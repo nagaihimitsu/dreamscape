@@ -40,7 +40,10 @@ INCLUDE modules.ink
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
-    迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
+    迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて
+    # speaker: heroine
+    # emotion: serious
+    ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
     # photo: gt_album_j43 # photo_caption: 楽隊の音の屋上の告白
@@ -96,7 +99,9 @@ INCLUDE modules.ink
         # emotion: serious
         うれしい。本当に、うれしい
         # speaker: heroine
-        でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから
+        でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに
+        # speaker: heroine
+        ……それは、嫌なの。ちゃんと、わたしが決めたいから
         # speaker: heroine
         # emotion: worried
         待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
@@ -142,7 +147,9 @@ INCLUDE modules.ink
     { cond("flag gt_delhi_back_word_secret"):
         # speaker: heroine
         # recall: gt_album_d61
-        あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
+        あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
+        # speaker: heroine
+        あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番

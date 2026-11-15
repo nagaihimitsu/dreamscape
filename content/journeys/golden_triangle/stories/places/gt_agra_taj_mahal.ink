@@ -285,7 +285,9 @@ INCLUDE modules.ink
 # background: gt_bg_agra_mehtab_bagh
 { quiz_correct:
     # speaker: heroine
-    デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町。……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない
+    デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町
+    # speaker: heroine
+    ……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない
 - else:
     # speaker: narrator
     アンワルが代わりに答えた。

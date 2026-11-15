@@ -7676,8 +7676,8 @@
   },
   {
     "line": 143,
-    "id": "gt_agra_main_fatehpur_sikri_008",
-    "text": "この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです。……ムケーシュさんの家も、誰かが渡ってくる橋みたいなものじゃないかなって",
+    "id": "gt_agra_main_fatehpur_sikri_battle_001",
+    "text": "この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです",
     "emo": [],
     "staging": [],
     "context": [],
@@ -7691,7 +7691,23 @@
     "title": "橋の上の家"
   },
   {
-    "line": 149,
+    "line": 145,
+    "id": "gt_agra_main_fatehpur_sikri_battle_002",
+    "text": "……ムケーシュさんの家も、誰かが渡ってくる橋みたいなものじゃないかなって",
+    "emo": [],
+    "staging": [],
+    "context": [],
+    "prev": [
+      "ヒロイン",
+      "この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです"
+    ],
+    "flags": [],
+    "file": "places/gt_agra_fatehpur_sikri.ink",
+    "knot": "gt_agra_main_fatehpur_sikri_battle",
+    "title": "橋の上の家"
+  },
+  {
+    "line": 151,
     "id": "gt_agra_main_fatehpur_sikri_009",
     "text": "い、今のは感想です。決めたわけじゃないです",
     "emo": [
@@ -7710,7 +7726,7 @@
     "title": "橋の上の家"
   },
   {
-    "line": 175,
+    "line": 177,
     "id": "gt_agra_main_fatehpur_sikri_010",
     "text": "……わたし、何もしてないのに、お礼を言われちゃった",
     "emo": [
@@ -8723,8 +8739,8 @@
   },
   {
     "line": 114,
-    "id": "gt_agra_date_confession_011",
-    "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから",
+    "id": "gt_agra_date_confession_019",
+    "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに",
     "emo": [],
     "staging": [],
     "context": [
@@ -8741,7 +8757,26 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 117,
+    "line": 116,
+    "id": "gt_agra_date_confession_020",
+    "text": "……それは、嫌なの。ちゃんと、わたしが決めたいから",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "それ以外",
+      "それ以外"
+    ],
+    "prev": [
+      "ヒロイン",
+      "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに"
+    ],
+    "flags": [],
+    "file": "places/gt_agra_hotel_hub_dates.ink",
+    "knot": "gt_agra_date_confession",
+    "title": "屋上の、言いたいこと"
+  },
+  {
+    "line": 119,
     "id": "gt_agra_date_confession_012",
     "text": "待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？",
     "emo": [
@@ -8754,7 +8789,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから"
+      "……それは、嫌なの。ちゃんと、わたしが決めたいから"
     ],
     "flags": [],
     "file": "places/gt_agra_hotel_hub_dates.ink",
@@ -8762,7 +8797,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 141,
+    "line": 143,
     "id": "gt_agra_confession_lead_001",
     "text": "この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから",
     "emo": [
@@ -8783,7 +8818,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 143,
+    "line": 145,
     "id": "gt_agra_confession_lead_002",
     "text": "でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
     "emo": [],
@@ -8802,7 +8837,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 147,
+    "line": 149,
     "id": "gt_agra_confession_lead_003",
     "text": "今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた",
     "emo": [
@@ -8823,7 +8858,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 149,
+    "line": 151,
     "id": "gt_agra_confession_lead_004",
     "text": "だから、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
     "emo": [],
@@ -8842,7 +8877,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 153,
+    "line": 155,
     "id": "gt_agra_confession_lead_005",
     "text": "話したいことがあって、屋上に誘ったの。わたしたちの話は、こっち向きでしたかったから",
     "emo": [
@@ -8863,7 +8898,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 155,
+    "line": 157,
     "id": "gt_agra_confession_lead_006",
     "text": "でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて",
     "emo": [],
@@ -8882,9 +8917,9 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 160,
-    "id": "gt_agra_confession_lead_007",
-    "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの",
+    "line": 162,
+    "id": "gt_agra_confession_lead_011",
+    "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ",
     "emo": [],
     "staging": [],
     "context": [
@@ -8901,7 +8936,26 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 163,
+    "line": 164,
+    "id": "gt_agra_confession_lead_012",
+    "text": "あれね、『まだいたい』って書いたの",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "告白を受け入れるとき",
+      "条件つき：出来事「gt_delhi_back_word_secret」があったとき"
+    ],
+    "prev": [
+      "ヒロイン",
+      "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ"
+    ],
+    "flags": [],
+    "file": "places/gt_agra_hotel_hub_dates.ink",
+    "knot": "gt_agra_confession_lead",
+    "title": "告白の前置き（gt_agra_confession_lead）"
+  },
+  {
+    "line": 167,
     "id": "gt_agra_confession_lead_008",
     "text": "背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番",
     "emo": [
@@ -8915,7 +8969,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの"
+      "あれね、『まだいたい』って書いたの"
     ],
     "flags": [],
     "file": "places/gt_agra_hotel_hub_dates.ink",
@@ -8923,7 +8977,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 175,
+    "line": 179,
     "id": "gt_agra_confession_lead_009",
     "text": "話、あるんでしょ。いいよ。最後まで、ちゃんと聞く",
     "emo": [],
@@ -8942,7 +8996,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 181,
+    "line": 185,
     "id": "gt_agra_confession_lead_010",
     "text": "ん？　どうしたの、改まった顔して",
     "emo": [],
@@ -8961,7 +9015,7 @@
     "title": "告白の前置き（gt_agra_confession_lead）"
   },
   {
-    "line": 200,
+    "line": 204,
     "id": "gt_agra_date_reassurance_001",
     "text": "チャイ、二つもらってきた。一つは、そっちの",
     "emo": [],
@@ -8977,7 +9031,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 203,
+    "line": 207,
     "id": "gt_agra_date_reassurance_002",
     "text": "この前の返事の話は、今日はしない。……そのかわり、チャイが冷めるまでは、普通の話をしよう。いつもの、どうでもいい話",
     "emo": [
@@ -8995,7 +9049,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 208,
+    "line": 212,
     "id": "gt_agra_date_reassurance_003",
     "text": "明日の話……。うん、普通だね。普通、なんだけど、ちょっとだけ緊張する",
     "emo": [],
@@ -9014,7 +9068,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 212,
+    "line": 216,
     "id": "gt_agra_date_reassurance_004",
     "text": "それ、いちばん普通の話。うれしい。明日は、わたしが一つ、行きたい所を言ってもいい？",
     "emo": [
@@ -9035,7 +9089,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 219,
+    "line": 223,
     "id": "gt_agra_date_reassurance_005",
     "text": "変なもの……。ごめん、今日は、あんまり周りを見てなかったかも",
     "emo": [
@@ -9056,7 +9110,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 223,
+    "line": 227,
     "id": "gt_agra_date_reassurance_006",
     "text": "変なもの？　屋根の上を歩いてた山羊。あれ、どうやって上ったんだろうね",
     "emo": [
@@ -9078,7 +9132,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 230,
+    "line": 234,
     "id": "gt_agra_date_reassurance_007",
     "text": "帰ったら……。帰る話は、今はちょっと、さみしいかも",
     "emo": [
@@ -9099,7 +9153,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 235,
+    "line": 239,
     "id": "gt_agra_date_reassurance_008",
     "text": "鮭のおにぎり。三か所はがすやつ。ラーム・バーグで言ったの、覚えてた？",
     "emo": [
@@ -9122,7 +9176,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 239,
+    "line": 243,
     "id": "gt_agra_date_reassurance_009",
     "text": "鮭のおにぎり。コンビニの、三か所はがすやつ。ちょっと恋しい",
     "emo": [
@@ -9145,7 +9199,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 248,
+    "line": 252,
     "id": "gt_agra_date_reassurance_010",
     "text": "待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの",
     "emo": [],
@@ -9161,7 +9215,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 251,
+    "line": 255,
     "id": "gt_agra_date_reassurance_011",
     "text": "答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる",
     "emo": [
@@ -9741,8 +9795,8 @@
   },
   {
     "line": 146,
-    "id": "gt_agra_date_mariam_tomb_015",
-    "text": "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ",
+    "id": "gt_agra_date_mariam_tomb_023",
+    "text": "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ",
     "emo": [],
     "staging": [],
     "context": [],
@@ -9750,9 +9804,7 @@
       "地の文",
       "彼女は芝生の端で立ち止まり、少し迷うように、こちらを見た。"
     ],
-    "flags": [
-      "★名前を含む"
-    ],
+    "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
     "knot": "gt_agra_date_mariam_tomb",
     "title": "本当の名前"
@@ -9769,7 +9821,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
+      "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
     ],
     "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
@@ -9790,7 +9842,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
+      "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
     ],
     "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
@@ -9811,7 +9863,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
+      "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
     ],
     "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
@@ -9833,7 +9885,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
+      "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
     ],
     "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
@@ -9855,7 +9907,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
+      "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
     ],
     "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
@@ -9877,7 +9929,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "ねえ。わたし、【主人公の呼び名】って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
+      "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ"
     ],
     "flags": [],
     "file": "places/gt_agra_mariam_tomb.ink",
@@ -10882,8 +10934,8 @@
   },
   {
     "line": 94,
-    "id": "gt_agra_date_ram_bagh_016",
-    "text": "クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない。道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ",
+    "id": "gt_agra_date_ram_bagh_030",
+    "text": "クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない",
     "emo": [],
     "staging": [],
     "context": [],
@@ -10897,7 +10949,23 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 97,
+    "line": 96,
+    "id": "gt_agra_date_ram_bagh_031",
+    "text": "道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ",
+    "emo": [],
+    "staging": [],
+    "context": [],
+    "prev": [
+      "ヒロイン",
+      "クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない"
+    ],
+    "flags": [],
+    "file": "places/gt_agra_ram_bagh.ink",
+    "knot": "gt_agra_date_ram_bagh",
+    "title": "皇帝の不満リスト"
+  },
+  {
+    "line": 99,
     "id": "gt_agra_date_ram_bagh_017",
     "text": "不満って、裏返すと、恋しいものになるんだね",
     "emo": [
@@ -10907,7 +10975,7 @@
     "context": [],
     "prev": [
       "ヒロイン",
-      "クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない。道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ"
+      "道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ"
     ],
     "flags": [],
     "file": "places/gt_agra_ram_bagh.ink",
@@ -10915,7 +10983,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 103,
+    "line": 105,
     "id": "gt_agra_date_ram_bagh_018",
     "text": "雨か。わたしが路地で買ったのも、雨の匂いだった。皇帝と、好みが合うね",
     "emo": [],
@@ -10933,7 +11001,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 106,
+    "line": 108,
     "id": "gt_agra_date_ram_bagh_019",
     "text": "雨か。わたしの雨は、猿のせいで、もう鹿の芝生に降っちゃったけど。皇帝と、好みは合ってたんだね",
     "emo": [],
@@ -10951,7 +11019,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 109,
+    "line": 111,
     "id": "gt_agra_date_ram_bagh_020",
     "text": "文句ばっかりの人が、雨は褒めたんだ。ちょっと、かわいいね",
     "emo": [],
@@ -10969,7 +11037,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 119,
+    "line": 121,
     "id": "gt_agra_date_ram_bagh_021",
     "text": "ど、どうして知ってるんですか！　しかも新婚じゃないです！",
     "emo": [
@@ -10988,7 +11056,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 127,
+    "line": 129,
     "id": "gt_agra_date_ram_bagh_022",
     "text": "……そんなに、きっぱり否定しなくても。いや、合ってるんだけど",
     "emo": [
@@ -11009,7 +11077,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 133,
+    "line": 135,
     "id": "gt_agra_date_ram_bagh_023",
     "text": "サミールさんと、同じこと言ってる……。この町、全員つながってるの？",
     "emo": [
@@ -11031,7 +11099,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 141,
+    "line": 143,
     "id": "gt_agra_date_ram_bagh_024",
     "text": "……そういう冗談、ここで言う？　お店の人、本気にするよ",
     "emo": [
@@ -11052,7 +11120,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 148,
+    "line": 150,
     "id": "gt_agra_date_ram_bagh_025",
     "text": "……今のところは、って何",
     "emo": [
@@ -11074,7 +11142,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 159,
+    "line": 161,
     "id": "gt_agra_date_ram_bagh_026",
     "text": "ごまかさないで。……ちゃんと否定してくれないと、わたしが困るんだから",
     "emo": [
@@ -11095,7 +11163,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 163,
+    "line": 165,
     "id": "gt_agra_date_ram_bagh_027",
     "text": "ごまかさないで、ちゃんと否定して。ううん、わたしがする。新婚じゃ、ありません！",
     "emo": [
@@ -11116,7 +11184,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 171,
+    "line": 173,
     "id": "gt_agra_date_ram_bagh_028",
     "text": "全然、日本の味じゃないのに、なんでだろう。ちょっと、懐かしい",
     "emo": [],
@@ -11132,7 +11200,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 174,
+    "line": 176,
     "id": "gt_agra_date_ram_bagh_029",
     "text": "帰ったら、きっとこれも恋しくなるんだね。恋しいものが一つ増えるの、ちょっと、うれしい",
     "emo": [
@@ -11150,7 +11218,7 @@
     "title": "皇帝の不満リスト"
   },
   {
-    "line": 183,
+    "line": 185,
     "id": "gt_agra_ram_bagh_complaints_001",
     "text": "一つ目から強い。それと、クラクションに返事するクラクション",
     "emo": [
@@ -11168,7 +11236,7 @@
     "title": "場面（gt_agra_ram_bagh_complaints）"
   },
   {
-    "line": 188,
+    "line": 190,
     "id": "gt_agra_ram_bagh_complaints_002",
     "text": "でも、毎回、全部飲んでるよね。わたしも飲んでるけど",
     "emo": [
@@ -11189,7 +11257,7 @@
     "title": "場面（gt_agra_ram_bagh_complaints）"
   },
   {
-    "line": 193,
+    "line": 195,
     "id": "gt_agra_ram_bagh_complaints_003",
     "text": "それ、わたしたちの電車も、オートも、さっき頼んだ水も",
     "emo": [
@@ -11543,8 +11611,8 @@
   },
   {
     "line": 287,
-    "id": "gt_agra_finale_007",
-    "text": "デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町。……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない",
+    "id": "gt_agra_finale_battle_001",
+    "text": "デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町",
     "emo": [],
     "staging": [],
     "context": [
@@ -11560,7 +11628,25 @@
     "title": "一番いい話"
   },
   {
-    "line": 296,
+    "line": 289,
+    "id": "gt_agra_finale_battle_002",
+    "text": "……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "クイズに正解したとき"
+    ],
+    "prev": [
+      "ヒロイン",
+      "デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町"
+    ],
+    "flags": [],
+    "file": "places/gt_agra_taj_mahal.ink",
+    "knot": "gt_agra_finale_battle",
+    "title": "一番いい話"
+  },
+  {
+    "line": 298,
     "id": "gt_agra_finale_008",
     "text": "……デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない",
     "emo": [],
@@ -11578,7 +11664,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 303,
+    "line": 305,
     "id": "gt_agra_finale_009",
     "text": "名前、ありますよ。一人だけ、タージに自分の名前を書き残した人がいるんです",
     "emo": [],
@@ -11594,7 +11680,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 310,
+    "line": 312,
     "id": "gt_agra_finale_010",
     "text": "書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて",
     "emo": [],
@@ -11612,7 +11698,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 319,
+    "line": 321,
     "id": "gt_agra_finale_011",
     "text": "それと、もう一つ、言っておきたいことがあります",
     "emo": [],
@@ -11628,7 +11714,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 325,
+    "line": 327,
     "id": "gt_agra_finale_012",
     "text": "わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます",
     "emo": [
@@ -11647,7 +11733,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 341,
+    "line": 343,
     "id": "gt_agra_finale_013",
     "text": "タージ・ガンジは、市場と隊商宿の町。最初から、タージの計画の一部だったんですよね",
     "emo": [],
@@ -11665,7 +11751,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 353,
+    "line": 355,
     "id": "gt_agra_finale_014",
     "text": "アンワルさん。わたし、今日聞いた中で一番泣けるのは、アンワルさんの話だと思います",
     "emo": [],
@@ -11681,7 +11767,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 357,
+    "line": 359,
     "id": "gt_agra_finale_015",
     "text": "手を切られた人の話じゃなくて、手を受け継いだ人の話。タージと一緒に生まれた町に、七代、住んでる人の話",
     "emo": [],
@@ -11697,7 +11783,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 364,
+    "line": 366,
     "id": "gt_agra_finale_016",
     "text": "はい。……そう言うと思ってました",
     "emo": [
@@ -11715,7 +11801,7 @@
     "title": "一番いい話"
   },
   {
-    "line": 388,
+    "line": 390,
     "id": "gt_agra_finale_017",
     "text": "……それは、受け取ります。そこは、譲らないです",
     "emo": [
@@ -12708,8 +12794,8 @@
   },
   {
     "line": 154,
-    "id": "gt_jaipur_date_albert_hall_015",
-    "text": "怖いって、ちゃんと言えるの、えらいよね。……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする",
+    "id": "gt_jaipur_date_albert_hall_017",
+    "text": "怖いって、ちゃんと言えるの、えらいよね",
     "emo": [],
     "staging": [],
     "context": [],
@@ -12723,7 +12809,23 @@
     "title": "ミイラより鳩"
   },
   {
-    "line": 157,
+    "line": 156,
+    "id": "gt_jaipur_date_albert_hall_018",
+    "text": "……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする",
+    "emo": [],
+    "staging": [],
+    "context": [],
+    "prev": [
+      "ヒロイン",
+      "怖いって、ちゃんと言えるの、えらいよね"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_albert_hall.ink",
+    "knot": "gt_jaipur_date_albert_hall",
+    "title": "ミイラより鳩"
+  },
+  {
+    "line": 159,
     "id": "gt_jaipur_date_albert_hall_016",
     "text": "それにしても、ミイラより、鳩の方がよっぽど元気。わたし、やっぱり鳩の方が怖いかも",
     "emo": [
@@ -12734,7 +12836,7 @@
     "context": [],
     "prev": [
       "ヒロイン",
-      "怖いって、ちゃんと言えるの、えらいよね。……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする"
+      "……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする"
     ],
     "flags": [],
     "file": "places/gt_jaipur_albert_hall.ink",
@@ -14002,8 +14104,8 @@
   },
   {
     "line": 45,
-    "id": "gt_jaipur_arrival_005",
-    "text": "結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も。……今度は、行きたい所、わたしからも言うね",
+    "id": "gt_jaipur_arrival_006",
+    "text": "結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も",
     "emo": [
       "ほほえみ"
     ],
@@ -14019,7 +14121,25 @@
     "title": "到着（gt_jaipur_arrival）"
   },
   {
-    "line": 63,
+    "line": 48,
+    "id": "gt_jaipur_arrival_007",
+    "text": "……今度は、行きたい所、わたしからも言うね",
+    "emo": [
+      "ほほえみ"
+    ],
+    "staging": [],
+    "context": [],
+    "prev": [
+      "ヒロイン",
+      "結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_hotel_hub.ink",
+    "knot": "gt_jaipur_arrival",
+    "title": "到着（gt_jaipur_arrival）"
+  },
+  {
+    "line": 66,
     "id": "gt_jaipur_epilogue_001",
     "text": "カムラさん！　昨日の今日なのに、もう値切ってる……",
     "emo": [
@@ -14038,7 +14158,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 77,
+    "line": 80,
     "id": "gt_jaipur_epilogue_002",
     "text": "……それ、わたしの、ですか",
     "emo": [
@@ -14057,7 +14177,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 94,
+    "line": 97,
     "id": "gt_jaipur_epilogue_003",
     "text": "はい。……もう、言いました。これからも、言いたいときに言います",
     "emo": [
@@ -14077,7 +14197,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 100,
+    "line": 103,
     "id": "gt_jaipur_epilogue_004",
     "text": "……まだ、です。でも、六十年は待ちません。約束します",
     "emo": [
@@ -14098,7 +14218,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 106,
+    "line": 109,
     "id": "gt_jaipur_epilogue_005",
     "text": "そ、そういうのじゃ……。でも、言いたいことは、ちゃんと言うようにします",
     "emo": [
@@ -14119,7 +14239,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 111,
+    "line": 114,
     "id": "gt_jaipur_epilogue_006",
     "text": "旅の連れ、です。……でも、この旅で一緒にいられてよかったって、それは、ちゃんと言えます",
     "emo": [],
@@ -14137,7 +14257,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 125,
+    "line": 128,
     "id": "gt_jaipur_epilogue_007",
     "text": "アーグラは、自分で書かなきゃね。……本当の話の方を、短く",
     "emo": [],
@@ -14153,7 +14273,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 130,
+    "line": 133,
     "id": "gt_jaipur_epilogue_008",
     "text": "インドで覚えた一番大事なこと、言うね。……好き。言いたいときに言うって、決めたから",
     "emo": [
@@ -14173,7 +14293,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 133,
+    "line": 136,
     "id": "gt_jaipur_epilogue_009",
     "text": "ふふ。今のは、六十年待たなかった分",
     "emo": [
@@ -14194,7 +14314,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 137,
+    "line": 140,
     "id": "gt_jaipur_epilogue_010",
     "text": "次の旅の行き先、今度はわたしから言ってもいい？　……一緒に行きたい所が、もうあるんだ",
     "emo": [
@@ -14214,7 +14334,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 141,
+    "line": 144,
     "id": "gt_jaipur_epilogue_011",
     "text": "楽しかった。……あなたと来られて、よかった。これは、勢いじゃないからね",
     "emo": [
@@ -14235,7 +14355,7 @@
     "title": "エピローグ（gt_jaipur_epilogue）"
   },
   {
-    "line": 144,
+    "line": 147,
     "id": "gt_jaipur_epilogue_012",
     "text": "ありがとう。一人だったら、きっと窓の内側から、見てるだけだった",
     "emo": [],
@@ -14293,8 +14413,8 @@
   },
   {
     "line": 42,
-    "id": "gt_jaipur_date_confession_003",
-    "text": "迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても",
+    "id": "gt_jaipur_date_confession_018",
+    "text": "迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて",
     "emo": [
       "真剣"
     ],
@@ -14312,7 +14432,27 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 46,
+    "line": 45,
+    "id": "gt_jaipur_date_confession_019",
+    "text": "……わたしも、一緒にいたい。旅が終わっても",
+    "emo": [
+      "真剣"
+    ],
+    "staging": [],
+    "context": [
+      "告白を受け入れるとき"
+    ],
+    "prev": [
+      "ヒロイン",
+      "迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_hotel_hub_dates.ink",
+    "knot": "gt_jaipur_date_confession",
+    "title": "屋上の、言いたいこと"
+  },
+  {
+    "line": 49,
     "id": "gt_jaipur_date_confession_004",
     "text": "ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど",
     "emo": [
@@ -14325,7 +14465,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても"
+      "……わたしも、一緒にいたい。旅が終わっても"
     ],
     "flags": [],
     "file": "places/gt_jaipur_hotel_hub_dates.ink",
@@ -14333,7 +14473,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 49,
+    "line": 52,
     "id": "gt_jaipur_date_confession_005",
     "text": "旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で",
     "emo": [
@@ -14353,7 +14493,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 58,
+    "line": 61,
     "id": "gt_jaipur_date_confession_012",
     "text": "前の屋上のことも、ちゃんと覚えてる。だから、今夜は、ぼかさずに言うね",
     "emo": [
@@ -14374,7 +14514,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 60,
+    "line": 63,
     "id": "gt_jaipur_date_confession_013",
     "text": "ごめんなさい。恋人にはなれない。最後の町まで考えて、そう決めたの",
     "emo": [],
@@ -14393,7 +14533,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 65,
+    "line": 68,
     "id": "gt_jaipur_date_confession_014",
     "text": "あれは、よその人のお祝い。……でも、ここまで一緒に来た旅は、わたしたちのだよ",
     "emo": [
@@ -14414,7 +14554,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 69,
+    "line": 72,
     "id": "gt_jaipur_date_confession_006",
     "text": "ありがとう。言ってくれて、うれしかった。それは、本当",
     "emo": [
@@ -14435,7 +14575,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 71,
+    "line": 74,
     "id": "gt_jaipur_date_confession_007",
     "text": "でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから",
     "emo": [],
@@ -14454,7 +14594,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 76,
+    "line": 79,
     "id": "gt_jaipur_date_confession_008",
     "text": "旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？",
     "emo": [
@@ -14475,7 +14615,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 83,
+    "line": 86,
     "id": "gt_jaipur_date_confession_015",
     "text": "前の夜も、今夜も、ちゃんと聞いてた。軽く聞いたことは、一回もないよ",
     "emo": [
@@ -14496,7 +14636,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 86,
+    "line": 89,
     "id": "gt_jaipur_date_confession_016",
     "text": "でも、今夜答えたら、楽隊と灯りのせいにしちゃう。……こんなに、にぎやかなんだもん",
     "emo": [
@@ -14517,7 +14657,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 89,
+    "line": 92,
     "id": "gt_jaipur_date_confession_017",
     "text": "だから、明るいところで、わたしから言う。今度は、答えを持っていくから",
     "emo": [
@@ -14538,7 +14678,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 96,
+    "line": 99,
     "id": "gt_jaipur_date_confession_009",
     "text": "うれしい。本当に、うれしい",
     "emo": [
@@ -14559,9 +14699,9 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 98,
-    "id": "gt_jaipur_date_confession_010",
-    "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから",
+    "line": 101,
+    "id": "gt_jaipur_date_confession_020",
+    "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに",
     "emo": [],
     "staging": [],
     "context": [
@@ -14578,7 +14718,26 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 101,
+    "line": 103,
+    "id": "gt_jaipur_date_confession_021",
+    "text": "……それは、嫌なの。ちゃんと、わたしが決めたいから",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "それ以外",
+      "それ以外"
+    ],
+    "prev": [
+      "ヒロイン",
+      "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_hotel_hub_dates.ink",
+    "knot": "gt_jaipur_date_confession",
+    "title": "屋上の、言いたいこと"
+  },
+  {
+    "line": 106,
     "id": "gt_jaipur_date_confession_011",
     "text": "待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？",
     "emo": [
@@ -14591,7 +14750,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから"
+      "……それは、嫌なの。ちゃんと、わたしが決めたいから"
     ],
     "flags": [],
     "file": "places/gt_jaipur_hotel_hub_dates.ink",
@@ -14599,7 +14758,7 @@
     "title": "屋上の、言いたいこと"
   },
   {
-    "line": 125,
+    "line": 130,
     "id": "gt_jaipur_confession_lead_001",
     "text": "この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから",
     "emo": [
@@ -14620,7 +14779,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 127,
+    "line": 132,
     "id": "gt_jaipur_confession_lead_002",
     "text": "でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
     "emo": [],
@@ -14639,7 +14798,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 131,
+    "line": 136,
     "id": "gt_jaipur_confession_lead_003",
     "text": "今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた",
     "emo": [
@@ -14660,7 +14819,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 133,
+    "line": 138,
     "id": "gt_jaipur_confession_lead_004",
     "text": "だから、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
     "emo": [],
@@ -14679,7 +14838,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 137,
+    "line": 142,
     "id": "gt_jaipur_confession_lead_005",
     "text": "話したいことがあって、屋上に誘ったの。今夜は、わたしから誘いたかった",
     "emo": [
@@ -14700,7 +14859,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 139,
+    "line": 144,
     "id": "gt_jaipur_confession_lead_006",
     "text": "でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて",
     "emo": [],
@@ -14719,9 +14878,9 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 144,
-    "id": "gt_jaipur_confession_lead_007",
-    "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの",
+    "line": 149,
+    "id": "gt_jaipur_confession_lead_012",
+    "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ",
     "emo": [],
     "staging": [],
     "context": [
@@ -14738,7 +14897,26 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 147,
+    "line": 151,
+    "id": "gt_jaipur_confession_lead_013",
+    "text": "あれね、『まだいたい』って書いたの",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "告白を受け入れるとき",
+      "条件つき：出来事「gt_delhi_back_word_secret」があったとき"
+    ],
+    "prev": [
+      "ヒロイン",
+      "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_hotel_hub_dates.ink",
+    "knot": "gt_jaipur_confession_lead",
+    "title": "告白の前置き（gt_jaipur_confession_lead）"
+  },
+  {
+    "line": 154,
     "id": "gt_jaipur_confession_lead_008",
     "text": "背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番",
     "emo": [
@@ -14752,7 +14930,7 @@
     ],
     "prev": [
       "ヒロイン",
-      "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの"
+      "あれね、『まだいたい』って書いたの"
     ],
     "flags": [],
     "file": "places/gt_jaipur_hotel_hub_dates.ink",
@@ -14760,7 +14938,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 168,
+    "line": 175,
     "id": "gt_jaipur_confession_lead_011",
     "text": "今夜も、話があるんだね。いいよ。楽隊に負けないくらいの声で、聞かせて",
     "emo": [
@@ -14782,7 +14960,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 171,
+    "line": 178,
     "id": "gt_jaipur_confession_lead_009",
     "text": "話、あるんでしょ。いいよ。最後まで、ちゃんと聞く",
     "emo": [],
@@ -14802,7 +14980,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 178,
+    "line": 185,
     "id": "gt_jaipur_confession_lead_010",
     "text": "ん？　どうしたの、改まった顔して",
     "emo": [],
@@ -14821,7 +14999,7 @@
     "title": "告白の前置き（gt_jaipur_confession_lead）"
   },
   {
-    "line": 198,
+    "line": 205,
     "id": "gt_jaipur_date_reassurance_001",
     "text": "チャイ、二つもらってきた。一つは、そっちの",
     "emo": [],
@@ -14837,7 +15015,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 201,
+    "line": 208,
     "id": "gt_jaipur_date_reassurance_002",
     "text": "この前の返事の話は、今日はしない。……そのかわり、チャイが冷めるまでは、普通の話をしよう。いつもの、どうでもいい話",
     "emo": [
@@ -14855,7 +15033,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 206,
+    "line": 213,
     "id": "gt_jaipur_date_reassurance_003",
     "text": "明日の話……。うん、普通だね。普通、なんだけど、ちょっとだけ緊張する",
     "emo": [],
@@ -14874,7 +15052,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 210,
+    "line": 217,
     "id": "gt_jaipur_date_reassurance_004",
     "text": "それ、いちばん普通の話。うれしい。明日は、わたしが一つ、行きたい所を言ってもいい？",
     "emo": [
@@ -14895,7 +15073,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 217,
+    "line": 224,
     "id": "gt_jaipur_date_reassurance_005",
     "text": "変なもの……。ごめん、今日は、あんまり周りを見てなかったかも",
     "emo": [
@@ -14916,7 +15094,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 221,
+    "line": 228,
     "id": "gt_jaipur_date_reassurance_006",
     "text": "変なもの？　屋根の上を歩いてた山羊。あれ、どうやって上ったんだろうね",
     "emo": [
@@ -14938,7 +15116,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 228,
+    "line": 235,
     "id": "gt_jaipur_date_reassurance_007",
     "text": "帰ったら……。帰る話は、今はちょっと、さみしいかも",
     "emo": [
@@ -14959,7 +15137,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 233,
+    "line": 240,
     "id": "gt_jaipur_date_reassurance_008",
     "text": "鮭のおにぎり。三か所はがすやつ。ラーム・バーグで言ったの、覚えてた？",
     "emo": [
@@ -14982,7 +15160,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 237,
+    "line": 244,
     "id": "gt_jaipur_date_reassurance_009",
     "text": "鮭のおにぎり。コンビニの、三か所はがすやつ。ちょっと恋しい",
     "emo": [
@@ -15005,7 +15183,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 244,
+    "line": 251,
     "id": "gt_jaipur_date_reassurance_010",
     "text": "待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの",
     "emo": [],
@@ -15021,7 +15199,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 247,
+    "line": 254,
     "id": "gt_jaipur_date_reassurance_011",
     "text": "答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる",
     "emo": [
@@ -15039,7 +15217,7 @@
     "title": "チャイが冷めるまで"
   },
   {
-    "line": 274,
+    "line": 281,
     "id": "gt_jaipur_date_answer_001",
     "text": "見て。夜と、ぜんぜん色がちがう。……こっちが、この町のふだんの顔なのかな",
     "emo": [],
@@ -15055,7 +15233,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 279,
+    "line": 286,
     "id": "gt_jaipur_date_answer_002",
     "text": "屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に",
     "emo": [
@@ -15073,7 +15251,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 282,
+    "line": 289,
     "id": "gt_jaipur_date_answer_003",
     "text": "答えは、わたしから言うって約束したもんね。だから、今日はわたしから",
     "emo": [],
@@ -15091,7 +15269,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 287,
+    "line": 294,
     "id": "gt_jaipur_date_answer_004",
     "text": "それに、通りの真ん中で踊れたんだもん。通りの真ん中でなら、ちゃんと言える気がした",
     "emo": [
@@ -15111,7 +15289,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 299,
+    "line": 306,
     "id": "gt_jaipur_date_answer_005",
     "text": "好き。……付き合いたい。旅が終わっても、一緒にいたい",
     "emo": [],
@@ -15130,7 +15308,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 302,
+    "line": 309,
     "id": "gt_jaipur_date_answer_006",
     "text": "昼間に、牛の横で言ってるんだからね。もう、夜のせいにはできないよ",
     "emo": [
@@ -15149,7 +15327,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 309,
+    "line": 316,
     "id": "gt_jaipur_date_answer_007",
     "text": "知ってた。……うそ。ちょっとだけ、こわかった。今、聞けてよかった",
     "emo": [
@@ -15170,7 +15348,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 314,
+    "line": 321,
     "id": "gt_jaipur_date_answer_008",
     "text": "だめ。一日一回まで。……うそ。好き。はい、二回目。三回目は、夜に取っておく",
     "emo": [
@@ -15191,7 +15369,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 321,
+    "line": 328,
     "id": "gt_jaipur_date_answer_009",
     "text": "……ふふ。窓がこんなにあるのに。まあ、いいか。見られても",
     "emo": [
@@ -15212,7 +15390,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 325,
+    "line": 332,
     "id": "gt_jaipur_date_answer_010",
     "text": "じゃあ、恋人になって最初の行き先、わたしが決めていい？　……もう、決めてあるんだけど",
     "emo": [
@@ -15230,7 +15408,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 331,
+    "line": 338,
     "id": "gt_jaipur_date_answer_011",
     "text": "ちゃんと考えた。夜の気持ちじゃなくて、昼の明るさで。……それで、決めた",
     "emo": [],
@@ -15248,7 +15426,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 333,
+    "line": 340,
     "id": "gt_jaipur_date_answer_012",
     "text": "恋人としては、今は、一緒にいられない。これが、わたしの答え。待たせたのに、ごめんなさい",
     "emo": [],
@@ -15264,7 +15442,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 337,
+    "line": 344,
     "id": "gt_jaipur_date_answer_013",
     "text": "この旅で隣にいてくれたのは、本当にうれしかった。それは、答えとは別に、ちゃんと本当",
     "emo": [],
@@ -15280,7 +15458,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 340,
+    "line": 347,
     "id": "gt_jaipur_date_answer_014",
     "text": "うん。……言うの、こわかった。でも、黙ったまま旅を終えるほうが、もっといやだった",
     "emo": [],
@@ -15298,7 +15476,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 343,
+    "line": 350,
     "id": "gt_jaipur_date_answer_015",
     "text": "うん。宿で待ってる。戻ってきたら、チャイにしよう。今度は、わたしがおごる",
     "emo": [],
@@ -15316,7 +15494,7 @@
     "title": "夜のせいにしない返事"
   },
   {
-    "line": 347,
+    "line": 354,
     "id": "gt_jaipur_date_answer_016",
     "text": "それ、わたしが言おうと思ってたのに。……先に言われちゃった",
     "emo": [
@@ -16800,8 +16978,8 @@
   },
   {
     "line": 122,
-    "id": "gt_jaipur_main_jantar_mantar_004",
-    "text": "携帯の時刻は、国の標準時ですよね。ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います",
+    "id": "gt_jaipur_main_jantar_mantar_battle_001",
+    "text": "携帯の時刻は、国の標準時ですよね",
     "emo": [],
     "staging": [],
     "context": [
@@ -16817,7 +16995,25 @@
     "title": "吉時の計算"
   },
   {
-    "line": 141,
+    "line": 124,
+    "id": "gt_jaipur_main_jantar_mantar_battle_002",
+    "text": "ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "クイズに正解したとき"
+    ],
+    "prev": [
+      "ヒロイン",
+      "携帯の時刻は、国の標準時ですよね"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_jantar_mantar.ink",
+    "knot": "gt_jaipur_main_jantar_mantar_battle",
+    "title": "吉時の計算"
+  },
+  {
+    "line": 143,
     "id": "gt_jaipur_main_jantar_mantar_005",
     "text": "ディヴィヤさん、論文、何時に出すんですか？",
     "emo": [],
@@ -16833,7 +17029,7 @@
     "title": "吉時の計算"
   },
   {
-    "line": 163,
+    "line": 165,
     "id": "gt_jaipur_main_jantar_mantar_006",
     "text": "天文学者と占星術師が、同じ影を見てる。……なんだか、いい眺め",
     "emo": [
@@ -16890,8 +17086,8 @@
   },
   {
     "line": 35,
-    "id": "gt_jaipur_date_johari_bazaar_003",
-    "text": "あのあと、結局、言いそびれちゃった。欲しいって。……カムラさんに、欲しいものは欲しいと言いなさいって、言われたばっかりだったのに",
+    "id": "gt_jaipur_date_johari_bazaar_024",
+    "text": "あのあと、結局、言いそびれちゃった。欲しいって",
     "emo": [
       "心配・弱っている"
     ],
@@ -16909,7 +17105,27 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 43,
+    "line": 38,
+    "id": "gt_jaipur_date_johari_bazaar_025",
+    "text": "……カムラさんに、欲しいものは欲しいと言いなさいって、言われたばっかりだったのに",
+    "emo": [
+      "心配・弱っている"
+    ],
+    "staging": [],
+    "context": [
+      "条件つき：クイズ「gt_delhi_main_red_fort_battle」を遊んだあと"
+    ],
+    "prev": [
+      "ヒロイン",
+      "あのあと、結局、言いそびれちゃった。欲しいって"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_johari_bazaar.ink",
+    "knot": "gt_jaipur_date_johari_bazaar",
+    "title": "欲しいものは、欲しいと"
+  },
+  {
+    "line": 46,
     "id": "gt_jaipur_date_johari_bazaar_023",
     "text": "ち、違います！　ただの招待客です！",
     "emo": [
@@ -16928,7 +17144,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 47,
+    "line": 50,
     "id": "gt_jaipur_date_johari_bazaar_005",
     "text": "そこの『今のところは』の人。今、何か言おうとしたでしょ",
     "emo": [
@@ -16949,7 +17165,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 62,
+    "line": 65,
     "id": "gt_jaipur_date_johari_bazaar_006",
     "text": "い、いたた……！　あ、入った。手首で、からんって鳴った",
     "emo": [
@@ -16968,7 +17184,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 71,
+    "line": 74,
     "id": "gt_jaipur_date_johari_bazaar_007",
     "text": "……今それ、ちょっと困る。ほら、また花嫁さんって言われた",
     "emo": [
@@ -16989,7 +17205,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 77,
+    "line": 80,
     "id": "gt_jaipur_date_johari_bazaar_008",
     "text": "それ、分かってて言ったでしょ。……でも、似合うって言われたら、ちょっと迷う",
     "emo": [
@@ -17011,7 +17227,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 85,
+    "line": 88,
     "id": "gt_jaipur_date_johari_bazaar_009",
     "text": "……迷ってるの、見て分からない？　一緒に見てほしかったのに",
     "emo": [
@@ -17032,7 +17248,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 93,
+    "line": 96,
     "id": "gt_jaipur_date_johari_bazaar_010",
     "text": "これ。夕方のジャイプールの色。この町に着いた日、窓から見た色だから",
     "emo": [
@@ -17053,7 +17269,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 103,
+    "line": 106,
     "id": "gt_jaipur_date_johari_bazaar_011",
     "text": "……そう言われると、ちょっと恥ずかしい",
     "emo": [
@@ -17075,7 +17291,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 107,
+    "line": 110,
     "id": "gt_jaipur_date_johari_bazaar_012",
     "text": "言ってくれるんだ。あのとき、わたし、何にも言わなかったのに",
     "emo": [
@@ -17097,7 +17313,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 110,
+    "line": 113,
     "id": "gt_jaipur_date_johari_bazaar_013",
     "text": "じゃあ、一緒に選んで。でも、最後に決めるのは、わたしね",
     "emo": [
@@ -17118,7 +17334,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 116,
+    "line": 119,
     "id": "gt_jaipur_date_johari_bazaar_014",
     "text": "欲しいです。すごく、欲しいです。でも、もう少しだけ、安くなりませんか",
     "emo": [],
@@ -17134,7 +17350,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 121,
+    "line": 124,
     "id": "gt_jaipur_date_johari_bazaar_015",
     "text": "……カムラさんの教え、値切りには向いてなかった",
     "emo": [
@@ -17153,7 +17369,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 135,
+    "line": 138,
     "id": "gt_jaipur_date_johari_bazaar_016",
     "text": "値切れた！　正直に言ったのに、値切れた",
     "emo": [
@@ -17175,7 +17391,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 144,
+    "line": 147,
     "id": "gt_jaipur_date_johari_bazaar_017",
     "text": "わたしの交渉だったのに……。それに、旦那さんじゃないです",
     "emo": [
@@ -17196,7 +17412,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 150,
+    "line": 153,
     "id": "gt_jaipur_date_johari_bazaar_018",
     "text": "旦那さんじゃないです……！　この旅で、もう何回目……",
     "emo": [
@@ -17218,7 +17434,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 157,
+    "line": 160,
     "id": "gt_jaipur_date_johari_bazaar_019",
     "text": "……値切るのも、ちょっと楽しみだったのにな",
     "emo": [
@@ -17239,7 +17455,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 160,
+    "line": 163,
     "id": "gt_jaipur_date_johari_bazaar_020",
     "text": "ううん。値切るのも、買い物のうちだから。でも、ありがとう",
     "emo": [],
@@ -17258,7 +17474,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 179,
+    "line": 182,
     "id": "gt_jaipur_date_johari_bazaar_021",
     "text": "音がする。歩くたびに。自分で選んで、自分で欲しいって言ったものの音",
     "emo": [
@@ -17276,7 +17492,7 @@
     "title": "欲しいものは、欲しいと"
   },
   {
-    "line": 181,
+    "line": 184,
     "id": "gt_jaipur_date_johari_bazaar_022",
     "text": "次は、値切る前に、欲しいって言わないようにする。ううん、やっぱり言う。言ってから、値切る",
     "emo": [],
@@ -17580,8 +17796,8 @@
   },
   {
     "line": 124,
-    "id": "gt_jaipur_date_nahargarh_fort_010",
-    "text": "探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ。今の、ちゃんと覚えておいてね",
+    "id": "gt_jaipur_date_nahargarh_fort_033",
+    "text": "探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ",
     "emo": [
       "困る・あきれる"
     ],
@@ -17600,7 +17816,28 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 131,
+    "line": 127,
+    "id": "gt_jaipur_date_nahargarh_fort_034",
+    "text": "今の、ちゃんと覚えておいてね",
+    "emo": [
+      "からかう"
+    ],
+    "staging": [],
+    "context": [
+      "選択肢［かくれんぼ：廊下の真ん中で待った］のあと",
+      "それ以外"
+    ],
+    "prev": [
+      "ヒロイン",
+      "探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_nahargarh_fort.ink",
+    "knot": "gt_jaipur_date_nahargarh_fort",
+    "title": "同じ形の部屋"
+  },
+  {
+    "line": 134,
     "id": "gt_jaipur_date_nahargarh_fort_030",
     "text": "王さまは、ほかの人に知られずに、誰の部屋にでも行けたって、言われてるんだよね。便利だけど、さみしい建物",
     "emo": [],
@@ -17616,7 +17853,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 134,
+    "line": 137,
     "id": "gt_jaipur_date_nahargarh_fort_012",
     "text": "来てもらう方は、廊下の音を聞いて、今夜は自分の扉かなって、待ってるだけだったのかな",
     "emo": [
@@ -17634,7 +17871,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 140,
+    "line": 143,
     "id": "gt_jaipur_date_nahargarh_fort_013",
     "text": "……それ、ちゃんと分かって言ってる？　かっこいいこと言うの、簡単だよ",
     "emo": [
@@ -17655,7 +17892,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 144,
+    "line": 147,
     "id": "gt_jaipur_date_nahargarh_fort_014",
     "text": "……そっか。うん。わたしも、そっちがいい",
     "emo": [
@@ -17677,7 +17914,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 151,
+    "line": 154,
     "id": "gt_jaipur_date_nahargarh_fort_015",
     "text": "……そうは、思えないな。待つだけって、けっこう苦しいよ",
     "emo": [
@@ -17698,7 +17935,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 154,
+    "line": 157,
     "id": "gt_jaipur_date_nahargarh_fort_016",
     "text": "そうかな。……そうだったらいいな。わたしなら、待つだけは、たぶん嫌だけど",
     "emo": [],
@@ -17717,7 +17954,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 161,
+    "line": 164,
     "id": "gt_jaipur_date_nahargarh_fort_017",
     "text": "……急に、真面目に聞くね。ちょっと、考えさせて",
     "emo": [
@@ -17739,7 +17976,7 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 164,
+    "line": 167,
     "id": "gt_jaipur_date_nahargarh_fort_018",
     "text": "わたし？",
     "emo": [],
@@ -17758,9 +17995,9 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 169,
-    "id": "gt_jaipur_date_nahargarh_fort_019",
-    "text": "わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って。……それから、自分からも、行きたい。待つだけじゃなくて",
+    "line": 172,
+    "id": "gt_jaipur_date_nahargarh_fort_035",
+    "text": "わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って",
     "emo": [
       "真剣"
     ],
@@ -17776,7 +18013,25 @@
     "title": "同じ形の部屋"
   },
   {
-    "line": 174,
+    "line": 175,
+    "id": "gt_jaipur_date_nahargarh_fort_036",
+    "text": "……それから、自分からも、行きたい。待つだけじゃなくて",
+    "emo": [
+      "真剣"
+    ],
+    "staging": [],
+    "context": [],
+    "prev": [
+      "ヒロイン",
+      "わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_nahargarh_fort.ink",
+    "knot": "gt_jaipur_date_nahargarh_fort",
+    "title": "同じ形の部屋"
+  },
+  {
+    "line": 180,
     "id": "gt_jaipur_date_nahargarh_fort_020",
     "text": "あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる",
     "emo": [
@@ -18063,8 +18318,8 @@
   },
   {
     "line": 95,
-    "id": "gt_jaipur_date_panna_meena_kund_015",
-    "text": "ニキルさんは、結婚式の段取りも三十枚のスライドにしてる。それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる",
+    "id": "gt_jaipur_date_panna_meena_kund_031",
+    "text": "ニキルさんは、結婚式の段取りも三十枚のスライドにしてる",
     "emo": [],
     "staging": [],
     "context": [
@@ -18080,7 +18335,25 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 102,
+    "line": 97,
+    "id": "gt_jaipur_date_panna_meena_kund_032",
+    "text": "それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる",
+    "emo": [],
+    "staging": [],
+    "context": [
+      "条件つき：「gt_agra_main_taj_mahal」を終えたあと"
+    ],
+    "prev": [
+      "ヒロイン",
+      "ニキルさんは、結婚式の段取りも三十枚のスライドにしてる"
+    ],
+    "flags": [],
+    "file": "places/gt_jaipur_panna_meena_kund.ink",
+    "knot": "gt_jaipur_date_panna_meena_kund",
+    "title": "文字どおりの井戸端会議"
+  },
+  {
+    "line": 104,
     "id": "gt_jaipur_date_panna_meena_kund_016",
     "text": "ハルバンスさんは、カナダで絶対、洗車係じゃ終わらない。三日目には、息子さんの会社の配車表を書き直してると思う",
     "emo": [],
@@ -18098,7 +18371,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 107,
+    "line": 109,
     "id": "gt_jaipur_date_panna_meena_kund_017",
     "text": "ソニアさんは、十年後に州の代表。写真代も、ずっと高くなってるね",
     "emo": [],
@@ -18116,7 +18389,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 112,
+    "line": 114,
     "id": "gt_jaipur_date_panna_meena_kund_018",
     "text": "道を教えてくれた人たち。全員、違う方向を指さした人たち。今ごろ、次の旅行者にも、自信満々で違う方向を教えてる",
     "emo": [],
@@ -18134,7 +18407,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 119,
+    "line": 121,
     "id": "gt_jaipur_date_panna_meena_kund_019",
     "text": "じゃあ、最後の噂。わたしたちのことは、みんな、何て言ってると思う？",
     "emo": [
@@ -18152,7 +18425,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 125,
+    "line": 127,
     "id": "gt_jaipur_date_panna_meena_kund_020",
     "text": "その話は、もういい……。ここまで追いかけてこないで",
     "emo": [
@@ -18173,7 +18446,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 129,
+    "line": 131,
     "id": "gt_jaipur_date_panna_meena_kund_021",
     "text": "あれは、もう諦めた。訂正したら、訂正した分だけ、話が増える気がする",
     "emo": [
@@ -18195,7 +18468,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 136,
+    "line": 138,
     "id": "gt_jaipur_date_panna_meena_kund_022",
     "text": "……それ、褒めてたのかな。わたし、ずっと分からないままなんだけど",
     "emo": [
@@ -18216,7 +18489,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 140,
+    "line": 142,
     "id": "gt_jaipur_date_panna_meena_kund_023",
     "text": "あれ、褒めてたんだよ、たぶん。カムラさんの褒め方、分かりにくいから",
     "emo": [
@@ -18238,7 +18511,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 147,
+    "line": 149,
     "id": "gt_jaipur_date_panna_meena_kund_024",
     "text": "そ、そう見えてるのかな。噂って、勝手に先に進むから、困る",
     "emo": [
@@ -18260,7 +18533,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 153,
+    "line": 155,
     "id": "gt_jaipur_date_panna_meena_kund_025",
     "text": "……一組だもん。噂じゃなくて、本当のこと",
     "emo": [
@@ -18283,7 +18556,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 157,
+    "line": 159,
     "id": "gt_jaipur_date_panna_meena_kund_026",
     "text": "……ふふ。わたしも、ちょっと、そう思ってた。噂のほうが、先を歩いてるね",
     "emo": [
@@ -18306,7 +18579,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 161,
+    "line": 163,
     "id": "gt_jaipur_date_panna_meena_kund_027",
     "text": "そう見えてるのかな。一緒にいる時間、長いもんね。噂って、早いなあ",
     "emo": [
@@ -18329,7 +18602,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 166,
+    "line": 168,
     "id": "gt_jaipur_date_panna_meena_kund_028",
     "text": "噂って、外から見た本当、なのかもね。わたしたちが言葉にする前に、まわりの方が、先に言葉にしてる",
     "emo": [],
@@ -18345,7 +18618,7 @@
     "title": "文字どおりの井戸端会議"
   },
   {
-    "line": 171,
+    "line": 173,
     "id": "gt_jaipur_date_panna_meena_kund_029",
     "text": "ここで聞いた噂話も、全部、井戸の底に置いていこう。わたしたちの分だけ、持って帰って",
     "emo": [
