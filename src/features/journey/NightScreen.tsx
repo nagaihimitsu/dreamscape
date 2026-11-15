@@ -4,19 +4,12 @@ import { holdTaps } from "../../components/tap-hold";
 import { playSe } from "../../audio/sound-effects";
 import type { NightAction } from "../../domain/day-end";
 import type { GameState } from "../../domain/game";
-import { NightSky, reducedMotionNow, useAnnounced, useNightCard } from "./NightRest";
+import { NIGHT_TAP_HINT_JA, NightSky, reducedMotionNow, useAnnounced, useNightCard } from "./NightRest";
 import { NIGHT_REST_BUTTON_JA, NIGHT_RESTED_JA, NIGHT_SCREEN_JA, nightActionLabelJa } from "./night-rest-text";
 import { TourBooking, TourCancelDialog } from "./TravelTours";
 import { hasNightRecap, nightRecap, todayWord, type NightRecap, type TodayWord } from "./night-recap";
 import { NightRecapView, TodayWordLine } from "./NightRecap";
 import "./night-rest.css";
-
-/**
- * How long 「ホテルで休みました。」 shows before the night screen has faded to the morning (ms); reduced motion: still, a
- * little shorter (2026-11-13: no fade to wait for; the night's route and word were on the screen before it).
- */
-const NIGHT_LEAVING_MS = 2000;
-const NIGHT_LEAVING_REDUCED_MS = 1400;
 
 /** A button of the night screen: a night action, or the rest. */
 export type NightButton = { kind: NightAction | "rest"; label: string };
@@ -92,7 +85,9 @@ export function NightLeaving({ buttons, recap, word = null, reduceMotion, onEnd 
   reduceMotion: boolean;
   onEnd: () => void;
 }) {
-  const { reduced, announced, end } = useNightCard({ reduceMotion, ms: NIGHT_LEAVING_MS, reducedMs: NIGHT_LEAVING_REDUCED_MS, onEnd });
+  // 「ホテルで休みました。」 stays until a tap anywhere or Enter, Space or Esc (2026-11-15 user decision: it used to fade by itself
+  // after 2 s while the player was still reading today's route).
+  const { reduced, announced, end } = useNightCard({ reduceMotion, ms: null, reducedMs: null, onEnd });
   // The night's rest from this screen: the same sound as the card of a rest the game took by itself (NightRest).
   useEffect(() => playSe("night_rest"), []);
   return <NightLayout line={NIGHT_RESTED_JA} recap={recap} word={word} buttons={buttons} reduced={reduced} announced={announced} leaving onClick={end} />;
@@ -121,13 +116,15 @@ function NightLayout({ rootRef, line, recap, word = null, buttons, reduced, anno
       <div className="night-screen-actions">
         {buttons.map((button) => <button key={button.kind} type="button" data-testid={`night-action-${button.kind}`}
           className={button.kind === "rest" ? "night-screen-rest" : "secondary"} onClick={() => onPress?.(button.kind)}>{button.label}</button>)}
+        {/* Where the buttons were (their room stays): how the leaving ends. */}
+        {leaving && <p className="night-tap-hint" aria-hidden="true">{NIGHT_TAP_HINT_JA}</p>}
       </div>
       {/* Under the buttons, so the night's actions stay in view on a short phone (the screen scrolls to the rest). */}
       {hasNightRecap(recap) && <NightRecapView recap={recap} />}
       {/* Last, a small plain line in the reading order (2026-11-13): nothing announces it and it never sits over a button. */}
       {word && <TodayWordLine word={word} />}
     </div>
-    <p className="sr-only" role="status">{announced ? line : ""}</p>
+    <p className="sr-only" role="status">{announced ? (leaving ? `${line}${NIGHT_TAP_HINT_JA}。` : line) : ""}</p>
     {children}
   </section>;
 }

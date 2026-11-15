@@ -14,14 +14,14 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: night-rest-overlay 2.8s ease both;
+  animation: night-rest-overlay 1.4s ease both;
 }
 .night-rest-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 100%;
-  animation: night-rest-content 2.8s ease both;
+  animation: night-rest-content 1.4s ease both;
 }
 .night-rest-sky {
   display: block;
@@ -48,22 +48,32 @@
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
-/* Dusk deepens to night, the moon, stars and line come out, and at the end the card fades to what lies under it. */
+/* Dusk deepens to night and the moon, stars and line come out; then the card stays until a tap (2026-11-15). */
 @keyframes night-rest-overlay {
-  0% { background-color: #3a416c; opacity: 1; }
-  22% { background-color: #111a2f; }
-  82% { opacity: 1; }
-  100% { background-color: #111a2f; opacity: 0; }
+  from { background-color: #3a416c; }
+  to { background-color: #111a2f; }
 }
 @keyframes night-rest-content {
-  0%, 12% { opacity: 0; transform: translateY(10px); }
-  36%, 100% { opacity: 1; transform: none; }
+  0%, 25% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: none; }
 }
+/* How the card ends (NIGHT_TAP_HINT_JA), on the card and where the night screen's buttons were. --ds-on-slate-muted on the night
+   colour: about 13:1. It comes out after the line. */
+.night-tap-hint {
+  margin: 18px 0 0;
+  color: var(--ds-on-slate-muted);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  animation: night-tap-hint-in 2s ease both;
+}
+@keyframes night-tap-hint-in { 0%, 60% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes night-rest-twinkle { from { opacity: 0.35; } to { opacity: 1; } }
-/* Reduced motion: nothing moves or fades; the line shows plainly until a tap or the card's time. */
-.night-rest.is-reduced, .night-rest.is-reduced .night-rest-content, .night-rest.is-reduced .night-rest-star { animation: none; }
+/* Reduced motion: nothing moves or fades; the line shows plainly until a tap. */
+.night-rest.is-reduced, .night-rest.is-reduced .night-rest-content, .night-rest.is-reduced .night-rest-star,
+.is-reduced .night-tap-hint { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .night-rest, .night-rest-content, .night-rest-star { animation: none; }
+  .night-rest, .night-rest-content, .night-rest-star, .night-tap-hint { animation: none; }
 }
 
 /* The night screen (NightScreen, docs/02 「一日の終わり」): free time at 21:00 or later with night actions open. The night of the
@@ -126,27 +136,27 @@
   box-shadow: 0 0 18px rgba(246, 231, 174, 0.25);
 }
 .night-screen-rest:hover:enabled { background: #fbefc4; }
-/* After 「ホテルで休む」 has slept (NightLeaving): the line changes in place, the buttons go from sight (their room stays), and
-   the screen fades to the morning; a tap ends it. */
+/* After 「ホテルで休む」 has slept (NightLeaving): the line changes in place, the buttons go from sight (their room stays, with
+   「タップして次へ」 in it), and the screen stays until a tap (2026-11-15). */
 .night-screen.is-leaving {
   cursor: pointer;
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: night-screen-out 2s ease both;
 }
 .night-screen.is-leaving .night-screen-content { animation: none; }
 .night-screen.is-leaving .night-screen-line { animation: night-screen-line-in 0.3s ease both; }
-.night-screen.is-leaving .night-screen-actions { visibility: hidden; }
+.night-screen.is-leaving .night-screen-actions { position: relative; visibility: hidden; }
+/* At the top of the buttons' room, over it: nothing under it moves. */
+.night-screen.is-leaving .night-tap-hint { position: absolute; top: 12px; right: 0; left: 0; margin: 0; visibility: visible; }
 @keyframes night-screen-in { from { background-color: #3a416c; } to { background-color: #111a2f; } }
 @keyframes night-screen-content-in {
   0%, 20% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: none; }
 }
-@keyframes night-screen-out { 0%, 70% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes night-screen-line-in { from { opacity: 0; } to { opacity: 1; } }
-/* Reduced motion: nothing moves or fades (the leaving ends after its time or a tap, at once). */
+/* Reduced motion: nothing moves or fades (the leaving ends on a tap, at once). */
 .night-screen.is-reduced, .night-screen.is-reduced .night-screen-content, .night-screen.is-reduced .night-screen-line,
 .night-screen.is-reduced .night-rest-star { animation: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -170,11 +180,9 @@
 @keyframes night-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
 /* The night's recap (NightRecap, 2026-11-11): today's route on a small map, its stops in words, and the heroine's line, under
-   the night screen's buttons or the card's line. The moon gives them room; the card that shows them stays longer (NightRest),
-   its timeline stretched alike. */
+   the night screen's buttons or the card's line. The moon gives them room. */
 .night-screen-content.has-recap .night-rest-sky,
 .night-rest.has-recap .night-rest-sky { width: min(120px, 34vw); }
-.night-rest.has-recap, .night-rest.has-recap .night-rest-content { animation-duration: 4.8s; }
 .night-rest.has-recap .night-rest-content { width: 100%; max-width: 360px; }
 .night-recap { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 12px; }
 .night-screen-actions + .night-recap { margin-top: 22px; }
