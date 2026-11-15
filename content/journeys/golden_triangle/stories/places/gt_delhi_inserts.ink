@@ -30,7 +30,8 @@ INCLUDE modules.ink
 # priority: -2
 # when: episodes delhi >= 1
 # when: time night
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_hub_night
+# tint: off
 { cond("seen gt_delhi_hotel_sick_morning"):
     # speaker: narrator
     宿の帳場の机で、ルーヒーが鉛筆をかじっていた。クミンの水を持ってきてくれた、宿の娘だ。

@@ -1167,10 +1167,17 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     // Decision 32: a special date that costs AP is the author's choice (a warning; it cannot start without the AP).
     if (date.kind !== "normal" && date.apCost !== 0)
       sceneNotes.push({ kind: "special-date-ap", message: `AP を使う特別なデートです：${date.id}（${date.kind}）は ${date.apCost} AP。ふつうは AP 不要（0）です。AP が足りないと始められません（止めません）。` +
-        (date.recovery ? "関係修復のデートは、通常デートを選べないときに出ます。AP が足りないと始められず、関係を築き直せないことがあります。" : "") });
-    if (date.recovery && (date.kind !== "special" || !date.repeatable || date.rewardOnlyOnce ||
-      date.choiceCount !== 1 || date.effectCount !== 1))
-      throw new Error(`Recovery event must be a repeatable special with one choice and effect: ${date.id}`);
+        (date.recovery ? "関係修復のデートは、AP が足りないと始められず、関係を築き直せないことがあります。" : "") });
+    // A relationship repair (recovery) shows when its writer's when/until say (2026-11-15: no rule of the game any more);
+    // its kind, repetition, choices and effects are the writer's too. The build stops only an ordinary date marked so: its
+    // one play would count twice toward the completed dates (as an ordinary date, and as a recovery).
+    if (date.recovery && date.kind === "normal")
+      throw new Error(`A relationship repair (recovery) cannot be an ordinary date (kind normal): ${date.id} would count twice ` +
+        "toward the completed dates, as an ordinary date and as a recovery (make it kind special)");
+    if (date.recovery && (!date.repeatable || date.rewardOnlyOnce))
+      sceneNotes.push({ kind: "recovery-date", message: `繰り返して関係を築き直せない関係修復のデートです：${date.id} は、` +
+        (!date.repeatable ? "繰り返さない（repeatable が false）ので、一度遊ぶと出なくなります" : "2回目からは選択の効果を当てない（rewardOnlyOnce が true）ので、繰り返しても関係の値が変わりません") +
+        "。悪い結果が重なったとき、関係を築き直せないままになることがあります（止めません）。" });
     if (
       (date.kind === "normal" || date.kind === "special" || date.kind === "reassurance" || date.kind === "answer") &&
       date.repeatable && !date.recovery

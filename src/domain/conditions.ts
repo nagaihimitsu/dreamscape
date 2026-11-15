@@ -1,8 +1,11 @@
-import { battles, dates, episodes, landmarks, scenes, storyState } from "../content";
+import { battles, dates, episodes, landmarks, progression, scenes, storyState } from "../content";
 import { usableAp, usableMoney } from "./reservations";
 import { leafKind, type Condition, type Leaf, type LeafKind, type LeafValues } from "../content/condition-schemas";
 import type { GameState } from "./game-state-schema";
 import { getGameWeekday, getTimePeriod, NIGHT_START } from "./travel";
+// A part that reads the other dates' availability (normalDateAvailable): date-rules.ts reads `meets` in turn, so the two
+// modules import each other; the part calls it only when judged (never while the modules load).
+import { normalDateAvailable } from "./date-rules";
 
 /**
  * The common condition system's judge: a condition is true or false for a game state,
@@ -25,11 +28,25 @@ export function completedDateCount(state: Readonly<GameState>): number {
 /**
  * No rejection waits now (the leaf dateSinceRejection): the last confession's answer was not a rejection, or a new
  * ordinary date or a recovery was completed since it. Before 2026-11-15 the game made every confession wait so; now a
- * writer writes it on the confessions that wait (India: Agra's and Jaipur's), and a recovery's showing reads it.
+ * writer writes it on the confessions that wait (India: Agra's and Jaipur's), and on a recovery that opens during the
+ * wait (Milan's).
  */
 export function dateSinceRejection(state: Readonly<GameState>): boolean {
   return state.confessionStatus !== "rejected" || state.lastRejectedDateCount === null ||
     completedDateCount(state) > state.lastRejectedDateCount || state.recoveryAfterRejection;
+}
+
+/**
+ * A confession would be accepted now (the leaf confessionReady; confessionResult in date-rules.ts reads it too): the
+ * hidden relationship values and the completed dates meet romance/progression.json's confession thresholds.
+ */
+export function canConfessSuccessfully(state: Readonly<GameState>): boolean {
+  return (
+    state.affection >= progression.confession.minAffection &&
+    state.trust >= progression.confession.minTrust &&
+    state.spark >= progression.confession.minSpark &&
+    completedDateCount(state) >= progression.confession.minCompletedDates
+  );
 }
 
 /** The money that can be spent now: the budget less the fare home and the main parts' payments kept back (reservations.ts). */
@@ -73,6 +90,9 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   romanceStage: (state, range) => inRange(state.romanceStage, range),
   couple: (state) => state.confessionStatus === "accepted",
   dateSinceRejection,
+  datesCompleted: (state, range) => inRange(completedDateCount(state), range),
+  confessionReady: canConfessSuccessfully,
+  normalDateAvailable: (state) => normalDateAvailable(state),
   ap: (state, range) => inRange(usableAp(state), range),
   flag: (state, id) => state.storyProgress.flags.includes(id),
   // Met: a scene naming the person in # person: was seen (decision 42; seen covers every ending).

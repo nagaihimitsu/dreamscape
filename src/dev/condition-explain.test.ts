@@ -43,4 +43,18 @@ describe("Debug's explanation of a condition", () => {
       .toEqual(["断られた後に、新しいデートか再交流を終えた（断られていなければ成り立つ）"]);
     expect(unmetConditionLabels(base, { dateSinceRejection: true })).toEqual([]);
   });
+
+  it("names the parts a relationship repair is written with (2026-11-15): dates done, a ready confession, an ordinary date to start", () => {
+    // Milan's recovery: a date done, the relationship not settled, and no ordinary date to start instead.
+    const recovery: Condition = { all: [{ datesCompleted: { atLeast: 1 } },
+      { any: [{ not: { confessionReady: true } }, { not: { dateSinceRejection: true } }] }, { not: { normalDateAvailable: true } }] };
+    const open = { ...base, ap: 12, completedEpisodeIds: ["milano_duomo_episode"] };
+    expect(unmetConditionLabels(open, recovery)).toEqual([
+      "終えたデート（再交流は3回まで）が1以上（今は0）",
+      "「この都市で、通常デートを今始められる（APも足りる）」ではないこと",
+    ]);
+    expect(explainCondition(open, { confessionReady: true })).toMatchObject({ kind: "leaf", value: false,
+      label: "今告白すれば受け入れられる（関係の値と終えたデートの数を読む）" });
+    expect(unmetConditionLabels({ ...open, ap: 0, playedDateIds: ["milano_cafe_01"] }, recovery)).toEqual([]);
+  });
 });

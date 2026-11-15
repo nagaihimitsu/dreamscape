@@ -107,7 +107,7 @@ type City = {
 };
 
 /** Leaves of the romance (decision: お答え1). */
-const ROMANCE: readonly LeafKind[] = ["relationship", "romanceStage", "couple", "datePlayed"];
+const ROMANCE: readonly LeafKind[] = ["relationship", "romanceStage", "couple", "datePlayed", "datesCompleted", "confessionReady"];
 /** Leaves whose record never turns back once true. */
 const MONOTONE: readonly LeafKind[] = ["battlePlayed", "episodeCompleted", "episodesCompleted", "cityCompleted", "landmarkVisited", "guideRead",
   "encounterCompleted", "encounterSeen", "datePlayed", "epilogueViewed", "epilogueStarted", "battlesPlayed", "couple", "rented"];
@@ -288,10 +288,13 @@ function judgeLeaf(content: ProgressionContent, city: City, now: ProgressionSnap
   const truth = rawLeaf(content, city, now, reach, leaf, mode);
   if (!mode.fragile) return truth;
   // The parts that may turn false for good (3.3 「二度と満たされなくなるおそれ」).
-  if (MONOTONE.includes(kind) || ("romanceStage" in leaf && leaf.romanceStage.atLeast !== undefined)) return { ...truth, canFalse: false };
+  if (MONOTONE.includes(kind) || ("romanceStage" in leaf && leaf.romanceStage.atLeast !== undefined) ||
+      ("datesCompleted" in leaf && leaf.datesCompleted.atLeast !== undefined)) return { ...truth, canFalse: false };
+  // An ordinary date that can be started (normalDateAvailable) is gone for good once the city's dates are played.
   if (("money" in leaf && leaf.money.atLeast !== undefined) || ("item" in leaf && leaf.item.is === "held" && spentOnTheWay(content, city, leaf.item.id)) ||
       ("cityDay" in leaf && leaf.cityDay.atMost !== undefined) || ("journeyDay" in leaf && leaf.journeyDay.atMost !== undefined) ||
-      ("romanceStage" in leaf && leaf.romanceStage.atMost !== undefined))
+      ("romanceStage" in leaf && leaf.romanceStage.atMost !== undefined) || ("datesCompleted" in leaf && leaf.datesCompleted.atMost !== undefined) ||
+      "normalDateAvailable" in leaf)
     return { ...truth, canTrue: false };
   return truth;
 }
@@ -403,7 +406,9 @@ function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapsh
     canFalse: leaf.romanceStage.atLeast === undefined || now.romanceStage < leaf.romanceStage.atLeast };
   if ("couple" in leaf) return { canTrue: true, canFalse: !now.couple };
   if ("rented" in leaf) return both;
-  // time, weekday, rides, relationship, the wait after a rejection (dateSinceRejection): they come round, or either way (3.3 check 9).
+  // time, weekday, rides, relationship, the wait after a rejection (dateSinceRejection), the completed dates (datesCompleted;
+  // the snapshot keeps no count), a confession that would succeed (confessionReady), an ordinary date that can be started
+  // (normalDateAvailable): they come round, or either way (3.3 check 9).
   return both;
 }
 
@@ -540,9 +545,14 @@ function tripCost(travel: ProgressionContent["travel"][number] | undefined, even
   return (Number.isFinite(out) ? out : 0) + (Number.isFinite(back) ? back : 0) + (event.admissionCost ?? 0);
 }
 
-/** Whether a leaf needs the romance (a date, the couple, a stage, a relationship value at least). */
+/** Whether a leaf needs the romance (a date, the couple, a stage, a relationship value at least, dates done, a confession ready). */
 const romanceNeed = (leaf: Leaf) => "datePlayed" in leaf || "couple" in leaf || ("romanceStage" in leaf && leaf.romanceStage.atLeast !== undefined) ||
-  ("relationship" in leaf && leaf.relationship.atLeast !== undefined);
+  ("relationship" in leaf && leaf.relationship.atLeast !== undefined) || ("datesCompleted" in leaf && leaf.datesCompleted.atLeast !== undefined) ||
+  "confessionReady" in leaf;
+/** The completed dates a romance leaf needs (the couple and a ready confession: the confession's; a stage: the stage's). */
+const datesNeeded = (content: ProgressionContent, leaf: Leaf) => "couple" in leaf || "confessionReady" in leaf ? content.romance.confession.minCompletedDates
+  : "romanceStage" in leaf ? content.romance.stages.find((stage) => stage.stage === leaf.romanceStage.atLeast)?.minCompletedDates ?? 0
+  : "datesCompleted" in leaf ? leaf.datesCompleted.atLeast ?? 0 : 0;
 
 /**
  * What a main event costs at the least (3.3): the cheapest round trip with its admission (tripCost), or, at a tour-only place, the
@@ -622,8 +632,7 @@ function apWarnings(content: ProgressionContent): ProgressionWarning[] {
     const cheapest = Math.min(...dates.filter((date) => date.kind === "normal").map((date) => date.apCost), Infinity);
     const perDate = Number.isFinite(cheapest) ? cheapest : 0;
     const named = new Set([...leaves.flatMap((leaf) => ("datePlayed" in leaf ? [leaf.datePlayed] : [])), ...itemDates]);
-    const count = Math.max(0, ...leaves.map((leaf) => "couple" in leaf ? content.romance.confession.minCompletedDates
-      : "romanceStage" in leaf ? content.romance.stages.find((stage) => stage.stage === leaf.romanceStage.atLeast)?.minCompletedDates ?? 0 : 0));
+    const count = Math.max(0, ...leaves.map((leaf) => datesNeeded(content, leaf)));
     const needed = [...named].reduce((sum, id) => sum + apOf(id), 0) + Math.max(0, count - named.size) * perDate;
     const eventIds = new Set(city.events.filter((event) => event.kind !== "finale").map((event) => event.id));
     const battleIds = new Set(city.events.filter((event) => event.kind === "special").map((event) => event.battleId));
@@ -744,8 +753,8 @@ export function apShortNow(content: ProgressionContent, cityId: string, now: Pro
   const dates = content.dates.filter((date) => date.chapterId === cityId);
   const cheapest = Math.min(...dates.filter((date) => date.kind === "normal").map((date) => date.apCost), Infinity);
   const named = [...new Set(leaves.flatMap((leaf) => ("datePlayed" in leaf ? [leaf.datePlayed] : [])))].filter((id) => !now.dates.has(id));
-  const count = Math.max(0, ...leaves.map((leaf) => "couple" in leaf && !now.couple ? content.romance.confession.minCompletedDates
-    : "romanceStage" in leaf && now.romanceStage < (leaf.romanceStage.atLeast ?? 0) ? content.romance.stages.find((stage) => stage.stage === leaf.romanceStage.atLeast)?.minCompletedDates ?? 0 : 0));
+  const count = Math.max(0, ...leaves.map((leaf) => ("couple" in leaf && now.couple) ||
+    ("romanceStage" in leaf && now.romanceStage >= (leaf.romanceStage.atLeast ?? 0)) ? 0 : datesNeeded(content, leaf)));
   const played = dates.filter((date) => now.dates.has(date.id)).length;
   const needed = named.reduce((sum, id) => sum + (dates.find((date) => date.id === id)?.apCost ?? 0), 0) +
     Math.max(0, count - played - named.length) * (Number.isFinite(cheapest) ? cheapest : 0);

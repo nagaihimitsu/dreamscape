@@ -250,7 +250,8 @@ INCLUDE modules.ink
 日が傾いたら、対岸の庭へ参りましょう。今日のツアーの最後の、とっておきの話は、そこでいたします
 # speaker: narrator
 杖の先が、二人を指した。新婚のお二人も、ぜひ、と。客たちの笑い声に押されて、断りそびれた。
-# background: gt_bg_agra_mehtab_bagh
+# background: gt_bg_agra_mehtab_bagh_sunset
+# tint: off
 # ambience: amb_wind
 # speaker: narrator
 夕方、一行は川を渡った。メヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
@@ -259,7 +260,7 @@ INCLUDE modules.ink
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
 -> quiz(2) ->
-# background: gt_bg_agra_mehtab_bagh
+# background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
     調べた人たちが見つけたのは、黒い墓の土台じゃなくて、庭でした。タージと、水に映るタージを眺めるための
@@ -284,7 +285,7 @@ INCLUDE modules.ink
 # speaker: enemy
 では、聞こう。手を切られなかったというなら、職人たちはそのあと、どこへ行った
 -> quiz(3) ->
-# background: gt_bg_agra_mehtab_bagh
+# background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
     デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町
@@ -309,7 +310,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アンワルの眉が、わずかに上がった。四十年、聞かれたことのない方向からの話だった。
 -> quiz(4) ->
-# background: gt_bg_agra_mehtab_bagh
+# background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
     書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて
@@ -339,7 +340,7 @@ INCLUDE modules.ink
 # speaker: enemy
 参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる
 -> quiz(5) ->
-# background: gt_bg_agra_mehtab_bagh
+# background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
     # term: gt_term_caravanserai

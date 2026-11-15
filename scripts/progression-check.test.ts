@@ -71,11 +71,21 @@ describe("check 9's warnings", () => {
   it("warns of a city cleared only through the romance, not when a battle way is left", () => {
     expect(kinds(town({ when: { couple: true } }))).toContain("romance-only-city");
     expect(kinds(town({ when: { any: [{ battlesPlayed: { city: "town", atLeast: 3 } }, { couple: true }] } }))).not.toContain("romance-only-city");
+    // 2026-11-15: the completed dates and a confession that would succeed are romance parts too; an ordinary date to start is not.
+    for (const when of [{ datesCompleted: { atLeast: 1 } }, { confessionReady: true }] as Condition[]) {
+      expect(kinds(town({ when })), JSON.stringify(when)).toContain("romance-only-city");
+      expect(progressionErrors(town({ when }))).toEqual([]);
+    }
+    expect(kinds(town({ when: { normalDateAvailable: true } }))).not.toContain("romance-only-city");
+    expect(kinds(town({ when: { not: { normalDateAvailable: true } } }))).not.toContain("romance-only-city");
   });
 
   it("warns of a condition that may never be met again, not when another way is left", () => {
-    for (const when of [{ money: { atLeast: 50 } }, { item: { id: "key", is: "held" } }, { not: { couple: true } }, { not: { battlePlayed: "bt_a" } }] as Condition[])
+    for (const when of [{ money: { atLeast: 50 } }, { item: { id: "key", is: "held" } }, { not: { couple: true } }, { not: { battlePlayed: "bt_a" } },
+      // 2026-11-15: an ordinary date to start is gone once they are played; dates done only rise.
+      { normalDateAvailable: true }, { datesCompleted: { atMost: 1 } }, { not: { datesCompleted: { atLeast: 2 } } }] as Condition[])
       expect(kinds(town({ when })), JSON.stringify(when)).toContain("never-met-again");
+    expect(kinds(town({ when: { all: [{ battlesPlayed: { city: "town", atLeast: 2 } }, { datesCompleted: { atLeast: 1 } }] } }))).not.toContain("never-met-again");
     expect(kinds(town({ when: { any: [{ money: { atLeast: 50 } }, { battlesPlayed: { city: "town", atLeast: 2 } }] } }))).not.toContain("never-met-again");
   });
 
@@ -106,6 +116,9 @@ describe("check 9's warnings", () => {
     expect(progressionWarnings(poor).find((warning) => warning.kind === "money-shortfall")?.message).toMatch(/city town: .*leaves 30.*cost at least 50: 20 short/);
     // A finale that needs the date: 2 AP, the city gives 1.
     expect(kinds(town({ when: { datePlayed: "dt" } }))).toContain("ap-shortfall");
+    // Dates done, or a ready confession, need that many dates at the cheapest (2026-11-15).
+    expect(kinds(town({ when: { datesCompleted: { atLeast: 1 } } }))).toContain("ap-shortfall");
+    expect(kinds(town({ when: { confessionReady: true } }))).toContain("ap-shortfall");
   });
 });
 

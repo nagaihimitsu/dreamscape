@@ -22,7 +22,8 @@ export type ConditionContent = {
   encounters: readonly { id: string; cityId: string; landmarkId?: string; storyId?: string; repeatable?: boolean;
     options?: readonly { id: string; deferCompletion?: boolean }[] }[];
   items: readonly { id: string; cityId: string; carry?: "journey" }[];
-  dates: readonly { id: string; chapterId: string; when?: Condition; until?: Condition }[];
+  /** `kind` (normal when absent) tells the ordinary dates, whose conditions cannot read normalDateAvailable. */
+  dates: readonly { id: string; chapterId: string; kind?: string; when?: Condition; until?: Condition }[];
   /** The declared story state (progression/story.json, stage 3a): flags are read in any city; a person belongs to a city. */
   flags?: readonly string[];
   people?: readonly { id: string; cityId: string }[];
@@ -161,9 +162,52 @@ export function conditionErrors(content: ConditionContent, owners: readonly Cond
     conditionLeaves(condition).flatMap((leaf) => leafErrors(content, owner, field, leaf))));
 }
 
-/** Throw one error listing every problem of the owners' conditions. */
+/**
+ * Ordinary dates (kind normal) whose `when` or `until` reads normalDateAvailable, directly or through a named condition
+ * (2026-11-15): whether an ordinary date can be started is read from those same conditions, so the game would read them
+ * again without end. The part is for the other dates (a relationship repair), encounters and scenes.
+ */
+export function selfReadingDateErrors(content: Pick<ConditionContent, "dates" | "namedConditions">): string[] {
+  const named = content.namedConditions ?? {};
+  const reads = (condition: Condition, seen: ReadonlySet<string>): boolean => conditionLeaves(condition).some((leaf) =>
+    "normalDateAvailable" in leaf || ("condition" in leaf && !seen.has(leaf.condition) && Object.hasOwn(named, leaf.condition) &&
+      reads(named[leaf.condition], new Set([...seen, leaf.condition]))));
+  return dateConditionOwners({ dates: content.dates.filter((date) => (date.kind ?? "normal") === "normal") }).flatMap((owner) =>
+    owner.conditions.filter(({ condition }) => reads(condition, new Set())).map(({ field }) =>
+      `An ordinary date cannot read normal_date_available (normalDateAvailable): ${owner.label} (${field}) would read itself ` +
+      "(an ordinary date can be started only when its own conditions hold); write the part on another kind of date, an encounter or a scene"));
+}
+
+/**
+ * Named conditions (progression/story.json `conditions`) that reach themselves through `{ "condition": <name> }`: the game
+ * would read them without end, so the build stops them. Each loop is reported once, from its first name in file order.
+ */
+export function namedConditionCycleErrors(content: Pick<ConditionContent, "namedConditions">): string[] {
+  const named = content.namedConditions ?? {};
+  const refs = (name: string): string[] => conditionLeaves(named[name]).flatMap((leaf) =>
+    "condition" in leaf && Object.hasOwn(named, leaf.condition) ? [leaf.condition] : []);
+  const reported = new Set<string>();
+  const errors: string[] = [];
+  const walk = (name: string, path: readonly string[]): void => {
+    const at = path.indexOf(name);
+    if (at >= 0) {
+      const loop = path.slice(at);
+      if (loop.some((step) => reported.has(step))) return;
+      loop.forEach((step) => reported.add(step));
+      errors.push(`Named conditions read each other without end: ${[...loop, name].join(" → ")} ` +
+        "(break the loop: a named condition cannot reach itself through { \"condition\": <name> })");
+      return;
+    }
+    refs(name).forEach((next) => walk(next, [...path, name]));
+  };
+  Object.keys(named).forEach((name) => walk(name, []));
+  return errors;
+}
+
+/** Throw one error listing every problem of the owners' conditions (and of the ordinary dates that would read themselves). */
 export function checkConditions(content: ConditionContent, owners: readonly ConditionOwner[]): void {
-  const errors = [...new Set(conditionErrors(content, owners))];
+  const errors = [...new Set([...conditionErrors(content, owners), ...selfReadingDateErrors(content),
+    ...namedConditionCycleErrors(content)])];
   if (errors.length) throw new Error(errors.join("\n"));
 }
 
