@@ -59,34 +59,67 @@ INCLUDE modules.ink
     # emotion: smile
     # voice: gt_agra_date_confession_006
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
+// デリーで告白していた場合（2026-11-15）：デリーと同じ断り方・「待って」を二度聞かせない。
+// デリーの返事が断りだったか「待って」だったかはゲームの記録で分けられないので、どちらの後でも本当になる言い方にする。
 - confession_result == "rejected":
-    # speaker: heroine
-    # emotion: serious
-    # voice: gt_agra_date_confession_007
-    ありがとう。言ってくれて、うれしかった。それは、本当
-    # speaker: heroine
-    # voice: gt_agra_date_confession_008
-    でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
-    # speaker: narrator
-    # emotion: serious
-    彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
-    # speaker: heroine
-    # emotion: smile
-    # voice: gt_agra_date_confession_009
-    旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
+    {
+    - cond("date gt_delhi_date_confession"):
+        # speaker: heroine
+        # emotion: serious
+        デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね
+        # speaker: heroine
+        だから、わたしもごまかさない。ごめんなさい。今は、その気持ちに応えられない
+        # speaker: narrator
+        # emotion: smile
+        彼女は、自分の腰かけている縁の隣を、手のひらでぽんと叩いた。
+        # speaker: heroine
+        # emotion: smile
+        座って。こっち向きの席、半分あげる。ドームの見えない、地味な席だけど
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        # voice: gt_agra_date_confession_007
+        ありがとう。言ってくれて、うれしかった。それは、本当
+        # speaker: heroine
+        # voice: gt_agra_date_confession_008
+        でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
+        # speaker: narrator
+        # emotion: serious
+        彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
+        # speaker: heroine
+        # emotion: smile
+        # voice: gt_agra_date_confession_009
+        旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
+    }
 - else:
-    # speaker: heroine
-    # emotion: serious
-    # voice: gt_agra_date_confession_010
-    うれしい。本当に、うれしい
-    # speaker: heroine
-    でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから
-    # speaker: heroine
-    # emotion: worried
-    待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
-    # speaker: narrator
-    # stand: close
-    彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
+    {
+    - cond("date gt_delhi_date_confession"):
+        # speaker: heroine
+        # emotion: serious
+        デリーの夜のこと、忘れてないよ。今夜の言葉も、ちゃんと届いてる
+        # speaker: heroine
+        # emotion: worried
+        でも、まだ答えが出ないの。こっち向きに座って、ちゃんと考えてるのに
+        # speaker: heroine
+        # emotion: serious
+        いいかげんな『はい』も、『いいえ』も、したくない。もう少しだけ、待ってて
+        # speaker: narrator
+        # stand: close
+        彼女は少し座り直して、こちらの手の横に、自分の手を置いた。重ねは、しなかった。
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        # voice: gt_agra_date_confession_010
+        うれしい。本当に、うれしい
+        # speaker: heroine
+        でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから
+        # speaker: heroine
+        # emotion: worried
+        待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
+        # speaker: narrator
+        # stand: close
+        彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
+    }
 }
 -> END
 
