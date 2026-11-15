@@ -23,7 +23,7 @@ INCLUDE modules.ink
 あ……模様が、絵の具じゃない。石がはめ込んであるんだ。花も、瓶も、ぜんぶ石
 # speaker: narrator
 # term: gt_term_jali
-近づくほど細かくなる模様に、{heroine_name}の歩幅が小さくなる。窓には、石を透かし彫りにした格子がはまっていた。
+近づくほど細かくなる模様に、{heroine_name}の歩幅が小さくなる。窓には、石の格子がはまっていた。
 # speaker: heroine
 格子を通った光が、床に模様を作ってる。石なのに、レースみたい
 # speaker: narrator
@@ -41,7 +41,8 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_agra_itimad_tomb
 # speaker: narrator
-門をくぐると、庭の奥に白い墓廟が見えた。大きくはない。けれど近づくほど、壁一面に色の石の模様が浮かび上がってくる。
+# leave: enemy
+庭の奥の白い墓廟は、大きくはない。けれど近づくほど、壁一面に色の石の模様が浮かび上がってくる。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 わあ……これが『ベビー・タージ』だね。名前どおり、かわいい
@@ -109,7 +110,8 @@ INCLUDE modules.ink
 # speaker: narrator
 三つ目の主張は、一番下に、一番大きな字で書いてあった。
 # speaker: narrator
-『この墓を建てた皇妃ヌール・ジャハーンは、タージ・マハルの設計にも関わった』
+# letter: note
+この墓を建てた皇妃ヌール・ジャハーンは、タージ・マハルの設計にも関わった
 # speaker: narrator
 {heroine_name}のペンが、紙の上で止まった。ヴィムラーがその手元をのぞき込む。
 # speaker: enemy
@@ -136,7 +138,10 @@ INCLUDE modules.ink
 # speaker: heroine
 この紙には署名できません。……でも、白い紙を一枚もらえますか
 # speaker: narrator
-{heroine_name}は新しい紙に、短く書いた。この墓は、娘が両親のために建てた。タージ・マハルより先に。その下に、自分の名前と国名を。
+{heroine_name}は新しい紙に短く書き、下に自分の名前と国名を添えた。
+# speaker: narrator
+# letter: card
+この墓は、娘が両親のために建てた。タージ・マハルより先に。
 # speaker: enemy
 ……あなたの文の方が、短くて強いわね。元ヒンディー語教師として、悔しい
 {
