@@ -12,7 +12,7 @@
         "フマユーン廟、東の門から三本目の木陰。",
         "ジャーマー・マスジド、朝のニハーリー、階段の下の店。",
         "月が水に落ちた所で、最後の買い物。",
-        { "textJa": "ジャイプール。通りで踊った夜", "when": { "epilogueViewed": "jaipur" } }
+        { "textJa": "ジャイプール。通りで踊った夜", "when": { "epilogueStarted": "jaipur" } }
       ],
       "carry": "journey"
     },

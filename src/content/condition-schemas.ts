@@ -43,6 +43,8 @@ export type LeafValues = {
   encounterSeen: string;
   datePlayed: string;
   epilogueViewed: string;
+  /** The city's epilogue is being read now or was read (2026-11-15: a line written in the epilogue shows from its start). */
+  epilogueStarted: string;
   /** `obtained`: the item was ever obtained; the other statuses: its current status. */
   item: { id: string; is: (typeof ITEM_STATUSES)[number] };
   /** `day` 9:00–17:59; `night` from 18:00 until the party sleeps (a rest at 21:00 or a late return counts as night). */
@@ -96,6 +98,7 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
   encounterSeen: id,
   datePlayed: id,
   epilogueViewed: id,
+  epilogueStarted: id,
   item: z.object({ id, is: z.enum(ITEM_STATUSES) }).strict(),
   time: z.enum(["day", "night"]),
   cityDay: range,
@@ -239,6 +242,7 @@ export function leafReference(leaf: Leaf): LeafReference | undefined {
   if ("encounterSeen" in leaf) return { kind: "encounter", id: leaf.encounterSeen };
   if ("datePlayed" in leaf) return { kind: "date", id: leaf.datePlayed };
   if ("epilogueViewed" in leaf) return { kind: "city", id: leaf.epilogueViewed };
+  if ("epilogueStarted" in leaf) return { kind: "city", id: leaf.epilogueStarted };
   if ("item" in leaf) return { kind: "item", id: leaf.item.id };
   if ("rides" in leaf) return { kind: "mode", id: leaf.rides.mode };
   if ("rented" in leaf) return { kind: "mode", id: leaf.rented };

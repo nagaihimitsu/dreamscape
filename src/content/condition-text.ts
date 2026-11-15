@@ -15,6 +15,7 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
  * | `battle <battle>` / `episode <episode>` / `city <city>` | `battlePlayed` / `episodeCompleted` / `cityCompleted` |
  * | `episodes <city> >= 1` | `episodesCompleted` |
  * | `date <date>` / `epilogue <city>` | `datePlayed` / `epilogueViewed` |
+ * | `epilogue_started <city>` (the epilogue on screen or read) | `epilogueStarted` |
  * | `time day` / `time night` | `time` |
  * | `day >= 2` / `day <= 3` | `cityDay` |
  * | `journey_day >= 5` / `journey_day <= 7` | `journeyDay` |
@@ -62,6 +63,7 @@ function leafOf(words: string[]): Condition {
     case "city": return { cityCompleted: one("city <city>") };
     case "date": return { datePlayed: one("date <date>") };
     case "epilogue": return { epilogueViewed: one("epilogue <city>") };
+    case "epilogue_started": return { epilogueStarted: one("epilogue_started <city>") };
     case "rented": return { rented: one("rented <mode>") };
     case "time": {
       const period = one("time day|night");

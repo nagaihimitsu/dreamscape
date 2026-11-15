@@ -608,6 +608,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 | 交流を見た | `{ "encounterSeen": "<交流ID>" }` | どの選択肢でも最後まで見た交流（「また今度」も） |
 | デートを遊んだ | `{ "datePlayed": "<デートID>" }` | 遊んだデート |
 | エピローグを読んだ | `{ "epilogueViewed": "<都市ID>" }` | 読んだ都市のエピローグ |
+| エピローグが始まった | `{ "epilogueStarted": "<都市ID>" }` | その都市のエピローグを読んでいる間と、読んだ後（2026-11-15。エピローグの中で書き足す品物の行などに。例：カムラのメモの6行目） |
 | 品物 | `{ "item": { "id": "<品物ID>", "is": "held" } }` | 品物の状態（下の表） |
 | 時間帯 | `{ "time": "day" }`・`{ "time": "night" }` | `day` は9:00〜18:00、`night` は18:00から眠るまで（21:00の一日の終わりに休むときの、宿へ向かう移動と宿の「眠る前」の場面も夜） |
 | この都市の何日目 | `{ "cityDay": { "atLeast": 2, "atMost": 3 } }` | 都市に着いた日が1日目。`atLeast`・`atMost` の片方だけでもよい |
@@ -670,7 +671,7 @@ EXTERNAL cond(text)
 ```
 
 - 今の「1場面1ファイル」のInk（`VAR` で始まる形）で `cond` を使うときは、`VAR` の行の後に `EXTERNAL cond(text)` を1行、ファイルの最後に、Inkyで下書きを見るための代わりの関数 `=== function cond(text) ===` と `~ return false` の2行を書きます（`EXTERNAL has_memory(memory_id)` と同じ書き方）。宣言がないと、`npm run content:build` が直し方を示して止めます。代わりの関数はInkyだけが使い、ゲームは本当の値を渡します。
-- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`。それぞれ上の表の部品と同じ意味です。
+- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`・`epilogue_started <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`。それぞれ上の表の部品と同じ意味です。
 - 引数は、引用符で囲んだ文字だけです（変数や式は書けません）。
 - `npm run content:build` は、`cond` の文字を頭の札と同じ読み方で条件にし、ほかの条件と同じ検査（形・存在しない名前・品物の都市など）をして、誤りがあれば止めます。そのうえで、代表の組み合わせ（全部偽・全部真・1つだけ真）で、全部の道が最後まで進むかを確かめます。全部の組み合わせは確かめません。
 - 選択肢を選んだ直後の行の `cond` は、その選択肢の効果（品物を渡した・関係の値が変わった など）の後の状態を読みます。

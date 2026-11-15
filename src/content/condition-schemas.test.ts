@@ -15,6 +15,7 @@ const EXAMPLES: Record<(typeof LEAF_KINDS)[number], Leaf> = {
   encounterSeen: { encounterSeen: "an_encounter" },
   datePlayed: { datePlayed: "a_date" },
   epilogueViewed: { epilogueViewed: "a_city" },
+  epilogueStarted: { epilogueStarted: "a_city" },
   item: { item: { id: "an_item", is: "held" } },
   time: { time: "night" },
   cityDay: { cityDay: { atLeast: 2, atMost: 3 } },
@@ -119,6 +120,7 @@ describe("leaves of a condition", () => {
     expect(leafReference(EXAMPLES.item)).toEqual({ kind: "item", id: "an_item" });
     expect(leafReference(EXAMPLES.rides)).toEqual({ kind: "mode", id: "tram" });
     expect(leafReference(EXAMPLES.epilogueViewed)).toEqual({ kind: "city", id: "a_city" });
+    expect(leafReference(EXAMPLES.epilogueStarted)).toEqual({ kind: "city", id: "a_city" });
     for (const situational of [EXAMPLES.time, EXAMPLES.cityDay, EXAMPLES.journeyDay, EXAMPLES.weekday])
       expect(leafReference(situational)).toBeUndefined();
   });
