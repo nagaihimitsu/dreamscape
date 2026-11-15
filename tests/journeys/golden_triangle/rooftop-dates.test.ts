@@ -343,3 +343,72 @@ describe("her answer in Jaipur after a deferral there (2026-11-13)", () => {
       .toThrow("A date of her answer takes no # profile: (its outcome is never random; B2)");
   }, 120_000);
 });
+
+/**
+ * A confession after one in an earlier city (2026-11-15): Agra's and Jaipur's answers to a second (or third) confession
+ * remember the earlier night instead of repeating Delhi's speech word for word, whatever that earlier answer was (the
+ * game keeps no record of it); the first confession of a journey keeps the recorded lines. The outcome is still the
+ * relationship state's (confession_result), never the earlier one's.
+ */
+describe("a confession after one in an earlier city (2026-11-15)", () => {
+  const firstNo = "ありがとう。言ってくれて、うれしかった。それは、本当";
+  const firstWait = "うれしい。本当に、うれしい";
+  const lead = "話、あるんでしょ。いいよ。最後まで、ちゃんと聞く";
+  /** The city after a sightseeing and three dates, at stage 2 or more; made once per city. */
+  const made = new Map<string, GameState>();
+  const afterDates = (cityId: "agra" | "jaipur", episodeId: string): GameState => made.get(cityId) ?? (() => {
+    let state = finishEpisode(cityStart(cityId), episodeId);
+    for (const dateId of normalDates(cityId).slice(0, 3)) state = playDate(state, dateId).state;
+    state = evaluateProgression(withRelationship(state, { affection: 2, trust: 1, spark: 0 }));
+    expect(state.romanceStage).toBeGreaterThanOrEqual(2);
+    made.set(cityId, state);
+    return state;
+  })();
+  /** `state` as if the confessions `earlier` had been played before on the journey, answered `status` (a rejection long enough ago). */
+  const confessedBefore = (state: GameState, earlier: readonly string[], status: "deferred" | "rejected"): GameState =>
+    validateGameState({ ...state, confessionStatus: status, lastRejectedDateCount: status === "rejected" ? 0 : null,
+      playedDateIds: [...state.playedDateIds, ...earlier] });
+
+  it("in Agra, after Delhi's: a no or a wait that remembers Delhi; the journey's first confession is as recorded", () => {
+    const agra = afterDates("agra", "gt_agra_main_taj_mahal");
+    const no = playDate(evening(confessedBefore(agra, ["gt_delhi_date_confession"], "rejected"), outcomeValues.rejected), "gt_agra_date_confession");
+    expect(no.state.confessionStatus).toBe("rejected");
+    expect(no.lines).toEqual(expect.arrayContaining([lead, "デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね",
+      "座って。こっち向きの席、半分あげる。ドームの見えない、地味な席だけど"]));
+    expect(no.lines).not.toContain(firstNo);
+
+    const wait = playDate(evening(confessedBefore(agra, ["gt_delhi_date_confession"], "deferred"), outcomeValues.deferred), "gt_agra_date_confession");
+    expect(wait.state.confessionStatus).toBe("deferred");
+    expect(wait.lines).toEqual(expect.arrayContaining(["デリーの夜のこと、忘れてないよ。今夜の言葉も、ちゃんと届いてる",
+      "いいかげんな『はい』も、『いいえ』も、したくない。もう少しだけ、待ってて"]));
+    expect(wait.lines).not.toContain(firstWait);
+
+    const first = playDate(evening(agra, outcomeValues.rejected), "gt_agra_date_confession");
+    expect(first.lines).toContain(firstNo);
+    expect(first.lines).not.toContain("デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね");
+  }, 300_000);
+
+  it("in Jaipur: answers that remember the earlier rooftop, a new lead the third time, and her answer by day still follows", () => {
+    const jaipur = afterDates("jaipur", "gt_jaipur_main_hawa_mahal");
+    const third = "今夜も、話があるんだね。いいよ。楽隊に負けないくらいの声で、聞かせて";
+    const both = confessedBefore(jaipur, ["gt_delhi_date_confession", "gt_agra_date_confession"], "deferred");
+    const no = playDate(evening(both, outcomeValues.rejected), "gt_jaipur_date_confession");
+    expect(no.state.confessionStatus).toBe("rejected");
+    expect(no.lines).toEqual(expect.arrayContaining([third, "前の屋上のことも、ちゃんと覚えてる。だから、今夜は、ぼかさずに言うね",
+      "あれは、よその人のお祝い。……でも、ここまで一緒に来た旅は、わたしたちのだよ"]));
+    expect(no.lines).not.toContain(lead);
+    expect(no.lines).not.toContain(firstNo);
+
+    // One earlier confession (Agra's, so its lead was the first one's): the lead she has not said before, then the wait.
+    const wait = playDate(evening(confessedBefore(jaipur, ["gt_agra_date_confession"], "rejected"), outcomeValues.deferred), "gt_jaipur_date_confession");
+    expect(wait.state.confessionStatus).toBe("deferred");
+    expect(wait.lines).toEqual(expect.arrayContaining([lead, "でも、今夜答えたら、楽隊と灯りのせいにしちゃう。……こんなに、にぎやかなんだもん",
+      "だから、明るいところで、わたしから言う。今度は、答えを持っていくから"]));
+    expect(wait.lines).not.toContain(third);
+    expect(wait.lines).not.toContain(firstWait);
+    // Her answer the next day picks up 「楽隊と、灯りのせいに」.
+    const answer = playDate(evaluateProgression(withRelationship(nextMorning(wait.state), outcomeValues.deferred)), "gt_jaipur_date_answer");
+    expect(answer.lines).toContain("屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に");
+    expect(answer.state.confessionStatus).toBe("rejected");
+  }, 300_000);
+});
