@@ -54,6 +54,7 @@ INCLUDE modules.ink
     - else:
         # speaker: narrator
         ジャスミートのドゥパッターを借りて頭からかぶり、途中のくぼみに身を隠した。彼女が一人で階段を下りてくる。足音が近づく。今だ。
+        # emotion: happy
         飛び出した瞬間、彼女は悲鳴のかわりに、思いきり吹き出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -117,8 +118,10 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_012
 質問……。だって、何に向かって叫べばいいのか、分からなくて
 # speaker: narrator
+もう一度、と彼女が井戸の方を向いた、そのときだった。
+# speaker: narrator
 # se: pigeon_flutter
-もう一度、と彼女が井戸の方を向いた、そのときだった。すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
+すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # photo: gt_album_d55 # photo_caption: 鳩が顔の前に、本物の悲鳴
@@ -189,8 +192,10 @@ INCLUDE modules.ink
     # speaker: narrator
     彼女はジャスミートのドゥパッターを借りて、くぼみに隠れた。両手で広げて、羽ばたく準備をしている。たぶん、鳩のつもりだ。
     # speaker: narrator
+    ジャスミートが階段を途中まで上り直し、もう一度下りてくる。三、二、一。
+    # speaker: narrator
     # se: cloth_flap
-    ジャスミートが階段を途中まで上り直し、もう一度下りてくる。三、二、一。白い布が、ばさりと広がった。
+    白い布が、ばさりと広がった。
 }
 # speaker: gt_jasmeet
 きゃあああっ！
@@ -212,6 +217,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_023
 顔は、ちょっとだけ隠してね
 # speaker: narrator
+# leave: gt_kunal
 帰りは、上り。百段を過ぎたあたりで、彼女の息が上がってきた。
 # speaker: heroine
 # voice: gt_delhi_date_agrasen_baoli_024
@@ -249,8 +255,10 @@ INCLUDE modules.ink
     # speaker: gt_jasmeet
     見えてるよ。鳩にしては、大きすぎ
     # speaker: narrator
+    彼女が笑いかけた、そのとき。
+    # speaker: narrator
     # se: pigeon_flutter
-    彼女が笑いかけた、そのとき。布の音に驚いた本物の鳩が、くぼみの奥から、こちらの肩を越えて飛び出した。
+    布の音に驚いた本物の鳩が、くぼみの奥から、こちらの肩を越えて飛び出した。
 * [布を広げた：遅すぎた # option: late]
     # speaker: narrator
     遅かった。足音は、もうくぼみの前の段を離れていた。広げた布が、ジャスミートの背中の後ろで、ばさりと鳴る。振り返った彼女の目の前に、白い布が広がっていた。
