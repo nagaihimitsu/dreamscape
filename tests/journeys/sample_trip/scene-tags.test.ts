@@ -70,6 +70,24 @@ describe("the sample journey's scene tags", () => {
     expect(frames.every((frame) => frame.weather === "petals")).toBe(true);
   });
 
+  it("takes the bookmark out on the first line of the scene that offers to give it, and only there", () => {
+    // # item_out: (2026-11-15): the line it is written on only (its choices on screen included); the bookmark has no lines
+    // written on it, so its card shows its description. Nothing is given or moved by it: the bookmark is still held then.
+    const held: (string | undefined)[] = [];
+    const tower = playUntil(depart(cityStart("mihon"), "smp_mihon_main_clock_tower"), free, (state) => {
+      const frame = state.activeEncounter?.encounterId === "smp_mihon_bookmark_gift" ? state.activeEncounter.frame : undefined;
+      if (frame?.itemOut) held.push(state.inventory.smp_mihon_three_bookmark);
+      return frame;
+    });
+    expect(held.length).toBeGreaterThan(0);
+    expect(held.every((status) => status === "held")).toBe(true);
+    const taken = tower.frames.filter((frame) => frame.itemOut);
+    expect(taken.length).toBeGreaterThan(0);
+    expect([...new Set(taken.map((frame) => frame.text))]).toEqual([expect.stringMatching(/の横で、ポケットの中の三時のしおりに指が触れた。$/u)]);
+    expect(taken.every((frame) => frame.choices.length > 0 && JSON.stringify(frame.itemOut) === JSON.stringify({ itemId: "smp_mihon_three_bookmark" }))).toBe(true);
+    expect(tower.frames.filter((frame) => !frame.itemOut).length).toBeGreaterThan(0);
+  });
+
   it("emphasises one word and makes another tremble on the guide's lines, and only there", () => {
     // The emphasis tags (2026-11-13): # em_shake: on her 「三時？」, # em: on her 「止まってる」, each on its line only.
     const { frames } = playUntil(depart(cityStart("mihon"), "smp_mihon_main_clock_tower"), free, (state) => state.activeTourism?.frame ?? undefined);

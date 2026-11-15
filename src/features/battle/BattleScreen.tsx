@@ -10,6 +10,7 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { ItemShowLayer } from "../../components/ItemShow";
+import { ItemOutLayer, itemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
@@ -470,6 +471,7 @@ export function BattleScreen({
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
+      <ItemOutLayer card={itemOutCard(game, staging?.itemOut)} quiet={!!staging?.quiet} />
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
           finale; 手がかり帳 is in the header, shown at a choice: the talk's choices, a question, the
           reasoning stop (whose panel also has its own 「手がかり帳を開く」). */}

@@ -15,6 +15,7 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { ItemShowLayer } from "../../components/ItemShow";
+import { ItemOutLayer, itemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
@@ -184,6 +185,7 @@ export function RomanceScene({
       <RecallLayer imageId={frame.recall} />
       <PhotoShowLayer photo={frame.photo} />
       <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
+      <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
       <SceneHeading label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"} />
       {destination?.referenceImage && (

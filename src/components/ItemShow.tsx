@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { DEFAULT_ITEM_ICON } from "../content/code-images";
 import { encounters } from "../content/encounters";
 import { playCue } from "../audio/sound-effects";
@@ -78,15 +78,28 @@ function ItemShowCard({ card, quiet }: { card: ItemCard; quiet: boolean }) {
  */
 export function ItemShowFlight({ itemId, toBag }: { itemId: string; toBag: boolean }) {
   const card = itemCard(itemId);
+  if (!card) return null;
+  const box: Box = shownCard?.itemId === itemId ? shownCard.box
+    : { left: window.innerWidth / 2 - 80, top: window.innerHeight * 0.3, width: 160, height: 200 };
+  return <CardFlight box={box} toBag={toBag} className="item-show-card item-show-leaving"><CardBody card={card} /></CardFlight>;
+}
+
+/** The box of the header's bag (its held items' button), where a card flies in and a `# item_out:` card comes from. */
+export const bagBox = (): DOMRect | undefined => document.querySelector<HTMLElement>(".journey-hud .held-item-button")?.getBoundingClientRect();
+
+/**
+ * A line's card on its way out, in the header's own layer over the screen (JourneyHud): from `box`, where the card was on
+ * screen, it shrinks and flies into the held items' button (`toBag`, when the button has a box), or else it fades where
+ * it was. `className` is the card's own, with how it leaves (item-show.css; item-out.css for a `# item_out:` card).
+ */
+export function CardFlight({ box, toBag, className, children }: { box: Box; toBag: boolean; className: string; children: ReactNode }) {
   const layer = useRef<HTMLSpanElement>(null);
   const [flight, setFlight] = useState<{ mode: "fly" | "fade"; style: CSSProperties } | null>(null);
   // Measured once as it starts: where the layer is, where the card was and where the bag is.
   useLayoutEffect(() => {
     const origin = layer.current?.getBoundingClientRect();
     if (!origin) return;
-    const box: Box = shownCard?.itemId === itemId ? shownCard.box
-      : { left: window.innerWidth / 2 - 80, top: window.innerHeight * 0.3, width: 160, height: 200 };
-    const bag = toBag ? document.querySelector<HTMLElement>(".journey-hud .held-item-button")?.getBoundingClientRect() : undefined;
+    const bag = toBag ? bagBox() : undefined;
     const fly = bag && bag.width > 0 && bag.height > 0 ? itemFlight(box, bag) : undefined;
     setFlight({
       mode: fly ? "fly" : "fade",
@@ -96,8 +109,7 @@ export function ItemShowFlight({ itemId, toBag }: { itemId: string; toBag: boole
   // Once, as it starts (each leaving is its own flight: JourneyHud keys it): a header changing meanwhile does not restart it.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (!card) return null;
   return <span ref={layer} className="item-show-flight" aria-hidden="true">
-    {flight && <span className="item-show-card item-show-leaving" data-mode={flight.mode} style={flight.style}><CardBody card={card} /></span>}
+    {flight && <span className={className} data-mode={flight.mode} style={flight.style}>{children}</span>}
   </span>;
 }

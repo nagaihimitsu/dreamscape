@@ -278,6 +278,9 @@ INCLUDE modules.ink
 
 // ───── +1：本筋の後。しおりを持っているときだけ（道中交流）。対決の結果で「自由時間へ」を押すと始まる。
 // 渡す2つの選択肢は # give:（品物を持っていないと隠れる。ここでは頭の # when: が持っていることを保証する）。
+// 行の札の例：ポケットのしおりに触れる行の # item_out:（その行のあいだ、もらった品物を上の帯の所持品から取り出して、絵と名前と、
+// 品物に書かれた行（linesJa。このしおりにはないので説明）を紙の札で見せる。見せるだけで、品物は渡しも使いもしない。
+// # item_out: <品物のID> 2 のように行の番号を足すと、その行に印が付く）。
 === smp_mihon_bookmark_gift ===
 # scene: encounter
 # title: しおりを渡す
@@ -287,6 +290,7 @@ INCLUDE modules.ink
 # sources: none
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
+# item_out: smp_mihon_three_bookmark
 時計塔を見上げる{heroine_name}の横で、ポケットの中の三時のしおりに指が触れた。
 * [This is for you. # option: give # translation: これ、あなたに。]
     # give: smp_mihon_three_bookmark heroine
