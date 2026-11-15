@@ -110,7 +110,7 @@ type City = {
 const ROMANCE: readonly LeafKind[] = ["relationship", "romanceStage", "couple", "datePlayed"];
 /** Leaves whose record never turns back once true. */
 const MONOTONE: readonly LeafKind[] = ["battlePlayed", "episodeCompleted", "episodesCompleted", "cityCompleted", "landmarkVisited", "guideRead",
-  "encounterCompleted", "encounterSeen", "datePlayed", "epilogueViewed", "battlesPlayed", "couple", "rented"];
+  "encounterCompleted", "encounterSeen", "datePlayed", "epilogueViewed", "epilogueStarted", "battlesPlayed", "couple", "rented"];
 
 /** How a run of the check reads some leaves (the warnings' "what if" runs). */
 type Mode = {
@@ -357,6 +357,7 @@ function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapsh
   }
   if ("cityCompleted" in leaf) return fact(content, city, now, leaf.cityCompleted, now.cities.has(leaf.cityCompleted), reach.finale);
   if ("epilogueViewed" in leaf) return fact(content, city, now, leaf.epilogueViewed, now.epilogues.has(leaf.epilogueViewed), reach.finale);
+  if ("epilogueStarted" in leaf) return fact(content, city, now, leaf.epilogueStarted, now.epilogues.has(leaf.epilogueStarted), reach.finale);
   if ("landmarkVisited" in leaf) return fact(content, city, now, landmarkCity(leaf.landmarkVisited), now.landmarks.has(leaf.landmarkVisited), reach.landmarks.has(leaf.landmarkVisited));
   if ("guideRead" in leaf) return fact(content, city, now, landmarkCity(leaf.guideRead), now.guides.has(leaf.guideRead), reach.guides.has(leaf.guideRead));
   if ("encounterCompleted" in leaf || "encounterSeen" in leaf) {

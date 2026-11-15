@@ -27,6 +27,12 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
   encounterSeen: [{ encounterSeen: "x1" }, { ...base, seenEncounterIds: ["x1"] }, { ...base, seenEncounterIds: ["x2"] }],
   datePlayed: [{ datePlayed: "d1" }, { ...base, playedDateIds: ["d1"] }, base],
   epilogueViewed: [{ epilogueViewed: "c1" }, { ...base, viewedEpilogueCityIds: ["c1"] }, { ...base, completedCityIds: ["c1"] }],
+  // The city's epilogue on screen counts (only what the leaf reads of it is set); an arrival of the same city does not.
+  epilogueStarted: (() => {
+    const episode = episodes[0];
+    const on = (kind?: "arrival") => ({ episodeId: episode.id, ...(kind ? { kind } : {}) }) as unknown as GameState["activeEpilogue"];
+    return [{ epilogueStarted: episode.cityId }, { ...base, activeEpilogue: on() }, { ...base, activeEpilogue: on("arrival") }];
+  })(),
   item: [{ item: { id: "i1", is: "held" } }, { ...base, inventory: { i1: "held" } }, { ...base, inventory: { i1: "gifted" } }],
   time: [{ time: "night" }, at(18 * 60), at(17 * 60 + 59)],
   cityDay: [{ cityDay: { atLeast: 2, atMost: 3 } }, { ...base, travel: { ...base.travel, day: 3 } }, { ...base, travel: { ...base.travel, day: 4 } }],
@@ -85,6 +91,12 @@ describe("meets", () => {
     expect(meets(state, { not: no })).toBe(true);
     expect(meets(state, { atLeast: { count: 2, of: [yes, no, yes] } })).toBe(true);
     expect(meets(state, { atLeast: { count: 2, of: [yes, no, no] } })).toBe(false);
+  });
+
+  it("counts a read epilogue as started, and another city's epilogue as not", () => {
+    expect(meets({ ...base, viewedEpilogueCityIds: ["c1"] }, { epilogueStarted: "c1" })).toBe(true);
+    const other = episodes.find((episode) => episode.cityId !== episodes[0].cityId);
+    if (other) expect(meets({ ...base, activeEpilogue: { episodeId: other.id } as unknown as GameState["activeEpilogue"] }, { epilogueStarted: episodes[0].cityId })).toBe(false);
   });
 
   it("counts a city's episodes as the old chapter rule did, for every city", () => {

@@ -54,6 +54,7 @@ describe("condition texts", () => {
     ["episodes mihon >= 2", { episodesCompleted: { city: "mihon", atLeast: 2 } }],
     ["date smp_d", { datePlayed: "smp_d" }],
     ["epilogue mihon", { epilogueViewed: "mihon" }],
+    ["epilogue_started mihon", { epilogueStarted: "mihon" }],
     ["time night", { time: "night" }],
     ["day >= 2", { cityDay: { atLeast: 2 } }],
     ["day <= 3", { cityDay: { atMost: 3 } }],

@@ -34,6 +34,7 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("encounterSeen" in leaf) return `交流「${encounters.encounters.find((item) => item.id === leaf.encounterSeen)?.titleJa ?? leaf.encounterSeen}」を見た`;
   if ("datePlayed" in leaf) return `デート「${dates.find((item) => item.id === leaf.datePlayed)?.titleJa ?? leaf.datePlayed}」を遊んだ`;
   if ("epilogueViewed" in leaf) return `${cityName(leaf.epilogueViewed)}のエピローグを読んだ`;
+  if ("epilogueStarted" in leaf) return `${cityName(leaf.epilogueStarted)}のエピローグが始まった（読んでいる間も）`;
   if ("item" in leaf) return `品物「${encounters.items.find((item) => item.id === leaf.item.id)?.nameJa ?? leaf.item.id}」${ITEM_STATUS_LABELS[leaf.item.is]}`;
   if ("time" in leaf) return leaf.time === "day" ? "昼（9:00〜18:00）" : "夜（18:00から眠るまで）";
   if ("cityDay" in leaf) return range("この都市の", leaf.cityDay);

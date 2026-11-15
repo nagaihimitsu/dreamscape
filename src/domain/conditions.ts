@@ -35,6 +35,9 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   encounterSeen: (state, id) => state.seenEncounterIds.includes(id),
   datePlayed: (state, id) => state.playedDateIds.includes(id),
   epilogueViewed: (state, id) => state.viewedEpilogueCityIds.includes(id),
+  // Read, or the city's epilogue on screen now (activeEpilogue without a kind: not an arrival or a tour leg).
+  epilogueStarted: (state, id) => state.viewedEpilogueCityIds.includes(id) || (!!state.activeEpilogue && state.activeEpilogue.kind === undefined &&
+    episodes.some((episode) => episode.id === state.activeEpilogue?.episodeId && episode.cityId === id)),
   item: (state, { id, is }) => (is === "obtained" ? id in state.inventory : state.inventory[id] === is),
   // Night lasts from 18:00 until sleeping sets the next morning (9:00): a rest at
   // 21:00 or a late return after it is still night, though getTimePeriod calls it closed.

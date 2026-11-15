@@ -1,4 +1,4 @@
-import { expect, ops, readSave, test, tier, type Locator, type Page } from "./helpers";
+import { devModules, expect, ops, readSave, test, tier, type Locator, type Page } from "./helpers";
 
 // Free time's row of photo cards and its expanded map (B案, docs/02 「自由時間の画面」), after the phone UI audit of
 // 2026-11-14: a new day starts at the first place (a habitual swipe up must never wait or rest again by yesterday's
@@ -101,4 +101,38 @@ test("at 320×568 the expanded map opens on the selected place, keeps 「行く�
   await ops.goToFromMap(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+// The night screen's 「ホテルで休む」 (docs/02 「一日の終わり」, 2026-11-15): 「ホテルで休みました。」 waits for a tap, and the header keeps
+// the night's clock (its day and moon) until then; the tap brings the morning's.
+test("after the night screen's rest the header keeps the night's clock until the tap", { tag: tier.gate }, async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto("/");
+  // Agra at 21:00 at the inn with its day tour booked: a night action is open, so the night screen shows.
+  const placed = await page.evaluate(async ({ modules }) => {
+    const builders = await import(/* @vite-ignore */ modules.builders);
+    const { saveGame } = await import(/* @vite-ignore */ modules.persistence);
+    const { journeyStorage } = await import(/* @vite-ignore */ modules.journeyStorage);
+    const booked = builders.bookTour(builders.cityStart("agra", ["航", "澪"]), "gt_agra_tour_fatehpur_sikri");
+    const night = { ...booked, travel: { ...booked.travel, currentPlaceId: booked.travel.hotelPlaceId, minute: 21 * 60 } };
+    return saveGame(journeyStorage(localStorage, "golden_triangle"), night);
+  }, { modules: devModules });
+  expect(placed).toEqual({ ok: true });
+  await page.reload();
+  await ops.chooseJourney(page, "golden_triangle");
+  await expect(page.getByTestId("night-screen")).toBeVisible();
+  const clock = page.getByTestId("journey-context");
+  await expect(clock).toContainText(/1日目.*21:00/u);
+  await expect(page.locator("html[data-tap-hold]")).toHaveCount(0);
+  await page.getByTestId("night-action-rest").click();
+  const leaving = page.getByTestId("night-leaving");
+  await expect(leaving).toBeVisible();
+  // The save already holds the morning; the header still shows the night.
+  await expect.poll(async () => (await readSave(page, "golden_triangle")).travel.day).toBe(2);
+  await expect(clock).toContainText(/1日目.*21:00/u);
+  await expect(clock).not.toContainText("09:00");
+  await expect(page.locator("html[data-tap-hold]")).toHaveCount(0);
+  await leaving.click();
+  await expect(leaving).toHaveCount(0);
+  await expect(clock).toContainText("2日目");
 });

@@ -29,7 +29,10 @@ const legArt = (leg: TourLeg): TransportMode => ({ id: leg.id, nameJa: leg.label
  * scenes before the night).
  */
 type Effect = { kind: "move"; mode: TransportMode; route?: RideRoute } | { kind: "night" } | { kind: "day_end"; recap?: NightRecap; line: string }
-  | { kind: "night_left"; buttons: readonly NightButton[]; recap: NightRecap; word: TodayWord | null } | { kind: "night_fade" };
+  | { kind: "night_left"; buttons: readonly NightButton[]; recap: NightRecap; word: TodayWord | null; clock: NightClock } | { kind: "night_fade" };
+/** The night's clock, as the header shows it (day, time, the journey's calendar for the weekday). */
+export type NightClock = Pick<GameState["travel"], "day" | "minute" | "calendar">;
+const clockOf = (state: GameState): NightClock => ({ day: state.travel.day, minute: state.travel.minute, calendar: state.travel.calendar });
 const night: Effect = { kind: "night" };
 const nightFade: Effect = { kind: "night_fade" };
 
@@ -108,7 +111,7 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
         // home to them as after 「休む」, and the visual when the night passes (playMove).
         if (after.travel.day !== before.travel.day)
           play([dayEnd.by === "game" ? nightCard(before, true)
-            : { kind: "night_left", buttons: dayEnd.buttons, recap: nightRecap(before), word: todayWord(before) }, ...tour]);
+            : { kind: "night_left", buttons: dayEnd.buttons, recap: nightRecap(before), word: todayWord(before), clock: clockOf(before) }, ...tour]);
         else {
           dayEndNight.current = { by: dayEnd.by, cityId: before.currentCityId, day: before.travel.day };
           if (before.travel.currentPlaceId !== after.travel.currentPlaceId)
@@ -188,8 +191,10 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
   const playing = queue.length > 0;
   /** The night screen is fading to the morning (GameApp keeps its page as at night meanwhile). */
   const nightLeaving = current?.kind === "night_left";
+  /** While it shows 「ホテルで休みました。」, the night it rested from: the header keeps that clock until the tap (2026-11-15). */
+  const nightLeavingClock = current?.kind === "night_left" ? current.clock : null;
   /** A ride's visual is on screen (the music is lowered under it), or a night's (the night's music plays): src/audio/scene-music.ts. */
   const riding = current?.kind === "move";
   const nightVisual = !!current && current.kind !== "move";
-  return { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing, nightLeaving, riding, nightVisual, effects };
+  return { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing, nightLeaving, nightLeavingClock, riding, nightVisual, effects };
 }
