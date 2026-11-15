@@ -13,8 +13,11 @@ INCLUDE modules.ink
 # hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_chini_rauza
 # speaker: narrator
-ヤムナー川の東岸、細い道の突き当たりに、四角い墓廟がぽつんと建っていた。チーニー・カ・ラウザー。壁は一面、色とりどりの釉薬のタイルで覆われていたというが、今はほとんどが剥がれ落ち、ところどころに、青と緑と黄色が、島のように残っている。
+ヤムナー川の東岸、細い道の突き当たりに、四角い墓廟がぽつんと建っていた。チーニー・カ・ラウザー。
+# speaker: narrator
 眠っているのは、アフザル・ハーン・シーラーズィー。学者で詩人で、シャー・ジャハーンの宰相を務めた人だ。
+# speaker: narrator
+壁は一面、色とりどりの釉薬のタイルで覆われていたという。今はほとんど剥がれ落ちて、青と緑と黄色が、島のように残っている。
 # speaker: heroine
 # voice: gt_agra_date_chini_rauza_001
 色が、少しだけ残ってる。全部残ってたら、どんなだったんだろう。目が痛いくらい、きらきらしてたのかな
@@ -26,7 +29,7 @@ INCLUDE modules.ink
 # cutin: name
 ジャグディープだ。アーグラで、結婚前の二人の写真を撮ってる
 # speaker: heroine
-# reaction: heroine,surprised,question
+# emotion: surprised
 # voice: gt_agra_date_chini_rauza_002
 代役……カップルの？
 # speaker: gt_jagdeep
@@ -94,9 +97,10 @@ INCLUDE modules.ink
 # speaker: narrator
 # photo: gt_album_a47 # photo_caption: 空っぽの指輪の箱、膝をつく代役
 # stand: near
+# emotion: shy
 渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
 # speaker: heroine
-# reaction: heroine,surprised_big,blush
+# emotion: surprised_big
 # voice: gt_agra_date_chini_rauza_009
 こ、これ、代役だよね？　分かってるけど。分かってるんだけど
 * [黙って、空の箱を開ける # option: open_empty_box]
@@ -110,6 +114,7 @@ INCLUDE modules.ink
     - else:
         # speaker: narrator
         # se: box_open
+        # emotion: smile
         中には何もない。彼女はそれを見て、ほっとしたような、拍子抜けしたような顔で笑った。
         # speaker: heroine
         # voice: gt_agra_date_chini_rauza_011
@@ -124,7 +129,7 @@ INCLUDE modules.ink
         台本、か。……そうだよね。代役だもんね
     - else:
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         # voice: gt_agra_date_chini_rauza_013
         台本、あるんだ。ふふ、ジャグディープさん、台詞はいらないって
     }
@@ -143,12 +148,13 @@ INCLUDE modules.ink
         ……っ。そういうの、代役でも、ずるい
         # speaker: narrator
         # se: camera_shutter
+        # emotion: shy_deep
         彼女は顔を手であおぎ、反射板の向こうのジャグディープをにらんだ。シャッターの音が、何度も鳴っていた。
     }
 -
 # speaker: narrator
 # se: car_door
-車の止まる音がした。走ってくる足音が二つ。
+車のドアの閉まる音。走ってくる足音が二つ。
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: narrator
     汗だくの青年と、緑のクルタの女性。青年が、こちらを見て立ち止まった。
@@ -159,16 +165,20 @@ INCLUDE modules.ink
     # speaker: narrator
     ニキルとタンヴィ。タージ・マハルで、指輪を出しそびれた二人だった。
     # speaker: gt_tanvi
-    地図を二人で見て、名前もちゃんと読めない場所を選んだの。誰かの有名な恋の話の、背景にならない所がよかった。それに、色が少しだけ残ってるでしょう。全部きれいに残ってるより、ちょっとだけ残ってる方が、本当っぽい
+    地図を二人で見て、名前もちゃんと読めない場所を選んだの。誰かの有名な恋の話の、背景にならない所がよかった。
+    # speaker: gt_tanvi
+    それに、色が少しだけ残ってるでしょう。全部きれいに残ってるより、ちょっとだけ残ってる方が、本当っぽい
     # speaker: narrator
     ニキルが、折りたたんだ紙をジャグディープに差し出した。撮ってほしい構図の一覧。三十枚。タンヴィが、その紙をそっと取り上げて、自分の鞄にしまった。
     # speaker: gt_tanvi
     今日は、一枚も決めないで撮って。……写真屋さんを呼んだのは、この人の、唯一のわがままなの
     # speaker: narrator
+    # leave: gt_tanvi
     代役の二人は、柱の陰に隠れた。アーチの下で、ニキルが膝をつく。今度の箱は、空っぽではなかった。
     タンヴィの返事は、柱の陰まで聞こえた。
     # speaker: gt_tanvi
     # pause: 800
+    # leave: gt_tanvi
     ……ハーン
     # speaker: narrator
     # local_word: gt_agra_word_haan
@@ -181,8 +191,11 @@ INCLUDE modules.ink
     # speaker: narrator
     プネーから来た二人だった。半年後に式を挙げるという。この場所を選んだのは、花嫁になる方だった。
     # speaker: gt_agra_chini_bride
-    タージは、みんなが撮るでしょう。わたしたちの写真の後ろに、ほかの人の恋の話が写るのは、ちょっと嫌だったの。ここは、色が少しだけ残ってる。全部残ってるより、その方が、わたしたちに似てる気がして
+    タージは、みんなが撮るでしょう。わたしたちの写真の後ろに、ほかの人の恋の話が写るのは、ちょっと嫌だったの。
+    # speaker: gt_agra_chini_bride
+    ここは、色が少しだけ残ってる。全部残ってるより、その方が、わたしたちに似てる気がして
     # speaker: narrator
+    # leave: gt_agra_chini_bride
     撮影が始まると、代役の二人は柱の陰に下がった。アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。
     # speaker: narrator
     ジャグディープは、構図にない、その一枚を一番長く撮っていた。
@@ -197,6 +210,7 @@ INCLUDE modules.ink
 代役の写真だ。いらなければ消す。……正直、今日の試し撮りで、一番いい顔をしてる
 -> gt_agra_chini_rauza_test_shot ->
 # speaker: narrator
+# leave: gt_jagdeep
 帰りぎわ、彼女は墓廟の壁に残った青いタイルの前で立ち止まった。四百年近く、雨と日差しを受けて、それでも落ちなかった一枚。
 # speaker: heroine
 # voice: gt_agra_date_chini_rauza_018

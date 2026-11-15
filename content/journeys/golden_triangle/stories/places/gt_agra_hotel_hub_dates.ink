@@ -30,13 +30,14 @@ INCLUDE modules.ink
 -> gt_agra_confession_lead ->
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
     # speaker: narrator
-    彼女は、息を吸ったまま、しばらく動かなかった。
+    洗濯物が一枚、風にふくらんで、またしぼんだ。そのあいだ、彼女はまばたきもしなかった。
 * [「好きだ。君は、どう思ってる？」 # option: ask_her_heart]
     # speaker: narrator
     彼女は縁に腰かけたまま、背筋を伸ばして、こちらを見上げた。
 * [「黙っていたら、誰も気づかない。だから言う。……好きです」 # option: say_it_now]
     # speaker: narrator
-    カムラの言葉だと気づいた彼女は、目を丸くして、それから、少しだけ笑った。
+    # emotion: smile
+    デリーで、カムラが言った言葉だ。彼女は小さく吹き出して、すぐに口を結んだ。
 -
 {
 - confession_result == "accepted":
@@ -67,7 +68,8 @@ INCLUDE modules.ink
     # voice: gt_agra_date_confession_008
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
-    彼女は目をそらさなかった。言葉は短く、迷いがなかった。
+    # emotion: serious
+    彼女は縁から立ち上がった。肩の向こうにあったドームが、その陰に隠れる。
     # speaker: heroine
     # emotion: smile
     # voice: gt_agra_date_confession_009
@@ -84,7 +86,7 @@ INCLUDE modules.ink
     待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
     # speaker: narrator
     # stand: close
-    彼女は、そう言ってから、こちらの袖のはしを、ほんの少しだけつまんだ。離れたいわけじゃない、と言うかわりに。
+    彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
 }
 -> END
 
@@ -97,7 +99,7 @@ INCLUDE modules.ink
 === gt_agra_confession_lead ===
 # speaker: narrator
 # quiet: scene
-しばらく、二人とも黙っていた。黙っていても気まずくない、と気づいたのは、いつからだっただろう。
+しばらく、二人とも黙っていた。彼女の肩の向こうで、白いドームが夜に浮かんでいる。
 {
 - confession_result == "accepted":
     {
@@ -161,7 +163,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
-宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。
+宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が二本、タージのドームの方へ流れていく。
 # speaker: heroine
 チャイ、二つもらってきた。一つは、そっちの
 # speaker: heroine
@@ -207,7 +209,9 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
-チャイが冷めるまで、二人は本当に、どうでもいい話だけをした。カップの底に、香辛料の粒が沈んでいく。
+チャイが冷めるまで、二人は本当に、どうでもいい話だけをした。サミールの白鳥は、どっちの首が長かったか、とか。
+# speaker: narrator
+カップの底に、香辛料の粒が沈んでいく。
 # speaker: heroine
 待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの
 # speaker: heroine

@@ -14,29 +14,37 @@ INCLUDE modules.ink
 # background: gt_bg_agra_ram_bagh
 # speaker: narrator
 ラーム・バーグには、ほとんど人がいなかった。一段高い石の通路が庭を四つに分け、水のない水路が、川の方へまっすぐ下りていく。木の上で、緑のインコが騒いでいた。
-インドでいちばん古いムガル庭園の一つで、帝国を開いたバーブルが造らせたと伝えられている。亡くなったバーブルは、いったんこの庭に葬られ、のちにカーブルへ運ばれた。
+インドでいちばん古いムガル庭園の一つで、帝国を開いたバーブルが造らせたと伝えられている。
 # speaker: heroine
 最初の皇帝の庭なのに、静かだね。タージの十分の一も、人がいない
 # speaker: narrator
 彼女のガイドブックに、バーブルが自伝に書き残した言葉が載っていた。この国にないもの、の一覧だ。
-良い馬がない。良い肉がない。ぶどうも、メロンもない。氷も、冷たい水もない。市場に、良いパンがない。湯につかる風呂がない。学校がない。ろうそくも、燭台もない。
+# speaker: narrator
+# letter: card
+良い馬がない。良い肉がない。ぶどうも、メロンもない。氷も、冷たい水もない。
+# speaker: narrator
+# letter: card
+市場に、良いパンがない。湯につかる風呂がない。学校がない。ろうそくも、燭台もない。
 # speaker: heroine
-# reaction: heroine,surprised_big,question
+# emotion: surprised_big
 全部、文句！？　国を手に入れた人が書く文章じゃない
 # speaker: narrator
-カーブルから届いたメロンを切って、泣いたという話も残っている。遠い故郷の味だったのだ。
+カーブルから届いたメロンを切って、泣いたという話も残っている。亡骸は一度この庭に葬られ、のちにカーブルへ運ばれた。
 # speaker: heroine
 千キロ以上も遠くから来て、着いた国に文句ばっかり。メロンで泣いちゃう皇帝。でも、ちょっとだけ、分かる
 # speaker: heroine
 # emotion: teasing
 ねえ。わたしたちも、書いてみない？　インドの不満リスト。皇帝の真似して
+# speaker: narrator
+彼女はガイドブックの裏表紙を開いて、ペンのキャップを外した。
 -> gt_agra_ram_bagh_complaints ->
 # speaker: heroine
 わたしのも、いい？　道を聞くと、知らなくても全員が教えてくれる。しかも、全員違う方向
 # speaker: heroine
 それと……
 # speaker: narrator
-そこで、彼女の言葉が止まった。水のない水路を見下ろしたまま、少し笑う。
+# emotion: smile
+そこで、ペンが止まった。彼女は水のない水路の方を見て、少し笑う。
 # speaker: heroine
 # emotion: worried
 実はね、昨日の夜、コンビニのおにぎりの夢を見たの。鮭の。包装、ちゃんと三か所はがすところまで、夢に出てきた
@@ -77,12 +85,12 @@ INCLUDE modules.ink
         今、ちょっと真面目に言ったんだけどな。でも、いいよ。裏返そう
     - else:
         # speaker: heroine
-        # reaction: heroine,surprised,question
+        # emotion: surprised
         裏返す？　あ、分かった。やってみよう
     }
 -
 # speaker: narrator
-二人で、さっきの不満のリストを頭から読み返した。今度は一つずつ、帰ったら恋しくなるものに裏返して。
+裏表紙いっぱいになった不満のリストを、二人で頭から読み返した。今度は一つずつ、帰ったら恋しくなるものに裏返して。
 # speaker: heroine
 クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない。道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ
 # speaker: heroine
@@ -133,12 +141,15 @@ INCLUDE modules.ink
         # emotion: serious
         ……そういう冗談、ここで言う？　お店の人、本気にするよ
         # speaker: narrator
+        # leave: gt_agra_ram_bagh_tea_master
         茶屋の主人は本気にしたらしく、頼んでいないゆで卵を二つ置いていった。
     - else:
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
         ……今のところは、って何
         # speaker: narrator
+        # emotion: shy
+        # leave: gt_agra_ram_bagh_tea_master
         茶屋の主人は満足そうにうなずき、頼んでいないゆで卵を二つ置いていった。彼女は麺をすすりながら、しばらくこちらを見なかった。
     }
 * [笑ってごまかす # option: laugh_it_off]
