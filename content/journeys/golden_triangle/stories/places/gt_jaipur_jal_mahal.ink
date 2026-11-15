@@ -22,8 +22,10 @@ INCLUDE modules.ink
     湖の真ん中に、黄土色の宮殿が浮かんでいた。ジャル・マハル。水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
 }
 # speaker: narrator
-もとは鴨猟のための館だったという。湖の水が満ちると、下の階は水に沈むと言われている。中には入れない。人々は湖沿いの長い遊歩道から、ただ眺めるだけだ。
+もとは鴨猟のための館だったという。湖の水が満ちると、下の階は水に沈むと言われている。
 遊歩道には、焼きとうもろこしの屋台、写真用に飾り立てたラクダ、風船売り。その間に、低い椅子を並べた女性がいた。手の中には、絞り袋のような、細い円錐の筒。
+# speaker: gt_jaipur_jal_mahal_woman
+あの宮殿、中には入れないのよ。眺めてるだけなら、手が暇でしょ
 # speaker: gt_jaipur_jal_mahal_woman
 # local_word: gt_jaipur_word_mehndi
 # term: gt_term_mehndi
@@ -44,16 +46,17 @@ INCLUDE modules.ink
     # set: gt_jaipur_mehndi_his_name
     { romance_result == "negative":
         # speaker: heroine
-        # reaction: heroine,surprised_big,sweat
+        # emotion: surprised_big
         ほ、ほんとに？　人前でそういうの、ずるいよ
         # speaker: heroine
         # reaction: heroine,shy,blush
         ……でも、いいよ。断れないからじゃなくて、わたしが、いいって決めたから
         # speaker: narrator
+        # emotion: shy
         ファルハーナが声を立てて笑い、筒を構えた。彼女は耳まで赤くして、手を差し出した。
     - else:
         # speaker: heroine
-        # reaction: heroine,surprised_big,blush
+        # emotion: surprised_big
         えっ！　それ、花嫁さんのやつ……
         # speaker: heroine
         # reaction: heroine,teasing,blush
@@ -69,7 +72,7 @@ INCLUDE modules.ink
         え、わたしが？　急に言われても……。ううん、決めた。ファルハーナさん、耳を貸して
     - else:
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         わたしが？　じゃあ、こっちに耳を貸して、ファルハーナさん
     }
     # speaker: narrator
@@ -102,7 +105,7 @@ INCLUDE modules.ink
 # speaker: narrator
 描き終わると、彼女は両手を胸の前に上げたまま、動けなくなった。その鼻先を、焼きとうもろこしの匂いが通り過ぎる。炭火で焼いて、塩とライムと唐辛子をこすりつけたものだ。
 # speaker: heroine
-# reaction: heroine,exasperated,sweat
+# emotion: exasperated
 食べたい。今、いちばん食べたい。でも、手が使えない
 # speaker: narrator
 ファルハーナに代金を払い、屋台で一本買って戻ると、彼女の目が、とうもろこしから離れなくなった。
@@ -114,10 +117,11 @@ INCLUDE modules.ink
         ひ、人が見てる……。一口だけ。一口だけね
     - else:
         # speaker: heroine
-        # reaction: heroine,shy,blush
+        # emotion: shy
         ……ありがとう。自分で食べられないの、ちょっと恥ずかしいね。誰かに食べさせてもらうなんて、子どものとき以来かも
     }
     # speaker: narrator
+    # emotion: smile
     # photo: gt_album_j22 # photo_caption: 手が使えない彼女に、焼きとうもろこし
     一口かじって、彼女は目を細めた。唐辛子とライムが、あとから追いかけてくる。
 * [わざと少し遠ざける # option: tease_corn]
@@ -127,12 +131,14 @@ INCLUDE modules.ink
         # emotion: exasperated
         今は本当にやめて。手、動かしたら模様がつぶれちゃう
         # speaker: narrator
+        # emotion: exasperated
         すぐに差し出すと、彼女はまだ少しむくれたまま、一口かじった。
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,anger
         いじわる！　手が乾いたら、覚えてなさいね
         # speaker: narrator
+        # emotion: teasing
         三回目で、ようやく一口かじらせてもらえた。彼女は、勝った人の顔で、もぐもぐと口を動かした。
     }
 * [自分でおいしそうに食べてみせる # option: eat_corn_myself]
@@ -147,9 +153,11 @@ INCLUDE modules.ink
         ひどい……。今の、この旅でいちばんひどい。ふふっ、でも、おいしそうに食べるね
     }
     # speaker: narrator
+    # emotion: exasperated
     残りの半分を差し出すと、彼女は、まだ少しむくれたまま、それをかじった。
 -
 # speaker: narrator
+# leave: gt_farhana
 遊歩道のはずれで、二人は湖を眺めた。彼女は、乾きかけた両手を、まだ胸の前に上げている。
 # speaker: heroine
 手が使えないと、何にもできないね。やってもらうの、慣れてないから、変な感じ。でも、今日は、ちょっと楽しかった

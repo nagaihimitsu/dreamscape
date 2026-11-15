@@ -13,8 +13,11 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_albert_hall
 # speaker: narrator
 アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。その正面の広場が、灰色に揺れている。鳩だ。何百羽もの鳩が、地面を埋めつくしていた。
+# speaker: narrator
+広場の端で、男が小さな袋に入った穀物を売っている。
+# speaker: narrator
 # se: pigeons_takeoff
-広場の端で、男が小さな袋に入った穀物を売っている。買った人が撒くたびに、灰色の波が、ざあっと音を立てて動く。
+買った人が撒くたびに、灰色の波が、ざあっと音を立てて動く。
 { cond("date gt_delhi_date_agrasen_baoli"):
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
@@ -33,10 +36,11 @@ INCLUDE modules.ink
         # speaker: narrator
         一握り撒いた瞬間、灰色の波が、こちらではなく彼女の足もとに押し寄せた。
         # speaker: heroine
-        # reaction: heroine,surprised_big,sweat
+        # emotion: surprised_big
         やだ、肩に！　は、早く払って！
     - else:
         # speaker: narrator
+        # emotion: happy
         一握り撒いた瞬間、灰色の波が足もとに押し寄せた。肩に一羽、頭に一羽。彼女は、悲鳴の手前で笑い出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -70,7 +74,7 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 # term: gt_term_miniature
-博物館の中は、ひんやりしていた。細密画、陶器、絨毯、鎧。ひときわ賑やかなのは、制服の子どもたちの遠足の一団だった。先生に連れられて、地下の展示室への階段を、列になって下りていく。
+博物館の中は、ひんやりしていた。細密画、絨毯、金属や木の細工。ひときわ賑やかなのは、制服の子どもたちの遠足の一団だった。先生に連れられて、地下の展示室への階段を、列になって下りていく。
 階段の手前の柱の陰に、一人だけ、取り残された女の子がいた。八歳くらい。三つ編みの先を、ぎゅっと握っている。
 # speaker: heroine
 # emotion: worried
@@ -127,12 +131,12 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 地下の展示室の真ん中に、ガラスの箱があった。中に、布にくるまれた細長い姿が横たわっている。
-案内によると、エジプトの古い時代の女性で、神官の家の人だったと考えられている。およそ二千三百年前の人だ。
-1887年、はるばるカイロからジャイプールへやってきた。トゥトゥと呼ばれている。
 # speaker: narrator
-カヴィヤが、案内にある名前を、声に出して読んだ。
+カヴィヤは彼女の手を握ったまま、案内の字を、指でたどって声に出した。
 # speaker: gt_kavya
-……トゥトゥ？　名前、あるの？
+エジプトの、女の人。神官のおうちの人、だったかもって。……二千三百年くらい、前の人
+# speaker: gt_kavya
+カイロから、ジャイプールまで来たんだって。……トゥトゥ？　名前、あるの？
 # speaker: gt_kavya
 かわいい名前。……トゥトゥは、遠くから来て、さみしくないのかな
 # speaker: heroine
@@ -141,6 +145,7 @@ INCLUDE modules.ink
 # speaker: narrator
 カヴィヤは、ガラスに額がつくほど近づいた。それから、振り向いて、先生のところへ走っていった。
 # speaker: gt_kavya
+# leave: gt_kavya
 先生！　わたし、見た！
 # speaker: narrator
 自慢しに行ったのだ。

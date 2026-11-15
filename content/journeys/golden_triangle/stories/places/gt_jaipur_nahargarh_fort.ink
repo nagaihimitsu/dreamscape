@@ -5,7 +5,7 @@ INCLUDE modules.ink
 // かくれんぼはミニゲーム「かくれんぼ」（# minigame: nahargarh_hide_seek）。選択肢の代わりに、同じ形の扉が並ぶ廊下で彼女を探す。
 // 彼女は七つ目の扉（hide 7）。扉を開ける（1つ目か2つ目で見つけたら door_quick、3つ目以降なら door_by_door）・
 // 「名前を呼ぶ」を3回（call_her_name）・何もしないで待つ（just_wait）。結果の選択肢の # profile: で1回目の噛み合いが決まる。
-// 扉には名前を描かない（扉に王妃の名前が書かれていたことは、公的な資料で確かめられていない。地の文の「伝えられている」のまま）。
+// 扉には名前を描かない（扉に王妃の名前が書かれていたことは確かめられていないので、地の文でも言わない）。
 
 // 【3】
 === gt_jaipur_date_nahargarh_fort ===
@@ -20,19 +20,21 @@ INCLUDE modules.ink
 # speaker: heroine
 幽霊に、ちゃんとあいさつしたら、工事が進んだんだ。怖い話なのに、ちょっと礼儀正しいね
 # speaker: narrator
-砦の奥に、二階建ての宮殿が建っていた。マーダヴェーンドラ・バワン。王と、九人の王妃のための部屋が、中庭を囲んで並んでいる。王妃たちの部屋はどれも同じ造りで、廊下でつながっていた。
-部屋を間違えないように、扉には王妃たちの名前が書かれていたと伝えられている。王は廊下を通って、ほかの王妃に知られずに、誰の部屋にでも行くことができた、とも。
+砦の奥に、二階建ての宮殿が建っていた。マーダヴェーンドラ・バワン。王と、九人の王妃のための部屋が、中庭を囲んで並んでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question
 同じ部屋が、ずらっと……。どこにいるのか、すぐ分からなくなりそう
 # speaker: narrator
+部屋どうしは廊下でつながっていて、王はそこを通って、ほかの王妃に知られずに、誰の部屋にでも行けた、と伝えられている。
+# speaker: narrator
+# emotion: teasing
 彼女は廊下の先を見て、それから、こちらを振り返った。目が、少しいたずらっぽく光っていた。
 # speaker: heroine
 # emotion: teasing
 ねえ、かくれんぼしよう。わたしが隠れる。百数えたら、探しに来て。ちゃんと数えてね
 # speaker: narrator
-# stand: apart
 # se: footsteps_run
+# leave: heroine
 返事を待たずに、足音が廊下の奥へ消えていった。
 # minigame: nahargarh_hide_seek auto door_by_door hide 7 art.bay gt_img_jaipur_nahargarh_doorways art.room gt_img_jaipur_nahargarh_chamber
 九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
@@ -109,12 +111,14 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":
         # speaker: narrator
+        # stand: apart
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。
         # speaker: heroine
         # emotion: worried
         ……探してくれないの？　ずっと待ってたのに。……ちょっと、さみしかった
     - else:
         # speaker: narrator
+        # stand: apart
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。ちょっと不満そうな顔だった。
         # speaker: heroine
         # emotion: exasperated
