@@ -1,4 +1,4 @@
-import { battles, episodes, landmarks, scenes, storyState } from "../content";
+import { battles, dates, episodes, landmarks, scenes, storyState } from "../content";
 import { usableAp, usableMoney } from "./reservations";
 import { leafKind, type Condition, type Leaf, type LeafKind, type LeafValues } from "../content/condition-schemas";
 import type { GameState } from "./game-state-schema";
@@ -14,6 +14,22 @@ import { getGameWeekday, getTimePeriod, NIGHT_START } from "./travel";
 /** A battle was played (any attempt, won or lost): the one place that reads battleRecords' attempts. */
 export function battlePlayed(state: Readonly<GameState>, battleId: string): boolean {
   return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
+}
+
+/** Completed ordinary dates and up to three real recovery conversations (the count the romance stages and the confession read). */
+export function completedDateCount(state: Readonly<GameState>): number {
+  const ordinary = state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
+  return ordinary + state.completedRecoveryCount;
+}
+
+/**
+ * No rejection waits now (the leaf dateSinceRejection): the last confession's answer was not a rejection, or a new
+ * ordinary date or a recovery was completed since it. Before 2026-11-15 the game made every confession wait so; now a
+ * writer writes it on the confessions that wait (India: Agra's and Jaipur's), and a recovery's showing reads it.
+ */
+export function dateSinceRejection(state: Readonly<GameState>): boolean {
+  return state.confessionStatus !== "rejected" || state.lastRejectedDateCount === null ||
+    completedDateCount(state) > state.lastRejectedDateCount || state.recoveryAfterRejection;
 }
 
 /** The money that can be spent now: the budget less the fare home and the main parts' payments kept back (reservations.ts). */
@@ -56,6 +72,7 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   money: (state, range) => inRange(spendableMoney(state), range),
   romanceStage: (state, range) => inRange(state.romanceStage, range),
   couple: (state) => state.confessionStatus === "accepted",
+  dateSinceRejection,
   ap: (state, range) => inRange(usableAp(state), range),
   flag: (state, id) => state.storyProgress.flags.includes(id),
   // Met: a scene naming the person in # person: was seen (decision 42; seen covers every ending).

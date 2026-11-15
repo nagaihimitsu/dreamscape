@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { battles, episodes, landmarks } from "../content";
+import { battles, dates, episodes, landmarks } from "../content";
 import { LEAF_KINDS, type Condition, type Leaf } from "../content/condition-schemas";
-import { battlePlayed, meets } from "./conditions";
+import { battlePlayed, completedDateCount, meets } from "./conditions";
 import { createGame, type GameState } from "./game";
 import { sleepAtHotel } from "./travel-game";
 
@@ -60,6 +60,8 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
     { ...base, travelBudget: 400, travel: { ...base.travel, returnReserve: 101 } }],
   romanceStage: [{ romanceStage: { atLeast: 2, atMost: 3 } }, { ...base, romanceStage: 3 }, { ...base, romanceStage: 4 }],
   couple: [{ couple: true }, { ...base, confessionStatus: "accepted" }, { ...base, confessionStatus: "deferred" }],
+  // 2026-11-15: no rejection waits (none at all here); a rejection with no date since it.
+  dateSinceRejection: [{ dateSinceRejection: true }, base, { ...base, confessionStatus: "rejected", lastRejectedDateCount: 0 }],
   // Stage 3a: the AP that can be spent, a flag, a person met (a seen scene naming them), a named condition.
   ap: [{ ap: { atLeast: 2 } }, { ...base, ap: 2 }, { ...base, ap: 1 }],
   flag: [{ flag: "smp_mihon_lili_told_why" }, { ...base, storyProgress: { lines: {}, flags: ["smp_mihon_lili_told_why"] } }, base],
@@ -91,6 +93,32 @@ describe("meets", () => {
     expect(meets(state, { not: no })).toBe(true);
     expect(meets(state, { atLeast: { count: 2, of: [yes, no, yes] } })).toBe(true);
     expect(meets(state, { atLeast: { count: 2, of: [yes, no, no] } })).toBe(false);
+  });
+
+  it("reads the wait after a rejection from the saved progress: a new ordinary date or a recovery since it ends it", () => {
+    const wait: Condition = { dateSinceRejection: true };
+    const ordinary = dates.find((date) => date.kind === "normal")!.id;
+    const recovery = dates.find((date) => date.recovery)!.id;
+    const confession = dates.find((date) => date.kind === "confession")!.id;
+    // No rejection at all, or the last answer was not one (a deferral or a yes after a rejection reset the record).
+    expect(meets(base, wait)).toBe(true);
+    for (const confessionStatus of ["deferred", "accepted"] as const)
+      expect(meets({ ...base, confessionStatus, playedDateIds: [confession] }, wait)).toBe(true);
+    // Right after a rejection: the count of dates when she said no is the count now.
+    const rejected: GameState = { ...base, playedDateIds: [ordinary, confession], confessionStatus: "rejected", lastRejectedDateCount: 1 };
+    expect(completedDateCount(rejected)).toBe(1);
+    expect(meets(rejected, wait)).toBe(false);
+    expect(meets(rejected, { not: wait })).toBe(true);
+    // A new ordinary date since then (another played confession is not one).
+    const other = dates.find((date) => date.kind === "normal" && date.id !== ordinary)!.id;
+    expect(meets({ ...rejected, playedDateIds: [...rejected.playedDateIds, other] }, wait)).toBe(true);
+    expect(meets({ ...rejected, playedDateIds: [...rejected.playedDateIds, dates.find((date) => date.kind === "reassurance")!.id] }, wait)).toBe(false);
+    // A recovery completed since then, also once the three counted recoveries are used up (its own record).
+    expect(meets({ ...rejected, playedDateIds: [...rejected.playedDateIds, recovery], completedRecoveryCount: 1, recoveryAfterRejection: true }, wait)).toBe(true);
+    expect(meets({ ...rejected, playedDateIds: [...rejected.playedDateIds, recovery], completedRecoveryCount: 3, lastRejectedDateCount: 4,
+      recoveryAfterRejection: true }, wait)).toBe(true);
+    // It reads no relationship value.
+    expect(meets({ ...rejected, affection: 99, trust: 99, spark: 99, romanceStage: 4 }, wait)).toBe(false);
   });
 
   it("counts a read epilogue as started, and another city's epilogue as not", () => {

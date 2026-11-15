@@ -72,6 +72,9 @@ describe("condition texts", () => {
     ["stage >= 2", { romanceStage: { atLeast: 2 } }],
     ["couple", { couple: true }],
     ["not couple", { not: { couple: true } }],
+    // 2026-11-15: the wait after a rejection, written by the writer on a date that waits.
+    ["date_since_rejection", { dateSinceRejection: true }],
+    ["not date_since_rejection", { not: { dateSinceRejection: true } }],
   ])("reads %s", (text, condition) => {
     expect(parseConditionText(text)).toEqual(condition);
   });
@@ -82,6 +85,7 @@ describe("condition texts", () => {
     ["ap >= -1", "Invalid condition"], ["met", "met <person>"], ["flag a b", "flag <flag>"], ["condition", "condition <name>"],
     ["rel charm >= 3", "rel affection|trust|spark"], ["rel affection > 3", "rel affection >= N"], ["rel affection >= 1.5", "rel affection >= N"],
     ["money >= -1", "Invalid condition"], ["stage >= 5", "Invalid condition"], ["couple yes", 'Write the condition part "couple" as: couple'],
+    ["date_since_rejection agra", 'Write the condition part "date_since_rejection" as: date_since_rejection'],
     ["battles mihon <= 2", "battles <city> >= N"], ["wish upon a star", "Unknown condition part: wish"],
   ])("refuses %j", (text, message) => {
     expect(() => parseConditionText(text)).toThrow(message);

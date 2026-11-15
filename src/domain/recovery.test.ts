@@ -123,8 +123,9 @@ describe("relationship recovery when free time is exhausted", () => {
   });
 
   it("requires completing a new conversation after rejection before re-confessing", () => {
-    // The wait after a rejection, on Milan's confession made repeatable for the test (the journey's own is played once).
-    onTestFinished(installRepeatableDate(confessionId));
+    // The wait after a rejection, on Milan's confession made repeatable for the test with the wait its writer would write
+    // (# when: date_since_rejection; the journey's own is played once, and no confession can follow it).
+    onTestFinished(installRepeatableDate(confessionId, { waitsAfterRejection: true }));
     let state: GameState = { ...stranded(), romanceStage: 2, affection: 0, trust: 0, spark: 0 };
     state = complete(state, confessionId);
     expect(state.confessionStatus).toBe("rejected");

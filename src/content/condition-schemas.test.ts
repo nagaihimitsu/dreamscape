@@ -28,6 +28,7 @@ const EXAMPLES: Record<(typeof LEAF_KINDS)[number], Leaf> = {
   money: { money: { atLeast: 0 } },
   romanceStage: { romanceStage: { atMost: 4 } },
   couple: { couple: true },
+  dateSinceRejection: { dateSinceRejection: true },
   ap: { ap: { atLeast: 2 } },
   flag: { flag: "a_flag" },
   met: { met: "a_person" },
@@ -91,6 +92,7 @@ describe("condition schema", () => {
     expect(messages({ romanceStage: { atLeast: 5 } })).toHaveLength(1);
     expect(messages({ romanceStage: { atLeast: 0 } })).toHaveLength(1);
     expect(messages({ couple: false })).toHaveLength(1);
+    expect(messages({ dateSinceRejection: false })).toHaveLength(1);
   });
 });
 
@@ -121,7 +123,7 @@ describe("leaves of a condition", () => {
     expect(leafReference(EXAMPLES.rides)).toEqual({ kind: "mode", id: "tram" });
     expect(leafReference(EXAMPLES.epilogueViewed)).toEqual({ kind: "city", id: "a_city" });
     expect(leafReference(EXAMPLES.epilogueStarted)).toEqual({ kind: "city", id: "a_city" });
-    for (const situational of [EXAMPLES.time, EXAMPLES.cityDay, EXAMPLES.journeyDay, EXAMPLES.weekday])
+    for (const situational of [EXAMPLES.time, EXAMPLES.cityDay, EXAMPLES.journeyDay, EXAMPLES.weekday, EXAMPLES.dateSinceRejection])
       expect(leafReference(situational)).toBeUndefined();
   });
 });
