@@ -3,11 +3,13 @@ import { debugGame, expect, ops, test, tier } from "./helpers";
 // 旅の図鑑 (2026-11-13 user decision) on the sample journey's fictional 三時パン: Debug opens the market's guide (lane 3,
 // docs/10「Debugを場面の起動台にする」), whose second line names the term (# term:). Its card shows over the scene the
 // first time; a tap anywhere closes it without reading on, and the focus comes back; 旅の図鑑 in ≡メニュー then has the term,
-// with the dots that say it is new and its 「NEW」. The sample is built only into the sample tier's server
+// with the dots that say it is new and its 「NEW」. Its photo's credit is not in 旅の図鑑 but in 出典・権利の一覧 (2026-11-15). The sample is built only into the sample tier's server
 // (playwright.sample.config.ts), so this runs there, through Debug as the @debug tier does. The recording rule (once a
 // save, not opened during 高速送り, the save's round trip) is src/domain/glossary.test.ts's.
 
 const TERM = "smp_term_mihon_sanji_pan";
+/** The credit of the term's photo (the sample's tourism/catalog.json). */
+const CREDIT = "Dreamscape 見本の旅のための自作画像（架空の街）";
 
 test("旅の図鑑: a term's card over its first line closes without reading on, and the term waits in 旅の図鑑 with its NEW marks", { tag: tier.sample }, async ({ page }) => {
   await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_market", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
@@ -57,16 +59,26 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(entry).toContainText("三時パン");
   await expect(entry).toContainText("NEW");
   await expect(entry).toHaveAccessibleName(/三時パン\s*、新しい言葉/u);
-  // Larger, with the photo's credit (the click waits for the dialog to take presses: Modal's settlePresses).
+  // Larger: the photo and the line, with no credit under them (2026-11-15 user decision; the click waits for the dialog to
+  // take presses: Modal's settlePresses).
   await entry.click();
   const larger = page.getByRole("dialog", { name: "三時パン", exact: true });
   await expect(larger.getByTestId("glossary-entry-photo")).toBeVisible();
   await expect(larger).toContainText("見本の街の朝市で焼く架空の丸パン。");
-  await expect(larger).toContainText("Dreamscape 見本の旅のための自作画像（架空の街）");
+  await expect(larger).not.toContainText(CREDIT);
+  await expect(larger.locator("a")).toHaveCount(0);
   await larger.getByRole("button", { name: "閉じる", exact: true }).click();
   await page.getByTestId("glossary-close").click();
   await expect(book).toHaveCount(0);
   // Seen: the dots are gone, and the card does not come back for the term.
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
   await expect(card).toHaveCount(0);
+
+  // The photo's credit: ゲームの設定 → 出典・権利の一覧 lists it with the journey's photos, with its licence.
+  const credits = await ops.openCredits(page, "settings");
+  const journey = credits.getByTestId("credits-journey-sample_trip");
+  await journey.locator("summary").click();
+  const photo = journey.getByRole("listitem").filter({ hasText: "見本の街の架空のパン「三時パン」を描いた簡単な絵。" });
+  await expect(photo).toContainText(CREDIT);
+  await expect(photo.getByRole("link", { name: "CC0 1.0", exact: true })).toHaveAttribute("href", "https://creativecommons.org/publicdomain/zero/1.0/");
 });

@@ -162,6 +162,8 @@ dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .photo-credits-modal .modal-title-bar { margin-bottom: 8px; }
 .photo-credits-list { display: grid; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
 .photo-credits-list li { display: flex; gap: 12px; align-items: flex-start; padding-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
+/* Only the recap's photo (the night screen): no note above the list, so its first entry needs no second line under the title bar. */
+.photo-credits-modal .modal-title-bar + .photo-credits-list > li:first-child { padding-top: 0; border-top: 0; }
 .photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: 6px; object-fit: cover; }
 .photo-credits-list div { min-width: 0; }
 .photo-credits-list h3 { margin: 0 0 4px; font-size: 14px; font-weight: 600; }

@@ -987,7 +987,7 @@
 
 /* The reveal under an answer's explanation (LandmarkReveal, a question's revealRegion): the battle's landmark photo in
    a small frame at the photo's own proportions, centred and never taller than --reveal-max-h (less on short screens,
-   so the feedback's buttons stay about as near as before), then the caption and the credit line. The photo zooms
+   so the feedback's buttons stay about as near as before), then the caption. The photo zooms
    slowly toward the region about --reveal-origin (transform only, after the answer's own beat) and the region's
    outline fades in; its lines are divided by the zoom, so they end at their own width. Under reduced motion the photo
    stays whole and the outline shows at once. Display only: an edge all round, no accent line. */
@@ -1036,15 +1036,6 @@
   text-align: center;
   overflow-wrap: anywhere;
 }
-.battle-reveal-credit {
-  margin: 2px 0 0;
-  color: var(--ds-ink-muted);
-  font-size: 11px;
-  line-height: 1.6;
-  text-align: center;
-  overflow-wrap: anywhere;
-}
-.battle-reveal-credit a { color: var(--ds-ink); }
 /* Short phones (320×568) and low landscape screens. */
 @media (max-height: 599px) {
   .battle-reveal { --reveal-max-h: 120px; }

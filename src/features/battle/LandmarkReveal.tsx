@@ -1,6 +1,5 @@
 import { useState, type CSSProperties } from "react";
 import type { ObservationRegion, TourismAsset } from "../../content/tourism-schemas";
-import { ImageCreditLine } from "../../components/ImageCredit";
 import { revealZoom } from "./reveal-zoom";
 
 const percent = (fraction: number) => `${fraction * 100}%`;
@@ -9,9 +8,9 @@ const percent = (fraction: number) => `${fraction * 100}%`;
  * The reveal under an answer's explanation (a battle question's revealRegion, user decision 2026-11-11): the
  * battle's landmark photo (the one behind the battle; the same file, already loaded) in a small frame at its own
  * proportions, slowly zooming toward the region while an outline around it fades in (battle.css; under reduced
- * motion the photo stays whole and the outline shows at once), the question's one-line caption when it has one,
- * and the photo's credit line as the clue book shows it (≡メニュー's 「画像の出典」 opens the same photo's credits).
- * Nothing in it takes a tap but the credit's links. A photo that cannot load leaves the reveal out.
+ * motion the photo stays whole and the outline shows at once) and the question's one-line caption when it has one.
+ * No credit under it (2026-11-15 user decision): it is the photo ≡メニュー's 「画像の出典」 opens over the battle (GameApp's
+ * scenePhoto: the battle's landmark photo). Nothing in it takes a tap. A photo that cannot load leaves the reveal out.
  */
 export function LandmarkReveal({ asset, region, captionJa }: { asset: TourismAsset; region: ObservationRegion; captionJa?: string }) {
   const [failed, setFailed] = useState(false);
@@ -32,6 +31,5 @@ export function LandmarkReveal({ asset, region, captionJa }: { asset: TourismAss
       </div>
     </div>
     {captionJa && <figcaption>{captionJa}</figcaption>}
-    <ImageCreditLine asset={asset} className="battle-reveal-credit" />
   </figure>;
 }
