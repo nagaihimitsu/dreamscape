@@ -146,9 +146,10 @@ function gatherStaging(staging: LineStaging, tags: StoryTags): void {
 /**
  * The stage after a line the walk reads (src/components/scene-stage.ts), warning about each `# leave:` naming someone
  * who does not stand there at the line (with the line's own comings: they may say the line they leave on). The cues are
- * the ones the screens read from the line's tags: a reaction (in an arrival or epilogue the enemy's only with a figure),
- * and in a talk or an encounter an emotion on the narration (hers) or on the enemy's line (theirs); a guide reads none.
- * A reaction keyed by its text in presentation/dialogue-reactions.json is not read here.
+ * the ones the screens read from the line's tags: her reaction (which brings her back after her `# leave:` in a scene
+ * that has her from the start), the enemy's (in an arrival or epilogue only with a figure; a guide reads none), and in a
+ * talk or an encounter an emotion on the narration (hers) or on the enemy's line (theirs). A reaction keyed by its text
+ * in presentation/dialogue-reactions.json is not read here.
  */
 function walkStage(previous: Stage | undefined, line: { speaker: Speaker; personId?: string; staging: LineStaging },
   stage: NonNullable<SceneWalkInput["stage"]>, scene: StageScene, warn: (problem: string) => void): Stage {
@@ -156,7 +157,7 @@ function walkStage(previous: Stage | undefined, line: { speaker: Speaker; person
   const { staging, speaker } = line;
   const talk = kind === "talk" || kind === "encounter";
   const cues = {
-    heroine: talk && (staging.heroineReaction || (staging.emotion && speaker === "narrator")),
+    heroine: staging.heroineReaction || (talk && staging.emotion && speaker === "narrator"),
     enemy: talk ? staging.enemyReaction || (staging.emotion && speaker === "enemy")
       : kind !== "guide" && staging.enemyReaction && (kind === "date" || kind === "battle" || !!stage.enemyFigure),
   };

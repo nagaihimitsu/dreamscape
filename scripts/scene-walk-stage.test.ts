@@ -66,4 +66,15 @@ describe("the walk's check of # leave:", () => {
     expect(warnings(`# speaker: narrator\n# emotion: smile\n風が吹く。\n${gone("heroine")}`)).toEqual([]);
     expect(warnings(`# speaker: narrator\n# reaction: heroine,smile\n風が吹く。\n${gone("heroine")}`)).toEqual([]);
   });
+
+  it("brings her back after she left a scene that has her from the start at her line or reaction, as the screens do", () => {
+    const reaction = "# speaker: narrator\n# reaction: heroine,smile\n風が吹く。\n";
+    for (const kind of ["date", "guide", "arrival", "epilogue", "tour_leg", "battle"] as const) {
+      expect(warnings(gone("heroine") + her + gone("heroine"), { kind })).toEqual([]);
+      expect(warnings(gone("heroine") + reaction + gone("heroine"), { kind }), kind).toEqual([]);
+      // An emotion on the narration is her cue in a talk or an encounter only.
+      expect(warnings(`${gone("heroine")}# speaker: narrator\n# emotion: smile\n風が吹く。\n${gone("heroine")}`, { kind }))
+        .toEqual([expect.stringContaining("# leave: heroine: the heroine is not on the stage there")]);
+    }
+  });
 });
