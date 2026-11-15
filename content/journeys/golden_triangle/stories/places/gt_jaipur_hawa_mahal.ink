@@ -194,6 +194,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 # ambience: gt_amb_street_traffic
 # speaker: narrator
+# leave: enemy
 旅の最後の日。昼のうちに、二人はハワー・マハルに上り、窓から行列が通る道を確かめておいた。そして、日が暮れた。
 # background: gt_bg_jaipur_hawa_mahal_night
 # tint: off
@@ -297,7 +298,7 @@ INCLUDE modules.ink
 # reaction: heroine,smile,music
 カムラさん、来たばかりなのに、もうこっちの人の言い方になってる……
 # speaker: narrator
-プージャーはひるまずに胸を張った。ジャイプールの自慢といえば、これだという顔で。
+プージャーはひるまずに胸を張り、指を三本立てた。
 # speaker: gt_pooja
 三問目。この町はね、きちんと設計して造られたの。誰が、どうやって設計したと思う？
 -> quiz(3) ->
@@ -336,18 +337,20 @@ INCLUDE modules.ink
     窓の上から、しわがれた声が答えた。
     # speaker: gt_jaipur_bride_grandmother
     # term: gt_term_gangaur
+    # leave: gt_jaipur_bride_grandmother
     ガンガウルよ。女神さまの、春のお祭り
 }
 # speaker: narrator
 窓の老婦人は、しばらく黙っていた。それから、窓越しに、ゆっくり話し始めた。プージャーが一言ずつ、こちらへ伝える。
 # speaker: gt_jaipur_bride_grandmother
+# leave: gt_jaipur_bride_grandmother
 十六でこの家に来て、六十年。ガンガウルの行列は、毎年この窓から見てきた。一度も、下を歩いたことはない
 # speaker: narrator
 足のせいだけでは、ないのだろう。十六の年から、一度も、なのだから。
 # speaker: narrator
 カムラが、窓を見上げた。デリーの暗い城で、亡き夫に話しかけていたときと同じ目だった。
 # speaker: narrator
-六十年前、あの城の暗がりで、夫に「好きだ」と言われた人だ。その返事を、デリーを発つ前の晩に、やっと口にした。
+六十年前の「好きだ」に、デリーを発つ前の晩、やっと返事をした人だ。
 # speaker: enemy
 六十年見てたなら、もう十分でしょう。……わたしも、六十年黙ってたのよ
 # speaker: narrator
@@ -356,6 +359,7 @@ INCLUDE modules.ink
 # speaker: narrator
 窓の奥の声が、最後の問題を告げた。
 # speaker: gt_jaipur_bride_grandmother
+# leave: gt_jaipur_bride_grandmother
 この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
 # background: gt_bg_jaipur_hawa_mahal_night
@@ -368,15 +372,16 @@ INCLUDE modules.ink
     窓の奥の声が、自分で答えた。
     # speaker: gt_jaipur_bride_grandmother
     # em: 見られずに
+    # leave: gt_jaipur_bride_grandmother
     見られずに、見るためよ。通りも、お祭りも、市場も
 }
 # speaker: narrator
 格子の向こうで、老婦人が小さく笑った気配がした。
-# speaker: gt_jaipur_bride_grandmother
-見るためには、見られないことが必要だった。……でも、今夜は、見られてもいいわね
 # speaker: narrator
 # se: wooden_window
 窓が閉まった。しばらくして、屋敷の門の奥から、杖をついた老婦人が姿を現した。花嫁側から、驚きの声が上がる。
+# speaker: gt_jaipur_bride_grandmother
+見るためには、見られないことが必要だった。……でも、今夜は、見られてもいいわね
 {
 - battle_score == 5:
     # speaker: narrator

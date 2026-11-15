@@ -13,7 +13,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_guru_ka_taal
 # speaker: narrator
 デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。
-雨水をためるために、1610年に造られた。塔はもとは十二本あり、今は八本が残る。そのそばに、シク教の礼拝所が建っている。
+雨水をためる池として、四百年あまり前に造られた。そのそばに、シク教の礼拝所が建っている。
 # speaker: narrator
 言い伝えでは、九代目のグル、テーグ・バハードゥルが、ここで皇帝アウラングゼーブの前に自ら進み出て、捕らえられたという。
 # speaker: heroine
@@ -85,7 +85,7 @@ INCLUDE modules.ink
         # speaker: narrator
         湯気の立つ素焼きのカップを置いたが、グルミートは手をつけなかった。父親の方から、鼻を鳴らす音がした。
         # speaker: heroine
-        # reaction: heroine,exasperated,sweat
+        # emotion: exasperated
         # voice: gt_agra_date_guru_ka_taal_006
         ……あ、冷めないうちに、どうぞ
     - else:
@@ -149,6 +149,7 @@ INCLUDE modules.ink
 ハルバンスが、鼻を鳴らした。それから、敷物の隙間を、自分から詰めた。
 { cond("flag gt_agra_sat_between"):
     # speaker: narrator
+    # emotion: happy
     隙間に座っていたこちらが、二人に挟まれて身動きできなくなった。彼女が、それを見て吹き出した。
 }
 # speaker: gt_harbans
@@ -158,9 +159,17 @@ INCLUDE modules.ink
 { cond("date gt_delhi_date_bangla_sahib"):
     # speaker: gt_harbans
     世界地図の娘。カナダの地図のローティーを、いつか焼いてやる。……たぶん、また違う国になるがな
+    // 次の行は else の行と同じ文。下ろす人だけが違う（最後に話したのが父か息子か）。文を直すときは両方。
+    # speaker: narrator
+    # leave: gt_harbans
+    食堂を出て、古い貯水池のふちに立つ。
+- else:
+    # speaker: narrator
+    # leave: gt_gurmeet
+    食堂を出て、古い貯水池のふちに立つ。
 }
 # speaker: narrator
-食堂を出て、古い貯水池のふちに立つ。四百年分の雨を受けとめてきた、深い石の底。道路の向こうでは、相変わらずトラックが走っている。
+四百年分の雨を受けとめてきた、深い石の底。道路の向こうでは、相変わらずトラックが走っている。
 # speaker: heroine
 # voice: gt_agra_date_guru_ka_taal_010
 わたし、どっちの味方もしなかったね。……できなかった、の方が近いかな
@@ -186,7 +195,7 @@ INCLUDE modules.ink
         そう？　……わたしは、お父さんの方だったかも。運ばない自分を見せたくないの、分かるから
     - else:
         # speaker: heroine
-        # reaction: heroine,surprised,question
+        # emotion: surprised
         # voice: gt_agra_date_guru_ka_taal_014
         そうなの？　実は、わたしも。電話が鳴るのが怖いって、あれ、ずるいくらい本当だった
     }

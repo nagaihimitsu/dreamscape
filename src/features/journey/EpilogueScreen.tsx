@@ -77,9 +77,11 @@ export function EpilogueScreen({
   const person = scenePerson(storyState.people, epilogueScene(active)?.people);
   const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
   // She stands from the start; opposite her, the scene's person from their first line or reaction, and a person with a
-  // figure who speaks in their own name from that line, each until the other comes in (scene-stage.ts).
+  // figure who speaks in their own name from that line, each until the other comes in (scene-stage.ts). A line's
+  // `# leave:` takes her or them off until they come again (her next line or reaction, their next line or reaction).
+  // Only who stands there is drawn.
   const stageScene = sceneStageOf(active.kind ?? "epilogue", person?.characterId);
-  const { stage, focus } = useSceneStage(stageLine(frame, storyState.people, { enemy: !!personReaction }), stageScene);
+  const { stage, focus } = useSceneStage(stageLine(frame, storyState.people, { heroine: !!reaction, enemy: !!personReaction }), stageScene);
   const opposite = stage.opposite?.figure;
   const personLooks = oppositeIsEnemy(stage, stageScene);
   const finaleOpponent = battles.find((battle) => battle.id === episode?.battleId);
@@ -135,10 +137,11 @@ export function EpilogueScreen({
         {/* Not under an arrival's title card, which holds the first line. */}
         <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} quiet={!!frame.quiet} />
         <ItemOutLayer card={showLogo ? undefined : itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
-        {/* With the scene's person on stage the two stand side by side (the encounter's slots); her
-            portrait keeps its place in the tree, so it is not drawn again when they come in. */}
-        <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={opposite ? true : undefined}>
-          <div className={opposite ? "encounter-character-slot encounter-character-heroine" : undefined}>
+        {/* With the scene's person on stage the two stand side by side (the encounter's slots), the person alone in the
+            middle while she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they
+            come in. */}
+        <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={stage.heroine && opposite ? true : undefined}>
+          {stage.heroine && <div className={opposite ? "encounter-character-slot encounter-character-heroine" : undefined}>
             <CharacterPortrait
               characterId="heroine"
               sceneId={active.episodeId}
@@ -149,7 +152,7 @@ export function EpilogueScreen({
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
-          </div>
+          </div>}
           {opposite && <div className="encounter-character-slot encounter-character-enemy">
             <CharacterPortrait
               key={opposite}

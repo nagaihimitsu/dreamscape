@@ -12,10 +12,13 @@ INCLUDE modules.ink
 # hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_lotus_temple
 # speaker: narrator
-芝生の向こうに、白い花びらを重ねた建物が浮かんでいた。大理石の花びらは二十七枚。三枚ずつ組になって、九つの面をつくっている。
+芝生の向こうに、白い大理石の花びらを重ねた建物が浮かんでいた。
 # speaker: narrator
 ロータス寺院。蓮の花をかたどった、バハイ信仰の礼拝堂だ。
-入口の手前で、ボランティアの若者が、並んだ人たちに静かに説明していた。どの宗教の人でも入れる。決まった儀式も、説教も、楽器の演奏もない。いちばん大事な決まりは一つ。話さないこと。
+# speaker: narrator
+入口の手前で、ボランティアの若者が静かに説明していた。どの宗教の人でも入れる。決まった儀式も、説教も、楽器の演奏もない。
+# speaker: narrator
+最後に彼は、唇の前に人さし指を一本立てた。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_lotus_temple_001
@@ -38,10 +41,12 @@ INCLUDE modules.ink
     # set: gt_delhi_lotus_made_her_laugh
     { romance_result == "negative":
         # speaker: narrator
-        三文字目で、彼女の肩が大きく揺れた。後ろの列から、ボランティアの視線が刺さる。彼女は真っ赤になってうつむき、それきり、こちらを見なかった。
+        # emotion: shy_deep
+        三文字目で、彼女の肩が大きく揺れた。彼女は真っ赤になってうつむき、それきり、こちらを見なかった。
     - else:
         # speaker: narrator
         三文字目を書き終える前に、彼女の肩が震えだした。声を出さずに笑うのは、声を出して笑うより、ずっと難しい。
+        # emotion: exasperated
         彼女は両手で口を押さえ、涙目でこちらをにらんだ。怒るから、と言ったでしょ、という目だった。
     }
 * [背中に「しずかに」と書き返す # option: hush_back]
@@ -49,9 +54,11 @@ INCLUDE modules.ink
     # memory: gt_delhi_date_lotus_temple_memory
     { romance_result == "negative":
         # speaker: narrator
+        # emotion: worried
         書き終えると、彼女の指先が、すっと離れた。叱られた子どもみたいに、膝の上で手を重ねる。少しだけ、寂しそうな横顔だった。
     - else:
         # speaker: narrator
+        # emotion: exasperated
         書き終えると、彼女は少しだけ口をとがらせた。それから、こちらの背中に、ゆっくり三文字。
         ま、じ、め。
     }
@@ -81,7 +88,7 @@ INCLUDE modules.ink
 # photo: gt_album_d61 # photo_caption: 背中の字あて
 さっきより、ずっとゆっくりだった。一画ずつ、確かめるように。
 ま。……次は、た、だろうか。右上に点が二つあったような、なかったような。い。た。い。
-# stand: apart
+# leave: heroine
 書き終えると、彼女はすぐに立ち上がり、こちらを振り返らずに出口へ歩きだした。
 靴を受け取り、建物を囲む池のそばまで来て、ようやく彼女は大きく息を吐いた。
 # speaker: heroine

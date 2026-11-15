@@ -45,7 +45,7 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_agra_fatehpur_sikri
 # speaker: narrator
-巨大な門へ続く急な石段の途中で、{heroine_name}は息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
+巨大な門へ続く急な石段を上りきって、{heroine_name}はまだ息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
 # speaker: narrator
 同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
 # speaker: gt_agra_fatehpur_man
@@ -143,7 +143,8 @@ INCLUDE modules.ink
 # speaker: heroine
 この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです。……ムケーシュさんの家も、誰かが渡ってくる橋みたいなものじゃないかなって
 # speaker: narrator
-言ってから、{heroine_name}は赤くなった。決めないと言ったのに、口を出してしまった。
+# emotion: shy
+言ってから、{heroine_name}は赤くなった。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 い、今のは感想です。決めたわけじゃないです
@@ -168,6 +169,7 @@ INCLUDE modules.ink
 # speaker: enemy
 あなた、最後まで決めてくれませんでしたね。……ありがとう。人に決めてもらった家には、住めないところでした
 # speaker: narrator
+# leave: enemy
 彼は石段を、一段ずつ下りていった。現場の方角へ。四時まで、まだ少し時間がある。
 # speaker: heroine
 # emotion: smile

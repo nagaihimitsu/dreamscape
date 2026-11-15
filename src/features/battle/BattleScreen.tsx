@@ -349,14 +349,17 @@ export function BattleScreen({
     : "neutral");
   // The opponent stands from the start; a person with a figure who speaks in their own name takes their place from that
   // line until the opponent speaks or reacts again, or the talk gives way to a question, where the opponent asks
-  // (scene-stage.ts). She stands in the talk. A person line whose figure is the opponent's own is the opponent speaking
-  // under the name the heroine knows them by before they give theirs (an alias of progression/story.json people,
+  // (scene-stage.ts). She stands in the talk. A line's `# leave:` takes her or the one opposite off until they come
+  // again (her next line or reaction; the opponent's next line or reaction, or their question); the place opposite stays
+  // empty meanwhile. Only who stands there is drawn. A person line whose figure is the opponent's own is the opponent
+  // speaking under the name the heroine knows them by before they give theirs (an alias of progression/story.json people,
   // 2026-11-11): their figure, expression and reaction stay the opponent's.
   const opponentFigure = characterForBattle(battle.id);
   const stageScene = sceneStageOf("battle", opponentFigure);
-  const line = isDialogue && frame ? stageLine(frame, storyState.people, { enemy: !!enemyReaction }) : { enemyCue: true };
+  const line = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction }) : { enemyCue: true };
   const { stage, focus } = useSceneStage(line, stageScene);
-  const personId = oppositeIsEnemy(stage, stageScene) ? undefined : stage.opposite?.figure;
+  const opponentStands = oppositeIsEnemy(stage, stageScene);
+  const personId = opponentStands ? undefined : stage.opposite?.figure;
   const opponentSpeaks = frame?.speaker === "enemy" || line.personFigure === opponentFigure;
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
@@ -489,7 +492,7 @@ export function BattleScreen({
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
         <div className="battle-characters">
-          {isDialogue && (
+          {isDialogue && stage.heroine && (
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
                 characterId="heroine"
@@ -504,7 +507,7 @@ export function BattleScreen({
             </div>
           )}
           <div className="battle-character-slot battle-enemy">
-            {personId ? <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} /> :
+            {personId ? <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} /> : opponentStands &&
             <CharacterPortrait
               characterId={opponentFigure}
               emotion={enemyEmotion}
@@ -647,7 +650,7 @@ export function BattleScreen({
             </LineStage>
             {choosing && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
               heroine: { emotion: heroineEmotion, sceneId: battle.id, cityId: heroineCityId },
-              person: <CharacterFigure characterId={personId ?? opponentFigure} />,
+              ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} /> } : {}),
             }}>
               <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />
             </ChoicePoint>}

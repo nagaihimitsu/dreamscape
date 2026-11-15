@@ -90,9 +90,13 @@ INCLUDE modules.ink
 # speaker: narrator
 チーム分けで、ソニアが真っ先に指さしたのは、彼女だった。テープのボールが、その手に放られる。
 # speaker: narrator
+# emotion: happy
 彼女の最初の一球は、地面を三回はねて、打者の足もとで止まった。子どもたちが笑い、彼女も笑った。
+# speaker: narrator
+二球目は、煉瓦の手前で失速した。
+# speaker: narrator
 # se: bricks_fall
-二球目は、煉瓦の手前で失速した。三球目で、煉瓦が一つ落ちた。アウト。打った少年が信じられないという顔をして、ソニアが一番大きな声で叫んだ。
+三球目で、煉瓦が一つ落ちた。アウト。打った少年が信じられないという顔をして、ソニアが一番大きな声で叫んだ。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 当たった！？　今の、わたし！？
@@ -122,6 +126,7 @@ INCLUDE modules.ink
 * [最後の一球：振らなかった # option: no_swing]
     # profile: provocative
     # speaker: narrator
+    # emotion: serious
     板きれは、肩の上で止まったままだった。ボールは脇を抜けて、後ろの煉瓦を落とした。子どもたちが歓声を上げる。彼女だけが、笑っていなかった。
     { romance_result == "negative":
         # speaker: heroine
@@ -153,6 +158,7 @@ INCLUDE modules.ink
 本物のバットが欲しいの。ちゃんとした革のボールも。州のチームの選考は、本物で打たないと笑われる
 -> gt_agra_mehtab_bagh_photo ->
 # speaker: narrator
+# leave: gt_sonia
 子どもたちが散っていくと、空き地には土ぼこりと、二人だけが残った。彼女は服の土を払いながら、塀に背中をあずけた。
 # speaker: heroine
 チーム分けで、最初に選ばれたの、生まれて初めてかも。ソニアさん、わたしが投げたいって顔してたの、分かってたのかな
@@ -184,6 +190,7 @@ INCLUDE modules.ink
     # reaction: heroine,exasperated,sigh
     振らなくても、当たっちゃうんだ。……ずるい
     # speaker: narrator
+    # emotion: smile
     彼女はボールを拾って、それから、ようやく笑った。
     # speaker: heroine
     # emotion: smile

@@ -26,11 +26,11 @@ INCLUDE modules.ink
 宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた
 -> gt_jaipur_jaigarh_fort_map ->
 # speaker: narrator
-最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。1720年にこの砦で造られ、当時、車輪のついた大砲としては世界最大だったという。
+最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。この砦で造られ、当時は、車輪のついた大砲として世界最大だったという。
 # speaker: gt_raju
 宝を守る大砲。一回撃ったら、玉が三十五キロ先まで飛んだんだ。落ちたところが、池になった
 # speaker: narrator
-試し撃ちは一度きりで、火薬は百キロ使ったと伝えられている。三十五キロ飛んだという話も残っているが、どこまでが本当かは分からない。
+試し撃ちは一度きりだった、と伝えられている。三十五キロ飛んだという話も残っているが、どこまでが本当かは分からない。
 * [ラージューの話を、最後まで聞く # option: hear_him_out]
     # profile: attentive
     # memory: gt_jaipur_date_jaigarh_fort_memory
@@ -58,7 +58,7 @@ INCLUDE modules.ink
         # speaker: gt_raju
         池になったのは、ちょっと盛った。でも、大砲は本物
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         正直な案内人。盛ったところも、ちゃんと自分で言うんだね
     }
 * [「落ちたところの池、見に行こう」と話に乗る # option: play_along]
@@ -79,7 +79,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
-二つ目の印は、石の蓋のついた、地下の貯水槽だった。砦には大きな貯水槽が三つあり、いちばん大きなものは、六百万ガロンもの水をためられるという。
+二つ目の印は、石の蓋のついた、地下の大きな貯水槽だった。
 # speaker: gt_raju
 宝は、この水の底。……って、みんな言ってた。だから、昔、国が本当に掘ったんだ
 # speaker: narrator
@@ -125,6 +125,7 @@ INCLUDE modules.ink
         # speaker: gt_raju
         仕事中は飲まない。……でも、もらう
         # speaker: narrator
+        # leave: gt_raju
         ラージューは三秒で飲み干し、次の客を探しに門の方へ走っていった。
     - else:
         # speaker: gt_raju
@@ -141,7 +142,7 @@ INCLUDE modules.ink
         # speaker: gt_jaipur_jaigarh_old_man
         話を聞きたがる人は、宝を見つける人だ。……わしの昔の話は、いつも、そういう人にしかしない
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         宝を見つける人、だって。じゃあ、今日のわたしたち、ちょっとは見込みあるね
     }
 -

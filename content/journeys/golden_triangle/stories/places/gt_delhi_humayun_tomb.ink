@@ -18,7 +18,7 @@ INCLUDE modules.ink
 クラクションの洪水を抜けてきた耳に、鳥の声がやけに大きく聞こえる。オウムの緑が、木から木へ飛んだ。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 3
-{heroine_name}は段ボールの切れ端を開き、三行目を読み上げた。フマユーン廟、東の門から三本目の木陰。
+{heroine_name}は段ボールの切れ端を開き、三行目を読み上げた。
 # speaker: heroine
 # voice: gt_delhi_humayun_tomb_guide_002
 三本目……一、二、三。あの木かな。ベンチがあって、確かに涼しそう
@@ -29,6 +29,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_humayun_tomb_guide_003
 ねえ、気づいた？　家族連れじゃない二人組、すごく多い。しかも、みんな少しだけ離れて座ってる
 # speaker: narrator
+# emotion: smile
 彼女はくすっと笑い、それから少し考える顔になった。
 # speaker: heroine
 # voice: gt_delhi_humayun_tomb_guide_004
@@ -46,6 +47,7 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_delhi_humayun_tomb
 # speaker: narrator
+# leave: enemy
 水路沿いの木陰で、{heroine_name}が廟のドームを見上げていたとき、誰かに腕をつかまれた。
 # speaker: narrator
 二十歳くらいの女の子だった。隣に、同じくらいの年の青年。二人とも、顔から血の気が引いている。
@@ -165,8 +167,11 @@ INCLUDE modules.ink
 # speaker: gt_delhi_humayun_woman
 スレーシュ！
 # speaker: narrator
+淡い色のサリーの女性が、手を振っている。
+# speaker: narrator
 # se: paper_drop
-淡い色のサリーの女性が、手を振っている。スレーシュの手から新聞が落ち、胸ポケットの薔薇が、全員の前にあらわになった。
+# reaction: enemy,exclamation
+スレーシュの手から新聞が落ち、胸ポケットの薔薇が、全員の前にあらわになった。
 # speaker: narrator
 メヘルの目が、ゆっくり細くなる。
 # speaker: gt_mehr
@@ -208,6 +213,7 @@ INCLUDE modules.ink
     君の申告は穴だらけだ。だが今日、わしは誰にも会っていないから、何も見なかった
 }
 # speaker: narrator
+# leave: enemy
 叔父は東の門へ、若い二人は西の門へ。互いに振り返らないまま、別々の方向へ歩いていった。
 # speaker: heroine
 # reaction: heroine,exasperated,sigh

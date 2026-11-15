@@ -37,17 +37,17 @@ INCLUDE modules.ink
 # on_done: item gt_jaipur_sushma_lime_pickle
 # background: gt_bg_jaipur_city_palace
 # speaker: narrator
-宮殿の中庭の一角に、人の背丈ほどもある銀の壺が二つ、並んで光っていた。{heroine_name}がその大きさに口を開けていると、すぐ隣で言い争う声が始まった。
+人の背丈ほどもある銀の壺の陰で、言い合いは近づくほど大きくなった。{heroine_name}がそばまで来たところで、女性の声が跳ね上がった。
 # speaker: gt_jaipur_city_palace_woman
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
-サリー姿の女性と、二十代半ばの青年。青年の手には、荷物の重さを測る小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
+サリー姿の女性と、二十代半ばの青年。青年が女性の手提げを荷物用の秤に吊るすと、中の瓶が鳴り、針が大きく振れた。
 # speaker: gt_jaipur_city_palace_young_man
 # term: gt_term_achar
 母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって
 # speaker: gt_vishal
 # cutin: name
-すみません、騒がしくて。ヴィシャールです。来週、仕事でドイツに発つんです。母のスシュマは、ぼくのために漬けたライムとマンゴーの漬物を、全部持たせるつもりで
+すみません、騒がしくて。ヴィシャールです。来週、仕事でドイツに発つんです
 # speaker: gt_vishal
 最後の週末だから、家族で宮殿を見に来たんですけど
 # speaker: enemy
@@ -81,6 +81,7 @@ INCLUDE modules.ink
 # speaker: gt_vishal
 王様には、荷物の重量制限がなかったんだよ、母さん
 # speaker: narrator
+# emotion: happy
 ヴィシャールの切り返しに、{heroine_name}は思わず吹き出した。慌てて口を押さえたが、もう遅い。
 # speaker: enemy
 # reaction: enemy,anger
@@ -108,13 +109,13 @@ INCLUDE modules.ink
 # speaker: gt_vishal
 ……持っていったら、向こうで毎日食べる。そしたら毎日、帰りたくなる。だから、持っていきたくないんだ
 # speaker: narrator
-本当の理由は、同僚の目ではなかった。{heroine_name}は少し考えてから、口を開いた。
+{heroine_name}は少し考えてから、口を開いた。
 # speaker: heroine
 わたし、旅の途中で、家のお味噌汁が恋しくなることがあります。我慢したら、もっと恋しくなりました
 # speaker: heroine
 恋しくなるのは、帰る場所があるってことだと思います。……恥ずかしいことじゃ、ないです
 # speaker: narrator
-スシュマが、こちらを見た。得意げな顔ではなかった。息子が、遠くへ行ってしまうことを、今さら思い知った顔だった。
+スシュマが、こちらを見た。得意げな顔ではなかった。それから、隣に立つ息子を、黙って見上げた。
 # speaker: enemy
 ……ねえ、上を見て。この宮殿の奥には、今も住んでる人がいるのよ。出ていかずに。知ってた？
 -> quiz(3) ->
@@ -131,7 +132,7 @@ INCLUDE modules.ink
 # speaker: narrator
 冗談めかした声が、途中でかすれた。ヴィシャールが母親の肩に手を置く。
 # speaker: narrator
-審判の答えを、二人が待っていた。{heroine_name}は、どちらの側にも立たないことにした。
+審判の答えを、二人が待っていた。{heroine_name}は、ヴィシャールが提げた秤を指さした。
 # speaker: heroine
 # emotion: serious
 五キロは無理でも、二キロなら入りますよね。……それで、漬物がなくなったら、電話してください。お母さんに、次の分を頼むって

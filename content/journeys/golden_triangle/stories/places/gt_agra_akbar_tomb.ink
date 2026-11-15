@@ -18,7 +18,7 @@ INCLUDE modules.ink
 # speaker: narrator
 シカンドラのアクバル廟は、門だけで一つの宮殿のようだった。赤い砂岩の大門をくぐると、広い芝生の向こうに、墓廟が低く横たわっている。
 # term: gt_term_blackbuck
-芝生の上で、背中の黒い獣が数頭、草を食んでいた。ねじれた長い角。ブラックバックだ。この廟の庭では、その群れが見られる。
+芝生の上で、背中の黒い獣が数頭、草を食んでいた。ブラックバックだ。この廟の庭では、その群れが見られる。
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
 # voice: gt_agra_date_akbar_tomb_001
@@ -47,7 +47,7 @@ INCLUDE modules.ink
         数えられないよ、遠すぎて……。あ、また頭下げちゃった
     - else:
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         # voice: gt_agra_date_akbar_tomb_005
         えっと、一、二、三、四！　ううん、五かも。ずるい、動かないで
     }
@@ -65,7 +65,7 @@ INCLUDE modules.ink
         # speaker: narrator
         そっと近づくと、一頭だけが逃げずに残った。角の筋まで見える距離だった。
         # speaker: heroine
-        # reaction: heroine,surprised,sparkle
+        # emotion: surprised
         # voice: gt_agra_date_akbar_tomb_007
         近い！　目、まつ毛が長い
     }
@@ -78,7 +78,17 @@ INCLUDE modules.ink
     -> gt_agra_akbar_tomb_monkey_glasses ->
 }
 # speaker: narrator
-彼女がスマートフォンで開いた英語の案内に、この廟に眠る皇帝のことが書いてあった。アクバルは、生涯、文字を読めなかったと伝えられている。それでも本が大好きで、毎日、人に読み上げさせていた。宮廷には、たくさんの写本が集められていたという。
+# leave: gt_agra_akbar_guard
+番人が門の方へ戻っていくと、彼女はスマートフォンで廟の英語の案内を開いた。二人で、画面をのぞきこむ。
+# speaker: narrator
+# letter: card
+アクバルは、生涯、文字を読めなかったと伝えられている。
+# speaker: narrator
+# letter: card
+それでも本が大好きで、毎日、人に読み上げさせていた。
+# speaker: narrator
+# letter: card
+宮廷には、たくさんの写本が集められていた。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_agra_date_akbar_tomb_008
@@ -128,7 +138,7 @@ INCLUDE modules.ink
         今、嘘ついたでしょ。……読んでもらうのは信じることだって、言ったばかりなのに
     - else:
         # speaker: heroine
-        # reaction: heroine,teasing,question
+        # emotion: teasing
         # voice: gt_agra_date_akbar_tomb_015
         待って。『皇帝は猿と取引した』って、今、書いてあった？
         # speaker: heroine
@@ -147,7 +157,8 @@ INCLUDE modules.ink
 === gt_agra_akbar_tomb_monkey_attar ===
 # speaker: narrator
 # item_out: gt_delhi_rain_attar
-暑さに顔をしかめながら、彼女が鞄から小さな布袋を取り出した。デリーの路地で買った、雨の匂いの小瓶だ。
+# emotion: exasperated
+暑さに顔をしかめながら、彼女が鞄から小さな布袋を取り出した。
 # speaker: heroine
 # voice: gt_agra_akbar_tomb_monkey_attar_001
 こんなに暑いと、雨の匂いが恋しくなるね。ちょっとだけ、袋の上から――
@@ -177,7 +188,7 @@ INCLUDE modules.ink
         # speaker: narrator
         壁の上では、猿が器用にストローの穴を探し当てていた。
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         取引成立、だね。……ありがとうございました？
         # speaker: narrator
         彼女は壁の上の猿に、律儀に頭を下げた。猿はジュースを飲みながら、それを見ていなかった。
@@ -204,9 +215,10 @@ INCLUDE modules.ink
     ……鹿が、雨だと思ってる
     # speaker: narrator
     # photo: gt_album_a39 # photo_caption: 雨の匂いになったアクバル廟
+    # emotion: happy
     彼女は割れた瓶を見下ろして、しばらく何も言わなかった。それから、こらえきれずに笑い出した。
     # speaker: heroine
-    # reaction: heroine,happy,music
+    # emotion: happy
     # voice: gt_agra_akbar_tomb_monkey_attar_005
     日本で雨が降ったら、あの路地を思い出すはずだったのに。インドの芝生に、先に降っちゃった
     # speaker: heroine
@@ -233,7 +245,7 @@ INCLUDE modules.ink
     # reaction: heroine,surprised_big,sparkle
     わたしの雨、無事だった！
     # speaker: heroine
-    # reaction: heroine,teasing,music
+    # emotion: teasing
     ……今の、ちょっと格好よかったよ。ちょっとだけね
     # speaker: narrator
     彼女は小瓶を受け取ると、今度は鞄のいちばん奥にしまった。
@@ -274,7 +286,7 @@ INCLUDE modules.ink
     パックを高く掲げてみせると、猿はサングラスのつるをかじりながら、ジュースと何度も見比べた。やがて、ぱっと手を離した。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
     # speaker: heroine
-    # reaction: heroine,teasing,music
+    # emotion: teasing
     # voice: gt_agra_akbar_tomb_monkey_glasses_002
     歯形がついてる。でも、かけられる。記念になっちゃった
 * [壁の下まで追いかける # option: glasses_chase]
@@ -286,6 +298,7 @@ INCLUDE modules.ink
     # voice: gt_agra_akbar_tomb_monkey_glasses_003
     似合ってる。ふふっ、どうしよう、すごく似合ってる
     # speaker: narrator
+    # emotion: teasing_big
     彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放り上げた。思ったより暗かったらしい。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
 * [「待とう。猿にも、考える時間がいる」 # option: glasses_wait]

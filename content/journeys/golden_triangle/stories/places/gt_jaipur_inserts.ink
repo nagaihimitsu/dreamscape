@@ -157,7 +157,7 @@ INCLUDE modules.ink
 # pause: 900
 帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
-# reaction: heroine,shy_deep,blush
+# emotion: shy_deep
 教えないって、言ったのに。……もう。聞かなかったことに、してくれる？
 * [「聞かなかった」 # option: didnt_hear]
     # rel: affection +1
@@ -208,7 +208,7 @@ INCLUDE modules.ink
     # emotion: smile
     アマンさんに、毎日言葉にしてくださいって、書く。カムラさんの言葉の、受け売りだけど
     # speaker: narrator
-    デリーの最後の夜に、アマンから聞いた言葉だ。祖母に、毎日ちゃんと言葉にしなさいと言われた、と。
+    デリーの最後の夜にアマンから聞いた、カムラの言いつけだ。
 -
 # speaker: narrator
 # item_show: gt_jaipur_wedding_envelope
@@ -275,6 +275,7 @@ INCLUDE modules.ink
 # speaker: enemy
 自分で言いなさい。花婿は、逃げやしないよ
 # speaker: narrator
+# leave: enemy
 カムラは封筒をサリーの胸元にしまい、踊りの輪の方へ戻っていった。足どりが、デリーで見たときより、ずっと軽かった。
 -> END
 
@@ -303,6 +304,8 @@ INCLUDE modules.ink
 # reaction: heroine,exasperated,sweat
 や、やりません！　あれは、鳩がいないと出ないの
 # speaker: narrator
+# leave: gt_pooja
+# emotion: shy
 プージャーはけらけら笑い、いとこたちを呼びに戻っていった。彼女は両手で顔を覆い、それから、指のすきまからこちらを見た。
 # speaker: heroine
 # emotion: smile

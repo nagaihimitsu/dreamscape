@@ -114,9 +114,11 @@ export function TourismScreen({
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
-  // She stands through the guide; a person with a figure who speaks in their own name stands opposite her from that line
-  // (scene-stage.ts). A guide read again starts with her alone.
-  const { stage, focus } = useSceneStage(active.phase === "guide" ? stageLine(frame, storyState.people) : {}, GUIDE_STAGE, active.phase);
+  // She stands from the guide's start; a person with a figure who speaks in their own name stands opposite her from that line
+  // (scene-stage.ts). A guide read again starts with her alone. A line's `# leave:` takes her or them off until they
+  // come again (her next line or reaction, their next line). Only who stands there is drawn.
+  const { stage, focus } = useSceneStage(active.phase === "guide" ? stageLine(frame, storyState.people, { heroine: !!reaction }) : {},
+    GUIDE_STAGE, active.phase);
   const personId = stage.opposite?.figure;
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   const speaker = plate.name;
@@ -217,10 +219,10 @@ export function TourismScreen({
           <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
           <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
           <span className="sr-only">{asset.altJa}</span>
-          {/* With a person on stage the two stand side by side (the encounter's slots); her portrait keeps its place in
-              the tree, so it is not drawn again when they come in. */}
-          <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={personId ? true : undefined}>
-            <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
+          {/* With a person on stage the two stand side by side (the encounter's slots), the person alone in the middle while
+              she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. */}
+          <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={stage.heroine && personId ? true : undefined}>
+            {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
               <CharacterPortrait
                 characterId="heroine"
                 sceneId={landmark.id}
@@ -231,7 +233,7 @@ export function TourismScreen({
               >
                 {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
               </CharacterPortrait>
-            </div>
+            </div>}
             {personId && <div className="encounter-character-slot encounter-character-enemy">
               <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
             </div>}

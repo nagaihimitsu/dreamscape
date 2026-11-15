@@ -13,14 +13,16 @@ INCLUDE modules.ink
 # hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_lodhi_garden
 # speaker: narrator
-ローディー・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。墓の方が先にあって、公園は1930年代、そのまわりに後から作られたのだという。
+ローディー・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_001
 お墓の間を、みんなジョギングしてる。日本だと、ちょっと考えられないね
 # speaker: narrator
+もっとも、先にいたのは墓の方だ。公園は1930年代に、墓のまわりに後から作られた。
+# speaker: narrator
 そのとき、芝生の真ん中で、二十人ほどの輪が、いっせいに笑い出した。手を叩き、空を仰ぎ、腹を抱えて。冗談を言った人は、どこにもいない。
 # speaker: heroine
-# reaction: heroine,surprised_big,question
+# emotion: surprised_big
 # voice: gt_delhi_date_lodhi_garden_002
 え、なに？　何がおかしかったの？　誰も、何も言ってないよね？
 # speaker: narrator
@@ -29,7 +31,9 @@ INCLUDE modules.ink
 乗客の皆さま、ご注意ください。まもなく、新しい笑いが到着いたします
 # speaker: gt_dubey
 # cutin: name
-ドゥベイと申します。鉄道の駅で、三十年、列車の案内放送をしておりました。ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていくんです
+ドゥベイと申します。鉄道の駅で、三十年、列車の案内放送をしておりました
+# speaker: gt_dubey
+ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていくんです
 # speaker: narrator
 会の人たちは、そう信じている。
 # speaker: gt_dubey
@@ -50,6 +54,7 @@ INCLUDE modules.ink
         それでも、隣の老人がつられて笑い出し、輪の笑い声が一段大きくなった。彼女は、少し遅れて、小さく笑った。
     - else:
         # speaker: narrator
+        # emotion: happy
         架空の相手は、よほど面白いことを言ったらしい。こちらが膝を叩いて笑い転げると、彼女が先に吹き出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -72,6 +77,7 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_lodhi_garden_007
         あっ、見てるだけ？　ずるい。わたしだけ変な顔させる気？
         # speaker: narrator
+        # emotion: happy
         腕をつかまれ、輪の中へ引っぱり込まれた。隣の老人が、こちらの肩を叩いて、頼まれてもいないのに笑い出す。結局、二人とも笑っていた。
     }
 * [「一緒に入ろう」と手を差し出す # option: join_hand]
@@ -83,13 +89,15 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_lodhi_garden_008
         あ、手は……ううん、大丈夫。並んでやろう
         # speaker: narrator
+        # emotion: smile
         差し出した手は、見えない電話を持つ手になった。並んで笑ううち、彼女の声も、だんだん本物になっていった。
     - else:
         # speaker: heroine
-        # reaction: heroine,shy,blush
+        # emotion: shy
         # voice: gt_delhi_date_lodhi_garden_009
         ……うん。一人だと恥ずかしいけど、二人なら、恥ずかしさも半分だね
         # speaker: narrator
+        # emotion: happy
         手をつないだまま、二人で見えない電話を耳に当てた。相手のいない電話に笑ううち、彼女の笑い声が、だんだん本物になっていった。
     }
 -
@@ -101,6 +109,7 @@ INCLUDE modules.ink
 
 = suresh_again
 # speaker: narrator
+# leave: gt_dubey
 輪の向こう側で、誰よりも大きな声で笑っている老人がいた。胸ポケットに、赤い薔薇。隣には、淡い色のサリーの女性。
 目が合った。老人の笑いが、途中で止まった。フマユーン廟で、姪とその同級生を問い詰めていた、あの元調査官だった。
 # speaker: heroine
@@ -108,6 +117,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_010
 スレーシュさん！
 # speaker: gt_dubey
+# leave: gt_dubey
 はい、次はあいさつの笑い。全員と握手して、言葉のかわりに笑いましょう
 # speaker: narrator
 逃げ場はなかった。スレーシュは彼女の手を握り、律儀に笑いながら、早口でささやいた。
@@ -130,6 +140,7 @@ INCLUDE modules.ink
 # speaker: gt_suresh
 家族に知れたら、夕飯の前に親戚中に知れる。この年で何をしている、と笑われる
 # speaker: narrator
+# emotion: surprised
 彼女が、ほんの一瞬、目を見開いた。廟の庭で、姪のメヘルも、ほとんど同じことを言っていた。
 # speaker: heroine
 # emotion: serious
@@ -153,13 +164,17 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_lodhi_garden_014
         ……それで、いいのかな
         # speaker: narrator
+        # leave: gt_suresh
         彼女の小さな声は、東の門へ歩いていく二人には届かなかった。
     - else:
         # speaker: gt_suresh
         よろしい。申告に誤りなし
         # speaker: narrator
+        # leave: gt_suresh
         スレーシュは胸の薔薇を指で直し、ミーナと並んで東の門へ歩いていった。笑う会の後なのに、背中が少し誇らしげだった。
     }
+    # speaker: narrator
+    人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 * [「笑う会の写真、メヘルさんに送ってみたら」 # option: suggest_tell]
     # profile: bold
     # set: gt_delhi_suresh_encouraged
@@ -179,7 +194,10 @@ INCLUDE modules.ink
     # speaker: gt_suresh
     結果は、笑う会の連絡で知らせる
     # speaker: narrator
+    # leave: gt_suresh
     それだけ言って、帰っていった。
+    # speaker: narrator
+    人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 * [「ミーナさんは、どう思いますか」と聞く # option: ask_meena]
     # profile: honest
     # set: gt_delhi_suresh_kept_secret
@@ -188,6 +206,9 @@ INCLUDE modules.ink
         わたしに決めさせないで。それは、この人の申告だもの
         # speaker: narrator
         スレーシュは返事のかわりに、咳払いを一つした。
+        # speaker: narrator
+        # leave: gt_meena
+        人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     - else:
         # speaker: gt_meena
         この人が決めることよ。でも、決めるまでは、一緒に笑っててあげる
@@ -197,12 +218,18 @@ INCLUDE modules.ink
         ……ハ
         # speaker: narrator
         たぶん、本物の方だった。
+        # speaker: narrator
+        # leave: gt_suresh
+        人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     }
 - -> two_of_us
 
 = rose_stranger
 # speaker: narrator
-輪の向こう側で、誰よりも大きな声で笑っている老人がいた。胸ポケットに、赤い薔薇。隣には、淡い色のサリーの女性。会が終わると、二人は人目を避けるように、別々の門から出ていった。
+# leave: gt_dubey
+輪の向こう側で、誰よりも大きな声で笑っている老人がいた。胸ポケットに、赤い薔薇。隣には、淡い色のサリーの女性。
+# speaker: narrator
+会が終わると、二人は人目を避けるように、別々の門から出ていった。
 # speaker: heroine
 # reaction: heroine,teasing,heart
 # voice: gt_delhi_date_lodhi_garden_015
@@ -232,11 +259,12 @@ INCLUDE modules.ink
         # speaker: narrator
         彼女は一度だけこちらを見て、息を吸った。
         # speaker: heroine
-        # reaction: heroine,surprised_big,exclamation
+        # emotion: surprised_big
         # size: large
         # voice: gt_delhi_date_lodhi_garden_019
         ヤートリーガン、クリプヤー、ディヤーン、デーン！
         # speaker: narrator
+        # emotion: surprised
         思ったより大きな声が出て、本人がいちばん驚いていた。
     }
 * [「もっと大きく！」と、ドゥベイの真似をする # option: mimic_dubey]
@@ -252,7 +280,7 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_lodhi_garden_021
         似てる！　ふふっ、もう、笑っちゃって言えない
         # speaker: heroine
-        # reaction: heroine,happy,music
+        # emotion: happy
         # size: large
         # voice: gt_delhi_date_lodhi_garden_022
         ディヤーン、デーン！
@@ -262,23 +290,27 @@ INCLUDE modules.ink
 -
 # speaker: gt_dubey
 合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る
+# speaker: narrator
+# leave: gt_dubey
+人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 -> two_of_us
 
 = two_of_us
-# speaker: narrator
-人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_023
 ねえ、さっきの、もう一回やってみる。理由のない笑い
 # speaker: narrator
+# emotion: serious
 彼女は真顔で言った。
 # speaker: heroine
+# emotion: serious
 # voice: gt_delhi_date_lodhi_garden_024
 ハ、ハ、ハ
 # speaker: narrator
+# emotion: happy
 三回目で、自分で吹き出した。
 # speaker: heroine
-# reaction: heroine,happy,music
+# emotion: happy
 # voice: gt_delhi_date_lodhi_garden_025
 だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも
 # speaker: heroine
@@ -299,7 +331,7 @@ INCLUDE modules.ink
     うん。じゃあ、『せーの』で。……わたしの声が小さくても、笑わないでね
 - else:
     # speaker: heroine
-    # reaction: heroine,happy,music
+    # emotion: happy
     うん、二人なら届きそう。わたしが『せーの』って言うから、その次ね
 }
 # speaker: narrator
@@ -343,9 +375,10 @@ INCLUDE modules.ink
         今の、わたしの声だけ先に出てた。……恥ずかしい
     - else:
         # speaker: heroine
-        # reaction: heroine,surprised_big,exclamation
+        # emotion: surprised_big
         遅いよ！　一瞬、わたし一人で叫んでた
         # speaker: narrator
+        # emotion: happy
         そう言いながら、彼女は笑っていた。
     }
     # speaker: gt_dubey
@@ -363,7 +396,7 @@ INCLUDE modules.ink
         # speaker: narrator
         彼女は最後まで言い切ってから、ゆっくりこちらを向いた。
         # speaker: heroine
-        # reaction: heroine,teasing,question
+        # emotion: teasing
         もしかして、わざと黙ってた？
         # speaker: heroine
         # reaction: heroine,happy,music
