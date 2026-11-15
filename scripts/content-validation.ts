@@ -67,6 +67,7 @@ import { sceneAudioOf } from "./scene-audio";
 import { checkSceneEffectTags, sceneItems } from "./scene-effect-tags";
 import { checkTermTags, glossaryTermsOf, glossaryWarnings } from "./glossary-terms";
 import { checkEmphasisTags } from "./line-emphasis";
+import { checkTranslationTags } from "./line-translation";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -694,6 +695,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkTermTags(authored, storyLayer, termJourneys));
     // A line's # em: and # em_shake: name a word of its own text (2026-11-13).
     withContext(file, () => checkEmphasisTags(authored));
+    // A line's # translation: is written in a choice's brackets or on a # letter: line (2026-11-15).
+    withContext(file, () => checkTranslationTags(authored));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;

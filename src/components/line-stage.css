@@ -216,7 +216,7 @@
 }
 /* The lines keep the paper's rhythm; the line on screen is at least a 44 px tap row (its room below a one-line text). */
 .letter-line,
-:is(.vn-dialogue, .battle-dialogue) .letter-sheet > p.dialogue-text {
+:is(.vn-dialogue, .battle-dialogue) .letter-sheet p.dialogue-text {
   min-height: 0;
   margin: 0;
   color: inherit;
@@ -227,11 +227,48 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-:is(.vn-dialogue, .battle-dialogue) .letter-sheet > p.dialogue-text {
+:is(.vn-dialogue, .battle-dialogue) .letter-sheet p.dialogue-text {
   min-height: 44px;
 }
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet .dialogue-next-mark {
   color: var(--ds-ink-muted);
+}
+/* A line with its # translation: (2026-11-15 user decision; LineStage.tsx TranslatedLetterLine): the English as
+   written, without the Japanese text's tracking, and right under it its Japanese in the window's sans face, smaller
+   and quieter (a reading aid beside the paper's own words; 6.5:1 on the card). The English's lines sit a little closer
+   than the paper's rhythm, so each English line and its Japanese read as one pair; on a note both keep the ruled lines'
+   pitch instead. On a card the lines of each are balanced. The Japanese is there from the line's start, so nothing
+   moves when the English has been typed. */
+.letter-entry > .letter-line,
+:is(.vn-dialogue, .battle-dialogue) .letter-entry > p.dialogue-text {
+  letter-spacing: 0.01em;
+}
+.letter-sheet:not([data-kind="note"]) .letter-entry > .letter-line,
+:is(.vn-dialogue, .battle-dialogue) .letter-sheet:not([data-kind="note"]) .letter-entry > p.dialogue-text {
+  line-height: 1.55;
+}
+.letter-sheet[data-kind="card"] .letter-entry > * {
+  text-wrap: balance;
+}
+.letter-translation {
+  --letter-gloss: 0.78;
+  margin: 0.15em 0 0.85em;
+  color: var(--ds-ink-muted);
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: calc(var(--letter-gloss) * 1em);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  /* Breaks between phrases where the browser can (「毎日」 stays whole); elsewhere as any Japanese text. */
+  word-break: auto-phrase;
+}
+.letter-entry:last-child > .letter-translation {
+  margin-bottom: 0;
+}
+.letter-sheet[data-kind="note"] .letter-translation {
+  margin: 0;
+  line-height: calc(var(--letter-line) / var(--letter-gloss));
 }
 @media (max-width: 700px) {
   .letter-sheet {

@@ -18,6 +18,7 @@ import { checkBgmTags, musicRegistry } from "./music-files";
 import { ambienceRegistry, checkAmbienceTags } from "./ambience-files";
 import { catalogSceneItems, checkSceneEffectTags } from "./scene-effect-tags";
 import { checkEmphasisTags } from "./line-emphasis";
+import { checkTranslationTags } from "./line-translation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, readHead, readPlaceFile, reachableKnots, type PlaceFile } from "./place-files";
 import { walkScene } from "./scene-walk";
@@ -141,6 +142,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     checkAmbienceTags(source, soundLayerId, ambienceTracks);
     checkSceneEffectTags(source, soundLayerId, items);
     checkEmphasisTags(source);
+    checkTranslationTags(source);
     // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
     parseSceneConditions(readSceneConditions(source, true));
     compiled.set(file, compileInk(source, file, { [MODULES_FILE]: MODULES_INK }));

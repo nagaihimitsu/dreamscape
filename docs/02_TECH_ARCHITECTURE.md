@@ -439,7 +439,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
   - 立ち絵の表情が変わるときは、次の絵が読み込まれてほどけるまで前の絵を出したままにする（`CharacterPortrait` の `CharacterImage`。絵は先読みと同じ `loadPicture` で読み、先読みで用意できた絵はすぐ替える。最初の絵は今までどおり読みながら出し、読み込めない絵はふつうの顔に戻す）。背景も、次の絵が読み込まれてから重ねる（`CanalScene`）。場面の背景と立ち絵は、同時に流れ始めるBGM・環境音より先に取る（`fetchPriority="high"`）。
 - 場面の演出の札（2026-11-11のユーザー判断、任意。`parseStoryTags` が読み、`frame-reader.ts` の `stageFrame` がフレームの任意の項目に入れて保存する。見せ方は `src/components/LineStage.tsx`・`line-staging.ts`）：`# recall: <絵のID>` は、その行だけ `# photo:` と同じアルバムの絵（作者の絵。出典なし）を背景にうっすら重ねる（アルバムには入らない。≡メニューの「画像の出典」には出さない）。
 - `# phone: received|sent` は、その行をスマホの画面の吹き出しにし、続く `# phone:` の行を同じ画面に積む（`phone.earlier`、最大40件）。
-- `# letter: letter|note|card` は、その行を紙に書いて見せ（話し手の札なし）、同じ種類の続く行を1枚に積む（`letter.earlier`）。
+- `# letter: letter|note|card` は、その行を紙に書いて見せ（話し手の札なし）、同じ種類の続く行を1枚に積む（`letter.earlier`）。同じ行の `# translation: <訳>`（2026-11-15のユーザー判断「英語の原文を出し、下に日本語の訳を添える」）は、行の字を英文とし、その下に日本語の訳を小さめの字で添える（`letter.translationJa`。積んだ前の行は `{ text, translationJa }` で訳を持つ。英文の部分は `lang="en"`）。会話ログにも訳を残す。選択肢でも `# letter:` の行でもない行の `# translation:` は `content:build`（`scripts/line-translation.ts`）が止める。
 - `# quiet: scene|line` は、上の帯（`hudView` の "quiet"。選択肢の間は出す）を隠し、字を1.3倍ゆっくりにし、背景に薄い覆いをかける（`scene` は場面の終わりまで）。
 - `# stand: apart|near|close` は、ヒロインの立ち絵の位置（`data-stand`）を次の札か場面の終わりまで変える（書いた人だけが決め、関係値からは決めない）。
 - `# cutin: name` は、その行だけの名札のカットイン（上の「名札のカットイン」。フレームの `cutin`）。同じ行に `# speaker: enemy` か人物の話し手がなく、携帯・手紙の行に書いたときは `parseStoryTags` が止める。

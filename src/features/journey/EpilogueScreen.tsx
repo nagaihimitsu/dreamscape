@@ -104,6 +104,7 @@ export function EpilogueScreen({
     speaker,
     frame.text,
     frame.delivery,
+    frame.letter?.translationJa,
   );
   const advanceSafely = () => {
     if (ready && !showLogo && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();

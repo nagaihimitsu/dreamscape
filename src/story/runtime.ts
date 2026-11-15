@@ -64,7 +64,10 @@ export const storyFrameSchema = z
     }).strict().optional(),
     letter: z.object({
       kind: z.enum(LETTER_KINDS),
-      earlier: z.array(z.string().min(1)).min(1).max(STACK_MAX).optional(),
+      // A line's `# translation:` (2026-11-15): the Japanese under its English; an earlier line with one keeps it.
+      translationJa: z.string().min(1).optional(),
+      earlier: z.array(z.union([z.string().min(1), z.object({ text: z.string().min(1), translationJa: z.string().min(1) }).strict()]))
+        .min(1).max(STACK_MAX).optional(),
     }).strict().optional(),
     quiet: z.enum(QUIET_SPANS).optional(),
     stand: z.enum(STAND_POSITIONS).optional(),
