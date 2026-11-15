@@ -173,6 +173,8 @@ INCLUDE modules.ink
         # leave: gt_suresh
         スレーシュは胸の薔薇を指で直し、ミーナと並んで東の門へ歩いていった。笑う会の後なのに、背中が少し誇らしげだった。
     }
+    # speaker: narrator
+    人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 * [「笑う会の写真、メヘルさんに送ってみたら」 # option: suggest_tell]
     # profile: bold
     # set: gt_delhi_suresh_encouraged
@@ -194,6 +196,8 @@ INCLUDE modules.ink
     # speaker: narrator
     # leave: gt_suresh
     それだけ言って、帰っていった。
+    # speaker: narrator
+    人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 * [「ミーナさんは、どう思いますか」と聞く # option: ask_meena]
     # profile: honest
     # set: gt_delhi_suresh_kept_secret
@@ -202,6 +206,9 @@ INCLUDE modules.ink
         わたしに決めさせないで。それは、この人の申告だもの
         # speaker: narrator
         スレーシュは返事のかわりに、咳払いを一つした。
+        # speaker: narrator
+        # leave: gt_meena
+        人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     - else:
         # speaker: gt_meena
         この人が決めることよ。でも、決めるまでは、一緒に笑っててあげる
@@ -211,6 +218,9 @@ INCLUDE modules.ink
         ……ハ
         # speaker: narrator
         たぶん、本物の方だった。
+        # speaker: narrator
+        # leave: gt_suresh
+        人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     }
 - -> two_of_us
 
@@ -280,14 +290,12 @@ INCLUDE modules.ink
 -
 # speaker: gt_dubey
 合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る
+# speaker: narrator
+# leave: gt_dubey
+人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 -> two_of_us
 
 = two_of_us
-# speaker: narrator
-# leave: gt_dubey
-# leave: gt_suresh
-# leave: gt_meena
-人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_023
 ねえ、さっきの、もう一回やってみる。理由のない笑い
