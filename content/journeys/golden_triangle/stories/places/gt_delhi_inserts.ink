@@ -348,6 +348,8 @@ Agra? Your train is cancelled today.
 # voice: gt_delhi_depart_scam_002
 二人とも、同じこと言ってる……。わざわざ教えてくれたんだし、話だけでも、聞いてみる？
 * [「話を聞くだけなら」と、ついて行く # option: just_listen]
+    # speaker: gt_delhi_scam_young_man
+    では、こちらへ。すぐそこです
     -> across_the_road
 * [「先に、駅の掲示板を見よう」と言う # option: check_the_board]
     # set: gt_delhi_scam_doubted
@@ -376,6 +378,7 @@ Agra? Your train is cancelled today.
 # background: gt_bg_delhi_scam_office
 # speaker: narrator
 中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
+# leave: gt_delhi_scam_young_man
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
 座ってください。まずはチャイを

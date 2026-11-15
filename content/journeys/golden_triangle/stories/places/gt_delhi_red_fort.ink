@@ -243,8 +243,10 @@ INCLUDE modules.ink
 # speaker: gt_delhi_red_fort_guide
 暗くなってから？　昼の券で入れるのは、日没までですよ
 # speaker: narrator
+夜まで待つか、出直すか。二人は顔を見合わせた。
+# speaker: narrator
 # se: phone_ring
-夜まで待つか、出直すか。顔を見合わせたところへ、宿の主人から電話が入った。
+そこへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
 # leave: gt_delhi_hotel_owner
 隣のカムラさんのお孫さんが、お二人を探しています
