@@ -377,11 +377,11 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 格子の向こうで、老婦人が小さく笑った気配がした。
-# speaker: gt_jaipur_bride_grandmother
-見るためには、見られないことが必要だった。……でも、今夜は、見られてもいいわね
 # speaker: narrator
 # se: wooden_window
 窓が閉まった。しばらくして、屋敷の門の奥から、杖をついた老婦人が姿を現した。花嫁側から、驚きの声が上がる。
+# speaker: gt_jaipur_bride_grandmother
+見るためには、見られないことが必要だった。……でも、今夜は、見られてもいいわね
 {
 - battle_score == 5:
     # speaker: narrator

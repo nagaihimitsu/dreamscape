@@ -100,7 +100,7 @@ INCLUDE modules.ink
 # reaction: enemy,sweat
 で、でも、それだけ愛してたから、こんな建物を、すぐに……
 # speaker: narrator
-タンヴィは、白いドームを見上げた。怒っているというより、ずっと前から考えていたことを口にする顔だった。
+タンヴィは、白いドームを見上げた。声を荒らげはしなかった。ずっと前から、言う順番を決めていたように。
 # speaker: gt_tanvi
 すぐ、じゃないよ。最初のお墓、どこだったと思う？
 # speaker: narrator

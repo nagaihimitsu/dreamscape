@@ -69,7 +69,7 @@ INCLUDE modules.ink
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
     # emotion: serious
-    彼女は縁から立ち上がった。肩の向こうにあったドームが、その陰に隠れる。
+    彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
     # speaker: heroine
     # emotion: smile
     # voice: gt_agra_date_confession_009

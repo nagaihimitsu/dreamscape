@@ -37,7 +37,7 @@ INCLUDE modules.ink
 # on_done: item gt_jaipur_sushma_lime_pickle
 # background: gt_bg_jaipur_city_palace
 # speaker: narrator
-宮殿の中庭の一角に、人の背丈ほどもある銀の壺が二つ、並んで光っていた。{heroine_name}がその大きさに口を開けていると、すぐ隣で言い争う声が始まった。
+人の背丈ほどもある銀の壺の陰で、言い合いは近づくほど大きくなった。{heroine_name}がそばまで来たところで、女性の声が跳ね上がった。
 # speaker: gt_jaipur_city_palace_woman
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
