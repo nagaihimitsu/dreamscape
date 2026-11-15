@@ -25,7 +25,7 @@ INCLUDE modules.ink
 係員が先に拾い上げ、一行目のヒンディー語を読んで、「暗くなってから、ね」とだけ言って少し笑った。次の鞄が、もう台に載っている。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
-返ってきた切れ端の一行目を、指でなぞる。赤い城、暗くなってから。今は、まだ明るい昼間だ。
+返ってきた切れ端の一行目を、指でなぞる。今は、まだ明るい昼間だ。
 # speaker: heroine
 # voice: gt_delhi_red_fort_guide_003
 暗くなってからって、何だろう。夕日がきれい、とか？　カムラさんの言い方だと、もっと何かありそう
@@ -128,15 +128,19 @@ INCLUDE modules.ink
     # cutin: name
     正解！
     # speaker: narrator
+    ソーヌーはそう叫んで、城壁に向かって演説の真似を始めた。
+    # speaker: narrator
     # se: shop_bells
-    ソーヌーはそう叫んで、城壁に向かって演説の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
+    手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 - else:
     # speaker: gt_sonu
     # cutin: name
     ブブー
     # speaker: narrator
+    ソーヌーはそう言って、城壁の上で国旗を掲げる首相の真似を始めた。
+    # speaker: narrator
     # se: shop_bells
-    ソーヌーはそう言って、城壁の上で国旗を掲げる首相の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
+    手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 }
 # speaker: enemy
 # reaction: enemy,anger
@@ -221,6 +225,7 @@ INCLUDE modules.ink
 # speaker: enemy
 さっき三十八人と言いましたけど。聞いていたのは、三十九人でした
 # speaker: narrator
+# leave: enemy
 バスへ向かう列の最後、ファイズがノートを胸に抱えて歩いていく。閉じたノートの端から、さっきの一行がはみ出していた。
 -> END
 
@@ -230,6 +235,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # ambience: gt_amb_street_traffic
 # speaker: narrator
+# leave: enemy
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
@@ -240,6 +246,7 @@ INCLUDE modules.ink
 # se: phone_ring
 夜まで待つか、出直すか。顔を見合わせたところへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
+# leave: gt_delhi_hotel_owner
 隣のカムラさんのお孫さんが、お二人を探しています
 # background: gt_bg_delhi_hotel_alley
 # ambience: amb_crowd_outdoor
@@ -270,7 +277,7 @@ INCLUDE modules.ink
 何も。……これを、もらっただけです
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo
-デリーに着いた日に、カムラが書いてくれた見どころの一覧。五行の場所と、一行ずつの妙な注釈。アマンは読み進めるほど、顔をこわばらせた。
+アマンは切れ端を受け取り、祖母の字を読み進めるほど、顔をこわばらせた。
 # speaker: enemy
 # item_out: gt_delhi_kamla_memo
 『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。誰かに文句を言ってるみたいだ
@@ -301,25 +308,22 @@ INCLUDE modules.ink
     ……知らなかった。祖母は、一人で地下鉄に乗れるんだ
 }
 # speaker: narrator
-病院の番号を押しかけていた指が、止まった。混乱した老人ではなく、自分の足で出かけた人。そう思い直すまでに、少し時間がかかった。
+病院の番号を押しかけていた指が、止まった。アマンは携帯を、ゆっくりポケットに戻した。
 # speaker: heroine
 # voice: gt_delhi_finale_004
 地下鉄に乗れるなら、どこへだって行けます。……それと、この一覧、最後の行だけ場所の名前がないんです
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 5
 五行目。カムラの字は、そこだけ大きかった。
-# speaker: narrator
-# letter: note
-月が水に落ちた所で、最後の買い物
 # speaker: enemy
+# item_out: gt_delhi_kamla_memo 5
 旧市街の通りに、池なんてない。……祖母は、また昔の話を
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_finale_005
 昔の話なら、昔の地図で読めばいいんだと思います
 -> quiz(2) ->
-# background: gt_bg_delhi_chandni_chowk
-# ambience: gt_amb_bazaar
+# background: gt_bg_delhi_hotel_alley
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_delhi_word_chandni
@@ -344,7 +348,10 @@ INCLUDE modules.ink
 # speaker: enemy
 いつ壊れた。今朝か？　さっきか？
 # speaker: narrator
+# emotion: smile
 値段が半分になるまで、三十秒。{heroine_name}は思わず小さく笑った。言い方が、路地で会ったカムラにそっくりだった。
+# background: gt_bg_delhi_chandni_chowk
+# ambience: gt_amb_bazaar
 # speaker: narrator
 # term: gt_term_paratha
 # term: gt_term_cycle_rickshaw
@@ -395,12 +402,8 @@ INCLUDE modules.ink
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
 {heroine_name}は一覧を開いた。一行目。赤い城、と書いた横の注釈は、最初の日からずっと気になっていた。
-# speaker: narrator
-# letter: note
-赤い城――暗くなってから
 -> quiz(4) ->
-# background: gt_bg_delhi_red_fort
-# ambience: gt_amb_street_traffic
+# background: gt_bg_delhi_chandni_chowk
 { quiz_correct:
     # speaker: heroine
     # voice: gt_delhi_finale_010
@@ -409,11 +412,13 @@ INCLUDE modules.ink
     # speaker: enemy
     光と音のショーか。城の中を歩いて回る……。暗くなってから、って、そういうことか
 }
+# background: gt_bg_delhi_red_fort
+# ambience: gt_amb_street_traffic
 # speaker: narrator
-三人は城へ急いだ。昼の見学は、とうに終わっている。問屋の言った『城の灯り』は、きっと夜のショーのことだ。
+三人は城へ急いだ。昼の見学は、とうに終わっている。ラホール門で、アマンが次の回の券を三枚買った。
 # speaker: narrator
 # se: switch_clunk
-ラホール門で、アマンが次の回の券を三枚買った。中へ入ると、暗い城壁に光が走った。
+中へ入ると、暗い城壁に光が走った。問屋の言っていた『城の灯り』だ。
 # speaker: narrator
 語り手の姿はどこにもない。どこからか、録音の語りが流れ出した。この城の皇帝たちの時代の話だ。
 # speaker: narrator
@@ -457,11 +462,14 @@ INCLUDE modules.ink
 # bgm: touching_moments_four
 録音の語りが途切れた。静かになった広間に、カムラの声が聞こえた。
 # speaker: gt_kamla
+# leave: gt_kamla
 プラカーシュ。あの冬の夜、ここのショーの暗がりで、言ったでしょう。好きだ、って
 # speaker: gt_kamla
+# leave: gt_kamla
 暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も
 # speaker: gt_kamla
 # pause: 1000
+# leave: gt_kamla
 ……わたしも。わたしも、です。遅くなったけど
 # speaker: narrator
 アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向き、孫を見て、それから{heroine_name}を見た。
@@ -494,8 +502,10 @@ INCLUDE modules.ink
     あなたが間違えたところは、僕が調べて追いついた。……二人で、やっと一人前でしたね
 }
 # speaker: narrator
+# leave: enemy
 二人はそっと、観客の列へ戻った。背中のほうで、カムラの声が、話の続きをしている。
 # speaker: gt_kamla
+# leave: gt_kamla
 そこの二人。明日の朝六時。見送りに来るなら、遅れないで。……来なくてもいいけど
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

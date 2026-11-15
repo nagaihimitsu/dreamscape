@@ -53,6 +53,8 @@ INCLUDE modules.ink
 先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ。みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
 # speaker: enemy
 隣のカムラおばあちゃんも常連なんだよ。オートの運転手と喧嘩しなくていいからって。……もうすぐ、引っ越しちゃうけど
+# speaker: narrator
+ルーヒーのノートには、題と、一行目の「女性車両」だけ。その先は、まだ白い。
 * [「それを書けばいい」 # option: write_the_metro]
     # rel: trust +1
     # set: gt_delhi_roohi_metro_essay
@@ -68,6 +70,7 @@ INCLUDE modules.ink
     # speaker: enemy
     やっぱり？　……うん、そうする。そっちの方が、ママも怒らないし
     # speaker: narrator
+    # emotion: worried
     ルーヒーは消しゴムで「女性車両」を消しはじめた。彼女が、その手元を少し寂しそうに見ていた。
     # speaker: heroine
     # voice: gt_delhi_hotel_homework_003
@@ -84,6 +87,8 @@ INCLUDE modules.ink
     # voice: gt_delhi_hotel_homework_004
     変じゃない。全然。そっか、それ、すごくよく分かる
 -
+# speaker: narrator
+かじっていた鉛筆が、やっと紙の上で動きはじめた。
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_hotel_homework_005
@@ -187,6 +192,7 @@ INCLUDE modules.ink
 やっぱりいい。寝て
 # background: gt_bg_delhi_hotel_corridor
 # speaker: narrator
+# emotion: worried
 廊下に出ると、彼女が長椅子で膝を抱えていた。顔が白い。
 # speaker: heroine
 # emotion: worried
@@ -246,21 +252,27 @@ INCLUDE modules.ink
     朝、こちらの部屋の扉を叩く音がした。開けると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。後ろには、制服姿の娘が、コップを両手で持っている。
     { cond("seen gt_delhi_hotel_sick_night_player"):
         # speaker: narrator
-        廊下の長椅子では、彼女が目をこすりながら起き上がるところだった。肩には、こちらの部屋の毛布がかかっている。ゆうべ、先に眠ってしまった彼女を起こせなくて、毛布をかけてから部屋に戻ったのだった。
+        # emotion: neutral
+        廊下の長椅子では、彼女が目をこすりながら起き上がるところだった。肩には、こちらの部屋の毛布がかかっている。
     - else:
         # speaker: narrator
+        # emotion: worried
         ノックの音で、隣の部屋の扉も開いた。彼女が、心配そうに顔を出す。
     }
 - else:
     # speaker: narrator
     # se: door_knock
     朝、隣の部屋の扉を叩く音がした。廊下に出てみると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。後ろには、制服姿の娘が、コップを両手で持っている。
+    # speaker: narrator
+    # emotion: worried
     彼女の部屋の扉が、細く開いた。
 }
 # speaker: gt_delhi_hotel_okami
 # local_word: gt_delhi_word_khichdi
 # term: gt_term_khichdi
-キチュリー。米と豆を、やわらかく煮たの。うちでは、お腹を壊したら、これ。……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
+キチュリー。うちでは、お腹を壊したら、これ
+# speaker: gt_delhi_hotel_okami
+……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
     クミンの水。わたしが作った。……宿題を手伝ってくれたお礼、半分ね
@@ -290,6 +302,7 @@ INCLUDE modules.ink
     いつも、どこへ行くか決めてもらってるから。たまには、ね
 - else:
     # speaker: narrator
+    # emotion: smile
     彼女は毛布にくるまったまま扉にもたれて、親子のやりとりを聞きながら、弱々しく笑っていた。
     # speaker: heroine
     # emotion: smile
@@ -359,8 +372,10 @@ Agra? Your train is cancelled today.
 # background: gt_bg_delhi_paharganj
 # ambience: stop
 # speaker: narrator
-道を渡り、大通りから一本入った路地の、狭い階段を上がる。扉には、大きな英語の看板。政府公認・観光案内所。中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
+道を渡り、大通りから一本入った路地の、狭い階段を上がる。扉には、大きな英語の看板。政府公認・観光案内所。
 # background: gt_bg_delhi_scam_office
+# speaker: narrator
+中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
 座ってください。まずはチャイを
@@ -381,7 +396,6 @@ Agra? Your train is cancelled today.
 # shake: window
 # se: impact_thud
 # voice: gt_delhi_depart_scam_004
-# shake: small
 この値段！？
 # speaker: narrator
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。

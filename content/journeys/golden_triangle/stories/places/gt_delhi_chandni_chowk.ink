@@ -29,7 +29,7 @@ INCLUDE modules.ink
 見て。あの人たち、丸いのを一口で食べてる。中に、水が入ってるの？
 # speaker: narrator
 # term: gt_term_golgappa
-ゴルガッパ。薄く揚げた空洞の玉に、男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。それを、客の器に一つずつ置いていく。
+ゴルガッパ。男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。それを、客の器に一つずつ置いていく。
 # speaker: heroine
 # voice: gt_delhi_date_chandni_chowk_002
 やってみたい。一個だけ。ううん、一皿だけ
@@ -41,12 +41,15 @@ INCLUDE modules.ink
 すっぱ、からっ、おいしい！　口の中で、割れた！
 # speaker: narrator
 感想を言い終わる前に、二つ目が来た。飲み込む前に、三つ目。屋台の男は客の顔を見ていない。手だけが、正確に、休まずに動いている。
+# speaker: narrator
+# emotion: smile
 四つ目。五つ目。彼女は涙目のまま、律儀に笑ってうなずいている。口がいっぱいで、何も言えない。
 隣の男の客が、短く何か言った。
 # speaker: gt_delhi_chandni_customer
 # local_word: gt_delhi_word_bas
 バス
 # speaker: narrator
+# leave: gt_delhi_chandni_customer
 屋台の男の手が、その客の器だけを飛ばした。
 * [「バス！」と、彼女の代わりに言う # option: say_bas_for_her]
     # profile: bold
@@ -106,9 +109,11 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_chandni_chowk_010
         勝負？　今？　……もう五個食べてるんだよ、わたし
         # speaker: narrator
+        # emotion: serious
         それでも彼女は器を差し出した。負けず嫌いの顔だった。
     - else:
         # speaker: narrator
+        # emotion: teasing
         こちらも器を受け取ると、彼女の目つきが変わった。涙目のまま、口の端だけで笑う。受けて立つ、という顔だった。
     }
     -> gt_delhi_chandni_chowk_duel ->
@@ -160,6 +165,7 @@ INCLUDE modules.ink
         ばれた？　じゃあ、いただきます。最後の一個って、いちばんおいしい気がするから
     }
     # speaker: narrator
+    # emotion: happy
     彼女は目を閉じて、最後の一つを丸ごと味わった。それから、勝った人の顔で、空の器を屋台の男に見せた。
 * [「二人で言おう。せーの」 # option: say_bas_together]
     # profile: playful
@@ -189,6 +195,7 @@ INCLUDE modules.ink
     水なしの、おまけのおまけ。断ったのに、もらえちゃった。言ってみるものだね
 -
 # speaker: narrator
+# leave: gt_delhi_chandni_vendor
 路地を出ると、人の流れに押されて、二人の肩がぶつかった。彼女は口の中の辛さを冷ますように、何度も息を吐いている。
 # speaker: heroine
 # voice: gt_delhi_date_chandni_chowk_021

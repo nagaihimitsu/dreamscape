@@ -22,7 +22,7 @@ INCLUDE modules.ink
 首が痛い。背の高いものって、ずるいね。目を全部持っていく
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 2
-彼女はガイドブックから段ボールの切れ端を出した。二行目。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。
+彼女はガイドブックから段ボールの切れ端を出した。二行目。
 # speaker: heroine
 # voice: gt_delhi_qutb_minar_guide_003
 鉄の柱……あ、あれかな。塔の近くの、黒い柱
@@ -33,6 +33,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_qutb_minar_guide_004
 『もう抱けない』ってことは、昔は抱けたんだ。……カムラさん、抱いたことあるのかな。誰かと一緒に
 # speaker: narrator
+# emotion: smile
 想像したらしく、彼女は一人で小さく笑った。それから、柵の前で何かを測るように手を動かしている男の人に気づいて、首をかしげた。
 # speaker: heroine
 # reaction: heroine,worried,question
@@ -49,9 +50,11 @@ INCLUDE modules.ink
 # speaker: narrator
 アイロンのきいた半袖シャツ。くたびれたリュック。視線は柱と、遠くの警備員を行ったり来たり。
 # speaker: narrator
+次の瞬間、男の片足が柵をまたいだ。
+# speaker: narrator
 # shake: window
 # se: cloth_grab
-次の瞬間、男の片足が柵をまたいだ。考えるより先に、{heroine_name}の手がリュックの肩紐をつかんでいた。
+考えるより先に、{heroine_name}の手がリュックの肩紐をつかんでいた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_delhi_main_qutb_minar_001
@@ -181,6 +184,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_qutb_minar_009
 止めたのに、叱られた……
 # speaker: narrator
+# leave: enemy
 男の背中が人混みに消える。{heroine_name}は自分の手のひらを見た。肩紐の重さが、まだ残っている。
 # speaker: heroine
 # voice: gt_delhi_main_qutb_minar_010
