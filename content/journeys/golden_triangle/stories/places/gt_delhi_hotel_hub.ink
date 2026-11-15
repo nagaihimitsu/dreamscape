@@ -27,9 +27,9 @@ INCLUDE modules.ink
 # voice: gt_delhi_arrival_001
 わたしのガイドブック、初対面で不合格になった……
 # speaker: narrator
-# item_show: gt_delhi_kamla_memo
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。ガイドブックの代わりだという。
 # speaker: narrator
+# item_show: gt_delhi_kamla_memo
 一行ずつ、ぶっきらぼうに訳してくれる。{heroine_name}は慌てて、その訳を余白に書きとめていく。
 # speaker: enemy
 わたしのデリーの地図だよ。赤い城、暗くなってから。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。

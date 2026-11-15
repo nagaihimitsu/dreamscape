@@ -290,6 +290,8 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     正直なキャプテン。払う価値、あるね
+    # speaker: narrator
+    写真代を渡すと、子どもたちが煉瓦の前に並んだ。
 * [「写真はいいから、もう一回握手しよう」 # option: shake_instead]
     # speaker: narrator
     ソニアは少しむっとした顔をしてから、差し出された手を、思いきり握り返した。
