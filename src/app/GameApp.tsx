@@ -91,6 +91,7 @@ import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { useJourneyMoments } from "./useJourneyMoments";
 import { useItemShowLeave } from "./useItemShowLeave";
+import { itemOutCard } from "../components/ItemOut";
 import { JourneyHud } from "./JourneyHud";
 import { hudView } from "./hud-view";
 import { BackgroundCredits } from "../components/BackgroundCredits";
@@ -616,6 +617,10 @@ export function GameApp({
   // waits until the card has gone.
   const lineItemId = lineFrameOnScreen(game)?.itemShow;
   const itemLeave = useItemShowLeave(lineItemId, game?.inventory, replacedGame);
+  // A line's item taken out (# item_out:, ItemOutLayer) goes back into the bag the same way as its line goes (the same
+  // item on the next line keeps its card); the notices wait for it too.
+  const lineItemOutId = lineFrameOnScreen(game)?.itemOut?.itemId;
+  const itemOutLeave = useItemShowLeave(lineItemOutId, game?.inventory, replacedGame);
   const mobilePlayActive = !!(
     conversationActive || (!game?.activeTourism && game?.activeBattle)
   );
@@ -810,9 +815,10 @@ export function GameApp({
         englishNew={englishNew}
         glossaryNew={glossaryNew}
         // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
-        // line's item card shows or flies into the bag.
-        holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave}
+        // line's item card (# item_show:, # item_out:) shows or flies into the bag.
+        holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
         itemFlight={itemLeave}
+        itemOutFlight={itemOutLeave}
         onLoad={reload}
         onSettings={() => {
           setPlayer(game.playerName);
@@ -1005,6 +1011,7 @@ export function GameApp({
               voiceId: activeEncounter.frame.voiceId,
               seId: activeEncounter.frame.seId,
               staging: activeEncounter.frame,
+              itemOut: itemOutCard(game, activeEncounter.frame.itemOut),
               minute: game.travel.minute,
               phoneNames: { heroine: game.heroineName, player: game.playerName, enemy: encounterPerson?.nameJa },
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.

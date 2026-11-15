@@ -27,6 +27,7 @@ import { flightTokens, itemsChange, numberChange, type Direction } from "./hud-c
 import { FLIGHT_TOTAL_MS, HudFlight } from "./HudFlight";
 import { ItemGainNotice } from "./ItemGainNotice";
 import { ItemShowFlight } from "../components/ItemShow";
+import { ItemOutFlight } from "../components/ItemOut";
 import type { ItemShowLeave } from "./useItemShowLeave";
 import type { SessionToast } from "./useGameSession";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
@@ -95,11 +96,12 @@ type MenuActions = {
  * Its feedback (2026-11-13 user decision; display only, for changes in play): the held items' キラリ, their
  * 「NEW」 and their float as one is given away, 「…を手に入れました」 under it (ItemGainNotice), coins and
  * stars flying into a rising budget and AP (HudFlight), the dots of 英語ノート and 旅の図鑑 and a save's ribbon on ≡メニュー, and a
- * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight). The session's short words
- * (`toast`: a save, a load, a tour's end) show in the same place for a moment, the item notices waiting behind them.
+ * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight), and an item taken out
+ * (`# item_out:`) going back into them (ItemOutFlight). The session's short words (`toast`: a save, a load, a tour's end)
+ * show in the same place for a moment, the item notices waiting behind them.
  */
 export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, glossaryNew = false, holdNotices = false,
-  itemFlight = null, toast = null, ...actions }: {
+  itemFlight = null, itemOutFlight = null, toast = null, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
   /**
    * The background the story scene on screen draws its picture from (GameApp; none in free time or where a landmark's
@@ -122,6 +124,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
   holdNotices?: boolean;
   /** A line's item card on its way out (`# item_show:`, GameApp's useItemShowLeave): into the bag when held and shown, else it fades. */
   itemFlight?: ItemShowLeave | null;
+  /** A line's item taken out on its way back (`# item_out:`, GameApp's useItemShowLeave): into the bag when held and shown, else it fades. */
+  itemOutFlight?: ItemShowLeave | null;
 } & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
   const weekday = getGameWeekday(game.travel.calendar);
@@ -142,7 +146,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
   const apCue = useSeenChange(game.ap, shown, valueChange, replaced);
   const itemKey = items.map((item) => item.id).join("\n");
   // A line's item card flying into the bag: the bag's pop waits for it to land.
-  const itemsCue = useSeenChange(itemKey, shown && !itemFlight, itemsChange, replaced);
+  const itemsCue = useSeenChange(itemKey, shown && !itemFlight && !itemOutFlight, itemsChange, replaced);
   const spentCue = useSeenChange(game.inventory, shown, spentChange, replaced);
   // item_pouch (and a short vibration) as a new item's picture pops and キラリ crosses the bag, not for the items a load
   // brings; item_give as one given away or used leaves it.
@@ -208,6 +212,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
       {coinsFlying && <HudFlight key={`coins-${budgetCue?.count}`} kind="coin" count={coins} to={budgetRef} />}
       {starsFlying && <HudFlight key={`stars-${apCue?.count}`} kind="star" count={stars} to={apRef} />}
       {itemFlight && <ItemShowFlight key={itemFlight.key} itemId={itemFlight.itemId} toBag={itemFlight.held && shown} />}
+      {itemOutFlight && <ItemOutFlight key={`out-${itemOutFlight.key}`} itemId={itemOutFlight.itemId} toBag={itemOutFlight.held && shown} />}
     </div>
   );
 }

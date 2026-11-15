@@ -11,7 +11,7 @@ import { albumImages, cityContents, episodes, getCities, getCityContent, getCity
 import { encounters } from "../content/encounters";
 import { getJourney, getJourneyForCity } from "../content/journeys";
 import { getTransportModes, type TransportMode } from "../content/transport";
-import { SCENE_SHAKE_SIZES, WEATHER_KINDS, type SceneShakeSize, type WeatherKind } from "../content/tags";
+import { SCENE_SHAKE_SIZES, WEATHER_KINDS, type ItemOutTag, type SceneShakeSize, type WeatherKind } from "../content/tags";
 import { holdSceneCues, playSe, playSound, useSoundEffectSettings } from "../audio/sound-effects";
 import { playSceneMusic, useBgmSettings, useSceneMusic } from "../audio/bgm";
 import { playSceneAmbience, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
@@ -26,6 +26,7 @@ import { CanalScene } from "../components/CanalScene";
 import { CharacterPortrait } from "../components/CharacterPortrait";
 import { SceneTint, WeatherLayer } from "../components/SceneAtmosphere";
 import { ItemShowLayer } from "../components/ItemShow";
+import { ItemOutLayer, itemOutCard } from "../components/ItemOut";
 import { DIALOGUE_WINDOW_ATTRIBUTE, shakeScene, shakeWindow } from "../components/DialogueText";
 import { SceneNotebookTool } from "../components/SceneHeading";
 import { NotebookCueContext } from "../components/notebook-cue";
@@ -372,6 +373,12 @@ function VoiceSection({ enabled, percent, voice, onToggle, onVolume, onPlay, rat
 type Demo = { game: GameState | null; error: string };
 
 /** The sample header's state: the city's start, as Debug's scenes build it, in memory only (never saved). */
+/** The city's first item with lines written on it (# item_out:'s card shows them), else its first item. */
+const itemWithLines = (cityId: string): string | undefined => {
+  const items = encounters.items.filter((item) => item.cityId === cityId);
+  return (items.find((item) => item.linesJa?.length) ?? items[0])?.id;
+};
+
 function demoOf(cityId: string): Demo {
   try {
     return { game: cityStart(cityId), error: "" };
@@ -401,6 +408,10 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
   const cityItems = encounters.items.filter((item) => item.cityId === cityId);
   const [itemId, setItemId] = useState<string | undefined>(() => cityItems[0]?.id);
   const [itemShow, setItemShow] = useState<string | undefined>(undefined);
+  // # item_out: the item taken out (its line's tag), the item and the line chosen for the next one.
+  const [outItemId, setOutItemId] = useState<string | undefined>(() => itemWithLines(cityId));
+  const [outLine, setOutLine] = useState<number | undefined>(undefined);
+  const [itemOut, setItemOut] = useState<ItemOutTag | undefined>(undefined);
 
   const [demo, setDemo] = useState<Demo>(() => demoOf(cityId));
   const game = demo.game;
@@ -413,6 +424,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
   const [status, setStatus] = useState("");
   const line = useRef<HTMLParagraphElement>(null);
   const itemLeave = useItemShowLeave(itemShow, game?.inventory, replaced);
+  const outLeave = useItemShowLeave(itemOut?.itemId, game?.inventory, replaced);
 
   // The photo card goes after its time, as GameApp's does.
   useEffect(() => {
@@ -431,6 +443,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
     setClue({ gleam: 0, unseen: false });
     setPhotoNotice(null);
     setItemShow(undefined);
+    setItemOut(undefined);
     setStatus("");
   }
   function chooseCity(nextCity: string) {
@@ -439,9 +452,13 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
     setBackground(backgroundChoices(nextContent.travel.places, getCityStoryBackground(nextCity, nextContent.travelSettings.hotelPlaceId),
       presentation.backgrounds)[0]?.id);
     setItemId(encounters.items.find((item) => item.cityId === nextCity)?.id);
+    setOutItemId(itemWithLines(nextCity));
+    setOutLine(undefined);
     restart(nextCity);
   }
   const change = (next: (state: GameState) => GameState) => setDemo((last) => (last.game ? { ...last, game: next(last.game) } : last));
+  const outItem = cityItems.find((item) => item.id === outItemId);
+  const outHeld = !!outItem && game?.inventory[outItem.id] === "held";
   const cityItemIds = cityItems.map((item) => item.id);
   const gain = game ? itemToGain(cityItemIds, game.inventory) : undefined;
   const give = game ? itemToGive(cityItemIds, game.inventory) : undefined;
@@ -483,7 +500,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
     <div className={`effects-room-screen${reduce ? " reduce-motion" : ""}`} data-breath={breathStill ? "still" : undefined}>
       {game && <JourneyHud game={game} place={place} view="all" replaced={replaced} seenItemIds={seenItems}
         onItemsSeen={(ids) => setSeenItems((seen) => new Set([...seen, ...ids]))} englishNew={englishNew}
-        holdNotices={!!photoNotice || !!itemShow || !!itemLeave} itemFlight={itemLeave}
+        holdNotices={!!photoNotice || !!itemShow || !!itemLeave || !!itemOut || !!outLeave} itemFlight={itemLeave} itemOutFlight={outLeave}
         onSave={() => {
           playSe("save");
           setStatus("セーブの印と音だけを出しました（何も保存していません）。");
@@ -505,6 +522,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
           </div>
           <WeatherLayer weather={weather} />
           <ItemShowLayer itemId={itemShow} />
+          <ItemOutLayer card={game ? itemOutCard(game, itemOut) : undefined} />
           <div className="vn-character-layer">
             {portrait && <CharacterPortrait characterId="heroine" cityId={cityId} />}
           </div>
@@ -573,6 +591,45 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
         }}>渡して次の行へ</button>
       </div>
       <p>「次の行へ」で、持っていない品物の札はその場で消え、持っている品物の札は上の帯の所持品へ飛びます。「渡して次の行へ」は、その行で品物を渡したときの形です。</p>
+    </> : <p>この都市には品物がありません。ほかの都市を選んでください。</p>}
+
+    <h3>品物を取り出す（# item_out:）</h3>
+    {cityItems.length ? <>
+      <div className="effects-room-fields">
+        <label className="effects-room-field">
+          品物
+          <select value={outItemId ?? ""} data-testid="effects-room-item-out-item" onChange={(event) => {
+            setOutItemId(event.target.value);
+            setOutLine(undefined);
+          }}>
+            {cityItems.map((item) => <option key={item.id} value={item.id}>{item.nameJa}（{item.linesJa ? `${item.linesJa.length}行` : "行なし"}）</option>)}
+          </select>
+        </label>
+        <label className="effects-room-field">
+          読む行（# item_out: … &lt;n&gt;）
+          <select value={outLine ?? ""} data-testid="effects-room-item-out-line" disabled={!outItem?.linesJa}
+            onChange={(event) => setOutLine(event.target.value ? Number(event.target.value) : undefined)}>
+            <option value="">なし</option>
+            {(outItem?.linesJa ?? []).map((line, index) => <option key={index} value={index + 1}>
+              {index + 1}行目{typeof line === "string" ? "" : "（条件つき）"}</option>)}
+          </select>
+        </label>
+      </div>
+      <div className="effects-room-chips">
+        <button type="button" className="effects-room-chip" data-testid="effects-room-item-out"
+          disabled={!outItemId || (itemOut?.itemId === outItemId && itemOut.line === outLine)}
+          onClick={() => outItemId && setItemOut(outLine === undefined ? { itemId: outItemId } : { itemId: outItemId, line: outLine })}>取り出す</button>
+        <button type="button" className="effects-room-chip" data-testid="effects-room-item-out-next" disabled={!itemOut}
+          onClick={() => setItemOut(undefined)}>次の行へ</button>
+      </div>
+      <label className="effects-room-toggle"><input type="checkbox" checked={outHeld} disabled={!outItem || !game}
+        onChange={(event) => {
+          const id = outItem?.id;
+          const held = event.target.checked;
+          if (id) change((state) => ({ ...state,
+            inventory: held ? { ...state.inventory, [id]: "held" } : Object.fromEntries(Object.entries(state.inventory).filter(([key]) => key !== id)) }));
+        }} />この品物を持っている（上の帯の所持品から出て、所持品へ戻る）</label>
+      <p>見せるだけの札で、品物は渡しも使いもしません。音は「ページを送ったとき」（ui_page）を札が出るときに1回だけ。札が出ているときに読む行を変えて「取り出す」を押すと、同じ品物の別の行を読む次の行の形（札はそのままで、印だけが動く）になります。条件つきの行は、条件を満たすまで出ません（その番号の行がないときは、印は付きません）。</p>
     </> : <p>この都市には品物がありません。ほかの都市を選んでください。</p>}
 
     <h3>人物</h3>

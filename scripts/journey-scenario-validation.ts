@@ -16,7 +16,7 @@ import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry } from "./sound-files";
 import { checkBgmTags, musicRegistry } from "./music-files";
 import { ambienceRegistry, checkAmbienceTags } from "./ambience-files";
-import { catalogItemJourneys, checkSceneEffectTags } from "./scene-effect-tags";
+import { catalogSceneItems, checkSceneEffectTags } from "./scene-effect-tags";
 import { checkEmphasisTags } from "./line-emphasis";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, readHead, readPlaceFile, reachableKnots, type PlaceFile } from "./place-files";
@@ -83,9 +83,9 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   // A line's # bgm: names a shared track or one of this journey, or stop or default (presentation/music.json; music-files.ts).
   const tracks = musicRegistry(sources).tracks;
   // A line's # ambience: names a shared ambience track or one of this journey, or stop or default (presentation/ambience.json;
-  // ambience-files.ts), its # item_show: an item of this journey (scene-effect-tags.ts).
+  // ambience-files.ts), its # item_show: and # item_out: an item of this journey (scene-effect-tags.ts).
   const ambienceTracks = ambienceRegistry(sources).tracks;
-  const items = catalogItemJourneys(sources);
+  const items = catalogSceneItems(sources);
   // The memories a date's # memory: may name: the scaffold's, and those the content already registers.
   const memoryIds = [...new Set([...Object.keys(fragments.memories), ...Object.keys(presentation.memories)])];
 

@@ -4,8 +4,8 @@ import type { DialogueReaction, ReactionTarget } from "../content/dialogue-react
 import { BGM_DEFAULT } from "../content/music";
 import type { MiniGameTag } from "../minigames/tag";
 import {
-  parseStoryTags, WEATHER_STOP, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition,
-  type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,
+  parseStoryTags, WEATHER_STOP, type CutInKind, type ItemOutTag, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan,
+  type StandPosition, type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,
 } from "../content/tags";
 
 // How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
@@ -81,6 +81,11 @@ export interface StoryFrame {
   bgm?: string;
   /** The line's `# item_show:` (only the line it is written on): the item's card over the scene (ItemShowLayer). */
   itemShow?: string;
+  /**
+   * The line's `# item_out:` (only the line it is written on): the item taken out, on a card with its lines (ItemOutLayer);
+   * `line`, the shown line it reads (highlighted).
+   */
+  itemOut?: ItemOutTag;
   /** `# weather:`: the scene's weather from its line on until another `# weather:`, `# weather: stop` or the scene's end. */
   weather?: WeatherKind;
   /** `# tint: off`: no colour of the time of day over the scene's picture, from its line on until `# tint: on` or the scene's end. */
@@ -182,7 +187,16 @@ function readTags(
   if (parsed.seId) frame.seId = parsed.seId;
   if (parsed.bgm === BGM_DEFAULT) delete frame.bgm;
   else if (parsed.bgm) frame.bgm = parsed.bgm;
-  if (parsed.itemShow) frame.itemShow = parsed.itemShow;
+  // A line shows an item or takes one out (parseStoryTags and content:build refuse both on one line; the last read wins
+  // here, as for a choice's tags and its line's).
+  if (parsed.itemShow) {
+    frame.itemShow = parsed.itemShow;
+    delete frame.itemOut;
+  }
+  if (parsed.itemOut) {
+    frame.itemOut = parsed.itemOut;
+    delete frame.itemShow;
+  }
   if (parsed.weather === WEATHER_STOP) delete frame.weather;
   else if (parsed.weather) frame.weather = parsed.weather;
   if (parsed.tint === "on") delete frame.tint;
@@ -196,7 +210,7 @@ function readTags(
 }
 
 /** What the scene tags put on a frame. */
-export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "leave">;
+export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "itemOut" | "leave">;
 
 /**
  * The parts of a frame that last from their line to the scene's end (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`):
@@ -224,7 +238,8 @@ export function stickyOf(from: FrameSticky | null | undefined): FrameSticky {
  *   lines: a line without `# phone:` ends it), a letter's line after the lines of the frame before it when that was
  *   written on the same kind of paper; the oldest go first beyond STACK_MAX;
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
- *   one: it keeps that line's recall, phone, letter, quiet, item card (`# item_show:`) and who left at it (`# leave:`).
+ *   one: it keeps that line's recall, phone, letter, quiet, item cards (`# item_show:`, `# item_out:`) and who left at it
+ *   (`# leave:`).
  */
 export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
@@ -233,7 +248,7 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
     .filter(([, value]) => value !== undefined)) as FrameStaging;
   if (!lineRead && previous)
     return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet, itemShow: previous.itemShow,
-      leave: previous.leave });
+      itemOut: previous.itemOut, leave: previous.leave });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
     ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
@@ -246,6 +261,7 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
     letter: tagged.letter && { kind: tagged.letter.kind, ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
     quiet: previous?.quiet === "scene" ? "scene" : tagged.quiet,
     itemShow: tagged.itemShow,
+    itemOut: tagged.itemOut,
     leave: tagged.leave,
   });
 }
@@ -297,7 +313,7 @@ export function readStoryFrame(
     delete frame.seId;
   }
   const staging = stageFrame(frame, previous, lineRead);
-  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow", "leave"] as const) delete frame[key];
+  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow", "itemOut", "leave"] as const) delete frame[key];
   Object.assign(frame, staging);
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)

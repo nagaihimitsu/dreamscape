@@ -78,6 +78,8 @@ export const storyFrameSchema = z
     // The scene's atmosphere (2026-11-13; presentation only): a line's item card, and the weather, the tint switched off
     // and the ambience kept to the scene's end like `# bgm:` (frame-reader.ts).
     itemShow: z.string().regex(ITEM_ID).optional(),
+    // `# item_out:` (2026-11-15; presentation only): the item taken out on the line, and the shown line it reads.
+    itemOut: z.object({ itemId: z.string().regex(ITEM_ID), line: z.number().int().min(1).optional() }).strict().optional(),
     weather: z.enum(WEATHER_KINDS).optional(),
     tint: z.literal("off").optional(),
     ambience: z.string().regex(SOUND_ID).optional(),

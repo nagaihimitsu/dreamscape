@@ -49,6 +49,77 @@ describe("a line's item card tag", () => {
   });
 });
 
+// `# item_out: <item ID> [<n>]` (2026-11-15, 「品物を取り出す」): the item taken out on its line, with the shown line it reads.
+describe("a line's item taken out", () => {
+  it("reads an item's ID, and the line it reads when one is written, beside the other line tags", () => {
+    expect(parseStoryTags(["speaker: narrator", "item_out: gt_delhi_kamla_memo"], context))
+      .toEqual({ speaker: "narrator", itemOut: { itemId: "gt_delhi_kamla_memo" }, effects: [] });
+    expect(parseStoryTags(["item_out: gt_delhi_kamla_memo 2"], context).itemOut).toEqual({ itemId: "gt_delhi_kamla_memo", line: 2 });
+    expect(parseStoryTags(["item_out:   gt_delhi_kamla_memo   12  "], context).itemOut).toEqual({ itemId: "gt_delhi_kamla_memo", line: 12 });
+    expect(parseStoryTags(["speaker: heroine"], context)).not.toHaveProperty("itemOut");
+  });
+
+  it("rejects a tag without an item, an ID that is not one, a line number that is not a whole number from 1, extra words and a second one", () => {
+    for (const [tag, message] of [
+      ["item_out", "Invalid item_out tag: name the item"],
+      ["item_out:", "Invalid item_out tag: name the item"],
+      ["item_out: Memo", "Invalid item_out tag: Memo"],
+      ["item_out: memo 0", "Invalid item_out tag: memo 0"],
+      ["item_out: memo -1", "Invalid item_out tag: memo -1"],
+      ["item_out: memo 1.5", "Invalid item_out tag: memo 1.5"],
+      ["item_out: memo 02", "Invalid item_out tag: memo 02"],
+      ["item_out: memo two", "Invalid item_out tag: memo two"],
+      ["item_out: memo 2 3", "Invalid item_out tag: memo 2 3"],
+    ])
+      expect(() => parseStoryTags([tag], context), tag).toThrow(message);
+    expect(() => parseStoryTags(["item_out: a", "item_out: b 1"], context)).toThrow("Duplicate item_out tag");
+  });
+
+  it("is never on a line with an item shown", () => {
+    expect(() => parseStoryTags(["item_show: smp_bookmark", "item_out: smp_memo 1"], context))
+      .toThrow("A line shows an item or takes one out, not both: # item_show: smp_bookmark and # item_out: smp_memo");
+  });
+
+  it("shows on its line only, its choices on screen included, and moves its highlight on the next line of the same item", () => {
+    const story = new Story(compileInk(`# item_out: smp_memo
+メモを取り出した。
+# item_out: smp_memo 2
+二行目を読んだ。
+次の行。
+-> END
+`));
+    const first = readStoryFrame(story, context).frame;
+    expect(first).toMatchObject({ text: "メモを取り出した。", itemOut: { itemId: "smp_memo" } });
+    expect(storyFrameSchema.parse(first).itemOut).toEqual({ itemId: "smp_memo" });
+    const second = readStoryFrame(story, context, first).frame;
+    expect(second.itemOut).toEqual({ itemId: "smp_memo", line: 2 });
+    expect(storyFrameSchema.parse(second).itemOut).toEqual({ itemId: "smp_memo", line: 2 });
+    expect(readStoryFrame(story, context, second).frame).not.toHaveProperty("itemOut");
+    // A saved frame keeps only the tag's form.
+    expect(() => storyFrameSchema.parse({ ...first, itemOut: { itemId: "smp_memo", line: 0 } })).toThrow();
+    expect(() => storyFrameSchema.parse({ ...first, itemOut: { itemId: "smp_memo", extra: true } })).toThrow();
+    const choosing = new Story(compileInk(`# item_out: smp_memo 1
+メモの一行目。
+* [しまう]
+  -> END
+`));
+    const line = readStoryFrame(choosing, context).frame;
+    expect(line.choices).toHaveLength(1);
+    expect(line.itemOut).toEqual({ itemId: "smp_memo", line: 1 });
+  });
+
+  it("keeps one item card a line when a choice's tag and its line's name both kinds (the line's wins)", () => {
+    const taken = readStoryFrame(new Story(compileInk("# item_out: smp_memo\nメモを取り出した。\n-> END\n")), context, undefined,
+      ["item_show: smp_bookmark"]).frame;
+    expect(taken.itemOut).toEqual({ itemId: "smp_memo" });
+    expect(taken).not.toHaveProperty("itemShow");
+    const shown = readStoryFrame(new Story(compileInk("# item_show: smp_bookmark\nしおり。\n-> END\n")), context, undefined,
+      ["item_out: smp_memo 1"]).frame;
+    expect(shown.itemShow).toBe("smp_bookmark");
+    expect(shown).not.toHaveProperty("itemOut");
+  });
+});
+
 describe("the weather, tint and ambience tags", () => {
   it("read their values beside the other line tags", () => {
     expect(parseStoryTags(["weather: rain", "tint: off", "ambience: amb_rain"], context))

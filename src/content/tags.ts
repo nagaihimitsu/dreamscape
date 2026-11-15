@@ -82,6 +82,8 @@ export interface StoryTags {
   bgm?: string;
   /** `# item_show: <item ID>`: the item's card over the scene while the line is on screen (the line it is written on only). */
   itemShow?: string;
+  /** `# item_out: <item ID> [<n>]`: the item taken out, its lines on a card while the line is on screen (the line it is written on only). */
+  itemOut?: ItemOutTag;
   /** `# weather: <kind>` / `# weather: stop`: the scene's weather from this line on (frame-reader.ts keeps it to the scene's end). */
   weather?: WeatherKind | typeof WEATHER_STOP;
   /** `# tint: off` / `# tint: on`: the colour of the time of day over the scene's picture, off or back on from this line. */
@@ -107,6 +109,25 @@ export const TINT_SWITCHES = ["off", "on"] as const;
 export type TintSwitch = (typeof TINT_SWITCHES)[number];
 /** An item's ID as `# item_show:` names it (content:build checks that the item exists in the story's journey). */
 export const ITEM_ID = /^[a-z][a-z0-9_]*$/u;
+
+/**
+ * `# item_out: <item ID>` / `# item_out: <item ID> <n>` (2026-11-15 user decision, 「品物を取り出す」): the item is taken
+ * out and looked at while the line is on screen, its lines on a quiet card (ItemOut.tsx); `line`, from 1, is the line of
+ * those shown that the line reads (highlighted). Presentation only: it never gives, uses or moves the item. content:build
+ * checks the item (its journey) and that the number is within its lines (scripts/scene-effect-tags.ts).
+ */
+export type ItemOutTag = { itemId: string; line?: number };
+/** A line number of `# item_out:` as written: a whole number from 1, without a sign or leading zeros. */
+export const ITEM_OUT_LINE = /^[1-9][0-9]*$/u;
+
+/** Read the value of a line's `# item_out:`; throws for another form. */
+function readItemOutTag(value: string): ItemOutTag {
+  const [itemId, line, ...extra] = value.split(/\s+/u);
+  if (extra.length || !ITEM_ID.test(itemId) || (line !== undefined && !ITEM_OUT_LINE.test(line)))
+    throw new Error(`Invalid item_out tag: ${value} (write # item_out: <item ID> or # item_out: <item ID> <line number>, ` +
+      "an item of encounters/catalog.json and a whole number from 1)");
+  return line === undefined ? { itemId } : { itemId, line: Number(line) };
+}
 
 /**
  * The scene tags (2026-11-11 user decision), presentation only, each a small closed set but `# recall:`:
@@ -244,6 +265,8 @@ export function parseStoryTags(
     const value = separator < 0 ? "" : tag.slice(separator + 1).trim();
     if (key === "item_show" && !value)
       throw new Error("Invalid item_show tag: name the item (write # item_show: <item ID>, an item of encounters/catalog.json)");
+    if (key === "item_out" && !value)
+      throw new Error("Invalid item_out tag: name the item (write # item_out: <item ID> or # item_out: <item ID> <line number>, an item of encounters/catalog.json)");
     if ((key === "em" || key === "em_shake") && !value)
       throw new Error(`Invalid ${key} tag: name the word (write # ${key}: <a word of the line>)`);
     if (separator < 1 || !value) throw new Error(`Invalid story tag: ${tag}`);
@@ -370,6 +393,11 @@ export function parseStoryTags(
       if (!ITEM_ID.test(value)) throw new Error(`Invalid item_show tag: ${value} (write # item_show: <item ID>, an item of encounters/catalog.json)`);
       if (result.itemShow) throw new Error("Duplicate item_show tag");
       result.itemShow = value;
+    } else if (key === "item_out") {
+      // The item, its journey and the line's number are checked by content:build (scripts/scene-effect-tags.ts).
+      const out = readItemOutTag(value);
+      if (result.itemOut) throw new Error("Duplicate item_out tag");
+      result.itemOut = out;
     } else if (key === "weather") {
       if (!(WEATHER_KINDS as readonly string[]).includes(value) && value !== WEATHER_STOP)
         throw new Error(`Invalid weather tag: ${value} (write ${[...WEATHER_KINDS, WEATHER_STOP].map((item) => `# weather: ${item}`).join(", ")})`);
@@ -421,5 +449,7 @@ export function parseStoryTags(
     throw new Error("# cutin: name shows the speaker's name: write # speaker: enemy or # speaker: <person ID> on the same line");
   if (result.cutin && (result.phone || result.letter))
     throw new Error("# cutin: name is for a line said in the scene, not a phone message or a letter");
+  if (result.itemShow && result.itemOut)
+    throw new Error(`A line shows an item or takes one out, not both: # item_show: ${result.itemShow} and # item_out: ${result.itemOut.itemId}`);
   return result;
 }
