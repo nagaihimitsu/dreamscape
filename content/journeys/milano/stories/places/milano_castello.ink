@@ -126,6 +126,7 @@ INCLUDE modules.ink
 開いたケースに、青い三角の跡だけが残っていた。
 { cond("item blue_pick held"):
     # speaker: heroine
+    # item_out: blue_pick
     ……ノラさんのピック、あの跡と同じ形だ
     -> castello_pick_with_pick
 - else:

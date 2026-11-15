@@ -69,7 +69,7 @@
 
 ### 道中交流・会話と品物（場所のファイルの差し込み）
 
-時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与）。受け取る交流と渡す交流の2件で1組です（使い道が要るのは、次の都市がある都市の、持ち歩く印のない品物だけです。見本の街は旅の最後の都市ですが、使い道のある形を手本にしています）。観察の後の会話（近道を教わり、APを1得る）と、対決の後の鐘の会話（APを1使って鐘楼に上がると、ときめきが上がる）、デートの中でしおりを渡すかの「場面の中の選択」もあります。どれも時計塔の場所のファイルの knot で、起きる時と順番は knot の頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`after observe` は観察の後、`+1`・`+2` は本筋の後）。品物は `encounters/catalog.json` の `items`、フラグ・人物・名前付きの条件は `progression/story.json` に宣言します（人物の紹介 `descriptionJa` は、出会った後に旅の記録の「出会った人」に出ます）。
+時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与。その最初の行では、ポケットのしおりを行の札 `# item_out:` で取り出して紙の札で見せます。見せるだけで、品物は動きません）。受け取る交流と渡す交流の2件で1組です（使い道が要るのは、次の都市がある都市の、持ち歩く印のない品物だけです。見本の街は旅の最後の都市ですが、使い道のある形を手本にしています）。観察の後の会話（近道を教わり、APを1得る）と、対決の後の鐘の会話（APを1使って鐘楼に上がると、ときめきが上がる）、デートの中でしおりを渡すかの「場面の中の選択」もあります。どれも時計塔の場所のファイルの knot で、起きる時と順番は knot の頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`after observe` は観察の後、`+1`・`+2` は本筋の後）。品物は `encounters/catalog.json` の `items`、フラグ・人物・名前付きの条件は `progression/story.json` に宣言します（人物の紹介 `descriptionJa` は、出会った後に旅の記録の「出会った人」に出ます）。
 
 - ファイル：`encounters/catalog.json`
 - 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`、`smp_mihon_lili`、`smp_mihon_lili_told_why`、`smp_mihon_bookmark_to_heroine`、`smp_mihon_bookmark_kept`、`smp_mihon_lili_heard`、`smp_mihon_bookmark_before_leaving`、`smp_mihon_lili_seeoff`（場所のファイルからは、その knot と、その ID を書いた行を消し、`progression/story.json` からはリリと3つのフラグと名前付きの条件を消す。最後の2つは下の「ほかの時点の場面と都市の終わり」のエピローグの前の場面で、ここで宣言するリリとフラグを使うので、この部分と一緒に外す）

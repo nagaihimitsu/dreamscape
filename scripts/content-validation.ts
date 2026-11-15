@@ -64,7 +64,7 @@ import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
 import { audioLayersOf } from "./audio-layers";
 import { sceneAudioOf } from "./scene-audio";
-import { checkSceneEffectTags, itemJourneys } from "./scene-effect-tags";
+import { checkSceneEffectTags, sceneItems } from "./scene-effect-tags";
 import { checkTermTags, glossaryTermsOf, glossaryWarnings } from "./glossary-terms";
 import { checkEmphasisTags } from "./line-emphasis";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
@@ -670,8 +670,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const mainFileHeads = new Map<string, { onDone: string[]; then?: string }>();
   // A line's # speaker: <person ID> names a person of progression/story.json people (2026-11-11).
   const declaredPeople = new Set(storyStateCatalog.people.map((person) => person.id));
-  // Each item's journey (its city's), for a line's # item_show: (scene-effect-tags.ts).
-  const storyItemJourneys = itemJourneys(encounterCatalog.items, sources.cities);
+  // Each item's journey (its city's) and its lines' count, for a line's # item_show: and # item_out: (scene-effect-tags.ts).
+  const storySceneItems = sceneItems(encounterCatalog.items, sources.cities);
   for (const { id, file, layer: storyLayer, source: authored } of sources.storyFiles) {
     withContext(file, () => checkSpeakerPeople(authored, declaredPeople));
     // A line's # photo: and # recall: name an album image of the story's own journey (2026-11-11).
@@ -687,8 +687,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkBgmTags(authored, storyLayer, music.tracks));
     // A line's # ambience: names a shared ambience track or one of the story's own journey, or stop or default (2026-11-13).
     withContext(file, () => checkAmbienceTags(authored, storyLayer, ambience.tracks));
-    // A line's # item_show: names an item of the story's own journey; # weather: and # tint: their own values (2026-11-13).
-    withContext(file, () => checkSceneEffectTags(authored, storyLayer, storyItemJourneys));
+    // A line's # item_show: and # item_out: name an item of the story's own journey (# item_out:'s number one of its
+    // lines); # weather: and # tint: their own values (2026-11-13, 2026-11-15).
+    withContext(file, () => checkSceneEffectTags(authored, storyLayer, storySceneItems));
     // A line's # term: names a 旅の図鑑 term of the story's own journey (2026-11-13).
     withContext(file, () => checkTermTags(authored, storyLayer, termJourneys));
     // A line's # em: and # em_shake: name a word of its own text (2026-11-13).

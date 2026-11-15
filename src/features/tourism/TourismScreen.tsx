@@ -16,6 +16,7 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { ItemShowLayer } from "../../components/ItemShow";
+import { ItemOutLayer, itemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
@@ -214,6 +215,7 @@ export function TourismScreen({
           <RecallLayer imageId={frame.recall} />
           <PhotoShowLayer photo={frame.photo} />
           <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
+          <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
           <span className="sr-only">{asset.altJa}</span>
           {/* With a person on stage the two stand side by side (the encounter's slots); her portrait keeps its place in
               the tree, so it is not drawn again when they come in. */}

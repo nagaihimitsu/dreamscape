@@ -21,7 +21,7 @@ type Progression = {
   storyBattles: { battleId: string }[];
 };
 type Battle = { id: string; quizId: string; reasoning: { correctClueIds: string[] } | null };
-type Encounters = { items: { id: string; cityId: string }[]; encounters: { id: string; landmarkId: string }[] };
+type Encounters = { items: { id: string; cityId: string; nameJa: string; descriptionJa: string }[]; encounters: { id: string; landmarkId: string }[] };
 
 /** The sample's city, events, battles and encounters, from the generated content of this run. */
 function sampleRoute() {
@@ -45,6 +45,7 @@ function sampleRoute() {
     // give, and the special battles B and C, started from the map like an episode.
     encounterIds: encounters.filter((item) => item.landmarkId === episode.landmarkId).map((item) => item.id),
     itemIds: items.filter((item) => item.cityId === city!.id).map((item) => item.id),
+    items: items.filter((item) => item.cityId === city!.id),
     specials: events.filter((item) => storyBattles.some((entry) => entry.battleId === item.id)),
     // Optional part: the rental bicycle, rented at the hotel and ridden until the party leaves the city.
     rental: rental && { offer: rental, mode: journey!.transportModes.find((mode) => mode.id === rental.modeId)! },
@@ -204,9 +205,22 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(result.ap).toBeGreaterThan(0);
   // (Optional part) 「自由時間へ」 meets the gift encounter after the main part (priority +1, while the
   // bookmark is held): the bookmark is given (AGENTS.md: an item is gained, given and used in its own city). Then the
-  // bell (+2): its first choice spends an AP (# ap: -1).
+  // bell (+2): its first choice spends an AP (# ap: -1). The gift's first line takes the bookmark out (# item_out:,
+  // 2026-11-15): its card over the scene with its name and, as nothing is written on it, its description, said once to
+  // screen readers; the next line (after the choice) has none, and the card is gone.
   await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  const bookmark = route.items[0];
+  if (bookmark) {
+    const taken = page.getByTestId("item-out");
+    await expect(taken).toBeVisible();
+    await expect(taken).toContainText(bookmark.nameJa);
+    await expect(taken).toContainText(bookmark.descriptionJa);
+    await expect(page.getByTestId("item-out-words")).toHaveText(`${bookmark.nameJa}を取り出した。${bookmark.descriptionJa}`);
+    const firstLine = (await readSave(page, JOURNEY)).activeEncounter!.frame.text;
+    await playUntil(page, (state) => state.activeEncounter?.frame.text !== firstLine, { source, pick });
+    await expect(taken).toHaveCount(0);
+  }
   const met = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
   expect(met.completedEncounterIds.filter((id) => route.encounterIds.includes(id)).sort()).toEqual([...route.encounterIds].sort());
   for (const itemId of route.itemIds) expect(met.inventory[itemId], itemId).toBe("gifted");

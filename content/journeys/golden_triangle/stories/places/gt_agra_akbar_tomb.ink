@@ -146,6 +146,7 @@ INCLUDE modules.ink
 // 【3】手伝いの knot：雨の匂いの小瓶を盗まれたとき（噛み合いでない選択）
 === gt_agra_akbar_tomb_monkey_attar ===
 # speaker: narrator
+# item_out: gt_delhi_rain_attar
 暑さに顔をしかめながら、彼女が鞄から小さな布袋を取り出した。デリーの路地で買った、雨の匂いの小瓶だ。
 # speaker: heroine
 # voice: gt_agra_akbar_tomb_monkey_attar_001
@@ -225,8 +226,10 @@ INCLUDE modules.ink
 小瓶が、壁の上から落ち――かけて、猿の手に戻った。からかっている。考えるより先に、両手が出ていた。
 * [落ちてきた小瓶を、両手で受け止めた # option: caught]
     # speaker: narrator
+    # item_out: gt_delhi_rain_attar
     両手の中に、ひやりとした小さな重みが収まった。指を開くと、小瓶は割れずにそこにあった。
     # speaker: heroine
+    # item_out: gt_delhi_rain_attar
     # reaction: heroine,surprised_big,sparkle
     わたしの雨、無事だった！
     # speaker: heroine

@@ -111,6 +111,7 @@ INCLUDE modules.ink
 # background: gt_bg_hotel_rooftop_night
 # tint: off
 # speaker: narrator
+# item_out: gt_agra_anwar_petha
 # local_word: gt_agra_word_petha
 二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。ペーターは冬瓜からできているのだと、箱に書いてある。
 # speaker: heroine
@@ -127,8 +128,10 @@ INCLUDE modules.ink
 # voice: gt_agra_epilogue_007
 でも今日、自分の言葉で言えた。カムラさんに、報告できる
 # speaker: narrator
+# item_out: gt_delhi_aman_wedding_invitation
 彼女は鞄から、折りたたんだ紙を取り出した。デリーの最後の夜、カムラの孫のアマンがくれた、彼の結婚式の案内だ。
 # speaker: narrator
+# item_out: gt_delhi_aman_wedding_invitation
 行くかどうかは自分で決めたい、とあの夜は返事を待ってもらった。ジャイプールの式の日付を、指でなぞる。
 # speaker: heroine
 # voice: gt_agra_epilogue_008

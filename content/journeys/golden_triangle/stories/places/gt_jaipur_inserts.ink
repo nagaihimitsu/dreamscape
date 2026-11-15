@@ -225,8 +225,10 @@ INCLUDE modules.ink
 {
 - cond("item gt_delhi_rain_attar held"):
     # speaker: narrator
+    # item_out: gt_delhi_rain_attar
     彼女は鞄から小瓶を取り出し、栓を抜いて、手首にほんの一滴だけのせた。デリーの路地で買った、雨の匂い。
     # speaker: heroine
+    # item_out: gt_delhi_rain_attar
     デリーの雨を、少しだけ、ジャイプールの結婚式に持っていく。全部は使わない。日本の分も、残しておくの
 - cond("flag gt_agra_rain_on_lawn"):
     # speaker: narrator
@@ -253,6 +255,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: gt_naraina
 # speaker: narrator
+# item_out: gt_jaipur_wedding_envelope
 踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、花婿の祖母のカムラに差し出した。
 # speaker: heroine
 アマンさんに

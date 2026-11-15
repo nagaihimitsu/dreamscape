@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_qutb_minar_guide_002
 首が痛い。背の高いものって、ずるいね。目を全部持っていく
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 2
 彼女はガイドブックから段ボールの切れ端を出した。二行目。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。
 # speaker: heroine
 # voice: gt_delhi_qutb_minar_guide_003

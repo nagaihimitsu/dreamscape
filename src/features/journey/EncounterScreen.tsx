@@ -5,6 +5,7 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { ItemShowLayer } from "../../components/ItemShow";
+import { ItemOutLayer, type ItemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "./time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate, type PhoneNames } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
@@ -59,6 +60,8 @@ export type EncounterScreenView = {
    * (`# photo_show:`), the scene's weather and tint (`# weather:`, `# tint:`) and who speaks it.
    */
   staging?: FrameStaging & Pick<StoryFrame, "photo" | "weather" | "tint"> & { speaker: Speaker; speakerPersonId?: string };
+  /** The line's `# item_out:` card, with what is written on the item now (itemOutCard). */
+  itemOut?: ItemOutCard;
   /** The game clock (minutes from midnight): the colour of the time of day over the scene's picture. */
   minute: number;
   /** The names a phone's messages show (LineStage). */
@@ -150,6 +153,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
+      <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {!quiz && (stage.heroine || stage.opposite) && <div className="vn-character-layer encounter-character-layer" data-two-characters={stage.heroine && !!stage.opposite}>
         {stage.heroine && <div className="encounter-character-slot encounter-character-heroine">
