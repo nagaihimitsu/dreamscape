@@ -8,7 +8,7 @@ const claimLabels: Record<string, string> = {
   legend: "伝承",
 };
 
-export function ClueDetails({ clue, action, image, imageCredits }: { clue: TourismClue; action?: ReactNode; image?: ReactNode; imageCredits?: ReactNode }) {
+export function ClueDetails({ clue, action, image }: { clue: TourismClue; action?: ReactNode; image?: ReactNode }) {
   const sources = (
     <details className="clue-sources">
       <summary>根拠と解釈を確認する</summary>
@@ -21,7 +21,6 @@ export function ClueDetails({ clue, action, image, imageCredits }: { clue: Touri
           </a>
         </div>
       ))}
-      {imageCredits}
     </details>
   );
   return (

@@ -63,6 +63,19 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(await readSave(page)).toEqual(progress);
   await expect(page.getByLabel(`残り${progress.ap}AP`)).toBeVisible();
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
+  // 前回までのあらすじ shows the Duomo's photo with no credit on the card (2026-11-15 user decision): ≡メニュー's
+  // 「写真の出典」 lists it first, with its credit, its licence and the note on its reduced, cropped copy.
+  const recap = page.getByTestId("resume-recap");
+  await expect(recap.getByRole("img")).toBeVisible();
+  await expect(recap.locator("a")).toHaveCount(0);
+  await ops.menuItem(page, "写真の出典");
+  const photoCredits = page.getByRole("dialog", { name: "写真の出典" });
+  const recapCredit = photoCredits.getByTestId("photo-credits").getByRole("listitem").first();
+  await expect(recapCredit.getByRole("heading")).toHaveText(/^前回までのあらすじ（.+）$/u);
+  await expect(recapCredit.getByRole("link")).toHaveText(["画像の出典", /^CC /u]);
+  await expect(recapCredit).toContainText("写真を縮小して表示しています（枠に合わせて切り抜きもしています）。");
+  await ops.closeDialog(photoCredits);
+  await expect(ops.settingsButton(page)).toBeFocused();
   const records = await ops.openRecords(page);
   await expect(records.getByTestId("city-progress")).toContainText("観光 1 / 4");
   await ops.closeDialog(records);

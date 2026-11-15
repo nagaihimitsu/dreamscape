@@ -225,8 +225,8 @@ button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: 0.55; }
 .glossary-card-empty { border-style: dashed; background: transparent; }
 .glossary-card-empty .glossary-card-photo { background: transparent; color: var(--ds-ink-muted); font-size: 22px; }
 
-/* A card opened larger: the photo whole, its words, its credit; 「閉じる」 in the title bar, which stays at the top while the
-   dialog scrolls (on a short phone the credit lies below the fold). */
+/* A card opened larger: the photo whole and its words; 「閉じる」 in the title bar, which stays at the top while the dialog
+   scrolls. */
 dialog.modal.glossary-entry {
   --modal-pad-top: 16px;
   --modal-pad-inline: 16px;
@@ -245,9 +245,6 @@ dialog.modal.glossary-entry {
   border-radius: 8px;
 }
 .glossary-entry-line { margin: 10px 0 0; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
-.glossary-entry-credit { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
-.glossary-entry-credit h3 { margin: 0 0 4px; font-size: 13px; color: var(--ds-ink); }
-.glossary-entry-credit p { margin: 0 0 2px; }
 
 /* Reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion): the card and the dimming show at once. */
 .reduce-motion .glossary-term-window,

@@ -2,7 +2,10 @@
 // resumed game, the packing of a departure and the credit roll at the end of a journey, as pure rules over the game.
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { DERIVED_PHOTO_NOTE_JA, RECAP_PHOTO_NOTE_JA } from "../../content/credits";
 import { episodes, getAlbumImage, landmarks, scenes, storyState, tourismAssets } from "../../content";
 import {
   cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue, startDateScene, withAp,
@@ -18,6 +21,7 @@ import {
   chapterStampOf, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, recapPicture,
   resumeRecap, type RecapPicture,
 } from "./journey-moments";
+import { PhotoCredits, recapPhotos } from "./PhotoCredits";
 import { formatTravelTime } from "./travel-time";
 
 const roll = () => 0;
@@ -162,6 +166,29 @@ describe("the recap of a resumed game", () => {
       chapter: { titleJa: "賭けではなく、欲しいから" },
       photo: placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド"),
     });
+  });
+});
+
+describe("the recap's photo in ≡メニュー's 「写真の出典」 (2026-11-15: the card shows no credit)", () => {
+  const jamaMasjid = placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド");
+
+  it("lists a place's photo in its recap copy under the recap's name, and nothing for the author's own picture or no picture", () => {
+    expect(recapPhotos(jamaMasjid)).toEqual([{ key: "recap", labelJa: "前回までのあらすじ（ジャーマー・マスジド）", asset: jamaMasjid.credit, kind: "recap" }]);
+    expect(recapPhotos(albumPicture(tajGuide))).toEqual([]);
+    expect(recapPhotos(null)).toEqual([]);
+  });
+
+  it("shows the photo with its credit and the note on its cropped copy; the note on free time's copies only with them", () => {
+    const markup = (photos: Parameters<typeof PhotoCredits>[0]["photos"]) => renderToStaticMarkup(createElement(PhotoCredits, { photos, onClose: () => {} }));
+    const recapOnly = markup(recapPhotos(jamaMasjid));
+    expect(recapOnly).toContain(`src="/${jamaMasjid.path}"`);
+    expect(recapOnly).toContain(jamaMasjid.credit!.creditJa);
+    expect(recapOnly).toContain(`href="${jamaMasjid.credit!.licenseUrl}"`);
+    expect(recapOnly).toContain(RECAP_PHOTO_NOTE_JA);
+    expect(recapOnly).not.toContain(DERIVED_PHOTO_NOTE_JA);
+    const withFreeTime = markup([...recapPhotos(jamaMasjid), { key: "row-x", labelJa: "場所", asset: jamaMasjid.credit!, kind: "card" }]);
+    expect(withFreeTime).toContain(DERIVED_PHOTO_NOTE_JA);
+    expect(withFreeTime.split(RECAP_PHOTO_NOTE_JA)).toHaveLength(2);
   });
 });
 

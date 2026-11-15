@@ -54,8 +54,9 @@ function closeWaitMenu() {
 }
 
 /**
- * What ≡メニュー's panel opens; 写真の出典 only while free time shows photos (cards, a backdrop photo), 画像の出典 only while a
- * story scene shows a registered photo (its credits: the scene shows no 出典 of its own).
+ * What ≡メニュー's panel opens; 写真の出典 only while free time shows photos (cards, a backdrop photo) or the recap card a
+ * place's photo (also on the night screen), 画像の出典 only while a story scene shows a registered photo (its credits: the
+ * scene shows no 出典 of its own, nor does a quiz answer's reveal of the same photo; 2026-11-15).
  */
 type MenuActions = {
   /** セーブ: whether the scene was saved (a ribbon then drops onto ≡メニュー). */

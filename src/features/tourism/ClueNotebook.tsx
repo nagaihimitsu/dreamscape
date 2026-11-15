@@ -3,7 +3,7 @@ import { getCityContent, landmarks, tourismClues } from "../../content";
 import { Modal, ModalTitle } from "../../components/Modal";
 import { playSe } from "../../audio/sound-effects";
 import { ClueDetails } from "./ClueDetails";
-import { ClueImage, ClueImageCredits } from "./ClueImage";
+import { ClueImage } from "./ClueImage";
 import "./notebook.css";
 
 export interface NotebookReasoning {
@@ -170,11 +170,7 @@ export function ClueNotebook({
               {unreadDocument ? <>
                 <h3>{current.titleJa}</h3>
                 <button className="secondary" data-testid={`read-document-${current.id}`} onClick={() => onDiscoverDocument(current.id)}>資料を読む</button>
-              </> : <ClueDetails
-                clue={current}
-                image={<ClueImage clue={current} />}
-                imageCredits={<ClueImageCredits clue={current} />}
-              />}
+              </> : <ClueDetails clue={current} image={<ClueImage clue={current} />} />}
             </article>
           )
         )}
