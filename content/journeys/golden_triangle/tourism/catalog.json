@@ -772,6 +772,34 @@
       "checkedAt": "2026-11-15"
     },
     {
+      "id": "gt_img_delhi_paharganj_reception_night",
+      "path": "assets/tourism/india/delhi_paharganj_reception_night.webp",
+      "width": 1350,
+      "height": 1800,
+      "altJa": "デリー・パハールガンジの小さなホテルの帳場を、夜に見えるように暗くした写真。壁の灯りの下に大理石の受付台があり、係の男性と客の男性が話している。左の大きな窓の外は暗い通り。デリーの宿の夜の帳場を表すイメージ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://www.flickr.com/photos/sasha-india/27650947394/",
+      "licenseName": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "creditJa": "写真：Sasha India／Flickr／CC BY 2.0",
+      "modificationJa": "Flickr配信の元画像（1944×2592px。窓の外が明るい、昼の写真）を使用。写っている人が分からないよう、係の男性と客の男性の顔と、窓の外の店先の3人の顔をぼかしました。夜の場面に使うため、全体を暗くして灯りのような暖かい色に寄せ、色を少し薄くし、四隅と床を暗くしました。天井の照明と壁の灯りの周りは暗くする度合いを弱めています。左の大きな窓（外の通り）は暗い青にして、店の明かりや看板の色の濃い部分だけを少し残しました。縦横比を維持し、切り抜き・描き足し・AI生成は行っていません。表示時は画面比率により端が切れる場合があります。さらに縦横比を保って1350×1800pxに縮小し、WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-15"
+    },
+    {
+      "id": "gt_img_agra_mehtab_bagh_sunset",
+      "path": "assets/tourism/india/agra_mehtab_bagh_sunset.webp",
+      "width": 1600,
+      "height": 1067,
+      "altJa": "ヤムナー川の対岸のメヘターブ・バーグから見た、夕方のタージ・マハル。霞んだ橙色の空の下で、白い大理石のドームと尖塔が夕日の色に染まっている。左端の尖塔には修復の足場が組まれている。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunset_view_of_the_Taj.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Sumit Das／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1280px縮小版を使用。元画像は6000×4000px。縦横比を維持し、切り抜き・描き足し・AI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1067pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-15"
+    },
+    {
       "id": "gt_img_agra_fatehabad_road",
       "path": "assets/tourism/india/agra_fatehabad_road.webp",
       "width": 1600,

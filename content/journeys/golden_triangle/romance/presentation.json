@@ -493,6 +493,30 @@
         "y": 50
       }
     },
+    "gt_bg_delhi_hotel_hub_night": {
+      "nameJa": "滞在先のホテル・夜（デリー）",
+      "captionJa": "デリー ／ 滞在先・夜（パハールガンジの宿の帳場を暗くしたイメージ）",
+      "color": "#363026",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_paharganj_reception_night",
+      "imagePosition": {
+        "x": 40,
+        "y": 50
+      },
+      "placeId": "delhi_hotel_hub"
+    },
+    "gt_bg_agra_mehtab_bagh_sunset": {
+      "nameJa": "メヘターブ・バーグ（夕方）",
+      "captionJa": "アーグラ ／ メヘターブ・バーグから見た夕方のタージ・マハル",
+      "color": "#a38558",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_mehtab_bagh_sunset",
+      "imagePosition": {
+        "x": 50,
+        "y": 50
+      },
+      "placeId": "agra_mehtab_bagh"
+    },
     "gt_bg_agra_fatehabad_road": {
       "nameJa": "アーグラの大通り",
       "captionJa": "アーグラ ／ ファテハバード・ロード",
