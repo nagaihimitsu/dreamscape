@@ -28,7 +28,7 @@ INCLUDE modules.ink
 見学を終えて、また長い階段を下りる。段の下は、もう別の世界だった。焼いた肉の煙、呼び込みの声、自転車リキシャの鈴。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 4
-{heroine_name}は段ボールの切れ端を出した。四行目。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
+{heroine_name}は段ボールの切れ端を出した。四行目。
 # speaker: heroine
 # reaction: heroine,worried,gloom
 # local_word: gt_delhi_word_nihari
@@ -36,6 +36,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_jama_masjid_guide_003
 ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……朝ごはんの時間、もう過ぎちゃった。完全に出遅れた
 # speaker: narrator
+# emotion: worried
 彼女は本気で悔しがり、通りの鍋を一つずつのぞき込んだ。どの鍋も、もう底が見えている。
 # speaker: heroine
 # voice: gt_delhi_jama_masjid_guide_004
@@ -78,7 +79,7 @@ INCLUDE modules.ink
 # speaker: enemy
 隣のゾヘブだ。気にするな。……いや、気にしてもらうことになるか
 # speaker: narrator
-ハミードの説明は短かった。
+店の奥で、古い柱時計の長い針が、かちりと一つ進んだ。ハミードの説明は短かった。
 # speaker: enemy
 こいつが、この店を売れと言ってきた。断った。そうしたら、賭けを持ちかけてきた
 # speaker: gt_zoheb
@@ -158,6 +159,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_004
 ……アサドさんって
 # speaker: narrator
+# emotion: serious
 戻ってきたゾヘブは、{heroine_name}の顔を見て観念したように息を吐いた。ハミードには聞こえない声で言う。
 # speaker: gt_zoheb
 爺さんの息子だよ。ドバイにいる。親父を引き取りたいけど、店がある限り動かないって。だから俺が買う役。賭けも、負けても納得できるようにって、俺が考えた
@@ -226,9 +228,10 @@ INCLUDE modules.ink
 ハミードは小瓶を小さな布袋に入れ、{heroine_name}の手にのせた。
 # speaker: narrator
 # se: phone_keypad
+# leave: enemy
 店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
 # speaker: heroine
-# reaction: heroine,smile,music
+# emotion: smile
 # voice: gt_delhi_main_jama_masjid_008
 ……雨の匂い、まだしてる。日本で雨が降ったら、たぶん、この路地を思い出すね
 -> END

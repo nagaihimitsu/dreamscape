@@ -83,7 +83,6 @@ INCLUDE modules.ink
 夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。五行のデリー。全部、行った。
 # speaker: narrator
 # se: door_knock
-# shake: small
 # term: gt_term_kulhad
 戸を叩く音。アマンが、素焼きの小さなカップのチャイを三つ、器用に指に挟んで立っていた。
 # speaker: enemy
@@ -91,6 +90,8 @@ INCLUDE modules.ink
 # speaker: heroine
 # voice: gt_delhi_epilogue_001
 いえ。……わたしも、アマンさんの立場だったら、同じことを言ったと思います
+# speaker: narrator
+アマンはチャイを一つずつ、二人の手に渡した。器が、まだ熱い。
 # speaker: enemy
 祖母は、零時まで話しました。祖父が六十年前に何を言ったか。自分が何を言わなかったか
 # speaker: enemy
