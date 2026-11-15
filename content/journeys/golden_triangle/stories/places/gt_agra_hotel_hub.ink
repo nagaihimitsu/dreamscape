@@ -31,6 +31,7 @@ INCLUDE modules.ink
 # speaker: narrator
 三回説明して、三回とも笑顔で流された。
 # speaker: narrator
+# leave: gt_samir
 去り際にサミールが置いていった名刺には、こう添えてあった。「叔父アンワルは、アーグラ一のガイドです。愛の物語なら、叔父に」
 { ending_reached:
     # speaker: heroine
@@ -129,10 +130,10 @@ INCLUDE modules.ink
 でも今日、自分の言葉で言えた。カムラさんに、報告できる
 # speaker: narrator
 # item_out: gt_delhi_aman_wedding_invitation
-彼女は鞄から、折りたたんだ紙を取り出した。デリーの最後の夜、カムラの孫のアマンがくれた、彼の結婚式の案内だ。
+彼女は鞄から、カムラの孫のアマンがくれた案内を取り出した。
 # speaker: narrator
 # item_out: gt_delhi_aman_wedding_invitation
-行くかどうかは自分で決めたい、とあの夜は返事を待ってもらった。ジャイプールの式の日付を、指でなぞる。
+行くかどうかは自分で決めたくて、返事はまだ待ってもらっている。ジャイプールの式の日付を、指でなぞる。
 # speaker: heroine
 # voice: gt_agra_epilogue_008
 ジャイプールの結婚式、行きたい。誘われたからじゃなくて、わたしが行きたいの。……一緒に、来てくれる？

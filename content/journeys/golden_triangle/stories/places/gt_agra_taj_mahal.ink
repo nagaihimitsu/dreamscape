@@ -23,7 +23,8 @@ INCLUDE modules.ink
 # pause: 700
 ……あ
 # speaker: narrator
-{heroine_name}は、しばらく何も言わなかった。言葉が出てこない、という顔だった。
+# emotion: surprised
+{heroine_name}は足を止めたまま、しばらく何も言わなかった。
 # speaker: heroine
 # emotion: neutral
 写真と、同じ形なのに。全然、同じじゃない。……大きいのに、浮いてるみたい
@@ -45,6 +46,7 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
+# leave: enemy
 タージ・マハルへ続く長い水路の途中に、白い大理石のベンチがある。記念写真の列が、今日も二十人ほど伸びていた。
 # speaker: narrator
 列に並んでいた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
@@ -120,6 +122,8 @@ INCLUDE modules.ink
 # emotion: serious
 ……わたしも、ちょっと分かります。きれいだからこそ、自分の話と重ねたくないこともあるのかなって
 # speaker: narrator
+# emotion: surprised
+# reaction: enemy,gloom
 言ってから、{heroine_name}ははっとした。ニキルの顔が、さらに一段沈んだ。
 # speaker: heroine
 # reaction: heroine,worried,sweat
@@ -172,6 +176,7 @@ INCLUDE modules.ink
 # speaker: narrator
 後ろの列から、拍手とも抗議ともつかない声が上がった。ベンチの番は、とっくに時間切れだった。
 # speaker: narrator
+# leave: enemy
 二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
 # speaker: heroine
 # reaction: heroine,shy,blush
@@ -210,8 +215,10 @@ INCLUDE modules.ink
 笑いと拍手が大きくなる。{heroine_name}の言葉は、そのたびに物語の一部にされていく。
 # speaker: narrator
 # recall: gt_album_d01
+# emotion: serious
 彼女は唇を結んだ。デリーの最後の朝、車の窓からカムラが言った言葉が、頭の中で聞こえた。
 # speaker: narrator
+# emotion: serious
 アーグラでも、言いたいことは言いなさい。
 # speaker: heroine
 # emotion: serious
@@ -232,7 +239,7 @@ INCLUDE modules.ink
     歴史家は、記録がない伝説だって言ってますよ
 }
 # speaker: narrator
-観客がざわめく。何人かは、がっかりした顔をした。泣いて損をした、という顔だった。
+観客がざわめく。さっき目を拭っていた何人かが、そそくさとハンカチをしまった。
 # speaker: enemy
 本当のことは、人を泣かせない。泣かない客は、タージを忘れる。わしは四十年、それを見てきた
 # speaker: narrator
@@ -285,7 +292,7 @@ INCLUDE modules.ink
     # speaker: enemy
     デリーの新しい都だ。赤い城と、大きなモスク
     # speaker: narrator
-    答えてから、彼は自分の口をしまったという顔をした。
+    答えてから、アンワルは慌てて口をつぐんだ。もう遅い。
     # speaker: heroine
     ……デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない
 }
@@ -319,8 +326,10 @@ INCLUDE modules.ink
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator
 # pause: 800
+一瞬の静寂。
+# speaker: narrator
 # se: applause
-一瞬の静寂。それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。
+それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。
 # speaker: enemy
@@ -368,9 +377,11 @@ INCLUDE modules.ink
     答えは半分も合わなかったね。それでも客は、あなたの方を見ていた。話というのは、そういうものだ
 }
 # speaker: narrator
+帰りぎわ、アンワルは甥のサミールに電話をかけ、何か短く言った。
+# speaker: narrator
 # item_show: gt_agra_anwar_petha
 # term: gt_term_petha
-帰りぎわ、アンワルは甥のサミールに電話をかけ、何か短く言った。それから、二人に紙の箱を差し出した。アーグラ名物の菓子、ペーター。
+それから、二人に紙の箱を差し出した。
 # speaker: enemy
 詫びの印だ。新婚でなくても、甘いものは食べられる
 # speaker: heroine

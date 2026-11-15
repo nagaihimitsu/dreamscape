@@ -28,6 +28,7 @@ INCLUDE modules.ink
 # speaker: heroine
 ありがとうございます。でも、今日は、二人で見て回りたいんです
 # speaker: narrator
+# emotion: surprised
 言い終えてから、彼女は自分で少し驚いた顔をした。断る言葉が、思ったより先に出たらしい。
 { cond("date gt_agra_date_mariam_tomb"):
     # speaker: heroine
@@ -44,6 +45,7 @@ INCLUDE modules.ink
 帳面の上で、サミールのペンが、妙に楽しそうに動いた。
 # background: gt_bg_agra_fatehabad_road
 # speaker: narrator
+# leave: gt_samir
 路地を抜けた先の大通りに、白い車が停まっていた。横に、アイロンの効いたシャツの男が立っている。胸の前に掲げた紙には、こちらの名前が、整ったアルファベットで書いてあった。
 # speaker: heroine
 # emotion: worried
@@ -59,6 +61,7 @@ INCLUDE modules.ink
 # speaker: gt_vinod
 娘が書きました。わたしの字は、道に迷った牛みたいだそうです
 # speaker: narrator
+# emotion: happy
 彼女は吹き出し、それから、こちらにだけ聞こえる声で言った。
 # speaker: heroine
 # emotion: smile
@@ -209,9 +212,9 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri visit
 # priority: +1
 # sources: none
-# background: gt_bg_agra_fatehpur_sikri
+# background: gt_bg_agra_fatehpur_sikri_bazaar
 # bgm: gt_relics_of_past
-# ambience: amb_wind
+# ambience: gt_amb_bazaar
 # speaker: narrator
 木の陰に戻ると、ヴィノードはもう車の横にいた。ボンネットの上に、新聞紙の包みが一つ。
 # speaker: gt_vinod
@@ -363,6 +366,7 @@ INCLUDE modules.ink
 # emotion: smile
 次は、って言ってくれるんですね。はい。マトリーのお礼、お母さんに、自分で言いたいです
 # speaker: narrator
+# leave: gt_vinod
 白い車は、大通りの流れに戻っていった。バックミラーの下のレモンと青唐辛子が、最後まで揺れていた。
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
