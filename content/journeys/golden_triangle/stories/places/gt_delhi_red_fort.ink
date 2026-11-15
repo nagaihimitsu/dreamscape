@@ -465,6 +465,7 @@ INCLUDE modules.ink
 録音の語りが途切れた。静かになった広間に、カムラの声が聞こえた。
 # speaker: gt_kamla
 # leave: gt_kamla
+# together: gt_kamla enemy
 プラカーシュ。あの冬の夜、ここのショーの暗がりで、言ったでしょう。好きだ、って
 # speaker: gt_kamla
 # leave: gt_kamla
@@ -474,6 +475,7 @@ INCLUDE modules.ink
 # leave: gt_kamla
 ……わたしも。わたしも、です。遅くなったけど
 # speaker: narrator
+# together: gt_kamla enemy
 アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向き、孫を見て、それから{heroine_name}を見た。
 # speaker: gt_kamla
 ……あんたが連れてきたの
@@ -505,6 +507,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # leave: enemy
+# leave: gt_kamla
 二人はそっと、観客の列へ戻った。背中のほうで、カムラの声が、話の続きをしている。
 # speaker: gt_kamla
 # leave: gt_kamla

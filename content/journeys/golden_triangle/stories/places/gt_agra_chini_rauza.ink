@@ -157,6 +157,7 @@ INCLUDE modules.ink
 車のドアの閉まる音。走ってくる足音が二つ。
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: narrator
+    # together: gt_nikhil gt_tanvi
     汗だくの青年と、緑のクルタの女性。青年が、こちらを見て立ち止まった。
     # speaker: gt_nikhil
     君たちは……タージの、ベンチの！
@@ -174,6 +175,7 @@ INCLUDE modules.ink
     今日は、一枚も決めないで撮って。……写真屋さんを呼んだのは、この人の、唯一のわがままなの
     # speaker: narrator
     # leave: gt_tanvi
+    # leave: gt_nikhil
     代役の二人は、柱の陰に隠れた。アーチの下で、ニキルが膝をつく。今度の箱は、空っぽではなかった。
     タンヴィの返事は、柱の陰まで聞こえた。
     # speaker: gt_tanvi

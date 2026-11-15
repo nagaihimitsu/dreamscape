@@ -23,7 +23,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { sceneStageOf, stageLine } from "../../components/scene-stage";
+import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -120,6 +120,7 @@ export function TourismScreen({
   const { stage, focus } = useSceneStage(active.phase === "guide" ? stageLine(frame, storyState.people, { heroine: !!reaction }) : {},
     GUIDE_STAGE, active.phase);
   const personId = stage.opposite?.figure;
+  const cast = stageCast(stage);
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   const speaker = plate.name;
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a guide has no one opposite).
@@ -220,8 +221,10 @@ export function TourismScreen({
           <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
           <span className="sr-only">{asset.altJa}</span>
           {/* With a person on stage the two stand side by side (the encounter's slots), the person alone in the middle while
-              she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. */}
-          <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={stage.heroine && personId ? true : undefined}>
+              she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. Two
+              people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as the other goes). */}
+          <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
+            data-together={cast.together}>
             {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
               <CharacterPortrait
                 characterId="heroine"
@@ -234,9 +237,11 @@ export function TourismScreen({
                 {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
               </CharacterPortrait>
             </div>}
-            {personId && <div className="encounter-character-slot encounter-character-enemy">
-              <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
-            </div>}
+            {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => (
+              <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+                <CharacterPortrait characterId={figure.figure} focus={at} />
+              </div>
+            ))}
           </div>
           {/* 「案内をとばす」 (2026-11-14, the phone UI audit): top left under the header, away from the window's head,
               whose place by 「ログ」 holds the harmless 「隠す」 in every scene. Not at a choice (the guide stops there:

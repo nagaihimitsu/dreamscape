@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_001
 すごい……。上のビルの音が、ここから急に聞こえなくなる。町の真ん中に、穴が空いてるみたい
 # speaker: narrator
+# together: gt_kunal gt_jasmeet
 # term: gt_term_dupatta
 階段の途中で、大学生くらいの二人が言い争っていた。携帯を構えた青年と、白いドゥパッターを頭からかぶった女の子。
 # speaker: gt_delhi_agrasen_young_man
@@ -218,6 +219,7 @@ INCLUDE modules.ink
 顔は、ちょっとだけ隠してね
 # speaker: narrator
 # leave: gt_kunal
+# leave: gt_jasmeet
 帰りは、上り。百段を過ぎたあたりで、彼女の息が上がってきた。
 # speaker: heroine
 # voice: gt_delhi_date_agrasen_baoli_024

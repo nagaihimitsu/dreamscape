@@ -73,6 +73,7 @@ INCLUDE modules.ink
 # speaker: narrator
 列の順番が来て、二人はベンチに並んで座った。後ろの視線が痛い。{heroine_name}は、意味もなく三回、髪を直した。
 # speaker: narrator
+# together: enemy gt_tanvi
 予定より早く、緑のクルタの女性が戻ってきた。タンヴィだ。ベンチの二人と、汗だくの恋人と、彼の胸ポケットを順に見て、彼女はすべてを理解した顔になった。
 # speaker: narrator
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
@@ -177,6 +178,7 @@ INCLUDE modules.ink
 後ろの列から、拍手とも抗議ともつかない声が上がった。ベンチの番は、とっくに時間切れだった。
 # speaker: narrator
 # leave: enemy
+# leave: gt_tanvi
 二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
 # speaker: heroine
 # reaction: heroine,shy,blush

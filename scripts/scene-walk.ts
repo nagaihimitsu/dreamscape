@@ -132,10 +132,12 @@ function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string
 }
 
 /** What a line's tags give its stage, gathered from its tag lines without text (frame-reader.ts reads them into the line after). */
-type LineStaging = { leave: string[]; phone?: PhoneSide; letter?: LetterKind; heroineReaction: boolean; enemyReaction: boolean; emotion: boolean };
+type LineStaging = { leave: string[]; together?: string[]; phone?: PhoneSide; letter?: LetterKind; heroineReaction: boolean; enemyReaction: boolean;
+  emotion: boolean };
 const noStaging = (): LineStaging => ({ leave: [], heroineReaction: false, enemyReaction: false, emotion: false });
 function gatherStaging(staging: LineStaging, tags: StoryTags): void {
   staging.leave.push(...(tags.leave ?? []).filter((who) => !staging.leave.includes(who)));
+  if (tags.together) staging.together = tags.together;
   if (tags.phone) staging.phone = tags.phone;
   if (tags.letter) staging.letter = tags.letter;
   staging.heroineReaction ||= !!tags.reactions?.heroine;
@@ -149,7 +151,9 @@ function gatherStaging(staging: LineStaging, tags: StoryTags): void {
  * the ones the screens read from the line's tags: her reaction (which brings her back after her `# leave:` in a scene
  * that has her from the start), the enemy's (in an arrival or epilogue only with a figure; a guide reads none), and in a
  * talk or an encounter an emotion on the narration (hers) or on the enemy's line (theirs). A reaction keyed by its text
- * in presentation/dialogue-reactions.json is not read here.
+ * in presentation/dialogue-reactions.json is not read here. A line's `# together:` (2026-11-15) must name two people who
+ * stand there: it stops the build for a person without a figure, the enemy where the scene has none for them, and two
+ * names of one figure (checkTogether).
  */
 function walkStage(previous: Stage | undefined, line: { speaker: Speaker; personId?: string; staging: LineStaging },
   stage: NonNullable<SceneWalkInput["stage"]>, scene: StageScene, warn: (problem: string) => void): Stage {
@@ -161,8 +165,10 @@ function walkStage(previous: Stage | undefined, line: { speaker: Speaker; person
     enemy: talk ? staging.enemyReaction || (staging.emotion && speaker === "enemy")
       : kind !== "guide" && staging.enemyReaction && (kind === "date" || kind === "battle" || !!stage.enemyFigure),
   };
+  if (staging.together) checkTogether(staging.together, stage.people, scene, kind);
   const frame = { speaker, ...(line.personId ? { speakerPersonId: line.personId } : {}),
-    ...(staging.phone ? { phone: { side: staging.phone } } : {}), ...(staging.letter ? { letter: { kind: staging.letter } } : {}) };
+    ...(staging.phone ? { phone: { side: staging.phone } } : {}), ...(staging.letter ? { letter: { kind: staging.letter } } : {}),
+    ...(staging.together ? { together: staging.together } : {}) };
   const arrived = stageAfter(previous, stageLine(frame, stage.people, cues), scene);
   for (const who of staging.leave) {
     const exit = stageExit(who, stage.people);
@@ -171,6 +177,35 @@ function walkStage(previous: Stage | undefined, line: { speaker: Speaker; person
       warn(`# leave: ${who}: ${who === "enemy" ? "the scene's enemy" : who === "heroine" ? "the heroine" : "the person"} is not on the stage there, so the tag takes no one off`);
   }
   return stageAfter(previous, stageLine({ ...frame, leave: staging.leave }, stage.people, cues), scene);
+}
+
+const KIND_JA: Record<SceneKind, string> = { talk: "会話", encounter: "寄り道", battle: "バトル", arrival: "到着", epilogue: "エピローグ",
+  tour_leg: "ツアーの移動", date: "デート", guide: "観光案内" };
+
+/**
+ * Throws when a line's `# together:` names someone who cannot stand opposite her in this scene (2026-11-15; the tag's form,
+ * two different IDs of enemy or declared people, is parseStoryTags'): a person without a figure (characterId in
+ * progression/story.json people), the enemy where the scene has no figure for `# speaker: enemy` (a date, a guide, a
+ * scene without a `# person:` with a figure), or two names of the same figure (a person's other name). Japanese first.
+ */
+function checkTogether(together: readonly string[], people: StoryStateCatalog["people"], scene: StageScene, kind: SceneKind): void {
+  const figures = together.map((who) => {
+    if (who === "enemy") {
+      if (!scene.enemyFigure)
+        throw new Error(`# together: の enemy は、この${KIND_JA[kind]}の場面では向かいに立ちません（${kind === "date" || kind === "guide"
+          ? "デートと観光案内の enemy には絵がありません" : "場面の頭の # person: に絵のある人がいません"}）。その人の人物ID を書いてください` +
+          `（# together: enemy: the scene's enemy has no figure here）。`);
+      return scene.enemyFigure;
+    }
+    const figure = people.find((person) => person.id === who)?.characterId;
+    if (!figure)
+      throw new Error(`# together: の ${who} には絵がないので、向かいに立ちません。progression/story.json の people で characterId を付けるか、` +
+        `絵のある人を書いてください（# together: ${who} has no figure）。`);
+    return figure;
+  });
+  if (figures[0] === figures[1])
+    throw new Error(`# together: の ${together.join(" と ")} は、同じ絵の人です（同じ人の別の呼び名など）。別の2人を書いてください` +
+      `（# together: ${together.join(" ")} name one figure, ${figures[0]}）。`);
 }
 
 /** Walk every path of the scene; returns the number of paths. */
@@ -259,8 +294,12 @@ export function walkScene(walked: SceneWalkInput): number {
         if (text) { input.observe?.(text, speaker, explicitEmotion); explicitEmotion = false; }
         if (text && input.stage && stageScene) {
           const shown = text.length > 30 ? `${text.slice(0, 30)}…` : text;
-          stage = walkStage(stage, { speaker, ...(personId ? { personId } : {}), staging }, input.stage, stageScene,
-            (problem) => warn(`${problem} (${input.label}, the line "${shown}")`));
+          try {
+            stage = walkStage(stage, { speaker, ...(personId ? { personId } : {}), staging }, input.stage, stageScene,
+              (problem) => warn(`${problem} (${input.label}, the line "${shown}")`));
+          } catch (error) {
+            throw new Error(`${(error as Error).message}（${input.label} の行「${shown}」）`, { cause: error });
+          }
         }
         if (text) staging = noStaging();
       }

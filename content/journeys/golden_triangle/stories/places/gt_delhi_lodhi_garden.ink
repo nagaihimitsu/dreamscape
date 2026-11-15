@@ -131,6 +131,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: camera_shutter
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
+# together: gt_suresh gt_meena
 それから、観念したように、女性を連れてやってきた。
 # speaker: gt_suresh
 ミーナだ。大学の同級生。……週に二回、ここで笑っている。健康のためだ。あくまで健康の
@@ -165,12 +166,14 @@ INCLUDE modules.ink
         ……それで、いいのかな
         # speaker: narrator
         # leave: gt_suresh
+        # leave: gt_meena
         彼女の小さな声は、東の門へ歩いていく二人には届かなかった。
     - else:
         # speaker: gt_suresh
         よろしい。申告に誤りなし
         # speaker: narrator
         # leave: gt_suresh
+        # leave: gt_meena
         スレーシュは胸の薔薇を指で直し、ミーナと並んで東の門へ歩いていった。笑う会の後なのに、背中が少し誇らしげだった。
     }
     # speaker: narrator
@@ -195,6 +198,7 @@ INCLUDE modules.ink
     結果は、笑う会の連絡で知らせる
     # speaker: narrator
     # leave: gt_suresh
+    # leave: gt_meena
     それだけ言って、帰っていった。
     # speaker: narrator
     人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
@@ -208,6 +212,7 @@ INCLUDE modules.ink
         スレーシュは返事のかわりに、咳払いを一つした。
         # speaker: narrator
         # leave: gt_meena
+        # leave: gt_suresh
         人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     - else:
         # speaker: gt_meena
@@ -220,6 +225,7 @@ INCLUDE modules.ink
         たぶん、本物の方だった。
         # speaker: narrator
         # leave: gt_suresh
+        # leave: gt_meena
         人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     }
 - -> two_of_us
