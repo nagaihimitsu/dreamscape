@@ -109,7 +109,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 窓辺のグラスにだけ、着いた日の花びらが浮かんでいた。片付ける人も、それには手を出さなかったらしい。
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_agra_hotel_rooftop_night
 # tint: off
 # speaker: narrator
 # item_out: gt_agra_anwar_petha

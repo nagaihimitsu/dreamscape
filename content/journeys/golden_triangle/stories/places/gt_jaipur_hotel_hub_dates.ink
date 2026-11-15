@@ -13,7 +13,7 @@ INCLUDE modules.ink
 # when: episodes jaipur >= 1
 # when: not couple
 # when: time night
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_jaipur_hotel_rooftop_night
 # tint: off
 # bgm: immersed
 # speaker: narrator
@@ -149,7 +149,7 @@ INCLUDE modules.ink
 # when: time night
 # until: date gt_delhi_date_reassurance
 # until: date gt_agra_date_reassurance
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_jaipur_hotel_rooftop_night
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator

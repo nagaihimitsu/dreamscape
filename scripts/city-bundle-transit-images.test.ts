@@ -91,12 +91,18 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     prematureRelease.city.productionStatus = "complete";
     await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow("都市の公開状態（productionStatus）は city:bundle では変えられません");
     expect(fingerprint(root)).toBe(before);
+    // A photo another city's date also shows is shared. Each city's rooftop dates now have their own night view
+    // (2026-11-15), so the fixture lets Agra's rooftop confession show Delhi's rooftop, as all three did before.
+    const catalogFile = "content/journeys/golden_triangle/romance/date_catalog.json";
+    const catalog = readJson(root, catalogFile);
+    catalog.dates.find((date: { id: string }) => date.id === "gt_agra_date_confession").backgroundId = "gt_bg_hotel_rooftop_night";
+    writeJson(root, catalogFile, catalog);
+    const sharedBefore = fingerprint(root);
     const shared = exportCityBundle(root, "delhi");
-    // The rooftop photo is shared: the three cities' rooftop dates show the same background.
     const sharedAsset = shared.assets.find((item) => item.id === "gt_img_hotel_rooftop_night")!;
     sharedAsset.altJa = "他都市の画像を変えてはならない";
     await expect(applyCityBundle(root, shared, true)).rejects.toThrow("ほかの都市の画像や共有の画像は変えられません: gt_img_hotel_rooftop_night");
-    expect(fingerprint(root)).toBe(before);
+    expect(fingerprint(root)).toBe(sharedBefore);
   }, 180_000);
 
   it("does not allow editing a background also used by another city", async () => {
