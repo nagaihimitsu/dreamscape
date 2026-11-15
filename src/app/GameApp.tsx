@@ -348,7 +348,7 @@ export function GameApp({
   // Once a notice: the line's quiet is read as it comes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [learnedNoticeId]);
-  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, riding, nightVisual, effects: travelEffects } = useTravelEffects({
+  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, nightLeavingClock, riding, nightVisual, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
   playMoveRef.current = playMove;
@@ -793,6 +793,7 @@ export function GameApp({
       </header>
       {game && <JourneyHud
         game={game}
+        clock={nightLeavingClock}
         place={currentTravelPlace}
         sceneBackgroundId={sceneBackgroundId}
         view={hudView(game)}

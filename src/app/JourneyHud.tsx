@@ -101,8 +101,13 @@ type MenuActions = {
  * show in the same place for a moment, the item notices waiting behind them.
  */
 export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, glossaryNew = false, holdNotices = false,
-  itemFlight = null, itemOutFlight = null, toast = null, ...actions }: {
+  itemFlight = null, itemOutFlight = null, toast = null, clock, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
+  /**
+   * The clock to show instead of the game's (GameApp: the night a rest slept from, while the night screen's 「ホテルで休みました。」
+   * still shows; 2026-11-15: the morning's 「2日目 09:00」 and its sun waited for the tap).
+   */
+  clock?: Pick<GameState["travel"], "day" | "minute" | "calendar"> | null;
   /**
    * The background the story scene on screen draws its picture from (GameApp; none in free time or where a landmark's
    * photo shows): when it says where it is (`placeId`/`placeJa`), the place plate names that place (hudPlaceName).
@@ -128,7 +133,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
   itemOutFlight?: ItemShowLeave | null;
 } & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
-  const weekday = getGameWeekday(game.travel.calendar);
+  const shownClock = clock ?? game.travel;
+  const weekday = getGameWeekday(shownClock.calendar);
   const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
   // This city's items, and those carried through the journey from an earlier city (the item design §2.6).
   const items = encounters.items
@@ -182,8 +188,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
         <p className="hud-plate" data-testid="journey-context">
           <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeJa}</span>
           <span className="hud-time">
-            <Icon name={getTimePeriod(game.travel.minute) === "day" ? "sun" : "moon"} />
-            {game.travel.day}日目{weekday === undefined ? null : <span aria-label={weekdayLabel(weekday).spoken}>{weekdayLabel(weekday).short}</span>} {formatTravelTime(game.travel.minute)}
+            <Icon name={getTimePeriod(shownClock.minute) === "day" ? "sun" : "moon"} />
+            {shownClock.day}日目{weekday === undefined ? null : <span aria-label={weekdayLabel(weekday).spoken}>{weekdayLabel(weekday).short}</span>} {formatTravelTime(shownClock.minute)}
           </span>
         </p>
         <p className="hud-wallet">
