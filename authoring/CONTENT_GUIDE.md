@@ -520,7 +520,20 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ### 通常デートのデータ
 
-デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection` と開く条件 `when` は開始条件で、`destinationId` と閉じる条件 `until` は必要な場合のみ（`when`・`until` の書き方は[条件の書き方](#条件の書き方)）。通常デートも、ほかのデートを遊んだことを開く条件（`when`）にできます。条件を書かない通常デートは順不同で、最初に選んでも成立させます。期間限定イベントには `until` で終了条件を指定できます（例：`"until": { "episodeCompleted": "milano_last_supper_episode" }`。一度地図に出た特別な出来事も、`until` が真になると閉じます）。`repeatable` は同じデートをもう一度遊べるかで、制作者がデートごとに決めます。通常デートは `false`、関係修復のデート（`recovery`）は `true` です。告白も、ほかのデートと同じく返事にかかわらず1回で思い出になるのが基本で、`false` にします（2026-11-13。ミラノ編・インド編の告白はどれも `false`。インド編は都市ごとに告白のデートがあるので、保留・拒否の後は後の都市の告白で告白し直せます）。`true` にした告白は、保留の後も拒否の後も、そのデートの条件がそろえばもう一度選べます。拒否の後に、新しい通常デートか再交流を終えるまで告白を待たせるかは、制作者がデートごとに決めます（2026-11-15）。待たせる告白には、開く条件に部品 `date_since_rejection`（JSON は `{ "dateSinceRejection": true }`。[条件の書き方](#条件の書き方)）を書きます。後の都市の告白も、繰り返せる告白も同じです（例：インド編のアーグラとジャイプールの告白の頭の `# when: date_since_rejection`。デリーの告白は旅で最初の告白なので書きません）。書かない告白は、断られた直後でも、ほかの条件がそろえば選べます。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
+デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection` と開く条件 `when` は開始条件で、`destinationId` と閉じる条件 `until` は必要な場合のみ（`when`・`until` の書き方は[条件の書き方](#条件の書き方)）。通常デートも、ほかのデートを遊んだことを開く条件（`when`）にできます。条件を書かない通常デートは順不同で、最初に選んでも成立させます。期間限定イベントには `until` で終了条件を指定できます（例：`"until": { "episodeCompleted": "milano_last_supper_episode" }`。一度地図に出た特別な出来事も、`until` が真になると閉じます）。`repeatable` は同じデートをもう一度遊べるかで、制作者がデートごとに決めます。通常デートは `false`、関係修復のデート（`recovery`）はふつう `true` です（下の「関係修復のデート」）。告白も、ほかのデートと同じく返事にかかわらず1回で思い出になるのが基本で、`false` にします（2026-11-13。ミラノ編・インド編の告白はどれも `false`。インド編は都市ごとに告白のデートがあるので、保留・拒否の後は後の都市の告白で告白し直せます）。`true` にした告白は、保留の後も拒否の後も、そのデートの条件がそろえばもう一度選べます。拒否の後に、新しい通常デートか再交流を終えるまで告白を待たせるかは、制作者がデートごとに決めます（2026-11-15）。待たせる告白には、開く条件に部品 `date_since_rejection`（JSON は `{ "dateSinceRejection": true }`。[条件の書き方](#条件の書き方)）を書きます。後の都市の告白も、繰り返せる告白も同じです（例：インド編のアーグラとジャイプールの告白の頭の `# when: date_since_rejection`。デリーの告白は旅で最初の告白なので書きません）。書かない告白は、断られた直後でも、ほかの条件がそろえば選べます。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
+
+関係修復のデート（`"recovery": true`、2026-11-15）：悪い結果が重なっても関係を築き直せる短い場面です。置くかは旅行編ごとに決めます（ミラノ編の `milano_recovery_01`。インド編にはありません）。**いつ地図に出るかも、ほかのデートと同じく `when`・`until` に書きます**（2026-11-15のユーザー判断。ゲームは決まりをかけず、条件を書かなければ、ほかの条件がそろう間いつでも出ます）。ミラノ編は、通常デートを選べず関係がまだ整っていないときだけ出るように、次のように書いています。
+
+```json
+"when": { "all": [
+  { "episodesCompleted": { "city": "milano", "atLeast": 1 } },
+  { "datesCompleted": { "atLeast": 1 } },
+  { "any": [ { "not": { "confessionReady": true } }, { "not": { "dateSinceRejection": true } } ] },
+  { "not": { "normalDateAvailable": true } }
+] }
+```
+
+上から、ミラノのエピソードを1つ終えた・デートを1つ以上終えた・今告白しても受け入れられないか断られた後の待ちの間・この都市で通常デートを今始められない、です（部品は[条件の書き方](#条件の書き方)）。`when` のすぐ下に `not normalDateAvailable` を書くと、通常デートを選べる間の理由の文は「今は別のひとときを選べます。」になります。関係修復のデートは、一度地図に出ても「出た」と記録しないので、`when` が偽になると地図から消えます。終えた回は3回までデートの数（恋愛の段階と告白の条件）に数え、断られた後に終えると `date_since_rejection` が真になります。通常デート（`kind` が `normal`）には付けられません（1回の完了が通常デートと再交流の2回に数えられるので、`content:build` が止めます）。選択の数・効果・AP は自由です。繰り返さない（`repeatable` が `false`）か、2回目から選択の効果を当てない（`rewardOnlyOnce` が `true`）と、関係を築き直せないままになることがあるので、`content:build` が注意に出します（止めません）。
 
 彼女の返事（`kind: answer`、2026-11-13）：保留の後に告白し直す場面がない所（最後の都市や1都市の旅行編）に、彼女から返事をする場面を置けます。主人公はもう一度告白せず、彼女が誘って先に話します。`needsDeferred: true` が要り（保留中にだけ出ます）、いつ出るかは `when`（knot の頭の `# when:` でも）に書きます。保留の後に一緒の時間を置いてください（例：インド編の `places/gt_jaipur_hotel_hub_dates.ink` の `gt_jaipur_date_answer` は、夜にしか出ない告白の後の `# when: time day` で次の日以降の昼。ミラノ編の `places/milano_darsena.ink` の `milano_answer_01` は、夜にだけ出る「今日は返事をしない日」を遊んだ後の昼）。返事は、場面を始めたときの関係の状態から、告白が成立する条件を満たせば `accepted`、満たさなければ `rejected` で、Inkには告白と同じ `confession_result` で渡します（`deferred` にはなりません）。告白と同じく、`# profile:` とミニゲームは書けず、knot の中の選択の回数が `choiceCount` です。`validationContexts` は `confessionResult` に `accepted` と `rejected` の両方を書き（`deferred` は書けません）、`confessionReady` は `accepted` のときだけ `true` にします。成立すると、告白の成立と同じく「交際開始」の画面と交際エンディングになります（思い出は、その道の選択肢の `# memory:` で残します）。返事が出ると、「待って」の後のデートと彼女の返事は地図から消えます。`content:build` は、`needsDeferred` がない、旅行編に告白のデートがない、検証の文脈が合わないときに止めます。Debugの「デート」からも開けます（保留を記録した状態から始まり、Debugの関係値が返事を決めます）。
 
@@ -624,6 +637,9 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 | 恋愛の段階 | `{ "romanceStage": { "atLeast": 2 } }` | 今の段階（1〜4。`atMost` も） |
 | 交際している | `{ "couple": true }` | 告白が成立した |
 | 断られた後にデートをした | `{ "dateSinceRejection": true }` | 告白を断られてから、新しい通常デートか再交流を終えた。断られていないとき（最後の返事が断りでないとき）も真。関係値は読まない（2026-11-15。拒否の後に待たせる告白に書く） |
+| 終えたデートの数 | `{ "datesCompleted": { "atLeast": 1 } }` | 旅全体で終えた通常デートと、再交流（3回まで）の数。恋愛の段階と告白が数えるのと同じ数（`atMost` も。0 も書ける）。関係値は読まない（2026-11-15） |
+| 今告白すれば受け入れられる | `{ "confessionReady": true }` | 関係の値（親しさ・信頼・恋愛の意識）と終えたデートの数が、`romance/progression.json` の告白の条件を満たす。**隠れた関係値を読む**部品で、プレイヤーには値も、条件が満たされたかも見せない（2026-11-15。関係修復のデートなどに） |
+| 通常デートを今始められる | `{ "normalDateAvailable": true }` | この都市の通常デート（`kind` が `normal`）のどれかを今始められる：条件がそろい、まだ遊んでおらず、AP が足りる（移動・営業時間は数えない。ほかの場面の途中は偽）。通常デートの条件には書けない（自分を読み続けるので、`content:build` が止める）（2026-11-15。関係修復のデートなどに） |
 | 使えるAP | `{ "ap": { "atLeast": 2 } }` | AP から取り置きを引いた数（`atMost` も。保留APは入らない） |
 | フラグ | `{ "flag": "<フラグID>" }` | 場面の `set:`・`on_done: set` で立てたフラグ（`progression/story.json` の `flags` に宣言する。どの都市でも読める） |
 | 会った | `{ "met": "<人物ID>" }` | 頭の `# person:` にその人の名前がある場面を見た（`progression/story.json` の `people`） |
@@ -647,9 +663,9 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 ```
 
 - デートは `when` が真で、`until` が偽で、恋愛の欄（`minRomanceStage`・`minAffection`・`needsDeferred`）を満たすときに開きます。一度地図に出た特別な出来事も、`until` が真になると閉じます（`needsDeferred` のデートは、保留が終わると閉じます）。始めた後のデートは、セーブを読み込み直しても条件を調べ直しません。
-- デートが開かない理由の文は今のままの順です（`when` のすぐ下の部品で、都市のクリア → エピソード → `until` → 断られた後の待ち（`dateSinceRejection`。「新しいひとときを過ごしてから、もう一度話せます。」） → そのほか）。ゲームは条件の中身や関係値を理由に出しません。Debugだけが、満たしていない部品を表示します。
+- デートが開かない理由の文は今のままの順です（`when` のすぐ下の部品で、都市のクリア → エピソード → `until` → 断られた後の待ち（`dateSinceRejection`。「新しいひとときを過ごしてから、もう一度話せます。」） → 通常デートを選べる（`not normalDateAvailable`。「今は別のひとときを選べます。」） → そのほか）。ゲームは条件の中身や関係値を理由に出しません。Debugだけが、満たしていない部品を表示します。
 - 道中交流の入場ルール（`encounters/entry-rules.json`）の `at` は、観察の `["observe"]` だけです。ほかの時点に置く交流は、Inkの頭の札で書きます（[場面の時点と順番](../docs/02_TECH_ARCHITECTURE.md#場面の時点と順番)）。
-- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`・`money`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
+- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物、通常デートの条件（名前付きの条件の中も）の `normalDateAvailable` です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`・`money`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
 
 ### 場面の中の分岐
 
@@ -674,7 +690,7 @@ EXTERNAL cond(text)
 ```
 
 - 今の「1場面1ファイル」のInk（`VAR` で始まる形）で `cond` を使うときは、`VAR` の行の後に `EXTERNAL cond(text)` を1行、ファイルの最後に、Inkyで下書きを見るための代わりの関数 `=== function cond(text) ===` と `~ return false` の2行を書きます（`EXTERNAL has_memory(memory_id)` と同じ書き方）。宣言がないと、`npm run content:build` が直し方を示して止めます。代わりの関数はInkyだけが使い、ゲームは本当の値を渡します。
-- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`・`epilogue_started <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`date_since_rejection`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`。それぞれ上の表の部品と同じ意味です。
+- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`・`epilogue_started <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`date_since_rejection`、`dates >= 1`（`<=` も）、`confession_ready`、`normal_date_available`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`。それぞれ上の表の部品と同じ意味です。
 - 引数は、引用符で囲んだ文字だけです（変数や式は書けません）。
 - `npm run content:build` は、`cond` の文字を頭の札と同じ読み方で条件にし、ほかの条件と同じ検査（形・存在しない名前・品物の都市など）をして、誤りがあれば止めます。そのうえで、代表の組み合わせ（全部偽・全部真・1つだけ真）で、全部の道が最後まで進むかを確かめます。全部の組み合わせは確かめません。
 - 選択肢を選んだ直後の行の `cond` は、その選択肢の効果（品物を渡した・関係の値が変わった など）の後の状態を読みます。

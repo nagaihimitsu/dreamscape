@@ -29,6 +29,9 @@ const EXAMPLES: Record<(typeof LEAF_KINDS)[number], Leaf> = {
   romanceStage: { romanceStage: { atMost: 4 } },
   couple: { couple: true },
   dateSinceRejection: { dateSinceRejection: true },
+  datesCompleted: { datesCompleted: { atLeast: 1 } },
+  confessionReady: { confessionReady: true },
+  normalDateAvailable: { normalDateAvailable: true },
   ap: { ap: { atLeast: 2 } },
   flag: { flag: "a_flag" },
   met: { met: "a_person" },
@@ -93,6 +96,13 @@ describe("condition schema", () => {
     expect(messages({ romanceStage: { atLeast: 0 } })).toHaveLength(1);
     expect(messages({ couple: false })).toHaveLength(1);
     expect(messages({ dateSinceRejection: false })).toHaveLength(1);
+    // 2026-11-15: the completed dates (0 allowed, as a count), a confession that would succeed, an ordinary date to start.
+    expect(messages({ datesCompleted: { atMost: 0 } })).toEqual([]);
+    expect(messages({ datesCompleted: {} })).toEqual(["datesCompleted: A range needs atLeast or atMost"]);
+    expect(messages({ datesCompleted: { atLeast: -1 } })).toHaveLength(1);
+    expect(messages({ datesCompleted: { atLeast: 1, city: "milano" } })).toHaveLength(1);
+    expect(messages({ confessionReady: false })).toHaveLength(1);
+    expect(messages({ normalDateAvailable: "milano" })).toHaveLength(1);
   });
 });
 
@@ -123,7 +133,8 @@ describe("leaves of a condition", () => {
     expect(leafReference(EXAMPLES.rides)).toEqual({ kind: "mode", id: "tram" });
     expect(leafReference(EXAMPLES.epilogueViewed)).toEqual({ kind: "city", id: "a_city" });
     expect(leafReference(EXAMPLES.epilogueStarted)).toEqual({ kind: "city", id: "a_city" });
-    for (const situational of [EXAMPLES.time, EXAMPLES.cityDay, EXAMPLES.journeyDay, EXAMPLES.weekday, EXAMPLES.dateSinceRejection])
+    for (const situational of [EXAMPLES.time, EXAMPLES.cityDay, EXAMPLES.journeyDay, EXAMPLES.weekday, EXAMPLES.dateSinceRejection,
+      EXAMPLES.datesCompleted, EXAMPLES.confessionReady, EXAMPLES.normalDateAvailable])
       expect(leafReference(situational)).toBeUndefined();
   });
 });

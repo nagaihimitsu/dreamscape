@@ -823,10 +823,38 @@
       "minAffection": 0,
       "storyId": "places/milano_galleria.milano_recovery_01",
       "when": {
-        "episodesCompleted": {
-          "city": "milano",
-          "atLeast": 1
-        }
+        "all": [
+          {
+            "episodesCompleted": {
+              "city": "milano",
+              "atLeast": 1
+            }
+          },
+          {
+            "datesCompleted": {
+              "atLeast": 1
+            }
+          },
+          {
+            "any": [
+              {
+                "not": {
+                  "confessionReady": true
+                }
+              },
+              {
+                "not": {
+                  "dateSinceRejection": true
+                }
+              }
+            ]
+          },
+          {
+            "not": {
+              "normalDateAvailable": true
+            }
+          }
+        ]
       },
       "rewardOnlyOnce": false,
       "backgroundId": "milano_city_date_landmark",

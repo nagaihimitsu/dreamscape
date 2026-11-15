@@ -22,7 +22,8 @@ export type ConditionContent = {
   encounters: readonly { id: string; cityId: string; landmarkId?: string; storyId?: string; repeatable?: boolean;
     options?: readonly { id: string; deferCompletion?: boolean }[] }[];
   items: readonly { id: string; cityId: string; carry?: "journey" }[];
-  dates: readonly { id: string; chapterId: string; when?: Condition; until?: Condition }[];
+  /** `kind` (normal when absent) tells the ordinary dates, whose conditions cannot read normalDateAvailable. */
+  dates: readonly { id: string; chapterId: string; kind?: string; when?: Condition; until?: Condition }[];
   /** The declared story state (progression/story.json, stage 3a): flags are read in any city; a person belongs to a city. */
   flags?: readonly string[];
   people?: readonly { id: string; cityId: string }[];
@@ -161,9 +162,25 @@ export function conditionErrors(content: ConditionContent, owners: readonly Cond
     conditionLeaves(condition).flatMap((leaf) => leafErrors(content, owner, field, leaf))));
 }
 
-/** Throw one error listing every problem of the owners' conditions. */
+/**
+ * Ordinary dates (kind normal) whose `when` or `until` reads normalDateAvailable, directly or through a named condition
+ * (2026-11-15): whether an ordinary date can be started is read from those same conditions, so the game would read them
+ * again without end. The part is for the other dates (a relationship repair), encounters and scenes.
+ */
+export function selfReadingDateErrors(content: Pick<ConditionContent, "dates" | "namedConditions">): string[] {
+  const named = content.namedConditions ?? {};
+  const reads = (condition: Condition, seen: ReadonlySet<string>): boolean => conditionLeaves(condition).some((leaf) =>
+    "normalDateAvailable" in leaf || ("condition" in leaf && !seen.has(leaf.condition) && Object.hasOwn(named, leaf.condition) &&
+      reads(named[leaf.condition], new Set([...seen, leaf.condition]))));
+  return dateConditionOwners({ dates: content.dates.filter((date) => (date.kind ?? "normal") === "normal") }).flatMap((owner) =>
+    owner.conditions.filter(({ condition }) => reads(condition, new Set())).map(({ field }) =>
+      `An ordinary date cannot read normal_date_available (normalDateAvailable): ${owner.label} (${field}) would read itself ` +
+      "(an ordinary date can be started only when its own conditions hold); write the part on another kind of date, an encounter or a scene"));
+}
+
+/** Throw one error listing every problem of the owners' conditions (and of the ordinary dates that would read themselves). */
 export function checkConditions(content: ConditionContent, owners: readonly ConditionOwner[]): void {
-  const errors = [...new Set(conditionErrors(content, owners))];
+  const errors = [...new Set([...conditionErrors(content, owners), ...selfReadingDateErrors(content)])];
   if (errors.length) throw new Error(errors.join("\n"));
 }
 

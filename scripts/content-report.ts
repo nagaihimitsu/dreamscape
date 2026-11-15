@@ -22,7 +22,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
-  | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music"
+  | "scene-tag" | "special-date-ap" | "recovery-date" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music"
   | "ambience" | "voice-changed" | "glossary";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
@@ -30,6 +30,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "tour-note": "tour note(s) (schedule windows, offer places, sources, then: on a tour day)",
   "scene-tag": "scene tag note(s) (place files and choice tags)",
   "special-date-ap": "special date(s) that cost AP",
+  "recovery-date": "relationship repair date(s) whose repeats cannot rebuild the relationship (not repeatable, or rewardOnlyOnce)",
   "epilogue-unreachable": "city(ies) whose author-started epilogue may never start (then: epilogue out of reach in some or all plays)",
   "then-loop": "then: loop(s) left only when a condition turns false",
   "unknown-file": "unknown file(s) in journey folders",
