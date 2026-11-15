@@ -70,13 +70,15 @@ describe("the Delhi finale's quizzes keep the story's background", () => {
       }
     }
     expect(quizzes).toEqual([
-      "gt_bg_delhi_hotel_alley", "gt_bg_delhi_hotel_alley", "gt_bg_delhi_chandni_chowk", "gt_bg_delhi_chandni_chowk", "gt_bg_delhi_red_fort",
+      "gt_bg_delhi_hotel_alley", "gt_bg_delhi_hotel_alley", "gt_bg_delhi_chandni_chowk_night", "gt_bg_delhi_chandni_chowk_night",
+      "gt_bg_delhi_red_fort_night",
     ]);
-    expect(background(state)).toBe("gt_bg_delhi_red_fort");
-    expect(background(restore(state))).toBe("gt_bg_delhi_red_fort");
-    // The header's place follows the picture: the hotel's alley is 「滞在先のホテル」, Chandni Chowk its map place.
+    expect(background(state)).toBe("gt_bg_delhi_red_fort_night");
+    expect(background(restore(state))).toBe("gt_bg_delhi_red_fort_night");
+    // The header's place follows the picture: the hotel's alley is 「滞在先のホテル」, Chandni Chowk (by day and by night) its map place.
     expect(plate(state, "gt_bg_delhi_hotel_alley")).toBe("滞在先のホテル");
     expect(plate(state, "gt_bg_delhi_chandni_chowk")).toBe("チャンドニー・チョーク");
+    expect(plate(state, "gt_bg_delhi_chandni_chowk_night")).toBe("チャンドニー・チョーク");
   });
 
   it("draws the battle's own background over a quiz saved before the battle kept one, and refuses a forged one", () => {

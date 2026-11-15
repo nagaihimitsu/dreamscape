@@ -12,12 +12,14 @@ INCLUDE modules.ink
 # when: episodes jaipur >= 1
 # hint: ジャイプールの観光を一つ終えてから
 # on_done: money -340
-# background: gt_bg_jaipur_jal_mahal
 { cond("time night"):
+    # background: gt_bg_jaipur_jal_mahal_night
+    # tint: off
     # ambience: amb_night_insects
     # speaker: narrator
     湖の真ん中に、灯りに縁どられた宮殿が浮かんでいた。ジャル・マハル。水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
 - else:
+    # background: gt_bg_jaipur_jal_mahal
     # speaker: narrator
     湖の真ん中に、黄土色の宮殿が浮かんでいた。ジャル・マハル。水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
 }

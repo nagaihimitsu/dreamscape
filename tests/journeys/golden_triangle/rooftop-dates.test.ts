@@ -101,7 +101,9 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
         "confession", "normal", "normal", "normal", "normal", "normal", "normal", "reassurance"]);
       for (const kind of ["confession", "reassurance"]) {
         const date = own.find((item) => item.kind === kind)!;
-        expect(date).toMatchObject({ apCost: 0, minRomanceStage: 2, choiceCount: 1, backgroundId: "gt_bg_hotel_rooftop_night",
+        // Each city's own rooftop at night (Delhi keeps the first one, gt_bg_hotel_rooftop_night; 2026-11-15).
+        const rooftop = cityId === "delhi" ? "gt_bg_hotel_rooftop_night" : `gt_bg_${cityId}_hotel_rooftop_night`;
+        expect(date).toMatchObject({ apCost: 0, minRomanceStage: 2, choiceCount: 1, backgroundId: rooftop,
           storyId: `places/gt_${cityId}_hotel_hub_dates.gt_${cityId}_date_${kind}` });
         expect(date.destinationId).toBeUndefined();
       }

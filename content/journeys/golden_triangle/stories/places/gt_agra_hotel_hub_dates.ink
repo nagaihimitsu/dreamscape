@@ -14,7 +14,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # when: date_since_rejection
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_agra_hotel_rooftop_night
 # tint: off
 # bgm: immersed
 # speaker: narrator
@@ -198,7 +198,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # until: date gt_delhi_date_reassurance
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_agra_hotel_rooftop_night
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
