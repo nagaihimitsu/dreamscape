@@ -341,7 +341,7 @@ export function formatUnusedReport(report: UnusedReport): string[] {
     const keys = report.keys.filter((item) => item.dataUses.some((use) => use.journey === journey.id)).length;
     out.push(`- ${journeyName(journey)}：届かない knot ${knots}、場面に届かないデータ ${entries}、画面が読まないかもしれない欄（データで使っている欄）${keys}`);
   }
-  out.push(`- 画面が読まないかもしれない欄（全体）：${report.keys.length}（どのデータも使っていない欄 ${report.keys.filter((item) => !item.dataUses.length).length} を含む）`);
+  out.push(`- 画面が読まないかもしれない欄（下の一覧の数。スキーマの欄の名前ごと）：${report.keys.length}（どのデータも使っていない欄 ${report.keys.filter((item) => !item.dataUses.length).length} を含む）`);
   out.push("", `■ (a) どこからも届かない knot（${report.knots.length}件）`);
   if (!report.knots.length) out.push("  ありません。");
   for (const item of report.knots)
