@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: narrator
 宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
 # speaker: heroine
+# voice: gt_jaipur_date_confession_001
 この町、毎晩、誰かが結婚してるのかな。楽隊の音って、知らない人のなのに、こっちまでうれしくなるね
 -> gt_jaipur_confession_lead ->
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
@@ -39,6 +40,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
     # pause: 800
+    # voice: gt_jaipur_date_confession_002
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
@@ -49,9 +51,11 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing,heart
     # photo: gt_album_j43 # photo_caption: 楽隊の音の屋上の告白
+    # voice: gt_jaipur_date_confession_004
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_confession_005
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
 // 前の町（デリーかアーグラ）で告白していた場合（2026-11-15）：前と同じ断り方・「待って」を二度聞かせない。
 // 前の返事が断りだったか「待って」だったかはゲームの記録で分けられないので、どちらの後でも本当になる言い方にする。
@@ -72,13 +76,16 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_date_confession_006
         ありがとう。言ってくれて、うれしかった。それは、本当
         # speaker: heroine
+        # voice: gt_jaipur_date_confession_007
         でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
         # speaker: narrator
         どこか遠くの通りで、また別の楽隊が鳴りはじめた。
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_confession_008
         旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
     }
 - else:
@@ -99,6 +106,7 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_date_confession_009
         うれしい。本当に、うれしい
         # speaker: heroine
         でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに
@@ -106,6 +114,7 @@ INCLUDE modules.ink
         ……それは、嫌なの。ちゃんと、わたしが決めたいから
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_confession_011
         待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
         # speaker: narrator
         # stand: close
@@ -130,6 +139,7 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_confession_lead_001
         この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから
         # speaker: heroine
         でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから

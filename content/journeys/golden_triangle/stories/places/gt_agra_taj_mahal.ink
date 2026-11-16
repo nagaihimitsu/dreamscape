@@ -59,6 +59,7 @@ INCLUDE modules.ink
 お願いがあります！　あのベンチを、十分だけ確保してください！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
+# voice: gt_agra_main_taj_mahal_001
 か、確保？
 # speaker: enemy
 # cutin: name
@@ -69,11 +70,13 @@ INCLUDE modules.ink
 お二人で、恋人同士みたいに、ベンチでゆっくり写真を撮っていてくれませんか。彼女が戻ったら、代わってください
 # speaker: heroine
 # reaction: heroine,shy,blush
+# voice: gt_agra_main_taj_mahal_002
 わたしたちが、あそこに？　二人で？　……ゆっくり？
 # speaker: narrator
 ニキルは携帯を見せた。プロポーズの手順が三十枚のスライドになっている。七枚目に、ベンチの写真と赤い丸。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_main_taj_mahal_003
 スライドまで……。わ、分かりました。ゆっくり、ですね
 # speaker: narrator
 列の順番が来て、二人はベンチに並んで座った。後ろの視線が痛い。{heroine_name}は、意味もなく三回、髪を直した。
@@ -126,6 +129,7 @@ INCLUDE modules.ink
 好きよ。建物としては、世界で一番。でも、ここで求婚されるのは、また別の話
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_main_taj_mahal_004
 ……わたしも、ちょっと分かります。きれいだからこそ、自分の話と重ねたくないこともあるのかなって
 # speaker: narrator
 # emotion: surprised
@@ -133,6 +137,7 @@ INCLUDE modules.ink
 言ってから、{heroine_name}ははっとした。ニキルの顔が、さらに一段沈んだ。
 # speaker: heroine
 # reaction: heroine,worried,sweat
+# voice: gt_agra_main_taj_mahal_005
 ご、ごめんなさい。ニキルさんの三か月を、否定したいわけじゃなくて……
 # speaker: narrator
 タンヴィは、廟の左右に一つずつ建つ、そっくりな赤い建物を指さした。
@@ -159,6 +164,7 @@ INCLUDE modules.ink
 # pause: 800
 沈黙。{heroine_name}は、ずっと引っかかっていたことを、やっと言葉にした。
 # speaker: heroine
+# voice: gt_agra_main_taj_mahal_006
 タンヴィさんが嫌なのは、タージじゃなくて……一度も、聞かれなかったこと、ですよね
 # speaker: narrator
 タンヴィは少し驚いた顔をして、それから、ゆっくりうなずいた。
@@ -187,6 +193,7 @@ INCLUDE modules.ink
 二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
 # speaker: heroine
 # reaction: heroine,shy,blush
+# voice: gt_agra_main_taj_mahal_007
 ……ねえ。わたしたち、世界で一番ロマンチックなベンチに座っちゃったね。ふりで、だけど
 -> END
 
@@ -215,6 +222,7 @@ INCLUDE modules.ink
 拍手が起きた。サミールが帳面に書き留めていた新婚の話は、叔父の口から、町中のガイドに回っていたらしい。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_finale_001
 ち、違います！　わたしたち、新婚じゃ……！
 # speaker: enemy
 ご覧なさい、この照れよう。タージの前では、誰もが恋に正直になる
@@ -231,6 +239,7 @@ INCLUDE modules.ink
 アーグラでも、言いたいことは言いなさい。
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_finale_002
 ……アンワルさん。その、職人の手を切ったっていう話。本当なんですか
 # speaker: narrator
 観客が、一斉にこちらを振り向いた。アンワルの笑顔は崩れない。
@@ -240,6 +249,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_taj_mahal
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_agra_finale_003
     記録が、ないんです。歴史家の人たちも、根拠のない伝説だって言ってます
 - else:
     # speaker: narrator
@@ -270,6 +280,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_agra_finale_004
     調べた人たちが見つけたのは、黒い墓の土台じゃなくて、庭でした。タージと、水に映るタージを眺めるための
 - else:
     # speaker: narrator
@@ -283,11 +294,13 @@ INCLUDE modules.ink
 観客が、拍手で彼女を前へ押し出した。逃げ場はない。五十人の目が、こちらを見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
+# voice: gt_agra_finale_005
 え、わたしが？　む、無理です。人前で話すのは……
 # speaker: narrator
 声が震えた。けれど、一歩下がりはしなかった。
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_finale_006
 ……やってみます。下手でも、本当の話をします
 # speaker: enemy
 では、聞こう。手を切られなかったというなら、職人たちはそのあと、どこへ行った
@@ -306,6 +319,7 @@ INCLUDE modules.ink
     # speaker: narrator
     答えてから、アンワルは慌てて口をつぐんだ。もう遅い。
     # speaker: heroine
+    # voice: gt_agra_finale_008
     ……デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない
 }
 # speaker: narrator
@@ -313,6 +327,7 @@ INCLUDE modules.ink
 # speaker: enemy
 名もない手の話では、人は泣かないよ。人は、名前に泣くんだ
 # speaker: heroine
+# voice: gt_agra_finale_009
 名前、ありますよ。一人だけ、タージに自分の名前を書き残した人がいるんです
 # speaker: narrator
 アンワルの眉が、わずかに上がった。四十年、聞かれたことのない方向からの話だった。
@@ -320,6 +335,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_agra_finale_010
     書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて
 - else:
     # speaker: enemy
@@ -329,12 +345,14 @@ INCLUDE modules.ink
 # em: 名前
 観客の何人かが、川向こうのタージを、目を細めて見つめた。あの白い壁のどこかに、一人の名前がある。
 # speaker: heroine
+# voice: gt_agra_finale_011
 それと、もう一つ、言っておきたいことがあります
 # speaker: narrator
 {heroine_name}は観客に向き直った。耳が熱い。それでも、声は最初より通っていた。
 # speaker: heroine
 # reaction: heroine,shy,blush
 # photo: gt_album_a66 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
+# voice: gt_agra_finale_012
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator
 # pause: 800
@@ -351,6 +369,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # term: gt_term_caravanserai
+    # voice: gt_agra_finale_013
     タージ・ガンジは、市場と隊商宿の町。最初から、タージの計画の一部だったんですよね
 - else:
     # speaker: enemy
@@ -363,10 +382,12 @@ INCLUDE modules.ink
 切られたと語られてきた手は、切られずに、次の都を建てに行ったと伝わる。
 # speaker: heroine
 # bgm: touching_moments_four
+# voice: gt_agra_finale_014
 アンワルさん。わたし、今日聞いた中で一番泣けるのは、アンワルさんの話だと思います
 # speaker: enemy
 わしの？
 # speaker: heroine
+# voice: gt_agra_finale_015
 手を切られた人の話じゃなくて、手を受け継いだ人の話。タージと一緒に生まれた町に、七代、住んでる人の話
 # speaker: narrator
 アンワルは答えなかった。杖を握る指に、少し力が入った。日が沈み、川向こうのタージが、白から灰色へ変わっていく。
@@ -374,6 +395,7 @@ INCLUDE modules.ink
 ……明日も、わしは手を切る話をするよ。客はあれで泣く。泣いた客は、また来る
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_finale_016
 はい。……そう言うと思ってました
 # speaker: enemy
 だが、終わりに一つ足そう。壁に名前を残した書家の話と、南門の外の町の話を
@@ -398,5 +420,6 @@ INCLUDE modules.ink
 詫びの印だ。新婚でなくても、甘いものは食べられる
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_finale_017
 ……それは、受け取ります。そこは、譲らないです
 -> END

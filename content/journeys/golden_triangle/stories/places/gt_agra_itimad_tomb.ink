@@ -49,6 +49,7 @@ INCLUDE modules.ink
 庭の奥の白い墓廟は、大きくはない。けれど近づくほど、壁一面に色の石の模様が浮かび上がってくる。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_agra_main_itimad_tomb_001
 わあ……これが『ベビー・タージ』だね。名前どおり、かわいい
 # speaker: gt_agra_itimad_woman
 # leave: gt_agra_itimad_woman
@@ -60,6 +61,7 @@ INCLUDE modules.ink
 ヴィムラーです。ヒンディー語の教師を三十八年。今は、この墓の名誉回復をしています
 # speaker: heroine
 # reaction: heroine,surprised,sweat
+# voice: gt_agra_main_itimad_tomb_002
 め、名誉回復……？
 # speaker: enemy
 この墓は、誰の赤ちゃんでもない。娘が、亡くなった両親のために建てたものです。それを『タージの赤ちゃん』だなんて
@@ -69,6 +71,7 @@ INCLUDE modules.ink
 署名を。名前と国名だけで結構です
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_main_itimad_tomb_003
 あの……読んでからでも、いいですか？
 # speaker: narrator
 ヴィムラーの手が止まった。教師の目で、{heroine_name}を上から下まで見る。
@@ -92,6 +95,7 @@ INCLUDE modules.ink
 # speaker: enemy
 イティマード・ウッダウラは名前じゃなくて称号。『国家の柱』という意味。どんな人だったか、分かる？
 # speaker: heroine
+# voice: gt_agra_main_itimad_tomb_004
 えっと……偉い人、ですよね
 # speaker: enemy
 # reaction: enemy,sigh
@@ -109,6 +113,7 @@ INCLUDE modules.ink
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_main_itimad_tomb_005
 建てたのも、建ててもらったのも、自分の足で来た人たちなんですね
 # speaker: enemy
 分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先。タージは、それを大きくしただけ
@@ -126,6 +131,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_main_itimad_tomb_006
     三つ目だけ、資料で確かめられないと思います。タージは、シャー・ジャハーンの建物ですよね
 - else:
     # speaker: narrator
@@ -137,10 +143,12 @@ INCLUDE modules.ink
 # speaker: enemy
 本当のことだけ書いても、誰も読まない。三年集めて、署名は四十二人。大きく書いたら、少しは足を止めてくれるかと思って
 # speaker: heroine
+# voice: gt_agra_main_itimad_tomb_007
 でも、一つ盛ったら、ほかの二つまで疑われちゃいます。せっかく、本当なのに
 # speaker: narrator
 ヴィムラーは長いこと黙っていた。先生に赤ペンを入れられた生徒みたいな顔だった。
 # speaker: heroine
+# voice: gt_agra_main_itimad_tomb_008
 この紙には署名できません。……でも、白い紙を一枚もらえますか
 # speaker: narrator
 {heroine_name}は新しい紙に短く書き、下に自分の名前と国名を添えた。
@@ -166,5 +174,6 @@ INCLUDE modules.ink
 それから、あなた。さっきの『イティマード』、発音が違います。イッ、ティ、マード。はい、繰り返して
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_main_itimad_tomb_009
 ……授業、始まっちゃった
 -> END
