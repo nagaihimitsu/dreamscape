@@ -47,6 +47,12 @@
 - [書いた場面をDebugで確かめる](authoring/DEBUG_CHECK_GUIDE.md)：書いた場面を、ゲームの中ですぐ見る手順。
 - [AIと決めごとを進める型](authoring/DECISION_GUIDE.md)：AIがユーザーに聞く・自分で決める・書き残すときの型。
 - [AIに仕事を分けて頼む手引き](authoring/AI_DELEGATION_GUIDE.md)：AIの担当を分けて速く進め、取り込む前に確かめるやり方。
+- [「調べて → 方法を決めて → 作る」の進め方](authoring/RESEARCH_TO_BUILD_GUIDE.md)：「調べて」「方法を考えて」「実装して」と頼まれたときの進め方。
+- [表現の道具（札・機能）を足すときの考え方](authoring/EXPRESSION_TOOLS_GUIDE.md)：新しい札を作る前に見ること、作るときにそろえるもの、一律の決まりを制作者の条件に移す手順。
+- [横の点検](authoring/SWEEP_CHECK_GUIDE.md)：1つの指摘を直したら、同じ型の所をほかにも全部探す手順。
+- [ミニゲームの手応えの作り方と確かめ方](authoring/MINIGAME_FEEL_GUIDE.md)：物語の中のミニゲームを気持ちよくする基準と、試遊・ボットでの確かめ方。
+- [無料の素材の探し方](authoring/FREE_ASSETS_GUIDE.md)：曲・環境音・効果音の探し方とライセンスの読み方、写真で足りない所。
+- [旅の数字の決め方](authoring/NUMBERS_GUIDE.md)：運賃・移動の時間・予算の出し方と、バランス調整で見ること。
 - [旅行編の制作手順](authoring/JOURNEY_AUTHORING.md)：下書きのシナリオとクイズを旅行編へ取り込む道具。
 - [都市データの編集](authoring/CITY_BUNDLES.md)：地点・交通・背景を都市ごとの作業用JSONでまとめて直す。
 - [都市の追加手順](authoring/FUTURE_CITIES.md)：都市のデータの登録と、都市の移り方・保存の決まり。
