@@ -2588,6 +2588,794 @@
     "gt_jaipur_confession_lead_001": {
       "text": "この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから",
       "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_001": {
+      "text": "……同じ絵。手描きだって、言ってたのに",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_002": {
+      "text": "すみません。さっきの絵、手描きだって言いましたよね。向こうのお店に、同じ絵がたくさんありました",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_003": {
+      "text": "それは……その……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_004": {
+      "text": "サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_005": {
+      "text": "……サリームさん、これ、何日描いたんですか",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_006": {
+      "text": "何千もの小さな鏡。だから点で描いたんですね。……星じゃない。鏡なんだ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_007": {
+      "text": "わたし……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_008": {
+      "text": "城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_009": {
+      "text": "ごめんなさい。確かめもしないで、サリームさんを疑いました。みんなの前で",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_010": {
+      "text": "……はい。だから、戻すために、もう一回大きな声を出してきます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_011": {
+      "text": "この絵の本物は、中庭の奥の露店にあります。描いた人が、今もそこにいます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_amber_fort_012": {
+      "text": "……わたしが、自分のために買った、初めての絵です。疑ったことも、ちゃんと一緒に覚えておきます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_001": {
+      "text": "は、はい。日本から……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_002": {
+      "text": "え、ええと……それは……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_003": {
+      "text": "す、すみません！　……でも、どっちの言い分も、ちょっと分かるんです",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_004": {
+      "text": "わたし、旅の途中で、家のお味噌汁が恋しくなることがあります。我慢したら、もっと恋しくなりました",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_005": {
+      "text": "恋しくなるのは、帰る場所があるってことだと思います。……恥ずかしいことじゃ、ないです",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_006": {
+      "text": "はい。宮殿の一部は、今も王家の方の住まいなんですよね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_007": {
+      "text": "五キロは無理でも、二キロなら入りますよね。……それで、漬物がなくなったら、電話してください。お母さんに、次の分を頼むって",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_008": {
+      "text": "なくなるたびに、電話する理由ができます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_city_palace_009": {
+      "text": "あ、ありがとうございます。……わたしにも、重量制限が……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_001": {
+      "text": "す、すみません！　……写真を撮ろうとしてて",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_002": {
+      "text": "四十年……じゃあ、中にも何度も？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_003": {
+      "text": "頼み、ですか？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_004": {
+      "text": "……はい。ちゃんと見てきます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_005": {
+      "text": "あれ……どうやって上がるの？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_006": {
+      "text": "坂道だ。階段じゃなくて、ゆるい坂でぐるぐる上がっていくんだ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_007": {
+      "text": "……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_008": {
+      "text": "九百五十三、なんだって。ガウラさんの九百五十一、ほとんど合ってます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_009": {
+      "text": "ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_010": {
+      "text": "……上から見たガウラさんが、通りで一番、生きてるって感じがしました",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_011": {
+      "text": "あの、今度、一緒に上に行きませんか。入場券は、わたしが……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_012": {
+      "text": "……ごめんなさい。聞きもしないで、決めちゃいました",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_hawa_mahal_013": {
+      "text": "だ、大根……。ホテルで、どうしよう……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_001": {
+      "text": "カ、カムラさん！？　踊ってる……！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_002": {
+      "text": "む、無理です、踊ったことないです！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_003": {
+      "text": "え、ええっ！？　こんな大勢の前で……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_004": {
+      "text": "……やります。わたしが、答えます",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_005": {
+      "text": "こ、これでも精いっぱいです……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_006": {
+      "text": "一と、四分の一。……です！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_007": {
+      "text": "カムラさん、来たばかりなのに、もうこっちの人の言い方になってる……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_008": {
+      "text": "ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_009": {
+      "text": "ガンガウル。女神さまを敬う、春のお祭り",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_010": {
+      "text": "中の人が、見られずに、外を見るため。……通りも、お祭りも、市場も",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_011": {
+      "text": "……はい。……怖いけど、踊りたいです",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_012": {
+      "text": "一緒に！　下手なのは、二人とも同じだから！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_002": {
+      "text": "でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_003": {
+      "text": "今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_004": {
+      "text": "だから、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_005": {
+      "text": "話したいことがあって、屋上に誘ったの。今夜は、わたしから誘いたかった",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_006": {
+      "text": "でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_008": {
+      "text": "背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_009": {
+      "text": "話、あるんでしょ。いいよ。最後まで、ちゃんと聞く",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_confession_lead_010": {
+      "text": "ん？　どうしたの、改まった顔して",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_001": {
+      "text": "チャイ、二つもらってきた。一つは、そっちの",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_002": {
+      "text": "この前の返事の話は、今日はしない。……そのかわり、チャイが冷めるまでは、普通の話をしよう。いつもの、どうでもいい話",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_003": {
+      "text": "明日の話……。うん、普通だね。普通、なんだけど、ちょっとだけ緊張する",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_004": {
+      "text": "それ、いちばん普通の話。うれしい。明日は、わたしが一つ、行きたい所を言ってもいい？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_005": {
+      "text": "変なもの……。ごめん、今日は、あんまり周りを見てなかったかも",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_006": {
+      "text": "変なもの？　屋根の上を歩いてた山羊。あれ、どうやって上ったんだろうね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_007": {
+      "text": "帰ったら……。帰る話は、今はちょっと、さみしいかも",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_008": {
+      "text": "鮭のおにぎり。三か所はがすやつ。ラーム・バーグで言ったの、覚えてた？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_009": {
+      "text": "鮭のおにぎり。コンビニの、三か所はがすやつ。ちょっと恋しい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_010": {
+      "text": "待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_reassurance_011": {
+      "text": "答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_001": {
+      "text": "はい、続き。今夜こそ、見つけてね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_002": {
+      "text": "はい。探して。ちゃんと、隠したものがあるんだから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_006": {
+      "text": "逃げたね。いいよ。明日の方が、濃くて見つけやすいかも",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_007": {
+      "text": "……見つけた、ね。自分の名前、人の手のひらで見るの、どんな気分？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_008": {
+      "text": "わたしは、ちょっと、くすぐったい。ずっと、持って歩いてたんだもん",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_009": {
+      "text": "見つけたね。もう、フロントの人に読まれちゃったけど。自分で見つけてくれたのは、うれしい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_010": {
+      "text": "見つけたけど、読めない。ふふ、セーフ。ファルハーナさん、ヒンディー語の文字で書いてくれたんだ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_011": {
+      "text": "何て書いてあるかは、教えない。読めなかったなら、読めないままで",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_012": {
+      "text": "電話番号！？　隠したの、ファルハーナさん自身の宣伝だった！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_night_013": {
+      "text": "ふふっ、あはは！　すごい、本気だ。自分の店、絶対持てると思う、あの人",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_morning_001": {
+      "text": "だ、旦那さまはいないです！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_morning_003": {
+      "text": "教えないって、言ったのに。……もう。聞かなかったことに、してくれる？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_morning_004": {
+      "text": "うそつき。でも、ありがと",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_hotel_mehndi_morning_005": {
+      "text": "……だよね。うん。隠したのは、わたしだから。わたしが選んだ名前だから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_001": {
+      "text": "割り切れない数は、縁起がいい。終わりにしないで、続いていく感じ、だったよね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_002": {
+      "text": "でも、いくら包めばいいんだろう。少なすぎても失礼だし、多すぎても気をつかわせちゃう",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_003": {
+      "text": "うん。気持ちが伝わるくらい。一ルピー玉、ちゃんと持ってる？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_004": {
+      "text": "奮発、だね。カムラさん、きっと中身を見て、ふんって言う。でも、うれしそうに言う",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_005": {
+      "text": "一ルピーと、手紙。それ、いいかも。割り切れない数の、いちばん小さいやつ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_006": {
+      "text": "アマンさんに、毎日言葉にしてくださいって、書く。カムラさんの言葉の、受け売りだけど",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_007": {
+      "text": "腕輪は、出かける直前にはめる。ナスリーンさんに、割れやすいって言われたから。今夜、からんって鳴らすの",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_008": {
+      "text": "メヘンディも、まだちゃんと残ってる。色、いちばん濃いときに結婚式でよかった",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_009": {
+      "text": "デリーの雨を、少しだけ、ジャイプールの結婚式に持っていく。全部は使わない。日本の分も、残しておくの",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_010": {
+      "text": "雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_before_envelope_011": {
+      "text": "踊りは、要相談、だったよね。相談の余地、たぶん、ないけど",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_after_envelope_001": {
+      "text": "アマンさんに",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_after_envelope_002": {
+      "text": "アマンさんに、おめでとうございますって、伝えてください",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_after_reel_001": {
+      "text": "こ、ここまで！？　ジャイプールにまで！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_after_reel_002": {
+      "text": "や、やりません！　あれは、鳩がいないと出ないの",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_finale_after_reel_003": {
+      "text": "旅の最後の夜に、デリーの階段井戸が追いかけてくるなんて。でも、ちょっと、うれしいかも。全部、つながってる感じがして",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_001": {
+      "text": "宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_002": {
+      "text": "どこまで本当で、どこから宝の地図なのか、分からなくなってきた。でも、それが楽しいね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_003": {
+      "text": "宝探しの最中に、それは言わない約束",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_004": {
+      "text": "正直な案内人。盛ったところも、ちゃんと自分で言うんだね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_005": {
+      "text": "案内人を困らせないの",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_006": {
+      "text": "ふふっ、商売上手！　続きは次の地図、だって",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_007": {
+      "text": "やられた！　ふふっ、最後の印、お茶屋さんだった！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_008": {
+      "text": "甘い。濃い。ほんとだ。宝物の味がする",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_009": {
+      "text": "宝を見つける人、だって。じゃあ、今日のわたしたち、ちょっとは見込みあるね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_010": {
+      "text": "あ、あの門。サリームさんが描いてた門だ。上から見ると、絵より、ずっと小さい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jaigarh_fort_011": {
+      "text": "宝物って、見つからない方が、ずっと探していられるね。五十年たっても、男の子が地図を描いて売ってるくらいに",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_jaigarh_fort_map_001": {
+      "text": "ふふっ、値段で地図が変わった！",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_002": {
+      "text": "ほ、ほんとに？　人前でそういうの、ずるいよ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_003": {
+      "text": "……でも、いいよ。断れないからじゃなくて、わたしが、いいって決めたから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_004": {
+      "text": "えっ！　それ、花嫁さんのやつ……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_005": {
+      "text": "……いいよ。ただし、自分で見つけられたらね。見つけられなかったら、ずっと言うから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_006": {
+      "text": "え、わたしが？　急に言われても……。ううん、決めた。ファルハーナさん、耳を貸して",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_007": {
+      "text": "わたしが？　じゃあ、こっちに耳を貸して、ファルハーナさん",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_008": {
+      "text": "秘密。聞いても、教えないからね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_009": {
+      "text": "……そっか。うん、模様だけでも、きれいだし",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_010": {
+      "text": "うん。模様だけで十分。きれいなのが、いちばんだもんね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_011": {
+      "text": "すごい。下書きもないのに。手のひらが、だんだん自分の手じゃないみたいになっていく",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_012": {
+      "text": "食べたい。今、いちばん食べたい。でも、手が使えない",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_013": {
+      "text": "ひ、人が見てる……。一口だけ。一口だけね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_014": {
+      "text": "……ありがとう。自分で食べられないの、ちょっと恥ずかしいね。誰かに食べさせてもらうなんて、子どものとき以来かも",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_015": {
+      "text": "今は本当にやめて。手、動かしたら模様がつぶれちゃう",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_016": {
+      "text": "いじわる！　手が乾いたら、覚えてなさいね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_017": {
+      "text": "ひどい。本気でひどい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_018": {
+      "text": "ひどい……。今の、この旅でいちばんひどい。ふふっ、でも、おいしそうに食べるね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_019": {
+      "text": "手が使えないと、何にもできないね。やってもらうの、慣れてないから、変な感じ。でも、今日は、ちょっと楽しかった",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_jal_mahal_020": {
+      "text": "この模様、結婚式の夜まで、持つかな。持ってほしいな",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_jantar_mantar_guide_001": {
+      "text": "現代美術の公園……じゃないよね。全部、空を測るための道具なんだって",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_jantar_mantar_guide_002": {
+      "text": "道具の中に、人が歩いて入れるんだ。道具の方が、わたしより大きい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_jantar_mantar_guide_003": {
+      "text": "影が、すごくくっきりしてる。……ここだと、影も道具の一部なのかもね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_jantar_mantar_guide_004": {
+      "text": "……あの人、すごい勢い。何かに怒ってるみたい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_jantar_mantar_001": {
+      "text": "それで、直接、抗議に……？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_jantar_mantar_002": {
+      "text": "この日時計が示すのは、ジャイプールの太陽で決まる時刻、なんですよね。携帯の時刻とは、別の",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_jantar_mantar_003": {
+      "text": "わ……目盛りが、すごく細かい。大きいのは、見せびらかすためじゃなかったんだ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_jantar_mantar_005": {
+      "text": "ディヴィヤさん、論文、何時に出すんですか？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_main_jantar_mantar_006": {
+      "text": "天文学者と占星術師が、同じ影を見てる。……なんだか、いい眺め",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_001": {
+      "text": "どのお店も、まぶしすぎる……。値札、見るのも怖い",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_002": {
+      "text": "デリーの、赤い城の商店街。腕輪の棚に手を伸ばしたとき、生徒さんたちの波が来たの、覚えてる？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_005": {
+      "text": "そこの『今のところは』の人。今、何か言おうとしたでしょ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_006": {
+      "text": "い、いたた……！　あ、入った。手首で、からんって鳴った",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_007": {
+      "text": "……今それ、ちょっと困る。ほら、また花嫁さんって言われた",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_008": {
+      "text": "それ、分かってて言ったでしょ。……でも、似合うって言われたら、ちょっと迷う",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_009": {
+      "text": "……迷ってるの、見て分からない？　一緒に見てほしかったのに",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_010": {
+      "text": "これ。夕方のジャイプールの色。この町に着いた日、窓から見た色だから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_011": {
+      "text": "……そう言われると、ちょっと恥ずかしい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_012": {
+      "text": "言ってくれるんだ。あのとき、わたし、何にも言わなかったのに",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_013": {
+      "text": "じゃあ、一緒に選んで。でも、最後に決めるのは、わたしね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_014": {
+      "text": "欲しいです。すごく、欲しいです。でも、もう少しだけ、安くなりませんか",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_015": {
+      "text": "……カムラさんの教え、値切りには向いてなかった",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_016": {
+      "text": "値切れた！　正直に言ったのに、値切れた",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_017": {
+      "text": "わたしの交渉だったのに……。それに、旦那さんじゃないです",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_018": {
+      "text": "旦那さんじゃないです……！　この旅で、もう何回目……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_019": {
+      "text": "……値切るのも、ちょっと楽しみだったのにな",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_020": {
+      "text": "ううん。値切るのも、買い物のうちだから。でも、ありがとう",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_021": {
+      "text": "音がする。歩くたびに。自分で選んで、自分で欲しいって言ったものの音",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_johari_bazaar_022": {
+      "text": "次は、値切る前に、欲しいって言わないようにする。ううん、やっぱり言う。言ってから、値切る",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_001": {
+      "text": "幽霊に、ちゃんとあいさつしたら、工事が進んだんだ。怖い話なのに、ちょっと礼儀正しいね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_002": {
+      "text": "同じ部屋が、ずらっと……。どこにいるのか、すぐ分からなくなりそう",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_003": {
+      "text": "ねえ、かくれんぼしよう。わたしが隠れる。百数えたら、探しに来て。ちゃんと数えてね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_004": {
+      "text": "呼ばれたら、出たら負けな気がして。かくれんぼ、終わっちゃうでしょ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_005": {
+      "text": "ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_007": {
+      "text": "あ……見つかった。一個ずつ、全部開けてきたの？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_009": {
+      "text": "……探してくれないの？　ずっと待ってたのに。……ちょっと、さみしかった",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_012": {
+      "text": "来てもらう方は、廊下の音を聞いて、今夜は自分の扉かなって、待ってるだけだったのかな",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_013": {
+      "text": "……それ、ちゃんと分かって言ってる？　かっこいいこと言うの、簡単だよ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_014": {
+      "text": "……そっか。うん。わたしも、そっちがいい",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_015": {
+      "text": "……そうは、思えないな。待つだけって、けっこう苦しいよ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_016": {
+      "text": "そうかな。……そうだったらいいな。わたしなら、待つだけは、たぶん嫌だけど",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_017": {
+      "text": "……急に、真面目に聞くね。ちょっと、考えさせて",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_018": {
+      "text": "わたし？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_nahargarh_fort_020": {
+      "text": "あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_001": {
+      "text": "目が回る。全部、同じ階段に見える。どこから下りて、どこへ着くの、これ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_002": {
+      "text": "ほんとだ。目で一段ずつ追いかけても、さっきの段に戻れない。一回下りたら、違う道で帰るしかないんだ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_003": {
+      "text": "それって、文字どおりの井戸端会議だね。日本語の『井戸端会議』って、本当に井戸の端でしてたんだもんね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_004": {
+      "text": "ねえ、しよう。井戸端会議。この旅で会った人たちの噂話。悪口じゃなくて、勝手な想像だけ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_005": {
+      "text": "サミールさん……。思い出すと、また誤解が増えそう。白鳥の折り方、毎晩練習してると思う",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_006": {
+      "text": "絶対、毎晩、白鳥の折り方を練習してる。新しいお客さんが来るたびに、首の角度を変えてると思う",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_007": {
+      "text": "カムラさんの噂は、ちょっと怖いな。……本人に聞こえてそう",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_008": {
+      "text": "ジャイプールに着いたその日に、もう誰かを値切ってると思う。運転手さんとか。三十秒で",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_009": {
+      "text": "わたしから？　……言い出したの、わたしだもんね。えっと",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_010": {
+      "text": "わたしから？　じゃあ……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_012": {
+      "text": "それから……",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_013": {
+      "text": "スレーシュさんとミーナさん。もう、笑う会の外でも会ってるよね。絶対。薔薇、毎回違う色にしてる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_014": {
+      "text": "スレーシュさん。今ごろ、胸ポケットの薔薇を、新聞で隠しながら歩いてる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_016": {
+      "text": "ハルバンスさんは、カナダで絶対、洗車係じゃ終わらない。三日目には、息子さんの会社の配車表を書き直してると思う",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_017": {
+      "text": "ソニアさんは、十年後に州の代表。写真代も、ずっと高くなってるね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_018": {
+      "text": "道を教えてくれた人たち。全員、違う方向を指さした人たち。今ごろ、次の旅行者にも、自信満々で違う方向を教えてる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_019": {
+      "text": "じゃあ、最後の噂。わたしたちのことは、みんな、何て言ってると思う？",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_020": {
+      "text": "その話は、もういい……。ここまで追いかけてこないで",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_021": {
+      "text": "あれは、もう諦めた。訂正したら、訂正した分だけ、話が増える気がする",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_022": {
+      "text": "……それ、褒めてたのかな。わたし、ずっと分からないままなんだけど",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_023": {
+      "text": "あれ、褒めてたんだよ、たぶん。カムラさんの褒め方、分かりにくいから",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_024": {
+      "text": "そ、そう見えてるのかな。噂って、勝手に先に進むから、困る",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_025": {
+      "text": "……一組だもん。噂じゃなくて、本当のこと",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_026": {
+      "text": "……ふふ。わたしも、ちょっと、そう思ってた。噂のほうが、先を歩いてるね",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_027": {
+      "text": "そう見えてるのかな。一緒にいる時間、長いもんね。噂って、早いなあ",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_028": {
+      "text": "噂って、外から見た本当、なのかもね。わたしたちが言葉にする前に、まわりの方が、先に言葉にしてる",
+      "script": "2026-11-15"
+    },
+    "gt_jaipur_date_panna_meena_kund_029": {
+      "text": "ここで聞いた噂話も、全部、井戸の底に置いていこう。わたしたちの分だけ、持って帰って",
+      "script": "2026-11-15"
     }
   }
 }

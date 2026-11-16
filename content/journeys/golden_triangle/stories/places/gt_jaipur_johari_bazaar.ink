@@ -18,6 +18,7 @@ INCLUDE modules.ink
 ジョーハリー・バザールは、宝石商の通りだった。桃色のアーケードの下に、金と宝石の店が、ガラスの扉を並べている。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_date_johari_bazaar_001
 どのお店も、まぶしすぎる……。値札、見るのも怖い
 # speaker: narrator
 # term: gt_term_lac_bangles
@@ -30,6 +31,7 @@ INCLUDE modules.ink
     # speaker: narrator
     彼女の足が、店の前で止まった。棚に伸ばしかけた手が、途中で止まる。
     # speaker: heroine
+    # voice: gt_jaipur_date_johari_bazaar_002
     デリーの、赤い城の商店街。腕輪の棚に手を伸ばしたとき、生徒さんたちの波が来たの、覚えてる？
     # speaker: heroine
     # emotion: worried
@@ -48,6 +50,7 @@ INCLUDE modules.ink
 { cond("flag gt_agra_said_for_now"):
     # speaker: heroine
     # reaction: heroine,teasing,question
+    # voice: gt_jaipur_date_johari_bazaar_005
     そこの『今のところは』の人。今、何か言おうとしたでしょ
 }
 # speaker: gt_nasreen
@@ -63,6 +66,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
 # se: bangles_clink
+# voice: gt_jaipur_date_johari_bazaar_006
 い、いたた……！　あ、入った。手首で、からんって鳴った
 * [「赤が似合う」 # option: red_suits_you]
     # profile: bold
@@ -72,12 +76,14 @@ INCLUDE modules.ink
         赤は、花嫁さんがよく選ぶ色ね
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_johari_bazaar_007
         ……今それ、ちょっと困る。ほら、また花嫁さんって言われた
     - else:
         # speaker: gt_nasreen
         赤は、花嫁さんがよく選ぶ色ね
         # speaker: heroine
         # reaction: heroine,teasing,blush
+        # voice: gt_jaipur_date_johari_bazaar_008
         それ、分かってて言ったでしょ。……でも、似合うって言われたら、ちょっと迷う
     }
 * [「君が選んで」 # option: you_choose]
@@ -86,6 +92,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_johari_bazaar_009
         ……迷ってるの、見て分からない？　一緒に見てほしかったのに
         # speaker: narrator
         それでも彼女は、棚の前で長いこと迷ってから、桃色と橙色がまだらに混ざった一組を、自分で指さした。
@@ -94,6 +101,7 @@ INCLUDE modules.ink
         彼女は棚の前で、長いこと迷っていた。そして、桃色と橙色がまだらに混ざった一組を、自分で指さした。
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_johari_bazaar_010
         これ。夕方のジャイプールの色。この町に着いた日、窓から見た色だから
     }
 // 赤い城の回の後だけ出す選択肢。# requires: を満たさないと、選択肢は隠れる（灰色にならない。2026-11-09 に決まった仕組み）
@@ -104,24 +112,29 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy,sweat
+        # voice: gt_jaipur_date_johari_bazaar_011
         ……そう言われると、ちょっと恥ずかしい
     - else:
         # speaker: heroine
         # reaction: heroine,surprised,blush
+        # voice: gt_jaipur_date_johari_bazaar_012
         言ってくれるんだ。あのとき、わたし、何にも言わなかったのに
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_johari_bazaar_013
         じゃあ、一緒に選んで。でも、最後に決めるのは、わたしね
     }
 -
 # speaker: narrator
 ナスリーンが値段を言うと、彼女は息を吸い、ナスリーンの目をまっすぐ見た。値切るのは、生まれて初めてらしい。
 # speaker: heroine
+# voice: gt_jaipur_date_johari_bazaar_014
 欲しいです。すごく、欲しいです。でも、もう少しだけ、安くなりませんか
 # speaker: gt_nasreen
 あはは！　欲しい、を先に言ったら、値切れないのよ
 # speaker: heroine
 # reaction: heroine,exasperated,gloom
+# voice: gt_jaipur_date_johari_bazaar_015
 ……カムラさんの教え、値切りには向いてなかった
 * [黙って、彼女の交渉を見守る # option: watch_her_bargain]
     # profile: attentive
@@ -136,6 +149,7 @@ INCLUDE modules.ink
         正直な人には、少しだけまけてあげる。今日だけよ
         # speaker: heroine
         # reaction: heroine,happy,sparkle
+        # voice: gt_jaipur_date_johari_bazaar_016
         値切れた！　正直に言ったのに、値切れた
     }
 * [横から口を出して、値切りに加わる # option: join_bargain]
@@ -145,12 +159,14 @@ INCLUDE modules.ink
         あら、旦那さんが出てきた
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_johari_bazaar_017
         わたしの交渉だったのに……。それに、旦那さんじゃないです
     - else:
         # speaker: gt_nasreen
         あら、旦那さんが出てきた。……いいわ、旦那さんに免じて、少しだけ
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_jaipur_date_johari_bazaar_018
         旦那さんじゃないです……！　この旅で、もう何回目……
     }
 * [「欲しいなら、値切らなくてもいいよ」 # option: no_need_to_haggle]
@@ -158,9 +174,11 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_johari_bazaar_019
         ……値切るのも、ちょっと楽しみだったのにな
     - else:
         # speaker: heroine
+        # voice: gt_jaipur_date_johari_bazaar_020
         ううん。値切るのも、買い物のうちだから。でも、ありがとう
     }
     # speaker: narrator
@@ -180,7 +198,9 @@ INCLUDE modules.ink
 アーケードの下を歩くと、彼女の手首で、試しにはめたままの一本が小さく鳴った。一歩ごとに、からん、と。
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_date_johari_bazaar_021
 音がする。歩くたびに。自分で選んで、自分で欲しいって言ったものの音
 # speaker: heroine
+# voice: gt_jaipur_date_johari_bazaar_022
 次は、値切る前に、欲しいって言わないようにする。ううん、やっぱり言う。言ってから、値切る
 -> END

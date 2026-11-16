@@ -18,11 +18,13 @@ INCLUDE modules.ink
 ナハルガル城は、ジャイプールの町を見下ろす尾根の上にあった。城壁の端に立つと、桃色の旧市街が、碁盤の目のまま足もとに広がっている。
 砦の名には、言い伝えがある。この地には、ナハル・シン・ボーミヤーという人の霊がいて、砦の工事を邪魔したのだという。砦の中に彼のための祠を建てると霊は鎮まり、砦は彼の名で呼ばれるようになった。
 # speaker: heroine
+# voice: gt_jaipur_date_nahargarh_fort_001
 幽霊に、ちゃんとあいさつしたら、工事が進んだんだ。怖い話なのに、ちょっと礼儀正しいね
 # speaker: narrator
 砦の奥に、二階建ての宮殿が建っていた。マーダヴェーンドラ・バワン。王と王妃たちの部屋が、九つの区画に分かれて、中庭を囲んでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_date_nahargarh_fort_002
 同じ部屋が、ずらっと……。どこにいるのか、すぐ分からなくなりそう
 # speaker: narrator
 部屋どうしは廊下でつながっていて、王はそこを通って、ほかの王妃に知られずに、誰の部屋にでも行けた、と伝えられている。
@@ -31,6 +33,7 @@ INCLUDE modules.ink
 彼女は廊下の先を見て、それから、こちらを振り返った。目が、少しいたずらっぽく光っていた。
 # speaker: heroine
 # emotion: teasing
+# voice: gt_jaipur_date_nahargarh_fort_003
 ねえ、かくれんぼしよう。わたしが隠れる。百数えたら、探しに来て。ちゃんと数えてね
 # speaker: narrator
 # se: footsteps_run
@@ -47,6 +50,7 @@ INCLUDE modules.ink
         名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。こだまにまじって、小さな笑い声がしたきり、返事はない。三回目に呼んだとき、ようやく扉の陰から彼女が出てきた。
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_nahargarh_fort_004
         呼ばれたら、出たら負けな気がして。かくれんぼ、終わっちゃうでしょ
     - else:
         # speaker: narrator
@@ -56,6 +60,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
+        # voice: gt_jaipur_date_nahargarh_fort_005
         ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方
     }
 * [かくれんぼ：扉を一つずつ開けて見つけた # option: door_by_door]
@@ -74,6 +79,7 @@ INCLUDE modules.ink
         扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁の絵を見ていた彼女が、振り向いた。
         # speaker: heroine
         # reaction: heroine,surprised,blush
+        # voice: gt_jaipur_date_nahargarh_fort_007
         あ……見つかった。一個ずつ、全部開けてきたの？
         # speaker: heroine
         # emotion: smile
@@ -115,6 +121,7 @@ INCLUDE modules.ink
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_nahargarh_fort_009
         ……探してくれないの？　ずっと待ってたのに。……ちょっと、さみしかった
     - else:
         # speaker: narrator
@@ -135,16 +142,19 @@ INCLUDE modules.ink
 王さまは、ほかの人に知られずに、誰の部屋にでも行けたって、言われてるんだよね。便利だけど、さみしい建物
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_nahargarh_fort_012
 来てもらう方は、廊下の音を聞いて、今夜は自分の扉かなって、待ってるだけだったのかな
 * [「自分なら、廊下は使わない」 # option: no_corridor]
     # profile: bold
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_date_nahargarh_fort_013
         ……それ、ちゃんと分かって言ってる？　かっこいいこと言うの、簡単だよ
     - else:
         # speaker: heroine
         # reaction: heroine,surprised,blush
+        # voice: gt_jaipur_date_nahargarh_fort_014
         ……そっか。うん。わたしも、そっちがいい
     }
 * [「待つ方も、案外楽しんでたかもしれない」 # option: waiting_fun]
@@ -152,9 +162,11 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_date_nahargarh_fort_015
         ……そうは、思えないな。待つだけって、けっこう苦しいよ
     - else:
         # speaker: heroine
+        # voice: gt_jaipur_date_nahargarh_fort_016
         そうかな。……そうだったらいいな。わたしなら、待つだけは、たぶん嫌だけど
     }
 * [「君なら、どうしてほしい？」 # option: ask_what_she_wants]
@@ -162,9 +174,11 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,surprised,sweat
+        # voice: gt_jaipur_date_nahargarh_fort_017
         ……急に、真面目に聞くね。ちょっと、考えさせて
     - else:
         # speaker: heroine
+        # voice: gt_jaipur_date_nahargarh_fort_018
         わたし？
     }
 -
@@ -178,5 +192,6 @@ INCLUDE modules.ink
 宮殿の屋上に出ると、町の全部が見えた。桃色の屋根、白い寺院の塔、遠くの湖の光。
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_date_nahargarh_fort_020
 あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
 -> END

@@ -57,11 +57,13 @@ INCLUDE modules.ink
 その絵が、店先に三十枚並んでいた。同じ構図。同じ色。値段は三分の一。光沢のある紙に、印刷されている。
 # speaker: heroine
 # reaction: heroine,surprised,gloom
+# voice: gt_jaipur_main_amber_fort_001
 ……同じ絵。手描きだって、言ってたのに
 # speaker: narrator
 足が、中庭の露店へ引き返していた。画家は顔を上げず、筆を動かし続けている。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_main_amber_fort_002
 すみません。さっきの絵、手描きだって言いましたよね。向こうのお店に、同じ絵がたくさんありました
 # speaker: narrator
 周りの露店の店主たちが、ちらりとこちらを見た。画家の筆が、止まった。
@@ -74,6 +76,7 @@ INCLUDE modules.ink
 あんたは、どっちがどっちを写したと思った
 # speaker: heroine
 # reaction: heroine,worried,sweat
+# voice: gt_jaipur_main_amber_fort_003
 それは……その……
 # speaker: enemy
 答えなくていい。顔に書いてある。……向こうの一枚を持ってこい。並べて見ろ。実物を見た人間にしか、描けないものがある
@@ -83,6 +86,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_amber_fort
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_amber_fort_004
     サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる
 - else:
     # speaker: enemy
@@ -103,6 +107,7 @@ INCLUDE modules.ink
 # speaker: narrator
 印刷の方の天井には、金色の星が描かれていた。サリームの絵の天井は、細かな点の集まりで埋め尽くされている。
 # speaker: heroine
+# voice: gt_jaipur_main_amber_fort_005
 ……サリームさん、これ、何日描いたんですか
 # speaker: enemy
 鏡の間に、四日座った。警備員に顔を覚えられた
@@ -111,6 +116,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # em: 鏡
+    # voice: gt_jaipur_main_amber_fort_006
     何千もの小さな鏡。だから点で描いたんですね。……星じゃない。鏡なんだ
 - else:
     # speaker: enemy
@@ -123,6 +129,7 @@ INCLUDE modules.ink
 疑ったのは、自分の方だった。
 # speaker: heroine
 # emotion: worried
+# voice: gt_jaipur_main_amber_fort_007
 わたし……
 # speaker: enemy
 まだだ。最後に、あっちの説明書きを読め
@@ -134,6 +141,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_amber_fort
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_amber_fort_008
     城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる
 - else:
     # speaker: enemy
@@ -145,14 +153,17 @@ INCLUDE modules.ink
 {heroine_name}はサリームに向き直り、深く頭を下げた。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_main_amber_fort_009
 ごめんなさい。確かめもしないで、サリームさんを疑いました。みんなの前で
 # speaker: enemy
 謝罪は受け取る。……だが、あんたがさっき、ここで大きな声で言ったことは、もう戻らない
 # speaker: heroine
+# voice: gt_jaipur_main_amber_fort_010
 ……はい。だから、戻すために、もう一回大きな声を出してきます
 # speaker: narrator
 彼女は土産物屋の前に立った。印刷の絵を手に取っている観光客たちに、はっきり聞こえる声で言った。
 # speaker: heroine
+# voice: gt_jaipur_main_amber_fort_011
 この絵の本物は、中庭の奥の露店にあります。描いた人が、今もそこにいます
 # speaker: narrator
 観光客の何人かが、顔を見合わせて中庭の方へ歩き出した。戻ってくると、サリームは筆を止めて、こちらを見ていた。
@@ -174,5 +185,6 @@ INCLUDE modules.ink
 おれの仕事だと言えるときだけ、名前を書く。……これは、あんたの絵だ
 # speaker: heroine
 # reaction: heroine,smile,sparkle
+# voice: gt_jaipur_main_amber_fort_012
 ……わたしが、自分のために買った、初めての絵です。疑ったことも、ちゃんと一緒に覚えておきます
 -> END

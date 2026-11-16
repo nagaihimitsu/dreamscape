@@ -23,6 +23,7 @@ INCLUDE modules.ink
 ぼく、ラージュー。この地図、全部ぼくが描いたんだ
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_jaipur_date_jaigarh_fort_001
 宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた
 -> gt_jaipur_jaigarh_fort_map ->
 # speaker: narrator
@@ -42,6 +43,7 @@ INCLUDE modules.ink
         ラージューは、聞いてくれる客がうれしいらしい。池の大きさを、両腕をいっぱいに広げて見せた。
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_jaipur_date_jaigarh_fort_002
         どこまで本当で、どこから宝の地図なのか、分からなくなってきた。でも、それが楽しいね
     }
 * [「三十五キロは、本当かな」と首をかしげる # option: doubt_the_story]
@@ -53,12 +55,14 @@ INCLUDE modules.ink
         # speaker: narrator
         ラージューが口をとがらせると、彼女がこちらの袖を引いた。
         # speaker: heroine
+        # voice: gt_jaipur_date_jaigarh_fort_003
         宝探しの最中に、それは言わない約束
     - else:
         # speaker: gt_raju
         池になったのは、ちょっと盛った。でも、大砲は本物
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_jaipur_date_jaigarh_fort_004
         正直な案内人。盛ったところも、ちゃんと自分で言うんだね
     }
 * [「落ちたところの池、見に行こう」と話に乗る # option: play_along]
@@ -69,12 +73,14 @@ INCLUDE modules.ink
         え、それは……今日は遠いから、無理
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_jaipur_date_jaigarh_fort_005
         案内人を困らせないの
     - else:
         # speaker: gt_raju
         それは、次の地図。別料金
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_jaipur_date_jaigarh_fort_006
         ふふっ、商売上手！　続きは次の地図、だって
     }
 -
@@ -97,6 +103,7 @@ INCLUDE modules.ink
 宝は、ここ。うちのナーナー……じいちゃんのチャイ。ジャイプールでいちばんうまいんだ。本当だよ
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_jaipur_date_jaigarh_fort_007
 やられた！　ふふっ、最後の印、お茶屋さんだった！
 # speaker: narrator
 老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。
@@ -116,6 +123,7 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_jaigarh_fort_008
         甘い。濃い。ほんとだ。宝物の味がする
     }
 * [ラージューの分も頼む # option: chai_for_raju]
@@ -143,6 +151,7 @@ INCLUDE modules.ink
         話を聞きたがる人は、宝を見つける人だ。……わしの昔の話は、いつも、そういう人にしかしない
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_jaipur_date_jaigarh_fort_009
         宝を見つける人、だって。じゃあ、今日のわたしたち、ちょっとは見込みあるね
     }
 -
@@ -150,10 +159,12 @@ INCLUDE modules.ink
 チャイのカップを手に、城壁のふちに立つ。下には、アンベール城と、その前の湖が、模型のように小さく見えた。
 { cond("episode gt_jaipur_main_amber_fort"):
     # speaker: heroine
+    # voice: gt_jaipur_date_jaigarh_fort_010
     あ、あの門。サリームさんが描いてた門だ。上から見ると、絵より、ずっと小さい
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_date_jaigarh_fort_011
 宝物って、見つからない方が、ずっと探していられるね。五十年たっても、男の子が地図を描いて売ってるくらいに
 -> END
 
@@ -192,6 +203,7 @@ INCLUDE modules.ink
     ラージューはポケットから、別の紙を出した。さっきのより、バツ印が少し小さい。
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_jaipur_jaigarh_fort_map_001
     ふふっ、値段で地図が変わった！
 // decline_map は「やめておく」、3回跳ね返されてへそを曲げた（「もういい！　地図は売らない！」）、12秒何もしなかった、のどれでも来る
 // （どれかは物語に渡らない）。最初の一言は、すねたときにも、断られたときにも合う形にする。

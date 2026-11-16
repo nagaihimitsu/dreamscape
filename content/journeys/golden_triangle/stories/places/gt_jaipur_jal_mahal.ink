@@ -49,9 +49,11 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: surprised_big
+        # voice: gt_jaipur_date_jal_mahal_002
         ほ、ほんとに？　人前でそういうの、ずるいよ
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_jaipur_date_jal_mahal_003
         ……でも、いいよ。断れないからじゃなくて、わたしが、いいって決めたから
         # speaker: narrator
         # emotion: shy
@@ -59,9 +61,11 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: surprised_big
+        # voice: gt_jaipur_date_jal_mahal_004
         えっ！　それ、花嫁さんのやつ……
         # speaker: heroine
         # reaction: heroine,teasing,blush
+        # voice: gt_jaipur_date_jal_mahal_005
         ……いいよ。ただし、自分で見つけられたらね。見つけられなかったら、ずっと言うから
     }
 * [「君が決めて」 # option: you_decide]
@@ -71,15 +75,18 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_jal_mahal_006
         え、わたしが？　急に言われても……。ううん、決めた。ファルハーナさん、耳を貸して
     - else:
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_jaipur_date_jal_mahal_007
         わたしが？　じゃあ、こっちに耳を貸して、ファルハーナさん
     }
     # speaker: narrator
     彼女が何かをささやくと、ファルハーナは目を丸くし、それから、たまらないという顔で笑った。
     # speaker: heroine
+    # voice: gt_jaipur_date_jal_mahal_008
     秘密。聞いても、教えないからね
 * [「名前は隠さないで、模様だけで」 # option: pattern_only]
     # profile: honest
@@ -87,10 +94,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_jal_mahal_009
         ……そっか。うん、模様だけでも、きれいだし
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_jal_mahal_010
         うん。模様だけで十分。きれいなのが、いちばんだもんね
     }
     # speaker: gt_farhana
@@ -101,6 +110,7 @@ INCLUDE modules.ink
 # speaker: narrator
 筒の先から、こげ茶色のペーストが細い線になって出てくる。花びら。蔓。孔雀の羽。手首から指先まで、迷いのない線が、見る見るうちに彼女の手を埋めていった。
 # speaker: heroine
+# voice: gt_jaipur_date_jal_mahal_011
 すごい。下書きもないのに。手のひらが、だんだん自分の手じゃないみたいになっていく
 # speaker: gt_farhana
 しばらくは、何にも触らないで。乾いたら、水で洗わずに、指でこそげ落とすの。最初はオレンジ色。一晩たつと、濃くなる
@@ -108,6 +118,7 @@ INCLUDE modules.ink
 描き終わると、彼女は両手を胸の前に上げたまま、動けなくなった。その鼻先を、焼きとうもろこしの匂いが通り過ぎる。炭火で焼いて、塩とライムと唐辛子をこすりつけたものだ。
 # speaker: heroine
 # emotion: exasperated
+# voice: gt_jaipur_date_jal_mahal_012
 食べたい。今、いちばん食べたい。でも、手が使えない
 # speaker: narrator
 ファルハーナに代金を払い、屋台で一本買って戻ると、彼女の目が、とうもろこしから離れなくなった。
@@ -116,10 +127,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy,sweat
+        # voice: gt_jaipur_date_jal_mahal_013
         ひ、人が見てる……。一口だけ。一口だけね
     - else:
         # speaker: heroine
         # emotion: shy
+        # voice: gt_jaipur_date_jal_mahal_014
         ……ありがとう。自分で食べられないの、ちょっと恥ずかしいね。誰かに食べさせてもらうなんて、子どものとき以来かも
     }
     # speaker: narrator
@@ -131,6 +144,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_jal_mahal_015
         今は本当にやめて。手、動かしたら模様がつぶれちゃう
         # speaker: narrator
         # emotion: exasperated
@@ -138,6 +152,7 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,anger
+        # voice: gt_jaipur_date_jal_mahal_016
         いじわる！　手が乾いたら、覚えてなさいね
         # speaker: narrator
         # emotion: teasing
@@ -148,10 +163,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,gloom
+        # voice: gt_jaipur_date_jal_mahal_017
         ひどい。本気でひどい
     - else:
         # speaker: heroine
         # reaction: heroine,exasperated,gloom
+        # voice: gt_jaipur_date_jal_mahal_018
         ひどい……。今の、この旅でいちばんひどい。ふふっ、でも、おいしそうに食べるね
     }
     # speaker: narrator
@@ -162,6 +179,7 @@ INCLUDE modules.ink
 # leave: gt_farhana
 遊歩道のはずれで、二人は湖を眺めた。彼女は、乾きかけた両手を、まだ胸の前に上げている。
 # speaker: heroine
+# voice: gt_jaipur_date_jal_mahal_019
 手が使えないと、何にもできないね。やってもらうの、慣れてないから、変な感じ。でも、今日は、ちょっと楽しかった
 { cond("episode gt_jaipur_finale"):
     # speaker: heroine
@@ -170,6 +188,7 @@ INCLUDE modules.ink
 - else:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_jal_mahal_020
     この模様、結婚式の夜まで、持つかな。持ってほしいな
 }
 -> END
