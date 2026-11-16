@@ -5,6 +5,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - ここに書いたコマンド・項目・ファイルは、2026-11-14 のリポジトリにあるものです（コマンドと検査の決まりは、この日にコードと照らした）。まだないものは「まだ仕組みがない」と書きます。
 - 決まりの元は [AGENTS.md](../AGENTS.md) です。この手引きと食い違うときは AGENTS.md に従います。
 - 手順と並べて読む手引き：[調べものの落とし穴集](RESEARCH_PITFALLS.md)（手順3〜5）、[シナリオ改稿のポイント](SCENARIO_EDITING_GUIDE.md)（手順10b）、[発注マニュアル](ORDERING_MANUAL.md)（手順13〜15・18）、[書いた場面をDebugで確かめる](DEBUG_CHECK_GUIDE.md)（手順10〜22）。AI と進めるときは [AIと決めごとを進める型](DECISION_GUIDE.md) と [AIに仕事を分けて頼む手引き](AI_DELEGATION_GUIDE.md) も。
+- 手順の途中で使う手引き：[旅の数字の決め方](NUMBERS_GUIDE.md)（手順3・11・21）、[表現の道具を足すときの考え方](EXPRESSION_TOOLS_GUIDE.md)（手順16。新しい札が欲しくなったとき）、[無料の素材の探し方](FREE_ASSETS_GUIDE.md)（手順5・17）、[ミニゲームの手応えの作り方と確かめ方](MINIGAME_FEEL_GUIDE.md)（手順19）、[横の点検](SWEEP_CHECK_GUIDE.md)（手順10b・22。1つ直したら同じ型を全部探す）。新しい仕組みや表現を調べて作るときは [「調べて → 方法を決めて → 作る」の進め方](RESEARCH_TO_BUILD_GUIDE.md)。
 - 例はインド・ゴールデントライアングル編です（旅行編ID `golden_triangle`、接頭辞 `gt`、デリー・アーグラ・ジャイプール）。ファイルの書き方の手本は、架空の街の[見本の編](templates/sample_trip/README.md)です。
 
 この文書での書き方：
@@ -435,6 +436,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - データの一言：地点の `descriptionJa`（筋を明かさない一般的な案内）・`heroineLinesJa`、`travel/<都市ID>.json` の最上位の `nightLinesJa`。
 - 守る決まり：ここぞという行だけに書く。`# em:` の語は行の字にそのまま書く。彼女の一言はどの関係の段階でも自然な言葉にし、キャラクターバイブルに照らす。札を付けるついでにヒロインの台詞の文を変えるなら、声を頼む前に済ませる（手順18、[発注マニュアルの 3.1](ORDERING_MANUAL.md#31-いつ頼むか)）。
 - 確かめ方と終わりの目安：`npm run content:build`（決まった値以外、行にない語、同じ行に同じ札2つで止まる）。Debug の場面の確認の「音と演出の見本を開く」で演出だけを見られる。
+- 今の札で書けない見せ方が欲しくなったら：先に [表現の道具（札・機能）を足すときの考え方](EXPRESSION_TOOLS_GUIDE.md) を読み、今の札で書けないかを確かめてから頼む。
 - インド編では：台詞の見せ方の札とその国の言葉15語（#100）、品物の札・天気・揺れ・夜の色（#114）。
 
 ### 手順17. BGM・環境音・効果音
@@ -448,6 +450,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - ファイル：`<旅行編>/public/assets/bgm/<ID>.mp3`・`ambience/<ID>.mp3`・`se/<ID>.mp3`（ID は旅行編の頭文字で始める。例 `gt_jalandhar`）。
   - 一覧：`presentation/music.json`（`sources`・`tracks`・`play`）、`presentation/ambience.json`、`presentation/sounds.json`。`tracks`・`sounds` には `useJa`・`sources`・`fromJa`・任意の `volume`。
   - 後半：`music.json` の `play`（`place`・`arrival`・`epilogue` など変えたい鍵と、地点ごとの `places`）、`ambience.json` の `play.places`、行の `# bgm:`・`# ambience:`・`# se:`。乗り物の音は `transportModes` の `se`。
+- 探し方：どこを探し何を外すか、サイトの決まりの読み方、音量（LUFS）のそろえ方、聞き比べのページの作り方は [無料の素材の探し方](FREE_ASSETS_GUIDE.md)。探した跡（探した所・語・外した物）は調査の記録に残す。
 - 守る決まり：曲で関係の値を知らせない。告白の場面の曲は結果で変えない。環境音は継ぎ目なくくり返せるように切る。
 - 確かめ方と終わりの目安：`npm run content:build`（ファイルのない音、一覧にないファイル、出典のない音、ない地点、ほかの旅行編の音で止まる。使わない音は注意）。Debug の「音と演出の見本」で一つずつ鳴らす。「出典・権利の一覧」に出ることを見る。
 - インド編では：効果音（#102、台本の59か所）、BGM 14曲（#107。Kevin MacLeod の8曲（CC BY 4.0）と、ほかの作者の CC0 1.0・CC BY 3.0 の曲）、環境音4つ。
@@ -464,6 +467,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 目的：場面の山場で、選択肢の代わりに短いミニゲームを遊んでもらい、その結果で選択肢を選ぶ。
 - 前に要るもの：その場面の初稿（デートなら手順10）。
 - 作るもの：選択肢のすぐ前の行に `# minigame: <ゲーム>`（任意で `auto <結果>`・`prefix <語>`・`bg <背景>`・`art.<名前> <絵>`・ゲームの引数）、すぐ後に結果ごとに1つずつ選択肢（`# option:` は結果のID）。ゲームの一覧は Debug の「ミニゲームの見本」にある（[CONTENT_GUIDE の「ミニゲーム」](CONTENT_GUIDE.md#ミニゲーム任意2026-11-13)）。旅行編の絵を使うときは `public/assets/minigames/` に置き、`presentation/own-artwork.json` に載せる（絵の頼み方・大きさ・受け取り方は[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章）。
+- 手応え：どの瞬間を遊びにするか、到達の基準、試遊とボットでの確かめ方は [ミニゲームの手応えの作り方と確かめ方](MINIGAME_FEEL_GUIDE.md)。
 - 守る決まり：場所のファイルの場面ならどこでも書けるが、告白のデートには書かない。結果は遊び方だけで決まり、乱数は使わない。結果の選択肢の支払い・品物は、場面の頭か道の上の条件で保証する。関係値は作者の札だけで動く。
 - 確かめ方と終わりの目安：`npm run content:build`（書き方の誤り、結果と選択肢が1つずつ合わない、選べないことがある結果の選択肢、書けない所、おまかせで抜けられない輪で止まる）。Debug の「ミニゲームの見本」の「Debugで開く」でその場面を開き、Debugモードの結果のボタンで各結果の後を読む。
 - インド編では：3都市の場面で11本を使っている（例：アーグラのメヘターブ・バーグのデートの最後の一球 `places/gt_agra_mehtab_bagh.ink`、ジャイプールのラージューの地図の値段 `places/gt_jaipur_jaigarh_fort.ink`）。
@@ -486,6 +490,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - `npm run balance:report -- --journey <旅行編ID> --out <ファイル>`：都市ごとのお金・AP・関係値の出入りの表（先に `npm run content:build`。何も検査しない）。
   - 直す所：`initialBudget`、出来事の `admissionCost`、経路の `cost`、ツアーの `price`、場面の `# money:`・`# on_done: money`、デートの `apCost`、報酬の `ap`、`cityPlan.cityClearAp`。
   - 予算のテスト：いちばん安く回れば本筋を最後まで遊べることを、`tests/journeys/<旅行編ID>/budget.test.ts` で確かめる（インド編の `tests/journeys/golden_triangle/budget.test.ts` を手本に）。
+- 数字の出し方（時刻表データと丸め方、運賃の式、資料のない値と期限のある値、予算の案の立て方）は [旅の数字の決め方](NUMBERS_GUIDE.md)。
 - 守る決まり：お金を使いすぎて旅を続けられなくなるのは遊びの結果でよい。ただし、いちばん安く回れば本筋を最後まで遊べることはテストで守る（[AGENTS.md の第一原則](../AGENTS.md)）。公開中の旅行編で交通費を上げる・経路をなくすときはセーブの版を上げる。
 - 確かめ方と終わりの目安：予算のテストが通る。`content:build` の「お金で詰むおそれ」「AP で詰むおそれ」の注意を読み、残すかを決める。
 - インド編では：`balance:report` を作り（#123）、予算を₹38,000にした（#124。いちばん安い運賃で全部遊べる額）。
