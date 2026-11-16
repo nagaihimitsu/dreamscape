@@ -100,8 +100,9 @@ await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 15
 | --- | --- | --- |
 | 初めて開いたときのタイトル（ミラノ） | 約5.9秒 | 約4.4秒 |
 | 初めて開いたときのタイトル（インド） | 約5.9秒 | 約5.1秒 |
-| 2回目以降の訪問 | 約0.9秒 | 約0.5秒 |
+| 2回目以降の訪問（キャッシュの期限切れ） | 約0.9秒 | 約0.5秒 |
 
+- 2回目以降は、キャッシュの期限が切れたとき（`max-age=0`）の値です。期限内のミラノでは、約0.6秒 → 約0.4〜0.5秒でした（元の記録の表）。
 - 立ち絵は、それまで可逆のまま配る決まりでした。数字を添えて聞き直し、ユーザーが「軽い版を配る」を選びました（問いの窓、2026-11-13）。前の決めごとを数字が覆すときは、黙って変えず、聞き直します（[決め方の手引き 4.2](DECISION_GUIDE.md#42-必ず聞くこと)）。
 - 直した後の「最初の場面のヒロインまで」の秒数は、記録に残っていません。次は、前と後を同じ表に並べます（2.4）。
 
@@ -127,7 +128,7 @@ await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 15
 速くしても、結果は変えません。
 
 - `npm run content:build -- --no-cache` と、ふつうの `content:build` が同じ結果になることを、`scripts/story-validation-cache-content.test.ts` が確かめます。
-- `npm run verify` の最初の生成と、PR の CI はキャッシュを使いません（[会話の全分岐検査のキャッシュ](../docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。
+- `npm run verify` の最初の生成はキャッシュを使いません。PR の CI はキャッシュを持ち越さず、空から始めます（[会話の全分岐検査のキャッシュ](../docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。
 
 ## 5. 画質は、数値と目の両方で決める
 
@@ -224,7 +225,7 @@ diff /tmp/dist-before.txt /tmp/dist-after.txt
 | 本番に入る物 | `npm run dist:check` の最後の1行と `withheld-files.json` |
 | 立ち絵の設定 | `PORTRAIT_WEBP` と `npm run images:optimize` |
 
-- 読み込み量と秒数は報告にして、合否にしません（ユーザーの判断。`boot.spec.ts` の注記）。ビルドを止めるのは、本番に入れてはいけない物が入ったときのように、壊れているときだけです（[AGENTS.md](../AGENTS.md#目的と第一原則) の第一原則）。
+- 読み込み量は報告にして、合否にしません（ユーザーの判断。`boot.spec.ts` の注記）。ビルドを止めるのは、本番に入れてはいけない物が入ったときのように、壊れているときだけです（[AGENTS.md](../AGENTS.md#目的と第一原則) の第一原則）。
 
 ### 7.2 残っていない道具（2026-11-16）
 
