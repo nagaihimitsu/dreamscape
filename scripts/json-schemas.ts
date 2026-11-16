@@ -78,7 +78,7 @@ export const CATALOG_SCHEMAS: Record<MergedKind, { titleJa: string; schema: z.Zo
   "romance/date_destinations.json": { titleJa: "デートの行き先", schema: dateDestinationsSchema },
   "romance/effect_catalog.json": { titleJa: "デートの効果", schema: content.effectCatalogSchema },
   "romance/presentation.json": { titleJa: "背景と思い出", schema: content.presentationSchema },
-  "romance/progression.json": { titleJa: "恋愛の段階", schema: content.progressionSchema },
+  "romance/progression.json": { titleJa: "恋の段階", schema: content.progressionSchema },
   "romance/response_profiles.json": { titleJa: "言葉の特性", schema: content.responseProfileCatalogSchema },
   "scenes/catalog.json": { titleJa: "場面のデータ", schema: sceneDataCatalogSchema },
   "tourism/catalog.json": { titleJa: "観光地・手がかり・画像", schema: tourismCatalogSchema },

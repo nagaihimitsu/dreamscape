@@ -380,6 +380,11 @@
       "nameJa": "電話の声"
     },
     {
+      "id": "gt_agra_kamla_voice",
+      "cityId": "agra",
+      "nameJa": "カムラの声"
+    },
+    {
       "id": "gt_delhi_red_fort_guide",
       "cityId": "delhi",
       "nameJa": "案内の係員",

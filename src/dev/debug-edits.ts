@@ -6,13 +6,14 @@ import { hasActiveScene } from "../domain/game-state-schema";
 import { tourKeepBack } from "../domain/reservations";
 import { getUsableRoutes } from "../domain/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
-import { clockText, debugDayRange, debugTimeRange } from "./debug-query";
+import { clockText, debugDayRange, debugRomanceStages, debugTimeRange, type DebugRomanceStage } from "./debug-query";
 
 /**
- * Debug's changes to a game state (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」): the story flags
- * a scene opens with or the running Debug game has, and free time's clock. Debug only: what they give is never reached in
- * play this way, but every result is a state the save's own check accepts (validateGameState), so the game goes on from it
- * with its real rules. Each throws a message for the person when it cannot be made.
+ * Debug's changes to a game state (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」; 2026-11-16
+ * 恋の段階): the story flags a scene opens with or the running Debug game has, free time's clock, and the romance stage. Debug
+ * only: what they give is never reached in play this way, but every result is a state the save's own check accepts
+ * (validateGameState), so the game goes on from it with its real rules. Each throws a message for the person when it cannot
+ * be made.
  */
 
 /** A story flag (progression/story.json `flags`) with its author's note. */
@@ -90,6 +91,24 @@ export function setDebugFlag(state: GameState, id: string, obtained: boolean): G
   checkDebugFlags(state.currentCityId, [id]);
   const flags = state.storyProgress.flags.filter((flag) => flag !== id);
   return validateGameState({ ...state, storyProgress: { ...state.storyProgress, flags: obtained ? [...flags, id] : flags } });
+}
+
+/**
+ * The state at 恋の段階 `stage` (GameState.romanceStage), set as chosen, lower too; nothing else changes (the relationship
+ * values stay). Play only raises the stage (evaluateProgression, after a choice or a scene's end that moves the relationship,
+ * and at a date's end), so a stage below what the relationship values and completed dates reach comes back up there, as in play.
+ */
+export function withDebugStage(state: GameState, stage: DebugRomanceStage): GameState {
+  if (!(debugRomanceStages as readonly number[]).includes(stage))
+    throw new Error(`恋の段階は${debugRomanceStages[0]}〜${debugRomanceStages.at(-1)}にしてください。`);
+  return stage === state.romanceStage ? state : validateGameState({ ...state, romanceStage: stage });
+}
+
+/** Set the running Debug game's 恋の段階 (refused while a scene is open, as the flags and the clock are). */
+export function setDebugStage(state: GameState, stage: DebugRomanceStage): GameState {
+  const refusal = debugEditRefusal(state);
+  if (refusal) throw new Error(refusal);
+  return withDebugStage(state, stage);
 }
 
 /**

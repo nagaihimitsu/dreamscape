@@ -140,7 +140,9 @@ INCLUDE modules.ink
 # reaction: enemy,sweat
 ……根拠がない、なんて言って。すみませんでした
 # speaker: narrator
-老人は笑って手を振った。占いを信じろとは言わない。ただ、時計の読み方は、昔からここで教わってきたのだと。
+老人は笑って手を振った。
+# speaker: gt_shastri
+占いを信じろとは言わないよ。ただ、時計の読み方は、昔からここで教わってきたんだ
 # speaker: heroine
 ディヴィヤさん、論文、何時に出すんですか？
 # speaker: enemy

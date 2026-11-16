@@ -4,9 +4,14 @@ import { validateGameState } from "../domain/game";
 import { DAY_END, DAY_START } from "../domain/travel";
 import { getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel } from "../domain/travel-game";
 import { getDayEnd } from "../domain/day-end";
-import { debugTimeRange } from "./debug-query";
-import { debugEditRefusal, debugFlagGroups, debugFlagIds, setDebugFlag, withDebugClock, withDebugFlags } from "./debug-edits";
-import { createDebugState, defaultDebugSettings, type DebugSettings } from "./debug-state";
+import { getDateAvailability, isEventVisible } from "../domain/date-rules";
+import { evaluateProgression } from "../domain/game";
+import { debugTimeRange, type DebugRomanceStage } from "./debug-query";
+import {
+  debugEditRefusal, debugFlagGroups, debugFlagIds, setDebugFlag, setDebugStage, withDebugClock, withDebugFlags, withDebugStage,
+} from "./debug-edits";
+import { createDebugState, defaultDebugSettings, resolveDebugLaunch, type DebugSettings } from "./debug-state";
+import { atPlace, cityStart, finishEpisode } from "./scenario-builders";
 
 // Debug's flags and free time's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」).
 const free = (cityId: string, input: Partial<DebugSettings> = {}): DebugSettings =>
@@ -68,7 +73,45 @@ describe("Debug's flags", () => {
     expect(debugEditRefusal(date)).toMatch(/^場面の途中なので変えられません。/u);
     expect(() => setDebugFlag(date, "milano_tino_needs_pick", true)).toThrow("場面の途中なので変えられません。");
     expect(() => withDebugClock(date, { minute: 19 * 60 })).toThrow("場面の途中なので変えられません。");
+    expect(() => setDebugStage(date, 2)).toThrow("場面の途中なので変えられません。");
     expect(debugEditRefusal(milano())).toBeNull();
+  });
+});
+
+describe("Debug's 恋の段階 (2026-11-16)", () => {
+  it("starts a scene at the chosen stage, lower too, and at the progress's own without one", () => {
+    const start = createDebugState(free("delhi", { id: "delhi_hotel_hub", progress: "initial" }));
+    expect(start.romanceStage).toBe(1);
+    const launch = resolveDebugLaunch({ dataMode: "real", cityId: "delhi", scene: "free", progress: "initial", stage: 3 });
+    expect(launch).toMatchObject({ kind: "scene", settings: { stage: 3 } });
+    const third = createDebugState(launch.kind === "scene" ? launch.settings : free("delhi"));
+    expect(third).toEqual({ ...start, romanceStage: 3 });
+    expect(validateGameState(third)).toEqual(third);
+    // Lower: set as chosen, nothing else changes (the relationship values stay as Debug set them).
+    expect(withDebugStage(third, 1)).toEqual(start);
+    expect(withDebugStage(start, 1)).toBe(start);
+    expect(() => withDebugStage(start, 5 as DebugRomanceStage)).toThrow("恋の段階は1〜4にしてください。");
+  });
+
+  it("opens Delhi's rooftop confession at night at stage 2 and not at stage 1", () => {
+    // `# when: episodes delhi >= 1`, `not couple`, `time night`; minRomanceStage 2 (date_catalog.json).
+    const night = withDebugClock(atPlace(finishEpisode(cityStart("delhi"), "gt_delhi_main_red_fort"), "delhi_hotel_hub"), { minute: 19 * 60 });
+    expect(night.romanceStage).toBe(1);
+    expect(isEventVisible(night, "gt_delhi_date_confession")).toBe(false);
+    expect(getDateAvailability(night, "gt_delhi_date_confession")).toEqual({ available: false, reason: "もう少し、一緒の時間を過ごしてから。" });
+    const second = setDebugStage(night, 2);
+    expect(isEventVisible(second, "gt_delhi_date_confession")).toBe(true);
+    expect(getDateAvailability(second, "gt_delhi_date_confession")).toEqual({ available: true, reason: "" });
+    expect(isEventVisible(setDebugStage(second, 1), "gt_delhi_date_confession")).toBe(false);
+  });
+
+  it("leaves play's rule as it is: a stage below what the relationship values and completed dates reach rises where play evaluates it", () => {
+    const reached = { ...createDebugState(free("delhi", { id: "delhi_hotel_hub" })), affection: 2, trust: 1, playedDateIds: ["gt_delhi_date_india_gate"] };
+    const lowered = withDebugStage({ ...reached, romanceStage: 2 }, 1);
+    expect(lowered.romanceStage).toBe(1);
+    expect(evaluateProgression(lowered).romanceStage).toBe(2);
+    // A stage above them stays (play never lowers it).
+    expect(evaluateProgression(withDebugStage(lowered, 4)).romanceStage).toBe(4);
   });
 });
 
