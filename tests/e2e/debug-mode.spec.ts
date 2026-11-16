@@ -1,6 +1,7 @@
 import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
+import { journeyFilesShip } from "../../src/content/journey-catalog";
 import { debugQueryString } from "../../src/dev/debug-query";
-import { allStorage, bothStorages, expect, expectNoDebugCode, ops, test, tier, type Page } from "./helpers";
+import { allStorage, bothStorages, expect, expectNoDebugCode, generated, journeyCatalog, ops, test, tier, type Page } from "./helpers";
 
 // User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (≡メニュー) with the password 「adminmode」
 // (not a secret: anyone may see it; it only prevents turning it on by accident). While it is on,
@@ -133,4 +134,35 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   await page.goto("/?debug");
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   await expect(page.getByTestId("debug-panel")).toHaveCount(0);
+});
+
+// User decision 2026-11-16: the production build has none of the served files (photos, pictures, sounds) of a journey
+// players cannot open yet. Its Debug still opens such a journey's cities: the map and routes of a city still drawn on
+// the map only (scene=map) and 仮の場面 (copies of a playable city, with that city's photos). Neither asks for a file
+// the build left out: the error guard fails on a missing image. Debug mode is on from the start (the test above turns
+// it on through ゲームの設定).
+test("production Debug opens the cities of a journey players cannot open yet without a file the build left out", { tag: tier.prod }, async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.addInitScript((key) => localStorage.setItem(key, "on"), DEBUG_MODE_KEY);
+  const authored = new Set(generated<{ episodes: { cityId: string }[] }>("progression/journey.json").episodes.map((episode) => episode.cityId));
+  const images = () => page.evaluate(() => [...document.images].map((image) => ({ src: image.src, complete: image.complete })));
+  let opened = 0;
+  for (const journey of journeyCatalog().journeys.filter((item) => !journeyFilesShip(item))) {
+    const [city] = journey.cities;
+    if (generated<{ productionStatus: string }>(`cities/${city.id}.json`).productionStatus === "prototype") {
+      await page.goto(`/${debugQueryString({ dataMode: "real", cityId: city.id, scene: "map" })}`);
+      await expect(page.getByTestId("debug-prototype-preview")).toBeVisible({ timeout: debugTimeout });
+      opened += 1;
+    }
+    // 仮の場面 replace the cities of a journey with no scene of its own yet (src/dev/test-cities.ts).
+    if (!journey.cities.some((item) => authored.has(item.id))) {
+      await page.goto(`/${debugQueryString({ dataMode: "fixture", cityId: city.id, scene: "tourism" })}`);
+      await expect(page.getByTestId("debug-session")).toBeVisible({ timeout: debugTimeout });
+      await expect.poll(async () => (await images()).length, `${city.id}: 仮の場面 show the photos of the city they copy`).toBeGreaterThan(0);
+      await expect.poll(async () => (await images()).every((image) => image.complete)).toBe(true);
+      opened += 1;
+    }
+  }
+  // Nothing to open only once every journey is playable.
+  expect(opened > 0 || journeyCatalog().journeys.every(journeyFilesShip)).toBe(true);
 });

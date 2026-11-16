@@ -8,6 +8,7 @@ import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings
 import { openMiniGame } from "../../src/domain/minigame";
 import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
 import { isDebugEntryChunk, journeyPartsIn, lazyDebugMarkers } from "../../scripts/dist-guard";
+import { WITHHELD_FILES_FILE, type WithheldFiles } from "../../scripts/withheld-files";
 
 export { expect };
 export type { Locator, Page };
@@ -143,6 +144,10 @@ export function generated<T>(file: string): T {
   return readJson<T>(new URL(`../../src/content/generated/content/${file}`, import.meta.url));
 }
 export const journeyCatalog = () => generated<JourneyCatalog>("journeys/catalog.json");
+/** The served files a production build leaves out: each journey's that players cannot open yet (scripts/withheld-files.ts). */
+export const withheldFiles = () => readJson<WithheldFiles>(new URL(`../../${WITHHELD_FILES_FILE}`, import.meta.url));
+/** Which journey provides each tourism photo (content:build, scripts/image-rights.ts imageJourneyIndex). */
+export const imageJourneys = () => readJson<{ journeys: Record<string, string[]> }>(new URL("../../src/content/generated/image-journeys.json", import.meta.url));
 /** Every generated quiz by its ID. */
 export const quizCatalog = () => readJson<Record<string, QuizDefinition>>(new URL("../../src/content/generated/quizzes.json", import.meta.url));
 

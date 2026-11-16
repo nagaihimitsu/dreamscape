@@ -91,7 +91,7 @@ function SoundCredits({ sounds, usesLabelJa = "使っている音" }: { sounds: 
 
 /**
  * The body of 「出典・権利の一覧」: every served tourism photo by journey (preparing journeys
- * marked, D1), the sound effects', the music's and the ambience's sources, the voices' (by journey: only the
+ * marked, D1: on the development server only, as a production build serves none of their photos), the sound effects', the music's and the ambience's sources, the voices' (by journey: only the
  * journeys with voices; 2026-11-13), the map, the fonts (D4), the libraries (D7) and the note that artwork made for
  * Dreamscape is not listed (D5). Each journey's photos, the sounds' and the music's sources and each licence text
  * open on demand.

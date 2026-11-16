@@ -4,10 +4,13 @@ import { listTestFiles, splitTestFiles } from "./scripts/test-sets.ts";
 import { THIRD_PARTY_LICENSES_PATH } from "./scripts/dist-guard.ts";
 import { serviceWorkerPlugin } from "./scripts/service-worker-build.ts";
 import { allJourneyPartsPlugin, journeyPartPreloadPlugin } from "./scripts/journey-parts-build.ts";
+import { withheldFilesPlugin } from "./scripts/withheld-files.ts";
 
 // `npm run content:build` assembles the served files (root public/ plus every
 // content/journeys/<journeyId>/public/) into this generated folder.
 // Run it before calling vite directly (npm run dev, build and test do it).
+// The development server serves all of them; a production build copies them without
+// those of the journeys players cannot open yet (scripts/withheld-files.ts).
 
 // Unit tests in two sets, decided by what each test file imports (see
 // scripts/test-sets.ts): "content" runs the whole content build, "quick" the
@@ -21,7 +24,7 @@ export default defineConfig({
   // tests bring every one with the game; production builds load each when its journey opens, and start loading
   // the opening journey's from index.html. Production builds also write the service worker (sw.js beside
   // index.html: later visits read the game's files from the browser; scripts/service-worker-build.ts, src/sw/).
-  plugins: [react(), allJourneyPartsPlugin(), journeyPartPreloadPlugin(), serviceWorkerPlugin()],
+  plugins: [react(), allJourneyPartsPlugin(), journeyPartPreloadPlugin(), withheldFilesPlugin(), serviceWorkerPlugin()],
   // Production builds write the licence notices of the bundled libraries next to
   // index.html (MIT and BSD-2-Clause ask for them in every copy); the credits list
   // reads them and the dist check (scripts/check-dist.ts) requires them.

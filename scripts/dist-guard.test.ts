@@ -7,14 +7,16 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   checkDist, checkThirdPartyLicenses, debugEntryModules, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts,
-  describeMiniGamesOnTitle, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, importedScripts, isDebugEntryChunk, isTextAsset,
+  describeMiniGamesOnTitle, describeWithheld, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, importedScripts, isDebugEntryChunk, isTextAsset,
   JOURNEY_PART_MARKER, journeyPartsIn, lazyDebugMarkers, miniGameMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 import { runtimeImports } from "./test-sets";
+import { readWithheldFiles, withheldPaths } from "./withheld-files";
 
-// No content build needed: the markers are checked against the repository's
-// sources and the detection against small in-memory "builds".
+// The markers are checked against the repository's sources and the detection
+// against small in-memory "builds". Only the run of scripts/check-dist.ts reads
+// generated content (the journey catalog and the withheld files: npm run content:build).
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const cleanBuild: DistFile[] = [
@@ -153,6 +155,7 @@ describe("production build guard", () => {
     expect(checkDist(checkedBuild)).toEqual({
       devOnly: [], titleFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], missing: [], onTitle: [], miniGamesOnTitle: [],
       gameFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], inGame: [], journeyPartsOnTitle: [], mixedJourneyParts: [],
+      withheld: [],
     });
     // The lazy Debug chunk is searched for the test hook and the sample journey like every other file.
     expect(checkDist(hookAndSampleInDebug).devOnly.map(({ path, marker }) => [path, marker.text])).toEqual([
@@ -207,6 +210,18 @@ describe("production build guard", () => {
     const renamed = splitBuild.map((file) => ({ ...file, path: file.path.replace("DebugMode-x1", "DebugScreen-x1"),
       text: file.text?.replaceAll("DebugMode-x1", "DebugScreen-x1") ?? null }));
     expect(checkDist(renamed).inGame.map(({ path }) => path)).toEqual(["assets/DebugScreen-x1.js", "assets/debug-only-o1.js"]);
+  });
+
+  it("fails on a served file of a journey players cannot open yet, wherever it is in the build (2026-11-16)", () => {
+    const withheld = new Map([["assets/tourism/b/harbour.webp", "trip_b"], ["assets/derived/trip_b/harbour.card.webp", "trip_b"]]);
+    expect(checkDist(checkedBuild, [], withheld).withheld).toEqual([]);
+    const leaked = [...checkedBuild, { path: "assets/derived/trip_b/harbour.card.webp", text: null }, { path: "assets/tourism/a/tower.webp", text: null }];
+    const found = checkDist(leaked, [], withheld).withheld;
+    expect(found).toEqual([{ path: "assets/derived/trip_b/harbour.card.webp", journeyId: "trip_b" }]);
+    expect(describeWithheld("dist", found)).toContain("まだ遊べない旅行編の配信ファイル（写真・絵・音）が 1 件入っています。\n- assets/derived/trip_b/harbour.card.webp（trip_b）");
+    // A long list shows its first ten files and the count of the rest.
+    const many = Array.from({ length: 12 }, (_, index) => ({ path: `assets/b/${index}.webp`, journeyId: "trip_b" }));
+    expect(describeWithheld("dist", many)).toContain("- assets/b/9.webp（trip_b）\n- ほか 2 件");
   });
 
   it("keeps each journey's part of the content in a file of its own, off the title page", () => {
@@ -273,6 +288,14 @@ describe("production build guard", () => {
       const unlicensed = check(checkedBuild.filter((file) => file.path !== THIRD_PARTY_LICENSES_PATH));
       expect(unlicensed.status, unlicensed.stdout).toBe(1);
       expect(unlicensed.stderr).toContain("のライブラリのライセンス一覧に問題があります。\n- third-party-licenses.json がありません。");
+      // A served file that the generated list withholds (a preparing journey's, when this checkout has one) fails at its own check.
+      const [first] = withheldPaths(readWithheldFiles(root));
+      if (first) {
+        const leaked = check([...checkedBuild, { path: first[0], text: null }]);
+        expect(leaked.status, leaked.stdout).toBe(1);
+        expect(leaked.stderr).toContain(`- ${first[0]}（${first[1]}）`);
+        expect(leaked.stderr).not.toContain("ライセンス一覧に問題があります");
+      }
     } finally {
       rmSync(folder, { recursive: true, force: true });
     }

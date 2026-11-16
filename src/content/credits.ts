@@ -4,7 +4,7 @@ import soundData from "./generated/content/presentation/sounds.json";
 import musicData from "./generated/music.json";
 import ambienceData from "./generated/ambience.json";
 import { landmarks, presentation, tourismAssets } from "./index";
-import type { Journey } from "./journey-catalog";
+import { journeyFilesShip, type Journey } from "./journey-catalog";
 import { journeys } from "./journeys";
 import type { LandmarkDefinition, TourismAsset } from "./tourism-schemas";
 import { soundCatalogSchema, type SoundEntry, type SoundSource } from "./sounds";
@@ -37,7 +37,10 @@ export type PhotoCredit = {
 export type JourneyPhotoCredits = {
   journeyId: string;
   nameJa: string;
-  /** The journey is not playable yet; its photos are served all the same (decision D1). */
+  /**
+   * The journey is not playable yet. The development server serves its photos (decision D1); a production build
+   * serves none of them and lists no credit for them (photoCredits; user decision 2026-11-16).
+   */
   preparing: boolean;
   count: number;
   /** e.g. 「ミラノ編（13枚）」, 「ウズベキスタン編（準備中・40枚）」. */
@@ -128,12 +131,18 @@ export const imageJourneyIndexSchema = z.object({
   journeys: z.record(z.string().min(1), z.array(z.string().min(1))),
 }).strict();
 
-/** The photo credits of the generated content (every served tourism photo), for the credits list. */
-export function photoCredits(): JourneyPhotoCredits[] {
-  return groupPhotoCredits({
+/**
+ * The photo credits of the generated content (every served tourism photo), for the credits list. A production build
+ * (`production`) serves no file of a journey players cannot open yet (journeyFilesShip; scripts/withheld-files.ts),
+ * so the list leaves its photos out; the development server serves and lists them.
+ */
+export function photoCredits(production: boolean = import.meta.env.PROD): JourneyPhotoCredits[] {
+  const credits = groupPhotoCredits({
     journeys, tourismAssets, landmarks, backgrounds: presentation.backgrounds,
     imageJourneys: imageJourneyIndexSchema.parse(imageJourneyData).journeys,
   });
+  const shipped = new Set(journeys.filter(journeyFilesShip).map((journey) => journey.id));
+  return production ? credits.filter((journey) => shipped.has(journey.journeyId)) : credits;
 }
 
 /** The licence of a sound's source as the list names it, and its deed (none for `own`, made for Dreamscape). */
