@@ -3895,6 +3895,14 @@
           "claimJa": "駅間の最速経路の乗車時間、普通運賃、停車駅数、乗換駅を掲載（運賃はS2の平日運賃の段階と一致）。区間距離は概算に見え、境目に近い区間はDMRCの正式な距離で段階が変わる可能性がある（未確認）。"
         },
         {
+          "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+          "title": "Jama Masjid to Rajiv Chowk Metro Route & Fare",
+          "url": "https://delhi.metro.org.in/route/jama-masjid/rajiv-chowk/",
+          "checkedAt": "2026-11-16",
+          "claimType": "documented_fact",
+          "claimJa": "2026-11-16 に読んだページ：最速の経路は18分・普通運賃₹32（スマートカードは₹29）、5駅、Mandi Houseで1回乗り換え（約6.3km）。"
+        },
+        {
           "publisher": "Business Today",
           "title": "Delhi Metro fare hike: DMRC increases prices by up to Rs 4 from Aug 25（2025-08-25）",
           "url": "https://www.businesstoday.in/india/story/delhi-metro-fare-hike-dmrc-increases-prices-by-up-to-rs-4-from-aug-25-check-details-490867-2025-08-25",
@@ -5162,6 +5170,14 @@
           "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
           "claimJa": "駅間の最速経路の乗車時間、普通運賃、停車駅数、乗換駅を掲載（運賃はS2の平日運賃の段階と一致）。区間距離は概算に見え、境目に近い区間はDMRCの正式な距離で段階が変わる可能性がある（未確認）。"
+        },
+        {
+          "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+          "title": "Jor Bagh to Barakhamba Road Metro Route & Fare",
+          "url": "https://delhi.metro.org.in/route/jor-bagh/barakhamba-road/",
+          "checkedAt": "2026-11-16",
+          "claimType": "documented_fact",
+          "claimJa": "2026-11-16 に読んだページ：最速の経路は22分・普通運賃₹32（スマートカードは₹29）、6駅、Rajiv Chowkで1回乗り換え（約7.5km）。"
         },
         {
           "publisher": "Business Today",
@@ -8195,6 +8211,14 @@
           "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
           "claimJa": "駅間の最速経路の乗車時間、普通運賃、停車駅数、乗換駅を掲載（運賃はS2の平日運賃の段階と一致）。区間距離は概算に見え、境目に近い区間はDMRCの正式な距離で段階が変わる可能性がある（未確認）。"
+        },
+        {
+          "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+          "title": "Rajiv Chowk to Jama Masjid Metro Route & Fare",
+          "url": "https://delhi.metro.org.in/route/rajiv-chowk/jama-masjid/",
+          "checkedAt": "2026-11-16",
+          "claimType": "documented_fact",
+          "claimJa": "2026-11-16 に読んだページ：最速の経路は18分・普通運賃₹32（スマートカードは₹29）、5駅、Mandi Houseで1回乗り換え（約6.3km）。"
         },
         {
           "publisher": "Business Today",
