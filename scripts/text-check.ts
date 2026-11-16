@@ -8,15 +8,16 @@ import { withoutComments } from "./place-files";
 // script review (台本の点検). The text is the Ink lines (their text, a choice's words, and the words of `# title:`,
 // `# hint:`, `# translation:`, `# photo_caption:`) and the Japanese fields of the data (the `…Ja` fields), never IDs,
 // tags or comments.
-// (a) Words of winning and losing (AGENTS.md: a quiz is not a battle, and these words are not used for it).
-// (b) A person speaking under the 「旅の風景」 plate (src/components/speaker-plate.ts: the narration, and a speaker the
+// (a) A person speaking under the 「旅の風景」 plate (src/components/speaker-plate.ts: the narration, and a speaker the
 //     screen cannot name): a narration line with a 「…」 quotation, a reported speech (〜と。), a 「あなた」; a line of
 //     `# speaker: enemy` in a scene that names no one for it (authoring/SCENARIO_EDITING_GUIDE.md 2.8).
-// (c) A line with `# voice:` whose plate shows no name (the narration, an enemy the screen cannot name).
-// (d) The variants a journey's terms ledger (authoring/journeys/<journeyId>/terms.json) says to avoid.
+// (b) A line with `# voice:` whose plate shows no name (the narration, an enemy the screen cannot name).
+// (c) The variants a journey's terms ledger (authoring/journeys/<journeyId>/terms.json) says to avoid.
+// Words of winning and losing are not looked for (2026-11-16 user decision: the uses that were a problem have all
+// been fixed, and the ones in use now and later are fine).
 // Lines are read statically (a line in a branch no walk takes is read too): a `# speaker:` holds until the next one, a
 // scene starts with the narration, and a helper knot's lines before its first `# speaker:` have an unknown speaker
-// (they are its caller's), so (b) and (c) pass them over. Pure: the caller passes the files' text.
+// (they are its caller's), so (a) and (b) pass them over. Pure: the caller passes the files' text.
 
 // ── The terms ledger ──────────────────────────────────────────────────────────
 
@@ -59,8 +60,6 @@ export type TextPiece = {
   /** The knot (an Ink line) or the JSON path and nearest id (a data field). */
   where: string;
   kind: "line" | "choice" | "tag" | "data";
-  /** In a quiz's scene (a battle knot or a knot it calls), or a quiz file's field. */
-  quiz: boolean;
   plate?: Plate;
   voiced?: boolean;
   /** `# phone:` or `# letter:`: read on a screen or a sheet, not spoken under a plate. */
@@ -108,9 +107,9 @@ function knotInfos(code: string[]): Map<string, KnotInfo> {
 /** Whether `# speaker: enemy` has a name in a scene of this kind: a battle's opponent, an arrival's or epilogue's city finale opponent, a `# person:`. */
 const namesEnemy = (knot: KnotInfo) => knot.person || knot.scene === "battle" || knot.scene === "arrival" || knot.scene === "epilogue";
 
-/** For each knot: whether its scenes name the enemy, and whether it is in a quiz (a battle and the knots it reaches). */
-function sceneContext(storyId: string, knots: Map<string, KnotInfo>): Map<string, { enemy: boolean | undefined; quiz: boolean }> {
-  const context = new Map<string, { enemy: boolean | undefined; quiz: boolean }>();
+/** For each knot: whether its scenes name the enemy. */
+function sceneContext(storyId: string, knots: Map<string, KnotInfo>): Map<string, { enemy: boolean | undefined }> {
+  const context = new Map<string, { enemy: boolean | undefined }>();
   const place = isPlaceStory(storyId);
   const scenes = place ? [...knots.values()].filter((knot) => knot.scene !== undefined) : [knots.get("")!];
   for (const scene of scenes) {
@@ -124,7 +123,7 @@ function sceneContext(storyId: string, knots: Map<string, KnotInfo>): Map<string
       if (!knot || seen.has(name)) continue;
       seen.add(name);
       const before = context.get(name);
-      context.set(name, { enemy: named === undefined ? before?.enemy : (before?.enemy ?? false) || named, quiz: (before?.quiz ?? false) || scene.scene === "battle" });
+      context.set(name, { enemy: named === undefined ? before?.enemy : (before?.enemy ?? false) || named });
       queue.push(...knot.targets.filter((target) => knots.has(target) && (knots.get(target)!.scene === undefined || target === name)));
     }
   }
@@ -148,7 +147,7 @@ export function inkPieces(ink: InkSource): TextPiece[] {
   let knot = "";
   let speaker: string | undefined = isPlaceStory(ink.storyId) ? undefined : "narrator";
   let pending: { key: string; value: string }[] = [];
-  const base = (line: number) => ({ file: ink.file, journey: ink.journey, line, where: knot ? `knot ${knot}` : "ファイルの頭", quiz: context.get(knot)?.quiz ?? false });
+  const base = (line: number) => ({ file: ink.file, journey: ink.journey, line, where: knot ? `knot ${knot}` : "ファイルの頭" });
   const plateOf = (who: string | undefined): Plate => who === undefined ? "unknown" : who === "narrator" ? "narration"
     : who !== "enemy" ? "named" : context.get(knot)?.enemy === undefined ? "unknown" : context.get(knot)!.enemy ? "named" : "unnamed-enemy";
   code.forEach((raw, index) => {
@@ -188,30 +187,23 @@ export function inkPieces(ink: InkSource): TextPiece[] {
   return pieces;
 }
 
-/** A content JSON file as read: its path, its journey ("core" for the shared files), its text, and whether it is a quiz's. */
+/** A content JSON file as read: its path, its journey ("core" for the shared files) and its text. */
 export type DataSource = { file: string; journey: string; text: string };
 
 /** The Japanese fields of a data file (the `…Ja` keys and the strings of arrays under them), with their lines. */
 export function dataPieces(data: DataSource): TextPiece[] {
   const value: unknown = JSON.parse(data.text);
   const lines = jsonValueLines(data.text);
-  const quiz = /\/quizzes\/[^/]+\.json$/u.test(data.file);
   return jsonStrings(value).filter((item) => item.field?.endsWith("Ja")).map((item) => {
     const id = nearestId(value, item.path);
-    return { file: data.file, journey: data.journey, line: lines.get(item.path) ?? 1, text: item.value, where: `${item.path}${id ? `（${id}）` : ""}`, kind: "data", quiz };
+    return { file: data.file, journey: data.journey, line: lines.get(item.path) ?? 1, text: item.value, where: `${item.path}${id ? `（${id}）` : ""}`, kind: "data" };
   });
 }
 
 // ── The notes ─────────────────────────────────────────────────────────────────
 
-export type NoteKind = "win-lose" | "narration-speech" | "voice-no-plate" | "term";
+export type NoteKind = "narration-speech" | "voice-no-plate" | "term";
 export type TextNote = { kind: NoteKind; piece: TextPiece; detailJa: string };
-
-/**
- * Words of winning and losing: 勝つ・勝ち・勝って・勝利・勝負・勝者・勝敗・〜勝（優勝・圧勝…）, 負け・負かす, 敗北・敗者・敗れる・〜敗
- * (完敗・惨敗・連敗). Not 勝手・名勝・勝る, 背負う・自負・負担, 失敗.
- */
-export const WIN_LOSE = /勝(?:ち|つ|て|っ|と|た|利|負|者|敗)|[優必連圧楽惜辛完全]勝|敗(?:北|者|れ|退)|[完惨連]敗|負(?:け|か[さしすせそ])/gu;
 
 /** A 「…」 quotation this long or longer in the narration is probably someone's words (a short quoted phrase is fine, 2.8). */
 export const QUOTE_MIN_LENGTH = 10;
@@ -242,12 +234,10 @@ export function foundVariant(text: string, term: Term): string | undefined {
 
 const short = (text: string) => ([...text].length > 70 ? `${[...text].slice(0, 70).join("")}…` : text);
 
-/** The notes (a) to (c) of the pieces, and (d) for the terms that apply to each piece (its journey's; the shared files: every journey's). */
+/** The notes (a) and (b) of the pieces, and (c) for the terms that apply to each piece (its journey's; the shared files: every journey's). */
 export function textNotes(pieces: readonly TextPiece[], termsOf: (journey: string) => readonly Term[]): TextNote[] {
   const notes: TextNote[] = [];
   for (const piece of pieces) {
-    const words = [...new Set([...piece.text.matchAll(WIN_LOSE)].map((match) => match[0]))];
-    if (words.length) notes.push({ kind: "win-lose", piece, detailJa: `勝ち負けの言葉「${words.join("」「")}」${piece.quiz ? "（クイズの場面）" : ""}` });
     if (piece.kind === "line" && !piece.written) {
       if (piece.plate === "narration") {
         const why = narrationSpeech(piece.text);
@@ -278,13 +268,11 @@ export function allTerms(ledgers: readonly (readonly Term[])[]): Term[] {
 }
 
 const KIND_LABELS: Record<NoteKind, string> = {
-  "win-lose": "(a) 勝ち負けの言葉",
-  "narration-speech": "(b) 「旅の風景」の名札のまま人が話しているかもしれない行",
-  "voice-no-plate": "(c) 名札の出ない声（# voice: の行）",
-  term: "(d) 用語の台帳で避ける言い方",
+  "narration-speech": "(a) 「旅の風景」の名札のまま人が話しているかもしれない行",
+  "voice-no-plate": "(b) 名札の出ない声（# voice: の行）",
+  term: "(c) 用語の台帳で避ける言い方",
 };
 const KIND_HINTS: Record<NoteKind, string> = {
-  "win-lose": "クイズは戦いとして書きません（AGENTS.md「文章と言語」）。クイズの外の歴史の話などは、そのままでかまいません。",
   "narration-speech": "人の言葉なら、その人の # speaker: の行に分けます（シナリオ改稿のポイント 2.8）。短い引用はそのままでかまいません。",
   "voice-no-plate": "声の主の # speaker: を書くか、場面の頭に # person: を書きます。",
   term: "表記をそろえます。台帳は authoring/journeys/<旅行編ID>/terms.json です。",
@@ -301,8 +289,7 @@ export function formatTextReport(notes: readonly TextNote[], options: { journeys
   for (const kind of Object.keys(KIND_LABELS) as NoteKind[]) {
     const ofKind = notes.filter((note) => note.kind === kind);
     const perJourney = options.journeys.map((journey) => `${journey === "core" ? "共通" : journey} ${ofKind.filter((note) => note.piece.journey === journey).length}`);
-    const quiz = kind === "win-lose" ? `。うちクイズの場面 ${ofKind.filter((note) => note.piece.quiz).length}` : "";
-    out.push(`- ${KIND_LABELS[kind]}：${ofKind.length}件（${perJourney.join("、")}${quiz}）`);
+    out.push(`- ${KIND_LABELS[kind]}：${ofKind.length}件（${perJourney.join("、")}）`);
   }
   for (const kind of Object.keys(KIND_LABELS) as NoteKind[]) {
     const ofKind = notes.filter((note) => note.kind === kind);

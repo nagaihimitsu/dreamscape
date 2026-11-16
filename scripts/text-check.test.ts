@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { allTerms, dataPieces, foundVariant, formatTextReport, inkPieces, narrationSpeech, parseTermLedger, textNotes, WIN_LOSE, type Term } from "./text-check";
+import { allTerms, dataPieces, foundVariant, formatTextReport, inkPieces, narrationSpeech, parseTermLedger, textNotes, type Term } from "./text-check";
 
 const place = [
   "INCLUDE modules.ink",
@@ -34,10 +34,10 @@ const ink = { storyId: "places/alpha_place", file: "content/journeys/alpha/stori
 describe("inkPieces", () => {
   it("reads the lines with their static plate, the choices' words and the text tags, never the comments", () => {
     const pieces = inkPieces(ink);
-    expect(pieces.map((piece) => [piece.line, piece.kind, piece.plate, piece.quiz])).toEqual([
-      [7, "tag", undefined, false], [8, "line", "narration", false], [9, "line", "narration", false], [10, "line", "narration", false],
-      [12, "line", "unnamed-enemy", false], [15, "line", "narration", false], [16, "choice", undefined, false],
-      [19, "line", "unknown", false], [25, "line", "named", true],
+    expect(pieces.map((piece) => [piece.line, piece.kind, piece.plate])).toEqual([
+      [7, "tag", undefined], [8, "line", "narration"], [9, "line", "narration"], [10, "line", "narration"],
+      [12, "line", "unnamed-enemy"], [15, "line", "narration"], [16, "choice", undefined],
+      [19, "line", "unknown"], [25, "line", "named"],
     ]);
     expect(pieces[0].text).toBe("門の前の勝負");
     expect(pieces[1].text).toBe("門の前は人が多い。");
@@ -48,22 +48,16 @@ describe("inkPieces", () => {
 });
 
 describe("dataPieces", () => {
-  it("reads the …Ja fields (and the strings of arrays under them) with their lines, and marks a quiz file's", () => {
+  it("reads the …Ja fields (and the strings of arrays under them) with their lines", () => {
     const text = JSON.stringify({ id: "alpha_q", questions: [{ id: "alpha_q1", questionJa: "誰が勝った？", textEn: "Who won?" }], nightLinesJa: ["一", "二"] }, null, 2);
     const pieces = dataPieces({ file: "content/journeys/alpha/quizzes/alpha_q.json", journey: "alpha", text });
-    expect(pieces.map((piece) => [piece.text, piece.line, piece.where, piece.quiz])).toEqual([
-      ["誰が勝った？", 6, "questions[0].questionJa（alpha_q1）", true], ["一", 11, "nightLinesJa[0]（alpha_q）", true], ["二", 12, "nightLinesJa[1]（alpha_q）", true],
+    expect(pieces.map((piece) => [piece.text, piece.line, piece.where])).toEqual([
+      ["誰が勝った？", 6, "questions[0].questionJa（alpha_q1）"], ["一", 11, "nightLinesJa[0]（alpha_q）"], ["二", 12, "nightLinesJa[1]（alpha_q）"],
     ]);
   });
 });
 
 describe("the notes", () => {
-  it("knows the words of winning and losing, not 勝手・名勝・背負う・失敗", () => {
-    const found = (text: string) => [...text.matchAll(WIN_LOSE)].map((match) => match[0]);
-    expect(found("勝って、勝利、勝負、優勝、負けず嫌い、負かした、敗北、惨敗")).toEqual(["勝っ", "勝利", "勝負", "優勝", "負け", "負かし", "敗北", "惨敗"]);
-    expect(found("勝手に名勝を背負う。失敗も自負も負担")).toEqual([]);
-  });
-
   it("finds a narration line that reads as speech: a long quotation, a reported speech, あなた", () => {
     expect(narrationSpeech("係員が「暗くなってから、ね」とだけ言った。")).toBeUndefined();
     expect(narrationSpeech("誰かが毎回「もうちょっと下がって」と叫んでいた。")).toContain("10字");
@@ -81,15 +75,17 @@ describe("the notes", () => {
     expect(allTerms([[term], [term, { preferred: "街歩き", avoid: ["自由時間"] }]])).toHaveLength(2);
   });
 
-  it("gives (a) to (d) for the pieces, and prints the counts per kind and journey, then each note", () => {
+  it("gives (a) to (c) for the pieces, not words of winning and losing (2026-11-16), and prints the counts per kind and journey, then each note", () => {
     const terms: Term[] = [{ preferred: "街歩き", avoid: ["自由時間"], reasonJa: "2026-11-16 のユーザー判断" }];
     const notes = textNotes(inkPieces(ink), (journey) => (journey === "alpha" ? terms : []));
     // The quotation of line 9 is short; the letter of line 15 is read, not spoken; line 19's speaker is its caller's.
+    // 勝負 (line 7), 勝利 (line 10) and 負け (line 25) give no note.
     expect(notes.map((note) => [note.kind, note.piece.line])).toEqual([
-      ["win-lose", 7], ["win-lose", 10], ["narration-speech", 10], ["narration-speech", 12], ["voice-no-plate", 12], ["term", 16], ["win-lose", 25],
+      ["narration-speech", 10], ["narration-speech", 12], ["voice-no-plate", 12], ["term", 16],
     ]);
     const lines = formatTextReport(notes, { journeys: ["alpha", "core"], ledgers: [{ journey: "alpha", file: "authoring/journeys/alpha/terms.json", count: 1 }] });
-    expect(lines).toContain("- (a) 勝ち負けの言葉：3件（alpha 3、共通 0。うちクイズの場面 1）");
+    expect(lines).toContain("- (a) 「旅の風景」の名札のまま人が話しているかもしれない行：2件（alpha 2、共通 0）");
+    expect(lines.some((line) => line.includes("勝ち負け"))).toBe(false);
     expect(lines).toContain("  content/journeys/alpha/stories/places/alpha_place.ink:16（knot alpha_talk）「自由時間」→「街歩き」（2026-11-16 のユーザー判断）");
   });
 });
