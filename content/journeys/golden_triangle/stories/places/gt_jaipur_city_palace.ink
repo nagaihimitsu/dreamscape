@@ -91,7 +91,9 @@ INCLUDE modules.ink
 # reaction: heroine,exasperated,sweat
 す、すみません！　……でも、どっちの言い分も、ちょっと分かるんです
 # speaker: narrator
-ヴィシャールが小声で言う。向こうで新しい同僚に、漬物の匂いのする部屋だと思われたくない。最初くらい、身軽に始めたいのだと。
+ヴィシャールが小声で言った。
+# speaker: gt_vishal
+向こうの新しい同僚に、漬物の匂いのする部屋だと思われたくないんです。最初くらい、身軽に始めたくて
 # speaker: narrator
 スシュマは聞こえないふりをして、二人を隣の中庭へ引っぱっていった。四方に、色の違う四つの門が並んでいる。
 # speaker: enemy

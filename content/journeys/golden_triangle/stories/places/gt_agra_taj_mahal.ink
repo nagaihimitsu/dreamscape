@@ -219,7 +219,7 @@ INCLUDE modules.ink
 # recall: gt_album_d01
 # emotion: serious
 彼女は唇を結んだ。デリーの最後の朝、車の窓からカムラが言った言葉が、頭の中で聞こえた。
-# speaker: narrator
+# speaker: gt_agra_kamla_voice
 # emotion: serious
 アーグラでも、言いたいことは言いなさい。
 # speaker: heroine
