@@ -119,8 +119,13 @@ INCLUDE modules.ink
     # set: gt_delhi_said_bas
     # speaker: narrator
     器の中に、二つたまっていた。慌てて一つ放り込むと、酸っぱい水が喉に飛び込んだ。むせて、声が出ない。
-    # speaker: narrator
-    彼女が、こちらの器の上に手をかざした。
+    { romance_result == "negative":
+        # speaker: narrator
+        彼女が、慌ててこちらの器の上に手をかざした。
+    - else:
+        # speaker: narrator
+        彼女が、笑いをこらえながら、こちらの器の上に手をかざした。
+    }
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
     バス！　この人の分も、バス！
@@ -132,6 +137,13 @@ INCLUDE modules.ink
     # memory: gt_delhi_date_chandni_chowk_memory
     # speaker: narrator
     十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
+    { romance_result == "negative":
+        # speaker: narrator
+        拍手の中で、彼女だけが手を叩かずに、こちらの赤い顔を見ていた。
+    - else:
+        # speaker: narrator
+        彼女も、つられて手を叩いていた。
+    }
     # speaker: heroine
     # reaction: heroine,teasing,music
     負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる
