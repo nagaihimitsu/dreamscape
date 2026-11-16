@@ -6,11 +6,11 @@
  * The format is for development and may change without compatibility.
  */
 
-export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion", "tour"] as const;
+export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion", "tour", "free"] as const;
 export type DebugScene = (typeof debugScenes)[number];
 export const debugSceneLabels: Record<DebugScene, string> = {
   tourism: "観光・場所", battle: "クイズ", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
-  tour: "ツアー",
+  tour: "ツアー", free: "街歩き（地図）",
 };
 export type DebugDataMode = "real" | "fixture";
 
@@ -41,7 +41,34 @@ export type DebugSettings = {
    * before Humayun's Tomb); `progress` is not read.
    */
   before?: string;
+  /**
+   * Free time (scene=free; 2026-11-15 user request): the day of the stay in the city (travel.day, 1 = the arrival day) and the
+   * time (minutes since midnight) its clock shows; either left out keeps the progress's own (debug-edits.ts withDebugClock).
+   */
+  day?: number;
+  time?: number;
+  /** Story flags of the city's journey (progression/story.json) the scene's state has as obtained, besides its progress's own (any scene). */
+  flags?: string[];
 };
+
+/** Free time's clock in Debug: 9:00 (the day's start) to 21:00 (the day's end, whose night follows as in play). */
+export const debugTimeRange = [9 * 60, 21 * 60] as const;
+/** The days of a stay Debug's free time offers. */
+export const debugDayRange = [1, 30] as const;
+/** The quick choices of free time's clock (night is from 18:00: `time night`). */
+export const debugClockPresets = [
+  { labelJa: "朝", minute: 9 * 60 }, { labelJa: "昼", minute: 12 * 60 }, { labelJa: "夕方", minute: 17 * 60 }, { labelJa: "夜", minute: 19 * 60 },
+] as const;
+/** `minute` (since midnight) as 「HH:MM」, the form of a time field and of the URL's `time`. */
+export function clockText(minute: number): string {
+  return `${String(Math.floor(minute / 60)).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`;
+}
+/** 「HH:MM」 (or 「H:MM」) as minutes since midnight; null for anything else. */
+export function parseClockText(text: string): number | null {
+  const match = /^(\d{1,2}):(\d{2})$/u.exec(text);
+  if (!match || Number(match[1]) > 23 || Number(match[2]) > 59) return null;
+  return Number(match[1]) * 60 + Number(match[2]);
+}
 
 /** The value range the scene picker (場面の確認) offers (AP is also capped by the game's AP limit). */
 export const debugValueRanges = {
@@ -65,6 +92,9 @@ export interface DebugQuery {
   step?: string;
   without?: string[];
   before?: string;
+  day?: number;
+  time?: number;
+  flags?: string[];
 }
 
 export type ParsedDebugQuery =
@@ -80,15 +110,29 @@ const choices = {
   roll: ["positive", "negative"],
 } as const;
 /** URL items in the order a copied URL lists them. */
-export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep", "step", "without", "before"] as const;
+export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep", "step", "without", "before",
+  "day", "time", "flags"] as const;
 type QueryKey = (typeof debugQueryKeys)[number];
 const idPattern = /^[a-z][a-z0-9_]*$/;
+const listNames = { prep: "場面", without: "品物", flags: "フラグ" } as const;
 
 function parseValue(key: QueryKey, value: string): string | number {
-  if (key === "prep" || key === "without") {
+  if (key === "prep" || key === "without" || key === "flags") {
     const ids = value.split(",");
-    if (ids.some((id) => !idPattern.test(id))) throw new Error(`「${key}=${value}」はIDの形ではありません（${key === "prep" ? "場面" : "品物"}のIDを , で区切ります）。`);
+    if (ids.some((id) => !idPattern.test(id))) throw new Error(`「${key}=${value}」はIDの形ではありません（${listNames[key]}のIDを , で区切ります）。`);
     return value;
+  }
+  if (key === "time") {
+    const minute = parseClockText(value);
+    if (minute === null || minute < debugTimeRange[0] || minute > debugTimeRange[1])
+      throw new Error(`「time=${value}」は使えません。time には ${clockText(debugTimeRange[0])}〜${clockText(debugTimeRange[1])} の時刻を 19:00 のように書きます。`);
+    return minute;
+  }
+  if (key === "day") {
+    const number = /^\d+$/u.test(value) ? Number(value) : NaN;
+    if (!Number.isInteger(number) || number < debugDayRange[0] || number > debugDayRange[1])
+      throw new Error(`「day=${value}」は使えません。day には ${debugDayRange[0]}〜${debugDayRange[1]} の整数（滞在の何日目か）を書きます。`);
+    return number;
   }
   if (key === "city" || key === "target" || key === "from" || key === "step" || key === "before") {
     // A moment's target may say its kind (target=visit:<landmark>).
@@ -135,9 +179,14 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     if (values.step !== undefined) query.step = values.step as string;
     if (values.without !== undefined) query.without = (values.without as string).split(",");
     if (values.before !== undefined) query.before = values.before as string;
+    if (values.day !== undefined) query.day = values.day as number;
+    if (values.time !== undefined) query.time = values.time as number;
+    if (values.flags !== undefined) query.flags = (values.flags as string).split(",");
     if ((query.from || query.prep) && query.scene !== "occasion") throw new Error("from と prep は scene=occasion（場面から始める）で使います。");
     if (query.step && query.scene !== "tour") throw new Error("step は scene=tour（ツアー）で使います。");
     if ((query.without || query.before) && query.scene !== "date") throw new Error("without と before は scene=date（デート）で使います。");
+    if ((query.day !== undefined || query.time !== undefined) && query.scene !== "free") throw new Error("day と time は scene=free（街歩き）で使います。");
+    if (query.flags && query.scene === "map") throw new Error("flags は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。");
     return { kind: "launch", query };
   } catch (error) {
     return { kind: "error", message: error instanceof Error ? error.message : String(error) };
@@ -150,10 +199,12 @@ export function debugQueryString(query: DebugQuery): string {
     data: query.dataMode === "fixture" ? "fixture" : undefined, city: query.cityId, scene: query.scene,
     target: query.target, progress: query.progress, ap: query.ap, affection: query.affection,
     trust: query.trust, spark: query.spark, roll: query.roll, from: query.from, prep: query.prep?.join(","), step: query.step,
-    without: query.without?.join(","), before: query.before,
+    without: query.without?.join(","), before: query.before, day: query.day,
+    time: query.time === undefined ? undefined : clockText(query.time), flags: query.flags?.join(","),
   };
+  // A time keeps its colon (allowed in a query), so that the URL reads time=19:00.
   return ["?debug", ...debugQueryKeys.flatMap((key) =>
-    values[key] === undefined ? [] : [`${key}=${encodeURIComponent(String(values[key]))}`])].join("&");
+    values[key] === undefined ? [] : [`${key}=${encodeURIComponent(String(values[key])).replace(/%3A/gu, ":")}`])].join("&");
 }
 
 /** Every item of the settings, so the URL opens the same scene even if a default changes later. */
@@ -161,5 +212,8 @@ export function settingsQuery(dataMode: DebugDataMode, settings: DebugSettings):
   return { dataMode, cityId: settings.cityId, scene: settings.scene, target: settings.id || undefined, progress: settings.progress,
     ap: settings.ap, affection: settings.affection, trust: settings.trust, spark: settings.spark, roll: settings.roll,
     ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}), ...(settings.step ? { step: settings.step } : {}),
-    ...(settings.without?.length ? { without: settings.without } : {}), ...(settings.before ? { before: settings.before } : {}) };
+    ...(settings.without?.length ? { without: settings.without } : {}), ...(settings.before ? { before: settings.before } : {}),
+    ...(settings.scene === "free" && settings.day !== undefined ? { day: settings.day } : {}),
+    ...(settings.scene === "free" && settings.time !== undefined ? { time: settings.time } : {}),
+    ...(settings.flags?.length ? { flags: settings.flags } : {}) };
 }

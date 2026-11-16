@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import App from "../app/App";
+import type { DebugGameAccess } from "../app/app-storage";
 import { getCities, getCityContent } from "../content";
 import { loadGame, saveGame } from "../persistence";
 import { debugTemplateDescription, installPreparingJourneyTestCities } from "./test-cities";
@@ -18,6 +19,8 @@ import { PrototypePreview } from "./PrototypePreview";
 import { OccasionCandidatesView } from "./OccasionCandidatesView";
 import { EffectsRoom } from "./EffectsRoom";
 import { MiniGameRoom } from "./MiniGameRoom";
+import { debugFlagGroups, debugFlagIds } from "./debug-edits";
+import { DebugClockFields, DebugEditDialog, DebugFlagChooser } from "./DebugStateTools";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -48,7 +51,11 @@ export default function DebugMode() {
   const [settings, setSettings] = useState<DebugSettings>(() => defaultDebugSettings());
   const cityId = settings.cityId ?? defaultDebugCityId;
   const options = debugTargets(cityId);
+  const flagGroups = useMemo(() => debugFlagGroups(cityId), [cityId, dataMode]);
   const [session, setSession] = useState<Session | null>(null);
+  // The Debug bar's 「フラグ・時刻」 (DebugEditDialog) and its way into the running game (GameApp sets it).
+  const [editing, setEditing] = useState(false);
+  const gameAccess = useRef<DebugGameAccess | null>(null);
   const [prototype, setPrototype] = useState<DebugSceneInfo | null>(null);
   const [message, setMessage] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
@@ -88,9 +95,14 @@ export default function DebugMode() {
   }) : undefined, []);
 
   function update(next: DebugSettings) {
-    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it.
-    const { step: _step, ...rest } = next;
-    setSettings(next.step && (next.scene !== "tour" || next.id !== settings.id || next.cityId !== settings.cityId) ? rest : next);
+    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it. Free time's day
+    // and time belong to free time; the flags chosen to the city's journey (another city keeps those of its journey).
+    const { step: _step, day: _day, time: _time, ...rest } = next;
+    const keepStep = !next.step || (next.scene === "tour" && next.id === settings.id && next.cityId === settings.cityId);
+    const offered = next.flags?.length && next.cityId !== settings.cityId ? debugFlagIds(next.cityId ?? defaultDebugCityId) : null;
+    setSettings({ ...rest, ...(keepStep && next.step ? { step: next.step } : {}),
+      ...(next.scene === "free" ? { day: next.day, time: next.time } : {}),
+      ...(offered ? { flags: next.flags!.filter((flag) => offered.includes(flag)) } : {}) });
     setCopyMessage("");
   }
   /** Open `next` (a prototype city's map, else its scene in fresh memory storage); throws a message. */
@@ -164,6 +176,7 @@ export default function DebugMode() {
     }
   }
   function backToSettings() {
+    setEditing(false);
     setSession(null);
     setPrototype(null);
     showInAddressBar("?debug");
@@ -180,10 +193,17 @@ export default function DebugMode() {
     </main>
   );
   if (prototype) return <PrototypePreview key={prototype.cityId} cityId={prototype.cityId} onClose={backToSettings} />;
+  // The bar's buttons wrap at their <wbr> on a phone (debug-mode.css), leaving the label its room.
   if (session) return (
     <div className="debug-session" data-testid="debug-session">
-      <header className="debug-session-bar"><div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div><button type="button" onClick={backToSettings}>場面の選択へ戻る</button></header>
-      <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugPanel={(state) => <OccasionCandidatesView state={state} />} />
+      <header className="debug-session-bar">
+        <div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div>
+        <button type="button" data-testid="debug-edit-open" onClick={() => setEditing(true)}>フラグ・<wbr />時刻</button>
+        <button type="button" onClick={backToSettings}>場面の選択へ<wbr />戻る</button>
+      </header>
+      <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugAccess={gameAccess}
+        debugPanel={(state) => <OccasionCandidatesView state={state} />} />
+      {editing && <DebugEditDialog access={gameAccess} onClose={() => setEditing(false)} />}
     </div>
   );
   // Never beside a game: no scene is open while it shows, so its music is the only one asked for.
@@ -225,7 +245,7 @@ export default function DebugMode() {
               {debugSceneLabels[scene]}{!options[scene].length ? "（この都市にはありません）" : firstDebugTarget(options[scene]) ? "" : "（開ける場面がありません）"}</option>)}
           </select>
         </label>
-        <label>対象
+        <label>{settings.scene === "free" ? "地点" : "対象"}
           <select data-testid="debug-target" value={settings.id} onChange={(event) => update({ ...settings, id: event.target.value })}>
             {options[settings.scene].map((item) => <option key={item.id} value={item.id} disabled={!!item.unavailable}>
               {item.name} ({item.id}){item.unavailable ? `（${item.unavailable}）` : ""}</option>)}
@@ -236,6 +256,8 @@ export default function DebugMode() {
             <option value="completed">都市クリア後</option><option value="initial">旅の開始時</option>
           </select>
         </label>
+        {settings.scene === "free" && <DebugClockFields time={settings.time} day={settings.day}
+          onChange={(clock) => update({ ...settings, ...clock })} />}
         <div className="debug-values">
           {([["ap", "AP"], ["affection", relationshipAxisLabels.affection], ["trust", relationshipAxisLabels.trust], ["spark", relationshipAxisLabels.spark]] as const).map(([key, label]) => {
             const [min, max] = debugValueRanges[key];
@@ -248,6 +270,7 @@ export default function DebugMode() {
             <option value="positive">成功寄り（抽選値 0）</option><option value="negative">失敗寄り（抽選値 9999）</option>
           </select>
         </label>
+        <DebugFlagChooser groups={flagGroups} cityId={cityId} chosen={settings.flags ?? []} onChange={(flags) => update({ ...settings, flags })} />
         </>}
         {message && <p role="alert">{message}</p>}
         <button type="submit" className="primary">{isPrototype ? "地図・交通を確認" : "この場面を開く"}</button>

@@ -15,11 +15,23 @@ export const browserKeyedStorage: KeyedStorage = {
   getItem: browserStorage.getItem,
   removeItem: browserStorage.removeItem,
 };
+/** What Debug's bar may do to its running game (src/dev/DebugMode.tsx: the flags and the clock, src/dev/debug-edits.ts). */
+export type DebugGameAccess = {
+  /** The game as it is now (null before a journey begins). */
+  game(): GameState | null;
+  /**
+   * Put `change(game)` in place of the game, saved as an action is but with no action run on it (no relationship change, no
+   * travel art), as 「移動画面に戻る（Debug）」's return; whether it was put in place. A throw of `change` (its reason) passes through.
+   */
+  replace(change: (state: GameState) => GameState): boolean;
+};
 export type AppProps = {
   storage?: typeof browserStorage;
   nextRomanceRoll?: () => number;
   debug?: boolean;
   /** Debug sessions only (src/dev/DebugMode.tsx): an author's panel over the game (the candidate table, 4.8). */
   debugPanel?: (state: GameState) => ReactNode;
+  /** Debug sessions only: set to the running game's access while it shows (null when it goes). */
+  debugAccess?: { current: DebugGameAccess | null };
 };
 
