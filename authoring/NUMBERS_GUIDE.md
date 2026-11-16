@@ -38,7 +38,7 @@
 
 | 数字 | 書く所 | メモ |
 | --- | --- | --- |
-| 旅の予算 | `manifest.json` の `initialBudget` と、最初の都市の `travel/<都市ID>-settings.json` の `initialBudget` | 旅全体で1つの残高。インド編は2か所とも `38000`、ほかの都市の設定は `0` |
+| 旅の予算 | `manifest.json` の `initialBudget` と、最初の都市の `travel/<都市ID>-settings.json` の `initialBudget` | 旅全体で1つの残高。インド編は2か所とも `38000`、ほかの都市の設定は `0`（ミラノは都市の設定 `milano-settings.json` だけ） |
 | 宿泊費 | `manifest.json` の `cityPlan.lodgingCost` と、都市の設定の `lodgingCost` | 2つは同じ値にする |
 | 運賃の人数 | `manifest.json` の `farePartySize` | インド編・ウズベキスタン編は2 |
 | 乗り物 | `manifest.json` の `transportModes` | 徒歩のほかに2つまで |
