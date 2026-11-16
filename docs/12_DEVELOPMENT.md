@@ -63,6 +63,23 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 
 どの確認をいつ行うかは[開発時の確認](10_DEVELOPMENT_CHECKS.md)にあります。
 
+## 制作ツールのメッセージ
+
+制作ツール（`content:build`・`journey:*`・`voice:*`・`city:bundle` など）の止める文と注意は、次の決まりで書きます。読むのは、コードを読まない書き手です。文だけで、どこを・どう直すかが分かるようにします。
+
+- **日本語で書き、ファイルはリポジトリの直下からの相対パスで示す。** 絶対パスは機械ごとに違い、長く、報告や資料にそのまま写せません。相対パスは `scripts/content-sources.ts` の `displayPath` で作ります。
+- **何が重なったか・食い違ったかと、その場所を名指しする。** 両方のファイルと、そのIDを書きます。「Duplicate battleId」としか言わないと、どのIDが、どのファイルとどのファイルで重なったのかを、書き手が探すことになります。
+- **次にすることを書く。** 直し方を一文で言います。
+- 思いがけない例外のほかは、stack（コードの呼び出しの跡）を出しません。
+
+例（`scripts/album-images.ts`。文は単体テスト `scripts/album-images.test.ts` から）：
+
+```text
+同じIDのアルバムの絵が2つあります：content/journeys/trip_a/public/assets/album/a_tower.webp と content/journeys/trip_b/public/assets/album/a_tower.jpg。ID はファイル名（拡張子を除く）で、すべての旅行編で1つだけにします。どちらかの名前を変えてください（Duplicate album image ID: a_tower）。
+```
+
+作り替えのときの改善案の一覧には、この種の直しが8件ありました。絶対パスが入る、成功の行は日本語なのに失敗の文だけ英語、stack ごと出す、「Duplicate battleId」としか言わない、などです。今の重なりの検査（`scripts/content-validation-utils.ts` の `unique()`）は、IDと、分かるときは両方のファイルを言うようになりましたが、文はまだ英語です。
+
 ## 生成と編集の流れ
 
 - ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物（`src/content/generated/`）だけを読みます。生成物は手で編集しません（[生成物](02_TECH_ARCHITECTURE.md#生成物手動で編集しない)）。Ink・JSON・画像を編集した後は `npm run content:build` を実行します。`dev`・`test`・`test:quick`・`build`・`verify` は自動で実行します。
