@@ -9,18 +9,23 @@ import {
 // (off the beat), a double-time burst, a break (the band stops: rests not to tap), faster, and the finale with the big
 // 「ドン・ドン」. How the player's taps meet the beats decides how the closing lines sound; mashing is no dancing, and a
 // tap in the break is an extra tap. Nothing is random. Pure. Every number to tune is in BARAAT_NUMBERS (E1; Debug's
-// room edits them: play.ts retune).
+// room edits them: play.ts retune). Practice (params `warmup yes`) plays a warm-up of its own instead: a short count and a
+// few even beats (BARAAT_WARMUP_PHRASES), nothing of the dance's phrases (2026-11-16, the user's decision).
 
 export type BaraatOutcome = "in_step" | "off_beat_together" | "stumble" | "stood_still";
-/** The dance has no keys of its own. */
-export type BaraatParams = object;
+/** The dance has one key, practice's own (the definition's `practice`; never in a story's tag): `warmup yes`, the warm-up. */
+export type BaraatParams = { warmup?: "yes" };
+/** Whether the params are practice's warm-up. */
+export const baraatWarmup = (params: BaraatParams | null | undefined): boolean => params?.warmup === "yes";
 
 /** The drum's count-in, and the last big beats (the field makes them bigger): the story's shape. */
 export const BARAAT_COUNT_IN = 4;
 export const BARAAT_BIG_BEATS = 2;
 
 /** A phrase of the band: its name (the field's word for it), its tempo's number, its eighth-note steps (`x` a beat, `X` big, `o` a rest). */
-export interface BaraatPhrase { name: "count" | "teach" | "chaal" | "burst" | "break" | "faster" | "finale"; tempo: "bpm" | "fastBpm"; steps: string }
+export interface BaraatPhrase {
+  name: "count" | "teach" | "chaal" | "burst" | "break" | "faster" | "finale" | "warmup"; tempo: "bpm" | "fastBpm"; steps: string;
+}
 
 /**
  * The band's phrases, in eighth notes: the count-in (not to tap), four on the beat, the chaal (3-3-2: the second off the
@@ -69,6 +74,35 @@ export const BARAAT_NUMBERS = {
   tangleExtra: 2,
 } as const;
 export type BaraatNumbers = { readonly [Key in keyof typeof BARAAT_NUMBERS]: number };
+
+/**
+ * Practice's warm-up (2026-11-16, the user's decision: practice is shorter and simpler than the real dance, and no
+ * rehearsal of it): the drum counts two, then five beats evenly on the beat; no groove off the beat, burst, break, change
+ * of tempo or big beats, and none of the dance's own bars.
+ */
+export const BARAAT_WARMUP_PHRASES: readonly BaraatPhrase[] = [
+  { name: "count", tempo: "bpm", steps: "x.x." },
+  { name: "warmup", tempo: "bpm", steps: "x.x.x.x.x." },
+];
+
+/**
+ * The warm-up's numbers: a calmer 80 a minute (the dance's is 96), wider windows (−150/+220), a quicker end; 5.6 s in
+ * all (the dance's 17). In step with 4 of the 5 beats met and no more than 3 extra taps; stumbling, mashing. Its outcome
+ * is never shown nor taken (practice: the host's cut-in follows it). The rest as the dance's (its finale's and rests'
+ * numbers unused: it has neither). Fixed: Debug's room tunes the dance, not the warm-up.
+ */
+export const BARAAT_WARMUP_NUMBERS: BaraatNumbers = {
+  ...BARAAT_NUMBERS,
+  bpm: 80,
+  fastBpm: 80,
+  earlyMs: 150,
+  lateMs: 220,
+  endAfterMs: 500,
+  inStepHits: 4,
+  inStepExtra: 3,
+  stumbleExtra: 5,
+  threeStarPerfects: 4,
+};
 
 /** A phrase of the band as played: its name, and when it starts and ends. */
 export interface BaraatSection { name: BaraatPhrase["name"]; startMs: number; endMs: number }
@@ -126,34 +160,38 @@ export function baraatFeet(taps: readonly number[], ms: number, tuning: RhythmTa
   return { extra, tangled: extra >= limit || counts[1] - 1 >= limit };
 }
 
-/** The dance from its numbers (the story's: BARAAT_NUMBERS; Debug's room's edited ones). */
-export function baraatGame(numbers: BaraatNumbers = BARAAT_NUMBERS): BaraatGame {
+/**
+ * The dance from its numbers (the story's: BARAAT_NUMBERS; Debug's room's edited ones), or practice's warm-up from its
+ * own (BARAAT_WARMUP_PHRASES, BARAAT_WARMUP_NUMBERS: no finale, so no peak; no rests). The first phrase is the count-in.
+ */
+export function baraatGame(numbers: BaraatNumbers = BARAAT_NUMBERS, written: readonly BaraatPhrase[] = BARAAT_PHRASES): BaraatGame {
   /** An eighth note at a tempo (never below a millisecond: Debug's room's zero). */
   const eighth = (bpm: number) => 60000 / Math.max(1, bpm) / 2;
-  const phrases: RhythmTapPhrase[] = BARAAT_PHRASES.map((phrase) => ({ stepMs: eighth(numbers[phrase.tempo]), steps: phrase.steps }));
+  const phrases: RhythmTapPhrase[] = written.map((phrase) => ({ stepMs: eighth(numbers[phrase.tempo]), steps: phrase.steps }));
   // Each phrase on its own from where the one before ended (the same steps as all of them at once: rhythmTapSteps).
   const sections: BaraatSection[] = [];
   let at = Math.round(numbers.countInFirstMs);
-  const written = BARAAT_PHRASES.map((phrase, index) => {
+  const stepsOf = written.map((phrase, index) => {
     const played = rhythmTapSteps(at, [phrases[index]]);
     sections.push({ name: phrase.name, startMs: at, endMs: played.endMs });
     at = played.endMs;
     return played.steps;
   });
-  const [count, ...dance] = written;
+  const [count, ...dance] = stepsOf;
   const steps = dance.flat();
   const countIn = rhythmTapPick(count, "xX");
   const beats = rhythmTapPick(steps, "xX");
-  const finaleFrom = beats.findIndex((beat) => beat >= sections[sections.length - 1].startMs);
+  const finale = sections.find((section) => section.name === "finale");
+  const restsAt = rhythmTapPick(steps, "o");
   const bigBeats = steps.filter((step) => step.char !== "o").flatMap((step, index) => (step.char === "X" ? [index] : []));
   const tuning: RhythmTapTuning = {
     beats,
     earlyMs: numbers.earlyMs,
     lateMs: numbers.lateMs,
-    peak: { from: finaleFrom, earlyMs: numbers.finaleEarlyMs, lateMs: numbers.finaleLateMs },
+    ...(finale ? { peak: { from: beats.findIndex((beat) => beat >= finale.startMs), earlyMs: numbers.finaleEarlyMs, lateMs: numbers.finaleLateMs } } : {}),
     perfect: { earlyMs: numbers.perfectEarlyMs, lateMs: numbers.perfectLateMs },
     endAfterMs: numbers.endAfterMs,
-    rests: { at: rhythmTapPick(steps, "o"), earlyMs: numbers.restEarlyMs, lateMs: numbers.restLateMs },
+    ...(restsAt.length ? { rests: { at: restsAt, earlyMs: numbers.restEarlyMs, lateMs: numbers.restLateMs } } : {}),
   };
   /** The outcome of how the player's taps met the beats (taps during the count-in are not counted). */
   const outcome = (summary: RhythmTapSummary): BaraatOutcome => {
@@ -194,4 +232,16 @@ export const BARAAT_BEATS = BARAAT_TUNING.beats.length;
 export const BARAAT_IN_STEP_HITS = BARAAT_NUMBERS.inStepHits;
 export const BARAAT_IN_STEP_EXTRA = BARAAT_NUMBERS.inStepExtra;
 export const baraatOutcome = BARAAT_GAME.outcome;
-export const baraatRules = BARAAT_GAME.rules;
+/** Practice's warm-up. */
+export const BARAAT_WARMUP_GAME = baraatGame(BARAAT_WARMUP_NUMBERS, BARAAT_WARMUP_PHRASES);
+
+/** The rules the host reads (play.ts): the warm-up's with practice's params (`warmup yes`), else the dance's (`dance`). */
+export function baraatRulesOf(dance: BaraatGame): MiniGameRules<BaraatParams, BaraatOutcome, RhythmTapRecord> {
+  const of = (params: BaraatParams) => (baraatWarmup(params) ? BARAAT_WARMUP_GAME : dance).rules;
+  return {
+    outcomeOf: (record, params) => of(params).outcomeOf(record, params),
+    autoRecord: (outcome, params) => of(params).autoRecord(outcome, params),
+    rate: (record, params) => of(params).rate?.(record, params) ?? null,
+  };
+}
+export const baraatRules = baraatRulesOf(BARAAT_GAME);

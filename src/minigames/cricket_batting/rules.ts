@@ -10,11 +10,15 @@ import type { CRICKET_BALLS, CRICKET_LET_GO } from "./definition";
 // `ball`): `quick` comes flat and fast and grips the dusty pitch, holding up after the bounce (a swing timed by its first
 // part is early); `slower` is tossed up slower and skids on (a swing timed by its first part is late). One tap, the swing:
 // its time against the real ball's arrival at the bat. Nothing is random (the taped ball's wobble on screen is drawn the
-// same every time and changes nothing). Pure.
+// same every time and changes nothing). Practice plays a warm-up of its own (the `warmup` key: CRICKET_WARMUP): one slow,
+// straight ball, none of the over's twists. Pure.
 
 export type CricketOutcome = "six" | "over_wall" | "edge" | "bowled" | "no_swing";
-/** The tag's keys: which ball she bowls, and where a ball the batter lets go goes (definition.ts; the picture, and which late swings count). */
-export type CricketParams = { ball?: (typeof CRICKET_BALLS)[number]; letgo?: (typeof CRICKET_LET_GO)[number] };
+/**
+ * The tag's keys: which ball she bowls, and where a ball the batter lets go goes (definition.ts; the picture, and which late
+ * swings count); `warmup` (practice's own key, never in a story): practice's warm-up in place of the over, whatever the others say.
+ */
+export type CricketParams = { ball?: (typeof CRICKET_BALLS)[number]; letgo?: (typeof CRICKET_LET_GO)[number]; warmup?: "yes" };
 export type CricketBall = (typeof CRICKET_BALLS)[number];
 
 /** The real ball's way: where it bounces (a part of the way from her hand to the bat). */
@@ -57,22 +61,29 @@ export const CRICKET_TUNING = {
 };
 export type CricketTuning = typeof CRICKET_TUNING;
 
-/** The over with a tuning: the bouncer, the real ball (its release, bounce, arrival at the bat and the bricks), and the play's script. */
+/** The bouncer: from her hand, its bounce, over the bat, the last moment a swing can still meet it, gone over the bricks. */
+export interface CricketBouncer { release: number; bounce: number; bat: number; reach: number; gone: number }
+
+/**
+ * A play's balls: the bouncer (none in practice's warm-up), the ball to hit (its release, bounce, arrival at the bat and the
+ * bricks), and the play's script.
+ */
 export interface CricketPlan {
-  /** The bouncer: from her hand, its bounce, over the bat, the last moment a swing can still meet it, gone over the bricks. */
-  bouncer: { release: number; bounce: number; bat: number; reach: number; gone: number };
+  bouncer: CricketBouncer | null;
   release: number;
   bounce: number;
   contact: number;
   bricks: number;
-  /** The real ball's pace before and after the bounce (the part of the way from her hand to the bat a millisecond). */
+  /** The ball's pace before and after the bounce (the part of the way from her hand to the bat a millisecond). */
   speeds: { pre: number; post: number };
   script: CueTapScript;
   tuning: CueTapTuning;
 }
+/** The story's over: the bouncer, then the real ball. */
+export type CricketOver = CricketPlan & { bouncer: CricketBouncer };
 
 /** The over worked out from a tuning (the story's, or Debug's room's edited one) and the tag's ball. */
-export function cricketPlan(t: CricketTuning, ball: CricketBall = "quick"): CricketPlan {
+export function cricketPlan(t: CricketTuning, ball: CricketBall = "quick"): CricketOver {
   const first = t.settleMs + t.runUpMs;
   const bouncer = {
     release: first, bounce: first + t.bouncerBounceMs, bat: first + t.bouncerBatMs, reach: first + t.bouncerBatMs + t.cleanLateMs, gone: first + t.bouncerGoneMs,
@@ -96,6 +107,50 @@ export function cricketPlan(t: CricketTuning, ball: CricketBall = "quick"): Cric
 }
 
 /**
+ * Practice's warm-up (the `warmup` key: definition.ts `practice`): after a short run-up, one slow, straight ball at one pace
+ * all the way (it bounces on the way without a change), with wider windows; no bouncer, no walk back, no change of pace,
+ * the tag's `ball` and `letgo` unused. Its own pace, slower than either real ball and after a shorter run-up, so it teaches
+ * the swing as the ball reaches the bat and not the real ball's timing. Fixed: Debug's room edits the story's over only.
+ */
+export const CRICKET_WARMUP = {
+  settleMs: 200,
+  runUpMs: 600,
+  /** From her hand to the bat, at one pace (slower all the way than either real ball, its first part or after the bounce). */
+  approachMs: 1600,
+  bricksMs: 380,
+  noneAfterMs: 550,
+  cleanEarlyMs: 100,
+  cleanLateMs: 150,
+  nearEarlyMs: 220,
+  nearLateMs: 320,
+};
+
+/** The warm-up's plan: its one ball, its script (the moment reads from the start; nothing looks like it) and its tuning. */
+function warmupPlan(w: typeof CRICKET_WARMUP): CricketPlan {
+  const release = w.settleMs + w.runUpMs;
+  const contact = release + w.approachMs;
+  const speed = 1 / w.approachMs;
+  const script: CueTapScript = { start: release, moment: contact, end: contact + w.noneAfterMs, read: { guessAt: contact, tellAt: release }, traps: [] };
+  const { cleanEarlyMs, cleanLateMs, nearEarlyMs, nearLateMs } = w;
+  return {
+    bouncer: null, release, bounce: release + CRICKET_BOUNCE_AT * w.approachMs, contact, bricks: contact + w.bricksMs, speeds: { pre: speed, post: speed },
+    script, tuning: cueTapTuningFor(script, { cleanEarlyMs, cleanLateMs, nearEarlyMs, nearLateMs }),
+  };
+}
+export const CRICKET_WARMUP_PLAN = warmupPlan(CRICKET_WARMUP);
+
+/** Whether a play is practice's warm-up. */
+export const cricketIsWarmup = (params: CricketParams): boolean => params.warmup === "yes";
+/** Whether a ball let go runs on to the still plank (`letgo plank`; never in the warm-up, whose ball goes into the bricks). */
+export const cricketOntoPlank = (params: CricketParams): boolean => params.letgo === "plank" && !cricketIsWarmup(params);
+
+/** Each play's plan with a tuning (the story's, or Debug's room's edited one): the warm-up, or the over with the tag's ball. */
+export function cricketPlanner(tuning: CricketTuning): (params: CricketParams) => CricketPlan {
+  const overs = { quick: cricketPlan(tuning, "quick"), slower: cricketPlan(tuning, "slower") };
+  return (params) => (cricketIsWarmup(params) ? CRICKET_WARMUP_PLAN : overs[params.ball ?? "quick"]);
+}
+
+/**
  * Whether a swing at `ms` counts: from the bouncer leaving her hand until it is over the bat and past reach (a swing at
  * it), and from the real ball leaving her hand to the play's end. Once the bouncer is over the batter's head, and while
  * she walks back and runs up again, it does not (the batter can still swing at the real ball).
@@ -106,7 +161,7 @@ export function cricketCounts(plan: CricketPlan, ms: number): boolean {
 
 /** Whether a swing at `ms` is at the bouncer (the plank gets under it and skies it over the side wall, however it is timed). */
 export function cricketAtBouncer(plan: CricketPlan, ms: number): boolean {
-  return ms >= plan.bouncer.release && ms <= plan.bouncer.reach;
+  return plan.bouncer !== null && ms >= plan.bouncer.release && ms <= plan.bouncer.reach;
 }
 
 /**
@@ -123,7 +178,7 @@ export function cricketTravel(plan: CricketPlan, ms: number): number {
 /**
  * The result card's ★ (display only: never saved, never in Ink; docs/13 4.1), in step with the outcome: a clean hit ★3,
  * a little early or late ★2, a miss or a swing at the bouncer ★1, no swing not rated. The score says how far off the swing
- * was, so practice shows which way to move (「0.12秒早い」), or that it was at the bouncer.
+ * was, so a player who plays again (`retry`, Debug's room) sees which way to move (「0.12秒早い」), or that it was at the bouncer.
  */
 export function cricketRating(record: CueTapRecord, plan: CricketPlan): MiniGameRating | null {
   if (record !== null && cricketAtBouncer(plan, record)) return { stars: 1, scoreJa: "高い球に振った" };
@@ -143,13 +198,12 @@ export function cricketRating(record: CueTapRecord, plan: CricketPlan): MiniGame
  * 動かなかった」). Only a late swing past the near window: earlier ones meet the ball as on any ball.
  */
 function swungAfterPlank(record: CueTapRecord, params: CricketParams, tuning: CueTapTuning): boolean {
-  return params.letgo === "plank" && record !== null && cueTapOutcome(record, tuning) === "miss" && record > cueTapMoment(tuning);
+  return cricketOntoPlank(params) && record !== null && cueTapOutcome(record, tuning) === "miss" && record > cueTapMoment(tuning);
 }
 
 /** The cricket's rules with a tuning (the story's, or Debug's room's edited one). */
 export function cricketRulesFor(tuning: CricketTuning): MiniGameRules<CricketParams, CricketOutcome, CueTapRecord> {
-  const plans = { quick: cricketPlan(tuning, "quick"), slower: cricketPlan(tuning, "slower") };
-  const planOf = (params: CricketParams) => plans[params.ball ?? "quick"];
+  const planOf = cricketPlanner(tuning);
   // Clean: straight back. A little early: pulled over the side. A little late: off the edge. Far off: bowled. No swing (a
   // swing during her run-ups does not count: the batter can still swing at the ball). At the bouncer: over the side.
   const rules = cueTapRules<CricketParams, CricketOutcome>((params) => planOf(params).tuning,

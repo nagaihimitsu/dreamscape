@@ -102,10 +102,46 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   for (const gap of gaps) wordsAt.push(wordsAt[wordsAt.length - 1] + gap);
   const breathAt = { from: wordsAt[3] - Math.round(numbers.breathMs), to: wordsAt[3] };
   const holdAt = { from: wordsAt[2], to: breathAt.from };
+  return sayGameAt(numbers, { countAt, wordsAt, holdAt, breathAt });
+}
+
+/**
+ * Practice's warm-up numbers (fixed; 2026-11-16): a short breath before the count (a tap in it is no tap; past the
+ * start's double-tap guard), the count's even beat (100 a minute: its own, not her 92), both words on that beat after
+ * it, and one wide window for both (wider than the real play's on both sides); the play ends this long after the last.
+ * Her words come at 1.8 and 2.4 s: the warm-up is over by about 2.4–2.7 s (the real play: about 5 s).
+ */
+export const SAY_WARMUP_NUMBERS = {
+  settleMs: 600,
+  beatMs: 600,
+  cleanEarlyMs: 150,
+  cleanLateMs: 250,
+  endAfterMs: 400,
+} as const;
+/** The warm-up's count (「いち」「に」) and its words said together (「さん」「し」). */
+export const SAY_WARMUP_COUNT_BEATS = 2;
+export const SAY_WARMUP_WORD_COUNT = 2;
+
+/** Practice's warm-up: her neutral count and two words on one even beat, one window for both, none of her phrasing. */
+export function sayWarmupGame(): SayGame {
+  const { settleMs, beatMs, cleanLateMs } = SAY_WARMUP_NUMBERS;
+  const countAt = Array.from({ length: SAY_WARMUP_COUNT_BEATS }, (_, index) => settleMs + beatMs * index);
+  const wordsAt = Array.from({ length: SAY_WARMUP_WORD_COUNT }, (_, index) => countAt[SAY_WARMUP_COUNT_BEATS - 1] + beatMs * (index + 1));
+  // No held syllable and no breath: both are empty, at the last word.
+  const none = { from: wordsAt[SAY_WARMUP_WORD_COUNT - 1], to: wordsAt[SAY_WARMUP_WORD_COUNT - 1] };
+  const numbers: SayNumbers = { ...SAY_WARMUP_NUMBERS, stretchMs: 0, catchUpMs: 0, holdMs: 0, breathMs: 0, laterLateMs: cleanLateMs };
+  return sayGameAt(numbers, { countAt, wordsAt, holdAt: none, breathAt: none });
+}
+
+/** The game from her moments (her count, her words, the held syllable and the breath) and its numbers' windows. */
+function sayGameAt(numbers: SayNumbers, { countAt, wordsAt, holdAt, breathAt }: Pick<SayGame, "countAt" | "wordsAt" | "holdAt" | "breathAt">): SayGame {
+  const wordCount = wordsAt.length;
+  const lastCount = countAt[countAt.length - 1];
+  const beat = Math.max(1, Math.round(numbers.beatMs));
   // The engine's lane lights each word's window as the judge reads it: the first word's, then the later words' (its
   // `peak`, here wider than the first: the later words count for the ★ only).
   const tuning: RhythmTapTuning = {
-    beats: wordsAt,
+    beats: [...wordsAt],
     earlyMs: Math.round(numbers.cleanEarlyMs),
     lateMs: Math.round(numbers.cleanLateMs),
     peak: { from: 1, earlyMs: Math.round(numbers.cleanEarlyMs), lateMs: Math.round(numbers.laterLateMs) },
@@ -117,7 +153,7 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   /** Each word's own time: from halfway after the word before to halfway before the next (the first from 「せー」, the last to the end). */
   const wordOf = (ms: number) => {
     let word = 0;
-    while (word + 1 < SAY_WORD_COUNT && ms >= (wordsAt[word] + wordsAt[word + 1]) / 2) word += 1;
+    while (word + 1 < wordCount && ms >= (wordsAt[word] + wordsAt[word + 1]) / 2) word += 1;
     return word;
   };
   const judge = (record: SayRecord, now = Number.POSITIVE_INFINITY): SayJudgement => {
@@ -126,7 +162,7 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
     const firstMs = taps[0] ?? null;
     const off = firstMs === null ? null : firstMs - wordsAt[0];
     const outcome: SayTogetherOutcome = off === null ? "silent" : off < -numbers.cleanEarlyMs ? "early" : off > numbers.cleanLateMs ? "late" : "together";
-    const per = Array.from({ length: SAY_WORD_COUNT }, () => [] as number[]);
+    const per = Array.from({ length: wordCount }, () => [] as number[]);
     for (const ms of taps) per[wordOf(ms)].push(ms);
     // The first word is the story's: together exactly when the outcome is. Another word is together with one tap, in its window.
     const words = per.map((list, word): SayWord => {
@@ -138,13 +174,14 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   };
   /**
    * The result card's ★ (display only: never saved, never in Ink; docs/13 4.1), in step with the outcome: together ★3 with
-   * all four words together, else ★2; early or late ★2 with two or more of the others together, else ★1; silent none.
+   * all four words together (the warm-up's two: it has no card), else ★2; early or late ★2 with two or more of the others
+   * together, else ★1; silent none.
    */
   const rate = (record: SayRecord): MiniGameRating | null => {
     const { outcome, together } = judge(record);
     if (outcome === "silent") return null;
-    const stars = outcome === "together" ? (together === SAY_WORD_COUNT ? 3 : 2) : together >= 2 ? 2 : 1;
-    return { stars, scoreJa: `${together}語そろった（${SAY_WORD_COUNT}語中）` };
+    const stars = outcome === "together" ? (together === wordCount ? 3 : 2) : together >= 2 ? 2 : 1;
+    return { stars, scoreJa: `${together}語そろった（${wordCount}語中）` };
   };
   /** 「おまかせ」: the first word as the outcome asks (half way into its side), the others on her words; silent says none. */
   const autoRecord = (outcome: SayTogetherOutcome): SayRecord => {
@@ -158,9 +195,9 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
     const problems = rhythmTapFairness(tuning);
     if (numbers.settleMs < 450) problems.push(`settleMs ${numbers.settleMs} ends her breath inside the start's double-tap guard (450 ms)`);
     // Each word's window inside its own time (halfway to the word before, or to 「の」, and to the word after).
-    for (let word = 0; word < SAY_WORD_COUNT; word += 1) {
-      const before = (wordsAt[word] - (word === 0 ? countAt[SAY_COUNT_BEATS - 1] : wordsAt[word - 1])) / 2;
-      const after = word + 1 < SAY_WORD_COUNT ? (wordsAt[word + 1] - wordsAt[word]) / 2 : Number.POSITIVE_INFINITY;
+    for (let word = 0; word < wordCount; word += 1) {
+      const before = (wordsAt[word] - (word === 0 ? lastCount : wordsAt[word - 1])) / 2;
+      const after = word + 1 < wordCount ? (wordsAt[word + 1] - wordsAt[word]) / 2 : Number.POSITIVE_INFINITY;
       if (numbers.cleanEarlyMs >= before || lateOf(word) >= after)
         problems.push(`word ${word + 1}'s window (−${numbers.cleanEarlyMs}/+${lateOf(word)}) reaches past halfway to the next or the one before: a tap could say two words`);
     }
@@ -181,9 +218,25 @@ export const SAY_GAME = sayGame();
 export const SAY_COUNT_MS = SAY_GAME.countAt[0];
 export const SAY_WORDS_MS = SAY_GAME.wordsAt[0];
 export const SAY_END_MS = SAY_GAME.endMs;
-export const sayTogetherRules = SAY_GAME.rules;
+/** Practice's warm-up game. */
+export const SAY_WARMUP = sayWarmupGame();
 
-/** How far off the first word was, for the card's second line (practice shows where to move); none for silence. */
+/** The game a play's params ask for: practice's warm-up (`warmup: "yes"`), else the real one. */
+export const sayGameOf = (params: SayTogetherParams | null | undefined, game: SayGame = SAY_GAME): SayGame =>
+  (params?.warmup === "yes" ? SAY_WARMUP : game);
+
+/** The rules the host reads (with the play's params): the warm-up's in practice, else the game's own (the story's, or Debug's room's edit). */
+export function sayRules(game: SayGame = SAY_GAME): MiniGameRules<SayTogetherParams, SayTogetherOutcome, SayRecord> {
+  const rulesOf = (params: SayTogetherParams) => sayGameOf(params, game).rules;
+  return {
+    outcomeOf: (record, params) => rulesOf(params).outcomeOf(record, params),
+    autoRecord: (outcome, params) => rulesOf(params).autoRecord(outcome, params),
+    rate: (record, params) => rulesOf(params).rate?.(record, params) ?? null,
+  };
+}
+export const sayTogetherRules = sayRules();
+
+/** How far off the first word was, for the result card's second line; none for silence. */
 export function sayFirstDetail(judgement: SayJudgement, game: SayGame = SAY_GAME): string | undefined {
   if (judgement.firstMs === null) return undefined;
   const off = judgement.firstMs - game.wordsAt[0];

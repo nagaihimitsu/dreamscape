@@ -28,9 +28,13 @@ export const CRICKET_BALLS = ["quick", "slower"] as const;
  * follows only the real ball's travel (it waits through the bouncer, and slows or quickens at the bounce); the gold zone
  * is exactly where a swing is clean.
  *
- * The host's flow (docs/13 2.6): practice before the real ball, the host's 3・2・1, the field ends the play at the bat
- * meeting the ball or the bricks falling (its swing's time rated for ★: a clean hit ★3, near ★2, a miss or a swing at the
- * bouncer ★1, no swing none), Sonia's call as the finish word, and the heroine's reaction from the far end. The reaction
+ * The host's flow (docs/13 2.6): practice first, a warm-up of its own (the `warmup` key, rules.ts CRICKET_WARMUP): after a
+ * shorter run-up, one slow, straight ball at one pace, at the bat about 2.4 s after the host's 「スタート！」 (the real
+ * ball about 5 s), with wider windows; no bouncer, no change at the bounce, no call, the tag's `ball` and `letgo` unused,
+ * so it teaches the swing and not the real ball's timing. It ends by itself like any play (its outcome never taken, her face
+ * a plain one), and the host's cut-in 「次は本番！」 brings the real play. Then the host's 3・2・1, the field ends the play
+ * at the bat meeting the ball or the bricks falling (its swing's time rated for ★: a clean hit ★3, near ★2, a miss or a
+ * swing at the bouncer ★1, no swing none), Sonia's call as the finish word, and the heroine's reaction from the far end. The reaction
  * lines are her first breath at the ball (the story's lines follow at once, in both of its romance branches): short, and
  * never what she says next. The children watch from the near corners: the batter's side jumps with a cheer at a six, the
  * bowler's raises its arms when the bricks fall.
@@ -67,6 +71,8 @@ export const cricketBatting = defineMiniGame({
       .describe("振らなかった球の行き先（bricks：脇を抜けて後ろの煉瓦を落とす。書かなければこれ。plank：止まった板きれに当たって、投げた人の足もとへ転がる。そのときは板きれに当たった後の空振りも振らなかったことになる）"),
     ball: z.enum(CRICKET_BALLS).default("quick")
       .describe("本番の一球（quick：速く低い球が、弾んだ後に土に食われて少し遅れて来る。書かなければこれ。slower：山なりの遅い球が、弾んだ後に滑って速く来る）。どちらも最初に高く跳ね上がる見送りの球がある"),
+    warmup: z.enum(["yes"]).optional()
+      .describe("練習用の短く簡単な遊び（yes。練習が自動で付ける。物語の札には書かない）：短い助走から、ゆっくりまっすぐの球が1つだけ（高く跳ね上がる球も、弾んだ後の速さの変化も無い）。ball と letgo は使わない"),
   }).strict(),
   examples: [{}, { ball: "slower", letgo: "plank" }],
   startJa: "構える",
@@ -74,7 +80,7 @@ export const cricketBatting = defineMiniGame({
   goalJa: "高く跳ね上がる球は見送り、本番の一球を針が金色に来た瞬間に「振る」で打ち返す",
   controls: "timing",
   durationSec: 6,
-  practice: {},
+  practice: { params: { warmup: "yes" } },
   countdown: "host",
   music: "bright",
   // The children cheer in the field right after a six (Skin): the card adds no applause of its own.

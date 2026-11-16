@@ -19,12 +19,16 @@ export const MONKEY_THINGS = ["bottle", "glasses"] as const;
  * monkey laughs and tosses it down past them at once (its teasing over: the play ends about a second after the tap), and
  * the card's score names the tease (「フェイントで手を閉じた」「殻で手を閉じた」「取り返された時に手を閉じた」).
  *
- * The host's flow (docs/13 2.6): practice before the real catch, no 3・2・1 (the monkey holds it out first), the play ends
- * as the thing meets the hands or goes past them (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none), and
- * the heroine's face and line: her first breath at her bottle or sunglasses caught (the story's lines follow at once: for
- * the bottle her 「わたしの雨、無事だった！」), never what she says next, and right for either thing; her face alone when it
- * gets away (the bottle breaks, and she says nothing for a while). The catch snaps (a short high knock right as the hands
- * meet it, the pouch's settle under it) with a small shake.
+ * Practice (the tag's `warmup`, set by `practice`; never in a story) is not this routine but a plain drop of its own, about
+ * 2.3 s (rules.ts monkeyWarmupPlan): the monkey holds the thing out, then simply lets go, and it falls straight into the
+ * ring with wider windows; no feint, shell, snatch or ledge, nothing said. It teaches the one tap, never the teasing.
+ *
+ * The host's flow (docs/13 2.6): practice once (no card: 「練習おわり　次は本番！」, then the real catch by itself), no 3・2・1
+ * (the monkey holds it out first), the play ends as the thing meets the hands or goes past them (★ from the tap: clean
+ * ★3, a little off ★2, far off ★1, no tap none), and the heroine's face and line: her first breath at her bottle or
+ * sunglasses caught (the story's lines follow at once: for the bottle her 「わたしの雨、無事だった！」), never what she says
+ * next, and right for either thing; her face alone when it gets away (the bottle breaks, and she says nothing for a while).
+ * The catch snaps (a short high knock right as the hands meet it, the pouch's settle under it) with a small shake.
  *
  * Accessibility: 「受け止める」 is 64px at the bottom (thumb reach), Space and Enter close the hands; no meter: a gold ring
  * with a dark edge marks where things meet the hands and tightens for whatever is about to arrive (the shells too: the
@@ -50,6 +54,7 @@ export const monkeyCatch = defineMiniGame({
   defaultAuto: "caught",
   params: () => z.object({
     thing: z.enum(MONKEY_THINGS).default("bottle").describe("落ちてくる物の絵（bottle：小瓶。書かなければこれ。glasses：サングラス）。遊び方は変わらない"),
+    warmup: z.enum(["yes"]).optional().describe("練習用の短く簡単な遊び（yes。練習が自動で使う。物語の札には書かない）"),
   }).strict(),
   examples: [{}, { thing: "glasses" }],
   startJa: "構える",
@@ -57,7 +62,8 @@ export const monkeyCatch = defineMiniGame({
   goalJa: "猿のフェイントや殻につられず、落とし物が輪に届く瞬間に「受け止める」",
   controls: "timing",
   durationSec: 7,
-  practice: {},
+  // Practice is a plain drop of its own (no teasing): the real catch's routine is never rehearsed.
+  practice: { params: { warmup: "yes" } },
   // The monkey's teasing is the cue (the story: 「考えるより先に、両手が出ていた」): no 3・2・1 before it.
   countdown: "own",
   music: "bright",

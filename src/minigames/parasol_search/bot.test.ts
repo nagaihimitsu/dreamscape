@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { playSearchBot, SEARCH_BOTS, type BotRound, type SearchBotProfile } from "../engines/search/bot";
 import {
-  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, parasolActive, parasolRulesFor, parasolTargets,
+  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, PARASOL_WARMUP_MS, PARASOL_WARMUP_SPOTS, PARASOL_WARMUP_TARGET,
+  parasolActive, parasolRulesFor, parasolTargets,
   type ParasolGesture, type ParasolOutcome, type ParasolParams, type ParasolTuning,
 } from "./rules";
 import { parasolChildAt, parasolGestures, parasolHoldings, parasolKinds } from "./Skin";
@@ -128,5 +129,44 @@ describe("the parasol's difficulty (the search bot, 600 seeded plays a kind of p
     expect(last.actions).toEqual([{ gone: true }]);
     expect(parasolRulesFor(PARASOL_TUNING).outcomeOf({ actions: [...before.actions, ...last.actions], lapse: null }, { at: "middle" })).toBe("pointed");
     expect(PARASOL_TOMATO_CHILD).toBe(parasolTargets({ at: "middle" })[2]);
+  });
+});
+
+/** The practice's look as the bot sees it: four plain umbrellas of different colours (none a look-alike), its own time. */
+export function parasolWarmupBotRounds(tuning: ParasolTuning = PARASOL_TUNING): BotRound[] {
+  return [{
+    idleMs: tuning.idleMs, idleAfterLeftMs: tuning.idleAfterLeftMs, limitMs: PARASOL_WARMUP_MS,
+    things: PARASOL_WARMUP_SPOTS.map((_, index) => (index === PARASOL_WARMUP_TARGET ? { target: true, pull: 0 } : { pull: OTHER_PULL })),
+  }];
+}
+
+describe("the parasol's practice, measured (the search bot, 300 seeded plays a kind of player)", () => {
+  const warm: ParasolParams = { at: "middle", rounds: 3, warmup: "yes" };
+  const rules = parasolRulesFor(PARASOL_TUNING);
+  const plays = (profile: SearchBotProfile) => Array.from({ length: 300 }, (_, seed) => playSearchBot(parasolWarmupBotRounds(), profile, (seed + 1) * 7919).record);
+
+  it("is over in about a second for every kind of player, by its 4 s at the latest: a fraction of the real look", () => {
+    for (const profile of SEARCH_BOTS) {
+      const records = plays(profile);
+      const ms = records.map((record) => record.endMs ?? Infinity);
+      const mean = ms.reduce((sum, value) => sum + value, 0) / ms.length;
+      console.log(`practice ${profile.id.padEnd(9)} ${(mean / 1000).toFixed(1)} s on average, ${(Math.max(...ms) / 1000).toFixed(1)} s at most`);
+      expect(Math.max(...ms), profile.id).toBeLessThanOrEqual(PARASOL_WARMUP_MS);
+      expect(mean, profile.id).toBeLessThan(2000);
+      expect(mean, profile.id).toBeLessThan(parasolBotShares(profile, 150).ms / 2);
+    }
+  });
+
+  it("is easy: nearly every player finds the blue umbrella themselves, and every play ends with one of the outcomes", () => {
+    for (const profile of SEARCH_BOTS) {
+      const outcomes = plays(profile).map((record) => rules.outcomeOf(record, warm));
+      expect(outcomes.filter((outcome) => outcome === "found").length / outcomes.length, profile.id).toBeGreaterThan(0.9);
+      for (const outcome of outcomes) expect(["found", "found_slow", "pointed"]).toContain(outcome);
+    }
+    // A player who never finds it: its own time runs out and she points it out (the practice ends by itself).
+    const blind: SearchBotProfile = { ...SEARCH_BOTS[1], overlook: 1, lure: 0 };
+    const last = playSearchBot(parasolWarmupBotRounds(), blind, 1).record;
+    expect(last).toEqual({ actions: [{ gone: true }], lapse: null, endMs: PARASOL_WARMUP_MS });
+    expect(rules.outcomeOf(last, warm)).toBe("pointed");
   });
 });

@@ -147,7 +147,7 @@ export const MONKEY_SNATCH_BACK_MS = 260;
  */
 export const MONKEY_WARMUP = {
   /** The monkey holds it out over the wall's edge (taps do not count), then lets go. */
-  holdMs: 700,
+  holdMs: 600,
   /** Its straight fall from the monkey's hand to the player's. */
   fallMs: 900,
   /** After it reaches the hands, a play without a tap ends this long after (it has fallen out of the field). */
@@ -167,6 +167,7 @@ export interface MonkeyWarmupPlan {
   tuning: CueTapTuning;
 }
 
+/** Practice's plain drop worked out from its numbers. */
 export function monkeyWarmupPlan(w: typeof MONKEY_WARMUP = MONKEY_WARMUP): MonkeyWarmupPlan {
   const release = w.holdMs;
   const hands = release + w.fallMs;

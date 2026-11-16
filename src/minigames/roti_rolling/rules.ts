@@ -12,11 +12,15 @@ import {
 // push). The board's arrow points the way of the dough rolled least so far (rotiNextWay: advice the rules never read).
 // The rolled shape gives Harbans's joke: round (a dull map), a box (a truck's bed), some country, or a hole (well round
 // and big is まん丸: ★3 on the result card only). Nothing is random; the same strokes at the same times give the same roti.
-// Pure. Every number to tune is in ROTI_NUMBERS (E1; Debug's room edits them: play.ts retune).
+// Pure. Every number to tune is in ROTI_NUMBERS (E1; Debug's room edits them: play.ts retune). Practice plays a short
+// roti of its own instead (ROTI_WARMUP: two strokes on a small ball, none of Harbans's beat), when its params say `warmup`.
 
 export type RotiOutcome = "round" | "truck_bed" | "country" | "torn";
-/** The roti has no keys of its own. */
-export type RotiParams = object;
+/** The roti's keys: only practice's `warmup` (the definition's practice sets it; a story never writes it). */
+export type RotiParams = { warmup?: "yes" };
+/** Whether a play is practice's short roti of its own (ROTI_WARMUP), not the real one. */
+export const isRotiWarmup = (params: RotiParams | undefined): boolean => params?.warmup === "yes";
+type RotiRules = MiniGameRules<RotiParams, RotiOutcome, ShapeDragRecord>;
 
 /**
  * The roti's numbers (lengths in board widths, times in ms). The dough, the pin and the strokes: the pin is wider than the
@@ -139,7 +143,8 @@ export interface RotiGame {
   perfect(measures: ShapeMeasures): boolean;
   /** The score line: how round (and big) the roti came out, how boxy a box (shown only; never in the story); none for a hole. */
   score(measures: ShapeMeasures, outcome: RotiOutcome): string | undefined;
-  rules: MiniGameRules<RotiParams, RotiOutcome, ShapeDragRecord>;
+  /** The roti's rules, and practice's (ROTI_WARMUP's) for a play whose params say `warmup`. */
+  rules: RotiRules;
 }
 
 const UP = 270;
@@ -241,7 +246,57 @@ export function rotiGame(numbers: RotiNumbers = ROTI_NUMBERS): RotiGame {
   const auto = rotiAuto({ windows, tuning, shapes });
   return {
     numbers, tuning, hand, windows, shapes, note, roundness, perfect, score,
-    rules: { ...shapeDragRules<RotiParams, RotiOutcome>(tuning, shapes, auto), rate },
+    rules: rotiWithWarmup({ ...shapeDragRules<RotiParams, RotiOutcome>(tuning, shapes, auto), rate }),
+  };
+}
+
+/**
+ * Practice's roti (`warmup`, which only the definition's practice sets; 2026-11-16, the user's decision: practice is short,
+ * simple and no rehearsal of the real play): a play of its own that teaches the stroke and nothing else. A smaller ball,
+ * no Harbans (no hand, no turns, no skid, no beat), no tear, no dotted ring, no clock: two strokes (the band counts them
+ * down), the arrow's way and then across it (Warmup.tsx), and it ends by itself (about 3 s). A stroke over the dough
+ * pushes it the same whatever its length past a short one (forgiving). Its numbers are its own, whatever Debug's room
+ * edits. Its outcome is never shown or taken: round when the two strokes crossed (rolled two ways), else some country
+ * (without his turns it makes no box, and it never tears). No ★.
+ */
+export const ROTI_WARMUP_TUNING: ShapeDragTuning = {
+  startRadius: 0.09,
+  sides: 48,
+  gain: 0.4,
+  maxPush: 0.09,
+  band: 0.4,
+  minStroke: 0.04,
+  turnDeg: 0,
+  timeMs: null,
+  maxStrokes: 2,
+  minStrokesToFinish: 1,
+  keyStroke: 0.45,
+};
+export const ROTI_WARMUP_SHAPES: ShapeClassifier<RotiOutcome> = {
+  classes: [{ outcome: "round", atLeast: { strokes: 2, roundness: 0.8 } }],
+  fallback: "country",
+};
+/**
+ * 「おまかせ」's practice records: up the board then across it (round), up twice (some country). おまかせ never plays
+ * practice (the host offers none then); a box or a hole, which practice never makes, takes the country one.
+ */
+export const ROTI_WARMUP_AUTO: Record<RotiOutcome, ShapeDragRecord> = (() => {
+  const country = [centreStroke(UP, 0.5), centreStroke(UP, 0.5)];
+  return { round: [centreStroke(UP, 0.5), centreStroke(0, 0.5)], country, truck_bed: country, torn: country };
+})();
+export const ROTI_WARMUP: { tuning: ShapeDragTuning; shapes: ShapeClassifier<RotiOutcome>; rules: RotiRules } = {
+  tuning: ROTI_WARMUP_TUNING,
+  shapes: ROTI_WARMUP_SHAPES,
+  rules: { ...shapeDragRules<RotiParams, RotiOutcome>(ROTI_WARMUP_TUNING, ROTI_WARMUP_SHAPES, ROTI_WARMUP_AUTO), rate: () => null },
+};
+
+/** The rules for a play's params: practice's (ROTI_WARMUP) when they say `warmup`, else the roti's own (`real`). */
+function rotiWithWarmup(real: RotiRules): RotiRules {
+  const pick = (params: RotiParams) => (isRotiWarmup(params) ? ROTI_WARMUP.rules : real);
+  return {
+    outcomeOf: (record, params) => pick(params).outcomeOf(record, params),
+    autoRecord: (outcome, params) => pick(params).autoRecord(outcome, params),
+    rate: (record, params) => pick(params).rate?.(record, params) ?? null,
   };
 }
 

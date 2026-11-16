@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { CueTapFieldProps, CueTapGaugeProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
-import { CLOTH_STEPS, CLOTH_TUNING, clothFlapRulesFor, clothPlan, type ClothFlapOutcome, type ClothFlapParams, type ClothMove, type ClothPlan, type ClothPose, type ClothTuning } from "./rules";
+import {
+  CLOTH_STEPS, CLOTH_TUNING, CLOTH_WARMUP_PLAN, clothFlapRulesFor, clothPlan, clothWarmup,
+  type ClothFlapOutcome, type ClothFlapParams, type ClothMove, type ClothPlan, type ClothPose, type ClothTuning,
+} from "./rules";
 import "./skin.css";
 
 // The flap's field (a cue_tap skin): the view from inside a niche of the stepwell, through its arch. The stairs cross the
@@ -19,6 +22,10 @@ import "./skin.css";
 // mark lights and one footstep rings as her foot lands on each (one goes out as she steps back), the gold one lit exactly
 // while a flap is perfect. Each change is told before it: her look along the niches (？), her hands to her chest (…), her
 // arms swung back as she bobs; the boy is smaller, in a red cap, quicker, his steps lighter, no mark lights for him.
+//
+// Practice (its `warmup` key) draws practice's short plain walk (rules.ts CLOTH_WARMUP_PLAN) on the same stairs: she starts
+// two steps down (two marks lit) and comes down three steady steps onto the gold step and one on; no boy, no tells, no
+// whisper. The gauge, which the engine gives no params, reads practice from the host's kit (practice always plays it).
 
 type Foot = { x: number; y: number };
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
@@ -94,14 +101,14 @@ function along(moves: readonly ClothMove[], ms: number): { foot: Foot; lift: num
 }
 
 /**
- * Her walk with a tuning (the story's, or Debug's room's edited one), for drawing: where her foot is, the step she is on
- * (the marks), her pose (the tells), how far she crouches as she bobs, when she next stands still, and when she stops.
+ * Her walk of a plan (the story's with a tuning, Debug's room's edited one, or practice's), for drawing: where her foot is,
+ * the step she is on (the marks), her pose (the tells), how far she crouches as she bobs (`bobMs` apart), when she next
+ * stands still, and when she stops.
  */
-function clothWalk(tuning: ClothTuning) {
-  const plan: ClothPlan = clothPlan(tuning);
+function clothWalk(plan: ClothPlan, bobMs: number) {
   const { moment: nicheMs, end: endMs } = plan.script;
-  const onGoldFrom = nicheMs - tuning.cleanEarlyMs;
-  const offGoldAt = nicheMs + tuning.cleanLateMs;
+  const onGoldFrom = nicheMs - plan.tuning.cleanEarlyMs;
+  const offGoldAt = nicheMs + plan.tuning.cleanLateMs;
   const walkerAt = (ms: number) => along(plan.moves, ms);
   /** The step she is on at `ms` (the one she left, while her foot is in the air). */
   const stepAt = (ms: number) => walkerAt(ms).step;
@@ -115,7 +122,7 @@ function clothWalk(tuning: ClothTuning) {
   const crouchAt = (ms: number): number => {
     const leap = plan.moves.find((move) => move.kind === "leap");
     if (!leap || ms >= leap.lift) return 0;
-    const half = tuning.bobMs / 2;
+    const half = bobMs / 2;
     const [first, second, held] = plan.bobs;
     if (ms >= held - half) return ms >= held ? 1 : Math.sin((Math.PI / 2) * clamp01((ms - (held - half)) / half));
     for (const bob of [first, second]) if (Math.abs(ms - bob) < half) return Math.cos((Math.PI / 2) * ((ms - bob) / half));
@@ -123,6 +130,7 @@ function clothWalk(tuning: ClothTuning) {
   };
   /** Her foot reaching toward the gold step (0 to 1) in the feint. */
   const reachAt = (ms: number): number => {
+    if (!plan.feint) return 0;
     const { lift, back } = plan.feint;
     if (ms <= lift || ms >= back) return 0;
     return Math.sin(Math.PI * ((ms - lift) / (back - lift)));
@@ -138,13 +146,15 @@ function clothWalk(tuning: ClothTuning) {
     tapMs === null ? Number.POSITIVE_INFINITY : outcome === "late" ? standsAt(tapMs) : tapMs;
   /** Where the boy is at `ms`, or null before he appears and once he has run off the bottom of the stairs. */
   const boyAt = (ms: number): { foot: Foot; lift: number } | null => {
-    if (ms < plan.boy[0].lift || ms >= plan.boy[plan.boy.length - 1].land) return null;
+    if (plan.boy.length === 0 || ms < plan.boy[0].lift || ms >= plan.boy[plan.boy.length - 1].land) return null;
     const { foot, lift } = along(plan.boy, ms);
     return { foot, lift };
   };
   return { plan, nicheMs, endMs, onGoldFrom, offGoldAt, walkerAt, stepAt, poseAt, crouchAt, reachAt, standsAt, stopsAt, boyAt };
 }
 type ClothWalk = ReturnType<typeof clothWalk>;
+/** Practice's walk (the same with any tuning: Debug's room edits the story's). */
+const WARMUP_WALK = clothWalk(CLOTH_WARMUP_PLAN, 0);
 
 /** After an early flap: the pigeon in the niche, startled by the cloth, bursts out this long after it. */
 const PIGEON_AFTER_MS = 450;
@@ -288,11 +298,15 @@ const TELL_MARK: Partial<Record<ClothPose, string>> = { wary: "？", freeze: "�
 
 /** The flap's skin with a tuning (the story's; Debug's room plays an edited one: play.ts retune). */
 export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParams, ClothFlapOutcome> {
-  const walk = clothWalk(tuning);
-  const { plan } = walk;
-  const freezeTell = plan.poses.find((entry) => entry.pose === "freeze")?.from ?? Number.POSITIVE_INFINITY;
+  const story = clothWalk(clothPlan(tuning), tuning.bobMs);
+  /** The walk a play draws: practice's short plain one (its `warmup` key), or the story's. */
+  const walkOf = (warmup: boolean): ClothWalk => (warmup ? WARMUP_WALK : story);
+  const walkFor = (params: ClothFlapParams): ClothWalk => walkOf(clothWarmup(params));
 
-  function ClothFlapField({ still, art, sound, vibrate, frames }: CueTapFieldProps<ClothFlapParams, ClothFlapOutcome>) {
+  function ClothFlapField({ params, still, art, sound, vibrate, frames }: CueTapFieldProps<ClothFlapParams, ClothFlapOutcome>) {
+    const walk = walkFor(params);
+    /** Where she stands as the play starts (the story's top step; practice's two steps down). */
+    const first = walk.walkerAt(0);
     const walker = useRef<HTMLSpanElement>(null);
     const body = useRef<HTMLSpanElement>(null);
     const boy = useRef<HTMLSpanElement>(null);
@@ -303,7 +317,7 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
     const [pose, setPose] = useState<ClothPose>("walk");
     const [reach, setReach] = useState(false);
     const [turned, setTurned] = useState(false);
-    const [on, setOn] = useState(0);
+    const [on, setOn] = useState(first.step);
     const [boyStartled, setBoyStartled] = useState(false);
     const kit = useMiniGameKit();
     const live = useRef({ sound, vibrate, kit });
@@ -316,8 +330,9 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
       let shown: string | null = null;
       let shownPose: ClothPose = "walk";
       let reaching = false;
-      let step = 0;
+      let step = walk.walkerAt(0).step;
       let boyStep = -1;
+      const freezeTell = walk.plan.poses.find((entry) => entry.pose === "freeze")?.from ?? Number.POSITIVE_INFINITY;
       return frames(({ ms, tapMs, outcome, impactAt }) => {
         const { juice } = live.current.kit;
         if (tapMs !== null && !spread) {
@@ -413,7 +428,7 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
           bird.style.opacity = t >= 0 && t <= 1 ? "1" : "0";
         }
       });
-    }, [frames, still]);
+    }, [frames, still, walk]);
     const shownPose = react ?? pose;
     const mark = react ? (react === "scream" ? "！" : react === "laugh" ? "♪" : "？") : TELL_MARK[pose];
     return (
@@ -425,7 +440,8 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
           <span className="mg-cloth-flap-far-wall"><span /><span /><span /></span>
           {!art.stairs && <DrawnStairs />}
           <StepMarks on={on} />
-          <span className="mg-cloth-flap-walker" ref={walker} data-react={react ?? undefined} data-pose={react ? undefined : pose}>
+          <span className="mg-cloth-flap-walker" ref={walker} data-react={react ?? undefined} data-pose={react ? undefined : pose}
+            style={{ left: `${first.foot.x}%`, top: `${first.foot.y}%` }}>
             <span className="mg-cloth-flap-walker-body mg-play-object" ref={body} data-turned={turned || undefined}>
               {art.walker ? <img src={art.walker} alt="" draggable={false} /> : <WalkerFigure pose={shownPose} reach={reach && !react} />}
             </span>
@@ -447,7 +463,9 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
 
   /** The gauge in place of the meter: a mark for each step down to the gold one, lit up to the step she is on (her count). */
   function ClothFlapGauge({ frames }: CueTapGaugeProps<ClothFlapParams, ClothFlapOutcome>) {
-    const [on, setOn] = useState(0);
+    // The engine gives the gauge no params: practice always plays practice's walk (the definition's practice key).
+    const walk = walkOf(useMiniGameKit().practice);
+    const [on, setOn] = useState(() => walk.walkerAt(0).step);
     const [past, setPast] = useState(false);
     useEffect(() => {
       let lit = -1;
@@ -466,7 +484,7 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
           setPast(off);
         }
       });
-    }, [frames]);
+    }, [frames, walk]);
     return (
       <div className="mg-cloth-flap-gauge" aria-hidden="true">
         {Array.from({ length: CLOTH_STEPS.gold }, (_, index) => {
@@ -479,17 +497,17 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
   }
 
   return {
-    tuning: plan.tuning,
+    tuning: (params) => walkFor(params).plan.tuning,
     rules: clothFlapRulesFor(tuning),
     hintJa: "金色の段に立った瞬間に「広げる」",
     actionJa: "広げる",
     actionHintJa: "階段を下りてくる人が、くぼみの前の金色の段に立ったときに押します。立ち止まったり、一段戻ったり、跳んだりします。ほかの人にはつられないで。",
     autoJa: "おまかせで広げています",
     // The play ends as she reacts (her scream, her laugh at the cloth, her peering back), the host's finish over it…
-    impactAt: ({ outcome, tapMs }) => reactionOf(outcome, tapMs, walk).at,
+    impactAt: ({ outcome, tapMs }, _still, params) => reactionOf(outcome, tapMs, walkFor(params)).at,
     // …and the field goes on to show the rest (after an early flap, the pigeon and her scream) before the result card.
-    endAt: ({ outcome, tapMs }, still) => {
-      const reaction = reactionOf(outcome, tapMs, walk);
+    endAt: ({ outcome, tapMs }, still, params) => {
+      const reaction = reactionOf(outcome, tapMs, walkFor(params));
       const last = reaction.then?.at ?? reaction.at;
       return last + (still ? 500 : outcome === "early" ? 900 : 850);
     },
@@ -501,9 +519,13 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
 /** The flap as a cue_tap skin: its timing, rules, words, field and gauge. */
 export const clothFlapSkin = clothFlapSkinFor(CLOTH_TUNING);
 
-/** For the tests: where a foot is on a step, her walk with the story's tuning (the plan, where she is, when she stops). */
-const STORY_WALK = clothWalk(CLOTH_TUNING);
+/**
+ * For the tests: where a foot is on a step, her walk with the story's tuning (the plan, where she is, when she stops), and
+ * practice's walk (`warmup`).
+ */
+const STORY_WALK = clothWalk(clothPlan(CLOTH_TUNING), CLOTH_TUNING.bobMs);
 export const CLOTH_FIELD_POINTS = {
   footOn, NICHE, ...STORY_WALK, pigeonAlong, footstepLevel, clothWalk, LAST_STEP, WAIT_LINE_JA,
   reactionOf: (outcome: ClothFlapOutcome, tapMs: number | null) => reactionOf(outcome, tapMs, STORY_WALK),
+  warmup: WARMUP_WALK,
 } as const;

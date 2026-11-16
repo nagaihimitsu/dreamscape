@@ -19,6 +19,11 @@ import { defineMiniGame } from "../contract";
  * skilled ones, under 1 in 10 careless ones). Nothing is random (the seed only shuffles which other stall stands where
  * and who does what); the street claims nothing about the place (an ordinary street from above).
  *
+ * The practice (2026-11-16: shorter and simpler than the real look, never its preview) is a look of its own (`warmup`):
+ * one round, four plain umbrellas of different colours on the far pavement, the blue one to find (about a second; not
+ * found within 4 s, she points it out). It teaches the tap and 「どこ？」 only: no old parasols, no customers, no
+ * children, and nothing of the real look's places (its finds are all on the near side).
+ *
  * Accessibility: each round's things are buttons in the tab order (the next round's first takes the focus), named by what
  * is drawn there (an umbrella's colour and the stall or walker under it; a customer's stall and what they do; what a
  * child holds), the same clues the picture gives, never by whose it is; Enter or Space looks at it; 「どこ？」 is a 56px
@@ -48,6 +53,8 @@ export const parasolSearch = defineMiniGame({
       .describe("古い日傘の場所（手前の歩道の left 左・middle 真ん中・right 右。書かなければ middle）"),
     rounds: z.coerce.number().int().min(1).max(3).default(3)
       .describe("見つける物の数（1 古い日傘だけ・2 値段で揉める客まで・3 トマトをもらう子どもまで。書かなければ 3）"),
+    warmup: z.enum(["yes"]).optional()
+      .describe("練習用の短く簡単な遊び（yes。向かいの歩道の4つの傘から青い傘を1つ押すだけ。練習が自動で使う。物語の札には書かない）"),
   }).strict(),
   examples: [{}, { at: "left" }, { at: "right" }, { at: "left", rounds: "1" }],
   startJa: "見下ろす",
@@ -55,9 +62,9 @@ export const parasolSearch = defineMiniGame({
   goalJa: "古い日傘、値段で揉める客、トマトをもらった子どもを、順に押して見つける",
   controls: "tap-target",
   durationSec: 10,
-  // The practice: the whole look at the left stall (the bursts, the feints and the handover can be learned; the real
-  // look's stall is elsewhere unless the tag says left).
-  practice: { params: { at: "left" } },
+  // The practice: a short, simple look of its own (one round, the blue umbrella among four plain ones on the far
+  // pavement), not a rehearsal of the real one: none of its look-alikes, bursts, feints or children, none of its places.
+  practice: { params: { warmup: "yes" } },
   // The ★ counts the time: the host's 3・2・1 starts it for everyone alike.
   countdown: "host",
   music: "calm",

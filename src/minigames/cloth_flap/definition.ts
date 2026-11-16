@@ -15,8 +15,14 @@ import { defineMiniGame } from "../contract";
  * back up (its mark goes out), bobbing in time, a held bob, then a leap two steps down onto the gold step, off the beat.
  * A flap at any of them is early. The heroine whispers 「まだ……」 as Jasmeet freezes.
  *
- * The host's flow (docs/13 2.6): practice before the real flap, no 3・2・1 (her steps are the count), the play ends as she
- * reacts (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none; the score names the fake-out a flap fell
+ * Practice (2026-11-16: shorter and simpler than the real flap, never its rehearsal): one play with the `warmup` key, a
+ * short plain walk of its own (rules.ts CLOTH_WARMUP_PLAN, about 2.7 s): already two steps down, she comes down three
+ * steady steps onto the gold step and one on past it, with wider windows; no stop, no boy, no freeze, no feint, no bobs,
+ * no leap, and no whisper. It teaches the one tap only.
+ *
+ * The host's flow (docs/13 2.6): practice once (no finish word, no result card; it ends as she reacts, like the real
+ * one), the host's cut-in 「次は本番！」, then the real flap by itself; no 3・2・1 (her steps are the count); the real flap ends
+ * as she reacts (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none; the score names the fake-out a flap fell
  * for: 「男の子で広げた」「立ち止まりで広げた」「踏み出しかけで広げた」「はずみの途中で広げた」), the finish word a sound or a call, and the
  * heroine's face and line from beside the niche: her first breath at the prank (Jasmeet's scream and the story's lines
  * follow at once), never what she says next.
@@ -44,14 +50,16 @@ export const clothFlap = defineMiniGame({
       reaction: { kind: "tease", linesJa: ["……鳩、固まってる？"] } },
   ],
   defaultAuto: "perfect",
-  params: () => z.object({}).strict(),
+  params: () => z.object({
+    warmup: z.enum(["yes"]).optional().describe("練習用の短く簡単な遊び（yes。練習が自動で使う。物語の札には書かない）"),
+  }).strict(),
   examples: [{}],
   startJa: "隠れる",
   hintJa: "金色の段に立った瞬間に「広げる」",
   goalJa: "立ち止まりや後戻りにつられず、金色の段に立った瞬間に「広げる」で驚かせる",
   controls: "timing",
   durationSec: 8,
-  practice: {},
+  practice: { params: { warmup: "yes" } },
   // Her steps are the count (the marks light one a step): no 3・2・1 before her walk (she stands at the top first).
   countdown: "own",
   finishAnchor: "top",

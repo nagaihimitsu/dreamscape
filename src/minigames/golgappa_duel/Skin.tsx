@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useMiniGameKit } from "../host/kit";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { rhythmTapPerfect } from "../engines/rhythm_tap/engine";
-import { GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_STOP, golgappaDetail, type GolgappaGame, type GolgappaOutcome, type GolgappaParams } from "./rules";
+import {
+  GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_STOP, GOLGAPPA_WARMUP_GAME, golgappaDetail, type GolgappaGame, type GolgappaOutcome, type GolgappaParams,
+} from "./rules";
 import "./skin.css";
 
 // The golgappa duel's field (a rhythm_tap skin): the stall's counter from the customer's side, her leaf bowl on the left
@@ -17,7 +19,9 @@ import "./skin.css";
 // 「なんてね」 as she thumps her chest: no flag on the lane, no gold ring); one golgappa before her 14th she says she is
 // about to stop; her raised palm and 「バス！」 come beside her face after it (the lane's flag meets its ring then); the
 // onlookers count aloud from the 10th. With the use's art (`art.stall`, `art.heroine`, `art.bowl`, `art.puri`) those
-// pictures take the drawn ones' places.
+// pictures take the drawn ones' places. The practice (rules.ts golgappaWarmup) is the same stall with the vendor serving
+// the player alone: her bowl stays empty and uncounted, no choke gauge, no 「バス」 or flag, and it just ends (no cough, no
+// stars: the host's 「次は本番！」 follows).
 
 /** Where things are, in percent of the field: the hand's height, the bowls (her on the left, the player's on the right). */
 const HAND_Y = 12;
@@ -64,16 +68,16 @@ const Palm = () => (
 
 /** The duel's skin built from its game (the story's, or Debug's room's edited numbers: play.ts retune). */
 export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParams, GolgappaOutcome> {
-  const { tuning, herLandings, handMs, bluffMs, moves, numbers } = game;
+  const { tuning, herLandings, handMs, bluffMs, moves, numbers, warmup } = game;
   const yourBeats = tuning.beats;
   const feints = tuning.rests?.at ?? [];
   const gaugeSize = tuning.strayLimit ?? 0;
   /** Her 13th eaten: she says the next is her last (beside her face, until her hand goes up: her 「バス！」 takes its place). */
-  const herWarnMs = herLandings[GOLGAPPA_HER_STOP - 2] + numbers.herEatMs;
+  const herWarnMs = (herLandings[GOLGAPPA_HER_STOP - 2] ?? Number.POSITIVE_INFINITY) + numbers.herEatMs;
   /** Her bluff's bubble ends by her warning at the latest (the same place beside her face; Debug's room's edited numbers). */
   const bluffEndMs = Math.min(bluffMs + BLUFF_MS, herWarnMs);
   /** Her 10th eaten, as the onlookers start counting: the sour water gets to her (her face only). */
-  const herTenthMs = herLandings[COUNT_FROM - 1] + numbers.herEatMs;
+  const herTenthMs = (herLandings[COUNT_FROM - 1] ?? Number.POSITIVE_INFINITY) + numbers.herEatMs;
   /** A reaction of her own at `ms` (her laugh at a bitten feint) does not crowd out her 10th's face or her warning. */
   const freeToReact = (ms: number) => [herWarnMs, herTenthMs].every((at) => Math.abs(at - ms) >= REACT_APART_MS);
 
@@ -206,8 +210,8 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         setHerStopped(up);
         setYouStopped(record.stopMs !== null && summary.ended === "stop");
         // The end's moment in the field: the cough (a splash and a small shake; once the next one has landed on the one
-        // left, when it was falling), outlasting her (a shake and stars).
-        if (outcome && !finished) {
+        // left, when it was falling), outlasting her (a shake and stars). The practice just ends.
+        if (outcome && !finished && !warmup) {
           finished = true;
           if (outcome === "choke") chokeAt = tailAt ?? ms;
           else if (outcome === "outlast") {
@@ -274,10 +278,12 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
           {art.bowl ? <img src={art.bowl} alt="" draggable={false} /> : <span className="mg-golgappa-duel-bowl-drawn" />}
           {Array.from({ length: inBowl }, (_, index) => <span key={index} className="mg-golgappa-duel-in-bowl" data-place={index}><Puri art={art.puri} /></span>)}
         </span>
-        <span className="mg-golgappa-duel-gauge" data-full={gauge >= gaugeSize - 1 || undefined} style={{ left: `${YOU.x + 19}%`, top: `${YOU.y - 4}%` }}>
-          {Array.from({ length: gaugeSize }, (_, index) => <span key={index} className="mg-golgappa-duel-drop" data-filled={index < gauge || undefined} />)}
-          <small>むせ</small>
-        </span>
+        {gaugeSize > 0 && (
+          <span className="mg-golgappa-duel-gauge" data-full={gauge >= gaugeSize - 1 || undefined} style={{ left: `${YOU.x + 19}%`, top: `${YOU.y - 4}%` }}>
+            {Array.from({ length: gaugeSize }, (_, index) => <span key={index} className="mg-golgappa-duel-drop" data-filled={index < gauge || undefined} />)}
+            <small>むせ</small>
+          </span>
+        )}
         <span className="mg-golgappa-duel-fall mg-play-object" ref={herFall}><Puri art={art.puri} /></span>
         <span className="mg-golgappa-duel-fall mg-golgappa-duel-fall-you mg-play-object" ref={yourFall}><Puri art={art.puri} /></span>
         {bite && !choked && (
@@ -298,7 +304,7 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         </span>
         {youStopped && <span className="mg-golgappa-duel-say" style={{ left: `${YOU.x}%`, top: `${YOU.y - 24}%` }}>バス！</span>}
         {(choked || cough) && <span className="mg-golgappa-duel-say mg-golgappa-duel-say-choke" style={{ left: `${YOU.x}%`, top: `${YOU.y - 24}%` }}>ごほっ</span>}
-        <span className="mg-golgappa-duel-count" style={{ left: `${HER.x}%` }}><small>{names.heroine}</small>{herCount}</span>
+        {!warmup && <span className="mg-golgappa-duel-count" style={{ left: `${HER.x}%` }}><small>{names.heroine}</small>{herCount}</span>}
         <span className="mg-golgappa-duel-count" style={{ left: `${YOU.x}%` }}><small>{names.player}</small>{yourCount}</span>
       </div>
     );
@@ -307,16 +313,19 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
   return {
     tuning,
     rules: game.rules,
-    hintJa: "落ちたら「食べる」。振りかぶるだけはフェイント。旗が彼女の「バス」",
+    hintJa: warmup ? "器に落ちたら「食べる」" : "落ちたら「食べる」。振りかぶるだけはフェイント。旗が彼女の「バス」",
     actionJa: "食べる",
-    actionHintJa: "自分の器にゴルガッパが落ちるたびに押します。屋台の男が手を高く振りかぶって何も落とさない時（フェイント）や、何もない時に押すと、むせそうになります。",
+    actionHintJa: warmup ? "自分の器にゴルガッパが落ちるたびに押します。"
+      : "自分の器にゴルガッパが落ちるたびに押します。屋台の男が手を高く振りかぶって何も落とさない時（フェイント）や、何もない時に押すと、むせそうになります。",
     autoJa: "おまかせで食べています",
-    stop: { labelJa: "バス", hintJa: `もう十分、と手を上げます。押すと勝負が終わります。彼女は${GOLGAPPA_HER_STOP}個目で手を上げます（レーンの旗が輪に重なる時。${GOLGAPPA_HER_BLUFF}個目の手は冗談です）。` },
-    partner: { atMs: handMs, flagJa: "バス" },
+    // The practice teaches 「食べる」 only: no 「バス」, no flag of hers.
+    stop: warmup ? null : { labelJa: "バス", hintJa: `もう十分、と手を上げます。押すと勝負が終わります。彼女は${GOLGAPPA_HER_STOP}個目で手を上げます（レーンの旗が輪に重なる時。${GOLGAPPA_HER_BLUFF}個目の手は冗談です）。` },
+    partner: warmup ? undefined : { atMs: handMs, flagJa: "バス" },
     restRevealMs: numbers.feintTellMs,
     statusJa: (summary) => (summary.came > 0 ? `${summary.came}個目` : ""),
-    // The card's score (rules.ts golgappaRating), and under it what ★3 asks for when a play with her or past her missed it.
-    detailJa: golgappaDetail,
+    // The card's score (rules.ts golgappaRating), and under it what ★3 asks for when a play with her or past her missed it
+    // (the practice has no card).
+    detailJa: warmup ? () => undefined : golgappaDetail,
     // Her hand and the player's 「バス」 (or the cough) stay a moment under the host's finish.
     endDelayMs: (outcome, still) => (still ? 450 : outcome === "choke" ? 1000 : 800),
     Field: GolgappaField,
@@ -325,3 +334,5 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
 
 /** The golgappa duel as a rhythm_tap skin: its beats, rules, words and field. */
 export const golgappaSkin = golgappaSkinFor(GOLGAPPA_GAME);
+/** Its practice's (rules.ts golgappaWarmup). */
+export const golgappaWarmupSkin = golgappaSkinFor(GOLGAPPA_WARMUP_GAME);

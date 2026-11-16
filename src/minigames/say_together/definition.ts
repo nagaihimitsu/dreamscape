@@ -11,8 +11,12 @@ import { defineMiniGame } from "../contract";
  * decision). A tap while she takes her breath, before 「せー」, does not count. First use: the Lodhi Garden date's
  * 「一緒に言おう」.
  *
- * The host's flow (docs/13 2.6): practice before the real one, no 3・2・1 (her 「せー」「の」 is the count), the play ends
- * on the last word (its peak when the two voices meet on it; the finish 「デーン！」 is that word); ★ from the four words
+ * The host's flow (docs/13 2.6): practice once, then the real one by itself (the host's cut-in 「次は本番！」), no 3・2・1
+ * (her count is the count). Practice is a short warm-up of its own (`warmup: "yes"`, 2026-11-16: not a preview of the
+ * real play): about 2.5 s, she counts a plain 「いち」「に」 and says 「さん」「し」 on the same even beat (its own, not her
+ * 「せー」「の」's), the player tapping 「言う」 with each, in wide windows: the basic control only, none of her phrasing
+ * (two words, not four; no late, quick or held word, no breath); its outcome is never shown. The real play ends on the
+ * last word (its peak when the two voices meet on it; the finish 「デーン！」 is that word); ★ from the four words
  * (all four together ★3; together ★2; early or late ★2 with two or more of the others together, else ★1; silent none);
  * an early or late start's finish is the plain end whistle (group2 N8); her face. No mini-game track: her count is the
  * beat, so the scene's music stays, lowered (group2 N4: a 134 BPM track for 4 s clashed with her 92).
@@ -40,14 +44,17 @@ export const sayTogether = defineMiniGame({
     { id: "silent", labelJa: "言わなかった", noteJa: "最後まで押さなかった（彼女だけが言う）", finishJa: null, reaction: { kind: "oops" } },
   ],
   defaultAuto: "together",
-  params: () => z.object({}).strict(),
+  params: () => z.object({
+    warmup: z.enum(["yes"]).optional().describe("練習用の短く簡単な遊び（yes。練習が自動で使う。物語の札には書かない）"),
+  }).strict(),
   examples: [{}],
   startJa: "息を吸う",
   hintJa: "「せー」「の」の次から、彼女の言葉に合わせて「言う」",
   goalJa: "「せー」「の」の後、彼女が言う4つの言葉に合わせて「言う」で声をそろえる",
   controls: "rhythm",
   durationSec: 6,
-  practice: {},
+  // Practice is the warm-up (rules.ts SAY_WARMUP_NUMBERS), not the real phrase.
+  practice: { params: { warmup: "yes" } },
   // Her 「せー」「の」 is the count.
   countdown: "own",
   // Her count is the beat (about 92 a minute): the scene's track stays, lowered (quietScene).

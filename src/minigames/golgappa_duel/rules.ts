@@ -17,10 +17,11 @@ import {
 // hand: a slip there is an ordinary one (round 3 fix, 2026-11-14: stopping with her never chokes for a normal reaction).
 // The player's 「バス」 against her hand decides the rest. Nothing is random. Pure.
 // Every number to tune is in GOLGAPPA_NUMBERS (E1; Debug's room edits them: play.ts retune).
+// The practice is a play of its own (golgappaWarmup: the host's practice reads `warmup yes`), not the duel's rehearsal.
 
 export type GolgappaOutcome = "together" | "you_first" | "choke" | "outlast";
-/** The duel has no keys of its own. */
-export type GolgappaParams = object;
+/** The duel has no keys of its own for a story; `warmup yes` is the host's practice (definition.ts practice). */
+export interface GolgappaParams { warmup?: "yes" | undefined }
 
 /** She raises her hand after her 14th (the scene's count: 「十四の声に重なって」; the hints say 14 too, so it stays). */
 export const GOLGAPPA_HER_STOP = 14;
@@ -95,15 +96,17 @@ export interface GolgappaMove { at: number; to: "her" | "you"; feint: boolean }
 
 /** A duel built from its numbers: the beats and windows, her landings, bluff and hand, the vendor's moves, the rules. */
 export interface GolgappaGame {
+  /** The practice's play (golgappaWarmup), not the duel. */
+  warmup: boolean;
   numbers: GolgappaNumbers;
   tuning: RhythmTapTuning;
   /** Every move of the vendor's hand, in order. */
   moves: readonly GolgappaMove[];
-  /** When each of her 14 lands. */
+  /** When each of her 14 lands (none in the practice). */
   herLandings: readonly number[];
-  /** When she bluffs: her 12th eaten (her hand half up, then her chest). */
+  /** When she bluffs: her 12th eaten (her hand half up, then her chest). Never (Infinity) in the practice. */
   bluffMs: number;
-  /** When she raises her hand: her 14th eaten (just before the player's 14th lands). */
+  /** When she raises her hand: her 14th eaten (just before the player's 14th lands). Never (Infinity) in the practice. */
   handMs: number;
   /** Why these numbers would be unfair (the engine's checks and the duel's own); none: fair. */
   fairness(): string[];
@@ -137,6 +140,17 @@ export function golgappaDetail(summary: RhythmTapSummary, outcome: GolgappaOutco
 }
 
 const all = () => true;
+
+/** Why the vendor's drops would be unfair: two falling at once (one hand), or the first falling before the play. */
+function dropProblems(moves: readonly GolgappaMove[], fallMs: number): string[] {
+  const problems: string[] = [];
+  const drops = moves.filter((move) => !move.feint).map((move) => move.at);
+  drops.slice(1).forEach((at, index) => {
+    if (at - drops[index] <= fallMs) problems.push(`drop ${index + 2} comes ${at - drops[index]} ms after the one before (a golgappa falls for fallMs ${fallMs}: two would fall at once)`);
+  });
+  if (drops[0] <= fallMs) problems.push(`the first golgappa lands at ${drops[0]} ms (it falls for ${fallMs}: it would start falling before the play)`);
+  return problems;
+}
 
 /** The duel from its numbers (the story's: GOLGAPPA_NUMBERS; Debug's room's edited ones). */
 export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): GolgappaGame {
@@ -179,12 +193,7 @@ export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): Golga
     return summary.judged[GOLGAPPA_HER_STOP + GOLGAPPA_TOGETHER_AFTER] === "hit" ? "outlast" : "together";
   };
   const fairness = () => {
-    const problems = rhythmTapFairness(tuning);
-    const drops = moves.filter((move) => !move.feint).map((move) => move.at);
-    drops.slice(1).forEach((at, index) => {
-      if (at - drops[index] <= numbers.fallMs) problems.push(`drop ${index + 2} comes ${at - drops[index]} ms after the one before (a golgappa falls for fallMs ${numbers.fallMs}: two would fall at once)`);
-    });
-    if (drops[0] <= numbers.fallMs) problems.push(`the first golgappa lands at ${drops[0]} ms (it falls for ${numbers.fallMs}: it would start falling before the play)`);
+    const problems = [...rhythmTapFairness(tuning), ...dropProblems(moves, numbers.fallMs)];
     if (handMs >= beats[GOLGAPPA_HER_STOP - 1]) problems.push(`her hand (${handMs} ms) comes after the player's ${GOLGAPPA_HER_STOP}th lands`);
     if (handMs <= beats[GOLGAPPA_HER_STOP - 2]) problems.push(`her hand (${handMs} ms) comes before the player's ${GOLGAPPA_HER_STOP - 1}th lands`);
     if (numbers.feintTellMs <= 0) problems.push(`feintTellMs ${numbers.feintTellMs} shows a feint only after it`);
@@ -197,11 +206,77 @@ export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): Golga
     choke: { hit: (index) => index < 8 },
     outlast: { hit: all },
   }, golgappaRating);
-  return { numbers, tuning, moves, herLandings, bluffMs, handMs, fairness, rules };
+  return { warmup: false, numbers, tuning, moves, herLandings, bluffMs, handMs, fairness, rules };
+}
+
+/**
+ * The practice's numbers (ms; 2026-11-16, the user's decision: 「練習は本番より簡単・単純・短く」, not the duel's preview):
+ * the vendor gives the player alone five at one even, easy pace (0.9 s apart, a pace the duel never keeps), with wider
+ * windows than the duel's (−180/+320; ぴったり −70/+110). About 5.3 s. Its own: Debug's room edits the duel's numbers only
+ * (the practice takes from those just how long a golgappa falls and how many left in the bowl are a choke).
+ */
+export const GOLGAPPA_WARMUP = {
+  firstMs: 1000,
+  stepMs: 900,
+  earlyMs: 180,
+  lateMs: 320,
+  perfectEarlyMs: 70,
+  perfectLateMs: 110,
+  endAfterMs: 700,
+} as const;
+/** The practice's beat map (GOLGAPPA_PHRASES' marks, each step GOLGAPPA_WARMUP's stepMs): five of the player's, nothing else. */
+export const GOLGAPPA_WARMUP_STEPS = "yyyyy";
+
+/**
+ * The practice (the host's practice: `warmup yes`): eating each one as it lands in the player's bowl, and nothing else.
+ * No feint, hold, double, speed-up or climax; no choke gauge and no miss limit (a missed one stays in the bowl, a tap at
+ * nothing clacks, and it plays on to the end by itself); nothing of hers (she has none: no bluff, no hand, no flag) and no
+ * 「バス」. It ends as `outlast` (every one the vendor had), or `choke` with two or more left in the bowl; a record's stop
+ * (the play has no 「バス」: the rules alone) is `you_first`, or `together` once the vendor's last has landed. Not rated.
+ */
+export function golgappaWarmup(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): GolgappaGame {
+  const warmup = GOLGAPPA_WARMUP;
+  const { steps } = rhythmTapSteps(warmup.firstMs, [{ stepMs: warmup.stepMs, steps: GOLGAPPA_WARMUP_STEPS }]);
+  const beats = rhythmTapPick(steps, "y");
+  const moves: GolgappaMove[] = steps.map((step) => ({ at: step.at, to: "you", feint: false }));
+  const tuning: RhythmTapTuning = {
+    beats,
+    earlyMs: warmup.earlyMs,
+    lateMs: warmup.lateMs,
+    perfect: { earlyMs: warmup.perfectEarlyMs, lateMs: warmup.perfectLateMs },
+    endAfterMs: warmup.endAfterMs,
+  };
+  const outcome = (summary: RhythmTapSummary): GolgappaOutcome => {
+    if (summary.misses >= numbers.missLimit) return "choke";
+    if (summary.ended !== "stop") return "outlast";
+    return summary.stopCount === beats.length ? "together" : "you_first";
+  };
+  const fairness = () => [...rhythmTapFairness(tuning), ...dropProblems(moves, numbers.fallMs)];
+  // Outlast: every one eaten. Together: 「バス」 after the last. First: after the 2nd. Choke: none eaten.
+  const rules = rhythmTapRules<GolgappaParams, GolgappaOutcome>(tuning, outcome, {
+    together: { hit: all, stopAfter: beats.length },
+    you_first: { hit: all, stopAfter: 2 },
+    choke: {},
+    outlast: { hit: all },
+  }, () => null);
+  const never = Number.POSITIVE_INFINITY;
+  return { warmup: true, numbers, tuning, moves, herLandings: [], bluffMs: never, handMs: never, fairness, rules };
+}
+
+/** The rules for a tag's params: the practice's (`warmup yes`) or the duel's. */
+export function golgappaRulesFor(duel: GolgappaGame, practice: GolgappaGame): MiniGameRules<GolgappaParams, GolgappaOutcome, RhythmTapRecord> {
+  const of = (params: GolgappaParams | undefined) => (params?.warmup === "yes" ? practice : duel).rules;
+  return {
+    outcomeOf: (record, params) => of(params).outcomeOf(record, params),
+    autoRecord: (outcome, params) => of(params).autoRecord(outcome, params),
+    rate: (record, params) => of(params).rate?.(record, params) ?? null,
+  };
 }
 
 /** The story's duel. */
 export const GOLGAPPA_GAME = golgappaGame();
 export const GOLGAPPA_TUNING = GOLGAPPA_GAME.tuning;
 export const GOLGAPPA_HER_HAND_MS = GOLGAPPA_GAME.handMs;
-export const golgappaRules = GOLGAPPA_GAME.rules;
+/** The practice before it. */
+export const GOLGAPPA_WARMUP_GAME = golgappaWarmup();
+export const golgappaRules = golgappaRulesFor(GOLGAPPA_GAME, GOLGAPPA_WARMUP_GAME);

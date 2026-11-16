@@ -14,14 +14,20 @@ import { searchEnding, searchRules, type SearchGame, type SearchRecord, type Sea
 // (`pointed`). The rating (★, the result card only) adds the time. The tag's `rounds` may play fewer. The bursts, feints
 // and the handover are on the field's clock from the round's start (parasolActive: the skin draws them, the tests' bot
 // reads them); the outcome never reads a time. Nothing is random. Pure.
+// The practice (`warmup`, 2026-11-16: shorter and simpler than the real look, never its preview) is a look of its own:
+// one round, four plain umbrellas of different colours on the far pavement, the blue one to find, gone by
+// PARASOL_WARMUP_MS (she points it out then); none of the real rounds' look-alikes, bursts, feints or children, and none of
+// their places (the real finds are all on the near side, the tag's `at` among them).
 
 export type ParasolOutcome = "found" | "found_slow" | "pointed";
 /** Where on the near pavement the old parasol is. */
 export type ParasolPlace = "left" | "middle" | "right";
 export interface ParasolParams {
   at: ParasolPlace;
-  /** How many of the three rounds to play, from the first (3 in the story; 1 in the practice). */
+  /** How many of the three rounds to play, from the first (3 unless the tag says fewer; the practice plays none of them). */
   rounds?: number;
+  /** The practice's own look (the definition's practice sets it; never in a story): the warm-up in place of the rounds. */
+  warmup?: "yes";
 }
 
 /** Round 1's umbrellas, in the field's order (and Tab's): five stalls on the far pavement, three people walking in the road, five stalls on the near pavement. */
@@ -37,6 +43,17 @@ export const PARASOL_CUSTOMERS = ["far_2", "far_3", "far_4", "near_1", "near_2",
 export const PARASOL_CHILDREN = ["child_1", "child_2", "child_3", "child_4", "child_5"] as const;
 export const PARASOL_TOMATO_CHILD = 1;
 export const PARASOL_ROUNDS = 3;
+/** The practice's umbrellas, in the field's order (and Tab's): four plain stalls on the far pavement, where no real find is. */
+export const PARASOL_WARMUP_SPOTS = ["warm_1", "warm_2", "warm_3", "warm_4"] as const;
+/** The practice's find: the blue umbrella, the third from the left. */
+export const PARASOL_WARMUP_TARGET = 2;
+/**
+ * The practice's own time (ms): not found by then, she points it out and the practice is over (the least a round's own time
+ * may be: time to look). A player who looks finds it in a second or two.
+ */
+export const PARASOL_WARMUP_MS = 4000;
+/** The practice's look in place of the rounds (the definition's practice sets `warmup`). */
+export const parasolWarmup = (params: ParasolParams): boolean => params.warmup === "yes";
 
 /** The parasol's numbers (E1; Debug's room may change them for its next play). Times of a round are from its start. */
 export type ParasolTuning = {
@@ -78,8 +95,9 @@ export const PARASOL_TUNING: ParasolTuning = {
 export const PARASOL_QUICK_MISSES = PARASOL_TUNING.quickMisses;
 export const PARASOL_IDLE_MS = PARASOL_TUNING.idleMs;
 
-/** The rounds the tag plays (1 to 3, all three when it says nothing). */
-export const parasolRounds = (params: ParasolParams) => Math.min(PARASOL_ROUNDS, Math.max(1, Math.trunc(params.rounds ?? PARASOL_ROUNDS) || PARASOL_ROUNDS));
+/** The rounds the tag plays (1 to 3, all three when it says nothing); the practice's look is one round. */
+export const parasolRounds = (params: ParasolParams) => parasolWarmup(params)
+  ? 1 : Math.min(PARASOL_ROUNDS, Math.max(1, Math.trunc(params.rounds ?? PARASOL_ROUNDS) || PARASOL_ROUNDS));
 
 /** The rounds' targets for the tag's `at`: her stall, the customer at it, the child with the tomato. */
 export function parasolTargets(params: ParasolParams): [number, number, number] {
@@ -126,7 +144,8 @@ export function parasolFairness(tuning: ParasolTuning): string[] {
 export const parasolSetupFor = (tuning: ParasolTuning) => (params: ParasolParams): SearchSetup => {
   const [stall, customer, child] = parasolTargets(params);
   return {
-    rounds: [
+    // The practice: its own one round (the blue umbrella, gone by its own time); the tag's `at` and `rounds` play no part.
+    rounds: parasolWarmup(params) ? [{ spots: PARASOL_WARMUP_SPOTS.length, targets: [PARASOL_WARMUP_TARGET], limitMs: PARASOL_WARMUP_MS }] : [
       { spots: PARASOL_SPOTS.length, targets: [stall] },
       { spots: PARASOL_CUSTOMERS.length, targets: [customer] },
       // The tomato child reaches the side street's mouth (she points it out): the round's own time.

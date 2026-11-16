@@ -3,7 +3,9 @@ import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { rhythmTapPerfect } from "../engines/rhythm_tap/engine";
-import { BARAAT_BEATS, BARAAT_GAME, baraatExtraTaps, baraatFeet, type BaraatGame, type BaraatOutcome, type BaraatParams, type BaraatPhrase } from "./rules";
+import {
+  BARAAT_GAME, BARAAT_WARMUP_GAME, baraatExtraTaps, baraatFeet, type BaraatGame, type BaraatOutcome, type BaraatParams, type BaraatPhrase,
+} from "./rules";
 import "./skin.css";
 
 // The baraat dance's field (a rhythm_tap skin): the procession's street over the scene, warm with the procession's lights;
@@ -17,7 +19,9 @@ import "./skin.css";
 // shows as it happens (group2 N6): from a beat's second extra tap, a beat met rings and bursts nothing, the hands go
 // askew, and the dancers stagger into each other for a moment with 「もつれそう」 (rules.ts baraatFeet). With the use's art
 // (`art.street`, `art.drummer`, `art.kamla`, `art.heroine`) those pictures take the drawn ones' places (Kamla's falls
-// back to the speaker's figure).
+// back to the speaker's figure). Practice's warm-up (rules.ts BARAAT_WARMUP_PHRASES) is the same field over its own beats:
+// the drum's count of two and five even beats, so no phrase's word, no rest, no big beat and no line of hers; its words
+// over the lane say only that.
 
 /** How long the drum lights (and the dancers dip) on a beat; how long the hands stay up after a tap; a grade's word. */
 const BEAT_MS = 140;
@@ -43,6 +47,18 @@ const PHRASE_WORDS: Partial<Record<BaraatPhrase["name"], string>> = {
   chaal: "ずらして", burst: "細かく", break: "止まって！", faster: "テンポが上がる！", finale: "ラスト！",
 };
 
+/** The words over the lane and read out with 「踊る」: the story's dance's, and practice's warm-up's (its count and its beats only). */
+const WORDS = {
+  dance: {
+    hintJa: "太鼓が4つ数えたら、印が輪に重なるたびに「踊る」。棒の印（休み）では押さない",
+    actionHintJa: "太鼓が鳴るたびに押します。最初の4つは数えるだけです。太鼓が止まる休み（レーンの棒の印）では押しません。拍の間に何度も押すと、足がもつれます。",
+  },
+  warmup: {
+    hintJa: "太鼓が2つ数えたら、印が輪に重なるたびに「踊る」",
+    actionHintJa: "太鼓が鳴るたびに押します。最初の2つは数えるだけです。拍の間に何度も押すと、足がもつれます。",
+  },
+} as const;
+
 /** The sounds of a play (definition `sounds`): the drum on every beat; the dancers' bangles on a beat met. */
 const SOUNDS = { drum: "drum_beat", hit: "bangles_clink" } as const;
 
@@ -57,16 +73,20 @@ const Hand = () => (
   </svg>
 );
 
-/** The dance's skin built from its game (the story's, or Debug's room's edited numbers: play.ts retune). */
-export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, BaraatOutcome> {
+/**
+ * The dance's skin built from its game (the story's, or Debug's room's edited numbers: play.ts retune), or practice's
+ * warm-up's (`words` its own).
+ */
+export function baraatSkinFor(game: BaraatGame, words: { hintJa: string; actionHintJa: string } = WORDS.dance): RhythmTapSkin<BaraatParams, BaraatOutcome> {
   const { tuning, countIn, numbers, sections, bigBeats } = game;
+  const beatCount = tuning.beats.length;
   const rests = tuning.rests?.at ?? [];
   /** Every drum beat: the count-in, then the beats to dance (silent at the rests). */
   const drum = [...countIn, ...tuning.beats];
   const big = new Set(bigBeats.map((index) => index + countIn.length));
   /** A beat at the slower tempo (a phrase's word shows this long before it). */
   const quarter = 60000 / Math.max(1, numbers.bpm);
-  const words = sections.flatMap((section) => {
+  const phraseWords = sections.flatMap((section) => {
     const word = PHRASE_WORDS[section.name];
     return word ? [{ word, from: section.startMs - quarter, to: section.startMs + PHRASE_WORD_MS, faster: section.name === "faster" }] : [];
   });
@@ -136,7 +156,7 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
         setStep(at % 2 ? "r" : "l");
         setBigBeat(big.has(at) && playing);
         setCount(at >= 0 && at < countIn.length ? at + 1 : null);
-        setPhrase(playing ? words.find((word) => ms >= word.from && ms < word.to)?.word ?? null : null);
+        setPhrase(playing ? phraseWords.find((word) => ms >= word.from && ms < word.to)?.word ?? null : null);
         setFreeze(playing && rests.some((rest) => ms >= rest - FREEZE_BEFORE_MS && ms < rest + FREEZE_AFTER_MS));
         if (!warned && ms >= fasterAt && playing) {
           warned = true;
@@ -182,7 +202,7 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
           juice.squash(drumFace.current, "press");
           const index = summary.judged.length - 1;
           if (bigBeats.includes(index)) {
-            juice.shake(index === BARAAT_BEATS - 1 ? "m" : "s");
+            juice.shake(index === beatCount - 1 ? "m" : "s");
             live.current.vibrate("hit");
           }
         }
@@ -231,14 +251,14 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
   return {
     tuning,
     rules: game.rules,
-    hintJa: "太鼓が4つ数えたら、印が輪に重なるたびに「踊る」。棒の印（休み）では押さない",
+    hintJa: words.hintJa,
     actionJa: "踊る",
-    actionHintJa: "太鼓が鳴るたびに押します。最初の4つは数えるだけです。太鼓が止まる休み（レーンの棒の印）では押しません。拍の間に何度も押すと、足がもつれます。",
+    actionHintJa: words.actionHintJa,
     autoJa: "おまかせで踊っています",
     stop: null,
     countIn,
     bigBeats,
-    statusJa: (summary) => (summary.came > 0 ? `のこり${BARAAT_BEATS - summary.came}拍` : ""),
+    statusJa: (summary) => (summary.came > 0 ? `のこり${beatCount - summary.came}拍` : ""),
     // Under the card's score (rules.ts): the extra taps, when there were any (why a dance with every beat met stumbled).
     detailJa: (summary) => {
       const extra = baraatExtraTaps(summary);
@@ -251,3 +271,5 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
 
 /** The baraat dance as a rhythm_tap skin: its beats, rules, words and field. */
 export const baraatSkin = baraatSkinFor(BARAAT_GAME);
+/** Practice's warm-up as a rhythm_tap skin: the same field over its few beats, its own words over the lane. */
+export const baraatWarmupSkin = baraatSkinFor(BARAAT_WARMUP_GAME, WORDS.warmup);
