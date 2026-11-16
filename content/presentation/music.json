@@ -163,7 +163,7 @@
     },
     {
       "id": "morning",
-      "useJa": "自由時間（朝）と、宿の朝の場面",
+      "useJa": "街歩き（朝）と、宿の朝の場面",
       "sources": [
         "incompetech_morning"
       ],
@@ -171,7 +171,7 @@
     },
     {
       "id": "inner_light",
-      "useJa": "自由時間（昼）",
+      "useJa": "街歩き（昼）",
       "sources": [
         "incompetech_inner_light"
       ],
@@ -179,7 +179,7 @@
     },
     {
       "id": "bossa_antigua",
-      "useJa": "自由時間（夜）",
+      "useJa": "街歩き（夜）",
       "sources": [
         "incompetech_bossa_antigua"
       ],

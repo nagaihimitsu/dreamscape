@@ -117,7 +117,7 @@ describe("a date's moment with the 「交際開始」 screen (3.9 (c))", () => {
     return trip;
   }
 
-  it("shows the screen before a then: of the accepted confession date; its 「自由時間へ」 then moves on, and a reload keeps the screen", () => {
+  it("shows the screen before a then: of the accepted confession date; its 「街歩きへ」 then moves on, and a reload keeps the screen", () => {
     const trip = confessionDate({ move: "p_duomo" });
     const screen = playUntil(trip, (state) => state.occasion?.romanceEnding === true);
     expect(screen.confessionStatus).toBe("accepted");
@@ -132,7 +132,7 @@ describe("a date's moment with the 「交際開始」 screen (3.9 (c))", () => {
     expect(moved.travel.currentPlaceId).toBe("p_duomo");
   });
 
-  it("shows the screen before a then: epilogue of the accepted confession date; its 「自由時間へ」 then opens the epilogue", () => {
+  it("shows the screen before a then: epilogue of the accepted confession date; its 「街歩きへ」 then opens the epilogue", () => {
     const trip = confessionDate({ epilogue: true });
     const screen = playUntil(trip, (state) => state.occasion?.romanceEnding === true);
     expect(screen.occasion).toMatchObject({ at: "main:ending", then: { epilogue: true } });

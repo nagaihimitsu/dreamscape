@@ -14,7 +14,7 @@ import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
-import { dialogueObstructed } from "../../components/dialogueObstructed";
+import { dialogueObstructed, readingHeld } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
@@ -143,7 +143,14 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
     text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled,
     readSkip, lineId: !quiz && view.text ? readLineId(view.sceneId ?? view.id, view.text) : null });
-  const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
+  // The quiz's verdict and explanation, its options gone: 「続きを読む」 or a tap on the scene goes on (2026-11-16 user decision).
+  const resultShown = !!quiz?.result;
+  function continueFromResult() {
+    if (!resultShown || windowVisibility.hidden || readingHeld()) return;
+    onAdvance();
+  }
+  const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: (!!quiz && !resultShown) || view.choices.length > 0, resultShown,
+    windowHidden: windowVisibility.hidden, onResult: continueFromResult });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" decoding="async" fetchPriority="high" /> : <CanalScene backgroundId={view.background} />}
@@ -185,14 +192,15 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         <div className="vn-window-body">
         {quiz ? (
           <>
-            <p className="encounter-quiz-prompt">
+            {/* Its words open their meanings: a tap beside one (or on a meaning shown) does not go on past the result. */}
+            <p className="encounter-quiz-prompt" data-no-advance>
               <InteractiveEnglish text={quiz.questionEn} vocabulary={[]} label="問題文" onDoubleTap={() => revealTranslation(learning, quiz.id, "question")} />
             </p>
             <button type="button" className="text-button" aria-expanded={visible(learning, quiz.id, "question")} onClick={() => toggleTranslation(learning, quiz.id, "question")}>
               {visible(learning, quiz.id, "question") ? "訳を閉じる" : "訳を見る"}
             </button>
             {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
-            {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={onAdvance}>続きを読む →</button></> : (
+            {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={continueFromResult}>続きを読む <span aria-hidden="true">→</span></button></> : (
               <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
             )}
           </>
@@ -210,7 +218,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
                 <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
               </ChoicePoint>
             ) : view.ended ? (
-              <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "自由時間へ" : "続きを読む"} <span aria-hidden="true">→</span></button>
+              <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "街歩きへ" : "続きを読む"} <span aria-hidden="true">→</span></button>
             ) : null}
           </>
         )}

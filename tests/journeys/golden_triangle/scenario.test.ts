@@ -16,7 +16,7 @@ import { advanceTourismGuide, startTourismBattle } from "../../../src/domain/tou
 import { correctAnswer, playBattleToResult, withAp, wrongAnswer } from "../../../src/dev/scenario-builders";
 
 /**
- * The result screen's way out, as the screen offers it: a sightseeing result offers only 「自由時間へ」;
+ * The result screen's way out, as the screen offers it: a sightseeing result offers only 「街歩きへ」;
  * a city finale's result offers only 「エピローグへ進む」, since the Golden Triangle moves on after
  * the epilogue (manifest cityTransition after_epilogue).
  */

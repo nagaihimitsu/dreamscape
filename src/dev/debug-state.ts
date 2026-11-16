@@ -5,11 +5,12 @@ import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
 import { validateGameState, type GameState } from "../domain/game";
 import { defaultJourneyId, getJourney } from "../content/journeys";
-import { debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
+import { clockText, debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
 import {
-  cityStart, completedCity, finishEpisode, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
+  atPlace, cityStart, completedCity, finishEpisode, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
   startDateScene, startEncounterScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
+import { checkDebugFlags, withDebugClock, withDebugFlags } from "./debug-edits";
 
 export type { DebugScene, DebugSettings } from "./debug-query";
 
@@ -54,7 +55,7 @@ export function firstDebugTarget(targets: readonly DebugTarget[]): string {
 
 /** What each scene of the scene picker (場面の確認) lists for a city. */
 export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> {
-  const { city, travel } = getCityContent(cityId);
+  const { city, travel, travelSettings } = getCityContent(cityId);
   // A tour-only place's landmarks and map events (tour stage 2a): their scenes open only through the tour.
   const tourOnly = new Set(travel.places.filter((place) => isTourOnlyPlace(place)).flatMap((place) => [place.id, ...(place.landmarkIds ?? [])]));
   const atTourOnly = (landmarkId: string | null | undefined, eventId?: string) => (!!landmarkId && tourOnly.has(landmarkId)) ||
@@ -74,6 +75,9 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
     occasion: landmarks.filter((item) => item.cityId === cityId).map((item) => mark({ id: item.id, name: `${item.nameJa}の時点` }, atTourOnly(item.id))),
     tour: getCityTours(cityId).map((item) => ({ id: item.id, name: item.titleJa })),
+    // Free time (the map) at a place of the city, the hotel first (where a day starts).
+    free: [...travel.places].sort((a, b) => Number(b.id === travelSettings.hotelPlaceId) - Number(a.id === travelSettings.hotelPlaceId))
+      .map((place) => mark({ id: place.id, name: place.nameJa }, isTourOnlyPlace(place))),
   };
 }
 
@@ -105,6 +109,7 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   if (!target) throw new Error(`「${id}」は${city.nameJa}の「${label}」にありません。`);
   if (target.unavailable)
     throw new Error(`「${id}」（${target.name}）は、${target.unavailable}。${target.unavailableKind === "item" ? "Debugの場面は品物を持たない状態から始まります。" : ""}`);
+  checkDebugFlags(cityId, query.flags ?? []);
   const defaults = defaultDebugSettings(cityId);
   // A tour is booked before the city is cleared (a cleared city has played its tour): it starts at the city's start.
   const progress = query.progress ?? (query.scene === "tour" ? "initial" : defaults.progress);
@@ -112,7 +117,9 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
     progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
     trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll,
     ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}),
-    ...(query.without ? { without: query.without } : {}), ...(query.before ? { before: query.before } : {}) } };
+    ...(query.without ? { without: query.without } : {}), ...(query.before ? { before: query.before } : {}),
+    ...(query.day !== undefined ? { day: query.day } : {}), ...(query.time !== undefined ? { time: query.time } : {}),
+    ...(query.flags ? { flags: query.flags } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -156,8 +163,7 @@ function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: stri
   let state = cityStart(cityId);
   for (const next of [...others, null]) {
     try {
-      return startDateScene(withRelationship(withAp(withoutHeldItems(state, settings.without ?? []), settings.ap), settings), settings.id,
-        rollTickets[settings.roll]);
+      return startDateScene(prepared(state, settings), settings.id, rollTickets[settings.roll]);
     } catch (error) {
       // The date's `when` is not met yet: one more episode.
       if (!next) throw new Error(`「${settings.id}」は「${before}」の前には始められません（${error instanceof Error ? error.message : String(error)}）`);
@@ -171,6 +177,17 @@ function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: stri
   throw new Error(`「${settings.id}」は「${before}」の前には始められません`);
 }
 
+/** The scene's starting state from its progress's: without the items `without` names, with the flags it adds, Debug's AP and relationship values. */
+function prepared(state: GameState, settings: DebugSettings): GameState {
+  const base = withDebugFlags(withoutHeldItems(state, settings.without ?? []), settings.flags ?? []);
+  return withRelationship(withAp(base, settings.ap), settings);
+}
+
+/** Free time (scene=free) at a place of the city, its clock at the settings' day and time (each the progress's own when left out). */
+function openFreeTime(state: GameState, placeId: string, settings: DebugSettings): GameState {
+  return withDebugClock(atPlace(state, placeId), { day: settings.day, minute: settings.time });
+}
+
 /** Build only states the real game functions can start; never alter player data. */
 export function createDebugState(settings: DebugSettings): GameState {
   const cityId = settings.cityId ?? defaultDebugCityId;
@@ -178,10 +195,10 @@ export function createDebugState(settings: DebugSettings): GameState {
     throw new Error("エピローグは都市クリア後に開けます。旅の進行を「都市クリア後」にしてください。");
   if (settings.scene === "tour" && settings.progress === "completed")
     throw new Error("ツアーは都市クリアの前に予約します。旅の進行を「旅の開始時」にしてください。");
-  const base = withoutHeldItems(debugCityState(cityId, settings.progress), settings.without ?? []);
-  const state = withRelationship(withAp(base, settings.ap), settings);
+  const state = prepared(debugCityState(cityId, settings.progress), settings);
   const ticket = rollTickets[settings.roll];
   switch (settings.scene) {
+    case "free": return openFreeTime(state, settings.id, settings);
     case "tourism": return openTourismScene(state, settings.id);
     case "battle": return openBattleScene(state, settings.id);
     case "encounter": return startEncounterScene(state, settings.id, ticket);
@@ -209,6 +226,10 @@ export function debugSceneLocation(settings: DebugSettings, state: GameState): s
     const label = step?.kind === "event" ? step.labelJa ?? getCityContent(state.currentCityId).travel.events.find((event) => event.id === step.eventId)?.titleJa
       : step?.labelJa;
     return `ツアー：${tour?.titleJa ?? settings.id}（${label ?? (record?.status === "booked" ? "予約中" : "行程")}）`;
+  }
+  if (settings.scene === "free") {
+    const place = getCityContent(state.currentCityId).travel.places.find((item) => item.id === state.travel.currentPlaceId);
+    return `${place?.nameJa ?? state.travel.currentPlaceId}（${state.travel.day}日目 ${clockText(state.travel.minute)}）`;
   }
   const landmarkId = settings.scene === "tourism" ? settings.id
     : settings.scene === "battle" ? battles.find((item) => item.id === settings.id)?.landmarkId

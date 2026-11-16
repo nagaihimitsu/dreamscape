@@ -203,12 +203,12 @@ test("the sample journey plays from a new journey through its city finale and ep
   const result = await playBattleToResult(page, pick);
   expect(result.completedEpisodeIds).toEqual([route.episode.id]);
   expect(result.ap).toBeGreaterThan(0);
-  // (Optional part) 「自由時間へ」 meets the gift encounter after the main part (priority +1, while the
+  // (Optional part) 「街歩きへ」 meets the gift encounter after the main part (priority +1, while the
   // bookmark is held): the bookmark is given (AGENTS.md: an item is gained, given and used in its own city). Then the
   // bell (+2): its first choice spends an AP (# ap: -1). The gift's first line takes the bookmark out (# item_out:,
   // 2026-11-15): its card over the scene with its name and, as nothing is written on it, its description, said once to
   // screen readers; the next line (after the choice) has none, and the card is gone.
-  await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
+  await page.getByRole("button", { name: "街歩きへ進む", exact: true }).click();
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   const bookmark = route.items[0];
   if (bookmark) {
@@ -257,7 +257,7 @@ test("the sample journey plays from a new journey through its city finale and ep
     await page.getByTestId("reasoning-submit").click();
     const cleared = await playBattleToResult(page, pick);
     expect(cleared.battleRecords.find((record) => record.battleId === special.id)?.attempts).toBe(1);
-    await page.getByRole("button", { name: "自由時間へ戻る", exact: true }).click();
+    await page.getByRole("button", { name: "街歩きへ戻る", exact: true }).click();
     await expect(menu).toBeVisible();
   }
 
@@ -273,7 +273,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   // The city writes then: epilogue (3.9 (d)): no 「エピローグへ」 on the result; free time leads to the square after the
   // finale, whose 「今日は、ここまでにしよう」 (the first choice) starts the epilogue (3.4 I), after Lili's farewell.
   await expect(page.getByRole("button", { name: "エピローグへ進む", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: /自由時間へ/u }).click();
+  await page.getByRole("button", { name: /街歩きへ/u }).click();
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   await playUntil(page, (state) => !!state.activeEpilogue, { source, pick });
   await expect(page.getByTestId("city-epilogue-screen")).toBeVisible();

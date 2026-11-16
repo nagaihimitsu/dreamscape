@@ -197,6 +197,7 @@ export function GameApp({
   nextRomanceRoll = secureRomanceRoll,
   debug = false,
   debugPanel,
+  debugAccess,
   journeyId = defaultJourneyId,
   onSwitchJourney,
   selectorFocus,
@@ -581,6 +582,25 @@ export function GameApp({
     setNotebook(false);
     holdTaps();
   }
+  /**
+   * Debug's bar (its flags and clock, src/dev/debug-edits.ts, only while no scene is open): `change(game)` replaces the game as
+   * returnToFreeTime's state does, with the revision after the current one (no control of the screen before acts on it), saved
+   * as an action is; the header makes no sound for what it brings. A throw of `change` (its reason) passes through.
+   */
+  function replaceForDebug(change: (state: GameState) => GameState): boolean {
+    const current = getCurrent();
+    if (!current) return false;
+    const next = change(current);
+    if (!session.replace({ ...next, revision: current.revision + 1 })) return false;
+    setReplacedGame((count) => count + 1);
+    setShownChange(null);
+    return true;
+  }
+  useEffect(() => {
+    if (!debugAccess) return;
+    debugAccess.current = { game: getCurrent, replace: replaceForDebug };
+    return () => { debugAccess.current = null; };
+  });
   function setAutoSave(enabled: boolean) {
     setSettingsNotice(null);
     if (enabled && !session.persistCurrent((text) => setSettingsNotice({ text, at: "autosave" }))) return;
@@ -863,7 +883,7 @@ export function GameApp({
                       ? "証拠で考える"
                       : "クイズ"
                   : freeTimeAvailable
-                    ? "ふたりの自由時間"
+                    ? "ふたりの街歩き"
                     : "出発前"}
           </span>
         </div>
@@ -913,7 +933,7 @@ export function GameApp({
               <p className="lead">
                 街の風景に立ち止まり、奇妙な人々と出会う。
                 <br />
-                そのあとは、ふたりの自由時間へ。
+                そのあとは、ふたりで街歩き。
               </p>
               {invalid && (
                 <div className="notice warning" role="alert">
@@ -1185,7 +1205,7 @@ export function GameApp({
                 これからも、旅先でふたりの時間を過ごせます。
               </p>
               <button className="primary" onClick={() => commit((state) => closeRomanceEnding(state, game.revision, nextRomanceRoll))}>
-                {resultExitLabel(game) ?? "自由時間へ"} <span aria-hidden="true">→</span>
+                {resultExitLabel(game) ?? "街歩きへ"} <span aria-hidden="true">→</span>
               </button>
             </section>
           </>

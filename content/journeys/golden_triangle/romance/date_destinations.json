@@ -283,9 +283,17 @@
           "publisher": "Daily Times",
           "title": "How Akbar came to love books despite never learning to read",
           "url": "https://dailytimes.com.pk/377146/how-akbar-came-to-love-books-despite-never-learning-to-read/",
-          "checkedAt": "2026-11-08",
+          "checkedAt": "2026-11-16",
           "claimType": "documented_fact",
-          "claimJa": "アクバルは文字を読めなかったと伝えられ、本を人に読み上げさせ、写本を集めた。"
+          "claimJa": "アクバルは文字を読めなかったと伝えられ、本を人に読み上げさせ、写本を集めた。記事によれば、『アーイーニ・アクバリー』に、毎晩本を読み上げさせたとある（原典は開いていない）。"
+        },
+        {
+          "publisher": "The Tribune",
+          "title": "Treasures from the past (B.N. Goswamy, 2024)",
+          "url": "https://www.tribuneindia.com/news/uncategorized/treasures-from-the-past/",
+          "checkedAt": "2026-11-16",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルは自分では読み書きができなかった。記事はアブル・ファズルの文として、経験のある者が毎日本を持ってきて読み上げ、アクバルは初めから終わりまで聞いた、と引く（出典の書名は記事になく、原典は開いていない）。"
         },
         {
           "publisher": "The Tribune",

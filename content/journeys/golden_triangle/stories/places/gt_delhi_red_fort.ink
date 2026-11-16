@@ -472,6 +472,9 @@ INCLUDE modules.ink
 # leave: gt_kamla
 暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も
 # speaker: gt_kamla
+# leave: gt_kamla
+あんたのお母さんが縁談を持ってきた日は、わたし、すぐうなずいたくせにね
+# speaker: gt_kamla
 # pause: 1000
 # leave: gt_kamla
 ……わたしも。わたしも、です。遅くなったけど

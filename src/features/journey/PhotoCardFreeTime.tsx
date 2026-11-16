@@ -33,7 +33,7 @@ import "./free-time-hub.css";
 import "./photo-free-time.css";
 
 /**
- * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」): the epilogue's button, one row of photo cards (「待機」,
+ * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」): the epilogue's button, one row of photo cards (「待機」,
  * the places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」; the first place's
  * card is chosen first; the chosen card is the selection, and its card under the row has the waits, the event and the
  * way to choose and a small map, the booking, or the ways home; a swipe up departs with that event and way, waits the

@@ -130,7 +130,7 @@ describe("# then:", () => {
 });
 
 describe("the 「交際開始」 screen and the entries", () => {
-  it("is a saved step of the date's occasion; its 「自由時間へ」 is an action; nothing else starts while it shows", () => {
+  it("is a saved step of the date's occasion; its 「街歩きへ」 is an action; nothing else starts while it shows", () => {
     // The screen as the step of a date's occasion (its trip still running; the confession records are left out here).
     const start = cityStart("mihon");
     const shown: GameState = { ...start,

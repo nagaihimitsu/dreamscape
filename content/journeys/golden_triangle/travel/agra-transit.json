@@ -169,6 +169,14 @@
       "checkedAt": "2026-11-09",
       "claimType": "documented_fact",
       "claimJa": "国立記念物機関がUPMRCに、Dr. Ambedkar Chowk駅からアーグラ城の門への地下道の許可を出したと報じる。アーグラ城から地下鉄駅までの距離は105mで、あいだに道路と交差点がある（地下道ができれば、渡らずにアマル・シン門の切符売り場へ行ける）。"
+    },
+    "osrm_car_chini_ram": {
+      "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "車の経路計算 table/v1/driving（チーニー・カ・ラウザーとラーム・バーグ）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-16",
+      "claimType": "hypothesis",
+      "claimJa": "地点の代表点どうしの車の道路距離を2026-11-16に計算した値：チーニー・カ・ラウザー→ラーム・バーグ約2.46km、逆向き約3.14km。同じ日に計算したアーグラの地点どうしの表で、ほかのオートの経路86本も今の時間・料金と同じ値に出た（タージ・マハルと宿を発着する分は、決まりの10分を足して）。門の位置やオートの通行規制は考えていない。"
     }
   },
   "decisions": [
@@ -320,7 +328,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -589,7 +597,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1542,7 +1550,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1571,7 +1579,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1600,7 +1608,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1629,7 +1637,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1658,7 +1666,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1670,12 +1678,15 @@
       "fromPlaceId": "agra_ram_bagh",
       "toPlaceId": "agra_chini_rauza",
       "mode": "auto_rickshaw",
-      "status": "not_suitable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "歩いて12分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "status": "available",
+      "checkedAt": "2026-11-16",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。2026-11-16 に歩く経路を地図で計算し直すと18分（逆向きは17分）で、15分を超えるので、それまで置いていなかったオートの経路を足した。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "walk_station_model"
+        "s11_atp_mehtab_bagh",
+        "s4_tomtom_delhi",
+        "osrm_car_chini_ram",
+        "agra_jaipur_auto_model"
       ]
     },
     {
@@ -1684,7 +1695,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1713,7 +1724,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1742,7 +1753,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1775,7 +1786,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-09",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -1934,12 +1945,15 @@
       "fromPlaceId": "agra_chini_rauza",
       "toPlaceId": "agra_ram_bagh",
       "mode": "auto_rickshaw",
-      "status": "not_suitable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "歩いて12分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "status": "available",
+      "checkedAt": "2026-11-16",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。2026-11-16 に歩く経路を地図で計算し直すと17分（逆向きは18分）で、15分を超えるので、それまで置いていなかったオートの経路を足した。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "walk_station_model"
+        "s11_atp_mehtab_bagh",
+        "s4_tomtom_delhi",
+        "osrm_car_chini_ram",
+        "agra_jaipur_auto_model"
       ]
     },
     {
@@ -2767,7 +2781,7 @@
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-09",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
+      "reasonJa": "ラーム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",

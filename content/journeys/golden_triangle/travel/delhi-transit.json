@@ -81,6 +81,30 @@
       "checkedAt": "2026-11-07",
       "claimType": "hypothesis",
       "claimJa": "ゲームの決まり：登録した徒歩が15分以内の組は徒歩だけにする。駅まで歩いて20分以内の地点だけ地下鉄を使う。地下鉄の合計時間が徒歩より長い組には地下鉄を置かない。"
+    },
+    "route_finder_rajiv_jama_20261116": {
+      "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+      "title": "Rajiv Chowk to Jama Masjid Metro Route & Fare",
+      "url": "https://delhi.metro.org.in/route/rajiv-chowk/jama-masjid/",
+      "checkedAt": "2026-11-16",
+      "claimType": "documented_fact",
+      "claimJa": "2026-11-16 に読んだページ：最速の経路は18分・普通運賃₹32（スマートカードは₹29）、5駅、Mandi Houseで1回乗り換え（約6.3km）。"
+    },
+    "route_finder_jama_rajiv_20261116": {
+      "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+      "title": "Jama Masjid to Rajiv Chowk Metro Route & Fare",
+      "url": "https://delhi.metro.org.in/route/jama-masjid/rajiv-chowk/",
+      "checkedAt": "2026-11-16",
+      "claimType": "documented_fact",
+      "claimJa": "2026-11-16 に読んだページ：最速の経路は18分・普通運賃₹32（スマートカードは₹29）、5駅、Mandi Houseで1回乗り換え（約6.3km）。"
+    },
+    "route_finder_jorbagh_barakhamba_20261116": {
+      "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+      "title": "Jor Bagh to Barakhamba Road Metro Route & Fare",
+      "url": "https://delhi.metro.org.in/route/jor-bagh/barakhamba-road/",
+      "checkedAt": "2026-11-16",
+      "claimType": "documented_fact",
+      "claimJa": "2026-11-16 に読んだページ：最速の経路は22分・普通運賃₹32（スマートカードは₹29）、6駅、Rajiv Chowkで1回乗り換え（約7.5km）。"
     }
   },
   "decisions": [
@@ -1477,10 +1501,11 @@
       "toPlaceId": "delhi_hotel_hub",
       "mode": "metro",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "Jama Masjid駅からRajiv Chowk駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く6分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は50分）。運賃は1人₹32×2人。",
+      "checkedAt": "2026-11-16",
+      "reasonJa": "Jama Masjid駅からRajiv Chowk駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く6分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は50分）。運賃は1人₹32×2人。2026-11-16 に経路案内を読み直すと乗車18分・1人₹32（平日5〜12kmの段階）で、この値はそのとおりに出る。オートより遅く高いのは、駅まで歩く分と入場・検査・待ちの10分が足されるため。資料が違う値を示さないので変えない。",
       "sourceRefs": [
         "s3_delhi_route_finder",
+        "route_finder_jama_rajiv_20261116",
         "s2_dmrc_fare_2025",
         "s22_dmrc_station_names",
         "s18_fossgis_foot",
@@ -1957,10 +1982,11 @@
       "toPlaceId": "delhi_agrasen_baoli",
       "mode": "metro",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "Jor Bagh駅からBarakhamba Road駅まで地下鉄（Rajiv Chowkで乗り換え）。駅まで歩く18分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "checkedAt": "2026-11-16",
+      "reasonJa": "Jor Bagh駅からBarakhamba Road駅まで地下鉄（Rajiv Chowkで乗り換え）。駅まで歩く18分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹32×2人。2026-11-16 に経路案内を読み直すと乗車22分・1人₹32（平日5〜12kmの段階）で、この値はそのとおりに出る。オートより遅く高いのは、駅まで歩く分と入場・検査・待ちの10分が足されるため。資料が違う値を示さないので変えない。",
       "sourceRefs": [
         "s3_delhi_route_finder",
+        "route_finder_jorbagh_barakhamba_20261116",
         "s2_dmrc_fare_2025",
         "s22_dmrc_station_names",
         "s18_fossgis_foot",
@@ -3039,10 +3065,11 @@
       "toPlaceId": "delhi_jama_masjid",
       "mode": "metro",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "Rajiv Chowk駅からJama Masjid駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く1分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は50分）。運賃は1人₹32×2人。",
+      "checkedAt": "2026-11-16",
+      "reasonJa": "Rajiv Chowk駅からJama Masjid駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く1分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は50分）。運賃は1人₹32×2人。2026-11-16 に経路案内を読み直すと乗車18分・1人₹32（平日5〜12kmの段階）で、この値はそのとおりに出る。オートより遅く高いのは、駅まで歩く分と入場・検査・待ちの10分が足されるため。資料が違う値を示さないので変えない。",
       "sourceRefs": [
         "s3_delhi_route_finder",
+        "route_finder_rajiv_jama_20261116",
         "s2_dmrc_fare_2025",
         "s22_dmrc_station_names",
         "s18_fossgis_foot",
