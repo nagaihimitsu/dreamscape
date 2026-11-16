@@ -91,7 +91,11 @@
   align-items: flex-end;
   justify-content: center;
   padding: 2px 14px;
-  font-family: Georgia, serif;
+  /* The lines' Mincho, a web font every phone loads (2026-11-16: Georgia, missing on Android and many Linux phones, drew
+     the figures in another serif there). Its figures share one width but its 1 (about 0.09em narrower), and it has no
+     tabular figures; tabular-nums keeps a fallback serif's figures of one width while the web font has not loaded. */
+  font-family: "Noto Serif JP", serif;
+  font-variant-numeric: tabular-nums;
   line-height: 1.1;
   white-space: nowrap;
 }
