@@ -385,15 +385,15 @@ test("battle: a remembered line shows 「回想」 by its speaker's name and in 
   await expect(plate).toHaveText("カムラ（回想）");
   await expect(plate.getByTestId("speaker-remembered")).toBeVisible();
   await expect(page.locator("[data-dialogue-window]")).toHaveAttribute("data-remembered", "true");
-  // Her `# recall:` photo (2026-11-16 user feedback): the scene's own picture (the Taj Mahal) fades nearly away over the
+  // Her `# recall:` photo (2026-11-16 user feedback): the scene's own picture (the Taj Mahal) fades away entirely over the
   // scene's grey ground, which covers the whole scene from its top behind the header (no bright band, no edge), and the
   // photo lies below the header. The picture comes back when the memory ends (below).
   const recall = page.locator(".recall-layer");
   await expect(recall.locator("img")).toHaveCount(1);
   const backdrop = page.locator(".battle-backdrop");
   await expect.poll(() => backdrop.evaluate((element) => Number(getComputedStyle(element).opacity)),
-    { message: "the scene's picture fades" })
-    .toBeLessThan(0.15);
+    { message: "the scene's picture fades out entirely" })
+    .toBe(0);
   const screen = page.locator(".battle-screen");
   await expect.poll(() => screen.evaluate((element) => Number(getComputedStyle(element, "::before").opacity)),
     { message: "the grey ground is there" }).toBe(1);

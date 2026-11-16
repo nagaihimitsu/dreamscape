@@ -6,7 +6,7 @@
 
 /* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
    feedback: the backdrop, the Taj Mahal, and the photo together were cluttered; the backdrop should grow transparent
-   gradually as the memory begins). The scene's picture (and its weather) is always on screen, so it fades out when a
+   gradually as the memory begins, and fade out entirely: even a tenth of it left the dome showing above the photo). The scene's picture (and its weather) is always on screen, so it fades out when a
    line with `# recall:` comes and fades back the same way when the memory ends; the grey is its own ground, behind the
    header too, so no edge shows. The photo lies below the header, over the grey and under the portraits and the window
    (both come later in the scene, on layers above it), and rises after the picture has begun to fade. Lines that keep
@@ -31,7 +31,7 @@
   transition: opacity 900ms var(--ease-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer) > :is(.vn-background, .battle-backdrop) {
-  opacity: 0.1;
+  opacity: 0;
   transition: opacity 900ms var(--ease-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer) > .weather-layer {
@@ -55,8 +55,13 @@
   height: calc(100% - var(--scene-top, 0px));
   object-fit: cover;
   opacity: 0.66;
-  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 45%, transparent 100%);
-  mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 45%, transparent 100%);
+  /* Its edges dissolve into the grey; the top edge too (under the header), so no straight line shows there. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%),
+    radial-gradient(ellipse 75% 70% at 50% 40%, #000 45%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent, #000 18%),
+    radial-gradient(ellipse 75% 70% at 50% 40%, #000 45%, transparent 100%);
+  mask-composite: intersect;
   animation: recall-photo-in 700ms 300ms var(--ease-out) both;
 }
 @keyframes stage-fade-in {
