@@ -1,9 +1,12 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
-  DEBUG_MODE_KEY, DEBUG_MODE_PASSWORD, DEBUG_VOICE_RATE_KEY, isDebugModePassword, readDebugMode, readDebugVoiceRate, writeDebugMode,
-  writeDebugVoiceRate,
+  DEBUG_MODE_KEY, DEBUG_MODE_PASSWORD, DEBUG_SHOT_KEY, DEBUG_VOICE_RATE_KEY, isDebugModePassword, readDebugMode, readDebugShot, readDebugVoiceRate,
+  writeDebugMode, writeDebugShot, writeDebugVoiceRate,
 } from "./debug-mode";
+import DebugShotSetting from "./DebugShotSetting";
 
 // User decision 2026-11-08: Debug mode for everyone from 設定, with the password 「adminmode」,
 // which is not a secret; a per-device preference with its own key.
@@ -126,5 +129,51 @@ describe("Debug's speed of the voices", () => {
     expect(writeDebugVoiceRate(store, 1.3)).toEqual(refused);
     expect(writeDebugVoiceRate(store, 1)).toEqual(refused);
     expect(Object.fromEntries(store.values)).toEqual({ [DEBUG_VOICE_RATE_KEY]: "1.1" });
+  });
+});
+
+// Debug's 撮影の形 (2026-11-16): the play screens without Debug's marks, for screenshots; a device preference like the speed.
+describe("Debug's 撮影の形", () => {
+  it("is a device preference under its own versioned key, beside the switch and the speed", () => {
+    expect(DEBUG_SHOT_KEY).toBe("dreamscape.debug-shot.v1");
+    expect(new Set([DEBUG_SHOT_KEY, DEBUG_MODE_KEY, DEBUG_VOICE_RATE_KEY]).size).toBe(3);
+  });
+
+  it("reads on only for the stored value on; nothing, another value or an unreadable storage is off", () => {
+    expect(readDebugShot(memory())).toBe(false);
+    expect(readDebugShot(memory({ [DEBUG_SHOT_KEY]: "on" }))).toBe(true);
+    expect(readDebugShot(memory({ [DEBUG_SHOT_KEY]: "true" }))).toBe(false);
+    expect(readDebugShot(refusing({ [DEBUG_SHOT_KEY]: "on" }))).toBe(false);
+  });
+
+  it("writes its key only, stores off as no key, and stays when Debug mode is turned off", () => {
+    const others = { "dreamscape.presentation.v1": "{}", [DEBUG_MODE_KEY]: "on", "dreamscape.journey.milano.save.v1": "{}" };
+    const store = memory(others);
+    expect(writeDebugShot(store, true)).toEqual({ ok: true });
+    expect(Object.fromEntries(store.values)).toEqual({ ...others, [DEBUG_SHOT_KEY]: "on" });
+    expect(writeDebugMode(store, false)).toEqual({ ok: true });
+    expect(readDebugShot(store)).toBe(true);
+    expect(writeDebugShot(store, false)).toEqual({ ok: true });
+    expect(store.values.has(DEBUG_SHOT_KEY)).toBe(false);
+  });
+
+  it("reports a storage that refuses, and changes nothing", () => {
+    const store = refusing({ [DEBUG_SHOT_KEY]: "on" });
+    const refused = { ok: false, message: "この端末に保存できなかったため、撮影の形はページを開き直すと元に戻ります。" };
+    expect(writeDebugShot(store, false)).toEqual(refused);
+    expect(writeDebugShot(store, true)).toEqual(refused);
+    expect(Object.fromEntries(store.values)).toEqual({ [DEBUG_SHOT_KEY]: "on" });
+  });
+
+  it("is a labelled checkbox in Japanese, with what it hides and where it is kept, and the storage's refusal", () => {
+    const html = (on: boolean, message = "") => renderToStaticMarkup(createElement(DebugShotSetting, { on, onChange: () => {}, message }));
+    expect(html(false)).toMatch(/<h3 id="[^"]+">撮影の形（Debug）<\/h3><label class="debug-shot-row"><input type="checkbox" data-testid="debug-shot"\/>Debugの表示を隠す<\/label>/u);
+    expect(html(true)).toContain('<input type="checkbox" data-testid="debug-shot" checked=""/>');
+    expect(html(false)).toContain("関係の変化と場面の条件、鍵のかかった札");
+    expect(html(false)).toContain("この端末だけに残ります（セーブ・英語ノート・表示設定とは別）。");
+    expect(html(false)).not.toContain('role="alert"');
+    expect(html(true, "保存できませんでした")).toContain('<p role="alert">保存できませんでした</p>');
+    expect(renderToStaticMarkup(createElement(DebugShotSetting, { on: false, onChange: () => {}, message: "", heading: "h2" })))
+      .toMatch(/<h2 id="[^"]+">撮影の形（Debug）<\/h2>/u);
   });
 });

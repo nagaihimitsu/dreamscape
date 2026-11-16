@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import App from "../app/App";
-import type { DebugGameAccess } from "../app/app-storage";
+import { browserStorage, type DebugGameAccess } from "../app/app-storage";
+import { useDebugShot } from "../app/debug-mode";
+import DebugShotSetting from "../app/DebugShotSetting";
 import { getCities, getCityContent } from "../content";
 import { loadGame, saveGame } from "../persistence";
 import { debugTemplateDescription, installPreparingJourneyTestCities } from "./test-cities";
@@ -38,10 +40,16 @@ const errorText = (error: unknown, fallback: string) => error instanceof Error ?
 /** The address bar shows what a reload opens: the open scene's launch URL, or 「場面の確認」. */
 const showInAddressBar = (search: string) => window.history.replaceState(null, "", search);
 const mapQuery = (dataMode: DebugDataMode, cityId: string): DebugQuery => ({ dataMode, cityId, scene: "map" });
+/** A scene's launch URL, with 撮影の形 while it is on (so the URL opens the same view on another device). */
+const sceneSearch = (dataMode: DebugDataMode, settings: DebugSettings, shot: boolean) =>
+  debugQueryString({ ...settingsQuery(dataMode, settings), ...(shot ? { shot: true as const } : {}) });
 
 export default function DebugMode() {
   // A URL with more than ?debug opens its scene directly (see debug-query.ts).
   const [launch] = useState(() => parseDebugQuery(window.location.search));
+  // 撮影の形 (src/app/debug-mode.ts): this device's Debug preference, or on for this page with a launch URL's shot=1. While it
+  // is on, the open scene shows no Debug bar, and the game leaves out Debug's marks (GameApp's debugShot).
+  const shot = useDebugShot(browserStorage, launch.kind === "launch" && launch.query.shot === true);
   const [launching, setLaunching] = useState(launch.kind === "launch");
   const [launchError, setLaunchError] = useState(launch.kind === "error" ? launch.message : "");
   const [dataMode, setDataMode] = useState<DebugDataMode>("real");
@@ -79,7 +87,7 @@ export default function DebugMode() {
     miniGameRoomButton.current?.focus();
   }, [miniGameRoom]);
   const isPrototype = getCityContent(cityId).city.productionStatus === "prototype";
-  const sceneUrl = new URL(debugQueryString(isPrototype ? mapQuery(dataMode, cityId) : settingsQuery(dataMode, settings)), window.location.href).href;
+  const sceneUrl = new URL(isPrototype ? debugQueryString(mapQuery(dataMode, cityId)) : sceneSearch(dataMode, settings, shot.on), window.location.href).href;
 
   // Read-only view of the open scene for tests, removed with this screen. Development server
   // only: a production build drops it (Debug itself ships behind Debug mode; the hook never does).
@@ -95,13 +103,12 @@ export default function DebugMode() {
   }) : undefined, []);
 
   function update(next: DebugSettings) {
-    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it. Free time's day
-    // and time belong to free time; the flags chosen to the city's journey (another city keeps those of its journey).
-    const { step: _step, day: _day, time: _time, ...rest } = next;
+    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it. The flags
+    // chosen belong to the city's journey (another city keeps those of its journey); the day and time, to any scene.
+    const { step: _step, ...rest } = next;
     const keepStep = !next.step || (next.scene === "tour" && next.id === settings.id && next.cityId === settings.cityId);
     const offered = next.flags?.length && next.cityId !== settings.cityId ? debugFlagIds(next.cityId ?? defaultDebugCityId) : null;
     setSettings({ ...rest, ...(keepStep && next.step ? { step: next.step } : {}),
-      ...(next.scene === "free" ? { day: next.day, time: next.time } : {}),
       ...(offered ? { flags: next.flags!.filter((flag) => offered.includes(flag)) } : {}) });
     setCopyMessage("");
   }
@@ -119,13 +126,18 @@ export default function DebugMode() {
     const storage = newStorage();
     const result = saveGame(storage, state);
     if (!result.ok) throw new Error(result.message);
-    const search = debugQueryString(settingsQuery(mode, next));
+    const search = sceneSearch(mode, next, shot.on);
     const ticket = rollTickets[next.roll];
     setSession({ storage, roll: () => ticket, key: Date.now(),
       info: { dataMode: mode, settings: next, cityId: target, url: search, location: debugSceneLocation(next, state) } });
     showInAddressBar(search);
     window.scrollTo(0, 0);
   }
+  // The address bar follows 撮影の形 while a scene is open, so that a reload (or the URL copied from it) opens the same view.
+  useEffect(() => {
+    const info = session?.info;
+    if (info?.settings) showInAddressBar(sceneSearch(info.dataMode, info.settings, shot.on));
+  }, [shot.on, session]);
   useEffect(() => {
     if (launch.kind !== "launch") return;
     const { query } = launch;
@@ -193,17 +205,18 @@ export default function DebugMode() {
     </main>
   );
   if (prototype) return <PrototypePreview key={prototype.cityId} cityId={prototype.cityId} onClose={backToSettings} />;
-  // The bar's buttons wrap at their <wbr> on a phone (debug-mode.css), leaving the label its room.
+  // The bar's buttons wrap at their <wbr> on a phone (debug-mode.css), leaving the label its room. 撮影の形 leaves the bar out
+  // (and the game its marks: debugShot); ゲームの設定's 「制作者向け」 turns it off again.
   if (session) return (
-    <div className="debug-session" data-testid="debug-session">
-      <header className="debug-session-bar">
+    <div className="debug-session" data-testid="debug-session" data-shot={shot.on || undefined}>
+      {!shot.on && <header className="debug-session-bar">
         <div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div>
         <button type="button" data-testid="debug-edit-open" onClick={() => setEditing(true)}>フラグ・<wbr /><span className="debug-bar-keep">時刻・段階</span></button>
         <button type="button" onClick={backToSettings}>場面の選択へ<wbr />戻る</button>
-      </header>
-      <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugAccess={gameAccess}
+      </header>}
+      <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugAccess={gameAccess} debugShot={shot}
         debugPanel={(state) => <OccasionCandidatesView state={state} />} />
-      {editing && <DebugEditDialog access={gameAccess} onClose={() => setEditing(false)} />}
+      {editing && !shot.on && <DebugEditDialog access={gameAccess} onClose={() => setEditing(false)} />}
     </div>
   );
   // Never beside a game: no scene is open while it shows, so its music is the only one asked for.
@@ -256,8 +269,8 @@ export default function DebugMode() {
             <option value="completed">都市クリア後</option><option value="initial">旅の開始時</option>
           </select>
         </label>
-        {settings.scene === "free" && <DebugClockFields time={settings.time} day={settings.day}
-          onChange={(clock) => update({ ...settings, ...clock })} />}
+        <DebugClockFields scene={settings.scene} time={settings.time} day={settings.day}
+          onChange={(clock) => update({ ...settings, ...clock })} />
         <div className="debug-values">
           {([["ap", "AP"], ["affection", relationshipAxisLabels.affection], ["trust", relationshipAxisLabels.trust], ["spark", relationshipAxisLabels.spark]] as const).map(([key, label]) => {
             const [min, max] = debugValueRanges[key];
@@ -279,6 +292,7 @@ export default function DebugMode() {
         {message && <p role="alert">{message}</p>}
         <button type="submit" className="primary">{isPrototype ? "地図・交通を確認" : "この場面を開く"}</button>
       </form>
+      {!isPrototype && <DebugShotSetting heading="h2" on={shot.on} onChange={shot.change} message={shot.message} />}
       <section className="debug-url" aria-labelledby="debug-url-title">
         <h2 id="debug-url-title">この場面のURL</h2>
         <p>開くと上の設定のまま、この場面から始まります。画面の確認や共有に使えます。</p>

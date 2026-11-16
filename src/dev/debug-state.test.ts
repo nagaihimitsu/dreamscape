@@ -2,6 +2,7 @@ import { encounterEntryRuleList, encounterVisitSlot } from "../domain/encounter"
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
+import { scenes } from "../content";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
 import { screenFor } from "../domain/screen";
 import { debugExampleUrls, debugSessionExampleUrls } from "../../scripts/dev/screen-gallery";
@@ -178,13 +179,26 @@ describe("Debug launch URLs against the content", () => {
     const unavailable: string[] = [];
     for (const cityId of ["milano", "mihon"]) {
       for (const [scene, targets] of Object.entries(debugTargets(cityId)) as Array<[DebugSettings["scene"], DebugTarget[]]>) {
-        // Neither city has a tour (the tour scenes are opened below, on a fixture tour).
-        if (scene === "tour") { expect(targets, cityId).toEqual([]); continue; }
+        // Neither city has a tour (the tour scenes are opened below, on a fixture tour), nor Milan a scene of its hotel's
+        // moment (India's are opened below).
+        if (scene === "tour" || (scene === "hotel" && cityId === "milano")) { expect(targets, cityId).toEqual([]); continue; }
         expect(firstDebugTarget(targets), `${cityId} ${scene}`).not.toBe("");
         for (const target of targets) {
           // An encounter before or after a landmark's main part starts on the departure to it: from the journey's start.
           const settings: DebugSettings = { ...base, cityId, scene, id: target.id,
             ...(scene === "encounter" && encounterVisitSlot(target.id) !== "observe" ? { progress: "initial" } : {}) };
+          // A scene of the hotel's moment opens at the progress its condition reads (the sample's morning before the clock tower).
+          if (scene === "hotel") {
+            const opened = (["completed", "initial"] as const).flatMap((progress) => {
+              try {
+                return [createDebugState({ ...settings, progress })];
+              } catch {
+                return [];
+              }
+            });
+            expect(opened[0]?.activeEncounter?.encounterId, `${cityId} hotel ${target.id}`).toBe(target.id);
+            continue;
+          }
           if (!target.unavailable) {
             const game = createDebugState(settings);
             expect(validateGameState(game), `${cityId} ${scene} ${target.id}`).toEqual(game);
@@ -210,6 +224,93 @@ describe("Debug launch URLs against the content", () => {
     ]);
     expect(() => createDebugState({ ...base, cityId: "mihon", scene: "encounter", id: "smp_mihon_bookmark_stall" }))
       .toThrow("旅の進行を「旅の開始時」にしてください。");
+  });
+});
+
+// The scenes screenshots needed Debug's code rewritten for (2026-11-16): the confession, a scene's night branch, the hotel's scenes.
+describe("Debug launch URLs for the confession, the clock of any scene and the hotel's scenes (2026-11-16)", () => {
+  const launch = (search: string) => {
+    const parsed = parseDebugQuery(search);
+    if (parsed.kind !== "launch") throw new Error(parsed.kind === "error" ? parsed.message : `not a launch URL: ${search}`);
+    const resolved = resolveDebugLaunch(parsed.query);
+    if (resolved.kind !== "scene") throw new Error(`not a scene: ${search}`);
+    return resolved.settings;
+  };
+  const confession = "?debug&city=delhi&scene=date&target=gt_delhi_date_confession";
+
+  it("lists each city's confession and opens it at night, at its stage, with the dates it counts: the values alone decide her answer", () => {
+    for (const [cityId, id] of [["milano", "milano_confession_01"], ["delhi", "gt_delhi_date_confession"], ["agra", "gt_agra_date_confession"],
+      ["jaipur", "gt_jaipur_date_confession"]] as const)
+      expect(debugTargets(cityId).date.find((target) => target.id === id)?.name, id).toMatch(/（告白）$/u);
+    for (const [values, outcome] of [["", "rejected"], ["&affection=4&trust=2", "deferred"], ["&affection=8&trust=4&spark=4", "accepted"]] as const) {
+      const state = createDebugState(launch(`${confession}${values}`));
+      expect(validateGameState(state)).toEqual(state);
+      expect(state.activeDate, values).toMatchObject({ dateId: "gt_delhi_date_confession", pendingOutcome: outcome });
+      expect(state.romanceStage).toBeGreaterThanOrEqual(2);
+      // Its `# when: time night` (18:00 on); three ordinary dates of the city recorded as played (the confession counts three).
+      expect(state.travel.minute).toBeGreaterThanOrEqual(18 * 60);
+      expect(state.playedDateIds).toEqual(["gt_delhi_date_india_gate", "gt_delhi_date_chandni_chowk", "gt_delhi_date_lodhi_garden"]);
+    }
+    // Before the city's first episode, the date's own condition says what is missing.
+    expect(() => createDebugState(launch(`${confession}&progress=initial`)))
+      .toThrow("デートの条件を満たしていません：デリーのエピソードを1つ以上終えた");
+  }, 120_000);
+
+  it("does not record a date the confession's story asks about (cond(\"date …\")), so its branch stays the player's", () => {
+    const scene = scenes.find((item) => item.main && "date" in item.main && item.main.date === "gt_delhi_date_confession")!;
+    const kept = scene.conds;
+    (scene as { conds: string[] }).conds = [...kept, "date gt_delhi_date_chandni_chowk"];
+    try {
+      expect(createDebugState(launch(confession)).playedDateIds)
+        .toEqual(["gt_delhi_date_india_gate", "gt_delhi_date_lodhi_garden", "gt_delhi_date_agrasen_baoli"]);
+    } finally {
+      (scene as { conds: string[] }).conds = kept;
+    }
+  }, 120_000);
+
+  it("opens any scene at a chosen time, so a date's cond(\"time night\") branch shows (from the hotel, the clock's rules kept)", () => {
+    const chowk = "?debug&city=delhi&scene=date&target=gt_delhi_date_chandni_chowk";
+    const night = createDebugState(launch(`${chowk}&time=19:00`));
+    expect(night.travel.minute).toBe(19 * 60);
+    expect(night.activeDate?.frame.text).toMatch(/^日が落ちても/u);
+    expect(validateGameState(night)).toEqual(night);
+    expect(createDebugState(launch(chowk)).activeDate?.frame.text).toMatch(/^チャンドニー・チョークの路地は、昼でも薄暗い/u);
+    // The day moves the journey's calendar, as free time's does.
+    expect(createDebugState(launch(`${chowk}&day=3&time=12:00`)).travel).toMatchObject({ day: 3, minute: 720, calendar: { journeyDay: 3 } });
+    expect(launch(`${chowk}&time=19:00`)).toMatchObject({ scene: "date", time: 1140 });
+  }, 120_000);
+
+  it("lists the hotel's scenes and opens each through 「休む」, the night's scenes first when it rests at night", () => {
+    expect(debugTargets("delhi").hotel).toEqual([
+      { id: "gt_delhi_hotel_homework", name: "宿の場面（休む前の夜）" },
+      { id: "gt_delhi_hotel_sick_night_player", name: "宿の場面（休む前の夜）" },
+      { id: "gt_delhi_hotel_sick_night_heroine", name: "宿の場面（休む前の夜）" },
+      { id: "gt_delhi_hotel_sick_morning", name: "宿の場面（翌朝）" },
+    ]);
+    const morning = "?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_sick_morning";
+    // Its `# when: flag gt_delhi_golgappa_sick` set by Debug; the next morning at 9:00.
+    const plain = createDebugState(launch(morning));
+    expect(validateGameState(plain)).toEqual(plain);
+    expect(plain.activeEncounter?.encounterId).toBe("gt_delhi_hotel_sick_morning");
+    expect(plain.storyProgress.flags).toContain("gt_delhi_golgappa_sick");
+    expect(plain.travel.minute).toBe(9 * 60);
+    expect(debugSceneLocation(launch(morning), plain)).toMatch(/（\d+日目 09:00）$/u);
+    // Sick himself, resting at 19:00: the night in the corridor came first, and the morning tells of it.
+    const sick = createDebugState(launch(`${morning}&flags=gt_delhi_player_sick&time=19:00`));
+    expect(sick.seenEncounterIds).toContain("gt_delhi_hotel_sick_night_player");
+    expect(sick.activeEncounter?.frame.text).toMatch(/^朝、こちらの部屋の扉を叩く音がした/u);
+    // A night scene opens before the rest; one whose condition Debug cannot set says so.
+    expect(createDebugState(launch("?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_homework")).activeEncounter?.encounterId).toBe("gt_delhi_hotel_homework");
+    expect(() => createDebugState(launch("?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_homework&progress=initial")))
+      .toThrow("宿の時点の場面 gt_delhi_hotel_homework の条件をDebugでは満たせません：デリーのエピソードを1つ以上終えた");
+  }, 120_000);
+
+  it.each([
+    [{ dataMode: "real", cityId: "milano", scene: "hotel" }, "ミラノには「宿の場面（休む）」の場面がありません。"],
+    [{ dataMode: "real", cityId: "delhi", scene: "hotel", target: "gt_delhi_date_confession" }, "「gt_delhi_date_confession」はデリーの「宿の場面（休む）」にありません。"],
+    [{ dataMode: "real", cityId: "delhi", scene: "date", target: "gt_delhi_date_reassurance" }, "「gt_delhi_date_reassurance」はデリーの「デート」にありません。"],
+  ] satisfies Array<[DebugQuery, string]>)("explains a hotel or confession URL that does not fit the content: %o", (query, message) => {
+    expect(() => resolveDebugLaunch(query)).toThrow(message);
   });
 });
 

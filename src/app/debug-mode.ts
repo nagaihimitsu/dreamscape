@@ -147,3 +147,64 @@ export function useDebugVoiceRate(storage: DebugModeStorage) {
     },
   };
 }
+
+/**
+ * Debug's 撮影の形 (shot mode, 2026-11-16: screenshots that should look like play had been taken with Debug's styles or code
+ * changed for the time being): while it is on, the play screens leave out Debug's own marks (the relationship-change strip and the
+ * scene's conditions, the locked cards, the mini-games' 「結果を選ぶ」, 「移動画面に戻る（Debug）」, 「未入手」 in 旅の図鑑, and on
+ * Debug's page its bar and 「この時点の候補」), so a screenshot looks like play; turned off, they come back as they are now.
+ * This device's Debug preference beside the switch, under its own key, never part of a save, a backup, the English notes,
+ * the display settings or Debug's memory storage (neither 「保存データの消去」 nor 「古い保存データの整理」 touches it). It
+ * counts only while Debug mode is on. Off is stored as no key.
+ */
+export const DEBUG_SHOT_KEY = "dreamscape.debug-shot.v1";
+
+/** Whether 撮影の形 is stored as on: only "on" is; nothing, another value or a storage that cannot be read is off. */
+export function readDebugShot(storage: Pick<StorageLike, "getItem">): boolean {
+  try {
+    return storage.getItem(DEBUG_SHOT_KEY) === ON;
+  } catch {
+    return false;
+  }
+}
+
+/** Stores 撮影の形 (off removes the key). A storage that refuses keeps what it had and says so. */
+export function writeDebugShot(storage: DebugModeStorage, on: boolean): DebugModeWrite {
+  try {
+    if (on) storage.setItem(DEBUG_SHOT_KEY, ON);
+    else storage.removeItem(DEBUG_SHOT_KEY);
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "この端末に保存できなかったため、撮影の形はページを開き直すと元に戻ります。" };
+  }
+}
+
+/**
+ * 撮影の形 for its control (ゲームの設定's 「制作者向け」, Debug's 場面の確認): a change applies at once, also when the storage
+ * refuses it (then `message` says it will not stay). `launched`: a Debug launch URL's `shot=1` (src/dev/debug-query.ts), on for
+ * this page without being stored, until the control changes it. `refresh` reads the stored value again (when ≡メニュー opens,
+ * as the switch).
+ */
+export function useDebugShot(storage: DebugModeStorage, launched = false) {
+  const [fromUrl, setFromUrl] = useState(launched);
+  const [on, setOn] = useState(() => launched || readDebugShot(storage));
+  const [message, setMessage] = useState("");
+  return {
+    /** Whether it is on (it hides Debug's marks only while Debug mode is on). */
+    on,
+    /** A storage failure of the last change, or "". */
+    message,
+    refresh() {
+      setOn(fromUrl || readDebugShot(storage));
+      setMessage("");
+    },
+    change(next: boolean) {
+      const result = writeDebugShot(storage, next);
+      setFromUrl(false);
+      setOn(next);
+      setMessage(result.ok ? "" : result.message);
+    },
+  };
+}
+/** What the game's screens read of 撮影の形 (useDebugShot). */
+export type DebugShot = ReturnType<typeof useDebugShot>;

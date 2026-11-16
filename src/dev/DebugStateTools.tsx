@@ -4,7 +4,7 @@ import type { DebugGameAccess } from "../app/app-storage";
 import { weekdayLabel } from "../app/journey-hud-text";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
-import { clockText, debugClockPresets, debugDayRange, debugRomanceStages, debugTimeRange, parseClockText, type DebugRomanceStage } from "./debug-query";
+import { clockText, debugClockPresets, debugDayRange, debugRomanceStages, debugTimeRange, parseClockText, type DebugRomanceStage, type DebugScene } from "./debug-query";
 import { debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugFlagGroup } from "./debug-edits";
 
 /**
@@ -77,14 +77,23 @@ const [minMinute, maxMinute] = debugTimeRange;
 const [minDay, maxDay] = debugDayRange;
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-/** 場面の確認's clock of free time (scene=free): the quick choices, an exact time and the day; empty keeps the progress's own. */
-export function DebugClockFields({ time, day, onChange }: {
+/** What 場面の確認's clock is for, by scene: free time's clock, the rest at the hotel, or the start of any other scene (2026-11-16). */
+const clockWording: Record<"free" | "hotel" | "other", { legend: string; note: string }> = {
+  free: { legend: "街歩きの日時", note: "空欄は旅の進行のまま（多くは1日目 9:00）。夜は18:00から。21:00にすると一日の終わり（夜の画面か、宿で休む）になります。" },
+  hotel: { legend: "休む日時", note: "空欄は旅の進行のまま。夜（18:00から）に休むと、遊びと同じく、その夜の場面が先に流れます。" },
+  other: { legend: "場面を始める日時", note: "空欄は旅の進行のまま（多くは1日目 9:00）。夜は18:00から。場面の中で時刻によって分かれる所（cond(\"time night\") など）を見るときに使います。" },
+};
+
+/** 場面の確認's clock of the scene to open: the quick choices, an exact time and the day; empty keeps the progress's own. */
+export function DebugClockFields({ scene, time, day, onChange }: {
+  scene: DebugScene;
   time: number | undefined;
   day: number | undefined;
   onChange: (clock: { time: number | undefined; day: number | undefined }) => void;
 }) {
+  const wording = clockWording[scene === "free" || scene === "hotel" ? scene : "other"];
   return <fieldset className="debug-clock" data-testid="debug-clock">
-    <legend>街歩きの日時</legend>
+    <legend>{wording.legend}</legend>
     <ClockPresets minute={time} onChoose={(minute) => onChange({ time: minute, day })} />
     <div className="debug-values">
       <label>時刻を指定
@@ -100,7 +109,7 @@ export function DebugClockFields({ time, day, onChange }: {
             : clamp(Math.trunc(Number(event.target.value)) || minDay, minDay, maxDay) })} />
       </label>
     </div>
-    <p className="debug-note">空欄は旅の進行のまま（多くは1日目 9:00）。夜は18:00から。21:00にすると一日の終わり（夜の画面か、宿で休む）になります。</p>
+    <p className="debug-note">{wording.note}</p>
   </fieldset>;
 }
 

@@ -333,6 +333,9 @@
 | 仮の場面（準備中の旅行編の都市） | `/?debug&data=fixture&city=tashkent&scene=battle&target=tashkent_special_b` |
 | アーグラのツアー（予約中） | `/?debug&city=agra&scene=tour&target=gt_agra_tour_fatehpur_sikri` |
 | アーグラのツアー（見学の途中） | `/?debug&city=agra&scene=tour&target=gt_agra_tour_fatehpur_sikri&step=visit` |
+| デリーの告白のデート（受け入れられる値。撮影の形） | `/?debug&city=delhi&scene=date&target=gt_delhi_date_confession&affection=8&trust=4&spark=4&shot=1` |
+| デリーの夜のデート（時刻で分かれる書き出し。撮影の形） | `/?debug&city=delhi&scene=date&target=gt_delhi_date_chandni_chowk&time=19:00&shot=1` |
+| デリーの宿の翌朝（お腹を壊した朝。撮影の形） | `/?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_sick_morning&shot=1` |
 | 見本の編の特殊戦B（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_special_b_market` |
 | 見本の編の特殊戦C（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_special_c_library` |
 | 見本の編の道中交流（`npm run dev:sample`） | `/?debug&city=mihon&scene=encounter&target=smp_mihon_bookmark_stall&progress=initial` |

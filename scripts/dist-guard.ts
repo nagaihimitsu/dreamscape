@@ -69,6 +69,8 @@ export const lazyDebugMarkers: readonly DevOnlyMarker[] = [
   { text: "導入の計測：このタブで「旅をはじめる」から遊ぶと", source: "src/app/IntroTimingNote.tsx" },
   // Debug's 台詞の声の速さ (2026-11-13; Debug mode only): GameApp loads it lazily in ⚙設定 while Debug mode is on.
   { text: "録音した声を速く・ゆっくり聞いて", source: "src/app/DebugVoiceRate.tsx" },
+  // Debug's 撮影の形 (2026-11-16; Debug mode only): GameApp loads it lazily in ⚙設定 while Debug mode is on.
+  { text: "遊びの画面にDebugの表示を出しません", source: "src/app/DebugShotSetting.tsx" },
   // 仮の場面 (in-memory test cities, shared by unit tests and Debug).
   { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },
 ];
@@ -189,6 +191,7 @@ export const debugEntryModules: readonly { name: string; source: string }[] = [
   { name: "CharacterPreview", source: "src/dev/CharacterPreview.tsx" },
   { name: "IntroTimingNote", source: "src/app/IntroTimingNote.tsx" },
   { name: "DebugVoiceRate", source: "src/app/DebugVoiceRate.tsx" },
+  { name: "DebugShotSetting", source: "src/app/DebugShotSetting.tsx" },
 ];
 
 /** Whether a built file is the lazy chunk (or its stylesheet) of a module only Debug mode opens (debugEntryModules). */
