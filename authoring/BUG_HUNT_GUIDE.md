@@ -2,7 +2,7 @@
 
 主に開発者と AI のための手引きです。ユーザーから「出ない」「始まらない」「直したのでは？」と言われたとき、テストや CI が落ちたときに、調べる順番をまとめました。答える前、直す前に読みます。
 
-- 元にしたのは、2026-11 の開発の会話と作業の記録（11-08〜11-16）です。CI だけで落ちた回が6回、手元の機械の問題（ブラウザの版・ディスク・重さ）が多数、ユーザーの報告から調べた件が3件ありました（「まだ行けません」、スワイプしても始まらない、落ちたテスト）。
+- 元にしたのは、2026-11 の開発の会話と作業の記録（11-08〜11-16）です。CI だけで落ちた回が6回、手元の機械の問題（ブラウザの版・ディスク・重さ）が多数、ユーザーの報告から調べた件が3件ありました（「まだ行けません」、スワイプしても始まらない、落ちたテスト）。日付と時刻は、記録のとおり UTC です（日本時間は9時間足します）。
 - 例は、その記録と Git の履歴から引きました。作業の記録は AI の作業用フォルダにあり、いずれ消えます。要る中身は、この手引きに写しました。
 - 決まりの元は [AGENTS.md](../AGENTS.md) です。この手引きと食い違うときは、そちらに従います。
 - 仲間の手引き：報告の書き方は [決め方の手引き 10章](DECISION_GUIDE.md#10-報告のしかた)、ディスクと重いコマンドは [AIへの頼み方の手引き 6章](AI_DELEGATION_GUIDE.md#6-ディスクポート重いコマンド)、CI と E2E の決まりは [開発時の確認](../docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions) にあります。ここでは繰り返さず、**調べる順番**だけを書きます。
@@ -52,7 +52,7 @@
 
 **聞く前に、自分で調べられることを調べる**（[決め方の手引き 5章](DECISION_GUIDE.md#5-聞く前に調べる)）。
 
-- 直しの PR が合流したか：`gh pr view <PRの番号> --json state,mergedAt`。squash で合流するので、作業の枝のコミットの SHA では `main` を探せません。
+- 直しの PR が合流したか：`gh pr view <PRの番号> --json state,mergedAt`。Claude Code の作業環境では `gh pr view` が通りません（GraphQL が止められている。2026-11-16 に確かめた）。そこでは `gh api 'repos/{owner}/{repo}/pulls/<PRの番号>' --jq '{state: .state, merged_at: .merged_at}'` で見ます。squash で合流するので、作業の枝のコミットの SHA では `main` を探せません。
 - 公開が終わったか：`gh run list --workflow pages.yml --limit 3`
 - 見えている物が Debug だけの表示か：[Debugで確かめる手引き 6章](DEBUG_CHECK_GUIDE.md#6-出ない理由を読む) と、その表示を出すコード。
 
@@ -117,7 +117,7 @@ AI は、操作の前の画面だと読み違えました。空いていた所�
 
 ## 6. CIだけで落ちたとき
 
-2026-11-08〜09 に、CI で落ちた回が6回ありました。
+2026-11-08〜09 に、CI で落ちた回が6回ありました。どれも、PR ごとに単体テストと E2E が動いていた頃です。2026-11-10 からは、PR で動くのはビルドだけで、単体テストと E2E は Actions から手で動かしたときだけ CI で流れます（[開発時の確認「CI」](../docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。
 
 | 日 | どこで | 原因 | 直したもの |
 | --- | --- | --- | --- |
@@ -143,7 +143,7 @@ AI は、操作の前の画面だと読み違えました。空いていた所�
 
 CI の機械（GitHub の Ubuntu）では、日本語の字が WenQuanYi Zen Hei になります。この開発の機械では IPA P ゴシックです。WenQuanYi は句読点を全角の幅で描くので、PR #16 では解説の高さが 404.2px から 432.2px になりました。そのぶん、ボタンが画面の外へ押し出されました。
 
-手元で CI の字にするには、IPA P ゴシックと Inter を隠す設定を作り、`FONTCONFIG_FILE` で渡します。設定はリポジトリの外に置きます。
+手元で CI の字にするには、IPA P ゴシックと Inter を隠す設定を作り、`FONTCONFIG_FILE` で渡します。設定はリポジトリの外に置き、絶対パスで渡します（相対パスでは、fc-match が設定を読めませんでした）。
 
 ```xml
 <?xml version="1.0"?>
@@ -159,8 +159,9 @@ CI の機械（GitHub の Ubuntu）では、日本語の字が WenQuanYi Zen Hei
 </fontconfig>
 ```
 
-- 隠せたかを確かめる：`FONTCONFIG_FILE=<設定> fc-match IPAPGothic` が `DejaVu Sans` を返せば隠れています（2026-11-16 にこの機械で確かめた）。機械によって入っている字は違うので、毎回確かめます。
-- 流す：`FONTCONFIG_FILE=<設定> npx playwright test tests/e2e/<ファイル> --repeat-each=10`。PR #16 では、これで10回とも CI と同じ失敗が出ました。
+- 隠せたかを確かめる：`FONTCONFIG_FILE=<設定> fc-match IPAPGothic` が `DejaVu Sans` を、`FONTCONFIG_FILE=<設定> fc-match 'sans-serif:lang=ja'` が `WenQuanYi Zen Hei` を返せば隠れています。機械によって入っている字は違うので、毎回確かめます。
+- 確かめた範囲：上の設定は、記録をもとに 2026-11-16 に書き直したものです。この機械で確かめたのは、fc-match の2つだけです。この設定で E2E は、まだ流していません。11-08 から後の E2E では、同じく IPA P ゴシックと Inter を隠す設定を使っていました（そのファイルは残っていません）。
+- 流す：`FONTCONFIG_FILE=<設定> npx playwright test tests/e2e/<ファイル> --repeat-each=10`。PR #16 では、IPA P ゴシックを隠す設定で流し、10回とも CI と同じ失敗が出ました。
 - 座標で押すテストを足したときも、一度この字で流します。PR #29 も、同じ字体の差でした。
 
 ### 6.3 CPUを遅くして流す
@@ -171,6 +172,8 @@ CI の機械（GitHub の Ubuntu）では、日本語の字が WenQuanYi Zen Hei
 const cdp = await page.context().newCDPSession(page);
 await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
 ```
+
+- 確かめた範囲：この2行は、11-08〜09 に一時の写しで使ったしかけ（テストのページごとに CPU を遅くする）と同じ呼び出しです。この形のまま流しては、確かめていません。
 
 - 倍率は、CI の遅さに合わせる。11-08 の遅い回（約4倍）は、手元の4倍で、推理クイズ（B・C）を遊ぶ2件が CI と同じく30秒の枠で時間切れになりました。6倍・4ワーカーでは3件が落ち、さらに厳しくなります。
 - 効いたかを確かめる。同じ空回しの時間が、6倍で約16〜26ミリ秒から約108〜111ミリ秒になりました。
@@ -190,7 +193,7 @@ await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
 
 - **重いときだけ落ちる。** 機械が重くて時間切れになり、そのテストだけなら通る、が 11-05〜11-08 に4回ほどありました。まず、そのテスト1つだけで流し直します（`npx vitest run <ファイル>`、`npx playwright test <ファイル>`）。結果と一緒に、そのときの重さ（`uptime` の数字）を書きます。1つの時間切れが、続くテストまで落とすこともあります。そのときは、最初に落ちた1つだけを見ます。1つだけなら通っても、遅い CI では落ちうる待ち方なら、6.3 で再現して直します。1つだけでも落ちるなら、重さのせいではありません（5章に戻る）。
 - **ディスクがない。** `ENOSPC` や `ERR_INSUFFICIENT_RESOURCES` は、空きの不足です（[AIへの頼み方の手引き 6章](AI_DELEGATION_GUIDE.md#6-ディスクポート重いコマンド)）。
-- **ブラウザの版が違う。** 「Playwright 1.64.1 wants chromium_headless_shell-1248, only 1243 installed」が 11-08 に4回出ました。手元にある別の版の Chromium を `DREAMSCAPE_CHROMIUM` で渡します（[開発時の確認「E2Eの段」](../docs/10_DEVELOPMENT_CHECKS.md#e2eの段) の実行の表）。
+- **ブラウザの版が違う。** Playwright 1.64.1 が求める chromium_headless_shell-1248 がなく、1243 しか入っていない。これが 11-08 に4回ありました。手元にある別の版の Chromium を `DREAMSCAPE_CHROMIUM` で渡します（[開発時の確認「E2Eの段」](../docs/10_DEVELOPMENT_CHECKS.md#e2eの段) の実行の表）。
 - **見本の編がない。** 「Unknown city: mihon」は、見本の編なしで生成してから単体テストを流した印です（11-14〜11-16 に5回。2026-11-15 には38件）。`npm run test:with-sample -- <ファイル>` で流します。見本入りで生成して流し、落ちても見本なしで生成し直します（作っている途中の道具です。まだないときは [AIへの頼み方の手引き「見本の編の生成」](AI_DELEGATION_GUIDE.md#見本の編の生成) の手順）。
 
 ## 8. 中身を足したら落ちやすいテスト
@@ -204,7 +207,7 @@ await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
 | 写真の権利の検査を足した（11-14） | `src/content/content.test.ts`：仮の写真に同じライセンスの一文がない | 仮データに一文（38f663b） |
 | 見本の編の `then: epilogue` の例（わざと注意が出る。PR #35、11-09） | `scripts/journey-new.test.ts`：写した旅行編にも同じ注意が出た | 見本のほかの例と同じに除く（d351b7f） |
 
-- 数は、その旅行編・都市の範囲で数える。全旅行編の合計を書かない（[開発時の確認「旅行編ごとのテスト」](../docs/10_DEVELOPMENT_CHECKS.md#旅行編ごとのテスト)）。
+- 数は、その旅行編・都市の範囲で数える。全旅行編の合計を書かない（[開発時の確認](../docs/10_DEVELOPMENT_CHECKS.md) の初め、`scripts/journey-folders.test.ts` の段落）。
 - 時間の枠は、中身の数から決める（fef54b5 の形）。
 - 検査を足したら、同じ変更でテストの仮データも合わせる。
 
