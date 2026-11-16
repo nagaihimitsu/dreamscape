@@ -1,34 +1,49 @@
 /* The scene tags of the line on screen (2026-11-11 user decision; LineStage.tsx). A scene without them looks as before:
-   every rule here is on an element or attribute only a scene tag adds. Nothing here moves the window or its controls.
-   No filter on a photo (its pixels stay as credited): the recalled photo is only faded, a quiet backdrop only veiled. */
+   every rule here is on an element or attribute only a scene tag adds, except the recall ground and fades below, which
+   rest at no effect (an invisible ground, a transition) until a `# recall:` line comes. Nothing here moves the window
+   or its controls. No filter on a photo (its pixels stay as credited): the recalled photo and the scene's picture are
+   only faded, a quiet backdrop only veiled. */
 
-/* # recall: the scene sinks into a quiet grey and the photo comes up in it, over the scene's picture and under the
-   portraits and the window (both come later in the scene, on layers above it). The grey covers the whole picture,
-   behind the header too, so the backdrop (the Taj Mahal, a street) no longer mixes with the photo and no edge shows
-   (2026-11-16 user feedback: the two pictures together were cluttered; a gradual darkening on entering the memory).
-   It comes in as a gradient in time and space: the edges darken first (::after, a vignette), the even grey follows
-   (::before), then the photo rises below the header. Lines that keep the same photo keep the layer (RecallLayer's
-   key), so this plays once when the memory begins. It goes at once, back to the scene. */
+/* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
+   feedback: the backdrop, the Taj Mahal, and the photo together were cluttered; the backdrop should grow transparent
+   gradually as the memory begins). The scene's picture (and its weather) is always on screen, so it fades out when a
+   line with `# recall:` comes and fades back the same way when the memory ends; the grey is its own ground, behind the
+   header too, so no edge shows. The photo lies below the header, over the grey and under the portraits and the window
+   (both come later in the scene, on layers above it), and rises after the picture has begun to fade. Lines that keep
+   the same photo keep the layer (RecallLayer's key), so it rises once; it goes at once when the memory ends. */
+:is(.vn-scene, .battle-screen)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: #2b2d33;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1000ms ease-in-out;
+}
+/* Back to the scene (the transition of the state it goes to): a gentle 1 s. Into the memory: 0.9 s, quick at first. */
+:is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
+:is(.vn-scene, .battle-screen) > .weather-layer {
+  transition: opacity 1000ms ease-in-out;
+}
+:is(.vn-scene, .battle-screen):has(> .recall-layer)::before {
+  opacity: 1;
+  transition: opacity 900ms var(--ease-out);
+}
+:is(.vn-scene, .battle-screen):has(> .recall-layer) > :is(.vn-background, .battle-backdrop) {
+  opacity: 0.1;
+  transition: opacity 900ms var(--ease-out);
+}
+:is(.vn-scene, .battle-screen):has(> .recall-layer) > .weather-layer {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+}
 .recall-layer {
   position: absolute;
   z-index: -1;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-}
-.recall-layer::before,
-.recall-layer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-.recall-layer::before {
-  background: rgba(38, 40, 46, 0.74);
-  animation: stage-fade-in 900ms var(--ease-out) both;
-}
-.recall-layer::after {
-  background: radial-gradient(ellipse 90% 75% at 50% 45%, transparent 35%, rgba(10, 11, 14, 0.72) 100%);
-  animation: stage-fade-in 450ms var(--ease-out) both;
 }
 .recall-layer img {
   position: absolute;
@@ -318,17 +333,20 @@
   }
 }
 
-/* Reduced motion: the photo and the veil come at once (a `# stand:` place: character-portrait.css). */
-.reduce-motion .recall-layer::before,
-.reduce-motion .recall-layer::after,
+/* Reduced motion: the photo and the veil come at once, and the scene's picture fades and returns at once (a `# stand:`
+   place: character-portrait.css). */
+.reduce-motion :is(.vn-scene, .battle-screen)::before,
+.reduce-motion :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
+.reduce-motion :is(.vn-scene, .battle-screen) > .weather-layer { transition: none; }
 .reduce-motion .recall-layer img,
 .reduce-motion .photo-show-layer,
 .reduce-motion .photo-show-layer img,
 .reduce-motion [data-quiet] > .vn-background::after,
 .reduce-motion [data-quiet] > .battle-backdrop::after { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .recall-layer::before,
-  .recall-layer::after,
+  :is(.vn-scene, .battle-screen)::before,
+  :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
+  :is(.vn-scene, .battle-screen) > .weather-layer { transition: none; }
   .recall-layer img,
   .photo-show-layer,
   .photo-show-layer img,
