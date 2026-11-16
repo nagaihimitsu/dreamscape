@@ -19,6 +19,7 @@ INCLUDE modules.ink
 失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_arrive_reel_001
 な、なんで知ってるんですか！
 # speaker: gt_samir
 アーグラの宿の者は、みんな見ています。うちの白鳥の動画より、再生が多いんです。少し悔しいくらい
@@ -27,12 +28,14 @@ INCLUDE modules.ink
     布を広げて飛び出す、鳩の役の方も。……あれは、旦那さまですよね？
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_agra_arrive_reel_002
     旦那さまじゃないです！　鳩の役の人です！
 - else:
     # speaker: gt_samir
     新婚旅行の思い出が、もう動画になっているなんて。お幸せに
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_agra_arrive_reel_003
     新婚じゃないです……！　有名なのは、鳩と、質問みたいな悲鳴だけです
 }
 # speaker: narrator

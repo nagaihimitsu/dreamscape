@@ -24,6 +24,7 @@ INCLUDE modules.ink
 乾いた土の上で、子どもたちがクリケットをしている。打席の向こう、川の対岸には、白いドームが浮かんでいた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_date_mehtab_bagh_001
 見て。タージ・マハルの前で、クリケット。誰もタージの方、見てないね
 # speaker: narrator
 打者の後ろ、本当なら三本の棒を立てる所に、煉瓦が三つ積んである。投げた球でこれを崩せば、打者はアウトだ。
@@ -40,11 +41,13 @@ INCLUDE modules.ink
 # speaker: gt_sonia
 塀の向こうは役所の庭だから、ボールを取りに入ると怒られる。だから、越えたらアウト
 # speaker: heroine
+# voice: gt_agra_date_mehtab_bagh_002
 ……投げられる方、だって
 # speaker: narrator
 彼女は、ソニアの手の中のボールを見ていた。テープを何重にも巻いた、でこぼこのボールだ。
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_date_mehtab_bagh_003
 わたし、やりたい。投げる方。体育のチーム分けで、いつも最後まで残ってた方なんだけど。それでも
 * [「いいね。自分は打つ方に入る」 # option: rival_team]
     # profile: playful
@@ -52,10 +55,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_mehtab_bagh_004
         敵同士……。ちょっと心細いな。味方、知らない子ばっかりだし
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_agra_date_mehtab_bagh_005
         じゃあ、敵同士だね。手加減しないから
     }
 * [「同じチームがいい」 # option: same_team]
@@ -66,12 +71,14 @@ INCLUDE modules.ink
         だめ。打つ人が足りない方に入って。キャプテンが決める
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_agra_date_mehtab_bagh_006
         ……子どもの前で、そういうこと言わないで。キャプテンに怒られちゃった
     - else:
         # speaker: gt_sonia
         だめ。打つ人が足りない方に入って。キャプテンが決める
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_agra_date_mehtab_bagh_007
         ふふ、キャプテンには逆らえないね。敵同士になっちゃった
     }
 * [「最初の一球、見てていい？」 # option: watch_first_ball]
@@ -80,10 +87,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_agra_date_mehtab_bagh_008
         見られてると、ほんとに投げられないかも……。少しだけ、あっち向いてて
     - else:
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_agra_date_mehtab_bagh_009
         見られてると、緊張する。……でも、見てて。あとで笑ったら怒るけど
     }
 -
@@ -99,6 +108,7 @@ INCLUDE modules.ink
 三球目で、煉瓦が一つ落ちた。アウト。打った少年が信じられないという顔をして、ソニアが一番大きな声で叫んだ。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_agra_date_mehtab_bagh_010
 当たった！？　今の、わたし！？
 # speaker: narrator
 それから先は、あっという間だった。ソニアの家の手伝いの時間が来る前に、終わらせなければならないらしい。
@@ -109,6 +119,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # minigame: cricket_batting auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
+# voice: gt_agra_date_mehtab_bagh_011
 本気で投げるから。本気で打ってね
 // 最後の一球：選択肢の代わりにミニゲーム。打った結果の ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。
 * [最後の一球：まっすぐ打ち返した # option: six]
@@ -153,6 +164,7 @@ INCLUDE modules.ink
 タージと、クリケットと、あなたたち。写真代、ちょうだい。外国の人は、みんな撮りたがるから
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
+# voice: gt_agra_date_mehtab_bagh_020
 しっかりしてる！
 # speaker: gt_sonia
 本物のバットが欲しいの。ちゃんとした革のボールも。州のチームの選考は、本物で打たないと笑われる
@@ -161,9 +173,11 @@ INCLUDE modules.ink
 # leave: gt_sonia
 子どもたちが散っていくと、空き地には土ぼこりと、二人だけが残った。彼女は服の土を払いながら、塀に背中をあずけた。
 # speaker: heroine
+# voice: gt_agra_date_mehtab_bagh_021
 チーム分けで、最初に選ばれたの、生まれて初めてかも。ソニアさん、わたしが投げたいって顔してたの、分かってたのかな
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_date_mehtab_bagh_022
 投げたい、って言ってよかった。言わなかったら、たぶん今日も、見てるだけだった
 -> END
 
@@ -236,8 +250,10 @@ INCLUDE modules.ink
 アウト！　塀を越えたらアウト！　わたしたちの勝ち！
 # speaker: heroine
 # reaction: heroine,teasing_big,music
+# voice: gt_agra_date_mehtab_bagh_012
 ふふっ、あははっ！　打てたのに負けてる！　今日いちばんの当たりだったのに！
 # speaker: heroine
+# voice: gt_agra_date_mehtab_bagh_013
 でも、ちゃんと本気で打ってくれた。うれしい。勝ったのも、うれしいけど
 ->->
 
@@ -296,6 +312,7 @@ INCLUDE modules.ink
     全部バット。……うそ。半分バット、半分は妹のノート
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_mehtab_bagh_photo_001
     正直なキャプテン。払う価値、あるね
     # speaker: narrator
     写真代を渡すと、子どもたちが煉瓦の前に並んだ。

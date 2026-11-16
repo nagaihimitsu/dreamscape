@@ -12,6 +12,7 @@ INCLUDE modules.ink
 電動リキシャでヤムナー川の橋を渡ると、町の音が一段遠くなった。対岸の道は細く、牛がのんびり横切っていく。
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_agra_itimad_tomb_guide_001
 川を一本越えただけで、急に静か。タージの近くの賑やかさが、うそみたい
 # speaker: narrator
 門の前の露店で、水と、焼いたとうもろこしを売っている。客は、ほとんどいない。
@@ -20,16 +21,19 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # term: gt_term_parchin_kari
+# voice: gt_agra_itimad_tomb_guide_002
 あ……模様が、絵の具じゃない。石がはめ込んであるんだ。花も、瓶も、ぜんぶ石
 # speaker: narrator
 # term: gt_term_jali
 近づくほど細かくなる模様に、{heroine_name}の歩幅が小さくなる。窓には、石の格子がはまっていた。
 # speaker: heroine
+# voice: gt_agra_itimad_tomb_guide_003
 格子を通った光が、床に模様を作ってる。石なのに、レースみたい
 # speaker: narrator
 彼女はガイドブックを開き、この墓の説明を探した。見出しの横に、小さく通称が書いてある。
 # speaker: heroine
 # reaction: heroine,happy,music
+# voice: gt_agra_itimad_tomb_guide_004
 通称、ベビー・タージ、だって。かわいい名前。……確かに、タージを小さくしたみたいだもんね
 # speaker: narrator
 # term: gt_term_neem

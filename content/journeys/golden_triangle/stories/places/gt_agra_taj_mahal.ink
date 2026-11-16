@@ -12,6 +12,7 @@ INCLUDE modules.ink
 タージ・マハルの手前で、車は入れない。二人は電動の小さなバスに乗り換え、手荷物検査の列に並んだ。前の家族が、持ち込めないお菓子を慌てて食べている。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_taj_mahal_guide_001
 ここで全部食べちゃうんだ。わたしも見習って、心の準備を全部しておこう
 # speaker: narrator
 赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
@@ -21,12 +22,14 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # pause: 700
+# voice: gt_agra_taj_mahal_guide_002
 ……あ
 # speaker: narrator
 # emotion: surprised
 {heroine_name}は足を止めたまま、しばらく何も言わなかった。
 # speaker: heroine
 # emotion: neutral
+# voice: gt_agra_taj_mahal_guide_003
 写真と、同じ形なのに。全然、同じじゃない。……大きいのに、浮いてるみたい
 # speaker: narrator
 まっすぐな水路が、建物まで続いている。水面に、もう一つのタージが逆さに揺れていた。
@@ -34,10 +37,12 @@ INCLUDE modules.ink
 水路の途中に、白い大理石のベンチ。その前に、記念写真の列が長く伸びている。
 # speaker: heroine
 # reaction: heroine,smile,question
+# voice: gt_agra_taj_mahal_guide_004
 あのベンチ、写真でよく見るやつだ。みんな、あそこで撮るんだね。……並んでる人、ほとんど二人組
 # speaker: narrator
 列の脇で、胸ポケットを何度も押さえている青年が、きょろきょろと誰かを探していた。
 # speaker: heroine
+# voice: gt_agra_taj_mahal_guide_005
 なんだか、あの人の方が、建物より緊張してるみたい
 -> END
 

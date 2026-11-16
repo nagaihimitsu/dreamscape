@@ -119,6 +119,7 @@ INCLUDE modules.ink
         ……それは、嫌なの。ちゃんと、わたしが決めたいから
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_confession_012
         待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
         # speaker: narrator
         # stand: close
@@ -143,20 +144,26 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_confession_lead_001
         この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから
         # speaker: heroine
+        # voice: gt_agra_confession_lead_002
         でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから
     - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_confession_lead_003
         今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた
         # speaker: heroine
+        # voice: gt_agra_confession_lead_004
         だから、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから
     - else:
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_confession_lead_005
         話したいことがあって、屋上に誘ったの。わたしたちの話は、こっち向きでしたかったから
         # speaker: heroine
+        # voice: gt_agra_confession_lead_006
         でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて
     }
     { cond("flag gt_delhi_back_word_secret"):
@@ -167,6 +174,7 @@ INCLUDE modules.ink
         あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_agra_confession_lead_008
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
     }
 - else:
@@ -179,12 +187,14 @@ INCLUDE modules.ink
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。
         }
         # speaker: heroine
+        # voice: gt_agra_confession_lead_009
         話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
     - else:
         # speaker: narrator
         夕食のあと、少し涼もうと屋上に誘ったのは、こちらだった。彼女は縁に腰かけて、洗濯物が風に揺れるのを眺めている。
         言うなら、今だと思った。
         # speaker: heroine
+        # voice: gt_agra_confession_lead_010
         ん？　どうしたの、改まった顔して
     }
 }
@@ -204,18 +214,22 @@ INCLUDE modules.ink
 # speaker: narrator
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が二本、タージのドームの方へ流れていく。
 # speaker: heroine
+# voice: gt_agra_date_reassurance_001
 チャイ、二つもらってきた。一つは、そっちの
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_date_reassurance_002
 この前の返事の話は、今日はしない。……そのかわり、チャイが冷めるまでは、普通の話をしよう。いつもの、どうでもいい話
 * [「明日、どこへ行く？」 # option: where_tomorrow]
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
+        # voice: gt_agra_date_reassurance_003
         明日の話……。うん、普通だね。普通、なんだけど、ちょっとだけ緊張する
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_date_reassurance_004
         それ、いちばん普通の話。うれしい。明日は、わたしが一つ、行きたい所を言ってもいい？
     }
 * [「今日見た、いちばん変なものの話」 # option: strangest_thing]
@@ -223,10 +237,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_reassurance_005
         変なもの……。ごめん、今日は、あんまり周りを見てなかったかも
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_agra_date_reassurance_006
         変なもの？　屋根の上を歩いてた山羊。あれ、どうやって上ったんだろうね
     }
 * [「日本に帰ったら、最初に何を食べる？」 # option: first_meal_home]
@@ -234,15 +250,18 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_reassurance_007
         帰ったら……。帰る話は、今はちょっと、さみしいかも
     - else:
         { cond("date gt_agra_date_ram_bagh"):
             # speaker: heroine
             # reaction: heroine,teasing,music
+            # voice: gt_agra_date_reassurance_008
             鮭のおにぎり。三か所はがすやつ。ラーム・バーグで言ったの、覚えてた？
         - else:
             # speaker: heroine
             # reaction: heroine,teasing,music
+            # voice: gt_agra_date_reassurance_009
             鮭のおにぎり。コンビニの、三か所はがすやつ。ちょっと恋しい
         }
     }
@@ -252,8 +271,10 @@ INCLUDE modules.ink
 # speaker: narrator
 カップの底に、香辛料の粒が沈んでいく。
 # speaker: heroine
+# voice: gt_agra_date_reassurance_010
 待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_date_reassurance_011
 答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる
 -> END
