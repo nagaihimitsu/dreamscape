@@ -98,17 +98,12 @@ describe("image rights", () => {
       .toThrow(twiceMessage);
   });
 
-  it("refuses a CC BY-SA photo whose note does not say that the served version keeps the licence", () => {
-    // The sentence images:optimize writes after its conversion (hasShareAlikeStatement reads the other wordings).
+  it("does not re-check what a registered credit says (user decision 2026-11-16)", () => {
+    // The same-licence sentence of a CC BY-SA photo is written once at registration
+    // (images:optimize adds it when it converts); the build does not look for it.
     const converted = "Commons原本を使用。さらに同じ寸法のままWebP形式（品質80）に変換。";
     const spot = "assets/tourism/trip_a/spot.webp";
-    expect(check(files(), [asset(spot, "CC BY-SA 4.0", `${converted}変換版もCC BY-SA 4.0で提供。`)])).not.toThrow();
-    expect(check(files(), [asset(spot, "CC BY-SA 4.0", converted)])).toThrow(
-      "継承の条件（BY-SA）のある写真に、配信する版も同じライセンスで提供するという一文がありません：tourism/catalog.json の \"spot\"（CC BY-SA 4.0）。" +
-      "modificationJa の最後のWebPへの変換の文の後（変換の文がなければどこでも）に、「変換版もCC BY-SA 4.0で提供。」のように書いてください" +
-      "（Share-alike image without a same-licence statement after its last conversion: spot）。");
-    // Other licences need no such sentence.
-    expect(check(files(), [asset(spot, "CC BY 4.0", converted)])).not.toThrow();
+    expect(check(files(), [asset(spot, "CC BY-SA 4.0", converted)])).not.toThrow();
   });
 
   it("asks nothing for a journey's album images (public/assets/album/), and refuses a credit for one", () => {
