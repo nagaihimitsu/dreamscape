@@ -20,7 +20,7 @@ import { OccasionCandidatesView } from "./OccasionCandidatesView";
 import { EffectsRoom } from "./EffectsRoom";
 import { MiniGameRoom } from "./MiniGameRoom";
 import { debugFlagGroups, debugFlagIds } from "./debug-edits";
-import { DebugClockFields, DebugEditDialog, DebugFlagChooser } from "./DebugStateTools";
+import { DebugClockFields, DebugEditDialog, DebugFlagChooser, DebugStageField } from "./DebugStateTools";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -53,7 +53,7 @@ export default function DebugMode() {
   const options = debugTargets(cityId);
   const flagGroups = useMemo(() => debugFlagGroups(cityId), [cityId, dataMode]);
   const [session, setSession] = useState<Session | null>(null);
-  // The Debug bar's 「フラグ・時刻」 (DebugEditDialog) and its way into the running game (GameApp sets it).
+  // The Debug bar's 「フラグ・時刻・段階」 (DebugEditDialog) and its way into the running game (GameApp sets it).
   const [editing, setEditing] = useState(false);
   const gameAccess = useRef<DebugGameAccess | null>(null);
   const [prototype, setPrototype] = useState<DebugSceneInfo | null>(null);
@@ -198,7 +198,7 @@ export default function DebugMode() {
     <div className="debug-session" data-testid="debug-session">
       <header className="debug-session-bar">
         <div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div>
-        <button type="button" data-testid="debug-edit-open" onClick={() => setEditing(true)}>フラグ・<wbr />時刻</button>
+        <button type="button" data-testid="debug-edit-open" onClick={() => setEditing(true)}>フラグ・<wbr /><span className="debug-bar-keep">時刻・段階</span></button>
         <button type="button" onClick={backToSettings}>場面の選択へ<wbr />戻る</button>
       </header>
       <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugAccess={gameAccess}
@@ -265,6 +265,10 @@ export default function DebugMode() {
               onChange={(event) => update({ ...settings, [key]: Math.min(max, Math.max(min, Math.trunc(Number(event.target.value)) || 0)) })} /></label>;
           })}
         </div>
+        <DebugStageField stage={settings.stage} onChange={(stage) => {
+          const { stage: _stage, ...rest } = settings;
+          update(stage === undefined ? rest : { ...rest, stage });
+        }} />
         <label>デートの反応
           <select data-testid="debug-roll" value={settings.roll} onChange={(event) => update({ ...settings, roll: event.target.value as DebugSettings["roll"] })}>
             <option value="positive">成功寄り（抽選値 0）</option><option value="negative">失敗寄り（抽選値 9999）</option>

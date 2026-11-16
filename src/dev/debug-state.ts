@@ -10,7 +10,7 @@ import {
   atPlace, cityStart, completedCity, finishEpisode, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
   startDateScene, startEncounterScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
-import { checkDebugFlags, withDebugClock, withDebugFlags } from "./debug-edits";
+import { checkDebugFlags, withDebugClock, withDebugFlags, withDebugStage } from "./debug-edits";
 
 export type { DebugScene, DebugSettings } from "./debug-query";
 
@@ -119,7 +119,7 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
     ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}),
     ...(query.without ? { without: query.without } : {}), ...(query.before ? { before: query.before } : {}),
     ...(query.day !== undefined ? { day: query.day } : {}), ...(query.time !== undefined ? { time: query.time } : {}),
-    ...(query.flags ? { flags: query.flags } : {}) } };
+    ...(query.flags ? { flags: query.flags } : {}), ...(query.stage !== undefined ? { stage: query.stage } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -177,10 +177,14 @@ function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: stri
   throw new Error(`「${settings.id}」は「${before}」の前には始められません`);
 }
 
-/** The scene's starting state from its progress's: without the items `without` names, with the flags it adds, Debug's AP and relationship values. */
+/**
+ * The scene's starting state from its progress's: without the items `without` names, with the flags it adds, Debug's AP and
+ * relationship values, and its 恋の段階 when one is chosen (else the progress's own).
+ */
 function prepared(state: GameState, settings: DebugSettings): GameState {
   const base = withDebugFlags(withoutHeldItems(state, settings.without ?? []), settings.flags ?? []);
-  return withRelationship(withAp(base, settings.ap), settings);
+  const related = withRelationship(withAp(base, settings.ap), settings);
+  return settings.stage === undefined ? related : withDebugStage(related, settings.stage);
 }
 
 /** Free time (scene=free) at a place of the city, its clock at the settings' day and time (each the progress's own when left out). */

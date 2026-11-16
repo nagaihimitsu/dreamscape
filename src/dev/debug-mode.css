@@ -11,11 +11,12 @@
 .debug-session-bar strong, .debug-session-bar span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .debug-session-bar span { font-size: 12px; }
 .debug-session-bar button { flex: none; min-height: 44px; padding: 4px 9px; line-height: 1.2; word-break: keep-all; }
-/* On a phone the bar's buttons wrap at their <wbr> (「フラグ・」「時刻」, 「場面の選択へ」「戻る」): the bar keeps its 56 px and
-   its label keeps room for 「Debug · 通常セーブとは別」 and the place. */
+/* On a phone the bar's buttons wrap at their <wbr> (「フラグ・」「時刻・段階」, 「場面の選択へ」「戻る」): the bar keeps its 56 px and
+   its label keeps room for 「Debug · 通常セーブとは別」 and the place. A button's second line stays one line (not at its 「・」). */
 @media (max-width: 480px) {
   .debug-session-bar button { width: min-content; padding: 4px 8px; font-size: 12px; }
 }
+.debug-session-bar button .debug-bar-keep { display: inline; overflow: visible; font-size: inherit; white-space: nowrap; }
 @media (max-width: 480px) {
   .debug-session .app-shell.mobile-play-active { height: calc(100dvh - 56px); }
 }
@@ -41,7 +42,7 @@
 .debug-candidates ol, .debug-candidates ul { margin: 6px 0; padding-left: 20px; }
 .debug-candidates p { margin: 2px 0; }
 
-/* Flags and free time's clock (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻」. */
+/* Flags, free time's clock and 恋の段階 (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻・段階」. */
 .debug-note { margin: 0; font-size: 13px; line-height: 1.6; }
 .debug-panel .debug-note { font-size: 13px; }
 .debug-clock { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 10px 12px 12px; border: 1px solid #d8ccb4; border-radius: 8px; }
@@ -49,6 +50,10 @@
 .debug-clock-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .debug-clock-presets button { display: grid; justify-items: center; align-content: center; min-height: 52px; margin-top: 0; padding: 4px 2px; font-size: 13px; line-height: 1.3; }
 .debug-clock-presets button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+.debug-stage { display: grid; gap: 6px; }
+.debug-stage-choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.debug-stage-choices button { min-height: 44px; margin-top: 0; padding: 4px 2px; font-size: 15px; }
+.debug-stage-choices button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 /* The summary keeps its disclosure triangle (a list item), so the fold reads as one to open. */
 .debug-flags summary { box-sizing: border-box; min-height: 44px; padding: 10px 0; font-weight: 600; cursor: pointer; }
 .debug-flags > .debug-note { margin: 4px 0 8px; }

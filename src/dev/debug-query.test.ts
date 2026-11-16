@@ -46,6 +46,17 @@ describe("Debug launch URLs", () => {
     expect(debugQueryString(settingsQuery("real", { ...settings, flags: [] }))).not.toContain("flags");
   });
 
+  it("writes and reads 恋の段階 (stage) after the relationship values, for any scene; left out, the progress's own (2026-11-16)", () => {
+    const staged: DebugSettings = { ...settings, stage: 2 };
+    const url = debugQueryString(settingsQuery("real", staged));
+    expect(url).toBe("?debug&city=milano&scene=date&target=milano_brera_date_01&progress=completed&ap=9&affection=-3&trust=2&spark=0&stage=2&roll=negative");
+    expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: settingsQuery("real", staged) });
+    expect(parseDebugQuery("?debug&city=delhi&scene=free&time=19:00&stage=4"))
+      .toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "free", time: 1140, stage: 4 } });
+    expect(parseDebugQuery("?debug&scene=battle&stage=1")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "battle", stage: 1 } });
+    expect(debugQueryString(settingsQuery("real", settings))).not.toContain("stage");
+  });
+
   it("reads and writes a clock as HH:MM", () => {
     expect([clockText(540), clockText(1140), clockText(1260)]).toEqual(["09:00", "19:00", "21:00"]);
     expect([parseClockText("19:00"), parseClockText("9:30"), parseClockText("24:00"), parseClockText("19:60"), parseClockText("1900"), parseClockText("")])
@@ -61,7 +72,7 @@ describe("Debug launch URLs", () => {
 
   it.each([
     ["?debug&city=milano", "場面（scene）がありません。"],
-    ["?debug&scene=battle&targt=x", "URLの項目「targt」は使えません。使える項目: data, city, scene, target, progress, ap, affection, trust, spark, roll, from, prep"],
+    ["?debug&scene=battle&targt=x", "URLの項目「targt」は使えません。使える項目: data, city, scene, target, progress, ap, affection, trust, spark, stage, roll, from, prep"],
     ["?debug&scene=battle&scene=date", "URLの項目「scene」が2回以上あります。"],
     ["?debug&scene=battle&city=", "URLの項目「city」に値がありません。"],
     ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / occasion / tour / free / map のどれかを書きます。"],
@@ -80,6 +91,11 @@ describe("Debug launch URLs", () => {
     ["?debug&scene=battle&ap=1.5", "「ap=1.5」は使えません。"],
     ["?debug&scene=battle&affection=-21", "「affection=-21」は使えません。affection には -20〜20 の整数を書きます。"],
     ["?debug&scene=battle&trust=many", "「trust=many」は使えません。"],
+    ["?debug&scene=free&stage=0", "「stage=0」は使えません。stage には恋の段階 1〜4 の整数を書きます。"],
+    ["?debug&scene=free&stage=5", "「stage=5」は使えません。"],
+    ["?debug&scene=free&stage=2.0", "「stage=2.0」は使えません。"],
+    ["?debug&scene=free&stage=two", "「stage=two」は使えません。"],
+    ["?debug&city=samarkand&scene=map&stage=2", "stage は scene=map（地図・交通の確認）では使えません。"],
     ["?debug&scene=date&roll=maybe", "「roll=maybe」は使えません。roll には positive / negative のどれかを書きます。"],
     ["?debug&scene=battle&progress=done", "「progress=done」は使えません。progress には completed / initial のどれかを書きます。"],
     ["?debug&scene=battle&data=mock", "「data=mock」は使えません。data には real / fixture のどれかを書きます。"],
