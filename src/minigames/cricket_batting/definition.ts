@@ -34,10 +34,10 @@ export const CRICKET_BALLS = ["quick", "slower"] as const;
  * so it teaches the swing and not the real ball's timing. It ends by itself like any play (its outcome never taken, her face
  * a plain one), and the host's cut-in 「次は本番！」 brings the real play. Then the host's 3・2・1, the field ends the play
  * at the bat meeting the ball or the bricks falling (its swing's time rated for ★: a clean hit ★3, near ★2, a miss or a
- * swing at the bouncer ★1, no swing none), Sonia's call as the finish word, and the heroine's reaction from the far end. The reaction
- * lines are her first breath at the ball (the story's lines follow at once, in both of its romance branches): short, and
- * never what she says next. The children watch from the near corners: the batter's side jumps with a cheer at a six, the
- * bowler's raises its arms when the bricks fall.
+ * swing at the bouncer ★1, no swing none), Sonia's call as the finish word, and the heroine's reaction from the far end.
+ * The reaction lines are her first breath at the ball (the story's lines follow at once, in both of its romance branches):
+ * short, and never what she says next. The children watch from the near corners: the batter's side jumps with a cheer at a
+ * six, the bowler's raises its arms when the bricks fall.
  *
  * Accessibility: 「振る」 is 64px at the bottom (thumb reach), Space and Enter swing; the meter's gold zone is brighter and
  * narrower than the near zone (not colour alone); the bouncer's kick off the crack is drawn (it climbs over the bat, its
