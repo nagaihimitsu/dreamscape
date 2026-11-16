@@ -1,9 +1,10 @@
 import { debugQueryString } from "../../src/dev/debug-query";
-import { test as base, bothStorages, debugGame, expect, ops, placeSave, tier, type Locator, type Page } from "./helpers";
+import { test as base, bothStorages, debugGame, expect, ops, placeSave, playUntil, tier, type Locator, type Page } from "./helpers";
 
 // Debug's flags and 街歩き's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」; the player-facing
-// name is 「街歩き」 since 2026-11-16): 場面の確認 opens 街歩き (scene=free) at a chosen time with flags, and the Debug bar's
-// 「フラグ・時刻」 changes them in the running Debug game. Lane 3 (docs/10): development server only, never a save/resume check.
+// name is 「街歩き」 since 2026-11-16) and 恋の段階 (2026-11-16): 場面の確認 opens 街歩き (scene=free) at a chosen time with flags,
+// any scene at a chosen 恋の段階, and the Debug bar's 「フラグ・時刻・段階」 changes them in the running Debug game. Lane 3
+// (docs/10): development server only, never a save/resume check.
 // Every test starts next to a normal saved game and ends with both browser storages exactly as before (Debug never changes
 // the player's data).
 const test = base.extend<{ normalStorageUnchanged: void }>({
@@ -27,10 +28,10 @@ async function nightDateGo(page: Page): Promise<Locator> {
   return ops.wayButton(card, "milano_night_01");
 }
 
-/** The Debug bar's 「フラグ・時刻」. */
+/** The Debug bar's 「フラグ・時刻・段階」. */
 async function openEdit(page: Page): Promise<Locator> {
   await page.getByTestId("debug-edit-open").click();
-  const dialog = page.getByRole("dialog", { name: "フラグ・時刻" });
+  const dialog = page.getByRole("dialog", { name: "フラグ・時刻・段階" });
   await expect(dialog).toBeVisible();
   return dialog;
 }
@@ -66,7 +67,7 @@ test("場面の確認 opens Milan's 街歩き at night with a flag, its URL says
   await expect(await nightDateGo(page)).toBeDisabled();
 });
 
-test("the bar's 「フラグ・時刻」 sets a flag that a hotel scene reads, and changes nothing while that scene is open", { tag: tier.debug }, async ({ page }) => {
+test("the bar's 「フラグ・時刻・段階」 sets a flag that a hotel scene reads, and changes nothing while that scene is open", { tag: tier.debug }, async ({ page }) => {
   await page.goto(`/${debugQueryString({ dataMode: "real", cityId: "delhi", scene: "free", progress: "initial" })}`);
   await ops.debugShown(page.getByTestId("debug-session"));
   let dialog = await openEdit(page);
@@ -85,4 +86,56 @@ test("the bar's 「フラグ・時刻」 sets a flag that a hotel scene reads, a
   await expect(dialog.getByTestId("debug-clock-1140")).toBeDisabled();
   await dialog.getByTestId("debug-edit-close").click();
   expect((await debugGame(page))!.activeEncounter?.encounterId).toBe("gt_delhi_hotel_sick_morning");
+});
+
+test("恋の段階 2 offers Delhi's rooftop confession at night, from 場面の確認 and from the bar, and stage 1 does not", { tag: tier.debug }, async ({ page }) => {
+  // The confession: `# when: episodes delhi >= 1`, `not couple`, `time night`, and its catalog's minRomanceStage 2. Debug's
+  // cleared Delhi opens its epilogue at once (India goes on to Agra after it), so the Red Fort's quiz is played from the start.
+  await page.goto("/?debug");
+  await ops.debugShown(page.getByTestId("debug-panel"));
+  await page.getByTestId("debug-city").selectOption("delhi");
+  await page.getByTestId("debug-scene").selectOption("battle");
+  await page.getByTestId("debug-target").selectOption("gt_delhi_main_red_fort_battle");
+  await page.getByTestId("debug-progress").selectOption("initial");
+  await expect(page.getByTestId("debug-url")).not.toHaveValue(/stage=/u);
+  await page.getByTestId("debug-stage").selectOption("2");
+  await expect(page.getByTestId("debug-url")).toHaveValue(/&spark=0&stage=2&roll=positive$/u);
+  await page.getByRole("button", { name: "この場面を開く" }).click();
+  await ops.debugShown(page.getByTestId("debug-session"));
+  expect((await debugGame(page))!.romanceStage).toBe(2);
+
+  await playUntil(page, (state) => state.activeBattle?.phase === "result", { source: debugGame });
+  await page.getByRole("button", { name: "街歩きへ進む", exact: true }).click();
+  const free = await playUntil(page, (state) => !state.activeBattle && !state.activeEncounter && !state.occasion, { source: debugGame });
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
+  expect(free.completedEpisodeIds).toContain("gt_delhi_main_red_fort");
+
+  // Offered: the hotel's card in free time's row, with the date and its 「行く」.
+  const hotel = page.getByTestId("travel-menu").getByTestId("travel-place-delhi_hotel_hub");
+  const offered = async () => {
+    const card = await ops.selectDestination(page, "delhi_hotel_hub");
+    await expect(card.getByTestId("place-event-gt_delhi_date_confession")).toBeVisible();
+    await expect(ops.wayButton(card, "gt_delhi_date_confession")).toBeEnabled();
+  };
+  let dialog = await openEdit(page);
+  await expect(dialog.getByTestId("debug-edit-stage-2")).toHaveAttribute("aria-pressed", "true");
+  await dialog.getByTestId("debug-clock-1140").click();
+  await expect(dialog.getByTestId("debug-edit-clock")).toContainText("19:00");
+  await dialog.getByTestId("debug-edit-close").click();
+  await offered();
+
+  // 1 from the bar: the confession leaves the row; nothing else changes (the relationship values stay).
+  dialog = await openEdit(page);
+  await dialog.getByTestId("debug-edit-stage-1").click();
+  await expect(dialog.getByTestId("debug-edit-stage-1")).toHaveAttribute("aria-pressed", "true");
+  await dialog.getByTestId("debug-edit-close").click();
+  expect(await debugGame(page)).toMatchObject({ romanceStage: 1, affection: free.affection, trust: free.trust, spark: free.spark, travel: { minute: 19 * 60 } });
+  await expect(hotel).toHaveCount(0);
+
+  // 2 again.
+  dialog = await openEdit(page);
+  await dialog.getByTestId("debug-edit-stage-2").click();
+  await expect(dialog.getByTestId("debug-edit-stage-2")).toHaveAttribute("aria-pressed", "true");
+  await dialog.getByTestId("debug-edit-close").click();
+  await offered();
 });

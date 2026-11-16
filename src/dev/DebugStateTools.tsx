@@ -4,13 +4,37 @@ import type { DebugGameAccess } from "../app/app-storage";
 import { weekdayLabel } from "../app/journey-hud-text";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
-import { clockText, debugClockPresets, debugDayRange, debugTimeRange, parseClockText } from "./debug-query";
-import { debugEditRefusal, debugFlagGroups, setDebugFlag, withDebugClock, type DebugFlagGroup } from "./debug-edits";
+import { clockText, debugClockPresets, debugDayRange, debugRomanceStages, debugTimeRange, parseClockText, type DebugRomanceStage } from "./debug-query";
+import { debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugFlagGroup } from "./debug-edits";
 
 /**
- * Debug's flags and free time's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」): the parts of
- * 場面の確認 that choose them for the scene to open, and the Debug bar's dialog that changes them in the running Debug game.
+ * Debug's flags, free time's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」) and 恋の段階
+ * (2026-11-16): the parts of 場面の確認 that choose them for the scene to open, and the Debug bar's dialog that changes them in
+ * the running Debug game.
  */
+
+/** The title of the Debug bar's dialog (its button in DebugMode.tsx says the same, with a place to wrap on a phone). */
+const debugEditTitle = "フラグ・時刻・段階";
+
+/**
+ * What a chosen 恋の段階 does next (debug-edits.ts withDebugStage): Debug sets only the stage, and play raises it again where
+ * evaluateProgression runs when the relationship values and completed dates reach a higher one.
+ */
+const stageNote = "関係の値と終えたデートの数が上の段階に届いていると、次に関係の値が動いたときか、デートを終えたときに上がります。";
+
+/** 場面の確認's 恋の段階: the progress's own (empty) or 1 to 4; the note while one is chosen. */
+export function DebugStageField({ stage, onChange }: { stage: DebugRomanceStage | undefined; onChange: (stage: DebugRomanceStage | undefined) => void }) {
+  return <div className="debug-stage">
+    <label>恋の段階
+      <select data-testid="debug-stage" value={stage ?? ""}
+        onChange={(event) => onChange(debugRomanceStages.find((item) => String(item) === event.target.value))}>
+        <option value="">旅の進行のまま</option>
+        {debugRomanceStages.map((item) => <option key={item} value={item}>{item}</option>)}
+      </select>
+    </label>
+    {stage !== undefined && <p className="debug-note">{stageNote}</p>}
+  </div>;
+}
 
 /** The journey's flags as checkboxes, by city (debugFlagGroups); each row's note and ID are its label (44 px or more). */
 export function DebugFlagList({ groups, cityId, checked, disabled = false, onChange }: {
@@ -91,7 +115,7 @@ export function DebugFlagChooser({ groups, cityId, chosen, onChange }: {
   if (!groups.length) return null;
   return <details className="debug-flags" data-testid="debug-flags" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
     <summary>フラグを得たことにする（{chosen.length ? `${chosen.length}件を選択中` : "なし"}）</summary>
-    <p className="debug-note">チェックしたフラグを得た状態で場面を開きます。旅の進行ですでに得ているフラグは残ります。開いた後は上の帯の「フラグ・時刻」で付け外しできます。</p>
+    <p className="debug-note">チェックしたフラグを得た状態で場面を開きます。旅の進行ですでに得ているフラグは残ります。開いた後は上の帯の「{debugEditTitle}」で付け外しできます。</p>
     <DebugFlagList groups={groups} cityId={cityId} checked={chosen}
       onChange={(id, obtained) => onChange(obtained ? [...chosen, id] : chosen.filter((flag) => flag !== id))} />
   </details>;
@@ -105,9 +129,9 @@ function clockNow(game: GameState): string {
 }
 
 /**
- * The Debug bar's 「フラグ・時刻」 (the running Debug game; memory only, like all of Debug's play): free time's clock and the
- * journey's flags, each change put in place at once (DebugGameAccess.replace). Only while no scene is open
- * (debugEditRefusal): during one the dialog shows the flags as they are, its controls disabled with the reason.
+ * The Debug bar's 「フラグ・時刻・段階」 (the running Debug game; memory only, like all of Debug's play): free time's clock,
+ * 恋の段階 and the journey's flags, each change put in place at once (DebugGameAccess.replace). Only while no scene is open
+ * (debugEditRefusal): during one the dialog shows the stage and the flags as they are, its controls disabled with the reason.
  */
 export function DebugEditDialog({ access, onClose }: { access: { current: DebugGameAccess | null }; onClose: () => void }) {
   const id = useId();
@@ -135,7 +159,7 @@ export function DebugEditDialog({ access, onClose }: { access: { current: DebugG
     apply((state) => withDebugClock(state, { day: Number(day), minute }));
   }
   return <Modal labelledBy={`${id}-title`} onClose={onClose} className="debug-edit-dialog">
-    <ModalTitle id={`${id}-title`} eyebrow="Debug" onClose={onClose} closeTestId="debug-edit-close">フラグ・時刻</ModalTitle>
+    <ModalTitle id={`${id}-title`} eyebrow="Debug" onClose={onClose} closeTestId="debug-edit-close">{debugEditTitle}</ModalTitle>
     <p className="debug-note">このDebugのゲームだけを、すぐに変えます（通常のセーブは変わりません）。</p>
     {refusal && <p className="debug-edit-refusal" data-testid="debug-edit-refusal">{refusal}</p>}
     <p className="debug-edit-error" role="alert">{error}</p>
@@ -155,6 +179,19 @@ export function DebugEditDialog({ access, onClose }: { access: { current: DebugG
         </label>
         <button type="submit" className="secondary" data-testid="debug-edit-clock-set" disabled={!!refusal}>この日時にする</button>
       </form>
+    </section>
+    <section className="debug-edit-section" aria-labelledby={`${id}-stage`}>
+      <h3 id={`${id}-stage`}>恋の段階</h3>
+      <div className="debug-stage-choices" role="group" aria-labelledby={`${id}-stage`}>
+        {debugRomanceStages.map((stage) => {
+          const pressed = game?.romanceStage === stage;
+          return <button key={stage} type="button" className="secondary" aria-pressed={pressed} disabled={!!refusal}
+            data-testid={`debug-edit-stage-${stage}`} onClick={() => apply((state) => setDebugStage(state, stage))}>
+            {pressed ? "✓" : ""}{stage}
+          </button>;
+        })}
+      </div>
+      <p className="debug-note">{stageNote}</p>
     </section>
     <section className="debug-edit-section" aria-labelledby={`${id}-flags`}>
       <h3 id={`${id}-flags`}>フラグ（チェックで得たことにする）</h3>
