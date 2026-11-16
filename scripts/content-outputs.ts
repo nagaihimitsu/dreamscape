@@ -2,14 +2,18 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmdirSy
 import path from "node:path";
 import { generatedPublicDirectory, mirrorDirectory, type CatalogKind } from "./content-layout";
 import type { MergedCatalog } from "./catalog-merge";
-import { listFiles, type ContentSources } from "./content-sources";
-import { imageJourneyIndex } from "./image-rights";
+import { journeyCatalogOf, listFiles, type ContentSources } from "./content-sources";
+import { imageJourneyIndex, servingLayer } from "./image-rights";
 import { JOURNEY_PART_MARKER } from "./dist-guard";
+import { WITHHELD_FILES_FILE, type WithheldFiles } from "./withheld-files";
+import { derivedImageDirectory } from "../src/content/code-images";
+import { journeyFilesShip, type Journey } from "../src/content/journey-catalog";
 
 // The outputs of content:build, written after the content was validated:
 // the compiled stories and quizzes, the generated mirror of the merged
 // catalogs (src/content/generated/content/) and the served static files
-// (src/content/generated/public/, with the reduced photo copies of derived-images.ts).
+// (src/content/generated/public/, with the reduced photo copies of derived-images.ts) and the list of those a
+// production build leaves out (withheld-files.ts).
 
 export const GENERATED_DIRECTORY = "src/content/generated";
 /** How the outputs were built: `{ extraJourneyFolders: { <journeyId>: <folder> } }`, empty without extra journey folders. */
@@ -94,6 +98,32 @@ export function writeContentOutputs(
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).
   assemblePublicDirectory(new Map([...sources.publicFiles, ...derivedFiles]), generatedPublicDirectory(root));
+  // The served files of the journeys players cannot open yet: the production build leaves them out.
+  const providers = new Map([...sources.publicFiles].map(([served, file]): [string, string | null] => {
+    const layer = servingLayer(sources, file);
+    return [served, layer.type === "journey" ? layer.id : null];
+  }));
+  const withheld = withheldFiles(journeyCatalogOf(sources).journeys, providers, derivedFiles.keys());
+  writeFileSync(path.join(root, WITHHELD_FILES_FILE), `${JSON.stringify(withheld, null, 2)}\n`);
+}
+
+/**
+ * The served files a production build leaves out (withheld-files.ts): every file a journey whose files do not ship
+ * (journeyFilesShip: one players cannot open yet) serves from its public/ folder (`publicFiles`: served path → the
+ * journey whose folder gives it, null for the root public/), and the reduced copies of its photos (`derivedPaths`, in
+ * its derivedImageDirectory). Each such journey is a key, in catalog order, even with no file; the paths are sorted.
+ */
+export function withheldFiles(
+  journeys: readonly Pick<Journey, "id" | "status">[],
+  publicFiles: ReadonlyMap<string, string | null>,
+  derivedPaths: Iterable<string>,
+): WithheldFiles {
+  const withheld = journeys.filter((journey) => !journeyFilesShip(journey));
+  const derived = [...derivedPaths];
+  return { schemaVersion: 1, journeys: Object.fromEntries(withheld.map((journey) => [journey.id, [
+    ...[...publicFiles].filter(([, journeyId]) => journeyId === journey.id).map(([served]) => served),
+    ...derived.filter((served) => served.startsWith(derivedImageDirectory(journey.id))),
+  ].sort()])) };
 }
 
 /** A journey's part of the game's content (src/content/index.ts reads it, through journey-part-files.ts). */

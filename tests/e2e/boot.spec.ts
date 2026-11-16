@@ -1,5 +1,6 @@
 import { appendFileSync } from "node:fs";
-import { allStorage, expect, expectNoDebugCode, journeyCatalog, ops, test, tier } from "./helpers";
+import { allStorage, expect, expectNoDebugCode, generated, imageJourneys, journeyCatalog, ops, test, tier, withheldFiles } from "./helpers";
+import { journeyFilesShip } from "../../src/content/journey-catalog";
 
 // AGENTS.md 「データ・セーブ・品質」, docs/07 acceptance 1 and 12: every registered
 // journey (from the generated catalog of this checkout, never a fixed list) opens
@@ -90,6 +91,26 @@ test("with Debug mode off, the production build ignores ?debug and ?character-pr
     expect(response.status(), href).toBe(200);
     expect(response.headers()["content-type"], href).toMatch(/^image\//);
   }
+});
+
+// User decision 2026-11-16: the production build leaves out the served files (photos, pictures, sounds) of every
+// journey players cannot open yet (content:build lists them, scripts/withheld-files.ts), and serves every other. The
+// start screens of those journeys need none of them: the first test opens each without a missing file (the error guard).
+test("the production build serves no photo or other file of a journey players cannot open yet", { tag: tier.prod }, async ({ page }) => {
+  const catalog = journeyCatalog();
+  const withheld = Object.entries(withheldFiles().journeys);
+  expect(withheld.map(([journeyId]) => journeyId)).toEqual(catalog.journeys.filter((journey) => !journeyFilesShip(journey)).map((journey) => journey.id));
+  const served = async (file: string) => {
+    const response = await page.request.get(`/${file}`);
+    // `vite preview` answers a missing file with 404, or with the page for a path it takes for one of the page's.
+    return response.ok() && !response.headers()["content-type"]?.startsWith("text/html");
+  };
+  for (const [journeyId, files] of withheld) for (const file of files) expect(await served(file), `${journeyId}: ${file}`).toBe(false);
+  // A playable journey's photo is there.
+  const index = imageJourneys().journeys;
+  const playable = catalog.journeys.find((journey) => journeyFilesShip(journey) && index[journey.id]?.length)!;
+  const photo = generated<{ assets: { id: string; path: string }[] }>("tourism/catalog.json").assets.find((asset) => asset.id === index[playable.id][0])!;
+  expect(await served(photo.path), `${playable.id}: ${photo.path}`).toBe(true);
 });
 
 // Report only (user decision: load size is measured and reported, not a gate). Counts

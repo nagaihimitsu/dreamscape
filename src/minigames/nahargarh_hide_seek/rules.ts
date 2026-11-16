@@ -102,7 +102,7 @@ export function hideSeekGameFor(tuning: HideSeekTuning): SearchGame<HideSeekPara
     auto: (outcome, params) => {
       switch (outcome) {
         case "call_her_name": return { kind: "button", button: "call" };
-        // From the first door to hers, as the story tells it (「七つ目の扉を開けたとき」).
+        // From the first door to hers, one by one (the story: 「扉を開ける。空っぽの部屋。次の扉。」).
         case "door_by_door": return { kind: "found", misses: Math.max(tuning.quickDoors, setup(params).rounds[0].targets[0]) };
         case "door_quick": return { kind: "found", misses: 0 };
         case "just_wait": return { kind: "idle" };

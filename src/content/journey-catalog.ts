@@ -105,3 +105,12 @@ export type JourneyCatalog = z.infer<typeof journeyCatalogSchema>;
 export type Journey = JourneyCatalog["journeys"][number];
 export type TitleArt = NonNullable<Journey["titleArt"]>;
 export type OpeningMovie = NonNullable<Journey["openingMovie"]>;
+
+/**
+ * Whether a production build serves the journey's own files: its public/ folder and the reduced copies of its photos
+ * (user decision 2026-11-16). Only a journey players can open; a preparing journey ships its name, cities and data
+ * but none of its photos, pictures or sounds (scripts/withheld-files.ts). The development server serves every journey's.
+ */
+export function journeyFilesShip(journey: Pick<Journey, "status">): boolean {
+  return journey.status === "available";
+}

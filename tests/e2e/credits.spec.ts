@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
-import { expect, generated, ops, test, tier } from "./helpers";
+import { expect, generated, journeyCatalog, ops, test, tier } from "./helpers";
+import { journeyFilesShip } from "../../src/content/journey-catalog";
 
-// 「出典・権利の一覧」 (WP20b, decisions D1–D7): the photos of every journey, the map, the fonts and,
-// in the production build only, the libraries' licences from dist/third-party-licenses.json.
+// 「出典・権利の一覧」 (WP20b, decisions D1–D7): the photos of every journey (in the production build, of the journeys
+// whose photos it serves: 2026-11-16), the map, the fonts and, in the production build only, the libraries' licences
+// from dist/third-party-licenses.json.
 type CatalogAsset = { id: string; sourceUrl: string };
 const duomo = () => {
   const asset = generated<{ assets: CatalogAsset[] }>("tourism/catalog.json").assets.find((item) => item.id === "duomo_milano_photo")!;
@@ -20,6 +22,10 @@ test("the title's 「出典・権利の一覧」 lists a photo with its source, 
   const { asset, fileName } = duomo();
   await expect(credits.getByRole("link", { name: `元の画像：${fileName}`, exact: true })).toHaveAttribute("href", asset.sourceUrl);
   await expect(credits.getByTestId("credits-map")).toContainText("地図データ © OpenStreetMap contributors");
+  // The build serves no photo of a journey players cannot open yet, so it lists none of theirs (2026-11-16).
+  for (const journey of journeyCatalog().journeys.filter((item) => !journeyFilesShip(item)))
+    await expect(credits.getByTestId(`credits-journey-${journey.id}`)).toHaveCount(0);
+  await expect(credits.locator("summary").filter({ hasText: "（準備中・" })).toHaveCount(0);
   const library = credits.getByTestId("credits-licences").getByRole("listitem")
     .filter({ has: page.getByText(`${react.name} ${react.version}（${react.identifier}）`, { exact: true }) });
   await library.locator("summary").click();

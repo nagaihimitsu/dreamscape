@@ -1,4 +1,4 @@
-// B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」), its rules as pure functions: the row of cards (「待機」, each place
+// B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」), its rules as pure functions: the row of cards (「待機」, each place
 // with all its events, then the tour and 「ホテルに戻る」) and the card chosen first, the selection each card stands for,
 // the event and way a swipe up takes (and 「待機」's wait, 「ホテルに戻る」's way home), the fill and the tag that say what a
 // place holds, how a card is read out, how the arrow keys and a flick move the choice, how big each card of the row is,

@@ -198,7 +198,7 @@ export function getBattleResultExits(state: GameState): { epilogue: boolean; lea
 
 /**
  * Leaving a battle's result screen: a special battle returns to its place, the others to free time.
- * The screen's 「自由時間へ戻る／進む」 is leaveBattleToFreeTime (encounter.ts), which then meets the
+ * The screen's 「街歩きへ戻る／進む」 is leaveBattleToFreeTime (encounter.ts), which then meets the
  * encounters after a landmark's main part.
  */
 export function leaveBattleResult(state: GameState, expectedRevision: number, nextRoll?: () => number): GameState {

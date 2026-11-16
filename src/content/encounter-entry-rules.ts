@@ -15,7 +15,7 @@ const momentsSchema = z.custom<["observe"]>().superRefine((value, context) => {
 /**
  * The encounter's place at its landmark's visit (the unified event design, stage 1): a negative
  * number before the main part (guide, observation, battle), a positive one after it (from the
- * battle result's 「自由時間へ」), "after observe" while observing (as an encounter without it);
+ * battle result's 「街歩きへ」), "after observe" while observing (as an encounter without it);
  * smaller numbers first, the same priority in the order of the story files' names.
  */
 export const visitPrioritySchema = z.union([

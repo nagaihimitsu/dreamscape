@@ -1,6 +1,6 @@
 import { devModules, expect, ops, readSave, test, tier, type Locator, type Page } from "./helpers";
 
-// Free time's row of photo cards and its expanded map (B案, docs/02 「自由時間の画面」), after the phone UI audit of
+// Free time's row of photo cards and its expanded map (B案, docs/02 「街歩きの画面」), after the phone UI audit of
 // 2026-11-14: a new day starts at the first place (a habitual swipe up must never wait or rest again by yesterday's
 // choice), 「待機」's waits and 「ホテルに戻る」's ways home are chips that only choose (one is a line), and the expanded
 // map opens on the selection with its 「行く」 pinned at its foot and the shared 「× 閉じる」 at its top.

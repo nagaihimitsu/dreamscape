@@ -39,7 +39,7 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
   const epilogueNote = isAuthoredEpilogueCity(state.currentCityId)
     ? [{ position: "エピローグ", name: "then: epilogue で始まる都市", status: "未到達" as const,
       reason: canStartAuthoredEpilogue(state) ? "まだ読んでいない（作者の then: epilogue で始まる）" : "エピローグをもう読んだ（then: epilogue は何もしない）", parts: [] }] : [];
-  if (!occasion) return { title: "時点なし（自由時間）", rows: epilogueNote, hiddenChoices: [], mapConditions };
+  if (!occasion) return { title: "時点なし（街歩き）", rows: epilogueNote, hiddenChoices: [], mapConditions };
   const landmark = landmarks.find((item) => item.id === occasion.landmarkId);
   const rows: CandidateRow[] = [];
   const steps = occasionSteps(occasion);
@@ -77,7 +77,7 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
   const kindNames = { date: "デート", battle: "クイズ", hotel: "宿", epilogue: "エピローグ", depart: "都市の出発", arrive: "到着", tour: "ツアーの区間" } as const;
   const tourStep = occasion.tour ? `${occasion.tour.id} ${occasion.tour.step}` : undefined;
   const title = (occasion.trip ? `移動（${occasion.trip.modeId}：${occasion.trip.from} → ${occasion.trip.to}）→ ` : "") + (occasion.ticket ? "窓口 → " : "") +
-    (occasion.kind === "visit" ? (occasion.landmarkId === null ? "自由時間（観光地なし）" : `観光地：${landmark?.nameJa ?? occasion.landmarkId}${occasion.eventId ? "" : "（本筋なし）"}` +
+    (occasion.kind === "visit" ? (occasion.landmarkId === null ? "街歩き（観光地なし）" : `観光地：${landmark?.nameJa ?? occasion.landmarkId}${occasion.eventId ? "" : "（本筋なし）"}` +
       (tourStep ? `（ツアー：${tourStep}）` : ""))
       : `${kindNames[occasion.kind]}：${tourStep ?? occasion.eventId ?? occasion.cityId}`);
   return { title, rows: [...rows, ...epilogueNote], hiddenChoices, mapConditions };

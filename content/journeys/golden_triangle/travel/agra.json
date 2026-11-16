@@ -589,7 +589,7 @@
         },
         {
           "publisher": "Dreamscape 統合調査",
-          "title": "ラム・バーグ ゲーム用代表点",
+          "title": "ラーム・バーグ ゲーム用代表点",
           "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
@@ -605,7 +605,7 @@
         },
         {
           "publisher": "Dreamscape 調査資料",
-          "title": "ラム・バーグ ゲーム用時間枠の候補",
+          "title": "ラーム・バーグ ゲーム用時間枠の候補",
           "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
@@ -613,7 +613,7 @@
         },
         {
           "publisher": "Dreamscape ゲーム編集",
-          "title": "ラム・バーグ 2人用入場費の試算",
+          "title": "ラーム・バーグ 2人用入場費の試算",
           "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
@@ -666,7 +666,7 @@
         },
         {
           "publisher": "Dreamscape 統合調査",
-          "title": "チーニー・カ・ラウザ ゲーム用代表点",
+          "title": "チーニー・カ・ラウザー ゲーム用代表点",
           "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
@@ -682,7 +682,7 @@
         },
         {
           "publisher": "Dreamscape 調査資料",
-          "title": "チーニー・カ・ラウザ ゲーム用時間枠の候補",
+          "title": "チーニー・カ・ラウザー ゲーム用時間枠の候補",
           "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
@@ -690,7 +690,7 @@
         },
         {
           "publisher": "Dreamscape ゲーム編集",
-          "title": "チーニー・カ・ラウザ 2人用入場費の試算",
+          "title": "チーニー・カ・ラウザー 2人用入場費の試算",
           "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
@@ -4190,19 +4190,69 @@
       "fromPlaceId": "agra_ram_bagh",
       "toPlaceId": "agra_chini_rauza",
       "mode": "walk",
-      "minutes": 12,
+      "minutes": 18,
       "cost": 0,
       "sources": [
         {
-          "publisher": "Dreamscape editorial distance model",
-          "title": "Prototype pedestrian movement, not measured OSM walking road",
-          "url": "https://www.openstreetmap.org/copyright",
-          "checkedAt": "2026-11-03",
+          "publisher": "FOSSGIS（valhalla1.openstreetmap.de、Valhalla pedestrian）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "地点どうしの歩く経路の計算（ラーム・バーグ→チーニー・カ・ラウザー）",
+          "url": "https://valhalla1.openstreetmap.de/route",
+          "checkedAt": "2026-11-16",
           "claimType": "hypothesis",
-          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+          "claimJa": "2026-11-16 に計算した歩く経路は約1.29km（庭園の小道と入口の道からNH509を南へ約0.53km。行きとはチーニー・カ・ラウザーの敷地の小道の回り方が違う）。地点の代表点から道までの約0.02kmを足した約1.30kmを、分速75m（地下鉄の駅まで歩く分と同じ換算）で割って切り上げ、18分とした。同じ日の OSRM の徒歩の計算（routing.openstreetmap.de の routed-foot）は約2.61km・約35分だが、幹線道路を歩かない設定のため入口に着けず、ヤムナー川の橋を渡って戻る道になるので使わない。入口の門の位置と幹線道路の歩道は確かめていない。現地の歩道の通行可否を保証しない。"
         }
       ],
       "estimation": "game_model"
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "auto_rickshaw",
+      "minutes": 15,
+      "cost": 130,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（チーニー・カ・ラウザーとラーム・バーグ）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-16",
+          "claimType": "hypothesis",
+          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-16に計算した値：チーニー・カ・ラウザー→ラーム・バーグ約2.46km、逆向き約3.14km。同じ日に計算したアーグラの地点どうしの表で、ほかのオートの経路86本も今の時間・料金と同じ値に出た（タージ・マハルと宿を発着する分は、決まりの10分を足して）。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        }
+      ]
     },
     {
       "fromPlaceId": "agra_ram_bagh",
@@ -4692,19 +4742,69 @@
       "fromPlaceId": "agra_chini_rauza",
       "toPlaceId": "agra_ram_bagh",
       "mode": "walk",
-      "minutes": 12,
+      "minutes": 17,
       "cost": 0,
       "sources": [
         {
-          "publisher": "Dreamscape editorial distance model",
-          "title": "Prototype pedestrian movement, not measured OSM walking road",
-          "url": "https://www.openstreetmap.org/copyright",
-          "checkedAt": "2026-11-03",
+          "publisher": "FOSSGIS（valhalla1.openstreetmap.de、Valhalla pedestrian）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "地点どうしの歩く経路の計算（チーニー・カ・ラウザー→ラーム・バーグ）",
+          "url": "https://valhalla1.openstreetmap.de/route",
+          "checkedAt": "2026-11-16",
           "claimType": "hypothesis",
-          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+          "claimJa": "2026-11-16 に計算した歩く経路は約1.22km（NH509を北へ約0.53km歩き、ラーム・バーグの入口の道から庭園の小道へ入る）。地点の代表点から道までの約0.02kmを足した約1.24kmを、分速75m（地下鉄の駅まで歩く分と同じ換算）で割って切り上げ、17分とした。同じ日の OSRM の徒歩の計算（routing.openstreetmap.de の routed-foot）は約2.61km・約35分だが、幹線道路を歩かない設定のため入口に着けず、ヤムナー川の橋を渡って戻る道になるので使わない。入口の門の位置と幹線道路の歩道は確かめていない。現地の歩道の通行可否を保証しない。"
         }
       ],
       "estimation": "game_model"
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "auto_rickshaw",
+      "minutes": 15,
+      "cost": 110,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（チーニー・カ・ラウザーとラーム・バーグ）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-16",
+          "claimType": "hypothesis",
+          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-16に計算した値：チーニー・カ・ラウザー→ラーム・バーグ約2.46km、逆向き約3.14km。同じ日に計算したアーグラの地点どうしの表で、ほかのオートの経路86本も今の時間・料金と同じ値に出た（タージ・マハルと宿を発着する分は、決まりの10分を足して）。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        }
+      ]
     },
     {
       "fromPlaceId": "agra_chini_rauza",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DIALOGUE_LINE_ATTRIBUTE, DIALOGUE_TOOLS_ATTRIBUTE, DOUBLE_TAP_SLOP_PX, PAGE_MARGIN_ATTRIBUTE, ignoresWindowToolTap, pressesControl, shouldAdvanceOnTap, windowToolAt, type SceneTapState, type TapNode } from "./scene-tap";
+import { DIALOGUE_LINE_ATTRIBUTE, DIALOGUE_TOOLS_ATTRIBUTE, DOUBLE_TAP_SLOP_PX, PAGE_MARGIN_ATTRIBUTE, ignoresWindowToolTap, pressesControl, sceneTapStep, shouldAdvanceOnTap, windowToolAt, type SceneTapState, type TapNode } from "./scene-tap";
 
 /** A stand-in for a DOM element: a tag, attributes and a parent. */
 function node(tagName: string, parentElement: TapNode | null = null, attributes: Record<string, string> = {}): TapNode {
@@ -97,6 +97,41 @@ describe("tap anywhere in a story scene", () => {
     expect(shouldAdvanceOnTap(background, scene, { ...reading, choicesShown: true, lineShown: false })).toBe(true);
     // Without choices, the first tap completes the line and the next one goes on: both read on.
     expect(shouldAdvanceOnTap(background, scene, { ...reading, lineShown: false })).toBe(true);
+  });
+});
+
+// An encounter's English 3-choice answered (2026-11-16 user decision): its verdict and explanation stand in the line's
+// place, the options gone, and a tap on the scene goes on as its 「続きを読む」 does (EncounterScreen).
+describe("tap anywhere past an answer's result", () => {
+  const result: SceneTapState = { ...reading, resultShown: true };
+  // The English question (its words open their meanings; the gaps beside them are a near miss), the verdict, the button.
+  const question = node("P", dialogueWindow, { "data-no-advance": "" });
+  const word = node("BUTTON", node("SPAN", node("SPAN", question)));
+  const gap = node("SPAN", question);
+  const meaning = node("STRONG", node("SPAN", node("SPAN", question), { role: "status" }));
+  const verdict = node("P", dialogueWindow, { role: "status" });
+  const next = node("BUTTON", dialogueWindow);
+
+  it("goes on from the picture, the window and the verdict", () => {
+    for (const target of [scene, background, picture, dialogueWindow, speaker, verdict, node("SPAN", verdict), main])
+      expect(sceneTapStep(target, scene, result)).toBe("result");
+    // No line is written there: what the line shows does not matter.
+    expect(sceneTapStep(picture, scene, { ...result, lineShown: false })).toBe("result");
+  });
+
+  it("never from its 「続きを読む」 (it goes on itself), the question's words, the gaps beside them or a meaning shown", () => {
+    for (const target of [next, word, gap, question, meaning, tools]) expect(sceneTapStep(target, scene, result)).toBeNull();
+  });
+
+  it("ignores the second tap of the answer that brought it, and taps while something is open over it or the window is hidden", () => {
+    for (const state of [{ settling: true }, { obstructed: true }, { windowHidden: true }])
+      expect(sceneTapStep(picture, scene, { ...result, ...state }), JSON.stringify(state)).toBeNull();
+  });
+
+  it("is not a result while the options wait for an answer, and a line reads on as before", () => {
+    expect(sceneTapStep(picture, scene, { ...reading, choicesShown: true })).toBeNull();
+    expect(sceneTapStep(picture, scene, reading)).toBe("line");
+    expect(sceneTapStep(line, scene, reading)).toBeNull();
   });
 });
 

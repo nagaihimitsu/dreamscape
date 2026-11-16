@@ -61,6 +61,9 @@ export const lazyDebugMarkers: readonly DevOnlyMarker[] = [
   // Debug's 音と演出の見本 (every sound and effect to check, 2026-11-13) and its rules.
   { text: "ここでの音の設定はこの部屋だけのもので", source: "src/dev/EffectsRoom.tsx" },
   { text: "消す（# tint: off）", source: "src/dev/effects-room.ts" },
+  // Debug's flags and free time's clock (2026-11-15): 場面の確認's choices, the Debug bar's 「フラグ・時刻」 and their rules.
+  { text: "このDebugのゲームだけを、すぐに変えます", source: "src/dev/DebugStateTools.tsx" },
+  { text: "どの場面も使っていないフラグ", source: "src/dev/debug-edits.ts" },
   // 最初の3分の計測's note (2026-11-13; Debug mode only): GameApp loads it lazily in ⚙設定 while Debug mode is on.
   { text: "導入の計測：このタブで「旅をはじめる」から遊ぶと", source: "src/app/IntroTimingNote.tsx" },
   // Debug's 台詞の声の速さ (2026-11-13; Debug mode only): GameApp loads it lazily in ⚙設定 while Debug mode is on.
@@ -258,14 +261,18 @@ export interface DistCheck {
   journeyPartsOnTitle: { path: string; journeyIds: string[] }[];
   /** A file that holds the parts of more than one journey. */
   mixedJourneyParts: { path: string; journeyIds: string[] }[];
+  /** A served file of a journey that players cannot open yet (scripts/withheld-files.ts), with that journey. */
+  withheld: { path: string; journeyId: string }[];
 }
 
 /**
  * The checks of scripts/check-dist.ts over all files of a build, except the
  * licence check. Which marker list scans which files is decided here (and unit
  * tested), so the command only reads the folder, passes every file and prints.
+ * `withheld` maps each served path that production builds leave out to its journey
+ * (scripts/withheld-files.ts withheldPaths): none of them may be a file of the build.
  */
-export function checkDist(files: readonly DistFile[], miniGames: readonly DevOnlyMarker[] = []): DistCheck {
+export function checkDist(files: readonly DistFile[], miniGames: readonly DevOnlyMarker[] = [], withheld: ReadonlyMap<string, string> = new Map()): DistCheck {
   const indexHtml = files.find((file) => file.path === "index.html")?.text ?? "";
   // The page itself and what it loads at once; Debug's chunks load only when Debug is opened.
   const titleFiles = ["index.html", ...eagerFiles(indexHtml)];
@@ -281,7 +288,21 @@ export function checkDist(files: readonly DistFile[], miniGames: readonly DevOnl
     miniGamesOnTitle: findDebugCodeOnTitle(files, titleFiles, miniGames),
     journeyPartsOnTitle: parts.filter((file) => titleFiles.includes(file.path)),
     mixedJourneyParts: parts.filter((file) => file.journeyIds.length > 1),
+    withheld: files.filter((file) => withheld.has(file.path)).map((file) => ({ path: file.path, journeyId: withheld.get(file.path)! })),
   };
+}
+
+/** A report of a preparing journey's served files in the build for the person who ran it. */
+export function describeWithheld(folder: string, findings: DistCheck["withheld"]): string {
+  const shown = findings.slice(0, 10).map(({ path, journeyId }) => `- ${path}（${journeyId}）`);
+  return [
+    `本番ビルド（${folder}）に、まだ遊べない旅行編の配信ファイル（写真・絵・音）が ${findings.length} 件入っています。`,
+    ...shown,
+    ...(findings.length > shown.length ? [`- ほか ${findings.length - shown.length} 件`] : []),
+    "本番ビルドは、公開中でない旅行編（manifest.json の status が available でない）の public/ のファイルと写真の縮小版を入れません",
+    "（src/content/generated/withheld-files.json。vite.config.ts の withheldFilesPlugin が生成した配信フォルダから除いて写します）。",
+    "vite.config.ts の plugins に withheldFilesPlugin があるか、vite build の前に npm run content:build を実行したかを確認してください。",
+  ].join("\n");
 }
 
 /** A report of Debug code in a file the game loads after the title for the person who ran the build. */

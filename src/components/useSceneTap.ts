@@ -3,7 +3,7 @@ import type { DialogueTextHandle } from "./DialogueText";
 import { dialogueObstructed, tapsObstructed } from "./dialogueObstructed";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "./double-tap";
 import { showIgnoredTap } from "./ignored-tap";
-import { DIALOGUE_LINE_ATTRIBUTE, ignoresWindowToolTap, pressesControl, shouldAdvanceOnTap, windowToolAt, type SceneTapState, type TapNode } from "./scene-tap";
+import { DIALOGUE_LINE_ATTRIBUTE, ignoresWindowToolTap, pressesControl, sceneTapStep, windowToolAt, type SceneTapState, type TapNode } from "./scene-tap";
 
 const elementOf = (target: EventTarget | null) => target instanceof Element ? target : null;
 /** What the scene reads of a click. */
@@ -20,7 +20,9 @@ const pointOf = (event: TapEvent) => (event.detail > 0 ? { x: event.clientX, y: 
  * Mouse and touch taps arrive as clicks; a drag that scrolls the window does
  * not. Keyboards keep using the line and the buttons. `active`: the scene shows
  * its dialogue (a battle between its talks and a guide's observation do not read
- * on; an encounter's quiz has no line, and its answers are choices).
+ * on; an encounter's quiz has no line, and its answers are choices). Where an
+ * answer's result stands in the line's place (`resultShown`: an encounter's quiz
+ * answered), a reading tap calls `onResult` (what its 「続きを読む」 does) instead.
  *
  * A press on any control of the page (a reply, a choice, a tool, the restore
  * control; the header's buttons, a modal's 「閉じる」) is seen in the capture phase
@@ -40,7 +42,7 @@ const pointOf = (event: TapEvent) => (event.detail > 0 ? { x: event.clientX, y: 
  * at the point of that press presses nothing either, unless it is the tool pressed first:
  * a reply or the log's 「閉じる」 can move the window's head under the finger.
  */
-export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructed" | "settling"> & { active: boolean }) {
+export function useSceneTap({ active, onResult, ...state }: Omit<SceneTapState, "obstructed" | "settling"> & { active: boolean; onResult?: () => void }) {
   const line = useRef<DialogueTextHandle>(null);
   const root = useRef<HTMLElement | null>(null);
   const attach = useCallback((element: HTMLElement | null) => {
@@ -63,10 +65,12 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
     if (!active || !scene) return;
     const settling = pressedAt.current !== null && isSecondTap(performance.now() - pressedAt.current);
     const tap = { ...state, settling, obstructed: dialogueObstructed() };
-    if (shouldAdvanceOnTap(target, scene, tap)) line.current?.activate();
+    const step = sceneTapStep(target, scene, tap);
+    if (step === "result") onResult?.();
+    else if (step === "line") line.current?.activate();
     // A tap that would read on but comes the moment after a press (its double tap's second): a faint ring where it
     // landed says it was heard and ignored (2026-11-13, ignored-tap.ts).
-    else if (settling && point && shouldAdvanceOnTap(target, scene, { ...tap, settling: false })) showIgnoredTap(point.x, point.y);
+    else if (settling && point && sceneTapStep(target, scene, { ...tap, settling: false })) showIgnoredTap(point.x, point.y);
   }
   const readFromPage = useRef(read);
   readFromPage.current = read;
