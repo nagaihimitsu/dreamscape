@@ -8,7 +8,7 @@ import {
   type ParasolParams, type ParasolPlace,
 } from "./rules";
 import {
-  PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, PARASOL_STREET_EDGE, parasolChildAt, parasolGestures, parasolHoldings, parasolKinds, parasolPosition,
+  PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, PARASOL_STREET_EDGE, PARASOL_WARMUP_FIELD, parasolChildAt, parasolGestures, parasolHoldings, parasolKinds, parasolPosition,
 } from "./Skin";
 import { fairness } from "./play";
 
@@ -291,6 +291,20 @@ describe("the parasol's street", () => {
     for (const window of windows) {
       apart(PARASOL_FIELD, window);
       apart(PARASOL_CUSTOMER_FIELD, window);
+    }
+  });
+
+  it("keeps the practice's four umbrellas 52px apart and inside the window, on the far pavement with no real find", () => {
+    for (const window of windows) apart(PARASOL_WARMUP_FIELD, window);
+    expect(Object.keys(PARASOL_WARMUP_FIELD)).toEqual([...PARASOL_WARMUP_SPOTS]);
+    const finds = PLACES.flatMap((at) => {
+      const [hers, arguing] = parasolTargets({ at });
+      return [PARASOL_FIELD[PARASOL_SPOTS[hers]], PARASOL_CUSTOMER_FIELD[PARASOL_CUSTOMERS[arguing]], parasolChildAt(PARASOL_TOMATO_CHILD, at, 0)];
+    });
+    for (const place of Object.values(PARASOL_WARMUP_FIELD)) {
+      expect(place.walk).toBeUndefined();
+      expect(place.y).toBe(PARASOL_FIELD.far_1.y);
+      for (const find of finds) expect(find.y).toBeGreaterThan(place.y);
     }
   });
 
