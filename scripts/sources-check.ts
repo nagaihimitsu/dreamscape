@@ -155,14 +155,12 @@ export function normalizeTitle(title: string): string {
     .replace(/\s+/gu, " ").trim().toLowerCase();
 }
 
-/** A title's parts between site separators, normalised (normalizeTitle). */
-const titleParts = (title: string) => normalizeTitle(title).split(SITE_SEPARATOR).filter(Boolean);
-
-/** A page title's readings: whole, without the last part (the site's name after it), without the first (the site's name before it). */
-function pageReadings(page: string): string[] {
-  const parts = titleParts(page);
-  return [...new Set([parts.join(" - "), ...(parts.length > 1 ? [parts.slice(0, -1).join(" - "), parts.slice(1).join(" - ")] : [])].filter(Boolean))];
-}
+/**
+ * A title's parts between site separators, normalised (normalizeTitle), as words: punctuation and symbols as spaces
+ * (`'Horn OK Please,'` and `'Horn OK Please',` read the same; letters, marks and digits of any script are kept).
+ */
+const titleParts = (title: string) => normalizeTitle(title).split(SITE_SEPARATOR)
+  .map((part) => part.replace(/[^\p{L}\p{M}\p{N}]+/gu, " ").trim()).filter(Boolean);
 
 export type TitleVerdict = "same" | "partial" | "different";
 
@@ -170,15 +168,17 @@ export type TitleVerdict = "same" | "partial" | "different";
 const PARTIAL_MIN_LENGTH = 4;
 
 /**
- * How a registered title compares with a page's <title> (normalizeTitle, and the page's site name left out, before or
- * after it): the same; one contains the other (`partial`: a section's title, an added word); or different.
+ * How a registered title compares with a page's <title> (normalizeTitle, punctuation as spaces): the same, whole or
+ * with the page's site name left out before or after it; `partial` when one contains the other or one part of the page's
+ * title (a section's title, an added or a cut word, `Tomb of X (Baby Taj)` and `Tomb of X | District Agra | India`); or different.
  */
 export function compareTitles(registered: string, page: string): TitleVerdict {
-  const mine = titleParts(registered).join(" - ");
-  const readings = pageReadings(page);
+  const mine = titleParts(registered).join(" ");
+  const parts = titleParts(page);
+  const readings = [parts.join(" "), ...(parts.length > 1 ? [parts.slice(0, -1).join(" "), parts.slice(1).join(" ")] : [])].filter(Boolean);
   if (readings.includes(mine)) return "same";
   const contains = (longer: string, shorter: string) => shorter.length >= PARTIAL_MIN_LENGTH && longer.includes(shorter);
-  return readings.some((reading) => contains(reading, mine) || contains(mine, reading)) ? "partial" : "different";
+  return [...readings, ...parts].some((reading) => contains(reading, mine) || contains(mine, reading)) ? "partial" : "different";
 }
 
 /** What a fetcher returns for a URL: the response (its status, Content-Type and text), or why there is none. */

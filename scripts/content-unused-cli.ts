@@ -14,6 +14,14 @@ import { jsonStrings } from "./json-lines";
 // now (no content:build needed) and the code of src/ and scripts/. Notes only: it changes no file and exits 0 (1 when
 // it cannot run).
 const usage = "使い方: npm run content:unused -- [--journey 旅行編ID]";
+const help = [
+  usage,
+  "content/ の今の版（content:build は要りません）と src/・scripts/ のコードから、使われていないものを注意として出します。ファイルは変えません。",
+  "(a) どこからも届かない knot と関数、場面に届かないデータ（デートのない行き先、地図に出ないクイズ、訪ねない観光地、名前の出ない人物）。",
+  "(b) 画面が読まないかもしれないスキーマの欄（src/content/ のスキーマの欄の名前が、src/ のほかのコードに一度も出ないもの。名前で探す推定）。",
+  "content:build がもう止めるもの（# at: のない差し込みの場面、どのカタログも指さない本筋の場面、どこからも指されない Ink のファイル、" +
+    "scenes/catalog.json の場面のない ID）と注意に出すもの（never-offered、unused-public-file、sound・music・ambience、glossary など）は繰り返しません。",
+].join("\n");
 
 type Entry = Record<string, unknown>;
 const isObject = (value: unknown): value is Entry => typeof value === "object" && value !== null && !Array.isArray(value);
@@ -43,6 +51,7 @@ function codeFiles(root: string, patterns: string[]): [string, string][] {
 
 try {
   const args = process.argv.slice(2);
+  if (args.includes("--help")) { console.log(help); process.exit(0); }
   if (args.length && (args.length !== 2 || args[0] !== "--journey" || args[1].startsWith("--"))) throw new Error(usage);
   const journey = args[1];
   const root = process.cwd();

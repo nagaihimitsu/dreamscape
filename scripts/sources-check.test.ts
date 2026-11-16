@@ -90,7 +90,9 @@ describe("the page titles", () => {
     expect(compareTitles("Agra Metro（2026-10-28編集の版）", "Agra Metro - Wikipedia")).toBe("same");
     expect(compareTitles("Getting Around | Asia for Visitors", "Getting Around | Asia for Visitors")).toBe("same");
     expect(compareTitles("Bicycle Horn", "OpenGameArt.org | Bicycle Horn")).toBe("same");
+    expect(compareTitles("The origins of 'Horn OK Please', India's phrase", "The Origins of 'Horn OK Please,' India’s Phrase - Atlas Obscura")).toBe("same");
     expect(compareTitles("History — 1776", "History - Teatro alla Scala")).toBe("partial");
+    expect(compareTitles("Tomb of Itimad-ud-Daulah (Baby Taj)", "Tomb of Itimad-ud-Daulah | District Agra , Government Of Uttar Pradesh | India")).toBe("partial");
     expect(compareTitles("Old Gate", "New Bridge | City")).toBe("different");
   });
 

@@ -9,10 +9,18 @@ import { allTerms, dataPieces, formatTextReport, inkPieces, parseTermLedger, tex
 // to avoid (text-check.ts). Notes only: it changes no file and exits 0 (1 when it cannot run, e.g. a ledger of the
 // wrong shape).
 const usage = "使い方: npm run text:check -- [--journey 旅行編ID]";
+const help = [
+  usage,
+  "遊ぶ人に見える文（Ink の行・選択肢・# title: などの札の字、データの …Ja の欄。ID・札・コメントは見ない）の注意を出します。ファイルは変えません。",
+  "(a) 勝ち負けの言葉 (b)「旅の風景」の名札のまま人が話していそうな行 (c) 名札の出ない声 (d) 用語の台帳 authoring/journeys/<旅行編ID>/terms.json で避ける言い方。",
+  "Ink は書いたとおりに読みます（# speaker: は次の札まで続く。場面は地の文で始まる。手伝いの knot の最初の行の話し手は、呼んだ場面のものなので (b)(c) では見ない）。",
+  "content:build の注意がもう見るもの（日本語の欄に日本語がない data-language、図鑑の語 glossary、録音後に変わった声 voice-changed）は繰り返しません。",
+].join("\n");
 const CORE = "core";
 
 try {
   const args = process.argv.slice(2);
+  if (args.includes("--help")) { console.log(help); process.exit(0); }
   if (args.length && (args.length !== 2 || args[0] !== "--journey" || args[1].startsWith("--"))) throw new Error(usage);
   const journey = args[1];
   const root = process.cwd();

@@ -10,6 +10,14 @@ import {
 // or a route's missing sources (tour-note, transit-route-unsourced), but checks no title. Prints notes and exits 0;
 // exits 1 only when it cannot run. It changes no file.
 const usage = "使い方: npm run sources:check -- [--journey 旅行編ID] [--fetch]";
+const help = [
+  usage,
+  "content/ の JSON に書いた出典（url と title。写真の出典 sourceUrl は題がないので数だけ）を集め、同じ URL に違う題、同じ題に違う URL を出します。データは変えません。",
+  "--fetch：ページを読み込み、<title> と登録の題を比べます（空白・大文字小文字・記号・サイト名・末尾の（…）の注記をそろえて）。読めないページは「確かめられなかった」と出します。",
+  "  プロキシを通す環境で読み込めないときは、NODE_USE_ENV_PROXY=1 を付けて実行します。",
+  "publisher に Dreamscape とある記録（ゲームの推定・モデル・現地のメモ）は、題がページの題ではないので比べません。",
+  "content:build がもう見るもの（出典のない場面を止める B4、ツアーの出典の注意 tour-note、出典のない経路の注意 transit-route-unsourced）は繰り返しません。題はビルドでは見ません。",
+].join("\n");
 
 /** Fetch a page through the environment's network (a proxy that the session sets up), as text in its character set. */
 const fetchPage: Fetcher = async (url) => {
@@ -32,10 +40,11 @@ const fetchPage: Fetcher = async (url) => {
 
 try {
   const args = process.argv.slice(2);
+  if (args.includes("--help")) { console.log(help); process.exit(0); }
   const journeyAt = args.indexOf("--journey");
   const journey = journeyAt >= 0 ? args[journeyAt + 1] : undefined;
   if (journeyAt >= 0 && (!journey || journey.startsWith("--"))) throw new Error(`--journey の後に旅行編IDを書いてください。${usage}`);
-  const unknown = args.filter((arg, index) => arg !== "--fetch" && index !== journeyAt && index !== journeyAt + 1);
+  const unknown = args.filter((arg, index) => arg !== "--fetch" && (journeyAt < 0 || (index !== journeyAt && index !== journeyAt + 1)));
   if (unknown.length) throw new Error(`分からない引数です：${unknown.join(" ")}。${usage}`);
   const root = process.cwd();
   const tree = readContentTree(root);
