@@ -34,7 +34,7 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run typecheck` | 型検査（`tsc --noEmit`）。生成物を読むので、空のチェックアウトでは先に `npm run content:check` |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・`verify`。[テストの組](10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
-| `npm run test:with-sample -- [vitest の引数]` | 見本の編を含めて生成し、引数を `vitest run` に渡して単体テストを流し、最後に見本なしで生成し直す（テストが失敗しても、Ctrl+C で止めても戻す。終了コードは vitest のもの）。見本の編を前提とするテストを絞って流すときに使う（例：`npm run test:with-sample -- tests/journeys/sample_trip/`）。`npm test`・`test:quick` は、前の生成で入れた見本を残したまま終わる |
+| `npm run test:with-sample -- [vitest の引数]` | 見本の編を含めて生成し、引数を `vitest run` に渡して単体テストを流し、最後に見本なしで生成し直す（テストが失敗しても、Ctrl+C で止めても戻す。終了コードは vitest のもの）。見本の編を前提とするテストを絞って流すときに使う（例：`npm run test:with-sample -- tests/journeys/sample_trip/`）。`npm test`・`test:quick` は、前の生成で入れた見本を残したまま終わる（毎回見本なしに戻すと1回約18秒長くなるため、このままにする。2026-11-16 のユーザー判断） |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ。過去のセーブが更新後に再開できることを保証するものではない |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にテスト用のコードやデータがないか、タイトル画面で読み込むファイルにDebugが入っていないか、ライブラリのライセンス一覧（`third-party-licenses.json`）があるかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
