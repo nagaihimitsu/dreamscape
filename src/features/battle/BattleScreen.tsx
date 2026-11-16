@@ -618,7 +618,7 @@ export function BattleScreen({
                   className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
                   onClick={onLeave}
                 >
-                  {leaveLabel ?? (isSpecial ? "自由時間へ戻る" : "自由時間へ進む")}{" "}
+                  {leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む")}{" "}
                   <span aria-hidden="true">→</span>
                 </button>}
                 {onNextEpisode && (

@@ -6,7 +6,7 @@ import { INTRO_MILESTONES, type IntroMilestone, type IntroTiming } from "./intro
 const MILESTONE_JA: Readonly<Record<IntroMilestone, string>> = {
   choice: "最初の選択",
   quiz: "最初のクイズの答え",
-  free: "最初の自由時間",
+  free: "最初の街歩き",
   date: "最初のデート",
 };
 
@@ -40,7 +40,7 @@ export default function IntroTimingNote({ timing }: { timing: IntroTiming | null
   return <section className="relationship-change debug-intro-timing" aria-label="Debug：導入の計測" data-testid="intro-timing">
     <span className="relationship-change-label" aria-hidden="true">Debug</span>
     <div className="relationship-change-lines">
-      <p>{timing ? introTimingJa(timing) : "導入の計測：このタブで「旅をはじめる」から遊ぶと、最初の選択・クイズ・自由時間・デートまでの時間と読んだ行数が出ます（保存しません）。"}</p>
+      <p>{timing ? introTimingJa(timing) : "導入の計測：このタブで「旅をはじめる」から遊ぶと、最初の選択・クイズ・街歩き・デートまでの時間と読んだ行数が出ます（保存しません）。"}</p>
     </div>
   </section>;
 }

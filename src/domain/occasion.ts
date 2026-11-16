@@ -332,7 +332,7 @@ export function leaveObservation(state: GameState, nextRoll: () => number = secu
   return advanceOccasion({ ...state, revision: state.revision + 1, activeTourism: null, occasion: { ...occasion, at: "left:observe" } }, nextRoll);
 }
 
-/** The 「交際開始」 screen's 「自由時間へ」 (an action now; the occasion goes on, 3.9 (c)). */
+/** The 「交際開始」 screen's 「街歩きへ」 (an action now; the occasion goes on, 3.9 (c)). */
 export function closeRomanceEnding(state: GameState, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
   const occasion = state.occasion;
   if (state.revision !== expectedRevision || !occasion?.romanceEnding) return state;

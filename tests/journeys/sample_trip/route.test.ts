@@ -166,7 +166,7 @@ describe("sample journey route", () => {
     expect(totalAp(s)).toBe(4);
     // What a reload can repeat pays nothing twice: the final answer again from the save made before the result ...
     expect(playBattle(restore(lastSave))).toEqual(s);
-    // ... leaving the restored result, also with a second (stale) tap: 「自由時間へ」 meets the gift encounter
+    // ... leaving the restored result, also with a second (stale) tap: 「街歩きへ」 meets the gift encounter
     // (priority +1, after the main part; its when: the bookmark is held), the time settled at the result ...
     const meeting = act(restore(s), (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(leaveBattleToFreeTime(meeting, s.revision, () => 0)).toBe(meeting);

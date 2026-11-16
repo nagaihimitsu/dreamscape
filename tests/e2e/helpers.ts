@@ -568,11 +568,11 @@ export const ops = {
     await page.getByRole("button", { name: "進む", exact: true }).click();
   },
   /**
-   * The result's 「自由時間へ進む」, then the scenes that follow the battle (Milan's 「切れた三本目」 after the Duomo's),
+   * The result's 「街歩きへ進む」, then the scenes that follow the battle (Milan's 「切れた三本目」 after the Duomo's),
    * played with their first choices, back to the travel menu. Returns the saved state there.
    */
   async toFreeTimeThroughScenes(page: Page): Promise<GameState> {
-    await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
+    await page.getByRole("button", { name: "街歩きへ進む", exact: true }).click();
     const state = await playUntil(page, (current) => !current.activeEncounter && !current.occasion);
     await expect(page.getByTestId("travel-menu")).toBeVisible();
     return state;

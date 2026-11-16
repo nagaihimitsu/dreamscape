@@ -33,7 +33,7 @@ function placeVisited(game: GameState, placeId: string): boolean {
 }
 
 /**
- * B案's photo cards (docs/02 「自由時間の画面」): 「待機」, the places, the tour and 「ホテルに戻る」. As a row: three show whole, the
+ * B案's photo cards (docs/02 「街歩きの画面」): 「待機」, the places, the tour and 「ホテルに戻る」. As a row: three show whole, the
  * chosen one in the middle and a smaller one on each side (each card's size follows its distance from the centre), the
  * one that settles in the centre after a flick is chosen (CSS scroll snap; a sideways drag anywhere on the screen moves
  * the row too), a press on a side card brings it to the centre and chooses it, 「m / n」 under the row says where it is

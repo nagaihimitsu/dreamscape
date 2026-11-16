@@ -89,7 +89,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | その国の言葉 | `<旅行編>/learning/local-words.json` | 仕上げ |
 | 旅の図鑑の言葉 | `<旅行編>/glossary/terms.json`、写真は `tourism/catalog.json` の `assets`、行の `# term:` | 仕上げ（耳慣れない言葉があるとき） |
 | 立ち絵 | `<旅行編>/presentation/characters.json`、`public/assets/characters/` | 仕上げ（ないと抽象の表示） |
-| 自由時間の背景 | 都市の `backdropImagePath` か `backdropAssetId` | 仕上げ |
+| 街歩き（2026-11-16 までの資料では「自由時間」）の背景 | 都市の `backdropImagePath` か `backdropAssetId` | 仕上げ |
 | アルバムの絵 | `<旅行編>/public/assets/album/<ID>.webp` | 仕上げ |
 | 自作の絵の一覧 | `<旅行編>/presentation/own-artwork.json` | 自作の絵を配信するなら必須 |
 | BGM・環境音・効果音 | `public/assets/bgm/`・`ambience/`・`se/`、`presentation/music.json`・`ambience.json`・`sounds.json` | 仕上げ |
@@ -392,17 +392,17 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 
 ### 手順13. 背景・移動画面・タイトルの絵
 
-- 目的：会話の背景、自由時間の背景、地点の写真札を整える。
+- 目的：会話の背景、街歩きの背景、地点の写真札を整える。
 - 前に要るもの：手順5（写真の背景）。自作の絵は手順2の後ならいつでも始められる。
 - 作るもの：
   - 会話の背景：`romance/presentation.json` の背景に、写真なら `imageAssetId`、自作の絵なら `imagePath`。
-  - 自由時間の背景：都市ファイルの `backdropImagePath`（自作の絵。縦長を1080×1920pxの枠に収めた WebP）か `backdropAssetId`（観光写真のID）。どちらか一方。元の絵は `<制作資料>/backdrops/`、配信する絵は `<旅行編>/public/assets/backdrops/`。
+  - 街歩きの背景：都市ファイルの `backdropImagePath`（自作の絵。縦長を1080×1920pxの枠に収めた WebP）か `backdropAssetId`（観光写真のID）。どちらか一方。元の絵は `<制作資料>/backdrops/`、配信する絵は `<旅行編>/public/assets/backdrops/`。
   - 地点の写真札：`travel/<都市ID>.json` の地点の `photoAssetId`（宿はこの欄の写真だけを使う）。
   - 品物のアイコン：品物の `iconPath`。
   - タイトルの絵（場合Bだけ）：`manifest.json` の `titleArt`（`imagePath`・`captionJa`・任意の `imagePosition`）。勧める大きさは 1760×560px（[既定背景とタイトルの絵](../docs/02_TECH_ARCHITECTURE.md#既定背景とタイトルの絵)）。
   - 自作の絵は、置いた層の `presentation/own-artwork.json` に配信時のパスを1行ずつ登録する（自作の絵は出典の一覧に載らない）。
 - 守る決まり：出典つきの写真と自作の絵を混ぜない（両方に載せると止まる）。ほかの旅行編の `public/` の画像は使えない（止まる）。
-- 確かめ方と終わりの目安：`npm run content:build`（出典のない画像、ない画像で止まる）。スマートフォンの幅で自由時間と会話の画面を見る。
+- 確かめ方と終わりの目安：`npm run content:build`（出典のない画像、ない画像で止まる）。スマートフォンの幅で街歩きと会話の画面を見る。
 - インド編では：3都市の移動画面の背景を自作の絵にした（#57。元のJPEGは `authoring/journeys/golden_triangle/backdrops/`）。
 
 ### 手順14. 立ち絵と大きさ
@@ -689,7 +689,7 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 
 ### 絵と音
 
-- [ ] 背景・自由時間の背景・品物のアイコンを登録した。自作の絵は `own-artwork.json` にある
+- [ ] 背景・街歩きの背景・品物のアイコンを登録した。自作の絵は `own-artwork.json` にある
 - [ ] 立ち絵を登録し、配信は軽い版にし（`images:optimize`）、`?character-preview` で大きさ（`figureScale`）と縁を見た
 - [ ] アルバムの絵は 3:2 で、`# photo:` が指している
 - [ ] BGM・環境音・効果音の出典（作者・ライセンス・確認日）を書いた

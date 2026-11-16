@@ -344,7 +344,7 @@
     },
     {
       "id": "card_new",
-      "useJa": "自由時間に新しい行き先のカードが加わったとき",
+      "useJa": "街歩きで新しい行き先のカードが加わったとき",
       "sources": [
         "kenney_casino",
         "kenney_interface"

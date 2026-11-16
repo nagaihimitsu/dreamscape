@@ -76,7 +76,7 @@ type Gesture = {
 };
 
 /**
- * The drags of the free-time screen in the row arrangement (docs/02 「自由時間の画面」, user decision 2026-11-11). A
+ * The drags of the free-time screen in the row arrangement (docs/02 「街歩きの画面」, user decision 2026-11-11). A
  * drag may start anywhere on the app shell but the header (and its menus), the site's header lines, a dialog and a
  * text field; its first movement past DRAG_SLOP_PX decides its way (photo-cards.ts dragDirection), and a press that
  * moves less is a tap on what it started on (a drag clicks nothing: the click it may leave behind is taken away).
