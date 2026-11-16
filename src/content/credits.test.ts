@@ -16,6 +16,7 @@ import {
 } from "./credits";
 import { tourismAssets } from "./index";
 import { journeys } from "./journeys";
+import { journeyFilesShip } from "./journey-catalog";
 import type { TourismAsset } from "./tourism-schemas";
 
 // The credits list (decision 32, D1, D3–D5): every served tourism photo, by
@@ -159,5 +160,15 @@ describe("the generated content", () => {
     const credits = groups.flatMap((group) => group.kinds.flatMap((kind) => kind.credits));
     for (const credit of credits.filter((item) => item.asset.sourceUrl.startsWith("https://commons.wikimedia.org/")))
       expect(credit.sourceLinkJa, credit.asset.id).toMatch(/^元の画像：\S/u);
+  });
+
+  it("lists in a production build only the photos it serves: none of a journey players cannot open yet (2026-11-16)", () => {
+    const development = photoCredits(false);
+    const production = photoCredits(true);
+    expect(production.map((group) => group.journeyId))
+      .toEqual(development.filter((group) => journeyFilesShip(journeys.find((journey) => journey.id === group.journeyId)!)).map((group) => group.journeyId));
+    expect(production.some((group) => group.preparing)).toBe(false);
+    // The vitest run is not a production build: the list there is the development server's.
+    expect(photoCredits()).toEqual(development);
   });
 });

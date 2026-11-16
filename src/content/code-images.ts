@@ -23,7 +23,12 @@ export type DerivedImageKind = "card" | "backdrop" | "recap";
  * names it through derivedImagePath (derived-images.ts).
  */
 export function derivedImageFile(journeyId: string, assetId: string, kind: DerivedImageKind): string {
-  return `assets/derived/${journeyId}/${assetId}.${kind}.webp`;
+  return `${derivedImageDirectory(journeyId)}${assetId}.${kind}.webp`;
+}
+
+/** The served folder (with its trailing slash) of the reduced copies of a journey's photos (derivedImageFile). */
+export function derivedImageDirectory(journeyId: string): string {
+  return `assets/derived/${journeyId}/`;
 }
 
 /** Every served file the code uses; they belong to the root public/ (shared by every journey). */
