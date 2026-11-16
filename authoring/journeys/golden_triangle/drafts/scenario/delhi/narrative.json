@@ -77,13 +77,13 @@
   },
   "finales": {
     "delhi": {
-      "titleJa": "三分間の旅への招待",
-      "descriptionJa": "レッド・フォートで、映像好きのニールと五枚の写真をめくる。",
-      "clearTitleJa": "わたしも、撮ってみたい",
-      "clearDescriptionJa": "自分たちの旅を三分間にして、ジャイプールの小さな上映会へ持っていく。",
-      "enemyNameJa": "ニール",
-      "enemyTitleJa": "旅の映像を集める人",
-      "enemyDescriptionJa": "人を誘うのが好きで、編集は少しせっかち。旅先で撮った映像を持ち寄る、仲間内の小さな上映会へ二人を誘う。",
+      "titleJa": "月が落ちた通り",
+      "descriptionJa": "デリー最後の日、カムラが姿を消した。疑いの目を向ける孫と、彼女の残した暗号の地図を読み解き、夜の旧市街を捜す。",
+      "clearTitleJa": "六十年目の返事",
+      "clearDescriptionJa": "暗い城の中で、カムラは亡き夫に返事をした。連れてきたことを怒られたけれど、孫は隣に座り、話の続きを聞いた。",
+      "enemyNameJa": "アマン",
+      "enemyTitleJa": "祖母を連れ帰りたい孫",
+      "enemyDescriptionJa": "カムラの孫。祖母の引っ越しと、数日後に迫った自分の結婚式の準備で、家族中の頼みごとを引き受けている。何も頼まない祖母の考えだけが、分からない。",
       "placeId": "delhi_red_fort",
       "activityMinutes": 45
     }
