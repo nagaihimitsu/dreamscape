@@ -107,6 +107,29 @@ describe("stageFrame", () => {
     expect(stageFrame({ letter: { kind: "card" } }, undefined, false)).toEqual({ letter: { kind: "card" } });
   });
 
+  it("keeps a recalled picture the line before recalled too (it stays up: no new sound), and only that one (2026-11-16)", () => {
+    expect(stageFrame({ recall: "3pm_tower" }, line({ recall: "3pm_tower" }), true)).toEqual({ recall: "3pm_tower", recallKept: true });
+    expect(stageFrame({ recall: "3pm_tower" }, line({ recall: "cafe_art" }), true)).toEqual({ recall: "3pm_tower" });
+    expect(stageFrame({ recall: "3pm_tower" }, line({}), true)).toEqual({ recall: "3pm_tower" });
+    // At a scene's start (or after a battle's call) the picture comes up anew; a line without the tag keeps nothing.
+    expect(stageFrame({ recall: "3pm_tower" }, undefined, true)).toEqual({ recall: "3pm_tower" });
+    expect(stageFrame({}, line({ recall: "3pm_tower" }), true)).toEqual({});
+    // The line on screen stays as it was when no new line was read.
+    expect(stageFrame({}, line({ recall: "3pm_tower", recallKept: true }), false)).toEqual({ recall: "3pm_tower", recallKept: true });
+  });
+
+  it("reads a picture recalled on three lines in a row as one coming up, then kept, and saves it", () => {
+    const story = new Story(compileInk("# recall: 3pm_tower\n一行目\n# recall: 3pm_tower\n二行目\n三行目\n# recall: 3pm_tower\n四行目\n-> END\n"));
+    const frames: StoryFrame[] = [];
+    for (let previous: StoryFrame | undefined; !previous?.ended;) {
+      previous = readStoryFrame(story, context, previous, []).frame;
+      frames.push(storyFrameSchema.parse(JSON.parse(JSON.stringify(previous))));
+    }
+    expect(frames.map((frame) => [frame.text, frame.recall ?? null, frame.recallKept ?? null])).toEqual([
+      ["一行目", "3pm_tower", null], ["二行目", "3pm_tower", true], ["三行目", null, null], ["四行目", "3pm_tower", null],
+    ]);
+  });
+
   it("keeps at most STACK_MAX earlier messages, the newest", () => {
     const earlier = Array.from({ length: STACK_MAX }, (_, index) => ({ side: "sent" as const, speaker: "player" as const, text: `${index}` }));
     const next = stageFrame({ phone: { side: "received" } }, line({ phone: { side: "sent", earlier } }), true);

@@ -20,6 +20,13 @@ describe("the line staging", () => {
     expect(lineCues(undefined, true)).toEqual([]);
   });
 
+  it("rings a recalled picture as it comes up, not while the same one stays up over the next lines (2026-11-16)", () => {
+    expect(lineCues({ recall: "gt_album_d01" }, false)).toEqual(["recall"]);
+    // The line before recalled the same picture (stageFrame's recallKept): it stays up, no new sound; the line's other sounds still ring.
+    expect(lineCues({ recall: "gt_album_d01", recallKept: true }, false)).toEqual([]);
+    expect(lineCues({ recall: "gt_album_d01", recallKept: true, phone: { side: "received" } }, true)).toEqual(["phone_receive", "name_cutin"]);
+  });
+
   it("hides the speaker's plate for a phone message and a letter only", () => {
     expect(showsSpeakerPlate({})).toBe(true);
     expect(showsSpeakerPlate(undefined)).toBe(true);
