@@ -204,7 +204,7 @@
 2. PR を開く。本文に、変えたことと確かめたことを書き、末尾にその会話で決められた行を付ける。PR の知らせを受け取るようにし（subscribe）、様子を見に戻る予約（check-in）も置く。
 3. 必須のチェック「Content, types and production build」を待つ。PR で動くのはこれだけです（[CI](../docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。
 4. squash で合流する。そのとき、確かめた先頭のコミットの SHA を全部の桁で渡す。後から別のコミットが push されていたら、合流は断られます。確かめたものだけが main に入ります。
-5. 作業ブランチをそろえる。main の squash のコミットから始めて、前の `tmp` の先頭を合流する（メッセージは「Merge branch head <短いSHA> into tmp after the squash merge of #<番号>」）。中身は main と同じで、前の歴史もつながったままです。だから、前の `tmp` から作った作業木のブランチも、そのまま合流できます。そろえた `tmp` を、また push する。
+5. 作業ブランチをそろえる。main の squash のコミットから始めて、前の `tmp` の先頭を合流する（メッセージは「Merge branch head <短いSHA> into tmp after the squash merge of #<番号>」）。中身は main と同じで、前の歴史もつながったままです。だから、前の `tmp` から作った作業木のブランチも、そのまま合流できます。そろえた `tmp` を、また push する。この手順は `npm run branch:after-squash -- <合流した先頭のコミットの SHA> -m "<末尾の行>"` が1回で行います（2026-11-16 から）。コミットしていない変更があるとき、HEAD がその SHA でないとき、変えたファイルが main で違う内容のときは、何も変えずに止まります。push はせず、push のコマンドを出します（[開発の手引きのコマンド](../docs/12_DEVELOPMENT.md#コマンド)）。
 6. PR の知らせの受け取りをやめ（unsubscribe）、様子を見に戻る予約を消す。
 
 ## 10. チェックリストと指示書の型

@@ -69,7 +69,7 @@ await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 15
 
 - どこが遅いかは、CPU の記録で見ます。方法の一つ：`npx tsx --cpu-prof --cpu-prof-dir=<リポジトリの外のフォルダ> scripts/build-content.ts`。できた `.cpuprofile` を Chrome の開発ツールで開きます。
 - 単体テストのファイルごとの時間：`npx vitest run --reporter=dot --reporter=json --outputFile.json=<出力先>.json`（先に `content:build`）。JSON の各ファイルの `startTime`・`endTime` を比べます（[開発時の確認](../docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)）。
-- 見本の編を読むテストも入れて計るときは、先に見本を含めて生成し、終わったら見本なしで生成し直します。作っている `npm run test:with-sample -- <vitest の引数>` ができたら、それ1つで済みます。
+- 見本の編を読むテストも入れて計るときは、先に見本を含めて生成し、終わったら見本なしで生成し直します。`npm run test:with-sample -- <vitest の引数>` なら、それ1つで済みます（2026-11-16 から）。
 - `npm run content:build` は「`Ink validation cache: 212 reused, 0 run`」のように、検査を使い回した数と流した数を出します。計る前に、この行でキャッシュの状態を確かめます。
 
 ### 2.4 記録の形
