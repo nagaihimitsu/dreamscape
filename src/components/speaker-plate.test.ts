@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { NARRATION_PLATE, nameCutIn, speakerPlate } from "./speaker-plate";
+import { loggedSpeaker, NARRATION_PLATE, nameCutIn, REMEMBERED_MARK, speakerPlate } from "./speaker-plate";
 
 const people = [
   { id: "smp_mihon_lili", cityId: "mihon", nameJa: "リリ" },
@@ -23,6 +23,25 @@ describe("the name plate of a line", () => {
   it("shows narration for a person who is not declared (a frame from another content version)", () => {
     expect(speakerPlate({ speaker: "person", speakerPersonId: "smp_nobody" }, names, people)).toEqual({ name: NARRATION_PLATE, narration: true });
     expect(speakerPlate({ speaker: "person" }, names, people)).toEqual({ name: NARRATION_PLATE, narration: true });
+  });
+});
+
+describe("the name plate of a remembered line (# remembered, 2026-11-16)", () => {
+  it("keeps the speaker's own name, marks it remembered, and logs 「<name>（回想）」", () => {
+    const lili = speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_lili", remembered: true }, names, people);
+    expect(lili).toEqual({ name: "リリ", narration: false, remembered: true });
+    expect(REMEMBERED_MARK).toBe("回想");
+    expect(loggedSpeaker(lili)).toBe("リリ（回想）");
+    expect(speakerPlate({ speaker: "heroine", remembered: true }, names, people)).toEqual({ name: "ヒロイン", narration: false, remembered: true });
+    expect(speakerPlate({ speaker: "enemy", remembered: true }, { ...names, enemy: "トマ" }, people)).toMatchObject({ name: "トマ", remembered: true });
+  });
+
+  it("logs a line without the tag by the name alone, and marks no plate that shows 旅の風景", () => {
+    expect(loggedSpeaker(speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_lili" }, names, people))).toBe("リリ");
+    // An enemy line where the screen has no one opposite to name (a date, a guide).
+    const unnamed = speakerPlate({ speaker: "enemy", remembered: true }, names, people);
+    expect(unnamed).toEqual({ name: NARRATION_PLATE, narration: true });
+    expect(loggedSpeaker(unnamed)).toBe(NARRATION_PLATE);
   });
 });
 

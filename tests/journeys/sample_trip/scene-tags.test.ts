@@ -4,7 +4,7 @@ import { validateGameState, type GameState } from "../../../src/domain/game";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
 import { beginTravelEvent, sleepAtHotel } from "../../../src/domain/travel-game";
-import { cityStart, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { cityStart, completedCity, openEpilogueScene, playBattleToResult } from "../../../src/dev/scenario-builders";
 import type { StoryFrame } from "../../../src/story/runtime";
 
 // The scene tags (2026-11-11) on the sample journey (fictional): the hotel morning's # phone: messages and the date's
@@ -86,6 +86,15 @@ describe("the sample journey's scene tags", () => {
     expect([...new Set(taken.map((frame) => frame.text))]).toEqual([expect.stringMatching(/の横で、ポケットの中の三時のしおりに指が触れた。$/u)]);
     expect(taken.every((frame) => frame.choices.length > 0 && JSON.stringify(frame.itemOut) === JSON.stringify({ itemId: "smp_mihon_three_bookmark" }))).toBe(true);
     expect(tower.frames.filter((frame) => !frame.itemOut).length).toBeGreaterThan(0);
+  });
+
+  it("hears the finale opponent's earlier words again in the epilogue, on that line only (# remembered)", () => {
+    // # remembered (2026-11-16): a line of `# speaker: enemy`, the finale's opponent; Lili's farewell (-1) may come first.
+    const { frames } = playUntil(openEpilogueScene(completedCity("mihon")), (state) => !state.activeEpilogue,
+      (state) => state.activeEpilogue?.frame);
+    const remembered = [...new Set(frames.filter((frame) => frame.remembered).map((frame) => `${frame.speaker}|${frame.text}`))];
+    expect(remembered).toEqual(["enemy|旅の人に『時間にいいかげんな街』と言われるのは、もう嫌なの"]);
+    expect(frames.filter((frame) => frame.text && !frame.remembered).length).toBeGreaterThan(3);
   });
 
   it("emphasises one word and makes another tremble on the guide's lines, and only there", () => {

@@ -77,6 +77,24 @@
   visibility: hidden;
 }
 
+/* # remembered (2026-11-16 user decision): words said before, heard again in someone's head. The window (the element
+   of data-dialogue-window: a story scene's .vn-dialogue, the battle's talk shell) takes a memory's tone through its
+   own colours: a faded sepia instead of slate, a softer edge and a dim rim inside, and its plate a faded brown (the
+   「回想」 label beside the name: dialogue-controls.css). Only colours change: no filter, no size, nothing moves. The
+   text stays at 8:1 or more on the window, and 5.6:1 on the plate, over any picture behind (its 8 % show-through
+   counted at white). */
+[data-dialogue-window][data-remembered] {
+  --vn-window-bg: rgba(64, 52, 40, 0.92);
+  --vn-text: #f7eedc;
+  --vn-muted: #e3d6bf;
+  --vn-name-bg: #6e5a45;
+}
+.vn-scene .vn-dialogue[data-remembered]::before,
+.battle-screen[data-phase="dialogue"] .battle-paper-shell[data-remembered]::before {
+  border-color: rgba(214, 190, 150, 0.55);
+  box-shadow: inset 0 0 26px rgba(20, 12, 4, 0.45), var(--ds-window-shadow);
+}
+
 /* # phone: a phone in the window: a dark body with a hairline edge, a light screen whose messages scroll inside it
    (newest at the bottom), received ones on the left under their sender's name, sent ones on the right. The line on
    screen is its last bubble; tapping it or the scene reads on as on any line. */

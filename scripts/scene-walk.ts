@@ -132,12 +132,14 @@ function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string
 }
 
 /** What a line's tags give its stage, gathered from its tag lines without text (frame-reader.ts reads them into the line after). */
-type LineStaging = { leave: string[]; together?: string[]; phone?: PhoneSide; letter?: LetterKind; heroineReaction: boolean; enemyReaction: boolean;
-  emotion: boolean };
+type LineStaging = { leave: string[]; together?: string[]; phone?: PhoneSide; letter?: LetterKind; remembered?: boolean; heroineReaction: boolean;
+  enemyReaction: boolean; emotion: boolean };
 const noStaging = (): LineStaging => ({ leave: [], heroineReaction: false, enemyReaction: false, emotion: false });
 function gatherStaging(staging: LineStaging, tags: StoryTags): void {
   staging.leave.push(...(tags.leave ?? []).filter((who) => !staging.leave.includes(who)));
   if (tags.together) staging.together = tags.together;
+  // `# remembered` goes with the `# speaker:` beside it, as frame-reader.ts reads it.
+  if (tags.speaker) staging.remembered = !!tags.remembered;
   if (tags.phone) staging.phone = tags.phone;
   if (tags.letter) staging.letter = tags.letter;
   staging.heroineReaction ||= !!tags.reactions?.heroine;
@@ -168,7 +170,7 @@ function walkStage(previous: Stage | undefined, line: { speaker: Speaker; person
   if (staging.together) checkTogether(staging.together, stage.people, scene, kind);
   const frame = { speaker, ...(line.personId ? { speakerPersonId: line.personId } : {}),
     ...(staging.phone ? { phone: { side: staging.phone } } : {}), ...(staging.letter ? { letter: { kind: staging.letter } } : {}),
-    ...(staging.together ? { together: staging.together } : {}) };
+    ...(staging.remembered ? { remembered: true as const } : {}), ...(staging.together ? { together: staging.together } : {}) };
   const arrived = stageAfter(previous, stageLine(frame, stage.people, cues), scene);
   for (const who of staging.leave) {
     const exit = stageExit(who, stage.people);

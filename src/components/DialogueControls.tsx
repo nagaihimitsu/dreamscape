@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { DialogueLog, type DialogueLogEntry } from "./DialogueLog";
 import { NameCutInPlate } from "./NameCutIn";
-import type { NameCutIn } from "./speaker-plate";
+import { REMEMBERED_MARK, type NameCutIn } from "./speaker-plate";
 import { Icon } from "./icons";
 import { DIALOGUE_TOOLS_ATTRIBUTE } from "./scene-tap";
 import { AutoAdvanceButton, type useAutoAdvance } from "./useAutoAdvance";
@@ -15,18 +15,28 @@ import "./dialogue-controls.css";
  * then grows down into the window, never upward. The plate is part of the
  * window (a tap on it reads on, as on the window); the controls are not.
  */
-export function DialogueWindowHead({ speaker, controls, narration = false, plateClassName, cutIn }: {
+export function DialogueWindowHead({ speaker, controls, narration = false, remembered = false, plateClassName, cutIn }: {
   speaker: ReactNode;
   controls: ReactNode;
   /** The line is the narration (「旅の風景」): its plate is slate instead of blue (D2). */
   narration?: boolean;
+  /**
+   * The line is remembered (`# remembered`, speakerPlate's `remembered`): a small 「回想」 beside the name, a label (screen
+   * readers read 「<name>（回想）」).
+   */
+  remembered?: boolean;
   plateClassName?: string;
   /** The line's name plate while it lasts (`# cutin: name`, useNameCutIn): shown just above the head. */
   cutIn?: NameCutIn;
 }) {
   return <div className="vn-window-head">
     <NameCutInPlate cutIn={cutIn} />
-    {speaker && <div className={["speaker", plateClassName].filter(Boolean).join(" ")} data-narration={narration || undefined}>{speaker}</div>}
+    {speaker && <div className={["speaker", plateClassName].filter(Boolean).join(" ")} data-narration={narration || undefined}>
+      {speaker}
+      {remembered && <span className="speaker-remembered" data-testid="speaker-remembered">
+        <span className="sr-only">（</span>{REMEMBERED_MARK}<span className="sr-only">）</span>
+      </span>}
+    </div>}
     <span className="vn-plate-trail" aria-hidden="true"><Icon name="plane" /></span>
     {controls}
   </div>;

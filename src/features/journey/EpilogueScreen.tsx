@@ -20,7 +20,7 @@ import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPo
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
-import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { useSceneStage } from "../../components/useSceneStage";
 import "./encounter.css";
@@ -88,8 +88,8 @@ export function EpilogueScreen({
   const personEmotion = personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral");
   const finaleOpponent = battles.find((battle) => battle.id === episode?.battleId);
   const enemyName = person?.nameJa ?? finaleOpponent?.enemyNameJa;
-  const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName },
-    storyState.people);
+  const plate = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName }, storyState.people);
+  const { name: speaker, narration, remembered } = plate;
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn): for `# speaker: enemy`, the scene's
   // person, else the city finale's opponent (as its plate names them). The city's title card over an arrival holds it.
   const enemyCut = person ? { nameJa: person.nameJa, ...(person.titleJa ? { titleJa: person.titleJa } : {}) }
@@ -103,7 +103,7 @@ export function EpilogueScreen({
   const { ready, onReady, entries } = useDialogueLog(
     active.episodeId,
     game.revision,
-    speaker,
+    loggedSpeaker(plate),
     frame.text,
     frame.delivery,
     frame.letter?.translationJa,
@@ -171,6 +171,7 @@ export function EpilogueScreen({
           className="paper story-paper vn-dialogue"
           {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
           aria-label={label.region}
+          data-remembered={remembered}
           inert={windowVisibility.hidden || showLogo}
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
@@ -178,6 +179,7 @@ export function EpilogueScreen({
             cutIn={nameCut}
             speaker={showsSpeakerPlate(frame) && speaker}
             narration={narration}
+            remembered={remembered}
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
           <div ref={dialogueRef} className="vn-window-body">

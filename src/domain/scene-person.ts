@@ -20,10 +20,11 @@ export function scenePerson(people: StoryStateCatalog["people"], scenePeople: re
  * The portrait of the person who says the line in their own name (`# speaker: <person ID>`), when
  * that person has one (`characterId`; 2026-11-11 user decision): from that line they stand opposite
  * the heroine in any scene (scene-stage.ts). A phone's message or a sheet's line is read, not
- * said there: no one comes in for it.
+ * said there, and a remembered line (`# remembered`, 2026-11-16) is heard in someone's head, said
+ * by someone not there: no one comes in for them.
  */
 export function speakingPerson(people: StoryStateCatalog["people"],
-  frame: { speaker: string; speakerPersonId?: string; phone?: unknown; letter?: unknown }): string | undefined {
-  if (frame.speaker !== "person" || frame.phone || frame.letter) return undefined;
+  frame: { speaker: string; speakerPersonId?: string; phone?: unknown; letter?: unknown; remembered?: true }): string | undefined {
+  if (frame.speaker !== "person" || frame.phone || frame.letter || frame.remembered) return undefined;
   return people.find((item) => item.id === frame.speakerPersonId)?.characterId;
 }

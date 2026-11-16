@@ -445,7 +445,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 前に要るもの：手順10の初稿が `content:build` を通っている。
 - 作るもの（[CONTENT_GUIDE の「Inkで会話と演出を作る」](CONTENT_GUIDE.md#inkで会話と演出を作る)）：
   - 行の見せ方：`# pause:`・`# shake`（`# shake: window`）・`# size: large`・`# em:`・`# em_shake:`。
-  - 場面の演出：`# phone:`・`# letter:`・`# quiet:`・`# stand:`・`# cutin: name`・`# reaction:`・`# emotion:`。
+  - 場面の演出：`# phone:`・`# letter:`・`# quiet:`・`# stand:`・`# cutin: name`・`# remembered`（前に聞いた言葉を頭の中でもう一度聞く行。「〜の声」のような仮の人物を作らず、言った人の人物IDで話させる）・`# reaction:`・`# emotion:`。
   - 品物と空気：`# item_show:`・`# item_out:`（品物を取り出して、書かれた行を見せる）・`# weather:`・`# tint: off`。
   - その国の言葉：`learning/local-words.json`（出典つき）と行の `# local_word:`。
   - 旅の図鑑：耳慣れない言葉（料理・生き物・建物など）を `glossary/terms.json` に書き、写真を `tourism/catalog.json` の `assets` に出典つきで登録し、言葉が初めて出うる行の前に `# term:` を置く（書き方は [CONTENT_GUIDE の「旅の図鑑の言葉」](CONTENT_GUIDE.md#旅の図鑑の言葉任意2026-11-13)）。

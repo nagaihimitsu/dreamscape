@@ -39,6 +39,22 @@
 }
 /* The narration's plate (「旅の風景」) is slate: no one speaks. */
 .vn-window-head > .speaker[data-narration] { background: var(--ds-slate-800); }
+/* A remembered line's 「回想」 beside the name (`# remembered`, 2026-11-16): a small outlined label in the plate's own
+   colours, unfilled and flat, so it reads as part of the name, not as a button (it takes no tap of its own: a tap on
+   the plate reads on). It never breaks inside; a long name wraps before it. */
+.vn-window-head > .speaker .speaker-remembered {
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0 0.4em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.08em;
+  vertical-align: 0.08em;
+  white-space: nowrap;
+}
 /* A paper plane with a dashed trail after the plate (a decoration of travel in
    general): it takes the room between the plate and the controls and shows only
    where that room is wide enough. */

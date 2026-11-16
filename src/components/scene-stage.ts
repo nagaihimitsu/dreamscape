@@ -9,7 +9,10 @@ export type PortraitFocus = "speaking" | "listening";
 export type StageLine = {
   /** None: no line is on screen (a battle's quiz). */
   speaker?: Speaker;
-  /** Read off a phone's screen or a sheet (`# phone:`, `# letter:`): nobody says it on stage. */
+  /**
+   * Nobody says it on stage: it is read off a phone's screen or a sheet (`# phone:`, `# letter:`), or heard again in
+   * someone's head (`# remembered`, 2026-11-16: its speaker is not there).
+   */
   read?: boolean;
   /** A person who says the line in their own name (`# speaker: <person ID>`): their figure, when they have one (speakingPerson). */
   personFigure?: string;
@@ -101,7 +104,7 @@ export function stageExit(who: string, people: StoryStateCatalog["people"]): Sta
  * their saying it (their reactions; StageLine).
  */
 export function stageLine(
-  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "phone" | "letter" | "leave" | "together"> | null | undefined,
+  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "phone" | "letter" | "remembered" | "leave" | "together"> | null | undefined,
   people: StoryStateCatalog["people"],
   cues: { heroine?: boolean; enemy?: boolean } = {},
 ): StageLine {
@@ -110,7 +113,7 @@ export function stageLine(
   const together = (frame?.together ?? []).flatMap((who) => stagePerson(who, people) ?? []);
   return {
     ...(frame ? { speaker: frame.speaker } : {}),
-    ...(frame?.phone || frame?.letter ? { read: true } : {}),
+    ...(frame?.phone || frame?.letter || frame?.remembered ? { read: true } : {}),
     ...(personFigure ? { personFigure } : {}),
     ...(cues.heroine ? { heroineCue: true } : {}),
     ...(cues.enemy ? { enemyCue: true } : {}),
@@ -127,6 +130,9 @@ export function stageLine(
  *   first time she shows herself (heroineCue) to the scene's end; from its start where the scene has her from the
  *   start. A line of hers read off a phone or a sheet is not said here and brings her on no more than the narration
  *   does (the writer's way to keep her out of a scene until she comes: a call, a message, a letter).
+ * - A remembered line (`# remembered`, 2026-11-16 user decision) is heard in someone's head, not said here: like a
+ *   phone's or a sheet's line, it brings no one on (its speaker's figure neither: they are not there), and the figures
+ *   on stage stay as they are (stageFocus dims no one for it). Its `# leave:` and the cues of its line still count.
  * - Opposite her, one person at a time: a person with a figure who says a line in their own name, from that line;
  *   the scene's enemy (its `# person:`, a battle's opponent) at their line or cue. Each stays, listening or as they
  *   are, until the other comes in. An enemy without a figure speaks off stage and leaves the place empty, or puts the
@@ -211,8 +217,8 @@ export function standsOnStage(stage: Stage, exit: StageExit, scene: StageScene):
 /**
  * Who comes forward at a line (2026-11-13 user decision): a figure on stage that says the line comes slightly forward
  * and the other figure on stage listens, slightly dimmed. A line said by no one on stage — the narration, the player,
- * a person or an enemy without a figure, anything read off a phone or a sheet — leaves every figure as it is: no one is
- * dimmed because the speaker is off stage.
+ * a person or an enemy without a figure, anything read off a phone or a sheet, a remembered line — leaves every figure
+ * as it is: no one is dimmed because the speaker is off stage.
  */
 export function stageFocus(stage: Stage, line: StageLine, scene: StageScene): StageFocus {
   if (line.read) return {};
