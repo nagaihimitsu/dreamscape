@@ -15,7 +15,12 @@
 
 この台本は、リポジトリにない使い捨てのスクリプトで作りました。今の `npm run voice:script` は同じ読み方で、同じ877行を同じ文と同じ ID で抜き出します。その後バトルの会話が場所のファイルへ移ったので、バトルの台詞150行の `file`・`knot` は当時のもの（例 `battles/gt_delhi_finale.ink`・`gt_delhi_finale`）で、今の knot には `_battle` が付いています（`gt_delhi_finale_battle`）。ID は台本のまま（`gt_delhi_finale_001` など）です。
 
-届いた声：407行（台本の1〜409番目のうち。2026-11-13までに6回に分けて届いた分）が `content/journeys/golden_triangle/public/assets/voice/<ID>.mp3`（MP3・48kHz・モノラル・80kbps）にあり、Inkの台詞の前の `# voice: <ID>` で結び付け、`recorded.json` に2026-11-12の台本の文で記録しています。残りは作っているところです。322〜409番目のうち2本は付けていません：`gt_agra_date_confession_011`（届いたzipが途中で切れていて取り出せなかった）と `gt_agra_akbar_tomb_monkey_attar_003`（猿の小瓶の場面をミニゲームで書き直して文が変わった。2026-11-13の台本で録り直す）。アーグラのメヘターブ・バーグのデート（台本の462〜484番）はクリケットのミニゲームで書き直したので、2026-11-13に差し替えの台本（34行、うち新しい行17）を渡しました。
+届いた声：647行（台本の1〜664番目のうち）が `content/journeys/golden_triangle/public/assets/voice/<ID>.mp3`（MP3・48kHz・モノラル・80kbps、ピークを -1 dB にそろえた）にあり、Inkの台詞の前の `# voice: <ID>` で結び付け、`recorded.json` に2026-11-12の台本の文で記録しています。1〜409番目は2026-11-13までに6回に分けて、410〜664番目は2026-11-16に6つのzipで届きました。残り（665〜877番目と、2026-11-13・2026-11-15の台本の行）は作っているところです。
+
+付けていない声：
+- 322〜409番目の2本：`gt_agra_date_confession_011`（届いたzipが途中で切れていて取り出せなかった）と `gt_agra_akbar_tomb_monkey_attar_003`（猿の小瓶の場面をミニゲームで書き直して文が変わった。2026-11-13の台本で録り直す）。
+- 453番目の `gt_agra_date_mariam_tomb_015`：届いていない。呼び名の入る行で、`_023` に書き直したので録らなくてよい（下の「名前のために書き直した行」）。
+- 410〜664番目の14本（届いたが、今の台詞にその ID の行がないので置いていない）：`gt_agra_date_mehtab_bagh_014`〜`_019`（クリケットのミニゲームで書き直した。アーグラのメヘターブ・バーグのデート、台本の462〜484番は、2026-11-13に差し替えの台本（34行、うち新しい行17）を渡しました）と、2026-11-15の台本で2行に分けた8本（`gt_agra_confession_lead_007`・`gt_agra_date_ram_bagh_016`・`gt_agra_finale_007`・`gt_agra_main_fatehpur_sikri_008`・`gt_jaipur_arrival_005`・`gt_jaipur_date_albert_hall_015`・`gt_jaipur_date_confession_003`・`gt_jaipur_date_confession_010`。分けた行は2026-11-15の台本にある）。
 
 ## 2026-11-13/
 
