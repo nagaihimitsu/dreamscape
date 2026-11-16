@@ -53,6 +53,9 @@ describe("the fictional test cities", () => {
         occasion: [["test_landmark", template.normal.landmark], ["test_special_b_landmark", template.special_b!.landmark],
           ["test_special_c_landmark", template.special_c!.landmark]].map(([id, source]) => ({ id, name: `${(source as typeof template.normal.landmark).nameJa}の時点` })),
         tour: [],
+        // Free time at each of its places, its hotel first.
+        free: [...cityContents.test_city.travel.places].sort((a, b) => Number(b.id === cityContents.test_city.travelSettings.hotelPlaceId) -
+          Number(a.id === cityContents.test_city.travelSettings.hotelPlaceId)).map((place) => ({ id: place.id, name: place.nameJa })),
       });
       expect(storyBattlesForCity("test_city").map((item) => item.battleId)).toEqual(["test_special_b", "test_special_c"]);
       // Each special battle's evidence points at the copies of its own landmark's clues.

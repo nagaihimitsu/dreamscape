@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { debugQueryString, parseDebugQuery, settingsQuery, type DebugQuery, type DebugSettings } from "./debug-query";
+import { clockText, debugQueryString, parseClockText, parseDebugQuery, settingsQuery, type DebugQuery, type DebugSettings } from "./debug-query";
 
 const settings: DebugSettings = { cityId: "milano", scene: "date", id: "milano_brera_date_01", progress: "completed", ap: 9, affection: -3, trust: 2, spark: 0, roll: "negative" };
 
@@ -33,6 +33,25 @@ describe("Debug launch URLs", () => {
     expect(parseDebugQuery("?debug&scene=date&without=Rain")).toEqual({ kind: "error", message: "「without=Rain」はIDの形ではありません（品物のIDを , で区切ります）。" });
   });
 
+  it("writes and reads free time's day and time (scene=free only, the time as 19:00) and the flags of any scene (2026-11-15)", () => {
+    const free: DebugSettings = { ...settings, scene: "free", id: "p_hotel", day: 2, time: 19 * 60, flags: ["milano_tino_needs_pick", "other_flag"] };
+    const url = debugQueryString(settingsQuery("real", free));
+    expect(url.endsWith("&roll=negative&day=2&time=19:00&flags=milano_tino_needs_pick%2Cother_flag")).toBe(true);
+    expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: settingsQuery("real", free) });
+    expect(parseDebugQuery("?debug&scene=free&time=9:05")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "free", time: 545 } });
+    // Another scene keeps its flags and leaves out free time's clock; no flags, no item.
+    const date = debugQueryString(settingsQuery("real", { ...free, scene: "date", id: "milano_brera_date_01" }));
+    expect(date).toContain("&flags=milano_tino_needs_pick%2Cother_flag");
+    expect(date).not.toMatch(/day=|time=/u);
+    expect(debugQueryString(settingsQuery("real", { ...settings, flags: [] }))).not.toContain("flags");
+  });
+
+  it("reads and writes a clock as HH:MM", () => {
+    expect([clockText(540), clockText(1140), clockText(1260)]).toEqual(["09:00", "19:00", "21:00"]);
+    expect([parseClockText("19:00"), parseClockText("9:30"), parseClockText("24:00"), parseClockText("19:60"), parseClockText("1900"), parseClockText("")])
+      .toEqual([1140, 570, null, null, null, null]);
+  });
+
   it("leaves omitted items to the scene picker's defaults and ignores the order", () => {
     expect(parseDebugQuery("?scene=battle&debug&city=delhi")).toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "battle" } });
     expect(parseDebugQuery("?debug&scene=epilogue")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "epilogue" } });
@@ -45,7 +64,16 @@ describe("Debug launch URLs", () => {
     ["?debug&scene=battle&targt=x", "URLの項目「targt」は使えません。使える項目: data, city, scene, target, progress, ap, affection, trust, spark, roll, from, prep"],
     ["?debug&scene=battle&scene=date", "URLの項目「scene」が2回以上あります。"],
     ["?debug&scene=battle&city=", "URLの項目「city」に値がありません。"],
-    ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / occasion / tour / map のどれかを書きます。"],
+    ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / occasion / tour / free / map のどれかを書きます。"],
+    ["?debug&scene=free&time=8:59", "「time=8:59」は使えません。time には 09:00〜21:00 の時刻を 19:00 のように書きます。"],
+    ["?debug&scene=free&time=21:01", "「time=21:01」は使えません。"],
+    ["?debug&scene=free&time=night", "「time=night」は使えません。"],
+    ["?debug&scene=free&day=0", "「day=0」は使えません。day には 1〜30 の整数（滞在の何日目か）を書きます。"],
+    ["?debug&scene=free&day=31", "「day=31」は使えません。"],
+    ["?debug&scene=date&time=19:00", "day と time は scene=free（街歩き）で使います。"],
+    ["?debug&scene=battle&day=2", "day と time は scene=free（街歩き）で使います。"],
+    ["?debug&scene=free&flags=Night", "「flags=Night」はIDの形ではありません（フラグのIDを , で区切ります）。"],
+    ["?debug&city=samarkand&scene=map&flags=a_flag", "flags は scene=map（地図・交通の確認）では使えません。"],
     ["?debug&scene=battle&city=Milano", "「city=Milano」はIDの形ではありません"],
     ["?debug&scene=battle&target=a%20b", "「target=a b」はIDの形ではありません"],
     ["?debug&scene=battle&ap=13", "「ap=13」は使えません。ap には 0〜12 の整数を書きます。"],

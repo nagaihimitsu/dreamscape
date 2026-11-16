@@ -468,7 +468,7 @@ export function withRelationship(state: GameState, values: Pick<GameState, "affe
 }
 
 /** Put the player at a place of the current city (Debug's placement), keeping a payable way back to the hotel. */
-function atPlace(state: GameState, placeId: string): GameState {
+export function atPlace(state: GameState, placeId: string): GameState {
   const { travel } = getCityContent(state.currentCityId);
   const place = travel.places.find((item) => item.id === placeId);
   if (!place) throw new Error("この街に場面の地点が見つかりません。");

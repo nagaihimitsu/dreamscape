@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
+import { screenFor } from "../domain/screen";
 import { debugExampleUrls, debugSessionExampleUrls } from "../../scripts/dev/screen-gallery";
 import { installPreparingJourneyTestCities } from "./test-cities";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
@@ -130,7 +131,38 @@ describe("Debug launch URLs against the content", () => {
       .toThrow("before の「gt_agra_main_agra_fort」は、デリーのフィナーレでないエピソードではありません。");
   });
 
+  it("opens free time (scene=free) at a place, day and time, with flags (2026-11-15)", () => {
+    const night = launch("?debug&city=milano&scene=free&time=19:00&flags=milano_tino_needs_pick");
+    if (night.kind !== "scene") throw new Error("not a scene");
+    expect(night.settings).toEqual({ ...defaultDebugSettings("milano"), scene: "free", id: "p_hotel", time: 1140, flags: ["milano_tino_needs_pick"] });
+    const state = createDebugState(night.settings);
+    expect(validateGameState(state)).toEqual(state);
+    expect(screenFor(state)).toBe("free_time");
+    expect(state.travel).toMatchObject({ currentPlaceId: "p_hotel", minute: 1140 });
+    expect(state.storyProgress.flags).toContain("milano_tino_needs_pick");
+    expect(debugSceneLocation(night.settings, state)).toBe(`${debugTargets("milano").free[0].name}（1日目 19:00）`);
+    // The hotel first; a place and a day (Delhi's calendar moves with it).
+    expect(debugTargets("delhi").free[0]).toEqual({ id: "delhi_hotel_hub", name: "デリーの架空宿（ラジーヴ・チョーク付近）" });
+    const gate = launch("?debug&city=delhi&scene=free&target=delhi_india_gate&day=2&time=12:00&progress=initial");
+    if (gate.kind !== "scene") throw new Error("not a scene");
+    expect(createDebugState(gate.settings).travel).toMatchObject({ currentPlaceId: "delhi_india_gate", day: 2, minute: 720, calendar: { journeyDay: 2 } });
+    // Without a time, the progress's own.
+    expect(createDebugState({ ...defaultDebugSettings("milano"), scene: "free", id: "p_hotel" }).travel.minute).toBe(540);
+  });
+
+  it("starts any scene with the flags it is given, before the scene reads them", () => {
+    const date = launch("?debug&city=delhi&scene=date&target=gt_delhi_date_lodhi_garden&flags=gt_delhi_golgappa_sick,gt_delhi_player_sick");
+    if (date.kind !== "scene") throw new Error("not a scene");
+    const state = createDebugState(date.settings);
+    expect(state.activeDate?.dateId).toBe("gt_delhi_date_lodhi_garden");
+    expect(state.storyProgress.flags).toEqual(expect.arrayContaining(["gt_delhi_golgappa_sick", "gt_delhi_player_sick"]));
+  });
+
   it.each([
+    [{ dataMode: "real", cityId: "milano", scene: "free", flags: ["gt_delhi_golgappa_sick"] },
+      "フラグ「gt_delhi_golgappa_sick」はミラノ編のフラグではありません（progression/story.json の flags のID。場面の確認の「フラグを得たことにする」に一覧があります）。"],
+    [{ dataMode: "real", cityId: "delhi", scene: "battle", flags: ["no_such_flag"] }, "フラグ「no_such_flag」はインド・ゴールデントライアングル編のフラグではありません"],
+    [{ dataMode: "real", cityId: "agra", scene: "free", target: "agra_fatehpur_sikri" }, "「agra_fatehpur_sikri」（ファテープル・シークリー）は、ツアーの場面（scene=tour）から開けます。"],
     [{ dataMode: "real", cityId: "atlantis", scene: "battle" }, "都市「atlantis」は登録されていません。仮の場面の都市なら data=fixture を付けます。"],
     [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「クイズ」にありません。"],
     [{ dataMode: "real", cityId: "delhi", scene: "encounter" }, "デリーには「人物との交流」の場面がありません。"],
