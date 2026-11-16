@@ -3,7 +3,8 @@ import { z } from "zod";
 import { parseStoryTags } from "../content/tags";
 import { defineMiniGame, type AnyMiniGameDefinition } from "./contract";
 import { cricketBatting } from "./cricket_batting/definition";
-import { isValidMiniGameTag, miniGameArtPath, miniGameChoice, miniGameOptionId, miniGameTagText, parseMiniGameTag } from "./tag";
+import { MINI_GAMES } from "./registry";
+import { isValidMiniGameTag, MINI_GAME_PRACTICE_KEY, miniGameArtPath, miniGameChoice, miniGameOptionId, miniGameTagText, parseMiniGameTag } from "./tag";
 
 const context = { effectIds: [], backgroundIds: ["bg_pitch"], emotionIds: ["neutral"], miniGameArt: { pitch_x: "assets/minigames/pitch_x.jpg", girl: "assets/minigames/girl.webp" } };
 
@@ -49,6 +50,15 @@ describe("a line's # minigame:", () => {
     expect(() => parseMiniGameTag("cricket_batting prefix Again")).toThrow("Invalid minigame prefix: Again");
     expect(() => parseMiniGameTag("cricket_batting prefix a_b")).toThrow("Invalid minigame prefix");
     expect(() => parseStoryTags(["minigame: cricket_batting", "minigame: cricket_batting"], context)).toThrow("Duplicate minigame tag");
+  });
+
+  it("refuses warmup in a story tag (only a game's practice sets it), and leaves it out of the keys a message lists", () => {
+    for (const definition of Object.values(MINI_GAMES)) {
+      if (!definition.practice) continue;
+      expect(definition.practice.params?.[MINI_GAME_PRACTICE_KEY], definition.id).toBe("yes");
+      expect(() => parseMiniGameTag(`${definition.id} warmup yes`), definition.id).toThrow("warmup is the practice's own key");
+    }
+    expect(() => parseMiniGameTag("cricket_batting fast yes")).not.toThrow("warmup:");
   });
 
   it("refuses a game key its zod refuses, saying the key's description", () => {
