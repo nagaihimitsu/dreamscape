@@ -2,7 +2,9 @@ INCLUDE modules.ink
 -> DONE
 
 // ロータス寺院のデート（二人きり。噛み合いの選択は2回）。
-// 背中に書いた最後の言葉を「読めなかった」と答えると、告白の夜に彼女が声で言い直す（gt_<都市>_hotel_hub_dates.ink）。
+// 背中に書いた最後の言葉は、この場面では読めない（何と書いたかは、交際が始まる告白の夜に彼女が明かす。
+// gt_<都市>_hotel_hub_dates.ink。2026-11-16 のユーザー判断：「まだいたい」と書いたことは、この場面の中では分からないように）。
+// 「読めなかった」と答えると、彼女は「いつか声で言う」と約束し、告白の夜にその約束どおり言い直す。
 
 // 【3】
 === gt_delhi_date_lotus_temple ===
@@ -87,7 +89,7 @@ INCLUDE modules.ink
 どれくらい経っただろう。立ち上がる前に、もう一度だけ、指先が背中に触れた。
 # photo: gt_album_d61 # photo_caption: 背中の字あて
 さっきより、ずっとゆっくりだった。一画ずつ、確かめるように。
-ま。……次は、た、だろうか。右上に点が二つあったような、なかったような。い。た。い。
+一つ目を追っているうちに、もう次の字が始まっていた。背中の上の線は、書かれたそばからほどけていく。読もうとするほど、指先のあたたかさばかりが残った。
 # leave: heroine
 書き終えると、彼女はすぐに立ち上がり、こちらを振り返らずに出口へ歩きだした。
 靴を受け取り、建物を囲む池のそばまで来て、ようやく彼女は大きく息を吐いた。
@@ -109,38 +111,35 @@ INCLUDE modules.ink
 # emotion: teasing
 # voice: gt_delhi_date_lotus_temple_006
 ……で。最後の、読めた？
-* [「『まだいたい』」 # option: read_mada]
-    # profile: honest
+* [「読めたよ。……でも、内緒」 # option: bluff_read]
+    # profile: provocative
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy_deep,sweat
-        # voice: gt_delhi_date_lotus_temple_007
-        こ、声に出して読まないでよ。……忘れて。今のは、なし
+        え……ほんとに？　……ずるい、そういう言い方
+        # speaker: narrator
+        彼女は池のほうへ顔をそむけた。こちらから見えるのは、赤くなった耳だけだった。
     - else:
         # speaker: heroine
-        # reaction: heroine,shy_deep,blush
-        # voice: gt_delhi_date_lotus_temple_008
-        読めちゃったか。点々、気づいたんだ
+        # reaction: heroine,teasing_big,music
+        うそ。読めた人は、そんな得意そうな顔しないもん
         # speaker: heroine
-        # voice: gt_delhi_date_lotus_temple_009
-        ここに、って意味。……たぶん。今は、そういうことにしておいて
+        # emotion: shy
+        ……よかった。ほんとに読めてたら、ここで逃げてた
     }
-* [「『またいたい』……？」 # option: read_mata]
+* [「『ひま』の続き？」 # option: guess_tease]
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
-        # voice: gt_delhi_date_lotus_temple_010
-        そっか。点々、届かなかったか。……ちゃんと書いたんだけどな
+        ……ちがうよ。ふざけて書いたんじゃないもん
     - else:
         # speaker: heroine
-        # reaction: heroine,teasing_big,music
-        # voice: gt_delhi_date_lotus_temple_011
-        ふふっ。点々、背中だと消えちゃうんだね
+        # reaction: heroine,teasing,music
+        ふふっ。ちがいます
         # speaker: heroine
         # emotion: smile
-        # voice: gt_delhi_date_lotus_temple_012
-        でも、それも合ってるかも。また来たいもん。正解は、教えない
+        続きなのは、ちょっと合ってるかな。……正解は、まだ教えない
     }
 * [「読めなかった」 # option: couldnt_read]
     # profile: attentive

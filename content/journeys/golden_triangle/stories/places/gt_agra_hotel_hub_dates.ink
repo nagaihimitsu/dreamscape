@@ -129,7 +129,8 @@ INCLUDE modules.ink
 -> END
 
 // 告白の前置き。返事（confession_result）はデートを始めたときに決まっているので、前置きもそれで分ける。
-// 交際が始まる道だけ、彼女から屋上に誘い、背中の字を明かす（交際は旅で1回なので、背中の字も1回）。
+// 交際が始まる道だけ、彼女から屋上に誘い、背中の字を明かす（交際は旅で1回なので、背中の字も1回）。ロータス寺院のデートを
+// した人に明かす（あの場面では読めない。「読めなかった」と答えた人には、約束どおり声で言い直す形で）。
 // 断る・「待って」の道は、主人公から誘って言い出す。前に告白していれば、挑み直しの言い出しにする。
 // 告白のデートは、ほかのデートと同じく各都市で1回（2026-11-13。返事にかかわらず思い出になる）。前の告白はデリーのもので、
 // 下の cond("date gt_agra_date_confession") は、この告白のデートを繰り返せるように（JSON の repeatable）したときだけ真になる。
@@ -166,7 +167,9 @@ INCLUDE modules.ink
         # voice: gt_agra_confession_lead_006
         でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて
     }
-    { cond("flag gt_delhi_back_word_secret"):
+    {
+    - cond("flag gt_delhi_back_word_secret"):
+        // 「読めなかった」と答えた人：ロータス寺院で約束したとおり、声で言い直す。
         # speaker: heroine
         # recall: gt_album_d61
         あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
@@ -176,6 +179,16 @@ INCLUDE modules.ink
         # reaction: heroine,shy,blush
         # voice: gt_agra_confession_lead_008
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
+    - cond("date gt_delhi_date_lotus_temple"):
+        // ほかの答えの人：あの場面では読めなかった字を、ここで初めて明かす（2026-11-16）。
+        # speaker: heroine
+        # recall: gt_album_d61
+        あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字
+        # speaker: heroine
+        あれね、『まだいたい』って書いたの
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番
     }
 - else:
     {
