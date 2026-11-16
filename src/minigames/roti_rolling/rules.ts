@@ -273,7 +273,7 @@ export const ROTI_WARMUP_TUNING: ShapeDragTuning = {
   keyStroke: 0.45,
 };
 export const ROTI_WARMUP_SHAPES: ShapeClassifier<RotiOutcome> = {
-  classes: [{ outcome: "round", atLeast: { strokes: 2, roundness: 0.8 } }],
+  classes: [{ outcome: "round", atLeast: { strokes: 2, roundness: 0.75 } }],
   fallback: "country",
 };
 /**
