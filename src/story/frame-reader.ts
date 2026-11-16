@@ -70,6 +70,12 @@ export interface StoryFrame {
   /** The line's `# cutin:` (only the line it is written on): its speaker's name plate over the scene for a moment. */
   cutin?: CutInKind;
   /**
+   * The line's `# remembered` (only the line it is written on; 2026-11-16): words its speaker said before, heard again in
+   * someone's head. Its plate shows 「回想」 beside the name (speaker-plate.ts), its speaker does not come on stage
+   * (src/components/scene-stage.ts) and the window takes a memory's tone (line-stage.css).
+   */
+  remembered?: true;
+  /**
    * The line's `# leave:` (only the line it is written on): who goes off the scene's stage at it (heroine, enemy or a
    * person's ID, as written); src/components/scene-stage.ts keeps them off until they come on again.
    */
@@ -164,6 +170,9 @@ function readTags(
     frame.speaker = parsed.speaker;
     if (parsed.speakerPersonId) frame.speakerPersonId = parsed.speakerPersonId;
     else delete frame.speakerPersonId;
+    // `# remembered` goes with the `# speaker:` beside it (parseStoryTags refuses it alone): a later speaker's line is not remembered.
+    if (parsed.remembered) frame.remembered = true;
+    else delete frame.remembered;
   }
   if (parsed.background) frame.background = parsed.background;
   if (parsed.emotion) {
@@ -221,7 +230,7 @@ function readTags(
 }
 
 /** What the scene tags put on a frame. */
-export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "itemOut" | "leave" | "together">;
+export type FrameStaging = Pick<StoryFrame, "recall" | "remembered" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "itemOut" | "leave" | "together">;
 
 /**
  * The parts of a frame that last from their line to the scene's end (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`):
@@ -249,8 +258,8 @@ export function stickyOf(from: FrameSticky | null | undefined): FrameSticky {
  *   lines: a line without `# phone:` ends it), a letter's line after the lines of the frame before it when that was
  *   written on the same kind of paper; the oldest go first beyond STACK_MAX;
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
- *   one: it keeps that line's recall, phone, letter, quiet, item cards (`# item_show:`, `# item_out:`), who left at it
- *   (`# leave:`) and who stood together from it (`# together:`).
+ *   one: it keeps that line's recall, whether it is remembered (`# remembered`), phone, letter, quiet, item cards
+ *   (`# item_show:`, `# item_out:`), who left at it (`# leave:`) and who stood together from it (`# together:`).
  */
 export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
@@ -258,8 +267,8 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
   const shown = (staging: FrameStaging): FrameStaging => Object.fromEntries(Object.entries({ ...staging, stand })
     .filter(([, value]) => value !== undefined)) as FrameStaging;
   if (!lineRead && previous)
-    return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet, itemShow: previous.itemShow,
-      itemOut: previous.itemOut, leave: previous.leave, together: previous.together });
+    return shown({ recall: previous.recall, remembered: previous.remembered, phone: previous.phone, letter: previous.letter, quiet: previous.quiet,
+      itemShow: previous.itemShow, itemOut: previous.itemOut, leave: previous.leave, together: previous.together });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
     ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
@@ -269,6 +278,7 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
       before.letter.translationJa ? { text: before.text, translationJa: before.letter.translationJa } : before.text].slice(-STACK_MAX) : [];
   return shown({
     recall: tagged.recall,
+    remembered: tagged.remembered,
     phone: tagged.phone && { side: tagged.phone.side, ...(phoneEarlier.length ? { earlier: phoneEarlier } : {}) },
     letter: tagged.letter && { kind: tagged.letter.kind, ...(tagged.letter.translationJa ? { translationJa: tagged.letter.translationJa } : {}),
       ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
@@ -327,7 +337,7 @@ export function readStoryFrame(
     delete frame.seId;
   }
   const staging = stageFrame(frame, previous, lineRead);
-  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow", "itemOut", "leave", "together"] as const) delete frame[key];
+  for (const key of ["recall", "remembered", "phone", "letter", "quiet", "stand", "itemShow", "itemOut", "leave", "together"] as const) delete frame[key];
   Object.assign(frame, staging);
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)

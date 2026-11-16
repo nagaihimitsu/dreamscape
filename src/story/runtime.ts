@@ -58,6 +58,8 @@ export const storyFrameSchema = z
     termIds: z.array(z.string().regex(TERM_ID)).min(1).optional(),
     // The scene tags (frame-reader.ts stageFrame): presentation only.
     recall: albumImageIdSchema.optional(),
+    // `# remembered` (2026-11-16): the line is its speaker's earlier words, heard again.
+    remembered: z.literal(true).optional(),
     phone: z.object({
       side: z.enum(PHONE_SIDES),
       earlier: z.array(z.object({ side: z.enum(PHONE_SIDES), speaker: speakerSchema, personId: imageIdSchema.optional(), text: z.string().min(1) }).strict()).min(1).max(STACK_MAX).optional(),

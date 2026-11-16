@@ -69,6 +69,11 @@ export interface StoryTags {
   stand?: StandPosition;
   /** `# cutin: name`: the speaker's name plate over the scene for a moment (the line it is written on only). */
   cutin?: CutInKind;
+  /**
+   * `# remembered` (2026-11-16 user decision; no value): words the line's speaker said before, heard again in someone's
+   * head (the line it is written on only). Written with its `# speaker:` (a person, enemy or the heroine).
+   */
+  remembered?: true;
   /** `# leave: <who>` (one tag per figure): who goes off the scene's stage at this line (src/components/scene-stage.ts). */
   leave?: string[];
   /** `# together: <who> <who>` (2026-11-15): the two who stand opposite the heroine from this line (src/components/scene-stage.ts). */
@@ -151,6 +156,16 @@ export type StandPosition = (typeof STAND_POSITIONS)[number];
  */
 export const CUTIN_KINDS = ["name"] as const;
 export type CutInKind = (typeof CUTIN_KINDS)[number];
+
+/**
+ * `# remembered` (2026-11-16 user decision), written alone like `# later`: the line is words its speaker said earlier,
+ * which a character hears again in their head. Their name plate shows 「回想」 beside the name, their figure does not come
+ * on stage (src/components/scene-stage.ts) and the window takes a memory's tone; the rest of the line is as without it.
+ * The line's own `# speaker:` says whose words they are: a person, `enemy` or the heroine (her own earlier words). Not
+ * the narration (no name to show: write the words in the narration with 『』), nor the player (the protagonist never
+ * speaks), nor a phone message or a letter (read there, not heard; and they show no name plate).
+ */
+export const REMEMBERED_TAG = "remembered";
 
 /**
  * `# leave: <who>` (2026-11-13 user decision): a figure goes off the scene's stage from its line until they come on again
@@ -268,6 +283,21 @@ export type StoryCall = (typeof STORY_CALLS)[number];
  */
 export const EFFECT_TAG_KEYS: readonly string[] = ["requires", "give", "use", "rel", "profile", "memory", "set", "money", "ap", "then"];
 
+/** Throws for a `# remembered` that cannot show whose words they are (REMEMBERED_TAG); Japanese first. */
+function checkRemembered(tags: StoryTags): void {
+  if (!tags.speaker)
+    throw new Error("# remembered は、その行の話し手が前に言った言葉の印です。同じ行に # speaker: <人物ID>（enemy・heroine も書けます）を" +
+      "書いてください（# remembered needs the line's own # speaker:）。");
+  if (tags.speaker === "narrator")
+    throw new Error("# remembered は地の文の行には書けません。名札に出す名前がないためです。思い出す言葉は、地の文の中に『』で書いてください" +
+      "（# remembered on a narrator line: write the words in the narration with 『』）。");
+  if (tags.speaker === "player")
+    throw new Error("# remembered は主人公の行には書けません。主人公は話さないためです（# remembered on a player line: the protagonist never speaks）。");
+  if (tags.phone || tags.letter)
+    throw new Error("# remembered は、頭の中で聞こえる言葉の印です。携帯（# phone:）と手紙（# letter:）の行には書けません（名札が出ないため。" +
+      "# remembered is for words heard, not a phone message or a letter）。");
+}
+
 /** Interpret Ink's official currentTags/choice.tags output, never Ink source. */
 export function parseStoryTags(
   tags: readonly string[],
@@ -279,6 +309,12 @@ export function parseStoryTags(
   for (const tag of tags) {
     const bare = tag.trim();
     if (bare === "later") continue;
+    // `# remembered` alone (2026-11-16): checked with the line's speaker after the loop.
+    if (bare === REMEMBERED_TAG) {
+      if (result.remembered) throw new Error("1つの行に # remembered が2つあります。1つにしてください（Duplicate remembered tag）。");
+      result.remembered = true;
+      continue;
+    }
     // `# shake` alone: the scene's shake (2026-11-13).
     if (bare === "shake") {
       result.delivery = readDelivery("shake", "", result.delivery ?? {});
@@ -293,6 +329,8 @@ export function parseStoryTags(
       throw new Error("Invalid item_out tag: name the item (write # item_out: <item ID> or # item_out: <item ID> <line number>, an item of encounters/catalog.json)");
     if ((key === "em" || key === "em_shake") && !value)
       throw new Error(`Invalid ${key} tag: name the word (write # ${key}: <a word of the line>)`);
+    if (key === REMEMBERED_TAG)
+      throw new Error(`# remembered には値を書きません。# remembered だけを1行に書いてください（# remembered takes no value: ${tag}）。`);
     if (separator < 1 || !value) throw new Error(`Invalid story tag: ${tag}`);
     if (key === "effect") {
       if (!context.effectIds.includes(value))
@@ -477,6 +515,7 @@ export function parseStoryTags(
     throw new Error("# cutin: name shows the speaker's name: write # speaker: enemy or # speaker: <person ID> on the same line");
   if (result.cutin && (result.phone || result.letter))
     throw new Error("# cutin: name is for a line said in the scene, not a phone message or a letter");
+  if (result.remembered) checkRemembered(result);
   if (result.itemShow && result.itemOut)
     throw new Error(`A line shows an item or takes one out, not both: # item_show: ${result.itemShow} and # item_out: ${result.itemOut.itemId}`);
   return result;
