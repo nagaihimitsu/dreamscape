@@ -16,7 +16,7 @@ import { defineMiniGame } from "../contract";
  * A flap at any of them is early. The heroine whispers 「まだ……」 as Jasmeet freezes.
  *
  * Practice (2026-11-16: shorter and simpler than the real flap, never its rehearsal): one play with the `warmup` key, a
- * short plain walk of its own (rules.ts CLOTH_WARMUP_PLAN, about 2.7 s): already two steps down, she comes down three
+ * short plain walk of its own (rules.ts CLOTH_WARMUP_PLAN, about 2.6 s): already two steps down, she comes down three
  * steady steps onto the gold step and one on past it, with wider windows; no stop, no boy, no freeze, no feint, no bobs,
  * no leap, and no whisper. It teaches the one tap only.
  *
