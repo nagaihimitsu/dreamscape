@@ -7,12 +7,17 @@ import type { MONKEY_THINGS } from "./definition";
 // (a decoy: not hers, let it fall), lets go of the thing and snatches it back in mid-air (the catch the fall promised does
 // not come), and at last opens its hand and lets it fall, the other hand dropping a second shell beside it ("two
 // things"): the shell falls straight, and the thing clips the wall's carved ledge and comes on a moment later (the late
-// change: the climax). One tap closes the hands. Nothing is random: the same teasing every time (practice is a
-// rehearsal). Pure.
+// change: the climax). One tap closes the hands. Nothing is random: the same teasing every time. Practice (the tag's
+// `warmup`, which only practice sets) is a short plain drop of its own (monkeyWarmupPlan): the monkey holds the thing out
+// and simply lets go, it falls straight into the hands with wide windows, and none of the real catch's teasing shows.
+// Pure.
 
 export type MonkeyCatchOutcome = "caught" | "fumbled" | "missed";
-/** The tag's keys: what the monkey drops (the picture only; the timing is the same). */
-export type MonkeyCatchParams = { thing: (typeof MONKEY_THINGS)[number] };
+/** The tag's keys: what the monkey drops (the picture only; the timing is the same), and practice's plain drop. */
+export type MonkeyCatchParams = { thing: (typeof MONKEY_THINGS)[number]; warmup?: "yes" };
+
+/** Whether a play is practice's plain drop (the definition's practice sets `warmup`; a story never writes it). */
+export const isMonkeyWarmup = (params: MonkeyCatchParams): boolean => params.warmup === "yes";
 
 /**
  * The catch's tuning (E1; Debug's room edits these numbers): the monkey's teasing and the windows, wider after the thing
@@ -134,6 +139,46 @@ export function monkeyEarlyFall(plan: MonkeyPlan, tuning: MonkeyTuning, tapMs: n
 export const MONKEY_SNATCH_BACK_MS = 260;
 
 /**
+ * Practice's catch (the tag's `warmup`): one plain drop that teaches the tap and nothing of the real catch's teasing. The
+ * monkey holds the thing out (taps do not count yet), then simply lets go: it falls straight into the hands, no feint,
+ * shell, snatch or ledge, and the windows are wider than the story's (wide enough for a first try, never wider than the
+ * palms hold it after it reaches them). About a third as long as the real catch. Its own numbers: Debug's room edits only
+ * the story's tuning, and a retuned play's practice is this same drop.
+ */
+export const MONKEY_WARMUP = {
+  /** The monkey holds it out over the wall's edge (taps do not count), then lets go. */
+  holdMs: 700,
+  /** Its straight fall from the monkey's hand to the player's. */
+  fallMs: 900,
+  /** After it reaches the hands, a play without a tap ends this long after (it has fallen out of the field). */
+  noneAfterMs: 500,
+  cleanEarlyMs: 110,
+  cleanLateMs: 150,
+  nearEarlyMs: 280,
+  nearLateMs: 300,
+} as const;
+
+/** Practice's plain drop worked out: when it lets go, when the thing reaches the hands, and the play's script (no traps). */
+export interface MonkeyWarmupPlan {
+  release: number;
+  hands: number;
+  fallMs: number;
+  script: CueTapScript;
+  tuning: CueTapTuning;
+}
+
+export function monkeyWarmupPlan(w: typeof MONKEY_WARMUP = MONKEY_WARMUP): MonkeyWarmupPlan {
+  const release = w.holdMs;
+  const hands = release + w.fallMs;
+  // Taps count from the moment it lets go; its fall reads from there (nothing changes on the way).
+  const script: CueTapScript = { start: release, moment: hands, end: hands + w.noneAfterMs, read: { guessAt: hands, tellAt: release }, traps: [] };
+  const { cleanEarlyMs, cleanLateMs, nearEarlyMs, nearLateMs } = w;
+  return { release, hands, fallMs: w.fallMs, script, tuning: cueTapTuningFor(script, { cleanEarlyMs, cleanLateMs, nearEarlyMs, nearLateMs }) };
+}
+
+export const MONKEY_WARMUP_PLAN = monkeyWarmupPlan();
+
+/**
  * The catch's rules with a tuning (the story's, or Debug's room's edited one). Clean: caught. A little early or late: it
  * bounces off the fingers (the hands closed on the shell beside it, or a moment late). Far off (the hands closed at a
  * feint, on the first shell, on the thing it snatched back, or long after), or no tap: it falls past the hands. ★ from
@@ -141,8 +186,10 @@ export const MONKEY_SNATCH_BACK_MS = 260;
  */
 export function monkeyCatchRulesFor(tuning: MonkeyTuning): MiniGameRules<MonkeyCatchParams, MonkeyCatchOutcome, CueTapRecord> {
   const plan = monkeyPlan(tuning);
-  return cueTapRules<MonkeyCatchParams, MonkeyCatchOutcome>(plan.tuning,
-    { clean: "caught", early: "fumbled", late: "fumbled", miss: "missed", none: "missed" }, { trapJa: (tapMs) => monkeyTrapJa(plan, tapMs) });
+  // Practice's plain drop has its own timing and no tease to name.
+  return cueTapRules<MonkeyCatchParams, MonkeyCatchOutcome>((params) => (isMonkeyWarmup(params) ? MONKEY_WARMUP_PLAN.tuning : plan.tuning),
+    { clean: "caught", early: "fumbled", late: "fumbled", miss: "missed", none: "missed" },
+    { trapJa: (tapMs, params) => (isMonkeyWarmup(params) ? null : monkeyTrapJa(plan, tapMs)) });
 }
 
 /** Why an edited tuning would make the catch unfair (the engine's checks of the monkey's script; none: fair). */

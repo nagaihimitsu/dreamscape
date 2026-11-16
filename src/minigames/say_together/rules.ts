@@ -11,10 +11,15 @@ import { rhythmTapEnd, rhythmTapFairness, type RhythmTapRecord, type RhythmTapTu
 // score count the words said together: one tap inside a word's window (a second tap on the same word is no longer
 // together; the first word together is the story's together). Timing only (2026-11-13 user decision: 「大きさじゃなくて
 // タイミングを合わせる」); nothing is random. Pure. Every number to tune is in SAY_NUMBERS (E1; Debug's room edits them).
+//
+// Practice is a warm-up of its own (2026-11-16, the user: 練習は本番より簡単・短く、本番の予習にしない): a neutral count
+// 「いち」「に」 on an even beat of its own (not her 「せー」「の」's), then two plain counts said with her, 「さん」「し」, on
+// the same even beat, with wide windows: one tap a word, nothing else (no phrasing, no held syllable, no breath, no long
+// phrase). Its numbers are SAY_WARMUP_NUMBERS (fixed: Debug's room edits the real play's only).
 
 export type SayTogetherOutcome = "together" | "early" | "late" | "silent";
-/** The game has no keys of its own. */
-export type SayTogetherParams = object;
+/** The game's one key: practice's warm-up (the definition's practice sets it; never in a story's tag). */
+export type SayTogetherParams = { warmup?: "yes" };
 export type SayRecord = RhythmTapRecord;
 
 /** Her count before the words (「せー」「の」), and the words. */
