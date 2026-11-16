@@ -41,7 +41,7 @@ import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
-import { guideSkipDestination } from "./guide-skip";
+import { guideEndLabel, guideSkipDestination } from "./guide-skip";
 import "./tourism.css";
 import "../journey/encounter.css";
 
@@ -111,6 +111,7 @@ export function TourismScreen({
   const frame = active.frame;
   const guideStoryId = activeGuideStoryId(active) ?? landmark.guideStoryId ?? "";
   const skipDestination = guideSkipDestination(landmark, !!active.replay);
+  const endLabel = guideEndLabel(landmark, !!active.replay);
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
@@ -246,7 +247,8 @@ export function TourismScreen({
           </div>
           {/* 「案内をとばす」 (2026-11-14, the phone UI audit): top left under the header, away from the window's head,
               whose place by 「ログ」 holds the harmless 「隠す」 in every scene. Not at a choice (the guide stops there:
-              choose first), on its last line (「観察を始める」 reads it to the end) or while the window is hidden. */}
+              choose first), on its last line (its button, 「観察を始める」 or 「クイズへ進む」, reads it to the end) or while the
+              window is hidden. */}
           {!frame.ended && !frame.choices.length && !windowVisibility.hidden && (
             <button type="button" className="guide-skip" data-testid="tourism-skip" onClick={onSkip}>
               案内をとばす{skipDestination && <span className="guide-skip-to">（{skipDestination}）</span>}
@@ -294,7 +296,7 @@ export function TourismScreen({
               disabled={!ready}
               onClick={advanceSafely}
             >
-              観察を始める
+              {endLabel}
               <span aria-hidden="true"> →</span>
             </button>}
             </div>

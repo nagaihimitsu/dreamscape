@@ -32,6 +32,11 @@ export interface SceneTapState {
    * second tap, landing on whatever the press put under the finger.
    */
   settling: boolean;
+  /**
+   * An answer's result stands where the line would, its options gone (an encounter's English 3-choice: its verdict and
+   * explanation): a reading tap continues past it, as its 「続きを読む」 does (2026-11-16 user decision; sceneTapStep).
+   */
+  resultShown?: boolean;
 }
 
 /** Marks the dialogue line (DialogueText): a tap on it reads on, it is not a control press. */
@@ -79,6 +84,15 @@ export function shouldAdvanceOnTap(target: TapNode | null, scene: TapNode, state
     if (isInteractive(node) || isNearMiss(node)) return false;
   }
   return false;
+}
+
+/**
+ * What a reading tap (shouldAdvanceOnTap) does: continue past an answer's shown result (`resultShown`), or what a tap
+ * on the line does. Null when the tap does not read on.
+ */
+export function sceneTapStep(target: TapNode | null, scene: TapNode, state: SceneTapState): "line" | "result" | null {
+  if (!shouldAdvanceOnTap(target, scene, state)) return null;
+  return state.resultShown ? "result" : "line";
 }
 
 /**
