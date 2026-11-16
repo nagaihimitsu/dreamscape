@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "noteJa": "インド・ゴールデントライアングル編の用語と表記の台帳。npm run text:check が、遊ぶ人に見える文（この編の Ink の行・選択肢・札の字と、データの …Ja の欄）から avoid の言い方を探して知らせる（注意だけ。ゲームは読まない）。資料に書いた決まりだけを、その資料の名前を reasonJa に書いて足す。allow は、avoid の言い方を含むが直さない語。",
+  "terms": [
+    {
+      "preferred": "街歩き",
+      "avoid": ["自由時間"],
+      "reasonJa": "2026-11-16 のユーザー判断。authoring/DECISION_GUIDE.md 11章、authoring/SWEEP_CHECK_GUIDE.md 6.5"
+    },
+    {
+      "preferred": "クイズ",
+      "avoid": ["バトル"],
+      "reasonJa": "人物とのクイズは「クイズ」（矛盾追及・証拠連結は「推理クイズ」）と呼ぶ。2026-11-11 のユーザー判断。AGENTS.md「文章と言語」"
+    },
+    {
+      "preferred": "相手",
+      "avoid": ["敵"],
+      "allow": ["素敵", "無敵", "匹敵", "不敵", "敵わ", "敵う"],
+      "reasonJa": "クイズの人は「相手」と呼ぶ。2026-11-11 のユーザー判断。AGENTS.md「文章と言語」"
+    },
+    {
+      "preferred": "恋の段階",
+      "avoid": ["恋愛の段階"],
+      "reasonJa": "2026-11-16 に、Debug の表示に合わせて呼び名を「恋の段階」に一つにした（16b9d71）。authoring/CONTENT_GUIDE.md「条件の書き方」"
+    },
+    {
+      "preferred": "ナハルガル城",
+      "avoid": ["ナハルガル砦"],
+      "reasonJa": "2026-11-15 に、遊ぶ人に見える nameJa の表記にそろえた。authoring/RESEARCH_PITFALLS.md 4.1"
+    },
+    {
+      "preferred": "ナハル",
+      "avoid": ["ナーハル"],
+      "reasonJa": "長音なしにそろえた（ナハルガル城、名の由来のナハル・シン）。2026-11-15。authoring/RESEARCH_PITFALLS.md 4.1"
+    },
+    {
+      "preferred": "ロディ・ガーデン",
+      "avoid": ["ロディ庭園"],
+      "reasonJa": "2026-11-15 に、遊ぶ人に見える nameJa の表記にそろえた。authoring/RESEARCH_PITFALLS.md 4.1"
+    },
+    {
+      "preferred": "ロディ",
+      "avoid": ["ローディー", "ローディ"],
+      "reasonJa": "長音なしにそろえた（ロディ・ガーデン）。2026-11-15。authoring/RESEARCH_PITFALLS.md 4.1"
+    },
+    {
+      "preferred": "ラーム・バーグ",
+      "avoid": ["ラム・バーグ"],
+      "reasonJa": "#132 で Ink・地図・背景の名前をそろえた。authoring/RESEARCH_PITFALLS.md 4.1、authoring/SCENARIO_EDITING_GUIDE.md 2.10"
+    },
+    {
+      "preferred": "チーニー・カ・ラウザー",
+      "avoid": ["チーニー・カ・ラウザ"],
+      "reasonJa": "#132 で Ink・地図・背景の名前をそろえた。authoring/RESEARCH_PITFALLS.md 4.1、authoring/SCENARIO_EDITING_GUIDE.md 2.10"
+    }
+  ]
+}
