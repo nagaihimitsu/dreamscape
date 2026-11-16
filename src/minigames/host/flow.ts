@@ -1,10 +1,10 @@
 import type { MiniGameFinishTone, MiniGameRating, MiniGameReaction } from "../contract";
 import type { VibrationKind } from "../../audio/vibration";
 import { seededRandom } from "./seed";
-import { MINI_GAME_COUNT_STEP_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
+import { MINI_GAME_COUNT_STEP_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_PRACTICE_STOP_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
 
-// The host's flow as pure functions (docs/13 2.6): the count before a play, the finish's strength, the result card's
-// buttons and its counted score, the heroine's line and face. MiniGameHost.tsx draws them; the tests read them here.
+// The host's flow as pure functions (docs/13 2.6): the count before a play, the finish's strength, practice's cut-in
+// into the real play, the result card's buttons and its counted score, the heroine's line and face. MiniGameHost.tsx draws them; the tests read them here.
 
 /** What the host's count shows: 3, 2, 1 through the lead, 「スタート！」 for a moment after it, then nothing. */
 export type CountPhase = "3" | "2" | "1" | "go" | null;
@@ -52,6 +52,12 @@ export const finishWord = (finishJa: string | null | undefined): string | null =
 /** When the result card comes after `end`: after the finish word, or after the field's hold when that is longer. */
 export const resultCardDelay = (holdMs: number | undefined): number => Math.max(MINI_GAME_FINISH_MS, holdMs && holdMs > 0 ? holdMs : 0);
 
+/**
+ * When practice's cut-in 「次は本番！」 comes after its `end` (practice has no finish word and no result card: one play,
+ * then the real one, 2026-11-16): after a short stop, or after the field's hold when that is longer.
+ */
+export const toRealDelay = (holdMs: number | undefined): number => Math.max(MINI_GAME_PRACTICE_STOP_MS, holdMs && holdMs > 0 ? holdMs : 0);
+
 /** A hit-stop's length: 40–150 ms, 90 when the game names none. */
 export const hitStopMs = (ms: number | undefined): number => Math.min(150, Math.max(40, ms === undefined || !Number.isFinite(ms) ? 90 : ms));
 
@@ -73,25 +79,22 @@ export function resultCardCompact({ card, field, layerHeight }: { card: ScreenSp
   return overlap / (field.bottom - field.top) > RESULT_CARD_MAX_COVER;
 }
 
-/** What the result card offers. */
+/** What the result card offers (the real play's: practice has no card). */
 export interface ResultButtons {
-  /** 「次へ」: take the outcome's choice (never in practice). */
+  /** 「次へ」: take the outcome's choice. */
   next: boolean;
   /** 「もう一回」: play again at once. */
   retry: boolean;
-  /** 「本番へ」: from practice to the real play. */
-  toReal: boolean;
   /** The card takes 「次へ」 by itself after a moment: only when 「次へ」 is all it offers. */
   autoAdvance: boolean;
 }
 
 /**
- * The result card's buttons: practice offers 「もう一回」 and 「本番へ」; the real play 「次へ」, and 「もう一回」 too where
- * a retry is allowed (the tag's `retry`, Debug's room). It goes on by itself only when it offers nothing else.
+ * The result card's buttons: 「次へ」, and 「もう一回」 too where a retry is allowed (the tag's `retry`, Debug's room). It
+ * goes on by itself only when it offers nothing else. (Practice has no card: it goes into the real play by itself.)
  */
-export function resultButtons({ practice, retry }: { practice: boolean; retry: boolean }): ResultButtons {
-  if (practice) return { next: false, retry: true, toReal: true, autoAdvance: false };
-  return { next: true, retry, toReal: false, autoAdvance: !retry };
+export function resultButtons({ retry }: { retry: boolean }): ResultButtons {
+  return { next: true, retry, autoAdvance: !retry };
 }
 
 const FIRST_NUMBER = /\d+(?:\.\d+)?/u;
@@ -144,7 +147,8 @@ export const playLeavable = ({ practice, ended, decided }: { practice: boolean; 
 
 /**
  * Whether the band shows 「中断する」: while the play may be left (playLeavable), but not over the result card, whose own
- * buttons say what comes next (2026-11-14, the phone UI audit: it stayed on practice's card). Esc still leaves practice.
+ * buttons say what comes next (2026-11-14, the phone UI audit). Practice shows it until the real play starts (its cut-in
+ * included: leaving then goes back to the instruction card).
  */
 export const quitShown = (state: { practice: boolean; ended: boolean; decided: boolean; cardShown: boolean }): boolean =>
   !state.cardShown && playLeavable(state);

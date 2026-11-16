@@ -21,7 +21,6 @@ export interface ResultCardProps {
   /** The heroine's face (CharacterFace) and her line. */
   face?: ReactNode;
   line?: string;
-  practice: boolean;
   retry: boolean;
   anchor: "top" | "bottom";
   /** The play's field on the screen (its key picture): the card goes compact when it would cover too much of it. */
@@ -30,16 +29,15 @@ export interface ResultCardProps {
   /** When the card came (performance.now): the guard counts from it. */
   shownAt: number;
   onNext(): void;
-  /** 「もう一回」 and 「本番へ」, with the button pressed (the next play's start guard reads its place). */
+  /** 「もう一回」, with the button pressed (the next play's start guard reads its place). */
   onRetry(from: Element): void;
-  onToReal(from: Element): void;
 }
 
 /** Whether the card's guard has passed (a press now is the player's own). */
 export const resultCardReady = (shownAt: number, now = performance.now()): boolean => now - shownAt >= MINI_GAME_RESULT_GUARD_MS;
 
-export function ResultCard({ label, rating, score, detail, face, line, practice, retry, anchor, field, still, shownAt, onNext, onRetry, onToReal }: ResultCardProps) {
-  const buttons = resultButtons({ practice, retry });
+export function ResultCard({ label, rating, score, detail, face, line, retry, anchor, field, still, shownAt, onNext, onRetry }: ResultCardProps) {
+  const buttons = resultButtons({ retry });
   const [counted, setCounted] = useState(() => (score && !still ? countedScore(score, 0) : score));
   const card = useRef<HTMLElement>(null);
   const body = useRef<HTMLDivElement>(null);
@@ -74,9 +72,8 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
     <span key={index} className="minigame-star" data-on={index <= rating.stars || undefined} data-big={rating.stars === 3 && index === 3 || undefined}
       style={still ? undefined : { animationDelay: `${(index - 1) * MINI_GAME_STAR_STEP_MS}ms` }}>★</span>
   )) : null;
-  const head = (practice || stars) && (
+  const head = stars && (
     <div className="minigame-result-head">
-      {practice && <span className="minigame-result-practice">練習</span>}
       {stars && <span className="minigame-stars" data-testid="minigame-stars" data-stars={rating?.stars} aria-hidden="true">{stars}</span>}
     </div>
   );
@@ -88,7 +85,7 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
   return (
     // A key held down from the play (its repeats) never presses the card's buttons.
     <section ref={card} className="minigame-result" data-anchor={anchor} data-compact={compact || undefined} data-testid="minigame-result"
-      aria-label={practice ? "練習の結果" : "結果"}
+      aria-label="結果"
       onKeyDown={(event) => { if (event.repeat) event.preventDefault(); }}>
       {/* Its words: part of the card low down (no box of its own there), a card of their own high up (host.css). */}
       <div ref={body} className="minigame-result-body">
@@ -114,8 +111,6 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
       </div>
       <div className="minigame-result-actions">
         {buttons.retry && <button type="button" className="secondary" data-testid="minigame-again" onClick={guarded(onRetry)}>もう一回</button>}
-        {buttons.toReal && <button ref={primary} type="button" className="primary" data-testid="minigame-to-real" data-minigame-card-primary
-          onClick={guarded(onToReal)}>本番へ <span aria-hidden="true">→</span></button>}
         {buttons.next && <button ref={primary} type="button" className="primary" data-testid="minigame-next" data-minigame-card-primary
           onClick={guarded(onNext)}>次へ <span aria-hidden="true">→</span></button>}
       </div>

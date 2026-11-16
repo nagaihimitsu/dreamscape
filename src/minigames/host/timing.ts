@@ -14,9 +14,13 @@ export const MINI_GAME_GO_MS = 300;
 
 /** The finish word (「そこまで！」) stays this long; the result card comes after it or after the play's hold, whichever is later. */
 export const MINI_GAME_FINISH_MS = 500;
+/** Practice's end: the field stands this long (or through the play's hold, when longer) before the cut-in 「次は本番！」. */
+export const MINI_GAME_PRACTICE_STOP_MS = 300;
+/** The cut-in 「練習おわり　次は本番！」 stays this long; then the real play starts (its count first: 2026-11-16, one practice, then the real one). */
+export const MINI_GAME_TO_REAL_MS = 1200;
 /** The result card drops every press this long after it shows (a finger still tapping the play does not skip it). */
 export const MINI_GAME_RESULT_GUARD_MS = 450;
-/** The result card takes its 「次へ」 by itself after this long (only when it offers nothing else: no practice, no retry). */
+/** The result card takes its 「次へ」 by itself after this long (only when it offers nothing else: no retry). */
 export const MINI_GAME_RESULT_MS = 2500;
 /** The result card's ★ come one by one, this far apart. */
 export const MINI_GAME_STAR_STEP_MS = 120;

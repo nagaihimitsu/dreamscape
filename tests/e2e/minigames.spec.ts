@@ -1,11 +1,12 @@
-import { MINI_GAME_RESULT_GUARD_MS, MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
+import { MINI_GAME_RESULT_GUARD_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_TO_REAL_MS } from "../../src/minigames/host/timing";
 import { expect, test, tier, type Page } from "./helpers";
 
 // Every registered mini-game through the shared host (docs/13 6.4), in Debug's 「ミニゲームの見本」 (no story, no save):
 // the instruction card's start, the focus in the play, 「中断する」 and Esc back to the start with nothing chosen, 「おまかせ」
 // to each outcome (a tap skips to it) with its result card read out and its 「次へ」 taking it (the room's card always
 // offers 「もう一回」, so it never goes on by itself), and a timed game's pause while the page is hidden (on Playwright's
-// clock, so no game's length is waited for). One game with practice and the host's count walks the whole flow. The
+// clock, so no game's length is waited for). One game with practice walks the whole flow (practice → 「次は本番！」 →
+// the real play by itself → its card's 「次へ」). The
 // fixture fails on any console error. The games are read from the room, so adding one adds nothing here. A game's own
 // real-input test (when to press) is its builder's tests/e2e/minigame-<gameId>.spec.ts. Development server only.
 test.describe.configure({ timeout: 120_000 });
@@ -93,7 +94,7 @@ test("every mini-game starts into its play, stops with 中断する and Esc, and
   }
 });
 
-test("a game with practice and the host's count: 練習 → もう一回 → 本番へ, a count the play ignores, then the result card's 次へ", { tag: tier.debug }, async ({ page }) => {
+test("a game with practice: one practice (a count the play ignores), its end's cut-in 「次は本番！」, the real play by itself, then the result card's 次へ", { tag: tier.debug }, async ({ page }) => {
   // The page's clock is Playwright's: each play's length is jumped over, not waited for.
   await page.clock.install();
   const games = await openRoom(page);
@@ -110,6 +111,7 @@ test("a game with practice and the host's count: 練習 → もう一回 → 本
     walked = true;
     const play = page.getByTestId("minigame-play");
     const card = page.getByTestId("minigame-result");
+    const cutIn = page.getByTestId("minigame-cutin");
     await practice.click();
     await expect(play).toHaveAttribute("data-practice", "true");
     await expect(page.getByTestId("minigame-practice-label")).toHaveText("練習");
@@ -121,32 +123,30 @@ test("a game with practice and the host's count: 練習 → もう一回 → 本
       await page.clock.runFor(200);
       await expect(play).not.toHaveAttribute("data-outcome", /.+/u);
     }
-    // Left alone, the practice play ends by itself and its card offers もう一回 and 本番へ, never taking the outcome.
-    await page.clock.runFor(LONGER_THAN_ANY_GAME_MS);
-    await expect(card).toBeVisible();
-    await expect(card).toContainText("練習");
-    await expect(page.getByTestId("minigame-next")).toHaveCount(0);
-    // Practice's card too (2026-11-14, the phone UI audit; before, 「中断する」 stayed over it and the dead 「振る」 looked
-    // pressable under it): no 「中断する」, the play's controls hidden, and the card's buttons at the bottom where they were.
-    await expect(page.getByTestId("minigame-quit")).toHaveCount(0);
-    await expect(play.locator("[data-minigame-controls]")).toBeHidden();
-    const layer = (await play.boundingBox())!;
-    const again = (await page.getByTestId("minigame-again").boundingBox())!;
-    expect(layer.y + layer.height - (again.y + again.height), "the card's buttons at the bottom").toBeLessThan(64);
-    await page.clock.runFor(MINI_GAME_RESULT_GUARD_MS + 50);
-    await page.getByTestId("minigame-again").click();
+    // Left alone, the practice play ends by itself (it is short: 2026-11-16) with no finish word and no result card: the
+    // cut-in 「練習おわり　次は本番！」 comes (read out), nothing is taken, and 「中断する」 may still leave.
+    for (let step = 0; step < 40 && !(await cutIn.count()); step++) await page.clock.runFor(500);
+    await expect(cutIn).toContainText("次は本番！");
     await expect(card).toHaveCount(0);
-    await expect(play).toHaveAttribute("data-practice", "true");
-    await page.clock.runFor(LONGER_THAN_ANY_GAME_MS);
-    await expect(card).toBeVisible();
-    await page.clock.runFor(MINI_GAME_RESULT_GUARD_MS + 50);
-    await page.getByTestId("minigame-to-real").click();
-    await expect(play).not.toHaveAttribute("data-practice", /.+/u);
+    await expect(page.getByTestId("minigame-finish")).toHaveCount(0);
+    await expect(page.getByTestId("minigame-announce")).toHaveText("練習おわり。次は本番。");
+    await expect(page.getByTestId("minigame-quit")).toBeVisible();
     await expect(page.getByTestId("minigame-room-last")).toHaveText("まだ遊んでいません。");
+    // After the cut-in the real play starts by itself (its count first where the host counts).
+    await page.clock.runFor(MINI_GAME_TO_REAL_MS + 50);
+    await expect(cutIn).toHaveCount(0);
+    await expect(play).not.toHaveAttribute("data-practice", /.+/u);
+    await expect(page.getByTestId("minigame-practice-label")).toHaveCount(0);
+    if (counted) await expect(page.getByTestId("minigame-count")).toHaveText("3");
     // The real play: its card's 次へ takes the outcome (the room's card does not go on by itself: it offers もう一回).
     await page.clock.runFor(LONGER_THAN_ANY_GAME_MS);
     await expect(card).toBeVisible();
     await expect(page.getByTestId("minigame-again")).toBeVisible();
+    // The card's buttons at the bottom, where the play's controls were (hidden under it: 2026-11-14, the phone UI audit).
+    await expect(play.locator("[data-minigame-controls]")).toBeHidden();
+    const layer = (await play.boundingBox())!;
+    const next = (await page.getByTestId("minigame-next").boundingBox())!;
+    expect(layer.y + layer.height - (next.y + next.height), "the card's buttons at the bottom").toBeLessThan(64);
     await page.clock.runFor(MINI_GAME_RESULT_GUARD_MS + 50);
     await page.getByTestId("minigame-next").click();
     await expect(page.getByTestId("minigame-room-last")).not.toHaveText("まだ遊んでいません。");
