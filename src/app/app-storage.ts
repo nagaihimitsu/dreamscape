@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { GameState } from "../domain/game";
 import type { KeyedStorage } from "../persistence/old-data";
+import type { DebugShot } from "./debug-mode";
 
 export const browserStorage = {
   getItem: (key: string) => window.localStorage.getItem(key),
@@ -33,5 +34,10 @@ export type AppProps = {
   debugPanel?: (state: GameState) => ReactNode;
   /** Debug sessions only: set to the running game's access while it shows (null when it goes). */
   debugAccess?: { current: DebugGameAccess | null };
+  /**
+   * Debug sessions only: the page's 撮影の形 (src/app/debug-mode.ts useDebugShot, on with a launch URL's shot=1), which also hides
+   * Debug's bar; without it, the game reads this device's own.
+   */
+  debugShot?: DebugShot;
 };
 

@@ -115,7 +115,7 @@ describe("every mini-game use with every outcome (the generated uses list)", () 
       for (const outcome of definition.outcomes) expect(rules.outcomeOf(rules.autoRecord(outcome.id, params), params), outcome.id).toBe(outcome.id);
     });
 
-  // Debug's 「ミニゲームの見本」 links each use it can open (not a scene of the hotel's moment, which 場面の確認 lacks) to its
+  // Debug's 「ミニゲームの見本」 links each use it can open (not a scene of the hotel's moment, which 場面の確認 opens the first time only) to its
   // scene on the use's own branch: a date without a held item where only that reaches it (Akbar's Tomb's sunglasses).
   const linked = uses.filter((use) => typeof miniGameUseLaunch(use) !== "string");
   it.each(linked.map((use) => [`${use.sceneId} ${use.knot ?? ""}${use.prefix ? ` prefix ${use.prefix}` : ""}`, use] as const))(

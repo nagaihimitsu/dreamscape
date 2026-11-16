@@ -1,5 +1,6 @@
 import { encounterVisitSlot, landmarkVisitOrder } from "../domain/encounter";
-import { battles, dateDestinations, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, type CityContent } from "../content";
+import { battles, dateDestinations, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, scenes, type CityContent } from "../content";
+import type { SceneEntry } from "../content/scene-schemas";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
@@ -7,8 +8,8 @@ import { validateGameState, type GameState } from "../domain/game";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { clockText, debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
 import {
-  atPlace, cityStart, completedCity, finishEpisode, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
-  startDateScene, startEncounterScene, startOccasionScene, tourScene, withAp, withRelationship,
+  atPlace, cityStart, completedCity, finishEpisode, isHotelInsert, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
+  startDateScene, startEncounterScene, startHotelInsertScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
 import { checkDebugFlags, withDebugClock, withDebugFlags, withDebugStage } from "./debug-edits";
 
@@ -48,6 +49,15 @@ function encounterTarget(item: Encounter): DebugTarget {
   return { id: item.id, name: item.titleJa, ...(needed.length ? { unavailable: `品物${names}が必要なため開けません`, unavailableKind: "item" as const } : {}) };
 }
 
+/**
+ * A scene of the hotel's moment (`# at: hotel …`; 2026-11-16, scene=hotel): its title (else 「宿の場面」) and when it runs, before
+ * the night's rest (a negative `# priority:`) or the morning after.
+ */
+function hotelTarget(scene: SceneEntry): DebugTarget {
+  const night = typeof scene.priority === "number" && scene.priority < 0;
+  return { id: scene.id, name: `${scene.title ?? "宿の場面"}（${night ? "休む前の夜" : "翌朝"}）` };
+}
+
 /** The first target Debug can open, as the scene picker (場面の確認) preselects it. */
 export function firstDebugTarget(targets: readonly DebugTarget[]): string {
   return targets.find((item) => !item.unavailable)?.id ?? "";
@@ -68,9 +78,11 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
     // A landmark's visit's scenes (a scene of another moment, stage 4, runs when its moment opens in play: the date, the hotel…).
     encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.landmarkId)
       .map((item) => (atTourOnly(item.landmarkId) ? { id: item.id, name: item.titleJa, ...TOUR_ONLY } : encounterTarget(item))),
-    // Ordinary dates, and her answer to a deferral (opened after Debug's records of one: startDateScene).
-    date: dates.filter((item) => (item.kind === "normal" || item.kind === "answer") && travel.events.some((event) => event.id === item.id))
-      .map((item) => mark({ id: item.id, name: item.titleJa }, atTourOnly(undefined, item.id))),
+    // Ordinary dates, the confession (2026-11-16) and her answer to a deferral, each opened after Debug's records of what it
+    // needs (startDateScene).
+    date: dates.filter((item) => (item.kind === "normal" || item.kind === "answer" || item.kind === "confession") &&
+      travel.events.some((event) => event.id === item.id))
+      .map((item) => mark({ id: item.id, name: item.kind === "confession" ? `${item.titleJa}（告白）` : item.titleJa }, atTourOnly(undefined, item.id))),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
     occasion: landmarks.filter((item) => item.cityId === cityId).map((item) => mark({ id: item.id, name: `${item.nameJa}の時点` }, atTourOnly(item.id))),
@@ -78,6 +90,8 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
     // Free time (the map) at a place of the city, the hotel first (where a day starts).
     free: [...travel.places].sort((a, b) => Number(b.id === travelSettings.hotelPlaceId) - Number(a.id === travelSettings.hotelPlaceId))
       .map((place) => mark({ id: place.id, name: place.nameJa }, isTourOnlyPlace(place))),
+    // The hotel's moment's scenes (a sick night, the morning after), opened through 「休む」 (startHotelInsertScene).
+    hotel: scenes.filter((scene) => scene.cityId === cityId && isHotelInsert(scene.id)).map(hotelTarget),
   };
 }
 
@@ -178,12 +192,15 @@ function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: stri
 }
 
 /**
- * The scene's starting state from its progress's: without the items `without` names, with the flags it adds, Debug's AP and
- * relationship values, and its 恋の段階 when one is chosen (else the progress's own).
+ * The scene's starting state from its progress's: without the items `without` names, with the flags it adds, at its day and
+ * time when one is chosen (the party at the hotel, where every scene's opener starts from; free time sets its clock at its
+ * own place: openFreeTime), Debug's AP and relationship values, and its 恋の段階 when one is chosen (else the progress's own).
  */
 function prepared(state: GameState, settings: DebugSettings): GameState {
   const base = withDebugFlags(withoutHeldItems(state, settings.without ?? []), settings.flags ?? []);
-  const related = withRelationship(withAp(base, settings.ap), settings);
+  const clocked = settings.scene === "free" || (settings.day === undefined && settings.time === undefined) ? base
+    : withDebugClock(atPlace(base, base.travel.hotelPlaceId), { day: settings.day, minute: settings.time });
+  const related = withRelationship(withAp(clocked, settings.ap), settings);
   return settings.stage === undefined ? related : withDebugStage(related, settings.stage);
 }
 
@@ -208,6 +225,7 @@ export function createDebugState(settings: DebugSettings): GameState {
     case "encounter": return startEncounterScene(state, settings.id, ticket);
     case "date": return settings.before ? dateBeforeEpisode(settings, settings.before, cityId) : startDateScene(state, settings.id, ticket);
     case "occasion": return startOccasionScene(state, settings.id, settings.from, settings.prep ?? [], ticket);
+    case "hotel": return startHotelInsertScene(state, settings.id, ticket);
     case "tour": {
       if (!getCityTours(cityId).some((item) => item.id === settings.id))
         throw new Error(`「${settings.id}」は${getCityContent(cityId).city.nameJa}のツアーではありません。`);
@@ -231,7 +249,7 @@ export function debugSceneLocation(settings: DebugSettings, state: GameState): s
       : step?.labelJa;
     return `ツアー：${tour?.titleJa ?? settings.id}（${label ?? (record?.status === "booked" ? "予約中" : "行程")}）`;
   }
-  if (settings.scene === "free") {
+  if (settings.scene === "free" || settings.scene === "hotel") {
     const place = getCityContent(state.currentCityId).travel.places.find((item) => item.id === state.travel.currentPlaceId);
     return `${place?.nameJa ?? state.travel.currentPlaceId}（${state.travel.day}日目 ${clockText(state.travel.minute)}）`;
   }

@@ -6,11 +6,11 @@
  * The format is for development and may change without compatibility.
  */
 
-export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion", "tour", "free"] as const;
+export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion", "tour", "free", "hotel"] as const;
 export type DebugScene = (typeof debugScenes)[number];
 export const debugSceneLabels: Record<DebugScene, string> = {
   tourism: "観光・場所", battle: "クイズ", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
-  tour: "ツアー", free: "街歩き（地図）",
+  tour: "ツアー", free: "街歩き（地図）", hotel: "宿の場面（休む）",
 };
 export type DebugDataMode = "real" | "fixture";
 
@@ -42,8 +42,9 @@ export type DebugSettings = {
    */
   before?: string;
   /**
-   * Free time (scene=free; 2026-11-15 user request): the day of the stay in the city (travel.day, 1 = the arrival day) and the
-   * time (minutes since midnight) its clock shows; either left out keeps the progress's own (debug-edits.ts withDebugClock).
+   * The day of the stay in the city (travel.day, 1 = the arrival day) and the time (minutes since midnight): free time's clock
+   * (scene=free; 2026-11-15 user request), or the clock any other scene starts at (2026-11-16: a date's `cond("time night")`
+   * branch, a hotel's rest at night); either left out keeps the progress's own (debug-edits.ts withDebugClock).
    */
   day?: number;
   time?: number;
@@ -105,6 +106,12 @@ export interface DebugQuery {
   time?: number;
   flags?: string[];
   stage?: DebugRomanceStage;
+  /**
+   * 撮影の形 (shot mode, 2026-11-16): the page opens with Debug's own marks hidden (its bar, the relationship-change strip, the
+   * locked cards…), so that a screenshot looks like play. For this page only, never stored (the device's own setting:
+   * src/app/debug-mode.ts readDebugShot).
+   */
+  shot?: true;
 }
 
 export type ParsedDebugQuery =
@@ -121,7 +128,7 @@ const choices = {
 } as const;
 /** URL items in the order a copied URL lists them. */
 export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "stage", "roll", "from", "prep", "step", "without",
-  "before", "day", "time", "flags"] as const;
+  "before", "day", "time", "flags", "shot"] as const;
 type QueryKey = (typeof debugQueryKeys)[number];
 const idPattern = /^[a-z][a-z0-9_]*$/;
 const listNames = { prep: "場面", without: "品物", flags: "フラグ" } as const;
@@ -143,6 +150,10 @@ function parseValue(key: QueryKey, value: string): string | number {
     if (stage === undefined)
       throw new Error(`「stage=${value}」は使えません。stage には恋の段階 ${debugRomanceStages[0]}〜${debugRomanceStages.at(-1)} の整数を書きます。`);
     return stage;
+  }
+  if (key === "shot") {
+    if (value !== "1") throw new Error(`「shot=${value}」は使えません。shot には 1 を書きます（撮影の形：Debugの帯や印を隠して開きます）。`);
+    return value;
   }
   if (key === "day") {
     const number = /^\d+$/u.test(value) ? Number(value) : NaN;
@@ -199,12 +210,14 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     if (values.time !== undefined) query.time = values.time as number;
     if (values.flags !== undefined) query.flags = (values.flags as string).split(",");
     if (values.stage !== undefined) query.stage = values.stage as DebugRomanceStage;
+    if (values.shot !== undefined) query.shot = true;
     if ((query.from || query.prep) && query.scene !== "occasion") throw new Error("from と prep は scene=occasion（場面から始める）で使います。");
     if (query.step && query.scene !== "tour") throw new Error("step は scene=tour（ツアー）で使います。");
     if ((query.without || query.before) && query.scene !== "date") throw new Error("without と before は scene=date（デート）で使います。");
-    if ((query.day !== undefined || query.time !== undefined) && query.scene !== "free") throw new Error("day と time は scene=free（街歩き）で使います。");
-    if (query.flags && query.scene === "map") throw new Error("flags は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。");
-    if (query.stage !== undefined && query.scene === "map") throw new Error("stage は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。");
+    // The map check shows a prototype city's data, without a game state or Debug's marks.
+    const sceneOnly = (["day", "time", "flags", "stage", "shot"] as const).filter((key) => values[key] !== undefined);
+    if (sceneOnly.length && query.scene === "map")
+      throw new Error(`${sceneOnly.join(" と ")} は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。`);
     return { kind: "launch", query };
   } catch (error) {
     return { kind: "error", message: error instanceof Error ? error.message : String(error) };
@@ -218,7 +231,7 @@ export function debugQueryString(query: DebugQuery): string {
     target: query.target, progress: query.progress, ap: query.ap, affection: query.affection,
     trust: query.trust, spark: query.spark, stage: query.stage, roll: query.roll, from: query.from, prep: query.prep?.join(","), step: query.step,
     without: query.without?.join(","), before: query.before, day: query.day,
-    time: query.time === undefined ? undefined : clockText(query.time), flags: query.flags?.join(","),
+    time: query.time === undefined ? undefined : clockText(query.time), flags: query.flags?.join(","), shot: query.shot ? 1 : undefined,
   };
   // A time keeps its colon (allowed in a query), so that the URL reads time=19:00.
   return ["?debug", ...debugQueryKeys.flatMap((key) =>
@@ -231,7 +244,6 @@ export function settingsQuery(dataMode: DebugDataMode, settings: DebugSettings):
     ap: settings.ap, affection: settings.affection, trust: settings.trust, spark: settings.spark, roll: settings.roll,
     ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}), ...(settings.step ? { step: settings.step } : {}),
     ...(settings.without?.length ? { without: settings.without } : {}), ...(settings.before ? { before: settings.before } : {}),
-    ...(settings.scene === "free" && settings.day !== undefined ? { day: settings.day } : {}),
-    ...(settings.scene === "free" && settings.time !== undefined ? { time: settings.time } : {}),
+    ...(settings.day !== undefined ? { day: settings.day } : {}), ...(settings.time !== undefined ? { time: settings.time } : {}),
     ...(settings.flags?.length ? { flags: settings.flags } : {}), ...(settings.stage !== undefined ? { stage: settings.stage } : {}) };
 }

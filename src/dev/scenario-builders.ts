@@ -12,7 +12,7 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, progression, sceneConditions, type DateDefinition, type QuizQuestion, type Tour } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, progression, sceneConditions, scenes, type DateDefinition, type QuizQuestion, type Tour } from "../content";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { bookTour as bookTourOffer, continueTour, getTourOffers } from "../domain/tour";
 import { encounters } from "../content/encounters";
@@ -756,14 +756,40 @@ function withDeferral(state: GameState, date: DateDefinition): GameState {
   const own = dates.filter((item) => item.chapterId === state.currentCityId);
   const confession = own.find((item) => item.kind === "confession");
   if (!confession) throw new Error("この都市には告白のデートがないため、保留の後の場面を開けません。");
-  const missing = Math.max(0, progression.confession.minCompletedDates - completedDateCount(state));
-  const ordinary = own.filter((item) => item.kind === "normal" && !state.playedDateIds.includes(item.id)).slice(0, missing).map((item) => item.id);
+  const ordinary = missingCountedDates(state);
   const deferred: GameState = state.confessionStatus === "deferred" ? state : {
     ...state, confessionStatus: "deferred", lastRejectedDateCount: null, recoveryAfterRejection: false,
     romanceStage: Math.max(state.romanceStage, confession.minRomanceStage) as GameState["romanceStage"],
     playedDateIds: [...new Set([...state.playedDateIds, ...ordinary, confession.id])],
   };
   return date.when ? withCondition(deferred, date.when) : deferred;
+}
+
+/**
+ * The current city's first ordinary dates not played yet, as many as a confession still counts (progression's
+ * minCompletedDates less the completed ones); `keep` leaves a date out (one its story asks about).
+ */
+function missingCountedDates(state: GameState, keep: (dateId: string) => boolean = () => true): string[] {
+  const missing = Math.max(0, progression.confession.minCompletedDates - completedDateCount(state));
+  return dates.filter((item) => item.chapterId === state.currentCityId && item.kind === "normal" && !state.playedDateIds.includes(item.id) && keep(item.id))
+    .slice(0, missing).map((item) => item.id);
+}
+
+/**
+ * Debug's records for a confession date (2026-11-16: to see each of her answers without playing the city's dates first), set
+ * directly as Debug sets the AP: the stage it needs (its minRomanceStage, when the state's is lower) and the ordinary dates a
+ * confession counts (missingCountedDates, the dates its story asks about with `cond("date …")` left out), so that Debug's
+ * relationship values alone decide her answer (confessionResult: accepted, deferred or rejected, never by chance). Then the parts
+ * of the date's own `when` Debug can set (withCondition: the night).
+ */
+function withConfession(state: GameState, date: DateDefinition): GameState {
+  if (state.endingReached) throw new Error("交際エンディングの後は、告白のデートを開けません。");
+  const read = scenes.find((scene) => scene.main && "date" in scene.main && scene.main.date === date.id)?.conds ?? [];
+  const asked = (dateId: string) => read.some((text) => new RegExp(`(?:^|\\s)date ${dateId}(?:\\s|$)`, "u").test(text));
+  const ordinary = missingCountedDates(state, (dateId) => !asked(dateId));
+  const ready: GameState = { ...state, romanceStage: Math.max(state.romanceStage, date.minRomanceStage) as GameState["romanceStage"],
+    playedDateIds: [...new Set([...state.playedDateIds, ...ordinary])] };
+  return date.when ? withCondition(ready, date.when) : ready;
 }
 
 /**
@@ -798,11 +824,13 @@ export function startHotelInsertScene(state: GameState, sceneId: string, ticket:
 
 /**
  * Start a date at its place with a saved reaction ticket; its AP is spent as on the map. A date that follows a deferral (her
- * answer) starts after Debug's records of one (withDeferral): Debug's relationship values decide her answer.
+ * answer) starts after Debug's records of one (withDeferral), a confession after Debug's records of what it needs
+ * (withConfession): Debug's relationship values decide her answer.
  */
 export function startDateScene(state: GameState, dateId: string, ticket: number): GameState {
   const definition = dates.find((item) => item.id === dateId);
-  const ready = definition?.needsDeferred ? withDeferral(state, definition) : state;
+  const ready = definition?.needsDeferred ? withDeferral(state, definition)
+    : definition?.kind === "confession" ? withConfession(state, definition) : state;
   const placed = atPlace(ready, scenePlaceId(state.currentCityId, dateId, undefined));
   const next = startDate(placed, dateId, () => ticket);
   if (!next.activeDate) {

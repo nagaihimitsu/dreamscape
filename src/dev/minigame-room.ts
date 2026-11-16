@@ -25,13 +25,16 @@ const DEBUG_SCENE: Partial<Record<MiniGameUse["kind"], DebugScene>> = {
 
 /**
  * How Debug opens a use's scene: its city and the Debug target of its main part (the date, the landmark of a guide, the
- * battle, the encounter, the city's finale for its epilogue), with 場面の確認's defaults; or why it cannot (a message).
+ * battle, the encounter, the city's finale for its epilogue), with 場面の確認's defaults; or why it cannot (a message). A scene
+ * of the hotel's moment opens in 場面の確認 (scene=hotel, 2026-11-16) the first time only, while a use may be on a branch of a
+ * later night (its own `seen`), so it is not linked.
  */
 export function miniGameUseLaunch(use: MiniGameUse): DebugSettings | string {
   const entry = scenes.find((scene) => scene.id === use.sceneId);
   const scene = DEBUG_SCENE[use.kind];
   if (!entry || !scene) return `${use.sceneId}（${use.kind}）はDebugの場面の確認から開けません`;
-  if (isHotelInsert(entry.id)) return `${use.sceneId}：宿の時点（「休む」）の場面は、場面の確認からは開けません`;
+  if (isHotelInsert(entry.id))
+    return `${use.sceneId}：宿の時点（「休む」）の場面です。場面の確認の「宿の場面（休む）」で、初めて出るときの形を開けます（2回目からの分かれ道は、遊んで進めます）`;
   const main = entry.main;
   const target = !main ? entry.id : "date" in main ? main.date : "guide" in main ? main.guide : "battle" in main ? main.battle
     : "epilogue" in main ? episodes.find((episode) => episode.cityId === main.epilogue && episode.kind === "city_finale")?.id ?? "" : "";

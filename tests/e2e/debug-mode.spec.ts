@@ -84,9 +84,10 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   // Until Debug is opened, the page loads no Debug code: the files index.html loads at once and those the game
   // loads later (Milan's part of the content, the map, …), none with Debug's code (expectNoDebugCode; Debug's chunks
   // are loaded later, whatever their names), and, once Debug mode is on, the parts that ゲームの設定 shows under the
-  // switch, each a chunk of its own: the note of 最初の3分の計測 (IntroTimingNote.tsx) and 台詞の声の速さ
-  // (DebugVoiceRate.tsx and its stylesheet). None of them while it is off.
-  const debugModeParts = [/^\/assets\/IntroTimingNote-[\w-]+\.js$/u, /^\/assets\/DebugVoiceRate-[\w-]+\.(?:js|css)$/u];
+  // switch, each a chunk of its own: 撮影の形 (DebugShotSetting.tsx and its stylesheet), the note of 最初の3分の計測
+  // (IntroTimingNote.tsx) and 台詞の声の速さ (DebugVoiceRate.tsx and its stylesheet). None of them while it is off.
+  const debugModeParts = [/^\/assets\/DebugShotSetting-[\w-]+\.(?:js|css)$/u, /^\/assets\/IntroTimingNote-[\w-]+\.js$/u,
+    /^\/assets\/DebugVoiceRate-[\w-]+\.(?:js|css)$/u];
   const isDebugModePart = (path: string) => debugModeParts.some((part) => part.test(path));
   expect(requestedWhileOff).toBeGreaterThan(0);
   expect(await expectNoDebugCode(page, requested.slice(0, requestedWhileOff))).toEqual(["milano"]);
