@@ -42,6 +42,11 @@
 - [新しい都市を1つ足す手引き](authoring/NEW_CITY_GUIDE.md)：都市を1つ足す作業の順番と、同時に進められる作業。ここから始める。
 - [コンテンツ制作ガイド](authoring/CONTENT_GUIDE.md)：会話・札・クイズ・観光・デート・条件・移動・音・人物の絵の書き方。
 - [シナリオ改稿のポイント（編集者視点）](authoring/SCENARIO_EDITING_GUIDE.md)：書き上がったシナリオを、書いた人とは別の編集者が、初めて遊ぶ人の目で読み直して整える手引き。
+- [発注マニュアル](authoring/ORDERING_MANUAL.md)：ヒロインの声と、描いてもらう絵の頼み方・受け取り方。
+- [調べものの落とし穴集](authoring/RESEARCH_PITFALLS.md)：事実・出典・道のり・写真を調べるときに実際に引っかかった所と、防ぐ習慣。
+- [書いた場面をDebugで確かめる](authoring/DEBUG_CHECK_GUIDE.md)：書いた場面を、ゲームの中ですぐ見る手順。
+- [AIと決めごとを進める型](authoring/DECISION_GUIDE.md)：AIがユーザーに聞く・自分で決める・書き残すときの型。
+- [AIに仕事を分けて頼む手引き](authoring/AI_DELEGATION_GUIDE.md)：AIの担当を分けて速く進め、取り込む前に確かめるやり方。
 - [旅行編の制作手順](authoring/JOURNEY_AUTHORING.md)：下書きのシナリオとクイズを旅行編へ取り込む道具。
 - [都市データの編集](authoring/CITY_BUNDLES.md)：地点・交通・背景を都市ごとの作業用JSONでまとめて直す。
 - [都市の追加手順](authoring/FUTURE_CITIES.md)：都市のデータの登録と、都市の移り方・保存の決まり。
