@@ -8,7 +8,7 @@ const GUIDE = "places/milano_duomo.duomo_milano_guide";
 const CONFESSION = "places/milano_darsena.milano_confession_01";
 const VARIABLES = { player_address: "航さん", romance_stage: 1, ending_reached: false };
 const conditions = () => false;
-const begin = (address: string) => beginStory(address, "航", "澪", VARIABLES, [], {}, undefined, conditions);
+const begin = (address: string) => beginStory(address, { playerName: "航", heroineName: "澪" }, VARIABLES, [], {}, undefined, conditions);
 const next = (address: string, step: StoryStep) => continueStory(address, step.storyState, step.frame, [], {}, {}, conditions);
 
 describe("peekStory", () => {

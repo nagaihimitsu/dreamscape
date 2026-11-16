@@ -41,6 +41,8 @@ export function validateEncounterStory(
           throw new Error(`Missing encounter variable: ${name}`);
         story.variablesState.$(name, "検証名");
       }
+      // The name in Latin letters: only where the story declares it (modules.ink does).
+      if (story.variablesState.GlobalVariableExistsWithName("player_name_latin")) story.variablesState.$("player_name_latin", "Kensho");
       if (story.variablesState.GlobalVariableExistsWithName("romance_result"))
         story.variablesState.$("romance_result", result);
       else if (options?.some((option) => option.responseProfileId))

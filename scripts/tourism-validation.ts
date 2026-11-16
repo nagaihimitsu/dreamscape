@@ -79,6 +79,8 @@ export function validateTourism(
             throw new Error(`Missing tourism guide variable: ${name}`);
           story.variablesState.$(name, value);
         }
+        // The name in Latin letters: only where the story declares it (modules.ink does).
+        if (story.variablesState.GlobalVariableExistsWithName("player_name_latin")) story.variablesState.$("player_name_latin", "Kensho");
         let count = 0;
         let hasText = false;
         let speaker: string = "narrator";

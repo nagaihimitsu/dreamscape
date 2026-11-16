@@ -70,6 +70,9 @@
 .mg-mehndi-hidden-name-fill { fill: #8f3f17; stroke: none; }
 .mg-mehndi-hidden-name-fine { stroke-width: 1.2; }
 .mg-mehndi-hidden-name-writing { fill: #7a3010; font-family: "Noto Serif JP", serif; font-weight: 600; }
+/* The player's name: in Playwrite IN, a joined cursive (bundled: writing.ts), at the one weight it comes in (no made-up
+   bold); FARHANA and the mark keep the rule above. */
+.mg-mehndi-hidden-name-cursive { font-family: "Playwrite IN", cursive; font-weight: 400; font-synthesis: none; }
 .mg-mehndi-hidden-name-mark path { fill: none; stroke: #7a3010; stroke-width: 1.3; stroke-linecap: round; }
 .mg-mehndi-hidden-name-mark circle { fill: #7a3010; }
 .mg-mehndi-hidden-name-brass { fill: #c7963f; }

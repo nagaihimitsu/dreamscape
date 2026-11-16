@@ -237,15 +237,19 @@ export const MAP_CREDIT = {
 } as const;
 
 /**
- * The fonts, as a courtesy (decision D4): they are loaded from Google Fonts
- * (src/app/styles.css), not shipped. Both are under the SIL Open Font License
- * 1.1 (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08).
+ * The fonts, as a courtesy (decision D4). Noto Sans JP and Noto Serif JP are loaded from Google Fonts (index.html), not
+ * shipped (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08). Playwrite IN, the cursive of the player's
+ * name in the mehndi mini-game (2026-11-16), is shipped with the game from @fontsource/playwrite-in (its licence text
+ * comes with the build's library licences; google/fonts ofl/playwritein, TypeTogether, checked 2026-11-16). All three are
+ * under the SIL Open Font License 1.1.
  */
 export const FONT_CREDIT = {
-  textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。",
+  textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
+    "Playwrite IN（TypeTogether、SIL Open Font License 1.1）。ミニゲーム「手のひらの模様」の名前の筆記体で、ゲームと一緒に配っています。",
   links: [
     { labelJa: "Noto Sans JP", url: "https://fonts.google.com/noto/specimen/Noto+Sans+JP" },
     { labelJa: "Noto Serif JP", url: "https://fonts.google.com/noto/specimen/Noto+Serif+JP" },
+    { labelJa: "Playwrite IN", url: "https://fonts.google.com/specimen/Playwrite+IN" },
     { labelJa: "SIL Open Font License", url: "https://openfontlicense.org/" },
   ],
 } as const;

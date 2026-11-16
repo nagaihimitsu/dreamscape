@@ -111,8 +111,7 @@ export function EnglishReview({
       return null;
     return beginStory(
       detail.storyId,
-      game.playerName,
-      game.heroineName,
+      game,
       { topic: learning.data.openTopic },
     );
   });
@@ -129,8 +128,7 @@ export function EnglishReview({
   function topic(storyId: string, id: string) {
     const first = beginStory(
       storyId,
-      game.playerName,
-      game.heroineName,
+      game,
       { topic: id },
     );
     learning.update((s) => ({ ...s, openTopic: id }));

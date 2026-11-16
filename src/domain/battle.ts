@@ -27,6 +27,7 @@ import {
   beginStory,
   continueStory,
   frameCall,
+  nameVariables,
   readStoryKnotLines,
   peekStoryLine,
   selectStoryChoice,
@@ -337,7 +338,7 @@ function returnFromFlowCall(state: GameState, active: ActiveBattle, variables: R
 }
 
 function startFlowBattle(state: GameState, active: ActiveBattle, battle: BattleDefinition): GameState {
-  const step = beginStory(battle.storyId, state.playerName, state.heroineName,
+  const step = beginStory(battle.storyId, state,
     { ...flowVariables(active), player_address: playerAddress(state), call_arg: 0, reasoning_action: "", evidence_result: "" },
     state.memories, state.inventory, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
     claimToTrack(active, battle));
@@ -492,8 +493,8 @@ export function getReasoningContext(
   const priorAnswers = active.answers.slice(0, config.roundIndex);
   // The flow's helper knots, read on their own with the variables as the flow had them at its stop point,
   // and with the names, memories and items as the flow reads them.
-  const variables = { ...flowVariables({ answers: priorAnswers, phase: "dialogue" }), player_name: state.playerName,
-    heroine_name: state.heroineName, player_address: playerAddress(state) };
+  const variables = { ...flowVariables({ answers: priorAnswers, phase: "dialogue" }), ...nameVariables(state),
+    player_address: playerAddress(state) };
   const read = (knot: string, enemyOnly: boolean) => {
     const lines: string[] = [];
     let found: { text: string; speaker: string }[] = [];

@@ -115,6 +115,9 @@ describe("the fixed lines of the list", () => {
     expect(MAP_CREDIT.textJa).toContain("ODbL");
     expect(MAP_CREDIT.url).toBe("https://www.openstreetmap.org/copyright");
     expect(FONT_CREDIT.textJa).toContain("SIL Open Font License 1.1");
+    // The cursive shipped with the game (the mehndi's name, 2026-11-16) is credited with its own page.
+    expect(FONT_CREDIT.textJa).toContain("Playwrite IN");
+    expect(FONT_CREDIT.links.map((link) => link.labelJa)).toContain("Playwrite IN");
     expect(FONT_CREDIT.links.every((link) => link.url.startsWith("https://"))).toBe(true);
     // Only the places that do show fact sources are named (no date screen shows them).
     expect(OWN_ARTWORK_NOTE_JA).toBe("Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +

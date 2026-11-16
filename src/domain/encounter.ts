@@ -251,7 +251,7 @@ function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: 
   const id = event.id;
   const [romanceRoll] = createRomanceRollPlan(1, nextRoll);
   const [rewardTicket] = createRomanceRollPlan(1, nextRoll);
-  const step = checkedStep(beginStory(event.storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory,
+  const step = checkedStep(beginStory(event.storyId, state, variables(state), state.memories, state.inventory,
     getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state)));
   const next = { ...state, revision: state.revision + 1 };
   return { ...next, activeEncounter: {
@@ -443,7 +443,7 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
     const record = state.encounterRewards[event.id];
     const storyId = !correct ? quiz.lostStoryId : active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
     const resolvedStoryId = activeStoryId(active, storyId);
-    const step = checkedStep(beginStory(resolvedStoryId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory,
+    const step = checkedStep(beginStory(resolvedStoryId, state, variables(state), state.memories, state.inventory,
       getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state)));
     return { ...state, revision: state.revision + 1, activeEncounter: withStep({ ...active, phase: "outcome", storyId, storyHash: storyFingerprint(resolvedStoryId) }, step) };
   }

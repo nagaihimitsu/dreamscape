@@ -257,7 +257,7 @@ export function walkScene(walked: SceneWalkInput): number {
       return story;
     };
     const first = make({}, []);
-    for (const [name, value] of Object.entries({ player_name: "検証主人公", heroine_name: "検証ヒロイン", player_address: "検証主人公さん", ...input.variables }))
+    for (const [name, value] of Object.entries({ player_name: "検証主人公", player_name_latin: "Kensho", heroine_name: "検証ヒロイン", player_address: "検証主人公さん", ...input.variables }))
       if (first.variablesState.GlobalVariableExistsWithName(name)) first.variablesState.$(name, value);
     if (result && first.variablesState.GlobalVariableExistsWithName("romance_result")) first.variablesState.$("romance_result", result);
     if (input.start) first.ChoosePathString(input.start);

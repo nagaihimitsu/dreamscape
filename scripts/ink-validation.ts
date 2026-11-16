@@ -144,6 +144,7 @@ export function validateStory(
   }
   const input = {
     player_name: "検証主人公",
+    player_name_latin: "Kensho",
     heroine_name: "検証ヒロイン",
     ...variables,
     ...(tone ? { relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone } : {}),

@@ -21,6 +21,7 @@ export function validateEpilogue(
         };
         for (const [key, value] of Object.entries({
           player_name: "検証主人公",
+          player_name_latin: "Kensho",
           heroine_name: "検証ヒロイン",
           player_address: "検証主人公さん",
           romance_stage: romanceStage,
@@ -28,7 +29,7 @@ export function validateEpilogue(
           memory_callback: "覚えている旅の言葉",
         })) {
           if (!story.variablesState.GlobalVariableExistsWithName(key)) {
-            if (key === "memory_callback") continue;
+            if (key === "memory_callback" || key === "player_name_latin") continue;
             throw new Error(`Missing epilogue Ink variable: ${key}`);
           }
           story.variablesState.$(key, value);

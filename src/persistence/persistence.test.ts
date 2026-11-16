@@ -438,6 +438,29 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
     expect(lostSlot.getItem(SAVE_KEY)).toBe(lost);
   });
 
+  it("writes the 「ローマ字のつづり」, an optional field of v23: kept through save and load, absent in an older save, Latin only", () => {
+    // The player's own spelling of their name in Latin letters (2026-11-16; the Jaipur mehndi draws the name in it).
+    const state = createGame("太一", "あゆみ", { journeyId: "golden_triangle", playerNameLatin: "Taichi" });
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, playerNameLatin: "Taichi" });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    // A save of this version written before the field (none given): it loads, and saves again as it is.
+    const { playerNameLatin: _spelling, ...older } = state;
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, JSON.stringify(older));
+    expect(loadGame(slot)).toEqual({ status: "loaded", state: older });
+    // A spelling in Japanese letters (or blank) never comes from the game: unreadable, kept as it is, never overwritten.
+    for (const spelling of ["たいち", "太一", " "]) {
+      const raw = JSON.stringify({ ...state, playerNameLatin: spelling });
+      const bad = new MemoryStorage();
+      bad.setItem(SAVE_KEY, raw);
+      expect(loadGame(bad)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+      expect(saveGame(bad, state).ok).toBe(false);
+      expect(bad.getItem(SAVE_KEY)).toBe(raw);
+    }
+  });
+
   it("writes the album of v22: empty in a new game, kept through save and load, and required", () => {
     // The photos the lines' # photo: took: the sample's album illustrations (src/domain/album.test.ts holds the recording
     // rule and what an album may name).

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { latinName, playerLatinName } from "./name-romaji";
+import { isLatinSpelling, latinName, playerLatinName, spellingAllowed } from "./name-romaji";
 
 // The player's name in Latin letters for the Jaipur mehndi (2026-11-16, the user's decision: no Japanese letters in the
 // pattern, the name in a cursive hand). Kana in Hepburn as on a passport; Latin kept; anything else null.
@@ -26,6 +26,22 @@ describe("latinName", () => {
 
   it("never returns a Japanese letter", () => {
     for (const [input] of cases) expect(latinName(input) ?? "").not.toMatch(/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u);
+  });
+});
+
+// The title's and the settings' 「ローマ字のつづり（任意）」 keep only Latin letters (the save refuses anything else).
+describe("isLatinSpelling", () => {
+  it.each(["Taichi", "taichi", "  Ken'ichi ", "Jean-Luc", "Émile", "ＴＡＲＯ", "Taro Yamada"])("keeps %j", (typed) => {
+    expect(isLatinSpelling(typed)).toBe(true);
+  });
+
+  it.each(["", " ", "たいち", "タイチ", "ﾀｲﾁ", "太一", "Taichiたいち", "Taroー", "하루", "Taichi2", "..."])("refuses %j", (typed) => {
+    expect(isLatinSpelling(typed)).toBe(false);
+  });
+
+  it("lets a form start or save with a blank spelling (none given) or one in Latin letters only", () => {
+    expect(["", "  ", "Taichi", " taichi "].every(spellingAllowed)).toBe(true);
+    expect(["たいち", "太一", "Taichi2"].some(spellingAllowed)).toBe(false);
   });
 });
 

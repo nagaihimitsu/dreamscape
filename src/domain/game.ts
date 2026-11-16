@@ -34,7 +34,7 @@ import {
   type StoryStep,
 } from "../story/runtime";
 
-import { GAME_STATE_VERSION, gameStateSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
+import { GAME_STATE_VERSION, gameStateSchema, latinSpellingSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
 import {
   activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
   getMemoryCallback, canConfessSuccessfully, confessionResult, decidingOutcome,
@@ -67,7 +67,12 @@ export interface Availability {
 export function createGame(
   playerName = balance.defaultPlayerName,
   heroineName = balance.defaultHeroineName,
-  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: defaultJourneyId },
+  options: {
+    journeyId: string;
+    initialState?: NonNullable<Journey["initialState"]>;
+    /** The player's own 「ローマ字のつづり」 (blank: none, so the field is left out). */
+    playerNameLatin?: string;
+  } = { journeyId: defaultJourneyId },
 ): GameState {
   const journey = getJourney(options.journeyId);
   if (!journey || journey.status !== "available" || journey.initialBudget === null)
@@ -76,6 +81,8 @@ export function createGame(
   const { travelSettings } = getCityContent(cityId);
   const initial = options.initialState ?? journey.initialState;
   if (initial && initial.pendingAp !== 0) throw new Error("Pending AP requires a reward record");
+  const spelling = spellingField(options.playerNameLatin ?? "");
+  if (!spelling) throw new Error("The spelling of the name is not in Latin letters");
   return {
     schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
@@ -95,6 +102,7 @@ export function createGame(
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
+    ...spelling,
     ap: initial?.ap ?? 0,
     affection: initial?.affection ?? 0,
     trust: initial?.trust ?? 0,
@@ -127,10 +135,19 @@ export function createGame(
   };
 }
 
+/** A typed 「ローマ字のつづり」 as saved: blank leaves the field out; anything else must be Latin letters (null if it is not). */
+function spellingField(typed: string): Pick<GameState, "playerNameLatin"> | null {
+  if (!typed.trim()) return {};
+  const spelling = latinSpellingSchema.safeParse(typed);
+  return spelling.success ? { playerNameLatin: spelling.data } : null;
+}
+
+/** ゲームの設定's 「名前を保存」: the names and the 「ローマ字のつづり」 (blank removes it), outside any scene. */
 export function setNames(
   state: GameState,
   playerName: string,
   heroineName: string,
+  playerNameLatin: string,
 ): GameState {
   if (
     state.activeDate ||
@@ -141,17 +158,21 @@ export function setNames(
   )
     return state;
   const player = nameSchema.safeParse(playerName),
-    heroine = nameSchema.safeParse(heroineName);
+    heroine = nameSchema.safeParse(heroineName),
+    spelling = spellingField(playerNameLatin);
   if (
     !player.success ||
     !heroine.success ||
-    (state.playerName === player.data && state.heroineName === heroine.data)
+    !spelling ||
+    (state.playerName === player.data && state.heroineName === heroine.data && state.playerNameLatin === spelling.playerNameLatin)
   )
     return state;
+  const { playerNameLatin: _replaced, ...rest } = state;
   return {
-    ...state,
+    ...rest,
     playerName: player.data,
     heroineName: heroine.data,
+    ...spelling,
     revision: state.revision + 1,
   };
 }
@@ -224,7 +245,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
   // A date that decides the confession (a confession, her answer) passes the outcome it fixes now; other dates read a confession's.
   const deciding = decidesConfession(date);
   const outcome = deciding ? decidingOutcome(state, date) : confessionResult(state);
-  const result = beginStory(date.storyId, state.playerName, state.heroineName, {
+  const result = beginStory(date.storyId, state, {
     relationship_tone: deriveRelationshipTone(state),
     relationship_tone_before: deriveRelationshipTone(state),
     relationship_tone_after: deriveRelationshipTone(state),

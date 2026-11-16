@@ -6,6 +6,7 @@ import { MEHNDI_HINT_JA } from "./definition";
 import {
   MEHNDI_SPOTS, MEHNDI_TUNING, mehndiGameFor, mehndiRulesFor, type MehndiOutcome, type MehndiParams, type MehndiSpot, type MehndiTarget, type MehndiTuning,
 } from "./rules";
+import { WRITING_BASELINE, writingSize } from "./writing";
 import "./skin.css";
 
 // The hidden name's field (a search skin): her right palm held out in the night, the mehndi's broad lines dim; where the
@@ -40,15 +41,18 @@ export const MEHNDI_HIT = 30;
 /** On a small palm, a finger's reach is at least this (px): a 44px target, the nearest place taken. */
 const FINGER_HIT_PX = 22;
 /**
- * Where the writing lies at each target: its centre, its slant and the room it has. The central vine's curls lie off its
- * letters (2026-11-13 playtest: the H of FARHANA was under a curl), and its line breaks behind them (VINE_GAP).
+ * Where the writing lies at each target: its centre, its slant, the room it has, and whether the central vine's line runs
+ * under it. The central vine's curls lie off its letters (2026-11-13 playtest: the H of FARHANA was under a curl), and
+ * the vine's line breaks behind writing laid on it (VINE_GAP). At the thumb, the name lies under the spiral, clear of its
+ * last turn and inside the palm's edge, within a point's reach of the place (2026-11-16, the cursive name measured at 390
+ * and 320 px).
  */
-const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number }> = {
-  thumb: { x: 210, y: 320, rotate: -22, width: 62 },
-  peacock: { x: 150, y: 246, rotate: -8, width: 58 },
-  vine: { x: 141, y: 316, rotate: -14, width: 62 },
+const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number; onVine: boolean }> = {
+  thumb: { x: 208, y: 324, rotate: -22, width: 54, onVine: false },
+  peacock: { x: 150, y: 246, rotate: -8, width: 58, onVine: true },
+  vine: { x: 141, y: 316, rotate: -14, width: 62, onVine: true },
 };
-/** Where the central vine's line breaks behind the writing hidden in it (in the writing's own frame): lit only, so the
+/** Where the central vine's line breaks behind the writing laid on it (in the writing's own frame): lit only, so the
  * dark shows no gap to give it away. */
 const VINE_GAP = { x: -16, y: -11, width: 32, height: 21 };
 /**
@@ -122,13 +126,6 @@ export function mehndiNear(x: number, y: number, target: MehndiTarget, units = M
   return Math.hypot(MEHNDI_PLACES[target].x - x, MEHNDI_PLACES[target].y - y) <= units;
 }
 
-/** The writing's size: the name as typed, smaller for a long one, never cut (docs/13 2.10). */
-export function writingSize(text: string, width: number): { fontSize: number; squeeze: boolean } {
-  const em = [...text].reduce((sum, char) => sum + ((char.codePointAt(0) ?? 0) >= 0x2e80 ? 1 : 0.62), 0) || 1;
-  const fontSize = Math.min(11, width / em);
-  return fontSize >= 4.5 ? { fontSize, squeeze: false } : { fontSize: 4.5, squeeze: true };
-}
-
 /** A row of loops like a hurried hand's writing (no letters): `loops` loops `h` high and `w` wide, centred on 0. */
 export function mehndiLoops(loops: number, h: number, w: number): string {
   let d = `M${(-loops * w) / 2} 0`;
@@ -177,10 +174,11 @@ const flower = (x: number, y: number, size: number) => (
 
 /** The mehndi's broad lines (seen in the dark too): fingertips, finger bands, the flowers, the feather, the vines, the wrist. */
 function BroadLines({ target, lit }: { target: MehndiTarget; lit: boolean }) {
-  // Lit, with the writing in the central vine: its line breaks behind the letters (never crossing them).
+  // Lit, with the writing laid on the central vine (at the peacock feather's base or in the vine): its line breaks
+  // behind the letters (never crossing them).
   const gap = `${useId().replace(/[^a-zA-Z0-9]/gu, "")}vinegap`;
-  const cut = lit && target === "vine";
-  const place = WRITING.vine;
+  const place = WRITING[target];
+  const cut = lit && place.onVine;
   return (
     <g className="mg-mehndi-hidden-name-ink">
       {cut && (
@@ -225,7 +223,8 @@ function FineLines({ target }: { target: MehndiTarget }) {
       <path d="M128 164 L120 156 M132 182 L122 190 M138 196 L130 204 M142 214 L134 222 M136 168 L144 160 M144 192 L150 186" />
       <path d="M150 262 c-8 0 -10 -8 -4 -10 M138 290 c8 -2 12 6 6 10 M146 340 c-8 0 -8 -8 -2 -10 M132 358 c8 0 8 8 2 10" />
       {dots([[196, 120], [212, 120], [204, 132], [76, 222], [100, 222], [88, 232], [110, 392], [124, 392], [138, 392], [162, 392], [176, 392], [190, 392]])}
-      {dots([[234, 284], [236, 300], [232, 316], [194, 284], [192, 300]])}
+      {/* Dots by the thumb's spiral, none under it (2026-11-16: one there read as a full stop after the name). */}
+      {dots([[234, 284], [236, 300], [194, 284], [192, 300]])}
       <circle cx={MEHNDI_PLACES.index.x} cy={MEHNDI_PLACES.index.y} r="15" />
       <circle cx={MEHNDI_PLACES.pinky.x} cy={MEHNDI_PLACES.pinky.y} r="18" />
       {target !== "peacock" && <path d="M142 246 c4 6 12 6 16 0 M144 254 c4 4 8 4 12 0" />}
@@ -246,15 +245,20 @@ function FineLines({ target }: { target: MehndiTarget }) {
   );
 }
 
-/** The writing at the target (docs/13 2.10): the name as typed, an illegible mark, or FARHANA over unreadable marks. */
-function Writing({ params, name }: { params: MehndiParams; name: string }) {
+/**
+ * The writing at the target (docs/13 2.10): the player's name in Latin letters in a cursive hand (writing.ts; as text,
+ * never HTML), or, with no Latin form of it (a name in kanji and no spelling given), the illegible mark as for `illegible`
+ * (no letters of any script are made up); an illegible mark; or FARHANA over unreadable marks.
+ */
+function Writing({ params, latin }: { params: MehndiParams; latin: string | null }) {
   const place = WRITING[params.target];
   const transform = `translate(${place.x} ${place.y}) rotate(${place.rotate})`;
-  if (params.text === "player") {
-    const { fontSize, squeeze } = writingSize(name, place.width);
+  if (params.text === "player" && latin) {
+    // The small letters centred on the place (the capitals and the loops above and below them, as a hand writes).
+    const { fontSize, squeeze } = writingSize(latin, place.width);
     return (
-      <text className="mg-mehndi-hidden-name-writing" transform={transform} fontSize={fontSize} textAnchor="middle" dominantBaseline="central"
-        {...(squeeze ? { textLength: place.width, lengthAdjust: "spacingAndGlyphs" } : {})}>{name}</text>
+      <text className="mg-mehndi-hidden-name-writing mg-mehndi-hidden-name-cursive" transform={transform} fontSize={fontSize} textAnchor="middle"
+        y={fontSize * WRITING_BASELINE} {...(squeeze ? { textLength: place.width, lengthAdjust: "spacingAndGlyphs" } : {})}>{latin}</text>
     );
   }
   if (params.text === "farhana") return (
@@ -488,7 +492,7 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
           {drawn(true)}
           {/* With the use's palm picture, the curls that look like writing are drawn over it too (the game's, like the writing). */}
           {art.palm && <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" focusable="false"><FineLines target={params.target} /></svg>}
-          <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" focusable="false"><Writing params={params} name={names.player} /></svg>
+          <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" focusable="false"><Writing params={params} latin={names.playerLatin ?? null} /></svg>
         </div>
         <span className="mg-mehndi-hidden-name-glow" aria-hidden="true" />
         <span className="mg-mehndi-hidden-name-lamp mg-play-object" aria-hidden="true">

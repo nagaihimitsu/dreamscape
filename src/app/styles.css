@@ -343,6 +343,23 @@ h3 {
   grid-column: 1 / -1;
   margin: -8px 0 0;
 }
+/* The player's 「ローマ字のつづり（任意）」 (2026-11-16) under the player's name: its field, its message while what is
+   typed is not in Latin letters (the error colour of the Debug password) and its note, as one group across the form
+   (where the names sit side by side, it takes the row under them and their defaults' line: grid-row below). */
+.name-form .name-latin {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 7px;
+}
+.name-form .name-latin-error {
+  margin: 0;
+  color: #873b34;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.name-form .name-latin-note {
+  margin: 0;
+}
 .fine-print {
   font-size: 11px;
   color: var(--ds-ink-muted);
@@ -708,6 +725,10 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     gap: 8px 10px;
     margin-bottom: 4px;
   }
+  /* The names side by side, the 「ローマ字のつづり」 under both. */
+  dialog.modal[aria-labelledby="settings-title"] .name-form .name-latin {
+    grid-row: 2;
+  }
   dialog.modal[aria-labelledby="settings-title"] .name-form .secondary {
     grid-column: 1 / -1;
     min-height: 44px;
@@ -786,6 +807,13 @@ dialog.modal .settings-data-links > .text-button {
 @media (min-width: 720px) {
   .intro .name-form {
     grid-template-columns: 1fr 1fr;
+  }
+  /* The names side by side with their defaults' line under both, then the 「ローマ字のつづり」. */
+  .intro .name-form .name-defaults {
+    grid-row: 2;
+  }
+  .intro .name-form .name-latin {
+    grid-row: 3;
   }
   .intro .name-form .primary {
     grid-column: 1/-1;
@@ -1500,6 +1528,12 @@ dialog.modal[open] {
   }
   .intro .name-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .intro .name-form .name-defaults {
+    grid-row: 2;
+  }
+  .intro .name-form .name-latin {
+    grid-row: 3;
   }
   .intro .name-form .primary {
     grid-column: 1 / -1;

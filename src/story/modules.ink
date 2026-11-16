@@ -4,6 +4,9 @@
 // file next to it (content:build ignores such copies and always uses this one).
 // Every variable the game sets is declared here; a place file declares no VAR.
 VAR player_name = ""
+// The player's name in Latin letters (2026-11-16): their own spelling, else their kana name in Hepburn;
+// "" when there is none (a kanji name with no spelling given). Never in a line with # voice:.
+VAR player_name_latin = ""
 VAR heroine_name = ""
 VAR player_address = ""
 VAR romance_stage = 1

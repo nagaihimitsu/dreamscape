@@ -34,8 +34,8 @@ export function checkHelperKnot(compiled: string, knot: string, conds: readonly 
       story.ResetState();
       assignment = current;
       ended = false;
-      for (const [name, value] of Object.entries({ player_name: "検証主人公", heroine_name: "検証ヒロイン", player_address: "検証主人公さん",
-        quiz_correct: correct, answer_correct: correct, battle_score: score }))
+      for (const [name, value] of Object.entries({ player_name: "検証主人公", player_name_latin: "Kensho", heroine_name: "検証ヒロイン",
+        player_address: "検証主人公さん", quiz_correct: correct, answer_correct: correct, battle_score: score }))
         if (story.variablesState.GlobalVariableExistsWithName(name)) story.variablesState.$(name, value);
       story.ChoosePathString(knot);
       for (let lines = 0; story.canContinue && !ended; lines++) {

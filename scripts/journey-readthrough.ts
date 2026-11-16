@@ -53,7 +53,8 @@ export function scenePaths(scene: SceneEntry, compiled: string, context: TagCont
       return story;
     };
     const first = make();
-    for (const [name, text] of Object.entries({ player_name: "（主人公）", heroine_name: "（ヒロイン）", player_address: "（主人公の呼び名）" }))
+    for (const [name, text] of Object.entries({ player_name: "（主人公）", player_name_latin: "（主人公の名前のローマ字）", heroine_name: "（ヒロイン）",
+      player_address: "（主人公の呼び名）" }))
       if (first.variablesState.GlobalVariableExistsWithName(name)) first.variablesState.$(name, text);
     if (scene.story.knot) first.ChoosePathString(scene.story.knot);
     const walk = (saved: string, lines: string[], depth: number) => {

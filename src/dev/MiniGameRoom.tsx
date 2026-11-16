@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { balance, tagContext } from "../content";
+import { latinName } from "../domain/name-romaji";
 import { holdSceneCues, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting } from "../audio/vibration";
 import { CanalScene } from "../components/CanalScene";
@@ -18,6 +19,7 @@ import "./minigame-room.css";
 // play each with its examples and a use's pictures (by hand, by each 「おまかせ」 outcome, with less motion) through the
 // game's own host, without a story or a save. It runs on the Debug page only (DebugMode shows it in place of 場面の確認).
 // It reads and writes no save, English notebook, presentation setting or Debug-mode key: its settings live in its own memory.
+// The games are given the default player name (and its Latin form, as GameApp gives it: latinName), or a name typed to try.
 
 function memoryStorage() {
   const values = new Map<string, string>();
@@ -63,6 +65,10 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
   const [stage, setStage] = useState<Stage | null>(null);
   const [round, setRound] = useState(0);
   const [last, setLast] = useState<string | null>(null);
+  /** A player name to try in the games that draw it (empty: the default); its Latin form, or null (none: no letters drawn). */
+  const [tried, setTried] = useState("");
+  const player = tried.trim() || balance.defaultPlayerName;
+  const playerLatin = latinName(player);
   const heading = useRef<HTMLHeadingElement>(null);
   const openedFrom = useRef<string | null>(null);
   // Each use's 「Debugで開く」: a date whose story asks whether an item is held is walked to the use's own branch (a
@@ -99,7 +105,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
     auto: stage?.auto !== null && stage?.auto !== undefined,
     debug: true,
     reduceMotion: !!stage?.still,
-    names: { player: balance.defaultPlayerName, heroine: balance.defaultHeroineName },
+    names: { player, heroine: balance.defaultHeroineName, playerLatin },
     revision: round,
     context: tagContext,
     ...(stage?.closed.length && definition ? { available: definition.outcomes.map((outcome) => outcome.id).filter((id) => !stage.closed.includes(id)) } : {}),
@@ -114,7 +120,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
     retry: true,
     ...(stage && Object.keys(stage.tuning).length ? { tuning: stage.tuning } : {}),
     ...(stage?.delay ? { inputDelayMs: stage.delay } : {}),
-  }), [stage?.auto, stage?.still, stage?.closed, stage?.tuning, stage?.delay, definition, round]);
+  }), [stage?.auto, stage?.still, stage?.closed, stage?.tuning, stage?.delay, definition, round, player, playerLatin]);
   const pictured = useMemo(() => (stage ? picturedUses(stage.gameId) : []), [stage]);
   // What the edited numbers would make unfair (the game's engine checks; the play still runs, to feel it).
   const unfair = useMemo<readonly string[]>(() => {
@@ -166,6 +172,16 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
         ))}
         <label className="minigame-room-still"><input type="checkbox" checked={stage.still} onChange={(event) => change({ still: event.target.checked })}
           data-testid="minigame-room-still" /> 動きを減らす</label>
+        {/* Another name in the games that draw it (the mehndi writes it in Latin letters, or a letterless mark without them). */}
+        <label className="minigame-room-name">名前を試す
+          <input type="text" value={tried} maxLength={balance.maxNameLength} placeholder={balance.defaultPlayerName} data-testid="minigame-room-name"
+            onChange={(event) => {
+              setTried(event.target.value);
+              setLast(null);
+              setRound((count) => count + 1);
+            }} />
+          <span className="minigame-room-latin" data-testid="minigame-room-latin">ローマ字：{playerLatin ?? "なし（字の無い印を描く）"}</span>
+        </label>
         {/* An outcome with a fallback may be greyed in a story (a price the player cannot pay): play it so (docs/13 4.2). */}
         {definition.outcomes.filter((outcome) => outcome.fallback).map((outcome) => (
           <label key={outcome.id}><input type="checkbox" checked={stage.closed.includes(outcome.id)} data-testid={`minigame-room-closed-${outcome.id}`}

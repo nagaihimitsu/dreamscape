@@ -11,7 +11,10 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 // the real writing's glint, and her hand as the hot and cold (the field's: looks only). Nothing is random. Pure.
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
-/** Where the writing hides, and what it is (2.10: the name as typed; an illegible mark where the story says Hindi letters). */
+/**
+ * Where the writing hides, and what it is (2.10: the player's name in Latin letters in a cursive hand, or no letters without
+ * them; an illegible mark where the story says Hindi letters; FARHANA over unreadable marks).
+ */
 export type MehndiTarget = "thumb" | "peacock" | "vine";
 export type MehndiText = "player" | "illegible" | "farhana";
 export interface MehndiParams {

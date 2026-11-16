@@ -34,6 +34,11 @@ describe("the voice tags of a story", () => {
       "Voiced line says the protagonist's form of address: the line of # voice: ta_v1 has {player_address}");
   });
 
+  it("refuses a voiced line that says the protagonist's name in Latin letters: it is made from the name (2026-11-16)", () => {
+    expect(() => check("=== ta_talk ===\n# voice: ta_v1\n「{player_name_latin}って書くんだね」\n")).toThrow(
+      "主人公の名前のローマ字は声にできません：knot ta_talk の2行目の # voice: ta_v1 の台詞（3行目）に {player_name_latin} があります。");
+  });
+
   it("refuses a voiced line that says the heroine's name: the player sets it too", () => {
     expect(() => check("=== ta_talk ===\n「私、{heroine_name}って言うの」 # voice: ta_v1\n")).toThrow(
       "ヒロインの名前は声にできません：knot ta_talk の2行目の # voice: ta_v1 の台詞（2行目）に {heroine_name} があります。");

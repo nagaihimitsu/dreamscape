@@ -1,11 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
 import { searchProgress } from "../engines/search/engine";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiFairness, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
-import { MEHNDI_HIT, MEHNDI_PLACES, mehndiLoops, mehndiNear, mehndiSpotAt, writingSize } from "./Skin";
+import { MEHNDI_HIT, MEHNDI_PLACES, mehndiLoops, mehndiNear, mehndiSpotAt } from "./Skin";
 import { fairness } from "./play";
+import { WRITING_FONT, warmWritingFont, writingSize, writingWidth } from "./writing";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 const spot = (name: (typeof MEHNDI_SPOTS)[number]) => ({ spot: MEHNDI_SPOTS.indexOf(name) });
@@ -109,13 +110,70 @@ describe("the hidden name's field", () => {
     for (const loops of [3, 4, 5]) expect(mehndiLoops(loops, 6, 6)).toMatch(/^M-?[\d.]+ 0( c[-\d. ]+)+$/u);
   });
 
-  it("writes the name as typed, smaller for a long one, never cut", () => {
-    expect(writingSize("Aki", 60)).toEqual({ fontSize: 11, squeeze: false });
-    expect(writingSize("ひなた", 60)).toEqual({ fontSize: 11, squeeze: false });
-    const longer = writingSize("Alexandria", 60);
-    expect(longer.fontSize).toBeLessThan(11);
-    expect(longer.fontSize * 10 * 0.62).toBeCloseTo(60);
-    expect(writingSize("Alexandria Konstantinopoulou", 60)).toEqual({ fontSize: 4.5, squeeze: true });
-    expect(writingSize("あ".repeat(40), 60)).toEqual({ fontSize: 4.5, squeeze: true });
+});
+
+// The player's name in Latin letters in Playwrite IN (docs/13 2.10; the user's decision of 2026-11-16): its size from the
+// font's own advances, as large as reads on a phone, smaller for a long name, never cut, and only ever pressed narrower.
+describe("the name's cursive writing", () => {
+  /** The thumb's room (the narrowest of the three places), in the hand's units. */
+  const ROOM = 54;
+
+  it("bounds the joined hand's width by the font's advances: every width measured in Chromium lies inside", () => {
+    // Shaped widths (em) of the bundled font in Chromium (getComputedTextLength at 100 px, 2026-11-16): the narrowest and
+    // widest against the advances' sum among 125 names, and two long ones.
+    const measured: [string, number][] = [
+      ["Ty", 1.36], ["Mei", 2.26], ["Kei", 1.84], ["Taichi", 3.21], ["Jo", 1.22], ["Mmmmmmmm", 9.14], ["Hiiiiiii", 3.5],
+      ["Ōtani", 3.19], ["Émile", 3.12], ["Tsuchimochi Shintarou", 12.81], ["Alexandria Konstantinopoulou", 16.79],
+    ];
+    for (const [name, em] of measured) {
+      const { low, high } = writingWidth(name);
+      expect(low, name).toBeLessThanOrEqual(em);
+      expect(high, name).toBeGreaterThanOrEqual(em);
+    }
+    // A letter with marks counts as its letter; one the table does not know, as anything from the narrowest to the widest.
+    expect(writingWidth("Émile")).toEqual(writingWidth("Emile"));
+    expect(writingWidth("Øystein").low).toBeLessThan(writingWidth("Oystein").low);
+    expect(writingWidth("Øystein").high).toBeGreaterThan(writingWidth("Oystein").high);
+  });
+
+  it("writes a short name at the largest size, and kana names of up to eight letters still large enough to read", () => {
+    for (const name of ["Jo", "Yuki", "Taichi"]) expect(writingSize(name, ROOM), name).toEqual({ fontSize: 12, squeeze: false });
+    // An x-height of half the size: 5 units is about 6 px on a 390 px phone (the palm 358 px for 300 units).
+    for (const name of ["Haruto", "Chihiro", "Kenichi", "Momoko", "Masaaki", "Shintaro", "Takahiro"]) {
+      expect(writingSize(name, ROOM).fontSize, name).toBeGreaterThanOrEqual(10);
+    }
+    expect(writingSize("", ROOM)).toEqual({ fontSize: 12, squeeze: false });
+  });
+
+  it("fits every name in its room: unpressed names fit, and a pressed one is surely wider than its room (never stretched)", () => {
+    const names = ["Jo", "Taichi", "Masayoshi", "Mohammed", "Mmmmmmmmmmmm", "Tsuchimochi Shintarou", "Alexandria Konstantinopoulou",
+      "Fujiwara no Michinaga", "Shohei Ohtani", "Wolfgang Amadeus Mozart", "Ryu".repeat(24), "Øyvind Ærø-Łukasz"];
+    for (const width of [54, 58, 62]) for (const name of names) {
+      const { fontSize, squeeze } = writingSize(name, width);
+      const { low, high } = writingWidth(name);
+      if (squeeze) {
+        expect(fontSize, name).toBe(4.5);
+        expect(low * fontSize, name).toBeGreaterThan(width);
+      } else {
+        expect(high * fontSize, name).toBeLessThanOrEqual(width + 1e-9);
+        expect(fontSize, name).toBeLessThanOrEqual(12);
+      }
+    }
+    expect(writingSize("Alexandria Konstantinopoulou", ROOM)).toEqual({ fontSize: 4.5, squeeze: true });
+    // Too long for the smallest size but maybe not wider than the room there: a little smaller, unpressed.
+    const between = writingSize("Tsuchimochi Shintarou", ROOM);
+    expect(between.squeeze).toBe(false);
+    expect(between.fontSize).toBeLessThan(4.5);
+    expect(between.fontSize).toBeGreaterThan(4);
+  });
+
+  it("starts loading the font as the play loads, and never throws when it cannot", async () => {
+    const load = vi.fn((_font: string, _text?: string) => Promise.resolve([] as FontFace[]));
+    warmWritingFont({ load });
+    expect(load).toHaveBeenCalledWith(`12px "${WRITING_FONT}"`, "Aa");
+    warmWritingFont({ load: () => Promise.reject(new Error("offline")) });
+    expect(() => warmWritingFont({ load: () => { throw new Error("no fonts API"); } })).not.toThrow();
+    expect(() => warmWritingFont(undefined)).not.toThrow();
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 });

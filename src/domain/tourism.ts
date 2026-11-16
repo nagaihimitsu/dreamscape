@@ -187,8 +187,7 @@ export function openTourism(state: GameState, landmarkId: string, mapChecked = f
           active,
           beginStory(
             guide,
-            state.playerName,
-            state.heroineName,
+            state,
             { player_address: playerAddress(state) },
             [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
           ),
@@ -205,7 +204,7 @@ export function beginLandmarkGuide(state: GameState, landmarkId: string): GameSt
   if (!landmark?.guideStoryId || state.activeTourism) return state;
   return { ...state, revision: state.revision + 1, activeTourism: fromGuide(
     { landmarkId, phase: "guide", contentHash: tourismFingerprint(landmarkId), storyState: null, frame: null },
-    beginStory(landmark.guideStoryId, state.playerName, state.heroineName, { player_address: playerAddress(state) },
+    beginStory(landmark.guideStoryId, state, { player_address: playerAddress(state) },
       [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))) };
 }
 
@@ -354,7 +353,7 @@ export function replayTourismGuide(
     revision: state.revision + 1,
     activeTourism: fromGuide(
       next,
-      beginStory(landmark.guideStoryId, state.playerName, state.heroineName, {
+      beginStory(landmark.guideStoryId, state, {
         player_address: playerAddress(state),
       }, [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state)),
     ),

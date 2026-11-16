@@ -8,7 +8,7 @@ const CONFESSION = "places/milano_darsena.milano_confession_01";
 describe("confession callback to an earlier date", () => {
   it.each([false, true])("recalls the earlier date only when it was actually played: %s", (played) => {
     const conditions = (text: string) => text === "date milano_maurizio_date_sound" && played;
-    let step: StoryStep = beginStory(CONFESSION, "航", "澪", {
+    let step: StoryStep = beginStory(CONFESSION, { playerName: "航", heroineName: "澪" }, {
       player_address: "航さん", romance_stage: 1, ending_reached: false,
     }, [], {}, undefined, conditions);
     const lines: string[] = [];

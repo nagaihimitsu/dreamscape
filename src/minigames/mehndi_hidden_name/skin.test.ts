@@ -1,25 +1,60 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import type { MiniGameNames } from "../contract";
 import type { SearchView } from "../engines/search/EnginePlay";
 import { mehndiHiddenName } from "./definition";
 import { mehndiSetup, type MehndiParams } from "./rules";
 import { mehndiSkin } from "./Skin";
 
-// The hidden name's field (docs/13 2.10, 2.12–2.13): the writing as text (the name as typed, never HTML), an illegible mark
-// with no letters where the story says Hindi, six places as buttons named by the pattern, and the use's art in its slots.
+// The hidden name's field (docs/13 2.10, 2.12–2.13): the player's name in Latin letters in a cursive hand, as text (never
+// HTML), or no letters at all without a Latin form (the user's decision of 2026-11-16: no Japanese letters in the pattern);
+// an illegible mark with no letters where the story says Hindi, six places as buttons named by the pattern, and the use's
+// art in its slots. The player's name as typed is kana here: it must never be drawn.
 const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, roundAt: 0, nudge: null, ending: null };
-const field = (params: MehndiParams, player = "Haruto", art: Record<string, string> = {}, shown: SearchView = view) => renderToStaticMarkup(createElement(mehndiSkin.Field, {
-  params, still: false, seed: 1, cast: { heroine: null }, names: { player, heroine: "ヒロイン" }, art, sound: () => undefined, vibrate: () => undefined,
-  setup: mehndiSetup(params), view: shown, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,
-}));
+const field = (params: MehndiParams, latin: Pick<MiniGameNames, "playerLatin"> = { playerLatin: "Haruto" }, art: Record<string, string> = {},
+  shown: SearchView = view) =>
+  renderToStaticMarkup(createElement(mehndiSkin.Field, {
+    params, still: false, seed: 1, cast: { heroine: null }, names: { player: "はると", heroine: "ヒロイン", ...latin }, art, sound: () => undefined,
+    vibrate: () => undefined, setup: mehndiSetup(params), view: shown, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,
+  }));
+/** The cursive name's text element and what it says, if one is drawn. */
+const cursive = (html: string) => html.match(/<text class="mg-mehndi-hidden-name-writing mg-mehndi-hidden-name-cursive"[^>]*>([^<]*)<\/text>/u);
+const japanese = /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u;
 
 describe("the hidden name's field", () => {
-  it("writes the player's name as typed, as text", () => {
-    const html = field({ target: "thumb", text: "player" }, "<b>ハル</b>");
+  it("writes the player's name in Latin letters in the cursive hand, never the name as typed", () => {
+    const html = field({ target: "thumb", text: "player" }, { playerLatin: "Taichi" });
     expect(html).toContain('class="mg-mehndi-hidden-name"');
-    expect(html).toContain("&lt;b&gt;ハル&lt;/b&gt;");
+    const writing = cursive(html);
+    expect(writing?.[1]).toBe("Taichi");
+    expect(writing?.[0]).not.toMatch(japanese);
+    // A short name unpressed (only a long one is pressed to its room), its small letters centred on the place.
+    expect(writing?.[0]).toContain('font-size="12"');
+    expect(writing?.[0]).toContain('y="3"');
+    expect(writing?.[0]).not.toContain("textLength");
+    expect(html).not.toContain("はると");
+    for (const target of ["peacock", "vine"] as const) expect(cursive(field({ target, text: "player" }, { playerLatin: "Taichi" }))?.[1], target).toBe("Taichi");
+    expect(cursive(field({ target: "thumb", text: "player" }, { playerLatin: "Alexandria Konstantinopoulou" }))?.[0]).toContain('textLength="54"');
+  });
+
+  it("writes the Latin name as text, never as HTML", () => {
+    const html = field({ target: "thumb", text: "player" }, { playerLatin: "<b>Haru</b>" });
+    expect(cursive(html)?.[1]).toBe("&lt;b&gt;Haru&lt;/b&gt;");
     expect(html).not.toContain("<b>");
+  });
+
+  it("draws the letterless mark at the target when the name has no Latin form (no letters of any script)", () => {
+    // null, or left out of the names.
+    for (const latin of [{ playerLatin: null }, {}]) {
+      const html = field({ target: "thumb", text: "player" }, latin);
+      expect(cursive(html)).toBeNull();
+      const lit = html.split("mg-mehndi-hidden-name-lit")[1];
+      expect(lit).toContain("mg-mehndi-hidden-name-mark");
+      expect(lit).not.toMatch(/<text/u);
+      expect(html).not.toContain("はると");
+      expect(html).not.toMatch(/[ऀ-ॿ]/u);
+    }
   });
 
   it("draws an illegible mark with no letters where the story says Hindi, and FARHANA over unreadable marks", () => {
@@ -29,6 +64,8 @@ describe("the hidden name's field", () => {
     expect(illegible).not.toMatch(/[ऀ-ॿ]/u);
     const farhana = field({ target: "vine", text: "farhana" });
     expect(farhana).toContain(">FARHANA<");
+    // FARHANA keeps its own letters (the story's Latin capitals), not the player's name's hand.
+    expect(farhana).not.toContain("mg-mehndi-hidden-name-cursive");
     // Her number is a row of marks: no digits are written.
     expect(farhana).not.toMatch(/>[^<]*\d[^<]*</u);
   });
@@ -41,10 +78,10 @@ describe("the hidden name's field", () => {
 
   it("rings each wrong place pointed at while the look goes on, and the writing once the player found it", () => {
     const thumb: MehndiParams = { target: "thumb", text: "player" };
-    const looking = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 5] });
+    const looking = field(thumb, undefined, {}, { ...view, searched: [0, 2, 5] });
     expect(looking.match(/mg-mehndi-hidden-name-mark-ring" data-wrong="true"/gu)).toHaveLength(3);
     expect(looking).not.toContain("data-writing");
-    const found = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 3], ending: { kind: "found", spot: 3, misses: 2, helped: 0 } });
+    const found = field(thumb, undefined, {}, { ...view, searched: [0, 2, 3], ending: { kind: "found", spot: 3, misses: 2, helped: 0 } });
     expect(found.match(/data-wrong="true"/gu)).toHaveLength(2);
     expect(found).toContain("data-writing");
     // One line for how to play, before and during the play; no line under the label (she never shows the place).
@@ -63,15 +100,16 @@ describe("the hidden name's field", () => {
     expect(field({ target: "thumb", text: "player" })).toContain("--mehndi-lamp-r:max(8cqw, 18px)");
   });
 
-  it("breaks the central vine's line behind the writing hidden in it, in the lit pattern only", () => {
-    const vine = field({ target: "vine", text: "farhana" });
-    expect(vine.match(/mask="url\(#[^)]*vinegap\)"/gu)).toHaveLength(1);
+  it("breaks the central vine's line behind the writing laid on it (in the vine, at the feather's base), in the lit pattern only", () => {
+    for (const params of [{ target: "vine", text: "farhana" }, { target: "peacock", text: "player" }, { target: "peacock", text: "illegible" }] as const) {
+      expect(field(params).match(/mask="url\(#[^)]*vinegap\)"/gu), params.target).toHaveLength(1);
+    }
     expect(field({ target: "thumb", text: "farhana" })).not.toContain("vinegap");
   });
 
   it("puts the use's pictures in its declared slots", () => {
     expect(mehndiHiddenName.artSlots.map((slot) => [slot.id, slot.kind])).toEqual([["palm", "sprite"], ["lamp", "sprite"]]);
-    const html = field({ target: "thumb", text: "player" }, "Haruto", { palm: "/assets/minigames/palm.webp", lamp: "/assets/minigames/lamp.webp" });
+    const html = field({ target: "thumb", text: "player" }, undefined, { palm: "/assets/minigames/palm.webp", lamp: "/assets/minigames/lamp.webp" });
     expect(html).toContain('src="/assets/minigames/palm.webp"');
     expect(html).toContain('src="/assets/minigames/lamp.webp"');
     // The writing is the game's, over the picture.

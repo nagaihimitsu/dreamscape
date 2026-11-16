@@ -117,6 +117,21 @@ export function latinName(typed: string): string | null {
   return capitalise((latin as string[]).join("").replace(/(^|[ ])-+|-+(?=$|[ ])/gu, "$1"));
 }
 
+const JAPANESE_LETTER = /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u;
+
+/**
+ * Whether a typed 「ローマ字のつづり」 can be kept: Latin letters only (with spaces, `-`, `'` and `.`; full-width letters
+ * count), so latinName makes it a name and no Japanese letter can reach a scene's writing through it.
+ */
+export function isLatinSpelling(typed: string): boolean {
+  return !JAPANESE_LETTER.test(typed) && latinName(typed) !== null;
+}
+
+/** Whether a name form may start or save with this 「ローマ字のつづり」: blank (none given) or isLatinSpelling. */
+export function spellingAllowed(typed: string): boolean {
+  return !typed.trim() || isLatinSpelling(typed);
+}
+
 /**
  * The Latin name a scene draws for the player: their own spelling if they gave one, else their name in Latin letters,
  * else null (no Latin form: the scene draws no letters of the name).
