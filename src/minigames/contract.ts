@@ -119,6 +119,13 @@ export interface MiniGameArtSlot {
 export type MiniGameRawParams = Readonly<Record<string, string>>;
 
 /** What a game's play is given, through its whole play (docs/13 2.5). */
+/** The names a play may draw (MiniGamePlayProps.names). */
+export interface MiniGameNames {
+  player: string;
+  heroine: string;
+  playerLatin?: string | null;
+}
+
 export interface MiniGamePlayProps<Params = unknown, Outcome extends string = string> {
   /** The tag's own keys, read by the game's zod. */
   params: Params;
@@ -137,8 +144,12 @@ export interface MiniGamePlayProps<Params = unknown, Outcome extends string = st
   clock: PlayClock;
   /** Who is on the scene's stage: the heroine's figure, and the person speaking (if any). */
   cast: MiniGameCast;
-  /** The names as written (draw them as React text only). */
-  names: { player: string; heroine: string };
+  /**
+   * The names as written (draw them as React text only). `playerLatin`: the player's name in Latin letters (their own
+   * spelling, else their kana name in Hepburn; src/domain/name-romaji.ts), for writing drawn in the scene where Japanese
+   * letters would not be (the mehndi); null when there is none (no letters of the name are drawn then). Left out: none.
+   */
+  names: MiniGameNames;
   /** The served URLs of the art slots the use fills (`art.<slot>`); a slot left out draws its CSS look. */
   art: Readonly<Record<string, string>>;
   /**
