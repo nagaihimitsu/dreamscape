@@ -52,6 +52,7 @@
     "voice:script": "tsx scripts/voice-script-cli.ts",
     "voice:changes": "tsx scripts/voice-changes-cli.ts",
     "voice:tag": "tsx scripts/voice-tag-cli.ts",
+    "branch:after-squash": "tsx scripts/branch-after-squash-cli.ts",
     "story:move-memos": "tsx scripts/move-story-memos.ts"
   },
   "dependencies": {
