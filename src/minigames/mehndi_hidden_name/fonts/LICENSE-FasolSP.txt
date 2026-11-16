@@ -1,0 +1,48 @@
+Fasol SP Demo (FasolSPDemo.otf)
+
+Designer: Sasha Pavljenko (Павленко А. А.) — https://pavljenko.ru/ , https://pavljenko.t.me
+Font file: FasolSPDemo.otf, Version 1.002, as distributed (not modified).
+Downloaded on 2026-11-17 from JustFreeFonts.com: https://justfreefonts.com/fonts/fasol-sp/
+Used in Dreamscape only for the player's name drawn in the mehndi pattern of the mini-game 「手のひらの模様」
+(src/minigames/mehndi_hidden_name). Chosen by the game's author on 2026-11-17.
+
+The licence, as written in English in the "Short License.pdf" that comes with the font (quoted; the author's
+bank and contact details on its second page are left out here):
+
+  License Agreement
+  This is the license agreement for the demo version of the font — it's free to use, including for commercial
+  projects, under a few important conditions:
+
+  1. Demo version only.
+  The demo includes only the Russian and Latin alphabet letters. Numbers, punctuation marks, and other characters
+  are available in the full version. If your project requires only alphabetic characters — great! You can use the
+  demo version for free. If you'd like to thank the author, you're welcome to do so — pavljenko.t.me.
+
+  2. Resale is strictly prohibited.
+  The font file and the character set remain the property of the author. You may not resell the font. However,
+  feel free to share the font itself — especially if you also include a link to the original author.
+
+  3. Using the font in client projects.
+  You may use the demo font in commercial client work and you may pass on the demo version to your client. If the
+  demo character set is enough — no need to buy anything extra.
+  If your client needs the full version (e.g., for numbers or punctuation), they can purchase it for just 5
+  dollars. Payments are accepted in dollars (USD) or euros (EUR). Don't worry — sanctions do not restrict you from
+  purchasing this font license. Payment can be made by the designer or the client directly. To keep things simple,
+  you may include this cost in your design fee from the start.
+  For use in high-budget projects (film, TV, YouTube, etc.), an official personal license is required. Please
+  contact the author at pavljenko.t.me — it's easy, affordable, and handled individually.
+
+  4. Unsure about your usage? Best to buy a license.
+  If you're not sure whether your usage is allowed, it's safer and simpler to purchase the full version. It's
+  inexpensive and saves you from any future trouble.
+
+  5. Contact the author.
+  If your project is unusual, high-budget, or involves multiple users or special licensing terms, feel free to
+  reach out. The author is open to fair agreements.
+
+Notes for this game:
+- Only letters are drawn in this font. The demo draws an advertisement ("GET FULL FONT") in place of digits and
+  punctuation, so the @font-face limits the font to letters and the space (unicode-range); anything else in a name
+  (a hyphen, an apostrophe) is drawn by the fallback font.
+- The licence does not say anything about embedding the font in a web page; it allows sharing the font file with a
+  link to the author, which the game's credits give. The full version (5 USD) also covers digits and punctuation.
