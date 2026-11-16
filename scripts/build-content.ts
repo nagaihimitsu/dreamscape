@@ -3,6 +3,7 @@ import { codeError, errorText } from "./cli-error";
 import { SAMPLE_JOURNEY_DIRECTORY } from "./content-layout";
 import { buildContent } from "./content-pipeline";
 import { CONTENT_WARNING_LABELS, formatJourneyContents, type ContentWarningKind } from "./content-report";
+import { STALE_DIALOGUE_LINE } from "./content-warnings";
 import { inkCacheDisabledByEnv, openStoryValidationCache } from "./story-validation-cache";
 
 // Warnings (stale dialogue annotations after Ink edits, and the content
@@ -20,7 +21,7 @@ const details = "details: npm run content:build -- --verbose";
 const staleWarnings: string[] = [];
 const warn = console.warn;
 console.warn = (...args: unknown[]) => {
-  if (typeof args[0] === "string" && /^Stale dialogue (expression|reaction) \(/u.test(args[0])) {
+  if (typeof args[0] === "string" && STALE_DIALOGUE_LINE.test(args[0])) {
     staleWarnings.push(args[0]);
     if (verbose) warn(...args);
     return;

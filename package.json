@@ -6,6 +6,7 @@
   "scripts": {
     "content:build": "tsx scripts/build-content.ts",
     "content:check": "npm run content:build",
+    "content:warnings": "tsx scripts/content-warnings-cli.ts",
     "content:watch": "tsx scripts/content-watch.ts",
     "india:draft": "tsx scripts/journeys/golden_triangle/prepare-india-draft.ts --write",
     "india:check": "tsx scripts/journeys/golden_triangle/prepare-india-draft.ts --check && tsx scripts/journeys/golden_triangle/check-india-followup.ts && tsx scripts/journeys/golden_triangle/prepare-india-observations.ts --check && tsx scripts/inspect-journey-transit.ts --journey golden_triangle",
