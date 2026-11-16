@@ -367,6 +367,7 @@ AI が編集者を務めるときは、都市や場面のまとまりごとに�
     | grep -E '# *(voice|photo|photo_caption|photo_show|recall|on_done|when|then):|cond\(|^[-+] *[*+] |^[-+]==='
   ```
 
+- 台本の点検を助けるコマンドが3つあります。どれも必要なときに走らせるもので、`content:build` には入っていません。注意を出すだけで、ファイルは変えません。直すかどうかは書く人が決めます。`npm run text:check -- --journey <旅行編ID>` は、勝ち負けの言葉、「旅の風景」の名札のまま人が話していそうな行（2.8）、名札の出ない声、用語の台帳（`authoring/journeys/<旅行編ID>/terms.json`。決めた言葉だけを、決めた資料の名前と一緒に書く）で避ける言い方を出します。`npm run content:unused` は、どこからも届かない knot と、場面に届かないデータを出します。`npm run sources:check` は、同じ URL に違う題が付いた出典などを出します（`-- --fetch` で、ページの題とも比べます）。
 - その旅行編の単体テストがあれば実行する（インド編は、`content:build` の後に `npx vitest run tests/journeys/golden_triangle`。選択肢・フラグ・場面のつながり・予算を確かめる）。選択肢や条件を書く人と決めて変えたときは、`npm run test:walk` も。
 - 最後に、変えた場面を、遊ぶ人と同じ画面で、すべての道で読む（5.2）。
 
