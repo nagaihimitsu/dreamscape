@@ -385,6 +385,18 @@ test("battle: a remembered line shows 「回想」 by its speaker's name and in 
   await expect(plate).toHaveText("カムラ（回想）");
   await expect(plate.getByTestId("speaker-remembered")).toBeVisible();
   await expect(page.locator("[data-dialogue-window]")).toHaveAttribute("data-remembered", "true");
+  // Her `# recall:` photo (2026-11-16 user feedback): the scene sinks into grey over the whole picture, from its very
+  // top behind the header (no bright band, no edge), and the photo lies below the header.
+  const recall = page.locator(".recall-layer");
+  await expect(recall.locator("img")).toHaveCount(1);
+  const [layerBox, backdropBox, photoBox, hudBox] = await Promise.all([recall.boundingBox(),
+    page.locator(".battle-backdrop").boundingBox(), recall.locator("img").boundingBox(), page.locator(".journey-hud").boundingBox()]);
+  expect(layerBox!.y, "the grey starts at the top of the scene's picture").toBeLessThanOrEqual(backdropBox!.y + 1);
+  expect(layerBox!.y + layerBox!.height, "the grey reaches the bottom of the picture")
+    .toBeGreaterThanOrEqual(backdropBox!.y + backdropBox!.height - 1);
+  expect(photoBox!.y, "the photo starts below the header").toBeGreaterThanOrEqual(hudBox!.y + hudBox!.height - 1);
+  expect(await recall.evaluate((element) => getComputedStyle(element, "::before").backgroundColor),
+    "an even grey veil").toMatch(/^rgba\(\d+, \d+, \d+, 0\.[6-9]\d*\)$/u);
   const figure = (id: string) => page.locator(`.vn-character img[src*="/assets/characters/${id}/"]`);
   await expect(figure("gt_anwar")).toHaveCount(1);
   await expect(figure("gt_kamla")).toHaveCount(0);
