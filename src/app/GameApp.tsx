@@ -151,7 +151,7 @@ import { browserStorage, type AppProps } from "./app-storage";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
-import { useDebugMode, useDebugVoiceRate } from "./debug-mode";
+import { useDebugMode, useDebugShot, useDebugVoiceRate } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
 import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn, type FreeTimeReturn } from "./free-time-return";
 import { endIntroMovie, introChange, recordIntro, startIntroTiming, type IntroTiming } from "./intro-timing";
@@ -166,6 +166,8 @@ import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
 /** Debug's 台詞の声の速さ (Debug mode only): its own chunk, loaded when ゲームの設定 shows it (scripts/dist-guard.ts). */
 const DebugVoiceRate = lazy(() => import("./DebugVoiceRate"));
+/** Debug's 撮影の形 (Debug mode only): its own chunk, loaded when ゲームの設定 shows it (scripts/dist-guard.ts). */
+const DebugShotSetting = lazy(() => import("./DebugShotSetting"));
 // Dialogs opened from a button, each its own file, loaded when first opened (the title page and the scenes do not need
 // them; LazyDialog shows nothing while one loads and says so if it cannot be loaded).
 const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ default: module.CreditsDialog })));
@@ -198,6 +200,7 @@ export function GameApp({
   debug = false,
   debugPanel,
   debugAccess,
+  debugShot,
   journeyId = defaultJourneyId,
   onSwitchJourney,
   selectorFocus,
@@ -317,6 +320,12 @@ export function GameApp({
   // Debug's 「移動画面に戻る（Debug）」 (free-time-return.ts): the last free-time state, in this tab's memory
   // only. Updated after each render, so the first render of another screen reads the free time before it.
   const debugOn = isDebug || debugMode.on;
+  // Debug's 撮影の形 (debug-mode.ts useDebugShot): this device's Debug preference (a Debug session passes its page's own, which
+  // a launch URL's shot=1 turns on). While it is on with Debug mode, the play screens leave out Debug's marks (`debugMarks`);
+  // the relationship changes are still followed, so turning it off shows the scene's last one.
+  const ownShot = useDebugShot(browserStorage);
+  const shot = debugShot ?? ownShot;
+  const debugMarks = debugOn && !shot.on;
   const freeTimeReturn = useRef<FreeTimeReturn | null>(null);
   // The cards free time's row has shown during this play, per city (photo-cards.ts newCardIds): a card it has not is
   // dealt in. In this tab's memory only, emptied by a new game, a load and Debug's return (what they bring is not new).
@@ -667,7 +676,7 @@ export function GameApp({
   const miniGameAvailable = (game && miniGameAvailableOutcomes(game))?.join(" ");
   const miniGameEnvironment = useMemo<MiniGameEnvironment>(() => ({
     auto: displaySettings.value.miniGameAuto,
-    debug: debugOn,
+    debug: debugMarks,
     reduceMotion: displaySettings.value.reduceMotion,
     names: { player: game?.playerName ?? "", heroine: game?.heroineName ?? "" },
     revision,
@@ -678,7 +687,7 @@ export function GameApp({
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
     onQuiet: setMiniGameQuiet,
     onMusic: (track) => setMiniGameTrack(track && hasTrack(track) ? track : null),
-  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, miniGameAvailable,
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugMarks, game?.playerName, game?.heroineName, revision, miniGameAvailable,
     commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
@@ -845,12 +854,13 @@ export function GameApp({
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
           setSettingsNotice(null);
-          // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices, meanwhile.
+          // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices or 撮影の形, meanwhile.
           debugMode.refresh();
           voiceRate.refresh();
+          shot.refresh();
           setSettings(true);
         }}
-        onReturnToFreeTime={canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
+        onReturnToFreeTime={debugMarks && canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
       />}
       {game && (
         <div className="journey-stage" aria-label="旅の進行">
@@ -893,9 +903,9 @@ export function GameApp({
       <NotebookCueContext.Provider value={notebookCue}>
       <MiniGameProvider value={miniGameEnvironment}>
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
-        {showChanges && <RelationshipChangeNote change={game && shownChange && shownChange.scene === changeScreenKey(game) ? shownChange.change : null}
+        {debugMarks && <RelationshipChangeNote change={game && shownChange && shownChange.scene === changeScreenKey(game) ? shownChange.change : null}
           conditions={storyScene && game ? sceneConditionTruths(game) : []} />}
-        {debugPanel && game && debugPanel(game)}
+        {debugPanel && game && debugMarks && debugPanel(game)}
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}
@@ -1241,7 +1251,7 @@ export function GameApp({
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}
-            debug={debugOn}
+            debug={debugMarks}
           />
         )}
       </main>
@@ -1292,7 +1302,7 @@ export function GameApp({
         <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />
       </LazyDialog>}
       {glossaryOpen && game && <LazyDialog onClose={() => setGlossaryOpen(null)}>
-        <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugOn} onClose={() => setGlossaryOpen(null)} />
+        <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugMarks} onClose={() => setGlossaryOpen(null)} />
       </LazyDialog>}
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
@@ -1579,6 +1589,8 @@ export function GameApp({
           {settingsNotice?.at === "delete" && <p role="status">{settingsNotice.text}</p>}
           {(!isDebug || debugOn) && <CreatorSettings initiallyOpen={debugOn}>
             {!isDebug && <DebugModeSetting debugMode={debugMode} />}
+            {/* 撮影の形 (Debug mode only), loaded when shown. */}
+            {debugOn && <Suspense fallback={null}><DebugShotSetting on={shot.on} onChange={shot.change} message={shot.message} /></Suspense>}
             {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
             {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
             {/* 台詞の声の速さ (Debug mode only), loaded when shown. */}

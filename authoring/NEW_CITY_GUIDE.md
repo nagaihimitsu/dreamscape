@@ -5,7 +5,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - ここに書いたコマンド・項目・ファイルは、2026-11-14 のリポジトリにあるものです（コマンドと検査の決まりは、この日にコードと照らした）。まだないものは「まだ仕組みがない」と書きます。
 - 決まりの元は [AGENTS.md](../AGENTS.md) です。この手引きと食い違うときは AGENTS.md に従います。
 - 手順と並べて読む手引き：[調べものの落とし穴集](RESEARCH_PITFALLS.md)（手順3〜5）、[シナリオ改稿のポイント](SCENARIO_EDITING_GUIDE.md)（手順10b）、[発注マニュアル](ORDERING_MANUAL.md)（手順13〜15・18）、[書いた場面をDebugで確かめる](DEBUG_CHECK_GUIDE.md)（手順10〜22）。AI と進めるときは [AIと決めごとを進める型](DECISION_GUIDE.md) と [AIに仕事を分けて頼む手引き](AI_DELEGATION_GUIDE.md) も。
-- 手順の途中で使う手引き：[旅の数字の決め方](NUMBERS_GUIDE.md)（手順3・11・21）、[表現の道具を足すときの考え方](EXPRESSION_TOOLS_GUIDE.md)（手順16。新しい札が欲しくなったとき）、[無料の素材の探し方](FREE_ASSETS_GUIDE.md)（手順5・17）、[ミニゲームの手応えの作り方と確かめ方](MINIGAME_FEEL_GUIDE.md)（手順19）、[横の点検](SWEEP_CHECK_GUIDE.md)（手順10b・22。1つ直したら同じ型を全部探す）。新しい仕組みや表現を調べて作るときは [「調べて → 方法を決めて → 作る」の進め方](RESEARCH_TO_BUILD_GUIDE.md)。
+- 手順の途中で使う手引き：[旅の数字の決め方](NUMBERS_GUIDE.md)（手順3・11・21）、[表現の道具を足すときの考え方](EXPRESSION_TOOLS_GUIDE.md)（手順16。新しい札が欲しくなったとき）、[無料の素材の探し方](FREE_ASSETS_GUIDE.md)（手順5・17）、[ミニゲームの手応えの作り方と確かめ方](MINIGAME_FEEL_GUIDE.md)（手順19）、[横の点検](SWEEP_CHECK_GUIDE.md)（手順10b・22。1つ直したら同じ型を全部探す）、[外の書き手とのやりとり](WRITER_HANDOFF_GUIDE.md)（手順10・10b。書き手に説明書を渡すときと、原稿を受け取ったとき）、[不具合を調べる手順](BUG_HUNT_GUIDE.md)（手順22。テストやCIで落ちたとき）。新しい仕組みや表現を調べて作るときは [「調べて → 方法を決めて → 作る」の進め方](RESEARCH_TO_BUILD_GUIDE.md)。
 - 例はインド・ゴールデントライアングル編です（旅行編ID `golden_triangle`、接頭辞 `gt`、デリー・アーグラ・ジャイプール）。ファイルの書き方の手本は、架空の街の[見本の編](templates/sample_trip/README.md)です。
 
 この文書での書き方：

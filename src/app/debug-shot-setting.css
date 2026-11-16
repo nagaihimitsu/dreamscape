@@ -1,0 +1,44 @@
+/*
+ * Debug's 撮影の形 (DebugShotSetting.tsx): in ≡メニュー → ゲームの設定 after 「Debugモード」 and in Debug's 場面の確認. Loaded with it
+ * (never by the title page). The checkbox's whole row is its label, 44 px or more, across the width; it wraps at 320 px.
+ * No thick left border (AGENTS.md).
+ */
+.debug-shot-setting {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+.debug-shot-setting h2,
+.debug-shot-setting h3 {
+  margin: 0;
+}
+.debug-shot-setting h2 {
+  font-size: 17px;
+  letter-spacing: 0;
+}
+.debug-shot-setting p {
+  margin: 0;
+}
+.debug-panel .debug-shot-row,
+.debug-shot-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 15px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.debug-shot-row input[type="checkbox"] {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+.debug-shot-setting [role="alert"] {
+  color: #873b34;
+  font-size: 13px;
+  line-height: 1.7;
+}

@@ -1,4 +1,5 @@
 import { debugQueryString } from "../../src/dev/debug-query";
+import { describeRelationshipChange, relationshipChange } from "../../src/domain/relationship-change";
 import { test as base, bothStorages, debugGame, expect, ops, placeSave, playUntil, tier, type Locator, type Page } from "./helpers";
 
 // Debug's flags and 街歩き's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」; the player-facing
@@ -138,4 +139,49 @@ test("恋の段階 2 offers Delhi's rooftop confession at night, from 場面の�
   await expect(dialog.getByTestId("debug-edit-stage-2")).toHaveAttribute("aria-pressed", "true");
   await dialog.getByTestId("debug-edit-close").click();
   await offered();
+});
+
+// 撮影の形 (2026-11-16): screenshots that look like play, Debug staying on. A launch URL's shot=1 turns it on for the page only
+// (nothing is stored), so turning it off in ゲームの設定 removes no key either: the browser storage stays as it was.
+test("shot=1 opens a date without Debug's bar, candidates and strip; turned off in ゲームの設定, they show, with the reply's change", { tag: tier.debug }, async ({ page }) => {
+  await page.goto(`/${debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01", shot: true })}`);
+  const session = page.getByTestId("debug-session");
+  await ops.debugShown(session);
+  await expect(session).toHaveAttribute("data-shot", "true");
+  const strip = page.getByTestId("relationship-change");
+  const marks = [page.locator(".debug-session-bar"), page.getByTestId("debug-candidates"), page.getByRole("status", { name: "Debug：関係の変化" })];
+  for (const mark of marks) await expect(mark).toHaveCount(0);
+  expect(page.url()).toMatch(/&shot=1$/u);
+
+  // A reply that moves the relationship (ticket 0: a positive reaction): followed, not shown.
+  const before = await playUntil(page, (state) => !!state.activeDate?.frame.choices.length, { source: debugGame });
+  await page.getByTestId("date-choice").first().click();
+  await expect.poll(async () => (await debugGame(page))?.revision).toBe(before.revision + 1);
+  const change = relationshipChange(before, (await debugGame(page))!);
+  expect(change?.axes.length).toBeGreaterThan(0);
+  await expect(page.getByTestId("romance-scene")).toBeVisible();
+  await expect(strip).toHaveCount(0);
+
+  // ゲームの設定 → 制作者向け (open in Debug) → 撮影の形: off shows the bar, the candidates and this reply's change at once.
+  const settings = await ops.openSettings(page);
+  const shot = settings.getByTestId("debug-shot");
+  await expect(shot).toBeChecked();
+  await expect(settings.getByTestId("debug-shot-setting").getByRole("heading", { name: "撮影の形（Debug）" })).toBeVisible();
+  await settings.getByLabel("Debugの表示を隠す").uncheck();
+  await ops.closeDialog(settings);
+  await expect(session).not.toHaveAttribute("data-shot");
+  await expect(page.locator(".debug-session-bar")).toBeVisible();
+  await expect(page.getByTestId("debug-candidates")).toBeVisible();
+  await expect(strip).toBeVisible();
+  expect(await strip.locator("p").allTextContents()).toEqual(describeRelationshipChange(change!));
+  expect(page.url()).not.toContain("shot=");
+
+  // 場面の確認 has the same setting: on, the scene's URL opens with it; off again leaves the storage as it was.
+  await ops.backToDebugSettings(page);
+  const panelShot = page.getByTestId("debug-panel").getByTestId("debug-shot");
+  await expect(panelShot).not.toBeChecked();
+  await panelShot.check();
+  await expect(page.getByTestId("debug-url")).toHaveValue(/&shot=1$/u);
+  await panelShot.uncheck();
+  await expect(page.getByTestId("debug-url")).not.toHaveValue(/shot=/u);
 });

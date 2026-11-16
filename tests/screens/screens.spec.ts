@@ -203,12 +203,13 @@ test("Debugの関係の変化（デートの返答の後）（Debug起動URL）"
   await save(page, "debug-relationship-change", "Debugの関係の変化（デートの返答の後）", { kind: "debug", url: changeUrl }, page.viewportSize()!.width);
 });
 
-// Every example URL of docs/10 that the normal development server opens (debug-state.test.ts proves they open).
+// Every example URL of docs/10 that the normal development server opens (debug-state.test.ts proves they open); those with
+// shot=1 (撮影の形) show the scene as play shows it, without Debug's bar and marks.
 const examples = debugExampleUrls(readFileSync(path.resolve("docs/10_DEVELOPMENT_CHECKS.md"), "utf8"));
 for (const [index, example] of examples.entries())
   test(`${example.titleJa}（Debug起動URL）`, async ({ page }) => {
     await page.goto(`/${example.url}`);
-    // A scene opens inside the Debug bar; a prototype city's map opens its own preview.
+    // A scene opens in the Debug session (under its bar, unless shot=1); a prototype city's map opens its own preview.
     await expect(page.getByTestId("debug-session").getByRole("main").or(page.getByTestId("debug-prototype-preview"))).toBeVisible();
     await save(page, `debug-${String(index + 1).padStart(2, "0")}`, example.titleJa, { kind: "debug", url: example.url }, page.viewportSize()!.width);
   });

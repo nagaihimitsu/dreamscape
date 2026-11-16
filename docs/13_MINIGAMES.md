@@ -554,7 +554,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 `src/minigames/minigame-uses.test.ts`：
 
 - `minigame-uses.json` の使い所ごとに、その場面を Debug の場面の組み立て（`createDebugState` と同じ部品）で開く。場面の種類ごとの開き方は Debug と同じ表（`src/dev/minigame-room.ts` の `miniGameUseLaunch`）を使い、ミニゲームのために足さない。その表で開けない所は、同じファイルの `miniGameUseOpening`・`miniGameUseStates` が、遊びと同じ関数で開く（実装で足した。10章）：
-  - 宿の時点の場面（`# at: hotel …`。場面の確認の一覧に無い）：都市クリアの後の「休む」で開く（`startHotelInsertScene`）。その物語が読む `cond("…")` ごとに、それだけが真の状態でも開く（その場面自身の `seen` は除く）。
+  - 宿の時点の場面（`# at: hotel …`。場面の確認の「宿の場面（休む）」（`scene=hotel`）は初めて出るときの形だけを開くので、部屋からはつながない）：都市クリアの後の「休む」で開く（`startHotelInsertScene`）。その物語が読む `cond("…")` ごとに、それだけが真の状態でも開く（その場面自身の `seen` は除く）。
   - 品物を持っているかを読むデート（`cond("item <ID> held")`）：Debug の状態で持っている品物を、持たない状態でも開く（`dateWithoutHeldItems`。起動 URL の `without=<品物>`。アクバル廟のサングラス）。
   - エピソードを終えたかを読むデート（`cond("episode <ID>")`）：そのエピソードの前でも開く。都市の始めから、ほかのエピソードを順に1つずつ終え、デートが始められる所で始める（`dateBeforeEpisodes`。起動 URL の `before=<エピソード>`。ローディー・ガーデンの「一緒に言おう」）。
   - Debug の部屋の「Debugで開く」も、こうした側でしか届かない使い所には、その側の URL を付ける（その場面の歩みで、使い所に最初に届く側を選ぶ）。

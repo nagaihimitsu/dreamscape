@@ -36,6 +36,10 @@
 - [08 公式資料](docs/08_REFERENCES.md)：使っている版と公式資料、史実の確かめ先。
 - [UI_RULES.md](UI_RULES.md)・[UI_REVIEW_CHECKLIST.md](UI_REVIEW_CHECKLIST.md)：画面の作り方と、作った後の点検。
 - [UI監査記録](docs/UI_AUDIT_2026_10.md)：2026年10月の画面の点検の記録。
+- [不具合を調べる手順](authoring/BUG_HUNT_GUIDE.md)：報告を受けたときと、CIだけで落ちるときに調べる順番。
+- [大きな作り替えで「前と同じ」を確かめる](authoring/SAME_AS_BEFORE_GUIDE.md)：変える前の結果を残し、変えた後と比べる道具を先に作るやり方。
+- [計ってから速く・軽くする](authoring/MEASURE_FIRST_GUIDE.md)：読み込み・生成・画像を、同じ条件で計ってから直すやり方。
+- [画面を作り直す進め方](authoring/UI_REDESIGN_GUIDE.md)：今の画面を一覧にして測り、小さな直しから入れて、実機で見るまでの順番。
 
 ### 作る人へ（[authoring/](authoring/)）
 
@@ -43,6 +47,7 @@
 - [コンテンツ制作ガイド](authoring/CONTENT_GUIDE.md)：会話・札・クイズ・観光・デート・条件・移動・音・人物の絵の書き方。
 - [シナリオ改稿のポイント（編集者視点）](authoring/SCENARIO_EDITING_GUIDE.md)：書き上がったシナリオを、書いた人とは別の編集者が、初めて遊ぶ人の目で読み直して整える手引き。
 - [発注マニュアル](authoring/ORDERING_MANUAL.md)：ヒロインの声と、描いてもらう絵の頼み方・受け取り方。
+- [外の書き手とのやりとり](authoring/WRITER_HANDOFF_GUIDE.md)：書き手に説明書を渡す前の試し書きと、受け取った原稿の点検のしかた。
 - [調べものの落とし穴集](authoring/RESEARCH_PITFALLS.md)：事実・出典・道のり・写真を調べるときに実際に引っかかった所と、防ぐ習慣。
 - [書いた場面をDebugで確かめる](authoring/DEBUG_CHECK_GUIDE.md)：書いた場面を、ゲームの中ですぐ見る手順。
 - [AIと決めごとを進める型](authoring/DECISION_GUIDE.md)：AIがユーザーに聞く・自分で決める・書き残すときの型。

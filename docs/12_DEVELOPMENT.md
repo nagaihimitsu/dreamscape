@@ -28,15 +28,18 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
 | `npm run dev:sample` | 見本の編（`authoring/templates/sample_trip/`）を含めて生成し、開発サーバーを起動。タイトル画面に「見本の旅」が並ぶ（`npm run dev` に戻すと消える。[見本の編](02_TECH_ARCHITECTURE.md#見本の編)） |
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
+| `npm run content:warnings -- --save [ファイル]`・`-- --compare [ファイル]` | `content:build` が数える注意を、種類ごとの件数と文で取る（Inkを直した後に残った表情・反応の注記は `stale-dialogue` として）。`--save` は件数・文・見本の有無・Git の HEAD を JSON に保存し（既定は `artifacts/content-warnings.json`。Git管理外）、`--compare` は保存したものと比べて、種類ごとの前 → 今と、消えた注意・増えた注意を出す（見本の有無が保存したときと違えば知らせる）。`-- --with-sample` で見本の編も含めて数える。検証は `content:build` と同じで、生成物は書かない |
 | `npm run content:watch` | 生成を1回行い、その後は `content/`・`public/` のファイル（Ink・JSON・画像）を保存するたびに生成し直す（`-- --with-sample` で見本の編も含めて監視）。失敗しても監視を続け、生成物は前回のまま。Ctrl+C で終了 |
 | `npm run dev:watch` | `content:watch` と開発サーバーを一緒に起動し、保存した Ink・JSON・画像を開いている画面へ反映する。開発サーバーは最初に生成に成功してから起動する（`npm run dev` と同じ）。Ctrl+C で両方を終了（`-- --with-sample` で見本の編も） |
 | `npm run typecheck` | 型検査（`tsc --noEmit`）。生成物を読むので、空のチェックアウトでは先に `npm run content:check` |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・`verify`。[テストの組](10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
+| `npm run test:with-sample -- [vitest の引数]` | 見本の編を含めて生成し、引数を `vitest run` に渡して単体テストを流し、最後に見本なしで生成し直す（テストが失敗しても、Ctrl+C で止めても戻す。終了コードは vitest のもの）。見本の編を前提とするテストを絞って流すときに使う（例：`npm run test:with-sample -- tests/journeys/sample_trip/`）。`npm test`・`test:quick` は、前の生成で入れた見本を残したまま終わる |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ。過去のセーブが更新後に再開できることを保証するものではない |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にテスト用のコードやデータがないか、タイトル画面で読み込むファイルにDebugが入っていないか、ライブラリのライセンス一覧（`third-party-licenses.json`）があるかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
 | `npm run dist:check` | ビルド済みの `dist/` にテスト用の読み取り口・仮データ・見本の旅行編がないか、Debug・プレビューがタイトル画面で読み込まない別のファイルだけにあるか、`package.json` の `dependencies` がすべてライブラリのライセンス一覧に載っているかを検査（`build`・`verify` が自動で実行） |
+| `npm run branch:after-squash -- <合流した PR の最後のコミットの SHA> [-m <段落>]...` | GitHub が作業ブランチの PR を squash で合流した後、手元のブランチを `origin/main` に合わせ、合流したコミットを `git merge -s ours` で履歴としてつなぐ（中身は `origin/main` のまま。次の push は PR のブランチへの fast-forward）。コミットしていない変更がある、HEAD が渡した SHA でない、ブランチで変えたファイルが `origin/main` で違う内容のときは、理由と次の手を出して止める。追跡先（upstream）は変えない。push はせず、push のコマンドを出す。`-m` の段落は既定の1行目（`Merge branch head <短いSHA> into <ブランチ> after the squash merge of #<番号>`）の後に足す（署名の行は1つの `-m` に改行でつなぐ） |
 | `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](10_DEVELOPMENT_CHECKS.md#e2eの段)） |
 | `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・Debugモードがオフの間は `?debug` を無視しDebugのファイルを読み込まないこと、ゲームの設定のパスワードでDebugモードをオンにしてDebugを開けること、タイトル画面までの読み込み量の報告 |
 | `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
@@ -56,12 +59,32 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run voice:script -- --journey <旅行編ID> [--out <フォルダ>]` | ヒロインの台詞を、声を作る人に渡す台本（`heroine_lines.txt`）とそのデータ（`entries.json`）にして `artifacts/voice/<旅行編ID>/` に書く（1行＝1ファイル。ID は前に渡した台本・`# voice:` のまま変わらない。[台詞の声の台本](../authoring/CONTENT_GUIDE.md#台詞の声の台本と台詞が変わったときの確認2026-11-13)） |
 | `npm run voice:tag -- --journey <旅行編ID> --from <フォルダ>` | 届いた声（`<ID>.mp3`・`<ID>.wav`）の行の前に `# voice: <ID>` を書き、その声が言っている文を `authoring/journeys/<旅行編ID>/voice/recorded.json` に記録する（文が台本と違う声・MP3 がまだ `public/assets/voice/` にない声は付けずに理由を出す） |
 | `npm run voice:changes -- --journey <旅行編ID>` | 録音した行を `recorded.json` の文と、まだ録音していない行を渡した最新の台本（`authoring/journeys/<旅行編ID>/voice/<日付>/`）と比べ、録り直しが要る行（先に出す）・変わった・なくなった・台本にない台詞を出す（録音した行が変わると `content:build` も注意を出す） |
+| `npm run content:unused -- [--journey <旅行編ID>]` | 必要なときに走らせる点検（ビルドに入れない。注意だけで、ファイルを変えない）。どこからも届かない knot と関数、場面に届かないデータ（デートのない行き先・地図に出ないクイズ・訪ねない観光地・名前の出ない人物）、画面が読まないかもしれないスキーマの欄（名前で探す推定）を、旅行編ごとの数と一覧で出す。`content:build` が止めるもの・注意に出すもの（never-offered・使われていない公開ファイルなど）は繰り返さない |
+| `npm run sources:check -- [--journey <旅行編ID>] [--fetch]` | 必要なときに走らせる出典の点検（ビルドに入れない。データを変えない）。同じ URL に違う題・同じ題に違う URL を、ファイルと行と ID つきで出す。`--fetch` でページの `<title>` と比べ（空白・大文字小文字・記号・サイト名・末尾の（…）の注記をそろえて）、読めないページは「確かめられなかった」と出す。publisher に Dreamscape とあるゲームの記録は題を比べない |
+| `npm run text:check -- [--journey <旅行編ID>]` | 必要なときに走らせる文の点検（台本の点検用。ビルドに入れない。ファイルを変えない）。遊ぶ人に見える文（Ink の行・選択肢・札の字、データの `…Ja` の欄）のうち、「旅の風景」の名札のまま人が話していそうな行、名札の出ない声、用語の台帳 `authoring/journeys/<旅行編ID>/terms.json` で避ける言い方を、種類ごとの数とファイル・行で出す（勝ち負けの言葉は見ない。2026-11-16 のユーザー判断） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](../authoring/CITY_BUNDLES.md)） |
 | `npm run schemas:build` | エディタの入力補助（JSON Schema）を作り直す。`authoring/schemas/` に、旅行編の `manifest.json`・都市・経路・旅行設定・交通判断台帳・クイズ・各カタログのスキーマを書き、`.vscode/settings.json` でそれぞれのファイルに結び付ける（VS Code で項目の候補・型・書き間違いが出る）。データの書式を変えたときに実行し、作ったファイルもコミットする。入力の補助だけで、検査は `content:build` |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
 | `npm run images:optimize` | 観光写真を配信用の WebP（品質80）にし、立ち絵の配信用の軽い版（非可逆の WebP 品質85、透明度は可逆）を `authoring/` の元の絵（可逆のPNG）から作る。そのままでは確認だけで、`--write` を付けると書き換える（`--journey <旅行編ID>` で1つの旅行編だけ。例 `npm run images:optimize -- --journey <旅行編ID> --write`）。観察で拡大する写真（観光地の画像と観察資料の画像）は同じ大きさ、ほかは幅1600px・高さ1800pxの枠に収め、写真の色の情報（ICCプロファイル）は残す。カタログの `path`・`width`・`height`・`modificationJa` と観察資料の `path`・`sha256` も書き換え、元のファイルを消す（出典と確認日は変えない）。仮の画像（`isPlaceholder`）と見本の画像は変えない。立ち絵は元の絵から作り直し、変わったものだけ書き換える（元の絵のない可逆の立ち絵は、先にそれを元の絵として残す）。変換できる写真や可逆のまま配信している立ち絵があると `content:build` が警告する |
 
 どの確認をいつ行うかは[開発時の確認](10_DEVELOPMENT_CHECKS.md)にあります。
+
+## 制作ツールのメッセージ
+
+制作ツール（`content:build`・`journey:*`・`voice:*`・`city:bundle` など）の止める文と注意は、次の決まりで書きます。読むのは、コードを読まない書き手です。文だけで、どこを・どう直すかが分かるようにします。
+
+- **日本語で書き、ファイルはリポジトリの直下からの相対パスで示す。** 絶対パスは機械ごとに違い、長く、報告や資料にそのまま写せません。相対パスは `scripts/content-sources.ts` の `displayPath` で作ります。
+- **何が重なったか・食い違ったかと、その場所を名指しする。** 両方のファイルと、そのIDを書きます。「Duplicate battleId」としか言わないと、どのIDが、どのファイルとどのファイルで重なったのかを、書き手が探すことになります。
+- **次にすることを書く。** 直し方を一文で言います。
+- 思いがけない例外のほかは、stack（コードの呼び出しの跡）を出しません。
+
+例（`scripts/album-images.ts`。文は単体テスト `scripts/album-images.test.ts` から）：
+
+```text
+同じIDのアルバムの絵が2つあります：content/journeys/trip_a/public/assets/album/a_tower.webp と content/journeys/trip_b/public/assets/album/a_tower.jpg。ID はファイル名（拡張子を除く）で、すべての旅行編で1つだけにします。どちらかの名前を変えてください（Duplicate album image ID: a_tower）。
+```
+
+作り替えのときの改善案の一覧には、この種の直しが8件ありました。絶対パスが入る、成功の行は日本語なのに失敗の文だけ英語、stack ごと出す、「Duplicate battleId」としか言わない、などです。今の重なりの検査（`scripts/content-validation-utils.ts` の `unique()`）は、IDと、分かるときは両方のファイルを言うようになりましたが、文はまだ英語です。
 
 ## 生成と編集の流れ
 

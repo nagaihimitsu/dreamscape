@@ -33,17 +33,36 @@ describe("Debug launch URLs", () => {
     expect(parseDebugQuery("?debug&scene=date&without=Rain")).toEqual({ kind: "error", message: "「without=Rain」はIDの形ではありません（品物のIDを , で区切ります）。" });
   });
 
-  it("writes and reads free time's day and time (scene=free only, the time as 19:00) and the flags of any scene (2026-11-15)", () => {
+  it("writes and reads the day and time (the time as 19:00) and the flags of any scene (2026-11-15; the clock beyond free time 2026-11-16)", () => {
     const free: DebugSettings = { ...settings, scene: "free", id: "p_hotel", day: 2, time: 19 * 60, flags: ["milano_tino_needs_pick", "other_flag"] };
     const url = debugQueryString(settingsQuery("real", free));
     expect(url.endsWith("&roll=negative&day=2&time=19:00&flags=milano_tino_needs_pick%2Cother_flag")).toBe(true);
     expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: settingsQuery("real", free) });
     expect(parseDebugQuery("?debug&scene=free&time=9:05")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "free", time: 545 } });
-    // Another scene keeps its flags and leaves out free time's clock; no flags, no item.
+    // Another scene keeps its flags and its clock (a date's night branch); no flags, no item.
     const date = debugQueryString(settingsQuery("real", { ...free, scene: "date", id: "milano_brera_date_01" }));
-    expect(date).toContain("&flags=milano_tino_needs_pick%2Cother_flag");
-    expect(date).not.toMatch(/day=|time=/u);
+    expect(date.endsWith("&roll=negative&day=2&time=19:00&flags=milano_tino_needs_pick%2Cother_flag")).toBe(true);
+    expect(parseDebugQuery("?debug&city=delhi&scene=date&target=gt_delhi_date_chandni_chowk&time=19:00"))
+      .toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "date", target: "gt_delhi_date_chandni_chowk", time: 1140 } });
+    expect(parseDebugQuery("?debug&scene=battle&day=2")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "battle", day: 2 } });
     expect(debugQueryString(settingsQuery("real", { ...settings, flags: [] }))).not.toContain("flags");
+  });
+
+  it("reads a hotel's scene (scene=hotel) with its night's clock and flags (2026-11-16)", () => {
+    const url = "?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_sick_morning&time=19:00&flags=gt_delhi_player_sick";
+    expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "hotel",
+      target: "gt_delhi_hotel_sick_morning", time: 1140, flags: ["gt_delhi_player_sick"] } });
+    const hotel: DebugSettings = { ...settings, cityId: "delhi", scene: "hotel", id: "gt_delhi_hotel_sick_morning", time: 1140 };
+    expect(parseDebugQuery(debugQueryString(settingsQuery("real", hotel)))).toEqual({ kind: "launch", query: settingsQuery("real", hotel) });
+  });
+
+  it("writes and reads 撮影の形 (shot=1) last, for any scene but the map check; never from the settings (2026-11-16)", () => {
+    const query: DebugQuery = { ...settingsQuery("real", settings), shot: true };
+    const url = debugQueryString(query);
+    expect(url).toBe("?debug&city=milano&scene=date&target=milano_brera_date_01&progress=completed&ap=9&affection=-3&trust=2&spark=0&roll=negative&shot=1");
+    expect(parseDebugQuery(url)).toEqual({ kind: "launch", query });
+    expect(parseDebugQuery("?debug&shot=1&scene=free")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "free", shot: true } });
+    expect(debugQueryString(settingsQuery("real", settings))).not.toContain("shot");
   });
 
   it("writes and reads 恋の段階 (stage) after the relationship values, for any scene; left out, the progress's own (2026-11-16)", () => {
@@ -75,14 +94,19 @@ describe("Debug launch URLs", () => {
     ["?debug&scene=battle&targt=x", "URLの項目「targt」は使えません。使える項目: data, city, scene, target, progress, ap, affection, trust, spark, stage, roll, from, prep"],
     ["?debug&scene=battle&scene=date", "URLの項目「scene」が2回以上あります。"],
     ["?debug&scene=battle&city=", "URLの項目「city」に値がありません。"],
-    ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / occasion / tour / free / map のどれかを書きます。"],
+    ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / occasion / tour / free / hotel / map のどれかを書きます。"],
     ["?debug&scene=free&time=8:59", "「time=8:59」は使えません。time には 09:00〜21:00 の時刻を 19:00 のように書きます。"],
     ["?debug&scene=free&time=21:01", "「time=21:01」は使えません。"],
     ["?debug&scene=free&time=night", "「time=night」は使えません。"],
     ["?debug&scene=free&day=0", "「day=0」は使えません。day には 1〜30 の整数（滞在の何日目か）を書きます。"],
     ["?debug&scene=free&day=31", "「day=31」は使えません。"],
-    ["?debug&scene=date&time=19:00", "day と time は scene=free（街歩き）で使います。"],
-    ["?debug&scene=battle&day=2", "day と time は scene=free（街歩き）で使います。"],
+    ["?debug&scene=date&time=19:30:00", "「time=19:30:00」は使えません。"],
+    ["?debug&city=samarkand&scene=map&time=19:00", "time は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。"],
+    ["?debug&city=samarkand&scene=map&day=2&time=19:00", "day と time は scene=map（地図・交通の確認）では使えません。"],
+    ["?debug&scene=date&shot=0", "「shot=0」は使えません。shot には 1 を書きます（撮影の形：Debugの帯や印を隠して開きます）。"],
+    ["?debug&scene=date&shot=true", "「shot=true」は使えません。"],
+    ["?debug&scene=date&shot", "URLの項目「shot」に値がありません。"],
+    ["?debug&city=samarkand&scene=map&shot=1", "shot は scene=map（地図・交通の確認）では使えません。"],
     ["?debug&scene=free&flags=Night", "「flags=Night」はIDの形ではありません（フラグのIDを , で区切ります）。"],
     ["?debug&city=samarkand&scene=map&flags=a_flag", "flags は scene=map（地図・交通の確認）では使えません。"],
     ["?debug&scene=battle&city=Milano", "「city=Milano」はIDの形ではありません"],

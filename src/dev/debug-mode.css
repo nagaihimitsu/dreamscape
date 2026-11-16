@@ -17,8 +17,9 @@
   .debug-session-bar button { width: min-content; padding: 4px 8px; font-size: 12px; }
 }
 .debug-session-bar button .debug-bar-keep { display: inline; overflow: visible; font-size: inherit; white-space: nowrap; }
+/* 撮影の形 (data-shot) leaves the bar out: the play has the whole height, as in normal play. */
 @media (max-width: 480px) {
-  .debug-session .app-shell.mobile-play-active { height: calc(100dvh - 56px); }
+  .debug-session:not([data-shot]) .app-shell.mobile-play-active { height: calc(100dvh - 56px); }
 }
 /* While a mini-game plays, Debug's bar and 「この時点の候補」 step aside and give the play their room, as the journey's
    header does (src/app/styles.css); they come back as the play ends or is left. */
