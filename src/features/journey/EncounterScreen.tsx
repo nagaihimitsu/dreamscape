@@ -23,7 +23,7 @@ import type { MiniGameTag } from "../../minigames/tag";
 import { figureIsEnemy, oppositeFigures, stageCast, type StageLine, type StageScene } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
-import type { NameCutIn } from "../../components/speaker-plate";
+import { loggedSpeaker, type NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
@@ -48,6 +48,8 @@ export type EncounterScreenView = {
   speaker: string;
   /** The line is the narration (「旅の風景」), no one's words. */
   narration: boolean;
+  /** The line is remembered (`# remembered`, speakerPlate): 「回想」 beside the name, the window in a memory's tone. */
+  remembered?: boolean;
   text: string;
   /** The line's `# pause:`, `# shake:` and `# size:`. */
   delivery?: LineDelivery;
@@ -106,8 +108,10 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   onAnswer: (index: number) => boolean;
   onFinish: () => void;
 }) {
-  const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text, view.delivery,
-    view.staging?.letter?.translationJa);
+  // A remembered line's plate and window (`# remembered`): not over a quiz, which shows no line.
+  const remembered = !view.quiz && !!view.remembered;
+  const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, loggedSpeaker({ name: view.speaker, remembered }),
+    view.quiz ? "" : view.text, view.delivery, view.staging?.letter?.translationJa);
   const windowVisibility = useDialogueWindow();
   const [choiceReady, setChoiceReady] = useState(false);
   const lock = useRef(false);
@@ -182,11 +186,12 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </div>;
         })}
       </div>}
-      <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
+      <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} data-remembered={remembered || undefined} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead
           cutIn={nameCut}
           speaker={showsSpeakerPlate(staging) && view.speaker}
           narration={view.narration}
+          remembered={remembered}
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
         />
         <div className="vn-window-body">

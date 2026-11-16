@@ -12,6 +12,8 @@ INCLUDE modules.ink
 // - # speaker: enemy はフィナーレの対戦相手の名前で表示される。ほかの人は progression/story.json の people に宣言すれば、# speaker: <人物ID> で話せる。
 // - 行の札の例：「思い出しそう」の行の # recall:（その行だけ、アルバムの時計塔の絵 smp_album_clock_tower が背景に
 //   うっすら出る。アルバムには入らない）と # quiet: line（その行だけ静かに：上の帯が隠れ、字が少しゆっくり、背景が落ち着く）。
+//   ハンナの行の # remembered（値なし。対決のときのハンナの言葉が、頭の中でもう一度聞こえる行。名札に「回想」が付き、
+//   窓が思い出の色になり、その人の立ち絵は出ない。同じ行の # speaker: に人物ID・enemy・heroine を書く）。
 === smp_mihon_epilogue ===
 # scene: epilogue
 # background: smp_bg_mihon_hotel
@@ -23,6 +25,9 @@ INCLUDE modules.ink
 短い滞在だったね。でも、あの針を見るたびに思い出しそう
 # speaker: narrator
 塔の下で、ハンナが街の人たちに囲まれていた。止まった三時をどうするか、みんなで話しているらしい。
+# speaker: enemy
+# remembered
+旅の人に『時間にいいかげんな街』と言われるのは、もう嫌なの
 # speaker: narrator
 宿を出ると、塔の上からトーマが手を振った。鐘が二度、少し不揃いに鳴る。
 # speaker: heroine

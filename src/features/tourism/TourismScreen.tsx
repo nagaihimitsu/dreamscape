@@ -25,7 +25,7 @@ import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
-import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -129,7 +129,7 @@ export function TourismScreen({
   const { ready, onReady, entries } = useDialogueLog(
     `${active.landmarkId}:${active.phase}`,
     game.revision,
-    speaker,
+    loggedSpeaker(plate),
     frame?.text ?? "",
     frame?.delivery,
     frame?.letter?.translationJa,
@@ -259,12 +259,14 @@ export function TourismScreen({
             className="tourism-guide paper vn-dialogue"
             {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
             data-testid="tourism-guide"
+            data-remembered={plate.remembered}
             inert={windowVisibility.hidden}
             aria-hidden={windowVisibility.hidden || undefined}
           >
             <DialogueWindowHead
               speaker={showsSpeakerPlate(frame) && speaker}
               narration={plate.narration}
+              remembered={plate.remembered}
               cutIn={nameCut}
               controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
             />

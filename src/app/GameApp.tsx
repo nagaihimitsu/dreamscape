@@ -1024,6 +1024,7 @@ export function GameApp({
               backgroundAsset: encounterImage,
               speaker: encounterPlate!.name,
               narration: encounterPlate!.narration,
+              remembered: !!encounterPlate!.remembered,
               cutIn: nameCutIn(activeEncounter.frame,
                 encounterPerson && { nameJa: encounterPerson.nameJa, ...(encounterPerson.titleJa ? { titleJa: encounterPerson.titleJa } : {}) },
                 storyState.people),

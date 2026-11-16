@@ -16,16 +16,18 @@ export function lineSpeed(speed: number, frame: Pick<StoryFrame, "quiet"> | null
 /**
  * The sounds a line's scene tags bring as its text starts (src/audio/sound-effects.ts useLineSounds): a phone message
  * received or sent, the first line of a letter (`earlier` is empty there), its speaker's name plate when it shows
- * (`nameCutIn`: the plate of `# cutin: name`, NameCutIn.tsx) and its recalled picture. None on a quiet line (`# quiet:`):
- * only the author's own `# se:` sounds there.
+ * (`nameCutIn`: the plate of `# cutin: name`, NameCutIn.tsx) and its recalled picture as it comes up: not when the line
+ * before recalled the same one (`recallKept`, 2026-11-16: it stays up, so a picture written on several lines in a row
+ * rings once). None on a quiet line (`# quiet:`): only the author's own `# se:` sounds there.
  */
-export function lineCues(frame: Pick<StoryFrame, "quiet" | "phone" | "letter" | "recall"> | null | undefined, nameCutIn: boolean): SystemSoundId[] {
+export function lineCues(frame: Pick<StoryFrame, "quiet" | "phone" | "letter" | "recall" | "recallKept"> | null | undefined,
+  nameCutIn: boolean): SystemSoundId[] {
   if (!frame || frame.quiet) return [];
   const cues: SystemSoundId[] = [];
   if (frame.phone) cues.push(frame.phone.side === "received" ? "phone_receive" : "phone_send");
   if (frame.letter && !frame.letter.earlier?.length) cues.push("letter_open");
   if (nameCutIn) cues.push("name_cutin");
-  if (frame.recall) cues.push("recall");
+  if (frame.recall && !frame.recallKept) cues.push("recall");
   return cues;
 }
 

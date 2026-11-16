@@ -374,6 +374,30 @@ test("battle: a double tap on 「相手の反応を見る」 opens the reaction 
   expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
 });
 
+// A remembered line (`# remembered`, 2026-11-16 user decision): in the Agra finale at the Taj Mahal, Kamla's words from Delhi
+// come back to the heroine. Her plate shows her name with 「回想」 (read 「カムラ（回想）」), the window takes its memory's
+// tone, the log keeps 「カムラ（回想）」, and her figure does not come on (the opponent stays); the next line is plain again.
+test("battle: a remembered line shows 「回想」 by its speaker's name and in the log, and brings no figure of theirs", { tag: tier.debug }, async ({ page }) => {
+  await ops.openDebugScene(page, settings({ cityId: "agra", scene: "battle", id: "gt_agra_finale_battle" }));
+  const at = await playUntil(page, (state) => !!state.activeBattle?.frame?.remembered, { source: debugGame });
+  expect(at.activeBattle!.frame).toMatchObject({ speaker: "person", speakerPersonId: "gt_kamla" });
+  const plate = page.locator(".vn-window-head > .speaker");
+  await expect(plate).toHaveText("カムラ（回想）");
+  await expect(plate.getByTestId("speaker-remembered")).toBeVisible();
+  await expect(page.locator("[data-dialogue-window]")).toHaveAttribute("data-remembered", "true");
+  const figure = (id: string) => page.locator(`.vn-character img[src*="/assets/characters/${id}/"]`);
+  await expect(figure("gt_anwar")).toHaveCount(1);
+  await expect(figure("gt_kamla")).toHaveCount(0);
+  await expect(page.getByTestId("dialogue-text")).toHaveAttribute("data-ready", "true");
+  await page.getByRole("button", { name: "会話ログ" }).click();
+  await expect(page.locator(".vn-log li").last().locator("strong")).toHaveText("カムラ（回想）");
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".vn-log")).toHaveCount(0);
+  await playUntil(page, (state) => state.revision > at.revision, { source: debugGame });
+  await expect(plate).not.toContainText("回想");
+  await expect(page.locator("[data-dialogue-window]")).not.toHaveAttribute("data-remembered", /.*/u);
+});
+
 // After a wrong answer the explanation, which starts with 「正しい答え：英文（訳）」, can be taller than the
 // battle paper's reading area (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、主な操作へ到達
 // できる。必要なスクロールは内容を読む領域に限る。」). Focus goes to it (for screen readers), and its first

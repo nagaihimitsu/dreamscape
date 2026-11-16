@@ -26,7 +26,7 @@ import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../co
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure } from "../../components/scene-stage";
-import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -385,10 +385,12 @@ export function BattleScreen({
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
     storyState.people);
   const speaker = plate.name;
+  // A remembered line's plate and window (`# remembered`): in the talk only (a quiz shows no line).
+  const remembered = isDialogue && plate.remembered;
   const { ready, onReady, entries } = useDialogueLog(
     `${battle.id}:${record?.attempts ?? 0}`,
     game.revision,
-    speaker,
+    loggedSpeaker(plate),
     frame?.text ?? "",
     frame?.delivery,
     frame?.letter?.translationJa,
@@ -531,11 +533,12 @@ export function BattleScreen({
           {beside && <div className="battle-character-slot battle-beside">{oppositePortrait(beside.figure, beside.focus)}</div>}
         </div>
       </div>
-      <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
+      <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} data-remembered={remembered || undefined} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
         cutIn={nameCut}
         narration={!!frame && plate.narration}
+        remembered={remembered}
         speaker={frame && showsSpeakerPlate(frame) && speaker}
         controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
       />}

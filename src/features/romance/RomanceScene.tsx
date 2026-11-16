@@ -8,7 +8,7 @@ import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
-import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
@@ -82,13 +82,14 @@ export function RomanceScene({
     { heroine: !!reaction, enemy: !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") }), DATE_STAGE);
   const personId = stage.opposite?.figure;
   const cast = stageCast(stage);
-  const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
+  const plate = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
+  const { name: speaker, narration, remembered } = plate;
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a date has no one opposite).
   const nameCut = useNameCutIn(nameCutIn(frame, undefined, storyState.people), active.storyState);
   const { ready, onReady, entries } = useDialogueLog(
     active.dateId,
     game.revision,
-    speaker,
+    loggedSpeaker(plate),
     frame.text,
     frame.delivery,
     frame.letter?.translationJa,
@@ -228,6 +229,7 @@ export function RomanceScene({
         {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
         aria-label="デートの会話"
         data-has-choices={frame.choices.length > 0}
+        data-remembered={remembered}
         inert={windowVisibility.hidden}
         aria-hidden={windowVisibility.hidden || undefined}
       >
@@ -242,6 +244,7 @@ export function RomanceScene({
         )}
         <DialogueWindowHead
           narration={narration}
+          remembered={remembered}
           cutIn={nameCut}
           speaker={showsSpeakerPlate(frame) && speaker}
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
