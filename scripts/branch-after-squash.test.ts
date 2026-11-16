@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { filesNotOnMain, parseAfterSquashArgs, pushLines, syncAfterSquash, type GitResult } from "./branch-after-squash";
+import {
+  filesNotOnMain, mergeTitle, parseAfterSquashArgs, pushLines, squashedPullRequest, syncAfterSquash, type GitResult,
+} from "./branch-after-squash";
 
 const sha = "87e1266aaaabbbbccccddddeeeeffff000011112";
 const ok = (stdout = ""): GitResult => ({ ok: true, stdout, stderr: "" });
@@ -17,6 +19,7 @@ function fakeGit(overrides: Record<string, GitResult> = {}) {
     "merge-base HEAD origin/main": ok("996c3f7000\n"),
     "diff --name-only --no-renames 996c3f7000 HEAD": ok("docs/12_DEVELOPMENT.md\nscripts/a.ts\n"),
     "diff --name-only --no-renames HEAD origin/main": ok(""),
+    "log --format=%s 996c3f7000..origin/main": ok("Credits are written once (#145)\n"),
     "checkout --no-track -B tmp origin/main": ok(),
     "merge -s ours": ok(),
     "rev-parse --short origin/main": ok("aaa1111\n"),
@@ -56,6 +59,14 @@ describe("branch:after-squash helpers", () => {
     expect(filesNotOnMain(["a.ts"], ["z.ts"])).toEqual([]);
   });
 
+  it("names the pull request in the first line when origin/main gained exactly one squash commit", () => {
+    expect(squashedPullRequest(["Docs (#144)", "Fix a typo"])).toBe(144);
+    expect(squashedPullRequest(["A (#144)", "B (#145)"])).toBeUndefined();
+    expect(squashedPullRequest(["Merge pull request #3 from x"])).toBeUndefined();
+    expect(mergeTitle("tmp", sha)).toBe("Merge branch head 87e1266 into tmp after the squash merge");
+    expect(mergeTitle("tmp", sha, 145)).toBe("Merge branch head 87e1266 into tmp after the squash merge of #145");
+  });
+
   it("prints the push to the pull request's branch, which may have another name", () => {
     expect(pushLines("tmp", sha, ["claude/x"]).at(-1)).toBe("  git push origin tmp:claude/x");
     expect(pushLines("feat", sha, ["feat"]).at(-1)).toBe("  git push origin feat");
@@ -72,7 +83,7 @@ describe("branch:after-squash steps", () => {
     const result = syncAfterSquash(git, { sha: sha.slice(0, 7), paragraphs: ["Co-Authored-By: X"] });
     expect(result.ok).toBe(true);
     expect(calls).toContainEqual(["checkout", "--no-track", "-B", "tmp", "origin/main"]);
-    expect(calls).toContainEqual(["merge", "-s", "ours", "--no-edit", "-m", "Merge branch head 87e1266 into tmp after the squash merge",
+    expect(calls).toContainEqual(["merge", "-s", "ours", "--no-edit", "-m", "Merge branch head 87e1266 into tmp after the squash merge of #145",
       "-m", "Co-Authored-By: X", sha]);
     expect(calls.some((call) => call[0] === "push")).toBe(false);
     expect(result.lines).toEqual([

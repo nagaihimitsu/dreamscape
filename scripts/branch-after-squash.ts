@@ -37,9 +37,22 @@ export function parseAfterSquashArgs(argv: readonly string[]): AfterSquashArgs {
   return { sha, paragraphs };
 }
 
-/** The first line of the merge commit's message, before the caller's paragraphs. */
-export function mergeTitle(branch: string, sha: string): string {
-  return `Merge branch head ${sha.slice(0, 7)} into ${branch} after the squash merge`;
+/**
+ * The first line of the merge commit's message, before the caller's paragraphs, with the pull request's number when
+ * one is known (authoring/AI_DELEGATION_GUIDE.md, 公開の流れ).
+ */
+export function mergeTitle(branch: string, sha: string, pullRequest?: number): string {
+  return `Merge branch head ${sha.slice(0, 7)} into ${branch} after the squash merge${pullRequest ? ` of #${pullRequest}` : ""}`;
+}
+
+/**
+ * The pull request's number, from the subjects of the commits origin/main gained since the fork point: GitHub ends a
+ * squash commit's subject with 「(#<number>)」. Undefined unless exactly one subject does (other pull requests merged
+ * meanwhile make it unclear which one is this branch's).
+ */
+export function squashedPullRequest(subjects: readonly string[]): number | undefined {
+  const numbers = subjects.flatMap((subject) => /\(#(\d+)\)$/u.exec(subject.trim())?.[1] ?? []);
+  return numbers.length === 1 ? Number(numbers[0]) : undefined;
 }
 
 /** The files the branch changed (`changed`) that are not the same on origin/main (`differing`: those that differ between HEAD and it). */
@@ -99,9 +112,10 @@ export function syncAfterSquash(git: Git, { sha, paragraphs }: AfterSquashArgs):
     "スカッシュがまだ main に入っていないか、合流の後に main でそのファイルが変わりました。"
     + `違いは git diff ${short} origin/main -- <ファイル> で確かめられます。`);
 
+  const pullRequest = squashedPullRequest(lines(git(["log", "--format=%s", `${base}..origin/main`]).stdout));
   const checkout = git(["checkout", "--no-track", "-B", branch, "origin/main"]);
   if (!checkout.ok) return refuse(`git checkout に失敗しました：${firstLine(checkout)}`, `${branch} は元のまま（${short}）です。`);
-  const merge = git(["merge", "-s", "ours", "--no-edit", "-m", mergeTitle(branch, merged), ...paragraphs.flatMap((paragraph) => ["-m", paragraph]), merged]);
+  const merge = git(["merge", "-s", "ours", "--no-edit", "-m", mergeTitle(branch, merged, pullRequest), ...paragraphs.flatMap((paragraph) => ["-m", paragraph]), merged]);
   if (!merge.ok) return refuse(`git merge に失敗しました：${firstLine(merge)}`,
     `${branch} は origin/main の位置にあります。元に戻すには git reset --hard ${short} を実行します。`);
   const main = git(["rev-parse", "--short", "origin/main"]).stdout.trim();
