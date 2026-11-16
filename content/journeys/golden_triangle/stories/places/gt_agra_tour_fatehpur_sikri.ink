@@ -26,17 +26,20 @@ INCLUDE modules.ink
 # speaker: gt_samir
 皇帝アクバルと、お妃ジョーダーの恋の話なら、叔父の右に出る者はおりません
 # speaker: heroine
+# voice: gt_agra_tour_morning_001
 ありがとうございます。でも、今日は、二人で見て回りたいんです
 # speaker: narrator
 # emotion: surprised
 言い終えてから、彼女は自分で少し驚いた顔をした。断る言葉が、思ったより先に出たらしい。
 { cond("date gt_agra_date_mariam_tomb"):
     # speaker: heroine
+    # voice: gt_agra_tour_morning_002
     それに、ジョーダーって名前、あとから広まった呼び名かもしれないって、聞きました
     # speaker: gt_samir
     恋の話に、本当の名前は要りません
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_tour_morning_003
     名前が大事な人も、いると思うけどな
 }
 # speaker: gt_samir
@@ -49,6 +52,7 @@ INCLUDE modules.ink
 路地を抜けた先の大通りに、白い車が停まっていた。横に、アイロンの効いたシャツの男が立っている。胸の前に掲げた紙には、こちらの名前が、整ったアルファベットで書いてあった。
 # speaker: heroine
 # emotion: worried
+# voice: gt_agra_tour_morning_004
 運転手つきの車、って聞くと、まだ少し、デリーの駅を思い出しちゃう
 # speaker: narrator
 男は紙を下ろし、軽く頭を下げた。
@@ -57,6 +61,7 @@ INCLUDE modules.ink
 ヴィノードです。運転をします。ガイドではありません。中のことは皇帝の仕事、外のことは、わたしの仕事
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_tour_morning_005
 その字、きれいですね。看板屋さんの字みたい
 # speaker: gt_vinod
 娘が書きました。わたしの字は、道に迷った牛みたいだそうです
@@ -65,6 +70,7 @@ INCLUDE modules.ink
 彼女は吹き出し、それから、こちらにだけ聞こえる声で言った。
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_tour_morning_006
 名前の紙を、娘さんに書いてもらう人。お芝居なら、そんなところまで作らないと思う
 -> END
 
@@ -79,6 +85,7 @@ INCLUDE modules.ink
 アーグラの町を抜けるまでが、いちばん長かった。オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
 ヴィノードは、クラクションを鳴らさなかった。牛の後ろで、ただ待っている。
 # speaker: heroine
+# voice: gt_agra_tour_out_leg_001
 鳴らさないんですね
 # speaker: gt_vinod
 牛は、鳴らしても急ぎません。急ぐのは、こっちの心臓だけ
@@ -88,10 +95,12 @@ INCLUDE modules.ink
 やがて道は西へまっすぐ伸び、建物の間に畑がのぞきはじめた。前を走るトラックの荷台の後ろに、色とりどりの文字が描いてある。HORN OK PLEASE。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_tour_out_leg_002
 ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？　どういう意味なんだろう。あ、あっちのトラックにも書いてある
 # speaker: gt_vinod
 その OK は、運転手の数だけ説があります。父の説と、わたしの説も違います
 # speaker: heroine
+# voice: gt_agra_tour_out_leg_003
 ヴィノードさんの説は？
 # speaker: gt_vinod
 書いてあると、なんだか安心する。それだけです
@@ -101,6 +110,7 @@ INCLUDE modules.ink
 # speaker: gt_vinod
 母が付けます。悪い目よけ。シークリーへ行くたびに、新しいのに替えてくれる
 # speaker: heroine
+# voice: gt_agra_tour_out_leg_004
 お母さん、シークリーに住んでるんですか？
 # speaker: gt_vinod
 皇帝の所の、すぐ下の町に。お二人が中にいる間、わたしは母の家で昼ごはんです。このツアーは、わたしにも、いいツアー
@@ -128,10 +138,12 @@ INCLUDE modules.ink
 サミールさんは、新婚さんだと言っていました。でも、お二人は、新婚さんの顔には見えない。……母に、何と言えばいいですか
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_tour_out_mother_001
 サミールさん、運転手さんにまで……
 { cond("flag gt_agra_said_for_now"):
     # speaker: heroine
     # reaction: heroine,teasing,question
+    # voice: gt_agra_tour_out_mother_002
     今度は、『今のところは』って言わないでね
 }
 * [Tell her we're traveling together. That's all. # option: just_traveling # translation: 一緒に旅をしている二人だ、とだけ伝えてください。]
@@ -141,15 +153,18 @@ INCLUDE modules.ink
     一緒に旅をしている二人。分かりました。母は、その先を自分で考えるのが好きです
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_out_mother_003
     うん。それが、いちばん正確
     # speaker: heroine
     # reaction: heroine,teasing,question
+    # voice: gt_agra_tour_out_mother_004
     でも、『とだけ』って言われると、ちょっとだけ引っかかるな。ふふ、冗談
 * [Tell her she reads everything. Signs, trucks, walls. # option: she_reads # translation: 何でも読む人だ、と。看板も、トラックも、壁も。]
     # set: gt_agra_tour_told_reader
     # rel: affection +1
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_tour_out_mother_005
     それ、わたしの紹介？　トラックまで読むのは、本当だけど
     # speaker: gt_vinod
     いい紹介です。母は、よく見る人が好きです。わたしは、前しか見ないので
@@ -158,17 +173,21 @@ INCLUDE modules.ink
     # rel: trust +1
     # speaker: heroine
     # reaction: heroine,surprised,interrobang
+    # voice: gt_agra_tour_out_mother_006
     えっ、わたし？
     # speaker: narrator
     彼女は少し考えてから、前の座席の背に手をかけた。
     # speaker: heroine
+    # voice: gt_agra_tour_out_mother_007
     同じ町を、同じ日に見たかった二人です。……って、伝えてください
     { cond("couple"):
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
+        # voice: gt_agra_tour_out_mother_008
         新婚では、ないです。……恋人では、ありますけど
     - else:
         # speaker: heroine
+        # voice: gt_agra_tour_out_mother_009
         新婚では、ないです。そこは、大事なところなので
     }
     # speaker: gt_vinod
@@ -197,10 +216,12 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # recall: gt_album_d84
+# voice: gt_agra_tour_arrive_001
 大丈夫です。ノー・サンキューは、デリーで練習してきました
 # speaker: gt_vinod
 それなら安心です。デリーで練習した人は、どこでも強い
 # speaker: heroine
+# voice: gt_agra_tour_arrive_002
 お母さんに、よろしく伝えてください。あ、さっきの話も
 # speaker: narrator
 ヴィノードは笑って、木の下の細い道を、下の町の方へ歩いていった。
@@ -224,9 +245,11 @@ INCLUDE modules.ink
 包みの中は、狐色の平たい揚げ菓子だった。マトリーというらしい。ヴィノードの母のは、アジョワンという種が入っている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
+# voice: gt_agra_tour_mathri_001
 あ、しょっぱい！　甘いクッキーだと思ってた
 # speaker: heroine
 # emotion: happy
+# voice: gt_agra_tour_mathri_002
 でも、この香り、好き。ちょっと薬草みたいで、口の中がすっとする
 # speaker: gt_vinod
 # term: gt_term_ajwain
@@ -237,24 +260,28 @@ INCLUDE modules.ink
     母に、伝えました。同じ町を、同じ日に見たかった二人。母はしばらく黙って、それから言いました。それはもう、旅の話じゃなくて、二人の話だね、と
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_tour_mathri_003
     ……お母さん、鋭い
 - cond("flag gt_agra_tour_told_reader"):
     # speaker: gt_vinod
     母に、伝えました。何でも読む人。母は笑って、それなら帰りの道も、ずっと何か読んでいるんだろう、運転は静かにね、と
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_mathri_004
     読みます。トラック、全部
 - cond("flag gt_agra_tour_told_traveling"):
     # speaker: gt_vinod
     母に、伝えました。一緒に旅をしている二人。母は、『一緒に』のところだけ、二回聞き返しました
     # speaker: heroine
     # reaction: heroine,surprised,sweat
+    # voice: gt_agra_tour_mathri_005
     に、二回……
 - else:
     # speaker: gt_vinod
     母は、お二人のことを聞きたがっていました。どこから来て、何を見たか。帰りに、また話します
 }
 # speaker: heroine
+# voice: gt_agra_tour_mathri_006
 お母さんに、おいしかったって伝えてください。ほんとは、自分で言えたら、いちばんいいんだけど
 -> END
 
@@ -275,6 +302,7 @@ INCLUDE modules.ink
 道沿いの家の屋上から、鉄の棒が何本も突き出していた。どの家も、まだ上に何かを建てるつもりのように見える。
 { cond("battle gt_agra_main_fatehpur_sikri_battle"):
     # speaker: heroine
+    # voice: gt_agra_tour_back_leg_001
     ムケーシュさんの家、今日、屋根ができるんだよね。二階の奥に、本を読む部屋のある家
     # speaker: narrator
     彼女は窓に額を寄せて、屋上の鉄の棒を、一軒ずつ目で追っていた。
@@ -282,6 +310,7 @@ INCLUDE modules.ink
 # speaker: gt_vinod
 うちの屋上も、ああです。もう一階、建てるつもりで。母の部屋です。母が、来ると言えば
 # speaker: heroine
+# voice: gt_agra_tour_back_leg_002
 来てくれないんですか？
 # speaker: gt_vinod
 皇帝が出ていった町だから、誰かが残らないといけない、と言います
@@ -291,6 +320,7 @@ INCLUDE modules.ink
 だから、聖者のそばを離れない。皇帝は王子をもらって、母はわたしをもらった。母は、それで十分だと言います
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_tour_back_leg_003
 十分すぎるくらいだと思います
 # speaker: narrator
 ヴィノードは返事のかわりに、バックミラーのレモンを指で弾いた。
@@ -328,6 +358,7 @@ INCLUDE modules.ink
     目を閉じたまま、彼女の口元だけが、ゆっくり笑った。
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_tour_back_awake_001
     ……聞こえてるよ。本人のいる所で、そういうこと言う？
 * [Only when she's having fun. # option: when_happy # translation: 楽しいときだけです。]
     # rel: spark +1
@@ -335,6 +366,7 @@ INCLUDE modules.ink
     目を閉じたまま、彼女が言った。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_back_awake_002
     楽しいときだけ？　じゃあ、今日は、ずっと楽しかったってことになるね
 * [Ask her when she wakes up. # option: ask_when_awake # translation: 起きたら、本人に聞いてください。]
     # rel: trust +1
@@ -342,6 +374,7 @@ INCLUDE modules.ink
     すると、閉じていたはずの目が、片方だけ開いた。
     # speaker: heroine
     # reaction: heroine,teasing,question
+    # voice: gt_agra_tour_back_awake_003
     起きてます。わたしが答えるね。ヴィノードさんの話のほうが、皇帝の話より、近くにあったからです
 -
 # speaker: narrator
@@ -364,6 +397,7 @@ INCLUDE modules.ink
 次にシークリーへ来るときは、母の家に寄ってください。食べきれないほど、食べさせられますが
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_tour_home_001
 次は、って言ってくれるんですね。はい。マトリーのお礼、お母さんに、自分で言いたいです
 # speaker: narrator
 # leave: gt_vinod
@@ -374,6 +408,7 @@ INCLUDE modules.ink
 # speaker: gt_samir
 おかえりなさい。いかがでした？　叔父がいなくて、お寂しくはなかったですか
 # speaker: heroine
+# voice: gt_agra_tour_home_002
 ガイドさんがいなくても、話してくれる人は、たくさんいました
 # speaker: gt_samir
 なるほど。お二人の思い出が、たくさん
@@ -381,5 +416,6 @@ INCLUDE modules.ink
 サミールは、また何かを書き足した。
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
+# voice: gt_agra_tour_home_003
 ……誤解は、今度、まとめて、ちゃんと解きます
 -> END

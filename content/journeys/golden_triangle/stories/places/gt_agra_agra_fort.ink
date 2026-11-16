@@ -73,6 +73,7 @@ INCLUDE modules.ink
 ちょうどいい。君たちを国際監視団に任命する。この抗議が平和的であることを見届けたまえ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_main_agra_fort_001
 こ、国際……？　わたしたち、ただの観光客です
 # speaker: enemy
 # cutin: name
@@ -80,6 +81,7 @@ INCLUDE modules.ink
 # speaker: narrator
 リヤが、すがるような目でこちらを見た。{heroine_name}は、おそるおそる大佐の隣にしゃがむ。
 # speaker: heroine
+# voice: gt_agra_main_agra_fort_002
 あの、大佐。何に抗議されてるんですか？
 # speaker: enemy
 閉じ込める者すべてにだ。この塔の主を閉じ込めたのが誰だったか、知っているかね
@@ -100,6 +102,7 @@ INCLUDE modules.ink
 娘さん、旗を振っていればいいと思うな。わしは命令される側を四十年やってきた
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_main_agra_fort_003
 大佐。……リヤさんに、その言い方はひどいと思います。リヤさんは、ほかの人たちを五時間運ばなきゃいけないんです
 # speaker: narrator
 大佐の眉が跳ね上がった。監視団が抗議するとは、予定になかったらしい。
@@ -124,6 +127,7 @@ INCLUDE modules.ink
 生姜の飴。白い顔。駐車場の方を見ようとしない目。一番前の席。{heroine_name}の中で、ばらばらだったものがつながった。
 # speaker: heroine
 # emotion: worried
+# voice: gt_agra_main_agra_fort_004
 ……大佐。もしかして、車、苦手ですか？
 # speaker: enemy
 # reaction: enemy,anger
@@ -141,6 +145,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_agra_fort
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_agra_main_agra_fort_005
     はい。城の一部は、今も陸軍の区域ですよね。……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
 - else:
     # speaker: enemy
@@ -171,6 +176,7 @@ INCLUDE modules.ink
 大佐はポケットから生姜の飴を一つ出し、{heroine_name}の手に載せた。監視団への勲章だそうだ。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_main_agra_fort_006
 勲章、ちょっと辛い……
 # speaker: narrator
 出口へ向かう一行の先頭で、大佐が誰より大きな声で、城の説明を始めていた。リヤが振り返り、こちらに小さく手を合わせた。

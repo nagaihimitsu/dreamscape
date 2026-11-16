@@ -12,21 +12,25 @@ INCLUDE modules.ink
 旧市街の大通りは、車とリキシャと牛と人で、隙間なく埋まっていた。その上に、桃色の壁が、小さな窓をびっしりと並べて立ち上がっている。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_jaipur_hawa_mahal_guide_001
 窓、窓、窓……！　建物というより、窓でできた壁みたい
 # speaker: narrator
 小窓の一つひとつに、細かな格子がはまっている。張り出した出窓が、上へ行くほど少しずつ細くなり、とがった屋根へ集まっていく。
 # speaker: heroine
+# voice: gt_jaipur_hawa_mahal_guide_002
 全部の窓から、誰かがこっちを見てたらって考えると……ちょっと、どきっとするね
 # speaker: narrator
 # se: car_horn
 正面から写真を撮ろうと、{heroine_name}は道の反対側へ渡った。クラクションが三回鳴り、牛が一頭、悠然と前を横切る。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_hawa_mahal_guide_003
 渡れた……。横断歩道より、牛の方が信号っぽかった
 # speaker: narrator
 歩道には、野菜や果物を並べた露店が続いている。古い日傘の下で、女性が大根の土を払っていた。
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_hawa_mahal_guide_004
 この通りの人たちは、毎日この窓の下で暮らしてるんだね。見上げもしないで
 # speaker: narrator
 彼女はカメラを構えた。画面の端に、日傘と大根が入り込む。
@@ -44,6 +48,7 @@ INCLUDE modules.ink
 歩道の端に布を敷き、野菜を並べている女性がいた。大根、人参、オクラ、小ぶりのトマト。古い日傘を、竿にくくりつけている。
 # speaker: heroine
 # reaction: heroine,surprised,sweat
+# voice: gt_jaipur_main_hawa_mahal_001
 す、すみません！　……写真を撮ろうとしてて
 # speaker: gt_jaipur_hawa_woman
 撮るなら、大根も一緒に入れなさい。四十年、あの窓の下にいるのは、こっちなんだから
@@ -51,6 +56,7 @@ INCLUDE modules.ink
 # cutin: name
 ガウラよ。この歩道で野菜を売って四十年。朝四時に卸の市場で仕入れて、昼過ぎまでここに座ってる。膝が痛いのは、三十年前から
 # speaker: heroine
+# voice: gt_jaipur_main_hawa_mahal_002
 四十年……じゃあ、中にも何度も？
 # speaker: enemy
 一度も。入場券の値段で、トマトが何キロ買えると思う。それに、あれは王様の女の人たちの建物。私らのじゃない
@@ -59,6 +65,7 @@ INCLUDE modules.ink
 # speaker: enemy
 ねえ、外国の娘さん。上に行くなら、頼みがあるの
 # speaker: heroine
+# voice: gt_jaipur_main_hawa_mahal_003
 頼み、ですか？
 # speaker: enemy
 窓から、私を見て。上からだと、私がどう見えるか。帰りに教えてちょうだい
@@ -66,6 +73,7 @@ INCLUDE modules.ink
 冗談のような口ぶりだった。けれど、トマトを磨く手は止まっていた。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_main_hawa_mahal_004
 ……はい。ちゃんと見てきます
 # speaker: enemy
 ついでに、あの屋根の形。ガイドが毎日、何かにたとえてるのよ。四十年聞いてるのに、いつも途中で客が来て聞きそびれる
@@ -86,11 +94,13 @@ INCLUDE modules.ink
 入口は正面ではなく、裏手の路地にあった。券を買って中へ入ると、{heroine_name}は首をかしげた。上の階が見えるのに、どこにも階段がない。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_main_hawa_mahal_005
 あれ……どうやって上がるの？
 -> quiz(2) ->
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_hawa_mahal_006
     坂道だ。階段じゃなくて、ゆるい坂でぐるぐる上がっていくんだ
 - else:
     # speaker: narrator
@@ -124,6 +134,7 @@ INCLUDE modules.ink
 ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
 # speaker: heroine
 # emotion: neutral
+# voice: gt_jaipur_main_hawa_mahal_007
 ……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま
 # speaker: narrator
 窓の数を数えようとして、{heroine_name}はすぐに諦めた。中からでは、とても数えきれない。ガウラは四十年、外から数え続けてきたのだ。
@@ -131,6 +142,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_hawa_mahal_008
     九百五十三、なんだって。ガウラさんの九百五十一、ほとんど合ってます
 - else:
     # speaker: narrator
@@ -148,13 +160,16 @@ INCLUDE modules.ink
     下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
 }
 # speaker: heroine
+# voice: gt_jaipur_main_hawa_mahal_009
 ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
 # speaker: heroine
+# voice: gt_jaipur_main_hawa_mahal_010
 ……上から見たガウラさんが、通りで一番、生きてるって感じがしました
 # speaker: narrator
 ガウラは何も言わず、日傘の竿を握り直した。目が、少し赤かった。
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_main_hawa_mahal_011
 あの、今度、一緒に上に行きませんか。入場券は、わたしが……
 # speaker: enemy
 # reaction: enemy,anger
@@ -164,6 +179,7 @@ INCLUDE modules.ink
 ぴしゃりとした声だった。{heroine_name}は、自分の言葉が何をしたのかに気づいた。
 # speaker: heroine
 # emotion: worried
+# voice: gt_jaipur_main_hawa_mahal_012
 ……ごめんなさい。聞きもしないで、決めちゃいました
 # speaker: enemy
 行くなら、自分のお金で、自分の足で行く。……今の話を聞いたら、行きたくなったわ。膝が言うことを聞く日にね
@@ -182,6 +198,7 @@ INCLUDE modules.ink
 ガウラは大根を一本、新聞紙でくるんで差し出した。報告のお礼だという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_main_hawa_mahal_013
 だ、大根……。ホテルで、どうしよう……
 # speaker: enemy
 宿の台所に渡しなさい。明日の朝、あんたの皿に戻ってくるから
@@ -214,11 +231,13 @@ INCLUDE modules.ink
 そこの二人！　窓際の客みたいに立ってないで！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_jaipur_finale_001
 カ、カムラさん！？　踊ってる……！
 # speaker: enemy
 踊るわよ。孫の行列だもの。あんたも来なさい
 # speaker: heroine
 # reaction: heroine,worried,sweat
+# voice: gt_jaipur_finale_002
 む、無理です、踊ったことないです！
 # speaker: narrator
 押し問答をしているうちに、行列が止まった。ハワー・マハルの向かいの、古い屋敷の門の前。花嫁の家だ。
@@ -235,6 +254,7 @@ INCLUDE modules.ink
 この子が答える。デリーで、わたしの地図を全部読んだ子よ
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
+# voice: gt_jaipur_finale_003
 え、ええっ！？　こんな大勢の前で……
 # speaker: enemy
 答えを言うだけ。言いたいことを言う練習よ。……できるでしょう
@@ -242,6 +262,7 @@ INCLUDE modules.ink
 何十人もの目が、こちらを向いた。{heroine_name}は一度だけ深く息を吸い、門の前に進み出た。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_finale_004
 ……やります。わたしが、答えます
 # speaker: narrator
 いとこたちの先頭の娘が、にやりと笑った。
@@ -267,6 +288,7 @@ INCLUDE modules.ink
 声が小さい。もっと大きく言いなさい。ここは通りよ
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_finale_005
 こ、これでも精いっぱいです……
 # speaker: narrator
 白い馬の上で、アマンが花の房の隙間から片手を上げた。ありがとう、という合図らしい。馬は退屈そうに、前脚で地面をかいている。
@@ -279,6 +301,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_jaipur_word_sawai
+    # voice: gt_jaipur_finale_006
     一と、四分の一。……です！
     # speaker: narrator
     今度は、さっきより大きな声が出た。プージャーが目を丸くする。
@@ -297,6 +320,7 @@ INCLUDE modules.ink
 カムラの切り返しに、両家から笑いが起きた。いとこたちの腕組みが、少しだけゆるむ。
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_jaipur_finale_007
 カムラさん、来たばかりなのに、もうこっちの人の言い方になってる……
 # speaker: narrator
 プージャーはひるまずに胸を張り、指を三本立てた。
@@ -306,6 +330,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_finale_008
     ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です
     # speaker: narrator
     いとこたちが、そろって唸った。花婿側の親戚が、なぜか拍手している。
@@ -332,6 +357,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # term: gt_term_gangaur
+    # voice: gt_jaipur_finale_009
     ガンガウル。女神さまを敬う、春のお祭り
 - else:
     # speaker: narrator
@@ -367,6 +393,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # em: 見られずに
+    # voice: gt_jaipur_finale_010
     中の人が、見られずに、外を見るため。……通りも、お祭りも、市場も
 - else:
     # speaker: narrator
@@ -413,6 +440,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # pause: 700
+# voice: gt_jaipur_finale_011
 ……はい。……怖いけど、踊りたいです
 # speaker: narrator
 # stand: apart
@@ -424,6 +452,7 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 # size: large
 # minigame: baraat_dance auto off_beat_together bg gt_bg_jaipur_baraat_night
+# voice: gt_jaipur_finale_012
 一緒に！　下手なのは、二人とも同じだから！
 // 踊り：選択肢の代わりにミニゲーム「花婿の行列で踊る」。どの結果も同じ結びへ合流し、変わるのは結びの前の数行の色だけ（関係値なし）。
 * [踊り：太鼓の拍に乗れた # option: in_step]

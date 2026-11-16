@@ -25,6 +25,7 @@ INCLUDE modules.ink
     今夜も、彼女が手のひらを差し出してきた。模様は、前に見たときより、ずっと濃くなっている。
     # speaker: heroine
     # emotion: teasing
+    # voice: gt_jaipur_hotel_mehndi_night_001
     はい、続き。今夜こそ、見つけてね
 - else:
     { cond("seen gt_jaipur_hotel_mehndi_morning"):
@@ -36,6 +37,7 @@ INCLUDE modules.ink
     }
     # speaker: heroine
     # emotion: teasing
+    # voice: gt_jaipur_hotel_mehndi_night_002
     はい。探して。ちゃんと、隠したものがあるんだから
 }
 {
@@ -82,6 +84,7 @@ INCLUDE modules.ink
     # later
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_hotel_mehndi_night_006
     逃げたね。いいよ。明日の方が、濃くて見つけやすいかも
     -> END
 
@@ -92,8 +95,10 @@ INCLUDE modules.ink
     親指の付け根、蔓が三回巻いたところ。模様のふりをした文字が、小さく並んでいた。{player_name}。
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
+    # voice: gt_jaipur_hotel_mehndi_night_007
     ……見つけた、ね。自分の名前、人の手のひらで見るの、どんな気分？
     # speaker: heroine
+    # voice: gt_jaipur_hotel_mehndi_night_008
     わたしは、ちょっと、くすぐったい。ずっと、持って歩いてたんだもん
 - cond("flag gt_jaipur_mehndi_her_secret"):
     # speaker: narrator
@@ -103,12 +108,15 @@ INCLUDE modules.ink
         けれど、何と書いてあるかは、もう知っている。
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_jaipur_hotel_mehndi_night_009
         見つけたね。もう、フロントの人に読まれちゃったけど。自分で見つけてくれたのは、うれしい
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_jaipur_hotel_mehndi_night_010
         見つけたけど、読めない。ふふ、セーフ。ファルハーナさん、ヒンディー語の文字で書いてくれたんだ
         # speaker: heroine
+        # voice: gt_jaipur_hotel_mehndi_night_011
         何て書いてあるかは、教えない。読めなかったなら、読めないままで
     }
 - else:
@@ -116,9 +124,11 @@ INCLUDE modules.ink
     こみいった蔓をほどくように見ていくと、模様のふりをした英語の文字が出てきた。FARHANA。その下に、小さな数字の列。
     # speaker: heroine
     # reaction: heroine,surprised_big,interrobang
+    # voice: gt_jaipur_hotel_mehndi_night_012
     電話番号！？　隠したの、ファルハーナさん自身の宣伝だった！
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_jaipur_hotel_mehndi_night_013
     ふふっ、あはは！　すごい、本気だ。自分の店、絶対持てると思う、あの人
 }
 -> END
@@ -137,6 +147,7 @@ INCLUDE modules.ink
 まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ。旦那さまに、ってね。お姑さんに、って言う人もいるけど
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
+# voice: gt_jaipur_hotel_mehndi_morning_001
 だ、旦那さまはいないです！
 { cond("flag gt_jaipur_mehndi_her_secret"):
     -> secret_read
@@ -158,16 +169,19 @@ INCLUDE modules.ink
 帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
 # emotion: shy_deep
+# voice: gt_jaipur_hotel_mehndi_morning_003
 教えないって、言ったのに。……もう。聞かなかったことに、してくれる？
 * [「聞かなかった」 # option: didnt_hear]
     # rel: affection +1
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_hotel_mehndi_morning_004
     うそつき。でも、ありがと
 * [「聞いた」 # option: did_hear]
     # rel: spark +2
     # speaker: heroine
     # reaction: heroine,shy_deep,heart
+    # voice: gt_jaipur_hotel_mehndi_morning_005
     ……だよね。うん。隠したのは、わたしだから。わたしが選んだ名前だから
 - -> END
 
@@ -185,27 +199,33 @@ INCLUDE modules.ink
 # speaker: narrator
 今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
+# voice: gt_jaipur_finale_before_envelope_001
 割り切れない数は、縁起がいい。終わりにしないで、続いていく感じ、だったよね
 # speaker: heroine
 # emotion: worried
+# voice: gt_jaipur_finale_before_envelope_002
 でも、いくら包めばいいんだろう。少なすぎても失礼だし、多すぎても気をつかわせちゃう
 * [「気持ちが伝わるくらいにしよう」 # option: modest_gift]
     # money: -501
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_finale_before_envelope_003
     うん。気持ちが伝わるくらい。一ルピー玉、ちゃんと持ってる？
 * [「旅の最後だから、思いきって奮発しよう」 # option: generous_gift]
     # money: -1101
     # speaker: heroine
     # reaction: heroine,surprised,sparkle
+    # voice: gt_jaipur_finale_before_envelope_004
     奮発、だね。カムラさん、きっと中身を見て、ふんって言う。でも、うれしそうに言う
 * [「お金は一ルピーだけ。あとは手紙を書こう」 # option: letter_gift]
     # set: gt_jaipur_envelope_letter
     # speaker: heroine
     # reaction: heroine,surprised,sparkle
+    # voice: gt_jaipur_finale_before_envelope_005
     一ルピーと、手紙。それ、いいかも。割り切れない数の、いちばん小さいやつ
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_finale_before_envelope_006
     アマンさんに、毎日言葉にしてくださいって、書く。カムラさんの言葉の、受け売りだけど
     # speaker: narrator
     デリーの最後の夜にアマンから聞いた、カムラの言いつけだ。
@@ -216,10 +236,12 @@ INCLUDE modules.ink
 { cond("item gt_jaipur_lac_bangles held"):
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_finale_before_envelope_007
     腕輪は、出かける直前にはめる。ナスリーンさんに、割れやすいって言われたから。今夜、からんって鳴らすの
 }
 { cond("date gt_jaipur_date_jal_mahal"):
     # speaker: heroine
+    # voice: gt_jaipur_finale_before_envelope_008
     メヘンディも、まだちゃんと残ってる。色、いちばん濃いときに結婚式でよかった
 }
 {
@@ -229,6 +251,7 @@ INCLUDE modules.ink
     彼女は鞄から小瓶を取り出し、栓を抜いて、手首にほんの一滴だけのせた。デリーの路地で買った、雨の匂い。
     # speaker: heroine
     # item_out: gt_delhi_rain_attar
+    # voice: gt_jaipur_finale_before_envelope_009
     デリーの雨を、少しだけ、ジャイプールの結婚式に持っていく。全部は使わない。日本の分も、残しておくの
 - cond("flag gt_agra_rain_on_lawn"):
     # speaker: narrator
@@ -236,10 +259,12 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing,music
     # recall: gt_album_a39
+    # voice: gt_jaipur_finale_before_envelope_010
     雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_finale_before_envelope_011
 踊りは、要相談、だったよね。相談の余地、たぶん、ないけど
 -> END
 
@@ -258,6 +283,7 @@ INCLUDE modules.ink
 # item_out: gt_jaipur_wedding_envelope
 踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、花婿の祖母のカムラに差し出した。
 # speaker: heroine
+# voice: gt_jaipur_finale_after_envelope_001
 アマンさんに
 # speaker: narrator
 カムラは封筒を光にかざし、中の一ルピー玉を、指で確かめた。
@@ -271,6 +297,7 @@ INCLUDE modules.ink
     ……ふん。割り切れないね。よろしい
 }
 # speaker: heroine
+# voice: gt_jaipur_finale_after_envelope_002
 アマンさんに、おめでとうございますって、伝えてください
 # speaker: enemy
 自分で言いなさい。花婿は、逃げやしないよ
@@ -295,6 +322,7 @@ INCLUDE modules.ink
 やっぱり！　デリーの階段井戸の、『きゃー？』の人でしょ！　いとこ全員で見たの、あの動画！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_jaipur_finale_after_reel_001
 こ、ここまで！？　ジャイプールにまで！
 # speaker: narrator
 デリーの階段井戸で、頼まれて出た怖い動画だ。その最後に、彼女の「きゃー？」が、おまけで入っている。
@@ -302,6 +330,7 @@ INCLUDE modules.ink
 さっきの問題に答えた声で、分かった。質問みたいな声だったから。……ねえ、もう一回やって。『きゃー？』って
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_finale_after_reel_002
 や、やりません！　あれは、鳩がいないと出ないの
 # speaker: narrator
 # leave: gt_pooja
@@ -309,5 +338,6 @@ INCLUDE modules.ink
 プージャーはけらけら笑い、いとこたちを呼びに戻っていった。彼女は両手で顔を覆い、それから、指のすきまからこちらを見た。
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_finale_after_reel_003
 旅の最後の夜に、デリーの階段井戸が追いかけてくるなんて。でも、ちょっと、うれしいかも。全部、つながってる感じがして
 -> END

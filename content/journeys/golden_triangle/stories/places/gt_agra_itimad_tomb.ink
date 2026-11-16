@@ -12,6 +12,7 @@ INCLUDE modules.ink
 電動リキシャでヤムナー川の橋を渡ると、町の音が一段遠くなった。対岸の道は細く、牛がのんびり横切っていく。
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_agra_itimad_tomb_guide_001
 川を一本越えただけで、急に静か。タージの近くの賑やかさが、うそみたい
 # speaker: narrator
 門の前の露店で、水と、焼いたとうもろこしを売っている。客は、ほとんどいない。
@@ -20,16 +21,19 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # term: gt_term_parchin_kari
+# voice: gt_agra_itimad_tomb_guide_002
 あ……模様が、絵の具じゃない。石がはめ込んであるんだ。花も、瓶も、ぜんぶ石
 # speaker: narrator
 # term: gt_term_jali
 近づくほど細かくなる模様に、{heroine_name}の歩幅が小さくなる。窓には、石の格子がはまっていた。
 # speaker: heroine
+# voice: gt_agra_itimad_tomb_guide_003
 格子を通った光が、床に模様を作ってる。石なのに、レースみたい
 # speaker: narrator
 彼女はガイドブックを開き、この墓の説明を探した。見出しの横に、小さく通称が書いてある。
 # speaker: heroine
 # reaction: heroine,happy,music
+# voice: gt_agra_itimad_tomb_guide_004
 通称、ベビー・タージ、だって。かわいい名前。……確かに、タージを小さくしたみたいだもんね
 # speaker: narrator
 # term: gt_term_neem
@@ -45,6 +49,7 @@ INCLUDE modules.ink
 庭の奥の白い墓廟は、大きくはない。けれど近づくほど、壁一面に色の石の模様が浮かび上がってくる。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_agra_main_itimad_tomb_001
 わあ……これが『ベビー・タージ』だね。名前どおり、かわいい
 # speaker: gt_agra_itimad_woman
 # leave: gt_agra_itimad_woman
@@ -56,6 +61,7 @@ INCLUDE modules.ink
 ヴィムラーです。ヒンディー語の教師を三十八年。今は、この墓の名誉回復をしています
 # speaker: heroine
 # reaction: heroine,surprised,sweat
+# voice: gt_agra_main_itimad_tomb_002
 め、名誉回復……？
 # speaker: enemy
 この墓は、誰の赤ちゃんでもない。娘が、亡くなった両親のために建てたものです。それを『タージの赤ちゃん』だなんて
@@ -65,6 +71,7 @@ INCLUDE modules.ink
 署名を。名前と国名だけで結構です
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_main_itimad_tomb_003
 あの……読んでからでも、いいですか？
 # speaker: narrator
 ヴィムラーの手が止まった。教師の目で、{heroine_name}を上から下まで見る。
@@ -88,6 +95,7 @@ INCLUDE modules.ink
 # speaker: enemy
 イティマード・ウッダウラは名前じゃなくて称号。『国家の柱』という意味。どんな人だったか、分かる？
 # speaker: heroine
+# voice: gt_agra_main_itimad_tomb_004
 えっと……偉い人、ですよね
 # speaker: enemy
 # reaction: enemy,sigh
@@ -105,6 +113,7 @@ INCLUDE modules.ink
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_main_itimad_tomb_005
 建てたのも、建ててもらったのも、自分の足で来た人たちなんですね
 # speaker: enemy
 分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先。タージは、それを大きくしただけ
@@ -122,6 +131,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_main_itimad_tomb_006
     三つ目だけ、資料で確かめられないと思います。タージは、シャー・ジャハーンの建物ですよね
 - else:
     # speaker: narrator
@@ -133,10 +143,12 @@ INCLUDE modules.ink
 # speaker: enemy
 本当のことだけ書いても、誰も読まない。三年集めて、署名は四十二人。大きく書いたら、少しは足を止めてくれるかと思って
 # speaker: heroine
+# voice: gt_agra_main_itimad_tomb_007
 でも、一つ盛ったら、ほかの二つまで疑われちゃいます。せっかく、本当なのに
 # speaker: narrator
 ヴィムラーは長いこと黙っていた。先生に赤ペンを入れられた生徒みたいな顔だった。
 # speaker: heroine
+# voice: gt_agra_main_itimad_tomb_008
 この紙には署名できません。……でも、白い紙を一枚もらえますか
 # speaker: narrator
 {heroine_name}は新しい紙に短く書き、下に自分の名前と国名を添えた。
@@ -162,5 +174,6 @@ INCLUDE modules.ink
 それから、あなた。さっきの『イティマード』、発音が違います。イッ、ティ、マード。はい、繰り返して
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_main_itimad_tomb_009
 ……授業、始まっちゃった
 -> END

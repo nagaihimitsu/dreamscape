@@ -11,6 +11,7 @@ INCLUDE modules.ink
 ジャイプールの宿は、旧市街の城壁の近くにあった。窓の外の壁も、向かいの家も、通りの門も、くすんだ桃色に塗られている。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_jaipur_arrival_001
 本当に、町じゅうがピンク……。写真より、ちょっと赤っぽいね。夕方の空みたいな色
 # background: gt_bg_jaipur_hotel_room
 # speaker: narrator
@@ -26,6 +27,7 @@ INCLUDE modules.ink
 祖母も、もうジャイプールの叔父の家に移っています。あなたに踊らせると言っています。逃げ道はありません
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_jaipur_arrival_002
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！
 # background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
@@ -34,12 +36,14 @@ INCLUDE modules.ink
 お祝いはね、封筒に入れた現金。金額の最後に、一ルピー足すの。割り切れない数は、縁起がいいから
 # speaker: heroine
 # reaction: heroine,smile,question
+# voice: gt_jaipur_arrival_003
 割り切れない方が、縁起がいいんだ。……いい考え方だね。終わりにしないで、続いていく感じ
 # speaker: narrator
 # leave: gt_jaipur_hotel_front
 帳場を離れて、彼女はノートに書き留めた。封筒、一ルピー、踊りは要相談。最後の項目に、二本線が引かれた。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_arrival_004
 相談の余地、なさそうだもんね。カムラさんだし
 # speaker: heroine
 # emotion: smile
@@ -64,6 +68,7 @@ INCLUDE modules.ink
 運転手が何か文句を言っている。料金を半分に値切られたらしい。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_jaipur_epilogue_001
 カムラさん！　昨日の今日なのに、もう値切ってる……
 # speaker: enemy
 ジャイプールの運転手は、デリーより素直ね。三十秒で折れた
@@ -78,6 +83,7 @@ INCLUDE modules.ink
 ジャイプール。通りで踊った夜
 # speaker: heroine
 # reaction: heroine,shy,blush
+# voice: gt_jaipur_epilogue_002
 ……それ、わたしの、ですか
 # speaker: enemy
 わたしのよ。でも、あんたにもあげる
@@ -95,23 +101,27 @@ INCLUDE modules.ink
 - ending_reached:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_epilogue_003
     はい。……もう、言いました。これからも、言いたいときに言います
     # speaker: enemy
     よろしい。言い過ぎるくらいで、ちょうどいいのよ
 - romance_stage >= 3:
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_jaipur_epilogue_004
     ……まだ、です。でも、六十年は待ちません。約束します
     # speaker: enemy
     約束は軽くするもんじゃないわよ。……したなら、守りなさい
 - romance_stage == 2:
     # speaker: heroine
     # reaction: heroine,shy,sweat
+    # voice: gt_jaipur_epilogue_005
     そ、そういうのじゃ……。でも、言いたいことは、ちゃんと言うようにします
     # speaker: enemy
     『そういうのじゃ』って言う子は、だいたいそういうのよ
 - else:
     # speaker: heroine
+    # voice: gt_jaipur_epilogue_006
     旅の連れ、です。……でも、この旅で一緒にいられてよかったって、それは、ちゃんと言えます
     # speaker: enemy
     それで十分。最初の一言は、それくらいがいい
@@ -126,25 +136,31 @@ INCLUDE modules.ink
 # speaker: narrator
 アーグラでは、名物ガイドの伝説の代わりに、人前で本当の話をした。
 # speaker: heroine
+# voice: gt_jaipur_epilogue_007
 アーグラは、自分で書かなきゃね。……本当の話の方を、短く
 {
 - ending_reached:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_epilogue_008
     インドで覚えた一番大事なこと、言うね。……好き。言いたいときに言うって、決めたから
     # speaker: heroine
     # reaction: heroine,teasing,blush
+    # voice: gt_jaipur_epilogue_009
     ふふ。今のは、六十年待たなかった分
 - romance_stage >= 3:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_epilogue_010
     次の旅の行き先、今度はわたしから言ってもいい？　……一緒に行きたい所が、もうあるんだ
 - romance_stage == 2:
     # speaker: heroine
     # reaction: heroine,smile,music
+    # voice: gt_jaipur_epilogue_011
     楽しかった。……あなたと来られて、よかった。これは、勢いじゃないからね
 - else:
     # speaker: heroine
+    # voice: gt_jaipur_epilogue_012
     ありがとう。一人だったら、きっと窓の内側から、見てるだけだった
 }
 # speaker: narrator

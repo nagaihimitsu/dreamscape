@@ -12,21 +12,25 @@ INCLUDE modules.ink
 ジャンタル・マンタルの敷地には、見たことのない形が並んでいた。巨大な階段、半球のくぼみ、空に向かって傾いた三角の壁。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_jantar_mantar_guide_001
 現代美術の公園……じゃないよね。全部、空を測るための道具なんだって
 # speaker: narrator
 十八世紀に、ジャイプールを築いた王が造らせた天文台。望遠鏡ではなく、肉眼で星や太陽の位置を測るための、石の道具たちだ。
 # speaker: heroine
+# voice: gt_jaipur_jantar_mantar_guide_002
 道具の中に、人が歩いて入れるんだ。道具の方が、わたしより大きい
 # speaker: narrator
 日差しが強い。{heroine_name}は帽子のつばを下げ、地面に落ちた影の濃さに目を細めた。
 # speaker: heroine
 # emotion: neutral
+# voice: gt_jaipur_jantar_mantar_guide_003
 影が、すごくくっきりしてる。……ここだと、影も道具の一部なのかもね
 # speaker: narrator
 # term: gt_term_dhoti
 一番大きな三角の壁の日陰で、白い腰布の老人が、古い冊子を膝に広げて座っていた。そこへ、眼鏡の若い女性が、まっすぐ歩いていく。
 # speaker: heroine
 # reaction: heroine,worried,question
+# voice: gt_jaipur_jantar_mantar_guide_004
 ……あの人、すごい勢い。何かに怒ってるみたい
 -> END
 
@@ -51,6 +55,7 @@ INCLUDE modules.ink
 ディヴィヤです。ベンガルールの研究所で、星の研究をしています。母が、わたしに黙って、この人に時刻を決めさせたんです
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_main_jantar_mantar_001
 それで、直接、抗議に……？
 # speaker: enemy
 ええ。この人は、太陽で決めた時刻だと言うんです。でも、根拠がない
@@ -66,6 +71,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_jantar_mantar_002
     この日時計が示すのは、ジャイプールの太陽で決まる時刻、なんですよね。携帯の時刻とは、別の
     # speaker: enemy
     ……地方時。もちろん知ってます。天文学の基礎です
@@ -85,6 +91,7 @@ INCLUDE modules.ink
 だいたい、かどうか。この装置がどれだけ細かく時を測れるか、あんたは知っているかね
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_main_jantar_mantar_003
 わ……目盛りが、すごく細かい。大きいのは、見せびらかすためじゃなかったんだ
 -> quiz(2) ->
 # background: gt_bg_jaipur_jantar_mantar
@@ -144,6 +151,7 @@ INCLUDE modules.ink
 # speaker: gt_shastri
 占いを信じろとは言わないよ。ただ、時計の読み方は、昔からここで教わってきたんだ
 # speaker: heroine
+# voice: gt_jaipur_main_jantar_mantar_005
 ディヴィヤさん、論文、何時に出すんですか？
 # speaker: enemy
 ……十一時四十三分に出します。占いを信じたからじゃない。中身は、何時に出しても、わたしのものだから
@@ -166,5 +174,6 @@ INCLUDE modules.ink
 影の読み方を、最初から教えてもらえますか
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_jaipur_main_jantar_mantar_006
 天文学者と占星術師が、同じ影を見てる。……なんだか、いい眺め
 -> END

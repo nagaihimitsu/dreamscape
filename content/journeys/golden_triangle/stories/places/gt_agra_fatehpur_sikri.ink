@@ -52,6 +52,7 @@ INCLUDE modules.ink
 家を、建てるな……だと
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_main_fatehpur_sikri_001
 だ、大丈夫ですか？
 # speaker: enemy
 # cutin: name
@@ -66,12 +67,14 @@ INCLUDE modules.ink
 止めるべきですか、ミキサー車。あなたが決めてください。外国の人は、しがらみがない。正しいことが言える
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_main_fatehpur_sikri_002
 えっ、わたしが？　む、無理です。それは、ムケーシュさんが決めることです
 # speaker: enemy
 # reaction: enemy,anger
 冷たいな。人生相談に来た男に
 # speaker: heroine
 # emotion: worried
+# voice: gt_agra_main_fatehpur_sikri_003
 人生相談、されてたんですね……。でも、家のことは、やっぱり
 # speaker: narrator
 ムケーシュは鼻を鳴らし、もう一度アーチを見上げた。翻訳の続きを、指で追う。
@@ -84,6 +87,7 @@ INCLUDE modules.ink
     # em: イエス
     イエス……？　キリストの？　イスラームの皇帝の門に？
     # speaker: heroine
+    # voice: gt_agra_main_fatehpur_sikri_004
     はい。マリアの子イエスの言葉、って書いてあるそうです
 - else:
     # speaker: enemy
@@ -96,6 +100,7 @@ INCLUDE modules.ink
 皇帝ってのは、度量が大きいんだな。よその宗教の言葉を、自分の勝ちを祝う門に刻むなんて。……うちの施主なら、絶対に許さない
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_main_fatehpur_sikri_005
 施主さん、厳しいんですね
 # speaker: enemy
 施主は自分です。だから一番厳しい
@@ -122,6 +127,7 @@ INCLUDE modules.ink
 {heroine_name}は何も言えなかった。慰める言葉なら、いくらでも浮かぶ。どれも、この人の四百万ルピーには軽すぎた。
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_main_fatehpur_sikri_006
 ……ごめんなさい。気の利いたことが、言えません
 # speaker: enemy
 いいんです。言われたら、たぶん怒ってた
@@ -139,6 +145,7 @@ INCLUDE modules.ink
     十五年ほど。……皇帝でさえ、出ていったのか
 }
 # speaker: heroine
+# voice: gt_agra_main_fatehpur_sikri_007
 でも、町は残ってます。四百年以上たっても、こうやって人が来て、上まで石段を上って
 # speaker: heroine
 この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです
@@ -149,6 +156,7 @@ INCLUDE modules.ink
 言ってから、{heroine_name}は赤くなった。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_main_fatehpur_sikri_009
 い、今のは感想です。決めたわけじゃないです
 # speaker: narrator
 # pause: 900
@@ -175,5 +183,6 @@ INCLUDE modules.ink
 彼は石段を、一段ずつ下りていった。現場の方角へ。四時まで、まだ少し時間がある。
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_main_fatehpur_sikri_010
 ……わたし、何もしてないのに、お礼を言われちゃった
 -> END

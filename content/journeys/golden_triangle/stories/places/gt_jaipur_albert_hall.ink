@@ -23,10 +23,12 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
     # recall: gt_album_d55
+    # voice: gt_jaipur_date_albert_hall_001
     鳩……。デリーの階段井戸以来、鳩には、ちょっと思うところがあるんだけど
 - else:
     # speaker: heroine
     # reaction: heroine,surprised_big,sweat
+    # voice: gt_jaipur_date_albert_hall_002
     鳩！　こんなに、いっぺんに。地面が動いてるみたい
 }
 * [穀物を一袋買って、撒いてみる # option: feed_pigeons]
@@ -38,6 +40,7 @@ INCLUDE modules.ink
         一握り撒いた瞬間、灰色の波が、こちらではなく彼女の足もとに押し寄せた。
         # speaker: heroine
         # emotion: surprised_big
+        # voice: gt_jaipur_date_albert_hall_003
         やだ、肩に！　は、早く払って！
     - else:
         # speaker: narrator
@@ -46,6 +49,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # photo: gt_album_j31 # photo_caption: 鳩の王さま
+        # voice: gt_jaipur_date_albert_hall_004
         頭！　頭に乗ってる！　ふふっ、すごく似合ってるよ、鳩の王さま
     }
 * [鳩の群れを、大回りでよける # option: avoid_pigeons]
@@ -54,10 +58,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_albert_hall_005
         ……ちょっとだけ、鳩とも遊びたかったかも。ううん、いいの。行こう
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_albert_hall_006
         賢い。わたしも、そっちに一票。鳩は、遠くから見るのがいちばん
     }
 * [彼女の前に立って、鳩よけになる # option: shield_her]
@@ -66,10 +72,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy,sweat
+        # voice: gt_jaipur_date_albert_hall_007
         鳩から守られるの、ちょっと恥ずかしい……。みんな、普通に歩いてるよ
     - else:
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_jaipur_date_albert_hall_008
         守ってくれてる？　鳩から？　……ふふ、ありがと。でも、背中に一羽、乗ってるよ
     }
 -
@@ -79,6 +87,7 @@ INCLUDE modules.ink
 階段の手前の柱の陰に、一人だけ、取り残された女の子がいた。八歳くらい。三つ編みの先を、ぎゅっと握っている。
 # speaker: heroine
 # emotion: worried
+# voice: gt_jaipur_date_albert_hall_009
 ……あの子、下りられないみたい
 # speaker: narrator
 彼女は女の子の前にしゃがんで、目の高さを合わせた。女の子は階段の先を指さして、小さな声で言った。
@@ -87,10 +96,12 @@ INCLUDE modules.ink
 # em_shake: 怖い
 ……わたし、カヴィヤ。あそこに、ミイラがいるの。エジプトの、本物の。……みんな、平気だって。でも、わたし、怖い
 # speaker: heroine
+# voice: gt_jaipur_date_albert_hall_010
 そっか。……実はね、わたしも、ちょっと怖い。ミイラって、本物を見たことないから
 # speaker: narrator
 階段の先で、先生が手を振っていた。ほかの子たちは、もう展示室の前に集まっている。
 # speaker: heroine
+# voice: gt_jaipur_date_albert_hall_011
 先生、あそこで待ってるね。下まで、一緒に行こうか。わたしも怖いから、手、つないでくれる？
 # speaker: narrator
 カヴィヤは、少し考えてから、彼女の手を握った。
@@ -101,6 +112,7 @@ INCLUDE modules.ink
         先に歩き出すと、カヴィヤは足を止め、彼女の後ろに隠れてしまった。知らない大人が前にいるのは、かえって怖いらしい。
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_albert_hall_012
         大丈夫。この人、鳩より怖くないから。ね、ゆっくり行こう
     - else:
         # speaker: narrator
@@ -127,6 +139,7 @@ INCLUDE modules.ink
         ……エーク、ドー、ティーン
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_albert_hall_013
         いち、に、さん。二つの国の言葉で数えたら、倍、強くなれそう
     }
 -
@@ -142,6 +155,7 @@ INCLUDE modules.ink
 かわいい名前。……トゥトゥは、遠くから来て、さみしくないのかな
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_date_albert_hall_014
 毎日、こんなにたくさんの子が、会いに来てくれるなら。たぶん、さみしくないと思うよ
 # speaker: narrator
 カヴィヤは、ガラスに額がつくほど近づいた。それから、振り向いて、先生のところへ走っていった。
@@ -157,5 +171,6 @@ INCLUDE modules.ink
 ……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_jaipur_date_albert_hall_016
 それにしても、ミイラより、鳩の方がよっぽど元気。わたし、やっぱり鳩の方が怖いかも
 -> END

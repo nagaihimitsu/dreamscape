@@ -12,21 +12,25 @@ INCLUDE modules.ink
 シティ・パレスの門の前に、赤いターバンと白い制服の門番が立っていた。立派な口ひげが、左右にくるりと巻き上がっている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_jaipur_city_palace_guide_001
 ひげ、すごい……。あの形、毎朝どうやって作ってるんだろう
 # speaker: narrator
 観光客が次々と門番と並んで写真を撮っていく。門番は表情を変えず、ひげの角度だけを完璧に保っていた。
 # speaker: narrator
 門をくぐると、中庭がいくつも連なっていた。白と桃色の建物、細かな彫刻の柱。奥の方の建物には、見学者の入れない階もある。
 # speaker: heroine
+# voice: gt_jaipur_city_palace_guide_002
 お城っていうより、町の中に、もう一つ町があるみたい
 # speaker: narrator
 ある中庭の真ん中で、{heroine_name}の足が止まった。人の背丈ほどもある銀の壺が、二つ並んでいる。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_jaipur_city_palace_guide_003
 なに、これ……！　お風呂？　……じゃないよね。何を入れるための壺なんだろう
 # speaker: narrator
 壺の陰で、サリー姿の女性と青年が、何やら言い合いをしていた。青年の手には、小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
 # speaker: heroine
+# voice: gt_jaipur_city_palace_guide_004
 ……あの二人、何か揉めてる。秤と、瓶……？
 -> END
 
@@ -56,6 +60,7 @@ INCLUDE modules.ink
 ちょっと、そこの旅行者さん。あなた、外国から来たのよね
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_main_city_palace_001
 は、はい。日本から……
 # speaker: enemy
 この子ったら、向こうで漬物の匂いがしたら恥ずかしいって言うの。あなた、審判をしてちょうだい
@@ -65,6 +70,7 @@ INCLUDE modules.ink
 二組の目が、同時に{heroine_name}を見た。母親の目と、息子の目。どちらに答えても、片方が傷つく。
 # speaker: heroine
 # reaction: heroine,worried,sweat
+# voice: gt_jaipur_main_city_palace_002
 え、ええと……それは……
 # speaker: narrator
 スシュマは返事を待たず、銀の壺を指さした。最後の証拠を出す弁護士のような手つきだった。
@@ -89,6 +95,7 @@ INCLUDE modules.ink
 笑ったわね。審判が笑うなんて
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_main_city_palace_003
 す、すみません！　……でも、どっちの言い分も、ちょっと分かるんです
 # speaker: narrator
 ヴィシャールが小声で言った。
@@ -114,8 +121,10 @@ INCLUDE modules.ink
 # speaker: narrator
 {heroine_name}は少し考えてから、口を開いた。
 # speaker: heroine
+# voice: gt_jaipur_main_city_palace_004
 わたし、旅の途中で、家のお味噌汁が恋しくなることがあります。我慢したら、もっと恋しくなりました
 # speaker: heroine
+# voice: gt_jaipur_main_city_palace_005
 恋しくなるのは、帰る場所があるってことだと思います。……恥ずかしいことじゃ、ないです
 # speaker: narrator
 スシュマが、こちらを見た。得意げな顔ではなかった。それから、隣に立つ息子を、黙って見上げた。
@@ -125,6 +134,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_city_palace
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_city_palace_006
     はい。宮殿の一部は、今も王家の方の住まいなんですよね
 - else:
     # speaker: narrator
@@ -138,8 +148,10 @@ INCLUDE modules.ink
 審判の答えを、二人が待っていた。{heroine_name}は、ヴィシャールが提げた秤を指さした。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_main_city_palace_007
 五キロは無理でも、二キロなら入りますよね。……それで、漬物がなくなったら、電話してください。お母さんに、次の分を頼むって
 # speaker: heroine
+# voice: gt_jaipur_main_city_palace_008
 なくなるたびに、電話する理由ができます
 # speaker: narrator
 スシュマとヴィシャールが、同時に黙った。先に口を開いたのは、母親の方だった。
@@ -163,6 +175,7 @@ INCLUDE modules.ink
 スシュマは手提げから小瓶を一つ取り出し、{heroine_name}の手に握らせた。ライムの漬物。審判の報酬だという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_jaipur_main_city_palace_009
 あ、ありがとうございます。……わたしにも、重量制限が……
 # speaker: enemy
 二百グラムよ。文句があるなら、電話してちょうだい
