@@ -1,0 +1,436 @@
+
+######## gt_agra_akbar_tomb.ink knot=gt_agra_akbar_tomb_monkey_catch_attar (line 243)
+  CALLED at 192 from gt_agra_akbar_tomb_monkey_attar: -> gt_agra_akbar_tomb_monkey_catch_attar -> | choice: * [売店でパックのジュースを買って、交換を申し込む # option: attar_trade]
+  CALLED at 206 from gt_agra_akbar_tomb_monkey_attar: -> gt_agra_akbar_tomb_monkey_catch_attar -> | choice: * [壁の下まで追いかける # option: attar_chase]
+  CALLED at 211 from gt_agra_akbar_tomb_monkey_attar: -> gt_agra_akbar_tomb_monkey_catch_attar -> | choice: * [「待とう。猿にも、考える時間がいる」 # option: attar_wait]
+  243: # minigame: monkey_catch auto fumbled art.wall gt_img_agra_akbar_tomb_gate
+  244: 小瓶が、壁の上から落ち――かけて、猿の手に戻った。からかっている。考えるより先に、両手が出ていた。
+  245: * [落ちてきた小瓶を、両手で受け止めた # option: caught]
+  247: # item_out: gt_delhi_rain_attar
+  248: 両手の中に、ひやりとした小さな重みが収まった。指を開くと、小瓶は割れずにそこにあった。
+  250: # item_out: gt_delhi_rain_attar
+  252: わたしの雨、無事だった！
+  255: ……今の、ちょっと格好よかったよ。ちょっとだけね
+  257: 彼女は小瓶を受け取ると、今度は鞄のいちばん奥にしまった。
+  258: * [受け止めかけて、指先で弾いた # option: fumbled]
+  259: # use: gt_delhi_rain_attar
+  260: # set: gt_agra_rain_on_lawn
+  262: 指先に、ガラスの冷たさが一瞬だけ触れた。つかんだと思った小瓶は、指の間で跳ねて、外へこぼれた。
+  263: * [手が届かなかった # option: missed]
+  264: # use: gt_delhi_rain_attar
+  265: # set: gt_agra_rain_on_lawn
+  267: 伸ばした手の先をかすめて、小瓶は落ちていった。
+  268: - ->->
+
+######## gt_agra_akbar_tomb.ink knot=gt_agra_akbar_tomb_monkey_catch_glasses (line 325)
+  CALLED at 293 from gt_agra_akbar_tomb_monkey_glasses: -> gt_agra_akbar_tomb_monkey_catch_glasses -> | choice: * [売店でパックのジュースを買って、交換を申し込む # option: glasses_trade]
+  CALLED at 309 from gt_agra_akbar_tomb_monkey_glasses: -> gt_agra_akbar_tomb_monkey_catch_glasses -> | choice: * [壁の下まで追いかける # option: glasses_chase]
+  CALLED at 314 from gt_agra_akbar_tomb_monkey_glasses: -> gt_agra_akbar_tomb_monkey_catch_glasses -> | choice: * [「待とう。猿にも、考える時間がいる」 # option: glasses_wait]
+  325: # minigame: monkey_catch prefix glasses thing glasses auto caught art.wall gt_img_agra_akbar_tomb_gate
+  326: サングラスが、壁の上から落ち――かけて、猿の手に戻った。からかっている。考えるより先に、両手が出ていた。
+  327: * [落ちてきたサングラスを、両手で受け止めた # option: glasses_caught]
+  329: 両手の中に、サングラスがすとんと収まった。
+  330: * [受け止めかけて、指先で弾いた # option: glasses_fumbled]
+  332: 指先で一度跳ねたサングラスは、くるりと回って、石の通路で、からんと鳴った。拾い上げると、レンズは割れていなかった。
+  333: * [手が届かなかった # option: glasses_missed]
+  335: サングラスは手の先をかすめて、石の通路に落ちた。拾い上げると、レンズは割れていなかった。
+  336: - ->->
+
+######## gt_agra_mehtab_bagh.ink knot=gt_agra_date_mehtab_bagh (line 121)
+  121: # minigame: cricket_batting auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
+  123: 本気で投げるから。本気で打ってね
+  125: * [最後の一球：まっすぐ打ち返した # option: six]
+  127: -> gt_agra_mehtab_bagh_ball_six ->
+  128: * [最後の一球：横へ高く打ち上げた # option: over_wall]
+  130: -> gt_agra_mehtab_bagh_ball_over_wall ->
+  131: * [最後の一球：板の端に当てた # option: edge]
+  133: -> gt_agra_mehtab_bagh_ball_edge ->
+  134: * [最後の一球：空振りした # option: bowled]
+  136: -> gt_agra_mehtab_bagh_ball_bowled ->
+  137: * [最後の一球：振らなかった # option: no_swing]
+  141: 板きれは、肩の上で止まったままだった。ボールは脇を抜けて、後ろの煉瓦を落とした。子どもたちが歓声を上げる。彼女だけが、笑っていなかった。
+  142: { romance_result == "negative":
+  145: ……今の、振らなかったでしょ。それ、一番嫌
+  147: 本気で投げたのに、振ってももらえなかったら、わたしの一球、なかったことになっちゃう
+  148: - else:
+  151: 今の、見送ったでしょ。勝たせてくれようとしたなら、優しいのは分かる。でも、それはだめ
+  153: わたしの一球、ちゃんと打ってほしかった
+  154: }
+  156: ソニアが二人を見比べて、肩をすくめた。
+  158: もう一球。今のは数えない。キャプテンが決める
+  159: -> gt_agra_mehtab_bagh_another_ball ->
+  160: -
+  162: 試合が終わると、ソニアは手を差し出した。握手かと思ったら、手のひらは上を向いていた。
+  164: タージと、クリケットと、あなたたち。写真代、ちょうだい。外国の人は、みんな撮りたがるから
+  168: しっかりしてる！
+  170: 本物のバットが欲しいの。ちゃんとした革のボールも。州のチームの選考は、本物で打たないと笑われる
+  171: -> gt_agra_mehtab_bagh_photo ->
+  174: 子どもたちが散っていくと、空き地には土ぼこりと、二人だけが残った。彼女は服の土を払いながら、塀に背中をあずけた。
+  177: チーム分けで、最初に選ばれたの、生まれて初めてかも。ソニアさん、わたしが投げたいって顔してたの、分かってたのかな
+  181: 投げたい、って言ってよかった。言わなかったら、たぶん今日も、見てるだけだった
+  182: -> END
+
+######## gt_agra_mehtab_bagh.ink knot=gt_agra_mehtab_bagh_another_ball (line 188)
+  CALLED at 159 from gt_agra_date_mehtab_bagh: -> gt_agra_mehtab_bagh_another_ball -> | choice: None
+  188: # minigame: cricket_batting prefix again ball slower letgo plank auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
+  189: ソニアがボールを投げ返す。彼女はそれを両手で受け取って、もう一度、土の盛り上がりに立った。
+  190: * [もう一球：まっすぐ打ち返した # option: again_six]
+  191: -> gt_agra_mehtab_bagh_ball_six ->
+  192: * [もう一球：横へ高く打ち上げた # option: again_over_wall]
+  193: -> gt_agra_mehtab_bagh_ball_over_wall ->
+  194: * [もう一球：板の端に当てた # option: again_edge]
+  195: -> gt_agra_mehtab_bagh_ball_edge ->
+  196: * [もう一球：空振りした # option: again_bowled]
+  197: -> gt_agra_mehtab_bagh_ball_bowled ->
+  198: * [もう一球：また振らなかった # option: again_no_swing]
+  200: 板きれは、また動かなかった。けれど今度は、少し遅いボールの方が板きれに当たって、ぼてぼてと転がり、彼女の足もとで止まった。
+  202: ……当たった。時間。引き分け
+  205: 振らなくても、当たっちゃうんだ。……ずるい
+  208: 彼女はボールを拾って、それから、ようやく笑った。
+  211: 次にどこかでやるときは、ちゃんと振ってね。かっこよくなくていいから、本気の方がいい
+  212: - ->->
+
+######## gt_delhi_agrasen_baoli.ink knot=gt_delhi_agrasen_baoli_pigeon_flap (line 249)
+  CALLED at 191 from gt_delhi_date_agrasen_baoli: -> gt_delhi_agrasen_baoli_pigeon_flap -> | choice: None
+  249: # minigame: cloth_flap auto perfect art.wall gt_img_delhi_agrasen_baoli_wall
+  250: 上から、ジャスミートの足音が下りてくる。一段、また一段。くぼみの前の段まで、あと少し。
+  251: * [布を広げた：ちょうど目の前で # option: perfect]
+  253: 今だ。白い布が、ばさりと広がった。
+  254: * [布を広げた：早すぎた # option: early]
+  256: 早すぎた。ジャスミートがくぼみの前の段に下りてくるより先に、広げた布が、ばさりと鳴った。
+  258: 見えてるよ。鳩にしては、大きすぎ
+  260: 彼女が笑いかけた、そのとき。
+  263: 布の音に驚いた本物の鳩が、くぼみの奥から、こちらの肩を越えて飛び出した。
+  264: * [布を広げた：遅すぎた # option: late]
+  266: 遅かった。足音は、もうくぼみの前の段を離れていた。広げた布が、ジャスミートの背中の後ろで、ばさりと鳴る。振り返った彼女の目の前に、白い布が広がっていた。
+  267: * [布を広げられなかった # option: frozen]
+  269: 手が、動かなかった。足音はくぼみの前を通り過ぎ、少し下で止まった。
+  270: ジャスミートが引き返してきて、そっと、くぼみを覗き込む。目が合った。
+  272: 驚いたのは、こちらが先だった。飛びのいた拍子に、ドゥパッターが勝手に、ばさりと広がった。
+  273: - ->->
+
+######## gt_delhi_bangla_sahib.ink knot=gt_delhi_bangla_sahib_roti (line 216)
+  CALLED at 47 from gt_delhi_date_bangla_sahib: -> gt_delhi_bangla_sahib_roti -> | choice: * [真剣に、丸を目指す # option: aim_round]
+  216: # minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar retry yes
+  217: 押して、回す。押して、回す。……あとは、手に聞け
+  218: * [ローティー：まん丸に伸ばした # option: round]
+  220: 伸ばした生地は、ほとんど丸かった。ハルバンスはそれを持ち上げて、光にかざした。
+  222: 丸い。……四十年で、いちばんつまらん地図だ
+  223: { romance_result == "negative":
+  226: ……ずるい。わたしのは、インドになったのに
+  227: - else:
+  230: ふふっ。丸すぎて怒られる人、初めて見た
+  231: }
+  232: * [ローティー：四角くなった # option: truck_bed]
+  233: { romance_result == "negative":
+  235: 全力で伸ばした生地は、なぜか四角くなった。
+  237: ……荷台だな
+  241: ……わたしのより、まとまってる。ちょっと悔しい
+  242: - else:
+  244: 全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
+  246: トラックの荷台だな。積みやすくていい
+  250: ふふっ。わたしの地図より、ちゃんと役に立ちそう
+  251: }
+  252: * [ローティー：地図のような形になった # option: country]
+  254: 生地は、思ったようには伸びてくれなかった。ハルバンスが、目を細める。
+  256: ほう。こっちはスリランカだ。インドの南には、島がないとな
+  257: { romance_result == "negative":
+  260: 並べないでください。……わたしのインドまで、本物っぽくなっちゃう
+  261: - else:
+  264: じゃあ、わたしのインドの下に置こう。地図、完成だね
+  265: }
+  266: * [ローティー：伸ばしすぎて穴が開いた # option: torn]
+  268: もう一押し、と力を込めたところで、生地の真ん中に、ぽっかり穴が開いた。
+  270: トンネルだな。……丸め直せ。生地は、何度でもやり直せる
+  271: { romance_result == "negative":
+  274: 真剣すぎ。……ローティーに、トンネルは要らないと思う
+  275: - else:
+  278: ふふっ。トンネル開通、おめでとう。……次のは、穴なしでね
+  279: }
+  280: - ->->
+
+######## gt_delhi_chandni_chowk.ink knot=gt_delhi_chandni_chowk_duel (line 221)
+  CALLED at 121 from gt_delhi_date_chandni_chowk: -> gt_delhi_chandni_chowk_duel -> | choice: None
+  221: # minigame: golgappa_duel auto together art.stall gt_img_delhi_golgappa_stall
+  222: 屋台の男は事情を察したらしい。二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
+  223: * [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
+  225: 七。八。九。十二で、彼女が胸を叩いた。十三で、こちらの目に涙がにじんだ。十四の声に重なって、二人ともほとんど同時に手を上げた。
+  229: 引き分け！　今の、わたしの方が一瞬早かったけどね
+  230: * [ゴルガッパの勝負：先に「バス」と言った # option: you_first]
+  232: 先に手を上げたのは、こちらだった。屋台の男の手が、こちらの器だけを飛ばしていく。彼女は横目でこちらを見ながら、十四まで食べて、ゆっくり手を上げた。
+  235: わたしの勝ち。……ほんとは、わたしもあと少しで言うところだった。内緒ね
+  236: * [ゴルガッパの勝負：器にたまって、むせた # option: choke]
+  238: 器の中に、二つたまっていた。慌てて一つ放り込むと、酸っぱい水が喉に飛び込んだ。むせて、声が出ない。
+  240: 彼女が、こちらの器の上に手をかざした。
+  243: バス！　この人の分も、バス！
+  246: 勝負は、わたしの勝ちでいい？　……はい、水。ゆっくり飲んで
+  247: * [ゴルガッパの勝負：彼女より長く食べ続けた # option: outlast]
+  249: 十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
+  252: 負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる
+  253: - ->->
+
+######## gt_delhi_lodhi_garden.ink knot=gt_delhi_lodhi_garden_say_together (line 344)
+  CALLED at 254 from gt_delhi_date_lodhi_garden: -> gt_delhi_lodhi_garden_say_together -> | choice: * [「一緒に言おう」と声を合わせる # option: shout_together]
+  344: # minigame: say_together auto together art.lawn gt_img_delhi_lodhi_lawn
+  345: 彼女は小さく息を吸って、こちらを見た。
+  346: * [声を合わせた：「の」の次の拍で、二人の声がそろった # option: together]
+  347: { romance_result == "negative":
+  349: 出だしは、ぴったり重なった。二人の声は、芝生の向こうの墓まで届いた。ただ、届いたのはほとんどこちらの声だった。
+  353: ……今の、九割くらい、そっちの声だったよ
+  354: - else:
+  356: 出だしが、ぴたりと重なった。二人の声が、芝生の向こうの墓まで届いた。散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
+  359: そろった！　今の、ぴったりだったよね
+  360: }
+  361: * [声を合わせた：合図より先に、こちらが言った # option: early]
+  363: こちらの声だけが、先に飛び出した。一人分の声が芝生を渡っていき、少し遅れて、彼女の声が追いかけてきた。
+  364: { romance_result == "negative":
+  367: えっ、もう？　……わたし、置いていかれちゃった
+  368: - else:
+  371: 早いよ！　『その次』って言ったのに。ふふ、一人で全部言っちゃうんだもん
+  372: }
+  374: ただいまの列車は、定刻より早く発車いたしました。お乗り遅れのお客様が、お一人
+  375: * [声を合わせた：彼女が先に言い、こちらは後から続いた # option: late]
+  377: 「の」の次の一拍で、彼女の声だけが先に出た。こちらの声は、その後から追いかけた。
+  378: { romance_result == "negative":
+  381: 今の、わたしの声だけ先に出てた。……恥ずかしい
+  382: - else:
+  385: 遅いよ！　一瞬、わたし一人で叫んでた
+  388: そう言いながら、彼女は笑っていた。
+  389: }
+  391: 後続の列車は、少々遅れての到着となりました
+  392: * [声を合わせた：こちらは言わず、彼女が一人で言った # option: silent]
+  394: 「の」の次の一拍で、彼女の声だけが芝生に響いた。こちらの口は、開いたまま動かなかった。
+  395: { romance_result == "negative":
+  397: 最後の「デーン」は、ほとんど聞こえなかった。彼女は、ゆっくりこちらを向いた。
+  400: ……一緒にって、言ったよね
+  401: - else:
+  403: 彼女は最後まで言い切ってから、ゆっくりこちらを向いた。
+  406: もしかして、わざと黙ってた？
+  409: もう。……でも、言えちゃった。一人で、最後まで
+  410: }
+  412: お知らせいたします。列車が一本、運休となりました
+  413: - ->->
+
+######## gt_jaipur_hawa_mahal.ink knot=gt_jaipur_main_hawa_mahal_battle (line 114)
+  114: # minigame: parasol_search at middle auto found art.street gt_img_jaipur_view_from_hawa_mahal
+  115: 通りのあちこちに、傘が開いていた。あの中のどれかが、ガウラの日傘だ。
+  120: * [日傘：すぐに見つけた # option: found]
+  122: 古い日傘はすぐに見つかった。
+  123: * [日傘：何度か見間違えてから見つけた # option: found_slow]
+  124: # set: gt_jaipur_parasol_hard_to_find
+  126: 上から見ると、傘も人も、どれも同じ丸に見えた。いくつか見間違えてから、やっと全部見つけた。
+  127: * [日傘：彼女と一緒に見つけた # option: pointed]
+  130: ほら、あそこ。……ね、見えた？
+  131: -
+  133: # photo: gt_album_j13 # photo_caption: 格子の小窓から見下ろす、古い日傘
+  134: ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
+  138: ……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま
+  140: 窓の数を数えようとして、{heroine_name}はすぐに諦めた。中からでは、とても数えきれない。ガウラは四十年、外から数え続けてきたのだ。
+  141: -> quiz(3) ->
+  142: # background: gt_bg_jaipur_hawa_mahal
+  143: { quiz_correct:
+  146: 九百五十三、なんだって。ガウラさんの九百五十一、ほとんど合ってます
+  147: - else:
+  149: 出口の案内板に、窓の数が書いてあった。九百五十三。ガウラの数とは、二つしか違わない。
+  150: }
+  152: 通りに戻ると、ガウラが待ちかねた顔で手招きした。
+  154: で？　私は、どう見えた
+  156: { cond("flag gt_jaipur_parasol_hard_to_find"):
+  158: 上から見ると、傘って、みんな同じ丸なんですね
+  160: 下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
+  161: }
+  164: ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
+  167: ……上から見たガウラさんが、通りで一番、生きてるって感じがしました
+  169: ガウラは何も言わず、日傘の竿を握り直した。目が、少し赤かった。
+  173: あの、今度、一緒に上に行きませんか。入場券は、わたしが……
+  177: 施しはいらないよ
+  179: ぴしゃりとした声だった。{heroine_name}は、自分の言葉が何をしたのかに気づいた。
+  183: ……ごめんなさい。聞きもしないで、決めちゃいました
+  185: 行くなら、自分のお金で、自分の足で行く。……今の話を聞いたら、行きたくなったわ。膝が言うことを聞く日にね
+  186: {
+  187: - battle_score == 3:
+  189: あんた、全部ちゃんと見てきたね。屋根も、坂も、窓の数も。それに、私も
+  190: - battle_score == 2:
+  192: 一つ取りこぼしたって、いいのよ。私なんか四十年、窓の数を二つ取りこぼしてた
+  193: - else:
+  195: 答えは、まあ、外れが多かったわね。でも、一番大事な頼みごとは、ちゃんとやってきた
+  196: }
+  198: ガウラは大根を一本、新聞紙でくるんで差し出した。報告のお礼だという。
+  202: だ、大根……。ホテルで、どうしよう……
+  204: 宿の台所に渡しなさい。明日の朝、あんたの皿に戻ってくるから
+  205: -> END
+
+######## gt_jaipur_hawa_mahal.ink knot=gt_jaipur_finale_battle (line 454)
+  454: # minigame: baraat_dance auto off_beat_together bg gt_bg_jaipur_baraat_night
+  456: 一緒に！　下手なのは、二人とも同じだから！
+  458: * [踊り：太鼓の拍に乗れた # option: in_step]
+  460: 太鼓の音に、足が勝手に乗った。カムラが、踊りながら目を丸くする。
+  462: なによ。やればできるじゃない
+  465: 下手なの、わたしだけだった……！
+  466: * [踊り：ずれたまま、二人で踊った # option: off_beat_together]
+  468: 太鼓とは、どうしても合わない。それでも、腕を上げるのも下ろすのも、{heroine_name}と同じだった。
+  471: ずれてる。でも、二人で同じだけずれてる
+  472: * [踊り：足がもつれた # option: stumble]
+  474: 三歩目で、足がもつれた。肩が{heroine_name}にぶつかり、二人で一緒によろける。
+  477: ふふっ。今のも、踊りってことにしよう
+  478: * [踊り：立ったままだった # option: stood_still]
+  480: 足が、地面に貼りついたように動かなかった。太鼓だけが、どんどん先へ行く。
+  483: 見てるだけは、自由とは違うんでしょ。……ほら
+  485: つかまれた手ごと、輪の真ん中へ引っぱり込まれた。
+  486: -
+  489: # photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
+  490: 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
+  491: -> END
+
+######## gt_jaipur_inserts.ink knot=gt_jaipur_hotel_mehndi_night (line 46)
+  46: # minigame: mehndi_hidden_name target thumb text player auto found
+  47: 花びらと蔓の間を、目でたどる。どこかに、自分の名前があるはずだった。
+  48: - cond("flag gt_jaipur_mehndi_her_secret"):
+  49: { cond("seen gt_jaipur_hotel_mehndi_morning"):
+  51: # minigame: mehndi_hidden_name target peacock text illegible auto found
+  52: 何が、どこに書いてあるかは、もう聞いてしまった。それでも、花びらと蔓の間を、自分の目でたどる。
+  53: - else:
+  55: # minigame: mehndi_hidden_name target peacock text illegible auto found
+  56: 何が隠されているのかも、分からない。花びらと蔓の間を、目でたどる。
+  57: }
+  58: - else:
+  60: # minigame: mehndi_hidden_name target vine text farhana auto found
+  61: 名前は隠していない、はずだった。けれど、手のひらの真ん中の蔓だけ、妙に形がこみいっている。
+  62: }
+  64: * [模様の中の文字を見つけた # option: found]
+  65: -> found
+  68: * [違う所も指してから、模様の中の文字を見つけた # option: wrong_spot]
+  69: { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
+  71: 今朝、フロントの女性が指さした所だったのに。最初に指したのは、まるで違う模様だった。
+  74: 今朝、教えてもらったばっかりなのに。……ふふ、忘れっぽいんだから
+  75: - else:
+  77: 最初に指したのは、文字ではなく、ただの模様だった。くすっと笑われて、灯りで模様をたどり直した。
+  80: さっき、自信満々に違う所を指してたでしょ。……ふふ、あの顔、見せてあげたかったな
+  81: }
+  82: -> found
+  83: * [「色が濃くなる明日にする」 # option: later]
+  84: # later
+  88: 逃げたね。いいよ。明日の方が、濃くて見つけやすいかも
+  89: -> END
+  91: = found
+  92: {
+  93: - cond("flag gt_jaipur_mehndi_his_name"):
+  95: 親指の付け根、蔓が三回巻いたところ。模様のふりをした文字が、小さく並んでいた。{player_name}。
+  99: ……見つけた、ね。自分の名前、人の手のひらで見るの、どんな気分？
+  102: わたしは、ちょっと、くすぐったい。ずっと、持って歩いてたんだもん
+  103: - cond("flag gt_jaipur_mehndi_her_secret"):
+  105: 手のひらの真ん中、孔雀の羽の付け根に、小さな文字の列があった。上に一本、横線が引かれた文字。ヒンディー語だ。読めない。
+  106: { cond("seen gt_jaipur_hotel_mehndi_morning"):
+  108: けれど、何と書いてあるかは、もう知っている。
+  112: 見つけたね。もう、フロントの人に読まれちゃったけど。自分で見つけてくれたのは、うれしい
+  113: - else:
+  117: 見つけたけど、読めない。ふふ、セーフ。ファルハーナさん、ヒンディー語の文字で書いてくれたんだ
+  120: 何て書いてあるかは、教えない。読めなかったなら、読めないままで
+  121: }
+  122: - else:
+  124: こみいった蔓をほどくように見ていくと、模様のふりをした英語の文字が出てきた。FARHANA。その下に、小さな数字の列。
+  128: 電話番号！？　隠したの、ファルハーナさん自身の宣伝だった！
+  132: ふふっ、あはは！　すごい、本気だ。自分の店、絶対持てると思う、あの人
+  133: }
+  134: -> END
+
+######## gt_jaipur_jaigarh_fort.ink knot=gt_jaipur_jaigarh_fort_map (line 181)
+  CALLED at 28 from gt_jaipur_date_jaigarh_fort: -> gt_jaipur_jaigarh_fort_map -> | choice: None
+  181: # minigame: raju_haggle auto fair_map bg gt_bg_jaipur_jaigarh_fort
+  182: 五十ルピー。……でも、じっと見られると、ぼく、ちょっとずつ負けちゃう
+  183: * [地図の値段：言い値の₹50で買った # option: buy_map]
+  184: # money: -50
+  185: # rel: affection +1
+  187: まいど。……宝が見つかっても、山分けはしないよ
+  188: * [地図の値段：₹40で話がまとまった # option: fair_map]
+  189: # money: -40
+  191: 四十。……うん、決まり。じいちゃんが言ってた。ちょっとだけ値切るお客さんは、ちゃんと最後まで地図を読むって
+  193: ラージューは地図のしわを手のひらで伸ばしてから、両手で差し出した。
+  196: 本物の宝の地図だ。……ねえ、最初の印は、どこ？
+  197: * [地図の値段：₹30まで値切った # option: haggle_map]
+  198: # money: -30
+  199: # rel: spark +1
+  201: 宝の値段を値切る人には、宝は見つからないよ。……でも、いいよ。安い方の地図ね
+  203: ラージューはポケットから、別の紙を出した。さっきのより、バツ印が少し小さい。
+  207: ふふっ、値段で地図が変わった！
+  210: * [地図の値段：買わなかった # option: decline_map]
+  211: # set: gt_jaipur_raju_guided
+  213: ……ふん。ぼくの地図、すごいのに
+  215: じゃあ、見習い期間ってことで、ついてきていいよ。地図は見せないけど
+  217: ラージューは地図を胸に抱えたまま、先に立って歩き出した。地図の印を、順に回ることになった。
+  218: - ->->
+
+######## gt_jaipur_nahargarh_fort.ink knot=gt_jaipur_date_nahargarh_fort (line 42)
+  42: # minigame: nahargarh_hide_seek auto door_by_door hide 7 art.bay gt_img_jaipur_nahargarh_doorways art.room gt_
+  43: 九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
+  45: * [かくれんぼ：名前を呼んで探した # option: call_her_name]
+  47: # memory: gt_jaipur_date_nahargarh_fort_memory
+  48: { romance_result == "negative":
+  50: 名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。こだまにまじって、小さな笑い声がしたきり、返事はない。三回目に呼んだとき、ようやく扉の陰から彼女が出てきた。
+  54: 呼ばれたら、出たら負けな気がして。かくれんぼ、終わっちゃうでしょ
+  55: - else:
+  57: 名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。どこから自分の声が戻ってくるのかも分からない。
+  59: 三回目に呼んだとき、笑い声のしていた扉が開いて、彼女が駆け寄ってきた。
+  62: # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
+  64: ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方
+  65: }
+  66: * [かくれんぼ：扉を一つずつ開けて見つけた # option: door_by_door]
+  68: # memory: gt_jaipur_date_nahargarh_fort_memory
+  69: { romance_result == "negative":
+  72: 扉を開ける。空っぽの部屋。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
+  75: 遅い……。ずっと待ってたんだよ。途中で、出ていこうかと思った
+  76: - else:
+  79: 扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁の絵を見ていた彼女が、振り向いた。
+  83: あ……見つかった。一個ずつ、全部開けてきたの？
+  86: ちゃんと探してくれたんだね。時間かかったのに
+  87: }
+  88: * [かくれんぼ：開けてすぐの扉で見つけた # option: door_quick]
+  90: # memory: gt_jaipur_date_nahargarh_fort_memory
+  91: { romance_result == "negative":
+  94: 扉を開けると、もう、そこに彼女がいた。壁ぎわにしゃがもうとしたところで、目が合った。
+  97: ……早すぎ。ちゃんと百、数えた？
+  100: ちょっと、のぞいてみただけなのに。かくれんぼって、もう少し、探してほしいんだけどな
+  101: - else:
+  104: 扉を開けると、もう、そこに彼女がいた。壁の絵の前で、息を止めて立っている。
+  107: えっ、もう？
+  110: ずるい。始まったばっかりなのに、かくれんぼ、終わっちゃった。……のぞいたの、見えちゃった？
+  113: 次は、わたしが探す番。すぐ見つけてあげるから、覚悟してね
+  114: }
+  115: * [かくれんぼ：廊下の真ん中で待った # option: just_wait]
+  117: # memory: gt_jaipur_date_nahargarh_fort_memory
+  118: { romance_result == "negative":
+  121: 動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。
+  125: ……探してくれないの？　ずっと待ってたのに。……ちょっと、さみしかった
+  126: - else:
+  129: 動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。ちょっと不満そうな顔だった。
+  132: 探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ
+  135: 今の、ちゃんと覚えておいてね
+  136: }
+  137: -
+  140: 並んで廊下を歩いた。どの扉の前を通っても、同じ部屋がある。その一つ一つに、王妃が住んでいたという。
+  142: 王さまは、ほかの人に知られずに、誰の部屋にでも行けたって、言われてるんだよね。便利だけど、さみしい建物
+  146: 来てもらう方は、廊下の音を聞いて、今夜は自分の扉かなって、待ってるだけだったのかな
+  147: * [「自分なら、廊下は使わない」 # option: no_corridor]
+  149: { romance_result == "negative":
+  153: ……それ、ちゃんと分かって言ってる？　かっこいいこと言うの、簡単だよ
+  154: - else:
+  158: ……そっか。うん。わたしも、そっちがいい
+  159: }
+  160: * [「待つ方も、案外楽しんでたかもしれない」 # option: waiting_fun]
+  162: { romance_result == "negative":
+  166: ……そうは、思えないな。待つだけって、けっこう苦しいよ
+  167: - else:
+  170: そうかな。……そうだったらいいな。わたしなら、待つだけは、たぶん嫌だけど
+  171: }
+  172: * [「君なら、どうしてほしい？」 # option: ask_what_she_wants]
+  174: { romance_result == "negative":
+  178: ……急に、真面目に聞くね。ちょっと、考えさせて
+  179: - else:
+  182: わたし？
+  183: }
+  184: -
+  187: わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って
+  190: ……それから、自分からも、行きたい。待つだけじゃなくて
+  192: 宮殿の屋上に出ると、町の全部が見えた。桃色の屋根、白い寺院の塔、遠くの湖の光。
+  196: あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
+  197: -> END

@@ -1,10 +1,12 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import type { MiniGamePlayProps } from "../contract";
 import type { SearchView } from "../engines/search/EnginePlay";
 import { parasolSearch } from "./definition";
-import { parasolSetup, parasolTargets, type ParasolParams } from "./rules";
-import { parasolSkin } from "./Skin";
+import { Play, retune } from "./play";
+import { PARASOL_TUNING, PARASOL_WARMUP_TARGET, parasolSetup, parasolTargets, type ParasolOutcome, type ParasolParams } from "./rules";
+import { parasolSkin, parasolWarmupSkin } from "./Skin";
 
 // The parasol's field (docs/13 2.12–2.13): each round's things as buttons named by what the picture shows (never whose),
 // the old one where the tag says, the use's art in its slot, the round and its looks in the top band.
@@ -90,5 +92,85 @@ describe("the parasol's field", () => {
     expect(html).toContain('src="/assets/minigames/street.webp"');
     expect(html).toContain('data-art-street="true"');
     expect(labels(html)).toHaveLength(13);
+  });
+});
+
+describe("the parasol's practice field (its own short look)", () => {
+  const warm = (at: ParasolParams["at"] = "middle"): ParasolParams => ({ at, rounds: 3, warmup: "yes" });
+  const one = (change: Partial<SearchView> = {}) => view({ total: 1, ...change });
+  /** The places' buttons only (the hint, the band and 「どこ？」 are the engine's). */
+  const buttons = (html: string) => [...html.matchAll(/<button[^>]*>/gu)].map((match) => match[0]);
+
+  it("draws four plain umbrellas on the far pavement to look at, the blue one the only blue, and nothing else to press", () => {
+    const html = field(warm());
+    const names = labels(html);
+    expect(names).toEqual(["赤白の縞の傘、ジュースの屋台", "黄色い傘、腕輪の店", "青い傘、果物の荷車", "橙の傘、花輪の店"]);
+    expect(names[PARASOL_WARMUP_TARGET]).toBe("青い傘、果物の荷車");
+    expect(names.filter((name) => name.includes("青い傘"))).toHaveLength(1);
+    expect(html.match(/data-testid="minigame-spot-\d+"/gu)).toHaveLength(4);
+    // All on the far pavement (the real look's finds are all on the near side), none walking.
+    for (const button of buttons(html)) expect(button).toContain("top:22%");
+    expect(html).not.toContain("data-walker");
+  });
+
+  it("has none of the real look's twists: no old parasols or vegetables, no customers or their bursts, no children or tomato", () => {
+    for (const state of [one(), one({ searched: [0, 1] }), one({ searched: [PARASOL_WARMUP_TARGET], done: [{ searched: [PARASOL_WARMUP_TARGET], found: true }],
+      ending: { kind: "found", spot: PARASOL_WARMUP_TARGET, misses: 0, helped: 0 } })]) {
+      const html = field(warm(), state);
+      expect(labels(html)).toHaveLength(4);
+      for (const name of labels(html)) expect(name).not.toMatch(/古い日傘|生成り|野菜|客|子ども|トマト|車道を行く人/u);
+      for (const sign of ["₹!", "♪!", "ん〜", "mg-parasol-search-handover", "data-tomato", "data-active"]) expect(html).not.toContain(sign);
+    }
+  });
+
+  it("is the same street for every tag and seed: it never shows where the real look's old parasol is", () => {
+    const first = field(warm("middle"), one(), {}, 0);
+    for (const at of ["left", "middle", "right"] as const) for (const seed of [0, 1, 7, 99, 12345]) expect(field(warm(at), one(), {}, seed), `${at} ${seed}`).toBe(first);
+    // The real look's own street does follow the tag (its old parasol at the tag's stall).
+    expect(field({ at: "left" })).not.toBe(field({ at: "right" }));
+  });
+
+  it("marks a wrong look, and at the end the find or her pointing (a ring only: no face, no word)", () => {
+    const looked = field(warm(), one({ searched: [0] }));
+    expect(labels(looked)[0]).toMatch(/：違った$/u);
+    expect(looked).toContain("mg-parasol-search-ring-wrong");
+    const found = field(warm(), one({ searched: [0, PARASOL_WARMUP_TARGET], done: [{ searched: [0, PARASOL_WARMUP_TARGET], found: true }],
+      ending: { kind: "found", spot: PARASOL_WARMUP_TARGET, misses: 1, helped: 0 } }));
+    expect(found).toContain("mg-parasol-search-ring-found");
+    const pointed = field(warm(), one({ done: [{ searched: [], found: false }], ending: { kind: "helped", misses: 0, helped: 1 } }));
+    expect(pointed).toContain("mg-parasol-search-ring-pointed");
+    expect(pointed).not.toContain("mg-parasol-search-ring-found");
+  });
+
+  it("says what to find above the buttons, and only the round and its looks in the band (none of the story's words)", () => {
+    expect(parasolWarmupSkin.hintJa).toBe("青い傘を押す");
+    expect(parasolWarmupSkin.statusJa?.(one(), null)).toBe("1/1　見た傘 0");
+    expect(parasolWarmupSkin.statusJa?.(one({ searched: [0, 1] }), null)).toBe("1/1　見た傘 2");
+    expect(parasolWarmupSkin.buttons).toEqual(parasolSkin.buttons);
+    // A shorter hold than the real look's before 「次は本番！」.
+    const ending = { kind: "found", spot: PARASOL_WARMUP_TARGET, misses: 0, helped: 0 } as const;
+    expect(parasolWarmupSkin.endDelayMs(ending, false)).toBeLessThan(parasolSkin.endDelayMs(ending, false));
+    // The real look's words stay as they were.
+    expect(typeof parasolSkin.hintJa === "function" && parasolSkin.hintJa(view())).toBe("野菜を並べた、古い日傘を押す");
+    expect(parasolSkin.statusJa?.(view(), null)).toBe("1/3　見た傘 0");
+  });
+
+  it("plays the practice's look when the params say warmup and the real look otherwise, retuned by Debug's room too", () => {
+    const play = (Component: typeof Play, params: ParasolParams) => renderToStaticMarkup(createElement(Component, {
+      params, auto: null, available: ["found", "found_slow", "pointed"], still: false, seed: 1,
+      clock: { now: () => 0, at: () => 0, onFrame: () => () => undefined, after: () => () => undefined },
+      cast: { heroine: null }, names: { player: "Haruto", heroine: "ヒロイン" }, art: {}, sound: () => undefined, vibrate: () => undefined,
+      status: () => undefined, end: () => undefined, decided: () => undefined, practice: params.warmup === "yes",
+    } as unknown as MiniGamePlayProps<ParasolParams, ParasolOutcome>));
+    for (const Component of [Play, retune({ ...PARASOL_TUNING, idleMs: 7000 }).Play]) {
+      const practice = play(Component, warm("left"));
+      expect(practice).toContain("青い傘を押す");
+      expect(practice.match(/data-testid="minigame-spot-\d+"/gu)).toHaveLength(4);
+      expect(practice).toContain('data-testid="minigame-button-ask"');
+      const real = play(Component, { at: "left", rounds: 3 });
+      expect(real).toContain("野菜を並べた、古い日傘を押す");
+      expect(real.match(/data-testid="minigame-spot-\d+"/gu)).toHaveLength(13);
+    }
+    expect(parasolSearch.practice).toEqual({ params: { warmup: "yes" } });
   });
 });

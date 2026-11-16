@@ -3,8 +3,8 @@ INCLUDE modules.ink
 
 // チャンドニー・チョークのデート（二人きり。噛み合いの選択は2回）。
 // 「チャンドニー」の名の由来はデリーのフィナーレの答えなので、ここでは言わない。
-// 一皿分の代金は、頭の # on_done: で払う（選択のない買い物）。腹を壊した夜と翌朝は gt_delhi_inserts.ink【4】。
-// 勝負を挑むと、ミニゲーム「ゴルガッパの勝負」（手伝いの knot gt_delhi_chandni_chowk_duel）。
+// 二人分の皿の代金は、頭の # on_done: で払う（選択のない買い物。2026-11-16 からゲームで二人とも食べるので二皿分）。腹を壊した夜と翌朝は gt_delhi_inserts.ink【4】。
+// 一回目の噛み合いは、ミニゲーム「ゴルガッパの勝負」（結果で、前の3択の道の台詞へつなぐ。下の注）。
 
 // 【3】
 === gt_delhi_date_chandni_chowk ===
@@ -12,7 +12,7 @@ INCLUDE modules.ink
 # title: バス、と言うまで
 # when: episodes delhi >= 1
 # hint: デリーの観光を一つ終えてから
-# on_done: money -40
+# on_done: money -80
 { cond("time night"):
     # background: gt_bg_delhi_chandni_chowk_night
     # tint: off
@@ -53,29 +53,20 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: gt_delhi_chandni_customer
 屋台の男の手が、その客の器だけを飛ばした。
-* [「バス！」と、彼女の代わりに言う # option: say_bas_for_her]
-    # profile: bold
-    # memory: gt_delhi_date_chandni_chowk_memory
-    # set: gt_delhi_bas_for_her
-    { romance_result == "negative":
-        # speaker: narrator
-        屋台の男の手が止まった。彼女は最後の一つをどうにか飲み込み、水を一口飲んでから、こちらを見た。
-        # speaker: heroine
-        # reaction: heroine,exasperated,anger
-        # voice: gt_delhi_date_chandni_chowk_004
-        ……今の、わたしが言うところだったのに。止めてもらうの、ちょっと悔しい
-    - else:
-        # speaker: narrator
-        屋台の男の手が止まった。彼女は最後の一つをどうにか飲み込み、水を一口飲んでから、こちらを見た。
-        # speaker: heroine
-        # reaction: heroine,exasperated,sigh
-        # voice: gt_delhi_date_chandni_chowk_005
-        助かった。助かったけど。次は、自分で言うからね
-    }
-* [「『バス』で止まるみたい」と耳打ちする # option: whisper_bas]
+// 一回目の噛み合いの代わりに、ミニゲーム「ゴルガッパの勝負」（2026-11-16。前は「勝負を挑む」を選んだときだけ遊んだ）。
+// 屋台の男が二人の器に交互に置き、ゲームの結果と同じ ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。結果ごとに、前の3択の道の台詞へつなぐ。
+// 同時（together）：手では止まらず、こちらの「バス」を聞いた彼女が自分で言う（前の「耳打ち」の道。gt_delhi_said_bas）。
+// 先に言った（you_first）：男の手が止まり、彼女は「わたしが言うところだった」（前の「代わりに言う」の道。gt_delhi_bas_for_her）。
+// むせた（choke）：彼女が「この人の分も、バス！」と自分で言う（gt_delhi_said_bas）。長く食べた（outlast）：拍手。フラグなし。
+# speaker: narrator
+# minigame: golgappa_duel auto together art.stall gt_img_delhi_golgappa_stall
+男は、隣に立つこちらにも葉の器を持たせた。それから二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
+* [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
     # profile: attentive
     # memory: gt_delhi_date_chandni_chowk_memory
     # set: gt_delhi_said_bas
+    # speaker: narrator
+    十四で、二人の手が同時に上がった。けれど屋台の男は、手を見ていない。二人の器に、十五個目が置かれた。思わず「バス」と口に出すと、男の手が、こちらの器の上でだけ止まった。
     { romance_result == "negative":
         # speaker: narrator
         彼女は口をいっぱいにしたまま、目だけで「バス？」と聞き返した。乗り物の、あのバスだ。飲み込んで、息を吸って、屋台の男に向かって言う。
@@ -83,7 +74,7 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_chandni_chowk_006
         ば、ばす……
         # speaker: narrator
-        小さすぎて、六つ目が来た。二回目で、ようやく男の手が止まった。
+        小さすぎて、もう一つ来た。二回目で、ようやく男の手が止まった。
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
         # voice: gt_delhi_date_chandni_chowk_007
@@ -101,24 +92,61 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_chandni_chowk_009
         止まった！　乗り物の名前で止まった！　これ、日本に持って帰りたい言葉かも
     }
-* [隣で同じ皿を頼み、勝負を挑む # option: golgappa_duel]
-    # profile: playful
+* [ゴルガッパの勝負：先に「バス」と言った # option: you_first]
+    # profile: bold
     # memory: gt_delhi_date_chandni_chowk_memory
-    # money: -40
+    # set: gt_delhi_bas_for_her
+    # speaker: narrator
+    先に「バス」と言ったのは、こちらだった。
     { romance_result == "negative":
-        # speaker: heroine
-        # emotion: worried
-        # voice: gt_delhi_date_chandni_chowk_010
-        勝負？　今？　……もう五個食べてるんだよ、わたし
         # speaker: narrator
-        # emotion: serious
-        それでも彼女は器を差し出した。負けず嫌いの顔だった。
+        屋台の男の手が止まった。彼女は最後の一つをどうにか飲み込み、水を一口飲んでから、こちらを見た。
+        # speaker: heroine
+        # reaction: heroine,exasperated,anger
+        # voice: gt_delhi_date_chandni_chowk_004
+        ……今の、わたしが言うところだったのに。止めてもらうの、ちょっと悔しい
     - else:
         # speaker: narrator
-        # emotion: teasing
-        こちらも器を受け取ると、彼女の目つきが変わった。涙目のまま、口の端だけで笑う。受けて立つ、という顔だった。
+        屋台の男の手が止まった。彼女は最後の一つをどうにか飲み込み、水を一口飲んでから、こちらを見た。
+        # speaker: heroine
+        # reaction: heroine,exasperated,sigh
+        # voice: gt_delhi_date_chandni_chowk_005
+        助かった。助かったけど。次は、自分で言うからね
     }
-    -> gt_delhi_chandni_chowk_duel ->
+* [ゴルガッパの勝負：器にたまって、むせた # option: choke]
+    # profile: playful
+    # memory: gt_delhi_date_chandni_chowk_memory
+    # set: gt_delhi_said_bas
+    # speaker: narrator
+    器の中に、二つたまっていた。慌てて一つ放り込むと、酸っぱい水が喉に飛び込んだ。むせて、声が出ない。
+    { romance_result == "negative":
+        # speaker: narrator
+        彼女が、慌ててこちらの器の上に手をかざした。
+    - else:
+        # speaker: narrator
+        彼女が、笑いをこらえながら、こちらの器の上に手をかざした。
+    }
+    # speaker: heroine
+    # reaction: heroine,surprised,exclamation
+    バス！　この人の分も、バス！
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    勝負は、わたしの勝ちでいい？　……はい、水。ゆっくり飲んで
+* [ゴルガッパの勝負：彼女より長く食べ続けた # option: outlast]
+    # profile: provocative
+    # memory: gt_delhi_date_chandni_chowk_memory
+    # speaker: narrator
+    十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
+    { romance_result == "negative":
+        # speaker: narrator
+        拍手の中で、彼女だけが手を叩かずに、こちらの赤い顔を見ていた。
+    - else:
+        # speaker: narrator
+        彼女も、つられて手を叩いていた。
+    }
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる
 -
 # speaker: narrator
 屋台の男が、指を一本立てた。
@@ -212,42 +240,3 @@ INCLUDE modules.ink
     このとき二人は、まだ知らなかった。最後の一つが、夜中に何をするのか。
 }
 -> END
-
-// 【3】手伝いの knot：ゴルガッパの勝負（勝負を挑んだときだけ）。選択肢の代わりにミニゲーム「ゴルガッパの勝負」
-// （# minigame: golgappa_duel）。場面の中の選択なので噛み合いも関係値もない。彼女は十四個目で手を上げる。
-// 「バス」は客と二人が口にする言葉として書き、屋台の決まりとしては言わない。
-=== gt_delhi_chandni_chowk_duel ===
-# speaker: narrator
-# minigame: golgappa_duel auto together art.stall gt_img_delhi_golgappa_stall
-屋台の男は事情を察したらしい。二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
-* [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
-    # speaker: narrator
-    七。八。九。十二で、彼女が胸を叩いた。十三で、こちらの目に涙がにじんだ。十四の声に重なって、二人ともほとんど同時に手を上げた。
-    # speaker: heroine
-    # reaction: heroine,teasing_big,music
-    # voice: gt_delhi_date_chandni_chowk_011
-    引き分け！　今の、わたしの方が一瞬早かったけどね
-* [ゴルガッパの勝負：先に「バス」と言った # option: you_first]
-    # speaker: narrator
-    先に手を上げたのは、こちらだった。屋台の男の手が、こちらの器だけを飛ばしていく。彼女は横目でこちらを見ながら、十四まで食べて、ゆっくり手を上げた。
-    # speaker: heroine
-    # reaction: heroine,teasing_big,music
-    わたしの勝ち。……ほんとは、わたしもあと少しで言うところだった。内緒ね
-* [ゴルガッパの勝負：器にたまって、むせた # option: choke]
-    # speaker: narrator
-    器の中に、二つたまっていた。慌てて一つ放り込むと、酸っぱい水が喉に飛び込んだ。むせて、声が出ない。
-    # speaker: narrator
-    彼女が、こちらの器の上に手をかざした。
-    # speaker: heroine
-    # reaction: heroine,surprised,exclamation
-    バス！　この人の分も、バス！
-    # speaker: heroine
-    # reaction: heroine,teasing,music
-    勝負は、わたしの勝ちでいい？　……はい、水。ゆっくり飲んで
-* [ゴルガッパの勝負：彼女より長く食べ続けた # option: outlast]
-    # speaker: narrator
-    十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
-    # speaker: heroine
-    # reaction: heroine,teasing,music
-    負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる
-- ->->

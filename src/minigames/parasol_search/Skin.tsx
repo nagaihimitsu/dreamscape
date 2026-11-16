@@ -1,11 +1,13 @@
-import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ComponentType, type CSSProperties, type ReactNode } from "react";
+import type { MiniGamePlayProps } from "../contract";
 import { searchFieldMs } from "../engines/search/engine";
-import type { SearchFieldProps, SearchSkin, SearchView } from "../engines/search/EnginePlay";
+import { searchPlay, type SearchFieldProps, type SearchSkin, type SearchView } from "../engines/search/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
 import {
-  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_PLACES, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, parasolActive, parasolGameFor, parasolRulesFor,
-  parasolTargets, type ParasolGesture, type ParasolOutcome, type ParasolParams, type ParasolPlace, type ParasolSpot, type ParasolTuning,
+  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_PLACES, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, PARASOL_WARMUP_SPOTS, parasolActive, parasolGameFor,
+  parasolRulesFor, parasolTargets, parasolWarmup,
+  type ParasolGesture, type ParasolOutcome, type ParasolParams, type ParasolPlace, type ParasolSpot, type ParasolTuning,
 } from "./rules";
 import "./skin.css";
 
@@ -25,6 +27,10 @@ import "./skin.css";
 // by the seed (looks only: her stall is the tag's `at`; the arguing customer is hers, the tomato child the second). With the use's art (`art.street`), that picture in place of the drawn street, cow
 // and traffic, as the back layer (the host's mg-photo); the umbrellas, stalls and people are drawn by the game either way,
 // as the play layer (mg-play-object: a dark edge and a shadow under them). Each round's find: a ring from it.
+// The practice (`warmup`) draws a street of its own: four plain stalls on the far pavement, the blue one to find, and
+// nothing else to press (no old parasols, walkers, customers or children; the near pavement, where the real finds are,
+// empty); the same for every tag and seed, so it never shows where the real look's things are. Her face and words stay
+// out of it (the ring shows her pointing).
 
 /** What an umbrella looks like and what is under it. */
 export type ParasolKind =
@@ -125,6 +131,20 @@ export const PARASOL_CUSTOMER_FIELD: Record<(typeof PARASOL_CUSTOMERS)[number], 
 };
 /** A child's size (round 3; in the window's unit): a little larger than round 1's walkers, what they hold readable. */
 export const PARASOL_CHILD_R = 15;
+
+/** The practice's stalls (rules' PARASOL_WARMUP_SPOTS): each umbrella a plain colour of its own, the blue one the find. */
+export const PARASOL_WARMUP_KINDS: Readonly<Record<(typeof PARASOL_WARMUP_SPOTS)[number], ParasolKind>> = {
+  warm_1: "juice", warm_2: "bangles", warm_3: "fruit", warm_4: "marigold",
+};
+/** The practice's stalls stand on the far pavement, wider apart than the real look's (none where a real find is). */
+export const PARASOL_WARMUP_FIELD: Record<(typeof PARASOL_WARMUP_SPOTS)[number], Place> = {
+  warm_1: { x: 14, y: ROW.far, r: STALL_R },
+  warm_2: { x: 38, y: ROW.far, r: STALL_R },
+  warm_3: { x: 62, y: ROW.far, r: STALL_R },
+  warm_4: { x: 86, y: ROW.far, r: STALL_R },
+};
+/** The practice's hint: what to find (the blue umbrella is the only one). */
+const WARMUP_HINT_JA = "青い傘を押す";
 
 /** What stands at each stall for the tag's `at` and the seed: the old parasol at hers, the others shuffled. */
 export function parasolKinds(at: ParasolPlace, seed = 0): Record<ParasolSpot, ParasolKind> {
@@ -665,6 +685,7 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
   const kitRef = useRef(kit);
   kitRef.current = kit;
   const jali = `${useId().replace(/[^a-zA-Z0-9]/gu, "")}jali`;
+  const warmup = parasolWarmup(params);
   const at = params.at;
   const kinds = useMemo(() => parasolKinds(at, seed), [at, seed]);
   const gestures = useMemo(() => parasolGestures(at, seed), [at, seed]);
@@ -751,6 +772,8 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
     if (!last) return;
     if (over && !view.done[view.done.length - 1].found) {
       play.current.sound(SOUNDS.look, { volume: 0.6 });
+      // The practice: her pointing is the ring only (no face, none of the story's words).
+      if (warmup) return;
       if ("gone" in last.action) kitRef.current.react("surprise", LEAVING_JA);
       else kitRef.current.react("tease");
       return;
@@ -851,7 +874,14 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
             <span className="mg-parasol-search-place" style={{ left: `${COW.x}%`, top: `${COW.y}%` }} aria-hidden="true"><Cow /></span>
           </>
         )}
-        {PARASOL_SPOTS.map((spot, index) => {
+        {warmup && PARASOL_WARMUP_SPOTS.map((spot, index) => {
+          // The practice's four stalls: a looked-at umbrella moves aside as in the real look.
+          const kind = PARASOL_WARMUP_KINDS[spot];
+          const place = PARASOL_WARMUP_FIELD[spot];
+          return thing(0, index, KINDS[kind].labelJa, place, spot, <Umbrella kind={kind} place={place} ring={ringOf(0, index)} />,
+            { shown: view.searched.includes(index) });
+        })}
+        {!warmup && PARASOL_SPOTS.map((spot, index) => {
           const kind = kinds[spot];
           const place = PARASOL_FIELD[spot];
           const shown = (round === 0 && view.searched.includes(index)) || (view.done.length > 0 && index === herStall);
@@ -907,3 +937,24 @@ export const parasolSkinFor = (tuning: ParasolTuning): SearchSkin<ParasolParams,
   Field: parasolFieldFor(tuning),
 });
 export const parasolSkin = parasolSkinFor(PARASOL_TUNING);
+
+/**
+ * The practice's look as a search skin: the same game, rules, field and band (they read `warmup` in the params), its own
+ * hint, and a shorter hold before the host's 「次は本番！」.
+ */
+export const parasolWarmupSkinFor = (tuning: ParasolTuning, skin = parasolSkinFor(tuning)): SearchSkin<ParasolParams, ParasolOutcome> => ({
+  ...skin,
+  hintJa: WARMUP_HINT_JA,
+  endDelayMs: (_, still) => (still ? 500 : 800),
+});
+export const parasolWarmupSkin = parasolWarmupSkinFor(PARASOL_TUNING, parasolSkin);
+
+/** The parasol's play for a tuning: the street's rounds, or the practice's look when the params say `warmup`. */
+export function parasolPlayFor(tuning: ParasolTuning): ComponentType<MiniGamePlayProps<ParasolParams, ParasolOutcome>> {
+  const skin = parasolSkinFor(tuning);
+  const Look = searchPlay(skin);
+  const Warmup = searchPlay(parasolWarmupSkinFor(tuning, skin));
+  return function ParasolPlay(props: MiniGamePlayProps<ParasolParams, ParasolOutcome>) {
+    return parasolWarmup(props.params) ? <Warmup {...props} /> : <Look {...props} />;
+  };
+}

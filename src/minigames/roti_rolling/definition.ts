@@ -17,12 +17,16 @@ import { defineMiniGame } from "../contract";
  * ring is reached, or the dough tears.
  *
  * The host's flow (docs/13 2.6): practice (the roti is the date's helper scene after the choice to aim round: its
- * outcomes carry no relationship effects), the host's 3・2・1 (his beat starts on スタート), the calm mini-game track, ★ from
- * how round and big (rules.ts), a finish word per outcome (a hole's tone is a mishap's thud) and her face on the card
- * (Harbans speaks in the field; she reacts in the band at a skid, the ring and the hot tava). The tag's use lets the real
- * play be rolled again (`retry yes`: Harbans's 「生地は、何度でもやり直せる」 after a hole; a helper scene with no
- * relationship effects). Her reaction lines are her first breath at the end and fit both of the story's branches after it
- * (romance_result); the story's lines (Harbans's joke, then hers) follow at once and are never repeated here.
+ * outcomes carry no relationship effects) is a short roti of its own, never a rehearsal of the real one (2026-11-16): its
+ * `warmup` key gives a smaller ball and two strokes, the arrow's way then across it, ends at the second (a few seconds;
+ * untouched, by itself at 6 s) with no Harbans's hand or beat, no tear, no ring, no meter and no lines (rules.ts ROTI_WARMUP, Warmup.tsx);
+ * practice ends with no finish word or card, and the host's cut-in 「次は本番！」 starts the real play. Then the host's
+ * 3・2・1 (his beat starts on スタート), the calm mini-game track, ★ from how round and big (rules.ts), a finish word per
+ * outcome (a hole's tone is a mishap's thud) and her face on the card (Harbans speaks in the field; she reacts in the
+ * band at a skid, the ring and the hot tava). The tag's use lets the real play be rolled again (`retry yes`: Harbans's
+ * 「生地は、何度でもやり直せる」 after a hole; a helper scene with no relationship effects). Her reaction lines are her
+ * first breath at the end and fit both of the story's branches after it (romance_result); the story's lines (Harbans's
+ * joke, then hers) follow at once and are never repeated here.
  *
  * Accessibility: 「できた」 is 64px at the bottom (thumb reach) and takes the focus (pressed before a stroke, it is turned
  * away and the hint says why); the arrows roll through the centre (Shift: the diagonal clockwise of it), Enter and Space
@@ -49,14 +53,17 @@ export const rotiRolling = defineMiniGame({
       finishTone: "oops", reaction: { kind: "oops", linesJa: ["あっ、穴！"] } },
   ],
   defaultAuto: "truck_bed",
-  params: () => z.object({}).strict(),
+  params: () => z.object({
+    warmup: z.enum(["yes"]).optional().describe("練習用の短く簡単な遊び（yes。練習が自動で使う。物語の札には書かない）"),
+  }).strict(),
   examples: [{}],
   startJa: "麺棒を持つ",
   hintJa: "ハルバンスが回す合間に、矢印の向きに一回ずつ。手が乗っている時は待つ。最後は速くなる",
   goalJa: "ハルバンスが回す合間に矢印の向きになぞって、丸く大きく伸ばす（手に当てない）",
   controls: "drag",
   durationSec: 17,
-  practice: {},
+  // Practice: a short roti of its own (two strokes on a smaller ball), none of the real play's beat or numbers.
+  practice: { params: { warmup: "yes" } },
   // His beat starts on スタート.
   countdown: "host",
   music: "calm",

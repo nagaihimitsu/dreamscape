@@ -93,7 +93,8 @@ describe("the flap's timing", () => {
 
 // The difficulty targets (round 3): seeded players with human-like timing (engines/cue_tap/bot.ts). Bounds, not the exact
 // shares (docs/13 2.2 lists them): an average first play spreads it perfectly about two times in five, a skilled one
-// mostly, a careless one rarely; practice (knowing the walk) helps.
+// mostly, a careless one rarely; knowing the walk (from a play before: practice is a short plain walk of its own,
+// practice.test.ts) helps.
 describe("the flap's difficulty", () => {
   const share = (player: keyof typeof CUE_TAP_PLAYERS, knows = false) =>
     cueTapShares(cueTapBotTally(CLOTH_PLAN.script, clothFlapRules, {}, CUE_TAP_PLAYERS[player], { plays: 1000, seed: 3, knows })).outcomes;

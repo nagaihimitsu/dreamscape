@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
+import type { CueTapTuning } from "../engines/cue_tap/engine";
 import { useMiniGameKit } from "../host/kit";
 import {
-  MONKEY_ON_SHELL_MS, MONKEY_SNATCH_BACK_MS, MONKEY_TUNING, monkeyCatchRulesFor, monkeyEarlyFall, monkeyPlan, type MonkeyCatchOutcome, type MonkeyCatchParams,
-  type MonkeyPlan, type MonkeyTuning,
+  isMonkeyWarmup, MONKEY_ON_SHELL_MS, MONKEY_SNATCH_BACK_MS, MONKEY_TUNING, MONKEY_WARMUP_PLAN, monkeyCatchRulesFor, monkeyEarlyFall, monkeyPlan,
+  type MonkeyCatchOutcome, type MonkeyCatchParams, type MonkeyPlan, type MonkeyTuning, type MonkeyWarmupPlan,
 } from "./rules";
 import "./skin.css";
 
@@ -20,6 +21,8 @@ import "./skin.css";
 // off the fingers, or gone past them), with its juice there and the heroine's face; the monkey reacts after. Hands closed
 // at a tease end its routine: the monkey laughs (a bob) and tosses the thing down past them at once (rules.ts
 // monkeyEarlyFall), so the play ends about a second after the tap. No meter: the ring over the hands is the gauge.
+// Practice (the tag's `warmup`) draws its own plain drop on the same wall (Course): the monkey holds the thing out and
+// lets go, it falls straight into the ring; no shells and no ledge are drawn, and she says nothing.
 
 type Point = { x: number; y: number; size: number };
 const mix = (from: Point, to: Point, t: number): Point => ({ x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t, size: from.size + (to.size - from.size) * t });
@@ -98,24 +101,54 @@ function shellAt(index: number, ms: number, tapMs: number | null, plan: MonkeyPl
 /** Whether the hands closed on shell `index` (a tap as it reached them). */
 const closedOnShell = (index: number, tapMs: number, plan: MonkeyPlan): boolean => Math.abs(tapMs - plan.shells[index].hands) <= MONKEY_ON_SHELL_MS;
 
+/** The monkey's toss after hands closed at a tease: when the thing leaves its hand, and how long it takes to the hands. */
+type Toss = { drop: number; fallMs: number };
+type Thing = MonkeyCatchParams["thing"];
+
+/**
+ * What the field draws of a play: the story's teasing (monkeyPlan) or practice's plain drop (monkeyWarmupPlan). Where the
+ * thing is untouched, when it reaches the hands and when a play without a tap ends, the toss after a tease, the monkey's
+ * hand, the ring, how the thing turns, the shells, the ledge and her laugh at the first shell.
+ */
+interface Course {
+  tuning: CueTapTuning;
+  untouched(ms: number): Point;
+  hands: number;
+  end: number;
+  /** Hands closed at `tapMs`, before the monkey let go for real: its toss down past them (null: none). */
+  tossOf(tapMs: number): Toss | null;
+  gripAt(ms: number): Grip;
+  ringAt(ms: number): number;
+  turnAt(ms: number, thing: Thing, tossed: Toss | null): number;
+  /** From when the thing falls free (sunglasses flip edge-on as they tumble). */
+  freeFrom: number;
+  /** How many shells it drops, and where shell `index` is. */
+  shells: number;
+  shellAt(index: number, ms: number, tapMs: number | null): Point | null;
+  /** The ledge the thing clips on its way down, and when (null: it falls straight). */
+  ledge: { at: Point; ms: number } | null;
+  /** When she laughs as the first shell falls past the open hands (null: no shell). */
+  laughAt: number | null;
+}
+
 /** When a tapped play's thing meets the hands: the tap, or its arrival when the hands closed before it came. */
-const meetsAt = (tapMs: number, plan: MonkeyPlan) => Math.max(tapMs, plan.hands);
+const meetsAt = (tapMs: number, course: Course) => Math.max(tapMs, course.hands);
 
 /**
  * When hands closed far too soon meet the thing going past them: tossed down at a tease (rules.ts monkeyEarlyFall), or
  * on its real way down (the ledge and all).
  */
-function pastAt(tapMs: number, plan: MonkeyPlan, tuning: MonkeyTuning): number {
-  const early = monkeyEarlyFall(plan, tuning, tapMs);
-  return early ? early.drop + early.fallMs : plan.hands;
+function pastAt(tapMs: number, course: Course): number {
+  const early = course.tossOf(tapMs);
+  return early ? early.drop + early.fallMs : course.hands;
 }
 
 /** Hands closed far too soon: it falls just beyond the fingertips (it veers past the closed hands, never into them). */
-function pastClosedHands(ms: number, tapMs: number, plan: MonkeyPlan, tuning: MonkeyTuning): Point {
-  const early = monkeyEarlyFall(plan, tuning, tapMs);
-  const arrive = pastAt(tapMs, plan, tuning);
+function pastClosedHands(ms: number, tapMs: number, course: Course): Point {
+  const early = course.tossOf(tapMs);
+  const arrive = pastAt(tapMs, course);
   const base = ms > arrive ? { ...HANDS, y: HANDS.y + 0.13 * (ms - arrive) + 0.0003 * (ms - arrive) ** 2 }
-    : early && ms >= early.drop ? straight(HELD, HANDS, early.drop, early.fallMs, ms) : untouched(ms, plan, tuning);
+    : early && ms >= early.drop ? straight(HELD, HANDS, early.drop, early.fallMs, ms) : course.untouched(ms);
   const veer = clamp01((ms - (arrive - 320)) / 320);
   return { ...base, x: base.x + 17 * veer * veer };
 }
@@ -126,14 +159,14 @@ function bounced(from: Point, u: number): Point {
 }
 
 /** Where the thing is at `ms` once the play is decided (or before). */
-function thingAt(ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null, plan: MonkeyPlan, tuning: MonkeyTuning): { at: Point; held: boolean } {
-  if (outcome === "caught" && tapMs !== null && ms >= meetsAt(tapMs, plan)) {
+function thingAt(ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null, course: Course): { at: Point; held: boolean } {
+  if (outcome === "caught" && tapMs !== null && ms >= meetsAt(tapMs, course)) {
     // In the hands: closed before it came, it lands there; closed as it slid down the palms, they take it back up.
-    return { at: mix(untouched(meetsAt(tapMs, plan), plan, tuning), HANDS, clamp01((ms - meetsAt(tapMs, plan)) / 90)), held: true };
+    return { at: mix(course.untouched(meetsAt(tapMs, course)), HANDS, clamp01((ms - meetsAt(tapMs, course)) / 90)), held: true };
   }
-  if (outcome === "fumbled" && tapMs !== null && ms >= meetsAt(tapMs, plan)) return { at: bounced(untouched(meetsAt(tapMs, plan), plan, tuning), ms - meetsAt(tapMs, plan)), held: false };
-  if (outcome === "missed" && tapMs !== null && tapMs < plan.hands) return { at: pastClosedHands(ms, tapMs, plan, tuning), held: false };
-  return { at: untouched(ms, plan, tuning), held: false };
+  if (outcome === "fumbled" && tapMs !== null && ms >= meetsAt(tapMs, course)) return { at: bounced(course.untouched(meetsAt(tapMs, course)), ms - meetsAt(tapMs, course)), held: false };
+  if (outcome === "missed" && tapMs !== null && tapMs < course.hands) return { at: pastClosedHands(ms, tapMs, course), held: false };
+  return { at: course.untouched(ms), held: false };
 }
 
 /**
@@ -141,18 +174,28 @@ function thingAt(ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome |
  * goes past the hands closed too soon (tossed down at once after a tease: at the feint, on a shell, on the thing
  * snatched back), as hands close too late on nothing, or (no tap) once the play is over.
  */
-function impactOf(outcome: MonkeyCatchOutcome, tapMs: number | null, plan: MonkeyPlan, tuning: MonkeyTuning): number {
-  if (tapMs === null) return plan.script.end;
-  if (outcome === "missed") return tapMs < plan.hands ? pastAt(tapMs, plan, tuning) + 120 : tapMs;
-  return meetsAt(tapMs, plan);
+function impactOf(outcome: MonkeyCatchOutcome, tapMs: number | null, course: Course): number {
+  if (tapMs === null) return course.end;
+  if (outcome === "missed") return tapMs < course.hands ? pastAt(tapMs, course) + 120 : tapMs;
+  return meetsAt(tapMs, course);
+}
+
+/**
+ * When the field has shown all of it (the end of the host's hold): the catch settling in the hands (the monkey on the wall
+ * reacting), the bounce off the fingers, or the thing falling out of sight.
+ */
+function endAtOf(outcome: MonkeyCatchOutcome, tapMs: number | null, still: boolean, course: Course): number {
+  if (outcome === "caught" && tapMs !== null) return meetsAt(tapMs, course) + (still ? 450 : 800);
+  if (outcome === "fumbled" && tapMs !== null) return meetsAt(tapMs, course) + (still ? 450 : 750);
+  return Math.max(tapMs ?? 0, (tapMs !== null && tapMs < course.hands ? pastAt(tapMs, course) : course.hands) + THROUGH_MS + GONE_MS) + 350;
 }
 
 /**
  * How the thing turns: in the hand it rocks in the feint and the snatch; falling, around a point below its middle (its
  * heavy end), faster as it falls, spinning off the ledge; drawn the same every time.
  */
-function turnAt(ms: number, thing: MonkeyCatchParams["thing"], plan: MonkeyPlan, tuning: MonkeyTuning, tossed?: { drop: number; fallMs: number } | null): number {
-  const spin = thing === "glasses" ? 300 : 420;
+function turnAt(ms: number, thing: Thing, plan: MonkeyPlan, tuning: MonkeyTuning, tossed?: Toss | null): number {
+  const spin = spinOf(thing);
   if (tossed && ms >= tossed.drop) return spin * Math.pow(Math.min((ms - tossed.drop) / tossed.fallMs, 1.6), 1.4);
   if (ms >= plan.fake.drop && ms < plan.release) return Math.min(1, (ms - plan.fake.drop) / tuning.fallMs) * spin * 0.6;
   if (ms < plan.release) return ms >= plan.feint && ms < plan.feint + tuning.feintMs ? 14 * Math.sin((ms - plan.feint) / 40) : 0;
@@ -160,8 +203,10 @@ function turnAt(ms: number, thing: MonkeyCatchParams["thing"], plan: MonkeyPlan,
   const kick = ms > plan.ledge ? 140 * Math.min(1, (ms - plan.ledge) / 300) : 0;
   return spin * Math.pow(Math.min(s, 1.6), 1.4) + 22 * Math.sin(s * 7.5) + kick;
 }
-/** Sunglasses flip edge-on and back as they tumble (their width narrows); a bottle is round and does not. */
-const flipAt = (ms: number, thing: MonkeyCatchParams["thing"], plan: MonkeyPlan, from = plan.release) =>
+/** How far the thing turns over a fall (sunglasses are lighter and turn less). */
+const spinOf = (thing: Thing) => (thing === "glasses" ? 300 : 420);
+/** Sunglasses flip edge-on and back as they tumble (their width narrows) from `from`; a bottle is round and does not. */
+const flipAt = (ms: number, thing: Thing, from: number) =>
   thing === "glasses" && ms > from ? 0.55 + 0.45 * Math.abs(Math.cos((ms - from) / 140)) : 1;
 
 /**
@@ -297,12 +342,56 @@ function Shell() {
   );
 }
 
-/** The catch's skin with a tuning (the story's; Debug's room plays an edited one: play.ts retune). */
+/** The story's course: the monkey's teasing with a tuning (the story's, or Debug's room's edited one). */
+function storyCourse(plan: MonkeyPlan, tuning: MonkeyTuning): Course {
+  return {
+    tuning: plan.tuning,
+    untouched: (ms) => untouched(ms, plan, tuning),
+    hands: plan.hands,
+    end: plan.script.end,
+    tossOf: (tapMs) => monkeyEarlyFall(plan, tuning, tapMs),
+    gripAt: (ms) => gripAt(ms, plan, tuning),
+    ringAt: (ms) => ringAt(ms, plan, tuning),
+    turnAt: (ms, thing, tossed) => turnAt(ms, thing, plan, tuning, tossed),
+    freeFrom: plan.release,
+    shells: plan.shells.length,
+    shellAt: (index, ms, tapMs) => shellAt(index, ms, tapMs, plan, tuning),
+    ledge: { at: ledgeOf(plan, tuning), ms: plan.ledge },
+    laughAt: plan.shells[0].hands + 120,
+  };
+}
+
+/**
+ * Practice's course (rules.ts monkeyWarmupPlan): the monkey holds the thing out, then opens its hand and lets go; it falls
+ * straight into the ring (turning as it falls), then slides down the palms and out. Nothing else falls, no ledge, no toss.
+ */
+function warmupCourse(w: MonkeyWarmupPlan): Course {
+  return {
+    tuning: w.tuning,
+    untouched: (ms) => (ms < w.release ? HELD : ms < w.hands ? straight(HELD, HANDS, w.release, w.fallMs, ms) : through(HANDS, ms - w.hands)),
+    hands: w.hands,
+    end: w.script.end,
+    tossOf: () => null,
+    gripAt: (ms) => (ms >= w.release ? "open" : "hold"),
+    ringAt: (ms) => (ms <= w.hands + 60 ? clamp01((ms - (w.hands - RING_TIGHTEN_MS)) / RING_TIGHTEN_MS) : 0),
+    turnAt: (ms, thing) => (ms < w.release ? 0 : spinOf(thing) * Math.pow(Math.min((ms - w.release) / w.fallMs, 1.6), 1.4)),
+    freeFrom: w.release,
+    shells: 0,
+    shellAt: () => null,
+    ledge: null,
+    laughAt: null,
+  };
+}
+const WARMUP_COURSE = warmupCourse(MONKEY_WARMUP_PLAN);
+
+/** The catch's skin with a tuning (the story's; Debug's room plays an edited one: play.ts retune). Practice's drop with either. */
 export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatchParams, MonkeyCatchOutcome> {
   const plan = monkeyPlan(tuning);
-  const clip = ledgeOf(plan, tuning);
+  const story = storyCourse(plan, tuning);
+  const courseOf = (params: MonkeyCatchParams): Course => (isMonkeyWarmup(params) ? WARMUP_COURSE : story);
 
   function MonkeyCatchField({ params, still, art, sound, vibrate, frames }: CueTapFieldProps<MonkeyCatchParams, MonkeyCatchOutcome>) {
+    const course = courseOf(params);
     const thing = useRef<HTMLSpanElement>(null);
     const shells = [useRef<HTMLSpanElement>(null), useRef<HTMLSpanElement>(null)];
     const ring = useRef<HTMLSpanElement>(null);
@@ -326,8 +415,8 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
       return frames(({ ms, tapMs, outcome, impactAt, endAt }) => {
         const { juice } = live.current.kit;
         // Hands closed at a tease: the monkey laughs and tosses the thing down (its hand opens), its routine over.
-        const tossed = tapMs !== null && outcome === "missed" ? monkeyEarlyFall(plan, tuning, tapMs) : null;
-        const nextGrip = tossed && ms >= tossed.drop ? "open" : gripAt(ms, plan, tuning);
+        const tossed = tapMs !== null && outcome === "missed" ? course.tossOf(tapMs) : null;
+        const nextGrip = tossed && ms >= tossed.drop ? "open" : course.gripAt(ms);
         if (nextGrip !== shownGrip) {
           shownGrip = nextGrip;
           setGrip(nextGrip);
@@ -339,7 +428,7 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
           if (outcome !== "caught") live.current.sound(SOUNDS.grab);
           if (tossed) setReact("cheer");
         }
-        const { at, held: inHands } = thingAt(ms, tapMs, outcome, plan, tuning);
+        const { at, held: inHands } = thingAt(ms, tapMs, outcome, course);
         if (inHands && !held) {
           held = true;
           setHolding(true);
@@ -347,20 +436,20 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
           live.current.sound(SOUNDS.catch, CATCH_SETTLE);
         }
         // The knock on the ledge (with a puff of the wall's dust), unless the thing was tossed down past it.
-        if (!knocked && !tossed && ms >= plan.ledge) {
+        if (!knocked && !tossed && course.ledge && ms >= course.ledge.ms) {
           knocked = true;
           live.current.sound(SOUNDS.snap, LEDGE_KNOCK);
           juice.burst(ledge.current, "dust", 0.6);
         }
         // Her laugh as the first shell falls past the open hands.
-        if (!laughed && tapMs === null && ms >= plan.shells[0].hands + 120) {
+        if (!laughed && tapMs === null && course.laughAt !== null && ms >= course.laughAt) {
           laughed = true;
           live.current.kit.react("laugh", SHELL_LINE_JA);
         }
         const element = thing.current;
         // It tumbles as it falls (drawn the same every time; with less motion it does not turn).
-        const turn = still || inHands ? 0 : turnAt(ms, params.thing, plan, tuning, tossed);
-        const flip = still || inHands ? 1 : flipAt(ms, params.thing, plan, tossed?.drop);
+        const turn = still || inHands ? 0 : course.turnAt(ms, params.thing, tossed);
+        const flip = still || inHands ? 1 : flipAt(ms, params.thing, tossed?.drop ?? course.freeFrom);
         if (element) {
           element.style.left = `${at.x}%`;
           element.style.top = `${at.y}%`;
@@ -370,7 +459,7 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
         for (const [index, shellRef] of shells.entries()) {
           const shell = shellRef.current;
           if (!shell) continue;
-          const place = shellAt(index, ms, tapMs, plan, tuning);
+          const place = course.shellAt(index, ms, tapMs);
           shell.style.opacity = place ? "1" : "0";
           if (place) {
             shell.style.left = `${place.x}%`;
@@ -397,14 +486,14 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
           setReact(monkeyReactOf(outcome));
         }
         const ringElement = ring.current;
-        if (ringElement) ringElement.style.transform = `translate(-50%, -50%) scale(${1 - 0.18 * ringAt(ms, plan, tuning)})`;
+        if (ringElement) ringElement.style.transform = `translate(-50%, -50%) scale(${1 - 0.18 * course.ringAt(ms)})`;
       });
-    }, [frames, still, params.thing]);
+    }, [frames, still, params.thing, course]);
     return (
       <div className="mg-monkey-catch" data-art-wall={art.wall ? true : undefined} data-still={still || undefined}>
         {art.wall && <img className="mg-monkey-catch-backdrop mg-photo" src={art.wall} alt="" draggable={false} />}
         <span className="mg-monkey-catch-wall"><span className="mg-monkey-catch-coping" /><span className="mg-monkey-catch-inlay" /></span>
-        <span className="mg-monkey-catch-ledge" ref={ledge} style={{ top: `${clip.y + 2.4}%` }} />
+        {course.ledge && <span className="mg-monkey-catch-ledge" ref={ledge} style={{ top: `${course.ledge.at.y + 2.4}%` }} />}
         <span className="mg-monkey-catch-monkey mg-play-object" data-grip={grip} data-react={react ?? undefined}>
           <span className="mg-monkey-catch-monkey-lean">
             {art.monkey ? <img src={art.monkey} alt="" draggable={false} /> : <MonkeyFigure open={grip === "open"} />}
@@ -415,7 +504,7 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
           <Hand side="left" />
           <Hand side="right" />
         </span>
-        {shells.map((shellRef, index) => <span key={index} className="mg-monkey-catch-shell mg-play-object" ref={shellRef}><Shell /></span>)}
+        {shells.slice(0, course.shells).map((shellRef, index) => <span key={index} className="mg-monkey-catch-shell mg-play-object" ref={shellRef}><Shell /></span>)}
         <span className="mg-monkey-catch-thing" ref={thing} data-thing={params.thing}>
           {params.thing === "glasses" ? <span className="mg-monkey-catch-glasses mg-play-object"><span /><span /></span>
             : <span className="mg-monkey-catch-bottle mg-play-object" />}
@@ -425,21 +514,19 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
   }
 
   return {
-    tuning: plan.tuning,
+    tuning: (params) => courseOf(params).tuning,
     rules: monkeyCatchRulesFor(tuning),
     hintJa: "落とし物が輪に届く瞬間に「受け止める」",
     actionJa: "受け止める",
     actionHintJa: "猿の手から離れて落ちてくる落とし物が、両手の上の輪に届くのに合わせて押します。猿はからかって、腕だけ振ったり、殻を落としたり、取り返したりします。",
+    // The practice's one plain drop: no teasing.
+    practiceActionHintJa: "猿の手から離れて落ちてくる落とし物が、両手の上の輪に届くのに合わせて押します。",
     autoJa: "おまかせで受け止めています",
     // The play ends as it meets the hands (a catch, a bounce) or goes past them, the host's finish over it…
-    impactAt: ({ outcome, tapMs }) => impactOf(outcome, tapMs, plan, tuning),
+    impactAt: ({ outcome, tapMs }, _still, params) => impactOf(outcome, tapMs, courseOf(params)),
     // …and the field goes on: the catch settling in the hands (the monkey on the wall reacting), the bounce off the
-    // fingers, or the thing falling out of sight, before the result card.
-    endAt: ({ outcome, tapMs }, still) => {
-      if (outcome === "caught" && tapMs !== null) return meetsAt(tapMs, plan) + (still ? 450 : 800);
-      if (outcome === "fumbled" && tapMs !== null) return meetsAt(tapMs, plan) + (still ? 450 : 750);
-      return Math.max(tapMs ?? 0, (tapMs !== null && tapMs < plan.hands ? pastAt(tapMs, plan, tuning) : plan.hands) + THROUGH_MS + GONE_MS) + 350;
-    },
+    // fingers, or the thing falling out of sight, before the result card (practice: before 「次は本番！」).
+    endAt: ({ outcome, tapMs }, still, params) => endAtOf(outcome, tapMs, still, courseOf(params)),
     Field: MonkeyCatchField,
     // The ring over the hands is the gauge (it tightens for whatever is about to arrive): no meter.
     Gauge: null,
@@ -451,14 +538,23 @@ export const monkeyCatchSkin = monkeyCatchSkinFor(MONKEY_TUNING);
 
 /** For the tests: where the thing and the shells are, the ring, the monkey's grip (the story's tuning). */
 const STORY_PLAN = monkeyPlan(MONKEY_TUNING);
+const STORY_COURSE = storyCourse(STORY_PLAN, MONKEY_TUNING);
 export const MONKEY_FIELD_POINTS = {
   plan: STORY_PLAN,
   untouched: (ms: number) => untouched(ms, STORY_PLAN, MONKEY_TUNING),
-  thingAt: (ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null) => thingAt(ms, tapMs, outcome, STORY_PLAN, MONKEY_TUNING),
+  thingAt: (ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null) => thingAt(ms, tapMs, outcome, STORY_COURSE),
   shellAt: (index: number, ms: number, tapMs: number | null) => shellAt(index, ms, tapMs, STORY_PLAN, MONKEY_TUNING),
   ringAt: (ms: number) => ringAt(ms, STORY_PLAN, MONKEY_TUNING),
   gripAt: (ms: number) => gripAt(ms, STORY_PLAN, MONKEY_TUNING),
-  impactOf: (outcome: MonkeyCatchOutcome, tapMs: number | null) => impactOf(outcome, tapMs, STORY_PLAN, MONKEY_TUNING),
+  impactOf: (outcome: MonkeyCatchOutcome, tapMs: number | null) => impactOf(outcome, tapMs, STORY_COURSE),
   ledge: ledgeOf(STORY_PLAN, MONKEY_TUNING),
   HELD, HANDS, THROUGH_DEPTH, SHELL_LINE_JA,
+} as const;
+
+/** For the tests: practice's plain drop as the field draws it (where the thing is, the ring, the monkey's hand). */
+export const MONKEY_WARMUP_FIELD_POINTS = {
+  untouched: (ms: number) => WARMUP_COURSE.untouched(ms),
+  thingAt: (ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null) => thingAt(ms, tapMs, outcome, WARMUP_COURSE),
+  ringAt: (ms: number) => WARMUP_COURSE.ringAt(ms),
+  gripAt: (ms: number) => WARMUP_COURSE.gripAt(ms),
 } as const;

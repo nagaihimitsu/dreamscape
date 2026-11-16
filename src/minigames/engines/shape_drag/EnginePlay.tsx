@@ -207,10 +207,11 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
       latest.current.end(outcome, skin.detailJa?.(shapeMeasures(shapeOfRecord(strokes, tuning, classifier), tuning), outcome), { record: strokes, holdMs });
     }, [clock]);
     // A time limit (if the skin has one) runs from the first stroke: before it, nothing has been rolled to end. A hand's
-    // end runs from the start.
+    // end, and the tuning's endMs, run from the start.
     const timer = useRef<{ cancel: () => void; startedAt: number } | null>(null);
     useEffect(() => () => timer.current?.cancel(), []);
     useEffect(() => (hand ? clock.after(hand.endMs, finish) : undefined), [clock, finish]);
+    useEffect(() => (tuning.endMs !== undefined ? clock.after(tuning.endMs, finish) : undefined), [clock, finish]);
     /** The hand's turns that have come by `ms` (the shape rolled again with them): the last one swings the drawing round. */
     const takeTurns = useCallback((ms: number) => {
       if (!hand) return;

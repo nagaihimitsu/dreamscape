@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import {
-  CRICKET_TUNING, cricketAtBouncer, cricketCounts, cricketPlan, cricketRulesFor, cricketTravel, type CricketOutcome, type CricketParams, type CricketPlan,
-  type CricketTuning,
+  CRICKET_TUNING, CRICKET_WARMUP, CRICKET_WARMUP_PLAN, cricketAtBouncer, cricketCounts, cricketIsWarmup, cricketOntoPlank, cricketPlan, cricketPlanner,
+  cricketRulesFor, cricketTravel, type CricketOutcome, type CricketParams, type CricketPlan, type CricketTuning,
 } from "./rules";
 import "./skin.css";
 
@@ -11,8 +11,10 @@ import "./skin.css";
 // three stacked bricks behind the bat. She runs up and bowls twice (rules.ts cricketPlan): first a ball that lands on a
 // crack and kicks up over the bat and the bricks (the bouncer: Sonia calls it dead; a swing at it skies it high over the
 // side), then, after she walks back, her real ball, which changes pace where it bounces (the tag's `ball`). The meter's
-// needle follows only the real ball (it waits through the bouncer). With the use's art (`art.pitch`, `art.bowler`) the
-// drawn pitch and the heroine's standing picture give way to those pictures.
+// needle follows only the real ball (it waits through the bouncer). Practice's warm-up (the `warmup` key) draws one
+// slow, straight ball after a shorter run-up: no bouncer, no call, no change at the bounce, the ball let go into the
+// bricks; her face at its end is a plain one (pleased at a hit, a little surprised otherwise). With the use's art
+// (`art.pitch`, `art.bowler`) the drawn pitch and the heroine's standing picture give way to those pictures.
 //
 // The host's flow (docs/13 2.6): the field ends the play itself at the moment that tells it (the bat meeting the ball, or
 // the bricks falling after a miss or no swing), with the swing's time as the record (the host rates it for ★) and the
@@ -41,8 +43,9 @@ const GONE: Point = { x: 56, y: -18, size: 2 };
 /** How far from the bat toward the bricks the ball gets while a late swing is still clean (it still reads as met squarely). */
 const CLEAN_DRIFT = 0.15;
 
-/** Where the bouncer and its shadow are at `ms` (null before it leaves her hand and once it is gone over the batter's head). */
+/** Where the bouncer and its shadow are at `ms` (null before it leaves her hand, once it is gone over the batter's head, and in the warm-up). */
 function bouncerBall(ms: number, plan: CricketPlan): { ball: Point; ground: Point } | null {
+  if (!plan.bouncer) return null;
   const { release, bounce, bat, gone } = plan.bouncer;
   if (ms < release - 150 || ms > gone) return null;
   if (ms <= release) return { ball: HAND, ground: HAND_GROUND };
@@ -119,14 +122,18 @@ function plankBall(ms: number, plan: CricketPlan, cleanLateMs: number): { ball: 
 }
 
 /** When a swing meets the ball: at once on the real ball; at the bouncer, as it rises past the raised plank (or at once, later). */
-const meetsAt = (tapMs: number, plan: CricketPlan) => (cricketAtBouncer(plan, tapMs) ? Math.max(tapMs, plan.bouncer.bat - 80) : tapMs);
+const meetsAt = (tapMs: number, plan: CricketPlan) => (plan.bouncer && cricketAtBouncer(plan, tapMs) ? Math.max(tapMs, plan.bouncer.bat - 80) : tapMs);
 
-/** Her run-ups (the bowler's picture): ready at her mark, running in, walking back after the bouncer, running in again. */
+/**
+ * Her run-ups (the bowler's picture): ready at her mark, running in, walking back after the bouncer, running in again; in
+ * the warm-up, ready and her one short run-up.
+ */
 type Phase = "ready" | "run1" | "walk" | "run2";
-function phaseAt(ms: number, plan: CricketPlan, tuning: CricketTuning): Phase {
-  if (ms < tuning.settleMs) return "ready";
-  if (ms < plan.bouncer.gone) return "run1";
-  if (ms < plan.release - tuning.runUpMs) return "walk";
+type RunUps = Pick<CricketTuning, "settleMs" | "runUpMs">;
+function phaseAt(ms: number, plan: CricketPlan, runUps: RunUps): Phase {
+  if (ms < runUps.settleMs) return "ready";
+  if (!plan.bouncer || ms < plan.bouncer.gone) return "run1";
+  if (ms < plan.release - runUps.runUpMs) return "walk";
   return "run2";
 }
 
@@ -155,6 +162,8 @@ const IMPACTS: Readonly<Record<CricketOutcome, { stopMs: number; burst: "star" |
 /** Sonia's call as the bouncer goes over (on the field, by her side of the children), and the bowler's word (unvoiced). */
 const DEAD_CALL_JA = "高い！ 今のはなし";
 const SORRY_LINE_JA = "ごめん、もう一球！";
+/** Her face at the warm-up's end (practice's outcome is not the story's): pleased at a hit, a little surprised otherwise. */
+const WARMUP_FACE: Readonly<Record<CricketOutcome, "cheer" | "oops">> = { six: "cheer", over_wall: "cheer", edge: "cheer", bowled: "oops", no_swing: "oops" };
 
 /**
  * The children watching from beside the pitch (they are in the story), dark against the light: the batter's side on the
@@ -180,12 +189,12 @@ function Kid({ hair }: { hair: "short" | "tail" | "cap" }) {
 
 /** The cricket's skin with a tuning (the story's; Debug's room plays an edited one: play.ts retune). */
 export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams, CricketOutcome> {
-  const plans = { quick: cricketPlan(tuning, "quick"), slower: cricketPlan(tuning, "slower") };
-  const planOf = (params: CricketParams) => plans[params.ball ?? "quick"];
+  const planOf = cricketPlanner(tuning);
   const pace: CSSProperties = {
     ["--mg-cricket-batting-run" as string]: `${tuning.runUpMs}ms`,
     ["--mg-cricket-batting-walk" as string]: `${tuning.walkBackMs}ms`,
   };
+  const warmupPace: CSSProperties = { ["--mg-cricket-batting-run" as string]: `${CRICKET_WARMUP.runUpMs}ms` };
 
   function CricketField({ params, cast, still, art, sound, vibrate, frames }: CueTapFieldProps<CricketParams, CricketOutcome>) {
     const ball = useRef<HTMLSpanElement>(null);
@@ -200,8 +209,11 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
     const kit = useMiniGameKit();
     const live = useRef({ sound, vibrate, kit });
     live.current = { sound, vibrate, kit };
-    const ontoPlank = params.letgo === "plank";
+    const warmup = cricketIsWarmup(params);
+    const ontoPlank = cricketOntoPlank(params);
     const plan = planOf(params);
+    const runUps: RunUps = warmup ? CRICKET_WARMUP : tuning;
+    const { cleanLateMs } = plan.tuning;
     useEffect(() => {
       let hit = false;
       let fell = false;
@@ -232,7 +244,7 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
       };
       return frames(({ ms, tapMs, outcome, endAt }) => {
         // A swing at the bouncer ends the play there: she stays at the crease, watching it go over the wall.
-        const nextPhase = tapMs !== null && cricketAtBouncer(plan, tapMs) ? "run1" : phaseAt(ms, plan, tuning);
+        const nextPhase = tapMs !== null && cricketAtBouncer(plan, tapMs) ? "run1" : phaseAt(ms, plan, runUps);
         if (nextPhase !== shownPhase) {
           shownPhase = nextPhase;
           setPhase(nextPhase);
@@ -251,10 +263,10 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
         const meet = tapMs === null ? null : meetsAt(tapMs, plan);
         // The bouncer, then the real ball (hidden until her second run-up brings it to her hand).
         const bouncer = bouncerBall(ms, plan);
-        let where = bouncer ?? route(ms, plan, tuning.cleanLateMs);
+        let where = bouncer ?? route(ms, plan, cleanLateMs);
         let hidden = !bouncer && ms < plan.release - 150;
         if (flight && meet !== null && ms >= meet) {
-          const from = atBouncer ? bouncerBall(meet, plan) ?? { ball: OVER, ground: BAT_GROUND } : route(meet, plan, tuning.cleanLateMs);
+          const from = atBouncer ? bouncerBall(meet, plan) ?? { ball: OVER, ground: BAT_GROUND } : route(meet, plan, cleanLateMs);
           const t = easeOut(clamp01((ms - meet) / flight.ms));
           where = { ball: mix(from.ball, flight.to, t), ground: flight.rolls ? mix(from.ground, flight.to, t) : { ...from.ground, size: from.ground.size * (1 - t) } };
           hidden = false;
@@ -264,20 +276,20 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
         const gone = still && !!flight && meet !== null && ms - meet > 120;
         if (still && plank && !flight && ms > plan.bricks) where = ms - plan.bricks > 400 ? { ball: HER_FEET, ground: HER_FEET } : { ball: PLANK, ground: PLANK };
         place(ball.current, where.ball, hidden || gone);
-        place(shadow.current, where.ground, hidden || gone || ms < plan.bouncer.release || (!bouncer && ms < plan.release));
-        // The bouncer's tick off the crack, then (no swing at it) Sonia's call and her sorry.
-        if (!ticked && ms >= plan.bouncer.bounce) {
+        place(shadow.current, where.ground, hidden || gone || ms < (plan.bouncer?.release ?? plan.release) || (!bouncer && ms < plan.release));
+        // The bouncer's tick off the crack, then (no swing at it) Sonia's call and her sorry (none in the warm-up).
+        if (plan.bouncer && !ticked && ms >= plan.bouncer.bounce) {
           ticked = true;
           live.current.sound(SOUNDS.hit, CRACK_TICK);
           // A puff of dust off the crack: the kick is seen, not only heard.
           live.current.kit.juice.burst(ball.current, "dust", 0.6);
         }
-        if (!dead && tapMs === null && ms >= plan.bouncer.reach + 80) {
+        if (plan.bouncer && !dead && tapMs === null && ms >= plan.bouncer.reach + 80) {
           dead = true;
           setCalled(true);
           live.current.kit.react("oops", SORRY_LINE_JA);
         }
-        if (dead && !uncalled && ms >= plan.release - tuning.runUpMs) {
+        if (dead && !uncalled && ms >= plan.release - runUps.runUpMs) {
           uncalled = true;
           setCalled(false);
         }
@@ -317,12 +329,13 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
         if (ended || !outcome || endAt === null || (flight ? !hit : !(plank ? knocked : fell))) return;
         ended = true;
         const until = !flight && plank ? Math.max(endAt, plan.bricks + (still ? 600 : PLANK_ROLL_MS) + 150) : endAt;
-        live.current.kit.react(IMPACTS[outcome].react);
+        live.current.kit.react(warmup ? WARMUP_FACE[outcome] : IMPACTS[outcome].react);
         live.current.kit.end(outcome, undefined, { record: tapMs, holdMs: Math.max(0, until - ms) });
       });
-    }, [frames, still, ontoPlank, plan]);
+    }, [frames, still, ontoPlank, plan, warmup, runUps, cleanLateMs]);
     return (
-      <div className="mg-cricket-batting" data-art-pitch={art.pitch ? true : undefined} data-still={still || undefined} style={pace}>
+      <div className="mg-cricket-batting" data-art-pitch={art.pitch ? true : undefined} data-still={still || undefined}
+        style={warmup ? warmupPace : pace}>
         {art.pitch && <img className="mg-cricket-batting-backdrop mg-photo" src={art.pitch} alt="" draggable={false} />}
         <span className="mg-cricket-batting-pitch" />
         {(["batter", "bowler"] as const).map((side) => (
@@ -352,6 +365,9 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
     hintJa: "針が金色に来たら「振る」（高い球は見送る）",
     actionJa: "振る",
     actionHintJa: "ボールが板に届くのに合わせて押します。高く跳ね上がる球は見送ります。弾んだところで速さが変わります。",
+    // The practice's one slow, straight ball has no high ball and no change of pace.
+    practiceHintJa: "針が金色に来たら「振る」",
+    practiceActionHintJa: "ゆっくりまっすぐ来るボールが、板に届くのに合わせて押します。",
     autoJa: "おまかせで打っています",
     // The needle follows only the real ball (it waits through the bouncer), at its pace before and after the bounce.
     progress: (ms, params) => {
@@ -381,5 +397,14 @@ export const CRICKET_FIELD_POINTS = {
   bowledBall: (ms: number, ball: "quick" | "slower" = "quick") => bowledBall(ms, STORY_PLANS[ball], CRICKET_TUNING.cleanLateMs),
   phaseAt: (ms: number) => phaseAt(ms, STORY_PLANS.quick, CRICKET_TUNING),
   meetsAt: (tapMs: number) => meetsAt(tapMs, STORY_PLANS.quick),
+  /** Practice's warm-up: its one ball (never a bouncer), her run-up's phase, when a swing meets the ball, her face at the end. */
+  warmup: {
+    plan: CRICKET_WARMUP_PLAN,
+    bouncerBall: (ms: number) => bouncerBall(ms, CRICKET_WARMUP_PLAN),
+    bowledBall: (ms: number) => bowledBall(ms, CRICKET_WARMUP_PLAN, CRICKET_WARMUP_PLAN.tuning.cleanLateMs),
+    phaseAt: (ms: number) => phaseAt(ms, CRICKET_WARMUP_PLAN, CRICKET_WARMUP),
+    meetsAt: (tapMs: number) => meetsAt(tapMs, CRICKET_WARMUP_PLAN),
+    face: WARMUP_FACE,
+  },
   HAND, BOUNCE, BAT, OVER, DEAD_CALL_JA, SORRY_LINE_JA,
 } as const;

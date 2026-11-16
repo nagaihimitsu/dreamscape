@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { searchFairness, type SearchAction, type SearchRecord } from "../engines/search/engine";
+import { searchEnding, searchFairness, type SearchAction, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { parasolSearch } from "./definition";
 import {
-  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_IDLE_MS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, parasolActive, parasolFairness, parasolRules,
-  parasolSetup, parasolTargets,
+  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_IDLE_MS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, PARASOL_WARMUP_MS, PARASOL_WARMUP_SPOTS,
+  PARASOL_WARMUP_TARGET, parasolActive, parasolFairness, parasolRules, parasolRulesFor, parasolSetup, parasolTargets,
   type ParasolParams, type ParasolPlace,
 } from "./rules";
 import {
-  PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, PARASOL_STREET_EDGE, parasolChildAt, parasolGestures, parasolHoldings, parasolKinds, parasolPosition,
+  PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, PARASOL_STREET_EDGE, PARASOL_WARMUP_FIELD, parasolChildAt, parasolGestures, parasolHoldings, parasolKinds, parasolPosition,
 } from "./Skin";
 import { fairness } from "./play";
 
@@ -104,15 +104,16 @@ describe("the parasol's rules", () => {
     expect(() => schema.parse({ rounds: "4" })).toThrow();
   });
 
-  it("plays fewer rounds when the tag says so; the practice is the whole look at the left stall", () => {
+  it("plays fewer rounds when the tag says so; the practice is a short look of its own (warmup), not the real one", () => {
     const one: ParasolParams = { at: "left", rounds: 1 };
     expect(parasolSetup(one).rounds).toHaveLength(1);
     expect(searchFairness(parasolSetup(one))).toEqual([]);
     expect(parasolRules.outcomeOf(record([stall("near_2")]), one)).toBe("found");
     expect(parasolRules.outcomeOf(record([ask]), one)).toBe("pointed");
     for (const outcome of ["found", "found_slow", "pointed"] as const) expect(parasolRules.outcomeOf(parasolRules.autoRecord(outcome, one), one)).toBe(outcome);
-    // The practice teaches the bursts, the feints and the handover too: all three rounds, where the story's look is not.
-    expect(parasolSearch.practice).toEqual({ params: { at: "left" } });
+    // The practice (2026-11-16: shorter and simpler than the real look, never its preview) is the warm-up: no `at`, no
+    // `rounds` of its own, so the tag's stall and rounds stay the real look's.
+    expect(parasolSearch.practice).toEqual({ params: { warmup: "yes" } });
   });
 
   it("has the tomato child walk off at the round's own time: she points it out, and only round 3 has one", () => {
@@ -172,6 +173,103 @@ describe("the parasol's rules", () => {
   });
 });
 
+describe("the parasol's practice (its own short look, 2026-11-16)", () => {
+  const schema = parasolSearch.params({ effectIds: [], backgroundIds: [], emotionIds: [] });
+  const practice = parasolSearch.practice && parasolSearch.practice.params;
+  /** The practice's params as the host reads them: its keys over the tag's own. */
+  const warm = (raw: Record<string, string> = {}): ParasolParams => schema.parse({ ...raw, ...practice });
+  /** The tags the story may write (the examples) and more: every stall, fewer rounds. */
+  const tags: Record<string, string>[] = [...parasolSearch.examples, { at: "right", rounds: "2" }, { rounds: "3" }];
+  const found = { spot: PARASOL_WARMUP_TARGET };
+  const wrong = [0, 1, 3].map((spot) => ({ spot }));
+
+  it("is one round of its own, whatever the tag says: four umbrellas, one to find, fair", () => {
+    expect(PARASOL_WARMUP_SPOTS).toHaveLength(4);
+    for (const raw of tags) {
+      const setup = parasolSetup(warm(raw));
+      expect(setup.rounds, JSON.stringify(raw)).toEqual([{ spots: 4, targets: [PARASOL_WARMUP_TARGET], limitMs: PARASOL_WARMUP_MS }]);
+      expect(searchFairness(setup)).toEqual([]);
+      // The rest is the real look's: a wrong one only looked at, 「どこ？」 for her to point.
+      expect({ ...setup, rounds: [] }).toEqual({ ...parasolSetup({ at: "middle" }), rounds: [] });
+    }
+    // The key is the practice's alone: the real look and the examples never set it.
+    for (const example of parasolSearch.examples) expect(example).not.toHaveProperty("warmup");
+    expect(schema.parse({})).not.toHaveProperty("warmup");
+    expect(schema.parse({ warmup: "yes" })).toEqual({ at: "middle", rounds: 3, warmup: "yes" });
+    expect(() => schema.parse({ warmup: "no" })).toThrow();
+  });
+
+  it("is shorter than the real look: gone by 4 s at most, where the real look waits 8 s a round and its last round alone runs 4.3 s", () => {
+    const real = parasolSetup({ at: "middle" });
+    expect(PARASOL_WARMUP_MS).toBeLessThanOrEqual(4000);
+    expect(PARASOL_WARMUP_MS).toBeLessThan(PARASOL_TUNING.walkOffMs);
+    expect(PARASOL_WARMUP_MS).toBeLessThan(PARASOL_TUNING.idleMs);
+    expect(parasolSetup(warm()).rounds).toHaveLength(1);
+    expect(real.rounds).toHaveLength(3);
+    // Its spots and things to look at, all told: 4 against the real look's 13 + 7 + 5.
+    expect(real.rounds.reduce((sum, round) => sum + round.spots, 0)).toBe(25);
+  });
+
+  it("ends by itself with one of the outcomes: found at once, found after looks, or pointed out (「どこ？」, or its own time)", () => {
+    const outcome = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null, raw: Record<string, string> = {}) =>
+      parasolRules.outcomeOf(record(actions, lapse), warm(raw));
+    for (const raw of tags) {
+      expect(outcome([found], null, raw)).toBe("found");
+      expect(outcome([wrong[0], found], null, raw)).toBe("found");
+      expect(outcome([wrong[0], wrong[1], found], null, raw)).toBe("found_slow");
+      expect(outcome([ask], null, raw)).toBe("pointed");
+      // Doing nothing: its own time runs out (4 s, before the idle limit) and she points it out.
+      expect(outcome([{ gone: true }], null, raw)).toBe("pointed");
+      expect(outcome([wrong[2], { gone: true }], null, raw)).toBe("pointed");
+      expect(outcome([idle], null, raw)).toBe("pointed");
+      expect(outcome([], "idle", raw)).toBe("pointed");
+      // The real look's finds are nothing here (no such spot, or a wrong look).
+      const [hers] = parasolTargets(schema.parse(raw));
+      expect(outcome([{ spot: hers }], null, raw)).toBe("pointed");
+    }
+    // One action ends it: the first round is the last.
+    for (const actions of [[found], [ask], [{ gone: true }]] as SearchRecord["actions"][]) {
+      expect(searchEnding(record(actions), parasolSetup(warm())).kind).not.toBe("idle");
+    }
+  });
+
+  it("plays 「おまかせ」 and rates every record without throwing (the host rates practice too; it shows nothing of it)", () => {
+    for (const raw of tags) {
+      const params = warm(raw);
+      for (const outcome of ["found", "found_slow", "pointed"] as const) {
+        const auto = parasolRules.autoRecord(outcome, params);
+        expect(parasolRules.outcomeOf(auto, params), `${JSON.stringify(raw)} ${outcome}`).toBe(outcome);
+        expect(() => parasolRules.rate?.(auto, params)).not.toThrow();
+      }
+      expect(parasolRules.autoRecord("found", params)).toEqual(record([found]));
+      expect(parasolRules.autoRecord("pointed", params)).toEqual(record([ask]));
+      for (const edge of [record([]), record([], "timeout"), record([{ spot: 40 }]), record([{ gone: true }])]) {
+        expect(["found", "found_slow", "pointed"]).toContain(parasolRules.outcomeOf(edge, params));
+        expect(() => parasolRules.rate?.(edge, params)).not.toThrow();
+      }
+    }
+    // Its ★ (never shown) counts one round's time.
+    expect(parasolRules.rate?.({ actions: [found], lapse: null, endMs: 1200 }, warm())).toEqual({ stars: 3, scoreJa: "1.2秒で見つけた" });
+    expect(parasolRules.rate?.(record([ask]), warm())).toBeNull();
+    // A retuned module (Debug's room) plays the same practice.
+    const retuned = parasolRulesFor({ ...PARASOL_TUNING, idleMs: 7000, walkOffMs: 5000 });
+    expect(retuned.outcomeOf(record([found]), warm())).toBe("found");
+    expect(retuned.outcomeOf(record([{ gone: true }]), warm())).toBe("pointed");
+  });
+
+  it("leaves the real look as it was, the tag's stall and rounds and all", () => {
+    for (const at of PLACES) {
+      const [hers, arguing, tomato] = parasolTargets({ at });
+      expect(parasolSetup({ at }).rounds).toEqual([
+        { spots: 13, targets: [hers] }, { spots: 7, targets: [arguing] }, { spots: 5, targets: [tomato], limitMs: PARASOL_TUNING.walkOffMs },
+      ]);
+      expect(parasolSetup(schema.parse({ at })).rounds).toEqual(parasolSetup({ at }).rounds);
+    }
+    expect(parasolSetup(schema.parse({ at: "left", rounds: "1" })).rounds).toEqual([{ spots: 13, targets: [parasolTargets({ at: "left" })[0]] }]);
+    expect(parasolRules.autoRecord("found", { at: "middle" })).toEqual(record([stall("near_3"), customer("near_3"), child(PARASOL_TOMATO_CHILD)]));
+  });
+});
+
 describe("the parasol's street", () => {
   /** The smallest windows: a 320×568 phone (Debug room: 268 wide; a scene: 300), as short as a battle leaves it; a 390×844 phone. */
   const windows = [{ width: 268, height: 240 }, { width: 300, height: 260 }, { width: 370, height: 455 }];
@@ -193,6 +291,20 @@ describe("the parasol's street", () => {
     for (const window of windows) {
       apart(PARASOL_FIELD, window);
       apart(PARASOL_CUSTOMER_FIELD, window);
+    }
+  });
+
+  it("keeps the practice's four umbrellas 52px apart and inside the window, on the far pavement with no real find", () => {
+    for (const window of windows) apart(PARASOL_WARMUP_FIELD, window);
+    expect(Object.keys(PARASOL_WARMUP_FIELD)).toEqual([...PARASOL_WARMUP_SPOTS]);
+    const finds = PLACES.flatMap((at) => {
+      const [hers, arguing] = parasolTargets({ at });
+      return [PARASOL_FIELD[PARASOL_SPOTS[hers]], PARASOL_CUSTOMER_FIELD[PARASOL_CUSTOMERS[arguing]], parasolChildAt(PARASOL_TOMATO_CHILD, at, 0)];
+    });
+    for (const place of Object.values(PARASOL_WARMUP_FIELD)) {
+      expect(place.walk).toBeUndefined();
+      expect(place.y).toBe(PARASOL_FIELD.far_1.y);
+      for (const find of finds) expect(find.y).toBeGreaterThan(place.y);
     }
   });
 

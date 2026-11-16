@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, type CSSProperties } from "react";
+import { useEffect, useId, useMemo, useRef, type CSSProperties, type ReactNode, type RefObject } from "react";
 import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
 import { shapePath, type ShapeDragFieldProps, type ShapeDragSkin, type ShapeDragView } from "../engines/shape_drag/EnginePlay";
@@ -146,6 +146,168 @@ export function rotiHarbansWord(game: RotiGame, seed: number, view: ShapeDragVie
   return word ? { key: `slot${index}`, word } : null;
 }
 
+type Art = Readonly<Record<string, string>>;
+
+// The field's parts the real roti and practice's (Warmup.tsx) share: the same table, board, dough, pin and arrow.
+
+/**
+ * The work table (the use's kitchen picture, else drawn), the tava waiting in its corner (`hot`: it glows), and Harbans
+ * (the scene's speaker) looking on from the table's far corner with his word (`said`), if any.
+ */
+export function RotiTable({ art, person, still, hot, said }: { art: Art; person: ReactNode; still: boolean; hot: boolean; said: { key: string; word: string } | null }) {
+  return (
+    <div className="mg-roti-rolling-table" data-art-kitchen={art.kitchen ? true : undefined}>
+      {art.kitchen && <img className="mg-roti-rolling-kitchen mg-photo" src={art.kitchen} alt="" draggable={false} />}
+      {/* The tava, waiting in the corner: it glows in the hot windows at the end. */}
+      <span className="mg-roti-rolling-tava" data-hot={hot || undefined} data-still={still || undefined} data-testid="roti-tava" />
+      {/* Harbans (the scene's speaker), looking on from the table's far corner; a word now and then, from his corner
+          even where the scene gives no figure (Debug's room: 2026-11-14 playtest, the twist and the climax went unsaid). */}
+      {(person || said) && (
+        <span className="mg-roti-rolling-harbans" data-figure={person ? true : undefined}>
+          {person && <span className="mg-roti-rolling-harbans-figure">{person}</span>}
+          {said && <span className="mg-roti-rolling-harbans-word" key={said.key} data-testid="roti-word">{said.word}</span>}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/** The pin, drawn or the use's picture, lying along x (its middle at 0, 0), `length` long (its strip's width). */
+function RotiPin({ art, length }: { art: Art; length: number }) {
+  if (art.pin) return <image href={art.pin} x={-length / 2 - 0.06} y={-PIN_THICKNESS} width={length + 0.12} height={PIN_THICKNESS * 2} preserveAspectRatio="xMidYMid meet" />;
+  return (
+    <g className="mg-roti-rolling-pin-drawn">
+      <rect x={-length / 2 - 0.05} y={-PIN_THICKNESS / 2 + 0.012} width={length + 0.1} height={PIN_THICKNESS} rx={PIN_THICKNESS / 2} className="mg-roti-rolling-pin-shadow" />
+      <rect x={-length / 2 - 0.06} y={-PIN_THICKNESS / 3} width={length + 0.12} height={(PIN_THICKNESS * 2) / 3} rx={PIN_THICKNESS / 3} className="mg-roti-rolling-pin-handle" />
+      <rect x={-length / 2} y={-PIN_THICKNESS / 2} width={length} height={PIN_THICKNESS} rx={PIN_THICKNESS / 2} className="mg-roti-rolling-pin-body" />
+    </g>
+  );
+}
+
+/** The pin at rest in the board's corner, under the dough (hidden while a stroke rolls it). */
+export function RotiPinAtRest({ art, length, hidden }: { art: Art; length: number; hidden: boolean }) {
+  return (
+    <g transform={`translate(${PIN_REST.x} ${PIN_REST.y}) rotate(${PIN_REST.degrees}) scale(${PIN_REST.scale})`} opacity={hidden ? 0 : 1}>
+      <RotiPin art={art} length={length} />
+    </g>
+  );
+}
+
+/** The pin as a stroke rolls it, over the dough (skidding into his hand). */
+export function RotiPinRolling({ art, length, pin }: { art: Art; length: number; pin: NonNullable<ShapeDragView["pin"]> }) {
+  return (
+    <g transform={`translate(${pin.x} ${pin.y}) rotate(${pin.degrees + 90})`} className="mg-roti-rolling-pin" data-skid={pin.skid || undefined}>
+      <RotiPin art={art} length={length} />
+    </g>
+  );
+}
+
+/**
+ * Under the dough: the board's gradients (and the use's dough texture, `ids`' own), the round wooden board (drawn or the
+ * use's) and flour on it (where the specks lie is looks only, from the seed: never the rules).
+ */
+export function RotiBoardFace({ ids, art, seed }: { ids: string; art: Art; seed: number }) {
+  const flour = useMemo(() => {
+    const random = seededRandom(seed);
+    return Array.from({ length: 26 }, () => {
+      const angle = random() * Math.PI * 2;
+      const distance = Math.sqrt(random()) * 0.44;
+      return { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance, r: 0.004 + random() * 0.008 };
+    });
+  }, [seed]);
+  return (
+    <>
+      <defs>
+        <radialGradient id={`${ids}-wood`} cx="0.42" cy="0.38" r="0.7">
+          <stop offset="0" stopColor="#c8955f" />
+          <stop offset="0.75" stopColor="#a8723f" />
+          <stop offset="1" stopColor="#8a5a31" />
+        </radialGradient>
+        <radialGradient id={`${ids}-dough`} cx="0.4" cy="0.36" r="0.75">
+          <stop offset="0" stopColor="#f6e9cb" />
+          <stop offset="0.7" stopColor="#ecd6a8" />
+          <stop offset="1" stopColor="#dcbd86" />
+        </radialGradient>
+        {art.dough && (
+          <pattern id={`${ids}-texture`} patternUnits="userSpaceOnUse" x="-0.5" y="-0.5" width="0.5" height="0.5">
+            <image href={art.dough} x="0" y="0" width="0.5" height="0.5" preserveAspectRatio="xMidYMid slice" />
+          </pattern>
+        )}
+      </defs>
+      {art.board
+        ? <image href={art.board} x="-0.5" y="-0.5" width="1" height="1" preserveAspectRatio="xMidYMid meet" />
+        : (
+          <g className="mg-roti-rolling-board">
+            <circle r="0.49" cy="0.012" className="mg-roti-rolling-board-shadow" />
+            <circle r="0.49" fill={`url(#${ids}-wood)`} className="mg-roti-rolling-board-face" />
+            <circle r="0.455" className="mg-roti-rolling-board-ring" />
+          </g>
+        )}
+      {flour.map((speck, index) => <circle key={`speck-${index}`} cx={speck.x} cy={speck.y} r={speck.r} className="mg-roti-rolling-flour" />)}
+    </>
+  );
+}
+
+/** The dough (its outline's `path`), drawn or with the use's texture, paler as it thins (`thin`: 0 to 1), in the group a press squashes. */
+export function RotiDough({ ids, art, path, thin, press }: { ids: string; art: Art; path: string; thin: number; press: RefObject<SVGGElement | null> }) {
+  return (
+    <g className="mg-roti-rolling-press" ref={press}>
+      <path d={path} className="mg-roti-rolling-dough-shadow" transform="translate(0.006 0.01)" />
+      <path d={path} fill={art.dough ? `url(#${ids}-texture)` : `url(#${ids}-dough)`} fillOpacity={1 - thin * 0.22} className="mg-roti-rolling-dough" data-testid="roti-dough" />
+    </g>
+  );
+}
+
+/**
+ * The next stroke's way (`degrees` on the screen), its shaft a fuse (`fuse`: how much is left, 0 to 1), fading while his
+ * hand is `coming`, and, left alone (`idle`), a finger rolling along it.
+ */
+export function RotiArrow({ degrees, fuse, idle, coming }: { degrees: number; fuse: number; idle: boolean; coming: boolean }) {
+  const shaft = ARROW_LENGTH - 0.05;
+  return (
+    <g className="mg-roti-rolling-arrow" transform={`rotate(${degrees})`} data-testid="roti-arrow" data-degrees={Math.round(degrees)}
+      data-coming={coming || undefined}>
+      <line x1={-ARROW_LENGTH / 2} y1="0" x2={ARROW_LENGTH / 2 - 0.05} y2="0" className="mg-roti-rolling-arrow-case" />
+      <line x1={-ARROW_LENGTH / 2} y1="0" x2={ARROW_LENGTH / 2 - 0.05} y2="0" className="mg-roti-rolling-arrow-spent" />
+      {fuse > 0 && <line x1={-ARROW_LENGTH / 2} y1="0" x2={-ARROW_LENGTH / 2 + shaft * fuse} y2="0" className="mg-roti-rolling-arrow-fuse" data-testid="roti-fuse" />}
+      <path d={`M ${ARROW_LENGTH / 2} 0 L ${ARROW_LENGTH / 2 - 0.07} -0.045 L ${ARROW_LENGTH / 2 - 0.07} 0.045 Z`} />
+      {idle && <circle className="mg-roti-rolling-finger" r="0.045" cx={-ARROW_LENGTH / 2} cy="0" style={{ "--finger-travel": `${ARROW_LENGTH}px` } as CSSProperties} />}
+    </g>
+  );
+}
+
+/** A stroke's press: a moment's stop, flour where the pin lifted, the dough squashed; a skid shakes the board. */
+export function useRotiPress(view: ShapeDragView, press: RefObject<SVGGElement | null>, lift: RefObject<SVGCircleElement | null>): void {
+  const kit = useMiniGameKit();
+  const live = useRef(kit);
+  live.current = kit;
+  const pressed = useRef(0);
+  useEffect(() => {
+    if (view.strokes <= pressed.current) return;
+    pressed.current = view.strokes;
+    const { juice } = live.current;
+    juice.hitStop(PRESS_STOP_MS);
+    juice.burst(lift.current, "dust", 0.7);
+    juice.squash(press.current, "press");
+    if (view.rolls.at(-1)?.skid) juice.shake("s");
+  }, [view.strokes]);
+}
+
+/** The end in the field: a round one sparkles; a hole puffs and shakes the board. */
+export function useRotiEnd(outcome: string | null, press: RefObject<SVGGElement | null>, hole: RefObject<SVGPathElement | null>): void {
+  const kit = useMiniGameKit();
+  const live = useRef(kit);
+  live.current = kit;
+  useEffect(() => {
+    const { juice } = live.current;
+    if (outcome === "round") juice.burst(press.current, "star", 1.2);
+    if (outcome === "torn") {
+      juice.burst(hole.current, "dust", 1);
+      juice.shake("s");
+    }
+  }, [outcome]);
+}
+
 /** The roti's skin built from its game (the story's, or Debug's room's edited numbers: play.ts retune). */
 export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutcome> {
   const { tuning, numbers } = game;
@@ -156,33 +318,7 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
     const said = rotiHarbansWord(game, seed, view);
     const { slot } = windowOf(game, view);
     const hot = view.outcome === null && slot?.kind === "hot";
-    return (
-      <div className="mg-roti-rolling-table" data-art-kitchen={art.kitchen ? true : undefined}>
-        {art.kitchen && <img className="mg-roti-rolling-kitchen mg-photo" src={art.kitchen} alt="" draggable={false} />}
-        {/* The tava, waiting in the corner: it glows in the hot windows at the end. */}
-        <span className="mg-roti-rolling-tava" data-hot={hot || undefined} data-still={still || undefined} data-testid="roti-tava" />
-        {/* Harbans (the scene's speaker), looking on from the table's far corner; a word now and then, from his corner
-            even where the scene gives no figure (Debug's room: 2026-11-14 playtest, the twist and the climax went unsaid). */}
-        {(cast.person || said) && (
-          <span className="mg-roti-rolling-harbans" data-figure={cast.person ? true : undefined}>
-            {cast.person && <span className="mg-roti-rolling-harbans-figure">{cast.person}</span>}
-            {said && <span className="mg-roti-rolling-harbans-word" key={said.key} data-testid="roti-word">{said.word}</span>}
-          </span>
-        )}
-      </div>
-    );
-  }
-
-  /** The pin, drawn or the use's picture, lying along x (its middle at 0, 0). */
-  function Pin({ art }: { art: Readonly<Record<string, string>> }) {
-    if (art.pin) return <image href={art.pin} x={-pinLength / 2 - 0.06} y={-PIN_THICKNESS} width={pinLength + 0.12} height={PIN_THICKNESS * 2} preserveAspectRatio="xMidYMid meet" />;
-    return (
-      <g className="mg-roti-rolling-pin-drawn">
-        <rect x={-pinLength / 2 - 0.05} y={-PIN_THICKNESS / 2 + 0.012} width={pinLength + 0.1} height={PIN_THICKNESS} rx={PIN_THICKNESS / 2} className="mg-roti-rolling-pin-shadow" />
-        <rect x={-pinLength / 2 - 0.06} y={-PIN_THICKNESS / 3} width={pinLength + 0.12} height={(PIN_THICKNESS * 2) / 3} rx={PIN_THICKNESS / 3} className="mg-roti-rolling-pin-handle" />
-        <rect x={-pinLength / 2} y={-PIN_THICKNESS / 2} width={pinLength} height={PIN_THICKNESS} rx={PIN_THICKNESS / 2} className="mg-roti-rolling-pin-body" />
-      </g>
-    );
+    return <RotiTable art={art} person={cast.person} still={still} hot={hot} said={said} />;
   }
 
   /**
@@ -219,28 +355,9 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
     const lift = useRef<SVGCircleElement>(null);
     const hole = useRef<SVGPathElement>(null);
     const handRef = useRef<SVGGElement>(null);
-    // Flour on the board: where the specks lie is looks only (from the seed), never the rules.
-    const flour = useMemo(() => {
-      const random = seededRandom(seed);
-      return Array.from({ length: 26 }, () => {
-        const angle = random() * Math.PI * 2;
-        const distance = Math.sqrt(random()) * 0.44;
-        return { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance, r: 0.004 + random() * 0.008 };
-      });
-    }, [seed]);
     const live = useRef(kit);
     live.current = kit;
-    // A stroke's press: a moment's stop, flour where the pin lifted, the dough squashed; a skid shakes the board.
-    const pressed = useRef(0);
-    useEffect(() => {
-      if (view.strokes <= pressed.current) return;
-      pressed.current = view.strokes;
-      const { juice } = live.current;
-      juice.hitStop(PRESS_STOP_MS);
-      juice.burst(lift.current, "dust", 0.7);
-      juice.squash(press.current, "press");
-      if (view.rolls.at(-1)?.skid) juice.shake("s");
-    }, [view.strokes]);
+    useRotiPress(view, press, lift);
     // The feint: his hand dusts the dough with flour instead of turning it.
     const dusted = useRef(-1);
     const visit = view.hand?.visit ?? -1;
@@ -267,15 +384,7 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
       cheered.current.ring = true;
       live.current.react("surprise", "わ、大きい！");
     }, [ringReached]);
-    // The end in the field: a round one sparkles; a hole puffs and shakes the board.
-    useEffect(() => {
-      const { juice } = live.current;
-      if (view.outcome === "round") juice.burst(press.current, "star", 1.2);
-      if (view.outcome === "torn") {
-        juice.burst(hole.current, "dust", 1);
-        juice.shake("s");
-      }
-    }, [view.outcome]);
+    useRotiEnd(view.outcome, press, hole);
     const path = useMemo(() => shapePath(softOutline(view.points)), [view.points]);
     // Thinner dough is paler and lets the board show a little (the hint also says so: not by colour alone).
     const thin = Math.min(1, Math.max(0, (view.measures.area - 1) / (numbers.tearArea - 1)));
@@ -295,60 +404,19 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
     const rest = Math.min(0.4, Math.max(0.12, view.measures.span / 2 - 0.035));
     const handAt = !hand?.phase || view.outcome !== null ? null
       : hand.phase === "coming" ? (still ? rest : HAND_FAR - (HAND_FAR - rest) * (1 - (1 - hand.progress) ** 2)) : rest;
-    const shaft = ARROW_LENGTH - 0.05;
     return (
       <svg className="mg-roti-rolling mg-play-object" viewBox="-0.5 -0.5 1 1" data-art-board={art.board ? true : undefined} data-torn={torn || undefined} data-warn={warn || undefined}
         data-hand={hand?.phase ?? undefined}>
-        <defs>
-          <radialGradient id={`${ids}-wood`} cx="0.42" cy="0.38" r="0.7">
-            <stop offset="0" stopColor="#c8955f" />
-            <stop offset="0.75" stopColor="#a8723f" />
-            <stop offset="1" stopColor="#8a5a31" />
-          </radialGradient>
-          <radialGradient id={`${ids}-dough`} cx="0.4" cy="0.36" r="0.75">
-            <stop offset="0" stopColor="#f6e9cb" />
-            <stop offset="0.7" stopColor="#ecd6a8" />
-            <stop offset="1" stopColor="#dcbd86" />
-          </radialGradient>
-          {art.dough && (
-            <pattern id={`${ids}-texture`} patternUnits="userSpaceOnUse" x="-0.5" y="-0.5" width="0.5" height="0.5">
-              <image href={art.dough} x="0" y="0" width="0.5" height="0.5" preserveAspectRatio="xMidYMid slice" />
-            </pattern>
-          )}
-        </defs>
-        {art.board
-          ? <image href={art.board} x="-0.5" y="-0.5" width="1" height="1" preserveAspectRatio="xMidYMid meet" />
-          : (
-            <g className="mg-roti-rolling-board">
-              <circle r="0.49" cy="0.012" className="mg-roti-rolling-board-shadow" />
-              <circle r="0.49" fill={`url(#${ids}-wood)`} className="mg-roti-rolling-board-face" />
-              <circle r="0.455" className="mg-roti-rolling-board-ring" />
-            </g>
-          )}
-        {flour.map((speck, index) => <circle key={`speck-${index}`} cx={speck.x} cy={speck.y} r={speck.r} className="mg-roti-rolling-flour" />)}
+        <RotiBoardFace ids={ids} art={art} seed={seed} />
         {/* How big a good roti is: reached, it turns gold. */}
         <circle r={numbers.bigSpan / 2} className="mg-roti-rolling-target" data-reached={big || undefined} />
-        <g transform={`translate(${PIN_REST.x} ${PIN_REST.y}) rotate(${PIN_REST.degrees}) scale(${PIN_REST.scale})`} opacity={view.pin ? 0 : 1}>
-          <Pin art={art} />
-        </g>
-        <g className="mg-roti-rolling-press" ref={press}>
-          <path d={path} className="mg-roti-rolling-dough-shadow" transform="translate(0.006 0.01)" />
-          <path d={path} fill={art.dough ? `url(#${ids}-texture)` : `url(#${ids}-dough)`} fillOpacity={1 - thin * 0.22} className="mg-roti-rolling-dough" data-testid="roti-dough" />
-        </g>
+        <RotiPinAtRest art={art} length={pinLength} hidden={!!view.pin} />
+        <RotiDough ids={ids} art={art} path={path} thin={thin} press={press} />
         {torn && <path ref={hole} d={holePath(view.points)} className="mg-roti-rolling-hole" />}
         {/* Where the pin last lifted (the flour's burst comes from here). */}
         <circle ref={lift} cx={lifted.x} cy={lifted.y} r="0.01" className="mg-roti-rolling-lift" />
         {/* The next stroke's way, its shaft a fuse for the window (and, left alone, a finger rolling along it). */}
-        {playing && (
-          <g className="mg-roti-rolling-arrow" transform={`rotate(${arrow})`} data-testid="roti-arrow" data-degrees={Math.round(arrow)}
-            data-coming={hand?.phase === "coming" || undefined}>
-            <line x1={-ARROW_LENGTH / 2} y1="0" x2={ARROW_LENGTH / 2 - 0.05} y2="0" className="mg-roti-rolling-arrow-case" />
-            <line x1={-ARROW_LENGTH / 2} y1="0" x2={ARROW_LENGTH / 2 - 0.05} y2="0" className="mg-roti-rolling-arrow-spent" />
-            {fuse > 0 && <line x1={-ARROW_LENGTH / 2} y1="0" x2={-ARROW_LENGTH / 2 + shaft * fuse} y2="0" className="mg-roti-rolling-arrow-fuse" data-testid="roti-fuse" />}
-            <path d={`M ${ARROW_LENGTH / 2} 0 L ${ARROW_LENGTH / 2 - 0.07} -0.045 L ${ARROW_LENGTH / 2 - 0.07} 0.045 Z`} />
-            {view.idle && <circle className="mg-roti-rolling-finger" r="0.045" cx={-ARROW_LENGTH / 2} cy="0" style={{ "--finger-travel": `${ARROW_LENGTH}px` } as CSSProperties} />}
-          </g>
-        )}
+        {playing && <RotiArrow degrees={arrow} fuse={fuse} idle={view.idle} coming={hand?.phase === "coming"} />}
         {/* The window has had its stroke: a faint turning sign, his turn next. */}
         {waiting && view.outcome === null && !view.pin && hand?.phase !== "on" && (
           <g className="mg-roti-rolling-wait" data-testid="roti-wait">
@@ -363,11 +431,7 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
             <Hand flour={hand.deg === 0 && hand.phase === "on"} />
           </g>
         )}
-        {view.pin && (
-          <g transform={`translate(${view.pin.x} ${view.pin.y}) rotate(${view.pin.degrees + 90})`} className="mg-roti-rolling-pin" data-skid={view.pin.skid || undefined}>
-            <Pin art={art} />
-          </g>
-        )}
+        {view.pin && <RotiPinRolling art={art} length={pinLength} pin={view.pin} />}
       </svg>
     );
   }

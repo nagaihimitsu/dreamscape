@@ -16,7 +16,11 @@ import { defineMiniGame } from "../contract";
  * says what ★3 asks for when a play with her or past her missed it (rules.ts golgappaDetail).
  *
  * The host's flow (docs/13 2.6): practice (a contest at a stall: no romance or route choice hangs on it; the story's
- * choices after it carry no relationship effects), the host's 3・2・1 (「よーい、どん」 of an eating contest), the scene's
+ * choices after it carry no relationship effects) is a short, simple play of its own, not the duel's rehearsal
+ * (2026-11-16, the user's decision; `warmup yes`: rules.ts golgappaWarmup): the vendor gives the player alone five at
+ * one easy, even pace with wider windows (about 5 s), to learn to eat each one as it lands; no feint, hold, double,
+ * speed-up or choke gauge, nothing of hers and no 「バス」. It ends by itself (no word, no card), and the host's
+ * 「練習おわり　次は本番！」 brings the duel. Then the host's 3・2・1 (「よーい、どん」 of an eating contest), the scene's
  * music lowered (the landings are the beat), ★ from the risk taken (rules.ts golgappaRating: with her ★2, past her
  * cleanly ★3), a finish word per outcome and her face on the card. Her reaction lines are her first breath at the end;
  * the story's lines follow at once and are never repeated here.
@@ -49,14 +53,16 @@ export const golgappaDuel = defineMiniGame({
       reaction: { kind: "surprise", linesJa: ["まだ食べるの！？", "え、どこに入ってるの？"] } },
   ],
   defaultAuto: "together",
-  params: () => z.object({}).strict(),
+  params: () => z.object({
+    warmup: z.enum(["yes"]).optional().describe("練習用の短く簡単な遊び（yes。練習が自動で使う。物語の札には書かない）"),
+  }).strict(),
   examples: [{}],
   startJa: "勝負する",
   hintJa: "落ちたら「食べる」。振りかぶるだけはフェイント。旗が彼女の「バス」",
   goalJa: "落ちるたびに「食べる」（フェイントでは押さない）。彼女と一緒に「バス」か、速い残りも食べきるか",
   controls: "rhythm",
   durationSec: 17,
-  practice: {},
+  practice: { params: { warmup: "yes" } },
   countdown: "host",
   music: "scene",
   timed: true,

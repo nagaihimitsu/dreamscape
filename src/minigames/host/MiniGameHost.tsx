@@ -10,8 +10,8 @@ import { miniGameArtPath, miniGameParams, type MiniGameTag } from "../tag";
 import type { MiniGameStageCast } from "./ChoicePoint";
 import { browserClockDriver, createPlayClock, type HostClock } from "./clock";
 import {
-  countPhase, fillNames, FINISH, finishLevel, finishWord, HOST_SOUNDS, pickLine, REACTION_EMOTION, resultButtons, resultCardDelay, vibrationDoubles, type CountPhase,
-  playLeavable, quitShown, startGuardDrops, type FinishLevel, type ScreenBox, type ScreenSpan,
+  countPhase, fillNames, FINISH, finishLevel, finishWord, HOST_SOUNDS, pickLine, REACTION_EMOTION, resultButtons, resultCardDelay, toRealDelay, vibrationDoubles,
+  playLeavable, quitShown, startGuardDrops, type CountPhase, type FinishLevel, type ScreenBox, type ScreenSpan,
 } from "./flow";
 import { HandDemo } from "./HandDemo";
 import { createJuice, NO_JUICE } from "./juice";
@@ -21,13 +21,15 @@ import { ResultCard, resultCardReady } from "./ResultCard";
 import { miniGameSeed } from "./seed";
 import {
   MINI_GAME_CHOICE_GUARD_MS, MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_REACT_GAP_MS, MINI_GAME_REACT_MS, MINI_GAME_RESULT_MS,
-  MINI_GAME_START_GUARD_MS, MINI_GAME_STAR_STEP_MS,
+  MINI_GAME_START_GUARD_MS, MINI_GAME_STAR_STEP_MS, MINI_GAME_TO_REAL_MS,
 } from "./timing";
 import type { MiniGameEnvironment } from "./MiniGameProvider";
 import "./host.css";
 
 // The shared host of every mini-game (docs/13 2.6). The flow, the same for every game:
-//   instruction card → (練習) → 3・2・1・スタート → play → そこまで！ → result card → the story.
+//   instruction card → (練習 → 次は本番！) → 3・2・1・スタート → play → そこまで！ → result card → the story.
+// Practice is one short, simple play of its own (the game's practice params): no finish word and no result card; its end
+// brings the cut-in 「練習おわり　次は本番！」 and then the real play by itself (2026-11-16, the user's decision).
 // The card sits where the choices would be (its title, goal, hand and length; one line after the game's first play in
 // the session); the play lies over the scene with its top band (the game's name, its status, 「中断する」), the clock and
 // its pause, 「おまかせ」 and its tap to skip, the heroine's quick reactions and the juice toolkit; the finish stops it and
@@ -70,6 +72,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const [run, setRun] = useState<Run | null>(null);
   const [ended, setEnded] = useState<Ended | null>(null);
   const [finishing, setFinishing] = useState(false);
+  /** Practice is over: the cut-in 「次は本番！」 shows, and the real play starts after it. */
+  const [toReal, setToReal] = useState(false);
   const [count, setCount] = useState<CountPhase>(null);
   const [paused, setPaused] = useState(false);
   /** The play's outcome is decided (its one try spent) though it has not ended yet: no leaving the real play. */
@@ -167,6 +171,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     setLocked(false);
     setEnded(null);
     setFinishing(false);
+    setToReal(false);
     setCount(null);
     setPaused(false);
     setStatus("");
@@ -209,6 +214,9 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     const startBox = box && box.width > 0 ? { left: box.left, top: box.top, right: box.right, bottom: box.bottom } : null;
     setRun((current) => ({ id: (current?.id ?? 0) + 1, clock, practice, count: countKind, startedAt: performance.now() + leadMs, startBox }));
   };
+  /** The latest render's start (practice's cut-in starts the real play from a timer). */
+  const startLatest = useRef(start);
+  startLatest.current = start;
   /** The outcome is decided before the end: the real play's one try is spent, so it can no longer be left (practice can). */
   const decided = useCallback(() => {
     if (lockedRef.current || !runRef.current) return;
@@ -251,7 +259,10 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     return () => window.clearTimeout(timer);
   }, [reaction]);
 
-  /** The play is over (docs/13 2.6): the finish (a stop, a flash, its word and sound), then the result card. */
+  /**
+   * The play is over (docs/13 2.6): the finish (a stop, a flash, its word and sound), then the result card. Practice's end
+   * has no word and no card: a stop and the end whistle, then the cut-in 「次は本番！」 (its outcome is not the story's).
+   */
   const end = useCallback((outcome: string, detail?: string, options?: MiniGameEndOptions) => {
     const current = runRef.current;
     if (!definition || !current || endedRef.current) return;
@@ -272,10 +283,11 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     }
     const takenOutcome = definition.outcomes.find((item) => item.id === outcomeTaken);
     const level = finishLevel(rating, takenOutcome?.finishTone);
-    const word = finishWord(takenOutcome?.finishJa);
+    const word = current.practice ? null : finishWord(takenOutcome?.finishJa);
     const finish = FINISH[level];
     juiceRef.current.hitStop(finish.stopMs);
-    if (word) {
+    if (current.practice) playSound(FINISH.plain.sound);
+    else if (word) {
       juiceRef.current.flash(finish.flashes > 1 ? "big" : "hit");
       playSound(finish.sound);
       // Not over the play's own vibration of this moment (its catch, its voices meeting): one buzz, not two.
@@ -288,6 +300,13 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     setEnded({ outcome: outcomeTaken, ...(detail ? { detail } : {}), rating, word, level, cardAt: null });
     setFinishing(!!word);
     later(MINI_GAME_FINISH_MS, () => setFinishing(false));
+    if (current.practice) {
+      later(toRealDelay(options?.holdMs), () => {
+        runRef.current?.clock.stop();
+        setToReal(true);
+      });
+      return;
+    }
     later(resultCardDelay(options?.holdMs), () => {
       runRef.current?.clock.stop();
       // The play's field (an engine's first part, above its controls): the card goes compact rather than hide too much of it.
@@ -298,7 +317,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   }, [definition, tag.id, taken, played, params, practiceParams, later]);
 
   const cardShown = ended?.cardAt !== null && ended?.cardAt !== undefined;
-  const buttons = resultButtons({ practice: !!run?.practice, retry: !!(environment.retry || tag.retry) });
+  const buttons = resultButtons({ retry: !!(environment.retry || tag.retry) });
   // The card: ★ one by one with their sound (★3: the perfect chime and applause), then 「次へ」 by itself when it is all.
   useEffect(() => {
     if (!ended || ended.cardAt === null) return;
@@ -317,6 +336,23 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     // The card's moment: its own effects once.
   }, [ended?.cardAt]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Practice's cut-in, then the real play (its count first). A hidden page waits for its return (the real play's clock
+  // would otherwise start unseen): the cut-in's time starts again then.
+  useEffect(() => {
+    if (!toReal) return;
+    let timer: number | undefined;
+    const wait = () => {
+      window.clearTimeout(timer);
+      if (!document.hidden) timer = window.setTimeout(() => startLatest.current(false), MINI_GAME_TO_REAL_MS);
+    };
+    wait();
+    document.addEventListener("visibilitychange", wait);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", wait);
+    };
+  }, [toReal]);
+
   // The host's count: 3・2・1 through the clock's lead, 「スタート！」 as the play's time starts (frozen with the page).
   useEffect(() => {
     if (!run || run.count === "none") return;
@@ -334,9 +370,10 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     update();
     return off;
   }, [run]);
-  // A game with its own music: its track from スタート to the result card (the scene's again after it).
+  // A game with its own music: its track from スタート to the result card, or to practice's cut-in (the scene's again
+  // after it; the real play's track starts again at its own スタート).
   useEffect(() => {
-    if (!run || !track || cardShown) return;
+    if (!run || !track || cardShown || toReal) return;
     let on = false;
     const off = run.clock.after(0, () => {
       on = true;
@@ -346,7 +383,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
       off();
       if (on) latest.current.onMusic?.(null);
     };
-  }, [run, track, cardShown]);
+  }, [run, track, cardShown, toReal]);
 
   // Focus: into the play as it starts (its main control), the card's main button as it comes, back to the start button
   // when the play is left.
@@ -430,8 +467,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     if (!isPressKey(event) || isQuit(event) || event.repeat) return;
     if (cardShown && ended && resultCardReady(ended.cardAt!)) {
       event.preventDefault();
-      if (buttons.next) choose(ended.outcome);
-      else start(false);
+      choose(ended.outcome);
     } else if (auto !== null && !endedRef.current && !paused) {
       event.preventDefault();
       end(auto);
@@ -449,13 +485,13 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const line = ended && outcome?.reaction ? pickLine(outcome.reaction.linesJa, seed) : undefined;
   const filledLine = line ? fillNames(line, names) : undefined;
   const score = ended?.rating?.scoreJa ?? ended?.detail;
-  const announced = cardShown && ended ? [
-    run?.practice ? "練習" : "", label(ended.outcome), score ?? "", ended.rating ? `★3つのうち${ended.rating.stars}つ` : "",
+  const announced = toReal ? "練習おわり。次は本番。" : cardShown && ended ? [
+    label(ended.outcome), score ?? "", ended.rating ? `★3つのうち${ended.rating.stars}つ` : "",
     ended.rating?.scoreJa && ended.detail ? ended.detail : "", filledLine ? `「${filledLine}」` : "",
   ].filter(Boolean).join("。") : "";
   const goal = auto !== null ? "おまかせで遊びます。" : definition.goalJa ?? definition.hintJa;
   // The real play's 「中断する」 goes once its outcome is decided (its one try spent: group1 round 2), as after its end;
-  // practice's goes as its result card comes (the card's own buttons are what comes next).
+  // practice's stays until the real play starts (leaving in its cut-in goes back to the instruction card).
   const showQuit = quitShown({ practice: !!run?.practice, ended: !!ended, decided: locked, cardShown });
 
   return (
@@ -534,13 +570,19 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
           {count && <p key={count} className="minigame-count" data-phase={count} data-testid="minigame-count" aria-hidden="true">{count === "go" ? "スタート！" : count}</p>}
           {finishing && ended?.word && <p className="minigame-finish" data-level={ended.level} data-anchor={definition.finishAnchor ?? "center"}
             data-testid="minigame-finish" aria-hidden="true">{ended.word}</p>}
+          {toReal && (
+            <div className="minigame-cutin" data-testid="minigame-cutin" aria-hidden="true">
+              <p className="minigame-cutin-sub">練習おわり</p>
+              <p className="minigame-cutin-main">次は本番！</p>
+            </div>
+          )}
           {cardShown && ended && (
             <ResultCard label={label(ended.outcome)} rating={ended.rating} {...(score ? { score } : {})}
               {...(ended.rating?.scoreJa && ended.detail ? { detail: ended.detail } : {})}
               {...(outcome?.reaction ? { face: face(outcome.reaction.kind) } : {})} {...(filledLine ? { line: filledLine } : {})}
-              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"}
+              retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"}
               {...(ended.field ? { field: ended.field } : {})} still={still} shownAt={ended.cardAt!}
-              onNext={() => choose(ended.outcome)} onRetry={(from) => start(run.practice, true, from)} onToReal={(from) => start(false, false, from)} />
+              onNext={() => choose(ended.outcome)} onRetry={(from) => start(false, true, from)} />
           )}
           {paused && !ended && (
             <div className="minigame-pause" role="group" aria-label="一時停止中" data-testid="minigame-pause">

@@ -18,10 +18,13 @@ import { defineMiniGame } from "../contract";
  * 「止まって！」「テンポが上がる！」「ラスト！」).
  *
  * The host's flow (docs/13 2.6): practice (the finale's dance carries no relationship effects and every outcome joins the
- * same closing lines), the drum's own count-in in place of the host's 3・2・1, ★ from the beats right on the drum and the
- * rests held (rules.ts), a finish word per outcome (none for standing still; 「踊りきった！」 rings as a good end though it
- * is ★1, a stumble as a mishap) and her face on the card. While the player mashes, a beat met shows no success and the
- * dancers stagger (「もつれそう」). Her reaction lines are her first breath at the end; the story's lines (Kamla's, then
+ * same closing lines) is a warm-up of its own, never a rehearsal of the dance (2026-11-16, the user's decision; params
+ * `warmup yes`, rules.ts BARAAT_WARMUP_PHRASES): the drum counts two at a calmer 80, then five even beats to tap with wider
+ * windows, none of the dance's groove, burst, break, faster tempo or big ending (5.6 s, the dance's 17); it ends by itself
+ * and the host's 「次は本番！」 starts the dance. Then the drum's own count-in in place of the host's 3・2・1, ★ from the
+ * beats right on the drum and the rests held (rules.ts), a finish word per outcome (none for standing still; 「踊りきった！」
+ * rings as a good end though it is ★1, a stumble as a mishap) and her face on the card. While the player mashes, a beat
+ * met shows no success and the dancers stagger (「もつれそう」). Her reaction lines are her first breath at the end; the story's lines (Kamla's, then
  * hers) follow at once and are never repeated here.
  *
  * Accessibility: 「踊る」 is 64px at the bottom (thumb reach), Space and Enter tap; the drum stands right over the lane's
@@ -50,14 +53,17 @@ export const baraatDance = defineMiniGame({
       reaction: { kind: "oops" } },
   ],
   defaultAuto: "off_beat_together",
-  params: () => z.object({}).strict(),
+  params: () => z.object({
+    warmup: z.enum(["yes"]).optional().describe("練習用の短く簡単な遊び（yes。練習が自動で使う。物語の札には書かない）"),
+  }).strict(),
   examples: [{}],
   startJa: "輪に入る",
   hintJa: "太鼓が4つ数えたら、印が輪に重なるたびに「踊る」。棒の印（休み）では押さない",
   goalJa: "太鼓が4つ数えたら、印が輪に重なる拍ごとに「踊る」。太鼓が止まる休みでは押さない。連打すると足がもつれる",
   controls: "rhythm",
   durationSec: 17,
-  practice: {},
+  // A short, simple warm-up of its own (rules.ts BARAAT_WARMUP_PHRASES), not the dance.
+  practice: { params: { warmup: "yes" } },
   // The drum counts four in the field (its own count): no 3・2・1 over it.
   countdown: "own",
   // The drum is the music (its own phrases at 96, then 108): the scene's track stays, lowered (quietScene).

@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import soundData from "../../../content/presentation/sounds.json";
 import {
   burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, HOST_SOUNDS, pickLine, RESULT_CARD_MAX_COVER, RESULT_CARD_SHORT_PX,
-  playLeavable, quitShown, resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, vibrationDoubles,
+  playLeavable, quitShown, resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, toRealDelay, vibrationDoubles,
 } from "./flow";
-import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
+import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_PRACTICE_STOP_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_TO_REAL_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
 
 describe("the host's start guard", () => {
   const startBox = { left: 100, top: 700, right: 300, bottom: 748 };
@@ -32,11 +32,10 @@ describe("leaving a play", () => {
     expect(playLeavable({ practice: true, ended: true, decided: true })).toBe(true);
   });
 
-  it("shows 「中断する」 while the play may be left, never over the result card (practice's included)", () => {
+  it("shows 「中断する」 while the play may be left (practice's cut-in into the real play included), never over the result card", () => {
     expect(quitShown({ practice: false, ended: false, decided: false, cardShown: false })).toBe(true);
     expect(quitShown({ practice: false, ended: false, decided: true, cardShown: false })).toBe(false);
     expect(quitShown({ practice: true, ended: true, decided: true, cardShown: false })).toBe(true);
-    expect(quitShown({ practice: true, ended: true, decided: true, cardShown: true })).toBe(false);
     expect(quitShown({ practice: false, ended: true, decided: true, cardShown: true })).toBe(false);
   });
 });
@@ -101,6 +100,14 @@ describe("the host's finish", () => {
     expect(resultCardDelay(750)).toBe(750);
   });
 
+  it("goes from practice into the real play by itself: a short stop (or the field's hold), the cut-in, then the real play's count", () => {
+    expect(toRealDelay(undefined)).toBe(MINI_GAME_PRACTICE_STOP_MS);
+    expect(toRealDelay(100)).toBe(MINI_GAME_PRACTICE_STOP_MS);
+    expect(toRealDelay(750)).toBe(750);
+    // Practice's end to the real play's 「スタート！」 stays short: under 2.5 s with the count.
+    expect(MINI_GAME_PRACTICE_STOP_MS + MINI_GAME_TO_REAL_MS + MINI_GAME_COUNT_MS).toBeLessThan(2500);
+  });
+
   it("keeps a hit-stop between 40 and 150 ms", () => {
     expect(hitStopMs(undefined)).toBe(90);
     expect(hitStopMs(10)).toBe(40);
@@ -110,10 +117,9 @@ describe("the host's finish", () => {
 });
 
 describe("the result card", () => {
-  it("offers 「もう一回」 and 「本番へ」 in practice, 「次へ」 in the story (and 「もう一回」 where allowed), going on by itself only with 「次へ」 alone", () => {
-    expect(resultButtons({ practice: true, retry: false })).toEqual({ next: false, retry: true, toReal: true, autoAdvance: false });
-    expect(resultButtons({ practice: false, retry: false })).toEqual({ next: true, retry: false, toReal: false, autoAdvance: true });
-    expect(resultButtons({ practice: false, retry: true })).toEqual({ next: true, retry: true, toReal: false, autoAdvance: false });
+  it("offers 「次へ」 (and 「もう一回」 where allowed), going on by itself only with 「次へ」 alone", () => {
+    expect(resultButtons({ retry: false })).toEqual({ next: true, retry: false, autoAdvance: true });
+    expect(resultButtons({ retry: true })).toEqual({ next: true, retry: true, autoAdvance: false });
   });
 
   it("counts the score's first number up in its own decimals", () => {

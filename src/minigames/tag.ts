@@ -36,6 +36,12 @@ export const MINI_GAME_PREFIX = /^[a-z][a-z0-9]*$/u;
 export const MINI_GAME_KEY = /^[a-z][a-z0-9_]*$/u;
 /** The host's keys, never a game's own. */
 export const MINI_GAME_HOST_KEYS = ["auto", "prefix", "bg", "retry"] as const;
+/**
+ * The game's key that only its practice sets (the definition's `practice: { params: { warmup: "yes" } }`: the short,
+ * simple practice play, 2026-11-16). A story tag never writes it: written there, the story's one real play would be the
+ * practice's (refused with a message).
+ */
+export const MINI_GAME_PRACTICE_KEY = "warmup";
 /** The host's key of an art slot: `art.<slot>`. */
 const ART_KEY = /^art\.([a-z][a-z0-9_]*)$/u;
 const FORM = "# minigame: <game> [auto <outcome>] [prefix <word>] [bg <background>] [art.<slot> <image>] [retry yes] [<key> <value>]…";
@@ -90,7 +96,7 @@ export function parseMiniGameTag(value: string, context: Partial<TagContext> = {
   const fullContext = { effectIds: [], backgroundIds: [], emotionIds: [], ...context } as TagContext;
   const keys = miniGameParamKeys(definition, fullContext);
   const keyHelp = () => [
-    ...keys.map((item) => `${item.key}: ${item.descriptionJa}`),
+    ...keys.filter((item) => item.key !== MINI_GAME_PRACTICE_KEY).map((item) => `${item.key}: ${item.descriptionJa}`),
     ...definition.artSlots.map((slot) => `art.${slot.id}: ${slot.labelJa}`),
     "auto, prefix, bg, retry yes",
   ].join("; ");
@@ -106,6 +112,9 @@ export function parseMiniGameTag(value: string, context: Partial<TagContext> = {
     if (seen.has(key)) throw new Error(`# minigame: ${id}: the key ${key} is written twice (each key once)`);
     seen.add(key);
     const slot = ART_KEY.exec(key)?.[1];
+    if (key === MINI_GAME_PRACTICE_KEY)
+      throw new Error(`# minigame: ${id}: ${key} is the practice's own key (the game's practice sets it for the short practice play; ` +
+        `a story tag never writes it: the story's play would be the practice's). 練習だけが使うキーです。物語の札には書きません`);
     if (key === "auto") {
       if (!outcomes.includes(word)) throw new Error(`Unknown outcome of the minigame ${id}: auto ${word} (its outcomes: ${outcomes.join(", ")})`);
       tag.auto = word;

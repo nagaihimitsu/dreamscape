@@ -1,5 +1,7 @@
 import type { MiniGameRules } from "../contract";
-import { cueTapRules, cueTapScriptFairness, cueTapTuningFor, type CueTapRecord, type CueTapScript, type CueTapTuning } from "../engines/cue_tap/engine";
+import {
+  cueTapRules, cueTapScriptFairness, cueTapTuningFor, type CueTapRecord, type CueTapScript, type CueTapTuning, type CueTapWindows,
+} from "../engines/cue_tap/engine";
 
 // The cloth flap (docs/13 2.4): a cue_tap skin with a script. Hidden in a niche of the stepwell, the player spreads the
 // cloth once as Jasmeet, coming down the stairs, stands on the gold step in front of it. She knows a pigeon is waiting
@@ -9,11 +11,20 @@ import { cueTapRules, cueTapScriptFairness, cueTapTuningFor, type CueTapRecord, 
 // up, and then she psyches herself up, bobbing on the third step in time (いち、にの…), holds on the bob she would go on
 // (another beat that does not come), and on the next leaps two steps down onto the gold step (the climax).
 // A far-off tap still tells its side: spread while she is still up the stairs (early), or after she has passed (late).
-// Nothing is random: the same walk every time (practice is a rehearsal). Pure.
+// Practice (its `warmup` key, 2026-11-16) is a walk of its own, short and plain, never a rehearsal of this one
+// (CLOTH_WARMUP_PLAN): from the second step she comes down three steady steps onto the gold step and on, with wider
+// windows; no stop, no boy, no freeze, no feint, no bobs, no leap. Nothing is random: the same walk every time. Pure.
 
 export type ClothFlapOutcome = "perfect" | "early" | "late" | "frozen";
-/** The flap has no keys of its own. */
-export type ClothFlapParams = object;
+/**
+ * The flap's one key, practice's alone: `warmup` (the definition's practice sets it; a story's tag never does) plays
+ * practice's short plain walk in place of the story's.
+ */
+export interface ClothFlapParams {
+  warmup?: "yes";
+}
+/** Whether a play is practice's short plain walk (its `warmup` key). */
+export const clothWarmup = (params: ClothFlapParams): boolean => params.warmup === "yes";
 
 /** Her walk's places: the steps from the top (0) to the gold one in front of the niche, and on down. */
 export const CLOTH_STEPS = {
@@ -75,9 +86,11 @@ export type ClothPose = "walk" | "wary" | "freeze" | "gather" | "hold";
 export interface ClothPlan {
   moves: readonly ClothMove[];
   poses: readonly { from: number; pose: ClothPose }[];
-  feint: { lift: number; back: number };
-  /** Her bobs on the third step before the leap (the times of their lowest points; she holds on the third). */
+  /** Her foot reached toward the gold step and drawn back (none in practice's walk). */
+  feint: { lift: number; back: number } | null;
+  /** Her bobs on the third step before the leap (the times of their lowest points; she holds on the third; none in practice's). */
   bobs: readonly number[];
+  /** The boy's run down past her (none in practice's walk). */
   boy: readonly ClothMove[];
   script: CueTapScript;
   tuning: CueTapTuning;
@@ -154,6 +167,49 @@ export function clothPlan(t: ClothTuning): ClothPlan {
 }
 
 /**
+ * Practice's walk (2026-11-16, the user's decision: practice is shorter and simpler than the real play, never its
+ * rehearsal): the one tap only. Already two steps down (a start of its own), she comes down three steady steps onto the
+ * gold step, stands on it through wider windows than the story's (a tap as she is seen to land on it is in time), and
+ * steps on past the niche; a third of the story's walk or less. Its timing is its own: its moment comes before she has
+ * even stopped once in the story's (a flap timed in practice is early there). The same in Debug's room (its edited numbers
+ * are the story's walk's).
+ */
+export const CLOTH_WARMUP = {
+  /** The step she stands on at the start (the marks of the first two lit; the gold one is the fifth). */
+  fromStep: 2,
+  /** She stands there this long (taps do not count yet), then comes down at her steady pace (a step's move in moveMs). */
+  settleMs: 600,
+  stepMs: 520,
+  moveMs: 250,
+  cleanEarlyMs: 130,
+  cleanLateMs: 200,
+  nearEarlyMs: 300,
+  nearLateMs: 450,
+} as const;
+
+/** Practice's walk worked out (CLOTH_WARMUP): her steady steps, and its script without a trap or a change of pace. */
+function clothWarmupPlan(): ClothPlan {
+  const { fromStep, settleMs, stepMs, moveMs, cleanEarlyMs, cleanLateMs, nearEarlyMs, nearLateMs } = CLOTH_WARMUP;
+  const moves: ClothMove[] = [];
+  let at = settleMs;
+  for (let k = fromStep; k < CLOTH_STEPS.gold; k += 1) {
+    moves.push({ from: k, to: k + 1, lift: at, land: at + moveMs, kind: "step" });
+    at += stepMs;
+  }
+  const onGold = moves[moves.length - 1].land;
+  const moment = onGold + cleanEarlyMs;
+  // She stands on the gold step through the perfect window, then one step on past the niche (and stops, as in the story's).
+  const off = moment + cleanLateMs;
+  moves.push({ from: CLOTH_STEPS.gold, to: CLOTH_STEPS.gold + 1, lift: off, land: off + moveMs, kind: "step" });
+  const script: CueTapScript = { start: settleMs, moment, end: off + moveMs + 160, read: { guessAt: moment, tellAt: settleMs }, traps: [] };
+  return {
+    moves, poses: [{ from: 0, pose: "walk" }], feint: null, bobs: [], boy: [], script,
+    tuning: cueTapTuningFor(script, { cleanEarlyMs, cleanLateMs, nearEarlyMs, nearLateMs }),
+  };
+}
+export const CLOTH_WARMUP_PLAN = clothWarmupPlan();
+
+/**
  * The fake-out a flap fell for, for the score line (like the cricket's 「高い球に振った」; the words of the early outcome's
  * note), or null (the seconds off: during her steady first steps, or her leap itself): her stop on the third step, the boy
  * running past (until she steps on), her stop on the fourth, her foot reached toward the gold step and her step back up,
@@ -166,26 +222,31 @@ export function clothTrapJa(plan: ClothPlan, tapMs: number): string | null {
   const leap = plan.moves.find((move) => move.kind === "leap")?.lift ?? Number.NEGATIVE_INFINITY;
   if (tapMs < wary || tapMs >= leap) return null;
   if (tapMs >= backOnThird) return "はずみの途中で広げた";
-  if (tapMs >= plan.feint.lift) return "踏み出しかけで広げた";
-  if (tapMs >= plan.boy[0].lift && tapMs < onFourth) return "男の子で広げた";
+  if (plan.feint && tapMs >= plan.feint.lift) return "踏み出しかけで広げた";
+  if (tapMs >= (plan.boy[0]?.lift ?? Number.POSITIVE_INFINITY) && tapMs < onFourth) return "男の子で広げた";
   return "立ち止まりで広げた";
 }
 
 /** The flap's rules with a tuning (the story's, or Debug's room's edited one). Clean: right in front of her. Any tap
  * before: early (the boy, her freeze, her feint: she sees it coming); any after: late (far off too, by its side). No tap:
  * frozen. ★ from the engine: clean ★3, a little off ★2, far off ★1 (its outcome is early or late all the same), no tap none;
- * the score line names the fake-out a flap fell for. */
+ * the score line names the fake-out a flap fell for. With the `warmup` key: practice's walk (CLOTH_WARMUP_PLAN, the same
+ * with any tuning), judged the same way; it has no fake-outs, so its score line is the seconds off. */
 export function clothFlapRulesFor(tuning: ClothTuning): MiniGameRules<ClothFlapParams, ClothFlapOutcome, CueTapRecord> {
   const plan = clothPlan(tuning);
-  return cueTapRules<ClothFlapParams, ClothFlapOutcome>(plan.tuning,
+  return cueTapRules<ClothFlapParams, ClothFlapOutcome>((params) => (clothWarmup(params) ? CLOTH_WARMUP_PLAN : plan).tuning,
     { clean: "perfect", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "frozen" },
-    { trapJa: (tapMs) => clothTrapJa(plan, tapMs) });
+    { trapJa: (tapMs, params) => (clothWarmup(params) ? null : clothTrapJa(plan, tapMs)) });
 }
 
 /** Why an edited tuning would make the flap unfair (the engine's checks of her walk's script; none: fair). */
 export function clothFlapFairness(tuning: ClothTuning): string[] {
-  const plan = clothPlan(tuning);
-  const problems = cueTapScriptFairness(plan.script, tuning);
+  return clothPlanFairness(clothPlan(tuning), tuning);
+}
+
+/** Why a walk would be unfair: the engine's checks of its script with its windows, and her steps out of order (none: fair). */
+export function clothPlanFairness(plan: ClothPlan, windows: CueTapWindows): string[] {
+  const problems = cueTapScriptFairness(plan.script, windows);
   for (const [index, move] of plan.moves.entries()) {
     if (move.land <= move.lift) problems.push(`her step ${index + 1} lands before it leaves`);
     const next = plan.moves[index + 1];
