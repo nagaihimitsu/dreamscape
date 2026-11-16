@@ -128,7 +128,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 22 | 検査とテスト | 確認 |
 | 23 | 公開する | 公開 |
 
-各手順は次の形で書きます：目的／前に要るもの／作るものと置き場所／守る決まり／確かめ方と終わりの目安／インド編では。
+各手順は次の形で書きます：目的／前に要るもの／作るものと置き場所／守る決まり／確かめ方と終わりの目安／インド編では。声と絵を頼んで受け取る手順13〜15・18 は要約で、細かい所は[発注マニュアル](ORDERING_MANUAL.md)にあります。
 
 ### 手順1. 都市の骨組みを決める
 
@@ -402,41 +402,23 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 
 ### 手順13. 背景・移動画面・タイトルの絵
 
-- 目的：会話の背景、街歩きの背景、地点の写真札を整える。
-- 前に要るもの：手順5（写真の背景）。自作の絵は手順2の後ならいつでも始められる。
-- 作るもの：
-  - 会話の背景：`romance/presentation.json` の背景に、写真なら `imageAssetId`、自作の絵なら `imagePath`。
-  - 街歩きの背景：都市ファイルの `backdropImagePath`（自作の絵。縦長を1080×1920pxの枠に収めた WebP）か `backdropAssetId`（観光写真のID）。どちらか一方。元の絵は `<制作資料>/backdrops/`、配信する絵は `<旅行編>/public/assets/backdrops/`。
-  - 地点の写真札：`travel/<都市ID>.json` の地点の `photoAssetId`（宿はこの欄の写真だけを使う）。
-  - 品物のアイコン：品物の `iconPath`。
-  - タイトルの絵（場合Bだけ）：`manifest.json` の `titleArt`（`imagePath`・`captionJa`・任意の `imagePosition`）。勧める大きさは 1760×560px（[既定背景とタイトルの絵](../docs/02_TECH_ARCHITECTURE.md#既定背景とタイトルの絵)）。
-  - 自作の絵は、置いた層の `presentation/own-artwork.json` に配信時のパスを1行ずつ登録する（自作の絵は出典の一覧に載らない）。
-- 守る決まり：出典つきの写真と自作の絵を混ぜない（両方に載せると止まる）。ほかの旅行編の `public/` の画像は使えない（止まる）。
-- 確かめ方と終わりの目安：`npm run content:build`（出典のない画像、ない画像で止まる）。スマートフォンの幅で街歩きと会話の画面を見る。
+- 目的と前に要るもの：会話の背景、街歩きの背景、地点の写真札、品物のアイコン、タイトルの絵（場合Bだけ）を整える。写真は手順5の後。描いた絵は手順2の後ならいつでも頼める。
+- 作るもの：会話の背景は `romance/presentation.json`（写真 `imageAssetId`、描いた絵 `imagePath`）、街歩きは都市ファイルの `backdropImagePath` か `backdropAssetId`（どちらか一方）、地点の写真札は `travel/<都市ID>.json` の `photoAssetId`（宿はこの欄だけ）、品物は `iconPath`、タイトルは `manifest.json` の `titleArt`。
+- 描いた絵の頼み方・大きさ・受け取り方（WebP、自作の絵の一覧 `own-artwork.json`）：[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章。確かめ方：`npm run content:build` と、スマートフォンの幅で街歩きと会話の画面を見る。
 - インド編では：3都市の移動画面の背景を自作の絵にした（#57。元のJPEGは `authoring/journeys/golden_triangle/backdrops/`）。
 
 ### 手順14. 立ち絵と大きさ
 
-- 目的：クイズの相手や出会う人に絵を付ける。
-- 前に要るもの：手順7（人物の設計）。台本の完成は待たなくてよい。
-- 作るもの：
-  - 絵：背景を透過した全身の絵。元の絵は可逆のPNGで `<制作資料>/characters/<人物ID>/neutral.png`（配信しない）。配信するのは、`npm run images:optimize -- --journey <旅行編ID> --write` が元の絵から作る軽い版（非可逆の WebP 品質85、透明度は元の絵のまま。`<旅行編>/public/assets/characters/<人物ID>/neutral.webp`）。
-  - 登録：`<旅行編>/presentation/characters.json` の `characters`（`id`・`imagePath`・`placement`・`placeholderColor`・`variants`）と、対決への割り当て `battleCharacters`（バトルID → 人物ID）。名前で話す人は `progression/story.json` の `people` の `characterId`。
-  - 大きさ：背の高さや姿勢で大きく見える人に `"figureScale": 0.88` のように書く（0.5〜1.2。足の位置はそのまま）。
-  - own-artwork への登録。
-- 守る決まり：別の人のイラストを流用しない。共通の `content/presentation/characters.json` に旅行編の人物を登録しない。
-- 確かめ方と終わりの目安：`npm run content:build`（形式・寸法・透過・参照。可逆のまま配信している立ち絵は注意で出る）。`npm run dev` を開き、URLに `?character-preview` を付けて見る。透過の縁は目で見る。
+- 目的と前に要るもの：クイズの相手や出会う人に、全身の絵（1024×1536px・透明）を付ける。手順7（人物の設計）の後。台本の完成は待たなくてよい。
+- 作るもの：元の絵は `<制作資料>/characters/<人物ID>/neutral.png`、配信するのは `npm run images:optimize -- --journey <旅行編ID> --write` が作る `<旅行編>/public/assets/characters/<人物ID>/neutral.webp`。登録は `<旅行編>/presentation/characters.json`（`characters`・`battleCharacters`）、`people` の `characterId`、`own-artwork.json`。大きく見える人は `figureScale`（0.5〜1.2）。
+- 頼み方・参考の絵・受け取り方と決まり：[発注マニュアル](ORDERING_MANUAL.md#6-絵の大きさと参考の絵)の5〜7章。確かめ方：`npm run content:build` と、`npm run dev` の URL に `?character-preview` を付けて大きさと透過の縁を見る。
 - インド編では：登場人物67人の立ち絵（#88）。年齢・体格・姿勢に合わせて `figureScale` を付けた（#103・#104。例 `gt_mehr`）。
 
 ### 手順15. アルバムの絵
 
-- 目的：思い出の場面を、アルバムに残る1枚の絵にする。
-- 前に要るもの：手順10の初稿（どの行で撮るか）。
-- 作るもの：
-  - 絵：`<旅行編>/public/assets/album/<ID>.webp`（ID はファイル名。英小文字・数字・`_`、すべての旅行編で1つだけ）。横長 3:2（例 1536×1024）。字や名前は絵に入れない。
-  - 札：行に `# photo: <ID>`、任意で `# photo_caption: <説明>`・`# photo_show: large`。思い出の呼び戻しは `# recall: <ID>`。
-- 守る決まり：アルバムの絵は作者が Dreamscape のために描いた絵だけ。登録も出典も要らない（`tourism/catalog.json` に載せると止まる）。
-- 確かめ方と終わりの目安：`npm run content:build`（ない ID、ID にならないファイル名、重なる ID で止まる。どの札も使わない絵は注意）。
+- 目的と前に要るもの：思い出の場面を、アルバムに残る1枚の絵（横長 3:2）にする。手順10の初稿（どの行で撮るか）の後。
+- 作るもの：`<旅行編>/public/assets/album/<ID>.webp`（登録も出典も要らない）と、行の `# photo: <ID>`（任意で `# photo_caption:`・`# photo_show: large`。呼び戻しは `# recall: <ID>`）。札は絵を置いてから書く。
+- 頼み方・受け取り方と決まり：[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章。確かめ方：`npm run content:build`（ない ID、ID にならないファイル名、重なる ID で止まる。どの札も使わない絵は注意）。
 - インド編では：アルバムに25枚（#99）。
 
 ### 手順16. 演出の札を付ける
@@ -450,7 +432,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - その国の言葉：`learning/local-words.json`（出典つき）と行の `# local_word:`。
   - 旅の図鑑：耳慣れない言葉（料理・生き物・建物など）を `glossary/terms.json` に書き、写真を `tourism/catalog.json` の `assets` に出典つきで登録し、言葉が初めて出うる行の前に `# term:` を置く（書き方は [CONTENT_GUIDE の「旅の図鑑の言葉」](CONTENT_GUIDE.md#旅の図鑑の言葉任意2026-11-13)）。
   - データの一言：地点の `descriptionJa`（筋を明かさない一般的な案内）・`heroineLinesJa`、`travel/<都市ID>.json` の最上位の `nightLinesJa`。
-- 守る決まり：ここぞという行だけに書く。`# em:` の語は行の字にそのまま書く。彼女の一言はどの関係の段階でも自然な言葉にし、キャラクターバイブルに照らす。
+- 守る決まり：ここぞという行だけに書く。`# em:` の語は行の字にそのまま書く。彼女の一言はどの関係の段階でも自然な言葉にし、キャラクターバイブルに照らす。札を付けるついでにヒロインの台詞の文を変えるなら、声を頼む前に済ませる（手順18、[発注マニュアルの 3.1](ORDERING_MANUAL.md#31-いつ頼むか)）。
 - 確かめ方と終わりの目安：`npm run content:build`（決まった値以外、行にない語、同じ行に同じ札2つで止まる）。Debug の場面の確認の「音と演出の見本を開く」で演出だけを見られる。
 - インド編では：台詞の見せ方の札とその国の言葉15語（#100）、品物の札・天気・揺れ・夜の色（#114）。
 
@@ -461,7 +443,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 目的：場所の空気を音で支える。
 - 前に要るもの：前半は手順2（場所の雰囲気）。後半は手順10の初稿。
 - 作るもの（[CONTENT_GUIDE](CONTENT_GUIDE.md) の「音楽（BGM）」「環境音」と、行の `# se:` の項）：
-  - 前半：曲・環境音・効果音を選び、作品の題・作者・ライセンス・確認日・URL を確かめる。ライセンスは `CC0 1.0`・`CC BY 3.0`・`CC BY 4.0`・`CC BY-SA 3.0`・`CC BY-SA 4.0`・`own`（自作）のどれか（`src/content/sounds.ts`）。自作でなければ `url` も書く。
+  - 前半：曲・環境音・効果音を、頼まずにフリー素材から選び（[発注マニュアルの1章](ORDERING_MANUAL.md#1-頼むもの頼まないもの)）、作品の題・作者・ライセンス・確認日・URL を確かめる。ライセンスは `CC0 1.0`・`CC BY 3.0`・`CC BY 4.0`・`CC BY-SA 3.0`・`CC BY-SA 4.0`・`own`（自作）のどれか（`src/content/sounds.ts`）。自作でなければ `url` も書く。
   - ファイル：`<旅行編>/public/assets/bgm/<ID>.mp3`・`ambience/<ID>.mp3`・`se/<ID>.mp3`（ID は旅行編の頭文字で始める。例 `gt_jalandhar`）。
   - 一覧：`presentation/music.json`（`sources`・`tracks`・`play`）、`presentation/ambience.json`、`presentation/sounds.json`。`tracks`・`sounds` には `useJa`・`sources`・`fromJa`・任意の `volume`。
   - 後半：`music.json` の `play`（`place`・`arrival`・`epilogue` など変えたい鍵と、地点ごとの `places`）、`ambience.json` の `play.places`、行の `# bgm:`・`# ambience:`・`# se:`。乗り物の音は `transportModes` の `se`。
@@ -471,27 +453,16 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 
 ### 手順18. 台詞の声
 
-- 目的：ヒロインなどの台詞に声を付ける。
-- 前に要るもの：台詞の確定（手順10の点検と手順10bの改稿、手順16・21で文を変えるなら、その後）。声は1行ごとのファイルなので、文を変えると録り直しになる。
-- 作るもの：
-  - 台本：`npm run voice:script -- --journey <旅行編ID>` が、ヒロインの台詞を1行＝1ファイルにした台本（`heroine_lines.txt` と `entries.json`）を `artifacts/voice/<旅行編ID>/` に書く。渡した台本は `<制作資料>/voice/<渡した日付>/` に置いてコミットする（[CONTENT_GUIDE の「台詞の声の台本」](CONTENT_GUIDE.md#台詞の声の台本と台詞が変わったときの確認2026-11-13)）。
-  - 声のID：英小文字・数字・`_`。台本は「knot の名前_番号」を付け（例 `gt_delhi_date_lodhi_garden_001`）、同じ文の行は前に渡した ID のまま変えない。
-  - 声が届いたら、MP3 を下のファイルの場所に置き、`npm run voice:tag -- --journey <旅行編ID> --from <届いたファイルのフォルダ>` で行に `# voice: <ID>` を書く（その声が言っている文を `<制作資料>/voice/recorded.json` に記録する。文が台本と違う声は付けない）。
-  - ファイル：`<旅行編>/public/assets/voice/<ID>.mp3`（登録は要らない）。
-  - 出典：`manifest.json` の `voiceCredits`（`useJa`・`titleJa`・`author`・`license`・`checkedAt`・`url`・`creditJa`）。「出典・権利の一覧」の「声」に出る。
-- 守る決まり：
-  - `{player_name}`・`{player_address}`・`{heroine_name}` のある行には声を付けない（遊ぶ人が名前を決めるので、録音では言えない。止まる）。
-  - 音声合成のモデル・素材のライセンスを確かめる。
-  - 実在の人の声を参考にするとき（声の見本や、音声合成の参照音声）は、その人の同意を得て記録を残す。同意の記録を置く決まった場所は、リポジトリにはまだない（`<制作資料>/research/` などにメモを置く）。
-- 確かめ方と終わりの目安：`npm run content:build`（ファイルのない ID、名前の行の声で止まる。どの行も使わないファイルは注意。声のファイルのない旅行編に `voiceCredits` を書くと止まる）。ゲームの設定「台詞の声を出す」で聞く。読み終えた場面の声は、旅の音楽室（最初の都市のクリア後、「旅の記録」から）にも並ぶ。
-- 台詞を直したら：`npm run voice:changes -- --journey <旅行編ID>` が、録音した行を `recorded.json` の文と、まだ録音していない行を渡した最新の台本と比べ、録り直しの要る行を出す。録音した行の文が変わると `content:build` も注意を出す（作り直した声を `voice:tag` で記録するまで消えない）。
+- 目的と前に要るもの：ヒロインの台詞に声を付ける。台詞の確定（手順10の点検と手順10bの改稿、手順16・21で文を変えるなら、その後）の後に頼む。声は1行ごとのファイルなので、文を変えると録り直しになる。
+- 流れ：`npm run voice:script -- --journey <旅行編ID>` で台本を作り、渡した台本を `<制作資料>/voice/<渡した日付>/` に置く → 届いた MP3 を `<旅行編>/public/assets/voice/<ID>.mp3` に置き、`npm run voice:tag` で `# voice:` を付ける → 台詞を直したら `npm run voice:changes` で、録り直しの要る行だけを頼む。出典は `manifest.json` の `voiceCredits`。
+- 頼む行・一行の長さ・発注のファイル・名前の行・受け取り方：[発注マニュアル](ORDERING_MANUAL.md#3-声を頼む)の3〜4章。確かめ方：`npm run content:build` と、ゲームの設定「台詞の声を出す」で聞く。
 - インド編では：音声合成 Irodori-TTS v4.1-Small でヒロインの声を作った（#101 で26本、#110 で210本、#125・#126 で171本。今はデリーとアーグラの407本）。
 
 ### 手順19. ミニゲーム
 
 - 目的：場面の山場で、選択肢の代わりに短いミニゲームを遊んでもらい、その結果で選択肢を選ぶ。
 - 前に要るもの：その場面の初稿（デートなら手順10）。
-- 作るもの：選択肢のすぐ前の行に `# minigame: <ゲーム>`（任意で `auto <結果>`・`prefix <語>`・`bg <背景>`・`art.<名前> <絵>`・ゲームの引数）、すぐ後に結果ごとに1つずつ選択肢（`# option:` は結果のID）。ゲームの一覧は Debug の「ミニゲームの見本」にある（[CONTENT_GUIDE の「ミニゲーム」](CONTENT_GUIDE.md#ミニゲーム任意2026-11-13)）。旅行編の絵を使うときは `public/assets/minigames/` に置き、`presentation/own-artwork.json` に載せる。
+- 作るもの：選択肢のすぐ前の行に `# minigame: <ゲーム>`（任意で `auto <結果>`・`prefix <語>`・`bg <背景>`・`art.<名前> <絵>`・ゲームの引数）、すぐ後に結果ごとに1つずつ選択肢（`# option:` は結果のID）。ゲームの一覧は Debug の「ミニゲームの見本」にある（[CONTENT_GUIDE の「ミニゲーム」](CONTENT_GUIDE.md#ミニゲーム任意2026-11-13)）。旅行編の絵を使うときは `public/assets/minigames/` に置き、`presentation/own-artwork.json` に載せる（絵の頼み方・大きさ・受け取り方は[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章）。
 - 守る決まり：場所のファイルの場面ならどこでも書けるが、告白のデートには書かない。結果は遊び方だけで決まり、乱数は使わない。結果の選択肢の支払い・品物は、場面の頭か道の上の条件で保証する。関係値は作者の札だけで動く。
 - 確かめ方と終わりの目安：`npm run content:build`（書き方の誤り、結果と選択肢が1つずつ合わない、選べないことがある結果の選択肢、書けない所、おまかせで抜けられない輪で止まる）。Debug の「ミニゲームの見本」の「Debugで開く」でその場面を開き、Debugモードの結果のボタンで各結果の後を読む。
 - インド編では：3都市の場面で11本を使っている（例：アーグラのメヘターブ・バーグのデートの最後の一球 `places/gt_agra_mehtab_bagh.ink`、ジャイプールのラージューの地図の値段 `places/gt_jaipur_jaigarh_fort.ink`）。
@@ -703,6 +674,8 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 - [ ] `journey:readiness` で、この都市の問題がない
 
 ### 絵と音
+
+頼むときと届いたときの細かい確かめは、[発注マニュアルのチェックリスト](ORDERING_MANUAL.md#8-チェックリスト)にあります。
 
 - [ ] 背景・街歩きの背景・品物のアイコンを登録した。自作の絵は `own-artwork.json` にある
 - [ ] 立ち絵を登録し、配信は軽い版にし（`images:optimize`）、`?character-preview` で大きさ（`figureScale`）と縁を見た
