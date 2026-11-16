@@ -51,7 +51,8 @@
     "voice:changes": "tsx scripts/voice-changes-cli.ts",
     "voice:tag": "tsx scripts/voice-tag-cli.ts",
     "story:move-memos": "tsx scripts/move-story-memos.ts",
-    "sources:check": "tsx scripts/sources-check-cli.ts"
+    "sources:check": "tsx scripts/sources-check-cli.ts",
+    "content:unused": "tsx scripts/content-unused-cli.ts"
   },
   "dependencies": {
     "inkjs": "^2.4.0",
