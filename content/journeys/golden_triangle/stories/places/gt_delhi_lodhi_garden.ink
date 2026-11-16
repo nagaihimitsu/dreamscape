@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // ロディ・ガーデンのデート（噛み合いの選択は2回。2回目は、フマユーン廟の回を終えたかで別の場面になる）。
 // 終えていれば、スレーシュと「大学の同級生」に再会する。終えていなければ、二人を知らないまま、胸に薔薇をさした老人を見かけるだけ。
-// 後の道で「一緒に言おう」を選ぶと、ミニゲーム「一緒に言う」（# minigame: say_together）で、彼女の「せーの」に声を合わせる（手伝いの knot）。
+// 後の道（スレーシュたちに会わない道）の二回目の噛み合いは、ミニゲーム「一緒に言う」（# minigame: say_together）。彼女の「せーの」に声を合わせ、そろい方で話が進む。
 
 // 【3】
 === gt_delhi_date_lodhi_garden ===
@@ -249,50 +249,94 @@ INCLUDE modules.ink
 や、ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: gt_dubey
 小さい。駅は広いんです。一番奥のホームまで届かせて
-* [「一緒に言おう」と声を合わせる # option: shout_together]
+// 二回目の噛み合いの代わりに、ミニゲーム「一緒に言う」（2026-11-16。前は「一緒に言おう」を選んだときだけ遊んだ）。
+// 彼女の「せー」「の」の次の拍で、主人公が「言う」を押す。大きさではなく、出だしのタイミングを合わせる（2026-11-13 ユーザー判断）。
+// ゲームの結果と同じ ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。結果の後は、ドゥベイの「合格」へ合流する。
+# speaker: narrator
+彼女が、こちらの袖を引いた。一緒に、と口の形だけで言う。こちらがうなずくと、彼女も小さくうなずき返した。
+{ romance_result == "negative":
+    # speaker: heroine
+    # emotion: worried
+    うん。じゃあ、『せーの』で。……わたしの声が小さくても、笑わないでね
+- else:
+    # speaker: heroine
+    # emotion: happy
+    うん、二人なら届きそう。わたしが『せーの』って言うから、その次ね
+}
+# speaker: narrator
+# minigame: say_together auto together art.lawn gt_img_delhi_lodhi_lawn
+彼女は小さく息を吸って、こちらを見た。
+* [声を合わせた：「の」の次の拍で、二人の声がそろった # option: together]
     # profile: playful
-    -> gt_delhi_lodhi_garden_say_together ->
-* [「君なら、届くよ」とだけ言う # option: you_can_reach]
-    # profile: attentive
     { romance_result == "negative":
-        # speaker: heroine
-        # emotion: worried
-        # voice: gt_delhi_date_lodhi_garden_018
-        ……そう言われると、余計に出ないかも
         # speaker: narrator
-        それでも彼女は息を吸い、さっきより、ほんの少しだけ大きな声で言い切った。
+        出だしは、ぴったり重なった。二人の声は、芝生の向こうの墓まで届いた。ただ、届いたのはほとんどこちらの声だった。
+        # speaker: heroine
+        # reaction: heroine,exasperated,sweat
+        # voice: gt_delhi_date_lodhi_garden_017
+        ……今の、九割くらい、そっちの声だったよ
     - else:
         # speaker: narrator
-        彼女は一度だけこちらを見て、息を吸った。
+        出だしが、ぴたりと重なった。二人の声が、芝生の向こうの墓まで届いた。散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
         # speaker: heroine
-        # emotion: surprised_big
-        # size: large
-        # voice: gt_delhi_date_lodhi_garden_019
-        ヤートリーガン、クリプヤー、ディヤーン、デーン！
-        # speaker: narrator
-        # emotion: surprised
-        思ったより大きな声が出て、本人がいちばん驚いていた。
+        # reaction: heroine,happy,music
+        そろった！　今の、ぴったりだったよね
     }
-* [「もっと大きく！」と、ドゥベイの真似をする # option: mimic_dubey]
+* [声を合わせた：合図より先に、こちらが言った # option: early]
     # profile: provocative
+    # speaker: narrator
+    こちらの声だけが、先に飛び出した。一人分の声が芝生を渡っていき、少し遅れて、彼女の声が追いかけてきた。
     { romance_result == "negative":
         # speaker: heroine
-        # reaction: heroine,exasperated,anger
-        # voice: gt_delhi_date_lodhi_garden_020
-        からかわないで。本当に恥ずかしいんだから
+        # reaction: heroine,surprised,sweat
+        えっ、もう？　……わたし、置いていかれちゃった
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        # voice: gt_delhi_date_lodhi_garden_021
-        似てる！　ふふっ、もう、笑っちゃって言えない
-        # speaker: heroine
-        # emotion: happy
-        # size: large
-        # voice: gt_delhi_date_lodhi_garden_022
-        ディヤーン、デーン！
-        # speaker: narrator
-        笑いながらの声は、今日いちばん大きかった。
+        早いよ！　『その次』って言ったのに。ふふ、一人で全部言っちゃうんだもん
     }
+    # speaker: gt_dubey
+    ただいまの列車は、定刻より早く発車いたしました。お乗り遅れのお客様が、お一人
+* [声を合わせた：彼女が先に言い、こちらは後から続いた # option: late]
+    # profile: honest
+    # speaker: narrator
+    「の」の次の一拍で、彼女の声だけが先に出た。こちらの声は、その後から追いかけた。
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,shy,sweat
+        今の、わたしの声だけ先に出てた。……恥ずかしい
+    - else:
+        # speaker: heroine
+        # emotion: surprised_big
+        遅いよ！　一瞬、わたし一人で叫んでた
+        # speaker: narrator
+        # emotion: happy
+        そう言いながら、彼女は笑っていた。
+    }
+    # speaker: gt_dubey
+    後続の列車は、少々遅れての到着となりました
+* [声を合わせた：こちらは言わず、彼女が一人で言った # option: silent]
+    # profile: attentive
+    # speaker: narrator
+    「の」の次の一拍で、彼女の声だけが芝生に響いた。こちらの口は、開いたまま動かなかった。
+    { romance_result == "negative":
+        # speaker: narrator
+        最後の「デーン」は、ほとんど聞こえなかった。彼女は、ゆっくりこちらを向いた。
+        # speaker: heroine
+        # emotion: worried
+        ……一緒にって、言ったよね
+    - else:
+        # speaker: narrator
+        彼女は最後まで言い切ってから、ゆっくりこちらを向いた。
+        # speaker: heroine
+        # emotion: teasing
+        もしかして、わざと黙ってた？
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        もう。……でも、言えちゃった。一人で、最後まで
+    }
+    # speaker: gt_dubey
+    お知らせいたします。列車が一本、運休となりました
 -
 # speaker: gt_dubey
 合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る
@@ -324,90 +368,3 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_026
 理由がなくても笑っていいって言われると、ちょっと楽になるね。わたし、いつも、笑っていい理由を探してから笑ってた気がする
 -> END
-
-// 【3】手伝いの knot：「一緒に言おう」（ミニゲーム「一緒に言う」 # minigame: say_together）。
-// 彼女が「せー」「の」と数え、次の拍で言う。主人公はそれに合わせて「言う」を押す。大きさではなく、出だしのタイミングを合わせる
-// （2026-11-13 ユーザー判断）。結果は、そろった（together）・先に言った（early）・出遅れた（late）・言わなかった（silent）。
-// 場面の中の選択なので噛み合いはなく、関係値も動かさない（噛み合いは、この前の「一緒に言おう」の選択で1回）。
-// 彼女の声の大きさと気持ちは、その噛み合いの romance_result のまま分ける。結果の後は、ドゥベイの「合格」へ合流する。
-=== gt_delhi_lodhi_garden_say_together ===
-{ romance_result == "negative":
-    # speaker: heroine
-    # emotion: worried
-    うん。じゃあ、『せーの』で。……わたしの声が小さくても、笑わないでね
-- else:
-    # speaker: heroine
-    # emotion: happy
-    うん、二人なら届きそう。わたしが『せーの』って言うから、その次ね
-}
-# speaker: narrator
-# minigame: say_together auto together art.lawn gt_img_delhi_lodhi_lawn
-彼女は小さく息を吸って、こちらを見た。
-* [声を合わせた：「の」の次の拍で、二人の声がそろった # option: together]
-    { romance_result == "negative":
-        # speaker: narrator
-        出だしは、ぴったり重なった。二人の声は、芝生の向こうの墓まで届いた。ただ、届いたのはほとんどこちらの声だった。
-        # speaker: heroine
-        # reaction: heroine,exasperated,sweat
-        # voice: gt_delhi_date_lodhi_garden_017
-        ……今の、九割くらい、そっちの声だったよ
-    - else:
-        # speaker: narrator
-        出だしが、ぴたりと重なった。二人の声が、芝生の向こうの墓まで届いた。散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
-        # speaker: heroine
-        # reaction: heroine,happy,music
-        そろった！　今の、ぴったりだったよね
-    }
-* [声を合わせた：合図より先に、こちらが言った # option: early]
-    # speaker: narrator
-    こちらの声だけが、先に飛び出した。一人分の声が芝生を渡っていき、少し遅れて、彼女の声が追いかけてきた。
-    { romance_result == "negative":
-        # speaker: heroine
-        # reaction: heroine,surprised,sweat
-        えっ、もう？　……わたし、置いていかれちゃった
-    - else:
-        # speaker: heroine
-        # reaction: heroine,teasing_big,music
-        早いよ！　『その次』って言ったのに。ふふ、一人で全部言っちゃうんだもん
-    }
-    # speaker: gt_dubey
-    ただいまの列車は、定刻より早く発車いたしました。お乗り遅れのお客様が、お一人
-* [声を合わせた：彼女が先に言い、こちらは後から続いた # option: late]
-    # speaker: narrator
-    「の」の次の一拍で、彼女の声だけが先に出た。こちらの声は、その後から追いかけた。
-    { romance_result == "negative":
-        # speaker: heroine
-        # reaction: heroine,shy,sweat
-        今の、わたしの声だけ先に出てた。……恥ずかしい
-    - else:
-        # speaker: heroine
-        # emotion: surprised_big
-        遅いよ！　一瞬、わたし一人で叫んでた
-        # speaker: narrator
-        # emotion: happy
-        そう言いながら、彼女は笑っていた。
-    }
-    # speaker: gt_dubey
-    後続の列車は、少々遅れての到着となりました
-* [声を合わせた：こちらは言わず、彼女が一人で言った # option: silent]
-    # speaker: narrator
-    「の」の次の一拍で、彼女の声だけが芝生に響いた。こちらの口は、開いたまま動かなかった。
-    { romance_result == "negative":
-        # speaker: narrator
-        最後の「デーン」は、ほとんど聞こえなかった。彼女は、ゆっくりこちらを向いた。
-        # speaker: heroine
-        # emotion: worried
-        ……一緒にって、言ったよね
-    - else:
-        # speaker: narrator
-        彼女は最後まで言い切ってから、ゆっくりこちらを向いた。
-        # speaker: heroine
-        # emotion: teasing
-        もしかして、わざと黙ってた？
-        # speaker: heroine
-        # reaction: heroine,happy,music
-        もう。……でも、言えちゃった。一人で、最後まで
-    }
-    # speaker: gt_dubey
-    お知らせいたします。列車が一本、運休となりました
-- ->->

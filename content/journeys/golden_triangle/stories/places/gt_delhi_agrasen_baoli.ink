@@ -3,8 +3,8 @@ INCLUDE modules.ink
 
 // アグラセン・キ・バオリのデート（噛み合いの選択は2回）。
 // ここで撮られた短い動画は、アーグラの到着の後と、ジャイプールのフィナーレの後で話題になる（差し込み【4】）。
-// 鳩の役が主人公のとき（gt_delhi_baoli_player_pigeon）は、布を広げる所がミニゲーム「鳩の役」（# minigame: cloth_flap、
-// 手伝いの knot gt_delhi_agrasen_baoli_pigeon_flap）。どの結果でも、ジャスミートの本物の悲鳴で動画が撮れる。
+// 2回目の3択の後、主人公が鳩の役になり、布を広げる所がミニゲーム「鳩の役」（# minigame: cloth_flap、
+// 手伝いの knot gt_delhi_agrasen_baoli_pigeon_flap）。3択のどれでも遊ぶ（2026-11-16）。どの結果でも、ジャスミートの本物の悲鳴で動画が撮れる。
 
 // 【3】
 === gt_delhi_date_agrasen_baoli ===
@@ -153,6 +153,7 @@ INCLUDE modules.ink
     }
 * [「最高の悲鳴だった」と褒める # option: praise_scream]
     # profile: playful
+    # set: gt_delhi_baoli_player_pigeon
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy_deep,gloom
@@ -187,17 +188,8 @@ INCLUDE modules.ink
     # voice: gt_delhi_date_agrasen_baoli_021
     ジャスミートさん、もう一回やろう。鳩の役なら、ここにちょうどいい人がいるし
 -
-{ cond("flag gt_delhi_baoli_player_pigeon"):
-    -> gt_delhi_agrasen_baoli_pigeon_flap ->
-- else:
-    # speaker: narrator
-    彼女はジャスミートのドゥパッターを借りて、くぼみに隠れた。両手で広げて、羽ばたく準備をしている。たぶん、鳩のつもりだ。
-    # speaker: narrator
-    ジャスミートが階段を途中まで上り直し、もう一度下りてくる。三、二、一。
-    # speaker: narrator
-    # se: cloth_flap
-    白い布が、ばさりと広がった。
-}
+// 2回目の3択のどれでも、鳩の役は主人公（2026-11-16。前は「最高の悲鳴だった」の道だけ彼女が鳩の役で、ゲームが無かった）。
+-> gt_delhi_agrasen_baoli_pigeon_flap ->
 # speaker: gt_jasmeet
 きゃあああっ！
 # speaker: narrator
@@ -237,7 +229,7 @@ INCLUDE modules.ink
 ……だめだ。冷たいものが飲みたい。煩悩、一個も減ってない
 -> END
 
-// 【3】手伝いの knot：鳩の役が主人公のとき（噛み合いでない、場面の中の選択）。
+// 【3】手伝いの knot：主人公の鳩の役（噛み合いでない、場面の中の選択。2回目の3択のどれの後でも来る）。
 // 選択肢の代わりにミニゲーム「鳩の役」：足音がくぼみの前の段に来たときに布を広げる。結果の選択肢に関係値は付けない。
 // どの結果も、戻った先のジャスミートの本物の悲鳴へつながる（後の動画の話：布を広げて飛び出す鳩の役）。
 === gt_delhi_agrasen_baoli_pigeon_flap ===
