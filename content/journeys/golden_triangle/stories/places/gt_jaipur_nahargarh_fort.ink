@@ -52,7 +52,7 @@ INCLUDE modules.ink
         # speaker: narrator
         名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。どこから自分の声が戻ってくるのかも分からない。
         # stand: close
-        三回目に呼んだとき、すぐ後ろの扉の陰から、くすくす笑う声がした。
+        三回目に呼んだとき、笑い声のしていた扉が開いて、彼女が駆け寄ってきた。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
@@ -64,14 +64,14 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: narrator
         # se: door_creak
-        扉を開ける。空っぽの部屋。次の扉。また同じ部屋。七つ目の扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
+        扉を開ける。空っぽの部屋。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
         # speaker: heroine
         # emotion: exasperated
         遅い……。ずっと待ってたんだよ。途中で、出ていこうかと思った
     - else:
         # speaker: narrator
         # se: door_creak
-        扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。七つ目の扉を開けたとき、壁の絵の前で、彼女が背中を向けて立っていた。
+        扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁の絵を見ていた彼女が、振り向いた。
         # speaker: heroine
         # reaction: heroine,surprised,blush
         あ……見つかった。一個ずつ、全部開けてきたの？

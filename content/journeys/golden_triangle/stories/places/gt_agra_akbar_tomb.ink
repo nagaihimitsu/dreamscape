@@ -81,7 +81,8 @@ INCLUDE modules.ink
 # leave: gt_agra_akbar_guard
 番人が門の方へ戻っていくと、彼女はスマートフォンで廟の英語の案内を開いた。二人で、画面をのぞきこむ。
 // 案内の英文と訳（2026-11-15のユーザー判断「英語の原文を出し、下に日本語の訳を添える」）。読めなかったことは
-// 「伝えられている」に留める（出典は romance/date_destinations.json の agra_akbar_tomb の facts）。
+// 「伝えられている」に留める（出典は romance/date_destinations.json の agra_akbar_tomb の facts。「毎日」は The Tribune の
+// B.N. Goswamy の記事が引くアブル・ファズルの「daily」。『アーイーニ・アクバリー』の原典は開いていない）。
 # speaker: narrator
 # letter: card
 # translation: アクバルは、生涯、文字を読めなかったと伝えられている。

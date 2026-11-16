@@ -77,13 +77,13 @@
   },
   "finales": {
     "jaipur": {
-      "titleJa": "上映前、最後の五問",
-      "descriptionJa": "ジャンタル・マンタルで上映役のラヴィと合流。三分間の旅を人に見せる前に、街の話を確かめる。",
-      "clearTitleJa": "最初の言葉は、わたしから",
-      "clearDescriptionJa": "旅の映像が完成した。紹介の一言は、自分で話すと決めた。",
-      "enemyNameJa": "ラヴィ",
-      "enemyTitleJa": "時計に細かい、小さな上映会の世話役",
-      "enemyDescriptionJa": "ニールの友人。人の話を聞くのが好きで、自分が話すと少し大げさ。仲間内の旅行映像の会を開く。架空の人物・企画。",
+      "titleJa": "窓の外へ",
+      "descriptionJa": "旅の最後の夜、ハワー・マハルの前を進む花婿の行列。花嫁の家の門で、カムラに背中を押され、花婿側の代表として問題に答えることになる。",
+      "clearTitleJa": "通りで踊った夜",
+      "clearDescriptionJa": "大勢の前で答え、通りの真ん中で踊った。六十年、窓から行列を見てきた花嫁の祖母も、杖をついて通りへ出てきた。",
+      "enemyNameJa": "カムラ",
+      "enemyTitleJa": "六十年黙っていた祖母",
+      "enemyDescriptionJa": "デリーに六十年、ジャイプールにはまだ数日。言わなかった言葉を、デリーの城でやっと口にした。今度は、黙って見ている側を許さない。",
       "placeId": "jaipur_hawa_mahal",
       "activityMinutes": 45
     }
