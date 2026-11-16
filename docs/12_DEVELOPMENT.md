@@ -28,15 +28,18 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
 | `npm run dev:sample` | 見本の編（`authoring/templates/sample_trip/`）を含めて生成し、開発サーバーを起動。タイトル画面に「見本の旅」が並ぶ（`npm run dev` に戻すと消える。[見本の編](02_TECH_ARCHITECTURE.md#見本の編)） |
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
+| `npm run content:warnings -- --save [ファイル]`・`-- --compare [ファイル]` | `content:build` が数える注意を、種類ごとの件数と文で取る（Inkを直した後に残った表情・反応の注記は `stale-dialogue` として）。`--save` は件数・文・見本の有無・Git の HEAD を JSON に保存し（既定は `artifacts/content-warnings.json`。Git管理外）、`--compare` は保存したものと比べて、種類ごとの前 → 今と、消えた注意・増えた注意を出す（見本の有無が保存したときと違えば知らせる）。`-- --with-sample` で見本の編も含めて数える。検証は `content:build` と同じで、生成物は書かない |
 | `npm run content:watch` | 生成を1回行い、その後は `content/`・`public/` のファイル（Ink・JSON・画像）を保存するたびに生成し直す（`-- --with-sample` で見本の編も含めて監視）。失敗しても監視を続け、生成物は前回のまま。Ctrl+C で終了 |
 | `npm run dev:watch` | `content:watch` と開発サーバーを一緒に起動し、保存した Ink・JSON・画像を開いている画面へ反映する。開発サーバーは最初に生成に成功してから起動する（`npm run dev` と同じ）。Ctrl+C で両方を終了（`-- --with-sample` で見本の編も） |
 | `npm run typecheck` | 型検査（`tsc --noEmit`）。生成物を読むので、空のチェックアウトでは先に `npm run content:check` |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・`verify`。[テストの組](10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
+| `npm run test:with-sample -- [vitest の引数]` | 見本の編を含めて生成し、引数を `vitest run` に渡して単体テストを流し、最後に見本なしで生成し直す（テストが失敗しても、Ctrl+C で止めても戻す。終了コードは vitest のもの）。見本の編を前提とするテストを絞って流すときに使う（例：`npm run test:with-sample -- tests/journeys/sample_trip/`）。`npm test`・`test:quick` は、前の生成で入れた見本を残したまま終わる |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ。過去のセーブが更新後に再開できることを保証するものではない |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にテスト用のコードやデータがないか、タイトル画面で読み込むファイルにDebugが入っていないか、ライブラリのライセンス一覧（`third-party-licenses.json`）があるかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
 | `npm run dist:check` | ビルド済みの `dist/` にテスト用の読み取り口・仮データ・見本の旅行編がないか、Debug・プレビューがタイトル画面で読み込まない別のファイルだけにあるか、`package.json` の `dependencies` がすべてライブラリのライセンス一覧に載っているかを検査（`build`・`verify` が自動で実行） |
+| `npm run branch:after-squash -- <合流した PR の最後のコミットの SHA> [-m <段落>]...` | GitHub が作業ブランチの PR を squash で合流した後、手元のブランチを `origin/main` に合わせ、合流したコミットを `git merge -s ours` で履歴としてつなぐ（中身は `origin/main` のまま。次の push は PR のブランチへの fast-forward）。コミットしていない変更がある、HEAD が渡した SHA でない、ブランチで変えたファイルが `origin/main` で違う内容のときは、理由と次の手を出して止める。追跡先（upstream）は変えない。push はせず、push のコマンドを出す。`-m` の段落は既定の1行目（`Merge branch head <短いSHA> into <ブランチ> after the squash merge of #<番号>`）の後に足す（署名の行は1つの `-m` に改行でつなぐ） |
 | `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](10_DEVELOPMENT_CHECKS.md#e2eの段)） |
 | `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・Debugモードがオフの間は `?debug` を無視しDebugのファイルを読み込まないこと、ゲームの設定のパスワードでDebugモードをオンにしてDebugを開けること、タイトル画面までの読み込み量の報告 |
 | `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
