@@ -582,7 +582,7 @@ function departToLandmark(initial: GameState, landmarkId: string, ticket: number
  * landmark's visit its rule names (the unified event design, stage 1):
  * - before the main part (a negative priority): depart to the landmark from the map (beginTravelEvent);
  * - after it (a positive priority): depart, play the landmark's battle to its result with the real
- *   functions (guide skipped, every answer correct) and leave it with 「自由時間へ」;
+ *   functions (guide skipped, every answer correct) and leave it with 「街歩きへ」;
  * - while observing: at its place the landmark's observation opens (a first visit skips the guide)
  *   and the encounter starts there under the observation's own rule (getTourismEncounterAvailability);
  *   after the scene the observation goes on.

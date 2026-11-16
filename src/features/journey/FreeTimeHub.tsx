@@ -34,7 +34,7 @@ export type FreeTimeHubProps = {
 };
 
 /**
- * Free time. The screen is chosen here, on its one line (docs/02 「自由時間の画面」): B案「写真札で旅先を選ぶ」 (a new
+ * Free time. The screen is chosen here, on its one line (docs/02 「街歩きの画面」): B案「写真札で旅先を選ぶ」 (a new
  * city starts its cards afresh). The previous map-and-list screen stays below as MapListFreeTime, type-checked by
  * every build; to bring it back, return `<MapListFreeTime {...props} />` on that line instead.
  */

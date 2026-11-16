@@ -177,7 +177,7 @@ function encounterStoryCanFinish(state: GameState): boolean {
   return !!option?.deferCompletion || !hasLandmarkBattle(state, event);
 }
 
-/** The encounter's last line ends the scene (EncounterScreen's 「観光に戻る」／「自由時間へ」) instead of reading on. */
+/** The encounter's last line ends the scene (EncounterScreen's 「観光に戻る」／「街歩きへ」) instead of reading on. */
 export function encounterCanFinish(state: GameState): boolean {
   const active = state.activeEncounter;
   return !!active && active.frame.ended && (active.phase === "outcome" || encounterStoryCanFinish(state));
@@ -343,7 +343,7 @@ export function visitedLandmarkOfEvent(eventId: string): string | undefined {
   return battles.find((battle) => battle.id === eventId)?.landmarkId ?? undefined;
 }
 
-/** The battle result screen's 「自由時間へ戻る／進む」: leave the result, then the occasion goes on (after battle, +N, its end). */
+/** The battle result screen's 「街歩きへ戻る／進む」: leave the result, then the occasion goes on (after battle, +N, its end). */
 export function leaveBattleToFreeTime(state: GameState, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
   return leaveBattleResult(state, expectedRevision, nextRoll);
 }

@@ -99,7 +99,7 @@ export function EpilogueScreen({
     ? { eyebrow: "ツアー", heading: leg?.labelJa ?? "ツアーの移動", region: "ツアーの移動の語り", next: "ツアーを続ける", testId: "tour-leg-screen" }
     : arrival ? { eyebrow: "旅のはじまり", heading: `${city.nameJa}に到着`, region: "到着の会話", next: "街を見に行く", testId: "city-arrival-screen" }
       : { eyebrow: "都市エピローグ", heading: episode?.clearTitleJa ?? "", region: "都市エピローグ",
-        next: nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ", testId: "city-epilogue-screen" };
+        next: nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの街歩きへ", testId: "city-epilogue-screen" };
   const { ready, onReady, entries } = useDialogueLog(
     active.episodeId,
     game.revision,

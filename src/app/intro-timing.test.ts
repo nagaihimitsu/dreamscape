@@ -43,7 +43,7 @@ describe("the first minutes' measure", () => {
     expect(durationJa(130_400)).toBe("2分10秒");
     expect(durationJa(45_000)).toBe("45秒");
     let timing = recordIntro(startIntroTiming(0, false), 130_000, { lines: 34, milestones: ["choice"] });
-    expect(introTimingJa(timing)).toBe("導入の計測：最初の選択 2分10秒・34行、最初のクイズの答え まだ、最初の自由時間 まだ、最初のデート まだ");
+    expect(introTimingJa(timing)).toBe("導入の計測：最初の選択 2分10秒・34行、最初のクイズの答え まだ、最初の街歩き まだ、最初のデート まだ");
     timing = recordIntro(endIntroMovie(startIntroTiming(0, true), 30_000), 160_000, { lines: 34, milestones: ["choice"] });
     expect(introTimingJa(timing)).toContain("最初の選択 2分40秒（ムービーを除く 2分10秒）・34行");
   });

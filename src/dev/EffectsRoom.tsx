@@ -569,7 +569,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
       {ROOM_TINTS.map((item) => <button key={item.id} type="button" className="effects-room-chip" aria-pressed={tintId === item.id}
         onClick={() => setTintId(item.id)}>{item.labelJa}</button>)}
     </div>
-    <p>会話の場面の絵に、ゲームの時計の色を自由時間の半分の濃さで重ねます（昼は色なし）。</p>
+    <p>会話の場面の絵に、ゲームの時計の色を街歩きの半分の濃さで重ねます（昼は色なし）。</p>
 
     <h3>品物の札（# item_show:）</h3>
     {cityItems.length ? <>
@@ -684,7 +684,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
 
     <h3>ゲームの中で見るもの</h3>
     <ul className="effects-room-elsewhere">
-      <li>新しい行き先の札が列に加わる動き：自由時間の写真の札の列で、物語が開いた行き先（when: がかなったデート・夜だけの場面・ツアー）が初めて並んだとき。</li>
+      <li>新しい行き先の札が列に加わる動き：街歩きの写真の札の列で、物語が開いた行き先（when: がかなったデート・夜だけの場面・ツアー）が初めて並んだとき。</li>
       <li>夜の「今日の一語」：その日にエピソードを終えた夜の画面のいちばん下。</li>
       <li>出発の確認の品物：「{"{都市}"}へ出発」の確認（持っていく品物・置いていく品物）。</li>
       <li>タイトル画面の時間帯の色：タイトル画面の絵（端末の時刻で決まる）。</li>

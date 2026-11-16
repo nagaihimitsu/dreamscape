@@ -1,4 +1,4 @@
-/* B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」). Every text sits on its own opaque card over the background;
+/* B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」). Every text sits on its own opaque card over the background;
    pressables keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no
    card has a thick accent line on its left (AGENTS.md). */
 
