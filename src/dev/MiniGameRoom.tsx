@@ -139,7 +139,8 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
   };
 
   if (stage && definition && tag) return (
-    <main className="minigame-room" data-testid="minigame-room-stage" data-game={definition.id} data-timed={definition.timed || undefined}>
+    <main className="minigame-room" data-testid="minigame-room-stage" data-game={definition.id} data-timed={definition.timed || undefined}
+      data-countdown={definition.countdown ?? "none"}>
       <header className="minigame-room-head">
         <h1 ref={heading} tabIndex={-1}>{definition.titleJa}</h1>
         <button type="button" className="minigame-room-close" data-testid="minigame-room-back" onClick={() => setStage(null)}>一覧へ戻る</button>

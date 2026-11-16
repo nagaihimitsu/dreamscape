@@ -502,6 +502,8 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
     hintJa: "金色の段に立った瞬間に「広げる」",
     actionJa: "広げる",
     actionHintJa: "階段を下りてくる人が、くぼみの前の金色の段に立ったときに押します。立ち止まったり、一段戻ったり、跳んだりします。ほかの人にはつられないで。",
+    // The practice's plain walk: no stop, no step back, no leap, nobody else.
+    practiceActionHintJa: "階段を下りてくる人が、くぼみの前の金色の段に立ったときに押します。",
     autoJa: "おまかせで広げています",
     // The play ends as she reacts (her scream, her laugh at the cloth, her peering back), the host's finish over it…
     impactAt: ({ outcome, tapMs }, _still, params) => reactionOf(outcome, tapMs, walkFor(params)).at,

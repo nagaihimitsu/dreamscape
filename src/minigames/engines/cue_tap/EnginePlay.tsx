@@ -50,6 +50,12 @@ export interface CueTapSkin<Params, Outcome extends string> {
   actionJa: string;
   /** What the button does, read out with it. */
   actionHintJa: string;
+  /**
+   * In practice (its short, simple play: 2026-11-16), the hint and the read-out in place of hintJa and actionHintJa, which
+   * describe the real play's twists the practice does not have. Without them, practice shows the real play's.
+   */
+  practiceHintJa?: string;
+  practiceActionHintJa?: string;
   /** In place of the button while おまかせ plays. */
   autoJa: string;
   /** When the field has shown what happened, once the outcome is decided (the end of the host's hold). */
@@ -99,7 +105,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
     };
   };
   return function CueTapPlay(props: MiniGamePlayProps<Params, Outcome>) {
-    const { params, auto, clock, still, seed, cast, names, art, sound, vibrate } = props;
+    const { params, auto, clock, still, seed, cast, names, art, sound, vibrate, practice } = props;
     // The play's timing and meter (the tag's keys do not change during a play).
     const tuning = useMemo(() => tuningOf(params), [params]);
     const end = cueTapEnd(tuning);
@@ -179,7 +185,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
           <Field params={params} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate} frames={frames} />
         </div>
         <div className="mg-cue-tap-controls" data-minigame-controls>
-          {auto === null && <p className="mg-cue-tap-hint">{skin.hintJa}</p>}
+          {auto === null && <p className="mg-cue-tap-hint">{(practice && skin.practiceHintJa) || skin.hintJa}</p>}
           {Gauge ? <Gauge still={still} frames={frames} /> : Gauge === null ? null : (
             <div className="mg-cue-tap-meter" aria-hidden="true">
               <span className="mg-cue-tap-meter-near" style={span(meter.zones.near)} />
@@ -200,7 +206,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
                 else tap(clock.at(event.timeStamp));
               }}>{skin.actionJa}</button>
           )}
-          <span id={hintId} className="sr-only">{skin.actionHintJa}</span>
+          <span id={hintId} className="sr-only">{(practice && skin.practiceActionHintJa) || skin.actionHintJa}</span>
         </div>
       </div>
     );

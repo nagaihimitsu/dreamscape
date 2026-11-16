@@ -365,6 +365,9 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
     hintJa: "針が金色に来たら「振る」（高い球は見送る）",
     actionJa: "振る",
     actionHintJa: "ボールが板に届くのに合わせて押します。高く跳ね上がる球は見送ります。弾んだところで速さが変わります。",
+    // The practice's one slow, straight ball has no high ball and no change of pace.
+    practiceHintJa: "針が金色に来たら「振る」",
+    practiceActionHintJa: "ゆっくりまっすぐ来るボールが、板に届くのに合わせて押します。",
     autoJa: "おまかせで打っています",
     // The needle follows only the real ball (it waits through the bouncer), at its pace before and after the bounce.
     progress: (ms, params) => {

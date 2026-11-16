@@ -18,8 +18,8 @@ import { defineMiniGame } from "../contract";
  *
  * The host's flow (docs/13 2.6): practice (the roti is the date's helper scene after the choice to aim round: its
  * outcomes carry no relationship effects) is a short roti of its own, never a rehearsal of the real one (2026-11-16): its
- * `warmup` key gives a smaller ball and two strokes, the arrow's way then across it, and it ends by itself (a few
- * seconds) with no Harbans's hand or beat, no tear, no ring, no meter and no lines (rules.ts ROTI_WARMUP, Warmup.tsx);
+ * `warmup` key gives a smaller ball and two strokes, the arrow's way then across it, ends at the second (a few seconds;
+ * untouched, by itself at 6 s) with no Harbans's hand or beat, no tear, no ring, no meter and no lines (rules.ts ROTI_WARMUP, Warmup.tsx);
  * practice ends with no finish word or card, and the host's cut-in 「次は本番！」 starts the real play. Then the host's
  * 3・2・1 (his beat starts on スタート), the calm mini-game track, ★ from how round and big (rules.ts), a finish word per
  * outcome (a hole's tone is a mishap's thud) and her face on the card (Harbans speaks in the field; she reacts in the

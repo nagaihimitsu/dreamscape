@@ -70,6 +70,11 @@ export const shapeDragTuningSchema = z.object({
    * after it; a stroke that meets it there skids (`skid`: its push times `gain`, along a strip `band` wide on each side of a
    * line `shift` beside the finger's). The play ends at `endMs`.
    */
+  /**
+   * The play ends at this time from its start, whatever has been rolled (a skin with neither a hand nor a clock from the
+   * start: an untouched play is never left waiting; roti's practice, 2026-11-16). Not with a hand (its endMs ends it).
+   */
+  endMs: z.number().int().positive().optional(),
   hand: z.object({
     turns: z.array(z.object({ at: z.number().min(0), deg: z.number().min(-180).max(180) }).strict()).min(1),
     comeMs: z.number().int().min(0),
@@ -417,6 +422,8 @@ export function shapeDragFairness<Outcome extends string>(tuning: ShapeDragTunin
   if (tuning.heavy && tuning.heavy.atLeast.area === undefined && tuning.heavy.atLeast.span === undefined) problems.push("the heavy pin has no size to start from");
   if (tuning.timeMs !== null && tuning.timeMs < SHAPE_DRAG_MIN_TIME_MS) problems.push(`timeMs ${tuning.timeMs} is shorter than ${SHAPE_DRAG_MIN_TIME_MS}`);
   if (tuning.timeMs === null && tuning.maxStrokes === null && !tuning.hand) problems.push("neither timeMs nor maxStrokes nor a hand: only the 「done」 button would end the play");
+  if (tuning.endMs !== undefined && tuning.endMs < SHAPE_DRAG_MIN_TIME_MS) problems.push(`endMs ${tuning.endMs} is shorter than ${SHAPE_DRAG_MIN_TIME_MS}`);
+  if (tuning.endMs !== undefined && tuning.hand) problems.push("endMs with a hand: the hand's endMs ends the play");
   if (tuning.hand) problems.push(...handFairness(tuning, tuning.hand));
   if (tuning.maxStrokes !== null && tuning.maxStrokes < tuning.minStrokesToFinish) problems.push("maxStrokes is less than minStrokesToFinish");
   for (const item of classifier.classes) {

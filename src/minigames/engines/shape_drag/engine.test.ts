@@ -176,6 +176,9 @@ describe("the shape_drag fairness", () => {
     // No time limit: a stroke limit ends the play (not the 「done」 button alone).
     expect(shapeDragFairness({ ...tuning, timeMs: null, maxStrokes: 8 }, shapes)).toEqual([]);
     expect(shapeDragFairness({ ...tuning, timeMs: null }, shapes).join()).toContain("neither timeMs nor maxStrokes");
+    // endMs: the play ends that long from its start (an untouched play is never left waiting), not shorter than the minimum.
+    expect(shapeDragFairness({ ...tuning, timeMs: null, maxStrokes: 2, endMs: 6000 }, shapes)).toEqual([]);
+    expect(shapeDragFairness({ ...tuning, timeMs: null, maxStrokes: 2, endMs: 3000 }, shapes).join()).toContain("endMs 3000");
     expect(shapeDragFairness({ ...tuning, heavy: { gain: 0.3, atLeast: { area: 5 } } }, shapes).join()).toContain("heavy pin's gain");
     expect(shapeDragFairness({ ...tuning, heavy: { gain: 0.1, atLeast: {} } }, shapes).join()).toContain("no size to start from");
     expect(shapeDragFairness(tuning, { ...shapes, classes: [{ outcome: "torn", atLeast: { roundness: 0.5 }, ends: true }] }).join()).toContain("can go down");
@@ -259,6 +262,7 @@ describe("the shape_drag hand", () => {
     expect(shapeDragFairness(handed, shapes)).toEqual([]);
     expect(shapeDragFairness({ ...handed, turnDeg: 90 }, shapes).join()).toContain("turnDeg 90 with a hand");
     expect(shapeDragFairness({ ...handed, timeMs: 15000 }, shapes).join()).toContain("timeMs with a hand");
+    expect(shapeDragFairness({ ...handed, endMs: 8000 }, shapes).join()).toContain("endMs with a hand");
     expect(shapeDragFairness({ ...handed, hand: { ...hand, comeMs: 100 } }, shapes).join()).toContain("no time to hold back");
     expect(shapeDragFairness({ ...handed, hand: { ...hand, endMs: 5000 } }, shapes).join()).toContain("endMs 5000");
     expect(shapeDragFairness({ ...handed, hand: { ...hand, turns: [{ at: 1500, deg: 90 }, { at: 2000, deg: 90 }] } }, shapes).join()).toContain("window before the hand's turn 1");

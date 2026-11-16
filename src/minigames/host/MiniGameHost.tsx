@@ -370,9 +370,10 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     update();
     return off;
   }, [run]);
-  // A game with its own music: its track from スタート to the result card (the scene's again after it).
+  // A game with its own music: its track from スタート to the result card, or to practice's cut-in (the scene's again
+  // after it; the real play's track starts again at its own スタート).
   useEffect(() => {
-    if (!run || !track || cardShown) return;
+    if (!run || !track || cardShown || toReal) return;
     let on = false;
     const off = run.clock.after(0, () => {
       on = true;
@@ -382,7 +383,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
       off();
       if (on) latest.current.onMusic?.(null);
     };
-  }, [run, track, cardShown]);
+  }, [run, track, cardShown, toReal]);
 
   // Focus: into the play as it starts (its main control), the card's main button as it comes, back to the start button
   // when the play is left.

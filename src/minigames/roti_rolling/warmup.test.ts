@@ -50,8 +50,11 @@ describe("practice's roti (warmup)", () => {
     // A third of the real play or less.
     expect(tuning.maxStrokes! * 3).toBeLessThanOrEqual(REAL_CHANCES);
     expect(tuning.startRadius).toBeLessThan(ROTI_NUMBERS.startRadius);
-    // The play takes no stroke after its second (the engine ends it there).
+    // The play takes no stroke after its second (the engine ends it there); untouched, it ends by itself from its start
+    // (endMs: the cut-in into the real play is never left waiting), well before the real beat's end.
     expect(shapeOfRecord(followed(6), tuning, shapes).strokes).toBe(2);
+    expect(tuning.endMs).toBeGreaterThan(0);
+    expect(tuning.endMs!).toBeLessThanOrEqual(ROTI_HAND.endMs / 2);
     expect(shapeDragFairness(tuning, shapes)).toEqual([]);
   });
 

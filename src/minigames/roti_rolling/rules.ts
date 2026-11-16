@@ -254,8 +254,8 @@ export function rotiGame(numbers: RotiNumbers = ROTI_NUMBERS): RotiGame {
  * Practice's roti (`warmup`, which only the definition's practice sets; 2026-11-16, the user's decision: practice is short,
  * simple and no rehearsal of the real play): a play of its own that teaches the stroke and nothing else. A smaller ball,
  * no Harbans (no hand, no turns, no skid, no beat), no tear, no dotted ring, no clock: two strokes (the band counts them
- * down), the arrow's way and then across it (Warmup.tsx), and the second ends it by itself (a few seconds, against the
- * real beat's 16). A stroke over the dough pushes it the same whatever its length past a short one (forgiving). Its
+ * down), the arrow's way and then across it (Warmup.tsx); the second ends it at once (a few seconds, against the real
+ * beat's 16), and an untouched practice ends by itself at 6 s (endMs from its start; one stroke and 「できた」 end it too). A stroke over the dough pushes it the same whatever its length past a short one (forgiving). Its
  * numbers are its own, whatever Debug's room edits. Its outcome is never shown or taken: round when the two strokes
  * crossed (rolled two ways, near square), else some country (without his turns it makes no box, and it never tears). No ★.
  */
@@ -271,6 +271,7 @@ export const ROTI_WARMUP_TUNING: ShapeDragTuning = {
   maxStrokes: 2,
   minStrokesToFinish: 1,
   keyStroke: 0.45,
+  endMs: 6000,
 };
 export const ROTI_WARMUP_SHAPES: ShapeClassifier<RotiOutcome> = {
   classes: [{ outcome: "round", atLeast: { strokes: 2, roundness: 0.75 } }],

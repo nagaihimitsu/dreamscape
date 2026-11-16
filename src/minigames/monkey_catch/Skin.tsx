@@ -519,6 +519,8 @@ export function monkeyCatchSkinFor(tuning: MonkeyTuning): CueTapSkin<MonkeyCatch
     hintJa: "落とし物が輪に届く瞬間に「受け止める」",
     actionJa: "受け止める",
     actionHintJa: "猿の手から離れて落ちてくる落とし物が、両手の上の輪に届くのに合わせて押します。猿はからかって、腕だけ振ったり、殻を落としたり、取り返したりします。",
+    // The practice's one plain drop: no teasing.
+    practiceActionHintJa: "猿の手から離れて落ちてくる落とし物が、両手の上の輪に届くのに合わせて押します。",
     autoJa: "おまかせで受け止めています",
     // The play ends as it meets the hands (a catch, a bounce) or goes past them, the host's finish over it…
     impactAt: ({ outcome, tapMs }, _still, params) => impactOf(outcome, tapMs, courseOf(params)),
