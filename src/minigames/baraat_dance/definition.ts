@@ -23,8 +23,8 @@ import { defineMiniGame } from "../contract";
  * windows, none of the dance's groove, burst, break, faster tempo or big ending (5.6 s, the dance's 17); it ends by itself
  * and the host's 「次は本番！」 starts the dance. Then the drum's own count-in in place of the host's 3・2・1, ★ from the
  * beats right on the drum and the rests held (rules.ts), a finish word per outcome (none for standing still; 「踊りきった！」
- * rings as a good end though it is ★1, a stumble as a mishap) and her face on the card. While the player mashes, a beat met shows no success and the
- * dancers stagger (「もつれそう」). Her reaction lines are her first breath at the end; the story's lines (Kamla's, then
+ * rings as a good end though it is ★1, a stumble as a mishap) and her face on the card. While the player mashes, a beat
+ * met shows no success and the dancers stagger (「もつれそう」). Her reaction lines are her first breath at the end; the story's lines (Kamla's, then
  * hers) follow at once and are never repeated here.
  *
  * Accessibility: 「踊る」 is 64px at the bottom (thumb reach), Space and Enter tap; the drum stands right over the lane's
