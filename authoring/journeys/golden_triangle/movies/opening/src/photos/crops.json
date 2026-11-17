@@ -1,0 +1,226 @@
+[
+ {
+  "slot": "delhi_1",
+  "id": "delhi_india_gate",
+  "source": "photos/new/delhi_india_gate.jpg",
+  "sourceSize": [
+   1920,
+   2400
+  ],
+  "sourceProfile": "Display P3",
+  "cropBox": [
+   0.04,
+   0.0,
+   0.96,
+   0.825
+  ],
+  "cropPx": [
+   76.8,
+   0.0,
+   1843.2,
+   1980.0
+  ],
+  "scale": 0.548,
+  "out": "photos/delhi_india_gate.jpg",
+  "outSize": [
+   968,
+   1085
+  ]
+ },
+ {
+  "slot": "delhi_2",
+  "id": "delhi_red_fort_facade",
+  "source": "photos/new/delhi_red_fort_facade.jpg",
+  "sourceSize": [
+   1920,
+   1280
+  ],
+  "sourceProfile": "c2",
+  "cropBox": [
+   0.0,
+   0.0453,
+   1.0,
+   0.7953
+  ],
+  "cropPx": [
+   0.0,
+   58.0,
+   1920.0,
+   1018.0
+  ],
+  "scale": 0.3229,
+  "out": "photos/delhi_red_fort_facade.jpg",
+  "outSize": [
+   620,
+   310
+  ]
+ },
+ {
+  "slot": "delhi_3",
+  "id": "delhi_qutub_minar",
+  "source": "photos/new/delhi_qutub_minar.jpg",
+  "sourceSize": [
+   1920,
+   2560
+  ],
+  "sourceProfile": "none (taken as sRGB)",
+  "cropBox": [
+   0.283,
+   0.07,
+   0.9177,
+   0.92
+  ],
+  "cropPx": [
+   543.4,
+   179.2,
+   1762.0,
+   2355.2
+  ],
+  "scale": 0.2987,
+  "out": "photos/delhi_qutub_minar.jpg",
+  "outSize": [
+   364,
+   650
+  ]
+ },
+ {
+  "slot": "agra_1",
+  "id": "agra_taj_mahal_arch",
+  "source": "photos/new/agra_taj_mahal_arch.jpg",
+  "sourceSize": [
+   1920,
+   2888
+  ],
+  "sourceProfile": "c2",
+  "cropBox": [
+   0.0786,
+   0.1399,
+   0.9214,
+   0.84
+  ],
+  "cropPx": [
+   151.2,
+   404.0,
+   1768.8,
+   2425.9
+  ],
+  "scale": 0.5663,
+  "out": "photos/agra_taj_mahal_arch.jpg",
+  "outSize": [
+   916,
+   1145
+  ]
+ },
+ {
+  "slot": "agra_2",
+  "id": "term_parchin_kari",
+  "source": "photos/game/term_parchin_kari.webp",
+  "sourceSize": [
+   1200,
+   1200
+  ],
+  "sourceProfile": "none (taken as sRGB)",
+  "cropBox": [
+   0.1,
+   0.0,
+   0.9,
+   1.0
+  ],
+  "cropPx": [
+   120.0,
+   0.0,
+   1080.0,
+   1200.0
+  ],
+  "scale": 0.3667,
+  "out": "photos/term_parchin_kari.jpg",
+  "outSize": [
+   352,
+   440
+  ]
+ },
+ {
+  "slot": "jaipur_1",
+  "id": "jaipur_hawa_mahal_night",
+  "source": "photos/game/jaipur_hawa_mahal_night.webp",
+  "sourceSize": [
+   1600,
+   992
+  ],
+  "sourceProfile": "sRGB IEC61966-2.1",
+  "cropBox": [
+   0.1519,
+   0.0,
+   0.6481,
+   1.0
+  ],
+  "cropPx": [
+   243.0,
+   0.0,
+   1037.0,
+   992.0
+  ],
+  "scale": 1.0001,
+  "out": "photos/jaipur_hawa_mahal_night.jpg",
+  "outSize": [
+   794,
+   992
+  ]
+ },
+ {
+  "slot": "jaipur_2",
+  "id": "jaipur_amber_fort_hill",
+  "source": "photos/new/jaipur_amber_fort_hill.jpg",
+  "sourceSize": [
+   1920,
+   1147
+  ],
+  "sourceProfile": "Display P3",
+  "cropBox": [
+   0.05,
+   0.0035,
+   0.95,
+   0.7568
+  ],
+  "cropPx": [
+   96.0,
+   4.0,
+   1824.0,
+   868.0
+  ],
+  "scale": 0.3588,
+  "out": "photos/jaipur_amber_fort_hill.jpg",
+  "outSize": [
+   620,
+   310
+  ]
+ },
+ {
+  "slot": "jaipur_3",
+  "id": "jaipur_city_palace_peacock_gate",
+  "source": "photos/new/jaipur_city_palace_peacock_gate.jpg",
+  "sourceSize": [
+   1920,
+   1374
+  ],
+  "sourceProfile": "c2",
+  "cropBox": [
+   0.2135,
+   0.0,
+   0.7865,
+   1.0
+  ],
+  "cropPx": [
+   410.4,
+   0.0,
+   1509.6,
+   1374.0
+  ],
+  "scale": 0.3202,
+  "out": "photos/jaipur_city_palace_peacock_gate.jpg",
+  "outSize": [
+   352,
+   440
+  ]
+ }
+]
