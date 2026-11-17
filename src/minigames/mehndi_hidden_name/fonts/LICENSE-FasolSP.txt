@@ -51,5 +51,6 @@ Notes for this game:
 - The licence does not say anything about laying the font's letters over each other, or mirroring or turning them, as
   decorations either. The game does so only when it draws (the browser sets each letter as text from this file and
   turns it; the file is not changed and no glyph outline is extracted or stored), and only with letters. The game's
-  author decided to go ahead on that reading on 2026-11-17; the licence's own advice for a use one is unsure of is to
-  buy the full version or ask the author.
+  author decided to go ahead on that reading on 2026-11-17, and confirmed it the same day after the review
+  (「今の判断でいいです、それでいきます」); the licence's own advice for a use one is unsure of is to buy the full
+  version or ask the author.
