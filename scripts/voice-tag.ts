@@ -6,14 +6,15 @@ import type { RecordedClip } from "./voice-records";
 import { showNames, type SentVoiceScript, type VoiceLine, type VoiceScript } from "./voice-script";
 
 // npm run voice:tag (2026-11-13; the repo version of the 2026-11-13 add_voice_tags.py): the delivered clips of a
-// journey, by file name (<ID>.mp3 or <ID>.wav), get their `# voice: <ID>` before their lines, and recorded.json
+// journey (the heroine's or, 2026-11-17, any other voice's), by file name (<ID>.mp3 or <ID>.wav), get their
+// `# voice: <ID>` before their lines, and recorded.json
 // (voice-records.ts) records what each says: the text of the newest script that had the ID. A clip is refused when
 // that text is not the line's text now (the line changed: its voice is made again from a new script), when no
 // script or line has the ID, or when its MP3 is not yet in the journey's public/assets/voice/ (content:build stops a
 // `# voice:` without its file). Copying and converting the audio stay by hand. Pure; voice-tag-cli.ts writes the files.
 
-/** A clip voice:tag does not take, and why (Japanese). */
-export type RefusedClip = { id: string; reasonJa: string };
+/** A clip voice:tag does not take, and why (Japanese), with who says its line when that is known. */
+export type RefusedClip = { id: string; reasonJa: string; speakerJa?: string };
 export type VoiceTagPlan = {
   /** Lines that get a `# voice:` (their ID is the clip's). */
   tag: VoiceLine[];
@@ -36,18 +37,24 @@ export function deliveredIds(fileNames: readonly string[]): { ids: string[]; ref
 
 /** What voice:tag does with the delivered `ids`: the lines to tag, what to record, and the clips it refuses. */
 export function planVoiceTags(script: VoiceScript, scripts: readonly SentVoiceScript[], ids: readonly string[], voiceFiles: ReadonlySet<string>): VoiceTagPlan {
-  // Each ID with the text and date of the newest script that has it (what its clip was made from).
+  // Each ID with the text and date of the newest script that has it (what its clip was made from), and who says it.
   const lastSent = new Map<string, RecordedClip>();
-  for (const sent of scripts) for (const line of sent.lines) if (!lastSent.has(line.id)) lastSent.set(line.id, { text: line.text, script: sent.date });
+  const sentBy = new Map<string, string>();
+  for (const sent of scripts) for (const line of sent.lines) if (!lastSent.has(line.id)) {
+    lastSent.set(line.id, { text: line.text, script: sent.date });
+    if (line.speakerJa !== undefined) sentBy.set(line.id, line.speakerJa);
+  }
   const order = new Map(script.lines.map((line, index) => [line.id, index]));
   const plan: VoiceTagPlan = { tag: [], record: [], refused: [] };
   for (const id of [...ids].sort((left, right) => (order.get(left) ?? Infinity) - (order.get(right) ?? Infinity) || (left < right ? -1 : 1))) {
     const clip = lastSent.get(id);
+    const lines = script.lines.filter((line) => line.id === id);
+    const speakerJa = lines[0]?.speakerJa ?? sentBy.get(id);
+    const who = speakerJa !== undefined ? { speakerJa } : {};
     if (!clip) {
-      plan.refused.push({ id, reasonJa: "渡した台本にない ID です" });
+      plan.refused.push({ id, reasonJa: "渡した台本にない ID です", ...who });
       continue;
     }
-    const lines = script.lines.filter((line) => line.id === id);
     const changed = lines.find((line) => line.text !== clip.text);
     const reasonJa = !lines.length ? `今の台詞に、この ID の行がありません（${clip.script}の台本の文：${clip.text}）。` +
         "文が変わった行は新しい ID になるので、この声は使えません（npm run voice:changes で確かめます）"
@@ -55,7 +62,7 @@ export function planVoiceTags(script: VoiceScript, scripts: readonly SentVoiceSc
       : !voiceFiles.has(id) ? `声のファイルがまだありません。この旅行編の public/assets/voice/${id}.mp3 に置いてから付けます`
       : undefined;
     if (reasonJa) {
-      plan.refused.push({ id, reasonJa });
+      plan.refused.push({ id, reasonJa, ...who });
       continue;
     }
     plan.record.push([id, clip]);

@@ -14,6 +14,13 @@ describe("the voice tags of a story", () => {
     expect(() => check("=== ta_talk ===\n# speaker: heroine\n# voice: ta_v1\n「行こう」\n{player_name}は頷いた。\n-> END\n")).not.toThrow();
   });
 
+  it("checks the voice of anyone's line the same way (2026-11-17: voices for the other people too)", () => {
+    expect(() => check("=== ta_talk ===\n# speaker: enemy\n# voice: ta_v1\n「止まりなさい」\n# speaker: ta_kamla\n「おいで」 # voice: ta_v1\n")).not.toThrow();
+    expect(() => check("=== ta_talk ===\n# speaker: ta_kamla\n# voice: ta_v2\n「おいで」\n")).toThrow("Unknown voice: # voice: ta_v2");
+    expect(() => check("=== ta_talk ===\n# speaker: enemy\n# voice: ta_v1\n「{player_name}、おいで」\n")).toThrow(
+      "主人公の名前は声にできません：knot ta_talk の3行目の # voice: ta_v1 の台詞（4行目）に {player_name} があります。");
+  });
+
   it("refuses an ID that is not one, a missing file and another journey's", () => {
     expect(() => check("「行こう」 # voice: Ta-V1\n")).toThrow("Invalid voice tag: # voice: Ta-V1");
     expect(() => check("「行こう」 # voice: ta_v2\n")).toThrow("Unknown voice: # voice: ta_v2");

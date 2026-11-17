@@ -5,7 +5,7 @@ import { formatVoiceChanges, voiceChanges } from "./voice-changes";
 import { RECORDED_FILE, readVoiceHistory, voiceRecordsFolder } from "./voice-records";
 import { voiceScript, voiceScriptInput } from "./voice-script";
 
-// npm run voice:changes -- --journey <journeyId>: the heroine lines of content/ as it is now (no content:build needed)
+// npm run voice:changes -- --journey <journeyId>: the spoken lines (every voice, 2026-11-17) of content/ as it is now (no content:build needed)
 // against their records in authoring/journeys/<journeyId>/voice/ (voice-changes.ts): the recorded lines against what
 // their clips say (recorded.json; they need recording again), the others against the newest script sent. It changes
 // no file.

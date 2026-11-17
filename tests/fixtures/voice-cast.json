@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "journeyId": "ta_trip",
+  "checkedAt": "2026-11-17",
+  "voices": [
+    {
+      "voice": "ta_kamla",
+      "nameJa": "カムラ（テスト用）",
+      "profile": {
+        "age": "79歳", "gender": "女性", "build": "小柄", "looks": "ショールを巻いた白髪", "personality": "ぶっきらぼうで世話焼き",
+        "pitch": "低め", "quality": "かすれた", "speed": "速い", "delivery": "言い切る", "origin": "テストの町。日本語で話す"
+      },
+      "engine": "voicevox",
+      "model": {
+        "id": "test_model_a", "nameJa": "テスト用モデルA", "speaker": "テスト話者A",
+        "url": "https://example.com/dreamscape-sample/model-a", "termsUrl": "https://example.com/dreamscape-sample/model-a/terms",
+        "license": "テスト用（架空）", "creditJa": "テスト用モデルA（架空）"
+      },
+      "styles": { "default": "ノーマル" },
+      "settings": { "speedScale": 1.1 },
+      "reasonJa": "テスト用の配役です（台詞のない声の注意を確かめる）。"
+    },
+    {
+      "voice": "ta_guard",
+      "nameJa": "時計守（テスト用）",
+      "profile": {
+        "age": "60代", "gender": "男性", "build": "背が高い", "looks": "制服", "personality": "厳格",
+        "pitch": "低い", "quality": "太い", "speed": "ゆっくり", "delivery": "重々しい", "origin": "テストの町。日本語で話す"
+      },
+      "engine": "aivishub",
+      "model": {
+        "id": "00000000-0000-0000-0000-000000000001", "nameJa": "テスト用モデルB", "speaker": "テスト話者B",
+        "url": "https://example.com/dreamscape-sample/model-b", "termsUrl": "https://example.com/dreamscape-sample/model-b/terms",
+        "license": "テスト用（架空）", "creditJa": "テスト用モデルB（架空）"
+      },
+      "styles": { "default": "ノーマル", "byEmotion": { "焦り": "あせり" } },
+      "settings": { "speedScale": 0.95, "tempoDynamicsScale": 1.0 },
+      "reasonJa": "テスト用の配役です。",
+      "noteJa": "テスト用のメモ。"
+    },
+    {
+      "voice": "ta_lili",
+      "nameJa": "リリ（テスト用）",
+      "profile": {
+        "age": "10歳", "gender": "女性", "build": "小柄", "looks": "おさげ", "personality": "人なつこい",
+        "pitch": "高い", "quality": "明るい", "speed": "速い", "delivery": "はずむ", "origin": "テストの町。日本語で話す"
+      },
+      "engine": "voicevox",
+      "model": {
+        "id": "test_model_c", "nameJa": "テスト用モデルC", "speaker": "テスト話者C",
+        "url": "https://example.com/dreamscape-sample/model-c", "termsUrl": "https://example.com/dreamscape-sample/model-c/terms",
+        "license": "テスト用（架空）", "creditJa": "テスト用モデルC（架空）"
+      },
+      "styles": { "default": "ノーマル" },
+      "settings": {},
+      "reasonJa": "テスト用の配役です。"
+    }
+  ],
+  "scenes": { "ta_tower_battle": "テストの塔の前。時計守が二人を止める。" },
+  "lines": {
+    "ta_tower_battle_guard_001": { "input": "とまりなさい", "noteJa": "テスト用の注意。" },
+    "ta_tower_meet_lili_001": { "style": "ささやき" }
+  },
+  "dictionary": [
+    { "word": "時計守", "reading": "トケイモリ", "accent": 3, "noteJa": "テスト用の語" },
+    { "word": "鐘楼", "reading": "ショウロウ", "accent": 0, "engines": ["aivishub"] }
+  ]
+}

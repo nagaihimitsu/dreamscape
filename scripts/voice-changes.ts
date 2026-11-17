@@ -3,12 +3,16 @@ import { displayPath, type ContentSources } from "./content-sources";
 import { errorText } from "./cli-error";
 import { taggedLines } from "./line-tag-text";
 import { readRecordedClips, type RecordedClip, type RecordedClips } from "./voice-records";
-import { cityOfFile, matchSameLines, showNames, type ScriptedLine, type SentVoiceScript, type VoiceLine, type VoiceScript } from "./voice-script";
+import {
+  cityOfFile, HEROINE_VOICE, matchSameLines, showNames, voiceOf, type ScriptedLine, type SentVoiceScript, type VoiceLine, type VoiceScript,
+} from "./voice-script";
 
-// Which heroine lines changed since their voices were scripted or recorded (2026-11-13): npm run voice:changes lists
+// Which spoken lines (the heroine's and, 2026-11-17, every other voice's) changed since their voices were scripted or
+// recorded (2026-11-13): npm run voice:changes lists
 // them (voiceChanges, formatVoiceChanges), and content:build warns about a recorded line whose text changed
 // (voiceRecordWarnings). A recorded line (one with a `# voice:`) is compared with what its clip says (recorded.json,
-// voice-records.ts), so it is reported until a new clip is recorded; the other lines with the newest script sent.
+// voice-records.ts), so it is reported until a new clip is recorded; the other lines with the newest script sent (a line
+// only with a line of the same voice).
 
 export type VoiceChanges = {
   /** Recorded lines whose text is no longer what their clip says: to record again. */
@@ -61,7 +65,7 @@ export function voiceChanges(script: VoiceScript, newest: SentVoiceScript | unde
   const cityOf = (line: { file: string }) => cityOfFile(line.file, cityIds);
   const changed: [number, number][] = [];
   const candidates = [...earlierLeft].flatMap((earlierIndex) => [...laterLeft]
-    .filter((laterIndex) => cityOf(earlier[earlierIndex]) === cityOf(later[laterIndex]))
+    .filter((laterIndex) => cityOf(earlier[earlierIndex]) === cityOf(later[laterIndex]) && voiceOf(earlier[earlierIndex]) === later[laterIndex].voice)
     .map((laterIndex) => ({ earlierIndex, laterIndex, ratio: textSimilarity(earlier[earlierIndex].text, later[laterIndex].text) })))
     .filter((item) => item.ratio >= SIMILAR)
     .sort((left, right) => right.ratio - left.ratio || left.earlierIndex - right.earlierIndex || left.laterIndex - right.laterIndex);
@@ -89,13 +93,17 @@ export function voiceChanges(script: VoiceScript, newest: SentVoiceScript | unde
 export function formatVoiceChanges(changes: VoiceChanges, script: VoiceScript, newest: { date: string; count: number; file: string },
   recorded: { count: number; file: string }): string[] {
   const { rerecord, unused, unlisted, same, changed, removed, added } = changes;
+  const heroine = script.lines.filter((line) => line.voice === HEROINE_VOICE).length;
   const head = [
-    `${script.nameJa}（${script.journeyId}）：今のヒロインの台詞 ${script.lines.length}行（録音済み ${script.tagged.size}行）を比べました。`,
+    `${script.nameJa}（${script.journeyId}）：今の台詞 ${script.lines.length}行（ヒロイン ${heroine}行・ほかの人物 ${script.lines.length - heroine}行。` +
+      `録音済み ${script.tagged.size}行）を比べました。`,
     `録音済みの行は録音した声 ${recorded.count}本の文（${recorded.file}）と、まだ録音していない行は${newest.date}に渡した台本（${newest.count}行、${newest.file}）と比べます。`,
   ];
   if (!rerecord.length && !unused.length && !unlisted.length && !changed.length && !removed.length && !added.length)
     return [...head, `変わった台詞はありません（録音済みの${script.tagged.size}行は録音した文のまま、まだ録音していない${same}行は台本のままです）。`];
-  const where = (line: Pick<VoiceLine, "title" | "file">) => `${line.title}（${line.file}）`;
+  // Who says it (a line sent before 2026-11-17 is the heroine's), and where.
+  const where = (line: Pick<VoiceLine, "title" | "file"> & { voice?: string; speakerJa?: string }) =>
+    `${line.speakerJa ?? (voiceOf(line) === HEROINE_VOICE ? "ヒロイン" : voiceOf(line))}　${line.title}（${line.file}）`;
   const clipText = (clip: RecordedClip) => `  録音：${clip.text}（${clip.script}の台本）`;
   // One box per line, each ending in a blank line.
   const sections: [string, string[]][] = [

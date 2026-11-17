@@ -1,12 +1,13 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { voiceRecordWarnings } from "./voice-changes";
-import { readRecordedClips, readSentScripts, readVoiceHistory, writeRecordedClips } from "./voice-records";
+import { readRecordedClips, readSentScripts, readVoiceCast, readVoiceHistory, writeRecordedClips } from "./voice-records";
 
-// A journey's voice records in authoring/journeys/<journeyId>/voice/: the scripts sent (one folder per date) and
-// recorded.json (what each delivered clip says).
+// A journey's voice records in authoring/journeys/<journeyId>/voice/: the scripts sent (one folder per date, or date and
+// label), recorded.json (what each delivered clip says) and cast.json (who voices the other characters).
 
 describe("the voice records of a journey", () => {
   let root = "";
@@ -28,6 +29,26 @@ describe("the voice records of a journey", () => {
     write(`${folder}/notes/entries.json`, "[]");
     expect(readSentScripts(root, "ta_trip").map((script) => [script.date, script.lines[0].text])).toEqual([["2026-11-20", "行こうよ"], ["2026-11-12", "行こう"]]);
     expect(readSentScripts(root, "tb_trip")).toEqual([]);
+  });
+
+  it("reads a date folder with a label (YYYY-MM-DD_<label>, 2026-11-17) as newer than the bare date, and old lines without a voice", () => {
+    write(`${folder}/2026-11-17/entries.json`, JSON.stringify([line("ta_a_001", "行こう")]));
+    write(`${folder}/2026-11-17_cast/entries.json`, JSON.stringify([{ ...line("ta_a_kamla_001", "おいで"), voice: "ta_kamla", speakerJa: "カムラ" }]));
+    write(`${folder}/2026-11-16_b2/entries.json`, "[]");
+    write(`${folder}/2026-11-15b/entries.json`, "[]");
+    write(`${folder}/2026-11-15_Cast/entries.json`, "[]");
+    const scripts = readSentScripts(root, "ta_trip");
+    expect(scripts.map((script) => script.date)).toEqual(["2026-11-17_cast", "2026-11-17", "2026-11-16_b2"]);
+    expect(scripts[0].lines[0]).toMatchObject({ id: "ta_a_kamla_001", voice: "ta_kamla", speakerJa: "カムラ" });
+    expect(scripts[1].lines[0].voice).toBeUndefined();
+  });
+
+  it("reads cast.json when there is one, and refuses one it cannot read", () => {
+    expect(readVoiceCast(root, "ta_trip")).toBeUndefined();
+    write(`${folder}/cast.json`, readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../tests/fixtures/voice-cast.json"), "utf8"));
+    expect(readVoiceCast(root, "ta_trip")?.voices.map((voice) => voice.voice)).toEqual(["ta_kamla", "ta_guard", "ta_lili"]);
+    write(`${folder}/cast.json`, JSON.stringify({ schemaVersion: 1, journeyId: "ta_trip", checkedAt: "2026-11-17", voices: [{ voice: "ta_x", engine: "coeiroink" }] }));
+    expect(() => readVoiceCast(root, "ta_trip")).toThrow(`声の配役を読めません：${folder}/cast.json`);
   });
 
   it("writes and reads recorded.json in the order of its clips", () => {
