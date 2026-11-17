@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ambienceCredits, MAP_CREDIT, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits, voiceCredits } from "../content/credits";
+import { ambienceCredits, MAP_CREDIT, movieCredits, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits, voiceCredits } from "../content/credits";
 import { CreditsList } from "./CreditsDialog";
 
 // 「出典・権利の一覧」 over the generated content: every journey's photos (preparing ones marked),
@@ -70,6 +70,20 @@ describe("credits list", () => {
     expect(html).toContain('<a href="https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small" target="_blank" rel="noreferrer">元の作品</a>');
     expect(html).toContain("Irodori-TTS: A Flow Matching-based Text-to-Speech Model");
     expect(render({ status: "dev" })).not.toContain("credits-voices");
+  });
+
+  it("lists the works inside the opening movies under オープニングムービー (2026-11-17), by journey, with licence links, credits and changes", () => {
+    const movies = movieCredits();
+    const india = movies.find((group) => group.journeyId === "golden_triangle")!;
+    const html = renderToStaticMarkup(createElement(CreditsList, { photos: [], movies, licences: { status: "dev" } }));
+    expect(html).toContain('<h3 id="credits-movies-title">オープニングムービー</h3>');
+    expect(html).toContain(`data-testid="credits-movie-golden_triangle"><summary>${india.headingJa}</summary>`);
+    expect(html.match(/class="credits-place"/gu)).toHaveLength(movies.reduce((sum, group) => sum + group.credits.length, 0));
+    expect(html).toContain('<p class="credits-place">写真：レッド・フォートのラホール門</p><p>Delhi, India, Red Fort Facade.jpg</p><p>作者：Vyacheslav Argenberg</p>' +
+      '<p>ライセンス：<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a></p><p>© Vyacheslav Argenberg</p>');
+    expect(html).toContain('<a href="https://commons.wikimedia.org/wiki/File:Delhi,_India,_Red_Fort_Facade.jpg" target="_blank" rel="noreferrer">元の作品</a>');
+    for (const item of india.credits) expect(html).toContain(`<p>${item.changesJa}</p>`);
+    expect(render({ status: "dev" })).not.toContain("credits-movies");
   });
 
   it("lists each library with its version, licence and text once the production list is read", () => {

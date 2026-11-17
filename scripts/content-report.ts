@@ -23,7 +23,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
   | "scene-tag" | "special-date-ap" | "recovery-date" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music"
-  | "ambience" | "voice-changed" | "glossary";
+  | "ambience" | "voice-changed" | "glossary" | "opening-movie";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -59,6 +59,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "ambience": "ambience note(s) (a journey's ambience track that no play.places value or # ambience: plays)",
   "glossary": "glossary note(s) (旅の図鑑: a term's line over 40 characters, a term no # term: names, a term tagged twice in one scene or on a choice)",
   "voice-changed": "recorded line(s) whose text is no longer what their voice says, or not in recorded.json (record again; npm run voice:changes)",
+  "opening-movie": "opening movie(s) without credits (出典・権利の一覧 lists nothing of what is in them; scripts/opening-movie.ts)",
 };
 
 /**

@@ -4,7 +4,7 @@ import soundData from "./generated/content/presentation/sounds.json";
 import musicData from "./generated/music.json";
 import ambienceData from "./generated/ambience.json";
 import { landmarks, presentation, tourismAssets } from "./index";
-import { journeyFilesShip, type Journey } from "./journey-catalog";
+import { journeyFilesShip, type Journey, type OpeningMovieCredit } from "./journey-catalog";
 import { journeys } from "./journeys";
 import type { LandmarkDefinition, TourismAsset } from "./tourism-schemas";
 import { soundCatalogSchema, type SoundEntry, type SoundSource } from "./sounds";
@@ -12,7 +12,8 @@ import { musicDataSchema } from "./music";
 import { ambienceDataSchema } from "./ambience";
 
 // The data of the credits list (「出典とライセンス」): the photos grouped by
-// journey and kind, the sound effects', the music's and the ambience's sources, the map and font lines, and the
+// journey and kind, the sound effects', the music's and the ambience's sources, the voices' and the opening movies'
+// works by journey, the map and font lines, and the
 // library licences that the production build writes. Pure functions, and photoCredits() over the
 // generated content for the screen. Artwork made for Dreamscape
 // (presentation/own-artwork.json) is never listed; only the note below says so.
@@ -202,6 +203,31 @@ export function groupVoiceCredits(catalog: readonly Pick<Journey, "id" | "nameJa
 /** The voices' sources of the generated content, for the credits list. */
 export function voiceCredits(): VoiceCredit[] {
   return groupVoiceCredits(journeys);
+}
+
+/** The works inside one journey's opening movie (its manifest's `openingMovie.credits`, 2026-11-17), under its name. */
+export type JourneyMovieCredits = {
+  journeyId: string;
+  nameJa: string;
+  /** e.g. 「インド・ゴールデントライアングル編（9件）」. */
+  headingJa: string;
+  credits: OpeningMovieCredit[];
+};
+
+/** The opening movies' works, journey by journey in catalog order; journeys without a movie or without credits are left out. */
+export function groupMovieCredits(catalog: readonly Pick<Journey, "id" | "nameJa" | "openingMovie">[]): JourneyMovieCredits[] {
+  return catalog.flatMap((journey): JourneyMovieCredits[] => {
+    const credits = journey.openingMovie?.credits ?? [];
+    return credits.length ? [{ journeyId: journey.id, nameJa: journey.nameJa, headingJa: `${journey.nameJa}（${credits.length}件）`, credits }] : [];
+  });
+}
+
+/**
+ * The opening movies' works of the generated content, for the credits list. As with the photos, a production build
+ * (`production`) leaves out a journey players cannot open yet: it serves none of its files, its movie included.
+ */
+export function movieCredits(production: boolean = import.meta.env.PROD): JourneyMovieCredits[] {
+  return groupMovieCredits(production ? journeys.filter(journeyFilesShip) : journeys);
 }
 
 /**

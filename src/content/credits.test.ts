@@ -9,7 +9,9 @@ import {
   MAP_CREDIT,
   OWN_ARTWORK_NOTE_JA,
   parseThirdPartyLicenses,
+  groupMovieCredits,
   groupVoiceCredits,
+  movieCredits,
   photoCredits,
   THIRD_PARTY_LICENSES_FILE,
   voiceCredits,
@@ -149,6 +151,41 @@ describe("the voices' credits (2026-11-13)", () => {
       useJa: "ヒロインの声", titleJa: "音声合成 Irodori-TTS v4.1-Small", author: "Aratako", license: "MIT License",
       url: "https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small",
     })]);
+  });
+});
+
+describe("the opening movies' credits (2026-11-17)", () => {
+  const credit = { useJa: "写真：試験の門", titleJa: "Test gate.jpg", author: "ta", license: "CC BY 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/4.0/", checkedAt: "2026-11-17", url: "https://commons.wikimedia.org/wiki/File:Test_gate.jpg" };
+  const videoPath = "assets/movies/ta_opening.mp4";
+
+  it("groups each journey's movie credits under its name, in catalog order, and leaves out journeys without a movie or credits", () => {
+    const music = { ...credit, useJa: "音楽", titleJa: "Test tune" };
+    expect(groupMovieCredits([
+      { id: "ta_trip", nameJa: "ta編", openingMovie: { videoPath, credits: [credit, music] } },
+      { id: "tb_trip", nameJa: "tb編" },
+      { id: "tc_trip", nameJa: "tc編", openingMovie: { videoPath } },
+      { id: "td_trip", nameJa: "td編", openingMovie: { videoPath, credits: [music] } },
+    ])).toEqual([
+      { journeyId: "ta_trip", nameJa: "ta編", headingJa: "ta編（2件）", credits: [credit, music] },
+      { journeyId: "td_trip", nameJa: "td編", headingJa: "td編（1件）", credits: [music] },
+    ]);
+  });
+
+  it("credits the eight photos and the music of the Golden Triangle movie, and leaves out in a production build what it does not serve", () => {
+    const india = movieCredits(false).find((group) => group.journeyId === "golden_triangle")!;
+    expect(india.headingJa).toBe("インド・ゴールデントライアングル編（9件）");
+    expect(india.credits.map((item) => item.useJa)).toEqual(["写真：インド門", "写真：レッド・フォートのラホール門", "写真：クトゥブ・ミナール",
+      "写真：アーチ越しのタージ・マハル", "写真：アーグラ城の象眼細工", "写真：夜のハワー・マハル", "写真：丘の上のアンベール城", "写真：シティ・パレスの孔雀の門", "音楽"]);
+    // What the authors ask for: the © of the Red Fort's photographer, the name of the Taj Mahal's, Kevin MacLeod's credit line.
+    expect(india.credits.find((item) => item.author === "Vyacheslav Argenberg")?.creditJa).toBe("© Vyacheslav Argenberg");
+    expect(india.credits.find((item) => item.author === "Philip Nalangan")?.creditJa).toBe("写真：Philip Nalangan");
+    expect(india.credits.at(-1)?.creditJa).toContain("\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0");
+    // Every work was changed for the movie (CC BY asks that changes be indicated).
+    expect(india.credits.every((item) => item.changesJa)).toBe(true);
+    expect(movieCredits(true).map((group) => group.journeyId))
+      .toEqual(movieCredits(false).filter((group) => journeyFilesShip(journeys.find((journey) => journey.id === group.journeyId)!)).map((group) => group.journeyId));
+    expect(movieCredits()).toEqual(movieCredits(false));
   });
 });
 

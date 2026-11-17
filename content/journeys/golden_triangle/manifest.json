@@ -63,7 +63,102 @@
     "captionJa": "アーグラ ／ タージ・マハル"
   },
   "openingMovie": {
-    "videoPath": "assets/movies/gt_opening.mp4"
+    "videoPath": "assets/movies/gt_opening.mp4",
+    "credits": [
+      {
+        "useJa": "写真：インド門",
+        "titleJa": "India Gate (All India War Memorial).jpg",
+        "author": "Quintin Soloviev",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:India_Gate_(All_India_War_Memorial).jpg",
+        "changesJa": "Wikimedia Commons の 1920×2400px 版を切り抜き（横77〜1843px・縦0〜1980px）、968×1085px に縮小し、色の形式を Display P3 から sRGB に変換。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、下の余白に手書き風の名前を添え、動かしている。"
+      },
+      {
+        "useJa": "写真：レッド・フォートのラホール門",
+        "titleJa": "Delhi, India, Red Fort Facade.jpg",
+        "author": "Vyacheslav Argenberg",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:Delhi,_India,_Red_Fort_Facade.jpg",
+        "creditJa": "© Vyacheslav Argenberg",
+        "changesJa": "Wikimedia Commons の 1920×1280px 版を切り抜き（横0〜1920px・縦58〜1018px）、620×310px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、動かしている。"
+      },
+      {
+        "useJa": "写真：クトゥブ・ミナール",
+        "titleJa": "The Qutb Minar in morning.jpg",
+        "author": "Raghith",
+        "license": "CC0 1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:The_Qutb_Minar_in_morning.jpg",
+        "changesJa": "Wikimedia Commons の 1920×2560px 版を切り抜き（横543〜1762px・縦179〜2355px）、364×650px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、動かしている。"
+      },
+      {
+        "useJa": "写真：アーチ越しのタージ・マハル",
+        "titleJa": "Taj Mahal Agra India 2025 06.jpg",
+        "author": "Philip Nalangan",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:Taj_Mahal_Agra_India_2025_06.jpg",
+        "creditJa": "写真：Philip Nalangan",
+        "changesJa": "Wikimedia Commons の 1920×2888px 版を切り抜き（横151〜1769px・縦404〜2426px）、916×1145px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、下の余白に手書き風の名前を添え、動かしている。"
+      },
+      {
+        "useJa": "写真：アーグラ城の象眼細工",
+        "titleJa": "Pietra Dura - Pillar - Musamman Burj - Agra Fort - Agra 2014-05-14 4143.JPG",
+        "author": "Biswarup Ganguly",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:Pietra_Dura_-_Pillar_-_Musamman_Burj_-_Agra_Fort_-_Agra_2014-05-14_4143.JPG",
+        "changesJa": "ゲームで使っている写真（元の画像を切り抜いて 1200×1200px に縮小したもの）を、さらに切り抜き（横120〜1080px）、352×440px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、動かしている。"
+      },
+      {
+        "useJa": "写真：夜のハワー・マハル",
+        "titleJa": "Hawa Mahal by night.jpg",
+        "author": "Ninara",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:Hawa_Mahal_by_night.jpg",
+        "changesJa": "ゲームで使っている写真（元の画像の下端と左端を切り取り、1600×992px に縮小したもの）を、さらに切り抜き（横243〜1037px）、794×992px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、下の余白に手書き風の名前を添え、動かしている。"
+      },
+      {
+        "useJa": "写真：丘の上のアンベール城",
+        "titleJa": "Amber Fort in Jaipur 2.jpg",
+        "author": "Dudva",
+        "license": "CC0 1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:Amber_Fort_in_Jaipur_2.jpg",
+        "changesJa": "Wikimedia Commons の 1920×1147px 版を切り抜き（横96〜1824px・縦4〜868px）、620×310px に縮小し、色の形式を Display P3 から sRGB に変換。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、動かしている。"
+      },
+      {
+        "useJa": "写真：シティ・パレスの孔雀の門",
+        "titleJa": "City Palace (Jaipur) - Peacock Gate.jpg",
+        "author": "Ninara",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://commons.wikimedia.org/wiki/File:City_Palace_(Jaipur)_-_Peacock_Gate.jpg",
+        "changesJa": "Wikimedia Commons の 1920×1374px 版を切り抜き（横410〜1510px）、352×440px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、動かしている。"
+      },
+      {
+        "useJa": "音楽",
+        "titleJa": "Jalandhar",
+        "author": "Kevin MacLeod",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "checkedAt": "2026-11-17",
+        "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400018",
+        "creditJa": "\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/",
+        "changesJa": "ゲームの BGM と同じ曲の頭から15秒を切り出し、終わりの1.2秒を小さくして消した。音の大きさをゲームの音楽にそろえ、AAC に変換。"
+      }
+    ]
   },
   "voiceCredits": [
     {

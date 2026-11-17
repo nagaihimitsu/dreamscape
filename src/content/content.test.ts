@@ -77,6 +77,30 @@ describe("content build acceptance", () => {
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp (place it in content/journeys/milano/public/)");
   }, 120000);
+  it("checks an opening movie's file and credits: stops without the file or at a share-alike licence, notes a movie without credits", async () => {
+    // Milan has no movie in the game; the fixture gives it one (2026-11-17, manifest openingMovie.credits).
+    const manifestFile = path.join(fixture, "content/journeys/milano/manifest.json");
+    const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
+    const credit = { useJa: "写真：試験の門", titleJa: "Test gate.jpg", author: "ta", license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/", checkedAt: "2026-11-17", url: "https://commons.wikimedia.org/wiki/File:Test_gate.jpg" };
+    const withMovie = (openingMovie: unknown) => writeFile(manifestFile, JSON.stringify({ ...manifest, openingMovie }));
+    const videoPath = "assets/movies/milano_opening.mp4";
+    // Credits without the movie file: the build stops (the file is missing).
+    await withMovie({ videoPath, credits: [credit] });
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      `オープニングムービーのファイルがありません：milano の openingMovie.videoPath "${videoPath}" を content/journeys/milano/public/ に置いてください`);
+    await mkdir(path.join(fixture, "content/journeys/milano/public/assets/movies"), { recursive: true });
+    await writeFile(path.join(fixture, "content/journeys/milano/public", videoPath), "movie");
+    // A share-alike work in the movie: the build stops and names it.
+    await withMovie({ videoPath, credits: [credit, { ...credit, license: "CC BY-SA 4.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/" }] });
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "オープニングムービーに使えないライセンスです：content/journeys/milano/manifest.json の openingMovie.credits の2番目（写真：試験の門）は「CC BY-SA 4.0」です。");
+    // No credits: a note, and the build goes on (the India movie has its credits, so it gets none).
+    await withMovie({ videoPath });
+    const result = await buildContent(fixture, false);
+    expect(result.warnings.filter((warning) => warning.kind === "opening-movie")).toEqual([{ kind: "opening-movie",
+      message: expect.stringContaining("オープニングムービーの出典がありません：content/journeys/milano/manifest.json の openingMovie に credits がない") }]);
+  }, 120000);
   it("warns about a tourism photo that npm run images:optimize would convert, but not about a placeholder", async () => {
     // A JPEG larger than 1600×1800 px that no landmark zooms: the build goes on and the warning names the command.
     const photo = "assets/tourism/content-test-photo.jpg";
