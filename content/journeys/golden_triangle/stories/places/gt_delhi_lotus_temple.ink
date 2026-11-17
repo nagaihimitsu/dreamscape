@@ -116,15 +116,18 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy_deep,sweat
+        # voice: gt_delhi_date_lotus_temple_019
         え……ほんとに？　……ずるい、そういう言い方
         # speaker: narrator
         彼女は池のほうへ顔をそむけた。こちらから見えるのは、赤くなった耳だけだった。
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_delhi_date_lotus_temple_020
         うそ。読めた人は、そんな得意そうな顔しないもん
         # speaker: heroine
         # emotion: shy
+        # voice: gt_delhi_date_lotus_temple_021
         ……よかった。ほんとに読めてたら、ここで逃げてた
     }
 * [「『ひま』の続き？」 # option: guess_tease]
@@ -132,13 +135,16 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_lotus_temple_022
         ……ちがうよ。ふざけて書いたんじゃないもん
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_delhi_date_lotus_temple_023
         ふふっ。ちがいます
         # speaker: heroine
         # emotion: smile
+        # voice: gt_delhi_date_lotus_temple_024
         続きなのは、ちょっと合ってるかな。……正解は、まだ教えない
     }
 * [「読めなかった」 # option: couldnt_read]

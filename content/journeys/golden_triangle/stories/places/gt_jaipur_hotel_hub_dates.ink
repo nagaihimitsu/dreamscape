@@ -190,11 +190,14 @@ INCLUDE modules.ink
         // ほかの答えの人：あの場面では読めなかった字を、ここで初めて明かす（2026-11-16）。
         # speaker: heroine
         # recall: gt_album_d61
+        # voice: gt_jaipur_confession_lead_014
         あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字
         # speaker: heroine
+        # voice: gt_jaipur_confession_lead_015
         あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_jaipur_confession_lead_016
         書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番
     }
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
