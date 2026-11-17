@@ -4,7 +4,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 
 - ここに書いたコマンド・項目・ファイルは、2026-11-14 のリポジトリにあるものです（コマンドと検査の決まりは、この日にコードと照らした）。まだないものは「まだ仕組みがない」と書きます。
 - 決まりの元は [AGENTS.md](../AGENTS.md) です。この手引きと食い違うときは AGENTS.md に従います。
-- 手順と並べて読む手引き：[調べものの落とし穴集](RESEARCH_PITFALLS.md)（手順3〜5）、[シナリオ改稿のポイント](SCENARIO_EDITING_GUIDE.md)（手順10b）、[発注マニュアル](ORDERING_MANUAL.md)（手順13〜15・18）、[書いた場面をDebugで確かめる](DEBUG_CHECK_GUIDE.md)（手順10〜22）。AI と進めるときは [AIと決めごとを進める型](DECISION_GUIDE.md) と [AIに仕事を分けて頼む手引き](AI_DELEGATION_GUIDE.md) も。
+- 手順と並べて読む手引き：[調べものの落とし穴集](RESEARCH_PITFALLS.md)（手順3〜5）、[シナリオ改稿のポイント](SCENARIO_EDITING_GUIDE.md)（手順10b）、[発注マニュアル](ORDERING_MANUAL.md)（手順13〜15・18）、[人物の声の作り方](CHARACTER_VOICE_GUIDE.md)（手順18）、[書いた場面をDebugで確かめる](DEBUG_CHECK_GUIDE.md)（手順10〜22）。AI と進めるときは [AIと決めごとを進める型](DECISION_GUIDE.md) と [AIに仕事を分けて頼む手引き](AI_DELEGATION_GUIDE.md) も。
 - 手順の途中で使う手引き：[旅の数字の決め方](NUMBERS_GUIDE.md)（手順3・11・21）、[表現の道具を足すときの考え方](EXPRESSION_TOOLS_GUIDE.md)（手順16。新しい札が欲しくなったとき）、[無料の素材の探し方](FREE_ASSETS_GUIDE.md)（手順5・17）、[ミニゲームの手応えの作り方と確かめ方](MINIGAME_FEEL_GUIDE.md)（手順19）、[横の点検](SWEEP_CHECK_GUIDE.md)（手順10b・22。1つ直したら同じ型を全部探す）、[外の書き手とのやりとり](WRITER_HANDOFF_GUIDE.md)（手順10・10b。書き手に説明書を渡すときと、原稿を受け取ったとき）、[不具合を調べる手順](BUG_HUNT_GUIDE.md)（手順22。テストやCIで落ちたとき）。新しい仕組みや表現を調べて作るときは [「調べて → 方法を決めて → 作る」の進め方](RESEARCH_TO_BUILD_GUIDE.md)。
 - 例はインド・ゴールデントライアングル編です（旅行編ID `golden_triangle`、接頭辞 `gt`、デリー・アーグラ・ジャイプール）。ファイルの書き方の手本は、架空の街の[見本の編](templates/sample_trip/README.md)です。
 
@@ -461,6 +461,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 流れ：`npm run voice:script -- --journey <旅行編ID>` で台本を作り、渡した台本を `<制作資料>/voice/<渡した日付>/` に置く → 届いた MP3 を `<旅行編>/public/assets/voice/<ID>.mp3` に置き、`npm run voice:tag` で `# voice:` を付ける → 台詞を直したら `npm run voice:changes` で、録り直しの要る行だけを頼む。出典は `manifest.json` の `voiceCredits`。
 - 頼む行・一行の長さ・発注のファイル・名前の行・受け取り方：[発注マニュアル](ORDERING_MANUAL.md#3-声を頼む)の3〜4章。確かめ方：`npm run content:build` と、ゲームの設定「台詞の声を出す」で聞く。
 - インド編では：音声合成 Irodori-TTS v4.1-Small でヒロインの声を作った（#101 で26本、#110 で210本、#125・#126 で171本。今はデリーとアーグラの407本）。
+- ヒロイン以外の人物の声（2026-11-17 から）：人物ごとに10の特徴を決め、AivisHub か VOICEVOX のモデルを選び、`cast.json` から依頼先ごとの依頼書を作る（[人物の声の作り方](CHARACTER_VOICE_GUIDE.md)）。インド編では 69人・703行の配役と依頼書を 2026-11-17 に作った（`<制作資料>/voice/2026-11-17_cast/`）。
 
 ### 手順19. ミニゲーム
 

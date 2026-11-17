@@ -1,0 +1,776 @@
+{
+ "scenes": {
+  "gt_delhi_arrival": "デリーの宿がある住宅街の路地。引っ越しの荷出しを指図していた老婦人カムラが、着いたばかりのヒロインと主人公に、ぶっきらぼうに話しかける。段ボールの切れ端に書いた五行のメモ（彼女のデリーの地図）を一行ずつ訳して渡し、最後に「欲しいものは欲しいと言いなさい」と助言する。",
+  "gt_delhi_epilogue": "デリー最後の夜更け、宿の部屋。カムラの孫アマンがチャイを持って訪ね、探している間に二人を疑ったことを謝り、祖母から聞いた祖父との思い出と、自分の結婚式の案内を伝える。打ち解けた、落ち着いた温度。翌朝六時の路地では、カムラが車の窓から一言だけ言って去る。",
+  "gt_delhi_date_agrasen_baoli": "ビルに囲まれた古い階段井戸、アグラセン・キ・バオリ。怖い動画を撮る大学生のクナール（撮影係）とジャスミート（叫ぶ役）が、ヒロインに悲鳴の役を頼む。ひんやり薄暗い場所だが、空気は明るい喜劇。鳩に驚いたヒロインの本物の悲鳴が撮れたあと、主人公が鳩の役になり、今度はジャスミートが本物の悲鳴を上げる。",
+  "gt_delhi_agrasen_baoli_pigeon_flap": "アグラセン・キ・バオリの場面の途中（布を広げるミニゲーム）。主人公が布を持ってくぼみに隠れ、階段を下りてくるジャスミートを驚かす。布を早く広げすぎたときだけ、ジャスミートが笑いながら一言言う。",
+  "gt_delhi_date_bangla_sahib": "シク教の礼拝所グルドワーラー・バングラー・サーヒブの大きな台所（ランガル）。元トラック運転手で、毎日ここで奉仕している老人ハルバンスが、ヒロインと主人公を手招きしてローティー（薄いパン）の伸ばし方を教える。いびつな生地を国の形にたとえる真顔の冗談から、カナダの息子の話、行きたくない本当の理由の打ち明け話へ移っていく。",
+  "gt_delhi_date_chandni_chowk": "旧市街チャンドニー・チョークの路地のゴルガッパ屋台。屋台の男が客の器に休まず一つずつ置いていき、隣の客の「バス」（ヒンディー語で、もういい）の一言で手が止まる。にぎやかで楽しいどたばた。",
+  "gt_delhi_main_humayun_tomb_battle": "フマユーン廟の庭。叔父に二人でいるところを見られたくない大学生メヘルとカビールが、ヒロインたちに友達のふりを頼む。現れた叔父スレーシュ（元・所得税の調査官）が、取り調べの口調で廟についてクイズを出す。途中で叔父も胸に薔薇を隠して誰かと待ち合わせていたと分かり、最後は全員で「今日は誰も誰にも会わなかった」ことにする、可笑しな場面。",
+  "gt_delhi_date_india_gate": "インド門の前の芝生。ピクニック中の村の大家族に写真を頼まれ、十六歳くらいのモヌが、祖母（ダーディー）の言葉をだるそうに通訳する。祖母は、門に名前が刻まれているはずの自分の祖父（最初の世界大戦で亡くなった兵士）を、毎年探しに来ている。明るい行楽の空気から少ししんみりし、最後は村らしい冗談（二人はいつ結婚するのか）で終わる。",
+  "gt_delhi_hotel_homework": "夜、宿の帳場の机。宿の娘ルーヒー（十三歳）が英語の作文の宿題に悩み、ヒロインに話しかける。題は「デリーでいちばん好きな場所」で、彼女の答えは地下鉄の女性車両。くだけた、静かな夜の会話。",
+  "gt_delhi_hotel_sick_morning": "チャンドニー・チョークのゴルガッパでお腹を壊した翌朝、宿の廊下。宿のおかみが鍋のキチュリーを、娘のルーヒーがクミンの水を持ってくる。母と娘の軽い口げんかが続く、にぎやかで温かい朝。",
+  "gt_delhi_depart_scam": "デリーを発つ日のニューデリー駅前。親切そうな青年とベストの男が「列車は運休」と言い、道の向かいの偽の観光案内所へ連れていく。中では背広の男が高いツアーを売りつけようとし、電話の声まで芝居をする。ヒロインが見抜いて断ったあとに会う駅の荷運びの男と検札係は本物で、そっけないが親切。",
+  "gt_delhi_main_jama_masjid_battle": "ジャーマー・マスジドの階段下の細い路地。六十年アタル（香油）を売る老人ハミードの店に、隣の携帯ケース屋の若者ゾヘブが「一時間以内に外国の観光客がアタルを買わなければ店を売る」という賭けを持ちかけている。ハミードは町とモスクの話をクイズにして出し、途中でゾヘブがハミードの息子に頼まれて動いていたと分かる。香りと昔話の、静かで少し苦い場面。",
+  "gt_delhi_date_lodhi_garden": "ロディ・ガーデンの芝生。理由なしに笑う「笑う会」を、元・駅の案内放送係ドゥベイが仕切っていて、にぎやかで可笑しい。フマユーン廟の場面を遊んでいれば、会の中にスレーシュと同級生ミーナがいて、二人の秘密の話になる。遊んでいなければ、ドゥベイが駅の決まり文句をヒンディー語で言わせる。",
+  "gt_delhi_main_qutb_minar_battle": "クトゥブ・ミナールの鉄の柱の前。柵を越えて柱を抱こうとした理科教師ラームキシャンを、ヒロインがリュックをつかんで止める。娘に頼まれて来た彼が、教室の口調で柱についてクイズを出す。押し問答から娘への本音が出て、最後は先生としてヒロインを叱って去る。",
+  "gt_delhi_main_red_fort_battle": "レッド・フォートの中の古い商店街。英語の宿題で外国人に質問したい遠足の生徒三十八人と、疲れた引率のニディ先生に囲まれる。学級委員アンジャリたちが質問をクイズにして出す、にぎやかな場面。最後に、去年の春から授業で話さなかったファイズが、小さな声で質問し、自分で話し始める（そこから静かになる）。",
+  "gt_delhi_finale_battle": "デリー最後の日の夕方から夜。引っ越しの前日にいなくなったカムラを、孫のアマンとヒロインたちが、メモの五行を手がかりに旧市街とレッド・フォートで探す。アマンは初め焦ってヒロインを疑うが、手がかりが当たるたびに落ち着いていく。夜の光と音のショーの中でカムラが見つかってからは静かな場面（声を落とす）で、彼女が亡き夫に六十年遅れの返事をする。"
+ },
+ "lines": {
+  "gt_delhi_arrival_kamla_001": {
+   "noteJa": "名乗りの行。自分のことを一気に、てきぱきと言い切る（地の文「三十秒で言い切る」）。読み：七十九歳＝ななじゅうきゅうさい、逝った＝いった。"
+  },
+  "gt_delhi_arrival_kamla_002": {
+   "noteJa": "ヒロインのガイドブックを取り上げて、鼻を鳴らしながら真顔で。"
+  },
+  "gt_delhi_arrival_kamla_003": {
+   "noteJa": "段ボールのメモを一行ずつ、ぶっきらぼうに訳す。読点ごとに短く切る。"
+  },
+  "gt_delhi_arrival_kamla_004": {
+   "noteJa": "メモの訳の続き。読点ごとに短く切る。読み：廟＝びょう。"
+  },
+  "gt_delhi_arrival_kamla_005": {
+   "noteJa": "メモの五行目（場所の名前がない行）。謎めかさず、淡々と。"
+  },
+  "gt_delhi_arrival_kamla_006": {
+   "noteJa": "意味を聞かれて、一言で突き放す。"
+  },
+  "gt_delhi_arrival_kamla_008": {
+   "noteJa": "ヒロインの後ろにいる主人公を、顎で示して。"
+  },
+  "gt_delhi_arrival_kamla_009": {
+   "noteJa": "笑わずに、落花生をヒロインの手のひらに載せながら。"
+  },
+  "gt_delhi_epilogue_aman_001": {
+   "noteJa": "夜更けの宿の部屋。昼とは違って落ち着き、少し気まずそうに謝る。"
+  },
+  "gt_delhi_epilogue_aman_004": {
+   "noteJa": "自分の結婚の話。少し照れて、迷いながら。"
+  },
+  "gt_delhi_epilogue_aman_005": {
+   "noteJa": "最後の一文は苦笑まじりに。"
+  },
+  "gt_delhi_epilogue_aman_006": {
+   "noteJa": "『来なくてもいい』は祖母の言葉の引用。声色はまねず、苦笑まじりに。"
+  },
+  "gt_delhi_epilogue_aman_007": {
+   "noteJa": "ヒロインの返事を聞いて、ほほえむように。"
+  },
+  "gt_delhi_epilogue_kamla_001": {
+   "noteJa": "翌朝六時の路地。車の窓から、表情を変えずに一言だけ。アーグラの gt_agra_finale_battle_kamla_001 とほぼ同じ文（別に録るか同じ録音を使うかは作者が決める）。"
+  },
+  "gt_delhi_date_agrasen_baoli_kunal_001": {
+   "noteJa": "名前が出る前（画面は「青年」）。携帯を構えたまま、相棒にダメ出し。"
+  },
+  "gt_delhi_date_agrasen_baoli_jasmeet_001": {
+   "noteJa": "クナールに、口をとがらせて言い返す。"
+  },
+  "gt_delhi_date_agrasen_baoli_kunal_002": {
+   "noteJa": "ヒロインに気づいて、急に丁寧に名乗る。"
+  },
+  "gt_delhi_date_agrasen_baoli_kunal_004": {
+   "noteJa": "「カット。」は撮影を止める合図。短く平らに。後半は苦笑まじり。"
+  },
+  "gt_delhi_date_agrasen_baoli_jasmeet_002": {
+   "noteJa": "階段を下りながら、声をひそめて言い伝えを話す。最後の「……言い伝えですけど」は少し軽く。"
+  },
+  "gt_delhi_date_agrasen_baoli_kunal_005": {
+   "noteJa": "「カット。」は短く平らに。真顔のダメ出し。"
+  },
+  "gt_delhi_date_agrasen_baoli_kunal_006": {
+   "noteJa": "大はしゃぎで叫ぶ。"
+  },
+  "gt_delhi_date_agrasen_baoli_jasmeet_003": {
+   "noteJa": "低くすねて、小さく。"
+  },
+  "gt_delhi_date_agrasen_baoli_jasmeet_004": {
+   "noteJa": "文字を読まず、本物の悲鳴に。井戸の底から空へ抜ける、全力の長い悲鳴（ヒロインの悲鳴より大きく）。何度か作って自然なものを選ぶ。"
+  },
+  "gt_delhi_date_agrasen_baoli_jasmeet_005": {
+   "noteJa": "悲鳴の直後、自分の声に驚いて、笑い出しながら。"
+  },
+  "gt_delhi_date_agrasen_baoli_kunal_007": {
+   "noteJa": "ヒロインに、丁寧にお願いする。"
+  },
+  "gt_delhi_agrasen_baoli_pigeon_flap_jasmeet_001": {
+   "noteJa": "くぼみに隠れた主人公に、笑いながら。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_001": {
+   "noteJa": "名前が出る前（画面は「老人」）。台所で生地を丸めながら、手招きして。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_002": {
+   "noteJa": "名乗りの行。読み：生地＝きじ。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_003": {
+   "noteJa": "いびつな生地を光にかざして、真顔の冗談。「ほう」は感心した短い息。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_004": {
+   "noteJa": "麺棒を渡しながら。伸ばす拍子のように、一定のリズムで。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_005": {
+   "noteJa": "真顔の冗談。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_008": {
+   "noteJa": "「ほう」は短い息。目を細めて。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_011": {
+   "input": "コメも、セメントも、祭りの花も運んだ。荷台がカラのまま走った日は、ほとんどない",
+   "noteJa": "生地を丸めながら、街道の思い出を。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_016": {
+   "noteJa": "手を止めて、声を落とし、ゆっくり。アーグラにほぼ同じ文が2行ある（gt_agra_date_guru_ka_taal_harbans_006 / _007）。"
+  },
+  "gt_delhi_date_chandni_chowk_delhi_chandni_customer_001": {
+   "noteJa": "ヒンディー語の「バス」（もういい、そこまで）。乗り物のバスではない（音は同じ）。短く、さらっと。語尾を上げない。"
+  },
+  "gt_delhi_date_chandni_chowk_delhi_chandni_vendor_001": {
+   "noteJa": "指を一本立てて、ぶっきらぼうに、でも気前よく。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_001": {
+   "input": "お願い、ジュップンだけ友達になって！",
+   "noteJa": "名前が出る前（画面は「女の子」）。腕をつかんで、あせった早口で。読み：十分＝10分（じゅっぷん。じっぷんでもよい）。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_002": {
+   "input": "わたし、メヘル。こっちはカビール。大学の同級生なの。今、ニシモンから、わたしの叔父さんが入ってきたの",
+   "noteJa": "早口で。読み：西門は仮に「にしもん」（作者への質問あり）。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_kabir_001": {
+   "noteJa": "メヘルに紹介されて、おずおずと小さく。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_003": {
+   "input": "二人きりでいるところを見られたら、夕飯の前にお母さんに知れる。お母さんに知れたら、シンセキジュウに知れる！",
+   "noteJa": "早口で、必死に。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_004": {
+   "noteJa": "早口で、必死に頼む。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_001": {
+   "noteJa": "名前が出る前（画面は「男」）。庭の向こうから飛んでくる、太い大声。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_002": {
+   "noteJa": "大股で近づきながら、問いただす。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_003": {
+   "noteJa": "名乗りの行。重々しく。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_004": {
+   "noteJa": "新聞を指揮棒のように振りながら、取り調べの口調で。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_kabir_002": {
+   "noteJa": "叔父に向かって、慌てて口を挟む早口。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_005": {
+   "noteJa": "ヒロインの耳元でささやく。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_008": {
+   "noteJa": "カビールを一睨みして、ぴしゃりと。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_009": {
+   "noteJa": "問題を出した側なのに、少し得意そうに。読み：廟＝びょう。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_011": {
+   "noteJa": "汗をかいて、慌てて取りつくろう。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_012": {
+   "noteJa": "咳払いのあと、ごまかすように声を少し大きく。読み：千八百五十七年＝せんはっぴゃくごじゅうななねん（録ったら確かめる）、廟＝びょう。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_014": {
+   "noteJa": "早く二人を行かせたくて、少し早口に。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_meena_001": {
+   "noteJa": "名前が出る前（画面は「女性」）。東の門の方から、手を振って呼ぶ明るい声（遠くから）。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_006": {
+   "noteJa": "目を細めて、ゆっくり、意地悪く問い返す。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_016": {
+   "noteJa": "声が上ずり、しどろもどろの早口。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_017": {
+   "noteJa": "沈黙のあと、取引を持ちかけるように重々しく。読み：廟＝びょう。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_mehr_007": {
+   "noteJa": "即答。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_018": {
+   "noteJa": "少し驚いて、照れたように。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_019": {
+   "noteJa": "落ちた新聞を拾い、少し笑いながら、しみじみと。"
+  },
+  "gt_delhi_date_india_gate_monu_001": {
+   "input": "フォト、プリーズ！",
+   "noteJa": "英語の台詞（カタカナで入れる）。名前が出る前（画面は「男の子」）。携帯を差し出しながら、明るく短く。"
+  },
+  "gt_delhi_date_india_gate_monu_002": {
+   "noteJa": "名乗りの行。「ダーディー……」と言いかけて、日本語の「おばあちゃん」に言い直す。"
+  },
+  "gt_delhi_date_india_gate_monu_003": {
+   "noteJa": "面倒くさそうに通訳する。"
+  },
+  "gt_delhi_date_india_gate_monu_004": {
+   "noteJa": "だるそうに。"
+  },
+  "gt_delhi_date_india_gate_monu_005": {
+   "noteJa": "しぶしぶ。"
+  },
+  "gt_delhi_date_india_gate_monu_006": {
+   "noteJa": "思いついて、少し乗り気に。"
+  },
+  "gt_delhi_date_india_gate_monu_007": {
+   "noteJa": "携帯の画面に夢中で、身を乗り出して早口に。"
+  },
+  "gt_delhi_date_india_gate_monu_008": {
+   "noteJa": "しぶしぶ携帯を貸しながら。「あ、待って」で身を乗り出す。"
+  },
+  "gt_delhi_date_india_gate_monu_009": {
+   "noteJa": "祖母の言葉を通訳する。少ししみじみ。"
+  },
+  "gt_delhi_date_india_gate_monu_010": {
+   "noteJa": "携帯を見つめたまま、小さく。"
+  },
+  "gt_delhi_date_india_gate_monu_011": {
+   "noteJa": "祖母の言葉の通訳。最後の「……初耳なんだけど」はぼそっと。"
+  },
+  "gt_delhi_date_india_gate_monu_012": {
+   "noteJa": "「……ごめん、」から気まずそうに。"
+  },
+  "gt_delhi_hotel_homework_roohi_004": {
+   "noteJa": "女性車両の話は少し弾んで、一気に。読み：床＝ゆか。"
+  },
+  "gt_delhi_hotel_homework_roohi_005": {
+   "noteJa": "最後の「……もうすぐ、引っ越しちゃうけど」は少し寂しそうに。"
+  },
+  "gt_delhi_hotel_homework_roohi_007": {
+   "noteJa": "小さく、まんざらでもなく。"
+  },
+  "gt_delhi_hotel_homework_roohi_010": {
+   "noteJa": "最後の「変？」は小さく聞く。"
+  },
+  "gt_delhi_hotel_homework_roohi_011": {
+   "noteJa": "あきれ半分、面白がって。"
+  },
+  "gt_delhi_hotel_sick_morning_delhi_hotel_okami_001": {
+   "noteJa": "鍋を差し出しながら。客にはやさしく。"
+  },
+  "gt_delhi_hotel_sick_morning_delhi_hotel_okami_002": {
+   "noteJa": "少し笑って、見抜いたように。"
+  },
+  "gt_delhi_hotel_sick_morning_roohi_001": {
+   "noteJa": "コップを差し出しながら。最後は少しいたずらっぽく。"
+  },
+  "gt_delhi_hotel_sick_morning_roohi_003": {
+   "noteJa": "得意げに。"
+  },
+  "gt_delhi_hotel_sick_morning_delhi_hotel_okami_003": {
+   "noteJa": "前半は客への種明かし。「それと、」から娘への小言（早口でぴしゃり）。"
+  },
+  "gt_delhi_hotel_sick_morning_roohi_004": {
+   "noteJa": "母への口答えの調子。"
+  },
+  "gt_delhi_hotel_sick_morning_delhi_hotel_okami_004": {
+   "noteJa": "娘の言葉に、真顔で即座に打ち消す。短く平らに。"
+  },
+  "gt_delhi_hotel_sick_morning_roohi_005": {
+   "noteJa": "玄関へ向かう途中、振り返って一言。「バス」はヒンディー語の「もういい」（乗り物ではない）。軽く。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_young_man_001": {
+   "input": "アーグラ？　ユア・トレイン・イズ・キャンセルド・トゥデイ。",
+   "noteJa": "英語の台詞（カタカナで入れる）。すっと隣に並んで、親切そうに。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_young_man_002": {
+   "noteJa": "もっともらしく、なめらかに説明する。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_vest_man_001": {
+   "noteJa": "通りがかりに、面倒くさそうに言い捨てる。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_young_man_004": {
+   "noteJa": "笑顔のまま急かす。荷物に手をかけながら。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_young_man_005": {
+   "noteJa": "落ち着き払って、言い切る。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_001": {
+   "noteJa": "にこやかに立ち上がって。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_002": {
+   "noteJa": "画面を見ながら、困ったふりを芝居がかって。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_003": {
+   "noteJa": "受話器をこちらに向けながら。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_phone_voice_001": {
+   "noteJa": "電話の受話器から聞こえる声。平板に、同じ言葉を二回。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_004": {
+   "noteJa": "笑顔の営業口調で、たたみかける。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_006": {
+   "noteJa": "話をそらすように。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_007": {
+   "noteJa": "断られて、脅すように。"
+  },
+  "gt_delhi_depart_scam_delhi_scam_suit_man_008": {
+   "noteJa": "笑顔が消え、冷たく事務的に。"
+  },
+  "gt_delhi_depart_scam_delhi_porter_001": {
+   "input": "あの路地の上の部屋だろう。毎日だよ。……観光客の窓口なら、駅の二階。今日もあいてる。列車は、あれを見な",
+   "noteJa": "二人が出てきた路地を見て、首を振りながら。後半はそっけなく親切に。読み：開いてる＝あいてる。"
+  },
+  "gt_delhi_depart_scam_delhi_ticket_checker_001": {
+   "noteJa": "淡々と。最後は少しやわらげて。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_001": {
+   "noteJa": "名前が出る前（画面は「老人」）。ヒロインの手首に香りをつけながら、短く。最後の「手首を」は言いさし（手首を出して、の意味）。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_002": {
+   "noteJa": "名乗りの行。読み：香油＝こうゆ。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_001": {
+   "noteJa": "名前が出る前（画面は「若い男」）。隣の店から顔を出して、からかうように叫ぶ。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_002": {
+   "noteJa": "名乗りの行。軽く、自信たっぷりに。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_003": {
+   "noteJa": "笑いながら。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_004": {
+   "noteJa": "目を丸くして、小さく。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_005": {
+   "noteJa": "肩をすくめて。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_009": {
+   "noteJa": "新しい小瓶の香りを説明する。ミッティはヒンディー語で「土」。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_007": {
+   "noteJa": "あきれたように、からかって。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_011": {
+   "noteJa": "読み：千八百五十七年＝せんはっぴゃくごじゅうななねん（録ったら確かめる）。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_008": {
+   "noteJa": "路地の角での電話。急に丁寧になり、声を落とす（それでも聞こえる程度）。「お父さん」はハミードのこと。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_009": {
+   "noteJa": "ハミードに聞こえない小声で、観念して打ち明ける。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_010": {
+   "noteJa": "同じく小声で。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_014": {
+   "input": "ダンジキヅキの夕方にはな、トオリジュウがモスクからの合図を待っていた。親父はその直前に、礼拝へ向かう男たちにアタルを売った",
+   "noteJa": "店の奥で帳面をめくりながら、独り言のように。少し遠くを見るように柔らかく。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_011": {
+   "noteJa": "小さく笑って。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_012": {
+   "noteJa": "逃げずに、ハミードに向かって。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_018": {
+   "noteJa": "怒っているが、声を荒らげず、低く押し殺して。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_022": {
+   "noteJa": "一ルピーもまけずに、きっぱりと。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_001": {
+   "noteJa": "名前が出る前（画面は「老人」）。駅の案内放送の口調で、朗々と（冗談として）。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_004": {
+   "noteJa": "「ホー、ホー、ハ、ハ、ハ」は笑う会の掛け声。区切って、腹から笑う。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_001": {
+   "noteJa": "握手しながら律儀に作り笑いをし、その合間に早口でささやく。「ハ」は作り笑い。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_002": {
+   "noteJa": "観念して、照れ隠しに堅く。"
+  },
+  "gt_delhi_date_lodhi_garden_meena_001": {
+   "noteJa": "くすっと笑いながら。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_003": {
+   "input": "家族に知れたら、夕飯の前にシンセキジュウに知れる。この年で何をしている、と笑われる",
+   "noteJa": "廟の場面のメヘルとほぼ同じ言い分（地の文でも触れている）。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_005": {
+   "noteJa": "同じ文が gt_delhi_date_lodhi_garden_suresh_006 にもある（分かれ道ちがい）。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_006": {
+   "noteJa": "同じ文が gt_delhi_date_lodhi_garden_suresh_005 にもある（分かれ道ちがい）。"
+  },
+  "gt_delhi_date_lodhi_garden_meena_002": {
+   "noteJa": "スレーシュをなだめるように。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_008": {
+   "noteJa": "驚いて、少したじろぎながら。"
+  },
+  "gt_delhi_date_lodhi_garden_suresh_010": {
+   "noteJa": "1音だけの、小さな本物の笑い（息に近くてよい）。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_006": {
+   "noteJa": "「ヤートリーガン、クリプヤー、ディヤーン、デーン」はヒンディー語（直前の『乗客の皆さま、ご注意ください』と同じ意味）。読点ごとに区切り、駅の放送の調子で。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_007": {
+   "noteJa": "先生のように、きっぱりと。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_008": {
+   "noteJa": "駅の放送のまねの冗談。放送の口調で。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_009": {
+   "noteJa": "駅の放送のまねの冗談。放送の口調で。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_010": {
+   "noteJa": "駅の放送のまねの冗談。放送の口調で。"
+  },
+  "gt_delhi_date_lodhi_garden_dubey_011": {
+   "noteJa": "最後の「声には、行き先が要る」は少ししみじみと。「行き先」の読みは作者への質問あり。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_001": {
+   "noteJa": "名前が出る前（画面は「男」）。柵をまたいだ片足立ちのまま、リュックをつかまれて焦って。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_004": {
+   "noteJa": "『』の中は娘の言葉の引用。声色は変えない。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_005": {
+   "noteJa": "冗談めかすが、目は笑っていない。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_009": {
+   "noteJa": "教室で問題を出す口調で。ボールペンの先を向けて。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_010": {
+   "noteJa": "楽しげに。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_012": {
+   "noteJa": "声が落ち、少し詰まる。『』の中は娘の言葉（声色は変えない）。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_016": {
+   "noteJa": "汗をかいて、苦笑まじりに。"
+  },
+  "gt_delhi_main_qutb_minar_battle_ramkishan_021": {
+   "noteJa": "歩き出しかけて振り返り、先生として叱る。"
+  },
+  "gt_delhi_main_red_fort_battle_delhi_red_fort_children_001": {
+   "noteJa": "遠足の子ども三十八人ほどが、同時に元気よく言う声。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_001": {
+   "noteJa": "ため息まじりに。すぐ頭を下げて謝る。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_002": {
+   "noteJa": "『』は宿題の題。少し読み上げる調子で、早口に。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_004": {
+   "noteJa": "生徒に向かって、一気に大声。"
+  },
+  "gt_delhi_main_red_fort_battle_anjali_001": {
+   "noteJa": "名乗りの行。胸を張って、きびきびと。"
+  },
+  "gt_delhi_main_red_fort_battle_anjali_002": {
+   "noteJa": "少し悔しそうに、すぐ付け足す。"
+  },
+  "gt_delhi_main_red_fort_battle_anjali_003": {
+   "noteJa": "胸を張って、得意げに読み上げる。"
+  },
+  "gt_delhi_main_red_fort_battle_delhi_red_fort_classmate_001": {
+   "noteJa": "みんなに聞こえるように叫ぶ。『』の中はファイズの言葉（口まねはしない）。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_005": {
+   "noteJa": "腕時計を見ながら、事務的に速く。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_006": {
+   "noteJa": "生徒を呼ぶ大声。"
+  },
+  "gt_delhi_main_red_fort_battle_sonu_001": {
+   "noteJa": "名乗りの行（名前の札が出る）。クイズ番組の司会のように叫ぶ。"
+  },
+  "gt_delhi_main_red_fort_battle_sonu_002": {
+   "noteJa": "名乗りの行（名前の札が出る）。口で鳴らす外れのブザーのまね。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_007": {
+   "noteJa": "前半は怒鳴る。「……はい、ここまで。」からすぐ事務的な声に戻る。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_009": {
+   "input": "……イップンです。あなたが無駄にしたイップンは、あとで生徒に恨まれますよ",
+   "noteJa": "ため息まじりに。読み：一分＝いっぷん。"
+  },
+  "gt_delhi_main_red_fort_battle_faiz_001": {
+   "noteJa": "名乗りの行。長く黙っていた子がやっと出す、かすれた小さな声（ノートに書いた一行を読み上げる）。"
+  },
+  "gt_delhi_main_red_fort_battle_faiz_002": {
+   "noteJa": "声は小さいまま、途切れずに。"
+  },
+  "gt_delhi_main_red_fort_battle_faiz_003": {
+   "noteJa": "声は小さいまま、途切れずに。"
+  },
+  "gt_delhi_main_red_fort_battle_anjali_004": {
+   "noteJa": "列から叫ぶ。"
+  },
+  "gt_delhi_main_red_fort_battle_anjali_005": {
+   "noteJa": "指を二本立てて、少し上から目線で。"
+  },
+  "gt_delhi_main_red_fort_battle_sonu_003": {
+   "noteJa": "胸を叩いて、得意げに。「バス」は乗り物のバス。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_010": {
+   "noteJa": "少し声を落として。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_011": {
+   "noteJa": "感動を見せず、淡々と。"
+  },
+  "gt_delhi_main_red_fort_battle_nidhi_012": {
+   "noteJa": "列を動かしながら、一度だけ振り返って。少しだけ温度が上がる。"
+  },
+  "gt_delhi_finale_battle_delhi_red_fort_guide_001": {
+   "noteJa": "メモの言葉に首をかしげて聞き返す。"
+  },
+  "gt_delhi_finale_battle_delhi_hotel_owner_001": {
+   "noteJa": "電話の声（宿の主人からの電話）。急ぎの用件を落ち着いて。"
+  },
+  "gt_delhi_finale_battle_aman_001": {
+   "noteJa": "名乗りの行。電話を切って、まっすぐ歩いてくる。焦りを抑えた丁寧語。"
+  },
+  "gt_delhi_finale_battle_aman_002": {
+   "noteJa": "焦って速め。読み：発つ＝たつ。"
+  },
+  "gt_delhi_finale_battle_aman_003": {
+   "noteJa": "疑いを隠さず、丁寧なまま強く詰め寄る。"
+  },
+  "gt_delhi_finale_battle_aman_004": {
+   "noteJa": "祖母のメモを読み上げる。声色はまねず、本人の声でいぶかしげに。"
+  },
+  "gt_delhi_finale_battle_aman_005": {
+   "noteJa": "不安そうに、声を落として。"
+  },
+  "gt_delhi_finale_battle_aman_007": {
+   "noteJa": "携帯の画面を見つめたまま、力が抜けたように。"
+  },
+  "gt_delhi_finale_battle_roohi_001": {
+   "noteJa": "名前は出ない（画面は「宿の娘」）。宿の窓から身を乗り出して呼びかける。"
+  },
+  "gt_delhi_finale_battle_aman_008": {
+   "noteJa": "力が抜けたように。"
+  },
+  "gt_delhi_finale_battle_aman_010": {
+   "noteJa": "つぶやくように。"
+  },
+  "gt_delhi_finale_battle_aman_011": {
+   "noteJa": "つぶやくように。"
+  },
+  "gt_delhi_finale_battle_delhi_auto_driver_001": {
+   "noteJa": "悪びれず、のんきに。"
+  },
+  "gt_delhi_finale_battle_aman_012": {
+   "noteJa": "運転手に、短く鋭く。"
+  },
+  "gt_delhi_finale_battle_delhi_sweet_shopkeeper_001": {
+   "noteJa": "思い当たって手を打ち、ぼやくように一気に。読み：香辛料＝こうしんりょう。"
+  },
+  "gt_delhi_finale_battle_aman_014": {
+   "noteJa": "最後の一文は少し懐かしそうに。読み：香辛料＝こうしんりょう、卸＝おろし。"
+  },
+  "gt_delhi_finale_battle_delhi_spice_trader_001": {
+   "noteJa": "思い出しながら、淡々と。"
+  },
+  "gt_delhi_finale_battle_delhi_spice_trader_002": {
+   "noteJa": "前の行に続けて、少しだけ間をおいて。読み：灯り＝あかり。"
+  },
+  "gt_delhi_finale_battle_aman_015": {
+   "noteJa": "香辛料の袋に手をつき、深く息を吐いてから。本音を少しずつ。"
+  },
+  "gt_delhi_finale_battle_delhi_red_fort_guide_002": {
+   "input": "最初のショーはせんきゅうひゃくろくじゅうごねんです。アジアで一番早いころのものですよ",
+   "noteJa": "ショーの最中なので、小声で。"
+  },
+  "gt_delhi_finale_battle_aman_021": {
+   "noteJa": "つぶやくように。読み：十九＝じゅうく。"
+  },
+  "gt_delhi_finale_battle_kamla_001": {
+   "noteJa": "静かな場面。亡き夫に話しかける、小さく柔らかい声。少しゆっくり。"
+  },
+  "gt_delhi_finale_battle_kamla_002": {
+   "noteJa": "小声のまま。"
+  },
+  "gt_delhi_finale_battle_kamla_003": {
+   "noteJa": "小声のまま、少し笑みを含んで。"
+  },
+  "gt_delhi_finale_battle_kamla_004": {
+   "noteJa": "六十年遅れの返事。小さく、少し震えてもよい。泣き崩れない。「です」はわざと丁寧なまま。前に1秒の間（ゲームが待つので、録音の頭に無音を足さない）。"
+  },
+  "gt_delhi_finale_battle_kamla_005": {
+   "noteJa": "振り向いて、ヒロインに。"
+  },
+  "gt_delhi_finale_battle_kamla_006": {
+   "noteJa": "怒った声で。でも突き放しきらない。"
+  },
+  "gt_delhi_finale_battle_aman_022": {
+   "noteJa": "祖母の隣に座って、小さく、孫の顔に戻って。"
+  },
+  "gt_delhi_finale_battle_kamla_007": {
+   "noteJa": "長い沈黙のあと、静かに語り始める。読み：千九百六十六年＝せんきゅうひゃくろくじゅうろくねん（録ったら確かめる）。"
+  },
+  "gt_delhi_finale_battle_kamla_008": {
+   "noteJa": "少し離れた背中のほうから呼びかける。最後の「……来なくてもいいけど」は照れ隠し。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_010": {
+   "noteJa": "読み：生地＝きじ。"
+  },
+  "gt_delhi_date_bangla_sahib_harbans_015": {
+   "noteJa": "読み：皆＝みな。"
+  },
+  "gt_delhi_main_humayun_tomb_battle_suresh_010": {
+   "noteJa": "読み：廟＝びょう。"
+  },
+  "gt_delhi_main_jama_masjid_battle_zoheb_006": {
+   "noteJa": "読み：香油＝こうゆ。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_015": {
+   "noteJa": "読み：香油＝こうゆ。"
+  },
+  "gt_delhi_main_jama_masjid_battle_hamid_016": {
+   "noteJa": "読み：香油＝こうゆ。"
+  },
+  "gt_delhi_finale_battle_aman_019": {
+   "noteJa": "読み：堅物＝かたぶつ。"
+  }
+ },
+ "dictionary": [
+  {
+   "word": "廟",
+   "reading": "ビョウ",
+   "noteJa": "フマユーン廟など。ヒロインの説明書6(3)で決めた読み。"
+  },
+  {
+   "word": "香辛料",
+   "reading": "コウシンリョウ",
+   "noteJa": "ヒロインの説明書6(3)と同じ。"
+  },
+  {
+   "word": "香油",
+   "reading": "コウユ",
+   "noteJa": "ハミードとゾヘブの台詞（アタルのこと）。"
+  },
+  {
+   "word": "断食月",
+   "reading": "ダンジキヅキ",
+   "noteJa": "ハミードの台詞。この行は入力も直した。"
+  },
+  {
+   "word": "通り中",
+   "reading": "トオリジュウ",
+   "noteJa": "「とおりちゅう」ではない。ハミードの台詞。この行は入力も直した。"
+  },
+  {
+   "word": "親戚中",
+   "reading": "シンセキジュウ",
+   "noteJa": "「しんせきちゅう」ではない。メヘルとスレーシュの台詞。入力も直した。"
+  },
+  {
+   "word": "西門",
+   "reading": "ニシモン",
+   "noteJa": "メヘルの台詞。仮の読み（作者への質問あり）。"
+  },
+  {
+   "word": "生地",
+   "reading": "キジ",
+   "noteJa": "ローティーの生地。「せいち」（生まれた土地）ではない。ハルバンスの台詞。"
+  },
+  {
+   "word": "米",
+   "reading": "コメ",
+   "noteJa": "ハルバンスの台詞（「べい」ではない）。入力も直した。ほかの都市で「米国」の意味に使う行があれば、辞書には入れず行ごとに直す。"
+  },
+  {
+   "word": "皆",
+   "reading": "ミナ",
+   "noteJa": "ハルバンスの「皆そう言う」。ほかの人物の「皆」には効かせないよう、登録するなら行を確かめる（作者への質問あり）。"
+  },
+  {
+   "word": "逝った",
+   "reading": "イッタ",
+   "noteJa": "カムラの名乗り。「ゆった」と読まれたら直す。"
+  },
+  {
+   "word": "発つ",
+   "reading": "タツ",
+   "noteJa": "アマンの「ジャイプールへ発つ」。"
+  },
+  {
+   "word": "堅物",
+   "reading": "カタブツ",
+   "noteJa": "アマンの台詞。"
+  },
+  {
+   "word": "卸",
+   "reading": "オロシ",
+   "noteJa": "アマンの「香辛料の卸の通り」。"
+  },
+  {
+   "word": "灯り",
+   "reading": "アカリ",
+   "noteJa": "問屋の「城の灯り」。"
+  },
+  {
+   "word": "床",
+   "reading": "ユカ",
+   "noteJa": "ルーヒーの「床に座って」。「とこ」ではない。"
+  },
+  {
+   "word": "バス",
+   "reading": "バス",
+   "noteJa": "隣の客とルーヒーの「バス」はヒンディー語の「もういい、そこまで」（ヒロインの説明書6(4)と同じ）。音は同じ。ニディ先生とソーヌーの「バス」は乗り物なので、辞書でアクセントを変えるなら行ごとに。"
+  },
+  {
+   "word": "ダーディー",
+   "reading": "ダーディー",
+   "noteJa": "ヒンディー語で父方の祖母。モヌは「おばあちゃん」と言い直し、アマンはカムラをこう呼ぶ。"
+  },
+  {
+   "word": "ヤートリーガン、クリプヤー、ディヤーン、デーン",
+   "reading": "ヤートリーガン、クリプヤー、ディヤーン、デーン",
+   "noteJa": "ヒンディー語の駅の決まり文句（台詞の中で『乗客の皆さま、ご注意ください』と言っている）。読点ごとに区切る。"
+  },
+  {
+   "word": "ミッティ",
+   "reading": "ミッティ",
+   "noteJa": "ヒンディー語で「土」。土の香りのアタル（台詞の中で説明している）。"
+  },
+  {
+   "word": "アタル",
+   "reading": "アタル",
+   "noteJa": "花や木の香りを油に閉じこめたもの（台詞の中で説明している）。"
+  }
+ ],
+ "authorQuestions": [
+  {
+   "id": "gt_delhi_main_humayun_tomb_battle_mehr_002",
+   "text": "わたし、メヘル。こっちはカビール。大学の同級生なの。今、西門から、わたしの叔父さんが入ってきたの",
+   "questionJa": "「西門」の読み。仮に「にしもん」で入力を書いた。",
+   "options": [
+    "にしもん",
+    "せいもん",
+    "さいもん"
+   ]
+  },
+  {
+   "id": "gt_delhi_date_lodhi_garden_dubey_011",
+   "text": "合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る",
+   "questionJa": "「行き先」の読み。元・駅の案内放送係の台詞。鉄道では「ゆきさき」と読むことが多い（推定）。入力は変えていない。",
+   "options": [
+    "いきさき",
+    "ゆきさき"
+   ]
+  },
+  {
+   "id": "gt_delhi_date_bangla_sahib_harbans_015",
+   "text": "皆そう言う。息子も、娘も、隣の家の者も。……皆、行かない者ほど、そう言う",
+   "questionJa": "「皆」（2か所）の読み。老人らしさは「みな」、くだけると「みんな」。入力は変えていない。",
+   "options": [
+    "みな",
+    "みんな"
+   ]
+  }
+ ]
+}

@@ -232,9 +232,13 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
  * the core layer, see selectJourneys), without reading the disk. With a
  * storyCache, the full-branch date validations (validateStory) reuse stored
  * successful results (story-validation-cache.ts); that is the only disk access.
+ * `untilName` (voice ID → what the clip says) names the voices recorded up to a name the player sets, whose `# voice:`
+ * may stand on a line with that name (recorded.json `spoken`, which buildContent reads: voice-files.ts checkVoiceTags).
  */
-export function validateContent(sources: ContentSources, options: { storyCache?: StoryValidationCache } = {}) {
+export function validateContent(sources: ContentSources,
+  options: { storyCache?: StoryValidationCache; untilName?: ReadonlyMap<string, string> } = {}) {
   const { root } = sources;
+  const untilName = options.untilName ?? new Map<string, string>();
   requireJourneyManifests(sources.manifests);
   // The authoring tools read these profiles; a broken one still fails the build early.
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
@@ -682,8 +686,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
     // A # minigame:'s art.<slot> names a picture of the story's own journey or the root (docs/13 2.12).
     withContext(file, () => checkMiniGameArtTags(authored, storyLayer, miniGameArt));
-    // A line's # voice: names a recording of the story's own journey (2026-11-12).
-    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
+    // A line's # voice: names a recording of the story's own journey (2026-11-12), never on a line with a name the
+    // player sets but for a clip recorded up to the name (2026-11-17).
+    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory), untilName));
     // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
     withContext(file, () => checkSoundTags(authored, storyLayer, sounds));
     // A line's # bgm: names a shared track or one of the story's own journey, or stop or default (2026-11-12).

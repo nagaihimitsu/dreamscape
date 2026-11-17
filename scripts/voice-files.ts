@@ -17,6 +17,13 @@ export const PLAYER_SET_NAMES = [
   { placeholder: "{heroine_name}", nameJa: "ヒロインの名前", nameEn: "the heroine's name" },
 ] as const;
 
+/**
+ * Whether a text says a name the player sets: its placeholder ({player_name} …) or the script's way of showing it
+ * (【主人公の名前】 …, voice-script.ts showNames).
+ */
+export const saysPlayerSetName = (text: string) =>
+  PLAYER_SET_NAMES.some((name) => text.includes(name.placeholder) || text.includes(`【${name.nameJa}】`));
+
 // content:build's voices (2026-11-12; src/content/voice-files.ts): the recordings of each journey's
 // public/assets/voice/<ID>.mp3 and the `# voice:` tags of the journeys' stories. Where they come from is the manifest's
 // voiceCredits (2026-11-13), the image-rights check reads only images (image-rights.ts isImagePath), and a file
@@ -78,10 +85,13 @@ const voiceTagWhere = (id: string, line: number, knot?: string) => `${knot ? `kn
  * names no voice of that journey (whose voice folder is `voiceFolder`, as voiceFolderPath shows it): a missing file, or
  * another journey's (a journey folder must stay removable on its own). Then at the first whose line says
  * {player_name}, {player_name_latin}, {player_address} or {heroine_name} (2026-11-13 user decision): the player sets the
- * names (the Latin name and the address are made from the protagonist's), so no recording can say them.
- * Japanese first, English after.
+ * names (the Latin name and the address are made from the protagonist's), so no recording can say them. The one
+ * exception (2026-11-17 author decision 「「……」まで録る」): a clip recorded up to the name, which `untilName` (voice ID →
+ * what the clip says: recorded.json's `spoken`, voice-records.ts partialRecordings) has with a text that says no name;
+ * the name is then only in the subtitle. Japanese first, English after.
  */
-export function checkVoiceTags(source: string, journeyId: string, voices: readonly VoiceFile[], voiceFolder: string): void {
+export function checkVoiceTags(source: string, journeyId: string, voices: readonly VoiceFile[], voiceFolder: string,
+  untilName: ReadonlyMap<string, string> = new Map()): void {
   for (const { id, line, knot } of voiceTagsOf(source)) {
     const where = voiceTagWhere(id, line, knot);
     if (!VOICE_ID.test(id))
@@ -99,8 +109,12 @@ export function checkVoiceTags(source: string, journeyId: string, voices: readon
   for (const { value, line, knot, text, textLine } of taggedLines(source, ["voice"])) {
     const name = PLAYER_SET_NAMES.find((item) => text?.includes(item.placeholder));
     if (!name) continue;
+    const spoken = untilName.get(value);
+    if (spoken !== undefined && spoken.trim() && !saysPlayerSetName(spoken)) continue;
     throw new Error(`${name.nameJa}は声にできません：${voiceTagWhere(value, line, knot)} の台詞（${textLine}行目）に ${name.placeholder} があります。` +
-      `${name.nameJa}は遊ぶ人が決めるので、録音した声では言えません。名前を言わない台詞にするか、# voice: を外してください` +
-      `（Voiced line says ${name.nameEn}: the line of # voice: ${value} has ${name.placeholder}; names are set by the player, so a recording cannot say it）。`);
+      `${name.nameJa}は遊ぶ人が決めるので、録音した声では言えません。名前を言わない台詞にするか、# voice: を外してください。` +
+      "名前の手前まで録った声だけは付けられます（その声が言う文が recorded.json の spoken にあるとき。voice:tag が記録します）" +
+      `（Voiced line says ${name.nameEn}: the line of # voice: ${value} has ${name.placeholder}; names are set by the player, so a recording cannot say it` +
+      " unless recorded.json says the clip stops before the name (spoken)）。");
   }
 }

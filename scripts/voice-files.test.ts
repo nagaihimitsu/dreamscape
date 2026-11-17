@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { checkVoiceCredits, checkVoiceTags } from "./voice-files";
 
 // content:build's checks of `# voice:` (scripts/voice-files.ts): the file of the line's own journey, and (2026-11-13) never
-// on a line that says the protagonist's or the heroine's name, which the player sets.
+// on a line that says the protagonist's or the heroine's name, which the player sets, but for a clip recorded up to the
+// name (2026-11-17: recorded.json `spoken`).
 
 const folder = "content/journeys/ta_trip/public/assets/voice";
 const voices = [{ id: "ta_v1", journeyId: "ta_trip" }, { id: "tb_v1", journeyId: "tb_trip" }];
@@ -12,6 +13,13 @@ describe("the voice tags of a story", () => {
   it("accepts a voice of the journey, on its line or before it", () => {
     expect(() => check("=== ta_talk ===\n「行こう」 # voice: ta_v1\n-> END\n")).not.toThrow();
     expect(() => check("=== ta_talk ===\n# speaker: heroine\n# voice: ta_v1\n「行こう」\n{player_name}は頷いた。\n-> END\n")).not.toThrow();
+  });
+
+  it("checks the voice of anyone's line the same way (2026-11-17: voices for the other people too)", () => {
+    expect(() => check("=== ta_talk ===\n# speaker: enemy\n# voice: ta_v1\n「止まりなさい」\n# speaker: ta_kamla\n「おいで」 # voice: ta_v1\n")).not.toThrow();
+    expect(() => check("=== ta_talk ===\n# speaker: ta_kamla\n# voice: ta_v2\n「おいで」\n")).toThrow("Unknown voice: # voice: ta_v2");
+    expect(() => check("=== ta_talk ===\n# speaker: enemy\n# voice: ta_v1\n「{player_name}、おいで」\n")).toThrow(
+      "主人公の名前は声にできません：knot ta_talk の3行目の # voice: ta_v1 の台詞（4行目）に {player_name} があります。");
   });
 
   it("refuses an ID that is not one, a missing file and another journey's", () => {
@@ -46,6 +54,25 @@ describe("the voice tags of a story", () => {
       "Voiced line says the heroine's name: the line of # voice: ta_v1 has {heroine_name}");
     // A line without a voice may say it.
     expect(() => check("=== ta_talk ===\n「行こう」 # voice: ta_v1\n{heroine_name}が笑った。\n")).not.toThrow();
+  });
+});
+
+describe("a voiced line with a name, recorded up to the name (2026-11-17 author decision 「「……」まで録る」)", () => {
+  const source = "=== ta_desk ===\n# speaker: ta_front\n# voice: ta_v1\nあら。……『{player_name}』\n";
+  const checkWith = (untilName: ReadonlyMap<string, string>) => checkVoiceTags(source, "ta_trip", voices, folder, untilName);
+
+  it("accepts the # voice: of a clip that recorded.json says stops before the name", () => {
+    expect(() => checkWith(new Map([["ta_v1", "あら。……"]]))).not.toThrow();
+  });
+
+  it("refuses it otherwise: no partial record, another clip's, an empty one, or one that says a name", () => {
+    const refused = "主人公の名前は声にできません：knot ta_desk の3行目の # voice: ta_v1 の台詞（4行目）に {player_name} があります。";
+    expect(() => check(source)).toThrow(refused);
+    expect(() => checkWith(new Map([["ta_v2", "あら。……"]]))).toThrow(refused);
+    expect(() => checkWith(new Map([["ta_v1", " "]]))).toThrow(refused);
+    expect(() => checkWith(new Map([["ta_v1", "あら。……『【主人公の名前】』"]]))).toThrow(refused);
+    expect(() => checkWith(new Map([["ta_v1", "{player_name}"]]))).toThrow(
+      "名前の手前まで録った声だけは付けられます（その声が言う文が recorded.json の spoken にあるとき。voice:tag が記録します）");
   });
 });
 

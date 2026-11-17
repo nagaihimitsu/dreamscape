@@ -9,9 +9,9 @@ import type { ScriptedLine, SentVoiceScript, VoiceLine, VoiceScript } from "./vo
 const scripted = (id: string, text: string, file = "places/ta_west_square.ink"): ScriptedLine =>
   ({ id, text, file, knot: id.replace(/_\d+$/u, ""), title: "広場の時計" });
 const current = (id: string, text: string, file = "places/ta_west_square.ink"): VoiceLine =>
-  ({ ...scripted(id, text, file), line: 0, emo: [], staging: [], context: [], prev: null, flags: [] });
+  ({ ...scripted(id, text, file), line: 0, emo: [], staging: [], context: [], prev: null, flags: [], speaker: "heroine", voice: "heroine", speakerJa: "ヒロイン" });
 const scriptOf = (lines: VoiceLine[], tagged: string[] = []): VoiceScript => ({ journeyId: "ta_trip", nameJa: "テストの旅",
-  cities: [{ id: "west", nameJa: "西" }, { id: "east", nameJa: "東" }], storiesPath: "", lines, tagged: new Set(tagged), skipped: 0 });
+  cities: [{ id: "west", nameJa: "西" }, { id: "east", nameJa: "東" }], storiesPath: "", lines, tagged: new Set(tagged), skipped: new Map() });
 const sent = (lines: ScriptedLine[]): SentVoiceScript => ({ journeyId: "ta_trip", date: "2026-11-12", file: "", lines });
 const clip = (text: string) => ({ text, script: "2026-11-12" });
 
@@ -42,6 +42,23 @@ describe("voice:changes", () => {
     expect(changes.added.map((line) => line.id)).toEqual(["ta_a_005", "ta_d_001"]);
   });
 
+  it("compares a line only with a line of the same voice, and says who speaks (2026-11-17)", () => {
+    const kamla = (id: string, text: string): VoiceLine => ({ ...current(id, text), speaker: "enemy", voice: "ta_kamla", speakerJa: "カムラ" });
+    // The script sent had the heroine's 「行こう」 (no voice: sent before voices had one); now Kamla says it.
+    const script = scriptOf([kamla("ta_a_kamla_001", "行こう")]);
+    const changes = voiceChanges(script, sent([scripted("ta_a_001", "行こう")]), new Map());
+    expect(changes).toMatchObject({ same: 0, changed: [] });
+    expect(changes.removed.map((old) => old.id)).toEqual(["ta_a_001"]);
+    expect(changes.added.map((line) => line.id)).toEqual(["ta_a_kamla_001"]);
+    const text = formatVoiceChanges(changes, script, { date: "2026-11-12", count: 1, file: "e" }, { count: 0, file: "r" });
+    expect(text[0]).toBe("テストの旅（ta_trip）：今の台詞 1行（ヒロイン 0行・ほかの人物 1行。録音済み 0行）を比べました。");
+    expect(text).toContain("[ta_a_001]　ヒロイン　広場の時計（places/ta_west_square.ink）");
+    expect(text).toContain("[ta_a_kamla_001]　カムラ　広場の時計（places/ta_west_square.ink）");
+    // A rewritten line of the same voice is paired.
+    const rewritten = voiceChanges(script, sent([{ ...scripted("ta_a_kamla_009", "行こうか"), voice: "ta_kamla", speakerJa: "カムラ" }]), new Map());
+    expect(rewritten.changed.map(({ old, now }) => [old.id, now.id])).toEqual([["ta_a_kamla_009", "ta_a_kamla_001"]]);
+  });
+
   it("measures similarity as the longest common subsequence", () => {
     expect(textSimilarity("abcd", "abcd")).toBe(1);
     expect(textSimilarity("abcd", "abxy")).toBe(0.5);
@@ -55,25 +72,25 @@ describe("voice:changes", () => {
       new Map([["ta_a_001", clip("きれいな時計だね")]]));
     const where = { date: "2026-11-12", count: 2, file: "v/2026-11-12/entries.json" };
     expect(formatVoiceChanges(changes, script, where, { count: 1, file: "v/recorded.json" })).toEqual([
-      "テストの旅（ta_trip）：今のヒロインの台詞 3行（録音済み 1行）を比べました。",
+      "テストの旅（ta_trip）：今の台詞 3行（ヒロイン 3行・ほかの人物 0行。録音済み 1行）を比べました。",
       "録音済みの行は録音した声 1本の文（v/recorded.json）と、まだ録音していない行は2026-11-12に渡した台本（2行、v/2026-11-12/entries.json）と比べます。",
       "録り直し 1行／使われなくなった声 0本／記録のない声 0行／まだ録音していない台詞：台本と同じ 0行・変わった 1行・なくなった 0行・台本にない 1行",
       "",
       "■ 録り直しが必要：録音した台詞が変わりました（1行）",
       "",
-      "[ta_a_001]　広場の時計（places/ta_west_square.ink）",
+      "[ta_a_001]　ヒロイン　広場の時計（places/ta_west_square.ink）",
       "  録音：きれいな時計だね（2026-11-12の台本）",
       "  今　：きれいな時計だよね",
       "",
       "■ まだ録音していない台詞が変わりました（1行。新しい ID で、今の文で作ります）",
       "",
-      "[ta_a_002]（今のID：ta_a_004）　広場の時計（places/ta_west_square.ink）",
+      "[ta_a_002]（今のID：ta_a_004）　ヒロイン　広場の時計（places/ta_west_square.ink）",
       "  台本：三時で止まってる",
       "  今　：三時で止まってるね",
       "",
       "■ 台本にない新しい台詞（1行。声を作るときは npm run voice:script で台本を作り直します）",
       "",
-      "[ta_a_005]　広場の時計（places/ta_west_square.ink）",
+      "[ta_a_005]　ヒロイン　広場の時計（places/ta_west_square.ink）",
       "  今　：初めて",
     ]);
     expect(formatVoiceChanges(voiceChanges(scriptOf([]), sent([]), new Map()), scriptOf([]), where, { count: 0, file: "" }).at(-1))
