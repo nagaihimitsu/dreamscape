@@ -28,7 +28,7 @@
 | ミニゲームの絵 | `# minigame:` の行の `art.<枠>` | 場面とゲームの絵の枠が決まってから | [手順19](NEW_CITY_GUIDE.md#手順19-ミニゲーム) |
 | 描いた背景 | 会話の背景・街歩きの背景・タイトルの絵 | 舞台が決まってから（関門A） | [手順13](NEW_CITY_GUIDE.md#手順13-背景移動画面タイトルの絵) |
 
-声はヒロインの台詞だけです（`voice:script` が抜き出すのはヒロインの行。主人公には声を付けない）。
+`voice:script` は、地の文と主人公を除く全員の台詞を抜き出します（2026-11-17。主人公には声を付けない）。ヒロイン以外の人物の声は、配役を決めてから頼みます（3.6）。
 
 頼まないもの：
 
@@ -45,6 +45,7 @@ authoring/journeys/<旅行編ID>/
     README.md        … このフォルダの記録（渡した台本ごとの中身、届いた本数、付けなかった声）
     <日付>/          … 渡した声の台本（渡したときのまま）
     recorded.json    … 届いた声が言っている文（voice:tag が書く。手で書かない）
+    cast.json        … ヒロイン以外の人物の配役（任意。3.6）
   art-requests/
     README.md        … 依頼ごとの開発の記録（絵がどこに入るか、届いたらどうつなぐか）
     <日付>.md        … 渡した絵の依頼書（渡したときのまま）
@@ -53,7 +54,7 @@ authoring/journeys/<旅行編ID>/
 ```
 
 - 日付は渡した日を `YYYY-MM-DD` で書きます（例 `voice/2026-11-15/`、`art-requests/2026-11-16.md`）。
-- 声のフォルダは、この形の名前で `entries.json` のあるものだけを、`voice:script`・`voice:changes`・`voice:tag` が「渡した台本」として読みます。いちばん新しい日付が「最新の台本」です。`2026-11-15b` のような名前は読まれません。
+- 声のフォルダの名前は `YYYY-MM-DD` か、同じ日に別の台本を渡すときは `YYYY-MM-DD_<英小文字・数字>`（例 `2026-11-17_cast`）です。この形の名前で `entries.json` のあるものだけを、`voice:script`・`voice:changes`・`voice:tag` が「渡した台本」として読みます。名前の順でいちばん後ろが「最新の台本」です（`2026-11-17_cast` は `2026-11-17` より新しい）。`2026-11-15b` のような名前は読まれません。
 - 渡したら、そのフォルダかファイルをコミットします。渡した後は書き換えません。直したくなったら、次の発注に入れます。
 - ゲームと `content:build` は `art-requests/` を読みません。`voice/` は声のツールが読み、`content:build` も `recorded.json` を読みます（4.2）。
 - 例：[インド編の声の記録](journeys/golden_triangle/voice/README.md)、[インド編の絵の依頼の記録](journeys/golden_triangle/art-requests/README.md)。
@@ -68,7 +69,9 @@ authoring/journeys/<旅行編ID>/
 
 ### 3.2 頼む行
 
-1. `npm run voice:script -- --journey <旅行編ID>` が、今の Ink からヒロインの台詞を全部抜き出し、`artifacts/voice/<旅行編ID>/` に `heroine_lines.txt`（台本）と `entries.json`（同じ台詞のデータ）を書きます。`content:build` は要りません。メッセージと手紙・メモの行（`# phone:`・`# letter:`）は入りません。
+1. `npm run voice:script -- --journey <旅行編ID>` が、今の Ink から台詞を全部抜き出し、`artifacts/voice/<旅行編ID>/` に `heroine_lines.txt`（ヒロインの台詞だけの台本）と `entries.json`（全員の台詞のデータ）を書きます。`content:build` は要りません。メッセージと手紙・メモの行（`# phone:`・`# letter:`）は、誰の行でも入りません。
+   - `entries.json` の行には、`speaker`（`# speaker:` の値）・`voice`（誰の声か。ヒロインは `heroine`、ほかの人は人物の `characterId`）・`speakerJa`（名札の名前）が付きます（2026-11-17）。同じ人の別の人物 ID（例：名前が分かる前の「男」）も、同じ `voice` になります。
+   - `# speaker: enemy` の声は、ゲームと同じ決め方です。バトルでは相手（`presentation/characters.json` の `battleCharacters`。ないときはバトルの ID）、ほかの場面では頭の `# person:` の人物です。どちらもない場面の `enemy` の行は、`voice:script` が止まって、ファイルと行を出します。
 2. 最初の発注は全部の行です（インド編 2026-11-12：877行）。
 3. 2回目からは、`npm run voice:changes -- --journey <旅行編ID>` が出す行だけを頼みます。
    - 台本にない新しい台詞。
@@ -80,7 +83,8 @@ authoring/journeys/<旅行編ID>/
 
 ID は `voice:script` が付けます。手で付けません。
 
-- 形は「knot の名前_番号」です（例 `gt_delhi_date_lodhi_garden_001`）。
+- 形は「knot の名前_番号」です（例 `gt_delhi_date_lodhi_garden_001`）。ヒロイン以外の人物の行は「knot の名前_声の名前_番号」です（声の名前は `voice` の最初の `gt_` などを除いた部分。例 `gt_delhi_arrival_kamla_001`）。番号は knot と声ごとに数えます。
+- 前に渡した台本の ID は、同じ声の行にだけ引き継ぎます（別の人が同じ文を言っても、その ID は使いません。2026-11-17 より前の台本の行はヒロインの行です）。
 - 前に渡した台本と同じ文の行は、その文を最後に渡したときの ID のままです。
 - 新しい行と文を直した行は、まだ使っていない番号になります。
 - まだ渡していない行の ID は仮です。ほかの行が先にその番号を使うと、送られることがあります（2026-11-15 に、ナハルガル城の2行の仮の ID が `_028`・`_029` から `_031`・`_032` に送られた）。渡した `entries.json` に入った時に決まります。
@@ -109,6 +113,7 @@ ID は `voice:script` が付けます。手で付けません。
 | `entries.json` | 同じ台詞のデータ（`id`・`text`・`file`・`knot`・`title` など） | `voice:script` の出力のまま |
 | `voice_batch.txt` | 今回録る行だけの台本 | 手で作る（ツールはない）。`voice:changes` の一覧と、各場面の Ink から |
 | `voice_guide.txt` | 声を作る人への説明書 | 最初の発注で作る。次からは「読み方は前の説明書と同じ」と書く |
+| `Aibishub.txt`・`voicevox.txt` | ヒロイン以外の人物の依頼書（依頼先ごと。3.6） | `cast.json` があるとき `voice:script` が書く |
 
 今回録る行の台本（[2026-11-15 の例](journeys/golden_triangle/voice/2026-11-15/india_voice_batch.txt)）の形：
 
@@ -146,6 +151,16 @@ ID は `voice:script` が付けます。手で付けません。
 - 声の作り方は、`<旅行編>/manifest.json` の `voiceCredits`（何の声か・作品・作者・ライセンス・確認日・ページ・作者が求める引用）に書きます。「出典・権利の一覧」の「声」に出ます。声のファイルのない旅行編に書くと止まります。インド編は音声合成 Irodori-TTS v4.1-Small（MIT License）です。
 - 音声合成のモデルや素材のライセンスを確かめます。実在の人の声を参考にするとき（声の見本や、音声合成の参照音声）は、その人の同意を得て記録を残します。同意の記録を置く決まった場所は、まだありません（`<制作資料>/research/` などにメモを置く）。
 
+### 3.6 ヒロイン以外の人物の声（配役と依頼書）
+
+2026-11-17 のユーザーの依頼で、ヒロイン以外の人物の台詞にも声を付けられるようにしました。人物ごとに、AivisHub のモデル（AivisSpeech で使う）か VOICEVOX のキャラクターを選びます。同じ旅行編の中では、2人の人物に同じモデルを使いません（旅行編が違えば同じでもよい）。
+
+- 配役は `<制作資料>/voice/cast.json` に書きます（任意。ゲームは読まない）。人物（`voice`。`entries.json` の `voice` と同じ）ごとに、10の特徴（年齢・性別・体型・身体的特徴・顔立ち・外見・性格・声の高さ・声質・質感・話す速度・話し方・抑揚・出身地・言語・アクセント）、エンジン（`aivishub` か `voicevox`）、モデル（ID・名前・話者・ページ・利用規約・ライセンス・クレジット表記）、スタイル（ふだんのものと、表情ごとのもの）、設定（話速など）、選んだ理由を書きます。場面の状況（knot ごと）、行ごとの入力する文・スタイル・注意、ユーザー辞書の語も書けます。形は `scripts/voice-cast.ts` にあります。
+- `cast.json` があると、`voice:script` は `heroine_lines.txt`・`entries.json` と同じフォルダに、`Aibishub.txt`（`aivishub` の人物）と `voicevox.txt`（`voicevox` の人物）を書きます。依頼先が違うので、ファイルを分けます。1つのファイルに、その依頼先の人物を全員まとめます。
+- 依頼書には、頭に読み方・ファイルのそろえ方・ユーザー辞書、目次（人物・モデル・行数）、人物ごとに特徴・モデル・設定・理由と、録る台詞（`# voice:` のない行と、録音した文が変わった「録り直し」の行）を都市・場面ごとに並べます。名前の入る台詞は入れず、頭に一覧を出します。
+- `voice:script` が止まるもの：ヒロインを書いた、同じ人物を2回書いた、同じ旅行編で同じモデル（エンジンとモデルの ID）を2人に使った、そのエンジンにない設定を書いた、ほかの旅行編の `journeyId`。注意に出るもの：台詞のない人物、配役した人物の台詞がない場面や ID のメモ。配役のない人物は、どちらの依頼書にも入らず、一覧が出ます。
+- 渡したら、ヒロインのときと同じく `voice/<日付>/` に置きます（同じ日に別の台本を渡すときは `<日付>_<ラベル>`。2.）。
+
 ## 4. 声を受け取る・録り直す
 
 ### 4.1 届いたら
@@ -158,7 +173,7 @@ ID は `voice:script` が付けます。手で付けません。
    npm run voice:tag -- --journey <旅行編ID> --from <届いたファイルだけのフォルダ>
    ```
 
-   届いた声ごとに、その行の前に `# voice: <ID>` を書き、`recorded.json` にその声が言っている文（その ID を最後に渡した台本の文と日付）を記録します。`--from` には、今回届いたファイルだけのフォルダを指します（前からある声まで記録し直さないため）。
+   届いた声ごとに、その行の前に `# voice: <ID>` を書き、`recorded.json` にその声が言っている文（その ID を最後に渡した台本の文と日付）を記録します。ヒロイン以外の人物の声も同じです（付けた行の数を、話す人ごとに出します）。`--from` には、今回届いたファイルだけのフォルダを指します（前からある声まで記録し直さないため）。
 
    次の声は付けずに、理由を出します（ほかの声は付けます。1本でも付けないと終了コード1）：ファイル名が ID でない、渡した台本にない ID、今の文が台本の文と違う、`public/assets/voice/` に MP3 がまだない、今の台詞にその ID の行がない。
 4. **確かめる。**
@@ -169,7 +184,7 @@ ID は `voice:script` が付けます。手で付けません。
 
 ### 4.2 台詞を直したとき
 
-- `npm run voice:changes -- --journey <旅行編ID>` が、録音した行は `recorded.json` の文と、まだ録音していない行は最新の台本と比べます。録り直しが要る行が先に出て、次に使われなくなった声、まだ録音していない行の変わった・なくなった・新しい台詞が出ます。ファイルは変えません。
+- `npm run voice:changes -- --journey <旅行編ID>` が、録音した行は `recorded.json` の文と、まだ録音していない行は最新の台本と比べます。録り直しが要る行が先に出て、次に使われなくなった声、まだ録音していない行の変わった・なくなった・新しい台詞が出ます。ヒロイン以外の人物の行も比べ（同じ声の行どうしだけ）、どの行にも話す人の名前が付きます。ファイルは変えません。
 - `content:build` も、録音した行の文が変わると、注意「録音した台詞が変わりました：<ID>（録り直しが必要）」を出します（一覧は `-- --verbose`）。この注意は、新しい台本を渡しただけでは消えません。作り直した声を `voice:tag` で記録すると消えます。
 - 録り直しの流れ：`voice:script` で台本を作り直す → 変わった行だけの台本を作って渡す（3.4）→ 届いたら `voice:tag`（4.1）。
 - 一覧に、意図していない変更が出たら、それは誰かが間違えて変えた台詞です。直した人に聞きます（[シナリオ改稿のポイントの4章](SCENARIO_EDITING_GUIDE.md#4-守ること)）。
@@ -310,6 +325,6 @@ ID は `voice:script` が付けます。手で付けません。
 ## 9. 参考
 
 - インド編の発注：[声の記録](journeys/golden_triangle/voice/README.md)（`2026-11-12/`・`2026-11-13/`・`2026-11-15/` と `recorded.json`）、[絵の依頼の記録](journeys/golden_triangle/art-requests/README.md)と [2026-11-16 の依頼書](journeys/golden_triangle/art-requests/2026-11-16.md)。
-- 声のツール：`scripts/voice-script.ts`（台本と ID）、`scripts/voice-changes.ts`（変わった行）、`scripts/voice-tag.ts`（札と記録）、`scripts/voice-records.ts`（日付のフォルダと `recorded.json` の読み方）、`scripts/voice-files.ts`（`content:build` の声の検査）。
+- 声のツール：`scripts/voice-script.ts`（台本と ID）、`scripts/voice-changes.ts`（変わった行）、`scripts/voice-tag.ts`（札と記録）、`scripts/voice-records.ts`（日付のフォルダと `recorded.json`・`cast.json` の読み方）、`scripts/voice-cast.ts`（ほかの人物の配役と依頼書）、`scripts/voice-files.ts`（`content:build` の声の検査）。
 - 札と登録の書き方：[制作ガイドの「台詞の声の台本と、台詞が変わったときの確認」](CONTENT_GUIDE.md#台詞の声の台本と台詞が変わったときの確認2026-11-13)、[「人物の絵と会話の背景」](CONTENT_GUIDE.md#人物の絵と会話の背景)、[13 ミニゲームの仕組みの 2.12](../docs/13_MINIGAMES.md#212-絵と置き場所)。
 - 作る順番：[新しい都市を1つ足す手引き](NEW_CITY_GUIDE.md)の手順13〜15・18・19 と関門D。
