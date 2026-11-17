@@ -295,6 +295,7 @@ INCLUDE modules.ink
 # speaker: narrator
 帰りの車の中は、行きより静かだった。日差しが真上から照りつけ、エアコンの風が、やっと追いついてくる。
 # speaker: heroine
+# voice: gt_agra_tour_back_leg_004
 ヴィノードさんは、中に入ったこと、ありますか？
 # speaker: gt_vinod
 一度だけ。学校の遠足で。あとは、ずっと外です。外にも、見るものはあります

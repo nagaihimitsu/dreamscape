@@ -158,6 +158,7 @@ INCLUDE modules.ink
 # speaker: narrator
 彼女は芝生の端で立ち止まり、少し迷うように、こちらを見た。
 # speaker: heroine
+# voice: gt_agra_date_mariam_tomb_023
 ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ
 * [「そのままがいい」 # option: keep_as_is]
     # profile: attentive

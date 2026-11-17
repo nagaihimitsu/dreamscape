@@ -15,7 +15,7 @@
 
 この台本は、リポジトリにない使い捨てのスクリプトで作りました。今の `npm run voice:script` は同じ読み方で、同じ877行を同じ文と同じ ID で抜き出します。その後バトルの会話が場所のファイルへ移ったので、バトルの台詞150行の `file`・`knot` は当時のもの（例 `battles/gt_delhi_finale.ink`・`gt_delhi_finale`）で、今の knot には `_battle` が付いています（`gt_delhi_finale_battle`）。ID は台本のまま（`gt_delhi_finale_001` など）です。
 
-届いた声：844行（台本の1〜877番目のうち。この台本は全部届いた）が `content/journeys/golden_triangle/public/assets/voice/<ID>.mp3`（MP3・48kHz・モノラル・80kbps、ピークを -1 dB にそろえた）にあり、Inkの台詞の前の `# voice: <ID>` で結び付け、`recorded.json` に2026-11-12の台本の文で記録しています。1〜409番目は2026-11-13までに6回に分けて、410〜877番目は2026-11-16に11のzipで届きました。残り（2026-11-13・2026-11-15の台本の行。2026-11-16の時点で123行）は作っているところです。
+届いた声：844行（台本の1〜877番目のうち。この台本は全部届いた）が `content/journeys/golden_triangle/public/assets/voice/<ID>.mp3`（MP3・48kHz・モノラル・80kbps、ピークを -1 dB にそろえた）にあり、Inkの台詞の前の `# voice: <ID>` で結び付け、`recorded.json` に2026-11-12の台本の文で記録しています。1〜409番目は2026-11-13までに6回に分けて、410〜877番目は2026-11-16に11のzipで届きました。残り（2026-11-13・2026-11-15の台本の行）は、2026-11-16の台本にまとめ直して、2026-11-17に届きました（下の「2026-11-16/」）。
 
 付けていない声：
 - 322〜409番目の2本：`gt_agra_date_confession_011`（届いたzipが途中で切れていて取り出せなかった）と `gt_agra_akbar_tomb_monkey_attar_003`（猿の小瓶の場面をミニゲームで書き直して文が変わった。2026-11-13の台本で録り直す）。
@@ -51,6 +51,12 @@
   - `gt_delhi_bangla_sahib_roti_003`「並べないでください。……わたしのインドまで、本物っぽくなっちゃう」
   - `gt_delhi_bangla_sahib_roti_004`「じゃあ、わたしのインドの下に置こう。地図、完成だね」
   - `gt_delhi_chandni_chowk_duel_005`「わたしの勝ち。……ほんとは、わたしもあと少しで言うところだった。内緒ね」
+
+届いた声：2026-11-17に、3つのzip（`india_heroine_voice_add_0001-0046`・`_0047-0089`・`_0090-0124`。WAV・48kHz・モノラル・16bit）で124本、全部届きました。
+
+- 121本を MP3（48kHz・モノラル・80kbps、ピークを -1 dB にそろえた）にして `content/journeys/golden_triangle/public/assets/voice/` に置き、`voice:tag` で `# voice:` を付け（120行。`gt_delhi_jama_masjid_guide_003` は前からの札のまま、声を差し替えた）、`recorded.json` に記録しました（121本）。付けなかった声はありません。
+- 録らなくてよくなった上の3本（`gt_delhi_bangla_sahib_roti_003`・`_004`、`gt_delhi_chandni_chowk_duel_005`）は、届きましたが置いていません。
+- 声の長さは2.4〜12.8秒。中身（数字や漢字の読み）は、まだ耳では確かめていません。
 
 ## 2026-11-17/
 

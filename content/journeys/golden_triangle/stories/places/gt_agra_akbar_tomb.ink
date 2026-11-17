@@ -195,6 +195,7 @@ Many handwritten books were collected at his court.
         壁の上では、猿が器用にストローの穴を探し当てていた。
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_agra_akbar_tomb_monkey_attar_007
         取引成立、だね。……ありがとうございました？
         # speaker: narrator
         彼女は壁の上の猿に、律儀に頭を下げた。猿はジュースを飲みながら、それを見ていなかった。
@@ -249,9 +250,11 @@ Many handwritten books were collected at his court.
     # speaker: heroine
     # item_out: gt_delhi_rain_attar
     # reaction: heroine,surprised_big,sparkle
+    # voice: gt_agra_akbar_tomb_monkey_catch_attar_001
     わたしの雨、無事だった！
     # speaker: heroine
     # emotion: teasing
+    # voice: gt_agra_akbar_tomb_monkey_catch_attar_002
     ……今の、ちょっと格好よかったよ。ちょっとだけね
     # speaker: narrator
     彼女は小瓶を受け取ると、今度は鞄のいちばん奥にしまった。

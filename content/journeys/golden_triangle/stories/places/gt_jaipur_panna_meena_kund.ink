@@ -81,6 +81,7 @@ INCLUDE modules.ink
         わたしから？　じゃあ……
     }
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_030
     アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。カムラさんに『毎日言葉にしなさい』って言われたから
     # speaker: narrator
     カムラの孫で、二人を結婚式に招いてくれた花婿のことだ。
@@ -106,8 +107,10 @@ INCLUDE modules.ink
 }
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_031
     ニキルさんは、結婚式の段取りも三十枚のスライドにしてる
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_032
     それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる
     # speaker: narrator
     タージ・マハルのベンチで、指輪を出しそびれた二人。

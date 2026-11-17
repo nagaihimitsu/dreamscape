@@ -127,6 +127,7 @@ INCLUDE modules.ink
 * [日傘：彼女と一緒に見つけた # option: pointed]
     # speaker: heroine
     # reaction: heroine,teasing,question
+    # voice: gt_jaipur_main_hawa_mahal_battle_001
     ほら、あそこ。……ね、見えた？
 -
 # speaker: narrator
@@ -155,6 +156,7 @@ INCLUDE modules.ink
 // 日傘探しで手間取ったときだけの一往復（フラグは上の日傘探しの found_slow）。報告そのものは、この後の彼女の言葉のまま。
 { cond("flag gt_jaipur_parasol_hard_to_find"):
     # speaker: heroine
+    # voice: gt_jaipur_main_hawa_mahal_battle_002
     上から見ると、傘って、みんな同じ丸なんですね
     # speaker: enemy
     下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
@@ -462,24 +464,28 @@ INCLUDE modules.ink
     なによ。やればできるじゃない
     # speaker: heroine
     # reaction: heroine,surprised,sweat
+    # voice: gt_jaipur_finale_battle_001
     下手なの、わたしだけだった……！
 * [踊り：ずれたまま、二人で踊った # option: off_beat_together]
     # speaker: narrator
     太鼓とは、どうしても合わない。それでも、腕を上げるのも下ろすのも、{heroine_name}と同じだった。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_jaipur_finale_battle_002
     ずれてる。でも、二人で同じだけずれてる
 * [踊り：足がもつれた # option: stumble]
     # speaker: narrator
     三歩目で、足がもつれた。肩が{heroine_name}にぶつかり、二人で一緒によろける。
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_jaipur_finale_battle_003
     ふふっ。今のも、踊りってことにしよう
 * [踊り：立ったままだった # option: stood_still]
     # speaker: narrator
     足が、地面に貼りついたように動かなかった。太鼓だけが、どんどん先へ行く。
     # speaker: heroine
     # emotion: serious
+    # voice: gt_jaipur_finale_battle_004
     見てるだけは、自由とは違うんでしょ。……ほら
     # speaker: narrator
     つかまれた手ごと、輪の真ん中へ引っぱり込まれた。

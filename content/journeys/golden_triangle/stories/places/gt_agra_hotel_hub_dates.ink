@@ -68,14 +68,17 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_confession"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_confession_013
         デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね
         # speaker: heroine
+        # voice: gt_agra_date_confession_014
         だから、わたしもごまかさない。ごめんなさい。今は、その気持ちに応えられない
         # speaker: narrator
         # emotion: smile
         彼女は、自分の腰かけている縁の隣を、手のひらでぽんと叩いた。
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_date_confession_015
         座って。こっち向きの席、半分あげる。ドームの見えない、地味な席だけど
     - else:
         # speaker: heroine
@@ -98,12 +101,15 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_confession"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_confession_016
         デリーの夜のこと、忘れてないよ。今夜の言葉も、ちゃんと届いてる
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_confession_017
         でも、まだ答えが出ないの。こっち向きに座って、ちゃんと考えてるのに
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_confession_018
         いいかげんな『はい』も、『いいえ』も、したくない。もう少しだけ、待ってて
         # speaker: narrator
         # stand: close
@@ -114,8 +120,10 @@ INCLUDE modules.ink
         # voice: gt_agra_date_confession_010
         うれしい。本当に、うれしい
         # speaker: heroine
+        # voice: gt_agra_date_confession_019
         でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに
         # speaker: heroine
+        # voice: gt_agra_date_confession_020
         ……それは、嫌なの。ちゃんと、わたしが決めたいから
         # speaker: heroine
         # emotion: worried
@@ -172,8 +180,10 @@ INCLUDE modules.ink
         // 「読めなかった」と答えた人：ロータス寺院で約束したとおり、声で言い直す。
         # speaker: heroine
         # recall: gt_album_d61
+        # voice: gt_agra_confession_lead_011
         あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
         # speaker: heroine
+        # voice: gt_agra_confession_lead_012
         あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush

@@ -128,9 +128,11 @@ INCLUDE modules.ink
     }
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_delhi_chandni_chowk_duel_002
     バス！　この人の分も、バス！
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_delhi_chandni_chowk_duel_003
     勝負は、わたしの勝ちでいい？　……はい、水。ゆっくり飲んで
 * [ゴルガッパの勝負：彼女より長く食べ続けた # option: outlast]
     # profile: provocative
@@ -146,6 +148,7 @@ INCLUDE modules.ink
     }
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_delhi_chandni_chowk_duel_004
     負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる
 -
 # speaker: narrator

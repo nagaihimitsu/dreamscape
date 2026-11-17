@@ -257,10 +257,12 @@ INCLUDE modules.ink
 { romance_result == "negative":
     # speaker: heroine
     # emotion: worried
+    # voice: gt_delhi_lodhi_garden_say_together_001
     うん。じゃあ、『せーの』で。……わたしの声が小さくても、笑わないでね
 - else:
     # speaker: heroine
     # emotion: happy
+    # voice: gt_delhi_lodhi_garden_say_together_002
     うん、二人なら届きそう。わたしが『せーの』って言うから、その次ね
 }
 # speaker: narrator
@@ -280,6 +282,7 @@ INCLUDE modules.ink
         出だしが、ぴたりと重なった。二人の声が、芝生の向こうの墓まで届いた。散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
         # speaker: heroine
         # reaction: heroine,happy,music
+        # voice: gt_delhi_lodhi_garden_say_together_003
         そろった！　今の、ぴったりだったよね
     }
 * [声を合わせた：合図より先に、こちらが言った # option: early]
@@ -289,10 +292,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,surprised,sweat
+        # voice: gt_delhi_lodhi_garden_say_together_004
         えっ、もう？　……わたし、置いていかれちゃった
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_delhi_lodhi_garden_say_together_005
         早いよ！　『その次』って言ったのに。ふふ、一人で全部言っちゃうんだもん
     }
     # speaker: gt_dubey
@@ -304,10 +309,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy,sweat
+        # voice: gt_delhi_lodhi_garden_say_together_006
         今の、わたしの声だけ先に出てた。……恥ずかしい
     - else:
         # speaker: heroine
         # emotion: surprised_big
+        # voice: gt_delhi_lodhi_garden_say_together_007
         遅いよ！　一瞬、わたし一人で叫んでた
         # speaker: narrator
         # emotion: happy
@@ -324,15 +331,18 @@ INCLUDE modules.ink
         最後の「デーン」は、ほとんど聞こえなかった。彼女は、ゆっくりこちらを向いた。
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_lodhi_garden_say_together_008
         ……一緒にって、言ったよね
     - else:
         # speaker: narrator
         彼女は最後まで言い切ってから、ゆっくりこちらを向いた。
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_delhi_lodhi_garden_say_together_009
         もしかして、わざと黙ってた？
         # speaker: heroine
         # reaction: heroine,happy,music
+        # voice: gt_delhi_lodhi_garden_say_together_010
         もう。……でも、言えちゃった。一人で、最後まで
     }
     # speaker: gt_dubey
