@@ -13,6 +13,7 @@ import { displayPath, journeyLayer, loadContentSources, parseCatalog, type Conte
 import { unique, withContext } from "./content-validation-utils";
 import { albumImagesOf } from "./album-images";
 import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
+import { partialRecordings } from "./voice-records";
 import { checkSoundTags, soundRegistry } from "./sound-files";
 import { checkBgmTags, musicRegistry } from "./music-files";
 import { ambienceRegistry, checkAmbienceTags } from "./ambience-files";
@@ -78,6 +79,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   // A line's # voice: names a recording of this journey (its public/assets/voice/; voice-files.ts).
   const voiceFiles = voiceFilesOf(sources);
   const voiceFolder = voiceFolderPath(sources, journeyLayer(sources, journeyId));
+  // The clips recorded up to a name (recorded.json `spoken`), whose # voice: may stand on a line with the name.
+  const untilName = partialRecordings(root, [journeyId]);
   // A line's # se: names a shared sound or one of this journey (presentation/sounds.json; sound-files.ts).
   const sounds = soundRegistry(sources);
   const soundLayerId = journeyLayer(sources, journeyId).id;
@@ -136,7 +139,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     if (/#\s*speaker\s*:\s*player\b/.test(code))
       warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
     validateMemoryReferences(source, memoryIds);
-    checkVoiceTags(source, journeyId, voiceFiles, voiceFolder);
+    checkVoiceTags(source, journeyId, voiceFiles, voiceFolder, untilName);
     checkSoundTags(source, soundLayerId, sounds);
     checkBgmTags(source, soundLayerId, tracks);
     checkAmbienceTags(source, soundLayerId, ambienceTracks);

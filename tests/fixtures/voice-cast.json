@@ -36,7 +36,7 @@
       "styles": { "default": "ノーマル", "byEmotion": { "焦り": "あせり" } },
       "settings": { "speedScale": 0.95, "tempoDynamicsScale": 1.0 },
       "reasonJa": "テスト用の配役です。",
-      "noteJa": "テスト用のメモ。"
+      "noteJa": "録音の前に：テスト用の規約を作者が読む。\nテスト用のメモ。"
     },
     {
       "voice": "ta_lili",
@@ -51,7 +51,7 @@
         "url": "https://example.com/dreamscape-sample/model-c", "termsUrl": "https://example.com/dreamscape-sample/model-c/terms",
         "license": "テスト用（架空）", "creditJa": "テスト用モデルC（架空）"
       },
-      "styles": { "default": "ノーマル" },
+      "styles": { "default": "ノーマル", "ids": { "ノーマル": 3, "ささやき": 5 } },
       "settings": {},
       "reasonJa": "テスト用の配役です。"
     }
@@ -62,7 +62,8 @@
     "ta_tower_meet_lili_001": { "style": "ささやき" }
   },
   "dictionary": [
-    { "word": "時計守", "reading": "トケイモリ", "accent": 3, "noteJa": "テスト用の語" },
+    { "word": "時計守", "reading": "トケイモリ", "accent": 3, "noteJa": "テスト用の語（どの台詞にもない）" },
+    { "word": "違う", "reading": "チガウ", "accent": 0, "noteJa": "テスト用の語" },
     { "word": "鐘楼", "reading": "ショウロウ", "accent": 0, "engines": ["aivishub"] }
   ]
 }

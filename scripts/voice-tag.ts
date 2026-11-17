@@ -8,7 +8,8 @@ import { showNames, type SentVoiceScript, type VoiceLine, type VoiceScript } fro
 // npm run voice:tag (2026-11-13; the repo version of the 2026-11-13 add_voice_tags.py): the delivered clips of a
 // journey (the heroine's or, 2026-11-17, any other voice's), by file name (<ID>.mp3 or <ID>.wav), get their
 // `# voice: <ID>` before their lines, and recorded.json
-// (voice-records.ts) records what each says: the text of the newest script that had the ID. A clip is refused when
+// (voice-records.ts) records what each says: the text of the newest script that had the ID (and, for a line requested
+// up to a name the player sets, 2026-11-17, what the clip says: the script line's `spoken`). A clip is refused when
 // that text is not the line's text now (the line changed: its voice is made again from a new script), when no
 // script or line has the ID, or when its MP3 is not yet in the journey's public/assets/voice/ (content:build stops a
 // `# voice:` without its file). Copying and converting the audio stay by hand. Pure; voice-tag-cli.ts writes the files.
@@ -41,7 +42,7 @@ export function planVoiceTags(script: VoiceScript, scripts: readonly SentVoiceSc
   const lastSent = new Map<string, RecordedClip>();
   const sentBy = new Map<string, string>();
   for (const sent of scripts) for (const line of sent.lines) if (!lastSent.has(line.id)) {
-    lastSent.set(line.id, { text: line.text, script: sent.date });
+    lastSent.set(line.id, { text: line.text, script: sent.date, ...(line.spoken !== undefined ? { spoken: line.spoken } : {}) });
     if (line.speakerJa !== undefined) sentBy.set(line.id, line.speakerJa);
   }
   const order = new Map(script.lines.map((line, index) => [line.id, index]));

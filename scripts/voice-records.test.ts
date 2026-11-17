@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { voiceRecordWarnings } from "./voice-changes";
-import { readRecordedClips, readSentScripts, readVoiceCast, readVoiceHistory, writeRecordedClips } from "./voice-records";
+import { partialRecordings, readRecordedClips, readSentScripts, readVoiceCast, readVoiceHistory, writeRecordedClips } from "./voice-records";
 
 // A journey's voice records in authoring/journeys/<journeyId>/voice/: the scripts sent (one folder per date, or date and
 // label), recorded.json (what each delivered clip says) and cast.json (who voices the other characters).
@@ -41,6 +41,16 @@ describe("the voice records of a journey", () => {
     expect(scripts.map((script) => script.date)).toEqual(["2026-11-17_cast", "2026-11-17", "2026-11-16_b2"]);
     expect(scripts[0].lines[0]).toMatchObject({ id: "ta_a_kamla_001", voice: "ta_kamla", speakerJa: "カムラ" });
     expect(scripts[1].lines[0].voice).toBeUndefined();
+  });
+
+  it("keeps a sent line's spoken, and reads the clips recorded up to a name of each journey (2026-11-17)", () => {
+    write(`${folder}/2026-11-17_cast/entries.json`, JSON.stringify([{ ...line("ta_a_front_001", "あら。【主人公の名前】"), spoken: "あら。" }]));
+    expect(readSentScripts(root, "ta_trip")[0].lines[0].spoken).toBe("あら。");
+    write(`${folder}/recorded.json`, JSON.stringify({ schemaVersion: 1, clips: {
+      ta_a_001: { text: "行こう", script: "2026-11-12" }, ta_a_front_001: { text: "あら。【主人公の名前】", script: "2026-11-17_cast", spoken: "あら。" } } }));
+    write("authoring/journeys/tb_trip/voice/recorded.json", "{ not json");
+    expect(partialRecordings(root, ["ta_trip", "tb_trip", "tc_trip"])).toEqual(new Map([["ta_a_front_001", "あら。"]]));
+    expect(readRecordedClips(root, "ta_trip")?.get("ta_a_001")).toEqual({ text: "行こう", script: "2026-11-12" });
   });
 
   it("reads cast.json when there is one, and refuses one it cannot read", () => {

@@ -63,6 +63,19 @@ describe("voice:tag", () => {
     expect(() => insertVoiceTags(SOURCE, [{ line: 2, id: "ta_gate_001", text: "に" }])).toThrow("3行目は「に」ではありません");
   });
 
+  it("records what a clip requested up to a name says (the sent line's spoken), and tags its line (2026-11-17)", () => {
+    const source = "=== ta_gate ===\n# speaker: ta_front\nあら。……『{player_name}』\n";
+    const desk = voiceScript({ ...input, stories: [{ storyId: "places/ta_west_gate", source }], recorded: new Set() });
+    expect(desk.lines.map((line) => [line.id, line.text])).toEqual([["ta_gate_front_001", "あら。……『【主人公の名前】』"]]);
+    const sent = [{ journeyId: "ta_trip", date: "2026-11-17_cast", file: "", lines: [
+      { ...scripted("ta_gate_front_001", "あら。……『【主人公の名前】』"), voice: "ta_front", speakerJa: "ta_front", spoken: "あら。……" },
+    ] }];
+    const plan = planVoiceTags(desk, sent, ["ta_gate_front_001"], new Set(["ta_gate_front_001"]));
+    expect(plan.refused).toEqual([]);
+    expect(plan.record).toEqual([["ta_gate_front_001", { text: "あら。……『【主人公の名前】』", script: "2026-11-17_cast", spoken: "あら。……" }]]);
+    expect(insertVoiceTags(source, plan.tag)).toBe(source.replace("あら", "# voice: ta_gate_front_001\nあら"));
+  });
+
   it("tags another voice's clip (2026-11-17) as the heroine's, and says who speaks a refused one", () => {
     const source = "=== ta_gate ===\n# speaker: ta_kamla_girl\nおいで\n# speaker: ta_kamla_girl\nこっちだよ\n";
     const people = new Map([["ta_kamla_girl", { nameJa: "女の子", characterId: "ta_kamla" }]]);

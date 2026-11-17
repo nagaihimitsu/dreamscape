@@ -95,9 +95,11 @@ export type VoiceScript = Pick<VoiceScriptInput, "journeyId" | "nameJa" | "citie
 
 /**
  * What the comparisons read of a sent script's line (its entries.json may hold more): a line sent before 2026-11-17 has
- * no voice (it is the heroine's) nor speakerJa.
+ * no voice (it is the heroine's) nor speakerJa. `spoken` (2026-11-17): a line with a name the player sets that was
+ * requested up to the name says this (voice-cast.ts castEntries); voice:tag records it.
  */
-export type ScriptedLine = Pick<VoiceLine, "id" | "text" | "file" | "knot" | "title"> & Partial<Pick<VoiceLine, "voice" | "speakerJa">>;
+export type ScriptedLine = Pick<VoiceLine, "id" | "text" | "file" | "knot" | "title"> & Partial<Pick<VoiceLine, "voice" | "speakerJa">> &
+  { spoken?: string };
 /** The voice of a sent line (HEROINE_VOICE for one sent before voices had a field). */
 export const voiceOf = (line: { voice?: string }) => line.voice ?? HEROINE_VOICE;
 /** A script sent to the people who make the voices: its date (its folder's name), its entries.json and its lines. */

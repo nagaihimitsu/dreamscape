@@ -1,0 +1,3485 @@
+{
+ "checkedAt": "2026-11-17",
+ "source": "VOICEVOX 公式サイトの製品ページ（ページに埋め込まれたキャラクター情報）、スタイルIDは https://github.com/VOICEVOX/voicevox_vvm の README の対応表（トーク）、音高は tools/f0.py による測定（各スタイルの公式サンプル2本をつなげて測定）。規約は各キャラクターの規約ページを 2026-11-17 に読んだ。",
+ "measurementNotes": [
+  "音高は各スタイルの公式サンプル音声2本（製品ページの1本目と2本目）をつなげて測定した。ヒロインは約245Hz。",
+  "測定範囲は60〜500Hz。上限に当たった2つ（猫使ビィ つよつよ、ずんだもん なみだめ）は、同じ測り方で上限を800Hzにして測り直した値を載せ、measuredNote に書いた。",
+  "ささやき系のスタイル（四国めたん ささやき、ずんだもん ささやき、ナースロボ 内緒話）は有声部分がなく、音高は null。",
+  "サンプルの文字起こしは公開されていないため、話す速さ（chars_per_sec）は null。",
+  "impressionJa / genderGuess / ageBand / natural は、実際に聴いた結果ではない。公式の声の説明・プロフィール・測定した音高からの推定。",
+  "プロフィールの gender は、製品ページに性別の項目がないため全員『未記載』とし、説明文に手がかりがあれば括弧で添えた。"
+ ],
+ "characters": [
+  {
+   "slug": "mochikosan",
+   "url": "https://voicevox.hiroshiba.jp/product/mochikosan/",
+   "nameJa": "もち子さん",
+   "profile": {
+    "officialVoiceDescription": "明瞭で穏やかな声",
+    "description": "小さい背丈で頑張る君を応援！ 福島県生まれのプラモ好き犬系ヲタ娘です",
+    "age": "未記載",
+    "gender": "未記載（説明に「犬系ヲタ娘」）",
+    "height": "142 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "本名": "ﾓﾁﾉ･ｷｮｳｺ",
+     "相棒（？）": "あん子ちゃん"
+    },
+    "detailUrl": "https://vtubermochio.wixsite.com/mochizora/もち子さんとは-設定資料",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/mochikosan/"
+   },
+   "cv": "明日葉よもぎ（製品ページのCV欄）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 20,
+     "f0_median_hz": 300.2,
+     "f0_p10_hz": 250.9,
+     "f0_p90_hz": 389.4,
+     "semitones": 7.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.46,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-normal-001.3NwFJxH5.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-normal-002.tfnV6L4m.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-normal-003.rNoBeAQB.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/mochikosan/s0-1.wav",
+      "samples/voicevox/mochikosan/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.57,
+       "f0_median_hz": 318.4,
+       "f0_p10_hz": 258.2,
+       "f0_p90_hz": 406.6,
+       "semitone_range_p10_p90": 7.9
+      },
+      {
+       "duration_s": 4.74,
+       "f0_median_hz": 291.1,
+       "f0_p10_hz": 249.1,
+       "f0_p90_hz": 381.5,
+       "semitone_range_p10_p90": 7.4
+      }
+     ]
+    },
+    {
+     "name": "セクシー／あん子",
+     "id": 66,
+     "f0_median_hz": 269.9,
+     "f0_p10_hz": 216.8,
+     "f0_p90_hz": 323.7,
+     "semitones": 6.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.44,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-sexy-001.Byp81nXy.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-sexy-002.BNy8gF1Y.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-sexy-003.C9qYNob8.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/mochikosan/s1-1.wav",
+      "samples/voicevox/mochikosan/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.92,
+       "f0_median_hz": 279.4,
+       "f0_p10_hz": 222.5,
+       "f0_p90_hz": 329.3,
+       "semitone_range_p10_p90": 6.8
+      },
+      {
+       "duration_s": 5.51,
+       "f0_median_hz": 265.6,
+       "f0_p10_hz": 211.2,
+       "f0_p90_hz": 313.7,
+       "semitone_range_p10_p90": 6.9
+      }
+     ]
+    },
+    {
+     "name": "泣き",
+     "id": 77,
+     "f0_median_hz": 333.5,
+     "f0_p10_hz": 285.1,
+     "f0_p90_hz": 382.8,
+     "semitones": 5.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.5,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-cry-001.BSomxUoH.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-cry-002.Cw0bbXdO.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-cry-003.CcjofpZz.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/mochikosan/s2-1.wav",
+      "samples/voicevox/mochikosan/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.06,
+       "f0_median_hz": 336.0,
+       "f0_p10_hz": 295.0,
+       "f0_p90_hz": 397.9,
+       "semitone_range_p10_p90": 5.2
+      },
+      {
+       "duration_s": 5.42,
+       "f0_median_hz": 329.6,
+       "f0_p10_hz": 277.2,
+       "f0_p90_hz": 369.9,
+       "semitone_range_p10_p90": 5.0
+      }
+     ]
+    },
+    {
+     "name": "怒り",
+     "id": 78,
+     "f0_median_hz": 328.2,
+     "f0_p10_hz": 255.9,
+     "f0_p90_hz": 403.4,
+     "semitones": 7.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.47,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-angry-001.Dwk8o9aD.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-angry-002.ZoW4PIgd.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-angry-003.D0ZGzE-y.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/mochikosan/s3-1.wav",
+      "samples/voicevox/mochikosan/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.13,
+       "f0_median_hz": 331.4,
+       "f0_p10_hz": 262.4,
+       "f0_p90_hz": 421.3,
+       "semitone_range_p10_p90": 8.2
+      },
+      {
+       "duration_s": 5.58,
+       "f0_median_hz": 324.4,
+       "f0_p10_hz": 246.0,
+       "f0_p90_hz": 397.2,
+       "semitone_range_p10_p90": 8.3
+      }
+     ]
+    },
+    {
+     "name": "喜び",
+     "id": 79,
+     "f0_median_hz": 327.2,
+     "f0_p10_hz": 279.5,
+     "f0_p90_hz": 386.4,
+     "semitones": 5.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.56,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-joy-001.DYDSWo7z.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-joy-002.CUb3DOHh.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-joy-003.Du8qIBA3.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/mochikosan/s4-1.wav",
+      "samples/voicevox/mochikosan/s4-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.47,
+       "f0_median_hz": 340.0,
+       "f0_p10_hz": 292.8,
+       "f0_p90_hz": 405.0,
+       "semitone_range_p10_p90": 5.6
+      },
+      {
+       "duration_s": 6.05,
+       "f0_median_hz": 325.2,
+       "f0_p10_hz": 274.0,
+       "f0_p90_hz": 370.7,
+       "semitone_range_p10_p90": 5.2
+      }
+     ]
+    },
+    {
+     "name": "のんびり",
+     "id": 80,
+     "f0_median_hz": 286.5,
+     "f0_p10_hz": 221.5,
+     "f0_p90_hz": 347.6,
+     "semitones": 7.8,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.51,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-relax-001.FB2oclPv.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-relax-002.vfrqz9cg.wav",
+      "https://voicevox.hiroshiba.jp/_astro/mochikosan-relax-003.DqT_iyJt.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/mochikosan/s5-1.wav",
+      "samples/voicevox/mochikosan/s5-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 4.37,
+       "f0_median_hz": 294.2,
+       "f0_p10_hz": 225.0,
+       "f0_p90_hz": 365.2,
+       "semitone_range_p10_p90": 8.4
+      },
+      {
+       "duration_s": 8.07,
+       "f0_median_hz": 284.3,
+       "f0_p10_hz": 219.4,
+       "f0_p90_hz": 326.7,
+       "semitone_range_p10_p90": 6.9
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://vtubermochio.wixsite.com/mochizora/利用規約",
+    "class": "NG",
+    "freeWebGame": "不可。禁止事項3「出力した合成音声を使用したゲーム作品の有償販売と、キャラクターもち子さん以外でのCV起用ゲーム作品の無償配布」。無償でも、もち子さん本人以外の声に使うゲームは禁止。",
+    "commercial": "個人の動画・配信（無料公開分）、ブログ等のナレーション、学生・教育機関の利用は可。それ以外の商用・有償販売・有償配布は事前に問い合わせ（無断の場合のライセンス料 80,000円＋税の記載あり）。企業は事前確認。",
+    "credit": "「VOICEVOX もち子さん(cv明日葉よもぎ)」。多少の表記ゆれは可だが「明日葉よもぎ」は必ず書く。VOICEVOX公式の要約の形は「VOICEVOX:もち子(cv 明日葉よもぎ)」。",
+    "prohibitions": "音声素材の配布・販売／音声作品（ASMR等）の配布・販売・有償公開・無料公開／ゲーム作品の有償販売、もち子さん以外のCVに使うゲームの無償配布／クレジットなしで他キャラクターのCVに使う／ボイスチェンジャーモデル・AI学習。二次創作共通：法令違反・犯罪、誹謗中傷、フィクションの域を超えた特定の政治・思想・宗教の勧誘・応援・非難、コンテンツのイメージを著しく損なう二次創作、転売など。",
+    "otherCharacterUse": "ゲームでは禁止（上記の禁止事項3）。動画などでは、クレジットがあれば他キャラクターのCVに使えると読める（禁止事項4はクレジットなしの場合だけを禁止）。",
+    "romance": "記載なし（未成年向け・成年向けを問わず禁止事項が当てはまると書かれている）。",
+    "application": "ゲームで別人物の声に使うことは規約で禁止。使うなら個別に相談が必要で、許可は保証されない。",
+    "notes": "VOICEVOX公式の要約（policy.md）も「音声作品・音声素材・ゲーム作品等を除いて」と書いている。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「明瞭で穏やかな声」。ノーマルの中央値は約300Hzで、ヒロインより高い。小柄な娘の設定。規約でゲームの別人物には使えないので配役しない。",
+   "genderGuess": "女性",
+   "ageBand": "10代〜20代前半（推定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "namine_ritsu",
+   "url": "https://voicevox.hiroshiba.jp/product/namine_ritsu/",
+   "nameJa": "波音リツ",
+   "profile": {
+    "officialVoiceDescription": "低めのクールな声",
+    "description": "地獄のような安価を踏み抜いて生まれた、 2ch・VIP発のキャラクター。",
+    "age": "6 歳",
+    "gender": "未記載",
+    "height": "156 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "体重": "25 トン",
+     "好きなもの": "チョコクリスピー"
+    },
+    "detailUrl": "https://www.canon-voice.com/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/namine_ritsu/"
+   },
+   "cv": "未記載（利用規約に「音源収録者であるカノン」とある）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 9,
+     "f0_median_hz": 246.3,
+     "f0_p10_hz": 194.6,
+     "f0_p90_hz": 282.1,
+     "semitones": 6.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.42,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/namine_ritsu-normal-001.CgP7yWbM.wav",
+      "https://voicevox.hiroshiba.jp/_astro/namine_ritsu-normal-002.CpK7ytjx.wav",
+      "https://voicevox.hiroshiba.jp/_astro/namine_ritsu-normal-003.cD5mKJrx.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/namine_ritsu/s0-1.wav",
+      "samples/voicevox/namine_ritsu/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.55,
+       "f0_median_hz": 247.3,
+       "f0_p10_hz": 180.9,
+       "f0_p90_hz": 301.8,
+       "semitone_range_p10_p90": 8.9
+      },
+      {
+       "duration_s": 4.51,
+       "f0_median_hz": 245.4,
+       "f0_p10_hz": 196.5,
+       "f0_p90_hz": 280.7,
+       "semitone_range_p10_p90": 6.2
+      }
+     ]
+    },
+    {
+     "name": "クイーン",
+     "id": 65,
+     "f0_median_hz": 337.4,
+     "f0_p10_hz": 267.8,
+     "f0_p90_hz": 381.7,
+     "semitones": 6.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.45,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/namine_ritsu-queen-001.D37WV45p.wav",
+      "https://voicevox.hiroshiba.jp/_astro/namine_ritsu-queen-002.DjVoZomE.wav",
+      "https://voicevox.hiroshiba.jp/_astro/namine_ritsu-queen-003.DjZYNRSt.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/namine_ritsu/s1-1.wav",
+      "samples/voicevox/namine_ritsu/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.61,
+       "f0_median_hz": 350.6,
+       "f0_p10_hz": 230.5,
+       "f0_p90_hz": 387.8,
+       "semitone_range_p10_p90": 9.0
+      },
+      {
+       "duration_s": 5.01,
+       "f0_median_hz": 331.8,
+       "f0_p10_hz": 273.2,
+       "f0_p90_hz": 376.1,
+       "semitone_range_p10_p90": 5.5
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://www.canon-voice.com/terms/",
+    "class": "OK",
+    "freeWebGame": "可。",
+    "commercial": "可（「商用利用可です」）。",
+    "credit": "「VOICEVOX:波音リツ」。リツの規約自体は「クレジット表記不要」だが、「VOICEVOXを使用する場合、『VOICEVOX』のクレジットが必要」と大きく書かれている。形は VOICEVOX 公式の要約に合わせる。",
+    "prohibitions": "ほぼなし。「性的表現、暴力的表現、政治的表現、宗教的表現など基本的に一切禁止しません」。違法なことはしない方がいい、作者が問題と判断したら公開中止・削除に応じる、犯罪利用は別途許諾が必要、と書かれている。",
+    "otherCharacterUse": "明記で可（「他キャラクターへの声当て可」）。",
+    "romance": "記載なし（性的表現も禁止しないと書かれている）。",
+    "application": "不要。",
+    "notes": "規約に載っている旧URL http://canon-voice.com/kiyaku.html は https://www.canon-voice.com/terms へ移転と表示される。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「低めのクールな声」。ノーマルの中央値は約246Hzで、ヒロイン（約245Hz）とほぼ同じ高さ。クイーンは約337Hzと高い。2ch発の6歳・体重25トンというネタの設定で、設定から年齢は決められない。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半〜20代（声からの推定）",
+   "natural": "中間（推定）"
+  },
+  {
+   "slug": "nekotsuka_aru",
+   "url": "https://voicevox.hiroshiba.jp/product/nekotsuka_aru/",
+   "nameJa": "猫使アル",
+   "profile": {
+    "officialVoiceDescription": "厚みのある気さくな声",
+    "description": "謎の研究所で作られた 猫使シリーズの タイプ:Red",
+    "age": "外見年齢10代前半",
+    "gender": "未記載",
+    "height": "140 cm",
+    "personality": "マイペース",
+    "otherLabels": {
+     "誕生日": "6月17日",
+     "好きなもの": "はまち",
+     "苦手なもの": "ねずみ",
+     "趣味": "噛むこと"
+    },
+    "detailUrl": "https://nekotukarb.wixsite.com/nekonohako",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/nekotsuka_aru/"
+   },
+   "cv": "未記載（規約に「海日月ぷらむ」の名があるが、声の提供者とは書かれていない＝未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 55,
+     "f0_median_hz": 273.1,
+     "f0_p10_hz": 193.0,
+     "f0_p90_hz": 344.4,
+     "semitones": 10.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.49,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-normal-001.ChdMH455.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-normal-002.CTAfp-W1.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-normal-003.B8ap1iRq.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_aru/s0-1.wav",
+      "samples/voicevox/nekotsuka_aru/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.47,
+       "f0_median_hz": 334.4,
+       "f0_p10_hz": 181.6,
+       "f0_p90_hz": 349.7,
+       "semitone_range_p10_p90": 11.3
+      },
+      {
+       "duration_s": 2.91,
+       "f0_median_hz": 261.5,
+       "f0_p10_hz": 214.2,
+       "f0_p90_hz": 317.1,
+       "semitone_range_p10_p90": 6.8
+      }
+     ]
+    },
+    {
+     "name": "おちつき",
+     "id": 56,
+     "f0_median_hz": 237.4,
+     "f0_p10_hz": 173.1,
+     "f0_p90_hz": 317.8,
+     "semitones": 10.5,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.49,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-ochitsuki-001.DZbsNpv3.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-ochitsuki-002.KtsT7dCq.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-ochitsuki-003.eeLtRUEi.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_aru/s1-1.wav",
+      "samples/voicevox/nekotsuka_aru/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.46,
+       "f0_median_hz": 286.6,
+       "f0_p10_hz": 172.8,
+       "f0_p90_hz": 326.8,
+       "semitone_range_p10_p90": 11.0
+      },
+      {
+       "duration_s": 2.88,
+       "f0_median_hz": 226.5,
+       "f0_p10_hz": 175.4,
+       "f0_p90_hz": 284.8,
+       "semitone_range_p10_p90": 8.4
+      }
+     ]
+    },
+    {
+     "name": "うきうき",
+     "id": 57,
+     "f0_median_hz": 270.0,
+     "f0_p10_hz": 188.8,
+     "f0_p90_hz": 365.0,
+     "semitones": 11.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.49,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-fun-001.BAbw7K_4.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-fun-002.fTl4L2o0.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-fun-003.BOJuuT6d.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_aru/s2-1.wav",
+      "samples/voicevox/nekotsuka_aru/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.4,
+       "f0_median_hz": 342.4,
+       "f0_p10_hz": 191.1,
+       "f0_p90_hz": 368.0,
+       "semitone_range_p10_p90": 11.3
+      },
+      {
+       "duration_s": 2.88,
+       "f0_median_hz": 260.6,
+       "f0_p10_hz": 187.8,
+       "f0_p90_hz": 329.0,
+       "semitone_range_p10_p90": 9.7
+      }
+     ]
+    },
+    {
+     "name": "つよつよ",
+     "id": 110,
+     "f0_median_hz": 387.6,
+     "f0_p10_hz": 309.7,
+     "f0_p90_hz": 444.8,
+     "semitones": 6.3,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.38,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-tsuyotsuyo-001.D62DVTjY.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-tsuyotsuyo-002.CLL-lel9.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-tsuyotsuyo-003.fQK0k7-4.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_aru/s3-1.wav",
+      "samples/voicevox/nekotsuka_aru/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.44,
+       "f0_median_hz": 429.3,
+       "f0_p10_hz": 316.2,
+       "f0_p90_hz": 462.5,
+       "semitone_range_p10_p90": 6.6
+      },
+      {
+       "duration_s": 2.83,
+       "f0_median_hz": 378.6,
+       "f0_p10_hz": 327.8,
+       "f0_p90_hz": 418.5,
+       "semitone_range_p10_p90": 4.2
+      }
+     ]
+    },
+    {
+     "name": "へろへろ",
+     "id": 111,
+     "f0_median_hz": 238.1,
+     "f0_p10_hz": 215.3,
+     "f0_p90_hz": 304.7,
+     "semitones": 6.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.58,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-herohero-001.CYP1N5T6.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-herohero-002.LihZQVlt.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_aru-herohero-003.CveDpagu.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_aru/s4-1.wav",
+      "samples/voicevox/nekotsuka_aru/s4-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.38,
+       "f0_median_hz": 288.0,
+       "f0_p10_hz": 228.4,
+       "f0_p90_hz": 320.0,
+       "semitone_range_p10_p90": 5.8
+      },
+      {
+       "duration_s": 4.23,
+       "f0_median_hz": 232.4,
+       "f0_p10_hz": 213.4,
+       "f0_p90_hz": 259.0,
+       "semitone_range_p10_p90": 3.4
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://nekotukarb.wixsite.com/nekonohako/利用規約",
+    "class": "OK",
+    "freeWebGame": "可。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。企業の商用は事前に問い合わせ。",
+    "credit": "「VOICEVOX:猫使アル」（両方使う場合は「VOICEVOX:猫使アル/猫使ビィ」も例示）。",
+    "prohibitions": "政治的・宗教的用途、公序良俗に反する利用／権利者の関与しない形で猫使を名乗る活動・権利者を偽る行為／出力音声で音響モデル等を作る機械学習／「海日月ぷらむ」や「プラムchに登場する人物」としての使用や誤認される使い方／R-18作品で音声のみ（ナレーション・声当て等）を使うこと／その他公式が不適切と考える利用。",
+    "otherCharacterUse": "明記で可（「猫使ビィ/猫使アル以外のキャラクターと紐づけて利用する場合も『猫使ビィ/猫使アル』のクレジットをお願いします」）。",
+    "romance": "記載なし（R-18 で音声のみの使用は禁止）。",
+    "application": "不要（企業の商用のみ事前問い合わせ）。",
+    "notes": "「リリースに伴い、規約は変更になる可能性があります」と書かれている。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「厚みのある気さくな声」。ノーマルの中央値は約273Hz、抑揚の幅が約10半音と大きい。おちつき・へろへろは約238Hzでヒロインに近い。外見年齢10代前半、マイペースの設定。",
+   "genderGuess": "女性（少女）",
+   "ageBand": "10代前半（外見年齢の設定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "nekotsuka_bi",
+   "url": "https://voicevox.hiroshiba.jp/product/nekotsuka_bi/",
+   "nameJa": "猫使ビィ",
+   "profile": {
+    "officialVoiceDescription": "ピュアであどけない声",
+    "description": "謎の研究所で作られた 猫使シリーズの タイプ:Blue",
+    "age": "外見年齢10代前半",
+    "gender": "未記載",
+    "height": "140 cm",
+    "personality": "シャイで臆病",
+    "otherLabels": {
+     "誕生日": "6月17日",
+     "好きなもの": "サーモン",
+     "苦手なもの": "おばけ",
+     "趣味": "おひるね"
+    },
+    "detailUrl": "https://nekotukarb.wixsite.com/nekonohako",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/nekotsuka_bi/"
+   },
+   "cv": "未記載（規約に「海日月ぷらむ」の名があるが、声の提供者とは書かれていない＝未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 58,
+     "f0_median_hz": 371.7,
+     "f0_p10_hz": 293.6,
+     "f0_p90_hz": 418.5,
+     "semitones": 6.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.6,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-normal-001.BsAxW9BH.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-normal-002.TuM75gnW.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-normal-003.BYu3G7zm.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_bi/s0-1.wav",
+      "samples/voicevox/nekotsuka_bi/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.27,
+       "f0_median_hz": 370.8,
+       "f0_p10_hz": 290.3,
+       "f0_p90_hz": 417.9,
+       "semitone_range_p10_p90": 6.3
+      },
+      {
+       "duration_s": 7.07,
+       "f0_median_hz": 371.7,
+       "f0_p10_hz": 294.8,
+       "f0_p90_hz": 420.1,
+       "semitone_range_p10_p90": 6.1
+      }
+     ]
+    },
+    {
+     "name": "おちつき",
+     "id": 59,
+     "f0_median_hz": 307.6,
+     "f0_p10_hz": 275.0,
+     "f0_p90_hz": 358.9,
+     "semitones": 4.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.56,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-ochitsuki-001.DL2P3JH6.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-ochitsuki-002.BOQ3eRsf.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-ochitsuki-003.BHaqGvTu.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_bi/s1-1.wav",
+      "samples/voicevox/nekotsuka_bi/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.17,
+       "f0_median_hz": 353.4,
+       "f0_p10_hz": 314.1,
+       "f0_p90_hz": 369.8,
+       "semitone_range_p10_p90": 2.8
+      },
+      {
+       "duration_s": 7.04,
+       "f0_median_hz": 297.3,
+       "f0_p10_hz": 272.2,
+       "f0_p90_hz": 340.8,
+       "semitone_range_p10_p90": 3.9
+      }
+     ]
+    },
+    {
+     "name": "人見知り",
+     "id": 60,
+     "f0_median_hz": 327.3,
+     "f0_p10_hz": 299.0,
+     "f0_p90_hz": 371.2,
+     "semitones": 3.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.54,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-shy-001.Bt_kThzx.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-shy-002.A0GBuZjj.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-shy-003.F35HM4Zp.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_bi/s2-1.wav",
+      "samples/voicevox/nekotsuka_bi/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.23,
+       "f0_median_hz": 343.1,
+       "f0_p10_hz": 308.4,
+       "f0_p90_hz": 391.4,
+       "semitone_range_p10_p90": 4.1
+      },
+      {
+       "duration_s": 7.21,
+       "f0_median_hz": 322.6,
+       "f0_p10_hz": 294.9,
+       "f0_p90_hz": 363.0,
+       "semitone_range_p10_p90": 3.6
+      }
+     ]
+    },
+    {
+     "name": "つよつよ",
+     "id": 112,
+     "f0_median_hz": 453.1,
+     "f0_p10_hz": 359.0,
+     "f0_p90_hz": 538.7,
+     "semitones": 7.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.42,
+     "measuredNote": "500Hz の上限に当たったため、上限 800Hz で測り直した値を載せた（上限 500Hz では中央値 418.2Hz）。",
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-tsuyotsuyo-001.DHacAjeX.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-tsuyotsuyo-002.Bn_wIMyw.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nekotsuka_bi-tsuyotsuyo-003.B9fpOqu-.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nekotsuka_bi/s3-1.wav",
+      "samples/voicevox/nekotsuka_bi/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.12,
+       "f0_median_hz": 322.5,
+       "f0_p10_hz": 267.9,
+       "f0_p90_hz": 473.7,
+       "semitone_range_p10_p90": 9.9
+      },
+      {
+       "duration_s": 6.64,
+       "f0_median_hz": 425.4,
+       "f0_p10_hz": 294.7,
+       "f0_p90_hz": 483.8,
+       "semitone_range_p10_p90": 8.6
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://nekotukarb.wixsite.com/nekonohako/利用規約",
+    "class": "OK",
+    "freeWebGame": "可。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。企業の商用は事前に問い合わせ。",
+    "credit": "「VOICEVOX:猫使ビィ」（両方使う場合は「VOICEVOX:猫使アル/猫使ビィ」も例示）。",
+    "prohibitions": "猫使アルと同じページ・同じ規約（政治・宗教・公序良俗、権利者を偽る、機械学習、「海日月ぷらむ」等としての使用、R-18で音声のみ、公式が不適切と考える利用）。",
+    "otherCharacterUse": "明記で可（猫使アルと同じ文）。",
+    "romance": "記載なし（R-18 で音声のみの使用は禁止）。",
+    "application": "不要（企業の商用のみ事前問い合わせ）。",
+    "notes": "猫使アルとは別のキャラクター・別の声。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「ピュアであどけない声」。ノーマルの中央値は約372Hzでかなり高い。人見知り約327Hzは抑揚が小さい（約3.7半音）。シャイで臆病、外見年齢10代前半の設定。",
+   "genderGuess": "女性（少女）",
+   "ageBand": "10代前半（外見年齢の設定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "number_seven",
+   "url": "https://voicevox.hiroshiba.jp/product/number_seven/",
+   "nameJa": "No.7",
+   "profile": {
+    "officialVoiceDescription": "しっかりした凛々しい声",
+    "description": "正体がつかめない不思議な女性。 得意のメイクで複数の「顔」を持つ。",
+    "age": "23 歳",
+    "gender": "女性（説明に「正体がつかめない不思議な女性」）",
+    "height": "165 cm",
+    "personality": "ミニマリストで部屋の明かりは蝋燭のみ",
+    "otherLabels": {
+     "好きなもの": "子供",
+     "趣味": "かいわれ大根の栽培"
+    },
+    "detailUrl": "https://voiceseven.com/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/number_seven/"
+   },
+   "cv": "小岩井ことり（製品ページのCV欄）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 29,
+     "f0_median_hz": 286.3,
+     "f0_p10_hz": 206.0,
+     "f0_p90_hz": 323.8,
+     "semitones": 7.8,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.43,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-normal-001.BahX7GIQ.wav",
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-normal-002.OPv30o-e.wav",
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-normal-003.ds1JG_8N.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/number_seven/s0-1.wav",
+      "samples/voicevox/number_seven/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.7,
+       "f0_median_hz": 307.9,
+       "f0_p10_hz": 251.3,
+       "f0_p90_hz": 328.3,
+       "semitone_range_p10_p90": 4.6
+      },
+      {
+       "duration_s": 4.76,
+       "f0_median_hz": 265.4,
+       "f0_p10_hz": 194.5,
+       "f0_p90_hz": 321.2,
+       "semitone_range_p10_p90": 8.7
+      }
+     ]
+    },
+    {
+     "name": "アナウンス",
+     "id": 30,
+     "f0_median_hz": 236.0,
+     "f0_p10_hz": 170.9,
+     "f0_p90_hz": 283.3,
+     "semitones": 8.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.47,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-announce-001.2glzAQjK.wav",
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-announce-002.NJ-8tJQw.wav",
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-announce-003.tHmA87q8.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/number_seven/s1-1.wav",
+      "samples/voicevox/number_seven/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.72,
+       "f0_median_hz": 239.2,
+       "f0_p10_hz": 196.7,
+       "f0_p90_hz": 283.0,
+       "semitone_range_p10_p90": 6.3
+      },
+      {
+       "duration_s": 4.62,
+       "f0_median_hz": 231.4,
+       "f0_p10_hz": 167.9,
+       "f0_p90_hz": 283.3,
+       "semitone_range_p10_p90": 9.1
+      }
+     ]
+    },
+    {
+     "name": "読み聞かせ",
+     "id": 31,
+     "f0_median_hz": 246.1,
+     "f0_p10_hz": 195.3,
+     "f0_p90_hz": 279.2,
+     "semitones": 6.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.48,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-reading-001.11m5tWib.wav",
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-reading-002.BNZIckXN.wav",
+      "https://voicevox.hiroshiba.jp/_astro/number_seven-reading-003.Dwo8uSiN.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/number_seven/s2-1.wav",
+      "samples/voicevox/number_seven/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.86,
+       "f0_median_hz": 253.0,
+       "f0_p10_hz": 203.7,
+       "f0_p90_hz": 281.1,
+       "semitone_range_p10_p90": 5.6
+      },
+      {
+       "duration_s": 6.99,
+       "f0_median_hz": 238.4,
+       "f0_p10_hz": 191.7,
+       "f0_p90_hz": 278.1,
+       "semitone_range_p10_p90": 6.4
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://voiceseven.com/#j0400",
+    "class": "条件付き",
+    "freeWebGame": "読み方が分かれる。非商用として許諾する例に「同人ゲームでの利用」「費用が発生しない配布」があり、商用（要相談）の例に「ゲームでの利用」がある。個人が無料で公開するゲームは非商用に当たると読めるが、確実にするなら事前に相談する。",
+    "commercial": "要相談。目安として動画や店頭アナウンスなら文字数制限なし・無期限で15,000円〜。クレジットなしの商用は250,000円＋税（https://voiceseven.com/#j0200）。",
+    "credit": "「VOICEVOX:No.7」（VOICEVOX公式の要約）。",
+    "prohibitions": "キャラクターのイメージを著しく損なう利用／作品の著作者の社会的評価を損なう利用／他者の権利侵害／原作の利用がわからなくなるようなキャラクターの改変／二次創作キャラクターの無断使用／商標・意匠登録などの独占使用／反社会的勢力の利用。",
+    "otherCharacterUse": "明記なし。「原作の利用がわからなくなってしまうようなキャラクターの改変」の禁止が、声だけを別の人物に使う場合に当たるかは読み取れない（不明）。",
+    "romance": "記載なし。",
+    "application": "非商用なら不要。ゲームでの利用は商用の例にも挙がっているので、相談するのが安全。",
+    "notes": "VOICEVOX公式の要約は「非商用（同人利用や配信による収入はOK）で利用可能。その他商用利用は No.7製作委員会に事前確認」。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「しっかりした凛々しい声」。ノーマル約286Hz、アナウンス約236Hz、読み聞かせ約246Hz（ヒロインに近い）。23歳の大人の女性で、アナウンス・読み聞かせのスタイルがある。",
+   "genderGuess": "女性",
+   "ageBand": "20代（23歳の設定）",
+   "natural": "自然寄り（推定。アナウンス・読み聞かせのスタイルがあるため）"
+  },
+  {
+   "slug": "nurserobo_typet",
+   "url": "https://voicevox.hiroshiba.jp/product/nurserobo_typet/",
+   "nameJa": "ナースロボ＿タイプＴ",
+   "profile": {
+    "officialVoiceDescription": "冷静で慎み深い声",
+    "description": "医者に作られたナース形ロボット。 人格は少女と設定されている。",
+    "age": "五ヶ月",
+    "gender": "未記載（説明に「人格は少女と設定されている」）",
+    "height": "150～160 cm（パーツによる）",
+    "personality": "未記載",
+    "otherLabels": {
+     "誕生日": "12月3日",
+     "愛称": "ＴＴ",
+     "製造者": "そばの小型ロボット（医者）"
+    },
+    "detailUrl": "https://www.krnr.top/blank",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/nurserobo_typet/"
+   },
+   "cv": "未記載",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 47,
+     "f0_median_hz": 275.7,
+     "f0_p10_hz": 220.7,
+     "f0_p90_hz": 300.7,
+     "semitones": 5.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.36,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-normal-001.CXxGLTvZ.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-normal-002.CYzPGBqy.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-normal-003.C-tPKx2I.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nurserobo_typet/s0-1.wav",
+      "samples/voicevox/nurserobo_typet/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.17,
+       "f0_median_hz": 271.2,
+       "f0_p10_hz": 223.0,
+       "f0_p90_hz": 297.9,
+       "semitone_range_p10_p90": 5.0
+      },
+      {
+       "duration_s": 5.54,
+       "f0_median_hz": 277.3,
+       "f0_p10_hz": 220.7,
+       "f0_p90_hz": 300.6,
+       "semitone_range_p10_p90": 5.4
+      }
+     ]
+    },
+    {
+     "name": "楽々",
+     "id": 48,
+     "f0_median_hz": 317.3,
+     "f0_p10_hz": 257.8,
+     "f0_p90_hz": 360.4,
+     "semitones": 5.8,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.48,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-fun-001.D_RAnRET.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-fun-002.DYcLzRNy.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-fun-003.CRePgRF2.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nurserobo_typet/s1-1.wav",
+      "samples/voicevox/nurserobo_typet/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.11,
+       "f0_median_hz": 313.7,
+       "f0_p10_hz": 263.1,
+       "f0_p90_hz": 341.9,
+       "semitone_range_p10_p90": 4.5
+      },
+      {
+       "duration_s": 5.38,
+       "f0_median_hz": 320.1,
+       "f0_p10_hz": 255.5,
+       "f0_p90_hz": 363.2,
+       "semitone_range_p10_p90": 6.1
+      }
+     ]
+    },
+    {
+     "name": "恐怖",
+     "id": 49,
+     "f0_median_hz": 313.7,
+     "f0_p10_hz": 264.5,
+     "f0_p90_hz": 339.9,
+     "semitones": 4.3,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.31,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-fear-001.DlOi-upK.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-fear-002.DFYj9RVV.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-fear-003.CJ0-9XLq.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nurserobo_typet/s2-1.wav",
+      "samples/voicevox/nurserobo_typet/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 4.12,
+       "f0_median_hz": 309.9,
+       "f0_p10_hz": 272.6,
+       "f0_p90_hz": 346.0,
+       "semitone_range_p10_p90": 4.1
+      },
+      {
+       "duration_s": 7.07,
+       "f0_median_hz": 319.1,
+       "f0_p10_hz": 260.1,
+       "f0_p90_hz": 339.1,
+       "semitone_range_p10_p90": 4.6
+      }
+     ]
+    },
+    {
+     "name": "内緒話",
+     "id": 50,
+     "f0_median_hz": null,
+     "f0_p10_hz": null,
+     "f0_p90_hz": null,
+     "semitones": null,
+     "chars_per_sec": null,
+     "voiced_ratio": null,
+     "measuredNote": "有声部分が検出されない（ささやき声）。音高は測れない。",
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-whis-001.M2dZbbJy.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-whis-002.DER0yqC7.wav",
+      "https://voicevox.hiroshiba.jp/_astro/nurserobo_typet-whis-003.CB9DgAx3.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/nurserobo_typet/s3-1.wav",
+      "samples/voicevox/nurserobo_typet/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.36,
+       "f0_median_hz": null,
+       "f0_p10_hz": null,
+       "f0_p90_hz": null,
+       "semitone_range_p10_p90": null
+      },
+      {
+       "duration_s": 5.93,
+       "f0_median_hz": null,
+       "f0_p10_hz": null,
+       "f0_p90_hz": null,
+       "semitone_range_p10_p90": null
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://www.krnr.top/rules",
+    "class": "条件付き",
+    "freeWebGame": "可（VOICEVOXの項「個人、法人および団体が本ボイスバンクの二次創作物を商用・非商用に限らず利用すること」は連絡不要）。ただし「AIで生成した画像・動画に声を当てること」は禁止。",
+    "commercial": "可（VOICEVOX音声。ナースロボ＿タイプＴの表記は必須）。",
+    "credit": "「VOICEVOX：ナースロボ＿タイプＴ」（使ったソフトとキャラクター名を必ず書く）。",
+    "prohibitions": "VOICEVOXの項：出力音声のAI学習／実際に使っていないのにクレジットに名前を書く／ボイス素材の無許可販売／AIボイスチェンジャーで他人の声にする／AIで生成した画像・動画に声を当てる／R18指定の利用。前提の禁止事項：二次配布・無断転載、著作情報を混乱させる行為、音声提供者・キャラクターの信用・品位・イメージを著しく損なう利用、故意に医療知識の誤りを広める行為、権利侵害、誹謗中傷など公序良俗に反する行為、政治宣伝・特定の思想・イデオロギー・団体・宗教に関係する行為、権利者に不利益な行為、AI学習・i2i・ボイスチェンジャー全般。",
+    "otherCharacterUse": "VOICEVOXの項には禁止の記載なし。同じページのUTAU音源の項では「創作キャラクターの声当てなど、他人の声として音源を利用すること」が禁止（UTAU用の決まりで、VOICEVOXには書かれていない）。",
+    "romance": "キャラクター利用の項で「他音声合成キャラクターとカップリング/恋愛表現」は連絡不要で可（キャラクターの話。声だけの利用の決まりではない）。",
+    "application": "不要。",
+    "notes": "規約の更新日は 2026.11.07。キャラクターをゲームに登場させることは「連絡・相談必要」だが、これはキャラクター（見た目や名前）の話。立ち絵が生成AI製なら声を当てられない。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「冷静で慎み深い声」。ノーマル約276Hz、抑揚は約5.4半音で控えめ。楽々約317Hz、恐怖約314Hz。内緒話はささやきで測れない。ロボットの設定。",
+   "genderGuess": "女性",
+   "ageBand": "10代〜20代（推定）",
+   "natural": "中間（推定）"
+  },
+  {
+   "slug": "ouka_miko",
+   "url": "https://voicevox.hiroshiba.jp/product/ouka_miko/",
+   "nameJa": "櫻歌ミコ",
+   "profile": {
+    "officialVoiceDescription": "かわいらしい少女の声",
+    "description": "ニホンオオカミの女の子。 もうひとりのミコ（通称：第二ちゃん）がいる。",
+    "age": "3.5 歳",
+    "gender": "未記載（説明に「ニホンオオカミの女の子」）",
+    "height": "135 cm",
+    "personality": "ガブデレ",
+    "otherLabels": {
+     "体重": "35 kg",
+     "誕生日": "12月24日",
+     "持ち物": "りんご/骨",
+     "愛称": "みこみこ/第二ちゃん"
+    },
+    "detailUrl": "https://voicevox35miko.studio.site/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/ouka_miko/"
+   },
+   "cv": "赤乃みずき（規約のクレジット例「VOICEVOX:櫻歌ミコ(CV:赤乃みずき)」。制作者も赤乃みずき）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 43,
+     "f0_median_hz": 282.5,
+     "f0_p10_hz": 250.1,
+     "f0_p90_hz": 310.3,
+     "semitones": 3.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.55,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-normal-001.oXjhcDJ0.wav",
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-normal-002.BJQ5IY2o.wav",
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-normal-003.CAA7YVAd.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/ouka_miko/s0-1.wav",
+      "samples/voicevox/ouka_miko/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.23,
+       "f0_median_hz": 275.2,
+       "f0_p10_hz": 245.8,
+       "f0_p90_hz": 291.1,
+       "semitone_range_p10_p90": 2.9
+      },
+      {
+       "duration_s": 2.85,
+       "f0_median_hz": 294.8,
+       "f0_p10_hz": 252.6,
+       "f0_p90_hz": 311.1,
+       "semitone_range_p10_p90": 3.6
+      }
+     ]
+    },
+    {
+     "name": "第二形態",
+     "id": 44,
+     "f0_median_hz": 197.2,
+     "f0_p10_hz": 184.1,
+     "f0_p90_hz": 214.5,
+     "semitones": 2.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.46,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-2nd-001.DzN4usKR.wav",
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-2nd-002.BG_wz4OM.wav",
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-2nd-003.BhGfKEjv.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/ouka_miko/s1-1.wav",
+      "samples/voicevox/ouka_miko/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.49,
+       "f0_median_hz": 204.5,
+       "f0_p10_hz": 185.5,
+       "f0_p90_hz": 215.6,
+       "semitone_range_p10_p90": 2.6
+      },
+      {
+       "duration_s": 3.22,
+       "f0_median_hz": 195.8,
+       "f0_p10_hz": 181.4,
+       "f0_p90_hz": 212.4,
+       "semitone_range_p10_p90": 2.7
+      }
+     ]
+    },
+    {
+     "name": "ロリ",
+     "id": 45,
+     "f0_median_hz": 253.5,
+     "f0_p10_hz": 224.9,
+     "f0_p90_hz": 268.8,
+     "semitones": 3.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.64,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-loli-001.4F3lpGvY.wav",
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-loli-002.CywujGLz.wav",
+      "https://voicevox.hiroshiba.jp/_astro/ouka_miko-loli-003.BocPX_mC.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/ouka_miko/s2-1.wav",
+      "samples/voicevox/ouka_miko/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.06,
+       "f0_median_hz": 254.9,
+       "f0_p10_hz": 218.5,
+       "f0_p90_hz": 294.2,
+       "semitone_range_p10_p90": 5.2
+      },
+      {
+       "duration_s": 4.12,
+       "f0_median_hz": 252.6,
+       "f0_p10_hz": 237.6,
+       "f0_p90_hz": 263.9,
+       "semitone_range_p10_p90": 1.8
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://voicevox35miko.studio.site/rule",
+    "class": "OK",
+    "freeWebGame": "可（商用・非商用を問わず無料で使用できる）。",
+    "commercial": "可。",
+    "credit": "「VOICEVOX:櫻歌ミコ」または「VOICEVOX:櫻歌ミコ(CV:赤乃みずき)」。",
+    "prohibitions": "制作者・第三者の権利や利益の侵害／キャラクター名称・ライブラリの著作権者を偽る／公序良俗に反する、誹謗中傷目的、実在する特定の政治・宗教の支持や批判、反社会的、犯罪やその助長、投資・金融の情報商材を含む合成音声の公開・配布・販売／制作者が不適切と合理的に判断する行為。",
+    "otherCharacterUse": "明記なし、禁止もなし。音声の規約は「キャラクターの使用について定めるものではありません」と書かれている（キャラクターは https://voicevox35miko.studio.site/guide のガイドラインで扱う）。",
+    "romance": "記載なし。",
+    "application": "不要。",
+    "notes": "キャラクターのガイドラインには「特定の政治・宗教を支持または批判する行為」の禁止がある。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「かわいらしい少女の声」。ノーマル約283Hz、抑揚は約3.7半音と小さい。第二形態は約197Hzと低め、ロリは約254Hz。3.5歳のオオカミの女の子の設定。",
+   "genderGuess": "女性（少女）",
+   "ageBand": "子ども（推定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "rito",
+   "url": "https://voicevox.hiroshiba.jp/product/rito/",
+   "nameJa": "離途",
+   "profile": {
+    "officialVoiceDescription": "包み込む息遣いな声",
+    "description": "記憶喪失のアンドロイドの青年。 自分のことを人間だと思い込んでいるようだ。",
+    "age": "不明",
+    "gender": "未記載（説明に「アンドロイドの青年」）",
+    "height": "180 cm",
+    "personality": "穏やか、不思議くん",
+    "otherLabels": {
+     "誕生日": "10月10日",
+     "種族": "アンドロイド",
+     "好きなもの": "日光浴、さつまいも"
+    },
+    "detailUrl": "https://litmus9.com/#/voicebank",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/rito/"
+   },
+   "cv": "LitMus（公式サイトに「CVを担当するLitMus本人」）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 99,
+     "f0_median_hz": 113.5,
+     "f0_p10_hz": 90.2,
+     "f0_p90_hz": 130.7,
+     "semitones": 6.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.37,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/rito-normal-001.ajMhwAku.wav",
+      "https://voicevox.hiroshiba.jp/_astro/rito-normal-002.DjXq0kMl.wav",
+      "https://voicevox.hiroshiba.jp/_astro/rito-normal-003.BiypJtHc.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/rito/s0-1.wav",
+      "samples/voicevox/rito/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 1.93,
+       "f0_median_hz": 119.3,
+       "f0_p10_hz": 103.5,
+       "f0_p90_hz": 125.1,
+       "semitone_range_p10_p90": 3.3
+      },
+      {
+       "duration_s": 3.3,
+       "f0_median_hz": 111.0,
+       "f0_p10_hz": 89.3,
+       "f0_p90_hz": 130.9,
+       "semitone_range_p10_p90": 6.6
+      }
+     ]
+    },
+    {
+     "name": "シリアス",
+     "id": 101,
+     "f0_median_hz": 88.4,
+     "f0_p10_hz": 81.9,
+     "f0_p90_hz": 98.3,
+     "semitones": 3.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.26,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/rito-serious-001.CBCRtV_d.wav",
+      "https://voicevox.hiroshiba.jp/_astro/rito-serious-002.13esjEKL.wav",
+      "https://voicevox.hiroshiba.jp/_astro/rito-serious-003.BJue72Yv.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/rito/s1-1.wav",
+      "samples/voicevox/rito/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.17,
+       "f0_median_hz": 88.5,
+       "f0_p10_hz": 86.7,
+       "f0_p90_hz": 93.4,
+       "semitone_range_p10_p90": 1.3
+      },
+      {
+       "duration_s": 3.82,
+       "f0_median_hz": 89.5,
+       "f0_p10_hz": 81.3,
+       "f0_p90_hz": 101.4,
+       "semitone_range_p10_p90": 3.8
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://litmus9.com/voicebank/",
+    "class": "OK",
+    "freeWebGame": "可。",
+    "commercial": "可（「音声波形の商用利用（個人利用・法人利用問わず、無料で商用利用可能）」）。",
+    "credit": "公式サイトの形は「VOICEVOX 離途」。VOICEVOX公式の要約の形は「VOICEVOX:離途」。",
+    "prohibitions": "コンテンツの二次配布／音声波形の機械学習／政治的・宗教的表現への利用／性行為・性器露出など過激なアダルト表現の公開／生成AIで作ったイラストの公開（キャラクター）／法人が許諾なくキャラクターを使うこと（音声だけなら法人も無料で商用可）／公式の発信と誤認される言動。",
+    "otherCharacterUse": "明記で可（許諾事項「音声波形を離途以外のキャラクターにイメージCVのような形で使用すること」）。",
+    "romance": "記載なし（軽度なアダルト表現・軽度な暴力表現は許諾）。",
+    "application": "不要。",
+    "notes": "製品ページの規約リンク https://litmus9.com/#/voicebank#rules は https://litmus9.com/voicebank/ の RULES 欄に移っている。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「包み込む息遣いな声」。ノーマル約113Hz、シリアス約88Hzの低い男性の声。有声の割合が低く（約0.26〜0.37）、息の多い声と考えられる。穏やかな「不思議くん」、身長180cmの設定。b組で規約を確かめられた大人の男性の声はこの人だけ。",
+   "genderGuess": "男性",
+   "ageBand": "20代〜30代（推定。年齢は不明の設定）",
+   "natural": "自然寄り（推定）"
+  },
+  {
+   "slug": "satoishi_yuka",
+   "url": "https://voicevox.hiroshiba.jp/product/satoishi_yuka/",
+   "nameJa": "里石ユカ",
+   "profile": {
+    "officialVoiceDescription": "未記載",
+    "description": "愛を糧に戦う魔法少女。大人になるのが怖くて、 18歳の誕生日に世界をやり直している。",
+    "age": "17歳",
+    "gender": "未記載（説明に「魔法少女」）",
+    "height": "168cm",
+    "personality": "開花：天真爛漫　つぼみ：引っ込み思案",
+    "otherLabels": {
+     "好物": "チョコレート",
+     "誕生日": "1月第二月曜日",
+     "語尾": "開花：なのです　つぼみ：特になし"
+    },
+    "detailUrl": "https://satoishiyuka.wixsite.com/satoishi",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/satoishi_yuka/",
+    "additionalNote": "つぼみは引っ込み思案、開花は天真爛漫。開花スタイル（画像右）は今後実装予定。"
+   },
+   "cv": "黒岩秀太（規約に「音声・キャラクターデザイン 黒岩秀太」）",
+   "styles": [
+    {
+     "name": "つぼみ",
+     "id": 126,
+     "f0_median_hz": 221.3,
+     "f0_p10_hz": 189.8,
+     "f0_p90_hz": 238.5,
+     "semitones": 4.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.35,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/satoishi_yuka-tsubomi-001.B3a31kz3.wav",
+      "https://voicevox.hiroshiba.jp/_astro/satoishi_yuka-tsubomi-002.Cb2n5XxY.wav",
+      "https://voicevox.hiroshiba.jp/_astro/satoishi_yuka-tsubomi-003.BaO26M_t.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/satoishi_yuka/s0-1.wav",
+      "samples/voicevox/satoishi_yuka/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.58,
+       "f0_median_hz": 224.6,
+       "f0_p10_hz": 211.4,
+       "f0_p90_hz": 239.0,
+       "semitone_range_p10_p90": 2.1
+      },
+      {
+       "duration_s": 4.11,
+       "f0_median_hz": 220.4,
+       "f0_p10_hz": 187.9,
+       "f0_p90_hz": 238.5,
+       "semitone_range_p10_p90": 4.1
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://satoishiyuka.wixsite.com/satoishi/kiyaku",
+    "class": "NG",
+    "freeWebGame": "別人物の声としては不可。",
+    "commercial": "非営利・収益化・同人は報告不要。個人の営利利用・企業利用は事前相談。",
+    "credit": "「VOICEVOX:里石ユカ（つぼみ）」（VOICEVOX公式の要約）。規約は「可能な限りキャラクター名の表示」。",
+    "prohibitions": "作者名の偽造／実在する宗教・政治への勧誘／公式イラストを他のキャラクターのイラストとして利用／他のキャラクターの音声として利用／ゾーニングなしのR18・R18G公開／特定の個人・団体の非難／反社会的勢力／差別的・攻撃的な表現／イメージを著しく損なう表現。AI関連：公式素材のAI学習、許可なくAIで二次創作を作ること、生成AIを使って作った画像・音楽・文章などを含む作品に里石ユカを使うこと。",
+    "otherCharacterUse": "禁止（禁止事項「他のキャラクターの音声として利用」。更新記録「2025/05/10 他キャラクターのCVへの利用についての規約を更新」）。",
+    "romance": "記載なし。",
+    "application": "別人物の声への利用は禁止事項なので、使うなら個別に相談が必要。",
+    "notes": "生成AIで作った文章・画像を含む作品での利用も禁止されている。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "製品ページに声の説明はない。つぼみの中央値は約221Hz、抑揚は約4.0半音と小さい。引っ込み思案の17歳の設定。規約で別人物の声に使えないので配役しない。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半（17歳の設定）",
+   "natural": "中間（推定）"
+  },
+  {
+   "slug": "sayo",
+   "url": "https://voicevox.hiroshiba.jp/product/sayo/",
+   "nameJa": "小夜/SAYO",
+   "profile": {
+    "officialVoiceDescription": "和やかで温厚な声",
+    "description": "おしゃべりがすきなねこの女の子。 おいしいものを与えると懐きやすい。",
+    "age": "未記載",
+    "gender": "未記載（説明に「ねこの女の子」）",
+    "height": "135 cm（猫耳を含む）",
+    "personality": "未記載",
+    "otherLabels": {
+     "誕生日": "9月29日",
+     "好きなもの": "缶詰",
+     "体長": "135 cm（猫耳を含む）"
+    },
+    "detailUrl": "https://316soramegu.wixsite.com/sayo-official",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/sayo/"
+   },
+   "cv": "未記載",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 46,
+     "f0_median_hz": 311.2,
+     "f0_p10_hz": 251.9,
+     "f0_p90_hz": 363.1,
+     "semitones": 6.3,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.51,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/sayo-normal-001.CuUywNuw.wav",
+      "https://voicevox.hiroshiba.jp/_astro/sayo-normal-002.tG60IxRK.wav",
+      "https://voicevox.hiroshiba.jp/_astro/sayo-normal-003.Bka85fEl.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/sayo/s0-1.wav",
+      "samples/voicevox/sayo/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.23,
+       "f0_median_hz": 345.9,
+       "f0_p10_hz": 275.0,
+       "f0_p90_hz": 376.5,
+       "semitone_range_p10_p90": 5.4
+      },
+      {
+       "duration_s": 5.07,
+       "f0_median_hz": 302.9,
+       "f0_p10_hz": 248.6,
+       "f0_p90_hz": 353.0,
+       "semitone_range_p10_p90": 6.1
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://316soramegu.wixsite.com/sayo-official/guideline",
+    "class": "OK",
+    "freeWebGame": "可。",
+    "commercial": "可（「商用・非商用問わず利用することが出来ます」）。",
+    "credit": "「VOICEVOX:小夜/SAYO」または「VOICEVOX:小夜」。",
+    "prohibitions": "誹謗中傷／第三者の権利侵害／イメージを著しく損なう内容、公序良俗に著しく反する内容／犯罪の助長／「小夜/SAYO」の著作情報を偽ること／運営が不適切と判断する行為。",
+    "otherCharacterUse": "明記なし、禁止もなし（「小夜/SAYOではないキャラクターへの改変」の禁止は公式素材（イラスト）の項）。",
+    "romance": "記載なし。",
+    "application": "不要。",
+    "notes": "",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「和やかで温厚な声」。中央値は約311Hzで高め。おしゃべりが好きなねこの女の子の設定。",
+   "genderGuess": "女性（少女）",
+   "ageBand": "子ども〜10代（推定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "shikoku_metan",
+   "url": "https://voicevox.hiroshiba.jp/product/shikoku_metan/",
+   "nameJa": "四国めたん",
+   "profile": {
+    "officialVoiceDescription": "はっきりした芯のある声",
+    "description": "高等部二年生。常に金欠。趣味は中二病妄想。 誰にでも遠慮しないので、基本的にタメ口。",
+    "age": "17 歳",
+    "gender": "未記載",
+    "height": "150 cm",
+    "personality": "若干ツンデレ気味",
+    "otherLabels": {},
+    "detailUrl": "https://zunko.jp/#charaSM",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/shikoku_metan/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 2,
+     "f0_median_hz": 345.6,
+     "f0_p10_hz": 235.7,
+     "f0_p90_hz": 376.8,
+     "semitones": 8.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.38,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-normal-001.D9FQX0-3.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-normal-002.B7UuYf3e.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-normal-003.BJPS0TKT.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shikoku_metan/s0-1.wav",
+      "samples/voicevox/shikoku_metan/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.0,
+       "f0_median_hz": 337.6,
+       "f0_p10_hz": 268.9,
+       "f0_p90_hz": 372.3,
+       "semitone_range_p10_p90": 5.6
+      },
+      {
+       "duration_s": 5.38,
+       "f0_median_hz": 351.5,
+       "f0_p10_hz": 233.0,
+       "f0_p90_hz": 378.4,
+       "semitone_range_p10_p90": 8.4
+      }
+     ]
+    },
+    {
+     "name": "あまあま",
+     "id": 0,
+     "f0_median_hz": 327.5,
+     "f0_p10_hz": 239.3,
+     "f0_p90_hz": 357.2,
+     "semitones": 6.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.4,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-ama-001.KKvbT7OM.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-ama-002.Nt-wEV5V.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-ama-003.CjtgfN57.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shikoku_metan/s1-1.wav",
+      "samples/voicevox/shikoku_metan/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.01,
+       "f0_median_hz": 321.9,
+       "f0_p10_hz": 249.8,
+       "f0_p90_hz": 365.2,
+       "semitone_range_p10_p90": 6.6
+      },
+      {
+       "duration_s": 5.44,
+       "f0_median_hz": 335.1,
+       "f0_p10_hz": 232.6,
+       "f0_p90_hz": 356.5,
+       "semitone_range_p10_p90": 7.4
+      }
+     ]
+    },
+    {
+     "name": "ツンツン",
+     "id": 6,
+     "f0_median_hz": 337.9,
+     "f0_p10_hz": 242.8,
+     "f0_p90_hz": 361.2,
+     "semitones": 6.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.36,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-tsun-001.GCrVVgJt.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-tsun-002.Dtcpq8Ij.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-tsun-003.klK43oj2.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shikoku_metan/s2-1.wav",
+      "samples/voicevox/shikoku_metan/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.88,
+       "f0_median_hz": 324.4,
+       "f0_p10_hz": 282.6,
+       "f0_p90_hz": 355.7,
+       "semitone_range_p10_p90": 4.0
+      },
+      {
+       "duration_s": 5.15,
+       "f0_median_hz": 340.3,
+       "f0_p10_hz": 232.2,
+       "f0_p90_hz": 362.2,
+       "semitone_range_p10_p90": 7.7
+      }
+     ]
+    },
+    {
+     "name": "セクシー",
+     "id": 4,
+     "f0_median_hz": 326.0,
+     "f0_p10_hz": 230.8,
+     "f0_p90_hz": 365.7,
+     "semitones": 8.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.38,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-sexy-001.rOtE_ZRW.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-sexy-002.BQDOpXyn.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-sexy-003.BxvqGdA8.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shikoku_metan/s3-1.wav",
+      "samples/voicevox/shikoku_metan/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.34,
+       "f0_median_hz": 297.6,
+       "f0_p10_hz": 229.1,
+       "f0_p90_hz": 353.0,
+       "semitone_range_p10_p90": 7.5
+      },
+      {
+       "duration_s": 6.07,
+       "f0_median_hz": 344.6,
+       "f0_p10_hz": 231.3,
+       "f0_p90_hz": 367.2,
+       "semitone_range_p10_p90": 8.0
+      }
+     ]
+    },
+    {
+     "name": "ささやき",
+     "id": 36,
+     "f0_median_hz": null,
+     "f0_p10_hz": null,
+     "f0_p90_hz": null,
+     "semitones": null,
+     "chars_per_sec": null,
+     "voiced_ratio": null,
+     "measuredNote": "有声部分が検出されない（ささやき声）。音高は測れない。",
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-whis-001.ChD63mOT.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-whis-002.DlLa1nNM.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-whis-003.DJAtLH7S.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shikoku_metan/s4-1.wav",
+      "samples/voicevox/shikoku_metan/s4-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.82,
+       "f0_median_hz": null,
+       "f0_p10_hz": null,
+       "f0_p90_hz": null,
+       "semitone_range_p10_p90": null
+      },
+      {
+       "duration_s": 5.3,
+       "f0_median_hz": null,
+       "f0_p10_hz": null,
+       "f0_p90_hz": null,
+       "semitone_range_p10_p90": null
+      }
+     ]
+    },
+    {
+     "name": "ヒソヒソ",
+     "id": 37,
+     "f0_median_hz": 246.4,
+     "f0_p10_hz": 191.0,
+     "f0_p90_hz": 272.8,
+     "semitones": 6.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.3,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-hiso-001.DUx1hQEm.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-hiso-002.O1huLp8G.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shikoku_metan-hiso-003.MYI0D3XY.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shikoku_metan/s5-1.wav",
+      "samples/voicevox/shikoku_metan/s5-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.91,
+       "f0_median_hz": 234.0,
+       "f0_p10_hz": 207.7,
+       "f0_p90_hz": 253.9,
+       "semitone_range_p10_p90": 3.5
+      },
+      {
+       "duration_s": 5.46,
+       "f0_median_hz": 260.6,
+       "f0_p10_hz": 187.1,
+       "f0_p90_hz": 273.6,
+       "semitone_range_p10_p90": 6.6
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://zunko.jp/con_ongen_kiyaku.html",
+    "class": "OK",
+    "freeWebGame": "可（商用・非商用ともに利用できる）。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。クレジットなしの商用は1キャラクターごとに40万円＋税の契約。",
+    "prohibitions": "公序良俗に反する利用／政治活動・宗教活動やそれにつながる利用、特定の個人・団体（国家を含む）を非難・批判・応援する目的の利用／情報商材／意図的な嘘やフェイク／風俗営業等の業態／反社会的勢力の利用。",
+    "otherCharacterUse": "音源規約に記載なし（禁止事項に含まれていない）。キャラクター（イラスト等）のガイドライン https://zunko.jp/guideline.html は「キャラクターのイメージを損なう利用」を禁止しているが、声だけを別の人物に使う場合に当たるかは書かれていない。",
+    "romance": "記載なし。",
+    "application": "不要。規約に当たるかの質問には原則答えない（有償の個別回答サービス 税込10,000円がある。https://zunko.jp/guideline_qa.html）。",
+    "notes": "クレジットはキャラクターごとに必要。アプリでは紹介画面など「少し探せばわかる場所」に書く（音源規約）。複数キャラを使うときはそれぞれ書く（https://zunko.jp/guideline_qa.html）。",
+    "credit": "「VOICEVOX:四国めたん」。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「はっきりした芯のある声」。ノーマル約346Hzと高い。ヒソヒソは約246Hz、ささやきは測れない。17歳、若干ツンデレ、基本的にタメ口の設定。VOICEVOXでよく知られた声。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半（17歳の設定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "shirakami_kotarou",
+   "url": "https://voicevox.hiroshiba.jp/product/shirakami_kotarou/",
+   "nameJa": "白上虎太郎",
+   "profile": {
+    "officialVoiceDescription": "声変わり直後の少年の声",
+    "description": "まっすぐで人懐っこい青年。 愛嬌はあるものの少しおばか。",
+    "age": "18 歳",
+    "gender": "未記載（説明に「青年」）",
+    "height": "146 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "体重": "42 kg",
+     "誕生日": "秋生まれ"
+    },
+    "detailUrl": "https://www.virvoxproject.com/白上虎太郎",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/shirakami_kotarou/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ふつう",
+     "id": 12,
+     "f0_median_hz": 177.4,
+     "f0_p10_hz": 116.8,
+     "f0_p90_hz": 201.1,
+     "semitones": 9.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.34,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-normal-001.UMB0FK_4.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-normal-002.BGQ61Wee.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-normal-003.Dl-Z4nQA.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shirakami_kotarou/s0-1.wav",
+      "samples/voicevox/shirakami_kotarou/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.54,
+       "f0_median_hz": 191.2,
+       "f0_p10_hz": 163.7,
+       "f0_p90_hz": 201.3,
+       "semitone_range_p10_p90": 3.6
+      },
+      {
+       "duration_s": 3.38,
+       "f0_median_hz": 176.6,
+       "f0_p10_hz": 116.8,
+       "f0_p90_hz": 201.2,
+       "semitone_range_p10_p90": 9.4
+      }
+     ]
+    },
+    {
+     "name": "わーい",
+     "id": 32,
+     "f0_median_hz": 243.1,
+     "f0_p10_hz": 192.0,
+     "f0_p90_hz": 272.2,
+     "semitones": 6.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.39,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-joy-001.BCq5M9Nk.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-joy-002.2ws_k8fT.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-joy-003.uhGvTcr7.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shirakami_kotarou/s1-1.wav",
+      "samples/voicevox/shirakami_kotarou/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.49,
+       "f0_median_hz": 247.6,
+       "f0_p10_hz": 187.2,
+       "f0_p90_hz": 269.6,
+       "semitone_range_p10_p90": 6.3
+      },
+      {
+       "duration_s": 3.38,
+       "f0_median_hz": 240.7,
+       "f0_p10_hz": 196.5,
+       "f0_p90_hz": 272.3,
+       "semitone_range_p10_p90": 5.6
+      }
+     ]
+    },
+    {
+     "name": "おこ",
+     "id": 34,
+     "f0_median_hz": 244.2,
+     "f0_p10_hz": 201.2,
+     "f0_p90_hz": 290.0,
+     "semitones": 6.3,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.26,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-angry-001.DQpGU7_h.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-angry-002.CLRJANI5.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-angry-003.DGNbZJtO.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shirakami_kotarou/s2-1.wav",
+      "samples/voicevox/shirakami_kotarou/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.5,
+       "f0_median_hz": 247.7,
+       "f0_p10_hz": 173.9,
+       "f0_p90_hz": 278.5,
+       "semitone_range_p10_p90": 8.2
+      },
+      {
+       "duration_s": 3.36,
+       "f0_median_hz": 241.6,
+       "f0_p10_hz": 204.1,
+       "f0_p90_hz": 295.9,
+       "semitone_range_p10_p90": 6.4
+      }
+     ]
+    },
+    {
+     "name": "びくびく",
+     "id": 33,
+     "f0_median_hz": 259.9,
+     "f0_p10_hz": 211.8,
+     "f0_p90_hz": 291.6,
+     "semitones": 5.5,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.49,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-biku-001.CCU47fyl.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-biku-002.DkgKgd5D.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-biku-003.GsQyPXgg.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shirakami_kotarou/s3-1.wav",
+      "samples/voicevox/shirakami_kotarou/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.71,
+       "f0_median_hz": 258.2,
+       "f0_p10_hz": 229.3,
+       "f0_p90_hz": 287.8,
+       "semitone_range_p10_p90": 3.9
+      },
+      {
+       "duration_s": 3.63,
+       "f0_median_hz": 262.3,
+       "f0_p10_hz": 200.5,
+       "f0_p90_hz": 295.2,
+       "semitone_range_p10_p90": 6.7
+      }
+     ]
+    },
+    {
+     "name": "びえーん",
+     "id": 35,
+     "f0_median_hz": 301.3,
+     "f0_p10_hz": 264.8,
+     "f0_p90_hz": 397.2,
+     "semitones": 7.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.44,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-cry-001.CFAXWf_G.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-cry-002.CjuRoN82.wav",
+      "https://voicevox.hiroshiba.jp/_astro/shirakami_kotarou-cry-003.BNQ8VyHX.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/shirakami_kotarou/s4-1.wav",
+      "samples/voicevox/shirakami_kotarou/s4-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.56,
+       "f0_median_hz": 298.0,
+       "f0_p10_hz": 277.8,
+       "f0_p90_hz": 361.9,
+       "semitone_range_p10_p90": 4.6
+      },
+      {
+       "duration_s": 4.79,
+       "f0_median_hz": 304.2,
+       "f0_p10_hz": 257.0,
+       "f0_p90_hz": 400.0,
+       "semitone_range_p10_p90": 7.7
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://www.virvoxproject.com/voicevoxの利用規約",
+    "class": "不明",
+    "freeWebGame": "未確認（規約ページを読めなかった）。",
+    "commercial": "VOICEVOX公式の要約では「クレジットを記載すれば商用・非商用で利用可能」（https://github.com/VOICEVOX/voicevox_resource の policy.md）。詳細は未確認。",
+    "prohibitions": "未確認。",
+    "otherCharacterUse": "未確認。",
+    "romance": "未確認。",
+    "application": "未確認。",
+    "notes": "2026-11-17 時点で virvoxproject.com 全体がメンテナンス中（「ただいまメンテナンス中です」）。web.archive.org の保存版（2026-10-08）はこの環境から取得できなかった。配役に使う前に規約ページを読み直す必要がある。",
+    "credit": "「VOICEVOX:白上虎太郎」（VOICEVOX公式の要約）。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「声変わり直後の少年の声」。ふつうは約177Hzで、他のスタイルは約243〜301Hzと高い。18歳だが少年らしい声。まっすぐで人懐っこい、少しおばかの設定。",
+   "genderGuess": "男性（少年の声）",
+   "ageBand": "10代（声の印象。設定は18歳）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "tohoku_itako",
+   "url": "https://voicevox.hiroshiba.jp/product/tohoku_itako/",
+   "nameJa": "東北イタコ",
+   "profile": {
+    "officialVoiceDescription": "雅やかで余韻のある声",
+    "description": "イタコ専門学校を主席で卒業した才能の持ち主。 本来のイタコ能力はイマイチ。東北三姉妹の長女。",
+    "age": "19歳",
+    "gender": "未記載",
+    "height": "160 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "口調": "ですわ口調",
+     "必殺技": "口寄せ(イタコ)"
+    },
+    "detailUrl": "https://zunko.jp/#charaTI",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/tohoku_itako/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 109,
+     "f0_median_hz": 269.1,
+     "f0_p10_hz": 180.9,
+     "f0_p90_hz": 297.6,
+     "semitones": 8.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.4,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_itako-normal-001.BON5PKOM.wav",
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_itako-normal-002.BDSTu1Bn.wav",
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_itako-normal-003.Dl4ThFaH.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/tohoku_itako/s0-1.wav",
+      "samples/voicevox/tohoku_itako/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.27,
+       "f0_median_hz": 274.6,
+       "f0_p10_hz": 219.1,
+       "f0_p90_hz": 293.1,
+       "semitone_range_p10_p90": 5.0
+      },
+      {
+       "duration_s": 5.85,
+       "f0_median_hz": 266.9,
+       "f0_p10_hz": 173.2,
+       "f0_p90_hz": 302.2,
+       "semitone_range_p10_p90": 9.6
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://zunko.jp/con_ongen_kiyaku.html",
+    "class": "OK",
+    "freeWebGame": "可（商用・非商用ともに利用できる）。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。クレジットなしの商用は1キャラクターごとに40万円＋税の契約。",
+    "prohibitions": "公序良俗に反する利用／政治活動・宗教活動やそれにつながる利用、特定の個人・団体（国家を含む）を非難・批判・応援する目的の利用／情報商材／意図的な嘘やフェイク／風俗営業等の業態／反社会的勢力の利用。",
+    "otherCharacterUse": "音源規約に記載なし（禁止事項に含まれていない）。キャラクター（イラスト等）のガイドライン https://zunko.jp/guideline.html は「キャラクターのイメージを損なう利用」を禁止しているが、声だけを別の人物に使う場合に当たるかは書かれていない。",
+    "romance": "記載なし。",
+    "application": "不要。規約に当たるかの質問には原則答えない（有償の個別回答サービス 税込10,000円がある。https://zunko.jp/guideline_qa.html）。",
+    "notes": "クレジットはキャラクターごとに必要。アプリでは紹介画面など「少し探せばわかる場所」に書く（音源規約）。複数キャラを使うときはそれぞれ書く（https://zunko.jp/guideline_qa.html）。",
+    "credit": "「VOICEVOX:東北イタコ」。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「雅やかで余韻のある声」。中央値は約269Hz、抑揚は約8.6半音。19歳、ですわ口調の設定。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半〜20代前半（19歳の設定）",
+   "natural": "中間（推定）"
+  },
+  {
+   "slug": "tohoku_kiritan",
+   "url": "https://voicevox.hiroshiba.jp/product/tohoku_kiritan/",
+   "nameJa": "東北きりたん",
+   "profile": {
+    "officialVoiceDescription": "淡麗でつづまやかな声",
+    "description": "ひきこもり気質で夜型の生活をしている。 他人に対してはクールで毒舌。包丁は髪飾り。",
+    "age": "11歳",
+    "gender": "未記載",
+    "height": "135 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "特技": "ゲーム",
+     "必殺技": "きりたん砲"
+    },
+    "detailUrl": "https://zunko.jp/#charaTK",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/tohoku_kiritan/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 108,
+     "f0_median_hz": 244.0,
+     "f0_p10_hz": 183.1,
+     "f0_p90_hz": 293.0,
+     "semitones": 8.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.43,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_kiritan-normal-001.DKz_sLUJ.wav",
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_kiritan-normal-002.CyGA-X_u.wav",
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_kiritan-normal-003.C64wDy8k.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/tohoku_kiritan/s0-1.wav",
+      "samples/voicevox/tohoku_kiritan/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.6,
+       "f0_median_hz": 257.0,
+       "f0_p10_hz": 178.9,
+       "f0_p90_hz": 297.4,
+       "semitone_range_p10_p90": 8.8
+      },
+      {
+       "duration_s": 4.0,
+       "f0_median_hz": 241.2,
+       "f0_p10_hz": 188.2,
+       "f0_p90_hz": 282.0,
+       "semitone_range_p10_p90": 7.0
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://zunko.jp/con_ongen_kiyaku.html",
+    "class": "OK",
+    "freeWebGame": "可（商用・非商用ともに利用できる）。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。クレジットなしの商用は1キャラクターごとに40万円＋税の契約。",
+    "prohibitions": "公序良俗に反する利用／政治活動・宗教活動やそれにつながる利用、特定の個人・団体（国家を含む）を非難・批判・応援する目的の利用／情報商材／意図的な嘘やフェイク／風俗営業等の業態／反社会的勢力の利用。",
+    "otherCharacterUse": "音源規約に記載なし（禁止事項に含まれていない）。キャラクター（イラスト等）のガイドライン https://zunko.jp/guideline.html は「キャラクターのイメージを損なう利用」を禁止しているが、声だけを別の人物に使う場合に当たるかは書かれていない。",
+    "romance": "記載なし。",
+    "application": "不要。規約に当たるかの質問には原則答えない（有償の個別回答サービス 税込10,000円がある。https://zunko.jp/guideline_qa.html）。",
+    "notes": "クレジットはキャラクターごとに必要。アプリでは紹介画面など「少し探せばわかる場所」に書く（音源規約）。複数キャラを使うときはそれぞれ書く（https://zunko.jp/guideline_qa.html）。",
+    "credit": "「VOICEVOX:東北きりたん」。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「淡麗でつづまやかな声」。中央値は約244Hzで、ヒロイン（約245Hz）とほぼ同じ高さ。11歳、他人にはクールで毒舌の設定。",
+   "genderGuess": "女性（子ども）",
+   "ageBand": "子ども（11歳の設定）",
+   "natural": "中間（推定）"
+  },
+  {
+   "slug": "tohoku_zunko",
+   "url": "https://voicevox.hiroshiba.jp/product/tohoku_zunko/",
+   "nameJa": "東北ずん子",
+   "profile": {
+    "officialVoiceDescription": "しとやかで愛嬌のある声",
+    "description": "前向きで明るい母性の塊のような性格。 ずんだの話をし始めると饒舌になる。",
+    "age": "17歳",
+    "gender": "未記載",
+    "height": "157 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "趣味": "ずんだ餅作り",
+     "必殺技": "ずんだアロー"
+    },
+    "detailUrl": "https://zunko.jp/#charaTZ",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/tohoku_zunko/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 107,
+     "f0_median_hz": 340.2,
+     "f0_p10_hz": 275.8,
+     "f0_p90_hz": 415.7,
+     "semitones": 7.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.54,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_zunko-normal-001.DtpH542d.wav",
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_zunko-normal-002.Dau9SZwX.wav",
+      "https://voicevox.hiroshiba.jp/_astro/tohoku_zunko-normal-003.JrojRiRI.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/tohoku_zunko/s0-1.wav",
+      "samples/voicevox/tohoku_zunko/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.65,
+       "f0_median_hz": 373.9,
+       "f0_p10_hz": 313.4,
+       "f0_p90_hz": 426.1,
+       "semitone_range_p10_p90": 5.3
+      },
+      {
+       "duration_s": 5.01,
+       "f0_median_hz": 328.7,
+       "f0_p10_hz": 266.2,
+       "f0_p90_hz": 410.5,
+       "semitone_range_p10_p90": 7.5
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://zunko.jp/con_ongen_kiyaku.html",
+    "class": "OK",
+    "freeWebGame": "可（商用・非商用ともに利用できる）。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。クレジットなしの商用は1キャラクターごとに40万円＋税の契約。",
+    "prohibitions": "公序良俗に反する利用／政治活動・宗教活動やそれにつながる利用、特定の個人・団体（国家を含む）を非難・批判・応援する目的の利用／情報商材／意図的な嘘やフェイク／風俗営業等の業態／反社会的勢力の利用。",
+    "otherCharacterUse": "音源規約に記載なし（禁止事項に含まれていない）。キャラクター（イラスト等）のガイドライン https://zunko.jp/guideline.html は「キャラクターのイメージを損なう利用」を禁止しているが、声だけを別の人物に使う場合に当たるかは書かれていない。",
+    "romance": "記載なし。",
+    "application": "不要。規約に当たるかの質問には原則答えない（有償の個別回答サービス 税込10,000円がある。https://zunko.jp/guideline_qa.html）。",
+    "notes": "クレジットはキャラクターごとに必要。アプリでは紹介画面など「少し探せばわかる場所」に書く（音源規約）。複数キャラを使うときはそれぞれ書く（https://zunko.jp/guideline_qa.html）。",
+    "credit": "「VOICEVOX:東北ずん子」。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「しとやかで愛嬌のある声」。中央値は約340Hzと高い。17歳、前向きで明るい母性の塊の設定。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半（17歳の設定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "voidoll",
+   "url": "https://voicevox.hiroshiba.jp/product/voidoll/",
+   "nameJa": "Voidoll",
+   "profile": {
+    "officialVoiceDescription": "慎ましやかで電子的な声",
+    "description": "「#コンパス」を管理するAIロボ 人間の戦い方を監視/分析している。",
+    "age": "？？？",
+    "gender": "未記載",
+    "height": "？？？",
+    "personality": "未記載",
+    "otherLabels": {
+     "アビリティ": "緊急回避プログラム",
+     "誕生日": "？？？"
+    },
+    "detailUrl": "https://app.nhn-playart.com/compass/index.nhn",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/voidoll/",
+    "additionalNote": "話速：0.90、音高：0.03、抑揚：0.90とすれば、「#コンパス 戦闘摂理解析システム」ゲーム内のボイスに近い仕上がりとなります。"
+   },
+   "cv": "丹下桜（製品ページのCV欄）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 89,
+     "f0_median_hz": 342.5,
+     "f0_p10_hz": 290.0,
+     "f0_p90_hz": 378.9,
+     "semitones": 4.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.17,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/voidoll-01.qTSjG2n3.wav",
+      "https://voicevox.hiroshiba.jp/_astro/voidoll-02.COVow3UI.wav",
+      "https://voicevox.hiroshiba.jp/_astro/voidoll-04.DqzqbTP3.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/voidoll/s0-1.wav",
+      "samples/voicevox/voidoll/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 1.97,
+       "f0_median_hz": 373.0,
+       "f0_p10_hz": 293.8,
+       "f0_p90_hz": 389.3,
+       "semitone_range_p10_p90": 4.9
+      },
+      {
+       "duration_s": 5.72,
+       "f0_median_hz": 339.2,
+       "f0_p10_hz": 275.1,
+       "f0_p90_hz": 368.6,
+       "semitone_range_p10_p90": 5.1
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://blog.nicovideo.jp/niconews/224589.html",
+    "class": "条件付き",
+    "freeWebGame": "個人なら可。法人は原則許諾なし。",
+    "commercial": "個人は商用・非商用とも可。法人は原則許諾を行っていない（問い合わせ https://qa.nicovideo.jp/）。",
+    "credit": "「VOICEVOX:Voidoll(CV:丹下桜)」。",
+    "prohibitions": "音源・出力音声のリバースエンジニアリング・逆コンパイル・解析・機械学習／暴力的・性的な表現／特定の個人・集団・国家・民族・思想を毀損する表現／特定の政治派閥・宗教を過度に称賛・毀損する表現／反社会的な内容／公序良俗に著しく反する使用／他人の権利侵害／「#コンパス」公式の制作物と誤認される作品／「#コンパス」と Voidoll のイメージを著しく損なう利用。",
+    "otherCharacterUse": "記載なし。",
+    "romance": "記載なし（性的な表現は禁止）。",
+    "application": "個人は不要。法人は問い合わせ。",
+    "notes": "株式会社ドワンゴの規約。Dreamscape を個人が公開する前提なら使える。製品ページは「話速0.90、音高0.03、抑揚0.90でゲーム内のボイスに近い」と案内している。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「慎ましやかで電子的な声」。中央値は約343Hz。有声の割合が約0.17と低く、電子的な加工が入った声と考えられる。AIロボの設定で、人間の脇役には合いにくい。",
+   "genderGuess": "女性（電子的）",
+   "ageBand": "不明（設定も「？？？」）",
+   "natural": "人工的（推定。公式の説明が「電子的な声」）"
+  },
+  {
+   "slug": "wakamatsu_akashi",
+   "url": "https://voicevox.hiroshiba.jp/product/wakamatsu_akashi/",
+   "nameJa": "雀松朱司",
+   "profile": {
+    "officialVoiceDescription": "物静かで安定した声",
+    "description": "温厚なしっかり者の青年。 ちょっぴり天然で抜けている面も･･･。",
+    "age": "26 歳",
+    "gender": "未記載（説明に「青年」）",
+    "height": "182 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "体重": "68 kg",
+     "誕生日": "7月17日",
+     "趣味": "読書、掃除、買い物"
+    },
+    "detailUrl": "https://www.virvoxproject.com/雀松朱司",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/wakamatsu_akashi/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 52,
+     "f0_median_hz": 115.6,
+     "f0_p10_hz": 95.0,
+     "f0_p90_hz": 152.9,
+     "semitones": 8.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.41,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/wakamatsu_akashi-normal-001.DhfXzKmi.wav",
+      "https://voicevox.hiroshiba.jp/_astro/wakamatsu_akashi-normal-002.CGLZyLYm.wav",
+      "https://voicevox.hiroshiba.jp/_astro/wakamatsu_akashi-normal-003.DxKaToJd.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/wakamatsu_akashi/s0-1.wav",
+      "samples/voicevox/wakamatsu_akashi/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.54,
+       "f0_median_hz": 125.1,
+       "f0_p10_hz": 97.3,
+       "f0_p90_hz": 153.7,
+       "semitone_range_p10_p90": 7.9
+      },
+      {
+       "duration_s": 5.77,
+       "f0_median_hz": 114.2,
+       "f0_p10_hz": 93.2,
+       "f0_p90_hz": 152.7,
+       "semitone_range_p10_p90": 8.5
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://www.virvoxproject.com/voicevoxの利用規約",
+    "class": "不明",
+    "freeWebGame": "未確認（規約ページを読めなかった）。",
+    "commercial": "VOICEVOX公式の要約では「クレジットを記載すれば商用・非商用で利用可能」（https://github.com/VOICEVOX/voicevox_resource の policy.md）。詳細は未確認。",
+    "prohibitions": "未確認。",
+    "otherCharacterUse": "未確認。",
+    "romance": "未確認。",
+    "application": "未確認。",
+    "notes": "2026-11-17 時点で virvoxproject.com 全体がメンテナンス中（「ただいまメンテナンス中です」）。web.archive.org の保存版（2026-10-08）はこの環境から取得できなかった。配役に使う前に規約ページを読み直す必要がある。",
+    "credit": "「VOICEVOX:雀松朱司」（VOICEVOX公式の要約）。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「物静かで安定した声」。中央値は約116Hzの低い男性の声。26歳、温厚なしっかり者で少し天然の設定。大人の男性の役に合いそうだが、規約が未確認。",
+   "genderGuess": "男性",
+   "ageBand": "20代（26歳の設定）",
+   "natural": "自然寄り（推定）"
+  },
+  {
+   "slug": "white_cul",
+   "url": "https://voicevox.hiroshiba.jp/product/white_cul/",
+   "nameJa": "WhiteCUL",
+   "profile": {
+    "officialVoiceDescription": "聞き心地のよい率直な声",
+    "description": "CULの姉。風雪月花四姉妹の雪。冷静に見えるが、 実は小心者のクールビューティー。",
+    "age": "20 歳",
+    "gender": "未記載（説明に「CULの姉」）",
+    "height": "165 cm",
+    "personality": "未記載",
+    "otherLabels": {
+     "体重": "内緒",
+     "誕生日": "9月30日",
+     "愛称": "雪さん",
+     "相棒": "雪おこじょ",
+     "好物": "バニラソフトクリーム"
+    },
+    "detailUrl": "https://www.whitecul.net/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/white_cul/"
+   },
+   "cv": "未記載",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 23,
+     "f0_median_hz": 299.3,
+     "f0_p10_hz": 232.0,
+     "f0_p90_hz": 340.8,
+     "semitones": 6.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.53,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-normal-001.9MPrFlt_.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-normal-002.D5IU_rJT.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-normal-003.Drtrlgky.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/white_cul/s0-1.wav",
+      "samples/voicevox/white_cul/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.19,
+       "f0_median_hz": 301.0,
+       "f0_p10_hz": 235.2,
+       "f0_p90_hz": 326.3,
+       "semitone_range_p10_p90": 5.7
+      },
+      {
+       "duration_s": 3.03,
+       "f0_median_hz": 293.3,
+       "f0_p10_hz": 228.7,
+       "f0_p90_hz": 343.4,
+       "semitone_range_p10_p90": 7.0
+      }
+     ]
+    },
+    {
+     "name": "たのしい",
+     "id": 24,
+     "f0_median_hz": 364.8,
+     "f0_p10_hz": 286.6,
+     "f0_p90_hz": 400.4,
+     "semitones": 5.8,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.55,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-joy-001.BAa96ACt.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-joy-002.D5ovnvu5.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-joy-003.BvkVD-Xs.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/white_cul/s1-1.wav",
+      "samples/voicevox/white_cul/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.19,
+       "f0_median_hz": 364.0,
+       "f0_p10_hz": 287.6,
+       "f0_p90_hz": 443.8,
+       "semitone_range_p10_p90": 7.5
+      },
+      {
+       "duration_s": 2.78,
+       "f0_median_hz": 365.1,
+       "f0_p10_hz": 284.2,
+       "f0_p90_hz": 395.9,
+       "semitone_range_p10_p90": 5.7
+      }
+     ]
+    },
+    {
+     "name": "かなしい",
+     "id": 25,
+     "f0_median_hz": 253.2,
+     "f0_p10_hz": 220.3,
+     "f0_p90_hz": 287.0,
+     "semitones": 4.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.5,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-sad-001.BAao_QT2.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-sad-002.D7FBx1yp.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-sad-003.BIBy0g_A.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/white_cul/s2-1.wav",
+      "samples/voicevox/white_cul/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.83,
+       "f0_median_hz": 232.4,
+       "f0_p10_hz": 217.6,
+       "f0_p90_hz": 259.9,
+       "semitone_range_p10_p90": 3.1
+      },
+      {
+       "duration_s": 3.11,
+       "f0_median_hz": 264.5,
+       "f0_p10_hz": 229.2,
+       "f0_p90_hz": 291.4,
+       "semitone_range_p10_p90": 4.2
+      }
+     ]
+    },
+    {
+     "name": "びえーん",
+     "id": 26,
+     "f0_median_hz": 403.4,
+     "f0_p10_hz": 325.6,
+     "f0_p90_hz": 438.2,
+     "semitones": 5.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.49,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-cry-001.BG2K49F7.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-cry-002.CE6cfJmb.wav",
+      "https://voicevox.hiroshiba.jp/_astro/white_cul-cry-003.hWqZ2DLI.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/white_cul/s3-1.wav",
+      "samples/voicevox/white_cul/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.59,
+       "f0_median_hz": 399.6,
+       "f0_p10_hz": 320.2,
+       "f0_p90_hz": 435.0,
+       "semitone_range_p10_p90": 5.3
+      },
+      {
+       "duration_s": 3.02,
+       "f0_median_hz": 404.1,
+       "f0_p10_hz": 335.8,
+       "f0_p90_hz": 438.1,
+       "semitone_range_p10_p90": 4.6
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://www.whitecul.net/guideline",
+    "class": "OK",
+    "freeWebGame": "可。",
+    "commercial": "可（「商用・非商用問わず使用することができる」）。",
+    "credit": "「VOICEVOX:WhiteCUL」。動画内や概要欄など、第三者が見られる場所に書く。クレジットを外すには事前許可が必要。",
+    "prohibitions": "犯罪の助長を目的とした作品・サイト／音声提供者とキャラクターの信用・品質・品位・イメージを著しく損なう音声の公開／権利侵害／公序良俗に著しく反する内容／著作情報を偽ること／他者が公衆送信する前提の音声を無許可で販売／出力音声をもとに機械学習・ファインチューニングで音響モデルを作ること／VOICEVOXで合成したことを書かずに使うこと。",
+    "otherCharacterUse": "記載なし。音声の規約は「キャラクター」の使用条件を定めず、キャラクターは ZAN-SHIN 二次創作ガイドライン https://zan-shin.net/guideline/ で定めると書かれている（このガイドラインは未確認）。",
+    "romance": "記載なし。",
+    "application": "不要。",
+    "notes": "株式会社ZAN-SHIN の規約。VOICEVOX公式の要約のリンクは https://www.whitecul.com/guideline、製品ページは .net（.net を確認）。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「聞き心地のよい率直な声」。ノーマル約299Hz、かなしい約253Hz、たのしい約365Hz、びえーん約403Hz。20歳、冷静に見えて小心者の設定。",
+   "genderGuess": "女性",
+   "ageBand": "20代（20歳の設定）",
+   "natural": "中間（推定）"
+  },
+  {
+   "slug": "yogatari_tobari",
+   "url": "https://voicevox.hiroshiba.jp/product/yogatari_tobari/",
+   "nameJa": "夜語トバリ",
+   "profile": {
+    "officialVoiceDescription": "理知的で輪郭のある声",
+    "description": "高校2年生の文学少女。 本を読むのが好きだがクラスは理系",
+    "age": "16歳",
+    "gender": "未記載（説明に「文学少女」）",
+    "height": "168cm",
+    "personality": "冷静沈着？",
+    "otherLabels": {
+     "誕生日": "10月8日",
+     "好物": "あたりめ",
+     "好きなもの": "読書",
+     "相棒": "暁記ミタマ"
+    },
+    "detailUrl": "https://yogataritobari.studio.site/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/yogatari_tobari/"
+   },
+   "cv": "行成とあ（製品ページのCV欄。公式サイトも「声優・行成とあの声を基に制作」）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 118,
+     "f0_median_hz": 223.9,
+     "f0_p10_hz": 171.3,
+     "f0_p90_hz": 301.4,
+     "semitones": 9.8,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.55,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-normal-001.B6aCRZEN.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-normal-002.D8y3mxFa.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-normal-003.Cf8pOhvY.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yogatari_tobari/s0-1.wav",
+      "samples/voicevox/yogatari_tobari/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.43,
+       "f0_median_hz": 208.3,
+       "f0_p10_hz": 174.7,
+       "f0_p90_hz": 264.4,
+       "semitone_range_p10_p90": 7.2
+      },
+      {
+       "duration_s": 5.14,
+       "f0_median_hz": 236.8,
+       "f0_p10_hz": 167.7,
+       "f0_p90_hz": 305.1,
+       "semitone_range_p10_p90": 10.4
+      }
+     ]
+    },
+    {
+     "name": "明るい",
+     "id": 119,
+     "f0_median_hz": 259.9,
+     "f0_p10_hz": 200.0,
+     "f0_p90_hz": 341.6,
+     "semitones": 9.3,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.54,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-cheerful-001.bc48zy4D.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-cheerful-002.zwIZqEpp.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-cheerful-003.CNoKljLl.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yogatari_tobari/s1-1.wav",
+      "samples/voicevox/yogatari_tobari/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.34,
+       "f0_median_hz": 260.8,
+       "f0_p10_hz": 199.8,
+       "f0_p90_hz": 295.9,
+       "semitone_range_p10_p90": 6.8
+      },
+      {
+       "duration_s": 4.74,
+       "f0_median_hz": 256.0,
+       "f0_p10_hz": 200.0,
+       "f0_p90_hz": 359.4,
+       "semitone_range_p10_p90": 10.1
+      }
+     ]
+    },
+    {
+     "name": "哀しみ",
+     "id": 120,
+     "f0_median_hz": 258.9,
+     "f0_p10_hz": 219.4,
+     "f0_p90_hz": 302.1,
+     "semitones": 5.5,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.54,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-sad-001.0iS9_WF_.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-sad-002.DcM97qsG.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-sad-003.DUKlk1o0.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yogatari_tobari/s2-1.wav",
+      "samples/voicevox/yogatari_tobari/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.53,
+       "f0_median_hz": 253.0,
+       "f0_p10_hz": 225.6,
+       "f0_p90_hz": 288.9,
+       "semitone_range_p10_p90": 4.3
+      },
+      {
+       "duration_s": 5.23,
+       "f0_median_hz": 264.8,
+       "f0_p10_hz": 216.5,
+       "f0_p90_hz": 309.9,
+       "semitone_range_p10_p90": 6.2
+      }
+     ]
+    },
+    {
+     "name": "呆れ",
+     "id": 121,
+     "f0_median_hz": 247.8,
+     "f0_p10_hz": 188.7,
+     "f0_p90_hz": 318.7,
+     "semitones": 9.1,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.51,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-akire-001.BEVSIhLp.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-akire-002.COB62r0G.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yogatari_tobari-akire-003.Byg-1BmF.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yogatari_tobari/s3-1.wav",
+      "samples/voicevox/yogatari_tobari/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.58,
+       "f0_median_hz": 253.6,
+       "f0_p10_hz": 195.8,
+       "f0_p90_hz": 295.4,
+       "semitone_range_p10_p90": 7.1
+      },
+      {
+       "duration_s": 5.24,
+       "f0_median_hz": 245.0,
+       "f0_p10_hz": 186.0,
+       "f0_p90_hz": 325.6,
+       "semitone_range_p10_p90": 9.7
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://yogataritobari.studio.site/#rules",
+    "class": "OK",
+    "freeWebGame": "可。キャラクター規約は「VOICEVOXの利用規約、使用可能範囲は各ソフトウェアの規約を確認」としており、VOICEVOX公式の要約は「クレジットを記載すれば商用・非商用で利用可能」。",
+    "commercial": "音声は VOICEVOX公式の要約で商用・非商用とも可。キャラクターの法人利用・商用・営利目的は別途問い合わせ（キャラクター規約）。",
+    "credit": "「VOICEVOX:夜語トバリ」（VOICEVOX公式の要約）。",
+    "prohibitions": "キャラクター規約：誹謗中傷／第三者に不快感を与えるもの／第三者の権利侵害／特定の思想・団体に関係するもの／政治的利用／公式素材を使ったグッズ制作など／当社が不適切と判断する行為。",
+    "otherCharacterUse": "記載なし。",
+    "romance": "記載なし。",
+    "application": "非商用なら不要。",
+    "notes": "合同会社レース・ノアエの管理。公式サイトのプロフィールは28歳・178cm（A.I.VOICE版の設定）。VOICEVOX版は「高校生のころの夜語トバリをイメージし違った声質」と書かれている。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「理知的で輪郭のある声」。ノーマル約224Hzでヒロインより少し低く、明るい・哀しみ・呆れは約248〜260Hzでヒロインに近い。抑揚は約9〜10半音。16歳の文学少女（VOICEVOX版）の設定。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半（VOICEVOX版の設定）",
+   "natural": "自然寄り（推定）"
+  },
+  {
+   "slug": "yureichan",
+   "url": "https://voicevox.hiroshiba.jp/product/yureichan/",
+   "nameJa": "ユーレイちゃん",
+   "profile": {
+    "officialVoiceDescription": "柔和な揺蕩う声",
+    "description": "ユーステラのメインヒロイン 『ユーレイちゃん』こと雛菊ルミ",
+    "age": "かなり生きてます",
+    "gender": "未記載（説明に「ユーステラのメインヒロイン」）",
+    "height": "未記載",
+    "personality": "未記載",
+    "otherLabels": {
+     "本名": "雛菊ルミ",
+     "誕生日": "5月1日",
+     "体重": "軽い",
+     "好きなもの": "クレープ",
+     "相棒": "ツクモちゃん"
+    },
+    "detailUrl": "http://u-stella.co.jp/u-rey-profile/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/yureichan/"
+   },
+   "cv": "神崎零（製品ページのCV欄）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 102,
+     "f0_median_hz": 363.4,
+     "f0_p10_hz": 267.1,
+     "f0_p90_hz": 438.6,
+     "semitones": 8.6,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.63,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-normal-001.D_4DJof6.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-normal-002.Bac_PDep.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-normal-003.DQTFPX2G.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yureichan/s0-1.wav",
+      "samples/voicevox/yureichan/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.27,
+       "f0_median_hz": 359.8,
+       "f0_p10_hz": 265.8,
+       "f0_p90_hz": 457.7,
+       "semitone_range_p10_p90": 9.4
+      },
+      {
+       "duration_s": 5.47,
+       "f0_median_hz": 368.6,
+       "f0_p10_hz": 269.1,
+       "f0_p90_hz": 431.6,
+       "semitone_range_p10_p90": 8.2
+      }
+     ]
+    },
+    {
+     "name": "甘々",
+     "id": 103,
+     "f0_median_hz": 357.0,
+     "f0_p10_hz": 291.4,
+     "f0_p90_hz": 453.6,
+     "semitones": 7.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.6,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-ama-001.Dx0MlFOl.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-ama-002.DJ5AUWuD.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-ama-003.FdcE4Q8s.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yureichan/s1-1.wav",
+      "samples/voicevox/yureichan/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.23,
+       "f0_median_hz": 344.2,
+       "f0_p10_hz": 293.4,
+       "f0_p90_hz": 454.1,
+       "semitone_range_p10_p90": 7.6
+      },
+      {
+       "duration_s": 5.62,
+       "f0_median_hz": 363.7,
+       "f0_p10_hz": 291.4,
+       "f0_p90_hz": 452.1,
+       "semitone_range_p10_p90": 7.6
+      }
+     ]
+    },
+    {
+     "name": "哀しみ",
+     "id": 104,
+     "f0_median_hz": 337.5,
+     "f0_p10_hz": 301.8,
+     "f0_p90_hz": 384.4,
+     "semitones": 4.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.55,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-sad-001.BAY7rIAC.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-sad-002.t9PnRdTq.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-sad-003.Dy-DK3r5.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yureichan/s2-1.wav",
+      "samples/voicevox/yureichan/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.82,
+       "f0_median_hz": 348.8,
+       "f0_p10_hz": 320.6,
+       "f0_p90_hz": 394.7,
+       "semitone_range_p10_p90": 3.6
+      },
+      {
+       "duration_s": 5.69,
+       "f0_median_hz": 326.2,
+       "f0_p10_hz": 297.3,
+       "f0_p90_hz": 379.0,
+       "semitone_range_p10_p90": 4.2
+      }
+     ]
+    },
+    {
+     "name": "ささやき",
+     "id": 105,
+     "f0_median_hz": 311.5,
+     "f0_p10_hz": 260.0,
+     "f0_p90_hz": 386.3,
+     "semitones": 6.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.53,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-whisper-001.BFoUgzl6.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-whisper-002.B0jR1ePX.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-whisper-003.DwKGBBnY.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yureichan/s3-1.wav",
+      "samples/voicevox/yureichan/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.24,
+       "f0_median_hz": 326.8,
+       "f0_p10_hz": 260.2,
+       "f0_p90_hz": 390.5,
+       "semitone_range_p10_p90": 7.0
+      },
+      {
+       "duration_s": 5.7,
+       "f0_median_hz": 307.6,
+       "f0_p10_hz": 260.0,
+       "f0_p90_hz": 379.7,
+       "semitone_range_p10_p90": 6.6
+      }
+     ]
+    },
+    {
+     "name": "ツクモちゃん",
+     "id": 106,
+     "f0_median_hz": 257.6,
+     "f0_p10_hz": 207.1,
+     "f0_p90_hz": 297.4,
+     "semitones": 6.3,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.59,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-tsukumo-001.BkSO2X4V.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-tsukumo-002.DS90t8rB.wav",
+      "https://voicevox.hiroshiba.jp/_astro/yureichan-tsukumo-003.DgTaNCO5.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/yureichan/s4-1.wav",
+      "samples/voicevox/yureichan/s4-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.97,
+       "f0_median_hz": 268.1,
+       "f0_p10_hz": 209.7,
+       "f0_p90_hz": 300.9,
+       "semitone_range_p10_p90": 6.3
+      },
+      {
+       "duration_s": 5.15,
+       "f0_median_hz": 254.2,
+       "f0_p10_hz": 207.1,
+       "f0_p90_hz": 296.4,
+       "semitone_range_p10_p90": 6.2
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://u-stella.co.jp/voicevox-ure-chan-tucumo-terms-of-use/",
+    "class": "条件付き",
+    "freeWebGame": "個人・同人の非商用なら可（「許可無くやってよいこと」に、個人・同人サークル等の非商用の二次創作物の公開・配布がある）。",
+    "commercial": "要許可（「商用・営利目的での利用とユーステラが認めたもの」「法人の利用」は許諾が必要）。",
+    "credit": "「VOICEVOX:ユーレイちゃん（CV:神崎零）」（CV名は任意）。ツクモちゃんのスタイルを使うなら例示は「VOICEVOXツクモちゃん（CV:神崎零）」。",
+    "prohibitions": "ユーレイちゃん・ツクモちゃんのイメージを著しく損なう利用／ユーステラの公式コンテンツと誤解されるおそれのある利用／ユーステラ以外の者が自分のもののように標榜すること・占有すること／ユーステラが不適切と判断する行為。",
+    "otherCharacterUse": "記載なし。",
+    "romance": "記載なし（R18・R18Gの二次創作も許諾。ゾーニングが必要）。",
+    "application": "個人・非商用なら不要。商用・法人は許諾が必要。",
+    "notes": "VOICEVOX公式の要約も「非商用（同人利用や配信による収入はOK）で利用可能。その他商用利用はユーステラに事前確認」。ツクモちゃんは同じ声のスタイルなので、ユーレイちゃんと別の人物に分けて使うと同じモデルの重複になる。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「柔和な揺蕩う声」。ノーマル約363Hz、甘々約357Hzと高い。ツクモちゃん約258Hz。年齢は「かなり生きてます」の幽霊の設定。",
+   "genderGuess": "女性",
+   "ageBand": "10代〜20代に聞こえると推定（設定は年齢不詳）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "zonko",
+   "url": "https://voicevox.hiroshiba.jp/product/zonko/",
+   "nameJa": "ぞん子",
+   "profile": {
+    "officialVoiceDescription": "熱血的でありありとした声",
+    "description": "ZONeエナジー公式アンバサダーのぞん子だよ！ ZONeを通じてeカルチャーを盛り上げるよ！",
+    "age": "未記載",
+    "gender": "未記載",
+    "height": "未記載",
+    "personality": "未記載",
+    "otherLabels": {
+     "誕生日": "5月12日",
+     "好物": "ZONeエナジー",
+     "好きなもの": "ゲーム、音楽、インターネット、eカルチャー全般",
+     "趣味": "Xでクリエイターを探すこと",
+     "ﾁｬｰﾑﾎﾟｲﾝﾄ": "眼帯、髪留め"
+    },
+    "detailUrl": "https://zonko.zone-energy.jp/",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/zonko/"
+   },
+   "cv": "未記載",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 90,
+     "f0_median_hz": 311.1,
+     "f0_p10_hz": 214.2,
+     "f0_p90_hz": 382.7,
+     "semitones": 10.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.44,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zonko-normal-001.CZErT2gJ.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-normal-002.kc_E8QTd.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-normal-003.BRgd98ys.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zonko/s0-1.wav",
+      "samples/voicevox/zonko/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.41,
+       "f0_median_hz": 313.1,
+       "f0_p10_hz": 221.1,
+       "f0_p90_hz": 395.1,
+       "semitone_range_p10_p90": 10.0
+      },
+      {
+       "duration_s": 5.19,
+       "f0_median_hz": 310.5,
+       "f0_p10_hz": 212.5,
+       "f0_p90_hz": 380.0,
+       "semitone_range_p10_p90": 10.1
+      }
+     ]
+    },
+    {
+     "name": "低血圧",
+     "id": 91,
+     "f0_median_hz": 257.6,
+     "f0_p10_hz": 213.0,
+     "f0_p90_hz": 317.1,
+     "semitones": 6.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.61,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zonko-relax-001.BiI2ZFkC.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-relax-002.D_WE71Wz.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-relax-003.Ba8kOux-.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zonko/s1-1.wav",
+      "samples/voicevox/zonko/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.95,
+       "f0_median_hz": 251.2,
+       "f0_p10_hz": 213.8,
+       "f0_p90_hz": 317.2,
+       "semitone_range_p10_p90": 6.8
+      },
+      {
+       "duration_s": 6.47,
+       "f0_median_hz": 259.1,
+       "f0_p10_hz": 212.0,
+       "f0_p90_hz": 316.7,
+       "semitone_range_p10_p90": 6.9
+      }
+     ]
+    },
+    {
+     "name": "覚醒",
+     "id": 92,
+     "f0_median_hz": 341.5,
+     "f0_p10_hz": 227.9,
+     "f0_p90_hz": 409.9,
+     "semitones": 10.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.44,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zonko-eager-001.BNIa2Qpy.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-eager-002.DpWmmdKf.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-eager-003.DXNIqh7h.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zonko/s2-1.wav",
+      "samples/voicevox/zonko/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.62,
+       "f0_median_hz": 333.7,
+       "f0_p10_hz": 249.3,
+       "f0_p90_hz": 416.9,
+       "semitone_range_p10_p90": 8.9
+      },
+      {
+       "duration_s": 5.24,
+       "f0_median_hz": 341.6,
+       "f0_p10_hz": 221.5,
+       "f0_p90_hz": 400.5,
+       "semitone_range_p10_p90": 10.3
+      }
+     ]
+    },
+    {
+     "name": "実況風",
+     "id": 93,
+     "f0_median_hz": 390.3,
+     "f0_p10_hz": 305.7,
+     "f0_p90_hz": 455.7,
+     "semitones": 6.9,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.42,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zonko-jikkyo-001.B9xvwqtC.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-jikkyo-002.C7VVldTC.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zonko-jikkyo-003.DSJTSCjj.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zonko/s3-1.wav",
+      "samples/voicevox/zonko/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.27,
+       "f0_median_hz": 383.1,
+       "f0_p10_hz": 320.9,
+       "f0_p90_hz": 456.5,
+       "semitone_range_p10_p90": 6.1
+      },
+      {
+       "duration_s": 4.44,
+       "f0_median_hz": 392.9,
+       "f0_p10_hz": 304.8,
+       "f0_p90_hz": 456.1,
+       "semitone_range_p10_p90": 7.0
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://zonko.zone-energy.jp/guideline",
+    "class": "条件付き",
+    "freeWebGame": "非営利・無償なら可（二次創作ガイドラインの条件）。",
+    "commercial": "VOICEVOX版「ぞん子」は用途により商用も可。商用は問い合わせが必要（https://zonko.zone-energy.jp/contact）。",
+    "credit": "「VOICEVOX:ぞん子」（VOICEVOX公式の要約）。",
+    "prohibitions": "弊社・弊社製品のイメージを損なうこと／公序良俗に反すること／他者の権利侵害／弊社の公式製品・公式キャラクターと誤解させること／反社会的な行為・目的、特定の信条や宗教、政治的発言のための利用。ガイドラインの前提として「創作性があること」「非営利であること」「直接販売であること」。",
+    "otherCharacterUse": "記載なし。",
+    "romance": "記載なし。",
+    "application": "非営利なら連絡不要。商用は問い合わせ。",
+    "notes": "ZONeエナジー（飲料ブランド）の公式アンバサダー。ガイドラインの日付は 2025.01.04。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「熱血的でありありとした声」。ノーマル約311Hz、抑揚は約10半音と大きい。低血圧約258Hz、覚醒約342Hz、実況風約390Hz。元気な実況向きの声。",
+   "genderGuess": "女性",
+   "ageBand": "10代後半〜20代（推定）",
+   "natural": "アニメ寄り（推定）"
+  },
+  {
+   "slug": "zundamon",
+   "url": "https://voicevox.hiroshiba.jp/product/zundamon/",
+   "nameJa": "ずんだもん",
+   "profile": {
+    "officialVoiceDescription": "子供っぽい高めの声",
+    "description": "ずんだ餅の精。やや不幸属性が備わっており、 ないがしろにされることもしばしば。",
+    "age": "未記載",
+    "gender": "未記載",
+    "height": "未記載",
+    "personality": "未記載",
+    "otherLabels": {
+     "趣味": "ずんだ餅にかかわることはだいたい好き",
+     "将来の夢": "ずんだ餅のさらなる普及"
+    },
+    "detailUrl": "https://zunko.jp/#charaZM",
+    "dormitoryUrl": "https://voicevox.hiroshiba.jp/dormitory/zundamon/"
+   },
+   "cv": "未記載（未確認）",
+   "styles": [
+    {
+     "name": "ノーマル",
+     "id": 3,
+     "f0_median_hz": 352.8,
+     "f0_p10_hz": 256.2,
+     "f0_p90_hz": 426.8,
+     "semitones": 8.8,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.4,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-normal-001.DlxPrwB-.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-normal-002.kPSKU_VH.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-normal-003.BKjvVfSJ.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s0-1.wav",
+      "samples/voicevox/zundamon/s0-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.13,
+       "f0_median_hz": 354.8,
+       "f0_p10_hz": 253.9,
+       "f0_p90_hz": 426.7,
+       "semitone_range_p10_p90": 9.0
+      },
+      {
+       "duration_s": 7.36,
+       "f0_median_hz": 350.4,
+       "f0_p10_hz": 255.3,
+       "f0_p90_hz": 428.8,
+       "semitone_range_p10_p90": 9.0
+      }
+     ]
+    },
+    {
+     "name": "あまあま",
+     "id": 1,
+     "f0_median_hz": 361.6,
+     "f0_p10_hz": 278.4,
+     "f0_p90_hz": 451.4,
+     "semitones": 8.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.42,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-ama-001.CdtTsG9B.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-ama-002.BFarXSE_.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-ama-003.WxzmDG_P.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s1-1.wav",
+      "samples/voicevox/zundamon/s1-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.58,
+       "f0_median_hz": 371.0,
+       "f0_p10_hz": 283.9,
+       "f0_p90_hz": 450.9,
+       "semitone_range_p10_p90": 8.0
+      },
+      {
+       "duration_s": 8.23,
+       "f0_median_hz": 358.0,
+       "f0_p10_hz": 278.5,
+       "f0_p90_hz": 452.6,
+       "semitone_range_p10_p90": 8.4
+      }
+     ]
+    },
+    {
+     "name": "ツンツン",
+     "id": 7,
+     "f0_median_hz": 346.9,
+     "f0_p10_hz": 246.4,
+     "f0_p90_hz": 391.7,
+     "semitones": 8.0,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.41,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-tsun-001.CTIZb6DG.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-tsun-002.BtBSwxw1.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-tsun-003.D77rQ-o_.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s2-1.wav",
+      "samples/voicevox/zundamon/s2-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.11,
+       "f0_median_hz": 348.7,
+       "f0_p10_hz": 245.7,
+       "f0_p90_hz": 384.3,
+       "semitone_range_p10_p90": 7.7
+      },
+      {
+       "duration_s": 7.05,
+       "f0_median_hz": 343.8,
+       "f0_p10_hz": 247.0,
+       "f0_p90_hz": 395.7,
+       "semitone_range_p10_p90": 8.2
+      }
+     ]
+    },
+    {
+     "name": "セクシー",
+     "id": 5,
+     "f0_median_hz": 336.0,
+     "f0_p10_hz": 248.2,
+     "f0_p90_hz": 421.9,
+     "semitones": 9.2,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.45,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-sexy-001.BxRHwP5J.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-sexy-002.D_5j0pTM.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-sexy-003.6rAajlHp.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s3-1.wav",
+      "samples/voicevox/zundamon/s3-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.49,
+       "f0_median_hz": 327.0,
+       "f0_p10_hz": 224.9,
+       "f0_p90_hz": 440.3,
+       "semitone_range_p10_p90": 11.6
+      },
+      {
+       "duration_s": 8.35,
+       "f0_median_hz": 339.8,
+       "f0_p10_hz": 258.4,
+       "f0_p90_hz": 414.4,
+       "semitone_range_p10_p90": 8.2
+      }
+     ]
+    },
+    {
+     "name": "ささやき",
+     "id": 22,
+     "f0_median_hz": null,
+     "f0_p10_hz": null,
+     "f0_p90_hz": null,
+     "semitones": null,
+     "chars_per_sec": null,
+     "voiced_ratio": null,
+     "measuredNote": "有声部分が検出されない（ささやき声）。音高は測れない。",
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-whis-001.AzNBvU4F.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-whis-002.BcayvpjD.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-whis-003.B-D47CxC.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s4-1.wav",
+      "samples/voicevox/zundamon/s4-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.62,
+       "f0_median_hz": null,
+       "f0_p10_hz": null,
+       "f0_p90_hz": null,
+       "semitone_range_p10_p90": null
+      },
+      {
+       "duration_s": 7.02,
+       "f0_median_hz": null,
+       "f0_p10_hz": null,
+       "f0_p90_hz": null,
+       "semitone_range_p10_p90": null
+      }
+     ]
+    },
+    {
+     "name": "ヒソヒソ",
+     "id": 38,
+     "f0_median_hz": 254.6,
+     "f0_p10_hz": 229.4,
+     "f0_p90_hz": 279.3,
+     "semitones": 3.4,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.36,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-hiso-001.BGNoTvtX.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-hiso-002.BM4wZNiE.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-hiso-003.DHoiWJf2.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s5-1.wav",
+      "samples/voicevox/zundamon/s5-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 2.59,
+       "f0_median_hz": 259.1,
+       "f0_p10_hz": 231.5,
+       "f0_p90_hz": 272.9,
+       "semitone_range_p10_p90": 2.8
+      },
+      {
+       "duration_s": 7.23,
+       "f0_median_hz": 251.9,
+       "f0_p10_hz": 229.7,
+       "f0_p90_hz": 281.2,
+       "semitone_range_p10_p90": 3.5
+      }
+     ]
+    },
+    {
+     "name": "ヘロヘロ",
+     "id": 75,
+     "f0_median_hz": 339.2,
+     "f0_p10_hz": 275.6,
+     "f0_p90_hz": 406.0,
+     "semitones": 6.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.57,
+     "measuredNote": null,
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-herohero-001.BsFu9HLT.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-herohero-002.Dtscd8Pd.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-herohero-003.nzIexrrt.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s6-1.wav",
+      "samples/voicevox/zundamon/s6-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.32,
+       "f0_median_hz": 339.4,
+       "f0_p10_hz": 271.2,
+       "f0_p90_hz": 381.1,
+       "semitone_range_p10_p90": 5.9
+      },
+      {
+       "duration_s": 9.3,
+       "f0_median_hz": 339.4,
+       "f0_p10_hz": 278.2,
+       "f0_p90_hz": 419.2,
+       "semitone_range_p10_p90": 7.1
+      }
+     ]
+    },
+    {
+     "name": "なみだめ",
+     "id": 76,
+     "f0_median_hz": 511.6,
+     "f0_p10_hz": 436.2,
+     "f0_p90_hz": 573.3,
+     "semitones": 4.7,
+     "chars_per_sec": null,
+     "voiced_ratio": 0.33,
+     "measuredNote": "500Hz の上限に当たったため、上限 800Hz で測り直した値を載せた（上限 500Hz では中央値 419.7Hz）。",
+     "sampleUrls": [
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-namidame-001.CfbdERVG.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-namidame-002.C96m58jO.wav",
+      "https://voicevox.hiroshiba.jp/_astro/zundamon-namidame-003.C3fcrikP.wav"
+     ],
+     "measuredFiles": [
+      "samples/voicevox/zundamon/s7-1.wav",
+      "samples/voicevox/zundamon/s7-2.wav"
+     ],
+     "perFile": [
+      {
+       "duration_s": 3.16,
+       "f0_median_hz": 432.9,
+       "f0_p10_hz": 269.6,
+       "f0_p90_hz": 483.1,
+       "semitone_range_p10_p90": 10.1
+      },
+      {
+       "duration_s": 8.8,
+       "f0_median_hz": 293.8,
+       "f0_p10_hz": 261.4,
+       "f0_p90_hz": 493.4,
+       "semitone_range_p10_p90": 11.0
+      }
+     ]
+    }
+   ],
+   "terms": {
+    "url": "https://zunko.jp/con_ongen_kiyaku.html",
+    "class": "OK",
+    "freeWebGame": "可（商用・非商用ともに利用できる）。",
+    "commercial": "可（クレジットを書けば商用・非商用とも可）。クレジットなしの商用は1キャラクターごとに40万円＋税の契約。",
+    "prohibitions": "公序良俗に反する利用／政治活動・宗教活動やそれにつながる利用、特定の個人・団体（国家を含む）を非難・批判・応援する目的の利用／情報商材／意図的な嘘やフェイク／風俗営業等の業態／反社会的勢力の利用。",
+    "otherCharacterUse": "音源規約に記載なし（禁止事項に含まれていない）。キャラクター（イラスト等）のガイドライン https://zunko.jp/guideline.html は「キャラクターのイメージを損なう利用」を禁止しているが、声だけを別の人物に使う場合に当たるかは書かれていない。",
+    "romance": "記載なし。",
+    "application": "不要。規約に当たるかの質問には原則答えない（有償の個別回答サービス 税込10,000円がある。https://zunko.jp/guideline_qa.html）。",
+    "notes": "クレジットはキャラクターごとに必要。アプリでは紹介画面など「少し探せばわかる場所」に書く（音源規約）。複数キャラを使うときはそれぞれ書く（https://zunko.jp/guideline_qa.html）。",
+    "credit": "「VOICEVOX:ずんだもん」。",
+    "checkedAt": "2026-11-17"
+   },
+   "impressionJa": "公式の説明は「子供っぽい高めの声」。ノーマル約353Hz。ヒソヒソ約255Hz、ヘロヘロ約339Hz、なみだめは中央値が約512Hz（500Hzを超える）。ささやきは測れない。ずんだ餅の精の設定。VOICEVOXで最もよく知られた声で、聞いた人はずんだもんを思い浮かべやすい。",
+   "genderGuess": "子どもの声（性別は未記載）",
+   "ageBand": "子ども（推定）",
+   "natural": "アニメ寄り（推定）"
+  }
+ ]
+}
