@@ -42,7 +42,7 @@ describe("encounter save protection", () => {
     expect(getBattleAvailability(state, "milano_galleria_01").available).toBe(false);
     expect(getTourismAvailability(state, "galleria_vittorio_emanuele_ii").available).toBe(false);
     expect(startDate(state, "milano_cafe_01")).toBe(state);
-    expect(setNames(state, "name", "name", "")).toBe(state);
+    expect(setNames(state, "name", "name")).toBe(state);
     expect(claimPendingRewards(state, state.revision)).toBe(state);
     const battle = createDebugState({ ...initial, scene: "battle", id: "milano_duomo_01" });
     expect(() => validateGameState({ ...state, activeBattle: battle.activeBattle })).toThrow("道中の交流と他の進行が重複しています。");

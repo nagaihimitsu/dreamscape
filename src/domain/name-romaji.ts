@@ -1,9 +1,15 @@
-// The player's name in Latin letters, for writing drawn in the scene (the Jaipur mehndi: 2026-11-16, the user's decision
-// 「案Aで、名前の文字のフォントを筆記体っぽいやつにして」: no Japanese letters in the pattern). Kana in Hepburn as a name
-// is written on a passport (long o and u once, ー not written, no apostrophe after ん, っ before ch as t); a name already in
-// Latin letters is kept (only an all-lower or all-upper word is put in title case); anything else (kanji, other scripts,
-// digits) is null: the player's own spelling (the title's and the settings' 「ローマ字のつづり」) is then the only way.
-// Known limit: こうめ reads as Kome (a long o); the spelling field is the fix. Pure, no imports.
+// The player's name in Latin letters, for writing drawn in the scene (the Jaipur mehndi: 2026-11-16, the user's decision,
+// 案A: no Japanese letters in the pattern, the name in Latin letters). Kana in Hepburn without long-vowel marks
+// (ヘボン式・長音は書かない: the long o and u written once, ー not written), ん always n (Junpei, Kenichi: no m before
+// b, m, p and no apostrophe), っ before ch as t; a name already in Latin letters is kept (only an all-lower or all-upper
+// word is put in title case). Any other name (kanji, other scripts, digits) has no Latin form of its own: the reading
+// captured while the player typed it (2026-11-17, the user's decision: no field for it, 「入力欄は隠す」; the title's and
+// the settings' name forms capture it as jquery.autoKana does, src/features/journey/useNameReading.ts) gives one, but
+// only when it plausibly fits the name (readingFits); else the scene writes no letters of the name.
+// Known limits: こうめ reads as Kome (お+う taken as a long o). A name pasted or filled in by the browser, or picked from
+// a phone's predictive conversion that skips kana, gives no reading or a short one (太一 picked after typing たい reads
+// Tai; a reading too short for the name's kanji, or none, gives no Latin form). A kanji name changed inside (not only
+// added to, nor replaced) keeps no reading. Pure, no imports.
 
 const BASE: Record<string, string> = {
   あ: "a", い: "i", う: "u", え: "e", お: "o",
@@ -117,25 +123,79 @@ export function latinName(typed: string): string | null {
   return capitalise((latin as string[]).join("").replace(/(^|[ ])-+|-+(?=$|[ ])/gu, "$1"));
 }
 
-const JAPANESE_LETTER = /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u;
+/** The most kana a character of a name other than kana (a kanji, 々) may take in its reading (志 こころざし). */
+export const MAX_KANA_PER_CHARACTER = 5;
+
+const READING = /^[ぁ-ゖゝゞー ]+$/u; // hiragana (after toHiragana), ゝゞ, ー and single spaces
+/** A character of a name read by any 1 to MAX_KANA_PER_CHARACTER kana: a kanji (々 and 〆 too), or ヶ ヵ (一ヶ谷). */
+const READ_AS_KANA = /^[\p{Script=Han}ゖゕ]$/u;
 
 /**
- * Whether a typed 「ローマ字のつづり」 can be kept: Latin letters only (with spaces, `-`, `'` and `.`; full-width letters
- * count), so latinName makes it a name and no Japanese letter can reach a scene's writing through it.
+ * A reading as kept: kana only (half-width and katakana as hiragana, ー, spaces between words), in hiragana with single
+ * spaces; null when it is empty or holds anything else.
  */
-export function isLatinSpelling(typed: string): boolean {
-  return !JAPANESE_LETTER.test(typed) && latinName(typed) !== null;
-}
-
-/** Whether a name form may start or save with this 「ローマ字のつづり」: blank (none given) or isLatinSpelling. */
-export function spellingAllowed(typed: string): boolean {
-  return !typed.trim() || isLatinSpelling(typed);
+export function kanaReading(text: string): string | null {
+  const reading = toHiragana(text.normalize("NFKC")).replace(/\s+/gu, " ").trim();
+  return READING.test(reading) && /[ぁ-ゖ]/u.test(reading) ? reading : null;
 }
 
 /**
- * The Latin name a scene draws for the player: their own spelling if they gave one, else their name in Latin letters,
- * else null (no Latin form: the scene draws no letters of the name).
+ * Whether `reading` plausibly reads `name` (spaces aside): the reading is kana only; each kana of the name is read as
+ * itself, at its place in the reading; each other character (a kanji, 々) takes 1 to MAX_KANA_PER_CHARACTER kana. A name
+ * with any other character (Latin letters, digits, other scripts) never fits.
  */
-export function playerLatinName(spelling: string | undefined, playerName: string): string | null {
-  return (spelling === undefined ? null : latinName(spelling)) ?? latinName(playerName);
+export function readingFits(reading: string, name: string): boolean {
+  const kana = kanaReading(reading);
+  if (kana === null) return false;
+  const read = [...kana.replace(/ /gu, "")];
+  const parts = [...toHiragana(name.normalize("NFKC")).replace(/\s+/gu, "")];
+  if (!parts.length || parts.some((part) => !READ_AS_KANA.test(part) && !KANA.test(part))) return false;
+  // fits(i, j): parts[i..] read by read[j..]; each (i, j) tried once.
+  const tried = new Set<number>();
+  const fits = (i: number, j: number): boolean => {
+    if (i === parts.length) return j === read.length;
+    if (tried.has(i * (read.length + 1) + j)) return false;
+    tried.add(i * (read.length + 1) + j);
+    if (!READ_AS_KANA.test(parts[i])) return read[j] === parts[i] && fits(i + 1, j + 1);
+    for (let taken = 1; taken <= MAX_KANA_PER_CHARACTER && j + taken <= read.length; taken += 1)
+      if (fits(i + 1, j + taken)) return true;
+    return false;
+  };
+  return fits(0, 0);
+}
+
+/**
+ * The Latin name a scene draws for the player: their name in Latin letters (latinName), else its reading in Latin
+ * letters when the reading fits the name (readingFits), else null (no Latin form: the scene draws no letters of the name).
+ */
+export function playerLatinName(reading: string | undefined, playerName: string): string | null {
+  return latinName(playerName) ?? (reading !== undefined && readingFits(reading, playerName) ? latinName(reading) : null);
+}
+
+/** The name a name form's field held when it appeared, and that name's saved reading (none: unknown, or not needed). */
+export type ReadingStart = Readonly<{ name: string; reading?: string }>;
+
+/** The reading of the name a field started with, as far as it is known: its saved reading, else the name itself when it is kana, else "". */
+export function startReading(start: ReadingStart): string {
+  return start.reading ?? kanaReading(start.name) ?? "";
+}
+
+/**
+ * The reading to save with the name a form gives (undefined: none). `captured` is the field's furigana as
+ * vanilla-autokana writes it: the reading the field started with (startReading), then the kana typed into it.
+ * - A name that has a Latin form of its own (kana, Latin letters) needs no reading.
+ * - The name kept as it started, maybe added to: the whole capture, when the reading it started with is known.
+ * - The name replaced (its first character is no longer the one it started with): only what was typed.
+ * - The name changed inside: the reading of the part kept is not known, so none.
+ * The reading is kept only when it fits the name (readingFits).
+ */
+export function readingToSave(name: string, captured: string, start: ReadingStart): string | undefined {
+  const typed = name.trim();
+  if (!typed || latinName(typed) !== null) return undefined;
+  const base = startReading(start);
+  const reading = typed.startsWith(start.name) ? (start.name && !base ? null : captured)
+    : [...typed][0] !== [...start.name][0] && captured.startsWith(base) ? captured.slice(base.length)
+    : null;
+  const kana = reading === null ? null : kanaReading(reading);
+  return kana !== null && readingFits(kana, typed) ? kana : undefined;
 }

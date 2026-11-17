@@ -11,7 +11,7 @@ import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
-import { isLatinSpelling } from "./name-romaji";
+import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
 /** The only saved game format this build reads; older versions are not migrated. */
 export const GAME_STATE_VERSION = 23;
@@ -20,8 +20,13 @@ const uniqueStrings = z
   .array(z.string().min(1))
   .refine((items) => new Set(items).size === items.length);
 export const nameSchema = z.string().trim().min(1).max(balance.maxNameLength);
-/** The player's own 「ローマ字のつづり」 (as typed, without the spaces around it): Latin letters only (isLatinSpelling). */
-export const latinSpellingSchema = nameSchema.refine(isLatinSpelling, "ローマ字のつづりは、ローマ字だけで書きます。");
+/**
+ * The reading of the player's name, as the game keeps it (kanaReading): kana only, in hiragana (katakana and half-width
+ * kana are read as hiragana), ー, single spaces between words; at most as long as a reading that can fit the longest name.
+ */
+export const nameReadingSchema = z.string().max(balance.maxNameLength * MAX_KANA_PER_CHARACTER)
+  .refine((text) => kanaReading(text) !== null, "名前の読みは、かなだけで書きます。")
+  .transform((text) => kanaReading(text)!);
 const relationshipValuesSchema = z.object({
   affection: z.number().int(), trust: z.number().int(), spark: z.number().int(),
 }).strict();
@@ -123,9 +128,10 @@ export const gameStateSchema = z.object({
   revision: z.number().int().nonnegative(),
   playerName: nameSchema,
   heroineName: nameSchema,
-  // The player's own spelling of their name in Latin letters (2026-11-16, an optional field of save v23: the Jaipur mehndi
-  // draws the name in Latin letters; src/domain/name-romaji.ts). Left out: none given (a kana name is spelt from the kana).
-  playerNameLatin: latinSpellingSchema.optional(),
+  // The reading of the player's name in hiragana (2026-11-17, an optional field of save v23), captured while it was typed
+  // (src/features/journey/useNameReading.ts): the Jaipur mehndi draws a kanji name in Latin letters from it
+  // (src/domain/name-romaji.ts). Left out: not known, or not needed (a kana or Latin name has its own Latin form).
+  playerNameReading: nameReadingSchema.optional(),
   ap: z.number().int().min(0).max(balance.apCap),
   affection: z.number().int(),
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),

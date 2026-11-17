@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { SceneAt, SceneEntry } from "../src/content/scene-schemas";
-import { journeyReadthrough, visitTable, type MapEvent } from "./journey-readthrough";
+import { compileInk } from "./ink-validation";
+import { journeyReadthrough, scenePaths, visitTable, type MapEvent } from "./journey-readthrough";
+import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 
 // journey:readthrough's order tables (a reading aid, stage 3a/4): a `place <place>` scene is listed where the game runs it,
 // at the visit, the date and the finale of that place, and `visit any` only at its own city's landmarks.
@@ -34,5 +36,14 @@ describe("journey:readthrough's tables", () => {
     expect(table("x  date x_date")).toEqual(["-1 x_painter", "-1 x_stall", "0 〔デート〕（告白なら「交際開始」の画面）"]);
     expect(table("x  finale x")).toEqual(["-2 x_sweets", "-1 x_stall", "0 〔フィナーレのバトル〕"]);
     expect(lines.some((line) => line.startsWith("x  place"))).toBe(false);
+  });
+});
+
+describe("journey:readthrough's paths", () => {
+  it("reads a scene that reads the name in Latin letters with a stand-in and with none (\"\")", () => {
+    const compiled = compileInk('INCLUDE modules.ink\n-> DONE\n=== x_talk ===\n{ player_name_latin != "":\n    文字は{player_name_latin}。\n- else:\n    読めない文字。\n}\n-> END\n',
+      "places/x_talk.ink", { [MODULES_FILE]: MODULES_INK });
+    expect(scenePaths(scene("x_talk", "x", [{ visit: "x_tower" }], 1), compiled, { effectIds: [], backgroundIds: [], emotionIds: [] }, 12))
+      .toEqual([["文字は（主人公の名前のローマ字）。"], ["読めない文字。"]]);
   });
 });

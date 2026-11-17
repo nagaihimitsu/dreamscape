@@ -87,7 +87,7 @@ describe("relationship progression", () => {
     expect(getPlayerAddress(afterWalk)).toBe(
       "晴" + progression.stages[2].playerSuffix,
     );
-    expect(getPlayerAddress(setNames(afterWalk, "海", "雪", ""))).toBe(
+    expect(getPlayerAddress(setNames(afterWalk, "海", "雪"))).toBe(
       "海" + progression.stages[2].playerSuffix,
     );
     expect(lowPath().romanceStage).toBe(4);

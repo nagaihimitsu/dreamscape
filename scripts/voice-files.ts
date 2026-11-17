@@ -8,7 +8,7 @@ import { withoutComments } from "./place-files";
  * The names the player sets, as a story's text writes them (src/features/romance/names.ts fills them in), with what
  * messages call them: no recording can say them (2026-11-13 user decision). {player_address}, the heroine's way of
  * calling the protagonist, is made from the protagonist's name (getPlayerAddress), and {player_name_latin}, the name in
- * Latin letters (2026-11-16), from the name or the player's own spelling, so both count as that name.
+ * Latin letters (2026-11-16), from the name or its reading captured as it was typed, so both count as that name.
  */
 export const PLAYER_SET_NAMES = [
   { placeholder: "{player_name}", nameJa: "主人公の名前", nameEn: "the protagonist's name" },

@@ -180,18 +180,19 @@ const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly str
   readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot, initialSticky);
 const storyChoices = (story: Story) => storyChoicesOf(story, tagContext);
 
-/** The names a story is told: the game state's (the names as typed, and the player's own 「ローマ字のつづり」 if any). */
-export type StoryNames = Readonly<{ playerName: string; heroineName: string; playerNameLatin?: string }>;
+/** The names a story is told: the game state's (the names as typed, and the reading of the player's name if known). */
+export type StoryNames = Readonly<{ playerName: string; heroineName: string; playerNameReading?: string }>;
 
 /**
  * The names as Ink's variables (src/story/modules.ink): player_name and heroine_name as typed, and player_name_latin, the
- * player's name in Latin letters (2026-11-16: their spelling, else their kana name in Hepburn; "" when it has none).
+ * player's name in Latin letters (playerLatinName: a kana or Latin name's own, else its reading's when that fits; ""
+ * when it has none).
  */
 export function nameVariables(names: StoryNames): { player_name: string; heroine_name: string; player_name_latin: string } {
   return {
     player_name: names.playerName,
     heroine_name: names.heroineName,
-    player_name_latin: playerLatinName(names.playerNameLatin, names.playerName) ?? "",
+    player_name_latin: playerLatinName(names.playerNameReading, names.playerName) ?? "",
   };
 }
 

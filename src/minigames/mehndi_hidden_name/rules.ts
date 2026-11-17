@@ -12,7 +12,7 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
 /**
- * Where the writing hides, and what it is (2.10: the player's name in Latin letters in a cursive hand, or no letters without
+ * Where the writing hides, and what it is (2.10: the player's name in Latin letters in the Fasol SP hand, or no letters without
  * them; an illegible mark where the story says Hindi letters; FARHANA over unreadable marks).
  */
 export type MehndiTarget = "thumb" | "peacock" | "vine";

@@ -22,6 +22,17 @@ export function checkLinesWithoutChoice(count: number): void {
     throw new Error(`Story reads more than ${MAX_LINES_WITHOUT_CHOICE} lines without a choice or an end (an endless loop?)`);
 }
 
+/** The stand-in the build walks a story with for player_name_latin, the player's name in Latin letters (src/story/modules.ink). */
+const LATIN_NAME_STAND_IN = "Kensho";
+/**
+ * The values of player_name_latin the build walks a compiled story with: the stand-in, and also "" (a name with no
+ * Latin form: src/story/runtime.ts nameVariables) where the story reads the variable, so the lines written for that
+ * case are walked too, as both of romance_result's results are.
+ */
+export function latinNameValues(compiled: string, standIn = LATIN_NAME_STAND_IN): string[] {
+  return compiled.includes('{"VAR?":"player_name_latin"}') ? [standIn, ""] : [standIn];
+}
+
 /** Compile Ink; `includes` are the files an INCLUDE line may name (a place file's modules.ink). */
 export function compileInk(source: string, filename = "story.ink", includes: Record<string, string> = {}): string {
   const compiler = new Compiler(
@@ -144,7 +155,6 @@ export function validateStory(
   }
   const input = {
     player_name: "検証主人公",
-    player_name_latin: "Kensho",
     heroine_name: "検証ヒロイン",
     ...variables,
     ...(tone ? { relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone } : {}),
@@ -282,11 +292,15 @@ export function validateStory(
       }
     }
   };
-  forEachCondAssignment(compiled, (bind) => {
-    bindConditions = bind;
-    visit(initial.state.ToJson(), 0, [], "narrator");
-  });
-  // Every route was followed to its end above (each choice, with both reactions when random, for every cond assignment).
+  for (const latin of latinNameValues(compiled)) {
+    if (initial.variablesState.GlobalVariableExistsWithName("player_name_latin")) initial.variablesState.$("player_name_latin", latin);
+    forEachCondAssignment(compiled, (bind) => {
+      bindConditions = bind;
+      visit(initial.state.ToJson(), 0, [], "narrator");
+    });
+  }
+  // Every route was followed to its end above (each choice, with both reactions when random, for every cond assignment
+  // and each value of player_name_latin).
   return routes;
 }
 

@@ -167,7 +167,7 @@ describe("optional tourism and discoveries", () => {
     expect(fresh.activeTourism).not.toBeNull();
     expect(fresh.activeBattle).toBeNull();
     expect(finalizeBattleProgress(fresh)).toBe(fresh);
-    expect(setNames(fresh, "違う", "名前", "")).toBe(fresh);
+    expect(setNames(fresh, "違う", "名前")).toBe(fresh);
     expect(startBattle(fresh, battles[0].id)).toBe(fresh);
     const state = explore(seedCurrentFreeTime(createGame()));
     expect(startDate(state, "milano_cafe_01")).toBe(state);

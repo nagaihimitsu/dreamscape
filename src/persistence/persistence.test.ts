@@ -438,21 +438,21 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
     expect(lostSlot.getItem(SAVE_KEY)).toBe(lost);
   });
 
-  it("writes the 「ローマ字のつづり」, an optional field of v23: kept through save and load, absent in an older save, Latin only", () => {
-    // The player's own spelling of their name in Latin letters (2026-11-16; the Jaipur mehndi draws the name in it).
-    const state = createGame("太一", "あゆみ", { journeyId: "golden_triangle", playerNameLatin: "Taichi" });
+  it("writes the reading of the player's name, an optional field of v23: kept through save and load, absent in an older save, kana only", () => {
+    // The reading captured as the name was typed (2026-11-17; the Jaipur mehndi draws a kanji name in Latin letters from it).
+    const state = createGame("太一", "あゆみ", { journeyId: "golden_triangle", playerNameReading: "たいち" });
     const storage = new MemoryStorage();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, playerNameLatin: "Taichi" });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, playerNameReading: "たいち" });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
-    // A save of this version written before the field (none given): it loads, and saves again as it is.
-    const { playerNameLatin: _spelling, ...older } = state;
+    // A save of this version written before the field (or without a reading): it loads, and saves again as it is.
+    const { playerNameReading: _reading, ...older } = state;
     const slot = new MemoryStorage();
     slot.setItem(SAVE_KEY, JSON.stringify(older));
     expect(loadGame(slot)).toEqual({ status: "loaded", state: older });
-    // A spelling in Japanese letters (or blank) never comes from the game: unreadable, kept as it is, never overwritten.
-    for (const spelling of ["たいち", "太一", " "]) {
-      const raw = JSON.stringify({ ...state, playerNameLatin: spelling });
+    // A reading not in kana (or blank) never comes from the game: unreadable, kept as it is, never overwritten.
+    for (const reading of ["Taichi", "太一", " ", ""]) {
+      const raw = JSON.stringify({ ...state, playerNameReading: reading });
       const bad = new MemoryStorage();
       bad.setItem(SAVE_KEY, raw);
       expect(loadGame(bad)).toMatchObject({ status: "invalid", kind: "corrupt", raw });

@@ -19,7 +19,8 @@ import "./minigame-room.css";
 // play each with its examples and a use's pictures (by hand, by each 「おまかせ」 outcome, with less motion) through the
 // game's own host, without a story or a save. It runs on the Debug page only (DebugMode shows it in place of 場面の確認).
 // It reads and writes no save, English notebook, presentation setting or Debug-mode key: its settings live in its own memory.
-// The games are given the default player name (and its Latin form, as GameApp gives it: latinName), or a name typed to try.
+// The games are given the default player name (and its Latin form: latinName, the name itself in kana or Latin letters; the
+// room catches no reading as the title's name field does, so a name in kanji has none here), or a name typed to try.
 
 function memoryStorage() {
   const values = new Map<string, string>();
@@ -172,7 +173,8 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
         ))}
         <label className="minigame-room-still"><input type="checkbox" checked={stage.still} onChange={(event) => change({ still: event.target.checked })}
           data-testid="minigame-room-still" /> 動きを減らす</label>
-        {/* Another name in the games that draw it (the mehndi writes it in Latin letters, or a letterless mark without them). */}
+        {/* Another name in the games that draw it (the mehndi writes it in Latin letters in the Fasol SP hand, or a letterless
+            mark without them; type a kanji name's reading in kana to see its letters). */}
         <label className="minigame-room-name">名前を試す
           <input type="text" value={tried} maxLength={balance.maxNameLength} placeholder={balance.defaultPlayerName} data-testid="minigame-room-name"
             onChange={(event) => {
@@ -180,7 +182,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
               setLast(null);
               setRound((count) => count + 1);
             }} />
-          <span className="minigame-room-latin" data-testid="minigame-room-latin">ローマ字：{playerLatin ?? "なし（字の無い印を描く）"}</span>
+          <span className="minigame-room-latin" data-testid="minigame-room-latin">ローマ字：{playerLatin ?? "なし（字の無い印を描く。漢字の名前は、読みをかなで書くと試せる）"}</span>
         </label>
         {/* An outcome with a fallback may be greyed in a story (a price the player cannot pay): play it so (docs/13 4.2). */}
         {definition.outcomes.filter((outcome) => outcome.fallback).map((outcome) => (

@@ -15,10 +15,13 @@ afterEach(() => {
 });
 
 describe("player_name_latin", () => {
-  it("is the player's own spelling, else the kana name in Hepburn, else empty", () => {
+  it("is the kana name in Hepburn, else the reading of a kanji name when it fits, else empty", () => {
     expect(nameVariables({ playerName: "たいち", heroineName: "あゆみ" }))
       .toEqual({ player_name: "たいち", heroine_name: "あゆみ", player_name_latin: "Taichi" });
-    expect(nameVariables({ playerName: "太一", heroineName: "あゆみ", playerNameLatin: "taichi" }).player_name_latin).toBe("Taichi");
+    expect(nameVariables({ playerName: "太一", heroineName: "あゆみ", playerNameReading: "たいち" }).player_name_latin).toBe("Taichi");
+    // Any reading that fits the kanji is the player's (the game does not know how a kanji is read).
+    expect(nameVariables({ playerName: "太一", heroineName: "あゆみ", playerNameReading: "たろう" }).player_name_latin).toBe("Taro");
+    expect(nameVariables({ playerName: "太一", heroineName: "あゆみ", playerNameReading: "た" }).player_name_latin).toBe("");
     expect(nameVariables({ playerName: "太一", heroineName: "あゆみ" }).player_name_latin).toBe("");
   });
 
@@ -36,7 +39,7 @@ VAR heroine_name = ""
     expect(kana.frame.text).toBe("模様の文字は、Yuki。");
     expect(storyVariables(declared, kana.storyState, ["player_name", "player_name_latin"]))
       .toEqual({ player_name: "ゆうき", player_name_latin: "Yuki" });
-    expect(beginStory(declared, { playerName: "太一", heroineName: "あゆみ", playerNameLatin: "Taichi" }).frame.text)
+    expect(beginStory(declared, { playerName: "太一", heroineName: "あゆみ", playerNameReading: "たいち" }).frame.text)
       .toBe("模様の文字は、Taichi。");
     expect(beginStory(declared, { playerName: "太一", heroineName: "あゆみ" }).frame.text).toBe("読めない文字。");
   });
@@ -46,8 +49,8 @@ VAR heroine_name = ""
 VAR heroine_name = ""
 {player_name}の旅。
 -> END`);
-    const step = beginStory(undeclared, { playerName: "たいち", heroineName: "あゆみ", playerNameLatin: "Taichi" });
-    expect(step.frame.text).toBe("たいちの旅。");
+    const step = beginStory(undeclared, { playerName: "太一", heroineName: "あゆみ", playerNameReading: "たいち" });
+    expect(step.frame.text).toBe("太一の旅。");
     expect(storyVariables(undeclared, step.storyState, ["player_name_latin"])).toEqual({ player_name_latin: undefined });
   });
 });

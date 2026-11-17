@@ -17,9 +17,10 @@ import { defineMiniGame } from "../contract";
  * run on time (`timed: false`: a hidden page needs no 「続ける」; no `durationSec` on its card). The scene's own music goes
  * on (`music: "scene"`: the hotel night's waltz, a quiet romance scene). An attitude, not a
  * skill (it may stand for how the player looks at her hand): no rating and no practice (a practice would show the place).
- * The writing (`text`, docs/13 2.10): `player` the player's name in Latin letters in a cursive hand (names.playerLatin, in
- * Playwrite IN; the user's decision of 2026-11-16: no Japanese letters in the pattern; drawn as text, never as HTML), or,
- * with no Latin form of it (a name in kanji and no spelling given), the mark of `illegible` (no letters are made up);
+ * The writing (`text`, docs/13 2.10): `player` the player's name in Latin letters (names.playerLatin; the user's decision
+ * of 2026-11-16: no Japanese letters in the pattern), in the Fasol SP Demo hand (the user's decision of 2026-11-17; letters
+ * only, writing.ts) and drawn as text, never as HTML, or, with no Latin form of it (a name in kanji whose reading was not
+ * caught as it was typed), the mark of `illegible` (no letters are made up);
  * `illegible` a deliberately unreadable mark under a top line, where the story says Hindi letters (no letters are made up);
  * `farhana` the Latin letters FARHANA over a row of small unreadable marks (the story's phone number, never a number).
  *
@@ -49,7 +50,7 @@ export const mehndiHiddenName = defineMiniGame({
     target: z.enum(["thumb", "peacock", "vine"]).default("thumb")
       .describe("文字を隠した所（thumb 親指の付け根の蔓・peacock 孔雀の羽の付け根・vine 真ん中の蔓。書かなければ thumb）"),
     text: z.enum(["player", "illegible", "farhana"]).default("player")
-      .describe("隠した文字（player 主人公の名前をローマ字の筆記体で〈無ければ読めない印〉・illegible 読めない線〈ヒンディー語の文字と書かれた所。字は作らない〉・farhana FARHANA と読めない小さな印の列。書かなければ player）"),
+      .describe("隠した文字（player 主人公の名前をローマ字で、Fasol SP の字で〈ローマ字が無ければ読めない印〉・illegible 読めない線〈ヒンディー語の文字と書かれた所。字は作らない〉・farhana FARHANA と読めない小さな印の列。書かなければ player）"),
   }).strict(),
   examples: [{ target: "thumb", text: "player" }, { target: "peacock", text: "illegible" }, { target: "vine", text: "farhana" }],
   startJa: "手のひらを見る",

@@ -115,9 +115,13 @@ describe("the fixed lines of the list", () => {
     expect(MAP_CREDIT.textJa).toContain("ODbL");
     expect(MAP_CREDIT.url).toBe("https://www.openstreetmap.org/copyright");
     expect(FONT_CREDIT.textJa).toContain("SIL Open Font License 1.1");
-    // The cursive shipped with the game (the mehndi's name, 2026-11-16) is credited with its own page.
-    expect(FONT_CREDIT.textJa).toContain("Playwrite IN");
-    expect(FONT_CREDIT.links.map((link) => link.labelJa)).toContain("Playwrite IN");
+    // The font shipped with the game (2026-11-17): its designer and its demo licence's terms, and the links to the author
+    // and to where it was got (the licence lets it be shared with a link to the author).
+    expect(FONT_CREDIT.textJa).toContain("Fasol SP Demo（Sasha Pavljenko。");
+    for (const term of ["商用を含めて無料", "再販売は禁止", "作者へのリンク", "ゲームと一緒に配って"]) expect(FONT_CREDIT.textJa).toContain(term);
+    expect(FONT_CREDIT.links.map((link) => link.url)).toEqual(expect.arrayContaining(["https://pavljenko.ru/", "https://justfreefonts.com/fonts/fasol-sp/"]));
+    // What it draws stays unsaid: the list must not give the mehndi's hidden name away.
+    expect(FONT_CREDIT.textJa).not.toMatch(/名前|手のひら|メヘンディ/u);
     expect(FONT_CREDIT.links.every((link) => link.url.startsWith("https://"))).toBe(true);
     // Only the places that do show fact sources are named (no date screen shows them).
     expect(OWN_ARTWORK_NOTE_JA).toBe("Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +

@@ -238,19 +238,23 @@ export const MAP_CREDIT = {
 
 /**
  * The fonts, as a courtesy (decision D4). Noto Sans JP and Noto Serif JP are loaded from Google Fonts (index.html), not
- * shipped (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08). Playwrite IN, the cursive of the player's
- * name in the mehndi mini-game (2026-11-16), is shipped with the game from @fontsource/playwrite-in (its licence text
- * comes with the build's library licences; google/fonts ofl/playwritein, TypeTogether, checked 2026-11-16). All three are
- * under the SIL Open Font License 1.1.
+ * shipped (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08), under the SIL Open Font License 1.1.
+ * Fasol SP Demo by Sasha Pavljenko (the user's choice of 2026-11-17) is shipped with the game as the unmodified demo file
+ * (src/minigames/mehndi_hidden_name/fonts/, beside its licence, LICENSE-FasolSP.txt; checked 2026-11-17): free to use,
+ * commercial use included; no resale; the font may be shared, with a link to its author, which the links give. What it
+ * draws is not said (the player's name in the henna: saying so here would give the scene away, as the spelling field did,
+ * the user's word of 2026-11-17).
  */
 export const FONT_CREDIT = {
   textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
-    "Playwrite IN（TypeTogether、SIL Open Font License 1.1）。ミニゲーム「手のひらの模様」の名前の筆記体で、ゲームと一緒に配っています。",
+    "Fasol SP Demo（Sasha Pavljenko。デモ版の利用許諾：商用を含めて無料、フォントの再販売は禁止、作者へのリンクを添えて共有できる）。" +
+    "ゲームの中の飾り文字に使い、ゲームと一緒に配っています。",
   links: [
     { labelJa: "Noto Sans JP", url: "https://fonts.google.com/noto/specimen/Noto+Sans+JP" },
     { labelJa: "Noto Serif JP", url: "https://fonts.google.com/noto/specimen/Noto+Serif+JP" },
-    { labelJa: "Playwrite IN", url: "https://fonts.google.com/specimen/Playwrite+IN" },
     { labelJa: "SIL Open Font License", url: "https://openfontlicense.org/" },
+    { labelJa: "Sasha Pavljenko（Fasol SP の作者）", url: "https://pavljenko.ru/" },
+    { labelJa: "Fasol SP（JustFreeFonts.com）", url: "https://justfreefonts.com/fonts/fasol-sp/" },
   ],
 } as const;
 

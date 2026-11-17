@@ -86,9 +86,10 @@ import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
 import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
-import { LatinSpellingField, TitleNameFields } from "../features/journey/TitleNameFields";
+import { TitleNameFields } from "../features/journey/TitleNameFields";
+import { useNameReading } from "../features/journey/useNameReading";
 import { nameOrDefault } from "../domain/player-names";
-import { playerLatinName, spellingAllowed } from "../domain/name-romaji";
+import { playerLatinName } from "../domain/name-romaji";
 import { useTravelEffects } from "./useTravelEffects";
 import { useJourneyMoments } from "./useJourneyMoments";
 import { useItemShowLeave } from "./useItemShowLeave";
@@ -271,7 +272,7 @@ export function GameApp({
   // Counts the actions that recorded a new clue in 手がかり帳: each gleams on its button (notebook-cue.tsx).
   const [clueGleam, setClueGleam] = useState(0);
   // A journey's opening movie (manifest openingMovie) between 「旅をはじめる」 and the new game, with the names it starts with.
-  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string; latin: string } | null>(null);
+  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string; reading?: string } | null>(null);
   // 最初の3分の計測 (Debug mode only; intro-timing.ts): from the last 「旅をはじめる」 in this tab, never saved; a load and
   // Debug's return end it.
   const introTiming = useRef<IntroTiming | null>(null);
@@ -463,8 +464,9 @@ export function GameApp({
   // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
   const [player, setPlayer] = useState(game?.playerName ?? "");
   const [heroine, setHeroine] = useState(game?.heroineName ?? "");
-  // The player's 「ローマ字のつづり」 (2026-11-16, optional: blank is none; Latin letters only, else the form waits).
-  const [latin, setLatin] = useState(game?.playerNameLatin ?? "");
+  // The reading of the player's name, captured as it is typed in the title's and the settings' forms (nothing shows it).
+  const titleReading = useNameReading();
+  const settingsReading = useNameReading(game?.playerNameReading);
   // The marks of what is new (seenMarks above): the memory starts from everything there is, and what the player opens is seen.
   // 英語ノート's entries, read again when an answer, a record or a word learned changes (the records' content is checked).
   const englishKey = useMemo(
@@ -516,26 +518,25 @@ export function GameApp({
 
   function begin(event: FormEvent) {
     event.preventDefault();
-    if (!spellingAllowed(latin)) return;
     playSe("ui_confirm");
     const playerName = nameOrDefault(player, balance.defaultPlayerName);
     const heroineName = nameOrDefault(heroine, balance.defaultHeroineName);
-    const playerNameLatin = latin.trim();
+    const reading = titleReading.read(playerName);
     // A journey with an opening movie plays it first (not in Debug); the game starts when it ends, so its first scene
     // (the arrival's title, its sounds) is not run under the movie.
     const movie = isDebug ? undefined : getJourney(journeyId)?.openingMovie;
     // Debug mode measures the first minutes from here (with and without the movie).
     introTiming.current = debugOn ? startIntroTiming(performance.now(), !!movie) : null;
-    if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName, latin: playerNameLatin });
-    else startJourney(playerName, heroineName, playerNameLatin);
+    if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName, reading });
+    else startJourney(playerName, heroineName, reading);
   }
-  function startJourney(playerName: string, heroineName: string, playerNameLatin: string) {
+  function startJourney(playerName: string, heroineName: string, reading: string | undefined) {
     freeTimeReturn.current = null;
     seenCards.current = new Map();
     setSeenMarks(null);
     moments.restart(false);
     holdSceneCues(false);
-    session.begin(playerName, heroineName, playerNameLatin, journeyId);
+    session.begin(playerName, heroineName, reading, journeyId);
   }
   /**
    * 保存データの消去 (ゲームの設定's, or the title's): its confirmation opens over ゲームの設定, whose 「消去せず戻る」 goes
@@ -684,7 +685,7 @@ export function GameApp({
     debug: debugMarks,
     reduceMotion: displaySettings.value.reduceMotion,
     names: { player: game?.playerName ?? "", heroine: game?.heroineName ?? "",
-      playerLatin: game ? playerLatinName(game.playerNameLatin, game.playerName) : null },
+      playerLatin: game ? playerLatinName(game.playerNameReading, game.playerName) : null },
     revision,
     context: tagContext,
     ...(miniGameAvailable !== undefined ? { available: miniGameAvailable ? miniGameAvailable.split(" ") : [] } : {}),
@@ -693,7 +694,7 @@ export function GameApp({
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
     onQuiet: setMiniGameQuiet,
     onMusic: (track) => setMiniGameTrack(track && hasTrack(track) ? track : null),
-  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugMarks, game?.playerName, game?.heroineName, game?.playerNameLatin,
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugMarks, game?.playerName, game?.heroineName, game?.playerNameReading,
     revision, miniGameAvailable, commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
@@ -794,6 +795,7 @@ export function GameApp({
       <label>
         主人公の名前
         <input
+          ref={settingsReading.ref}
           name="playerName"
           value={player}
           maxLength={balance.maxNameLength}
@@ -802,7 +804,6 @@ export function GameApp({
           autoComplete="off"
         />
       </label>
-      <LatinSpellingField value={latin} playerName={player.trim()} onChange={setLatin} />
       <label>
         ヒロインの名前
         <input
@@ -860,7 +861,6 @@ export function GameApp({
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
-          setLatin(game.playerNameLatin ?? "");
           setSettingsNotice(null);
           // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices or 撮影の形, meanwhile.
           debugMode.refresh();
@@ -981,11 +981,11 @@ export function GameApp({
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
                 <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine}
-                  latin={latin} onLatin={setLatin} />
+                  playerRef={titleReading.ref} />
                 <button
                   className="primary"
                   data-testid="title-start"
-                  disabled={titleActions.start === "disabled" || !spellingAllowed(latin)}
+                  disabled={titleActions.start === "disabled"}
                 >
                   {invalid
                     ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"
@@ -1562,9 +1562,10 @@ export function GameApp({
               className="name-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                if (player.trim() && heroine.trim() && spellingAllowed(latin)) {
+                if (player.trim() && heroine.trim()) {
+                  const reading = settingsReading.read(player.trim());
                   commit((state) =>
-                    setNames(state, player.trim(), heroine.trim(), latin.trim()),
+                    setNames(state, player.trim(), heroine.trim(), reading),
                   );
                   setSettings(false);
                 }
@@ -1573,7 +1574,7 @@ export function GameApp({
               {nameForm}
               <button
                 className="secondary"
-                disabled={!player.trim() || !heroine.trim() || !spellingAllowed(latin)}
+                disabled={!player.trim() || !heroine.trim()}
               >
                 名前を保存
               </button>
@@ -1615,7 +1616,7 @@ export function GameApp({
         muted={!displaySettings.value.bgm} onEnd={() => {
           if (introTiming.current) introTiming.current = endIntroMovie(introTiming.current, performance.now());
           setOpening(null);
-          startJourney(opening.player, opening.heroine, opening.latin);
+          startJourney(opening.player, opening.heroine, opening.reading);
         }} />}
       {/* From the title's notice, or over ゲームの設定 (closing goes back to it, where it was). */}
       {oldDataOpen && oldDataStorage && <LazyDialog onClose={() => setOldDataOpen(false)}>

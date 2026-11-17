@@ -13,7 +13,7 @@ import { sceneStageOf, stageAfter, stageExit, standsOnStage, stageLine, type Sta
 import type { Speaker } from "../src/story/frame-reader";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
-import { checkLinesWithoutChoice } from "./ink-validation";
+import { checkLinesWithoutChoice, latinNameValues } from "./ink-validation";
 import { condWalk } from "./scene-conditions";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -230,7 +230,9 @@ export function walkScene(walked: SceneWalkInput): number {
   const warn = (message: string) => { if (!warned.has(message)) { warned.add(message); input.onWarning?.(message); } };
   const stageScene = input.stage ? sceneStageOf(input.stage.kind, input.stage.enemyFigure) : undefined;
 
-  for (const assignment of assignments) for (const result of profiled ? ["positive", "negative"] : [undefined]) {
+  // Each cond assignment, both reactions of a profiled choice, and each value of the name in Latin letters the story reads.
+  const latinValues = latinNameValues(input.compiled);
+  for (const assignment of assignments) for (const result of profiled ? ["positive", "negative"] : [undefined]) for (const latin of latinValues) {
     type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: Speaker;
       /** A battle's quizzes called so far, its score and whether it reached its reasoning stop. */
       quizzes: number; score: number; reasoned: boolean;
@@ -257,7 +259,7 @@ export function walkScene(walked: SceneWalkInput): number {
       return story;
     };
     const first = make({}, []);
-    for (const [name, value] of Object.entries({ player_name: "検証主人公", player_name_latin: "Kensho", heroine_name: "検証ヒロイン", player_address: "検証主人公さん", ...input.variables }))
+    for (const [name, value] of Object.entries({ player_name: "検証主人公", player_name_latin: latin, heroine_name: "検証ヒロイン", player_address: "検証主人公さん", ...input.variables }))
       if (first.variablesState.GlobalVariableExistsWithName(name)) first.variablesState.$(name, value);
     if (result && first.variablesState.GlobalVariableExistsWithName("romance_result")) first.variablesState.$("romance_result", result);
     if (input.start) first.ChoosePathString(input.start);

@@ -4,6 +4,7 @@ import { knotAddress } from "../src/content/story-address";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
+import { latinNameValues } from "./ink-validation";
 
 // journey:readthrough (the unified event design, stage 3a, 3.3): a tool for reading a journey's
 // script, not a build check. For every landmark visit (and, stage 4, every other moment a scene is
@@ -40,10 +41,13 @@ export function visitTable(scenes: readonly SceneEntry[], landmarkId: string, ev
   return [...own].sort((left, right) => rank(left) - rank(right) || (left.story.storyId < right.story.storyId ? -1 : left.story.storyId > right.story.storyId ? 1 : left.order - right.order));
 }
 
-/** A scene's lines, path by path (choices labelled), with every cond text false and then true. */
+/**
+ * A scene's lines, path by path (choices labelled), with every cond text false and then true, and for each value of the
+ * name in Latin letters the story reads (a stand-in, and "" for a name with none: latinNameValues).
+ */
 export function scenePaths(scene: SceneEntry, compiled: string, context: TagContext, maxPaths: number): string[][] {
   const paths: string[][] = [];
-  for (const value of [false, true]) {
+  for (const latin of latinNameValues(compiled, "（主人公の名前のローマ字）")) for (const value of scene.conds.length ? [false, true] : [false]) {
     const make = () => {
       const story = new Story(compiled);
       story.onError = (message) => { throw new Error(message); };
@@ -53,7 +57,7 @@ export function scenePaths(scene: SceneEntry, compiled: string, context: TagCont
       return story;
     };
     const first = make();
-    for (const [name, text] of Object.entries({ player_name: "（主人公）", player_name_latin: "（主人公の名前のローマ字）", heroine_name: "（ヒロイン）",
+    for (const [name, text] of Object.entries({ player_name: "（主人公）", player_name_latin: latin, heroine_name: "（ヒロイン）",
       player_address: "（主人公の呼び名）" }))
       if (first.variablesState.GlobalVariableExistsWithName(name)) first.variablesState.$(name, text);
     if (scene.story.knot) first.ChoosePathString(scene.story.knot);
@@ -80,7 +84,6 @@ export function scenePaths(scene: SceneEntry, compiled: string, context: TagCont
       }
     };
     walk(first.state.ToJson(), [], 0);
-    if (!scene.conds.length) break;
   }
   return paths;
 }

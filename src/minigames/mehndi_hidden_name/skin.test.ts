@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -7,8 +8,9 @@ import { mehndiHiddenName } from "./definition";
 import { mehndiSetup, type MehndiParams } from "./rules";
 import { mehndiSkin } from "./Skin";
 
-// The hidden name's field (docs/13 2.10, 2.12–2.13): the player's name in Latin letters in a cursive hand, as text (never
-// HTML), or no letters at all without a Latin form (the user's decision of 2026-11-16: no Japanese letters in the pattern);
+// The hidden name's field (docs/13 2.10, 2.12–2.13): the player's name in Latin letters in the Fasol SP hand (the user's
+// decisions of 2026-11-16, no Japanese letters in the pattern, and 2026-11-17, the font), as text (never HTML), or no
+// letters at all without a Latin form;
 // an illegible mark with no letters where the story says Hindi, six places as buttons named by the pattern, and the use's
 // art in its slots. The player's name as typed is kana here: it must never be drawn.
 const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, roundAt: 0, nudge: null, ending: null };
@@ -18,29 +20,36 @@ const field = (params: MehndiParams, latin: Pick<MiniGameNames, "playerLatin"> =
     params, still: false, seed: 1, cast: { heroine: null }, names: { player: "はると", heroine: "ヒロイン", ...latin }, art, sound: () => undefined,
     vibrate: () => undefined, setup: mehndiSetup(params), view: shown, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,
   }));
-/** The cursive name's text element and what it says, if one is drawn. */
-const cursive = (html: string) => html.match(/<text class="mg-mehndi-hidden-name-writing mg-mehndi-hidden-name-cursive"[^>]*>([^<]*)<\/text>/u);
+/** The name's text element in the Fasol SP hand and what it says, if one is drawn. */
+const lettering = (html: string) => html.match(/<text class="mg-mehndi-hidden-name-writing mg-mehndi-hidden-name-lettering"[^>]*>([^<]*)<\/text>/u);
 const japanese = /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u;
 
 describe("the hidden name's field", () => {
-  it("writes the player's name in Latin letters in the cursive hand, never the name as typed", () => {
+  it("writes the player's name in Latin letters in the Fasol SP hand, never the name as typed", () => {
     const html = field({ target: "thumb", text: "player" }, { playerLatin: "Taichi" });
     expect(html).toContain('class="mg-mehndi-hidden-name"');
-    const writing = cursive(html);
+    const writing = lettering(html);
     expect(writing?.[1]).toBe("Taichi");
     expect(writing?.[0]).not.toMatch(japanese);
-    // A short name unpressed (only a long one is pressed to its room), its small letters centred on the place.
-    expect(writing?.[0]).toContain('font-size="12"');
-    expect(writing?.[0]).toContain('y="3"');
+    // A short name at the largest size, unpressed (only a long one is pressed to its room), its small letters centred on
+    // the place (the baseline 0.18 of the size under it).
+    expect(writing?.[0]).toContain('font-size="16"');
+    expect(writing?.[0]).toContain('y="2.88"');
     expect(writing?.[0]).not.toContain("textLength");
     expect(html).not.toContain("はると");
-    for (const target of ["peacock", "vine"] as const) expect(cursive(field({ target, text: "player" }, { playerLatin: "Taichi" }))?.[1], target).toBe("Taichi");
-    expect(cursive(field({ target: "thumb", text: "player" }, { playerLatin: "Alexandria Konstantinopoulou" }))?.[0]).toContain('textLength="54"');
+    for (const target of ["peacock", "vine"] as const) expect(lettering(field({ target, text: "player" }, { playerLatin: "Taichi" }))?.[1], target).toBe("Taichi");
+    // A long name only ever pressed narrower, to the room (the thumb's 54 units), at the smallest size.
+    const long = lettering(field({ target: "thumb", text: "player" }, { playerLatin: "Alexandria Konstantinopoulou" }))?.[0];
+    expect(long).toContain('font-size="6"');
+    expect(long).toContain('textLength="54"');
+    expect(long).toContain('lengthAdjust="spacingAndGlyphs"');
+    // A hyphen or an apostrophe stays in the name (the stylesheet leaves it to the fallback, never the demo's advert).
+    for (const name of ["Jan-Poru", "O'Brien"]) expect(lettering(field({ target: "vine", text: "player" }, { playerLatin: name }))?.[1], name).toBe(name.replace("'", "&#x27;"));
   });
 
   it("writes the Latin name as text, never as HTML", () => {
     const html = field({ target: "thumb", text: "player" }, { playerLatin: "<b>Haru</b>" });
-    expect(cursive(html)?.[1]).toBe("&lt;b&gt;Haru&lt;/b&gt;");
+    expect(lettering(html)?.[1]).toBe("&lt;b&gt;Haru&lt;/b&gt;");
     expect(html).not.toContain("<b>");
   });
 
@@ -48,7 +57,7 @@ describe("the hidden name's field", () => {
     // null, or left out of the names.
     for (const latin of [{ playerLatin: null }, {}]) {
       const html = field({ target: "thumb", text: "player" }, latin);
-      expect(cursive(html)).toBeNull();
+      expect(lettering(html)).toBeNull();
       const lit = html.split("mg-mehndi-hidden-name-lit")[1];
       expect(lit).toContain("mg-mehndi-hidden-name-mark");
       expect(lit).not.toMatch(/<text/u);
@@ -65,7 +74,7 @@ describe("the hidden name's field", () => {
     const farhana = field({ target: "vine", text: "farhana" });
     expect(farhana).toContain(">FARHANA<");
     // FARHANA keeps its own letters (the story's Latin capitals), not the player's name's hand.
-    expect(farhana).not.toContain("mg-mehndi-hidden-name-cursive");
+    expect(farhana).not.toContain("mg-mehndi-hidden-name-lettering");
     // Her number is a row of marks: no digits are written.
     expect(farhana).not.toMatch(/>[^<]*\d[^<]*</u);
   });
@@ -105,6 +114,13 @@ describe("the hidden name's field", () => {
       expect(field(params).match(/mask="url\(#[^)]*vinegap\)"/gu), params.target).toHaveLength(1);
     }
     expect(field({ target: "thumb", text: "farhana" })).not.toContain("vinegap");
+  });
+
+  it("loads the font's stylesheet with the play only: the definition (on the title page) imports no stylesheet or font file", () => {
+    const definition = readFileSync(new URL("./definition.ts", import.meta.url), "utf8");
+    expect([...definition.matchAll(/^import .*$/gmu)].map((line) => line[0])).toEqual(['import { z } from "zod";', 'import { defineMiniGame } from "../contract";']);
+    expect(definition).not.toMatch(/\.css|\.otf|@font-face/u);
+    expect(readFileSync(new URL("./Skin.tsx", import.meta.url), "utf8")).toContain('import "./skin.css";');
   });
 
   it("puts the use's pictures in its declared slots", () => {

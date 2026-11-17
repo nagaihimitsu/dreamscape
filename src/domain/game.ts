@@ -34,7 +34,7 @@ import {
   type StoryStep,
 } from "../story/runtime";
 
-import { GAME_STATE_VERSION, gameStateSchema, latinSpellingSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
+import { GAME_STATE_VERSION, gameStateSchema, nameReadingSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
 import {
   activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
   getMemoryCallback, canConfessSuccessfully, confessionResult, decidingOutcome,
@@ -70,8 +70,8 @@ export function createGame(
   options: {
     journeyId: string;
     initialState?: NonNullable<Journey["initialState"]>;
-    /** The player's own 「ローマ字のつづり」 (blank: none, so the field is left out). */
-    playerNameLatin?: string;
+    /** The reading of the player's name captured as it was typed (none: not known or not needed; the field is left out). */
+    playerNameReading?: string;
   } = { journeyId: defaultJourneyId },
 ): GameState {
   const journey = getJourney(options.journeyId);
@@ -81,8 +81,6 @@ export function createGame(
   const { travelSettings } = getCityContent(cityId);
   const initial = options.initialState ?? journey.initialState;
   if (initial && initial.pendingAp !== 0) throw new Error("Pending AP requires a reward record");
-  const spelling = spellingField(options.playerNameLatin ?? "");
-  if (!spelling) throw new Error("The spelling of the name is not in Latin letters");
   return {
     schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
@@ -102,7 +100,7 @@ export function createGame(
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
-    ...spelling,
+    ...(options.playerNameReading === undefined ? {} : { playerNameReading: nameReadingSchema.parse(options.playerNameReading) }),
     ap: initial?.ap ?? 0,
     affection: initial?.affection ?? 0,
     trust: initial?.trust ?? 0,
@@ -135,19 +133,16 @@ export function createGame(
   };
 }
 
-/** A typed 「ローマ字のつづり」 as saved: blank leaves the field out; anything else must be Latin letters (null if it is not). */
-function spellingField(typed: string): Pick<GameState, "playerNameLatin"> | null {
-  if (!typed.trim()) return {};
-  const spelling = latinSpellingSchema.safeParse(typed);
-  return spelling.success ? { playerNameLatin: spelling.data } : null;
-}
-
-/** ゲームの設定's 「名前を保存」: the names and the 「ローマ字のつづり」 (blank removes it), outside any scene. */
+/**
+ * ゲームの設定's 「名前を保存」, outside any scene: the names, and the reading of the player's name captured as it was
+ * typed (undefined: not known or not needed, which removes a saved one). Nothing changes when one is not valid, or
+ * when all three are as saved.
+ */
 export function setNames(
   state: GameState,
   playerName: string,
   heroineName: string,
-  playerNameLatin: string,
+  playerNameReading?: string,
 ): GameState {
   if (
     state.activeDate ||
@@ -159,20 +154,20 @@ export function setNames(
     return state;
   const player = nameSchema.safeParse(playerName),
     heroine = nameSchema.safeParse(heroineName),
-    spelling = spellingField(playerNameLatin);
+    reading = playerNameReading === undefined ? undefined : nameReadingSchema.safeParse(playerNameReading);
   if (
     !player.success ||
     !heroine.success ||
-    !spelling ||
-    (state.playerName === player.data && state.heroineName === heroine.data && state.playerNameLatin === spelling.playerNameLatin)
+    reading?.success === false ||
+    (state.playerName === player.data && state.heroineName === heroine.data && state.playerNameReading === reading?.data)
   )
     return state;
-  const { playerNameLatin: _replaced, ...rest } = state;
+  const { playerNameReading: _replaced, ...rest } = state;
   return {
     ...rest,
     playerName: player.data,
     heroineName: heroine.data,
-    ...spelling,
+    ...(reading ? { playerNameReading: reading.data } : {}),
     revision: state.revision + 1,
   };
 }

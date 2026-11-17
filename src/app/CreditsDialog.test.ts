@@ -26,6 +26,8 @@ describe("credits list", () => {
     const html = render({ status: "dev" });
     expect(html).toContain(MAP_CREDIT.textJa);
     expect(html).toContain("Noto Sans JP");
+    expect(html).toContain("Fasol SP Demo（Sasha Pavljenko。");
+    expect(html).toContain('<a href="https://pavljenko.ru/" target="_blank" rel="noreferrer">Sasha Pavljenko（Fasol SP の作者）</a>');
     expect(html).toContain(OWN_ARTWORK_NOTE_JA);
     expect(html).toContain("公開版（本番ビルド）では、ここに一覧が出ます。");
     expect(html).not.toContain('data-testid="credits-licences"');

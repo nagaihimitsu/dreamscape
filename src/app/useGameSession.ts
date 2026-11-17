@@ -112,9 +112,9 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     protectedOriginalRef.current = result.baseline.protectedOriginal;
     return true;
   }
-  /** A new journey with the names and the player's 「ローマ字のつづり」 ("" for none) as the title's form gives them. */
-  function begin(player: string, heroine: string, playerNameLatin: string, journeyId: string) {
-    const initial = createGame(player.trim(), heroine.trim(), { journeyId, playerNameLatin });
+  /** A new journey with the names as the title's form gives them, and the reading captured with the player's (if any). */
+  function begin(player: string, heroine: string, playerNameReading: string | undefined, journeyId: string) {
+    const initial = createGame(player.trim(), heroine.trim(), { journeyId, playerNameReading });
     // The new journey's arrival opens through the same entry as the others (4.2); a line it shows at once may take a photo
     // and name a term of 旅の図鑑 (none under the arrival's title card, which covers its first line).
     const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));

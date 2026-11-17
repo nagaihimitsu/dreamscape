@@ -60,37 +60,38 @@ describe("AP and date rules", () => {
     expect(() => createGame(" ", "名前")).toThrow(zodIssues({ code: "too_small", path: [], minimum: 1 }));
     expect(() => createGame("あ".repeat(balance.maxNameLength + 1))).toThrow(zodIssues({ code: "too_big", path: [], maximum: balance.maxNameLength }));
     const state = createGame();
-    expect(setNames(state, " ", "名前", "")).toBe(state);
-    expect(setNames(state, "青", "花", "")).toMatchObject({
+    expect(setNames(state, " ", "名前")).toBe(state);
+    expect(setNames(state, "青", "花")).toMatchObject({
       playerName: "青",
       heroineName: "花",
     });
   });
-  // The player's own 「ローマ字のつづり」 (2026-11-16, the Jaipur mehndi draws the name in Latin letters): kept as typed
-  // without the spaces around it, left out when blank, and only in Latin letters.
-  it("keeps the spelling in Latin letters as typed, leaves the field out when blank and refuses other letters", () => {
-    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameLatin: "  taichi " }).playerNameLatin).toBe("taichi");
-    expect(createGame("たいち", "あゆみ", { journeyId: defaultJourneyId, playerNameLatin: "  " })).not.toHaveProperty("playerNameLatin");
-    expect(createGame()).not.toHaveProperty("playerNameLatin");
-    expect(() => createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameLatin: "たいち" }))
-      .toThrow("The spelling of the name is not in Latin letters");
-    expect(() => createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameLatin: "T".repeat(balance.maxNameLength + 1) }))
-      .toThrow("The spelling of the name is not in Latin letters");
+  // The reading of the player's name (2026-11-17), captured as it was typed: kept in hiragana, left out when not known,
+  // and only in kana (the Jaipur mehndi draws a kanji name in Latin letters from it).
+  it("keeps the reading of the player's name in hiragana, leaves the field out without one and refuses other letters", () => {
+    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: "たいち" }).playerNameReading).toBe("たいち");
+    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: "タイチ" }).playerNameReading).toBe("たいち");
+    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId })).not.toHaveProperty("playerNameReading");
+    expect(createGame()).not.toHaveProperty("playerNameReading");
+    for (const reading of ["Taichi", "太一", "", " "])
+      expect(() => createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: reading })).toThrow("名前の読みは、かなだけで書きます。");
+    expect(() => createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: "た".repeat(balance.maxNameLength * 5 + 1) }))
+      .toThrow(zodIssues({ code: "too_big", path: [], maximum: balance.maxNameLength * 5 }));
   });
-  it("changes, removes and refuses the spelling with the names, and leaves the game alone when nothing changes", () => {
+  it("changes, removes and refuses the reading with the names, and leaves the game alone when nothing changes", () => {
     const state = createGame("太一", "あゆみ");
-    const spelt = setNames(state, "太一", "あゆみ", " Taichi ");
-    expect(spelt).toMatchObject({ playerNameLatin: "Taichi", revision: state.revision + 1 });
-    // Only the spelling changed: still a change (the names alone are the same).
-    expect(setNames(spelt, "太一", "あゆみ", "Taiichi")).toMatchObject({ playerNameLatin: "Taiichi", revision: spelt.revision + 1 });
-    expect(setNames(spelt, "太一", "あゆみ", "Taichi")).toBe(spelt);
-    const cleared = setNames(spelt, "太一", "あゆみ", "");
-    expect(cleared).not.toHaveProperty("playerNameLatin");
-    expect(cleared.revision).toBe(spelt.revision + 1);
-    expect(setNames(state, "太一", "あゆみ", "")).toBe(state);
-    // A spelling in Japanese letters changes nothing, not even the names given with it.
-    expect(setNames(spelt, "大地", "あゆみ", "たいち")).toBe(spelt);
-    expect(validateGameState(JSON.parse(JSON.stringify(spelt)))).toEqual(spelt);
+    const read = setNames(state, "太一", "あゆみ", "たいち");
+    expect(read).toMatchObject({ playerNameReading: "たいち", revision: state.revision + 1 });
+    // Only the reading changed: still a change (the names alone are the same).
+    expect(setNames(read, "太一", "あゆみ", "ふとかず")).toMatchObject({ playerNameReading: "ふとかず", revision: read.revision + 1 });
+    expect(setNames(read, "太一", "あゆみ", "たいち")).toBe(read);
+    const cleared = setNames(read, "太一", "あゆみ");
+    expect(cleared).not.toHaveProperty("playerNameReading");
+    expect(cleared.revision).toBe(read.revision + 1);
+    expect(setNames(state, "太一", "あゆみ")).toBe(state);
+    // A reading not in kana changes nothing, not even the names given with it.
+    expect(setNames(read, "大地", "あゆみ", "Daichi")).toBe(read);
+    expect(validateGameState(JSON.parse(JSON.stringify(read)))).toEqual(read);
   });
   it("refuses an episode completion without battle evidence and never repeats its rewards", () => {
     const initial = createGame();
@@ -121,7 +122,7 @@ describe("AP and date rules", () => {
     expect(startDate(started, dateId)).toBe(started);
     expect(started.ap).toBe(2);
     expect(started.affection).toBe(0);
-    expect(setNames(started, "変更", "変更", "")).toBe(started);
+    expect(setNames(started, "変更", "変更")).toBe(started);
   });
   it("uses revision tokens to ignore stale double next/choice/finish clicks", () => {
     const initial = freshDate();
