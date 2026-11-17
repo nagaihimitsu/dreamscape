@@ -308,8 +308,10 @@ INCLUDE modules.ink
 # background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_agra_finale_battle_001
     デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町
     # speaker: heroine
+    # voice: gt_agra_finale_battle_002
     ……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない
 - else:
     # speaker: narrator

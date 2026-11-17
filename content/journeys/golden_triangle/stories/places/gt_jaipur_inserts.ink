@@ -74,12 +74,14 @@ INCLUDE modules.ink
         今朝、フロントの女性が指さした所だったのに。最初に指したのは、まるで違う模様だった。
         # speaker: heroine
         # reaction: heroine,teasing,question
+        # voice: gt_jaipur_hotel_mehndi_night_017
         今朝、教えてもらったばっかりなのに。……ふふ、忘れっぽいんだから
     - else:
         # speaker: narrator
         最初に指したのは、文字ではなく、ただの模様だった。くすっと笑われて、灯りで模様をたどり直した。
         # speaker: heroine
         # reaction: heroine,teasing,question
+        # voice: gt_jaipur_hotel_mehndi_night_018
         さっき、自信満々に違う所を指してたでしょ。……ふふ、あの顔、見せてあげたかったな
     }
     -> found
@@ -163,6 +165,7 @@ INCLUDE modules.ink
 - else:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_hotel_mehndi_morning_006
     でも、きれいに出てよかった。しばらく、ちゃんと残りそう
     -> END
 }

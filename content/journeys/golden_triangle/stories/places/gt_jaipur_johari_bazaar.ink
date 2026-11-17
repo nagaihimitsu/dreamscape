@@ -35,9 +35,11 @@ INCLUDE modules.ink
     デリーの、赤い城の商店街。腕輪の棚に手を伸ばしたとき、生徒さんたちの波が来たの、覚えてる？
     # speaker: heroine
     # emotion: worried
+    # voice: gt_jaipur_date_johari_bazaar_024
     あのあと、結局、言いそびれちゃった。欲しいって
     # speaker: heroine
     # emotion: worried
+    # voice: gt_jaipur_date_johari_bazaar_025
     ……カムラさんに、欲しいものは欲しいと言いなさいって、言われたばっかりだったのに
 }
 # speaker: narrator
@@ -46,6 +48,7 @@ INCLUDE modules.ink
 結婚式？　あなた、花嫁さん？
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
+# voice: gt_jaipur_date_johari_bazaar_023
 ち、違います！　ただの招待客です！
 { cond("flag gt_agra_said_for_now"):
     # speaker: heroine

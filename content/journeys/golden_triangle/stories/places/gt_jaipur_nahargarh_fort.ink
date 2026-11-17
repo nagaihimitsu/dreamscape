@@ -72,6 +72,7 @@ INCLUDE modules.ink
         扉を開ける。空っぽの部屋。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_nahargarh_fort_021
         遅い……。ずっと待ってたんだよ。途中で、出ていこうかと思った
     - else:
         # speaker: narrator
@@ -83,6 +84,7 @@ INCLUDE modules.ink
         あ……見つかった。一個ずつ、全部開けてきたの？
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_nahargarh_fort_022
         ちゃんと探してくれたんだね。時間かかったのに
     }
 * [かくれんぼ：開けてすぐの扉で見つけた # option: door_quick]
@@ -94,9 +96,11 @@ INCLUDE modules.ink
         扉を開けると、もう、そこに彼女がいた。壁ぎわにしゃがもうとしたところで、目が合った。
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_nahargarh_fort_023
         ……早すぎ。ちゃんと百、数えた？
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_nahargarh_fort_031
         ちょっと、のぞいてみただけなのに。かくれんぼって、もう少し、探してほしいんだけどな
     - else:
         # speaker: narrator
@@ -104,12 +108,15 @@ INCLUDE modules.ink
         扉を開けると、もう、そこに彼女がいた。壁の絵の前で、息を止めて立っている。
         # speaker: heroine
         # reaction: heroine,surprised_big,interrobang
+        # voice: gt_jaipur_date_nahargarh_fort_025
         えっ、もう？
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_jaipur_date_nahargarh_fort_032
         ずるい。始まったばっかりなのに、かくれんぼ、終わっちゃった。……のぞいたの、見えちゃった？
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_nahargarh_fort_027
         次は、わたしが探す番。すぐ見つけてあげるから、覚悟してね
     }
 * [かくれんぼ：廊下の真ん中で待った # option: just_wait]
@@ -129,9 +136,11 @@ INCLUDE modules.ink
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。ちょっと不満そうな顔だった。
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_jaipur_date_nahargarh_fort_033
         探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ
         # speaker: heroine
         # emotion: teasing
+        # voice: gt_jaipur_date_nahargarh_fort_034
         今の、ちゃんと覚えておいてね
     }
 -
@@ -139,6 +148,7 @@ INCLUDE modules.ink
 # stand: near
 並んで廊下を歩いた。どの扉の前を通っても、同じ部屋がある。その一つ一つに、王妃が住んでいたという。
 # speaker: heroine
+# voice: gt_jaipur_date_nahargarh_fort_030
 王さまは、ほかの人に知られずに、誰の部屋にでも行けたって、言われてるんだよね。便利だけど、さみしい建物
 # speaker: heroine
 # emotion: serious
@@ -184,9 +194,11 @@ INCLUDE modules.ink
 -
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_nahargarh_fort_035
 わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_nahargarh_fort_036
 ……それから、自分からも、行きたい。待つだけじゃなくて
 # speaker: narrator
 宮殿の屋上に出ると、町の全部が見えた。桃色の屋根、白い寺院の塔、遠くの湖の光。

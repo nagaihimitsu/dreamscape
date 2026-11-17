@@ -193,6 +193,7 @@ INCLUDE modules.ink
     ラージューは地図のしわを手のひらで伸ばしてから、両手で差し出した。
     # speaker: heroine
     # reaction: heroine,happy,sparkle
+    # voice: gt_jaipur_jaigarh_fort_map_002
     本物の宝の地図だ。……ねえ、最初の印は、どこ？
 * [地図の値段：₹30まで値切った # option: haggle_map]
     # money: -30

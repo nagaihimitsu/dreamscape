@@ -148,8 +148,10 @@ INCLUDE modules.ink
 # voice: gt_agra_main_fatehpur_sikri_007
 でも、町は残ってます。四百年以上たっても、こうやって人が来て、上まで石段を上って
 # speaker: heroine
+# voice: gt_agra_main_fatehpur_sikri_battle_001
 この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです
 # speaker: heroine
+# voice: gt_agra_main_fatehpur_sikri_battle_002
 ……ムケーシュさんの家も、誰かが渡ってくる橋みたいなものじゃないかなって
 # speaker: narrator
 # emotion: shy
