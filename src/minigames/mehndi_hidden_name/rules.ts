@@ -7,8 +7,10 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 // (2026-11-14 playtest: the story says the player found it): from the third on she only hints the area (the field's), and
 // the find is always the player's. 「明日にする」 is later. There is no time limit and no idle limit (user decision
 // 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only their own 「明日にする」). Round 3
-// (2026-11-14: 「もっと楽しく」) made the look a hunt: a smaller lamp, curls at the other places that look like writing,
-// the real writing's glint, and her hand as the hot and cold (the field's: looks only). Nothing is random. Pure.
+// (2026-11-14: 「もっと楽しく」) made the look a hunt: a smaller lamp, the real writing's glint, and her hand as the hot and
+// cold (the field's: looks only). Round 4 (2026-11-17: 「かんたんすぎる」): letter-like decorations across the palm, each
+// counting as the place it belongs to (marks.ts: a decoration pointed at is that place pointed at; the rules here are as
+// they were). Nothing is random. Pure.
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
 /**
@@ -43,7 +45,7 @@ export type MehndiTuning = {
   nearUnits: number;
   /** The lamp held still this long on another place: her 「そこ、じっと見すぎ」 (again after the lamp moves on and rests). */
   lingerMs: number;
-  /** The real writing catches the light this often (a glint; the curls that look like writing never do). */
+  /** The real writing catches the light this often (a glint; the decorations that look like letters never do). */
   glintEveryMs: number;
 };
 export const MEHNDI_TUNING: MehndiTuning = { hintAfter: 3, lampPct: 8, nearUnits: 34, lingerMs: 2500, glintEveryMs: 1600 };

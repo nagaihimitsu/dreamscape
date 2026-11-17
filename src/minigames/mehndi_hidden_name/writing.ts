@@ -1,12 +1,13 @@
 // The player's name as the mehndi's writing (docs/13 2.10). The user's decisions: 2026-11-16 (案A: no Japanese letters in
 // the pattern, the name in Latin letters in a hand of its own) and 2026-11-17 (「フォントはFasol SPにしましょう」). The hand
-// is Fasol SP Demo by Sasha Pavljenko, bundled with the game as the unmodified file fonts/FasolSPDemo.otf under its demo
-// licence (fonts/LICENSE-FasolSP.txt). skin.css declares it for the letters A–Z, a–z and the space only (its
-// unicode-range): the demo draws an advert ("GET FULL FONT") in place of digits and punctuation, and a letter with marks
-// (é, ø) without its marks, so a hyphen, an apostrophe or a letter with marks comes from the fallback (Noto Serif JP, the
-// face of the scene's other writing). Its capitals and small letters share their shapes (one case). Only the play's module
-// loads skin.css (play.ts → Skin.tsx), never the title page's. The size is worked out from the font's own advances
-// (measured from the file), so the name fits its room and is never pressed wider than it is.
+// (the name's, and that of the decorations made of its letters: marks.ts) is Fasol SP Demo by Sasha Pavljenko, bundled
+// with the game as the unmodified file fonts/FasolSPDemo.otf under its demo licence (fonts/LICENSE-FasolSP.txt). skin.css
+// declares it for the letters A–Z, a–z and the space only (its unicode-range): the demo draws an advert ("GET FULL FONT")
+// in place of digits and punctuation, and a letter with marks (é, ø) without its marks, so a hyphen, an apostrophe or a
+// letter with marks comes from the fallback (Noto Serif JP, the face of the scene's other writing). Its capitals and small
+// letters share their shapes (one case). Only the play's module loads skin.css (play.ts → Skin.tsx), never the title
+// page's. The size is worked out from the font's own advances (measured from the file), so the name fits its room and is
+// never pressed wider than it is.
 
 /** The writing's font family (skin.css declares it and names it, with the fallback after it). */
 export const WRITING_FONT = "Fasol SP Demo";

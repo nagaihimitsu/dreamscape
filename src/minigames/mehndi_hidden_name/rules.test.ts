@@ -6,7 +6,7 @@ import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
 import { searchProgress } from "../engines/search/engine";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiFairness, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
-import { MEHNDI_HIT, MEHNDI_PLACES, MEHNDI_WRITING, mehndiLoops, mehndiNear, mehndiSpotAt } from "./Skin";
+import { MEHNDI_HIT, MEHNDI_PLACES, MEHNDI_WRITING, mehndiNear, mehndiSpotAt } from "./marks";
 import { fairness } from "./play";
 import { WRITING_FONT, writingSize, writingWidth } from "./writing";
 
@@ -106,10 +106,6 @@ describe("the hidden name's field", () => {
     expect(mehndiFairness({ ...MEHNDI_TUNING, nearUnits: 80 }).join()).toContain("nearUnits 80");
     expect(mehndiFairness({ ...MEHNDI_TUNING, nearUnits: 46 }).join()).toContain("nearUnits 46");
     expect(mehndiFairness({ ...MEHNDI_TUNING, lingerMs: 300 }).join()).toContain("lingerMs 300");
-  });
-
-  it("draws the curls that look like writing as loops only (well-formed paths, no letters)", () => {
-    for (const loops of [3, 4, 5]) expect(mehndiLoops(loops, 6, 6)).toMatch(/^M-?[\d.]+ 0( c[-\d. ]+)+$/u);
   });
 
 });
