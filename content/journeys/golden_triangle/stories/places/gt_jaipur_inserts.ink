@@ -66,7 +66,7 @@ INCLUDE modules.ink
 // 選択肢の代わりにミニゲーム。結果の ID の選択肢をゲームが選ぶ。
 * [模様の中の文字を見つけた # option: found]
     -> found
-// wrong_spot はゲームの中で違う所を指した後（そのたびに彼女が「そこは、ただの花びら」などと答え、探すのは続く）。
+// wrong_spot はゲームの中で違う所を指した後（そのたびに彼女が「そこは、ただの花びら」「それは字じゃなくて、飾り。似てるでしょ」などと答え、探すのは続く）。
 // その後で自分で見つけたときも、3回目に違う所を指して彼女が場所を見せたときも、この選択肢。だから台詞は、済んだことを振り返る形にする。
 * [違う所も指してから、模様の中の文字を見つけた # option: wrong_spot]
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):

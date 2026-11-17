@@ -3,8 +3,10 @@ Fasol SP Demo (FasolSPDemo.otf)
 Designer: Sasha Pavljenko (Павленко А. А.) — https://pavljenko.ru/ , https://pavljenko.t.me
 Font file: FasolSPDemo.otf, Version 1.002, as distributed (not modified).
 Downloaded on 2026-11-17 from JustFreeFonts.com: https://justfreefonts.com/fonts/fasol-sp/
-Used in Dreamscape only for the player's name drawn in the mehndi pattern of the mini-game 「手のひらの模様」
-(src/minigames/mehndi_hidden_name). Chosen by the game's author on 2026-11-17.
+Used in Dreamscape only in the mini-game 「手のひらの模様」 (src/minigames/mehndi_hidden_name): for the player's name
+drawn in the mehndi pattern, and for letter-like decorations around it, each made of the font's own letters (two laid
+over each other, or one mirrored or turned), drawn as SVG text with this unmodified file (no outlines are copied out of
+it). Chosen by the game's author on 2026-11-17.
 
 The licence, as written in English in the "Short License.pdf" that comes with the font (quoted; the author's
 bank and contact details on its second page are left out here):
@@ -46,3 +48,8 @@ Notes for this game:
   (a hyphen, an apostrophe) is drawn by the fallback font.
 - The licence does not say anything about embedding the font in a web page; it allows sharing the font file with a
   link to the author, which the game's credits give. The full version (5 USD) also covers digits and punctuation.
+- The licence does not say anything about laying the font's letters over each other, or mirroring or turning them, as
+  decorations either. The game does so only when it draws (the browser sets each letter as text from this file and
+  turns it; the file is not changed and no glyph outline is extracted or stored), and only with letters. The game's
+  author decided to go ahead on that reading on 2026-11-17; the licence's own advice for a use one is unsure of is to
+  buy the full version or ask the author.

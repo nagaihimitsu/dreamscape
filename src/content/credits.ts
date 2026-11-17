@@ -242,8 +242,8 @@ export const MAP_CREDIT = {
  * Fasol SP Demo by Sasha Pavljenko (the user's choice of 2026-11-17) is shipped with the game as the unmodified demo file
  * (src/minigames/mehndi_hidden_name/fonts/, beside its licence, LICENSE-FasolSP.txt; checked 2026-11-17): free to use,
  * commercial use included; no resale; the font may be shared, with a link to its author, which the links give. What it
- * draws is not said (the player's name in the henna: saying so here would give the scene away, as the spelling field did,
- * the user's word of 2026-11-17).
+ * draws is not said (the player's name in the henna and the decorations made of its letters: saying so here would give
+ * the scene away, as the spelling field did, the user's word of 2026-11-17).
  */
 export const FONT_CREDIT = {
   textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
