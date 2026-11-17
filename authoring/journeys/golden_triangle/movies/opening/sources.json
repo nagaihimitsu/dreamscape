@@ -321,8 +321,8 @@
      0.6481,
      1.0
     ],
-    "changes": "Cropped to x 243-1037, y 0-992 px of the 1600x992 file, scaled down to 794x992 px (Lanczos), colour unchanged (already sRGB), saved as JPEG (quality 92). No retouching, no colour grading, nothing drawn in. In the movie the picture is shown as a print on white paper with a wide lower margin, a handwritten caption (type) on that margin, a strip of drawn tape and a drop shadow; it is tilted and scaled, motion blur is applied while it moves, a drawn stamp may overlap its corner, and it stays, small, beside its city on the last picture.",
-    "changesJa": "切り抜き（1600×992px のファイルの 横243〜1037px・縦0〜992px）、794×992px に縮小、色はそのまま（もとから sRGB）、JPEG（品質92）で保存。色の調整・修整・描き足しはなし。動画の中では、下の余白を広くとった白い紙焼きにして、その余白に手書き風の説明（文字）を入れ、描いたテープと影を付け、傾けて地図に貼る。動く間はぶれが付き、角に描いたスタンプが重なることがある。最後の絵では小さくして都市のそばに残す。"
+    "changes": "Cropped to x 243-1037, y 0-992 px of the 1600x992 file (794x992 px; not scaled: crops.json scale 1.0001), colour unchanged (already sRGB), saved as JPEG (quality 92). No retouching, no colour grading, nothing drawn in. In the movie the picture is shown as a print on white paper with a wide lower margin, a handwritten caption (type) on that margin, a strip of drawn tape and a drop shadow; it is tilted and scaled, motion blur is applied while it moves, a drawn stamp may overlap its corner, and it stays, small, beside its city on the last picture.",
+    "changesJa": "切り抜き（1600×992px のファイルの 横243〜1037px・縦0〜992px。794×992px で、縮小はしていない）、色はそのまま（もとから sRGB）、JPEG（品質92）で保存。色の調整・修整・描き足しはなし。動画の中では、下の余白を広くとった白い紙焼きにして、その余白に手書き風の説明（文字）を入れ、描いたテープと影を付け、傾けて地図に貼る。動く間はぶれが付き、角に描いたスタンプが重なることがある。最後の絵では小さくして都市のそばに残す。"
    },
    "fileNote": "A copy of the game's content/journeys/golden_triangle/public/assets/tourism/india/jaipur_hawa_mahal_night.webp (not kept here; src/tools/prepare_photos.py reads it from this path)."
   },
@@ -442,7 +442,7 @@
    "sourceUrl": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400018",
    "site": "incompetech.com",
    "isrc": "USUAN1400018",
-   "creditText": "\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/",
+   "creditText": "\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/",
    "checkedAt": "2026-11-17",
    "licenseEvidence": "content/journeys/golden_triangle/presentation/music.json (sources: incompetech_jalandhar, checkedAt 2026-11-12; tracks: gt_jalandhar); incompetech licence page read again on 2026-11-17 (see recheck).",
    "gameFile": "content/journeys/golden_triangle/public/assets/bgm/gt_jalandhar.mp3",
@@ -581,6 +581,6 @@
   "checkedAt": "2026-11-17",
   "why": "Before the movie went into the game (its credits in the manifest).",
   "how": "Each Commons file page opened again (the Commons API answered 429; the pages loaded), its author line and licence box read; the incompetech licence page's credit block read.",
-  "result": "All 8 photos and the music: author and licence as below. Red Fort page: licence box 'Attribution: © Vyacheslav Argenberg'. Taj Mahal page: 'Simply attribute the photo to the author: Philip Nalangan. But, make sure the photo attribution is visible and readable.' Pietra dura page: GFDL 1.2+ or CC BY 3.0 at the user's choice (CC BY 3.0 is used). Hawa Mahal and Peacock Gate: Flickr review of 7 September 2023, cc-by-2.0. Jalandhar: incompetech gives the credit 'Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/'."
+  "result": "All 8 photos and the music: author and licence as below. Red Fort page: licence box 'Attribution: © Vyacheslav Argenberg'. Taj Mahal page: 'Simply attribute the photo to the author: Philip Nalangan. But, make sure the photo attribution is visible and readable.' Pietra dura page: GFDL 1.2+ or CC BY 3.0 at the user's choice (CC BY 3.0 is used). Hawa Mahal and Peacock Gate: Flickr review of 7 September 2023, cc-by-2.0. Jalandhar: the track page's Attribution Code (index.html?isrc=USUAN1400018, read again on 2026-11-17) is '\"Jalandhar\" Kevin MacLeod (incompetech.com) / Licensed under Creative Commons: By Attribution 4.0 License / http://creativecommons.org/licenses/by/4.0/' (three lines; creditText joins them with spaces, word for word). The FAQ's Crediting example differs a little ('By Attribution 4.0' without 'License', and https). The game's BGM credit for the same track (presentation/music.json) is written without 'License'."
  }
 }

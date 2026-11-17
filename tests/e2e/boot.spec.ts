@@ -57,6 +57,25 @@ test("the title screen opens every registered journey without writing a save, an
   await expect(selector).toHaveValue(catalog.journeys.filter((journey) => journey.status === "available").at(-1)!.id);
 });
 
+// A journey's opening movie (manifest openingMovie) fits the screen held upright and sideways: the 2026-11-17 review found
+// the player kept the movie's 9:16 height on a screen wider than that, so a phone held sideways or a PC saw only its top
+// quarter and never its title. The first playable journey with a movie, from the generated catalog.
+test("an opening movie fits the screen held upright and sideways", { tag: tier.gate }, async ({ page }) => {
+  const journey = journeyCatalog().journeys.find((entry) => entry.status === "available" && entry.openingMovie);
+  test.skip(!journey, "no playable journey has an opening movie");
+  await page.goto("/");
+  await ops.chooseJourney(page, journey!.id);
+  await ops.fillNames(page);
+  await ops.startButton(page).click();
+  const video = page.getByTestId("opening-movie").locator("video");
+  // Its size is known (the box follows the movie's 9:16 only once the browser has read it).
+  await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.videoHeight)).toBeGreaterThan(0);
+  for (const size of [page.viewportSize()!, { width: 844, height: 390 }]) {
+    await page.setViewportSize(size);
+    await expect.poll(() => video.boundingBox()).toEqual({ x: 0, y: 0, ...size });
+  }
+});
+
 // AGENTS.md 「本番ビルドでは、設定でパスワード…を入れてDebugモードをオンにした端末だけが使い、Debugの画面は
 // タイトル画面で読み込むファイルに入れない」, docs/07 acceptance 14: in a fresh browser (Debug mode off) the
 // production build ignores ?debug and ?character-preview, opens the normal title, has no test hook and

@@ -16,6 +16,15 @@
 | 入れ物 | MP4（faststart） |
 | ファイルの大きさ | 2,979,771 バイト（2.98 MB。画質 CRF 19.5。上限 2,990,000 バイト） |
 
+## まだ決めていないこと
+
+制作者が決めることです。決まるまでは今のままにしています（2026-11-17の点検で見つかったもの）。
+
+1. **同じ出だしが2回続く。** ムービーの音楽は、デリー到着の場面の BGM（`presentation/music.json` の `"arrival": "gt_jalandhar"`）と同じ曲の頭15秒です。最後まで見ると、同じ出だしを続けて2回聞きます。案は3つです。(1) このままにする。(2) 同じ曲の別の15秒（曲の 153.31〜168.31 秒。点検の作業用のフォルダに候補の音がある）で、音だけ作り直す。(3) 最後まで見たときは、到着の曲を15秒目から流す（ゲームのコードを変える）。
+2. **始めの約1.5秒、2つの曲が重なる。** 「旅をはじめる」を押すと、タイトルの曲が消えていく間に、ムービーの曲がもう鳴り始めます（前からの動き。`src/audio/scene-music.ts`）。気になるなら、ムービーに入るときだけタイトルの曲を短く（0.3秒ほどで）消します。実機で聞いて決めます。
+3. **素材のライセンスでビルドを止めるか。** 今は、CC BY・CC0・パブリックドメインでない素材を `credits` に書くと、`content:build` は注意を出すだけで止まりません。AGENTS.md の第一原則では、ビルドを止めるのは、ゲームやセーブが壊れるものと、AGENTS.md に書いた決まりを破るものだけだからです。止めたいときは、その決まりを AGENTS.md に書いてから、`scripts/opening-movie.ts` を止める形に戻します。
+4. **BGM のクレジットの文。** ムービーの音楽のクレジットは、曲のページの文のとおり「By Attribution 4.0 License」です。ゲームの BGM の出典（`presentation/music.json`）の同じ曲の文は「License」の語がありません。そろえるかどうかを決めます（どちらも作者・曲名・ライセンス・URL は入っています）。
+
 ## 作り直す
 
 リポジトリのいちばん上で、次の1つの命令を実行します。
@@ -95,7 +104,7 @@ python3 -I authoring/journeys/golden_triangle/movies/opening/src/tools/contact_s
 | 写真を替える・切り抜きを変える | `src/tools/prepare_photos.py` の表（写真・切り抜く範囲・大きさ）。元の写真を `photos/new/`（Commons の 1920px 版。`sources.json` の `downloadUrl`）と `photos/game/`（ゲームの `content/journeys/golden_triangle/public/assets/tourism/india/` の WebP）に置いてから実行する。結果は `src/photos/` と `src/photos/crops.json` |
 | 音楽の切り方 | `music/segment.flac` を作り直す（ゲームの `gt_jalandhar.mp3` の頭から 15.0 秒、48 kHz、+7.15 dB、終わりの 1.2 秒を小さくして消す）。ffmpeg で読める音なら、`render.mjs` の `MUSIC` を変えてもよい |
 
-写真・音楽・フォントを足したり替えたりしたら、`sources.json` と、ゲームの出典 `content/journeys/golden_triangle/manifest.json` の `openingMovie.credits` を直します。使ってよいのは、自作・CC0・パブリックドメイン・CC BY だけです。CC BY-SA・NC・ND は使えません（`content:build` が止まります）。
+写真・音楽・フォントを足したり替えたりしたら、`sources.json` と、ゲームの出典 `content/journeys/golden_triangle/manifest.json` の `openingMovie.credits` を直します。素材は、自作・CC0・パブリックドメイン・CC BY のものを使います。ほかのライセンス（CC BY-SA・NC・ND、GFDL、分からないものなど）を `credits` に書くと、`content:build` が注意を出します（止まりはしません）。
 
 ## フォルダの中身
 
@@ -135,7 +144,7 @@ python3 -I authoring/journeys/golden_triangle/movies/opening/src/tools/contact_s
 | クトゥブ・ミナール | Raghith | CC0 1.0 | [Commons](https://commons.wikimedia.org/wiki/File:The_Qutb_Minar_in_morning.jpg) | 切り抜き、364×650px に縮小 |
 | アーチ越しのタージ・マハル | Philip Nalangan | CC BY 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Taj_Mahal_Agra_India_2025_06.jpg) | 切り抜き、916×1145px に縮小 |
 | アーグラ城の象眼細工（ゲームの写真） | Biswarup Ganguly | CC BY 3.0（GFDL との選択。CC BY 3.0 を使う） | [Commons](https://commons.wikimedia.org/wiki/File:Pietra_Dura_-_Pillar_-_Musamman_Burj_-_Agra_Fort_-_Agra_2014-05-14_4143.JPG) | ゲームの写真をさらに切り抜き、352×440px に縮小 |
-| 夜のハワー・マハル（ゲームの写真） | Ninara | CC BY 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:Hawa_Mahal_by_night.jpg) | ゲームの写真をさらに切り抜き、794×992px に縮小 |
+| 夜のハワー・マハル（ゲームの写真） | Ninara | CC BY 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:Hawa_Mahal_by_night.jpg) | ゲームの写真をさらに切り抜き（794×992px。縮小はしていない） |
 | 丘の上のアンベール城 | Dudva | CC0 1.0 | [Commons](https://commons.wikimedia.org/wiki/File:Amber_Fort_in_Jaipur_2.jpg) | 切り抜き、620×310px に縮小、Display P3 から sRGB に変換 |
 | シティ・パレスの孔雀の門 | Ninara | CC BY 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:City_Palace_(Jaipur)_-_Peacock_Gate.jpg) | 切り抜き、352×440px に縮小 |
 
@@ -149,7 +158,9 @@ python3 -I authoring/journeys/golden_triangle/movies/opening/src/tools/contact_s
 |---|---|---|---|---|
 | "Jalandhar" | Kevin MacLeod（incompetech.com） | CC BY 4.0 | [incompetech](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400018)（ゲームの `gt_jalandhar.mp3` と同じ曲） | 頭から 15.0 秒を切り出し、48 kHz に変換、終わりの 1.2 秒を小さくして消した。動画にするとき、ゲームの音楽と同じ大きさ（約 -20 LUFS）にそろえ、AAC にした |
 
-クレジットの文：`"Jalandhar" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/`
+クレジットの文：`"Jalandhar" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/`
+
+曲のページ（`index.html?isrc=USUAN1400018`）の「Attribution Code」の3行を、そのまま1行につないだものです（2026-11-17に確かめた）。incompetech の FAQ の例は少し違います（「License」の語がなく、URL が https）。ゲームの BGM の出典（`presentation/music.json`）の同じ曲の文は、「License」の語がない書き方のままです。
 
 音は音楽だけです。写真を貼る音やスタンプの音は入れていません。
 

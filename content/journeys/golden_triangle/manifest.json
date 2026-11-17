@@ -125,7 +125,7 @@
         "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
         "checkedAt": "2026-11-17",
         "url": "https://commons.wikimedia.org/wiki/File:Hawa_Mahal_by_night.jpg",
-        "changesJa": "ゲームで使っている写真（元の画像の下端と左端を切り取り、1600×992px に縮小したもの）を、さらに切り抜き（横243〜1037px）、794×992px に縮小。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、下の余白に手書き風の名前を添え、動かしている。"
+        "changesJa": "ゲームで使っている写真（元の画像の下端と左端を切り取り、1600×992px に縮小したもの）を、さらに切り抜き（横243〜1037px、794×992px）。大きさはそのまま。動画では、白いふちとテープを付けた紙焼きにして傾けて地図に貼り、下の余白に手書き風の名前を添え、動かしている。"
       },
       {
         "useJa": "写真：丘の上のアンベール城",
@@ -155,7 +155,7 @@
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
         "checkedAt": "2026-11-17",
         "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400018",
-        "creditJa": "\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/",
+        "creditJa": "\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/",
         "changesJa": "ゲームの BGM と同じ曲の頭から15秒を切り出し、終わりの1.2秒を小さくして消した。音の大きさをゲームの音楽にそろえ、AAC に変換。"
       }
     ]

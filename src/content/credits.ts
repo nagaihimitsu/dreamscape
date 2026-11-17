@@ -223,11 +223,13 @@ export function groupMovieCredits(catalog: readonly Pick<Journey, "id" | "nameJa
 }
 
 /**
- * The opening movies' works of the generated content, for the credits list. As with the photos, a production build
- * (`production`) leaves out a journey players cannot open yet: it serves none of its files, its movie included.
+ * The opening movies' works of the generated content (or of `catalog`), for the credits list. As with the photos, a
+ * production build (`production`) leaves out a journey players cannot open yet: it serves none of its files, its movie
+ * included.
  */
-export function movieCredits(production: boolean = import.meta.env.PROD): JourneyMovieCredits[] {
-  return groupMovieCredits(production ? journeys.filter(journeyFilesShip) : journeys);
+export function movieCredits(production: boolean = import.meta.env.PROD,
+  catalog: readonly Pick<Journey, "id" | "nameJa" | "status" | "openingMovie">[] = journeys): JourneyMovieCredits[] {
+  return groupMovieCredits(production ? catalog.filter(journeyFilesShip) : catalog);
 }
 
 /**

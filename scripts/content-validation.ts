@@ -61,7 +61,7 @@ import { miniGameUseKey, type MiniGameUse } from "../src/minigames/uses";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
-import { checkOpeningMovieCredits, openingMovieWarnings } from "./opening-movie";
+import { openingMovieWarnings } from "./opening-movie";
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
 import { audioLayersOf } from "./audio-layers";
 import { sceneAudioOf } from "./scene-audio";
@@ -440,8 +440,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (movie && !servedFile(publicFiles, movie.videoPath))
       throw new Error(`オープニングムービーのファイルがありません：${plannedJourney.id} の openingMovie.videoPath "${movie.videoPath}" を ` +
         `${journeyFolderPath(sources.tree, plannedJourney.id)}/public/ に置いてください（Missing opening movie: ${plannedJourney.id}/${movie.videoPath}）。`);
-    // The works inside it (2026-11-17): none under a share-alike, non-commercial or no-derivatives licence.
-    checkOpeningMovieCredits(plannedJourney, manifestFiles.get(plannedJourney.id) ?? plannedJourney.id);
+    // The licences of the works inside it are notes only (openingMovieWarnings below; scripts/opening-movie.ts).
   }
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.

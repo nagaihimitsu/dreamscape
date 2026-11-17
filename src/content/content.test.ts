@@ -77,7 +77,7 @@ describe("content build acceptance", () => {
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp (place it in content/journeys/milano/public/)");
   }, 120000);
-  it("checks an opening movie's file and credits: stops without the file or at a share-alike licence, notes a movie without credits", async () => {
+  it("checks an opening movie's file and credits: stops without the file, notes a share-alike licence and a movie without credits", async () => {
     // Milan has no movie in the game; the fixture gives it one (2026-11-17, manifest openingMovie.credits).
     const manifestFile = path.join(fixture, "content/journeys/milano/manifest.json");
     const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
@@ -91,10 +91,12 @@ describe("content build acceptance", () => {
       `オープニングムービーのファイルがありません：milano の openingMovie.videoPath "${videoPath}" を content/journeys/milano/public/ に置いてください`);
     await mkdir(path.join(fixture, "content/journeys/milano/public/assets/movies"), { recursive: true });
     await writeFile(path.join(fixture, "content/journeys/milano/public", videoPath), "movie");
-    // A share-alike work in the movie: the build stops and names it.
+    // A share-alike work in the movie: a note names it, and the build goes on (a licence breaks neither the game nor a save).
     await withMovie({ videoPath, credits: [credit, { ...credit, license: "CC BY-SA 4.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/" }] });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "オープニングムービーに使えないライセンスです：content/journeys/milano/manifest.json の openingMovie.credits の2番目（写真：試験の門）は「CC BY-SA 4.0」です。");
+    const shareAlike = await buildContent(fixture, false);
+    expect(shareAlike.warnings.filter((warning) => warning.kind === "opening-movie")).toEqual([{ kind: "opening-movie",
+      message: expect.stringContaining("オープニングムービーの素材のライセンスを確かめてください：content/journeys/milano/manifest.json の " +
+        "openingMovie.credits の2番目（写真：試験の門）。ライセンスのページ（https://creativecommons.org/licenses/by-sa/4.0/）が SA・NC・ND のものです。") }]);
     // No credits: a note, and the build goes on (the India movie has its credits, so it gets none).
     await withMovie({ videoPath });
     const result = await buildContent(fixture, false);

@@ -172,15 +172,27 @@ describe("the opening movies' credits (2026-11-17)", () => {
     ]);
   });
 
+  it("leaves out in a production build the movie of a journey players cannot open yet, and keeps it in development", () => {
+    const music = { ...credit, useJa: "音楽", titleJa: "Test tune" };
+    const catalog = [
+      { id: "ta_trip", nameJa: "ta編", status: "available" as const, openingMovie: { videoPath, credits: [credit] } },
+      { id: "tb_trip", nameJa: "tb編", status: "preparing" as const, openingMovie: { videoPath, credits: [music] } },
+    ];
+    expect(movieCredits(true, catalog).map((group) => group.journeyId)).toEqual(["ta_trip"]);
+    expect(movieCredits(false, catalog).map((group) => group.journeyId)).toEqual(["ta_trip", "tb_trip"]);
+  });
+
   it("credits the eight photos and the music of the Golden Triangle movie, and leaves out in a production build what it does not serve", () => {
     const india = movieCredits(false).find((group) => group.journeyId === "golden_triangle")!;
     expect(india.headingJa).toBe("インド・ゴールデントライアングル編（9件）");
     expect(india.credits.map((item) => item.useJa)).toEqual(["写真：インド門", "写真：レッド・フォートのラホール門", "写真：クトゥブ・ミナール",
       "写真：アーチ越しのタージ・マハル", "写真：アーグラ城の象眼細工", "写真：夜のハワー・マハル", "写真：丘の上のアンベール城", "写真：シティ・パレスの孔雀の門", "音楽"]);
-    // What the authors ask for: the © of the Red Fort's photographer, the name of the Taj Mahal's, Kevin MacLeod's credit line.
+    // What the authors ask for: the © of the Red Fort's photographer, the name of the Taj Mahal's, and Kevin MacLeod's credit
+    // line as the track's incompetech page gives it (its Attribution Code, word for word).
     expect(india.credits.find((item) => item.author === "Vyacheslav Argenberg")?.creditJa).toBe("© Vyacheslav Argenberg");
     expect(india.credits.find((item) => item.author === "Philip Nalangan")?.creditJa).toBe("写真：Philip Nalangan");
-    expect(india.credits.at(-1)?.creditJa).toContain("\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0");
+    expect(india.credits.at(-1)?.creditJa)
+      .toBe("\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/");
     // Every work was changed for the movie (CC BY asks that changes be indicated).
     expect(india.credits.every((item) => item.changesJa)).toBe(true);
     expect(movieCredits(true).map((group) => group.journeyId))

@@ -64,8 +64,8 @@ export const journeyCatalogSchema = z.object({
     openingMovie: z.object({
       videoPath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.mp4$/),
       // The works inside the movie (photos, music; 2026-11-17), for 「出典・権利の一覧」's オープニングムービー
-      // (src/content/credits.ts movieCredits). content:build refuses a share-alike, non-commercial or no-derivatives
-      // licence (scripts/opening-movie.ts) and notes a movie without credits.
+      // (src/content/credits.ts movieCredits). content:build notes a licence that is not CC BY, CC0 or public domain and
+      // a movie without credits (scripts/opening-movie.ts; notes only, the build goes on).
       credits: z.array(z.object({
         /** What it is in the movie, as the list names it (「写真：インド門」, 「音楽」). */
         useJa: text,
