@@ -128,8 +128,10 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_jaipur_main_jantar_mantar_battle_001
     携帯の時刻は、国の標準時ですよね
     # speaker: heroine
+    # voice: gt_jaipur_main_jantar_mantar_battle_002
     ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います
 - else:
     # speaker: narrator

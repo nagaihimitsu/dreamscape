@@ -438,6 +438,29 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
     expect(lostSlot.getItem(SAVE_KEY)).toBe(lost);
   });
 
+  it("writes the reading of the player's name, an optional field of v23: kept through save and load, absent in an older save, kana only", () => {
+    // The reading captured as the name was typed (2026-11-17; the Jaipur mehndi draws a kanji name in Latin letters from it).
+    const state = createGame("太一", "あゆみ", { journeyId: "golden_triangle", playerNameReading: "たいち" });
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, playerNameReading: "たいち" });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    // A save of this version written before the field (or without a reading): it loads, and saves again as it is.
+    const { playerNameReading: _reading, ...older } = state;
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, JSON.stringify(older));
+    expect(loadGame(slot)).toEqual({ status: "loaded", state: older });
+    // A reading not in kana (or blank) never comes from the game: unreadable, kept as it is, never overwritten.
+    for (const reading of ["Taichi", "太一", " ", ""]) {
+      const raw = JSON.stringify({ ...state, playerNameReading: reading });
+      const bad = new MemoryStorage();
+      bad.setItem(SAVE_KEY, raw);
+      expect(loadGame(bad)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+      expect(saveGame(bad, state).ok).toBe(false);
+      expect(bad.getItem(SAVE_KEY)).toBe(raw);
+    }
+  });
+
   it("writes the album of v22: empty in a new game, kept through save and load, and required", () => {
     // The photos the lines' # photo: took: the sample's album illustrations (src/domain/album.test.ts holds the recording
     // rule and what an album may name).

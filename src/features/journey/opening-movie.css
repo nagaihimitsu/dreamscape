@@ -9,9 +9,13 @@
   place-items: center;
   background: #000;
 }
+/* The box is the screen: without min-height and max-height a grid item keeps the movie's 9:16 height, so on a screen
+   wider than 9:16 (a phone held sideways, a PC) its lower part, the title, was cut off below the screen. */
 .opening-movie-video {
   width: 100%;
   height: 100%;
+  min-height: 0;
+  max-height: 100%;
   object-fit: contain;
   background: #000;
 }

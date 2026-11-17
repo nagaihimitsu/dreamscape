@@ -59,10 +59,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_delhi_bangla_sahib_roti_001
         ……ずるい。わたしのは、インドになったのに
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_delhi_bangla_sahib_roti_002
         ふふっ。丸すぎて怒られる人、初めて見た
     }
 * [ローティー：四角くなった # option: truck_bed]
@@ -120,10 +122,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_delhi_bangla_sahib_roti_005
         真剣すぎ。……ローティーに、トンネルは要らないと思う
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_delhi_bangla_sahib_roti_006
         ふふっ。トンネル開通、おめでとう。……次のは、穴なしでね
     }
 -

@@ -4,7 +4,7 @@ import { episodes, presentation, scenes, tourismAssets } from "../../../src/cont
 import { encounters } from "../../../src/content/encounters";
 import { clearCity, cityStart, departFromClearedCity, finishEpisode, newJourney, withAp } from "../../../src/dev/scenario-builders";
 import { getActiveBattleContent } from "../../../src/domain/battle";
-import { startDate, validateGameState, type GameState } from "../../../src/domain/game";
+import { setNames, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { openMiniGame } from "../../../src/domain/minigame";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
@@ -285,6 +285,43 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       expect(shown(second, "けれど、何と書いてあるかは、もう知っている。")).toBe(true);
       expect(second.state.completedEncounterIds).toContain("gt_jaipur_hotel_mehndi_night");
       expect(ids(rest(second.state, 20 * 60))).toEqual([]);
+    }, 300_000);
+
+    it("says the name found in the mehndi in Latin letters, or in Hindi letters when it has none: never in Japanese ones", () => {
+      // 2026-11-16, the user's decision: no Japanese letters in the pattern. 「自分の名前を隠して」 hides the player's name;
+      // the line after the find says what the game draws there (player_name_latin: a kana name in Hepburn, a kanji name
+      // from the reading captured as it was typed when that fits; a kanji name without one is written in Hindi letters, as
+      // the mini-game draws its letterless mark).
+      const jalMahal = playDate(jaipurStart(), "gt_jaipur_date_jal_mahal", ["hide_my_name"]);
+      expect(jalMahal.state.storyProgress.flags).toContain("gt_jaipur_mehndi_his_name");
+      const found = "親指の付け根、蔓が三回巻いたところ。模様のふりをした文字が、小さく並んでいた。";
+      const hindi = `${found}上に一本線の引かれた、ヒンディー語の文字。読めない。それでも、自分の名前だと分かった。`;
+      /** The mehndi night played to `found` with these names: the night's lines, from its first to the heroine's last. */
+      const night = (playerName: string, reading?: string) => {
+        const named = setNames(jalMahal.state, playerName, jalMahal.state.heroineName, reading);
+        expect(named.playerName).toBe(playerName);
+        expect(named.playerNameReading).toBe(reading);
+        const played = rest(named, 20 * 60, ["found"]);
+        expect(ids(played)).toContain("gt_jaipur_hotel_mehndi_night");
+        const first = played.lines.findIndex((line) => line.startsWith("夜、宿の中庭のランプの下。"));
+        const last = played.lines.indexOf("わたしは、ちょっと、くすぐったい。ずっと、持って歩いてたんだもん");
+        expect(first).toBeGreaterThanOrEqual(0);
+        expect(last).toBeGreaterThan(first);
+        const lines = played.lines.slice(first, last + 1);
+        // The name typed (kana or kanji) is never what the pattern shows.
+        expect(lines.filter((line) => line.includes(playerName))).toEqual([]);
+        return lines.find((line) => line.startsWith(found));
+      };
+      // A kana name: written in Hepburn, in Latin letters only.
+      const kana = night("たいち");
+      expect(kana).toBe(`${found}アルファベットで、Taichi。`);
+      expect(/アルファベットで、([^。]+)。$/u.exec(kana ?? "")?.[1]).toMatch(/^[A-Za-z' -]+$/u);
+      // A kanji name with the reading captured as it was typed, which fits it: the reading in Hepburn.
+      expect(night("太一", "たいち")).toBe(`${found}アルファベットで、Taichi。`);
+      // A kanji name with no reading, or one too short for its kanji: no Latin form, so Farhana wrote it in Hindi letters
+      // (no fake letters are made).
+      expect(night("太一")).toBe(hindi);
+      expect(night("太一", "た")).toBe(hindi);
     }, 300_000);
 
     /** From `start` in Jaipur, every Jaipur sightseeing done; the map's finale (its moment opens with it) played to its epilogue. */

@@ -142,14 +142,18 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_mehtab_bagh_023
         ……今の、振らなかったでしょ。それ、一番嫌
         # speaker: heroine
+        # voice: gt_agra_date_mehtab_bagh_024
         本気で投げたのに、振ってももらえなかったら、わたしの一球、なかったことになっちゃう
     - else:
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_agra_date_mehtab_bagh_025
         今の、見送ったでしょ。勝たせてくれようとしたなら、優しいのは分かる。でも、それはだめ
         # speaker: heroine
+        # voice: gt_agra_date_mehtab_bagh_026
         わたしの一球、ちゃんと打ってほしかった
     }
     # speaker: narrator
@@ -202,12 +206,14 @@ INCLUDE modules.ink
     ……当たった。時間。引き分け
     # speaker: heroine
     # reaction: heroine,exasperated,sigh
+    # voice: gt_agra_mehtab_bagh_another_ball_001
     振らなくても、当たっちゃうんだ。……ずるい
     # speaker: narrator
     # emotion: smile
     彼女はボールを拾って、それから、ようやく笑った。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_mehtab_bagh_another_ball_002
     次にどこかでやるときは、ちゃんと振ってね。かっこよくなくていいから、本気の方がいい
 - ->->
 
@@ -220,15 +226,19 @@ INCLUDE modules.ink
 { romance_result == "negative":
     # speaker: heroine
     # reaction: heroine,surprised,sweat
+    # voice: gt_agra_mehtab_bagh_ball_six_001
     今の、わたしの頭のすぐ上だったよ。……本気で、とは言ったけど。本気すぎ
     # speaker: heroine
+    # voice: gt_agra_mehtab_bagh_ball_six_002
     拾いに行くのは、そっちだからね。わたしは、ここで待ってる
 - else:
     # speaker: heroine
     # reaction: heroine,surprised_big,sparkle
+    # voice: gt_agra_mehtab_bagh_ball_six_003
     わ、見た？　わたしの頭の上、まっすぐ越えていった！
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_mehtab_bagh_ball_six_004
     悔しいのに、ちょっと見とれちゃった。……拾いに行くの、一緒に走ってあげる。投げた責任があるから
 }
 # speaker: narrator
@@ -265,10 +275,12 @@ INCLUDE modules.ink
 { romance_result == "negative":
     # speaker: heroine
     # reaction: heroine,worried,sigh
+    # voice: gt_agra_mehtab_bagh_ball_edge_001
     引き分け、か。……今日くらいは、勝ちたかったな
 - else:
     # speaker: heroine
     # reaction: heroine,teasing,anger
+    # voice: gt_agra_mehtab_bagh_ball_edge_002
     当てられた。悔しい。次は、ちゃんと煉瓦を落とすから
 }
 # speaker: narrator
@@ -283,18 +295,23 @@ INCLUDE modules.ink
 { romance_result == "negative":
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
+    # voice: gt_agra_mehtab_bagh_ball_bowled_001
     落ちた！　二つ目！　わたしの球で、今日、二つ目！
     # speaker: heroine
     # reaction: heroine,shy,sweat
+    # voice: gt_agra_mehtab_bagh_ball_bowled_002
     ……あ。ごめん、喜びすぎた。空振りした人の、目の前で
 - else:
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
+    # voice: gt_agra_mehtab_bagh_ball_bowled_003
     また落ちた！　二つ目！　今日、わたし、二つ目だよ！
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_agra_mehtab_bagh_ball_bowled_004
     ふふっ、今の空振り、すっごく本気だった。風の音、ここまで聞こえたもん
     # speaker: heroine
+    # voice: gt_agra_mehtab_bagh_ball_bowled_005
     本気で振ってくれたから、ちゃんと勝った気がする
 }
 ->->

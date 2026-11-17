@@ -1,7 +1,7 @@
 import { Story } from "inkjs";
 import type { BattleDefinition, QuizDefinition } from "../src/content/schemas";
 import type { TourismCatalog } from "../src/content/tourism-schemas";
-import { checkLinesWithoutChoice } from "./ink-validation";
+import { checkLinesWithoutChoice, latinNameValues } from "./ink-validation";
 import { forEachCondAssignment } from "./scene-conditions";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
@@ -64,7 +64,8 @@ export function validateTourism(
     if (!compiled)
       throw new Error(`Unknown tourism guideStoryId: ${guideStoryId}`);
     try {
-      forEachCondAssignment(compiled, (bind) => {
+      // Each cond assignment, and each value of the name in Latin letters the guide reads.
+      for (const latin of latinNameValues(compiled)) forEachCondAssignment(compiled, (bind) => {
         const story = new Story(compiled);
         bind(story);
         story.onError = (message) => {
@@ -79,6 +80,8 @@ export function validateTourism(
             throw new Error(`Missing tourism guide variable: ${name}`);
           story.variablesState.$(name, value);
         }
+        // The name in Latin letters: only where the story declares it (modules.ink does).
+        if (story.variablesState.GlobalVariableExistsWithName("player_name_latin")) story.variablesState.$("player_name_latin", latin);
         let count = 0;
         let hasText = false;
         let speaker: string = "narrator";

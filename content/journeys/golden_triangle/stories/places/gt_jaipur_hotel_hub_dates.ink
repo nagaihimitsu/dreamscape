@@ -44,9 +44,11 @@ INCLUDE modules.ink
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
+    # voice: gt_jaipur_date_confession_018
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて
     # speaker: heroine
     # emotion: serious
+    # voice: gt_jaipur_date_confession_019
     ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
@@ -65,13 +67,16 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_date_confession_012
         前の屋上のことも、ちゃんと覚えてる。だから、今夜は、ぼかさずに言うね
         # speaker: heroine
+        # voice: gt_jaipur_date_confession_013
         ごめんなさい。恋人にはなれない。最後の町まで考えて、そう決めたの
         # speaker: narrator
         遠くの通りで、楽隊がひときわ大きく鳴った。どこかの花婿が、角を曲がったらしい。
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_confession_014
         あれは、よその人のお祝い。……でも、ここまで一緒に来た旅は、わたしたちのだよ
     - else:
         # speaker: heroine
@@ -93,12 +98,15 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_jaipur_date_confession_015
         前の夜も、今夜も、ちゃんと聞いてた。軽く聞いたことは、一回もないよ
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_date_confession_016
         でも、今夜答えたら、楽隊と灯りのせいにしちゃう。……こんなに、にぎやかなんだもん
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_date_confession_017
         だから、明るいところで、わたしから言う。今度は、答えを持っていくから
         # speaker: narrator
         # stand: close
@@ -109,8 +117,10 @@ INCLUDE modules.ink
         # voice: gt_jaipur_date_confession_009
         うれしい。本当に、うれしい
         # speaker: heroine
+        # voice: gt_jaipur_date_confession_020
         でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに
         # speaker: heroine
+        # voice: gt_jaipur_date_confession_021
         ……それは、嫌なの。ちゃんと、わたしが決めたいから
         # speaker: heroine
         # emotion: worried
@@ -167,8 +177,10 @@ INCLUDE modules.ink
         // 「読めなかった」と答えた人：ロータス寺院で約束したとおり、声で言い直す。
         # speaker: heroine
         # recall: gt_album_d61
+        # voice: gt_jaipur_confession_lead_012
         あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
         # speaker: heroine
+        # voice: gt_jaipur_confession_lead_013
         あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
@@ -178,11 +190,14 @@ INCLUDE modules.ink
         // ほかの答えの人：あの場面では読めなかった字を、ここで初めて明かす（2026-11-16）。
         # speaker: heroine
         # recall: gt_album_d61
+        # voice: gt_jaipur_confession_lead_014
         あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字
         # speaker: heroine
+        # voice: gt_jaipur_confession_lead_015
         あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_jaipur_confession_lead_016
         書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番
     }
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
@@ -204,6 +219,7 @@ INCLUDE modules.ink
         - cond("date gt_delhi_date_confession") and cond("date gt_agra_date_confession"):
             # speaker: heroine
             # emotion: smile
+            # voice: gt_jaipur_confession_lead_011
             今夜も、話があるんだね。いいよ。楽隊に負けないくらいの声で、聞かせて
         - else:
             # speaker: heroine
@@ -323,19 +339,23 @@ INCLUDE modules.ink
 宿の玄関で、彼女が先に待っていた。「すぐそこだから」とだけ言って、角をひとつ曲がる。
 ハワー・マハルの正面に、日の光が当たっていた。夜の屋上からは橙色に見えた町が、いまは、ちゃんと桃色をしている。
 # speaker: heroine
+# voice: gt_jaipur_date_answer_001
 見て。夜と、ぜんぜん色がちがう。……こっちが、この町のふだんの顔なのかな
 # speaker: narrator
 どこかの店のシャッターが上がる音。牛が一頭、ゆっくり通りを渡っていく。楽隊の音は、どこにもしない。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_answer_002
 屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に
 { cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
     # speaker: heroine
+    # voice: gt_jaipur_date_answer_003
     答えは、わたしから言うって約束したもんね。だから、今日はわたしから
 }
 { cond("episode gt_jaipur_finale"):
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_answer_004
     それに、通りの真ん中で踊れたんだもん。通りの真ん中でなら、ちゃんと言える気がした
 }
 { confession_result == "accepted":
@@ -348,9 +368,11 @@ INCLUDE modules.ink
 # speaker: heroine
 # quiet: scene
 # pause: 600
+# voice: gt_jaipur_date_answer_005
 好き。……付き合いたい。旅が終わっても、一緒にいたい
 # speaker: heroine
 # reaction: heroine,teasing,blush
+# voice: gt_jaipur_date_answer_006
 昼間に、牛の横で言ってるんだからね。もう、夜のせいにはできないよ
 # speaker: narrator
 すぐ後ろを、さっきの牛が通っていった。彼女は笑いそうになるのをこらえて、こちらを見たままでいた。
@@ -358,11 +380,13 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_answer_memory
     # speaker: heroine
     # reaction: heroine,shy_deep,heart
+    # voice: gt_jaipur_date_answer_007
     知ってた。……うそ。ちょっとだけ、こわかった。今、聞けてよかった
 * [「もう一回、言って」 # option: say_it_again]
     # memory: gt_jaipur_date_answer_memory
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_jaipur_date_answer_008
     だめ。一日一回まで。……うそ。好き。はい、二回目。三回目は、夜に取っておく
 * [黙って、手を差し出す # option: offer_hand]
     # memory: gt_jaipur_date_answer_memory
@@ -370,32 +394,40 @@ INCLUDE modules.ink
     彼女は少しだけ迷ってから、自分の手を重ねた。
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_jaipur_date_answer_009
     ……ふふ。窓がこんなにあるのに。まあ、いいか。見られても
 -
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_date_answer_010
 じゃあ、恋人になって最初の行き先、わたしが決めていい？　……もう、決めてあるんだけど
 -> END
 
 = not_now
 # speaker: heroine
 # quiet: scene
+# voice: gt_jaipur_date_answer_011
 ちゃんと考えた。夜の気持ちじゃなくて、昼の明るさで。……それで、決めた
 # speaker: heroine
+# voice: gt_jaipur_date_answer_012
 恋人としては、今は、一緒にいられない。これが、わたしの答え。待たせたのに、ごめんなさい
 # speaker: narrator
 彼女は目をそらさなかった。たくさんの小さな窓が、上から二人を見下ろしていた。
 # speaker: heroine
+# voice: gt_jaipur_date_answer_013
 この旅で隣にいてくれたのは、本当にうれしかった。それは、答えとは別に、ちゃんと本当
 * [「聞かせてくれて、ありがとう」 # option: thank_her]
     # speaker: heroine
+    # voice: gt_jaipur_date_answer_014
     うん。……言うの、こわかった。でも、黙ったまま旅を終えるほうが、もっといやだった
 * [「少しだけ、一人で歩いてくる」 # option: walk_alone]
     # speaker: heroine
+    # voice: gt_jaipur_date_answer_015
     うん。宿で待ってる。戻ってきたら、チャイにしよう。今度は、わたしがおごる
 * [「残りの旅も、いつもどおりで」 # option: as_usual]
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_jaipur_date_answer_016
     それ、わたしが言おうと思ってたのに。……先に言われちゃった
 -
 # speaker: narrator

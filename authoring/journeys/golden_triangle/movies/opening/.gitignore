@@ -1,0 +1,4 @@
+# Made by src/render.mjs and src/tools/contact_sheets.py; not kept in Git (README.md).
+/out/
+# The original photos, put here only to cut the prints again (src/tools/prepare_photos.py).
+/photos/

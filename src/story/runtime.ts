@@ -20,6 +20,7 @@ import { SOUND_ID } from "../content/sounds";
 import { MINI_GAME_ID, MINI_GAME_OUTCOME_ID } from "../minigames/contract";
 import { isValidMiniGameTag, MINI_GAME_KEY, MINI_GAME_PREFIX } from "../minigames/tag";
 import { MINI_GAME_ART_ID } from "../minigames/art";
+import { playerLatinName } from "../domain/name-romaji";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
@@ -179,10 +180,25 @@ const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly str
   readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot, initialSticky);
 const storyChoices = (story: Story) => storyChoicesOf(story, tagContext);
 
+/** The names a story is told: the game state's (the names as typed, and the reading of the player's name if known). */
+export type StoryNames = Readonly<{ playerName: string; heroineName: string; playerNameReading?: string }>;
+
+/**
+ * The names as Ink's variables (src/story/modules.ink): player_name and heroine_name as typed, and player_name_latin, the
+ * player's name in Latin letters (playerLatinName: a kana or Latin name's own, else its reading's when that fits; ""
+ * when it has none).
+ */
+export function nameVariables(names: StoryNames): { player_name: string; heroine_name: string; player_name_latin: string } {
+  return {
+    player_name: names.playerName,
+    heroine_name: names.heroineName,
+    player_name_latin: playerLatinName(names.playerNameReading, names.playerName) ?? "",
+  };
+}
+
 export function beginStory(
   storyId: string,
-  playerName: string,
-  heroineName: string,
+  names: StoryNames,
   variables: Record<string, string | number | boolean> = {},
   memoryIds: readonly string[] = [],
   inventory: Readonly<Record<string, ItemStatus>> = {},
@@ -192,13 +208,11 @@ export function beginStory(
   originKnot?: string,
 ): StoryStep {
   const story = runtime(storyId, undefined, memoryIds, inventory, conditions);
-  story.variablesState.$("player_name", playerName);
-  story.variablesState.$("heroine_name", heroineName);
-  for (const [name, value] of Object.entries(variables)) {
-    // Old cafe saves/scripts do not declare Phase 2 variables. Never rewrite them.
-    if (story.variablesState.GlobalVariableExistsWithName(name))
-      story.variablesState.$(name, value);
-  }
+  const { player_name, heroine_name, player_name_latin } = nameVariables(names);
+  story.variablesState.$("player_name", player_name);
+  story.variablesState.$("heroine_name", heroine_name);
+  // The Latin name only where the story declares it (modules.ink does; a learning story's own VARs may not).
+  setOptionalVariables(story, { player_name_latin, ...variables });
   // A place file's scene starts at its knot; its file's top runs nothing.
   const path = splitStoryAddress(storyId).path;
   if (path !== undefined) story.ChoosePathString(path);
@@ -283,7 +297,7 @@ export function peekStory(storyId: string, saved: string, previous: StoryFrame, 
   return peek;
 }
 
-// Optional presentation context was not present in earlier published Ink.
+// A variable a story does not declare is not set (inkjs refuses it): optional context, and the stories without it.
 function setOptionalVariables(story: Story, variables: Record<string, string | number | boolean>): void {
   for (const [name, value] of Object.entries(variables)) {
     if (story.variablesState.GlobalVariableExistsWithName(name))

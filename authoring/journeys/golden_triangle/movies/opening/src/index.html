@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dreamscape インド・ゴールデントライアングル編 オープニング（試作2）</title>
+<link rel="stylesheet" href="css/movie.css">
+</head>
+<body>
+<!-- The 720x1280 stage. window.renderAt(seconds) draws any moment of the 15 seconds from the time alone. -->
+<div id="fit">
+  <div id="stage">
+    <!-- 1. the map: paper (a canvas drawn at load), folds, grid, legend, pencilled route, triangle, gold line, city marks and names (one camera transform) -->
+    <div id="world" class="world"><svg id="map" viewBox="-720 -1280 2160 3840" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    <!-- 2. degree numbers on the frame edges (screen space, constant size) -->
+    <svg id="degrees" xmlns="http://www.w3.org/2000/svg"></svg>
+    <!-- 3. what lies on the map: prints with tape and captions, stamps (the same camera transform) -->
+    <div id="world2" class="world">
+      <div id="prints"></div>
+      <div id="stamps"></div>
+    </div>
+    <!-- 4. the title (screen space) -->
+    <svg id="title" xmlns="http://www.w3.org/2000/svg"></svg>
+    <!-- 5. edge shade (static), then the dimming of the first frames -->
+    <div id="shade"></div>
+    <div id="black"></div>
+    <div id="guides"><i id="g_skip"></i><i id="g_buttons"></i></div>
+  </div>
+</div>
+<div id="controls" hidden>
+  <button id="c_play" type="button">再生</button>
+  <input id="c_seek" type="range" min="0" max="449" step="1" value="0" aria-label="フレーム">
+  <output id="c_time">0.000 s / f0</output>
+</div>
+<script src="js/timeline.js"></script>
+<script src="js/glyphs.js"></script>
+<script src="js/type.js"></script>
+<script src="js/paper.js"></script>
+<script src="js/stamp.js"></script>
+<script src="js/movie.js"></script>
+<script src="js/preview.js"></script>
+</body>
+</html>

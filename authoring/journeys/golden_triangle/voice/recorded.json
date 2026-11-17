@@ -790,8 +790,8 @@
       "script": "2026-11-12"
     },
     "gt_delhi_jama_masjid_guide_003": {
-      "text": "ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……今、お昼過ぎ。完全に出遅れた",
-      "script": "2026-11-12"
+      "text": "ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……朝ごはんの時間、もう過ぎちゃった。完全に出遅れた",
+      "script": "2026-11-17"
     },
     "gt_delhi_jama_masjid_guide_004": {
       "text": "明日の朝、もう一回来る？　……って言いたいけど、明日の朝は別の街かもしれないし",
@@ -3376,6 +3376,546 @@
     "gt_jaipur_date_panna_meena_kund_029": {
       "text": "ここで聞いた噂話も、全部、井戸の底に置いていこう。わたしたちの分だけ、持って帰って",
       "script": "2026-11-15"
+    },
+    "gt_delhi_bangla_sahib_roti_001": {
+      "text": "……ずるい。わたしのは、インドになったのに",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_bangla_sahib_roti_002": {
+      "text": "ふふっ。丸すぎて怒られる人、初めて見た",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_bangla_sahib_roti_005": {
+      "text": "真剣すぎ。……ローティーに、トンネルは要らないと思う",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_bangla_sahib_roti_006": {
+      "text": "ふふっ。トンネル開通、おめでとう。……次のは、穴なしでね",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_chandni_chowk_duel_002": {
+      "text": "バス！　この人の分も、バス！",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_chandni_chowk_duel_003": {
+      "text": "勝負は、わたしの勝ちでいい？　……はい、水。ゆっくり飲んで",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_chandni_chowk_duel_004": {
+      "text": "負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_001": {
+      "text": "うん。じゃあ、『せーの』で。……わたしの声が小さくても、笑わないでね",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_002": {
+      "text": "うん、二人なら届きそう。わたしが『せーの』って言うから、その次ね",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_003": {
+      "text": "そろった！　今の、ぴったりだったよね",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_004": {
+      "text": "えっ、もう？　……わたし、置いていかれちゃった",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_005": {
+      "text": "早いよ！　『その次』って言ったのに。ふふ、一人で全部言っちゃうんだもん",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_006": {
+      "text": "今の、わたしの声だけ先に出てた。……恥ずかしい",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_007": {
+      "text": "遅いよ！　一瞬、わたし一人で叫んでた",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_008": {
+      "text": "……一緒にって、言ったよね",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_009": {
+      "text": "もしかして、わざと黙ってた？",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_lodhi_garden_say_together_010": {
+      "text": "もう。……でも、言えちゃった。一人で、最後まで",
+      "script": "2026-11-17"
+    },
+    "gt_agra_akbar_tomb_monkey_attar_007": {
+      "text": "取引成立、だね。……ありがとうございました？",
+      "script": "2026-11-17"
+    },
+    "gt_agra_akbar_tomb_monkey_catch_attar_001": {
+      "text": "わたしの雨、無事だった！",
+      "script": "2026-11-17"
+    },
+    "gt_agra_akbar_tomb_monkey_catch_attar_002": {
+      "text": "……今の、ちょっと格好よかったよ。ちょっとだけね",
+      "script": "2026-11-17"
+    },
+    "gt_agra_main_fatehpur_sikri_battle_001": {
+      "text": "この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです",
+      "script": "2026-11-17"
+    },
+    "gt_agra_main_fatehpur_sikri_battle_002": {
+      "text": "……ムケーシュさんの家も、誰かが渡ってくる橋みたいなものじゃないかなって",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_013": {
+      "text": "デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_014": {
+      "text": "だから、わたしもごまかさない。ごめんなさい。今は、その気持ちに応えられない",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_015": {
+      "text": "座って。こっち向きの席、半分あげる。ドームの見えない、地味な席だけど",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_016": {
+      "text": "デリーの夜のこと、忘れてないよ。今夜の言葉も、ちゃんと届いてる",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_017": {
+      "text": "でも、まだ答えが出ないの。こっち向きに座って、ちゃんと考えてるのに",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_018": {
+      "text": "いいかげんな『はい』も、『いいえ』も、したくない。もう少しだけ、待ってて",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_019": {
+      "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_confession_020": {
+      "text": "……それは、嫌なの。ちゃんと、わたしが決めたいから",
+      "script": "2026-11-17"
+    },
+    "gt_agra_confession_lead_011": {
+      "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ",
+      "script": "2026-11-17"
+    },
+    "gt_agra_confession_lead_012": {
+      "text": "あれね、『まだいたい』って書いたの",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_mariam_tomb_023": {
+      "text": "ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_mehtab_bagh_023": {
+      "text": "……今の、振らなかったでしょ。それ、一番嫌",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_mehtab_bagh_024": {
+      "text": "本気で投げたのに、振ってももらえなかったら、わたしの一球、なかったことになっちゃう",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_mehtab_bagh_025": {
+      "text": "今の、見送ったでしょ。勝たせてくれようとしたなら、優しいのは分かる。でも、それはだめ",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_mehtab_bagh_026": {
+      "text": "わたしの一球、ちゃんと打ってほしかった",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_another_ball_001": {
+      "text": "振らなくても、当たっちゃうんだ。……ずるい",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_another_ball_002": {
+      "text": "次にどこかでやるときは、ちゃんと振ってね。かっこよくなくていいから、本気の方がいい",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_six_001": {
+      "text": "今の、わたしの頭のすぐ上だったよ。……本気で、とは言ったけど。本気すぎ",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_six_002": {
+      "text": "拾いに行くのは、そっちだからね。わたしは、ここで待ってる",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_six_003": {
+      "text": "わ、見た？　わたしの頭の上、まっすぐ越えていった！",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_six_004": {
+      "text": "悔しいのに、ちょっと見とれちゃった。……拾いに行くの、一緒に走ってあげる。投げた責任があるから",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_edge_001": {
+      "text": "引き分け、か。……今日くらいは、勝ちたかったな",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_edge_002": {
+      "text": "当てられた。悔しい。次は、ちゃんと煉瓦を落とすから",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_bowled_001": {
+      "text": "落ちた！　二つ目！　わたしの球で、今日、二つ目！",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_bowled_002": {
+      "text": "……あ。ごめん、喜びすぎた。空振りした人の、目の前で",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_bowled_003": {
+      "text": "また落ちた！　二つ目！　今日、わたし、二つ目だよ！",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_bowled_004": {
+      "text": "ふふっ、今の空振り、すっごく本気だった。風の音、ここまで聞こえたもん",
+      "script": "2026-11-17"
+    },
+    "gt_agra_mehtab_bagh_ball_bowled_005": {
+      "text": "本気で振ってくれたから、ちゃんと勝った気がする",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_ram_bagh_030": {
+      "text": "クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない",
+      "script": "2026-11-17"
+    },
+    "gt_agra_date_ram_bagh_031": {
+      "text": "道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ",
+      "script": "2026-11-17"
+    },
+    "gt_agra_finale_battle_001": {
+      "text": "デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町",
+      "script": "2026-11-17"
+    },
+    "gt_agra_finale_battle_002": {
+      "text": "……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない",
+      "script": "2026-11-17"
+    },
+    "gt_agra_tour_back_leg_004": {
+      "text": "ヴィノードさんは、中に入ったこと、ありますか？",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_albert_hall_017": {
+      "text": "怖いって、ちゃんと言えるの、えらいよね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_albert_hall_018": {
+      "text": "……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_main_hawa_mahal_battle_001": {
+      "text": "ほら、あそこ。……ね、見えた？",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_main_hawa_mahal_battle_002": {
+      "text": "上から見ると、傘って、みんな同じ丸なんですね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_finale_battle_001": {
+      "text": "下手なの、わたしだけだった……！",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_finale_battle_002": {
+      "text": "ずれてる。でも、二人で同じだけずれてる",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_finale_battle_003": {
+      "text": "ふふっ。今のも、踊りってことにしよう",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_finale_battle_004": {
+      "text": "見てるだけは、自由とは違うんでしょ。……ほら",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_arrival_006": {
+      "text": "結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_arrival_007": {
+      "text": "……今度は、行きたい所、わたしからも言うね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_018": {
+      "text": "迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_019": {
+      "text": "……わたしも、一緒にいたい。旅が終わっても",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_012": {
+      "text": "前の屋上のことも、ちゃんと覚えてる。だから、今夜は、ぼかさずに言うね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_013": {
+      "text": "ごめんなさい。恋人にはなれない。最後の町まで考えて、そう決めたの",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_014": {
+      "text": "あれは、よその人のお祝い。……でも、ここまで一緒に来た旅は、わたしたちのだよ",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_015": {
+      "text": "前の夜も、今夜も、ちゃんと聞いてた。軽く聞いたことは、一回もないよ",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_016": {
+      "text": "でも、今夜答えたら、楽隊と灯りのせいにしちゃう。……こんなに、にぎやかなんだもん",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_017": {
+      "text": "だから、明るいところで、わたしから言う。今度は、答えを持っていくから",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_020": {
+      "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_confession_021": {
+      "text": "……それは、嫌なの。ちゃんと、わたしが決めたいから",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_confession_lead_012": {
+      "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_confession_lead_013": {
+      "text": "あれね、『まだいたい』って書いたの",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_confession_lead_011": {
+      "text": "今夜も、話があるんだね。いいよ。楽隊に負けないくらいの声で、聞かせて",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_001": {
+      "text": "見て。夜と、ぜんぜん色がちがう。……こっちが、この町のふだんの顔なのかな",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_002": {
+      "text": "屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_003": {
+      "text": "答えは、わたしから言うって約束したもんね。だから、今日はわたしから",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_004": {
+      "text": "それに、通りの真ん中で踊れたんだもん。通りの真ん中でなら、ちゃんと言える気がした",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_005": {
+      "text": "好き。……付き合いたい。旅が終わっても、一緒にいたい",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_006": {
+      "text": "昼間に、牛の横で言ってるんだからね。もう、夜のせいにはできないよ",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_007": {
+      "text": "知ってた。……うそ。ちょっとだけ、こわかった。今、聞けてよかった",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_008": {
+      "text": "だめ。一日一回まで。……うそ。好き。はい、二回目。三回目は、夜に取っておく",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_009": {
+      "text": "……ふふ。窓がこんなにあるのに。まあ、いいか。見られても",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_010": {
+      "text": "じゃあ、恋人になって最初の行き先、わたしが決めていい？　……もう、決めてあるんだけど",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_011": {
+      "text": "ちゃんと考えた。夜の気持ちじゃなくて、昼の明るさで。……それで、決めた",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_012": {
+      "text": "恋人としては、今は、一緒にいられない。これが、わたしの答え。待たせたのに、ごめんなさい",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_013": {
+      "text": "この旅で隣にいてくれたのは、本当にうれしかった。それは、答えとは別に、ちゃんと本当",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_014": {
+      "text": "うん。……言うの、こわかった。でも、黙ったまま旅を終えるほうが、もっといやだった",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_015": {
+      "text": "うん。宿で待ってる。戻ってきたら、チャイにしよう。今度は、わたしがおごる",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_answer_016": {
+      "text": "それ、わたしが言おうと思ってたのに。……先に言われちゃった",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_hotel_mehndi_night_017": {
+      "text": "今朝、教えてもらったばっかりなのに。……ふふ、忘れっぽいんだから",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_hotel_mehndi_night_018": {
+      "text": "さっき、自信満々に違う所を指してたでしょ。……ふふ、あの顔、見せてあげたかったな",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_hotel_mehndi_morning_006": {
+      "text": "でも、きれいに出てよかった。しばらく、ちゃんと残りそう",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_jaigarh_fort_map_002": {
+      "text": "本物の宝の地図だ。……ねえ、最初の印は、どこ？",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_jal_mahal_021": {
+      "text": "わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_jal_mahal_022": {
+      "text": "結婚式には、間に合わなかったけど。この模様、日本に帰るまで、持つかな。持ってほしいな",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_main_jantar_mantar_battle_001": {
+      "text": "携帯の時刻は、国の標準時ですよね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_main_jantar_mantar_battle_002": {
+      "text": "ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_johari_bazaar_024": {
+      "text": "あのあと、結局、言いそびれちゃった。欲しいって",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_johari_bazaar_025": {
+      "text": "……カムラさんに、欲しいものは欲しいと言いなさいって、言われたばっかりだったのに",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_johari_bazaar_023": {
+      "text": "ち、違います！　ただの招待客です！",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_021": {
+      "text": "遅い……。ずっと待ってたんだよ。途中で、出ていこうかと思った",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_022": {
+      "text": "ちゃんと探してくれたんだね。時間かかったのに",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_023": {
+      "text": "……早すぎ。ちゃんと百、数えた？",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_031": {
+      "text": "ちょっと、のぞいてみただけなのに。かくれんぼって、もう少し、探してほしいんだけどな",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_025": {
+      "text": "えっ、もう？",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_032": {
+      "text": "ずるい。始まったばっかりなのに、かくれんぼ、終わっちゃった。……のぞいたの、見えちゃった？",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_027": {
+      "text": "次は、わたしが探す番。すぐ見つけてあげるから、覚悟してね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_033": {
+      "text": "探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_034": {
+      "text": "今の、ちゃんと覚えておいてね",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_030": {
+      "text": "王さまは、ほかの人に知られずに、誰の部屋にでも行けたって、言われてるんだよね。便利だけど、さみしい建物",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_035": {
+      "text": "わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_nahargarh_fort_036": {
+      "text": "……それから、自分からも、行きたい。待つだけじゃなくて",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_panna_meena_kund_030": {
+      "text": "アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。カムラさんに『毎日言葉にしなさい』って言われたから",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_panna_meena_kund_031": {
+      "text": "ニキルさんは、結婚式の段取りも三十枚のスライドにしてる",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_date_panna_meena_kund_032": {
+      "text": "それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_confession_lead_011": {
+      "text": "あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_confession_lead_012": {
+      "text": "あれね、『まだいたい』って書いたの",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_confession_lead_013": {
+      "text": "書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_date_lotus_temple_019": {
+      "text": "え……ほんとに？　……ずるい、そういう言い方",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_date_lotus_temple_020": {
+      "text": "うそ。読めた人は、そんな得意そうな顔しないもん",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_date_lotus_temple_021": {
+      "text": "……よかった。ほんとに読めてたら、ここで逃げてた",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_date_lotus_temple_022": {
+      "text": "……ちがうよ。ふざけて書いたんじゃないもん",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_date_lotus_temple_023": {
+      "text": "ふふっ。ちがいます",
+      "script": "2026-11-17"
+    },
+    "gt_delhi_date_lotus_temple_024": {
+      "text": "続きなのは、ちょっと合ってるかな。……正解は、まだ教えない",
+      "script": "2026-11-17"
+    },
+    "gt_agra_confession_lead_013": {
+      "text": "あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字",
+      "script": "2026-11-17"
+    },
+    "gt_agra_confession_lead_014": {
+      "text": "あれね、『まだいたい』って書いたの",
+      "script": "2026-11-17"
+    },
+    "gt_agra_confession_lead_015": {
+      "text": "書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_confession_lead_014": {
+      "text": "あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_confession_lead_015": {
+      "text": "あれね、『まだいたい』って書いたの",
+      "script": "2026-11-17"
+    },
+    "gt_jaipur_confession_lead_016": {
+      "text": "書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番",
+      "script": "2026-11-17"
     }
   }
 }

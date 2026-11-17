@@ -1,11 +1,14 @@
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
 import { searchProgress } from "../engines/search/engine";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiFairness, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
-import { MEHNDI_HIT, MEHNDI_PLACES, mehndiLoops, mehndiNear, mehndiSpotAt, writingSize } from "./Skin";
+import { MEHNDI_HIT, MEHNDI_PLACES, MEHNDI_WRITING, mehndiNear, mehndiSpotAt } from "./marks";
 import { fairness } from "./play";
+import { WRITING_FONT, writingSize, writingWidth } from "./writing";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 const spot = (name: (typeof MEHNDI_SPOTS)[number]) => ({ spot: MEHNDI_SPOTS.indexOf(name) });
@@ -105,17 +108,91 @@ describe("the hidden name's field", () => {
     expect(mehndiFairness({ ...MEHNDI_TUNING, lingerMs: 300 }).join()).toContain("lingerMs 300");
   });
 
-  it("draws the curls that look like writing as loops only (well-formed paths, no letters)", () => {
-    for (const loops of [3, 4, 5]) expect(mehndiLoops(loops, 6, 6)).toMatch(/^M-?[\d.]+ 0( c[-\d. ]+)+$/u);
+});
+
+// The player's name in Latin letters in Fasol SP Demo (docs/13 2.10; the user's decisions of 2026-11-16 and 2026-11-17): the
+// font declared for the letters only, its size from the font's own advances, as large as reads on a phone, smaller for a
+// long name, never cut, and only ever pressed narrower.
+describe("the name's writing in Fasol SP Demo", () => {
+  /** The thumb's room (the narrowest of the three places), in the hand's units. */
+  const ROOM = MEHNDI_WRITING.thumb.width;
+  const face = readFileSync(new URL("./skin.css", import.meta.url), "utf8").match(/@font-face\s*\{([^}]*)\}/u)?.[1] ?? "";
+
+  it("declares the bundled file, as distributed and beside its licence, for the letters A–Z, a–z and the space only", () => {
+    expect(face).toContain(`font-family: "${WRITING_FONT}";`);
+    // A relative url: the build bundles the file with the play's stylesheet (never a served path of public/).
+    const url = face.match(/src: url\("([^"]+)"\) format\("opentype"\);/u)?.[1];
+    expect(url).toBe("./fonts/FasolSPDemo.otf");
+    // The demo file as JustFreeFonts.com distributes it (version 1.002; the licence lets it be shared, not changed).
+    expect(createHash("sha256").update(readFileSync(new URL(url!, import.meta.url))).digest("hex"))
+      .toBe("00c19e5cce5fa58a68458a6b23a4efdbb107d8af66109e2ac6b6f9950a5fc0cb");
+    expect(readFileSync(new URL("./fonts/LICENSE-FasolSP.txt", import.meta.url), "utf8")).toContain("Resale is strictly prohibited");
+    // The demo draws an advert in place of digits and punctuation, and a letter with marks without them: those fall back.
+    expect(face.match(/unicode-range: ([^;]+);/u)?.[1]).toBe("U+0020, U+0041-005A, U+0061-007A");
+    // The width table counts exactly those characters as the font's (by its advances, the rest as the fallback draws them).
+    const drawn = (code: number) => code === 0x20 || (code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a);
+    for (let code = 0x20; code < 0x250; code += 1) {
+      const { low, high } = writingWidth(String.fromCodePoint(code));
+      expect(Math.abs(high / low - 1.01 / 0.9) < 1e-9, `U+${code.toString(16)}`).toBe(drawn(code));
+    }
   });
 
-  it("writes the name as typed, smaller for a long one, never cut", () => {
-    expect(writingSize("Aki", 60)).toEqual({ fontSize: 11, squeeze: false });
-    expect(writingSize("ひなた", 60)).toEqual({ fontSize: 11, squeeze: false });
-    const longer = writingSize("Alexandria", 60);
-    expect(longer.fontSize).toBeLessThan(11);
-    expect(longer.fontSize * 10 * 0.62).toBeCloseTo(60);
-    expect(writingSize("Alexandria Konstantinopoulou", 60)).toEqual({ fontSize: 4.5, squeeze: true });
-    expect(writingSize("あ".repeat(40), 60)).toEqual({ fontSize: 4.5, squeeze: true });
+  it("bounds the drawn width by the font's advances and the fallback's: every width measured in Chromium lies inside", () => {
+    // Shaped widths (em) in Chromium (getComputedTextLength at 100 units, geometricPrecision, 2026-11-17): the font's
+    // tightest kerning (Blblbl, Hlhlhl), its narrowest letters, kana names, long names, and names with a hyphen, an
+    // apostrophe, full stops or letters with marks, those in Noto Serif JP (as index.html loads it) and in the local serif.
+    const measured: [string, number, number][] = [
+      ["Blblbl", 2.757, 2.757], ["Hlhlhl", 2.589, 2.589], ["Ii", 0.338, 0.338], ["Taichi", 2.351, 2.351], ["Jo", 0.72, 0.72],
+      ["Masayoshi", 4.797, 4.797], ["Mmmmmmmm", 6.52, 6.52], ["Jan-Poru", 3.674, 3.661], ["O'Brien", 3.137, 3.121],
+      ["Ken’ichi", 3.383, 3.484], ["J. R. Smith", 4.209, 4.055], ["Zoë", 1.611, 1.508], ["Émile", 2.479, 2.438],
+      ["Øystein", 3.336, 3.291], ["Ōtani", 2.327, 2.282], ["Tsuchimochi Shintarou", 9.732, 9.732],
+      ["Alexandria Konstantinopoulou", 13.052, 13.052],
+    ];
+    for (const [name, ...ems] of measured) {
+      const { low, high } = writingWidth(name);
+      for (const em of ems) {
+        expect(low, name).toBeLessThanOrEqual(em);
+        expect(high, name).toBeGreaterThanOrEqual(em);
+      }
+    }
+    // One case: a capital is its small letter. A letter with marks is the fallback's (whole, with its marks).
+    expect(writingWidth("TAICHI")).toEqual(writingWidth("taichi"));
+    expect(writingWidth("Émile").low).toBeLessThan(writingWidth("Emile").low);
+    expect(writingWidth("Émile").high).toBeGreaterThan(writingWidth("Emile").high);
+    expect(writingWidth("Zoë")).toEqual(writingWidth("Zoë"));
+    expect(writingWidth("n̈")).toEqual({ low: 0.2, high: 1.1 });
   });
+
+  it("writes a short name at the largest size, and kana names of up to eight letters still large enough to read", () => {
+    for (const name of ["Jo", "Yuki", "Taichi", "Haruto", "Kenichi"]) expect(writingSize(name, ROOM), name).toEqual({ fontSize: 16, squeeze: false });
+    // Small letters 0.363 of the size high: 13 units makes 4.7, about 5.6 px on a 390 px phone (the palm 358 px for 300 units).
+    for (const name of ["Chihiro", "Momoko", "Masaaki", "Shintaro", "Takahiro"]) {
+      expect(writingSize(name, ROOM).fontSize, name).toBeGreaterThanOrEqual(13);
+    }
+    expect(writingSize("", ROOM)).toEqual({ fontSize: 16, squeeze: false });
+  });
+
+  it("fits every name in its room: unpressed names fit, and a pressed one is surely wider than its room (never stretched)", () => {
+    const names = ["Jo", "Taichi", "Masayoshi", "Jan-Poru", "O'Brien", "Mohammed", "Mmmmmmmmmmmm", "Tsuchimochi Shintarou",
+      "Alexandria Konstantinopoulou", "Fujiwara no Michinaga", "Shohei Ohtani", "Wolfgang Amadeus Mozart", "Ryu".repeat(24),
+      "Øyvind Ærø-Łukasz", "J. R. R. Tolkien"];
+    for (const { width } of Object.values(MEHNDI_WRITING)) for (const name of names) {
+      const { fontSize, squeeze } = writingSize(name, width);
+      const { low, high } = writingWidth(name);
+      if (squeeze) {
+        expect(fontSize, name).toBe(6);
+        expect(low * fontSize, name).toBeGreaterThan(width);
+      } else {
+        expect(high * fontSize, name).toBeLessThanOrEqual(width + 1e-9);
+        expect(fontSize, name).toBeLessThanOrEqual(16);
+      }
+    }
+    expect(writingSize("Alexandria Konstantinopoulou", ROOM)).toEqual({ fontSize: 6, squeeze: true });
+    // Too long for the smallest size but maybe not wider than the room there: a little smaller, unpressed.
+    const between = writingSize("Fujiwara no Michinaga", ROOM);
+    expect(between.squeeze).toBe(false);
+    expect(between.fontSize).toBeLessThan(6);
+    expect(between.fontSize).toBeGreaterThan(5);
+  });
+
 });

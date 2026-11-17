@@ -9,7 +9,9 @@ import {
   MAP_CREDIT,
   OWN_ARTWORK_NOTE_JA,
   parseThirdPartyLicenses,
+  groupMovieCredits,
   groupVoiceCredits,
+  movieCredits,
   photoCredits,
   THIRD_PARTY_LICENSES_FILE,
   voiceCredits,
@@ -115,6 +117,13 @@ describe("the fixed lines of the list", () => {
     expect(MAP_CREDIT.textJa).toContain("ODbL");
     expect(MAP_CREDIT.url).toBe("https://www.openstreetmap.org/copyright");
     expect(FONT_CREDIT.textJa).toContain("SIL Open Font License 1.1");
+    // The font shipped with the game (2026-11-17): its designer and its demo licence's terms, and the links to the author
+    // and to where it was got (the licence lets it be shared with a link to the author).
+    expect(FONT_CREDIT.textJa).toContain("Fasol SP Demo（Sasha Pavljenko。");
+    for (const term of ["商用を含めて無料", "再販売は禁止", "作者へのリンク", "ゲームと一緒に配って"]) expect(FONT_CREDIT.textJa).toContain(term);
+    expect(FONT_CREDIT.links.map((link) => link.url)).toEqual(expect.arrayContaining(["https://pavljenko.ru/", "https://justfreefonts.com/fonts/fasol-sp/"]));
+    // What it draws stays unsaid: the list must not give the mehndi's hidden name away.
+    expect(FONT_CREDIT.textJa).not.toMatch(/名前|手のひら|メヘンディ/u);
     expect(FONT_CREDIT.links.every((link) => link.url.startsWith("https://"))).toBe(true);
     // Only the places that do show fact sources are named (no date screen shows them).
     expect(OWN_ARTWORK_NOTE_JA).toBe("Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +
@@ -142,6 +151,53 @@ describe("the voices' credits (2026-11-13)", () => {
       useJa: "ヒロインの声", titleJa: "音声合成 Irodori-TTS v4.1-Small", author: "Aratako", license: "MIT License",
       url: "https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small",
     })]);
+  });
+});
+
+describe("the opening movies' credits (2026-11-17)", () => {
+  const credit = { useJa: "写真：試験の門", titleJa: "Test gate.jpg", author: "ta", license: "CC BY 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/4.0/", checkedAt: "2026-11-17", url: "https://commons.wikimedia.org/wiki/File:Test_gate.jpg" };
+  const videoPath = "assets/movies/ta_opening.mp4";
+
+  it("groups each journey's movie credits under its name, in catalog order, and leaves out journeys without a movie or credits", () => {
+    const music = { ...credit, useJa: "音楽", titleJa: "Test tune" };
+    expect(groupMovieCredits([
+      { id: "ta_trip", nameJa: "ta編", openingMovie: { videoPath, credits: [credit, music] } },
+      { id: "tb_trip", nameJa: "tb編" },
+      { id: "tc_trip", nameJa: "tc編", openingMovie: { videoPath } },
+      { id: "td_trip", nameJa: "td編", openingMovie: { videoPath, credits: [music] } },
+    ])).toEqual([
+      { journeyId: "ta_trip", nameJa: "ta編", headingJa: "ta編（2件）", credits: [credit, music] },
+      { journeyId: "td_trip", nameJa: "td編", headingJa: "td編（1件）", credits: [music] },
+    ]);
+  });
+
+  it("leaves out in a production build the movie of a journey players cannot open yet, and keeps it in development", () => {
+    const music = { ...credit, useJa: "音楽", titleJa: "Test tune" };
+    const catalog = [
+      { id: "ta_trip", nameJa: "ta編", status: "available" as const, openingMovie: { videoPath, credits: [credit] } },
+      { id: "tb_trip", nameJa: "tb編", status: "preparing" as const, openingMovie: { videoPath, credits: [music] } },
+    ];
+    expect(movieCredits(true, catalog).map((group) => group.journeyId)).toEqual(["ta_trip"]);
+    expect(movieCredits(false, catalog).map((group) => group.journeyId)).toEqual(["ta_trip", "tb_trip"]);
+  });
+
+  it("credits the eight photos and the music of the Golden Triangle movie, and leaves out in a production build what it does not serve", () => {
+    const india = movieCredits(false).find((group) => group.journeyId === "golden_triangle")!;
+    expect(india.headingJa).toBe("インド・ゴールデントライアングル編（9件）");
+    expect(india.credits.map((item) => item.useJa)).toEqual(["写真：インド門", "写真：レッド・フォートのラホール門", "写真：クトゥブ・ミナール",
+      "写真：アーチ越しのタージ・マハル", "写真：アーグラ城の象眼細工", "写真：夜のハワー・マハル", "写真：丘の上のアンベール城", "写真：シティ・パレスの孔雀の門", "音楽"]);
+    // What the authors ask for: the © of the Red Fort's photographer, the name of the Taj Mahal's, and Kevin MacLeod's credit
+    // line as the track's incompetech page gives it (its Attribution Code, word for word).
+    expect(india.credits.find((item) => item.author === "Vyacheslav Argenberg")?.creditJa).toBe("© Vyacheslav Argenberg");
+    expect(india.credits.find((item) => item.author === "Philip Nalangan")?.creditJa).toBe("写真：Philip Nalangan");
+    expect(india.credits.at(-1)?.creditJa)
+      .toBe("\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/");
+    // Every work was changed for the movie (CC BY asks that changes be indicated).
+    expect(india.credits.every((item) => item.changesJa)).toBe(true);
+    expect(movieCredits(true).map((group) => group.journeyId))
+      .toEqual(movieCredits(false).filter((group) => journeyFilesShip(journeys.find((journey) => journey.id === group.journeyId)!)).map((group) => group.journeyId));
+    expect(movieCredits()).toEqual(movieCredits(false));
   });
 });
 

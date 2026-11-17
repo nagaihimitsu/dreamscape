@@ -61,6 +61,7 @@ import { miniGameUseKey, type MiniGameUse } from "../src/minigames/uses";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
+import { openingMovieWarnings } from "./opening-movie";
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
 import { audioLayersOf } from "./audio-layers";
 import { sceneAudioOf } from "./scene-audio";
@@ -231,9 +232,13 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
  * the core layer, see selectJourneys), without reading the disk. With a
  * storyCache, the full-branch date validations (validateStory) reuse stored
  * successful results (story-validation-cache.ts); that is the only disk access.
+ * `untilName` (voice ID → what the clip says) names the voices recorded up to a name the player sets, whose `# voice:`
+ * may stand on a line with that name (recorded.json `spoken`, which buildContent reads: voice-files.ts checkVoiceTags).
  */
-export function validateContent(sources: ContentSources, options: { storyCache?: StoryValidationCache } = {}) {
+export function validateContent(sources: ContentSources,
+  options: { storyCache?: StoryValidationCache; untilName?: ReadonlyMap<string, string> } = {}) {
   const { root } = sources;
+  const untilName = options.untilName ?? new Map<string, string>();
   requireJourneyManifests(sources.manifests);
   // The authoring tools read these profiles; a broken one still fails the build early.
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
@@ -439,6 +444,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (movie && !servedFile(publicFiles, movie.videoPath))
       throw new Error(`オープニングムービーのファイルがありません：${plannedJourney.id} の openingMovie.videoPath "${movie.videoPath}" を ` +
         `${journeyFolderPath(sources.tree, plannedJourney.id)}/public/ に置いてください（Missing opening movie: ${plannedJourney.id}/${movie.videoPath}）。`);
+    // The licences of the works inside it are notes only (openingMovieWarnings below; scripts/opening-movie.ts).
   }
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.
@@ -680,8 +686,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
     // A # minigame:'s art.<slot> names a picture of the story's own journey or the root (docs/13 2.12).
     withContext(file, () => checkMiniGameArtTags(authored, storyLayer, miniGameArt));
-    // A line's # voice: names a recording of the story's own journey (2026-11-12).
-    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
+    // A line's # voice: names a recording of the story's own journey (2026-11-12), never on a line with a name the
+    // player sets but for a clip recorded up to the name (2026-11-17).
+    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory), untilName));
     // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
     withContext(file, () => checkSoundTags(authored, storyLayer, sounds));
     // A line's # bgm: names a shared track or one of the story's own journey, or stop or default (2026-11-12).
@@ -1773,7 +1780,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
     warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes,
-      ...glossaryWarnings(sources, glossaryTerms)],
+      ...glossaryWarnings(sources, glossaryTerms), ...openingMovieWarnings(journeyCatalog.journeys, (id) => manifestFiles.get(id) ?? id)],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

@@ -1,6 +1,7 @@
 /* The hidden name's field (Skin.tsx): her palm in the courtyard's night, dim; the lamp's pool of light shows it lit, with
-   the fine lines and the writing (a second copy of the hand, masked to a soft-edged circle whose edge breathes with the
-   flame). With the use's art.palm and art.lamp, those pictures in place of the drawn hand and lamp. */
+   the fine lines, the decorations that look like letters and the writing (a second copy of the hand, masked to a
+   soft-edged circle whose edge breathes with the flame). With the use's art.palm and art.lamp, those pictures in place
+   of the drawn hand and lamp. */
 /* The lamp's place, registered so that it glides (a tap, a Tab, おまかせ) instead of jumping. */
 @property --mehndi-lamp-x { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
 @property --mehndi-lamp-y { syntax: "<percentage>"; inherits: true; initial-value: 14%; }
@@ -31,8 +32,8 @@
 .mg-mehndi-hidden-name-picture { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 /* The night: the broad lines only just show. */
 .mg-mehndi-hidden-name-dark { filter: brightness(0.32) saturate(0.7); }
-/* The lamp's pool: the same hand, lit, with the fine lines and the writing, full in the middle, fading out to its edge
-   (light, not a hole cut in the dark). */
+/* The lamp's pool: the same hand, lit, with the fine lines, the decorations and the writing, full in the middle, fading
+   out to its edge (light, not a hole cut in the dark). */
 .mg-mehndi-hidden-name-lit {
   --mehndi-pool: radial-gradient(circle at var(--mehndi-lamp-x) var(--mehndi-lamp-y), #000 0 calc(var(--mehndi-lamp-r) * var(--mehndi-lamp-k)),
     rgba(0, 0, 0, 0.55) calc(var(--mehndi-lamp-r) * 1.35 * var(--mehndi-lamp-k)), transparent calc(var(--mehndi-lamp-r) * 1.75 * var(--mehndi-lamp-k)));
@@ -70,6 +71,31 @@
 .mg-mehndi-hidden-name-fill { fill: #8f3f17; stroke: none; }
 .mg-mehndi-hidden-name-fine { stroke-width: 1.2; }
 .mg-mehndi-hidden-name-writing { fill: #7a3010; font-family: "Noto Serif JP", serif; font-weight: 600; }
+/* The hand of the player's name and of the decorations made of its letters (docs/13 2.10, 2.12; the user's decisions of
+   2026-11-17): Fasol SP Demo by Sasha Pavljenko, the unmodified demo file bundled with the game (its licence:
+   fonts/LICENSE-FasolSP.txt), declared here, in the play's own stylesheet, so the title page never loads it; the relative
+   url makes the build bundle the file with the play. Only for the letters A–Z, a–z and the space (unicode-range): the demo
+   draws an advert ("GET FULL FONT") in place of digits and punctuation, and a letter with marks without its marks, so a
+   hyphen, an apostrophe or an é comes from the next font (the decorations are made of a–z only). */
+@font-face {
+  font-family: "Fasol SP Demo";
+  src: url("./fonts/FasolSPDemo.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A;
+}
+/* The name and the decorations in that hand, at the one weight it comes in (no made-up bold), the name's other characters
+   in the serif of the scene's other writing (FARHANA and the mark keep the rule above). Laid out at its exact advances
+   (geometricPrecision: no hinted rounding of each letter), as writing.ts and marks.ts measure it. */
+.mg-mehndi-hidden-name-lettering, .mg-mehndi-hidden-name-decoy {
+  font-family: "Fasol SP Demo", "Noto Serif JP", serif;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+}
+/* The decorations that look like letters (Skin.tsx's Decoys): the writing's colour, so that the colour tells nothing. */
+.mg-mehndi-hidden-name-decoy { fill: #7a3010; }
 .mg-mehndi-hidden-name-mark path { fill: none; stroke: #7a3010; stroke-width: 1.3; stroke-linecap: round; }
 .mg-mehndi-hidden-name-mark circle { fill: #7a3010; }
 .mg-mehndi-hidden-name-brass { fill: #c7963f; }
@@ -90,7 +116,8 @@
   transform: translate(-50%, -50%);
 }
 .mg-mehndi-hidden-name-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
-/* The places pointed at: a dashed ring where the writing is not; gold where it is, once found or shown. */
+/* The places pointed at: a dashed ring where the writing is not (round a decoration pointed at, as wide as Skin.tsx
+   says); gold where it is, once found or shown. */
 .mg-mehndi-hidden-name-mark-ring {
   position: absolute;
   width: 24cqw;
@@ -103,11 +130,19 @@
 }
 @keyframes mg-mehndi-hidden-name-ring { from { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
 .mg-mehndi-hidden-name-mark-ring[data-writing] { border: 2px solid #f0c860; box-shadow: 0 0 12px rgba(240, 200, 96, 0.7); }
-/* The real writing catches the light now and then (the tell; the curls that look like writing never do). */
+/* The real writing catches the light now and then (the tell; the decorations never do). */
 .mg-mehndi-hidden-name-writing { animation: mg-mehndi-hidden-name-glint var(--mehndi-glint-every, 1600ms) ease-in-out infinite; }
 @keyframes mg-mehndi-hidden-name-glint {
   0%, 68%, 100% { filter: none; }
   82% { filter: drop-shadow(0 0 1.6px rgba(255, 236, 190, 0.95)) brightness(1.4); }
+}
+/* With less motion nothing glints (the host stops every animation for 「演出を短縮する」 and the device's reduced motion:
+   its three selectors, as here): the writing keeps a faint steady sheen in the lamp's light instead, fainter than the
+   glint, so that its look still tells it from the decorations (2026-11-17 review: with them in the name's own hand, the
+   glint was the one tell by look, and it was gone). */
+:is([data-still], .reduce-motion) .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 1.2px rgba(255, 236, 190, 0.8)) brightness(1.22); }
+@media (prefers-reduced-motion: reduce) {
+  .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 1.2px rgba(255, 236, 190, 0.8)) brightness(1.22); }
 }
 /* Found: the pool opens over the whole palm and the writing glows (twice, then stays lit). */
 .mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-palm { --mehndi-lamp-r: 90cqw !important; transition: --mehndi-lamp-r 700ms ease-out; }
@@ -124,8 +159,9 @@
 }
 @keyframes mg-mehndi-hidden-name-twitch { 30% { transform: rotate(2.4deg) scaleY(0.955); } 65% { transform: rotate(-1deg) scaleY(0.975); } }
 [data-still] .mg-mehndi-hidden-name-palm[data-near] :is(.mg-mehndi-hidden-name-dark, .mg-mehndi-hidden-name-lit) { animation: none; transform: scaleY(0.98); }
-/* A finger holding the lamp still over a place aims at it: a gold ring closes round the place and 「離すと、ここ」 over it
-   (lifting the finger points there; the words above, clear of writing that lies under a place). */
+/* A finger holding the lamp still over a place, a decoration or the writing aims at it: a gold ring closes round it (as
+   wide as Skin.tsx says for a thing) and 「離すと、ここ」 over it (lifting the finger points there; the words above, clear
+   of writing that lies under a place). */
 .mg-mehndi-hidden-name-aim {
   position: absolute;
   z-index: 2;
@@ -153,8 +189,9 @@
   transform: translateX(-50%);
 }
 [data-still] .mg-mehndi-hidden-name-aim { animation: none; }
-/* Her hint of the area (from the third wrong place): a dotted ring round the writing's area (about 70px across at 390
-   wide), for as long as her word; the lamp stays where the player pointed. */
+/* Her hint of the area (from the third wrong thing): a dotted ring round the writing's area, as wide as Skin.tsx says
+   (marks.ts's mehndiHintRing: round the writing's room from the place to point at, 27 to 38cqw, no decoration inside it),
+   for as long as her word; the lamp stays where the player pointed. */
 .mg-mehndi-hidden-name-hint-ring {
   position: absolute;
   z-index: 1;
@@ -168,9 +205,13 @@
   animation: mg-mehndi-hidden-name-hint 1600ms ease-out both;
 }
 @keyframes mg-mehndi-hidden-name-hint { 0% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); } 15%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; } }
-/* Her word by a place pointed at (a wrong one, or the writing as she shows it): above it, or below one near the top. */
+/* Her word by what was pointed at (a wrong place or a decoration; her hint by the writing's area): above it, or below one
+   near the top; centred on it (--mehndi-said-x, from Skin.tsx), but never past the palm's sides (a decoration on the
+   little finger or the thumb: the bubble slides in). */
 .mg-mehndi-hidden-name-said {
+  --mehndi-said-dy: calc(-100% - 14cqw);
   position: absolute;
+  left: var(--mehndi-said-x);
   z-index: 2;
   width: max-content;
   max-width: min(78cqw, 260px);
@@ -187,13 +228,14 @@
   text-align: center;
   word-break: auto-phrase;
   pointer-events: none;
-  transform: translate(-50%, calc(-100% - 14cqw));
+  transform: translate(clamp(-1 * var(--mehndi-said-x), -50%, 100cqw - var(--mehndi-said-x) - 100%), var(--mehndi-said-dy));
   animation: mg-mehndi-hidden-name-said 220ms ease-out both;
 }
-.mg-mehndi-hidden-name-said[data-below] { transform: translate(-50%, 14cqw); }
-/* Her hint's word: above the ring (or below it near the top). */
-.mg-mehndi-hidden-name-said[data-hint] { transform: translate(-50%, calc(-100% - 21cqw)); }
-.mg-mehndi-hidden-name-said[data-hint][data-below] { transform: translate(-50%, 21cqw); }
+.mg-mehndi-hidden-name-said[data-below] { --mehndi-said-dy: 14cqw; }
+/* Her hint's word: above the ring (or below it near the top), clear of it by the ring's own half width (--mehndi-hint-r,
+   from Skin.tsx). */
+.mg-mehndi-hidden-name-said[data-hint] { --mehndi-said-dy: calc(-100% - var(--mehndi-hint-r, 19.5cqw) - 1.5cqw); }
+.mg-mehndi-hidden-name-said[data-hint][data-below] { --mehndi-said-dy: calc(var(--mehndi-hint-r, 19.5cqw) + 1.5cqw); }
 @keyframes mg-mehndi-hidden-name-said { from { opacity: 0; } }
 /* 「明日にする」 or the night run out: the lamp goes out. */
 .mg-mehndi-hidden-name:is([data-ending="button"], [data-ending="timeout"], [data-ending="idle"]) :is(.mg-mehndi-hidden-name-lit, .mg-mehndi-hidden-name-glow, .mg-mehndi-hidden-name-lamp) {

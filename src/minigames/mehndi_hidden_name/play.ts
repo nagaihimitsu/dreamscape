@@ -4,7 +4,8 @@ import { mehndiSkin, mehndiSkinFor } from "./Skin";
 
 // What the definition's load() reads (docs/13 2.3): the hidden name's play (the search engine with its skin) and its
 // rules; its tuning (E1), the same with Debug's room's edited numbers (retune; never in a story), and what in them would
-// mislead (fairness: the room says so).
+// mislead (fairness: the room says so). The font of the name and of the decorations made of its letters, Fasol SP Demo,
+// comes with the skin's stylesheet (skin.css).
 export const Play = searchPlay(mehndiSkin);
 export { mehndiRules as rules } from "./rules";
 export const tuning = MEHNDI_TUNING;

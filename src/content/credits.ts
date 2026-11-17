@@ -4,7 +4,7 @@ import soundData from "./generated/content/presentation/sounds.json";
 import musicData from "./generated/music.json";
 import ambienceData from "./generated/ambience.json";
 import { landmarks, presentation, tourismAssets } from "./index";
-import { journeyFilesShip, type Journey } from "./journey-catalog";
+import { journeyFilesShip, type Journey, type OpeningMovieCredit } from "./journey-catalog";
 import { journeys } from "./journeys";
 import type { LandmarkDefinition, TourismAsset } from "./tourism-schemas";
 import { soundCatalogSchema, type SoundEntry, type SoundSource } from "./sounds";
@@ -12,7 +12,8 @@ import { musicDataSchema } from "./music";
 import { ambienceDataSchema } from "./ambience";
 
 // The data of the credits list (「出典とライセンス」): the photos grouped by
-// journey and kind, the sound effects', the music's and the ambience's sources, the map and font lines, and the
+// journey and kind, the sound effects', the music's and the ambience's sources, the voices' and the opening movies'
+// works by journey, the map and font lines, and the
 // library licences that the production build writes. Pure functions, and photoCredits() over the
 // generated content for the screen. Artwork made for Dreamscape
 // (presentation/own-artwork.json) is never listed; only the note below says so.
@@ -204,6 +205,33 @@ export function voiceCredits(): VoiceCredit[] {
   return groupVoiceCredits(journeys);
 }
 
+/** The works inside one journey's opening movie (its manifest's `openingMovie.credits`, 2026-11-17), under its name. */
+export type JourneyMovieCredits = {
+  journeyId: string;
+  nameJa: string;
+  /** e.g. 「インド・ゴールデントライアングル編（9件）」. */
+  headingJa: string;
+  credits: OpeningMovieCredit[];
+};
+
+/** The opening movies' works, journey by journey in catalog order; journeys without a movie or without credits are left out. */
+export function groupMovieCredits(catalog: readonly Pick<Journey, "id" | "nameJa" | "openingMovie">[]): JourneyMovieCredits[] {
+  return catalog.flatMap((journey): JourneyMovieCredits[] => {
+    const credits = journey.openingMovie?.credits ?? [];
+    return credits.length ? [{ journeyId: journey.id, nameJa: journey.nameJa, headingJa: `${journey.nameJa}（${credits.length}件）`, credits }] : [];
+  });
+}
+
+/**
+ * The opening movies' works of the generated content (or of `catalog`), for the credits list. As with the photos, a
+ * production build (`production`) leaves out a journey players cannot open yet: it serves none of its files, its movie
+ * included.
+ */
+export function movieCredits(production: boolean = import.meta.env.PROD,
+  catalog: readonly Pick<Journey, "id" | "nameJa" | "status" | "openingMovie">[] = journeys): JourneyMovieCredits[] {
+  return groupMovieCredits(production ? catalog.filter(journeyFilesShip) : catalog);
+}
+
 /**
  * The libraries bundled into the production build and their licences, as
  * Vite's `build.license` writes them (`third-party-licenses.json` next to
@@ -237,16 +265,24 @@ export const MAP_CREDIT = {
 } as const;
 
 /**
- * The fonts, as a courtesy (decision D4): they are loaded from Google Fonts
- * (src/app/styles.css), not shipped. Both are under the SIL Open Font License
- * 1.1 (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08).
+ * The fonts, as a courtesy (decision D4). Noto Sans JP and Noto Serif JP are loaded from Google Fonts (index.html), not
+ * shipped (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08), under the SIL Open Font License 1.1.
+ * Fasol SP Demo by Sasha Pavljenko (the user's choice of 2026-11-17) is shipped with the game as the unmodified demo file
+ * (src/minigames/mehndi_hidden_name/fonts/, beside its licence, LICENSE-FasolSP.txt; checked 2026-11-17): free to use,
+ * commercial use included; no resale; the font may be shared, with a link to its author, which the links give. What it
+ * draws is not said (the player's name in the henna and the decorations made of its letters: saying so here would give
+ * the scene away, as the spelling field did, the user's word of 2026-11-17).
  */
 export const FONT_CREDIT = {
-  textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。",
+  textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
+    "Fasol SP Demo（Sasha Pavljenko。デモ版の利用許諾：商用を含めて無料、フォントの再販売は禁止、作者へのリンクを添えて共有できる）。" +
+    "ゲームの中の飾り文字に使い、ゲームと一緒に配っています。",
   links: [
     { labelJa: "Noto Sans JP", url: "https://fonts.google.com/noto/specimen/Noto+Sans+JP" },
     { labelJa: "Noto Serif JP", url: "https://fonts.google.com/noto/specimen/Noto+Serif+JP" },
     { labelJa: "SIL Open Font License", url: "https://openfontlicense.org/" },
+    { labelJa: "Sasha Pavljenko（Fasol SP の作者）", url: "https://pavljenko.ru/" },
+    { labelJa: "Fasol SP（JustFreeFonts.com）", url: "https://justfreefonts.com/fonts/fasol-sp/" },
   ],
 } as const;
 

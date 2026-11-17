@@ -4,6 +4,7 @@ import { startBattle } from "./battle";
 import { playBattleToResult } from "../dev/scenario-builders";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
 import { balance, dates, episodes } from "../content";
+import { defaultJourneyId } from "../content/journeys";
 import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
@@ -64,6 +65,33 @@ describe("AP and date rules", () => {
       playerName: "青",
       heroineName: "花",
     });
+  });
+  // The reading of the player's name (2026-11-17), captured as it was typed: kept in hiragana, left out when not known,
+  // and only in kana (the Jaipur mehndi draws a kanji name in Latin letters from it).
+  it("keeps the reading of the player's name in hiragana, leaves the field out without one and refuses other letters", () => {
+    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: "たいち" }).playerNameReading).toBe("たいち");
+    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: "タイチ" }).playerNameReading).toBe("たいち");
+    expect(createGame("太一", "あゆみ", { journeyId: defaultJourneyId })).not.toHaveProperty("playerNameReading");
+    expect(createGame()).not.toHaveProperty("playerNameReading");
+    for (const reading of ["Taichi", "太一", "", " "])
+      expect(() => createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: reading })).toThrow("名前の読みは、かなだけで書きます。");
+    expect(() => createGame("太一", "あゆみ", { journeyId: defaultJourneyId, playerNameReading: "た".repeat(balance.maxNameLength * 5 + 1) }))
+      .toThrow(zodIssues({ code: "too_big", path: [], maximum: balance.maxNameLength * 5 }));
+  });
+  it("changes, removes and refuses the reading with the names, and leaves the game alone when nothing changes", () => {
+    const state = createGame("太一", "あゆみ");
+    const read = setNames(state, "太一", "あゆみ", "たいち");
+    expect(read).toMatchObject({ playerNameReading: "たいち", revision: state.revision + 1 });
+    // Only the reading changed: still a change (the names alone are the same).
+    expect(setNames(read, "太一", "あゆみ", "ふとかず")).toMatchObject({ playerNameReading: "ふとかず", revision: read.revision + 1 });
+    expect(setNames(read, "太一", "あゆみ", "たいち")).toBe(read);
+    const cleared = setNames(read, "太一", "あゆみ");
+    expect(cleared).not.toHaveProperty("playerNameReading");
+    expect(cleared.revision).toBe(read.revision + 1);
+    expect(setNames(state, "太一", "あゆみ")).toBe(state);
+    // A reading not in kana changes nothing, not even the names given with it.
+    expect(setNames(read, "大地", "あゆみ", "Daichi")).toBe(read);
+    expect(validateGameState(JSON.parse(JSON.stringify(read)))).toEqual(read);
   });
   it("refuses an episode completion without battle evidence and never repeats its rewards", () => {
     const initial = createGame();
@@ -168,8 +196,8 @@ describe("Ink choices and reload boundaries", () => {
   }
   it("keeps names as plain Ink text in the Duomo guide", () => {
     const storyId = "places/milano_duomo.duomo_milano_guide";
-    expect(beginStory(storyId, "旅人", "{heroine_name}").frame.text).toContain("{heroine_name}");
-    expect(beginStory(storyId, "旅人", "<img src=x>").frame.text).toContain("<img src=x>");
+    expect(beginStory(storyId, { playerName: "旅人", heroineName: "{heroine_name}" }).frame.text).toContain("{heroine_name}");
+    expect(beginStory(storyId, { playerName: "旅人", heroineName: "<img src=x>" }).frame.text).toContain("<img src=x>");
   });
   it("rejects mismatched Ink pointers, content versions and choices", () => {
     const state = untilChoice(freshDate());

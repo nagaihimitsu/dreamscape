@@ -34,7 +34,7 @@ import {
   type StoryStep,
 } from "../story/runtime";
 
-import { GAME_STATE_VERSION, gameStateSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
+import { GAME_STATE_VERSION, gameStateSchema, nameReadingSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
 import {
   activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
   getMemoryCallback, canConfessSuccessfully, confessionResult, decidingOutcome,
@@ -67,7 +67,12 @@ export interface Availability {
 export function createGame(
   playerName = balance.defaultPlayerName,
   heroineName = balance.defaultHeroineName,
-  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: defaultJourneyId },
+  options: {
+    journeyId: string;
+    initialState?: NonNullable<Journey["initialState"]>;
+    /** The reading of the player's name captured as it was typed (none: not known or not needed; the field is left out). */
+    playerNameReading?: string;
+  } = { journeyId: defaultJourneyId },
 ): GameState {
   const journey = getJourney(options.journeyId);
   if (!journey || journey.status !== "available" || journey.initialBudget === null)
@@ -95,6 +100,7 @@ export function createGame(
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
+    ...(options.playerNameReading === undefined ? {} : { playerNameReading: nameReadingSchema.parse(options.playerNameReading) }),
     ap: initial?.ap ?? 0,
     affection: initial?.affection ?? 0,
     trust: initial?.trust ?? 0,
@@ -127,10 +133,16 @@ export function createGame(
   };
 }
 
+/**
+ * ゲームの設定's 「名前を保存」, outside any scene: the names, and the reading of the player's name captured as it was
+ * typed (undefined: not known or not needed, which removes a saved one). Nothing changes when one is not valid, or
+ * when all three are as saved.
+ */
 export function setNames(
   state: GameState,
   playerName: string,
   heroineName: string,
+  playerNameReading?: string,
 ): GameState {
   if (
     state.activeDate ||
@@ -141,17 +153,21 @@ export function setNames(
   )
     return state;
   const player = nameSchema.safeParse(playerName),
-    heroine = nameSchema.safeParse(heroineName);
+    heroine = nameSchema.safeParse(heroineName),
+    reading = playerNameReading === undefined ? undefined : nameReadingSchema.safeParse(playerNameReading);
   if (
     !player.success ||
     !heroine.success ||
-    (state.playerName === player.data && state.heroineName === heroine.data)
+    reading?.success === false ||
+    (state.playerName === player.data && state.heroineName === heroine.data && state.playerNameReading === reading?.data)
   )
     return state;
+  const { playerNameReading: _replaced, ...rest } = state;
   return {
-    ...state,
+    ...rest,
     playerName: player.data,
     heroineName: heroine.data,
+    ...(reading ? { playerNameReading: reading.data } : {}),
     revision: state.revision + 1,
   };
 }
@@ -224,7 +240,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
   // A date that decides the confession (a confession, her answer) passes the outcome it fixes now; other dates read a confession's.
   const deciding = decidesConfession(date);
   const outcome = deciding ? decidingOutcome(state, date) : confessionResult(state);
-  const result = beginStory(date.storyId, state.playerName, state.heroineName, {
+  const result = beginStory(date.storyId, state, {
     relationship_tone: deriveRelationshipTone(state),
     relationship_tone_before: deriveRelationshipTone(state),
     relationship_tone_after: deriveRelationshipTone(state),

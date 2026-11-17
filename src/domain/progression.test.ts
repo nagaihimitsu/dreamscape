@@ -159,7 +159,7 @@ describe("confession and relationship ending", () => {
     const storyId = "places/milano_darsena.milano_confession_01";
     const opening = (played: string[]) => {
       const conditions = (text: string) => text.startsWith("date ") && played.includes(text.slice("date ".length));
-      let step = beginStory(storyId, "晴", "灯", {}, [], {}, undefined, conditions);
+      let step = beginStory(storyId, { playerName: "晴", heroineName: "灯" }, {}, [], {}, undefined, conditions);
       const lines: string[] = [];
       for (let i = 0; !step.frame.choices.length && i < 100; i++) {
         lines.push(step.frame.text);

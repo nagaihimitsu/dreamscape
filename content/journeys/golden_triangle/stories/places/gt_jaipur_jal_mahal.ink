@@ -37,6 +37,7 @@ INCLUDE modules.ink
 わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。いつか、扇風機と鏡のある自分のお店を持つのが夢
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_jaipur_date_jal_mahal_021
 わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか
 # speaker: gt_farhana
 結婚式なら、手の甲と手のひら、両方ね。……花嫁さんの手には、模様の中に花婿の名前を隠すの。初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
@@ -184,6 +185,7 @@ INCLUDE modules.ink
 { cond("episode gt_jaipur_finale"):
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_jal_mahal_022
     結婚式には、間に合わなかったけど。この模様、日本に帰るまで、持つかな。持ってほしいな
 - else:
     # speaker: heroine

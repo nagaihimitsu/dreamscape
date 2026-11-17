@@ -1,0 +1,802 @@
+{
+ "scenes": {
+  "gt_jaipur_arrival": "ジャイプールの宿の帳場。結婚式のお祝いに何を持っていけばいいか尋ねたヒロインに、フロントの女性が笑いながら包み方を教える。着いたばかりの、明るく穏やかな場面。",
+  "gt_jaipur_date_albert_hall": "鳩だらけの広場の奥の博物館、アルバート・ホール。遠足の列から取り残された八歳くらいの女の子カヴィヤが、ミイラが怖くて階段を下りられずにいる。ヒロインと手をつないで展示室へ行き、案内を読むうちに怖さが消えて、最後は先生のもとへ自慢しに駆けていく。",
+  "gt_jaipur_main_amber_fort_battle": "アンベール城の中庭。ヒロインが買った手描きの細密画とそっくりの印刷が土産物屋に並んでいて、彼女は露店の画家サリームに問いただす。サリームは怒鳴らず冷たい声で二枚を比べさせ、写したのが店の方だと分かって、ヒロインが人前で訂正すると、絵の裏に自分の名前を書き入れる。",
+  "gt_jaipur_main_city_palace_battle": "シティ・パレスの銀の大壺の前と、四つの門の中庭。来週ドイツへ発つ息子ヴィシャールと、漬物を五キロ持たせたい母スシュマが言い合い、旅行者のヒロインが審判にされる。母はまくしたて、息子は小声で本音を言い、最後は「二キロと毎週の電話」で折り合う、可笑しくて少し切ない場面。",
+  "gt_jaipur_main_hawa_mahal_battle": "ハワー・マハル前の歩道。四十年ここで野菜を売るガウラが、上の窓から自分がどう見えるか見てきてほしいとヒロインに頼む。報告に目を赤くするが、入場券をおごるという申し出は「施しはいらない」とはねつけ、自分の足で行くと言い直して、お礼に大根をくれる。",
+  "gt_jaipur_finale_battle": "旅の最後の夜、照明に浮かぶハワー・マハル前の通り。楽隊と踊りでにぎやかな花婿の行列を、花嫁のいとこプージャーたちが門の前で止め、通行料を値切るクイズの余興が始まる。カムラがヒロインに答えさせ、終盤は格子窓の奥から花嫁の祖母が問い、最後は祖母が門の外に出てきて、通りが踊りの輪になる。",
+  "gt_jaipur_finale_after_envelope": "フィナーレの後、踊りの輪がひと息ついた夜の通り。ヒロインが祝儀袋をカムラに差し出し、カムラは中の一ルピー玉（と、あれば手紙）を確かめる。ぶっきらぼうだが、うれしさのにじむ短いやりとり。",
+  "gt_jaipur_finale_after_reel": "フィナーレの後、踊りの輪がほどけた夜の通り。花嫁のいとこプージャーが携帯を握って走ってきて、ヒロインがデリーの階段井戸の動画の『きゃー？』の人だと気づき、大はしゃぎでからかう。",
+  "gt_jaipur_epilogue": "翌朝の宿の中庭。運転手を値切ってオートリキシャで現れたカムラが、デリーで渡した段ボールのメモに一行書き足し、花嫁の祖母のその後を伝える。ヒロインに「黙らないこと」と念を押す、くつろいだ別れの場面で、最後の一言はヒロインの答えで変わる。",
+  "gt_jaipur_hotel_mehndi_morning": "朝の宿の帳場。一晩で濃くなったヒロインの手のメヘンディを見て、フロントの女性が感心し、からかい半分に言い伝えを話す。条件によっては、模様の中のヒンディー語の文字を見つけて、悪気なく声に出して読んでしまう。",
+  "gt_jaipur_date_jaigarh_fort": "アンベール城の上の尾根にあるジャイガル砦。十歳くらいの男の子ラージューが、自分で描いた宝の地図を売りつけ、大砲や貯水槽の印を得意げに案内して回る。最後のバツ印は門の外の祖父の茶屋で、白ひげの老人がチャイを煮ながら、昔の宝探しの話をのんびり語る。",
+  "gt_jaipur_jaigarh_fort_map": "ジャイガル砦の門を入ってすぐ（同じデートの途中）。ラージューが宝の地図の値段を言い、にらめっこで値切るミニゲームになる。いくらで買ったか（買わなかったか）で、ラージューの一言が変わる。",
+  "gt_jaipur_date_jal_mahal": "湖に浮かぶ宮殿ジャル・マハルを望む遊歩道（昼か夜）。メヘンディ描きのファルハーナが軽く客引きをし、ヒロインの手に模様を描く。花婿の名前を模様に隠すならわしを内緒話のように教え、何を隠すかで場が少し色めく。",
+  "gt_jaipur_main_jantar_mantar_battle": "ジャンタル・マンタルの巨大な日時計の日陰。天文学者の卵ディヴィヤが、母が占星術師シャーストリーに決めさせた論文提出の時刻（十一時四十三分）に抗議し、ヒロインを証人にする。正午の影が十二時に線へ届かず、土地の太陽の時刻のずれだと分かって、ディヴィヤは謝り、老人に影の読み方を習う。",
+  "gt_jaipur_date_johari_bazaar": "ジョーハリー・バザールのアーケードの端、ラックの腕輪の店。店番のナスリーンが明るく客を迎え、ヒロインに腕輪をはめながら言い伝えを話す。ヒロインの初めての値切りを笑って受け止め、少しまけたり、おまけを足したりする。"
+ },
+ "lines": {
+  "gt_jaipur_date_albert_hall_kavya_001": {
+   "noteJa": "名前の札が出る行。しゃがんだヒロインに、泣きそうな小さな声で、とぎれとぎれに。『怖い』は震わせる（# em_shake）。"
+  },
+  "gt_jaipur_date_albert_hall_kavya_002": {
+   "noteJa": "数を数えるよう教わったあと（次の行とどちらか一方だけ流れる）。先生に注意されるほどの大声で、元気よく。次の行と同じ言葉だが、別に録る。"
+  },
+  "gt_jaipur_date_albert_hall_kavya_003": {
+   "noteJa": "前の行とどちらか一方だけ流れる。小さな声で、一つずつ区切って、自分を励ますように。"
+  },
+  "gt_jaipur_date_albert_hall_kavya_004": {
+   "noteJa": "ガラスの前で、案内の字を指でたどって、たどたどしく読み上げる。読み：神官＝しんかん、二千三百年＝にせんさんびゃくねん。"
+  },
+  "gt_jaipur_date_albert_hall_kavya_005": {
+   "noteJa": "案内を読み続けて、『トゥトゥ？』で驚いて顔を上げる。"
+  },
+  "gt_jaipur_date_albert_hall_kavya_006": {
+   "noteJa": "ほっとして、少ししんみりと。"
+  },
+  "gt_jaipur_date_albert_hall_kavya_007": {
+   "noteJa": "振り向いて、先生のほうへ走りながら、弾んだ大声で（自慢しに行く）。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_001": {
+   "noteJa": "名前の札が出る行。筆を止め、ゆっくり顔を上げて。怒鳴らず、冷たく低い声。読み：八年＝はちねん、描いて＝かいて。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_002": {
+   "noteJa": "責めるより冷たく問う。語尾は上げない。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_003": {
+   "noteJa": "ヒロインの返事をさえぎって。淡々と、短く切って命じる。読み：描けない＝かけない。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_004": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。教えるように、そっけなく。"
+  },
+  "gt_jaipur_main_amber_fort_battle_jaipur_amber_shopkeeper_001": {
+   "noteJa": "騒ぎを聞きつけて来て、いきなり大声で。怒り半分、ごまかし半分。悪役の誇張にはしない。読み：描いて＝かいて、刷った＝すった。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_005": {
+   "noteJa": "店主への短い問い。語尾を上げずに、低く。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_006": {
+   "input": "カガミノマ。天井を見ろ",
+   "noteJa": "店主を見ずに、筆の尻で示しながら短く命じる。読み：鏡の間＝かがみのま（あいだ と読まれないよう入力で直した）。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_007": {
+   "input": "カガミノマに、四日座った。警備員に顔を覚えられた",
+   "noteJa": "何日描いたか聞かれて、淡々と。最後の一文に、かすかな苦笑。読み：鏡の間＝かがみのま（入力で直した）、四日＝よっか。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_008": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。最初の『鏡』を強く（# em）。読み：何千＝なんぜん。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_009": {
+   "noteJa": "謝りかけたヒロインを止めて、短く。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_010": {
+   "noteJa": "静かに、誇りを込めて。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_011": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。最後の一文は低く、吐き捨てずに。読み：一世＝いっせい、描いた＝かいた、奴＝やつ。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_012": {
+   "noteJa": "謝罪を受けて。前半は淡々と、『……だが』からは重く。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_013": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。わずかに温度が上がる。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_014": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_015": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。後半で、わずかに認める声に。"
+  },
+  "gt_jaipur_main_amber_fort_battle_saleem_016": {
+   "noteJa": "絵の裏に名前を書き入れながら。最後の『……これは、あんたの絵だ』で、わずかに温かく。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_001": {
+   "noteJa": "名前が出る前（画面は『女性』）。言い合いの最中、声が跳ね上がる。少し離れた所から聞こえる大声。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_001": {
+   "noteJa": "名前が出る前（画面は『青年』）。秤を吊るしたまま、母に半分あきれて言い聞かせる。読み：預け荷物＝あずけにもつ。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_002": {
+   "noteJa": "名前の札が出る行。ヒロインに向き直って、すまなそうに丁寧に。読み：発つ＝たつ。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_003": {
+   "noteJa": "苦笑まじりに。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_002": {
+   "noteJa": "名前の札が出る行。ヒロインに目を留めて、すかさず呼び止める。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_003": {
+   "noteJa": "息子を指して、まくしたてる。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_004": {
+   "noteJa": "詰め寄るように、まっすぐ問う。読み：家の味は作者に確かめる（作者への質問あり。入力は変えていない）。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_005": {
+   "noteJa": "返事を待たず、壺を指さして。最後の証拠を出す弁護士のように得意げに。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_006": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。勝ち誇って。読み：家の水は作者への質問あり。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_007": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。勝ち誇って教える。読み：家の水は作者への質問あり。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_004": {
+   "noteJa": "母への冷静な突っ込み。真顔で、さらりと。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_008": {
+   "noteJa": "吹き出したヒロインに、むっとして（怒りの札）。本気で怒るより、むっとする感じ。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_005": {
+   "noteJa": "ヒロインにだけ聞こえる小声。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_009": {
+   "noteJa": "息子への問い。後半はわざと嫌みっぽく。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_010": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。前半は得意げに、『……』のあとは台所を思い出して少ししみじみ。読み：瓶＝びん。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_011": {
+   "input": "四季よ。孔雀が秋で、ハスが夏。……うちの台所にも、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる",
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。前半は教えるように、『……』のあとは少ししみじみ。読み：蓮＝はす（れん と読まれないよう入力で直した）、四季＝しき、瓶＝びん。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_006": {
+   "noteJa": "母に聞こえないくらいの小声で、ゆっくり。この人のいちばん大事な本音。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_012": {
+   "noteJa": "ヒロインの言葉を聞いたあと。得意げな調子が消えて、静かに。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_013": {
+   "noteJa": "冗談めかして始め、『……でも』のあたりから声がかすれる。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_014": {
+   "noteJa": "二人とも黙ったあと、先に口を開く。照れ隠しに、きっぱりと。"
+  },
+  "gt_jaipur_main_city_palace_battle_vishal_007": {
+   "noteJa": "観念して、小さな笑みを含めて。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_015": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。上機嫌に。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_016": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。最後の一文はからかうように。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_017": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。"
+  },
+  "gt_jaipur_main_city_palace_battle_sushma_018": {
+   "noteJa": "漬物の小瓶を渡しながら。照れ隠しの言い切り。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_001": {
+   "noteJa": "名前が出る前（画面は『女性』）。歩道に座ったまま、足もとから見上げて、ぶっきらぼうに。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_002": {
+   "noteJa": "名前が出る前（画面は『女性』）。あきれ半分、誇り半分。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_003": {
+   "input": "ガウラよ。この歩道で野菜を売って四十年。朝四時に卸のイチバで仕入れて、昼過ぎまでここに座ってる。膝が痛いのは、三十年前から",
+   "noteJa": "名前の札が出る行。自己紹介を一息に、きびきびと。最後の一文は自嘲ぎみに。読み：朝四時＝あさよじ、卸＝おろし、市場＝いちば（しじょう と読まれないよう入力で直した）。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_004": {
+   "noteJa": "即答の『一度も。』のあと、淡々と割り切った口調で。読み：私ら＝わたしら。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_005": {
+   "noteJa": "トマトを磨きながら、ふと思いついたように。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_006": {
+   "noteJa": "冗談めかした口ぶりだが、本気がにじむ（地の文）。読み：私＝わたし。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_007": {
+   "noteJa": "ついでのように軽く。最後はぼやき。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_008": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。手を打って喜ぶように。読み：冠＝かんむり。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_009": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。隣のガイドの声に耳を澄ませたあと、うれしそうに。読み：冠＝かんむり。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_010": {
+   "noteJa": "満足して、思い出したように付け加える。最後はちょっと不服そうに。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_011": {
+   "noteJa": "待ちかねて、少し照れて。読み：私＝わたし。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_012": {
+   "noteJa": "日傘探しのミニゲームで手間取ったときだけ流れる。さらりと、少し誇らしく。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_013": {
+   "noteJa": "この人のいちばん強い一言。ぴしゃりと短く（怒りの札と画面の揺れが付く）。怒鳴らず、誇りを傷つけられた声。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_014": {
+   "noteJa": "前半はまだ硬く、『……』のあとで和らぐ。最後は少し笑って。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_015": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。最後の『それに、私も』はしみじみと。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_016": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。笑って、励ますように。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_017": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。"
+  },
+  "gt_jaipur_main_hawa_mahal_battle_gaura_018": {
+   "noteJa": "大根を新聞紙にくるんで渡しながら、あっさりと。"
+  },
+  "gt_jaipur_finale_battle_kamla_001": {
+   "noteJa": "夜の通りで、楽隊に負けない大声で。楽しげに呼びつける。"
+  },
+  "gt_jaipur_finale_battle_kamla_002": {
+   "noteJa": "踊りながら、当然という調子で。"
+  },
+  "gt_jaipur_finale_battle_pooja_001": {
+   "noteJa": "名前が出る前（画面は『花嫁のいとこ』）。門の前で、群衆に向けて高らかに宣言する。読み：五万一千ルピー＝ごまんいっせんルピー。"
+  },
+  "gt_jaipur_finale_battle_kamla_003": {
+   "noteJa": "ヒロインの背中を押しながら、周りに宣言するように。"
+  },
+  "gt_jaipur_finale_battle_kamla_004": {
+   "noteJa": "ヒロインにだけ、少し声を落として。最後の『……できるでしょう』は短く。"
+  },
+  "gt_jaipur_finale_battle_pooja_002": {
+   "noteJa": "名前の札が出る行。にやりと笑って、挑発的に。"
+  },
+  "gt_jaipur_finale_battle_pooja_003": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。舌打ちのあと、悔しそうに。"
+  },
+  "gt_jaipur_finale_battle_pooja_004": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。得意げに。"
+  },
+  "gt_jaipur_finale_battle_kamla_005": {
+   "noteJa": "ヒロインに、きびきびとはっぱをかける。"
+  },
+  "gt_jaipur_finale_battle_pooja_005": {
+   "noteJa": "花婿側を横目で見ながら、挑発的に。"
+  },
+  "gt_jaipur_finale_battle_pooja_006": {
+   "input": "いちとよんぶんのいち！",
+   "noteJa": "クイズの答えが違ったときだけ流れる（次の行も）。得意げに叫ぶ。読み：一と四分の一＝いちと よんぶんのいち（入力で直した）。"
+  },
+  "gt_jaipur_finale_battle_pooja_007": {
+   "input": "つまりジャイプールの人間は、デリーの人のいちとよんぶんのいち倍ってこと",
+   "noteJa": "クイズの答えが違ったときだけ流れる。得意げに笑って、花婿側をからかう。読み：一と四分の一倍（入力で直した）。"
+  },
+  "gt_jaipur_finale_battle_kamla_006": {
+   "input": "何がいちとよんぶんのいちよ。わたしはデリーに六十年、ジャイプールにはまだ数日。それでも、あんたたちの誰より長生きしてるわ",
+   "noteJa": "すかさず切り返す。真顔の皮肉で、周りを笑わせる。読み：一と四分の一（入力で直した）、数日＝すうじつ。"
+  },
+  "gt_jaipur_finale_battle_pooja_008": {
+   "noteJa": "ひるまずに胸を張って。"
+  },
+  "gt_jaipur_finale_battle_pooja_009": {
+   "noteJa": "クイズの答えが違ったときだけ流れる（次の行も）。勢いよく。"
+  },
+  "gt_jaipur_finale_battle_pooja_010": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。花婿側をからかうように。"
+  },
+  "gt_jaipur_finale_battle_pooja_011": {
+   "noteJa": "小声で、ヒロインたちにだけ。"
+  },
+  "gt_jaipur_finale_battle_pooja_012": {
+   "noteJa": "窓の祖母の言葉を受けて、声を張って伝える。"
+  },
+  "gt_jaipur_finale_battle_jaipur_bride_grandmother_001": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。屋敷の二階の格子窓の奥から、しわがれた声で（遠くの声に聞こえる加工をするかは作者が決める）。"
+  },
+  "gt_jaipur_finale_battle_jaipur_bride_grandmother_002": {
+   "noteJa": "窓の奥から、ゆっくり淡々と。悲しみを押しつけない（地の文ではプージャーが一言ずつ伝えるが、声は祖母）。"
+  },
+  "gt_jaipur_finale_battle_kamla_007": {
+   "noteJa": "窓を見上げて、静かに。前半は窓の祖母へ、『……』のあとは自分のことを小さく。読み：十分＝じゅうぶん。"
+  },
+  "gt_jaipur_finale_battle_jaipur_bride_grandmother_003": {
+   "noteJa": "窓の奥から、最後の問題を静かに告げる。読み：格子＝こうし、細かな＝こまかな。"
+  },
+  "gt_jaipur_finale_battle_jaipur_bride_grandmother_004": {
+   "input": "見られずに、見るためよ。通りも、お祭りも、イチバも",
+   "noteJa": "クイズの答えが違ったときだけ流れる。窓の奥から、自分で答える。『見られずに』を強く（# em）。読み：市場＝いちば（入力で直した）。"
+  },
+  "gt_jaipur_finale_battle_jaipur_bride_grandmother_005": {
+   "noteJa": "門の外に出てきて、みんなの前で。小さな笑いを含め、『……』の間をしっかり取る。この人のいちばん大事な行。"
+  },
+  "gt_jaipur_finale_battle_pooja_013": {
+   "noteJa": "点数で一つだけ流れる結果の行（五問とも正解）。リボンを掲げて叫ぶ。読み：百一ルピー＝ひゃくいちルピー。"
+  },
+  "gt_jaipur_finale_battle_pooja_014": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問以上正解）。リボンを掲げて叫ぶ。読み：一万一千一ルピー＝いちまん いっせんいちルピー。"
+  },
+  "gt_jaipur_finale_battle_pooja_015": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が二問以下）。リボンを掲げて叫ぶ。"
+  },
+  "gt_jaipur_finale_battle_kamla_008": {
+   "noteJa": "楽隊が鳴り出す中、ヒロインの手首をつかんで。デリーでヒロインに言われた言葉を引いて、まっすぐに。"
+  },
+  "gt_jaipur_finale_battle_kamla_009": {
+   "noteJa": "前の行に続けて、強く言い切る。"
+  },
+  "gt_jaipur_finale_battle_kamla_010": {
+   "noteJa": "踊りのミニゲームで太鼓の拍に乗れたときだけ流れる。踊りながら、驚き半分、うれしさ半分で。"
+  },
+  "gt_jaipur_arrival_jaipur_hotel_front_001": {
+   "noteJa": "帳場で、笑いながら教える。読み：縁起＝えんぎ、数＝かず。"
+  },
+  "gt_jaipur_epilogue_kamla_001": {
+   "noteJa": "オートリキシャを降りて、満足げに、さらっと。"
+  },
+  "gt_jaipur_epilogue_kamla_002": {
+   "noteJa": "段ボールに油性ペンで書き足しながら、声に出して。短く、少しゆっくり。"
+  },
+  "gt_jaipur_epilogue_kamla_003": {
+   "noteJa": "そっけなく、でも温かく。"
+  },
+  "gt_jaipur_epilogue_kamla_004": {
+   "noteJa": "くつろいで、うれしそうに伝える。読み：嫁いで＝とついで。"
+  },
+  "gt_jaipur_epilogue_kamla_005": {
+   "noteJa": "少し誇らしげに。"
+  },
+  "gt_jaipur_epilogue_kamla_006": {
+   "noteJa": "デリーで初めて会ったときの台詞（gt_delhi_arrival_kamla_008）と同じ言い方で始める（地の文）。『……でも』からは真顔で念を押す。"
+  },
+  "gt_jaipur_epilogue_kamla_007": {
+   "noteJa": "恋人になっているとき（この行と次の3行は、関係の段階でどれか一つだけ流れる）。満足げに。"
+  },
+  "gt_jaipur_epilogue_kamla_008": {
+   "noteJa": "関係の段階で一つだけ流れる行。前半は釘を刺し、後半はやわらかく。"
+  },
+  "gt_jaipur_epilogue_kamla_009": {
+   "noteJa": "関係の段階で一つだけ流れる行。にやりと、からかうように。"
+  },
+  "gt_jaipur_epilogue_kamla_010": {
+   "noteJa": "関係の段階で一つだけ流れる行。やさしく。読み：十分＝じゅうぶん、一言＝ひとこと。"
+  },
+  "gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_001": {
+   "noteJa": "一晩で濃く染まった手を見て、感嘆から始め、後半はからかい半分に。読み：お姑さん＝おしゅうとめさん。"
+  },
+  "gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002": {
+   "input": "あら。ここ、名前が書いてある。ヒンディー語で。……",
+   "noteJa": "最後の『【主人公の名前】』は遊ぶ人が決める名前なので、そのままでは録れない（作者への質問あり。仮の入力は、名前の手前で止める言い方）。見つけた驚きのまま、悪気なく。ジャル・マハルのデートで『君が決めて』を選んだときだけ流れる。"
+  },
+  "gt_jaipur_finale_after_envelope_kamla_001": {
+   "noteJa": "手紙が入っているときだけ流れる（次の行も）。手紙に目を走らせ、『……毎日言葉にしなさい、か』は読み上げるように。最後は、あきれ半分、うれしさ半分。"
+  },
+  "gt_jaipur_finale_after_envelope_kamla_002": {
+   "noteJa": "手紙が入っているときだけ流れる。いたずらっぽく、きっぱりと。"
+  },
+  "gt_jaipur_finale_after_envelope_kamla_003": {
+   "noteJa": "手紙がないとき（前の2行の代わりに流れる）。封筒を光にかざし、一ルピー玉を指で確かめて。鼻を鳴らしてから、満足げに。"
+  },
+  "gt_jaipur_finale_after_envelope_kamla_004": {
+   "noteJa": "ぶっきらぼうに。足どりは軽い（地の文）。"
+  },
+  "gt_jaipur_finale_after_reel_pooja_001": {
+   "noteJa": "携帯を握って走ってきて、興奮して早口で。『きゃー？』は動画のヒロインの声を軽くまねる（質問みたいに語尾を上げる。叫ばない）。"
+  },
+  "gt_jaipur_finale_after_reel_pooja_002": {
+   "noteJa": "からかって、おねだりするように。最後の『きゃー？』も軽くまねる（語尾を上げる）。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_001": {
+   "noteJa": "名前が出る前（画面は『男の子』）。二人の前に立ちはだかって、元気よく呼び込む。読み：何か月＝なんかげつ。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_002": {
+   "noteJa": "名前の札が出る行。胸を張って自慢げに。読み：描いた＝かいた。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_003": {
+   "noteJa": "大砲の前で、得意げに。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_004": {
+   "noteJa": "選択肢で一つだけ流れる行。口をとがらせて、すねて小さく。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_005": {
+   "noteJa": "選択肢で一つだけ流れる行。あっさり白状して、最後は胸を張る。読み：盛った＝もった。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_006": {
+   "noteJa": "選択肢で一つだけ流れる行。困って、言い訳がましく。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_007": {
+   "noteJa": "選択肢で一つだけ流れる行。商売人ぶって、すまして。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_008": {
+   "noteJa": "貯水槽の前で、もったいぶって。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_009": {
+   "noteJa": "地図を買わなかったときだけ流れる。案内人ぶって早口に。最後の一文はもったいぶって。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_010": {
+   "noteJa": "茶屋を指して得意げに。『ナーナー……』のあとに小さな間を置き、『じいちゃん』と言い直す。"
+  },
+  "gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_001": {
+   "noteJa": "チャイを出しながら、のんびりと昔話を。自慢げだが大げさにしない。"
+  },
+  "gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_002": {
+   "noteJa": "前の行に続けて。前半はとぼけて、後半は少し懐かしそうに。読み：何か月＝なんかげつ、片方＝かたほう。"
+  },
+  "gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_003": {
+   "noteJa": "選択肢で一つだけ流れる行。本気で砂糖を足しそうな、とぼけた真顔で。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_011": {
+   "noteJa": "選択肢で一つだけ流れる行。大人ぶって断りかけて、すぐもらう。"
+  },
+  "gt_jaipur_date_jaigarh_fort_raju_012": {
+   "noteJa": "選択肢で一つだけ流れる行。素直に喜ぶ。"
+  },
+  "gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_004": {
+   "noteJa": "選択肢で一つだけ流れる行。鍋をかき混ぜながら、そっけなく。"
+  },
+  "gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_005": {
+   "noteJa": "選択肢で一つだけ流れる行。ゆっくり、少しうれしそうに。"
+  },
+  "gt_jaipur_jaigarh_fort_map_raju_001": {
+   "noteJa": "値切りのミニゲームが始まるときの一言。言い値は胸を張って、『……』のあとは小声で、つい本音を漏らすように。"
+  },
+  "gt_jaipur_jaigarh_fort_map_raju_002": {
+   "noteJa": "言い値で買ってもらえたとき（ミニゲームの結果で一つだけ流れる）。上機嫌で、最後は念を押す。"
+  },
+  "gt_jaipur_jaigarh_fort_map_raju_003": {
+   "noteJa": "四十ルピーで決まったとき。大人ぶって、祖父の受け売りを得意げに。読み：四十＝よんじゅう。"
+  },
+  "gt_jaipur_jaigarh_fort_map_raju_004": {
+   "noteJa": "三十ルピーまで値切られたとき。負け惜しみで、しぶしぶ。"
+  },
+  "gt_jaipur_jaigarh_fort_map_raju_005": {
+   "noteJa": "買わなかったとき（次の行も）。すねて、小さく。すねたときにも、断られたときにも合うように。"
+  },
+  "gt_jaipur_jaigarh_fort_map_raju_006": {
+   "noteJa": "前の行に続けて。気を取り直して、偉そうに。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_001": {
+   "input": "あの宮殿、中にははいれないのよ。眺めてるだけなら、手が暇でしょ",
+   "noteJa": "名前が出る前（画面は『女性』）。軽くくだけた客引き。読み：入れない＝はいれない（いれない と読まれないよう入力で直した）。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_002": {
+   "noteJa": "名前が出る前（画面は『女性』）。筒を見せながら、軽く。読み：描く・描いて＝かく・かいて。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_003": {
+   "noteJa": "名前の札が出る行。夢の話は少し照れて、でも胸を張って。読み：描いてる＝かいてる。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_004": {
+   "noteJa": "ならわしの説明。後半は内緒話のように少し声をひそめて、楽しげに。読み：手の甲＝てのこう、初夜＝しょや。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_005": {
+   "noteJa": "いたずらっぽく、誘うように。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_006": {
+   "noteJa": "模様だけを選んだときだけ流れる。少しすねて、すぐ切り替える。"
+  },
+  "gt_jaipur_date_jal_mahal_farhana_007": {
+   "input": "しばらくは、なんにも触らないで。乾いたら、水で洗わずに、指でこそげ落とすの。最初はオレンジ色。一晩たつと、濃くなる",
+   "noteJa": "描き終えたあと、手際よく注意する。読み：何にも＝なんにも（入力で直した）。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_001": {
+   "input": "十一時四十三分？　天体物理学のハクシロンブンを、占いの時刻に提出しろって言うんですか！",
+   "noteJa": "名前が出る前（画面は『女性』）。少し離れた所から聞こえる抗議の大声。読み：十一時四十三分＝じゅういちじ よんじゅうさんぷん、博士論文＝はくしろんぶん（入力で直した）。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_shastri_001": {
+   "noteJa": "名前の札が出る行。石段に座ったまま軽く会釈して、ゆっくり穏やかに。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_002": {
+   "noteJa": "名前の札が出る行。怒りを抑えて、事情をてきぱき説明する。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_003": {
+   "noteJa": "早口で、強く言い切る。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_004": {
+   "noteJa": "たたみかけるように。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_005": {
+   "noteJa": "ヒロインに目を留めて、強気に頼む。最後は自信満々に。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_006": {
+   "noteJa": "クイズの答えが合っていたとき。不正解の道の gt_jaipur_main_jantar_mantar_battle_divya_007 と同じ文（1つの録音で両方に使える）。強がって、少し早口で。読み：地方時＝ちほうじ。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_shastri_002": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。穏やかに教える。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_007": {
+   "noteJa": "クイズの答えが違ったとき。gt_jaipur_main_jantar_mantar_battle_divya_006 と同じ文（1つの録音で両方に使える）。強がって、少し早口で。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_008": {
+   "noteJa": "立て直して、また強気に。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_shastri_003": {
+   "noteJa": "首を振り、目盛りを指しながら、ゆっくり問う。読み：時を＝ときを。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_009": {
+   "noteJa": "クイズの答えが合っていたとき（gt_jaipur_main_jantar_mantar_battle_divya_010 とどちらか一方だけ流れる）。『二秒』を強く（# em）。息をのむように、素で語尾が上がる。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_shastri_004": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。短く、さらりと。『二秒』を強く（# em）。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_010": {
+   "noteJa": "クイズの答えが違ったとき（gt_jaipur_main_jantar_mantar_battle_divya_009 とどちらか一方だけ流れる）。口が半分開いたまま、驚いて。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_011": {
+   "noteJa": "携帯を掲げて自信満々に始め、影を見て語尾がしぼむ。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_012": {
+   "noteJa": "本気でうろたえる（驚きの札）。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_013": {
+   "noteJa": "自分で気づいて、ゆっくり、独り言のように。読み：標準時＝ひょうじゅんじ、南中＝なんちゅう。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_shastri_005": {
+   "noteJa": "暦を開いて見せながら、責めずに種明かし。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_014": {
+   "noteJa": "小さく、照れを含めて謝る。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_shastri_006": {
+   "noteJa": "笑って手を振りながら。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_015": {
+   "noteJa": "ヒロインに聞かれて、少し考えてから、きっぱりと。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_016": {
+   "noteJa": "前の行に続けて、やわらかく。最後は少し笑って。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_017": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。少し悔しそうに、素直に。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_018": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。最後の一文は冗談めかして。読み：十分＝じゅうぶん。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_019": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。前向きに。"
+  },
+  "gt_jaipur_main_jantar_mantar_battle_divya_020": {
+   "noteJa": "老人の隣に座り直して。とげの抜けた、穏やかな声。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_001": {
+   "noteJa": "名前の札が出る行。店先の明るい呼び込み。読み：義理の弟＝ぎりのおとうと、炉＝ろ。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_002": {
+   "noteJa": "目を光らせて、からかうように。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_003": {
+   "noteJa": "楽しそうに、たたみかける。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_004": {
+   "noteJa": "腕輪をはめながら、少しゆっくり語る。読み：腕輪職人＝うでわしょくにん。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_005": {
+   "noteJa": "軽く付け足す。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_006": {
+   "noteJa": "選択肢の結果で流れる行。gt_jaipur_date_johari_bazaar_nasreen_007 と同じ文（どちらか一方だけ流れる。1つの録音で両方に使える）。にこやかに。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_007": {
+   "noteJa": "gt_jaipur_date_johari_bazaar_nasreen_006 と同じ文（どちらか一方だけ流れる）。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_008": {
+   "noteJa": "『あはは！』は文字どおり読ませず、本物の大きな笑いに。そのあと、笑いながら。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_009": {
+   "noteJa": "選択肢で一つだけ流れる行。そっけなく、でも少しやさしく。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_010": {
+   "noteJa": "選択肢で一つだけ流れる行。にっこりと。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_011": {
+   "noteJa": "選択肢で一つだけ流れる行。にやりと。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_012": {
+   "noteJa": "選択肢で一つだけ流れる行。にやりと始めて、後半は気前よく。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_013": {
+   "noteJa": "細い腕輪を主人公の手首にはめながら、笑って。"
+  },
+  "gt_jaipur_date_johari_bazaar_nasreen_014": {
+   "noteJa": "腕輪を包みながら、やさしく念を押す。"
+  }
+ },
+ "dictionary": [
+  {
+   "word": "鏡の間",
+   "reading": "カガミノマ",
+   "noteJa": "サリームの台詞（2行。入力も直した）。アンベール城の鏡の間。「かがみのあいだ」と読まれやすい（推定）。"
+  },
+  {
+   "word": "市場",
+   "reading": "イチバ",
+   "noteJa": "ガウラの『卸の市場』と花嫁の祖母の『市場も』（2行。入力も直した）。アーグラと同じ。"
+  },
+  {
+   "word": "卸",
+   "reading": "オロシ",
+   "noteJa": "ガウラの『卸の市場』。デリーと同じ。"
+  },
+  {
+   "word": "格子",
+   "reading": "コウシ",
+   "noteJa": "花嫁の祖母の『細かな格子』。ヒロインの説明書6(3)と同じ。"
+  },
+  {
+   "word": "縁起",
+   "reading": "エンギ",
+   "noteJa": "フロントの女性。ヒロインの説明書6(3)と同じ。"
+  },
+  {
+   "word": "腕輪",
+   "reading": "ウデワ",
+   "noteJa": "ナスリーンの『腕輪職人』『ラックの腕輪』ほか。ヒロインの説明書6(3)と同じ。"
+  },
+  {
+   "word": "蓮",
+   "reading": "ハス",
+   "noteJa": "スシュマの『蓮が夏』（入力も直した）。一文字の語なので、辞書より行ごとに直す方がよい。"
+  },
+  {
+   "word": "瓶",
+   "reading": "ビン",
+   "noteJa": "スシュマの『瓶は覚えてる』（2行）。『かめ』と読まれたら直す。一文字の語なので、行ごとに直す方がよい。"
+  },
+  {
+   "word": "博士論文",
+   "reading": "ハクシロンブン",
+   "noteJa": "ディヴィヤの台詞（入力も直した）。「はかせろんぶん」と読まれやすい（推定）。"
+  },
+  {
+   "word": "地方時",
+   "reading": "チホウジ",
+   "noteJa": "ディヴィヤの台詞（同じ文の2行）。"
+  },
+  {
+   "word": "南中",
+   "reading": "ナンチュウ",
+   "noteJa": "ディヴィヤの台詞。太陽が真南に来ること。"
+  },
+  {
+   "word": "発つ",
+   "reading": "タツ",
+   "noteJa": "ヴィシャールの『ドイツに発つ』。デリーと同じ。"
+  },
+  {
+   "word": "嫁いで",
+   "reading": "トツイデ",
+   "noteJa": "カムラの台詞。アーグラの『嫁いだ』と同じ語。"
+  },
+  {
+   "word": "お姑さん",
+   "reading": "オシュウトメサン",
+   "noteJa": "フロントの女性（メヘンディの朝）。"
+  },
+  {
+   "word": "炉",
+   "reading": "ロ",
+   "noteJa": "ナスリーンの『小さな炉』。一文字の語なので、行ごとに直す方がよい。"
+  },
+  {
+   "word": "冠",
+   "reading": "カンムリ",
+   "noteJa": "ガウラの『クリシュナ様の冠』（2行）。"
+  },
+  {
+   "word": "描く",
+   "reading": "カク",
+   "noteJa": "サリーム（描いている・描けない・描いた）、店主（描いて）、ラージュー（描いた）、ファルハーナ（描く・描いて・描いてる）。どれも『かく』。『えがく』と読まれたら、その行の入力を直す（動詞なので辞書より行ごとがよい）。"
+  },
+  {
+   "word": "入れない",
+   "reading": "ハイレナイ",
+   "noteJa": "ファルハーナの『中には入れない』（入る、の意味）。動詞なので入力で直した。"
+  },
+  {
+   "word": "何にも",
+   "reading": "ナンニモ",
+   "noteJa": "ファルハーナの台詞（入力で直した）。"
+  },
+  {
+   "word": "十分",
+   "reading": "ジュウブン",
+   "noteJa": "カムラ（2行）とディヴィヤの『十分』は、どれも足りるの意味。アーグラでは十分間（じゅっぷん）の行もあったので、辞書には入れず行ごとに確かめる。"
+  },
+  {
+   "word": "一と四分の一",
+   "reading": "イチトヨンブンノイチ",
+   "noteJa": "プージャーとカムラ（3行。入力で直した）。サワーイーの意味。ヒロインの gt_jaipur_finale_006 と同じ言葉。"
+  },
+  {
+   "word": "数",
+   "reading": "カズ",
+   "noteJa": "フロントの女性の『割り切れない数』。一文字の語なので、行ごとに確かめる。"
+  },
+  {
+   "word": "私",
+   "reading": "ワタシ",
+   "noteJa": "ガウラの台詞（5行。『私ら』は わたしら）。『わたくし』と読まれたら直す。ほかの人物は『わたし』とかなで書いてある。一文字の語なので、行ごとに確かめる。"
+  },
+  {
+   "word": "マーン・シング一世",
+   "reading": "マーン・シング・イッセイ",
+   "noteJa": "サリームの台詞。アンベール城を建てさせた王。"
+  },
+  {
+   "word": "エーク、ドー、ティーン",
+   "reading": "エーク、ドー、ティーン",
+   "noteJa": "ヒンディー語の1・2・3（カヴィヤの2行）。読点ごとに区切る。"
+  },
+  {
+   "word": "トゥトゥ",
+   "reading": "トゥトゥ",
+   "noteJa": "博物館のミイラの名前（カヴィヤが案内を読んで知る）。"
+  },
+  {
+   "word": "ナーナー",
+   "reading": "ナーナー",
+   "noteJa": "ラージューの『うちのナーナー……じいちゃん』。ヒンディー語の母方の祖父の呼び方（ゲームの用語には登録がない。台詞の中で『じいちゃん』と言い直している）。"
+  },
+  {
+   "word": "ナーニー",
+   "reading": "ナーニー",
+   "noteJa": "プージャーの台詞。ヒンディー語で母方のおばあさん（ゲームの言葉の資料 gt_jaipur_word_nani）。"
+  },
+  {
+   "word": "サワーイー",
+   "reading": "サワーイー",
+   "noteJa": "プージャーの台詞。ジャイプールの王の称号で、『一と四分の一（倍の）』の意味（gt_jaipur_word_sawai）。"
+  },
+  {
+   "word": "ガンガウル",
+   "reading": "ガンガウル",
+   "noteJa": "花嫁の祖母とカムラの台詞。女神ガウリーを祝う、ラージャスターンの春の祭り（用語 gt_term_gangaur）。"
+  },
+  {
+   "word": "ヴィディヤーダル",
+   "reading": "ヴィディヤーダル",
+   "noteJa": "プージャーの台詞。ジャイプールの町を設計した人の名前。"
+  },
+  {
+   "word": "ガネーシュ・ポール",
+   "reading": "ガネーシュ・ポール",
+   "noteJa": "サリームの台詞。アンベール城のガネーシャの門。"
+  },
+  {
+   "word": "メヘンディ",
+   "reading": "メヘンディ",
+   "noteJa": "ファルハーナの台詞。ヘナで手に描く模様（台詞の中で説明している）。"
+  },
+  {
+   "word": "ラック",
+   "reading": "ラック",
+   "noteJa": "ナスリーンの台詞。腕輪の材料の、虫が出す樹脂（用語 gt_term_lac_bangles）。英語の luck ではない。"
+  }
+ ],
+ "authorQuestions": [
+  {
+   "id": "gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002",
+   "text": "あら。ここ、名前が書いてある。ヒンディー語で。……『【主人公の名前】』",
+   "questionJa": "最後の『【主人公の名前】』は遊ぶ人が決める名前なので、録った声では言えない（ヒロインの説明書6(1)と同じ問題）。仮の入力は、名前の手前の『……』で止める言い方（案ウ）にした。",
+   "options": [
+    "ア．台本を、名前を言わない言い方に書き直してから録る",
+    "イ．この行だけ声を付けない",
+    "ウ．名前の所を飛ばして『……』まで録る（字幕と声が少し違ってもよい場合）"
+   ]
+  },
+  {
+   "id": "gt_jaipur_main_city_palace_battle_sushma_004",
+   "text": "教えて。外国に家の味を持っていくのは、恥ずかしいこと？",
+   "questionJa": "「家の味」の読み。家庭の味の意味なので『うちのあじ』とも読める。スシュマはほかの所で『うちの台所』『うちの息子』とかなで書いている。入力は変えていない（エンジンはたぶん『いえ』と読む。推定）。gt_jaipur_main_city_palace_battle_sushma_006・_007 の『自分の家の水』と同じ読みにそろえる。",
+   "options": [
+    "いえ",
+    "うち"
+   ]
+  },
+  {
+   "id": "gt_jaipur_main_city_palace_battle_sushma_006",
+   "text": "そう！　ガンジスの水！　王様だって、自分の家の水を持っていったのよ。漬物五キロくらい、何よ",
+   "questionJa": "「自分の家の水」の読み（gt_jaipur_main_city_palace_battle_sushma_004 と同じ質問）。入力は変えていない。",
+   "options": [
+    "いえ",
+    "うち"
+   ]
+  },
+  {
+   "id": "gt_jaipur_main_city_palace_battle_sushma_007",
+   "text": "ガンジスの水よ！　王様だって、自分の家の水を壺に詰めて持っていったの。漬物五キロくらい、何よ",
+   "questionJa": "「自分の家の水」の読み（gt_jaipur_main_city_palace_battle_sushma_004 と同じ質問）。入力は変えていない。",
+   "options": [
+    "いえ",
+    "うち"
+   ]
+  }
+ ]
+}

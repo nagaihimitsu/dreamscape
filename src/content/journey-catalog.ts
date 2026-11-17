@@ -63,6 +63,27 @@ export const journeyCatalogSchema = z.object({
     // MP4 (H.264 and AAC) served from the journey's own public/ folder. Without it the journey starts at once.
     openingMovie: z.object({
       videoPath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.mp4$/),
+      // The works inside the movie (photos, music; 2026-11-17), for 「出典・権利の一覧」's オープニングムービー
+      // (src/content/credits.ts movieCredits). content:build notes a licence that is not CC BY, CC0 or public domain and
+      // a movie without credits (scripts/opening-movie.ts; notes only, the build goes on).
+      credits: z.array(z.object({
+        /** What it is in the movie, as the list names it (「写真：インド門」, 「音楽」). */
+        useJa: text,
+        /** The work as its page names it (a Commons file name, a track's title). */
+        titleJa: text,
+        author: text,
+        /** The licence as its page names it (「CC BY 4.0」). */
+        license: text,
+        /** The licence's page (CC BY asks for a link to it). */
+        licenseUrl: z.url({ protocol: /^https$/ }),
+        checkedAt: z.iso.date(),
+        /** The work's page. */
+        url: z.url({ protocol: /^https$/ }),
+        /** The credit its author asks for, shown as written. */
+        creditJa: text.optional(),
+        /** What was changed for the movie (cropped, scaled, colour converted…; CC BY asks that changes be indicated). */
+        changesJa: text.optional(),
+      }).strict()).min(1).optional(),
     }).strict().optional(),
     // Where the journey's line voices (`# voice:`, its public/assets/voice/) come from (2026-11-13), for 「出典・権利の
     // 一覧」 (src/content/credits.ts voiceCredits): only on a journey with voice files (content:build checks it).
@@ -105,6 +126,8 @@ export type JourneyCatalog = z.infer<typeof journeyCatalogSchema>;
 export type Journey = JourneyCatalog["journeys"][number];
 export type TitleArt = NonNullable<Journey["titleArt"]>;
 export type OpeningMovie = NonNullable<Journey["openingMovie"]>;
+/** One work inside a journey's opening movie, as its manifest credits it. */
+export type OpeningMovieCredit = NonNullable<OpeningMovie["credits"]>[number];
 
 /**
  * Whether a production build serves the journey's own files: its public/ folder and the reduced copies of its photos

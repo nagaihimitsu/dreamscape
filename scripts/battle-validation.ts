@@ -1,7 +1,7 @@
 import { Story } from "inkjs";
 import type { BattleDefinition, QuizDefinition } from "../src/content/schemas";
 import type { TourismCatalog, TourismClue } from "../src/content/tourism-schemas";
-import { checkLinesWithoutChoice } from "./ink-validation";
+import { checkLinesWithoutChoice, latinNameValues } from "./ink-validation";
 import { condWalk } from "./scene-conditions";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
@@ -9,7 +9,8 @@ import { bindMemoryReader } from "../src/story/memory";
 /**
  * A special battle's helper knot (<battle>_claim, <battle>_press) read on its own, as the clue book reads it
  * (src/story/runtime.ts readStoryKnotLines): from the knot to its `->->`, for each cond assignment of condWalk, a wrong and a right quiz result,
- * and no memory and every memory held (has_memory; has_item_status reads no item held, as the battle walk reads them).
+ * each value of the name in Latin letters the story reads (latinNameValues), and no memory and every memory held (has_memory;
+ * has_item_status reads no item held, as the battle walk reads them).
  * Stops the build when the read reaches a choice (its own or one in a knot it calls, a quiz's or the reasoning's call included)
  * or an error, which would leave the clue book without its text.
  */
@@ -30,12 +31,12 @@ export function checkHelperKnot(compiled: string, knot: string, conds: readonly 
     bindItemReader(story, {}, known.itemIds);
     story.BindExternalFunction("cond", (text: unknown) => assignment[String(text)] ?? false, true);
     // Representative quiz results only: a wrong answer with no score, a right one with every point.
-    for (const current of assignments) for (const [correct, score] of [[false, 0], [true, 3]] as const) {
+    for (const current of assignments) for (const [correct, score] of [[false, 0], [true, 3]] as const) for (const latin of latinNameValues(compiled)) {
       story.ResetState();
       assignment = current;
       ended = false;
-      for (const [name, value] of Object.entries({ player_name: "検証主人公", heroine_name: "検証ヒロイン", player_address: "検証主人公さん",
-        quiz_correct: correct, answer_correct: correct, battle_score: score }))
+      for (const [name, value] of Object.entries({ player_name: "検証主人公", player_name_latin: latin, heroine_name: "検証ヒロイン",
+        player_address: "検証主人公さん", quiz_correct: correct, answer_correct: correct, battle_score: score }))
         if (story.variablesState.GlobalVariableExistsWithName(name)) story.variablesState.$(name, value);
       story.ChoosePathString(knot);
       for (let lines = 0; story.canContinue && !ended; lines++) {

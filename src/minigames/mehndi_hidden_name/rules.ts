@@ -4,14 +4,19 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 // them hides what was written there (the tag's `target`, chosen by the Jal Mahal date's flags through cond()). Pointing at
 // it first is found. Pointing at another is a wrong spot: she says it is only a petal, and the look goes on; finding the
 // writing after that is still `wrong_spot` (the story then remembers the wrong point). Wrong points never end the look
-// (2026-11-14 playtest: the story says the player found it): from the third on she only hints the area (the field's), and
-// the find is always the player's. 「明日にする」 is later. There is no time limit and no idle limit (user decision
-// 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only their own 「明日にする」). Round 3
-// (2026-11-14: 「もっと楽しく」) made the look a hunt: a smaller lamp, curls at the other places that look like writing,
-// the real writing's glint, and her hand as the hot and cold (the field's: looks only). Nothing is random. Pure.
+// (2026-11-14 playtest: the story says the player found it): from the third wrong thing on she only hints the area (the
+// field's: it counts the wrong things pointed at, not these places), and the find is always the player's. 「明日にする」
+// is later. There is no time limit and no idle limit (user decision 2026-11-13: the player looks as long as they like,
+// and 「逃げたね」 follows only their own 「明日にする」). Round 3 (2026-11-14: 「もっと楽しく」) made the look a hunt: a
+// smaller lamp, the real writing's glint, and her hand as the hot and cold (the field's: looks only). Round 4 (2026-11-17:
+// 「かんたんすぎる」): letter-like decorations across the palm, each counting as the place it belongs to (marks.ts: a
+// decoration pointed at is that place pointed at; the rules here are as they were). Nothing is random. Pure.
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
-/** Where the writing hides, and what it is (2.10: the name as typed; an illegible mark where the story says Hindi letters). */
+/**
+ * Where the writing hides, and what it is (2.10: the player's name in Latin letters in the Fasol SP hand, or no letters without
+ * them; an illegible mark where the story says Hindi letters; FARHANA over unreadable marks).
+ */
 export type MehndiTarget = "thumb" | "peacock" | "vine";
 export type MehndiText = "player" | "illegible" | "farhana";
 export interface MehndiParams {
@@ -27,8 +32,10 @@ export const MEHNDI_TEXTS: readonly MehndiText[] = ["player", "illegible", "farh
 /** The hidden name's numbers (E1; Debug's room may change them for its next play). */
 export type MehndiTuning = {
   /**
-   * The wrong point from which she hints the area instead of naming the pattern (looks only: the field's; wrong points
-   * never end the look): two wrong points get her word, the third and after her 「このへん、かな」 and a ring.
+   * The wrong thing pointed at from which she hints the area instead of naming the pattern (looks only: the field's;
+   * wrong points never end the look). The field counts the wrong things pointed at, each once, places and decorations
+   * alike (not the places the rules count: a second decoration of a place already wrong is another wrong thing to her):
+   * the first gets her word, the second her warning, the third and after her 「このへん、かな」 and a ring.
    */
   hintAfter: number;
   /** The lamp's pool: fully lit within this share of the palm's width (%), fading out to 1.75 times it. */
@@ -40,7 +47,7 @@ export type MehndiTuning = {
   nearUnits: number;
   /** The lamp held still this long on another place: her 「そこ、じっと見すぎ」 (again after the lamp moves on and rests). */
   lingerMs: number;
-  /** The real writing catches the light this often (a glint; the curls that look like writing never do). */
+  /** The real writing catches the light this often (a glint; the decorations that look like letters never do). */
   glintEveryMs: number;
 };
 export const MEHNDI_TUNING: MehndiTuning = { hintAfter: 3, lampPct: 8, nearUnits: 34, lingerMs: 2500, glintEveryMs: 1600 };

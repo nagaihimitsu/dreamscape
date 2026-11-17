@@ -14,12 +14,12 @@ VAR heroine_name = ""
 # background: milano_galleria
 次の場面。
 -> END`);
-  const first = beginStory(id, "航", "澪", {}, [], {}, "milano_duomo");
+  const first = beginStory(id, { playerName: "航", heroineName: "澪" }, {}, [], {}, "milano_duomo");
   expect(first.frame.background).toBe("milano_duomo");
   const second = continueStory(id, first.storyState, first.frame);
   expect(second.frame.background).toBe("milano_galleria");
   // Without a city background, a scene starts with the shared default background.
-  expect(beginStory(id, "航", "澪").frame.background).toBe(DEFAULT_BACKGROUND_ID);
+  expect(beginStory(id, { playerName: "航", heroineName: "澪" }).frame.background).toBe(DEFAULT_BACKGROUND_ID);
   expect(DEFAULT_BACKGROUND_ID).toBe("default_scene");
 });
 

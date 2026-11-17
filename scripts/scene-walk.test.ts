@@ -33,6 +33,15 @@ describe("the scene walk", () => {
     expect(walk(source)).toBe(4);
   });
 
+  it("walks a scene that reads the name in Latin letters with a stand-in and with none (\"\"), so the lines of both are walked", () => {
+    const named = '{ player_name_latin != "":\n    A {player_name_latin}.\n- else:\n    B\n}\n-> END\n';
+    expect(walk(talk("", named))).toBe(2);
+    expect(walk(talk("", "A {player_name}.\n-> END\n"))).toBe(1);
+    // A fault only in the lines for a name with no Latin form stops the build too (here, A10).
+    const faulty = '{ player_name_latin != "":\n    A\n    -> END\n- else:\n    * [B # option: b]\n        # give: smp_x_card heroine\n        b\n        -> END\n}\n';
+    expect(() => walk(talk("", faulty))).toThrow("No choice can be chosen");
+  });
+
   it("stops a choice point where no choice can be chosen in some state (A10), unless the head guarantees it", () => {
     const body = "* [A # option: a]\n    # give: smp_x_card heroine\n    a\n    -> END\n* [B # option: b]\n    # ap: -2\n    b\n    -> END\n";
     expect(() => walk(talk("", body))).toThrow("No choice can be chosen");

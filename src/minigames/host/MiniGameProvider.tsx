@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import type { TagContext } from "../../content/tags";
+import type { MiniGameNames } from "../contract";
 
 // What every mini-game gets from the game, given once by GameApp (docs/13 1.5): a screen's own wiring is only ChoicePoint,
 // MiniGameSlot and the cast it passes. The Debug room gives its own (no game, no save).
@@ -11,8 +12,8 @@ export interface MiniGameEnvironment {
   debug: boolean;
   /** 「演出を短縮する」 (the device's own setting is read too). */
   reduceMotion: boolean;
-  /** The names as the player wrote them. */
-  names: { player: string; heroine: string };
+  /** The names as the player wrote them, and the player's in Latin letters (MiniGameNames). */
+  names: MiniGameNames;
   /** The save's revision: a new frame starts a new play; the play's looks (its seed) come from it. */
   revision: number;
   /** The lists a tag's keys are read with (the game's own keys; its art). */

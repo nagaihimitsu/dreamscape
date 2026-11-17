@@ -166,8 +166,10 @@ INCLUDE modules.ink
 自慢しに行ったのだ。
 外に出ると、鳩は相変わらず、広場を埋めていた。
 # speaker: heroine
+# voice: gt_jaipur_date_albert_hall_017
 怖いって、ちゃんと言えるの、えらいよね
 # speaker: heroine
+# voice: gt_jaipur_date_albert_hall_018
 ……わたし、八歳のとき、たぶん言えなかった。平気なふりして、一人で泣いてた気がする
 # speaker: heroine
 # reaction: heroine,teasing,music

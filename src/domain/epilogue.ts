@@ -117,7 +117,7 @@ export function beginArrival(state: GameState, logoComplete = false): GameState 
   const finale = episodes.find((episode) => episode.cityId === state.currentCityId && episode.kind === "city_finale")!;
   return { ...state, revision: state.revision + 1, activeEpilogue: {
     episodeId: finale.id, kind: "arrival", logoComplete, contentHash: storyFingerprint(storyId),
-    ...checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), [], {},
+    ...checkedStep(beginStory(storyId, state, variables(state), [], {},
       getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))),
   } };
 }
@@ -133,7 +133,7 @@ export function beginTourLegNarration(state: GameState, sceneId: string): GameSt
   const address = knotAddress(scene.story.storyId, scene.story.knot!);
   return { ...state, revision: state.revision + 1, activeEpilogue: {
     episodeId: scene.id, kind: "tour_leg", contentHash: storyFingerprint(address),
-    ...checkedStep(beginStory(address, state.playerName, state.heroineName, variables(state), [], {},
+    ...checkedStep(beginStory(address, state, variables(state), [], {},
       getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))),
   } };
 }
@@ -219,8 +219,7 @@ export function beginCityEpilogue(state: GameState, cityId: string): GameState {
       ...checkedStep(
         beginStory(
           storyId,
-          state.playerName,
-          state.heroineName,
+          state,
           variables(state),
           [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
         ),

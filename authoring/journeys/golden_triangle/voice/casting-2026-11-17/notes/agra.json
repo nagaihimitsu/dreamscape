@@ -1,0 +1,976 @@
+{
+ "scenes": {
+  "gt_agra_agra_fort_guide": "アーグラ城の、川に面した八角形の塔。ツアーの一行が欄干から遠くのタージ・マハルを順番に眺めていて、その中の客の一人が、連れに聞きかじりの話をする。",
+  "gt_agra_main_agra_fort_battle": "アーグラ城の八角形の塔。退役陸軍大佐のドゥッガルが床に座り込み、添乗員リヤの「バスが出ます」を断って、ヒロインと主人公を勝手に「国際監視団」に任命する。芝居がかった抗議の裏にある車酔いを見抜かれたあと、リヤに最前列の解説係を頼まれて、威厳を取り戻して立ち上がる。",
+  "gt_agra_akbar_tomb_monkey_attar": "シカンドラのアクバル廟の門の前。猿がヒロインの小瓶の布袋を盗んで門の壁に登り、笛を吹きながら若い番人が走ってくる。番人は慣れた様子で、追わずに飲み物と取引するよう教える。",
+  "gt_agra_akbar_tomb_monkey_glasses": "同じアクバル廟の門の前で、猿がヒロインのサングラスを盗んだとき。走ってきた若い番人の台詞は、小瓶の場面と同じ。",
+  "gt_agra_date_chini_rauza": "チーニー・カ・ラウザーのアーチの下。結婚前の写真を撮るせっかちな写真家ジャグディープが、渋滞で遅れているカップルの代わりに、二人を光を決めるための代役に立たせる。遅れて来るのは、タージ・マハルの回を終えていればニキルとタンヴィ（ここで求婚に答えが出る）、終えていなければプネーから来た婚約中の二人。",
+  "gt_agra_main_fatehpur_sikri_battle": "ファテープル・シークリーの巨大な門の、急な石段の上。建設業のムケーシュが、翻訳アプリで読んだ門の碑文「家を建てるな」に動揺し、今日の午後に屋根を流すかどうかをヒロインに決めてもらおうとする。息子が遠くで暮らすと決めた話を打ち明けたあと、最後は自分で現場監督に電話して決め、礼を言って去る。",
+  "gt_agra_date_guru_ka_taal": "グル・カ・タールのシク教の礼拝所の食堂。元トラック運転手のハルバンス（デリーで会っていれば再会）と、カナダから迎えに来た息子グルミートが、隣に座ったまま互いへの伝言をヒロインに頼む。ヒロインが伝言を断って何が怖いのかを聞くと、二人は初めて本音を言い、「夏だけ」で折り合う。",
+  "gt_agra_arrival": "アーグラの宿。若い支配人サミールが、花びらの道とタオルの白鳥で飾った部屋を「ハネムーン・スペシャル」と胸を張って見せる。新婚ではないと何度説明されても、にこにこ笑顔で受け流す。",
+  "gt_agra_epilogue": "フィナーレのあと、宿に戻った夜のロビー。老ガイドのアンワルが甥のサミールとチャイを飲んでいて、今日の客の一人が書家の名前を探しにもう一度タージへ行くと、くつろいだ様子で伝える。サミールは叔父から電話で事情を聞いていて、新婚と決めつけたことをていねいに詫びる。",
+  "gt_agra_arrive_reel": "宿の帳場（デリーの階段井戸のデートをしたときだけ）。サミールが携帯の動画とヒロインを見比べ、デリーで撮られた悲鳴の動画の人だと気づいて興奮する。また一つ誤解が増え、彼は満足そうに帳面に書き留める。",
+  "gt_agra_main_itimad_tomb_battle": "イティマード・ウッダウラ廟の庭。元ヒンディー語教師のヴィムラーが「ベビー・タージ」という呼び名に怒り、名誉回復の請願書への署名を求める。ヒロインが読んでから署名すると言い、三つ目の主張の誇張を見つけると、ヴィムラーは素直に認めて線を引き、最後は発音の授業を始める。",
+  "gt_agra_date_mariam_tomb": "マリアム廟の芝生。ピクニックの家族の父親が映画で覚えた名前を子どもたちに得意げに説明し、十五、六の娘が携帯の資料で言い返す。イティマード廟の回を終えていればヴィムラーが新しい請願書を持って現れ、嫁いだ家で名前で呼ばれなかった過去を静かに話す。終えていなければ、娘が祖母の言葉を英語に訳して伝える。",
+  "gt_agra_mariam_tomb_petition": "マリアム廟の入口（前の場面の途中）。ヴィムラーの新しい請願書に主人公がどう署名するかで、ヴィムラーの一言が変わる。",
+  "gt_agra_date_mehtab_bagh": "メヘターブ・バーグの塀の外、隣の村の空き地。十二歳のキャプテン、ソニアが、子どもたちのクリケットにヒロインと主人公を入れ、ルールを決めてきびきび仕切る。最後の一球のあと、手のひらを上にして写真代を求める。",
+  "gt_agra_mehtab_bagh_another_ball": "最後の一球を主人公が振らなかったときの、もう一球の場面。また振らなかったが、遅い球が板に当たって転がり、ソニアが時間切れの引き分けを告げる。",
+  "gt_agra_mehtab_bagh_ball_six": "最後の一球を主人公がまっすぐ打ち返し、ボールが川の方まで飛んだとき。ソニアが六点と、主人公のチームの勝ちを告げる。",
+  "gt_agra_mehtab_bagh_ball_over_wall": "打球が高く上がって庭の塀を越えたとき（この空き地のルールではアウト）。一瞬の静けさのあと、ソニアが両手を上げて大喜びで叫ぶ。",
+  "gt_agra_mehtab_bagh_ball_edge": "振るのが少し遅れて、ボールが板の端に当たって転がったとき。ソニアが淡々と引き分けを告げる。",
+  "gt_agra_mehtab_bagh_ball_bowled": "主人公が思いきり空振りして、後ろの煉瓦が崩れたとき。ソニアが落ち着いて、自分たちの勝ちを告げる。",
+  "gt_agra_mehtab_bagh_photo": "試合のあと、ソニアに写真代を求められた場面。主人公がどう応じるかで、ソニアの一言が変わる。",
+  "gt_agra_date_ram_bagh": "ラーム・バーグの向かいの小さな茶屋。インスタントの麺を運んできた主人が、二人を「サミールのところの新婚」と決めつけて、にやにやとからかう。",
+  "gt_agra_main_taj_mahal_battle": "タージ・マハルの水路の途中、記念写真の白いベンチ。銀行員のニキルが、恋人タンヴィへの求婚のためにベンチを確保してほしいと二人に必死に頼むが、早く戻ったタンヴィが、静かな問いを重ねて計画を止める。最後に二人は、場所から一緒に決めることにして、少し近づいて去る。",
+  "gt_agra_finale_battle": "タージ・マハルの正門近くの人だかり。名物の老ガイド、アンワルが「職人の手を切った」伝説を朗々と語り、ヒロインたちを新婚として観客に紹介する。ヒロインが伝説に疑問を出すと、夕方、対岸のメヘターブ・バーグの岸辺へ場所を移して語り合いが続き、最後にアンワルは苦笑いで「参った」と認めて詫びの菓子を渡す。途中のカムラの一言は、ヒロインの頭の中で聞こえる回想の声。",
+  "gt_agra_tour_morning": "ファテープル・シークリー日帰りツアーの朝。宿の帳場でサミールが叔父のガイドを勧め、断られても楽しそうに帳面に書く。大通りでは、運転手のヴィノードが娘の書いた名前の紙を持って待っていて、控えめに名乗る。",
+  "gt_agra_tour_out_leg": "行きの車の中。ヴィノードは交差点の牛の後ろでクラクションを鳴らさずに待ち、トラックの「HORN OK PLEASE」の文字やバックミラーの魔よけについて、短く淡々と話す。",
+  "gt_agra_tour_out_mother": "行きの車の中（続き）。ヴィノードがバックミラー越しに、客の話を楽しみにしている母に二人のことを何と伝えればいいか、控えめに尋ねる。主人公の英語の答えか、ヒロイン自身の答えを受け取って返事をする。",
+  "gt_agra_tour_arrive": "シークリーの下の町、大きな木の陰に車を停めたところ。ヴィノードが入口の客引きについて短く助言し、母の家の方へ歩いていく。",
+  "gt_agra_tour_mathri": "見学を終えて車に戻ったところ。ヴィノードが母の手作りの揚げ菓子マトリーを渡し、行きの車で預かった話への母の返事を伝える。",
+  "gt_agra_tour_back_leg": "帰りの車の中。行きより静かで、ヴィノードは、母がシークリーを離れない理由（聖者の墓に願って自分を授かった話）をぽつりぽつりと話す。最後に、ヒロインがうとうとし始める。",
+  "gt_agra_tour_back_awake": "帰りの車の中（続き）。ヒロインが眠ったと思ったヴィノードが、声を落として主人公に話しかける。返事を聞いたあと、声を出して笑う。",
+  "gt_agra_tour_home": "宿の前の大通りで、ヴィノードが運転席の窓を下ろして別れのあいさつをする。宿の帳場では、サミールが帰りを迎え、また何かを帳面に書き足す。"
+ },
+ "lines": {
+  "gt_agra_agra_fort_guide_agra_fort_tourist_001": {
+   "noteJa": "地の文『誰かが言った』に続く、ツアーの一行の中からの一言。連れに、聞きかじりの話を少ししみじみと。目立たせない。読み：年月は作者に確かめる（作者への質問あり。ヒロインが次の行で同じ言葉を繰り返す）。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_001": {
+   "noteJa": "名前が出る前（画面は『老人』）。床にあぐらをかいたまま、添乗員の催促に短く、きっぱり。"
+  },
+  "gt_agra_main_agra_fort_battle_riya_001": {
+   "noteJa": "名前の札が出る行。携帯を二台握ったまま頭を下げて、困り果てて急かす。早口。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_002": {
+   "input": "タージを建てたシャー・ジャハーンは、この塔に八年座っていた。わしはハチジュップンでいい。これは座り込みだ。平和的な抗議である",
+   "noteJa": "名前が出る前（画面は『老人』）。駐車場から顔をそむけて、堂々と宣言する芝居がかった口調。読み：八十分＝はちじゅっぷん（入力で直した）。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_003": {
+   "noteJa": "名前が出る前（画面は『老人』）。二人に目を留め、背筋を伸ばして、任命式のようにもったいぶって。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_004": {
+   "noteJa": "名前の札が出る行。軍人らしくきびきび名乗る。読み：最後の『十分だ』は じゅうぶん（足りる、の意味）。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_005": {
+   "input": "閉じ込める者すべてにだ。この塔のアルジを閉じ込めたのが誰だったか、知っているかね",
+   "noteJa": "少し声を落として、試すように問いかける。読み：主は作者に確かめる（作者への質問あり。入力は仮に『あるじ』）。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_006": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。うなずいてから、最後の一文は皮肉っぽく。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_007": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。答えを教えてから、最後の一文は皮肉っぽく。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_008": {
+   "noteJa": "添乗員のリヤへのきつい一言。むっとして、吐き捨てるように。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_009": {
+   "noteJa": "ヒロインにたしなめられたあと。最初の『……』で間を置き、しぶしぶ、でも正式に詫びる。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_010": {
+   "noteJa": "気を取り直して、監視団に試問する口調。顔色は悪いが、声は張る。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_011": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。『娘というのは、……』で声をやわらげる。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_012": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。『娘というのは、……』で声をやわらげる。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_013": {
+   "noteJa": "少しやわらかく、娘を懐かしむように。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_014": {
+   "noteJa": "図星を指されて怒鳴るが、すぐしぼむ（地の文）。大声で始め、語尾にかけて力が抜ける。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_015": {
+   "input": "……後ろの席だと、ジュップンでだめなんだ。今日の座席表では、わしは最後列だ。言えるか、そんなこと。若い娘さんの前で、元大佐が",
+   "noteJa": "タージを見たまま小声で、照れくさそうに打ち明ける本音（地の文『小さく言った』）。ゆっくり。読み：十分＝じゅっぷん（十分間。入力で直した）。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_016": {
+   "noteJa": "咳払いのあと、声を大きくして体面を取り戻す（地の文）。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_017": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。自分で理屈を認めて、苦笑まじりに。"
+  },
+  "gt_agra_main_agra_fort_battle_riya_002": {
+   "noteJa": "ヒロインに耳打ちされて顔が明るくなったあと。大佐を立てる、ていねいで明るいお願い。1行目より声がはっきり明るい。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_018": {
+   "noteJa": "少し間を置いて、威厳を取り戻して短く。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_019": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。上機嫌で。最後の一文は声を低めて念を押す。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_020": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。最後の一文は声を低めて念を押す。"
+  },
+  "gt_agra_main_agra_fort_battle_duggal_021": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。最後の一文は声を低めて念を押す。"
+  },
+  "gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_001": {
+   "noteJa": "笛を吹いて走ってきた直後で、少し息が上がっていてよい。猿を見上げ、ため息まじりに、慣れた調子で。サングラスの場面に同じ文の行がある（流れるのはどちらか一方）。"
+  },
+  "gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_002": {
+   "noteJa": "慣れた調子で説明し、『見習い』で少し苦笑い。サングラスの場面に同じ文の行がある（流れるのはどちらか一方）。"
+  },
+  "gt_agra_akbar_tomb_monkey_glasses_agra_akbar_guard_001": {
+   "noteJa": "小瓶の場面の gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_001 と同じ文（流れるのはどちらか一方）。同じ録音を使うかは作者が決める。"
+  },
+  "gt_agra_akbar_tomb_monkey_glasses_agra_akbar_guard_002": {
+   "noteJa": "小瓶の場面の gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_002 と同じ文（流れるのはどちらか一方）。同じ録音を使うかは作者が決める。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_001": {
+   "noteJa": "名前が出る前（画面は『男』）。電話を切った直後、二人を見てぱっと顔を明るくして、早口で頼む。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_002": {
+   "noteJa": "名前の札が出る行。ぶっきらぼうに、短く。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_003": {
+   "noteJa": "せっかちに、たたみかける。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_004": {
+   "noteJa": "撮影の指示。『もっと近く。……もっと』は間を置いて、さらに押す。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_005": {
+   "noteJa": "主人公が冗談で思いきり遠くに立ったとき。大声で勢いよくツッコむ。次の行と同じ文（どちらか一方だけ流れる）。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_006": {
+   "noteJa": "前の行と同じ文（どちらか一方だけ流れる）。同じ録音を使うかは作者が決める。大声で勢いよくツッコむ。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_007": {
+   "noteJa": "空っぽの指輪の箱を手渡しながら、仕事の段取りとしてきびきびと。"
+  },
+  "gt_agra_date_chini_rauza_nikhil_001": {
+   "noteJa": "タージ・マハルの回を終えているときだけ流れる。走ってきて汗だくのまま、二人に気づいて驚く。"
+  },
+  "gt_agra_date_chini_rauza_tanvi_001": {
+   "noteJa": "タージ・マハルの回を終えているときだけ流れる（ここからタンヴィの5行）。打ち解けて、少しうれしそうに。"
+  },
+  "gt_agra_date_chini_rauza_tanvi_002": {
+   "noteJa": "穏やかに、少し誇らしげに。"
+  },
+  "gt_agra_date_chini_rauza_tanvi_003": {
+   "noteJa": "やわらかく。"
+  },
+  "gt_agra_date_chini_rauza_tanvi_004": {
+   "noteJa": "ジャグディープに向けて。前半はやわらかく頼み、後半は恋人を思いやって、少し笑って。"
+  },
+  "gt_agra_date_chini_rauza_tanvi_005": {
+   "noteJa": "求婚への返事。ヒンディー語の『はい』（ハーン）。前に0.8秒の間。柱の陰まで聞こえる、少し離れた所からの声。短く、小さく、心をこめて。泣き声にしない。日本語の『はーん（なるほど）』のような含みのある言い方にしない。"
+  },
+  "gt_agra_date_chini_rauza_agra_chini_bride_001": {
+   "noteJa": "タージ・マハルの回を終えていないときだけ流れる（次の行と2行）。少し照れながら、素直に。"
+  },
+  "gt_agra_date_chini_rauza_agra_chini_bride_002": {
+   "noteJa": "やわらかく。最後の『似てる気がして』は、照れて途切れる言いさし。"
+  },
+  "gt_agra_date_chini_rauza_jagdeep_008": {
+   "noteJa": "携帯の試し撮りを見せながら。前半はぶっきらぼうに、『……正直、』からは声を落として、照れくさそうに正直に。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_001": {
+   "noteJa": "名前が出る前（画面は『男』）。翻訳アプリで碑文を読み、笑っているのか泣いているのか分からない声で独り言。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_002": {
+   "noteJa": "名前の札が出る行。最初の一文は皮肉っぽく、名乗りはぶっきらぼうに。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_003": {
+   "noteJa": "『世界は橋だ、家を建てるな』は碑文の言葉を読み上げる部分で、少し改まって。最後は自虐的に笑うように。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_004": {
+   "noteJa": "携帯を突き出して、すがるように、まくしたてる。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_005": {
+   "noteJa": "すねて、むっとして。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_006": {
+   "noteJa": "アーチを見上げて、ぶつぶつ文句を言う。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_007": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。素で驚いて。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_008": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。翻訳の続きを読んで驚く。『マリアの子イエスは言った』は画面を読み上げる部分。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_009": {
+   "noteJa": "変なところに感心して。最後の一文は苦笑まじりに。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_010": {
+   "noteJa": "自虐のユーモアを真顔で。読み：施主＝せしゅ。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_011": {
+   "noteJa": "町並みを見渡して、首をかしげるように。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_012": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。最後の『……息子のために、町を一つ』で声が沈む。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_013": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。最後の『……息子のために、町を一つ』で声が沈む。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_014": {
+   "noteJa": "声の調子が変わる所（地の文）。携帯を伏せて静かに、楽しみにしていた暮らしを話すように。読み：凧＝たこ。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_015": {
+   "noteJa": "静かに、ぽつりと。最後の一文は寂しさをこらえて。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_016": {
+   "noteJa": "力なく、少し笑って。直後に鼻をすする（地の文）。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_017": {
+   "noteJa": "鼻をすすってから、気を取り直して。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_018": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。しみじみと、つぶやくように。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_019": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。しみじみと、つぶやくように。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_020": {
+   "input": "わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。二階の奥にヒトヘヤ、わたしの部屋を作る。本を読む部屋だ。息子が帰ってきたら、そこで一緒に茶を飲む",
+   "noteJa": "携帯で現場監督に電話する。親方の命令口調で、きっぱり。後半の図面の変更は、言いながら決意が固まっていくように。読み：四時＝よじ、一部屋＝ひとへや（入力で直した）。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_021": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。素直に、感謝を込めて。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_022": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。少し笑って。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_023": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。穏やかに。"
+  },
+  "gt_agra_main_fatehpur_sikri_battle_mukesh_024": {
+   "noteJa": "立ち上がって、素直に礼を言う。最後の一文は晴れやかに。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_001": {
+   "noteJa": "デリーで会っていたときの再会の第一声（次の行とどちらか一方だけ流れる）。食堂の奥から飛んでくる大声で、うれしそうに。割れないように。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_002": {
+   "noteJa": "初めて会うとき（前の行とどちらか一方だけ流れる）。名前の札が出る行。ぶっきらぼうに、短く言い切る。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_003": {
+   "noteJa": "隣の息子の方を見ずに、ぶっきらぼうに。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_001": {
+   "noteJa": "名前の札が出る行。父の方を見ないまま、軽く頭を下げて、ていねいに。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_002": {
+   "noteJa": "ややあきれ気味に、事情を説明する。やや速め。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_004": {
+   "noteJa": "すかさず、真顔で訂正する。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_005": {
+   "noteJa": "ヒロインの袖を引いて、頑固に。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_003": {
+   "noteJa": "ヒロインの反対側から小声で。父に聞こえていても構わない、という意地の小声。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_006": {
+   "noteJa": "デリーでこの話を聞いていたとき。次の行と同じ文（どちらか一方だけ流れる）。デリーの gt_delhi_date_bangla_sahib_harbans_016 とほぼ同じ文を、今度は息子の前で初めて口にする。デリーより重く、言いにくそうに、ゆっくり。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_007": {
+   "noteJa": "デリーでこの話を聞いていないとき。前の行と同じ文（どちらか一方だけ流れる。同じ録音を使うかは作者が決める）。息子の前で初めて口にする本音。重く、言いにくそうに、ゆっくり。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_004": {
+   "noteJa": "感情を抑えた低い声。『……』でしっかり間を取る。泣かない。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_005": {
+   "noteJa": "静かに、まっすぐ。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_008": {
+   "noteJa": "前に0.9秒の間。外のトラックの警笛が遠ざかるのを聞いたあと、ぽつりと。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_006": {
+   "noteJa": "すかさず妥協案を出す。少し早口に。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_009": {
+   "noteJa": "ぶっきらぼうに即答。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_007": {
+   "input": "……じゃあ、センシャガカリ",
+   "noteJa": "あきれ半分、小さな笑いを含めて。読み：洗車係＝せんしゃがかり（入力で直した）。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_010": {
+   "noteJa": "折れた照れを隠す、ぶっきらぼうな声。最後の一文は真顔の冗談。"
+  },
+  "gt_agra_date_guru_ka_taal_gurmeet_008": {
+   "noteJa": "あきれ半分の小さな笑いを含めて、やさしく。"
+  },
+  "gt_agra_date_guru_ka_taal_harbans_011": {
+   "noteJa": "デリーで会っていたときだけ流れる。ヒロインに真顔の冗談で。最後の一文は少しうれしそうに。"
+  },
+  "gt_agra_arrival_samir_001": {
+   "noteJa": "名前の札が出る登場の行。花びらと白鳥の部屋を見せて、胸を張って誇らしげに。"
+  },
+  "gt_agra_arrival_samir_002": {
+   "noteJa": "新婚ではないという説明を、にこにこした接客の笑顔で軽く受け流す。悪気はない。"
+  },
+  "gt_agra_epilogue_anwar_001": {
+   "noteJa": "宿のロビーでチャイを飲みながら、親しみを込めて。フィナーレの朗々とした語りではなく、くつろいだ声。読み：書家＝しょか。"
+  },
+  "gt_agra_epilogue_anwar_002": {
+   "noteJa": "少し得意げに、いたずらっぽく。"
+  },
+  "gt_agra_epilogue_anwar_003": {
+   "noteJa": "チャイを飲み干して立ち上がりながら、さらりと。"
+  },
+  "gt_agra_epilogue_samir_001": {
+   "noteJa": "叔父のあとで、ていねいに。最後の『……失礼いたしました』は少し間を置き、頭を下げて恐縮して。"
+  },
+  "gt_agra_arrive_reel_samir_001": {
+   "input": "失礼ですが……デリーの階段井戸の動画のカタですよね？　最後の、『きゃー？』の",
+   "noteJa": "携帯の画面とヒロインを見比べて、驚きと興奮で。『きゃー？』は動画の悲鳴を軽くまねる（語尾を上げる。叫ばない）。読み：方＝かた（人のこと。ほう と読まれないよう入力で直した）。"
+  },
+  "gt_agra_arrive_reel_samir_002": {
+   "noteJa": "うれしそうに。最後の『少し悔しいくらい』は本気半分の冗談。"
+  },
+  "gt_agra_arrive_reel_samir_003": {
+   "input": "布を広げて飛び出す、鳩の役のカタも。……あれは、旦那さまですよね？",
+   "noteJa": "デリーで主人公が鳩の役をしたときだけ流れる（次の行とどちらか一方だけ流れる）。にこにこと決めつけて。読み：方＝かた（入力で直した）。"
+  },
+  "gt_agra_arrive_reel_samir_004": {
+   "noteJa": "鳩の役をしていないときに流れる（前の行とどちらか一方だけ流れる）。心から祝福するように、にこやかに。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_001": {
+   "noteJa": "名前が出る前（画面は『女性』）。ニームの木陰から立ち上がりながら、少し離れた所から強く叱る。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_002": {
+   "noteJa": "名前の札が出る行。きっちりと名乗る。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_003": {
+   "noteJa": "憤慨して。『タージの赤ちゃん』は呆れたように。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_004": {
+   "noteJa": "クリップボードを差し出して、事務的に。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_005": {
+   "noteJa": "少し意外そうに。教師の目で値踏みしてから、認める。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_006": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。先生らしく褒めて。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_007": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。訂正する先生の口調。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_008": {
+   "noteJa": "授業のように問いかける。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_009": {
+   "noteJa": "ため息まじりに言い直させる。最後の一文で声を落として強調する。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_010": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。一番聞いてほしい所で声を落とす先生のように。読み：上った＝のぼった、皇妃＝こうひ。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_011": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。説明する先生の口調。読み：上った＝のぼった、皇妃＝こうひ。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_012": {
+   "noteJa": "少し満足そうに、得意げに。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_013": {
+   "noteJa": "止まったペンを見とがめて、急かす。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_014": {
+   "noteJa": "目をそらして、ばつが悪そうに小さく。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_015": {
+   "noteJa": "言い訳ではなく、本音を淡々と。少し疲れた声。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_016": {
+   "noteJa": "素直に認めて、苦笑まじりに。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_017": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。褒めて、最後に少し笑う。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_018": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。先生の講評のように。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_019": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。やわらかく。"
+  },
+  "gt_agra_main_itimad_tomb_battle_vimla_020": {
+   "noteJa": "発音の授業。前半の『イティマード』はふつうに読み、『イッ、ティ、マード』は一音ずつ区切って、教える発音ではっきり。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_father_001": {
+   "input": "ここはな、ジョーダー・バーイーの墓だ。映画で見ただろう。アクバルの、いちばん有名なキサキだ",
+   "noteJa": "子どもたちに得意げに講釈する。読み：妃＝きさき（入力で直した）。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_daughter_001": {
+   "noteJa": "父に携帯を突きつけて、遠慮なく言い返す。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_father_002": {
+   "noteJa": "画面を見ようともせず、きっぱり、少しむきになって。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_daughter_002": {
+   "noteJa": "旅行者のヒロインに、得意げに、はきはき説明する。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_daughter_003": {
+   "noteJa": "続けて、得意げに。読み：皇子＝おうじ。"
+  },
+  "gt_agra_date_mariam_tomb_vimla_001": {
+   "input": "あら。署名の前に読む人ね。……今度の請願書は、これ。案内やガイドの説明で、このカタを正しい名前で呼んでほしい、という内容",
+   "noteJa": "イティマード廟の回を終えているときだけ流れる（ここからヴィムラーの6行）。ヒロインに気づいて、少し打ち解けた声。読み：この方＝このかた（入力で直した）。"
+  },
+  "gt_agra_date_mariam_tomb_vimla_002": {
+   "noteJa": "少し照れて、そっけなく。読み：七人＝ななにん（しちにんでもよい）。"
+  },
+  "gt_agra_date_mariam_tomb_vimla_003": {
+   "noteJa": "墓廟の赤い壁を見上げて、静かに淡々と。悲しみを押しつけない。"
+  },
+  "gt_agra_date_mariam_tomb_vimla_004": {
+   "noteJa": "淡々と、静かに。"
+  },
+  "gt_agra_date_mariam_tomb_vimla_005": {
+   "noteJa": "静かに。最後の『……せめて、お墓くらいは』は小さく。"
+  },
+  "gt_agra_date_mariam_tomb_vimla_006": {
+   "noteJa": "名前を二回呼ばれて、照れてそっけなく。でも嫌そうではない（地の文）。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_daughter_004": {
+   "noteJa": "イティマード廟の回を終えていないときだけ流れる（次の行と2行）。祖母の言葉を英語に訳して伝える、通訳らしい淡々とした声。"
+  },
+  "gt_agra_date_mariam_tomb_agra_mariam_daughter_005": {
+   "noteJa": "前半は通訳らしく淡々と。最後の『……初めて聞いた、そんな話』は静かに、しみじみ。"
+  },
+  "gt_agra_mariam_tomb_petition_vimla_001": {
+   "noteJa": "主人公が先に全部読んでから署名したとき（次の行とどちらか一方だけ流れる）。満足そうに、やわらかく。"
+  },
+  "gt_agra_mariam_tomb_petition_vimla_002": {
+   "noteJa": "主人公がすぐ署名しようとしたとき（前の行とどちらか一方だけ流れる）。ペンを取り上げる、先生の命令。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_001": {
+   "noteJa": "名前が出る前（画面は『女の子』）。走ってきて、息を少し弾ませて、短く迷いなく。読み：投げられる方＝ほう（二人のうちの、の意味）。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_002": {
+   "noteJa": "名前の札が出る行。指を折りながら、ルールを一つずつ事務的に。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_003": {
+   "noteJa": "ルールの理由を、当然のことのように。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_004": {
+   "noteJa": "主人公が同じチームを望んだとき。ぴしゃりと短く。次の行と同じ文（どちらか一方だけ流れる）。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_005": {
+   "noteJa": "前の行と同じ文（どちらか一方だけ流れる）。同じ録音を使うかは作者が決める。ぴしゃりと短く。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_006": {
+   "noteJa": "試合の最後を、きびきびと仕切る。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_007": {
+   "noteJa": "主人公が最後の一球を振らなかったとき。二人を見比べ、肩をすくめて、キャプテンの判断を短く。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_008": {
+   "noteJa": "手のひらを上にして差し出しながら、悪びれずに。"
+  },
+  "gt_agra_date_mehtab_bagh_sonia_009": {
+   "noteJa": "少し真剣に、本音で。"
+  },
+  "gt_agra_mehtab_bagh_another_ball_sonia_001": {
+   "noteJa": "二球目も振らなかったが、遅い球が板に当たって転がったとき。そっけなく、短く区切って。"
+  },
+  "gt_agra_mehtab_bagh_ball_six_sonia_001": {
+   "noteJa": "打球が川の方へ飛んだとき。少し悔しそうに、でも公平に。最後は言いつけるように。"
+  },
+  "gt_agra_mehtab_bagh_ball_over_wall_sonia_001": {
+   "noteJa": "打球が塀を越えたとき。両手を上げて大喜びで叫ぶ、今日いちばんの大声。割れないように。"
+  },
+  "gt_agra_mehtab_bagh_ball_edge_sonia_001": {
+   "noteJa": "板の端に当たったとき。淡々と判定する。"
+  },
+  "gt_agra_mehtab_bagh_ball_bowled_sonia_001": {
+   "noteJa": "空振りで煉瓦が崩れたとき。落ち着いて淡々と。塀を越えたときの『アウト！』とは温度を変える。"
+  },
+  "gt_agra_mehtab_bagh_photo_sonia_001": {
+   "noteJa": "写真代の使い道を聞かれたとき。最初は即答、『……うそ。』からは少し照れて正直に。"
+  },
+  "gt_agra_mehtab_bagh_photo_sonia_002": {
+   "noteJa": "写真代の代わりに握手されたとき。むっとしてから、少し素直に。"
+  },
+  "gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_001": {
+   "noteJa": "麺を運んできて、二人を見比べ、にやにやしながら。"
+  },
+  "gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_002": {
+   "noteJa": "うまいことを言ったという顔で、からかう。読み：茹で上がる＝ゆであがる。"
+  },
+  "gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_003": {
+   "noteJa": "主人公が『新婚じゃありません』と言ったとき。軽く聞き流す。宿のサミールの『皆さん、最初はそうおっしゃいます』と同じ言い回し（ヒロインが次の行で指摘する）。"
+  },
+  "gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_004": {
+   "noteJa": "ヒロインが自分で否定したとき。にやにやと、軽く聞き流す。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_001": {
+   "input": "お願いがあります！　あのベンチを、ジュップンだけ確保してください！",
+   "noteJa": "名前が出る前（画面は『青年』）。額に汗、列の前に飛び出してきて、息を切らして必死に。読み：十分＝じゅっぷん（十分間。入力で直した）。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_002": {
+   "noteJa": "名前の札が出る行。早口でまくしたてるが、読点の区切りは保つ。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_003": {
+   "noteJa": "早口のまま、困りきって。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_004": {
+   "noteJa": "必死に頼みこむ。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_005": {
+   "noteJa": "練習どおりの求婚の台詞。少し芝居がかって始め、『……』の所でタンヴィに遮られて止まる。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_001": {
+   "noteJa": "名前の札が出る行。恋人の台詞を静かに遮る。責めず、落ち着いた問いかけ。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_002": {
+   "input": "そう。イクサの旅の途中で、出産で。何人目の子かは、資料でも十三とか十四とか揺れるの。それくらい、何度も",
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。うなずいて、淡々と。読み：戦＝いくさ（入力で直した）。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_003": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。首を振って、淡々と。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_006": {
+   "noteJa": "どもって、あわてて言い返す。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_004": {
+   "noteJa": "白いドームを見上げて。声を荒らげず、言う順番を前から決めていたように静かに。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_005": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。静かに説明する。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_006": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。静かに説明する。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_007": {
+   "noteJa": "不安そうに、恐る恐る。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_007": {
+   "noteJa": "やわらかく、はっきり。前半は本心から、後半で静かに線を引く。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_008": {
+   "noteJa": "廟の左右の赤い建物を指さしながら、落ち着いて問いかける。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_009": {
+   "noteJa": "クイズの答えが合っていたとき（次の行とどちらか一方だけ流れる）。静かに。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_010": {
+   "noteJa": "クイズの答えが違ったとき（前の行とどちらか一方だけ流れる）。静かに。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_011": {
+   "noteJa": "ニキルに向き直って、本題を。責める声にせず、静かにきっぱり。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_008": {
+   "noteJa": "言い返しかけて、途中で言葉が止まる。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_012": {
+   "noteJa": "淡々と事実を並べる。最後の一文に、少しだけ寂しさ。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_009": {
+   "noteJa": "沈黙のあと、静かに、心から反省して。ゆっくり。"
+  },
+  "gt_agra_main_taj_mahal_battle_tanvi_013": {
+   "noteJa": "やわらかく、少しほほえむように。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_010": {
+   "noteJa": "点数で一つだけ流れる結果の行（三問とも正解）。落ちこみながらも、冗談めかして。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_011": {
+   "noteJa": "点数で一つだけ流れる結果の行（二問正解）。冗談めかして、自分を励ますように。"
+  },
+  "gt_agra_main_taj_mahal_battle_nikhil_012": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が一問以下）。ほっとして、少し笑って。"
+  },
+  "gt_agra_finale_battle_anwar_001": {
+   "noteJa": "名前の札が出る行。人だかりの観客に語る途中から始まる。悲劇を盛り上げる朗々とした語り。『切り落とせと』で声を落とす。読み：二万＝にまん。"
+  },
+  "gt_agra_finale_battle_anwar_002": {
+   "noteJa": "観客に向かって、大げさに紹介する。『ご覧なさい！』は張って。読み：甥＝おい。"
+  },
+  "gt_agra_finale_battle_anwar_003": {
+   "noteJa": "観客を笑わせる、余裕たっぷりの口調。"
+  },
+  "gt_agra_finale_battle_kamla_001": {
+   "noteJa": "回想の声。デリー最後の朝に車の窓から言われた言葉が、ヒロインの頭の中で聞こえる。デリーのエピローグの gt_delhi_epilogue_kamla_001 と同じ文（句点だけ違う）。同じ録音を使うか別に録るかは作者が決める。"
+  },
+  "gt_agra_finale_battle_anwar_004": {
+   "noteJa": "笑顔を崩さず、余裕を見せて挑むように。"
+  },
+  "gt_agra_finale_battle_agra_finale_student_001": {
+   "noteJa": "フィナーレの最初のクイズを間違えたときだけ流れる。人だかりの中から、携帯を見ながら、さらりと。得意げにしない。"
+  },
+  "gt_agra_finale_battle_anwar_005": {
+   "noteJa": "持論。ここは声を落として、本音で。"
+  },
+  "gt_agra_finale_battle_anwar_006": {
+   "noteJa": "杖を上げて、観客全体にツアーの案内として。"
+  },
+  "gt_agra_finale_battle_anwar_007": {
+   "input": "皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。白いキサキと、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです",
+   "noteJa": "夕日の岸辺で。たっぷり抑揚をつけた伝説の語り。読み：妃＝きさき（ひ と読まれないよう入力で直した）。"
+  },
+  "gt_agra_finale_battle_anwar_008": {
+   "noteJa": "観客に両手を広げて、挑むように。"
+  },
+  "gt_agra_finale_battle_anwar_009": {
+   "noteJa": "ヒロインに向けて、試すように。"
+  },
+  "gt_agra_finale_battle_anwar_010": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。思わず答えてしまい、言い終わりに『しまった』という短い間。"
+  },
+  "gt_agra_finale_battle_anwar_011": {
+   "noteJa": "静かに、諭すように。"
+  },
+  "gt_agra_finale_battle_anwar_012": {
+   "noteJa": "クイズの答えが違ったときだけ流れる。少し間を置いて、強がって。最後の一文は言い訳めいて。読み：書家＝しょか。"
+  },
+  "gt_agra_finale_battle_anwar_013": {
+   "input": "参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。タージのミナミモンの外、タージ・ガンジだ。七代、あそこに住んでいる",
+   "noteJa": "杖の先で地面を叩いて、苦笑いしながら。後半は家への誇りを込めて。読み：南門は作者に確かめる（作者への質問あり。入力は仮に『みなみもん』）。七代＝ななだい（しちだいでもよい）。"
+  },
+  "gt_agra_finale_battle_anwar_014": {
+   "input": "イチバとタイショウヤドだよ。タージのミナミモンの外に、最初から造られた町だ。墓と一緒に生まれた町なんだ",
+   "noteJa": "クイズの答えが違ったときだけ流れる。教えるように、誇らしく。読み：市場＝いちば、隊商宿＝たいしょうやど（入力で直した）。南門は作者への質問あり（入力は仮に『みなみもん』）。"
+  },
+  "gt_agra_finale_battle_anwar_015": {
+   "noteJa": "短く、意外そうに。"
+  },
+  "gt_agra_finale_battle_anwar_016": {
+   "noteJa": "しばらく黙ったあと、静かに。頑固さと照れを込めて。"
+  },
+  "gt_agra_finale_battle_anwar_017": {
+   "input": "だが、終わりに一つ足そう。壁に名前を残した書家の話と、ミナミモンの外の町の話を",
+   "noteJa": "少し間を置いて、穏やかに。読み：書家＝しょか。南門は作者への質問あり（入力は仮に『みなみもん』）。"
+  },
+  "gt_agra_finale_battle_anwar_018": {
+   "noteJa": "点数で一つだけ流れる結果の行（五問とも正解）。苦笑いで、さっぱりと認める。"
+  },
+  "gt_agra_finale_battle_anwar_019": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が三、四問）。苦笑いで。"
+  },
+  "gt_agra_finale_battle_anwar_020": {
+   "noteJa": "点数で一つだけ流れる結果の行（正解が二問以下）。穏やかに、諭すように。"
+  },
+  "gt_agra_finale_battle_anwar_021": {
+   "noteJa": "紙の箱を差し出しながら。少し照れて、ぶっきらぼうに。読み：詫び＝わび、印＝しるし（いん と読まれたら直す）。"
+  },
+  "gt_agra_tour_morning_samir_001": {
+   "noteJa": "朝の帳場。明るい接客の声。『……ただ、』からは残念そうに。"
+  },
+  "gt_agra_tour_morning_samir_002": {
+   "noteJa": "叔父を自慢して、売りこむように。"
+  },
+  "gt_agra_tour_morning_samir_003": {
+   "input": "皇帝アクバルと、おきさきジョーダーの恋の話なら、叔父の右に出る者はおりません",
+   "noteJa": "うっとりと、叔父の語りを宣伝する。読み：お妃＝おきさき（入力で直した。後ろのジョーダーと一続きのカタカナにならないよう、ひらがなにした）。"
+  },
+  "gt_agra_tour_morning_samir_004": {
+   "noteJa": "マリアム廟のデートを遊んだあとだけ流れる。にこやかに、悪びれずに言い切る。"
+  },
+  "gt_agra_tour_morning_samir_005": {
+   "noteJa": "何か勘違いした様子で、楽しそうに。このあと帳面に何か書く。"
+  },
+  "gt_agra_tour_morning_vinod_001": {
+   "noteJa": "名前の札が出る登場の行。名前の紙を下ろし、軽く頭を下げて、淡々と。最後の一文も強調しない。"
+  },
+  "gt_agra_tour_morning_vinod_002": {
+   "noteJa": "乾いた冗談を真顔で、同じ調子のまま。笑わせようとしない。"
+  },
+  "gt_agra_tour_out_leg_vinod_001": {
+   "noteJa": "牛の後ろで待ちながら、淡々と。冗談も真顔で。"
+  },
+  "gt_agra_tour_out_leg_vinod_002": {
+   "input": "そのオーケーは、運転手の数だけ説があります。父の説と、わたしの説も違います",
+   "noteJa": "英字の『OK』はオーケーと読む（入力で直した）。淡々と。"
+  },
+  "gt_agra_tour_out_leg_vinod_003": {
+   "noteJa": "少し考えてから、ぽつりと。"
+  },
+  "gt_agra_tour_out_leg_vinod_004": {
+   "noteJa": "顎でバックミラーの魔よけを示しながら。読み：悪い目よけ＝わるいめよけ。"
+  },
+  "gt_agra_tour_out_leg_vinod_005": {
+   "noteJa": "少しうれしそうに。最後の一文は控えめな冗談。"
+  },
+  "gt_agra_tour_out_mother_vinod_001": {
+   "noteJa": "バックミラー越しに、控えめに断ってから尋ねる。"
+  },
+  "gt_agra_tour_out_mother_vinod_002": {
+   "noteJa": "穏やかに、母を思って。"
+  },
+  "gt_agra_tour_out_mother_vinod_003": {
+   "noteJa": "遠慮がちに。最後の問いは誠実に。"
+  },
+  "gt_agra_tour_out_mother_vinod_004": {
+   "noteJa": "主人公の英語の答え（一緒に旅をしている二人）を受けて。淡々と、少し楽しそうに。"
+  },
+  "gt_agra_tour_out_mother_vinod_005": {
+   "noteJa": "主人公の英語の答え（何でも読む人）を受けて。最後の一文は乾いた冗談。"
+  },
+  "gt_agra_tour_out_mother_vinod_006": {
+   "noteJa": "ヒロインが自分で答えたあと。大事そうに、ゆっくり繰り返す。"
+  },
+  "gt_agra_tour_arrive_vinod_001": {
+   "noteJa": "名前の紙の裏に電話番号を書いて渡しながら。客引きへの注意を、落ち着いてきっぱり。"
+  },
+  "gt_agra_tour_arrive_vinod_002": {
+   "noteJa": "感心して、少しほほえむように。"
+  },
+  "gt_agra_tour_mathri_vinod_001": {
+   "noteJa": "ボンネットの上の包みを示して、短く。"
+  },
+  "gt_agra_tour_mathri_vinod_002": {
+   "noteJa": "穏やかに、少し笑って。"
+  },
+  "gt_agra_tour_mathri_vinod_003": {
+   "noteJa": "行きの車でヒロインが自分で答えたときに流れる（この行から4行のうち一つ）。母の言葉は声色を変えず、聞いたとおりに伝える。"
+  },
+  "gt_agra_tour_mathri_vinod_004": {
+   "noteJa": "行きの車の答えが『何でも読む人』のとき（4行のうち一つ）。母の言葉は声色を変えず、少し笑って伝える。"
+  },
+  "gt_agra_tour_mathri_vinod_005": {
+   "noteJa": "行きの車の答えが『一緒に旅をしている二人』のとき（4行のうち一つ）。淡々と、でも少しおかしそうに。"
+  },
+  "gt_agra_tour_mathri_vinod_006": {
+   "noteJa": "行きの車の答えがないとき（4行のうち一つ）。穏やかに。"
+  },
+  "gt_agra_tour_back_leg_vinod_001": {
+   "noteJa": "帰りの静かな車の中。淡々と。"
+  },
+  "gt_agra_tour_back_leg_vinod_002": {
+   "noteJa": "道沿いの屋上を見ながら。最後の一文は少し寂しそうに。"
+  },
+  "gt_agra_tour_back_leg_vinod_003": {
+   "noteJa": "母の言葉を伝える。静かに。"
+  },
+  "gt_agra_tour_back_leg_vinod_004": {
+   "noteJa": "少し声を落として、静かに。読み：格子＝こうし、授かった＝さずかった。"
+  },
+  "gt_agra_tour_back_leg_vinod_005": {
+   "noteJa": "静かに、穏やかに。読み：十分＝じゅうぶん。"
+  },
+  "gt_agra_tour_back_awake_vinod_001": {
+   "input": "眠りましたか。……一つ、いいですか。お客さんは、たいてい皇帝のことを聞きます。何年住んだか、キサキは何人いたか",
+   "noteJa": "眠ったはずのヒロインを起こさないよう、声を落として主人公に話す小声。読み：妃＝きさき（入力で直した）。"
+  },
+  "gt_agra_tour_back_awake_vinod_002": {
+   "input": "でも、この人は、わたしの母のことを聞きました。レモンのことも、娘の字のことも、トラックのオーケーのことも。いつも、こうですか",
+   "noteJa": "小声のまま。英字の『OK』はオーケーと読む（入力で直した）。最後の問いは静かに。"
+  },
+  "gt_agra_tour_back_awake_vinod_003": {
+   "noteJa": "声を出して笑った直後の、明るい声。読み：土産話＝みやげばなし。"
+  },
+  "gt_agra_tour_home_vinod_001": {
+   "noteJa": "運転席の窓を下ろして、車の中から。最後の一文は乾いた冗談。"
+  },
+  "gt_agra_tour_home_samir_001": {
+   "noteJa": "帳面を開いて待っていた帳場で、明るい接客の笑顔で。"
+  },
+  "gt_agra_tour_home_samir_002": {
+   "noteJa": "楽しそうに、言いながら帳面に何か書き足す（地の文）。"
+  }
+ },
+ "dictionary": [
+  {
+   "word": "書家",
+   "reading": "ショカ",
+   "noteJa": "アンワルの台詞（3行）。ヒロインの説明書6(3)で決めた読み。"
+  },
+  {
+   "word": "格子",
+   "reading": "コウシ",
+   "noteJa": "ヴィノードの『聖者のお墓の格子』。ヒロインの説明書6(3)と同じ。"
+  },
+  {
+   "word": "隊商宿",
+   "reading": "タイショウヤド",
+   "noteJa": "アンワルの台詞。ゲームの用語集（glossary/terms.json の gt_term_caravanserai）の読み。この行は入力も直した。"
+  },
+  {
+   "word": "市場",
+   "reading": "イチバ",
+   "noteJa": "アンワルの『市場と隊商宿』。『しじょう』ではない。この行は入力も直した。ほかの都市で『しじょう』の意味に使う行があれば、辞書には入れず行ごとに直す。"
+  },
+  {
+   "word": "南門",
+   "reading": "ミナミモン",
+   "noteJa": "アンワルの台詞（タージの南門、3行）。仮の読み（作者への質問あり）。この3行は入力も仮の読みで書いた。"
+  },
+  {
+   "word": "主",
+   "reading": "アルジ",
+   "noteJa": "ドゥッガル大佐の『この塔の主』。仮の読み（作者への質問あり）。一文字の語なので辞書に入れるとほかの『主』にも効く。行ごとに直す方がよい（この行は入力を仮の読みで書いた）。"
+  },
+  {
+   "word": "妃",
+   "reading": "キサキ",
+   "noteJa": "マリアム廟の父親・アンワル・ヴィノードの台詞。『ひ』と読まれないよう、この3行は入力も直した。皇妃（こうひ）は別の語。"
+  },
+  {
+   "word": "お妃",
+   "reading": "オキサキ",
+   "noteJa": "サミールの台詞。この行は入力も直した。"
+  },
+  {
+   "word": "皇妃",
+   "reading": "コウヒ",
+   "noteJa": "ヴィムラーの台詞（2行）。"
+  },
+  {
+   "word": "皇子",
+   "reading": "オウジ",
+   "noteJa": "マリアム廟の娘の台詞。"
+  },
+  {
+   "word": "戦",
+   "reading": "イクサ",
+   "noteJa": "タンヴィの『戦の旅』。この行は入力も直した。一文字の語なので、辞書より行ごとに直す方がよい。"
+  },
+  {
+   "word": "方",
+   "reading": "カタ",
+   "noteJa": "人を指す『方』（サミールの『動画の方』『鳩の役の方』、ヴィムラーの『この方』）。この3行は入力も直した。ほかの行の『方』（投げられる方、映画の方 など）は ほう なので、辞書には入れない。"
+  },
+  {
+   "word": "十分",
+   "reading": "ジュップン",
+   "noteJa": "大佐の『後ろの席だと、十分で』とニキルの『十分だけ』は十分間（入力で直した）。大佐の『目は二つある。十分だ』とヴィノードの『それで十分』は じゅうぶん。辞書には入れず、行ごとに直す。大佐の『八十分』も はちじゅっぷん（入力で直した）。"
+  },
+  {
+   "word": "一部屋",
+   "reading": "ヒトヘヤ",
+   "noteJa": "ムケーシュの電話。この行は入力も直した。"
+  },
+  {
+   "word": "洗車係",
+   "reading": "センシャガカリ",
+   "noteJa": "グルミートの台詞。この行は入力も直した。"
+  },
+  {
+   "word": "施主",
+   "reading": "セシュ",
+   "noteJa": "ムケーシュの台詞（2行）。"
+  },
+  {
+   "word": "凧",
+   "reading": "タコ",
+   "noteJa": "ムケーシュの『凧を揚げる』。"
+  },
+  {
+   "word": "茹で上がる",
+   "reading": "ユデアガル",
+   "noteJa": "茶屋の主人の台詞。"
+  },
+  {
+   "word": "甥",
+   "reading": "オイ",
+   "noteJa": "アンワルの『甥の宿』。"
+  },
+  {
+   "word": "詫び",
+   "reading": "ワビ",
+   "noteJa": "アンワルの『詫びの印』。"
+  },
+  {
+   "word": "印",
+   "reading": "シルシ",
+   "noteJa": "アンワルの『詫びの印』。『いん』と読まれたら直す。一文字の語なので、行ごとに直す方がよい。"
+  },
+  {
+   "word": "上った",
+   "reading": "ノボッタ",
+   "noteJa": "ヴィムラーの『自分の力で上った』（2行）。『あがった』ではない。"
+  },
+  {
+   "word": "七代",
+   "reading": "ナナダイ",
+   "noteJa": "アンワルの台詞。しちだいでもよい。"
+  },
+  {
+   "word": "七人",
+   "reading": "ナナニン",
+   "noteJa": "ヴィムラーの台詞。しちにんでもよい。"
+  },
+  {
+   "word": "嫁いだ",
+   "reading": "トツイダ",
+   "noteJa": "ヴィムラーの台詞。"
+  },
+  {
+   "word": "土産話",
+   "reading": "ミヤゲバナシ",
+   "noteJa": "ヴィノードの台詞。"
+  },
+  {
+   "word": "OK",
+   "reading": "オーケー",
+   "noteJa": "ヴィノードの台詞（2行）。英字のままでは読めないので、2行とも入力をカタカナにした。"
+  },
+  {
+   "word": "ハーン",
+   "reading": "ハーン",
+   "noteJa": "タンヴィの『……ハーン』はヒンディー語の『はい』（求婚への返事）。アンワルの『アマーナト・ハーン』のハーンは人名。同じ音。"
+  },
+  {
+   "word": "バフー",
+   "reading": "バフー",
+   "noteJa": "ヒンディー語で嫁のこと（ヴィムラーが台詞の中で説明している）。"
+  },
+  {
+   "word": "ローティー",
+   "reading": "ローティー",
+   "noteJa": "インドの薄いパン（ハルバンスの台詞）。デリーの場面と同じ。"
+  },
+  {
+   "word": "アジョワン",
+   "reading": "アジョワン",
+   "noteJa": "香辛料の名前（ヴィノードの台詞）。"
+  },
+  {
+   "word": "バス",
+   "reading": "バス",
+   "noteJa": "アーグラのこの台詞群の『バス』（リヤと大佐の台詞）は、すべて乗り物。ヒロインの説明書6(4)のヒンディー語の『バス』（もういい）とは別。"
+  }
+ ],
+ "authorQuestions": [
+  {
+   "id": "gt_agra_agra_fort_guide_agra_fort_tourist_001",
+   "text": "ここは、ある皇帝が、最後の年月を過ごした場所なんだって",
+   "questionJa": "「年月」の読み。ヒロインの次の行 gt_agra_agra_fort_guide_005「最後の年月を、遠くのタージを見ながら……」（録音済み）が同じ言葉を繰り返すので、その録音の読みに合わせるのがよい（録音は耳では確かめていない）。入力は変えていない。",
+   "options": [
+    "としつき",
+    "ねんげつ"
+   ]
+  },
+  {
+   "id": "gt_agra_main_agra_fort_battle_duggal_005",
+   "text": "閉じ込める者すべてにだ。この塔の主を閉じ込めたのが誰だったか、知っているかね",
+   "questionJa": "「この塔の主」の読み。仮に『あるじ』で入力を書いた。",
+   "options": [
+    "あるじ",
+    "ぬし"
+   ]
+  },
+  {
+   "id": "gt_agra_finale_battle_anwar_013",
+   "text": "参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる",
+   "questionJa": "「南門」（タージの南門）の読み。仮に『みなみもん』で入力を書いた。同じ語が gt_agra_finale_battle_anwar_014・_017 にもあるので、3行とも同じ読みにする。",
+   "options": [
+    "みなみもん",
+    "なんもん"
+   ]
+  },
+  {
+   "id": "gt_agra_finale_battle_anwar_014",
+   "text": "市場と隊商宿だよ。タージの南門の外に、最初から造られた町だ。墓と一緒に生まれた町なんだ",
+   "questionJa": "「南門」の読み（gt_agra_finale_battle_anwar_013 と同じ質問）。仮に『みなみもん』で入力を書いた。",
+   "options": [
+    "みなみもん",
+    "なんもん"
+   ]
+  },
+  {
+   "id": "gt_agra_finale_battle_anwar_017",
+   "text": "だが、終わりに一つ足そう。壁に名前を残した書家の話と、南門の外の町の話を",
+   "questionJa": "「南門」の読み（gt_agra_finale_battle_anwar_013 と同じ質問）。仮に『みなみもん』で入力を書いた。",
+   "options": [
+    "みなみもん",
+    "なんもん"
+   ]
+  }
+ ]
+}

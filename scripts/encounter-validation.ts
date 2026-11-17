@@ -3,7 +3,7 @@ import type { EncounterCatalog, EncounterDefinition } from "../src/content/encou
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { QuizDefinition, QuizQuestion } from "../src/content/schemas";
 import type { LandmarkDefinition } from "../src/content/tourism-schemas";
-import { checkLinesWithoutChoice } from "./ink-validation";
+import { checkLinesWithoutChoice, latinNameValues } from "./ink-validation";
 import { forEachCondAssignment } from "./scene-conditions";
 import { translationLanguageWarning } from "./data-language";
 import type { ContentWarning } from "./content-report";
@@ -12,7 +12,10 @@ import { bindItemReader, type ItemStatus } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { unique } from "./content-validation-utils";
 
-/** An encounter's story walked on its own (each cond assignment, item status and reaction): its choices match its options, and it applies no Ink effect. */
+/**
+ * An encounter's story walked on its own (each cond assignment, item status, reaction and value of the name in Latin
+ * letters it reads): its choices match its options, and it applies no Ink effect.
+ */
 export function validateEncounterStory(
   compiled: string,
   context: TagContext,
@@ -30,7 +33,7 @@ export function validateEncounterStory(
     {}, ...itemIds.flatMap((id) => (["held", "gifted", "used"] as const).map((status) => ({ [id]: status }))),
   ];
   forEachCondAssignment(compiled, (bind) => {
-    for (const [contextIndex, inventory] of inventoryContexts.entries()) for (const result of ["positive", "negative"]) {
+    for (const [contextIndex, inventory] of inventoryContexts.entries()) for (const result of ["positive", "negative"]) for (const latin of latinNameValues(compiled)) {
       const story = new Story(compiled);
       bind(story);
       bindItemReader(story, inventory, itemIds);
@@ -41,6 +44,8 @@ export function validateEncounterStory(
           throw new Error(`Missing encounter variable: ${name}`);
         story.variablesState.$(name, "検証名");
       }
+      // The name in Latin letters: only where the story declares it (modules.ink does).
+      if (story.variablesState.GlobalVariableExistsWithName("player_name_latin")) story.variablesState.$("player_name_latin", latin);
       if (story.variablesState.GlobalVariableExistsWithName("romance_result"))
         story.variablesState.$("romance_result", result);
       else if (options?.some((option) => option.responseProfileId))

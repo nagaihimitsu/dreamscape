@@ -8,11 +8,13 @@ import {
   parseThirdPartyLicenses,
   musicCredits,
   ambienceCredits,
+  movieCredits,
   photoCredits,
   SOUND_LICENSE_TEXT,
   soundCredits,
   THIRD_PARTY_LICENSES_FILE,
   voiceCredits,
+  type JourneyMovieCredits,
   type JourneyPhotoCredits,
   type SoundCredit,
   type ThirdPartyLicense,
@@ -90,15 +92,38 @@ function SoundCredits({ sounds, usesLabelJa = "使っている音" }: { sounds: 
 }
 
 /**
+ * The works inside the journeys' opening movies (2026-11-17), journey by journey: what each is in the movie, the work,
+ * its author and licence (with its link), the credit its author asks for, what was changed for the movie and its page.
+ */
+function MovieCredits({ movies }: { movies: readonly JourneyMovieCredits[] }) {
+  return <>
+    {movies.map((journey) => <details key={journey.journeyId} className="credits-journey" data-testid={`credits-movie-${journey.journeyId}`}>
+      <summary>{journey.headingJa}</summary>
+      <ul className="credits-sounds">
+        {journey.credits.map((credit) => <li key={`${credit.useJa}-${credit.url}`}>
+          <p className="credits-place">{credit.useJa}</p>
+          <p>{credit.titleJa}</p>
+          <p>作者：{credit.author}</p>
+          <p>ライセンス：<a href={credit.licenseUrl} target="_blank" rel="noreferrer">{credit.license}</a></p>
+          {credit.creditJa && <p>{credit.creditJa}</p>}
+          {credit.changesJa && <p>{credit.changesJa}</p>}
+          <p><a href={credit.url} target="_blank" rel="noreferrer">元の作品</a></p>
+        </li>)}
+      </ul>
+    </details>)}
+  </>;
+}
+
+/**
  * The body of 「出典・権利の一覧」: every served tourism photo by journey (preparing journeys
  * marked, D1: on the development server only, as a production build serves none of their photos), the sound effects', the music's and the ambience's sources, the voices' (by journey: only the
- * journeys with voices; 2026-11-13), the map, the fonts (D4), the libraries (D7) and the note that artwork made for
- * Dreamscape is not listed (D5). Each journey's photos, the sounds' and the music's sources and each licence text
- * open on demand.
+ * journeys with voices; 2026-11-13), the works inside the opening movies (by journey; 2026-11-17), the map, the fonts
+ * (D4), the libraries (D7) and the note that artwork made for Dreamscape is not listed (D5). Each journey's photos and
+ * movie works, the sounds' and the music's sources and each licence text open on demand.
  */
-export function CreditsList({ photos, sounds = [], music = [], ambience = [], voices = [], licences }: {
+export function CreditsList({ photos, sounds = [], music = [], ambience = [], voices = [], movies = [], licences }: {
   photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; music?: readonly SoundCredit[]; ambience?: readonly SoundCredit[];
-  voices?: readonly VoiceCredit[]; licences: LicenceListState;
+  voices?: readonly VoiceCredit[]; movies?: readonly JourneyMovieCredits[]; licences: LicenceListState;
 }) {
   return <div className="credits-list">
     <section aria-labelledby="credits-photos-title">
@@ -153,6 +178,11 @@ export function CreditsList({ photos, sounds = [], music = [], ambience = [], vo
         </li>)}
       </ul>
     </section>}
+    {movies.length > 0 && <section aria-labelledby="credits-movies-title" data-testid="credits-movies">
+      <h3 id="credits-movies-title">オープニングムービー</h3>
+      <p className="fine-print">旅をはじめるときに流れる動画の中の、写真と音楽です。旅行編ごとに開いて、作者・ライセンスと、動画のために変えたところを確かめられます。</p>
+      <MovieCredits movies={movies} />
+    </section>}
     <section aria-labelledby="credits-map-title" data-testid="credits-map">
       <h3 id="credits-map-title">地図</h3>
       <p>{MAP_CREDIT.textJa}</p>
@@ -182,9 +212,10 @@ export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [music] = useState(musicCredits);
   const [ambience] = useState(ambienceCredits);
   const [voices] = useState(voiceCredits);
+  const [movies] = useState(movieCredits);
   const licences = useThirdPartyLicenses();
   return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses closeOnBackdrop>
     <ModalTitle id="credits-title" onClose={onClose} closeTestId="credits-close">出典・権利の一覧</ModalTitle>
-    <CreditsList photos={photos} sounds={sounds} music={music} ambience={ambience} voices={voices} licences={licences} />
+    <CreditsList photos={photos} sounds={sounds} music={music} ambience={ambience} voices={voices} movies={movies} licences={licences} />
   </Modal>;
 }

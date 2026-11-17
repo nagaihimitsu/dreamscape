@@ -4,7 +4,7 @@ import { errorText } from "./cli-error";
 import { displayPath, loadContentSources } from "./content-sources";
 import { readVoiceHistory, voiceRecordsFolder, writeRecordedClips } from "./voice-records";
 import { deliveredIds, insertVoiceTags, planVoiceTags } from "./voice-tag";
-import { voiceScript, voiceScriptInput } from "./voice-script";
+import { HEROINE_VOICE, voiceScript, voiceScriptInput } from "./voice-script";
 
 // npm run voice:tag -- --journey <journeyId> --from <folder>: the clips delivered in <folder> (<ID>.mp3 or <ID>.wav, as
 // the voice makers name them) get their `# voice:` in the journey's Ink files, and recorded.json records what each
@@ -37,10 +37,15 @@ try {
   }
   const recordedFile = plan.record.length ? writeRecordedClips(root, journeyId, new Map([...history.recorded, ...plan.record])) : undefined;
   const refused = [...delivered.refused, ...plan.refused];
+  // Who the tagged lines are said by (the heroine first), with how many lines each.
+  const bySpeaker = new Map<string, number>();
+  for (const line of [...plan.tag].sort((left, right) => Number(right.voice === HEROINE_VOICE) - Number(left.voice === HEROINE_VOICE)))
+    bySpeaker.set(line.speakerJa, (bySpeaker.get(line.speakerJa) ?? 0) + 1);
   console.log([
-    `届いた声 ${delivered.ids.length}本（${from}）：# voice: を付けた行 ${plan.tag.length}行（${files.length}ファイル）、` +
+    `届いた声 ${delivered.ids.length}本（${from}）：# voice: を付けた行 ${plan.tag.length}行（${files.length}ファイル` +
+      `${bySpeaker.size ? `。${[...bySpeaker].map(([name, count]) => `${name} ${count}行`).join("・")}` : ""}）、` +
       `録音した文を記録 ${plan.record.length}本${recordedFile ? `（${displayPath(root, recordedFile)}）` : ""}、付けなかった声 ${refused.length}本`,
-    ...refused.map((clip) => `  [${clip.id}] ${clip.reasonJa}`),
+    ...refused.map((clip) => `  [${clip.id}]${clip.speakerJa ? `（${clip.speakerJa}）` : ""} ${clip.reasonJa}`),
   ].join("\n"));
   if (refused.length) process.exitCode = 1;
 } catch (error) {

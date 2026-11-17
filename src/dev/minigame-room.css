@@ -34,6 +34,10 @@
 .minigame-room-controls input { width: 20px; height: 20px; }
 .minigame-room-example { flex-wrap: wrap; }
 .minigame-room-example select { min-height: 44px; min-width: 0; max-width: 100%; }
+/* A name to try (the games that draw it): a field the line's width, its Latin form under it. */
+.minigame-room-controls .minigame-room-name { flex-wrap: wrap; }
+.minigame-room-controls .minigame-room-name input { flex: 1 1 10em; width: auto; min-width: 0; height: 44px; padding: 0 8px; font-size: 16px; }
+.minigame-room-latin { flex-basis: 100%; font-size: 13px; }
 /* A use's pictures (bg, art.<slot>): long IDs, so the choice takes the line's width and its text is cut, not the page widened. */
 .minigame-room-pictures select { width: 100%; text-overflow: ellipsis; }
 /* The stage: the game's scene box with a window where the choices would be; the play lies over it as in a story. */
