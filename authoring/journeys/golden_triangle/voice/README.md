@@ -136,6 +136,32 @@
 - `casting-2026-11-17/`（約860KB）：配役を決めたときの記録。`casting.md`（配役表・同じモデルを使う人・規約の印・試聴の順・点検で変えたこと）、`casting.json`（配役のデータ。候補と、使っていない声も）、`profiles/`（人物の10の特徴）、`notes/`（都市ごとの、場面・行・辞書のメモ）。ゲームも `voice:script` も読みません。
 - `cast.json` に移すときに、2人（ニキル・ゾヘブ）の「選んだ理由」にあった前の下書きのモデルの名前と高さを、決まった配役のものに直しました（`casting.md` の頭の注）。
 
+**届いた声（2026-11-17）**：その日のうちに、両方とも全部届きました。
+
+- VOICEVOX：5つの zip（`india_voicevox_0001-0070`・`0071-0142`・`0143-0214`・`0215-0296`・`0297-0321`。WAV・48kHz・モノラル・16bit）で、依頼の321行が全部（29人。足りない行も、依頼にない行もありません）。
+- AivisSpeech：6つの zip（`india_aivis_voice_0001-0075`・`0076-0140`・`0141-0203`・`0204-0281`・`0282-0361`・`0362-0382`。WAV・44.1kHz・モノラル・16bit）で、依頼の382行が全部（40人。名前の手前まで録る1行も入っています）。
+- 703本を、ヒロインの声と同じ形（MP3・48kHz・モノラル・80kbps、ピークを -1 dB にそろえた。AivisSpeech の声は 44.1kHz から 48kHz に変えた）にして `content/journeys/golden_triangle/public/assets/voice/` に置き、`voice:tag` で `# voice:` を付け、`recorded.json` に記録しました。付けなかった声はありません。
+- 使ったモデル（VOICEVOX 24・AivisHub 35）は、1つずつ `manifest.json` の `voiceCredits` に足しました（「出典・権利の一覧」の「声」）。クレジットが任意のモデルも、声の出所として載せました。書き方は `cast.json` の `model.creditJa` のとおりで、任意のモデルは、配布元が勧める書き方があればそれを、なければ「音声合成モデル『○○』（AivisSpeech）」にしました。
+- 「★録音の前に」の31人も届いています。作者が規約を確かめたかどうかは、この記録にはまだ書いてありません。
+- 声の長さ：VOICEVOX は0.6〜15.4秒（合わせて約32分）、AivisSpeech は0.6〜17.5秒（約39分）。VOICEVOX のカヴィヤの短い3行（`gt_jaipur_date_albert_hall_kavya_002`・`_003`・`_007`）は、間を取った遅めの読みです。
+- **耳で確かめてほしい AivisSpeech の15行**：台詞の字数のわりに声が短い行です（1秒に8〜17字。同じ人物のふだんの行は4〜7字）。台詞の途中までしか読んでいないか、別の行の声かもしれません。音の終わりは静かなので、録音が途中で切れたのではありません。VOICEVOX の声には、こういう行はありません。足りなければ、その行だけ頼み直します（台詞は変わっていないので `voice:changes` には出ません。ID を伝えます）。
+  - 番人 `gt_agra_akbar_tomb_monkey_glasses_agra_akbar_guard_002`（49字で3.3秒）「ヴリンダーヴァンって町の猿は、眼鏡を…」
+  - グルミート `gt_agra_date_guru_ka_taal_gurmeet_008`（32字で3.5秒）「濃いのを探しておく。ブランプトンには…」
+  - ハルバンス `gt_agra_date_guru_ka_taal_harbans_011`（38字で4.2秒）「世界地図の娘。カナダの地図のローティ…」
+  - 娘 `gt_agra_date_mariam_tomb_agra_mariam_daughter_005`（39字で3.1秒）「おばあちゃんは、結婚してから、ずっと…」
+  - リヤ `gt_agra_main_agra_fort_battle_riya_002`（52字で3.1秒）「大佐。ジャイプールまでの道中、一番前…」
+  - ムケーシュ `gt_agra_main_fatehpur_sikri_battle_mukesh_024`（46字で4.4秒）「あなた、最後まで決めてくれませんでし…」
+  - ヴィノード `gt_agra_tour_home_vinod_001`（39字で4.0秒）「次にシークリーへ来るときは、母の家に…」
+  - ドゥベイ `gt_delhi_date_lodhi_garden_dubey_011`（51字で3.7秒）「合格。退職してから、毎日、誰にも話し…」
+  - 青年 `gt_delhi_depart_scam_delhi_scam_young_man_005`（26字で2.6秒）「アプリは古い情報です。今朝決まったこ…」
+  - アマン `gt_delhi_finale_battle_aman_025`（35字で4.3秒）「あなたが間違えたところは、僕が調べて…」
+  - 問屋 `gt_delhi_finale_battle_delhi_spice_trader_002`（31字で3.4秒）「それと、城の灯りは何時から始まるか聞…」
+  - 店主 `gt_delhi_finale_battle_delhi_sweet_shopkeeper_001`（55字で3.2秒）「ああ、あのばあさんか。ジャレビー百グ…」
+  - ファイズ `gt_delhi_main_red_fort_battle_faiz_003`（38字で3.6秒）「最後の皇帝は、自分の家で裁判にかけら…」
+  - ソーヌー `gt_delhi_main_red_fort_battle_sonu_003`（28字で3.2秒）「大丈夫！　バスで僕がインドの歴史を全…」
+  - ナスリーン `gt_jaipur_date_johari_bazaar_nasreen_014`（33字で4.1秒）「割れやすいから、はめっぱなしにしない…」
+- 中身は、まだ耳では確かめていません。配役の記録の「2. 作者の耳で確かめてほしい組」と、上の「読みの質問」の行を聞いてください。
+
 ## unused/
 
 ゲームに置いていたが、台詞がなくなって使わなくなった声です（ゲームは読みません。公開物にも入りません）。台詞を戻すときは、`content/journeys/golden_triangle/public/assets/voice/` へ戻し、Inkの台詞の前に `# voice: <ID>` を書き直します。`recorded.json` の記録は残してあります。

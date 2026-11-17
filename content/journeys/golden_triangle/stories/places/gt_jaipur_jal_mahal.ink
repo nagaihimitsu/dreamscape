@@ -27,21 +27,26 @@ INCLUDE modules.ink
 もとは鴨猟のための館だったという。湖の水が満ちると、下の階は水に沈むと言われている。
 遊歩道には、焼きとうもろこしの屋台、写真用に飾り立てたラクダ、風船売り。その間に、低い椅子を並べた女性がいた。手の中には、絞り袋のような、細い円錐の筒。
 # speaker: gt_jaipur_jal_mahal_woman
+# voice: gt_jaipur_date_jal_mahal_farhana_001
 あの宮殿、中には入れないのよ。眺めてるだけなら、手が暇でしょ
 # speaker: gt_jaipur_jal_mahal_woman
 # local_word: gt_jaipur_word_mehndi
 # term: gt_term_mehndi
+# voice: gt_jaipur_date_jal_mahal_farhana_002
 メヘンディ、どう？　手に描く模様。ヘナで描いて、二週間くらい残るの
 # speaker: gt_farhana
 # cutin: name
+# voice: gt_jaipur_date_jal_mahal_farhana_003
 わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。いつか、扇風機と鏡のある自分のお店を持つのが夢
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_jaipur_date_jal_mahal_021
 わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか
 # speaker: gt_farhana
+# voice: gt_jaipur_date_jal_mahal_farhana_004
 結婚式なら、手の甲と手のひら、両方ね。……花嫁さんの手には、模様の中に花婿の名前を隠すの。初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
 # speaker: gt_farhana
+# voice: gt_jaipur_date_jal_mahal_farhana_005
 あなたも、何か隠す？
 * [「自分の名前を隠して」 # option: hide_my_name]
     # profile: bold
@@ -104,6 +109,7 @@ INCLUDE modules.ink
         うん。模様だけで十分。きれいなのが、いちばんだもんね
     }
     # speaker: gt_farhana
+    # voice: gt_jaipur_date_jal_mahal_farhana_006
     もったいない。……まあ、いいわ。お客さんが決めること
     # speaker: narrator
     そう言いながら、ファルハーナの筒の先は、手のひらの真ん中で、妙に長く止まっていた。
@@ -114,6 +120,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_jal_mahal_011
 すごい。下書きもないのに。手のひらが、だんだん自分の手じゃないみたいになっていく
 # speaker: gt_farhana
+# voice: gt_jaipur_date_jal_mahal_farhana_007
 しばらくは、何にも触らないで。乾いたら、水で洗わずに、指でこそげ落とすの。最初はオレンジ色。一晩たつと、濃くなる
 # speaker: narrator
 描き終わると、彼女は両手を胸の前に上げたまま、動けなくなった。その鼻先を、焼きとうもろこしの匂いが通り過ぎる。炭火で焼いて、塩とライムと唐辛子をこすりつけたものだ。

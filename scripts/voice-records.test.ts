@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { voiceRecordWarnings } from "./voice-changes";
-import { partialRecordings, readRecordedClips, readSentScripts, readVoiceCast, readVoiceHistory, writeRecordedClips } from "./voice-records";
+import { copyVoiceRecords, partialRecordings, readRecordedClips, readSentScripts, readVoiceCast, readVoiceHistory, writeRecordedClips } from "./voice-records";
 
 // A journey's voice records in authoring/journeys/<journeyId>/voice/: the scripts sent (one folder per date, or date and
 // label), recorded.json (what each delivered clip says) and cast.json (who voices the other characters).
@@ -21,6 +21,21 @@ describe("the voice records of a journey", () => {
     root = mkdtempSync(path.join(tmpdir(), "dreamscape-voice-"));
   });
   afterEach(() => rmSync(root, { recursive: true, force: true }));
+
+  it("copies each journey's recorded.json to a staged copy, so the copy keeps the clips recorded up to a name", () => {
+    const clips = { gt_x_001: { text: "あら。……『{player_name}』", script: "2026-11-17", spoken: "あら。……" } };
+    write(`${folder}/recorded.json`, JSON.stringify({ schemaVersion: 1, clips }));
+    write("authoring/journeys/no_voice/notes.md", "声なし");
+    const stage = mkdtempSync(path.join(tmpdir(), "dreamscape-voice-stage-"));
+    try {
+      copyVoiceRecords(root, stage);
+      expect(partialRecordings(stage, ["ta_trip", "no_voice"])).toEqual(new Map([["gt_x_001", "あら。……"]]));
+      expect(() => readFileSync(path.join(stage, "authoring/journeys/no_voice/voice/recorded.json"))).toThrow(/ENOENT/);
+      copyVoiceRecords(path.join(root, "missing"), stage);
+    } finally {
+      rmSync(stage, { recursive: true, force: true });
+    }
+  });
 
   it("reads the scripts sent, newest first: each date folder with an entries.json", () => {
     write(`${folder}/2026-11-12/entries.json`, JSON.stringify([line("ta_a_001", "行こう")]));

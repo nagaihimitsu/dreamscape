@@ -120,6 +120,7 @@ describe("journey folders", () => {
     const original = readFileSync(manifestFile, "utf8");
     // The folder name and the manifest ID are the journey's identity; its authoring files move with it.
     renameSync(source, clone);
+    renameSync(path.join(root, "authoring/journeys/golden_triangle"), path.join(root, "authoring/journeys/gt_clone"));
     try {
       const renamed = original.replace('"id": "golden_triangle"', '"id": "gt_clone"');
       writeFileSync(path.join(clone, "manifest.json"), renamed);
@@ -147,6 +148,7 @@ describe("journey folders", () => {
     } finally {
       writeFileSync(path.join(clone, "manifest.json"), original);
       renameSync(clone, source);
+      renameSync(path.join(root, "authoring/journeys/gt_clone"), path.join(root, "authoring/journeys/golden_triangle"));
     }
   });
 

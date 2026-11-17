@@ -180,8 +180,10 @@ Many handwritten books were collected at his court.
 # se: whistle
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。
 # speaker: gt_agra_akbar_guard
+# voice: gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_001
 追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます
 # speaker: gt_agra_akbar_guard
+# voice: gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_002
 ヴリンダーヴァンって町の猿は、眼鏡を盗んでジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
 * [売店でパックのジュースを買って、交換を申し込む # option: attar_trade]
     # money: -20
@@ -285,8 +287,10 @@ Many handwritten books were collected at his court.
 # se: whistle
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。
 # speaker: gt_agra_akbar_guard
+# voice: gt_agra_akbar_tomb_monkey_glasses_agra_akbar_guard_001
 追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます
 # speaker: gt_agra_akbar_guard
+# voice: gt_agra_akbar_tomb_monkey_glasses_agra_akbar_guard_002
 ヴリンダーヴァンって町の猿は、眼鏡を盗んでジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
 * [売店でパックのジュースを買って、交換を申し込む # option: glasses_trade]
     # money: -20

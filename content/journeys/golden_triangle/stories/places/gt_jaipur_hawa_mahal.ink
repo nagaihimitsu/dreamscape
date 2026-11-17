@@ -43,6 +43,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ハワー・マハルの正面は、通りに向かって無数の小窓を広げていた。{heroine_name}が見上げて立ち止まると、足もとから声が飛んだ。
 # speaker: gt_jaipur_hawa_woman
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_001
 そこ、うちの大根に影が落ちてるよ
 # speaker: narrator
 歩道の端に布を敷き、野菜を並べている女性がいた。大根、人参、オクラ、小ぶりのトマト。古い日傘を、竿にくくりつけている。
@@ -51,23 +52,28 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_001
 す、すみません！　……写真を撮ろうとしてて
 # speaker: gt_jaipur_hawa_woman
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_002
 撮るなら、大根も一緒に入れなさい。四十年、あの窓の下にいるのは、こっちなんだから
 # speaker: enemy
 # cutin: name
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_003
 ガウラよ。この歩道で野菜を売って四十年。朝四時に卸の市場で仕入れて、昼過ぎまでここに座ってる。膝が痛いのは、三十年前から
 # speaker: heroine
 # voice: gt_jaipur_main_hawa_mahal_002
 四十年……じゃあ、中にも何度も？
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_004
 一度も。入場券の値段で、トマトが何キロ買えると思う。それに、あれは王様の女の人たちの建物。私らのじゃない
 # speaker: narrator
 ガウラはトマトを一つ磨きながら、窓を見上げた。四十年見上げてきた人の、慣れた角度だった。
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_005
 ねえ、外国の娘さん。上に行くなら、頼みがあるの
 # speaker: heroine
 # voice: gt_jaipur_main_hawa_mahal_003
 頼み、ですか？
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_006
 窓から、私を見て。上からだと、私がどう見えるか。帰りに教えてちょうだい
 # speaker: narrator
 冗談のような口ぶりだった。けれど、トマトを磨く手は止まっていた。
@@ -76,19 +82,23 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_004
 ……はい。ちゃんと見てきます
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_007
 ついでに、あの屋根の形。ガイドが毎日、何かにたとえてるのよ。四十年聞いてるのに、いつも途中で客が来て聞きそびれる
 -> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
     # speaker: enemy
+    # voice: gt_jaipur_main_hawa_mahal_battle_gaura_008
     クリシュナ様の冠！　それそれ。四十年かかって、やっと最後まで聞けた
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_hawa_mahal_battle_gaura_009
     ……今、隣のガイドが言ったわ。クリシュナ様の冠だって。あんたのおかげで、四十年ぶりに最後まで聞けた
 }
 # speaker: narrator
 ガウラは満足そうに、オクラの山を整え直した。そして、思い出したように付け加える。
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_010
 それとね。窓の数も数えたのよ。暇な日に、少しずつ。何度数えても九百五十一。ガイドの言う数と、合わないの
 # speaker: narrator
 入口は正面ではなく、裏手の路地にあった。券を買って中へ入ると、{heroine_name}は首をかしげた。上の階が見えるのに、どこにも階段がない。
@@ -152,6 +162,7 @@ INCLUDE modules.ink
 # speaker: narrator
 通りに戻ると、ガウラが待ちかねた顔で手招きした。
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_011
 で？　私は、どう見えた
 // 日傘探しで手間取ったときだけの一往復（フラグは上の日傘探しの found_slow）。報告そのものは、この後の彼女の言葉のまま。
 { cond("flag gt_jaipur_parasol_hard_to_find"):
@@ -159,6 +170,7 @@ INCLUDE modules.ink
     # voice: gt_jaipur_main_hawa_mahal_battle_002
     上から見ると、傘って、みんな同じ丸なんですね
     # speaker: enemy
+    # voice: gt_jaipur_main_hawa_mahal_battle_gaura_012
     下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
 }
 # speaker: heroine
@@ -176,6 +188,7 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,anger
 # shake: window
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_013
 施しはいらないよ
 # speaker: narrator
 ぴしゃりとした声だった。{heroine_name}は、自分の言葉が何をしたのかに気づいた。
@@ -184,16 +197,20 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_012
 ……ごめんなさい。聞きもしないで、決めちゃいました
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_014
 行くなら、自分のお金で、自分の足で行く。……今の話を聞いたら、行きたくなったわ。膝が言うことを聞く日にね
 {
 - battle_score == 3:
     # speaker: enemy
+    # voice: gt_jaipur_main_hawa_mahal_battle_gaura_015
     あんた、全部ちゃんと見てきたね。屋根も、坂も、窓の数も。それに、私も
 - battle_score == 2:
     # speaker: enemy
+    # voice: gt_jaipur_main_hawa_mahal_battle_gaura_016
     一つ取りこぼしたって、いいのよ。私なんか四十年、窓の数を二つ取りこぼしてた
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_hawa_mahal_battle_gaura_017
     答えは、まあ、外れが多かったわね。でも、一番大事な頼みごとは、ちゃんとやってきた
 }
 # speaker: narrator
@@ -203,6 +220,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_013
 だ、大根……。ホテルで、どうしよう……
 # speaker: enemy
+# voice: gt_jaipur_main_hawa_mahal_battle_gaura_018
 宿の台所に渡しなさい。明日の朝、あんたの皿に戻ってくるから
 -> END
 
@@ -230,12 +248,14 @@ INCLUDE modules.ink
 # recall: gt_album_d79
 輪の真ん中で、鮮やかな桃色のサリーが跳ねた。デリーで見た、ショールの小さな老婦人と同じ人だとは思えない。
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_001
 そこの二人！　窓際の客みたいに立ってないで！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_jaipur_finale_001
 カ、カムラさん！？　踊ってる……！
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_002
 踊るわよ。孫の行列だもの。あんたも来なさい
 # speaker: heroine
 # reaction: heroine,worried,sweat
@@ -247,18 +267,21 @@ INCLUDE modules.ink
 # together: enemy gt_pooja
 門には赤いリボンが張られ、その前に、花嫁のいとこたちが腕を組んで立ちはだかっていた。先頭の娘が、高らかに宣言する。
 # speaker: gt_jaipur_bride_cousin
+# voice: gt_jaipur_finale_battle_pooja_001
 花婿さんを通すには、五万一千ルピー！　まけてほしかったら、ジャイプールの問題に答えてもらいます！
 # speaker: narrator
 あちこちから、ブーイングと笑い声が一緒に上がった。本気で怒っている顔は、一つもない。
 # speaker: narrator
 デリーから来た花婿側の親戚たちが、顔を見合わせる。ジャイプールのことなど、誰も知らない。カムラが、{heroine_name}の背中を押した。
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_003
 この子が答える。デリーで、わたしの地図を全部読んだ子よ
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
 # voice: gt_jaipur_finale_003
 え、ええっ！？　こんな大勢の前で……
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_004
 答えを言うだけ。言いたいことを言う練習よ。……できるでしょう
 # speaker: narrator
 何十人もの目が、こちらを向いた。{heroine_name}は一度だけ深く息を吸い、門の前に進み出た。
@@ -270,6 +293,7 @@ INCLUDE modules.ink
 いとこたちの先頭の娘が、にやりと笑った。
 # speaker: gt_pooja
 # cutin: name
+# voice: gt_jaipur_finale_battle_pooja_002
 わたしはプージャー。花嫁のいとこよ。一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal_night
@@ -277,16 +301,19 @@ INCLUDE modules.ink
     # speaker: narrator
     プージャーが悔しそうに舌打ちした。
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_003
     ……正解。値下げしてあげる
     # speaker: narrator
     花婿側から歓声が上がる。
 - else:
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_004
     はずれ！　お客さんを迎えるために塗ったのよ。値上げね
     # speaker: narrator
     プージャーの宣言に、花嫁側から歓声が上がった。
 }
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_005
 声が小さい。もっと大きく言いなさい。ここは通りよ
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -297,6 +324,7 @@ INCLUDE modules.ink
 # speaker: narrator
 プージャーが、指を二本立てた。二問目。花婿側を、横目で見ながら。
 # speaker: gt_pooja
+# voice: gt_jaipur_finale_battle_pooja_005
 この町の王様の称号、サワーイー。その意味、デリーの人は知らないでしょう？
 -> quiz(2) ->
 # background: gt_bg_jaipur_hawa_mahal_night
@@ -310,13 +338,16 @@ INCLUDE modules.ink
 - else:
     # speaker: gt_pooja
     # local_word: gt_jaipur_word_sawai
+    # voice: gt_jaipur_finale_battle_pooja_006
     一と四分の一！
     # speaker: narrator
     プージャーが得意げに笑った。
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_007
     つまりジャイプールの人間は、デリーの人の一と四分の一倍ってこと
 }
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_006
 何が一と四分の一よ。わたしはデリーに六十年、ジャイプールにはまだ数日。それでも、あんたたちの誰より長生きしてるわ
 # speaker: narrator
 カムラの切り返しに、両家から笑いが起きた。いとこたちの腕組みが、少しだけゆるむ。
@@ -327,6 +358,7 @@ INCLUDE modules.ink
 # speaker: narrator
 プージャーはひるまずに胸を張り、指を三本立てた。
 # speaker: gt_pooja
+# voice: gt_jaipur_finale_battle_pooja_008
 三問目。この町はね、きちんと設計して造られたの。誰が、どうやって設計したと思う？
 -> quiz(3) ->
 # background: gt_bg_jaipur_hawa_mahal_night
@@ -338,8 +370,10 @@ INCLUDE modules.ink
     いとこたちが、そろって唸った。花婿側の親戚が、なぜか拍手している。
 - else:
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_009
     ヴィディヤーダル！　建築の手引きに沿って、一本ずつ線を引いたの
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_010
     デリーみたいに、勝手に増えた町とは違うのよ
 }
 # speaker: narrator
@@ -348,11 +382,13 @@ INCLUDE modules.ink
 # speaker: narrator
 花嫁の祖母だった。プージャーが小声で言う。
 # speaker: gt_pooja
+# voice: gt_jaipur_finale_battle_pooja_011
 おばあちゃん、足が悪いの。行列は、窓から見ることになってる
 # speaker: narrator
 窓の老婦人が、プージャーに何か伝えた。プージャーがうなずき、声を張る。
 # speaker: gt_pooja
 # local_word: gt_jaipur_word_nani
+# voice: gt_jaipur_finale_battle_pooja_012
 最後の二問は、ナーニーが出すって！　一問目。春になると、女の人たちの行列がこの通りを通る。何のお祭り？
 -> quiz(4) ->
 # background: gt_bg_jaipur_hawa_mahal_night
@@ -367,12 +403,14 @@ INCLUDE modules.ink
     # speaker: gt_jaipur_bride_grandmother
     # term: gt_term_gangaur
     # leave: gt_jaipur_bride_grandmother
+    # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_001
     ガンガウルよ。女神さまの、春のお祭り
 }
 # speaker: narrator
 窓の老婦人は、しばらく黙っていた。それから、窓越しに、ゆっくり話し始めた。プージャーが一言ずつ、こちらへ伝える。
 # speaker: gt_jaipur_bride_grandmother
 # leave: gt_jaipur_bride_grandmother
+# voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_002
 十六でこの家に来て、六十年。ガンガウルの行列は、毎年この窓から見てきた。一度も、下を歩いたことはない
 # speaker: narrator
 足のせいだけでは、ないのだろう。十六の年から、一度も、なのだから。
@@ -381,6 +419,7 @@ INCLUDE modules.ink
 # speaker: narrator
 六十年前の「好きだ」に、デリーを発つ前の晩、やっと返事をした人だ。
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_007
 六十年見てたなら、もう十分でしょう。……わたしも、六十年黙ってたのよ
 # speaker: narrator
 # quiet: line
@@ -389,6 +428,7 @@ INCLUDE modules.ink
 窓の奥の声が、最後の問題を告げた。
 # speaker: gt_jaipur_bride_grandmother
 # leave: gt_jaipur_bride_grandmother
+# voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_003
 この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
 # background: gt_bg_jaipur_hawa_mahal_night
@@ -403,6 +443,7 @@ INCLUDE modules.ink
     # speaker: gt_jaipur_bride_grandmother
     # em: 見られずに
     # leave: gt_jaipur_bride_grandmother
+    # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_004
     見られずに、見るためよ。通りも、お祭りも、市場も
 }
 # speaker: narrator
@@ -411,22 +452,26 @@ INCLUDE modules.ink
 # se: wooden_window
 窓が閉まった。しばらくして、屋敷の門の奥から、杖をついた老婦人が姿を現した。花嫁側から、驚きの声が上がる。
 # speaker: gt_jaipur_bride_grandmother
+# voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_005
 見るためには、見られないことが必要だった。……でも、今夜は、見られてもいいわね
 {
 - battle_score == 5:
     # speaker: narrator
     プージャーがリボンを掲げて叫んだ。
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_013
     全問正解！　通行料は、百一ルピーにまけてあげる！
 - battle_score >= 3:
     # speaker: narrator
     プージャーがリボンを掲げて叫んだ。
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_014
     よく頑張りました！　通行料は、一万一千一ルピーで手を打つ！
 - else:
     # speaker: narrator
     プージャーがリボンを掲げて叫んだ。
     # speaker: gt_pooja
+    # voice: gt_jaipur_finale_battle_pooja_015
     通行料は満額！　でも答えた勇気に免じて、リボンは切ってあげる！
 }
 # speaker: narrator
@@ -436,8 +481,10 @@ INCLUDE modules.ink
 # weather: petals
 リボンが切られた。楽隊が一斉に鳴り出し、通りが揺れる。カムラが、{heroine_name}の手首をつかんだ。
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_008
 デリーで、あんたはわたしに言ったね。黙っていなくなるのは、自由とは違うって
 # speaker: enemy
+# voice: gt_jaipur_finale_battle_kamla_009
 今夜はわたしが言う。黙って見ているだけなのも、自由とは違うのよ
 # speaker: heroine
 # emotion: serious
@@ -461,6 +508,7 @@ INCLUDE modules.ink
     # speaker: narrator
     太鼓の音に、足が勝手に乗った。カムラが、踊りながら目を丸くする。
     # speaker: enemy
+    # voice: gt_jaipur_finale_battle_kamla_010
     なによ。やればできるじゃない
     # speaker: heroine
     # reaction: heroine,surprised,sweat

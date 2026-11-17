@@ -56,6 +56,7 @@ INCLUDE modules.ink
 # speaker: narrator
 列に並んでいた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
 # speaker: gt_agra_taj_young_man
+# voice: gt_agra_main_taj_mahal_battle_nikhil_001
 お願いがあります！　あのベンチを、十分だけ確保してください！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
@@ -63,10 +64,13 @@ INCLUDE modules.ink
 か、確保？
 # speaker: enemy
 # cutin: name
+# voice: gt_agra_main_taj_mahal_battle_nikhil_002
 ニキルです。ラクナウで銀行員をしています。恋人のタンヴィが、今トイレの列に並んでいて。戻ってきたら、あのベンチで指輪を出すんです。三か月前から決めてたんです
 # speaker: enemy
+# voice: gt_agra_main_taj_mahal_battle_nikhil_003
 写真を撮るはずだった友達が、来られなくなって。僕が並び直したら、その間に彼女が戻ってきてしまう
 # speaker: enemy
+# voice: gt_agra_main_taj_mahal_battle_nikhil_004
 お二人で、恋人同士みたいに、ベンチでゆっくり写真を撮っていてくれませんか。彼女が戻ったら、代わってください
 # speaker: heroine
 # reaction: heroine,shy,blush
@@ -86,11 +90,13 @@ INCLUDE modules.ink
 # speaker: narrator
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
 # speaker: enemy
+# voice: gt_agra_main_taj_mahal_battle_nikhil_005
 シャー・ジャハーンは、ムムターズをそれほど愛して……
 # speaker: narrator
 タンヴィが静かに遮った。
 # speaker: gt_tanvi
 # cutin: name
+# voice: gt_agra_main_taj_mahal_battle_tanvi_001
 ねえ、ニキル。ムムターズがどこで、どうやって亡くなったか、知ってる？
 -> quiz(1) ->
 # background: gt_bg_agra_taj_mahal
@@ -98,19 +104,23 @@ INCLUDE modules.ink
     # speaker: narrator
     タンヴィはうなずいた。
     # speaker: gt_tanvi
+    # voice: gt_agra_main_taj_mahal_battle_tanvi_002
     そう。戦の旅の途中で、出産で。何人目の子かは、資料でも十三とか十四とか揺れるの。それくらい、何度も
 - else:
     # speaker: narrator
     タンヴィは首を振った。
     # speaker: gt_tanvi
+    # voice: gt_agra_main_taj_mahal_battle_tanvi_003
     ブルハーンプル。夫の遠征についていって、出産の途中で。何人目の子かは、資料でも十三とか十四とか揺れるの
 }
 # speaker: enemy
 # reaction: enemy,sweat
+# voice: gt_agra_main_taj_mahal_battle_nikhil_006
 で、でも、それだけ愛してたから、こんな建物を、すぐに……
 # speaker: narrator
 タンヴィは、白いドームを見上げた。声を荒らげはしなかった。ずっと前から、言う順番を決めていたように。
 # speaker: gt_tanvi
+# voice: gt_agra_main_taj_mahal_battle_tanvi_004
 すぐ、じゃないよ。最初のお墓、どこだったと思う？
 # speaker: narrator
 ベンチの上で、{heroine_name}は身動きできなかった。立てば、ニキルの計画が終わる。座っていれば、二人の喧嘩の特等席。
@@ -118,14 +128,18 @@ INCLUDE modules.ink
 # background: gt_bg_agra_taj_mahal
 { quiz_correct:
     # speaker: gt_tanvi
+    # voice: gt_agra_main_taj_mahal_battle_tanvi_005
     そう。遠くの庭に仮に埋めて、何か月もたってから、ここへ運ばれたの
 - else:
     # speaker: gt_tanvi
+    # voice: gt_agra_main_taj_mahal_battle_tanvi_006
     ブルハーンプルの庭に、仮に埋められたの。ここへ運ばれたのは、何か月もあと
 }
 # speaker: enemy
+# voice: gt_agra_main_taj_mahal_battle_nikhil_007
 タンヴィ……君は、タージが嫌いなの？
 # speaker: gt_tanvi
+# voice: gt_agra_main_taj_mahal_battle_tanvi_007
 好きよ。建物としては、世界で一番。でも、ここで求婚されるのは、また別の話
 # speaker: heroine
 # emotion: serious
@@ -142,23 +156,29 @@ INCLUDE modules.ink
 # speaker: narrator
 タンヴィは、廟の左右に一つずつ建つ、そっくりな赤い建物を指さした。
 # speaker: gt_tanvi
+# voice: gt_agra_main_taj_mahal_battle_tanvi_008
 あっちはモスク。じゃあ、反対側のそっくりな方は、何のために建てたと思う？
 -> quiz(3) ->
 # background: gt_bg_agra_taj_mahal
 { quiz_correct:
     # speaker: gt_tanvi
+    # voice: gt_agra_main_taj_mahal_battle_tanvi_009
     そう。釣り合いのため。片方があるから、もう片方が要る。きれいだけど、それだけの役目
 - else:
     # speaker: gt_tanvi
+    # voice: gt_agra_main_taj_mahal_battle_tanvi_010
     釣り合いのためよ。モスクの写し。きれいだけど、片方のためだけにある
 }
 # speaker: narrator
 タンヴィはニキルに向き直った。
 # speaker: gt_tanvi
+# voice: gt_agra_main_taj_mahal_battle_tanvi_011
 わたし、誰かの設計図の釣り合いのために置かれる方には、なりたくないの
 # speaker: enemy
+# voice: gt_agra_main_taj_mahal_battle_nikhil_008
 設計図なんて、僕は……
 # speaker: gt_tanvi
+# voice: gt_agra_main_taj_mahal_battle_tanvi_012
 スライド三十枚。わたしは一枚も見てない。あなたのお母さんは見たのに
 # speaker: narrator
 # pause: 800
@@ -169,20 +189,25 @@ INCLUDE modules.ink
 # speaker: narrator
 タンヴィは少し驚いた顔をして、それから、ゆっくりうなずいた。
 # speaker: enemy
+# voice: gt_agra_main_taj_mahal_battle_nikhil_009
 ……聞けばよかった。どこで、どうしたいか
 # speaker: narrator
 ニキルは胸ポケットから手を離した。指輪の箱は、出てこなかった。
 # speaker: gt_tanvi
+# voice: gt_agra_main_taj_mahal_battle_tanvi_013
 次は、場所から一緒に決めて。そうしたら、答えはたぶん同じだから
 {
 - battle_score == 3:
     # speaker: enemy
+    # voice: gt_agra_main_taj_mahal_battle_nikhil_010
     あなた、三問とも彼女の側の答えでしたね。……僕の味方は、いないのか
 - battle_score == 2:
     # speaker: enemy
+    # voice: gt_agra_main_taj_mahal_battle_nikhil_011
     二問は彼女の言うとおりでした。残りの一問で、僕を励ましてください
 - else:
     # speaker: enemy
+    # voice: gt_agra_main_taj_mahal_battle_nikhil_012
     あなたも知らなかったんですね。……よかった。僕だけじゃなかった
 }
 # speaker: narrator
@@ -212,10 +237,12 @@ INCLUDE modules.ink
 名刺にあった名前だ。宿の支配人のサミールが薦めていた、あの叔父。
 # speaker: enemy
 # cutin: name
+# voice: gt_agra_finale_battle_anwar_001
 そして最後の石が置かれた日。皇帝は命じたのです。二度とこれほどのものを造らせぬよう、二万の職人の手を、切り落とせと
 # speaker: narrator
 観客から、悲鳴に近い溜め息が漏れた。何人かは本当に目を拭っている。アンワルは満足げに杖を鳴らし、ぐるりと見回して、こちらで目を止めた。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_002
 おお、ご覧なさい！　甥の宿にお泊まりの、日本から来た新婚のお二人です。愛の記念碑に、愛を誓いに来られた
 # speaker: narrator
 # se: applause
@@ -225,6 +252,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_001
 ち、違います！　わたしたち、新婚じゃ……！
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_003
 ご覧なさい、この照れよう。タージの前では、誰もが恋に正直になる
 # speaker: narrator
 笑いと拍手が大きくなる。{heroine_name}の言葉は、そのたびに物語の一部にされていく。
@@ -236,6 +264,7 @@ INCLUDE modules.ink
 # remembered
 # recall: gt_album_d01
 # reaction: heroine,serious
+# voice: gt_agra_finale_battle_kamla_001
 アーグラでも、言いたいことは言いなさい。
 # speaker: heroine
 # emotion: serious
@@ -244,6 +273,7 @@ INCLUDE modules.ink
 # speaker: narrator
 観客が、一斉にこちらを振り向いた。アンワルの笑顔は崩れない。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_004
 お嬢さん。この町では、昔からみんながそう語ってきた。それを違うと言うなら、証明できるかね
 -> quiz(1) ->
 # background: gt_bg_agra_taj_mahal
@@ -255,15 +285,18 @@ INCLUDE modules.ink
     # speaker: narrator
     観客の中の学生らしい青年が、携帯を見ながら言った。
     # speaker: gt_agra_finale_student
+    # voice: gt_agra_finale_battle_agra_finale_student_001
     歴史家は、記録がない伝説だって言ってますよ
 }
 # speaker: narrator
 観客がざわめく。さっき目を拭っていた何人かが、そそくさとハンカチをしまった。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_005
 本当のことは、人を泣かせない。泣かない客は、タージを忘れる。わしは四十年、それを見てきた
 # speaker: narrator
 アンワルは杖を上げた。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_006
 日が傾いたら、対岸の庭へ参りましょう。今日のツアーの最後の、とっておきの話は、そこでいたします
 # speaker: narrator
 杖の先が、二人を指した。新婚のお二人も、ぜひ、と。客たちの笑い声に押されて、断りそびれた。
@@ -273,6 +306,7 @@ INCLUDE modules.ink
 # speaker: narrator
 夕方、一行は川を渡った。メヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_007
 皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
@@ -289,6 +323,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アンワルは杖をついたまま、しばらく黙った。それから、観客に向かって両手を広げた。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_008
 皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう。あなたの本当の話で、この人たちを泣かせてみなさい
 # speaker: narrator
 観客が、拍手で彼女を前へ押し出した。逃げ場はない。五十人の目が、こちらを見ている。
@@ -303,6 +338,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_006
 ……やってみます。下手でも、本当の話をします
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_009
 では、聞こう。手を切られなかったというなら、職人たちはそのあと、どこへ行った
 -> quiz(3) ->
 # background: gt_bg_agra_mehtab_bagh_sunset
@@ -317,6 +353,7 @@ INCLUDE modules.ink
     # speaker: narrator
     アンワルが代わりに答えた。
     # speaker: enemy
+    # voice: gt_agra_finale_battle_anwar_010
     デリーの新しい都だ。赤い城と、大きなモスク
     # speaker: narrator
     答えてから、アンワルは慌てて口をつぐんだ。もう遅い。
@@ -327,6 +364,7 @@ INCLUDE modules.ink
 # speaker: narrator
 観客が静かになった。泣いてはいない。けれど、さっきとは違う顔で、川向こうの白い建物を見ている。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_011
 名もない手の話では、人は泣かないよ。人は、名前に泣くんだ
 # speaker: heroine
 # voice: gt_agra_finale_009
@@ -341,6 +379,7 @@ INCLUDE modules.ink
     書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて
 - else:
     # speaker: enemy
+    # voice: gt_agra_finale_battle_anwar_012
     ……アマーナト・ハーン。書家だ。知っていたとも。わしは、その話をしたことがないだけだ
 }
 # speaker: narrator
@@ -365,6 +404,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_013
 参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる
 -> quiz(5) ->
 # background: gt_bg_agra_mehtab_bagh_sunset
@@ -376,6 +416,7 @@ INCLUDE modules.ink
 - else:
     # speaker: enemy
     # term: gt_term_caravanserai
+    # voice: gt_agra_finale_battle_anwar_014
     市場と隊商宿だよ。タージの南門の外に、最初から造られた町だ。墓と一緒に生まれた町なんだ
 }
 # speaker: narrator
@@ -387,6 +428,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_014
 アンワルさん。わたし、今日聞いた中で一番泣けるのは、アンワルさんの話だと思います
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_015
 わしの？
 # speaker: heroine
 # voice: gt_agra_finale_015
@@ -394,22 +436,27 @@ INCLUDE modules.ink
 # speaker: narrator
 アンワルは答えなかった。杖を握る指に、少し力が入った。日が沈み、川向こうのタージが、白から灰色へ変わっていく。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_016
 ……明日も、わしは手を切る話をするよ。客はあれで泣く。泣いた客は、また来る
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_finale_016
 はい。……そう言うと思ってました
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_017
 だが、終わりに一つ足そう。壁に名前を残した書家の話と、南門の外の町の話を
 {
 - battle_score == 5:
     # speaker: enemy
+    # voice: gt_agra_finale_battle_anwar_018
     五つとも、あなたの言うとおりだった。四十年で初めて、話を全部取られた。……悔しいが、いい夕方だった
 - battle_score >= 3:
     # speaker: enemy
+    # voice: gt_agra_finale_battle_anwar_019
     いくつかは、わしが守った。だが、大事なところは全部あなたに取られた
 - else:
     # speaker: enemy
+    # voice: gt_agra_finale_battle_anwar_020
     答えは半分も合わなかったね。それでも客は、あなたの方を見ていた。話というのは、そういうものだ
 }
 # speaker: narrator
@@ -419,6 +466,7 @@ INCLUDE modules.ink
 # term: gt_term_petha
 それから、二人に紙の箱を差し出した。
 # speaker: enemy
+# voice: gt_agra_finale_battle_anwar_021
 詫びの印だ。新婚でなくても、甘いものは食べられる
 # speaker: heroine
 # reaction: heroine,teasing,music

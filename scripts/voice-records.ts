@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { displayPath } from "./content-sources";
@@ -83,6 +83,22 @@ export function partialRecordings(root: string, journeyIds: readonly string[]): 
       return [];
     }
   }));
+}
+
+/**
+ * Copy each journey's recorded.json from the project `from` to a copy of it at `to` (same place), for a staged or test
+ * copy of content/ that content:build checks there: a clip recorded up to a name the player sets passes only with its
+ * record (partialRecordings). A journey without one is passed over.
+ */
+export function copyVoiceRecords(from: string, to: string): void {
+  const journeys = path.join(from, authoringFolder(""));
+  if (!existsSync(journeys)) return;
+  for (const journeyId of readdirSync(journeys)) {
+    const file = path.join(voiceRecordsFolder(journeyId), RECORDED_FILE);
+    if (!existsSync(path.join(from, file))) continue;
+    mkdirSync(path.dirname(path.join(to, file)), { recursive: true });
+    cpSync(path.join(from, file), path.join(to, file));
+  }
 }
 
 /** The journey's cast.json (voice-cast.ts), or undefined when it has none. Throws for one it cannot read. */

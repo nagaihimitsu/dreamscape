@@ -26,6 +26,7 @@ INCLUDE modules.ink
     # speaker: narrator
     奥の長い敷物の端から、聞き覚えのある大声が飛んできた。
     # speaker: gt_harbans
+    # voice: gt_agra_date_guru_ka_taal_harbans_001
     世界地図！　世界地図の娘じゃないか！
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
@@ -36,30 +37,37 @@ INCLUDE modules.ink
     奥の長い敷物の端から、大きな声が飛んできた。白いひげの大柄な老人が、こちらを手招きしていた。外国の若い二人が珍しいらしい。
     # speaker: gt_harbans
     # cutin: name
+    # voice: gt_agra_date_guru_ka_taal_harbans_002
     ハルバンス・シンだ。四十年、トラックで国じゅうを走ってきた
 }
 # speaker: narrator
 # together: gt_harbans gt_gurmeet
 ハルバンスの隣には、同じ鼻と同じ肩幅の、四十代くらいの男が座っていた。二人のあいだには、ちょうど一人分の隙間が空いている。
 # speaker: gt_harbans
+# voice: gt_agra_date_guru_ka_taal_harbans_003
 息子のグルミートだ。カナダから来た。わしを連れて帰るつもりで
 # speaker: narrator
 グルミートは、父親の方を見ないまま、軽く頭を下げた。
 # speaker: gt_gurmeet
 # cutin: name
+# voice: gt_agra_date_guru_ka_taal_gurmeet_001
 カナダのブランプトンで、トラックの会社をやっています
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_002
 親父が、昔の自分の道を見せると言って聞かなくて。デリーから、ずっとこの街道を。……車の中で、三回喧嘩しました
 # speaker: gt_harbans
+# voice: gt_agra_date_guru_ka_taal_harbans_004
 四回だ
 # speaker: narrator
 それきり、二人とも黙った。豆の皿だけが、ゆっくり冷めていく。
 しばらくすると、ハルバンスが彼女の袖を引いた。
 # speaker: gt_harbans
+# voice: gt_agra_date_guru_ka_taal_harbans_005
 あいつに言ってくれ。わしは寒い国には行かん、と
 # speaker: narrator
 反対側から、グルミートが小声で言う。
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_003
 親父に言ってください。意地を張るのもいい加減にしろ、と
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -121,30 +129,38 @@ INCLUDE modules.ink
     # speaker: narrator
     ハルバンスは、しばらく豆の皿を見ていた。それから、息子の方を見ないまま、口を開いた。
     # speaker: gt_harbans
+    # voice: gt_agra_date_guru_ka_taal_harbans_006
     ……向こうへ行ったら、わしは、何も運ばない人になる。四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
     # speaker: narrator
     グルミートが、初めて父親の方を向いた。そんな話は、一度も聞いたことがなかったらしい。
 - else:
     # speaker: gt_harbans
+    # voice: gt_agra_date_guru_ka_taal_harbans_007
     ……向こうへ行ったら、わしは、何も運ばない人になる。四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
     # speaker: narrator
     グルミートが、初めて父親の方を向いた。
 }
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_004
 俺は……電話が鳴るのが怖い。夜中に鳴ったら、親父のことかもしれない。一万キロ先じゃ、何が起きても間に合わない
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_005
 運ばなくていいんだ。生きててくれれば、それで
 # speaker: narrator
 # se: truck_horn
 食堂の窓の外を、トラックが一台、長い警笛を鳴らして通り過ぎた。ハルバンスは、その音が遠ざかるまで、黙って聞いていた。
 # speaker: gt_harbans
 # pause: 900
+# voice: gt_agra_date_guru_ka_taal_harbans_008
 ……冬は、だめだ。道が白い
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_006
 じゃあ、夏は。夏なら、道は白くない。三か月だけ。うちのトラックの、助手席に乗ればいい
 # speaker: gt_harbans
+# voice: gt_agra_date_guru_ka_taal_harbans_009
 助手席は嫌だ
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_007
 ……じゃあ、洗車係
 # speaker: narrator
 ハルバンスが、鼻を鳴らした。それから、敷物の隙間を、自分から詰めた。
@@ -154,11 +170,14 @@ INCLUDE modules.ink
     隙間に座っていたこちらが、二人に挟まれて身動きできなくなった。彼女が、それを見て吹き出した。
 }
 # speaker: gt_harbans
+# voice: gt_agra_date_guru_ka_taal_harbans_010
 夏だけだ。寒い国へは、夏だけ。……それと、向こうのチャイが薄かったら、すぐ帰る
 # speaker: gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_gurmeet_008
 濃いのを探しておく。ブランプトンには、パンジャーブの店がいくらでもある
 { cond("date gt_delhi_date_bangla_sahib"):
     # speaker: gt_harbans
+    # voice: gt_agra_date_guru_ka_taal_harbans_011
     世界地図の娘。カナダの地図のローティーを、いつか焼いてやる。……たぶん、また違う国になるがな
     // 次の行は else の行と同じ文。どちらでも、父と息子の2人とも下ろす（together の札で並んで立っている）。文を直すときは両方。
     # speaker: narrator

@@ -16,15 +16,18 @@ INCLUDE modules.ink
 帳場の前で、彼女がサミールに声をかけた。とたんに彼は携帯の画面を見て、彼女を見て、もう一度画面を見た。
 # speaker: gt_samir
 # recall: gt_album_d55
+# voice: gt_agra_arrive_reel_samir_001
 失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_arrive_reel_001
 な、なんで知ってるんですか！
 # speaker: gt_samir
+# voice: gt_agra_arrive_reel_samir_002
 アーグラの宿の者は、みんな見ています。うちの白鳥の動画より、再生が多いんです。少し悔しいくらい
 { cond("flag gt_delhi_baoli_player_pigeon"):
     # speaker: gt_samir
+    # voice: gt_agra_arrive_reel_samir_003
     布を広げて飛び出す、鳩の役の方も。……あれは、旦那さまですよね？
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
@@ -32,6 +35,7 @@ INCLUDE modules.ink
     旦那さまじゃないです！　鳩の役の人です！
 - else:
     # speaker: gt_samir
+    # voice: gt_agra_arrive_reel_samir_004
     新婚旅行の思い出が、もう動画になっているなんて。お幸せに
     # speaker: heroine
     # reaction: heroine,exasperated,sweat

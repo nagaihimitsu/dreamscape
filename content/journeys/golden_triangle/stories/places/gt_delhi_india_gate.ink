@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: narrator
 敷物の一つから、十六くらいの男の子が走ってきた。携帯を差し出して、英語で一言。
 # speaker: gt_delhi_india_gate_boy
+# voice: gt_delhi_date_india_gate_monu_001
 Photo, please!
 # speaker: narrator
 振り返ると、敷物の上に十二人いた。腰の曲がった祖母から、よちよち歩きの子まで。ハリヤーナー州の村から、年に一度のデリー見物に来たのだという。
@@ -34,6 +35,7 @@ Photo, please!
 # speaker: gt_monu
 # cutin: name
 # local_word: gt_delhi_word_dadi
+# voice: gt_delhi_date_india_gate_monu_002
 ぼく、モヌ。ダーディー……おばあちゃんが、あなたも入れって。外国の人と撮ると、村で自慢できるから
 # speaker: heroine
 # voice: gt_delhi_date_india_gate_003
@@ -99,12 +101,14 @@ Photo, please!
 # speaker: narrator
 モヌが、面倒くさそうに通訳する。
 # speaker: gt_monu
+# voice: gt_delhi_date_india_gate_monu_003
 ダーディーのおじいさんの名前が、あの門に彫ってあるんだって。最初の世界大戦で、遠い国で死んだ兵士。毎年探して、毎年見つからない
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_date_india_gate_010
 毎年……。それでも、毎年来てるんだ
 # speaker: gt_monu
+# voice: gt_delhi_date_india_gate_monu_004
 去年も柵の前で一時間。僕は飽きた。名前が一万三千もあって、遠くて読めないんだ
 # speaker: heroine
 # voice: gt_delhi_date_india_gate_011
@@ -128,6 +132,7 @@ Photo, please!
     # set: gt_delhi_monu_zoom
     { romance_result == "negative":
         # speaker: gt_monu
+        # voice: gt_delhi_date_india_gate_monu_005
         ……僕の携帯、電池が残り少ないんだけど
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
@@ -135,6 +140,7 @@ Photo, please!
         あ、ごめん、無理にとは……
     - else:
         # speaker: gt_monu
+        # voice: gt_delhi_date_india_gate_monu_006
         望遠？　……ああ、それ、思いつかなかった
     }
     -> searching
@@ -159,11 +165,13 @@ Photo, please!
     # speaker: narrator
     モヌが渋々、携帯のカメラを最大まで寄せた。画面の中で、石の文字が一つずつ大きくなる。気づけば彼は、誰よりも熱心に画面を動かしていた。
     # speaker: gt_monu
+    # voice: gt_delhi_date_india_gate_monu_007
     ダーディー、名前、もう一回言って。……ラーム・シン。待って、今、それっぽいのが
 - else:
     # speaker: narrator
     彼女は目を細め、文字の列を指でたどった。読めるのは、太い見出しの英字だけだ。見かねたモヌが、黙って携帯を差し出した。望遠にすると、石の文字がぐっと近づく。
     # speaker: gt_monu
+    # voice: gt_delhi_date_india_gate_monu_008
     貸すだけだからね。ラーム・シン、だっけ。あ、待って
 }
 # speaker: narrator
@@ -175,6 +183,7 @@ Photo, please!
 # speaker: narrator
 モヌが画面を見せると、祖母は目を細め、しばらく黙っていた。それから、画面の中の一番近くの一つを指さした。
 # speaker: gt_monu
+# voice: gt_delhi_date_india_gate_monu_009
 ……どれでもいいって。全部、誰かのおじいさんだから、どれに手を合わせても怒られないって
 # speaker: heroine
 # emotion: smile
@@ -183,6 +192,7 @@ Photo, please!
 # speaker: narrator
 モヌは携帯を見つめたまま、小さく言った。
 # speaker: gt_monu
+# voice: gt_delhi_date_india_gate_monu_010
 来年は、もっと望遠のきく携帯にする
 -> family_talk
 
@@ -193,6 +203,7 @@ Photo, please!
 # speaker: narrator
 モヌが通訳すると、祖母は少し考え、首を横に振った。それから、門ではなく、芝生の方を指さした。
 # speaker: gt_monu
+# voice: gt_delhi_date_india_gate_monu_011
 名前は、去年まででいいって。今年は、ひ孫がここで走ってるのを見に来たんだって。……初耳なんだけど
 # speaker: narrator
 芝生の上で、よちよち歩きの子が鳩を追いかけていた。祖母はそれを、門を見上げるときと同じ目で見ていた。
@@ -207,6 +218,7 @@ Photo, please!
 # term: gt_term_achar
 帰りぎわ、母親たちが弁当箱を差し出した。揚げたパンに、辛い漬物。断ると、もう一つ増えた。
 # speaker: gt_monu
+# voice: gt_delhi_date_india_gate_monu_012
 あと、ダーディーが聞いてって。二人はいつ結婚するのかって。……ごめん、うちの村ではこれ、あいさつだから
 {
 - cond("couple"):

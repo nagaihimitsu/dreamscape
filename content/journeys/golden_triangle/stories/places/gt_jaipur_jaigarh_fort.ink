@@ -17,9 +17,11 @@ INCLUDE modules.ink
 ジャイガル砦は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
 門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
 # speaker: gt_jaipur_jaigarh_boy
+# voice: gt_jaipur_date_jaigarh_fort_raju_001
 宝の地図、買わない？　この砦には、王さまの宝が隠されてる。本当だよ。昔、国が、何か月も掘って探したんだから
 # speaker: gt_raju
 # cutin: name
+# voice: gt_jaipur_date_jaigarh_fort_raju_002
 ぼく、ラージュー。この地図、全部ぼくが描いたんだ
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -29,6 +31,7 @@ INCLUDE modules.ink
 # speaker: narrator
 最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。この砦で造られ、当時は、車輪のついた大砲として世界最大だったという。
 # speaker: gt_raju
+# voice: gt_jaipur_date_jaigarh_fort_raju_003
 宝を守る大砲。一回撃ったら、玉が三十五キロ先まで飛んだんだ。落ちたところが、池になった
 # speaker: narrator
 試し撃ちは一度きりだった、と伝えられている。三十五キロ飛んだという話も残っているが、どこまでが本当かは分からない。
@@ -51,6 +54,7 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_jaigarh_fort_memory
     { romance_result == "negative":
         # speaker: gt_raju
+        # voice: gt_jaipur_date_jaigarh_fort_raju_004
         ……本当だもん
         # speaker: narrator
         ラージューが口をとがらせると、彼女がこちらの袖を引いた。
@@ -59,6 +63,7 @@ INCLUDE modules.ink
         宝探しの最中に、それは言わない約束
     - else:
         # speaker: gt_raju
+        # voice: gt_jaipur_date_jaigarh_fort_raju_005
         池になったのは、ちょっと盛った。でも、大砲は本物
         # speaker: heroine
         # emotion: teasing
@@ -70,6 +75,7 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_jaigarh_fort_memory
     { romance_result == "negative":
         # speaker: gt_raju
+        # voice: gt_jaipur_date_jaigarh_fort_raju_006
         え、それは……今日は遠いから、無理
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
@@ -77,6 +83,7 @@ INCLUDE modules.ink
         案内人を困らせないの
     - else:
         # speaker: gt_raju
+        # voice: gt_jaipur_date_jaigarh_fort_raju_007
         それは、次の地図。別料金
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -87,11 +94,13 @@ INCLUDE modules.ink
 # speaker: narrator
 二つ目の印は、石の蓋のついた、地下の大きな貯水槽だった。
 # speaker: gt_raju
+# voice: gt_jaipur_date_jaigarh_fort_raju_008
 宝は、この水の底。……って、みんな言ってた。だから、昔、国が本当に掘ったんだ
 # speaker: narrator
 1976年、この砦では、実際に大がかりな宝探しが行われた。宝が見つかったという記録はない。
 { cond("flag gt_jaipur_raju_guided"):
     # speaker: gt_raju
+    # voice: gt_jaipur_date_jaigarh_fort_raju_009
     三つ目の印は、アンベールへ抜ける秘密の通路。でも、今日は時間がないから、飛ばす。……最後の印が、いちばん大事だから
 - else:
     # speaker: narrator
@@ -100,6 +109,7 @@ INCLUDE modules.ink
 # speaker: narrator
 最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。小さな茶屋で、白いひげの老人が、チャイを煮ていた。
 # speaker: gt_raju
+# voice: gt_jaipur_date_jaigarh_fort_raju_010
 宝は、ここ。うちのナーナー……じいちゃんのチャイ。ジャイプールでいちばんうまいんだ。本当だよ
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -108,15 +118,18 @@ INCLUDE modules.ink
 # speaker: narrator
 老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。
 # speaker: gt_jaipur_jaigarh_old_man
+# voice: gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_001
 わしは子どものころ、あの宝探しで掘っていた兵隊たちに、水を運んでおった
 # speaker: narrator
 本人の話では、だが。
 # speaker: gt_jaipur_jaigarh_old_man
+# voice: gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_002
 何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ。……でも、あの年だけは、この砦が、国でいちばん有名だった
 * [「本当に、宝の味がする」 # option: treasure_taste]
     # profile: playful
     { romance_result == "negative":
         # speaker: gt_jaipur_jaigarh_old_man
+        # voice: gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_003
         宝の味は、もっと甘い。砂糖が足りなかったか
         # speaker: narrator
         老人が本気で砂糖を足そうとしたので、彼女があわてて止めた。
@@ -131,23 +144,27 @@ INCLUDE modules.ink
     # money: -10
     { romance_result == "negative":
         # speaker: gt_raju
+        # voice: gt_jaipur_date_jaigarh_fort_raju_011
         仕事中は飲まない。……でも、もらう
         # speaker: narrator
         # leave: gt_raju
         ラージューは三秒で飲み干し、次の客を探しに門の方へ走っていった。
     - else:
         # speaker: gt_raju
+        # voice: gt_jaipur_date_jaigarh_fort_raju_012
         やった。……案内料に、チャイもつけてくれる客は、初めて
     }
 * [「その頃の話、もっと聞かせてください」と頼む # option: more_stories]
     # profile: honest
     { romance_result == "negative":
         # speaker: gt_jaipur_jaigarh_old_man
+        # voice: gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_004
         話は、チャイ一杯につき一つだ
         # speaker: narrator
         老人はそれきり、鍋をかき混ぜる手を止めなかった。
     - else:
         # speaker: gt_jaipur_jaigarh_old_man
+        # voice: gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_005
         話を聞きたがる人は、宝を見つける人だ。……わしの昔の話は、いつも、そういう人にしかしない
         # speaker: heroine
         # emotion: teasing
@@ -179,15 +196,18 @@ INCLUDE modules.ink
 === gt_jaipur_jaigarh_fort_map ===
 # speaker: gt_raju
 # minigame: raju_haggle auto fair_map bg gt_bg_jaipur_jaigarh_fort
+# voice: gt_jaipur_jaigarh_fort_map_raju_001
 五十ルピー。……でも、じっと見られると、ぼく、ちょっとずつ負けちゃう
 * [地図の値段：言い値の₹50で買った # option: buy_map]
     # money: -50
     # rel: affection +1
     # speaker: gt_raju
+    # voice: gt_jaipur_jaigarh_fort_map_raju_002
     まいど。……宝が見つかっても、山分けはしないよ
 * [地図の値段：₹40で話がまとまった # option: fair_map]
     # money: -40
     # speaker: gt_raju
+    # voice: gt_jaipur_jaigarh_fort_map_raju_003
     四十。……うん、決まり。じいちゃんが言ってた。ちょっとだけ値切るお客さんは、ちゃんと最後まで地図を読むって
     # speaker: narrator
     ラージューは地図のしわを手のひらで伸ばしてから、両手で差し出した。
@@ -199,6 +219,7 @@ INCLUDE modules.ink
     # money: -30
     # rel: spark +1
     # speaker: gt_raju
+    # voice: gt_jaipur_jaigarh_fort_map_raju_004
     宝の値段を値切る人には、宝は見つからないよ。……でも、いいよ。安い方の地図ね
     # speaker: narrator
     ラージューはポケットから、別の紙を出した。さっきのより、バツ印が少し小さい。
@@ -211,8 +232,10 @@ INCLUDE modules.ink
 * [地図の値段：買わなかった # option: decline_map]
     # set: gt_jaipur_raju_guided
     # speaker: gt_raju
+    # voice: gt_jaipur_jaigarh_fort_map_raju_005
     ……ふん。ぼくの地図、すごいのに
     # speaker: gt_raju
+    # voice: gt_jaipur_jaigarh_fort_map_raju_006
     じゃあ、見習い期間ってことで、ついてきていいよ。地図は見せないけど
     # speaker: narrator
     ラージューは地図を胸に抱えたまま、先に立って歩き出した。地図の印を、順に回ることになった。

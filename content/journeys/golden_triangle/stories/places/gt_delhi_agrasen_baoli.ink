@@ -25,16 +25,20 @@ INCLUDE modules.ink
 # term: gt_term_dupatta
 階段の途中で、大学生くらいの二人が言い争っていた。携帯を構えた青年と、白いドゥパッターを頭からかぶった女の子。
 # speaker: gt_delhi_agrasen_young_man
+# voice: gt_delhi_date_agrasen_baoli_kunal_001
 ジャスミート、今のは悲鳴じゃない。あくびだ
 # speaker: gt_jasmeet
 # cutin: name
+# voice: gt_delhi_date_agrasen_baoli_jasmeet_001
 本当に怖くないのに、本物の声なんか出ないってば
 # speaker: narrator
 青年が、二人に気づいた。正確には、彼女に。
 # speaker: gt_kunal
 # cutin: name
+# voice: gt_delhi_date_agrasen_baoli_kunal_002
 クナールです。こっちはジャスミート。怖い動画を撮って、ネットに載せてるんです。叫ぶ役は、いつも彼女
 # speaker: gt_kunal
+# voice: gt_delhi_date_agrasen_baoli_kunal_003
 お願いがあります。一人で底まで下りていく外国の旅行者、の役。最後に悲鳴を一つ。三十秒で終わります
 # speaker: narrator
 隣で、ジャスミートが白いドゥパッターの端を握りしめた。
@@ -63,6 +67,7 @@ INCLUDE modules.ink
         ご、ごめんなさいっ。足、見えてた。いつもの靴だったから、ふふっ
     }
     # speaker: gt_kunal
+    # voice: gt_delhi_date_agrasen_baoli_kunal_004
     カット。……幽霊は、靴を履き替えてください
     # speaker: narrator
     幽霊の案は、そこで没になった。撮り直しは最初の筋書きどおり、彼女が一人で底まで下りる。
@@ -102,6 +107,7 @@ INCLUDE modules.ink
 # speaker: narrator
 一段下りるごとに、空気が冷たくなっていく。上の路地の暑さが、嘘みたいだった。彼女は小さな声で、段を数えている。
 # speaker: gt_jasmeet
+# voice: gt_delhi_date_agrasen_baoli_jasmeet_002
 ここ、出るって言われてるんですよ。昔は底に黒い水が溜まっていて、その水に呼ばれて、飛び込んだ人がいたって。……言い伝えですけど
 # speaker: heroine
 # emotion: worried
@@ -113,6 +119,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_011
 きゃ、きゃー……？
 # speaker: gt_kunal
+# voice: gt_delhi_date_agrasen_baoli_kunal_005
 カット。それは悲鳴じゃない。質問だ
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -133,6 +140,7 @@ INCLUDE modules.ink
 # speaker: narrator
 本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。鳩は何事もなかったように、反対側のくぼみに収まった。
 # speaker: gt_kunal
+# voice: gt_delhi_date_agrasen_baoli_kunal_006
 それだ！　撮れた！　今のが、今日の一番！
 # speaker: narrator
 クナールが飛び上がる。その後ろで、ジャスミートが拍手をしていた。笑ってはいたけれど、拍手は、ほんの少しだけ遅かった。
@@ -141,6 +149,7 @@ INCLUDE modules.ink
     # set: gt_delhi_baoli_player_pigeon
     { romance_result == "negative":
         # speaker: gt_jasmeet
+        # voice: gt_delhi_date_agrasen_baoli_jasmeet_003
         ……同情なら、いらない
         # speaker: heroine
         # voice: gt_delhi_date_agrasen_baoli_014
@@ -191,10 +200,12 @@ INCLUDE modules.ink
 // 2回目の3択のどれでも、鳩の役は主人公（2026-11-16。前は「最高の悲鳴だった」の道だけ彼女が鳩の役で、ゲームが無かった）。
 -> gt_delhi_agrasen_baoli_pigeon_flap ->
 # speaker: gt_jasmeet
+# voice: gt_delhi_date_agrasen_baoli_jasmeet_004
 きゃあああっ！
 # speaker: narrator
 二本目の本物が、井戸の底から空へ抜けていった。ジャスミートは自分の声に驚いて、それから、お腹を抱えて笑い出した。
 # speaker: gt_jasmeet
+# voice: gt_delhi_date_agrasen_baoli_jasmeet_005
 出た！　本当に出た！　……ねえ、今の、わたしの方がすごかったでしょ？
 # speaker: heroine
 # reaction: heroine,happy,music
@@ -203,6 +214,7 @@ INCLUDE modules.ink
 # speaker: narrator
 動画は、ジャスミートの悲鳴で締めることになった。
 # speaker: gt_kunal
+# voice: gt_delhi_date_agrasen_baoli_kunal_007
 あなたの、質問みたいな悲鳴。おまけとして、最後に入れたいです
 # speaker: narrator
 彼女は少し考えてから、うなずいた。
@@ -247,6 +259,7 @@ INCLUDE modules.ink
     # speaker: narrator
     早すぎた。ジャスミートがくぼみの前の段に下りてくるより先に、広げた布が、ばさりと鳴った。
     # speaker: gt_jasmeet
+    # voice: gt_delhi_agrasen_baoli_pigeon_flap_jasmeet_001
     見えてるよ。鳩にしては、大きすぎ
     # speaker: narrator
     彼女が笑いかけた、そのとき。

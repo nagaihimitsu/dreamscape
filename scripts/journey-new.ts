@@ -8,6 +8,7 @@ import { validateContent } from "./content-validation";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
 import { jsonText, readSampleJourney, withoutOptionalParts, type SampleReadme } from "./sample-journey";
 import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
+import { partialRecordings } from "./voice-records";
 
 // `npm run journey:new`: a new journey folder copied from the sample journey
 // (authoring/templates/sample_trip/). The sample's IDs, prefix, city and
@@ -230,7 +231,7 @@ export function createJourney(root: string, options: NewJourneyOptions, { storyC
       journeyFolders: [...sources.tree.journeyFolders, journeyId].sort(),
       files: new Map([...sources.tree.files, ...[...files].map(([file, bytes]): [string, Buffer | null] =>
         [`${folder}/${file}`, file.startsWith("public/") || !/\.(json|ink)$/u.test(file) ? null : bytes])]),
-    }), { storyCache: chooseStoryCache(storyCache) });
+    }), { storyCache: chooseStoryCache(storyCache), untilName: partialRecordings(root, sources.manifests.map((manifest) => manifest.id)) });
   } catch (error) {
     throw new Error(`作った旅行編が内容の検証を通らなかったため、何も書き込んでいません: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
   }

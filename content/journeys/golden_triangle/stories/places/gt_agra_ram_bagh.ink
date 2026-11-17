@@ -137,12 +137,14 @@ INCLUDE modules.ink
 庭を出ると、道の向かいに小さな茶屋があった。プラスチックの椅子が三つと、湯気の立つ大鍋。注文は、インスタントのマギーの麺と、チャイを二つ。
 麺を運んできた主人が、二人を見比べて、にやりとした。
 # speaker: gt_agra_ram_bagh_tea_master
+# voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_001
 サミールのところの客だろう。白鳥の部屋の。この町じゃ、あそこの新婚は有名だ
 # speaker: heroine
 # reaction: heroine,surprised_big,sweat
 # voice: gt_agra_date_ram_bagh_021
 ど、どうして知ってるんですか！　しかも新婚じゃないです！
 # speaker: gt_agra_ram_bagh_tea_master
+# voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_002
 サミールが、会う人ごとに話してるからな。この町じゃ、噂は麺より早く茹で上がる
 * [「新婚じゃありません」 # option: not_newlyweds]
     # profile: honest
@@ -153,6 +155,7 @@ INCLUDE modules.ink
         ……そんなに、きっぱり否定しなくても。いや、合ってるんだけど
     - else:
         # speaker: gt_agra_ram_bagh_tea_master
+        # voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_003
         皆さん、最初はそう言う
         # speaker: heroine
         # reaction: heroine,exasperated,gloom
@@ -193,6 +196,7 @@ INCLUDE modules.ink
         # voice: gt_agra_date_ram_bagh_027
         ごまかさないで、ちゃんと否定して。ううん、わたしがする。新婚じゃ、ありません！
         # speaker: gt_agra_ram_bagh_tea_master
+        # voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_004
         はいはい
     }
 -

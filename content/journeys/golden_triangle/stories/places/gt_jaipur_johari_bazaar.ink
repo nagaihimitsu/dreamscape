@@ -26,6 +26,7 @@ INCLUDE modules.ink
 店番の女性が、顔を上げた。
 # speaker: gt_nasreen
 # cutin: name
+# voice: gt_jaipur_date_johari_bazaar_nasreen_001
 いらっしゃい。ナスリーンよ。腕輪は、夫と義理の弟が、近くの職人の路地で、小さな炉に向かって作ってるの。売るのは、女の仕事
 { cond("battle gt_delhi_main_red_fort_battle"):
     # speaker: narrator
@@ -45,6 +46,7 @@ INCLUDE modules.ink
 # speaker: narrator
 この町の結婚式に呼ばれた、と{heroine_name}が話すと、ナスリーンの目が光った。
 # speaker: gt_nasreen
+# voice: gt_jaipur_date_johari_bazaar_nasreen_002
 結婚式？　あなた、花嫁さん？
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
@@ -57,12 +59,15 @@ INCLUDE modules.ink
     そこの『今のところは』の人。今、何か言おうとしたでしょ
 }
 # speaker: gt_nasreen
+# voice: gt_jaipur_date_johari_bazaar_nasreen_003
 招待客なら、なおさら。結婚式の腕輪は、女の人みんなの楽しみよ
 # speaker: narrator
 ナスリーンは、腕輪をはめながら話してくれた。
 # speaker: gt_nasreen
+# voice: gt_jaipur_date_johari_bazaar_nasreen_004
 昔ね、女神パールヴァティーがシヴァと結婚するとき、腕輪職人たちがラックの腕輪を作ったの。それからずっと、花嫁や結婚した女の人は、ラックの腕輪で手首を飾るのよ
 # speaker: gt_nasreen
+# voice: gt_jaipur_date_johari_bazaar_nasreen_005
 ……言い伝えだけどね
 # speaker: narrator
 腕輪を通すとき、ナスリーンは彼女の手を握り、指の付け根をぎゅっと寄せた。手を細くして、その上を滑らせるのだ。
@@ -76,6 +81,7 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_johari_bazaar_memory
     { romance_result == "negative":
         # speaker: gt_nasreen
+        # voice: gt_jaipur_date_johari_bazaar_nasreen_006
         赤は、花嫁さんがよく選ぶ色ね
         # speaker: heroine
         # emotion: exasperated
@@ -83,6 +89,7 @@ INCLUDE modules.ink
         ……今それ、ちょっと困る。ほら、また花嫁さんって言われた
     - else:
         # speaker: gt_nasreen
+        # voice: gt_jaipur_date_johari_bazaar_nasreen_007
         赤は、花嫁さんがよく選ぶ色ね
         # speaker: heroine
         # reaction: heroine,teasing,blush
@@ -134,6 +141,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_johari_bazaar_014
 欲しいです。すごく、欲しいです。でも、もう少しだけ、安くなりませんか
 # speaker: gt_nasreen
+# voice: gt_jaipur_date_johari_bazaar_nasreen_008
 あはは！　欲しい、を先に言ったら、値切れないのよ
 # speaker: heroine
 # reaction: heroine,exasperated,gloom
@@ -146,9 +154,11 @@ INCLUDE modules.ink
         # emotion: worried
         彼女は何度か、助けを求めるようにこちらを振り返った。こちらが黙っていると、小さくため息をついて、ナスリーンに向き直った。
         # speaker: gt_nasreen
+        # voice: gt_jaipur_date_johari_bazaar_nasreen_009
         正直な人には、少しだけね
     - else:
         # speaker: gt_nasreen
+        # voice: gt_jaipur_date_johari_bazaar_nasreen_010
         正直な人には、少しだけまけてあげる。今日だけよ
         # speaker: heroine
         # reaction: heroine,happy,sparkle
@@ -159,6 +169,7 @@ INCLUDE modules.ink
     # profile: bold
     { romance_result == "negative":
         # speaker: gt_nasreen
+        # voice: gt_jaipur_date_johari_bazaar_nasreen_011
         あら、旦那さんが出てきた
         # speaker: heroine
         # emotion: exasperated
@@ -166,6 +177,7 @@ INCLUDE modules.ink
         わたしの交渉だったのに……。それに、旦那さんじゃないです
     - else:
         # speaker: gt_nasreen
+        # voice: gt_jaipur_date_johari_bazaar_nasreen_012
         あら、旦那さんが出てきた。……いいわ、旦那さんに免じて、少しだけ
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
@@ -187,6 +199,7 @@ INCLUDE modules.ink
     # speaker: narrator
     ナスリーンは笑って、細い腕輪を一本、おまけに足した。
     # speaker: gt_nasreen
+    # voice: gt_jaipur_date_johari_bazaar_nasreen_013
     旦那さんの分よ
     # speaker: narrator
     そう言って、こちらの手首にはめてくれた。
@@ -195,6 +208,7 @@ INCLUDE modules.ink
 # item_show: gt_jaipur_lac_bangles
 代金を払うと、ナスリーンは腕輪を新聞紙で一組ずつ包み、紙袋に入れてくれた。
 # speaker: gt_nasreen
+# voice: gt_jaipur_date_johari_bazaar_nasreen_014
 割れやすいから、はめっぱなしにしない方がいいわ。はめるのは、特別な日だけ
 # speaker: narrator
 # se: bangles_clink

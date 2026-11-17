@@ -32,13 +32,16 @@ INCLUDE modules.ink
 バットは板きれ。一人だけ、髪を後ろで固く結んだ女の子が、全員に指示を飛ばしていた。
 その子が、こちらに気づいて走ってきた。英語は短く、迷いがない。
 # speaker: gt_agra_mehtab_girl
+# voice: gt_agra_date_mehtab_bagh_sonia_001
 一人足りない。入って。どっちでもいい。……ううん、やっぱり、投げられる方
 # speaker: gt_sonia
 # cutin: name
+# voice: gt_agra_date_mehtab_bagh_sonia_002
 ソニア、十二歳。この空き地のキャプテン。ルールは三つ。川まで飛ばしたら六点。ただし、自分で拾いに行くこと。庭の塀を越えたら、アウト
 # speaker: narrator
 指を折りながら、そう教えてくれた。
 # speaker: gt_sonia
+# voice: gt_agra_date_mehtab_bagh_sonia_003
 塀の向こうは役所の庭だから、ボールを取りに入ると怒られる。だから、越えたらアウト
 # speaker: heroine
 # voice: gt_agra_date_mehtab_bagh_002
@@ -68,6 +71,7 @@ INCLUDE modules.ink
     # memory: gt_agra_date_mehtab_bagh_memory
     { romance_result == "negative":
         # speaker: gt_sonia
+        # voice: gt_agra_date_mehtab_bagh_sonia_004
         だめ。打つ人が足りない方に入って。キャプテンが決める
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
@@ -75,6 +79,7 @@ INCLUDE modules.ink
         ……子どもの前で、そういうこと言わないで。キャプテンに怒られちゃった
     - else:
         # speaker: gt_sonia
+        # voice: gt_agra_date_mehtab_bagh_sonia_005
         だめ。打つ人が足りない方に入って。キャプテンが決める
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -113,6 +118,7 @@ INCLUDE modules.ink
 # speaker: narrator
 それから先は、あっという間だった。ソニアの家の手伝いの時間が来る前に、終わらせなければならないらしい。
 # speaker: gt_sonia
+# voice: gt_agra_date_mehtab_bagh_sonia_006
 最後の一球。今、同点。あなたが打って。この人が投げる。打てなかったら、わたしたちの勝ち
 # speaker: narrator
 板きれのバットを渡された。マウンドの代わりの土の盛り上がりに、彼女が立つ。ボールを握り直して、まっすぐこちらを見た。
@@ -159,18 +165,21 @@ INCLUDE modules.ink
     # speaker: narrator
     ソニアが二人を見比べて、肩をすくめた。
     # speaker: gt_sonia
+    # voice: gt_agra_date_mehtab_bagh_sonia_007
     もう一球。今のは数えない。キャプテンが決める
     -> gt_agra_mehtab_bagh_another_ball ->
 -
 # speaker: narrator
 試合が終わると、ソニアは手を差し出した。握手かと思ったら、手のひらは上を向いていた。
 # speaker: gt_sonia
+# voice: gt_agra_date_mehtab_bagh_sonia_008
 タージと、クリケットと、あなたたち。写真代、ちょうだい。外国の人は、みんな撮りたがるから
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
 # voice: gt_agra_date_mehtab_bagh_020
 しっかりしてる！
 # speaker: gt_sonia
+# voice: gt_agra_date_mehtab_bagh_sonia_009
 本物のバットが欲しいの。ちゃんとした革のボールも。州のチームの選考は、本物で打たないと笑われる
 -> gt_agra_mehtab_bagh_photo ->
 # speaker: narrator
@@ -203,6 +212,7 @@ INCLUDE modules.ink
     # speaker: narrator
     板きれは、また動かなかった。けれど今度は、少し遅いボールの方が板きれに当たって、ぼてぼてと転がり、彼女の足もとで止まった。
     # speaker: gt_sonia
+    # voice: gt_agra_mehtab_bagh_another_ball_sonia_001
     ……当たった。時間。引き分け
     # speaker: heroine
     # reaction: heroine,exasperated,sigh
@@ -222,6 +232,7 @@ INCLUDE modules.ink
 # speaker: narrator
 板きれの真ん中で、乾いた音がした。打球は彼女の頭の上を越えて、まっすぐ川の方へ飛んでいった。
 # speaker: gt_sonia
+# voice: gt_agra_mehtab_bagh_ball_six_sonia_001
 六点。……そっちの勝ち。ボールは、あなたが拾ってくること
 { romance_result == "negative":
     # speaker: heroine
@@ -257,6 +268,7 @@ INCLUDE modules.ink
 # photo: gt_album_a32 # photo_caption: 最後の一球、塀を越えてアウト
 打球は高く上がり、そのまま――庭の塀を越えていった。一瞬の静けさのあと、ソニアが両手を上げた。
 # speaker: gt_sonia
+# voice: gt_agra_mehtab_bagh_ball_over_wall_sonia_001
 アウト！　塀を越えたらアウト！　わたしたちの勝ち！
 # speaker: heroine
 # reaction: heroine,teasing_big,music
@@ -271,6 +283,7 @@ INCLUDE modules.ink
 # speaker: narrator
 振るのが、ほんの少し遅れた。ボールは板きれの端に当たって、土の上を転がり、彼女の靴の先で止まった。
 # speaker: gt_sonia
+# voice: gt_agra_mehtab_bagh_ball_edge_sonia_001
 当たった。でも、点はなし。……引き分け
 { romance_result == "negative":
     # speaker: heroine
@@ -291,6 +304,7 @@ INCLUDE modules.ink
 # speaker: narrator
 思いきり振った板きれは、空を切った。背中の後ろで、煉瓦の崩れる音がした。
 # speaker: gt_sonia
+# voice: gt_agra_mehtab_bagh_ball_bowled_sonia_001
 アウト。わたしたちの勝ち
 { romance_result == "negative":
     # speaker: heroine
@@ -326,6 +340,7 @@ INCLUDE modules.ink
     # money: -10
     # rel: trust +1
     # speaker: gt_sonia
+    # voice: gt_agra_mehtab_bagh_photo_sonia_001
     全部バット。……うそ。半分バット、半分は妹のノート
     # speaker: heroine
     # emotion: smile
@@ -337,5 +352,6 @@ INCLUDE modules.ink
     # speaker: narrator
     ソニアは少しむっとした顔をしてから、差し出された手を、思いきり握り返した。
     # speaker: gt_sonia
+    # voice: gt_agra_mehtab_bagh_photo_sonia_002
     商売にならない。……でも、いい試合だった
 - ->->

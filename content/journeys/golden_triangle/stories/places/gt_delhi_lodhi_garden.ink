@@ -28,15 +28,19 @@ INCLUDE modules.ink
 # speaker: narrator
 輪の中心にいた白い口ひげの老人が、二人に気づいて手招きした。張りのある、よく通る声だった。
 # speaker: gt_delhi_lodhi_old_man
+# voice: gt_delhi_date_lodhi_garden_dubey_001
 乗客の皆さま、ご注意ください。まもなく、新しい笑いが到着いたします
 # speaker: gt_dubey
 # cutin: name
+# voice: gt_delhi_date_lodhi_garden_dubey_002
 ドゥベイと申します。鉄道の駅で、三十年、列車の案内放送をしておりました
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_003
 ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていくんです
 # speaker: narrator
 会の人たちは、そう信じている。
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_004
 ホー、ホー、ハ、ハ、ハ。手を叩いて。はい、次は電話の笑い。誰かから電話が来たつもりで、受話器に向かって笑うんです
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -118,10 +122,12 @@ INCLUDE modules.ink
 スレーシュさん！
 # speaker: gt_dubey
 # leave: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_005
 はい、次はあいさつの笑い。全員と握手して、言葉のかわりに笑いましょう
 # speaker: narrator
 逃げ場はなかった。スレーシュは彼女の手を握り、律儀に笑いながら、早口でささやいた。
 # speaker: gt_suresh
+# voice: gt_delhi_date_lodhi_garden_suresh_001
 ハ、ハ、ハ。……今日も、誰も、誰にも会わなかった。ハ、ハ
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_011
@@ -134,11 +140,14 @@ INCLUDE modules.ink
 # together: gt_suresh gt_meena
 それから、観念したように、女性を連れてやってきた。
 # speaker: gt_suresh
+# voice: gt_delhi_date_lodhi_garden_suresh_002
 ミーナだ。大学の同級生。……週に二回、ここで笑っている。健康のためだ。あくまで健康の
 # speaker: gt_meena
 # cutin: name
+# voice: gt_delhi_date_lodhi_garden_meena_001
 この人、四十年前の教室では一度も笑わなかったのよ。あなたたち、すごいものを見たわね
 # speaker: gt_suresh
+# voice: gt_delhi_date_lodhi_garden_suresh_003
 家族に知れたら、夕飯の前に親戚中に知れる。この年で何をしている、と笑われる
 # speaker: narrator
 # emotion: surprised
@@ -148,6 +157,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_012
 メヘルさんなら、笑わないと思います
 # speaker: gt_suresh
+# voice: gt_delhi_date_lodhi_garden_suresh_004
 どうして、そう言い切れる
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_013
@@ -159,6 +169,7 @@ INCLUDE modules.ink
     # set: gt_delhi_suresh_kept_secret
     { romance_result == "negative":
         # speaker: gt_suresh
+        # voice: gt_delhi_date_lodhi_garden_suresh_005
         よろしい。申告に誤りなし
         # speaker: heroine
         # emotion: worried
@@ -170,6 +181,7 @@ INCLUDE modules.ink
         彼女の小さな声は、東の門へ歩いていく二人には届かなかった。
     - else:
         # speaker: gt_suresh
+        # voice: gt_delhi_date_lodhi_garden_suresh_006
         よろしい。申告に誤りなし
         # speaker: narrator
         # leave: gt_suresh
@@ -183,18 +195,23 @@ INCLUDE modules.ink
     # set: gt_delhi_suresh_encouraged
     { romance_result == "negative":
         # speaker: gt_suresh
+        # voice: gt_delhi_date_lodhi_garden_suresh_007
         君に申告の指導を受ける覚えはない
         # speaker: gt_meena
+        # voice: gt_delhi_date_lodhi_garden_meena_002
         まあまあ。……いい考えだと、わたしは思うけれど
     - else:
         # speaker: gt_suresh
+        # voice: gt_delhi_date_lodhi_garden_suresh_008
         わしが？　自分から？　……それは、自主申告というやつだな
         # speaker: gt_meena
+        # voice: gt_delhi_date_lodhi_garden_meena_003
         いい考えね。四十年ぶりに会えたのに、隠れてばかりなのは、もう十分
     }
     # speaker: narrator
     スレーシュは携帯を取り出し、さっきの集合写真を開いたまま、しばらく固まっていた。送ったかどうかは、分からない。
     # speaker: gt_suresh
+    # voice: gt_delhi_date_lodhi_garden_suresh_009
     結果は、笑う会の連絡で知らせる
     # speaker: narrator
     # leave: gt_suresh
@@ -207,6 +224,7 @@ INCLUDE modules.ink
     # set: gt_delhi_suresh_kept_secret
     { romance_result == "negative":
         # speaker: gt_meena
+        # voice: gt_delhi_date_lodhi_garden_meena_004
         わたしに決めさせないで。それは、この人の申告だもの
         # speaker: narrator
         スレーシュは返事のかわりに、咳払いを一つした。
@@ -216,10 +234,12 @@ INCLUDE modules.ink
         人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     - else:
         # speaker: gt_meena
+        # voice: gt_delhi_date_lodhi_garden_meena_005
         この人が決めることよ。でも、決めるまでは、一緒に笑っててあげる
         # speaker: narrator
         スレーシュは返事のかわりに、小さく一回だけ笑った。
         # speaker: gt_suresh
+        # voice: gt_delhi_date_lodhi_garden_suresh_010
         ……ハ
         # speaker: narrator
         たぶん、本物の方だった。
@@ -243,11 +263,13 @@ INCLUDE modules.ink
 # speaker: narrator
 ドゥベイが、二人の前に立った。会の最後に、新入りには、いつも一つ頼むことがあるという。
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_006
 わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_016
 や、ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_007
 小さい。駅は広いんです。一番奥のホームまで届かせて
 // 二回目の噛み合いの代わりに、ミニゲーム「一緒に言う」（2026-11-16。前は「一緒に言おう」を選んだときだけ遊んだ）。
 // 彼女の「せー」「の」の次の拍で、主人公が「言う」を押す。大きさではなく、出だしのタイミングを合わせる（2026-11-13 ユーザー判断）。
@@ -301,6 +323,7 @@ INCLUDE modules.ink
         早いよ！　『その次』って言ったのに。ふふ、一人で全部言っちゃうんだもん
     }
     # speaker: gt_dubey
+    # voice: gt_delhi_date_lodhi_garden_dubey_008
     ただいまの列車は、定刻より早く発車いたしました。お乗り遅れのお客様が、お一人
 * [声を合わせた：彼女が先に言い、こちらは後から続いた # option: late]
     # profile: honest
@@ -321,6 +344,7 @@ INCLUDE modules.ink
         そう言いながら、彼女は笑っていた。
     }
     # speaker: gt_dubey
+    # voice: gt_delhi_date_lodhi_garden_dubey_009
     後続の列車は、少々遅れての到着となりました
 * [声を合わせた：こちらは言わず、彼女が一人で言った # option: silent]
     # profile: attentive
@@ -346,9 +370,11 @@ INCLUDE modules.ink
         もう。……でも、言えちゃった。一人で、最後まで
     }
     # speaker: gt_dubey
+    # voice: gt_delhi_date_lodhi_garden_dubey_010
     お知らせいたします。列車が一本、運休となりました
 -
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_011
 合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る
 # speaker: narrator
 # leave: gt_dubey

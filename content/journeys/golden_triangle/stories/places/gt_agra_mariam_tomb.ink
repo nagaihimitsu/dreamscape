@@ -16,12 +16,15 @@ INCLUDE modules.ink
 アクバル廟から少し離れた所に、赤い砂岩の四角い建物が、芝生の真ん中に静かに建っていた。マリアム・ウッザマーニーの墓廟。訪れる人は、ずっと少ない。
 木陰で、ピクニックの家族が弁当を広げていた。父親が、子どもたちに得意げに説明している。
 # speaker: gt_agra_mariam_father
+# voice: gt_agra_date_mariam_tomb_agra_mariam_father_001
 ここはな、ジョーダー・バーイーの墓だ。映画で見ただろう。アクバルの、いちばん有名な妃だ
 # speaker: gt_agra_mariam_daughter
+# voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_001
 パパ、違う。ジョーダー・バーイーって名前、当時の記録には出てこないんだって。ほら、ここに書いてある
 # speaker: narrator
 十五、六の娘が携帯を突きつける。父親は画面を見ようともしない。
 # speaker: gt_agra_mariam_father
+# voice: gt_agra_date_mariam_tomb_agra_mariam_father_002
 映画の方が正しいんだ
 # speaker: narrator
 母親は笑って、揚げ菓子を配っている。
@@ -30,8 +33,10 @@ INCLUDE modules.ink
 # voice: gt_agra_date_mariam_tomb_001
 名前が、違うの？　お墓の人の？
 # speaker: gt_agra_mariam_daughter
+# voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_002
 そう。ここに眠ってるのは、アンベールの王さまの娘なの。ジャイプールのそばの、山の上のお城
 # speaker: gt_agra_mariam_daughter
+# voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_003
 アクバルと結婚して、跡継ぎの皇子を産んで、『時代のマリアム』って称号をもらった人
 # speaker: narrator
 娘は、画面を父親の方へ向け直した。
@@ -99,10 +104,12 @@ INCLUDE modules.ink
 # voice: gt_agra_date_mariam_tomb_010
 ヴィムラー先生！
 # speaker: gt_vimla
+# voice: gt_agra_date_mariam_tomb_vimla_001
 あら。署名の前に読む人ね。……今度の請願書は、これ。案内やガイドの説明で、この方を正しい名前で呼んでほしい、という内容
 # speaker: narrator
 紙には、小さな字で、三行だけ書いてあった。確かめられることだけを、確かめられる言葉で。大きな字は、どこにもない。
 # speaker: gt_vimla
+# voice: gt_agra_date_mariam_tomb_vimla_002
 あなたに赤ペンを入れられてから、大きな字はやめたの。……署名は、まだ七人だけど
 -> gt_agra_mariam_tomb_petition ->
 # speaker: narrator
@@ -114,16 +121,20 @@ INCLUDE modules.ink
 ヴィムラーは、少しのあいだ、墓廟の赤い壁を見上げていた。
 # speaker: gt_vimla
 # local_word: gt_agra_word_bahu
+# voice: gt_agra_date_mariam_tomb_vimla_003
 嫁いだ家で、三十年、『バフー』と呼ばれたの。嫁、という意味
 # speaker: gt_vimla
+# voice: gt_agra_date_mariam_tomb_vimla_004
 夫の母も、夫の弟も、近所の人も。わたしの名前を呼んだのは、学校の書類と、夫のお葬式の日の役所の人だけ
 # speaker: gt_vimla
+# voice: gt_agra_date_mariam_tomb_vimla_005
 死んだ後に付いた名前で、今も呼ばれ続けるのは、かわいそうでしょう。……せめて、お墓くらいは
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_date_mariam_tomb_012
 名前って、呼んでもらえないと、なくなっちゃうみたいですね。……ヴィムラー先生。ヴィムラー先生
 # speaker: gt_vimla
+# voice: gt_agra_date_mariam_tomb_vimla_006
 二回も呼ばなくていいの
 # speaker: narrator
 そう言いながら、ヴィムラーは、少しも嫌そうではなかった。
@@ -136,8 +147,10 @@ INCLUDE modules.ink
 # speaker: narrator
 言い合う父と娘の横で、それまで黙っていた祖母が、ゆっくり口を開いた。娘が英語に訳してくれる。
 # speaker: gt_agra_mariam_daughter
+# voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_004
 おばあちゃんが言ってる。名前なんてどうでもいい、って男の人は言うけど、それは、ずっと自分の名前で呼ばれてきた人の言い方だって
 # speaker: gt_agra_mariam_daughter
+# voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_005
 おばあちゃんは、結婚してから、ずっと『誰々の嫁』『誰々の母』だったから。……初めて聞いた、そんな話
 # speaker: narrator
 # term: gt_term_tiffin
@@ -212,9 +225,11 @@ INCLUDE modules.ink
 * [先に全部読んでから、署名する # option: read_then_sign]
     # rel: trust +1
     # speaker: gt_vimla
+    # voice: gt_agra_mariam_tomb_petition_vimla_001
     あなたも読むのね。二人そろって。……いい旅の仕方だわ
 * [すぐに署名する # option: sign_at_once]
     # speaker: gt_vimla
+    # voice: gt_agra_mariam_tomb_petition_vimla_002
     読みなさい。署名は、読んでから
     # speaker: narrator
     ペンを取り上げられた。三行を読み終えるまで、返してもらえなかった。
