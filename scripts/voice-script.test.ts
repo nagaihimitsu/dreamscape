@@ -96,6 +96,14 @@ describe("the heroine lines of a voice script", () => {
       speaker: "heroine", voice: "heroine", speakerJa: "ヒロイン" });
   });
 
+  it("keeps the 2026-11-12 entries' fields in their order, with who speaks after them (2026-11-17)", () => {
+    expect(Object.keys(script.lines[0])).toEqual(["line", "id", "text", "emo", "staging", "context", "prev", "flags", "file", "knot", "title",
+      "speaker", "voice", "speakerJa"]);
+    // The other speakers' lines are in too, and never change the heroine's.
+    expect(script.lines.filter((item) => item.voice !== "heroine").map((item) => [item.text, item.voice, item.id])).toEqual([
+      ["三時で止まってるの", "ta_lili", "ta_square_date_lili_001"], ["止まれ", "ta_square_battle", "ta_square_battle_square_battle_001"]]);
+  });
+
   it("says the tags in words and flags names and English", () => {
     expect(line("きれいな時計だね")).toMatchObject({ emo: ["ほほえみ", "楽しげ"], staging: [], flags: [] });
     expect(line("【主人公の呼び名】、見て")).toMatchObject({ emo: ["心配・弱っている"], flags: ["★名前を含む"] });
