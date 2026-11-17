@@ -12,6 +12,7 @@ import {
 } from "./dist-guard";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 import { OFFLINE_LIST_FILE, type OfflineList } from "../src/offline/list";
+import { SAMPLE_JOURNEY_ID } from "./content-layout";
 import { playableJourneys } from "./journey-parts-build";
 import { builtFile, offlineList, type BuiltFile } from "./offline-list-build";
 import { runtimeImports } from "./test-sets";
@@ -345,7 +346,8 @@ describe("production build guard", () => {
     const folder = mkdtempSync(path.join(tmpdir(), "dreamscape-dist-"));
     // Each build gets the offline list the real build writes for its files (the journeys players can open are this
     // checkout's, which the command reads from the generated catalog); `list` gives another one, or none (null).
-    const playable = playableJourneys(root);
+    // Without the sample journey, which never ships (`npm test` builds the generated content with it).
+    const playable = playableJourneys(root).filter((id) => id !== SAMPLE_JOURNEY_ID);
     const check = (build: DistFile[], list?: ((made: OfflineList) => unknown) | null) => {
       rmSync(folder, { recursive: true, force: true });
       for (const file of build) {

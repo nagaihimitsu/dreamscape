@@ -23,6 +23,7 @@ import { OFFLINE_LIST_FILE, readOfflineList } from "../src/offline/list";
 import { readWithheldFiles, WITHHELD_FILES_FILE, withheldPaths } from "./withheld-files";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 import { journeyCatalogSchema, journeyFilesShip } from "../src/content/journey-catalog";
+import { SAMPLE_JOURNEY_ID } from "./content-layout";
 
 const folder = process.argv[2] ?? "dist";
 const root = path.resolve(folder);
@@ -94,7 +95,9 @@ if (check.withheld.length > 0) {
 }
 // The list a device that keeps a journey loads by (「オフラインで遊ぶ」): every file of this build, once, as it is here.
 const listText = files.find((file) => file.path === OFFLINE_LIST_FILE)?.text ?? null;
-const playable = catalog.journeys.filter(journeyFilesShip).map((journey) => journey.id);
+// The sample journey never ships (a build that holds it fails the leak check above), so the list is checked without it
+// even when the generated content was built with the sample, as `npm test` does.
+const playable = catalog.journeys.filter(journeyFilesShip).map((journey) => journey.id).filter((id) => id !== SAMPLE_JOURNEY_ID);
 const listProblems = checkOfflineList({
   files: built, listText, indexHtml: files.find((file) => file.path === "index.html")?.text ?? "", playable, withheld: withheldPaths(withheld),
 });
