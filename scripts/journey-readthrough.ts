@@ -43,10 +43,13 @@ export function visitTable(scenes: readonly SceneEntry[], landmarkId: string, ev
 
 /**
  * A scene's lines, path by path (choices labelled), with every cond text false and then true, and for each value of the
- * name in Latin letters the story reads (a stand-in, and "" for a name with none: latinNameValues).
+ * name in Latin letters the story reads (a stand-in, and "" for a name with none: latinNameValues). A path whose lines
+ * are those of one already taken is left out (the "" name read again by a scene that never reads it: its place file's
+ * other scenes do), so each path reads once.
  */
 export function scenePaths(scene: SceneEntry, compiled: string, context: TagContext, maxPaths: number): string[][] {
   const paths: string[][] = [];
+  const taken = new Set<string>();
   for (const latin of latinNameValues(compiled, "（主人公の名前のローマ字）")) for (const value of scene.conds.length ? [false, true] : [false]) {
     const make = () => {
       const story = new Story(compiled);
@@ -74,7 +77,11 @@ export function scenePaths(scene: SceneEntry, compiled: string, context: TagCont
         speaker = tags.speakerPersonId ?? tags.speaker ?? speaker;
         if (text) read.push(`${speaker === "narrator" ? "" : `${speaker}: `}${text}`);
       }
-      if (!story.currentChoices.length || depth > 20) { paths.push(read); return; }
+      if (!story.currentChoices.length || depth > 20) {
+        const key = JSON.stringify(read);
+        if (!taken.has(key)) { taken.add(key); paths.push(read); }
+        return;
+      }
       const checkpoint = story.state.ToJson();
       for (const choice of story.currentChoices) {
         const branch = make();

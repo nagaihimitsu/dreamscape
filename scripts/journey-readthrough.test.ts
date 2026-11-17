@@ -46,4 +46,14 @@ describe("journey:readthrough's paths", () => {
     expect(scenePaths(scene("x_talk", "x", [{ visit: "x_tower" }], 1), compiled, { effectIds: [], backgroundIds: [], emotionIds: [] }, 12))
       .toEqual([["文字は（主人公の名前のローマ字）。"], ["読めない文字。"]]);
   });
+
+  it("reads each path once: a scene that never reads the Latin name is not read again with none, though its file's other scene does", () => {
+    const compiled = compileInk('INCLUDE modules.ink\n-> DONE\n=== x_talk ===\n{ player_name_latin != "":\n    文字は{player_name_latin}。\n- else:\n    読めない文字。\n}\n-> END\n' +
+      "=== x_other ===\n灯りが揺れる。\n* [見る]\n    模様だけ。\n* [見ない]\n    目を閉じる。\n- -> END\n", "places/x_talk.ink", { [MODULES_FILE]: MODULES_INK });
+    const context = { effectIds: [], backgroundIds: [], emotionIds: [] };
+    expect(scenePaths(scene("x_other", "x", [{ visit: "x_tower" }], 1), compiled, context, 12))
+      .toEqual([["灯りが揺れる。", "▶ 見る", "模様だけ。"], ["灯りが揺れる。", "▶ 見ない", "目を閉じる。"]]);
+    // The scene that reads it keeps both.
+    expect(scenePaths(scene("x_talk", "x", [{ visit: "x_tower" }], 1), compiled, context, 12)).toHaveLength(2);
+  });
 });

@@ -6,7 +6,7 @@ import { MEHNDI_HINT_JA } from "./definition";
 import {
   MEHNDI_SPOTS, MEHNDI_TUNING, mehndiGameFor, mehndiRulesFor, type MehndiOutcome, type MehndiParams, type MehndiSpot, type MehndiTarget, type MehndiTuning,
 } from "./rules";
-import { WRITING_BASELINE, writingSize } from "./writing";
+import { WRITING_ASCENT, WRITING_BASELINE, WRITING_DESCENT, WRITING_MAX_SIZE, writingSize } from "./writing";
 import "./skin.css";
 
 // The hidden name's field (a search skin): her right palm held out in the night, the mehndi's broad lines dim; where the
@@ -42,16 +42,30 @@ export const MEHNDI_HIT = 30;
 const FINGER_HIT_PX = 22;
 /**
  * Where the writing lies at each target: its centre, its slant, the room it has, and whether the central vine's line runs
- * under it. The central vine's curls lie off its letters (2026-11-13 playtest: the H of FARHANA was under a curl), and
- * the vine's line breaks behind writing laid on it (VINE_GAP). At the thumb, the name lies under the spiral, clear of its
- * last turn and inside the palm's edge, within a point's reach of the place (2026-11-16; measured again at 390 and 320 px
- * with the Fasol SP hand on 2026-11-17, its tall strokes and tails included).
+ * under it. The fine lines' curls by the central vine lie off its letters (2026-11-13 playtest: the H of FARHANA was under
+ * a curl): at the feather's base, its curls and the leaf under them are not drawn when the writing lies there (FineLines;
+ * the Fasol SP tails of g, j, p, q and y reached the leaf, 2026-11-17), and the vine's line breaks behind writing laid on it
+ * (VINE_GAP). At the thumb, the name lies under the spiral, clear of its last turn and inside the palm's edge, within a
+ * point's reach of the place (2026-11-16; measured again at 390 and 320 px with the Fasol SP hand on 2026-11-17, its
+ * tall strokes and tails included).
  */
 const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number; onVine: boolean }> = {
   thumb: { x: 208, y: 324, rotate: -22, width: 54, onVine: false },
   peacock: { x: 150, y: 246, rotate: -8, width: 58, onVine: true },
   vine: { x: 141, y: 316, rotate: -14, width: 62, onVine: true },
 };
+/** How far the writing's ring stays out from the writing (units: its 2 px line and a little air). */
+const RING_CLEAR = 4;
+/**
+ * The gold ring round the writing once found (in the hand's units): centred on the writing, not on the place pointed at
+ * (at the thumb the two are apart, and a ring round the place crossed the name), and round all of its room, the tall
+ * strokes and the tails of the largest size included, RING_CLEAR clear of them.
+ */
+export function mehndiWritingRing(target: MehndiTarget): { x: number; y: number; diameter: number } {
+  const place = WRITING[target];
+  const reach = Math.max(WRITING_ASCENT - WRITING_BASELINE, WRITING_DESCENT + WRITING_BASELINE) * WRITING_MAX_SIZE;
+  return { x: place.x, y: place.y, diameter: 2 * (Math.hypot(place.width / 2, reach) + RING_CLEAR) };
+}
 /** Where the central vine's line breaks behind the writing laid on it (in the writing's own frame): lit only, so the
  * dark shows no gap to give it away. Tall enough for the name's tall strokes and tails (a j's tail at the feather's base,
  * 2026-11-17). */
@@ -222,13 +236,14 @@ function FineLines({ target }: { target: MehndiTarget }) {
   return (
     <g className="mg-mehndi-hidden-name-ink mg-mehndi-hidden-name-fine">
       <path d="M128 164 L120 156 M132 182 L122 190 M138 196 L130 204 M142 214 L134 222 M136 168 L144 160 M144 192 L150 186" />
-      <path d="M150 262 c-8 0 -10 -8 -4 -10 M138 290 c8 -2 12 6 6 10 M146 340 c-8 0 -8 -8 -2 -10 M132 358 c8 0 8 8 2 10" />
+      <path d="M138 290 c8 -2 12 6 6 10 M146 340 c-8 0 -8 -8 -2 -10 M132 358 c8 0 8 8 2 10" />
       {dots([[196, 120], [212, 120], [204, 132], [76, 222], [100, 222], [88, 232], [110, 392], [124, 392], [138, 392], [162, 392], [176, 392], [190, 392]])}
       {/* Dots by the thumb's spiral, none under it (2026-11-16: one there read as a full stop after the name). */}
       {dots([[234, 284], [236, 300], [194, 284], [192, 300]])}
       <circle cx={MEHNDI_PLACES.index.x} cy={MEHNDI_PLACES.index.y} r="15" />
       <circle cx={MEHNDI_PLACES.pinky.x} cy={MEHNDI_PLACES.pinky.y} r="18" />
-      {target !== "peacock" && <path d="M142 246 c4 6 12 6 16 0 M144 254 c4 4 8 4 12 0" />}
+      {/* The feather's base: its curls and the leaf under them, where the writing is not (its tails reach the leaf). */}
+      {target !== "peacock" && <path d="M142 246 c4 6 12 6 16 0 M144 254 c4 4 8 4 12 0 M150 262 c-8 0 -10 -8 -4 -10" />}
       {MEHNDI_SPOTS.filter((spot) => spot !== target).map((spot) => {
         const look = LOOKALIKES[spot];
         const at = MEHNDI_PLACES[spot];
@@ -482,6 +497,7 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
   const shownWriting = ending?.kind === "found";
   const wrongs = view.searched.filter((spot) => spot !== target);
   const at = (spot: number) => ({ left: `${(MEHNDI_PLACES[MEHNDI_SPOTS[spot]].x / W) * 100}%`, top: `${(MEHNDI_PLACES[MEHNDI_SPOTS[spot]].y / H) * 100}%` });
+  const ring = mehndiWritingRing(params.target);
   // The pool never smaller than a fingertip on a small phone.
   const pool = { "--mehndi-lamp-r": `max(${tuning.lampPct}cqw, 18px)`, "--mehndi-glint-every": `${Math.max(400, tuning.glintEveryMs)}ms` } as CSSProperties;
   return (
@@ -512,7 +528,8 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
           <span key={`aim-${aim}`} className="mg-mehndi-hidden-name-aim" style={at(aim)}
             data-testid="mehndi-aim" aria-hidden="true"><span>{AIM_JA}</span></span>
         )}
-        {shownWriting && <span ref={writingRing} className="mg-mehndi-hidden-name-mark-ring" data-writing style={at(target)} aria-hidden="true" />}
+        {shownWriting && <span ref={writingRing} className="mg-mehndi-hidden-name-mark-ring" data-writing aria-hidden="true"
+          style={{ left: `${(ring.x / W) * 100}%`, top: `${(ring.y / H) * 100}%`, width: `${((ring.diameter / W) * 100).toFixed(2)}cqw` }} />}
         {said?.hint && <span key={`hint-${said.at}`} className="mg-mehndi-hidden-name-hint-ring" style={at(target)} aria-hidden="true" />}
         {said && (
           <span key={said.at} className="mg-mehndi-hidden-name-said" data-below={MEHNDI_PLACES[MEHNDI_SPOTS[said.spot]].y < H * 0.4 || undefined}

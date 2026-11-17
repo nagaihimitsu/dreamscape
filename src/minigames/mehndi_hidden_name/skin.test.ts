@@ -5,8 +5,9 @@ import { describe, expect, it } from "vitest";
 import type { MiniGameNames } from "../contract";
 import type { SearchView } from "../engines/search/EnginePlay";
 import { mehndiHiddenName } from "./definition";
-import { mehndiSetup, type MehndiParams } from "./rules";
-import { mehndiSkin } from "./Skin";
+import { MEHNDI_SPOTS, mehndiSetup, type MehndiParams } from "./rules";
+import { MEHNDI_PLACES, mehndiSkin, mehndiWritingRing } from "./Skin";
+import { WRITING_ASCENT, WRITING_BASELINE, WRITING_DESCENT, WRITING_MAX_SIZE } from "./writing";
 
 // The hidden name's field (docs/13 2.10, 2.12–2.13): the player's name in Latin letters in the Fasol SP hand (the user's
 // decisions of 2026-11-16, no Japanese letters in the pattern, and 2026-11-17, the font), as text (never HTML), or no
@@ -93,9 +94,42 @@ describe("the hidden name's field", () => {
     const found = field(thumb, undefined, {}, { ...view, searched: [0, 2, 3], ending: { kind: "found", spot: 3, misses: 2, helped: 0 } });
     expect(found.match(/data-wrong="true"/gu)).toHaveLength(2);
     expect(found).toContain("data-writing");
+    // The wrong places' rings stay round the places pointed at (the index finger's flower here: 204, 104 of 300 × 420).
+    expect(found).toMatch(/data-wrong="true" style="left:68%;top:24.76\d*%"/u);
     // One line for how to play, before and during the play; no line under the label (she never shows the place).
     expect(mehndiSkin.hintJa).toBe(mehndiHiddenName.hintJa);
     expect(mehndiSkin.detailJa).toBeUndefined();
+  });
+
+  it("rings the writing found round the writing itself, all of its room with its tall strokes and tails, at every target", () => {
+    for (const target of ["thumb", "peacock", "vine"] as const) {
+      const ring = mehndiWritingRing(target);
+      const spot = MEHNDI_SPOTS.indexOf(target);
+      const html = field({ target, text: "player" }, { playerLatin: "Masayoshi" }, {}, { ...view, searched: [spot], ending: { kind: "found", spot, misses: 0, helped: 0 } });
+      // The ring's place and size (in the palm's share: 300 × 420 units, the width in cqw of the palm).
+      const style = html.match(/data-writing="true" aria-hidden="true" style="left:([\d.]+)%;top:([\d.]+)%;width:([\d.]+)cqw"/u);
+      expect(style, target).not.toBeNull();
+      expect(Number(style![1]), target).toBeCloseTo((ring.x / 300) * 100, 3);
+      expect(Number(style![2]), target).toBeCloseTo((ring.y / 420) * 100, 3);
+      expect(Number(style![3]), target).toBeCloseTo((ring.diameter / 300) * 100, 1);
+      // Centred on the writing: its transform's translate.
+      const writing = html.match(/mg-mehndi-hidden-name-lettering" transform="translate\(([\d.]+) ([\d.]+)\) rotate\((-?[\d.]+)\)"/u);
+      expect([Number(writing![1]), Number(writing![2])], target).toEqual([ring.x, ring.y]);
+      // Every corner of the name's room (a long name is pressed to its width) at the largest size lies inside the ring, a
+      // few units clear of its line (the slant turns the room about the ring's centre).
+      const half = { thumb: 54, peacock: 58, vine: 62 }[target] / 2;
+      for (const y of [(WRITING_BASELINE - WRITING_ASCENT) * WRITING_MAX_SIZE, (WRITING_BASELINE + WRITING_DESCENT) * WRITING_MAX_SIZE])
+        for (const x of [-half, half]) expect(Math.hypot(x, y), `${target} ${x} ${y}`).toBeLessThanOrEqual(ring.diameter / 2 - 3);
+    }
+    // At the thumb the writing lies under the spiral, apart from the place pointed at: the ring is round the writing.
+    const thumb = mehndiWritingRing("thumb");
+    expect(Math.hypot(thumb.x - MEHNDI_PLACES.thumb.x, thumb.y - MEHNDI_PLACES.thumb.y)).toBeGreaterThan(20);
+  });
+
+  it("leaves out the leaf at the feather's base when the writing lies there (the name's tails reach it), and draws it elsewhere", () => {
+    const leaf = "M150 262 c-8 0 -10 -8 -4 -10";
+    expect(field({ target: "peacock", text: "player" })).not.toContain(leaf);
+    for (const target of ["thumb", "vine"] as const) expect(field({ target, text: "player" }), target).toContain(leaf);
   });
 
   it("curls the five other places like writing (lit only), never the writing's own, and gives the pool the tuning's size", () => {

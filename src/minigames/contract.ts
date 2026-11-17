@@ -145,9 +145,10 @@ export interface MiniGamePlayProps<Params = unknown, Outcome extends string = st
   /** Who is on the scene's stage: the heroine's figure, and the person speaking (if any). */
   cast: MiniGameCast;
   /**
-   * The names as written (draw them as React text only). `playerLatin`: the player's name in Latin letters (their own
-   * spelling, else their kana name in Hepburn; src/domain/name-romaji.ts), for writing drawn in the scene where Japanese
-   * letters would not be (the mehndi); null when there is none (no letters of the name are drawn then). Left out: none.
+   * The names as written (draw them as React text only). `playerLatin`: the player's name in Latin letters (a name in
+   * Latin letters as typed, a kana name in Hepburn, else a kanji name's reading caught as it was typed, in Hepburn, when
+   * it fits the name: playerLatinName in src/domain/name-romaji.ts), for writing drawn in the scene where Japanese letters
+   * would not be (the mehndi); null when there is none (no letters of the name are drawn then). Left out: none.
    */
   names: MiniGameNames;
   /** The served URLs of the art slots the use fills (`art.<slot>`); a slot left out draws its CSS look. */

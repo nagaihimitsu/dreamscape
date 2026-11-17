@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { kanaReading, latinName, playerLatinName, readingFits, readingToSave, startReading } from "./name-romaji";
+import { kanaReading, latinName, nameFieldEdit, playerLatinName, readingFits, readingToSave, startReading } from "./name-romaji";
 
 // The player's name in Latin letters for the Jaipur mehndi (2026-11-16, the user's decision: no Japanese letters in the
 // pattern). Kana in Hepburn without long-vowel marks (ん always n); Latin kept; anything else null. A kanji name has one
@@ -113,5 +113,61 @@ describe("readingToSave", () => {
   it("takes only what was typed over a replaced name", () => {
     expect(readingToSave("花子", "たいちはなこ", { name: "太一", reading: "たいち" })).toBe("はなこ");
     expect(readingToSave("花子", "はなこ", { name: "太一" })).toBe("はなこ");
+  });
+});
+
+describe("nameFieldEdit", () => {
+  // The selection as the edit began: a caret at `at`, or a range.
+  const caret = (at: number) => ({ start: at, end: at });
+  const range = (start: number, end: number) => ({ start, end });
+
+  it("starts the reading again when the field is emptied or its whole name typed over", () => {
+    expect(nameFieldEdit("太一", "", caret(2))).toBe("restart");
+    expect(nameFieldEdit("太", "")).toBe("restart");
+    // Selected all and typed over: an IME's first kana (it shares no character with the old name), or the same first kana
+    // as a kana name's (the default たいち typed over as 太一: たいち).
+    expect(nameFieldEdit("太一", "じ", range(0, 2))).toBe("restart");
+    expect(nameFieldEdit("たいち", "た", range(0, 3))).toBe("restart");
+    expect(nameFieldEdit("太一", "次郎", range(0, 2))).toBe("restart");
+    // An edit whose selection the field did not report (a browser's autofill): a new name with another first character.
+    expect(nameFieldEdit("たいち", "太一")).toBe("restart");
+    expect(nameFieldEdit("太一", "太一郎")).toBe("kept");
+  });
+
+  it("keeps the reading for a name typed on at its end, and for the kana typed and not yet converted changed one at a time", () => {
+    expect(nameFieldEdit("", "た", caret(0))).toBe("kept");
+    expect(nameFieldEdit("太一", "太一ろ", caret(2))).toBe("kept");
+    expect(nameFieldEdit("太一", "太一r", caret(2))).toBe("kept");
+    expect(nameFieldEdit("太一ろ", "太一", caret(3))).toBe("kept");
+    expect(nameFieldEdit("太一ろ", "太一ら", range(2, 3))).toBe("kept");
+    expect(nameFieldEdit("たいち", "またいち", caret(0))).toBe("kept");
+    expect(nameFieldEdit("太一 ", "太一", caret(3))).toBe("kept");
+    // A character beyond the BMP is two UTF-16 units: the selection is in units, the edit found in characters.
+    expect(nameFieldEdit("𠮷", "𠮷た", caret(2))).toBe("kept");
+  });
+
+  it("loses the reading when a converted character is taken out, or the name changed before one", () => {
+    // 太一 typed as たいち, then Backspace (and 一 typed again: the field is not emptied, so the reading stays lost).
+    expect(nameFieldEdit("太一", "太", caret(2))).toBe("lost");
+    expect(nameFieldEdit("太一", "一", caret(0))).toBe("lost");
+    expect(nameFieldEdit("太一郎", "太郎", caret(2))).toBe("lost");
+    expect(nameFieldEdit("太一", "太い", range(1, 2))).toBe("lost");
+    expect(nameFieldEdit("太ジョン", "太ジョ", caret(4))).toBe("lost");
+    expect(nameFieldEdit("𠮷田", "𠮷", caret(3))).toBe("lost");
+    // Typed before a converted character (its kana would come after the kanji's in the reading): 一 between 太 and 郎,
+    // or between 太 and 一 (太一一 shares 太一 with 太一, but the caret was after 太).
+    expect(nameFieldEdit("太郎", "太い郎", caret(1))).toBe("lost");
+    expect(nameFieldEdit("太一", "太一一", caret(1))).toBe("lost");
+    expect(nameFieldEdit("たいち郎", "たい郎", caret(3))).toBe("lost");
+    // A collapsed caret at the start is no selection of the whole: typed before the name.
+    expect(nameFieldEdit("太一", "た太一", caret(0))).toBe("lost");
+  });
+
+  it("loses the reading when kana are taken out two at once, or one typed over with romaji (the capture takes either for a conversion)", () => {
+    expect(nameFieldEdit("太一ろう", "太一", range(2, 4))).toBe("lost");
+    expect(nameFieldEdit("たいち", "た", caret(3))).toBe("lost");
+    expect(nameFieldEdit("たいち", "たいc", range(2, 3))).toBe("lost");
+    // Typed over with kana: the capture follows it.
+    expect(nameFieldEdit("たいち", "たいぢ", range(2, 3))).toBe("kept");
   });
 });

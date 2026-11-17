@@ -39,13 +39,19 @@ const FALLBACK_LETTER = [0.2, 1.1] as const;
 const SHAPED_LOW = 0.9;
 const SHAPED_HIGH = 1.01;
 /**
- * The name's size (in the hand's units): at most MAX_SIZE (its small letters 5.8 units high, about 7 px on a 390 px phone;
+ * The name's size (in the hand's units): at most WRITING_MAX_SIZE (its small letters 5.8 units high, about 7 px on a 390 px phone;
  * a kana name of up to about eight letters keeps 5), and down to MIN_SIZE for a longer one; under that, pressed to its room.
  */
-const MAX_SIZE = 16;
+export const WRITING_MAX_SIZE = 16;
 const MIN_SIZE = 6;
 /** Half the small letters' height (em): the alphabetic baseline this far under the writing's centre centres them on it. */
 export const WRITING_BASELINE = 0.18;
+/**
+ * How far the letters reach from the baseline (em; the glyphs' bounds in the file): up to the tall strokes' tops (b d h
+ * k l: 0.899) and down to the tails' ends (j p q y: 0.465).
+ */
+export const WRITING_ASCENT = 0.9;
+export const WRITING_DESCENT = 0.465;
 
 /**
  * The name's width in em, at least and at most: the font's letters by their advances (narrowed by the kerning), each other
@@ -68,15 +74,15 @@ export function writingWidth(name: string): { low: number; high: number } {
 }
 
 /**
- * The writing's size for a room `width` wide: as large as fits (never over MAX_SIZE), smaller for a long name, never
+ * The writing's size for a room `width` wide: as large as fits (never over WRITING_MAX_SIZE), smaller for a long name, never
  * cut. Under MIN_SIZE, MIN_SIZE pressed to the room (`squeeze`: SVG's textLength) only when the name is surely wider
  * than the room there, so it is only ever pressed narrower, never stretched; else just under MIN_SIZE, unpressed.
  */
 export function writingSize(name: string, width: number): { fontSize: number; squeeze: boolean } {
   const { low, high } = writingWidth(name);
-  if (!high) return { fontSize: MAX_SIZE, squeeze: false };
+  if (!high) return { fontSize: WRITING_MAX_SIZE, squeeze: false };
   const fit = width / high;
-  if (fit >= MIN_SIZE) return { fontSize: Math.min(MAX_SIZE, fit), squeeze: false };
+  if (fit >= MIN_SIZE) return { fontSize: Math.min(WRITING_MAX_SIZE, fit), squeeze: false };
   return low * MIN_SIZE > width ? { fontSize: MIN_SIZE, squeeze: true } : { fontSize: fit, squeeze: false };
 }
 
@@ -86,7 +92,7 @@ export function writingSize(name: string, width: number): { fontSize: number; sq
  */
 export function warmWritingFont(fonts: Pick<FontFaceSet, "load"> | undefined = globalThis.document?.fonts): void {
   try {
-    fonts?.load(`${MAX_SIZE}px "${WRITING_FONT}"`, "Aa").catch(() => undefined);
+    fonts?.load(`${WRITING_MAX_SIZE}px "${WRITING_FONT}"`, "Aa").catch(() => undefined);
   } catch {
     // A browser without the font loading API's load(): the font comes when the writing is drawn.
   }

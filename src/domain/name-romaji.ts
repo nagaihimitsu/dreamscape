@@ -8,8 +8,10 @@
 // only when it plausibly fits the name (readingFits); else the scene writes no letters of the name.
 // Known limits: こうめ reads as Kome (お+う taken as a long o). A name pasted or filled in by the browser, or picked from
 // a phone's predictive conversion that skips kana, gives no reading or a short one (太一 picked after typing たい reads
-// Tai; a reading too short for the name's kanji, or none, gives no Latin form). A kanji name changed inside (not only
-// added to, nor replaced) keeps no reading. Pure, no imports.
+// Tai; a reading too short for the name's kanji, or none, gives no Latin form). The capture follows a name typed on at
+// its end: a converted character (a kanji, katakana) deleted, or anything typed or deleted before one, leaves the reading
+// unknown (none is kept: 太一 with its 一 deleted and typed again keeps none) until the field is emptied or its whole name
+// typed over, which starts the reading again from the kana typed from then on (nameFieldEdit). Pure, no imports.
 
 const BASE: Record<string, string> = {
   あ: "a", い: "i", う: "u", え: "e", お: "o",
@@ -198,4 +200,55 @@ export function readingToSave(name: string, captured: string, start: ReadingStar
     : null;
   const kana = reading === null ? null : kanaReading(reading);
   return kana !== null && readingFits(kana, typed) ? kana : undefined;
+}
+
+/** What an edit of a name field does to the reading captured from the kana typed into it (nameFieldEdit). */
+export type NameFieldEdit = "restart" | "lost" | "kept";
+/** The selection of a name field an edit replaces (UTF-16 offsets into its value before the edit, as the field reports them). */
+export type FieldSelection = Readonly<{ start: number; end: number }>;
+
+/** The kana vanilla-autokana reads as typed (its own pattern: hiragana ぁ to ん, ー, spaces); any other character was converted. */
+const TYPED_KANA = /^[ 　ぁ-んー]$/u;
+const hasConverted = (chars: readonly string[]) => chars.some((char) => !TYPED_KANA.test(char));
+
+/**
+ * What an edit of a name field (its value `before` to `after`) does to the reading captured while it is typed: the
+ * capture (vanilla-autokana) adds up the kana typed and takes a conversion's kana as the reading of what it gave, so it
+ * follows a name typed on at its end, and cannot give back the kana of a converted character taken out.
+ * - "restart": the field emptied, or its whole name replaced (a selection of all of it typed over; for an edit whose
+ *   selection the field did not report, as a browser's autofill, a new name that shares no first character with the old):
+ *   the reading starts again from nothing, from the kana typed from now on.
+ * - "lost": a converted character (a kanji, katakana: anything but the kana typed) taken out, or anything typed or taken
+ *   out before one (the kana kept no longer line up with the name); or kana taken out two or more at once, or one typed
+ *   over with anything but kana (the capture takes either for a conversion): the reading is not known until the field is
+ *   emptied or its whole name replaced.
+ * - "kept": anything else (typed at the end; one of the kana typed and not yet converted taken out or typed over with
+ *   kana, which the capture follows).
+ * `selection` is the field's selection as the edit began (before input, composition start). An IME composition is one
+ * edit: its first change, with the selection it replaced; its later changes (its kana turning into kanji as it commits)
+ * replace its own text, not the name's, and are not passed here.
+ */
+export function nameFieldEdit(before: string, after: string, selection?: FieldSelection): NameFieldEdit {
+  if (!after) return "restart";
+  if (!before) return "kept";
+  const whole = selection ? selection.start <= 0 && selection.end >= before.length : before[0] !== after[0];
+  if (whole) return "restart";
+  const old = [...before];
+  const now = [...after];
+  const offset = (units: number) => [...before.slice(0, units)].length;
+  // Where the edit begins: after the start both values share, and never after the selection's start (a 一 typed between
+  // 太 and 一 begins there, though 太一一 shares 太一 with 太一).
+  let at = 0;
+  while (at < old.length && at < now.length && old[at] === now[at]) at += 1;
+  if (selection) at = Math.min(at, offset(selection.start));
+  // Where what it took out ends: before the end both values share, and never before the selection's end.
+  let tail = 0;
+  while (tail < old.length - at && tail < now.length - at && old[old.length - 1 - tail] === now[now.length - 1 - tail]) tail += 1;
+  const end = Math.max(old.length - tail, selection ? Math.min(old.length, offset(selection.end)) : 0);
+  const taken = old.slice(at, end);
+  const put = now.slice(at, now.length - (old.length - end));
+  // A converted character taken out or kept after the edit loses the reading. So do kana taken out two or more at once,
+  // or one typed over with anything but kana (an IME's first letter of romaji): the capture takes either for a
+  // conversion, and keeps the kana taken out as the reading of what is left.
+  return hasConverted(old.slice(at)) || taken.length > 1 || (taken.length === 1 && hasConverted(put)) ? "lost" : "kept";
 }
