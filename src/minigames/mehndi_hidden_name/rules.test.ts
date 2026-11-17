@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
@@ -8,7 +8,7 @@ import { searchProgress } from "../engines/search/engine";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiFairness, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
 import { MEHNDI_HIT, MEHNDI_PLACES, mehndiLoops, mehndiNear, mehndiSpotAt } from "./Skin";
 import { fairness } from "./play";
-import { WRITING_FONT, warmWritingFont, writingSize, writingWidth } from "./writing";
+import { WRITING_FONT, writingSize, writingWidth } from "./writing";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 const spot = (name: (typeof MEHNDI_SPOTS)[number]) => ({ spot: MEHNDI_SPOTS.indexOf(name) });
@@ -199,13 +199,4 @@ describe("the name's writing in Fasol SP Demo", () => {
     expect(between.fontSize).toBeGreaterThan(5);
   });
 
-  it("starts loading the font as the play loads, and never throws when it cannot", async () => {
-    const load = vi.fn((_font: string, _text?: string) => Promise.resolve([] as FontFace[]));
-    warmWritingFont({ load });
-    expect(load).toHaveBeenCalledWith('16px "Fasol SP Demo"', "Aa");
-    warmWritingFont({ load: () => Promise.reject(new Error("offline")) });
-    expect(() => warmWritingFont({ load: () => { throw new Error("no fonts API"); } })).not.toThrow();
-    expect(() => warmWritingFont(undefined)).not.toThrow();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  });
 });

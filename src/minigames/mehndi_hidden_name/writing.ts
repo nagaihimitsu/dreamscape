@@ -85,15 +85,3 @@ export function writingSize(name: string, width: number): { fontSize: number; sq
   if (fit >= MIN_SIZE) return { fontSize: Math.min(WRITING_MAX_SIZE, fit), squeeze: false };
   return low * MIN_SIZE > width ? { fontSize: MIN_SIZE, squeeze: true } : { fontSize: fit, squeeze: false };
 }
-
-/**
- * Starts loading the font as the play's module loads (the name shows only in the lamp's light: it must not change its
- * hand there mid-play). Never throws: a font that cannot load leaves the fallback.
- */
-export function warmWritingFont(fonts: Pick<FontFaceSet, "load"> | undefined = globalThis.document?.fonts): void {
-  try {
-    fonts?.load(`${WRITING_MAX_SIZE}px "${WRITING_FONT}"`, "Aa").catch(() => undefined);
-  } catch {
-    // A browser without the font loading API's load(): the font comes when the writing is drawn.
-  }
-}
