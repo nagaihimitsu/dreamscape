@@ -44,8 +44,8 @@ const FINGER_HIT_PX = 22;
  * Where the writing lies at each target: its centre, its slant, the room it has, and whether the central vine's line runs
  * under it. The central vine's curls lie off its letters (2026-11-13 playtest: the H of FARHANA was under a curl), and
  * the vine's line breaks behind writing laid on it (VINE_GAP). At the thumb, the name lies under the spiral, clear of its
- * last turn and inside the palm's edge, within a point's reach of the place (2026-11-16, the cursive name measured at 390
- * and 320 px).
+ * last turn and inside the palm's edge, within a point's reach of the place (2026-11-16; measured again at 390 and 320 px
+ * with the Fasol SP hand on 2026-11-17, its tall strokes and tails included).
  */
 const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number; onVine: boolean }> = {
   thumb: { x: 208, y: 324, rotate: -22, width: 54, onVine: false },
@@ -53,8 +53,9 @@ const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; widt
   vine: { x: 141, y: 316, rotate: -14, width: 62, onVine: true },
 };
 /** Where the central vine's line breaks behind the writing laid on it (in the writing's own frame): lit only, so the
- * dark shows no gap to give it away. */
-const VINE_GAP = { x: -16, y: -11, width: 32, height: 21 };
+ * dark shows no gap to give it away. Tall enough for the name's tall strokes and tails (a j's tail at the feather's base,
+ * 2026-11-17). */
+const VINE_GAP = { x: -16, y: -12, width: 32, height: 25 };
 /**
  * The curls at each place that look like writing at a glance (lit only; drawn where the writing is not): a row of loops
  * (count, height, width of each), a slant, an offset from the place's centre, and a dotted underline or not. No letters
@@ -246,18 +247,18 @@ function FineLines({ target }: { target: MehndiTarget }) {
 }
 
 /**
- * The writing at the target (docs/13 2.10): the player's name in Latin letters in a cursive hand (writing.ts; as text,
- * never HTML), or, with no Latin form of it (a name in kanji and no spelling given), the illegible mark as for `illegible`
- * (no letters of any script are made up); an illegible mark; or FARHANA over unreadable marks.
+ * The writing at the target (docs/13 2.10): the player's name in Latin letters in the Fasol SP hand (writing.ts; as text,
+ * never HTML), or, with no Latin form of it (a name in kanji whose reading was not caught), the illegible mark as for
+ * `illegible` (no letters of any script are made up); an illegible mark; or FARHANA over unreadable marks.
  */
 function Writing({ params, latin }: { params: MehndiParams; latin: string | null }) {
   const place = WRITING[params.target];
   const transform = `translate(${place.x} ${place.y}) rotate(${place.rotate})`;
   if (params.text === "player" && latin) {
-    // The small letters centred on the place (the capitals and the loops above and below them, as a hand writes).
+    // The small letters centred on the place (the tall strokes and the tails above and below them).
     const { fontSize, squeeze } = writingSize(latin, place.width);
     return (
-      <text className="mg-mehndi-hidden-name-writing mg-mehndi-hidden-name-cursive" transform={transform} fontSize={fontSize} textAnchor="middle"
+      <text className="mg-mehndi-hidden-name-writing mg-mehndi-hidden-name-lettering" transform={transform} fontSize={fontSize} textAnchor="middle"
         y={fontSize * WRITING_BASELINE} {...(squeeze ? { textLength: place.width, lengthAdjust: "spacingAndGlyphs" } : {})}>{latin}</text>
     );
   }
