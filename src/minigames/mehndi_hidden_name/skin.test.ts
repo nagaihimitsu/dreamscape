@@ -6,8 +6,8 @@ import type { MiniGameNames } from "../contract";
 import type { SearchView } from "../engines/search/EnginePlay";
 import { mehndiHiddenName } from "./definition";
 import {
-  MEHNDI_DECOYS, MEHNDI_HIT, MEHNDI_PLACES, MEHNDI_WRITING, mehndiDecoyBox, mehndiDecoyGlyphs, mehndiDecoySize, mehndiDecoysFor, mehndiMarkRing, mehndiMarks,
-  mehndiSpotAt, mehndiVineGaps, mehndiWritingRing, type MehndiBox, type MehndiDecoy,
+  MEHNDI_DECOYS, MEHNDI_HIT, MEHNDI_PLACES, MEHNDI_WRITING, RING_CLEAR, mehndiDecoyBox, mehndiDecoyGlyphs, mehndiDecoySize, mehndiDecoysFor, mehndiHintRing,
+  mehndiMarkRing, mehndiMarks, mehndiSpotAt, mehndiVineGaps, mehndiWritingBox, mehndiWritingRing, type MehndiBox, type MehndiDecoy,
 } from "./marks";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, mehndiSetup, type MehndiParams, type MehndiTarget } from "./rules";
 import {
@@ -128,6 +128,13 @@ describe("the hidden name's field", () => {
     // One line for how to play, before and during the play; no line under the label (she never shows the place).
     expect(mehndiSkin.hintJa).toBe(mehndiHiddenName.hintJa);
     expect(mehndiSkin.detailJa).toBeUndefined();
+    // What the player reads before the play (the start card's line) says that there are decorations that look like letters
+    // (2026-11-17 review: only Debug's howToJa did); the play's line stays short (one line on a phone: a second line makes
+    // the palm smaller). Neither says how to tell them (the glint) nor what is written (a name).
+    expect(mehndiHiddenName.goalJa).toBe("指でなぞって灯りを動かし、模様にまぎれた文字を見つけて押す（文字に似せた飾りもある）");
+    expect(mehndiHiddenName.hintJa).toBe("なぞって灯りを動かし、模様にまぎれた文字を押す");
+    for (const text of [mehndiHiddenName.goalJa!, mehndiHiddenName.hintJa]) expect(text).not.toMatch(/光|名前/u);
+    expect(mehndiHiddenName.howToJa).toContain("文字に似せた飾り");
   });
 
   it("rings the writing found round the writing itself, all of its room with its tall strokes and tails, at every target", () => {
@@ -236,8 +243,11 @@ describe("the hidden name's field", () => {
     const fill = (selector: string) => css.match(new RegExp(`\\.${selector} \\{ fill: (#[0-9a-f]{6});`, "u"))?.[1];
     expect(fill("mg-mehndi-hidden-name-decoy")).toBe("#7a3010");
     expect(fill("mg-mehndi-hidden-name-writing")).toBe(fill("mg-mehndi-hidden-name-decoy"));
-    // Only the writing glints.
-    expect(css).not.toMatch(/-decoy[^{]*\{[^}]*animation/u);
+    // Only the writing glints; with less motion (no animation runs then) only the writing keeps a steady sheen.
+    expect(css).not.toMatch(/-decoy[^{]*\{[^}]*(?:animation|filter)/u);
+    const sheen = css.match(/:is\(\[data-still\], \.reduce-motion\) \.mg-mehndi-hidden-name-writing \{ filter: ([^;]+); \}/u)?.[1];
+    expect(sheen).toMatch(/^drop-shadow\(.+\) brightness\(1\.\d+\)$/u);
+    expect(css).toContain(`@media (prefers-reduced-motion: reduce) {\n  .mg-mehndi-hidden-name-writing { filter: ${sheen}; }\n}`);
   });
 
   it("puts the use's pictures in its declared slots, the writing and the decorations over the palm's", () => {
@@ -430,7 +440,7 @@ describe("where the writing lies", () => {
     expect(nearest(MEHNDI_WRITING.thumb, room("thumb"), dense([spiral])) - half).toBeGreaterThanOrEqual(AIR);
   });
 
-  it("hides the feather's point behind Fasol SP letters at its base (lit only), so their tall strokes clear what is drawn", () => {
+  it("hides the feather's point behind what lies at its base (lit only): the letters' tall strokes and the letterless mark's top line clear what is drawn", () => {
     const feather = pathPoints(MEHNDI_FEATHER);
     // The feather comes to its point where the peacock's place is.
     expect(feather[0]).toEqual([MEHNDI_PLACES.peacock.x, MEHNDI_PLACES.peacock.y]);
@@ -458,21 +468,26 @@ describe("where the writing lies", () => {
     const hidden = wholeFeather.filter((point) => !shown.has(point));
     expect(hidden.length).toBeGreaterThan(10);
     expect(hidden.every(([, y]) => y > MEHNDI_PLACES.peacock.y - 6)).toBe(true);
-    // With the writing elsewhere, the run of decorations at the feather's base lies behind the same gap (the same frame);
-    // with the letterless mark or FARHANA at the feather's base, the feather is drawn whole (they keep clear of its point).
-    for (const params of [{ target: "thumb", text: "player" }, { target: "vine", text: "player" }, { target: "vine", text: "farhana" }, { target: "thumb", text: "illegible" }] as const) {
-      const [off, on] = layers(field(params));
-      expect(on, `${params.target} ${params.text}`).toMatch(masked);
-      expect(off, `${params.target} ${params.text}`).not.toContain("feathergap");
+    // The same gap behind whatever lies at the feather's base, in the lit pattern only: the run of decorations there with
+    // the writing elsewhere (the same frame), and the letterless mark and FARHANA there too.
+    for (const target of MEHNDI_TARGETS) for (const { text, latin } of WRITINGS) {
+      const [off, on] = layers(field({ target, text }, { playerLatin: latin }));
+      expect(on, `${target} ${text} ${latin}`).toMatch(masked);
+      expect(on.split("feathergap"), `${target} ${text} ${latin}`).toHaveLength(3);
+      expect(off, `${target} ${text} ${latin}`).not.toContain("feathergap");
     }
-    for (const params of [{ target: "peacock", text: "illegible" }, { target: "peacock", text: "farhana" }] as const) {
-      expect(field(params), `${params.target} ${params.text}`).not.toContain("feathergap");
-    }
-    expect(field({ target: "peacock", text: "player" }, { playerLatin: null })).not.toContain("feathergap");
     const run = MEHNDI_DECOYS.find((decoy) => decoy.id === "feather_base")!;
     expect([run.x, run.y, run.rotate]).toEqual([place.x, place.y, place.rotate]);
+    // The letterless mark's top line (1.3 wide) lay 1.15 under the feather's uncut point (2026-11-17 review: under a pixel
+    // on a small phone, it read as touching). Under the cut feather it is clear by 4 or more, and so are the mark's box
+    // and FARHANA's.
     const markLine = [toHand(place, [-26, -7]), toHand(place, [26, -7])] as [Point, Point];
-    expect(Math.min(...feather.map((point) => segment(point, ...markLine))) - half - 1.3 / 2).toBeGreaterThan(0.5);
+    const fromLine = (points: Point[]) => Math.min(...points.map((point) => segment(point, ...markLine))) - half - 1.3 / 2;
+    expect(fromLine(wholeFeather)).toBeLessThan(1.2);
+    expect(fromLine(shownFeather)).toBeGreaterThanOrEqual(4);
+    for (const text of ["illegible", "farhana"] as const) {
+      expect(nearest(place, mehndiWritingBox({ target: "peacock", text }, null), shownFeather) - half, text).toBeGreaterThanOrEqual(3);
+    }
   });
 
   it("breaks the central vine clear of the writing laid on it: what is drawn of its line keeps off the room", () => {
@@ -499,6 +514,22 @@ describe("where the writing lies", () => {
       const place = MEHNDI_WRITING[target];
       expect(Math.hypot(place.x - MEHNDI_PLACES[target].x, place.y - MEHNDI_PLACES[target].y), target).toBeLessThanOrEqual(MEHNDI_HIT - 2);
       expect(mehndiSpotAt(place.x, place.y), target).toBe(MEHNDI_SPOTS.indexOf(target));
+    }
+  });
+
+  it("rings her hint round the writing's room from the place to point at: all of the room inside it, and no wider", () => {
+    const across: Record<MehndiTarget, number> = { thumb: 112.5, peacock: 81, vine: 89.3 };
+    for (const target of MEHNDI_TARGETS) {
+      const ring = mehndiHintRing(target);
+      // Centred on the place to point at (the writing lies off it: 28 at the thumb).
+      expect([ring.x, ring.y], target).toEqual([MEHNDI_PLACES[target].x, MEHNDI_PLACES[target].y]);
+      const reach = Math.max(...edge(MEHNDI_WRITING[target], room(target)).map(([x, y]) => Math.hypot(x - ring.x, y - ring.y)));
+      // Every point of the room is inside it, RING_CLEAR from its line at the farthest corner.
+      expect(ring.diameter / 2 - reach, target).toBeCloseTo(RING_CLEAR, 9);
+      expect(ring.diameter, target).toBeCloseTo(across[target], 1);
+      // An area, not the thing: wider than the gold ring round the writing found; never wider than it was (39% of the palm).
+      expect(ring.diameter, target).toBeGreaterThan(mehndiWritingRing(target).diameter);
+      expect(ring.diameter, target).toBeLessThanOrEqual(117);
     }
   });
 });
@@ -592,6 +623,7 @@ describe("where the decorations lie", () => {
       const drawn = mehndiDecoysFor(target);
       const writing = MEHNDI_WRITING[target];
       const ring = mehndiWritingRing(target);
+      const hint = mehndiHintRing(target);
       const marks = mehndiMarks({ target, text: "player" }, "Taichi");
       for (const decoy of drawn) {
         const label = `${target} ${decoy.id}`;
@@ -600,6 +632,9 @@ describe("where the decorations lie", () => {
         expect(Math.min(...points.map(([x, y]) => Math.hypot(x - MEHNDI_PLACES[target].x, y - MEHNDI_PLACES[target].y))), `${label} the place`).toBeGreaterThanOrEqual(40);
         // Outside the gold ring round the writing found, and well off the writing's room.
         expect(Math.min(...points.map(([x, y]) => Math.hypot(x - ring.x, y - ring.y))) - ring.diameter / 2, `${label} the gold ring`).toBeGreaterThanOrEqual(3);
+        // Outside the dotted ring of her hint (2 or more): the area she hints holds nothing letter-like but the writing
+        // (2026-11-17 review: a ring of 117 at every target took in a third of the run above the wrist at the central vine).
+        expect(Math.min(...points.map(([x, y]) => Math.hypot(x - hint.x, y - hint.y))) - hint.diameter / 2, `${label} her hint's ring`).toBeGreaterThanOrEqual(2);
         expect(nearest(writing, room(target), points), `${label} the room`).toBeGreaterThanOrEqual(12);
         // The dashed ring round a run pointed at (at the name's largest size, as Taichi's) stays off the writing's room.
         const own = mehndiMarkRing(marks.find((mark) => mark.id === decoy.id)!);

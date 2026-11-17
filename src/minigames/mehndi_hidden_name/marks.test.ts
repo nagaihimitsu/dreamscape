@@ -4,7 +4,8 @@ import { readOtf } from "../testing/otf-outlines";
 import {
   MEHNDI_DECOY_MARKS, MEHNDI_DECOY_MIN_SIZE, MEHNDI_DECOY_PLAIN_SIZE, MEHNDI_DECOYS, MEHNDI_GAP_AIR, MEHNDI_HIT, MEHNDI_MARK_PAD, MEHNDI_PLACES, MEHNDI_WRITING,
   MEHNDI_WRITING_MARK, mehndiDecoyBox, mehndiDecoyGlyphs, mehndiDecoyLayout, mehndiDecoySize, mehndiDecoysFor, mehndiMarkDistance, mehndiMarkRing, mehndiMarks,
-  mehndiNear, mehndiPointAt, mehndiVineGaps, mehndiWritingBox, mehndiWrongRings, type MehndiBox, type MehndiMark, type MehndiMarkId,
+  mehndiNear, mehndiPointAt, mehndiPointing, mehndiVineGaps, mehndiWritingBox, mehndiWrongRings, type MehndiBox, type MehndiMark, type MehndiMarkId,
+  type MehndiPointedAt,
 } from "./marks";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, type MehndiParams, type MehndiTarget } from "./rules";
 import { WRITING_ASCENT, WRITING_BASELINE, WRITING_DESCENT, WRITING_MAX_SIZE, writingSize, writingWidth } from "./writing";
@@ -305,6 +306,28 @@ describe("what a point points at", () => {
     expect(mehndiMarkDistance(turned, 109, 300)).toBeCloseTo(7, 9);
   });
 
+  it("a key points at what lies at its place: that place always, and the run laid on it where there is one", () => {
+    // Enter or Space on a place's button points at the place's own point (Skin.tsx), where Tab brought the lamp.
+    const on: Record<string, string[]> = {};
+    for (const target of MEHNDI_TARGETS) for (const { params, latin } of writings(target)) {
+      const marks = mehndiMarks(params, latin);
+      MEHNDI_SPOTS.forEach((spot, index) => {
+        const at = mehndiPointAt(marks, MEHNDI_PLACES[spot].x, MEHNDI_PLACES[spot].y);
+        const label = `${target} ${params.text} ${latin} ${spot}`;
+        // Never another place: a key on the writing's place finds it, a key on another never does.
+        expect(at?.spot, label).toBe(index);
+        if (at?.mark) expect(at.mark.spot, label).toBe(spot);
+        if (at?.mark && at.mark.id !== MEHNDI_WRITING_MARK) (on[`${target} ${spot}`] ??= []).push(at.mark.id);
+      });
+    }
+    // The runs in the two rooms the writing is not in lie on their places (2026-11-17 review: by keys she said 「そこは、
+    // 孔雀の羽だけ」 with a run of decorations lit there): her word is about the run, whatever the writing is (six writings).
+    expect(Object.fromEntries(Object.entries(on).map(([key, ids]) => [key, [...new Set(ids)]]))).toEqual({
+      "thumb peacock": ["feather_base"], "thumb vine": ["vine_room"], "peacock vine": ["vine_room"], "vine peacock": ["feather_base"],
+    });
+    for (const ids of Object.values(on)) expect(ids).toHaveLength(6);
+  });
+
   it("a finger on a small palm finds a decoration a finger's width away, where no place is within its reach", () => {
     // The palm's width (px) on a 320 × 568 phone (the play's height bounds it), on a 320px-wide and on a 390px-wide one.
     for (const width of [223, 288, 358]) {
@@ -365,6 +388,79 @@ describe("what a point points at", () => {
         expect(found, label).toBeGreaterThan(50);
       }
     }
+  });
+});
+
+// What pointing at a thing or a place does (the field's decision: Skin.tsx's pointAt only carries it out). 2026-11-17
+// review: with the decision in the field, a decoration that counted as the writing, or a tap that saw no decorations,
+// passed every test.
+describe("what pointing does to the look", () => {
+  const thumb: MehndiParams = { target: "thumb", text: "player" };
+  const marks = mehndiMarks(thumb, "Taichi");
+  const on = (id: string) => ({ spot: spotOf(marks.find((mark) => mark.id === id)!.spot), mark: marks.find((mark) => mark.id === id)! });
+  const place = (name: (typeof MEHNDI_SPOTS)[number]) => ({ spot: spotOf(name), mark: null });
+  /** A look played through `mehndiPointing`: the places searched, the wrong things remembered, and each point's result. */
+  const look = (target: MehndiTarget, points: { spot: number; mark: MehndiMark | null }[], all = marks) => {
+    const searched: number[] = [];
+    const pointed: MehndiPointedAt[] = [];
+    const results = points.map((hit) => {
+      const result = mehndiPointing(target, searched, pointed, all, hit);
+      if (result.ring) pointed.push(result.ring);
+      if (result.search !== null) searched.push(result.search);
+      return result;
+    });
+    return { searched, pointed, results };
+  };
+
+  it("the writing, on its letters or at its place, is the find; a decoration never is", () => {
+    expect(mehndiPointing("thumb", [], [], marks, on(MEHNDI_WRITING_MARK))).toEqual({ search: spotOf("thumb"), ring: null, count: 0 });
+    expect(mehndiPointing("thumb", [], [], marks, place("thumb"))).toEqual({ search: spotOf("thumb"), ring: null, count: 0 });
+    // After wrong things too: the find searches the writing's place, and adds no ring.
+    expect(mehndiPointing("thumb", [spotOf("index")], [{ spot: spotOf("index"), markId: "middle_tip" }], marks, on(MEHNDI_WRITING_MARK)))
+      .toEqual({ search: spotOf("thumb"), ring: null, count: 1 });
+    for (const target of MEHNDI_TARGETS) for (const { params, latin } of writings(target)) {
+      const all = mehndiMarks(params, latin);
+      for (const mark of all.slice(0, -1)) {
+        const result = mehndiPointing(target, [], [], all, { spot: spotOf(mark.spot), mark });
+        // A wrong place of the look (the outcome can no longer be `found`), ringed round the run, the first wrong thing.
+        expect(result, `${target} ${params.text} ${mark.id}`).toEqual({ search: spotOf(mark.spot), ring: { spot: spotOf(mark.spot), markId: mark.id }, count: 1 });
+        expect(result.search, `${target} ${mark.id}`).not.toBe(spotOf(target));
+      }
+    }
+  });
+
+  it("counts the wrong things pointed at, each once, whichever places they belong to (her words follow the count)", () => {
+    // 2026-11-17 review, at the thumb: the middle finger's run, the little finger's, then three more of places already counted.
+    const { searched, pointed, results } = look("thumb", [on("middle_tip"), on("pinky_finger"), on("ring_finger"), on("index_band"), on("pinky_palm"), on("feather_base")]);
+    expect(results.map((result) => result.count)).toEqual([1, 2, 3, 4, 5, 6]);
+    // The look counts a place once (the rules: the outcome and the record), her words every new wrong thing.
+    expect(results.map((result) => result.search)).toEqual([spotOf("index"), spotOf("pinky"), null, null, null, spotOf("peacock")]);
+    expect(searched).toEqual([spotOf("index"), spotOf("pinky"), spotOf("peacock")]);
+    expect(results.every((result) => result.ring !== null)).toBe(true);
+    expect(pointed.map((item) => item.markId)).toEqual(["middle_tip", "pinky_finger", "ring_finger", "index_band", "pinky_palm", "feather_base"]);
+    // The count is the dashed rings shown.
+    expect(mehndiWrongRings("thumb", searched, pointed, marks)).toHaveLength(6);
+  });
+
+  it("a wrong thing pointed at again is not a new one: no search, no ring, the count as it was", () => {
+    const { results } = look("thumb", [on("middle_tip"), on("middle_tip"), place("index"), place("index"), on("ring_finger"), on("middle_tip")]);
+    expect(results).toEqual([
+      { search: spotOf("index"), ring: { spot: spotOf("index"), markId: "middle_tip" }, count: 1 },
+      { search: null, ring: null, count: 1 },
+      // The place itself (a key, or a point beside its runs) is another thing than its runs.
+      { search: null, ring: { spot: spotOf("index"), markId: null }, count: 2 },
+      { search: null, ring: null, count: 2 },
+      { search: null, ring: { spot: spotOf("index"), markId: "ring_finger" }, count: 3 },
+      { search: null, ring: null, count: 3 },
+    ]);
+  });
+
+  it("counts a wrong place of 「おまかせ」 (searched, pointed at by no hand) as one wrong thing", () => {
+    // The place's ring stands for it; pointing at the place itself again is not a new thing, a run of it is.
+    expect(mehndiPointing("thumb", [spotOf("index")], [], marks, place("index"))).toEqual({ search: null, ring: null, count: 1 });
+    expect(mehndiPointing("thumb", [spotOf("index")], [], marks, place("wrist"))).toEqual({ search: spotOf("wrist"), ring: { spot: spotOf("wrist"), markId: null }, count: 2 });
+    // A run of that place takes the place's ring's part (mehndiWrongRings): still one wrong thing.
+    expect(mehndiPointing("thumb", [spotOf("index")], [], marks, on("middle_tip"))).toEqual({ search: null, ring: { spot: spotOf("index"), markId: "middle_tip" }, count: 1 });
   });
 });
 

@@ -28,7 +28,7 @@ export const MEHNDI_HIT = 30;
  * centre within a point's reach of the place (MEHNDI_HIT). No line of the pattern crosses it: nothing is drawn at the
  * feather's base but the writing or a decoration (the fine curls and the leaf that were there are gone, 2026-11-17: the
  * Fasol SP tails of g, j, p, q and y reached the leaf), the vine's line breaks behind what is laid on it (mehndiVineGaps),
- * and the feather's point behind Fasol SP letters laid at its base (MEHNDI_FEATHER_GAP, Skin.tsx). At the thumb, the name
+ * and the feather's point behind what is laid at its base (MEHNDI_FEATHER_GAP, Skin.tsx). At the thumb, the name
  * lies level under the spiral in a room of 52: its tall strokes anywhere along the room about 2.5 clear of the spiral's
  * lines (past their half width), its tails 2 inside the palm's edge, its centre 28 from the place (2026-11-17: slanted
  * −22° in a room of 54, as measured on 2026-11-16, the tall strokes of a long name ran into the spiral's last turn, and the
@@ -51,6 +51,24 @@ export function mehndiWritingRing(target: MehndiTarget): { x: number; y: number;
   const place = MEHNDI_WRITING[target];
   const reach = Math.max(WRITING_ASCENT - WRITING_BASELINE, WRITING_DESCENT + WRITING_BASELINE) * WRITING_MAX_SIZE;
   return { x: place.x, y: place.y, diameter: 2 * (Math.hypot(place.width / 2, reach) + RING_CLEAR) };
+}
+/**
+ * The dotted ring of her hint (「このへん、かな」): centred on the place to point at, round all of the writing's room at the
+ * largest size (its far corners RING_CLEAR inside it), and no wider: every decoration lies outside it, so the area she
+ * hints holds nothing that looks like letters but the writing (skin.test.ts). Until 2026-11-17 it was 117 across at every
+ * target: at the central vine it took in a part of two runs of decorations.
+ */
+export function mehndiHintRing(target: MehndiTarget): { x: number; y: number; diameter: number } {
+  const place = MEHNDI_PLACES[target];
+  const room = MEHNDI_WRITING[target];
+  const angle = (room.rotate * Math.PI) / 180;
+  let reach = 0;
+  for (const x of [-room.width / 2, room.width / 2]) {
+    for (const y of [(WRITING_BASELINE - WRITING_ASCENT) * WRITING_MAX_SIZE, (WRITING_BASELINE + WRITING_DESCENT) * WRITING_MAX_SIZE]) {
+      reach = Math.max(reach, Math.hypot(room.x + x * Math.cos(angle) - y * Math.sin(angle) - place.x, room.y + x * Math.sin(angle) + y * Math.cos(angle) - place.y));
+    }
+  }
+  return { x: place.x, y: place.y, diameter: 2 * (reach + RING_CLEAR) };
 }
 
 /** The place a point (in the hand's units) points at: the nearest within `reach`, if any. */
@@ -312,6 +330,28 @@ export function mehndiWrongRings(target: MehndiTarget, searched: readonly number
     if (spot !== writingSpot && !pointed.some((item) => item.spot === spot) && !rings.some((ring) => ring.key === `place-${spot}`)) rings.push(atPlace(spot));
   }
   return rings;
+}
+
+/**
+ * What pointing at a thing or a place does to the look (the field does it; decided here so that it is tested):
+ * - `search`: the place the look searches now (the rules count it: the writing's place is the find, another a wrong
+ *   place), or null for a wrong place already searched (the look counts a place once, whatever is pointed at in it).
+ * - `ring`: the wrong thing or place to remember for its dashed ring, if it is a new one (null: the writing's place, or a
+ *   wrong thing or place pointed at again).
+ * - `count`: the wrong things and places pointed at so far, this one among them: the dashed rings there will be. Her words
+ *   follow it (lines.ts), not the places counted: a player cannot see which place a decoration belongs to.
+ * A decoration never counts as the writing: its place is never the writing's (mehndiDecoysFor).
+ */
+export interface MehndiPointing { search: number | null; ring: MehndiPointedAt | null; count: number }
+export function mehndiPointing(target: MehndiTarget, searched: readonly number[], pointed: readonly MehndiPointedAt[], marks: readonly MehndiMark[],
+  hit: MehndiPointed): MehndiPointing {
+  const rings = mehndiWrongRings(target, searched, pointed, marks);
+  if (hit.spot === MEHNDI_SPOTS.indexOf(target)) return { search: hit.spot, ring: null, count: rings.length };
+  const search = searched.includes(hit.spot) ? null : hit.spot;
+  const markId = hit.mark?.id ?? null;
+  if (rings.some((ring) => ring.key === (markId ?? `place-${hit.spot}`))) return { search, ring: null, count: rings.length };
+  const ring = { spot: hit.spot, markId };
+  return { search, ring, count: mehndiWrongRings(target, search === null ? searched : [...searched, search], [...pointed, ring], marks).length };
 }
 
 /**

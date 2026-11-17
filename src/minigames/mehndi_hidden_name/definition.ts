@@ -14,8 +14,10 @@ import { defineMiniGame } from "../contract";
  * decorations, a dashed ring round it), and the writing is pointed at on its letters too. The player drags the lamp over
  * her palm and taps where the writing is (`found`), or holds the lamp still over it (a ring: 「離すと、ここ」) and lifts the
  * finger: what is lit is what is pointed at (2026-11-14 playtest). A place where there is none gets her word ("only a
- * petal") and the look goes on; finding the writing after one is `wrong_spot` (the story remembers it). From the third
- * wrong place she only hints the area (a dotted ring, 「このへん、かな」): the find is always the player's (2026-11-14).
+ * petal") and the look goes on; finding the writing after one is `wrong_spot` (the story remembers it). Her words follow
+ * the wrong things pointed at, places and decorations alike, each once (2026-11-17: a player cannot see which place a
+ * decoration belongs to): at the second she warns (「次も外れたら、教えちゃうね」), and from the third she only hints the
+ * area (a dotted ring that holds no decoration, 「このへん、かな」): the find is always the player's (2026-11-14).
  * Or the player presses 「明日にする」 (`later`). No time limit (2026-11-13): only those end the look, so the game does not
  * run on time (`timed: false`: a hidden page needs no 「続ける」; no `durationSec` on its card). The scene's own music goes
  * on (`music: "scene"`: the hotel night's waltz, a quiet romance scene). An attitude, not a
@@ -28,24 +30,32 @@ import { defineMiniGame } from "../contract";
  * `farhana` the Latin letters FARHANA over a row of small unreadable marks (the story's phone number, never a number).
  *
  * Accessibility: the six places are buttons (named by the pattern there, never by what hides in it) in the tab order; a
- * focused one brings the lamp to it, Enter or Space points at it; her word at a wrong place is read out (a status by it);
+ * focused one brings the lamp to it, Enter or Space points at what lies there (the run of decorations on it, if there is
+ * one: her word is about what the lamp shows; else the place); her word at a wrong place is read out (a status by it);
  * the decorations are part of the picture (hidden from the screen reader, no buttons of their own: Tab goes by the places);
  * 「明日にする」 is a 56px button at the bottom. With less motion the lamp jumps instead of gliding, its light does not
- * flicker and nothing pulses. The outcome is read out by the host.
+ * flicker and nothing pulses; the writing, which cannot glint then, keeps a faint steady sheen in the lamp's light (the
+ * decorations have none). The outcome is read out by the host.
  */
-/** How to play, one line for both the start and the play (2026-11-13 playtest: they said it two ways). */
+/**
+ * How to play, one line during the play, and the start card's (`goalJa`) in the same words (2026-11-13 playtest: they said
+ * it two ways). The start card adds that there are decorations that look like letters (2026-11-17 review: only Debug's
+ * `howToJa` said so, and the first decoration pointed at already makes the outcome `wrong_spot`), not how to tell them
+ * apart. The play's line does not repeat it: longer, it takes a second line on a phone and the palm is drawn smaller for it
+ * (on a 320 × 568 phone, 210px wide for 223px), where the letters are already small.
+ */
 export const MEHNDI_HINT_JA = "なぞって灯りを動かし、模様にまぎれた文字を押す";
 
 export const mehndiHiddenName = defineMiniGame({
   id: "mehndi_hidden_name",
   engine: "search",
   titleJa: "手のひらの模様",
-  howToJa: "暗い中で小さな灯りを動かし、手のひらの模様にまぎれた文字を探して押す（灯りを止めて輪が出たら、指を離しても、照らしている所を指せる）。模様のあちこちに、文字に似せた飾りがある（本物は時々光る。灯りが近いと彼女の指が動く）。違う所を指すと彼女が答え、3回目からはだいたいの場所を教えてくれる（見つけるのは自分）。「明日にする」でやめる（時間の制限は無い）",
+  howToJa: "暗い中で小さな灯りを動かし、手のひらの模様にまぎれた文字を探して押す（灯りを止めて輪が出たら、指を離しても、照らしている所を指せる）。模様のあちこちに、文字に似せた飾りがある（本物は時々光る。動きを減らしているときは、うっすら光ったまま。灯りが近いと彼女の指が動く）。違う所や飾りを指すと彼女が答え、2つ目で「次も外れたら、教えちゃうね」、3つ目からはだいたいの場所を教えてくれる（見つけるのは自分）。「明日にする」でやめる（時間の制限は無い）",
   // An attitude more than a skill: no finish word, flash or sound, no ★, no practice (a practice would show the place). Her
   // face on the result card only: the story goes on with her own words about what was written.
   outcomes: [
     { id: "found", labelJa: "見つけた", noteJa: "隠した文字の所を押した", finishJa: null, reaction: { kind: "cheer" } },
-    { id: "wrong_spot", labelJa: "違う所も指して、見つけた", noteJa: "文字の無い模様や、文字に似せた飾りを押してから、文字を見つけた（3回目からは彼女がだいたいの場所を教える。見つけるのはいつも遊ぶ人）。物語は過去のこととして書く",
+    { id: "wrong_spot", labelJa: "違う所も指して、見つけた", noteJa: "文字の無い模様や、文字に似せた飾りを押してから、文字を見つけた（違う所や飾りの3つ目からは彼女がだいたいの場所を教える。見つけるのはいつも遊ぶ人）。物語は過去のこととして書く",
       finishJa: null, reaction: { kind: "tease" } },
     { id: "later", labelJa: "明日にする", noteJa: "「明日にする」を押した", finishJa: null, reaction: { kind: "tease" } },
   ],
@@ -63,7 +73,7 @@ export const mehndiHiddenName = defineMiniGame({
   ],
   startJa: "手のひらを見る",
   hintJa: MEHNDI_HINT_JA,
-  goalJa: "指でなぞって灯りを動かし、模様にまぎれた文字を見つけて押す",
+  goalJa: "指でなぞって灯りを動かし、模様にまぎれた文字を見つけて押す（文字に似せた飾りもある）",
   controls: "drag",
   // A quiet night for two: the scene's waltz goes on (docs/13 2.11).
   music: "scene",

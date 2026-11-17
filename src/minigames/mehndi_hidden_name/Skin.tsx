@@ -3,10 +3,10 @@ import type { SearchFieldProps, SearchSkin } from "../engines/search/EnginePlay"
 import { useMiniGameKit } from "../host/kit";
 import { fieldPoint } from "../host/seed";
 import { MEHNDI_HINT_JA } from "./definition";
-import { AGAIN_JA, DECOY_JA, HINT_JA, LINGER_JA, NEAR_KNOWS_JA, NEAR_WONDERS_JA, WRONG_JA } from "./lines";
+import { LINGER_JA, NEAR_KNOWS_JA, NEAR_WONDERS_JA, mehndiAnswer, mehndiSaidMs } from "./lines";
 import {
-  MEHNDI_HIT, MEHNDI_MARK_PAD, MEHNDI_PLACES, MEHNDI_WRITING, MEHNDI_WRITING_MARK, mehndiDecoyGlyphs, mehndiDecoySize, mehndiDecoysFor, mehndiMarkRing, mehndiMarks,
-  mehndiNear, mehndiPointAt, mehndiVineGaps, mehndiWritingRing, mehndiWrongRings, type MehndiDecoy, type MehndiMark, type MehndiPointed, type MehndiPointedAt,
+  MEHNDI_HIT, MEHNDI_MARK_PAD, MEHNDI_PLACES, MEHNDI_WRITING, MEHNDI_WRITING_MARK, mehndiDecoyGlyphs, mehndiDecoySize, mehndiDecoysFor, mehndiHintRing, mehndiMarkRing,
+  mehndiMarks, mehndiNear, mehndiPointAt, mehndiPointing, mehndiVineGaps, mehndiWritingRing, mehndiWrongRings, type MehndiDecoy, type MehndiPointed, type MehndiPointedAt,
 } from "./marks";
 import {
   MEHNDI_SPOTS, MEHNDI_TUNING, mehndiGameFor, mehndiRulesFor, type MehndiOutcome, type MehndiParams, type MehndiSpot, type MehndiTarget, type MehndiTuning,
@@ -26,12 +26,14 @@ import "./skin.css";
 // Fasol SP letter or two laid over each other, mirrored or turned, drawn as text from the font in the name's colour and at
 // the name's size, lit only, never glinting, read as no word. Pointing at one (a tap on it, or the lamp held still on it)
 // points at the place it belongs to: her word about decorations, a dashed ring round that run, her teasing face (a second
-// run of a place already wrong: her next word and its own ring, not counted again). The writing is pointed at on its
-// letters too (its box), not only near its place. Drag to move the lamp (it rides a little above a finger, so the finger
-// does not hide what it lights), tap to point. A wrong place: her word by it, her teasing face and a dashed ring (the look
-// goes on); from the third on, she only hints the area (a dotted ring round it for a moment, 「このへん、かな」): the find
-// is always the player's. The six places are buttons for Tab and the screen reader (the decorations are part of the
-// picture); a pointer hits them by where it lands. Finding the writing is the one moment of impact: a short stop, the pool
+// run of a place already wrong: the same, though the look does not count the place again). The writing is pointed at on
+// its letters too (its box), not only near its place. Drag to move the lamp (it rides a little above a finger, so the
+// finger does not hide what it lights), tap to point. A wrong thing or place: her word by it, her teasing face and a
+// dashed ring (the look goes on); her words follow the wrong things pointed at (the dashed rings), whichever places they
+// belong to: at the second she warns, and from the third on she only hints the area (a dotted ring round it for a moment,
+// 「このへん、かな」): the find is always the player's. The six places are buttons for Tab and the screen reader (the
+// decorations are part of the picture: a key points at what lies at the place, the run there if there is one); a pointer
+// hits them by where it lands. Finding the writing is the one moment of impact: a short stop, the pool
 // opening over the whole palm, the writing swelling, her surprised face, stars from it (the host's juice). With the use's
 // art (`art.palm`, `art.lamp`), those pictures in place of the drawn hand and lamp; the writing and the decorations are
 // drawn by the game either way.
@@ -44,19 +46,17 @@ const FINGER_HIT_PX = 22;
 /** And a finger is on a decoration (or the writing) this near its box (px): the smallest run about 45px across with it. */
 const MARK_TAP_PX = 16;
 /**
- * Where the peacock feather's point (its base in the palm) breaks behind Fasol SP letters laid there, the player's name
- * or the run of decorations drawn there when the writing is elsewhere (in the frame of the writing at the peacock, which
- * is that run's too; lit only, as the vine's gaps): from below the point up to 2.5 above the tall strokes of the largest
- * size (they reached into it, 2026-11-17). Not behind the letterless mark or FARHANA at the peacock (they keep clear of
- * the point).
+ * Where the peacock feather's point (its base in the palm) breaks behind what is laid there: the writing, or the run of
+ * decorations drawn there when the writing is elsewhere (in the frame of the writing at the peacock, which is that run's
+ * too; lit only, as the vine's gaps): from below the point up to 2.5 above the tall strokes of the largest size (they
+ * reached into it, 2026-11-17). Behind the letterless mark and FARHANA too (2026-11-17 review: the mark's top line lay
+ * 1.15 under the uncut point, under a pixel on a small phone, and read as touching it).
  */
 export const MEHNDI_FEATHER_GAP = { x: -8, y: -14, width: 16, height: 8 };
 /** Her hot and cold comes again at most once in this (her lines: lines.ts). */
 const TELL_AGAIN_MS = 3500;
 /** The lamp near the writing this long before her hand tells (a lamp only passing by does not). */
 const NEAR_DWELL_MS = 200;
-/** How long her word (and her hint's ring) shows (the play's clock). */
-const SAID_MS = 1600;
 /** The stop as the writing is found (ms). */
 const FOUND_STOP_MS = 120;
 /** A drag starts after this much movement (px); a shorter touch is a tap. */
@@ -147,14 +147,13 @@ const flower = (x: number, y: number, size: number) => (
 );
 
 /** The mehndi's broad lines (seen in the dark too): fingertips, finger bands, the flowers, the feather, the vines, the wrist. */
-function BroadLines({ target, lit, lettering }: { target: MehndiTarget; lit: boolean; lettering: boolean }) {
+function BroadLines({ target, lit }: { target: MehndiTarget; lit: boolean }) {
   // Lit, the central vine's line breaks behind what is laid on it (the writing or a run of decorations, at the feather's
-  // base and in the vine's middle: never crossing them), and the feather's point behind Fasol SP letters at its base (the
-  // run of decorations there when the writing is elsewhere; the player's name when it is there). The dark shows no gap.
+  // base and in the vine's middle: never crossing them), and the feather's point behind what lies at its base (the run of
+  // decorations there when the writing is elsewhere; the writing when it is there). The dark shows no gap.
   const id = useId().replace(/[^a-zA-Z0-9]/gu, "");
   const gap = `${id}vinegap`;
   const tip = `${id}feathergap`;
-  const cutTip = lit && (target !== "peacock" || lettering);
   const base = MEHNDI_WRITING.peacock;
   return (
     <g className="mg-mehndi-hidden-name-ink">
@@ -168,12 +167,10 @@ function BroadLines({ target, lit, lettering }: { target: MehndiTarget; lit: boo
                 transform={`translate(${x} ${y}) rotate(${rotate})`} />
             ))}
           </mask>
-          {cutTip && (
-            <mask id={tip} maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
-              <rect width={W} height={H} fill="#fff" />
-              <rect {...MEHNDI_FEATHER_GAP} rx="4" fill="#000" stroke="none" transform={`translate(${base.x} ${base.y}) rotate(${base.rotate})`} />
-            </mask>
-          )}
+          <mask id={tip} maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
+            <rect width={W} height={H} fill="#fff" />
+            <rect {...MEHNDI_FEATHER_GAP} rx="4" fill="#000" stroke="none" transform={`translate(${base.x} ${base.y}) rotate(${base.rotate})`} />
+          </mask>
         </defs>
       )}
       <g className="mg-mehndi-hidden-name-fill">
@@ -182,7 +179,7 @@ function BroadLines({ target, lit, lettering }: { target: MehndiTarget; lit: boo
       <path d={MEHNDI_BANDS} />
       {MEHNDI_FLOWERS.map(({ spot, size }) => flower(MEHNDI_PLACES[spot].x, MEHNDI_PLACES[spot].y, size))}
       {/* The peacock's feather: from its base in the palm up toward the ring finger, its eye near the top. */}
-      <path d={MEHNDI_FEATHER} {...(cutTip ? { mask: `url(#${tip})` } : {})} />
+      <path d={MEHNDI_FEATHER} {...(lit ? { mask: `url(#${tip})` } : {})} />
       <ellipse {...MEHNDI_EYE} />
       <path d={MEHNDI_VINE} {...(lit ? { mask: `url(#${gap})` } : {})} />
       <path d={MEHNDI_SPIRAL} />
@@ -296,8 +293,11 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
   const writingRing = useRef<HTMLSpanElement>(null);
   const target = setup.rounds[0].targets[0];
   const ending = view.ending;
-  /** Her word, by the thing or the place it is about (`about`: that thing's or place's key; her hint is by the writing's area). */
-  const [said, setSaid] = useState<{ x: number; y: number; textJa: string; at: number; about: string; hint?: boolean } | null>(null);
+  /**
+   * Her word, by the thing or the place it is about (`about`: that thing's or place's key; her hint is by the writing's
+   * area), since when and for how long (a longer word shows longer: lines.ts).
+   */
+  const [said, setSaid] = useState<{ x: number; y: number; textJa: string; at: number; forMs: number; about: string; hint?: boolean } | null>(null);
   /**
    * The wrong things and places pointed at by hand (each once: their dashed rings), what the look's latest search pointed
    * at (the effect below reads it once), and how many words about decorations she has said (they come in turn).
@@ -361,7 +361,7 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
   useEffect(() => frames((ms) => {
     clockMs.current = ms;
     if (!still) palm.current?.style.setProperty("--mehndi-lamp-k", (1 + 0.014 * Math.sin(ms * 0.0377) + 0.008 * Math.sin(ms * 0.0911)).toFixed(4));
-    setSaid((current) => (current && ms - current.at >= SAID_MS ? null : current));
+    setSaid((current) => (current && ms - current.at >= current.forMs ? null : current));
     const down = press.current;
     if (down && !down.shown && ms - down.at >= LAMP_SHOW_MS) {
       down.shown = true;
@@ -376,25 +376,28 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
       if (on && on.spot !== target) tell("linger", ms);
     }
   }), [frames, still]);
-  // Her word at a wrong place, by the thing or the place pointed at: about decorations (in turn) or about the pattern
-  // there; the first of the look teases (「ふふ、」: round 2 playtest), the one before the hints warns that the next brings
-  // one; from then on, her hint: 「このへん、かな」 over a dotted ring round the writing's area (the lamp stays where the
-  // player pointed). `misses`: the look's wrong places so far; null for a wrong thing or place pointed at again (the look
-  // counts it once): her word alone (not 「ふふ、」 every time).
-  const say = (spot: number, mark: MehndiMark | null, misses: number | null) => {
-    const at = clockMs.current;
-    const about = pointedKey({ spot, mark })!;
-    if (misses !== null && misses >= tuning.hintAfter) {
-      setSaid({ x: MEHNDI_PLACES[params.target].x, y: MEHNDI_PLACES[params.target].y, textJa: HINT_JA, at, about, hint: true });
-      return;
-    }
-    const where = mark ?? MEHNDI_PLACES[MEHNDI_SPOTS[spot]];
-    const word = () => (mark && mark.id !== MEHNDI_WRITING_MARK ? DECOY_JA[decoyWords.current++ % DECOY_JA.length] : WRONG_JA[MEHNDI_SPOTS[spot]]);
-    const textJa = misses === null ? word() : misses === tuning.hintAfter - 1 ? AGAIN_JA : `${misses === 1 ? "ふふ、" : ""}${word()}`;
-    setSaid({ x: where.x, y: where.y, textJa, at, about });
+  // Her answer to a wrong thing or place, by it: her word about decorations (in turn) or about the pattern there, her
+  // warning, or her hint (「このへん、かな」 over a dotted ring round the writing's area; the lamp stays where the player
+  // pointed). Which of them is lines.ts's (mehndiAnswer): by the wrong things pointed at so far (`count`: the dashed
+  // rings), and whether this one is new (`fresh`) or one pointed at again.
+  const say = (hit: MehndiPointed, pointed: { count: number; fresh: boolean }) => {
+    const decoration = hit.mark !== null && hit.mark.id !== MEHNDI_WRITING_MARK;
+    const answer = mehndiAnswer(MEHNDI_SPOTS[hit.spot], decoration, pointed, tuning.hintAfter, decoyWords.current);
+    if (answer.decoyWord) decoyWords.current += 1;
+    const where = answer.hint ? MEHNDI_PLACES[params.target] : hit.mark ?? MEHNDI_PLACES[MEHNDI_SPOTS[hit.spot]];
+    setSaid({
+      x: where.x, y: where.y, textJa: answer.textJa, at: clockMs.current, forMs: mehndiSaidMs(answer.textJa), about: pointedKey(hit)!,
+      ...(answer.hint ? { hint: true } : {}),
+    });
+  };
+  /** A new wrong thing or place: the sound, her teasing face, and her answer (`count`: the wrong things so far, this one among them). */
+  const wrong = (hit: MehndiPointed, count: number) => {
+    play.current.sound(SOUNDS.wrong);
+    kitRef.current.react("tease");
+    say(hit, { count, fresh: true });
   };
   // A place pointed at (by hand or by おまかせ): the lamp goes to it (to the thing pointed at, if it was one); the writing
-  // found rings; a wrong place, her word or her hint, and her teasing face.
+  // found rings; a wrong place, her answer and her teasing face.
   const searches = view.searched.length;
   useEffect(() => {
     if (!searches) return;
@@ -411,36 +414,37 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
       kitRef.current.juice.burst(writingRing.current, "star", 0.9);
       // Her surprise always shows at the find (over a hot-and-cold word or a tease just before: 2026-11-14 playtest).
       kitRef.current.react("surprise", undefined, { over: true });
-    } else {
-      play.current.sound(SOUNDS.wrong);
-      kitRef.current.react("tease");
-      say(last, mark, searches);
-    }
+    } else wrong({ spot: last, mark }, mehndiWrongRings(params.target, view.searched, pointedAt, marks).length);
   }, [searches]); // each place pointed at once
 
   /**
-   * Points at a thing or a place: the look's search of its place, or, for a wrong place pointed at again (the look counts
-   * it once), her word again (never a dead press). A wrong thing or place is remembered for its dashed ring. The second
-   * tap of a double tap (the same thing again while her word about it still shows) changes nothing: her word, or her
-   * hint, stays to be read.
+   * Points at a thing or a place (marks.ts decides what that does: mehndiPointing): the look's search of its place; or,
+   * for a wrong place the look has already counted, a new wrong thing in it (her answer and her teasing face, as for any
+   * wrong thing: a player cannot see which place a decoration belongs to) or one pointed at again (her word again, or her
+   * hint once she has warned: never a dead press). A new wrong thing or place is remembered for its dashed ring. The
+   * second tap of a double tap (the same thing again while her word about it still shows) changes nothing: her word, or
+   * her hint, stays to be read.
    */
   const pointAt = (hit: MehndiPointed) => {
-    if (hit.spot !== target) {
-      const markId = hit.mark?.id ?? null;
-      setPointedAt((current) => (current.some((item) => item.spot === hit.spot && item.markId === markId) ? current : [...current, { spot: hit.spot, markId }]));
-      if (view.searched.includes(hit.spot)) {
-        if (said?.about !== pointedKey(hit)) say(hit.spot, hit.mark, null);
-        return;
-      }
-    }
-    lastPointed.current = hit;
-    search(hit.spot);
+    const { search: spot, ring, count } = mehndiPointing(params.target, view.searched, pointedAt, marks, hit);
+    if (ring) setPointedAt((current) => (current.some((item) => item.spot === ring.spot && item.markId === ring.markId) ? current : [...current, ring]));
+    if (spot !== null) {
+      lastPointed.current = hit;
+      search(spot);
+    } else if (ring) wrong(hit, count);
+    else if (said?.about !== pointedKey(hit)) say(hit, { count, fresh: false });
   };
-  /** Where a pointer's lamp is (in the palm's share): a finger's rides above it, so the finger does not hide what it lights. */
+  /**
+   * Where a pointer's lamp is (in the palm's share): a finger's rides above it, so the finger does not hide what it lights,
+   * and follows a finger that runs on below the palm (the finger's own place is not held at the palm's lower edge:
+   * 2026-11-17 review, on a 320 × 568 phone the lamp stopped 52px above that edge and never came down to the wrist). The
+   * lamp itself stays on the palm (`place`).
+   */
   const lampOf = (event: PointerEvent<HTMLDivElement>, box: HTMLDivElement) => {
-    const lift = event.pointerType === "touch" ? FINGER_LIFT_PX / box.getBoundingClientRect().height : 0;
     const point = fieldPoint(event, box);
-    return { x: point.x, y: point.y - lift, lifted: lift > 0 };
+    if (event.pointerType !== "touch") return { ...point, lifted: false };
+    const { top, height } = box.getBoundingClientRect();
+    return { x: point.x, y: height ? (event.clientY - top - FINGER_LIFT_PX) / height : point.y, lifted: true };
   };
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 || !live || !palm.current) return;
@@ -505,7 +509,7 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
     : (
       <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" aria-hidden="true" focusable="false">
         <Hand />
-        <BroadLines target={params.target} lit={shown} lettering={params.text === "player" && !!latin} />
+        <BroadLines target={params.target} lit={shown} />
         {shown && <FineLines />}
       </svg>
     );
@@ -514,6 +518,7 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
   const shownWriting = ending?.kind === "found";
   const wrongs = mehndiWrongRings(params.target, view.searched, pointedAt, marks);
   const ring = mehndiWritingRing(params.target);
+  const hintRing = mehndiHintRing(params.target);
   const aimRing = aim?.mark ? mehndiMarkRing(aim.mark) : null;
   // The pool never smaller than a fingertip on a small phone.
   const pool = { "--mehndi-lamp-r": `max(${tuning.lampPct}cqw, 18px)`, "--mehndi-glint-every": `${Math.max(400, tuning.glintEveryMs)}ms` } as CSSProperties;
@@ -553,18 +558,26 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
         )}
         {shownWriting && <span ref={writingRing} className="mg-mehndi-hidden-name-mark-ring" data-writing aria-hidden="true"
           style={{ ...share(ring), width: across(ring.diameter) }} />}
-        {said?.hint && <span key={`hint-${said.at}`} className="mg-mehndi-hidden-name-hint-ring" style={share(MEHNDI_PLACES[params.target])} aria-hidden="true" />}
+        {/* Her hint's ring: round the writing's area, as wide as marks.ts says (no decoration inside it). */}
+        {said?.hint && <span key={`hint-${said.at}`} className="mg-mehndi-hidden-name-hint-ring" style={{ ...share(hintRing), width: across(hintRing.diameter) }}
+          aria-hidden="true" />}
         {said && (
-          <span key={said.at} className="mg-mehndi-hidden-name-said" data-below={said.y < H * 0.4 || undefined}
-            data-hint={said.hint || undefined} style={{ "--mehndi-said-x": `${((said.x / W) * 100).toFixed(2)}cqw`, top: `${(said.y / H) * 100}%` } as CSSProperties}
-            role="status">{said.textJa}</span>
+          <span key={said.at} className="mg-mehndi-hidden-name-said" data-below={said.y < H * 0.4 || undefined} data-hint={said.hint || undefined}
+            style={{
+              "--mehndi-said-x": `${((said.x / W) * 100).toFixed(2)}cqw`, top: `${(said.y / H) * 100}%`,
+              ...(said.hint ? { "--mehndi-hint-r": across(hintRing.diameter / 2) } : {}),
+            } as CSSProperties} role="status">{said.textJa}</span>
         )}
         {MEHNDI_SPOTS.map((spot, index) => (
           <button key={spot} type="button" className="mg-mehndi-hidden-name-spot" data-testid={`minigame-spot-${index}`}
             aria-disabled={!live || undefined} aria-label={MEHNDI_PLACES[spot].labelJa} style={share(MEHNDI_PLACES[spot])}
             onFocus={(event) => onFocus(event, spot)} onClick={() => {
-              // Keys point at the place itself (a wrong place pointed at again: her word again, never a dead press).
-              if (live) pointAt({ spot: index, mark: null });
+              // Keys point at what lies at the place, where the lamp came by Tab: the run of decorations on it, if one
+              // lies there (her word is then about what the lamp shows; 2026-11-17 review: she said 「孔雀の羽だけ」 with a
+              // run lit under the focus ring), else the place itself. Pointed at again: her word again, never a dead press.
+              if (!live) return;
+              const at = mehndiPointAt(marks, MEHNDI_PLACES[spot].x, MEHNDI_PLACES[spot].y);
+              pointAt(at?.spot === index ? at : { spot: index, mark: null });
             }} />
         ))}
       </div>

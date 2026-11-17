@@ -136,6 +136,14 @@
   0%, 68%, 100% { filter: none; }
   82% { filter: drop-shadow(0 0 1.6px rgba(255, 236, 190, 0.95)) brightness(1.4); }
 }
+/* With less motion nothing glints (the host stops every animation for 「演出を短縮する」 and the device's reduced motion:
+   its three selectors, as here): the writing keeps a faint steady sheen in the lamp's light instead, fainter than the
+   glint, so that its look still tells it from the decorations (2026-11-17 review: with them in the name's own hand, the
+   glint was the one tell by look, and it was gone). */
+:is([data-still], .reduce-motion) .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 1.2px rgba(255, 236, 190, 0.8)) brightness(1.22); }
+@media (prefers-reduced-motion: reduce) {
+  .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 1.2px rgba(255, 236, 190, 0.8)) brightness(1.22); }
+}
 /* Found: the pool opens over the whole palm and the writing glows (twice, then stays lit). */
 .mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-palm { --mehndi-lamp-r: 90cqw !important; transition: --mehndi-lamp-r 700ms ease-out; }
 .mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-writing {
@@ -181,8 +189,9 @@
   transform: translateX(-50%);
 }
 [data-still] .mg-mehndi-hidden-name-aim { animation: none; }
-/* Her hint of the area (from the third wrong place): a dotted ring round the writing's area (about 70px across at 390
-   wide), for as long as her word; the lamp stays where the player pointed. */
+/* Her hint of the area (from the third wrong thing): a dotted ring round the writing's area, as wide as Skin.tsx says
+   (marks.ts's mehndiHintRing: round the writing's room from the place to point at, 27 to 38cqw, no decoration inside it),
+   for as long as her word; the lamp stays where the player pointed. */
 .mg-mehndi-hidden-name-hint-ring {
   position: absolute;
   z-index: 1;
@@ -223,9 +232,10 @@
   animation: mg-mehndi-hidden-name-said 220ms ease-out both;
 }
 .mg-mehndi-hidden-name-said[data-below] { --mehndi-said-dy: 14cqw; }
-/* Her hint's word: above the ring (or below it near the top). */
-.mg-mehndi-hidden-name-said[data-hint] { --mehndi-said-dy: calc(-100% - 21cqw); }
-.mg-mehndi-hidden-name-said[data-hint][data-below] { --mehndi-said-dy: 21cqw; }
+/* Her hint's word: above the ring (or below it near the top), clear of it by the ring's own half width (--mehndi-hint-r,
+   from Skin.tsx). */
+.mg-mehndi-hidden-name-said[data-hint] { --mehndi-said-dy: calc(-100% - var(--mehndi-hint-r, 19.5cqw) - 1.5cqw); }
+.mg-mehndi-hidden-name-said[data-hint][data-below] { --mehndi-said-dy: calc(var(--mehndi-hint-r, 19.5cqw) + 1.5cqw); }
 @keyframes mg-mehndi-hidden-name-said { from { opacity: 0; } }
 /* 「明日にする」 or the night run out: the lamp goes out. */
 .mg-mehndi-hidden-name:is([data-ending="button"], [data-ending="timeout"], [data-ending="idle"]) :is(.mg-mehndi-hidden-name-lit, .mg-mehndi-hidden-name-glow, .mg-mehndi-hidden-name-lamp) {
