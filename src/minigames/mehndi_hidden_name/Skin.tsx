@@ -42,15 +42,19 @@ export const MEHNDI_HIT = 30;
 const FINGER_HIT_PX = 22;
 /**
  * Where the writing lies at each target: its centre, its slant, the room it has, and whether the central vine's line runs
- * under it. The fine lines' curls by the central vine lie off its letters (2026-11-13 playtest: the H of FARHANA was under
- * a curl): at the feather's base, its curls and the leaf under them are not drawn when the writing lies there (FineLines;
- * the Fasol SP tails of g, j, p, q and y reached the leaf, 2026-11-17), and the vine's line breaks behind writing laid on it
- * (VINE_GAP). At the thumb, the name lies under the spiral, clear of its last turn and inside the palm's edge, within a
- * point's reach of the place (2026-11-16; measured again at 390 and 320 px with the Fasol SP hand on 2026-11-17, its
- * tall strokes and tails included).
+ * under it. Every room, with the tall strokes and the tails of the largest size, lies inside the palm's outline, and its
+ * centre within a point's reach of the place (MEHNDI_HIT). The fine lines' curls by the central vine lie off its letters
+ * (2026-11-13 playtest: the H of FARHANA was under a curl): at the feather's base, its curls and the leaf under them are
+ * not drawn when the writing lies there (FineLines; the Fasol SP tails of g, j, p, q and y reached the leaf, 2026-11-17),
+ * the vine's line breaks behind writing laid on it (VINE_GAP), and the feather's point behind a name laid at its base
+ * (MEHNDI_FEATHER_GAP). At the thumb, the name lies level under the spiral in a room of 52: its tall strokes anywhere
+ * along the room about 2.5 clear of the spiral's lines (past their half width), its tails 2 inside the palm's edge, its
+ * centre 28 from the place (2026-11-17: slanted −22° in a room of 54, as measured on 2026-11-16, the tall strokes of a
+ * long name ran into the spiral's last turn, and the tails of one ending in g, j, p, q or y out past the palm's edge;
+ * level, a short name keeps the largest size). skin.test.ts measures these from the shapes drawn.
  */
-const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number; onVine: boolean }> = {
-  thumb: { x: 208, y: 324, rotate: -22, width: 54, onVine: false },
+export const MEHNDI_WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number; onVine: boolean }> = {
+  thumb: { x: 201.5, y: 323, rotate: 0, width: 52, onVine: false },
   peacock: { x: 150, y: 246, rotate: -8, width: 58, onVine: true },
   vine: { x: 141, y: 316, rotate: -14, width: 62, onVine: true },
 };
@@ -62,7 +66,7 @@ const RING_CLEAR = 4;
  * strokes and the tails of the largest size included, RING_CLEAR clear of them.
  */
 export function mehndiWritingRing(target: MehndiTarget): { x: number; y: number; diameter: number } {
-  const place = WRITING[target];
+  const place = MEHNDI_WRITING[target];
   const reach = Math.max(WRITING_ASCENT - WRITING_BASELINE, WRITING_DESCENT + WRITING_BASELINE) * WRITING_MAX_SIZE;
   return { x: place.x, y: place.y, diameter: 2 * (Math.hypot(place.width / 2, reach) + RING_CLEAR) };
 }
@@ -70,6 +74,12 @@ export function mehndiWritingRing(target: MehndiTarget): { x: number; y: number;
  * dark shows no gap to give it away. Tall enough for the name's tall strokes and tails (a j's tail at the feather's base,
  * 2026-11-17). */
 const VINE_GAP = { x: -16, y: -12, width: 32, height: 25 };
+/**
+ * Where the peacock feather's point (its base in the palm) breaks behind the player's name laid there (in the writing's own
+ * frame; lit only, as the vine's gap): from below the point up to 2.5 above the tall strokes of the largest size (they
+ * reached into it, 2026-11-17). Not behind the illegible mark (its top line keeps clear of the point).
+ */
+export const MEHNDI_FEATHER_GAP = { x: -8, y: -14, width: 16, height: 8 };
 /**
  * The curls at each place that look like writing at a glance (lit only; drawn where the writing is not): a row of loops
  * (count, height, width of each), a slant, an offset from the place's centre, and a dotted underline or not. No letters
@@ -154,7 +164,7 @@ export function mehndiLoops(loops: number, h: number, w: number): string {
 }
 
 /** Three turns of a vine, round the thumb's base (an Archimedean spiral; the same lines every time). */
-const SPIRAL = (() => {
+export const MEHNDI_SPIRAL = (() => {
   const points: string[] = [];
   for (let step = 0; step <= 72; step += 1) {
     const angle = (step / 72) * Math.PI * 6;
@@ -163,6 +173,11 @@ const SPIRAL = (() => {
   }
   return `M${points.join(" L")}`;
 })();
+
+/** The palm's outline (the writing's rooms lie inside it). */
+export const MEHNDI_PALM = "M66 214 C60 280 70 350 100 384 L200 384 C232 352 244 300 236 228 C236 214 224 206 212 206 L84 206 C72 206 66 210 66 214 Z";
+/** The peacock's feather: from its point at its base in the palm (150, 236) up toward the ring finger. */
+export const MEHNDI_FEATHER = "M150 236 C138 214 114 198 114 172 C114 150 138 148 142 168 C146 188 152 208 150 236 Z";
 
 /** The hand: four fingers, the thumb out to the right, the palm and the wrist. */
 function Hand() {
@@ -173,7 +188,7 @@ function Hand() {
       <rect x="144" y="44" width="40" height="210" rx="20" />
       <rect x="187" y="70" width="37" height="186" rx="18" transform="rotate(5 205 246)" />
       <rect x="214" y="206" width="40" height="114" rx="20" transform="rotate(22 234 320)" />
-      <path d="M66 214 C60 280 70 350 100 384 L200 384 C232 352 244 300 236 228 C236 214 224 206 212 206 L84 206 C72 206 66 210 66 214 Z" />
+      <path d={MEHNDI_PALM} />
       <path d="M100 380 L200 380 L208 420 L92 420 Z" />
     </g>
   );
@@ -188,20 +203,33 @@ const flower = (x: number, y: number, size: number) => (
 );
 
 /** The mehndi's broad lines (seen in the dark too): fingertips, finger bands, the flowers, the feather, the vines, the wrist. */
-function BroadLines({ target, lit }: { target: MehndiTarget; lit: boolean }) {
+function BroadLines({ target, lit, lettering }: { target: MehndiTarget; lit: boolean; lettering: boolean }) {
   // Lit, with the writing laid on the central vine (at the peacock feather's base or in the vine): its line breaks
-  // behind the letters (never crossing them).
-  const gap = `${useId().replace(/[^a-zA-Z0-9]/gu, "")}vinegap`;
-  const place = WRITING[target];
+  // behind the letters (never crossing them); and with the player's name at the feather's base, the feather's point too.
+  const id = useId().replace(/[^a-zA-Z0-9]/gu, "");
+  const gap = `${id}vinegap`;
+  const tip = `${id}feathergap`;
+  const place = MEHNDI_WRITING[target];
   const cut = lit && place.onVine;
+  const cutTip = lit && lettering && target === "peacock";
+  const frame = `translate(${place.x} ${place.y}) rotate(${place.rotate})`;
   return (
     <g className="mg-mehndi-hidden-name-ink">
-      {cut && (
+      {(cut || cutTip) && (
         <defs>
-          <mask id={gap} maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
-            <rect width={W} height={H} fill="#fff" />
-            <rect {...VINE_GAP} rx="4" fill="#000" transform={`translate(${place.x} ${place.y}) rotate(${place.rotate})`} />
-          </mask>
+          {cut && (
+            <mask id={gap} maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
+              <rect width={W} height={H} fill="#fff" />
+              <rect {...VINE_GAP} rx="4" fill="#000" transform={frame} />
+            </mask>
+          )}
+          {cutTip && (
+            <mask id={tip} maskUnits="userSpaceOnUse" x="0" y="0" width={W} height={H}>
+              <rect width={W} height={H} fill="#fff" />
+              {/* No stroke: the ink's stroke, inherited, would leave a pale band of the feather at the gap's edge. */}
+              <rect {...MEHNDI_FEATHER_GAP} rx="4" fill="#000" stroke="none" transform={frame} />
+            </mask>
+          )}
         </defs>
       )}
       <g className="mg-mehndi-hidden-name-fill">
@@ -215,10 +243,10 @@ function BroadLines({ target, lit }: { target: MehndiTarget; lit: boolean }) {
       {flower(MEHNDI_PLACES.index.x, MEHNDI_PLACES.index.y, 9)}
       {flower(MEHNDI_PLACES.pinky.x, MEHNDI_PLACES.pinky.y, 11)}
       {/* The peacock's feather: from its base in the palm up toward the ring finger, its eye near the top. */}
-      <path d="M150 236 C138 214 114 198 114 172 C114 150 138 148 142 168 C146 188 152 208 150 236 Z" />
+      <path d={MEHNDI_FEATHER} {...(cutTip ? { mask: `url(#${tip})` } : {})} />
       <ellipse cx="128" cy="174" rx="7" ry="10" />
       <path d="M150 240 C162 262 128 282 140 304 C150 324 124 346 138 374" {...(cut ? { mask: `url(#${gap})` } : {})} />
-      <path d={SPIRAL} />
+      <path d={MEHNDI_SPIRAL} />
       {/* The central vine "unusually intricate" where the writing hides in it (the story says so). */}
       {target === "vine" && <path d="M114 284 c8 -6 16 2 10 8 c-6 6 -14 -2 -8 -8 M152 336 c6 -4 12 2 6 6 M124 334 c-6 -2 -8 6 -2 8" />}
       <path d="M96 210 Q110 202 124 210 Q138 202 152 210 Q166 202 180 210 Q194 202 208 210 Q222 202 234 210" />
@@ -267,7 +295,7 @@ function FineLines({ target }: { target: MehndiTarget }) {
  * `illegible` (no letters of any script are made up); an illegible mark; or FARHANA over unreadable marks.
  */
 function Writing({ params, latin }: { params: MehndiParams; latin: string | null }) {
-  const place = WRITING[params.target];
+  const place = MEHNDI_WRITING[params.target];
   const transform = `translate(${place.x} ${place.y}) rotate(${place.rotate})`;
   if (params.text === "player" && latin) {
     // The small letters centred on the place (the tall strokes and the tails above and below them).
@@ -489,7 +517,7 @@ const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, 
     : (
       <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" aria-hidden="true" focusable="false">
         <Hand />
-        <BroadLines target={params.target} lit={lit} />
+        <BroadLines target={params.target} lit={lit} lettering={params.text === "player" && !!names.playerLatin} />
         {lit && <FineLines target={params.target} />}
       </svg>
     );

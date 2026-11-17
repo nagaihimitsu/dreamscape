@@ -5,8 +5,10 @@ import { describe, expect, it } from "vitest";
 import type { MiniGameNames } from "../contract";
 import type { SearchView } from "../engines/search/EnginePlay";
 import { mehndiHiddenName } from "./definition";
-import { MEHNDI_SPOTS, mehndiSetup, type MehndiParams } from "./rules";
-import { MEHNDI_PLACES, mehndiSkin, mehndiWritingRing } from "./Skin";
+import { MEHNDI_SPOTS, MEHNDI_TARGETS, mehndiSetup, type MehndiParams, type MehndiTarget } from "./rules";
+import {
+  MEHNDI_FEATHER, MEHNDI_FEATHER_GAP, MEHNDI_HIT, MEHNDI_PALM, MEHNDI_PLACES, MEHNDI_SPIRAL, MEHNDI_WRITING, mehndiSkin, mehndiSpotAt, mehndiWritingRing,
+} from "./Skin";
 import { WRITING_ASCENT, WRITING_BASELINE, WRITING_DESCENT, WRITING_MAX_SIZE } from "./writing";
 
 // The hidden name's field (docs/13 2.10, 2.12–2.13): the player's name in Latin letters in the Fasol SP hand (the user's
@@ -39,10 +41,10 @@ describe("the hidden name's field", () => {
     expect(writing?.[0]).not.toContain("textLength");
     expect(html).not.toContain("はると");
     for (const target of ["peacock", "vine"] as const) expect(lettering(field({ target, text: "player" }, { playerLatin: "Taichi" }))?.[1], target).toBe("Taichi");
-    // A long name only ever pressed narrower, to the room (the thumb's 54 units), at the smallest size.
+    // A long name only ever pressed narrower, to the room (the thumb's 52 units), at the smallest size.
     const long = lettering(field({ target: "thumb", text: "player" }, { playerLatin: "Alexandria Konstantinopoulou" }))?.[0];
     expect(long).toContain('font-size="6"');
-    expect(long).toContain('textLength="54"');
+    expect(long).toContain(`textLength="${MEHNDI_WRITING.thumb.width}"`);
     expect(long).toContain('lengthAdjust="spacingAndGlyphs"');
     // A hyphen or an apostrophe stays in the name (the stylesheet leaves it to the fallback, never the demo's advert).
     for (const name of ["Jan-Poru", "O'Brien"]) expect(lettering(field({ target: "vine", text: "player" }, { playerLatin: name }))?.[1], name).toBe(name.replace("'", "&#x27;"));
@@ -117,7 +119,7 @@ describe("the hidden name's field", () => {
       expect([Number(writing![1]), Number(writing![2])], target).toEqual([ring.x, ring.y]);
       // Every corner of the name's room (a long name is pressed to its width) at the largest size lies inside the ring, a
       // few units clear of its line (the slant turns the room about the ring's centre).
-      const half = { thumb: 54, peacock: 58, vine: 62 }[target] / 2;
+      const half = MEHNDI_WRITING[target].width / 2;
       for (const y of [(WRITING_BASELINE - WRITING_ASCENT) * WRITING_MAX_SIZE, (WRITING_BASELINE + WRITING_DESCENT) * WRITING_MAX_SIZE])
         for (const x of [-half, half]) expect(Math.hypot(x, y), `${target} ${x} ${y}`).toBeLessThanOrEqual(ring.diameter / 2 - 3);
     }
@@ -164,5 +166,166 @@ describe("the hidden name's field", () => {
     expect(html).toContain('src="/assets/minigames/lamp.webp"');
     // The writing is the game's, over the picture.
     expect(html).toContain(">Haruto<");
+  });
+});
+
+// Where the writing lies (in the hand's units, 300 × 420), measured from the shapes the field draws: every room, at the
+// largest size with its tall strokes and tails, clear of the broad lines by their half width and a unit of air, inside the
+// palm's outline, and its centre within a point's reach of its place. 2026-11-17: at the thumb (then slanted −22° in a room
+// of 54 at 208, 324) the tall strokes of a long name ran into the spiral's last turn, and the tails out past the palm's edge;
+// at the feather's base the tall strokes ran into the feather's point.
+describe("where the writing lies", () => {
+  type Point = [number, number];
+  /** A path's points (absolute M, L, C and Z, as the hand's are drawn), its curves sampled about every 0.1 unit. */
+  const pathPoints = (d: string): Point[] => {
+    const tokens = d.match(/[MLCZ]|-?\d*\.?\d+/gu) ?? [];
+    const points: Point[] = [];
+    let command = "";
+    let start: Point = [0, 0];
+    for (let index = 0; index < tokens.length;) {
+      if (/^[MLCZ]$/u.test(tokens[index])) command = tokens[index++];
+      if (command === "Z") {
+        points.push(start);
+        continue;
+      }
+      const take = (count: number) => tokens.slice(index, (index += count)).map(Number);
+      if (command === "M") {
+        const [x, y] = take(2);
+        start = [x, y];
+        points.push(start);
+        command = "L";
+      } else if (command === "L") {
+        const [x, y] = take(2);
+        points.push([x, y]);
+      } else {
+        const [x0, y0] = points[points.length - 1];
+        const [x1, y1, x2, y2, x3, y3] = take(6);
+        for (let step = 1; step <= 1000; step += 1) {
+          const t = step / 1000;
+          const u = 1 - t;
+          points.push([u * u * u * x0 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3, u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3]);
+        }
+      }
+    }
+    return points;
+  };
+  /** The broad lines' half width (skin.css). */
+  const css = readFileSync(new URL("./skin.css", import.meta.url), "utf8");
+  const half = Number(css.match(/\.mg-mehndi-hidden-name-ink \{[^}]*stroke-width: ([\d.]+);/u)![1]) / 2;
+  const AIR = 1;
+  /** The room at the largest size, in the writing's own frame: its width, from the tall strokes' tops to the tails' ends. */
+  const room = (target: MehndiTarget) => ({
+    left: -MEHNDI_WRITING[target].width / 2, right: MEHNDI_WRITING[target].width / 2,
+    top: (WRITING_BASELINE - WRITING_ASCENT) * WRITING_MAX_SIZE, bottom: (WRITING_BASELINE + WRITING_DESCENT) * WRITING_MAX_SIZE,
+  });
+  /** A point of the hand in the writing's frame at a target (its transform undone), and back. */
+  const toWriting = (target: MehndiTarget, [x, y]: Point): Point => {
+    const place = MEHNDI_WRITING[target];
+    const angle = (-place.rotate * Math.PI) / 180;
+    return [(x - place.x) * Math.cos(angle) - (y - place.y) * Math.sin(angle), (x - place.x) * Math.sin(angle) + (y - place.y) * Math.cos(angle)];
+  };
+  const toHand = (target: MehndiTarget, [x, y]: Point): Point => {
+    const place = MEHNDI_WRITING[target];
+    const angle = (place.rotate * Math.PI) / 180;
+    return [place.x + x * Math.cos(angle) - y * Math.sin(angle), place.y + x * Math.sin(angle) + y * Math.cos(angle)];
+  };
+  /** How far a point (in the writing's frame) is outside the room (negative: inside it). */
+  const outside = (target: MehndiTarget, [x, y]: Point) => {
+    const box = room(target);
+    const dx = Math.max(box.left - x, x - box.right);
+    const dy = Math.max(box.top - y, y - box.bottom);
+    return dx <= 0 && dy <= 0 ? Math.max(dx, dy) : Math.hypot(Math.max(dx, 0), Math.max(dy, 0));
+  };
+  /** The tall strokes' tops anywhere along the room (every half unit), in the hand's units. */
+  const tops = (target: MehndiTarget): Point[] => {
+    const box = room(target);
+    return Array.from({ length: (box.right - box.left) * 2 + 1 }, (_, index) => toHand(target, [box.left + index / 2, box.top]));
+  };
+  const segment = (point: Point, a: Point, b: Point) => {
+    const [vx, vy] = [b[0] - a[0], b[1] - a[1]];
+    const t = Math.max(0, Math.min(1, ((point[0] - a[0]) * vx + (point[1] - a[1]) * vy) / (vx * vx + vy * vy || 1)));
+    return Math.hypot(point[0] - a[0] - t * vx, point[1] - a[1] - t * vy);
+  };
+  /** The nearest a line drawn through `points` comes to `point`, less the line's half width. */
+  const clear = (point: Point, points: Point[]) => Math.min(...points.slice(1).map((b, index) => segment(point, points[index], b))) - half;
+
+  it("lays the name at the thumb clear of the spiral: its tall strokes anywhere along the room, and all of the room", () => {
+    const spiral = pathPoints(MEHNDI_SPIRAL);
+    // The spiral is the one drawn (three turns, out to 20 from its centre near the thumb's place).
+    expect(spiral).toHaveLength(73);
+    expect(Math.max(...spiral.map(([x, y]) => Math.hypot(x - MEHNDI_PLACES.thumb.x, y - (MEHNDI_PLACES.thumb.y - 6))))).toBeCloseTo(20, 1);
+    // The tops of h, k, t, l, d, b, f wherever they fall along the room, at the largest size.
+    const fromTops = Math.min(...tops("thumb").map((top) => clear(top, spiral)));
+    expect(fromTops).toBeGreaterThanOrEqual(AIR);
+    // And no line of the spiral comes nearer the room anywhere (its corners, its sides, the tails).
+    const fromRoom = Math.min(...spiral.map((point) => outside("thumb", toWriting("thumb", point)))) - half;
+    expect(fromRoom).toBeGreaterThanOrEqual(AIR);
+  });
+
+  it("hides the feather's point behind a name at its base (lit only), so the name's tall strokes clear what is drawn", () => {
+    const feather = pathPoints(MEHNDI_FEATHER);
+    // The feather comes to its point where the peacock's place is.
+    expect(feather[0]).toEqual([MEHNDI_PLACES.peacock.x, MEHNDI_PLACES.peacock.y]);
+    // Drawn whole, its point lies among the tall strokes: they would run into it.
+    expect(Math.min(...tops("peacock").map((top) => clear(top, feather)))).toBeLessThan(0);
+    // The lit pattern masks it there for the player's name, with the gap in the writing's frame (rounded as drawn).
+    const html = field({ target: "peacock", text: "player" }, { playerLatin: "Hideaki" });
+    const [dark, lit] = html.split("mg-mehndi-hidden-name-lit");
+    const masked = new RegExp(`<path d="${MEHNDI_FEATHER}" mask="url\\(#([^)]*feathergap)\\)"></path>`, "u");
+    expect(dark).not.toMatch(masked);
+    const id = lit.match(masked)?.[1];
+    expect(id).toBeDefined();
+    const gap = MEHNDI_FEATHER_GAP;
+    const place = MEHNDI_WRITING.peacock;
+    const rx = Number(lit.match(new RegExp(`<mask id="${id}"[^>]*>.*?<rect x="${gap.x}" y="${gap.y}" width="${gap.width}" height="${gap.height}" rx="([\\d.]+)" fill="#000" stroke="none" transform="translate\\(${place.x} ${place.y}\\) rotate\\(${place.rotate}\\)"></rect>`, "u"))?.[1]);
+    expect(rx).toBeGreaterThan(0);
+    const hidden = ([x, y]: Point) => {
+      const nearest: Point = [Math.min(Math.max(x, gap.x + rx), gap.x + gap.width - rx), Math.min(Math.max(y, gap.y + rx), gap.y + gap.height - rx)];
+      return Math.hypot(x - nearest[0], y - nearest[1]) <= rx;
+    };
+    // What is drawn of the feather (each point of its line outside the gap, with its full half width) clears the tall
+    // strokes along the room, and the room.
+    const shown = feather.filter((point) => !hidden(toWriting("peacock", point)));
+    expect(shown.length).toBeLessThan(feather.length);
+    const nearest = (point: Point) => Math.min(...shown.map((drawn) => Math.hypot(point[0] - drawn[0], point[1] - drawn[1]))) - half;
+    expect(Math.min(...tops("peacock").map(nearest))).toBeGreaterThanOrEqual(AIR);
+    expect(Math.min(...shown.map((point) => outside("peacock", toWriting("peacock", point)))) - half).toBeGreaterThanOrEqual(AIR);
+    // Only the point is hidden: the rest of the feather is drawn.
+    expect(feather.filter((point) => hidden(toWriting("peacock", point))).every(([, y]) => y > MEHNDI_PLACES.peacock.y - 6)).toBe(true);
+    // The illegible mark (her secret) is drawn as it was, the feather whole over it: its top line keeps clear of the point.
+    for (const params of [{ target: "peacock", text: "illegible" }, { target: "thumb", text: "player" }, { target: "vine", text: "player" }] as const) {
+      expect(field(params), `${params.target} ${params.text}`).not.toContain("feathergap");
+    }
+    expect(field({ target: "peacock", text: "player" }, { playerLatin: null })).not.toContain("feathergap");
+    const markLine = [toHand("peacock", [-26, -7]), toHand("peacock", [26, -7])] as [Point, Point];
+    expect(Math.min(...feather.map((point) => segment(point, ...markLine))) - half - 1.3 / 2).toBeGreaterThan(0.5);
+  });
+
+  it("keeps every room inside the palm's outline, and its centre within a point's reach of its place", () => {
+    const outline = pathPoints(MEHNDI_PALM);
+    const inside = ([x, y]: Point) => {
+      let within = false;
+      for (let index = 0, last = outline.length - 1; index < outline.length; last = index, index += 1) {
+        const [ax, ay] = outline[index];
+        const [bx, by] = outline[last];
+        if (ay > y !== by > y && x < ((bx - ax) * (y - ay)) / (by - ay) + ax) within = !within;
+      }
+      return within;
+    };
+    for (const target of MEHNDI_TARGETS) {
+      const box = room(target);
+      const edge: Point[] = [];
+      for (let x = box.left; x <= box.right; x += 0.5) edge.push([x, box.top], [x, box.bottom]);
+      for (let y = box.top; y <= box.bottom; y += 0.5) edge.push([box.left, y], [box.right, y]);
+      for (const point of edge.map((point) => toHand(target, point))) {
+        expect(inside(point), `${target} ${point}`).toBe(true);
+        // At least 1.5 inside the edge (the tails of a name ending in g, j, p, q or y at the thumb).
+        expect(clear(point, outline) + half, `${target} ${point}`).toBeGreaterThanOrEqual(1.5);
+      }
+      // A point at the writing's centre points at its place (the nearest, within reach).
+      const place = MEHNDI_WRITING[target];
+      expect(Math.hypot(place.x - MEHNDI_PLACES[target].x, place.y - MEHNDI_PLACES[target].y), target).toBeLessThanOrEqual(MEHNDI_HIT - 2);
+      expect(mehndiSpotAt(place.x, place.y), target).toBe(MEHNDI_SPOTS.indexOf(target));
+    }
   });
 });

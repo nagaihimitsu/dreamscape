@@ -6,7 +6,7 @@ import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
 import { searchProgress } from "../engines/search/engine";
 import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiFairness, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
-import { MEHNDI_HIT, MEHNDI_PLACES, mehndiLoops, mehndiNear, mehndiSpotAt } from "./Skin";
+import { MEHNDI_HIT, MEHNDI_PLACES, MEHNDI_WRITING, mehndiLoops, mehndiNear, mehndiSpotAt } from "./Skin";
 import { fairness } from "./play";
 import { WRITING_FONT, writingSize, writingWidth } from "./writing";
 
@@ -119,7 +119,7 @@ describe("the hidden name's field", () => {
 // long name, never cut, and only ever pressed narrower.
 describe("the name's writing in Fasol SP Demo", () => {
   /** The thumb's room (the narrowest of the three places), in the hand's units. */
-  const ROOM = 54;
+  const ROOM = MEHNDI_WRITING.thumb.width;
   const face = readFileSync(new URL("./skin.css", import.meta.url), "utf8").match(/@font-face\s*\{([^}]*)\}/u)?.[1] ?? "";
 
   it("declares the bundled file, as distributed and beside its licence, for the letters A–Z, a–z and the space only", () => {
@@ -180,7 +180,7 @@ describe("the name's writing in Fasol SP Demo", () => {
     const names = ["Jo", "Taichi", "Masayoshi", "Jan-Poru", "O'Brien", "Mohammed", "Mmmmmmmmmmmm", "Tsuchimochi Shintarou",
       "Alexandria Konstantinopoulou", "Fujiwara no Michinaga", "Shohei Ohtani", "Wolfgang Amadeus Mozart", "Ryu".repeat(24),
       "Øyvind Ærø-Łukasz", "J. R. R. Tolkien"];
-    for (const width of [54, 58, 62]) for (const name of names) {
+    for (const { width } of Object.values(MEHNDI_WRITING)) for (const name of names) {
       const { fontSize, squeeze } = writingSize(name, width);
       const { low, high } = writingWidth(name);
       if (squeeze) {
