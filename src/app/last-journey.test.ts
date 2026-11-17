@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LAST_JOURNEY_KEY, openingJourneyId, readLastJourney, rememberJourney } from "./last-journey";
+import { LAST_JOURNEY_KEY, openingJourneyId, readLastJourney, readRecentJourneys, RECENT_JOURNEYS_KEY, rememberJourney, titleJourneyId } from "./last-journey";
 
 // UI stage 0, item L: the title opens the journey last opened on this device, a
 // per-device preference kept apart from saves, with a safe fallback.
@@ -53,10 +53,22 @@ describe("readLastJourney", () => {
 });
 
 describe("rememberJourney", () => {
-  it("writes only its own key, for a journey that can be played", () => {
+  it("writes only its own keys, for a journey that can be played: the remembered one, and the recent list with it first", () => {
     const storage = memory({ "dreamscape.journey.milano.save.v1": "{}" });
     rememberJourney(storage, journeys[1]);
-    expect(Object.fromEntries(storage.values)).toEqual({ "dreamscape.journey.milano.save.v1": "{}", [LAST_JOURNEY_KEY]: "golden_triangle" });
+    expect(Object.fromEntries(storage.values)).toEqual({
+      "dreamscape.journey.milano.save.v1": "{}", [LAST_JOURNEY_KEY]: "golden_triangle", [RECENT_JOURNEYS_KEY]: '["golden_triangle"]',
+    });
+    rememberJourney(storage, journeys[0]);
+    rememberJourney(storage, journeys[1]);
+    expect(readRecentJourneys(storage)).toEqual(["golden_triangle", "milano"]);
+  });
+
+  it("reads a recent list of another form as none, and keeps only its strings", () => {
+    expect(readRecentJourneys(memory({ [RECENT_JOURNEYS_KEY]: "golden_triangle" }))).toEqual([]);
+    expect(readRecentJourneys(memory({ [RECENT_JOURNEYS_KEY]: '{"0":"milano"}' }))).toEqual([]);
+    expect(readRecentJourneys(memory({ [RECENT_JOURNEYS_KEY]: '["milano",3,null,"golden_triangle"]' }))).toEqual(["milano", "golden_triangle"]);
+    expect(readRecentJourneys(refusing)).toEqual([]);
   });
 
   it("keeps the last playable journey when a preparing journey or none is opened", () => {
@@ -74,5 +86,43 @@ describe("rememberJourney", () => {
     const storage = memory();
     rememberJourney(storage, journeys[1]);
     expect(openingJourneyId(readLastJourney(storage), journeys, "milano")).toBe("golden_triangle");
+  });
+});
+
+// User decision 2026-11-17 (「A」): without a network, the title opens a journey the device keeps for 「オフラインで遊ぶ」.
+describe("titleJourneyId", () => {
+  const catalog = [...journeys, { id: "jaipur", status: "available" }];
+  const pick = (facts: Partial<Parameters<typeof titleJourneyId>[0]>) =>
+    titleJourneyId({ remembered: null, recent: [], kept: null, online: false, ...facts }, catalog, "milano");
+
+  it("changes nothing with a network", () => {
+    expect(pick({ online: true, remembered: "golden_triangle", kept: ["milano"] })).toBe("golden_triangle");
+    expect(pick({ online: true, remembered: null, kept: ["jaipur"] })).toBe("milano");
+  });
+
+  it("changes nothing when what is kept is not known or nothing playable is kept", () => {
+    expect(pick({ remembered: "golden_triangle", kept: null })).toBe("golden_triangle");
+    expect(pick({ remembered: "golden_triangle", kept: [] })).toBe("golden_triangle");
+    expect(pick({ remembered: "golden_triangle", kept: ["uzbekistan", "luang_prabang"] })).toBe("golden_triangle");
+  });
+
+  it("keeps the remembered journey when it is kept", () => {
+    expect(pick({ remembered: "golden_triangle", recent: ["milano"], kept: ["milano", "golden_triangle"] })).toBe("golden_triangle");
+  });
+
+  it("else opens the kept journey opened most recently, else the first kept one in the catalog's order", () => {
+    expect(pick({ remembered: "golden_triangle", recent: ["golden_triangle", "jaipur", "milano"], kept: ["milano", "jaipur"] })).toBe("jaipur");
+    expect(pick({ remembered: "golden_triangle", recent: ["golden_triangle"], kept: ["jaipur", "milano"] })).toBe("milano");
+    // Nothing remembered: the default journey when kept, else as above.
+    expect(pick({ kept: ["jaipur", "milano"] })).toBe("milano");
+    expect(pick({ kept: ["jaipur"] })).toBe("jaipur");
+    // A remembered journey this version cannot play counts as none.
+    expect(pick({ remembered: "uzbekistan", recent: ["uzbekistan", "golden_triangle"], kept: ["golden_triangle"] })).toBe("golden_triangle");
+  });
+
+  it("does not change the remembered journey", () => {
+    const storage = memory({ [LAST_JOURNEY_KEY]: "golden_triangle" });
+    expect(titleJourneyId({ remembered: readLastJourney(storage), recent: readRecentJourneys(storage), kept: ["milano"], online: false }, catalog, "milano")).toBe("milano");
+    expect(storage.getItem(LAST_JOURNEY_KEY)).toBe("golden_triangle");
   });
 });

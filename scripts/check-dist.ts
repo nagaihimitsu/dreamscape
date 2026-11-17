@@ -3,19 +3,23 @@
  * Debug's code on the title page or in a file the game loads with Debug mode off
  * (Debug ships only as lazily loaded files it alone opens), loads a journey's part
  * of the content on the title page or mixes two journeys' parts in a file, holds a
- * served file of a journey players cannot open yet (scripts/withheld-files.ts), or
+ * served file of a journey players cannot open yet (scripts/withheld-files.ts),
+ * has a list for 「オフラインで遊ぶ」 (offline-files.json) that does not match its files, or
  * lacks the licence notices of the bundled libraries (see scripts/dist-guard.ts).
- * `npm run build` and `npm run verify` run it after `vite build`.
+ * `npm run build` and `npm run verify` run it after `vite build`. It prints the sizes a
+ * device takes in for each journey (scripts/offline-list-build.ts describeOfflineSizes).
  *
  * Usage: tsx scripts/check-dist.ts [folder]   (default: dist)
  */
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import {
-  checkDist, checkThirdPartyLicenses, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts, describeMiniGamesOnTitle,
-  describeWithheld, isTextAsset, miniGameMarkers,
+  checkDist, checkOfflineList, checkThirdPartyLicenses, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts, describeMiniGamesOnTitle,
+  describeOfflineList, describeWithheld, isTextAsset, miniGameMarkers,
   THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
+import { builtFile, describeOfflineSizes, type BuiltFile } from "./offline-list-build";
+import { OFFLINE_LIST_FILE, readOfflineList } from "../src/offline/list";
 import { readWithheldFiles, WITHHELD_FILES_FILE, withheldPaths } from "./withheld-files";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 import { journeyCatalogSchema, journeyFilesShip } from "../src/content/journey-catalog";
@@ -28,13 +32,17 @@ if (!existsSync(path.join(root, "index.html"))) {
   process.exit(1);
 }
 
-const files: DistFile[] = readdirSync(root, { recursive: true, withFileTypes: true })
-  .filter((entry) => entry.isFile())
-  .map((entry) => {
-    const file = path.join(entry.parentPath, entry.name);
-    const relative = path.relative(root, file).split(path.sep).join("/");
-    return { path: relative, text: isTextAsset(relative) ? readFileSync(file, "utf8") : null };
-  });
+// Every file is read once: its text for the marker checks, its size and hash for the offline list's.
+const files: DistFile[] = [];
+const built: BuiltFile[] = [];
+for (const entry of readdirSync(root, { recursive: true, withFileTypes: true })) {
+  if (!entry.isFile()) continue;
+  const file = path.join(entry.parentPath, entry.name);
+  const relative = path.relative(root, file).split(path.sep).join("/");
+  const data = readFileSync(file);
+  files.push({ path: relative, text: isTextAsset(relative) ? data.toString("utf8") : null });
+  built.push(builtFile(relative, data));
+}
 
 // The served files of the journeys players cannot open yet (content:build lists them): the list must name exactly the
 // journeys of the generated catalog whose files do not ship, or it is older than the content.
@@ -84,6 +92,16 @@ if (check.withheld.length > 0) {
   console.error(describeWithheld(folder, check.withheld));
   process.exit(1);
 }
+// The list a device that keeps a journey loads by (「オフラインで遊ぶ」): every file of this build, once, as it is here.
+const listText = files.find((file) => file.path === OFFLINE_LIST_FILE)?.text ?? null;
+const playable = catalog.journeys.filter(journeyFilesShip).map((journey) => journey.id);
+const listProblems = checkOfflineList({
+  files: built, listText, indexHtml: files.find((file) => file.path === "index.html")?.text ?? "", playable, withheld: withheldPaths(withheld),
+});
+if (listProblems.length > 0) {
+  console.error(describeOfflineList(folder, listProblems));
+  process.exit(1);
+}
 const dependencies = Object.keys(JSON.parse(readFileSync("package.json", "utf8")).dependencies ?? {});
 const licenses = files.find((file) => file.path === THIRD_PARTY_LICENSES_PATH)?.text ?? null;
 const licenseProblems = checkThirdPartyLicenses(licenses, dependencies);
@@ -96,3 +114,6 @@ console.log(`${folder} の検査: テスト専用のコードとデータは含�
   `Debugモードがオフでも読み込む ${gameFiles.length} ファイルにDebugのコードはありません。` +
   `ライブラリのライセンス一覧（${THIRD_PARTY_LICENSES_PATH}）に dependencies の ${dependencies.length} 件があります。` +
   `公開中でない旅行編（${notShipped.join("・") || "なし"}）の配信ファイル ${withheldPaths(withheld).size} 件は入っていません`);
+// What a device takes in when a player chooses 「オフラインで遊ぶ」 (the measured sizes; nothing loads unless asked).
+const list = readOfflineList(JSON.parse(listText!));
+if (typeof list !== "string") console.log(`端末に入れるファイルの一覧（${OFFLINE_LIST_FILE}）は、ビルドのファイルと合っています。\n${describeOfflineSizes(list)}`);

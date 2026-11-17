@@ -1,0 +1,133 @@
+/* 「オフラインで遊ぶ」 (OfflinePlayDialog, 2026-11-17): one size in its list and its confirmations, as 古い保存データの整理
+   (styles.css dialog.old-data): the title band on top, the text under it (only it scrolls), a confirmation's two
+   answers at the foot. Rows are told apart by their heading and a hairline; no edge at the left. */
+dialog.offline-play[open] {
+  --modal-pad-top: 0px;
+  --modal-pad-inline: 0px;
+  display: flex;
+  flex-direction: column;
+  height: min(90dvh, 720px);
+  padding: 0;
+  overflow: hidden;
+}
+dialog.offline-play .modal-title-bar {
+  flex: none;
+  position: static;
+  margin: 0;
+  padding-left: 22px;
+}
+.offline-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 22px 16px;
+}
+.offline-body > p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.offline-body > .fine-print {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.offline-answers {
+  flex: none;
+  padding: 12px 22px 18px;
+  border-top: 1px solid var(--ds-parchment-line);
+}
+.offline-answers .modal-answers {
+  margin-top: 0;
+  grid-auto-rows: minmax(56px, auto);
+}
+.offline-answers .modal-answers > .primary {
+  border-radius: 12px;
+}
+/* A row: a journey (or the kept journeys' newer build) under its heading, its state line, its buttons. */
+.offline-row {
+  padding: 12px 0;
+  border-top: 1px solid var(--ds-parchment-line);
+}
+.offline-row > h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.offline-line,
+.offline-notice {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+/* The state line and a result take the focus after a step (read first); neither is a control. */
+.offline-line:focus,
+.offline-notice:focus,
+dialog.offline-play h2:focus {
+  outline: none;
+}
+/* How far a run is, beside its line (the numbers keep their width as they change). */
+.offline-live {
+  margin-left: 0.6em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.offline-notice {
+  margin-top: 6px;
+  font-weight: 600;
+}
+/* The first progress bar of the game: a parchment track with a slate fill, no motion of its own; the same numbers are
+   in the line above it. */
+.offline-progress {
+  display: block;
+  width: 100%;
+  height: 10px;
+  margin: 8px 0 2px;
+  appearance: none;
+  border: 1px solid var(--ds-field-edge);
+  border-radius: 999px;
+  background: var(--ds-parchment-2);
+  overflow: hidden;
+}
+.offline-progress::-webkit-progress-bar { background: var(--ds-parchment-2); }
+.offline-progress::-webkit-progress-value { background: var(--ds-slate-800); }
+.offline-progress::-moz-progress-bar { background: var(--ds-slate-800); }
+/* A row's buttons: the action as a secondary pressable, 「端末から消す」 as a text button in the colour of what deletes;
+   each 44 px or more, apart from each other. */
+.offline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  margin-top: 8px;
+}
+.offline-actions > .secondary,
+.offline-row > .offline-reload {
+  width: auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 18px;
+}
+.offline-row > .offline-reload {
+  margin-top: 8px;
+}
+.offline-actions > .text-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 6px;
+  font-size: 13px;
+}
+.offline-actions > .text-button[data-settling] {
+  color: var(--ds-disabled-ink);
+}
+.offline-body > .offline-advice {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--ds-parchment-line);
+}
+.offline-body > .offline-foot {
+  margin: 6px 0 0;
+}

@@ -2,23 +2,34 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { Plugin } from "vite";
 // With their extensions: vite.config.ts imports this module (Vite's native config loader asks for them).
-import { LAST_JOURNEY_KEY } from "../src/app/last-journey.ts";
+import { LAST_JOURNEY_KEY, RECENT_JOURNEYS_KEY } from "../src/app/last-journey.ts";
+import { KEPT_JOURNEYS_KEY } from "../src/offline/kept-journeys.ts";
 
 /**
  * The page script that starts loading the opening journey's part of the content (src/content/index.ts
  * loadJourneyContent) from index.html, beside the game's own files: otherwise it would start only once the game's
- * script had run. It picks the journey as the title does (src/app/last-journey.ts openingJourneyId): the one this
- * device opened last while it can be played, else the first playable one. `parts` names the part file of each
- * playable journey (paths as index.html writes them).
+ * script had run. It picks the journey as the title does (src/app/last-journey.ts titleJourneyId; the unit test runs
+ * both on the same storage): the one this device opened last while it can be played, else the first playable one;
+ * without a network on a device that keeps journeys for 「オフラインで遊ぶ」 (the mirror src/offline/kept-journeys.ts),
+ * that one when it is kept, else the kept one opened most recently, else the first kept one. `parts` names the part
+ * file of each playable journey, in the catalog's order (paths as index.html writes them). A storage that cannot be
+ * read counts as nothing remembered and nothing known to be kept.
  */
-export function journeyPartPreloadScript(parts: Readonly<Record<string, string>>, fallback: string, key = LAST_JOURNEY_KEY): string {
-  return `(function(){var p=${JSON.stringify(parts)},j=null;try{j=localStorage.getItem(${JSON.stringify(key)})}catch(e){}` +
-    `var h=Object.prototype.hasOwnProperty.call(p,j)?p[j]:p[${JSON.stringify(fallback)}];if(!h)return;` +
+export function journeyPartPreloadScript(parts: Readonly<Record<string, string>>, fallback: string): string {
+  const key = (name: string) => `localStorage.getItem(${JSON.stringify(name)})`;
+  return `(function(){var p=${JSON.stringify(parts)},o=Object.prototype.hasOwnProperty,j=null,r=[],k=[],w=true;` +
+    // A stored list: the playable journeys it names (anything else counts as none).
+    `function a(v){try{v=JSON.parse(v)}catch(e){return[]}return Array.isArray(v)?v.filter(function(x){return typeof x==="string"&&o.call(p,x)}):[]}` +
+    `try{j=${key(LAST_JOURNEY_KEY)};w=navigator.onLine!==false;if(!w){k=a(${key(KEPT_JOURNEYS_KEY)});r=a(${key(RECENT_JOURNEYS_KEY)})}}catch(e){k=[]}` +
+    `var h=o.call(p,j)?j:${JSON.stringify(fallback)};` +
+    `if(!w&&k.length&&k.indexOf(h)<0){var n=null,i,s=Object.keys(p);for(i=0;i<r.length&&!n;i++)if(k.indexOf(r[i])>=0)n=r[i];` +
+    `for(i=0;i<s.length&&!n;i++)if(k.indexOf(s[i])>=0)n=s[i];h=n}` +
+    `h=p[h];if(!h)return;` +
     `var l=document.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;document.head.appendChild(l)})();`;
 }
 
 /** The playable journeys of the generated catalog, in its order (the first is the default). */
-function playableJourneys(root: string): string[] {
+export function playableJourneys(root: string): string[] {
   const catalog = JSON.parse(readFileSync(path.join(root, "src/content/generated/content/journeys/catalog.json"), "utf8")) as
     { journeys: { id: string; status: string }[] };
   return catalog.journeys.filter((journey) => journey.status === "available").map((journey) => journey.id);

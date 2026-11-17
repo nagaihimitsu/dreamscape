@@ -2,9 +2,18 @@
  * How the service worker (service-worker.ts) answers a request for the game's own files, so that later visits read
  * them from the browser instead of the network (2026-11-13). Pure: the unit test checks it, and the build
  * (scripts/service-worker-build.ts) sorts the built files with the same rule to version the caches.
+ *
+ * What 「オフラインで遊ぶ」 keeps on a device is answered before these rules (offline-rules.ts); a device that keeps
+ * nothing is answered by these rules alone.
  */
+// With its extension: vite.config.ts loads this module through scripts/service-worker-build.ts (Vite's native config loader asks for it).
+import { DOWNLOAD_PARAM } from "../offline/state.ts";
+
 export type CacheRule =
-  /** Left to the browser as if there were no worker: another site, not a GET, a range (video, streamed audio), a movie. */
+  /**
+   * Left to the browser as if there were no worker: another site, not a GET, a range (video, streamed audio), a movie,
+   * and the page's own requests for the files 「オフラインで遊ぶ」 keeps (DOWNLOAD_PARAM: always the network, never kept here).
+   */
   | "pass"
   /** The page (index.html, any query), the manifest, the licence list, the icons: the network first, so a new version shows; the last copy when offline. */
   | "network-first"
@@ -38,7 +47,7 @@ export function cacheRule(request: RequestFacts, scope: string): CacheRule {
   if (request.method !== "GET" || request.range) return "pass";
   const url = new URL(request.url);
   const base = new URL(scope);
-  if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) return "pass";
+  if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname) || url.searchParams.has(DOWNLOAD_PARAM)) return "pass";
   if (request.mode === "navigate") return "network-first";
   return fileRule(decodeURIComponent(url.pathname.slice(base.pathname.length)));
 }

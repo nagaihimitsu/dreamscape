@@ -7,9 +7,6 @@ import { loadAllJourneyContent } from "./content";
 import { registerServiceWorker } from "./app/service-worker";
 import "./app/styles.css";
 
-// Later visits read the game's files from the browser (production builds only; src/app/service-worker.ts).
-if (import.meta.env.PROD) registerServiceWorker();
-
 // Debug's 「場面の確認」 (?debug, launch URLs) and the asset preview (?character-preview)
 // run on their own page and never mount beside a normal game. They are loaded only
 // when opened: lazy chunks the title page does not load (scripts/check-dist.ts). They open any
@@ -24,6 +21,9 @@ const debugAllowed = import.meta.env.DEV || readDebugMode(browserStorage);
 const query = new URLSearchParams(window.location.search);
 const showDebug = debugAllowed && query.has("debug");
 const showCharacterPreview = debugAllowed && query.has("character-preview");
+// Later visits read the game's files from the browser (production builds only; src/app/service-worker.ts). On the
+// game's own page, a device that keeps a journey for 「オフラインで遊ぶ」 also looks for a newer build of it.
+if (import.meta.env.PROD) registerServiceWorker({ offline: !showDebug && !showCharacterPreview });
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     {showDebug ? (

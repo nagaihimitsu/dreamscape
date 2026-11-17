@@ -1,12 +1,15 @@
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import path from "node:path";
 import type { Plugin } from "vite";
+// With its extension: vite.config.ts imports this module (Vite's native config loader asks for it).
+import { readJourneyPaths } from "./journey-files.ts";
 
 // The served files a production build leaves out (user decision 2026-11-16): those of each journey players cannot
 // open yet (src/content/journey-catalog.ts journeyFilesShip), so its photos, pictures and sounds wait for its release.
 // content:build lists them (scripts/content-outputs.ts withheldFiles), the production build copies the generated
 // public folder without them (withheldFilesPlugin) and the dist check (scripts/check-dist.ts) fails when one is in
-// dist/. The development server serves them all. No project module is imported here: vite.config.ts loads this one.
+// dist/. The development server serves them all. They are the files of journey-files.ts's list whose journey does not
+// ship. Only that module is imported here (no other project module): vite.config.ts loads this one.
 
 /** The list content:build writes: `{ schemaVersion: 1, journeys: { <journeyId>: [<served path>, …] } }`. */
 export const WITHHELD_FILES_FILE = "src/content/generated/withheld-files.json";
@@ -16,14 +19,7 @@ export type WithheldFiles = { schemaVersion: 1; journeys: Record<string, string[
 
 /** Read the list of `root` (WITHHELD_FILES_FILE); throws a message for the person when it is missing or malformed. */
 export function readWithheldFiles(root: string): WithheldFiles {
-  const file = path.join(root, WITHHELD_FILES_FILE);
-  if (!existsSync(file)) throw new Error(`${WITHHELD_FILES_FILE} がありません。先に npm run content:build を実行してください。`);
-  const data = JSON.parse(readFileSync(file, "utf8")) as Partial<WithheldFiles> | null;
-  const journeys = data?.journeys;
-  if (data?.schemaVersion !== 1 || typeof journeys !== "object" || journeys === null || Array.isArray(journeys) ||
-    !Object.values(journeys).every((paths) => Array.isArray(paths) && paths.every((item) => typeof item === "string")))
-    throw new Error(`${WITHHELD_FILES_FILE} の形が違います。npm run content:build で生成し直してください。`);
-  return { schemaVersion: 1, journeys };
+  return readJourneyPaths(root, WITHHELD_FILES_FILE);
 }
 
 /** Every withheld served path, with the journey whose file it is. */

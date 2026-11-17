@@ -14,7 +14,7 @@ import {
   tagContext,
 } from "../content";
 import { scenePerson } from "../domain/scene-person";
-import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
+import { defaultJourneyId, getJourney, getJourneyForCity, journeys } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
 import { getDayEnd } from "../domain/day-end";
@@ -35,6 +35,8 @@ import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
 import { LazyDialog } from "../components/LazyDialog";
+import { holdOfflineDownloads, onOfflineEvent, refreshOffline, useOfflineStatus, useOnline, type OfflineEvent } from "../offline/offline-status";
+import { offlineDeleteNote, offlineEntryMark, offlineSummary, offlineTitleHint, offlineTitleStatus, offlineToast } from "./offline-summary";
 import { oldDataContext, readOldData, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -174,6 +176,7 @@ const DebugShotSetting = lazy(() => import("./DebugShotSetting"));
 // them; LazyDialog shows nothing while one loads and says so if it cannot be loaded).
 const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ default: module.CreditsDialog })));
 const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({ default: module.OldDataCleanup })));
+const OfflinePlayDialog = lazy(() => import("./OfflinePlayDialog").then((module) => ({ default: module.OfflinePlayDialog })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
 const AlbumDialog = lazy(() => import("../features/journey/AlbumDialog").then((module) => ({ default: module.AlbumDialog })));
 const GlossaryDialog = lazy(() => import("../features/journey/GlossaryDialog").then((module) => ({ default: module.GlossaryDialog })));
@@ -310,6 +313,25 @@ export function GameApp({
   // The background loading (src/media/preload-ahead.ts): after each saved change, the pictures and voices of the lines
   // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
   usePreloadAhead(game, journeyId, !!opening);
+  // 「オフラインで遊ぶ」 (2026-11-17; src/offline/): what this device keeps of the journeys, for the entries on the title and
+  // in ゲームの設定 and the dialog they open. Not in Debug, nor on a page given another storage (a test's): the entries
+  // belong to the game's own page. A journey being loaded starts no new file while the opening movie streams.
+  const offline = useOfflineStatus();
+  const online = useOnline();
+  const offlineEntries = !isDebug && !!oldDataStorage;
+  // The ways into the dialog show when the browser has what keeping a journey needs, as known when the page starts.
+  // They stay when the dialog itself finds that the browser refuses after all (its storage, its service worker): the
+  // dialog says so, and the button that opened it is still there to take the focus back.
+  const [offlineEntryShown] = useState(() => offline.support !== "unsupported");
+  const [offlineOpen, setOfflineOpen] = useState(false);
+  useEffect(() => {
+    holdOfflineDownloads(!!opening);
+    return () => holdOfflineDownloads(false);
+  }, [opening]);
+  // What happened to a journey's loading while the player is in the game with the dialog closed: a short word under the header.
+  const offlineWord = useRef<(event: OfflineEvent) => void>(() => undefined);
+  offlineWord.current = (event) => { if (game && !offlineOpen) session.showToast(offlineToast(event, journeys)); };
+  useEffect(() => (offlineEntries ? onOfflineEvent((event) => offlineWord.current(event)) : undefined), [offlineEntries]);
   // A game opened on its save (the page's start, a journey switch) shows its scene as it was: the scene's cues (a line's
   // phone, a city's title...) wait for the player's first action, as after 「ロード」 (loadSavedGame).
   useLayoutEffect(() => {
@@ -428,6 +450,10 @@ export function GameApp({
     try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
   }, [game, invalid, isDebug, oldDataStorage, journeyId]);
   const [creditsOpen, setCreditsOpen] = useState(false);
+  // ゲームの設定's line under 「オフライン」; on the title, the same words for screen readers and a short mark on the entry
+  // (a run goes on when the dialog is closed, and no line is added above 「旅をはじめる」 on a short screen).
+  const offlineLine = offlineSummary(offline, journeys);
+  const offlineMark = offlineEntryMark(offline);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
   // the title's selector has taken the focus back (child effects run first).
@@ -866,6 +892,8 @@ export function GameApp({
           debugMode.refresh();
           voiceRate.refresh();
           shot.refresh();
+          // What the device keeps for 「オフラインで遊ぶ」 may have changed too (a run that ended, another tab).
+          if (offlineEntries) void refreshOffline();
           setSettings(true);
         }}
         onReturnToFreeTime={debugMarks && canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
@@ -978,7 +1006,13 @@ export function GameApp({
                     onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
                 </div>
               )}
-              {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
+              {/* The way into 「オフラインで遊ぶ」 sits beside the selector's caption (the title shows only without a game: a
+                  player with a save finds it in ゲームの設定). */}
+              {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus}
+                aside={offlineEntries && offlineEntryShown ? <button type="button" className="text-button offline-entry" data-testid="offline-entry"
+                  onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ{offlineMark && `（${offlineMark}）`}</button> : undefined} />}
+              {offlineEntries && offlineEntryShown && <p role="status" className="sr-only" data-testid="offline-title-status">{offlineTitleStatus(offline, journeys)?.text}</p>}
+              {offlineEntries && offlineTitleHint(offline, online, journeyId) && <p className="fine-print offline-hint">{offlineTitleHint(offline, online, journeyId)}</p>}
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
                 <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine}
                   playerRef={titleReading.ref} />
@@ -1407,6 +1441,7 @@ export function GameApp({
           </p>
           <p className="fine-print">
             文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
+            {offlineEntries && offlineDeleteNote(offline)}
           </p></>}
           <ModalAnswers
             cancel={<button type="button" className="secondary" autoFocus onClick={() => setDeleteSnapshot(null)}>消去せず戻る</button>}
@@ -1434,7 +1469,7 @@ export function GameApp({
         </Modal>
       )}
       {/* ゲームの設定 (2026-11-14 user decision): its groups under their headings, the most used first (文字と表示, 音と振動,
-          名前, データ), and the creator's tools last, folded away (open while Debug mode is on). The first focus is the
+          名前, データ, オフライン), and the creator's tools last, folded away (open while Debug mode is on). The first focus is the
           title bar's 「× 閉じる」 (the first control). What it opens (the credits, the old data, a deletion's or a journey
           switch's confirmation) stacks over it and closes back to it. A form is in it: a tap beside it does not close it. */}
       {settings && game && (
@@ -1597,6 +1632,17 @@ export function GameApp({
             </button>
           </div>
           {settingsNotice?.at === "delete" && <p role="status">{settingsNotice.text}</p>}
+          {/* 「オフライン」 (2026-11-17): what this device keeps of the journeys, in one line (a status region that stays
+              mounted; how far a run is shows beside it and is not announced), and the way into the dialog that does the rest. */}
+          {offlineEntries && <>
+            <h3>オフライン</h3>
+            <p role="status" className="offline-summary" data-testid="offline-summary">
+              {offlineLine.text}{offlineLine.live && <span className="offline-summary-live" aria-hidden="true">{offlineLine.live}</span>}
+            </p>
+            {offlineEntryShown && <div className="settings-data-links">
+              <button type="button" className="text-button offline-entry" data-testid="offline-settings-entry" onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ</button>
+            </div>}
+          </>}
           {(!isDebug || debugOn) && <CreatorSettings initiallyOpen={debugOn}>
             {!isDebug && <DebugModeSetting debugMode={debugMode} />}
             {/* 撮影の形 (Debug mode only), loaded when shown. */}
@@ -1618,6 +1664,8 @@ export function GameApp({
           setOpening(null);
           startJourney(opening.player, opening.heroine, opening.reading);
         }} />}
+      {/* From the title's selector, or over ゲームの設定 (closing goes back to it, where it was). Closing never stops a run. */}
+      {offlineOpen && <LazyDialog onClose={() => setOfflineOpen(false)}><OfflinePlayDialog onClose={() => setOfflineOpen(false)} journeys={journeys} /></LazyDialog>}
       {/* From the title's notice, or over ゲームの設定 (closing goes back to it, where it was). */}
       {oldDataOpen && oldDataStorage && <LazyDialog onClose={() => setOldDataOpen(false)}>
         <OldDataCleanup storage={oldDataStorage} context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />

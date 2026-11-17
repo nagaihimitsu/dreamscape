@@ -6,11 +6,14 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
-  checkDist, checkThirdPartyLicenses, debugEntryModules, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts,
-  describeMiniGamesOnTitle, describeWithheld, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, importedScripts, isDebugEntryChunk, isTextAsset,
+  checkDist, checkOfflineList, checkThirdPartyLicenses, debugEntryModules, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts,
+  describeMiniGamesOnTitle, describeOfflineList, describeWithheld, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, importedScripts, isDebugEntryChunk, isTextAsset,
   JOURNEY_PART_MARKER, journeyPartsIn, lazyDebugMarkers, miniGameMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
+import { OFFLINE_LIST_FILE, type OfflineList } from "../src/offline/list";
+import { playableJourneys } from "./journey-parts-build";
+import { builtFile, offlineList, type BuiltFile } from "./offline-list-build";
 import { runtimeImports } from "./test-sets";
 import { readWithheldFiles, withheldPaths } from "./withheld-files";
 
@@ -18,6 +21,13 @@ import { readWithheldFiles, withheldPaths } from "./withheld-files";
 // against small in-memory "builds". Only the run of scripts/check-dist.ts reads
 // generated content (the journey catalog and the withheld files: npm run content:build).
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+/** A small build's files as the offline list reads them, and the list the build would write for it (no journey owns a file). */
+const builtFiles = (build: readonly DistFile[]): BuiltFile[] => build.map((file) => builtFile(file.path, Buffer.from(file.text ?? "")));
+const listOf = (build: readonly DistFile[], playable: readonly string[]): OfflineList => offlineList({
+  files: builtFiles(build), indexHtml: build.find((file) => file.path === "index.html")?.text ?? "",
+  owners: { schemaVersion: 1, journeys: Object.fromEntries(playable.map((id) => [id, []])) }, playable, release: 0,
+});
 
 const cleanBuild: DistFile[] = [
   { path: "index.html", text: '<script type="module" src="./assets/index-abc.js"></script>' },
@@ -224,6 +234,86 @@ describe("production build guard", () => {
     expect(describeWithheld("dist", many)).toContain("- assets/b/9.webp（trip_b）\n- ほか 2 件");
   });
 
+  describe("the list of 「オフラインで遊ぶ」 (2026-11-17)", () => {
+    // A build as the real one: the page, its files, a journey's own picture and voice, the worker and the list.
+    const playable = ["trip", "trip_two"];
+    const offlineBuild: DistFile[] = [
+      ...checkedBuild,
+      { path: "assets/tourism/trip/tower.webp", text: "tower" },
+      { path: "assets/voice/trip_two/line_001.mp3", text: "voice" },
+      { path: "sw.js", text: "self.addEventListener" },
+    ];
+    const made = offlineList({
+      files: builtFiles(offlineBuild), indexHtml: checkedHtml, playable, release: 3,
+      owners: { schemaVersion: 1, journeys: { trip: ["assets/tourism/trip/tower.webp"], trip_two: ["assets/voice/trip_two/line_001.mp3"], trip_b: [] } },
+    });
+    const problems = (change: (list: OfflineList) => unknown = (list) => list, extra: Partial<Parameters<typeof checkOfflineList>[0]> = {}) => {
+      const text = JSON.stringify(change(JSON.parse(JSON.stringify(made)) as OfflineList));
+      return checkOfflineList({ files: builtFiles([...offlineBuild, { path: OFFLINE_LIST_FILE, text }]), listText: text, indexHtml: checkedHtml, playable, ...extra });
+    };
+    const sha = "0".repeat(16);
+
+    it("passes the list the build writes: every file of the build once, but the worker and the list", () => {
+      expect(problems()).toEqual([]);
+      expect(made.journeys.trip).toHaveLength(1);
+      expect([...made.shared, ...Object.values(made.journeys).flat()].map(([file]) => file).sort())
+        .toEqual(offlineBuild.map((file) => file.path).filter((file) => file !== "sw.js").sort());
+    });
+
+    it("fails without a list, on text that is no JSON and on JSON that is no list", () => {
+      expect(checkOfflineList({ files: builtFiles(offlineBuild), listText: null, indexHtml: checkedHtml, playable }))
+        .toEqual(["offline-files.json がありません。vite.config.ts の plugins に serviceWorkerPlugin があるかを確認してください（scripts/service-worker-build.ts が書き出します）。"]);
+      expect(checkOfflineList({ files: builtFiles(offlineBuild), listText: "<!doctype html>", indexHtml: checkedHtml, playable })).toEqual(["offline-files.json を JSON として読めません。"]);
+      for (const change of [() => [], (list: OfflineList) => ({ ...list, schemaVersion: 2 }), (list: OfflineList) => ({ ...list, build: "today" })])
+        expect(problems(change)).toEqual(["offline-files.json の形が違います（ページとサービスワーカーが読める一覧ではありません）。"]);
+    });
+
+    it("fails on a listed file the build lacks, and on one whose size or hash differs", () => {
+      expect(problems((list) => ({ ...list, shared: [...list.shared, ["assets/gone-a1b2c3d4.js", 4, sha]] }))).toEqual(["assets/gone-a1b2c3d4.js（共通）がビルドにありません。"]);
+      const withFile = (file: [string, number, string]) => (list: OfflineList) => ({ ...list, journeys: { ...list.journeys, trip: [file] } });
+      const [tower, bytes, hash] = made.journeys.trip[0];
+      expect(problems(withFile([tower, bytes + 1, hash]))).toEqual(["assets/tourism/trip/tower.webp（trip）の大きさかハッシュが、ビルドのファイルと違います。"]);
+      expect(problems(withFile([tower, bytes, sha]))).toEqual(["assets/tourism/trip/tower.webp（trip）の大きさかハッシュが、ビルドのファイルと違います。"]);
+      // The files as they are in the build decide: one changed after the list was written is found.
+      const later = builtFiles(offlineBuild.map((file) => file.path === tower ? { ...file, text: "tower, edited" } : file));
+      expect(checkOfflineList({ files: later, listText: JSON.stringify(made), indexHtml: checkedHtml, playable }))
+        .toEqual(["assets/tourism/trip/tower.webp（trip）の大きさかハッシュが、ビルドのファイルと違います。"]);
+    });
+
+    it("fails on a file of the build in no group, in two groups, and on the worker or the list in a group", () => {
+      expect(problems((list) => ({ ...list, journeys: { ...list.journeys, trip_two: [] } }))).toEqual(["assets/voice/trip_two/line_001.mp3 がどの組にも入っていません。"]);
+      expect(problems((list) => ({ ...list, journeys: { ...list.journeys, trip_two: [...list.journeys.trip_two, ...list.journeys.trip] } })))
+        .toEqual(["offline-files.json に同じファイルが2回あります: assets/tourism/trip/tower.webp"]);
+      expect(problems((list) => ({ ...list, shared: [...list.shared, list.shared[0]] }))).toEqual([`offline-files.json に同じファイルが2回あります: ${made.shared[0][0]}`]);
+      const worker = builtFile("sw.js", Buffer.from("self.addEventListener"));
+      expect(problems((list) => ({ ...list, shared: [...list.shared, ["sw.js", worker.bytes, worker.sha256.slice(0, 16)]] }))).toEqual(["sw.js は一覧に入れないファイルです。"]);
+    });
+
+    it("fails on a file of a journey that does not ship and on the sample journey's", () => {
+      const withheld = new Map([["assets/tourism/trip/tower.webp", "trip"]]);
+      expect(problems(undefined, { withheld })).toEqual(["assets/tourism/trip/tower.webp は、まだ遊べない旅行編（trip）の配信ファイルです。"]);
+      const sample = { path: "assets/tourism/sample_trip/mihon_market.png", text: "market" };
+      const withSample = offlineList({ files: builtFiles([...offlineBuild, sample]), indexHtml: checkedHtml, playable, release: 3,
+        owners: { schemaVersion: 1, journeys: { trip: ["assets/tourism/trip/tower.webp"], trip_two: ["assets/voice/trip_two/line_001.mp3"] } } });
+      expect(checkOfflineList({ files: builtFiles([...offlineBuild, sample]), listText: JSON.stringify(withSample), indexHtml: checkedHtml, playable }))
+        .toEqual(["assets/tourism/sample_trip/mihon_market.png は、見本の旅行編（sample_trip）のファイルです。"]);
+    });
+
+    it("fails when the entry script is not the page's, and when the groups are not the journeys players can open", () => {
+      expect(problems((list) => ({ ...list, entry: "assets/DebugMode-x1.js" }))).toEqual(["最初のスクリプト（entry: assets/DebugMode-x1.js）が index.html のもの（assets/index-abc.js）と違います。"]);
+      expect(problems(undefined, { playable: ["trip"] })).toEqual(["旅行編の組（trip・trip_two）が、遊べる旅行編（trip）と違います。"]);
+      expect(problems(undefined, { playable: ["trip_two", "trip"] })).toEqual(["旅行編の組（trip・trip_two）が、遊べる旅行編（trip_two・trip）と違います。"]);
+      expect(problems(undefined, { playable: ["trip", "trip_two", "trip_new"] })).toEqual(["旅行編の組（trip・trip_two）が、遊べる旅行編（trip・trip_two・trip_new）と違います。"]);
+    });
+
+    it("reports the first ten problems, the count of the rest and where the list comes from", () => {
+      const report = describeOfflineList("dist", Array.from({ length: 12 }, (_, index) => `assets/${index}.webp がどの組にも入っていません。`));
+      expect(report).toContain("本番ビルド（dist）の、端末に入れるファイルの一覧（offline-files.json。「オフラインで遊ぶ」が読みます）に問題があります。\n- assets/0.webp がどの組にも入っていません。");
+      expect(report).toContain("- assets/9.webp がどの組にも入っていません。\n- ほか 2 件\n");
+      expect(report).toContain("scripts/service-worker-build.ts");
+    });
+  });
+
   it("keeps each journey's part of the content in a file of its own, off the title page", () => {
     expect(journeyPartsIn('{marker:"dreamscape-journey-part:milano"}')).toEqual(["milano"]);
     expect(journeyPartsIn('{marker:"dreamscape-core-part"}')).toEqual([]);
@@ -253,21 +343,39 @@ describe("production build guard", () => {
   it("passes a clean build and fails the build command (scripts/check-dist.ts) on a leak, whichever built file holds the code", () => {
     const tsx = pathToFileURL(createRequire(import.meta.url).resolve("tsx")).href;
     const folder = mkdtempSync(path.join(tmpdir(), "dreamscape-dist-"));
-    const check = (build: DistFile[]) => {
+    // Each build gets the offline list the real build writes for its files (the journeys players can open are this
+    // checkout's, which the command reads from the generated catalog); `list` gives another one, or none (null).
+    const playable = playableJourneys(root);
+    const check = (build: DistFile[], list?: ((made: OfflineList) => unknown) | null) => {
       rmSync(folder, { recursive: true, force: true });
       for (const file of build) {
         mkdirSync(path.dirname(path.join(folder, file.path)), { recursive: true });
         writeFileSync(path.join(folder, file.path), file.text ?? "");
+      }
+      if (list !== null) {
+        const made = listOf(build, playable);
+        writeFileSync(path.join(folder, OFFLINE_LIST_FILE), JSON.stringify(list ? list(made) : made));
       }
       return spawnSync(process.execPath, ["--import", tsx, path.join(root, "scripts/check-dist.ts"), folder], { cwd: root, encoding: "utf8" });
     };
     try {
       expect(dependencies.length).toBeGreaterThan(0);
       expect(checkThirdPartyLicenses(licenses, dependencies)).toEqual([]);
-      // The clean build passes every check, the licence check included.
+      // The clean build passes every check, the licence check included, and prints what a device takes in.
       const clean = check(checkedBuild);
       expect(clean.status, clean.stderr).toBe(0);
-      expect(clean.stdout).toContain(`の検査: テスト専用のコードとデータは含まれていません（${checkedBuild.length} ファイル）。`);
+      expect(clean.stdout).toContain(`の検査: テスト専用のコードとデータは含まれていません（${checkedBuild.length + 1} ファイル）。`);
+      expect(clean.stdout).toContain(`端末に入れるファイルの一覧（${OFFLINE_LIST_FILE}）は、ビルドのファイルと合っています。\n端末に入れる大きさ（オフラインで遊ぶ）: 共通 `);
+      for (const journeyId of playable) expect(clean.stdout).toContain(`\n- ${journeyId}: 0.0 MB（0 ファイル）。最初の旅行編なら共通と合わせて `);
+      // Without the offline list, or with one that does not match the files (a file changed after the build), it
+      // fails at the list's check, before the licence check.
+      const unlisted = check(checkedBuild, null);
+      expect(unlisted.status, unlisted.stdout).toBe(1);
+      expect(unlisted.stderr).toContain(`端末に入れるファイルの一覧（${OFFLINE_LIST_FILE}。「オフラインで遊ぶ」が読みます）に問題があります。\n- ${OFFLINE_LIST_FILE} がありません。`);
+      const stale = check(checkedBuild, (made) => ({ ...made, shared: made.shared.map(([file, bytes, sha]) => file === "assets/index-abc.css" ? [file, bytes + 1, sha] : [file, bytes, sha]) }));
+      expect(stale.status, stale.stdout).toBe(1);
+      expect(stale.stderr).toContain("- assets/index-abc.css（共通）の大きさかハッシュが、ビルドのファイルと違います。");
+      expect(stale.stderr).not.toContain("ライセンス一覧に問題があります");
       // Each leak fails at its own check (the licence list is the same valid one).
       const hook = check(hookAndSampleInDebug);
       expect(hook.status, hook.stdout).toBe(1);

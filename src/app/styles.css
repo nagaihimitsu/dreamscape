@@ -744,6 +744,21 @@ dialog.modal .settings-data-links > .text-button {
   padding: 0 4px;
   font-size: 13px;
 }
+/* 「オフライン」's line in ゲームの設定: what this device keeps of the journeys (how far a run is beside it, in digits of one width). */
+dialog.modal .offline-summary {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.offline-summary-live {
+  margin-left: 0.6em;
+  font-variant-numeric: tabular-nums;
+}
+/* The title's line under the journey choice while offline: the chosen journey is not on the device. */
+.intro > .offline-hint {
+  margin: -8px 0 12px;
+  line-height: 1.6;
+}
 /* 「制作者向け」: Debug mode and its tools, folded away for players; its summary a 44-px row like the group headings. */
 .settings-creator {
   margin-top: 14px;

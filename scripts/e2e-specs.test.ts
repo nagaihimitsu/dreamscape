@@ -35,7 +35,7 @@ const notInProduction = new RegExp(`${devServerOnly.source}|place\\w*Save`, "u")
 
 describe("E2E specs", () => {
   it("are found", () => {
-    expect(specs).toEqual(expect.arrayContaining(["boot.spec.ts", "play.spec.ts", "save-load.spec.ts", "sample-journey.spec.ts", "explore/monkey.spec.ts"]));
+    expect(specs).toEqual(expect.arrayContaining(["boot.spec.ts", "play.spec.ts", "save-load.spec.ts", "sample-journey.spec.ts", "offline.spec.ts", "explore/monkey.spec.ts"]));
   });
 
   it("keep the exploration (@explore) in tests/e2e/explore/ and out of every other tier", () => {
@@ -90,6 +90,15 @@ describe("E2E specs", () => {
   it("run the sample journey's playthrough only in the sample tier (its server is the only one with the sample)", () => {
     for (const test of specTests(source("sample-journey.spec.ts")))
       expect(test.tiers, `「${test.title}」`).toEqual(["sample"]);
+  });
+
+  // 「オフラインで遊ぶ」 needs the built site and its service worker (the development server registers none), served by a
+  // server the test can stop (tests/e2e/dist-server.ts serves dist/, which only the production tier's server builds).
+  it("run the tests of 「オフラインで遊ぶ」, and every spec that serves dist/ itself, only in the production tier", () => {
+    const serving = specs.filter((name) => /from "\.\/dist-server"/u.test(source(name)));
+    expect(serving).toContain("offline.spec.ts");
+    for (const name of serving) for (const test of specTests(source(name)))
+      expect(test.tiers, `「${test.title}」 in ${name}`).toEqual(["prod"]);
   });
 
   it("give each gating tier its own CI job, the sample job after making a journey with journey:new", () => {

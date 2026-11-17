@@ -26,10 +26,22 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       # The build only (content, types, vite, dist check); tests run by hand.
+      # DREAMSCAPE_RELEASE numbers the deploy in dist/offline-files.json (scripts/offline-list-build.ts): a device that
+      # keeps a journey for 「オフラインで遊ぶ」 never goes back to a lower number. The run number rises with every new run
+      # of this workflow, a run of an older commit included (workflow_dispatch, a revert); re-running an old run keeps
+      # that run's number, so such a deploy does not reach those devices: roll back with a new run.
+      # The run number is counted per workflow file: do not rename or recreate this file (it would start at 1 again,
+      # and those devices would silently stay on their build until the number passes the old one). Only if that cannot
+      # be avoided: add the old file's last run number in a step before the build (GitHub's expressions cannot add),
+      # e.g. with 412 as that number:
+      #   - run: echo "DREAMSCAPE_RELEASE=$(( ${{ github.run_number }} + 412 ))" >> "$GITHUB_ENV"
+      # and take DREAMSCAPE_RELEASE out of the build step's env (a step's own env would win), and out of the check in
+      # scripts/offline-list-build.test.ts. While this file keeps its name, nothing of it is needed.
       - name: Build content, check types and build for production
         run: npm run build
         env:
           DREAMSCAPE_INK_CACHE: "off"
+          DREAMSCAPE_RELEASE: ${{ github.run_number }}
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:

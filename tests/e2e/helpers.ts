@@ -7,6 +7,7 @@ import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-h
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
 import { openMiniGame } from "../../src/domain/minigame";
 import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
+import { OFFLINE_CACHE, stateKey, type OfflineState } from "../../src/offline/state";
 import { isDebugEntryChunk, journeyPartsIn, lazyDebugMarkers } from "../../scripts/dist-guard";
 import { WITHHELD_FILES_FILE, type WithheldFiles } from "../../scripts/withheld-files";
 
@@ -57,7 +58,8 @@ const gameKeyPrefix = "dreamscape.";
  * - Every test fails on an uncaught page error, a console error or a missing image, media or
  *   font file of the game in any of its tabs. Blocked requests to other origins are ignored.
  *   A test that can be replayed (the monkey's seed) adds a `reproduce` annotation; the
- *   guard's failure message repeats it.
+ *   guard's failure message repeats it. A test that makes requests fail on purpose (a
+ *   connection lost while a journey is loaded) names the browser's message first (expectError).
  * - A failed test gets each tab's URL and the game's localStorage keys attached (storage.json).
  */
 export const test = base.extend<{ externalNetwork: void; errorGuard: void; failureReport: void }>({
@@ -90,13 +92,24 @@ export const test = base.extend<{ externalNetwork: void; errorGuard: void; failu
     context.on("page", watch);
     await use();
     const reproduce = testInfo.annotations.filter((note) => note.type === "reproduce").map((note) => ` (${note.description})`).join("");
-    expect(errors, `console errors, uncaught exceptions or missing game files${reproduce}`).toEqual([]);
+    const expected = testInfo.annotations.filter((note) => note.type === EXPECTED_ERROR && note.description).map((note) => note.description!);
+    expect(errors.filter((error) => !expected.some((text) => error.includes(text))), `console errors, uncaught exceptions or missing game files${reproduce}`).toEqual([]);
   }, { auto: true }],
   failureReport: [async ({ context }, use, testInfo) => {
     await use();
     if (testInfo.status !== testInfo.expectedStatus) await attachStorage(context.pages(), testInfo);
   }, { auto: true }],
 });
+
+const EXPECTED_ERROR = "expected-error";
+/**
+ * The running test causes this failure on purpose: the error guard lets pass the console errors whose words hold
+ * `text` (the browser's own message, e.g. "net::ERR_INTERNET_DISCONNECTED" for requests cut off by a lost connection).
+ * Every other error still fails the test.
+ */
+export function expectError(text: string) {
+  base.info().annotations.push({ type: EXPECTED_ERROR, description: text });
+}
 
 async function attachStorage(pages: Page[], testInfo: TestInfo) {
   const tabs = await Promise.all(pages.map(async (page) => {
@@ -136,6 +149,20 @@ export function bothStorages(page: Page): Promise<{ local: Record<string, string
   return page.evaluate(() => ({
     local: Object.fromEntries(Object.entries(localStorage)), session: Object.fromEntries(Object.entries(sessionStorage)),
   }));
+}
+
+/**
+ * What 「オフラインで遊ぶ」 keeps in this browser, read from its Cache Storage as the page and the service worker read it
+ * (src/offline/state.ts): null while the device keeps nothing (no store at all), else the stored state (null when the
+ * store has none) and the addresses of everything in the store (kept files, lists, the state, fonts).
+ */
+export function readOfflineStore(page: Page): Promise<{ state: OfflineState | null; keys: string[] } | null> {
+  return page.evaluate(async ({ name, state }) => {
+    if (!(await caches.has(name))) return null;
+    const store = await caches.open(name);
+    const stored = await store.match(state);
+    return { state: stored ? await stored.json() : null, keys: (await store.keys()).map((request) => request.url) };
+  }, { name: OFFLINE_CACHE, state: stateKey(new URL("./", page.url()).href) });
 }
 
 const readJson = <T>(url: URL): T => JSON.parse(readFileSync(url, "utf8")) as T;
@@ -242,7 +269,8 @@ function showsAt(page: Page, point: { x: number; y: number }, surface: string): 
 export const ops = {
   /** Title screen: choose a journey and names, and start playing. */
   async startJourney(page: Page, journeyId = "milano", names: readonly [string, string] = ["航", "澪"]) {
-    await page.goto("/");
+    // The game's own folder: the site's root for every tier's server, a sub-path for the built site of offline.spec.ts.
+    await page.goto("./");
     await ops.beginJourney(page, journeyId, names);
     await expect(page.getByTestId("travel-menu")).toBeVisible();
   },
@@ -331,6 +359,48 @@ export const ops = {
     await expect(credits).toBeVisible();
     await expect(credits).not.toHaveAttribute("data-settling");
     return credits;
+  },
+  /**
+   * 「オフラインで遊ぶ」 (2026-11-17), whatever its step shows (its heading changes: the list, or a confirmation's question).
+   * Only the production build keeps a journey; on the development server the dialog says so.
+   */
+  offlinePlay(page: Page): Locator {
+    return page.getByRole("dialog").filter({ has: page.getByTestId("offline-play") });
+  },
+  /**
+   * 「オフラインで遊ぶ」 from the title screen (beside 「旅行編」) or from ≡メニュー → ゲームの設定 (over which it opens);
+   * returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
+   */
+  async openOfflinePlay(page: Page, from: "title" | "settings"): Promise<Locator> {
+    if (from === "title") await page.getByTestId("offline-entry").click();
+    else await (await ops.openSettings(page)).getByTestId("offline-settings-entry").click();
+    const dialog = ops.offlinePlay(page);
+    await expect(dialog).toBeVisible();
+    await expect(dialog).not.toHaveAttribute("data-settling");
+    return dialog;
+  },
+  /** A row of 「オフラインで遊ぶ」: a journey's (its ID), or "version" (the kept journeys' newer or missing files). Its `data-kind` is its state. */
+  offlineRow(page: Page, id: string): Locator {
+    return ops.offlinePlay(page).locator(`[data-row="${id}"]`);
+  },
+  /**
+   * A button of 「オフラインで遊ぶ」, pressed once it takes presses: each ignores them for a moment after its row's state
+   * changes and after a confirmation opens or closes (the second tap of a double tap; `data-settling`).
+   */
+  async pressOffline(button: Locator) {
+    await expect(button).toBeVisible();
+    await expect(button).not.toHaveAttribute("data-settling");
+    await button.click();
+  },
+  /** In 「オフラインで遊ぶ」: a journey's 「この端末に入れる」, then the confirmation's 「入れる」 (the run starts; nothing loads before it). */
+  async keepJourney(page: Page, journeyId: string) {
+    await ops.pressOffline(ops.offlineRow(page, journeyId).getByRole("button", { name: "この端末に入れる", exact: true }));
+    await ops.pressOffline(ops.offlinePlay(page).getByRole("button", { name: "入れる", exact: true }));
+  },
+  /** In 「オフラインで遊ぶ」: the journey's row says it is on the device, whole (every file loaded and checked, the kept build switched to). */
+  async waitKept(page: Page, journeyId: string, timeout = 120_000) {
+    await expect(ops.offlineRow(page, journeyId)).toHaveAttribute("data-kind", "held", { timeout });
+    await expect(ops.offlineRow(page, journeyId)).toContainText("この端末に入っています");
   },
   /** In 「古い保存データの整理」: tick the listed items whose titles match, then 「選んだデータを消去する」 (the confirmation opens). */
   async chooseOldData(page: Page, cleanup: Locator, titles: readonly RegExp[]): Promise<Locator> {

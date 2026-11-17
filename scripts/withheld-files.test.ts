@@ -2,14 +2,17 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { withheldFiles } from "./content-outputs";
+import { journeyFiles, withheldFiles } from "./content-outputs";
+import { JOURNEY_FILES_FILE, readJourneyFiles } from "./journey-files";
 import { copyReleasedFiles, readWithheldFiles, WITHHELD_FILES_FILE, withheldFilesPlugin, withheldPaths, type WithheldFiles } from "./withheld-files";
 import { derivedImageDirectory, derivedImageFile } from "../src/content/code-images";
 import { journeyCatalogSchema, journeyFilesShip } from "../src/content/journey-catalog";
 
 // User decision 2026-11-16: a production build leaves out the served files (photos, pictures, sounds) of each journey
 // players cannot open yet, by its manifest status alone; the development server serves them all. Fictional journeys
-// below; the last tests read this checkout's generated content (npm run content:build).
+// below; the last tests read this checkout's generated content (npm run content:build). The withheld files are those
+// of the list of every journey's served files (scripts/journey-files.ts; 「オフラインで遊ぶ」 sorts the build by it,
+// 2026-11-17) whose journey does not ship.
 
 const repository = path.resolve(import.meta.dirname, "..");
 let folder: string;
@@ -52,6 +55,26 @@ describe("the rule", () => {
     } });
     expect(withheldFiles([journeys[0]], publicFiles, derived)).toEqual({ schemaVersion: 1, journeys: {} });
   });
+
+  it("lists every journey's served files, playable or not, and gives the root public/ files to none", () => {
+    const publicFiles = new Map<string, string | null>([
+      ["assets/items/item.svg", null],
+      ["assets/tourism/trip/tower.webp", "trip"],
+      ["assets/voice/trip/line_01.mp3", "trip"],
+      ["assets/tourism/b/harbour.webp", "trip_b"],
+    ]);
+    const derived = [derivedImageFile("trip", "tower", "card"), derivedImageFile("trip_b", "harbour", "card")];
+    const owned = journeyFiles(journeys, publicFiles, derived);
+    expect(owned).toEqual({ schemaVersion: 1, journeys: {
+      trip: ["assets/derived/trip/tower.card.webp", "assets/tourism/trip/tower.webp", "assets/voice/trip/line_01.mp3"],
+      trip_b: ["assets/derived/trip_b/harbour.card.webp", "assets/tourism/b/harbour.webp"],
+      trip_c: [],
+    } });
+    // The catalog's order, and one source of ownership: the withheld files are this list's, for the journeys that do not ship.
+    expect(Object.keys(journeyFiles([...journeys].reverse(), publicFiles, derived).journeys)).toEqual(["trip_c", "trip_b", "trip"]);
+    expect(withheldFiles(journeys, publicFiles, derived)).toEqual({ schemaVersion: 1, journeys: { trip_b: owned.journeys.trip_b, trip_c: [] } });
+    expect(Object.values(owned.journeys).flat()).not.toContain("assets/items/item.svg");
+  });
 });
 
 describe("the list and the production build's copy", () => {
@@ -64,6 +87,14 @@ describe("the list and the production build's copy", () => {
     write(WITHHELD_FILES_FILE, JSON.stringify(list));
     expect(readWithheldFiles(folder)).toEqual(list);
     expect([...withheldPaths(list)]).toEqual([["assets/tourism/b/harbour.webp", "trip_b"], ["assets/derived/trip_b/harbour.card.webp", "trip_b"]]);
+  });
+
+  it("reads the list of every journey's files the same way", () => {
+    expect(() => readJourneyFiles(folder)).toThrow(`${JOURNEY_FILES_FILE} がありません。先に npm run content:build を実行してください。`);
+    write(JOURNEY_FILES_FILE, JSON.stringify({ schemaVersion: 2, journeys: {} }));
+    expect(() => readJourneyFiles(folder)).toThrow(`${JOURNEY_FILES_FILE} の形が違います。npm run content:build で生成し直してください。`);
+    write(JOURNEY_FILES_FILE, JSON.stringify({ schemaVersion: 1, journeys: { trip: ["assets/tourism/trip/tower.webp"], trip_c: [] } }));
+    expect(readJourneyFiles(folder)).toEqual({ schemaVersion: 1, journeys: { trip: ["assets/tourism/trip/tower.webp"], trip_c: [] } });
   });
 
   it("copies the generated public folder without the withheld files", () => {
@@ -99,6 +130,24 @@ describe("the generated content", () => {
       expect(paths, journeyId).toEqual(expected);
       for (const file of paths) expect(served, file).toContain(file);
     }
+  });
+
+  it("lists every journey of the catalog with every file of its public/ folder and its reduced copies, and the withheld ones are exactly those lists", () => {
+    const owned = readJourneyFiles(repository);
+    expect(Object.keys(owned.journeys)).toEqual(catalog.journeys.map((journey) => journey.id));
+    for (const [journeyId, paths] of Object.entries(owned.journeys)) {
+      const own = path.join(repository, "content/journeys", journeyId, "public");
+      // (A journey outside content/journeys/, the sample one, serves its files from its own folder: its copies are checked.)
+      const expected = [...(existsSync(own) ? listFiles(own) : paths.filter((file) => !file.startsWith(derivedImageDirectory(journeyId)))),
+        ...served.filter((file) => file.startsWith(derivedImageDirectory(journeyId)))].sort();
+      expect(paths, journeyId).toEqual(expected);
+      for (const file of paths) expect(served, file).toContain(file);
+    }
+    for (const [journeyId, paths] of Object.entries(withheld.journeys)) expect(paths, journeyId).toEqual(owned.journeys[journeyId]);
+    // No file belongs to two journeys, and no root public/ file to any.
+    const all = Object.values(owned.journeys).flat();
+    expect(new Set(all).size).toBe(all.length);
+    for (const file of listFiles(path.join(repository, "public"))) expect(all.includes(file), file).toBe(false);
   });
 
   it("withholds no file of a journey players can open, nor of the root public/", () => {

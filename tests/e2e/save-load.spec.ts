@@ -1,6 +1,6 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
-import { LAST_JOURNEY_KEY } from "../../src/app/last-journey";
+import { LAST_JOURNEY_KEY, RECENT_JOURNEYS_KEY } from "../../src/app/last-journey";
 import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
 import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readLinesKey, readSave, saveKey, test, tier } from "./helpers";
 
@@ -555,12 +555,14 @@ test("old saved data is listed with its keys, removed only after confirmation an
   // other tab writes nothing else (the old save it reports stays as it was).
   await expect.poll(async () => (await allStorage(page))[LAST_JOURNEY_KEY]).toBe("golden_triangle");
   const before = await allStorage(page);
-  expect(before).toEqual({ ...seeded, [LAST_JOURNEY_KEY]: "golden_triangle" });
+  // (With it, the journeys this device opened, the most recent first: a preference of the same kind.)
+  expect(JSON.parse(before[RECENT_JOURNEYS_KEY])[0]).toBe("golden_triangle");
+  expect(before).toEqual({ ...seeded, [LAST_JOURNEY_KEY]: "golden_triangle", [RECENT_JOURNEYS_KEY]: before[RECENT_JOURNEYS_KEY] });
 
   let cleanup = await ops.openOldDataCleanup(page);
   for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();
   // The save in use, every journey's English notes, the settings, the remembered journey, the Debug-mode switch and other apps' keys are not listed.
-  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, LAST_JOURNEY_KEY, DEBUG_MODE_KEY, "another-app.on-this-origin"])
+  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, LAST_JOURNEY_KEY, RECENT_JOURNEYS_KEY, DEBUG_MODE_KEY, "another-app.on-this-origin"])
     await expect(cleanup.getByText(key, { exact: true })).toHaveCount(0);
 
   // 「消去せず戻る」 changes nothing.
@@ -596,7 +598,7 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await confirm.getByRole("button", { name: "消去する", exact: true }).click();
   await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
   const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = kept;
-  expect(await allStorage(page)).toEqual({ ...left, [LAST_JOURNEY_KEY]: "milano" });
+  expect(await allStorage(page)).toEqual({ ...left, [LAST_JOURNEY_KEY]: "milano", [RECENT_JOURNEYS_KEY]: JSON.stringify(["milano", "golden_triangle"]) });
 });
 
 // The cleanup opened from a journey other than the default one (here the Indian journey) treats that

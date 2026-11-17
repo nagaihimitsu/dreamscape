@@ -39,6 +39,10 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   });
   await ops.startJourney(page);
   let settings = await ops.openSettings(page);
+  // (The game's own ゲームの設定 has the way into 「オフラインで遊ぶ」; Debug's has none: below.)
+  await expect(settings.getByTestId("offline-settings-entry")).toBeVisible();
+  await ops.closeDialog(settings);
+  settings = await ops.openSettings(page);
   const before = await allStorage(page);
   // While it is off, it waits folded in ゲームの設定's 「制作者向け」 (2026-11-14), the last group.
   await expect(settings.locator("details.settings-creator")).not.toHaveAttribute("open");
@@ -101,6 +105,8 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
     section.getByRole("link", { name: "場面の確認を開く" }).click(),
   ]);
   await expect(page.getByTestId("debug-panel")).toBeVisible({ timeout: debugTimeout });
+  // 「オフラインで遊ぶ」 belongs to the game's own page: 場面の確認 has no way into it.
+  await expect(page.getByText("オフラインで遊ぶ")).toHaveCount(0);
   await page.goto(`/${debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
     progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive" })}`);
   await expect(page.getByTestId("debug-session")).toBeVisible({ timeout: debugTimeout });
@@ -113,6 +119,9 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   settings = await ops.openSettings(page);
   await expect(settings.getByTestId("debug-mode-setting")).toHaveCount(0);
   await expect(settings.getByRole("button", { name: "Debug用の一時データの消去" })).toBeVisible();
+  // …and no 「オフライン」 group: nothing is kept on a device from a Debug page.
+  await expect(settings.getByRole("heading", { name: "オフライン", exact: true })).toHaveCount(0);
+  await expect(settings.getByText("オフラインで遊ぶ")).toHaveCount(0);
   await ops.closeDialog(settings);
   await page.getByRole("button", { name: "場面の選択へ戻る" }).click();
   await expect(page.getByTestId("debug-panel")).toBeVisible();

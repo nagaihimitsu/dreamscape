@@ -113,3 +113,64 @@ test("battle on a 320×480 screen: after a wrong answer the round bar and the ex
   await ops.tapAt(page, await ops.centerOf(reaction));
   await expect.poll(async () => (await source(page))!.activeBattle?.phase).toBe("dialogue");
 });
+
+// 「オフラインで遊ぶ」 on the title (2026-11-17, docs/02 「オフラインで遊ぶ」): a small way in beside the caption 「旅行編」, on the
+// smallest phone the game supports. It must cost the screen nothing: the caption's row keeps its height (the button's
+// 44 px reach up into the space above, over no other control), so 「旅をはじめる」 is where it is without the entry. Where
+// that is depends on the fonts of the machine (the lead wraps to two lines or three), so the start button's place is
+// compared with the entry hidden, and reported, not held to the screen's height. On the development server the dialog
+// only says that it keeps nothing there (no service worker); what it does is offline.spec.ts's, in the production tier.
+test.describe("the title on a 320×568 screen", () => {
+  test.use({ viewport: { width: 320, height: 568 } });
+
+  test("the title's 「オフラインで遊ぶ」 sits beside 「旅行編」 over no other control, costs 「旅をはじめる」 no height, and says what the development server cannot do", { tag: tier.gate }, async ({ page }) => {
+    await page.goto("/");
+    const entry = page.getByTestId("offline-entry");
+    const start = ops.startButton(page);
+    await expect(start).toBeVisible();
+    await expect(entry).toHaveAccessibleName("オフラインで遊ぶ");
+    const layout = await entry.evaluate((button) => {
+      const box = (element: Element) => { const { left, top, right, bottom } = element.getBoundingClientRect(); return { left, top, right, bottom }; };
+      const own = box(button);
+      const select = document.querySelector<HTMLSelectElement>('select[aria-label="旅行編"]')!;
+      const caption = document.querySelector(`label[for="${select.id}"]`)!;
+      const controls = [...document.querySelectorAll("a, button, input, select, textarea, summary")].filter((control) => control !== button && control.getClientRects().length > 0);
+      return {
+        own, caption: box(caption), select: box(select), page: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        // The controls whose boxes meet the entry's, by what they say.
+        under: controls.filter((control) => { const other = box(control); return other.left < own.right && own.left < other.right && other.top < own.bottom && own.top < other.bottom; })
+          .map((control) => control.textContent?.trim() || control.getAttribute("aria-label") || control.tagName),
+      };
+    });
+    expect(layout.own.bottom - layout.own.top, "a finger's target").toBeGreaterThanOrEqual(44);
+    expect(layout.own.left, "to the right of the caption").toBeGreaterThanOrEqual(layout.caption.right);
+    expect(layout.own.right, "inside the screen").toBeLessThanOrEqual(320);
+    expect(layout.page, "the page does not scroll sideways").toBe(0);
+    expect([layout.caption.top >= layout.own.top, layout.caption.bottom <= layout.own.bottom], "on the caption's row").toEqual([true, true]);
+    expect(layout.own.bottom, "above the journey's select").toBeLessThanOrEqual(layout.select.top);
+    expect(layout.under, "over no other control").toEqual([]);
+
+    // The same title without the entry: the start button is where it was.
+    const bottom = async () => { const box = (await start.boundingBox())!; return Math.round(box.y + box.height); };
+    const withEntry = await bottom();
+    const hidden = await page.addStyleTag({ content: '[data-testid="offline-entry"] { display: none !important; }' });
+    const withoutEntry = await bottom();
+    await hidden.evaluate((style) => (style as HTMLStyleElement).remove());
+    expect(withEntry, "the entry costs the screen no height").toBe(withoutEntry);
+    test.info().annotations.push({ type: "「旅をはじめる」の下端（320×568）", description: `${withEntry} px（「オフラインで遊ぶ」なしでも ${withoutEntry} px）` });
+
+    // The dialog opens with the keyboard, says that the development server keeps nothing and offers nothing to press,
+    // and gives the focus back.
+    await entry.focus();
+    await page.keyboard.press("Enter");
+    const dialog = ops.offlinePlay(page);
+    await expect(dialog.getByRole("heading", { name: "オフラインで遊ぶ", exact: true })).toBeFocused();
+    await expect(dialog.getByRole("status")).toHaveText("開発用のサーバーでは使えません。公開版（本番ビルド）で使えます。");
+    await expect(dialog.locator("[data-action]")).toHaveCount(0);
+    await expect(dialog).not.toHaveAttribute("data-settling");
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(entry).toBeFocused();
+    expect(await page.evaluate(() => caches.has("dreamscape.offline")), "nothing is kept on the development server").toBe(false);
+  });
+});
