@@ -19,7 +19,9 @@ import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } 
  * Never listed: this journey's own save slot (its title and 「保存データの消去」 handle it), any game
  * save that loads in this version (also as a backup), another journey's save that is not an old
  * version (damaged, newer, preparation draft), the English notes, the read lines and the words learned of a journey this version has,
- * the display settings, the remembered journey (`dreamscape.last-journey.v1`), the Debug-mode switch, Debug's voice
+ * the display settings, the remembered journey (`dreamscape.last-journey.v1`) and the journeys opened lately
+ * (`dreamscape.recent-journeys.v1`), the journeys 「オフラインで遊ぶ」 keeps on the device (`dreamscape.offline.kept.v1`, a
+ * hint for the title without a network), the Debug-mode switch, Debug's voice
  * speed and 撮影の形 (`dreamscape.debug-mode.v1`, `dreamscape.debug-voice-rate.v1`, `dreamscape.debug-shot.v1`, src/app/debug-mode.ts;
  * all per-device preferences), every key outside
  * the patterns above (other sites on the same origin included). Debug's play keeps its data in memory

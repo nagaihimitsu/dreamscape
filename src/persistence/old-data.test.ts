@@ -65,6 +65,10 @@ const kept = {
   "dreamscape.presentation.v1": JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: false }),
   // The journey the title opens (src/app/last-journey.ts): a per-device preference like the settings.
   "dreamscape.last-journey.v1": "milano",
+  // The journeys opened on this device, the most recent first (the same file), and the journeys 「オフラインで遊ぶ」
+  // keeps (src/offline/kept-journeys.ts): a hint for the title without a network.
+  "dreamscape.recent-journeys.v1": '["milano","trip_b"]',
+  "dreamscape.offline.kept.v1": '["milano"]',
   // The Debug-mode switch (src/app/debug-mode.ts): another per-device preference.
   "dreamscape.debug-mode.v1": "on",
   "dreamscape.journey.trip_b.unknown": "not a slot key",

@@ -44,6 +44,18 @@ describe("service worker cache rules", () => {
     expect(get("./assets/movies/gt_opening.mp4")).toBe("pass");
   });
 
+  it("leaves the page's own requests for the files 「オフラインで遊ぶ」 keeps to the network: never kept twice", () => {
+    // The page loads each file it keeps from its address with the hash, and asks for the list the same way (2026-11-17).
+    expect(get("./assets/tourism/india/agra_taj_mahal.webp?dreamscape-offline=0123456789abcdef")).toBe("pass");
+    expect(get("./assets/index-WvJOQTlj.js?dreamscape-offline=0123456789abcdef")).toBe("pass");
+    expect(get("./index.html?dreamscape-offline=0123456789abcdef")).toBe("pass");
+    expect(get("./offline-files.json?dreamscape-offline=list")).toBe("pass");
+    // The list itself is no kept kind of file: without the parameter, the network first.
+    expect(get("./offline-files.json")).toBe("network-first");
+    // Any other query changes nothing.
+    expect(get("./assets/se/ui_tap.mp3?v=2")).toBe("media");
+  });
+
   it("names its caches by version and removes only its own older ones", () => {
     const names = cacheNames({ code: "c1", media: "m1" });
     expect(names).toEqual({ "network-first": "dreamscape-pages", code: "dreamscape-code-c1", media: "dreamscape-media-m1" });
@@ -53,5 +65,7 @@ describe("service worker cache rules", () => {
     expect(staleCache("dreamscape-media-m0", current)).toBe(true);
     expect(staleCache("dreamscape-pages", current)).toBe(false);
     expect(staleCache("another-app-cache", current)).toBe(false);
+    // What 「オフラインで遊ぶ」 keeps is in a cache of its own, which no version's start removes.
+    expect(staleCache("dreamscape.offline", current)).toBe(false);
   });
 });

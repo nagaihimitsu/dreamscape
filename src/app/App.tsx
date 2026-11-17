@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { defaultJourneyId, getJourney, journeys } from "../content/journeys";
 import { journeyStorage } from "../persistence/journey-storage";
-import { openingJourneyId, readLastJourney, rememberJourney } from "./last-journey";
+import { readLastJourney, readRecentJourneys, rememberJourney, titleJourneyId } from "./last-journey";
+import { readKeptJourneys } from "../offline/kept-journeys";
 import { useJourneyLock } from "../persistence/useJourneyLock";
 import { journeyLockNotice, needsJourneyLock, type JourneyLockNotice } from "../persistence/journey-lock";
 import { focusIsLost, focusQuietly } from "../components/scene-focus";
@@ -18,10 +19,13 @@ import { browserKeyedStorage, browserStorage, type AppProps } from "./app-storag
 
 export default function App(props: AppProps = {}) {
   const baseStorage = props.storage ?? browserStorage;
-  // The title opens the journey last opened on this device (last-journey.ts); Debug
-  // (isolated storage, its own scene) neither reads nor writes that preference.
-  const [journeyId, setJourneyId] = useState(() =>
-    props.debug ? defaultJourneyId : openingJourneyId(readLastJourney(baseStorage), journeys, defaultJourneyId));
+  // The title opens the journey last opened on this device; without a network on a device that keeps journeys for
+  // 「オフラインで遊ぶ」, a kept one (last-journey.ts titleJourneyId; the choice is not remembered). Debug (isolated
+  // storage, its own scene) neither reads nor writes that preference.
+  const [journeyId, setJourneyId] = useState(() => props.debug ? defaultJourneyId : titleJourneyId({
+    remembered: readLastJourney(baseStorage), recent: readRecentJourneys(baseStorage), kept: readKeptJourneys(baseStorage),
+    online: typeof navigator === "undefined" || navigator.onLine !== false,
+  }, journeys, defaultJourneyId));
   // A switch rebuilds the screen (key={journeyId}); the new screen's journey
   // selector takes the keyboard focus back (see JourneySelection). The other
   // journey's screen, perhaps its saved story scene, appears under the finger:

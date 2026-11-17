@@ -144,6 +144,11 @@
 }
 
 .journey-selection { display: grid; gap: 7px; margin: 16px 0; font-size: 12px; }
+/* The caption's row when something sits beside it (the title's 「オフラインで遊ぶ」): the row keeps the caption's height, and
+   the button's 44 px reach up into the selector's top margin, never over the select under it. */
+.journey-selection-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0 12px; }
+.journey-selection-head > label { flex: none; white-space: nowrap; }
+.journey-selection-head > .text-button { display: inline-flex; align-items: flex-end; min-height: 44px; margin: -26px -5px -6px auto; padding: 0 5px 6px; font-size: 12px; line-height: inherit; white-space: nowrap; }
 .journey-select { position: relative; display: block; }
 /* The journey select looks like the text fields (stage 2.2) with its own chevron (⌄). */
 .journey-select-value { display: block; min-height: 48px; padding: 12px 40px 12px 10px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: #fffaf1; color: var(--ds-ink); font-size: 16px; line-height: 1.4; word-break: auto-phrase; overflow-wrap: anywhere; }

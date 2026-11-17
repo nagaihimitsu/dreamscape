@@ -106,6 +106,7 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 - 公開先：https://nagaihimitsu.github.io/dreamscape/
 - `.github/workflows/pages.yml` が、`main` へのpushで本番ビルド（コンテンツの検証・型検査・`dist/` の検査を含む）を行い、成功した `dist/` をGitHub Pagesへ公開します。PRでは `ci.yml` の本番ビルドだけが動きます。単体テスト・E2E・探索は手動（Actionsから実行）だけです（[CI](10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。
 - 初めてのときだけ、リポジトリの **Settings → Pages → Build and deployment → Source: GitHub Actions** を選びます。設定の後は、Actionsの「Deploy to GitHub Pages」から手で実行することもできます。公開の設定とデプロイには、GitHub側の権限が要ります。
+- 公開のたびに、ビルドに公開の番号が入ります（`DREAMSCAPE_RELEASE`。`pages.yml` がワークフローの実行番号を渡します。手元のビルドは0）。「オフラインで遊ぶ」で旅行編を端末に入れた人は、番号の小さい版を受け取りません。前の版に戻すときは、古い実行のやり直し（Re-run）ではなく、取り消しのコミットを `main` に入れるか、手動実行で新しく公開してください。`pages.yml` は名前を変えず、作り直さないでください：実行番号はワークフローのファイルごとに数えるので1に戻り、旅行編を入れた端末は、番号が前の値を超えるまで何も言わずに前の版のままになります（名前を変えず作り直さなければ、番号に手を入れることはありません。どうしても名前を変えるか作り直すときだけ、前のファイルの最後の実行番号を、ビルドの前の手順で足します。GitHub Actions の式では足し算ができないので、シェルで計算します。最後の番号が412なら `- run: echo "DREAMSCAPE_RELEASE=$(( ${{ github.run_number }} + 412 ))" >> "$GITHUB_ENV"` とし、ビルドの手順の `env` から `DREAMSCAPE_RELEASE` を外します）（[技術設計の「オフラインで遊ぶ」](02_TECH_ARCHITECTURE.md#オフラインで遊ぶ)）。
 - 旅行編の「公開中」（`manifest.json` の `status: "available"`）は、このソースでのビルドの登録状態です。サイトに出すには、別にGitHub Pagesへのデプロイが要ります。
 
 ## 今の実装の範囲

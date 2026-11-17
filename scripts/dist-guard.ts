@@ -11,7 +11,13 @@
  * that only such code contains. scripts/dist-guard.test.ts checks that every marker
  * is still found in its source, so renaming the source cannot silently switch a
  * check off.
+ *
+ * It also checks the list of 「オフラインで遊ぶ」 (checkOfflineList: what a device that keeps a
+ * journey loads) against the build's files, and the licence notices.
  */
+// With their extensions: vite.config.ts imports this module (Vite's native config loader asks for them).
+import { listSha, OFFLINE_LIST_FILE, readOfflineList, UNLISTED_FILES, type OfflineFile } from "../src/offline/list.ts";
+import type { BuiltFile } from "./offline-list-build.ts";
 
 export interface DevOnlyMarker {
   /** Text that only development, test or Debug code contains. */
@@ -19,6 +25,9 @@ export interface DevOnlyMarker {
   /** Repository file or folder (ending in "/") whose path or content contains `text`. */
   source: string;
 }
+
+/** The ID of the journey for development and tests only: no built file or path holds it. */
+const SAMPLE_JOURNEY = "sample_trip";
 
 /** Never in a production build, in any file or path. */
 export const devOnlyMarkers: readonly DevOnlyMarker[] = [
@@ -32,7 +41,7 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   // The journey for development and tests only (npm run dev:sample, unit tests);
   // its ID also names its image folder. Debug's 仮の場面 uses the ID only under
   // import.meta.env.DEV (src/dev/fixture-template.ts), so it stays out of the build.
-  { text: "sample_trip", source: "authoring/templates/sample_trip/manifest.json" },
+  { text: SAMPLE_JOURNEY, source: "authoring/templates/sample_trip/manifest.json" },
   // Source paths, as written by source maps and the development JSX transform.
   // (tests/fixtures/current-game.ts has no text of its own: it calls the scene
   // builders and imports tests/, which the import scan of dist-guard.test.ts refuses.)
@@ -146,6 +155,13 @@ export function eagerFiles(indexHtml: string): string[] {
     files.add(url.replace(/^\.?\//u, "").replace(/[?#].*$/u, ""));
   }
   return [...files];
+}
+
+/** The page's entry script (`assets/index-….js`, index.html's module script): it names the version of a page (the service worker, the offline list). */
+export function entryScript(indexHtml: string): string {
+  const entry = eagerFiles(indexHtml).find((file) => file.endsWith(".js"));
+  if (!entry) throw new Error("index.html has no module script for the service worker to name.");
+  return entry;
 }
 
 export interface DebugOnTitleFinding {
@@ -347,6 +363,78 @@ export function describeDebugOnTitle(folder: string, findings: readonly DebugOnT
     ...findings.map(({ path, marker }) => `- ${path} に「${marker.text}」（目印の由来: ${marker.source}）`),
     "Debug・プレビューは src/main.tsx の React.lazy(() => import(\"./dev/…\")) からだけ読み込みます。",
     "ゲームのコードから src/dev/ のモジュールを静的な import で読み込んでいないかを確認してください。",
+  ].join("\n");
+}
+
+/**
+ * Problems of the build's list for 「オフラインで遊ぶ」 (src/offline/list.ts; `listText` is the content of
+ * offline-files.json, or null when the build has none), for the person who ran the build: a device that keeps a
+ * journey loads exactly the listed files and checks each one's size and hash, so the list must name every file of the
+ * build once (all but the worker and the list itself) with the size and hash it has, name the page's entry script,
+ * group exactly the journeys players can open (`playable`, in the catalog's order), and hold no file of a journey that
+ * does not ship (`withheld`: served path → journey) nor of the sample journey.
+ */
+export function checkOfflineList(input: {
+  files: readonly BuiltFile[];
+  listText: string | null;
+  indexHtml: string;
+  playable: readonly string[];
+  withheld?: ReadonlyMap<string, string>;
+}): string[] {
+  if (input.listText === null) return [`${OFFLINE_LIST_FILE} がありません。vite.config.ts の plugins に serviceWorkerPlugin があるかを確認してください（scripts/service-worker-build.ts が書き出します）。`];
+  let data: unknown;
+  try {
+    data = JSON.parse(input.listText);
+  } catch {
+    return [`${OFFLINE_LIST_FILE} を JSON として読めません。`];
+  }
+  const list = readOfflineList(data);
+  if (typeof list === "string") {
+    // The reader refuses a file listed twice: name it, as the likeliest fault of a list that is otherwise one.
+    const groups = (data as { shared?: unknown; journeys?: unknown } | null) ?? {};
+    const paths = [groups.shared, ...Object.values(typeof groups.journeys === "object" && groups.journeys !== null ? groups.journeys : {})]
+      .flatMap((group) => Array.isArray(group) ? group.map((file: unknown) => Array.isArray(file) ? file[0] : undefined) : []);
+    const twice = [...new Set(paths.filter((item, index) => typeof item === "string" && paths.indexOf(item) !== index))];
+    return [twice.length ? `${OFFLINE_LIST_FILE} に同じファイルが2回あります: ${twice.slice(0, 5).join("、")}`
+      : `${OFFLINE_LIST_FILE} の形が違います（ページとサービスワーカーが読める一覧ではありません）。`];
+  }
+  const problems: string[] = [];
+  const built = new Map(input.files.map((file) => [file.path, file]));
+  const groups: [string, OfflineFile[]][] = [["共通", list.shared], ...Object.entries(list.journeys)];
+  const listed = new Set<string>();
+  for (const [group, files] of groups) for (const [path, bytes, sha] of files) {
+    listed.add(path);
+    const file = built.get(path);
+    if (!file) problems.push(`${path}（${group}）がビルドにありません。`);
+    else if (file.bytes !== bytes || listSha(file.sha256) !== sha) problems.push(`${path}（${group}）の大きさかハッシュが、ビルドのファイルと違います。`);
+    const journeyId = input.withheld?.get(path);
+    if (journeyId !== undefined) problems.push(`${path} は、まだ遊べない旅行編（${journeyId}）の配信ファイルです。`);
+    if (path.includes(SAMPLE_JOURNEY)) problems.push(`${path} は、見本の旅行編（${SAMPLE_JOURNEY}）のファイルです。`);
+  }
+  for (const file of input.files)
+    if (!listed.has(file.path) && !UNLISTED_FILES.includes(file.path)) problems.push(`${file.path} がどの組にも入っていません。`);
+  for (const file of UNLISTED_FILES) if (listed.has(file)) problems.push(`${file} は一覧に入れないファイルです。`);
+  let entry: string | undefined;
+  try {
+    entry = entryScript(input.indexHtml);
+  } catch {
+    entry = undefined;
+  }
+  if (list.entry !== entry) problems.push(`最初のスクリプト（entry: ${list.entry}）が index.html のもの（${entry ?? "なし"}）と違います。`);
+  if (Object.keys(list.journeys).join(",") !== input.playable.join(","))
+    problems.push(`旅行編の組（${Object.keys(list.journeys).join("・") || "なし"}）が、遊べる旅行編（${input.playable.join("・") || "なし"}）と違います。`);
+  return problems;
+}
+
+/** A report of the offline list's problems (checkOfflineList) for the person who ran the build. */
+export function describeOfflineList(folder: string, problems: readonly string[]): string {
+  const shown = problems.slice(0, 10);
+  return [
+    `本番ビルド（${folder}）の、端末に入れるファイルの一覧（${OFFLINE_LIST_FILE}。「オフラインで遊ぶ」が読みます）に問題があります。`,
+    ...shown.map((problem) => `- ${problem}`),
+    ...(problems.length > shown.length ? [`- ほか ${problems.length - shown.length} 件`] : []),
+    "一覧は vite build の最後に scripts/service-worker-build.ts が、ビルドの全ファイルと src/content/generated/journey-files.json から作ります。",
+    "ビルドの後で dist/ のファイルを変えていないか、vite build の前に npm run content:build を実行したかを確認してください。",
   ].join("\n");
 }
 
