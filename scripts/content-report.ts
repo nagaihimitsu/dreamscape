@@ -23,7 +23,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
   | "scene-tag" | "special-date-ap" | "recovery-date" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music"
-  | "ambience" | "voice-changed" | "glossary" | "opening-movie";
+  | "ambience" | "voice-changed" | "glossary" | "opening-movie" | "moment-quiz-landmark" | "moment-quiz-repeat-tags";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -50,7 +50,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "never-met-again": "city(ies) whose finale condition may never be met again (money spent, an item given, a battle or date under not; no other way)",
   "earlier-item-start": "city(ies) whose clear needs an item only an optional scene of an earlier city gives (a Debug or walk start at that city may lack it)",
   "romance-only-city": "city(ies) that can be cleared only through the romance values",
-  "unfindable-clue": "landmark(s) without an observation that list clues no observation finds",
+  "unfindable-clue": "clue(s) that no observation, no scene's # clue: / # on_done: clue and no reasoning quiz's case evidence brings (or a scene's condition reading one)",
   "battle-after-epilogue": "battle(s) that may be left unplayable after the epilogue (the journey moves on after it)",
   "money-shortfall": "journey(s) whose budget may run short for a city's required main parts after the other events (not stopped)",
   "ap-shortfall": "city(ies) whose finale needs dates that the city's AP may not cover after the other dates (not stopped)",
@@ -59,6 +59,8 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "ambience": "ambience note(s) (a journey's ambience track that no play.places value or # ambience: plays)",
   "glossary": "glossary note(s) (旅の図鑑: a term's line over 40 characters, a term no # term: names, a term tagged twice in one scene or on a choice)",
   "voice-changed": "recorded line(s) whose text is no longer what their voice says, or not in recorded.json (record again; npm run voice:changes)",
+  "moment-quiz-landmark": "moment quiz landmark(s) with a guide or an observation, which never run (no map event opens the visit)",
+  "moment-quiz-repeat-tags": "moment quiz(zes) repeated always whose tags apply on the first play only",
   "opening-movie": "opening movie note(s) (a movie without credits, or a credit whose licence is not CC BY, CC0 or public domain; scripts/opening-movie.ts)",
 };
 
@@ -305,22 +307,30 @@ function entryKeys(table: FieldTable, prefix = ""): string[] {
 }
 
 /**
- * The observation-only clues (no quiz question depends on them, docs/07) that
- * the files `own` accepts provide in the merged tourism catalog.
+ * The clues the files `own` accepts provide in the merged tourism catalog: how many are observation-only (no quiz question depends
+ * on them, docs/07; not a clue a scene gives, `heard`, nor one of a landmark without an observation, such as a reasoning quiz's case
+ * evidence; 2026-11-18) and how many a scene gives (conversation clues: `# clue:`, `# on_done: clue`).
  */
-function observationOnlyClues(sources: ContentSources, own: (file: string) => boolean): number {
+function clueCounts(sources: ContentSources, own: (file: string) => boolean, heard: ReadonlySet<string>): { observationOnly: number; conversation: number } {
   const catalog = sources.catalogs["tourism/catalog.json"];
   const files = catalog?.provenance.items.clues ?? [];
-  const clues = isObject(catalog?.value) ? catalog.value.clues : undefined;
-  return (Array.isArray(clues) ? clues : []).filter((clue, index) => own(files[index] ?? "") && isObject(clue) &&
-    Array.isArray(clue.relatedQuestionIds) && isObservationOnlyClue({ relatedQuestionIds: clue.relatedQuestionIds })).length;
+  const value = isObject(catalog?.value) ? catalog.value : undefined;
+  const clues = (Array.isArray(value?.clues) ? value.clues : []).filter((clue, index) => own(files[index] ?? "") && isObject(clue)) as Record<string, unknown>[];
+  const closed = new Set((Array.isArray(value?.landmarks) ? value.landmarks : [])
+    .filter((landmark) => isObject(landmark) && landmark.observation === false).map((landmark) => (landmark as Record<string, unknown>).id));
+  return {
+    observationOnly: clues.filter((clue) => Array.isArray(clue.relatedQuestionIds) && isObservationOnlyClue({ relatedQuestionIds: clue.relatedQuestionIds }) &&
+      !heard.has(String(clue.id)) && !closed.has(clue.landmarkId)).length,
+    conversation: clues.filter((clue) => heard.has(String(clue.id))).length,
+  };
 }
 
 /**
  * What each journey folder provides, in manifest order (zero counts are left
- * out for catalogs). After its clues comes how many of them are observation-only.
+ * out for catalogs). After its clues comes how many of them are observation-only, then how many a scene gives (`heard`: the
+ * scenes' `# clue:` and `# on_done: clue`).
  */
-export function journeyContents(sources: ContentSources): JourneyContents[] {
+export function journeyContents(sources: ContentSources, heard: ReadonlySet<string> = new Set()): JourneyContents[] {
   return sources.manifests.map((manifest): JourneyContents => {
     const own = (file: string) => file.startsWith(manifest.directory + path.sep);
     const counts: [string, number][] = [
@@ -336,8 +346,10 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
         const files = [...(provenance?.items[key] ?? []), ...Object.values(provenance?.keys[key] ?? {})];
         const count = files.filter(own).length;
         if (count) counts.push([entryLabel(rule.kind, key), count]);
-        const observationOnly = rule.kind === "tourism/catalog.json" && key === "clues" ? observationOnlyClues(sources, own) : 0;
-        if (observationOnly) counts.push(["observation-only clues", observationOnly]);
+        if (rule.kind !== "tourism/catalog.json" || key !== "clues") continue;
+        const clues = clueCounts(sources, own, heard);
+        if (clues.observationOnly) counts.push(["observation-only clues", clues.observationOnly]);
+        if (clues.conversation) counts.push(["conversation clues", clues.conversation]);
       }
     }
     const tours = sources.tourFiles.filter((tour) => tour.layer === manifest.id).length;

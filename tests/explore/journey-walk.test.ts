@@ -34,7 +34,7 @@ import { itemUsableIn } from "../../src/domain/item-cities";
 import { usableAp, usableMoney } from "../../src/domain/reservations";
 import { placeSceneById } from "../../src/domain/scene-effects";
 import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
-import type { SceneEntry } from "../../src/content/scene-schemas";
+import { momentQuizBattle, type SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
 import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, getTour, journeyConfig, landmarks, progression, scenes, tourismClues, tours } from "../../src/content";
@@ -156,6 +156,7 @@ function pick(state: GameState, actions: PlayerAction[], next: () => number): Pl
 const progressionContent: ProgressionContent = {
   journeys, episodes, storyBattles: journeyConfig.storyBattles, battles, landmarks, encounters: encounters.encounters, items: encounters.items, dates,
   rewards: allRewardRules, romance: progression, sceneItems: sceneItemsOf(scenes), clues: tourismClues,
+  momentQuizIds: scenes.flatMap((scene) => momentQuizBattle(scene) ?? []),
   // Registered cities only (a journey may list cities not built yet).
   travel: playable.flatMap((journey) => journey.cities).filter((city) => city.id in cityContents).map((city) => {
     const { travel, travelSettings } = getCityContent(city.id);

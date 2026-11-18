@@ -22,6 +22,11 @@ export type ProgressionContent = {
     requiredEpisodeIds: readonly string[]; when?: Condition }[];
   storyBattles: readonly { battleId: string; requiredEpisodeIds: readonly string[]; when?: Condition }[];
   battles: readonly { id: string; cityId?: string; landmarkId: string | null; scope?: string }[];
+  /**
+   * The moment quizzes (時点のクイズ: a battle knot's `# at: depart|epilogue`; 2026-11-18): no map event opens them, so
+   * `battles <city> >= N` does not count them (as the game does, conditions.ts).
+   */
+  momentQuizIds?: readonly string[];
   landmarks: readonly { id: string; cityId: string; guideStoryId?: string; observation?: boolean }[];
   encounters: readonly { id: string; cityId: string; repeatable?: boolean; completionMoney?: number; completionItemId?: string;
     quiz?: { rewardItemId: string }; options: readonly { cost?: number; giftItemId?: string; consumeItemId?: string }[] }[];
@@ -91,7 +96,8 @@ export function sceneItemsOf(scenes: readonly { id: string; cityId: string; repe
       return { sceneId: scene.id, cityId: scene.cityId, gives: scene.done.items ?? [],
         spends: [...(scene.done.use ?? []), ...scene.options.flatMap((option) => [option.give?.item, option.use].filter((id): id is string => !!id))],
         ...(clues.length ? { clues } : {}), ...(scene.repeat ? { repeat: scene.repeat } : {}),
-        ...(scene.main ? { main: scene.main } : { at: scene.at }) };
+        // A moment quiz (a battle's scene with # at:, 2026-11-18) keeps both: it gives at its moment, and is over once played.
+        ...(scene.main ? { main: scene.main } : {}), ...(!scene.main || scene.at.length ? { at: scene.at } : {}) };
     });
 }
 
@@ -172,7 +178,8 @@ function sceneSources(content: ProgressionContent, scene: SceneItems): ItemSourc
   const main = scene.main;
   // A later-city start skips the guides and reads the epilogue only when the journey moves on after it (departFromClearedCity).
   const readsEpilogue = journeyOf(content, scene.cityId)?.cityTransition === "after_epilogue";
-  if (main) return [main.battle ? { battleId: main.battle, mainPath: true } : main.guide ? { guideLandmarkId: main.guide }
+  // (A moment quiz, a main battle with # at:, gives at its moment below: its departure or epilogue, after the finale.)
+  if (main && !scene.at?.length) return [main.battle ? { battleId: main.battle, mainPath: true } : main.guide ? { guideLandmarkId: main.guide }
     : main.epilogue ? { afterFinale: true, mainPath: readsEpilogue } : main.date ? { dateId: main.date } : { mainPath: true }];
   const travel = content.travel.find((item) => item.cityId === scene.cityId);
   const landmarkOfEvent = (eventId: string) => content.episodes.find((episode) => episode.id === eventId)?.landmarkId ??
@@ -402,7 +409,9 @@ function earlierSourceReachable(content: ProgressionContent, cityId: string, ite
 function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapshot, reach: Reach, leaf: Leaf, mode: Mode = {}): Truth {
   const both = { canTrue: true, canFalse: true };
   const landmarkCity = (id: string) => content.landmarks.find((item) => item.id === id)?.cityId;
-  const cityBattles = (cityId: string) => content.battles.filter((battle) => battle.scope !== "city_finale" && battleCityOf(content, battle.id) === cityId).map((battle) => battle.id);
+  // The city's map quizzes: not its finale, nor a moment quiz (no map event opens it; 2026-11-18).
+  const cityBattles = (cityId: string) => content.battles.filter((battle) => battle.scope !== "city_finale" && !content.momentQuizIds?.includes(battle.id) &&
+    battleCityOf(content, battle.id) === cityId).map((battle) => battle.id);
   if ("battlePlayed" in leaf) return fact(content, city, now, battleCityOf(content, leaf.battlePlayed), now.battles.has(leaf.battlePlayed), reach.battles.has(leaf.battlePlayed));
   if ("episodeCompleted" in leaf)
     return fact(content, city, now, content.episodes.find((item) => item.id === leaf.episodeCompleted)?.cityId, now.episodes.has(leaf.episodeCompleted), reach.episodes.has(leaf.episodeCompleted));
@@ -714,9 +723,13 @@ function apWarnings(content: ProgressionContent): ProgressionWarning[] {
   });
 }
 
-/** Check 9's warnings: probable dead ends that break nothing (content:build lists them). */
+/**
+ * Check 9's warnings: probable dead ends that break nothing (content:build lists them). `findable` (4.3, 2026-11-18): the clues a
+ * landmark without an observation may still list, because a scene gives them (`# clue:`, `# on_done: clue`) or they are a reasoning
+ * quiz's case evidence (readable during its reasoning whether found or not).
+ */
 export function progressionWarnings(content: ProgressionContent, clueUses: readonly { clueId: string; usedBy: string }[] = [],
-  landmarkClues: readonly { landmarkId: string; clueIds: readonly string[] }[] = []): ProgressionWarning[] {
+  landmarkClues: readonly { landmarkId: string; clueIds: readonly string[] }[] = [], findable: ReadonlySet<string> = new Set()): ProgressionWarning[] {
   const warnings: ProgressionWarning[] = [];
   for (const cityId of finaleCities(content)) {
     const city = cityModel(content, cityId);
@@ -763,10 +776,14 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
     }
   }
   const closed = new Set(content.landmarks.filter((item) => item.observation === false).map((item) => item.id));
-  for (const { landmarkId, clueIds } of landmarkClues.filter((item) => closed.has(item.landmarkId) && item.clueIds.length)) {
+  for (const { landmarkId, clueIds: listed } of landmarkClues.filter((item) => closed.has(item.landmarkId))) {
+    // Only the clues no way records or shows: a scene's # clue: / # on_done: clue and a reasoning quiz's case evidence do (4.3).
+    const clueIds = listed.filter((id) => !findable.has(id));
+    if (!clueIds.length) continue;
     const used = clueUses.filter((use) => clueIds.includes(use.clueId));
     warnings.push({ kind: "unfindable-clue", message: `Clues that can never be found: ${landmarkId} has no observation (observation: false) but lists ` +
-      `${clueIds.join(", ")}${used.length ? `, used by ${used.map((use) => `${use.usedBy} (${use.clueId})`).join(", ")}` : ""} ` +
+      `${clueIds.join(", ")}, which no scene gives (# clue:, # on_done: clue) and no reasoning quiz shows as case evidence` +
+      `${used.length ? `; used by ${used.map((use) => `${use.usedBy} (${use.clueId})`).join(", ")}` : ""} ` +
       `(not stopped: a question or the evidence can be answered without them)` });
   }
   // The author-started epilogue (3.9 (d)): a city of a journey the player leaves by choice may never reach its then: epilogue

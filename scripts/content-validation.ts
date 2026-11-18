@@ -26,7 +26,7 @@ import { dataLanguageWarnings, translationLanguageWarning } from "./data-languag
 import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
-import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
+import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, unfindableClueConditionWarnings, type ConditionContent, type ConditionOwner } from "./condition-validation";
 import { mainPaymentsOf, progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
 import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
@@ -70,7 +70,7 @@ import { checkTermTags, glossaryTermsOf, glossaryWarnings } from "./glossary-ter
 import { checkEmphasisTags } from "./line-emphasis";
 import { checkTranslationTags } from "./line-translation";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
-import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
+import { hasObservation, landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
 import { validateTourism } from "./tourism-validation";
 import { isTourOnlyPlace, travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
@@ -88,8 +88,8 @@ import { includesModules, readFileChoices, readMainFileHead, readPlaceFile, choi
 import { checkSpeakerPeople } from "./speaker-people";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
-import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneRewardErrors, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
-import { sceneDataCatalogSchema, sceneGivenClues, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
+import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, momentQuizErrors, momentQuizWarnings, placeScenes, sceneConditionsOf, sceneRewardErrors, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type MomentQuizContext, type ThenLoopContext } from "./scene-table";
+import { momentQuizBattle, sceneDataCatalogSchema, sceneGivenClues, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
 import { validateQuizEntries } from "./quiz-validation";
@@ -360,15 +360,24 @@ export function validateContent(sources: ContentSources,
     const dateValue = structuredClone(sources.catalogs["romance/date_catalog.json"]?.value) as { dates: Record<string, unknown>[] } | undefined;
     let journeyChanged = false;
     let datesChanged = false;
+    // A battle's knot with # at: is a moment quiz (時点のクイズ, 2026-11-18): its # when: and # until: are read when its turn comes,
+    // and stay in the scene table (scene-table.ts placeScenes), not on the map.
+    const placedAtMoment = (address: string) => {
+      const { storyId, path: knotPath } = splitStoryAddress(address);
+      return !!knotPath && !!placeFiles.get(storyId)?.knots.find((item) => item.name === knotPath)?.head.some((tag) => tag.key === "at");
+    };
     for (const battle of battles) {
+      if (placedAtMoment(battle.storyId)) continue;
       const head = knotWhen(battle.storyId);
       if (!head) continue;
-      if (head.until.length) throw new Error(`A battle's knot takes # when: only (its map condition): ${head.label}`);
+      if (head.until.length) throw new Error(`A battle's knot takes # when: only (its map condition): ${head.label}; a battle's knot with # at: ` +
+        "(a reasoning quiz placed at a moment) takes # when: and # until: as the condition read when its turn comes");
       const condition = combineWhenUntil(head.when, [])!;
       const episodeIndex = journey.episodes.findIndex((episode) => episode.battleId === battle.id);
       const storyIndex = journey.storyBattles.findIndex((item) => item.battleId === battle.id);
       const target = episodeIndex >= 0 ? journey.episodes[episodeIndex] : journey.storyBattles[storyIndex];
-      if (!target) throw new Error(`A battle's knot # when: needs an episode or a special battle for ${battle.id}: ${head.label}`);
+      if (!target) throw new Error(`A battle's knot # when: needs an episode or a special battle for ${battle.id}: ${head.label} (its map condition; ` +
+        "with # at: depart|epilogue <city>, a reasoning quiz placed at a moment reads its # when: when its turn comes instead)");
       if (target.when || target.requiredEpisodeIds.length)
         throw new Error(`The map condition of ${battle.id} is written twice: ${head.label} has # when:, progression/journey.json has ` +
           `${target.when ? "when" : "requiredEpisodeIds"} (keep one; A4)`);
@@ -803,6 +812,27 @@ export function validateContent(sources: ContentSources,
   // A tour's steps across the files (tour stages 2b, 3): one narration and one in-car encounter per leg, and what that encounter takes.
   const tourProblems = tourMomentErrors(placeEntries);
   if (tourProblems.length) throw new Error(tourProblems.join("\n"));
+  // The moment quizzes (時点のクイズ, 2026-11-18; 4.1, 4.2): reasoning only, on no map, a head # on_done: that only gives; their notes.
+  const momentQuizContext: MomentQuizContext = {
+    battle: (battleId) => {
+      const battle = battles.find((item) => item.id === battleId);
+      return battle && { reasoning: !!battle.reasoning, landmarkId: battle.landmarkId };
+    },
+    onMap: (battleId) => {
+      const episode = journey.episodes.find((item) => item.battleId === battleId);
+      if (episode) return `the episode ${episode.id} of progression/journey.json`;
+      if (journey.storyBattles.some((item) => item.battleId === battleId)) return "storyBattles of progression/journey.json";
+      const mapped = travels.find(({ travel }) => travel.events.some((event) => event.id === battleId));
+      return mapped ? `a map event of travel/${mapped.city.id}.json` : undefined;
+    },
+    landmark: (landmarkId) => {
+      const landmark = tourism.landmarks.find((item) => item.id === landmarkId);
+      return landmark && { guide: !!landmark.guideStoryId, observation: hasObservation(landmark) };
+    },
+  };
+  const momentQuizProblems = momentQuizErrors(placeEntries, momentQuizContext);
+  if (momentQuizProblems.length) throw new Error(momentQuizProblems.join("\n"));
+  sceneNotes.push(...momentQuizWarnings(placeEntries, momentQuizContext));
   const fileEntries: SceneEntry[] = [];
   /** A one-scene guide, arrival or epilogue with choices: walked as a scene (its choices may have tags from stage 3a). */
   const fileChoiceStories = new Set<string>();
@@ -1396,6 +1426,8 @@ export function validateContent(sources: ContentSources,
     battleScenarios += withContext(label, () => walkScene({
       compiled: stories[battleAddress.storyId], ...(battleAddress.path ? { start: battleAddress.path } : {}), label, context,
       conds: scene?.conds ?? storyConditionTexts[battleAddress.storyId] ?? [], options: scene?.options ?? [], headThen: !!scene?.then, done: scene?.done,
+      // A moment quiz's # when: (read when its turn comes) holds on every path: cond("clue …") under # when: clue … is walked true.
+      ...(scene?.when ? { when: scene.when } : {}),
       itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(battleAddress.storyId),
       variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
       battle: { quizzes: quiz.questions.length, ...(battle.reasoning ? { reasoning: { kind: battle.reasoning.kind, roundIndex: battle.reasoning.roundIndex } } : {}) },
@@ -1518,9 +1550,11 @@ export function validateContent(sources: ContentSources,
     sceneConditions.stories[storyId] = texts;
     sceneConditionOwners.push({ label: `the scene ${storyId}`, cityId, conditions: texts.map((text) => ({ field: `cond("${text}")`, condition: parsed[text] })) });
   }
-  const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, runtimeEntryRules),
-    // The tagged scenes' # requires: (their # when: is an entry rule above, or a main part's map condition).
-    ...taggedScenes.map((scene) => ({ label: `the scene ${scene.id}`, cityId: scene.cityId, conditions: sceneConditionsOf(scene).filter((item) => item.field !== "when") })),
+  // The tagged scenes' # requires: (their # when: is an entry rule, or a main part's map condition); a moment quiz's # when: is
+  // neither (read when its turn comes; 2026-11-18), so it is read here.
+  const taggedSceneOwners: ConditionOwner[] = taggedScenes.map((scene) => ({ label: `the scene ${scene.id}`, cityId: scene.cityId,
+    conditions: sceneConditionsOf(scene).filter((item) => item.field !== "when" || momentQuizBattle(scene)) }));
+  const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, runtimeEntryRules), ...taggedSceneOwners,
     // Named conditions are checked where they are declared, in no particular city (their parts must exist).
     ...Object.entries(storyStateCatalog.conditions).map(([name, condition]) => ({ label: `the named condition ${name}`, cityId: "", conditions: [{ field: name, condition }] }))];
   // The map conditions of episodes and special battles (stage 2b): read like the others, in their city.
@@ -1536,7 +1570,10 @@ export function validateContent(sources: ContentSources,
     conditions: (place.heroineLinesJa ?? []).flatMap((line, index) => (typeof line === "string" ? [] : [{ field: `heroineLinesJa[${index}].when`, condition: line.when }])),
   }))).filter((owner) => owner.conditions.length);
   checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners, ...placeLineOwners]);
-  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners, ...placeLineOwners])];
+  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners, ...placeLineOwners]),
+    // A scene's condition reading a clue no scene gives and no observation finds (4.2; a map condition's stops: progression-check.ts).
+    ...unfindableClueConditionWarnings({ clues: conditionContent.clues, landmarks: tourism.landmarks },
+      [...entryRuleConditionOwners(conditionContent, runtimeEntryRules), ...sceneConditionOwners, ...taggedSceneOwners])];
   // The tours against their cities (tour stage 2a; tour-validation.ts): before the progression check, which reads them.
   const tourNotes = validateTours({ root, tours: tourFiles,
     cities: travels.map(({ city: current, travel, settings }) => ({ id: current.id, travel, hotelPlaceId: settings.hotelPlaceId,
@@ -1550,6 +1587,7 @@ export function validateContent(sources: ContentSources,
   // Check 9 (stage 2b): every city has a way to clear it; its warnings name probable dead ends (progression-check.ts).
   const progressionContent: ProgressionContent = {
     journeys: journeyCatalog.journeys, episodes: journey.episodes, storyBattles: journey.storyBattles, battles, landmarks: tourism.landmarks,
+    momentQuizIds: generatedScenes.scenes.flatMap((scene) => momentQuizBattle(scene) ?? []),
     encounters: runtimeEncounters, items: encounterCatalog.items, dates, rewards: getAllRewardRules(journey, generatedScenes.rewards), romance: progression,
     travel: travels.map(({ city: current, travel, settings }) => ({ cityId: current.id, hotelPlaceId: settings.hotelPlaceId, initialBudget: settings.initialBudget,
       events: travel.events, routes: travel.routes, tourOnlyPlaceIds: travel.places.filter((place) => isTourOnlyPlace(place)).map((place) => place.id) })),
@@ -1597,7 +1635,9 @@ export function validateContent(sources: ContentSources,
     ...battles.flatMap((battle) => (battle.reasoning?.correctClueIds ?? []).map((clueId) => ({ clueId, usedBy: `special battle ${battle.id}` }))),
   ];
   conditionNotes.push(...progressionWarnings(progressionContent, clueUses,
-    tourism.landmarks.map((landmark) => ({ landmarkId: landmark.id, clueIds: landmark.clueIds }))));
+    tourism.landmarks.map((landmark) => ({ landmarkId: landmark.id, clueIds: landmark.clueIds })),
+    // A landmark without an observation may list clues a scene gives or a reasoning quiz shows as its case (4.3; 2026-11-18).
+    new Set([...heardClues, ...battles.flatMap((battle) => battle.reasoning?.caseClueIds ?? [])])));
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   const transitReviews = new Map<string, CityTransitReview[]>();
   // Walks and route sources a city with a ledger lacks: warnings, not errors (transport-validation.ts).
@@ -1797,7 +1837,7 @@ export function validateContent(sources: ContentSources,
     warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes,
       ...glossaryWarnings(sources, glossaryTerms), ...openingMovieWarnings(journeyCatalog.journeys, (id) => manifestFiles.get(id) ?? id)],
     /** What each journey folder provides, for the build report. */
-    journeyContents: journeyContents(sources),
+    journeyContents: journeyContents(sources, heardClues),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */
     transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item }, transitReviews.get(item.id) ?? [])),
     /** Word meanings no English text uses, for the build report. */

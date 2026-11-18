@@ -91,8 +91,20 @@ describe("check 9's warnings", () => {
 
   it("warns of clues at a landmark without an observation, naming what uses them", () => {
     const warnings = progressionWarnings(town(), [{ clueId: "clue_c", usedBy: "question q1" }], [{ landmarkId: "lm_c", clueIds: ["clue_c"] }]);
-    expect(warnings.find((warning) => warning.kind === "unfindable-clue")?.message).toMatch(/lm_c .*clue_c, used by question q1/);
+    expect(warnings.find((warning) => warning.kind === "unfindable-clue")?.message).toMatch(/lm_c .*clue_c, which no scene gives.*used by question q1/);
     expect(progressionWarnings(town(), [], [{ landmarkId: "lm_b", clueIds: ["clue_b"] }])).toEqual([]);
+    // 4.3 (2026-11-18): a clue a scene gives or a reasoning quiz shows as case evidence is not unfindable; the rest still are.
+    expect(progressionWarnings(town(), [], [{ landmarkId: "lm_c", clueIds: ["clue_c"] }], new Set(["clue_c"]))).toEqual([]);
+    expect(progressionWarnings(town(), [], [{ landmarkId: "lm_c", clueIds: ["clue_c", "clue_d"] }], new Set(["clue_c"]))
+      .map((warning) => warning.message)).toEqual([expect.stringMatching(/lists clue_d, which/)]);
+  });
+
+  it("does not count a moment quiz (# at: depart|epilogue) in battles <city> >= N: no map event opens it", () => {
+    const content = town({ when: { battlesPlayed: { city: "town", atLeast: 3 } } });
+    expect(progressionErrors(content)).toEqual([]);
+    // bt_c becomes a moment quiz: two map quizzes are left, so three can never be played.
+    expect(progressionErrors({ ...content, momentQuizIds: ["bt_c"] })[0]).toMatch(/^No way to clear city town/);
+    expect(progressionErrors({ ...town({ when: { battlesPlayed: { city: "town", atLeast: 2 } } }), momentQuizIds: ["bt_c"] })).toEqual([]);
   });
 
   it("warns of a battle left after the epilogue in a journey that moves on after it", () => {

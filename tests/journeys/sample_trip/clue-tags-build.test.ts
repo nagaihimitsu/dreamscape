@@ -14,7 +14,9 @@ const prefix = `${SAMPLE_JOURNEY_DIRECTORY}/`;
 const TOWER = "stories/places/smp_mihon_clock_tower.ink";
 const RAIN = "smp_obs_mihon_market_rain";
 const HANDS = "smp_obs_mihon_clock_tower_hands";
-const STAY = "* [下から見上げておく # option: stay_below]\n";
+// The bell talk's 「下から見上げておく」 records the coach stop's clue already (the sample's optional part, 2026-11-18).
+const BELL_CLUE = "smp_obs_mihon_coach_bell";
+const STAY = `* [下から見上げておく # option: stay_below]\n    # clue: ${BELL_CLUE}\n`;
 const GEARS = "=== smp_mihon_clock_gears ===\n# scene: talk\n";
 let sample: ContentSources;
 
@@ -40,7 +42,9 @@ describe("a clue heard in conversation, as content:build reads it", () => {
     const before = validateContent(sample).scenes.scenes;
     const after = validateContent(towerWith((text) => heardAtEnd(HANDS)(heardOnChoice(RAIN)(text)))).scenes.scenes;
     const bell = after.find((scene) => scene.id === "smp_mihon_clock_bell")!;
-    expect(bell.options.find((option) => option.id === "stay_below")).toEqual({ id: "stay_below", knot: "smp_mihon_clock_bell", clues: [RAIN] });
+    expect(before.find((scene) => scene.id === "smp_mihon_clock_bell")!.options.find((option) => option.id === "stay_below"))
+      .toEqual({ id: "stay_below", knot: "smp_mihon_clock_bell", clues: [BELL_CLUE] });
+    expect(bell.options.find((option) => option.id === "stay_below")).toEqual({ id: "stay_below", knot: "smp_mihon_clock_bell", clues: [BELL_CLUE, RAIN] });
     expect(bell.options.find((option) => option.id === "climb")).not.toHaveProperty("clues");
     expect(after.find((scene) => scene.id === "smp_mihon_clock_gears")!.done).toEqual({ ap: 1, clues: [HANDS] });
     const changed = after.filter((scene) => before.find((item) => item.id === scene.id)?.fingerprint !== scene.fingerprint).map((scene) => scene.id);

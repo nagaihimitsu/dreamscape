@@ -60,6 +60,7 @@ import { getUsableRoutes } from "../domain/transport";
 import { otherCityItemsMissing, unmetConditionLabels } from "./condition-explain";
 import type { Condition } from "../content/condition-schemas";
 import { meets } from "../domain/conditions";
+import { isMomentQuiz } from "../domain/moments";
 import { DAY_START, getTimePeriod, NIGHT_START } from "../domain/travel";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
@@ -505,6 +506,8 @@ export function openTourismScene(state: GameState, landmarkId: string): GameStat
 
 /** Start a battle at its place: a landmark's battle, a special battle B/C or the city finale. */
 export function openBattleScene(state: GameState, battleId: string): GameState {
+  // A moment quiz (# at: depart|epilogue; 2026-11-18) opened by itself would run outside its moment, which the save check refuses.
+  if (isMomentQuiz(battleId)) throw new Error(`この場面は時点の場面です。時点を開く操作（エピローグ・出発など）で流してください（${battleId}）。`);
   const landmarkId = battles.find((item) => item.id === battleId)?.landmarkId ?? undefined;
   const eventId = episodes.find((item) => item.cityId === state.currentCityId && item.battleId === battleId)?.id ?? battleId;
   const next = startBattle(atPlace(state, scenePlaceId(state.currentCityId, eventId, landmarkId)), battleId);

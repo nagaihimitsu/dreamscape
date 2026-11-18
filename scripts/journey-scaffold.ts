@@ -103,8 +103,10 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
   const memories: Record<string, { titleJa: string; descriptionJa: string }> = {};
   const requirements = journeyRequirements(input, selectedCityIds, narrativeFinalePlaces(narrative));
   for (const plan of requirements) {
+    // Every main event's landmark is planned, once (a planned landmark without a map event, such as a moment quiz's, is allowed; 2026-11-18).
     const planned = input.plannedLandmarks[plan.cityId];
-    if (!planned || plan.main.length !== planned.length || new Set(plan.main.map((entry) => entry.landmarkId)).size !== planned.length)
+    if (!planned || !plan.main.length || plan.main.some((entry) => !planned.includes(entry.landmarkId)) ||
+        new Set(plan.main.map((entry) => entry.landmarkId)).size !== plan.main.length)
       throw new Error(`journey:scaffold: 都市 ${plan.cityId} の本筋の観光（地図の main の出来事）が、都市の landmarkIdsPlanned と合いません。`);
   }
   const expectedMain = requirements.flatMap((city) => city.main.map((item) => item.eventId));
@@ -219,7 +221,8 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   const { assets } = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
   const { backgrounds } = parseCatalog(sources, presentationSchema, "romance/presentation.json");
   const imageAssetIds: Record<string, string> = {};
-  for (const city of cities) for (const landmarkId of plannedLandmarks[city.cityId]) {
+  // The planned landmarks a main map event visits (one without a map event, a moment quiz's, has no place of its own here).
+  for (const city of cities) for (const landmarkId of plannedLandmarks[city.cityId].filter((id) => city.events.some((event) => event.category === "main" && event.placeId === id))) {
     const place = city.places.find((entry) => entry.id === landmarkId);
     const assetId = place && backgrounds[place.backgroundId]?.imageAssetId;
     const asset = assets.find((entry) => entry.id === assetId);

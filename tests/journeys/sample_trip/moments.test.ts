@@ -86,8 +86,9 @@ describe("the order of a stage-4 moment (4.3)", () => {
     const trip = { from: "mihon_hotel", to: TOWER, modeId: "rental_bicycle", arrivalMinute: 543 };
     expect(keys({ ...base, kind: "hotel", cityId: "mihon", eventId: null, landmarkId: null, parts: ["move", "sleep"], trip: { ...trip, from: TOWER, to: "mihon_hotel" } }))
       .toEqual(["main:move", "smp_mihon_hotel_bell_night", "main:sleep", "smp_mihon_hotel_morning", "smp_mihon_last_morning"]);
+    // The epilogue: the coach stop's reasoning quiz placed at the moment (-3, a moment quiz), the bookmark (-2), Lili (-1).
     expect(keys({ ...base, kind: "epilogue", cityId: "mihon", eventId: null, landmarkId: null, parts: ["epilogue"] }))
-      .toEqual(["smp_mihon_bookmark_before_leaving", "smp_mihon_lili_seeoff", "main:epilogue"]);
+      .toEqual(["smp_mihon_special_b_coach", "smp_mihon_bookmark_before_leaving", "smp_mihon_lili_seeoff", "main:epilogue"]);
     // A trip before a visit: its scenes at the place it leaves (`from mihon_hotel`), the move, then the visit's own.
     expect(keys({ ...base, kind: "visit", eventId: EPISODE, landmarkId: TOWER, parts: ["move", "guide", "observe", "battle"], trip }))
       .toEqual(["smp_mihon_first_bicycle", "main:move", "smp_mihon_bookmark_stall", "main:guide", "main:observe", "main:battle",
@@ -482,6 +483,7 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     // Open by itself (no scene before or after it): its own choice that spends AP leaves the epilogue's AP.
     patch(scene("smp_mihon_lili_seeoff"), { at: [] });
     patch(scene("smp_mihon_bookmark_before_leaving"), { at: [] });
+    patch(scene("smp_mihon_special_b_coach"), { at: [] });
     const reading = playUntil(depart(withAp(cityStart("mihon"), 1), EPISODE), (state) => !!state.activeEpilogue?.frame.choices.length);
     expect(reading.occasion).toBeNull();
     expect(usableAp(reading)).toBe(0);

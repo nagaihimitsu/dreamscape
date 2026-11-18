@@ -9,7 +9,7 @@ import type { Condition } from "../content/condition-schemas";
 import { encounterChoiceDisplay, encounterEntryRule, encounterRunsAt, encounterVisitSlot, momentSceneAvailability, nextObservationScene } from "../domain/encounter";
 import { canStartAuthoredEpilogue, isAuthoredEpilogueCity } from "../domain/epilogue";
 import type { GameState } from "../domain/game";
-import { occasionSteps, planThen } from "../domain/occasion";
+import { momentStepAvailability, occasionSteps, planThen } from "../domain/occasion";
 import { insertedDoneReserve, sceneById, sceneOption } from "../domain/scene-effects";
 import { explainCondition, type ExplainedNode } from "./condition-explain";
 
@@ -20,7 +20,7 @@ export type OccasionCandidates = { title: string; rows: CandidateRow[]; hiddenCh
 const leaves = (node: ExplainedNode): CandidatePart[] => node.kind === "leaf" ? [{ label: node.label, value: node.value }] : node.children.flatMap(leaves);
 const partsOf = (state: Readonly<GameState>, condition: Condition | undefined): CandidatePart[] => condition ? leaves(explainCondition(state, condition)) : [];
 const positionOf = (id: string) => {
-  const priority = encounterEntryRule(id)?.priority;
+  const priority = encounterEntryRule(id)?.priority ?? sceneById(id)?.priority;
   return typeof priority === "number" ? (priority > 0 ? `+${priority}` : String(priority)) : priority ?? "after observe";
 };
 const partNames = { guide: "案内", observe: "観察", battle: "クイズ", date: "デート", ending: "「交際開始」の画面", move: "移動", ticket: "入場",
@@ -59,14 +59,15 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
     }
     const id = step.scene;
     const started = occasion.started.includes(id);
-    const availability = momentSceneAvailability({ ...state, activeTourism: null, activeEncounter: null, activeBattle: null }, id);
+    // (A moment quiz's row reads its # when:, its repetition and whether its battle can start: momentStepAvailability.)
+    const availability = momentStepAvailability({ ...state, activeTourism: null, activeEncounter: null, activeBattle: null }, id);
     const thenPlan = sceneById(id)?.then && planThen(state, sceneById(id)!.then!, id, insertedDoneReserve(id));
     const reason = started ? "" : occasion.then ? "前の場面の then: で時点が終わる" :
       step.after && !occasion.ran.includes(step.after) ? `${partNames[step.after]}がこの時点で流れていない` :
         thenPlan && thenPlan.ok === false ? `then: が払えない（${thenPlan.reason}）` : availability.available ? "" : availability.reason;
     const status = started ? (occasion.at === id ? "実行中" : "済み") : index < atIndex ? "とばす" : !reason && !nextFound ? "次の候補" : reason ? "とばす" : "未到達";
     if (status === "次の候補") nextFound = true;
-    rows.push({ position: positionOf(id), name: sceneName(id), status, reason, parts: partsOf(state, encounterEntryRule(id)?.when) });
+    rows.push({ position: positionOf(id), name: sceneName(id), status, reason, parts: partsOf(state, sceneById(id)?.when ?? encounterEntryRule(id)?.when) });
   });
   const active = state.activeEncounter;
   const scene = active && sceneById(active.encounterId);

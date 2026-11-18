@@ -19,8 +19,10 @@ export function screenFor(state: Pick<GameState, "activeEncounter" | "activeEpil
 
 /**
  * The exit of a result screen (a battle's result, the 「交際開始」 screen) names what comes next (2.7, 4.7): 「エピローグへ進む」
- * when a then: epilogue waits for it, 「ツアーを続ける」 on a running tour (tour stage 2a); otherwise undefined (the screen's own
- * label, e.g. 「街歩きへ」).
+ * when a then: epilogue waits for it, 「ツアーを続ける」 on a running tour (tour stage 2a), 「先へ進む」 inside a city's departure or
+ * epilogue (a moment quiz's result: the moment goes on, not to free time; 2026-11-18); otherwise undefined (the screen's own label,
+ * e.g. 「街歩きへ」).
  */
 export const resultExitLabel = (state: Pick<GameState, "occasion" | "tour">): string | undefined =>
-  state.occasion?.then && "epilogue" in state.occasion.then ? "エピローグへ進む" : state.tour?.status === "running" ? "ツアーを続ける" : undefined;
+  state.occasion?.then && "epilogue" in state.occasion.then ? "エピローグへ進む" : state.tour?.status === "running" ? "ツアーを続ける"
+    : state.occasion?.kind === "depart" || state.occasion?.kind === "epilogue" ? "先へ進む" : undefined;

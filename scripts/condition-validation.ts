@@ -224,9 +224,29 @@ export function checkConditions(content: ConditionContent, owners: readonly Cond
 
 /** Warnings of conditions: probable mistakes that break nothing (content:build lists them). */
 export type ConditionWarning = {
-  kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until";
+  kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until" | "unfindable-clue";
   message: string;
 };
+
+/**
+ * A scene's condition (an inserted scene's or a moment quiz's `# when:`, a choice's `# requires:`, a `cond()`) that reads `clue <ID>`
+ * of a clue no scene gives (`# clue:`, `# on_done: clue`) and no observation finds (its landmark has `observation: false`): it never
+ * holds (4.2, 2026-11-18; a warning). A map condition reading such a clue stops instead: its city has no way to clear it
+ * (progression-check.ts). `landmarks` tells the observations.
+ */
+export function unfindableClueConditionWarnings(content: Pick<ConditionContent, "clues"> & { landmarks: readonly { id: string; observation?: boolean }[] },
+  owners: readonly ConditionOwner[]): ConditionWarning[] {
+  const never = (id: string) => {
+    const clue = content.clues?.find((item) => item.id === id);
+    return !!clue && !clue.heard && content.landmarks.find((item) => item.id === clue.landmarkId)?.observation === false;
+  };
+  return owners.flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
+    [...new Set(conditionLeaves(condition).flatMap((leaf) => ("clue" in leaf && never(leaf.clue) ? [leaf.clue] : [])))].map((id) => ({
+      kind: "unfindable-clue",
+      message: `A condition that never holds: ${owner.label} (${field}) reads clue ${id}, which no scene gives (# clue:, # on_done: clue) and no ` +
+        "observation finds (its landmark has observation: false); give it in a scene, or the scene never runs or the choice never shows (not stopped)",
+    }))));
+}
 type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | `after ${string}`; when?: Condition; quizAfterLandmarkBattle?: true };
 
 /**

@@ -16,6 +16,7 @@ import { servedFile } from "./public-assets";
 import { cityTransitPath, cityTransitPlan } from "./journey-transit";
 import { inspectCityTransit } from "./transit-ledger";
 import { describeSampleLeftovers, SAMPLE_SETTINGS, sampleLeftovers, type SampleLeftover } from "./sample-journey";
+import { momentQuizBattleIds } from "./place-files";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
 export type JourneyReadinessInput = {
@@ -39,6 +40,11 @@ export type JourneyReadinessInput = {
   assetExists: (assetPath: string) => boolean;
   /** Sample content left in the journey's folder (`folder` relative to the repository, the files inside it); none for the sample itself. */
   sampleLeftovers: { folder: string; leftovers: SampleLeftover[] };
+  /**
+   * The moment quizzes (時点のクイズ, 2026-11-18): battles whose knot says `# at:` (a city's departure or epilogue). No map event names
+   * them, so the travel events' checks never reach them; their city checks them (4.3).
+   */
+  momentQuizIds?: readonly string[];
 };
 
 export type JourneyReadinessIssue = { code: string; detail: string };
@@ -199,6 +205,19 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
       if (reward.length !== 1 || reward[0].ap !== trip.cityPlan!.cityClearAp) problem(cityIssues, "city_reward_mismatch", `都市クリア報酬が不一致: ${cityId}`);
       checkBattle(final.battleId, null, cityId, cityIssues);
     }
+    // The moment quizzes of the city's landmarks (no map event: 4.3): the battle's script, quiz and translations, the landmark's photo
+    // (the quiz screen shows it) and its clues' owner. A landmark without an observation needs no clues of its own.
+    for (const battleId of input.momentQuizIds ?? []) {
+      const battle = input.battles.find((item) => item.id === battleId);
+      const landmark = input.tourism.landmarks.find((item) => item.id === battle?.landmarkId);
+      if (!battle || !landmark || landmark.cityId !== cityId) continue;
+      checkBattle(battle.id, landmark.id, cityId, cityIssues);
+      const asset = input.tourism.assets.find((item) => item.id === landmark.imageAssetId);
+      if (!asset || asset.isPlaceholder || !input.assetExists(asset.path))
+        problem(cityIssues, "observation_image_missing", `時点のクイズの観光地の画像が未完成: ${landmark.id}（${battle.id}）`);
+      for (const clueId of landmark.clueIds) if (!input.tourism.clues.some((clue) => clue.id === clueId && clue.landmarkId === landmark.id))
+        problem(cityIssues, "observation_mismatch", `観察ポイントの参照が不一致: ${clueId}`);
+    }
     return { cityId, issues: cityIssues, events };
   });
   const readyForPromotion = issues.every((issue) => issue.code === "journey_unavailable") &&
@@ -249,12 +268,14 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
   });
   const quizzes = sources.quizFiles.filter((quiz) => !quiz.example).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
+  const battles = parseCatalog(sources, battleCatalogSchema, "battles/catalog.json").battles;
   return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
+    momentQuizIds: momentQuizBattleIds(battles, (storyId) => sources.storyFiles.find((story) => story.id === storyId)?.source),
     tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),
     backgrounds: parseCatalog(sources, presentationSchema, "romance/presentation.json").backgrounds,
     dates: parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates,
     destinations: parseCatalog(sources, dateDestinationsSchema, "romance/date_destinations.json").destinations,
-    battles: parseCatalog(sources, battleCatalogSchema, "battles/catalog.json").battles,
+    battles,
     translations: parseCatalog(sources, learningCatalogSchema, "learning/translations.json").questions,
     // A place file's knot (stage 3a): its file exists and has the knot (=== name ===).
     storyExists: (id) => {

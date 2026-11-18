@@ -1,5 +1,5 @@
 import { dates, episodes, getCityContent, scenes } from "../content";
-import { INSERTED_KINDS, type AfterPart, type SceneAt, type SceneEntry } from "../content/scene-schemas";
+import { momentQuizBattle, runsAtMoment, type AfterPart, type SceneAt, type SceneEntry } from "../content/scene-schemas";
 import { storyFileOf } from "../content/story-address";
 import { WALK_MODE_ID } from "../content/transport";
 
@@ -40,10 +40,18 @@ export function atMatches(at: SceneAt, moment: Moment, sceneCityId: string): boo
   }
 }
 
-/** The inserted scenes (a place file's talks and encounters) that run at the moment, in any slot. */
+/**
+ * The scenes that run at the moment as its turns, in any slot: the inserted scenes (a place file's talks and encounters) and the
+ * moment quizzes (a battle's knot with `# at:`, 時点のクイズ; 2026-11-18).
+ */
 export function scenesAt(moment: Moment): SceneEntry[] {
-  return scenes.filter((scene) => scene.origin === "place" && INSERTED_KINDS.includes(scene.kind) && scene.at.some((at) => atMatches(at, moment, scene.cityId)));
+  return scenes.filter((scene) => scene.origin === "place" && runsAtMoment(scene) && scene.at.some((at) => atMatches(at, moment, scene.cityId)));
 }
+/**
+ * Whether a battle is a moment quiz (時点のクイズ: its knot says `# at: depart|epilogue …`; 2026-11-18): it runs only as its moment's
+ * turn, so no map event opens it and `battles <city> >= N` does not count it.
+ */
+export const isMomentQuiz = (battleId: string): boolean => scenes.some((scene) => momentQuizBattle(scene) === battleId);
 /** Whether any scene runs at the moment (the game opens a stage-4 occasion only then; else everything goes on as before). */
 export const momentHasScenes = (moment: Moment) => scenesAt(moment).length > 0;
 /** A tour leg's narration (`# scene: tour_leg`; tour stage 2b), if its leg has one (content:build allows one per leg). */

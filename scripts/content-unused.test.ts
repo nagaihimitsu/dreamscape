@@ -84,6 +84,15 @@ describe("unusedEntries", () => {
       ["alpha_cafe", "destinations[0]"], ["alpha_q2", "battles[1]"], ["alpha_tower", "landmarks[1]"], ["alpha_ghost", "people[1]"],
     ]);
   });
+
+  it("does not list a moment quiz (# at: depart|epilogue) as a battle off the map", () => {
+    const input = {
+      destinations: [], dates: [], episodes: [], storyBattles: [], people: [], inkSources: [],
+      battles: [entry({ id: "alpha_coach", landmarkId: "alpha_stop" }, "battles[0]")], landmarks: [entry({ id: "alpha_stop" }, "landmarks[0]")],
+    };
+    expect(unusedEntries(input).map((item) => item.id)).toEqual(["alpha_coach"]);
+    expect(unusedEntries({ ...input, momentQuizIds: ["alpha_coach"] })).toEqual([]);
+  });
 });
 
 describe("schema keys and the code that reads them", () => {

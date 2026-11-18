@@ -4,6 +4,7 @@ import type { SceneEntry } from "../content/scene-schemas";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
+import { isMomentQuiz } from "../domain/moments";
 import { validateGameState, type GameState } from "../domain/game";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { clockText, debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
@@ -71,9 +72,12 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
   const atTourOnly = (landmarkId: string | null | undefined, eventId?: string) => (!!landmarkId && tourOnly.has(landmarkId)) ||
     (eventId !== undefined && tourOnly.has(travel.events.find((event) => event.id === eventId)?.placeId ?? ""));
   const mark = (target: DebugTarget, tour: boolean): DebugTarget => (tour ? { ...target, ...TOUR_ONLY } : target);
+  // A moment quiz (時点のクイズ, # at: depart|epilogue; 2026-11-18) runs only as its moment's turn: not a battle to open by itself,
+  // nor its landmark a visit (opened as one, the quiz would run as the visit's main part). Its moment opens it (scene=epilogue …).
+  const visited = landmarks.filter((item) => item.cityId === cityId && !isMomentQuiz(item.battleId));
   return {
-    tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => mark({ id: item.id, name: item.nameJa }, atTourOnly(item.id))),
-    battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => mark({ id: item.id, name: item.titleJa },
+    tourism: visited.map((item) => mark({ id: item.id, name: item.nameJa }, atTourOnly(item.id))),
+    battle: battles.filter((item) => battleCityId(item.id) === cityId && !isMomentQuiz(item.id)).map((item) => mark({ id: item.id, name: item.titleJa },
       atTourOnly(item.landmarkId, episodes.find((episode) => episode.battleId === item.id)?.id ?? item.id))),
     // A landmark's visit's scenes (a scene of another moment, stage 4, runs when its moment opens in play: the date, the hotel…).
     encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.landmarkId)
@@ -85,7 +89,7 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
       .map((item) => mark({ id: item.id, name: item.kind === "confession" ? `${item.titleJa}（告白）` : item.titleJa }, atTourOnly(undefined, item.id))),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
-    occasion: landmarks.filter((item) => item.cityId === cityId).map((item) => mark({ id: item.id, name: `${item.nameJa}の時点` }, atTourOnly(item.id))),
+    occasion: visited.map((item) => mark({ id: item.id, name: `${item.nameJa}の時点` }, atTourOnly(item.id))),
     tour: getCityTours(cityId).map((item) => ({ id: item.id, name: item.titleJa })),
     // Free time (the map) at a place of the city, the hotel first (where a day starts).
     free: [...travel.places].sort((a, b) => Number(b.id === travelSettings.hotelPlaceId) - Number(a.id === travelSettings.hotelPlaceId))

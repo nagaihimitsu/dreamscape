@@ -1,5 +1,6 @@
 import type { Condition } from "../src/content/condition-schemas";
 import { combineWhenUntil, parseConditionText } from "../src/content/condition-text";
+import { splitStoryAddress } from "../src/content/story-address";
 import { RELATIONSHIP_AXES } from "../src/content/condition-schemas";
 import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type SceneDone, type SceneKind, type SceneOption, type SceneThen } from "../src/content/scene-schemas";
 
@@ -539,4 +540,19 @@ export function readFileChoices(storyId: string, source: string): PlaceChoice[] 
     }
   });
   return choices;
+}
+
+/**
+ * The battles of a catalog whose knot head says `# at:` (moment quizzes, 時点のクイズ; 2026-11-18), read from the place files' sources
+ * (`source`: a story file's Ink). For the tools that do not build the scene table (journey:readiness, content:unused); content:build
+ * checks the rest of their head. A file that is not a place file has none.
+ */
+export function momentQuizBattleIds(battles: readonly { id: string; storyId: string }[], source: (storyId: string) => string | undefined): string[] {
+  return battles.filter((battle) => {
+    const { storyId, path: knot } = splitStoryAddress(battle.storyId);
+    const text = knot === undefined ? undefined : source(storyId);
+    if (text === undefined) return false;
+    try { return !!readPlaceFile(storyId, text).knots.find((item) => item.name === knot)?.head.some((tag) => tag.key === "at"); }
+    catch { return false; }
+  }).map((battle) => battle.id);
 }

@@ -1,6 +1,7 @@
 import { battles, dates, episodes, landmarks, progression, scenes, storyState } from "../content";
 import { usableAp, usableMoney } from "./reservations";
 import { leafKind, type Condition, type Leaf, type LeafKind, type LeafValues } from "../content/condition-schemas";
+import { isMomentQuiz } from "./moments";
 import type { GameState } from "./game-state-schema";
 import { getGameWeekday, getTimePeriod, NIGHT_START } from "./travel";
 // A part that reads the other dates' availability (normalDateAvailable): date-rules.ts reads `meets` in turn, so the two
@@ -83,7 +84,8 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   },
   rides: (state, { mode, atLeast }) => (state.travel.rideCounts[mode] ?? 0) >= atLeast,
   rented: (state, id) => state.travel.rentedModeIds.includes(id),
-  battlesPlayed: (state, { city, atLeast }) => battles.filter((battle) => battle.scope !== "city_finale" &&
+  // The city's map quizzes (not its finale, nor a moment quiz, # at: depart|epilogue, which no map shows; 2026-11-18).
+  battlesPlayed: (state, { city, atLeast }) => battles.filter((battle) => battle.scope !== "city_finale" && !isMomentQuiz(battle.id) &&
     landmarks.find((landmark) => landmark.id === battle.landmarkId)?.cityId === city && battlePlayed(state, battle.id)).length >= atLeast,
   relationship: (state, { axis, ...range }) => inRange(state[axis], range),
   money: (state, range) => inRange(spendableMoney(state), range),

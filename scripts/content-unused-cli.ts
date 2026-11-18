@@ -9,6 +9,7 @@ import {
   type CatalogEntry,
 } from "./content-unused";
 import { jsonStrings } from "./json-lines";
+import { momentQuizBattleIds } from "./place-files";
 
 // npm run content:unused [-- --journey <journeyId>]: what nothing reaches (content-unused.ts), from content/ as it is
 // now (no content:build needed) and the code of src/ and scripts/. Notes only: it changes no file and exits 0 (1 when
@@ -71,6 +72,8 @@ try {
     battles, episodes: entriesOf(sources, "progression/journey.json", "episodes"), storyBattles: entriesOf(sources, "progression/journey.json", "storyBattles"),
     landmarks: entriesOf(sources, "tourism/catalog.json", "landmarks"), people: entriesOf(sources, "progression/story.json", "people"),
     inkSources: sources.storyFiles.map((story) => story.source),
+    momentQuizIds: momentQuizBattleIds(battles.flatMap((battle) => typeof battle.value.id === "string" && typeof battle.value.storyId === "string"
+      ? [{ id: battle.value.id, storyId: battle.value.storyId }] : []), (storyId) => sources.storyFiles.find((story) => story.id === storyId)?.source),
   });
 
   // (b) The keys of the content schemas that the game's code never names.
