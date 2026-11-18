@@ -6729,6 +6729,178 @@
     "gt_jaipur_date_johari_bazaar_nasreen_014": {
       "text": "割れやすいから、はめっぱなしにしない方がいいわ。はめるのは、特別な日だけ",
       "script": "2026-11-17_cast"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_001": {
+      "text": "駅の窓口は、今日は工事中。臨時の窓口は、あの路地の奥の、階段の上です。歩いて五分",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_002": {
+      "text": "タクシーの列を抜けますよ。足元、お気をつけて",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_001": {
+      "text": "本当なら、急がなきゃ。……でも、何だろう。何か、引っかかる",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_003": {
+      "text": "格好や看板が怪しい、というだけでしょう？　似た人がいたって、わたしが駅の者でないことにはなりません",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_004": {
+      "text": "駅がどうやって運休を知らせるか、ご存じないでしょう",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_005": {
+      "text": "……放送係の方と、お知り合いで",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_002": {
+      "text": "ドゥベイさん！　わたしも隣で聞いてたのに。焦って、全部飛んでた",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_003": {
+      "text": "確かめよう。自分たちで",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_004": {
+      "text": "Thank you. We'll check it ourselves.",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_006": {
+      "text": "では伺いますが。その方は、運休を誰が知らせるとおっしゃるんです",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_007": {
+      "text": "……放送と、掲示板",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_005": {
+      "text": "ううん。駅の放送と、駅の掲示板、って言ってた",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_006": {
+      "text": "さっきのアプリの『定刻』も、本当だったんだ",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_008": {
+      "text": "掲示板は、表示が遅れるんです。それに、運休の切符は、臨時窓口でないとお金が戻りませんよ",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_007": {
+      "text": "本当に運休だったら、切符のお金って、どうなるんだろう",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_008": {
+      "text": "だよね。念のため、鉄道の決まりを開いてみる",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_009": {
+      "text": "待って。鉄道の決まりを開いてみる",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_010": {
+      "text": "運休になったe切符は、運賃が自動で払い戻される。申し込みも、いらないって",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_009": {
+      "text": "……今日は、ついてないな。どうぞ、よい旅を",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_011": {
+      "text": "助かった。……でも、さっき、ちょっと得意そうな顔してたでしょ",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_012": {
+      "text": "してたよ。今も、ちょっとしてる",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_013": {
+      "text": "そうだね。笑う会に行ってなかったら、今ごろ、あの路地の階段の上だった",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_014": {
+      "text": "はいはい。そういうことにしておく",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_015": {
+      "text": "次は、わたしが先に気づく番だからね",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_claim_delhi_scam_young_man_001": {
+      "text": "今朝、決まった運休です。掲示板にも、駅の放送にも、まだ出ていません",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_claim_delhi_scam_young_man_002": {
+      "text": "だから駅の者が、こうして外で、お一人ずつお知らせしているんです",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_press_001": {
+      "text": "駅の方なんですよね。どうして、駅の中じゃなくて外でお知らせを？",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_quiz_press_delhi_scam_young_man_001": {
+      "text": "放送は、決まってから流れるまで時間がかかるんです。その間、お客さまが困らないように",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_001": {
+      "text": "……待って。少し、考えたい",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_delhi_scam_suit_man_001": {
+      "text": "では、手付金だけ。考えるお時間は、お約束します",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_002": {
+      "text": "少しだけ、外に出よう。駅の掲示板、自分の目で見たい",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_delhi_scam_suit_man_002": {
+      "text": "……では、お金をご用意してから、またどうぞ",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_003": {
+      "text": "……駅の掲示板、自分の目で見に行こう。あの人の話が本当かどうか",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_004": {
+      "text": "定刻……！　じゃあ、運休も、駅長の電話も",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_005": {
+      "text": "払えなかったから、何も取られなかったんだ。お財布が軽くて助かったの、初めてかも",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_scam_office_006": {
+      "text": "……ありがと、黙っててくれて。次の駅では、わたしが先に掲示板を見るからね",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_depart_station_008": {
+      "text": "返事しておくね。今年のお客さんは、引っかかる手前で止まりました、って",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_date_lodhi_garden_027": {
+      "text": "駅の案内放送をされていたんですよね。ホームに響く、あの声ですか？　わたしたち、今度、列車でアーグラへ行くんです",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_012": {
+      "text": "さようでございます。では、元・放送係より、お知らせいたします",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_013": {
+      "text": "運休・遅れのご案内は、駅の構内放送と、駅の掲示板にて行っております",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_014": {
+      "text": "駅の外でお客様をお呼び止めし、運休とお伝えする者は――わたしの知るかぎり、駅の者ではございません",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_015": {
+      "text": "ご不明の点は、駅の中の窓口か、お電話の139番にてお確かめください。……以上、お知らせでした",
+      "script": "2026-11-18"
+    },
+    "gt_delhi_date_lodhi_garden_028": {
+      "text": "放送で言われると、忘れられなさそう",
+      "script": "2026-11-18"
     }
   }
 }
