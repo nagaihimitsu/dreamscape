@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { voiceRecordWarnings } from "./voice-changes";
-import { recordedVoicesFile, spokenUpToName } from "./content-sources";
+import { recordedVoicesFile, spokenUpToName, voiceRecordsOf } from "./content-sources";
 import { copyVoiceRecords, partialRecordings, RECORDED_FILE, readRecordedClips, readSentScripts, readVoiceCast, readVoiceHistory, voiceRecordsFolder, writeRecordedClips } from "./voice-records";
 
 // A journey's voice records in authoring/journeys/<journeyId>/voice/: the scripts sent (one folder per date, or date and
@@ -29,6 +29,7 @@ describe("the voice records of a journey", () => {
     expect(spokenUpToName(root, ["ta_trip"])).toEqual(new Map([["ta_a_001", "あら。……"]]));
     write(`${folder}/recorded.json`, "{");
     expect(spokenUpToName(root, ["ta_trip"])).toEqual(new Map());
+    expect(voiceRecordsOf(root, ["ta_trip", "tb_trip"]).unreadable).toEqual([`${folder}/recorded.json`]);
   });
 
   it("copies each journey's recorded.json to a staged copy, so the copy keeps the clips recorded up to a name", () => {

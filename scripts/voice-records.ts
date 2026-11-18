@@ -73,7 +73,8 @@ export function readRecordedClips(root: string, journeyId: string): RecordedClip
 /**
  * The clips of the journeys recorded up to a name the player sets: voice ID → what each says (recorded.json `spoken`),
  * for content:build's name rule (voice-files.ts checkVoiceTags). A recorded.json it cannot read gives none (content:build
- * warns about it: voice-changes.ts voiceRecordWarnings).
+ * names it in the error of a voiced line with a name, and warns about it otherwise: voice-changes.ts voiceRecordWarnings).
+ * The same reader as the content tree's (content-sources.ts spokenUpToName).
  */
 export function partialRecordings(root: string, journeyIds: readonly string[]): ReadonlyMap<string, string> {
   return spokenUpToName(root, journeyIds);

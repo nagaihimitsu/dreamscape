@@ -690,7 +690,8 @@ export function validateContent(sources: ContentSources,
     withContext(file, () => checkMiniGameArtTags(authored, storyLayer, miniGameArt));
     // A line's # voice: names a recording of the story's own journey (2026-11-12), never on a line with a name the
     // player sets but for a clip recorded up to the name (2026-11-17).
-    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory), untilName));
+    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory), untilName,
+      sources.tree.unreadableVoiceRecords));
     // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
     withContext(file, () => checkSoundTags(authored, storyLayer, sounds));
     // A line's # bgm: names a shared track or one of the story's own journey, or stop or default (2026-11-12).
