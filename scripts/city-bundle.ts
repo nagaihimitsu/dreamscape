@@ -14,6 +14,7 @@ import { assertUniqueIds, mergeCityCatalogs, referencedBackgrounds } from "./cit
 import { cityTransitPath, cityTransitPlan } from "./journey-transit";
 import { jsonTextKeeping } from "./json-text";
 import { exportTransitDecisions, inspectCityTransit, transitLedgerSchema } from "./transit-ledger";
+import { copyVoiceRecords } from "./voice-records";
 
 export type { CityBundle, EditableCityBundle } from "./city-bundle-schema";
 export { writeCityBundleFiles } from "./city-bundle-files";
@@ -139,6 +140,7 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
   try {
     cpSync(path.join(root, "content"), path.join(stage, "content"), { recursive: true });
     cpSync(path.join(root, "public"), path.join(stage, "public"), { recursive: true });
+    copyVoiceRecords(root, stage);
     for (const [file, value] of Object.entries(next)) {
       const target = path.join(stage, file);
       mkdirSync(path.dirname(target), { recursive: true });

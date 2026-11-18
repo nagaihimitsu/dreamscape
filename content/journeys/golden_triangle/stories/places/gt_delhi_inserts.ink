@@ -36,23 +36,28 @@ INCLUDE modules.ink
     # speaker: narrator
     宿の帳場の机で、ルーヒーが鉛筆をかじっていた。クミンの水を持ってきてくれた、宿の娘だ。
     # speaker: enemy
+    # voice: gt_delhi_hotel_homework_roohi_001
     英語の作文の宿題なの。題は、デリーでいちばん好きな場所
 - else:
     # speaker: narrator
     宿の帳場の机で、制服の女の子が鉛筆をかじっていた。
     # speaker: enemy
     # cutin: name
+    # voice: gt_delhi_hotel_homework_roohi_002
     あ、お客さん。わたし、ルーヒー。この宿の娘で、十三歳。英語の作文の宿題なの。題は、デリーでいちばん好きな場所
 }
 # speaker: enemy
+# voice: gt_delhi_hotel_homework_roohi_003
 先生は、インド門とか、赤い城とかって書いてほしいの。でも、わたしの好きな場所は、地下鉄の女性車両
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_delhi_hotel_homework_001
 女性車両？　地下鉄の？
 # speaker: enemy
+# voice: gt_delhi_hotel_homework_roohi_004
 先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ。みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
 # speaker: enemy
+# voice: gt_delhi_hotel_homework_roohi_005
 隣のカムラおばあちゃんも常連なんだよ。オートの運転手と喧嘩しなくていいからって。……もうすぐ、引っ越しちゃうけど
 # speaker: narrator
 ルーヒーのノートには、題と、一行目の「女性車両」だけ。その先は、まだ白い。
@@ -60,15 +65,18 @@ INCLUDE modules.ink
     # rel: trust +1
     # set: gt_delhi_roohi_metro_essay
     # speaker: enemy
+    # voice: gt_delhi_hotel_homework_roohi_006
     でも、点が低かったら？
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_hotel_homework_002
     低くても、ルーヒーさんの好きな場所は変わらないよ。先生が知らない場所を教えてあげるの、ちょっと気持ちよくない？
     # speaker: enemy
+    # voice: gt_delhi_hotel_homework_roohi_007
     ……気持ちいいかも
 * [「インド門の方が、点はもらえるかも」 # option: write_the_monument]
     # speaker: enemy
+    # voice: gt_delhi_hotel_homework_roohi_008
     やっぱり？　……うん、そうする。そっちの方が、ママも怒らないし
     # speaker: narrator
     # emotion: worried
@@ -80,8 +88,10 @@ INCLUDE modules.ink
     # rel: affection +1
     # set: gt_delhi_roohi_metro_essay
     # speaker: enemy
+    # voice: gt_delhi_hotel_homework_roohi_009
     家だと、わたし、いちばん下だから。お兄ちゃんにも、ママにも、お客さんにも、ルーヒー、あれ持ってきて、って言われる
     # speaker: enemy
+    # voice: gt_delhi_hotel_homework_roohi_010
     女性車両だと、わたしも、ただの乗客の一人。……それが好き。変？
     # speaker: heroine
     # reaction: heroine,surprised,sparkle
@@ -99,6 +109,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_hotel_homework_006
 先生、すごく困った顔してた。でも、あの作文が、今でもいちばん好き
 # speaker: enemy
+# voice: gt_delhi_hotel_homework_roohi_011
 コインランドリー……。日本の子って、変
 # speaker: heroine
 # voice: gt_delhi_hotel_homework_007
@@ -272,24 +283,32 @@ INCLUDE modules.ink
 # together: gt_delhi_hotel_okami enemy
 # local_word: gt_delhi_word_khichdi
 # term: gt_term_khichdi
+# voice: gt_delhi_hotel_sick_morning_delhi_hotel_okami_001
 キチュリー。うちでは、お腹を壊したら、これ
 # speaker: gt_delhi_hotel_okami
+# voice: gt_delhi_hotel_sick_morning_delhi_hotel_okami_002
 ……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
+    # voice: gt_delhi_hotel_sick_morning_roohi_001
     クミンの水。わたしが作った。……宿題を手伝ってくれたお礼、半分ね
 - else:
     # speaker: enemy
     # cutin: name
+    # voice: gt_delhi_hotel_sick_morning_roohi_002
     わたし、ルーヒー。十三歳。これは、クミンを煮出した水
     # speaker: enemy
+    # voice: gt_delhi_hotel_sick_morning_roohi_003
     わたし、ゴルガッパなら百個食べても平気。デリーの子だから
 }
 # speaker: gt_delhi_hotel_okami
+# voice: gt_delhi_hotel_sick_morning_delhi_hotel_okami_003
 百個は嘘。この子は四十個で、一晩泣いたの。それと、あんたは学校。もう七時半よ
 # speaker: enemy
+# voice: gt_delhi_hotel_sick_morning_roohi_004
 病人の看病は、学校より大事って、先生も言ってた
 # speaker: gt_delhi_hotel_okami
+# voice: gt_delhi_hotel_sick_morning_delhi_hotel_okami_004
 言ってない
 { cond("flag gt_delhi_player_sick"):
     # speaker: narrator
@@ -314,6 +333,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ルーヒーは母親に背中を押されて、ようやく玄関へ向かった。振り返って、ひとこと。
 # speaker: enemy
+# voice: gt_delhi_hotel_sick_morning_roohi_005
 次は、バスって言うんだよ。最初の一個の前に
 -> END
 
@@ -332,6 +352,7 @@ INCLUDE modules.ink
 宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
 # speaker: gt_delhi_scam_young_man
+# voice: gt_delhi_depart_scam_delhi_scam_young_man_001
 Agra? Your train is cancelled today.
 # speaker: narrator
 アーグラ行きの列車は、今日は運休だという。今朝、決まったのだと。
@@ -340,10 +361,12 @@ Agra? Your train is cancelled today.
 # voice: gt_delhi_depart_scam_001
 えっ、運休？
 # speaker: gt_delhi_scam_young_man
+# voice: gt_delhi_depart_scam_delhi_scam_young_man_002
 外国の方の振り替えは、観光客の窓口でしかできません。でも、駅の中の窓口は、今日は工事で閉まっています。臨時の窓口が、道の向かいに。歩いて五分です
 # speaker: narrator
 そこへ、反射材のベストを着て、無線機を持った男が通りかかった。青年が声をかけると、男は面倒くさそうにうなずいた。
 # speaker: gt_delhi_scam_vest_man
+# voice: gt_delhi_depart_scam_delhi_scam_vest_man_001
 アーグラ？　運休、運休。早く向かいの窓口へ。代わりの席が、なくなるよ
 # speaker: heroine
 # emotion: worried
@@ -351,11 +374,13 @@ Agra? Your train is cancelled today.
 二人とも、同じこと言ってる……。わざわざ教えてくれたんだし、話だけでも、聞いてみる？
 * [「話を聞くだけなら」と、ついて行く # option: just_listen]
     # speaker: gt_delhi_scam_young_man
+    # voice: gt_delhi_depart_scam_delhi_scam_young_man_003
     では、こちらへ。すぐそこです
     -> across_the_road
 * [「先に、駅の掲示板を見よう」と言う # option: check_the_board]
     # set: gt_delhi_scam_doubted
     # speaker: gt_delhi_scam_young_man
+    # voice: gt_delhi_depart_scam_delhi_scam_young_man_004
     掲示板は、表示が遅れるんです。待っていたら、代わりの席も埋まりますよ。こちらです、早く
     # speaker: narrator
     青年は、もう彼女の荷物に手をかけて歩き出していた。置いていくわけにはいかない。
@@ -365,6 +390,7 @@ Agra? Your train is cancelled today.
     # speaker: narrator
     電波が弱く、画面がなかなか切り替わらない。ようやく出た表示は、「定刻」だった。
     # speaker: gt_delhi_scam_young_man
+    # voice: gt_delhi_depart_scam_delhi_scam_young_man_005
     アプリは古い情報です。今朝決まったことは、まだ載りません
     # speaker: heroine
     # emotion: worried
@@ -383,16 +409,21 @@ Agra? Your train is cancelled today.
 # leave: gt_delhi_scam_young_man
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_delhi_scam_suit_man_001
 座ってください。まずはチャイを
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_delhi_scam_suit_man_002
 切符を拝見。……ああ、本当だ。運休ですね。しかも、婚礼の季節で、アーグラ行きは三日先まで満席です
 # speaker: narrator
 男はこちらに背を向けた画面を見ながら、首を振った。それから電話をかけ、受話器をこちらに向けた。
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_delhi_scam_suit_man_003
 駅長です
 # speaker: gt_delhi_scam_phone_voice
+# voice: gt_delhi_depart_scam_delhi_scam_phone_voice_001
 運休です。運休です
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_delhi_scam_suit_man_004
 ご安心を。車と運転手をご用意できます。アーグラとジャイプール、ホテル込み。特別価格です。手付金だけ先にいただければ、今すぐ車を押さえます
 # speaker: narrator
 示された額は、二人の旅の予算を全部足しても、まるで届かない数字だった。
@@ -410,12 +441,14 @@ Agra? Your train is cancelled today.
     # speaker: narrator
     男は札を数え、満足そうに引き出しにしまった。
     # speaker: gt_delhi_scam_suit_man
+    # voice: gt_delhi_depart_scam_delhi_scam_suit_man_005
     契約書を用意します
     # speaker: narrator
     男が立ち上がる。その間、彼女はノートをめくっていた。
 * [「その電話の相手と、直接話させてください」 # option: ask_the_caller]
     # rel: trust +1
     # speaker: gt_delhi_scam_suit_man
+    # voice: gt_delhi_depart_scam_delhi_scam_suit_man_006
     駅長はお忙しい。二度はかけられません。それより、こちらの感想を
     # speaker: narrator
     男は話をそらすように、ノートを彼女の方へ押しやった。
@@ -459,6 +492,7 @@ No, thank you.
 # voice: gt_delhi_depart_scam_010
 けっこうです。自分で、確かめます
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_delhi_scam_suit_man_007
 列車に乗り遅れますよ。後で泣いても、知りません
 # speaker: heroine
 # voice: gt_delhi_depart_scam_011
@@ -467,6 +501,7 @@ No, thank you.
     # speaker: narrator
     手付金を返してほしいと言うと、男の笑顔が消えた。
     # speaker: gt_delhi_scam_suit_man
+    # voice: gt_delhi_depart_scam_delhi_scam_suit_man_008
     返金はできません。契約の決まりです
     # speaker: narrator
     机の向こうで、引き出しはもう鍵がかかっていた。
@@ -480,6 +515,7 @@ No, thank you.
 # speaker: narrator
 階段を駆け下り、道を渡る。駅の入口で、赤いシャツの荷運びの男が、こちらの出てきた路地を見て、首を振った。
 # speaker: gt_delhi_porter
+# voice: gt_delhi_depart_scam_delhi_porter_001
 あの路地の上の部屋だろう。毎日だよ。……観光客の窓口なら、駅の二階。今日も開いてる。列車は、あれを見な
 # speaker: narrator
 男が顎で示した電光掲示板に、アーグラ行きの列車が出ていた。定刻。発車番線も、ちゃんと表示されている。
@@ -488,6 +524,7 @@ No, thank you.
 # speaker: narrator
 念のため、ホームにいた黒い上着の検札係に乗車券を見せると、彼は画面を一瞥して、うなずいただけだった。
 # speaker: gt_delhi_ticket_checker
+# voice: gt_delhi_depart_scam_delhi_ticket_checker_001
 運休だと言われて、ここまで走ってくる人は、毎日いますよ。……間に合った人は、運がいい
 # speaker: narrator
 # leave: gt_delhi_ticket_checker

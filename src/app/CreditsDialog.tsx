@@ -168,15 +168,18 @@ export function CreditsList({ photos, sounds = [], music = [], ambience = [], vo
     </section>}
     {voices.length > 0 && <section aria-labelledby="credits-voices-title" data-testid="credits-voices">
       <h3 id="credits-voices-title">声</h3>
-      <p className="fine-print">台詞の声の作り方です。声のある旅行編だけに載せています。</p>
-      <ul className="credits-sounds">
-        {voices.map((voice) => <li key={`${voice.journeyId}-${voice.url}`}>
-          <p className="credits-place">{voice.journeyNameJa}</p>
-          <p>{voice.useJa}：{voice.titleJa}（{voice.author}、{voice.license}）</p>
-          {voice.creditJa && <p>{voice.creditJa}</p>}
-          <p><a href={voice.url} target="_blank" rel="noreferrer">元の作品</a></p>
-        </li>)}
-      </ul>
+      <p className="fine-print">台詞の声の作り方です。声のある旅行編だけに載せています。開くと、声ごとに使ったモデル・作者・ライセンスを確かめられます。</p>
+      <details className="credits-journey">
+        <summary>声の出典（{voices.length}件）</summary>
+        <ul className="credits-sounds">
+          {voices.map((voice) => <li key={`${voice.journeyId}-${voice.url}`}>
+            <p className="credits-place">{voice.journeyNameJa}</p>
+            <p>{voice.useJa}：{voice.titleJa}（{voice.author}、{voice.license}）</p>
+            {voice.creditJa && <p>{voice.creditJa}</p>}
+            <p><a href={voice.url} target="_blank" rel="noreferrer">元の作品</a></p>
+          </li>)}
+        </ul>
+      </details>
     </section>}
     {movies.length > 0 && <section aria-labelledby="credits-movies-title" data-testid="credits-movies">
       <h3 id="credits-movies-title">オープニングムービー</h3>

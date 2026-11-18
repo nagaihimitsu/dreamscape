@@ -12,7 +12,6 @@ import { imageJourneyIndex } from "./image-rights";
 import { sampleMarks } from "./sample-journey";
 import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
 import { voiceRecordWarnings } from "./voice-changes";
-import { partialRecordings } from "./voice-records";
 
 // content:build in three steps: load (content-sources.ts reads every content
 // file once) → validate (content-validation.ts, pure; content-images.ts then
@@ -24,7 +23,7 @@ import { partialRecordings } from "./voice-records";
 // the warnings about recorded lines that changed read what the clips say
 // (authoring/journeys/<journeyId>/voice/recorded.json, voice-changes.ts), and so
 // does the name rule of `# voice:` for the clips recorded up to a name
-// (recorded.json `spoken`, voice-records.ts partialRecordings).
+// (recorded.json `spoken`, read with the content tree: content-sources.ts spokenUpToName).
 //
 // This module exports only buildContent: the unit-test split (scripts/test-sets.ts) puts every test that imports
 // it in the slow "content" set. Put helpers that tests call on their own in light modules
@@ -45,7 +44,7 @@ export async function buildContent(
 ) {
   const sources = loadContentSources(root, { extraJourneyDirectories: options.extraJourneyDirectories });
   const storyCache = chooseStoryCache(options.storyCache);
-  const content = validateContent(sources, { storyCache, untilName: partialRecordings(root, sources.manifests.map((manifest) => manifest.id)) });
+  const content = validateContent(sources, { storyCache });
   await checkContentImages(sources.publicFiles, content.images);
   // The reduced copies of the free-time photos (derived-images.ts), served beside the other public files.
   let derivedImages: { count: number; made: number } | undefined;

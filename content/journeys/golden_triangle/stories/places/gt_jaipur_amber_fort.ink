@@ -69,16 +69,19 @@ INCLUDE modules.ink
 周りの露店の店主たちが、ちらりとこちらを見た。画家の筆が、止まった。
 # speaker: enemy
 # cutin: name
+# voice: gt_jaipur_main_amber_fort_battle_saleem_001
 ……サリームだ。この中庭で、八年描いている
 # speaker: narrator
 彼はゆっくり顔を上げた。怒鳴りはしなかった。その分、声が冷たかった。
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_002
 あんたは、どっちがどっちを写したと思った
 # speaker: heroine
 # reaction: heroine,worried,sweat
 # voice: gt_jaipur_main_amber_fort_003
 それは……その……
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_003
 答えなくていい。顔に書いてある。……向こうの一枚を持ってこい。並べて見ろ。実物を見た人間にしか、描けないものがある
 # speaker: narrator
 {heroine_name}は印刷の一枚を買って戻り、二枚を並べた。まず目に入ったのは、王の宮殿へ入る、色鮮やかな門。その上に描かれた姿が、二枚で違っていた。
@@ -90,17 +93,21 @@ INCLUDE modules.ink
     サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_amber_fort_battle_saleem_004
     ガネーシャだ。ガネーシュ・ポール、ガネーシャの門。名前を読めば分かる。向こうのは孔雀になっている
 }
 # speaker: narrator
 土産物屋の店主が、騒ぎを聞きつけてやってきた。腹の出た男で、首から金の鎖を下げている。
 # speaker: gt_jaipur_amber_shopkeeper
+# voice: gt_jaipur_main_amber_fort_battle_jaipur_amber_shopkeeper_001
 何を言いがかりつけてる。うちのが元の絵だ。うちの職人が描いて、それを刷ったんだ
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_005
 職人の名前は
 # speaker: narrator
 店主は答えず、話をそらした。サリームはもう店主を見ていなかった。次の場所を、筆の尻で示す。
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_006
 鏡の間。天井を見ろ
 # speaker: narrator
 二枚とも、絵の隅に、城の奥の鏡の間が天井まで描き込まれている。
@@ -110,6 +117,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_amber_fort_005
 ……サリームさん、これ、何日描いたんですか
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_007
 鏡の間に、四日座った。警備員に顔を覚えられた
 -> quiz(2) ->
 # background: gt_bg_jaipur_amber_fort
@@ -121,6 +129,7 @@ INCLUDE modules.ink
 - else:
     # speaker: enemy
     # em: 鏡
+    # voice: gt_jaipur_main_amber_fort_battle_saleem_008
     鏡だ。何千もの、小さな鏡。星に見えるのは、写真がぼやけていたからだ。実物を見ていない証拠だ
 }
 # speaker: narrator
@@ -132,10 +141,12 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_amber_fort_007
 わたし……
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_009
 まだだ。最後に、あっちの説明書きを読め
 # speaker: narrator
 印刷の絵の下に、英語の説明が刷り込まれていた。この城は、ジャイプールを築いた王が建てた、と。
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_010
 おれの絵には、説明は書かない。書くなら、正しいことを書く
 -> quiz(3) ->
 # background: gt_bg_jaipur_amber_fort
@@ -145,6 +156,7 @@ INCLUDE modules.ink
     城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_amber_fort_battle_saleem_011
     城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前。向こうは王を取り違えている。……描いた奴は、ここに来たこともない
 }
 # speaker: narrator
@@ -156,6 +168,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_amber_fort_009
 ごめんなさい。確かめもしないで、サリームさんを疑いました。みんなの前で
 # speaker: enemy
+# voice: gt_jaipur_main_amber_fort_battle_saleem_012
 謝罪は受け取る。……だが、あんたがさっき、ここで大きな声で言ったことは、もう戻らない
 # speaker: heroine
 # voice: gt_jaipur_main_amber_fort_010
@@ -170,18 +183,22 @@ INCLUDE modules.ink
 {
 - battle_score == 3:
     # speaker: enemy
+    # voice: gt_jaipur_main_amber_fort_battle_saleem_013
     全部、見分けた。……画家の目だな。疑ったのも、見る目があったからだ。向きを間違えただけで
 - battle_score == 2:
     # speaker: enemy
+    # voice: gt_jaipur_main_amber_fort_battle_saleem_014
     二つは見分けた。残りの一つは、おれが言った。それでいい。見ようとしたことの方が大事だ
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_amber_fort_battle_saleem_015
     見分けたのは、ほとんどおれだ。だが最後に声を出したのは、あんただ
 }
 # speaker: narrator
 サリームは{heroine_name}の手から絵を取り、裏返した。細い筆で、自分の名前を書き入れる。
 # speaker: enemy
 # item_show: gt_jaipur_salim_miniature
+# voice: gt_jaipur_main_amber_fort_battle_saleem_016
 おれの仕事だと言えるときだけ、名前を書く。……これは、あんたの絵だ
 # speaker: heroine
 # reaction: heroine,smile,sparkle

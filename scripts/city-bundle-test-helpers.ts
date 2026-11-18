@@ -8,6 +8,7 @@ import { journeyAuthoringProfiles } from "./journey-authoring";
 import { displayPath, loadContentSources, readJourneyCatalog, requireCity, storyFile } from "./content-sources";
 import type { MergedKind } from "./content-layout";
 import { storyFileOf, storyKnotOf } from "../src/content/story-address";
+import { copyVoiceRecords } from "./voice-records";
 
 // Fixtures and helpers shared by the city-bundle tests (scripts/city-bundle*.test.ts).
 // The tests are split over several files so that their slow content builds run in parallel.
@@ -20,6 +21,7 @@ export function fixture(): string {
   for (const directory of ["content", "public"]) {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
+  copyVoiceRecords(process.cwd(), root);
   const extraFiles = [...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile);
   for (const file of extraFiles) {
     if (!existsSync(path.join(process.cwd(), file))) continue;

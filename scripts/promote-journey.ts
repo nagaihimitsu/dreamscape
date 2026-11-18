@@ -14,6 +14,7 @@ import { jsonTextKeeping } from "./json-text";
 import { CONTENT_DIRECTORY, completeFragment, emptyCatalog, journeyManifestPath, trimFragment, type MergedKind } from "./content-layout";
 import { displayPath, journeyLayer, loadContentSources } from "./content-sources";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
+import { copyVoiceRecords } from "./voice-records";
 
 /** The journey's own manifest.json carries its status and city order. */
 const journeyCities = (original: ReleaseFiles, journeyId: string): string[] => {
@@ -366,6 +367,7 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
   try {
     cpSync(path.join(root, "content"), path.join(stage, "content"), { recursive: true });
     cpSync(path.join(root, "public"), path.join(stage, "public"), { recursive: true });
+    copyVoiceRecords(root, stage);
     for (const [relative, value] of Object.entries(next)) {
       mkdirSync(path.dirname(path.join(stage, relative)), { recursive: true });
       writeFileSync(path.join(stage, relative), value);

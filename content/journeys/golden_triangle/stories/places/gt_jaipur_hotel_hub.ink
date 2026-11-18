@@ -33,6 +33,7 @@ INCLUDE modules.ink
 # speaker: narrator
 何を着ていくのか、お祝いには何を持っていくのか。帳場で尋ねると、フロントの女性が笑った。
 # speaker: gt_jaipur_hotel_front
+# voice: gt_jaipur_arrival_jaipur_hotel_front_001
 お祝いはね、封筒に入れた現金。金額の最後に、一ルピー足すの。割り切れない数は、縁起がいいから
 # speaker: heroine
 # reaction: heroine,smile,question
@@ -73,6 +74,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_epilogue_001
 カムラさん！　昨日の今日なのに、もう値切ってる……
 # speaker: enemy
+# voice: gt_jaipur_epilogue_kamla_001
 ジャイプールの運転手は、デリーより素直ね。三十秒で折れた
 # speaker: narrator
 カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
@@ -82,22 +84,27 @@ INCLUDE modules.ink
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
 # speaker: enemy
 # recall: gt_album_j54
+# voice: gt_jaipur_epilogue_kamla_002
 ジャイプール。通りで踊った夜
 # speaker: heroine
 # reaction: heroine,shy,blush
 # voice: gt_jaipur_epilogue_002
 ……それ、わたしの、ですか
 # speaker: enemy
+# voice: gt_jaipur_epilogue_kamla_003
 わたしのよ。でも、あんたにもあげる
 # speaker: enemy
+# voice: gt_jaipur_epilogue_kamla_004
 花嫁のおばあさんはね、ゆうべ、嫁いで六十年で初めて、行列と一緒に通りを歩いたの
 # speaker: enemy
+# voice: gt_jaipur_epilogue_kamla_005
 来年のガンガウルは、あの人と二人で見に行く。窓じゃなくて、下から
 # speaker: narrator
 # recall: gt_album_d01
 # se: pen_click
 カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
+# voice: gt_jaipur_epilogue_kamla_006
 あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと
 {
 - ending_reached:
@@ -106,6 +113,7 @@ INCLUDE modules.ink
     # voice: gt_jaipur_epilogue_003
     はい。……もう、言いました。これからも、言いたいときに言います
     # speaker: enemy
+    # voice: gt_jaipur_epilogue_kamla_007
     よろしい。言い過ぎるくらいで、ちょうどいいのよ
 - romance_stage >= 3:
     # speaker: heroine
@@ -113,6 +121,7 @@ INCLUDE modules.ink
     # voice: gt_jaipur_epilogue_004
     ……まだ、です。でも、六十年は待ちません。約束します
     # speaker: enemy
+    # voice: gt_jaipur_epilogue_kamla_008
     約束は軽くするもんじゃないわよ。……したなら、守りなさい
 - romance_stage == 2:
     # speaker: heroine
@@ -120,12 +129,14 @@ INCLUDE modules.ink
     # voice: gt_jaipur_epilogue_005
     そ、そういうのじゃ……。でも、言いたいことは、ちゃんと言うようにします
     # speaker: enemy
+    # voice: gt_jaipur_epilogue_kamla_009
     『そういうのじゃ』って言う子は、だいたいそういうのよ
 - else:
     # speaker: heroine
     # voice: gt_jaipur_epilogue_006
     旅の連れ、です。……でも、この旅で一緒にいられてよかったって、それは、ちゃんと言えます
     # speaker: enemy
+    # voice: gt_jaipur_epilogue_kamla_010
     それで十分。最初の一言は、それくらいがいい
 }
 # speaker: narrator

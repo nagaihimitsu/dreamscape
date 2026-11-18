@@ -34,6 +34,7 @@ INCLUDE modules.ink
 # speaker: narrator
 川に面した八角形の塔の欄干から、ツアーの人々が順番にタージを眺めている。誰かが言った。
 # speaker: gt_agra_fort_tourist
+# voice: gt_agra_agra_fort_guide_agra_fort_tourist_001
 ここは、ある皇帝が、最後の年月を過ごした場所なんだって
 # speaker: heroine
 # emotion: neutral
@@ -57,19 +58,23 @@ INCLUDE modules.ink
 # speaker: narrator
 旗を掲げた添乗員の後ろで、ツアーの一行が出口へ流れていく。ただ一人、鳥打ち帽の老人だけが、床にあぐらをかいて動かなかった。
 # speaker: gt_agra_fort_old_man
+# voice: gt_agra_main_agra_fort_battle_duggal_001
 断る
 # speaker: narrator
 添乗員の若い女性が、携帯を二台握ったまま頭を下げる。胸の名札にはリヤとある。
 # speaker: gt_riya
 # cutin: name
+# voice: gt_agra_main_agra_fort_battle_riya_001
 大佐、バスが出ます。ジャイプールまで五時間なんです
 # speaker: narrator
 バス、と聞いたとたん、老人は駐車場の方から顔をそむけた。
 # speaker: gt_agra_fort_old_man
+# voice: gt_agra_main_agra_fort_battle_duggal_002
 タージを建てたシャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
 老人の視線が、近くにいた{heroine_name}たちを捉えた。背筋がさらに伸びる。
 # speaker: gt_agra_fort_old_man
+# voice: gt_agra_main_agra_fort_battle_duggal_003
 ちょうどいい。君たちを国際監視団に任命する。この抗議が平和的であることを見届けたまえ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -77,6 +82,7 @@ INCLUDE modules.ink
 こ、国際……？　わたしたち、ただの観光客です
 # speaker: enemy
 # cutin: name
+# voice: gt_agra_main_agra_fort_battle_duggal_004
 ドゥッガル。退役した陸軍大佐だ。観光客でも、目は二つある。十分だ
 # speaker: narrator
 リヤが、すがるような目でこちらを見た。{heroine_name}は、おそるおそる大佐の隣にしゃがむ。
@@ -84,14 +90,17 @@ INCLUDE modules.ink
 # voice: gt_agra_main_agra_fort_002
 あの、大佐。何に抗議されてるんですか？
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_005
 閉じ込める者すべてにだ。この塔の主を閉じ込めたのが誰だったか、知っているかね
 -> quiz(1) ->
 # background: gt_bg_agra_agra_fort
 { quiz_correct:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_006
     そう、実の息子だ。……そして今、わしを閉じ込めようとしているのは、旅行会社のバスだ
 - else:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_007
     実の息子、アウラングゼーブだよ。……そして今、わしを閉じ込めようとしているのは、旅行会社のバスだ
 }
 # speaker: narrator
@@ -99,6 +108,7 @@ INCLUDE modules.ink
 リヤの二台の携帯が、同時に鳴った。会社と、バスの運転手らしい。
 # speaker: enemy
 # reaction: enemy,anger
+# voice: gt_agra_main_agra_fort_battle_duggal_008
 娘さん、旗を振っていればいいと思うな。わしは命令される側を四十年やってきた
 # speaker: heroine
 # emotion: serious
@@ -107,21 +117,26 @@ INCLUDE modules.ink
 # speaker: narrator
 大佐の眉が跳ね上がった。監視団が抗議するとは、予定になかったらしい。
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_009
 ……監視団の意見を記録する。リヤ君、今のは失礼した
 # speaker: narrator
 大佐はポケットから飴を出して、口に入れた。生姜の匂い。さっきから三つ目だ。顔色が、塔の大理石と同じくらい白い。
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_010
 では、監視団に問う。閉じ込められた皇帝の世話を、最後までしたのは誰だったと思う
 -> quiz(2) ->
 # background: gt_bg_agra_agra_fort
 { quiz_correct:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_011
     娘だ。ジャハーナーラー。……娘というのは、ありがたいものだ
 - else:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_012
     娘のジャハーナーラーだよ。……娘というのは、ありがたいものだ
 }
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_013
 うちの娘はな、わしとバスに乗るときだけは、必ず一番前の席を取ってくれた。理由は聞かずに
 # speaker: narrator
 生姜の飴。白い顔。駐車場の方を見ようとしない目。一番前の席。{heroine_name}の中で、ばらばらだったものがつながった。
@@ -132,14 +147,17 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,anger
 # em_shake: 何を言うか
+# voice: gt_agra_main_agra_fort_battle_duggal_014
 軍人に向かって何を言うか！
 # speaker: narrator
 怒鳴った声は、すぐにしぼんだ。大佐は欄干の向こうのタージを見たまま、小さく言った。
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_015
 ……後ろの席だと、十分でだめなんだ。今日の座席表では、わしは最後列だ。言えるか、そんなこと。若い娘さんの前で、元大佐が
 # speaker: narrator
 リヤは電話中で、こちらの話には気づいていない。大佐は咳払いをして、声を大きくした。
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_016
 それに、わしがここに残る正当な理由はほかにもある。この城には、今も軍がいるのだ
 -> quiz(3) ->
 # background: gt_bg_agra_agra_fort
@@ -149,6 +167,7 @@ INCLUDE modules.ink
     はい。城の一部は、今も陸軍の区域ですよね。……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
 - else:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_017
     城の一部は、今も陸軍が使っている。……つまり、わしがいなくても守りは万全ということか。理屈では、ぐうの音も出んな
 }
 # speaker: narrator
@@ -156,20 +175,25 @@ INCLUDE modules.ink
 # speaker: narrator
 リヤの顔が、ぱっと明るくなる。彼女は旗を下ろし、大佐の前に立った。
 # speaker: gt_riya
+# voice: gt_agra_main_agra_fort_battle_riya_002
 大佐。ジャイプールまでの道中、一番前の席で、窓の外の解説をお願いできませんか。皆さん、大佐のお話を聞きたがっています
 # speaker: enemy
+# voice: gt_agra_main_agra_fort_battle_duggal_018
 ……任務とあらば
 # speaker: narrator
 大佐は立ち上がり、帽子をかぶり直した。座り込みは終わった。抗議の成果として、最前列の席と、解説係の肩書きが残った。
 {
 - battle_score == 3:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_019
     監視団の報告は完璧だった。君は軍でも通用する。……車酔いの件は、報告書から削除するように
 - battle_score == 2:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_020
     二問正解。監視団としては合格だ。……車酔いの件は、報告書から削除するように
 - else:
     # speaker: enemy
+    # voice: gt_agra_main_agra_fort_battle_duggal_021
     歴史の点数はともかく、観察力は一級だった。……車酔いの件は、報告書から削除するように
 }
 # speaker: narrator

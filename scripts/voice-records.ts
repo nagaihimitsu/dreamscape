@@ -1,7 +1,7 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
-import { displayPath } from "./content-sources";
+import { displayPath, spokenUpToName } from "./content-sources";
 import { authoringFolder } from "./journey-authoring";
 import { voiceCastSchema, type VoiceCast } from "./voice-cast";
 import type { SentVoiceScript } from "./voice-script";
@@ -73,16 +73,27 @@ export function readRecordedClips(root: string, journeyId: string): RecordedClip
 /**
  * The clips of the journeys recorded up to a name the player sets: voice ID → what each says (recorded.json `spoken`),
  * for content:build's name rule (voice-files.ts checkVoiceTags). A recorded.json it cannot read gives none (content:build
- * warns about it: voice-changes.ts voiceRecordWarnings).
+ * names it in the error of a voiced line with a name, and warns about it otherwise: voice-changes.ts voiceRecordWarnings).
+ * The same reader as the content tree's (content-sources.ts spokenUpToName).
  */
 export function partialRecordings(root: string, journeyIds: readonly string[]): ReadonlyMap<string, string> {
-  return new Map(journeyIds.flatMap((journeyId) => {
-    try {
-      return [...readRecordedClips(root, journeyId) ?? []].flatMap(([id, clip]): [string, string][] => clip.spoken === undefined ? [] : [[id, clip.spoken]]);
-    } catch {
-      return [];
-    }
-  }));
+  return spokenUpToName(root, journeyIds);
+}
+
+/**
+ * Copy each journey's recorded.json from the project `from` to a copy of it at `to` (same place), for a staged or test
+ * copy of content/ that content:build checks there: a clip recorded up to a name the player sets passes only with its
+ * record (partialRecordings). A journey without one is passed over.
+ */
+export function copyVoiceRecords(from: string, to: string): void {
+  const journeys = path.join(from, authoringFolder(""));
+  if (!existsSync(journeys)) return;
+  for (const journeyId of readdirSync(journeys)) {
+    const file = path.join(voiceRecordsFolder(journeyId), RECORDED_FILE);
+    if (!existsSync(path.join(from, file))) continue;
+    mkdirSync(path.dirname(path.join(to, file)), { recursive: true });
+    cpSync(path.join(from, file), path.join(to, file));
+  }
 }
 
 /** The journey's cast.json (voice-cast.ts), or undefined when it has none. Throws for one it cannot read. */

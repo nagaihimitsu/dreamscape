@@ -91,7 +91,7 @@ const voiceTagWhere = (id: string, line: number, knot?: string) => `${knot ? `kn
  * the name is then only in the subtitle. Japanese first, English after.
  */
 export function checkVoiceTags(source: string, journeyId: string, voices: readonly VoiceFile[], voiceFolder: string,
-  untilName: ReadonlyMap<string, string> = new Map()): void {
+  untilName: ReadonlyMap<string, string> = new Map(), unreadableRecords: readonly string[] = []): void {
   for (const { id, line, knot } of voiceTagsOf(source)) {
     const where = voiceTagWhere(id, line, knot);
     if (!VOICE_ID.test(id))
@@ -114,6 +114,7 @@ export function checkVoiceTags(source: string, journeyId: string, voices: readon
     throw new Error(`${name.nameJa}は声にできません：${voiceTagWhere(value, line, knot)} の台詞（${textLine}行目）に ${name.placeholder} があります。` +
       `${name.nameJa}は遊ぶ人が決めるので、録音した声では言えません。名前を言わない台詞にするか、# voice: を外してください。` +
       "名前の手前まで録った声だけは付けられます（その声が言う文が recorded.json の spoken にあるとき。voice:tag が記録します）" +
+      (unreadableRecords.length ? `。読めない声の記録があります：${unreadableRecords.join("、")}。直すと確かめられます` : "") +
       `（Voiced line says ${name.nameEn}: the line of # voice: ${value} has ${name.placeholder}; names are set by the player, so a recording cannot say it` +
       " unless recorded.json says the clip stops before the name (spoken)）。");
   }

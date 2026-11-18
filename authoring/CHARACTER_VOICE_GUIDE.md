@@ -237,8 +237,9 @@ D3「「……」まで録る」：名前の手前まで録って、名前は字
 3. **札を付けて記録する。** `npm run voice:tag -- --journey <旅行編ID> --from <届いたファイルだけのフォルダ>`。名前の手前まで録った行は、`recorded.json` に `spoken` も記録されます。
 4. **クレジットを足す。** 使ったモデルごとに、`<旅行編>/manifest.json` の `voiceCredits` に1つずつ足します（「出典・権利の一覧」の「声」に出ます）。
    - `useJa`：何の声か（例：「カムラの声」、同じモデルを2人に使ったら「ハミード・老人の声」）。
-   - `titleJa`：モデル（例：「VOICEVOX:中部つるぎ」「AivisHub のモデル MarkN（AivisSpeech）」）。
-   - `author`・`license`・`url`（https のページ）・`checkedAt`（規約を確かめた日）。
+   - `titleJa`：モデル（例：「VOICEVOX の音声ライブラリ「中部つるぎ」」「AivisHub のモデル「MarkN」（AivisSpeech）」）。
+   - `author`（VOICEVOX は音声ライブラリの権利者、AivisHub はモデルを公開した人）・`license`（規約の名前だけ。確かめた時のメモは入れない）・`url`（https のページ）・`checkedAt`（規約を確かめた日）。
+   - 人数が多いと「声」の欄が長くなるので、出典・権利の一覧では「声の出典（○件）」を開いて見る形にしてあります。
    - `creditJa`：`cast.json` の `model.creditJa` の、規約が求める書き方。クレジットが任意のモデルも、声の出所として載せます。実在の人の声から作ったモデルは「音声合成モデル『○○』」の形にし、「CV:○○」のように本人が演じたと読める書き方をしません。
 5. **聞いて確かめる。**
    - 配役の記録の「作者の耳で確かめてほしい組」を、続けて聞きます（インド編：[casting.md](journeys/golden_triangle/voice/casting-2026-11-17/casting.md) の「2. 作者の耳で確かめてほしい組」）。同じモデルを使う2人が別の人に聞こえるか、年齢感、同じ場面の人と聞き分けられるか。

@@ -146,11 +146,24 @@ describe("the voices' credits (2026-11-13)", () => {
     ]);
   });
 
-  it("credits the Golden Triangle heroine's voices to the speech synthesis model they were made with", () => {
-    expect(voiceCredits().filter((item) => item.journeyId === "golden_triangle")).toEqual([expect.objectContaining({
+  it("credits the Golden Triangle heroine's voices to the speech synthesis model they were made with, first", () => {
+    expect(voiceCredits().filter((item) => item.journeyId === "golden_triangle")[0]).toEqual(expect.objectContaining({
       useJa: "ヒロインの声", titleJa: "音声合成 Irodori-TTS v4.1-Small", author: "Aratako", license: "MIT License",
       url: "https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small",
-    })]);
+    }));
+  });
+
+  it("credits each model of the other Golden Triangle characters' voices once (2026-11-17), with the form its terms ask for", () => {
+    const others = voiceCredits().filter((item) => item.journeyId === "golden_triangle").slice(1);
+    expect(others).toHaveLength(59);
+    expect(new Set(others.map((item) => item.url)).size).toBe(others.length);
+    expect(others.filter((item) => item.titleJa.startsWith("VOICEVOX "))).toHaveLength(24);
+    for (const item of others.filter((credit) => credit.titleJa.startsWith("VOICEVOX ")))
+      expect(item.creditJa).toMatch(/^VOICEVOX[: ]/u);
+    expect(others).toContainEqual(expect.objectContaining({ useJa: "カムラの声", titleJa: "VOICEVOX の音声ライブラリ「中部つるぎ」",
+      creditJa: "VOICEVOX:中部つるぎ", url: "https://voicevox.hiroshiba.jp/product/chubu_tsurugi/" }));
+    // A model made from a real person's voice is named as a model, never as if that person performed the role.
+    expect(others.some((item) => /CV[:：]/u.test(`${item.titleJa}${item.creditJa ?? ""}`))).toBe(false);
   });
 });
 

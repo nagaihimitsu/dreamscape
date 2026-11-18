@@ -5,6 +5,7 @@ import { ownArtworkCatalogSchema, type OwnArtworkCatalog } from "./own-artwork-s
 import type { MergedKind } from "../../scripts/content-layout";
 import { loadContentSources, publicRoots, storyFile } from "../../scripts/content-sources";
 import { OWN_ARTWORK_KIND } from "../../scripts/image-rights";
+import { copyVoiceRecords } from "../../scripts/voice-records";
 
 /**
  * Build an isolated, artwork-undelivered fixture for tests of other content.
@@ -36,6 +37,8 @@ export async function prepareContentFixture(fixture: string): Promise<void> {
     recursive: true,
     filter: (source) => source !== characterAssets,
   });
+  // content:build reads what the delivered voices say (a voice recorded up to the player's name passes only with it).
+  copyVoiceRecords(root, fixture);
   const file = path.join(fixture, "content/presentation/characters.json");
   const catalog = characterCatalogSchema.parse(JSON.parse(await readFile(file, "utf8")));
   for (const character of catalog.characters)

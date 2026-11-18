@@ -29,13 +29,16 @@ INCLUDE modules.ink
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
 # term: gt_term_roti
+# voice: gt_delhi_date_bangla_sahib_harbans_001
 見てるだけか。手を洗って、こっちへ来なさい。ローティーは、見るより丸める方がうまい
 # speaker: gt_harbans
 # cutin: name
+# voice: gt_delhi_date_bangla_sahib_harbans_002
 ハルバンス・シンだ。四十年、トラックで国を縦断する大きな街道を走ってきた。降りてからは、毎日ここで生地を丸めている
 # speaker: narrator
 彼女が丸めた一枚目は、どこから見ても丸くなかった。ハルバンスはそれを持ち上げて、光にかざした。
 # speaker: gt_harbans
+# voice: gt_delhi_date_bangla_sahib_harbans_003
 ほう。これはインドだ。ここが西のグジャラート、この出っぱりがベンガル。……四十年走ったわしが言うんだ、間違いない
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -48,6 +51,7 @@ INCLUDE modules.ink
 ハルバンスが、新しい生地の玉を一つ、こちらの前に置いた。麺棒を渡される。
 # speaker: gt_harbans
 # minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar retry yes
+# voice: gt_delhi_date_bangla_sahib_harbans_004
 押して、回す。押して、回す。……あとは、手に聞け
 * [ローティー：まん丸に伸ばした # option: round]
     # profile: honest
@@ -55,6 +59,7 @@ INCLUDE modules.ink
     # speaker: narrator
     伸ばした生地は、ほとんど丸かった。ハルバンスはそれを持ち上げて、光にかざした。
     # speaker: gt_harbans
+    # voice: gt_delhi_date_bangla_sahib_harbans_005
     丸い。……四十年で、いちばんつまらん地図だ
     { romance_result == "negative":
         # speaker: heroine
@@ -74,6 +79,7 @@ INCLUDE modules.ink
         # speaker: narrator
         全力で伸ばした生地は、なぜか四角くなった。
         # speaker: gt_harbans
+        # voice: gt_delhi_date_bangla_sahib_harbans_006
         ……荷台だな
         # speaker: heroine
         # emotion: exasperated
@@ -83,6 +89,7 @@ INCLUDE modules.ink
         # speaker: narrator
         全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
         # speaker: gt_harbans
+        # voice: gt_delhi_date_bangla_sahib_harbans_007
         トラックの荷台だな。積みやすくていい
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -95,6 +102,7 @@ INCLUDE modules.ink
     # speaker: narrator
     生地は、思ったようには伸びてくれなかった。ハルバンスが、目を細める。
     # speaker: gt_harbans
+    # voice: gt_delhi_date_bangla_sahib_harbans_008
     ほう。……これは、ハートか
     { romance_result == "negative":
         # speaker: heroine
@@ -108,6 +116,7 @@ INCLUDE modules.ink
         ……ねえ、それ、誰にあげるの
     }
     # speaker: gt_harbans
+    # voice: gt_delhi_date_bangla_sahib_harbans_009
     焼いたら、誰の皿に行くかは分からんぞ。ランガルでは、誰が誰に作ったかは、関係ない
     # speaker: heroine
     # voice: gt_delhi_date_bangla_sahib_007
@@ -118,6 +127,7 @@ INCLUDE modules.ink
     # speaker: narrator
     もう一押し、と力を込めたところで、生地の真ん中に、ぽっかり穴が開いた。
     # speaker: gt_harbans
+    # voice: gt_delhi_date_bangla_sahib_harbans_010
     トンネルだな。……丸め直せ。生地は、何度でもやり直せる
     { romance_result == "negative":
         # speaker: heroine
@@ -134,15 +144,19 @@ INCLUDE modules.ink
 # speaker: narrator
 生地を丸めながら、ハルバンスは街道の話をした。どの町の茶屋のチャイが一番濃いか。夜中の検問で、どうやって眠気をこらえたか。川が溢れて、三日動けなかった夏のこと。
 # speaker: gt_harbans
+# voice: gt_delhi_date_bangla_sahib_harbans_011
 米も、セメントも、祭りの花も運んだ。荷台が空のまま走った日は、ほとんどない
 # speaker: gt_harbans
+# voice: gt_delhi_date_bangla_sahib_harbans_012
 息子はカナダだ。向こうでトラックの会社をやっている。三台持っているそうだ。こっちへ来い、来い、と毎週電話してくる
 # speaker: gt_harbans
+# voice: gt_delhi_date_bangla_sahib_harbans_013
 寒い国は嫌だ。道が白い。白い道は、走ったことがない
 # speaker: heroine
 # voice: gt_delhi_date_bangla_sahib_010
 毎週、電話してくれるんですね
 # speaker: gt_harbans
+# voice: gt_delhi_date_bangla_sahib_harbans_014
 毎週だ。日曜の朝。向こうは土曜の夜だ
 * [「行ってみたら、案外いいかもしれませんよ」 # option: suggest_go]
     # profile: bold
@@ -155,6 +169,7 @@ INCLUDE modules.ink
         あ、えっと……生地、乾いちゃいますよ
     - else:
         # speaker: gt_harbans
+        # voice: gt_delhi_date_bangla_sahib_harbans_015
         皆そう言う。息子も、娘も、隣の家の者も。……皆、行かない者ほど、そう言う
         # speaker: heroine
         # emotion: worried
@@ -172,29 +187,34 @@ INCLUDE modules.ink
         ハルバンスの手が、初めて止まった。
     }
     # speaker: gt_harbans
+    # voice: gt_delhi_date_bangla_sahib_harbans_016
     向こうへ行ったら、わしは、何も運ばない人になる。四十年、何かを運んできた。運ばないわしを、息子に見せるのが、嫌なんだ
     # speaker: heroine
     # emotion: serious
     # voice: gt_delhi_date_bangla_sahib_013
     わたしも、役に立てていないと不安になる方なので……少し、分かります。ちゃんとした答えは、出せないですけど
     # speaker: gt_harbans
+    # voice: gt_delhi_date_bangla_sahib_harbans_017
     答えは要らん。分かると言ってもらえたら、それで十分だ
 * [黙って、生地を丸め続ける # option: keep_rolling]
     # profile: attentive
     { romance_result == "negative":
         # speaker: gt_harbans
+        # voice: gt_delhi_date_bangla_sahib_harbans_018
         ……黙っているのも、時には寂しいものだ
         # speaker: heroine
         # voice: gt_delhi_date_bangla_sahib_014
         あ……すみません。聞いてないわけじゃ、ないんです
     - else:
         # speaker: gt_harbans
+        # voice: gt_delhi_date_bangla_sahib_harbans_019
         いい弟子だ。黙って手を動かす者が、いちばん先に上手くなる
         # speaker: heroine
         # emotion: teasing
         # voice: gt_delhi_date_bangla_sahib_015
         わたしも黙ってたら、上手くなりますか？
         # speaker: gt_harbans
+        # voice: gt_delhi_date_bangla_sahib_harbans_020
         君は、しゃべりながらでいい。地図が、毎回違う国になるのが面白い
     }
 -

@@ -24,17 +24,21 @@ INCLUDE modules.ink
 # speaker: narrator
 アーチの下で、口ひげの男が、銀色の反射板を抱えて電話に怒鳴っていた。電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
 # speaker: gt_agra_chini_man
+# voice: gt_agra_date_chini_rauza_jagdeep_001
 お願いがある。カップルが橋の渋滞で遅れてる。光を決めたいのに、立つ人がいない。……二人とも、身長がちょうどいい。代役をやってくれないか
 # speaker: gt_jagdeep
 # cutin: name
+# voice: gt_agra_date_chini_rauza_jagdeep_002
 ジャグディープだ。アーグラで、結婚前の二人の写真を撮ってる
 # speaker: heroine
 # emotion: surprised
 # voice: gt_agra_date_chini_rauza_002
 代役……カップルの？
 # speaker: gt_jagdeep
+# voice: gt_agra_date_chini_rauza_jagdeep_003
 立ってるだけでいい。台詞はいらない。顔も作らなくていい。光を見るだけだ
 # speaker: gt_jagdeep
+# voice: gt_agra_date_chini_rauza_jagdeep_004
 はい、アーチの下で向かい合って。もっと近く。……もっと。おでこがくっつくくらい
 * [指示どおり、近づく # option: step_closer]
     # profile: bold
@@ -82,9 +86,11 @@ INCLUDE modules.ink
         # voice: gt_agra_date_chini_rauza_007
         ……そんなに離れなくても、いいのに
         # speaker: gt_jagdeep
+        # voice: gt_agra_date_chini_rauza_jagdeep_005
         遠い！　別れ話の写真か！
     - else:
         # speaker: gt_jagdeep
+        # voice: gt_agra_date_chini_rauza_jagdeep_006
         遠い！　別れ話の写真か！
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -93,6 +99,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: gt_jagdeep
+# voice: gt_agra_date_chini_rauza_jagdeep_007
 よし。次が本番の構図だ。膝をついて、これを差し出す
 # speaker: narrator
 # photo: gt_album_a47 # photo_caption: 空っぽの指輪の箱、膝をつく代役
@@ -160,18 +167,23 @@ INCLUDE modules.ink
     # together: gt_nikhil gt_tanvi
     汗だくの青年と、緑のクルタの女性。青年が、こちらを見て立ち止まった。
     # speaker: gt_nikhil
+    # voice: gt_agra_date_chini_rauza_nikhil_001
     君たちは……タージの、ベンチの！
     # speaker: gt_tanvi
+    # voice: gt_agra_date_chini_rauza_tanvi_001
     また会えた。……今日は、ベンチは要らないの。場所は、二人で決めたから
     # speaker: narrator
     ニキルとタンヴィ。タージ・マハルで、指輪を出しそびれた二人だった。
     # speaker: gt_tanvi
+    # voice: gt_agra_date_chini_rauza_tanvi_002
     地図を二人で見て、名前もちゃんと読めない場所を選んだの。誰かの有名な恋の話の、背景にならない所がよかった
     # speaker: gt_tanvi
+    # voice: gt_agra_date_chini_rauza_tanvi_003
     それに、色が少しだけ残ってるでしょう。全部きれいに残ってるより、ちょっとだけ残ってる方が、本当っぽい
     # speaker: narrator
     ニキルが、折りたたんだ紙をジャグディープに差し出した。撮ってほしい構図の一覧。三十枚。タンヴィが、その紙をそっと取り上げて、自分の鞄にしまった。
     # speaker: gt_tanvi
+    # voice: gt_agra_date_chini_rauza_tanvi_004
     今日は、一枚も決めないで撮って。……写真屋さんを呼んだのは、この人の、唯一のわがままなの
     # speaker: narrator
     # leave: gt_tanvi
@@ -181,6 +193,7 @@ INCLUDE modules.ink
     # speaker: gt_tanvi
     # pause: 800
     # leave: gt_tanvi
+    # voice: gt_agra_date_chini_rauza_tanvi_005
     ……ハーン
     # speaker: narrator
     # local_word: gt_agra_word_haan
@@ -193,8 +206,10 @@ INCLUDE modules.ink
     # speaker: narrator
     プネーから来た二人だった。半年後に式を挙げるという。この場所を選んだのは、花嫁になる方だった。
     # speaker: gt_agra_chini_bride
+    # voice: gt_agra_date_chini_rauza_agra_chini_bride_001
     タージは、みんなが撮るでしょう。わたしたちの写真の後ろに、ほかの人の恋の話が写るのは、ちょっと嫌だったの
     # speaker: gt_agra_chini_bride
+    # voice: gt_agra_date_chini_rauza_agra_chini_bride_002
     ここは、色が少しだけ残ってる。全部残ってるより、ちょっとだけ残ってる方が本当っぽくて、わたしたちに似てる気がして
     # speaker: narrator
     # leave: gt_agra_chini_bride
@@ -209,6 +224,7 @@ INCLUDE modules.ink
 # speaker: narrator
 撮影の終わりに、ジャグディープが携帯を見せてくれた。光を決めるための試し撮り。アーチの下で膝をつく一人と、どこを見ればいいか分からない顔で立つ一人。
 # speaker: gt_jagdeep
+# voice: gt_agra_date_chini_rauza_jagdeep_008
 代役の写真だ。いらなければ消す。……正直、今日の試し撮りで、一番いい顔をしてる
 -> gt_agra_chini_rauza_test_shot ->
 # speaker: narrator

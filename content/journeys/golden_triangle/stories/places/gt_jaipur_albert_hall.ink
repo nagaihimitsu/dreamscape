@@ -94,6 +94,7 @@ INCLUDE modules.ink
 # speaker: gt_kavya
 # cutin: name
 # em_shake: 怖い
+# voice: gt_jaipur_date_albert_hall_kavya_001
 ……わたし、カヴィヤ。あそこに、ミイラがいるの。エジプトの、本物の。……みんな、平気だって。でも、わたし、怖い
 # speaker: heroine
 # voice: gt_jaipur_date_albert_hall_010
@@ -131,11 +132,13 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: gt_kavya
+        # voice: gt_jaipur_date_albert_hall_kavya_002
         エーク、ドー、ティーン！
         # speaker: narrator
         声が大きすぎて、階段の先で先生が人差し指を口に当てた。カヴィヤは首をすくめ、彼女も一緒に首をすくめた。
     - else:
         # speaker: gt_kavya
+        # voice: gt_jaipur_date_albert_hall_kavya_003
         ……エーク、ドー、ティーン
         # speaker: heroine
         # emotion: smile
@@ -148,10 +151,13 @@ INCLUDE modules.ink
 # speaker: narrator
 カヴィヤは彼女の手を握ったまま、案内の字を、指でたどって声に出した。
 # speaker: gt_kavya
+# voice: gt_jaipur_date_albert_hall_kavya_004
 エジプトの、女の人。神官のおうちの人、だったかもって。……二千三百年くらい、前の人
 # speaker: gt_kavya
+# voice: gt_jaipur_date_albert_hall_kavya_005
 カイロから、ジャイプールまで来たんだって。……トゥトゥ？　名前、あるの？
 # speaker: gt_kavya
+# voice: gt_jaipur_date_albert_hall_kavya_006
 かわいい名前。……トゥトゥは、遠くから来て、さみしくないのかな
 # speaker: heroine
 # emotion: smile
@@ -161,6 +167,7 @@ INCLUDE modules.ink
 カヴィヤは、ガラスに額がつくほど近づいた。それから、振り向いて、先生のところへ走っていった。
 # speaker: gt_kavya
 # leave: gt_kavya
+# voice: gt_jaipur_date_albert_hall_kavya_007
 先生！　わたし、見た！
 # speaker: narrator
 自慢しに行ったのだ。

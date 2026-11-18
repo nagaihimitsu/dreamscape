@@ -74,6 +74,11 @@ describe("a voiced line with a name, recorded up to the name (2026-11-17 author 
     expect(() => checkWith(new Map([["ta_v1", "{player_name}"]]))).toThrow(
       "名前の手前まで録った声だけは付けられます（その声が言う文が recorded.json の spoken にあるとき。voice:tag が記録します）");
   });
+
+  it("names a recorded.json it could not read, which may hold the missing record", () => {
+    expect(() => checkVoiceTags(source, "ta_trip", voices, folder, new Map(), ["authoring/journeys/ta_trip/voice/recorded.json"]))
+      .toThrow("読めない声の記録があります：authoring/journeys/ta_trip/voice/recorded.json。直すと確かめられます");
+  });
 });
 
 describe("a journey's voice credits (2026-11-13)", () => {

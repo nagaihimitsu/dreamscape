@@ -6,6 +6,7 @@ import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { prepareJourneyRelease } from "./promote-journey";
 import { splitStoryAddress, storyFileOf } from "../src/content/story-address";
 import { placeKnot } from "../src/content/test-fixtures";
+import { copyVoiceRecords } from "./voice-records";
 
 // The whole journey:release pipeline (prepareJourneyRelease) on a copy of the
 // project. It needs a journey with an authoring profile, travel data and
@@ -126,6 +127,7 @@ function unpublishedProject({ withoutEmptyCatalogs = false } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-india-full-release-"));
   cpSync(path.join(source, "content"), path.join(root, "content"), { recursive: true });
   cpSync(path.join(source, "public"), path.join(root, "public"), { recursive: true });
+  copyVoiceRecords(source, root);
   const observation = "authoring/journeys/golden_triangle/drafts/observation-cards.json";
   mkdirSync(path.dirname(path.join(root, observation)), { recursive: true });
   cpSync(path.join(source, observation), path.join(root, observation));

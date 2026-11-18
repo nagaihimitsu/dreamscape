@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # speaker: gt_samir
 # cutin: name
 # photo: gt_album_a01 # photo_caption: ハネムーン・スペシャルの白鳥
+# voice: gt_agra_arrival_samir_001
 ハネムーン・スペシャルです！
 # speaker: narrator
 サミールは胸を張った。
@@ -27,6 +28,7 @@ INCLUDE modules.ink
 # voice: gt_agra_arrival_001
 は、ハネムーン！？　ち、違います、わたしたち、新婚じゃ……！
 # speaker: gt_samir
+# voice: gt_agra_arrival_samir_002
 皆さん、最初はそうおっしゃいます。お若いお二人で、お部屋は隣同士。照れていらっしゃるだけです
 # speaker: narrator
 三回説明して、三回とも笑顔で流された。
@@ -72,18 +74,22 @@ INCLUDE modules.ink
 # speaker: narrator
 宿に戻ると、ロビーの長椅子で、アンワルが甥のサミールとチャイを飲んでいた。銀の杖が、壁に立てかけてある。
 # speaker: enemy
+# voice: gt_agra_epilogue_anwar_001
 おお、本当の話のお嬢さん。今日の客の一人がね、明日もう一度タージへ行くそうだ。壁の書家の名前を、自分の目で探しに
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_agra_epilogue_001
 えっ……本当ですか
 # speaker: enemy
+# voice: gt_agra_epilogue_anwar_002
 本当の話だよ。わしは、嘘は物語の中でしかつかない
 # speaker: narrator
 彼はチャイを飲み干し、甥の肩を叩いて立ち上がった。
 # speaker: enemy
+# voice: gt_agra_epilogue_anwar_003
 部屋のことは、片付けさせておいたよ
 # speaker: gt_samir
+# voice: gt_agra_epilogue_samir_001
 叔父から、電話で聞きました。新婚では、なかったんですね。……失礼いたしました
 # speaker: narrator
 サミールは帳面を開き、一行に、ていねいに線を引いた。それから、その横に、また何か書き足した。

@@ -18,6 +18,7 @@ import { manifestKeyOrderProblems } from "./json-schemas";
 import { prepareJourneyRelease } from "./promote-journey";
 import { readSampleJourney } from "./sample-journey";
 import { taggedLines } from "./line-tag-text";
+import { copyVoiceRecords } from "./voice-records";
 
 // `npm run journey:new` copies the sample journey into a new preparing
 // journey; journey:readiness and journey:release refuse it until the sample's
@@ -209,6 +210,7 @@ describe("journey:new in a copy of the repository", () => {
     // A real copy (journey:release refuses the linked images of prepareContentFixture), with the sample and the checklist.
     for (const folder of ["content", "public", "authoring/templates"])
       cpSync(path.join(repository, folder), path.join(root, folder), { recursive: true });
+    copyVoiceRecords(repository, root);
     before = journeyFolders();
     const manifests = readJourneyManifests(root);
     orders = manifests.map((manifest) => manifest.order);

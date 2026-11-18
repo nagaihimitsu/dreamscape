@@ -51,6 +51,7 @@ INCLUDE modules.ink
 # speaker: narrator
 十二、三歳の子どもたち。四十人近く。全員がノートを開き、全員が同時に言った。
 # speaker: gt_delhi_red_fort_children
+# voice: gt_delhi_main_red_fort_battle_delhi_red_fort_children_001
 インタビュー、プリーズ！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -59,16 +60,19 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,sigh
 # cutin: name
+# voice: gt_delhi_main_red_fort_battle_nidhi_001
 三十八人です。二人はトイレ。……すみません、引率のニディです
 # speaker: narrator
 ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_002
 英語の宿題なんです。『外国人観光客に遺産について質問する』。一時間後にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
 # emotion: worried
 # voice: gt_delhi_main_red_fort_002
 逃げたくなる気持ちも、ちょっと分かります……
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_003
 分かります。わたしも毎日逃げたい。でも、この子たちを手ぶらで帰すと、帰りのバスが地獄になるんです
 # speaker: narrator
 先生の背後で、子どもたちが押し合う。誰が最初に聞くかで、もう小さな戦争が始まっていた。
@@ -78,11 +82,13 @@ INCLUDE modules.ink
 ……分かりました。でも一人ずつ、順番に。押さないって約束してくれるなら
 # speaker: enemy
 # reaction: enemy,exclamation
+# voice: gt_delhi_main_red_fort_battle_nidhi_004
 聞いた？　一列！　約束を破った人は、バスで歌を歌ってもらいます
 # speaker: narrator
 一瞬で列ができた。歌はよほど嫌らしい。先頭は三つ編みの女の子。ノートの文字は几帳面で、質問には番号まで振ってある。
 # speaker: gt_anjali
 # cutin: name
+# voice: gt_delhi_main_red_fort_battle_anjali_001
 学級委員のアンジャリです。質問は、番号順にします
 # speaker: narrator
 列の最後に、一人だけノートを閉じたままの少年がいる。前の子の背中ばかり見ていた。
@@ -94,11 +100,13 @@ INCLUDE modules.ink
     # speaker: narrator
     アンジャリの眉が、少しだけ下がった。外国人が知っていたのが、ほんの少し悔しいらしい。それでもすぐに付け足す。
     # speaker: gt_anjali
+    # voice: gt_delhi_main_red_fort_battle_anjali_002
     書いたのはアミール・フスローです！
 - else:
     # speaker: narrator
     アンジャリが胸を張って正解を読み上げる。
     # speaker: gt_anjali
+    # voice: gt_delhi_main_red_fort_battle_anjali_003
     地上に楽園があるなら、それはここ！　書いたのはアミール・フスローです！
 }
 # speaker: narrator
@@ -106,6 +114,7 @@ INCLUDE modules.ink
 # speaker: narrator
 隣の子が大声で通訳した。
 # speaker: gt_delhi_red_fort_classmate
+# voice: gt_delhi_main_red_fort_battle_delhi_red_fort_classmate_001
 ファイズが、『誰が書いたかは分かってない』って！
 # speaker: narrator
 アンジャリが振り返って睨む。少年は首をすくめ、それきり何も言わなかった。何人かが笑った。
@@ -114,10 +123,12 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_red_fort_004
 先生。今の子は……
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_005
 ファイズ。話しません。去年の春から、授業で一度も
 # speaker: narrator
 先生は腕時計を見ながら言った。冷たいというより、もう何度も同じ説明をした人の速さだった。
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_006
 次！　ソーヌー！
 # speaker: narrator
 二番手の男の子が、敬礼したまま前に出る。敬礼の角度が妙に本格的で、周りがまた笑った。
@@ -126,6 +137,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: gt_sonu
     # cutin: name
+    # voice: gt_delhi_main_red_fort_battle_sonu_001
     正解！
     # speaker: narrator
     ソーヌーはそう叫んで、城壁に向かって演説の真似を始めた。
@@ -135,6 +147,7 @@ INCLUDE modules.ink
 - else:
     # speaker: gt_sonu
     # cutin: name
+    # voice: gt_delhi_main_red_fort_battle_sonu_002
     ブブー
     # speaker: narrator
     ソーヌーはそう言って、城壁の上で国旗を掲げる首相の真似を始めた。
@@ -144,6 +157,7 @@ INCLUDE modules.ink
 }
 # speaker: enemy
 # reaction: enemy,anger
+# voice: gt_delhi_main_red_fort_battle_nidhi_007
 ソーヌー！　鈴の代金はお父さんに請求します！　……はい、ここまで。バスに向かいます
 # speaker: narrator
 列が崩れて歩き出す。最後の少年もノートを抱えて歩き出した。一度も開かないまま。
@@ -152,6 +166,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_red_fort_005
 待ってください。まだ質問していない子がいます
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_008
 三十八人と一時間です。話さない子を待つ時間は、わたしにはないんです
 # speaker: heroine
 # voice: gt_delhi_main_red_fort_006
@@ -160,6 +175,7 @@ INCLUDE modules.ink
 先生は口を開きかけ、閉じた。腕時計を見て、もう一度{heroine_name}を見る。
 # speaker: enemy
 # reaction: enemy,sigh
+# voice: gt_delhi_main_red_fort_battle_nidhi_009
 ……一分です。あなたが無駄にした一分は、あとで生徒に恨まれますよ
 # speaker: narrator
 # quiet: scene
@@ -169,6 +185,7 @@ INCLUDE modules.ink
 三十秒。ファイズはノートを開き、一行書いて、こちらへ向けた。それから、かすれた声で読み上げた。
 # speaker: gt_faiz
 # cutin: name
+# voice: gt_delhi_main_red_fort_battle_faiz_001
 この楽園に住んでいた人は、ここで、どうなったの
 # speaker: narrator
 騒いでいた子どもたちが、一人ずつ黙っていった。
@@ -178,11 +195,13 @@ INCLUDE modules.ink
     # speaker: narrator
     ファイズの目が、初めてまっすぐこちらを見た。そして、続きを自分で話し始めた。
     # speaker: gt_faiz
+    # voice: gt_delhi_main_red_fort_battle_faiz_002
     最後の皇帝。詩を書く人だった。自分の家で、裁判にかけられて、遠くへ送られた
 - else:
     # speaker: narrator
     ファイズは小さく首を振り、答えを自分で話し始めた。
     # speaker: gt_faiz
+    # voice: gt_delhi_main_red_fort_battle_faiz_003
     最後の皇帝は、自分の家で裁判にかけられた。詩を書く人だった。それから、遠くへ送られた
 }
 # speaker: narrator
@@ -197,23 +216,28 @@ INCLUDE modules.ink
     # speaker: narrator
     アンジャリが列から叫ぶ。
     # speaker: gt_anjali
+    # voice: gt_delhi_main_red_fort_battle_anjali_004
     外国の人、全問正解！　ずるい、来年また来て！　もっと難しいの出すから！
 - battle_score == 2:
     # speaker: narrator
     アンジャリが指を二本立てる。
     # speaker: gt_anjali
+    # voice: gt_delhi_main_red_fort_battle_anjali_005
     二問正解。外国の人にしては、まあまあです
 - else:
     # speaker: narrator
     ソーヌーが胸を叩く。
     # speaker: gt_sonu
+    # voice: gt_delhi_main_red_fort_battle_sonu_003
     大丈夫！　バスで僕がインドの歴史を全部教えるから、乗っていって！
 }
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_010
 ……あの子、去年から一度も、授業で手を挙げなかったんです
 # speaker: narrator
 先生はノートに何か書きつけ、すぐ顔を上げた。感動した顔ではなかった。
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_011
 でも、明日になったら、また黙りますよ。あなたは明日ここにいない。毎日あの子の隣にいるのは、わたしです
 # speaker: heroine
 # emotion: serious
@@ -223,6 +247,7 @@ INCLUDE modules.ink
 # se: whistle
 先生は答えず、笛を鳴らした。列が動き出す。歩きながら、一度だけ振り返った。
 # speaker: enemy
+# voice: gt_delhi_main_red_fort_battle_nidhi_012
 さっき三十八人と言いましたけど。聞いていたのは、三十九人でした
 # speaker: narrator
 # leave: enemy
@@ -241,6 +266,7 @@ INCLUDE modules.ink
 # item_out: gt_delhi_kamla_memo 1
 メモを見せると、門の係員は首をかしげた。
 # speaker: gt_delhi_red_fort_guide
+# voice: gt_delhi_finale_battle_delhi_red_fort_guide_001
 暗くなってから？　昼の券で入れるのは、日没までですよ
 # speaker: narrator
 夜まで待つか、出直すか。二人は顔を見合わせた。
@@ -249,6 +275,7 @@ INCLUDE modules.ink
 そこへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
 # leave: gt_delhi_hotel_owner
+# voice: gt_delhi_finale_battle_delhi_hotel_owner_001
 隣のカムラさんのお孫さんが、お二人を探しています
 # background: gt_bg_delhi_hotel_alley
 # ambience: amb_crowd_outdoor
@@ -261,16 +288,19 @@ INCLUDE modules.ink
 宿の主人が、こちらを指さした。青年が電話を切り、まっすぐ歩いてくる。
 # speaker: enemy
 # cutin: name
+# voice: gt_delhi_finale_battle_aman_001
 アマンです。カムラの孫です。この前、路地で祖母と話していたのは、あなたたちですね
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_delhi_finale_001
 はい。……カムラさんに、何か？
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_002
 朝から、いないんです。携帯は段ボールの上に置きっぱなし。明日の朝六時には、ジャイプールへ発つのに
 # speaker: narrator
 アマンの目が、{heroine_name}の鞄に向いた。疑いを隠す余裕もない目だった。
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_003
 祖母に何を言ったんですか。どこかへ連れていく約束でも？　観光客についていく人じゃないんです
 # speaker: heroine
 # item_out: gt_delhi_kamla_memo
@@ -282,8 +312,10 @@ INCLUDE modules.ink
 アマンは切れ端を受け取り、祖母の字を読み進めるほど、顔をこわばらせた。
 # speaker: enemy
 # item_out: gt_delhi_kamla_memo
+# voice: gt_delhi_finale_battle_aman_004
 『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。誰かに文句を言ってるみたいだ
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_005
 最近の祖母は、亡くなった祖父に話しかけるんです。誰もいない椅子に、『プラカーシュ』って。これも、きっと
 # speaker: narrator
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
@@ -293,6 +325,7 @@ INCLUDE modules.ink
 待ってください。あの日のカムラさん、すごくはっきりしてました。オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
 # speaker: enemy
 # reaction: enemy,anger
+# voice: gt_delhi_finale_battle_aman_006
 女性車両？　そんなもの、あるわけない。……ほら。やっぱり、話がおかしいんです
 -> quiz(1) ->
 # background: gt_bg_delhi_hotel_alley
@@ -300,13 +333,16 @@ INCLUDE modules.ink
     # speaker: narrator
     アマンは黙って携帯で調べ、画面を見つめたまま動かなくなった。
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_007
     ……先頭車両。本当だ。知らなかった。祖母は、一人で地下鉄に乗れるんだ
 - else:
     # speaker: narrator
     宿の娘が、窓から身を乗り出した。
     # speaker: gt_delhi_hotel_daughter
+    # voice: gt_delhi_finale_battle_roohi_001
     アマン兄さん、女性車両はあるよ。先頭の車両
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_008
     ……知らなかった。祖母は、一人で地下鉄に乗れるんだ
 }
 # speaker: narrator
@@ -319,6 +355,7 @@ INCLUDE modules.ink
 五行目。カムラの字は、そこだけ大きかった。
 # speaker: enemy
 # item_out: gt_delhi_kamla_memo 5
+# voice: gt_delhi_finale_battle_aman_009
 旧市街の通りに、池なんてない。……祖母は、また昔の話を
 # speaker: heroine
 # emotion: serious
@@ -333,21 +370,25 @@ INCLUDE modules.ink
     # voice: gt_delhi_finale_006
     チャンドニー・チョーク。月光の広場。昔の池に、月が映ったから
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_010
     ……月が水に落ちた所。祖母の地図には、まだ池があるんだ
 - else:
     # speaker: enemy
     # local_word: gt_delhi_word_chandni
     # em: 月光
+    # voice: gt_delhi_finale_battle_aman_011
     ……チャンドニー・チョーク。月光の広場か。池なんて、とっくにないのに
 }
 # speaker: narrator
 # se: gt_auto_rickshaw_horn
 日が傾くころ、アマンがオートリキシャを止めた。
 # speaker: gt_delhi_auto_driver
+# voice: gt_delhi_finale_battle_delhi_auto_driver_001
 メーターは壊れてるよ
 # speaker: narrator
 アマンは即座に聞き返した。
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_012
 いつ壊れた。今朝か？　さっきか？
 # speaker: narrator
 # emotion: smile
@@ -363,8 +404,10 @@ INCLUDE modules.ink
 アマンが写真を見せて回る。三軒目の揚げ菓子屋で、店主が手を打った。
 # speaker: gt_delhi_sweet_shopkeeper
 # term: gt_term_jalebi
+# voice: gt_delhi_finale_battle_delhi_sweet_shopkeeper_001
 ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。一年分の香辛料を、一番安く買えるのはどこかって
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_013
 一年分……？　ジャイプールにも店はあるのに
 -> quiz(3) ->
 # background: gt_bg_delhi_chandni_chowk_night
@@ -374,6 +417,7 @@ INCLUDE modules.ink
     カーリー・バーオリー。通りの西の端の、香辛料の市場です
 - else:
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_014
     カーリー・バーオリーだ。西の端の、香辛料の卸の通り。……子どもの頃、祖母に連れていかれた
 }
 # speaker: narrator
@@ -381,18 +425,22 @@ INCLUDE modules.ink
 # speaker: narrator
 年配の問屋が、目を細めて覚えていた。
 # speaker: gt_delhi_spice_trader
+# voice: gt_delhi_finale_battle_delhi_spice_trader_001
 来たよ。ガラムマサラを一年分。ジャイプールのは甘すぎるんだそうだ
 # speaker: gt_delhi_spice_trader
+# voice: gt_delhi_finale_battle_delhi_spice_trader_002
 それと、城の灯りは何時から始まるか聞かれた。三十分前に出ていったよ
 # speaker: narrator
 アマンは香辛料の袋に手をつき、深く息を吐いた。
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_015
 祖母は、誰にも何も頼まない人なんです。僕の結婚式の準備で、家族はみんな僕に頼みごとをする。祖母だけは何も言わない。だから、何を考えてるのか分からない
 # speaker: heroine
 # voice: gt_delhi_finale_008
 カムラさん、迷子じゃないと思います。行きたい所に、一つずつ行ってるだけ
 # speaker: enemy
 # reaction: enemy,anger
+# voice: gt_delhi_finale_battle_aman_016
 八十近い人が、夜の旧市街で一人ですよ。何かあったら、あなたが責任を取れるんですか
 # speaker: heroine
 # emotion: serious
@@ -401,6 +449,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アマンは言い返しかけて、やめた。代わりに、城の方角を見た。
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_017
 でも、城はもう閉まってる。日が暮れたら入れない
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
@@ -413,6 +462,7 @@ INCLUDE modules.ink
     夜の光と音のショー。城の中を歩きながら見るんです。暗くなってから、です
 - else:
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_018
     光と音のショーか。城の中を歩いて回る……。暗くなってから、って、そういうことか
 }
 # background: gt_bg_delhi_red_fort_night
@@ -427,11 +477,13 @@ INCLUDE modules.ink
 # speaker: narrator
 観客の列について歩きながら、アマンが首を振る。
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_019
 祖父は堅物でした。結婚も親の決めた縁談で、映画も見ない人だった。こんなものに、祖母を連れてきたはずがない
 # speaker: heroine
 # voice: gt_delhi_finale_011
 でも、一覧の一行目は、ここなんです
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_020
 二人が結婚したのは、六十年前ですよ。光のショーなんて、あったはずがない。祖母の思い出は、どこかで混ざってるんです
 # speaker: narrator
 光が、内謁の間の白いアーチを照らし出した。遠足の子が指さした『楽園』の広間だ。その奥に、まだ人の姿は見えない。
@@ -445,9 +497,11 @@ INCLUDE modules.ink
     # speaker: narrator
     案内の係員が、小声で教えてくれた。
     # speaker: gt_delhi_red_fort_guide
+    # voice: gt_delhi_finale_battle_delhi_red_fort_guide_002
     最初のショーは一九六五年です。アジアで一番早いころのものですよ
 }
 # speaker: enemy
+# voice: gt_delhi_finale_battle_aman_021
 ……六十年前。祖母は、十九だ
 # speaker: narrator
 内謁の間のアーチの下、光の届かない端の段に、ショールの小さな人影が座っていた。膝の上に、香辛料の袋。カムラだ。
@@ -467,46 +521,57 @@ INCLUDE modules.ink
 # speaker: gt_kamla
 # leave: gt_kamla
 # together: gt_kamla enemy
+# voice: gt_delhi_finale_battle_kamla_001
 プラカーシュ。あの冬の夜、ここのショーの暗がりで、言ったでしょう。好きだ、って
 # speaker: gt_kamla
 # leave: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_002
 暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も
 # speaker: gt_kamla
 # leave: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_003
 あんたのお母さんが縁談を持ってきた日は、わたし、すぐうなずいたくせにね
 # speaker: gt_kamla
 # pause: 1000
 # leave: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_004
 ……わたしも。わたしも、です。遅くなったけど
 # speaker: narrator
 # together: gt_kamla enemy
 アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向き、孫を見て、それから{heroine_name}を見た。
 # speaker: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_005
 ……あんたが連れてきたの
 # speaker: heroine
 # voice: gt_delhi_finale_014
 はい。黙っていなくなるのは、自由とは違うと思ったから。カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
 # speaker: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_006
 生意気な外国の娘だね
 # speaker: narrator
 カムラの声は怒っていた。けれど、空いていた隣に孫が座るのを、止めはしなかった。
 # speaker: enemy
 # local_word: gt_delhi_word_dadi
+# voice: gt_delhi_finale_battle_aman_022
 ダーディー。……最初から教えて。祖父と、ここで何があったのか
 # speaker: narrator
 # pause: 1200
 長い沈黙のあと、カムラは香辛料の袋を膝から下ろした。
 # speaker: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_007
 千九百六十六年の、冬。……ここ、もっと暗かったのよ
 {
 - battle_score == 5:
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_023
     あなたの読み、全部合ってました。孫の僕より、祖母のことを分かってたみたいだ
 - battle_score >= 3:
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_024
     いくつか外したけど、たどり着いた。祖母の地図の読み方は、僕には一行もできなかった
 - else:
     # speaker: enemy
+    # voice: gt_delhi_finale_battle_aman_025
     あなたが間違えたところは、僕が調べて追いついた。……二人で、やっと一人前でしたね
 }
 # speaker: narrator
@@ -515,6 +580,7 @@ INCLUDE modules.ink
 二人はそっと、観客の列へ戻った。背中のほうで、カムラの声が、話の続きをしている。
 # speaker: gt_kamla
 # leave: gt_kamla
+# voice: gt_delhi_finale_battle_kamla_008
 そこの二人。明日の朝六時。見送りに来るなら、遅れないで。……来なくてもいいけど
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

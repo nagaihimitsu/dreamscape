@@ -49,6 +49,7 @@ INCLUDE modules.ink
 隣の男の客が、短く何か言った。
 # speaker: gt_delhi_chandni_customer
 # local_word: gt_delhi_word_bas
+# voice: gt_delhi_date_chandni_chowk_delhi_chandni_customer_001
 バス
 # speaker: narrator
 # leave: gt_delhi_chandni_customer
@@ -154,6 +155,7 @@ INCLUDE modules.ink
 # speaker: narrator
 屋台の男が、指を一本立てた。
 # speaker: gt_delhi_chandni_vendor
+# voice: gt_delhi_date_chandni_chowk_delhi_chandni_vendor_001
 最後の一つ。おまけだ
 # speaker: narrator
 緑の水が、今日いちばんたっぷり入っている。

@@ -43,28 +43,35 @@ INCLUDE modules.ink
 # speaker: narrator
 人の背丈ほどもある銀の壺の陰で、言い合いは近づくほど大きくなった。{heroine_name}がそばまで来たところで、女性の声が跳ね上がった。
 # speaker: gt_jaipur_city_palace_woman
+# voice: gt_jaipur_main_city_palace_battle_sushma_001
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
 # together: enemy gt_vishal
 サリー姿の女性と、二十代半ばの青年。青年が女性の手提げを荷物用の秤に吊るすと、中の瓶が鳴り、針が大きく振れた。
 # speaker: gt_jaipur_city_palace_young_man
 # term: gt_term_achar
+# voice: gt_jaipur_main_city_palace_battle_vishal_001
 母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって
 # speaker: gt_vishal
 # cutin: name
+# voice: gt_jaipur_main_city_palace_battle_vishal_002
 すみません、騒がしくて。ヴィシャールです。来週、仕事でドイツに発つんです
 # speaker: gt_vishal
+# voice: gt_jaipur_main_city_palace_battle_vishal_003
 最後の週末だから、家族で宮殿を見に来たんですけど
 # speaker: enemy
 # cutin: name
+# voice: gt_jaipur_main_city_palace_battle_sushma_002
 ちょっと、そこの旅行者さん。あなた、外国から来たのよね
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_main_city_palace_001
 は、はい。日本から……
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_003
 この子ったら、向こうで漬物の匂いがしたら恥ずかしいって言うの。あなた、審判をしてちょうだい
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_004
 教えて。外国に家の味を持っていくのは、恥ずかしいこと？
 # speaker: narrator
 二組の目が、同時に{heroine_name}を見た。母親の目と、息子の目。どちらに答えても、片方が傷つく。
@@ -75,23 +82,28 @@ INCLUDE modules.ink
 # speaker: narrator
 スシュマは返事を待たず、銀の壺を指さした。最後の証拠を出す弁護士のような手つきだった。
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_005
 この壺はね、昔の王様が外国へ持っていったのよ。中に何を入れていったと思う？
 -> quiz(1) ->
 # background: gt_bg_jaipur_city_palace
 { quiz_correct:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_006
     そう！　ガンジスの水！　王様だって、自分の家の水を持っていったのよ。漬物五キロくらい、何よ
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_007
     ガンジスの水よ！　王様だって、自分の家の水を壺に詰めて持っていったの。漬物五キロくらい、何よ
 }
 # speaker: gt_vishal
+# voice: gt_jaipur_main_city_palace_battle_vishal_004
 王様には、荷物の重量制限がなかったんだよ、母さん
 # speaker: narrator
 # emotion: happy
 ヴィシャールの切り返しに、{heroine_name}は思わず吹き出した。慌てて口を押さえたが、もう遅い。
 # speaker: enemy
 # reaction: enemy,anger
+# voice: gt_jaipur_main_city_palace_battle_sushma_008
 笑ったわね。審判が笑うなんて
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -100,23 +112,28 @@ INCLUDE modules.ink
 # speaker: narrator
 ヴィシャールが小声で言った。
 # speaker: gt_vishal
+# voice: gt_jaipur_main_city_palace_battle_vishal_005
 向こうの新しい同僚に、漬物の匂いのする部屋だと思われたくないんです。最初くらい、身軽に始めたくて
 # speaker: narrator
 スシュマは聞こえないふりをして、二人を隣の中庭へ引っぱっていった。四方に、色の違う四つの門が並んでいる。
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_009
 ほら、この門。何を表してるか、あんたは知ってる？　小さい頃に連れてきたのに、どうせ覚えてないでしょう
 -> quiz(2) ->
 # background: gt_bg_jaipur_city_palace
 { quiz_correct:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_010
     四つの季節。春も、夏も、秋も、冬も。……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_011
     四季よ。孔雀が秋で、蓮が夏。……うちの台所にも、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 }
 # speaker: narrator
 ヴィシャールは、緑の門を見上げたまま黙った。それから、母親に聞こえないくらいの声で言った。
 # speaker: gt_vishal
+# voice: gt_jaipur_main_city_palace_battle_vishal_006
 ……持っていったら、向こうで毎日食べる。そしたら毎日、帰りたくなる。だから、持っていきたくないんだ
 # speaker: narrator
 {heroine_name}は少し考えてから、口を開いた。
@@ -129,6 +146,7 @@ INCLUDE modules.ink
 # speaker: narrator
 スシュマが、こちらを見た。得意げな顔ではなかった。それから、隣に立つ息子を、黙って見上げた。
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_012
 ……ねえ、上を見て。この宮殿の奥には、今も住んでる人がいるのよ。出ていかずに。知ってた？
 -> quiz(3) ->
 # background: gt_bg_jaipur_city_palace
@@ -141,6 +159,7 @@ INCLUDE modules.ink
     案内板には、宮殿の一部が今も王家の住まいだと書いてあった。博物館だけの建物ではないのだ。
 }
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_013
 王様の家族は、まだここに住んでる。……でも、うちの息子は出ていくの
 # speaker: narrator
 冗談めかした声が、途中でかすれた。ヴィシャールが母親の肩に手を置く。
@@ -156,18 +175,23 @@ INCLUDE modules.ink
 # speaker: narrator
 スシュマとヴィシャールが、同時に黙った。先に口を開いたのは、母親の方だった。
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_014
 ……毎週よ。日曜の朝。時差があるなら、そっちに合わせてあげる
 # speaker: gt_vishal
+# voice: gt_jaipur_main_city_palace_battle_vishal_007
 二キロと、毎週の電話。……分かった
 {
 - battle_score == 3:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_015
     審判さん、全問正解ね。うちの息子より、この宮殿に詳しいじゃない
 - battle_score == 2:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_016
     二問正解。審判としては合格。笑ったのは減点だけど
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_main_city_palace_battle_sushma_017
     答えは、まあまあね。でも、判定は一番いいのを出してくれた
 }
 # speaker: narrator
@@ -178,5 +202,6 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_city_palace_009
 あ、ありがとうございます。……わたしにも、重量制限が……
 # speaker: enemy
+# voice: gt_jaipur_main_city_palace_battle_sushma_018
 二百グラムよ。文句があるなら、電話してちょうだい
 -> END

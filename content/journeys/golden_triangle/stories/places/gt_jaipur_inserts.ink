@@ -156,6 +156,7 @@ INCLUDE modules.ink
 # speaker: narrator
 朝、宿の帳場。手のひらの模様は、一晩で、オレンジから赤茶色のほうへ、ぐっと濃くなっていた。フロントの女性が、それを見て声を上げた。
 # speaker: gt_jaipur_hotel_front
+# voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_001
 まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ。旦那さまに、ってね。お姑さんに、って言う人もいるけど
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
@@ -175,6 +176,7 @@ INCLUDE modules.ink
 # speaker: narrator
 フロントの女性は、彼女の手のひらをのぞきこみ、孔雀の羽の付け根を指でさした。
 # speaker: gt_jaipur_hotel_front
+# voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
 # photo: gt_album_j26 # photo_caption: 読み上げられた名前
@@ -302,17 +304,21 @@ INCLUDE modules.ink
 カムラは封筒を光にかざし、中の一ルピー玉を、指で確かめた。
 { cond("flag gt_jaipur_envelope_letter"):
     # speaker: enemy
+    # voice: gt_jaipur_finale_after_envelope_kamla_001
     手紙も入ってるね。……毎日言葉にしなさい、か。わたしの言ったことじゃないか
     # speaker: enemy
+    # voice: gt_jaipur_finale_after_envelope_kamla_002
     いいわ。アマンには、わたしが読み上げてやる。花嫁の前でね
 - else:
     # speaker: enemy
+    # voice: gt_jaipur_finale_after_envelope_kamla_003
     ……ふん。割り切れないね。よろしい
 }
 # speaker: heroine
 # voice: gt_jaipur_finale_after_envelope_002
 アマンさんに、おめでとうございますって、伝えてください
 # speaker: enemy
+# voice: gt_jaipur_finale_after_envelope_kamla_004
 自分で言いなさい。花婿は、逃げやしないよ
 # speaker: narrator
 # leave: enemy
@@ -332,6 +338,7 @@ INCLUDE modules.ink
 # speaker: narrator
 踊りの輪がほどけたころ、花嫁のいとこのプージャーが、携帯を握りしめて走ってきた。画面と彼女の顔を、交互に見る。
 # speaker: gt_pooja
+# voice: gt_jaipur_finale_after_reel_pooja_001
 やっぱり！　デリーの階段井戸の、『きゃー？』の人でしょ！　いとこ全員で見たの、あの動画！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -340,6 +347,7 @@ INCLUDE modules.ink
 # speaker: narrator
 デリーの階段井戸で、頼まれて出た怖い動画だ。その最後に、彼女の「きゃー？」が、おまけで入っている。
 # speaker: gt_pooja
+# voice: gt_jaipur_finale_after_reel_pooja_002
 さっきの問題に答えた声で、分かった。質問みたいな声だったから。……ねえ、もう一回やって。『きゃー？』って
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

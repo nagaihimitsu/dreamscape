@@ -169,6 +169,537 @@
       "checkedAt": "2026-11-13",
       "url": "https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small",
       "creditJa": "Chihiro Arata, \"Irodori-TTS: A Flow Matching-based Text-to-Speech Model with Emoji-driven Style Control\", Hugging Face, 2026. https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small"
+    },
+    {
+      "useJa": "カムラの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「中部つるぎ」",
+      "author": "SSS合同会社（東北ずん子・ずんだもんプロジェクト）",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 中部つるぎ 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/chubu_tsurugi/",
+      "creditJa": "VOICEVOX:中部つるぎ"
+    },
+    {
+      "useJa": "アマンの声",
+      "titleJa": "AivisHub のモデル「MarkN」（AivisSpeech）",
+      "author": "まーくん。(MarkN)",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/f79e73ab-3320-473b-8e3f-713c30c39ed1",
+      "creditJa": "AivisSpeech:MarkN"
+    },
+    {
+      "useJa": "スレーシュの声",
+      "titleJa": "AivisHub のモデル「Flow」（AivisSpeech）",
+      "author": "フロウ",
+      "license": "Flow 独自ライセンス",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/76a774e4-cc4d-4d8c-879e-8d2be3d30dad",
+      "creditJa": "音声合成モデル『Flow』（AivisSpeech）"
+    },
+    {
+      "useJa": "ハルバンスの声",
+      "titleJa": "AivisHub のモデル「銀芽(ぎんが)」（AivisSpeech）",
+      "author": "AI声優シリーズ",
+      "license": "AI声優 音声利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/052bb693-112b-45be-b498-8e05aa9d6e5e",
+      "creditJa": "AI声優-銀芽"
+    },
+    {
+      "useJa": "ヴィノードの声",
+      "titleJa": "AivisHub のモデル「fumifumi」（AivisSpeech）",
+      "author": "サガワフミヤ",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/71e72188-2726-4739-9aa9-39567396fb2a",
+      "creditJa": "音声合成モデル『fumifumi』（AivisSpeech）"
+    },
+    {
+      "useJa": "ヴィムラーの声",
+      "titleJa": "AivisHub のモデル「水巻咲_T2モデル」（AivisSpeech）",
+      "author": "TαkoeProject",
+      "license": "Tαkoe 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/55696911-05cb-4cd2-bdb9-dbc8bfe6e5c7",
+      "creditJa": "Tαkoe:AivisSpeech:水巻咲"
+    },
+    {
+      "useJa": "アンワル・店主の声",
+      "titleJa": "AivisHub のモデル「阿井田 茂」（AivisSpeech）",
+      "author": "古山キリヲ",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/47e53151-a378-46f3-abee-ce13aa07feb1",
+      "creditJa": "音声合成モデル『阿井田 茂』（AivisSpeech）"
+    },
+    {
+      "useJa": "ムケーシュ・茶屋の主人の声",
+      "titleJa": "AivisHub のモデル「TANAKA」（AivisSpeech）",
+      "author": "田中",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/470a41e2-863f-4bf2-8a20-bf7cde0d8f7b",
+      "creditJa": "音声合成モデル『TANAKA』（AivisSpeech）"
+    },
+    {
+      "useJa": "ハミード・老人の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「ちび式じい」",
+      "author": "ちび式じい運営",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ ちび式じい 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/chibishikiji/",
+      "creditJa": "VOICEVOX:ちび式じい"
+    },
+    {
+      "useJa": "ドゥッガル大佐・検札係の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「麒ヶ島宗麟」",
+      "author": "VirVox Project",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ VirVox Project「VOICEVOXの利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/kigashima_sourin/",
+      "creditJa": "VOICEVOX:麒ヶ島宗麟"
+    },
+    {
+      "useJa": "ラームキシャン・父親の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「雀松朱司」",
+      "author": "VirVox Project",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ VirVox Project「VOICEVOXの利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/wakamatsu_akashi/",
+      "creditJa": "VOICEVOX:雀松朱司"
+    },
+    {
+      "useJa": "ディヴィヤの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「夜語トバリ」",
+      "author": "合同会社レース・ノアエ",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 夜語トバリ 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/yogatari_tobari/",
+      "creditJa": "VOICEVOX:夜語トバリ"
+    },
+    {
+      "useJa": "ガウラの声",
+      "titleJa": "AivisHub のモデル「楽町音穏_T3モデル」（AivisSpeech）",
+      "author": "TαkoeProject",
+      "license": "Tαkoe 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/0e8ea44c-d904-467d-a0e6-81d52b1db098",
+      "creditJa": "Tαkoe:AivisSpeech:楽町音穏"
+    },
+    {
+      "useJa": "ラージューの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「満別花丸」",
+      "author": "満別花丸運営",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 満別花丸 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/manbetsu_hanamaru/",
+      "creditJa": "VOICEVOX:満別花丸"
+    },
+    {
+      "useJa": "スシュマの声",
+      "titleJa": "AivisHub のモデル「金苗(かなえ)」（AivisSpeech）",
+      "author": "AI声優シリーズ",
+      "license": "AI声優 音声利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/1a322ad9-6b7e-4a6d-8d0b-c4cd264538dc",
+      "creditJa": "AI声優-金苗"
+    },
+    {
+      "useJa": "タンヴィの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「波音リツ」",
+      "author": "カノン",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 波音リツ 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/namine_ritsu/",
+      "creditJa": "VOICEVOX:波音リツ"
+    },
+    {
+      "useJa": "プージャーの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「WhiteCUL」",
+      "author": "株式会社ZAN-SHIN",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ WhiteCUL 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/white_cul/",
+      "creditJa": "VOICEVOX:WhiteCUL"
+    },
+    {
+      "useJa": "ルーヒーの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「猫使アル」",
+      "author": "猫使アル・猫使ビィ",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 猫使アル 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/nekotsuka_aru/",
+      "creditJa": "VOICEVOX:猫使アル"
+    },
+    {
+      "useJa": "サリームの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「離途」",
+      "author": "LitMus",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 離途 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/rito/",
+      "creditJa": "VOICEVOX 離途"
+    },
+    {
+      "useJa": "ソニアの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「あんこもん」",
+      "author": "SSS合同会社（東北ずん子・ずんだもんプロジェクト）",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ あんこもん 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/ankomon/",
+      "creditJa": "VOICEVOX:あんこもん"
+    },
+    {
+      "useJa": "ナスリーンの声",
+      "titleJa": "AivisHub のモデル「morioki」（AivisSpeech）",
+      "author": "yuki",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/baaae3c0-7b22-4605-8ba5-80c959b41a48",
+      "creditJa": "音声合成モデル『morioki』（AivisSpeech）"
+    },
+    {
+      "useJa": "サミールの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「玄野武宏」",
+      "author": "VirVox Project",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ VirVox Project「VOICEVOXの利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/kurono_takehiro/",
+      "creditJa": "VOICEVOX:玄野武宏"
+    },
+    {
+      "useJa": "ニキルの声",
+      "titleJa": "AivisHub のモデル「にせ」（AivisSpeech）",
+      "author": "魔法プログラム",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/6d11c6c2-f4a4-4435-887e-23dd60f8b8dd",
+      "creditJa": "音声合成モデル『にせ』（AivisSpeech）"
+    },
+    {
+      "useJa": "モヌの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「白上虎太郎」",
+      "author": "VirVox Project",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ VirVox Project「VOICEVOXの利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/shirakami_kotarou/",
+      "creditJa": "VOICEVOX:白上虎太郎"
+    },
+    {
+      "useJa": "ニディ先生の声",
+      "titleJa": "AivisHub のモデル「蝶舞和香_T3モデル」（AivisSpeech）",
+      "author": "TαkoeProject",
+      "license": "Tαkoe 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/7ac45cff-1e2f-4545-91bb-e7b2cc67649b",
+      "creditJa": "Tαkoe:AivisSpeech:蝶舞和香"
+    },
+    {
+      "useJa": "ゾヘブの声",
+      "titleJa": "AivisHub のモデル「はきみて れく(瞭魅推 れく)」（AivisSpeech）",
+      "author": "はきみて れく(瞭魅推 れく)",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/70ad7e84-6a10-48d6-8f9a-8dac4bba3c0b",
+      "creditJa": "音声合成モデル『はきみて れく(瞭魅推 れく)』（AivisSpeech）"
+    },
+    {
+      "useJa": "ドゥベイの声",
+      "titleJa": "AivisHub のモデル「Shinjou Tomoharu」（AivisSpeech）",
+      "author": "名無しさん",
+      "license": "ACML-NC 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/098d4e66-2faf-4a00-889c-a1d2f05bde78",
+      "creditJa": "AivisSpeech:Shinjou Tomoharu"
+    },
+    {
+      "useJa": "背広の男・シャーストリーの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「剣崎雌雄」",
+      "author": "銃口會",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 剣崎雌雄 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/kenzaki_mesuo/",
+      "creditJa": "VOICEVOX:剣崎雌雄"
+    },
+    {
+      "useJa": "グルミートの声",
+      "titleJa": "AivisHub のモデル「猩々博士 (雑談ボイス)」（AivisSpeech）",
+      "author": "猩々博士",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/70a875a9-feae-41e6-a586-8cf9e47c6c0b",
+      "creditJa": "音声合成モデル『猩々博士 (雑談ボイス)』（AivisSpeech）"
+    },
+    {
+      "useJa": "ジャグディープ・ベストの男の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「青山龍星」",
+      "author": "VirVox Project",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ VirVox Project「VOICEVOXの利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/aoyama_ryusei/",
+      "creditJa": "VOICEVOX:青山龍星"
+    },
+    {
+      "useJa": "ファルハーナの声",
+      "titleJa": "AivisHub のモデル「ほのか(~現実20代女子AIボイチェン~リアボVC公式モデル)」（AivisSpeech）",
+      "author": "AIボイチェンアプリ リアボVC2 無料体験版",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/59f96896-64d2-4378-830a-4d5feb3d81aa",
+      "creditJa": "声は(x.com/dopoiro)のAI"
+    },
+    {
+      "useJa": "カヴィヤの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「猫使ビィ」",
+      "author": "猫使アル・猫使ビィ",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 猫使ビィ 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/nekotsuka_bi/",
+      "creditJa": "VOICEVOX:猫使ビィ"
+    },
+    {
+      "useJa": "クナールの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「黒沢冴白」",
+      "author": "VirVox Project",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ VirVox Project「VOICEVOXの利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/kurosawa_kohaku/",
+      "creditJa": "VOICEVOX:黒沢冴白"
+    },
+    {
+      "useJa": "メヘルの声",
+      "titleJa": "AivisHub のモデル「かりん(現実20代女子AIボイチェン@リアボVC公式モデル)」（AivisSpeech）",
+      "author": "AIボイチェンアプリ リアボVC2 無料体験版",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/18972473-ca36-4e06-a33a-5cc14adba0c4",
+      "creditJa": "声は(x.com/dopoiro)のAI"
+    },
+    {
+      "useJa": "ヴィシャール・隣の客の声",
+      "titleJa": "AivisHub のモデル「yukyu」（AivisSpeech）",
+      "author": "yukyu",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/1f04a608-916c-4d9e-bf6e-b9da5c176f85",
+      "creditJa": "音声合成モデル『yukyu』（AivisSpeech）"
+    },
+    {
+      "useJa": "ジャスミートの声",
+      "titleJa": "AivisHub のモデル「もえ(現実20代女子AIボイチェン@リアボVC公式モデル)」（AivisSpeech）",
+      "author": "AIボイチェンアプリ リアボVC2 無料体験版",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/9a7feb22-b6f3-4f79-92d9-26849e063fa1",
+      "creditJa": "声は(x.com/dopoiro)のAI"
+    },
+    {
+      "useJa": "ミーナの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「九州そら」",
+      "author": "SSS合同会社（東北ずん子・ずんだもんプロジェクト）",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 九州そら 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/kyushu_sora/",
+      "creditJa": "VOICEVOX:九州そら"
+    },
+    {
+      "useJa": "娘の声",
+      "titleJa": "AivisHub のモデル「れな(現実20代女子AIボイチェン@リアボVC公式モデル)」（AivisSpeech）",
+      "author": "AIボイチェンアプリ リアボVC2 無料体験版",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/b1b8072f-809f-4c6d-9ba1-2ca94d9c3663",
+      "creditJa": "声は(x.com/dopoiro)のAI"
+    },
+    {
+      "useJa": "アンジャリの声",
+      "titleJa": "AivisHub のモデル「梅𡵅弓哥_T3モデル」（AivisSpeech）",
+      "author": "TαkoeProject",
+      "license": "Tαkoe 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/1f677b65-741e-4ba4-b029-d5525deb82b8",
+      "creditJa": "Tαkoe:AivisSpeech:梅𡵅弓哥"
+    },
+    {
+      "useJa": "青年（駅前で声をかける男）の声",
+      "titleJa": "AivisHub のモデル「natto-z」（AivisSpeech）",
+      "author": "kokuren",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/0c032c2d-272a-4030-a75c-74dc6f7662ad",
+      "creditJa": "音声合成モデル『natto-z』（AivisSpeech）"
+    },
+    {
+      "useJa": "花嫁の祖母の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「暁記ミタマ」",
+      "author": "合同会社レース・ノアエ",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 暁記ミタマ 音声ライブラリ利用規約 ＋ 夜語トバリ・暁記ミタマ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/akatsuki_mitama/",
+      "creditJa": "VOICEVOX:暁記ミタマ"
+    },
+    {
+      "useJa": "番人・運転手の声",
+      "titleJa": "AivisHub のモデル「観測症」（AivisSpeech）",
+      "author": "観測症",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/ed47c952-c253-405e-adba-1172399816a1",
+      "creditJa": "音声合成モデル『観測症』（AivisSpeech）"
+    },
+    {
+      "useJa": "おかみの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「No.7」",
+      "author": "No.7製作委員会",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ No.7 音声ライブラリ利用規約 ＋ No.7「イラスト、音声・歌声の利用規約」",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/number_seven/",
+      "creditJa": "VOICEVOX:No.7"
+    },
+    {
+      "useJa": "ファイズの声",
+      "titleJa": "AivisHub のモデル「Lux」（AivisSpeech）",
+      "author": "神瀬来未",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/3dabea2b-cc10-41da-955b-4618ce84e716",
+      "creditJa": "音声合成モデル『Lux』（AivisSpeech）"
+    },
+    {
+      "useJa": "フロントの女性の声",
+      "titleJa": "AivisHub のモデル「木角空_T2モデル」（AivisSpeech）",
+      "author": "TαkoeProject",
+      "license": "Tαkoe 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/d0471c7d-3adc-4c99-b7b7-0e91c4d9d96f",
+      "creditJa": "Tαkoe:AivisSpeech:木角空"
+    },
+    {
+      "useJa": "ソーヌーの声",
+      "titleJa": "AivisHub のモデル「らせつん」（AivisSpeech）",
+      "author": "こずかた学園プロジェクト",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/9f36ec0d-8dac-42dc-aff4-149c5f99faad",
+      "creditJa": "音声合成モデル『らせつん』（AivisSpeech）"
+    },
+    {
+      "useJa": "花嫁になる人の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「冥鳴ひまり」",
+      "author": "冥鳴ひまり",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 冥鳴ひまり 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/meimei_himari/",
+      "creditJa": "VOICEVOX:冥鳴ひまり"
+    },
+    {
+      "useJa": "案内の係員の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「栗田まろん」",
+      "author": "栗田まろん（権利者は未確認）",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ 栗田まろん 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/kurita_maron/",
+      "creditJa": "VOICEVOX:栗田まろん"
+    },
+    {
+      "useJa": "問屋の声",
+      "titleJa": "AivisHub のモデル「G59」（AivisSpeech）",
+      "author": "オレンジ",
+      "license": "ACML-NC 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/83f2930e-4697-4265-822c-04d7337b3047",
+      "creditJa": "音声合成モデル『G59』"
+    },
+    {
+      "useJa": "カビールの声",
+      "titleJa": "AivisHub のモデル「すきやき馬太郎」（AivisSpeech）",
+      "author": "すきやき馬太郎",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/f493ab6c-1ffa-4534-9bbd-2ba398f17cd5",
+      "creditJa": "音声合成モデル『すきやき馬太郎』（AivisSpeech）"
+    },
+    {
+      "useJa": "リヤの声",
+      "titleJa": "AivisHub のモデル「凛音エル」（AivisSpeech）",
+      "author": "kokuren",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/f5017410-fbb5-49e1-97cb-e785f42e15f5",
+      "creditJa": "音声合成モデル『凛音エル』（AivisSpeech）"
+    },
+    {
+      "useJa": "青年の声",
+      "titleJa": "AivisHub のモデル「kokuren_3rd」（AivisSpeech）",
+      "author": "kokuren",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/3bef4d35-124e-4ddd-93d3-75f292732195",
+      "creditJa": "音声合成モデル『kokuren_3rd』（AivisSpeech）"
+    },
+    {
+      "useJa": "ツアーの客の声",
+      "titleJa": "AivisHub のモデル「七日週_T2モデル」（AivisSpeech）",
+      "author": "TαkoeProject",
+      "license": "Tαkoe 利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/baa6d55a-d751-49b8-bafb-b3a6555a100c",
+      "creditJa": "Tαkoe:AivisSpeech:七日週"
+    },
+    {
+      "useJa": "屋台の男の声",
+      "titleJa": "AivisHub のモデル「蒼月ハヤテ」（AivisSpeech）",
+      "author": "サルドラ",
+      "license": "蒼月ハヤテ AivisSpeech音源利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/eefe1fbd-d15a-49ae-bc83-fc4aaad680e1",
+      "creditJa": "AivisSpeech: 蒼月ハヤテ"
+    },
+    {
+      "useJa": "宿の主人の声",
+      "titleJa": "AivisHub のモデル「akiRAM」（AivisSpeech）",
+      "author": "オレンジ",
+      "license": "ACML-NC 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/1112959e-bb11-4a61-8c07-ebea8ea568cc",
+      "creditJa": "音声合成モデル『akiRAM』"
+    },
+    {
+      "useJa": "荷運びの男の声",
+      "titleJa": "AivisHub のモデル「立神ケイ」（AivisSpeech）",
+      "author": "ニッケル",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/b2bee8fc-3f65-4c99-9607-a1075a10066b",
+      "creditJa": "音声合成モデル『立神ケイ』（AivisSpeech）"
+    },
+    {
+      "useJa": "子どもたちの声",
+      "titleJa": "VOICEVOX の音声ライブラリ「ブイブイ・コバコ」",
+      "author": "ブイブイ部",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ ブイブイ・コバコ 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/buibui_kobako/",
+      "creditJa": "VOICEVOX:ブイブイ・コバコ"
+    },
+    {
+      "useJa": "隣の子の声",
+      "titleJa": "VOICEVOX の音声ライブラリ「†聖騎士 紅桜†」",
+      "author": "百花 繚乱",
+      "license": "VOICEVOX ソフトウェア利用規約 ＋ †聖騎士 紅桜† 音声ライブラリ利用規約",
+      "checkedAt": "2026-11-17",
+      "url": "https://voicevox.hiroshiba.jp/product/horinaito_benizakura/",
+      "creditJa": "VOICEVOX:†聖騎士 紅桜†"
+    },
+    {
+      "useJa": "電話の声",
+      "titleJa": "AivisHub のモデル「ろてじん（匿名インタビュー風）」（AivisSpeech）",
+      "author": "Rotejin",
+      "license": "ACML 1.0",
+      "checkedAt": "2026-11-17",
+      "url": "https://hub.aivis-project.com/aivm-models/80fe2db4-5891-4550-a3f3-dff9a91c0946",
+      "creditJa": "音声合成モデル『ろてじん（匿名インタビュー風）』（AivisSpeech）"
     }
   ],
   "authoring": {
