@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { battles, scenes, type BattleDefinition } from "../../../src/content";
+import { battles, scenes, tourismClues, type BattleDefinition } from "../../../src/content";
 import { getJourney, getJourneyForCity } from "../../../src/content/journeys";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
 import { getBattleResultExits } from "../../../src/domain/chapter";
@@ -9,8 +9,13 @@ import { validateGameState, type GameState } from "../../../src/domain/game";
 import { momentStepAvailability, openEpilogue, openOccasion } from "../../../src/domain/occasion";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { resultExitLabel, screenFor } from "../../../src/domain/screen";
-import { cityFinaleResult, completedCity, openBattleScene, playBattleToResult } from "../../../src/dev/scenario-builders";
-import { debugTargets } from "../../../src/dev/debug-state";
+import {
+  cityFinaleResult, cityStart, completedCity, departFromClearedCity, openBattleScene, openEpilogueScene, playBattleToResult, playMomentUntil, readEpilogue, withClues,
+} from "../../../src/dev/scenario-builders";
+import { createDebugState, debugTargets, resolveDebugLaunch } from "../../../src/dev/debug-state";
+import { checkDebugClues, debugClueGroups, debugClueIds, withDebugClues } from "../../../src/dev/debug-edits";
+import { parseDebugQuery, type DebugQuery, type DebugSettings } from "../../../src/dev/debug-query";
+import { occasionCandidates } from "../../../src/dev/occasion-candidates";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 
@@ -135,18 +140,21 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
   });
 
   it("gives its head # on_done: and its choices' tags once (its first play), not on a reload or a second tap; # repeat: once never runs it again", () => {
-    // As content:build would write `# on_done: money +7` and the first choice's `# money: +3` (the sample writes none).
+    // As content:build would write `# on_done: money +7` and the first choice's `# money: +3` and `# ap: -1` (the sample writes none).
     patchScene(QUIZ, (scene) => ({ ...scene, done: { money: 7 },
-      options: scene.options.map((option) => (option.id === "ask_which_three" ? { ...option, money: 3 } : option)) }));
+      options: scene.options.map((option) => (option.id === "ask_which_three" ? { ...option, money: 3, ap: -1 } : option)) }));
     const before = cleared(true);
     const started = toEpilogue(before);
     const budget = started.travelBudget;
+    expect(started.ap).toBeGreaterThan(0);
     const result = playBattleToResult(started, { after: (next) => reload(next) });
     expect(result.activeBattle?.appliedOptionIds).toEqual(["ask_which_three"]);
     expect(result.travelBudget).toBe(budget + 3 + 7);
+    expect(result.ap).toBe(started.ap - 1);
     // Leaving the reloaded result, twice: nothing more.
     const left = restore(leaveBattleToFreeTime(reload(result), result.revision, () => 0));
     expect(left.travelBudget).toBe(budget + 10);
+    expect(left.ap).toBe(started.ap - 1);
     // Once played, its turn is passed (repeat once): a later moment of the same kind goes on without it.
     const played = restore({ ...before, battleRecords: left.battleRecords, travelBudget: left.travelBudget });
     expect(momentStepAvailability(played, QUIZ)).toEqual({ available: false, reason: "もう遊んだクイズです。" });
@@ -188,23 +196,23 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
   });
 });
 
-describe("a reasoning quiz placed at a departure (Delhi → Agra, the sample's quiz added there in memory)", () => {
-  /** The sample's coach stop quiz as a battle of Delhi's Red Fort, placed at Delhi's departure before its own scenes (-2, -1). */
-  function addDepartureQuiz() {
-    const id = "zz_test_depart_quiz";
-    const battle: BattleDefinition = { ...battles.find((item) => item.id === QUIZ)!, id, landmarkId: "delhi_red_fort" };
-    const sample = scenes.find((scene) => scene.id === QUIZ)!;
-    const { when: _when, ...rest } = sample;
-    const entry: SceneEntry = { ...rest, id, cityId: "delhi", main: { battle: id }, at: [{ depart: "delhi" }], priority: -4 };
-    (battles as BattleDefinition[]).push(battle);
-    (scenes as SceneEntry[]).push(entry);
-    undo.push(() => {
-      (battles as BattleDefinition[]).splice(battles.indexOf(battle), 1);
-      (scenes as SceneEntry[]).splice(scenes.indexOf(entry), 1);
-    });
-    return id;
-  }
+/** The sample's coach stop quiz as a battle of Delhi's Red Fort, placed at Delhi's departure before its own scenes (-2, -1), with no condition. */
+function addDepartureQuiz() {
+  const id = "zz_test_depart_quiz";
+  const battle: BattleDefinition = { ...battles.find((item) => item.id === QUIZ)!, id, landmarkId: "delhi_red_fort" };
+  const sample = scenes.find((scene) => scene.id === QUIZ)!;
+  const { when: _when, ...rest } = sample;
+  const entry: SceneEntry = { ...rest, id, cityId: "delhi", main: { battle: id }, at: [{ depart: "delhi" }], priority: -4 };
+  (battles as BattleDefinition[]).push(battle);
+  (scenes as SceneEntry[]).push(entry);
+  undo.push(() => {
+    (battles as BattleDefinition[]).splice(battles.indexOf(battle), 1);
+    (scenes as SceneEntry[]).splice(scenes.indexOf(entry), 1);
+  });
+  return id;
+}
 
+describe("a reasoning quiz placed at a departure (Delhi → Agra, the sample's quiz added there in memory)", () => {
   it("runs before the departure's own scenes, resumes from a save, and its 「先へ進む」 goes on to them and to the next city", () => {
     const id = addDepartureQuiz();
     const cleared = completedCity("delhi");
@@ -223,6 +231,73 @@ describe("a reasoning quiz placed at a departure (Delhi → Agra, the sample's q
   });
 });
 
+describe("the scenario builders with a moment quiz (3.12)", () => {
+  it("do not pick up the bell's clue on their default way (its choice is not the first), so the quiz is not played there", () => {
+    const cleared = completedCity("mihon");
+    expect(cleared.discoveredClueIds).not.toContain(BELL);
+    const ended = readEpilogue(openEpilogueScene(cleared));
+    expect(ended.battleRecords.some((record) => record.battleId === QUIZ)).toBe(false);
+    expect(ended.viewedEpilogueCityIds).toContain("mihon");
+  });
+
+  it("withClues records a clue a scene gives (once), and refuses one that only an observation finds before its visit", () => {
+    const start = cityStart("mihon");
+    const heard = withClues(start, [BELL, BELL]);
+    expect(heard.discoveredClueIds.filter((id) => id === BELL)).toEqual([BELL]);
+    expect(withClues(heard, [BELL])).toBe(heard);
+    expect(withClues(start, [])).toBe(start);
+    expect(start.visitedLandmarkIds).not.toContain("mihon_clock_tower");
+    expect(() => withClues(start, ["smp_obs_mihon_clock_tower_hands"]))
+      .toThrow("手がかり「smp_obs_mihon_clock_tower_hands」は、この状態では手がかり帳に記録できません");
+    expect(() => withClues(start, ["zz_no_such_clue"])).toThrow("手がかり「zz_no_such_clue」は、この状態では手がかり帳に記録できません");
+    // A visited landmark's clue is kept by the save check (its observation finds it there).
+    const visited = completedCity("mihon");
+    expect(withClues(visited, ["smp_obs_mihon_clock_tower_hands"]).discoveredClueIds).toContain("smp_obs_mihon_clock_tower_hands");
+  });
+
+  it("readEpilogue plays the epilogue's moment quiz to its result and on, with the clue (once), and ends the journey's epilogue", () => {
+    const heard = withClues(completedCity("mihon"), [BELL]);
+    const opened = openEpilogueScene(heard);
+    expect(opened.activeEpilogue).not.toBeNull();
+    expect(opened.battleRecords.find((record) => record.battleId === QUIZ)?.attempts).toBe(1);
+    const ended = readEpilogue(opened);
+    expect(ended.viewedEpilogueCityIds).toContain("mihon");
+    expect(ended.battleRecords.find((record) => record.battleId === QUIZ)?.attempts).toBe(1);
+    expect(ended).toMatchObject({ activeBattle: null, activeEpilogue: null, occasion: null });
+  });
+
+  it("departFromClearedCity and cityStart play a departure's moment quiz and arrive in the next city", () => {
+    const id = addDepartureQuiz();
+    const arrived = departFromClearedCity(completedCity("delhi"));
+    expect(arrived.currentCityId).toBe("agra");
+    expect(arrived.battleRecords.find((record) => record.battleId === id)?.attempts).toBe(1);
+    const agra = cityStart("agra");
+    expect(agra.currentCityId).toBe("agra");
+    expect(agra.battleRecords.find((record) => record.battleId === id)?.attempts).toBe(1);
+  });
+
+  it("playMomentUntil stops at each stage of the quiz and at the step after it; every stop saves and resumes as it is", () => {
+    const started = toEpilogue(cleared(true));
+    // A stop that holds already returns the state as it is.
+    expect(playMomentUntil(started, (state) => !!state.activeBattle)).toEqual(started);
+    for (const phase of ["question", "feedback", "reasoning", "result"] as const) {
+      const at = playMomentUntil(started, (state) => state.activeBattle?.phase === phase);
+      expect(at.activeBattle).toMatchObject({ battleId: QUIZ, phase });
+      expect(at.occasion).toMatchObject({ kind: "epilogue", at: QUIZ, started: [QUIZ] });
+      reload(at);
+    }
+    const reasoning = playMomentUntil(started, (state) => state.activeBattle?.phase === "reasoning");
+    expect(reasoning.activeBattle!.reasoning!.selectedClueIds).toEqual([]);
+    // After the quiz: the moment's next step (the epilogue itself here), as a player's 「先へ進む」 leaves it.
+    const after = playMomentUntil(started, (state) => !state.activeBattle && !!state.activeEpilogue);
+    expect(after.occasion).toMatchObject({ kind: "epilogue", at: "main:epilogue", started: [QUIZ] });
+    expect(after.battleRecords.find((record) => record.battleId === QUIZ)?.attempts).toBe(1);
+    reload(after);
+    // The moment ends (the journey's epilogue read) before a stop that never holds.
+    expect(() => playMomentUntil(started, () => false)).toThrow("時点が終わりました");
+  });
+});
+
 describe("Debug and the scenario builders (3.10)", () => {
   it("list neither the moment quiz as a battle nor its landmark as a visit, and refuse to open the quiz by itself", () => {
     const targets = debugTargets("mihon");
@@ -232,5 +307,31 @@ describe("Debug and the scenario builders (3.10)", () => {
     // The map's quizzes stay listed.
     expect(targets.battle.map((target) => target.id)).toContain("smp_mihon_main_clock_tower_battle");
     expect(() => openBattleScene(completedCity("mihon"), QUIZ)).toThrow("この場面は時点の場面です。時点を開く操作（エピローグ・出発など）で流してください");
+  });
+
+  it("list the moment quiz in the candidate table by its title, with its reason when it is passed", () => {
+    const passed = occasionCandidates(toEpilogue(cleared(false)));
+    expect(passed.rows).toContainEqual(expect.objectContaining({ position: "-3", name: "三時に出た馬車", status: "とばす",
+      reason: "時点の条件を満たしていません。" }));
+    const running = occasionCandidates(toEpilogue(cleared(true)));
+    expect(running.rows).toContainEqual(expect.objectContaining({ name: "三時に出た馬車", status: "実行中" }));
+  });
+
+  it("offer the clues a scene gives as 「手がかりを得たことにする」 and in a launch URL's clues=, and refuse the others with the reason", () => {
+    expect(debugClueGroups("mihon")).toEqual([{ cityId: "mihon", nameJa: "見本の街", clues: [{ id: BELL, titleJa: tourismClues.find((clue) => clue.id === BELL)!.titleJa }] }]);
+    expect(debugClueIds("milano")).toEqual([]);
+    const launch = resolveDebugLaunch((parseDebugQuery(`?debug&city=mihon&scene=epilogue&clues=${BELL}`) as { query: DebugQuery }).query);
+    expect(launch).toMatchObject({ kind: "scene", settings: { scene: "epilogue", clues: [BELL] } });
+    // The epilogue opens after the moment quiz its clue lets run (the scenes before an epilogue are played as Debug opens it).
+    const opened = createDebugState((launch as { settings: DebugSettings }).settings);
+    expect(opened.discoveredClueIds).toContain(BELL);
+    expect(opened.activeEpilogue).not.toBeNull();
+    expect(opened.battleRecords.find((record) => record.battleId === QUIZ)?.attempts).toBe(1);
+    const refusal = (search: string) => () => resolveDebugLaunch((parseDebugQuery(search) as { query: DebugQuery }).query);
+    expect(refusal("?debug&city=mihon&scene=epilogue&clues=smp_obs_mihon_clock_tower_hands"))
+      .toThrow("手がかり「smp_obs_mihon_clock_tower_hands」は場面が渡す手がかりではありません。観察で見つけてください");
+    expect(refusal("?debug&city=mihon&scene=epilogue&clues=zz_no_such_clue")).toThrow("手がかり「zz_no_such_clue」は登録されていません");
+    expect(() => checkDebugClues("milano", [BELL])).toThrow(`手がかり「${BELL}」は${getJourneyForCity("milano")!.nameJa}の場面が渡す手がかりではありません。`);
+    expect(() => withDebugClues(cityStart("milano"), [BELL])).toThrow("の場面が渡す手がかりではありません。");
   });
 });

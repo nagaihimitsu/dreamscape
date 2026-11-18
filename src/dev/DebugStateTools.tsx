@@ -5,12 +5,12 @@ import { weekdayLabel } from "../app/journey-hud-text";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { clockText, debugClockPresets, debugDayRange, debugRomanceStages, debugTimeRange, parseClockText, type DebugRomanceStage, type DebugScene } from "./debug-query";
-import { debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugFlagGroup } from "./debug-edits";
+import { debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugClueGroup, type DebugFlagGroup } from "./debug-edits";
 
 /**
  * Debug's flags, free time's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」) and 恋の段階
  * (2026-11-16): the parts of 場面の確認 that choose them for the scene to open, and the Debug bar's dialog that changes them in
- * the running Debug game.
+ * the running Debug game. The clues heard in conversation (2026-11-18): 場面の確認 only (a launch URL's `clues`).
  */
 
 /** The title of the Debug bar's dialog (its button in DebugMode.tsx says the same, with a place to wrap on a phone). */
@@ -36,28 +36,41 @@ export function DebugStageField({ stage, onChange }: { stage: DebugRomanceStage 
   </div>;
 }
 
-/** The journey's flags as checkboxes, by city (debugFlagGroups); each row's note and ID are its label (44 px or more). */
-export function DebugFlagList({ groups, cityId, checked, disabled = false, onChange }: {
-  groups: readonly DebugFlagGroup[];
+/** Checkboxes by city (the journey's flags or clues): each row's text and ID are its label (44 px or more). */
+function DebugCheckList({ groups, cityId, checked, disabled = false, testId, onChange }: {
+  groups: readonly { cityId: string | null; nameJa: string; rows: readonly { id: string; text?: string }[] }[];
   cityId: string;
   checked: readonly string[];
   disabled?: boolean;
+  testId: string;
   onChange: (id: string, obtained: boolean) => void;
 }) {
   return <div className="debug-flag-list">
     {groups.map((group) => <section key={group.cityId ?? ""}>
       <h3>{group.nameJa}{group.cityId === cityId ? "（この都市）" : ""}</h3>
       <ul>
-        {group.flags.map((flag) => <li key={flag.id}>
+        {group.rows.map((row) => <li key={row.id}>
           <label className="debug-flag">
-            <input type="checkbox" data-testid={`debug-flag-${flag.id}`} checked={checked.includes(flag.id)} disabled={disabled}
-              onChange={(event) => onChange(flag.id, event.currentTarget.checked)} />
-            <span>{flag.noteJa ?? flag.id}{flag.noteJa && <code>{flag.id}</code>}</span>
+            <input type="checkbox" data-testid={`${testId}-${row.id}`} checked={checked.includes(row.id)} disabled={disabled}
+              onChange={(event) => onChange(row.id, event.currentTarget.checked)} />
+            <span>{row.text ?? row.id}{row.text && <code>{row.id}</code>}</span>
           </label>
         </li>)}
       </ul>
     </section>)}
   </div>;
+}
+
+/** The journey's flags as checkboxes, by city (debugFlagGroups); each row's note and ID are its label. */
+export function DebugFlagList({ groups, ...rest }: {
+  groups: readonly DebugFlagGroup[];
+  cityId: string;
+  checked: readonly string[];
+  disabled?: boolean;
+  onChange: (id: string, obtained: boolean) => void;
+}) {
+  return <DebugCheckList {...rest} testId="debug-flag"
+    groups={groups.map((group) => ({ ...group, rows: group.flags.map((flag) => ({ id: flag.id, text: flag.noteJa })) }))} />;
 }
 
 /** The quick choices of the clock (朝・昼・夕方・夜), the one at `minute` pressed. */
@@ -127,6 +140,27 @@ export function DebugFlagChooser({ groups, cityId, chosen, onChange }: {
     <p className="debug-note">チェックしたフラグを得た状態で場面を開きます。旅の進行ですでに得ているフラグは残ります。開いた後は上の帯の「{debugEditTitle}」で付け外しできます。</p>
     <DebugFlagList groups={groups} cityId={cityId} checked={chosen}
       onChange={(id, obtained) => onChange(obtained ? [...chosen, id] : chosen.filter((flag) => flag !== id))} />
+  </details>;
+}
+
+/**
+ * 場面の確認's clues heard in conversation (2026-11-18; debugClueGroups: the journey's clues a scene gives with `# clue:` or
+ * `# on_done: clue`), folded like the flags. None in a journey whose scenes give no clue.
+ */
+export function DebugClueChooser({ groups, cityId, chosen, onChange }: {
+  groups: readonly DebugClueGroup[];
+  cityId: string;
+  chosen: readonly string[];
+  onChange: (clues: string[]) => void;
+}) {
+  const [open, setOpen] = useState(chosen.length > 0);
+  if (!groups.length) return null;
+  return <details className="debug-flags" data-testid="debug-clues" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+    <summary>手がかりを得たことにする（{chosen.length ? `${chosen.length}件を選択中` : "なし"}）</summary>
+    <p className="debug-note">チェックした手がかりを手がかり帳に記録した状態で場面を開きます（会話で聞いたことにします）。選べるのは、場面が # clue:・# on_done: clue で渡す手がかりだけです。観察で見つける手がかりは、観察を開いて見つけてください。</p>
+    <DebugCheckList testId="debug-clue" cityId={cityId} checked={chosen}
+      groups={groups.map((group) => ({ ...group, rows: group.clues.map((clue) => ({ id: clue.id, text: clue.titleJa })) }))}
+      onChange={(id, obtained) => onChange(obtained ? [...chosen, id] : chosen.filter((clue) => clue !== id))} />
   </details>;
 }
 

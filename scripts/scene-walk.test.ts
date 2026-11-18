@@ -64,6 +64,15 @@ describe("the scene walk", () => {
     expect(() => walk(talk("# when: money >= 8\n", deciding))).toThrow("No choice can be chosen");
   });
 
+  it("stops a deposit next to a choice for those who cannot pay (# requires: money <= 499), and lets a cond(\"money >= 500\") split pass (A10; 2026-11-18)", () => {
+    // The way to write 「払えるなら払う、払えなければ払わない」: a choice that needs nothing is not guaranteed on either path.
+    const side = "* [Pay # option: pay_deposit]\n    # money: -500\n    paid\n    -> END\n* [Cannot # option: short]\n    # requires: money <= 499\n    short\n    -> END\n";
+    expect(() => walk(talk("", side))).toThrow("No choice can be chosen");
+    // Split first: the path that reads money >= 500 true is guaranteed the money to pay; the other pays nothing.
+    const split = `{ cond("money >= 500"):\n* [Pay # option: pay_deposit]\n    # money: -500\n    paid\n    -> END\n- else:\n    cannot pay\n    -> END\n}\n`;
+    expect(walk(talk("", split))).toBe(2);
+  });
+
   it("counts money and AP as it counts items: a cond read true guarantees them, and what the path paid before comes off (docs/13 4.2, A10)", () => {
     const pay = (id: string, tag: string) => `* [${id} # option: ${id}]\n    # ${tag}\n    ${id}\n    -> END\n`;
     // A cond read true guarantees its money (the walk reads it both ways; false: the else).

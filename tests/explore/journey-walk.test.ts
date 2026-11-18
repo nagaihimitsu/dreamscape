@@ -33,7 +33,7 @@ import { screenFor } from "../../src/domain/screen";
 import { itemUsableIn } from "../../src/domain/item-cities";
 import { usableAp, usableMoney } from "../../src/domain/reservations";
 import { placeSceneById } from "../../src/domain/scene-effects";
-import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
+import { mainScene, sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
 import { momentQuizBattle, type SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
@@ -199,8 +199,9 @@ function spentAp(previous: GameState, next: GameState): number {
 }
 /**
  * AP the step's scene tags gave or spent (stage 3a): a choice's # ap: (a place scene's, a guide's not re-read, an
- * epilogue's, a tagged date's not replayed) and a place scene's # on_done: ap when it closes done. Main parts'
- * # on_done: ap has no content yet.
+ * epilogue's, a tagged date's not replayed, a battle conversation's on the battle's first play, once per choice) and
+ * # on_done: ap (a place scene's when it closes done; a battle's head, when its first result is recorded: a moment quiz's
+ * reward AP is written so, 2026-11-18). Other main parts' # on_done: ap has no content yet.
  */
 function tagAp(previous: GameState, next: GameState, action: PlayerAction): number {
   const optionAp = (scene: SceneEntry | undefined, optionId: string | undefined) => scene?.options.find((option) => option.id === optionId)?.ap ?? 0;
@@ -223,6 +224,17 @@ function tagAp(previous: GameState, next: GameState, action: PlayerAction): numb
   const date = previous.activeDate;
   if (action.kind === "date_choose" && date && !date.replay)
     return optionAp(taggedDateScene(date.dateId), date.frame.choices.find((choice) => choice.index === action.index)?.optionId);
+  // A battle's tags apply on its first play only (no result recorded yet; battle.ts chooseBattle, finishBattle).
+  const battle = previous.activeBattle;
+  if (battle && !previous.battleRecords.some((record) => record.battleId === battle.battleId)) {
+    if (action.kind === "battle_choose") {
+      const optionId = battle.frame?.choices.find((choice) => choice.index === action.index)?.optionId;
+      return optionId && !battle.appliedOptionIds.includes(optionId)
+        ? optionAp(sceneOfAddress(battles.find((item) => item.id === battle.battleId)?.storyId), optionId) : 0;
+    }
+    if (battle.phase !== "result" && next.activeBattle?.battleId === battle.battleId && next.activeBattle.phase === "result")
+      return mainScene({ battle: battle.battleId })?.done.ap ?? 0;
+  }
   return 0;
 }
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
@@ -394,12 +406,15 @@ function summary(): string {
     const battleIds = [...episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.battleId),
       ...cityIds.flatMap((cityId) => storyBattlesForCity(cityId).map((battle) => battle.battleId))].filter((id) => battles.some((battle) => battle.id === id));
     const cityEncounters = encounters.encounters.filter((event) => cityIds.includes(event.cityId));
+    // Moment quizzes (時点のクイズ, # at: depart|epilogue; 2026-11-18): reached or not, counted only (a run may never meet their condition).
+    const momentQuizIds = scenes.filter((scene) => cityIds.includes(scene.cityId)).flatMap((scene) => momentQuizBattle(scene) ?? []);
     lines.push(`${journey.id} (${seen.steps} steps, journey end reached ${seen.ends} times):`,
       count("cities reached", cityIds, seen.cities),
       count("cities cleared", cityIds, seen.cleared),
       count("epilogues read", cityIds, seen.epilogues),
       count("stops completed", episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.id), seen.episodes),
       count("battles started", battleIds, seen.battles),
+      ...(momentQuizIds.length ? [count("moment quizzes started (not failed)", momentQuizIds, seen.battles)] : []),
       count("dates started", dateIds, seen.dates),
       count("place encounters met", cityEncounters.map((event) => event.id), seen.encounters),
       count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals),

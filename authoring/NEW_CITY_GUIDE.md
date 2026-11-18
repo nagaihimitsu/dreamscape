@@ -154,14 +154,14 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 役目 | 数の目安 | 決まり |
 | --- | --- | --- |
 | 本筋の観光（通常のクイズ3問） | `cityPlan.mainTourismCount`（インド編4） | 実在する著名な観光地を主舞台にする |
-| 推理クイズB（矛盾追及）・C（証拠連結） | 物語に合うときだけ（稀） | 実在する著名な観光地を主舞台にする。BとCは互いに主舞台を重ねない（『最後の晩餐』とも重ねない）。その場所固有の資料で推理する |
+| 推理クイズB（矛盾追及）・C（証拠連結） | 物語に合うときだけ（稀） | 置き場所は制作者が決める（実在の観光地の訪問のほか、駅など場面の時点 `# at:` の中でもよい）。BとCは互いに主舞台を重ねない（『最後の晩餐』とも重ねない）。その場所・事件固有の資料で推理する |
 | 都市フィナーレ（5問） | 1 | 実在する著名な観光地を主舞台にする。複数の観光地の知識や出会いを回収する |
 | デートの行き先 | `cityPlan.dateCount`（インド編6）＋告白などの特別なデート | 名所を明示し、その場所ならではの体験にする。本筋の観光地と同じ場所でもよい（データは別） |
 | 道中交流・差し込みの場面 | 自由 | 名所を明示し、その場所ならではの体験にする |
 | 宿 | 1 | 架空の宿でよい（画面では「滞在先のホテル」と出る） |
 
 - 守る決まり：
-  - 本筋・推理クイズ・フィナーレは実在する著名な観光地（[AGENTS.md の「観光と学習」](../AGENTS.md)）。
+  - 本筋・フィナーレは実在する著名な観光地。推理クイズは観光地の訪問のほか、駅など場面の時点の中にも置ける（[AGENTS.md の「観光と学習」](../AGENTS.md)）。
   - 観察は任意です。観察を入れるか、案内・観察・クイズをどの順にするかは、場所ごとに決めます（`tourism/catalog.json` の `observation: false`・`order`）。
   - ゲームの行動は9:00〜21:00、夜は18:00からです。フィナーレはその地点の営業時間内に始まります。夜の場面は、物語の中で時間を進めてから描きます（[インド編改稿の設計](journeys/golden_triangle/drafts/SCENARIO_REWRITE.md)の7章）。
   - ツアーでだけ行く遠い地点（`"access": "tour"`）も作れます（[CONTENT_GUIDE のツアー](CONTENT_GUIDE.md#ツアー決まった行程の日帰り)）。
@@ -296,6 +296,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 任意：`hintHeroineJa`（ヒントを彼女の言葉で）、`heroineCorrectJa`（正解の後の一言）、`revealRegion`・`revealCaptionJa`（答えの後の写真の種明かし）。
   - フィナーレ：`quizzes/<頭>_finale_quiz.json`。5問、`scope: "city_finale"`・`cityId`・`landmarkId: null`。
   - 推理クイズB・C：`battles/catalog.json` の `format`（`"B"`・`"C"`）と `reasoning`（`kind` は `contradiction`・`connection`、`roundIndex`、候補の証拠 `caseClueIds` 3〜5枚、正解 `correctClueIds` はBが1枚・Cが2枚）。`progression/journey.json` の `storyBattles` に対決ID・前提・案内文・ボタン名・`completionReward`。
+  - 時点に置く推理クイズ（駅前など、地図に出ない所。2026-11-18）：地図の出来事を持たない観光地を `tourism/catalog.json` に足し（案内の `guideStoryId` は書かず `observation: false`。写真の `imageAssetId` と、ケース資料にする手がかりの `clueIds` は書く）、`cities/<都市>.json` の `landmarkIdsPlanned` にも足す（足さないと止まる）。クイズは `battles/catalog.json` に足して `landmarkId` でその観光地を指し、`quizzes/` に3問を置く。`progression/journey.json` の `storyBattles`・エピソードにも、travel の出来事にも書かない（書くと止まる）。脚本は手順10の表の「時点に置く推理クイズ」。報酬の AP を付けるなら、頭の `# on_done: ap +N` か選択肢の `# ap:` で書く。
   - 和訳：`learning/translations.json` に問題IDごとに、原文の写し `source` と、公平な `questionJa`・`optionsJa`。
   - 単語の意味：この旅行編だけの語（地名など）は `learning/word-meanings.json`。複数の旅行編で使う語は共通の `content/learning/word-meanings.json`。
   - 任意：英語ノートの解説 `learning/details.json` と、その会話（`learning/<頭>_english`）。
@@ -322,6 +323,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 観光案内 | その観光地（`<頭>_<観光地>_guide`） | `# scene: guide`。観光地の `guideStoryId` で指す。要らない場所は書かない |
 | 通常のクイズ | その観光地（knot はバトルID） | `# scene: battle`。`-> quiz(1) ->`〜`-> quiz(3) ->` を順に1回ずつ。戻ると `quiz_correct`・`battle_score`。正解の枝に余韻の1行 |
 | 推理クイズB・C | その観光地 | 主張は `<バトル>_claim`、追及は `<バトル>_press`。`- (stop)` の次に `-> reasoning ->`。戻ると `reasoning_action`・`evidence_result` |
+| 時点に置く推理クイズ（B・C） | 時点の場所（駅前など） | 同じ書き方の knot の頭に `# at: depart <都市>` か `# at: epilogue <都市>` と `# priority:`（必須）、任意の `# when:`・`# until:`・`# repeat:`。`# when:` は番が来たときの条件（`# at:` のないクイズでは地図に出る条件）。頭に `# then:` は書けない。結果の画面の出口は「先へ進む」で、時点の次の手番へ続く（[CONTENT_GUIDE の「推理クイズを時点に置く」](CONTENT_GUIDE.md#推理クイズを時点に置く)） |
 | フィナーレ | 会場の地点 | `-> quiz(1) ->`〜`-> quiz(5) ->` |
 | デート | その地点（宿の屋上の告白などは `places/<頭>_<宿>_dates` も可） | `# scene: date`。選択の回数はデートの `choiceCount`（ふつう2回）。選択肢に `# profile:`・`# memory:`。`romance_result` の `positive`・`negative` で反応を変える。場所のファイルでは `# effect:` を書かない。任意で `# when:`・`# hint:` |
 | 告白のデート | 同上 | `# profile:` も結果の `# effect:` も書かない。ゲームが関係の状態から決めた `confession_result` で返事を分ける |
@@ -368,8 +370,9 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 前に要るもの：手順10（どの選択肢・場面に付けるか）。
 - 作るもの：
   - 品物：`encounters/catalog.json` の `items` に `id`・`cityId`・`nameJa`・`descriptionJa`・任意の `iconPath`（自作の絵は own-artwork に登録）・`linesJa`・`"carry": "journey"`（旅の間持ち歩く）。
-  - 選択肢の札：`# option:`・`# give:`・`# use:`・`# requires:`・`# money: -300`・`# ap: +1`・`# rel:`・`# set:`・`# then:`・`# later`。
-  - 選択のない場面の札：`# on_done: money -300`・`# on_done: ap -1`・`# on_done: item <品物ID>`・`# on_done: set …`。
+  - 選択肢の札：`# option:`・`# give:`・`# use:`・`# requires:`・`# money: -300`・`# ap: +1`・`# rel:`・`# set:`・`# clue:`・`# then:`・`# later`。
+  - 選択のない場面の札：`# on_done: money -300`・`# on_done: ap -1`・`# on_done: item <品物ID>`・`# on_done: set …`・`# on_done: clue <手がかりID>`。
+  - 会話で手がかりを渡す（2026-11-18）：人から聞いたことを手がかり帳に記録し、推理クイズの証拠や条件（`clue <手がかりID>`）にするときは、手がかりを `tourism/catalog.json` の `clues` に足し（`kind: "document"`・`region: null` が使いやすい。持ち主の観光地は、その手がかりを証拠にする推理クイズの観光地。出典は1件以上）、その場面が終わったとき全員に渡すなら頭の `# on_done: clue <手がかりID>`、聞くかを選ばせるなら選択肢のすぐ次の行に `# clue: <手がかりID>` を書く（ふつうのデートの knot に書いた選択肢には `# profile:` が要るので、手伝いの knot に書いて呼ぶ）。手がかり帳では「会話で聞いた」と出て、聞いた場所は説明文に書く。記録したときは短い知らせが出る。Debug では起動用 URL の `clues=` か、場面の確認の「手がかりを得たことにする」で、聞いた状態から始められる。
   - フラグ：`progression/story.json` の `flags` に宣言する。
   - 一度かぎりのAP報酬：`progression/journey.json` の `rewards`（`trigger` は `guide_read`・`battle_complete`・`battle_score`・`episode_clear`・`city_clear`）。場面の札から作る `scene_tag` は作者が書かない。
   - デートのAP：デートの `apCost`（作者が決める。インド編の通常デートは2・4・6、告白などの特別なデートは0）。入場料：出来事の `admissionCost`（2人分）。
@@ -654,7 +657,7 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 
 - [ ] 都市ID・日本語名・旅の順・テーマ・接頭辞を決めた（見本の名前を使っていない）
 - [ ] 場合A：乗り物は旅行編の宣言の中から選んだ。`cityPlan` の件数を守れる
-- [ ] 本筋・フィナーレ・推理クイズは実在する著名な観光地。BとCは主舞台が重ならない
+- [ ] 本筋・フィナーレは実在する著名な観光地。推理クイズの置き場所は物語に合い、BとCは主舞台が重ならない
 - [ ] デート・道中交流は名所を明示し、その場所ならではの体験にした
 - [ ] 宿・営業時間・休みの曜日・入場料（2人分）を調べた
 
