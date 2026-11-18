@@ -364,6 +364,84 @@
         "B": "「三時に会おう」と言う。",
         "C": "「五時ちょうどに来て」と言う。"
       }
+    },
+    "smp_mihon_coach_b_q1": {
+      "source": {
+        "questionEn": "Where do the carriages stop in this town?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Under the clock tower."
+          },
+          {
+            "id": "B",
+            "textEn": "At the morning market."
+          },
+          {
+            "id": "C",
+            "textEn": "In front of the library."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "この街の乗合馬車は、どこに止まる？",
+      "optionsJa": {
+        "A": "時計塔の下。",
+        "B": "朝市。",
+        "C": "図書室の前。"
+      }
+    },
+    "smp_mihon_coach_b_q2": {
+      "source": {
+        "questionEn": "What tells the driver to leave?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The hands of the clock."
+          },
+          {
+            "id": "B",
+            "textEn": "The evening bell."
+          },
+          {
+            "id": "C",
+            "textEn": "A whistle from the mayor."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "御者に出発を知らせるのは何？",
+      "optionsJa": {
+        "A": "時計の針。",
+        "B": "夕方の鐘。",
+        "C": "町長の笛。"
+      }
+    },
+    "smp_mihon_coach_b_q3": {
+      "source": {
+        "questionEn": "Why did the seller say the carriage had left?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He lost the timetable."
+          },
+          {
+            "id": "B",
+            "textEn": "The horses were tired."
+          },
+          {
+            "id": "C",
+            "textEn": "He wanted us to stay one more night."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "切符売りは、なぜ馬車がもう出たと言った？",
+      "optionsJa": {
+        "A": "時刻表をなくした。",
+        "B": "馬が疲れていた。",
+        "C": "わたしたちにもう一晩泊まってほしかった。"
+      }
     }
   }
 }

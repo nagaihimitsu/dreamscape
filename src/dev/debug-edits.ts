@@ -1,16 +1,20 @@
-import { getCities, getCityContent, scenes, storyState } from "../content";
+import { getCities, getCityContent, scenes, storyState, tourismClues } from "../content";
+import { sceneGivenClues } from "../content/scene-schemas";
 import { formatMoneyForCity } from "../content/currency";
 import { getJourneyForCity } from "../content/journeys";
 import { validateGameState, type GameState } from "../domain/game";
 import { hasActiveScene } from "../domain/game-state-schema";
 import { tourKeepBack } from "../domain/reservations";
+import { clueRecordAllowed } from "../domain/tourism";
 import { getUsableRoutes } from "../domain/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { clockText, debugDayRange, debugRomanceStages, debugTimeRange, type DebugRomanceStage } from "./debug-query";
+import { withClues } from "./scenario-builders";
 
 /**
  * Debug's changes to a game state (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」; 2026-11-16
- * 恋の段階): the story flags a scene opens with or the running Debug game has, free time's clock, and the romance stage. Debug
+ * 恋の段階; 2026-11-18 the clues heard in conversation): the story flags a scene opens with or the running Debug game has, the
+ * clues a scene opens with, free time's clock, and the romance stage. Debug
  * only: what they give is never reached in play this way, but every result is a state the save's own check accepts
  * (validateGameState), so the game goes on from it with its real rules. Each throws a message for the person when it cannot
  * be made.
@@ -71,6 +75,58 @@ export function withDebugFlags(state: GameState, ids: readonly string[]): GameSt
   checkDebugFlags(state.currentCityId, ids);
   const added = ids.filter((id, index) => !state.storyProgress.flags.includes(id) && ids.indexOf(id) === index);
   return validateGameState({ ...state, storyProgress: { ...state.storyProgress, flags: [...state.storyProgress.flags, ...added] } });
+}
+
+/** A clue a scene gives (`# clue:`, `# on_done: clue`; 2026-11-18) with its card's title. */
+export type DebugClue = { id: string; titleJa: string };
+/** The clues of one city of a journey (the city whose scene gives them). */
+export type DebugClueGroup = { cityId: string; nameJa: string; clues: DebugClue[] };
+
+/**
+ * The clues Debug offers for a city (2026-11-18; the scene picker's 「手がかりを得たことにする」, a launch URL's `clues`): those of
+ * the city's journey that some scene gives in conversation. The save check keeps such a clue without its landmark's visit
+ * (clueRecordAllowed with no landmark visited); a clue an observation finds is found by opening the observation, in Debug too.
+ * Grouped by the city whose scene gives it (the journey's first), in the journey's order, the tourism catalog's order within one.
+ */
+export function debugClueGroups(cityId: string): DebugClueGroup[] {
+  const journeyCities = getJourneyForCity(cityId)?.cities.map((city) => city.id) ?? [cityId];
+  const groups = new Map<string, DebugClue[]>(journeyCities.map((id) => [id, []]));
+  // The cities whose scenes give each clue (sceneGivenClueIds, by city).
+  const givers = new Map<string, Set<string>>();
+  for (const scene of scenes) for (const id of sceneGivenClues([scene])) givers.set(id, (givers.get(id) ?? new Set()).add(scene.cityId));
+  for (const clue of tourismClues) {
+    const cities = givers.get(clue.id);
+    const home = cities && journeyCities.find((id) => cities.has(id));
+    if (home) groups.get(home)!.push({ id: clue.id, titleJa: clue.titleJa });
+  }
+  const cityName = (id: string) => getCities().find((city) => city.id === id)?.nameJa ?? id;
+  return [...groups].filter(([, clues]) => clues.length).map(([id, clues]) => ({ cityId: id, nameJa: cityName(id), clues }));
+}
+
+/** The IDs of the clues Debug offers for a city (debugClueGroups). */
+export function debugClueIds(cityId: string): string[] {
+  return debugClueGroups(cityId).flatMap((group) => group.clues.map((clue) => clue.id));
+}
+
+/** Throws the reason when a clue is not one Debug offers for the city (a launch URL's `clues`, a choice of the scene picker). */
+export function checkDebugClues(cityId: string, ids: readonly string[]): void {
+  if (!ids.length) return;
+  const offered = debugClueIds(cityId);
+  const refused = ids.find((id) => !offered.includes(id));
+  if (refused === undefined) return;
+  const clue = tourismClues.find((item) => item.id === refused);
+  const journey = getJourneyForCity(cityId)?.nameJa ?? getCityContent(cityId).city.nameJa;
+  if (!clue) throw new Error(`手がかり「${refused}」は登録されていません（tourism/catalog.json の clues のID）。`);
+  if (!clueRecordAllowed({ visitedLandmarkIds: [] }, refused))
+    throw new Error(`手がかり「${refused}」は場面が渡す手がかりではありません。観察で見つけてください（Debugでも、その観光地の観察を開くと見つかります）。`);
+  throw new Error(`手がかり「${refused}」は${journey}の場面が渡す手がかりではありません。`);
+}
+
+/** The state with these clues found too (heard in conversation; a scene's starting state: each must be offered for the current city). */
+export function withDebugClues(state: GameState, ids: readonly string[]): GameState {
+  if (!ids.length) return state;
+  checkDebugClues(state.currentCityId, ids);
+  return withClues(state, ids);
 }
 
 /**

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "smp_mihon_special_b_coach_quiz",
+  "landmarkId": "mihon_coach_stop",
+  "englishLevel": "A2",
+  "questions": [
+    {
+      "id": "smp_mihon_coach_b_q1",
+      "questionEn": "Where do the carriages stop in this town?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Under the clock tower."
+        },
+        {
+          "id": "B",
+          "textEn": "At the morning market."
+        },
+        {
+          "id": "C",
+          "textEn": "In front of the library."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "carriages",
+          "meaning": "乗合馬車（複数）"
+        },
+        {
+          "word": "stop",
+          "meaning": "止まる"
+        }
+      ],
+      "hintJa": "停留所の上を見上げる。",
+      "correctExplanationJa": "乗合馬車は、時計塔の下の停留所に止まる。",
+      "incorrectExplanationJa": "朝市や図書室ではない。停留所は時計塔の下にある。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-18",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：見本の街の乗合馬車は、時計塔の下の停留所に止まる。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "smp_mihon_coach_b_q2",
+      "questionEn": "What tells the driver to leave?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The hands of the clock."
+        },
+        {
+          "id": "B",
+          "textEn": "The evening bell."
+        },
+        {
+          "id": "C",
+          "textEn": "A whistle from the mayor."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "driver",
+          "meaning": "御者"
+        },
+        {
+          "word": "leave",
+          "meaning": "出発する"
+        },
+        {
+          "word": "evening",
+          "meaning": "夕方の"
+        }
+      ],
+      "hintJa": "塔の時計は止まっている。",
+      "correctExplanationJa": "御者は夕方の鐘を合図に馬車を出す。",
+      "incorrectExplanationJa": "塔の時計の針は三時で止まっていて、合図にならない。馬車は夕方の鐘で出る。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-18",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：見本の街の乗合馬車は、塔の時計ではなく夕方の鐘を合図に出る。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "smp_mihon_coach_b_q3",
+      "questionEn": "Why did the seller say the carriage had left?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "He lost the timetable."
+        },
+        {
+          "id": "B",
+          "textEn": "The horses were tired."
+        },
+        {
+          "id": "C",
+          "textEn": "He wanted us to stay one more night."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "seller",
+          "meaning": "売り手"
+        },
+        {
+          "word": "timetable",
+          "meaning": "時刻表"
+        },
+        {
+          "word": "horses",
+          "meaning": "馬"
+        },
+        {
+          "word": "tired",
+          "meaning": "疲れた"
+        }
+      ],
+      "hintJa": "ヨナが最後に話したことを思い出す。",
+      "correctExplanationJa": "ヨナは、三時の街をもう一晩見てほしくて、馬車はもう出たと言った。",
+      "incorrectExplanationJa": "時刻表をなくしたのでも、馬が疲れたのでもない。ヨナは、もう一晩泊まってほしかった。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-18",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の筋書き：停留所の切符売りは、旅人にもう一晩泊まってほしくて、馬車はもう出たと言った。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

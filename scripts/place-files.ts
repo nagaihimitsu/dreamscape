@@ -1,5 +1,6 @@
 import type { Condition } from "../src/content/condition-schemas";
 import { combineWhenUntil, parseConditionText } from "../src/content/condition-text";
+import { splitStoryAddress } from "../src/content/story-address";
 import { RELATIONSHIP_AXES } from "../src/content/condition-schemas";
 import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type SceneDone, type SceneKind, type SceneOption, type SceneThen } from "../src/content/scene-schemas";
 
@@ -17,7 +18,7 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 // Light module (no content loading): unit tests use it directly.
 
 export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources", "hint"] as const;
-export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "money", "ap", "then", "later"] as const;
+export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "clue", "money", "ap", "then", "later"] as const;
 /**
  * Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place
  * file; a tour's file, `places/<tourId>`, holds its legs' narrations, `tour_leg`).
@@ -295,6 +296,8 @@ export function choiceOption(choice: PlaceChoice, apCap: number, onWarning?: (me
         break;
       }
       case "set": option.set = [...(option.set ?? []), ident(tag.value, "# set:")]; break;
+      // A clue heard in conversation (2026-11-18): recorded in 手がかり帳 when the choice is chosen.
+      case "clue": option.clues = [...(option.clues ?? []), ident(tag.value, "# clue:")]; break;
       case "memory": option.memory = [...(option.memory ?? []), ident(tag.value, "# memory:")]; break;
       case "profile": if (option.profile) throw new Error(`One # profile: per choice ${where}`); option.profile = ident(tag.value, "# profile:"); break;
       case "effect": if (option.effect) throw new Error(`One # effect: per choice ${where}`); option.effect = ident(tag.value, "# effect:"); break;
@@ -331,6 +334,7 @@ export function parseDone(values: readonly string[], apCap: number): SceneDone {
     if (part === "item") done.items = [...(done.items ?? []), one()];
     else if (part === "use") done.use = [...(done.use ?? []), one()];
     else if (part === "set") done.set = [...(done.set ?? []), one()];
+    else if (part === "clue") done.clues = [...(done.clues ?? []), one()];
     else if (part === "rel") done.rel = parseRelationship(rest.join(" "), done.rel);
     else if (part === "money") done.money = (done.money ?? 0) + signedInteger(rest.join(" "), "# on_done: money");
     else if (part === "reward") {
@@ -340,7 +344,7 @@ export function parseDone(values: readonly string[], apCap: number): SceneDone {
       const amount = signedInteger(rest.join(" "), "# on_done: ap");
       if (amount === 0) throw new Error("# on_done: ap 0 does nothing");
       ap += amount;
-    } else throw new Error(`Unknown # on_done: ${value} (item, use, set, rel, money, ap or reward)`);
+    } else throw new Error(`Unknown # on_done: ${value} (item, use, set, clue, rel, money, ap or reward)`);
   }
   if (ap) {
     if (ap > apCap) throw new Error(`# on_done: gives ${ap} AP: at most ${apCap} (the AP cap)`);
@@ -536,4 +540,19 @@ export function readFileChoices(storyId: string, source: string): PlaceChoice[] 
     }
   });
   return choices;
+}
+
+/**
+ * The battles of a catalog whose knot head says `# at:` (moment quizzes, 時点のクイズ; 2026-11-18), read from the place files' sources
+ * (`source`: a story file's Ink). For the tools that do not build the scene table (journey:readiness, content:unused); content:build
+ * checks the rest of their head. A file that is not a place file has none.
+ */
+export function momentQuizBattleIds(battles: readonly { id: string; storyId: string }[], source: (storyId: string) => string | undefined): string[] {
+  return battles.filter((battle) => {
+    const { storyId, path: knot } = splitStoryAddress(battle.storyId);
+    const text = knot === undefined ? undefined : source(storyId);
+    if (text === undefined) return false;
+    try { return !!readPlaceFile(storyId, text).knots.find((item) => item.name === knot)?.head.some((tag) => tag.key === "at"); }
+    catch { return false; }
+  }).map((battle) => battle.id);
 }

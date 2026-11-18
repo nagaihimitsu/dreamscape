@@ -312,6 +312,8 @@ INCLUDE modules.ink
 
 // ───── +2：この場所の後日談（会話）。鐘の銘は英語のまま見せ、訳はヒロインの台詞で言う。
 // 「鐘楼に上がらせてもらう」は AP を使い、ときめき（spark）が上がる。もう1つの選択肢は何も要らない（AP が0でも選べる）。
+// 「下から見上げておく」の # clue: は、会話で聞いたことを手がかり帳に記録する札（任意の部分「会話の手がかりと時点の推理クイズ」）。
+// 記録した手がかりは、街を出る前の停留所の推理クイズ（stories/places/smp_mihon_coach_stop.ink）の # when: と証拠になる。
 // 行の札の例：鐘が鳴る行の # shake: window（会話の窓が1回揺れる）と # shake: small（場面の絵と人物が1回小さく揺れる）、
 // 鐘の銘の行の # size: large（その行の字が大きく出る）。
 === smp_mihon_clock_bell ===
@@ -341,8 +343,11 @@ Come back at three. Any three will do.
     # speaker: heroine
     うわ、街じゅうの時計が見える。……どれも三時だね。並んで見ると、ちょっと可笑しい
 * [下から見上げておく # option: stay_below]
+    # clue: smp_obs_mihon_coach_bell
     # speaker: heroine
     まだ帰ってないのに、おかえりって言われたみたい
+    # speaker: smp_mihon_toma
+    夕方の鐘は、乗合馬車の合図でもあるんです。針が三時のままでも、馬車は鐘で出ます
 -
 -> END
 

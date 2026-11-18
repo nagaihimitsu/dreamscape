@@ -7,9 +7,9 @@
  * change the state, and a finished map event is settled like GameApp does);
  * every exported builder returns its state through validateGameState, and the
  * city builders stop with a message unless the finale cleared the city. Only
- * the scene openers and withAp/withRelationship set values directly, as Debug
- * always has: they place the player at the scene's place and set AP and the
- * relationship.
+ * the scene openers and withAp/withRelationship/withClues set values directly, as
+ * Debug always has: they place the player at the scene's place and set AP, the
+ * relationship and the clues found (only those the save check keeps).
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
 import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, progression, sceneConditions, scenes, type DateDefinition, type QuizQuestion, type Tour } from "../content";
@@ -30,7 +30,10 @@ import { isSceneOpen } from "../domain/game-state-schema";
 import { hasObservation, landmarkParts } from "../content/tourism-schemas";
 import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay, isAuthoredEpilogueCity } from "../domain/epilogue";
 import { completedDateCount, createGame, startDate, validateGameState, type GameState } from "../domain/game";
-import { advanceTourismGuide, beginLandmarkGuide, chooseTourismGuide, getTourismAvailability, guideChoiceDisplay, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
+import {
+  advanceTourismGuide, beginLandmarkGuide, chooseTourismGuide, clueRecordAllowed, getTourismAvailability, guideChoiceDisplay, openTourism, replayTourismGuide,
+  skipTourismGuide, startTourismBattle,
+} from "../domain/tourism";
 
 /** The first shown, choosable choice of the open guide (stage 3a: a guide may have choices), if any. */
 const firstGuideChoice = (state: GameState) =>
@@ -60,6 +63,7 @@ import { getUsableRoutes } from "../domain/transport";
 import { otherCityItemsMissing, unmetConditionLabels } from "./condition-explain";
 import type { Condition } from "../content/condition-schemas";
 import { meets } from "../domain/conditions";
+import { isMomentQuiz } from "../domain/moments";
 import { DAY_START, getTimePeriod, NIGHT_START } from "../domain/travel";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
@@ -104,29 +108,40 @@ function act(state: GameState, change: (current: GameState) => GameState, what: 
   return options.after ? options.after(settled, state) : settled;
 }
 
+/**
+ * One action in the open battle before its result: in the reasoning, a correct clue not chosen yet, else the submission (B/C);
+ * a question's answer by `options.answer`; a conversation's first open choice; else the next line.
+ */
+function battleStep(state: GameState, options: PlayOptions = {}): GameState {
+  const active = state.activeBattle!;
+  const what = `クイズ ${active.battleId}（${active.phase}）`;
+  const { battle, quiz } = getActiveBattleContent(active);
+  if (active.phase === "reasoning") {
+    const missing = battle.reasoning!.correctClueIds.find((clueId) => !active.reasoning!.selectedClueIds.includes(clueId));
+    return missing !== undefined
+      ? act(state, (current) => selectReasoningClue(current, missing, current.revision), what, options)
+      : act(state, (current) => submitBattleEvidence(current, current.revision), what, options);
+  }
+  if (active.phase === "question") {
+    const optionId = (options.answer ?? correctAnswer)(quiz.questions[active.roundIndex], active.roundIndex);
+    return act(state, (current) => answerBattle(current, optionId, current.revision), what, options);
+  }
+  if (active.phase === "dialogue" && battleDialogueStop(active) === "choices") {
+    const choice = active.frame!.choices.find((item) => battleChoiceDisplay(state, item.index).show === "open");
+    if (!choice) throw new Error(`${what}：選べる選択肢がありません。`);
+    return act(state, (current) => chooseBattle(current, choice.index, current.revision), what, options);
+  }
+  return act(state, (current) => advanceBattle(current, current.revision), what, options);
+}
+
 /** Play the active battle to its result screen: correct evidence for B/C, answers by `options.answer`, a conversation's first open choice. */
 export function playBattleToResult(initial: GameState, options: PlayOptions = {}): GameState {
-  const answer = options.answer ?? correctAnswer;
   let state = initial;
   for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
     const active = state.activeBattle;
     if (!active) throw new Error("クイズが始まっていません。");
     if (step > MAX_STEPS) throw new Error(`クイズ ${active.battleId} を結果まで進められませんでした。`);
-    const what = `クイズ ${active.battleId}（${active.phase}）`;
-    const { battle, quiz } = getActiveBattleContent(active);
-    if (active.phase === "reasoning") {
-      for (const clueId of battle.reasoning!.correctClueIds)
-        if (!state.activeBattle!.reasoning!.selectedClueIds.includes(clueId))
-          state = act(state, (current) => selectReasoningClue(current, clueId, current.revision), what, options);
-      state = act(state, (current) => submitBattleEvidence(current, current.revision), what, options);
-    } else if (active.phase === "question") {
-      const optionId = answer(quiz.questions[active.roundIndex], active.roundIndex);
-      state = act(state, (current) => answerBattle(current, optionId, current.revision), what, options);
-    } else if (active.phase === "dialogue" && battleDialogueStop(active) === "choices") {
-      const choice = active.frame!.choices.find((item) => battleChoiceDisplay(state, item.index).show === "open");
-      if (!choice) throw new Error(`${what}：選べる選択肢がありません。`);
-      state = act(state, (current) => chooseBattle(current, choice.index, current.revision), what, options);
-    } else state = act(state, (current) => advanceBattle(current, current.revision), what, options);
+    state = battleStep(state, options);
   }
   return validateGameState(state);
 }
@@ -230,25 +245,62 @@ export function clearCity(state: GameState, options: CityPlayOptions = {}): Game
   return validateGameState(leaveResult(result, options));
 }
 
+/** Whether a moment quiz (時点のクイズ: a battle knot's `# at: depart|epilogue`; 2026-11-18) is open: a turn of the running moment. */
+const momentQuizOpen = (state: GameState) => !!state.activeBattle && isMomentQuiz(state.activeBattle.battleId);
+
 /**
- * Play the inserted scenes the running occasion shows (stage 4: after the finale, around an arrival, an epilogue, a
- * night) with their first choices, a choice without a `# then:` first (so a scene that offers to move on or to start
- * the epilogue stays where it is), until no inserted scene is open. Another scene that starts (a guide, a battle, a
- * date, an arrival or an epilogue) is left open for its own player.
+ * One action in the running moment's turn: an inserted scene's first open choice (one without a `# then:` first), else its next
+ * line; a moment quiz's next action (correct answers and evidence, the first open choice), its result left with 「先へ進む」.
  */
-function settleScenes(initial: GameState, ticket: number): GameState {
-  let state = initial;
-  for (let step = 0; state.activeEncounter; step++) {
-    if (step > MAX_STEPS) throw new Error("時点の場面を終えられませんでした。");
-    const active = state.activeEncounter;
+function sceneStep(state: GameState, ticket: number): GameState {
+  const active = state.activeEncounter;
+  if (active) {
     const scene = sceneById(active.encounterId);
     const open = active.frame.choices.filter((item) => getEncounterOptionAvailability(state, item.index).available);
     const choice = open.find((item) => !sceneOption(scene, item.optionId)?.then) ?? open[0];
-    state = choice && active.phase === "story"
-      ? act(state, (current) => advanceOccasion(chooseEncounter(current, choice.index, current.revision, () => ticket), () => ticket), "場面の選択")
-      : playOccasionStep(state, ticket);
+    if (choice && active.phase === "story")
+      return act(state, (current) => advanceOccasion(chooseEncounter(current, choice.index, current.revision, () => ticket), () => ticket), "場面の選択");
+  }
+  if (state.activeBattle && state.activeBattle.phase !== "result") return battleStep(state);
+  return playOccasionStep(state, ticket);
+}
+
+/**
+ * Play the inserted scenes the running occasion shows (stage 4: after the finale, around an arrival, an epilogue, a
+ * night) with their first choices, a choice without a `# then:` first (so a scene that offers to move on or to start
+ * the epilogue stays where it is), and its moment quizzes (時点のクイズ; 2026-11-18) to their result and on with 「先へ進む」,
+ * until neither is open. Another scene that starts (a guide, a map battle, a date, an arrival or an epilogue) is left open
+ * for its own player.
+ */
+function settleScenes(initial: GameState, ticket: number): GameState {
+  let state = initial;
+  for (let step = 0; state.activeEncounter || momentQuizOpen(state); step++) {
+    if (step > MAX_STEPS) throw new Error("時点の場面を終えられませんでした。");
+    state = sceneStep(state, ticket);
   }
   return state;
+}
+
+/**
+ * Play the running moment (an occasion: a departure, an epilogue…) one action at a time as settleScenes does — inserted scenes
+ * with their first choices, a moment quiz with correct answers and evidence, an epilogue or an arrival read line by line, its
+ * main parts as they start — until `stop(state)` holds (checked before each action, so a stop that already holds returns the
+ * state as it is). For a state at a stage of the moment (a quiz's conversation, question, reasoning or result, the scene after
+ * it: the E2E's saves to resume from). Throws when the moment ends or cannot go on before `stop`.
+ */
+export function playMomentUntil(initial: GameState, stop: (state: GameState) => boolean): GameState {
+  let state = initial;
+  for (let step = 0; !stop(state); step++) {
+    if (step > MAX_STEPS) throw new Error("時点を止める所まで進められませんでした。");
+    const epilogue = state.activeEpilogue;
+    if (!state.occasion && !epilogue && !state.activeEncounter && !state.activeBattle)
+      throw new Error("時点が終わりました（止める所に届きませんでした）。");
+    state = state.activeEncounter || state.activeBattle ? sceneStep(state, 0)
+      : epilogue?.kind === "arrival" && !epilogue.logoComplete ? act(state, (current) => advanceOccasion(completeArrivalLogo(current, current.revision), () => 0), "到着のロゴ")
+        : epilogue && epilogue.kind !== "tour_leg" ? act(state, (current) => advanceOccasion(epilogueStep(current), () => 0), "エピローグ・到着の会話")
+          : playOccasionStep(state, 0);
+  }
+  return validateGameState(state);
 }
 
 /** Finish the arrival logo and conversation through their real, effect-free transitions. */
@@ -467,6 +519,19 @@ export function withRelationship(state: GameState, values: Pick<GameState, "affe
   return validateGameState({ ...state, affection: values.affection, trust: values.trust, spark: values.spark });
 }
 
+/**
+ * Clues recorded in 手がかり帳 as if heard or found (2026-11-18), set directly: each must be one the save check keeps in this
+ * state (tourism.ts clueRecordAllowed: a scene gives it with `# clue:` or `# on_done: clue`, or its landmark was visited, where
+ * its observation finds it). Throws the reason for one that is not; the clues already found stay.
+ */
+export function withClues(state: GameState, clueIds: readonly string[]): GameState {
+  const refused = clueIds.find((id) => !clueRecordAllowed(state, id));
+  if (refused !== undefined)
+    throw new Error(`手がかり「${refused}」は、この状態では手がかり帳に記録できません（記録できるのは、場面が # clue:・# on_done: clue で渡す手がかりと、訪ねた観光地の手がかりです）。`);
+  const added = clueIds.filter((id, index) => !state.discoveredClueIds.includes(id) && clueIds.indexOf(id) === index);
+  return added.length ? validateGameState({ ...state, discoveredClueIds: [...state.discoveredClueIds, ...added] }) : state;
+}
+
 /** Put the player at a place of the current city (Debug's placement), keeping a payable way back to the hotel. */
 export function atPlace(state: GameState, placeId: string): GameState {
   const { travel } = getCityContent(state.currentCityId);
@@ -505,6 +570,8 @@ export function openTourismScene(state: GameState, landmarkId: string): GameStat
 
 /** Start a battle at its place: a landmark's battle, a special battle B/C or the city finale. */
 export function openBattleScene(state: GameState, battleId: string): GameState {
+  // A moment quiz (# at: depart|epilogue; 2026-11-18) opened by itself would run outside its moment, which the save check refuses.
+  if (isMomentQuiz(battleId)) throw new Error(`この場面は時点の場面です。時点を開く操作（エピローグ・出発など）で流してください（${battleId}）。`);
   const landmarkId = battles.find((item) => item.id === battleId)?.landmarkId ?? undefined;
   const eventId = episodes.find((item) => item.cityId === state.currentCityId && item.battleId === battleId)?.id ?? battleId;
   const next = startBattle(atPlace(state, scenePlaceId(state.currentCityId, eventId, landmarkId)), battleId);

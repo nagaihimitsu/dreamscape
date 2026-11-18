@@ -107,6 +107,8 @@ export type EntryInput = {
   people: readonly CatalogEntry[];
   /** Every Ink source (a person is named by `# speaker:`, `# person:`, `# together:`, `# leave:`, `# give:` or `cond("met …")`). */
   inkSources: readonly string[];
+  /** The moment quizzes (a battle knot's `# at:`, 2026-11-18): run at a city's departure or epilogue, on no map by design. */
+  momentQuizIds?: readonly string[];
 };
 
 const idOf = (entry: CatalogEntry) => (typeof entry.value.id === "string" ? entry.value.id : undefined);
@@ -123,7 +125,7 @@ export function unusedEntries(input: EntryInput): UnusedEntry[] {
   return [
     ...unused(input.destinations, names(input.dates, "destinationId"),
       "どのデートの destinationId にもない行き先です（街歩きにデートとして出ません。デートを書くか、要らなければ消します）"),
-    ...unused(input.battles, new Set([...names(input.episodes, "battleId"), ...names(input.storyBattles, "battleId")]),
+    ...unused(input.battles, new Set([...names(input.episodes, "battleId"), ...names(input.storyBattles, "battleId"), ...(input.momentQuizIds ?? [])]),
       "どのエピソードの battleId にも、特殊戦（storyBattles）にもないクイズです（地図に出ません）"),
     ...unused(input.landmarks, new Set([...names(input.episodes, "landmarkId"), ...names(input.battles, "landmarkId")]),
       "どのエピソードの landmarkId にも、クイズの landmarkId にもない観光地です（訪ねる場面がなく、案内も出ません）"),

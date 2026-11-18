@@ -2,7 +2,7 @@
 // only) played from the title to the city epilogue with the game's real Ink
 // and domain functions, the way the map screen starts each scene: tourism
 // guide → normal battle → date → (optional) encounters and special battles
-// B/C → city finale → epilogue. Every step is restored from JSON and checked
+// B/C → city finale → the epilogue's moment (its reasoning quiz placed there, 2026-11-18) → epilogue. Every step is restored from JSON and checked
 // with validateGameState; AP is checked where it is earned and spent, and the
 // normal battle is repeated the ways a reload or a re-clear repeats it.
 import { chooseTourismGuide } from "../../../src/domain/tourism";
@@ -11,7 +11,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { getJourney } from "../../../src/content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../../../src/domain/battle";
+import { advanceBattle, answerBattle, battleDialogueStop, chooseBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../../../src/domain/battle";
 import {
   advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, leaveBattleToFreeTime, proceedFromTourism,
 } from "../../../src/domain/encounter";
@@ -19,6 +19,8 @@ import { advanceCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { advanceTourismGuide, discoverClue } from "../../../src/domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability } from "../../../src/domain/travel-game";
+import { getBattleResultExits } from "../../../src/domain/chapter";
+import { resultExitLabel } from "../../../src/domain/screen";
 
 const JOURNEY = "sample_trip";
 const CITY = "mihon";
@@ -59,13 +61,16 @@ function sightsee(state: GameState, clueId?: string): GameState {
   return act(s, (current) => proceedFromTourism(current, current.revision, () => 0));
 }
 
-/** One player step of the active battle: the correct answer or evidence, else go on. */
+/** One player step of the active battle: the correct answer or evidence, the first choice of its conversation, else go on. */
 function battleStep(state: GameState): GameState {
   const active = state.activeBattle!;
   const { battle, quiz } = getActiveBattleContent(active);
+  if (active.phase === "dialogue" && battleDialogueStop(active) === "choices")
+    return act(state, (current) => chooseBattle(current, active.frame!.choices[0].index, current.revision));
   if (active.phase === "reasoning") {
     let s = state;
-    for (const id of battle.reasoning!.correctClueIds) s = act(s, (current) => selectReasoningClue(current, id, current.revision));
+    for (const id of battle.reasoning!.correctClueIds)
+      if (!s.activeBattle!.reasoning!.selectedClueIds.includes(id)) s = act(s, (current) => selectReasoningClue(current, id, current.revision));
     return act(s, (current) => submitBattleEvidence(current, current.revision));
   }
   if (active.phase === "question")
@@ -245,9 +250,22 @@ describe("sample journey route", () => {
     expect(saveGame(storage, s).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: s });
 
-    // 4. Epilogue (3.4 I): 「今日は、ここまでにしよう」 starts it right after the scene; Lili's farewell (-1) comes first.
+    // 4. Epilogue (3.4 I): 「今日は、ここまでにしよう」 starts it right after the scene; its moment's turns come first. The bell's
+    // 「下から見上げておく」 recorded the coach stop's clue (# clue:), so the reasoning quiz placed at the moment starts (-3, a
+    // moment quiz; its # when: clue …) ...
+    expect(s.discoveredClueIds).toContain("smp_obs_mihon_coach_bell");
     s = playEncounter(s, "to_epilogue");
-    expect(s.occasion).toMatchObject({ kind: "epilogue", started: ["smp_mihon_lili_seeoff"], at: "main:epilogue" });
+    expect(s.occasion).toMatchObject({ kind: "epilogue", started: ["smp_mihon_special_b_coach"], at: "smp_mihon_special_b_coach" });
+    expect(s.activeBattle?.battleId).toBe("smp_mihon_special_b_coach");
+    s = playBattle(s);
+    // ... its result's exit says 「先へ進む」 (no free time inside the moment) and goes on with it: Lili's farewell (-1), the epilogue.
+    expect(getBattleResultExits(s)).toEqual({ epilogue: false, leave: true });
+    expect(resultExitLabel(s)).toBe("先へ進む");
+    expect(totalAp(s)).toBe(8);
+    s = act(s, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
+    expect(s.activeEncounter?.encounterId).toBe("smp_mihon_lili_seeoff");
+    s = playEncounter(s);
+    expect(s.occasion).toMatchObject({ kind: "epilogue", started: ["smp_mihon_special_b_coach", "smp_mihon_lili_seeoff"], at: "main:epilogue" });
     expect(s.completedEncounterIds).toContain("smp_mihon_lili_seeoff");
     expect(s.activeEpilogue).not.toBeNull();
     // The epilogue's choice (stage 3a): waving back is affection +1, applied once.

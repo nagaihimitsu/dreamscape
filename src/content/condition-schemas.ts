@@ -100,6 +100,11 @@ export type LeafValues = {
   met: string;
   /** A named condition of progression/story.json holds. Stage 3a. */
   condition: string;
+  /**
+   * The clue (tourism/catalog.json) is recorded in 手がかり帳 (discoveredClueIds): found in an observation, or heard in a scene
+   * (`# clue:`, `# on_done: clue`; 2026-11-18). Recorded clues stay.
+   */
+  clue: string;
 };
 export type LeafKind = keyof LeafValues;
 export type Leaf = { [K in LeafKind]: { [P in K]: LeafValues[K] } }[LeafKind];
@@ -144,6 +149,7 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
   flag: id,
   met: id,
   condition: id,
+  clue: id,
 };
 export const LEAF_KINDS = Object.keys(LEAF_VALUE_SCHEMAS) as LeafKind[];
 const COMBINATORS = ["all", "any", "not", "atLeast"] as const;
@@ -254,7 +260,7 @@ export function requiredLeaves(condition: Condition): Leaf[] {
 }
 
 export type LeafReference = {
-  kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode" | "flag" | "person" | "condition";
+  kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode" | "flag" | "person" | "condition" | "clue";
   id: string;
 };
 /** What a leaf names (situational leaves such as time and days name nothing). */
@@ -277,5 +283,6 @@ export function leafReference(leaf: Leaf): LeafReference | undefined {
   if ("flag" in leaf) return { kind: "flag", id: leaf.flag };
   if ("met" in leaf) return { kind: "person", id: leaf.met };
   if ("condition" in leaf) return { kind: "condition", id: leaf.condition };
+  if ("clue" in leaf) return { kind: "clue", id: leaf.clue };
   return undefined;
 }

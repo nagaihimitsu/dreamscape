@@ -24,6 +24,22 @@ export const SCENE_KINDS = ["talk", "encounter", "guide", "battle", "date", "arr
 export type SceneKind = (typeof SCENE_KINDS)[number];
 /** Kinds the game places at a moment (差し込み); the others are main parts (a catalog points at them, or a tour leg's narration). */
 export const INSERTED_KINDS: readonly SceneKind[] = ["talk", "encounter"];
+/**
+ * The moments a reasoning quiz can be placed at (時点のクイズ, 2026-11-18: a battle knot's `# at:`): its city's departure and its
+ * epilogue, both after the finale. The others stay closed until a quiz open there is shown to save and resume (content:build stops them).
+ */
+export const MOMENT_QUIZ_MOMENTS = ["depart", "epilogue"] as const;
+
+/**
+ * Whether the scene runs as a turn of its moment: an inserted scene, or a battle whose knot says `# at:` (a moment quiz, 時点のクイズ;
+ * 2026-11-18). INSERTED_KINDS keeps its meaning (the scenes run as encounters).
+ */
+export const runsAtMoment = (scene: Pick<SceneEntry, "kind" | "at">): boolean =>
+  INSERTED_KINDS.includes(scene.kind) || (scene.kind === "battle" && scene.at.length > 0);
+
+/** The battle a moment quiz plays (the battle its catalog points at it as), if the scene is one. */
+export const momentQuizBattle = (scene: Pick<SceneEntry, "kind" | "at" | "main">): string | undefined =>
+  scene.kind === "battle" && scene.at.length > 0 && scene.main && "battle" in scene.main ? scene.main.battle : undefined;
 
 /** Fixed relationship changes (`# rel: affection +1, trust -1`): whole numbers, any size (rev. 5). */
 export const relationshipDeltaSchema = z.object(Object.fromEntries(RELATIONSHIP_AXES.map((axis) => [axis, signed.optional()])) as
@@ -82,6 +98,8 @@ export const sceneOptionSchema = z.object({
   /** `# ap: -1` / `+2`: the sum (never 0). */
   ap: signed.optional(),
   set: z.array(id).optional(),
+  /** `# clue: <clue ID>` (2026-11-18): the clues of tourism/catalog.json the choice records in 手がかり帳 (heard in conversation). */
+  clues: z.array(id).optional(),
   memory: z.array(id).optional(),
   /** `# profile:` (docs/03 「噛み合い」): the reaction profile the choice resolves with. */
   profile: id.optional(),
@@ -100,6 +118,8 @@ export const sceneDoneSchema = z.object({
   items: z.array(id).optional(),
   use: z.array(id).optional(),
   set: z.array(id).optional(),
+  /** `# on_done: clue <clue ID>` (2026-11-18): the clues the scene records in 手がかり帳 when it is done. */
+  clues: z.array(id).optional(),
   rel: relationshipDeltaSchema.optional(),
   money: signed.optional(),
   ap: signed.optional(),
@@ -131,16 +151,19 @@ export const sceneEntrySchema = z.object({
   /** Where the scene starts: its story file and, in a place file, its knot. */
   story: z.object({ storyId: z.string().regex(STORY_FILE_PATTERN), knot: id.optional() }).strict(),
   main: sceneMainSchema.optional(),
-  /** `# at:` (2.3): the moments the scene runs at (several are allowed: it runs at any of them); a tour leg's narration: its leg. */
+  /**
+   * `# at:` (2.3): the moments the scene runs at (several are allowed: it runs at any of them); a tour leg's narration: its leg; a
+   * moment quiz (a battle's knot with `# at:`, 2026-11-18): its departure or epilogue.
+   */
   at: z.array(sceneAtSchema),
-  /** `# priority:` (an inserted scene): a whole number, or after one main part of its moment. */
+  /** `# priority:` (an inserted scene, a moment quiz): a whole number, or after one main part of its moment. */
   priority: z.union([signed, z.literal("after guide"), z.literal("after observe"), z.literal("after battle"), z.literal("after date"), z.literal("after logo"),
     z.literal("after leg")]).optional(),
   /** The scene's place in its file (the same priority runs in written order, then by file name). */
   order: z.number().int().nonnegative(),
   repeat: z.enum(["once", "always"]),
   people: z.array(id),
-  /** Every `# when:` and none of the `# until:`. */
+  /** Every `# when:` and none of the `# until:` (an inserted scene's and a moment quiz's: read when its turn comes). */
   when: conditionSchema.optional(),
   options: z.array(sceneOptionSchema),
   done: sceneDoneSchema,
@@ -163,6 +186,15 @@ export const generatedScenesSchema = z.object({
   rewards: z.array(rewardRuleSchema),
 }).strict();
 export type GeneratedScenes = z.infer<typeof generatedScenesSchema>;
+
+/**
+ * The clues some scene gives (2026-11-18): a choice's `# clue:` or a head's `# on_done: clue`. One set for every reader:
+ * the save check accepts such a clue without its landmark's visit (tourism.ts clueRecordAllowed), and 手がかり帳 shows it as
+ * heard in conversation (「会話で聞いた」) rather than observed. A clue's `kind` stays its form (a hotspot or a document card).
+ */
+export function sceneGivenClues(list: readonly Pick<SceneEntry, "options" | "done">[]): Set<string> {
+  return new Set(list.flatMap((scene) => [...(scene.done.clues ?? []), ...scene.options.flatMap((option) => option.clues ?? [])]));
+}
 
 /**
  * The story state an author declares (`progression/story.json`, 3a): flags (物語の状態; set by

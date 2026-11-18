@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getCities } from "../content";
+import { getCities, tourismClues } from "../content";
 import { encounters } from "../content/encounters";
 import type { Condition } from "../content/condition-schemas";
 import { createGame } from "../domain/game";
@@ -56,5 +56,12 @@ describe("Debug's explanation of a condition", () => {
     expect(explainCondition(open, { confessionReady: true })).toMatchObject({ kind: "leaf", value: false,
       label: "今告白すれば受け入れられる（関係の値と終えたデートの数を読む）" });
     expect(unmetConditionLabels({ ...open, ap: 0, playedDateIds: ["milano_cafe_01"] }, recovery)).toEqual([]);
+  });
+
+  it("names a clue in 手がかり帳 by its title (2026-11-18), and its ID when no catalog has it", () => {
+    const clue = tourismClues[0];
+    expect(explainCondition({ ...base, discoveredClueIds: [clue.id] }, { clue: clue.id }))
+      .toMatchObject({ kind: "leaf", label: `手がかり「${clue.titleJa}」を持っている`, value: true });
+    expect(unmetConditionLabels(base, { clue: "smp_no_such_clue" })).toEqual(["手がかり「smp_no_such_clue」を持っている"]);
   });
 });

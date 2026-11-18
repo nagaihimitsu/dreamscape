@@ -91,8 +91,20 @@ describe("check 9's warnings", () => {
 
   it("warns of clues at a landmark without an observation, naming what uses them", () => {
     const warnings = progressionWarnings(town(), [{ clueId: "clue_c", usedBy: "question q1" }], [{ landmarkId: "lm_c", clueIds: ["clue_c"] }]);
-    expect(warnings.find((warning) => warning.kind === "unfindable-clue")?.message).toMatch(/lm_c .*clue_c, used by question q1/);
+    expect(warnings.find((warning) => warning.kind === "unfindable-clue")?.message).toMatch(/lm_c .*clue_c, which no scene gives.*used by question q1/);
     expect(progressionWarnings(town(), [], [{ landmarkId: "lm_b", clueIds: ["clue_b"] }])).toEqual([]);
+    // 4.3 (2026-11-18): a clue a scene gives or a reasoning quiz shows as case evidence is not unfindable; the rest still are.
+    expect(progressionWarnings(town(), [], [{ landmarkId: "lm_c", clueIds: ["clue_c"] }], new Set(["clue_c"]))).toEqual([]);
+    expect(progressionWarnings(town(), [], [{ landmarkId: "lm_c", clueIds: ["clue_c", "clue_d"] }], new Set(["clue_c"]))
+      .map((warning) => warning.message)).toEqual([expect.stringMatching(/lists clue_d, which/)]);
+  });
+
+  it("does not count a moment quiz (# at: depart|epilogue) in battles <city> >= N: no map event opens it", () => {
+    const content = town({ when: { battlesPlayed: { city: "town", atLeast: 3 } } });
+    expect(progressionErrors(content)).toEqual([]);
+    // bt_c becomes a moment quiz: two map quizzes are left, so three can never be played.
+    expect(progressionErrors({ ...content, momentQuizIds: ["bt_c"] })[0]).toMatch(/^No way to clear city town/);
+    expect(progressionErrors({ ...town({ when: { battlesPlayed: { city: "town", atLeast: 2 } } }), momentQuizIds: ["bt_c"] })).toEqual([]);
   });
 
   it("warns of a battle left after the epilogue in a journey that moves on after it", () => {
@@ -346,5 +358,107 @@ describe("check 10: an event at a tour-only place (tour stage 2a)", () => {
     expect(tourProgression({ id: "tr", cityId: "town", offers: [{ price: 1, when: { battlePlayed: "bt_b" } }],
       steps: [{ kind: "leg" }, { kind: "event", eventId: "ep_a" }, { kind: "leg" }, { kind: "event", eventId: "bt_c" }] }))
       .toEqual({ id: "tr", cityId: "town", offers: [{ price: 1, when: { battlePlayed: "bt_b" } }], eventIds: ["ep_a", "bt_c"] });
+  });
+});
+
+describe("the condition clue <ID> (2026-11-18): a clue a scene gives or an observation finds", () => {
+  const now = (change: Partial<ProgressionSnapshot>): ProgressionSnapshot => ({ ...startSnapshot(), exact: true, ...change });
+  // lm_b has an observation (bt_b is held there), lm_c has none (observation: false).
+  const clues = [{ id: "clue_b", landmarkId: "lm_b" }, { id: "clue_c", landmarkId: "lm_c" }];
+  type Scene = Parameters<typeof sceneItemsOf>[0][number];
+  const scene = (change: Partial<Scene>): Scene => ({ id: "tk", cityId: "town", at: [{ visit: "lm_a" }], done: {}, options: [], ...change });
+  const heardBy = (...list: Scene[]) => ({ clues, sceneItems: sceneItemsOf(list) });
+  const reading = (id: string, extra: Partial<ProgressionContent> = {}) => town({ when: { clue: id } }, { clues, ...extra });
+
+  it("stops a finale that reads a clue nothing records, and passes one an observation finds or a scene gives before the finale", () => {
+    expect(progressionErrors(reading("clue_x"))).toHaveLength(1);
+    expect(progressionErrors(reading("clue_c"))[0]).toMatch(/^No way to clear city town/);
+    expect(progressionErrors(reading("clue_b"))).toEqual([]);
+    expect(progressionErrors(reading("clue_c", heardBy(scene({ options: [{ clues: ["clue_c"] }] }))))).toEqual([]);
+    expect(progressionErrors(reading("clue_c", heardBy(scene({ done: { clues: ["clue_c"] } }))))).toEqual([]);
+    // A battle's conversation gives it once the battle can be played; a departure's scene only after the finale.
+    expect(progressionErrors(reading("clue_c", heardBy(scene({ id: "bt_b", main: { battle: "bt_b" }, at: [], options: [{ clues: ["clue_c"] }] }))))).toEqual([]);
+    expect(progressionErrors(reading("clue_c", heardBy(scene({ at: [{ depart: "town" }], done: { clues: ["clue_c"] } }))))).toHaveLength(1);
+    // A clue never turns back: it counts as met for good (no "may never be met again" warning).
+    expect(kinds(reading("clue_b"))).not.toContain("never-met-again");
+  });
+
+  it("lists a scene's clues with its repetition (sceneItemsOf), and only scenes that give an item or a clue", () => {
+    expect(sceneItemsOf([scene({ repeat: "always", options: [{ clues: ["clue_c"] }, { clues: ["clue_c", "clue_b"] }], done: { clues: ["clue_b"] } }),
+      scene({ id: "plain" })])).toEqual([{ sceneId: "tk", cityId: "town", gives: [], spends: [], clues: ["clue_b", "clue_c"], choiceClues: ["clue_c", "clue_b"],
+      repeat: "always", at: [{ visit: "lm_a" }] }]);
+  });
+
+  it("from the real records (the walk): a clue recorded stays; a scene played once and done without it gives it no more", () => {
+    const once = reading("clue_c", heardBy(scene({ options: [{ clues: ["clue_c"] }, {}] })));
+    expect(canStillClearCity(once, "town", now({}))).toBe(true);
+    expect(canStillClearCity(once, "town", now({ encounters: new Set(["tk"]) }))).toBe(false);
+    expect(canStillClearCity(once, "town", now({ encounters: new Set(["tk"]), clues: new Set(["clue_c"]) }))).toBe(true);
+    // Ended with 「また今度」 (seen, not done) it comes again; a scene repeated always comes again too.
+    expect(canStillClearCity(once, "town", now({ seenEncounters: new Set(["tk"]) }))).toBe(true);
+    const always = reading("clue_c", heardBy(scene({ repeat: "always", options: [{ clues: ["clue_c"] }] })));
+    expect(canStillClearCity(always, "town", now({ encounters: new Set(["tk"]) }))).toBe(true);
+    // A battle's conversation gives it on the battle's first play only.
+    const battle = reading("clue_c", heardBy(scene({ id: "bt_b", main: { battle: "bt_b" }, at: [], options: [{ clues: ["clue_c"] }] })));
+    expect(canStillClearCity(battle, "town", now({}))).toBe(true);
+    expect(canStillClearCity(battle, "town", now({ battles: new Set(["bt_b"]) }))).toBe(false);
+    // An observation is never counted as over.
+    expect(canStillClearCity(reading("clue_b"), "town", now({ landmarks: new Set(["lm_b"]), battles: new Set(["bt_b"]) }))).toBe(true);
+  });
+
+  it("from the real records: a date played once gives no more, unless it is played again with its choices' tags (repeatable, not reward-only-once)", () => {
+    const dated = (date: Partial<ProgressionContent["dates"][number]>, where: Partial<Scene>) => reading("clue_c", {
+      ...heardBy(scene({ id: "dt_scene", main: { date: "dt_sp" }, at: [], ...where })),
+      dates: [{ id: "dt", chapterId: "town", kind: "normal", apCost: 2 }, { id: "dt_sp", chapterId: "town", kind: "special", apCost: 1, ...date }],
+    });
+    const played = now({ dates: new Set(["dt_sp"]) });
+    const byChoice = { options: [{ clues: ["clue_c"] }, {}] };
+    expect(canStillClearCity(dated({}, byChoice), "town", now({}))).toBe(true);
+    expect(canStillClearCity(dated({}, byChoice), "town", played)).toBe(false);
+    // Played again and no replay (game.ts startDate): its choice may still give it.
+    expect(canStillClearCity(dated({ repeatable: true, rewardOnlyOnce: false }, byChoice), "town", played)).toBe(true);
+    // A replay (reward only once) applies no tag; an ordinary date is never played again; # on_done: gives on the first play only.
+    expect(canStillClearCity(dated({ repeatable: true, rewardOnlyOnce: true }, byChoice), "town", played)).toBe(false);
+    expect(canStillClearCity(dated({ kind: "normal", repeatable: true, rewardOnlyOnce: false }, byChoice), "town", played)).toBe(false);
+    expect(canStillClearCity(dated({ repeatable: true, rewardOnlyOnce: false }, { done: { clues: ["clue_c"] } }), "town", played)).toBe(false);
+  });
+
+  it("reads a clue an earlier city's scene gives as unknown from the city's start, and fixed in the real records", () => {
+    const content = reading("clue_c", {
+      journeys: [{ id: "trip", cities: [{ id: "old" }, { id: "town" }], initialBudget: 120 }],
+      ...heardBy(scene({ id: "old_talk", cityId: "old", at: [{ hotel: "any" }], options: [{ clues: ["clue_c"] }] })),
+    });
+    expect(progressionErrors(content)).toEqual([]);
+    expect(canStillClearCity(content, "town", now({ cities: new Set(["old"]) }))).toBe(false);
+    expect(canStillClearCity(content, "town", now({ cities: new Set(["old"]), clues: new Set(["clue_c"]) }))).toBe(true);
+    // A later city's scene never gives it in time.
+    const later = reading("clue_c", {
+      journeys: [{ id: "trip", cities: [{ id: "town" }, { id: "later" }], initialBudget: 120 }],
+      ...heardBy(scene({ id: "later_talk", cityId: "later", at: [{ hotel: "any" }], options: [{ clues: ["clue_c"] }] })),
+    });
+    expect(progressionErrors(later)).toHaveLength(1);
+  });
+
+  it("reads an earlier city's clue as its source comes there: only an optional date's warns (romance only, a later-city start), a battle's does not", () => {
+    const base = town({ when: { clue: "clue_c" } });
+    const earlier = (given: Scene) => reading("clue_c", {
+      journeys: [{ id: "trip", cities: [{ id: "old" }, { id: "town" }], initialBudget: 120 }],
+      episodes: [...base.episodes, { id: "ep_old", kind: "episode", cityId: "old", landmarkId: "lm_old", battleId: "bt_old", requiredEpisodeIds: [] }],
+      battles: [...base.battles, { id: "bt_old", landmarkId: "lm_old" }], landmarks: [...base.landmarks, { id: "lm_old", cityId: "old" }],
+      dates: [...base.dates, { id: "old_dt", chapterId: "old", kind: "normal", apCost: 2 }],
+      ...heardBy(given),
+    });
+    const fromDate = earlier(scene({ id: "old_dt_scene", cityId: "old", main: { date: "old_dt" }, at: [], done: { clues: ["clue_c"] } }));
+    expect(progressionErrors(fromDate)).toEqual([]);
+    expect(kinds(fromDate)).toEqual(expect.arrayContaining(["romance-only-city", "earlier-item-start"]));
+    expect(progressionWarnings(fromDate).find((item) => item.kind === "earlier-item-start")?.message)
+      .toMatch(/^City town needs a clue from an earlier city that only an optional date, inserted scene, guide, epilogue or encounter there gives: .*only with clue_c; .*may lack the clue/);
+    // The earlier city's battle gives it: on every way, and on a later-city start's main path.
+    const fromBattle = earlier(scene({ id: "bt_old", cityId: "old", main: { battle: "bt_old" }, at: [], options: [{ clues: ["clue_c"] }] }));
+    expect(progressionErrors(fromBattle)).toEqual([]);
+    expect(kinds(fromBattle)).not.toContain("romance-only-city");
+    expect(kinds(fromBattle)).not.toContain("earlier-item-start");
+    // A source that never comes in the earlier city (a departure there, after a finale it does not have): no way to clear town.
+    expect(progressionErrors(earlier(scene({ id: "old_depart", cityId: "old", at: [{ depart: "old" }], done: { clues: ["clue_c"] } })))).toHaveLength(1);
   });
 });

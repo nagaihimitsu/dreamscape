@@ -272,7 +272,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 - 頭の札：`# scene: encounter`、`# title:`（日本語の題）、`# at:`（いつ起きるか。`visit <観光地>`・`place <場所>` など）、`# priority:`（本筋の前の負の数・`after observe`・本筋の後の正の数）は必須です。出会える条件は `# when:`・`# until:`、繰り返しは `# repeat:` で書きます（[場面の時点と順番](../docs/02_TECH_ARCHITECTURE.md#場面の時点と順番)、下の「[道中の交流](#道中の交流)」）。
 - 出典：本当の土地の事実を言う場面は、場面のIDで `<旅行編>/scenes/catalog.json` の `scenes` に出典を書きます。事実を言わない場面だけ、頭に `# sources: none` を書きます。
 - 英語の選択（ふつうは3択。数は自由）には正誤を付けません。英文はInkを正とし、訳は選択肢の角括弧の中の `# translation:` に書きます。
-- 効果は、選択肢のすぐ次の行の札（品物の `# give:`・`# use:`、お金の `# money: -300`、関係値の `# rel:`、APの `# ap:`、フラグの `# set:`、「また今度」の `# later` など）と、頭の `# on_done:` に書きます。効果のある選択肢には、角括弧の中に `# option: <ID>` が要ります（保存に入るので、公開した後は変えません）。
+- 効果は、選択肢のすぐ次の行の札（品物の `# give:`・`# use:`、お金の `# money: -300`、関係値の `# rel:`、APの `# ap:`、フラグの `# set:`、手がかりの `# clue: <手がかりID>`、「また今度」の `# later` など）と、頭の `# on_done:`（`# on_done: clue <手がかりID>` も）に書きます。手がかりの札は、会話で聞いたことを手がかり帳に記録します（観察で見つけた手がかりと同じ記録。推理クイズの証拠になり、条件 `clue <手がかりID>` で読めます。手がかり帳では「会話で聞いた」と出て、記録したときは短い知らせが出ます。2026-11-18）。手がかりは `tourism/catalog.json` の `clues` に登録します（知らないIDやほかの旅行編の手がかりは止まります）。効果のある選択肢には、角括弧の中に `# option: <ID>` が要ります（保存に入るので、公開した後は変えません）。
 - 品物は `encounters/catalog.json` の `items` に登録し、くれる場面（`# on_done: item <品物>` など）を書きます。手本は見本の編のしおりの露店と、しおりを渡す場面（`stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_bookmark_stall`・`smp_mihon_bookmark_gift`）です。
 - クイズとくじのある道中交流だけは、カタログの形（1場面1ファイルの `stories/encounters/<頭>_<交流>.ink` と、`encounters/catalog.json` の `encounters` の項目）で書きます（今はどの旅行編も使っておらず、テストの元データ `tests/fixtures/catalog-encounters/` が手本です）。この形では、選択肢ごとの費用をカタログの `options`（`{ "id": "tea", "cost": 4 }`。IDはInkの `# option:` と同じ）、終えたときに受け取る金額を `completionMoney` に書きます（旅行編の通貨の整数）。
 
@@ -357,8 +357,8 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 ### 観光データの項目
 
 - `assets`：`id` は画像の安定ID、`path` は画像ファイル、`width` / `height` は実際のピクセル寸法、`altJa` は画像を見られない人向けの日本語説明、`isPlaceholder` は仮画像かどうか。`sourceUrl`、`licenseName`、`licenseUrl`、`creditJa`、`modificationJa`、`checkedAt` に元画像の所在・権利・作者・加工・確認日を記録します。仮画像を実物の細部の根拠にしません。配信する写真は WebP（品質80）にします。JPEG・PNG の写真は置いた後に `npm run images:optimize -- --journey <旅行編ID> --write` で変換します（`--write` を付けなければ確認だけ）。観察で拡大する写真（観光地の `imageAssetId` と観察資料の画像）は同じ大きさのまま、ほかは幅1600px・高さ1800pxの枠に収まるよう縮小し、色のプロファイルは残します。このとき `path`・`width`・`height` と観察資料の `path`・`sha256` を書き換え、`modificationJa` の最後に変換の一文（例「さらに同じ寸法のままWebP形式（品質80）に変換。」）を足し、CC BY-SA の写真には変換の一文の後に「変換版もCC BY-SA 4.0で提供。」のように足します（それより前の「この縮小版も…で提供します。」などは、変換する前の版についての記載です）。変換できる写真が残っていると `npm run content:build` が警告で知らせます（生成は止めません）。仮画像（`isPlaceholder: true`）と見本の編の画像は変換しません。
-- `landmarks`：`id` / `cityId` は場所と都市のID、`nameJa` / `nameEn` は表示名、`descriptionJa` は短い案内。`imageAssetId`、`guideStoryId`、`battleId` はそれぞれ画像、案内Ink、通常戦のID、`clueIds` はその場所の発見ID一覧です。案内の要らない場所では `guideStoryId` を書きません。観察の要らない場所では `observation: false` を書きます（書かなければ観察あり）。どちらもない場所では、着いてすぐバトルが始まります。案内のない場所には、案内の AP（`guide_read` の報酬）もありません（書くと `content:build` が止まります）。観察のない場所に手がかりを書いたり、バトルの問題や特殊戦の証拠が使う手がかりをどの観察でも見つけられなかったりすると、`content:build` が注意します（生成は止めません）。
-- `clues`：`id`、`landmarkId`、`titleJa`、`descriptionJa`、`factId`、`relatedQuestionIds`、`sources` は発見と参照、説明、根拠です。`relatedQuestionIds` には、同じ観光地のクイズの問題のうち、問題文・正解・解説がその手がかりの内容を必要とする問題のIDだけを書きます（ゲームの表示と判定には使わず、`content:build` が同じ観光地のクイズの問題であることを確かめます。都市フィナーレと例のクイズの問題は書けません）。同じ場所の話題というだけでは書きません。どの問題にも結び付かない手がかりは `[]` とし、これを「観察だけの手がかり」として正式に認めます。見え方を変える観察・資料として手がかり帳に残り、表示も同じです。旅行編ごとの数は `content:build` の行（`observation-only clues`）に出ます。公開中の旅行編の観察だけの手がかりを問題へ付け直すのはシナリオ改修のときの作業で、改修する問題と1件ずつ文を照らして決めます。特殊戦の証拠の手がかりを変えるとその特殊戦の途中のセーブは再開できなくなります（[データ契約](../docs/07_DATA_AND_TESTS.md#観察だけの手がかり)）。`kind: "hotspot"` は写真で見える場所、`kind: "document"` は画像だけでは判断できない資料。後者の `region` は `null` です。hotspotの `region` は画像全体を1とする左上の `x` / `y` と `width` / `height`（各0〜1）で、画像の外には出せません。画像差し替えで構図が変われば座標も見直します。
+- `landmarks`：`id` / `cityId` は場所と都市のID、`nameJa` / `nameEn` は表示名、`descriptionJa` は短い案内。`imageAssetId`、`guideStoryId`、`battleId` はそれぞれ画像、案内Ink、通常戦のID、`clueIds` はその場所の発見ID一覧です。案内の要らない場所では `guideStoryId` を書きません。観察の要らない場所では `observation: false` を書きます（書かなければ観察あり）。どちらもない場所では、着いてすぐバトルが始まります。案内のない場所には、案内の AP（`guide_read` の報酬）もありません（書くと `content:build` が止まります）。観察でも会話の札（`# clue:`・`# on_done: clue`）でも拾えず、推理クイズのケース資料でもない手がかりがあると、`content:build` が注意します（生成は止めません）。観察のない場所の手がかりも、場面が渡すか、推理クイズのケース資料なら注意しません（推理の間は、見つけていなくても並び、選べます）。
+- `clues`：`id`、`landmarkId`、`titleJa`、`descriptionJa`、`factId`、`relatedQuestionIds`、`sources` は発見と参照、説明、根拠です。`relatedQuestionIds` には、同じ観光地のクイズの問題のうち、問題文・正解・解説がその手がかりの内容を必要とする問題のIDだけを書きます（ゲームの表示と判定には使わず、`content:build` が同じ観光地のクイズの問題であることを確かめます。都市フィナーレと例のクイズの問題は書けません）。同じ場所の話題というだけでは書きません。どの問題にも結び付かない手がかりは `[]` とし、これを「観察だけの手がかり」として正式に認めます。見え方を変える観察・資料として手がかり帳に残り、表示も同じです。旅行編ごとの数は `content:build` の行（`observation-only clues`）に出ます。場面が渡す手がかり（`# clue:`・`# on_done: clue`）と、観察のない場所の手がかり（推理クイズのケース資料など）は、問題IDが空でもこの数に入りません。会話で渡す手がかりの数は、同じ行の `conversation clues` に出ます（0件なら省略）。公開中の旅行編の観察だけの手がかりを問題へ付け直すのはシナリオ改修のときの作業で、改修する問題と1件ずつ文を照らして決めます。特殊戦の証拠の手がかりを変えるとその特殊戦の途中のセーブは再開できなくなります（[データ契約](../docs/07_DATA_AND_TESTS.md#観察だけの手がかり)）。`kind: "hotspot"` は写真で見える場所、`kind: "document"` は画像だけでは判断できない資料。後者の `region` は `null` です。hotspotの `region` は画像全体を1とする左上の `x` / `y` と `width` / `height`（各0〜1）で、画像の外には出せません。画像差し替えで構図が変われば座標も見直します。
 - `sources` の `publisher` / `title` / `url` / `checkedAt` / `claimType` / `claimJa` は発行者、資料名、URL、確認日、根拠の区分、その資料が裏付ける主張。`claimType` は `documented_fact`、`interpretation`、`legend` を区別します。
 
 ### 単語の意味
@@ -636,7 +636,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 | 曜日 | `{ "weekday": [5, 6] }` | 月曜が0。暦のある旅だけ |
 | 乗った回数 | `{ "rides": { "mode": "<乗り物ID>", "atLeast": 2 } }` | この都市で、これまでにその乗り物に乗った回数（徒歩は数えない） |
 | 借りた | `{ "rented": "<乗り物ID>" }` | この都市で借りた乗り物 |
-| 都市のバトルをいくつ遊んだ | `{ "battlesPlayed": { "city": "<都市ID>", "atLeast": 2 } }` | その都市のバトル（フィナーレを除く。勝ち負けは問わない）を遊んだ数 |
+| 都市のバトルをいくつ遊んだ | `{ "battlesPlayed": { "city": "<都市ID>", "atLeast": 2 } }` | その都市の地図に出るバトル（フィナーレと、時点に置く推理クイズを除く。勝ち負けは問わない）を遊んだ数 |
 | 関係の値 | `{ "relationship": { "axis": "affection", "atLeast": 3 } }` | 親しさ `affection`・信頼 `trust`・恋愛の意識 `spark` の今の値（`atMost` も。負の数も書ける）。プレイヤーには、値も、条件が満たされたかも見せない |
 | 使えるお金 | `{ "money": { "atLeast": 300 } }` | 旅行予算から帰りの交通費の取り置きを引いた額（`atMost` も） |
 | 恋の段階 | `{ "romanceStage": { "atLeast": 2 } }` | 今の段階（1〜4。`atMost` も） |
@@ -649,6 +649,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 | フラグ | `{ "flag": "<フラグID>" }` | 場面の `set:`・`on_done: set` で立てたフラグ（`progression/story.json` の `flags` に宣言する。どの都市でも読める） |
 | 会った | `{ "met": "<人物ID>" }` | 頭の `# person:` にその人の名前がある場面を見た（`progression/story.json` の `people`） |
 | 名前付きの条件 | `{ "condition": "<名前>" }` | `progression/story.json` の `conditions` に名前を付けて書いた条件 |
+| 手がかりを持っている | `{ "clue": "<手がかりID>" }` | 手がかり帳に記録した手がかり（観察で見つけた・会話で聞いた。2026-11-18）。地図の条件に書くと、`content:build` の詰みの判定が、渡す場面・見つける観察が届くかを見ます |
 
 品物の `is` は5つです。
 
@@ -695,10 +696,29 @@ EXTERNAL cond(text)
 ```
 
 - 今の「1場面1ファイル」のInk（`VAR` で始まる形）で `cond` を使うときは、`VAR` の行の後に `EXTERNAL cond(text)` を1行、ファイルの最後に、Inkyで下書きを見るための代わりの関数 `=== function cond(text) ===` と `~ return false` の2行を書きます（`EXTERNAL has_memory(memory_id)` と同じ書き方）。宣言がないと、`npm run content:build` が直し方を示して止めます。代わりの関数はInkyだけが使い、ゲームは本当の値を渡します。
-- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`・`epilogue_started <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`date_since_rejection`、`dates >= 1`（`<=` も）、`confession_ready`、`normal_date_available`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`。それぞれ上の表の部品と同じ意味です。
+- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`・`epilogue_started <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`date_since_rejection`、`dates >= 1`（`<=` も）、`confession_ready`、`normal_date_available`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`、`clue <手がかり>`。それぞれ上の表の部品と同じ意味です。
 - 引数は、引用符で囲んだ文字だけです（変数や式は書けません）。
 - `npm run content:build` は、`cond` の文字を頭の札と同じ読み方で条件にし、ほかの条件と同じ検査（形・存在しない名前・品物の都市など）をして、誤りがあれば止めます。そのうえで、代表の組み合わせ（全部偽・全部真・1つだけ真）で、全部の道が最後まで進むかを確かめます。全部の組み合わせは確かめません。
 - 選択肢を選んだ直後の行の `cond` は、その選択肢の効果（品物を渡した・関係の値が変わった など）の後の状態を読みます。
+- 「払えるなら払う、払えなければ払わない」は、`cond("money >= N")` で先に分けて書きます（2026-11-18）。
+
+```ink
+{ cond("money >= 500"):
+    -> deposit
+- else:
+    -> short_of_money
+}
+= deposit
+* [手付金を払う # option: pay_deposit]
+    # money: -500
+    （払う行）
+- -> leave
+= short_of_money
+（払えずに話が流れる行。お金は動かない）
+-> leave
+```
+
+  `# requires: money <= 499` の選択肢を `# money: -500` の選択肢と並べると、どちらの選択肢もその道で選べると保証されないので、`content:build` の全分岐の歩きが止めます（A10）。`cond("money >= 500")` で分ければ、その道では使えるお金500が保証されます（`money` の条件と選択肢が選べるかは、同じ使えるお金を読みます）。差し込みの場面の頭の `# on_done: money -500` は、払えないと場面ごと出なくなるので、この形には使いません。
 - 関係の値の条件は制作者が書くものです。プレイヤーには、条件が満たされたかも見せません。Debugモードがオンの間だけ、場面の上に、今の場面の `cond` の文字ごとの真偽を出します。
 - 英語ノートの話題の説明（場面ではありません）と、特殊戦の反論（段階5から）では使えません。ビルドが止めます。
 
@@ -732,6 +752,27 @@ EXTERNAL cond(text)
 - 到着とエピローグの会話にも、頭の札・選択肢の札の `then:` を書けます。
 - `then: move <場所>` は、`by <乗り物>` を書かなければ徒歩で動きます（徒歩の道がなければいちばん安い道）。地図の出発と同じく時刻を確かめるので、夕方や遠い場所へ徒歩で動くと、動いた先の本筋が間に合わず本筋のない訪問になったり、帰り道が間に合わずその選択肢が選べなくなったりします。速い乗り物で動かしたいときは `by <乗り物>` を書いてください。
 - 例は見本の編の `stories/places/smp_mihon_clock_tower.ink`（デートの前のベンチを塗る人・初めての貸し自転車・宿の眠る前と起きた後・エピローグの前のしおりとリリの見送り）と `stories/places/smp_mihon_city_end.ink`（フィナーレの前後と、エピローグを始める時。統一イベント設計 3.9 の (d)）です。時点の並びは `npm run journey:readthrough -- --journey <旅行編>` で読めます。札を書かない交流は、入場ルール（`encounters/entry-rules.json`）を満たすものが、観察を進めたときにカタログの順に始まり、終わると観察に戻ります。街歩きから始める道はありません。入場ルール（`encounters/entry-rules.json`、`"schemaVersion": 2`）には、交流ごとに `encounterId`、調べる時点 `at`（今は観察の `["observe"]` だけ。省略しても同じ）、出会える条件 `when`（例：`{ "episodeCompleted": "milano_duomo_episode" }`、`{ "battlePlayed": "milano_la_scala_b01" }`。書き方は[条件の書き方](#条件の書き方)）を書きます。入場ルールのない交流や `when` のない交流は、条件なしに出会えます。`quizAfterLandmarkBattle` の印を付けた交流は、最初の観察で会えます。同じ観光地の本戦をまだ戦っていないうちはクイズなしで話が終わり、本戦を戦った後に始まった場合だけ、文化クイズと賞品の抽選へ進みます（今はどの旅行編も使っていません。テストは `tests/fixtures/catalog-encounters/` のカタログの形の願掛けで確かめます）。ミラノの道中交流は、2026-11-13の改稿で、どの順に観光地を回っても起こる時点に置き直しました：観察の後（ガッレリアの願掛けと券、ブレラの学生）、本筋の後（`# priority: +1`。ドゥオモのノラ・城のティノ・ガッレリアのリナ・スカラ座の喉飴・最後の晩餐の兄妹）、フィナーレの前（ダルセナの一音。城を先に回ってティノにピックなしで会ったときだけ）。「また今度」は、同じ場所に後の時点（デート）がある交流にだけ残し、`# at: place <地点>` でその場所のデートの後にもう一度出します。各交流がいつ起こるかは、場所のファイルのその knot の前のコメントに書いています。JSONにはコメントを書けないので、カタログと入場ルールには書きません。起こる時を変えたら、そのコメントも直してください。カタログに `availability` は書けません（セーブ版 v14 でなくなりました）。使わない交流はカタログから消してください。既存の会話や賞品を差し替える際は、現在のゲームの参照と獲得・使用の整合性を確認してください。
+
+#### 推理クイズを時点に置く
+
+推理クイズ（形式 B・C）は、観光地の訪問のほか、出発やエピローグの時点の中にも置けます（例：街を出る前の駅前。2026-11-18）。場所のファイルの `# scene: battle` の knot の頭に、会話と同じ `# at:`・`# priority:`（必須）を書き、任意で `# when:`・`# until:`・`# repeat:` を書きます。
+
+```ink
+=== smp_mihon_special_b_coach ===
+# scene: battle
+# at: epilogue mihon
+# priority: -3
+# when: clue smp_obs_mihon_coach_bell
+（会話、-> quiz(1) ->、主張、- (stop)、-> reasoning ->、-> quiz(2) ->、-> quiz(3) ->。書き方はふつうの推理クイズと同じ）
+-> END
+```
+
+- 書ける時点は、今は `depart <都市>` と `epilogue <都市>` だけです（どちらもフィナーレの後）。形式は推理のある B・C だけ。ほかの時点・形式 A、頭の `# then:` は `content:build` が止めます。時点の都市とクイズの観光地の都市は同じにします。
+- `# when:` の意味が変わります：`# at:` のないバトルの `# when:` は地図に出る条件、`# at:` のあるバトルでは番が来たときの条件です。満たさなければ、そのクイズは流れず、次の場面へ進みます。`# repeat:` を書かなければ一度きり（遊んだクイズはもう流れません）。
+- クイズの観光地は、地図の出来事を持たない観光地にできます（案内も観察もなし。案内・観察を書くと決して流れないので注意が出ます）。このクイズは `progression/journey.json` のエピソード・特殊戦にも travel の出来事にも書きません（書くと止まります）。条件 `battles <都市> >= N` は、このクイズを数えません。
+- 結果の画面の出口は「先へ進む」で、時点の次の場面へ続きます。
+- 会話の選択肢の札と頭の `# on_done:` は、最初の1回だけ当たります（`# repeat: always` でも2回目からは当たらず、注意が出ます）。頭の `# on_done:` でお金・AP は減らせません（払いは選択肢の `# money:`・`# ap:` に）。報酬の AP は頭の `# on_done: ap +N` で書きます。
+- 例は見本の編の `stories/places/smp_mihon_coach_stop.ink`（任意の部分「会話の手がかりと時点の推理クイズ」）です。仕組みは[技術設計の「時点に置く推理クイズ」](../docs/02_TECH_ARCHITECTURE.md#場面の時点と順番)。
 
 旅行予算とAP・保留APは都市別に初期化しない共通残高です。次の都市へ出発すると、その都市でまだ持っている品物は「置いてきた」になり、持ち越せません。旅の間持ち歩く品物（`"carry": "journey"`）だけは、持ったまま次の都市へ行きます。置いていくことのある品物（持ち歩く印がなく、次の都市がある都市の品物）には、その都市での使い道が要ります。入手・贈与・使用の履歴、交流の履歴、思い出・関係値は残ります。
 

@@ -33,11 +33,11 @@ import { screenFor } from "../../src/domain/screen";
 import { itemUsableIn } from "../../src/domain/item-cities";
 import { usableAp, usableMoney } from "../../src/domain/reservations";
 import { placeSceneById } from "../../src/domain/scene-effects";
-import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
-import type { SceneEntry } from "../../src/content/scene-schemas";
+import { mainScene, sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
+import { momentQuizBattle, type SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
-import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, getTour, journeyConfig, landmarks, progression, scenes, tours } from "../../src/content";
+import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, getTour, journeyConfig, landmarks, progression, scenes, tourismClues, tours } from "../../src/content";
 import { isTourOnlyPlace } from "../../src/content/travel-schemas";
 import { bookTour, cancelTourBooking } from "../../src/domain/tour";
 import { spendableMoney } from "../../src/domain/conditions";
@@ -45,8 +45,10 @@ import {
   apShortNow, canStillClearCity, mainPaymentsOf, moneyShortNow, sceneItemsOf, tourProgression, type ProgressionContent, type ProgressionSnapshot,
 } from "../../scripts/progression-check";
 import { encounters } from "../../src/content/encounters";
-import { journeys } from "../../src/content/journeys";
-import { cityStart } from "../../src/dev/scenario-builders";
+import { getJourney, journeys } from "../../src/content/journeys";
+import { cityFinaleResult, cityStart, playBattleToResult, playMomentUntil } from "../../src/dev/scenario-builders";
+import { leaveBattleToFreeTime } from "../../src/domain/encounter";
+import { openEpilogue } from "../../src/domain/occasion";
 import { getActiveBattleContent } from "../../src/domain/battle";
 import { storyBattlesForCity } from "../../src/domain/chapter";
 import { isJourneyComplete } from "../../src/domain/city-travel";
@@ -155,7 +157,8 @@ function pick(state: GameState, actions: PlayerAction[], next: () => number): Pl
 /** The content the progression check reads, from the runtime catalogs (the same check as content:build's). */
 const progressionContent: ProgressionContent = {
   journeys, episodes, storyBattles: journeyConfig.storyBattles, battles, landmarks, encounters: encounters.encounters, items: encounters.items, dates,
-  rewards: allRewardRules, romance: progression, sceneItems: sceneItemsOf(scenes),
+  rewards: allRewardRules, romance: progression, sceneItems: sceneItemsOf(scenes), clues: tourismClues,
+  momentQuizIds: scenes.flatMap((scene) => momentQuizBattle(scene) ?? []),
   // Registered cities only (a journey may list cities not built yet).
   travel: playable.flatMap((journey) => journey.cities).filter((city) => city.id in cityContents).map((city) => {
     const { travel, travelSettings } = getCityContent(city.id);
@@ -170,7 +173,7 @@ const snapshotOf = (state: GameState): ProgressionSnapshot => ({
   exact: true, battles: new Set(state.battleRecords.filter((item) => item.attempts > 0).map((item) => item.battleId)),
   episodes: new Set(state.completedEpisodeIds), cities: new Set(state.completedCityIds), landmarks: new Set(state.visitedLandmarkIds),
   guides: new Set(state.completedGuideIds), encounters: new Set(state.completedEncounterIds), seenEncounters: new Set(state.seenEncounterIds),
-  dates: new Set(state.playedDateIds), epilogues: new Set(state.viewedEpilogueCityIds), items: state.inventory,
+  dates: new Set(state.playedDateIds), epilogues: new Set(state.viewedEpilogueCityIds), items: state.inventory, clues: new Set(state.discoveredClueIds),
   couple: state.confessionStatus === "accepted", romanceStage: state.romanceStage, cityDay: state.travel.day,
   journeyDay: state.travel.calendar?.journeyDay, money: spendableMoney(state),
 });
@@ -196,13 +199,14 @@ function spentAp(previous: GameState, next: GameState): number {
   if (!date) throw new Error(`no date has the started ID ${active.dateId}`);
   return date.apCost;
 }
+const optionAp = (scene: SceneEntry | undefined, optionId: string | undefined) => scene?.options.find((option) => option.id === optionId)?.ap ?? 0;
 /**
  * AP the step's scene tags gave or spent (stage 3a): a choice's # ap: (a place scene's, a guide's not re-read, an
- * epilogue's, a tagged date's not replayed) and a place scene's # on_done: ap when it closes done. Main parts'
- * # on_done: ap has no content yet.
+ * epilogue's, a tagged date's not replayed, a battle conversation's on the battle's first play, once per choice) and
+ * # on_done: ap (a place scene's when it closes done; a battle's head, when its first result is recorded: a moment quiz's
+ * reward AP is written so, 2026-11-18). Other main parts' # on_done: ap has no content yet.
  */
 function tagAp(previous: GameState, next: GameState, action: PlayerAction): number {
-  const optionAp = (scene: SceneEntry | undefined, optionId: string | undefined) => scene?.options.find((option) => option.id === optionId)?.ap ?? 0;
   const encounter = previous.activeEncounter;
   const place = encounter && placeSceneById(encounter.encounterId);
   if (action.kind === "encounter_choose" && place)
@@ -222,7 +226,25 @@ function tagAp(previous: GameState, next: GameState, action: PlayerAction): numb
   const date = previous.activeDate;
   if (action.kind === "date_choose" && date && !date.replay)
     return optionAp(taggedDateScene(date.dateId), date.frame.choices.find((choice) => choice.index === action.index)?.optionId);
-  return 0;
+  return battleTagAp(previous, next, action);
+}
+/**
+ * A battle's tags apply on its first play only (no result recorded yet; battle.ts chooseBattle, finishBattle): a conversation
+ * choice's # ap: (once per choice), and its head's # on_done: ap as the first result is recorded. Both may come in one step: a
+ * last choice whose story ends there goes on to the result in the same action (chooseBattle → finishBattle).
+ */
+function battleTagAp(previous: GameState, next: GameState, action: PlayerAction): number {
+  const battle = previous.activeBattle;
+  if (!battle || previous.battleRecords.some((record) => record.battleId === battle.battleId)) return 0;
+  let ap = 0;
+  if (action.kind === "battle_choose") {
+    const optionId = battle.frame?.choices.find((choice) => choice.index === action.index)?.optionId;
+    if (optionId && !battle.appliedOptionIds.includes(optionId))
+      ap += optionAp(sceneOfAddress(battles.find((item) => item.id === battle.battleId)?.storyId), optionId);
+  }
+  if (battle.phase !== "result" && next.activeBattle?.battleId === battle.battleId && next.activeBattle.phase === "result")
+    ap += mainScene({ battle: battle.battleId })?.done.ap ?? 0;
+  return ap;
 }
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
 
@@ -393,12 +415,15 @@ function summary(): string {
     const battleIds = [...episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.battleId),
       ...cityIds.flatMap((cityId) => storyBattlesForCity(cityId).map((battle) => battle.battleId))].filter((id) => battles.some((battle) => battle.id === id));
     const cityEncounters = encounters.encounters.filter((event) => cityIds.includes(event.cityId));
+    // Moment quizzes (時点のクイズ, # at: depart|epilogue; 2026-11-18): reached or not, counted only (a run may never meet their condition).
+    const momentQuizIds = scenes.filter((scene) => cityIds.includes(scene.cityId)).flatMap((scene) => momentQuizBattle(scene) ?? []);
     lines.push(`${journey.id} (${seen.steps} steps, journey end reached ${seen.ends} times):`,
       count("cities reached", cityIds, seen.cities),
       count("cities cleared", cityIds, seen.cleared),
       count("epilogues read", cityIds, seen.epilogues),
       count("stops completed", episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.id), seen.episodes),
       count("battles started", battleIds, seen.battles),
+      ...(momentQuizIds.length ? [count("moment quizzes started (not failed)", momentQuizIds, seen.battles)] : []),
       count("dates started", dateIds, seen.dates),
       count("place encounters met", cityEncounters.map((event) => event.id), seen.encounters),
       count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals),
@@ -438,5 +463,33 @@ describe("random walk through the game functions", () => {
       journey.cities.filter((city) => !reachedFor(journey.id)[kind].has(city.id)).map((city) => `${journey.id}: ${city.id}`));
     expect(missing("cleared"), `no walk cleared these cities. ${fix}`).toEqual([]);
     expect(missing("epilogues"), `no walk read the epilogue of these cities. ${fix}`).toEqual([]);
+  });
+});
+
+// The walk's count of a battle's tag AP (battleTagAp), on the sample's epilogue quiz (fictional): its last conversation choice
+// may end its story, and then the same action records the first result, so the choice's # ap: and the head's # on_done: ap
+// both count in that one step (the sample writes no AP there: the scene list is changed for the test, as content:build would).
+describe.runIf(!!getJourney("sample_trip"))("the walk's AP of a battle's tags", () => {
+  it("counts a choice's # ap: and the head's # on_done: ap together when the choice goes on to the first result in one action", () => {
+    const quiz = "smp_mihon_special_b_coach";
+    const finale = cityFinaleResult("mihon");
+    const cleared = validateGameState({ ...leaveBattleToFreeTime(finale, finale.revision, () => 0), discoveredClueIds: [...finale.discoveredClueIds, "smp_obs_mihon_coach_bell"] });
+    const choosing = playMomentUntil(openEpilogue(cleared, true, () => 0), (state) => state.activeBattle?.battleId === quiz && !!state.activeBattle.frame?.choices.length);
+    const choice = choosing.activeBattle!.frame!.choices[0];
+    const result = playBattleToResult(choosing);
+    expect(result.activeBattle).toMatchObject({ battleId: quiz, phase: "result" });
+    expect(choosing.battleRecords.some((record) => record.battleId === quiz)).toBe(false);
+    const list = scenes as SceneEntry[];
+    const index = list.findIndex((scene) => momentQuizBattle(scene) === quiz);
+    const kept = list[index];
+    list[index] = { ...kept, done: { ...kept.done, ap: 3 }, options: kept.options.map((option) => (option.id === choice.optionId ? { ...option, ap: 2 } : option)) };
+    try {
+      const choose: PlayerAction = { kind: "battle_choose", index: choice.index };
+      expect(tagAp(choosing, result, choose)).toBe(5);
+      // The result recorded already (a replay): nothing.
+      expect(tagAp({ ...choosing, battleRecords: result.battleRecords }, result, choose)).toBe(0);
+    } finally {
+      list[index] = kept;
+    }
   });
 });

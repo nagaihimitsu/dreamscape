@@ -56,6 +56,13 @@ describe("hudPlaceName", () => {
     expect(hudPlaceName(here, { backdrop: { placeId: "a_garden" } }, cities)).toBe("川向こうの庭");
   });
 
+  it("names the scene's own place (a moment quiz's landmark) when its background names none, after the background's", () => {
+    expect(hudPlaceName("滞在先のホテル", { sceneJa: "見本の停留所" }, cities)).toBe("見本の停留所");
+    expect(hudPlaceName("滞在先のホテル", { backdrop: {}, sceneJa: "見本の停留所" }, cities)).toBe("見本の停留所");
+    expect(hudPlaceName("滞在先のホテル", { backdrop: { placeJa: "ニューデリー駅" }, sceneJa: "駅の観光地" }, cities)).toBe("ニューデリー駅");
+    expect(hudPlaceName("滞在先のホテル", { legJa: "車で移動中", sceneJa: "見本の停留所" }, cities)).toBe("車で移動中");
+  });
+
   it("keeps the party's place for a placeId no map has", () => {
     expect(hudPlaceName(here, { backdrop: { placeId: "nowhere" } }, cities)).toBe("赤い城");
   });

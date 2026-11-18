@@ -102,6 +102,21 @@
         "smp_obs_mihon_library_weather",
         "smp_obs_mihon_library_hours"
       ]
+    },
+    {
+      "id": "mihon_coach_stop",
+      "cityId": "mihon",
+      "nameJa": "見本の停留所",
+      "nameEn": "Mihon Coach Stop",
+      "descriptionJa": "時計塔の下にある、乗合馬車の架空の停留所。地図の出来事はなく、街を出る前の推理クイズ（時点のクイズ）だけに使う。",
+      "imageAssetId": "smp_img_mihon_clock_tower",
+      "battleId": "smp_mihon_special_b_coach",
+      "observation": false,
+      "clueIds": [
+        "smp_obs_mihon_coach_bell",
+        "smp_obs_mihon_coach_timetable",
+        "smp_obs_mihon_coach_trough"
+      ]
     }
   ],
   "clues": [
@@ -275,6 +290,68 @@
           "checkedAt": "2026-11-06",
           "claimType": "legend",
           "claimJa": "見本用の架空の資料：図書室は今も、司書が手を三度たたいて閉館を知らせる。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_coach_bell",
+      "landmarkId": "mihon_coach_stop",
+      "kind": "document",
+      "titleJa": "夕方の鐘の合図",
+      "descriptionJa": "乗合馬車は塔の時計ではなく、夕方の鐘を合図に出る。（時計塔の鐘の下で、トーマに聞いた）",
+      "factId": "smp_fact_mihon_coach_bell",
+      "relatedQuestionIds": [
+        "smp_mihon_coach_b_q2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-18",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：見本の街の乗合馬車は、塔の時計ではなく夕方の鐘を合図に出る。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_coach_timetable",
+      "landmarkId": "mihon_coach_stop",
+      "kind": "document",
+      "titleJa": "色あせた時刻表",
+      "descriptionJa": "停留所の時刻表は色あせて、行き先の街の名前しか読めない。",
+      "factId": "smp_fact_mihon_coach_timetable",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-18",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：停留所の時刻表は色あせて、行き先の街の名前しか読めない。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_coach_trough",
+      "landmarkId": "mihon_coach_stop",
+      "kind": "document",
+      "titleJa": "馬の水桶",
+      "descriptionJa": "停留所の水桶は、毎朝いっぱいに満たされる。",
+      "factId": "smp_fact_mihon_coach_trough",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-18",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：停留所の水桶は、毎朝いっぱいに満たされる。"
         }
       ]
     }

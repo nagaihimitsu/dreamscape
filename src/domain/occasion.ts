@@ -2,22 +2,23 @@ import { battles, dates, episodes, getCityContent, getTour, landmarks } from "..
 import { landmarkParts } from "../content/tourism-schemas";
 import { decidesConfession } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
-import { startVisitBattle } from "./battle";
-import { battlePlayed } from "./conditions";
-import { beginMomentScene, momentSceneEligible, nextObservationScene, sceneSchedule, visitedLandmarkOfEvent } from "./encounter";
+import { momentBattleAvailability, startVisitBattle } from "./battle";
+import { battlePlayed, meets } from "./conditions";
+import { beginMomentScene, momentSceneAvailability, nextObservationScene, sceneSchedule, visitedLandmarkOfEvent } from "./encounter";
 import { beginArrival, beginCityEpilogue, beginTourLegNarration, canBeginArrival, canStartAuthoredEpilogue, epilogueOpening, startCityEpilogue } from "./epilogue";
 import { canDepart, departToNextCity, leaveForNextCity, registerMomentOpeners } from "./city-travel";
-import { startDate } from "./game";
+import { startDate, type Availability } from "./game";
 import { eventCity, eventPlace, momentHasScenes, momentSchedule, narrationAt, tourMoment, tripMoment, type Moment, type MomentSchedule } from "./moments";
 import { DAY_START, getGameWeekday, moveToPlace, planTravelEvent } from "./travel";
 import type { GameState } from "./game-state-schema";
 import type { Occasion, OccasionPart, OccasionThen, OccasionTour, OccasionTrip } from "./occasion-state";
 import { mainPartPayments, mainScene, runningMainPayment, tourKeepBack, type Payment } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
+import { placeSceneById } from "./scene-effects";
 import { cheapestOnTimeFare, compareRouteCost, findTravelHomeRoutes } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
 import { getTravelEventDefinition, getTravelHomeRoutes, isCompletedTravelEvent, isTravelEventVisible, reasonJa } from "./travel-game";
-import type { AfterPart, SceneEntry, SceneMain, SceneThen } from "../content/scene-schemas";
+import { momentQuizBattle, type AfterPart, type SceneEntry, type SceneMain, type SceneThen } from "../content/scene-schemas";
 import { WALK_MODE_ID } from "../content/transport";
 import { registerOccasionHooks } from "./occasion-hooks";
 
@@ -207,6 +208,28 @@ function partScene(occasion: Occasion, part: OccasionPart): SceneEntry | undefin
   return main && mainScene(main);
 }
 
+/** The battle of a moment quiz (時点のクイズ: a battle knot's `# at:`; 2026-11-18) the step's scene plays, if it is one. */
+const momentQuizOf = (sceneId: string): string | undefined => {
+  const scene = placeSceneById(sceneId);
+  return scene && momentQuizBattle(scene);
+};
+
+/**
+ * Why a scene step of the occasion can or cannot start now (Debug's candidate table reads the reason). A moment quiz: its `# when:`
+ * (read now, as its turn comes), its `# repeat:` (once: not after it was played), then whether the battle can start (its city, no
+ * other scene open; momentBattleAvailability). An inserted scene: its entry rules (encounter.ts momentSceneAvailability).
+ */
+export function momentStepAvailability(state: GameState, sceneId: string): Availability {
+  const scene = placeSceneById(sceneId);
+  const battleId = scene && momentQuizBattle(scene);
+  if (!scene || !battleId) return momentSceneAvailability(state, sceneId);
+  if (!meets(state, scene.when)) return { available: false, reason: "時点の条件を満たしていません。" };
+  if (scene.repeat === "once" && battlePlayed(state, battleId)) return { available: false, reason: "もう遊んだクイズです。" };
+  return momentBattleAvailability(state, battleId);
+}
+/** A scene step of the occasion can start now. */
+export const momentStepEligible = (state: GameState, sceneId: string): boolean => momentStepAvailability(state, sceneId).available;
+
 /** Start a main part; undefined when it does not start (the next step is tried). */
 function startPart(state: GameState, part: OccasionPart, nextRoll: () => number): GameState | undefined {
   const occasion = state.occasion!;
@@ -278,8 +301,15 @@ function stepOccasion(state: GameState, nextRoll: () => number): GameState {
   for (let index = nextIndex(steps, occasion.at, occasion.ran); index < steps.length; index++) {
     const step = steps[index];
     if ("scene" in step) {
-      if ((step.after && !occasion.ran.includes(step.after)) || occasion.started.includes(step.scene) || !momentSceneEligible(state, step.scene)) continue;
-      return beginMomentScene(withOccasion(state, { ...occasion, at: step.scene, started: [...occasion.started, step.scene] }), step.scene, nextRoll);
+      if ((step.after && !occasion.ran.includes(step.after)) || occasion.started.includes(step.scene) || !momentStepEligible(state, step.scene)) continue;
+      const moved = withOccasion(state, { ...occasion, at: step.scene, started: [...occasion.started, step.scene] });
+      // A moment quiz (時点のクイズ, 2026-11-18) runs as the turn's battle: its result screen's exit goes on with the next step.
+      const quiz = momentQuizOf(step.scene);
+      if (!quiz) return beginMomentScene(moved, step.scene, nextRoll);
+      const started = startVisitBattle(moved, quiz, true);
+      // Not started (it cannot start now): the next step is tried, and the scene is not recorded as started.
+      if (!started.activeBattle) continue;
+      return started;
     }
     // Each main part runs once (a scene listed at two moments of the occasion resumes the walk after its first slot).
     if (occasion.ran.includes(step.part)) continue;

@@ -17,7 +17,8 @@ export type ConditionContent = {
   cities: readonly { id: string }[];
   episodes: readonly { id: string; cityId: string; landmarkId: string | null; battleId?: string }[];
   battles: readonly { id: string; cityId?: string; landmarkId: string | null }[];
-  landmarks: readonly { id: string; cityId: string }[];
+  /** `observation: false`: the landmark has no observation (its clues are found only where a scene gives them). */
+  landmarks: readonly { id: string; cityId: string; observation?: boolean }[];
   /** The story file orders encounters of one priority; the options and repetition are read by the visit warnings. */
   encounters: readonly { id: string; cityId: string; landmarkId?: string; storyId?: string; repeatable?: boolean;
     options?: readonly { id: string; deferCompletion?: boolean }[] }[];
@@ -28,6 +29,12 @@ export type ConditionContent = {
   flags?: readonly string[];
   people?: readonly { id: string; cityId: string }[];
   namedConditions?: Readonly<Record<string, Condition>>;
+  /**
+   * The clues (tourism/catalog.json; 2026-11-18) and the cities of the scenes that give them (`heardIn`: `# clue:`, `# on_done:
+   * clue`): a clue comes first in the earliest of those cities and of its landmark's when that has an observation; a clue no
+   * scene gives belongs to its landmark's city.
+   */
+  clues?: readonly { id: string; landmarkId: string; heardIn?: readonly string[] }[];
   /** Scenes that also run at other moments than their landmark's visit (stage 4: a `place` with a date or a finale): 「また今度」 brings them back there. */
   returningScenes?: ReadonlySet<string>;
 };
@@ -37,6 +44,7 @@ export type ConditionOwner = { label: string; cityId: string; conditions: { fiel
 const KIND_LABELS: Record<LeafReference["kind"], string> = {
   episode: "episode", city: "city", battle: "battle", landmark: "landmark", encounter: "encounter", date: "date", item: "item", mode: "transport mode",
   flag: "flag (progression/story.json)", person: "person (progression/story.json)", condition: "named condition (progression/story.json)",
+  clue: "clue (tourism/catalog.json)",
 };
 
 /** The dates' `when` and `until`, checked in each date's city (its chapterId). */
@@ -96,6 +104,14 @@ export function referenceCity(content: ConditionContent, reference: LeafReferenc
     case "date": return content.dates.find((item) => item.id === reference.id)?.chapterId;
     case "item": return content.items.find((item) => item.id === reference.id)?.cityId;
     case "person": return content.people?.find((item) => item.id === reference.id)?.cityId;
+    case "clue": {
+      const clue = content.clues?.find((item) => item.id === reference.id);
+      const landmark = content.landmarks.find((item) => item.id === clue?.landmarkId);
+      if (!clue?.heardIn?.length) return landmark?.cityId;
+      // Heard in conversation: the earliest city where it can be recorded (a scene that gives it, or its landmark's observation).
+      const places = [...clue.heardIn, ...(landmark && landmark.observation !== false ? [landmark.cityId] : [])];
+      return places.reduce((first, cityId) => (cityOrder(content, cityId) < cityOrder(content, first) ? cityId : first));
+    }
     case "mode": case "flag": case "condition": return undefined;
   }
 }
@@ -113,6 +129,7 @@ function exists(content: ConditionContent, reference: LeafReference): boolean {
     case "flag": return !!content.flags?.includes(reference.id);
     case "person": return !!content.people?.some((item) => item.id === reference.id);
     case "condition": return !!content.namedConditions && Object.hasOwn(content.namedConditions, reference.id);
+    case "clue": return !!content.clues?.some((item) => item.id === reference.id);
   }
 }
 
@@ -213,9 +230,29 @@ export function checkConditions(content: ConditionContent, owners: readonly Cond
 
 /** Warnings of conditions: probable mistakes that break nothing (content:build lists them). */
 export type ConditionWarning = {
-  kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until";
+  kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until" | "unfindable-clue";
   message: string;
 };
+
+/**
+ * A scene's condition (an inserted scene's or a moment quiz's `# when:`, a choice's `# requires:`, a `cond()`) that reads `clue <ID>`
+ * of a clue no scene gives (`# clue:`, `# on_done: clue`) and no observation finds (its landmark has `observation: false`): it never
+ * holds (4.2, 2026-11-18; a warning). A map condition reading such a clue stops instead: its city has no way to clear it
+ * (progression-check.ts). `landmarks` tells the observations.
+ */
+export function unfindableClueConditionWarnings(content: Pick<ConditionContent, "clues"> & { landmarks: readonly { id: string; observation?: boolean }[] },
+  owners: readonly ConditionOwner[]): ConditionWarning[] {
+  const never = (id: string) => {
+    const clue = content.clues?.find((item) => item.id === id);
+    return !!clue && !clue.heardIn?.length && content.landmarks.find((item) => item.id === clue.landmarkId)?.observation === false;
+  };
+  return owners.flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
+    [...new Set(conditionLeaves(condition).flatMap((leaf) => ("clue" in leaf && never(leaf.clue) ? [leaf.clue] : [])))].map((id) => ({
+      kind: "unfindable-clue",
+      message: `A condition that never holds: ${owner.label} (${field}) reads clue ${id}, which no scene gives (# clue:, # on_done: clue) and no ` +
+        "observation finds (its landmark has observation: false); give it in a scene, or the scene never runs or the choice never shows (not stopped)",
+    }))));
+}
 type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | `after ${string}`; when?: Condition; quizAfterLandmarkBattle?: true };
 
 /**

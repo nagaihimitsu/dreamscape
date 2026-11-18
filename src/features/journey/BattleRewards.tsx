@@ -1,4 +1,5 @@
 import { allRewardRules, episodes } from "../../content";
+import { battleTagApGained } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import { PendingRewards } from "./PendingRewards";
 
@@ -15,8 +16,12 @@ export function BattleRewards({
     game.battleRewardReceipt?.battleRunId === active.runId
       ? game.battleRewardReceipt
       : null;
+  // The AP the battle's own tags gave (a choice's # ap:, the head's # on_done: ap): a moment quiz's reward AP is written so.
+  const tagAp = battleTagApGained(game);
   const earned =
-    receipt?.entries.reduce((total, entry) => total + entry.earnedAp, 0) ?? 0;
+    (receipt?.entries.reduce((total, entry) => total + entry.earnedAp, 0) ?? 0) + tagAp;
+  const rewarded = allRewardRules.some((rule) => rule.trigger !== "scene_tag" && rule.trigger !== "guide_read" &&
+    ((rule.battleId !== undefined && rule.battleId === active.battleId) || (!!episode && rule.episodeId === episode.id)));
   return (
     <>
       <section
@@ -36,9 +41,9 @@ export function BattleRewards({
         </p>
         <details className="reward-details">
           <summary>AP報酬の内訳</summary>
-          {receipt?.entries.length ? (
+          {receipt?.entries.length || tagAp > 0 ? (
             <ul>
-              {receipt.entries.map((entry) => {
+              {receipt?.entries.map((entry) => {
                 const pending =
                   game.pendingApRewards.find(
                     (item) => item.rewardId === entry.rewardId,
@@ -58,10 +63,16 @@ export function BattleRewards({
                   </li>
                 );
               })}
+              {tagAp > 0 && (
+                <li data-testid="battle-tag-ap">
+                  <span>クイズの中で得たAP</span>
+                  <span>＋{tagAp} AP</span>
+                </li>
+              )}
             </ul>
           ) : (
             <p className="fine-print">
-              初回報酬は受け取り済み、または下の受け取り待ちに保管されています。
+              {rewarded ? "初回報酬は受け取り済み、または下の受け取り待ちに保管されています。" : "このクイズで新しく得たAPはありません。"}
             </p>
           )}
         </details>

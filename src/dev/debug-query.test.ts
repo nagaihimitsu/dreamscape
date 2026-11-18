@@ -48,6 +48,19 @@ describe("Debug launch URLs", () => {
     expect(debugQueryString(settingsQuery("real", { ...settings, flags: [] }))).not.toContain("flags");
   });
 
+  it("writes and reads the clues heard of any scene after the flags (2026-11-18), never for the map check", () => {
+    const epilogue: DebugSettings = { ...settings, scene: "epilogue", id: "smp_mihon_finale", flags: ["a_flag"], clues: ["smp_obs_a", "smp_obs_b"] };
+    const url = debugQueryString(settingsQuery("real", epilogue));
+    expect(url.endsWith("&roll=negative&flags=a_flag&clues=smp_obs_a%2Csmp_obs_b")).toBe(true);
+    expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: settingsQuery("real", epilogue) });
+    expect(parseDebugQuery("?debug&city=delhi&scene=epilogue&clues=gt_delhi_clue_dubey_announcement"))
+      .toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "epilogue", clues: ["gt_delhi_clue_dubey_announcement"] } });
+    expect(debugQueryString(settingsQuery("real", { ...settings, clues: [] }))).not.toContain("clues");
+    expect(parseDebugQuery("?debug&scene=free&clues=Bell")).toEqual({ kind: "error", message: "「clues=Bell」はIDの形ではありません（手がかりのIDを , で区切ります）。" });
+    expect(parseDebugQuery("?debug&city=samarkand&scene=map&clues=a_clue"))
+      .toEqual({ kind: "error", message: "clues は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。" });
+  });
+
   it("reads a hotel's scene (scene=hotel) with its night's clock and flags (2026-11-16)", () => {
     const url = "?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_sick_morning&time=19:00&flags=gt_delhi_player_sick";
     expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "hotel",

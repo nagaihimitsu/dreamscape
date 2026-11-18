@@ -330,7 +330,8 @@ export function TourismScreen({
               aria-live="polite"
             >
               <span className="sr-only">手がかり帳に記録しました。</span>
-              <ClueDetails clue={selected} action={
+              {/* Found by this observation just now, whatever a scene may also give (heard: false). */}
+              <ClueDetails clue={selected} heard={false} action={
                 <button type="button" className="text-button" onClick={() => setDetailOpen(false)}>
                   説明を閉じる
                 </button>

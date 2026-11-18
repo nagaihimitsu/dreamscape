@@ -443,6 +443,84 @@
         "C": "1997年。王族の誕生日に向けて城が清掃されたあと。"
       }
     },
+    "gt_delhi_station_where_he_leads": {
+      "source": {
+        "questionEn": "The young man says the tourist ticket office inside the station is closed for repairs and a temporary office is across the road. Everything he says points to one action. What is it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Going into the station to check the board."
+          },
+          {
+            "id": "B",
+            "textEn": "Walking away from the station with him."
+          },
+          {
+            "id": "C",
+            "textEn": "Calling the railway helpline about the train."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "青年は、駅の中の観光客向けの切符売り場は工事で閉まっていて、臨時の窓口が道の向かいにあると言います。彼の話は、どれも一つの行動を指しています。それは何ですか。",
+      "optionsJa": {
+        "A": "駅の中へ入って、掲示板を確かめる。",
+        "B": "彼と一緒に、駅から離れて歩いていく。",
+        "C": "鉄道の電話相談に、列車のことを聞く。"
+      }
+    },
+    "gt_delhi_station_who_announces": {
+      "source": {
+        "questionEn": "Dubey made station announcements for thirty years. According to him, how does a station tell passengers about a cancelled train?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Staff wait outside the station and tell each passenger."
+          },
+          {
+            "id": "B",
+            "textEn": "A travel office across the road keeps a list of cancelled trains."
+          },
+          {
+            "id": "C",
+            "textEn": "It makes announcements and updates the train information boards."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ドゥベイさんは三十年、駅の案内放送をしていました。彼によると、駅は列車の運休をどうやって乗客に知らせますか。",
+      "optionsJa": {
+        "A": "職員が駅の外で待ち、乗客一人ずつに知らせる。",
+        "B": "道の向かいの旅行の事務所が、運休の列車の一覧を持っている。",
+        "C": "放送をして、列車の案内板の表示を更新する。"
+      }
+    },
+    "gt_delhi_station_auto_refund": {
+      "source": {
+        "questionEn": "The young man says you will not get your money back unless you go to the temporary office across the road. If your train is really cancelled and you have an e-ticket, what happens to the fare?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The railway refunds the fare automatically."
+          },
+          {
+            "id": "B",
+            "textEn": "The fare is lost unless you rebook today."
+          },
+          {
+            "id": "C",
+            "textEn": "Only an office across the road can give the fare back."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "青年は、道の向かいの臨時窓口へ行かないとお金は戻らないと言います。e切符を持っていて、列車が本当に運休になったら、運賃はどうなりますか。",
+      "optionsJa": {
+        "A": "鉄道が運賃を自動で払い戻す。",
+        "B": "今日のうちに振り替えないと、運賃はなくなる。",
+        "C": "道の向かいの事務所だけが、運賃を返せる。"
+      }
+    },
     "gt_agra_taj_mumtaz_last_journey": {
       "source": {
         "questionEn": "Tanvi asks Nikhil where and how Mumtaz Mahal died. What is the answer?",

@@ -87,6 +87,13 @@
 - ファイル：`stories/places/smp_mihon_city_end.ink`
 - 項目のID：`smp_mihon_date_bench_painter`、`smp_mihon_hotel_bell_night`、`smp_mihon_hotel_morning`（場所のファイルからは、その knot と、その ID を書いた行を消す。エピローグの前の2つの場面は「道中交流・会話と品物」の、移動の場面は「乗り物（貸し自転車）」の項目のIDにあり、それぞれの部分と一緒に外れる）
 
+### 会話の手がかりと時点の推理クイズ
+
+会話で聞いたことを手がかり帳に記録し、街を出る前の時点（エピローグの時点）に置いた推理クイズBの証拠にする例です（2026-11-18）。時計塔の鐘の会話で「下から見上げておく」を選ぶと、トーマが乗合馬車の合図を話し、選択肢の札 `# clue:` で手がかり「夕方の鐘の合図」が手がかり帳に入ります（画面の上に「手がかり帳に…を記録しました」と短く出ます）。その手がかりを持っていると、エピローグの前（`# at: epilogue mihon`、`# priority: -3`、`# when: clue …`）に、時計塔の下の架空の停留所で切符売りのヨナとの推理クイズが始まります。結果の画面の「先へ進む」で、エピローグの時点の次の場面へ続きます。停留所（`tourism/catalog.json` の `mihon_coach_stop`）は地図の出来事を持たない観光地で、案内も観察もありません（`observation: false`）。このクイズは `progression/journey.json` にも `travel/mihon.json` にも書きません（地図に置くとビルドが止めます）。手がかりを拾わずに進む人には、このクイズは流れません。
+
+- ファイル：`quizzes/smp_mihon_special_b_coach_quiz.json`、`stories/places/smp_mihon_coach_stop.ink`
+- 項目のID：`smp_mihon_special_b_coach`、`mihon_coach_stop`、`smp_obs_mihon_coach_bell`、`smp_obs_mihon_coach_timetable`、`smp_obs_mihon_coach_trough`、`smp_mihon_coach_b_q1`、`smp_mihon_coach_b_q2`、`smp_mihon_coach_b_q3`（場所のファイルからは、その ID を書いた行（時計塔の鐘の会話の `# clue:` の札）を消す。鐘の会話は「道中交流・会話と品物」の部分にあり、それだけを外すと手がかりを渡す場面がなくなり、このクイズは決して流れないと `content:build` の注意に出ます（止まりません））
+
 ### 乗り物（貸し自転車）
 
 徒歩のほかに、宿で借りる貸し自転車で街を回れます。借りるまでは自転車の経路に乗れず、借りなくてもどこへでも歩いて行けて、宿に帰れます。宿で一度払うと、見本の街にいるあいだ乗れます（次の都市へ出発すると返したことになります）。乗り物の宣言（`manifest.json` の `transportModes`、`"rental": true`）、自転車の経路、宿の貸し出し（`travel/mihon-settings.json` の `rentals`）、都市ごとの交通判断台帳（`travel/mihon-transit.json`）の書き方を示します。宿から初めて乗るときの会話（移動の時点の場面）は、上の「ほかの時点の場面と都市の終わり」で説明しています。

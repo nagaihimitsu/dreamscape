@@ -69,6 +69,32 @@
       "portrait": "abstract"
     },
     {
+      "id": "gt_delhi_special_station_battle",
+      "titleJa": "今朝決まった運休",
+      "descriptionJa": "ニューデリー駅の前で、名札の青年が列車の運休を告げる。",
+      "enemyNameJa": "青年",
+      "enemyTitleJa": "駅前の「案内係」",
+      "enemyDescriptionJa": "駅前の同じ角に、毎朝立っている。言うことは、昨日も今朝も同じ「今朝決まった運休」。客を連れて行けない日は、路地の上の誰かに言い訳をする。",
+      "storyId": "places/gt_delhi_inserts.gt_delhi_depart_scam_quiz",
+      "quizId": "gt_delhi_special_station_quiz",
+      "format": "B",
+      "landmarkId": "delhi_new_delhi_station",
+      "backgroundId": "gt_bg_delhi_station_front",
+      "portrait": "abstract",
+      "reasoning": {
+        "kind": "contradiction",
+        "roundIndex": 1,
+        "caseClueIds": [
+          "gt_delhi_clue_station_vest",
+          "gt_delhi_clue_dubey_announcement",
+          "gt_delhi_clue_station_office"
+        ],
+        "correctClueIds": [
+          "gt_delhi_clue_dubey_announcement"
+        ]
+      }
+    },
+    {
       "id": "gt_agra_main_taj_mahal_battle",
       "titleJa": "ベンチの番",
       "descriptionJa": "タージ・マハルの名物ベンチで、求婚の段取りのために「恋人のふり」で場所を取らされる。戻ってきた恋人は、指輪の前に問いかけた。",

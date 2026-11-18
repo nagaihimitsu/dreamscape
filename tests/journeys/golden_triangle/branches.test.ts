@@ -63,7 +63,11 @@ function choose(story: Story, index: number, result: "positive" | "negative" | u
 describe("Golden Triangle authored branching contracts", () => {
   it("covers the complete published cast and independent date set", () => {
     expect(indiaDates).toHaveLength(25);
-    expect(indiaBattles).toHaveLength(15);
+    // 15 on the map and the departure moment quiz at New Delhi station (gt_delhi_special_station_battle, 2026-11-18),
+    // the one India battle with reasoning (a B quiz at # at: depart delhi, its knot in the Delhi inserts file).
+    expect(indiaBattles).toHaveLength(16);
+    expect(indiaBattles.filter((battle) => battle.reasoning).map((battle) => [battle.id, battle.storyId]))
+      .toEqual([["gt_delhi_special_station_battle", "places/gt_delhi_inserts.gt_delhi_depart_scam_quiz"]]);
     const normal = indiaDates.filter((date) => date.kind === "normal");
     expect(normal).toHaveLength(18);
     for (const date of normal) {
@@ -146,7 +150,8 @@ describe("Golden Triangle authored branching contracts", () => {
     }, 60_000);
   }
 
-  for (const battle of indiaBattles) {
+  // The walk plays a battle's quiz calls only: the reasoning quiz above (its reasoning step and conversation choices) is not walked here.
+  for (const battle of indiaBattles.filter((item) => !item.reasoning)) {
     it(`${battle.id}: every combination of correct and incorrect answers leaves the one flow playable to its end`, () => {
       // -> quiz(n) -> calls the quiz, which comes back with quiz_correct and battle_score (stage 5).
       // The battle is a knot of its landmark's place file (#116): the flow starts there, as the game starts it.

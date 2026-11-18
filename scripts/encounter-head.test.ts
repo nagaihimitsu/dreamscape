@@ -82,6 +82,9 @@ describe("condition texts", () => {
     ["not confession_ready", { not: { confessionReady: true } }],
     ["normal_date_available", { normalDateAvailable: true }],
     ["not normal_date_available", { not: { normalDateAvailable: true } }],
+    // 2026-11-18: a clue in 手がかり帳 (found in an observation or heard in a scene).
+    ["clue smp_clue_heard", { clue: "smp_clue_heard" }],
+    ["not clue smp_clue_heard", { not: { clue: "smp_clue_heard" } }],
   ])("reads %s", (text, condition) => {
     expect(parseConditionText(text)).toEqual(condition);
   });
@@ -97,6 +100,8 @@ describe("condition texts", () => {
     ["confession_ready now", 'Write the condition part "confession_ready" as: confession_ready'],
     ["normal_date_available milano", 'Write the condition part "normal_date_available" as: normal_date_available'],
     ["battles mihon <= 2", "battles <city> >= N"], ["wish upon a star", "Unknown condition part: wish"],
+    ["clue", 'Write the condition part "clue" as: clue <clue>'], ["clue a b", 'Write the condition part "clue" as: clue <clue>'],
+    ["not clue", 'Write the condition part "clue" as: clue <clue>'], ["clue Bad-ID", "Invalid condition"],
   ])("refuses %j", (text, message) => {
     expect(() => parseConditionText(text)).toThrow(message);
   });

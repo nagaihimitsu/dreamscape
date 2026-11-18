@@ -82,6 +82,8 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
   condition: [{ condition: "smp_mihon_lili_heard" },
     { ...base, seenEncounterIds: ["smp_mihon_bookmark_stall"], storyProgress: { lines: {}, flags: ["smp_mihon_lili_told_why"] } },
     { ...base, seenEncounterIds: ["smp_mihon_bookmark_stall"] }],
+  // 2026-11-18: a clue in 手がかり帳, however it was recorded (an observation, a scene's # clue: or # on_done: clue).
+  clue: [{ clue: "k1" }, { ...base, discoveredClueIds: ["k1"] }, { ...base, discoveredClueIds: ["k2"] }],
 };
 
 describe("meets", () => {

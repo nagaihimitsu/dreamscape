@@ -4,7 +4,7 @@ import type { EncounterDefinition } from "../src/content/encounter-schemas";
 import type { EncounterEntryRule } from "../src/content/encounter-entry-rules";
 import { fnvHash } from "../src/content/fingerprint";
 import type { RewardRule } from "../src/content/journey-schemas";
-import { INSERTED_KINDS, type SceneAt, type SceneDone, type SceneEntry, type SceneKind, type SceneMain, type SceneOption } from "../src/content/scene-schemas";
+import { INSERTED_KINDS, MOMENT_QUIZ_MOMENTS, momentQuizBattle, runsAtMoment, type SceneAt, type SceneDone, type SceneEntry, type SceneKind, type SceneMain, type SceneOption } from "../src/content/scene-schemas";
 import { knotAddress } from "../src/content/story-address";
 import { choiceOption, moduleCalls, readHead, reachableKnots, type PlaceFile, type PlaceHead } from "./place-files";
 
@@ -69,6 +69,8 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
     const inserted = INSERTED_KINDS.includes(head.kind);
     // A tour leg's narration (tour stage 2b): no catalog points at it; its # at: names its leg.
     const narration = head.kind === "tour_leg";
+    // A moment quiz (時点のクイズ, 2026-11-18): a battle's knot with # at: runs as a turn of that moment, not on the map.
+    const momentQuiz = head.kind === "battle" && head.at.length > 0;
     const main = input.mains.find((item) => item.address === address);
     // `after leg` follows a leg's narration (tour stage 3): a tour's event step has none.
     for (const moment of head.at) if ("tour" in moment && head.priority === "after leg" && input.tourStep?.(moment.tour, moment.step)?.kind !== "leg")
@@ -88,18 +90,41 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
       if (head.priority === undefined) throw new Error(`The scene ${label} needs # priority: (-1, after guide, after observe, after battle or +1)`);
       if (main) throw new Error(`The ${head.kind} ${label} is also the main part ${JSON.stringify(main.main)} of a catalog; a catalog points at a guide, battle or date knot`);
       if (head.kind === "encounter" && head.title === undefined) throw new Error(`An encounter needs # title: (${label})`);
+    } else if (momentQuiz) {
+      if (!main) throw new Error(`No catalog points at the battle ${label}: write its address ${address} as a battle's storyId in battles/catalog.json ` +
+        "(a moment quiz is a battle of the catalog that no map event opens)");
+      if (main.kind !== head.kind) throw new Error(`The catalog points at ${label} as a ${main.kind}, its head says # scene: ${head.kind}`);
+      // Only the departure and the epilogue (both after the finale) are shown to save and resume with a quiz open in them (3.6).
+      const other = head.at.find((moment) => !MOMENT_QUIZ_MOMENTS.some((kind) => kind in moment));
+      if (other)
+        throw new Error(`時点のクイズは今は depart・epilogue にだけ置けます（ほかの時点は、クイズの途中の保存と再開をまだ確かめていません）：` +
+          `${label} は # at: ${momentText(other)}。# at: depart <都市> か # at: epilogue <都市> に書いてください` +
+          `（a moment quiz runs at depart <city> or epilogue <city> only）。`);
+      if (head.priority === undefined)
+        throw new Error(`時点のクイズには # priority: が要ります：${label}（その時点の差し込みの場面と同じく、負の数か、エピローグなら正の数も）` +
+          `（a moment quiz needs # priority:）。`);
+      if (head.then)
+        throw new Error(`時点のクイズの頭には # then: を書けません：${label}（結果の画面の後は、その時点の次の手番へ続きます）` +
+          `（a moment quiz takes no # then:）。`);
     } else {
       for (const key of ["at", "priority", "repeat"] as const) if (knot.head.some((tag) => tag.key === key))
-        throw new Error(`A main part's knot takes no # ${key}: (${label}): the catalog points at it, its order (the landmark's order) and repetition are the game's (A5)`);
+        throw new Error(`A main part's knot takes no # ${key}: (${label}): the catalog points at it, its order (the landmark's order) and repetition are the game's (A5)` +
+          (head.kind === "battle" && key !== "at" ? "; a reasoning quiz placed at a moment writes # at: depart|epilogue <city> with them" : ""));
       if (!main) throw new Error(`No catalog points at the ${head.kind} ${label}: write its address ${address} in the catalog (a landmark's guideStoryId, a battle's or a date's storyId)`);
       if (main.kind !== head.kind) throw new Error(`The catalog points at ${label} as a ${main.kind}, its head says # scene: ${head.kind}`);
       if ((head.whenTexts.length && head.kind !== "battle" && head.kind !== "date") || (head.untilTexts.length && head.kind !== "date"))
-        throw new Error(`Only a battle's knot takes # when: and only a date's # until: as its map condition (${label})`);
+        throw new Error(`Only a battle's knot takes # when: and only a date's # until: as its map condition (${label}); ` +
+          "a battle's knot with # at: (a reasoning quiz placed at a moment) reads its # when: and # until: when its turn comes instead");
     }
     // An inserted scene's city: its moments' (visit any, bare hotel and a trip without places: the city of the file's other scenes, settled below).
-    const cities = inserted || narration ? [...new Set(head.at.map((moment) => momentCity(input, moment, label)).filter((city): city is string => !!city))] : [main!.cityId];
+    const atMoments = inserted || narration || momentQuiz;
+    const cities = atMoments ? [...new Set(head.at.map((moment) => momentCity(input, moment, label)).filter((city): city is string => !!city))] : [main!.cityId];
     if (cities.length > 1) throw new Error(`The moments of ${label} are in different cities (${cities.join(", ")}); one scene belongs to one city`);
     const cityId = cities[0] ?? "";
+    // A moment quiz's city is its moment's; the game starts a battle only in its landmark's city (battle.ts battleAvailability).
+    if (momentQuiz && cityId !== main!.cityId)
+      throw new Error(`時点のクイズの都市と、クイズの観光地の都市が違います：${label} は ${cityId} の時点、クイズ ${JSON.stringify(main!.main)} の観光地は ` +
+        `${main!.cityId || "(no city)"} です（a moment quiz runs in its landmark's city）。`);
     // The helper knots, then the calls of modules.ink (a battle's -> quiz(n) -> and -> reasoning ->, stage 5).
     const knots = [...reached.map((item) => item.name), ...moduleCalls(file, reached)];
     const conds = [...new Set(reached.flatMap((item) => item.conds))];
@@ -107,9 +132,9 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
     result.push({ head, entry: {
       id: knot.name, kind: head.kind, ...(head.title ? { title: head.title } : main ? { title: main.title } : {}), cityId,
       story: { storyId: file.storyId, knot: knot.name }, ...(main ? { main: main.main } : {}),
-      at: inserted || narration ? head.at : [],
-      ...(inserted ? { priority: head.priority } : {}), order,
-      repeat: head.repeat ?? "once", people: head.people, ...(head.when && inserted ? { when: head.when } : {}),
+      at: atMoments ? head.at : [],
+      ...(inserted || momentQuiz ? { priority: head.priority } : {}), order,
+      repeat: head.repeat ?? "once", people: head.people, ...(head.when && (inserted || momentQuiz) ? { when: head.when } : {}),
       options, done: head.done, ...(head.then ? { then: head.then } : {}), ...(head.sources ? { sources: head.sources } : {}),
       conds, knots, fingerprint: placeFingerprint(input.compiled, knots, data), origin: "place",
     } });
@@ -205,7 +230,7 @@ export function catalogScenes(encounters: readonly EncounterDefinition[], rules:
 }
 
 /**
- * A one-scene catalog encounter's choice tags (`# requires:`, `# rel:`, `# money:`, `# ap:`, `# set:`, `# memory:`,
+ * A one-scene catalog encounter's choice tags (`# requires:`, `# rel:`, `# money:`, `# ap:`, `# set:`, `# clue:`, `# memory:`,
  * `# then:`) joined to its catalog options by `# option:` (the catalog keeps the gift, the use, 「また今度」 and the reaction).
  */
 export function mergeCatalogChoiceTags(scene: SceneEntry, tagged: readonly SceneOption[]): SceneEntry {
@@ -216,7 +241,8 @@ export function mergeCatalogChoiceTags(scene: SceneEntry, tagged: readonly Scene
     const money = (option.money ?? 0) + (tags.money ?? 0);
     return { ...option, ...(tags.requires ? { requires: [...(option.requires ?? []), ...tags.requires] } : {}),
       ...(tags.rel ? { rel: tags.rel } : {}), ...(money ? { money } : {}), ...(tags.ap ? { ap: tags.ap } : {}),
-      ...(tags.set ? { set: tags.set } : {}), ...(tags.memory ? { memory: tags.memory } : {}), ...(tags.then ? { then: tags.then } : {}),
+      ...(tags.set ? { set: tags.set } : {}), ...(tags.clues ? { clues: tags.clues } : {}), ...(tags.memory ? { memory: tags.memory } : {}),
+      ...(tags.then ? { then: tags.then } : {}),
       ...(tags.translated ? { translated: true as const } : {}) };
   });
   for (const tags of tagged) if (!scene.options.some((option) => option.id === tags.id))
@@ -304,9 +330,15 @@ export type SceneReferences = {
   effects: ReadonlySet<string>;
   /** An item carried through the journey (`"carry": "journey"`) from a city before the scene's: held, given and used there too. */
   carriedInto?: (itemId: string, sceneCityId: string) => boolean;
+  /**
+   * The clues of tourism/catalog.json (`# clue:`, `# on_done: clue`; 2026-11-18): each clue's journey, and the journey of a city.
+   * A scene may give a clue of any city of its own journey (手がかり帳 shows the clues of the city or landmark it is opened at).
+   */
+  clues: ReadonlyMap<string, string | undefined>;
+  journeyOfCity: (cityId: string) => string | undefined;
 };
 
-/** Stop at an undeclared flag, person, item, memory, profile or effect, and at an item of another city (A2, A22). */
+/** Stop at an undeclared flag, person, item, memory, profile, effect or clue, at an item of another city (A2, A22) and at a clue of another journey. */
 export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): void {
   const where = `${scene.story.storyId}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
   const item = (id: string, what: string) => {
@@ -319,6 +351,13 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
   const flag = (id: string, what: string) => {
     if (!refs.flags.has(id)) throw new Error(`Undeclared flag in ${what} of ${where}: ${id} (declare it in progression/story.json flags)`);
   };
+  const clue = (id: string, what: string) => {
+    if (!refs.clues.has(id)) throw new Error(`Unknown clue in ${what} of ${where}: ${id} (register it in tourism/catalog.json clues)`);
+    const journey = refs.clues.get(id);
+    const own = refs.journeyOfCity(scene.cityId);
+    if (journey !== own)
+      throw new Error(`A clue of another journey in ${what} of ${where}: ${id} belongs to ${journey ?? "no journey"}, the scene to ${own ?? "no journey"}`);
+  };
   for (const person of scene.people) if (!refs.people.has(person))
     throw new Error(`Undeclared person in # person: of ${where}: ${person} (declare it in progression/story.json people)`);
   for (const option of scene.options) {
@@ -330,6 +369,7 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
     }
     if (option.use) item(option.use, `${what} (# use:)`);
     for (const id of option.set ?? []) flag(id, `${what} (# set:)`);
+    for (const id of option.clues ?? []) clue(id, `${what} (# clue:)`);
     for (const id of option.memory ?? []) if (!refs.memories.has(id)) throw new Error(`Unknown memory in ${what} of ${where}: ${id}`);
     if (option.profile && !refs.profiles.has(option.profile)) throw new Error(`Unknown reaction profile in ${what} of ${where}: ${option.profile}`);
     if (option.effect && !refs.effects.has(option.effect)) throw new Error(`Unknown effect in ${what} of ${where}: ${option.effect}`);
@@ -337,6 +377,7 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
   for (const id of scene.done.items ?? []) item(id, "# on_done: item");
   for (const id of scene.done.use ?? []) item(id, "# on_done: use");
   for (const id of scene.done.set ?? []) flag(id, "# on_done: set");
+  for (const id of scene.done.clues ?? []) clue(id, "# on_done: clue");
 }
 
 /** The conditions of a scene (its head and its options' `# requires:`), for the condition checks. */
@@ -567,7 +608,8 @@ export function momentWarnings(scenes: readonly SceneEntry[], places: MomentPlac
     if ("trip" in moment) return [{ key: `trip ${moment.trip} in ${scene.cityId}`, from: moment.from, to: moment.to }];
     return [{ key: momentText(moment) }];
   };
-  const inserted = scenes.filter((scene) => INSERTED_KINDS.includes(scene.kind) && scene.priority !== undefined);
+  // The scenes that run as a moment's turns: the inserted ones and the moment quizzes (2026-11-18).
+  const inserted = scenes.filter((scene) => runsAtMoment(scene) && scene.priority !== undefined);
   const groups = new Map<string, { scene: SceneEntry; from?: string; to?: string; key: string }[]>();
   for (const scene of inserted) for (const moment of scene.at) for (const item of keysOf(scene, moment)) {
     const group = `${item.key}\u0000${scene.priority}`;
@@ -600,6 +642,78 @@ export function momentWarnings(scenes: readonly SceneEntry[], places: MomentPlac
       : [];
   });
   return [...later, ...same, ...repeated];
+}
+
+/** What the checks of the moment quizzes read of the journey (時点のクイズ, 2026-11-18). */
+export type MomentQuizContext = {
+  /** A battle of the catalog: whether it has a reasoning stop (format B or C) and its landmark. */
+  battle: (battleId: string) => { reasoning: boolean; landmarkId: string | null } | undefined;
+  /** Where the map names the battle, if it does (an episode, a special battle of progression/journey.json, a map event). */
+  onMap: (battleId: string) => string | undefined;
+  /**
+   * A landmark: whether its visit has a guide and an observation, and whether a map event opens that visit (an episode at it, or
+   * a special battle held there: visitedLandmarkOfEvent).
+   */
+  landmark: (landmarkId: string) => { guide: boolean; observation: boolean; mapVisit: boolean } | undefined;
+};
+/** The choice's effect tags (what a moment quiz's conversation applies only on its first play). */
+const EFFECT_FIELDS = ["give", "use", "rel", "money", "ap", "set", "clues", "memory", "profile"] as const;
+const sceneWhere = (scene: SceneEntry) => `${scene.story.storyId}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
+
+/**
+ * What stops a moment quiz (4.1; the head's rules are placeScenes'): a quiz without reasoning (format A: its result screen's exit
+ * goes to free time, enterFreeTime, which is not shown to go back to the moment), a quiz the map also opens (an episode, a special
+ * battle, a map event: started there, it is open outside its moment and its save is refused), and a head `# on_done:` that spends
+ * (nothing is kept back for it, so a result that cannot pay it would stop the game; a choice pays instead). Returns the errors.
+ */
+export function momentQuizErrors(scenes: readonly SceneEntry[], context: MomentQuizContext): string[] {
+  return scenes.flatMap((scene) => {
+    const battleId = momentQuizBattle(scene);
+    if (!battleId) return [];
+    const where = sceneWhere(scene);
+    const errors: string[] = [];
+    const battle = context.battle(battleId);
+    if (battle && !battle.reasoning)
+      errors.push(`時点のクイズは推理のある形式（B・C）だけです：${where} のクイズ ${battleId} には reasoning がありません（形式A。結果の画面の出口が ` +
+        "街歩きへ出るため、時点の流れへ戻れることをまだ確かめていません）（a moment quiz is a reasoning quiz, format B or C）。");
+    const onMap = context.onMap(battleId);
+    if (onMap)
+      errors.push(`時点のクイズは地図に置けません：${battleId}（${where} の # at: ${scene.at.map(momentText).join(", ")}）を ${onMap} も指しています。` +
+        "地図から始めると時点の外で開き、保存を読み込めなくなります。どちらか一方にしてください（a moment quiz is on no map: no episode, special battle or map event）。");
+    if ((scene.done.money ?? 0) < 0 || (scene.done.ap ?? 0) < 0)
+      errors.push(`時点のクイズの頭の # on_done: は、お金・APを減らせません：${where}（${[
+        ...((scene.done.money ?? 0) < 0 ? [`money ${scene.done.money}`] : []), ...((scene.done.ap ?? 0) < 0 ? [`ap ${scene.done.ap}`] : [])].join(", ")}）。` +
+        "取り置きがないので、結果のときに払えないと止まります。払いは会話の選択肢の # money:・# ap: に書いてください（a moment quiz's # on_done: only gives）。");
+    return errors;
+  });
+}
+
+export type MomentQuizWarning = { kind: "moment-quiz-landmark" | "moment-quiz-repeat-tags"; message: string };
+/**
+ * The moment quizzes' warnings (4.2; not stopped): its landmark has a guide or an observation that never runs because no map event
+ * opens the landmark's visit (a landmark the map visits runs them there, so it is not warned); a quiz repeated always whose
+ * conversation's tags or head `# on_done:` give or spend: they apply on its first play only (decision 10), not each time it runs again.
+ */
+export function momentQuizWarnings(scenes: readonly SceneEntry[], context: MomentQuizContext): MomentQuizWarning[] {
+  return scenes.flatMap((scene): MomentQuizWarning[] => {
+    const battleId = momentQuizBattle(scene);
+    if (!battleId) return [];
+    const where = sceneWhere(scene);
+    const warnings: MomentQuizWarning[] = [];
+    const landmarkId = context.battle(battleId)?.landmarkId;
+    const landmark = landmarkId ? context.landmark(landmarkId) : undefined;
+    if (landmark && !landmark.mapVisit && (landmark.guide || landmark.observation))
+      warnings.push({ kind: "moment-quiz-landmark", message: `The landmark ${landmarkId} of the moment quiz ${battleId} (${where}) has ` +
+        `${[landmark.guide ? "a guide (guideStoryId)" : "", landmark.observation ? "an observation (observation is not false)" : ""].filter(Boolean).join(" and ")}, ` +
+        "which never runs: no map event opens its visit (write observation: false and no guideStoryId; not stopped)" });
+    const tagged = scene.options.filter((option) => EFFECT_FIELDS.some((key) => option[key] !== undefined)).map((option) => option.id);
+    const done = Object.keys(scene.done);
+    if (scene.repeat === "always" && (tagged.length || done.length))
+      warnings.push({ kind: "moment-quiz-repeat-tags", message: `The moment quiz ${battleId} (${where}) is repeated always, but its ` +
+        `${[tagged.length ? `choice tags (${tagged.join(", ")})` : "", done.length ? `head # on_done: (${done.join(", ")})` : ""].filter(Boolean).join(" and ")} ` +
+        "apply on its first play only: when it runs again they give and spend nothing (a battle's tags apply once; not stopped)" });
+    return warnings;
+  });
 }
 
 /**

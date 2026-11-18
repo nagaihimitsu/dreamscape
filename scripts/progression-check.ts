@@ -22,6 +22,11 @@ export type ProgressionContent = {
     requiredEpisodeIds: readonly string[]; when?: Condition }[];
   storyBattles: readonly { battleId: string; requiredEpisodeIds: readonly string[]; when?: Condition }[];
   battles: readonly { id: string; cityId?: string; landmarkId: string | null; scope?: string }[];
+  /**
+   * The moment quizzes (時点のクイズ: a battle knot's `# at: depart|epilogue`; 2026-11-18): no map event opens them, so
+   * `battles <city> >= N` does not count them (as the game does, conditions.ts).
+   */
+  momentQuizIds?: readonly string[];
   landmarks: readonly { id: string; cityId: string; guideStoryId?: string; observation?: boolean }[];
   encounters: readonly { id: string; cityId: string; repeatable?: boolean; completionMoney?: number; completionItemId?: string;
     quiz?: { rewardItemId: string }; options: readonly { cost?: number; giftItemId?: string; consumeItemId?: string }[] }[];
@@ -32,7 +37,16 @@ export type ProgressionContent = {
    * once the battle is played (`battleId`), a guide's once it is read (`guideLandmarkId`), an epilogue's after the finale.
    */
   sceneItems?: readonly SceneItems[];
-  dates: readonly { id: string; chapterId: string; kind: string; apCost: number; when?: Condition }[];
+  /**
+   * The clues (tourism/catalog.json; 2026-11-18) with their landmarks: an observation at a landmark that has one finds its
+   * clues once the visit comes. A scene's `# clue:` or `# on_done: clue` gives one too (SceneItems.clues).
+   */
+  clues?: readonly { id: string; landmarkId: string }[];
+  /**
+   * `repeatable` and `rewardOnlyOnce` (romance/date_catalog.json): a date that can be played again (a special date, repeatable)
+   * and is not a replay then (not reward-only-once) applies its choices' tags again (game.ts), its clues among them.
+   */
+  dates: readonly { id: string; chapterId: string; kind: string; apCost: number; when?: Condition; repeatable?: boolean; rewardOnlyOnce?: boolean }[];
   /**
    * Each city's travel: the hotel, the map events' places and admissions, the routes' fares, the starting budget, and the
    * tour-only places (`access: "tour"`, tour stage 2a), whose events only a tour reaches.
@@ -66,19 +80,32 @@ export type ProgressionContent = {
 };
 
 /**
- * A scene that gives, gives away or uses items: a main scene (`main`: its main part) or an inserted scene (`at`: the
- * moments it runs at, from its `# at:`). `sceneId` is the scene's ID (an inserted scene's encounter has the same ID).
+ * A scene that gives, gives away or uses items, or gives clues: a main scene (`main`: its main part) or an inserted scene
+ * (`at`: the moments it runs at, from its `# at:`). `sceneId` is the scene's ID (an inserted scene's encounter has the same
+ * ID). `clues` (2026-11-18): the clues its `# clue:` choices and `# on_done: clue` record, `choiceClues` those of its choices
+ * (a date played again may give them again; its `# on_done:` only once); `repeat`: an inserted scene's `# repeat:` (a scene
+ * played once gives nothing more once it is done).
  */
-export type SceneItems = { sceneId: string; cityId: string; gives: readonly string[]; spends: readonly string[];
-  main?: Readonly<Record<string, string>>; at?: readonly Readonly<Record<string, string>>[] };
+export type SceneItems = { sceneId: string; cityId: string; gives: readonly string[]; spends: readonly string[]; clues?: readonly string[];
+  choiceClues?: readonly string[]; repeat?: "once" | "always"; main?: Readonly<Record<string, string>>; at?: readonly Readonly<Record<string, string>>[] };
 
-/** The scenes' items as the check reads them (ProgressionContent.sceneItems), from the scene list content:build makes. */
-export function sceneItemsOf(scenes: readonly { id: string; cityId: string; main?: Record<string, string>; at: readonly Record<string, string>[];
-  done: { items?: readonly string[]; use?: readonly string[] }; options: readonly { give?: { item: string }; use?: string }[] }[]): SceneItems[] {
-  return scenes.filter((scene) => scene.done.items?.length || scene.done.use?.length || scene.options.some((option) => option.give || option.use))
-    .map((scene) => ({ sceneId: scene.id, cityId: scene.cityId, gives: scene.done.items ?? [],
-      spends: [...(scene.done.use ?? []), ...scene.options.flatMap((option) => [option.give?.item, option.use].filter((id): id is string => !!id))],
-      ...(scene.main ? { main: scene.main } : { at: scene.at }) }));
+/** The scenes' items and clues as the check reads them (ProgressionContent.sceneItems), from the scene list content:build makes. */
+export function sceneItemsOf(scenes: readonly { id: string; cityId: string; repeat?: "once" | "always"; main?: Record<string, string>; at: readonly Record<string, string>[];
+  done: { items?: readonly string[]; use?: readonly string[]; clues?: readonly string[] };
+  options: readonly { give?: { item: string }; use?: string; clues?: readonly string[] }[] }[]): SceneItems[] {
+  const choiceCluesOf = (scene: (typeof scenes)[number]) => [...new Set(scene.options.flatMap((option) => option.clues ?? []))];
+  const cluesOf = (scene: (typeof scenes)[number]) => [...new Set([...(scene.done.clues ?? []), ...choiceCluesOf(scene)])];
+  return scenes.filter((scene) => scene.done.items?.length || scene.done.use?.length || scene.options.some((option) => option.give || option.use) ||
+      cluesOf(scene).length)
+    .map((scene) => {
+      const clues = cluesOf(scene);
+      const choiceClues = choiceCluesOf(scene);
+      return { sceneId: scene.id, cityId: scene.cityId, gives: scene.done.items ?? [],
+        spends: [...(scene.done.use ?? []), ...scene.options.flatMap((option) => [option.give?.item, option.use].filter((id): id is string => !!id))],
+        ...(clues.length ? { clues } : {}), ...(choiceClues.length ? { choiceClues } : {}), ...(scene.repeat ? { repeat: scene.repeat } : {}),
+        // A moment quiz (a battle's scene with # at:, 2026-11-18) keeps both: it gives at its moment, and is over once played.
+        ...(scene.main ? { main: scene.main } : {}), ...(!scene.main || scene.at.length ? { at: scene.at } : {}) };
+    });
 }
 
 /**
@@ -91,6 +118,8 @@ export type ProgressionSnapshot = {
   battles: ReadonlySet<string>; episodes: ReadonlySet<string>; cities: ReadonlySet<string>; landmarks: ReadonlySet<string>;
   guides: ReadonlySet<string>; encounters: ReadonlySet<string>; seenEncounters: ReadonlySet<string>; dates: ReadonlySet<string>;
   epilogues: ReadonlySet<string>; items: Readonly<Record<string, string>>;
+  /** The clues in 手がかり帳 (discoveredClueIds; 2026-11-18). */
+  clues: ReadonlySet<string>;
   couple: boolean; romanceStage: number; cityDay: number; journeyDay?: number; money: number;
 };
 
@@ -102,6 +131,8 @@ type City = {
   events: MainEvent[];
   /** Items a scene of the city gives (with the main part it comes after, if any), and those a choice or a scene's end gives away or uses. */
   itemSources: Map<string, ItemSource[]>; itemSpends: Set<string>;
+  /** The city's sources of each clue (2026-11-18): its scenes' # clue: and # on_done: clue, and its landmarks' observations. */
+  clueSources: Map<string, ClueSource[]>;
   /** The most money the party can have in the city (Infinity when a repeated scene pays). */
   maxMoney: number;
 };
@@ -110,7 +141,7 @@ type City = {
 const ROMANCE: readonly LeafKind[] = ["relationship", "romanceStage", "couple", "datePlayed", "datesCompleted", "confessionReady"];
 /** Leaves whose record never turns back once true. */
 const MONOTONE: readonly LeafKind[] = ["battlePlayed", "episodeCompleted", "episodesCompleted", "cityCompleted", "landmarkVisited", "guideRead",
-  "encounterCompleted", "encounterSeen", "datePlayed", "epilogueViewed", "epilogueStarted", "battlesPlayed", "couple", "rented"];
+  "encounterCompleted", "encounterSeen", "datePlayed", "epilogueViewed", "epilogueStarted", "battlesPlayed", "couple", "rented", "clue"];
 
 /** How a run of the check reads some leaves (the warnings' "what if" runs). */
 type Mode = {
@@ -131,13 +162,39 @@ type Mode = {
  * moves on after it). Guides are skipped there, so a guide's item counts as outside the main path.
  */
 type ItemSource = { battleId?: string; guideLandmarkId?: string; landmarkId?: string; afterFinale?: boolean; dateId?: string; mainPath?: boolean };
+/**
+ * A source of a clue (2026-11-18): when it comes, as an item's, and whether it is over in the real records of an exact
+ * snapshot (`over`: a scene played once and done, a main part already played; an observation is never counted as over).
+ */
+type ClueSource = ItemSource & { over?: (now: ProgressionSnapshot) => boolean };
+
+/**
+ * Whether a scene that gives `clueId` has given it for the last time, by the records of an exact snapshot. A date played once is
+ * over, unless it can be played again and is no replay then (a repeatable special date not reward-only-once, game.ts) while one
+ * of its choices gives the clue: a choice's tags apply on each such play (its `# on_done:` only on the first).
+ */
+function sceneOver(content: ProgressionContent, scene: SceneItems, cityId: string, clueId: string): (now: ProgressionSnapshot) => boolean {
+  const main = scene.main;
+  if (main?.battle) return (now) => now.battles.has(main.battle);
+  if (main?.guide) return (now) => now.guides.has(main.guide);
+  if (main?.date) {
+    const date = content.dates.find((item) => item.id === main.date);
+    const again = !!date && date.kind !== "normal" && !!date.repeatable && !date.rewardOnlyOnce && !!scene.choiceClues?.includes(clueId);
+    return (now) => !again && now.dates.has(main.date);
+  }
+  if (main?.epilogue) return (now) => now.epilogues.has(cityId);
+  // An arrival: the snapshot does not tell whether it is over (counted as still to come).
+  if (main) return () => false;
+  return (now) => (scene.repeat ?? "once") === "once" && now.encounters.has(scene.sceneId);
+}
 
 /** The sources of a scene's items: one per main part, or one per moment the inserted scene runs at (any of them gives it). */
 function sceneSources(content: ProgressionContent, scene: SceneItems): ItemSource[] {
   const main = scene.main;
   // A later-city start skips the guides and reads the epilogue only when the journey moves on after it (departFromClearedCity).
   const readsEpilogue = journeyOf(content, scene.cityId)?.cityTransition === "after_epilogue";
-  if (main) return [main.battle ? { battleId: main.battle, mainPath: true } : main.guide ? { guideLandmarkId: main.guide }
+  // (A moment quiz, a main battle with # at:, gives at its moment below: its departure or epilogue, after the finale.)
+  if (main && !scene.at?.length) return [main.battle ? { battleId: main.battle, mainPath: true } : main.guide ? { guideLandmarkId: main.guide }
     : main.epilogue ? { afterFinale: true, mainPath: readsEpilogue } : main.date ? { dateId: main.date } : { mainPath: true }];
   const travel = content.travel.find((item) => item.cityId === scene.cityId);
   const landmarkOfEvent = (eventId: string) => content.episodes.find((episode) => episode.id === eventId)?.landmarkId ??
@@ -249,8 +306,17 @@ function cityModel(content: ProgressionContent, cityId: string): City {
   for (const item of encounters.filter((entry) => !sceneIds.has(entry.id)))
     for (const id of [item.completionItemId, item.quiz?.rewardItemId]) if (id) addSource(id, {});
   for (const scene of scenes) for (const id of scene.gives) for (const source of sceneSources(content, scene)) addSource(id, source);
+  // A clue: the scenes that give it (as an item's sources) and the observations of the city's landmarks that have one.
+  const clueSources = new Map<string, ClueSource[]>();
+  const addClueSource = (clueId: string, source: ClueSource) => clueSources.set(clueId, [...(clueSources.get(clueId) ?? []), source]);
+  for (const scene of scenes) for (const id of scene.clues ?? []) for (const source of sceneSources(content, scene))
+    addClueSource(id, { ...source, over: sceneOver(content, scene, cityId, id) });
+  for (const clue of content.clues ?? []) {
+    const landmark = content.landmarks.find((item) => item.id === clue.landmarkId);
+    if (landmark?.cityId === cityId && landmark.observation !== false) addClueSource(clue.id, { landmarkId: landmark.id });
+  }
   return {
-    id: cityId, journeyId: journey?.id, order: orderOf(content, cityId), events, itemSources,
+    id: cityId, journeyId: journey?.id, order: orderOf(content, cityId), events, itemSources, clueSources,
     itemSpends: new Set([...encounters.flatMap((item) => item.options.flatMap((option) => [option.giftItemId, option.consumeItemId].filter((id): id is string => !!id))),
       ...scenes.flatMap((scene) => scene.spends)]),
     maxMoney: paying.some((item) => item.repeatable) ? Infinity : start + paying.reduce((sum, item) => sum + (item.completionMoney ?? 0), 0),
@@ -307,10 +373,38 @@ function fact(content: ProgressionContent, city: City, now: ProgressionSnapshot,
   return { canTrue: earlier || isNow, canFalse: !isNow };
 }
 
-/** Whether a source of the item comes in the reach: it needs no main part, or its battle, guide or the finale is reached. */
-const sourceReached = (city: City, reach: Reach, itemId: string, mode: Mode = {}) => (city.itemSources.get(itemId) ?? []).some((source) =>
+/** Whether a source comes in the reach: it needs no main part, or its battle, guide, visit or the finale is reached (a date: some day). */
+const comes = (reach: Reach, source: ItemSource, mode: Mode) =>
   (!source.battleId || reach.battles.has(source.battleId)) && (!source.guideLandmarkId || reach.guides.has(source.guideLandmarkId)) &&
-  (!source.landmarkId || reach.landmarks.has(source.landmarkId)) && (!source.afterFinale || reach.finale) && (!source.dateId || !mode.noRomance));
+  (!source.landmarkId || reach.landmarks.has(source.landmarkId)) && (!source.afterFinale || reach.finale) && (!source.dateId || !mode.noRomance);
+/** Whether a source of the item comes in the reach. */
+const sourceReached = (city: City, reach: Reach, itemId: string, mode: Mode = {}) => (city.itemSources.get(itemId) ?? []).some((source) => comes(reach, source, mode));
+
+/**
+ * Whether the clue can still be recorded (2026-11-18): a source in the city that comes in the reach (in an exact snapshot, one
+ * not over yet), or, from a city's start, a source in an earlier city of the journey that comes there, playing that city from
+ * its start in the same mode (without the romance: no date; a Debug or walk start at this city: only its main path, as an
+ * item's; earlierSourceReachable). A clue no scene gives and no observation finds is never recorded.
+ */
+function clueMayCome(content: ProgressionContent, city: City, now: ProgressionSnapshot, reach: Reach, clueId: string, mode: Mode): boolean {
+  if ((city.clueSources.get(clueId) ?? []).some((source) => comes(reach, source, mode) && !(now.exact && source.over?.(now)))) return true;
+  if (now.exact || !city.journeyId) return false;
+  return earlierClueSources(content, city).some(({ cityId }) => earlierClueReachable(content, cityId, clueId, mode));
+}
+
+/** The earlier cities of the city's journey whose scenes or observations give some clue, in travel order. */
+const earlierClueSources = (content: ProgressionContent, city: City) =>
+  (journeyOf(content, city.id)?.cities.slice(0, city.order) ?? []).map(({ id }) => ({ cityId: id, sources: cityModel(content, id).clueSources }));
+
+/** Whether a source of the clue in an earlier city comes there, played from its start (in a later-city start: on its main path only). */
+function earlierClueReachable(content: ProgressionContent, cityId: string, clueId: string, mode: Mode): boolean {
+  const city = cityModel(content, cityId);
+  const sources = city.clueSources.get(clueId) ?? [];
+  if (!sources.length) return false;
+  const earlierMode: Mode = mode.noRomance ? { noRomance: true } : {};
+  const reach = reachCity(content, city, startSnapshot(), earlierMode);
+  return sources.some((source) => comes(reach, source, earlierMode) && (!mode.noEarlierItems || !!source.mainPath));
+}
 
 /** Whether a scene that a Debug or walk start at a later city plays gives it: an arrival, a battle, the epilogue only in an
  * after_epilogue journey, never a guide (the item design §2.5 9). */
@@ -344,7 +438,9 @@ function earlierSourceReachable(content: ProgressionContent, cityId: string, ite
 function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapshot, reach: Reach, leaf: Leaf, mode: Mode = {}): Truth {
   const both = { canTrue: true, canFalse: true };
   const landmarkCity = (id: string) => content.landmarks.find((item) => item.id === id)?.cityId;
-  const cityBattles = (cityId: string) => content.battles.filter((battle) => battle.scope !== "city_finale" && battleCityOf(content, battle.id) === cityId).map((battle) => battle.id);
+  // The city's map quizzes: not its finale, nor a moment quiz (no map event opens it; 2026-11-18).
+  const cityBattles = (cityId: string) => content.battles.filter((battle) => battle.scope !== "city_finale" && !content.momentQuizIds?.includes(battle.id) &&
+    battleCityOf(content, battle.id) === cityId).map((battle) => battle.id);
   if ("battlePlayed" in leaf) return fact(content, city, now, battleCityOf(content, leaf.battlePlayed), now.battles.has(leaf.battlePlayed), reach.battles.has(leaf.battlePlayed));
   if ("episodeCompleted" in leaf)
     return fact(content, city, now, content.episodes.find((item) => item.id === leaf.episodeCompleted)?.cityId, now.episodes.has(leaf.episodeCompleted), reach.episodes.has(leaf.episodeCompleted));
@@ -394,6 +490,9 @@ function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapsh
     if (is === "left_behind") return { canTrue: status === is, canFalse: status !== is };
     return { canTrue: status === is || ((status === "held" || obtainable) && city.itemSpends.has(id)), canFalse: status !== is };
   }
+  // A clue (2026-11-18): recorded already (it stays), or a scene or an observation that records it can still come.
+  if ("clue" in leaf) return now.clues.has(leaf.clue) ? { canTrue: true, canFalse: false }
+    : { canTrue: clueMayCome(content, city, now, reach, leaf.clue, mode), canFalse: true };
   if ("cityDay" in leaf) return { canTrue: leaf.cityDay.atMost === undefined || now.cityDay <= leaf.cityDay.atMost,
     canFalse: leaf.cityDay.atLeast === undefined || now.cityDay < leaf.cityDay.atLeast || leaf.cityDay.atMost !== undefined };
   if ("journeyDay" in leaf) {
@@ -442,7 +541,7 @@ function reachCity(content: ProgressionContent, city: City, now: ProgressionSnap
 export function startSnapshot(): ProgressionSnapshot {
   const none = new Set<string>();
   return { exact: false, battles: none, episodes: none, cities: none, landmarks: none, guides: none, encounters: none, seenEncounters: none,
-    dates: none, epilogues: none, items: {}, couple: false, romanceStage: 1, cityDay: 1, money: 0 };
+    dates: none, epilogues: none, items: {}, clues: none, couple: false, romanceStage: 1, cityDay: 1, money: 0 };
 }
 
 /** Whether the city's finale can still show on the map (or the city is cleared) from the snapshot. */
@@ -653,9 +752,13 @@ function apWarnings(content: ProgressionContent): ProgressionWarning[] {
   });
 }
 
-/** Check 9's warnings: probable dead ends that break nothing (content:build lists them). */
+/**
+ * Check 9's warnings: probable dead ends that break nothing (content:build lists them). `findable` (4.3, 2026-11-18): the clues a
+ * landmark without an observation may still list, because a scene gives them (`# clue:`, `# on_done: clue`) or they are a reasoning
+ * quiz's case evidence (readable during its reasoning whether found or not).
+ */
 export function progressionWarnings(content: ProgressionContent, clueUses: readonly { clueId: string; usedBy: string }[] = [],
-  landmarkClues: readonly { landmarkId: string; clueIds: readonly string[] }[] = []): ProgressionWarning[] {
+  landmarkClues: readonly { landmarkId: string; clueIds: readonly string[] }[] = [], findable: ReadonlySet<string> = new Set()): ProgressionWarning[] {
   const warnings: ProgressionWarning[] = [];
   for (const cityId of finaleCities(content)) {
     const city = cityModel(content, cityId);
@@ -668,18 +771,23 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
         `shows on the map only while a part holds that can turn false for good (money spent, an item given or used — an item carried ` +
         `through the journey also by a choice in an earlier city —, a battle played or a date or the couple under not, a day limit), and no other way is left` });
     if (!reachCity(content, city, start, { noEarlierItems: true }).finale) {
-      const items = [...new Set(city.events.flatMap((event) => (event.condition ? conditionLeaves(event.condition) : []))
-        .flatMap((leaf) => ("item" in leaf ? [leaf.item.id] : [])).filter((id) => {
-          const itemCity = content.items.find((item) => item.id === id)?.cityId;
-          return itemCity !== undefined && itemCity !== cityId && journeyOf(content, itemCity)?.id === city.journeyId && orderOf(content, itemCity) < city.order &&
-            !onMainPath(content, itemCity, id);
-        }))];
+      const leaves = city.events.flatMap((event) => (event.condition ? conditionLeaves(event.condition) : []));
+      const items = [...new Set(leaves.flatMap((leaf) => ("item" in leaf ? [leaf.item.id] : [])).filter((id) => {
+        const itemCity = content.items.find((item) => item.id === id)?.cityId;
+        return itemCity !== undefined && itemCity !== cityId && journeyOf(content, itemCity)?.id === city.journeyId && orderOf(content, itemCity) < city.order &&
+          !onMainPath(content, itemCity, id);
+      }))];
+      // A clue (2026-11-18) the city's own scenes and observations do not give, and an earlier city gives only off its main path.
+      const clues = [...new Set(leaves.flatMap((leaf) => ("clue" in leaf ? [leaf.clue] : [])).filter((id) => !city.clueSources.has(id) &&
+        earlierClueSources(content, city).some(({ sources }) => sources.has(id)) &&
+        !earlierClueSources(content, city).some(({ cityId: earlier }) => earlierClueReachable(content, earlier, id, { noEarlierItems: true }))))];
       const readsEpilogue = journeyOf(content, cityId)?.cityTransition === "after_epilogue";
-      warnings.push({ kind: "earlier-item-start", message: `City ${cityId} needs an item from an earlier city that only an optional date, inserted scene, ` +
+      const what = items.length && clues.length ? "an item and a clue" : clues.length ? "a clue" : "an item";
+      warnings.push({ kind: "earlier-item-start", message: `City ${cityId} needs ${what} from an earlier city that only an optional date, inserted scene, ` +
         `guide${readsEpilogue ? "" : ", epilogue"} or encounter there gives: its finale ${finale.id} (or a main part it needs) shows on the map only with ` +
-        `${items.join(", ")}; a play started at ${cityId} (Debug, the exploration walk's start of a later city) has played the earlier cities along their ` +
+        `${[...items, ...clues].join(", ")}; a play started at ${cityId} (Debug, the exploration walk's start of a later city) has played the earlier cities along their ` +
         `main path only (arrival, battles, finale${readsEpilogue ? ", epilogue" : ""}; guides${readsEpilogue ? "" : " and epilogues"} skipped), so it may lack ` +
-        `the item and then cannot clear ${cityId} (normal play starts at the first city; not stopped)` });
+        `${clues.length && !items.length ? "the clue" : "the item"} and then cannot clear ${cityId} (normal play starts at the first city; not stopped)` });
     }
     if (!reachCity(content, city, start, { noRomance: true }).finale)
       warnings.push({ kind: "romance-only-city", message: `City ${cityId} can be cleared only through the romance: without the romance values ` +
@@ -702,10 +810,14 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
     }
   }
   const closed = new Set(content.landmarks.filter((item) => item.observation === false).map((item) => item.id));
-  for (const { landmarkId, clueIds } of landmarkClues.filter((item) => closed.has(item.landmarkId) && item.clueIds.length)) {
+  for (const { landmarkId, clueIds: listed } of landmarkClues.filter((item) => closed.has(item.landmarkId))) {
+    // Only the clues no way records or shows: a scene's # clue: / # on_done: clue and a reasoning quiz's case evidence do (4.3).
+    const clueIds = listed.filter((id) => !findable.has(id));
+    if (!clueIds.length) continue;
     const used = clueUses.filter((use) => clueIds.includes(use.clueId));
     warnings.push({ kind: "unfindable-clue", message: `Clues that can never be found: ${landmarkId} has no observation (observation: false) but lists ` +
-      `${clueIds.join(", ")}${used.length ? `, used by ${used.map((use) => `${use.usedBy} (${use.clueId})`).join(", ")}` : ""} ` +
+      `${clueIds.join(", ")}, which no scene gives (# clue:, # on_done: clue) and no reasoning quiz shows as case evidence` +
+      `${used.length ? `; used by ${used.map((use) => `${use.usedBy} (${use.clueId})`).join(", ")}` : ""} ` +
       `(not stopped: a question or the evidence can be answered without them)` });
   }
   // The author-started epilogue (3.9 (d)): a city of a journey the player leaves by choice may never reach its then: epilogue

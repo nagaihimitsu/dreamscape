@@ -5,6 +5,7 @@ import { STICKY_KEYS, stickyOf } from "../story/frame-reader";
 import { sceneConditionReader } from "./scene-conditions";
 import { hasObservation } from "../content/tourism-schemas";
 import { splitStoryAddress } from "../content/story-address";
+import { momentQuizBattle } from "../content/scene-schemas";
 import { applyChoiceEffects, applyDoneEffects, choiceDisplay, sceneOption, type ChoiceDisplay } from "./scene-effects";
 import { mainScene, sceneOfAddress } from "./reservations";
 import { advanceRunningOccasion } from "./occasion-hooks";
@@ -178,6 +179,12 @@ export function getBattleAvailability(
 }
 
 /**
+ * Whether a moment quiz (時点のクイズ, 2026-11-18) can start as its moment's turn: the battle's city and no other scene open; its map
+ * condition is not read (no map shows it; its scene's `# when:` was read before, occasion.ts momentStepAvailability).
+ */
+export const momentBattleAvailability = (state: GameState, battleId: string): Availability => battleAvailability(state, battleId, true);
+
+/**
  * `mapChecked`: the battle continues a visit whose departure from the map already checked that it
  * shows on the map (its observation, or the arrival at a place without one), so the map
  * condition is not checked again (decision 21; stage 2b).
@@ -347,6 +354,19 @@ function startFlowBattle(state: GameState, active: ActiveBattle, battle: BattleD
 
 /** The scene of the battle's own tags (its choices' effects; a place file's knot or its one-scene file). */
 const battleScene = (battle: BattleDefinition) => sceneOfAddress(battle.storyId);
+
+/**
+ * The AP the open battle's own tags gave on this play, for its result screen (2026-11-18; a moment quiz has no reward rule,
+ * so its reward AP is written so): its conversation's `# ap: +N` choices (applied on its first play only) and its head's
+ * `# on_done: ap +N` (applied as its first result is recorded). Zero before the result and on a play after the first.
+ */
+export function battleTagApGained(state: GameState): number {
+  const active = state.activeBattle;
+  if (active?.phase !== "result" || state.battleRecords.find((record) => record.battleId === active.battleId)?.attempts !== 1) return 0;
+  const scene = battleScene(getActiveBattleContent(active).battle);
+  const choices = active.appliedOptionIds.reduce((sum, id) => sum + Math.max(0, sceneOption(scene, id)?.ap ?? 0), 0);
+  return choices + Math.max(0, mainScene({ battle: active.battleId })?.done.ap ?? 0);
+}
 
 /** How a choice of the battle's conversation shows (decision 43; stage 5). */
 export function battleChoiceDisplay(state: GameState, index: number): ChoiceDisplay {
@@ -789,6 +809,16 @@ export function validateBattleState(state: GameState): void {
   const { battle, quiz } = getActiveBattleContent(active);
   if (battleCityId(battle.id) !== state.currentCityId)
     throw new Error("クイズの都市と現在地が一致しません。");
+  // A moment quiz (時点のクイズ, # at: depart|epilogue …; 2026-11-18) is open only as its moment's turn: an occasion of that moment, at
+  // its scene, started there (as an inserted scene's encounter, encounter.ts validateEncounterMoment).
+  const moment = mainScene({ battle: battle.id });
+  if (moment && momentQuizBattle(moment)) {
+    const occasion = state.occasion;
+    const atMoment = !!occasion && moment.at.some((at) => ("depart" in at && occasion.kind === "depart" && at.depart === occasion.cityId) ||
+      ("epilogue" in at && occasion.kind === "epilogue" && at.epilogue === occasion.cityId));
+    if (!atMoment || occasion!.at !== moment.id || !occasion!.started.includes(moment.id))
+      throw new Error("クイズの時点の記録が一致しません。");
+  }
   const episode = episodes.find((item) => item.battleId === battle.id);
   // A map condition (`when`) was checked on departing and may have turned false since (decision 21).
   if (episode && !episode.when && !isEpisodeUnlocked(state, episode))

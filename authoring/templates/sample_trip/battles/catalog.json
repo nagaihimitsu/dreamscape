@@ -70,6 +70,32 @@
       }
     },
     {
+      "id": "smp_mihon_special_b_coach",
+      "titleJa": "三時に出た馬車",
+      "descriptionJa": "街を出る前、時計塔の下の停留所で、切符売りのヨナが『馬車はもう出た』と言う。全3問のうち第2問は矛盾追及。地図には出ない時点のクイズ。",
+      "landmarkId": "mihon_coach_stop",
+      "enemyNameJa": "ヨナ",
+      "enemyTitleJa": "停留所の切符売り",
+      "enemyDescriptionJa": "停留所で馬車の札を出し入れして三十年。三時のまま止まった街を見ないで出ていく旅人を見送るのが、少しさみしい。",
+      "storyId": "places/smp_mihon_coach_stop.smp_mihon_special_b_coach",
+      "quizId": "smp_mihon_special_b_coach_quiz",
+      "format": "B",
+      "backgroundId": "smp_bg_mihon_clock_tower",
+      "portrait": "abstract",
+      "reasoning": {
+        "kind": "contradiction",
+        "roundIndex": 1,
+        "caseClueIds": [
+          "smp_obs_mihon_coach_bell",
+          "smp_obs_mihon_coach_timetable",
+          "smp_obs_mihon_coach_trough"
+        ],
+        "correctClueIds": [
+          "smp_obs_mihon_coach_bell"
+        ]
+      }
+    },
+    {
       "id": "smp_mihon_finale_battle",
       "titleJa": "時計を動かす日",
       "descriptionJa": "町長のハンナが、時計を動かす図面を広げている。",

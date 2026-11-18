@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { episodes, presentation, scenes, tourismAssets } from "../../../src/content";
 import { encounters } from "../../../src/content/encounters";
-import { clearCity, cityStart, departFromClearedCity, finishEpisode, newJourney, withAp } from "../../../src/dev/scenario-builders";
+import { clearCity, cityStart, departFromClearedCity, finishEpisode, newJourney, withAp, withRelationship } from "../../../src/dev/scenario-builders";
 import { getActiveBattleContent } from "../../../src/domain/battle";
 import { setNames, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { openMiniGame } from "../../../src/domain/minigame";
@@ -12,7 +12,7 @@ import { miniGameOptionId } from "../../../src/minigames/tag";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 /**
- * GT-4: the Golden Triangle's 13 inserted scenes (talks at the stage-4 moments: the hotel's night and morning,
+ * GT-4: the Golden Triangle's 13 inserted scenes (15 since the station scam was split into an opening, an office scene and a reasoning quiz, 2026-11-18) (talks at the stage-4 moments: the hotel's night and morning,
  * Delhi's departure, Agra's arrival, the Jaipur finale and the India Gate date), each played at its moment with the
  * real actions as the screens commit them, each step saved and loaded again. Their two items are given (the envelope
  * handed over once), their money is paid once (the station deposit through to Agra; each envelope gift in its scene,
@@ -122,7 +122,7 @@ const shown = (played: Played, text: string) => played.lines.some((line) => line
 const delhiStart = () => finishEpisode(newJourney("golden_triangle"), "gt_delhi_main_red_fort");
 
 describe("Golden Triangle inserted scenes (GT-4)", () => {
-  it("places the 13 scenes at their moments, with their sources, flags, items and backgrounds", () => {
+  it("places the 15 scenes at their moments, with their sources, flags, items and backgrounds", () => {
     const own = scenes.filter((scene) => /^places\/gt_(delhi|agra|jaipur)_inserts$/u.test(scene.story.storyId));
     const table = Object.fromEntries(own.map((scene) => [scene.id, [scene.kind, scene.at, scene.priority, scene.sources ?? "listed"]]));
     expect(table).toEqual({
@@ -131,7 +131,9 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       gt_delhi_hotel_sick_night_player: ["talk", [{ hotel: "delhi_hotel_hub" }], -1, "none"],
       gt_delhi_hotel_sick_night_heroine: ["talk", [{ hotel: "delhi_hotel_hub" }], -1, "none"],
       gt_delhi_hotel_sick_morning: ["talk", [{ hotel: "delhi_hotel_hub" }], 1, "listed"],
-      gt_delhi_depart_scam: ["talk", [{ depart: "delhi" }], -2, "listed"],
+      gt_delhi_depart_scam: ["talk", [{ depart: "delhi" }], -3, "listed"],
+      gt_delhi_depart_scam_office: ["talk", [{ depart: "delhi" }], -2, "listed"],
+      gt_delhi_depart_scam_quiz: ["battle", [{ depart: "delhi" }], -2, "listed"],
       gt_delhi_depart_station: ["talk", [{ depart: "delhi" }], -1, "listed"],
       gt_agra_arrive_reel: ["talk", [{ arrive: "agra" }], 1, "none"],
       gt_jaipur_hotel_mehndi_night: ["talk", [{ hotel: "jaipur_hotel_hub" }], -1, "listed"],
@@ -144,10 +146,11 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     // (The Fatehpur Sikri tour's scenes, places/gt_agra_tour_fatehpur_sikri, list theirs in the same file.)
     const catalog = JSON.parse(readFileSync(`${GT}/scenes/catalog.json`, "utf8")) as { scenes: { id: string; sources: { url: string; checkedAt: string; claimType: string }[] }[] };
     const listed = catalog.scenes.filter((scene) => !scene.id.startsWith("gt_agra_tour_"));
-    expect(listed.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.sources !== "none").map((scene) => scene.id).sort());
+    // (The station's reasoning quiz lists its sources in its quiz file and clue cards, not here.)
+    expect(listed.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.kind !== "battle" && scene.sources !== "none").map((scene) => scene.id).sort());
     for (const source of listed.flatMap((scene) => scene.sources)) {
       expect(source.url).toMatch(/^https:\/\//u);
-      expect(source.checkedAt).toMatch(/^2026-11-0[89]$/u);
+      expect(source.checkedAt).toMatch(/^2026-11-(0[89]|18)$/u);
     }
     // The flags only the inserts set and read, and the two items they give.
     const reads = new Set(own.flatMap((scene) => scene.conds));
@@ -237,22 +240,24 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     const cleared = clearCity(homework.state);
     const epilogue = act(cleared, { kind: "read_epilogue" });
     const before = epilogue.travelBudget;
-    const agra = play(epilogue, (state) => state.currentCityId === "agra" && noScene(state), ["open_the_app", "pay_deposit", "well_spotted"]);
-    expect(ids(agra)).toEqual(["gt_delhi_depart_scam", "gt_delhi_depart_station", "gt_agra_arrive_reel"]);
-    expect(agra.chosen).toEqual(expect.arrayContaining(["open_the_app", "pay_deposit", "well_spotted"]));
+    // No clue from Dubey and spark below the office scene's threshold: taken in, the deposit paid (path 3).
+    const agra = play(epilogue, (state) => state.currentCityId === "agra" && noScene(state), ["open_the_app", "pay_deposit", "hand_water"]);
+    expect(ids(agra)).toEqual(["gt_delhi_depart_scam", "gt_delhi_depart_scam_office", "gt_delhi_depart_station", "gt_agra_arrive_reel"]);
+    expect(agra.chosen).toEqual(expect.arrayContaining(["open_the_app", "pay_deposit", "hand_water"]));
     expect(agra.state.travelBudget).toBe(before - 500);
     expect(agra.state.storyProgress.flags).toEqual(expect.arrayContaining(["gt_delhi_scam_checked", "gt_delhi_scam_paid"]));
-    expect(shown(agra, "それに、さっきのアプリ、『定刻』って出てた。古いのは、たぶん、こっちの話の方")).toBe(true);
+    expect(shown(agra, "それに、さっきのアプリ、『定刻』って出てた。古いのは、たぶん、こっちの話の方")).toBe(false);
     expect(shown(agra, "手付金は、高い授業料だったね。")).toBe(true);
     expect(shown(agra, "よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います")).toBe(true);
     expect(shown(agra, "旦那さまじゃないです！　鳩の役の人です！")).toBe(true);
     // The departure's scenes ran in Delhi, before its items were left behind; the arrival's after the conversation.
-    expect(agra.scenes.map((scene) => scene.city)).toEqual(["delhi", "delhi", "agra"]);
+    expect(agra.scenes.map((scene) => scene.city)).toEqual(["delhi", "delhi", "delhi", "agra"]);
 
-    // Without the date and the homework, and doubting at once: no money, no Roohi news, no reel.
-    const plain = act(clearCity(delhiStart()), { kind: "read_epilogue" });
+    // Without the date and the homework, doubting at once, and spark at the office scene's threshold: she sees through
+    // it by the handwriting (path 2). No money, no Roohi news, no reel.
+    const plain = act(withRelationship(clearCity(delhiStart()), { affection: 0, trust: 0, spark: 6 }), { kind: "read_epilogue" });
     const left = play(plain, (state) => state.currentCityId === "agra" && noScene(state), ["check_the_board", "ask_the_caller", "half_and_half"]);
-    expect(ids(left)).toEqual(["gt_delhi_depart_scam", "gt_delhi_depart_station"]);
+    expect(ids(left)).toEqual(["gt_delhi_depart_scam", "gt_delhi_depart_scam_office", "gt_delhi_depart_station"]);
     expect(left.state.travelBudget).toBe(plain.travelBudget);
     expect(left.state.storyProgress.flags).toContain("gt_delhi_scam_doubted");
     expect(left.state.storyProgress.flags).not.toContain("gt_delhi_scam_paid");
