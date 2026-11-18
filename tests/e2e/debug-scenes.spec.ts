@@ -343,6 +343,58 @@ test("special battle: the tap that ends the talk before the proof does not also 
   await page.clock.resume();
 });
 
+// 「Quiz」 over a battle's first question (2026-11-18 user decision; QuizCutIn.tsx) ends early by Esc and as the page
+// goes to the background, besides a tap (save-load.spec.ts), and changes nothing in the battle. A dialog opened from
+// the header while it shows (手がかり帳) takes the Esc: one Esc closes it, and the cut-in under it stays until it ends
+// (here as the page is hidden). After Esc the focus, lost with the talk's button, goes to the battle's heading; one
+// placed meanwhile (back on 手がかり帳 from its dialog) stays.
+test("battle: the 「Quiz」 cut-in ends by Esc or a hidden page, and one Esc closes the clue book opened over it", { tag: tier.debug }, async ({ page }) => {
+  const target = (await tapTargets(page)).battle;
+  expect(target, "a battle that Debug opens in its default city").toBeDefined();
+  await page.clock.install();
+  const cutIn = page.getByTestId("quiz-cutin");
+  /** Opens the battle and ends its talk by keyboard, which brings the cut-in; returns the question as it stands. */
+  const toCutIn = async () => {
+    await ops.openDebugScene(page, settings(target!));
+    await playUntil(page, (state) => state.activeBattle?.phase === "dialogue" && state.activeBattle.answers.length === 0 &&
+      !!state.activeBattle.frame?.choices.some((choice) => choice.call === "quiz"), { source: debugGame });
+    await page.getByTestId("battle-advance").focus();
+    // The clock is held, so the cut-in cannot end by itself before each step.
+    await ops.holdClock(page);
+    await page.keyboard.press("Enter");
+    await expect(cutIn).toBeVisible();
+    const question = (await debugGame(page))!;
+    expect(question.activeBattle).toMatchObject({ phase: "question", roundIndex: 0, answers: [] });
+    return question;
+  };
+
+  let question = await toCutIn();
+  await page.keyboard.press("Escape");
+  await expect(cutIn).toHaveCount(0);
+  await page.clock.resume();
+  await expect(ops.sceneHeading(page)).toBeFocused();
+  expect(await debugGame(page)).toEqual(question);
+
+  question = await toCutIn();
+  // After the moment the end of the talk holds every tap, the header's 手がかり帳 is pressed over the cut-in.
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await expect(cutIn).toBeVisible();
+  const notebook = page.locator("#hud-screen-tool").getByRole("button", { name: /^手がかり帳/u });
+  await notebook.click();
+  const book = page.getByTestId("cluebook");
+  await expect(book).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(book, "one Esc closes the clue book").toBeHidden();
+  await expect(cutIn, "the cut-in under it is left as it was").toBeVisible();
+  await expect(notebook).toBeFocused();
+  await ops.setHidden(page, true);
+  await expect(cutIn, "a hidden page ends it at once").toHaveCount(0);
+  await ops.setHidden(page, false);
+  await page.clock.resume();
+  await expect(notebook).toBeFocused();
+  expect(await debugGame(page)).toEqual(question);
+});
+
 // A story scene that starts under the finger (here the enemy's reaction after an answer's
 // feedback) does not take the second tap of the double tap that started it, so its first line is
 // not read on before it is seen (lines appear whole here). Two guards stop that tap: the hold on

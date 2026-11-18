@@ -746,6 +746,14 @@ export const ops = {
       }
     }
   },
+  /** Hides (true) or shows the page as a switch to another tab would, with its visibilitychange. */
+  async setHidden(page: Page, hidden: boolean) {
+    await page.evaluate((value) => {
+      Object.defineProperty(document, "hidden", { configurable: true, get: () => value });
+      Object.defineProperty(document, "visibilityState", { configurable: true, get: () => (value ? "hidden" : "visible") });
+      document.dispatchEvent(new Event("visibilitychange"));
+    }, hidden);
+  },
   /**
    * Two taps of a finger at a point, as one quick double tap. Hold the page's clock
    * first (`holdClock`), so they fall within the double-tap window however slow the
@@ -763,7 +771,8 @@ export const ops = {
    * (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS. A scene that a move
    * has just started takes no reading tap on the travel transition's card, so this also
    * waits for the transition to go, for the day's end visuals (night-rest, night-leaving, night-fade: a tap ends each) and for
-   * the journey's moments that cover a screen by themselves (an episode's title card, a departure's packing; each ends by itself).
+   * the journey's moments that cover a screen by themselves (an episode's title card, a departure's packing, the 「Quiz」 cut-in
+   * over a battle's first question: each ends by itself; the cut-in in 0.5 s here, with reduced motion).
    * The night's 「ホテルで休みました。」 cards (night-rest, night-leaving) wait for a tap (2026-11-15): it taps each once, as a
    * player does, after the moment of a double tap has passed.
    */
@@ -774,7 +783,7 @@ export const ops = {
       // A tap anywhere ends it (its middle: clear of the header over the night screen). Bounded: the card may already be gone.
       await nightCard.first().click({ timeout: 2000 }).catch(() => undefined);
     }
-    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene]")).toHaveCount(0);
+    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene], [data-testid=quiz-cutin]")).toHaveCount(0);
   },
   /**
    * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): 「閉じる」 on each, as a player

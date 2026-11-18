@@ -35,12 +35,15 @@ import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
+import { QuizCutIn } from "./QuizCutIn";
+import { battleCutInView, shouldShowQuizCutIn } from "./quiz-cutin";
 import { OutcomeHeading } from "./OutcomeHeading";
 import { HeroineNote } from "./HeroineNote";
 import { LandmarkReveal } from "./LandmarkReveal";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import { answerBeat, CORRECT_HOLD_MS } from "./answer-beat";
 import { showIgnoredTap } from "../../components/ignored-tap";
+import { focusSceneHeading } from "../../components/scene-focus";
 import {
   Translation,
   TranslationAll,
@@ -192,17 +195,24 @@ export function BattleScreen({
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
   // The rebuttal is lines of the battle's flow (saved, decision 1). The cut-in plays as the flow first reaches its
   // stop point in this mounted screen: mounting directly in reasoning (a reload) never replays it, and a different
-  // run cannot inherit the prior transition.
-  const previousBattle = useRef({ runId: active.runId, phase: active.phase, proof: !!active.reasoning });
+  // run cannot inherit the prior transition. 「Quiz」 (QuizCutIn) plays the same way as the flow first moves from the
+  // talk to the run's first question (shouldShowQuizCutIn). Both read the view this screen showed before (previousBattle).
+  const previousBattle = useRef(battleCutInView(active));
   const [cutIn, setCutIn] = useState<"contradiction" | "connection" | null>(null);
+  const [quizCutIn, setQuizCutIn] = useState(false);
   useLayoutEffect(() => {
     const previous = previousBattle.current;
-    previousBattle.current = { runId: active.runId, phase: active.phase, proof: !!active.reasoning };
+    const current = battleCutInView(active);
+    previousBattle.current = current;
     if (previous.runId !== active.runId || active.phase !== "reasoning") setCutIn(null);
     const config = battle.reasoning;
     if (config && previous.runId === active.runId && previous.phase === "dialogue" && !previous.proof && active.phase === "reasoning" && active.reasoning)
       setCutIn(config.kind);
-  }, [active.runId, active.phase, active.reasoning, battle]);
+    if (shouldShowQuizCutIn(previous, current)) setQuizCutIn(true);
+    else if (active.phase !== "question") setQuizCutIn(false);
+  }, [active.runId, active.phase, active.roundIndex, active.answers.length, active.reasoning, battle]);
+  // The battle under a cut-in: hidden from screen readers and taking no focus or press while it shows.
+  const coveredByCutIn = !!cutIn || quizCutIn;
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
   const roundBar = useRef<HTMLDivElement>(null);
@@ -396,7 +406,7 @@ export function BattleScreen({
     frame?.letter?.translationJa,
   );
   const advanceSafely = () => {
-    if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed() || choosing) return;
+    if (coveredByCutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed() || choosing) return;
     onAdvance();
   };
   const { show } = windowVisibility;
@@ -533,7 +543,7 @@ export function BattleScreen({
           {beside && <div className="battle-character-slot battle-beside">{oppositePortrait(beside.figure, beside.focus)}</div>}
         </div>
       </div>
-      <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} data-remembered={remembered || undefined} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
+      <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} data-remembered={remembered || undefined} aria-hidden={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined}>
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
         cutIn={nameCut}
@@ -889,6 +899,13 @@ export function BattleScreen({
         window.requestAnimationFrame(() =>
           readingArea.current?.querySelector<HTMLButtonElement>('[data-testid="reasoning-notebook"]')?.focus({ preventScroll: true }),
         );
+      }} />}
+      {quizCutIn && <QuizCutIn reduceMotion={reduceMotion} onComplete={() => {
+        setQuizCutIn(false);
+        // The talk's line or button that had the focus went with the talk: once the question takes it again, a lost
+        // focus goes where a new screen's does (the scene's heading, scene-focus.ts), never left on the page body. A
+        // focus placed meanwhile (the header's ≡メニュー) stays.
+        window.requestAnimationFrame(() => focusSceneHeading(document.getElementById("main")));
       }} />}
     </div>
   );

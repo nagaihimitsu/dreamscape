@@ -1,5 +1,5 @@
 import { MINI_GAME_RESULT_GUARD_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_TO_REAL_MS } from "../../src/minigames/host/timing";
-import { expect, test, tier, type Page } from "./helpers";
+import { expect, ops, test, tier, type Page } from "./helpers";
 
 // Every registered mini-game through the shared host (docs/13 6.4), in Debug's 「ミニゲームの見本」 (no story, no save):
 // the instruction card's start, the focus in the play, 「中断する」 and Esc back to the start with nothing chosen, 「おまかせ」
@@ -23,15 +23,6 @@ const PER_GAME_MS = 22_000;
 
 /** Longer than any timed game's play (the longest, 手のひらの模様, is about 30 seconds). */
 const LONGER_THAN_ANY_GAME_MS = 60_000;
-
-/** Hides (true) or shows the page as a switch to another tab would, with its visibilitychange. */
-function setHidden(page: Page, hidden: boolean): Promise<void> {
-  return page.evaluate((value) => {
-    Object.defineProperty(document, "hidden", { configurable: true, get: () => value });
-    Object.defineProperty(document, "visibilityState", { configurable: true, get: () => (value ? "hidden" : "visible") });
-    document.dispatchEvent(new Event("visibilitychange"));
-  }, hidden);
-}
 
 /** The result card's 「次へ」 (or another of its buttons), pressed once its first moment (which drops every press) is over. */
 async function pressOnCard(page: Page, testId: string) {
@@ -189,11 +180,11 @@ test("practice's cut-in: 「中断する」 leaves it (no real play follows), an
     await expect(page.getByTestId("minigame-room-last")).toHaveText("まだ遊んでいません。");
     // A page hidden in the cut-in starts no real play unseen; shown again, the cut-in runs its time and the real play starts.
     await practiceToCutIn(page);
-    await setHidden(page, true);
+    await ops.setHidden(page, true);
     await page.clock.runFor(3 * MINI_GAME_TO_REAL_MS);
     await expect(play).toHaveAttribute("data-practice", "true");
     await expect(page.getByTestId("minigame-cutin")).toBeVisible();
-    await setHidden(page, false);
+    await ops.setHidden(page, false);
     await page.clock.runFor(MINI_GAME_TO_REAL_MS + 50);
     await expect(play).not.toHaveAttribute("data-practice", /.+/u);
     await expect(page.getByTestId("minigame-cutin")).toHaveCount(0);
@@ -219,8 +210,8 @@ test("a timed mini-game pauses while the page is hidden and goes on with 続け�
     const play = page.getByTestId("minigame-play");
     await page.getByTestId("minigame-start").click();
     await expect(play).toBeVisible();
-    await setHidden(page, true);
-    await setHidden(page, false);
+    await ops.setHidden(page, true);
+    await ops.setHidden(page, false);
     await expect(page.getByTestId("minigame-pause"), `${id}: 一時停止中`).toBeVisible();
     // Time does not go on while it waits: the play has no outcome yet, however long it waits (a jump past any game's
     // length, then 3 seconds for frames that would end it).

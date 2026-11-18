@@ -102,6 +102,67 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(finished.playedDateIds).toEqual(["milano_novecento_date_01"]);
 });
 
+// 「Quiz」 (2026-11-18 user decision; src/features/battle/quiz-cutin.ts): a short cut-in over the battle as its flow moves
+// from the talk to the run's first question. While it shows it covers the answers and the battle under it is inert: a tap
+// where the first answer is lands on the cut-in and ends it early, answers nothing, and leaves the focus on the battle's
+// heading, not on the page body. Presentation only: the question is already saved. A reload into that question shows
+// none (only the flow moving from the talk in the mounted screen does). Esc and the page going to the background end it
+// too, and a clue book opened over it takes the Esc: debug-scenes.spec.ts. Every other E2E that plays a battle lets it
+// end by itself (ops.settled waits for it).
+test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk, a tap on it answers nothing, and a reload shows none", { tag: tier.gate }, async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.clock.install();
+  await ops.startJourney(page, "milano");
+  await ops.goTo(page, "p_duomo");
+  await ops.skipGuideToBattle(page);
+  // The talk's line before the first quiz call, with its 「問題へ進む」.
+  const talk = await playUntil(page, (state) => state.activeBattle?.phase === "dialogue" && state.activeBattle.answers.length === 0 &&
+    !!state.activeBattle.frame?.choices.some((choice) => choice.call === "quiz"));
+  const cutIn = page.getByTestId("quiz-cutin");
+  const answer = page.getByTestId("answer-A");
+  const answerPoint = () => ops.centerOf(answer);
+  /** Whether the middle of the first answer is the cut-in (as a tap there would land). */
+  const answerCovered = async () => page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="quiz-cutin"]'),
+    await answerPoint());
+  // The page's clock is held, so the cut-in cannot end by itself before it is looked at.
+  await ops.holdClock(page);
+  await page.getByTestId("battle-advance").click();
+  await expect(cutIn).toBeVisible();
+  await expect(cutIn.getByRole("status")).toHaveText("Quiz");
+  // The end of the talk holds every tap for a moment (story-scene-change.ts); after it the cut-in, still there
+  // (0.5 s here), takes them: it lies over the answers.
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await expect(page.locator("html[data-tap-hold]")).toHaveCount(0);
+  await expect(cutIn).toBeVisible();
+  expect(await answerCovered(), "the cut-in lies over the answers").toBe(true);
+  await expect(page.locator(".battle-paper-shell"), "the battle under it is out of reach").toHaveAttribute("inert", "");
+  const question = await readSave(page);
+  expect(question.revision).toBe(talk.revision + 1);
+  expect(question.activeBattle).toMatchObject({ phase: "question", roundIndex: 0, answers: [] });
+  // A finger's tap where the first answer is, the clock still held (so the cut-in cannot have ended by itself): it
+  // ends the cut-in, and the answer under it is not chosen.
+  const point = await answerPoint();
+  await page.touchscreen.tap(point.x, point.y);
+  await expect(cutIn).toHaveCount(0);
+  await expect(page.getByTestId("battle-feedback")).toHaveCount(0);
+  expect(await readSave(page), "the tap answered nothing").toEqual(question);
+  // The answers take presses again, and the focus goes to the battle's heading with the next frame.
+  await page.clock.resume();
+  expect(await answerCovered(), "the first answer is reachable").toBe(false);
+  await expect(page.locator(".battle-paper-shell")).not.toHaveAttribute("inert", "");
+  await expect(ops.sceneHeading(page), "the focus is on the battle's heading, not the page body").toBeFocused();
+  expect(await readSave(page)).toEqual(question);
+
+  // Reloaded on that question: it opens without the cut-in (checked as soon as the question shows, while one would still be there).
+  await page.reload();
+  await expect(page.getByTestId("battle-question")).toBeVisible();
+  expect(await cutIn.count(), "no cut-in after a reload into the question").toBe(0);
+  expect(await readSave(page)).toEqual(question);
+  // The question is answered as usual.
+  await answer.click();
+  await expect(page.getByTestId("battle-feedback")).toBeVisible();
+});
+
 // AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6;
 // docs/07 acceptance 10: with manual saving, leaving unsaved progress asks first (switching journeys,
 // ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
