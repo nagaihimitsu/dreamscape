@@ -4,13 +4,16 @@ INCLUDE modules.ink
 // ロディ・ガーデンのデート（噛み合いの選択は2回。2回目は、フマユーン廟の回を終えたかで別の場面になる）。
 // 終えていれば、スレーシュと「大学の同級生」に再会する。終えていなければ、二人を知らないまま、胸に薔薇をさした老人を見かけるだけ。
 // 後の道（スレーシュたちに会わない道）の二回目の噛み合いは、ミニゲーム「一緒に言う」（# minigame: say_together）。彼女の「せーの」に声を合わせ、そろい方で話が進む。
+// 最初の噛み合いの後、ドゥベイが元・放送係として、駅の運休の知らせ方を話す（手がかり gt_delhi_clue_dubey_announcement を、デートを初めて終えたときに頭の # on_done: で渡す。デリーを発つ日の駅前の推理クイズの証拠になる）。
 
+// 下書き（2026-11-18）：作者の確認待ち。確かめてほしいこと：authoring/journeys/golden_triangle/research/golden-triangle-station-scam-20261118/README.md
 // 【3】
 === gt_delhi_date_lodhi_garden ===
 # scene: date
 # title: 笑う会の秘密
 # when: episodes delhi >= 1
 # hint: デリーの観光を一つ終えてから
+# on_done: clue gt_delhi_clue_dubey_announcement
 # background: gt_bg_delhi_lodhi_garden
 # speaker: narrator
 ロディ・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。
@@ -105,6 +108,25 @@ INCLUDE modules.ink
         手をつないだまま、二人で見えない電話を耳に当てた。相手のいない電話に笑ううち、彼女の笑い声が、だんだん本物になっていった。
     }
 -
+// 下書き（2026-11-18）：作者の確認待ち。確かめてほしいこと：authoring/journeys/golden_triangle/research/golden-triangle-station-scam-20261118/README.md
+# speaker: narrator
+笑いがひと区切りすると、ドゥベイが二人のところへ来た。
+# speaker: heroine
+# emotion: surprised
+駅の案内放送をされていたんですよね。ホームに響く、あの声ですか？　わたしたち、今度、列車でアーグラへ行くんです
+# speaker: gt_dubey
+さようでございます。では、元・放送係より、お知らせいたします
+# speaker: gt_dubey
+運休・遅れのご案内は、駅の構内放送と、駅の掲示板にて行っております
+# speaker: gt_dubey
+駅の外でお客様をお呼び止めし、運休とお伝えする者は――わたしの知るかぎり、駅の者ではございません
+# speaker: gt_dubey
+ご不明の点は、駅の中の窓口か、お電話の139番にてお確かめください。……以上、お知らせでした
+# speaker: narrator
+彼女が、こちらに小声で言う。
+# speaker: heroine
+# emotion: smile
+放送で言われると、忘れられなさそう
 { cond("episode gt_delhi_main_humayun_tomb"):
     -> suresh_again
 - else:

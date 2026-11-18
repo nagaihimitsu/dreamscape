@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_delhi_special_station_quiz",
+  "landmarkId": "delhi_new_delhi_station",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_delhi_station_where_he_leads",
+      "questionEn": "The young man says the tourist ticket office inside the station is closed for repairs and a temporary office is across the road. Everything he says points to one action. What is it?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Going into the station to check the board."
+        },
+        {
+          "id": "B",
+          "textEn": "Walking away from the station with him."
+        },
+        {
+          "id": "C",
+          "textEn": "Calling the railway helpline about the train."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "repairs",
+          "meaning": "修理、工事"
+        },
+        {
+          "word": "temporary",
+          "meaning": "臨時の"
+        },
+        {
+          "word": "points",
+          "meaning": "（〜を）指す、示す"
+        }
+      ],
+      "hintJa": "青年の話に出てきた場所を、順に思い出してみよう。",
+      "correctExplanationJa": "駅の中の窓口は工事中、臨時の窓口は道の向かい、歩いて五分。青年の話は、どれも「駅を離れて、彼について行く」に行き着く。",
+      "incorrectExplanationJa": "掲示板を見に行くことも、鉄道の電話相談に聞くことも、青年は勧めていない。 駅の中の窓口は工事中、臨時の窓口は道の向かい、歩いて五分。青年の話は、どれも「駅を離れて、彼について行く」に行き着く。",
+      "sources": [
+        {
+          "publisher": "Bennion Kearny",
+          "title": "Delhi Indian Railway Ticket Scam",
+          "url": "https://www.bennionkearny.com/?p=554",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅では、客引きが上の階の外国人向け窓口へ行かせないよう、窓口は改装中で閉まっている、道の向かいに移った、などと言う（旅行ガイドの記述）。"
+        },
+        {
+          "publisher": "Travel India Smart",
+          "title": "India Travel Scams in 2026 and How to Spot Them",
+          "url": "https://www.travelindiasmart.com/trip-planning/india-travel-scams-2026",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅で「列車は運休、上の階で取り直しを」と声をかけ、近くの路地の私設の旅行会社へ連れて行く手口がある。列車は普通に走っている（旅行ガイドの記述）。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_station_who_announces",
+      "questionEn": "Dubey made station announcements for thirty years. According to him, how does a station tell passengers about a cancelled train?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Staff wait outside the station and tell each passenger."
+        },
+        {
+          "id": "B",
+          "textEn": "A travel office across the road keeps a list of cancelled trains."
+        },
+        {
+          "id": "C",
+          "textEn": "It makes announcements and updates the train information boards."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "announcements",
+          "meaning": "放送、お知らせ"
+        },
+        {
+          "word": "passengers",
+          "meaning": "乗客"
+        },
+        {
+          "word": "cancelled",
+          "meaning": "運休になった、取り消された"
+        },
+        {
+          "word": "updates",
+          "meaning": "新しくする、更新する"
+        },
+        {
+          "word": "boards",
+          "meaning": "案内板、掲示板"
+        }
+      ],
+      "hintJa": "手がかり帳の「元・案内放送係の話」を、もう一度読んでみよう。",
+      "correctExplanationJa": "ドゥベイさんは、運休も遅れも、駅の構内放送と駅の掲示板で知らせると話していた。報道によれば、鉄道委員会は2024年、駅の旅客案内の表示板を全国列車照会システム（NTES）とつなぎ、正しい列車情報を出すよう各管区に指示している。ニューデリー駅の待合区画にも、構内放送の設備と電子の列車案内板がある（2026年、鉄道相の答弁）。",
+      "incorrectExplanationJa": "ドゥベイさんは、駅の外で呼び止めて運休を告げる者は、自分の知るかぎり駅の者ではないと話していた。道の向かいの事務所も、話には出てこない。 ドゥベイさんは、運休も遅れも、駅の構内放送と駅の掲示板で知らせると話していた。報道によれば、鉄道委員会は2024年、駅の旅客案内の表示板を全国列車照会システム（NTES）とつなぎ、正しい列車情報を出すよう各管区に指示している。ニューデリー駅の待合区画にも、構内放送の設備と電子の列車案内板がある（2026年、鉄道相の答弁）。",
+      "sources": [
+        {
+          "publisher": "ThePrint (PTI)",
+          "title": "Act against officials for wrong train data in passenger information systems: Railway Board to zones",
+          "url": "https://theprint.in/india/act-against-officials-for-wrong-train-data-in-passenger-information-systems-railway-board-to-zones/2299836",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "鉄道委員会は2024年、駅に置いた旅客案内の表示板を全国列車照会システム（NTES）とつなぎ、正しい列車情報を出すよう各管区に指示した。ホームの列車案内板は、列車番号・列車名・運行状況を出す。"
+        },
+        {
+          "publisher": "Press Information Bureau (Ministry of Railways)",
+          "title": "To Make Train Journey Comfortable & Safe During Rush Hours, Besides Holding Areas, 76 Stations Across India are Being Equipped with All Latest Amenities",
+          "url": "https://pib.gov.in/PressReleasePage.aspx?PRID=2246448",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅の待合区画には、構内放送の設備（PAS）と電子の列車案内板などがある（2026年3月、ラージヤ・サバーでの鉄道相の答弁）。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_station_auto_refund",
+      "questionEn": "The young man says you will not get your money back unless you go to the temporary office across the road. If your train is really cancelled and you have an e-ticket, what happens to the fare?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The railway refunds the fare automatically."
+        },
+        {
+          "id": "B",
+          "textEn": "The fare is lost unless you rebook today."
+        },
+        {
+          "id": "C",
+          "textEn": "Only an office across the road can give the fare back."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "e-ticket",
+          "meaning": "電子切符（e切符）"
+        },
+        {
+          "word": "fare",
+          "meaning": "運賃"
+        },
+        {
+          "word": "refunds",
+          "meaning": "払い戻す"
+        },
+        {
+          "word": "automatically",
+          "meaning": "自動で"
+        },
+        {
+          "word": "rebook",
+          "meaning": "予約し直す、振り替える"
+        }
+      ],
+      "hintJa": "切符を売ったのは鉄道。運休を決めるのも鉄道。",
+      "correctExplanationJa": "インド鉄道の払い戻しの決まりでは、列車が運休になると、e切符の運賃は自動で払い戻される（2015年7月から）。払い戻しの申し込み（TDR）もいらない。本当の運休でも、道の向かいの事務所へ行く理由はない。旅行ガイドには、駅前で「窓口は閉まった」「道の向かいに移った」と言って、駅の中の外国人向け窓口へ行かせない手口が書かれている。",
+      "incorrectExplanationJa": "運休のe切符は鉄道が自動で払い戻すので、今日のうちに振り替える必要も、駅の外の事務所へ行く必要もない。 インド鉄道の払い戻しの決まりでは、列車が運休になると、e切符の運賃は自動で払い戻される（2015年7月から）。払い戻しの申し込み（TDR）もいらない。本当の運休でも、道の向かいの事務所へ行く理由はない。旅行ガイドには、駅前で「窓口は閉まった」「道の向かいに移った」と言って、駅の中の外国人向け窓口へ行かせない手口が書かれている。",
+      "sources": [
+        {
+          "publisher": "Indian Railways",
+          "title": "Revised Refund Rules w.e.f. 12.11.2015",
+          "url": "https://www.indianrail.gov.in/refund_Rules.html",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "列車が運休になると、e切符の運賃は自動で払い戻される（2015年7月から）。この場合、払い戻しの申請（TDR）は要らない。"
+        },
+        {
+          "publisher": "Bennion Kearny",
+          "title": "Delhi Indian Railway Ticket Scam",
+          "url": "https://www.bennionkearny.com/?p=554",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅では、客引きが上の階の外国人向け窓口へ行かせないよう、窓口は改装中で閉まっている、道の向かいに移った、などと言う（旅行ガイドの記述）。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

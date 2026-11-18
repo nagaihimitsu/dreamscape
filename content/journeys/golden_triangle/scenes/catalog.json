@@ -65,6 +65,51 @@
       ]
     },
     {
+      "id": "gt_delhi_depart_scam_office",
+      "sources": [
+        {
+          "publisher": "外務省 海外安全ホームページ",
+          "title": "安全対策基礎データ（インド）",
+          "url": "https://www.anzen.mofa.go.jp/info/pcsafetymeasure_001.html",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "鉄道駅などで政府観光局の職員を装って声をかけ、悪質な旅行会社へ連れて行くのが典型的な手口。ニューデリー駅近くのパハールガンジなどの小規模の旅行会社は、空港や鉄道駅の悪質な客引きと結託している可能性が高い。"
+        },
+        {
+          "publisher": "Business Standard (PTI)",
+          "title": "Delhi Police to raid unauthorised tour operators",
+          "url": "https://www.business-standard.com/amp/article/pti-stories/delhi-police-to-raid-unauthorised-tour-operators-116082401665_1.html",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "2016年、デリー警察が、Incredible India・India Tourism を名乗る無許可の事務所の強制捜査と、鉄道駅などへの警察のブースの設置を予定していると報じられた。"
+        },
+        {
+          "publisher": "Millennium Post",
+          "title": "Don't use govt logos to misguide passengers: Delhi Police to private travel agents",
+          "url": "https://www.millenniumpost.in/delhi/dont-use-govt-logos-to-misguide-passengers-delhi-police-to-private-travel-agents-355608",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "2019年、デリー警察は私設の旅行会社に、看板に政府のロゴを使って客を惑わさないこと、正規の代理店になりすまさないことを申し渡した。"
+        },
+        {
+          "publisher": "Travel India Smart",
+          "title": "India Travel Scams in 2026 and How to Spot Them",
+          "url": "https://www.travelindiasmart.com/trip-planning/india-travel-scams-2026",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "オートリキシャの運転手が「Government of India Tourist Office」などの看板の小さな事務所へ連れて行き、列車は満席・運休・危険だと言って、5〜10倍の私設ツアーを売る手口がある（旅行ガイドの記述）。"
+        },
+        {
+          "publisher": "Indian Railways",
+          "title": "Facilities for International Tourist",
+          "url": "https://www.indianrail.gov.in/international_Tourist.html",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅の International Tourist Bureau は駅舎の First Floor（日本式の2階）にあり、2014年12月から24時間開いている（公式ページの記述。今も24時間かは未確認）。"
+        }
+      ]
+    },
+    {
       "id": "gt_delhi_depart_station",
       "sources": [
         {

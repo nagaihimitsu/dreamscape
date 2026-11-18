@@ -269,6 +269,7 @@
 ## 8. 参考
 
 - インド編の調査の記録（`authoring/journeys/golden_triangle/research/`）：
+  - [ニューデリー駅「運休です」の詐欺と推理クイズ（2026-11-18）](journeys/golden_triangle/research/golden-triangle-station-scam-20261118/README.md)（公的資料・報道・旅行ガイドの区別と、確かめられなかったことの書き方の例）
   - [夜と夕方の写真（2026-11-15）](journeys/golden_triangle/research/golden-triangle-night-photos-20261115/README.md)
   - [宿の部屋の飾りの写真（2026-11-14）](journeys/golden_triangle/research/golden-triangle-agra-room-photo-20261114/README.md)
   - [都市内の交通（2026-11-07〜）](journeys/golden_triangle/research/golden-triangle-transport-20261107/README.md)（3.1〜3.3 の例。チーニー・カ・ラウザーとラーム・バーグ、デリー地下鉄の見直しも）

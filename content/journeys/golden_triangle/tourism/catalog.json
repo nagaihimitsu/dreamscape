@@ -1508,6 +1508,21 @@
       "clueIds": []
     },
     {
+      "id": "delhi_new_delhi_station",
+      "cityId": "delhi",
+      "nameJa": "ニューデリー駅",
+      "nameEn": "New Delhi Railway Station",
+      "descriptionJa": "アーグラ行きの列車が出る駅。駅前で、親切な人が運休を知らせてくる。",
+      "imageAssetId": "gt_img_delhi_station_front",
+      "battleId": "gt_delhi_special_station_battle",
+      "observation": false,
+      "clueIds": [
+        "gt_delhi_clue_station_vest",
+        "gt_delhi_clue_dubey_announcement",
+        "gt_delhi_clue_station_office"
+      ]
+    },
+    {
       "id": "agra_taj_mahal",
       "cityId": "agra",
       "nameJa": "タージ・マハル",
@@ -1604,5 +1619,112 @@
       "clueIds": []
     }
   ],
-  "clues": []
+  "clues": [
+    {
+      "id": "gt_delhi_clue_station_vest",
+      "landmarkId": "delhi_new_delhi_station",
+      "kind": "document",
+      "titleJa": "名札とベストと無線機",
+      "descriptionJa": "白いシャツに名札を下げた青年と、反射材のベストに無線機の男。どちらも駅の係員らしく見える。2022年には、ニューデリー駅で検札係を装っていた11人が捕まった。多くが偽の採用通知や身分証を持ち、ホームでよく見る検札係と同じ、白いシャツに黒いズボンだった。",
+      "factId": "gt_delhi_fact_station_lookalike_staff",
+      "relatedQuestionIds": [
+        "gt_delhi_station_who_announces"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "ThePrint (PTI)",
+          "title": "Fake TTEs operating at New Delhi Rly Station arrested: Northern Railways",
+          "url": "https://theprint.in/india/fake-ttes-operating-at-new-delhi-rly-station-arrested-northern-railways/1113210",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "2022年、ニューデリー駅で検札係を装って15日間活動していた11人が逮捕された。鉄道保安隊（RPF）と営業部門の合同の摘発で、多くが偽の採用通知と身分証を持ち、検札係のいつもの身なりの白いシャツに黒いズボンだった。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_clue_dubey_announcement",
+      "landmarkId": "delhi_new_delhi_station",
+      "kind": "document",
+      "titleJa": "元・案内放送係の話",
+      "descriptionJa": "「運休・遅れのご案内は、駅の構内放送と、駅の掲示板にて行っております。駅の外でお客様をお呼び止めし、運休とお伝えする者は――わたしの知るかぎり、駅の者ではございません。ご不明の点は、駅の中の窓口か、お電話の139番にてお確かめください」――ロディ・ガーデンで、駅の案内放送を三十年していたドゥベイさんに聞いた。",
+      "factId": "gt_delhi_fact_station_cancellation_notice",
+      "relatedQuestionIds": [
+        "gt_delhi_station_who_announces"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "ThePrint (PTI)",
+          "title": "Act against officials for wrong train data in passenger information systems: Railway Board to zones",
+          "url": "https://theprint.in/india/act-against-officials-for-wrong-train-data-in-passenger-information-systems-railway-board-to-zones/2299836",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "鉄道委員会は2024年、駅に置いた旅客案内の表示板を全国列車照会システム（NTES）とつなぎ、正しい列車情報を出すよう各管区に指示した。ホームの列車案内板は、列車番号・列車名・運行状況を出す。"
+        },
+        {
+          "publisher": "Press Information Bureau (Ministry of Railways)",
+          "title": "To Make Train Journey Comfortable & Safe During Rush Hours, Besides Holding Areas, 76 Stations Across India are Being Equipped with All Latest Amenities",
+          "url": "https://pib.gov.in/PressReleasePage.aspx?PRID=2246448",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅の待合区画には、構内放送の設備（PAS）と電子の列車案内板などがある（2026年3月、ラージヤ・サバーでの鉄道相の答弁）。"
+        },
+        {
+          "publisher": "Press Information Bureau (Ministry of Railways)",
+          "title": "Indian Railway announces integrated Rail Madad Helpline number “139” for all type of queries/complaints/assistance during travel",
+          "url": "https://pib.gov.in/PressReleasePage.aspx?PRID=1703201",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "鉄道の問い合わせは電話139にまとめられ、列車の到着・発車の情報も聞ける（2021年の発表）。"
+        },
+        {
+          "publisher": "Indian Railways",
+          "title": "Facilities for International Tourist",
+          "url": "https://www.indianrail.gov.in/international_Tourist.html",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅の International Tourist Bureau は駅舎の First Floor にあり、外国人旅行者の問い合わせ・予約・旅の計画を手伝う。"
+        },
+        {
+          "publisher": "GOV.UK (Foreign, Commonwealth & Development Office)",
+          "title": "Safety and security - India travel advice",
+          "url": "https://www.gov.uk/foreign-travel-advice/india/safety-and-security",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "英国政府は、鉄道駅で切符やツアーを持ちかけてくる人を避けるよう旅行者に勧めている。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_clue_station_office",
+      "landmarkId": "delhi_new_delhi_station",
+      "kind": "document",
+      "titleJa": "「政府公認」の看板",
+      "descriptionJa": "道の向かいの路地の入口に、英語の看板。政府公認・観光案内所。矢印は路地の奥を指している。日本の外務省の安全情報によると、インド政府観光局はツアーの手配をしていない。2019年には、デリー警察が私設の旅行会社に、看板に政府のロゴを使わないよう申し渡した。",
+      "factId": "gt_delhi_fact_station_govt_sign",
+      "relatedQuestionIds": [
+        "gt_delhi_station_who_announces"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "外務省 海外安全ホームページ",
+          "title": "安全対策基礎データ（インド）",
+          "url": "https://www.anzen.mofa.go.jp/info/pcsafetymeasure_001.html",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "鉄道駅などで政府観光局の職員を装って声をかけ、悪質な旅行会社へ連れて行くのが典型的な手口。インド政府観光局はツアー等の手配をしていない。"
+        },
+        {
+          "publisher": "Millennium Post",
+          "title": "Don't use govt logos to misguide passengers: Delhi Police to private travel agents",
+          "url": "https://www.millenniumpost.in/delhi/dont-use-govt-logos-to-misguide-passengers-delhi-police-to-private-travel-agents-355608",
+          "checkedAt": "2026-11-18",
+          "claimType": "documented_fact",
+          "claimJa": "2019年、デリー警察は私設の旅行会社に、看板に政府のロゴを使って客を惑わさないこと、正規の代理店になりすまさないことを申し渡した。"
+        }
+      ]
+    }
+  ]
 }

@@ -11,8 +11,11 @@ import { itemUsableIn } from "../../../src/domain/item-cities";
  */
 describe("Golden Triangle main story in place files (GT-3a)", () => {
   it("points every guide, arrival and epilogue at a knot of a place file", () => {
-    for (const landmark of landmarks.filter((item) => getJourney("golden_triangle")!.cities.some((city) => city.id === item.cityId)))
-      expect(landmark.guideStoryId).toBe(`places/gt_${landmark.id}.gt_${landmark.id}_guide`);
+    for (const landmark of landmarks.filter((item) => getJourney("golden_triangle")!.cities.some((city) => city.id === item.cityId))) {
+      // New Delhi station is the landmark of the departure moment quiz only (no map event): no guide, no observation (2026-11-18).
+      if (landmark.id === "delhi_new_delhi_station") expect(landmark.guideStoryId).toBeUndefined();
+      else expect(landmark.guideStoryId).toBe(`places/gt_${landmark.id}.gt_${landmark.id}_guide`);
+    }
     for (const cityId of ["delhi", "agra", "jaipur"]) {
       expect(getCityContent(cityId).city.arrivalStoryId).toBe(`places/gt_${cityId}_hotel_hub.gt_${cityId}_arrival`);
       expect(episodes.find((episode) => episode.cityId === cityId && episode.kind === "city_finale")?.epilogueStoryId)
