@@ -175,6 +175,12 @@
 - 読みの質問（作者の確認待ち）：ドゥベイの「139番」（`gt_delhi_date_lodhi_garden_dubey_015`）を、仮に「いちさんきゅうばん」としました（行のメモ）。
 - 使わなくなった声はありません。録音済みの行で文の変わった行もありません（文を変えたのは、声のない地の文1行だけ）。
 
+届いた声：2026-11-18に、3つのzip（`india_heroine_voice_add4_bundle1_0001-0025` の中の `india_heroine_voice_add4_0001-0025`、`india_aivis_voice_add2_0001-0016`、`india_voicevox_add_bundle1_0001-0002` の中の `india_voicevox_add_0001-0002`。WAV・44.1kHz・モノラル・16bit）で43本、全部届きました。
+
+- 43本を MP3（48kHz・モノラル・80kbps、ピークを -1 dB にそろえた）にして `content/journeys/golden_triangle/public/assets/voice/` に置き、`voice:tag` で `# voice:` を付け（43行、2ファイル：ヒロイン25行・青年12行・ドゥベイ4行・背広の男2行）、`recorded.json` に記録しました（43本）。付けなかった声はありません。
+- 声の長さは1.6〜11.8秒。台詞の長さに比べて極端に短い声はありません（いちばん速いのは青年の行で、1秒に8字ほど）。中身（「139番」などの読み）は、まだ耳では確かめていません。
+- これで、今の台詞1710行（ヒロイン989行・ほかの人物721行）は全部、声があります。`voice:changes` に残るのは、使われなくなった声15本（下の「unused/」）だけです。
+
 ## unused/
 
 ゲームに置いていたが、台詞がなくなって使わなくなった声です（ゲームは読みません。公開物にも入りません）。台詞を戻すときは、`content/journeys/golden_triangle/public/assets/voice/` へ戻し、Inkの台詞の前に `# voice: <ID>` を書き直します。`recorded.json` の記録は残してあります。

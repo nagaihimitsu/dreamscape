@@ -417,10 +417,12 @@ Agra? Your train is cancelled today.
 道の向かい、路地の入口に、奥を指す矢印の付いた英語の看板が見えた。政府公認・観光案内所。
 # speaker: enemy
 # cutin: name
+# voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_001
 駅の窓口は、今日は工事中。臨時の窓口は、あの路地の奥の、階段の上です。歩いて五分
 -> quiz(1) ->
 # background: gt_bg_delhi_station_front
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_002
 タクシーの列を抜けますよ。足元、お気をつけて
 # speaker: narrator
 青年の話では、駅の中の窓口は閉まっていて、臨時の窓口は道の向かいの路地の奥。言われる行き先は、どれも駅の外だ。
@@ -429,6 +431,7 @@ Agra? Your train is cancelled today.
 # background: gt_bg_delhi_station_front
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_depart_scam_quiz_001
 本当なら、急がなきゃ。……でも、何だろう。何か、引っかかる
 - (stop)
 -> reasoning ->
@@ -439,8 +442,10 @@ Agra? Your train is cancelled today.
 { evidence_result == "failure":
     # background: gt_bg_delhi_station_front
     # speaker: enemy
+    # voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_003
     格好や看板が怪しい、というだけでしょう？　似た人がいたって、わたしが駅の者でないことにはなりません
     # speaker: enemy
+    # voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_004
     駅がどうやって運休を知らせるか、ご存じないでしょう
     # speaker: narrator
     見た目を疑うだけでは、「駅の者が外で知らせている」という話は崩れない。
@@ -452,31 +457,38 @@ Agra? Your train is cancelled today.
 駅の外で呼び止めて運休を告げる者は、自分の知るかぎり、駅の者ではない――と。
 # speaker: enemy
 # reaction: enemy,sweat
+# voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_005
 ……放送係の方と、お知り合いで
 # speaker: narrator
 青年の笑顔が、ほんの一瞬、止まった。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_delhi_depart_scam_quiz_002
 ドゥベイさん！　わたしも隣で聞いてたのに。焦って、全部飛んでた
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_quiz_003
 確かめよう。自分たちで
 # speaker: narrator
 彼女は、青年に向き直った。
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_depart_scam_quiz_004
 Thank you. We'll check it ourselves.
 # speaker: narrator
 お礼と、自分たちで確かめます、のひとこと。にこやかで、譲る気のない声だった。
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_006
 では伺いますが。その方は、運休を誰が知らせるとおっしゃるんです
 -> quiz(2) ->
 # background: gt_bg_delhi_station_front
 { quiz_correct:
     # speaker: enemy
+    # voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_007
     ……放送と、掲示板
 - else:
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_quiz_005
     ううん。駅の放送と、駅の掲示板、って言ってた
 }
 # speaker: narrator
@@ -485,29 +497,36 @@ Thank you. We'll check it ourselves.
 { cond("flag gt_delhi_scam_checked"):
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_depart_scam_quiz_006
     さっきのアプリの『定刻』も、本当だったんだ
 }
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_008
 掲示板は、表示が遅れるんです。それに、運休の切符は、臨時窓口でないとお金が戻りませんよ
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_quiz_007
 本当に運休だったら、切符のお金って、どうなるんだろう
 -> quiz(3) ->
 # background: gt_bg_delhi_station_front
 { quiz_correct:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_depart_scam_quiz_008
     だよね。念のため、鉄道の決まりを開いてみる
 - else:
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_quiz_009
     待って。鉄道の決まりを開いてみる
 }
 # speaker: heroine
+# voice: gt_delhi_depart_scam_quiz_010
 運休になったe切符は、運賃が自動で払い戻される。申し込みも、いらないって
 # speaker: narrator
 ベストの男が、無線機を耳に当てたまま、青年の肩を軽く叩いた。ヒンディー語で、短く何か言う。
 青年は一度だけ、道の向かいの路地の方を振り返った。上で待つ誰かへの言い訳を、考えるような顔だった。
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_delhi_scam_young_man_009
 ……今日は、ついてないな。どうぞ、よい旅を
 # speaker: narrator
 # leave: enemy
@@ -515,26 +534,31 @@ Thank you. We'll check it ourselves.
 彼女は老夫婦と目が合うと、入口の上の掲示板を、黙って指さして見せた。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_depart_scam_quiz_011
 助かった。……でも、さっき、ちょっと得意そうな顔してたでしょ
 // からかいへの返事の3択（任意。作者が決める：README の「作者に確かめてほしいこと」10）。外すなら、この3択と返事3行と下の「-」を消し、「次は、…」の行だけ残す。
 * [「……してない」 # option: not_smug]
     # rel: affection +1
     # speaker: heroine
     # emotion: teasing
+    # voice: gt_delhi_depart_scam_quiz_012
     してたよ。今も、ちょっとしてる
 * [「ドゥベイさんの放送のおかげ」 # option: thanks_dubey]
     # rel: trust +1
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_depart_scam_quiz_013
     そうだね。笑う会に行ってなかったら、今ごろ、あの路地の階段の上だった
 * [「先に思い出したのは、こっちだから」 # option: remembered_first]
     # rel: spark +1
     # speaker: heroine
     # emotion: teasing
+    # voice: gt_delhi_depart_scam_quiz_014
     はいはい。そういうことにしておく
 -
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_depart_scam_quiz_015
 次は、わたしが先に気づく番だからね
 -> END
 
@@ -543,8 +567,10 @@ Thank you. We'll check it ourselves.
 === gt_delhi_depart_scam_quiz_claim ===
 # background: gt_bg_delhi_station_front
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_claim_delhi_scam_young_man_001
 今朝、決まった運休です。掲示板にも、駅の放送にも、まだ出ていません
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_claim_delhi_scam_young_man_002
 だから駅の者が、こうして外で、お一人ずつお知らせしているんです
 ->->
 
@@ -554,8 +580,10 @@ Thank you. We'll check it ourselves.
 # background: gt_bg_delhi_station_front
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_quiz_press_001
 駅の方なんですよね。どうして、駅の中じゃなくて外でお知らせを？
 # speaker: enemy
+# voice: gt_delhi_depart_scam_quiz_press_delhi_scam_young_man_001
 放送は、決まってから流れるまで時間がかかるんです。その間、お客さまが困らないように
 # speaker: narrator
 青年は、首から下げた名札を指でつまんで、こちらに見せた。
@@ -699,8 +727,10 @@ No, thank you.
 とても親切でした。この人はしんらいできます。わたしはまんぞくしました。名前は、タナカ、スズキ、サトウ。日付は、三年にわたっていた。
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_depart_scam_office_001
 ……待って。少し、考えたい
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_office_delhi_scam_suit_man_001
 では、手付金だけ。考えるお時間は、お約束します
 { cond("money >= 500"):
     -> deposit
@@ -722,6 +752,7 @@ No, thank you.
 男が奥の部屋へ消えると、彼女が小声で言った。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_office_002
 少しだけ、外に出よう。駅の掲示板、自分の目で見たい
 # speaker: narrator
 すぐ戻ると言い残して、二人は事務所を出た。
@@ -731,11 +762,13 @@ No, thank you.
 # speaker: narrator
 手付金は、五百ルピーだという。財布を開いてみたが、二人の手持ちを合わせても届かなかった。
 # speaker: gt_delhi_scam_suit_man
+# voice: gt_delhi_depart_scam_office_delhi_scam_suit_man_002
 ……では、お金をご用意してから、またどうぞ
 # speaker: narrator
 男の笑顔は、財布が閉じるより先に消えていた。二人は追い出されるように、事務所を出た。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_office_003
 ……駅の掲示板、自分の目で見に行こう。あの人の話が本当かどうか
 -> back_to_station
 
@@ -743,6 +776,7 @@ No, thank you.
 -> gt_delhi_depart_scam_back_at_station ->
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_delhi_depart_scam_office_004
 定刻……！　じゃあ、運休も、駅長の電話も
 { cond("flag gt_delhi_scam_paid"):
     # speaker: narrator
@@ -767,6 +801,7 @@ No, thank you.
 - else:
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_delhi_depart_scam_office_005
     払えなかったから、何も取られなかったんだ。お財布が軽くて助かったの、初めてかも
 }
 -> gt_delhi_depart_scam_on_platform ->
@@ -779,6 +814,7 @@ No, thank you.
     # rel: trust +1
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_depart_scam_office_006
     ……ありがと、黙っててくれて。次の駅では、わたしが先に掲示板を見るからね
 * [「もっと早く止めればよかった」 # option: blame_myself]
     # rel: affection +1
@@ -898,6 +934,7 @@ No, thank you.
 - else:
     # speaker: heroine
     # emotion: teasing
+    # voice: gt_delhi_depart_station_008
     返事しておくね。今年のお客さんは、引っかかる手前で止まりました、って
 }
 -> messages

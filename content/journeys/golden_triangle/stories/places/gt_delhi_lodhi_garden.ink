@@ -113,19 +113,25 @@ INCLUDE modules.ink
 笑いがひと区切りすると、ドゥベイが二人のところへ来た。
 # speaker: heroine
 # emotion: surprised
+# voice: gt_delhi_date_lodhi_garden_027
 駅の案内放送をされていたんですよね。ホームに響く、あの声ですか？　わたしたち、今度、列車でアーグラへ行くんです
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_012
 さようでございます。では、元・放送係より、お知らせいたします
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_013
 運休・遅れのご案内は、駅の構内放送と、駅の掲示板にて行っております
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_014
 駅の外でお客様をお呼び止めし、運休とお伝えする者は――わたしの知るかぎり、駅の者ではございません
 # speaker: gt_dubey
+# voice: gt_delhi_date_lodhi_garden_dubey_015
 ご不明の点は、駅の中の窓口か、お電話の139番にてお確かめください。……以上、お知らせでした
 # speaker: narrator
 彼女が、こちらに小声で言う。
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_date_lodhi_garden_028
 放送で言われると、忘れられなさそう
 { cond("episode gt_delhi_main_humayun_tomb"):
     -> suresh_again
