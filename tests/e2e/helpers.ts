@@ -746,6 +746,14 @@ export const ops = {
       }
     }
   },
+  /** Hides (true) or shows the page as a switch to another tab would, with its visibilitychange. */
+  async setHidden(page: Page, hidden: boolean) {
+    await page.evaluate((value) => {
+      Object.defineProperty(document, "hidden", { configurable: true, get: () => value });
+      Object.defineProperty(document, "visibilityState", { configurable: true, get: () => (value ? "hidden" : "visible") });
+      document.dispatchEvent(new Event("visibilitychange"));
+    }, hidden);
+  },
   /**
    * Two taps of a finger at a point, as one quick double tap. Hold the page's clock
    * first (`holdClock`), so they fall within the double-tap window however slow the

@@ -25,9 +25,11 @@ export function QuizCutIn({ reduceMotion, onComplete }: { reduceMotion: boolean;
     const still = reduceMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(finish, quizCutInDuration(still));
     const onVisibility = () => { if (document.hidden) finish(); };
-    // The battle under it is inert and the talk's focused line has gone, so Esc is read on the document.
+    // The battle under it is inert and the talk's focused line has gone, so Esc is read on the document. A layer over
+    // the cut-in takes its own Esc: a dialog opened from the header meanwhile (手がかり帳) closes on it, which a cancelled
+    // Esc would stop, and the cut-in still ends by itself under it; so does a key another handler has already taken.
     const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Escape" || event.defaultPrevented || document.querySelector("dialog[open]")) return;
       event.preventDefault();
       finish();
     };

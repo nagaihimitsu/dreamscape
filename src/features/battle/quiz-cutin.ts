@@ -20,12 +20,13 @@ export function battleCutInView(active: Pick<ActiveBattle, "runId" | "phase" | "
 /**
  * Whether 「Quiz」 shows: the run's flow moves, in this mounted screen, from its talk to its first 3-choice question.
  * Once per run. Never for a screen that mounts on a question (a reload, a resumed save: the screen's first view is the
- * question itself), for a later question, across runs, or at a special battle's reasoning stop and the question that
- * follows its proof (B/C keep their own ReasoningCutIn). A special battle's ordinary first question shows it too.
+ * question itself), for a later question, across runs, or at a special battle's reasoning stop (B/C keep their own
+ * ReasoningCutIn). A special battle's ordinary first question shows it too, also when it comes after the proof (a
+ * reasoning stop at round 0: the proof's talk then leads to that first question).
  */
 export function shouldShowQuizCutIn(previous: BattleCutInView, current: BattleCutInView): boolean {
   return previous.runId === current.runId && previous.phase === "dialogue" && current.phase === "question" &&
-    current.roundIndex === 0 && current.answered === 0 && !current.proof;
+    current.roundIndex === 0 && current.answered === 0;
 }
 
 /**

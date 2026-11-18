@@ -34,14 +34,19 @@ describe("when 「Quiz」 shows", () => {
     expect(shouldShowQuizCutIn(talk, next)).toBe(false);
   });
 
-  it("does not show at a reasoning stop, nor at the question its proof leads to", () => {
+  it("does not show at a reasoning stop", () => {
     expect(shouldShowQuizCutIn(view(), view({ phase: "reasoning" }))).toBe(false);
-    // A proof at the first round (roundIndex 0): its question follows the proof's talk.
-    expect(shouldShowQuizCutIn(view({ proof: true }), view({ phase: "question", proof: true }))).toBe(false);
+    expect(shouldShowQuizCutIn(view({ phase: "reasoning", proof: true }), view({ phase: "question", proof: true }))).toBe(false);
   });
 
-  it("shows for a special battle's ordinary first question, before its proof", () => {
+  it("shows for a special battle's ordinary first question, before its proof or after it", () => {
     expect(shouldShowQuizCutIn(view({ runId: "special:4" }), view({ runId: "special:4", phase: "question" }))).toBe(true);
+    // A proof at the first round (reasoning.roundIndex 0): the proof's talk leads to the run's first 3-choice question.
+    const afterProof = { runId: "special:4", proof: true };
+    expect(shouldShowQuizCutIn(view(afterProof), view({ ...afterProof, phase: "question" }))).toBe(true);
+    // Its later questions do not.
+    expect(shouldShowQuizCutIn(view({ ...afterProof, roundIndex: 1, answered: 1 }),
+      view({ ...afterProof, phase: "question", roundIndex: 1, answered: 1 }))).toBe(false);
   });
 
   it("does not carry over to another run, unless that run's own talk leads to its first question", () => {

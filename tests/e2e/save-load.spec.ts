@@ -102,17 +102,14 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(finished.playedDateIds).toEqual(["milano_novecento_date_01"]);
 });
 
-// AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6;
-// docs/07 acceptance 10: with manual saving, leaving unsaved progress asks first (switching journeys,
-// ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
-// UI stage 0, item I: like the title's start, a preparing journey's 「旅の準備を保存する」 with empty name fields
-// saves the default names shown as placeholders (nameOrDefault in PreparingJourney).
 // 「Quiz」 (2026-11-18 user decision; src/features/battle/quiz-cutin.ts): a short cut-in over the battle as its flow moves
-// from the talk to the run's first question. While it shows it covers the answers (a tap meant for the last line lands on
-// it, not on an answer) and the battle under it is inert; it ends by itself and leaves the focus on the battle's heading,
-// not on the page body. Presentation only: the question is already saved. A reload into that question shows none (only
-// the flow moving from the talk in the mounted screen does).
-test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk, and without one after a reload", { tag: tier.gate }, async ({ page }) => {
+// from the talk to the run's first question. While it shows it covers the answers and the battle under it is inert: a tap
+// where the first answer is lands on the cut-in and ends it early, answers nothing, and leaves the focus on the battle's
+// heading, not on the page body. Presentation only: the question is already saved. A reload into that question shows
+// none (only the flow moving from the talk in the mounted screen does). Esc and the page going to the background end it
+// too, and a clue book opened over it takes the Esc: debug-scenes.spec.ts. Every other E2E that plays a battle lets it
+// end by itself (ops.settled waits for it).
+test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk, a tap on it answers nothing, and a reload shows none", { tag: tier.gate }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.clock.install();
   await ops.startJourney(page, "milano");
@@ -123,9 +120,10 @@ test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk
     !!state.activeBattle.frame?.choices.some((choice) => choice.call === "quiz"));
   const cutIn = page.getByTestId("quiz-cutin");
   const answer = page.getByTestId("answer-A");
+  const answerPoint = () => ops.centerOf(answer);
   /** Whether the middle of the first answer is the cut-in (as a tap there would land). */
   const answerCovered = async () => page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="quiz-cutin"]'),
-    await ops.centerOf(answer));
+    await answerPoint());
   // The page's clock is held, so the cut-in cannot end by itself before it is looked at.
   await ops.holdClock(page);
   await page.getByTestId("battle-advance").click();
@@ -141,9 +139,15 @@ test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk
   const question = await readSave(page);
   expect(question.revision).toBe(talk.revision + 1);
   expect(question.activeBattle).toMatchObject({ phase: "question", roundIndex: 0, answers: [] });
-  // It ends by itself (nothing is tapped or pressed), saves nothing, and the answers take presses again.
-  await page.clock.resume();
+  // A finger's tap where the first answer is, the clock still held (so the cut-in cannot have ended by itself): it
+  // ends the cut-in, and the answer under it is not chosen.
+  const point = await answerPoint();
+  await page.touchscreen.tap(point.x, point.y);
   await expect(cutIn).toHaveCount(0);
+  await expect(page.getByTestId("battle-feedback")).toHaveCount(0);
+  expect(await readSave(page), "the tap answered nothing").toEqual(question);
+  // The answers take presses again, and the focus goes to the battle's heading with the next frame.
+  await page.clock.resume();
   expect(await answerCovered(), "the first answer is reachable").toBe(false);
   await expect(page.locator(".battle-paper-shell")).not.toHaveAttribute("inert", "");
   await expect(ops.sceneHeading(page), "the focus is on the battle's heading, not the page body").toBeFocused();
@@ -159,6 +163,11 @@ test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk
   await expect(page.getByTestId("battle-feedback")).toBeVisible();
 });
 
+// AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6;
+// docs/07 acceptance 10: with manual saving, leaving unsaved progress asks first (switching journeys,
+// ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
+// UI stage 0, item I: like the title's start, a preparing journey's 「旅の準備を保存する」 with empty name fields
+// saves the default names shown as placeholders (nameOrDefault in PreparingJourney).
 test("a preparing journey saved with empty name fields keeps the default names", { tag: tier.gate }, async ({ page }) => {
   const preparing = journeyCatalog().journeys.find((journey) => journey.status === "preparing" && journey.initialState);
   test.skip(!preparing, "no preparing journey with an initial state to save names for");
