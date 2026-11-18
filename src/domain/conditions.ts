@@ -98,6 +98,8 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   // Met: a scene naming the person in # person: was seen (decision 42; seen covers every ending).
   met: (state, id) => scenes.some((scene) => scene.people.includes(id) && state.seenEncounterIds.includes(scene.id)),
   condition: (state, name) => Object.hasOwn(storyState.conditions, name) && meets(state, storyState.conditions[name]),
+  // A clue in 手がかり帳: found in an observation or heard in a scene (# clue:, # on_done: clue; 2026-11-18).
+  clue: (state, id) => state.discoveredClueIds.includes(id),
 };
 
 function meetsLeaf(state: Readonly<GameState>, leaf: Leaf): boolean {

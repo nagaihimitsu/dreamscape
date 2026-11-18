@@ -64,6 +64,7 @@ import { withNames } from "../features/romance/names";
 import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
+import { clueRecordedNotice } from "../features/tourism/clue-source";
 import { useLearning } from "../features/learning/useLearning";
 import { answeredQuestions, EnglishReview, latestAnsweredQuestionId, metQuestions } from "../features/learning/EnglishReview";
 import { useLocalWords } from "../features/learning/useLocalWords";
@@ -295,14 +296,17 @@ export function GameApp({
     // A line's # term: just put terms in 旅の図鑑: their card shows, unless 高速送り passes the line (the effect below).
     const terms = termsAdded(previous, next);
     if (terms.length) setAddedTerms((last) => ({ key: (last?.key ?? 0) + 1, ids: terms, quiet: !!lineFrameOnScreen(next)?.quiet }));
-    // A clue just recorded in 手がかり帳: clue_new, a short vibration and the notebook's button gleams (2026-11-13).
+    // A clue just recorded in 手がかり帳: clue_new, a short vibration and the notebook's button gleams (2026-11-13); outside the
+    // observation (a clue heard in a scene, 2026-11-18) also a word under the header, which needs no sound or vibration.
     if (addedIds(previous.discoveredClueIds, next.discoveredClueIds).length) {
       setClueGleam((count) => count + 1);
       playSe("clue_new");
       vibrate("clue");
     }
-    // The action that ended a tour (tour stage 2a) says so in free time, for a moment under the header.
-    if (previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.showToast("ツアーが終わりました。");
+    // The action that ended a tour (tour stage 2a) says so in free time, for a moment under the header (one word with the clue's).
+    const tourEnded = !!previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length;
+    const words = [clueRecordedNotice(previous, next), tourEnded ? "ツアーが終わりました。" : null].filter((word) => word !== null);
+    if (words.length) session.showToast(words.join(""));
     if (!showChangesRef.current) return;
     if (introTiming.current) introTiming.current = recordIntro(introTiming.current, performance.now(), introChange(previous, next));
     const change = relationshipChange(previous, next);

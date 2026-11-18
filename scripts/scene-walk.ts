@@ -444,6 +444,8 @@ export function walkScene(walked: SceneWalkInput): number {
           overrides[`item ${item} ${option?.give?.item === item ? "gifted" : "used"}`] = true;
         }
         for (const flag of option?.set ?? []) overrides[`flag ${flag}`] = true;
+        // A clue the choice records (# clue:; 2026-11-18): a later cond("clue …") of the scene reads it as true.
+        for (const id of option?.clues ?? []) overrides[`clue ${id}`] = true;
         const branch = make(overrides, [...trueTexts]);
         branch.state.LoadJson(checkpoint);
         branch.ChooseChoiceIndex(choice.index);

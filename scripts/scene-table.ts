@@ -205,7 +205,7 @@ export function catalogScenes(encounters: readonly EncounterDefinition[], rules:
 }
 
 /**
- * A one-scene catalog encounter's choice tags (`# requires:`, `# rel:`, `# money:`, `# ap:`, `# set:`, `# memory:`,
+ * A one-scene catalog encounter's choice tags (`# requires:`, `# rel:`, `# money:`, `# ap:`, `# set:`, `# clue:`, `# memory:`,
  * `# then:`) joined to its catalog options by `# option:` (the catalog keeps the gift, the use, 「また今度」 and the reaction).
  */
 export function mergeCatalogChoiceTags(scene: SceneEntry, tagged: readonly SceneOption[]): SceneEntry {
@@ -216,7 +216,8 @@ export function mergeCatalogChoiceTags(scene: SceneEntry, tagged: readonly Scene
     const money = (option.money ?? 0) + (tags.money ?? 0);
     return { ...option, ...(tags.requires ? { requires: [...(option.requires ?? []), ...tags.requires] } : {}),
       ...(tags.rel ? { rel: tags.rel } : {}), ...(money ? { money } : {}), ...(tags.ap ? { ap: tags.ap } : {}),
-      ...(tags.set ? { set: tags.set } : {}), ...(tags.memory ? { memory: tags.memory } : {}), ...(tags.then ? { then: tags.then } : {}),
+      ...(tags.set ? { set: tags.set } : {}), ...(tags.clues ? { clues: tags.clues } : {}), ...(tags.memory ? { memory: tags.memory } : {}),
+      ...(tags.then ? { then: tags.then } : {}),
       ...(tags.translated ? { translated: true as const } : {}) };
   });
   for (const tags of tagged) if (!scene.options.some((option) => option.id === tags.id))
@@ -304,9 +305,15 @@ export type SceneReferences = {
   effects: ReadonlySet<string>;
   /** An item carried through the journey (`"carry": "journey"`) from a city before the scene's: held, given and used there too. */
   carriedInto?: (itemId: string, sceneCityId: string) => boolean;
+  /**
+   * The clues of tourism/catalog.json (`# clue:`, `# on_done: clue`; 2026-11-18): each clue's journey, and the journey of a city.
+   * A scene may give a clue of any city of its own journey (手がかり帳 shows the clues of the city or landmark it is opened at).
+   */
+  clues: ReadonlyMap<string, string | undefined>;
+  journeyOfCity: (cityId: string) => string | undefined;
 };
 
-/** Stop at an undeclared flag, person, item, memory, profile or effect, and at an item of another city (A2, A22). */
+/** Stop at an undeclared flag, person, item, memory, profile, effect or clue, at an item of another city (A2, A22) and at a clue of another journey. */
 export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): void {
   const where = `${scene.story.storyId}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
   const item = (id: string, what: string) => {
@@ -319,6 +326,13 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
   const flag = (id: string, what: string) => {
     if (!refs.flags.has(id)) throw new Error(`Undeclared flag in ${what} of ${where}: ${id} (declare it in progression/story.json flags)`);
   };
+  const clue = (id: string, what: string) => {
+    if (!refs.clues.has(id)) throw new Error(`Unknown clue in ${what} of ${where}: ${id} (register it in tourism/catalog.json clues)`);
+    const journey = refs.clues.get(id);
+    const own = refs.journeyOfCity(scene.cityId);
+    if (journey !== own)
+      throw new Error(`A clue of another journey in ${what} of ${where}: ${id} belongs to ${journey ?? "no journey"}, the scene to ${own ?? "no journey"}`);
+  };
   for (const person of scene.people) if (!refs.people.has(person))
     throw new Error(`Undeclared person in # person: of ${where}: ${person} (declare it in progression/story.json people)`);
   for (const option of scene.options) {
@@ -330,6 +344,7 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
     }
     if (option.use) item(option.use, `${what} (# use:)`);
     for (const id of option.set ?? []) flag(id, `${what} (# set:)`);
+    for (const id of option.clues ?? []) clue(id, `${what} (# clue:)`);
     for (const id of option.memory ?? []) if (!refs.memories.has(id)) throw new Error(`Unknown memory in ${what} of ${where}: ${id}`);
     if (option.profile && !refs.profiles.has(option.profile)) throw new Error(`Unknown reaction profile in ${what} of ${where}: ${option.profile}`);
     if (option.effect && !refs.effects.has(option.effect)) throw new Error(`Unknown effect in ${what} of ${where}: ${option.effect}`);
@@ -337,6 +352,7 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
   for (const id of scene.done.items ?? []) item(id, "# on_done: item");
   for (const id of scene.done.use ?? []) item(id, "# on_done: use");
   for (const id of scene.done.set ?? []) flag(id, "# on_done: set");
+  for (const id of scene.done.clues ?? []) clue(id, "# on_done: clue");
 }
 
 /** The conditions of a scene (its head and its options' `# requires:`), for the condition checks. */

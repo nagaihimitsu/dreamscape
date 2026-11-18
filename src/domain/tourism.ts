@@ -8,6 +8,7 @@ import {
   progression,
   tourismClues,
   getCityStoryBackground,
+  sceneGivenClueIds,
 } from "../content";
 import { hasObservation } from "../content/tourism-schemas";
 import {
@@ -439,15 +440,23 @@ export function startTourismBattle(
   return startBattleFromTourism(state, landmark.battleId);
 }
 
+/**
+ * Whether a clue may be in the saved records (2026-11-18): it exists, and its landmark was visited (an observation finds it
+ * there) or a scene gives it (`# clue:`, `# on_done: clue`: heard in conversation, anywhere). `given`: sceneGivenClueIds(),
+ * passed when many clues are checked at once.
+ */
+export function clueRecordAllowed(state: Pick<GameState, "visitedLandmarkIds">, clueId: string, given: ReadonlySet<string> = sceneGivenClueIds()): boolean {
+  const clue = tourismClues.find((item) => item.id === clueId);
+  return !!clue && (state.visitedLandmarkIds.includes(clue.landmarkId) || given.has(clueId));
+}
+
 export function validateTourismState(state: GameState): void {
   const knownLandmarks = new Set(landmarks.map((item) => item.id));
   if (state.visitedLandmarkIds.some((id) => !knownLandmarks.has(id)))
     throw new Error("訪問した観光地が見つかりません。");
-  for (const id of state.discoveredClueIds) {
-    const clue = tourismClues.find((item) => item.id === id);
-    if (!clue || !state.visitedLandmarkIds.includes(clue.landmarkId))
-      throw new Error("手がかりの発見記録が一致しません。");
-  }
+  const given = sceneGivenClueIds();
+  for (const id of state.discoveredClueIds)
+    if (!clueRecordAllowed(state, id, given)) throw new Error("手がかりの発見記録が一致しません。");
   const active = state.activeTourism;
   if (!active) return;
   const landmark = landmarks.find((item) => item.id === active.landmarkId);

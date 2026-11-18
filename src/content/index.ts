@@ -32,7 +32,7 @@ import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import sceneConditionData from "./generated/scene-conditions.json";
 import sceneData from "./generated/scenes.json";
 import storyStateData from "./generated/content/progression/story.json";
-import { generatedScenesSchema, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
+import { generatedScenesSchema, sceneGivenClues, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
 import albumImageData from "./generated/album-images.json";
 import { albumImageListSchema, type AlbumImage } from "./album-images";
 import miniGameArtData from "./generated/minigame-art.json";
@@ -75,6 +75,11 @@ const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;
 export const tourismClues = tourism.clues;
+/**
+ * The clues a scene gives (`# clue:`, `# on_done: clue`; 2026-11-18), read from the scene list each time (the unit tests
+ * add scenes to it): the save check accepts them without their landmark's visit, and 手がかり帳 shows them as heard.
+ */
+export const sceneGivenClueIds = (): ReadonlySet<string> => sceneGivenClues(scenes);
 // City files, including each unpublished prototype, are the single registration source.
 // The content pipeline validates them and copies them into the generated mirror,
 // so adding a city does not require a separate runtime list.

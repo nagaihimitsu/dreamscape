@@ -28,6 +28,11 @@ export type ConditionContent = {
   flags?: readonly string[];
   people?: readonly { id: string; cityId: string }[];
   namedConditions?: Readonly<Record<string, Condition>>;
+  /**
+   * The clues (tourism/catalog.json; 2026-11-18): a clue belongs to its landmark's city, unless a scene gives it (`heard`:
+   * `# clue:`, `# on_done: clue`), which may be in any city of the journey.
+   */
+  clues?: readonly { id: string; landmarkId: string; heard?: boolean }[];
   /** Scenes that also run at other moments than their landmark's visit (stage 4: a `place` with a date or a finale): 「また今度」 brings them back there. */
   returningScenes?: ReadonlySet<string>;
 };
@@ -37,6 +42,7 @@ export type ConditionOwner = { label: string; cityId: string; conditions: { fiel
 const KIND_LABELS: Record<LeafReference["kind"], string> = {
   episode: "episode", city: "city", battle: "battle", landmark: "landmark", encounter: "encounter", date: "date", item: "item", mode: "transport mode",
   flag: "flag (progression/story.json)", person: "person (progression/story.json)", condition: "named condition (progression/story.json)",
+  clue: "clue (tourism/catalog.json)",
 };
 
 /** The dates' `when` and `until`, checked in each date's city (its chapterId). */
@@ -96,6 +102,10 @@ export function referenceCity(content: ConditionContent, reference: LeafReferenc
     case "date": return content.dates.find((item) => item.id === reference.id)?.chapterId;
     case "item": return content.items.find((item) => item.id === reference.id)?.cityId;
     case "person": return content.people?.find((item) => item.id === reference.id)?.cityId;
+    case "clue": {
+      const clue = content.clues?.find((item) => item.id === reference.id);
+      return clue && !clue.heard ? content.landmarks.find((item) => item.id === clue.landmarkId)?.cityId : undefined;
+    }
     case "mode": case "flag": case "condition": return undefined;
   }
 }
@@ -113,6 +123,7 @@ function exists(content: ConditionContent, reference: LeafReference): boolean {
     case "flag": return !!content.flags?.includes(reference.id);
     case "person": return !!content.people?.some((item) => item.id === reference.id);
     case "condition": return !!content.namedConditions && Object.hasOwn(content.namedConditions, reference.id);
+    case "clue": return !!content.clues?.some((item) => item.id === reference.id);
   }
 }
 

@@ -89,7 +89,7 @@ import { checkSpeakerPeople } from "./speaker-people";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
 import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneRewardErrors, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
-import { sceneDataCatalogSchema, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
+import { sceneDataCatalogSchema, sceneGivenClues, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
 import { validateQuizEntries } from "./quiz-validation";
@@ -852,17 +852,24 @@ export function validateContent(sources: ContentSources,
     const to = journeyCityPosition(cityId);
     return item?.carry === "journey" && !!from && !!to && from.journey === to.journey && from.index < to.index;
   };
+  const journeyOfCityId = (cityId: string) => journeyCatalog.journeys.find((item) => item.cities.some((city) => city.id === cityId))?.id;
+  const landmarkCityOf = (landmarkId: string) => tourism.landmarks.find((item) => item.id === landmarkId)?.cityId;
   const sceneRefs = {
     carriedInto,
     items: itemCities, flags: new Set(storyStateCatalog.flags.map((flag) => flag.id)),
     people: new Set(storyStateCatalog.people.map((person) => person.id)), memories: new Set(Object.keys(presentation.memories)),
     profiles: new Set(responseProfiles.map((profile) => profile.id)), effects: new Set(effects.map((effect) => effect.id)),
+    // A clue's journey: its landmark's city's (# clue:, # on_done: clue; 2026-11-18).
+    clues: new Map(tourism.clues.map((clue) => {
+      const cityId = landmarkCityOf(clue.landmarkId);
+      return [clue.id, cityId === undefined ? undefined : journeyOfCityId(cityId)] as const;
+    })),
+    journeyOfCity: journeyOfCityId,
   };
   for (const person of storyStateCatalog.people) if (!cities.some((city) => city.id === person.cityId))
     throw new Error(`Unknown city of the person ${person.id} in progression/story.json: ${person.cityId}`);
   for (const person of storyStateCatalog.people) if (person.characterId && !characters.characters.some((item) => item.id === person.characterId))
     throw new Error(`Unknown portrait of the person ${person.id} in progression/story.json: ${person.characterId} (register it in presentation/characters.json)`);
-  const journeyOfCityId = (cityId: string) => journeyCatalog.journeys.find((item) => item.cities.some((city) => city.id === cityId))?.id;
   for (const scene of taggedScenes) {
     const label = `${storyLabel(scene.story.storyId)}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
     withContext(label, () => checkSceneReferences(scene, sceneRefs));
@@ -931,6 +938,8 @@ export function validateContent(sources: ContentSources,
   const catalogEntries = catalogScenes(encounterCatalog.encounters, encounterEntryRules.entries, (storyId) => fnvHash(stories[storyId] ?? ""))
     .map((scene) => mergeCatalogChoiceTags(scene, catalogChoiceTags.get(scene.id) ?? []));
   for (const scene of catalogEntries) if (catalogChoiceTags.has(scene.id)) withContext(storyLabel(scene.story.storyId), () => checkSceneReferences(scene, sceneRefs));
+  // The clues a scene gives (# clue:, # on_done: clue; 2026-11-18), heard in conversation rather than found in an observation.
+  const heardClues = sceneGivenClues([...taggedScenes, ...catalogEntries]);
   // A21: an arrival, or an epilogue the game starts by itself, takes no # on_done: that spends. An epilogue its city starts by a
   // then: epilogue may (the then: keeps it back and greys when it cannot be paid): such a city is read from every scene, a
   // catalog encounter's choice tags too, as the game reads them (isAuthoredEpilogueCity; 3.9 (d)).
@@ -1483,6 +1492,7 @@ export function validateContent(sources: ContentSources,
     journeys: journeyCatalog.journeys, cities, episodes: journey.episodes, battles, landmarks: tourism.landmarks,
     encounters: runtimeEncounters, items: encounterCatalog.items, dates,
     flags: storyStateCatalog.flags.map((flag) => flag.id), people: storyStateCatalog.people, namedConditions: storyStateCatalog.conditions,
+    clues: tourism.clues.map((clue) => ({ id: clue.id, landmarkId: clue.landmarkId, ...(heardClues.has(clue.id) ? { heard: true } : {}) })),
     returningScenes: new Set(placeEntries.filter((scene) => scene.at.some((moment) => !("visit" in moment) &&
       (!("place" in moment) || datesAtPlace(moment.place).length > 0 || finalesAtPlace(moment.place).length > 0))).map((scene) => scene.id)),
   };
@@ -1570,8 +1580,10 @@ export function validateContent(sources: ContentSources,
         ...(scene.at.some(comesAgain) ? { anytime: true } : {}),
         ...(scene.when ? { when: scene.when } : {}) };
     }),
-    // The scenes' items (stage 3 tags): what they give, give away or use (the item design §2.5 7–9).
+    // The scenes' items (stage 3 tags): what they give, give away or use (the item design §2.5 7–9); and the clues they record.
     sceneItems: sceneItemsOf(generatedScenes.scenes),
+    // The clues an observation finds at their landmarks (a condition's clue <ID>; 2026-11-18).
+    clues: tourism.clues.map((clue) => ({ id: clue.id, landmarkId: clue.landmarkId })),
     // The tags' AP (stage 3): once-only scenes' gains (their scene_tag rules) and the main parts' spends.
     sceneAp: generatedScenes.scenes.filter((scene) => scene.repeat === "once").map((scene) => ({ cityId: scene.cityId,
       gained: generatedScenes.rewards.filter((rule) => rule.sceneId === scene.id && !scene.options.some((option) => option.later && `${scene.id}__${option.id}` === rule.id))

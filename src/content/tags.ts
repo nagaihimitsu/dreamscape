@@ -281,7 +281,7 @@ export type StoryCall = (typeof STORY_CALLS)[number];
  * source into the scene table, and the game applies them from the table before passing the choice to
  * Ink; on screen they are skipped like comments.
  */
-export const EFFECT_TAG_KEYS: readonly string[] = ["requires", "give", "use", "rel", "profile", "memory", "set", "money", "ap", "then"];
+export const EFFECT_TAG_KEYS: readonly string[] = ["requires", "give", "use", "rel", "profile", "memory", "set", "clue", "money", "ap", "then"];
 
 /** Throws for a `# remembered` that cannot show whose words they are (REMEMBERED_TAG); Japanese first. */
 function checkRemembered(tags: StoryTags): void {

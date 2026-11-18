@@ -101,16 +101,22 @@ const addFlags = (state: GameState, flags: readonly string[] | undefined): GameS
   const added = (flags ?? []).filter((flag) => !state.storyProgress.flags.includes(flag));
   return added.length ? { ...state, storyProgress: { ...state.storyProgress, flags: [...state.storyProgress.flags, ...added] } } : state;
 };
+/** `# clue:` / `# on_done: clue` (2026-11-18): the clues heard, recorded in 手がかり帳 once (a clue found already stays as it is). */
+const addClues = (state: GameState, clues: readonly string[] | undefined): GameState => {
+  const added = [...new Set(clues ?? [])].filter((id) => !state.discoveredClueIds.includes(id));
+  return added.length ? { ...state, discoveredClueIds: [...state.discoveredClueIds, ...added] } : state;
+};
 
 /**
- * A choice's own tags before its then: and its reaction profile: money, AP (`earn` gives a gain), relationship, flags, memories,
- * the item given or used. The choice's display reads the then: on this state too, so it shows as the choice decides it.
+ * A choice's own tags before its then: and its reaction profile: money, AP (`earn` gives a gain), relationship, flags, clues,
+ * memories, the item given or used. The choice's display reads the then: on this state too, so it shows as the choice decides it.
  */
 function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: GameState, gain: number) => GameState, sceneId = ""): GameState {
   let next = applyMoney(state, option.money);
   next = (option.ap ?? 0) > 0 ? earn(next, option.ap!) : applyAp(next, option.ap, "", 0);
   next = addRelationship(next, option.rel);
   next = addFlags(next, option.set);
+  next = addClues(next, option.clues);
   const memories = (option.memory ?? []).filter((id) => !next.memories.includes(id));
   if (memories.length) next = { ...next, memories: [...next.memories, ...memories] };
   for (const [item, status] of [[option.give?.item, "gifted"], [option.use, "used"]] as const) {
@@ -123,7 +129,7 @@ function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: Ga
 
 /**
  * Apply a choice's tags, before the choice is passed to Ink: money, AP (giving by the rule
- * "<scene>__<option>", stored as "…@<revision>"), relationship, flags, memories, the item given or
+ * "<scene>__<option>", stored as "…@<revision>"), relationship, flags, clues, memories, the item given or
  * used (recorded in itemUses with the scene and option), and the reaction profile (one roll
  * drawn now; decision 39). `revision`: the revision the action saves.
  */
@@ -145,7 +151,7 @@ export function applyChoiceEffects(state: GameState, sceneId: string, option: Sc
 /**
  * Apply what a scene does when it is done (`# on_done:`): the items it gives (an item already
  * recorded is left as it is: a repeated scene gives it once), the items it uses (when held;
- * recorded with the scene and no option), flags, relationship, money and AP ("<scene>__on_done").
+ * recorded with the scene and no option), flags, clues, relationship, money and AP ("<scene>__on_done").
  */
 export function applyDoneEffects(state: GameState, sceneId: string, done: SceneDone, revision: number): GameState {
   let next = state;
@@ -153,6 +159,7 @@ export function applyDoneEffects(state: GameState, sceneId: string, done: SceneD
   for (const item of done.use ?? []) if (next.inventory[item] === "held")
     next = { ...next, inventory: { ...next.inventory, [item]: "used" }, itemUses: { ...next.itemUses, [item]: { encounterId: sceneId } } };
   next = addFlags(next, done.set);
+  next = addClues(next, done.clues);
   next = addRelationship(next, done.rel);
   next = applyMoney(next, done.money);
   next = applyAp(next, done.ap, `${sceneId}__on_done`, revision);

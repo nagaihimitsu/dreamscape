@@ -37,7 +37,7 @@ import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
 import type { SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
-import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, getTour, journeyConfig, landmarks, progression, scenes, tours } from "../../src/content";
+import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, getTour, journeyConfig, landmarks, progression, scenes, tourismClues, tours } from "../../src/content";
 import { isTourOnlyPlace } from "../../src/content/travel-schemas";
 import { bookTour, cancelTourBooking } from "../../src/domain/tour";
 import { spendableMoney } from "../../src/domain/conditions";
@@ -155,7 +155,7 @@ function pick(state: GameState, actions: PlayerAction[], next: () => number): Pl
 /** The content the progression check reads, from the runtime catalogs (the same check as content:build's). */
 const progressionContent: ProgressionContent = {
   journeys, episodes, storyBattles: journeyConfig.storyBattles, battles, landmarks, encounters: encounters.encounters, items: encounters.items, dates,
-  rewards: allRewardRules, romance: progression, sceneItems: sceneItemsOf(scenes),
+  rewards: allRewardRules, romance: progression, sceneItems: sceneItemsOf(scenes), clues: tourismClues,
   // Registered cities only (a journey may list cities not built yet).
   travel: playable.flatMap((journey) => journey.cities).filter((city) => city.id in cityContents).map((city) => {
     const { travel, travelSettings } = getCityContent(city.id);
@@ -170,7 +170,7 @@ const snapshotOf = (state: GameState): ProgressionSnapshot => ({
   exact: true, battles: new Set(state.battleRecords.filter((item) => item.attempts > 0).map((item) => item.battleId)),
   episodes: new Set(state.completedEpisodeIds), cities: new Set(state.completedCityIds), landmarks: new Set(state.visitedLandmarkIds),
   guides: new Set(state.completedGuideIds), encounters: new Set(state.completedEncounterIds), seenEncounters: new Set(state.seenEncounterIds),
-  dates: new Set(state.playedDateIds), epilogues: new Set(state.viewedEpilogueCityIds), items: state.inventory,
+  dates: new Set(state.playedDateIds), epilogues: new Set(state.viewedEpilogueCityIds), items: state.inventory, clues: new Set(state.discoveredClueIds),
   couple: state.confessionStatus === "accepted", romanceStage: state.romanceStage, cityDay: state.travel.day,
   journeyDay: state.travel.calendar?.journeyDay, money: spendableMoney(state),
 });

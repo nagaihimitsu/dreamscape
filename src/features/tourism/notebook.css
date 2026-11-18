@@ -227,7 +227,10 @@ dialog.modal.clue-notebook {
 .clue-notebook .clue-meta .clue-sources { flex: 0 1 auto; }
 .clue-notebook .clue-meta:has(.clue-sources[open]) { flex-wrap: wrap; }
 .clue-notebook .clue-meta .clue-sources[open] { flex: 1 0 100%; }
-.case-notebook .notebook-clue .clue-kind {
+/* The pill already says where the clue came from: in a reasoning battle, and for a clue heard in conversation in a city
+   finale's book (「会話で聞いた」 over 「会話で聞いたこと」 would say it twice); the heading stays for screen readers. */
+.case-notebook .notebook-clue .clue-kind,
+.clue-notebook .notebook-clue.heard-clue .clue-kind {
   position: absolute;
   width: 1px;
   height: 1px;

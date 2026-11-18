@@ -82,6 +82,8 @@ export const sceneOptionSchema = z.object({
   /** `# ap: -1` / `+2`: the sum (never 0). */
   ap: signed.optional(),
   set: z.array(id).optional(),
+  /** `# clue: <clue ID>` (2026-11-18): the clues of tourism/catalog.json the choice records in 手がかり帳 (heard in conversation). */
+  clues: z.array(id).optional(),
   memory: z.array(id).optional(),
   /** `# profile:` (docs/03 「噛み合い」): the reaction profile the choice resolves with. */
   profile: id.optional(),
@@ -100,6 +102,8 @@ export const sceneDoneSchema = z.object({
   items: z.array(id).optional(),
   use: z.array(id).optional(),
   set: z.array(id).optional(),
+  /** `# on_done: clue <clue ID>` (2026-11-18): the clues the scene records in 手がかり帳 when it is done. */
+  clues: z.array(id).optional(),
   rel: relationshipDeltaSchema.optional(),
   money: signed.optional(),
   ap: signed.optional(),
@@ -163,6 +167,15 @@ export const generatedScenesSchema = z.object({
   rewards: z.array(rewardRuleSchema),
 }).strict();
 export type GeneratedScenes = z.infer<typeof generatedScenesSchema>;
+
+/**
+ * The clues some scene gives (2026-11-18): a choice's `# clue:` or a head's `# on_done: clue`. One set for every reader:
+ * the save check accepts such a clue without its landmark's visit (tourism.ts clueRecordAllowed), and 手がかり帳 shows it as
+ * heard in conversation (「会話で聞いた」) rather than observed. A clue's `kind` stays its form (a hotspot or a document card).
+ */
+export function sceneGivenClues(list: readonly Pick<SceneEntry, "options" | "done">[]): Set<string> {
+  return new Set(list.flatMap((scene) => [...(scene.done.clues ?? []), ...scene.options.flatMap((option) => option.clues ?? [])]));
+}
 
 /**
  * The story state an author declares (`progression/story.json`, 3a): flags (物語の状態; set by

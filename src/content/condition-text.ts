@@ -34,6 +34,7 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
  * | `flag <flag>` (3a) | `flag` |
  * | `met <person>` (3a) | `met` |
  * | `condition <name>` (3a) | `condition` |
+ * | `clue <clue>` (found in an observation or heard in a scene; 2026-11-18) | `clue` |
  */
 const LATER_PARTS: Record<string, number> = {};
 
@@ -103,6 +104,7 @@ function leafOf(words: string[]): Condition {
     case "flag": return { flag: one("flag <flag>") };
     case "met": return { met: one("met <person>") };
     case "condition": return { condition: one("condition <name>") };
+    case "clue": return { clue: one("clue <clue>") };
     case "weekday": {
       const days = one("weekday 5,6 (Monday is 0)").split(",").map((day) => (/^[0-6]$/u.test(day) ? Number(day) : NaN));
       return days.some(Number.isNaN) ? fail("weekday 5,6 (Monday is 0)") : { weekday: days };

@@ -135,6 +135,24 @@ describe("condition build checks", () => {
   });
 });
 
+describe("the condition clue <ID> (2026-11-18)", () => {
+  const clues = [{ id: "beta_card", landmarkId: "beta_gate" }, { id: "beta_word", landmarkId: "beta_gate", heard: true }];
+  const read = (cityId: string, id: string) => ({ label: "the scene encounters/probe", cityId, conditions: [{ field: "when", condition: { clue: id } }] });
+
+  it("names a clue of tourism/catalog.json, read in any city", () => {
+    expect(conditionErrors({ ...content, clues }, [read("beta", "beta_card"), read("gamma", "beta_word")])).toEqual([]);
+    expect(conditionErrors({ ...content, clues }, [read("beta", "missing")]))
+      .toEqual(["Unknown clue (tourism/catalog.json) in a condition of the scene encounters/probe (when): missing"]);
+    expect(conditionErrors(content, [read("beta", "beta_card")])).toHaveLength(1);
+  });
+
+  it("warns about a clue of a later city's landmark only when no scene gives it (a heard clue may come in any city)", () => {
+    expect(conditionWarnings({ ...content, clues }, [], [read("alpha", "beta_card")])).toEqual([{ kind: "never-offered", message:
+      "Condition never met where it is checked: the scene encounters/probe (when) is read in alpha but needs clue (tourism/catalog.json) beta_card of the later city beta" }]);
+    expect(conditionWarnings({ ...content, clues }, [], [read("alpha", "beta_word")])).toEqual([]);
+  });
+});
+
 describe("condition build warnings", () => {
   const warn = (extra: Partial<ConditionContent>, rules: Parameters<typeof conditionWarnings>[1] = []) =>
     conditionWarnings({ ...content, ...extra }, rules);

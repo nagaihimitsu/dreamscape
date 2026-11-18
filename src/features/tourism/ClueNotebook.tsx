@@ -4,6 +4,7 @@ import { Modal, ModalTitle } from "../../components/Modal";
 import { playSe } from "../../audio/sound-effects";
 import { ClueDetails } from "./ClueDetails";
 import { ClueImage } from "./ClueImage";
+import { caseProvenanceLabel, cityProvenanceLabel, isHeardClue } from "./clue-source";
 import "./notebook.css";
 
 export interface NotebookReasoning {
@@ -62,6 +63,8 @@ export function ClueNotebook({
   const currentSelected = !!current && !!reasoning?.selectedIds.includes(current.id);
   const canSelectCurrent = !!current && !!reasoning?.caseClueIds.includes(current.id);
   const unreadDocument = !!current && readableDocumentIds.includes(current.id) && !discoveredIds.includes(current.id) && !!onDiscoverDocument && !reasoning;
+  // A clue a scene gives was heard in conversation (2026-11-18): said so, and shown without its landmark's photo.
+  const heard = !!current && isHeardClue(current.id);
   return (
     <Modal
       labelledBy="cluebook-title"
@@ -145,32 +148,25 @@ export function ClueNotebook({
         </p>
         {clues.length === 0 ? (
           <p className="empty-clues">
-            まだ手がかりはありません。観光画面の気になる場所や資料カードを調べると、ここに記録されます。
+            まだ手がかりはありません。観光画面の気になる場所や資料カードを調べたり、人から話を聞いたりすると、ここに記録されます。
           </p>
         ) : (
           current && (
             <article
-              className={`notebook-clue ${currentSelected ? "case-selected" : ""}`}
+              className={`notebook-clue${currentSelected ? " case-selected" : ""}${heard ? " heard-clue" : ""}`}
               data-testid={`notebook-${current.id}`}
               key={current.id}
             >
               {reasoning && (
-                <p className="case-provenance">
-                  {discoveredIds.includes(current.id) ? "観察済み" : "ケース資料"}
-                </p>
+                <p className="case-provenance">{caseProvenanceLabel(discoveredIds.includes(current.id), heard)}</p>
               )}
               {cityId && (
-                <p className="case-provenance">
-                  {
-                    landmarks.find((item) => item.id === current.landmarkId)
-                      ?.nameJa
-                  }
-                </p>
+                <p className="case-provenance">{cityProvenanceLabel(current, heard)}</p>
               )}
               {unreadDocument ? <>
                 <h3>{current.titleJa}</h3>
                 <button className="secondary" data-testid={`read-document-${current.id}`} onClick={() => onDiscoverDocument(current.id)}>資料を読む</button>
-              </> : <ClueDetails clue={current} image={<ClueImage clue={current} />} />}
+              </> : <ClueDetails clue={current} heard={heard} image={heard ? undefined : <ClueImage clue={current} />} />}
             </article>
           )
         )}
