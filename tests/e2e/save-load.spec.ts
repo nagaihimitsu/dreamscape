@@ -107,6 +107,58 @@ test("autosaved progress, a battle question, the English note and the text speed
 // ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
 // UI stage 0, item I: like the title's start, a preparing journey's 「旅の準備を保存する」 with empty name fields
 // saves the default names shown as placeholders (nameOrDefault in PreparingJourney).
+// 「Quiz」 (2026-11-18 user decision; src/features/battle/quiz-cutin.ts): a short cut-in over the battle as its flow moves
+// from the talk to the run's first question. While it shows it covers the answers (a tap meant for the last line lands on
+// it, not on an answer) and the battle under it is inert; it ends by itself and leaves the focus on the battle's heading,
+// not on the page body. Presentation only: the question is already saved. A reload into that question shows none (only
+// the flow moving from the talk in the mounted screen does).
+test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk, and without one after a reload", { tag: tier.gate }, async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.clock.install();
+  await ops.startJourney(page, "milano");
+  await ops.goTo(page, "p_duomo");
+  await ops.skipGuideToBattle(page);
+  // The talk's line before the first quiz call, with its 「問題へ進む」.
+  const talk = await playUntil(page, (state) => state.activeBattle?.phase === "dialogue" && state.activeBattle.answers.length === 0 &&
+    !!state.activeBattle.frame?.choices.some((choice) => choice.call === "quiz"));
+  const cutIn = page.getByTestId("quiz-cutin");
+  const answer = page.getByTestId("answer-A");
+  /** Whether the middle of the first answer is the cut-in (as a tap there would land). */
+  const answerCovered = async () => page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="quiz-cutin"]'),
+    await ops.centerOf(answer));
+  // The page's clock is held, so the cut-in cannot end by itself before it is looked at.
+  await ops.holdClock(page);
+  await page.getByTestId("battle-advance").click();
+  await expect(cutIn).toBeVisible();
+  await expect(cutIn.getByRole("status")).toHaveText("Quiz");
+  // The end of the talk holds every tap for a moment (story-scene-change.ts); after it the cut-in, still there
+  // (0.5 s here), takes them: it lies over the answers.
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await expect(page.locator("html[data-tap-hold]")).toHaveCount(0);
+  await expect(cutIn).toBeVisible();
+  expect(await answerCovered(), "the cut-in lies over the answers").toBe(true);
+  await expect(page.locator(".battle-paper-shell"), "the battle under it is out of reach").toHaveAttribute("inert", "");
+  const question = await readSave(page);
+  expect(question.revision).toBe(talk.revision + 1);
+  expect(question.activeBattle).toMatchObject({ phase: "question", roundIndex: 0, answers: [] });
+  // It ends by itself (nothing is tapped or pressed), saves nothing, and the answers take presses again.
+  await page.clock.resume();
+  await expect(cutIn).toHaveCount(0);
+  expect(await answerCovered(), "the first answer is reachable").toBe(false);
+  await expect(page.locator(".battle-paper-shell")).not.toHaveAttribute("inert", "");
+  await expect(ops.sceneHeading(page), "the focus is on the battle's heading, not the page body").toBeFocused();
+  expect(await readSave(page)).toEqual(question);
+
+  // Reloaded on that question: it opens without the cut-in (checked as soon as the question shows, while one would still be there).
+  await page.reload();
+  await expect(page.getByTestId("battle-question")).toBeVisible();
+  expect(await cutIn.count(), "no cut-in after a reload into the question").toBe(0);
+  expect(await readSave(page)).toEqual(question);
+  // The question is answered as usual.
+  await answer.click();
+  await expect(page.getByTestId("battle-feedback")).toBeVisible();
+});
+
 test("a preparing journey saved with empty name fields keeps the default names", { tag: tier.gate }, async ({ page }) => {
   const preparing = journeyCatalog().journeys.find((journey) => journey.status === "preparing" && journey.initialState);
   test.skip(!preparing, "no preparing journey with an initial state to save names for");
