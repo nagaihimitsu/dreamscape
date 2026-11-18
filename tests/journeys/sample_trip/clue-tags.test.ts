@@ -11,7 +11,7 @@ import { applyChoiceEffects, applyDoneEffects, sceneById } from "../../../src/do
 import { screenFor } from "../../../src/domain/screen";
 import { clueRecordAllowed } from "../../../src/domain/tourism";
 import { beginTravelEvent } from "../../../src/domain/travel-game";
-import { cityStart, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { cityStart, openBattleScene, playBattleToResult } from "../../../src/dev/scenario-builders";
 import { ClueNotebook } from "../../../src/features/tourism/ClueNotebook";
 import { clueRecordedNotice } from "../../../src/features/tourism/clue-source";
 
@@ -117,6 +117,25 @@ describe("a clue heard in conversation", () => {
     expect(clueRecordedNotice(start, start)).toBeNull();
     expect(clueRecordedNotice(start, { ...start, discoveredClueIds: [RAIN, "smp_obs_mihon_market_rows"] })).toBe("手がかり帳に2件を記録しました。");
   });
+
+  it("says nothing for a clue found in the observation a quiz was left for (「観光に戻って調べる」: the quiz stays underneath)", () => {
+    const battle = openBattleScene(cityStart("mihon"), "smp_mihon_main_clock_tower_battle");
+    const observe = listPlayerActions(battle).find((action) => action.kind === "battle_observe");
+    expect(observe, "the clock tower's quiz offers 「観光に戻って調べる」").toBeDefined();
+    let state = restore(applyPlayerAction(battle, playerActionChange(observe!, () => 0), () => 0));
+    for (let step = 0; state.activeTourism?.phase === "guide"; step++) {
+      expect(step).toBeLessThan(300);
+      const actions = listPlayerActions(state);
+      state = restore(applyPlayerAction(state, playerActionChange(actions.find((action) => action.kind === "guide_close") ?? actions[0], () => 0), () => 0));
+    }
+    expect(state.activeBattle).not.toBeNull();
+    expect(screenFor(state)).toBe("tourism");
+    const discover = listPlayerActions(state).find((action) => action.kind === "discover");
+    expect(discover, "the observation offers a clue to find").toBeDefined();
+    const found = restore(applyPlayerAction(state, playerActionChange(discover!, () => 0), () => 0));
+    expect(found.discoveredClueIds.length).toBeGreaterThan(state.discoveredClueIds.length);
+    expect(clueRecordedNotice(state, found)).toBeNull();
+  });
 });
 
 describe("the clue book for a clue heard in conversation", () => {
@@ -135,13 +154,21 @@ describe("the clue book for a clue heard in conversation", () => {
     patch("smp_mihon_clock_bell", onChoice("stay_below", [RAIN]));
     const heardCase = book({ landmarkId: MARKET, reasoning });
     expect(provenance(heardCase)).toEqual(["会話で聞いた"]);
-    expect(heardCase).toContain("会話で聞いたこと");
+    // The pill says it was heard: no heading says it again (read aloud twice otherwise).
+    expect(heardCase).not.toContain("会話で聞いたこと");
     expect(heardCase).not.toContain(`data-testid="clue-image-${RAIN}"`);
     const heardCity = book({ cityId: "mihon" });
     expect(provenance(heardCity)).toEqual(["会話で聞いた"]);
+    expect(heardCity).not.toContain("会話で聞いたこと");
     expect(heardCity).not.toContain(`data-testid="clue-image-${RAIN}"`);
-    // Not found yet, a case file is a case file however it would be recorded.
-    expect(provenance(book({ landmarkId: MARKET, reasoning, discoveredIds: [] }))).toEqual(["ケース資料"]);
+    // A book with no pill (the landmark's, from its observation) names it heard in its heading.
+    expect(book({ landmarkId: MARKET })).toContain("会話で聞いたこと");
+    // Not found yet, a case file is a case file however it would be recorded: its mark, its form and its photo.
+    const unfound = book({ landmarkId: MARKET, reasoning, discoveredIds: [] });
+    expect(provenance(unfound)).toEqual(["ケース資料"]);
+    expect(unfound).toContain("資料カード");
+    expect(unfound).not.toContain("会話で聞いた");
+    expect(unfound).toContain(`data-testid="clue-image-${RAIN}"`);
   });
 
   it("names hearing from people as a way to fill an empty book", () => {

@@ -45,8 +45,10 @@ import {
   apShortNow, canStillClearCity, mainPaymentsOf, moneyShortNow, sceneItemsOf, tourProgression, type ProgressionContent, type ProgressionSnapshot,
 } from "../../scripts/progression-check";
 import { encounters } from "../../src/content/encounters";
-import { journeys } from "../../src/content/journeys";
-import { cityStart } from "../../src/dev/scenario-builders";
+import { getJourney, journeys } from "../../src/content/journeys";
+import { cityFinaleResult, cityStart, playBattleToResult, playMomentUntil } from "../../src/dev/scenario-builders";
+import { leaveBattleToFreeTime } from "../../src/domain/encounter";
+import { openEpilogue } from "../../src/domain/occasion";
 import { getActiveBattleContent } from "../../src/domain/battle";
 import { storyBattlesForCity } from "../../src/domain/chapter";
 import { isJourneyComplete } from "../../src/domain/city-travel";
@@ -197,6 +199,7 @@ function spentAp(previous: GameState, next: GameState): number {
   if (!date) throw new Error(`no date has the started ID ${active.dateId}`);
   return date.apCost;
 }
+const optionAp = (scene: SceneEntry | undefined, optionId: string | undefined) => scene?.options.find((option) => option.id === optionId)?.ap ?? 0;
 /**
  * AP the step's scene tags gave or spent (stage 3a): a choice's # ap: (a place scene's, a guide's not re-read, an
  * epilogue's, a tagged date's not replayed, a battle conversation's on the battle's first play, once per choice) and
@@ -204,7 +207,6 @@ function spentAp(previous: GameState, next: GameState): number {
  * reward AP is written so, 2026-11-18). Other main parts' # on_done: ap has no content yet.
  */
 function tagAp(previous: GameState, next: GameState, action: PlayerAction): number {
-  const optionAp = (scene: SceneEntry | undefined, optionId: string | undefined) => scene?.options.find((option) => option.id === optionId)?.ap ?? 0;
   const encounter = previous.activeEncounter;
   const place = encounter && placeSceneById(encounter.encounterId);
   if (action.kind === "encounter_choose" && place)
@@ -224,18 +226,25 @@ function tagAp(previous: GameState, next: GameState, action: PlayerAction): numb
   const date = previous.activeDate;
   if (action.kind === "date_choose" && date && !date.replay)
     return optionAp(taggedDateScene(date.dateId), date.frame.choices.find((choice) => choice.index === action.index)?.optionId);
-  // A battle's tags apply on its first play only (no result recorded yet; battle.ts chooseBattle, finishBattle).
+  return battleTagAp(previous, next, action);
+}
+/**
+ * A battle's tags apply on its first play only (no result recorded yet; battle.ts chooseBattle, finishBattle): a conversation
+ * choice's # ap: (once per choice), and its head's # on_done: ap as the first result is recorded. Both may come in one step: a
+ * last choice whose story ends there goes on to the result in the same action (chooseBattle → finishBattle).
+ */
+function battleTagAp(previous: GameState, next: GameState, action: PlayerAction): number {
   const battle = previous.activeBattle;
-  if (battle && !previous.battleRecords.some((record) => record.battleId === battle.battleId)) {
-    if (action.kind === "battle_choose") {
-      const optionId = battle.frame?.choices.find((choice) => choice.index === action.index)?.optionId;
-      return optionId && !battle.appliedOptionIds.includes(optionId)
-        ? optionAp(sceneOfAddress(battles.find((item) => item.id === battle.battleId)?.storyId), optionId) : 0;
-    }
-    if (battle.phase !== "result" && next.activeBattle?.battleId === battle.battleId && next.activeBattle.phase === "result")
-      return mainScene({ battle: battle.battleId })?.done.ap ?? 0;
+  if (!battle || previous.battleRecords.some((record) => record.battleId === battle.battleId)) return 0;
+  let ap = 0;
+  if (action.kind === "battle_choose") {
+    const optionId = battle.frame?.choices.find((choice) => choice.index === action.index)?.optionId;
+    if (optionId && !battle.appliedOptionIds.includes(optionId))
+      ap += optionAp(sceneOfAddress(battles.find((item) => item.id === battle.battleId)?.storyId), optionId);
   }
-  return 0;
+  if (battle.phase !== "result" && next.activeBattle?.battleId === battle.battleId && next.activeBattle.phase === "result")
+    ap += mainScene({ battle: battle.battleId })?.done.ap ?? 0;
+  return ap;
 }
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
 
@@ -454,5 +463,33 @@ describe("random walk through the game functions", () => {
       journey.cities.filter((city) => !reachedFor(journey.id)[kind].has(city.id)).map((city) => `${journey.id}: ${city.id}`));
     expect(missing("cleared"), `no walk cleared these cities. ${fix}`).toEqual([]);
     expect(missing("epilogues"), `no walk read the epilogue of these cities. ${fix}`).toEqual([]);
+  });
+});
+
+// The walk's count of a battle's tag AP (battleTagAp), on the sample's epilogue quiz (fictional): its last conversation choice
+// may end its story, and then the same action records the first result, so the choice's # ap: and the head's # on_done: ap
+// both count in that one step (the sample writes no AP there: the scene list is changed for the test, as content:build would).
+describe.runIf(!!getJourney("sample_trip"))("the walk's AP of a battle's tags", () => {
+  it("counts a choice's # ap: and the head's # on_done: ap together when the choice goes on to the first result in one action", () => {
+    const quiz = "smp_mihon_special_b_coach";
+    const finale = cityFinaleResult("mihon");
+    const cleared = validateGameState({ ...leaveBattleToFreeTime(finale, finale.revision, () => 0), discoveredClueIds: [...finale.discoveredClueIds, "smp_obs_mihon_coach_bell"] });
+    const choosing = playMomentUntil(openEpilogue(cleared, true, () => 0), (state) => state.activeBattle?.battleId === quiz && !!state.activeBattle.frame?.choices.length);
+    const choice = choosing.activeBattle!.frame!.choices[0];
+    const result = playBattleToResult(choosing);
+    expect(result.activeBattle).toMatchObject({ battleId: quiz, phase: "result" });
+    expect(choosing.battleRecords.some((record) => record.battleId === quiz)).toBe(false);
+    const list = scenes as SceneEntry[];
+    const index = list.findIndex((scene) => momentQuizBattle(scene) === quiz);
+    const kept = list[index];
+    list[index] = { ...kept, done: { ...kept.done, ap: 3 }, options: kept.options.map((option) => (option.id === choice.optionId ? { ...option, ap: 2 } : option)) };
+    try {
+      const choose: PlayerAction = { kind: "battle_choose", index: choice.index };
+      expect(tagAp(choosing, result, choose)).toBe(5);
+      // The result recorded already (a replay): nothing.
+      expect(tagAp({ ...choosing, battleRecords: result.battleRecords }, result, choose)).toBe(0);
+    } finally {
+      list[index] = kept;
+    }
   });
 });

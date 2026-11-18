@@ -355,6 +355,19 @@ function startFlowBattle(state: GameState, active: ActiveBattle, battle: BattleD
 /** The scene of the battle's own tags (its choices' effects; a place file's knot or its one-scene file). */
 const battleScene = (battle: BattleDefinition) => sceneOfAddress(battle.storyId);
 
+/**
+ * The AP the open battle's own tags gave on this play, for its result screen (2026-11-18; a moment quiz has no reward rule,
+ * so its reward AP is written so): its conversation's `# ap: +N` choices (applied on its first play only) and its head's
+ * `# on_done: ap +N` (applied as its first result is recorded). Zero before the result and on a play after the first.
+ */
+export function battleTagApGained(state: GameState): number {
+  const active = state.activeBattle;
+  if (active?.phase !== "result" || state.battleRecords.find((record) => record.battleId === active.battleId)?.attempts !== 1) return 0;
+  const scene = battleScene(getActiveBattleContent(active).battle);
+  const choices = active.appliedOptionIds.reduce((sum, id) => sum + Math.max(0, sceneOption(scene, id)?.ap ?? 0), 0);
+  return choices + Math.max(0, mainScene({ battle: active.battleId })?.done.ap ?? 0);
+}
+
 /** How a choice of the battle's conversation shows (decision 43; stage 5). */
 export function battleChoiceDisplay(state: GameState, index: number): ChoiceDisplay {
   const active = state.activeBattle;

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   albumImages,
   balance,
@@ -23,6 +23,7 @@ import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBad
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture, isJourneyComplete } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
+import { isMomentQuiz } from "../domain/moments";
 import { resultExitLabel, screenFor } from "../domain/screen";
 import {
   advanceDate,
@@ -65,6 +66,7 @@ import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { clueRecordedNotice } from "../features/tourism/clue-source";
+import type { ClueNoticeWord } from "./ClueRecordedNotice";
 import { useLearning } from "../features/learning/useLearning";
 import { answeredQuestions, EnglishReview, latestAnsweredQuestionId, metQuestions } from "../features/learning/EnglishReview";
 import { useLocalWords } from "../features/learning/useLocalWords";
@@ -262,6 +264,11 @@ export function GameApp({
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
+  // 「手がかり帳に「…」を記録しました。」 (ClueRecordedNotice, 3.11): the words of the clues the player's actions recorded outside
+  // the observation, shown one at a time under the header (each waits while another notice shows there).
+  const [clueWords, setClueWords] = useState<readonly ClueNoticeWord[]>([]);
+  const clueWordKey = useRef(0);
+  const dropClueWord = useCallback((key: number) => setClueWords((words) => (words[0]?.key === key ? words.slice(1) : words)), []);
   // 旅の図鑑's card (GlossaryTermWindow): the terms the player's last action put in 旅の図鑑 (`addedTerms`, with whether
   // its line is quiet), then the card that shows them over their story scene (`termCard`) once the line on screen is known
   // not to be passed by 高速送り (below).
@@ -303,10 +310,10 @@ export function GameApp({
       playSe("clue_new");
       vibrate("clue");
     }
-    // The action that ended a tour (tour stage 2a) says so in free time, for a moment under the header (one word with the clue's).
-    const tourEnded = !!previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length;
-    const words = [clueRecordedNotice(previous, next), tourEnded ? "ツアーが終わりました。" : null].filter((word) => word !== null);
-    if (words.length) session.showToast(words.join(""));
+    const clueWord = clueRecordedNotice(previous, next);
+    if (clueWord) setClueWords((words) => [...words, { key: ++clueWordKey.current, text: clueWord }]);
+    // The action that ended a tour (tour stage 2a) says so in free time, for a moment under the header.
+    if (!!previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.showToast("ツアーが終わりました。");
     if (!showChangesRef.current) return;
     if (introTiming.current) introTiming.current = recordIntro(introTiming.current, performance.now(), introChange(previous, next));
     const change = relationshipChange(previous, next);
@@ -345,6 +352,8 @@ export function GameApp({
   }, []);
   // Counts the loads (and Debug's returns) that put another game in place: the header makes no sound for what they bring.
   const [replacedGame, setReplacedGame] = useState(0);
+  // The clues' words waiting belonged to the play before (a load says nothing of what it brings).
+  useEffect(() => setClueWords([]), [replacedGame]);
   // Debug's 「移動画面に戻る（Debug）」 (free-time-return.ts): the last free-time state, in this tab's memory
   // only. Updated after each render, so the first render of another screen reads the free time before it.
   const debugOn = isDebug || debugMode.on;
@@ -813,13 +822,16 @@ export function GameApp({
   // The background the story scene on screen draws its picture from (in the order of the screens below): the header's
   // place plate names where it is, if it says (hudPlaceName). None where a landmark's photo shows: the party is there.
   // A battle's quiz, reasoning and result keep its last line's (battleBackgroundId), so the plate stays where the story is.
+  // A moment quiz (2026-11-18) is not where the map took the party: its background, else its landmark, names the plate.
+  const momentQuiz = !!game?.activeBattle && !game.activeEncounter && !game.activeEpilogue && !game.activeTourism && isMomentQuiz(game.activeBattle.battleId);
   const sceneBackgroundId = !game || moments.packingScene ? undefined
     : activeEncounter && currentEncounter ? (encounterImage ? undefined : activeEncounter.frame.background)
     : game.activeEpilogue ? game.activeEpilogue.frame.background
     : game.activeTourism ? (landmarkPhoto(game.activeTourism.landmarkId) ? undefined : game.activeTourism.frame?.background)
     : game.activeBattle && currentBattle
-      ? (landmarkPhoto(currentBattle.landmarkId) ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
+      ? (landmarkPhoto(currentBattle.landmarkId) && !momentQuiz ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
     : active?.frame.background;
+  const scenePlaceJa = momentQuiz && currentBattle ? landmarks.find((landmark) => landmark.id === currentBattle.landmarkId)?.nameJa : undefined;
   const nameForm = (
     <>
       <label>
@@ -863,6 +875,7 @@ export function GameApp({
         clock={nightLeavingClock}
         place={currentTravelPlace}
         sceneBackgroundId={sceneBackgroundId}
+        scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
         onRecords={() => setRecordsOpen(true)}
         onAlbum={() => setAlbumOpen(true)}
@@ -877,6 +890,8 @@ export function GameApp({
         }}
         autoSave={displaySettings.value.autoSave ? { savedAt: session.savedAt } : null}
         toast={session.toast}
+        clueNotice={clueWords[0] ?? null}
+        onClueNoticeDone={dropClueWord}
         replaced={replacedGame}
         seenItemIds={seenMarks?.items}
         onItemsSeen={(ids) => setSeenMarks((marks) => marks && markSeen(marks, "items", ids))}

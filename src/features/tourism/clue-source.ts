@@ -1,5 +1,6 @@
 import { landmarks, sceneGivenClueIds, tourismClues, type TourismClue } from "../../content";
 import type { GameState } from "../../domain/game-state-schema";
+import { screenFor } from "../../domain/screen";
 
 // Where 手がかり帳 says a clue came from (2026-11-18), and the word the game says when a clue is recorded. A clue some scene
 // gives (`# clue:`, `# on_done: clue`) was heard in conversation: the book says so instead of the observation's words and
@@ -21,9 +22,11 @@ export const caseProvenanceLabel = (discovered: boolean, heard: boolean) =>
 export const cityProvenanceLabel = (clue: Pick<TourismClue, "landmarkId">, heard: boolean) =>
   heard ? "会話で聞いた" : landmarks.find((item) => item.id === clue.landmarkId)?.nameJa;
 
-/** Whether the observation is on screen (its own button gleams for a clue it finds; no scene runs over it). */
-const observing = (state: Pick<GameState, "activeTourism" | "activeEncounter" | "activeBattle">) =>
-  state.activeTourism?.phase === "exploring" && !state.activeEncounter && !state.activeBattle;
+/**
+ * Whether the observation is on screen (its own button gleams for a clue it finds), by the screen the state shows: no scene
+ * runs over it, and a quiz the player left for it (「観光に戻って調べる」, its activeBattle kept underneath) stays behind it.
+ */
+const observing = (state: GameState) => screenFor(state) === "tourism" && state.activeTourism?.phase === "exploring";
 
 /**
  * The word for the clues the player's last action recorded in 手がかり帳, outside the observation (3.11): a date, a walk or a

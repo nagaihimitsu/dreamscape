@@ -136,7 +136,8 @@ describe("condition build checks", () => {
 });
 
 describe("the condition clue <ID> (2026-11-18)", () => {
-  const clues = [{ id: "beta_card", landmarkId: "beta_gate" }, { id: "beta_word", landmarkId: "beta_gate", heard: true }];
+  const clues = [{ id: "beta_card", landmarkId: "beta_gate" }, { id: "beta_word", landmarkId: "beta_gate", heardIn: ["alpha"] },
+    { id: "beta_late", landmarkId: "beta_gate", heardIn: ["beta"] }];
   const read = (cityId: string, id: string) => ({ label: "the scene encounters/probe", cityId, conditions: [{ field: "when", condition: { clue: id } }] });
 
   it("names a clue of tourism/catalog.json, read in any city", () => {
@@ -146,10 +147,24 @@ describe("the condition clue <ID> (2026-11-18)", () => {
     expect(conditionErrors(content, [read("beta", "beta_card")])).toHaveLength(1);
   });
 
-  it("warns about a clue of a later city's landmark only when no scene gives it (a heard clue may come in any city)", () => {
+  it("warns about a clue that comes only in a later city: its landmark's, unless an earlier city's scene gives it", () => {
     expect(conditionWarnings({ ...content, clues }, [], [read("alpha", "beta_card")])).toEqual([{ kind: "never-offered", message:
       "Condition never met where it is checked: the scene encounters/probe (when) is read in alpha but needs clue (tourism/catalog.json) beta_card of the later city beta" }]);
+    // Heard in alpha (an alpha scene gives it), it may be read in alpha.
     expect(conditionWarnings({ ...content, clues }, [], [read("alpha", "beta_word")])).toEqual([]);
+    // Heard only in beta (and its landmark there): read in alpha, it never holds.
+    expect(conditionWarnings({ ...content, clues }, [], [read("alpha", "beta_late")])).toEqual([{ kind: "never-offered", message:
+      "Condition never met where it is checked: the scene encounters/probe (when) is read in alpha but needs clue (tourism/catalog.json) beta_late of the later city beta" }]);
+    expect(conditionWarnings({ ...content, clues }, [], [read("beta", "beta_late")])).toEqual([]);
+    // A later city's landmark with an observation and a scene of the earlier city: the earlier one counts.
+    const observed = { ...content, clues: [{ id: "alpha_seen", landmarkId: "beta_gate", heardIn: ["alpha"] }] };
+    expect(conditionWarnings(observed, [], [read("alpha", "alpha_seen")])).toEqual([]);
+    // An earlier city's observation and a later city's scene: heard later, found earlier.
+    const early = { ...content, clues: [{ id: "tower_word", landmarkId: "alpha_tower", heardIn: ["beta"] }] };
+    expect(conditionWarnings(early, [], [read("alpha", "tower_word")])).toEqual([]);
+    const closed = { ...early, landmarks: content.landmarks.map((landmark) => (landmark.id === "alpha_tower" ? { ...landmark, observation: false } : landmark)) };
+    expect(conditionWarnings(closed, [], [read("alpha", "tower_word")]).map((warning) => warning.message))
+      .toEqual([expect.stringContaining("tower_word of the later city beta")]);
   });
 });
 

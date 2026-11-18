@@ -17,7 +17,8 @@ export type ConditionContent = {
   cities: readonly { id: string }[];
   episodes: readonly { id: string; cityId: string; landmarkId: string | null; battleId?: string }[];
   battles: readonly { id: string; cityId?: string; landmarkId: string | null }[];
-  landmarks: readonly { id: string; cityId: string }[];
+  /** `observation: false`: the landmark has no observation (its clues are found only where a scene gives them). */
+  landmarks: readonly { id: string; cityId: string; observation?: boolean }[];
   /** The story file orders encounters of one priority; the options and repetition are read by the visit warnings. */
   encounters: readonly { id: string; cityId: string; landmarkId?: string; storyId?: string; repeatable?: boolean;
     options?: readonly { id: string; deferCompletion?: boolean }[] }[];
@@ -29,10 +30,11 @@ export type ConditionContent = {
   people?: readonly { id: string; cityId: string }[];
   namedConditions?: Readonly<Record<string, Condition>>;
   /**
-   * The clues (tourism/catalog.json; 2026-11-18): a clue belongs to its landmark's city, unless a scene gives it (`heard`:
-   * `# clue:`, `# on_done: clue`), which may be in any city of the journey.
+   * The clues (tourism/catalog.json; 2026-11-18) and the cities of the scenes that give them (`heardIn`: `# clue:`, `# on_done:
+   * clue`): a clue comes first in the earliest of those cities and of its landmark's when that has an observation; a clue no
+   * scene gives belongs to its landmark's city.
    */
-  clues?: readonly { id: string; landmarkId: string; heard?: boolean }[];
+  clues?: readonly { id: string; landmarkId: string; heardIn?: readonly string[] }[];
   /** Scenes that also run at other moments than their landmark's visit (stage 4: a `place` with a date or a finale): 「また今度」 brings them back there. */
   returningScenes?: ReadonlySet<string>;
 };
@@ -104,7 +106,11 @@ export function referenceCity(content: ConditionContent, reference: LeafReferenc
     case "person": return content.people?.find((item) => item.id === reference.id)?.cityId;
     case "clue": {
       const clue = content.clues?.find((item) => item.id === reference.id);
-      return clue && !clue.heard ? content.landmarks.find((item) => item.id === clue.landmarkId)?.cityId : undefined;
+      const landmark = content.landmarks.find((item) => item.id === clue?.landmarkId);
+      if (!clue?.heardIn?.length) return landmark?.cityId;
+      // Heard in conversation: the earliest city where it can be recorded (a scene that gives it, or its landmark's observation).
+      const places = [...clue.heardIn, ...(landmark && landmark.observation !== false ? [landmark.cityId] : [])];
+      return places.reduce((first, cityId) => (cityOrder(content, cityId) < cityOrder(content, first) ? cityId : first));
     }
     case "mode": case "flag": case "condition": return undefined;
   }
@@ -238,7 +244,7 @@ export function unfindableClueConditionWarnings(content: Pick<ConditionContent, 
   owners: readonly ConditionOwner[]): ConditionWarning[] {
   const never = (id: string) => {
     const clue = content.clues?.find((item) => item.id === id);
-    return !!clue && !clue.heard && content.landmarks.find((item) => item.id === clue.landmarkId)?.observation === false;
+    return !!clue && !clue.heardIn?.length && content.landmarks.find((item) => item.id === clue.landmarkId)?.observation === false;
   };
   return owners.flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
     [...new Set(conditionLeaves(condition).flatMap((leaf) => ("clue" in leaf && never(leaf.clue) ? [leaf.clue] : [])))].map((id) => ({

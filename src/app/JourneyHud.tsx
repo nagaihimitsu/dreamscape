@@ -25,6 +25,7 @@ import { autoSaveLine, moneyLength, weekdayLabel } from "./journey-hud-text";
 import type { HudView } from "./hud-view";
 import { flightTokens, itemsChange, numberChange, type Direction } from "./hud-cues";
 import { FLIGHT_TOTAL_MS, HudFlight } from "./HudFlight";
+import { ClueRecordedNotice, type ClueNoticeWord } from "./ClueRecordedNotice";
 import { ItemGainNotice } from "./ItemGainNotice";
 import { ItemShowFlight } from "../components/ItemShow";
 import { ItemOutFlight } from "../components/ItemOut";
@@ -81,6 +82,8 @@ type MenuActions = {
   onReturnToFreeTime?: () => void;
 };
 
+const noop = () => undefined;
+
 /**
  * The header of every game screen (UI redesign §3.1): row 1 shows where and when
  * the couple are and what they have (display only; the budget above the AP at
@@ -98,10 +101,10 @@ type MenuActions = {
  * stars flying into a rising budget and AP (HudFlight), the dots of 英語ノート and 旅の図鑑 and a save's ribbon on ≡メニュー, and a
  * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight), and an item taken out
  * (`# item_out:`) going back into them (ItemOutFlight). The session's short words (`toast`: a save, a load, a tour's end)
- * show in the same place for a moment, the item notices waiting behind them.
+ * show in the same place for a moment, the clue's word (ClueRecordedNotice) and the item notices waiting behind them.
  */
-export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, glossaryNew = false, holdNotices = false,
-  itemFlight = null, itemOutFlight = null, toast = null, clock, ...actions }: {
+export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, glossaryNew = false, holdNotices = false,
+  itemFlight = null, itemOutFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
   /**
    * The clock to show instead of the game's (GameApp: the night a rest slept from, while the night screen's 「ホテルで休みました。」
@@ -113,6 +116,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
    * photo shows): when it says where it is (`placeId`/`placeJa`), the place plate names that place (hudPlaceName).
    */
   sceneBackgroundId?: string;
+  /** Where the story scene on screen is when the party did not go there on the map (a moment quiz's landmark): the plate's name if its background names no place. */
+  scenePlaceJa?: string;
   /** Counts the times a load (or Debug's return) put another game in place (GameApp): what it brings has no cue. */
   replaced?: number;
   /** The held items the player has looked at in the open detail during this play (GameApp's memory, seen-marks.ts). */
@@ -125,8 +130,11 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
   glossaryNew?: boolean;
   /** The session's word for a moment (useGameSession's SessionToast; it goes by itself). */
   toast?: SessionToast | null;
-  /** Holds 「…を手に入れました」 while something else shows under the header (ItemGainNotice's `hold`). */
+  /** Holds 「…を手に入れました」 and the clue's word while something else shows under the header (ItemGainNotice's `hold`). */
   holdNotices?: boolean;
+  /** The first word of GameApp's queue that a clue was recorded (ClueRecordedNotice), and its end (it is dropped from the queue). */
+  clueNotice?: ClueNoticeWord | null;
+  onClueNoticeDone?: (key: number) => void;
   /** A line's item card on its way out (`# item_show:`, GameApp's useItemShowLeave): into the bag when held and shown, else it fades. */
   itemFlight?: ItemShowLeave | null;
   /** A line's item taken out on its way back (`# item_out:`, GameApp's useItemShowLeave): into the bag when held and shown, else it fades. */
@@ -180,7 +188,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
   // In a tour's car (its leg's narration begun, the move not yet) the leg's label, not the place left behind; while the
   // scene shows a background that says where it is (a station, the hotel's alley in a finale), that place.
   const backdrop = sceneBackgroundId === undefined ? undefined : presentation.backgrounds[sceneBackgroundId];
-  const placeJa = hudPlaceName(placeDisplayName(game, place), { legJa: tourLegUnderway(game)?.labelJa, backdrop },
+  const placeJa = hudPlaceName(placeDisplayName(game, place), { legJa: tourLegUnderway(game)?.labelJa, backdrop, sceneJa: scenePlaceJa },
     backdrop?.placeId ? mapCities() : []);
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
@@ -209,7 +217,9 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
           <HudMenu {...actions} englishNew={englishNew} glossaryNew={glossaryNew} />
         </nav>
       </div>
-      <ItemGainNotice inventory={game.inventory} replaced={replaced} hold={holdNotices || view === "quiet" || !!toast} />
+      {/* One notice under the header at a time: the session's word first, then the clue's, then 「…を手に入れました」. */}
+      <ClueRecordedNotice notice={clueNotice} hold={holdNotices || view === "quiet" || !!toast} onDone={onClueNoticeDone ?? noop} />
+      <ItemGainNotice inventory={game.inventory} replaced={replaced} hold={holdNotices || view === "quiet" || !!toast || !!clueNotice} />
       {/* The session's word (a save, a load, a tour's end): under the header like 「…を手に入れました」, taking no press and
           pushing nothing down; also over a quiet line (journey-hud.css), as it answers what the player just did. */}
       <div className="hud-toast-region" role="status" data-testid="session-toast">

@@ -650,8 +650,11 @@ export type MomentQuizContext = {
   battle: (battleId: string) => { reasoning: boolean; landmarkId: string | null } | undefined;
   /** Where the map names the battle, if it does (an episode, a special battle of progression/journey.json, a map event). */
   onMap: (battleId: string) => string | undefined;
-  /** A landmark: whether its visit has a guide and an observation. */
-  landmark: (landmarkId: string) => { guide: boolean; observation: boolean } | undefined;
+  /**
+   * A landmark: whether its visit has a guide and an observation, and whether a map event opens that visit (an episode at it, or
+   * a special battle held there: visitedLandmarkOfEvent).
+   */
+  landmark: (landmarkId: string) => { guide: boolean; observation: boolean; mapVisit: boolean } | undefined;
 };
 /** The choice's effect tags (what a moment quiz's conversation applies only on its first play). */
 const EFFECT_FIELDS = ["give", "use", "rel", "money", "ap", "set", "clues", "memory", "profile"] as const;
@@ -687,9 +690,9 @@ export function momentQuizErrors(scenes: readonly SceneEntry[], context: MomentQ
 
 export type MomentQuizWarning = { kind: "moment-quiz-landmark" | "moment-quiz-repeat-tags"; message: string };
 /**
- * The moment quizzes' warnings (4.2; not stopped): its landmark has a guide or an observation, which never run (no map event opens
- * the landmark's visit); a quiz repeated always whose conversation's tags or head `# on_done:` give or spend: they apply on its
- * first play only (decision 10), not each time it runs again.
+ * The moment quizzes' warnings (4.2; not stopped): its landmark has a guide or an observation that never runs because no map event
+ * opens the landmark's visit (a landmark the map visits runs them there, so it is not warned); a quiz repeated always whose
+ * conversation's tags or head `# on_done:` give or spend: they apply on its first play only (decision 10), not each time it runs again.
  */
 export function momentQuizWarnings(scenes: readonly SceneEntry[], context: MomentQuizContext): MomentQuizWarning[] {
   return scenes.flatMap((scene): MomentQuizWarning[] => {
@@ -699,7 +702,7 @@ export function momentQuizWarnings(scenes: readonly SceneEntry[], context: Momen
     const warnings: MomentQuizWarning[] = [];
     const landmarkId = context.battle(battleId)?.landmarkId;
     const landmark = landmarkId ? context.landmark(landmarkId) : undefined;
-    if (landmark && (landmark.guide || landmark.observation))
+    if (landmark && !landmark.mapVisit && (landmark.guide || landmark.observation))
       warnings.push({ kind: "moment-quiz-landmark", message: `The landmark ${landmarkId} of the moment quiz ${battleId} (${where}) has ` +
         `${[landmark.guide ? "a guide (guideStoryId)" : "", landmark.observation ? "an observation (observation is not false)" : ""].filter(Boolean).join(" and ")}, ` +
         "which never runs: no map event opens its visit (write observation: false and no guideStoryId; not stopped)" });

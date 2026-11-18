@@ -1,5 +1,10 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { battles, scenes, tourismClues, type BattleDefinition } from "../../../src/content";
+import { allRewardRules, battles, scenes, tourismClues, type BattleDefinition } from "../../../src/content";
+import type { RewardRule } from "../../../src/content/journey-schemas";
+import { battleTagApGained } from "../../../src/domain/battle";
+import { BattleRewards } from "../../../src/features/journey/BattleRewards";
 import { getJourney, getJourneyForCity } from "../../../src/content/journeys";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
 import { getBattleResultExits } from "../../../src/domain/chapter";
@@ -161,6 +166,34 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
     const passed = toEpilogue(played);
     expect(passed.activeBattle).toBeNull();
     expect(passed.occasion).toMatchObject({ at: "main:epilogue", started: [] });
+  });
+
+  it("shows the AP its tags gave on its result screen (a choice's # ap:, the head's # on_done: ap), and no rule's 初回報酬 it never had", () => {
+    const rewards = (state: GameState) => renderToStaticMarkup(createElement(BattleRewards, { game: state, onClaim: () => {} }));
+    // Without AP tags (the sample's): nothing gained, and no first-time reward rule to have received.
+    const plain = playBattleToResult(toEpilogue(cleared(true)));
+    expect(battleTagApGained(plain)).toBe(0);
+    expect(rewards(plain)).toContain("＋0");
+    expect(rewards(plain)).toContain("このクイズで新しく得たAPはありません。");
+    // As content:build would write `# on_done: ap +2` and the first choice's `# ap: +1` (with their scene_tag rules).
+    patchScene(QUIZ, (scene) => ({ ...scene, done: { ap: 2 },
+      options: scene.options.map((option) => (option.id === "ask_which_three" ? { ...option, ap: 1 } : option)) }));
+    const rules = allRewardRules as RewardRule[];
+    const tagRules: RewardRule[] = [
+      { id: `${QUIZ}__on_done`, sceneId: QUIZ, trigger: "scene_tag", ap: 2, minScore: null, titleJa: "三時に出た馬車" },
+      { id: `${QUIZ}__ask_which_three`, sceneId: QUIZ, trigger: "scene_tag", ap: 1, minScore: null, titleJa: "三時に出た馬車" },
+    ];
+    rules.push(...tagRules);
+    undo.push(() => { for (const rule of tagRules) rules.splice(rules.indexOf(rule), 1); });
+    const started = toEpilogue(cleared(true));
+    const result = playBattleToResult(started);
+    const total = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
+    expect(total(result) - total(started)).toBe(3);
+    expect(battleTagApGained(result)).toBe(3);
+    expect(rewards(result)).toContain("＋3");
+    expect(rewards(result)).toContain("クイズの中で得たAP");
+    // A second play (repeat always, the records of the first) gives nothing, and says so.
+    expect(battleTagApGained({ ...result, battleRecords: result.battleRecords.map((record) => ({ ...record, attempts: 2 })) })).toBe(0);
   });
 
   it("repeated always, it runs again, and gives nothing more: its tags apply on the first play only", () => {

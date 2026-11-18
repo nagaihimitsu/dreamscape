@@ -25,21 +25,23 @@ export type BackdropPlace = { placeId?: string; placeJa?: string };
  * The header's place plate (2026-11-13 user decision): in a tour's car (its leg's narration begun, the move not yet)
  * the leg's label (`legJa`); else, while a story scene shows a background that says where it is, that place (its
  * `placeJa`, or the map place `placeId` as the screens name it: the hotel of any city is 「滞在先のホテル」); else the
- * place the party is at (`here`, as placeDisplayName names it). A `placeId` no map has leaves the plate to `here`.
+ * place the scene itself is at when the party did not go there on the map (`sceneJa`: a moment quiz's landmark,
+ * 2026-11-18); else the place the party is at (`here`, as placeDisplayName names it). A `placeId` no map has leaves the
+ * plate to the next of them.
  */
 export function hudPlaceName(
   here: string,
-  scene: { legJa?: string; backdrop?: BackdropPlace },
+  scene: { legJa?: string; backdrop?: BackdropPlace; sceneJa?: string },
   cities: readonly MapCity[],
 ): string {
-  const { legJa, backdrop } = scene;
+  const { legJa, backdrop, sceneJa } = scene;
   if (legJa !== undefined) return legJa;
   if (backdrop?.placeJa !== undefined) return backdrop.placeJa;
   if (backdrop?.placeId !== undefined) {
     const city = cities.find((item) => item.places.some((place) => place.id === backdrop.placeId));
     if (city) return placeDisplayName({ travel: { hotelPlaceId: city.hotelPlaceId } }, city.places.find((place) => place.id === backdrop.placeId));
   }
-  return here;
+  return sceneJa ?? here;
 }
 
 /**

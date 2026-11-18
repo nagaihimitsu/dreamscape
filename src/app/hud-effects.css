@@ -5,7 +5,8 @@
 /* 「{品物名}を手に入れました」: a parchment pill hanging from the header's bottom edge (below Debug mode's strip when
    it shows a change), over the screen; the region takes no presses and has no size of its own. */
 .item-gain-notice-region,
-.hud-toast-region {
+.hud-toast-region,
+.clue-notice-region {
   position: absolute;
   top: calc(100% + 6px + var(--change-h, 0px));
   left: 8px;
@@ -33,6 +34,8 @@
 /* The session's word (a save, a load, a tour's end; SessionToast): the same pill without an icon. It answers what the
    player just did, so it shows over a quiet line too, while the rest of the header steps aside. */
 .journey-hud .hud-toast { padding: 7px 16px; }
+/* 「手がかり帳に「…」を記録しました。」 (ClueRecordedNotice): the same pill, shown longer (CLUE_NOTICE_MS) to be read. */
+.journey-hud .clue-notice { animation-duration: 5000ms; }
 .journey-hud[data-view="quiet"] .hud-toast-region { visibility: visible; }
 .item-gain-notice img {
   flex: none;

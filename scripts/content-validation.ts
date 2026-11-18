@@ -827,7 +827,13 @@ export function validateContent(sources: ContentSources,
     },
     landmark: (landmarkId) => {
       const landmark = tourism.landmarks.find((item) => item.id === landmarkId);
-      return landmark && { guide: !!landmark.guideStoryId, observation: hasObservation(landmark) };
+      // A map event opens the visit of an episode's landmark (not a finale's) or of a special battle's (encounter.ts visitedLandmarkOfEvent).
+      const mapVisit = travels.some(({ travel }) => travel.events.some((event) => {
+        const episode = journey.episodes.find((item) => item.id === event.id);
+        return episode ? episode.kind !== "city_finale" && episode.landmarkId === landmarkId
+          : battles.find((battle) => battle.id === event.id)?.landmarkId === landmarkId;
+      }));
+      return landmark && { guide: !!landmark.guideStoryId, observation: hasObservation(landmark), mapVisit };
     },
   };
   const momentQuizProblems = momentQuizErrors(placeEntries, momentQuizContext);
@@ -1524,7 +1530,10 @@ export function validateContent(sources: ContentSources,
     journeys: journeyCatalog.journeys, cities, episodes: journey.episodes, battles, landmarks: tourism.landmarks,
     encounters: runtimeEncounters, items: encounterCatalog.items, dates,
     flags: storyStateCatalog.flags.map((flag) => flag.id), people: storyStateCatalog.people, namedConditions: storyStateCatalog.conditions,
-    clues: tourism.clues.map((clue) => ({ id: clue.id, landmarkId: clue.landmarkId, ...(heardClues.has(clue.id) ? { heard: true } : {}) })),
+    clues: tourism.clues.map((clue) => {
+      const heardIn = [...new Set([...taggedScenes, ...catalogEntries].filter((scene) => sceneGivenClues([scene]).has(clue.id)).map((scene) => scene.cityId))];
+      return { id: clue.id, landmarkId: clue.landmarkId, ...(heardIn.length ? { heardIn } : {}) };
+    }),
     returningScenes: new Set(placeEntries.filter((scene) => scene.at.some((moment) => !("visit" in moment) &&
       (!("place" in moment) || datesAtPlace(moment.place).length > 0 || finalesAtPlace(moment.place).length > 0))).map((scene) => scene.id)),
   };
@@ -1570,7 +1579,11 @@ export function validateContent(sources: ContentSources,
     conditions: (place.heroineLinesJa ?? []).flatMap((line, index) => (typeof line === "string" ? [] : [{ field: `heroineLinesJa[${index}].when`, condition: line.when }])),
   }))).filter((owner) => owner.conditions.length);
   checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners, ...placeLineOwners]);
-  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners, ...placeLineOwners]),
+  // A moment quiz's # when: / # until: (read as its turn comes, like an inserted scene's entry rule): the same notes as one.
+  const momentQuizWhenOwners: ConditionOwner[] = taggedScenes.flatMap((scene) => momentQuizBattle(scene) && scene.when
+    ? [{ label: `the moment quiz ${scene.id}`, cityId: scene.cityId, conditions: [{ field: "when", condition: scene.when }] }] : []);
+  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules,
+    [...sceneConditionOwners, ...mapOwners, ...placeLineOwners, ...momentQuizWhenOwners]),
     // A scene's condition reading a clue no scene gives and no observation finds (4.2; a map condition's stops: progression-check.ts).
     ...unfindableClueConditionWarnings({ clues: conditionContent.clues, landmarks: tourism.landmarks },
       [...entryRuleConditionOwners(conditionContent, runtimeEntryRules), ...sceneConditionOwners, ...taggedSceneOwners])];

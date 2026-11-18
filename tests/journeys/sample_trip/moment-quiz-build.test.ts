@@ -110,6 +110,35 @@ describe("the moment quiz's warnings (4.2)", () => {
     expect(kinds(sampleWith(observed), "moment-quiz-landmark")).toEqual([expect.stringContaining("mihon_coach_stop of the moment quiz smp_mihon_special_b_coach")]);
   });
 
+  it("does not warn of a landmark the map visits (its guide and observation run on that visit)", () => {
+    // The quiz at the market (the special battle B's landmark, with a guide and an observation, visited from the map), its case
+    // files moved there with it and the coach stop left out.
+    const COACH_CLUES = ["smp_obs_mihon_coach_bell", "smp_obs_mihon_coach_timetable", "smp_obs_mihon_coach_trough"];
+    const atMarket = sampleWith({
+      "tourism/catalog.json": json((value) => {
+        const landmarks = value.landmarks as Record<string, unknown>[];
+        value.landmarks = landmarks.filter((landmark) => landmark.id !== "mihon_coach_stop");
+        const market = landmarks.find((landmark) => landmark.id === "mihon_market")!;
+        market.clueIds = [...(market.clueIds as string[]), ...COACH_CLUES];
+        for (const clue of value.clues as Record<string, unknown>[]) if (COACH_CLUES.includes(clue.id as string)) clue.landmarkId = "mihon_market";
+      }),
+      "battles/catalog.json": json((value) => {
+        const battles = (Array.isArray(value) ? value : value.battles) as Record<string, unknown>[];
+        battles.find((battle) => battle.id === "smp_mihon_special_b_coach")!.landmarkId = "mihon_market";
+      }),
+      "quizzes/smp_mihon_special_b_coach_quiz.json": json((value) => { value.landmarkId = "mihon_market"; }),
+      "cities/mihon.json": json((value) => { value.landmarkIdsPlanned = (value.landmarkIdsPlanned as string[]).filter((id) => id !== "mihon_coach_stop"); }),
+    });
+    expect(kinds(atMarket, "moment-quiz-landmark")).toEqual([]);
+  });
+
+  it("warns of its # when: as of an inserted scene's: a calendar part in a journey without a calendar never holds", () => {
+    expect(kinds(sample, "never-offered").filter((message) => message.includes("smp_mihon_special_b_coach"))).toEqual([]);
+    const weekday = sampleWith(head("# priority: -3\n", "# priority: -3\n# when: weekday 5\n"));
+    expect(kinds(weekday, "never-offered")).toEqual(expect.arrayContaining([
+      expect.stringMatching(/^Calendar condition without a calendar: the moment quiz smp_mihon_special_b_coach \(when\) reads journeyDay or weekday/)]));
+  });
+
   it("warns of a quiz repeated always whose tags apply once", () => {
     expect(kinds(sample, "moment-quiz-repeat-tags")).toEqual([]);
     const always = sampleWith(head("# priority: -3\n", "# priority: -3\n# repeat: always\n# on_done: money +5\n"));

@@ -9,8 +9,13 @@ const claimLabels: Record<string, string> = {
   legend: "伝承",
 };
 
-/** `heard`: a scene gives the clue (heard in conversation; clue-source.ts), read from the scene list when not given. */
-export function ClueDetails({ clue, action, image, heard = isHeardClue(clue.id) }: { clue: TourismClue; action?: ReactNode; image?: ReactNode; heard?: boolean }) {
+/**
+ * `heard`: the clue was heard in conversation (a scene gives it; clue-source.ts), read from the scene list when not given.
+ * `kind: false`: no heading of its kind over its title (where a mark next to it already says where it came from).
+ */
+export function ClueDetails({ clue, action, image, heard = isHeardClue(clue.id), kind = true }: {
+  clue: TourismClue; action?: ReactNode; image?: ReactNode; heard?: boolean; kind?: boolean;
+}) {
   const sources = (
     <details className="clue-sources">
       <summary>根拠と解釈を確認する</summary>
@@ -29,7 +34,7 @@ export function ClueDetails({ clue, action, image, heard = isHeardClue(clue.id) 
     <>
       <div className="clue-heading">
         <div>
-          <p className="clue-kind">{clueKindLabel(clue, heard)}</p>
+          {kind && <p className="clue-kind">{clueKindLabel(clue, heard)}</p>}
           <h3>{clue.titleJa}</h3>
         </div>
         {action}

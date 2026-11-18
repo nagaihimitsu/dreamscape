@@ -63,8 +63,11 @@ export function ClueNotebook({
   const currentSelected = !!current && !!reasoning?.selectedIds.includes(current.id);
   const canSelectCurrent = !!current && !!reasoning?.caseClueIds.includes(current.id);
   const unreadDocument = !!current && readableDocumentIds.includes(current.id) && !discoveredIds.includes(current.id) && !!onDiscoverDocument && !reasoning;
-  // A clue a scene gives was heard in conversation (2026-11-18): said so, and shown without its landmark's photo.
-  const heard = !!current && isHeardClue(current.id);
+  // A clue a scene gives, once recorded, was heard in conversation (2026-11-18): said so, and shown without its landmark's
+  // photo. Not found yet (a reasoning quiz's case file), it is a case file like the others.
+  const heard = !!current && discoveredIds.includes(current.id) && isHeardClue(current.id);
+  // The mark over it (a reasoning quiz's, a city finale's) already says it was heard: no heading of its kind says it again.
+  const marked = !!reasoning || !!cityId;
   return (
     <Modal
       labelledBy="cluebook-title"
@@ -153,7 +156,7 @@ export function ClueNotebook({
         ) : (
           current && (
             <article
-              className={`notebook-clue${currentSelected ? " case-selected" : ""}${heard ? " heard-clue" : ""}`}
+              className={`notebook-clue${currentSelected ? " case-selected" : ""}`}
               data-testid={`notebook-${current.id}`}
               key={current.id}
             >
@@ -166,7 +169,7 @@ export function ClueNotebook({
               {unreadDocument ? <>
                 <h3>{current.titleJa}</h3>
                 <button className="secondary" data-testid={`read-document-${current.id}`} onClick={() => onDiscoverDocument(current.id)}>資料を読む</button>
-              </> : <ClueDetails clue={current} heard={heard} image={heard ? undefined : <ClueImage clue={current} />} />}
+              </> : <ClueDetails clue={current} heard={heard} kind={!(heard && marked)} image={heard ? undefined : <ClueImage clue={current} />} />}
             </article>
           )
         )}

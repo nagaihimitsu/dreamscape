@@ -48,7 +48,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "repeat-without-until": "repeated encounter(s) without # until:",
   "data-language": "data field(s) whose text is not in the field's language (Japanese fields, the quizzes' English)",
   "never-met-again": "city(ies) whose finale condition may never be met again (money spent, an item given, a battle or date under not; no other way)",
-  "earlier-item-start": "city(ies) whose clear needs an item only an optional scene of an earlier city gives (a Debug or walk start at that city may lack it)",
+  "earlier-item-start": "city(ies) whose clear needs an item or a clue only an optional scene of an earlier city gives (a Debug or walk start at that city may lack it)",
   "romance-only-city": "city(ies) that can be cleared only through the romance values",
   "unfindable-clue": "clue(s) that no observation, no scene's # clue: / # on_done: clue and no reasoning quiz's case evidence brings (or a scene's condition reading one)",
   "battle-after-epilogue": "battle(s) that may be left unplayable after the epilogue (the journey moves on after it)",
