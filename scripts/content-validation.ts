@@ -233,12 +233,14 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
  * storyCache, the full-branch date validations (validateStory) reuse stored
  * successful results (story-validation-cache.ts); that is the only disk access.
  * `untilName` (voice ID → what the clip says) names the voices recorded up to a name the player sets, whose `# voice:`
- * may stand on a line with that name (recorded.json `spoken`, which buildContent reads: voice-files.ts checkVoiceTags).
+ * may stand on a line with that name (voice-files.ts checkVoiceTags); by default the tree's (recorded.json `spoken`,
+ * read with the tree: content-sources.ts spokenUpToName).
  */
 export function validateContent(sources: ContentSources,
   options: { storyCache?: StoryValidationCache; untilName?: ReadonlyMap<string, string> } = {}) {
   const { root } = sources;
-  const untilName = options.untilName ?? new Map<string, string>();
+  // What the voices recorded up to a player-set name say: read with the tree (content-sources.ts spokenUpToName).
+  const untilName = options.untilName ?? sources.tree.untilName ?? new Map<string, string>();
   requireJourneyManifests(sources.manifests);
   // The authoring tools read these profiles; a broken one still fails the build early.
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);

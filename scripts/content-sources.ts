@@ -71,6 +71,13 @@ export type ContentTree = {
    */
   extraJourneyFolders?: Readonly<Record<string, string>>;
   files: ReadonlyMap<string, Buffer | null>;
+  /**
+   * The voices recorded up to a name the player sets (2026-11-17): voice ID → what each says, from each journey's
+   * authoring/journeys/<journeyId>/voice/recorded.json (`spoken`; spokenUpToName). content:build lets only such a
+   * voice's `# voice:` stand on a line with a name (voice-files.ts checkVoiceTags). Read with the tree, so a check of
+   * the tree (and of a tree changed in memory) has it; a copy of content/ without these files has none.
+   */
+  untilName?: ReadonlyMap<string, string>;
 };
 
 export type ContentLoadOptions = {
@@ -209,12 +216,42 @@ export function readContentTree(root: string, scope: "all" | "manifests" = "all"
     }
     return { ...tree, files };
   }
+  const untilName = spokenUpToName(root, tree.journeyFolders);
   const add = (treePath: string) => files.set(treePath, isDataFile(treePath, journeyFileOf(tree, treePath)) ? readFileSync(path.join(root, treePath)) : null);
   for (const relative of listFiles(coreLayerDirectory(root))) add(`${CONTENT_PREFIX}${relative}`);
   for (const folder of Object.values(extra)) for (const relative of listFiles(path.join(root, folder))) add(`${folder}/${relative}`);
   const shared = path.join(root, "public");
   if (existsSync(shared)) for (const relative of listFiles(shared)) files.set(`${PUBLIC_PREFIX}${relative}`, null);
-  return { ...tree, files };
+  return { ...tree, files, ...(untilName.size ? { untilName } : {}) };
+}
+
+/** A journey's recorded.json (voice-records.ts: voiceRecordsFolder + RECORDED_FILE, which voice-records.test.ts checks). */
+export const recordedVoicesFile = (journeyId: string) => `authoring/journeys/${journeyId}/voice/recorded.json`;
+
+/**
+ * The voices of the journeys recorded up to a name the player sets: voice ID → what each says (recorded.json `spoken`,
+ * voice-records.ts). A recorded.json that is missing or cannot be read gives none (content:build warns about one it
+ * cannot read: voice-changes.ts voiceRecordWarnings).
+ */
+export function spokenUpToName(root: string, journeyIds: readonly string[]): ReadonlyMap<string, string> {
+  const spoken = new Map<string, string>();
+  for (const journeyId of journeyIds) {
+    const file = path.join(root, recordedVoicesFile(journeyId));
+    if (!existsSync(file)) continue;
+    let clips: unknown;
+    try {
+      const data = JSON.parse(readFileSync(file, "utf8")) as { schemaVersion?: unknown; clips?: unknown };
+      clips = data.schemaVersion === 1 ? data.clips : undefined;
+    } catch {
+      continue;
+    }
+    if (!clips || typeof clips !== "object") continue;
+    for (const [id, clip] of Object.entries(clips as Record<string, unknown>)) {
+      const said = (clip as { spoken?: unknown } | null)?.spoken;
+      if (typeof said === "string") spoken.set(id, said);
+    }
+  }
+  return spoken;
 }
 
 /**
@@ -474,6 +511,7 @@ export function selectJourneys(sources: ContentSources, journeyIds: readonly str
     journeyFolders: tree.journeyFolders.filter((id) => journeyIds.includes(id)),
     ...(extra.length ? { extraJourneyFolders: Object.fromEntries(extra) } : {}),
     files: new Map([...tree.files].filter(([treePath]) => keep(treePath))),
+    ...(tree.untilName ? { untilName: tree.untilName } : {}),
   });
 }
 

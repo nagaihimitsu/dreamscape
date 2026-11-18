@@ -1,7 +1,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
-import { displayPath } from "./content-sources";
+import { displayPath, spokenUpToName } from "./content-sources";
 import { authoringFolder } from "./journey-authoring";
 import { voiceCastSchema, type VoiceCast } from "./voice-cast";
 import type { SentVoiceScript } from "./voice-script";
@@ -76,13 +76,7 @@ export function readRecordedClips(root: string, journeyId: string): RecordedClip
  * warns about it: voice-changes.ts voiceRecordWarnings).
  */
 export function partialRecordings(root: string, journeyIds: readonly string[]): ReadonlyMap<string, string> {
-  return new Map(journeyIds.flatMap((journeyId) => {
-    try {
-      return [...readRecordedClips(root, journeyId) ?? []].flatMap(([id, clip]): [string, string][] => clip.spoken === undefined ? [] : [[id, clip.spoken]]);
-    } catch {
-      return [];
-    }
-  }));
+  return spokenUpToName(root, journeyIds);
 }
 
 /**
