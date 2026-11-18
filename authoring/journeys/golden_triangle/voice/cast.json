@@ -4401,6 +4401,57 @@
     },
     "gt_jaipur_date_johari_bazaar_nasreen_014": {
       "noteJa": "腕輪を包みながら、やさしく念を押す。"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_012": {
+      "noteJa": "ここから4行は、駅の案内放送の口調で。ゆっくり、はっきり、少し得意そうに（元・放送係の見せ場）。"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_013": {
+      "noteJa": "案内放送の口調のまま。「運休・遅れ」は「うんきゅう、おくれ」と区切る。"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_014": {
+      "noteJa": "「――」で一拍おいて、「わたしの知るかぎり」だけ放送の調子を少し崩し、本人の声で。"
+    },
+    "gt_delhi_date_lodhi_garden_dubey_015": {
+      "noteJa": "読み（仮）：139番＝いちさんきゅうばん（作者が決める）。「……以上、お知らせでした」で放送を締めて、にっこり。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_001": {
+      "noteJa": "急がせる。親切な案内係の顔のまま、早口ぎみに。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_003": {
+      "noteJa": "推理で、遊ぶ人がはずれの証拠を出したとき。余裕のある、少し呆れた笑い。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_004": {
+      "noteJa": "前の行の続き（はずれの証拠を出したとき）。相手の知らない所を突く、自信のある言い方。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_005": {
+      "noteJa": "正しい証拠を出された直後。笑顔が一瞬止まる。声が少し低くなり、探るように。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_006": {
+      "noteJa": "立て直して、ていねいに言い返す。相手が答えられないと思っている。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_007": {
+      "noteJa": "第2問に正解されたとき。言われたことを、悔しそうに小さく繰り返す。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_008": {
+      "noteJa": "まだ食い下がる。早口で、言い訳を重ねる。"
+    },
+    "gt_delhi_depart_scam_quiz_delhi_scam_young_man_009": {
+      "noteJa": "「……今日は、ついてないな」だけ、芝居の外の素の声で小さく。すぐ「どうぞ、よい旅を」で、にこやかな案内係の声に戻る。"
+    },
+    "gt_delhi_depart_scam_quiz_claim_delhi_scam_young_man_001": {
+      "noteJa": "推理クイズの主張の行。気の毒そうに、でも言い切る。"
+    },
+    "gt_delhi_depart_scam_quiz_claim_delhi_scam_young_man_002": {
+      "noteJa": "主張の続き。親切を売るように、ていねいに。"
+    },
+    "gt_delhi_depart_scam_quiz_press_delhi_scam_young_man_001": {
+      "noteJa": "遊ぶ人が「追及する」を押したとき。もっともらしく、すらすらと。"
+    },
+    "gt_delhi_depart_scam_office_delhi_scam_suit_man_001": {
+      "noteJa": "迷う客を逃がさない、柔らかい押し。にこやかに。"
+    },
+    "gt_delhi_depart_scam_office_delhi_scam_suit_man_002": {
+      "noteJa": "お金が足りずに払えなかったとき。笑顔を消して、冷たく、事務的に。"
     }
   },
   "dictionary": [
