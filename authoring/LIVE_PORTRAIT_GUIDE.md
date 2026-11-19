@@ -21,7 +21,9 @@
   | `avatar.json`・`rig.json` | 名前と、骨組み（頭・目・口・髪の毛束などの位置） |
   | `built/base.png` ほか | 元の絵（`neutral`）を動かすための層 |
   | `built/sprites/face_<表情ID>.png` | **表情ごとの顔**。表情の絵から顔を切り出したもの。`neutral` は元の顔なので要らない |
-  | `built/sprites/mouthopen_<表情ID>.png` | 口を開けた絵の表情が、話すときに開く口 |
+  | `built/sprites/mouthopen_<表情ID>.png` | 口を開けた絵の表情が、話すときに開く口（普段は顔に描き込んだ閉じた口） |
+  | `built/sprites/mouthrest_<表情ID>.png` | 口を閉じた絵の表情の、その表情の閉じた口。口を閉じている間だけ出す（顔のほうは、話す口に合う通常の口を描き込む） |
+  | `built/sprites/mouth_<a/u/o>__<表情ID>.png` | 口を閉じた絵の表情が話すときの口（頬の赤みを掛けたもの） |
   | `built/sprites/eyes_closed_<0/1>__<表情ID>.png` | 表情ごとのまばたきの閉じ目（頬の赤みを残す） |
   | `built/sprites/eyes_closed_*`・`eyes_half_*`・`mouth_a`・`mouth_u`・`mouth_o` | 作者が描いたまばたきと口（[`blink-mouth-sheet.png`](characters/heroine/default_01/mesh_avatar/blink-mouth-sheet.png)） |
 
@@ -34,7 +36,7 @@
 表情の絵（`expressions`）を足すときは、**同じポーズの動く立ち絵に `face_<表情ID>.png` も必ず足します**。足さないと、動く立ち絵ではその表情が出ず、元の顔のまま話します。
 
 1. いつもどおり表情の絵を足します（元の絵 `authoring/characters/…/<表情ID>.png`、配信用の WebP、`expressions`・`own-artwork.json` への登録。[コンテンツ制作ガイド](CONTENT_GUIDE.md#基本の衣装表情の画像を足す)）。
-2. その表情の絵の口が開いているなら、[`cut-faces.py`](characters/heroine/default_01/mesh_avatar/cut-faces.py) の `CLOSED` に、普段の閉じた口に使う絵を足します（明るい表情は `source.png`、驚きは `serious.png` など）。口を閉じた絵なら何もしません（話すときは「あ・う・お」の口になります）。口がとても大きく開いているなら `WIDE` にも足します。
+2. その表情の絵の口が開いているなら、[`cut-faces.py`](characters/heroine/default_01/mesh_avatar/cut-faces.py) の `CLOSED` に、普段の閉じた口に使う絵を足します（明るい表情は `source.png`、驚きは `serious.png` など）。口を閉じた絵なら何もしません（その口は閉じている間だけ出し、話すときは「あ・う・お」の口になります）。口がとても大きい・横に広い（舌や口角の線が口から離れている）なら `WIDE` にも足します。足りないと、話すときにその表情の口の端が残って見えます（teasing の舌で起きた）。足したら、12表情すべての「閉じた口・あ・う・お」を並べて見ます（[6.](#6-確かめること)）。
 3. Mesh Avatar Studio の作業フォルダ `projects/<名前>/`（[3.](#3-新しい衣装人物に作るとき)で作ったもの。なければ3.の1〜8をやり直す）で、次を順に実行します。`<表情の絵>` は `authoring/characters/heroine/default_01/standing_01` のような、表情の元の絵のフォルダです。表情の一覧は、そのフォルダの `neutral` 以外の PNG から自動で作ります。
 
    ```sh
@@ -42,7 +44,7 @@
    uv run --with pillow --with numpy --with opencv-python-headless python <mesh_avatar>/cut-closed-eyes.py <表情の絵>
    ```
 
-4. できた `built/sprites/` の新しいファイル（`face_<表情ID>.png`、口が開いた表情は `mouthopen_<表情ID>.png`、`eyes_closed_0__<表情ID>.png`・`eyes_closed_1__<表情ID>.png`）と `sprites.json` を、配信のフォルダ `public/assets/…/avatar/built/sprites/` に写し、新しい PNG を `own-artwork.json` の動く立ち絵の `paths` に1行ずつ足します。
+4. できた `built/sprites/` の新しいファイル（`face_<表情ID>.png`、`eyes_closed_0__<表情ID>.png`・`eyes_closed_1__<表情ID>.png`、口が開いた表情は `mouthopen_<表情ID>.png`、口を閉じた表情は `mouthrest_<表情ID>.png` と `mouth_a__<表情ID>.png`・`mouth_u__…`・`mouth_o__…`）と `sprites.json` を、配信のフォルダ `public/assets/…/avatar/built/sprites/` に写し、新しい PNG を `own-artwork.json` の動く立ち絵の `paths` に1行ずつ足します。
 5. [6. 確かめること](#6-確かめること) をします。
 
 ## 3. 新しい衣装・人物に作るとき
@@ -71,10 +73,10 @@
 
 ## 5. 動かす部品を作り直すとき
 
-ゲームは、mesh-avatar 0.8.0 を Dreamscape 用に直した部品を使っています（表情ごとの顔 `setFace`、表情ごとの閉じ目、口を開けた表情の口、描いた「う」と「あ」の代用、端末の画素の密度どおり最大3倍で描く。元は2倍までで、3倍の iPhone ではぼけて見えた）。部品は [`vendor/mesh-avatar-0.8.0-dreamscape.2.tgz`](../vendor/mesh-avatar-0.8.0-dreamscape.2.tgz) で、`package.json` の依存です（ライセンスの一覧に自動で載るため）。
+ゲームは、mesh-avatar 0.8.0 を Dreamscape 用に直した部品を使っています（表情ごとの顔 `setFace`、表情ごとの閉じ目、口を開けた表情の口、描いた「う」と「あ」の代用、端末の画素の密度どおり最大3倍で描く。元は2倍までで、3倍の iPhone ではぼけて見えた。口を閉じた絵の表情の閉じた口 `mouthrest_` と、表情ごとの話す口）。部品は [`vendor/mesh-avatar-0.8.0-dreamscape.3.tgz`](../vendor/mesh-avatar-0.8.0-dreamscape.3.tgz) で、`package.json` の依存です（ライセンスの一覧に自動で載るため）。
 
 1. Mesh Avatar Studio の `406714b`（2026-11-17）に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当てます（`git apply`）。
-2. `packages/runtime/package.json` の `version` を上げ（今は `0.8.0-dreamscape.2`。次は `.3` など）、`dependencies`（fflate。部品に同梱済み）と `publishConfig` を外します。
+2. `packages/runtime/package.json` の `version` を上げ（今は `0.8.0-dreamscape.3`。次は `.4` など）、`dependencies`（fflate。部品に同梱済み）と `publishConfig` を外します。
 3. `packages/runtime` で `npm pack`、できた tgz を `vendor/` に置いて、Dreamscape で `npm install ./vendor/<tgz>` を実行します。古い tgz は消します。
 4. 直した所はパッチにも書き戻します（`git diff -- packages/runtime/src > mesh-avatar-faces.patch`）。
 
@@ -83,4 +85,5 @@
 - `npm run content:check`：フォルダのファイルがそろっているか、顔の名前（`face_<表情ID>`）が表情IDか。**表情に顔がないことは知らせない**ので、[2.](#2-表情を足すとき)を忘れないでください。
 - `npm run dev` で `?character-preview` を開き、衣装・ポーズ・表情を切り替えて、動く立ち絵が静止画と同じ位置・大きさで、その表情の顔になるかを見ます。
 - 声のある台詞の場面で、話しているときだけ口が動くか、まばたきで頬の赤みが消えないかを見ます。
+- 表情ごとに、閉じた口と話す口（あ・う・お）を並べて、元の口が残って見えないか、口のまわりの頬の赤みが薄くならないかを見ます（試作では、作業フォルダで差分を重ねた画像を作って見比べた）。
 - 実機のスマートフォンで、滑らかさと電池の減りを見ます。

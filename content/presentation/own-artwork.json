@@ -75,12 +75,21 @@
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/face_teasing_big.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/face_worried.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_a.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_a__serious.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_a__shy.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_a__teasing.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_a_half.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_angry.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_i.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_o.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_o__serious.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_o__shy.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_o__teasing.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_sad.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_u.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_u__serious.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_u__shy.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouth_u__teasing.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_exasperated.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_happy.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_shy_deep.png",
@@ -88,7 +97,10 @@
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_surprised.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_surprised_big.png",
         "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_teasing_big.png",
-        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_worried.png"
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthopen_worried.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthrest_serious.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthrest_shy.png",
+        "assets/characters/heroine/default_01/standing_01/avatar/built/sprites/mouthrest_teasing.png"
       ]
     },
     {

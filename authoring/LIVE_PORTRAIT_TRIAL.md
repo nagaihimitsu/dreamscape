@@ -80,12 +80,20 @@
 
 ユーザー判断「これで実装」で、確認用ページの形をゲームに入れました。
 
-- 動かす部品：改造した mesh-avatar を `vendor/mesh-avatar-0.8.0-dreamscape.2.tgz` にまとめ、`package.json` の依存に入れています（ライセンスの一覧に載せるため。中身は mesh-avatar-studio `406714b` の `packages/runtime` に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当て、`version` を `0.8.0-dreamscape.2`、依存（fflate は同梱済み）を外して `npm pack` したもの）。立ち絵が要るときだけ読み込み、タイトル画面では読みません。
+- 動かす部品：改造した mesh-avatar を `vendor/mesh-avatar-0.8.0-dreamscape.3.tgz` にまとめ、`package.json` の依存に入れています（ライセンスの一覧に載せるため。中身は mesh-avatar-studio `406714b` の `packages/runtime` に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当て、`version` を `0.8.0-dreamscape.3`、依存（fflate は同梱済み）を外して `npm pack` したもの）。立ち絵が要るときだけ読み込み、タイトル画面では読みません。
 - データ：`characters.json` の衣装・ポーズの `avatar`（フォルダ）。基本の衣装 `default_01/standing_01` だけに付けています。ファイルは `public/assets/characters/heroine/default_01/standing_01/avatar/`（約1.7MB。`base.png` が可逆のPNGで約710KB。部品がPNGしか読まないため。軽くするのは後の仕事）。`content:build` がフォルダのファイルと顔の名前を確かめます（`scripts/presentation-validation.ts`）。
 - 画面：`src/components/LivePortrait.tsx`。`CharacterPortrait` が衣装・ポーズの `avatar` を見て、静止画の上にキャンバスを重ね、動き始めたら静止画を隠します。表情は `setFace`、口は話している人（`focus` が `speaking`）だけが台詞の声の大きさ（`src/components/useVoice.ts` の `lineVoiceLevel`。声は聞こえない分かれ道で解析器にも流す）に合わせて動きます。
 - 動かさないとき：「演出を短縮する」・端末の動きを減らす設定・WebGL がない・読み込めない。表情の静止画が出ます。顔の丸枠（`CharacterFace`）とミニゲームの全身（`CharacterFigure`）は静止画のまま。
 - 声のない台詞では口は動きません（声に合わせる形のため）。
 - 確かめたこと：`content:build`、型の確認、`src/content/character-assets.test.ts`、本番ビルド（`dist:check`：ライセンスの一覧に mesh-avatar、タイトル画面で読まない）、開発サーバーの `?character-preview` で動く立ち絵が静止画と同じ位置・大きさに出ること。実機のスマホでの滑らかさ・電池と、声に合わせた口は未確認。
+
+### 口を閉じた絵の表情の口（2026-11-19、ユーザーの報告）
+
+teasing（舌を出した口）で、話すと元の口が残って見えた。口を閉じた絵の表情は、顔の差分に描いた口の上に話す口を重ねていたため。照れ（`shy`）・真剣（`serious`）も同じ作り。
+
+- 顔の差分の口のまわりは通常の口（話す口が合わせて描かれた口）に頬の赤みを掛けたものにし、その表情の閉じた口は `mouthrest_<表情ID>` に分けて、口を閉じている間だけ出す（部品の改造に追加、`0.8.0-dreamscape.3`）。
+- 話す口も表情ごとに頬の赤みを掛けた `mouth_<a/u/o>__<表情ID>` にした（照れで、話す口のまわりが薄い楕円になっていた）。
+- 12表情を並べて見て、ほかに次も直した：閉じた口のまわりの赤いしみ（開いた口の赤を頬の赤みと読んでいた。頬の赤みは口を除いた肌で測る）、強い照れの口のまわりの赤みが薄い、大きな驚きの閉じた口の上に開いた口の縁が残る、teasing の口角の線が残る（`WIDE` に teasing・surprised_big を足した）。
 
 ## 作り直すときの手順
 

@@ -91,17 +91,17 @@
       53,
       33
     ],
-    "mouthopen_smile": [
+    "mouthopen_exasperated": [
       468,
       214,
       89,
       53
     ],
-    "face_smile": [
+    "face_exasperated": [
       391,
       116,
       221,
-      150
+      152
     ],
     "mouthopen_happy": [
       461,
@@ -113,7 +113,25 @@
       391,
       116,
       224,
-      131
+      152
+    ],
+    "mouthrest_serious": [
+      468,
+      214,
+      89,
+      53
+    ],
+    "face_serious": [
+      391,
+      116,
+      221,
+      152
+    ],
+    "mouthrest_shy": [
+      468,
+      214,
+      89,
+      53
     ],
     "face_shy": [
       391,
@@ -131,7 +149,19 @@
       391,
       116,
       221,
-      136
+      152
+    ],
+    "mouthopen_smile": [
+      468,
+      214,
+      89,
+      53
+    ],
+    "face_smile": [
+      391,
+      116,
+      221,
+      152
     ],
     "mouthopen_surprised": [
       468,
@@ -146,10 +176,10 @@
       152
     ],
     "mouthopen_surprised_big": [
-      468,
-      214,
-      89,
-      53
+      463,
+      205,
+      100,
+      62
     ],
     "face_surprised_big": [
       391,
@@ -157,35 +187,11 @@
       222,
       152
     ],
-    "mouthopen_worried": [
-      468,
-      214,
-      89,
-      53
-    ],
-    "face_worried": [
-      392,
-      116,
-      221,
-      132
-    ],
-    "face_serious": [
-      391,
-      116,
-      221,
-      152
-    ],
-    "mouthopen_exasperated": [
-      468,
-      214,
-      89,
-      53
-    ],
-    "face_exasperated": [
-      391,
-      116,
-      221,
-      136
+    "mouthrest_teasing": [
+      460,
+      205,
+      104,
+      62
     ],
     "face_teasing": [
       391,
@@ -203,15 +209,27 @@
       391,
       116,
       222,
-      131
+      152
     ],
-    "eyes_closed_0__smile": [
+    "mouthopen_worried": [
+      468,
+      214,
+      89,
+      53
+    ],
+    "face_worried": [
+      392,
+      116,
+      221,
+      152
+    ],
+    "eyes_closed_0__exasperated": [
       439,
       165,
       62,
       47
     ],
-    "eyes_closed_1__smile": [
+    "eyes_closed_1__exasperated": [
       514,
       158,
       58,
@@ -224,6 +242,18 @@
       47
     ],
     "eyes_closed_1__happy": [
+      514,
+      158,
+      58,
+      45
+    ],
+    "eyes_closed_0__serious": [
+      439,
+      165,
+      62,
+      47
+    ],
+    "eyes_closed_1__serious": [
       514,
       158,
       58,
@@ -253,6 +283,18 @@
       58,
       45
     ],
+    "eyes_closed_0__smile": [
+      439,
+      165,
+      62,
+      47
+    ],
+    "eyes_closed_1__smile": [
+      514,
+      158,
+      58,
+      45
+    ],
     "eyes_closed_0__surprised": [
       439,
       165,
@@ -277,42 +319,6 @@
       58,
       45
     ],
-    "eyes_closed_0__worried": [
-      439,
-      165,
-      62,
-      47
-    ],
-    "eyes_closed_1__worried": [
-      514,
-      158,
-      58,
-      45
-    ],
-    "eyes_closed_0__serious": [
-      439,
-      165,
-      62,
-      47
-    ],
-    "eyes_closed_1__serious": [
-      514,
-      158,
-      58,
-      45
-    ],
-    "eyes_closed_0__exasperated": [
-      439,
-      165,
-      62,
-      47
-    ],
-    "eyes_closed_1__exasperated": [
-      514,
-      158,
-      58,
-      45
-    ],
     "eyes_closed_0__teasing": [
       439,
       165,
@@ -332,6 +338,18 @@
       47
     ],
     "eyes_closed_1__teasing_big": [
+      514,
+      158,
+      58,
+      45
+    ],
+    "eyes_closed_0__worried": [
+      439,
+      165,
+      62,
+      47
+    ],
+    "eyes_closed_1__worried": [
       514,
       158,
       58,
