@@ -986,6 +986,7 @@
   font-size: 11px;
   line-height: 1.7;
 }
+.heroine-note-bubble--unlabeled { padding-top: 8px; }
 .hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
 @keyframes heroine-note-in {
   from { opacity: 0; transform: translateY(4px); }
