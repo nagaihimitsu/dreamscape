@@ -86,10 +86,23 @@ dialog.modal.travel-log {
 }
 .travel-log-record { margin: 0 0 6px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
 .travel-log-heroine { margin: 0 12px 12px; }
-/* 出会った人: each person's small face (their portrait, or an empty circle) beside the name and words. */
+/* 出会った人: each person's standing picture, small, beside the name and words. The whole picture is laid from the frame's
+   top at 1.7 times its height, so the frame shows the head to about the waist and the feet are cut off; any character
+   fits without a face position of its own. A person without a portrait keeps the empty frame. */
 .travel-log .met-people dl > .travel-log-person { display: flex; align-items: flex-start; gap: 10px; }
-.travel-log-person .character-face { width: 40px; height: 40px; margin-top: 2px; }
-.travel-log-person-blank { flex: none; width: 40px; height: 40px; margin-top: 2px; border: 1px solid var(--ds-parchment-line); border-radius: 50%; background: var(--ds-parchment-2); }
+.travel-log-person-figure {
+  flex: none;
+  width: 48px;
+  height: 64px;
+  margin-top: 2px;
+  overflow: hidden;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 10px;
+  background: var(--ds-parchment-2);
+}
+.travel-log-person-figure .character-figure { height: 170%; }
+.travel-log-person-figure .character-figure img,
+.travel-log-person-figure .character-figure svg { object-position: center top; }
 .travel-log-person > div { min-width: 0; }
 .travel-log-people-title { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: 1rem; }
 .travel-log .met-people { margin-top: 16px; }

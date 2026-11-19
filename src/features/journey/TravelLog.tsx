@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Modal, ModalTitle } from "../../components/Modal";
 import { ImageCredit } from "../../components/ImageCredit";
-import { CharacterFace } from "../../components/CharacterPortrait";
+import { CharacterFigure } from "../../components/CharacterPortrait";
 import { Icon } from "../../components/icons";
 import { playSe } from "../../audio/sound-effects";
 import type { GameState } from "../../domain/game";
@@ -79,7 +79,7 @@ function useArrowKeys(within: React.RefObject<HTMLElement | null>, active: boole
  * or the arrow keys. A page shows one of its two axes, chosen at its top and kept as the pages turn:
  * - 「体験」: the city's progress and each thing lived there as a card (its picture, kind, time when the save has it, place,
  *   clear title and record with its seal 「完」, and her few words looking back on the place), then the people met there with
- *   their small faces, and `footer` (旅の数字). A card whose stories took album photos opens them all, larger, on a tap
+ *   their small standing pictures (head to waist), and `footer` (旅の数字). A card whose stories took album photos opens them all, larger, on a tap
  *   (its count on the picture when more than one); a place's tourism photo (the card's picture when its stories took none)
  *   carries its credit under it.
  * - 「写真」: the album's photos taken there as a close grid of square thumbnails; a tap opens them larger.
@@ -180,8 +180,9 @@ function LivedPage({ page, heroineName, onOpen }: { page: LogPage; heroineName: 
     {page.people.length > 0 && <section className="met-people" aria-labelledby={`log-people-${page.cityId}`} data-testid="met-people">
       <h4 id={`log-people-${page.cityId}`} className="travel-log-people-title">出会った人</h4>
       <dl>{page.people.map((person) => <div key={person.id} className="travel-log-person" data-testid={`met-person-${person.id}`}>
-        {person.characterId ? <CharacterFace characterId={person.characterId} cityId={page.cityId} />
-          : <span className="travel-log-person-blank" aria-hidden="true" />}
+        <span className="travel-log-person-figure" aria-hidden="true">
+          {person.characterId && <CharacterFigure characterId={person.characterId} cityId={page.cityId} />}
+        </span>
         <div>
           <dt>{person.nameJa}</dt>
           {person.descriptionJa && <dd>{person.descriptionJa}</dd>}
