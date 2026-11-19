@@ -123,7 +123,7 @@ export function DepartureLuggage({ carried, left }: { carried: readonly PackedIt
  * the place's name. The card shows no credit (2026-11-15 user decision): while it shows, ≡メニュー's 「写真の出典」 lists the
  * photo with its credit and the note that the copy is reduced and cropped (PhotoCredits.tsx recapPhotos). In the page's
  * flow; nothing waits for it, and it goes with 「閉じる」 or when the screen changes. Under it, her small face and a bubble
- * with her line looking back on the place finished last, when it has one (recapLine, 2026-11-19).
+ * with her line looking back on the place finished last, when it has one (resumeRecap, 2026-11-19).
  */
 export function ResumeRecapCard({ recap, heroineName, onClose }: { recap: ResumeRecap; heroineName: string; onClose: () => void }) {
   // Its height (--recap-h) is the night screen's room for it: that screen lies under it and starts below it.

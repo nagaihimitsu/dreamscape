@@ -6,7 +6,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { DERIVED_PHOTO_NOTE_JA, RECAP_PHOTO_NOTE_JA } from "../../content/credits";
-import { episodes, getAlbumImage, getCityContent, landmarks, scenes, storyState, tourismAssets } from "../../content";
+import { dates, episodes, getAlbumImage, getCityContent, landmarks, scenes, storyState, tourismAssets } from "../../content";
 import {
   cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue, startDateScene, withAp,
 } from "../../dev/scenario-builders";
@@ -153,22 +153,7 @@ describe("the recap of a resumed game", () => {
     expect(resumeRecap(agra)).toMatchObject({ cityJa: "アーグラ", chapter: { titleJa: last.clearTitleJa, cityJa: "デリー" } });
   });
 
-  it("shows the Jama Masjid's photo, not the date photo taken after it (the user's case, 2026-11-13)", () => {
-    // Delhi: the Jama Masjid's episode completed, then the Agrasen ki Baoli date played to its end like a player.
-    let state = startDateScene(withAp(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), 12), "gt_delhi_date_agrasen_baoli", 0);
-    for (let step = 0; state.activeDate; step++) {
-      expect(step, "the date did not end").toBeLessThan(300);
-      state = applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], roll), roll);
-    }
-    expect(state.completedEpisodeIds.at(-1)).toBe(JAMA_MASJID);
-    expect(state.album.at(-1)).toMatchObject({ imageId: baoliDate.imageId, storyId: baoliDate.storyId });
-    expect(resumeRecap(state)).toMatchObject({
-      chapter: { titleJa: "賭けではなく、欲しいから" },
-      photo: placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド"),
-    });
-  });
-
-  it("has her line about the place finished last: a date after the episode, then the next episode (2026-11-19)", () => {
+  it("looks back on what was finished last: an episode, a date after it, then the next episode (2026-11-19)", () => {
     const place = (id: string) => getCityContent(id.split("_")[0]).travel.places.find((item) => item.id === id)!;
     const delhi = finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID);
     expect(delhi.recapDateId).toBeUndefined();
@@ -180,10 +165,19 @@ describe("the recap of a resumed game", () => {
     }
     expect(state.recapDateId).toBe("gt_delhi_date_agrasen_baoli");
     expect(validateGameState(state)).toEqual(state);
-    expect(resumeRecap(state)?.heroine).toEqual({ textJa: place("delhi_agrasen_baoli").recapLinesJa![0], cityId: "delhi" });
+    // The date is the recap now: its title and description, its own album photo, her line about the baoli.
+    expect(state.completedEpisodeIds.at(-1)).toBe(JAMA_MASJID);
+    expect(state.album.at(-1)).toMatchObject({ imageId: baoliDate.imageId, storyId: baoliDate.storyId });
+    const date = dates.find((item) => item.id === "gt_delhi_date_agrasen_baoli")!;
+    expect(resumeRecap(state)).toEqual({
+      cityJa: "デリー", whenJa: `${state.travel.day}日目 ${formatTravelTime(state.travel.minute)}`,
+      chapter: { titleJa: "本物の悲鳴", descriptionJa: date.descriptionJa },
+      photo: albumPicture(baoliDate),
+      heroine: { textJa: place("delhi_agrasen_baoli").recapLinesJa![0], cityId: "delhi" },
+    });
     const next = finishEpisode(state, RED_FORT);
     expect(next.recapDateId).toBeUndefined();
-    expect(resumeRecap(next)?.heroine?.textJa).toBe(place("delhi_red_fort").recapLinesJa![0]);
+    expect(resumeRecap(next)).toMatchObject({ chapter: { titleJa: episode(RED_FORT).clearTitleJa }, heroine: { textJa: place("delhi_red_fort").recapLinesJa![0] } });
     expect(() => validateGameState({ ...delhi, recapDateId: "gt_delhi_date_agrasen_baoli" })).toThrow();
   });
 });

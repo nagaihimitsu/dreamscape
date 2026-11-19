@@ -83,7 +83,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 - 登録はいりません。`tourism/catalog.json` にも `presentation/own-artwork.json` にも書かず、出典も書きません。アルバムにも「出典・権利の一覧」にも出典は出ません。
 - 絵は横長の 3:2 で作ります（例 1536×1024 か 1600×1067）。アルバムでは 3:2 の枠に合わせて表示し、違う比率の絵は真ん中を残して切り取ります。押すと全体が見えます。大事なもの（顔など）は真ん中に寄せます。字や名前は絵に入れません。
 
-アルバムには、その絵と、都市、「n日目 hh:mm」、場所の名前が出ます。絵の下に出す短い説明は、同じ行に `# photo_caption: <説明>` と書きます（任意。`#` は書けません。説明は絵の代わりの文にもなり、ないときは「思い出の絵」です）。同じ絵は一度だけ入り、読み直し・観光案内の読み直し・セーブからの再開では増えません。どの会話の場面でも書けます（英語ノートの解説には書けません）。セーブから再開したときの「前回までのあらすじ」は、最後に終えたエピソードの観光案内・バトル（フィナーレはバトルとエピローグ）で入った絵を出し、なければその場所の観光写真を出典つきで出します（デートや道中交流の絵は、同じ場所でも出しません）。例は見本の編のデート（`stories/places/smp_mihon_clock_tower.ink` の `= ending`、説明つき）と、朝市・図書室の観光案内の最初の行（絵は見本の `public/assets/album/`）。
+アルバムには、その絵と、都市、「n日目 hh:mm」、場所の名前が出ます。絵の下に出す短い説明は、同じ行に `# photo_caption: <説明>` と書きます（任意。`#` は書けません。説明は絵の代わりの文にもなり、ないときは「思い出の絵」です）。同じ絵は一度だけ入り、読み直し・観光案内の読み直し・セーブからの再開では増えません。どの会話の場面でも書けます（英語ノートの解説には書けません）。セーブから再開したときの「前回までのあらすじ」は、最後に終えたエピソードの観光案内・バトル（フィナーレはバトルとエピローグ）で入った絵を出し、なければその場所の観光写真を出典つきで出します（道中交流や、ほかの場面の絵は、同じ場所でも出しません）。最後のエピソードの後に行き先のある通常デートを終えていれば、そのデートの題（`titleJa`）と紹介（`descriptionJa`）、デートで入った絵（なければ行き先の場所の観光写真）を出します（2026-11-19のユーザー判断）。例は見本の編のデート（`stories/places/smp_mihon_clock_tower.ink` の `= ending`、説明つき）と、朝市・図書室の観光案内の最初の行（絵は見本の `public/assets/album/`）。
 
 ```ink
 # speaker: narrator
@@ -784,7 +784,7 @@ EXTERNAL cond(text)
 
 交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("blue_pick", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿した場合、過去の途中セーブを再開できなくなることがあります。
 
-都市（`cities/<都市ID>.json`）の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`progression/journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。`titleJa` は、そのエピソードを初めて始めたときに場所の写真の上に大きく出る題名の札にもなり、`clearTitleJa` と `clearDescriptionJa` は、対決の結果のほか、セーブから再開したときの「前回までのあらすじ」（最後に終えたエピソード）、夜の「今日の見出し」（その日に終えたエピソードの `clearTitleJa`）、旅の終わりのエンドロールにも出ます（2026-11-11。`{player_name}`・`{heroine_name}` は名前に変わります）。エンドロールの「出会った人」は、`progression/story.json` の `people` の `nameJa` のうち、その人を `# person:` で挙げた場面を見た人です。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
+都市（`cities/<都市ID>.json`）の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`progression/journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。`titleJa` は、そのエピソードを初めて始めたときに場所の写真の上に大きく出る題名の札にもなり、`clearTitleJa` と `clearDescriptionJa` は、対決の結果のほか、セーブから再開したときの「前回までのあらすじ」（最後に終えたエピソード。その後にデートを終えていればデート）、夜の「今日の見出し」（その日に終えたエピソードの `clearTitleJa`）、旅の終わりのエンドロールにも出ます（2026-11-11。`{player_name}`・`{heroine_name}` は名前に変わります）。エンドロールの「出会った人」は、`progression/story.json` の `people` の `nameJa` のうち、その人を `# person:` で挙げた場面を見た人です。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`（このほかに、ビルドが場面の札 `# ap: +N` から作る `scene_tag` がありますが、作者はこのJSONに書きません。書くと `content:build` が止まります）。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。
 
@@ -851,7 +851,7 @@ EXTERNAL cond(text)
 
 ### 前回までのあらすじの、彼女のひと言（任意）
 
-セーブから再開したときの「前回までのあらすじ」の札の下に、彼女の小さな顔と吹き出しで、最後に終えた場所をふり返るひと言を出せます（2026-11-19のユーザー判断）。`travel/<都市ID>.json` の `places[]` に `recapLinesJa`（形は `heroineLinesJa` と同じ。上から見て、今出せる最初の1つ）として書きます。どの場所のひと言を出すかはゲームが決めます：最後に終えた観光の回（エピソード）の場所、その後に行き先のある通常デートを終えていれば、そのデートの行き先の場所です（デートの読み直しは数えません）。写真札の `heroineLinesJa` は行く前のひと言、`recapLinesJa` は終えた後のひと言として書き分けます。書かない場所では何も出ません。例はインド編の `travel/delhi.json`。
+セーブから再開したときの「前回までのあらすじ」の札の下に、彼女の小さな顔と吹き出しで、最後に終えた場所をふり返るひと言を出せます（2026-11-19のユーザー判断）。`travel/<都市ID>.json` の `places[]` に `recapLinesJa`（形は `heroineLinesJa` と同じ。上から見て、今出せる最初の1つ）として書きます。どの場所のひと言を出すかはゲームが決めます：あらすじが出す回（最後に終えた観光の回（エピソード）、その後に行き先のある通常デートを終えていればそのデート。デートの読み直しは数えません）の場所です。写真札の `heroineLinesJa` は行く前のひと言、`recapLinesJa` は終えた後のひと言として書き分けます。書かない場所では何も出ません。例はインド編の `travel/delhi.json`。
 
 ```json
 "heroineLinesJa": ["ビルの間に、昔の階段井戸があるんだって。こんな都会の真ん中に？"],
