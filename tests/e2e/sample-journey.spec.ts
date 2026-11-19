@@ -321,6 +321,8 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(again.glossary ?? []).toEqual(expect.arrayContaining(ended.glossary ?? []));
   expect(again.pastBattleIds).toEqual(ended.battleRecords.map((record) => record.battleId));
   expect(again.battleRecords).toEqual([]);
+  // The difficulty is the finished journey's unless another level is chosen in the confirmation.
+  expect(again.difficulty).toEqual(ended.difficulty);
   const kept = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "null"), `dreamscape.journey.${JOURNEY}.memory.v1`);
   expect(kept).toEqual(ended);
   await playUntil(page, (state) => !state.activeEpilogue && !state.occasion, { source, pick });

@@ -11,6 +11,7 @@ import { carryOver } from "../domain/carry-over";
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
 import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
+import type { Difficulty } from "../domain/difficulty";
 
 export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
@@ -114,9 +115,9 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     protectedOriginalRef.current = result.baseline.protectedOriginal;
     return true;
   }
-  /** A new journey with the names as the title's form gives them, and the reading captured with the player's (if any). */
-  function begin(player: string, heroine: string, playerNameReading: string | undefined, journeyId: string) {
-    const initial = createGame(player.trim(), heroine.trim(), { journeyId, playerNameReading });
+  /** A new journey with the names and the difficulty as the title's form gives them, and the reading captured with the player's (if any). */
+  function begin(player: string, heroine: string, playerNameReading: string | undefined, journeyId: string, difficulty?: Difficulty) {
+    const initial = createGame(player.trim(), heroine.trim(), { journeyId, playerNameReading, difficulty });
     // The new journey's arrival opens through the same entry as the others (4.2); a line it shows at once may take a photo
     // and name a term of 旅の図鑑 (none under the arrival's title card, which covers its first line).
     const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));
@@ -128,14 +129,14 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
   /**
    * 「もう一度この旅を」 (2026-11-19 user decision): over a finished journey, keep it as 旅の思い出 in place of the memory
    * the confirmation showed (`expectedMemory`: its raw value, null for none), then start the journey again with the same
-   * names. The new journey is written at once in either saving mode (the finished one is in the memory), over the
+   * names at the difficulty chosen there. The new journey is written at once in either saving mode (the finished one is in the memory), over the
    * save this tab last observed. False when either write is refused (the notice says why).
    */
-  function beginAgain(journeyId: string, expectedMemory: string | null) {
+  function beginAgain(journeyId: string, expectedMemory: string | null, difficulty?: Difficulty) {
     const finished = gameRef.current;
     if (!finished || !isJourneyComplete(finished)) return false;
     // What the finished journey collected stays (carry-over.ts): the album, 旅の図鑑 and the quizzes of 英語ノート.
-    const initial = carryOver(finished, createGame(finished.playerName, finished.heroineName, { journeyId, playerNameReading: finished.playerNameReading }));
+    const initial = carryOver(finished, createGame(finished.playerName, finished.heroineName, { journeyId, playerNameReading: finished.playerNameReading, difficulty }));
     const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));
     const kept = keepJourneyMemory(storage, finished, expectedMemory);
     if (!kept.ok) { setNotice(kept.message); return false; }

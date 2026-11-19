@@ -51,6 +51,7 @@ import { advanceRunningOccasion } from "./occasion-hooks";
 import { validateAlbum } from "./album";
 import { validateGlossary } from "./glossary";
 import { validatePastBattles } from "./carry-over";
+import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishLevel } from "./difficulty";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -73,6 +74,8 @@ export function createGame(
     initialState?: NonNullable<Journey["initialState"]>;
     /** The reading of the player's name captured as it was typed (none: not known or not needed; the field is left out). */
     playerNameReading?: string;
+    /** The difficulty chosen at the title (none: the default; difficulty.ts). */
+    difficulty?: Difficulty;
   } = { journeyId: defaultJourneyId },
 ): GameState {
   const journey = getJourney(options.journeyId);
@@ -82,12 +85,14 @@ export function createGame(
   const { travelSettings } = getCityContent(cityId);
   const initial = options.initialState ?? journey.initialState;
   if (initial && initial.pendingAp !== 0) throw new Error("Pending AP requires a reward record");
+  const difficulty = difficultySchema.parse(options.difficulty ?? DEFAULT_DIFFICULTY);
   return {
     schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
     travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [], todayPlaceIds: [], todayEpisodeIds: [],
       ...(journey.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) },
-    travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
+    travelBudget: startingBudget(journey.initialBudget ?? travelSettings.initialBudget, difficulty.economy),
+    difficulty,
     inventory: {},
     completedEncounterIds: [],
     seenEncounterIds: [],
@@ -171,6 +176,16 @@ export function setNames(
     ...(reading ? { playerNameReading: reading.data } : {}),
     revision: state.revision + 1,
   };
+}
+
+/**
+ * ゲームの設定's English of the quizzes (the difficulty; 2026-11-19): any time, also during a scene. A quiz already started
+ * keeps the English it started with (its activeBattle.englishLevel); the next one asks the new level. Unchanged as saved.
+ */
+export function setEnglishLevel(state: GameState, english: EnglishLevel): GameState {
+  const current = difficultyOf(state);
+  if (current.english === english) return state;
+  return { ...state, difficulty: difficultySchema.parse({ ...current, english }), revision: state.revision + 1 };
 }
 
 function applyStep(

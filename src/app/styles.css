@@ -336,6 +336,65 @@ h3 {
   margin-top: 7px;
 }
 /* The default names shown as placeholders: lighter than a typed name, still readable (6.0:1). */
+/* The difficulty's selects (2026-11-19): the same field as a name's, with the system's arrow. */
+.name-form select {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  background: #fffaf1;
+  border: 1px solid var(--ds-field-edge);
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: var(--ds-ink);
+  font-size: 16px;
+}
+/* What the chosen level does, under its select (not spaced as a label's caption). */
+.name-form .difficulty-note {
+  letter-spacing: normal;
+  line-height: 1.7;
+}
+/* The title's difficulty, folded (2026-11-19): the summary is a 44-px row over the form's width; open, its two fields stack. */
+.name-form .difficulty-fields {
+  grid-column: 1 / -1;
+}
+.name-form .difficulty-fields-body {
+  display: grid;
+  gap: 12px;
+}
+.name-form .difficulty-fields > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  color: var(--ds-ink);
+}
+.name-form .difficulty-fields > summary::-webkit-details-marker {
+  display: none;
+}
+/* The fold's mark (a flex summary has no marker of its own): pointing right while folded, down while open. */
+.name-form .difficulty-fields > summary::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  flex: none;
+}
+.name-form .difficulty-fields[open] > summary::before {
+  transform: rotate(45deg);
+}
+.name-form .difficulty-fields[open] > summary {
+  margin-bottom: 8px;
+}
+/* ゲームの設定's English: one field over the full width (the names' form has two columns there). */
+dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: 0;
+}
 .name-form input::placeholder {
   color: var(--ds-ink-muted);
   opacity: 1;
@@ -716,7 +775,7 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     padding: 8px 12px;
   }
 }
-/* ゲームの設定's groups (2026-11-14): 文字と表示, 音と振動, 名前 and データ, each under its heading with a hairline above
+/* ゲームの設定's groups (2026-11-14): 文字と表示, 音と振動, 難易度 (2026-11-19), 名前 and データ, each under its heading with a hairline above
    (none under the title bar), then 「制作者向け」 folded. */
 dialog.modal[aria-labelledby="settings-title"] > h3 {
   margin: 14px 0 2px;
@@ -1502,7 +1561,8 @@ dialog.modal[open] {
   }
 }
 /* A short phone (320×568, 2026-11-14): 「旅をはじめる」 shows without scrolling. The title's header and art band are
-   lower, and the two name fields sit side by side (the default names' line and the start under both). */
+   lower, and the two name fields sit side by side (the default names' line, the difficulty's folded line and the start under
+   both, closer together). */
 @media (max-width: 480px) and (max-height: 600px) {
   .app-shell:has(.paper.intro) > .masthead {
     height: 64px;
@@ -1514,11 +1574,27 @@ dialog.modal[open] {
   .intro .lead {
     margin-bottom: 8px;
   }
+  /* The small 「旅のはじまり」 over the heading gives its row to the difficulty's folded line (2026-11-19). */
+  .intro > .eyebrow {
+    display: none;
+  }
+  .intro {
+    padding-top: 6px;
+  }
+  .intro h1 {
+    margin: 0 0 4px;
+  }
   .intro .name-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 10px;
   }
   .intro .name-form .primary {
     grid-column: 1 / -1;
+    margin-top: 0;
+  }
+  /* The difficulty's folded line (2026-11-19) takes the room the closer rows give back. */
+  .intro .name-form .name-defaults {
+    margin-top: -4px;
   }
 }
 

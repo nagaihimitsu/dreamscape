@@ -42,6 +42,9 @@ import {
 import { storyFileOf } from "../content/story-address";
 import type { GameState, Availability } from "./game";
 import { scoreQuizAnswer } from "./quiz-answer";
+import { difficultyOf } from "./difficulty";
+import { ENGLISH_LEVELS } from "../content/schemas";
+import { quizAtLevel } from "../content/english-levels";
 
 export const battleAnswerSchema = z
   .object({
@@ -95,6 +98,11 @@ export const activeBattleSchema = z
     turns: z.number().int().nonnegative(),
     /** The conversation's choices whose tags this run applied (decision 10: once per battle, and only on its first play). */
     appliedOptionIds: z.array(stableContentId),
+    /**
+     * The English its questions are asked in (the difficulty, 2026-11-19; english-levels.ts), when not the quiz's own
+     * englishLevel: the level chosen when it started, kept to its end whatever ゲームの設定 says meanwhile.
+     */
+    englishLevel: z.enum(ENGLISH_LEVELS).optional(),
     /** A special battle's line before its first stop point: its claim (from the helper knot) or its rebuttal (after the claim). */
     linePart: z.enum(["claim", "rebuttal"]).optional(),
     /** The line ends a part before the first stop (the lines before the claim, the claim before its rebuttal): 「次へ進む」 there. */
@@ -164,10 +172,13 @@ export function getBattleContentByHash(battleId: string, contentHash: string) {
   return null;
 }
 
-/** Resolve the exact published definition, quiz, evidence and Ink for an active run. */
+/**
+ * Resolve the exact published definition, quiz, evidence and Ink for an active run, its questions in the English the run
+ * started with (englishLevel; the marks and answers are the same at every level, english-levels.ts).
+ */
 export function getActiveBattleContent(active: ActiveBattle) {
   const content = getBattleContentByHash(active.battleId, active.contentHash);
-  if (content) return content;
+  if (content) return { ...content, quiz: quizAtLevel(content.quiz, active.englishLevel) };
   throw new Error("クイズが更新されています。以前の途中データは保管されています。");
 }
 
@@ -479,6 +490,7 @@ export function startVisitBattle(state: GameState, battleId: string, mapChecked:
 function startBattleInternal(state: GameState, battleId: string, mapChecked: boolean): GameState {
   if (!battleAvailability(state, battleId, mapChecked).available) return state;
   const battle = battles.find((item) => item.id === battleId)!;
+  const { english } = difficultyOf(state);
   const active: ActiveBattle = {
     battleId,
     runId: `${battleId}:${state.revision + 1}`,
@@ -494,6 +506,8 @@ function startBattleInternal(state: GameState, battleId: string, mapChecked: boo
     reasoning: null,
     turns: 0,
     appliedOptionIds: [],
+    // The English of the difficulty (2026-11-19), kept for the run: a change in ゲームの設定 asks it from the next quiz.
+    ...(english !== battleQuizzes[battle.quizId].englishLevel ? { englishLevel: english } : {}),
   };
   return startFlowBattle({ ...state, revision: state.revision + 1, battleRewardReceipt: null }, active, battle);
 }

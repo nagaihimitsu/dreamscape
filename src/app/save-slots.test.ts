@@ -35,7 +35,7 @@ describe("save slots", () => {
     expect(saveGame(journeyStorage(base, "milano", 1), createGame("ユウ", "ミオ")).ok).toBe(true);
     base.data.set(journeyStorage(base, "milano", 3).physicalKey("dreamscape.save.v1"), "{broken");
     expect(slotSummaries(base, "milano")).toEqual([
-      { slot: 1, status: "saved", playerName: "ユウ", heroineName: "ミオ", cityJa: "ミラノ", day: 1, finished: false },
+      { slot: 1, status: "saved", playerName: "ユウ", heroineName: "ミオ", cityJa: "ミラノ", day: 1, finished: false, difficulty: { english: "B1", economy: "standard" } },
       { slot: 2, status: "empty" },
       { slot: 3, status: "unreadable" },
     ]);

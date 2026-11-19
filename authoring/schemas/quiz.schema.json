@@ -230,6 +230,207 @@
             "type": "string",
             "minLength": 1,
             "language": "ja"
+          },
+          "levels": {
+            "type": "object",
+            "properties": {
+              "A2": {
+                "type": "object",
+                "properties": {
+                  "questionEn": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "en"
+                  },
+                  "options": {
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "A",
+                            "B",
+                            "C"
+                          ]
+                        },
+                        "textEn": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "en"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "textEn"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "vocabularyJa": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "word": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "meaning": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "ja"
+                        }
+                      },
+                      "required": [
+                        "word",
+                        "meaning"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "questionEn",
+                  "options"
+                ],
+                "additionalProperties": false
+              },
+              "B1": {
+                "type": "object",
+                "properties": {
+                  "questionEn": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "en"
+                  },
+                  "options": {
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "A",
+                            "B",
+                            "C"
+                          ]
+                        },
+                        "textEn": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "en"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "textEn"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "vocabularyJa": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "word": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "meaning": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "ja"
+                        }
+                      },
+                      "required": [
+                        "word",
+                        "meaning"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "questionEn",
+                  "options"
+                ],
+                "additionalProperties": false
+              },
+              "B2": {
+                "type": "object",
+                "properties": {
+                  "questionEn": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "en"
+                  },
+                  "options": {
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "A",
+                            "B",
+                            "C"
+                          ]
+                        },
+                        "textEn": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "en"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "textEn"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "vocabularyJa": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "word": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "meaning": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "ja"
+                        }
+                      },
+                      "required": [
+                        "word",
+                        "meaning"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "questionEn",
+                  "options"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
           }
         },
         "required": [

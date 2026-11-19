@@ -3,9 +3,10 @@ import { allRewardRules, battles, cityContents, dates, episodes, journeyConfig, 
 import { encounters } from "../src/content/encounters";
 import { journeys } from "../src/content/journeys";
 import { isTourOnlyPlace } from "../src/content/travel-schemas";
+import { ECONOMY_LEVELS, startingBudget } from "../src/domain/difficulty";
 import { mainPaymentsOf, requiredCitySpend, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
 
-// AGENTS.md: 「いちばん安く回れば本筋を最後まで遊べることは、テストで守る」. For every published journey of the last content:build
+// AGENTS.md: 「いちばん安く回れば本筋を最後まで遊べることは、テストで守る」, at every difficulty (the tightest's budget). For every published journey of the last content:build
 // (the sample too after content:build -- --with-sample), the journey's budget covers what its cities' finales require at the least,
 // counted by the money warning's own function (requiredCitySpend: each required main part at its cheapest fares and admission, a
 // tour-only place at its tour's cheapest offer, and the main parts' # on_done: payments). Money a scene gives is not counted.
@@ -26,8 +27,10 @@ describe("journey budgets", () => {
     const available = journeys.filter((journey) => journey.status === "available");
     expect(available.length).toBeGreaterThan(0);
     const rows = available.map((journey) => {
-      // The journey's budget, or its first city's (the same start as the progression check's).
-      const budget = journey.initialBudget ?? cityContents[journey.cities[0].id]?.travelSettings.initialBudget ?? 0;
+      // The journey's budget, or its first city's (the same start as the progression check's), at the tightest difficulty
+      // (2026-11-19: 「いちばんきびしい段階でも、いちばん安く回れば本筋を最後まで遊べる」).
+      const written = journey.initialBudget ?? cityContents[journey.cities[0].id]?.travelSettings.initialBudget ?? 0;
+      const budget = ECONOMY_LEVELS.map((level) => startingBudget(written, level)).reduce((low, value) => Math.min(low, value));
       const spend = journey.cities.map((city) => ({ cityId: city.id, money: requiredCitySpend(content, city.id).money }));
       return { journeyId: journey.id, budget, spend, total: spend.reduce((sum, city) => sum + city.money, 0) };
     });

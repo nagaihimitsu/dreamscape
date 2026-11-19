@@ -4,6 +4,7 @@ import {
   learningTranslations,
 } from "../../content";
 import { getBattleContentByHash } from "../../domain/battle";
+import { quizAtLevel } from "../../content/english-levels";
 import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { Modal, ModalTitle } from "../../components/Modal";
@@ -20,14 +21,16 @@ import { pastBattleIds } from "../../domain/carry-over";
 import "./learning.css";
 
 /** A battle's answers as the notes keep them (learning-storage.ts) and as a battle on screen has them (its run). */
-type AnswerRecord = Pick<LearningState["records"][string], "contentHash" | "answers">;
+type AnswerRecord = Pick<LearningState["records"][string], "contentHash" | "answers" | "englishLevel">;
 
 /** The questions answered in these records, by battle; a record of other content than today's (its hash) is left out. */
 function recordedQuestions(records: Record<string, AnswerRecord>) {
   return Object.entries(records).flatMap(([id, record]) => {
     const content = getBattleContentByHash(id, record.contentHash);
     if (!content) return [];
-    const { battle, quiz } = content;
+    // The questions in the English the run asked (the difficulty; english-levels.ts).
+    const { battle } = content;
+    const quiz = quizAtLevel(content.quiz, record.englishLevel);
     return record.answers.flatMap((a) => {
       const question = quiz.questions.find((q) => q.id === a.questionId);
       return question &&
@@ -94,7 +97,7 @@ export function EnglishReview({
   const localGroups = localWordGroups(learnedWords);
   const shown = view === "words" && allEntries.length > 0 ? "words" : view === "local" && localGroups.length > 0 ? "local" : "questions";
   const entries = markedOnly
-    ? allEntries.filter((item) => learning.isMarked(item.question.id))
+    ? allEntries.filter((item) => learning.isMarked(item.question.textKey))
     : allEntries;
   const selected = entries.find(
     (e) => e.question.id === learning.data.openQuestion,
@@ -108,7 +111,7 @@ export function EnglishReview({
     if (!selected || !learning.data.openTopic) return null;
     const detail =
       learningDetails.questions[
-        selected.question.id as keyof typeof learningDetails.questions
+        selected.question.textKey as keyof typeof learningDetails.questions
       ];
     if (!detail?.topics.some((item) => item.id === learning.data.openTopic))
       return null;
@@ -120,7 +123,7 @@ export function EnglishReview({
   });
   const details = selected
     ? learningDetails.questions[
-        selected.question.id as keyof typeof learningDetails.questions
+        selected.question.textKey as keyof typeof learningDetails.questions
       ]
     : undefined;
   function select(id: string) {
@@ -223,10 +226,10 @@ export function EnglishReview({
       {selected &&
         (() => {
           const { question, answer } = selected;
-          const tr = learningTranslations[question.id];
+          const tr = learningTranslations[question.textKey];
           if (!tr) return null;
-          const marked = learning.isMarked(question.id);
-          const reviewKey = `review:${question.id}`;
+          const marked = learning.isMarked(question.textKey);
+          const reviewKey = `review:${question.textKey}`;
           const showTranslation = (part: Part) =>
             !(learning.data.revealed[reviewKey] ?? []).includes(part);
           const toggle = (part: Part) =>
@@ -265,8 +268,8 @@ export function EnglishReview({
                   onClick={() =>
                     learning.update((s) => {
                       const marks = { ...s.marks };
-                      if (marked) delete marks[question.id];
-                      else marks[question.id] = JSON.stringify(tr.source);
+                      if (marked) delete marks[question.textKey];
+                      else marks[question.textKey] = JSON.stringify(tr.source);
                       return { ...s, marks };
                     })
                   }

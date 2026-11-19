@@ -3,16 +3,18 @@ import { Modal, ModalTitle } from "../../components/Modal";
 import type { SaveSlot } from "../../persistence/journey-storage";
 import { slotSummaries, type SlotSummary } from "../../app/save-slots";
 import type { SaveSlots } from "../../app/app-storage";
+import { economyLevelLabel, englishLevelLabel } from "../../domain/difficulty";
 import "./save-slots.css";
 
-/** What a slot's row says of it (relationship values are never shown). */
-function slotLine(summary: SlotSummary): { title: string; detail: string } {
+/** What a slot's row says of it (relationship values are never shown): with a save, its difficulty too (2026-11-19). */
+function slotLine(summary: SlotSummary): { title: string; detail: string; difficulty?: string } {
   switch (summary.status) {
     case "empty": return { title: "空き", detail: "まだ使っていません" };
     case "unreadable": return { title: "読み込めないセーブ", detail: "開くと、データの案内を確かめられます" };
     default: return {
       title: `${summary.playerName}・${summary.heroineName}`,
       detail: summary.finished ? `旅を終えました（${summary.cityJa}）` : `${summary.cityJa} ${summary.day}日目`,
+      difficulty: `英語 ${englishLevelLabel(summary.difficulty.english).labelJa}・お金とAP ${economyLevelLabel(summary.difficulty.economy).labelJa}`,
     };
   }
 }
@@ -43,6 +45,7 @@ function SlotRows({ summaries, current, onChoose }: { summaries: SlotSummary[]; 
         <span className="save-slot-text">
           <strong>{line.title}</strong>
           <span>{line.detail}</span>
+          {line.difficulty && <span>{line.difficulty}</span>}
         </span>
         {playing
           ? <span className="save-slot-mark">遊んでいる枠</span>

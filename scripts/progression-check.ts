@@ -15,6 +15,11 @@ import {
 
 /** What the check reads of the content (the build's parsed catalogs or the runtime's). */
 export type ProgressionContent = {
+  /**
+   * The tightest difficulty's share of the starting budget, in percent (romance/balance.json `difficulty`; 2026-11-19): the
+   * checks start each journey with its budget at that share (rounded down). Without it, the budget as written.
+   */
+  budgetPercent?: number;
   /** Journeys in catalog order, their cities in travel order. */
   journeys: readonly { id: string; cities: readonly { id: string }[]; initialBudget?: number | null;
     cityTransition?: "manual" | "after_epilogue"; initialState?: { ap: number } }[];
@@ -297,7 +302,7 @@ function cityModel(content: ProgressionContent, cityId: string): City {
   // The journey's budget and every gain up to this city (decision: 3.3 check 9).
   const upTo = journey ? journey.cities.slice(0, orderOf(content, cityId) + 1).map((city) => city.id) : [cityId];
   const paying = content.encounters.filter((item) => upTo.includes(item.cityId) && (item.completionMoney ?? 0) > 0);
-  const start = journey?.initialBudget ?? content.travel.find((item) => item.cityId === (journey?.cities[0]?.id ?? cityId))?.initialBudget ?? 0;
+  const start = startBudget(content, journey?.initialBudget ?? content.travel.find((item) => item.cityId === (journey?.cities[0]?.id ?? cityId))?.initialBudget ?? 0);
   const scenes = (content.sceneItems ?? []).filter((item) => item.cityId === cityId);
   const itemSources = new Map<string, ItemSource[]>();
   const addSource = (itemId: string, source: ItemSource) => itemSources.set(itemId, [...(itemSources.get(itemId) ?? []), source]);
@@ -681,10 +686,14 @@ export function requiredCitySpend(content: ProgressionContent, cityId: string): 
   return { eventIds: required.map((event) => event.id), money: required.reduce((sum, event) => sum + cost(event.id), 0) };
 }
 
+/** A journey's starting budget as the checks read it: at the tightest difficulty's share (budgetPercent). */
+export const startBudget = (content: Pick<ProgressionContent, "budgetPercent">, budget: number) =>
+  Math.floor(budget * (content.budgetPercent ?? 100) / 100);
+
 /** The money each journey needs for the cities' required main parts after playing everything else first (3.3 「お金で詰むおそれ」). */
 function moneyWarnings(content: ProgressionContent): ProgressionWarning[] {
   return content.journeys.flatMap((journey): ProgressionWarning[] => {
-    let money = journey.initialBudget ?? content.travel.find((item) => item.cityId === journey.cities[0]?.id)?.initialBudget ?? 0;
+    let money = startBudget(content, journey.initialBudget ?? content.travel.find((item) => item.cityId === journey.cities[0]?.id)?.initialBudget ?? 0);
     for (const { id: cityId } of journey.cities) {
       if (!finaleCities(content).includes(cityId)) continue;
       const city = cityModel(content, cityId);

@@ -44,6 +44,7 @@ import {
   quizSchema,
   type QuizDefinition,
   balanceSchema,
+  ECONOMY_LEVELS,
   citySchema,
   dateCatalogSchema,
   decidesConfession,
@@ -1599,6 +1600,8 @@ export function validateContent(sources: ContentSources,
   const mainPayments = mainPaymentsOf(generatedScenes.scenes, { episodes: journey.episodes, storyBattles: journey.storyBattles, battles });
   // Check 9 (stage 2b): every city has a way to clear it; its warnings name probable dead ends (progression-check.ts).
   const progressionContent: ProgressionContent = {
+    // Money is checked at the tightest difficulty (2026-11-19): its budget still covers the main story at the cheapest.
+    budgetPercent: Math.min(...ECONOMY_LEVELS.map((level) => balance.difficulty.economy[level].budgetPercent)),
     journeys: journeyCatalog.journeys, episodes: journey.episodes, storyBattles: journey.storyBattles, battles, landmarks: tourism.landmarks,
     momentQuizIds: generatedScenes.scenes.flatMap((scene) => momentQuizBattle(scene) ?? []),
     encounters: runtimeEncounters, items: encounterCatalog.items, dates, rewards: getAllRewardRules(journey, generatedScenes.rewards), romance: progression,
