@@ -59,7 +59,83 @@
           "claimJa": "職人の手を切ったという話は証拠に裏付けられておらず、ジャワハルラール・ネルー大学の歴史家ナジャフ・ハイダルらも歴史的根拠はないと述べる。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "A guide says Shah Jahan cut off the workers' hands after they built the Taj Mahal. What do historians say?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It is true. A court diary has the workers' names."
+            },
+            {
+              "id": "B",
+              "textEn": "There is no proof. It is an old story that many people tell."
+            },
+            {
+              "id": "C",
+              "textEn": "Only the main architect lost his hands. It was a punishment."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "cut off",
+              "meaning": "切り落とす"
+            },
+            {
+              "word": "historians",
+              "meaning": "歴史家"
+            },
+            {
+              "word": "proof",
+              "meaning": "証拠"
+            },
+            {
+              "word": "punishment",
+              "meaning": "罰"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The guide claims that Shah Jahan had the hands of the Taj Mahal's workers cut off. What is the view of historians?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It is true, and the workers' names were recorded in a court diary."
+            },
+            {
+              "id": "B",
+              "textEn": "No historical evidence supports it; it is a widely repeated legend."
+            },
+            {
+              "id": "C",
+              "textEn": "Only the chief architect lost his hands, as a form of punishment."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "claims",
+              "meaning": "主張する"
+            },
+            {
+              "word": "recorded",
+              "meaning": "記録された"
+            },
+            {
+              "word": "evidence",
+              "meaning": "証拠"
+            },
+            {
+              "word": "widely repeated",
+              "meaning": "広く語り継がれた"
+            },
+            {
+              "word": "legend",
+              "meaning": "伝説"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_finale_moonlight_garden",
@@ -110,7 +186,83 @@
           "claimJa": "インド考古調査局と共同の七年間の調査は、庭がタージとその八角形の池に映る姿を眺めるために設計された可能性を示し、シャー・ジャハーンの黒大理石の墓のための場所という俗説を退けた。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "He also says there was a plan for a 'Black Taj' across the river, at Mehtab Bagh. What did researchers find there?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A garden with a big pool. From there, you could see the Taj in the water. There was no black tomb."
+            },
+            {
+              "id": "B",
+              "textEn": "The bottom of a black marble tomb. Nobody finished it."
+            },
+            {
+              "id": "C",
+              "textEn": "A secret way under the river between the two sides."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "plan",
+              "meaning": "計画"
+            },
+            {
+              "word": "researchers",
+              "meaning": "研究者"
+            },
+            {
+              "word": "marble",
+              "meaning": "大理石"
+            },
+            {
+              "word": "secret",
+              "meaning": "秘密の"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "He goes on to claim that a 'Black Taj' was planned on the opposite bank, at Mehtab Bagh. What did researchers actually uncover there?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A garden with a vast pool designed for viewing the Taj and its reflection, rather than a black tomb."
+            },
+            {
+              "id": "B",
+              "textEn": "The foundations of a black marble tomb that was abandoned before completion."
+            },
+            {
+              "id": "C",
+              "textEn": "A hidden tunnel beneath the river connecting the two banks."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "opposite bank",
+              "meaning": "対岸"
+            },
+            {
+              "word": "uncover",
+              "meaning": "掘り出す、明らかにする"
+            },
+            {
+              "word": "reflection",
+              "meaning": "（水面に）映った姿"
+            },
+            {
+              "word": "foundations",
+              "meaning": "基礎"
+            },
+            {
+              "word": "abandoned",
+              "meaning": "放棄された"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_finale_builders_next",
@@ -161,7 +313,79 @@
           "claimJa": "Times of India（2017年）の報道を引き、同じ職人たちが後にデリーのシャージャハーナーバードを築いたと伝える。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Many builders of the Taj Mahal were very good at their work. What did they do after it was finished?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "They went back to Persia and never came back to India."
+            },
+            {
+              "id": "B",
+              "textEn": "They stopped working. Nobody needed them anymore."
+            },
+            {
+              "id": "C",
+              "textEn": "They helped to build Shah Jahan's new capital city, Shahjahanabad, in Delhi."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "builders",
+              "meaning": "建設に携わった人々"
+            },
+            {
+              "word": "anymore",
+              "meaning": "もはや（〜ない）"
+            },
+            {
+              "word": "capital city",
+              "meaning": "首都"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Once the Taj Mahal had been completed, what became of many of the skilled craftsmen who had worked on it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "They were dispatched back to Persia and never returned to India."
+            },
+            {
+              "id": "B",
+              "textEn": "They gave up their trade, as their skills were no longer in demand."
+            },
+            {
+              "id": "C",
+              "textEn": "They went on to help construct Shah Jahan's new capital, Shahjahanabad, in Delhi."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "craftsmen",
+              "meaning": "職人"
+            },
+            {
+              "word": "dispatched",
+              "meaning": "送り出された"
+            },
+            {
+              "word": "trade",
+              "meaning": "職業、仕事"
+            },
+            {
+              "word": "no longer in demand",
+              "meaning": "もはや求められない"
+            },
+            {
+              "word": "construct",
+              "meaning": "建設する"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_finale_one_signature",
@@ -220,7 +444,83 @@
           "claimJa": "タージ・マハルで自分の作品に署名を許されたのは、アマーナト・ハーンだけだったとされる。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "One person's name is written among the words on the Taj Mahal's walls. Whose name is it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Shah Jahan's own name, above the main door."
+            },
+            {
+              "id": "B",
+              "textEn": "Amanat Khan's. He was the artist of the writing. It has the year 1638."
+            },
+            {
+              "id": "C",
+              "textEn": "The name of the leader of the stone workers, on Mumtaz's tomb."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "walls",
+              "meaning": "壁"
+            },
+            {
+              "word": "artist",
+              "meaning": "芸術家"
+            },
+            {
+              "word": "writing",
+              "meaning": "文字、書かれたもの"
+            },
+            {
+              "word": "leader",
+              "meaning": "長、指導者"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Among all the inscriptions adorning the Taj Mahal, whose signature is to be found?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Shah Jahan's own, carved into the stone above the main entrance."
+            },
+            {
+              "id": "B",
+              "textEn": "That of the calligrapher Amanat Khan, bearing the date 1638."
+            },
+            {
+              "id": "C",
+              "textEn": "That of the master stonemason, inscribed on Mumtaz's tomb."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "inscriptions",
+              "meaning": "碑文"
+            },
+            {
+              "word": "adorning",
+              "meaning": "飾っている"
+            },
+            {
+              "word": "calligrapher",
+              "meaning": "書家"
+            },
+            {
+              "word": "bearing",
+              "meaning": "（日付などを）記した"
+            },
+            {
+              "word": "stonemason",
+              "meaning": "石工"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_finale_taj_ganj",
@@ -271,7 +571,83 @@
           "claimJa": "南門の外の一段高い場所に、市場と隊商宿の区画であるタージ・ガンジがある。"
         }
       ],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "levels": {
+        "A2": {
+          "questionEn": "The guide's family lives in Taj Ganj, just outside the south gate of the Taj. What was Taj Ganj in the plan of the Taj Mahal?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A place for the king to hunt. Ordinary people could not go in."
+            },
+            {
+              "id": "B",
+              "textEn": "A farm village. It was much older than the city of Agra."
+            },
+            {
+              "id": "C",
+              "textEn": "A market area with rooms for travelling traders. It was part of the Taj."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "hunt",
+              "meaning": "狩りをする"
+            },
+            {
+              "word": "ordinary",
+              "meaning": "普通の、一般の"
+            },
+            {
+              "word": "market",
+              "meaning": "市場"
+            },
+            {
+              "word": "traders",
+              "meaning": "商人"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The guide's family lives in Taj Ganj, immediately beyond the Taj's southern gate. What role did Taj Ganj play in the original design of the Taj Mahal?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It was a royal hunting reserve from which ordinary people were barred."
+            },
+            {
+              "id": "B",
+              "textEn": "It was a farming settlement that long predated the city of Agra."
+            },
+            {
+              "id": "C",
+              "textEn": "It was a quarter of bazaars and caravanserais forming part of the Taj complex."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "hunting reserve",
+              "meaning": "狩猟用の保護地"
+            },
+            {
+              "word": "barred",
+              "meaning": "締め出された"
+            },
+            {
+              "word": "predated",
+              "meaning": "〜より前からあった"
+            },
+            {
+              "word": "caravanserais",
+              "meaning": "隊商宿"
+            },
+            {
+              "word": "complex",
+              "meaning": "（建物の）複合体、一群"
+            }
+          ]
+        }
+      }
     }
   ]
 }

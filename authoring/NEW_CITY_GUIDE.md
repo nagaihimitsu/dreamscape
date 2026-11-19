@@ -292,7 +292,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 目的：レイトン式の3択を中心に、見え方が変わる問いを作る。
 - 前に要るもの：手順4（出典）、手順8（どの回でどんな問いか）。推理クイズの証拠は手順6の観察ポイント。
 - 作るもの：
-  - 通常のクイズ：`quizzes/<頭>_main_<観光地>_quiz.json`（ファイル名＝クイズID）。3問。各問に `id`（`<頭>_<観光地>_<要点>`）・`questionEn`・`options`（A・B・C の `textEn`）・`correctOptionId`・`vocabularyJa`・`hintJa`・`correctExplanationJa`・`incorrectExplanationJa`・`sources`・`difficulty`。クイズに `englishLevel`（`A2`・`B1`・`B2`）。今のクイズはどれも `B1` で、英語は B1 ほどを目安にする（遊ぶ人が英語の難しさを選ぶ設定はなく、ゲームはこの値を使わない）。
+  - 通常のクイズ：`quizzes/<頭>_main_<観光地>_quiz.json`（ファイル名＝クイズID）。3問。各問に `id`（`<頭>_<観光地>_<要点>`）・`questionEn`・`options`（A・B・C の `textEn`）・`correctOptionId`・`vocabularyJa`・`hintJa`・`correctExplanationJa`・`incorrectExplanationJa`・`sources`・`difficulty`。クイズに `englishLevel`（`A2`・`B1`・`B2`）。今のクイズはどれも `B1` で、英語は B1 ほどを目安にする。遊ぶ人は英語の難しさ（A2・B1・B2）を選べるので、ほかの段階の英文を問題の `levels` に書く（書き方は[クイズと観光](../docs/04_BATTLE_TOURISM.md#英語難易度)。訳は `learning/translations.json` の `<問題ID>@<段階>`、語の意味も要る）。
   - 任意：`hintHeroineJa`（ヒントを彼女の言葉で）、`heroineCorrectJa`（正解の後の一言）、`revealRegion`・`revealCaptionJa`（答えの後の写真の種明かし）。
   - フィナーレ：`quizzes/<頭>_finale_quiz.json`。5問、`scope: "city_finale"`・`cityId`・`landmarkId: null`。
   - 推理クイズB・C：`battles/catalog.json` の `format`（`"B"`・`"C"`）と `reasoning`（`kind` は `contradiction`・`connection`、`roundIndex`、候補の証拠 `caseClueIds` 3〜5枚、正解 `correctClueIds` はBが1枚・Cが2枚）。`progression/journey.json` の `storyBattles` に対決ID・前提・案内文・ボタン名・`completionReward`。

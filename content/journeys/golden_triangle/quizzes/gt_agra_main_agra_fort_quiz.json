@@ -49,7 +49,83 @@
           "claimJa": "アウラングゼーブは父シャー・ジャハーンをアーグラの城（赤い城）に幽閉した。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The colonel asks a question. Who kept Shah Jahan inside Agra Fort and did not let him leave?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The British army, after the fighting of 1857."
+            },
+            {
+              "id": "B",
+              "textEn": "A king from Persia who attacked Delhi."
+            },
+            {
+              "id": "C",
+              "textEn": "His own son Aurangzeb, who became the new emperor."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "colonel",
+              "meaning": "大佐"
+            },
+            {
+              "word": "fighting",
+              "meaning": "戦い"
+            },
+            {
+              "word": "attacked",
+              "meaning": "攻撃した"
+            },
+            {
+              "word": "emperor",
+              "meaning": "皇帝"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The colonel wants to know who confined Shah Jahan within Agra Fort. Who was responsible?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The British army, in the aftermath of the 1857 uprising."
+            },
+            {
+              "id": "B",
+              "textEn": "A Persian king who had invaded Delhi."
+            },
+            {
+              "id": "C",
+              "textEn": "His own son Aurangzeb, who had seized the throne."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "confined",
+              "meaning": "閉じ込めた"
+            },
+            {
+              "word": "responsible",
+              "meaning": "（〜の）責任がある"
+            },
+            {
+              "word": "aftermath",
+              "meaning": "（事件の）余波、直後"
+            },
+            {
+              "word": "invaded",
+              "meaning": "侵攻した"
+            },
+            {
+              "word": "seized the throne",
+              "meaning": "王位を奪った"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_fort_jahanara_care",
@@ -96,7 +172,75 @@
           "claimJa": "ジャハーナーラーは1666年に父が亡くなるまで世話をした。チャンドニー・チョークの建設で最もよく知られる。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Who took care of Shah Jahan in the fort until he died in 1666?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A guard at the palace. Later, he wrote a famous book about him."
+            },
+            {
+              "id": "B",
+              "textEn": "His daughter Jahanara."
+            },
+            {
+              "id": "C",
+              "textEn": "The younger sister of Mumtaz Mahal."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "took care of",
+              "meaning": "世話をした"
+            },
+            {
+              "word": "guard",
+              "meaning": "衛兵、見張り"
+            },
+            {
+              "word": "younger sister",
+              "meaning": "妹"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Who tended to Shah Jahan in the fort during his final years, up to his death in 1666?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A palace guard who went on to write a celebrated account of him."
+            },
+            {
+              "id": "B",
+              "textEn": "His daughter, Jahanara."
+            },
+            {
+              "id": "C",
+              "textEn": "The younger sister of Mumtaz Mahal."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "tended to",
+              "meaning": "世話をした"
+            },
+            {
+              "word": "final years",
+              "meaning": "晩年"
+            },
+            {
+              "word": "celebrated",
+              "meaning": "名高い"
+            },
+            {
+              "word": "account",
+              "meaning": "記録、話"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_fort_army_today",
@@ -147,7 +291,79 @@
           "claimJa": "城の一部はインド陸軍が使用しており、その区域への一般の立ち入りは禁止されている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The colonel says there are still soldiers at the fort today. Is that true?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Yes. The Indian Army uses part of the fort, and visitors cannot go there."
+            },
+            {
+              "id": "B",
+              "textEn": "No. The army left the fort in 1858 and never came back."
+            },
+            {
+              "id": "C",
+              "textEn": "Only one day a year, when soldiers walk through it on a holiday."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "soldiers",
+              "meaning": "兵士"
+            },
+            {
+              "word": "Indian Army",
+              "meaning": "インド陸軍"
+            },
+            {
+              "word": "visitors",
+              "meaning": "訪問者"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "According to the colonel, the fort is still home to soldiers today. Is he correct?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Yes. A section of the fort remains in use by the Indian Army and is off-limits to the public."
+            },
+            {
+              "id": "B",
+              "textEn": "No. The army withdrew from the fort in 1858 and has never returned."
+            },
+            {
+              "id": "C",
+              "textEn": "Only once a year, when troops parade through it on a public holiday."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "section",
+              "meaning": "区画"
+            },
+            {
+              "word": "remains in use",
+              "meaning": "使われ続けている"
+            },
+            {
+              "word": "off-limits",
+              "meaning": "立ち入り禁止の"
+            },
+            {
+              "word": "withdrew",
+              "meaning": "撤退した"
+            },
+            {
+              "word": "parade",
+              "meaning": "行進する"
+            }
+          ]
+        }
+      }
     }
   ]
 }

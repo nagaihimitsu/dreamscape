@@ -49,7 +49,83 @@
           "claimJa": "モスクはパハーリー・ボージャラという小高い丘に建てられ、世界を見渡すモスク（マスジド・エ・ジャハーン・ヌマー）と名付けられた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The old perfume seller says the mosque's name was Masjid-i-Jahan Numa. What does the name mean?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A mosque next to the river of the moon."
+            },
+            {
+              "id": "B",
+              "textEn": "A mosque only for travellers from far away."
+            },
+            {
+              "id": "C",
+              "textEn": "A mosque that can see the whole world."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "perfume",
+              "meaning": "香水、香料"
+            },
+            {
+              "word": "next to",
+              "meaning": "〜の隣に"
+            },
+            {
+              "word": "travellers",
+              "meaning": "旅人"
+            },
+            {
+              "word": "whole",
+              "meaning": "全体の"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The elderly perfume merchant claims the mosque was originally called Masjid-i-Jahan Numa. What is the meaning of this name?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A mosque erected on the banks of the river of the moon."
+            },
+            {
+              "id": "B",
+              "textEn": "A mosque intended solely for travellers from distant lands."
+            },
+            {
+              "id": "C",
+              "textEn": "A mosque commanding a view of the world."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "merchant",
+              "meaning": "商人"
+            },
+            {
+              "word": "banks",
+              "meaning": "岸"
+            },
+            {
+              "word": "solely",
+              "meaning": "〜だけ"
+            },
+            {
+              "word": "distant",
+              "meaning": "遠い"
+            },
+            {
+              "word": "commanding a view of",
+              "meaning": "〜を見渡す"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_jama_after_1857",
@@ -104,7 +180,87 @@
           "claimJa": "1857年後に英国が占拠して礼拝を禁じ、取り壊しや教会への転用も議論されたが、五年後の1862年11月28日、請願を受けて返還された。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "What happened to the Jama Masjid after the fighting of 1857?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "British soldiers took it. People asked for it for five years, and then they got it back."
+            },
+            {
+              "id": "B",
+              "textEn": "Someone sold it to a rich trader, and it became a market with a roof."
+            },
+            {
+              "id": "C",
+              "textEn": "People took it to pieces and built it again on another hill outside the city."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "soldiers",
+              "meaning": "兵士"
+            },
+            {
+              "word": "got it back",
+              "meaning": "取り戻した"
+            },
+            {
+              "word": "trader",
+              "meaning": "商人"
+            },
+            {
+              "word": "took it to pieces",
+              "meaning": "ばらばらにした"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What became of the Jama Masjid in the wake of the 1857 uprising?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "British troops seized it, and it was only handed back after five years of petitioning."
+            },
+            {
+              "id": "B",
+              "textEn": "It was sold off to a wealthy merchant and converted into a covered market."
+            },
+            {
+              "id": "C",
+              "textEn": "It was dismantled and reconstructed on another hill beyond the city walls."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "in the wake of",
+              "meaning": "〜の後に"
+            },
+            {
+              "word": "seized",
+              "meaning": "奪った"
+            },
+            {
+              "word": "handed back",
+              "meaning": "返還された"
+            },
+            {
+              "word": "petitioning",
+              "meaning": "請願すること"
+            },
+            {
+              "word": "converted into",
+              "meaning": "〜に作り変えられた"
+            },
+            {
+              "word": "dismantled",
+              "meaning": "解体された"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_jama_ramzan_signal",
@@ -155,7 +311,83 @@
           "claimJa": "ラマザーンの間、断食を終える知らせはモスクの楼閣の一つから告げられる。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "During Ramzan, people hear news from one of the mosque's pavilions. What is the news?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The winners of the street's perfume contest this year."
+            },
+            {
+              "id": "B",
+              "textEn": "The time to stop the fast and eat."
+            },
+            {
+              "id": "C",
+              "textEn": "The names of new shops that can open near the mosque."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "Ramzan",
+              "meaning": "ラマザーン（断食月。ラマダーン）"
+            },
+            {
+              "word": "pavilions",
+              "meaning": "（屋根のある）楼閣"
+            },
+            {
+              "word": "contest",
+              "meaning": "コンテスト"
+            },
+            {
+              "word": "fast",
+              "meaning": "断食"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Throughout Ramzan, what is proclaimed from one of the mosque's pavilions?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The winners of the lane's annual perfume competition."
+            },
+            {
+              "id": "B",
+              "textEn": "The moment at which the day's fast may be broken."
+            },
+            {
+              "id": "C",
+              "textEn": "The names of new shops granted permission to open nearby."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "throughout",
+              "meaning": "〜の間ずっと"
+            },
+            {
+              "word": "proclaimed",
+              "meaning": "告げられる"
+            },
+            {
+              "word": "annual",
+              "meaning": "年に一度の"
+            },
+            {
+              "word": "fast",
+              "meaning": "断食"
+            },
+            {
+              "word": "granted permission",
+              "meaning": "許可を与えられた"
+            }
+          ]
+        }
+      }
     }
   ]
 }

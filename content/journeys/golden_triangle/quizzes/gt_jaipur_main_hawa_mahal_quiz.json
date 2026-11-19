@@ -57,7 +57,95 @@
           "claimJa": "頂上のピラミッド状の構造はクリシュナ神の冠を表すと説明される。1799年にマハーラージャ・サワーイー・プラタープ・シングが建て、ラール・チャンド・ウスタードが設計した。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The vegetable seller says that guides always say the pointed top of Hawa Mahal looks like something. What is it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A beehive. The windows look like its small holes."
+            },
+            {
+              "id": "B",
+              "textEn": "The crown of Lord Krishna."
+            },
+            {
+              "id": "C",
+              "textEn": "The sail of a ship in the wind."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "vegetable",
+              "meaning": "野菜"
+            },
+            {
+              "word": "pointed",
+              "meaning": "先のとがった"
+            },
+            {
+              "word": "beehive",
+              "meaning": "蜂の巣"
+            },
+            {
+              "word": "crown",
+              "meaning": "冠"
+            },
+            {
+              "word": "sail",
+              "meaning": "帆"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "According to the vegetable vendor, guides invariably liken the tapering summit of Hawa Mahal to something. What is it reputed to represent?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A beehive, since the windows resemble tiny cells."
+            },
+            {
+              "id": "B",
+              "textEn": "The crown of Lord Krishna."
+            },
+            {
+              "id": "C",
+              "textEn": "A ship's sail billowing in the wind."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "vendor",
+              "meaning": "売り手"
+            },
+            {
+              "word": "invariably",
+              "meaning": "いつも、きまって"
+            },
+            {
+              "word": "liken",
+              "meaning": "たとえる"
+            },
+            {
+              "word": "tapering",
+              "meaning": "先細りの"
+            },
+            {
+              "word": "summit",
+              "meaning": "頂上"
+            },
+            {
+              "word": "resemble",
+              "meaning": "似ている"
+            },
+            {
+              "word": "billowing",
+              "meaning": "ふくらんでいる"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_hawa_ramps",
@@ -108,7 +196,91 @@
           "claimJa": "上の階へは階段ではなく傾斜路で上がる。正面の入口はなく、入口は裏側にある。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Inside Hawa Mahal, how do visitors go up to the higher floors?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "They climb a small wooden ladder behind each window."
+            },
+            {
+              "id": "B",
+              "textEn": "They take an old lift. It was put in for the royal family."
+            },
+            {
+              "id": "C",
+              "textEn": "They walk up ramps, not stairs."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "higher floors",
+              "meaning": "上の階"
+            },
+            {
+              "word": "ladder",
+              "meaning": "はしご"
+            },
+            {
+              "word": "lift",
+              "meaning": "エレベーター"
+            },
+            {
+              "word": "ramps",
+              "meaning": "傾斜路、スロープ"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Within Hawa Mahal, by what means do visitors ascend to the upper storeys?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Via a cramped wooden ladder concealed behind each window."
+            },
+            {
+              "id": "B",
+              "textEn": "Via a vintage lift installed for the royal household."
+            },
+            {
+              "id": "C",
+              "textEn": "Via ramps rather than staircases."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "means",
+              "meaning": "手段"
+            },
+            {
+              "word": "ascend",
+              "meaning": "上がる"
+            },
+            {
+              "word": "storeys",
+              "meaning": "階"
+            },
+            {
+              "word": "cramped",
+              "meaning": "狭苦しい"
+            },
+            {
+              "word": "concealed",
+              "meaning": "隠された"
+            },
+            {
+              "word": "vintage",
+              "meaning": "年代物の"
+            },
+            {
+              "word": "installed",
+              "meaning": "取り付けられた"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_hawa_window_count",
@@ -159,7 +331,87 @@
           "claimJa": "ハワー・マハルの名は953の窓（ジャローカー）に由来すると紹介される。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The seller has counted the windows for forty years. He always gets 951. What number do most people give for Hawa Mahal's windows?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "There are 953 windows."
+            },
+            {
+              "id": "B",
+              "textEn": "There are 365, one for each day of the year."
+            },
+            {
+              "id": "C",
+              "textEn": "There are 108, like the number of beads for prayer."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "counted",
+              "meaning": "数えた"
+            },
+            {
+              "word": "number",
+              "meaning": "数"
+            },
+            {
+              "word": "beads",
+              "meaning": "玉、数珠玉"
+            },
+            {
+              "word": "prayer",
+              "meaning": "祈り"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "For four decades the vendor has tallied the windows and always arrives at 951. What figure is generally quoted for the windows of Hawa Mahal?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "There are 953."
+            },
+            {
+              "id": "B",
+              "textEn": "There are 365, one for every day of the year."
+            },
+            {
+              "id": "C",
+              "textEn": "There are 108, mirroring a string of prayer beads."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "tallied",
+              "meaning": "数えた"
+            },
+            {
+              "word": "arrives at",
+              "meaning": "〜にたどり着く"
+            },
+            {
+              "word": "figure",
+              "meaning": "数字"
+            },
+            {
+              "word": "quoted",
+              "meaning": "挙げられる"
+            },
+            {
+              "word": "mirroring",
+              "meaning": "〜をなぞって"
+            },
+            {
+              "word": "prayer beads",
+              "meaning": "数珠"
+            }
+          ]
+        }
+      }
     }
   ]
 }

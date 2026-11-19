@@ -63,7 +63,91 @@
           "claimJa": "町はもてなしの色とされるピンクに塗られ、今も旧市街の住民は法によってその色を保つことを求められている。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The bride's cousin stands in the door and asks, 'Why is our old city pink?' What is the best answer?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "You can find pink stone only in the hills near Jaipur."
+            },
+            {
+              "id": "B",
+              "textEn": "Many people say the king painted the city pink for a royal visit in 1876. Pink is a colour of welcome."
+            },
+            {
+              "id": "C",
+              "textEn": "A paint company gave the city free paint in the 1950s."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "bride",
+              "meaning": "花嫁"
+            },
+            {
+              "word": "cousin",
+              "meaning": "いとこ"
+            },
+            {
+              "word": "royal visit",
+              "meaning": "王族の訪問"
+            },
+            {
+              "word": "welcome",
+              "meaning": "歓迎"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Barring the doorway, the bride's cousin demands, 'Why is our old city pink?' What is the most fitting reply?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Pink stone occurs exclusively in the hills surrounding Jaipur."
+            },
+            {
+              "id": "B",
+              "textEn": "It is commonly held that the king had the city painted pink, a colour symbolising hospitality, for a royal visit in 1876."
+            },
+            {
+              "id": "C",
+              "textEn": "A paint manufacturer donated paint to the city free of charge in the 1950s."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "barring",
+              "meaning": "ふさいで"
+            },
+            {
+              "word": "fitting",
+              "meaning": "ふさわしい"
+            },
+            {
+              "word": "occurs",
+              "meaning": "産出する"
+            },
+            {
+              "word": "commonly held",
+              "meaning": "一般に信じられている"
+            },
+            {
+              "word": "symbolising",
+              "meaning": "象徴する"
+            },
+            {
+              "word": "hospitality",
+              "meaning": "もてなし"
+            },
+            {
+              "word": "manufacturer",
+              "meaning": "製造会社"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_finale_sawai_title",
@@ -110,7 +194,83 @@
           "claimJa": "アウラングゼーブは「一と四分の一」を意味するサワーイーの称号を与え、ジャイ・シングの子孫はそれを受け継いだ。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The kings of Jaipur used the special name 'Sawai'. What does it mean?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "One and a quarter."
+            },
+            {
+              "id": "B",
+              "textEn": "Son of the sun."
+            },
+            {
+              "id": "C",
+              "textEn": "The one who keeps the pink city safe."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "special",
+              "meaning": "特別な"
+            },
+            {
+              "word": "quarter",
+              "meaning": "四分の一"
+            },
+            {
+              "word": "safe",
+              "meaning": "安全な"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Jaipur's rulers bore the honorific 'Sawai'. What does it signify?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "One and a quarter."
+            },
+            {
+              "id": "B",
+              "textEn": "Offspring of the sun."
+            },
+            {
+              "id": "C",
+              "textEn": "Guardian of the pink city."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "rulers",
+              "meaning": "支配者"
+            },
+            {
+              "word": "bore",
+              "meaning": "（称号などを）持っていた"
+            },
+            {
+              "word": "honorific",
+              "meaning": "敬称"
+            },
+            {
+              "word": "signify",
+              "meaning": "意味する"
+            },
+            {
+              "word": "offspring",
+              "meaning": "子孫"
+            },
+            {
+              "word": "guardian",
+              "meaning": "守護者"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_finale_city_planner",
@@ -165,7 +325,91 @@
           "claimJa": "ジャイプールの功績の多くはヴィディヤーダル・バッターチャーリヤに帰され、町は古い建築書シルパ・シャーストラに従って区画された。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Who gets most of the thanks for planning Jaipur? And how did he plan the city?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A British engineer. He copied the streets of London."
+            },
+            {
+              "id": "B",
+              "textEn": "The king's astrologer. He chose each street only by looking at the stars."
+            },
+            {
+              "id": "C",
+              "textEn": "Vidyadhar Bhattacharya. He followed the Shilpa Shastra, an old Indian book about building."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "thanks",
+              "meaning": "感謝"
+            },
+            {
+              "word": "engineer",
+              "meaning": "技師"
+            },
+            {
+              "word": "copied",
+              "meaning": "まねた"
+            },
+            {
+              "word": "astrologer",
+              "meaning": "占星術師"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "To whom is much of the credit for Jaipur's planning attributed, and on what principles was the city laid out?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A British engineer, who modelled its streets on those of London."
+            },
+            {
+              "id": "B",
+              "textEn": "The royal astrologer, who determined each street purely by the stars."
+            },
+            {
+              "id": "C",
+              "textEn": "Vidyadhar Bhattacharya, who drew on the Shilpa Shastra, a traditional Indian treatise on architecture."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "credit",
+              "meaning": "功績"
+            },
+            {
+              "word": "attributed",
+              "meaning": "〜のものとされる"
+            },
+            {
+              "word": "principles",
+              "meaning": "原理"
+            },
+            {
+              "word": "laid out",
+              "meaning": "区画された"
+            },
+            {
+              "word": "modelled",
+              "meaning": "手本にして作った"
+            },
+            {
+              "word": "drew on",
+              "meaning": "〜に拠った"
+            },
+            {
+              "word": "treatise",
+              "meaning": "論書"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_finale_gangaur",
@@ -216,7 +460,79 @@
           "claimJa": "ガンガウルはチャイトラ月に女神ガウリーを敬う祭りで、特に女性が祝う。ジャイプールの行列はシティ・パレスのザナーナー・デオリーから出て、トリポリア・バザールなど旧市街を進む。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Every spring there is a women's festival. Its parade leaves the women's part of the City Palace and goes through these streets. Which festival is it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Holi, the festival of colours."
+            },
+            {
+              "id": "B",
+              "textEn": "Gangaur. It is for the goddess Gauri."
+            },
+            {
+              "id": "C",
+              "textEn": "Diwali, the festival of lights."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "festival",
+              "meaning": "祭り"
+            },
+            {
+              "word": "parade",
+              "meaning": "行列、パレード"
+            },
+            {
+              "word": "goddess",
+              "meaning": "女神"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Each spring, a women's festival procession emerges from the women's quarters of the City Palace and winds its way through these streets. Which festival does it belong to?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Holi, the festival of colours."
+            },
+            {
+              "id": "B",
+              "textEn": "Gangaur, held in honour of the goddess Gauri."
+            },
+            {
+              "id": "C",
+              "textEn": "Diwali, the festival of lights."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "procession",
+              "meaning": "行列"
+            },
+            {
+              "word": "emerges",
+              "meaning": "出てくる"
+            },
+            {
+              "word": "women's quarters",
+              "meaning": "女性の居住区"
+            },
+            {
+              "word": "winds its way",
+              "meaning": "曲がりくねって進む"
+            },
+            {
+              "word": "in honour of",
+              "meaning": "〜をたたえて"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_finale_screened_windows",
@@ -267,7 +583,87 @@
           "claimJa": "ハワー・マハルは王家の女性の居室を広げたもので、格子によって女性たちは通りの人々に見られることなく、ジョーハリー・バザール周辺の人々を眺めることができた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The bride's grandmother asks why they built the windows of Hawa Mahal with stone screens. What is the answer?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "So the royal women could watch the street and the market, and nobody could see them."
+            },
+            {
+              "id": "B",
+              "textEn": "So the guards could shoot arrows at enemies in the street."
+            },
+            {
+              "id": "C",
+              "textEn": "So the king could count the people shopping in the market."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "screens",
+              "meaning": "格子、仕切り"
+            },
+            {
+              "word": "royal",
+              "meaning": "王家の"
+            },
+            {
+              "word": "arrows",
+              "meaning": "矢"
+            },
+            {
+              "word": "enemies",
+              "meaning": "敵"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The bride's grandmother enquires what the latticed windows of Hawa Mahal were designed for. What is the answer?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To enable royal women to observe the street and the bazaar while remaining unseen."
+            },
+            {
+              "id": "B",
+              "textEn": "To allow guards to fire arrows down at enemies in the street."
+            },
+            {
+              "id": "C",
+              "textEn": "To let the king keep a tally of the shoppers in the bazaar beneath."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "enquires",
+              "meaning": "尋ねる"
+            },
+            {
+              "word": "latticed",
+              "meaning": "格子のついた"
+            },
+            {
+              "word": "enable",
+              "meaning": "可能にする"
+            },
+            {
+              "word": "observe",
+              "meaning": "見る、観察する"
+            },
+            {
+              "word": "remaining unseen",
+              "meaning": "見られないままで"
+            },
+            {
+              "word": "keep a tally of",
+              "meaning": "〜を数えておく"
+            }
+          ]
+        }
+      }
     }
   ]
 }
