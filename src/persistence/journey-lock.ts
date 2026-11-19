@@ -1,6 +1,6 @@
 import type { Journey } from "../content/journeys";
 import { SAVE_KEY, type StorageLike } from "./index";
-import { storagePhysicalKey } from "./journey-storage";
+import { journeyPhysicalKey, storagePhysicalKey } from "./journey-storage";
 
 /** The other-tab protection of a journey's save slot (AGENTS.md 「別タブ競合の保護」, docs/07 acceptance 10). */
 export type JourneyLockStatus = "loading" | "ready" | "busy" | "unsupported";
@@ -28,9 +28,12 @@ export const LOCK_RETRY_MS = 100;
 // the page would report its own lock as held by another tab.
 const settledRequests = new Map<string, Promise<unknown>>();
 
-/** One lock per journey slot, shared by every tab of the browser. */
+/**
+ * One lock per journey, shared by every tab of the browser: the name of its first save slot's key, whichever slot the
+ * tab plays (its save slots share the English notes and the read lines, so one tab at a time plays the journey).
+ */
 export function journeyLockName(storage: StorageLike): string {
-  return slotLockName(storagePhysicalKey(storage, SAVE_KEY));
+  return slotLockName(storage.journeyId ? journeyPhysicalKey(storage.journeyId, SAVE_KEY) : storagePhysicalKey(storage, SAVE_KEY));
 }
 
 /** The lock of the slot whose game save is stored under the browser key `physicalSaveKey`. */

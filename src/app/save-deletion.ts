@@ -1,7 +1,8 @@
 import { LEARNING_KEY, SAVE_KEY, loadGame, sameGameState, type LoadResult, type StorageLike } from "../persistence";
 import type { SaveBaseline } from "./save-recovery";
 
-export type DeleteSnapshot = { game: string | null; learning: string | null };
+/** `sharedKept`: another save slot holds a save, so only this slot's save is deleted (the notes and records stay). */
+export type DeleteSnapshot = { game: string | null; learning: string | null; sharedKept: boolean };
 export type DeleteRequest = { snapshot?: DeleteSnapshot; notice?: string };
 
 /** What this tab knows about the save it shows. */
@@ -34,7 +35,7 @@ export function checkDeleteRequest(storage: StorageLike, session: DeleteSession)
     } else if (loaded.status !== "invalid" || current.status !== "invalid" || current.raw === null || current.raw !== loaded.raw) {
       return { notice: "保存データを確認できません。再読み込みしてからやり直してください。" };
     }
-    return { snapshot: { game: storage.getItem(SAVE_KEY), learning: storage.getItem(LEARNING_KEY) } };
+    return { snapshot: { game: storage.getItem(SAVE_KEY), learning: storage.getItem(LEARNING_KEY), sharedKept: storage.otherSlotsInUse?.() ?? false } };
   } catch {
     return { notice: "保存データを読み取れませんでした。ブラウザの保存設定を確認してください。" };
   }

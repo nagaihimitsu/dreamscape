@@ -111,6 +111,19 @@ describe("which old saved data can be removed", () => {
     expect(list({ [save("trip_b")]: v13 }, { ...context, currentJourneyId: "trip_b" })).toEqual([]);
   });
 
+  it("lists each save slot of another journey apart, under the journey's one lock, and no slot of the open journey", () => {
+    const second = journeyStorage(memory(), "trip_b", 2).physicalKey(SAVE_KEY);
+    expect(second).toBe("dreamscape.journey.trip_b.slot2.save.v1");
+    expect(list({ ...kept, [save("trip_b")]: current, [second]: v13 })).toEqual([{
+      id: "old_version:trip_b:slot2",
+      lock: { name: "dreamscape:dreamscape.journey.trip_b.save.v1", ownerJa: "見本B編" },
+      titleJa: "見本B編のセーブ2（旧版）",
+      impactJa: "バージョン13の形式のため、今の版では再開できません。消去すると、見本B編のセーブ2は次に開いたとき新しい旅から始まります。英語ノートは消えません。",
+      keys: [{ key: second, noteJa: "バージョン13の旧版のセーブ", chars: second.length + v13.length, backedUpAt: null }],
+    }]);
+    expect(list({ ...kept, [journeyStorage(memory(), "milano", 3).physicalKey(SAVE_KEY)]: v13 })).toEqual([]);
+  });
+
   it("lists the backups of every journey with what each holds, but never a backup that loads as a current save", () => {
     const items = list({
       ...kept,
