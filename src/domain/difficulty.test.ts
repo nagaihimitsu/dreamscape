@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { allRewardRules, balance, battleQuizzes, battles, learningTranslations } from "../content";
+import { allRewardRules, balance, battleQuizzes, battles, dates, learningTranslations, progression } from "../content";
 import { getJourney } from "../content/journeys";
 import { quizSchema } from "../content/schemas";
 import { questionAtLevel } from "../content/english-levels";
 import { cityStart, openBattleScene } from "../dev/scenario-builders";
 import { getActiveBattleContent } from "./battle";
 import { createGame, setEnglishLevel, validateGameState, type GameState } from "./game";
-import { DEFAULT_DIFFICULTY, difficultyOf, startingBudget } from "./difficulty";
+import { canConfessSuccessfully } from "./conditions";
+import { confessionThresholds, DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, rewardApBonus, startingBudget } from "./difficulty";
 import { earnRewards } from "./rewards";
 
 // The difficulty (2026-11-19 user decision; src/domain/difficulty.ts): the English of the quizzes and how tight money and AP
@@ -37,10 +38,14 @@ describe("the difficulty's money and AP", () => {
     expect(startingBudget(99, "tight")).toBe(Math.floor(99 * balance.difficulty.economy.tight.budgetPercent / 100));
   });
 
-  it("adds the level's bonus to a reward's AP, once, keeping the rest above the cap as pending", () => {
-    const rule = allRewardRules.find((item) => item.ap > 0 && item.trigger !== "scene_tag")!;
-    const bonus = balance.difficulty.economy.relaxed.rewardApBonus;
+  it("adds the level's bonus to a reward's AP by its kind, once, keeping the rest above the cap as pending", () => {
+    const rule = allRewardRules.find((item) => item.ap > 0 && rewardApBonus("relaxed", item.trigger) > 0)!;
+    const bonus = rewardApBonus("relaxed", rule.trigger);
+    const without = allRewardRules.find((item) => item.ap > 0 && rewardApBonus("relaxed", item.trigger) === 0)!;
     const relaxed = withDifficulty(createGame(), { english: "B1", economy: "relaxed" });
+    expect(earnRewards(relaxed, [without.id]).state.ap).toBe(relaxed.ap + without.ap);
+    expect(rewardApBonus("relaxed", "scene_tag")).toBe(0);
+    expect(rewardApBonus("standard", rule.trigger)).toBe(0);
     const earned = earnRewards(relaxed, [rule.id]);
     expect(earned.state.ap).toBe(relaxed.ap + rule.ap + bonus);
     expect(earned.entries).toEqual([{ rewardId: rule.id, earnedAp: rule.ap + bonus, creditedAp: rule.ap + bonus, pendingAp: 0 }]);
@@ -48,6 +53,40 @@ describe("the difficulty's money and AP", () => {
     expect(earnRewards(createGame(), [rule.id]).state.ap).toBe(rule.ap);
     const full = earnRewards({ ...relaxed, ap: balance.apCap }, [rule.id]).state;
     expect(full.pendingApRewards).toEqual([{ rewardId: rule.id, earnedAp: rule.ap + bonus, remainingAp: rule.ap + bonus }]);
+  });
+});
+
+describe("the difficulty's confession", () => {
+  // India sets its own confession at ゆったり and きびしい (manifest economyLevels); ふつう and Milan read romance/progression.json's.
+  const journey = getJourney("golden_triangle")!;
+  const at = (economy: "relaxed" | "standard" | "tight", values: Partial<GameState> = {}) => ({
+    ...createGame("たいち", "あゆみ", { journeyId: "golden_triangle", difficulty: { english: "B1", economy } }), ...values });
+  const meeting = (need: { minAffection: number; minTrust: number; minSpark: number; minCompletedDates: number }) => ({
+    affection: need.minAffection, trust: need.minTrust, spark: need.minSpark,
+    playedDateIds: dates.filter((date) => date.kind === "normal" && date.chapterId === "delhi").slice(0, need.minCompletedDates).map((date) => date.id) });
+
+  it("reads the journey's thresholds at the save's level, else progression's", () => {
+    expect(confessionThresholds(at("relaxed"))).toEqual(journey.economyLevels!.relaxed!.confession);
+    expect(confessionThresholds(at("tight"))).toEqual(journey.economyLevels!.tight!.confession);
+    expect(confessionThresholds(at("standard"))).toEqual(progression.confession);
+    expect(confessionThresholds(createGame("たいち", "あゆみ", { journeyId: "milano", difficulty: { english: "B1", economy: "tight" } })))
+      .toEqual(progression.confession);
+  });
+
+  it("accepts the same values at ゆったり and ふつう, and not at きびしい", () => {
+    const values = meeting(progression.confession);
+    expect(canConfessSuccessfully(at("relaxed", values))).toBe(true);
+    expect(canConfessSuccessfully(at("standard", values))).toBe(true);
+    expect(canConfessSuccessfully(at("tight", values))).toBe(false);
+    expect(canConfessSuccessfully(at("tight", meeting(confessionThresholds(at("tight")))))).toBe(true);
+    expect(canConfessSuccessfully(at("relaxed", meeting(confessionThresholds(at("relaxed")))))).toBe(true);
+    expect(canConfessSuccessfully(at("standard", meeting(confessionThresholds(at("relaxed")))))).toBe(false);
+  });
+
+  it("names a journey's own words for a level at its title", () => {
+    expect(economyLevelLabel("tight", "golden_triangle").descriptionJa).toBe(journey.economyLevels!.tight!.descriptionJa);
+    expect(economyLevelLabel("tight", "milano").descriptionJa).toBe(balance.difficulty.economy.tight.descriptionJa);
+    expect(economyLevelLabel("standard", "golden_triangle").descriptionJa).toBe(balance.difficulty.economy.standard.descriptionJa);
   });
 });
 

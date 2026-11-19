@@ -9,6 +9,20 @@ const text = z.string().trim().min(1);
  */
 const currencySymbol = z.string().regex(/^\S+ ?$/u);
 
+/** What a confession needs to be accepted (romance/progression.json `confession`, or a journey's at a level: `economyLevels`). */
+export const confessionThresholdsSchema = z.object({
+  minAffection: z.number().int().nonnegative(),
+  minTrust: z.number().int(),
+  minSpark: z.number().int(),
+  minCompletedDates: z.number().int().nonnegative(),
+}).strict();
+export type ConfessionThresholds = z.infer<typeof confessionThresholdsSchema>;
+/**
+ * A journey's own setting at one level of money and AP (2026-11-19 user decision): the confession's thresholds there
+ * (none: romance/progression.json's) and the level's words at its title (none: romance/balance.json's).
+ */
+const economyLevelSetting = z.object({ descriptionJa: text.optional(), confession: confessionThresholdsSchema.optional() }).strict();
+
 /** A journey is a separate game; cities are ordered but may still be unbuilt. */
 export const journeyCatalogSchema = z.object({
   schemaVersion: z.literal(1),
@@ -40,6 +54,9 @@ export const journeyCatalogSchema = z.object({
       mainTourismCount: z.number().int().nonnegative(),
       dateCount: z.number().int().nonnegative(),
     }).strict().optional(),
+    // The levels of money and AP as this journey sets them (the level names are ECONOMY_LEVELS in schemas.ts).
+    economyLevels: z.object({ relaxed: economyLevelSetting.optional(), standard: economyLevelSetting.optional(),
+      tight: economyLevelSetting.optional() }).strict().optional(),
     /** Whether completing the epilogue advances to the next released city. */
     cityTransition: z.enum(["manual", "after_epilogue"]).optional(),
     /** Number of travellers included in the authored transport fares. */

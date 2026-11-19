@@ -31,7 +31,11 @@ export type BalanceProfile = { id: string; baseChance: number;
 export type BalanceInput = {
   journey: { id: string; nameJa: string; cities: readonly { id: string; nameJa?: string }[]; initialBudget?: number | null;
     currency: { code: string; symbol: string }; farePartySize?: number;
-    initialState?: { ap: number; affection: number; trust: number; spark: number } };
+    initialState?: { ap: number; affection: number; trust: number; spark: number };
+    /** The journey's own confession at a level of money and AP (manifest economyLevels). */
+    economyLevels?: Readonly<Record<string, { confession?: BalanceInput["romance"]["confession"] } | undefined>> };
+  /** The levels of money and AP by their names (romance/balance.json difficulty.economy), in order. */
+  economyLevelNames?: Readonly<Record<string, string>>;
   /** The journey's cities in travel order: their travel catalog and settings (the first city's initialBudget: a journey without its own). */
   cities: readonly { cityId: string; initialBudget: number; hotelPlaceId: string; lodgingCost: number; rentals?: readonly { modeId: string; cost: number }[];
     places: readonly { id: string; nameJa: string; access?: "tour" }[];
@@ -255,7 +259,10 @@ export function journeyBalance(input: BalanceInput): JourneyBalance {
   });
   const needOf = (item: BalanceInput["romance"]["confession"]) => ({ affection: item.minAffection, trust: item.minTrust, spark: item.minSpark, dates: item.minCompletedDates });
   const thresholds = [...input.romance.stages.filter((stage) => stage.stage > 1).map((stage) => ({ label: `段階${stage.stage}`, need: needOf(stage) })),
-    { label: "告白の成功", need: needOf(input.romance.confession) }].map((threshold) => {
+    { label: "告白の成功", need: needOf(input.romance.confession) },
+    // A journey's own confession at a level of money and AP (manifest economyLevels; difficulty.ts confessionThresholds).
+    ...Object.entries(input.journey.economyLevels ?? {}).flatMap(([level, setting]) => setting?.confession
+      ? [{ label: `告白の成功（${input.economyLevelNames?.[level] ?? level}）`, need: needOf(setting.confession) }] : [])].map((threshold) => {
     const meets = (city: CityBalance, values: "withDates" | "expected", end: "min" | "max") => city.cumulative.dates >= threshold.need.dates &&
       AXES.every((axis) => city.cumulative[values][axis][end] >= threshold.need[axis]);
     const where = (values: "withDates" | "expected", end: "min" | "max") => cities.find((city) => meets(city, values, end))?.cityId;

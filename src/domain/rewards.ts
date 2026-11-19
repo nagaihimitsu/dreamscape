@@ -42,7 +42,7 @@ export function earnRewards(
     const rule = allRewardRules.find((item) => item.id === rewardId);
     if (!rule) throw new Error("報酬の定義が見つかりません。");
     // The difficulty's bonus (difficulty.ts) is part of what the reward gives, kept with it while it waits.
-    const earnedAp = rewardAp(next, rule.ap);
+    const earnedAp = rewardAp(next, rule);
     const creditedAp = creditNow
       ? Math.min(earnedAp, balance.apCap - next.ap)
       : 0;

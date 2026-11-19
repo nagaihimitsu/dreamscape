@@ -41,6 +41,26 @@
     "mainTourismCount": 4,
     "dateCount": 6
   },
+  "economyLevels": {
+    "relaxed": {
+      "descriptionJa": "旅の予算が多めで、観光や都市をクリアしたときのAPが少し増えます。告白も届きやすくなります。",
+      "confession": {
+        "minAffection": 6,
+        "minTrust": 3,
+        "minSpark": 3,
+        "minCompletedDates": 2
+      }
+    },
+    "tight": {
+      "descriptionJa": "旅の予算が少なめです。安い乗り物を選べば、本筋は最後まで回れます。告白が届くには、デートを重ねて、ふたりの気持ちを十分に育てる必要があります。",
+      "confession": {
+        "minAffection": 14,
+        "minTrust": 7,
+        "minSpark": 7,
+        "minCompletedDates": 6
+      }
+    }
+  },
   "cityTransition": "after_epilogue",
   "farePartySize": 2,
   "intercityModes": [],
