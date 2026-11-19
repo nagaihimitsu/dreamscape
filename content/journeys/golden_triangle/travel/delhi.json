@@ -16,6 +16,15 @@
           "end": 990
         }
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "一度入ったのに、あの壁を見上げると、また初めてみたいな気持ちになるね",
+          "when": {
+            "landmarkVisited": "delhi_red_fort"
+          }
+        },
+        "赤い壁、どこまで続いてるんだろう。お城っていうより、町をまるごと囲んでるみたい"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -141,6 +150,15 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "あの鉄の柱、遠くから運ばれてきたんだよね。知らない町で、何百年も立ってる",
+          "when": {
+            "landmarkVisited": "delhi_qutb_minar"
+          }
+        },
+        "あの塔、ここからでも先っぽが見える。近くで見たら、首が痛くなりそう"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -250,6 +268,15 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "三本目の木陰、今日も誰か座ってるかな。……のぞきに行くのは、なしだよね",
+          "when": {
+            "landmarkVisited": "delhi_humayun_tomb"
+          }
+        },
+        "タージ・マハルより先に建った、庭園のお墓なんだって。どこが似てるか、探してみたいな"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -351,6 +378,15 @@
           "end": 1260
         }
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "モヌくんの家族、もう村に帰ったかな。あの写真、村で自慢されてるといいな",
+          "when": {
+            "datePlayed": "gt_delhi_date_india_gate"
+          }
+        },
+        "インド門の芝生、休みの日は家族のピクニックでいっぱいなんだって。わたしたちも、混ざれるかな"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -435,6 +471,15 @@
           "start": 540,
           "end": 1020
         }
+      ],
+      "heroineLinesJa": [
+        {
+          "textJa": "階段の上から見た旧市街、ほんとに全部見えた気がしたな",
+          "when": {
+            "landmarkVisited": "delhi_jama_masjid"
+          }
+        },
+        "ニハーリーっていう朝ごはん、この近くで食べられるんだって。行くなら、早起きしないとね"
       ],
       "sources": [
         {
@@ -545,6 +590,15 @@
           "end": 1260
         }
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "『バス』、もう言えるよ。……たぶん。屋台の前に立つと、また忘れそうだけど",
+          "when": {
+            "datePlayed": "gt_delhi_date_chandni_chowk"
+          }
+        },
+        "あの路地、全部お店なの？　迷子になったら、匂いをたどって帰ってこられるかな"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -613,6 +667,15 @@
           "start": 540,
           "end": 1020
         }
+      ],
+      "heroineLinesJa": [
+        {
+          "textJa": "理由のない笑い、一人だとやっぱり変な人だよね。……{player_name}も、一緒にやる？",
+          "when": {
+            "datePlayed": "gt_delhi_date_lodhi_garden"
+          }
+        },
+        "お墓のある公園で、朝の散歩をするんだって。どんな感じなんだろう"
       ],
       "sources": [
         {
@@ -698,6 +761,15 @@
           "start": 540,
           "end": 1050
         }
+      ],
+      "heroineLinesJa": [
+        {
+          "textJa": "百八段も上ったのに、冷たいものが飲みたいのは変わらなかったな",
+          "when": {
+            "datePlayed": "gt_delhi_date_agrasen_baoli"
+          }
+        },
+        "ビルの間に、昔の階段井戸があるんだって。こんな都会の真ん中に？"
       ],
       "sources": [
         {
@@ -792,6 +864,15 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "静かにしてたのに、頭の中はずっとうるさかったな。あれ、また行きたいかも",
+          "when": {
+            "datePlayed": "gt_delhi_date_lotus_temple"
+          }
+        },
+        "中では、しゃべっちゃだめなんだって。……わたし、我慢できるかな"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -855,6 +936,15 @@
           "start": 540,
           "end": 1260
         }
+      ],
+      "heroineLinesJa": [
+        {
+          "textJa": "わたしのローティー、世界地図みたいだったね。……次は、ちゃんと丸くする",
+          "when": {
+            "datePlayed": "gt_delhi_date_bangla_sahib"
+          }
+        },
+        "誰でも無料でごはんを食べられる食堂があるんだって。作る方も、手伝えるのかな"
       ],
       "sources": [
         {
