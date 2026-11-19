@@ -69,6 +69,8 @@ type MenuActions = {
    */
   autoSave?: { savedAt: number | null } | null;
   onLoad: () => void;
+  /** 「セーブの枠」: the journey's save slots (SaveSlots.tsx); absent in Debug, which plays isolated storage. */
+  onSaveSlots?: () => void;
   onRecords: () => void;
   /** 「アルバム」: the photos the journey's lines took (AlbumDialog). */
   onAlbum: () => void;
@@ -294,7 +296,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
 
 /**
  * ≡メニュー (U2, U24; 「設定」 with a gear until 2026-11-14, renamed as it is the game's main menu): a disclosure button
- * with its small panel of セーブ, ロード (and, while saving is automatic, a line saying when it last saved),
+ * with its small panel of セーブ, ロード (and, while saving is automatic, a line saying when it last saved), セーブの枠,
  * 旅の記録, アルバム, 旅の図鑑 (a journey with terms), 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
  * scene's photo) and ゲームの設定 (U28) right under the header (APG Disclosure,
  * not an ARIA menu: ordinary buttons, and Tab works as everywhere else). Opening
@@ -315,7 +317,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * likewise for 旅の図鑑's terms (`glossaryNew`) on ≡メニュー and 「旅の図鑑」;
  * a manual save that succeeded drops a small ribbon onto ≡メニュー, which fades.
  */
-function HudMenu({ onSave, autoSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
+function HudMenu({ onSave, autoSave, onLoad, onSaveSlots, onRecords, onAlbum, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
   glossaryNew }: MenuActions & { englishNew: boolean; glossaryNew: boolean }) {
   const newIn = [englishNew && "英語ノート", glossaryNew && "旅の図鑑"].filter(Boolean).join("と");
   const [open, setOpen] = useState(false);
@@ -409,6 +411,7 @@ function HudMenu({ onSave, autoSave, onLoad, onRecords, onAlbum, onGlossary, onE
         }, true)}><Icon name="save" />セーブ</button>
         <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
         {autoSave && <p className="hud-menu-note">{autoSaveLine(autoSave.savedAt, openedAt)}</p>}
+        {onSaveSlots && <button type="button" onClick={choose(onSaveSlots)}><Icon name="load" />セーブの枠</button>}
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
         <button type="button" onClick={choose(onAlbum)}><Icon name="camera" />アルバム</button>
         {onGlossary && <button type="button" onClick={choose(onGlossary)}><Icon name="lens" />旅の図鑑{glossaryNew && <NewDot label="新しい言葉あり" />}</button>}

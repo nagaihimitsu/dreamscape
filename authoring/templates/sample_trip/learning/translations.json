@@ -27,6 +27,32 @@
         "C": "三時のままにしておいた。"
       }
     },
+    "smp_mihon_clock_tower_q1@B2": {
+      "source": {
+        "questionEn": "Long after the clock stopped working, how did the town choose to deal with it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They replaced the tower with a taller one."
+          },
+          {
+            "id": "B",
+            "textEn": "They had the clock carried off to the market."
+          },
+          {
+            "id": "C",
+            "textEn": "They left its hands pointing at three on purpose."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "時計が動かなくなってからずっと後、街はそれをどう扱うことにした？",
+      "optionsJa": {
+        "A": "塔をもっと高い塔に建て替えた。",
+        "B": "時計を市場へ運び出させた。",
+        "C": "針をわざと三時に向けたままにした。"
+      }
+    },
     "smp_mihon_clock_tower_q2": {
       "source": {
         "questionEn": "In this town, what does \"Meet me at three\" mean?",

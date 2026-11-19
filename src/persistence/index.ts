@@ -12,6 +12,12 @@ export const READ_LINES_KEY = "dreamscape.read-lines.v1";
  * record apart from the save, shown in the English notes and removed with them by 「保存データの消去」.
  */
 export const LOCAL_WORDS_KEY = "dreamscape.local-words.v1";
+/**
+ * 旅の思い出 (2026-11-19 user decision; docs/01 「クリア後・難易度・複数のセーブ」): the journey last finished in this slot,
+ * kept as it was when 「もう一度この旅を」 started a new one, so its end roll, album, music room and numbers can be seen again.
+ * One per save slot (a later finish replaces it); removed with the slot's save by 「保存データの消去」.
+ */
+export const MEMORY_KEY = "dreamscape.memory.v1";
 /** The current format is validated, not automatically migrated from older versions. */
 export const SUPPORTED_SAVE_VERSION = GAME_STATE_VERSION;
 
@@ -21,6 +27,11 @@ export interface StorageLike {
   physicalKey?(key: string): string;
   /** Absent for isolated debug/test storage; browser journey slots always set it. */
   journeyId?: string;
+  /**
+   * Whether another save slot of the journey holds a save (journey-storage.ts); absent for a storage of one slot. Its
+   * English notes, read lines and words learned are shared by the slots, so deleting one slot's save keeps them then.
+   */
+  otherSlotsInUse?(): boolean;
 }
 
 export type LoadResult =
@@ -147,6 +158,59 @@ export function saveGame(
   }
 }
 
+/**
+ * 「もう一度この旅を」: put the new journey `next` in the slot, only while it still holds `expectedPrevious` (the finished
+ * journey this tab shows; another tab's save is refused). The revision starts again, so saveGame's check of a newer
+ * revision does not apply here.
+ */
+export function replaceWithNewJourney(storage: StorageLike, next: GameState, expectedPrevious: GameState | null): SaveResult {
+  try {
+    if (!belongsToSlot(storage, next.currentCityId)) return { ok: false, message: wrongJourneyMessage };
+    const saved = loadGame(storage);
+    if (saved.status === "invalid") return { ok: false, message: "読み込めないセーブを保護するため、上書きしませんでした。" };
+    const current = saved.status === "loaded" ? serialize(saved.state) : null;
+    if (current !== (expectedPrevious === null ? null : serialize(expectedPrevious)))
+      return { ok: false, message: "別の画面でセーブが更新されています。上書きせずに保護しました。ロードして最新の場面から再開してください。" };
+    storage.setItem(SAVE_KEY, serialize(next));
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "保存できませんでした。空き容量やブラウザの保存設定を確認して、もう一度お試しください。" };
+  }
+}
+
+/** The slot's 旅の思い出 (MEMORY_KEY): none, one this version reads, or one it cannot (`raw` null: the storage could not be read). */
+export type MemoryLoad =
+  | { status: "empty" }
+  | { status: "loaded"; state: GameState; raw: string }
+  | { status: "invalid"; raw: string | null };
+
+export function loadJourneyMemory(storage: StorageLike): MemoryLoad {
+  let raw: string | null;
+  try { raw = storage.getItem(MEMORY_KEY); } catch { return { status: "invalid", raw: null }; }
+  if (raw === null) return { status: "empty" };
+  try {
+    const state = parseGameState(raw);
+    return belongsToSlot(storage, state.currentCityId) ? { status: "loaded", state, raw } : { status: "invalid", raw };
+  } catch {
+    return { status: "invalid", raw };
+  }
+}
+
+/**
+ * Keep `finished` as the slot's 旅の思い出, in place of the one there, only while MEMORY_KEY still holds `expectedRaw` (what
+ * the confirmation told the player it replaces: none, the earlier memory, or one this version cannot read).
+ */
+export function keepJourneyMemory(storage: StorageLike, finished: GameState, expectedRaw: string | null): SaveResult {
+  try {
+    if (!belongsToSlot(storage, finished.currentCityId)) return { ok: false, message: wrongJourneyMessage };
+    if (!writeIfUnchanged(storage, MEMORY_KEY, expectedRaw, serialize(finished)))
+      return { ok: false, message: "別の画面で旅の思い出が更新されています。再読み込みしてからやり直してください。" };
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "旅の思い出を保存できませんでした。空き容量やブラウザの保存設定を確認して、もう一度お試しください。" };
+  }
+}
+
 /** Write only while the observed slot still contains the expected snapshot. */
 export function writeIfUnchanged(storage: StorageLike, key: string, expected: string | null, next: string): boolean {
   if (storage.getItem(key) !== expected) return false;
@@ -202,19 +266,21 @@ export function backupAndCreate(
 }
 
 /**
- * Delete only the two active Dreamscape slots after checking the confirmed snapshot, then this journey's other play
+ * Delete only the two active Dreamscape slots (only the game save when `sharedKept`: another save slot of the journey
+ * holds a save, and the records below are shared with it) after checking the confirmed snapshot, then this journey's other play
  * records on the device: the words learned that the English notes show (LOCAL_WORDS_KEY) and the lines read
- * (READ_LINES_KEY; 2026-11-11 user decision: 「保存データの消去」 erases everything of the play). Only the tab that holds
+ * (READ_LINES_KEY; 2026-11-11 user decision: 「保存データの消去」 erases everything of the play). The slot's 旅の思い出 (MEMORY_KEY) goes either way. Only the tab that holds
  * the journey writes them (journey-lock.ts), and the game reloads right after. Presentation settings stay.
  */
 export function deleteSaveData(
   storage: StorageLike & { removeItem(key: string): void },
-  expected: { game: string | null; learning: string | null },
+  expected: { game: string | null; learning: string | null; sharedKept?: boolean },
 ): SaveResult {
   try {
     if (
       storage.getItem(SAVE_KEY) !== expected.game ||
-      storage.getItem(LEARNING_KEY) !== expected.learning
+      storage.getItem(LEARNING_KEY) !== expected.learning ||
+      (storage.otherSlotsInUse?.() ?? false) !== (expected.sharedKept ?? false)
     )
       return {
         ok: false,
@@ -223,6 +289,12 @@ export function deleteSaveData(
       };
     const current = loadGame(storage);
     if (current.status === "invalid" && current.kind === "journey") return { ok: false, message: wrongJourneyMessage };
+    // Another slot still plays the journey: only this slot's save goes; the records the slots share stay.
+    if (expected.sharedKept) {
+      storage.removeItem(SAVE_KEY);
+      storage.removeItem(MEMORY_KEY);
+      return { ok: true };
+    }
     storage.removeItem(LEARNING_KEY);
     try {
       storage.removeItem(SAVE_KEY);
@@ -233,6 +305,7 @@ export function deleteSaveData(
     }
     storage.removeItem(LOCAL_WORDS_KEY);
     storage.removeItem(READ_LINES_KEY);
+    storage.removeItem(MEMORY_KEY);
     return { ok: true };
   } catch {
     return {

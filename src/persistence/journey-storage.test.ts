@@ -151,15 +151,45 @@ describe("independent journey saves", () => {
   // 「古い保存データの整理」 (old-data.ts) finds the slots by reading these keys back.
   it("reads a journey slot's browser key back to its journey and logical key, and no other key", () => {
     for (const key of [SAVE_KEY, LEARNING_KEY, READ_LINES_KEY, LOCAL_WORDS_KEY, `${SAVE_KEY}.backup.1762500000000`, `${SAVE_KEY}.backup.1762500000000.2`])
-      expect(parseJourneyPhysicalKey(journeyPhysicalKey("golden_triangle", key))).toEqual({ journeyId: "golden_triangle", key });
+      expect(parseJourneyPhysicalKey(journeyPhysicalKey("golden_triangle", key))).toEqual({ journeyId: "golden_triangle", key, slot: 1 });
+    for (const key of [SAVE_KEY, `${SAVE_KEY}.backup.1762500000000`])
+      expect(parseJourneyPhysicalKey(journeyPhysicalKey("golden_triangle", key, 3))).toEqual({ journeyId: "golden_triangle", key, slot: 3 });
+    expect(journeyPhysicalKey("milano", SAVE_KEY, 2)).toBe("dreamscape.journey.milano.slot2.save.v1");
+    // Only the game save has slots: the notes, the read lines and the words learned are shared by them.
+    expect(journeyPhysicalKey("milano", LEARNING_KEY, 2)).toBe("dreamscape.journey.milano.learning.v1");
     expect(journeyPhysicalKey("milano", READ_LINES_KEY)).toBe("dreamscape.journey.milano.read-lines.v1");
     expect(journeyPhysicalKey("milano", LOCAL_WORDS_KEY)).toBe("dreamscape.journey.milano.local-words.v1");
     for (const physical of [SAVE_KEY, LEARNING_KEY, READ_LINES_KEY, LOCAL_WORDS_KEY, "dreamscape.presentation.v1", "dreamscape.journey.Milano.save.v1",
       "dreamscape.journey..save.v1", "dreamscape.journey.milano.save.v2", "dreamscape.journey.milano.save.v1.extra",
       "dreamscape.journey.milano.learning.v1.backup.1", "dreamscape.journey.milano.read-lines.v2", "dreamscape.journey.milano.local-words.v2",
-      "dreamscape.journey.milano.unknown",
+      "dreamscape.journey.milano.unknown", "dreamscape.journey.milano.slot1.save.v1", "dreamscape.journey.milano.slot4.save.v1",
+      "dreamscape.journey.milano.slot2.learning.v1", "dreamscape.journey.milano.last-slot.v1",
       "x.dreamscape.journey.milano.save.v1"])
       expect(parseJourneyPhysicalKey(physical), physical).toBeNull();
+  });
+
+  it("keeps each save slot's game apart, shares the notes, and deletes the shared records only with the last save", () => {
+    const base = memoryStorage();
+    const first = journeyStorage(base, "milano", 1);
+    const second = journeyStorage(base, "milano", 2);
+    expect(saveGame(first, createGame("ユウ", "ミオ")).ok).toBe(true);
+    expect(loadGame(second).status).toBe("empty");
+    expect(saveGame(second, createGame("ケン", "ハナ")).ok).toBe(true);
+    const one = loadGame(first);
+    const two = loadGame(second);
+    expect(one.status === "loaded" && one.state.playerName).toBe("ユウ");
+    expect(two.status === "loaded" && two.state.playerName).toBe("ケン");
+    first.setItem(LEARNING_KEY, "notes");
+    expect(second.getItem(LEARNING_KEY)).toBe("notes");
+    expect(first.otherSlotsInUse()).toBe(true);
+    // The confirmed snapshot says the shared records stay; a snapshot that no longer says so is refused.
+    expect(deleteSaveData(second, { game: second.getItem(SAVE_KEY), learning: "notes", sharedKept: false }).ok).toBe(false);
+    expect(deleteSaveData(second, { game: second.getItem(SAVE_KEY), learning: "notes", sharedKept: true }).ok).toBe(true);
+    expect(loadGame(second).status).toBe("empty");
+    expect(first.getItem(LEARNING_KEY)).toBe("notes");
+    expect(first.otherSlotsInUse()).toBe(false);
+    expect(deleteSaveData(first, { game: first.getItem(SAVE_KEY), learning: "notes", sharedKept: false }).ok).toBe(true);
+    expect(first.getItem(LEARNING_KEY)).toBeNull();
   });
 
   it("names every backup as isSaveBackupKey expects, also a second one in the same millisecond", () => {

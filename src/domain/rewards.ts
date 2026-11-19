@@ -2,6 +2,7 @@ import { z } from "zod";
 import { allRewardRules, balance, episodes } from "../content";
 import type { GameState } from "./game";
 import { rewardBattleId } from "./reward-rules";
+import { rewardAp } from "./difficulty";
 
 export const pendingApRewardSchema = z
   .object({
@@ -40,11 +41,13 @@ export function earnRewards(
     if (next.claimedRewardIds.includes(rewardId)) continue;
     const rule = allRewardRules.find((item) => item.id === rewardId);
     if (!rule) throw new Error("報酬の定義が見つかりません。");
+    // The difficulty's bonus (difficulty.ts) is part of what the reward gives, kept with it while it waits.
+    const earnedAp = rewardAp(next, rule.ap);
     const creditedAp = creditNow
-      ? Math.min(rule.ap, balance.apCap - next.ap)
+      ? Math.min(earnedAp, balance.apCap - next.ap)
       : 0;
-    const pendingAp = rule.ap - creditedAp;
-    entries.push({ rewardId, earnedAp: rule.ap, creditedAp, pendingAp });
+    const pendingAp = earnedAp - creditedAp;
+    entries.push({ rewardId, earnedAp, creditedAp, pendingAp });
     next = {
       ...next,
       ap: next.ap + creditedAp,
@@ -52,7 +55,7 @@ export function earnRewards(
       pendingApRewards: pendingAp
         ? [
             ...next.pendingApRewards,
-            { rewardId, earnedAp: rule.ap, remainingAp: pendingAp },
+            { rewardId, earnedAp, remainingAp: pendingAp },
           ]
         : next.pendingApRewards,
     };

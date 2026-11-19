@@ -30,6 +30,7 @@ import {
   chooseDate,
   finishDate,
   setNames,
+  setEnglishLevel,
 } from "../domain/game";
 import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
@@ -85,13 +86,17 @@ import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, PhotoCredits, recapPhotos } from "../features/journey/PhotoCredits";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
-import { DepartureLuggage } from "../features/journey/JourneyMoments";
-import { departureLuggage } from "../features/journey/journey-moments";
+import { DepartureLuggage, EndRollDialog } from "../features/journey/JourneyMoments";
+import { departureLuggage, endRollOf } from "../features/journey/journey-moments";
+import { JourneyMemoriesScreen, KeptMemoryContents } from "../features/journey/JourneyMemories";
+import { loadJourneyMemory, type MemoryLoad } from "../persistence";
 import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
 import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
+import { DifficultyFields, EnglishLevelField } from "../features/journey/DifficultyFields";
+import { DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
 import { nameOrDefault } from "../domain/player-names";
 import { playerLatinName } from "../domain/name-romaji";
@@ -154,7 +159,9 @@ import {
   battleBackgroundId,
 } from "../domain/battle";
 
-import { browserStorage, type AppProps } from "./app-storage";
+import { browserStorage, type AppProps, type SaveSlots } from "./app-storage";
+import type { SaveSlot } from "../persistence/journey-storage";
+import { SaveSlotList, SaveSlotsDialog } from "../features/journey/SaveSlots";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
@@ -213,7 +220,10 @@ export function GameApp({
   onSwitchJourney,
   selectorFocus,
   oldDataStorage,
-}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage }) {
+  saves,
+}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage;
+  /** The journey's save slots (save-slots.ts); absent in Debug, which plays isolated storage. */
+  saves?: SaveSlots }) {
   // Only Debug (src/dev/DebugMode.tsx) passes `debug`, on the dev server and, with Debug mode on, in production.
   const isDebug = debug;
   const displaySettings = usePresentationSettings(storage);
@@ -285,7 +295,8 @@ export function GameApp({
   // Counts the actions that recorded a new clue in 手がかり帳: each gleams on its button (notebook-cue.tsx).
   const [clueGleam, setClueGleam] = useState(0);
   // A journey's opening movie (manifest openingMovie) between 「旅をはじめる」 and the new game, with the names it starts with.
-  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string; reading?: string } | null>(null);
+  // `again`: 「もう一度この旅を」's start, with the 旅の思い出 its confirmation said it replaces (its raw value; null for none).
+  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string; reading?: string; difficulty: Difficulty; again?: { memory: string | null } } | null>(null);
   // 最初の3分の計測 (Debug mode only; intro-timing.ts): from the last 「旅をはじめる」 in this tab, never saved; a load and
   // Debug's return end it.
   const introTiming = useRef<IntroTiming | null>(null);
@@ -483,6 +494,16 @@ export function GameApp({
       main.current?.focus({ preventScroll: true });
     endSelectorFocus();
   }, [restoreSelectorFocus, endSelectorFocus]);
+  // 「セーブの枠」 (SaveSlots.tsx): its dialog, and the slot whose switch waits for the player to confirm losing unsaved play.
+  const [saveSlotsOpen, setSaveSlotsOpen] = useState(false);
+  const [switchSlotTo, setSwitchSlotTo] = useState<SaveSlot | null>(null);
+  function requestSlotSwitch(slot: SaveSlot) {
+    if (!saves) return;
+    setSaveSlotsOpen(false);
+    const step = leaveStep({ way: "switch_slot", from: saves.slot, to: slot }, session.hasUnsavedProgress());
+    if (step === "ask") setSwitchSlotTo(slot);
+    else if (step === "leave") saves.onSwitch(slot);
+  }
   function requestJourneySwitch(id: string) {
     if (!onSwitchJourney) return;
     const step = leaveStep({ way: "switch_journey", from: journeyId, to: id }, session.hasUnsavedProgress());
@@ -491,6 +512,24 @@ export function GameApp({
     else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
+  // 旅の思い出 (2026-11-19; JourneyMemories.tsx): the journey kept when 「もう一度この旅を」 started this one, read as
+  // 旅の記録 opens; its own dialog over 旅の記録 (`keptOpen`), whose album, music room and end roll show it, not the game.
+  const [keptMemory, setKeptMemory] = useState<MemoryLoad | null>(null);
+  const [keptOpen, setKeptOpen] = useState(false);
+  const [keptEndRoll, setKeptEndRoll] = useState(false);
+  const keptGame = keptOpen && keptMemory?.status === "loaded" ? keptMemory.state : null;
+  // 「もう一度この旅を」's confirmation, with the memory it would replace (read as it opens).
+  const [confirmAgain, setConfirmAgain] = useState<MemoryLoad | null>(null);
+  // Its difficulty: the finished journey's at first, or another level (2026-11-19 user decision).
+  const [againDifficulty, setAgainDifficulty] = useState<Difficulty>(DEFAULT_DIFFICULTY);
+  function openAgain() {
+    if (game) setAgainDifficulty(difficultyOf(game));
+    setConfirmAgain(loadJourneyMemory(storage));
+  }
+  function openRecords() {
+    setKeptMemory(loadJourneyMemory(storage));
+    setRecordsOpen(true);
+  }
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
   const [musicRoom, setMusicRoom] = useState(false);
   const [roomTrack, setRoomTrack] = useState<string | null>(null);
@@ -505,6 +544,8 @@ export function GameApp({
   // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
   const [player, setPlayer] = useState(game?.playerName ?? "");
   const [heroine, setHeroine] = useState(game?.heroineName ?? "");
+  // The title's difficulty for a new journey (2026-11-19).
+  const [difficulty, setDifficulty] = useState<Difficulty>(DEFAULT_DIFFICULTY);
   // The reading of the player's name, captured as it is typed in the title's and the settings' forms (nothing shows it).
   const titleReading = useNameReading();
   const settingsReading = useNameReading(game?.playerNameReading);
@@ -513,7 +554,7 @@ export function GameApp({
   const englishKey = useMemo(
     () => (game ? englishNoteKeys(metQuestions(game, learning), learnedWords.learned) : []).join("\n"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [!!game, game?.battleRecords, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
+    [!!game, game?.battleRecords, game?.pastBattleIds, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
   );
   const englishIds = englishKey ? englishKey.split("\n") : [];
   useEffect(() => {
@@ -568,16 +609,32 @@ export function GameApp({
     const movie = isDebug ? undefined : getJourney(journeyId)?.openingMovie;
     // Debug mode measures the first minutes from here (with and without the movie).
     introTiming.current = debugOn ? startIntroTiming(performance.now(), !!movie) : null;
-    if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName, reading });
-    else startJourney(playerName, heroineName, reading);
+    if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName, reading, difficulty });
+    else startJourney(playerName, heroineName, reading, difficulty);
   }
-  function startJourney(playerName: string, heroineName: string, reading: string | undefined) {
+  function startJourney(playerName: string, heroineName: string, reading: string | undefined, chosen: Difficulty, again?: { memory: string | null }) {
     freeTimeReturn.current = null;
     seenCards.current = new Map();
     setSeenMarks(null);
     moments.restart(false);
     holdSceneCues(false);
-    session.begin(playerName, heroineName, reading, journeyId);
+    if (!again) session.begin(playerName, heroineName, reading, journeyId, chosen);
+    else if (session.beginAgain(journeyId, again.memory, chosen)) {
+      // A new journey under the finger of 「最初から始める」: its first scene takes no tap of the same press.
+      holdTaps();
+      setSceneEpoch((epoch) => epoch + 1);
+    }
+  }
+  /** 「もう一度この旅を」's 「最初から始める」 at the difficulty chosen there: the journey's opening movie first, as from the title (not in Debug). */
+  function beginAgain(memory: string | null, chosen: Difficulty) {
+    if (!game) return;
+    playSe("ui_confirm");
+    setConfirmAgain(null);
+    const movie = isDebug ? undefined : getJourney(journeyId)?.openingMovie;
+    introTiming.current = debugOn ? startIntroTiming(performance.now(), !!movie) : null;
+    const again = { memory };
+    if (movie) setOpening({ videoPath: movie.videoPath, player: game.playerName, heroine: game.heroineName, reading: game.playerNameReading, difficulty: chosen, again });
+    else startJourney(game.playerName, game.heroineName, game.playerNameReading, chosen, again);
   }
   /**
    * 保存データの消去 (ゲームの設定's, or the title's): its confirmation opens over ゲームの設定, whose 「消去せず戻る」 goes
@@ -879,7 +936,7 @@ export function GameApp({
         sceneBackgroundId={sceneBackgroundId}
         scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
-        onRecords={() => setRecordsOpen(true)}
+        onRecords={openRecords}
         onAlbum={() => setAlbumOpen(true)}
         onGlossary={hasTerms ? openGlossary : undefined}
         onEnglish={() => openEnglish()}
@@ -905,6 +962,7 @@ export function GameApp({
         itemFlight={itemLeave}
         itemOutFlight={itemOutLeave}
         onLoad={reload}
+        onSaveSlots={saves ? () => setSaveSlotsOpen(true) : undefined}
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
@@ -950,7 +1008,7 @@ export function GameApp({
                       ? "証拠で考える"
                       : "クイズ"
                   : freeTimeAvailable
-                    ? "ふたりの街歩き"
+                    ? isJourneyComplete(game) ? "旅の思い出" : "ふたりの街歩き"
                     : "出発前"}
           </span>
         </div>
@@ -1034,9 +1092,11 @@ export function GameApp({
                   onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ{offlineMark && `（${offlineMark}）`}</button> : undefined} />}
               {offlineEntries && offlineEntryShown && <p role="status" className="sr-only" data-testid="offline-title-status">{offlineTitleStatus(offline, journeys)?.text}</p>}
               {offlineEntries && offlineTitleHint(offline, online, journeyId) && <p className="fine-print offline-hint">{offlineTitleHint(offline, online, journeyId)}</p>}
+              {saves && <SaveSlotList saves={saves} onChoose={requestSlotSwitch} />}
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
                 <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine}
                   playerRef={titleReading.ref} />
+                <DifficultyFields value={difficulty} onChange={setDifficulty} />
                 <button
                   className="primary"
                   data-testid="title-start"
@@ -1286,6 +1346,15 @@ export function GameApp({
               </button>
             </section>
           </>
+        ) : isJourneyComplete(game) ? (
+          <>
+            <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
+            <JourneyMemoriesScreen journeyJa={getJourney(journeyId)?.nameJa ?? ""} playerName={game.playerName} heroineName={game.heroineName}
+              numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
+              views={{ onEndRoll: moments.openEndRoll, onAlbum: () => setAlbumOpen(true), onMusicRoom: () => setMusicRoom(true), onRecords: openRecords }}
+              onAgain={openAgain}
+              selector={!isDebug && onSwitchJourney ? <JourneySelection value={journeyId} onChange={requestJourneySwitch} /> : undefined} />
+          </>
         ) : nightScreen && dayEnd ? (
           <NightScreen
             key={`${game.currentCityId}:${game.travel.day}`}
@@ -1354,18 +1423,43 @@ export function GameApp({
           {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
             エンドロールを見る</button>}
         </div>}
+        {/* The journey kept as 旅の思い出 when this one began again (2026-11-19). */}
+        {keptMemory?.status === "loaded" && <button type="button" className="secondary records-kept" data-testid="kept-memory-open"
+          onClick={() => setKeptOpen(true)}>前の旅の思い出</button>}
         <CityRecords game={game} />
         {/* 旅の数字 (2026-11-13): the journey so far in a few numbers, counting up as the records open. */}
         <JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
         <MetPeople game={game} />
       </Modal>}
+      {keptOpen && keptGame && <Modal labelledBy="kept-memory-title" onClose={() => setKeptOpen(false)} closeOnBackdrop>
+        <ModalTitle id="kept-memory-title" onClose={() => setKeptOpen(false)}>前の旅の思い出</ModalTitle>
+        <KeptMemoryContents playerName={keptGame.playerName} heroineName={keptGame.heroineName}
+          numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
+          views={{ onEndRoll: () => setKeptEndRoll(true), onAlbum: () => setAlbumOpen(true), onMusicRoom: () => setMusicRoom(true) }} />
+      </Modal>}
+      {keptEndRoll && keptGame && <EndRollDialog roll={endRollOf(keptGame)} numbers={journeyNumbers(keptGame, learnedWords.learned)}
+        reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
+      {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>
+        <ModalTitle id="again-title">もう一度この旅を</ModalTitle>
+        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。アルバムの写真・旅の図鑑・英語ノートは、そのまま引き継ぎます。</p>
+        <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。その国の言葉・既読の記録も、そのまま残ります。
+          {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
+          {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
+        <DifficultyFields value={againDifficulty} onChange={setAgainDifficulty} />
+        {confirmAgain.status === "invalid" && confirmAgain.raw === null && <p role="alert">このブラウザの保存領域を読み取れないため、始められません。保存の設定を確認してください。</p>}
+        <ModalAnswers
+          cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmAgain(null)}>戻る</button>}
+          action={<button type="button" className="primary" data-testid="again-confirm"
+            disabled={confirmAgain.status === "invalid" && confirmAgain.raw === null}
+            onClick={() => beginAgain(confirmAgain.status === "empty" ? null : confirmAgain.raw, againDifficulty)}>最初から始める</button>} />
+      </Modal>}
       {musicRoom && game && <LazyDialog onClose={() => { setMusicRoom(false); setRoomTrack(null); }}>
-        <MusicRoom game={game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
+        <MusicRoom game={keptGame ?? game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
           bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
       </LazyDialog>}
       {albumOpen && game && <LazyDialog onClose={() => setAlbumOpen(false)}>
-        <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />
+        <AlbumDialog album={(keptGame ?? game).album} currentCityId={(keptGame ?? game).currentCityId} onClose={() => setAlbumOpen(false)} />
       </LazyDialog>}
       {glossaryOpen && game && <LazyDialog onClose={() => setGlossaryOpen(null)}>
         <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugMarks} onClose={() => setGlossaryOpen(null)} />
@@ -1459,8 +1553,13 @@ export function GameApp({
           onClose={() => setDeleteSnapshot(null)}
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
-          {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
+          {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : deleteSnapshot.sharedKept ? <><p>
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、旅の思い出を消去します。元には戻せません。
+          </p>
+          <p className="fine-print">
+            ほかのセーブの枠と、枠で共有する英語ノート（単語帳・その国の言葉）・対訳設定・既読の記録は消去しません。文字の速さなどの表示設定、以前に退避したバックアップ、ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
+          </p></> : <><p>
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
@@ -1482,6 +1581,16 @@ export function GameApp({
             </ConfirmActionButton>} />
         </Modal>
       )}
+      {saveSlotsOpen && saves && <SaveSlotsDialog saves={saves} onChoose={requestSlotSwitch} onClose={() => setSaveSlotsOpen(false)} />}
+      {switchSlotTo !== null && saves && (
+        <Modal labelledBy="switch-slot-title" onClose={() => setSwitchSlotTo(null)}>
+          <ModalTitle id="switch-slot-title">セーブ{switchSlotTo}に切り替える</ModalTitle>
+          <p>手動セーブしていない進行は失われます。切り替えますか？</p>
+          <ModalAnswers
+            cancel={<button type="button" className="secondary" autoFocus onClick={() => setSwitchSlotTo(null)}>戻る</button>}
+            action={<button type="button" className="primary" onClick={() => saves.onSwitch(switchSlotTo)}>切り替える</button>} />
+        </Modal>
+      )}
       {switchJourneyTo && (
         <Modal labelledBy="switch-journey-title" onClose={() => setSwitchJourneyTo(null)}>
           <ModalTitle id="switch-journey-title">旅行編を切り替える</ModalTitle>
@@ -1492,7 +1601,7 @@ export function GameApp({
         </Modal>
       )}
       {/* ゲームの設定 (2026-11-14 user decision): its groups under their headings, the most used first (文字と表示, 音と振動,
-          名前, データ, オフライン), and the creator's tools last, folded away (open while Debug mode is on). The first focus is the
+          難易度, 名前, データ, オフライン), and the creator's tools last, folded away (open while Debug mode is on). The first focus is the
           title bar's 「× 閉じる」 (the first control). What it opens (the credits, the old data, a deletion's or a journey
           switch's confirmation) stacks over it and closes back to it. A form is in it: a tap beside it does not close it. */}
       {settings && game && (
@@ -1613,6 +1722,15 @@ export function GameApp({
           {displaySettings.error && (
             <p role="status">{displaySettings.error}</p>
           )}
+          {/* The difficulty (2026-11-19): the English changes from the next quiz (one already started keeps its own); how tight
+              money and AP are was chosen at the title and stays for the journey. */}
+          <h3>難易度</h3>
+          <div className="name-form difficulty-settings">
+            <EnglishLevelField value={difficultyOf(game).english}
+              note={game.activeBattle ? "解いている途中のクイズは、始めたときの英語のまま進みます。" : "次のクイズから変わります。"}
+              onChange={(level) => commit((state) => setEnglishLevel(state, level))} />
+          </div>
+          <p className="fine-print">お金とAPのきびしさ：{economyLevelLabel(difficultyOf(game).economy).labelJa}（旅の始めに決めたもので、変えられません）</p>
           <h3>名前</h3>
           {active ||
           game.activeEncounter ||
@@ -1690,7 +1808,7 @@ export function GameApp({
         muted={!displaySettings.value.bgm} onEnd={() => {
           if (introTiming.current) introTiming.current = endIntroMovie(introTiming.current, performance.now());
           setOpening(null);
-          startJourney(opening.player, opening.heroine, opening.reading);
+          startJourney(opening.player, opening.heroine, opening.reading, opening.difficulty, opening.again);
         }} />}
       {/* From the title's selector, or over ゲームの設定 (closing goes back to it, where it was). Closing never stops a run. */}
       {offlineOpen && <LazyDialog onClose={() => setOfflineOpen(false)}><OfflinePlayDialog onClose={() => setOfflineOpen(false)} journeys={journeys} /></LazyDialog>}

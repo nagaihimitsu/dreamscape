@@ -29,7 +29,7 @@ describe("deleting the save from settings", () => {
     const before = new Map(data);
 
     const request = checkDeleteRequest(slot, { hasGame: true, savedGame: state, protectedOriginal: null, loaded: { status: "loaded", state } });
-    expect(request).toEqual({ snapshot: { game: slot.getItem(SAVE_KEY), learning: "notes" } });
+    expect(request).toEqual({ snapshot: { game: slot.getItem(SAVE_KEY), learning: "notes", sharedKept: false } });
     // Preparing the confirmation (or cancelling it) writes nothing.
     expect(data).toEqual(before);
 
@@ -72,7 +72,7 @@ describe("deleting the save from settings", () => {
     const { slot } = browser();
     const game = createGame("ユウ", "ミオ");
     const unsaved = { hasGame: true, savedGame: null, protectedOriginal: null, loaded: { status: "empty" as const } };
-    expect(checkDeleteRequest(slot, unsaved)).toEqual({ snapshot: { game: null, learning: null } });
+    expect(checkDeleteRequest(slot, unsaved)).toEqual({ snapshot: { game: null, learning: null, sharedKept: false } });
     expect(saveGame(slot, game).ok).toBe(true);
     expect(checkDeleteRequest(slot, unsaved)).toEqual({ notice: staleTab });
 
@@ -80,7 +80,7 @@ describe("deleting the save from settings", () => {
     broken.setItem(SAVE_KEY, "{broken");
     const loaded = loadGame(broken);
     const protectedStart = { hasGame: true, savedGame: null, protectedOriginal: "{broken", loaded };
-    expect(checkDeleteRequest(broken, protectedStart)).toEqual({ snapshot: { game: "{broken", learning: null } });
+    expect(checkDeleteRequest(broken, protectedStart)).toEqual({ snapshot: { game: "{broken", learning: null, sharedKept: false } });
     broken.setItem(SAVE_KEY, "{changed");
     expect(checkDeleteRequest(broken, protectedStart)).toEqual({ notice: staleTab });
   });
@@ -91,7 +91,7 @@ describe("deleting the save from settings", () => {
     const loaded = loadGame(slot);
     expect(loaded.status).toBe("invalid");
     const startScreen = { hasGame: false, savedGame: null, protectedOriginal: null, loaded };
-    expect(checkDeleteRequest(slot, startScreen)).toEqual({ snapshot: { game: "{broken", learning: null } });
+    expect(checkDeleteRequest(slot, startScreen)).toEqual({ snapshot: { game: "{broken", learning: null, sharedKept: false } });
 
     slot.setItem(SAVE_KEY, "{changed");
     expect(checkDeleteRequest(slot, startScreen)).toEqual({ notice: unconfirmed });

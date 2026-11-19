@@ -192,10 +192,10 @@ export function BattleScreen({
   const answer = active.answers[active.roundIndex];
   const outcome = getBattleOutcome(active.score, quiz.questions.length);
   // The same translation as the option's 「訳を見る」 (shown after a wrong answer whatever the translation settings).
-  const correctTranslation = question && learningTranslations[question.id]?.optionsJa[question.correctOptionId];
+  const correctTranslation = question && learningTranslations[question.textKey]?.optionsJa[question.correctOptionId];
   // 「英語オフ」: the translation shown in the English's place, where the question has one (else its English stays).
-  const japaneseOnly = englishOff && !!question && !!learningTranslations[question.id];
-  const quizTranslation = question ? learningTranslations[question.id] : undefined;
+  const quizTranslation = question ? learningTranslations[question.textKey] : undefined;
+  const japaneseOnly = englishOff && !!quizTranslation;
   const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
     active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
@@ -718,15 +718,15 @@ export function BattleScreen({
                 metWords={metWords}
                 label="問題文"
                 onDoubleTap={() =>
-                  revealTranslation(learning, question.id, "question")
+                  revealTranslation(learning, question.textKey, "question")
                 }
               />
             </h2>
             <div className="question-translation-tools">
-              <Translation learning={learning} id={question.id} part="question">
+              <Translation learning={learning} id={question.textKey} part="question">
                 <ReadAloudButton reader={reader} part="question" text={question.questionEn} />
               </Translation>
-              <TranslationAll learning={learning} id={question.id} />
+              <TranslationAll learning={learning} id={question.textKey} />
             </div>
             </>)}
             <div className="quiz-choices" aria-label={japaneseOnly ? "3択" : "英語の3択"}>
@@ -781,7 +781,7 @@ export function BattleScreen({
                           metWords={metWords}
                           label={`選択肢${option.id}`}
                           onDoubleTap={() =>
-                            revealTranslation(learning, question.id, option.id)
+                            revealTranslation(learning, question.textKey, option.id)
                           }
                         />
                         </>}
@@ -794,7 +794,7 @@ export function BattleScreen({
                       </div>
                       {!japaneseOnly && <Translation
                         learning={learning}
-                        id={question.id}
+                        id={question.textKey}
                         part={option.id}
                       />}
                     </div>

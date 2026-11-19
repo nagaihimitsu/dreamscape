@@ -322,7 +322,7 @@ export const ops = {
     return panel;
   },
   /** One of ≡メニュー's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "アルバム" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "セーブの枠" | "旅の記録" | "アルバム" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
