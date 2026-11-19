@@ -94,9 +94,11 @@ export type EncounterScreenView = {
 };
 
 /** The view contains no game rules: all changes are committed by the caller. */
-export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvanceEnabled = false, readSkip, onAdvance, onChoose, onAnswer, onFinish }: {
+export function EncounterScreen({ view, learning, englishOff = false, speed, reduceMotion, autoAdvanceEnabled = false, readSkip, onAdvance, onChoose, onAnswer, onFinish }: {
   view: EncounterScreenView;
   learning: Learning;
+  /** 「英語オフ」: a quiz's question and options in their Japanese translation only. */
+  englishOff?: boolean;
   speed: number;
   reduceMotion: boolean;
   onSpeed: (value: number) => void;
@@ -198,6 +200,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         {quiz ? (
           <>
             {/* Its words open their meanings: a tap beside one (or on a meaning shown) does not go on past the result. */}
+            {englishOff && quiz.questionJa ? <p className="encounter-quiz-prompt" lang="ja">{quiz.questionJa}</p> : <>
             <p className="encounter-quiz-prompt" data-no-advance>
               <InteractiveEnglish text={quiz.questionEn} vocabulary={[]} label="問題文" onDoubleTap={() => revealTranslation(learning, quiz.id, "question")} />
             </p>
@@ -205,8 +208,9 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
               {visible(learning, quiz.id, "question") ? "訳を閉じる" : "訳を見る"}
             </button>
             {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
+            </>}
             {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={continueFromResult}>続きを読む <span aria-hidden="true">→</span></button></> : (
-              <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
+              <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
             )}
           </>
         ) : (
