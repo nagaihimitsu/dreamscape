@@ -19,7 +19,7 @@ function onBackdrop(event: { target: EventTarget; currentTarget: HTMLDialogEleme
  * dialog shows at that point (at 320–390 px, 「ゲームの設定」's point is the autosave checkbox
  * of the settings). Keys and the first focus are not held.
  *
- * `closeOnBackdrop` (2026-11-14 user decision): a dialog for viewing (旅の記録, アルバム, 会話ログ, the credits...)
+ * `closeOnBackdrop` (2026-11-14 user decision): a dialog for viewing (旅の記録, 会話ログ, the credits...)
  * also closes on a tap on the dimmed page around it, as the header's panels do, and then holds the page's taps for a
  * moment (holdTaps) as its 「× 閉じる」 does. Never a confirmation, never a dialog with a form (ゲームの設定's names).
  * A press that starts inside the dialog and ends outside (a scroll, a text selection) does not close it.

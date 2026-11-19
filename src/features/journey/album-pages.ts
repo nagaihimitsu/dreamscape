@@ -2,8 +2,8 @@ import type { AlbumPhoto } from "../../domain/album-state";
 import { placeDisplayName } from "./travel-labels";
 import { formatTravelTime } from "./travel-time";
 
-// The album's pages (≡メニュー → 「アルバム」, 2026-11-11 user decision) as pure rules, apart from the dialog
-// (AlbumDialog.tsx): one page per city in the journey's order, the page it opens on, and the swipe that turns one.
+// The album's pages (≡メニュー → 「旅の記録」 → 「写真」; 2026-11-11, made one with 旅の記録 2026-11-19) as pure rules, apart from the dialog
+// (TravelLog.tsx): one page per city in the journey's order, the page it opens on, and the swipe that turns one.
 
 /** A city of the journey as the album names it and its places. */
 export type AlbumCity = { id: string; nameJa: string; hotelPlaceId: string; places: readonly { id: string; nameJa: string }[] };

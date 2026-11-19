@@ -51,6 +51,7 @@ import { advanceRunningOccasion } from "./occasion-hooks";
 import { validateAlbum } from "./album";
 import { validateGlossary } from "./glossary";
 import { validatePastBattles } from "./carry-over";
+import { validateLivedTimes, withLivedTimes } from "./lived-times";
 import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishChoice } from "./difficulty";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
@@ -516,8 +517,9 @@ export function finishDate(
         memories.push(effect.memoryId);
     }
   }
-  // The date is one part of its occasion: the 「交際開始」 screen or the occasion's end follows now (stage 3b).
-  return advanceRunningOccasion(evaluateProgression({
+  // The date is one part of its occasion: the 「交際開始」 screen or the occasion's end follows now (stage 3b). Its first
+  // finish is timed for 旅の記録 (lived-times.ts).
+  return advanceRunningOccasion(evaluateProgression(withLivedTimes({
     ...state,
     memories,
     revision: state.revision + 1,
@@ -536,7 +538,7 @@ export function finishDate(
       : [...state.playedDateIds, active.dateId],
     // The latest place finished, for 前回までのあらすじ's heroine line: a normal date at a destination, not a replay.
     ...(date.destinationId && !active.replay ? { recapDateId: date.id } : {}),
-  }));
+  }, [active.dateId])));
 }
 
 export function validateGameState(input: unknown): GameState {
@@ -558,5 +560,6 @@ export function validateGameState(input: unknown): GameState {
   validateAlbum(state);
   validateGlossary(state);
   validatePastBattles(state);
+  validateLivedTimes(state);
   return state;
 }

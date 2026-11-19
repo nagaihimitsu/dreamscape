@@ -16,17 +16,17 @@ async function tapsAreFree(page: Page) {
   await expect(page.locator("html[data-tap-hold]")).toHaveCount(0);
 }
 
-test("a tap on the dimmed page closes the album and the map, never the settings", { tag: [tier.gate, tier.smoke] }, async ({ page }) => {
+test("a tap on the dimmed page closes 旅の記録 and the map, never the settings", { tag: [tier.gate, tier.smoke] }, async ({ page }) => {
   await ops.startJourney(page, "milano");
   const dialog = page.locator("dialog[open]");
 
-  await ops.menuItem(page, "アルバム");
+  await ops.menuItem(page, "旅の記録");
   await expect(dialog).toHaveCount(1);
-  // The album opens under the finger and waits a moment before it takes presses (Modal's settlePresses).
+  // 旅の記録 opens under the finger and waits a moment before it takes presses (Modal's settlePresses).
   await expect(page.locator("dialog[open][data-settling]")).toHaveCount(0);
   const outsideAlbum = await besideDialog(page);
   await page.touchscreen.tap(outsideAlbum.x, outsideAlbum.y);
-  await expect(dialog, "the album closes").toHaveCount(0);
+  await expect(dialog, "旅の記録 closes").toHaveCount(0);
   await tapsAreFree(page);
 
   await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^地図/u }).click();
