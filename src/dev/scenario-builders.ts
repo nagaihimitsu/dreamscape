@@ -12,7 +12,7 @@
  * relationship and the clues found (only those the save check keeps).
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, progression, sceneConditions, scenes, type DateDefinition, type QuizQuestion, type Tour } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, sceneConditions, scenes, type DateDefinition, type QuizQuestion, type Tour } from "../content";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { bookTour as bookTourOffer, continueTour, getTourOffers } from "../domain/tour";
 import { encounters } from "../content/encounters";
@@ -20,6 +20,7 @@ import { getJourneyForCity } from "../content/journeys";
 import { advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, chooseBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
 import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
+import { confessionThresholds } from "../domain/difficulty";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterEntryRule, encounterVisitSlot, finishEncounter,
   getEncounterOptionAvailability, leaveBattleToFreeTime, nextObservationScene, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
@@ -833,11 +834,11 @@ function withDeferral(state: GameState, date: DateDefinition): GameState {
 }
 
 /**
- * The current city's first ordinary dates not played yet, as many as a confession still counts (progression's
- * minCompletedDates less the completed ones); `keep` leaves a date out (one its story asks about).
+ * The current city's first ordinary dates not played yet, as many as a confession still counts (minCompletedDates at the
+ * save's level, difficulty.ts confessionThresholds, less the completed ones); `keep` leaves a date out (one its story asks about).
  */
 function missingCountedDates(state: GameState, keep: (dateId: string) => boolean = () => true): string[] {
-  const missing = Math.max(0, progression.confession.minCompletedDates - completedDateCount(state));
+  const missing = Math.max(0, confessionThresholds(state).minCompletedDates - completedDateCount(state));
   return dates.filter((item) => item.chapterId === state.currentCityId && item.kind === "normal" && !state.playedDateIds.includes(item.id) && keep(item.id))
     .slice(0, missing).map((item) => item.id);
 }

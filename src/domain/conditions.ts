@@ -1,5 +1,6 @@
-import { battles, dates, episodes, landmarks, progression, scenes, storyState } from "../content";
+import { battles, dates, episodes, landmarks, scenes, storyState } from "../content";
 import { usableAp, usableMoney } from "./reservations";
+import { confessionThresholds } from "./difficulty";
 import { leafKind, type Condition, type Leaf, type LeafKind, type LeafValues } from "../content/condition-schemas";
 import { isMomentQuiz } from "./moments";
 import type { GameState } from "./game-state-schema";
@@ -39,14 +40,16 @@ export function dateSinceRejection(state: Readonly<GameState>): boolean {
 
 /**
  * A confession would be accepted now (the leaf confessionReady; confessionResult in date-rules.ts reads it too): the
- * hidden relationship values and the completed dates meet romance/progression.json's confession thresholds.
+ * hidden relationship values and the completed dates meet the confession's thresholds at the save's level of money and AP
+ * (difficulty.ts confessionThresholds: the journey's own there, else romance/progression.json's).
  */
 export function canConfessSuccessfully(state: Readonly<GameState>): boolean {
+  const need = confessionThresholds(state);
   return (
-    state.affection >= progression.confession.minAffection &&
-    state.trust >= progression.confession.minTrust &&
-    state.spark >= progression.confession.minSpark &&
-    completedDateCount(state) >= progression.confession.minCompletedDates
+    state.affection >= need.minAffection &&
+    state.trust >= need.minTrust &&
+    state.spark >= need.minSpark &&
+    completedDateCount(state) >= need.minCompletedDates
   );
 }
 
