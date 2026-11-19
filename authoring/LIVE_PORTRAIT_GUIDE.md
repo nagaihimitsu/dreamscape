@@ -71,10 +71,10 @@
 
 ## 5. 動かす部品を作り直すとき
 
-ゲームは、mesh-avatar 0.8.0 を Dreamscape 用に直した部品を使っています（表情ごとの顔 `setFace`、表情ごとの閉じ目、口を開けた表情の口、描いた「う」と「あ」の代用）。部品は [`vendor/mesh-avatar-0.8.0-dreamscape.1.tgz`](../vendor/mesh-avatar-0.8.0-dreamscape.1.tgz) で、`package.json` の依存です（ライセンスの一覧に自動で載るため）。
+ゲームは、mesh-avatar 0.8.0 を Dreamscape 用に直した部品を使っています（表情ごとの顔 `setFace`、表情ごとの閉じ目、口を開けた表情の口、描いた「う」と「あ」の代用、端末の画素の密度どおり最大3倍で描く。元は2倍までで、3倍の iPhone ではぼけて見えた）。部品は [`vendor/mesh-avatar-0.8.0-dreamscape.2.tgz`](../vendor/mesh-avatar-0.8.0-dreamscape.2.tgz) で、`package.json` の依存です（ライセンスの一覧に自動で載るため）。
 
 1. Mesh Avatar Studio の `406714b`（2026-11-17）に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当てます（`git apply`）。
-2. `packages/runtime/package.json` の `version` を上げ（`0.8.0-dreamscape.2` など）、`dependencies`（fflate。部品に同梱済み）と `publishConfig` を外します。
+2. `packages/runtime/package.json` の `version` を上げ（今は `0.8.0-dreamscape.2`。次は `.3` など）、`dependencies`（fflate。部品に同梱済み）と `publishConfig` を外します。
 3. `packages/runtime` で `npm pack`、できた tgz を `vendor/` に置いて、Dreamscape で `npm install ./vendor/<tgz>` を実行します。古い tgz は消します。
 4. 直した所はパッチにも書き戻します（`git diff -- packages/runtime/src > mesh-avatar-faces.patch`）。
 

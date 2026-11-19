@@ -26,6 +26,26 @@ index 614400a..26501b6 100644
    getExpression(): { name: LiveExpression; active: boolean };
    setTalkGain(gain: number): void;
    play(id: string): void;
+diff --git a/packages/runtime/src/engine/renderer.js b/packages/runtime/src/engine/renderer.js
+index 7ae2fac..8a4eedf 100644
+--- a/packages/runtime/src/engine/renderer.js
++++ b/packages/runtime/src/engine/renderer.js
+@@ -379,7 +379,14 @@ export function createRenderer(engine, rig) {
+     }
+ 
+     resize() {
+-      const c = this.canvas, dpr = Math.min(window.devicePixelRatio || 1, 2);
++      // The device's own pixel density (up to 3), but never finer than the illustration's own pixels: a phone at 3x
++      // drew a 2x canvas stretched by 1.5 and sampled the texture at about 0.67 (blending in its half-size mip), which
++      // looked out of focus next to the still picture.
++      const c = this.canvas, fitAt = d => (this.fit === 'cover' ? Math.max : Math.min)(
++        c.clientWidth * d / (IMG.w * (1 + 2 * this.pad.side)), c.clientHeight * d / (IMG.h * (1 + this.pad.top)));
++      let dpr = Math.min(window.devicePixelRatio || 1, 3);
++      const over = fitAt(dpr);
++      if (over > 1) dpr = Math.max(1, dpr / over);
+       const w = Math.round(c.clientWidth * dpr), h = Math.round(c.clientHeight * dpr);
+       if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+       // Contain anchors the cut-off body to the bottom; cover crops around the image center.
 diff --git a/packages/runtime/src/engine/sprites.js b/packages/runtime/src/engine/sprites.js
 index db42017..5877342 100644
 --- a/packages/runtime/src/engine/sprites.js
