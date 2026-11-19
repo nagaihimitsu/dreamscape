@@ -170,7 +170,7 @@ export function recapPicture(game: Pick<GameState, "album" | "currentCityId">, e
 
 /**
  * The recap of a resumed game: where and when the party is, the thing finished last (recapSubject: an episode's clear
- * title and record, or a date's title and description; the names filled in; the city it was in when that is not the city
+ * title and record, or a date's (its clear title and record, else its title and description); the names filled in; the city it was in when that is not the city
  * now), its picture (subjectPicture) and her line looking back on its place (the first of the place's `recapLinesJa` that
  * holds now). Null before anything is finished: there is nothing to recap yet (the header shows the place and time).
  */
@@ -189,7 +189,7 @@ export function resumeRecap(game: GameState): ResumeRecap | null {
   const found = subjectPlace(subject);
   const cityId = subject.kind === "episode" ? subject.episode.cityId : found?.cityId;
   const [titleJa, descriptionJa] = subject.kind === "episode"
-    ? [subject.episode.clearTitleJa, subject.episode.clearDescriptionJa] : [subject.date.titleJa, subject.date.descriptionJa];
+    ? [subject.episode.clearTitleJa, subject.episode.clearDescriptionJa] : [subject.date.clearTitleJa ?? subject.date.titleJa, subject.date.clearDescriptionJa ?? subject.date.descriptionJa];
   const photo = subjectPicture(game, subject);
   const line = found ? itemLines(game, found.place.recapLinesJa)?.[0] : undefined;
   return {

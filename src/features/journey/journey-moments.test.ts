@@ -165,13 +165,13 @@ describe("the recap of a resumed game", () => {
     }
     expect(state.recapDateId).toBe("gt_delhi_date_agrasen_baoli");
     expect(validateGameState(state)).toEqual(state);
-    // The date is the recap now: its title and description, its own album photo, her line about the baoli.
+    // The date is the recap now: its clear title and record (without them, its title and description), its own album photo, her line about the baoli.
     expect(state.completedEpisodeIds.at(-1)).toBe(JAMA_MASJID);
     expect(state.album.at(-1)).toMatchObject({ imageId: baoliDate.imageId, storyId: baoliDate.storyId });
     const date = dates.find((item) => item.id === "gt_delhi_date_agrasen_baoli")!;
     expect(resumeRecap(state)).toEqual({
       cityJa: "デリー", whenJa: `${state.travel.day}日目 ${formatTravelTime(state.travel.minute)}`,
-      chapter: { titleJa: "本物の悲鳴", descriptionJa: date.descriptionJa },
+      chapter: { titleJa: "質問みたいな悲鳴", descriptionJa: date.clearDescriptionJa!.replace("{heroine_name}", "澪") },
       photo: albumPicture(baoliDate),
       heroine: { textJa: place("delhi_agrasen_baoli").recapLinesJa![0], cityId: "delhi" },
     });
