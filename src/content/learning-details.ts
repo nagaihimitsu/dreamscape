@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { japaneseText, englishText, type QuizDefinition } from "./schemas";
+import { askedLevels } from "./learning-schema";
 const text = z.string().trim().min(1);
 // English-note details, keyed by question ID and merged across the journey
 // folders like the translations. Each question names the learning story its
@@ -48,10 +49,11 @@ export function validateLearningDetails(
   details: z.infer<typeof learningDetailsSchema>,
   quizzes: Record<string, QuizDefinition>,
 ) {
-  const questions = Object.values(quizzes).flatMap((q) => q.questions);
+  // A question's details, or its English's at another level (`<ID>@<level>`, english-levels.ts).
+  const questions = Object.values(quizzes).flatMap((quiz) => quiz.questions.flatMap((question) => askedLevels(quiz, question)));
   const topicIds = new Set<string>();
   for (const [id, detail] of Object.entries(details.questions)) {
-    const question = questions.find((q) => q.id === id);
+    const question = questions.find((q) => q.textKey === id);
     if (!question) throw new Error(`Unknown learning question: ${id}`);
     for (const segment of detail.segments)
       if (!question.questionEn.includes(segment.textEn))

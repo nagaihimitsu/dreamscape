@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { battleAnswerSchema, getBattleContentByHash } from "../../domain/battle";
 import { battles } from "../../content";
+import { ENGLISH_LEVELS } from "../../content/schemas";
 import { LEARNING_KEY as key, type StorageLike } from "../../persistence";
 
 const schema = z
@@ -21,6 +22,8 @@ const schema = z
           runId: z.string().min(1),
           contentHash: z.string().min(1),
           answers: z.array(battleAnswerSchema).max(5),
+          /** The English the run asked (its activeBattle.englishLevel; none: the quiz's own), which the review shows again. */
+          englishLevel: z.enum(ENGLISH_LEVELS).optional(),
         })
         .strict(),
     ),

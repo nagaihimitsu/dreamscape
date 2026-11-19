@@ -9,6 +9,7 @@ import { deleteSaveData, loadGame, saveGame, type StorageLike } from "../persist
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
 import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
+import type { Difficulty } from "../domain/difficulty";
 
 export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
@@ -112,9 +113,9 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     protectedOriginalRef.current = result.baseline.protectedOriginal;
     return true;
   }
-  /** A new journey with the names as the title's form gives them, and the reading captured with the player's (if any). */
-  function begin(player: string, heroine: string, playerNameReading: string | undefined, journeyId: string) {
-    const initial = createGame(player.trim(), heroine.trim(), { journeyId, playerNameReading });
+  /** A new journey with the names and the difficulty as the title's form gives them, and the reading captured with the player's (if any). */
+  function begin(player: string, heroine: string, playerNameReading: string | undefined, journeyId: string, difficulty?: Difficulty) {
+    const initial = createGame(player.trim(), heroine.trim(), { journeyId, playerNameReading, difficulty });
     // The new journey's arrival opens through the same entry as the others (4.2); a line it shows at once may take a photo
     // and name a term of 旅の図鑑 (none under the arrival's title card, which covers its first line).
     const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));

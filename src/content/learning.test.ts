@@ -4,7 +4,7 @@ import { zodIssues } from "../../tests/fixtures/zod-issues";
 import raw from "./generated/content/learning/translations.json";
 import details from "./generated/content/learning/details.json";
 import { battleQuizzes } from "./index";
-import { learningCatalogSchema, validateLearning } from "./learning-schema";
+import { askedLevels, learningCatalogSchema, validateLearning } from "./learning-schema";
 import {
   learningDetailsSchema,
   validateLearningDetails,
@@ -17,7 +17,9 @@ describe("learning content", () => {
     const catalog = learningCatalogSchema.parse(raw);
     expect(() => validateLearning(catalog, battleQuizzes, ids)).not.toThrow();
     const published = ids.flatMap((id) => battleQuizzes[id].questions.map((question) => question.id));
-    expect(Object.keys(catalog.questions).sort()).toEqual([...new Set(published)].sort());
+    // A question's English at another level has its own translation (`<ID>@<level>`; the difficulty, 2026-11-19).
+    const asked = ids.flatMap((id) => battleQuizzes[id].questions.flatMap((question) => askedLevels(battleQuizzes[id], question).map((item) => item.textKey)));
+    expect(Object.keys(catalog.questions).sort()).toEqual([...new Set(asked)].sort());
     expect(published).toEqual(expect.arrayContaining(["milano_la_scala_b_q2", "milano_brera_c_q3"]));
     for (const entry of Object.values(catalog.questions))
       expect(Object.keys(entry.optionsJa).sort()).toEqual(["A", "B", "C"]);

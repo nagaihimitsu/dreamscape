@@ -1,5 +1,6 @@
 import { getJourney } from "../content/journeys";
 import { isJourneyComplete } from "../domain/city-travel";
+import { difficultyOf, type Difficulty } from "../domain/difficulty";
 import { loadGame, type StorageLike } from "../persistence";
 import { SAVE_SLOTS, isSaveSlot, journeyStorage, type SaveSlot } from "../persistence/journey-storage";
 
@@ -32,7 +33,8 @@ export function rememberSlot(storage: Pick<StorageLike, "setItem">, journeyId: s
 /** What a slot holds, as the list of saves shows it. Relationship values are never shown. */
 export type SlotSummary =
   | { slot: SaveSlot; status: "empty" }
-  | { slot: SaveSlot; status: "saved"; playerName: string; heroineName: string; cityJa: string; day: number; finished: boolean }
+  | { slot: SaveSlot; status: "saved"; playerName: string; heroineName: string; cityJa: string; day: number; finished: boolean;
+      difficulty: Difficulty }
   | { slot: SaveSlot; status: "unreadable" };
 
 /** Each slot of the journey in order: empty, a save this version loads (names, city, day), or one it cannot read. */
@@ -46,7 +48,7 @@ export function slotSummaries(base: StorageLike & { removeItem(key: string): voi
     return {
       slot, status: "saved", playerName: state.playerName, heroineName: state.heroineName,
       cityJa: cities.find((city) => city.id === state.currentCityId)?.nameJa ?? "",
-      day: state.travel.day, finished: isJourneyComplete(state),
+      day: state.travel.day, finished: isJourneyComplete(state), difficulty: difficultyOf(state),
     };
   });
 }

@@ -57,6 +57,7 @@ export function useLearning(game: GameState | null, storage: StorageLike = windo
             runId: active.runId,
             contentHash: active.contentHash,
             answers: active.answers,
+            ...(active.englishLevel ? { englishLevel: active.englishLevel } : {}),
           },
         },
       };
