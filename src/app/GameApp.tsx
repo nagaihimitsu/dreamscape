@@ -158,8 +158,10 @@ import {
 } from "../domain/battle";
 
 import { browserStorage, type AppProps, type SaveSlots } from "./app-storage";
-import type { SaveSlot } from "../persistence/journey-storage";
-import { SaveSlotList, SaveSlotsDialog } from "../features/journey/SaveSlots";
+import { journeyStorage, type SaveSlot } from "../persistence/journey-storage";
+import { SaveLoadDialog, SaveSlotList } from "../features/journey/SaveSlots";
+import { slotSummaries, summarizeSlot } from "./save-slots";
+import { autoSaveLine } from "./journey-hud-text";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
@@ -492,12 +494,28 @@ export function GameApp({
       main.current?.focus({ preventScroll: true });
     endSelectorFocus();
   }, [restoreSelectorFocus, endSelectorFocus]);
-  // 「セーブの枠」 (SaveSlots.tsx): its dialog, and the slot whose switch waits for the player to confirm losing unsaved play.
-  const [saveSlotsOpen, setSaveSlotsOpen] = useState(false);
+  // 「セーブ・ロード」 (SaveSlots.tsx): its dialog (the time it opened, for the line of the last automatic save), the count
+  // of saves that drops the ribbon onto ≡メニュー, and the slot whose switch waits for the player to confirm losing unsaved play.
+  const [saveLoadOpenedAt, setSaveLoadOpenedAt] = useState<number | null>(null);
+  const [saveMark, setSaveMark] = useState(0);
   const [switchSlotTo, setSwitchSlotTo] = useState<SaveSlot | null>(null);
+  const playedSlot: SaveSlot = saves?.slot ?? 1;
+  function saveIntoSlot(slot: SaveSlot) {
+    setSaveLoadOpenedAt(null);
+    const saved = slot === playedSlot || !saves
+      ? save()
+      : session.saveTo(journeyStorage(saves.base, journeyId, slot), `セーブ${slot}`);
+    if (!saved) return;
+    playSe("save");
+    setSaveMark((count) => count + 1);
+  }
+  function loadFromSlot(slot: SaveSlot) {
+    setSaveLoadOpenedAt(null);
+    if (slot === playedSlot) reload();
+    else requestSlotSwitch(slot);
+  }
   function requestSlotSwitch(slot: SaveSlot) {
     if (!saves) return;
-    setSaveSlotsOpen(false);
     const step = leaveStep({ way: "switch_slot", from: saves.slot, to: slot }, session.hasUnsavedProgress());
     if (step === "ask") setSwitchSlotTo(slot);
     else if (step === "leave") saves.onSwitch(slot);
@@ -944,12 +962,8 @@ export function GameApp({
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
         onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
-        onSave={() => {
-          const saved = save();
-          if (saved) playSe("save");
-          return saved;
-        }}
-        autoSave={displaySettings.value.autoSave ? { savedAt: session.savedAt } : null}
+        onSaveLoad={() => setSaveLoadOpenedAt(Date.now())}
+        saveMark={saveMark}
         toast={session.toast}
         clueNotice={clueWords[0] ?? null}
         onClueNoticeDone={dropClueWord}
@@ -963,8 +977,6 @@ export function GameApp({
         holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
         itemFlight={itemLeave}
         itemOutFlight={itemOutLeave}
-        onLoad={reload}
-        onSaveSlots={saves ? () => setSaveSlotsOpen(true) : undefined}
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
@@ -1578,7 +1590,10 @@ export function GameApp({
             </ConfirmActionButton>} />
         </Modal>
       )}
-      {saveSlotsOpen && saves && <SaveSlotsDialog saves={saves} onChoose={requestSlotSwitch} onClose={() => setSaveSlotsOpen(false)} />}
+      {saveLoadOpenedAt !== null && <SaveLoadDialog current={playedSlot} debug={!saves}
+        readSlots={() => saves ? slotSummaries(saves.base, journeyId) : [summarizeSlot(storage, journeyId, 1)]}
+        autoSaveNote={displaySettings.value.autoSave ? autoSaveLine(session.savedAt, saveLoadOpenedAt) : null}
+        onSave={saveIntoSlot} onLoad={loadFromSlot} onClose={() => setSaveLoadOpenedAt(null)} />}
       {switchSlotTo !== null && saves && (
         <Modal labelledBy="switch-slot-title" onClose={() => setSwitchSlotTo(null)}>
           <ModalTitle id="switch-slot-title">セーブ{switchSlotTo}に切り替える</ModalTitle>

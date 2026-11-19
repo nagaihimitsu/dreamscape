@@ -305,7 +305,7 @@ export const ops = {
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
   /**
-   * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ, ロード, 旅の記録,
+   * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ・ロード, 旅の記録,
    * 英語ノート, 写真の出典 (free time) or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While
    * 英語ノート has a new entry, its name and 「英語ノート」's go on with 「、…新しい項目あり」 (its dot; the browser may put a
    * space before it, as the words are a separate visually hidden span).
@@ -322,7 +322,7 @@ export const ops = {
     return panel;
   },
   /** One of ≡メニュー's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "セーブの枠" | "旅の記録" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ・ロード" | "旅の記録" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
@@ -479,16 +479,33 @@ export const ops = {
   sessionToast(page: Page): Locator {
     return page.getByTestId("session-toast");
   },
-  /** ≡メニュー → 「セーブ」. */
-  async manualSave(page: Page) {
-    await ops.menuItem(page, "セーブ");
+  /**
+   * ≡メニュー → 「セーブ・ロード」 (2026-11-19: one item, a dialog of the slots): returns that dialog in the mode asked
+   * (「セーブ」 or 「ロード」), once it takes presses (it opens under the finger and waits a moment).
+   */
+  async openSaveLoad(page: Page, mode: "save" | "load"): Promise<Locator> {
+    await ops.menuItem(page, "セーブ・ロード");
+    const dialog = page.getByRole("dialog", { name: "セーブ・ロード" });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).not.toHaveAttribute("data-settling");
+    await dialog.getByTestId(`save-load-${mode}`).click();
+    return dialog;
   },
-  /** ≡メニュー → 「ロード」: with nothing unsaved the saved scene comes back at once (with unsaved progress it asks first: askToLoad). */
-  async loadSaved(page: Page) {
-    await ops.menuItem(page, "ロード");
+  /** ≡メニュー → 「セーブ・ロード」 → 「セーブ」 of the slot played. */
+  async manualSave(page: Page) {
+    const dialog = await ops.openSaveLoad(page, "save");
+    await dialog.locator(".save-slot.playing").getByRole("button", { name: /にセーブ$/u }).click();
   },
   /**
-   * ≡メニュー → 「ロード」 while progress is unsaved (manual saving): returns the confirmation
+   * ≡メニュー → 「セーブ・ロード」 → 「ロード」 of the slot played: with nothing unsaved the saved scene comes back at once
+   * (with unsaved progress it asks first: askToLoad).
+   */
+  async loadSaved(page: Page) {
+    const dialog = await ops.openSaveLoad(page, "load");
+    await dialog.locator(".save-slot.playing").getByRole("button", { name: /をロード$/u }).click();
+  },
+  /**
+   * ≡メニュー → 「セーブ・ロード」 → 「ロード」 while progress is unsaved (manual saving): returns the confirmation
    * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`), once it takes presses
    * (it opens under the finger and waits a moment, like the settings).
    */

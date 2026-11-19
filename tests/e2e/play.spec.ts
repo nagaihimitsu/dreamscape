@@ -98,7 +98,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
   const left = await unrevealed();
   const panel = await ops.openMenu(page);
-  await expect(panel.getByRole("button", { name: "セーブ", exact: true })).toBeFocused();
+  await expect(panel.getByRole("button", { name: "セーブ・ロード", exact: true })).toBeFocused();
   await page.clock.fastForward(2_000);
   expect(await unrevealed(), "the line waits while the panel is open").toBe(left);
   await ops.tapAt(page, picture);
