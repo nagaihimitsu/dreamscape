@@ -29,10 +29,22 @@
 /* A character's own size (characters.json figureScale, --figure-scale on the portrait): the picture shrinks about its
    bottom, so the feet stay where everyone's are and the head comes down. The box, its placement and the slots of a
    two-person scene are unchanged. */
-.vn-character > img {
+.vn-character > img,
+.vn-character > canvas.live-portrait {
   scale: var(--figure-scale, 1);
   transform-origin: center bottom;
 }
+/* The moving standing picture (LivePortrait.tsx): its canvas lies over the still picture in the same box and draws the
+   figure as the still picture does (contain, on the bottom edge). Once it moves, the still picture under it is hidden;
+   until then (and if it never does) the still picture shows. */
+.vn-character > canvas.live-portrait {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.vn-character[data-live="ready"] > :is(img, svg) { visibility: hidden; }
 /* A face in a small round frame (CharacterFace): the standing picture, scaled so that its head
    fills the frame. Every standing picture of the heroine is a 2:3 canvas with her head at the top
    centre (about 12 % down); the placeholder figure's head sits lower in its own 2:3 canvas. */

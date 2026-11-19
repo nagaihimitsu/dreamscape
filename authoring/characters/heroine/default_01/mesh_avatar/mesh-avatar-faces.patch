@@ -1,0 +1,160 @@
+diff --git a/packages/runtime/src/engine/createMeshAvatar.js b/packages/runtime/src/engine/createMeshAvatar.js
+index 16eb10c..dbb37fd 100644
+--- a/packages/runtime/src/engine/createMeshAvatar.js
++++ b/packages/runtime/src/engine/createMeshAvatar.js
+@@ -288,6 +288,9 @@ export async function createMeshAvatarImpl(canvas, options) {
+     setExpression(name, { parameters = true } = {}) { expression.set(name); expressionParameters = parameters; },
+     /** Show the named overlay layers (built/overlays/overlays.json) and hide the others. */
+     setOverlays(names) { overlays?.set(names); },
++    /** Whole-face expression drawing (sprites face_<name>); null shows the base face. */
++    setFace(name) { sprites?.setFace(name ?? null); },
++    getFaces() { return sprites?.faces ?? []; },
+     getExpression() { return { name: expression.name, active: expression.active }; },
+     /** How much the head moves with the voice while speaking (1 = default, calmer below). */
+     setTalkGain(g) { motion.talkGain = Math.max(0, Number(g) || 0); },
+diff --git a/packages/runtime/src/engine/index.ts b/packages/runtime/src/engine/index.ts
+index 614400a..26501b6 100644
+--- a/packages/runtime/src/engine/index.ts
++++ b/packages/runtime/src/engine/index.ts
+@@ -38,6 +38,9 @@ export interface MeshAvatar {
+   setExpression(name: LiveExpression, options?: { parameters?: boolean }): void;
+   /** Show the named overlay layers from built/overlays/overlays.json and hide the rest; unknown names are ignored. */
+   setOverlays(names: string[]): void;
++  /** Whole-face expression drawing (sprites face_<name>); null shows the base face. */
++  setFace(name: string | null): void;
++  getFaces(): string[];
+   getExpression(): { name: LiveExpression; active: boolean };
+   setTalkGain(gain: number): void;
+   play(id: string): void;
+diff --git a/packages/runtime/src/engine/sprites.js b/packages/runtime/src/engine/sprites.js
+index db42017..5877342 100644
+--- a/packages/runtime/src/engine/sprites.js
++++ b/packages/runtime/src/engine/sprites.js
+@@ -24,6 +24,14 @@ export function createSpriteModule(engine, rig) {
+     o: { sprite: 'mouth_o', ref: 0.75, width: 1 },
+     u: { sprite: 'mouth_o', ref: 0.75, width: 0.78 },
+   };
++  // Shapes drawn from fewer drawings: a drawn u when there is one, and the a drawing squashed (and a
++  // little wider for i / e) when the half-open a or the i was not drawn.
++  const MOUTH_FALLBACKS = {
++    u: [{ sprite: 'mouth_u', ref: 0.6, width: 1 }],
++    aHalf: [{ sprite: 'mouth_a', ref: 0.9, width: 1 }],
++    e: [{ sprite: 'mouth_a', ref: 0.9, width: 1.06 }],
++    i: [{ sprite: 'mouth_a', ref: 1.2, width: 1.1 }],
++  };
+   // below this the drawn closed mouth of the original image is shown (a barely open mouth
+   // drawing looked like a stuck, oddly shaped mouth)
+   const MOUTH_OPEN_MIN = 0.16;
+@@ -90,7 +98,8 @@ export function createSpriteModule(engine, rig) {
+     // expression closed mouths under open ones (the fade-in frame is drawn on top)
+     const shut = n => n.startsWith('eyes_closed') || n.startsWith('eyes_smile');
+     const moodMouth = n => MOUTH_MOODS.some(m => n === `mouth_${m}`);
+-    const order = n => (shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
++    // whole-face expression drawings (face_<name>) lie under every eye / mouth drawing
++    const order = n => (n.startsWith('face_') ? -1 : n.startsWith('mouthopen_') ? 4 : shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
+     const entries = Object.entries(sheet.layers).sort((x, y) => order(x[0]) - order(y[0]));
+     for (const [name, rect] of entries) {
+       const mesh = buildGrid(rect, rig.mesh.spriteCell, alphaOf(imgs[name]), imgs[name].width);
+@@ -109,7 +118,7 @@ export function createSpriteModule(engine, rig) {
+     // layered eye and the shader mouth instead of hiding them under a drawing that is not there.
+     // Only an eye with both the closed and the half-closed drawing is held open for the sprites.
+     const eyesDrawn = [0, 1].map(i => Boolean(items[`eyes_closed_${i}`] && items[`eyes_half_${i}`]));
+-    const mouthsDrawn = Object.values(MOUTH_SHAPES).some(def => items[def.sprite]);
++    const mouthsDrawn = [...Object.values(MOUTH_SHAPES), ...Object.values(MOUTH_FALLBACKS).flat()].some(def => items[def.sprite]);
+     const frameFor = (want, i) => {
+       if (want === 'eyes_smile' && !items[`eyes_smile_${i}`]) want = 'eyes_closed';
+       return want === 'open' || items[`${want}_${i}`] ? want : 'open';
+@@ -117,6 +126,9 @@ export function createSpriteModule(engine, rig) {
+     const tmp = [0, 0];
+     let lastShape = null;
+     const eyeState = [0, 1].map(() => ({ cur: 'open', prev: 'open', t: 1 }));
++    // the shown face drawing (null: the base illustration's own face) and the one fading out
++    const faceState = { cur: null, prev: null, t: 1 };
++    const FACE_FADE_SEC = 0.12;
+ 
+     function place(item, P, phys, squash, width = 1) {
+       const r = item.mesh.rest, o = item.mesh.pos;
+@@ -144,6 +156,17 @@ export function createSpriteModule(engine, rig) {
+        */
+       update(P, phys, dt = 1 / 60, mood = null) {
+         for (const it of Object.values(items)) it.layer.visible = false;
++        faceState.t = dt > 0 ? Math.min(1, faceState.t + dt / FACE_FADE_SEC) : 1;
++        const fk = sstep(0, 1, faceState.t);
++        const showFace = (name, alpha) => {
++          const it = name && items[`face_${name}`];
++          if (!it || alpha <= 0.001) return;
++          it.layer.visible = true;
++          it.layer.alpha = alpha;
++          place(it, P, phys, 1);
++        };
++        if (faceState.t < 1) showFace(faceState.prev, 1 - fk);
++        showFace(faceState.cur, faceState.t < 1 ? fk : 1);
+         const covered = [false, false];
+         const eyes = [
+           [P.eyeROpen, P.eyeSmile],
+@@ -154,7 +177,10 @@ export function createSpriteModule(engine, rig) {
+         eyes.forEach(([open, smile], i) => {
+           const st = eyeState[i];
+           const drawn = EYE_MOODS_DRAWN.includes(mood) && items[`eyes_${mood}_${i}`] ? `eyes_${mood}` : null;
+-          const want = frameFor(eyeSprite(open, smile, drawn) ?? 'open', i);
++          // a whole-face drawing keeps its own open eyes until the eye is nearly shut: the half-closed
++          // drawing belongs to the base face and would replace the expression's eyes
++          const faceOn = Boolean(faceState.cur && items[`face_${faceState.cur}`]);
++          const want = frameFor(faceOn ? (open >= EYE_CLOSED_MAX ? 'open' : 'eyes_closed') : eyeSprite(open, smile, drawn) ?? 'open', i);
+           if (want !== st.cur) { st.prev = st.cur; st.cur = want; st.t = 0; }
+           // A redraw without elapsed time (a paused preview moving a slider) shows the target
+           // frame at once; otherwise the fade would stay at its first frame.
+@@ -162,7 +188,9 @@ export function createSpriteModule(engine, rig) {
+           const k = sstep(0, 1, st.t);
+           const show = (name, alpha) => {
+             if (name === 'open' || alpha <= 0.001) return;
+-            const it = items[`${name}_${i}`];
++            // a face drawing can bring its own closed eye (eyes_closed_<i>__<face>: its blush kept)
++            const own = faceOn && name === 'eyes_closed' && items[`${name}_${i}__${faceState.cur}`];
++            const it = own || items[`${name}_${i}`];
+             if (!it) return;
+             it.layer.visible = true;
+             it.layer.alpha = alpha;
+@@ -178,9 +206,26 @@ export function createSpriteModule(engine, rig) {
+           else { show(st.cur, 1); show(st.prev, 1 - k); }
+           covered[i] = st.cur !== 'open' && k >= 0.999;
+         });
++        // A whole-face drawing with its own open mouth (mouthopen_<name>) rests with the closed mouth
++        // painted into the face, and opens to that drawing (squashed by the openness) instead of the vowels.
++        const faceMouth = faceState.cur && items[`mouthopen_${faceState.cur}`];
++        if (faceMouth) {
++          lastShape = null;
++          if (P.mouthOpen >= MOUTH_OPEN_MIN) {
++            faceMouth.layer.visible = true;
++            faceMouth.layer.alpha = sstep(MOUTH_OPEN_MIN, MOUTH_OPEN_MIN + 0.08, P.mouthOpen);
++            place(faceMouth, P, phys, Math.min(1.05, Math.max(0.55, P.mouthOpen / 0.8)));
++          }
++          return { eyes: covered, mouth: P.mouthOpen >= MOUTH_OPEN_MIN ? 'face' : null, mouthDrawn: true };
++        }
+         const shape = mouthShape(P.mouthOpen, P.mouthForm, lastShape);
+         lastShape = shape;
+-        const def = shape && MOUTH_SHAPES[shape];
++        let def = shape && MOUTH_SHAPES[shape];
++        // a drawn u goes first; the other fallbacks only stand in for a drawing that is missing
++        if (shape) {
++          const alt = (MOUTH_FALLBACKS[shape] ?? []).find(f => items[f.sprite]);
++          if (alt && (shape === 'u' || !items[def.sprite])) def = alt;
++        }
+         const mt = def && items[def.sprite];
+         // the expression's closed mouth stays solid under an open mouth drawing until it has faded in
+         const closed = MOUTH_MOODS.includes(mood) && items[`mouth_${mood}`];
+@@ -202,6 +247,14 @@ export function createSpriteModule(engine, rig) {
+       },
+       /** Whether each eye has the closed and half-closed drawings, so the layered eye stays open. */
+       eyesDrawn,
++      /** Names of the whole-face drawings (face_<name>). */
++      faces: Object.keys(items).filter(n => n.startsWith('face_')).map(n => n.slice(5)),
++      /** Show a whole-face drawing by name (null or an unknown name: the base face), fading over FACE_FADE_SEC. */
++      setFace(name) {
++        const next = name && items[`face_${name}`] ? name : null;
++        if (next === faceState.cur) return;
++        faceState.prev = faceState.cur; faceState.cur = next; faceState.t = 0;
++      },
+     };
+   }
+   return { createSprites, mouthShape, eyeSprite };

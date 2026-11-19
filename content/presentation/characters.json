@@ -55,7 +55,8 @@
                 "teasing": "assets/characters/heroine/default_01/standing_01/teasing.webp",
                 "teasing_big": "assets/characters/heroine/default_01/standing_01/teasing_big.webp",
                 "exasperated": "assets/characters/heroine/default_01/standing_01/exasperated.webp"
-              }
+              },
+              "avatar": "assets/characters/heroine/default_01/standing_01/avatar/"
             }
           ]
         },
