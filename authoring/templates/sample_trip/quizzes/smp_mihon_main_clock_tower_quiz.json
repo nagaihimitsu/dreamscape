@@ -49,7 +49,36 @@
           "claimJa": "見本用の架空の言い伝え：時計が止まったとき、街の人は直さずに三時のまま残した。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "B2": {
+          "questionEn": "Long after the clock stopped working, how did the town choose to deal with it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "They replaced the tower with a taller one."
+            },
+            {
+              "id": "B",
+              "textEn": "They had the clock carried off to the market."
+            },
+            {
+              "id": "C",
+              "textEn": "They left its hands pointing at three on purpose."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "deal with",
+              "meaning": "〜を扱う・〜に対処する"
+            },
+            {
+              "word": "on purpose",
+              "meaning": "わざと"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "smp_mihon_clock_tower_q2",

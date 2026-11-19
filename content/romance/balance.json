@@ -3,5 +3,17 @@
   "apCap": 12,
   "defaultPlayerName": "たいち",
   "defaultHeroineName": "あゆみ",
-  "maxNameLength": 24
+  "maxNameLength": 24,
+  "difficulty": {
+    "english": {
+      "A2": { "labelJa": "やさしい", "descriptionJa": "短い文と身近な言葉で問います（A2程度）。" },
+      "B1": { "labelJa": "ふつう", "descriptionJa": "旅先で読む案内くらいの英文です（B1程度）。" },
+      "B2": { "labelJa": "むずかしい", "descriptionJa": "長めの文や言い回しを使います（B2程度）。" }
+    },
+    "economy": {
+      "relaxed": { "labelJa": "ゆったり", "descriptionJa": "旅の予算が多めで、クリアなどのAPの報酬が1ずつ増えます。", "budgetPercent": 120, "rewardApBonus": 1 },
+      "standard": { "labelJa": "ふつう", "descriptionJa": "標準の予算とAPで旅をします。", "budgetPercent": 100, "rewardApBonus": 0 },
+      "tight": { "labelJa": "きびしい", "descriptionJa": "旅の予算が少なめです。安い乗り物を選べば、本筋は最後まで回れます。", "budgetPercent": 80, "rewardApBonus": 0 }
+    }
+  }
 }

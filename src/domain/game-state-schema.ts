@@ -11,6 +11,7 @@ import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
+import { difficultySchema } from "./difficulty";
 import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
 /** The only saved game format this build reads; older versions are not migrated. */
@@ -132,6 +133,9 @@ export const gameStateSchema = z.object({
   // (src/features/journey/useNameReading.ts): the Jaipur mehndi draws a kanji name in Latin letters from it
   // (src/domain/name-romaji.ts). Left out: not known, or not needed (a kana or Latin name has its own Latin form).
   playerNameReading: nameReadingSchema.optional(),
+  // The difficulty (2026-11-19, an optional field of save v23; src/domain/difficulty.ts): chosen when the journey starts.
+  // A save written before it has none and plays at the default (ふつう and ふつう).
+  difficulty: difficultySchema.optional(),
   ap: z.number().int().min(0).max(balance.apCap),
   affection: z.number().int(),
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
@@ -143,6 +147,9 @@ export const gameStateSchema = z.object({
   // 旅の図鑑 (2026-11-13, an optional field of save v23; src/domain/glossary.ts): the terms the lines' # term: named, each
   // once, in the order met. A save written before it has none (nothing met yet); a new game starts it empty.
   glossary: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じ言葉が旅の図鑑に2つあります。").optional(),
+  // 「もう一度この旅を」 (2026-11-19, an optional field; src/domain/carry-over.ts): the quizzes the finished journeys before
+  // this one played, whose questions 英語ノート lists besides this journey's. Absent for a journey not begun again.
+  pastBattleIds: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じクイズが2つあります。").optional(),
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),

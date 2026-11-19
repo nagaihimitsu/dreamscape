@@ -162,6 +162,18 @@ export const citySchema = z
       .optional(),
   })
   .strict();
+/** The levels of the difficulty (2026-11-19): the English of the quizzes by CEFR, and how tight money and AP are. */
+export const ENGLISH_LEVELS = ["A2", "B1", "B2"] as const;
+export type EnglishLevel = (typeof ENGLISH_LEVELS)[number];
+export const ECONOMY_LEVELS = ["relaxed", "standard", "tight"] as const;
+export type EconomyLevel = (typeof ECONOMY_LEVELS)[number];
+const difficultyLabel = z.object({ labelJa: text, descriptionJa: text }).strict();
+const economyLevel = difficultyLabel.extend({
+  /** The share of the journey's starting budget (rounded down); the tightest level still covers the main story at its cheapest. */
+  budgetPercent: z.number().int().min(1).max(1000),
+  /** AP added to each reward that gives AP (a first clear, a first read…), up to the AP cap; never less than as authored. */
+  rewardApBonus: z.number().int().min(0).max(10),
+}).strict();
 export const balanceSchema = z
   .object({
     schemaVersion: version,
@@ -169,6 +181,14 @@ export const balanceSchema = z
     defaultPlayerName: text,
     defaultHeroineName: text,
     maxNameLength: z.number().int().min(1).max(100),
+    /**
+     * The difficulty (2026-11-19 user decision; src/domain/difficulty.ts): the English of the quizzes (a question's text at
+     * each level, battleQuestionSchema `levels`) and how tight money and AP are, chosen apart when a journey starts.
+     */
+    difficulty: z.object({
+      english: z.object({ A2: difficultyLabel, B1: difficultyLabel, B2: difficultyLabel }).strict(),
+      economy: z.object({ relaxed: economyLevel, standard: economyLevel, tight: economyLevel }).strict(),
+    }).strict(),
   })
   .strict();
 export const presentationSchema = z
@@ -411,6 +431,14 @@ export const quizQuestionSchema = z
   })
   .strict();
 
+/** A question's English at another level (battleQuestionSchema `levels`). */
+const questionLevelSchema = z.object({
+  questionEn: englishText,
+  options: z.array(z.object({ id: z.enum(["A", "B", "C"]), textEn: englishText }).strict()).length(3),
+  /** The words shown for it (none: the question's own vocabularyJa). */
+  vocabularyJa: z.array(z.object({ word: text, meaning: japaneseText }).strict()).optional(),
+}).strict();
+
 /**
  * A battle's question: the heroine's optional lines by its quiz card and the optional reveal on the landmark
  * photo under its explanation (an encounter's quiz has no hint button and no explanation card, so its question
@@ -431,6 +459,14 @@ export const battleQuestionSchema = quizQuestionSchema.extend({
   ).optional(),
   /** A one-line caption under the reveal (shown only with a revealRegion). */
   revealCaptionJa: japaneseText.optional(),
+  /**
+   * The question's English at other levels of the difficulty (2026-11-19; src/content/english-levels.ts): the question and
+   * its options (and their words) written again for A2, B1 or B2, never at the quiz's own englishLevel. The options keep
+   * their marks and the answer; the hint, the explanations and the reveal stay as written. A level without one asks the
+   * quiz's own English. Each needs its translation (learning/translations.json, `<question ID>@<level>`).
+   */
+  levels: z.object({ A2: questionLevelSchema.optional(), B1: questionLevelSchema.optional(), B2: questionLevelSchema.optional() })
+    .strict().optional(),
 });
 
 export const quizSchema = z
@@ -454,6 +490,12 @@ export const quizSchema = z
           quiz.cityId === undefined &&
           quiz.questions.length === 3,
     "A normal quiz needs three questions; a city finale needs five",
+  )
+  .refine(
+    (quiz) => quiz.questions.every((question) => !question.levels?.[quiz.englishLevel] &&
+      Object.values(question.levels ?? {}).every((level) => level &&
+        level.options.map((option) => option.id).join() === question.options.map((option) => option.id).join())),
+    "A question's other level is not the quiz's own englishLevel and keeps its options' marks in order (問題の別の英語の段階は、クイズの englishLevel と別の段階にし、選択肢の記号を同じ順に書きます)",
   );
 
 export type BattleDefinition = z.infer<typeof battleSchema>;
