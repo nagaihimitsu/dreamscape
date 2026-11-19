@@ -1,5 +1,7 @@
 # 動く立ち絵の試作（mesh-avatar-studio）
 
+作り方の手順は [動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md) にまとめました。ここは検討と試作の記録です。
+
 立ち絵を「普段は呼吸・まばたきし、台詞の声で口が動き、表情が変わり、髪や身体がわずかに揺れ、スマホでも軽い」ものにするための検討と試作の記録です（2026-11-19）。2026-11-19 に、基本の衣装でゲームに入れました（下の「ゲームに入れた形」）。
 
 ## 決めたこと（2026-11-19 のユーザー判断）
@@ -87,13 +89,7 @@
 
 ## 作り直すときの手順
 
-mesh-avatar-studio の [エージェント向けの手順](https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/agent-guide.md) に従います。この絵での要点：
-
-1. 元の絵は、配信用の webp ではなく [`characters/heroine/default_01/standing_01/neutral.png`](characters/heroine/default_01/standing_01/neutral.png) を使う（試作では webp を使いました）。
-2. `uv run tools/new-project.py <絵> heroine` の後、`rig.draft.json` を上の下書きで置き換える。
-3. 外側の明るい茶色の毛先は、毛束（`strands`）の線を上に引かないと髪のマスクに入りません（下書きの `side_l0`・`tip_l`・`tip_r`）。
-4. `build-layers.py` → `npm run render-poses` で、閉じた目・顔の向き・口を確かめる。
-5. ブラウザで読むときは、`.mavatar` の代わりに展開したフォルダ（`avatar.json`・`rig.json`・`built/`）を `loadMeshAvatar(canvas, "<フォルダ>/")` で読めます。
+[動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md) にまとめました（試作の初めに書いた手順は、そちらに置き換えました）。
 
 ## 本番に入れる前に決めること
 

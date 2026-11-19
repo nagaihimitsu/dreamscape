@@ -7,13 +7,16 @@ hair=np.asarray(Image.open('built/hairmask.png').convert('L'))>140
 sheet=json.load(open('built/sprites/sprites.json'))
 for k in [k for k in sheet['layers'] if k.startswith('face_')]: del sheet['layers'][k]
 X0,Y0,X1,Y1=395,120,650,290
-names=['smile','happy','shy','shy_deep','surprised','surprised_big','worried','serious','exasperated','teasing','teasing_big']
+# every expression picture of the pose but neutral (an expression added there gets its face on the next run)
+from pathlib import Path
+HERE=Path(__file__).resolve().parent
+names=sorted(p.stem for p in Path(A).glob('*.png') if p.stem!='neutral')
 total=0
 # Expressions drawn with an open mouth rest with a closed one painted in (from these full-size pictures)
 # and open to their own mouth, cut as mouthopen_<name>.
 CLOSED={'smile':'source.png','happy':'source.png','shy_deep':'source.png','teasing_big':'source.png',
         'surprised':f'{A}/serious.png','surprised_big':f'{A}/serious.png',
-        'worried':'work/variants-raw/mouth_sad.png','exasperated':'work/variants-raw/mouth_angry.png'}
+        'worried':str(HERE/'closed-mouth-sad.png'),'exasperated':str(HERE/'closed-mouth-angry.png')}
 for k in [k for k in sheet['layers'] if k.startswith('mouthopen_')]: del sheet['layers'][k]
 yy,xx=np.mgrid[0:src.shape[0],0:src.shape[1]]
 # Nothing below the jaw line: the neck (and its shadow, drawn a little differently in every picture)

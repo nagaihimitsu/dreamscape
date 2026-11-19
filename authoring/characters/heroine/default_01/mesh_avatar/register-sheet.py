@@ -1,11 +1,13 @@
 # Align each panel of blink-mouth-sheet.png (normal / closed / half / a / u / o) onto neutral.png (SIFT + similarity
-# transform) and write warped_<panel>.png at the standing picture's size. Run from a folder holding sheet.png.
+# transform) and write warped_<panel>.png at the standing picture's size. Run: python register-sheet.py <neutral.png> <sheet.png> (writes into the current folder).
 import numpy as np, cv2, json
 from PIL import Image
-A='/home/user/dreamscape/authoring/characters/heroine/default_01/standing_01/neutral.png'
+import sys
+A=sys.argv[1]  # the pose's neutral.png (authoring/characters/<…>/neutral.png)
+SHEET=sys.argv[2] if len(sys.argv)>2 else 'sheet.png'
 src=np.asarray(Image.open(A).convert('RGBA')).astype(np.float32)
 white=(src[...,:3]*(src[...,3:]/255)+255*(1-src[...,3:]/255)).astype(np.uint8)
-sheet=np.asarray(Image.open('sheet.png').convert('RGB'))
+sheet=np.asarray(Image.open(SHEET).convert('RGB'))
 X=[(0,437),(462,876),(900,1312)]; Y=[(70,582),(670,1199)]
 names=['neutral','closed','half','a','u','o']
 ref=cv2.cvtColor(white[0:420,300:740],cv2.COLOR_RGB2GRAY)
