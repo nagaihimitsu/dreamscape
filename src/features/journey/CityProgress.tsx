@@ -1,16 +1,6 @@
-import {
-  battles,
-  battleQuizzes,
-  getCityContent,
-  episodes,
-  landmarks,
-} from "../../content";
-import { getEpisodeAvailability, storyBattlesForCity } from "../../domain/chapter";
+import { getCityContent } from "../../content";
 import type { GameState } from "../../domain/game";
-import { isTourOnlyPlace } from "../../content/travel-schemas";
-import { battlePlayed } from "../../domain/conditions";
 import { canReadCityEpilogue } from "../../domain/epilogue";
-import { cityProgressParts, type CityProgressCounts } from "./city-progress-label";
 import { playSe } from "../../audio/sound-effects";
 import "./city.css";
 
@@ -39,94 +29,5 @@ export function CityProgress({ game, onEpilogue }: { game: GameState; onEpilogue
         </button>
       </div>
     </section>
-  );
-}
-
-/** The current city's cleared stops and special battles (旅の記録 sums them up). */
-function cityProgressCounts(game: GameState): CityProgressCounts {
-  const { city } = getCityContent(game.currentCityId);
-  const stops = episodes.filter((episode) => episode.cityId === city.id && episode.kind !== "city_finale");
-  const storyBattles = storyBattlesForCity(city.id);
-  return {
-    completedStops: stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length,
-    stops: stops.length,
-    completedSpecialBattles: storyBattles.filter((item) => battlePlayed(game, item.battleId)).length,
-    specialBattles: storyBattles.length,
-    cityCompleted: game.completedCityIds.includes(city.id),
-  };
-}
-
-/** Whether a map event is at a tour-only place (tour stage 2a): the records say a tour goes there. */
-function atTourOnlyPlace(cityId: string, eventId: string): boolean {
-  const { travel } = getCityContent(cityId);
-  return isTourOnlyPlace(travel.places.find((place) => place.id === travel.events.find((event) => event.id === eventId)?.placeId));
-}
-
-/** 旅の記録: the city's progress in one line (「観光 1 / 4 · クイズ 0 / 2」, or 「都市クリア」), then each stop. */
-export function CityRecords({ game }: { game: GameState }) {
-  return (
-    <div className="city-records">
-      <p className="records-progress" data-testid="city-progress">{cityProgressParts(cityProgressCounts(game)).map((part) => part.text).join(" · ")}</p>
-      <ol>
-        {episodes.filter((episode) => episode.cityId === game.currentCityId).map((episode, index) => {
-          const cleared = game.completedEpisodeIds.includes(episode.id);
-          const availability = getEpisodeAvailability(game, episode.id);
-          const landmark = landmarks.find(
-            (item) => item.id === episode.landmarkId,
-          );
-          const battle = battles.find(
-            (item) => item.id === episode.battleId,
-          )!;
-          const record = game.battleRecords.find(
-            (item) => item.battleId === episode.battleId,
-          );
-          return (
-            <li key={episode.id} data-testid={`city-stop-${episode.id}`}>
-              <span
-                className={`stop-number ${cleared ? "complete" : ""}`}
-                aria-hidden="true"
-              >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div className="stop-info">
-                <p className="fine-print">
-                  {cleared
-                    ? "クリア"
-                    : atTourOnlyPlace(game.currentCityId, episode.id)
-                      ? "ツアーで訪ねます"
-                      : availability.available
-                        ? "訪問できる"
-                        : "この先"}
-                </p>
-                {/* A completed stop's small seal of 「完」 (2026-11-13), as stamped when it ended; 「クリア」 above says it in words. */}
-                <div className="stop-title">
-                  <h3>{landmark?.nameJa ?? "都市フィナーレ"}</h3>
-                  {cleared && <span className="stop-seal" aria-hidden="true">完</span>}
-                </div>
-                {landmark && (
-                  <p>
-                    手がかり{" "}
-                    {
-                      landmark.clueIds.filter((id) =>
-                        game.discoveredClueIds.includes(id),
-                      ).length
-                    }{" "}
-                    / {landmark.clueIds.length}
-                  </p>
-                )}
-                {record ? (
-                  <p>
-                    挑戦 {record.attempts}回 · 最高 {record.bestScore} /{" "}
-                    {battleQuizzes[battle.quizId].questions.length}問
-                  </p>
-                ) : (
-                  <p>クイズ未完了</p>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
   );
 }

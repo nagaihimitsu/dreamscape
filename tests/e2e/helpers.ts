@@ -306,7 +306,7 @@ export const ops = {
   },
   /**
    * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ, ロード, 旅の記録,
-   * アルバム, 英語ノート, 写真の出典 (free time) or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While
+   * 英語ノート, 写真の出典 (free time) or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While
    * 英語ノート has a new entry, its name and 「英語ノート」's go on with 「、…新しい項目あり」 (its dot; the browser may put a
    * space before it, as the words are a separate visually hidden span).
    */
@@ -322,7 +322,7 @@ export const ops = {
     return panel;
   },
   /** One of ≡メニュー's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "セーブの枠" | "旅の記録" | "アルバム" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "セーブの枠" | "旅の記録" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },

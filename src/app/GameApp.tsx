@@ -78,8 +78,6 @@ import { primeSpeechOnGesture } from "../features/learning/ReadAloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
-import { CityRecords } from "../features/journey/CityProgress";
-import { MetPeople } from "../features/journey/MetPeople";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
 import { journeyNumbers } from "../features/journey/journey-numbers";
@@ -188,7 +186,7 @@ const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ d
 const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({ default: module.OldDataCleanup })));
 const OfflinePlayDialog = lazy(() => import("./OfflinePlayDialog").then((module) => ({ default: module.OfflinePlayDialog })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
-const AlbumDialog = lazy(() => import("../features/journey/AlbumDialog").then((module) => ({ default: module.AlbumDialog })));
+const TravelLogDialog = lazy(() => import("../features/journey/TravelLog").then((module) => ({ default: module.TravelLogDialog })));
 const GlossaryDialog = lazy(() => import("../features/journey/GlossaryDialog").then((module) => ({ default: module.GlossaryDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
@@ -513,11 +511,17 @@ export function GameApp({
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
   // 旅の思い出 (2026-11-19; JourneyMemories.tsx): the journey kept when 「もう一度この旅を」 started this one, read as
-  // 旅の記録 opens; its own dialog over 旅の記録 (`keptOpen`), whose album, music room and end roll show it, not the game.
+  // 旅の記録 opens; its own dialog over 旅の記録 (`keptOpen`), whose 旅の記録, music room and end roll show it, not the game.
   const [keptMemory, setKeptMemory] = useState<MemoryLoad | null>(null);
   const [keptOpen, setKeptOpen] = useState(false);
   const [keptEndRoll, setKeptEndRoll] = useState(false);
+  // The kept journey's own 旅の記録, over its 旅の思い出.
+  const [keptLogOpen, setKeptLogOpen] = useState(false);
   const keptGame = keptOpen && keptMemory?.status === "loaded" ? keptMemory.state : null;
+  function closeKept() {
+    setKeptOpen(false);
+    setKeptLogOpen(false);
+  }
   // 「もう一度この旅を」's confirmation, with the memory it would replace (read as it opens).
   const [confirmAgain, setConfirmAgain] = useState<MemoryLoad | null>(null);
   // Its difficulty: the finished journey's at first, or another level (2026-11-19 user decision).
@@ -533,7 +537,6 @@ export function GameApp({
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
   const [musicRoom, setMusicRoom] = useState(false);
   const [roomTrack, setRoomTrack] = useState<string | null>(null);
-  const [albumOpen, setAlbumOpen] = useState(false);
   const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
   const [scenePhotoOpen, setScenePhotoOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
@@ -937,7 +940,6 @@ export function GameApp({
         scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
         onRecords={openRecords}
-        onAlbum={() => setAlbumOpen(true)}
         onGlossary={hasTerms ? openGlossary : undefined}
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
@@ -1351,7 +1353,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <JourneyMemoriesScreen journeyJa={getJourney(journeyId)?.nameJa ?? ""} playerName={game.playerName} heroineName={game.heroineName}
               numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-              views={{ onEndRoll: moments.openEndRoll, onAlbum: () => setAlbumOpen(true), onMusicRoom: () => setMusicRoom(true), onRecords: openRecords }}
+              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onRecords: openRecords }}
               onAgain={openAgain}
               selector={!isDebug && onSwitchJourney ? <JourneySelection value={journeyId} onChange={requestJourneySwitch} /> : undefined} />
           </>
@@ -1409,39 +1411,34 @@ export function GameApp({
             }
           }}>出発する</button>} />
       </Modal>}
-      {recordsOpen && game && <Modal labelledBy="city-records-title" onClose={() => setRecordsOpen(false)} closeOnBackdrop>
-        <ModalTitle id="city-records-title" onClose={() => setRecordsOpen(false)}>旅の記録</ModalTitle>
-        <p className="records-travelers">
-          <span data-testid="travelers">{game.playerName}<span className="amp"> と </span>{game.heroineName}</span>
-          {game.endingReached && <span className="records-relationship">交際中</span>}
-        </p>
-        {/* 旅の音楽室 (2026-11-13: once the first city is cleared) and the credit roll (the journey over), side by side at the
-            top (2026-11-14), each opening over 旅の記録 and closing back to it where it was. */}
-        {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
-          {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
-            onClick={() => setMusicRoom(true)}>旅の音楽室</button>}
-          {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
-            エンドロールを見る</button>}
-        </div>}
-        {/* The journey kept as 旅の思い出 when this one began again (2026-11-19). */}
-        {keptMemory?.status === "loaded" && <button type="button" className="secondary records-kept" data-testid="kept-memory-open"
-          onClick={() => setKeptOpen(true)}>前の旅の思い出</button>}
-        <CityRecords game={game} />
-        {/* 旅の数字 (2026-11-13): the journey so far in a few numbers, counting up as the records open. */}
-        <JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
-        <MetPeople game={game} />
-      </Modal>}
-      {keptOpen && keptGame && <Modal labelledBy="kept-memory-title" onClose={() => setKeptOpen(false)} closeOnBackdrop>
-        <ModalTitle id="kept-memory-title" onClose={() => setKeptOpen(false)}>前の旅の思い出</ModalTitle>
+      {/* 旅の記録 (2026-11-19: 旅の記録 and アルバム made one; TravelLog.tsx). 旅の音楽室 (2026-11-13: once the first city is
+          cleared), the credit roll (the journey over) and the journey kept as 旅の思い出 (2026-11-19) open over it and close back
+          to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
+      {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
+        <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
+          extras={<>
+            {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
+              {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
+                onClick={() => setMusicRoom(true)}>旅の音楽室</button>}
+              {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
+                エンドロールを見る</button>}
+            </div>}
+            {keptMemory?.status === "loaded" && <button type="button" className="secondary records-kept" data-testid="kept-memory-open"
+              onClick={() => setKeptOpen(true)}>前の旅の思い出</button>}
+          </>}
+          footer={<JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />} />
+      </LazyDialog>}
+      {keptOpen && keptGame && <Modal labelledBy="kept-memory-title" onClose={closeKept} closeOnBackdrop>
+        <ModalTitle id="kept-memory-title" onClose={closeKept}>前の旅の思い出</ModalTitle>
         <KeptMemoryContents playerName={keptGame.playerName} heroineName={keptGame.heroineName}
           numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-          views={{ onEndRoll: () => setKeptEndRoll(true), onAlbum: () => setAlbumOpen(true), onMusicRoom: () => setMusicRoom(true) }} />
+          views={{ onEndRoll: () => setKeptEndRoll(true), onMusicRoom: () => setMusicRoom(true), onRecords: () => setKeptLogOpen(true) }} />
       </Modal>}
       {keptEndRoll && keptGame && <EndRollDialog roll={endRollOf(keptGame)} numbers={journeyNumbers(keptGame, learnedWords.learned)}
         reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
       {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>
         <ModalTitle id="again-title">もう一度この旅を</ModalTitle>
-        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。アルバムの写真・旅の図鑑・英語ノートは、そのまま引き継ぎます。</p>
+        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。旅の記録の写真・旅の図鑑・英語ノートは、そのまま引き継ぎます。</p>
         <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。その国の言葉・既読の記録も、そのまま残ります。
           {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
           {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
@@ -1458,8 +1455,8 @@ export function GameApp({
           bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
       </LazyDialog>}
-      {albumOpen && game && <LazyDialog onClose={() => setAlbumOpen(false)}>
-        <AlbumDialog album={(keptGame ?? game).album} currentCityId={(keptGame ?? game).currentCityId} onClose={() => setAlbumOpen(false)} />
+      {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
+        <TravelLogDialog game={keptGame} onClose={() => setKeptLogOpen(false)} />
       </LazyDialog>}
       {glossaryOpen && game && <LazyDialog onClose={() => setGlossaryOpen(null)}>
         <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugMarks} onClose={() => setGlossaryOpen(null)} />
@@ -1554,12 +1551,12 @@ export function GameApp({
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
           {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : deleteSnapshot.sharedKept ? <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、旅の思い出を消去します。元には戻せません。
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             ほかのセーブの枠と、枠で共有する英語ノート（単語帳・その国の言葉）・対訳設定・既読の記録は消去しません。文字の速さなどの表示設定、以前に退避したバックアップ、ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
           </p></> : <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。

@@ -307,7 +307,8 @@ describe("her answer in Jaipur after a deferral there (2026-11-13)", () => {
     expect(getDateAvailability(morning, answer)).toEqual({ available: true, reason: "" });
     // Without a deferral there is nothing to answer.
     expect(getDateAvailability(validateGameState({ ...morning, confessionStatus: "none", playedDateIds: morning.playedDateIds
-      .filter((id) => id !== "gt_jaipur_date_confession") }), answer).available).toBe(false);
+      .filter((id) => id !== "gt_jaipur_date_confession"),
+    livedTimes: morning.livedTimes?.filter((item) => item.id !== "gt_jaipur_date_confession") }), answer).available).toBe(false);
   }, 300_000);
 
   it("says not now when the confession's condition is not met: a final rejection, after keeping her promise", () => {

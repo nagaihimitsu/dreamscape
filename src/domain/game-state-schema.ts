@@ -11,6 +11,7 @@ import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
+import { livedTimesSchema } from "./lived-times";
 import { difficultySchema } from "./difficulty";
 import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
@@ -154,6 +155,9 @@ export const gameStateSchema = z.object({
   // 「もう一度この旅を」 (2026-11-19, an optional field; src/domain/carry-over.ts): the quizzes the finished journeys before
   // this one played, whose questions 英語ノート lists besides this journey's. Absent for a journey not begun again.
   pastBattleIds: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じクイズが2つあります。").optional(),
+  // 旅の記録's times (2026-11-19, an optional field; src/domain/lived-times.ts): when each episode was completed and each
+  // date first finished (the city's day and minute), in that order. Absent in a save written before it.
+  livedTimes: livedTimesSchema.optional(),
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),

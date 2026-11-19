@@ -133,7 +133,7 @@ function episodeStoryIds(episode: EpisodeDefinition): string[] {
  * happened at (a date's destination's place, or the episode's place on the map; content:build checks that each episode
  * has its map event) and that place's city.
  */
-type RecapSubject = { kind: "episode"; episode: EpisodeDefinition } | { kind: "date"; date: DateDefinition };
+export type RecapSubject = { kind: "episode"; episode: EpisodeDefinition } | { kind: "date"; date: DateDefinition };
 
 function recapSubject(game: Pick<GameState, "recapDateId" | "completedEpisodeIds">): RecapSubject | null {
   const date = dates.find((item) => item.id === game.recapDateId && item.destinationId);
@@ -183,9 +183,22 @@ export type ResumeRecap = {
   heroine?: { textJa: string; cityId: string };
 };
 
-export function resumeRecap(game: GameState): ResumeRecap | null {
-  const subject = recapSubject(game);
-  if (!subject) return null;
+/**
+ * A thing finished, looked back on (the recap and 旅の記録's 「体験」, travel-log.ts): its clear title and record (an
+ * episode's, or a date's, else the date's title and description; the names filled in), the city it was in, its place's
+ * name, its picture (subjectPicture) and her line looking back on its place (the first of the place's `recapLinesJa` that
+ * holds now).
+ */
+export type LookBack = {
+  titleJa: string;
+  descriptionJa: string;
+  cityId?: string;
+  placeJa?: string;
+  photo?: RecapPicture;
+  heroine?: { textJa: string; cityId: string };
+};
+
+export function lookBackOf(game: GameState, subject: RecapSubject): LookBack {
   const found = subjectPlace(subject);
   const cityId = subject.kind === "episode" ? subject.episode.cityId : found?.cityId;
   const [titleJa, descriptionJa] = subject.kind === "episode"
@@ -193,14 +206,27 @@ export function resumeRecap(game: GameState): ResumeRecap | null {
   const photo = subjectPicture(game, subject);
   const line = found ? itemLines(game, found.place.recapLinesJa)?.[0] : undefined;
   return {
+    titleJa: withNames(titleJa, game), descriptionJa: withNames(descriptionJa, game),
+    ...(cityId ? { cityId } : {}),
+    ...(found ? { placeJa: found.place.nameJa } : {}),
+    ...(photo ? { photo } : {}),
+    ...(found && line !== undefined ? { heroine: { textJa: withNames(line, game), cityId: found.cityId } } : {}),
+  };
+}
+
+export function resumeRecap(game: GameState): ResumeRecap | null {
+  const subject = recapSubject(game);
+  if (!subject) return null;
+  const look = lookBackOf(game, subject);
+  return {
     cityJa: cityNameJa(game.currentCityId),
     whenJa: `${game.travel.day}日目 ${formatTravelTime(game.travel.minute)}`,
     chapter: {
-      titleJa: withNames(titleJa, game), descriptionJa: withNames(descriptionJa, game),
-      ...(cityId && cityId !== game.currentCityId ? { cityJa: cityNameJa(cityId) } : {}),
+      titleJa: look.titleJa, descriptionJa: look.descriptionJa,
+      ...(look.cityId && look.cityId !== game.currentCityId ? { cityJa: cityNameJa(look.cityId) } : {}),
     },
-    ...(photo ? { photo } : {}),
-    ...(found && line !== undefined ? { heroine: { textJa: withNames(line, game), cityId: found.cityId } } : {}),
+    ...(look.photo ? { photo: look.photo } : {}),
+    ...(look.heroine ? { heroine: look.heroine } : {}),
   };
 }
 

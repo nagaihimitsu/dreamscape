@@ -1,0 +1,187 @@
+/* 旅の記録 (TravelLog.tsx): the shared frame, a page per city told apart by its heading and the 「体験｜写真」 switch,
+   cards and photos separated by hairlines and their own paper (no side accents), the pager kept at the dialog's foot while
+   the page scrolls. Every pressable is 44 px. */
+dialog.modal.travel-log {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(560px, calc(100% - 24px));
+  max-width: 560px;
+  max-height: calc(100dvh - 24px);
+}
+.travel-log .modal-title-bar { margin-bottom: 8px; }
+.travel-log-empty { margin: 4px 0 8px; font-size: 14px; line-height: 1.7; }
+/* The city's name, and beside it (under it when narrow) the switch between the page's two axes. */
+.travel-log-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin: 4px 0 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ds-parchment-line);
+}
+.travel-log-head h3 {
+  margin: 0;
+  min-width: 0;
+  font-family: "Noto Serif JP", serif;
+  font-size: 18px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.travel-log-axes {
+  display: inline-flex;
+  flex: none;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--ds-parchment-2);
+}
+.travel-log-axes button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 76px;
+  min-height: 44px;
+  margin: 0;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ds-ink-muted);
+  font-size: 14px;
+  justify-content: center;
+}
+.travel-log-axes button[aria-pressed="true"] {
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+}
+.travel-log-count { font-size: 12px; font-weight: 400; color: var(--ds-ink-muted); }
+/* Sideways moves of a finger turn the page (albumSwipeStep); upright ones still scroll the dialog, and pinch still zooms. */
+.travel-log-page { touch-action: pan-y pinch-zoom; }
+/* 「体験」: each thing lived as a card of its own paper, its picture on top, her words at its foot. */
+.travel-log-lived { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.travel-log-card {
+  overflow: hidden;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+}
+.travel-log-picture { margin: 0; }
+.travel-log-picture .album-photo { border-radius: 0; }
+.travel-log-credit { padding: 0 12px; font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); }
+.travel-log-credit summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; }
+.travel-log-credit p { margin: 0 0 4px; overflow-wrap: anywhere; }
+.travel-log-card-body { padding: 10px 12px 4px; }
+.travel-log-where { margin: 0 0 2px; font-size: 12px; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.travel-log-card .stop-title { margin: 0 0 4px; }
+.travel-log-card h4 {
+  min-width: 0;
+  margin: 0;
+  font-family: "Noto Serif JP", serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.travel-log-record { margin: 0 0 6px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
+.travel-log-heroine { margin: 0 12px 12px; }
+.travel-log-people-title { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: 1rem; }
+.travel-log .met-people { margin-top: 16px; }
+.travel-log .journey-numbers { margin-top: 16px; }
+.album-photos { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.album-photos li + li { padding-top: 14px; border-top: 1px solid var(--ds-parchment-line); }
+.album-photos figure { margin: 0; }
+.album-photo {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #26342e;
+}
+/* Each illustration fills a fixed 3:2 frame (one of another shape keeps its middle; the larger view shows it whole),
+   so the file's own size is never needed. A short screen held sideways keeps the frame low by narrowing it. */
+.album-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .album-photo { width: min(100%, 69dvh); margin-inline: auto; }
+}
+.album-photos figcaption { margin-top: 6px; }
+.album-caption { font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+.album-meta { font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.album-pager {
+  position: sticky;
+  bottom: calc(-1 * var(--modal-pad-top, 0px));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px calc(-1 * var(--modal-pad-inline, 0px)) calc(-1 * var(--modal-pad-top, 0px));
+  padding: 8px var(--modal-pad-inline, 16px);
+  background: var(--ds-parchment);
+  border-top: 1px solid var(--ds-parchment-line);
+}
+.album-page-button {
+  flex: none;
+  min-width: 88px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 14px;
+}
+.album-page-button:hover:enabled { background: var(--ds-parchment-2); }
+.album-page-button:disabled {
+  opacity: 1;
+  border-color: transparent;
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
+}
+.album-page-count { flex: 1 1 auto; min-width: 3em; font-size: 13px; color: var(--ds-ink-muted); text-align: center; }
+/* A turned page comes in from the side it was turned towards; the page it leaves goes at once. */
+.travel-log-page[data-turn="next"] { animation: album-turn-next var(--motion-medium) var(--ease-out); }
+.travel-log-page[data-turn="back"] { animation: album-turn-back var(--motion-medium) var(--ease-out); }
+@keyframes album-turn-next { from { opacity: 0; transform: translateX(24px); } }
+@keyframes album-turn-back { from { opacity: 0; transform: translateX(-24px); } }
+.reduce-motion .travel-log-page[data-turn] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .travel-log-page[data-turn] { animation: none; }
+}
+
+/* The photo opened larger: the whole picture, its time and place, 「閉じる」 at the foot (as 背景画像). The frame is the
+   picture's own shape (2026-11-13 user decision: no empty band around a wide picture on a phone held upright), as wide as
+   the dialog and no taller than its share of the screen; a picture taller than that keeps its shape, narrower. */
+dialog.modal.album-photo-viewer {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(760px, calc(100% - 24px));
+  max-width: 760px;
+}
+.album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
+.album-photo-viewer > img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(60dvh, 520px);
+  margin: 0 auto;
+  border-radius: 8px;
+}
+.album-photo-viewer > .album-meta { margin: 6px 0 8px; }
+@media (orientation: landscape) and (max-height: 500px) {
+  .album-photo-viewer > img { max-height: 52dvh; }
+}
+
+/* With 旅の数字 after the pages, the pager no longer reaches the dialog's foot: it keeps its own room above the card. */
+.travel-log-book:not(:last-child) > .album-pager { margin-bottom: 0; }
