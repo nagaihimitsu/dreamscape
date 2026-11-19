@@ -108,6 +108,20 @@ describe("the presentation settings' mini-game おまかせ", () => {
   });
 });
 
+// 「英語オフ」 (2026-11-19, `englishOff`): off by default, a device preference like the others.
+describe("the presentation settings' English off", () => {
+  it("is off for settings stored without it and with none stored, and reads what was stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ englishOff: false });
+    expect(readPresentationSettings(null)).toMatchObject({ englishOff: false });
+    expect(readPresentationSettings(stored({ englishOff: true }))).toMatchObject({ englishOff: true, reduceMotion: false });
+  });
+
+  it("refuses a switch that is not true or false", () => {
+    for (const extra of [{ englishOff: "on" }, { englishOff: 1 }, { englishOff: null }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});
+
 // 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision, `autoReadAloud`): on by default, a device preference.
 describe("the presentation settings' automatic reading", () => {
   it("is on for settings stored without it and with none stored, and reads what was stored", () => {

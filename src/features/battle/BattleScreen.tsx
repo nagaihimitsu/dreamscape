@@ -134,6 +134,8 @@ interface Props {
   readAloud?: boolean;
   /** 「問題が出たら英語を自動で読み上げる」 is on and this browser can read aloud: the question read as it shows (ReadAloud.tsx). */
   autoReadAloud?: boolean;
+  /** 「英語オフ」: the question and its options in their Japanese translation only (no English, translation buttons or speaker). */
+  englishOff?: boolean;
   /** An episode's title card waits or shows over the opening (GameApp's useJourneyMoments): a name plate comes after it. */
   introHeld?: boolean;
   onSpeed: (speed: number) => void;
@@ -164,6 +166,7 @@ export function BattleScreen({
   reduceMotion,
   readAloud = false,
   autoReadAloud = false,
+  englishOff = false,
   introHeld = false,
   autoAdvanceEnabled = false,
   readSkip,
@@ -190,6 +193,9 @@ export function BattleScreen({
   const outcome = getBattleOutcome(active.score, quiz.questions.length);
   // The same translation as the option's 「訳を見る」 (shown after a wrong answer whatever the translation settings).
   const correctTranslation = question && learningTranslations[question.textKey]?.optionsJa[question.correctOptionId];
+  // 「英語オフ」: the translation shown in the English's place, where the question has one (else its English stays).
+  const quizTranslation = question ? learningTranslations[question.textKey] : undefined;
+  const japaneseOnly = englishOff && !!quizTranslation;
   const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
     active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
@@ -701,6 +707,9 @@ export function BattleScreen({
                 onSubmit={onSubmitEvidence}
               />
             )}
+            {japaneseOnly ? (
+              <h2 className="question-en question-ja" lang="ja">{quizTranslation?.questionJa}</h2>
+            ) : (<>
             <h2 className="question-en">
               <InteractiveEnglish
                 key={question.id}
@@ -719,7 +728,8 @@ export function BattleScreen({
               </Translation>
               <TranslationAll learning={learning} id={question.textKey} />
             </div>
-            <div className="quiz-choices" aria-label="英語の3択">
+            </>)}
+            <div className="quiz-choices" aria-label={japaneseOnly ? "3択" : "英語の3択"}>
               {question.options.map((option) => {
                 const selected = answer?.optionId === option.id;
                 const correct =
@@ -739,7 +749,7 @@ export function BattleScreen({
                         type="button"
                         data-testid={`answer-${option.id}`}
                         className="option-id answer-submit"
-                        aria-label={`選択肢${option.id}「${option.textEn}」を答える`}
+                        aria-label={`選択肢${option.id}「${japaneseOnly ? quizTranslation?.optionsJa[option.id] : option.textEn}」を答える`}
                         disabled={active.phase !== "question"}
                         onClick={() => {
                           if (onAnswer(option.id)) {
@@ -763,6 +773,7 @@ export function BattleScreen({
                       </button>
                       <div className="option-body">
                         {/* At the right of the option's text, before its 「訳を見る」 and away from its answer button. */}
+                        {japaneseOnly ? <span lang="ja">{quizTranslation?.optionsJa[option.id]}</span> : <>
                         <ReadAloudButton reader={reader} part={option.id} text={option.textEn} />
                         <InteractiveEnglish
                           text={option.textEn}
@@ -773,6 +784,7 @@ export function BattleScreen({
                             revealTranslation(learning, question.textKey, option.id)
                           }
                         />
+                        </>}
                         {shownAnswer && (
                           <span className="option-mark">
                             {selected ? "選んだ答え" : ""}
@@ -780,11 +792,11 @@ export function BattleScreen({
                           </span>
                         )}
                       </div>
-                      <Translation
+                      {!japaneseOnly && <Translation
                         learning={learning}
                         id={question.textKey}
                         part={option.id}
-                      />
+                      />}
                     </div>
                   </div>
                 );
@@ -801,6 +813,7 @@ export function BattleScreen({
                 {!answer.correct && (
                   <p className="correct-answer" data-testid="correct-answer">
                     正しい答え：
+                    {japaneseOnly ? <span>{correctTranslation}</span> : <>
                     <span lang="en">
                       {
                         question.options.find(
@@ -809,6 +822,7 @@ export function BattleScreen({
                       }
                     </span>
                     {correctTranslation && <span>（{correctTranslation}）</span>}
+                    </>}
                   </p>
                 )}
                 <p>
@@ -836,12 +850,12 @@ export function BattleScreen({
                     captionJa={question.revealCaptionJa}
                   />
                 )}
-                <button
+                {!japaneseOnly && <button
                   className="secondary"
                   onClick={() => onEnglish(question.id)}
                 >
                   英文を確認する
-                </button>
+                </button>}
                 <details className="quiz-sources">
                   <summary>解説の根拠を読む</summary>
                   <ul>
@@ -863,7 +877,7 @@ export function BattleScreen({
                 </button>
               </div>
             )}
-            <div className="vocabulary" aria-label="難単語の補足">
+            {!japaneseOnly && <div className="vocabulary" aria-label="難単語の補足">
               <h3>ことばの補足</h3>
               <dl>
                 {question.vocabularyJa.map((word) => (
@@ -873,7 +887,7 @@ export function BattleScreen({
                   </div>
                 ))}
               </dl>
-            </div>
+            </div>}
             {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa),
                 else its hint (hintJa, plain narration: shown as her note, not quoted as her words). Always
                 shown under the question, with no button to open or close it (user decision 2026-11-11). */}

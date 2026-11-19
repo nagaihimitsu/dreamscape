@@ -41,6 +41,11 @@ interface Preferences {
   vibration: boolean;
   /** 「ミニゲームをおまかせにする」 (src/minigames/host/MiniGameHost.tsx): on, a line's `# minigame:` plays itself to its `auto` outcome. Off by default. */
   miniGameAuto: boolean;
+  /**
+   * 「英語オフ」 (BattleScreen.tsx, EncounterScreen.tsx): on, a quiz shows its question and options in their Japanese
+   * translation only (no English, no translation buttons, no reading aloud). Off by default (user request 2026-11-19).
+   */
+  englishOff: boolean;
 }
 const defaults: Preferences = {
   schemaVersion: 1,
@@ -61,6 +66,7 @@ const defaults: Preferences = {
   ambience: true,
   vibration: true,
   miniGameAuto: false,
+  englishOff: false,
 };
 
 const isVolume = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
@@ -90,9 +96,10 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       (item.ambience !== undefined && typeof item.ambience !== "boolean") ||
       (item.vibration !== undefined && typeof item.vibration !== "boolean") ||
       (item.miniGameAuto !== undefined && typeof item.miniGameAuto !== "boolean") ||
+      (item.englishOff !== undefined && typeof item.englishOff !== "boolean") ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
       Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud",
-        "autoReadAloud", "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume", "ambience", "vibration", "miniGameAuto"].includes(name))
+        "autoReadAloud", "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume", "ambience", "vibration", "miniGameAuto", "englishOff"].includes(name))
     )
       return null;
     return {
@@ -114,6 +121,7 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       ambience: item.ambience === undefined ? true : item.ambience as boolean,
       vibration: item.vibration === undefined ? true : item.vibration as boolean,
       miniGameAuto: item.miniGameAuto === undefined ? false : item.miniGameAuto as boolean,
+      englishOff: item.englishOff === undefined ? false : item.englishOff as boolean,
     };
   } catch {
     return null;
@@ -146,7 +154,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   );
   function update(
     change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud"
-      | "autoReadAloud" | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume" | "ambience" | "vibration" | "miniGameAuto">>,
+      | "autoReadAloud" | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume" | "ambience" | "vibration" | "miniGameAuto" | "englishOff">>,
   ): boolean {
     if (error) return false;
     try {

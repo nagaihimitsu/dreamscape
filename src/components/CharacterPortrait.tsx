@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
+import { characterAvatar, characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
 import { loadPicture, pictureReady } from "../media/preload";
 import { characterCatalog as catalog } from "./character-catalog";
 import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
+import { LivePortrait } from "./LivePortrait";
 import "./character-portrait.css";
 
 const characters = catalog.characters;
@@ -42,12 +43,18 @@ export function CharacterPortrait({
       : {},
     [character, sceneId, cityId, countryId, regionId, costume, pose],
   );
+  // The pose's moving picture (characters.json `avatar`): drawn over the still one once it moves; "failed" keeps the
+  // still picture for this outfit (reduced motion, no WebGL, files that cannot load).
+  const avatar = character ? characterAvatar(character, selection) : null;
+  const [live, setLive] = useState<{ folder: string; state: "ready" | "failed" } | null>(null);
+  const liveState = live && live.folder === avatar ? live.state : null;
   if (!character) return null;
   const placement = characterPlacement(character, selection);
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
-    <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} aria-hidden="true" style={{
+    <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} data-live={liveState ?? undefined}
+      aria-hidden="true" style={{
       left: `${placement.x}%`, bottom: `${placement.bottom}%`, width: `${placement.width}%`, height: `${placement.height}%`,
       transform: `translateX(-50%) scale(${placement.scale})`, transformOrigin: `${placement.originX}% ${placement.originY}%`,
       // The character's own size (characters.json figureScale): its picture, not its box (character-portrait.css).
@@ -61,6 +68,16 @@ export function CharacterPortrait({
         onImageError={onImageError}
         breathOf={characterId}
       />
+      {avatar && liveState !== "failed" && (
+        <LivePortrait
+          key={avatar}
+          folder={avatar}
+          emotion={emotion}
+          speaking={focus === "speaking"}
+          onReady={() => setLive({ folder: avatar, state: "ready" })}
+          onFail={() => setLive({ folder: avatar, state: "failed" })}
+        />
+      )}
       {children}
     </div>
   );

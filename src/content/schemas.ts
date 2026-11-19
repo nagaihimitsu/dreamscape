@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { contentId as id } from "./content-id";
+import { confessionThresholdsSchema } from "./journey-catalog";
 import { conditionSchema } from "./condition-schemas";
 import { storyAddressSchema } from "./story-address";
 import { imageRegionSchema } from "./tourism-schemas";
@@ -167,12 +168,19 @@ export const ENGLISH_LEVELS = ["A2", "B1", "B2"] as const;
 export type EnglishLevel = (typeof ENGLISH_LEVELS)[number];
 export const ECONOMY_LEVELS = ["relaxed", "standard", "tight"] as const;
 export type EconomyLevel = (typeof ECONOMY_LEVELS)[number];
+/** The rewards a level's AP bonus can add to (every reward kind but a scene's `ap` tag, which a writer sets in its scene). */
+export const REWARD_AP_BONUS_TRIGGERS = ["guide_read", "battle_complete", "battle_score", "episode_clear", "city_clear"] as const;
+export type RewardApBonusTrigger = (typeof REWARD_AP_BONUS_TRIGGERS)[number];
 const difficultyLabel = z.object({ labelJa: text, descriptionJa: text }).strict();
 const economyLevel = difficultyLabel.extend({
   /** The share of the journey's starting budget (rounded down); the tightest level still covers the main story at its cheapest. */
   budgetPercent: z.number().int().min(1).max(1000),
-  /** AP added to each reward that gives AP (a first clear, a first read…), up to the AP cap; never less than as authored. */
-  rewardApBonus: z.number().int().min(0).max(10),
+  /**
+   * AP added to each reward that gives AP, by its kind (a first read, a first clear…; a kind left out adds none; a scene's
+   * `ap` tag is never changed), up to the AP cap; never less than as authored (the AP checks read the numbers as written).
+   */
+  rewardApBonus: z.object(Object.fromEntries(REWARD_AP_BONUS_TRIGGERS.map((trigger) => [trigger, z.number().int().min(0).max(10).optional()])) as
+    Record<RewardApBonusTrigger, z.ZodOptional<z.ZodNumber>>).strict(),
 }).strict();
 export const balanceSchema = z
   .object({
@@ -288,14 +296,8 @@ export const progressionSchema = z
           .strict(),
       )
       .length(4),
-    confession: z
-      .object({
-        minAffection: z.number().int().nonnegative(),
-        minTrust: z.number().int(),
-        minSpark: z.number().int(),
-        minCompletedDates: z.number().int().nonnegative(),
-      })
-      .strict(),
+    /** The confession's thresholds; a journey may set its own at a level of money and AP (manifest `economyLevels`). */
+    confession: confessionThresholdsSchema,
     // May be empty: a date without a matching callback uses fallbackMemoryCallbackJa.
     memoryCallbacks: z.array(z.object({ memoryId: id, textJa: text }).strict()),
     fallbackMemoryCallbackJa: text,

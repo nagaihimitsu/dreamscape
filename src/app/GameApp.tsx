@@ -237,6 +237,8 @@ export function GameApp({
   // speech, so that a question can be read with no press (iOS Safari speaks with no gesture only after one).
   const autoReadAloud = readAloudAvailable && displaySettings.value.autoReadAloud;
   useEffect(() => (autoReadAloud ? primeSpeechOnGesture() : undefined), [autoReadAloud]);
+  // 「英語オフ」 (2026-11-19): a quiz shows its Japanese translation only, so nothing of it is read aloud.
+  const englishOff = displaySettings.value.englishOff;
   // Said once under the reading settings, below the first one turned on.
   const noEnglishVoiceJa = "英語の声がない端末では、読まないか、ほかの言葉の声で読みます。";
   // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
@@ -1094,7 +1096,7 @@ export function GameApp({
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
                 <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine}
                   playerRef={titleReading.ref} />
-                <DifficultyFields value={difficulty} onChange={setDifficulty} />
+                <DifficultyFields value={difficulty} onChange={setDifficulty} journeyId={journeyId} />
                 <button
                   className="primary"
                   data-testid="title-start"
@@ -1120,6 +1122,7 @@ export function GameApp({
             readSkip={readLines}
             key={`${activeEncounter.runId}-${sceneEpoch}`}
             learning={learning}
+            englishOff={englishOff}
             speed={speed}
             reduceMotion={displaySettings.value.reduceMotion}
             onSpeed={setSpeed}
@@ -1253,8 +1256,9 @@ export function GameApp({
             readSkip={readLines}
             key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
-            readAloud={readAloud}
-            autoReadAloud={autoReadAloud}
+            readAloud={readAloud && !englishOff}
+            autoReadAloud={autoReadAloud && !englishOff}
+            englishOff={englishOff}
             introHeld={moments.titleHolding}
             learning={learning}
             onEnglish={openEnglish}
@@ -1441,7 +1445,7 @@ export function GameApp({
         <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。その国の言葉・既読の記録も、そのまま残ります。
           {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
           {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
-        <DifficultyFields value={againDifficulty} onChange={setAgainDifficulty} />
+        <DifficultyFields value={againDifficulty} onChange={setAgainDifficulty} journeyId={journeyId} />
         {confirmAgain.status === "invalid" && confirmAgain.raw === null && <p role="alert">このブラウザの保存領域を読み取れないため、始められません。保存の設定を確認してください。</p>}
         <ModalAnswers
           cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmAgain(null)}>戻る</button>}
@@ -1648,6 +1652,11 @@ export function GameApp({
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
           </label>}
           {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
+          <label className="translation-setting">
+            <input type="checkbox" checked={englishOff} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ englishOff: event.target.checked })} /> 英語オフ（クイズは訳だけを表示する）
+          </label>
+          {englishOff && <p className="fine-print">クイズの問題文と選択肢を日本語訳だけで表示します。英語の読み上げも行いません。</p>}
           <label className="translation-setting">
             <input
               type="checkbox"

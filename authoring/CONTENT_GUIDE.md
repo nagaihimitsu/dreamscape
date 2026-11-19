@@ -866,8 +866,16 @@ EXTERNAL cond(text)
 1. 背景を透過した全身の絵を、可逆のPNGで用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本の衣装 `default_01` の `standing_01` は **1024×1536px** を共通のキャンバスにしています。同じ衣装・ポーズの差分は、人物の位置とキャンバスをそろえ、画像ごとに切り抜きません。この元の絵は配信しない制作資料に、配信のパスの `assets/` より下と同じ場所で置きます（例 `authoring/characters/heroine/default_01/standing_01/neutral.png`。今の12表情の元の絵もここにあります）。
 2. 配信するパス `public/assets/characters/heroine/default_01/standing_01/neutral.webp` を、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスで、配信するのは WebP です。Dreamscape のために作った絵なので、同じパスを [`content/presentation/own-artwork.json`](../content/presentation/own-artwork.json) の立ち絵の `paths` にも1行足します（足さないと `npm run content:check` が「出典のない画像」で止まります。自作の絵は出典の一覧に載せません。[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
 3. `npm run images:optimize -- --write` を実行すると、元の絵から配信用の軽い版（非可逆の WebP 品質85。透明度は元の絵のまま）を `public/assets/…` に作ります。2026-11-13のユーザー判断「軽い版を配る」：可逆の WebP より約8割小さく、遅い回線でも最初の場面の立ち絵が早く出て、スマートフォンの大きさでは違いが見えません。元の絵を描き直したときも同じコマンドで作り直します（変わった絵だけ書き換えます）。可逆の WebP を直接置いたときは、コマンドがそれを元の絵として制作資料にPNGで残してから軽い版にします。可逆の WebP や PNG のまま配信していると、`content:build` が注意で知らせます。
-4. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に1枚ずつ足し、届いていないファイルは登録しません。`neutral` だけでもその衣装が使われ、登録のない表情は同じ衣装・ポーズの `neutral` が出ます。表情の指定には Ink の `# emotion:` を使います。
+4. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に1枚ずつ足し、届いていないファイルは登録しません。**動く立ち絵のある衣装・ポーズ（`avatar`）に表情を足すときは、動く立ち絵の顔 `face_<表情ID>.png` も必ず足します**（足さないと、動く立ち絵ではその表情が出ず、元の顔のまま話します。手順は [動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md#2-表情を足すとき)）。`neutral` だけでもその衣装が使われ、登録のない表情は同じ衣装・ポーズの `neutral` が出ます。表情の指定には Ink の `# emotion:` を使います。
 5. `npm run content:check` を実行します。登録したファイルがあること、実際の形式・寸法・透過の画素、表情や衣装の参照を確かめます。背景がきれいに切り抜けているか、透過の縁の質までは確かめないので、下のプレビューで目で確かめてください。衣装が届いていないときは基本の素材を使い、画像を読み込めなくても会話は続きます。
+
+### 動く立ち絵
+
+衣装・ポーズに動く立ち絵（mesh-avatar のフォルダ）があると、その衣装のときは立ち絵が呼吸・まばたきし、髪や身体がわずかに揺れ、`# emotion:` の表情に変わり、声のある台詞を話す間は声に合わせて口が動きます（2026-11-19のユーザー判断。今は基本の衣装 `default_01` の `standing_01` だけ）。`characters.json` の同じポーズに `"avatar": "assets/characters/heroine/default_01/standing_01/avatar/"` と、`public/` からのフォルダのパス（最後に `/`）を書きます。表情ごとの顔は、そのフォルダの `built/sprites/face_<表情ID>.png` です（`neutral` は元の顔）。**表情を足すときは `face_<表情ID>.png` も必ず足します**。顔のない表情は、動く立ち絵では元の顔のまま話し、表情の静止画には切り替わりません。
+
+- 上の `expressions` の絵は、そのまま必要です。動く立ち絵が使えないとき（「演出を短縮する」・端末の「視差効果を減らす」、WebGL が使えない、読み込めない）と、読み込みが終わるまでは、今までどおり表情の絵が出ます。
+- フォルダのファイル（`avatar.json`・`rig.json`・`built/` の絵）がそろっているか、顔の名前が表情IDかを `content:check` が確かめます。フォルダの絵も1枚ずつ `own-artwork.json` に書きます。
+- 作り方は [動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)、試したこと・やめたことは [動く立ち絵の試作](LIVE_PORTRAIT_TRIAL.md) にあります。動かす部品は mesh-avatar 0.8.0 を Dreamscape 用に少し直したもので、`vendor/` に置いています。
 
 ### 配置・衣装・表情の指定
 

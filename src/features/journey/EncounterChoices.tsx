@@ -25,6 +25,7 @@ export function EncounterChoices({
   learning,
   formatMoney,
   disabled,
+  japaneseOnly = false,
   onChoose,
 }: {
   id: string;
@@ -33,17 +34,20 @@ export function EncounterChoices({
   /** The journey's money format (formatMoneyForCity). */
   formatMoney: (amount: number) => string;
   disabled?: boolean;
+  /** 「英語オフ」 (a quiz's options only): each option's translation in its English's place, with no 「訳を見る」. */
+  japaneseOnly?: boolean;
   onChoose: (index: number) => void;
 }) {
   const hasPrices = choices.some((choice) => (choice.cost ?? 0) > 0);
   return (
     <div className="encounter-choices" aria-label="返答を選ぶ">
-      {choices.some((choice) => choice.translationJa) && <div className="encounter-translation-tools">
+      {!japaneseOnly && choices.some((choice) => choice.translationJa) && <div className="encounter-translation-tools">
         <TranslationAll learning={learning} id={id} parts={["question", ...choices.map((_, ordinal) => choiceMark(ordinal))]} />
       </div>}
       {choices.map((choice, ordinal) => {
         const part = choiceMark(ordinal);
         const isOpen = visible(learning, id, part);
+        const jaOnly = japaneseOnly && !!choice.translationJa;
         return (
           <div className="encounter-choice" key={choice.index} data-translated={choice.translationJa ? true : undefined}>
             <button
@@ -57,18 +61,18 @@ export function EncounterChoices({
               {part}
             </button>
             <div className="encounter-choice-content">
-              <InteractiveEnglish
+              {jaOnly ? <span lang="ja">{choice.translationJa}</span> : <InteractiveEnglish
                 text={choice.textEn}
                 vocabulary={[]}
                 label={`選択肢${part}`}
                 onDoubleTap={() => { if (choice.translationJa) revealTranslation(learning, id, part); }}
-              />
+              />}
               {(hasPrices || !!choice.apCost) && <div className="encounter-choice-meta">
                 {hasPrices && <span>{choice.cost ? formatMoney(choice.cost) : "無料"}</span>}
                 {choice.apCost ? <span>AP {choice.apCost}</span> : null}
               </div>}
             </div>
-            {choice.translationJa && <button
+            {choice.translationJa && !jaOnly && <button
               type="button"
               className="text-button encounter-choice-translate"
               aria-expanded={isOpen}
@@ -77,7 +81,7 @@ export function EncounterChoices({
             >
               {isOpen ? "訳を閉じる" : "訳を見る"}
             </button>}
-            {isOpen && choice.translationJa && <p className="encounter-choice-translation" lang="ja">{choice.translationJa}</p>}
+            {isOpen && choice.translationJa && !jaOnly && <p className="encounter-choice-translation" lang="ja">{choice.translationJa}</p>}
             {choice.unavailableReason && <p id={`${id}-${part}-reason`} className="encounter-choice-reason">{choice.unavailableReason}</p>}
           </div>
         );
