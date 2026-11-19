@@ -11,6 +11,7 @@ import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
+import { difficultySchema } from "./difficulty";
 import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
 /** The only saved game format this build reads; older versions are not migrated. */
@@ -132,6 +133,9 @@ export const gameStateSchema = z.object({
   // (src/features/journey/useNameReading.ts): the Jaipur mehndi draws a kanji name in Latin letters from it
   // (src/domain/name-romaji.ts). Left out: not known, or not needed (a kana or Latin name has its own Latin form).
   playerNameReading: nameReadingSchema.optional(),
+  // The difficulty (2026-11-19, an optional field of save v23; src/domain/difficulty.ts): chosen when the journey starts.
+  // A save written before it has none and plays at the default (ふつう and ふつう).
+  difficulty: difficultySchema.optional(),
   ap: z.number().int().min(0).max(balance.apCap),
   affection: z.number().int(),
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),

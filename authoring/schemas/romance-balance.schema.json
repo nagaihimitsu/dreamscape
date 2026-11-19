@@ -25,6 +25,182 @@
       "type": "integer",
       "minimum": 1,
       "maximum": 100
+    },
+    "difficulty": {
+      "type": "object",
+      "properties": {
+        "english": {
+          "type": "object",
+          "properties": {
+            "A2": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa"
+              ],
+              "additionalProperties": false
+            },
+            "B1": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa"
+              ],
+              "additionalProperties": false
+            },
+            "B2": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "A2",
+            "B1",
+            "B2"
+          ],
+          "additionalProperties": false
+        },
+        "economy": {
+          "type": "object",
+          "properties": {
+            "relaxed": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "budgetPercent": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "rewardApBonus": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa",
+                "budgetPercent",
+                "rewardApBonus"
+              ],
+              "additionalProperties": false
+            },
+            "standard": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "budgetPercent": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "rewardApBonus": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa",
+                "budgetPercent",
+                "rewardApBonus"
+              ],
+              "additionalProperties": false
+            },
+            "tight": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "budgetPercent": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "rewardApBonus": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa",
+                "budgetPercent",
+                "rewardApBonus"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "relaxed",
+            "standard",
+            "tight"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "english",
+        "economy"
+      ],
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
