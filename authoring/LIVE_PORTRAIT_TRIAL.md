@@ -80,7 +80,7 @@
 
 ユーザー判断「これで実装」で、確認用ページの形をゲームに入れました。
 
-- 動かす部品：改造した mesh-avatar を `vendor/mesh-avatar-0.8.0-dreamscape.1.tgz` にまとめ、`package.json` の依存に入れています（ライセンスの一覧に載せるため。中身は mesh-avatar-studio `406714b` の `packages/runtime` に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当て、`version` を `0.8.0-dreamscape.1`、依存（fflate は同梱済み）を外して `npm pack` したもの）。立ち絵が要るときだけ読み込み、タイトル画面では読みません。
+- 動かす部品：改造した mesh-avatar を `vendor/mesh-avatar-0.8.0-dreamscape.2.tgz` にまとめ、`package.json` の依存に入れています（ライセンスの一覧に載せるため。中身は mesh-avatar-studio `406714b` の `packages/runtime` に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当て、`version` を `0.8.0-dreamscape.2`、依存（fflate は同梱済み）を外して `npm pack` したもの）。立ち絵が要るときだけ読み込み、タイトル画面では読みません。
 - データ：`characters.json` の衣装・ポーズの `avatar`（フォルダ）。基本の衣装 `default_01/standing_01` だけに付けています。ファイルは `public/assets/characters/heroine/default_01/standing_01/avatar/`（約1.7MB。`base.png` が可逆のPNGで約710KB。部品がPNGしか読まないため。軽くするのは後の仕事）。`content:build` がフォルダのファイルと顔の名前を確かめます（`scripts/presentation-validation.ts`）。
 - 画面：`src/components/LivePortrait.tsx`。`CharacterPortrait` が衣装・ポーズの `avatar` を見て、静止画の上にキャンバスを重ね、動き始めたら静止画を隠します。表情は `setFace`、口は話している人（`focus` が `speaking`）だけが台詞の声の大きさ（`src/components/useVoice.ts` の `lineVoiceLevel`。声は聞こえない分かれ道で解析器にも流す）に合わせて動きます。
 - 動かさないとき：「演出を短縮する」・端末の動きを減らす設定・WebGL がない・読み込めない。表情の静止画が出ます。顔の丸枠（`CharacterFace`）とミニゲームの全身（`CharacterFigure`）は静止画のまま。
