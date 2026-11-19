@@ -9,8 +9,29 @@ for k in [k for k in sheet['layers'] if k.startswith('face_')]: del sheet['layer
 X0,Y0,X1,Y1=395,120,650,290
 names=['smile','happy','shy','shy_deep','surprised','surprised_big','worried','serious','exasperated','teasing','teasing_big']
 total=0
+# Expressions drawn with an open mouth rest with a closed one painted in (from these full-size pictures)
+# and open to their own mouth, cut as mouthopen_<name>.
+CLOSED={'smile':'source.png','happy':'source.png','shy_deep':'source.png','teasing_big':'source.png',
+        'surprised':f'{A}/serious.png','surprised_big':f'{A}/serious.png',
+        'worried':'work/variants-raw/mouth_sad.png','exasperated':'work/variants-raw/mouth_angry.png'}
+for k in [k for k in sheet['layers'] if k.startswith('mouthopen_')]: del sheet['layers'][k]
+yy,xx=np.mgrid[0:src.shape[0],0:src.shape[1]]
+# the mouth zone swapped for the closed mouth; wide-open grins need a wider one
+WIDE={'happy':48,'teasing_big':47}
+def zone_soft(n):
+    zone=(((xx-513)/float(WIDE.get(n,40)))**2+((yy-(241 if n in WIDE else 245))/(31.0 if n in WIDE else 26.0))**2)<=1
+    return cv2.GaussianBlur(zone.astype(np.float32),(0,0),2.5)
 for n in names:
     e=np.asarray(Image.open(f'{A}/{n}.png').convert('RGBA'))
+    if n in CLOSED:
+        # the open mouth on its own, feathered at the zone edge
+        om=e.copy(); zsoft=zone_soft(n); om[...,3]=(np.clip(zsoft*1.2,0,1)*e[...,3]).astype(np.uint8)
+        ys,xs=np.where(om[...,3]>2); x0,y0,x1,y1=xs.min(),ys.min(),xs.max()+1,ys.max()+1
+        Image.fromarray(om[y0:y1,x0:x1]).save(f'built/sprites/mouthopen_{n}.png',optimize=True)
+        sheet['layers'][f'mouthopen_{n}']=[int(x0),int(y0),int(x1-x0),int(y1-y0)]
+        c=np.asarray(Image.open(CLOSED[n]).convert('RGBA')).astype(np.float32)
+        w=zsoft[...,None]
+        e=(e.astype(np.float32)*(1-w)+c*w).astype(np.uint8)
     d=np.abs(e.astype(int)-src.astype(int)).max(-1)>18
     box=np.zeros(d.shape,bool); box[Y0:Y1,X0:X1]=True
     m=(d&box&~hair&(src[...,3]>200)).astype(np.uint8)

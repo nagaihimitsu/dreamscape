@@ -27,7 +27,7 @@ index 614400a..26501b6 100644
    setTalkGain(gain: number): void;
    play(id: string): void;
 diff --git a/packages/runtime/src/engine/sprites.js b/packages/runtime/src/engine/sprites.js
-index db42017..46e81b1 100644
+index db42017..eda7be7 100644
 --- a/packages/runtime/src/engine/sprites.js
 +++ b/packages/runtime/src/engine/sprites.js
 @@ -90,7 +90,8 @@ export function createSpriteModule(engine, rig) {
@@ -36,7 +36,7 @@ index db42017..46e81b1 100644
      const moodMouth = n => MOUTH_MOODS.some(m => n === `mouth_${m}`);
 -    const order = n => (shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
 +    // whole-face expression drawings (face_<name>) lie under every eye / mouth drawing
-+    const order = n => (n.startsWith('face_') ? -1 : shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
++    const order = n => (n.startsWith('face_') ? -1 : n.startsWith('mouthopen_') ? 4 : shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
      const entries = Object.entries(sheet.layers).sort((x, y) => order(x[0]) - order(y[0]));
      for (const [name, rect] of entries) {
        const mesh = buildGrid(rect, rig.mesh.spriteCell, alphaOf(imgs[name]), imgs[name].width);
@@ -80,7 +80,26 @@ index db42017..46e81b1 100644
            if (want !== st.cur) { st.prev = st.cur; st.cur = want; st.t = 0; }
            // A redraw without elapsed time (a paused preview moving a slider) shows the target
            // frame at once; otherwise the fade would stay at its first frame.
-@@ -202,6 +220,14 @@ export function createSpriteModule(engine, rig) {
+@@ -178,6 +196,18 @@ export function createSpriteModule(engine, rig) {
+           else { show(st.cur, 1); show(st.prev, 1 - k); }
+           covered[i] = st.cur !== 'open' && k >= 0.999;
+         });
++        // A whole-face drawing with its own open mouth (mouthopen_<name>) rests with the closed mouth
++        // painted into the face, and opens to that drawing (squashed by the openness) instead of the vowels.
++        const faceMouth = faceState.cur && items[`mouthopen_${faceState.cur}`];
++        if (faceMouth) {
++          lastShape = null;
++          if (P.mouthOpen >= MOUTH_OPEN_MIN) {
++            faceMouth.layer.visible = true;
++            faceMouth.layer.alpha = sstep(MOUTH_OPEN_MIN, MOUTH_OPEN_MIN + 0.08, P.mouthOpen);
++            place(faceMouth, P, phys, Math.min(1.05, Math.max(0.55, P.mouthOpen / 0.8)));
++          }
++          return { eyes: covered, mouth: P.mouthOpen >= MOUTH_OPEN_MIN ? 'face' : null, mouthDrawn: true };
++        }
+         const shape = mouthShape(P.mouthOpen, P.mouthForm, lastShape);
+         lastShape = shape;
+         const def = shape && MOUTH_SHAPES[shape];
+@@ -202,6 +232,14 @@ export function createSpriteModule(engine, rig) {
        },
        /** Whether each eye has the closed and half-closed drawings, so the layered eye stays open. */
        eyesDrawn,
