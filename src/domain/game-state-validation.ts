@@ -70,6 +70,7 @@ export function validateGameHistory(state: GameState): void {
   ]);
   if (
     state.playedDateIds.some((id) => !dates.some((date) => date.id === id)) ||
+    (state.recapDateId !== undefined && !state.playedDateIds.includes(state.recapDateId)) ||
     state.memories.some((id) => !knownMemories.has(id)) ||
     state.unlockedEventIds.some(
       (id) => !dates.some((date) => date.id === id && date.kind !== "normal"),

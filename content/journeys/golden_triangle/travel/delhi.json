@@ -16,6 +16,12 @@
           "end": 990
         }
       ],
+      "heroineLinesJa": [
+        "赤い壁、どこまで続いてるんだろう。お城っていうより、町をまるごと囲んでるみたい"
+      ],
+      "recapLinesJa": [
+        "一度入ったのに、あの壁を見上げると、また初めてみたいな気持ちになるね"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -141,6 +147,12 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        "あの塔、ここからでも先っぽが見える。近くで見たら、首が痛くなりそう"
+      ],
+      "recapLinesJa": [
+        "あの鉄の柱、遠くから運ばれてきたんだよね。知らない町で、何百年も立ってる"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -250,6 +262,12 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        "タージ・マハルより先に建った、庭園のお墓なんだって。どこが似てるか、探してみたいな"
+      ],
+      "recapLinesJa": [
+        "三本目の木陰、今日も誰か座ってるかな。……のぞきに行くのは、なしだよね"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -351,6 +369,12 @@
           "end": 1260
         }
       ],
+      "heroineLinesJa": [
+        "インド門の芝生、休みの日は家族のピクニックでいっぱいなんだって。わたしたちも、混ざれるかな"
+      ],
+      "recapLinesJa": [
+        "モヌくんの家族、もう村に帰ったかな。あの写真、村で自慢されてるといいな"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -435,6 +459,12 @@
           "start": 540,
           "end": 1020
         }
+      ],
+      "heroineLinesJa": [
+        "ニハーリーっていう朝ごはん、この近くで食べられるんだって。行くなら、早起きしないとね"
+      ],
+      "recapLinesJa": [
+        "階段の上から見た旧市街、ほんとに全部見えた気がしたな"
       ],
       "sources": [
         {
@@ -545,6 +575,12 @@
           "end": 1260
         }
       ],
+      "heroineLinesJa": [
+        "あの路地、全部お店なの？　迷子になったら、匂いをたどって帰ってこられるかな"
+      ],
+      "recapLinesJa": [
+        "『バス』、もう言えるよ。……たぶん。屋台の前に立つと、また忘れそうだけど"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -613,6 +649,12 @@
           "start": 540,
           "end": 1020
         }
+      ],
+      "heroineLinesJa": [
+        "お墓のある公園で、朝の散歩をするんだって。どんな感じなんだろう"
+      ],
+      "recapLinesJa": [
+        "理由のない笑い、一人だとやっぱり変な人だよね。……{player_name}も、一緒にやる？"
       ],
       "sources": [
         {
@@ -698,6 +740,12 @@
           "start": 540,
           "end": 1050
         }
+      ],
+      "heroineLinesJa": [
+        "ビルの間に、昔の階段井戸があるんだって。こんな都会の真ん中に？"
+      ],
+      "recapLinesJa": [
+        "百八段も上ったのに、冷たいものが飲みたいのは変わらなかったな"
       ],
       "sources": [
         {
@@ -792,6 +840,12 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        "中では、しゃべっちゃだめなんだって。……わたし、我慢できるかな"
+      ],
+      "recapLinesJa": [
+        "静かにしてたのに、頭の中はずっとうるさかったな。あれ、また行きたいかも"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -855,6 +909,12 @@
           "start": 540,
           "end": 1260
         }
+      ],
+      "heroineLinesJa": [
+        "誰でも無料でごはんを食べられる食堂があるんだって。作る方も、手伝えるのかな"
+      ],
+      "recapLinesJa": [
+        "わたしのローティー、世界地図みたいだったね。……次は、ちゃんと丸くする"
       ],
       "sources": [
         {

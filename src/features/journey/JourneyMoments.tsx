@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from
 import { createPortal } from "react-dom";
 import { DEFAULT_ITEM_ICON } from "../../content/code-images";
 import { Icon } from "../../components/icons";
+import { HeroineNote } from "../battle/HeroineNote";
 import { Modal } from "../../components/Modal";
 import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import { playSe } from "../../audio/sound-effects";
@@ -121,9 +122,10 @@ export function DepartureLuggage({ carried, left }: { carried: readonly PackedIt
  * caption, no credit), else its place's photo (the one free time's card shows, in its larger `recap` copy) captioned with
  * the place's name. The card shows no credit (2026-11-15 user decision): while it shows, ≡メニュー's 「写真の出典」 lists the
  * photo with its credit and the note that the copy is reduced and cropped (PhotoCredits.tsx recapPhotos). In the page's
- * flow; nothing waits for it, and it goes with 「閉じる」 or when the screen changes.
+ * flow; nothing waits for it, and it goes with 「閉じる」 or when the screen changes. Under it, her small face and a bubble
+ * with her line looking back on the place finished last, when it has one (resumeRecap, 2026-11-19).
  */
-export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClose: () => void }) {
+export function ResumeRecapCard({ recap, heroineName, onClose }: { recap: ResumeRecap; heroineName: string; onClose: () => void }) {
   // Its height (--recap-h) is the night screen's room for it: that screen lies under it and starts below it.
   const measured = useMeasuredHeight("--recap-h");
   return <section ref={measured} className="resume-recap" aria-labelledby="resume-recap-title" data-testid="resume-recap">
@@ -142,6 +144,7 @@ export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClos
         <p>{recap.chapter.descriptionJa}</p>
       </div>
     </div>
+    {recap.heroine && <HeroineNote className="resume-recap-heroine" label={heroineName} text={recap.heroine.textJa} cityId={recap.heroine.cityId} testId="recap-heroine-line" />}
   </section>;
 }
 

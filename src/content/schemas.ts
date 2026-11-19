@@ -22,6 +22,13 @@ export const dateSchema = z
     chapterId: id,
     titleJa: text,
     descriptionJa: text.default("ふたりで旅先を訪ねる。"),
+    /**
+     * After the date (2026-11-19 user decision), like an episode's clear title and record: 前回までのあらすじ shows them
+     * when this date was the thing finished last (save `recapDateId`). `{player_name}`・`{heroine_name}` take the names
+     * set. Optional: without them the recap shows `titleJa` and `descriptionJa`.
+     */
+    clearTitleJa: text.optional(),
+    clearDescriptionJa: text.optional(),
     apCost: z.number().int().nonnegative().default(2),
     minRomanceStage: z.number().int().min(1).max(4).default(1),
     storyId: storyAddressSchema,

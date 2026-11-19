@@ -112,7 +112,7 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
     /** The packing, shown in place of the screen (null when none). */
     packingScene: packing && <PackingScene packing={packing} reduceMotion={reduceMotion} onEnd={() => setPacking(null)} />,
     /** The recap card, at the top of <main> (null when none). */
-    recapCard: recap && <ResumeRecapCard recap={recap} onClose={() => setRecapScreen(null)} />,
+    recapCard: recap && game && <ResumeRecapCard recap={recap} heroineName={game.heroineName} onClose={() => setRecapScreen(null)} />,
     /** The recap card's picture while it shows (≡メニュー's 「写真の出典」 lists a credited one: GameApp's creditPhotos). */
     recapPicture: recap?.photo ?? null,
     /** The title card (or its waiting mark), the stamp and the credit roll, after the screens. */

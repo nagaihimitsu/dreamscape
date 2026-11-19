@@ -117,6 +117,8 @@
 .resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: 12px; }
 .resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }
 .resume-recap-chapter p:last-child { margin: 4px 0 0; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+/* Her line looking back on the place finished last, under the record (resumeRecap). */
+.resume-recap .resume-recap-heroine { margin: 10px 0 0; }
 /* A narrow phone: the photo above the record, so the record keeps the card's width. */
 @media (max-width: 359px) {
   .resume-recap-body { flex-direction: column; }

@@ -16,6 +16,12 @@
           "end": 1050
         }
       ],
+      "heroineLinesJa": [
+        "丘の上のお城なんだって。歩いて登るのかな、それとも……"
+      ],
+      "recapLinesJa": [
+        "お城の後ろの山の壁、どこまで続いてたんだろう。万里の長城みたいだったね"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -117,6 +123,12 @@
           "end": 990
         }
       ],
+      "heroineLinesJa": [
+        "窓だらけの宮殿なんだって。あの窓から、誰が外を見てたんだろう"
+      ],
+      "recapLinesJa": [
+        "あの通り、牛の方が信号っぽかったね。渡るたびに思い出しそう"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -209,6 +221,12 @@
           "start": 570,
           "end": 1110
         }
+      ],
+      "heroineLinesJa": [
+        "今も王家の人が住んでる宮殿なんだって。……お隣さんの気分で行ったら、怒られるかな"
+      ],
+      "recapLinesJa": [
+        "お城の中に、もう一つ町があるみたいだったね。迷子にならなかったの、奇跡かも"
       ],
       "sources": [
         {
@@ -319,6 +337,12 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        "空を測る道具が並んでるんだって。道具なのに、建物くらい大きいらしいよ"
+      ],
+      "recapLinesJa": [
+        "あそこだと、影も道具の一部だったね。……今、何時か当ててみる？　太陽で"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -412,6 +436,12 @@
           "end": 1260
         }
       ],
+      "heroineLinesJa": [
+        "湖の真ん中に、宮殿が浮いてるんだって。どこまで近づけるのかな"
+      ],
+      "recapLinesJa": [
+        "手のひらの模様、まだ少し残ってる。……見る？"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OSM",
@@ -488,6 +518,12 @@
           "start": 540,
           "end": 1020
         }
+      ],
+      "heroineLinesJa": [
+        "あのお城、同じ形の部屋がたくさんあるんだって。絶対、迷いそう"
+      ],
+      "recapLinesJa": [
+        "上から見たら、迷ってばっかりの道が碁盤の目だったね。ちょっとずるい"
       ],
       "sources": [
         {
@@ -566,6 +602,12 @@
           "end": 1020
         }
       ],
+      "heroineLinesJa": [
+        "あの博物館、ミイラがいるんだって。……わたし、大丈夫かな"
+      ],
+      "recapLinesJa": [
+        "ミイラより、鳩の方が怖かった。今も、つい上を見ちゃう"
+      ],
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -642,6 +684,12 @@
           "start": 540,
           "end": 1110
         }
+      ],
+      "heroineLinesJa": [
+        "アンベール城の、さらに上にもお城があるんだって。上から見たら、どんなかな"
+      ],
+      "recapLinesJa": [
+        "あの宝の地図、どこまで本当だったんだろう。考えるだけで、ちょっと楽しい"
       ],
       "sources": [
         {
@@ -744,6 +792,12 @@
           "end": 1260
         }
       ],
+      "heroineLinesJa": [
+        "宝石のお店ばっかりの通りなんだって。……見るだけ、ね。見るだけ"
+      ],
+      "recapLinesJa": [
+        "欲しいものは、欲しいって言う。あの通りで、ちょっと練習できた気がする"
+      ],
       "sources": [
         {
           "publisher": "Around Us",
@@ -828,6 +882,12 @@
           "start": 540,
           "end": 1020
         }
+      ],
+      "heroineLinesJa": [
+        "階段が模様みたいに並んだ井戸なんだって。目が回りそう"
+      ],
+      "recapLinesJa": [
+        "井戸の底に置いてきた噂話、誰かに拾われてないといいな"
       ],
       "sources": [
         {

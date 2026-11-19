@@ -266,7 +266,9 @@ function recordEpisodes(state: GameState): GameState {
     return state;
   const today = completedEpisodeIds.slice(state.completedEpisodeIds.length)
     .filter((id) => episodes.some((episode) => episode.id === id && episode.cityId === state.currentCityId));
-  return { ...state, completedEpisodeIds, completedCityIds,
+  // A new episode is the latest thing finished: 前回までのあらすじ no longer follows a date before it (recapDateId).
+  const { recapDateId: _recapDate, ...rest } = state;
+  return { ...(completedEpisodeIds.length > state.completedEpisodeIds.length ? rest : state), completedEpisodeIds, completedCityIds,
     travel: today.length ? { ...state.travel, todayEpisodeIds: [...state.travel.todayEpisodeIds, ...today] } : state.travel };
 }
 export function finalizeBattleProgress(state: GameState): GameState {

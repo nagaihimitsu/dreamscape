@@ -77,7 +77,8 @@ export function derivedImageList(input: {
   for (const { city, places, hotelPlaceId, episodePlaceIds } of input.cities) {
     for (const place of places) add(choosePlacePhoto(input.content, place, hotelPlaceId), "card");
     add(chooseCityBackdrop(input.content.assets, city), "backdrop");
-    for (const place of places.filter((item) => episodePlaceIds.includes(item.id)))
+    // 前回までのあらすじ's photo: an episode's place, or a date's destination (a date finished last, 2026-11-19).
+    for (const place of places.filter((item) => episodePlaceIds.includes(item.id) || item.destinationIds?.length))
       add(choosePlacePhoto(input.content, place, hotelPlaceId), "recap");
   }
   return [...images.values()];

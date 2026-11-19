@@ -27,6 +27,13 @@ export const travelPlaceSchema = z.object({
    * `{heroine_name}` take the names set. Optional: without one, or with none holding, nothing shows.
    */
   heroineLinesJa: z.array(z.union([japaneseText, z.object({ textJa: japaneseText, when: conditionSchema }).strict()])).min(1).optional(),
+  /**
+   * The heroine's few words looking back on the place (2026-11-19 user decision): in 前回までのあらすじ, when the latest thing
+   * finished was here (the last episode's place, or a normal date's destination finished after it; save `recapDateId`),
+   * her small face and the first entry that holds now. The same shape as heroineLinesJa. Optional: without one, or with
+   * none holding, the recap shows no line.
+   */
+  recapLinesJa: z.array(z.union([japaneseText, z.object({ textJa: japaneseText, when: conditionSchema }).strict()])).min(1).optional(),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   backgroundId: id,

@@ -42,6 +42,14 @@
             "type": "string",
             "minLength": 1
           },
+          "clearTitleJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "clearDescriptionJa": {
+            "type": "string",
+            "minLength": 1
+          },
           "apCost": {
             "default": 2,
             "type": "integer",

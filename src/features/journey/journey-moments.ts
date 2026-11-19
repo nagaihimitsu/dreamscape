@@ -1,11 +1,13 @@
-import { battles, cityContents, encounters, episodes, getAlbumImage, landmarks, presentation, tourismAssets, type EpisodeDefinition } from "../../content";
+import { battles, cityContents, dates, encounters, episodes, getAlbumImage, landmarks, presentation, tourismAssets, type DateDefinition, type EpisodeDefinition } from "../../content";
 import { derivedImagePath } from "../../content/derived-images";
 import { getJourneyForCity } from "../../content/journeys";
 import { getPlacePhoto } from "../../content/place-photo";
 import type { TourismAsset } from "../../content/tourism-schemas";
+import type { TravelPlace } from "../../content/travel-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
 import { isCarriedItem } from "../../domain/item-cities";
+import { itemLines } from "../../domain/item-lines";
 import type { GameState } from "../../domain/game";
 import { eventPlace } from "../../domain/moments";
 import { withNames } from "../romance/names";
@@ -126,47 +128,79 @@ function episodeStoryIds(episode: EpisodeDefinition): string[] {
 }
 
 /**
- * The picture of an episode in the recap: the latest album photo taken in the episode's own parts (episodeStoryIds);
- * else the photo of the place the episode happens at on the map (a landmark's place, or where a finale is set; content:build
- * checks that each episode has its map event and that a landmark's is at the landmark's place), the photo free time's card
- * shows for that place (getPlacePhoto) in its larger `recap` copy, with its credit; else none (a place without a photo, or
- * with only a placeholder).
+ * What the recap looks back on (2026-11-19 user decision: dates too): the thing finished last, a normal date with a
+ * destination finished after the last episode (save `recapDateId`), else the last episode completed; with the place it
+ * happened at (a date's destination's place, or the episode's place on the map; content:build checks that each episode
+ * has its map event) and that place's city.
  */
-export function recapPicture(game: Pick<GameState, "album" | "currentCityId">, episode: EpisodeDefinition): RecapPicture | null {
-  const own = episodeStoryIds(episode);
-  const photo = photoViews(game.album.filter((item) => own.includes(item.storyId)), game.currentCityId).at(-1);
-  if (photo) return { path: photo.path, altJa: photo.altJa, captionJa: photo.caption ?? photo.placeJa };
-  const placeId = eventPlace(episode.cityId, episode.id);
-  const place = cityContents[episode.cityId]?.travel.places.find((item) => item.id === placeId);
-  const asset = place ? getPlacePhoto(episode.cityId, place.id) : null;
-  return place && asset ? { path: derivedImagePath(asset, "recap"), altJa: asset.altJa, captionJa: place.nameJa, credit: asset } : null;
+type RecapSubject = { kind: "episode"; episode: EpisodeDefinition } | { kind: "date"; date: DateDefinition };
+
+function recapSubject(game: Pick<GameState, "recapDateId" | "completedEpisodeIds">): RecapSubject | null {
+  const date = dates.find((item) => item.id === game.recapDateId && item.destinationId);
+  if (date) return { kind: "date", date };
+  const episode = episodes.find((item) => item.id === game.completedEpisodeIds.at(-1));
+  return episode ? { kind: "episode", episode } : null;
+}
+
+function subjectPlace(subject: RecapSubject): { cityId: string; place: TravelPlace } | null {
+  const places = Object.values(cityContents).flatMap((city) => city.travel.places.map((place) => ({ cityId: city.travel.cityId, place })));
+  if (subject.kind === "date") return places.find(({ place }) => place.destinationIds?.includes(subject.date.destinationId!)) ?? null;
+  const { episode } = subject;
+  return places.find(({ cityId, place }) => cityId === episode.cityId && place.id === eventPlace(episode.cityId, episode.id)) ?? null;
 }
 
 /**
- * The recap of a resumed game: where and when the party is, the last episode completed (its clear title and record,
- * the names filled in; the city it was in when that is not the city now) and that episode's picture (recapPicture: its
- * own album photo, else its place's photo with the credit). Null before any episode is completed: there is nothing to
- * recap yet (the header shows the place and time).
+ * The picture of the recap's subject: the latest album photo taken in its own story (an episode's parts, episodeStoryIds;
+ * a date's story); else the photo free time's card shows for its place (getPlacePhoto) in its larger `recap` copy, with
+ * its credit; else none (a place without a photo, or with only a placeholder).
+ */
+function subjectPicture(game: Pick<GameState, "album" | "currentCityId">, subject: RecapSubject): RecapPicture | null {
+  const own = subject.kind === "date" ? [subject.date.storyId] : episodeStoryIds(subject.episode);
+  const photo = photoViews(game.album.filter((item) => own.includes(item.storyId)), game.currentCityId).at(-1);
+  if (photo) return { path: photo.path, altJa: photo.altJa, captionJa: photo.caption ?? photo.placeJa };
+  const found = subjectPlace(subject);
+  const asset = found ? getPlacePhoto(found.cityId, found.place.id) : null;
+  return found && asset ? { path: derivedImagePath(asset, "recap"), altJa: asset.altJa, captionJa: found.place.nameJa, credit: asset } : null;
+}
+
+/** The picture of an episode in the recap (subjectPicture). */
+export function recapPicture(game: Pick<GameState, "album" | "currentCityId">, episode: EpisodeDefinition): RecapPicture | null {
+  return subjectPicture(game, { kind: "episode", episode });
+}
+
+/**
+ * The recap of a resumed game: where and when the party is, the thing finished last (recapSubject: an episode's clear
+ * title and record, or a date's (its clear title and record, else its title and description); the names filled in; the city it was in when that is not the city
+ * now), its picture (subjectPicture) and her line looking back on its place (the first of the place's `recapLinesJa` that
+ * holds now). Null before anything is finished: there is nothing to recap yet (the header shows the place and time).
  */
 export type ResumeRecap = {
   cityJa: string;
   whenJa: string;
   chapter: { titleJa: string; descriptionJa: string; cityJa?: string };
   photo?: RecapPicture;
+  /** Her few words looking back, with the city of the place for her face's costume. */
+  heroine?: { textJa: string; cityId: string };
 };
 
 export function resumeRecap(game: GameState): ResumeRecap | null {
-  const episode = episodes.find((item) => item.id === game.completedEpisodeIds.at(-1));
-  if (!episode) return null;
-  const photo = recapPicture(game, episode);
+  const subject = recapSubject(game);
+  if (!subject) return null;
+  const found = subjectPlace(subject);
+  const cityId = subject.kind === "episode" ? subject.episode.cityId : found?.cityId;
+  const [titleJa, descriptionJa] = subject.kind === "episode"
+    ? [subject.episode.clearTitleJa, subject.episode.clearDescriptionJa] : [subject.date.clearTitleJa ?? subject.date.titleJa, subject.date.clearDescriptionJa ?? subject.date.descriptionJa];
+  const photo = subjectPicture(game, subject);
+  const line = found ? itemLines(game, found.place.recapLinesJa)?.[0] : undefined;
   return {
     cityJa: cityNameJa(game.currentCityId),
     whenJa: `${game.travel.day}日目 ${formatTravelTime(game.travel.minute)}`,
     chapter: {
-      titleJa: withNames(episode.clearTitleJa, game), descriptionJa: withNames(episode.clearDescriptionJa, game),
-      ...(episode.cityId !== game.currentCityId ? { cityJa: cityNameJa(episode.cityId) } : {}),
+      titleJa: withNames(titleJa, game), descriptionJa: withNames(descriptionJa, game),
+      ...(cityId && cityId !== game.currentCityId ? { cityJa: cityNameJa(cityId) } : {}),
     },
     ...(photo ? { photo } : {}),
+    ...(found && line !== undefined ? { heroine: { textJa: withNames(line, game), cityId: found.cityId } } : {}),
   };
 }
 

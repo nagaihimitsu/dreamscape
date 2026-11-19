@@ -534,6 +534,8 @@ export function finishDate(
     playedDateIds: state.playedDateIds.includes(active.dateId)
       ? state.playedDateIds
       : [...state.playedDateIds, active.dateId],
+    // The latest place finished, for 前回までのあらすじ's heroine line: a normal date at a destination, not a replay.
+    ...(date.destinationId && !active.replay ? { recapDateId: date.id } : {}),
   }));
 }
 
