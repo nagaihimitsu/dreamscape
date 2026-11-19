@@ -6,14 +6,14 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { DERIVED_PHOTO_NOTE_JA, RECAP_PHOTO_NOTE_JA } from "../../content/credits";
-import { episodes, getAlbumImage, landmarks, scenes, storyState, tourismAssets } from "../../content";
+import { episodes, getAlbumImage, getCityContent, landmarks, scenes, storyState, tourismAssets } from "../../content";
 import {
   cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue, startDateScene, withAp,
 } from "../../dev/scenario-builders";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { leaveForNextCity } from "../../domain/city-travel";
 import { startEpisode } from "../../domain/chapter";
-import type { GameState } from "../../domain/game";
+import { validateGameState, type GameState } from "../../domain/game";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../domain/player-action";
 import { advanceTourismGuide } from "../../domain/tourism";
 import { beginTravelEvent } from "../../domain/travel-game";
@@ -166,6 +166,25 @@ describe("the recap of a resumed game", () => {
       chapter: { titleJa: "賭けではなく、欲しいから" },
       photo: placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド"),
     });
+  });
+
+  it("has her line about the place finished last: a date after the episode, then the next episode (2026-11-19)", () => {
+    const place = (id: string) => getCityContent(id.split("_")[0]).travel.places.find((item) => item.id === id)!;
+    const delhi = finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID);
+    expect(delhi.recapDateId).toBeUndefined();
+    expect(resumeRecap(delhi)?.heroine).toEqual({ textJa: place("delhi_jama_masjid").recapLinesJa![0], cityId: "delhi" });
+    let state = startDateScene(withAp(delhi, 12), "gt_delhi_date_agrasen_baoli", 0);
+    for (let step = 0; state.activeDate; step++) {
+      expect(step, "the date did not end").toBeLessThan(300);
+      state = applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], roll), roll);
+    }
+    expect(state.recapDateId).toBe("gt_delhi_date_agrasen_baoli");
+    expect(validateGameState(state)).toEqual(state);
+    expect(resumeRecap(state)?.heroine).toEqual({ textJa: place("delhi_agrasen_baoli").recapLinesJa![0], cityId: "delhi" });
+    const next = finishEpisode(state, RED_FORT);
+    expect(next.recapDateId).toBeUndefined();
+    expect(resumeRecap(next)?.heroine?.textJa).toBe(place("delhi_red_fort").recapLinesJa![0]);
+    expect(() => validateGameState({ ...delhi, recapDateId: "gt_delhi_date_agrasen_baoli" })).toThrow();
   });
 });
 

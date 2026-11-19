@@ -17,13 +17,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "お城の後ろの山の壁、どこまで続いてたんだろう。万里の長城みたいだったね",
-          "when": {
-            "landmarkVisited": "jaipur_amber_fort"
-          }
-        },
         "丘の上のお城なんだって。歩いて登るのかな、それとも……"
+      ],
+      "recapLinesJa": [
+        "お城の後ろの山の壁、どこまで続いてたんだろう。万里の長城みたいだったね"
       ],
       "sources": [
         {
@@ -127,13 +124,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "あの通り、牛の方が信号っぽかったね。渡るたびに思い出しそう",
-          "when": {
-            "landmarkVisited": "jaipur_hawa_mahal"
-          }
-        },
         "窓だらけの宮殿なんだって。あの窓から、誰が外を見てたんだろう"
+      ],
+      "recapLinesJa": [
+        "あの通り、牛の方が信号っぽかったね。渡るたびに思い出しそう"
       ],
       "sources": [
         {
@@ -229,13 +223,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "お城の中に、もう一つ町があるみたいだったね。迷子にならなかったの、奇跡かも",
-          "when": {
-            "landmarkVisited": "jaipur_city_palace"
-          }
-        },
         "今も王家の人が住んでる宮殿なんだって。……お隣さんの気分で行ったら、怒られるかな"
+      ],
+      "recapLinesJa": [
+        "お城の中に、もう一つ町があるみたいだったね。迷子にならなかったの、奇跡かも"
       ],
       "sources": [
         {
@@ -347,13 +338,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "あそこだと、影も道具の一部だったね。……今、何時か当ててみる？　太陽で",
-          "when": {
-            "landmarkVisited": "jaipur_jantar_mantar"
-          }
-        },
         "空を測る道具が並んでるんだって。道具なのに、建物くらい大きいらしいよ"
+      ],
+      "recapLinesJa": [
+        "あそこだと、影も道具の一部だったね。……今、何時か当ててみる？　太陽で"
       ],
       "sources": [
         {
@@ -449,13 +437,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "手のひらの模様、まだ少し残ってる。……見る？",
-          "when": {
-            "datePlayed": "gt_jaipur_date_jal_mahal"
-          }
-        },
         "湖の真ん中に、宮殿が浮いてるんだって。どこまで近づけるのかな"
+      ],
+      "recapLinesJa": [
+        "手のひらの模様、まだ少し残ってる。……見る？"
       ],
       "sources": [
         {
@@ -535,13 +520,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "上から見たら、迷ってばっかりの道が碁盤の目だったね。ちょっとずるい",
-          "when": {
-            "datePlayed": "gt_jaipur_date_nahargarh_fort"
-          }
-        },
         "あのお城、同じ形の部屋がたくさんあるんだって。絶対、迷いそう"
+      ],
+      "recapLinesJa": [
+        "上から見たら、迷ってばっかりの道が碁盤の目だったね。ちょっとずるい"
       ],
       "sources": [
         {
@@ -621,13 +603,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "ミイラより、鳩の方が怖かった。今も、つい上を見ちゃう",
-          "when": {
-            "datePlayed": "gt_jaipur_date_albert_hall"
-          }
-        },
         "あの博物館、ミイラがいるんだって。……わたし、大丈夫かな"
+      ],
+      "recapLinesJa": [
+        "ミイラより、鳩の方が怖かった。今も、つい上を見ちゃう"
       ],
       "sources": [
         {
@@ -707,13 +686,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "あの宝の地図、どこまで本当だったんだろう。考えるだけで、ちょっと楽しい",
-          "when": {
-            "datePlayed": "gt_jaipur_date_jaigarh_fort"
-          }
-        },
         "アンベール城の、さらに上にもお城があるんだって。上から見たら、どんなかな"
+      ],
+      "recapLinesJa": [
+        "あの宝の地図、どこまで本当だったんだろう。考えるだけで、ちょっと楽しい"
       ],
       "sources": [
         {
@@ -817,13 +793,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "欲しいものは、欲しいって言う。あの通りで、ちょっと練習できた気がする",
-          "when": {
-            "datePlayed": "gt_jaipur_date_johari_bazaar"
-          }
-        },
         "宝石のお店ばっかりの通りなんだって。……見るだけ、ね。見るだけ"
+      ],
+      "recapLinesJa": [
+        "欲しいものは、欲しいって言う。あの通りで、ちょっと練習できた気がする"
       ],
       "sources": [
         {
@@ -911,13 +884,10 @@
         }
       ],
       "heroineLinesJa": [
-        {
-          "textJa": "井戸の底に置いてきた噂話、誰かに拾われてないといいな",
-          "when": {
-            "datePlayed": "gt_jaipur_date_panna_meena_kund"
-          }
-        },
         "階段が模様みたいに並んだ井戸なんだって。目が回りそう"
+      ],
+      "recapLinesJa": [
+        "井戸の底に置いてきた噂話、誰かに拾われてないといいな"
       ],
       "sources": [
         {

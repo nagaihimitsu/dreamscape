@@ -1,4 +1,4 @@
-import { battles, cityContents, encounters, episodes, getAlbumImage, landmarks, presentation, tourismAssets, type EpisodeDefinition } from "../../content";
+import { battles, cityContents, dates, encounters, episodes, getAlbumImage, landmarks, presentation, tourismAssets, type EpisodeDefinition } from "../../content";
 import { derivedImagePath } from "../../content/derived-images";
 import { getJourneyForCity } from "../../content/journeys";
 import { getPlacePhoto } from "../../content/place-photo";
@@ -6,6 +6,7 @@ import type { TourismAsset } from "../../content/tourism-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
 import { isCarriedItem } from "../../domain/item-cities";
+import { itemLines } from "../../domain/item-lines";
 import type { GameState } from "../../domain/game";
 import { eventPlace } from "../../domain/moments";
 import { withNames } from "../romance/names";
@@ -153,12 +154,30 @@ export type ResumeRecap = {
   whenJa: string;
   chapter: { titleJa: string; descriptionJa: string; cityJa?: string };
   photo?: RecapPicture;
+  /** Her few words looking back (recapLine), with the city of the place for her face's costume. */
+  heroine?: { textJa: string; cityId: string };
 };
+
+/**
+ * The heroine's line in the recap (2026-11-19 user decision): the first of `recapLinesJa` that holds now, at the place
+ * finished last: a normal date's destination finished after the last episode (save `recapDateId`), else the last
+ * episode's place on the map. The names set filled in. Null when that place has no line holding.
+ */
+export function recapLine(game: GameState, episode: EpisodeDefinition): { textJa: string; cityId: string } | null {
+  const destinationId = dates.find((date) => date.id === game.recapDateId)?.destinationId;
+  const found = Object.values(cityContents).flatMap((city) => city.travel.places.map((place) => ({ cityId: city.travel.cityId, place })))
+    .find(({ cityId, place }) => destinationId
+      ? place.destinationIds?.includes(destinationId)
+      : cityId === episode.cityId && place.id === eventPlace(episode.cityId, episode.id));
+  const line = found && itemLines(game, found.place.recapLinesJa)?.[0];
+  return found && line !== undefined ? { textJa: withNames(line, game), cityId: found.cityId } : null;
+}
 
 export function resumeRecap(game: GameState): ResumeRecap | null {
   const episode = episodes.find((item) => item.id === game.completedEpisodeIds.at(-1));
   if (!episode) return null;
   const photo = recapPicture(game, episode);
+  const heroine = recapLine(game, episode);
   return {
     cityJa: cityNameJa(game.currentCityId),
     whenJa: `${game.travel.day}日目 ${formatTravelTime(game.travel.minute)}`,
@@ -167,6 +186,7 @@ export function resumeRecap(game: GameState): ResumeRecap | null {
       ...(episode.cityId !== game.currentCityId ? { cityJa: cityNameJa(episode.cityId) } : {}),
     },
     ...(photo ? { photo } : {}),
+    ...(heroine ? { heroine } : {}),
   };
 }
 

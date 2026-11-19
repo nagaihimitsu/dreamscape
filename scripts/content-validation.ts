@@ -1577,7 +1577,8 @@ export function validateContent(sources: ContentSources,
   // The places' heroine lines (heroineLinesJa, 2026-11-11): each `{ textJa, when }` read in its place's city.
   const placeLineOwners: ConditionOwner[] = travels.flatMap(({ travel }) => travel.places.map((place) => ({
     label: `the heroine lines of place ${place.id}`, cityId: travel.cityId,
-    conditions: (place.heroineLinesJa ?? []).flatMap((line, index) => (typeof line === "string" ? [] : [{ field: `heroineLinesJa[${index}].when`, condition: line.when }])),
+    conditions: (["heroineLinesJa", "recapLinesJa"] as const).flatMap((field) => (place[field] ?? [])
+      .flatMap((line, index) => (typeof line === "string" ? [] : [{ field: `${field}[${index}].when`, condition: line.when }]))),
   }))).filter((owner) => owner.conditions.length);
   checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners, ...placeLineOwners]);
   // A moment quiz's # when: / # until: (read as its turn comes, like an inserted scene's entry rule): the same notes as one.

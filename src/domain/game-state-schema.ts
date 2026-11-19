@@ -141,6 +141,10 @@ export const gameStateSchema = z.object({
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
   claimedRewardIds: uniqueStrings,
   playedDateIds: uniqueStrings,
+  // 前回までのあらすじ's place (2026-11-19, an optional field of save v23): the normal date with a destination finished
+  // after the last episode completed (game.ts finishDate sets it, chapter.ts recordEpisodes drops it). The recap's heroine
+  // line is that date's place's then, else the last episode's place's. Absent: no date since the last episode.
+  recapDateId: stableContentId.optional(),
   memories: uniqueStrings,
   // The album (save v22; src/domain/album.ts): the photos the lines' # photo: took, each image once, in the order taken.
   album: albumSchema,
