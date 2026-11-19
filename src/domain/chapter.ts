@@ -20,6 +20,7 @@ import { rewardBattleId, rewardLandmarkId } from "./reward-rules";
 import { encounters } from "../content/encounters";
 import { battlePlayed, meets } from "./conditions";
 import type { GameState, Availability } from "./game";
+import { withLivedTimes } from "./lived-times";
 
 /**
  * Whether the episode shows on the map: its `when` when written (stage 2b), else the current
@@ -268,8 +269,10 @@ function recordEpisodes(state: GameState): GameState {
     .filter((id) => episodes.some((episode) => episode.id === id && episode.cityId === state.currentCityId));
   // A new episode is the latest thing finished: 前回までのあらすじ no longer follows a date before it (recapDateId).
   const { recapDateId: _recapDate, ...rest } = state;
-  return { ...(completedEpisodeIds.length > state.completedEpisodeIds.length ? rest : state), completedEpisodeIds, completedCityIds,
-    travel: today.length ? { ...state.travel, todayEpisodeIds: [...state.travel.todayEpisodeIds, ...today] } : state.travel };
+  // Each episode completed now is timed for 旅の記録 (lived-times.ts).
+  return withLivedTimes({ ...(completedEpisodeIds.length > state.completedEpisodeIds.length ? rest : state), completedEpisodeIds, completedCityIds,
+    travel: today.length ? { ...state.travel, todayEpisodeIds: [...state.travel.todayEpisodeIds, ...today] } : state.travel },
+  completedEpisodeIds.slice(state.completedEpisodeIds.length));
 }
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;

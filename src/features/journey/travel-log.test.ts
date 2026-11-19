@@ -7,13 +7,15 @@ import { episodes, getCityContent } from "../../content";
 import { cityStart, finishEpisode, startDateScene, withAp } from "../../dev/scenario-builders";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../domain/player-action";
-import type { GameState } from "../../domain/game";
+import { validateGameState, type GameState } from "../../domain/game";
+import { formatTravelTime } from "./travel-time";
 import { travelLogPages } from "./travel-log";
 import { TravelLogDialog } from "./TravelLog";
 
 const roll = () => 0;
 const place = (id: string) => getCityContent(id.split("_")[0]).travel.places.find((item) => item.id === id)!;
 const JAMA_MASJID = "gt_delhi_main_jama_masjid";
+const RED_FORT = "gt_delhi_main_red_fort";
 const delhiArrival: AlbumPhoto = { imageId: "gt_album_d01", caption: "路地の将軍カムラ", cityId: "delhi", day: 1, minute: 600,
   placeId: "delhi_hotel_hub", storyId: "places/gt_delhi_hotel_hub.gt_delhi_arrival" };
 
@@ -68,6 +70,32 @@ describe("旅の記録's pages", () => {
     expect(pages.map((page) => page.cityId)).toEqual(["delhi", "agra"]);
     expect(pages[0].photos.map((photo) => photo.imageId)).toEqual(["gt_album_d01"]);
     expect(pages[1].photos).toEqual([]);
+  });
+});
+
+describe("旅の記録's times (save livedTimes)", () => {
+  const BAOLI = "gt_delhi_date_agrasen_baoli";
+
+  it("times an episode as completed and a date as first finished, and orders the city's cards by them", () => {
+    const dated = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI);
+    const datedAt = dated.livedTimes?.find((item) => item.id === BAOLI);
+    expect(datedAt).toEqual({ id: BAOLI, day: expect.any(Number), minute: expect.any(Number) });
+    const state = finishEpisode(dated, RED_FORT);
+    expect(validateGameState(state)).toEqual(state);
+    expect(state.livedTimes?.map((item) => item.id).slice(-3)).toEqual([JAMA_MASJID, BAOLI, RED_FORT]);
+    const [delhi] = travelLogPages(state);
+    // The date came between the two episodes, though episodes come before dates when the save has no time.
+    expect(delhi.experiences.map((item) => item.id).slice(-3)).toEqual([JAMA_MASJID, BAOLI, RED_FORT]);
+    expect(delhi.experiences.find((item) => item.id === BAOLI)?.whenJa).toBe(`${datedAt!.day}日目 ${formatTravelTime(datedAt!.minute)}`);
+  });
+
+  it("puts what a save lived without times first, in the old order, and refuses a time of nothing lived", () => {
+    const state = finishEpisode(playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI), RED_FORT);
+    const { livedTimes: _times, ...untimed } = state;
+    const [delhi] = travelLogPages(untimed);
+    expect(delhi.experiences.map((item) => item.id).slice(-3)).toEqual([JAMA_MASJID, RED_FORT, BAOLI]);
+    expect(delhi.experiences.every((item) => item.whenJa === undefined)).toBe(true);
+    expect(() => validateGameState({ ...state, livedTimes: [{ id: "gt_agra_main_taj_mahal", day: 1, minute: 600 }] })).toThrow("旅の記録の時刻の参照先が見つかりません。");
   });
 });
 

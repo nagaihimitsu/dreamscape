@@ -6,6 +6,7 @@ import { albumPages, type AlbumPhotoView } from "./album-pages";
 import { cityProgressParts } from "./city-progress-label";
 import { journeyAlbumContent, lookBackOf, type LookBack, type RecapSubject } from "./journey-moments";
 import { metPeopleGroups, type MetPerson } from "./met-people";
+import { formatTravelTime } from "./travel-time";
 
 // 旅の記録 (2026-11-19 user decision: 旅の記録 and アルバム made one): the journey kept on two axes, page by page per city in the
 // journey's order. 「体験」 is what was lived there (each episode completed and each date with a destination played, with its
@@ -13,7 +14,12 @@ import { metPeopleGroups, type MetPerson } from "./met-people";
 // Pure rules apart from the dialog (TravelLog.tsx). Never a relationship value, a quiz score or a place not visited yet.
 
 /** One thing lived in a city: an episode (a landmark's or the city's finale) or a date, looked back on. */
-export type LogExperience = LookBack & { id: string; kind: "visit" | "finale" | "date" };
+export type LogExperience = LookBack & {
+  id: string;
+  kind: "visit" | "finale" | "date";
+  /** When it was lived (「n日目 hh:mm」, the city's day as the header shows it; save livedTimes), when the save knows. */
+  whenJa?: string;
+};
 
 export type LogPage = {
   cityId: string;
@@ -39,19 +45,27 @@ export function cityProgressJa(game: Readonly<GameState>, cityId: string): strin
 }
 
 /**
- * The things lived in a city: its episodes in the order completed, then the dates with a destination there in the order
- * played (the save keeps no time across the two lists).
+ * The things lived in a city in the order they were: those the save has no time for (lived before times were kept) first,
+ * episodes as completed and then dates as played, then the timed ones by their time (lived-times.ts: in the order
+ * recorded, which is the clock's).
  */
 function experiencesIn(game: GameState, cityId: string): LogExperience[] {
+  const times = game.livedTimes ?? [];
   const lived: { id: string; kind: LogExperience["kind"]; subject: RecapSubject }[] = [
     ...game.completedEpisodeIds.flatMap((id) => episodes.filter((episode) => episode.id === id && episode.cityId === cityId))
       .map((episode) => ({ id: episode.id, kind: episode.kind === "city_finale" ? "finale" as const : "visit" as const, subject: { kind: "episode" as const, episode } })),
     ...game.playedDateIds.flatMap((id) => dates.filter((date) => date.id === id && date.destinationId))
       .map((date) => ({ id: date.id, kind: "date" as const, subject: { kind: "date" as const, date } })),
   ];
+  const at = (id: string) => times.findIndex((item) => item.id === id);
+  // Untimed first (-1), keeping their order (a stable sort), then the timed by their place in the record.
+  lived.sort((left, right) => at(left.id) - at(right.id));
   return lived.flatMap(({ id, kind, subject }) => {
     const look = lookBackOf(game, subject);
-    return look.cityId === cityId ? [{ ...look, id, kind }] : [];
+    const time = times[at(id)];
+    return look.cityId === cityId
+      ? [{ ...look, id, kind, ...(time ? { whenJa: `${time.day}日目 ${formatTravelTime(time.minute)}` } : {}) }]
+      : [];
   });
 }
 

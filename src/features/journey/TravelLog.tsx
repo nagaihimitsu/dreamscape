@@ -20,7 +20,7 @@ const KIND_JA: Record<LogExperience["kind"], string> = { visit: "観光", finale
  * 旅の記録 (2026-11-19 user decision: 旅の記録 and アルバム made one; travel-log.ts): the two names (and 「交際中」 once
  * together), `extras` (旅の音楽室, the end roll, the kept 旅の思い出), then one page per city in the journey's order, turned with
  * 「前の街」「次の街」, a sideways swipe on the page or the arrow keys. A page shows one of its two axes, chosen at its top and
- * kept as the pages turn: 「体験」, the city's progress and each thing lived there as a card (its picture, kind, place, clear
+ * kept as the pages turn: 「体験」, the city's progress and each thing lived there as a card (its picture, kind, time when the save has it, place, clear
  * title and record, and her few words looking back on the place), then the people met there; 「写真」, the album's photos
  * taken there. An album photo opens larger, whole, in its own dialog over the log, which it closes back to. A place's
  * tourism photo (the card's picture when the story took none) carries its credit under it. `footer`: 旅の数字. It opens
@@ -157,7 +157,7 @@ function LivedPage({ page, heroineName, onEnlarge }: { page: LogPage; heroineNam
           <article className="travel-log-card" aria-labelledby={`log-title-${item.id}`}>
             {item.photo && <ExperiencePicture item={item} photos={page.photos} onEnlarge={onEnlarge} />}
             <div className="travel-log-card-body">
-              <p className="travel-log-where">{KIND_JA[item.kind]}{item.placeJa && ` · ${item.placeJa}`}</p>
+              <p className="travel-log-where">{[KIND_JA[item.kind], item.whenJa, item.placeJa].filter(Boolean).join(" · ")}</p>
               <div className="stop-title">
                 <h4 id={`log-title-${item.id}`}>{item.titleJa}</h4>
                 {item.kind !== "date" && <span className="stop-seal" aria-hidden="true">完</span>}
