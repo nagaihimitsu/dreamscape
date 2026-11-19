@@ -1,6 +1,6 @@
 # 動く立ち絵の試作（mesh-avatar-studio）
 
-立ち絵を「普段は呼吸・まばたきし、台詞の声で口が動き、表情が変わり、髪や身体がわずかに揺れ、スマホでも軽い」ものにするための検討と試作の記録です（2026-11-19）。本番の画面にはまだ入れていません。
+立ち絵を「普段は呼吸・まばたきし、台詞の声で口が動き、表情が変わり、髪や身体がわずかに揺れ、スマホでも軽い」ものにするための検討と試作の記録です（2026-11-19）。2026-11-19 に、基本の衣装でゲームに入れました（下の「ゲームに入れた形」）。
 
 ## 決めたこと（2026-11-19 のユーザー判断）
 
@@ -73,6 +73,17 @@
 - 話す口はすべてこの絵の「あ」「う」「お」にしました（同日、ユーザーの頼み）。母音の「う」は描いた「う」（`mouth_u`。build-sprites.py が知らないので [`cut-mouth-u.py`](characters/heroine/default_01/mesh_avatar/cut-mouth-u.py) で「お」の範囲から切り出す）、「い」「え」「半開きのあ」は「あ」を縦につぶして少し横に広げて使います（部品の改造に `MOUTH_FALLBACKS` を追加）。画像生成の「い」「半開きのあ」は使いません（`variants/` から外す）。
 - 結果：閉じ目のまわりの帯が消え、前髪も残りました。表情ごとの閉じ目（頬の赤みを掛けたもの）もこの閉じ目から作り直しています。
 - 作り直す順：`sheet-to-variants.py`（`mouth_u` は `work/mouth_u_full.png` に移す）→ `build-sprites.py`（顔の差分も消える）→ `cut-mouth-u.py` → `cut-faces.py` → `cut-closed-eyes.py`。
+
+## ゲームに入れた形（2026-11-19）
+
+ユーザー判断「これで実装」で、確認用ページの形をゲームに入れました。
+
+- 動かす部品：改造した mesh-avatar を `vendor/mesh-avatar-0.8.0-dreamscape.1.tgz` にまとめ、`package.json` の依存に入れています（ライセンスの一覧に載せるため。中身は mesh-avatar-studio `406714b` の `packages/runtime` に [`mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch) を当て、`version` を `0.8.0-dreamscape.1`、依存（fflate は同梱済み）を外して `npm pack` したもの）。立ち絵が要るときだけ読み込み、タイトル画面では読みません。
+- データ：`characters.json` の衣装・ポーズの `avatar`（フォルダ）。基本の衣装 `default_01/standing_01` だけに付けています。ファイルは `public/assets/characters/heroine/default_01/standing_01/avatar/`（約1.7MB。`base.png` が可逆のPNGで約710KB。部品がPNGしか読まないため。軽くするのは後の仕事）。`content:build` がフォルダのファイルと顔の名前を確かめます（`scripts/presentation-validation.ts`）。
+- 画面：`src/components/LivePortrait.tsx`。`CharacterPortrait` が衣装・ポーズの `avatar` を見て、静止画の上にキャンバスを重ね、動き始めたら静止画を隠します。表情は `setFace`、口は話している人（`focus` が `speaking`）だけが台詞の声の大きさ（`src/components/useVoice.ts` の `lineVoiceLevel`。声は聞こえない分かれ道で解析器にも流す）に合わせて動きます。
+- 動かさないとき：「演出を短縮する」・端末の動きを減らす設定・WebGL がない・読み込めない。表情の静止画が出ます。顔の丸枠（`CharacterFace`）とミニゲームの全身（`CharacterFigure`）は静止画のまま。
+- 声のない台詞では口は動きません（声に合わせる形のため）。
+- 確かめたこと：`content:build`、型の確認、`src/content/character-assets.test.ts`、本番ビルド（`dist:check`：ライセンスの一覧に mesh-avatar、タイトル画面で読まない）、開発サーバーの `?character-preview` で動く立ち絵が静止画と同じ位置・大きさに出ること。実機のスマホでの滑らかさ・電池と、声に合わせた口は未確認。
 
 ## 作り直すときの手順
 

@@ -222,6 +222,10 @@
                           "type": "string",
                           "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\.(?:png|webp)$"
                         }
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\/$"
                       }
                     },
                     "required": [

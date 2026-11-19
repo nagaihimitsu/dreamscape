@@ -869,6 +869,14 @@ EXTERNAL cond(text)
 4. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に1枚ずつ足し、届いていないファイルは登録しません。`neutral` だけでもその衣装が使われ、登録のない表情は同じ衣装・ポーズの `neutral` が出ます。表情の指定には Ink の `# emotion:` を使います。
 5. `npm run content:check` を実行します。登録したファイルがあること、実際の形式・寸法・透過の画素、表情や衣装の参照を確かめます。背景がきれいに切り抜けているか、透過の縁の質までは確かめないので、下のプレビューで目で確かめてください。衣装が届いていないときは基本の素材を使い、画像を読み込めなくても会話は続きます。
 
+### 動く立ち絵
+
+衣装・ポーズに動く立ち絵（mesh-avatar のフォルダ）があると、その衣装のときは立ち絵が呼吸・まばたきし、髪や身体がわずかに揺れ、`# emotion:` の表情に変わり、声のある台詞を話す間は声に合わせて口が動きます（2026-11-19のユーザー判断。今は基本の衣装 `default_01` の `standing_01` だけ）。`characters.json` の同じポーズに `"avatar": "assets/characters/heroine/default_01/standing_01/avatar/"` と、`public/` からのフォルダのパス（最後に `/`）を書きます。表情ごとの顔は、そのフォルダの `built/sprites/face_<表情ID>.png` です（`neutral` は元の顔）。
+
+- 上の `expressions` の絵は、そのまま必要です。動く立ち絵が使えないとき（「演出を短縮する」・端末の「視差効果を減らす」、WebGL が使えない、読み込めない）と、読み込みが終わるまでは、今までどおり表情の絵が出ます。
+- フォルダのファイル（`avatar.json`・`rig.json`・`built/` の絵）がそろっているか、顔の名前が表情IDかを `content:check` が確かめます。フォルダの絵も1枚ずつ `own-artwork.json` に書きます。
+- 作り方・描き足した絵・作り直す順は [動く立ち絵の試作](LIVE_PORTRAIT_TRIAL.md) にあります。動かす部品は mesh-avatar 0.8.0 を Dreamscape 用に少し直したもので、`vendor/` に置いています。
+
 ### 配置・衣装・表情の指定
 
 - 人物の配置は人物ごとの `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で書きます。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分の間で共有し、画像をゆがめずに出します。`imagePath`、`variants`、相手の `battleCharacters` の設定も使えます。観察用の画像と座標は別に管理します。

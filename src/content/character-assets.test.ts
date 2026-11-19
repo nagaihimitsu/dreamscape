@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import characterData from "./generated/content/presentation/characters.json";
-import { battleCharacterId, characterCatalogSchema, characterImage } from "./character-assets";
+import { battleCharacterId, characterAvatar, characterCatalogSchema, characterImage } from "./character-assets";
 
 const base = characterCatalogSchema.parse(characterData).characters[0];
 describe("character artwork registration", () => {
@@ -44,5 +44,17 @@ describe("character artwork registration", () => {
       battleCharacters: { first_battle: "missing_enemy" },
     });
     expect(result.success).toBe(false);
+  });
+  it("gives the moving picture of the outfit's pose only, and only a safe folder path", () => {
+    const pose = base.costumes![0].poses[0];
+    const costume = base.costumes![0];
+    expect(characterAvatar(base, { costume: costume.id, pose: pose.id })).toBe(pose.avatar);
+    const still = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatar: undefined }] }] };
+    expect(characterAvatar(still, { costume: costume.id, pose: pose.id })).toBeNull();
+    expect(characterAvatar(base, {})).toBeNull();
+    for (const avatar of ["assets/a/../b/", "assets/a", "other/a/"]) {
+      const bad = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatar }] }] };
+      expect(characterCatalogSchema.safeParse({ schemaVersion: 1, characters: [bad] }).success).toBe(false);
+    }
   });
 });

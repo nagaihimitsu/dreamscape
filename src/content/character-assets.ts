@@ -26,6 +26,10 @@ const poseSchema = z.object({
   placement: placementSchema.optional(),
   // Only delivered assets are listed. Unlisted expressions fall back to neutral.
   expressions: z.record(id, z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.(?:png|webp)$/)),
+  // The moving standing picture of this pose (2026-11-19 user decision): a mesh-avatar folder (avatar.json, rig.json,
+  // built/), ending in "/". Its whole-face drawings are named by the expressions (built/sprites/face_<expression>.png);
+  // the pictures above stay its fallback (no WebGL, reduced motion, before it has loaded). authoring/LIVE_PORTRAIT_TRIAL.md
+  avatar: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\/$/).optional(),
 }).strict();
 const costumeSchema = z.object({
   id,
@@ -169,6 +173,13 @@ export function characterImage(character: CharacterAsset, selection: CharacterSe
     if (specificity > score) { selected = variant.imagePath; score = specificity; }
   }
   return selected;
+}
+
+/** The moving standing picture's folder (pose `avatar`) of the outfit chosen for the scene, or null when it has none. */
+export function characterAvatar(character: CharacterAsset, selection: { costume?: string; pose?: string }): string | null {
+  const costume = character.costumes?.find((item) => item.id === selection.costume);
+  const pose = selection.pose ? costume?.poses.find((item) => item.id === selection.pose) : costume?.poses[0];
+  return pose?.expressions.neutral ? pose.avatar ?? null : null;
 }
 
 /** All expression images for one pose share one placement to avoid jumping. */

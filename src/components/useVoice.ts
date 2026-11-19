@@ -90,6 +90,44 @@ function finish(current: Voice, state: "ended" | null) {
   current.done(state);
 }
 
+// How loud the voice playing is, for the mouth of a moving standing picture (LivePortrait.tsx, 2026-11-19): every voice
+// is also led into one analyser of the page's audio (a silent branch: it adds nothing to what is heard).
+let tap: { audio: BaseAudioContext; analyser: AnalyserNode; samples: Float32Array<ArrayBuffer> } | null = null;
+const tappedElements = new WeakSet<GainNode>();
+
+/** The analyser every voice also goes into (made with the page's audio, kept for it). */
+function voiceTap(audio: BaseAudioContext): AnalyserNode {
+  if (tap?.audio === audio) return tap.analyser;
+  const analyser = audio.createAnalyser();
+  analyser.fftSize = 1024;
+  const silent = audio.createGain();
+  silent.gain.value = 0;
+  analyser.connect(silent);
+  silent.connect(audio.destination);
+  tap = { audio, analyser, samples: new Float32Array(analyser.fftSize) };
+  return analyser;
+}
+
+/** Whether a line's voice is playing now (a moving standing picture's head nods along while it does). */
+export function lineVoicePlaying(): boolean {
+  return playing !== null;
+}
+
+/**
+ * How loud the line's voice is now, 0 (silent, or no voice playing) to 1, as the mouth of a moving standing picture
+ * opens: the loudness of the last ~20 ms, before 「声の大きさ」 (so a quiet setting does not shut her mouth).
+ */
+export function lineVoiceLevel(): number {
+  if (!playing || !tap) return 0;
+  tap.analyser.getFloatTimeDomainData(tap.samples);
+  let sum = 0;
+  for (const sample of tap.samples) sum += sample * sample;
+  const rms = Math.sqrt(sum / tap.samples.length);
+  // The voice on the element is tapped after its volume; one from a buffer before it.
+  const loud = playing.sound.kind === "element" ? rms / Math.max(settings.volume, 0.05) : rms;
+  return Math.min(1, Math.max(0, (loud - 0.008) * 5));
+}
+
 /** A hidden page (another tab, the phone locked) stops the voice. */
 const stopHiddenVoice = () => {
   if (playing) finish(playing, null);
@@ -108,6 +146,7 @@ function bufferSound(audio: AudioContext, buffer: AudioBuffer, voice: () => Voic
   gain.gain.value = settings.volume;
   source.connect(gain);
   gain.connect(audio.destination);
+  source.connect(voiceTap(audio));
   const sound: BufferSound = { kind: "buffer", source, gain, startedAt: audio.currentTime };
   source.onended = () => {
     const current = voice();
@@ -120,6 +159,10 @@ function bufferSound(audio: AudioContext, buffer: AudioBuffer, voice: () => Voic
 /** The voice element's sound (already playing): its end finishes `voice`, as an error does. */
 function elementSound(element: VoiceElement, voice: () => Voice): ElementSound {
   const sound: ElementSound = { kind: "element", media: element, guard: undefined };
+  if (!tappedElements.has(element.gain)) {
+    element.gain.connect(voiceTap(element.gain.context));
+    tappedElements.add(element.gain);
+  }
   const end = (state: "ended" | null) => {
     const current = voice();
     if (current.sound === sound) finish(current, state);

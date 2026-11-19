@@ -1,6 +1,7 @@
 import type { characterCatalogSchema } from "../src/content/character-assets";
 import type { presentationSchema } from "../src/content/schemas";
 import type { tourismCatalogSchema } from "../src/content/tourism-schemas";
+import { readFileSync } from "node:fs";
 import { servedFile } from "./public-assets";
 
 type Presentation = ReturnType<typeof presentationSchema.parse>;
@@ -91,8 +92,36 @@ export function validateCharacters(
           if (!file) throw new Error(`Missing character image: ${label}/${imagePath}`);
           images.push({ file, imagePath, canvas: pose.canvas, label });
         }
+        if (pose.avatar) validateAvatarFolder(publicFiles, pose.avatar, `${character.id}/${costume.id}/${pose.id}`, references.emotions);
       }
     }
   }
   return images;
+}
+
+/**
+ * A pose's moving standing picture (`avatar`, a mesh-avatar folder): its rig, its layers and every drawing its
+ * sprite sheet names are served, and each whole-face drawing (face_<expression>) is named by a known expression,
+ * so a missing file or a misspelt face stops the build instead of leaving a portrait still or wrong in the game.
+ */
+function validateAvatarFolder(publicFiles: PublicFiles, folder: string, label: string, emotions: Presentation["emotions"]): void {
+  const need = (relative: string) => {
+    const file = servedFile(publicFiles, folder + relative);
+    if (!file) throw new Error(`Missing moving portrait file: ${label}/${folder}${relative}`);
+    return file;
+  };
+  const json = (relative: string) => JSON.parse(readFileSync(need(relative), "utf8")) as { layers?: unknown };
+  need("avatar.json");
+  need("rig.json");
+  need("built/base.png");
+  need("built/hairmask.png");
+  const layers = json("built/layers.json").layers;
+  for (const name of Object.keys(typeof layers === "object" && layers ? layers : {})) need(`built/${name}.png`);
+  if (!servedFile(publicFiles, `${folder}built/sprites/sprites.json`)) return;
+  const sprites = json("built/sprites/sprites.json").layers;
+  for (const name of Object.keys(typeof sprites === "object" && sprites ? sprites : {})) {
+    need(`built/sprites/${name}.png`);
+    const face = /^face_(.+)$/.exec(name)?.[1];
+    if (face && !emotions[face]) throw new Error(`Unknown expression of a moving portrait face: ${label}/${name}`);
+  }
 }
