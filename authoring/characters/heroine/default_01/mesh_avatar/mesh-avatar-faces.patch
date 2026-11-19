@@ -47,7 +47,7 @@ index 7ae2fac..8a4eedf 100644
        if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
        // Contain anchors the cut-off body to the bottom; cover crops around the image center.
 diff --git a/packages/runtime/src/engine/sprites.js b/packages/runtime/src/engine/sprites.js
-index db42017..5877342 100644
+index db42017..c3860a6 100644
 --- a/packages/runtime/src/engine/sprites.js
 +++ b/packages/runtime/src/engine/sprites.js
 @@ -24,6 +24,14 @@ export function createSpriteModule(engine, rig) {
@@ -71,7 +71,7 @@ index db42017..5877342 100644
      const moodMouth = n => MOUTH_MOODS.some(m => n === `mouth_${m}`);
 -    const order = n => (shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
 +    // whole-face expression drawings (face_<name>) lie under every eye / mouth drawing
-+    const order = n => (n.startsWith('face_') ? -1 : n.startsWith('mouthopen_') ? 4 : shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
++    const order = n => (n.startsWith('face_') ? -1 : n.startsWith('mouthopen_') ? 4 : n.startsWith('mouthrest_') ? 2 : shut(n) ? 1 : n.startsWith('eyes_') ? 0 : moodMouth(n) ? 2 : 3);
      const entries = Object.entries(sheet.layers).sort((x, y) => order(x[0]) - order(y[0]));
      for (const [name, rect] of entries) {
        const mesh = buildGrid(rect, rig.mesh.spriteCell, alphaOf(imgs[name]), imgs[name].width);
@@ -135,7 +135,7 @@ index db42017..5877342 100644
              if (!it) return;
              it.layer.visible = true;
              it.layer.alpha = alpha;
-@@ -178,9 +206,26 @@ export function createSpriteModule(engine, rig) {
+@@ -178,12 +206,33 @@ export function createSpriteModule(engine, rig) {
            else { show(st.cur, 1); show(st.prev, 1 - k); }
            covered[i] = st.cur !== 'open' && k >= 0.999;
          });
@@ -154,16 +154,26 @@ index db42017..5877342 100644
          const shape = mouthShape(P.mouthOpen, P.mouthForm, lastShape);
          lastShape = shape;
 -        const def = shape && MOUTH_SHAPES[shape];
+-        const mt = def && items[def.sprite];
+-        // the expression's closed mouth stays solid under an open mouth drawing until it has faded in
+-        const closed = MOUTH_MOODS.includes(mood) && items[`mouth_${mood}`];
 +        let def = shape && MOUTH_SHAPES[shape];
 +        // a drawn u goes first; the other fallbacks only stand in for a drawing that is missing
 +        if (shape) {
 +          const alt = (MOUTH_FALLBACKS[shape] ?? []).find(f => items[f.sprite]);
 +          if (alt && (shape === 'u' || !items[def.sprite])) def = alt;
 +        }
-         const mt = def && items[def.sprite];
-         // the expression's closed mouth stays solid under an open mouth drawing until it has faded in
-         const closed = MOUTH_MOODS.includes(mood) && items[`mouth_${mood}`];
-@@ -202,6 +247,14 @@ export function createSpriteModule(engine, rig) {
++        // a face drawing can bring its own vowel drawings (mouth_<vowel>__<face>: its blush kept)
++        const mt = def && ((faceState.cur && items[`${def.sprite}__${faceState.cur}`]) || items[def.sprite]);
++        // the expression's closed mouth stays solid under an open mouth drawing until it has faded in: a face
++        // drawing's own closed mouth (mouthrest_<face>; the face itself carries the base mouth there, which the
++        // vowel drawings are drawn for), else a mood's
++        const closed = (faceState.cur && items[`mouthrest_${faceState.cur}`])
++          || (MOUTH_MOODS.includes(mood) && items[`mouth_${mood}`]);
+         if (closed && (!mt || P.mouthOpen < MOUTH_OPEN_MIN + 0.04)) {
+           closed.layer.visible = true;
+           closed.layer.alpha = 1;
+@@ -202,6 +251,14 @@ export function createSpriteModule(engine, rig) {
        },
        /** Whether each eye has the closed and half-closed drawings, so the layered eye stays open. */
        eyesDrawn,
