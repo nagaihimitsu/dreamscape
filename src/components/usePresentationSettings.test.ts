@@ -108,17 +108,11 @@ describe("the presentation settings' mini-game おまかせ", () => {
   });
 });
 
-// 「英語オフ」 (2026-11-19, `englishOff`): off by default, a device preference like the others.
-describe("the presentation settings' English off", () => {
-  it("is off for settings stored without it and with none stored, and reads what was stored", () => {
-    expect(readPresentationSettings(stored())).toMatchObject({ englishOff: false });
-    expect(readPresentationSettings(null)).toMatchObject({ englishOff: false });
-    expect(readPresentationSettings(stored({ englishOff: true }))).toMatchObject({ englishOff: true, reduceMotion: false });
-  });
-
-  it("refuses a switch that is not true or false", () => {
-    for (const extra of [{ englishOff: "on" }, { englishOff: 1 }, { englishOff: null }])
-      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+// 「英語オフ」 (2026-11-19) moved to the difficulty's 「日本語のみ」: a stored one is read and dropped, not refused.
+describe("the presentation settings' former English off", () => {
+  it("reads settings stored with it and leaves it out", () => {
+    expect(readPresentationSettings(stored({ englishOff: true }))).not.toHaveProperty("englishOff");
+    expect(readPresentationSettings(stored({ englishOff: true }))).toMatchObject({ reduceMotion: false });
   });
 });
 

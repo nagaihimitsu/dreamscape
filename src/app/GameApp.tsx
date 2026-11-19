@@ -94,7 +94,7 @@ import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
 import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { DifficultyFields, EnglishLevelField } from "../features/journey/DifficultyFields";
-import { DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, type Difficulty } from "../domain/difficulty";
+import { DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
 import { nameOrDefault } from "../domain/player-names";
 import { playerLatinName } from "../domain/name-romaji";
@@ -235,8 +235,6 @@ export function GameApp({
   // speech, so that a question can be read with no press (iOS Safari speaks with no gesture only after one).
   const autoReadAloud = readAloudAvailable && displaySettings.value.autoReadAloud;
   useEffect(() => (autoReadAloud ? primeSpeechOnGesture() : undefined), [autoReadAloud]);
-  // 「英語オフ」 (2026-11-19): a quiz shows its Japanese translation only, so nothing of it is read aloud.
-  const englishOff = displaySettings.value.englishOff;
   // Said once under the reading settings, below the first one turned on.
   const noEnglishVoiceJa = "英語の声がない端末では、読まないか、ほかの言葉の声で読みます。";
   // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
@@ -332,6 +330,8 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // 「日本語のみ」 (the difficulty's English, 2026-11-19): a quiz shows its Japanese translation only, so nothing of it is read aloud.
+  const englishOff = !!game && isJapaneseOnly(game);
   // The background loading (src/media/preload-ahead.ts): after each saved change, the pictures and voices of the lines
   // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
   usePreloadAhead(game, journeyId, !!opening);
@@ -1649,11 +1649,6 @@ export function GameApp({
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
           </label>}
           {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
-          <label className="translation-setting">
-            <input type="checkbox" checked={englishOff} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ englishOff: event.target.checked })} /> 英語オフ（クイズは訳だけを表示する）
-          </label>
-          {englishOff && <p className="fine-print">クイズの問題文と選択肢を日本語訳だけで表示します。英語の読み上げも行いません。</p>}
           <label className="translation-setting">
             <input
               type="checkbox"
