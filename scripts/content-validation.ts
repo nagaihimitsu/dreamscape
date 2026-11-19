@@ -1449,7 +1449,8 @@ export function validateContent(sources: ContentSources,
   const wordMeanings = parseCatalog(wordMeaningsSchema, "learning/word-meanings.json");
   for (const battle of battles)
     for (const question of quizzes[battle.quizId].questions) {
-      // The question's English as written and at each other level of the difficulty (english-levels.ts).
+      // The question's English as written and at each other level of the difficulty (english-levels.ts). This check only
+      // matters when a quiz's English is added or changed; it need not be checked on every task.
       const texts = [question, ...Object.values(question.levels ?? {})].flatMap((asked) => asked
         ? [asked.questionEn, ...asked.options.map((option) => option.textEn)] : []);
       for (const text of texts)
