@@ -53,7 +53,83 @@
           "claimJa": "ムムターズは1631年、デカンのブルハーンプルで出産中に亡くなった。頻繁な妊娠にもかかわらず、シャー・ジャハーンの遠征に同行していた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Tanvi asks Nikhil where and how Mumtaz Mahal died. What is the answer?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Quietly in her palace in Agra, when she was very old."
+            },
+            {
+              "id": "B",
+              "textEn": "In Burhanpur, in the Deccan, when she was having a baby. She was travelling with Shah Jahan's army."
+            },
+            {
+              "id": "C",
+              "textEn": "In an accident while hunting near the Yamuna river."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "quietly",
+              "meaning": "静かに"
+            },
+            {
+              "word": "having a baby",
+              "meaning": "出産している"
+            },
+            {
+              "word": "travelling with",
+              "meaning": "〜と一緒に旅して"
+            },
+            {
+              "word": "accident",
+              "meaning": "事故"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Tanvi asks Nikhil about the place and circumstances of Mumtaz Mahal's death. What should he tell her?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "She passed away peacefully in her Agra palace in old age."
+            },
+            {
+              "id": "B",
+              "textEn": "She died in childbirth at Burhanpur in the Deccan while accompanying Shah Jahan's army on campaign."
+            },
+            {
+              "id": "C",
+              "textEn": "She was killed in a hunting accident close to the Yamuna river."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "circumstances",
+              "meaning": "状況、事情"
+            },
+            {
+              "word": "passed away",
+              "meaning": "亡くなった"
+            },
+            {
+              "word": "childbirth",
+              "meaning": "出産"
+            },
+            {
+              "word": "accompanying",
+              "meaning": "〜に同行して"
+            },
+            {
+              "word": "on campaign",
+              "meaning": "遠征中で"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_taj_first_grave",
@@ -104,7 +180,87 @@
           "claimJa": "遺体はブルハーンプルのザイナーバードという塀に囲まれた庭園に仮埋葬され、1631年12月に掘り出されてアーグラへ運ばれた。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "'He built this for her at once,' says Nikhil. Where did they first bury Mumtaz Mahal?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "In a garden with walls at Burhanpur, for some months. Then they brought her body to Agra."
+            },
+            {
+              "id": "B",
+              "textEn": "Right under the big dome of the Taj Mahal, on the day she died."
+            },
+            {
+              "id": "C",
+              "textEn": "In her family's home town in Persia."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "at once",
+              "meaning": "すぐに"
+            },
+            {
+              "word": "bury",
+              "meaning": "埋葬する"
+            },
+            {
+              "word": "body",
+              "meaning": "遺体"
+            },
+            {
+              "word": "dome",
+              "meaning": "ドーム、丸屋根"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "'He built this for her straight away,' Nikhil insists. Where was Mumtaz Mahal initially laid to rest?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "In a walled garden at Burhanpur, for several months, before her remains were transferred to Agra."
+            },
+            {
+              "id": "B",
+              "textEn": "Directly beneath the Taj Mahal's great dome, on the very day of her death."
+            },
+            {
+              "id": "C",
+              "textEn": "In her family's ancestral town in Persia."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "straight away",
+              "meaning": "すぐに"
+            },
+            {
+              "word": "initially",
+              "meaning": "最初に"
+            },
+            {
+              "word": "laid to rest",
+              "meaning": "埋葬された"
+            },
+            {
+              "word": "remains",
+              "meaning": "遺骸"
+            },
+            {
+              "word": "transferred",
+              "meaning": "移された"
+            },
+            {
+              "word": "ancestral",
+              "meaning": "先祖代々の"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_taj_balancing_twin",
@@ -155,7 +311,83 @@
           "claimJa": "ミフマーン・ハーナはモスクとの釣り合いを取るためだけに複製として造られ、本来はムムターズの命日に訪れる客を泊めるためのものだった。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Tanvi points to the building on the east side. It looks just like the mosque. Why did they build it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "As a second mosque. One mosque was too small for all the people."
+            },
+            {
+              "id": "B",
+              "textEn": "As a home for the emperor's guards and their horses."
+            },
+            {
+              "id": "C",
+              "textEn": "As a copy of the mosque, so that both sides of the design look the same."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "points to",
+              "meaning": "〜を指さす"
+            },
+            {
+              "word": "mosque",
+              "meaning": "モスク"
+            },
+            {
+              "word": "guards",
+              "meaning": "衛兵"
+            },
+            {
+              "word": "copy",
+              "meaning": "写し"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Tanvi gestures towards the building on the eastern side, which is practically identical to the mosque. Why was it built?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It served as a second mosque, since the first could not accommodate the crowds."
+            },
+            {
+              "id": "B",
+              "textEn": "It housed the emperor's guards along with their horses."
+            },
+            {
+              "id": "C",
+              "textEn": "It mirrored the mosque so as to give the overall design symmetry."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "gestures towards",
+              "meaning": "〜を身ぶりで示す"
+            },
+            {
+              "word": "practically identical",
+              "meaning": "ほとんど同じ"
+            },
+            {
+              "word": "accommodate",
+              "meaning": "収容する"
+            },
+            {
+              "word": "mirrored",
+              "meaning": "鏡のように写した"
+            },
+            {
+              "word": "symmetry",
+              "meaning": "左右対称"
+            }
+          ]
+        }
+      }
     }
   ]
 }

@@ -41,7 +41,91 @@
           "claimJa": "館は極端な短縮法が見る人を場面の中心へ引き込むと解説する。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "What makes people feel very close to Mantegna's Dead Christ?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A long line of people going far away into the picture."
+            },
+            {
+              "id": "B",
+              "textEn": "A very unusual view: we look along the body from its feet."
+            },
+            {
+              "id": "C",
+              "textEn": "A picture of the person who is looking, next to the people who are crying."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "dead",
+              "meaning": "死んだ"
+            },
+            {
+              "word": "unusual",
+              "meaning": "珍しい"
+            },
+            {
+              "word": "view",
+              "meaning": "見え方"
+            },
+            {
+              "word": "crying",
+              "meaning": "泣いている"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What pulls viewers into such intimate proximity with Mantegna's Dead Christ?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A lengthy procession receding into the distance."
+            },
+            {
+              "id": "B",
+              "textEn": "A radically foreshortened view along the length of the body."
+            },
+            {
+              "id": "C",
+              "textEn": "A portrait of the onlooker positioned beside the mourners."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "intimate",
+              "meaning": "親密な"
+            },
+            {
+              "word": "proximity",
+              "meaning": "近さ"
+            },
+            {
+              "word": "procession",
+              "meaning": "行列"
+            },
+            {
+              "word": "receding",
+              "meaning": "遠ざかっていく"
+            },
+            {
+              "word": "foreshortened",
+              "meaning": "短縮法で描かれた"
+            },
+            {
+              "word": "onlooker",
+              "meaning": "見る人"
+            },
+            {
+              "word": "mourners",
+              "meaning": "嘆き悲しむ人々"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_brera_c_q2",
@@ -80,7 +164,87 @@
           "claimJa": "独立戦争と統一運動の進展を祝う展覧会に《接吻》が出品された。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "In 1859, Brera had a show for everyone. What did it celebrate?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A royal wedding in Milan in the Middle Ages."
+            },
+            {
+              "id": "B",
+              "textEn": "The start of the opera season."
+            },
+            {
+              "id": "C",
+              "textEn": "Steps forward in the fight to make Italy one country."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "celebrate",
+              "meaning": "祝う"
+            },
+            {
+              "word": "Middle Ages",
+              "meaning": "中世"
+            },
+            {
+              "word": "season",
+              "meaning": "シーズン"
+            },
+            {
+              "word": "steps forward",
+              "meaning": "前進"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What did the 1859 public exhibition at Brera commemorate?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A royal marriage in medieval Milan."
+            },
+            {
+              "id": "B",
+              "textEn": "The inauguration of the opera season."
+            },
+            {
+              "id": "C",
+              "textEn": "Advances in the campaign for Italian unification."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "exhibition",
+              "meaning": "展覧会"
+            },
+            {
+              "word": "commemorate",
+              "meaning": "記念する"
+            },
+            {
+              "word": "medieval",
+              "meaning": "中世の"
+            },
+            {
+              "word": "inauguration",
+              "meaning": "開幕"
+            },
+            {
+              "word": "advances",
+              "meaning": "前進"
+            },
+            {
+              "word": "unification",
+              "meaning": "統一"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_brera_c_q3",
@@ -119,7 +283,91 @@
           "claimJa": "館の解説では衣装にイタリアとフランスの旗の色が重なり、当時の人は恋とともに愛国的な意味も受け取った。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Think about the clothes in The Kiss and the time when people first saw it. What can the painting mean?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The love of two people also has a message of love for their country."
+            },
+            {
+              "id": "B",
+              "textEn": "The two people are singers in opera clothes."
+            },
+            {
+              "id": "C",
+              "textEn": "The lovers are showing the clothes of one army."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "kiss",
+              "meaning": "キス、接吻"
+            },
+            {
+              "word": "message",
+              "meaning": "メッセージ"
+            },
+            {
+              "word": "lovers",
+              "meaning": "恋人たち"
+            },
+            {
+              "word": "army",
+              "meaning": "軍隊"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which interpretation ties the costumes in The Kiss to the circumstances of its first public exhibition?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A private love between two people simultaneously conveys a patriotic message."
+            },
+            {
+              "id": "B",
+              "textEn": "The couple are performers dressed in operatic costumes."
+            },
+            {
+              "id": "C",
+              "textEn": "The lovers are displaying the uniform of a single army."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "interpretation",
+              "meaning": "解釈"
+            },
+            {
+              "word": "costumes",
+              "meaning": "衣装"
+            },
+            {
+              "word": "circumstances",
+              "meaning": "事情"
+            },
+            {
+              "word": "simultaneously",
+              "meaning": "同時に"
+            },
+            {
+              "word": "conveys",
+              "meaning": "伝える"
+            },
+            {
+              "word": "patriotic",
+              "meaning": "愛国的な"
+            },
+            {
+              "word": "operatic",
+              "meaning": "オペラの"
+            }
+          ]
+        }
+      }
     }
   ]
 }

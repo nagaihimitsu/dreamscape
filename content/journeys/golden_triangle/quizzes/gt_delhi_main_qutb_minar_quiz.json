@@ -61,7 +61,91 @@
           "claimJa": "背を柱につけて腕を回せた人には幸運が訪れると言われ、柵ができるまでは柱に触れることができた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "A man wants to put his arms around the Iron Pillar, but a fence is in his way. Why did they put the fence around the bottom of the pillar?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The pillar is slowly going down into the ground, so nobody may stand near it."
+            },
+            {
+              "id": "B",
+              "textEn": "To keep it safe from the many, many visitors who touched it before."
+            },
+            {
+              "id": "C",
+              "textEn": "Now the pillar belongs to a person who collects old things."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "pillar",
+              "meaning": "柱"
+            },
+            {
+              "word": "fence",
+              "meaning": "柵"
+            },
+            {
+              "word": "bottom",
+              "meaning": "下の部分"
+            },
+            {
+              "word": "ground",
+              "meaning": "地面"
+            },
+            {
+              "word": "collects",
+              "meaning": "集める"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "A man is eager to embrace the Iron Pillar, yet a fence bars his way. What was the reason for enclosing its base?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The pillar is gradually subsiding, so no one is permitted to stand close to it."
+            },
+            {
+              "id": "B",
+              "textEn": "To shield it from the vast numbers of visitors who were once in the habit of touching it."
+            },
+            {
+              "id": "C",
+              "textEn": "The pillar has passed into the hands of a private collector."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "embrace",
+              "meaning": "抱きしめる"
+            },
+            {
+              "word": "bars",
+              "meaning": "ふさぐ"
+            },
+            {
+              "word": "enclosing",
+              "meaning": "囲うこと"
+            },
+            {
+              "word": "subsiding",
+              "meaning": "沈下している"
+            },
+            {
+              "word": "shield",
+              "meaning": "守る"
+            },
+            {
+              "word": "in the habit of",
+              "meaning": "〜する習慣がある"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_qutb_iron_pillar_rust",
@@ -112,7 +196,95 @@
           "claimJa": "耐食性には鉄中のリンが重要で、表面に保護的な不動態膜が形成される、とバラスブラマニアンが説明している。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The science teacher asks a question. Why has the Iron Pillar not rusted for about 1,600 years? What is the best answer?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Workers have put a special oil on it every year since it was made."
+            },
+            {
+              "id": "B",
+              "textEn": "It is a new metal pillar. It took the place of the old one around 1900."
+            },
+            {
+              "id": "C",
+              "textEn": "A very thin layer forms on its surface and protects it. Phosphorus in the iron helps."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "rusted",
+              "meaning": "錆びた"
+            },
+            {
+              "word": "took the place of",
+              "meaning": "〜に取って代わった"
+            },
+            {
+              "word": "layer",
+              "meaning": "層、膜"
+            },
+            {
+              "word": "surface",
+              "meaning": "表面"
+            },
+            {
+              "word": "phosphorus",
+              "meaning": "リン（元素）"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The science teacher poses a question: how has the Iron Pillar managed to withstand corrosion for some 1,600 years? What is the most convincing explanation?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Labourers have coated it in a special oil every year since it was forged."
+            },
+            {
+              "id": "B",
+              "textEn": "It is made of a modern alloy that superseded the original pillar around 1900."
+            },
+            {
+              "id": "C",
+              "textEn": "A thin protective film develops on its surface, aided by the phosphorus content of the iron."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "withstand",
+              "meaning": "耐える"
+            },
+            {
+              "word": "corrosion",
+              "meaning": "腐食"
+            },
+            {
+              "word": "convincing",
+              "meaning": "説得力のある"
+            },
+            {
+              "word": "forged",
+              "meaning": "鍛造された"
+            },
+            {
+              "word": "alloy",
+              "meaning": "合金"
+            },
+            {
+              "word": "superseded",
+              "meaning": "取って代わった"
+            },
+            {
+              "word": "aided",
+              "meaning": "助けられた"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_qutb_iron_pillar_journey",
@@ -171,7 +343,83 @@
           "claimJa": "柱の碑文には、もとはヴィシュヌパダの丘の上にあったと記されている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Research on the Iron Pillar tells us something. Where did it stand first?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Far away in the middle of India. Later, people moved it to Delhi."
+            },
+            {
+              "id": "B",
+              "textEn": "In the same place in Delhi where it is today."
+            },
+            {
+              "id": "C",
+              "textEn": "In a museum in London, until India became free."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "research",
+              "meaning": "研究"
+            },
+            {
+              "word": "middle",
+              "meaning": "真ん中"
+            },
+            {
+              "word": "moved",
+              "meaning": "移した"
+            },
+            {
+              "word": "museum",
+              "meaning": "博物館"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What does research suggest about the Iron Pillar's original location?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It stood far off in central India before being relocated to Delhi."
+            },
+            {
+              "id": "B",
+              "textEn": "It has occupied the very same spot in Delhi from the start."
+            },
+            {
+              "id": "C",
+              "textEn": "It was housed in a London museum until India gained independence."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "suggest",
+              "meaning": "示唆する"
+            },
+            {
+              "word": "location",
+              "meaning": "場所"
+            },
+            {
+              "word": "relocated",
+              "meaning": "移された"
+            },
+            {
+              "word": "occupied",
+              "meaning": "占めてきた"
+            },
+            {
+              "word": "gained independence",
+              "meaning": "独立を勝ち取った"
+            }
+          ]
+        }
+      }
     }
   ]
 }

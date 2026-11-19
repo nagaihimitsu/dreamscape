@@ -53,7 +53,83 @@
           "claimJa": "1556年1月、フマユーンは礼拝の呼びかけを聞いて、書庫シェール・マンダルの急な階段から転落し、三日のうちに亡くなった。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The uncle tests the 'foreign friends'. How did Emperor Humayun die?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He fell down the stairs in his library."
+            },
+            {
+              "id": "B",
+              "textEn": "Someone put poison in his food at a wedding party in Agra."
+            },
+            {
+              "id": "C",
+              "textEn": "He died in a river. He was crossing it on an elephant."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "foreign",
+              "meaning": "外国の"
+            },
+            {
+              "word": "stairs",
+              "meaning": "階段"
+            },
+            {
+              "word": "library",
+              "meaning": "書庫、図書室"
+            },
+            {
+              "word": "poison",
+              "meaning": "毒"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The uncle decides to put the 'foreign friends' to the test. What was the cause of Emperor Humayun's death?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He tumbled down the steep staircase of his library."
+            },
+            {
+              "id": "B",
+              "textEn": "He was poisoned at a wedding banquet in Agra."
+            },
+            {
+              "id": "C",
+              "textEn": "He drowned while crossing a river on elephant-back."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "to the test",
+              "meaning": "試しに（put A to the testで「Aを試す」）"
+            },
+            {
+              "word": "tumbled",
+              "meaning": "転げ落ちた"
+            },
+            {
+              "word": "staircase",
+              "meaning": "階段"
+            },
+            {
+              "word": "banquet",
+              "meaning": "宴会"
+            },
+            {
+              "word": "drowned",
+              "meaning": "溺れ死んだ"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_humayun_first_tomb",
@@ -100,7 +176,83 @@
           "claimJa": "イーサー・ハーンの墓は碑文によりヒジュラ暦954年（1547〜48年）の建造で、フマユーン廟の敷地で訪問者が最初に出会う歴史的建造物である。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "'The first tomb you see when you come in. Whose is it?' Which answer is right?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A tomb that the British moved here from Agra in the 1800s."
+            },
+            {
+              "id": "B",
+              "textEn": "Isa Khan's. He was an important man at the court of Sher Shah Suri. It was built before Humayun's tomb."
+            },
+            {
+              "id": "C",
+              "textEn": "The tomb of Humayun's cook. His son Akbar built it."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "tomb",
+              "meaning": "墓"
+            },
+            {
+              "word": "moved",
+              "meaning": "移した"
+            },
+            {
+              "word": "court",
+              "meaning": "宮廷"
+            },
+            {
+              "word": "cook",
+              "meaning": "料理人"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "'Whose is the first tomb you encounter on entering?' Which response is correct?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A tomb relocated here from Agra by the British during the nineteenth century."
+            },
+            {
+              "id": "B",
+              "textEn": "That of Isa Khan, a nobleman at the court of Sher Shah Suri, which predates Humayun's tomb."
+            },
+            {
+              "id": "C",
+              "textEn": "The resting place of Humayun's royal cook, erected by his son Akbar."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "encounter",
+              "meaning": "出会う"
+            },
+            {
+              "word": "relocated",
+              "meaning": "移設された"
+            },
+            {
+              "word": "nineteenth century",
+              "meaning": "19世紀"
+            },
+            {
+              "word": "predates",
+              "meaning": "〜より古い"
+            },
+            {
+              "word": "resting place",
+              "meaning": "墓所"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_humayun_1857_arrest",
@@ -147,7 +299,79 @@
           "claimJa": "1857年9月19日、皇帝は妃や皇子らとともにフマユーン廟で捕らえられた。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Last question: what happened at Humayun's Tomb in September 1857?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The British had a royal wedding in its garden."
+            },
+            {
+              "id": "B",
+              "textEn": "The tomb closed for repairs for the first time."
+            },
+            {
+              "id": "C",
+              "textEn": "The British caught the last Mughal emperor there."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "royal wedding",
+              "meaning": "王族の結婚式"
+            },
+            {
+              "word": "repairs",
+              "meaning": "修理"
+            },
+            {
+              "word": "caught",
+              "meaning": "捕まえた"
+            },
+            {
+              "word": "emperor",
+              "meaning": "皇帝"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Final question: what took place at Humayun's Tomb in September 1857?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The British staged a royal wedding in its gardens."
+            },
+            {
+              "id": "B",
+              "textEn": "The tomb was shut for restoration work for the first time."
+            },
+            {
+              "id": "C",
+              "textEn": "The last Mughal emperor was taken prisoner there by the British."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "took place",
+              "meaning": "起きた"
+            },
+            {
+              "word": "staged",
+              "meaning": "催した"
+            },
+            {
+              "word": "restoration",
+              "meaning": "修復"
+            },
+            {
+              "word": "taken prisoner",
+              "meaning": "捕らえられた"
+            }
+          ]
+        }
+      }
     }
   ]
 }

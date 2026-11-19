@@ -27,6 +27,58 @@
         "C": "真理のみが勝つ。訪れる者はみな、それを忘れてはならない。"
       }
     },
+    "gt_delhi_red_fort_paradise_line@A2": {
+      "source": {
+        "questionEn": "A student points to the Hall of Private Audience. What famous words are cut into the stone inside?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The world is a bridge. Pass over it, but build no house on it."
+          },
+          {
+            "id": "B",
+            "textEn": "If there is a paradise on earth, it is this, it is this, it is this."
+          },
+          {
+            "id": "C",
+            "textEn": "Truth alone wins, and every visitor must remember it."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "生徒の一人が内謁の間を指さします。中の石に刻まれている有名な言葉はどれですか？",
+      "optionsJa": {
+        "A": "世界は橋である。渡りなさい、だがその上に家を建ててはならない。",
+        "B": "地上に楽園があるならば、それはここだ、ここだ、ここだ。",
+        "C": "真理のみが勝つ。訪れる者はみな、それを忘れてはならない。"
+      }
+    },
+    "gt_delhi_red_fort_paradise_line@B2": {
+      "source": {
+        "questionEn": "A student indicates the Hall of Private Audience. Which celebrated verse is inscribed within it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The world is a bridge. Pass over it, but build no house on it."
+          },
+          {
+            "id": "B",
+            "textEn": "If there is a paradise on earth, it is this, it is this, it is this."
+          },
+          {
+            "id": "C",
+            "textEn": "Truth alone wins, and every visitor must remember it."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "生徒の一人が内謁の間を指し示します。その中に刻まれている名高い詩句はどれですか？",
+      "optionsJa": {
+        "A": "世界は橋である。渡りなさい、だがその上に家を建ててはならない。",
+        "B": "地上に楽園があるならば、それはここだ、ここだ、ここだ。",
+        "C": "真理のみが勝つ。訪れる者はみな、それを忘れてはならない。"
+      }
+    },
     "gt_delhi_red_fort_august_flag": {
       "source": {
         "questionEn": "A boy salutes and asks what happens at the Red Fort every Independence Day. What is the answer?",
@@ -51,6 +103,58 @@
         "A": "首相が国旗を掲げ、城壁から国民に向けて演説する。",
         "B": "大統領が、古い王家の宝物庫を一日だけ一般に公開する。",
         "C": "デリーのすべての学校が、城の中で期末試験を行う。"
+      }
+    },
+    "gt_delhi_red_fort_august_flag@A2": {
+      "source": {
+        "questionEn": "A boy salutes and asks a question. What happens at the Red Fort every Independence Day?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The Prime Minister puts up the national flag and talks to the country from its walls."
+          },
+          {
+            "id": "B",
+            "textEn": "The President opens the old royal treasure room to everyone for one day."
+          },
+          {
+            "id": "C",
+            "textEn": "Every school in Delhi has its last exams inside the fort."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "男の子が敬礼して質問します。毎年の独立記念日に、赤い城では何がありますか？",
+      "optionsJa": {
+        "A": "首相が国旗を掲げ、城壁から国民に話をする。",
+        "B": "大統領が古い王家の宝物の部屋を1日だけみんなに開く。",
+        "C": "デリーのすべての学校が、城の中で最後の試験をする。"
+      }
+    },
+    "gt_delhi_red_fort_august_flag@B2": {
+      "source": {
+        "questionEn": "Saluting smartly, a boy asks what takes place at the Red Fort each Independence Day. How would you answer him?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The Prime Minister hoists the national flag and addresses the nation from its ramparts."
+          },
+          {
+            "id": "B",
+            "textEn": "The President throws open the former royal treasury to the public for a single day."
+          },
+          {
+            "id": "C",
+            "textEn": "Every school in Delhi holds its end-of-year examinations within the fort."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "きびきびと敬礼して、男の子は毎年の独立記念日に赤い城で何が行われるのかを尋ねます。どう答えますか？",
+      "optionsJa": {
+        "A": "首相が国旗を掲げ、城壁から国民に向けて演説する。",
+        "B": "大統領がかつての王家の宝物庫を1日だけ一般に開放する。",
+        "C": "デリーのすべての学校が、城の中で学年末の試験を行う。"
       }
     },
     "gt_delhi_red_fort_last_emperor_trial": {
@@ -79,6 +183,58 @@
         "C": "最後のムガル皇帝が、自分の宮殿でイギリス側によって裁判にかけられた。"
       }
     },
+    "gt_delhi_red_fort_last_emperor_trial@A2": {
+      "source": {
+        "questionEn": "A quiet student asks a question. What happened in 1858 to the man who lived in this palace?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He moved to a new palace in Agra and never came back."
+          },
+          {
+            "id": "B",
+            "textEn": "He gave the palace to his friends, who were poets, and became a teacher."
+          },
+          {
+            "id": "C",
+            "textEn": "The last Mughal emperor had a trial in his own palace. The British judged him."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "物静かな生徒が質問します。1858年、この宮殿に住んでいた人に何が起きましたか？",
+      "optionsJa": {
+        "A": "アーグラの新しい宮殿へ移り、二度と戻らなかった。",
+        "B": "宮殿を詩人の友人たちに譲り、教師になった。",
+        "C": "最後のムガル皇帝は、自分の宮殿で裁判を受けた。裁いたのはイギリス人だった。"
+      }
+    },
+    "gt_delhi_red_fort_last_emperor_trial@B2": {
+      "source": {
+        "questionEn": "A reserved student wonders what befell the palace's last resident in 1858. What was his fate?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He withdrew to a new palace in Agra, never to return."
+          },
+          {
+            "id": "B",
+            "textEn": "He handed the palace over to his fellow poets and took up teaching."
+          },
+          {
+            "id": "C",
+            "textEn": "The British tried the last Mughal emperor in his very own palace."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "控えめな生徒は、1858年にこの宮殿の最後の住人に何が降りかかったのかと考えます。彼の運命はどうなりましたか？",
+      "optionsJa": {
+        "A": "アーグラの新しい宮殿へ退き、二度と戻らなかった。",
+        "B": "宮殿を詩人仲間に譲り、教える仕事に就いた。",
+        "C": "イギリス人は、最後のムガル皇帝をほかならぬ彼自身の宮殿で裁判にかけた。"
+      }
+    },
     "gt_delhi_qutb_iron_pillar_fence": {
       "source": {
         "questionEn": "A man wants to hug the Iron Pillar, but a fence stands in his way. Why was the fence put around its base?",
@@ -103,6 +259,58 @@
         "A": "柱が少しずつ沈んでいて、誰も近くに立てないから。",
         "B": "以前は柱に触れていた、非常に多くの見物客から守るため。",
         "C": "柱が今では個人の収集家のものだから。"
+      }
+    },
+    "gt_delhi_qutb_iron_pillar_fence@A2": {
+      "source": {
+        "questionEn": "A man wants to put his arms around the Iron Pillar, but a fence is in his way. Why did they put the fence around the bottom of the pillar?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The pillar is slowly going down into the ground, so nobody may stand near it."
+          },
+          {
+            "id": "B",
+            "textEn": "To keep it safe from the many, many visitors who touched it before."
+          },
+          {
+            "id": "C",
+            "textEn": "Now the pillar belongs to a person who collects old things."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ある男性が鉄柱に抱きつきたいのですが、柵がじゃまをしています。なぜ柱の下のまわりに柵が置かれたのですか？",
+      "optionsJa": {
+        "A": "柱がゆっくり地面に沈んでいるので、誰も近くに立ってはいけない。",
+        "B": "以前それに触っていたとても多くの来場者から守るため。",
+        "C": "今、柱は古い物を集める人のものだから。"
+      }
+    },
+    "gt_delhi_qutb_iron_pillar_fence@B2": {
+      "source": {
+        "questionEn": "A man is eager to embrace the Iron Pillar, yet a fence bars his way. What was the reason for enclosing its base?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The pillar is gradually subsiding, so no one is permitted to stand close to it."
+          },
+          {
+            "id": "B",
+            "textEn": "To shield it from the vast numbers of visitors who were once in the habit of touching it."
+          },
+          {
+            "id": "C",
+            "textEn": "The pillar has passed into the hands of a private collector."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ある男性は鉄柱を抱きしめたくてたまりませんが、柵が行く手をふさいでいます。根元を柵で囲ったのはなぜですか？",
+      "optionsJa": {
+        "A": "柱が少しずつ沈下しているので、誰も近くに立つことを許されない。",
+        "B": "かつてそれに触るのが習慣だった膨大な数の来場者から守るため。",
+        "C": "柱が個人の収集家の手に渡ったから。"
       }
     },
     "gt_delhi_qutb_iron_pillar_rust": {
@@ -131,6 +339,58 @@
         "C": "鉄に含まれるリンの働きもあって、表面に薄い保護膜ができるから。"
       }
     },
+    "gt_delhi_qutb_iron_pillar_rust@A2": {
+      "source": {
+        "questionEn": "The science teacher asks a question. Why has the Iron Pillar not rusted for about 1,600 years? What is the best answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Workers have put a special oil on it every year since it was made."
+          },
+          {
+            "id": "B",
+            "textEn": "It is a new metal pillar. It took the place of the old one around 1900."
+          },
+          {
+            "id": "C",
+            "textEn": "A very thin layer forms on its surface and protects it. Phosphorus in the iron helps."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "理科の先生が質問します。鉄柱が約1600年もの間錆びていないのはなぜでしょう？いちばんよい答えはどれですか？",
+      "optionsJa": {
+        "A": "作られてから毎年、作業員が特別な油を塗ってきた。",
+        "B": "新しい金属の柱だ。1900年ごろに古い柱と入れ替わった。",
+        "C": "とても薄い膜が表面にでき、柱を守っている。鉄の中のリンがそれを助けている。"
+      }
+    },
+    "gt_delhi_qutb_iron_pillar_rust@B2": {
+      "source": {
+        "questionEn": "The science teacher poses a question: how has the Iron Pillar managed to withstand corrosion for some 1,600 years? What is the most convincing explanation?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Labourers have coated it in a special oil every year since it was forged."
+          },
+          {
+            "id": "B",
+            "textEn": "It is made of a modern alloy that superseded the original pillar around 1900."
+          },
+          {
+            "id": "C",
+            "textEn": "A thin protective film develops on its surface, aided by the phosphorus content of the iron."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "理科の先生が問いを投げかけます。鉄柱はどうやって約1600年もの間、腐食に耐えてきたのでしょう？いちばん説得力のある説明はどれですか？",
+      "optionsJa": {
+        "A": "鍛造されて以来、毎年労働者が特別な油を塗ってきた。",
+        "B": "1900年ごろに元の柱に取って代わった、現代の合金でできている。",
+        "C": "鉄に含まれるリンに助けられて、表面に薄い保護膜ができる。"
+      }
+    },
     "gt_delhi_qutb_iron_pillar_journey": {
       "source": {
         "questionEn": "According to research on the Iron Pillar, where did it first stand?",
@@ -155,6 +415,58 @@
         "A": "デリーに移される前、遠く離れた中部インドに。",
         "B": "今立っているのと同じ、デリーのこの場所に。",
         "C": "インドが独立するまで、ロンドンの博物館に。"
+      }
+    },
+    "gt_delhi_qutb_iron_pillar_journey@A2": {
+      "source": {
+        "questionEn": "Research on the Iron Pillar tells us something. Where did it stand first?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Far away in the middle of India. Later, people moved it to Delhi."
+          },
+          {
+            "id": "B",
+            "textEn": "In the same place in Delhi where it is today."
+          },
+          {
+            "id": "C",
+            "textEn": "In a museum in London, until India became free."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "鉄柱の研究から分かることがあります。それは最初どこに立っていましたか？",
+      "optionsJa": {
+        "A": "遠く離れたインドの中部。後に人々がデリーへ移した。",
+        "B": "今と同じデリーの場所。",
+        "C": "インドが自由になるまで、ロンドンの博物館に。"
+      }
+    },
+    "gt_delhi_qutb_iron_pillar_journey@B2": {
+      "source": {
+        "questionEn": "What does research suggest about the Iron Pillar's original location?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It stood far off in central India before being relocated to Delhi."
+          },
+          {
+            "id": "B",
+            "textEn": "It has occupied the very same spot in Delhi from the start."
+          },
+          {
+            "id": "C",
+            "textEn": "It was housed in a London museum until India gained independence."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "研究は、鉄柱の元の場所について何を示していますか？",
+      "optionsJa": {
+        "A": "デリーへ移される前は、遠いインド中部に立っていた。",
+        "B": "最初からデリーのまさに同じ場所にある。",
+        "C": "インドが独立するまで、ロンドンの博物館に収められていた。"
       }
     },
     "gt_delhi_humayun_library_stairs": {
@@ -183,6 +495,58 @@
         "C": "象に乗って川を渡る途中で溺れ死んだ。"
       }
     },
+    "gt_delhi_humayun_library_stairs@A2": {
+      "source": {
+        "questionEn": "The uncle tests the 'foreign friends'. How did Emperor Humayun die?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He fell down the stairs in his library."
+          },
+          {
+            "id": "B",
+            "textEn": "Someone put poison in his food at a wedding party in Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "He died in a river. He was crossing it on an elephant."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "おじさんが「外国の友だち」を試します。フマーユーン帝はどのように亡くなりましたか？",
+      "optionsJa": {
+        "A": "書庫の階段から落ちた。",
+        "B": "アーグラの結婚式の宴で、誰かが食べ物に毒を入れた。",
+        "C": "川で亡くなった。象に乗って川を渡っていた。"
+      }
+    },
+    "gt_delhi_humayun_library_stairs@B2": {
+      "source": {
+        "questionEn": "The uncle decides to put the 'foreign friends' to the test. What was the cause of Emperor Humayun's death?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He tumbled down the steep staircase of his library."
+          },
+          {
+            "id": "B",
+            "textEn": "He was poisoned at a wedding banquet in Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "He drowned while crossing a river on elephant-back."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "おじさんは「外国の友だち」を試してみることにします。フマーユーン帝の死因は何でしたか？",
+      "optionsJa": {
+        "A": "書庫の急な階段を転げ落ちた。",
+        "B": "アーグラの婚礼の宴で毒を盛られた。",
+        "C": "象の背に乗って川を渡っている途中で溺れた。"
+      }
+    },
     "gt_delhi_humayun_first_tomb": {
       "source": {
         "questionEn": "'The first tomb you see when you come in. Whose is it?' Which answer is correct?",
@@ -207,6 +571,58 @@
         "A": "1800年代にイギリスがアーグラからここへ移した墓。",
         "B": "シェール・シャー・スーリの宮廷に仕えた貴族、イーサー・ハーンの墓。フマユーン廟より前に建てられた。",
         "C": "フマユーンの宮廷料理人の墓。息子のアクバルが建てた。"
+      }
+    },
+    "gt_delhi_humayun_first_tomb@A2": {
+      "source": {
+        "questionEn": "'The first tomb you see when you come in. Whose is it?' Which answer is right?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A tomb that the British moved here from Agra in the 1800s."
+          },
+          {
+            "id": "B",
+            "textEn": "Isa Khan's. He was an important man at the court of Sher Shah Suri. It was built before Humayun's tomb."
+          },
+          {
+            "id": "C",
+            "textEn": "The tomb of Humayun's cook. His son Akbar built it."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "「入ってすぐに見える最初の墓。誰の墓かな？」正しい答えはどれですか？",
+      "optionsJa": {
+        "A": "1800年代にイギリス人がアーグラからここへ移した墓。",
+        "B": "イーサー・ハーンの墓。彼はシェール・シャー・スーリーの宮廷の重要な人物だった。フマーユーン廟より前に建てられた。",
+        "C": "フマーユーンの料理人の墓。息子のアクバルが建てた。"
+      }
+    },
+    "gt_delhi_humayun_first_tomb@B2": {
+      "source": {
+        "questionEn": "'Whose is the first tomb you encounter on entering?' Which response is correct?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A tomb relocated here from Agra by the British during the nineteenth century."
+          },
+          {
+            "id": "B",
+            "textEn": "That of Isa Khan, a nobleman at the court of Sher Shah Suri, which predates Humayun's tomb."
+          },
+          {
+            "id": "C",
+            "textEn": "The resting place of Humayun's royal cook, erected by his son Akbar."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "「入ってすぐ出会う最初の墓は誰のものかな？」正しい答えはどれですか？",
+      "optionsJa": {
+        "A": "19世紀にイギリス人がアーグラからここへ移設した墓。",
+        "B": "シェール・シャー・スーリーの宮廷の貴族、イーサー・ハーンの墓。フマーユーン廟より古い。",
+        "C": "フマーユーンの宮廷料理人の墓所。息子のアクバルが建てた。"
       }
     },
     "gt_delhi_humayun_1857_arrest": {
@@ -235,6 +651,58 @@
         "C": "最後のムガル皇帝が、そこでイギリス側に捕らえられた。"
       }
     },
+    "gt_delhi_humayun_1857_arrest@A2": {
+      "source": {
+        "questionEn": "Last question: what happened at Humayun's Tomb in September 1857?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The British had a royal wedding in its garden."
+          },
+          {
+            "id": "B",
+            "textEn": "The tomb closed for repairs for the first time."
+          },
+          {
+            "id": "C",
+            "textEn": "The British caught the last Mughal emperor there."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "最後の質問。1857年9月、フマーユーン廟で何が起きましたか？",
+      "optionsJa": {
+        "A": "イギリス人が庭で王族の結婚式を開いた。",
+        "B": "墓が初めて修理のために閉じられた。",
+        "C": "イギリス人がそこで最後のムガル皇帝を捕まえた。"
+      }
+    },
+    "gt_delhi_humayun_1857_arrest@B2": {
+      "source": {
+        "questionEn": "Final question: what took place at Humayun's Tomb in September 1857?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The British staged a royal wedding in its gardens."
+          },
+          {
+            "id": "B",
+            "textEn": "The tomb was shut for restoration work for the first time."
+          },
+          {
+            "id": "C",
+            "textEn": "The last Mughal emperor was taken prisoner there by the British."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "最後の質問。1857年9月、フマーユーン廟で何が起きましたか？",
+      "optionsJa": {
+        "A": "イギリス人が庭園で王族の結婚式を催した。",
+        "B": "墓が初めて修復工事のために閉ざされた。",
+        "C": "最後のムガル皇帝が、そこでイギリス人に捕らえられた。"
+      }
+    },
     "gt_delhi_jama_world_view_name": {
       "source": {
         "questionEn": "The old perfume seller says the mosque was named Masjid-i-Jahan Numa. What does the name mean?",
@@ -258,6 +726,58 @@
       "optionsJa": {
         "A": "月の川のほとりに建てられたモスク。",
         "B": "遠い国から来た旅人のためだけに造られたモスク。",
+        "C": "世界を見渡すモスク。"
+      }
+    },
+    "gt_delhi_jama_world_view_name@A2": {
+      "source": {
+        "questionEn": "The old perfume seller says the mosque's name was Masjid-i-Jahan Numa. What does the name mean?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A mosque next to the river of the moon."
+          },
+          {
+            "id": "B",
+            "textEn": "A mosque only for travellers from far away."
+          },
+          {
+            "id": "C",
+            "textEn": "A mosque that can see the whole world."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "年老いた香水売りは、このモスクの名前はマスジディ・ジャハーン・ヌマーだったと言います。その名前はどういう意味ですか？",
+      "optionsJa": {
+        "A": "月の川の隣のモスク。",
+        "B": "遠くから来た旅人だけのモスク。",
+        "C": "世界全体を見わたすモスク。"
+      }
+    },
+    "gt_delhi_jama_world_view_name@B2": {
+      "source": {
+        "questionEn": "The elderly perfume merchant claims the mosque was originally called Masjid-i-Jahan Numa. What is the meaning of this name?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A mosque erected on the banks of the river of the moon."
+          },
+          {
+            "id": "B",
+            "textEn": "A mosque intended solely for travellers from distant lands."
+          },
+          {
+            "id": "C",
+            "textEn": "A mosque commanding a view of the world."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "年老いた香水商は、このモスクはもともとマスジディ・ジャハーン・ヌマーと呼ばれていたと言います。この名前の意味は何ですか？",
+      "optionsJa": {
+        "A": "月の川の岸辺に建てられたモスク。",
+        "B": "遠い国からの旅人だけのためのモスク。",
         "C": "世界を見渡すモスク。"
       }
     },
@@ -287,6 +807,58 @@
         "C": "解体され、町の外の別の丘に建て直された。"
       }
     },
+    "gt_delhi_jama_after_1857@A2": {
+      "source": {
+        "questionEn": "What happened to the Jama Masjid after the fighting of 1857?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "British soldiers took it. People asked for it for five years, and then they got it back."
+          },
+          {
+            "id": "B",
+            "textEn": "Someone sold it to a rich trader, and it became a market with a roof."
+          },
+          {
+            "id": "C",
+            "textEn": "People took it to pieces and built it again on another hill outside the city."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "1857年の戦いの後、ジャーマー・マスジドに何が起きましたか？",
+      "optionsJa": {
+        "A": "イギリス兵がそれを奪った。人々は5年間返してほしいと頼み、それから取り戻した。",
+        "B": "誰かが金持ちの商人に売り、屋根のある市場になった。",
+        "C": "ばらばらにされ、町の外の別の丘に建て直された。"
+      }
+    },
+    "gt_delhi_jama_after_1857@B2": {
+      "source": {
+        "questionEn": "What became of the Jama Masjid in the wake of the 1857 uprising?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "British troops seized it, and it was only handed back after five years of petitioning."
+          },
+          {
+            "id": "B",
+            "textEn": "It was sold off to a wealthy merchant and converted into a covered market."
+          },
+          {
+            "id": "C",
+            "textEn": "It was dismantled and reconstructed on another hill beyond the city walls."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "1857年の反乱の後、ジャーマー・マスジドはどうなりましたか？",
+      "optionsJa": {
+        "A": "イギリス軍がそれを奪い、5年間の請願の末にようやく返還された。",
+        "B": "裕福な商人に売り払われ、屋根付きの市場に作り変えられた。",
+        "C": "解体され、市壁の外の別の丘に建て直された。"
+      }
+    },
     "gt_delhi_jama_ramzan_signal": {
       "source": {
         "questionEn": "During Ramzan, what is announced from one of the mosque's pavilions?",
@@ -311,6 +883,58 @@
         "A": "路地で毎年開かれる香水コンテストの優勝者。",
         "B": "その日の断食を終える時刻。",
         "C": "近くで開店を許された新しい店の名前。"
+      }
+    },
+    "gt_delhi_jama_ramzan_signal@A2": {
+      "source": {
+        "questionEn": "During Ramzan, people hear news from one of the mosque's pavilions. What is the news?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The winners of the street's perfume contest this year."
+          },
+          {
+            "id": "B",
+            "textEn": "The time to stop the fast and eat."
+          },
+          {
+            "id": "C",
+            "textEn": "The names of new shops that can open near the mosque."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ラマザーンの間、人々はモスクの楼閣の一つから知らせを聞きます。それは何の知らせですか？",
+      "optionsJa": {
+        "A": "今年の通りの香水コンテストの勝者。",
+        "B": "断食をやめて食事をする時間。",
+        "C": "モスクの近くで開店してよい新しい店の名前。"
+      }
+    },
+    "gt_delhi_jama_ramzan_signal@B2": {
+      "source": {
+        "questionEn": "Throughout Ramzan, what is proclaimed from one of the mosque's pavilions?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The winners of the lane's annual perfume competition."
+          },
+          {
+            "id": "B",
+            "textEn": "The moment at which the day's fast may be broken."
+          },
+          {
+            "id": "C",
+            "textEn": "The names of new shops granted permission to open nearby."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ラマザーンの間ずっと、モスクの楼閣の一つから何が告げられますか？",
+      "optionsJa": {
+        "A": "路地で年に一度開かれる香水コンテストの勝者。",
+        "B": "その日の断食を終えてよい時刻。",
+        "C": "近くで開店を許可された新しい店の名前。"
       }
     },
     "gt_delhi_finale_ladies_coach": {
@@ -339,6 +963,58 @@
         "C": "日曜日だけ。一両が祖父母のために確保される。"
       }
     },
+    "gt_delhi_finale_ladies_coach@A2": {
+      "source": {
+        "questionEn": "Aman thinks his grandmother is confused. She talked about a 'ladies' coach' on the Delhi Metro. Is she right?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "No. Delhi Metro trains do not have any special coaches."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. The first coach, at the front of the train, is only for women."
+          },
+          {
+            "id": "C",
+            "textEn": "Only on Sundays. Then one coach is for grandparents."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "アマンは、おばあさんが混乱していると思っています。彼女がデリー・メトロの「女性車両」の話をしたからです。彼女は正しいですか？",
+      "optionsJa": {
+        "A": "いいえ。デリー・メトロの列車には特別な車両はない。",
+        "B": "はい。列車のいちばん前の最初の車両は、女性専用だ。",
+        "C": "日曜日だけ。その日は1両が祖父母用になる。"
+      }
+    },
+    "gt_delhi_finale_ladies_coach@B2": {
+      "source": {
+        "questionEn": "Aman suspects his grandmother is muddled because she mentioned a 'ladies' coach' on the Delhi Metro. Is she actually correct?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "No. Delhi Metro trains have no designated coaches whatsoever."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. The leading coach in the direction of travel is set aside for women."
+          },
+          {
+            "id": "C",
+            "textEn": "Only on Sundays, when a single coach is reserved for grandparents."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "アマンは、おばあさんがデリー・メトロの「女性車両」と言ったので、混乱しているのではないかと思っています。彼女は実は正しいのでしょうか？",
+      "optionsJa": {
+        "A": "いいえ。デリー・メトロの列車には、指定の車両などまったくない。",
+        "B": "はい。進行方向の先頭車両は女性のために確保されている。",
+        "C": "日曜日だけ。1両が祖父母のために確保される。"
+      }
+    },
     "gt_delhi_finale_moonlight_square": {
       "source": {
         "questionEn": "Her note says, 'Where the moon fell into the water, my last shopping.' Which place in Old Delhi fits best?",
@@ -363,6 +1039,58 @@
         "A": "そこの池に映った月にちなんで名付けられた、チャンドニー・チョーク。",
         "B": "満月の夜にだけ開く、川沿いの市場。",
         "C": "池が月の形をしている、ロータス寺院。"
+      }
+    },
+    "gt_delhi_finale_moonlight_square@A2": {
+      "source": {
+        "questionEn": "Her note says, 'Where the moon fell into the water, my last shopping.' Which place in Old Delhi is the best answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Chandni Chowk. Its name comes from the moon in a pool there."
+          },
+          {
+            "id": "B",
+            "textEn": "A market by the river. It opens only on nights with a full moon."
+          },
+          {
+            "id": "C",
+            "textEn": "The Lotus Temple. Its pools have the shape of a moon."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "彼女のメモには「月が水に落ちたところで、最後の買い物」とあります。オールド・デリーのどの場所がいちばんよい答えですか？",
+      "optionsJa": {
+        "A": "チャンドニー・チョウク。その名前は、そこの池に映った月から来ている。",
+        "B": "川沿いの市場。満月の夜だけ開く。",
+        "C": "ロータス・テンプル。その池は月の形をしている。"
+      }
+    },
+    "gt_delhi_finale_moonlight_square@B2": {
+      "source": {
+        "questionEn": "Her note reads, 'Where the moon fell into the water, my last shopping.' Which spot in Old Delhi best matches this description?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Chandni Chowk, whose name recalls the moonlight reflected in a pool that was once there."
+          },
+          {
+            "id": "B",
+            "textEn": "A riverside market that only trades on full-moon nights."
+          },
+          {
+            "id": "C",
+            "textEn": "The Lotus Temple, whose pools are moon-shaped."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "彼女のメモには「月が水に落ちたところで、最後の買い物」とあります。オールド・デリーのどの場所が、この描写にいちばん合いますか？",
+      "optionsJa": {
+        "A": "チャンドニー・チョウク。その名は、かつてそこにあった池に映る月の光を思い起こさせる。",
+        "B": "満月の夜だけ商いをする川沿いの市場。",
+        "C": "ロータス・テンプル。その池は月の形をしている。"
       }
     },
     "gt_delhi_finale_spice_market": {
@@ -391,6 +1119,58 @@
         "C": "アジア最大の香辛料の卸売市場といわれる、カーリー・バーオリー。"
       }
     },
+    "gt_delhi_finale_spice_market@A2": {
+      "source": {
+        "questionEn": "A sweet seller says she asked where to buy spices for a whole year. Where would she most likely go?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To the duty-free shop at Delhi airport."
+          },
+          {
+            "id": "B",
+            "textEn": "To the market with a roof inside the Red Fort. It sells only spices."
+          },
+          {
+            "id": "C",
+            "textEn": "To Khari Baoli. It is called Asia's biggest market for buying spices in large amounts."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "お菓子屋さんは、彼女が1年分の香辛料をどこで買えるか尋ねたと言います。彼女が行った可能性がいちばん高いのはどこですか？",
+      "optionsJa": {
+        "A": "デリー空港の免税店。",
+        "B": "赤い城の中の屋根のある市場。香辛料だけを売っている。",
+        "C": "カーリー・バーオリー。香辛料を大量に買うためのアジア最大の市場と言われている。"
+      }
+    },
+    "gt_delhi_finale_spice_market@B2": {
+      "source": {
+        "questionEn": "A sweet seller recalls her asking where she could stock up on a whole year's supply of spices. Where would she most probably have gone?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To the duty-free outlet at Delhi airport."
+          },
+          {
+            "id": "B",
+            "textEn": "To the covered bazaar within the Red Fort, which deals exclusively in spices."
+          },
+          {
+            "id": "C",
+            "textEn": "To Khari Baoli, reputed to be Asia's largest wholesale spice market."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "お菓子屋さんは、彼女が1年分の香辛料をまとめて買える場所を尋ねたことを覚えています。彼女が行った可能性がいちばん高いのはどこですか？",
+      "optionsJa": {
+        "A": "デリー空港の免税店。",
+        "B": "赤い城の中の屋根付きの市場。香辛料だけを扱っている。",
+        "C": "カーリー・バーオリー。アジア最大の香辛料の卸売市場と言われている。"
+      }
+    },
     "gt_delhi_finale_evening_show": {
       "source": {
         "questionEn": "The fort closes to day visitors at sunset. How could someone still be inside at seven in the evening?",
@@ -415,6 +1195,58 @@
         "A": "衛兵が、年配の見学者には暗くなってからも残らせてくれるから。",
         "B": "夜の光と音のショーが、城の中で開かれるから。",
         "C": "公謁の間で夜市が開かれるから。"
+      }
+    },
+    "gt_delhi_finale_evening_show@A2": {
+      "source": {
+        "questionEn": "Day visitors must leave the fort when the sun goes down. How could someone still be inside at seven in the evening?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The guards let old visitors stay after dark."
+          },
+          {
+            "id": "B",
+            "textEn": "There is a sound-and-light show inside the fort in the evening."
+          },
+          {
+            "id": "C",
+            "textEn": "A night market opens in the Hall of Public Audience."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "昼間の来場者は、日が沈むと城を出なければなりません。夜7時に、まだ中にいられたのはなぜでしょう？",
+      "optionsJa": {
+        "A": "衛兵が年配の来場者を暗くなってからも残らせる。",
+        "B": "夕方、城の中で光と音のショーがある。",
+        "C": "公謁の間で夜市が開かれる。"
+      }
+    },
+    "gt_delhi_finale_evening_show@B2": {
+      "source": {
+        "questionEn": "The fort shuts its doors to daytime visitors at sunset. How, then, could anyone still be inside at seven in the evening?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The guards allow elderly visitors to linger after nightfall."
+          },
+          {
+            "id": "B",
+            "textEn": "An evening sound-and-light show is staged within the fort."
+          },
+          {
+            "id": "C",
+            "textEn": "A night market sets up in the Hall of Public Audience."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "城は日没とともに昼間の来場者に門を閉ざします。それなのに、夜7時にまだ中にいられたのはどうしてでしょう？",
+      "optionsJa": {
+        "A": "衛兵が年配の来場者には日暮れ後も居残ることを許す。",
+        "B": "夜の光と音のショーが城の中で上演される。",
+        "C": "公謁の間に夜市が店を開く。"
       }
     },
     "gt_delhi_finale_first_show": {
@@ -443,6 +1275,58 @@
         "C": "1997年。王族の誕生日に向けて城が清掃されたあと。"
       }
     },
+    "gt_delhi_finale_first_show@A2": {
+      "source": {
+        "questionEn": "Aman says there were no light shows at the fort sixty years ago. When did the Red Fort's sound-and-light show start?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "In 1965. It was one of the first shows like this in Asia."
+          },
+          {
+            "id": "B",
+            "textEn": "In 2023, when the fort first opened at night."
+          },
+          {
+            "id": "C",
+            "textEn": "In 1997, after people cleaned the fort for a royal birthday."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "アマンは、60年前の城には光のショーはなかったと言います。赤い城の光と音のショーはいつ始まりましたか？",
+      "optionsJa": {
+        "A": "1965年。アジアで最初のこうしたショーの一つだった。",
+        "B": "2023年。城が初めて夜に開いたとき。",
+        "C": "1997年。王族の誕生日のために城が掃除された後。"
+      }
+    },
+    "gt_delhi_finale_first_show@B2": {
+      "source": {
+        "questionEn": "Aman maintains that the fort had no light shows sixty years ago. When was the Red Fort's sound-and-light show first staged?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "In 1965, making it one of the earliest shows of its kind in Asia."
+          },
+          {
+            "id": "B",
+            "textEn": "In 2023, when the fort opened its gates after dark for the first time."
+          },
+          {
+            "id": "C",
+            "textEn": "In 1997, following a clean-up of the fort for a royal birthday."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "アマンは、60年前の城には光のショーなどなかったと言い張ります。赤い城の光と音のショーが初めて上演されたのはいつですか？",
+      "optionsJa": {
+        "A": "1965年。アジアでこの種のショーとしては最も早いものの一つになった。",
+        "B": "2023年。城が初めて日没後に門を開いたとき。",
+        "C": "1997年。王族の誕生日に向けて城が清掃された後。"
+      }
+    },
     "gt_delhi_station_where_he_leads": {
       "source": {
         "questionEn": "The young man says the tourist ticket office inside the station is closed for repairs and a temporary office is across the road. Everything he says points to one action. What is it?",
@@ -467,6 +1351,58 @@
         "A": "駅の中へ入って、掲示板を確かめる。",
         "B": "彼と一緒に、駅から離れて歩いていく。",
         "C": "鉄道の電話相談に、列車のことを聞く。"
+      }
+    },
+    "gt_delhi_station_where_he_leads@A2": {
+      "source": {
+        "questionEn": "The young man says the tourist ticket office in the station is closed for repairs. He says there is another office across the road. Everything he says leads to one action. What is it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Going into the station to look at the board."
+          },
+          {
+            "id": "B",
+            "textEn": "Walking away from the station with him."
+          },
+          {
+            "id": "C",
+            "textEn": "Calling the railway helpline about the train."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "若い男は、駅の中の外国人用切符売り場は工事で閉まっていると言います。道の向こうに別の事務所があるとも言います。彼の話はすべて、ある一つの行動につながります。それは何ですか？",
+      "optionsJa": {
+        "A": "駅に入って案内板を見ること。",
+        "B": "彼と一緒に駅から離れること。",
+        "C": "列車のことで鉄道の相談電話にかけること。"
+      }
+    },
+    "gt_delhi_station_where_he_leads@B2": {
+      "source": {
+        "questionEn": "The young man insists that the tourist ticket office inside the station is shut for repairs and that a temporary office has been set up across the road. Every detail of his story steers you towards a single course of action. Which one?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Entering the station to consult the departure board."
+          },
+          {
+            "id": "B",
+            "textEn": "Leaving the station on foot in his company."
+          },
+          {
+            "id": "C",
+            "textEn": "Ringing the railway helpline to enquire about the train."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "若い男は、駅の中の外国人用切符売り場は工事で閉まっていて、道の向こうに臨時の事務所ができていると言い張ります。彼の話のどの部分も、あなたをある一つの行動へと導きます。それはどれですか？",
+      "optionsJa": {
+        "A": "駅に入って発車案内板を確かめること。",
+        "B": "彼に連れられて歩いて駅を離れること。",
+        "C": "鉄道の相談電話にかけて列車のことを問い合わせること。"
       }
     },
     "gt_delhi_station_who_announces": {
@@ -495,6 +1431,58 @@
         "C": "放送をして、列車の案内板の表示を更新する。"
       }
     },
+    "gt_delhi_station_who_announces@A2": {
+      "source": {
+        "questionEn": "For thirty years, Dubey made the announcements at the station. He tells you how a station tells passengers about a cancelled train. How does it do it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Workers wait outside the station and tell each passenger."
+          },
+          {
+            "id": "B",
+            "textEn": "A travel office across the road has a list of cancelled trains."
+          },
+          {
+            "id": "C",
+            "textEn": "It makes announcements and changes the train information boards."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ドゥベーは30年間、駅の放送をしていました。駅が乗客に列車の運休をどう知らせるか、彼は話してくれます。駅はどうやって知らせますか？",
+      "optionsJa": {
+        "A": "職員が駅の外で待ち、乗客一人ひとりに伝える。",
+        "B": "道の向こうの旅行事務所が運休列車のリストを持っている。",
+        "C": "放送をして、列車の案内板を変える。"
+      }
+    },
+    "gt_delhi_station_who_announces@B2": {
+      "source": {
+        "questionEn": "Dubey spent three decades making announcements at the station. According to him, how are passengers informed when a train has been cancelled?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Staff are stationed outside the building to inform passengers one by one."
+          },
+          {
+            "id": "B",
+            "textEn": "A travel agency across the road maintains a record of cancelled services."
+          },
+          {
+            "id": "C",
+            "textEn": "The station broadcasts announcements and updates its train information boards."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ドゥベーは30年にわたって駅の放送を担当してきました。彼によれば、列車が運休になったとき、乗客にはどのように知らされますか？",
+      "optionsJa": {
+        "A": "職員が建物の外に配置され、乗客に一人ずつ伝える。",
+        "B": "道の向こうの旅行代理店が運休になった便の記録をつけている。",
+        "C": "駅が放送で知らせ、列車の案内板を更新する。"
+      }
+    },
     "gt_delhi_station_auto_refund": {
       "source": {
         "questionEn": "The young man says you will not get your money back unless you go to the temporary office across the road. If your train is really cancelled and you have an e-ticket, what happens to the fare?",
@@ -519,6 +1507,58 @@
         "A": "鉄道が運賃を自動で払い戻す。",
         "B": "今日のうちに振り替えないと、運賃はなくなる。",
         "C": "道の向かいの事務所だけが、運賃を返せる。"
+      }
+    },
+    "gt_delhi_station_auto_refund@A2": {
+      "source": {
+        "questionEn": "The young man says you will not get your money back if you do not go to his office across the road. If your train is really cancelled and you have an e-ticket, what happens to your money?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The railway gives you the money back. You do not have to do anything."
+          },
+          {
+            "id": "B",
+            "textEn": "You lose the money if you do not book again today."
+          },
+          {
+            "id": "C",
+            "textEn": "Only an office across the road can give the money back."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "若い男は、道の向こうの彼の事務所へ行かなければお金は戻らないと言います。列車が本当に運休になり、電子切符を持っているなら、お金はどうなりますか？",
+      "optionsJa": {
+        "A": "鉄道がお金を返してくれる。あなたは何もしなくてよい。",
+        "B": "今日予約し直さなければ、お金はなくなる。",
+        "C": "道の向こうの事務所だけがお金を返せる。"
+      }
+    },
+    "gt_delhi_station_auto_refund@B2": {
+      "source": {
+        "questionEn": "The young man warns that you will forfeit your money unless you visit the temporary office across the road. If your train genuinely has been cancelled and you hold an e-ticket, what becomes of the fare?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The railway refunds it automatically, with no action required on your part."
+          },
+          {
+            "id": "B",
+            "textEn": "It is forfeited unless you rebook on another train today."
+          },
+          {
+            "id": "C",
+            "textEn": "It can be recovered only through an office across the road."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "若い男は、道の向こうの臨時の事務所へ行かなければお金を失うと警告します。列車が本当に運休になり、あなたが電子切符を持っているなら、運賃はどうなりますか？",
+      "optionsJa": {
+        "A": "鉄道が自動で払い戻す。あなたの側で何かする必要はない。",
+        "B": "今日別の列車に予約し直さなければ、没収される。",
+        "C": "道の向こうの事務所を通してしか取り戻せない。"
       }
     },
     "gt_agra_taj_mumtaz_last_journey": {
@@ -547,6 +1587,58 @@
         "C": "ヤムナー川の近くで、狩りの事故によって。"
       }
     },
+    "gt_agra_taj_mumtaz_last_journey@A2": {
+      "source": {
+        "questionEn": "Tanvi asks Nikhil where and how Mumtaz Mahal died. What is the answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Quietly in her palace in Agra, when she was very old."
+          },
+          {
+            "id": "B",
+            "textEn": "In Burhanpur, in the Deccan, when she was having a baby. She was travelling with Shah Jahan's army."
+          },
+          {
+            "id": "C",
+            "textEn": "In an accident while hunting near the Yamuna river."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ターンヴィーはニキルに、ムムターズ・マハルがどこで、どのように亡くなったかを尋ねます。答えは何ですか？",
+      "optionsJa": {
+        "A": "アーグラの宮殿で、とても年をとってから静かに。",
+        "B": "デカンのブルハーンプルで、出産のときに。彼女はシャー・ジャハーンの軍と一緒に旅をしていた。",
+        "C": "ヤムナー川の近くで、狩りの最中の事故で。"
+      }
+    },
+    "gt_agra_taj_mumtaz_last_journey@B2": {
+      "source": {
+        "questionEn": "Tanvi asks Nikhil about the place and circumstances of Mumtaz Mahal's death. What should he tell her?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "She passed away peacefully in her Agra palace in old age."
+          },
+          {
+            "id": "B",
+            "textEn": "She died in childbirth at Burhanpur in the Deccan while accompanying Shah Jahan's army on campaign."
+          },
+          {
+            "id": "C",
+            "textEn": "She was killed in a hunting accident close to the Yamuna river."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ターンヴィーはニキルに、ムムターズ・マハルが亡くなった場所と事情を尋ねます。彼は何と答えるべきですか？",
+      "optionsJa": {
+        "A": "晩年、アーグラの宮殿で安らかに亡くなった。",
+        "B": "遠征中のシャー・ジャハーンの軍に同行していたとき、デカンのブルハーンプルで出産により亡くなった。",
+        "C": "ヤムナー川の近くで、狩りの事故で亡くなった。"
+      }
+    },
     "gt_agra_taj_first_grave": {
       "source": {
         "questionEn": "'He built this for her right away,' says Nikhil. Where was Mumtaz Mahal first buried?",
@@ -571,6 +1663,58 @@
         "A": "ブルハーンプルの塀に囲まれた庭園に、数か月のあいだ。その後、遺体はアーグラへ運ばれた。",
         "B": "亡くなったその日に、タージ・マハルの大ドームの真下へ。",
         "C": "ペルシアにある、彼女の一族の故郷の町。"
+      }
+    },
+    "gt_agra_taj_first_grave@A2": {
+      "source": {
+        "questionEn": "'He built this for her at once,' says Nikhil. Where did they first bury Mumtaz Mahal?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "In a garden with walls at Burhanpur, for some months. Then they brought her body to Agra."
+          },
+          {
+            "id": "B",
+            "textEn": "Right under the big dome of the Taj Mahal, on the day she died."
+          },
+          {
+            "id": "C",
+            "textEn": "In her family's home town in Persia."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "「彼はすぐに彼女のためにこれを建てた」とニキルは言います。ムムターズ・マハルは最初どこに葬られましたか？",
+      "optionsJa": {
+        "A": "ブルハーンプルの塀に囲まれた庭園に数か月。その後、遺体はアーグラへ運ばれた。",
+        "B": "亡くなった日に、タージ・マハルの大きなドームの真下に。",
+        "C": "ペルシアにある家族の故郷に。"
+      }
+    },
+    "gt_agra_taj_first_grave@B2": {
+      "source": {
+        "questionEn": "'He built this for her straight away,' Nikhil insists. Where was Mumtaz Mahal initially laid to rest?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "In a walled garden at Burhanpur, for several months, before her remains were transferred to Agra."
+          },
+          {
+            "id": "B",
+            "textEn": "Directly beneath the Taj Mahal's great dome, on the very day of her death."
+          },
+          {
+            "id": "C",
+            "textEn": "In her family's ancestral town in Persia."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "「彼はすぐさま彼女のためにこれを建てた」とニキルは言い張ります。ムムターズ・マハルが最初に葬られたのはどこですか？",
+      "optionsJa": {
+        "A": "ブルハーンプルの塀に囲まれた庭園に数か月。その後、遺骸はアーグラへ移された。",
+        "B": "亡くなったまさにその日に、タージ・マハルの大ドームの真下に。",
+        "C": "ペルシアにある、家族の先祖代々の町に。"
       }
     },
     "gt_agra_taj_balancing_twin": {
@@ -599,6 +1743,58 @@
         "C": "全体の設計の釣り合いを取るための、モスクの写しとして。"
       }
     },
+    "gt_agra_taj_balancing_twin@A2": {
+      "source": {
+        "questionEn": "Tanvi points to the building on the east side. It looks just like the mosque. Why did they build it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "As a second mosque. One mosque was too small for all the people."
+          },
+          {
+            "id": "B",
+            "textEn": "As a home for the emperor's guards and their horses."
+          },
+          {
+            "id": "C",
+            "textEn": "As a copy of the mosque, so that both sides of the design look the same."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ターンヴィーは東側の建物を指さします。モスクにそっくりです。なぜ建てられたのですか？",
+      "optionsJa": {
+        "A": "二つ目のモスクとして。一つでは人が多すぎた。",
+        "B": "皇帝の衛兵とその馬の住まいとして。",
+        "C": "モスクの写しとして。設計の両側が同じに見えるように。"
+      }
+    },
+    "gt_agra_taj_balancing_twin@B2": {
+      "source": {
+        "questionEn": "Tanvi gestures towards the building on the eastern side, which is practically identical to the mosque. Why was it built?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It served as a second mosque, since the first could not accommodate the crowds."
+          },
+          {
+            "id": "B",
+            "textEn": "It housed the emperor's guards along with their horses."
+          },
+          {
+            "id": "C",
+            "textEn": "It mirrored the mosque so as to give the overall design symmetry."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ターンヴィーは東側の建物を指し示します。モスクとほとんど見分けがつきません。なぜ建てられたのですか？",
+      "optionsJa": {
+        "A": "二つ目のモスクとして使われた。一つ目では群衆が入りきらなかったから。",
+        "B": "皇帝の衛兵とその馬を住まわせた。",
+        "C": "設計全体を左右対称にするため、モスクを鏡のように写した。"
+      }
+    },
     "gt_agra_fort_who_confined": {
       "source": {
         "questionEn": "The colonel asks who kept Shah Jahan shut away in Agra Fort. Who was it?",
@@ -625,6 +1821,58 @@
         "C": "王位を手にした、実の息子のアウラングゼーブ。"
       }
     },
+    "gt_agra_fort_who_confined@A2": {
+      "source": {
+        "questionEn": "The colonel asks a question. Who kept Shah Jahan inside Agra Fort and did not let him leave?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The British army, after the fighting of 1857."
+          },
+          {
+            "id": "B",
+            "textEn": "A king from Persia who attacked Delhi."
+          },
+          {
+            "id": "C",
+            "textEn": "His own son Aurangzeb, who became the new emperor."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "大佐が質問します。シャー・ジャハーンをアーグラ城塞の中にとどめ、外へ出さなかったのは誰ですか？",
+      "optionsJa": {
+        "A": "1857年の戦いの後のイギリス軍。",
+        "B": "デリーを攻撃したペルシアの王。",
+        "C": "自分の息子アウラングゼーブ。彼が新しい皇帝になった。"
+      }
+    },
+    "gt_agra_fort_who_confined@B2": {
+      "source": {
+        "questionEn": "The colonel wants to know who confined Shah Jahan within Agra Fort. Who was responsible?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The British army, in the aftermath of the 1857 uprising."
+          },
+          {
+            "id": "B",
+            "textEn": "A Persian king who had invaded Delhi."
+          },
+          {
+            "id": "C",
+            "textEn": "His own son Aurangzeb, who had seized the throne."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "大佐は、シャー・ジャハーンをアーグラ城塞に閉じ込めたのは誰かを知りたがっています。それは誰でしたか？",
+      "optionsJa": {
+        "A": "1857年の反乱の直後のイギリス軍。",
+        "B": "デリーに侵攻したペルシアの王。",
+        "C": "王位を奪った自分の息子アウラングゼーブ。"
+      }
+    },
     "gt_agra_fort_jahanara_care": {
       "source": {
         "questionEn": "Who looked after Shah Jahan in the fort until his death in 1666?",
@@ -647,6 +1895,58 @@
       "questionJa": "1666年に亡くなるまで、城でシャー・ジャハーンの世話をしたのは誰ですか？",
       "optionsJa": {
         "A": "のちに彼について有名な本を書いた、宮殿の衛兵。",
+        "B": "娘のジャハーナーラー。",
+        "C": "ムムターズ・マハルの妹。"
+      }
+    },
+    "gt_agra_fort_jahanara_care@A2": {
+      "source": {
+        "questionEn": "Who took care of Shah Jahan in the fort until he died in 1666?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A guard at the palace. Later, he wrote a famous book about him."
+          },
+          {
+            "id": "B",
+            "textEn": "His daughter Jahanara."
+          },
+          {
+            "id": "C",
+            "textEn": "The younger sister of Mumtaz Mahal."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "1666年に亡くなるまで、城塞でシャー・ジャハーンの世話をしたのは誰ですか？",
+      "optionsJa": {
+        "A": "宮殿の衛兵。のちに彼についての有名な本を書いた。",
+        "B": "娘のジャハーナーラー。",
+        "C": "ムムターズ・マハルの妹。"
+      }
+    },
+    "gt_agra_fort_jahanara_care@B2": {
+      "source": {
+        "questionEn": "Who tended to Shah Jahan in the fort during his final years, up to his death in 1666?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A palace guard who went on to write a celebrated account of him."
+          },
+          {
+            "id": "B",
+            "textEn": "His daughter, Jahanara."
+          },
+          {
+            "id": "C",
+            "textEn": "The younger sister of Mumtaz Mahal."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "晩年、1666年に亡くなるまで、城塞でシャー・ジャハーンの世話をしたのは誰ですか？",
+      "optionsJa": {
+        "A": "後に彼についての名高い記録を書いた宮殿の衛兵。",
         "B": "娘のジャハーナーラー。",
         "C": "ムムターズ・マハルの妹。"
       }
@@ -677,6 +1977,58 @@
         "C": "年に一度、祝日に兵士が中を行進するときだけ。"
       }
     },
+    "gt_agra_fort_army_today@A2": {
+      "source": {
+        "questionEn": "The colonel says there are still soldiers at the fort today. Is that true?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Yes. The Indian Army uses part of the fort, and visitors cannot go there."
+          },
+          {
+            "id": "B",
+            "textEn": "No. The army left the fort in 1858 and never came back."
+          },
+          {
+            "id": "C",
+            "textEn": "Only one day a year, when soldiers walk through it on a holiday."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "大佐は、今も城塞には兵士がいると言います。それは本当ですか？",
+      "optionsJa": {
+        "A": "はい。インド陸軍が城塞の一部を使っていて、訪問者はそこへ行けない。",
+        "B": "いいえ。軍は1858年に城塞を去り、二度と戻らなかった。",
+        "C": "年に一日だけ。祝日に兵士たちが中を歩いて通る。"
+      }
+    },
+    "gt_agra_fort_army_today@B2": {
+      "source": {
+        "questionEn": "According to the colonel, the fort is still home to soldiers today. Is he correct?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Yes. A section of the fort remains in use by the Indian Army and is off-limits to the public."
+          },
+          {
+            "id": "B",
+            "textEn": "No. The army withdrew from the fort in 1858 and has never returned."
+          },
+          {
+            "id": "C",
+            "textEn": "Only once a year, when troops parade through it on a public holiday."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "大佐によると、城塞には今も兵士がいます。彼は正しいですか？",
+      "optionsJa": {
+        "A": "はい。城塞の一部は今もインド陸軍が使っていて、一般の人は立ち入れない。",
+        "B": "いいえ。軍は1858年に城塞から撤退し、一度も戻っていない。",
+        "C": "年に一度だけ。祝日に部隊が中を行進する。"
+      }
+    },
     "gt_agra_itimad_before_taj": {
       "source": {
         "questionEn": "The petition says, 'This tomb is not the Taj's baby. It came first.' Is that true?",
@@ -701,6 +2053,58 @@
         "A": "いいえ。タージが完成したあとに、小さな写しとして建てられた。",
         "B": "はい。タージ・マハルの工事が始まるおよそ4年前に完成していた。",
         "C": "両方とも同じ年に建てられたので、誰にも分からない。"
+      }
+    },
+    "gt_agra_itimad_before_taj@A2": {
+      "source": {
+        "questionEn": "The letter says, 'This tomb is not the Taj's baby. It came first.' Is that true?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "No. People built it as a small copy after the Taj was finished."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. It was finished about four years before work on the Taj Mahal started."
+          },
+          {
+            "id": "C",
+            "textEn": "Nobody knows. They were both built in the same year."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "手紙にはこうあります。「この墓はタージの赤ちゃんではない。こちらが先にできた」。それは本当ですか？",
+      "optionsJa": {
+        "A": "いいえ。タージが完成した後に、小さな写しとして建てられた。",
+        "B": "はい。タージ・マハルの工事が始まる約4年前に完成した。",
+        "C": "誰にも分からない。どちらも同じ年に建てられた。"
+      }
+    },
+    "gt_agra_itimad_before_taj@B2": {
+      "source": {
+        "questionEn": "The petition insists, 'This tomb is not the Taj's baby. It came first.' Does the claim hold up?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "No. It was erected as a scaled-down copy once the Taj had been completed."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. It was completed roughly four years before construction of the Taj Mahal got under way."
+          },
+          {
+            "id": "C",
+            "textEn": "It is impossible to say, since the two were built in the same year."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "請願書は「この墓はタージの赤ちゃんではない。こちらが先にできた」と言い張ります。その主張は通りますか？",
+      "optionsJa": {
+        "A": "いいえ。タージの完成後に、縮小した写しとして建てられた。",
+        "B": "はい。タージ・マハルの建設が始まるおよそ4年前に完成した。",
+        "C": "分かりようがない。両者は同じ年に建てられたのだから。"
       }
     },
     "gt_agra_itimad_who_lies_here": {
@@ -729,6 +2133,58 @@
         "C": "結婚によって王家の一員となった、ジャイプールのラージプートの王子。"
       }
     },
+    "gt_agra_itimad_who_lies_here@A2": {
+      "source": {
+        "questionEn": "Who was Itimad-ud-Daulah? He is buried here with his wife.",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "An important man from Persia. He came to the Mughal court and got one of the top jobs in the government."
+          },
+          {
+            "id": "B",
+            "textEn": "The man who later planned the Taj Mahal."
+          },
+          {
+            "id": "C",
+            "textEn": "A Rajput prince from Jaipur. He married a woman from the royal family."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "イティマード・ウッダウラとは誰でしたか？彼は妻と一緒にここに葬られています。",
+      "optionsJa": {
+        "A": "ペルシアから来た重要な人物。ムガルの宮廷に来て、政権の最高位の仕事の一つに就いた。",
+        "B": "後にタージ・マハルを設計した人。",
+        "C": "ジャイプールのラージプートの王子。王家の女性と結婚した。"
+      }
+    },
+    "gt_agra_itimad_who_lies_here@B2": {
+      "source": {
+        "questionEn": "Who was Itimad-ud-Daulah, who lies buried here beside his wife?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A Persian nobleman who entered Mughal service and rose to the highest ranks of government."
+          },
+          {
+            "id": "B",
+            "textEn": "The architect who would later go on to design the Taj Mahal."
+          },
+          {
+            "id": "C",
+            "textEn": "A Rajput prince from Jaipur who married into the imperial family."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "妻の傍らに葬られているイティマード・ウッダウラとは誰でしたか？",
+      "optionsJa": {
+        "A": "ムガルに仕え、政権の最高位にまで昇ったペルシアの貴族。",
+        "B": "後にタージ・マハルを設計することになる建築家。",
+        "C": "婚姻によって皇帝の一族に加わった、ジャイプールのラージプートの王子。"
+      }
+    },
     "gt_agra_itimad_unsupported_claim": {
       "source": {
         "questionEn": "Which claim in the petition is NOT supported by history?",
@@ -753,6 +2209,58 @@
         "A": "白い大理石で覆われた、最初のムガルの墓廟である。",
         "B": "その石の象嵌は、タージ・マハルの象嵌細工よりも先に作られた。",
         "C": "ヌール・ジャハーンは、タージ・マハルの設計もした。"
+      }
+    },
+    "gt_agra_itimad_unsupported_claim@A2": {
+      "source": {
+        "questionEn": "Which idea in the letter has NO proof in history?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was the first Mughal tomb with white marble on the outside."
+          },
+          {
+            "id": "B",
+            "textEn": "Its pictures made of small coloured stones came before the same work at the Taj Mahal."
+          },
+          {
+            "id": "C",
+            "textEn": "Nur Jahan also designed the Taj Mahal."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "手紙の考えのうち、歴史の上で証拠がないのはどれですか？",
+      "optionsJa": {
+        "A": "外側を白い大理石で覆った、最初のムガルの墓だった。",
+        "B": "小さな色石で作った模様は、タージ・マハルの同じ技法より先だった。",
+        "C": "ヌール・ジャハーンがタージ・マハルも設計した。"
+      }
+    },
+    "gt_agra_itimad_unsupported_claim@B2": {
+      "source": {
+        "questionEn": "Which of the petition's claims finds no support in the historical record?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was the first Mughal tomb to be clad in white marble."
+          },
+          {
+            "id": "B",
+            "textEn": "Its inlaid stonework predated that of the Taj Mahal."
+          },
+          {
+            "id": "C",
+            "textEn": "Nur Jahan was also responsible for designing the Taj Mahal."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "請願書の主張のうち、歴史の記録に裏付けがないのはどれですか？",
+      "optionsJa": {
+        "A": "白い大理石で覆われた最初のムガルの墓だった。",
+        "B": "その石の象嵌細工は、タージ・マハルのものより前だった。",
+        "C": "ヌール・ジャハーンがタージ・マハルの設計も手がけた。"
       }
     },
     "gt_agra_fatehpur_bridge_words": {
@@ -781,6 +2289,58 @@
         "C": "門を建てた人が、後の世の建設者への冗談として書いた言葉。"
       }
     },
+    "gt_agra_fatehpur_bridge_words@A2": {
+      "source": {
+        "questionEn": "The words on the great gate say, 'The world is a bridge, pass over it, but build no houses on it.' Who first said these words?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Jesus, son of Mary."
+          },
+          {
+            "id": "B",
+            "textEn": "Emperor Akbar. He wrote them on his wedding day."
+          },
+          {
+            "id": "C",
+            "textEn": "The man who built the gate. It was a joke for builders in the future."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "大門の文字にはこう書かれています。「世界は橋である。渡りなさい、だがその上に家を建ててはならない」。この言葉を最初に言ったのは誰ですか？",
+      "optionsJa": {
+        "A": "マリアの子イエス。",
+        "B": "アクバル帝。結婚式の日に書いた。",
+        "C": "門を建てた人。未来の建設者への冗談だった。"
+      }
+    },
+    "gt_agra_fatehpur_bridge_words@B2": {
+      "source": {
+        "questionEn": "The inscription on the great gate reads, 'The world is a bridge, pass over it, but build no houses on it.' To whom are these words attributed?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Jesus, son of Mary."
+          },
+          {
+            "id": "B",
+            "textEn": "Emperor Akbar, who supposedly composed them on his wedding day."
+          },
+          {
+            "id": "C",
+            "textEn": "The gate's builder, who intended them as a joke for later generations of builders."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "大門の碑文には「世界は橋である。渡りなさい、だがその上に家を建ててはならない」とあります。この言葉は誰のものとされていますか？",
+      "optionsJa": {
+        "A": "マリアの子イエス。",
+        "B": "アクバル帝。結婚式の日に作ったということになっている。",
+        "C": "門の建設者。後の世代の建設者への冗談のつもりだった。"
+      }
+    },
     "gt_agra_fatehpur_saint_for_heir": {
       "source": {
         "questionEn": "Why did Emperor Akbar first come to the village of Sikri?",
@@ -805,6 +2365,58 @@
         "A": "湖の周りの森で虎を狩るため。",
         "B": "アーグラの宮殿を焼いた火事から逃れるため。",
         "C": "跡継ぎを授かるよう、スーフィーの聖者シャイフ・サリーム・チシュティーの祝福を求めるため。"
+      }
+    },
+    "gt_agra_fatehpur_saint_for_heir@A2": {
+      "source": {
+        "questionEn": "Why did Emperor Akbar first go to the village of Sikri?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To hunt tigers in the forests near a lake."
+          },
+          {
+            "id": "B",
+            "textEn": "To get away from a fire. The fire burned his palace in Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "To ask the Sufi holy man Shaikh Salim Chishti for a blessing, so he could have a son."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "アクバル帝が初めてシークリー村へ行ったのはなぜですか？",
+      "optionsJa": {
+        "A": "湖の近くの森でトラを狩るため。",
+        "B": "火事から逃れるため。その火事でアーグラの宮殿が焼けた。",
+        "C": "スーフィーの聖者シャイフ・サリーム・チシュティーに祝福を求め、息子を授かるため。"
+      }
+    },
+    "gt_agra_fatehpur_saint_for_heir@B2": {
+      "source": {
+        "questionEn": "What originally brought Emperor Akbar to the village of Sikri?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A desire to hunt tigers in the forests surrounding a lake."
+          },
+          {
+            "id": "B",
+            "textEn": "The need to flee a fire that had destroyed his palace in Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "A wish to obtain the Sufi saint Shaikh Salim Chishti's blessing for an heir to the throne."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "そもそもアクバル帝がシークリー村へ来たのはなぜですか？",
+      "optionsJa": {
+        "A": "湖を囲む森でトラを狩りたかったから。",
+        "B": "アーグラの宮殿を焼き尽くした火事から逃れる必要があったから。",
+        "C": "スーフィーの聖者シャイフ・サリーム・チシュティーから、王位の跡継ぎを授かる祝福を得たかったから。"
       }
     },
     "gt_agra_fatehpur_short_capital": {
@@ -833,6 +2445,58 @@
         "C": "一度もない。建物が一つも完成しないうちに、宮廷は去った。"
       }
     },
+    "gt_agra_fatehpur_short_capital@A2": {
+      "source": {
+        "questionEn": "For how long was Fatehpur Sikri the capital city of the Mughals?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "For more than two hundred years."
+          },
+          {
+            "id": "B",
+            "textEn": "Only until 1585, about fifteen years after it was built."
+          },
+          {
+            "id": "C",
+            "textEn": "Never. The king and his people left before any building was finished."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ファテープル・シークリーは、どのくらいの間ムガルの首都でしたか？",
+      "optionsJa": {
+        "A": "200年以上。",
+        "B": "1585年まで。建てられてから15年ほどだけ。",
+        "C": "一度もない。建物が一つできる前に、王と人々は去った。"
+      }
+    },
+    "gt_agra_fatehpur_short_capital@B2": {
+      "source": {
+        "questionEn": "For how long did Fatehpur Sikri remain the capital of the Mughal empire?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "For well over two centuries."
+          },
+          {
+            "id": "B",
+            "textEn": "Only until 1585, roughly fifteen years after its foundation."
+          },
+          {
+            "id": "C",
+            "textEn": "Never: the court moved away before a single building had been completed."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ファテープル・シークリーは、どのくらいの間ムガル帝国の首都であり続けましたか？",
+      "optionsJa": {
+        "A": "優に2世紀以上。",
+        "B": "1585年まで。創建からおよそ15年だけ。",
+        "C": "一度もない。建物が一つ完成する前に、宮廷は移ってしまった。"
+      }
+    },
     "gt_agra_finale_cut_hands": {
       "source": {
         "questionEn": "The guide says Shah Jahan cut off the hands of the Taj Mahal's workers. What do historians say?",
@@ -857,6 +2521,58 @@
         "A": "本当であり、職人たちの名前は宮廷の日誌に記されている。",
         "B": "それを示す歴史的な証拠はない。よく知られた伝説である。",
         "C": "罰として手を失ったのは、主任建築家だけだった。"
+      }
+    },
+    "gt_agra_finale_cut_hands@A2": {
+      "source": {
+        "questionEn": "A guide says Shah Jahan cut off the workers' hands after they built the Taj Mahal. What do historians say?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It is true. A court diary has the workers' names."
+          },
+          {
+            "id": "B",
+            "textEn": "There is no proof. It is an old story that many people tell."
+          },
+          {
+            "id": "C",
+            "textEn": "Only the main architect lost his hands. It was a punishment."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ガイドは、タージ・マハルを建てた後、シャー・ジャハーンが職人たちの手を切り落としたと言います。歴史家はどう言っていますか？",
+      "optionsJa": {
+        "A": "本当だ。宮廷の日誌に職人たちの名前がある。",
+        "B": "証拠はない。多くの人が語る昔話だ。",
+        "C": "手を失ったのは主任建築家だけだった。それは罰だった。"
+      }
+    },
+    "gt_agra_finale_cut_hands@B2": {
+      "source": {
+        "questionEn": "The guide claims that Shah Jahan had the hands of the Taj Mahal's workers cut off. What is the view of historians?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It is true, and the workers' names were recorded in a court diary."
+          },
+          {
+            "id": "B",
+            "textEn": "No historical evidence supports it; it is a widely repeated legend."
+          },
+          {
+            "id": "C",
+            "textEn": "Only the chief architect lost his hands, as a form of punishment."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ガイドは、シャー・ジャハーンがタージ・マハルの職人たちの手を切り落とさせたと主張します。歴史家の見方はどうですか？",
+      "optionsJa": {
+        "A": "本当であり、職人たちの名前は宮廷の日誌に記録された。",
+        "B": "それを裏付ける歴史的な証拠はない。広く語り継がれた伝説である。",
+        "C": "罰の一つとして手を失ったのは、主任建築家だけだった。"
       }
     },
     "gt_agra_finale_moonlight_garden": {
@@ -885,6 +2601,58 @@
         "C": "両岸を結ぶ、川の下の秘密のトンネル。"
       }
     },
+    "gt_agra_finale_moonlight_garden@A2": {
+      "source": {
+        "questionEn": "He also says there was a plan for a 'Black Taj' across the river, at Mehtab Bagh. What did researchers find there?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A garden with a big pool. From there, you could see the Taj in the water. There was no black tomb."
+          },
+          {
+            "id": "B",
+            "textEn": "The bottom of a black marble tomb. Nobody finished it."
+          },
+          {
+            "id": "C",
+            "textEn": "A secret way under the river between the two sides."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "彼はまた、川の向こうのメータブ・バーグに「黒いタージ」の計画があったとも言います。研究者たちはそこで何を見つけましたか？",
+      "optionsJa": {
+        "A": "大きな池のある庭園。そこから、水に映るタージが見えた。黒い墓はなかった。",
+        "B": "黒い大理石の墓の下の部分。誰も完成させなかった。",
+        "C": "川の下を通って両岸を結ぶ秘密の道。"
+      }
+    },
+    "gt_agra_finale_moonlight_garden@B2": {
+      "source": {
+        "questionEn": "He goes on to claim that a 'Black Taj' was planned on the opposite bank, at Mehtab Bagh. What did researchers actually uncover there?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A garden with a vast pool designed for viewing the Taj and its reflection, rather than a black tomb."
+          },
+          {
+            "id": "B",
+            "textEn": "The foundations of a black marble tomb that was abandoned before completion."
+          },
+          {
+            "id": "C",
+            "textEn": "A hidden tunnel beneath the river connecting the two banks."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "彼はさらに、対岸のメータブ・バーグに「黒いタージ」が計画されていたと主張します。研究者たちがそこで実際に掘り出したものは何ですか？",
+      "optionsJa": {
+        "A": "黒い墓ではなく、タージと水に映るその姿を眺めるために造られた広い池のある庭園。",
+        "B": "完成前に放棄された、黒い大理石の墓の基礎。",
+        "C": "川の下を通って両岸を結ぶ隠れたトンネル。"
+      }
+    },
     "gt_agra_finale_builders_next": {
       "source": {
         "questionEn": "After the Taj Mahal was finished, what did many of its skilled builders do next?",
@@ -909,6 +2677,58 @@
         "A": "ペルシアへ送り返され、二度とインドに戻らなかった。",
         "B": "もう誰も彼らの技能を必要としなかったので、働くのをやめた。",
         "C": "デリーに造られる、シャー・ジャハーンの新しい都シャージャハーナーバードの建設を手伝った。"
+      }
+    },
+    "gt_agra_finale_builders_next@A2": {
+      "source": {
+        "questionEn": "Many builders of the Taj Mahal were very good at their work. What did they do after it was finished?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They went back to Persia and never came back to India."
+          },
+          {
+            "id": "B",
+            "textEn": "They stopped working. Nobody needed them anymore."
+          },
+          {
+            "id": "C",
+            "textEn": "They helped to build Shah Jahan's new capital city, Shahjahanabad, in Delhi."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "タージ・マハルを建てた人たちの多くは、仕事がとても上手でした。完成した後、彼らは何をしましたか？",
+      "optionsJa": {
+        "A": "ペルシアへ帰り、二度とインドに戻らなかった。",
+        "B": "仕事をやめた。もう誰も彼らを必要としなかった。",
+        "C": "デリーで、シャー・ジャハーンの新しい首都シャージャハーナーバードを建てるのを手伝った。"
+      }
+    },
+    "gt_agra_finale_builders_next@B2": {
+      "source": {
+        "questionEn": "Once the Taj Mahal had been completed, what became of many of the skilled craftsmen who had worked on it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They were dispatched back to Persia and never returned to India."
+          },
+          {
+            "id": "B",
+            "textEn": "They gave up their trade, as their skills were no longer in demand."
+          },
+          {
+            "id": "C",
+            "textEn": "They went on to help construct Shah Jahan's new capital, Shahjahanabad, in Delhi."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "タージ・マハルが完成してから、そこで働いた熟練の職人たちの多くはどうなりましたか？",
+      "optionsJa": {
+        "A": "ペルシアへ送り返され、二度とインドに戻らなかった。",
+        "B": "技能がもう求められなくなったので、その仕事をやめた。",
+        "C": "続いて、デリーでシャー・ジャハーンの新しい首都シャージャハーナーバードの建設を手伝った。"
       }
     },
     "gt_agra_finale_one_signature": {
@@ -937,6 +2757,58 @@
         "C": "ムムターズの墓に刻まれた、石工の親方の署名。"
       }
     },
+    "gt_agra_finale_one_signature@A2": {
+      "source": {
+        "questionEn": "One person's name is written among the words on the Taj Mahal's walls. Whose name is it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Shah Jahan's own name, above the main door."
+          },
+          {
+            "id": "B",
+            "textEn": "Amanat Khan's. He was the artist of the writing. It has the year 1638."
+          },
+          {
+            "id": "C",
+            "textEn": "The name of the leader of the stone workers, on Mumtaz's tomb."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "タージ・マハルの壁の文字の中に、ある一人の名前が書かれています。それは誰の名前ですか？",
+      "optionsJa": {
+        "A": "シャー・ジャハーン自身の名前。正面の扉の上にある。",
+        "B": "アマーナト・ハーンの名前。彼は文字を書いた芸術家だった。1638年という年が入っている。",
+        "C": "石工たちの長の名前。ムムターズの墓にある。"
+      }
+    },
+    "gt_agra_finale_one_signature@B2": {
+      "source": {
+        "questionEn": "Among all the inscriptions adorning the Taj Mahal, whose signature is to be found?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Shah Jahan's own, carved into the stone above the main entrance."
+          },
+          {
+            "id": "B",
+            "textEn": "That of the calligrapher Amanat Khan, bearing the date 1638."
+          },
+          {
+            "id": "C",
+            "textEn": "That of the master stonemason, inscribed on Mumtaz's tomb."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "タージ・マハルを飾る数々の碑文の中に、誰の署名が見つかりますか？",
+      "optionsJa": {
+        "A": "シャー・ジャハーン自身のもの。正面入口の上の石に刻まれている。",
+        "B": "書家アマーナト・ハーンのもの。1638年の日付がある。",
+        "C": "石工の親方のもの。ムムターズの墓に刻まれている。"
+      }
+    },
     "gt_agra_finale_taj_ganj": {
       "source": {
         "questionEn": "The guide's family lives in Taj Ganj, just outside the Taj's south gate. What was Taj Ganj in the plan of the Taj Mahal?",
@@ -961,6 +2833,58 @@
         "A": "一般の人々の立ち入りが禁じられた、王家の狩猟場。",
         "B": "アーグラの町よりもずっと古い農村。",
         "C": "タージの建物群の一部だった、市場と隊商宿の区域。"
+      }
+    },
+    "gt_agra_finale_taj_ganj@A2": {
+      "source": {
+        "questionEn": "The guide's family lives in Taj Ganj, just outside the south gate of the Taj. What was Taj Ganj in the plan of the Taj Mahal?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A place for the king to hunt. Ordinary people could not go in."
+          },
+          {
+            "id": "B",
+            "textEn": "A farm village. It was much older than the city of Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "A market area with rooms for travelling traders. It was part of the Taj."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ガイドの家族は、タージの南門のすぐ外のタージ・ガンジに住んでいます。タージ・マハルの計画の中で、タージ・ガンジは何でしたか？",
+      "optionsJa": {
+        "A": "王が狩りをする場所。普通の人は入れなかった。",
+        "B": "農村。アーグラの町よりずっと古かった。",
+        "C": "旅する商人のための部屋がある市場の地区。タージの一部だった。"
+      }
+    },
+    "gt_agra_finale_taj_ganj@B2": {
+      "source": {
+        "questionEn": "The guide's family lives in Taj Ganj, immediately beyond the Taj's southern gate. What role did Taj Ganj play in the original design of the Taj Mahal?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was a royal hunting reserve from which ordinary people were barred."
+          },
+          {
+            "id": "B",
+            "textEn": "It was a farming settlement that long predated the city of Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "It was a quarter of bazaars and caravanserais forming part of the Taj complex."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ガイドの家族は、タージの南門のすぐ外にあるタージ・ガンジに住んでいます。タージ・マハルの当初の設計で、タージ・ガンジはどんな役割を担っていましたか？",
+      "optionsJa": {
+        "A": "王家の狩猟地で、一般の人々は締め出されていた。",
+        "B": "アーグラの町よりはるか前からあった農村だった。",
+        "C": "タージの複合施設の一部をなす、市場と隊商宿の地区だった。"
       }
     },
     "gt_jaipur_amber_ganesh_gate": {
@@ -989,6 +2913,58 @@
         "C": "幸運のしるしである、ガネーシャ神。"
       }
     },
+    "gt_jaipur_amber_ganesh_gate@A2": {
+      "source": {
+        "questionEn": "In one painting, there is a peacock above Amber's Ganesh Pol. The other painting has a different picture. What is really painted above this gate?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A royal peacock. It is a sign of the queen's rooms."
+          },
+          {
+            "id": "B",
+            "textEn": "An elephant. It is taking the king to a battle."
+          },
+          {
+            "id": "C",
+            "textEn": "Lord Ganesha, a sign of good luck."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "一枚の絵では、アンベールのガネーシュ・ポールの上に孔雀がいます。もう一枚の絵には別の絵柄があります。この門の上に本当に描かれているのは何ですか？",
+      "optionsJa": {
+        "A": "王家の孔雀。王妃の部屋のしるし。",
+        "B": "象。王を戦いへ運んでいる。",
+        "C": "ガネーシャ神。幸運のしるし。"
+      }
+    },
+    "gt_jaipur_amber_ganesh_gate@B2": {
+      "source": {
+        "questionEn": "One painting depicts a peacock above Amber's Ganesh Pol, while the other portrays a different figure altogether. Which figure genuinely adorns this gate?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A royal peacock, emblem of the queen's apartments."
+          },
+          {
+            "id": "B",
+            "textEn": "An elephant bearing the king into battle."
+          },
+          {
+            "id": "C",
+            "textEn": "Lord Ganesha, an auspicious symbol of good fortune."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "一枚の絵はアンベールのガネーシュ・ポールの上に孔雀を描き、もう一枚はまったく別の姿を描いています。この門を本当に飾っているのはどの姿ですか？",
+      "optionsJa": {
+        "A": "王妃の居室の象徴である、王家の孔雀。",
+        "B": "王を乗せて戦いへ向かう象。",
+        "C": "幸運を表す縁起のよいしるし、ガネーシャ神。"
+      }
+    },
     "gt_jaipur_amber_mirror_hall": {
       "source": {
         "questionEn": "In the copy, the ceiling of the Sheesh Mahal is painted with gold stars. What really covers its walls and ceilings?",
@@ -1013,6 +2989,58 @@
         "A": "何千もの小さな鏡。",
         "B": "ペルシアから来た、本物の金の板。",
         "C": "宮廷の天文学者たちが描いた、夜空の絵。"
+      }
+    },
+    "gt_jaipur_amber_mirror_hall@A2": {
+      "source": {
+        "questionEn": "In the copy, the ceiling of the Sheesh Mahal has gold stars on it. What is really on its walls and ceilings?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Thousands of very small mirrors."
+          },
+          {
+            "id": "B",
+            "textEn": "Pieces of real gold from Persia."
+          },
+          {
+            "id": "C",
+            "textEn": "Pictures of the night sky by the court astronomers."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "写しでは、シーシュ・マハルの天井に金の星が描かれています。実際に壁と天井にあるのは何ですか？",
+      "optionsJa": {
+        "A": "とても小さな鏡が何千枚も。",
+        "B": "ペルシアから来た本物の金のかけら。",
+        "C": "宮廷の天文学者が描いた夜空の絵。"
+      }
+    },
+    "gt_jaipur_amber_mirror_hall@B2": {
+      "source": {
+        "questionEn": "In the copy, the ceiling of the Sheesh Mahal is decorated with gilded stars. What actually covers its walls and ceilings?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Thousands upon thousands of minute mirrors."
+          },
+          {
+            "id": "B",
+            "textEn": "Sheets of genuine Persian gold."
+          },
+          {
+            "id": "C",
+            "textEn": "Depictions of the night sky executed by court astronomers."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "写しでは、シーシュ・マハルの天井は金箔の星で飾られています。実際に壁と天井を覆っているのは何ですか？",
+      "optionsJa": {
+        "A": "何千何万というごく小さな鏡。",
+        "B": "本物のペルシアの金の板。",
+        "C": "宮廷の天文学者が制作した夜空の絵。"
       }
     },
     "gt_jaipur_amber_who_built": {
@@ -1041,6 +3069,58 @@
         "C": "イギリスが、将校たちの夏の別邸として建てた。"
       }
     },
+    "gt_jaipur_amber_who_built@A2": {
+      "source": {
+        "questionEn": "The words under the copy say, 'Built by the king who started Jaipur.' Which words are right?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Built in 1727, at the same time as the new city of Jaipur."
+          },
+          {
+            "id": "B",
+            "textEn": "Raja Man Singh I asked for it to be built in 1592, long before Jaipur began."
+          },
+          {
+            "id": "C",
+            "textEn": "Built by the British as a summer home for army officers."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "写しの下の説明には「ジャイプールを創った王が建てた」とあります。正しい説明はどれですか？",
+      "optionsJa": {
+        "A": "1727年、新しい街ジャイプールと同じ時期に建てられた。",
+        "B": "1592年、ジャイプールができるずっと前に、ラージャー・マーン・シング1世が建てるよう命じた。",
+        "C": "イギリス人が将校の夏の家として建てた。"
+      }
+    },
+    "gt_jaipur_amber_who_built@B2": {
+      "source": {
+        "questionEn": "The copy's caption reads, 'Built by the king who founded Jaipur.' Which caption would be historically accurate?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Erected in 1727, concurrently with the new city of Jaipur."
+          },
+          {
+            "id": "B",
+            "textEn": "Commissioned by Raja Man Singh I in 1592, well before Jaipur was founded."
+          },
+          {
+            "id": "C",
+            "textEn": "Constructed by the British as a summer retreat for their officers."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "写しの説明文には「ジャイプールを創設した王が建てた」とあります。史実に合った説明文はどれですか？",
+      "optionsJa": {
+        "A": "1727年、新しい街ジャイプールと同時に建てられた。",
+        "B": "ジャイプール創設よりずっと前の1592年に、ラージャー・マーン・シング1世が建造を命じた。",
+        "C": "イギリス人が将校たちの夏の保養所として建てた。"
+      }
+    },
     "gt_jaipur_hawa_crown_shape": {
       "source": {
         "questionEn": "The vegetable seller says guides always compare the pointed top of Hawa Mahal to something. What is it said to represent?",
@@ -1065,6 +3145,58 @@
         "A": "窓が小さな巣房のように見えるので、蜂の巣。",
         "B": "クリシュナ神の冠。",
         "C": "風を受ける船の帆。"
+      }
+    },
+    "gt_jaipur_hawa_crown_shape@A2": {
+      "source": {
+        "questionEn": "The vegetable seller says that guides always say the pointed top of Hawa Mahal looks like something. What is it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A beehive. The windows look like its small holes."
+          },
+          {
+            "id": "B",
+            "textEn": "The crown of Lord Krishna."
+          },
+          {
+            "id": "C",
+            "textEn": "The sail of a ship in the wind."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "野菜売りは、ガイドはいつもハワー・マハルのとがった上の部分が何かに似ていると言う、と話します。それは何ですか？",
+      "optionsJa": {
+        "A": "蜂の巣。窓がその小さな穴のように見える。",
+        "B": "クリシュナ神の冠。",
+        "C": "風を受ける船の帆。"
+      }
+    },
+    "gt_jaipur_hawa_crown_shape@B2": {
+      "source": {
+        "questionEn": "According to the vegetable vendor, guides invariably liken the tapering summit of Hawa Mahal to something. What is it reputed to represent?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A beehive, since the windows resemble tiny cells."
+          },
+          {
+            "id": "B",
+            "textEn": "The crown of Lord Krishna."
+          },
+          {
+            "id": "C",
+            "textEn": "A ship's sail billowing in the wind."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "野菜売りによれば、ガイドはきまってハワー・マハルの先細りの頂を何かにたとえます。それは何を表していると言われていますか？",
+      "optionsJa": {
+        "A": "蜂の巣。窓が小さな巣穴に似ているから。",
+        "B": "クリシュナ神の冠。",
+        "C": "風をはらんでふくらむ船の帆。"
       }
     },
     "gt_jaipur_hawa_ramps": {
@@ -1093,6 +3225,58 @@
         "C": "階段ではなく、傾斜路（スロープ）で。"
       }
     },
+    "gt_jaipur_hawa_ramps@A2": {
+      "source": {
+        "questionEn": "Inside Hawa Mahal, how do visitors go up to the higher floors?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They climb a small wooden ladder behind each window."
+          },
+          {
+            "id": "B",
+            "textEn": "They take an old lift. It was put in for the royal family."
+          },
+          {
+            "id": "C",
+            "textEn": "They walk up ramps, not stairs."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ハワー・マハルの中で、来場者はどうやって上の階へ行きますか？",
+      "optionsJa": {
+        "A": "窓の後ろにある小さな木のはしごを登る。",
+        "B": "古いエレベーターに乗る。王家のために取り付けられた。",
+        "C": "階段ではなく、スロープを歩いて上がる。"
+      }
+    },
+    "gt_jaipur_hawa_ramps@B2": {
+      "source": {
+        "questionEn": "Within Hawa Mahal, by what means do visitors ascend to the upper storeys?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Via a cramped wooden ladder concealed behind each window."
+          },
+          {
+            "id": "B",
+            "textEn": "Via a vintage lift installed for the royal household."
+          },
+          {
+            "id": "C",
+            "textEn": "Via ramps rather than staircases."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ハワー・マハルの中で、来場者はどんな手段で上の階へ上がりますか？",
+      "optionsJa": {
+        "A": "窓の後ろに隠れた狭い木のはしごで。",
+        "B": "王家のために取り付けられた年代物のエレベーターで。",
+        "C": "階段ではなくスロープで。"
+      }
+    },
     "gt_jaipur_hawa_window_count": {
       "source": {
         "questionEn": "The seller has counted the windows for forty years and always gets 951. What number is usually given for Hawa Mahal's windows?",
@@ -1117,6 +3301,58 @@
         "A": "窓は953ある。",
         "B": "窓は365ある。一年の一日に一つずつ。",
         "C": "窓は108ある。数珠の玉のように。"
+      }
+    },
+    "gt_jaipur_hawa_window_count@A2": {
+      "source": {
+        "questionEn": "The seller has counted the windows for forty years. He always gets 951. What number do most people give for Hawa Mahal's windows?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "There are 953 windows."
+          },
+          {
+            "id": "B",
+            "textEn": "There are 365, one for each day of the year."
+          },
+          {
+            "id": "C",
+            "textEn": "There are 108, like the number of beads for prayer."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "野菜売りは40年間窓を数えていて、いつも951になります。ハワー・マハルの窓の数として、ほとんどの人は何と言いますか？",
+      "optionsJa": {
+        "A": "953の窓がある。",
+        "B": "365。1年の1日に1つずつ。",
+        "C": "108。祈りに使う数珠の玉の数と同じ。"
+      }
+    },
+    "gt_jaipur_hawa_window_count@B2": {
+      "source": {
+        "questionEn": "For four decades the vendor has tallied the windows and always arrives at 951. What figure is generally quoted for the windows of Hawa Mahal?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "There are 953."
+          },
+          {
+            "id": "B",
+            "textEn": "There are 365, one for every day of the year."
+          },
+          {
+            "id": "C",
+            "textEn": "There are 108, mirroring a string of prayer beads."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "40年間、野菜売りは窓を数え、いつも951にたどり着きます。ハワー・マハルの窓の数として一般に挙げられる数字は何ですか？",
+      "optionsJa": {
+        "A": "953ある。",
+        "B": "365。1年の毎日に1つずつ。",
+        "C": "108。数珠一連の玉の数をなぞっている。"
       }
     },
     "gt_jaipur_palace_silver_water_jars": {
@@ -1145,6 +3381,58 @@
         "C": "宮殿へイギリスの紅茶を持ち帰るため。"
       }
     },
+    "gt_jaipur_palace_silver_water_jars@A2": {
+      "source": {
+        "questionEn": "The mother points to the very big silver jars. Why did a Maharaja of Jaipur take jars like these to England?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To take water from the Ganges with him to the crowning of King Edward VII."
+          },
+          {
+            "id": "B",
+            "textEn": "To give them to the British king as a wedding present."
+          },
+          {
+            "id": "C",
+            "textEn": "To bring English tea back to the palace."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "お母さんがとても大きな銀の壺を指さします。ジャイプールのマハーラージャは、なぜこのような壺をイギリスへ持っていったのですか？",
+      "optionsJa": {
+        "A": "エドワード7世の戴冠式へ、ガンジス川の水を持っていくため。",
+        "B": "イギリスの王に結婚の贈り物として渡すため。",
+        "C": "イギリスの紅茶を宮殿に持ち帰るため。"
+      }
+    },
+    "gt_jaipur_palace_silver_water_jars@B2": {
+      "source": {
+        "questionEn": "Gesturing at the enormous silver urns, the mother asks why a Maharaja of Jaipur took vessels like these all the way to England. What was the reason?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To transport Ganges water for his journey to attend King Edward VII's coronation."
+          },
+          {
+            "id": "B",
+            "textEn": "To present them to the British monarch as a wedding gift."
+          },
+          {
+            "id": "C",
+            "textEn": "To ship English tea back to the palace."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "巨大な銀の壺を指して、お母さんは、ジャイプールのマハーラージャがなぜこのような容器をはるばるイギリスまで持っていったのかと尋ねます。その理由は何ですか？",
+      "optionsJa": {
+        "A": "エドワード7世の戴冠式に出席する旅のために、ガンジス川の水を運ぶため。",
+        "B": "イギリスの君主に結婚祝いとして贈るため。",
+        "C": "イギリスの紅茶を宮殿へ船で持ち帰るため。"
+      }
+    },
     "gt_jaipur_palace_four_season_gates": {
       "source": {
         "questionEn": "In one courtyard of the City Palace there are four decorated gates. What do they stand for?",
@@ -1169,6 +3457,58 @@
         "A": "それらを建てた王の、四人の妃。",
         "B": "四つの季節。それぞれにヒンドゥーの神が結びついている。",
         "C": "ジャイプールと交易した四つの国。"
+      }
+    },
+    "gt_jaipur_palace_four_season_gates@A2": {
+      "source": {
+        "questionEn": "In one courtyard of the City Palace, there are four beautiful gates. What does each gate show?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "One of the four wives of the king who built them."
+          },
+          {
+            "id": "B",
+            "textEn": "One of the four seasons, with a Hindu god."
+          },
+          {
+            "id": "C",
+            "textEn": "One of the four countries that bought and sold things with Jaipur."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "シティ・パレスのある中庭には、美しい門が4つあります。それぞれの門は何を表していますか？",
+      "optionsJa": {
+        "A": "門を建てた王の4人の妻の一人。",
+        "B": "四季の一つと、ヒンドゥーの神。",
+        "C": "ジャイプールと売り買いをした4つの国の一つ。"
+      }
+    },
+    "gt_jaipur_palace_four_season_gates@B2": {
+      "source": {
+        "questionEn": "One of the City Palace's courtyards contains four ornate gateways. What do they symbolise?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The four wives of the king who had them built."
+          },
+          {
+            "id": "B",
+            "textEn": "The four seasons, each associated with a Hindu deity."
+          },
+          {
+            "id": "C",
+            "textEn": "The four nations with which Jaipur conducted trade."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "シティ・パレスのある中庭には、装飾の凝った門が4つあります。それらは何を象徴していますか？",
+      "optionsJa": {
+        "A": "それらを建てさせた王の4人の妻。",
+        "B": "四季。それぞれヒンドゥーの神と結びついている。",
+        "C": "ジャイプールが交易を行った4つの国。"
       }
     },
     "gt_jaipur_palace_still_home": {
@@ -1197,6 +3537,58 @@
         "C": "いいえ。一部は今も、現在の王家の住まいになっている。"
       }
     },
+    "gt_jaipur_palace_still_home@A2": {
+      "source": {
+        "questionEn": "Is the City Palace only a museum now?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Yes. The British made the whole palace into a museum in 1900."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. Nobody has lived there since Jaipur began."
+          },
+          {
+            "id": "C",
+            "textEn": "No. The royal family of today still lives in part of it."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "シティ・パレスは今、博物館なだけですか？",
+      "optionsJa": {
+        "A": "はい。1900年にイギリス人が宮殿全体を博物館にした。",
+        "B": "はい。ジャイプールができてから誰も住んでいない。",
+        "C": "いいえ。今の王家が今もその一部に住んでいる。"
+      }
+    },
+    "gt_jaipur_palace_still_home@B2": {
+      "source": {
+        "questionEn": "Does the City Palace function solely as a museum nowadays?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Yes. The British converted the entire palace into a museum in 1900."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. It has stood empty ever since Jaipur was founded."
+          },
+          {
+            "id": "C",
+            "textEn": "No. A portion of it remains the residence of the present-day royal family."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "シティ・パレスは、今日では博物館としてだけ使われているのですか？",
+      "optionsJa": {
+        "A": "はい。1900年にイギリス人が宮殿全体を博物館に作り変えた。",
+        "B": "はい。ジャイプール創設以来、ずっと空き家のままだ。",
+        "C": "いいえ。その一部は、今も現在の王家の住まいである。"
+      }
+    },
     "gt_jaipur_jantar_local_time": {
       "source": {
         "questionEn": "What time does the shadow on the giant sundial, the Samrat Yantra, show?",
@@ -1221,6 +3613,58 @@
         "A": "携帯電話と同じ、インド標準時。",
         "B": "ジャイプールの上空の太陽の位置で決まる、地方時。",
         "C": "昔のイギリス人役人のための、ロンドンの時刻。"
+      }
+    },
+    "gt_jaipur_jantar_local_time@A2": {
+      "source": {
+        "questionEn": "What time does the shadow on the very big sundial, the Samrat Yantra, show?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Indian Standard Time, the same time as on a mobile phone."
+          },
+          {
+            "id": "B",
+            "textEn": "The local time. It comes from where the sun is over Jaipur."
+          },
+          {
+            "id": "C",
+            "textEn": "London time, for the British officials long ago."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "とても大きな日時計サムラート・ヤントラの影は、何時を示しますか？",
+      "optionsJa": {
+        "A": "インド標準時。携帯電話と同じ時刻。",
+        "B": "地方時。ジャイプールの上の太陽の位置から決まる。",
+        "C": "ロンドン時間。昔のイギリスの役人のため。"
+      }
+    },
+    "gt_jaipur_jantar_local_time@B2": {
+      "source": {
+        "questionEn": "Which time is indicated by the shadow cast on the giant sundial known as the Samrat Yantra?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Indian Standard Time, identical to that displayed on a mobile phone."
+          },
+          {
+            "id": "B",
+            "textEn": "Local solar time, determined by the sun's position above Jaipur."
+          },
+          {
+            "id": "C",
+            "textEn": "London time, for the benefit of British officials in former times."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "サムラート・ヤントラとして知られる巨大な日時計に落ちる影は、どの時刻を示していますか？",
+      "optionsJa": {
+        "A": "インド標準時。携帯電話に表示される時刻と同じ。",
+        "B": "地方太陽時。ジャイプールの上の太陽の位置で決まる。",
+        "C": "ロンドン時間。かつてのイギリスの役人のため。"
       }
     },
     "gt_jaipur_jantar_two_seconds": {
@@ -1249,6 +3693,58 @@
         "C": "午前か午後かが分かるだけ。"
       }
     },
+    "gt_jaipur_jantar_two_seconds@A2": {
+      "source": {
+        "questionEn": "How exact is the time on Jaipur's Samrat Yantra?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To about two seconds."
+          },
+          {
+            "id": "B",
+            "textEn": "Only to the nearest hour."
+          },
+          {
+            "id": "C",
+            "textEn": "It only tells you if it is morning or afternoon."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ジャイプールのサムラート・ヤントラの時刻は、どれくらい正確ですか？",
+      "optionsJa": {
+        "A": "約2秒まで。",
+        "B": "いちばん近い1時間単位までだけ。",
+        "C": "午前か午後かが分かるだけ。"
+      }
+    },
+    "gt_jaipur_jantar_two_seconds@B2": {
+      "source": {
+        "questionEn": "To what degree of precision can Jaipur's Samrat Yantra measure time?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To within roughly two seconds."
+          },
+          {
+            "id": "B",
+            "textEn": "Merely to the nearest hour."
+          },
+          {
+            "id": "C",
+            "textEn": "Only well enough to distinguish morning from afternoon."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ジャイプールのサムラート・ヤントラは、どの程度の精度で時刻を測れますか？",
+      "optionsJa": {
+        "A": "およそ2秒以内まで。",
+        "B": "1時間単位にすぎない。",
+        "C": "午前と午後を見分けられる程度だけ。"
+      }
+    },
     "gt_jaipur_jantar_time_correction": {
       "source": {
         "questionEn": "At twelve o'clock by Divya's phone, the shadow has not reached the noon line. Why?",
@@ -1273,6 +3769,58 @@
         "A": "日時計は1900年代の初めから壊れているから。",
         "B": "影は、月が出ているときにしか正しく動かないから。",
         "C": "標準時を得るには、経度の差と、一年の中の時期による違いを補正しなければならないから。"
+      }
+    },
+    "gt_jaipur_jantar_time_correction@A2": {
+      "source": {
+        "questionEn": "It is twelve o'clock on Divya's phone, but the shadow is not at the noon line yet. Why?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The sundial has been broken since the early 1900s."
+          },
+          {
+            "id": "B",
+            "textEn": "The shadow only moves the right way when the moon is in the sky."
+          },
+          {
+            "id": "C",
+            "textEn": "You must change the sundial's time to get the phone's time. The change depends on where Jaipur is and on the time of year."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ディヴィヤの携帯では12時なのに、影はまだ正午の線に届いていません。なぜですか？",
+      "optionsJa": {
+        "A": "日時計は1900年代の初めから壊れている。",
+        "B": "影は月が空にあるときだけ正しく動く。",
+        "C": "携帯の時刻にするには、日時計の時刻を変えなければならない。その差は、ジャイプールの位置と季節による。"
+      }
+    },
+    "gt_jaipur_jantar_time_correction@B2": {
+      "source": {
+        "questionEn": "Divya's phone reads twelve o'clock, yet the shadow has still not reached the noon line. How can this be explained?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The sundial has been out of order since the early twentieth century."
+          },
+          {
+            "id": "B",
+            "textEn": "The shadow only behaves correctly while the moon is visible."
+          },
+          {
+            "id": "C",
+            "textEn": "Converting to standard time requires an adjustment for longitude and for the time of year."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ディヴィヤの携帯は12時を示しているのに、影はまだ正午の線に届いていません。どう説明できますか？",
+      "optionsJa": {
+        "A": "日時計は20世紀初めから故障している。",
+        "B": "影は月が見えている間だけ正しく動く。",
+        "C": "標準時に換算するには、経度と季節の分の補正が必要だ。"
       }
     },
     "gt_jaipur_finale_pink_city": {
@@ -1301,6 +3849,58 @@
         "C": "1950年代に、塗料会社が町に塗料を無料で配ったから。"
       }
     },
+    "gt_jaipur_finale_pink_city@A2": {
+      "source": {
+        "questionEn": "The bride's cousin stands in the door and asks, 'Why is our old city pink?' What is the best answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "You can find pink stone only in the hills near Jaipur."
+          },
+          {
+            "id": "B",
+            "textEn": "Many people say the king painted the city pink for a royal visit in 1876. Pink is a colour of welcome."
+          },
+          {
+            "id": "C",
+            "textEn": "A paint company gave the city free paint in the 1950s."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "花嫁のいとこが戸口に立って尋ねます。「どうして私たちの旧市街はピンクなの？」いちばんよい答えはどれですか？",
+      "optionsJa": {
+        "A": "ピンクの石はジャイプールの近くの丘でしか見つからない。",
+        "B": "1876年の王族の訪問のために、王が街をピンクに塗ったと多くの人が言う。ピンクは歓迎の色だ。",
+        "C": "1950年代に、ペンキ会社が街にただでペンキをくれた。"
+      }
+    },
+    "gt_jaipur_finale_pink_city@B2": {
+      "source": {
+        "questionEn": "Barring the doorway, the bride's cousin demands, 'Why is our old city pink?' What is the most fitting reply?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Pink stone occurs exclusively in the hills surrounding Jaipur."
+          },
+          {
+            "id": "B",
+            "textEn": "It is commonly held that the king had the city painted pink, a colour symbolising hospitality, for a royal visit in 1876."
+          },
+          {
+            "id": "C",
+            "textEn": "A paint manufacturer donated paint to the city free of charge in the 1950s."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "戸口をふさいで、花嫁のいとこが問いただします。「どうして私たちの旧市街はピンクなの？」いちばんふさわしい答えはどれですか？",
+      "optionsJa": {
+        "A": "ピンクの石は、ジャイプールを囲む丘でしか産出しない。",
+        "B": "1876年の王族の訪問のため、王がもてなしを象徴する色であるピンクに街を塗らせたと、一般に言われている。",
+        "C": "1950年代に、塗料の会社が街に無料で塗料を寄付した。"
+      }
+    },
     "gt_jaipur_finale_sawai_title": {
       "source": {
         "questionEn": "The kings of Jaipur used the title 'Sawai'. What does it mean?",
@@ -1325,6 +3925,58 @@
         "A": "一と四分の一。",
         "B": "太陽の子。",
         "C": "ピンクの町の守り手。"
+      }
+    },
+    "gt_jaipur_finale_sawai_title@A2": {
+      "source": {
+        "questionEn": "The kings of Jaipur used the special name 'Sawai'. What does it mean?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "One and a quarter."
+          },
+          {
+            "id": "B",
+            "textEn": "Son of the sun."
+          },
+          {
+            "id": "C",
+            "textEn": "The one who keeps the pink city safe."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ジャイプールの王たちは「サワーイー」という特別な名前を使いました。どういう意味ですか？",
+      "optionsJa": {
+        "A": "1と4分の1。",
+        "B": "太陽の息子。",
+        "C": "ピンクの街を守る人。"
+      }
+    },
+    "gt_jaipur_finale_sawai_title@B2": {
+      "source": {
+        "questionEn": "Jaipur's rulers bore the honorific 'Sawai'. What does it signify?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "One and a quarter."
+          },
+          {
+            "id": "B",
+            "textEn": "Offspring of the sun."
+          },
+          {
+            "id": "C",
+            "textEn": "Guardian of the pink city."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ジャイプールの支配者たちは「サワーイー」という敬称を持っていました。それは何を意味しますか？",
+      "optionsJa": {
+        "A": "1と4分の1。",
+        "B": "太陽の子孫。",
+        "C": "ピンクの街の守護者。"
       }
     },
     "gt_jaipur_finale_city_planner": {
@@ -1353,6 +4005,58 @@
         "C": "インドの古い建築の手引書シルパ・シャーストラに従った、ヴィディヤーダル・バッターチャーリヤ。"
       }
     },
+    "gt_jaipur_finale_city_planner@A2": {
+      "source": {
+        "questionEn": "Who gets most of the thanks for planning Jaipur? And how did he plan the city?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A British engineer. He copied the streets of London."
+          },
+          {
+            "id": "B",
+            "textEn": "The king's astrologer. He chose each street only by looking at the stars."
+          },
+          {
+            "id": "C",
+            "textEn": "Vidyadhar Bhattacharya. He followed the Shilpa Shastra, an old Indian book about building."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ジャイプールの都市計画でいちばん感謝されているのは誰ですか？また、彼はどのように街を計画しましたか？",
+      "optionsJa": {
+        "A": "イギリス人の技師。ロンドンの通りをまねた。",
+        "B": "王の占星術師。星だけを見て一本一本の通りを決めた。",
+        "C": "ヴィディヤーダル・バッターチャーリヤ。インドの古い建築の本『シルパ・シャーストラ』に従った。"
+      }
+    },
+    "gt_jaipur_finale_city_planner@B2": {
+      "source": {
+        "questionEn": "To whom is much of the credit for Jaipur's planning attributed, and on what principles was the city laid out?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A British engineer, who modelled its streets on those of London."
+          },
+          {
+            "id": "B",
+            "textEn": "The royal astrologer, who determined each street purely by the stars."
+          },
+          {
+            "id": "C",
+            "textEn": "Vidyadhar Bhattacharya, who drew on the Shilpa Shastra, a traditional Indian treatise on architecture."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ジャイプールの都市計画の功績の多くは誰のものとされていますか？また、街はどんな原理で区画されましたか？",
+      "optionsJa": {
+        "A": "イギリス人の技師。通りをロンドンの通りに倣って作った。",
+        "B": "王室の占星術師。星だけを頼りに一本一本の通りを決めた。",
+        "C": "ヴィディヤーダル・バッターチャーリヤ。インドの伝統的な建築の論書『シルパ・シャーストラ』に拠った。"
+      }
+    },
     "gt_jaipur_finale_gangaur": {
       "source": {
         "questionEn": "Every spring, a women's festival procession leaves the women's quarters of the City Palace and passes through these streets. Which festival is it?",
@@ -1379,6 +4083,58 @@
         "C": "光の祭り、ディーワーリー。"
       }
     },
+    "gt_jaipur_finale_gangaur@A2": {
+      "source": {
+        "questionEn": "Every spring there is a women's festival. Its parade leaves the women's part of the City Palace and goes through these streets. Which festival is it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Holi, the festival of colours."
+          },
+          {
+            "id": "B",
+            "textEn": "Gangaur. It is for the goddess Gauri."
+          },
+          {
+            "id": "C",
+            "textEn": "Diwali, the festival of lights."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "毎年春に、女性たちの祭りがあります。その行列はシティ・パレスの女性の区画を出て、この通りを進みます。何の祭りですか？",
+      "optionsJa": {
+        "A": "ホーリー。色の祭り。",
+        "B": "ガンガウル。女神ガウリーのための祭り。",
+        "C": "ディーワーリー。光の祭り。"
+      }
+    },
+    "gt_jaipur_finale_gangaur@B2": {
+      "source": {
+        "questionEn": "Each spring, a women's festival procession emerges from the women's quarters of the City Palace and winds its way through these streets. Which festival does it belong to?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Holi, the festival of colours."
+          },
+          {
+            "id": "B",
+            "textEn": "Gangaur, held in honour of the goddess Gauri."
+          },
+          {
+            "id": "C",
+            "textEn": "Diwali, the festival of lights."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "毎年春、女性の祭りの行列がシティ・パレスの女性の居住区から現れ、この通りを縫うように進みます。それは何の祭りの行列ですか？",
+      "optionsJa": {
+        "A": "ホーリー。色の祭り。",
+        "B": "ガンガウル。女神ガウリーをたたえて行われる。",
+        "C": "ディーワーリー。光の祭り。"
+      }
+    },
     "gt_jaipur_finale_screened_windows": {
       "source": {
         "questionEn": "The bride's grandmother asks why the screened windows of Hawa Mahal were built. What is the answer?",
@@ -1403,6 +4159,58 @@
         "A": "王家の女性たちが、見られることなく通りや市場を眺められるように。",
         "B": "衛兵が、通りの敵に矢を射られるように。",
         "C": "王が、下の市場の買い物客を数えられるように。"
+      }
+    },
+    "gt_jaipur_finale_screened_windows@A2": {
+      "source": {
+        "questionEn": "The bride's grandmother asks why they built the windows of Hawa Mahal with stone screens. What is the answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "So the royal women could watch the street and the market, and nobody could see them."
+          },
+          {
+            "id": "B",
+            "textEn": "So the guards could shoot arrows at enemies in the street."
+          },
+          {
+            "id": "C",
+            "textEn": "So the king could count the people shopping in the market."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "花嫁のおばあさんが、ハワー・マハルの窓はなぜ石の格子で作られたのかと尋ねます。答えは何ですか？",
+      "optionsJa": {
+        "A": "王家の女性たちが、誰にも見られずに通りと市場を眺められるように。",
+        "B": "衛兵が通りの敵に矢を射られるように。",
+        "C": "王が市場で買い物をする人の数を数えられるように。"
+      }
+    },
+    "gt_jaipur_finale_screened_windows@B2": {
+      "source": {
+        "questionEn": "The bride's grandmother enquires what the latticed windows of Hawa Mahal were designed for. What is the answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To enable royal women to observe the street and the bazaar while remaining unseen."
+          },
+          {
+            "id": "B",
+            "textEn": "To allow guards to fire arrows down at enemies in the street."
+          },
+          {
+            "id": "C",
+            "textEn": "To let the king keep a tally of the shoppers in the bazaar beneath."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "花嫁のおばあさんは、ハワー・マハルの格子窓が何のために作られたのかを尋ねます。答えは何ですか？",
+      "optionsJa": {
+        "A": "王家の女性たちが、人目に触れないまま通りや市場を見られるようにするため。",
+        "B": "衛兵が通りの敵に向かって矢を射下ろせるようにするため。",
+        "C": "王が下の市場の買い物客を数えておけるようにするため。"
       }
     }
   }

@@ -57,7 +57,91 @@
           "claimJa": "ニューデリー駅で「列車は運休、上の階で取り直しを」と声をかけ、近くの路地の私設の旅行会社へ連れて行く手口がある。列車は普通に走っている（旅行ガイドの記述）。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The young man says the tourist ticket office in the station is closed for repairs. He says there is another office across the road. Everything he says leads to one action. What is it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Going into the station to look at the board."
+            },
+            {
+              "id": "B",
+              "textEn": "Walking away from the station with him."
+            },
+            {
+              "id": "C",
+              "textEn": "Calling the railway helpline about the train."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "repairs",
+              "meaning": "修理、工事"
+            },
+            {
+              "word": "across the road",
+              "meaning": "道の向こうに"
+            },
+            {
+              "word": "leads to",
+              "meaning": "〜につながる"
+            },
+            {
+              "word": "action",
+              "meaning": "行動"
+            },
+            {
+              "word": "helpline",
+              "meaning": "相談電話"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The young man insists that the tourist ticket office inside the station is shut for repairs and that a temporary office has been set up across the road. Every detail of his story steers you towards a single course of action. Which one?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Entering the station to consult the departure board."
+            },
+            {
+              "id": "B",
+              "textEn": "Leaving the station on foot in his company."
+            },
+            {
+              "id": "C",
+              "textEn": "Ringing the railway helpline to enquire about the train."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "temporary",
+              "meaning": "臨時の"
+            },
+            {
+              "word": "steers",
+              "meaning": "導く"
+            },
+            {
+              "word": "course of action",
+              "meaning": "行動の方針"
+            },
+            {
+              "word": "consult",
+              "meaning": "調べる"
+            },
+            {
+              "word": "in his company",
+              "meaning": "彼と一緒に"
+            },
+            {
+              "word": "enquire",
+              "meaning": "問い合わせる"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_station_who_announces",
@@ -120,7 +204,87 @@
           "claimJa": "ニューデリー駅の待合区画には、構内放送の設備（PAS）と電子の列車案内板などがある（2026年3月、ラージヤ・サバーでの鉄道相の答弁）。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "For thirty years, Dubey made the announcements at the station. He tells you how a station tells passengers about a cancelled train. How does it do it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Workers wait outside the station and tell each passenger."
+            },
+            {
+              "id": "B",
+              "textEn": "A travel office across the road has a list of cancelled trains."
+            },
+            {
+              "id": "C",
+              "textEn": "It makes announcements and changes the train information boards."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "announcements",
+              "meaning": "放送、お知らせ"
+            },
+            {
+              "word": "passengers",
+              "meaning": "乗客"
+            },
+            {
+              "word": "cancelled",
+              "meaning": "運休になった"
+            },
+            {
+              "word": "boards",
+              "meaning": "案内板、掲示板"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Dubey spent three decades making announcements at the station. According to him, how are passengers informed when a train has been cancelled?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Staff are stationed outside the building to inform passengers one by one."
+            },
+            {
+              "id": "B",
+              "textEn": "A travel agency across the road maintains a record of cancelled services."
+            },
+            {
+              "id": "C",
+              "textEn": "The station broadcasts announcements and updates its train information boards."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "decades",
+              "meaning": "10年間"
+            },
+            {
+              "word": "informed",
+              "meaning": "知らされる"
+            },
+            {
+              "word": "stationed",
+              "meaning": "配置された"
+            },
+            {
+              "word": "maintains",
+              "meaning": "保っている"
+            },
+            {
+              "word": "services",
+              "meaning": "（列車の）便"
+            },
+            {
+              "word": "broadcasts",
+              "meaning": "放送する"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_station_auto_refund",
@@ -183,7 +347,91 @@
           "claimJa": "ニューデリー駅では、客引きが上の階の外国人向け窓口へ行かせないよう、窓口は改装中で閉まっている、道の向かいに移った、などと言う（旅行ガイドの記述）。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The young man says you will not get your money back if you do not go to his office across the road. If your train is really cancelled and you have an e-ticket, what happens to your money?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The railway gives you the money back. You do not have to do anything."
+            },
+            {
+              "id": "B",
+              "textEn": "You lose the money if you do not book again today."
+            },
+            {
+              "id": "C",
+              "textEn": "Only an office across the road can give the money back."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "money back",
+              "meaning": "払い戻し"
+            },
+            {
+              "word": "e-ticket",
+              "meaning": "電子切符（e切符）"
+            },
+            {
+              "word": "railway",
+              "meaning": "鉄道"
+            },
+            {
+              "word": "book",
+              "meaning": "予約する"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The young man warns that you will forfeit your money unless you visit the temporary office across the road. If your train genuinely has been cancelled and you hold an e-ticket, what becomes of the fare?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The railway refunds it automatically, with no action required on your part."
+            },
+            {
+              "id": "B",
+              "textEn": "It is forfeited unless you rebook on another train today."
+            },
+            {
+              "id": "C",
+              "textEn": "It can be recovered only through an office across the road."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "forfeit",
+              "meaning": "失う、没収される"
+            },
+            {
+              "word": "genuinely",
+              "meaning": "本当に"
+            },
+            {
+              "word": "fare",
+              "meaning": "運賃"
+            },
+            {
+              "word": "refunds",
+              "meaning": "払い戻す"
+            },
+            {
+              "word": "on your part",
+              "meaning": "あなたの側で"
+            },
+            {
+              "word": "rebook",
+              "meaning": "予約し直す"
+            },
+            {
+              "word": "recovered",
+              "meaning": "取り戻される"
+            }
+          ]
+        }
+      }
     }
   ]
 }
