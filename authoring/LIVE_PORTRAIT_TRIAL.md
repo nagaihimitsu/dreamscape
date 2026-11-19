@@ -70,9 +70,9 @@
 閉じ目を塗って直すと前髪が消えるため、ユーザーが元の絵柄で描き足しました：[`mesh_avatar/blink-mouth-sheet.png`](characters/heroine/default_01/mesh_avatar/blink-mouth-sheet.png)（通常・まばたき（閉じ）・まばたき（半目）・あ・う・お の6コマ、胸から上）。
 
 - 各コマを `neutral.png` に位置合わせ（[`register-sheet.py`](characters/heroine/default_01/mesh_avatar/register-sheet.py)：SIFT の対応点から相似変換。6コマとも縮尺約0.65、回転0.5度以内）し、通常のコマで肌の色を合わせてから、閉じ目・半目・口の「あ」「お」をマスクの内側だけ差分にしました（[`sheet-to-variants.py`](characters/heroine/default_01/mesh_avatar/sheet-to-variants.py)）。`build-sprites.py` の検査は通ります。
-- 「う」は使っていません（mesh-avatar は「お」を横に細めて「う」にする）。口の「い」「半開きのあ」は画像生成の絵のままです。
+- 話す口はすべてこの絵の「あ」「う」「お」にしました（同日、ユーザーの頼み）。母音の「う」は描いた「う」（`mouth_u`。build-sprites.py が知らないので [`cut-mouth-u.py`](characters/heroine/default_01/mesh_avatar/cut-mouth-u.py) で「お」の範囲から切り出す）、「い」「え」「半開きのあ」は「あ」を縦につぶして少し横に広げて使います（部品の改造に `MOUTH_FALLBACKS` を追加）。画像生成の「い」「半開きのあ」は使いません（`variants/` から外す）。
 - 結果：閉じ目のまわりの帯が消え、前髪も残りました。表情ごとの閉じ目（頬の赤みを掛けたもの）もこの閉じ目から作り直しています。
-- 作り直す順：`sheet-to-variants.py` → `build-sprites.py`（顔の差分も消える）→ `cut-faces.py` → `cut-closed-eyes.py`。
+- 作り直す順：`sheet-to-variants.py`（`mouth_u` は `work/mouth_u_full.png` に移す）→ `build-sprites.py`（顔の差分も消える）→ `cut-mouth-u.py` → `cut-faces.py` → `cut-closed-eyes.py`。
 
 ## 作り直すときの手順
 
