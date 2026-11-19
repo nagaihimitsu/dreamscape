@@ -71,9 +71,8 @@ type MenuActions = {
   onLoad: () => void;
   /** 「セーブの枠」: the journey's save slots (SaveSlots.tsx); absent in Debug, which plays isolated storage. */
   onSaveSlots?: () => void;
+  /** 「旅の記録」: the journey's 体験 and 写真, city by city (TravelLog.tsx; 2026-11-19, アルバム made one with it). */
   onRecords: () => void;
-  /** 「アルバム」: the photos the journey's lines took (AlbumDialog). */
-  onAlbum: () => void;
   /** 「旅の図鑑」: the terms the journey's lines named (GlossaryDialog); only for a journey that has terms. */
   onGlossary?: () => void;
   onEnglish: () => void;
@@ -93,7 +92,7 @@ const noop = () => undefined;
  * pressed, side by side at its right end (user decision 2026-11-11): the held
  * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
  * 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」 until 2026-11-14) with
- * セーブ・ロード・旅の記録・アルバム・旅の図鑑・英語ノート・(free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定.
+ * セーブ・ロード・旅の記録・旅の図鑑・英語ノート・(free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定.
  * Over a story scene
  * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
@@ -297,7 +296,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
 /**
  * ≡メニュー (U2, U24; 「設定」 with a gear until 2026-11-14, renamed as it is the game's main menu): a disclosure button
  * with its small panel of セーブ, ロード (and, while saving is automatic, a line saying when it last saved), セーブの枠,
- * 旅の記録, アルバム, 旅の図鑑 (a journey with terms), 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
+ * 旅の記録, 旅の図鑑 (a journey with terms), 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
  * scene's photo) and ゲームの設定 (U28) right under the header (APG Disclosure,
  * not an ARIA menu: ordinary buttons, and Tab works as everywhere else). Opening
  * moves the focus to セーブ (ArrowUp/ArrowDown also move between the items); Esc closes and
@@ -309,15 +308,15 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * that take no press for a moment (or a load holds taps), and セーブ, which opens
  * none, holds the page's taps for that moment itself (holdTaps), so the second
  * tap of a double tap presses nothing that lay under it (over a story scene, its
- * picture, where a tap reads on). 旅の記録, 英語ノート and the credits open their
+ * picture, where a tap reads on). 英語ノート and the credits open their
  * dialogs at once, as their own buttons did (the second tap lands inside the dialog);
- * アルバム's and 旅の図鑑's dialogs take no press for that moment, as their cards open larger on a tap.
+ * 旅の記録's and 旅の図鑑's dialogs take no press for that moment, as their photos and cards open larger on a tap.
  * Its marks (2026-11-13 user decision): while 英語ノート has an entry the player has not
  * opened it on (`englishNew`), a dot on ≡メニュー and on 「英語ノート」, said in their names;
  * likewise for 旅の図鑑's terms (`glossaryNew`) on ≡メニュー and 「旅の図鑑」;
  * a manual save that succeeded drops a small ribbon onto ≡メニュー, which fades.
  */
-function HudMenu({ onSave, autoSave, onLoad, onSaveSlots, onRecords, onAlbum, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
+function HudMenu({ onSave, autoSave, onLoad, onSaveSlots, onRecords, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
   glossaryNew }: MenuActions & { englishNew: boolean; glossaryNew: boolean }) {
   const newIn = [englishNew && "英語ノート", glossaryNew && "旅の図鑑"].filter(Boolean).join("と");
   const [open, setOpen] = useState(false);
@@ -413,7 +412,6 @@ function HudMenu({ onSave, autoSave, onLoad, onSaveSlots, onRecords, onAlbum, on
         {autoSave && <p className="hud-menu-note">{autoSaveLine(autoSave.savedAt, openedAt)}</p>}
         {onSaveSlots && <button type="button" onClick={choose(onSaveSlots)}><Icon name="load" />セーブの枠</button>}
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
-        <button type="button" onClick={choose(onAlbum)}><Icon name="camera" />アルバム</button>
         {onGlossary && <button type="button" onClick={choose(onGlossary)}><Icon name="lens" />旅の図鑑{glossaryNew && <NewDot label="新しい言葉あり" />}</button>}
         <button type="button" onClick={choose(onEnglish)}><Icon name="book" />英語ノート{englishNew && <NewDot label="新しい項目あり" />}</button>
         {onPhotoCredits && <button type="button" onClick={choose(onPhotoCredits)}><Icon name="credit" />写真の出典</button>}

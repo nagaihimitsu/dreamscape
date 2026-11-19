@@ -15,11 +15,11 @@ export const FIRST_ALBUM_PHOTO_NOTICE_MS = 6000;
 export type AlbumPhotoNoticeState = { id: number; photo: AlbumPhoto; first: boolean; fromLarge?: boolean };
 
 /** Where the album is, said once, with the journey's first photo. */
-export const ALBUM_PLACE_HINT_JA = "メニューの「アルバム」で見られます";
+export const ALBUM_PLACE_HINT_JA = "メニューの「旅の記録」の「写真」で見られます";
 
 /**
  * 「写真の札」 (2026-11-12 user decision): a small card right under the header when a line's `# photo:` has just put a
- * photo in the album (GameApp: photoTaken on an action): the picture's small copy in a white frame, 「アルバムに入れました」
+ * photo in the album (GameApp: photoTaken on an action): the picture's small copy in a white frame, 「写真に残しました」
  * and its caption, and with the journey's first photo where the album is. It takes no taps and no focus (a tap on it
  * reaches the scene below), comes in, stays a few seconds and goes up toward ≡メニュー (album-photo-notice.css; still under
  * reduced motion and 「演出を短縮する」). Its status region stays mounted through the story scene (GameApp), so screen
@@ -35,7 +35,7 @@ export function AlbumPhotoNotice({ notice }: { notice: AlbumPhotoNoticeState | n
           style={{ "--album-notice-ms": `${duration}ms` } as CSSProperties}>
           {image && <img className="album-photo-notice-picture" src={`${import.meta.env.BASE_URL}${image.path}`} alt="" decoding="async" />}
           <p className="album-photo-notice-text">
-            <span className="album-photo-notice-label">アルバムに入れました</span>
+            <span className="album-photo-notice-label">写真に残しました</span>
             <span className="sr-only">：</span>
             <span className="album-photo-notice-caption">{notice.photo.caption ?? ALBUM_IMAGE_ALT_JA}</span>
             {notice.first && <span className="album-photo-notice-hint">{ALBUM_PLACE_HINT_JA}</span>}

@@ -1,0 +1,83 @@
+// 旅の記録 (2026-11-19 user decision: 旅の記録 and アルバム made one; travel-log.ts): a page per city with its two axes,
+// 「体験」 (each thing lived there with its picture and her few words looking back) and 「写真」 (the album's photos).
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
+import { episodes, getCityContent } from "../../content";
+import { cityStart, finishEpisode, startDateScene, withAp } from "../../dev/scenario-builders";
+import type { AlbumPhoto } from "../../domain/album-state";
+import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../domain/player-action";
+import type { GameState } from "../../domain/game";
+import { travelLogPages } from "./travel-log";
+import { TravelLogDialog } from "./TravelLog";
+
+const roll = () => 0;
+const place = (id: string) => getCityContent(id.split("_")[0]).travel.places.find((item) => item.id === id)!;
+const JAMA_MASJID = "gt_delhi_main_jama_masjid";
+const delhiArrival: AlbumPhoto = { imageId: "gt_album_d01", caption: "路地の将軍カムラ", cityId: "delhi", day: 1, minute: 600,
+  placeId: "delhi_hotel_hub", storyId: "places/gt_delhi_hotel_hub.gt_delhi_arrival" };
+
+function playDate(state: GameState, dateId: string): GameState {
+  let next = startDateScene(withAp(state, 12), dateId, 0);
+  for (let step = 0; next.activeDate; step++) {
+    expect(step, "the date did not end").toBeLessThan(300);
+    next = applyPlayerAction(next, playerActionChange(listPlayerActions(next)[0], roll), roll);
+  }
+  return next;
+}
+
+describe("旅の記録's pages", () => {
+  it("always has the city the party is in, with its progress, even before anything is lived there", () => {
+    const pages = travelLogPages(cityStart("mihon"));
+    expect(pages).toHaveLength(1);
+    expect(pages[0]).toMatchObject({ cityId: "mihon", cityJa: "見本の街", experiences: [], photos: [] });
+    expect(pages[0].progressJa).toMatch(/^観光 0 \/ \d+/u);
+  });
+
+  it("keeps each city lived in, in the journey's order: its episodes as completed, with her line looking back", () => {
+    const agra = cityStart("agra", ["航", "澪"]);
+    const pages = travelLogPages(agra);
+    expect(pages.map((page) => page.cityId)).toEqual(["delhi", "agra"]);
+    const [delhi] = pages;
+    expect(delhi.progressJa).toBe("都市クリア");
+    const delhiDone = agra.completedEpisodeIds.filter((id) => episodes.find((item) => item.id === id)?.cityId === "delhi");
+    expect(delhi.experiences.map((item) => item.id)).toEqual(delhiDone);
+    expect(delhi.experiences.at(-1)?.kind).toBe("finale");
+    const masjid = delhi.experiences.find((item) => item.id === JAMA_MASJID)!;
+    expect(masjid).toMatchObject({
+      kind: "visit", placeJa: place("delhi_jama_masjid").nameJa, titleJa: episodes.find((item) => item.id === JAMA_MASJID)!.clearTitleJa,
+      heroine: { textJa: place("delhi_jama_masjid").recapLinesJa![0], cityId: "delhi" },
+    });
+    expect(masjid.photo).toBeDefined();
+  });
+
+  it("puts a date with a destination after the city's episodes, with its own photo on both axes", () => {
+    const state = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), "gt_delhi_date_agrasen_baoli");
+    const [delhi] = travelLogPages(state);
+    expect(delhi.experiences.map((item) => [item.id, item.kind])).toEqual([[JAMA_MASJID, "visit"], ["gt_delhi_date_agrasen_baoli", "date"]]);
+    const date = delhi.experiences[1];
+    expect(date.heroine?.textJa).toBe(place("delhi_agrasen_baoli").recapLinesJa![0]);
+    const taken = delhi.photos.find((photo) => photo.imageId === state.album.at(-1)!.imageId)!;
+    expect(date.photo).toMatchObject({ path: taken.path });
+    expect(date.photo?.credit).toBeUndefined();
+  });
+
+  it("puts each album photo on its city's 「写真」, and a city only photographed has its page", () => {
+    const state = { ...cityStart("delhi"), currentCityId: "agra", album: [delhiArrival] };
+    const pages = travelLogPages(state);
+    expect(pages.map((page) => page.cityId)).toEqual(["delhi", "agra"]);
+    expect(pages[0].photos.map((photo) => photo.imageId)).toEqual(["gt_album_d01"]);
+    expect(pages[1].photos).toEqual([]);
+  });
+});
+
+describe("旅の記録's dialog", () => {
+  it("opens on the city the party is in, on 「体験」, with her words and no quiz score", () => {
+    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), onClose: () => {} }));
+    expect(html).toContain("航<span class=\"amp\"> と </span>澪");
+    expect(html).toContain('aria-pressed="true" data-testid="travel-log-lived"');
+    expect(html).toContain(`data-testid="log-experience-${JAMA_MASJID}"`);
+    expect(html).toContain(place("delhi_jama_masjid").recapLinesJa![0]);
+    expect(html).not.toMatch(/挑戦|最高|手がかり \d/u);
+  });
+});

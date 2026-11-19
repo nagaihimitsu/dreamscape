@@ -244,11 +244,11 @@ test("Milano kept from the title plays with the server stopped: the page, the pi
     const response = await fetch(`./${path}`, { headers: { Range: "bytes=0-99" } });
     return [response.status, response.headers.get("Content-Range"), (await response.arrayBuffer()).byteLength];
   }, tune[0])).toEqual([206, `bytes 0-99/${tune[1]}`, 100]);
-  // Dialogs whose files load only when they open: アルバム, and 出典・権利の一覧 with the build's licence list.
-  await ops.menuItem(page, "アルバム");
-  const album = page.getByRole("dialog", { name: "アルバム" });
-  await expect(album).toBeVisible();
-  await ops.closeDialog(album);
+  // Dialogs whose files load only when they open: 旅の記録, and 出典・権利の一覧 with the build's licence list.
+  await ops.menuItem(page, "旅の記録");
+  const records = page.getByRole("dialog", { name: "旅の記録" });
+  await expect(records).toBeVisible();
+  await ops.closeDialog(records);
   const licences = JSON.parse(readFileSync("dist/third-party-licenses.json", "utf8")) as { name: string; version: string; identifier: string }[];
   const react = licences.find((licence) => licence.name === "react")!;
   const credits = await ops.openCredits(page, "settings");

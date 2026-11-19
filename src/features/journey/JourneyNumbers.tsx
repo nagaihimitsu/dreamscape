@@ -45,7 +45,7 @@ export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: Journey
     { label: "出来事のあった場所", value: count(numbers.eventPlaces, "か所") },
     ...(numbers.people !== null ? [{ label: "出会った人", value: count(numbers.people, "人") }] : []),
     ...(numbers.localWords !== null ? [{ label: "覚えたその国の言葉", value: count(numbers.localWords, "語") }] : []),
-    ...(numbers.photos !== null ? [{ label: "アルバムの写真", value: count(numbers.photos, "枚") }] : []),
+    ...(numbers.photos !== null ? [{ label: "残した写真", value: count(numbers.photos, "枚") }] : []),
     ...(numbers.spent ? [{ label: "使ったお金", value: numbers.spent.textJa }] : []),
   ];
   return <section className="journey-numbers" aria-labelledby={`${id}-title`} data-testid="journey-numbers">
