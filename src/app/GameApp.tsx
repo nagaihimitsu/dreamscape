@@ -85,8 +85,10 @@ import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, PhotoCredits, recapPhotos } from "../features/journey/PhotoCredits";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
-import { DepartureLuggage } from "../features/journey/JourneyMoments";
-import { departureLuggage } from "../features/journey/journey-moments";
+import { DepartureLuggage, EndRollDialog } from "../features/journey/JourneyMoments";
+import { departureLuggage, endRollOf } from "../features/journey/journey-moments";
+import { JourneyMemoriesScreen, KeptMemoryContents } from "../features/journey/JourneyMemories";
+import { loadJourneyMemory, type MemoryLoad } from "../persistence";
 import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
@@ -283,7 +285,8 @@ export function GameApp({
   // Counts the actions that recorded a new clue in 手がかり帳: each gleams on its button (notebook-cue.tsx).
   const [clueGleam, setClueGleam] = useState(0);
   // A journey's opening movie (manifest openingMovie) between 「旅をはじめる」 and the new game, with the names it starts with.
-  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string; reading?: string } | null>(null);
+  // `again`: 「もう一度この旅を」's start, with the 旅の思い出 its confirmation said it replaces (its raw value; null for none).
+  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string; reading?: string; again?: { memory: string | null } } | null>(null);
   // 最初の3分の計測 (Debug mode only; intro-timing.ts): from the last 「旅をはじめる」 in this tab, never saved; a load and
   // Debug's return end it.
   const introTiming = useRef<IntroTiming | null>(null);
@@ -489,6 +492,18 @@ export function GameApp({
     else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
+  // 旅の思い出 (2026-11-19; JourneyMemories.tsx): the journey kept when 「もう一度この旅を」 started this one, read as
+  // 旅の記録 opens; its own dialog over 旅の記録 (`keptOpen`), whose album, music room and end roll show it, not the game.
+  const [keptMemory, setKeptMemory] = useState<MemoryLoad | null>(null);
+  const [keptOpen, setKeptOpen] = useState(false);
+  const [keptEndRoll, setKeptEndRoll] = useState(false);
+  const keptGame = keptOpen && keptMemory?.status === "loaded" ? keptMemory.state : null;
+  // 「もう一度この旅を」's confirmation, with the memory it would replace (read as it opens).
+  const [confirmAgain, setConfirmAgain] = useState<MemoryLoad | null>(null);
+  function openRecords() {
+    setKeptMemory(loadJourneyMemory(storage));
+    setRecordsOpen(true);
+  }
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
   const [musicRoom, setMusicRoom] = useState(false);
   const [roomTrack, setRoomTrack] = useState<string | null>(null);
@@ -569,13 +584,29 @@ export function GameApp({
     if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName, reading });
     else startJourney(playerName, heroineName, reading);
   }
-  function startJourney(playerName: string, heroineName: string, reading: string | undefined) {
+  function startJourney(playerName: string, heroineName: string, reading: string | undefined, again?: { memory: string | null }) {
     freeTimeReturn.current = null;
     seenCards.current = new Map();
     setSeenMarks(null);
     moments.restart(false);
     holdSceneCues(false);
-    session.begin(playerName, heroineName, reading, journeyId);
+    if (!again) session.begin(playerName, heroineName, reading, journeyId);
+    else if (session.beginAgain(journeyId, again.memory)) {
+      // A new journey under the finger of 「最初から始める」: its first scene takes no tap of the same press.
+      holdTaps();
+      setSceneEpoch((epoch) => epoch + 1);
+    }
+  }
+  /** 「もう一度この旅を」's 「最初から始める」: the journey's opening movie first, as from the title (not in Debug). */
+  function beginAgain(memory: string | null) {
+    if (!game) return;
+    playSe("ui_confirm");
+    setConfirmAgain(null);
+    const movie = isDebug ? undefined : getJourney(journeyId)?.openingMovie;
+    introTiming.current = debugOn ? startIntroTiming(performance.now(), !!movie) : null;
+    const again = { memory };
+    if (movie) setOpening({ videoPath: movie.videoPath, player: game.playerName, heroine: game.heroineName, reading: game.playerNameReading, again });
+    else startJourney(game.playerName, game.heroineName, game.playerNameReading, again);
   }
   /**
    * 保存データの消去 (ゲームの設定's, or the title's): its confirmation opens over ゲームの設定, whose 「消去せず戻る」 goes
@@ -877,7 +908,7 @@ export function GameApp({
         sceneBackgroundId={sceneBackgroundId}
         scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
-        onRecords={() => setRecordsOpen(true)}
+        onRecords={openRecords}
         onAlbum={() => setAlbumOpen(true)}
         onGlossary={hasTerms ? openGlossary : undefined}
         onEnglish={() => openEnglish()}
@@ -948,7 +979,7 @@ export function GameApp({
                       ? "証拠で考える"
                       : "クイズ"
                   : freeTimeAvailable
-                    ? "ふたりの街歩き"
+                    ? isJourneyComplete(game) ? "旅の思い出" : "ふたりの街歩き"
                     : "出発前"}
           </span>
         </div>
@@ -1282,6 +1313,15 @@ export function GameApp({
               </button>
             </section>
           </>
+        ) : isJourneyComplete(game) ? (
+          <>
+            <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
+            <JourneyMemoriesScreen journeyJa={getJourney(journeyId)?.nameJa ?? ""} playerName={game.playerName} heroineName={game.heroineName}
+              numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
+              views={{ onEndRoll: moments.openEndRoll, onAlbum: () => setAlbumOpen(true), onMusicRoom: () => setMusicRoom(true), onRecords: openRecords }}
+              onAgain={() => setConfirmAgain(loadJourneyMemory(storage))}
+              selector={!isDebug && onSwitchJourney ? <JourneySelection value={journeyId} onChange={requestJourneySwitch} /> : undefined} />
+          </>
         ) : nightScreen && dayEnd ? (
           <NightScreen
             key={`${game.currentCityId}:${game.travel.day}`}
@@ -1350,18 +1390,42 @@ export function GameApp({
           {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
             エンドロールを見る</button>}
         </div>}
+        {/* The journey kept as 旅の思い出 when this one began again (2026-11-19). */}
+        {keptMemory?.status === "loaded" && <button type="button" className="secondary records-kept" data-testid="kept-memory-open"
+          onClick={() => setKeptOpen(true)}>前の旅の思い出</button>}
         <CityRecords game={game} />
         {/* 旅の数字 (2026-11-13): the journey so far in a few numbers, counting up as the records open. */}
         <JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
         <MetPeople game={game} />
       </Modal>}
+      {keptOpen && keptGame && <Modal labelledBy="kept-memory-title" onClose={() => setKeptOpen(false)} closeOnBackdrop>
+        <ModalTitle id="kept-memory-title" onClose={() => setKeptOpen(false)}>前の旅の思い出</ModalTitle>
+        <KeptMemoryContents playerName={keptGame.playerName} heroineName={keptGame.heroineName}
+          numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
+          views={{ onEndRoll: () => setKeptEndRoll(true), onAlbum: () => setAlbumOpen(true), onMusicRoom: () => setMusicRoom(true) }} />
+      </Modal>}
+      {keptEndRoll && keptGame && <EndRollDialog roll={endRollOf(keptGame)} numbers={journeyNumbers(keptGame, learnedWords.learned)}
+        reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
+      {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>
+        <ModalTitle id="again-title">もう一度この旅を</ModalTitle>
+        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・アルバム・ふたりの関係は、最初からになります。</p>
+        <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。英語ノート・その国の言葉・既読の記録は、そのまま残ります。
+          {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
+          {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
+        {confirmAgain.status === "invalid" && confirmAgain.raw === null && <p role="alert">このブラウザの保存領域を読み取れないため、始められません。保存の設定を確認してください。</p>}
+        <ModalAnswers
+          cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmAgain(null)}>戻る</button>}
+          action={<button type="button" className="primary" data-testid="again-confirm"
+            disabled={confirmAgain.status === "invalid" && confirmAgain.raw === null}
+            onClick={() => beginAgain(confirmAgain.status === "empty" ? null : confirmAgain.raw)}>最初から始める</button>} />
+      </Modal>}
       {musicRoom && game && <LazyDialog onClose={() => { setMusicRoom(false); setRoomTrack(null); }}>
-        <MusicRoom game={game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
+        <MusicRoom game={keptGame ?? game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
           bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
       </LazyDialog>}
       {albumOpen && game && <LazyDialog onClose={() => setAlbumOpen(false)}>
-        <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />
+        <AlbumDialog album={(keptGame ?? game).album} currentCityId={(keptGame ?? game).currentCityId} onClose={() => setAlbumOpen(false)} />
       </LazyDialog>}
       {glossaryOpen && game && <LazyDialog onClose={() => setGlossaryOpen(null)}>
         <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugMarks} onClose={() => setGlossaryOpen(null)} />
@@ -1456,7 +1520,7 @@ export function GameApp({
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
           {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
@@ -1681,7 +1745,7 @@ export function GameApp({
         muted={!displaySettings.value.bgm} onEnd={() => {
           if (introTiming.current) introTiming.current = endIntroMovie(introTiming.current, performance.now());
           setOpening(null);
-          startJourney(opening.player, opening.heroine, opening.reading);
+          startJourney(opening.player, opening.heroine, opening.reading, opening.again);
         }} />}
       {/* From the title's selector, or over ゲームの設定 (closing goes back to it, where it was). Closing never stops a run. */}
       {offlineOpen && <LazyDialog onClose={() => setOfflineOpen(false)}><OfflinePlayDialog onClose={() => setOfflineOpen(false)} journeys={journeys} /></LazyDialog>}

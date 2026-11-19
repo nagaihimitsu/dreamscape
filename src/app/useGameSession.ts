@@ -5,7 +5,8 @@ import { openOccasion } from "../domain/occasion";
 import { recordAlbumPhoto } from "../domain/album";
 import { recordGlossaryTerms } from "../domain/glossary";
 import { applyPlayerAction } from "../domain/player-action";
-import { deleteSaveData, loadGame, saveGame, type StorageLike } from "../persistence";
+import { deleteSaveData, keepJourneyMemory, loadGame, replaceWithNewJourney, saveGame, type StorageLike } from "../persistence";
+import { isJourneyComplete } from "../domain/city-travel";
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
 import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
@@ -123,6 +124,28 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     setInvalid("");
     setNotice("");
   }
+  /**
+   * 「もう一度この旅を」 (2026-11-19 user decision): over a finished journey, keep it as 旅の思い出 in place of the memory
+   * the confirmation showed (`expectedMemory`: its raw value, null for none), then start the journey again with the same
+   * names. The new journey is written at once in either saving mode (the finished one is in the memory), over the
+   * save this tab last observed. False when either write is refused (the notice says why).
+   */
+  function beginAgain(journeyId: string, expectedMemory: string | null) {
+    const finished = gameRef.current;
+    if (!finished || !isJourneyComplete(finished)) return false;
+    const initial = createGame(finished.playerName, finished.heroineName, { journeyId, playerNameReading: finished.playerNameReading });
+    const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));
+    const kept = keepJourneyMemory(storage, finished, expectedMemory);
+    if (!kept.ok) { setNotice(kept.message); return false; }
+    const written = replaceWithNewJourney(storage, next, savedGameRef.current);
+    if (!written.ok) { setNotice(written.message); return false; }
+    savedGameRef.current = next;
+    protectedOriginalRef.current = null;
+    setSavedAt(Date.now());
+    adopt(next);
+    setNotice("");
+    return true;
+  }
   /** Shared by manual save and enabling automatic saving (whose refusal ゲームの設定 shows: `report`). */
   function persistCurrent(report: NoticeReport = setNotice) {
     const current = gameRef.current;
@@ -167,5 +190,5 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     return true;
   }
   return { game, loaded, invalid, notice, setNotice, toast, showToast, savedAt, getCurrent, hasUnsavedProgress,
-    commit, replace, begin, persistCurrent, save, restore, prepareDelete, deleteConfirmed };
+    commit, replace, begin, beginAgain, persistCurrent, save, restore, prepareDelete, deleteConfirmed };
 }

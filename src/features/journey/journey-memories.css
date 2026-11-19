@@ -1,0 +1,10 @@
+/* 旅の思い出 (JourneyMemories.tsx): the finished journey's screen, and a kept memory inside 旅の記録. */
+.journey-memories h1 { margin-bottom: 6px; }
+.memories-names { margin: 0 0 12px; font-size: 16px; overflow-wrap: anywhere; }
+/* The ways to look back, two to a row on a phone (each a 44px target). */
+.memories-views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; }
+.memories-views > .secondary { min-height: 44px; margin: 0; padding: 6px 10px; }
+.memories-next { margin: 22px 0 10px; font-size: 16px; }
+.journey-memories > .primary { width: 100%; min-height: 48px; }
+.memories-other { margin-top: 18px; }
+.kept-memory { margin: 0 0 4px; }

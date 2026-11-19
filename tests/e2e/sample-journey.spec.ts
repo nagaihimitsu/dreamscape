@@ -279,7 +279,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(page.getByTestId("city-epilogue-screen")).toBeVisible();
 
   // 6. The epilogue, then the end of the journey: its only city is cleared and its
-  // ending read, there is no next city to leave for, and the travellers stay in free time.
+  // ending read, there is no next city to leave for, and free time gives way to 旅の思い出 (2026-11-19).
   const ended = await playUntil(page, (state) => state.viewedEpilogueCityIds.includes(route.city.id) && !state.activeEpilogue && !state.occasion, { source, pick });
   // The journey's end opens its credit roll (the city and its clear titles, the names); 「閉じる」 leaves it.
   const roll = page.getByTestId("end-roll");
@@ -287,20 +287,40 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(roll).toContainText(ended.playerName);
   await page.getByTestId("end-roll-close").click();
   await expect(roll).toHaveCount(0);
-  await expect(menu).toBeVisible();
+  const memories = page.getByTestId("journey-memories");
+  await expect(memories).toBeVisible();
+  await expect(menu).toHaveCount(0);
   expectNoActiveScene(ended);
   expect(ended).toMatchObject({ currentCityId: route.city.id, completedCityIds: [route.city.id], ap: finale.ap });
-  const records = await ops.openRecords(page);
+  // The rental lasts while the party stays in the city.
+  expect(ended.travel.rentedModeIds).toEqual(rental ? [rental.offer.modeId] : []);
+  // 旅の思い出 looks back: the end roll again, and 旅の記録.
+  await memories.getByTestId("memories-end-roll").click();
+  await expect(roll).toContainText(route.city.nameJa);
+  await page.getByTestId("end-roll-close").click();
+  await memories.getByTestId("memories-records").click();
+  const records = page.getByRole("dialog", { name: "旅の記録" });
   await expect(records.getByTestId("city-progress")).toHaveText("都市クリア");
+  await expect(records.getByTestId("kept-memory-open")).toHaveCount(0);
   await ops.closeDialog(records);
   await expect(page.getByRole("button", { name: /へ出発/ })).toHaveCount(0);
 
-  // The rental lasts while the party stays in the city.
-  expect(ended.travel.rentedModeIds).toEqual(rental ? [rental.offer.modeId] : []);
-
   // A reload resumes the finished journey exactly as saved: the journey last opened on this device opens by itself.
   await page.reload();
-  await expect(menu).toBeVisible();
+  await expect(memories).toBeVisible();
   expect(await readSave(page, JOURNEY)).toEqual(ended);
-  if (rental) await expect(page.getByTestId("travel-rentals")).toContainText(`${rental.mode.nameJa}を借りています`);
+
+  // 「もう一度この旅を」: the same names from the start; the finished journey is kept as 旅の思い出 and seen from 旅の記録.
+  await memories.getByTestId("memories-again").click();
+  await page.getByTestId("again-confirm").click();
+  await expect(memories).toHaveCount(0);
+  const again = await readSave(page, JOURNEY);
+  expect(again).toMatchObject({ playerName: ended.playerName, heroineName: ended.heroineName, completedCityIds: [], viewedEpilogueCityIds: [] });
+  const kept = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "null"), `dreamscape.journey.${JOURNEY}.memory.v1`);
+  expect(kept).toEqual(ended);
+  await playUntil(page, (state) => !state.activeEpilogue && !state.occasion, { source, pick });
+  await expect(menu).toBeVisible();
+  const recordsAgain = await ops.openRecords(page);
+  await recordsAgain.getByTestId("kept-memory-open").click();
+  await expect(page.getByTestId("kept-memory")).toContainText(ended.playerName);
 });
