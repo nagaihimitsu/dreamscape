@@ -53,7 +53,91 @@
           "claimJa": "晴れた日、日時計の指針の影が四分円の目盛りに落ちて、地方時を示す。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "What time does the shadow on the very big sundial, the Samrat Yantra, show?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Indian Standard Time, the same time as on a mobile phone."
+            },
+            {
+              "id": "B",
+              "textEn": "The local time. It comes from where the sun is over Jaipur."
+            },
+            {
+              "id": "C",
+              "textEn": "London time, for the British officials long ago."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "shadow",
+              "meaning": "影"
+            },
+            {
+              "word": "sundial",
+              "meaning": "日時計"
+            },
+            {
+              "word": "mobile phone",
+              "meaning": "携帯電話"
+            },
+            {
+              "word": "local time",
+              "meaning": "地方時（その土地の太陽による時刻）"
+            },
+            {
+              "word": "officials",
+              "meaning": "役人"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which time is indicated by the shadow cast on the giant sundial known as the Samrat Yantra?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Indian Standard Time, identical to that displayed on a mobile phone."
+            },
+            {
+              "id": "B",
+              "textEn": "Local solar time, determined by the sun's position above Jaipur."
+            },
+            {
+              "id": "C",
+              "textEn": "London time, for the benefit of British officials in former times."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "indicated",
+              "meaning": "示される"
+            },
+            {
+              "word": "cast",
+              "meaning": "（影を）落とした"
+            },
+            {
+              "word": "identical",
+              "meaning": "同一の"
+            },
+            {
+              "word": "displayed",
+              "meaning": "表示された"
+            },
+            {
+              "word": "solar",
+              "meaning": "太陽の"
+            },
+            {
+              "word": "for the benefit of",
+              "meaning": "〜のために"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_jantar_two_seconds",
@@ -100,7 +184,83 @@
           "claimJa": "ジャイプールのサムラート・ヤントラは、時刻を二秒の精度で測ることができる。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "How exact is the time on Jaipur's Samrat Yantra?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To about two seconds."
+            },
+            {
+              "id": "B",
+              "textEn": "Only to the nearest hour."
+            },
+            {
+              "id": "C",
+              "textEn": "It only tells you if it is morning or afternoon."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "exact",
+              "meaning": "正確な"
+            },
+            {
+              "word": "seconds",
+              "meaning": "秒"
+            },
+            {
+              "word": "nearest",
+              "meaning": "いちばん近い"
+            },
+            {
+              "word": "afternoon",
+              "meaning": "午後"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "To what degree of precision can Jaipur's Samrat Yantra measure time?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To within roughly two seconds."
+            },
+            {
+              "id": "B",
+              "textEn": "Merely to the nearest hour."
+            },
+            {
+              "id": "C",
+              "textEn": "Only well enough to distinguish morning from afternoon."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "degree",
+              "meaning": "程度"
+            },
+            {
+              "word": "precision",
+              "meaning": "精度"
+            },
+            {
+              "word": "within",
+              "meaning": "〜以内で"
+            },
+            {
+              "word": "merely",
+              "meaning": "〜にすぎない"
+            },
+            {
+              "word": "distinguish",
+              "meaning": "見分ける"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_jantar_time_correction",
@@ -151,7 +311,87 @@
           "claimJa": "標準時を得るには、経度の差と、地球の公転による日々の調整を補う式を用いる。"
         }
       ],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "levels": {
+        "A2": {
+          "questionEn": "It is twelve o'clock on Divya's phone, but the shadow is not at the noon line yet. Why?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The sundial has been broken since the early 1900s."
+            },
+            {
+              "id": "B",
+              "textEn": "The shadow only moves the right way when the moon is in the sky."
+            },
+            {
+              "id": "C",
+              "textEn": "You must change the sundial's time to get the phone's time. The change depends on where Jaipur is and on the time of year."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "noon line",
+              "meaning": "正午の線"
+            },
+            {
+              "word": "broken",
+              "meaning": "壊れた"
+            },
+            {
+              "word": "sundial",
+              "meaning": "日時計"
+            },
+            {
+              "word": "depends on",
+              "meaning": "〜による"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Divya's phone reads twelve o'clock, yet the shadow has still not reached the noon line. How can this be explained?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The sundial has been out of order since the early twentieth century."
+            },
+            {
+              "id": "B",
+              "textEn": "The shadow only behaves correctly while the moon is visible."
+            },
+            {
+              "id": "C",
+              "textEn": "Converting to standard time requires an adjustment for longitude and for the time of year."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "out of order",
+              "meaning": "故障して"
+            },
+            {
+              "word": "behaves",
+              "meaning": "ふるまう"
+            },
+            {
+              "word": "visible",
+              "meaning": "見える"
+            },
+            {
+              "word": "converting",
+              "meaning": "換算すること"
+            },
+            {
+              "word": "adjustment",
+              "meaning": "補正"
+            },
+            {
+              "word": "longitude",
+              "meaning": "経度"
+            }
+          ]
+        }
+      }
     }
   ]
 }

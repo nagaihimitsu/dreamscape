@@ -61,7 +61,91 @@
           "claimJa": "宗教上の指導者が英国の水を使わないようガンジスの水を持参するよう求め、銀の壺に水が満たされた。残る二つはシティ・パレスに展示されている。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The mother points to the very big silver jars. Why did a Maharaja of Jaipur take jars like these to England?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To take water from the Ganges with him to the crowning of King Edward VII."
+            },
+            {
+              "id": "B",
+              "textEn": "To give them to the British king as a wedding present."
+            },
+            {
+              "id": "C",
+              "textEn": "To bring English tea back to the palace."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "silver",
+              "meaning": "銀の"
+            },
+            {
+              "word": "jars",
+              "meaning": "壺"
+            },
+            {
+              "word": "Ganges",
+              "meaning": "ガンジス川"
+            },
+            {
+              "word": "crowning",
+              "meaning": "戴冠式"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Gesturing at the enormous silver urns, the mother asks why a Maharaja of Jaipur took vessels like these all the way to England. What was the reason?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To transport Ganges water for his journey to attend King Edward VII's coronation."
+            },
+            {
+              "id": "B",
+              "textEn": "To present them to the British monarch as a wedding gift."
+            },
+            {
+              "id": "C",
+              "textEn": "To ship English tea back to the palace."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "enormous",
+              "meaning": "巨大な"
+            },
+            {
+              "word": "urns",
+              "meaning": "壺"
+            },
+            {
+              "word": "vessels",
+              "meaning": "容器"
+            },
+            {
+              "word": "transport",
+              "meaning": "運ぶ"
+            },
+            {
+              "word": "attend",
+              "meaning": "出席する"
+            },
+            {
+              "word": "coronation",
+              "meaning": "戴冠式"
+            },
+            {
+              "word": "monarch",
+              "meaning": "君主"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_palace_four_season_gates",
@@ -116,7 +200,87 @@
           "claimJa": "プリタム・ニワス中庭には四つの小さな門があり、それぞれ四季を主題とし、特定のヒンドゥーの神にささげられている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "In one courtyard of the City Palace, there are four beautiful gates. What does each gate show?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "One of the four wives of the king who built them."
+            },
+            {
+              "id": "B",
+              "textEn": "One of the four seasons, with a Hindu god."
+            },
+            {
+              "id": "C",
+              "textEn": "One of the four countries that bought and sold things with Jaipur."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "courtyard",
+              "meaning": "中庭"
+            },
+            {
+              "word": "gates",
+              "meaning": "門"
+            },
+            {
+              "word": "seasons",
+              "meaning": "季節"
+            },
+            {
+              "word": "Hindu",
+              "meaning": "ヒンドゥー教の"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "One of the City Palace's courtyards contains four ornate gateways. What do they symbolise?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The four wives of the king who had them built."
+            },
+            {
+              "id": "B",
+              "textEn": "The four seasons, each associated with a Hindu deity."
+            },
+            {
+              "id": "C",
+              "textEn": "The four nations with which Jaipur conducted trade."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "ornate",
+              "meaning": "装飾の凝った"
+            },
+            {
+              "word": "gateways",
+              "meaning": "門"
+            },
+            {
+              "word": "symbolise",
+              "meaning": "象徴する"
+            },
+            {
+              "word": "associated with",
+              "meaning": "〜と結びついた"
+            },
+            {
+              "word": "deity",
+              "meaning": "神"
+            },
+            {
+              "word": "conducted trade",
+              "meaning": "交易を行った"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_palace_still_home",
@@ -163,7 +327,83 @@
           "claimJa": "宮殿の一部は、今も現在の王家の住まいとして使われている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Is the City Palace only a museum now?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Yes. The British made the whole palace into a museum in 1900."
+            },
+            {
+              "id": "B",
+              "textEn": "Yes. Nobody has lived there since Jaipur began."
+            },
+            {
+              "id": "C",
+              "textEn": "No. The royal family of today still lives in part of it."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "museum",
+              "meaning": "博物館"
+            },
+            {
+              "word": "whole",
+              "meaning": "全体の"
+            },
+            {
+              "word": "royal family",
+              "meaning": "王家"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Does the City Palace function solely as a museum nowadays?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Yes. The British converted the entire palace into a museum in 1900."
+            },
+            {
+              "id": "B",
+              "textEn": "Yes. It has stood empty ever since Jaipur was founded."
+            },
+            {
+              "id": "C",
+              "textEn": "No. A portion of it remains the residence of the present-day royal family."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "function",
+              "meaning": "機能する"
+            },
+            {
+              "word": "nowadays",
+              "meaning": "今日では"
+            },
+            {
+              "word": "converted",
+              "meaning": "作り変えた"
+            },
+            {
+              "word": "portion",
+              "meaning": "一部"
+            },
+            {
+              "word": "residence",
+              "meaning": "住まい"
+            },
+            {
+              "word": "present-day",
+              "meaning": "現在の"
+            }
+          ]
+        }
+      }
     }
   ]
 }

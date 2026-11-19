@@ -49,7 +49,83 @@
           "claimJa": "この対句はレッド・フォートのディーワーニ・ハースの内側のアーチ上部、南北に刻まれている。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "A student points to the Hall of Private Audience. What famous words are cut into the stone inside?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The world is a bridge. Pass over it, but build no house on it."
+            },
+            {
+              "id": "B",
+              "textEn": "If there is a paradise on earth, it is this, it is this, it is this."
+            },
+            {
+              "id": "C",
+              "textEn": "Truth alone wins, and every visitor must remember it."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "Hall of Private Audience",
+              "meaning": "内謁の間（ディーワーニ・ハース）"
+            },
+            {
+              "word": "famous",
+              "meaning": "有名な"
+            },
+            {
+              "word": "cut into",
+              "meaning": "〜に刻まれた"
+            },
+            {
+              "word": "paradise",
+              "meaning": "楽園"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "A student indicates the Hall of Private Audience. Which celebrated verse is inscribed within it?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The world is a bridge. Pass over it, but build no house on it."
+            },
+            {
+              "id": "B",
+              "textEn": "If there is a paradise on earth, it is this, it is this, it is this."
+            },
+            {
+              "id": "C",
+              "textEn": "Truth alone wins, and every visitor must remember it."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "indicates",
+              "meaning": "指し示す"
+            },
+            {
+              "word": "celebrated",
+              "meaning": "名高い"
+            },
+            {
+              "word": "verse",
+              "meaning": "詩句"
+            },
+            {
+              "word": "inscribed",
+              "meaning": "刻まれた"
+            },
+            {
+              "word": "paradise",
+              "meaning": "楽園"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_red_fort_august_flag",
@@ -100,7 +176,91 @@
           "claimJa": "ネルー首相がレッド・フォートの城壁で国旗を掲げ、以後の首相も独立記念日の演説をここで行っている。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "A boy salutes and asks a question. What happens at the Red Fort every Independence Day?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The Prime Minister puts up the national flag and talks to the country from its walls."
+            },
+            {
+              "id": "B",
+              "textEn": "The President opens the old royal treasure room to everyone for one day."
+            },
+            {
+              "id": "C",
+              "textEn": "Every school in Delhi has its last exams inside the fort."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "salutes",
+              "meaning": "敬礼する"
+            },
+            {
+              "word": "Independence Day",
+              "meaning": "独立記念日（8月15日）"
+            },
+            {
+              "word": "Prime Minister",
+              "meaning": "首相"
+            },
+            {
+              "word": "national flag",
+              "meaning": "国旗"
+            },
+            {
+              "word": "treasure",
+              "meaning": "宝物"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Saluting smartly, a boy asks what takes place at the Red Fort each Independence Day. How would you answer him?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The Prime Minister hoists the national flag and addresses the nation from its ramparts."
+            },
+            {
+              "id": "B",
+              "textEn": "The President throws open the former royal treasury to the public for a single day."
+            },
+            {
+              "id": "C",
+              "textEn": "Every school in Delhi holds its end-of-year examinations within the fort."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "smartly",
+              "meaning": "きびきびと"
+            },
+            {
+              "word": "hoists",
+              "meaning": "掲げる"
+            },
+            {
+              "word": "addresses the nation",
+              "meaning": "国民に向けて演説する"
+            },
+            {
+              "word": "ramparts",
+              "meaning": "城壁"
+            },
+            {
+              "word": "throws open",
+              "meaning": "開放する"
+            },
+            {
+              "word": "treasury",
+              "meaning": "宝物庫"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_red_fort_last_emperor_trial",
@@ -155,7 +315,87 @@
           "claimJa": "裁判は1858年1月27日から3月9日まで続き、皇帝はビルマへ追放された。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "A quiet student asks a question. What happened in 1858 to the man who lived in this palace?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He moved to a new palace in Agra and never came back."
+            },
+            {
+              "id": "B",
+              "textEn": "He gave the palace to his friends, who were poets, and became a teacher."
+            },
+            {
+              "id": "C",
+              "textEn": "The last Mughal emperor had a trial in his own palace. The British judged him."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "quiet",
+              "meaning": "物静かな"
+            },
+            {
+              "word": "poets",
+              "meaning": "詩人"
+            },
+            {
+              "word": "trial",
+              "meaning": "裁判"
+            },
+            {
+              "word": "judged",
+              "meaning": "裁いた"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "A reserved student wonders what befell the palace's last resident in 1858. What was his fate?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He withdrew to a new palace in Agra, never to return."
+            },
+            {
+              "id": "B",
+              "textEn": "He handed the palace over to his fellow poets and took up teaching."
+            },
+            {
+              "id": "C",
+              "textEn": "The British tried the last Mughal emperor in his very own palace."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "reserved",
+              "meaning": "控えめな"
+            },
+            {
+              "word": "befell",
+              "meaning": "〜に降りかかった"
+            },
+            {
+              "word": "resident",
+              "meaning": "住人"
+            },
+            {
+              "word": "fate",
+              "meaning": "運命"
+            },
+            {
+              "word": "withdrew",
+              "meaning": "退いた"
+            },
+            {
+              "word": "tried",
+              "meaning": "裁判にかけた"
+            }
+          ]
+        }
+      }
     }
   ]
 }

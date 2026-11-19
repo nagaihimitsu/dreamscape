@@ -41,7 +41,83 @@
           "claimJa": "ガッレリアは大聖堂側とスカラ座側をつなぐ。店に用がなくても、人がここを通る理由がある。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "You can walk under the roof of the arcade. From where to where?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "From the castle to the old port."
+            },
+            {
+              "id": "B",
+              "textEn": "From the Duomo to La Scala."
+            },
+            {
+              "id": "C",
+              "textEn": "From Brera to the old dining hall."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "arcade",
+              "meaning": "屋根付きの通路"
+            },
+            {
+              "word": "roof",
+              "meaning": "屋根"
+            },
+            {
+              "word": "castle",
+              "meaning": "城"
+            },
+            {
+              "word": "port",
+              "meaning": "港"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The covered arcade provides a sheltered passage between which two places?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The castle and the old harbour."
+            },
+            {
+              "id": "B",
+              "textEn": "The Duomo and La Scala."
+            },
+            {
+              "id": "C",
+              "textEn": "Brera and the former refectory."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "provides",
+              "meaning": "提供する"
+            },
+            {
+              "word": "sheltered",
+              "meaning": "雨風をしのげる"
+            },
+            {
+              "word": "passage",
+              "meaning": "通り道"
+            },
+            {
+              "word": "harbour",
+              "meaning": "港"
+            },
+            {
+              "word": "refectory",
+              "meaning": "（修道院の）食堂"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_galleria_q2",
@@ -80,7 +156,91 @@
           "claimJa": "立ち話や散策、食事を楽しむ場所として街の暮らしに組み込まれている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Why do people say the Galleria is the city's living room?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "People meet and spend time there."
+            },
+            {
+              "id": "B",
+              "textEn": "Artists pay to use it and draw people's faces."
+            },
+            {
+              "id": "C",
+              "textEn": "Long ago, its shops sold only tables and chairs."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "living room",
+              "meaning": "居間"
+            },
+            {
+              "word": "spend time",
+              "meaning": "時間を過ごす"
+            },
+            {
+              "word": "artists",
+              "meaning": "芸術家"
+            },
+            {
+              "word": "faces",
+              "meaning": "顔"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What lies behind the Galleria's nickname, 'the city's drawing room'?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It is where people gather and socialise."
+            },
+            {
+              "id": "B",
+              "textEn": "Painters hire it to sketch portraits."
+            },
+            {
+              "id": "C",
+              "textEn": "Its shops once dealt exclusively in furniture."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "lies behind",
+              "meaning": "背後にある"
+            },
+            {
+              "word": "nickname",
+              "meaning": "愛称"
+            },
+            {
+              "word": "drawing room",
+              "meaning": "客間"
+            },
+            {
+              "word": "socialise",
+              "meaning": "交流する"
+            },
+            {
+              "word": "hire",
+              "meaning": "借りる"
+            },
+            {
+              "word": "sketch",
+              "meaning": "スケッチする"
+            },
+            {
+              "word": "exclusively",
+              "meaning": "もっぱら"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_galleria_bull_city",
@@ -123,7 +283,71 @@
           "claimJa": "ガッレリアの床にある雄牛はトリノ市の紋章。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The Galleria has a mosaic of a bull on the floor. Which city does the bull show?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Milan."
+            },
+            {
+              "id": "B",
+              "textEn": "Venice."
+            },
+            {
+              "id": "C",
+              "textEn": "Turin."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "mosaic",
+              "meaning": "モザイク"
+            },
+            {
+              "word": "bull",
+              "meaning": "雄牛"
+            },
+            {
+              "word": "floor",
+              "meaning": "床"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which city is symbolised by the bull depicted in the Galleria's floor mosaic?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Milan."
+            },
+            {
+              "id": "B",
+              "textEn": "Venice."
+            },
+            {
+              "id": "C",
+              "textEn": "Turin."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "symbolised",
+              "meaning": "象徴される"
+            },
+            {
+              "word": "depicted",
+              "meaning": "描かれた"
+            },
+            {
+              "word": "mosaic",
+              "meaning": "モザイク"
+            }
+          ]
+        }
+      }
     }
   ]
 }

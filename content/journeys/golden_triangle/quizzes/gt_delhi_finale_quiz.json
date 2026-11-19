@@ -55,7 +55,83 @@
           "claimJa": "2019年1月から、デリー・メトロのほぼ全路線で、進行方向の先頭車両が女性専用とされた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Aman thinks his grandmother is confused. She talked about a 'ladies' coach' on the Delhi Metro. Is she right?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "No. Delhi Metro trains do not have any special coaches."
+            },
+            {
+              "id": "B",
+              "textEn": "Yes. The first coach, at the front of the train, is only for women."
+            },
+            {
+              "id": "C",
+              "textEn": "Only on Sundays. Then one coach is for grandparents."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "confused",
+              "meaning": "混乱している"
+            },
+            {
+              "word": "coach",
+              "meaning": "（鉄道の）車両"
+            },
+            {
+              "word": "front",
+              "meaning": "前、先頭"
+            },
+            {
+              "word": "grandparents",
+              "meaning": "祖父母"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Aman suspects his grandmother is muddled because she mentioned a 'ladies' coach' on the Delhi Metro. Is she actually correct?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "No. Delhi Metro trains have no designated coaches whatsoever."
+            },
+            {
+              "id": "B",
+              "textEn": "Yes. The leading coach in the direction of travel is set aside for women."
+            },
+            {
+              "id": "C",
+              "textEn": "Only on Sundays, when a single coach is reserved for grandparents."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "suspects",
+              "meaning": "〜ではないかと思う"
+            },
+            {
+              "word": "muddled",
+              "meaning": "混乱した"
+            },
+            {
+              "word": "designated",
+              "meaning": "指定された"
+            },
+            {
+              "word": "whatsoever",
+              "meaning": "少しも"
+            },
+            {
+              "word": "set aside for",
+              "meaning": "〜のために取っておかれた"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_finale_moonlight_square",
@@ -102,7 +178,83 @@
           "claimJa": "チャンドニー・チョークは「月光の広場」を意味し、かつてあった大きな池に映る月にちなむ。1650年にジャハーナーラー皇女が設計したとされる。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Her note says, 'Where the moon fell into the water, my last shopping.' Which place in Old Delhi is the best answer?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Chandni Chowk. Its name comes from the moon in a pool there."
+            },
+            {
+              "id": "B",
+              "textEn": "A market by the river. It opens only on nights with a full moon."
+            },
+            {
+              "id": "C",
+              "textEn": "The Lotus Temple. Its pools have the shape of a moon."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "note",
+              "meaning": "メモ"
+            },
+            {
+              "word": "pool",
+              "meaning": "池"
+            },
+            {
+              "word": "full moon",
+              "meaning": "満月"
+            },
+            {
+              "word": "shape",
+              "meaning": "形"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Her note reads, 'Where the moon fell into the water, my last shopping.' Which spot in Old Delhi best matches this description?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Chandni Chowk, whose name recalls the moonlight reflected in a pool that was once there."
+            },
+            {
+              "id": "B",
+              "textEn": "A riverside market that only trades on full-moon nights."
+            },
+            {
+              "id": "C",
+              "textEn": "The Lotus Temple, whose pools are moon-shaped."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "description",
+              "meaning": "描写"
+            },
+            {
+              "word": "recalls",
+              "meaning": "思い起こさせる"
+            },
+            {
+              "word": "reflected",
+              "meaning": "映った"
+            },
+            {
+              "word": "trades",
+              "meaning": "商売をする"
+            },
+            {
+              "word": "moon-shaped",
+              "meaning": "月の形の"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_finale_spice_market",
@@ -153,7 +305,91 @@
           "claimJa": "カーリー・バーオリーはアジア最大の香辛料卸売市場と紹介されている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "A sweet seller says she asked where to buy spices for a whole year. Where would she most likely go?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To the duty-free shop at Delhi airport."
+            },
+            {
+              "id": "B",
+              "textEn": "To the market with a roof inside the Red Fort. It sells only spices."
+            },
+            {
+              "id": "C",
+              "textEn": "To Khari Baoli. It is called Asia's biggest market for buying spices in large amounts."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "seller",
+              "meaning": "売る人"
+            },
+            {
+              "word": "spices",
+              "meaning": "香辛料"
+            },
+            {
+              "word": "duty-free shop",
+              "meaning": "免税店"
+            },
+            {
+              "word": "roof",
+              "meaning": "屋根"
+            },
+            {
+              "word": "large amounts",
+              "meaning": "大量"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "A sweet seller recalls her asking where she could stock up on a whole year's supply of spices. Where would she most probably have gone?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To the duty-free outlet at Delhi airport."
+            },
+            {
+              "id": "B",
+              "textEn": "To the covered bazaar within the Red Fort, which deals exclusively in spices."
+            },
+            {
+              "id": "C",
+              "textEn": "To Khari Baoli, reputed to be Asia's largest wholesale spice market."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "stock up on",
+              "meaning": "〜を買いだめする"
+            },
+            {
+              "word": "supply",
+              "meaning": "蓄え"
+            },
+            {
+              "word": "outlet",
+              "meaning": "販売店"
+            },
+            {
+              "word": "exclusively",
+              "meaning": "もっぱら"
+            },
+            {
+              "word": "reputed",
+              "meaning": "〜と評判の"
+            },
+            {
+              "word": "wholesale",
+              "meaning": "卸売りの"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_finale_evening_show",
@@ -200,7 +436,83 @@
           "claimJa": "2023年1月に始まった光と音のショー「ジャイ・ヒンド」は、火曜から日曜の夕方に上演され、ナウバト・カーナ、ディーワーニ・アーム、ディーワーニ・ハースを巡る。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Day visitors must leave the fort when the sun goes down. How could someone still be inside at seven in the evening?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The guards let old visitors stay after dark."
+            },
+            {
+              "id": "B",
+              "textEn": "There is a sound-and-light show inside the fort in the evening."
+            },
+            {
+              "id": "C",
+              "textEn": "A night market opens in the Hall of Public Audience."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "day visitors",
+              "meaning": "昼間の来場者"
+            },
+            {
+              "word": "goes down",
+              "meaning": "沈む"
+            },
+            {
+              "word": "after dark",
+              "meaning": "暗くなってから"
+            },
+            {
+              "word": "sound-and-light show",
+              "meaning": "光と音のショー"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The fort shuts its doors to daytime visitors at sunset. How, then, could anyone still be inside at seven in the evening?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The guards allow elderly visitors to linger after nightfall."
+            },
+            {
+              "id": "B",
+              "textEn": "An evening sound-and-light show is staged within the fort."
+            },
+            {
+              "id": "C",
+              "textEn": "A night market sets up in the Hall of Public Audience."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "elderly",
+              "meaning": "年配の"
+            },
+            {
+              "word": "linger",
+              "meaning": "居残る"
+            },
+            {
+              "word": "nightfall",
+              "meaning": "日暮れ"
+            },
+            {
+              "word": "staged",
+              "meaning": "上演される"
+            },
+            {
+              "word": "sets up",
+              "meaning": "店を開く"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_delhi_finale_first_show",
@@ -255,7 +567,79 @@
           "claimJa": "レッド・フォートのショーはアジア最古級で、ITDCは50年続いたため改修のため2018年に休止したと述べた。"
         }
       ],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "levels": {
+        "A2": {
+          "questionEn": "Aman says there were no light shows at the fort sixty years ago. When did the Red Fort's sound-and-light show start?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "In 1965. It was one of the first shows like this in Asia."
+            },
+            {
+              "id": "B",
+              "textEn": "In 2023, when the fort first opened at night."
+            },
+            {
+              "id": "C",
+              "textEn": "In 1997, after people cleaned the fort for a royal birthday."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "light shows",
+              "meaning": "光のショー"
+            },
+            {
+              "word": "start",
+              "meaning": "始まる"
+            },
+            {
+              "word": "royal",
+              "meaning": "王族の"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Aman maintains that the fort had no light shows sixty years ago. When was the Red Fort's sound-and-light show first staged?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "In 1965, making it one of the earliest shows of its kind in Asia."
+            },
+            {
+              "id": "B",
+              "textEn": "In 2023, when the fort opened its gates after dark for the first time."
+            },
+            {
+              "id": "C",
+              "textEn": "In 1997, following a clean-up of the fort for a royal birthday."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "maintains",
+              "meaning": "主張する"
+            },
+            {
+              "word": "staged",
+              "meaning": "上演された"
+            },
+            {
+              "word": "earliest",
+              "meaning": "最も早い"
+            },
+            {
+              "word": "of its kind",
+              "meaning": "その種の"
+            },
+            {
+              "word": "clean-up",
+              "meaning": "清掃"
+            }
+          ]
+        }
+      }
     }
   ]
 }

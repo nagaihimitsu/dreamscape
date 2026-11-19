@@ -28,11 +28,13 @@ export function balanceInputs(root: string, journeyId?: string): BalanceInput[] 
   const items = (read("content/encounters/catalog.json") as { items: { id: string; nameJa: string }[] }).items;
   const memoryIds = Object.keys(presentationSchema.parse(read("content/romance/presentation.json")).memories);
   const itemIds = items.map((item) => item.id);
+  const balance = balanceSchema.parse(read("content/romance/balance.json"));
   const shared = {
     tours: tourCatalogSchema.parse(read("tours.json")), episodes: progression.episodes, rewards: getAllRewardRules(progression, scenes.rewards),
     dates: dateCatalogSchema.parse(read("content/romance/date_catalog.json")).dates, romance: progressionSchema.parse(read("content/romance/progression.json")),
     profiles: responseProfileCatalogSchema.parse(read("content/romance/response_profiles.json")).profiles,
-    apCap: balanceSchema.parse(read("content/romance/balance.json")).apCap, items,
+    apCap: balance.apCap, items,
+    economyLevelNames: Object.fromEntries(Object.entries(balance.difficulty.economy).map(([level, { labelJa }]) => [level, labelJa])),
   };
   return journeys.map((journey) => {
     const cityIds = new Set(journey.cities.map((city) => city.id));

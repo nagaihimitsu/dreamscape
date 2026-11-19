@@ -49,7 +49,87 @@
           "claimJa": "墓廟は1622年から1628年にヌール・ジャハーンが両親のために建て、タージ・マハル着工の四年前に完成した。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The letter says, 'This tomb is not the Taj's baby. It came first.' Is that true?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "No. People built it as a small copy after the Taj was finished."
+            },
+            {
+              "id": "B",
+              "textEn": "Yes. It was finished about four years before work on the Taj Mahal started."
+            },
+            {
+              "id": "C",
+              "textEn": "Nobody knows. They were both built in the same year."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "letter",
+              "meaning": "手紙"
+            },
+            {
+              "word": "tomb",
+              "meaning": "墓"
+            },
+            {
+              "word": "came first",
+              "meaning": "先にできた"
+            },
+            {
+              "word": "copy",
+              "meaning": "写し"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The petition insists, 'This tomb is not the Taj's baby. It came first.' Does the claim hold up?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "No. It was erected as a scaled-down copy once the Taj had been completed."
+            },
+            {
+              "id": "B",
+              "textEn": "Yes. It was completed roughly four years before construction of the Taj Mahal got under way."
+            },
+            {
+              "id": "C",
+              "textEn": "It is impossible to say, since the two were built in the same year."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "petition",
+              "meaning": "請願書"
+            },
+            {
+              "word": "insists",
+              "meaning": "言い張る"
+            },
+            {
+              "word": "hold up",
+              "meaning": "（主張が）通用する"
+            },
+            {
+              "word": "erected",
+              "meaning": "建てられた"
+            },
+            {
+              "word": "scaled-down",
+              "meaning": "縮小した"
+            },
+            {
+              "word": "got under way",
+              "meaning": "始まった"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_itimad_who_lies_here",
@@ -100,7 +180,87 @@
           "claimJa": "ミールザー・ギヤース・ベグはホラーサーン出身のペルシア人貴族で、アクバルの治世に宮廷へ来て、政権の頂点へ素早く上った。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Who was Itimad-ud-Daulah? He is buried here with his wife.",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "An important man from Persia. He came to the Mughal court and got one of the top jobs in the government."
+            },
+            {
+              "id": "B",
+              "textEn": "The man who later planned the Taj Mahal."
+            },
+            {
+              "id": "C",
+              "textEn": "A Rajput prince from Jaipur. He married a woman from the royal family."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "buried",
+              "meaning": "埋葬された"
+            },
+            {
+              "word": "court",
+              "meaning": "宮廷"
+            },
+            {
+              "word": "government",
+              "meaning": "政府、政権"
+            },
+            {
+              "word": "prince",
+              "meaning": "王子"
+            },
+            {
+              "word": "royal family",
+              "meaning": "王家"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Who was Itimad-ud-Daulah, who lies buried here beside his wife?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A Persian nobleman who entered Mughal service and rose to the highest ranks of government."
+            },
+            {
+              "id": "B",
+              "textEn": "The architect who would later go on to design the Taj Mahal."
+            },
+            {
+              "id": "C",
+              "textEn": "A Rajput prince from Jaipur who married into the imperial family."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "nobleman",
+              "meaning": "貴族"
+            },
+            {
+              "word": "service",
+              "meaning": "（主君に）仕えること"
+            },
+            {
+              "word": "ranks",
+              "meaning": "地位、階級"
+            },
+            {
+              "word": "imperial",
+              "meaning": "皇帝の"
+            },
+            {
+              "word": "married into",
+              "meaning": "（婚姻で）〜の一員になった"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_itimad_unsupported_claim",
@@ -151,7 +311,83 @@
           "claimJa": "この廟は白大理石で覆われた最初のムガルの墓で、外装の象嵌はタージ・マハルの繊細なピエトラ・ドゥーラの先駆けとされる。同資料はヌール・ジャハーンをタージの設計者とはしていない。"
         }
       ],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "levels": {
+        "A2": {
+          "questionEn": "Which idea in the letter has NO proof in history?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It was the first Mughal tomb with white marble on the outside."
+            },
+            {
+              "id": "B",
+              "textEn": "Its pictures made of small coloured stones came before the same work at the Taj Mahal."
+            },
+            {
+              "id": "C",
+              "textEn": "Nur Jahan also designed the Taj Mahal."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "proof",
+              "meaning": "証拠"
+            },
+            {
+              "word": "marble",
+              "meaning": "大理石"
+            },
+            {
+              "word": "coloured",
+              "meaning": "色のついた"
+            },
+            {
+              "word": "designed",
+              "meaning": "設計した"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which of the petition's claims finds no support in the historical record?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It was the first Mughal tomb to be clad in white marble."
+            },
+            {
+              "id": "B",
+              "textEn": "Its inlaid stonework predated that of the Taj Mahal."
+            },
+            {
+              "id": "C",
+              "textEn": "Nur Jahan was also responsible for designing the Taj Mahal."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "historical record",
+              "meaning": "歴史の記録"
+            },
+            {
+              "word": "clad in",
+              "meaning": "〜で覆われた"
+            },
+            {
+              "word": "inlaid stonework",
+              "meaning": "石の象嵌（ぞうがん）細工"
+            },
+            {
+              "word": "predated",
+              "meaning": "〜より前にあった"
+            },
+            {
+              "word": "responsible for",
+              "meaning": "〜を手がけた、〜の責任を負う"
+            }
+          ]
+        }
+      }
     }
   ]
 }

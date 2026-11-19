@@ -6,9 +6,10 @@ import {
 /**
  * The difficulty of a new journey at its title (2026-11-19 user decision): the English of the quizzes and how tight money
  * and AP are, chosen apart. Folded under a line that names both levels, so the start stays in view on a short phone; each
- * select says under it what its level does (romance/balance.json `difficulty`).
+ * select says under it what its level does (romance/balance.json `difficulty`; a journey's own words for a level of money
+ * and AP, its manifest `economyLevels`).
  */
-export function DifficultyFields({ value, onChange }: { value: Difficulty; onChange: (value: Difficulty) => void }) {
+export function DifficultyFields({ value, onChange, journeyId }: { value: Difficulty; onChange: (value: Difficulty) => void; journeyId: string }) {
   return <details className="difficulty-fields">
     <summary>
       難易度：英語 {englishLevelLabel(value.english).labelJa}・お金とAP {economyLevelLabel(value.economy).labelJa}
@@ -22,7 +23,7 @@ export function DifficultyFields({ value, onChange }: { value: Difficulty; onCha
           {ECONOMY_LEVELS.map((level) => <option key={level} value={level}>{economyLevelLabel(level).labelJa}</option>)}
         </select>
         <span className="fine-print difficulty-note" id="title-economy-level">
-          {economyLevelLabel(value.economy).descriptionJa}旅の途中では変えられません。
+          {economyLevelLabel(value.economy, journeyId).descriptionJa}旅の途中では変えられません。
         </span>
       </label>
     </div>

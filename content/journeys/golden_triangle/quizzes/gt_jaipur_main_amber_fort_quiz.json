@@ -53,7 +53,91 @@
           "claimJa": "ガネーシュ・ポールはマハーラージャの私的な宮殿への入口で、門の上に幸運を象徴するガネーシャが描かれている。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "In one painting, there is a peacock above Amber's Ganesh Pol. The other painting has a different picture. What is really painted above this gate?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A royal peacock. It is a sign of the queen's rooms."
+            },
+            {
+              "id": "B",
+              "textEn": "An elephant. It is taking the king to a battle."
+            },
+            {
+              "id": "C",
+              "textEn": "Lord Ganesha, a sign of good luck."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "painting",
+              "meaning": "絵"
+            },
+            {
+              "word": "peacock",
+              "meaning": "孔雀"
+            },
+            {
+              "word": "sign",
+              "meaning": "しるし"
+            },
+            {
+              "word": "elephant",
+              "meaning": "象"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "One painting depicts a peacock above Amber's Ganesh Pol, while the other portrays a different figure altogether. Which figure genuinely adorns this gate?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A royal peacock, emblem of the queen's apartments."
+            },
+            {
+              "id": "B",
+              "textEn": "An elephant bearing the king into battle."
+            },
+            {
+              "id": "C",
+              "textEn": "Lord Ganesha, an auspicious symbol of good fortune."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "depicts",
+              "meaning": "描く"
+            },
+            {
+              "word": "portrays",
+              "meaning": "描く"
+            },
+            {
+              "word": "genuinely",
+              "meaning": "本当に"
+            },
+            {
+              "word": "adorns",
+              "meaning": "飾る"
+            },
+            {
+              "word": "emblem",
+              "meaning": "象徴"
+            },
+            {
+              "word": "apartments",
+              "meaning": "居室"
+            },
+            {
+              "word": "auspicious",
+              "meaning": "縁起のよい"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_amber_mirror_hall",
@@ -104,7 +188,83 @@
           "claimJa": "シーシュ・マハルの壁と天井は、何千もの小さな鏡で飾られている。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "In the copy, the ceiling of the Sheesh Mahal has gold stars on it. What is really on its walls and ceilings?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Thousands of very small mirrors."
+            },
+            {
+              "id": "B",
+              "textEn": "Pieces of real gold from Persia."
+            },
+            {
+              "id": "C",
+              "textEn": "Pictures of the night sky by the court astronomers."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "copy",
+              "meaning": "写し、模写"
+            },
+            {
+              "word": "ceiling",
+              "meaning": "天井"
+            },
+            {
+              "word": "mirrors",
+              "meaning": "鏡"
+            },
+            {
+              "word": "astronomers",
+              "meaning": "天文学者"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "In the copy, the ceiling of the Sheesh Mahal is decorated with gilded stars. What actually covers its walls and ceilings?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Thousands upon thousands of minute mirrors."
+            },
+            {
+              "id": "B",
+              "textEn": "Sheets of genuine Persian gold."
+            },
+            {
+              "id": "C",
+              "textEn": "Depictions of the night sky executed by court astronomers."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "gilded",
+              "meaning": "金箔を張った"
+            },
+            {
+              "word": "minute",
+              "meaning": "ごく小さな"
+            },
+            {
+              "word": "genuine",
+              "meaning": "本物の"
+            },
+            {
+              "word": "depictions",
+              "meaning": "描いたもの、絵"
+            },
+            {
+              "word": "executed",
+              "meaning": "制作された"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_jaipur_amber_who_built",
@@ -171,7 +331,83 @@
           "claimJa": "ジャイプールの名は、創設者マハーラージャ・ジャイ・シング2世に由来する。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The words under the copy say, 'Built by the king who started Jaipur.' Which words are right?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Built in 1727, at the same time as the new city of Jaipur."
+            },
+            {
+              "id": "B",
+              "textEn": "Raja Man Singh I asked for it to be built in 1592, long before Jaipur began."
+            },
+            {
+              "id": "C",
+              "textEn": "Built by the British as a summer home for army officers."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "copy",
+              "meaning": "写し、模写"
+            },
+            {
+              "word": "Man Singh I",
+              "meaning": "マーン・シング1世（アンベールの王）"
+            },
+            {
+              "word": "summer home",
+              "meaning": "夏の家"
+            },
+            {
+              "word": "officers",
+              "meaning": "将校"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The copy's caption reads, 'Built by the king who founded Jaipur.' Which caption would be historically accurate?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Erected in 1727, concurrently with the new city of Jaipur."
+            },
+            {
+              "id": "B",
+              "textEn": "Commissioned by Raja Man Singh I in 1592, well before Jaipur was founded."
+            },
+            {
+              "id": "C",
+              "textEn": "Constructed by the British as a summer retreat for their officers."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "caption",
+              "meaning": "説明文"
+            },
+            {
+              "word": "historically",
+              "meaning": "歴史的に"
+            },
+            {
+              "word": "concurrently",
+              "meaning": "同時に"
+            },
+            {
+              "word": "commissioned",
+              "meaning": "建造を命じた"
+            },
+            {
+              "word": "retreat",
+              "meaning": "保養所"
+            }
+          ]
+        }
+      }
     }
   ]
 }

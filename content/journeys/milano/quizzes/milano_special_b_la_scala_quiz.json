@@ -41,7 +41,83 @@
           "claimJa": "桟敷を所有する家族は内装を自分好みにでき、貸したり譲ったりもできた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "In the early years of La Scala, what could a family do with its box in the theatre?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Make it beautiful in the way they liked."
+            },
+            {
+              "id": "B",
+              "textEn": "Choose the conductor for each show."
+            },
+            {
+              "id": "C",
+              "textEn": "Decide who could use the door to the stage."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "box",
+              "meaning": "劇場の桟敷席"
+            },
+            {
+              "word": "beautiful",
+              "meaning": "美しい"
+            },
+            {
+              "word": "conductor",
+              "meaning": "指揮者"
+            },
+            {
+              "word": "stage",
+              "meaning": "舞台"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "In La Scala's early days, what were families entitled to do with the boxes they held?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Decorate them in accordance with their own taste."
+            },
+            {
+              "id": "B",
+              "textEn": "Select the conductor for every performance."
+            },
+            {
+              "id": "C",
+              "textEn": "Determine who might use the stage door."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "entitled to",
+              "meaning": "〜する権利がある"
+            },
+            {
+              "word": "held",
+              "meaning": "所有していた"
+            },
+            {
+              "word": "in accordance with",
+              "meaning": "〜に従って"
+            },
+            {
+              "word": "taste",
+              "meaning": "好み"
+            },
+            {
+              "word": "conductor",
+              "meaning": "指揮者"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_la_scala_b_q2",
@@ -80,7 +156,91 @@
           "claimJa": "初期の平土間の椅子は可動式で、座る客が借りた。これだけで「いつも固定」は崩れる。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Someone says the seats on the main floor were always fixed in place. Which record shows this is not right?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Families made their own boxes beautiful."
+            },
+            {
+              "id": "B",
+              "textEn": "Visitors paid to use seats on the main floor that could be moved."
+            },
+            {
+              "id": "C",
+              "textEn": "Electric light filled the theatre."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "main floor",
+              "meaning": "平土間（舞台前の1階席）"
+            },
+            {
+              "word": "fixed",
+              "meaning": "固定された"
+            },
+            {
+              "word": "record",
+              "meaning": "記録"
+            },
+            {
+              "word": "electric",
+              "meaning": "電気の"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which piece of documentary evidence undermines the assertion that the stalls were always equipped with fixed seating?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Families decorated boxes of their own."
+            },
+            {
+              "id": "B",
+              "textEn": "Patrons rented movable chairs in the stalls."
+            },
+            {
+              "id": "C",
+              "textEn": "Electric lighting flooded the auditorium."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "documentary evidence",
+              "meaning": "文書の証拠"
+            },
+            {
+              "word": "undermines",
+              "meaning": "揺るがす"
+            },
+            {
+              "word": "assertion",
+              "meaning": "主張"
+            },
+            {
+              "word": "equipped with",
+              "meaning": "〜を備えた"
+            },
+            {
+              "word": "patrons",
+              "meaning": "観客、常連客"
+            },
+            {
+              "word": "movable",
+              "meaning": "動かせる"
+            },
+            {
+              "word": "auditorium",
+              "meaning": "客席"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_la_scala_b_q3",
@@ -119,7 +279,87 @@
           "claimJa": "戦災後、正式再開に先立つ演奏では、観客が普通の椅子に座った。再開記念公演と区別しよう。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Before the theatre was fully open again, what did people do in its ruins?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "They sold the boxes to the people who paid the most."
+            },
+            {
+              "id": "B",
+              "textEn": "They built a second stage for practice."
+            },
+            {
+              "id": "C",
+              "textEn": "They had a concert. The audience sat on ordinary chairs."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "fully",
+              "meaning": "完全に"
+            },
+            {
+              "word": "ruins",
+              "meaning": "廃墟"
+            },
+            {
+              "word": "practice",
+              "meaning": "練習"
+            },
+            {
+              "word": "audience",
+              "meaning": "観客"
+            },
+            {
+              "word": "ordinary",
+              "meaning": "普通の"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Prior to the theatre's full reopening, what took place amid the ruins?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The boxes were auctioned off."
+            },
+            {
+              "id": "B",
+              "textEn": "A second stage was constructed for rehearsals."
+            },
+            {
+              "id": "C",
+              "textEn": "A concert was staged, with the audience seated on ordinary chairs."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "prior to",
+              "meaning": "〜より前に"
+            },
+            {
+              "word": "reopening",
+              "meaning": "再開"
+            },
+            {
+              "word": "amid",
+              "meaning": "〜の中で"
+            },
+            {
+              "word": "auctioned off",
+              "meaning": "競売にかけられた"
+            },
+            {
+              "word": "rehearsals",
+              "meaning": "リハーサル"
+            }
+          ]
+        }
+      }
     }
   ]
 }

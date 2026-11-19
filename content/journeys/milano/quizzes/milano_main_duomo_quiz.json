@@ -41,7 +41,83 @@
           "claimJa": "広場の地下の洗礼堂は、新しい大聖堂を建てるために取り壊され、埋められた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Why did people put the older church buildings here under the ground?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To keep them safe from water in winter."
+            },
+            {
+              "id": "B",
+              "textEn": "To make space for the new cathedral."
+            },
+            {
+              "id": "C",
+              "textEn": "To make a square for a market every week."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "church",
+              "meaning": "教会"
+            },
+            {
+              "word": "under the ground",
+              "meaning": "地下に"
+            },
+            {
+              "word": "cathedral",
+              "meaning": "大聖堂"
+            },
+            {
+              "word": "square",
+              "meaning": "広場"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "For what reason were the earlier places of worship on this site demolished and buried?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To shield them from winter floodwaters."
+            },
+            {
+              "id": "B",
+              "textEn": "To clear space for the new cathedral."
+            },
+            {
+              "id": "C",
+              "textEn": "To create a square for a weekly market."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "worship",
+              "meaning": "礼拝"
+            },
+            {
+              "word": "site",
+              "meaning": "敷地"
+            },
+            {
+              "word": "demolished",
+              "meaning": "取り壊された"
+            },
+            {
+              "word": "buried",
+              "meaning": "埋められた"
+            },
+            {
+              "word": "floodwaters",
+              "meaning": "洪水の水"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_duomo_q2",
@@ -80,7 +156,91 @@
           "claimJa": "サン・ジョヴァンニ・アッレ・フォンティは洗礼堂。アンブロジウスがアウグスティヌスに洗礼を授けた場所でもある。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "What did people do long ago in the pool under the square?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "People were baptised there."
+            },
+            {
+              "id": "B",
+              "textEn": "Visitors washed their clothes."
+            },
+            {
+              "id": "C",
+              "textEn": "Builders checked stone for cracks."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "long ago",
+              "meaning": "昔"
+            },
+            {
+              "word": "baptised",
+              "meaning": "洗礼を受けた"
+            },
+            {
+              "word": "washed",
+              "meaning": "洗った"
+            },
+            {
+              "word": "cracks",
+              "meaning": "ひび"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What took place in the basin beneath the square in former times?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "People underwent baptism there."
+            },
+            {
+              "id": "B",
+              "textEn": "Visitors laundered their garments."
+            },
+            {
+              "id": "C",
+              "textEn": "Builders inspected stone for flaws."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "basin",
+              "meaning": "水盤"
+            },
+            {
+              "word": "former times",
+              "meaning": "昔"
+            },
+            {
+              "word": "underwent",
+              "meaning": "受けた"
+            },
+            {
+              "word": "baptism",
+              "meaning": "洗礼"
+            },
+            {
+              "word": "garments",
+              "meaning": "衣服"
+            },
+            {
+              "word": "inspected",
+              "meaning": "調べた"
+            },
+            {
+              "word": "flaws",
+              "meaning": "欠陥"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_duomo_q3",
@@ -119,7 +279,83 @@
           "claimJa": "寄付者は希望すれば、紙とオンラインの名簿に名前を載せられる。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Today, how can a person who gives money put their name in the history of the Duomo?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "By giving a name to a new door."
+            },
+            {
+              "id": "B",
+              "textEn": "By writing their name on a roof tile."
+            },
+            {
+              "id": "C",
+              "textEn": "By putting their name on the list of people who give money."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "history",
+              "meaning": "歴史"
+            },
+            {
+              "word": "roof tile",
+              "meaning": "屋根瓦"
+            },
+            {
+              "word": "list",
+              "meaning": "名簿、一覧"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "In what way can benefactors have their names recorded in the Duomo's history today?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "By having a new entrance named after them."
+            },
+            {
+              "id": "B",
+              "textEn": "By inscribing their signature on a roof tile."
+            },
+            {
+              "id": "C",
+              "textEn": "By being entered in the register of donors."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "benefactors",
+              "meaning": "寄付者、後援者"
+            },
+            {
+              "word": "recorded",
+              "meaning": "記録される"
+            },
+            {
+              "word": "named after",
+              "meaning": "〜にちなんで名づけられた"
+            },
+            {
+              "word": "inscribing",
+              "meaning": "刻むこと"
+            },
+            {
+              "word": "register",
+              "meaning": "名簿"
+            },
+            {
+              "word": "donors",
+              "meaning": "寄付者"
+            }
+          ]
+        }
+      }
     }
   ]
 }

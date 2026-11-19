@@ -41,7 +41,87 @@
           "claimJa": "二つの運河が出合うダルセナは旧港。今は夕暮れに人が集う。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "What did the Darsena give Milan before people started to go there for evening walks?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A place for opera outside."
+            },
+            {
+              "id": "B",
+              "textEn": "A port where canals meet."
+            },
+            {
+              "id": "C",
+              "textEn": "A pool for baptism."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "evening walks",
+              "meaning": "夕方の散歩"
+            },
+            {
+              "word": "opera",
+              "meaning": "オペラ"
+            },
+            {
+              "word": "port",
+              "meaning": "港"
+            },
+            {
+              "word": "canals",
+              "meaning": "運河"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Before it became a favourite spot for evening strolls, what function did the Darsena fulfil for Milan?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "It served as a venue for open-air opera."
+            },
+            {
+              "id": "B",
+              "textEn": "It was a harbour where several canals converged."
+            },
+            {
+              "id": "C",
+              "textEn": "It was a basin used for public baptisms."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "strolls",
+              "meaning": "散歩"
+            },
+            {
+              "word": "fulfil",
+              "meaning": "果たす"
+            },
+            {
+              "word": "venue",
+              "meaning": "会場"
+            },
+            {
+              "word": "harbour",
+              "meaning": "港"
+            },
+            {
+              "word": "converged",
+              "meaning": "合流した"
+            },
+            {
+              "word": "basin",
+              "meaning": "池、水槽"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_finale_q2",
@@ -80,7 +160,83 @@
           "claimJa": "大聖堂の建設用大理石はこの水路網を通って市中心部へ運ばれた。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "What did boats carry on the canals to the place where they built the Duomo?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Marble for the cathedral."
+            },
+            {
+              "id": "B",
+              "textEn": "Frames for the glass arcade."
+            },
+            {
+              "id": "C",
+              "textEn": "Seats for the boxes of the theatre."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "boats",
+              "meaning": "船"
+            },
+            {
+              "word": "canals",
+              "meaning": "運河"
+            },
+            {
+              "word": "marble",
+              "meaning": "大理石"
+            },
+            {
+              "word": "cathedral",
+              "meaning": "大聖堂"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which cargo connected the city's waterways with the construction site of the Duomo?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Marble destined for the cathedral."
+            },
+            {
+              "id": "B",
+              "textEn": "Frameworks for the glass-roofed arcade."
+            },
+            {
+              "id": "C",
+              "textEn": "Seating for the theatre's private boxes."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "cargo",
+              "meaning": "積み荷"
+            },
+            {
+              "word": "waterways",
+              "meaning": "水路"
+            },
+            {
+              "word": "construction site",
+              "meaning": "建設現場"
+            },
+            {
+              "word": "destined for",
+              "meaning": "〜行きの"
+            },
+            {
+              "word": "frameworks",
+              "meaning": "骨組み"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_finale_q3",
@@ -119,7 +275,95 @@
           "claimJa": "保存環境と鑑賞を両立するため、人数と滞在時間を制限する。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Why can only a small number of people go into the old dining hall at one time?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "So there is space for the friars to eat there today."
+            },
+            {
+              "id": "B",
+              "textEn": "So people in the street cannot see the painted figures."
+            },
+            {
+              "id": "C",
+              "textEn": "To help protect a wall painting that is easily damaged."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "dining hall",
+              "meaning": "食堂"
+            },
+            {
+              "word": "friars",
+              "meaning": "修道士たち"
+            },
+            {
+              "word": "figures",
+              "meaning": "人物の姿"
+            },
+            {
+              "word": "wall painting",
+              "meaning": "壁画"
+            },
+            {
+              "word": "damaged",
+              "meaning": "傷ついた"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What is the purpose of restricting visitor numbers in the former refectory?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To keep space free for the friars to take their meals there today."
+            },
+            {
+              "id": "B",
+              "textEn": "To conceal the painted figures from passers-by in the street."
+            },
+            {
+              "id": "C",
+              "textEn": "To help preserve a delicate mural."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "restricting",
+              "meaning": "制限すること"
+            },
+            {
+              "word": "refectory",
+              "meaning": "（修道院の）食堂"
+            },
+            {
+              "word": "conceal",
+              "meaning": "隠す"
+            },
+            {
+              "word": "passers-by",
+              "meaning": "通行人"
+            },
+            {
+              "word": "preserve",
+              "meaning": "保存する"
+            },
+            {
+              "word": "delicate",
+              "meaning": "傷みやすい"
+            },
+            {
+              "word": "mural",
+              "meaning": "壁画"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_finale_q4",
@@ -158,7 +402,83 @@
           "claimJa": "平土間の可動席は舞踏会など、上演以外の用途に結びついていた。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "In the early years of La Scala, why could people dance on the floor in front of the stage?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The boxes could go down onto the stage."
+            },
+            {
+              "id": "B",
+              "textEn": "People could take the seats away."
+            },
+            {
+              "id": "C",
+              "textEn": "The orchestra played outside the building."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "early years",
+              "meaning": "初めのころ"
+            },
+            {
+              "word": "stage",
+              "meaning": "舞台"
+            },
+            {
+              "word": "boxes",
+              "meaning": "劇場の桟敷席"
+            },
+            {
+              "word": "take the seats away",
+              "meaning": "座席を取り除く"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "How was it possible for the stalls of the early La Scala to double as a dance floor?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The boxes could be lowered onto the stage."
+            },
+            {
+              "id": "B",
+              "textEn": "The seating was removable."
+            },
+            {
+              "id": "C",
+              "textEn": "The orchestra performed outside the building."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "stalls",
+              "meaning": "劇場の平土間席"
+            },
+            {
+              "word": "double as",
+              "meaning": "〜としても使われる"
+            },
+            {
+              "word": "lowered",
+              "meaning": "下ろされた"
+            },
+            {
+              "word": "removable",
+              "meaning": "取り外せる"
+            },
+            {
+              "word": "performed",
+              "meaning": "演奏した"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_finale_q5",
@@ -197,7 +517,83 @@
           "claimJa": "洗濯を仕事にしていた人々の石の洗い場が残る。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "In Vicolo dei Lavandai, what can you still see from the work people did there?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A stone tub for washing clothes."
+            },
+            {
+              "id": "B",
+              "textEn": "A stone table for cutting marble."
+            },
+            {
+              "id": "C",
+              "textEn": "A stone counter for selling tickets."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "tub",
+              "meaning": "たらい、水槽"
+            },
+            {
+              "word": "washing",
+              "meaning": "洗うこと"
+            },
+            {
+              "word": "clothes",
+              "meaning": "服"
+            },
+            {
+              "word": "counter",
+              "meaning": "カウンター、売り台"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which vestige of former labour can still be seen in Vicolo dei Lavandai?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A stone trough once used for laundering clothes."
+            },
+            {
+              "id": "B",
+              "textEn": "A stone slab used for cutting marble."
+            },
+            {
+              "id": "C",
+              "textEn": "A stone counter where tickets were sold."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "vestige",
+              "meaning": "名残"
+            },
+            {
+              "word": "labour",
+              "meaning": "労働"
+            },
+            {
+              "word": "trough",
+              "meaning": "水槽"
+            },
+            {
+              "word": "laundering",
+              "meaning": "洗濯すること"
+            },
+            {
+              "word": "slab",
+              "meaning": "厚板"
+            }
+          ]
+        }
+      }
     }
   ],
   "scope": "city_finale",

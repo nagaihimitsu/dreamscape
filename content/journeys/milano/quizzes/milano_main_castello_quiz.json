@@ -41,7 +41,87 @@
           "claimJa": "現在の展示室は旧スペイン病院で、病気の兵士もここで療養した。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "The Rondanini Pietà is in this room now. Who needed this room in the past?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Musicians who were waiting to play for the court."
+            },
+            {
+              "id": "B",
+              "textEn": "Soldiers who needed help because they were sick or hurt."
+            },
+            {
+              "id": "C",
+              "textEn": "Artists who were learning to cut stone."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "in the past",
+              "meaning": "昔"
+            },
+            {
+              "word": "musicians",
+              "meaning": "音楽家"
+            },
+            {
+              "word": "sick",
+              "meaning": "病気の"
+            },
+            {
+              "word": "hurt",
+              "meaning": "けがをした"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Before it housed the Rondanini Pietà, whose needs did this room once serve?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Those of musicians waiting to perform at a court concert."
+            },
+            {
+              "id": "B",
+              "textEn": "Those of soldiers in need of medical care."
+            },
+            {
+              "id": "C",
+              "textEn": "Those of sculptors being trained in stone carving."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "housed",
+              "meaning": "収めた"
+            },
+            {
+              "word": "serve",
+              "meaning": "役立つ"
+            },
+            {
+              "word": "perform",
+              "meaning": "演奏する"
+            },
+            {
+              "word": "in need of",
+              "meaning": "〜を必要として"
+            },
+            {
+              "word": "medical care",
+              "meaning": "医療"
+            },
+            {
+              "word": "sculptors",
+              "meaning": "彫刻家"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_castello_q2",
@@ -80,7 +160,83 @@
           "claimJa": "晩年の約十年間に繰り返し作り変えた彫刻だと城の美術館は説明する。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "What was special about how Michelangelo worked on his last Pietà?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He changed it again and again for years."
+            },
+            {
+              "id": "B",
+              "textEn": "He copied a finished model and did not change anything."
+            },
+            {
+              "id": "C",
+              "textEn": "He cut a new figure for each bed in the hospital."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "special",
+              "meaning": "特別な"
+            },
+            {
+              "word": "again and again",
+              "meaning": "何度も"
+            },
+            {
+              "word": "model",
+              "meaning": "模型"
+            },
+            {
+              "word": "figure",
+              "meaning": "像"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What characterised Michelangelo's approach to his final Pietà?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He went on reworking it over a period of years."
+            },
+            {
+              "id": "B",
+              "textEn": "He reproduced a completed model without any alterations."
+            },
+            {
+              "id": "C",
+              "textEn": "He carved a fresh figure for every hospital bed."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "characterised",
+              "meaning": "特徴づけた"
+            },
+            {
+              "word": "approach",
+              "meaning": "取り組み方"
+            },
+            {
+              "word": "reworking",
+              "meaning": "作り直すこと"
+            },
+            {
+              "word": "reproduced",
+              "meaning": "複製した"
+            },
+            {
+              "word": "alterations",
+              "meaning": "変更"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_castello_q3",
@@ -119,7 +275,87 @@
           "claimJa": "現展示では像の周囲から多方向で見られる。正面の写真一枚だけがその姿とは限らない。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "In the room today, what can a visitor do with the Pietà?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Hold a piece of the stone it was cut from."
+            },
+            {
+              "id": "B",
+              "textEn": "Watch the statue go around above the beds."
+            },
+            {
+              "id": "C",
+              "textEn": "Look at the statue from every side."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "hold",
+              "meaning": "手に持つ"
+            },
+            {
+              "word": "statue",
+              "meaning": "像"
+            },
+            {
+              "word": "go around",
+              "meaning": "回る"
+            },
+            {
+              "word": "every side",
+              "meaning": "あらゆる方向"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What does the current presentation of the Pietà allow visitors to do?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Handle a fragment of the original block of marble."
+            },
+            {
+              "id": "B",
+              "textEn": "Observe the statue rotating above the beds."
+            },
+            {
+              "id": "C",
+              "textEn": "View the sculpture in the round, from every angle."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "current",
+              "meaning": "現在の"
+            },
+            {
+              "word": "presentation",
+              "meaning": "展示"
+            },
+            {
+              "word": "handle",
+              "meaning": "手で触れる"
+            },
+            {
+              "word": "fragment",
+              "meaning": "かけら"
+            },
+            {
+              "word": "rotating",
+              "meaning": "回転している"
+            },
+            {
+              "word": "in the round",
+              "meaning": "全方位から"
+            }
+          ]
+        }
+      }
     }
   ]
 }

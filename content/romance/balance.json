@@ -11,9 +11,9 @@
       "B2": { "labelJa": "むずかしい", "descriptionJa": "長めの文や言い回しを使います（B2程度）。" }
     },
     "economy": {
-      "relaxed": { "labelJa": "ゆったり", "descriptionJa": "旅の予算が多めで、クリアなどのAPの報酬が1ずつ増えます。", "budgetPercent": 120, "rewardApBonus": 1 },
-      "standard": { "labelJa": "ふつう", "descriptionJa": "標準の予算とAPで旅をします。", "budgetPercent": 100, "rewardApBonus": 0 },
-      "tight": { "labelJa": "きびしい", "descriptionJa": "旅の予算が少なめです。安い乗り物を選べば、本筋は最後まで回れます。", "budgetPercent": 80, "rewardApBonus": 0 }
+      "relaxed": { "labelJa": "ゆったり", "descriptionJa": "旅の予算が多めで、観光や都市をクリアしたときのAPが少し増えます。", "budgetPercent": 120, "rewardApBonus": { "episode_clear": 1, "city_clear": 2 } },
+      "standard": { "labelJa": "ふつう", "descriptionJa": "標準の予算とAPで旅をします。", "budgetPercent": 100, "rewardApBonus": {} },
+      "tight": { "labelJa": "きびしい", "descriptionJa": "旅の予算が少なめです。安い乗り物を選べば、本筋は最後まで回れます。", "budgetPercent": 80, "rewardApBonus": {} }
     }
   }
 }

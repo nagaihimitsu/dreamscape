@@ -53,7 +53,83 @@
           "claimJa": "門のアーチには二つの碑文があり、その一つは「マリアの子イエス（彼に平安あれ）は言った。世界は橋である。渡りなさい、その上に家を建ててはならない」と記す。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "The words on the great gate say, 'The world is a bridge, pass over it, but build no houses on it.' Who first said these words?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Jesus, son of Mary."
+            },
+            {
+              "id": "B",
+              "textEn": "Emperor Akbar. He wrote them on his wedding day."
+            },
+            {
+              "id": "C",
+              "textEn": "The man who built the gate. It was a joke for builders in the future."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "gate",
+              "meaning": "門"
+            },
+            {
+              "word": "bridge",
+              "meaning": "橋"
+            },
+            {
+              "word": "wedding day",
+              "meaning": "結婚式の日"
+            },
+            {
+              "word": "joke",
+              "meaning": "冗談"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "The inscription on the great gate reads, 'The world is a bridge, pass over it, but build no houses on it.' To whom are these words attributed?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Jesus, son of Mary."
+            },
+            {
+              "id": "B",
+              "textEn": "Emperor Akbar, who supposedly composed them on his wedding day."
+            },
+            {
+              "id": "C",
+              "textEn": "The gate's builder, who intended them as a joke for later generations of builders."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "inscription",
+              "meaning": "碑文"
+            },
+            {
+              "word": "attributed",
+              "meaning": "（言葉などが）〜のものとされる"
+            },
+            {
+              "word": "supposedly",
+              "meaning": "〜ということになっている"
+            },
+            {
+              "word": "composed",
+              "meaning": "作った"
+            },
+            {
+              "word": "generations",
+              "meaning": "世代"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_fatehpur_saint_for_heir",
@@ -104,7 +180,83 @@
           "claimJa": "跡継ぎのいないことを案じたアクバルはシークリー村の聖者シャイフ・サリーム・チシュティーを訪ね、1569年、聖者にちなんで名付けられた皇子サリームがシークリーで生まれた。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Why did Emperor Akbar first go to the village of Sikri?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "To hunt tigers in the forests near a lake."
+            },
+            {
+              "id": "B",
+              "textEn": "To get away from a fire. The fire burned his palace in Agra."
+            },
+            {
+              "id": "C",
+              "textEn": "To ask the Sufi holy man Shaikh Salim Chishti for a blessing, so he could have a son."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "hunt",
+              "meaning": "狩りをする"
+            },
+            {
+              "word": "get away from",
+              "meaning": "〜から逃げる"
+            },
+            {
+              "word": "holy man",
+              "meaning": "聖者"
+            },
+            {
+              "word": "blessing",
+              "meaning": "祝福"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What originally brought Emperor Akbar to the village of Sikri?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A desire to hunt tigers in the forests surrounding a lake."
+            },
+            {
+              "id": "B",
+              "textEn": "The need to flee a fire that had destroyed his palace in Agra."
+            },
+            {
+              "id": "C",
+              "textEn": "A wish to obtain the Sufi saint Shaikh Salim Chishti's blessing for an heir to the throne."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "originally",
+              "meaning": "もともと"
+            },
+            {
+              "word": "surrounding",
+              "meaning": "周りを囲む"
+            },
+            {
+              "word": "flee",
+              "meaning": "逃れる"
+            },
+            {
+              "word": "obtain",
+              "meaning": "得る"
+            },
+            {
+              "word": "heir",
+              "meaning": "跡継ぎ"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "gt_agra_fatehpur_short_capital",
@@ -163,7 +315,79 @@
           "claimJa": "町はアクバルによって1571年から1585年の間に建設された。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "For how long was Fatehpur Sikri the capital city of the Mughals?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "For more than two hundred years."
+            },
+            {
+              "id": "B",
+              "textEn": "Only until 1585, about fifteen years after it was built."
+            },
+            {
+              "id": "C",
+              "textEn": "Never. The king and his people left before any building was finished."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "capital city",
+              "meaning": "首都"
+            },
+            {
+              "word": "Mughals",
+              "meaning": "ムガル（の人々）"
+            },
+            {
+              "word": "built",
+              "meaning": "建てられた"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "For how long did Fatehpur Sikri remain the capital of the Mughal empire?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "For well over two centuries."
+            },
+            {
+              "id": "B",
+              "textEn": "Only until 1585, roughly fifteen years after its foundation."
+            },
+            {
+              "id": "C",
+              "textEn": "Never: the court moved away before a single building had been completed."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "remain",
+              "meaning": "〜のままである"
+            },
+            {
+              "word": "empire",
+              "meaning": "帝国"
+            },
+            {
+              "word": "centuries",
+              "meaning": "世紀"
+            },
+            {
+              "word": "roughly",
+              "meaning": "おおよそ"
+            },
+            {
+              "word": "foundation",
+              "meaning": "創建"
+            }
+          ]
+        }
+      }
     }
   ]
 }

@@ -190,6 +190,138 @@
       ],
       "additionalProperties": false
     },
+    "economyLevels": {
+      "type": "object",
+      "properties": {
+        "relaxed": {
+          "type": "object",
+          "properties": {
+            "descriptionJa": {
+              "type": "string",
+              "minLength": 1
+            },
+            "confession": {
+              "type": "object",
+              "properties": {
+                "minAffection": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "minTrust": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "minSpark": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "minCompletedDates": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "minAffection",
+                "minTrust",
+                "minSpark",
+                "minCompletedDates"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "standard": {
+          "type": "object",
+          "properties": {
+            "descriptionJa": {
+              "type": "string",
+              "minLength": 1
+            },
+            "confession": {
+              "type": "object",
+              "properties": {
+                "minAffection": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "minTrust": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "minSpark": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "minCompletedDates": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "minAffection",
+                "minTrust",
+                "minSpark",
+                "minCompletedDates"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "tight": {
+          "type": "object",
+          "properties": {
+            "descriptionJa": {
+              "type": "string",
+              "minLength": 1
+            },
+            "confession": {
+              "type": "object",
+              "properties": {
+                "minAffection": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "minTrust": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "minSpark": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "minCompletedDates": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "minAffection",
+                "minTrust",
+                "minSpark",
+                "minCompletedDates"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "cityTransition": {
       "type": "string",
       "enum": [

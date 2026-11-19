@@ -41,7 +41,87 @@
           "claimJa": "絵の主光源は旧食堂の左側からの採光とそろう。それで絵の食卓と実際の部屋が地続きに見える。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Why does the room in the painting seem to have the same light as the friars' room?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The painted lamps look the same as the lamps on the table."
+            },
+            {
+              "id": "B",
+              "textEn": "Real daylight comes through the wall and the people in the painting."
+            },
+            {
+              "id": "C",
+              "textEn": "The light in the painting goes the same way as the light from the real windows."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "painting",
+              "meaning": "絵"
+            },
+            {
+              "word": "friars",
+              "meaning": "修道士たち"
+            },
+            {
+              "word": "daylight",
+              "meaning": "日光"
+            },
+            {
+              "word": "windows",
+              "meaning": "窓"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "What makes the painted room appear to be lit by the very same light as the friars' refectory?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The lamps depicted in the scene correspond to the lamps set on the table."
+            },
+            {
+              "id": "B",
+              "textEn": "The wall allows genuine daylight to filter through the figures."
+            },
+            {
+              "id": "C",
+              "textEn": "The illumination within the scene is consistent with the light entering through the actual windows."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "lit",
+              "meaning": "照らされた"
+            },
+            {
+              "word": "refectory",
+              "meaning": "（修道院の）食堂"
+            },
+            {
+              "word": "correspond to",
+              "meaning": "〜に対応する"
+            },
+            {
+              "word": "filter through",
+              "meaning": "透けて入る"
+            },
+            {
+              "word": "illumination",
+              "meaning": "照明、光"
+            },
+            {
+              "word": "consistent with",
+              "meaning": "〜と一致する"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_last_supper_q2",
@@ -80,7 +160,91 @@
           "claimJa": "館はマタイが隣の使徒たちに、いま聞いた言葉への注意を促す姿と解説する。腕と顔が別々の相手を結ぶ。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "levels": {
+        "A2": {
+          "questionEn": "Matthew puts his hands out toward Jesus, but he looks the other way. What does this show?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He is asking the others, 'Did you hear what Jesus said?'"
+            },
+            {
+              "id": "B",
+              "textEn": "He is calling a servant to take the plates away."
+            },
+            {
+              "id": "C",
+              "textEn": "He is turning to see who came into the room."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "puts his hands out",
+              "meaning": "手を差し出す"
+            },
+            {
+              "word": "the other way",
+              "meaning": "反対の方"
+            },
+            {
+              "word": "servant",
+              "meaning": "召使い"
+            },
+            {
+              "word": "plates",
+              "meaning": "皿"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Matthew stretches out his arms towards Jesus while turning his gaze elsewhere. What does this gesture convey?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He is urging the others to take note of what Jesus has just said."
+            },
+            {
+              "id": "B",
+              "textEn": "He is summoning a servant to clear the table."
+            },
+            {
+              "id": "C",
+              "textEn": "He is turning round to see who has come into the room."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "stretches out",
+              "meaning": "伸ばす"
+            },
+            {
+              "word": "gaze",
+              "meaning": "視線"
+            },
+            {
+              "word": "gesture",
+              "meaning": "身ぶり"
+            },
+            {
+              "word": "convey",
+              "meaning": "伝える"
+            },
+            {
+              "word": "urging",
+              "meaning": "促している"
+            },
+            {
+              "word": "take note of",
+              "meaning": "〜に注意を向ける"
+            },
+            {
+              "word": "summoning",
+              "meaning": "呼び寄せている"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "milano_last_supper_q3",
@@ -119,7 +283,83 @@
           "claimJa": "乾いた壁に描くことで時間をかけて変更を加えられた。じっくり選んだ一筆には、技法上の理由もある。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "Leonardo painted on dry plaster. What did this let him do?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "He could move the wall after he painted it."
+            },
+            {
+              "id": "B",
+              "textEn": "He could work slowly and change his work."
+            },
+            {
+              "id": "C",
+              "textEn": "He could paint the picture with no light."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "dry",
+              "meaning": "乾いた"
+            },
+            {
+              "word": "plaster",
+              "meaning": "しっくい"
+            },
+            {
+              "word": "slowly",
+              "meaning": "ゆっくり"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Working on dry plaster, rather than wet, afforded Leonardo what kind of freedom?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "The freedom to relocate the wall once it had been painted."
+            },
+            {
+              "id": "B",
+              "textEn": "The freedom to proceed at a leisurely pace and revise as he went."
+            },
+            {
+              "id": "C",
+              "textEn": "The freedom to paint without any light whatsoever."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "plaster",
+              "meaning": "しっくい"
+            },
+            {
+              "word": "afforded",
+              "meaning": "与えた"
+            },
+            {
+              "word": "relocate",
+              "meaning": "移す"
+            },
+            {
+              "word": "proceed",
+              "meaning": "進める"
+            },
+            {
+              "word": "leisurely",
+              "meaning": "ゆったりとした"
+            },
+            {
+              "word": "revise",
+              "meaning": "修正する"
+            }
+          ]
+        }
+      }
     }
   ]
 }

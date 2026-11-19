@@ -214,7 +214,7 @@ function inkChoiceTexts(source: string): string[] {
 /**
  * Each word (normalized like the game's word lookup) of the English shown
  * with word meanings, and the layers whose texts use it, each with the first
- * file that does: questions and options of the quiz files (samples excluded),
+ * file that does: questions and options of the quiz files at every English level (samples excluded),
  * and of encounters: their quiz, their catalog option texts and the choices of
  * their Ink story.
  */
@@ -232,6 +232,8 @@ export function wordUses(sources: ContentSources): Map<string, Map<string, strin
     if (!isObject(value)) return;
     use(value.questionEn, layer, file);
     for (const option of list(value.options)) use(option.textEn, layer, file);
+    // The question's English at the other levels of the difficulty.
+    if (isObject(value.levels)) for (const level of Object.values(value.levels)) question(level, layer, file);
   };
   for (const quiz of sources.quizFiles)
     if (!quiz.example && isObject(quiz.data)) for (const item of list(quiz.data.questions)) question(item, quiz.layer, quiz.file);
