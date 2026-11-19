@@ -41,6 +41,20 @@
 - 試したがやめたもの：半目を `exasperated` から（ぼやけて横目）、閉じ目を `happy` の肌から（笑い目の線の跡が残る）。
 - **すべてを今の絵柄にそろえるには、今の12枚と同じ作り方で「閉じ目」「半目」「口のあ・い・お」の絵を足してもらうのが確実です。** 足せば、上と同じ切り出しで差分にできます。
 
+## 12種類の表情をすべて使う（2026-11-19）
+
+ユーザーの頼み（「ほかの表情差分も全て使えませんか」）で、表情ごとに顔の差分を足しました。mesh-avatar の表情の差分は、目が「悲しい」「驚き」、口が「怒り」「悲しみ」の分しか入れる場所がないため、**動かす部品（`mesh-avatar` 0.8.0）を少し改造しています**。
+
+- 改造：[`mesh_avatar/mesh-avatar-faces.patch`](characters/heroine/default_01/mesh_avatar/mesh-avatar-faces.patch)（mesh-avatar-studio `406714b` の `packages/runtime/src` に当てる）。
+  - 差分に `face_<表情>` を足せるようにし、元の絵のすぐ上、目・口の差分より下に描く。
+  - `avatar.setFace("<表情>")` で切り替え（0.12秒で入れ替わる）、`setFace(null)` で元の顔。`getFaces()` で一覧。
+  - 顔の差分を出している間は、通常の顔から作った半目を使わない（目を閉じるときだけ閉じ目を重ねる）。
+- 顔の差分の切り出し：[`mesh_avatar/cut-faces.py`](characters/heroine/default_01/mesh_avatar/cut-faces.py)。`neutral.png` と違う所を、顔のまわり（x 395〜650、y 120〜290）で、前髪（`hairmask.png`）を除いて切り出し、ふちをぼかします。表情の絵は顔の外でも細かく描き直されているので、顔全体に近い範囲になります。1枚約80KB、11枚で約880KB。
+- 驚き・悲しみの目などの切り出しは [`cut-expression-sprites.py`](characters/heroine/default_01/mesh_avatar/cut-expression-sprites.py)、閉じ目・半目の帯の色の補正は [`fix-lid-band.py`](characters/heroine/default_01/mesh_avatar/fix-lid-band.py)。どれも mesh-avatar-studio の `projects/heroine/` で動かす作業用の手順です。
+- 結果：12種類とも今の表情の絵と同じ顔で、どの表情でもまばたきと声に合わせた口が動きます。
+- 残る問題：まばたきの一瞬は通常の顔から作った閉じ目が重なるので、照れの頬の赤みなどが目のまわりだけ薄くなります。口を大きく開けた表情（大きな驚き・喜びなど）で話すと、元の口の上に話す口が重なります。
+- 本番に入れるなら、改造した部品を Dreamscape 側に置いて版を固定する（元の mesh-avatar の更新は自分で取り込む）ことになります。
+
 ## 作り直すときの手順
 
 mesh-avatar-studio の [エージェント向けの手順](https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/agent-guide.md) に従います。この絵での要点：
