@@ -51,7 +51,7 @@ import { advanceRunningOccasion } from "./occasion-hooks";
 import { validateAlbum } from "./album";
 import { validateGlossary } from "./glossary";
 import { validatePastBattles } from "./carry-over";
-import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishLevel } from "./difficulty";
+import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishChoice } from "./difficulty";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -182,7 +182,7 @@ export function setNames(
  * ゲームの設定's English of the quizzes (the difficulty; 2026-11-19): any time, also during a scene. A quiz already started
  * keeps the English it started with (its activeBattle.englishLevel); the next one asks the new level. Unchanged as saved.
  */
-export function setEnglishLevel(state: GameState, english: EnglishLevel): GameState {
+export function setEnglishLevel(state: GameState, english: EnglishChoice): GameState {
   const current = difficultyOf(state);
   if (current.english === english) return state;
   return { ...state, difficulty: difficultySchema.parse({ ...current, english }), revision: state.revision + 1 };

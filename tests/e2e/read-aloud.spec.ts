@@ -62,7 +62,9 @@ test("a quiz's question is read aloud as it shows, stops at the answer, waits fo
       debugTargets(cityId).battle.some((target: { id: string; unavailable?: string }) => target.id === item.id && !target.unavailable));
     const questions: { questionEn: string; correctOptionId: string }[] = battleQuizzes[battle.quizId].questions;
     const journeyId: string = getJourneyForCity(cityId).id;
-    const state = builders.openBattleScene(builders.completedCity(cityId, { names: ["航", "澪"] }), battle.id);
+    // An English level (the default 「日本語のみ」 shows the translation only and reads nothing aloud).
+    const city = { ...builders.completedCity(cityId, { names: ["航", "澪"] }), difficulty: { english: "B1", economy: "standard" } };
+    const state = builders.openBattleScene(city, battle.id);
     return {
       journeyId, saved: saveGame(journeyStorage(localStorage, journeyId), state),
       questions: questions.map((question) => ({ en: question.questionEn, right: question.correctOptionId })),
