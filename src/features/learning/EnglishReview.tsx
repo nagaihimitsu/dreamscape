@@ -17,6 +17,7 @@ import { toggleTranslation, type Part } from "./Translations";
 import { WordBook } from "./WordBook";
 import { LocalWords } from "./LocalWords";
 import { localWordGroups } from "./local-words";
+import { pastBattleIds } from "../../domain/carry-over";
 import "./learning.css";
 
 /** A battle's answers as the notes keep them (learning-storage.ts) and as a battle on screen has them (its run). */
@@ -42,7 +43,9 @@ function recordedQuestions(records: Record<string, AnswerRecord>) {
 }
 /** The notes' records of the battles this save has fought (its battleRecords). */
 function savedRecords(game: GameState, learning: Pick<Learning, "data">): Record<string, AnswerRecord> {
-  return Object.fromEntries(Object.entries(learning.data.records).filter(([id]) => game.battleRecords.some((item) => item.battleId === id)));
+  // With the quizzes of the journeys finished before this one (「もう一度この旅を」: carry-over.ts).
+  const past = pastBattleIds(game);
+  return Object.fromEntries(Object.entries(learning.data.records).filter(([id]) => past.includes(id) || game.battleRecords.some((item) => item.battleId === id)));
 }
 /** The questions the notes list: during a battle, its run's; else those of the battles this save has fought. */
 export function answeredQuestions(game: GameState, learning: Pick<Learning, "data">) {

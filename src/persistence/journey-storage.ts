@@ -1,4 +1,4 @@
-import { LEARNING_KEY, LOCAL_WORDS_KEY, READ_LINES_KEY, SAVE_KEY, type StorageLike } from "./index";
+import { LEARNING_KEY, LOCAL_WORDS_KEY, MEMORY_KEY, READ_LINES_KEY, SAVE_KEY, type StorageLike } from "./index";
 
 export interface ScopedStorage extends StorageLike {
   removeItem(key: string): void;
@@ -11,7 +11,7 @@ const JOURNEY_ID = /^[a-z][a-z0-9_]*$/;
 
 /**
  * The save slots of a journey (2026-11-19 user decision: several saves of one journey, each with its own names). Only
- * the game save and its backups are kept per slot; the English notes, the read lines and the words learned are the
+ * the game save, its backups and its 旅の思い出 are kept per slot; the English notes, the read lines and the words learned are the
  * device's records of the journey, shared by its slots.
  */
 export const SAVE_SLOTS = [1, 2, 3] as const;
@@ -31,26 +31,28 @@ export function journeyPhysicalKey(journeyId: string, key: string, slot: SaveSlo
   if (key === LEARNING_KEY) return `${prefix}.learning.v1`;
   if (key === READ_LINES_KEY) return `${prefix}.read-lines.v1`;
   if (key === LOCAL_WORDS_KEY) return `${prefix}.local-words.v1`;
+  // 旅の思い出 belongs to the slot whose journey was finished, as its save does.
+  if (key === MEMORY_KEY) return `${prefix}${slot === 1 ? "" : `.slot${slot}`}.memory.v1`;
   return key;
 }
 
 /**
  * The journey and logical key behind a journey slot's browser key, the inverse of journeyPhysicalKey
  * (`dreamscape.journey.<id>.save.v1[.backup.…]` → SAVE_KEY[.backup.…], `….learning.v1` →
- * LEARNING_KEY, `….read-lines.v1` → READ_LINES_KEY, `….local-words.v1` → LOCAL_WORDS_KEY); null for every other key.
+ * LEARNING_KEY, `….read-lines.v1` → READ_LINES_KEY, `….local-words.v1` → LOCAL_WORDS_KEY, `….memory.v1` → MEMORY_KEY); null for every other key.
  */
 export function parseJourneyPhysicalKey(physical: string): { journeyId: string; key: string; slot: SaveSlot } | null {
-  const match = /^dreamscape\.journey\.([^.]+)\.(?:(?:slot(\d+)\.)?(save\.v1)(\..+)?|(learning\.v1)|(local-words\.v1)|read-lines\.v1)$/.exec(physical);
+  const match = /^dreamscape\.journey\.([^.]+)\.(?:(?:slot(\d+)\.)?(?:(save\.v1)(\..+)?|(memory\.v1))|(learning\.v1)|(local-words\.v1)|read-lines\.v1)$/.exec(physical);
   if (!match || !JOURNEY_ID.test(match[1])) return null;
   const slot = match[2] === undefined ? 1 : Number(match[2]);
   if (!isSaveSlot(slot)) return null;
-  const key = match[3] ? `${SAVE_KEY}${match[4] ?? ""}` : match[5] ? LEARNING_KEY : match[6] ? LOCAL_WORDS_KEY : READ_LINES_KEY;
+  const key = match[3] ? `${SAVE_KEY}${match[4] ?? ""}` : match[5] ? MEMORY_KEY : match[6] ? LEARNING_KEY : match[7] ? LOCAL_WORDS_KEY : READ_LINES_KEY;
   return journeyPhysicalKey(match[1], key, slot) === physical ? { journeyId: match[1], key, slot } : null;
 }
 
 /**
- * Every journey keeps its game saves (one per slot) with their backups, English notes, read lines and local words
- * learned under keys of its own; this storage reads and writes slot `slot`'s save.
+ * Every journey keeps its game saves (one per slot) with their backups and 旅の思い出, English notes, read lines and local
+ * words learned under keys of its own; this storage reads and writes slot `slot`'s save and memory.
  */
 export function journeyStorage(
   base: StorageLike & { removeItem(key: string): void },

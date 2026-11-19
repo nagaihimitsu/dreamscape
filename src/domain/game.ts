@@ -50,6 +50,7 @@ import { validateTourState } from "./tour";
 import { advanceRunningOccasion } from "./occasion-hooks";
 import { validateAlbum } from "./album";
 import { validateGlossary } from "./glossary";
+import { validatePastBattles } from "./carry-over";
 import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishLevel } from "./difficulty";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
@@ -554,5 +555,6 @@ export function validateGameState(input: unknown): GameState {
   validateStoryProgress(state);
   validateAlbum(state);
   validateGlossary(state);
+  validatePastBattles(state);
   return state;
 }
