@@ -316,6 +316,11 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(memories).toHaveCount(0);
   const again = await readSave(page, JOURNEY);
   expect(again).toMatchObject({ playerName: ended.playerName, heroineName: ended.heroineName, completedCityIds: [], viewedEpilogueCityIds: [] });
+  // What was collected stays (carry-over.ts): the album's photos (as taken), 旅の図鑑 and the quizzes 英語ノート lists.
+  expect(again.album.slice(0, ended.album.length)).toEqual(ended.album);
+  expect(again.glossary ?? []).toEqual(expect.arrayContaining(ended.glossary ?? []));
+  expect(again.pastBattleIds).toEqual(ended.battleRecords.map((record) => record.battleId));
+  expect(again.battleRecords).toEqual([]);
   const kept = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "null"), `dreamscape.journey.${JOURNEY}.memory.v1`);
   expect(kept).toEqual(ended);
   await playUntil(page, (state) => !state.activeEpilogue && !state.occasion, { source, pick });

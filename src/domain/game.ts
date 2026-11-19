@@ -50,6 +50,7 @@ import { validateTourState } from "./tour";
 import { advanceRunningOccasion } from "./occasion-hooks";
 import { validateAlbum } from "./album";
 import { validateGlossary } from "./glossary";
+import { validatePastBattles } from "./carry-over";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -539,5 +540,6 @@ export function validateGameState(input: unknown): GameState {
   validateStoryProgress(state);
   validateAlbum(state);
   validateGlossary(state);
+  validatePastBattles(state);
   return state;
 }

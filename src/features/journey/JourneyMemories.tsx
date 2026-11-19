@@ -45,7 +45,7 @@ export function JourneyMemoriesScreen({ journeyJa, playerName, heroineName, numb
     <button type="button" className="primary" data-testid="memories-again" onClick={onAgain}>
       もう一度この旅を <span aria-hidden="true">→</span>
     </button>
-    <p className="fine-print">同じ名前で、最初から始めます。今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。</p>
+    <p className="fine-print">同じ名前で、最初から始めます。アルバムの写真・旅の図鑑・英語ノートは引き継ぎます。今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。</p>
     {selector && <div className="memories-other">
       {selector}
       <p className="fine-print">別の旅行編へ切り替えても、この旅はこのまま残ります。</p>

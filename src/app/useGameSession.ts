@@ -7,6 +7,7 @@ import { recordGlossaryTerms } from "../domain/glossary";
 import { applyPlayerAction } from "../domain/player-action";
 import { deleteSaveData, keepJourneyMemory, loadGame, replaceWithNewJourney, saveGame, type StorageLike } from "../persistence";
 import { isJourneyComplete } from "../domain/city-travel";
+import { carryOver } from "../domain/carry-over";
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
 import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
@@ -133,7 +134,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
   function beginAgain(journeyId: string, expectedMemory: string | null) {
     const finished = gameRef.current;
     if (!finished || !isJourneyComplete(finished)) return false;
-    const initial = createGame(finished.playerName, finished.heroineName, { journeyId, playerNameReading: finished.playerNameReading });
+    // What the finished journey collected stays (carry-over.ts): the album, 旅の図鑑 and the quizzes of 英語ノート.
+    const initial = carryOver(finished, createGame(finished.playerName, finished.heroineName, { journeyId, playerNameReading: finished.playerNameReading }));
     const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));
     const kept = keepJourneyMemory(storage, finished, expectedMemory);
     if (!kept.ok) { setNotice(kept.message); return false; }

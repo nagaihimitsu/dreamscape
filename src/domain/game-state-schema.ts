@@ -143,6 +143,9 @@ export const gameStateSchema = z.object({
   // 旅の図鑑 (2026-11-13, an optional field of save v23; src/domain/glossary.ts): the terms the lines' # term: named, each
   // once, in the order met. A save written before it has none (nothing met yet); a new game starts it empty.
   glossary: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じ言葉が旅の図鑑に2つあります。").optional(),
+  // 「もう一度この旅を」 (2026-11-19, an optional field; src/domain/carry-over.ts): the quizzes the finished journeys before
+  // this one played, whose questions 英語ノート lists besides this journey's. Absent for a journey not begun again.
+  pastBattleIds: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じクイズが2つあります。").optional(),
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),

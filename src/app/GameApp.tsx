@@ -526,7 +526,7 @@ export function GameApp({
   const englishKey = useMemo(
     () => (game ? englishNoteKeys(metQuestions(game, learning), learnedWords.learned) : []).join("\n"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [!!game, game?.battleRecords, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
+    [!!game, game?.battleRecords, game?.pastBattleIds, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
   );
   const englishIds = englishKey ? englishKey.split("\n") : [];
   useEffect(() => {
@@ -1408,8 +1408,8 @@ export function GameApp({
         reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
       {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>
         <ModalTitle id="again-title">もう一度この旅を</ModalTitle>
-        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・アルバム・ふたりの関係は、最初からになります。</p>
-        <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。英語ノート・その国の言葉・既読の記録は、そのまま残ります。
+        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。アルバムの写真・旅の図鑑・英語ノートは、そのまま引き継ぎます。</p>
+        <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。その国の言葉・既読の記録も、そのまま残ります。
           {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
           {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
         {confirmAgain.status === "invalid" && confirmAgain.raw === null && <p role="alert">このブラウザの保存領域を読み取れないため、始められません。保存の設定を確認してください。</p>}
