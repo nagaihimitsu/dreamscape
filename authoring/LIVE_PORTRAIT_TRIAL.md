@@ -65,6 +65,15 @@
 - 首の影が出たり消えたりした（表情の絵ごとに首の影の描き方が違い、顔の差分に首まで入っていた）ので、あごの線（`cut-faces.py` の `JAW`）より下は顔の差分にも開いた口の差分にも入れないようにしました。首はいつも元の絵のままです。差分の合計は約670KBに減りました。
 - まばたきで頬の赤みが薄くなった（閉じ目が通常の顔から作られていた）ので、表情ごとの閉じ目 `eyes_closed_<0|1>__<表情>` を作り、表情を出している間はそれを使うようにしました（部品の改造に追加）。作り方は [`cut-closed-eyes.py`](characters/heroine/default_01/mesh_avatar/cut-closed-eyes.py)：表情の絵と通常の絵の肌の色の割合（頬の赤み）を閉じ目に掛けます。喜びはもともと目を閉じた絵なので、喜びの目をそのまま使います（まばたきしても変わらない）。表情の絵の肌から目を塗りつぶす方法も試しましたが、前髪の影で目の上の肌が灰色なので、まぶた全体が灰色になりやめました。表情を出している間は、目を閉じるときも笑い目を使わず閉じ目にします。
 
+### ユーザーが描いた閉じ目・半目・口（2026-11-19）
+
+閉じ目を塗って直すと前髪が消えるため、ユーザーが元の絵柄で描き足しました：[`mesh_avatar/blink-mouth-sheet.png`](characters/heroine/default_01/mesh_avatar/blink-mouth-sheet.png)（通常・まばたき（閉じ）・まばたき（半目）・あ・う・お の6コマ、胸から上）。
+
+- 各コマを `neutral.png` に位置合わせ（[`register-sheet.py`](characters/heroine/default_01/mesh_avatar/register-sheet.py)：SIFT の対応点から相似変換。6コマとも縮尺約0.65、回転0.5度以内）し、通常のコマで肌の色を合わせてから、閉じ目・半目・口の「あ」「お」をマスクの内側だけ差分にしました（[`sheet-to-variants.py`](characters/heroine/default_01/mesh_avatar/sheet-to-variants.py)）。`build-sprites.py` の検査は通ります。
+- 「う」は使っていません（mesh-avatar は「お」を横に細めて「う」にする）。口の「い」「半開きのあ」は画像生成の絵のままです。
+- 結果：閉じ目のまわりの帯が消え、前髪も残りました。表情ごとの閉じ目（頬の赤みを掛けたもの）もこの閉じ目から作り直しています。
+- 作り直す順：`sheet-to-variants.py` → `build-sprites.py`（顔の差分も消える）→ `cut-faces.py` → `cut-closed-eyes.py`。
+
 ## 作り直すときの手順
 
 mesh-avatar-studio の [エージェント向けの手順](https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/agent-guide.md) に従います。この絵での要点：
@@ -77,7 +86,6 @@ mesh-avatar-studio の [エージェント向けの手順](https://github.com/sh
 
 ## 本番に入れる前に決めること
 
-- 閉じ目・半目・口の形の絵を、今の表情の絵と同じ作り方で足すか。
 - 表情12種類と mesh-avatar の表情の対応表。制作者が JSON で決められるようにする。
 - 衣装ごとに1体ずつ作るので、衣装の仕組み（`resolveCharacterCostume`）との対応。
 - 声の大きさを `useVoice.ts` の AudioContext から取り出す方法と、声のない台詞の口の動き。
