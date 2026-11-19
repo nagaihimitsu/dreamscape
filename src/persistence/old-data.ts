@@ -1,6 +1,6 @@
 import { journeys } from "../content/journeys";
 import { LEARNING_KEY, LOCAL_WORDS_KEY, MEMORY_KEY, READ_LINES_KEY, SAVE_KEY, isSaveBackupKey, loadGame, saveBackupTime } from "./index";
-import { journeyPhysicalKey, parseJourneyPhysicalKey } from "./journey-storage";
+import { journeyPhysicalKey, parseJourneyPhysicalKey, type SaveSlot } from "./journey-storage";
 import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } from "./journey-lock";
 
 /**
@@ -15,8 +15,9 @@ import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } 
  * - the keys Milan used before journeys had their own slots (`dreamscape.save.v1` with its backups,
  *   `dreamscape.learning.v1`);
  * - the keys of a journey this version does not have (its save with backups, its notes, its read
- *   lines (READ_LINES_KEY), its words learned (LOCAL_WORDS_KEY) and its 旅の思い出 (MEMORY_KEY) each apart).
- * Never listed: this journey's own save slot (its title and 「保存データの消去」 handle it), any game
+ *   lines (READ_LINES_KEY), its words learned (LOCAL_WORDS_KEY) and its 旅の思い出 (MEMORY_KEY, of every slot) each apart).
+ * Each save slot (journey-storage.ts SAVE_SLOTS) of another journey is listed apart when it holds an old version.
+ * Never listed: this journey's own save slots (the list of saves, its title and 「保存データの消去」 handle it), any game
  * save that loads in this version (also as a backup), another journey's save that is not an old
  * version (damaged, newer, preparation draft), the English notes, the read lines, the words learned and 旅の思い出 of a journey this version has,
  * the display settings, the remembered journey (`dreamscape.last-journey.v1`) and the journeys opened lately
@@ -145,16 +146,18 @@ function unusedSaves(entries: ReadonlyMap<string, string>, keys: readonly string
 /** What the player may remove now, in this order: the journeys of this version, Milan's old keys, removed journeys. */
 export function listOldData(entries: ReadonlyMap<string, string>, context: OldDataContext): OldDataItem[] {
   const known = new Map(context.journeys.map((journey) => [journey.id, journey]));
-  const byJourney = new Map<string, { save?: string; backups: string[]; learning?: string; readLines?: string; localWords?: string; memory?: string }>();
-  for (const key of entries.keys()) {
+  // `saves`: each save slot's game save, by slot (journey-storage.ts SAVE_SLOTS), slot 1 first.
+  type JourneyKeys = { saves: Map<SaveSlot, string>; backups: string[]; learning?: string; readLines?: string; localWords?: string; memories: string[] };
+  const byJourney = new Map<string, JourneyKeys>();
+  for (const key of [...entries.keys()].sort((a, b) => (parseJourneyPhysicalKey(a)?.slot ?? 1) - (parseJourneyPhysicalKey(b)?.slot ?? 1))) {
     const parsed = parseJourneyPhysicalKey(key);
     if (!parsed) continue;
-    const slot = byJourney.get(parsed.journeyId) ?? { backups: [] };
-    if (parsed.key === SAVE_KEY) slot.save = key;
+    const slot: JourneyKeys = byJourney.get(parsed.journeyId) ?? { saves: new Map(), backups: [], memories: [] };
+    if (parsed.key === SAVE_KEY) slot.saves.set(parsed.slot, key);
     else if (parsed.key === LEARNING_KEY) slot.learning = key;
     else if (parsed.key === READ_LINES_KEY) slot.readLines = key;
     else if (parsed.key === LOCAL_WORDS_KEY) slot.localWords = key;
-    else if (parsed.key === MEMORY_KEY) slot.memory = key;
+    else if (parsed.key === MEMORY_KEY) slot.memories.push(key);
     else if (isSaveBackupKey(parsed.key)) slot.backups.push(key);
     else continue;
     byJourney.set(parsed.journeyId, slot);
@@ -166,16 +169,18 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
     if (!slot) continue;
     const current = journey.id === context.currentJourneyId;
     const lock = current ? null : { name: slotLockName(journeyPhysicalKey(journey.id, SAVE_KEY)), ownerJa: journey.nameJa };
-    if (!current && slot.save !== undefined) {
-      const raw = entries.get(slot.save)!;
+    for (const [saveSlot, saveKey] of current ? [] : slot.saves) {
+      const raw = entries.get(saveKey)!;
       const content = describeSave(raw, journey.id);
+      // Slot 1 keeps the names of the time before slots (one save per journey); the others say their slot.
+      const slotJa = saveSlot === 1 ? "" : String(saveSlot);
       if (content.kind === "old") items.push({
-        id: `old_version:${journey.id}`, lock,
-        titleJa: `${journey.nameJa}のセーブ（旧版）`,
+        id: saveSlot === 1 ? `old_version:${journey.id}` : `old_version:${journey.id}:slot${saveSlot}`, lock,
+        titleJa: `${journey.nameJa}のセーブ${slotJa}（旧版）`,
         impactJa: `バージョン${content.version}の形式のため、今の版では再開できません。` + (journey.status === "available"
-          ? `消去すると、${journey.nameJa}は次に開いたとき新しい旅から始まります。`
+          ? `消去すると、${journey.nameJa}${saveSlot === 1 ? "" : `のセーブ${saveSlot}`}は次に開いたとき新しい旅から始まります。`
           : `${journey.nameJa}は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。`) + "英語ノートは消えません。",
-        keys: [entry(slot.save, raw, contentNote(content))],
+        keys: [entry(saveKey, raw, contentNote(content))],
       });
     }
     const backups = unusedSaves(entries, slot.backups);
@@ -206,7 +211,7 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
   for (const [journeyId, slot] of [...byJourney].filter(([id]) => !known.has(id)).sort(([a], [b]) => a.localeCompare(b))) {
     const name = `旅行編「${journeyId}」`;
     const lock = { name: slotLockName(journeyPhysicalKey(journeyId, SAVE_KEY)), ownerJa: name };
-    const saves = unusedSaves(entries, [...(slot.save === undefined ? [] : [slot.save]), ...slot.backups], ABSENT_JOURNEY_SAVE_JA);
+    const saves = unusedSaves(entries, [...slot.saves.values(), ...slot.backups], ABSENT_JOURNEY_SAVE_JA);
     if (saves.length) items.push({
       id: `removed:${journeyId}:save`, lock,
       titleJa: `この版にない${name}のセーブ`,
@@ -231,11 +236,11 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
       impactJa: "この版のゲームにない旅行編で覚えた、その国の言葉の記録です。今のゲームは読み込みません。消去すると戻せません。",
       keys: [entry(slot.localWords, entries.get(slot.localWords)!, "覚えたその国の言葉")],
     });
-    if (slot.memory !== undefined) items.push({
+    if (slot.memories.length) items.push({
       id: `removed:${journeyId}:memory`, lock,
       titleJa: `この版にない${name}の旅の思い出`,
       impactJa: "この版のゲームにない旅行編で、終えた旅を残したものです。今のゲームは読み込みません。消去すると戻せません。",
-      keys: [entry(slot.memory, entries.get(slot.memory)!, "旅の思い出")],
+      keys: slot.memories.map((key) => entry(key, entries.get(key)!, "旅の思い出")),
     });
   }
   return items;

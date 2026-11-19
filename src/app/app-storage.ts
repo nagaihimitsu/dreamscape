@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { GameState } from "../domain/game";
 import type { KeyedStorage } from "../persistence/old-data";
 import type { DebugShot } from "./debug-mode";
+import type { SaveSlot } from "../persistence/journey-storage";
 
 export const browserStorage = {
   getItem: (key: string) => window.localStorage.getItem(key),
@@ -41,3 +42,12 @@ export type AppProps = {
   debugShot?: DebugShot;
 };
 
+
+/** The journey's save slots as the game's screen sees them (save-slots.ts): the one it plays, and the way to another. */
+export type SaveSlots = {
+  journeyId: string;
+  slot: SaveSlot;
+  /** The browser storage the slots are read from (SaveSlots.tsx's list). */
+  base: typeof browserStorage;
+  onSwitch: (slot: SaveSlot) => void;
+};

@@ -186,7 +186,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード・旅の記録・アルバム・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ≡メニュー
+  // セーブ・ロード・セーブの枠・旅の記録・アルバム・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ≡メニュー
   // (UI redesign §3.1, U2/U24/U28; named 「設定」 until 2026-11-14), a disclosure: by keyboard it opens on セーブ, the
   // arrows move between its items, Esc closes it back on ≡メニュー, and leaving it with Tab closes it. While saving is
   // automatic, a line under セーブ・ロード says when it last saved (display only: the arrows and Tab pass it).
@@ -195,7 +195,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "旅の記録", "アルバム", "英語ノート", "写真の出典", "ゲームの設定"]);
+  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "セーブの枠", "旅の記録", "アルバム", "英語ノート", "写真の出典", "ゲームの設定"]);
   await expect(panel.getByText(/^自動保存：(?:たった今|オン)$/u)).toBeVisible();
   await expect(item("セーブ")).toBeFocused();
   await page.keyboard.press("ArrowDown");

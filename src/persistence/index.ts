@@ -15,7 +15,7 @@ export const LOCAL_WORDS_KEY = "dreamscape.local-words.v1";
 /**
  * 旅の思い出 (2026-11-19 user decision; docs/01 「クリア後・難易度・複数のセーブ」): the journey last finished in this slot,
  * kept as it was when 「もう一度この旅を」 started a new one, so its end roll, album, music room and numbers can be seen again.
- * One per journey (a later finish replaces it); removed with the rest by 「保存データの消去」.
+ * One per save slot (a later finish replaces it); removed with the slot's save by 「保存データの消去」.
  */
 export const MEMORY_KEY = "dreamscape.memory.v1";
 /** The current format is validated, not automatically migrated from older versions. */
@@ -27,6 +27,11 @@ export interface StorageLike {
   physicalKey?(key: string): string;
   /** Absent for isolated debug/test storage; browser journey slots always set it. */
   journeyId?: string;
+  /**
+   * Whether another save slot of the journey holds a save (journey-storage.ts); absent for a storage of one slot. Its
+   * English notes, read lines and words learned are shared by the slots, so deleting one slot's save keeps them then.
+   */
+  otherSlotsInUse?(): boolean;
 }
 
 export type LoadResult =
@@ -261,19 +266,21 @@ export function backupAndCreate(
 }
 
 /**
- * Delete only the two active Dreamscape slots after checking the confirmed snapshot, then this journey's other play
+ * Delete only the two active Dreamscape slots (only the game save when `sharedKept`: another save slot of the journey
+ * holds a save, and the records below are shared with it) after checking the confirmed snapshot, then this journey's other play
  * records on the device: the words learned that the English notes show (LOCAL_WORDS_KEY) and the lines read
- * (READ_LINES_KEY; 2026-11-11 user decision: 「保存データの消去」 erases everything of the play) and 旅の思い出 (MEMORY_KEY). Only the tab that holds
+ * (READ_LINES_KEY; 2026-11-11 user decision: 「保存データの消去」 erases everything of the play). The slot's 旅の思い出 (MEMORY_KEY) goes either way. Only the tab that holds
  * the journey writes them (journey-lock.ts), and the game reloads right after. Presentation settings stay.
  */
 export function deleteSaveData(
   storage: StorageLike & { removeItem(key: string): void },
-  expected: { game: string | null; learning: string | null },
+  expected: { game: string | null; learning: string | null; sharedKept?: boolean },
 ): SaveResult {
   try {
     if (
       storage.getItem(SAVE_KEY) !== expected.game ||
-      storage.getItem(LEARNING_KEY) !== expected.learning
+      storage.getItem(LEARNING_KEY) !== expected.learning ||
+      (storage.otherSlotsInUse?.() ?? false) !== (expected.sharedKept ?? false)
     )
       return {
         ok: false,
@@ -282,6 +289,12 @@ export function deleteSaveData(
       };
     const current = loadGame(storage);
     if (current.status === "invalid" && current.kind === "journey") return { ok: false, message: wrongJourneyMessage };
+    // Another slot still plays the journey: only this slot's save goes; the records the slots share stay.
+    if (expected.sharedKept) {
+      storage.removeItem(SAVE_KEY);
+      storage.removeItem(MEMORY_KEY);
+      return { ok: true };
+    }
     storage.removeItem(LEARNING_KEY);
     try {
       storage.removeItem(SAVE_KEY);

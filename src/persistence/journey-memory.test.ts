@@ -76,6 +76,14 @@ describe("旅の思い出 (2026-11-19)", () => {
   it("has a key of its own in each journey's slot", () => {
     const physical = journeyPhysicalKey("milano", MEMORY_KEY);
     expect(physical).toBe("dreamscape.journey.milano.memory.v1");
-    expect(parseJourneyPhysicalKey(physical)).toEqual({ journeyId: "milano", key: MEMORY_KEY });
+    expect(parseJourneyPhysicalKey(physical)).toEqual({ journeyId: "milano", key: MEMORY_KEY, slot: 1 });
+  });
+});
+
+describe("旅の思い出 of each save slot", () => {
+  it("has a key of its own in each slot, read back with its slot", () => {
+    const physical = journeyPhysicalKey("milano", MEMORY_KEY, 2);
+    expect(physical).toBe("dreamscape.journey.milano.slot2.memory.v1");
+    expect(parseJourneyPhysicalKey(physical)).toEqual({ journeyId: "milano", key: MEMORY_KEY, slot: 2 });
   });
 });

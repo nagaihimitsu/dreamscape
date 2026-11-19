@@ -156,7 +156,9 @@ import {
   battleBackgroundId,
 } from "../domain/battle";
 
-import { browserStorage, type AppProps } from "./app-storage";
+import { browserStorage, type AppProps, type SaveSlots } from "./app-storage";
+import type { SaveSlot } from "../persistence/journey-storage";
+import { SaveSlotList, SaveSlotsDialog } from "../features/journey/SaveSlots";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
@@ -215,7 +217,10 @@ export function GameApp({
   onSwitchJourney,
   selectorFocus,
   oldDataStorage,
-}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage }) {
+  saves,
+}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage;
+  /** The journey's save slots (save-slots.ts); absent in Debug, which plays isolated storage. */
+  saves?: SaveSlots }) {
   // Only Debug (src/dev/DebugMode.tsx) passes `debug`, on the dev server and, with Debug mode on, in production.
   const isDebug = debug;
   const displaySettings = usePresentationSettings(storage);
@@ -484,6 +489,16 @@ export function GameApp({
       main.current?.focus({ preventScroll: true });
     endSelectorFocus();
   }, [restoreSelectorFocus, endSelectorFocus]);
+  // 「セーブの枠」 (SaveSlots.tsx): its dialog, and the slot whose switch waits for the player to confirm losing unsaved play.
+  const [saveSlotsOpen, setSaveSlotsOpen] = useState(false);
+  const [switchSlotTo, setSwitchSlotTo] = useState<SaveSlot | null>(null);
+  function requestSlotSwitch(slot: SaveSlot) {
+    if (!saves) return;
+    setSaveSlotsOpen(false);
+    const step = leaveStep({ way: "switch_slot", from: saves.slot, to: slot }, session.hasUnsavedProgress());
+    if (step === "ask") setSwitchSlotTo(slot);
+    else if (step === "leave") saves.onSwitch(slot);
+  }
   function requestJourneySwitch(id: string) {
     if (!onSwitchJourney) return;
     const step = leaveStep({ way: "switch_journey", from: journeyId, to: id }, session.hasUnsavedProgress());
@@ -934,6 +949,7 @@ export function GameApp({
         itemFlight={itemLeave}
         itemOutFlight={itemOutLeave}
         onLoad={reload}
+        onSaveSlots={saves ? () => setSaveSlotsOpen(true) : undefined}
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
@@ -1063,6 +1079,7 @@ export function GameApp({
                   onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ{offlineMark && `（${offlineMark}）`}</button> : undefined} />}
               {offlineEntries && offlineEntryShown && <p role="status" className="sr-only" data-testid="offline-title-status">{offlineTitleStatus(offline, journeys)?.text}</p>}
               {offlineEntries && offlineTitleHint(offline, online, journeyId) && <p className="fine-print offline-hint">{offlineTitleHint(offline, online, journeyId)}</p>}
+              {saves && <SaveSlotList saves={saves} onChoose={requestSlotSwitch} />}
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
                 <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine}
                   playerRef={titleReading.ref} />
@@ -1519,7 +1536,12 @@ export function GameApp({
           onClose={() => setDeleteSnapshot(null)}
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
-          {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
+          {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : deleteSnapshot.sharedKept ? <><p>
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、旅の思い出を消去します。元には戻せません。
+          </p>
+          <p className="fine-print">
+            ほかのセーブの枠と、枠で共有する英語ノート（単語帳・その国の言葉）・対訳設定・既読の記録は消去しません。文字の速さなどの表示設定、以前に退避したバックアップ、ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
+          </p></> : <><p>
             このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
@@ -1540,6 +1562,16 @@ export function GameApp({
             >
               {isDebug ? "Debug用の一時データを消去する" : "保存データを消去する"}
             </ConfirmActionButton>} />
+        </Modal>
+      )}
+      {saveSlotsOpen && saves && <SaveSlotsDialog saves={saves} onChoose={requestSlotSwitch} onClose={() => setSaveSlotsOpen(false)} />}
+      {switchSlotTo !== null && saves && (
+        <Modal labelledBy="switch-slot-title" onClose={() => setSwitchSlotTo(null)}>
+          <ModalTitle id="switch-slot-title">セーブ{switchSlotTo}に切り替える</ModalTitle>
+          <p>手動セーブしていない進行は失われます。切り替えますか？</p>
+          <ModalAnswers
+            cancel={<button type="button" className="secondary" autoFocus onClick={() => setSwitchSlotTo(null)}>戻る</button>}
+            action={<button type="button" className="primary" onClick={() => saves.onSwitch(switchSlotTo)}>切り替える</button>} />
         </Modal>
       )}
       {switchJourneyTo && (
