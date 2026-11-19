@@ -15,8 +15,8 @@
     "pivotY": 290,
     "maxRoll": 0.15,
     "weightBand": [
-      272,
-      330
+      268,
+      345
     ],
     "turnBand": [
       275,
@@ -26,14 +26,14 @@
   "body": {
     "pivotX": 512,
     "pivotY": 1500,
-    "maxRoll": 0.015,
+    "maxRoll": 0.012,
     "breathBand": [
       470,
       760
     ],
     "rollBand": [
-      300,
-      1350
+      1380,
+      1500
     ],
     "chest": {
       "cx": 512,
@@ -54,7 +54,14 @@
         "rx": 50,
         "ry": 35
       }
-    ]
+    ],
+    "hip": {
+      "shift": 9,
+      "band": [
+        1250,
+        1500
+      ]
+    }
   },
   "face": {
     "nose": {
