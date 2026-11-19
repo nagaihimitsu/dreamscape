@@ -4,7 +4,7 @@ import { battlePlayed } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import { albumPages, type AlbumPhotoView } from "./album-pages";
 import { cityProgressParts } from "./city-progress-label";
-import { journeyAlbumContent, lookBackOf, type LookBack, type RecapSubject } from "./journey-moments";
+import { journeyAlbumContent, lookBackOf, subjectStoryIds, type LookBack, type RecapSubject } from "./journey-moments";
 import { metPeopleGroups, type MetPerson } from "./met-people";
 import { formatTravelTime } from "./travel-time";
 
@@ -19,6 +19,8 @@ export type LogExperience = LookBack & {
   kind: "visit" | "finale" | "date";
   /** When it was lived (「n日目 hh:mm」, the city's day as the header shows it; save livedTimes), when the save knows. */
   whenJa?: string;
+  /** The album photos its own stories took (subjectStoryIds), in the order taken: its card opens them all. */
+  photos: AlbumPhotoView[];
 };
 
 export type LogPage = {
@@ -49,7 +51,7 @@ export function cityProgressJa(game: Readonly<GameState>, cityId: string): strin
  * episodes as completed and then dates as played, then the timed ones by their time (lived-times.ts: in the order
  * recorded, which is the clock's).
  */
-function experiencesIn(game: GameState, cityId: string): LogExperience[] {
+function experiencesIn(game: GameState, cityId: string, taken: readonly AlbumPhotoView[]): LogExperience[] {
   const times = game.livedTimes ?? [];
   const lived: { id: string; kind: LogExperience["kind"]; subject: RecapSubject }[] = [
     ...game.completedEpisodeIds.flatMap((id) => episodes.filter((episode) => episode.id === id && episode.cityId === cityId))
@@ -63,8 +65,10 @@ function experiencesIn(game: GameState, cityId: string): LogExperience[] {
   return lived.flatMap(({ id, kind, subject }) => {
     const look = lookBackOf(game, subject);
     const time = times[at(id)];
+    const stories = subjectStoryIds(subject);
+    const own = new Set(game.album.filter((photo) => stories.includes(photo.storyId)).map((photo) => photo.imageId));
     return look.cityId === cityId
-      ? [{ ...look, id, kind, ...(time ? { whenJa: `${time.day}日目 ${formatTravelTime(time.minute)}` } : {}) }]
+      ? [{ ...look, id, kind, ...(time ? { whenJa: `${time.day}日目 ${formatTravelTime(time.minute)}` } : {}), photos: taken.filter((photo) => own.has(photo.imageId)) }]
       : [];
   });
 }
@@ -76,9 +80,10 @@ function experiencesIn(game: GameState, cityId: string): LogExperience[] {
 export function travelLogPages(game: GameState): LogPage[] {
   const content = journeyAlbumContent(game.currentCityId);
   const photoPages = albumPages(game.album, content);
+  const taken = photoPages.flatMap((page) => page.photos);
   const met = metPeopleGroups(game);
   return content.cities.flatMap((city): LogPage[] => {
-    const experiences = experiencesIn(game, city.id);
+    const experiences = experiencesIn(game, city.id, taken);
     const photos = photoPages.find((page) => page.cityId === city.id)?.photos ?? [];
     const people = met.find((group) => group.cityId === city.id)?.people ?? [];
     if (city.id !== game.currentCityId && !experiences.length && !photos.length && !people.length) return [];

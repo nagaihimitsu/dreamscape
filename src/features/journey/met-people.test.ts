@@ -57,10 +57,10 @@ describe("the people met on the journey", () => {
     expect(names(delhi)).toEqual([["delhi", ["カムラ"]]]);
     expect(names(played(delhi, ["gt_delhi_finale_battle"]))).toEqual([["delhi", ["カムラ", "アマン"]]]);
     expect(names({ ...delhi, viewedEpilogueCityIds: ["delhi"] })).toEqual([["delhi", ["カムラ", "アマン"]]]);
-    // A quiz partner who is no declared person: by the quiz's name and role.
+    // A quiz partner who is no declared person: by the quiz's name and role, with the quiz's portrait (旅の記録's small face).
     const redFort = battles.find((battle) => battle.id === "gt_delhi_main_red_fort_battle")!;
     expect(metPeopleGroups(played(delhi, ["gt_delhi_main_red_fort_battle"]))[0].people[1])
-      .toEqual({ id: "quiz:gt_delhi_main_red_fort_battle", nameJa: redFort.enemyNameJa, descriptionJa: redFort.enemyTitleJa });
+      .toEqual({ id: "quiz:gt_delhi_main_red_fort_battle", nameJa: redFort.enemyNameJa, descriptionJa: redFort.enemyTitleJa, characterId: "gt_nidhi" });
   });
 
   it("never reads a relationship value", () => {

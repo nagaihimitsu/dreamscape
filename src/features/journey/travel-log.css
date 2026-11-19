@@ -86,13 +86,16 @@ dialog.modal.travel-log {
 }
 .travel-log-record { margin: 0 0 6px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
 .travel-log-heroine { margin: 0 12px 12px; }
+/* 出会った人: each person's small face (their portrait, or an empty circle) beside the name and words. */
+.travel-log .met-people dl > .travel-log-person { display: flex; align-items: flex-start; gap: 10px; }
+.travel-log-person .character-face { width: 40px; height: 40px; margin-top: 2px; }
+.travel-log-person-blank { flex: none; width: 40px; height: 40px; margin-top: 2px; border: 1px solid var(--ds-parchment-line); border-radius: 50%; background: var(--ds-parchment-2); }
+.travel-log-person > div { min-width: 0; }
 .travel-log-people-title { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: 1rem; }
 .travel-log .met-people { margin-top: 16px; }
 .travel-log .journey-numbers { margin-top: 16px; }
-.album-photos { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
-.album-photos li + li { padding-top: 14px; border-top: 1px solid var(--ds-parchment-line); }
-.album-photos figure { margin: 0; }
 .album-photo {
+  position: relative;
   display: block;
   width: 100%;
   min-height: 44px;
@@ -101,7 +104,7 @@ dialog.modal.travel-log {
   overflow: hidden;
   background: #26342e;
 }
-/* Each illustration fills a fixed 3:2 frame (one of another shape keeps its middle; the larger view shows it whole),
+/* A card's picture fills a fixed 3:2 frame (one of another shape keeps its middle; the larger view shows it whole),
    so the file's own size is never needed. A short screen held sideways keeps the frame low by narrowing it. */
 .album-photo img {
   display: block;
@@ -111,10 +114,50 @@ dialog.modal.travel-log {
   object-fit: cover;
 }
 @media (orientation: landscape) and (max-height: 500px) {
-  .album-photo { width: min(100%, 69dvh); margin-inline: auto; }
+  .travel-log-picture .album-photo { width: min(100%, 69dvh); margin-inline: auto; }
 }
-.album-photos figcaption { margin-top: 6px; }
-.album-caption { font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+/* How many photos the card opens, on its picture's corner (only with more than one). */
+.travel-log-photo-count {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgb(20 24 30 / 72%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.travel-log-photo-count svg { width: 15px; height: 15px; }
+/* 「写真」: square thumbnails three to a row, close together, each one a button (wider than 44 px at any width). */
+.travel-log-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  margin: 0 calc(-1 * var(--modal-pad-inline, 16px));
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 520px) {
+  .travel-log-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-inline: 0; }
+}
+.travel-log-grid button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #26342e;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.travel-log-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.travel-log-grid button:focus-visible { outline: 3px solid var(--ds-slate-800); outline-offset: -3px; }
 .album-meta { font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
 .album-pager {
   position: sticky;
@@ -169,7 +212,8 @@ dialog.modal.album-photo-viewer {
   max-width: 760px;
 }
 .album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
-.album-photo-viewer > img {
+.photo-viewer-frame { touch-action: pan-y pinch-zoom; }
+.photo-viewer-frame img {
   display: block;
   width: auto;
   max-width: 100%;
@@ -180,8 +224,9 @@ dialog.modal.album-photo-viewer {
 }
 .album-photo-viewer > .album-meta { margin: 6px 0 8px; }
 @media (orientation: landscape) and (max-height: 500px) {
-  .album-photo-viewer > img { max-height: 52dvh; }
+  .photo-viewer-frame img { max-height: 52dvh; }
 }
+.photo-viewer-pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
 
 /* With 旅の数字 after the pages, the pager no longer reaches the dialog's foot: it keeps its own room above the card. */
 .travel-log-book:not(:last-child) > .album-pager { margin-bottom: 0; }

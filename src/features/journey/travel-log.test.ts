@@ -16,6 +16,7 @@ const roll = () => 0;
 const place = (id: string) => getCityContent(id.split("_")[0]).travel.places.find((item) => item.id === id)!;
 const JAMA_MASJID = "gt_delhi_main_jama_masjid";
 const RED_FORT = "gt_delhi_main_red_fort";
+const BAOLI = "gt_delhi_date_agrasen_baoli";
 const delhiArrival: AlbumPhoto = { imageId: "gt_album_d01", caption: "路地の将軍カムラ", cityId: "delhi", day: 1, minute: 600,
   placeId: "delhi_hotel_hub", storyId: "places/gt_delhi_hotel_hub.gt_delhi_arrival" };
 
@@ -74,7 +75,6 @@ describe("旅の記録's pages", () => {
 });
 
 describe("旅の記録's times (save livedTimes)", () => {
-  const BAOLI = "gt_delhi_date_agrasen_baoli";
 
   it("times an episode as completed and a date as first finished, and orders the city's cards by them", () => {
     const dated = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI);
@@ -102,10 +102,32 @@ describe("旅の記録's times (save livedTimes)", () => {
 describe("旅の記録's dialog", () => {
   it("opens on the city the party is in, on 「体験」, with her words and no quiz score", () => {
     const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), onClose: () => {} }));
-    expect(html).toContain("航<span class=\"amp\"> と </span>澪");
+    // No names line (2026-11-19 user decision).
+    expect(html).not.toContain("航");
     expect(html).toContain('aria-pressed="true" data-testid="travel-log-lived"');
     expect(html).toContain(`data-testid="log-experience-${JAMA_MASJID}"`);
     expect(html).toContain(place("delhi_jama_masjid").recapLinesJa![0]);
     expect(html).not.toMatch(/挑戦|最高|手がかり \d/u);
+  });
+
+  it("opens all the photos an experience's stories took from its card, says their count, and seals a date too", () => {
+    const state = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI);
+    const dateStory = state.album.at(-1)!.storyId;
+    // A second photo taken in the same date's story (another illustration of the journey).
+    const twice = { ...state, album: [...state.album.filter((photo) => photo.imageId !== delhiArrival.imageId), { ...delhiArrival, storyId: dateStory }] };
+    const date = travelLogPages(twice)[0].experiences.find((item) => item.id === BAOLI)!;
+    expect(date.photos.map((photo) => photo.imageId)).toEqual(twice.album.filter((photo) => photo.storyId === dateStory).map((photo) => photo.imageId));
+    expect(date.photos).toHaveLength(2);
+    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: twice, onClose: () => {} }));
+    expect(html).toContain(`data-testid="log-photos-${BAOLI}"`);
+    expect(html).toContain("の写真2枚を大きく見る");
+    const card = html.slice(html.indexOf(`log-experience-${BAOLI}`));
+    expect(card).toContain("stop-seal");
+  });
+
+  it("gives the people met their portrait when they have one", () => {
+    const people = travelLogPages(cityStart("agra")).find((page) => page.cityId === "delhi")!.people;
+    expect(people.length).toBeGreaterThan(0);
+    expect(people.some((person) => person.characterId)).toBe(true);
   });
 });

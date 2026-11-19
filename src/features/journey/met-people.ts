@@ -9,7 +9,8 @@ import { withNames } from "../romance/names";
 import { sceneCompleted } from "./music-room";
 
 /** One person met, as 旅の記録 lists them: the name and the writer's few words (optional). */
-export type MetPerson = { id: string; nameJa: string; descriptionJa?: string };
+/** `characterId`: the person's portrait (story.json `characterId`, or the quiz's partner in characters.json), when there is one. */
+export type MetPerson = { id: string; nameJa: string; descriptionJa?: string; characterId?: string };
 /** The people met in one city. */
 export type MetPeopleGroup = { cityId: string; cityNameJa: string; people: MetPerson[] };
 
@@ -56,16 +57,20 @@ export function metPeopleGroups(game: Readonly<GameState>): MetPeopleGroup[] {
   const add = (entry: Met) => {
     const same = met.find((item) => item.id === entry.id || (item.cityId === entry.cityId && item.nameJa === entry.nameJa));
     if (!same) met.push(entry);
-    else if (!same.descriptionJa && entry.descriptionJa) same.descriptionJa = entry.descriptionJa;
+    else {
+      if (!same.descriptionJa && entry.descriptionJa) same.descriptionJa = entry.descriptionJa;
+      if (!same.characterId && entry.characterId) same.characterId = entry.characterId;
+    }
   };
   const words = (...texts: (string | undefined)[]) => {
     const text = texts.find((item) => item);
     return text ? { descriptionJa: text } : {};
   };
+  const portrait = (characterId: string | undefined) => (characterId ? { characterId } : {});
   const addPeopleOf = (sceneList: readonly (typeof scenes)[number][]) => {
     for (const scene of sceneList)
       for (const person of scene.people.flatMap((id) => storyState.people.filter((item) => item.id === id)))
-        add({ id: person.id, cityId: person.cityId, nameJa: person.nameJa, ...words(person.descriptionJa, person.titleJa) });
+        add({ id: person.id, cityId: person.cityId, nameJa: person.nameJa, ...words(person.descriptionJa, person.titleJa), ...portrait(person.characterId) });
   };
   const isArrival = (scene: (typeof scenes)[number]) => !!scene.main && "arrival" in scene.main;
   addPeopleOf(cityIds.flatMap((cityId) => scenes.filter((scene) => isArrival(scene) && scene.cityId === cityId && sceneCompleted(scene, game, reached))));
@@ -78,8 +83,8 @@ export function metPeopleGroups(game: Readonly<GameState>): MetPeopleGroup[] {
     const person = storyState.people.find((item) => item.cityId === cityId &&
       ((characterId !== undefined && item.characterId === characterId) || item.nameJa === battle.enemyNameJa));
     add(person
-      ? { id: person.id, cityId: person.cityId, nameJa: person.nameJa, ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa) }
-      : { id: `quiz:${battle.id}`, cityId, nameJa: battle.enemyNameJa, ...words(battle.enemyTitleJa) });
+      ? { id: person.id, cityId: person.cityId, nameJa: person.nameJa, ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa), ...portrait(person.characterId ?? characterId) }
+      : { id: `quiz:${battle.id}`, cityId, nameJa: battle.enemyNameJa, ...words(battle.enemyTitleJa), ...portrait(characterId) });
   }
   const other = scenes.filter((scene) => !isArrival(scene) && !INSERTED_KINDS.includes(scene.kind) && sceneCompleted(scene, game, reached));
   addPeopleOf([...other.filter((scene) => !(scene.main && "epilogue" in scene.main)), ...other.filter((scene) => !!scene.main && "epilogue" in scene.main)]);
@@ -89,7 +94,8 @@ export function metPeopleGroups(game: Readonly<GameState>): MetPeopleGroup[] {
     const group = groups.get(person.cityId) ??
       { cityId: person.cityId, cityNameJa: cityContents[person.cityId]?.city.nameJa ?? person.cityId, people: [] };
     groups.set(person.cityId, group);
-    group.people.push({ id: person.id, nameJa: person.nameJa, ...(person.descriptionJa ? { descriptionJa: withNames(person.descriptionJa, game) } : {}) });
+    group.people.push({ id: person.id, nameJa: person.nameJa, ...(person.descriptionJa ? { descriptionJa: withNames(person.descriptionJa, game) } : {}),
+      ...(person.characterId ? { characterId: person.characterId } : {}) });
   }
   return [...groups.values()];
 }
