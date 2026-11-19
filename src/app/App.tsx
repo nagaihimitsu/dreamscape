@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { defaultJourneyId, getJourney, journeys } from "../content/journeys";
-import { journeyStorage } from "../persistence/journey-storage";
+import { journeyStorage, type SaveSlot } from "../persistence/journey-storage";
+import { readLastSlot, rememberSlot } from "./save-slots";
 import { readLastJourney, readRecentJourneys, rememberJourney, titleJourneyId } from "./last-journey";
 import { readKeptJourneys } from "../offline/kept-journeys";
 import { useJourneyLock } from "../persistence/useJourneyLock";
@@ -15,7 +16,7 @@ import { GameApp } from "./GameApp";
 import { JourneyContentGate } from "./JourneyContentGate";
 import { loadJourneyContent } from "../content";
 import type { KeyedStorage } from "../persistence/old-data";
-import { browserKeyedStorage, browserStorage, type AppProps } from "./app-storage";
+import { browserKeyedStorage, browserStorage, type AppProps, type SaveSlots } from "./app-storage";
 
 export default function App(props: AppProps = {}) {
   const baseStorage = props.storage ?? browserStorage;
@@ -32,15 +33,24 @@ export default function App(props: AppProps = {}) {
   // the second tap of a double tap on 「切り替える」 must not press or read it
   // (tap-hold.ts; the new GameApp starts with that scene, so it sees no start).
   const [restoreSelectorFocus, setRestoreSelectorFocus] = useState(false);
+  // The save slot played (save-slots.ts): the one this device played last in the journey, read again on a switch.
+  const [saveSlot, setSaveSlot] = useState<SaveSlot>(() => readLastSlot(baseStorage, journeyId));
   const switchJourney = useCallback((id: string) => {
     holdTaps();
     setRestoreSelectorFocus(true);
     setJourneyId(id);
+    setSaveSlot(readLastSlot(baseStorage, id));
     if (!props.debug) rememberJourney(baseStorage, getJourney(id));
   }, [props.debug, baseStorage]);
+  // Another slot of the same journey: the game's screen is rebuilt on it (key below), as a journey switch rebuilds it.
+  const switchSlot = useCallback((slot: SaveSlot) => {
+    holdTaps();
+    setSaveSlot(slot);
+    rememberSlot(baseStorage, journeyId, slot);
+  }, [baseStorage, journeyId]);
   const selectorFocusRestored = useCallback(() => setRestoreSelectorFocus(false), []);
   const selectorFocus: SelectorFocus = { restoreFocus: restoreSelectorFocus, onFocusRestored: selectorFocusRestored };
-  const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
+  const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId, saveSlot), [baseStorage, journeyId, saveSlot]);
   const [lockAttempt, setLockAttempt] = useState(0);
   // 再試行 rebuilds the screen like a switch: the selector keeps the focus
   // while the lock is checked again, and the new screen takes it at the end;
@@ -72,8 +82,10 @@ export default function App(props: AppProps = {}) {
   const oldDataStorage = props.storage ? undefined : browserKeyedStorage;
   return <JourneyContentGate key={journeyId} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus}>
     {journey?.initialState
-      ? <PlayableJourney {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />
-      : <GameApp {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />}
+      ? <PlayableJourney key={saveSlot} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus}
+        oldDataStorage={oldDataStorage} saves={{ journeyId, slot: saveSlot, base: baseStorage, onSwitch: switchSlot }} />
+      : <GameApp key={saveSlot} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus}
+        oldDataStorage={oldDataStorage} saves={{ journeyId, slot: saveSlot, base: baseStorage, onSwitch: switchSlot }} />}
   </JourneyContentGate>;
 }
 
@@ -99,14 +111,17 @@ function JourneyLockScreen({ journeyName, notice, selector, onRetry }: {
   </section></main></div>;
 }
 
-function PlayableJourney(props: AppProps & { storage: typeof browserStorage; journeyId: string; onSwitchJourney: (id: string) => void; selectorFocus: SelectorFocus; oldDataStorage?: KeyedStorage }) {
+function PlayableJourney(props: AppProps & { storage: typeof browserStorage; journeyId: string; onSwitchJourney: (id: string) => void; selectorFocus: SelectorFocus;
+  oldDataStorage?: KeyedStorage; saves: SaveSlots }) {
   const [status, setStatus] = useState<"loading" | "ready" | string>("loading");
   useEffect(() => {
+    // A preparing journey kept one save, so a draft of its preparation can only be in slot 1.
+    if (props.saves.slot !== 1) { setStatus("ready"); return; }
     const draft = loadJourneyDraft(props.storage);
     if (draft.status !== "loaded") { setStatus("ready"); return; }
     const result = promoteJourneyDraft(props.storage, draft.raw);
     setStatus(result.ok ? "ready" : result.message);
-  }, [props.storage]);
+  }, [props.storage, props.saves.slot]);
   if (status === "ready") return <GameApp {...props} />;
   return <div className="app-shell"><main id="main"><section className="paper intro">
     <JourneySelection value={props.journeyId} onChange={props.onSwitchJourney} restoreFocus={props.selectorFocus.restoreFocus}
