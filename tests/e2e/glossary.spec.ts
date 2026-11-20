@@ -70,6 +70,10 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(larger).not.toContainText(CREDIT);
   await expect(larger.locator("a")).toHaveCount(0);
   await larger.getByRole("button", { name: "閉じる", exact: true }).click();
+  // The note's other page, 旅のことば (2026-11-20: the words of the country, 英語ノートの「その国の言葉」 until then).
+  await book.getByTestId("note-tab-words").click();
+  await expect(book.getByTestId("note-tab-words")).toHaveAttribute("aria-pressed", "true");
+  await expect(book).toContainText("物語で覚えたその国の言葉です");
   await page.getByTestId("note-close").click();
   await expect(book).toHaveCount(0);
   // Seen: the dots are gone, and the card does not come back for the term.

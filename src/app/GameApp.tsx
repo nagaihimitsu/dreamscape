@@ -70,10 +70,10 @@ import { clueRecordedNotice } from "../features/tourism/clue-source";
 import type { ClueNoticeWord } from "./ClueRecordedNotice";
 import { useLearning } from "../features/learning/useLearning";
 import { answeredQuestions, latestAnsweredQuestionId, metQuestions } from "../features/learning/EnglishReview";
-import { NoteDialog, type NoteTab } from "./NoteDialog";
+import { ENGLISH_NOTE_SHOWN, NOTE_PAGE_NAMES, NoteDialog, noteName, type NoteTab } from "./NoteDialog";
 import { useLocalWords } from "../features/learning/useLocalWords";
 import { LocalWordNotice } from "../features/learning/LocalWordNotice";
-import { lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
+import { journeyHasLocalWords, lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
 import { readAloudSupported } from "../features/learning/read-aloud";
 import { primeSpeechOnGesture } from "../features/learning/ReadAloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
@@ -433,12 +433,12 @@ export function GameApp({
     // A notice not read yet (a refused save) stays: the commit clears it. (A load's or a tour's word is a toast of its own.)
     if (restAtDayEnd(dayEnd.way, game.revision, { by: "game" }) && notice) setNotice(notice);
   }, [game, travelEffectPlaying]);
-  // 「ノート」 (NoteDialog.tsx; 2026-11-20): the page it shows, none while it is closed. 英語ノート's question stays open
-  // over a reload (learning.data.openQuestion), and so does the note on that page.
-  const [noteTab, setNoteTab] = useState<NoteTab | null>(() => learning.data.openQuestion ? "english" : null);
+  // 「ノート」 (NoteDialog.tsx; 2026-11-20): the page it shows, none while it is closed. 英語ノート's question (while it is
+  // shown) stays open over a reload (learning.data.openQuestion), and so does the note on that page.
+  const [noteTab, setNoteTab] = useState<NoteTab | null>(() => ENGLISH_NOTE_SHOWN && learning.data.openQuestion ? "english" : null);
   const englishOpen = noteTab === "english";
   // The page the note showed last in this tab (its memory only): the menu's 「ノート」 opens on it unless a page has a dot.
-  const lastNoteTab = useRef<NoteTab>("english");
+  const lastNoteTab = useRef<NoteTab | null>(null);
   // The question 英語ノート showed last in this tab (its memory only). Opened without a question named (the menu's
   // 「英語ノート」, a quiz result's), the note shows that one again while it is listed, else the question answered last,
   // never an empty 「問題を選んでください」 (2026-11-14 user decision).
@@ -447,6 +447,7 @@ export function GameApp({
     if (learning.data.openQuestion) lastEnglishQuestion.current = learning.data.openQuestion;
   }, [learning.data.openQuestion]);
   function openEnglish(questionId?: string) {
+    if (!ENGLISH_NOTE_SHOWN) return;
     const last = lastEnglishQuestion.current;
     const listed = !!game && !!last && answeredQuestions(game, learning).some((entry) => entry.question.id === last);
     const shown = questionId ?? (listed ? last : game ? latestAnsweredQuestionId(game, learning) : null);
@@ -580,7 +581,7 @@ export function GameApp({
   // The marks of what is new (seenMarks above): the memory starts from everything there is, and what the player opens is seen.
   // 英語ノート's entries, read again when an answer, a record or a word learned changes (the records' content is checked).
   const englishKey = useMemo(
-    () => (game ? englishNoteKeys(metQuestions(game, learning), learnedWords.learned) : []).join("\n"),
+    () => (game ? englishNoteKeys(ENGLISH_NOTE_SHOWN ? metQuestions(game, learning) : [], learnedWords.learned) : []).join("\n"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [!!game, game?.battleRecords, game?.pastBattleIds, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
   );
@@ -591,13 +592,19 @@ export function GameApp({
   useEffect(() => {
     if (notebook && game) setSeenMarks((marks) => marks && markSeen(marks, "clues", game.discoveredClueIds));
   }, [notebook, game]);
+  // 英語ノート's entries are its questions; the words of the country (`word:` marks of the same memory) are 旅のことば's.
+  const isWordMark = (id: string) => id.startsWith("word:");
+  const questionMarks = englishIds.filter((id) => !isWordMark(id));
+  const wordMarks = englishIds.filter(isWordMark);
   useEffect(() => {
-    if (englishOpen) setSeenMarks((marks) => marks && markSeen(marks, "english", englishIds));
+    if (noteTab === "english") setSeenMarks((marks) => marks && markSeen(marks, "english", questionMarks));
+    if (noteTab === "words") setSeenMarks((marks) => marks && markSeen(marks, "english", wordMarks));
   // The entries as a key: the list itself is made again at each render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [englishOpen, englishKey]);
+  }, [noteTab, englishKey]);
   const notebookCue = { gleam: clueGleam, unseen: !!game && unseenIds(seenMarks?.clues, game.discoveredClueIds).length > 0 };
-  const englishNew = unseenIds(seenMarks?.english, englishIds).length > 0;
+  const englishNew = unseenIds(seenMarks?.english, questionMarks).length > 0;
+  const wordsNew = unseenIds(seenMarks?.english, wordMarks).length > 0;
   // 旅の図鑑: in ≡メニュー for a journey that has terms; its dot while a term met in play has not been seen there. Opening it
   // shows 「NEW」 on those terms (as they were as it opened) and counts them as seen.
   // The journey of the game on screen (a Debug session opens any journey's scene).
@@ -615,11 +622,26 @@ export function GameApp({
     lastNoteTab.current = "glossary";
     setNoteTab("glossary");
   }
-  /** ≡メニュー's 「ノート」: on a page with something new (英語ノート first), else on the page shown last. */
+  // 旅のことば (2026-11-20): for a journey with words of the country, or once this device has learned one in it.
+  const hasWords = journeyHasLocalWords(glossaryJourneyId) || learnedWords.learned.length > 0;
+  // The note's pages, in their order (none: no 「ノート」 in ≡メニュー).
+  const notePages = ([ENGLISH_NOTE_SHOWN && "english", hasWords && "words", hasTerms && "glossary"] as const)
+    .filter((page): page is NoteTab => !!page);
+  const newNotePages = notePages.filter((page) => page === "english" ? englishNew : page === "words" ? wordsNew : glossaryNew);
+  function openWords() {
+    if (noteTab === "english") leaveEnglish();
+    lastNoteTab.current = "words";
+    setNoteTab("words");
+  }
+  function openNotePage(page: NoteTab) {
+    if (page === "english") openEnglish();
+    else if (page === "words") openWords();
+    else openGlossary();
+  }
+  /** ≡メニュー's 「ノート」: on the first page with something new, else on the page shown last, else on the first. */
   function openNote() {
-    if (englishNew) openEnglish();
-    else if (hasTerms && (glossaryNew || lastNoteTab.current === "glossary")) openGlossary();
-    else openEnglish();
+    const last = lastNoteTab.current;
+    openNotePage(newNotePages[0] ?? (last && notePages.includes(last) ? last : notePages[0]));
   }
   function closeNote() {
     if (noteTab === "english") leaveEnglish();
@@ -980,8 +1002,8 @@ export function GameApp({
         scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
         onRecords={openRecords}
-        onNote={openNote}
-        noteLabel={hasTerms ? "ノート" : "英語ノート"}
+        onNote={notePages.length ? openNote : undefined}
+        noteLabel={noteName(notePages)}
         onScreenCredits={creditPhotos.length || scenePhoto ? () => setScreenCreditsOpen(true) : undefined}
         onSaveLoad={() => {
           setSettingsNotice(null);
@@ -994,8 +1016,7 @@ export function GameApp({
         replaced={replacedGame}
         seenItemIds={seenMarks?.items}
         onItemsSeen={(ids) => setSeenMarks((marks) => marks && markSeen(marks, "items", ids))}
-        englishNew={englishNew}
-        glossaryNew={glossaryNew}
+        noteNew={newNotePages.map((page) => NOTE_PAGE_NAMES[page])}
         // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
         // line's item card (# item_show:, # item_out:) shows or flies into the bag.
         holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
@@ -1299,7 +1320,7 @@ export function GameApp({
             englishOff={englishOff}
             introHeld={moments.titleHolding}
             learning={learning}
-            onEnglish={openEnglish}
+            onEnglish={ENGLISH_NOTE_SHOWN ? openEnglish : undefined}
             game={game}
             speed={speed}
             onSpeed={setSpeed}
@@ -1474,7 +1495,7 @@ export function GameApp({
         reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
       {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>
         <ModalTitle id="again-title">もう一度この旅を</ModalTitle>
-        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。旅の記録の写真・旅の図鑑・英語ノートは、そのまま引き継ぎます。</p>
+        <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。旅の記録の写真・旅の図鑑・旅のことばは、そのまま引き継ぎます。</p>
         <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。その国の言葉・既読の記録も、そのまま残ります。
           {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
           {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
@@ -1543,10 +1564,10 @@ export function GameApp({
           }
         />
       )}
-      {noteTab && game && <NoteDialog tab={noteTab} onTab={(tab) => tab === "glossary" ? openGlossary() : openEnglish()}
+      {noteTab && game && notePages.length > 0 && <NoteDialog pages={notePages} tab={noteTab} onTab={openNotePage}
         game={game} learning={learning} learnedWords={learnedWords.learned} readAloud={readAloud}
         glossary={hasTerms ? { journeyId: glossaryJourneyId, met: metGlossary, newIds: glossaryNewIds, revealAll: debugMarks } : undefined}
-        englishNew={englishNew} glossaryNew={glossaryNew} onClose={closeNote} />}
+        newPages={newNotePages} onClose={closeNote} />}
       {confirmLoad && (
         <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)} settlePresses>
           <ModalTitle id="load-title">保存した場面を読み込みますか？</ModalTitle>
@@ -1576,9 +1597,9 @@ export function GameApp({
             このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
-            ほかのセーブの枠と、枠で共有する英語ノート（単語帳・その国の言葉）・対訳設定・既読の記録は消去しません。文字の速さなどの表示設定、以前に退避したバックアップ、ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
+            ほかのセーブの枠と、枠で共有するクイズの英語の記録・旅のことば・対訳設定・既読の記録は消去しません。文字の速さなどの表示設定、以前に退避したバックアップ、ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
           </p></> : <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、クイズの英語の記録・旅のことばと対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
@@ -1684,7 +1705,7 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
           </label>}
-          {readAloud && <p className="fine-print setting-note">クイズと英語ノートの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
+          {readAloud && <p className="fine-print setting-note">クイズの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
           <label className="translation-setting">
             <input
               type="checkbox"

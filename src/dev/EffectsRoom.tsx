@@ -500,7 +500,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
 
     <div className={`effects-room-screen${reduce ? " reduce-motion" : ""}`} data-breath={breathStill ? "still" : undefined}>
       {game && <JourneyHud game={game} place={place} view="all" replaced={replaced} seenItemIds={seenItems}
-        onItemsSeen={(ids) => setSeenItems((seen) => new Set([...seen, ...ids]))} englishNew={englishNew}
+        onItemsSeen={(ids) => setSeenItems((seen) => new Set([...seen, ...ids]))} noteNew={englishNew ? ["旅のことば"] : []}
         holdNotices={!!photoNotice || !!itemShow || !!itemLeave || !!itemOut || !!outLeave} itemFlight={itemLeave} itemOutFlight={outLeave}
         onSaveLoad={() => {
           playSe("save");
@@ -657,7 +657,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
           playSe("clue_new");
           vibrate("clue");
         }}>手がかりを記録</button>
-        <button type="button" className="effects-room-chip" aria-pressed={englishNew} onClick={() => setEnglishNew((on) => !on)}>英語ノートの点</button>
+        <button type="button" className="effects-room-chip" aria-pressed={englishNew} onClick={() => setEnglishNew((on) => !on)}>ノートの点</button>
         <button type="button" className="effects-room-chip" onClick={() => restart(cityId)}>元に戻す</button>
       </div>
       <p>セーブの印は、上の帯の「メニュー」から「セーブ・ロード」で出ます（何も保存しません）。所持品の「NEW」の点は、所持品を開くと消えます。

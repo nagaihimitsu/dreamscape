@@ -1,8 +1,10 @@
 import { cityContents, localWords as catalogWords, type LocalWord } from "../../content";
 import { LOCAL_WORDS_KEY, type StorageLike } from "../../persistence";
+import { getJourneyForCity } from "../../content/journeys";
 
 /**
- * The words of the country (2026-11-11 user decision, 英語ノートの「その国の言葉」). A line's `# local_word: <id>` teaches
+ * The words of the country (2026-11-11 user decision; 英語ノートの「その国の言葉」 until 2026-11-20, then ≡メニュー's
+ * 「旅のことば」). A line's `# local_word: <id>` teaches
  * a word of learning/local-words.json when the line is shown in normal play; this device remembers it per journey
  * (LOCAL_WORDS_KEY: `{ "schemaVersion": 1, "ids": [...] }`, in the order learned), never the save. Learning a word again
  * changes nothing. A failing or unreadable storage never stops reading: the record then lives in this tab's memory only,
@@ -125,14 +127,20 @@ export function learnedNoticeText(words: readonly Pick<LocalWord, "word" | "read
   return `ことばを覚えた：${words.map((word) => `${word.word}（${word.reading}）`).join("、")}`;
 }
 
-/** One heading of 「その国の言葉」: a city (or the whole journey, for words without a city) and its words. */
+/** Whether the journey has words of the country: one of the catalog belongs to a city of the journey (旅のことば's page). */
+export function journeyHasLocalWords(journeyId: string, catalog: readonly LocalWord[] = catalogWords,
+  journeyOf: (cityId: string) => string | undefined = (cityId) => getJourneyForCity(cityId)?.id): boolean {
+  return catalog.some((word) => !!word.cityId && journeyOf(word.cityId) === journeyId);
+}
+
+/** One heading of 「旅のことば」: a city (or the whole journey, for words without a city) and its words. */
 export type LocalWordGroup = { key: string; titleJa: string; words: LocalWord[] };
 
 /** The heading of the words that belong to no city. */
 export const JOURNEY_WORDS_TITLE_JA = "この旅の言葉";
 
 /**
- * 「その国の言葉」 of the English notes: the words learned, grouped by their city (the city's name; words without a city
+ * 「旅のことば」: the words learned, grouped by their city (the city's name; words without a city
  * under JOURNEY_WORDS_TITLE_JA), groups in the order their first word was learned, words in the order learned. A word
  * the catalog no longer has stays in the record and is not shown.
  */
