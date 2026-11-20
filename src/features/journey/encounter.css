@@ -109,15 +109,29 @@
 }
 /* Two people opposite her (# together:, 2026-11-15 user decision; scene-stage.ts stageCast): with her, three in a row
    (her on the left, the first named in the middle, the second on the right), each a third of the screen and about four
-   fifths as tall as two side by side; without her, the two side by side as she and one person stand. */
+   fifths as tall as two side by side; without her, the two side by side as she and one person stand. Three people
+   opposite her (2026-11-20): with her, four in a row (her, the first, the second, the third), each a quarter of the
+   screen and about nine tenths as tall as three in a row (standing a little into each other's place, so the faces
+   stay about as high); without her, the three in a row as she and two stand. */
 .encounter-character-layer[data-together] .encounter-character-slot { right: auto; }
-.encounter-character-layer[data-together="three"] .encounter-character-slot { width: calc(100% / 3); }
+.encounter-character-layer[data-together="three"] .encounter-character-slot,
+.encounter-character-layer[data-together="trio"] .encounter-character-slot { width: calc(100% / 3); }
 .encounter-character-layer[data-together="three"] .encounter-character-enemy { left: calc(100% / 3); }
 .encounter-character-layer[data-together="three"] .encounter-character-beside { left: calc(200% / 3); }
+.encounter-character-layer[data-together="trio"] .encounter-character-beside { left: calc(100% / 3); }
+.encounter-character-layer[data-together="trio"] .encounter-character-far { left: calc(200% / 3); }
+.encounter-character-layer[data-together="four"] .encounter-character-slot { width: 25%; }
+.encounter-character-layer[data-together="four"] .encounter-character-enemy { left: 25%; }
+.encounter-character-layer[data-together="four"] .encounter-character-beside { left: 50%; }
+.encounter-character-layer[data-together="four"] .encounter-character-far { left: 75%; }
 .encounter-character-layer[data-together="pair"] .encounter-character-slot { width: 50%; }
 .encounter-character-layer[data-together="pair"] .encounter-character-beside { left: 50%; }
-.encounter-character-layer[data-together="three"] .encounter-character-slot .vn-character {
+.encounter-character-layer[data-together="three"] .encounter-character-slot .vn-character,
+.encounter-character-layer[data-together="trio"] .encounter-character-slot .vn-character {
   width: min(180%, 37dvh) !important;
+}
+.encounter-character-layer[data-together="four"] .encounter-character-slot .vn-character {
+  width: min(215%, 33dvh) !important;
 }
 .encounter-character-layer[data-together="pair"] .encounter-character-slot .vn-character {
   width: min(150%, 46dvh) !important;
@@ -131,15 +145,18 @@
 /* The existing generic SVG's head starts lower in its canvas than the
    full-body heroine artwork. Align the visible heads, not the canvas tops. */
 .encounter-character-enemy .vn-character:has(> svg),
-.encounter-character-beside .vn-character:has(> svg) {
+.encounter-character-beside .vn-character:has(> svg),
+.encounter-character-far .vn-character:has(> svg) {
   transform: translate(-50%, -19%) !important;
 }
 .encounter-character-enemy .vn-character:has(> svg) .comic-effect,
-.encounter-character-beside .vn-character:has(> svg) .comic-effect { top: 21%; }
+.encounter-character-beside .vn-character:has(> svg) .comic-effect,
+.encounter-character-far .vn-character:has(> svg) .comic-effect { top: 21%; }
 /* In the right-hand slot, put the mark on the inner side of the portrait so
    it stays in the viewport even when the screen is narrow. */
 .encounter-character-layer[data-two-characters="true"] .encounter-character-enemy .comic-effect,
-.encounter-character-layer[data-together] .encounter-character-beside .comic-effect {
+.encounter-character-layer[data-together] .encounter-character-beside .comic-effect,
+.encounter-character-layer[data-together] .encounter-character-far .comic-effect {
   left: auto;
   right: 64%;
 }

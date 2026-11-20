@@ -86,8 +86,9 @@ export interface StoryFrame {
    */
   leave?: string[];
   /**
-   * The line's `# together:` (only the line it is written on; 2026-11-15): the two who stand opposite the heroine from it
-   * (enemy or a person's ID, as written); src/components/scene-stage.ts keeps two places opposite her from there.
+   * The line's `# together:` (only the line it is written on; 2026-11-15, three 2026-11-20): the two or three who stand
+   * opposite the heroine from it (enemy or a person's ID, as written); src/components/scene-stage.ts keeps as many places
+   * opposite her from there.
    */
   together?: string[];
   /** The line's `# voice:` (only the line it is written on): its recording, played as its text starts (useVoice.ts). */

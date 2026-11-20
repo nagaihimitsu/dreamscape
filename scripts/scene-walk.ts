@@ -153,9 +153,9 @@ function gatherStaging(staging: LineStaging, tags: StoryTags): void {
  * the ones the screens read from the line's tags: her reaction (which brings her back after her `# leave:` in a scene
  * that has her from the start), the enemy's (in an arrival or epilogue only with a figure; a guide reads none), and in a
  * talk or an encounter an emotion on the narration (hers) or on the enemy's line (theirs). A reaction keyed by its text
- * in presentation/dialogue-reactions.json is not read here. A line's `# together:` (2026-11-15) must name two people who
- * stand there: it stops the build for a person without a figure, the enemy where the scene has none for them, and two
- * names of one figure (checkTogether).
+ * in presentation/dialogue-reactions.json is not read here. A line's `# together:` (2026-11-15; three 2026-11-20) must
+ * name two or three people who stand there: it stops the build for a person without a figure, the enemy where the scene
+ * has none for them, and two names of one figure (checkTogether).
  */
 function walkStage(previous: Stage | undefined, line: { speaker: Speaker; personId?: string; staging: LineStaging },
   stage: NonNullable<SceneWalkInput["stage"]>, scene: StageScene, warn: (problem: string) => void): Stage {
@@ -186,7 +186,7 @@ const KIND_JA: Record<SceneKind, string> = { talk: "会話", encounter: "寄り�
 
 /**
  * Throws when a line's `# together:` names someone who cannot stand opposite her in this scene (2026-11-15; the tag's form,
- * two different IDs of enemy or declared people, is parseStoryTags'): a person without a figure (characterId in
+ * two or three different IDs of enemy or declared people, is parseStoryTags'): a person without a figure (characterId in
  * progression/story.json people), the enemy where the scene has no figure for `# speaker: enemy` (a date, a guide, a
  * scene without a `# person:` with a figure), or two names of the same figure (a person's other name). Japanese first.
  */
@@ -205,9 +205,12 @@ function checkTogether(together: readonly string[], people: StoryStateCatalog["p
         `絵のある人を書いてください（# together: ${who} has no figure）。`);
     return figure;
   });
-  if (figures[0] === figures[1])
-    throw new Error(`# together: の ${together.join(" と ")} は、同じ絵の人です（同じ人の別の呼び名など）。別の2人を書いてください` +
-      `（# together: ${together.join(" ")} name one figure, ${figures[0]}）。`);
+  const twice = figures.findIndex((figure, index) => figures.indexOf(figure) !== index);
+  if (twice >= 0) {
+    const same = together.filter((_, index) => figures[index] === figures[twice]);
+    throw new Error(`# together: の ${same.join(" と ")} は、同じ絵の人です（同じ人の別の呼び名など）。別々の人を書いてください` +
+      `（# together: ${same.join(" ")} name one figure, ${figures[twice]}）。`);
+  }
 }
 
 /** Walk every path of the scene; returns the number of paths. */
