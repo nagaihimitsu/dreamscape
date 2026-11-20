@@ -20,6 +20,8 @@ import { waitForTravel } from "../domain/travel-game";
 import { getDayEnd } from "../domain/day-end";
 import { rentTransport } from "../domain/transport";
 import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
+import { buyOutfit, wearOutfit, wornCostume } from "../domain/outfits";
+import { WornCostumeContext } from "../components/worn-costume";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture, isJourneyComplete } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
@@ -80,8 +82,10 @@ import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
+import { showsMissedPhotos } from "../features/journey/album-pages";
 import { journeyNumbers } from "../features/journey/journey-numbers";
-import { freeTimePhotos, recapPhotos, ScreenCredits } from "../features/journey/PhotoCredits";
+import { freeTimePhotos, recapPhotos, ScreenCredits, type ScreenAnswer } from "../features/journey/PhotoCredits";
+import { shownNotebookClues } from "../features/tourism/notebook-clues";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { DepartureLuggage, EndRollDialog } from "../features/journey/JourneyMoments";
@@ -189,6 +193,7 @@ const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ d
 const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({ default: module.OldDataCleanup })));
 const OfflinePlayDialog = lazy(() => import("./OfflinePlayDialog").then((module) => ({ default: module.OfflinePlayDialog })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
+const MiniGameCollection = lazy(() => import("../features/journey/MiniGameCollection").then((module) => ({ default: module.MiniGameCollection })));
 const TravelLogDialog = lazy(() => import("../features/journey/TravelLog").then((module) => ({ default: module.TravelLogDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
@@ -547,6 +552,8 @@ export function GameApp({
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
   const [musicRoom, setMusicRoom] = useState(false);
   const [roomTrack, setRoomTrack] = useState<string | null>(null);
+  // ミニゲーム集 (MiniGameCollection.tsx; 2026-11-20): beside 旅の音楽室 once the journey is over.
+  const [miniGamesOpen, setMiniGamesOpen] = useState(false);
   // 「画面の出典」 (2026-11-20: one item for 写真の出典 and 画像の出典).
   const [screenCreditsOpen, setScreenCreditsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
@@ -843,6 +850,13 @@ export function GameApp({
     onMusic: (track) => setMiniGameTrack(track && hasTrack(track) ? track : null),
   }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugMarks, game?.playerName, game?.heroineName, game?.playerNameReading,
     revision, miniGameAvailable, commit, nextRomanceRoll]);
+  // ミニゲーム集's plays: the same settings and music as a story's, no choice to take (MiniGameCollection.tsx).
+  const collectionPlay = useMemo(() => ({
+    auto: displaySettings.value.miniGameAuto,
+    reduceMotion: displaySettings.value.reduceMotion,
+    onQuiet: setMiniGameQuiet,
+    onMusic: (track: string | null) => setMiniGameTrack(track && hasTrack(track) ? track : null),
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
@@ -920,6 +934,9 @@ export function GameApp({
   const photoOf = (id: string | undefined) => (id ? tourismAssets.find((asset) => asset.id === id) : undefined);
   const landmarkPhoto = (id: string | null | undefined) => photoOf(landmarks.find((landmark) => landmark.id === id)?.imageAssetId);
   const backdropPhoto = (backgroundId: string) => photoOf(presentation.backgrounds[backgroundId]?.imageAssetId);
+  // The sources of the quiz explanation on screen, listed there too (2026-11-20: the explanation shows none of its own).
+  const explanationSources = game?.activeBattle?.phase === "feedback" && activeBattleContent
+    ? activeBattleContent.quiz.questions[game.activeBattle.roundIndex]?.sources : undefined;
   const scenePhoto = !game ? undefined
     : activeEncounter && currentEncounter ? encounterImage ?? encounterBackdrop?.asset
     : game.activeEpilogue ? undefined
@@ -939,8 +956,29 @@ export function GameApp({
     : game.activeBattle && currentBattle
       ? (landmarkPhoto(currentBattle.landmarkId) && !momentQuiz ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
     : active?.frame.background;
+  /** 「服」's or the shop's change of clothes (outfits.ts wearOutfit): in free time only, with a short sound once she has changed. */
+  function wear(outfitId: string | null): boolean {
+    const changed = commit((state) => wearOutfit(state, outfitId, state.revision));
+    if (changed) playSe("ui_confirm");
+    return changed;
+  }
   const scenePlaceJa = momentQuiz && currentBattle ? landmarks.find((landmark) => landmark.id === currentBattle.landmarkId)?.nameJa : undefined;
+  // A reasoning quiz's case file in the clue book (not while a visit's observation opened from it shows).
+  const caseClueIds = game?.activeBattle && reasoningRule && reasoningContext && !game.activeTourism ? reasoningRule.caseClueIds : undefined;
+  // ≡メニュー's 「画面の出典」 (2026-11-20 user decision): the sources of what the screen's clue book shows, where it opens (a
+  // visit, a reasoning quiz; 「根拠と解釈を確認する」 is off the clue book).
+  const screenClues = game && !activeEncounter && (canObserve || cityNotebook) && (game.activeTourism || caseClueIds)
+    ? shownNotebookClues({ landmarkId: currentLandmarkId ?? undefined, cityId: cityNotebook ? currentBattle.cityId : undefined,
+      discoveredIds: game.discoveredClueIds, readableDocumentIds: getReadableDocumentIds(game), caseClueIds,
+      clues: caseClueIds ? activeBattleContent?.clues : undefined })
+    : [];
+  // The answer of the explanation on screen, said over its sources there (2026-11-20: a right one shows no mark of its own).
+  const explainedQuestion = explanationSources && game?.activeBattle ? activeBattleContent?.quiz.questions[game.activeBattle.roundIndex] : undefined;
+  const explainedAnswer = explainedQuestion && game?.activeBattle?.answers[game.activeBattle.roundIndex];
+  const screenAnswer: ScreenAnswer | undefined = explainedQuestion && explainedAnswer
+    ? { optionId: explainedAnswer.optionId, correctOptionId: explainedQuestion.correctOptionId } : undefined;
   return (
+    <WornCostumeContext.Provider value={game ? wornCostume(game) : undefined}>
     <div
       className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
     >
@@ -989,6 +1027,7 @@ export function GameApp({
           shot.refresh();
           setSettings(true);
         }}
+        onWearOutfit={wear}
         onReturnToFreeTime={debugMarks && canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
       />}
       {game && (
@@ -1309,7 +1348,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <JourneyMemoriesScreen journeyJa={getJourney(journeyId)?.nameJa ?? ""} playerName={game.playerName} heroineName={game.heroineName}
               numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onRecords: openRecords }}
+              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true), onRecords: openRecords }}
               onAgain={openAgain}
               selector={!isDebug && onSwitchJourney ? <JourneySelection value={journeyId} onChange={requestJourneySwitch} /> : undefined} />
           </>
@@ -1341,6 +1380,8 @@ export function GameApp({
             onCancelTour={() => commit((state) => cancelTourBooking(state, game.revision))}
             onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
             onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
+            onBuyOutfit={(outfitId) => commit((state) => buyOutfit(state, outfitId, game.revision))}
+            onWearOutfit={(outfitId) => wear(outfitId)}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}
@@ -1368,14 +1409,17 @@ export function GameApp({
           }}>出発する</button>} />
       </Modal>}
       {/* 旅の記録 (2026-11-19: 旅の記録 and アルバム made one; TravelLog.tsx). 旅の音楽室 (2026-11-13: once the first city is
-          cleared), the credit roll (the journey over) and the journey kept as 旅の思い出 (2026-11-19) open over it and close back
-          to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
+          cleared), ミニゲーム集 beside it and the credit roll (the journey over; 2026-11-20) and the journey kept as 旅の思い出
+          (2026-11-19) open over it and close back to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
+          missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
           extras={<>
             {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
               {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
                 onClick={() => setMusicRoom(true)}>旅の音楽室</button>}
+              {isJourneyComplete(game) && <button type="button" className="secondary" data-testid="minigame-collection-open"
+                onClick={() => setMiniGamesOpen(true)}>ミニゲーム集</button>}
               {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
                 エンドロールを見る</button>}
             </div>}
@@ -1388,7 +1432,8 @@ export function GameApp({
         <ModalTitle id="kept-memory-title" onClose={closeKept}>前の旅の思い出</ModalTitle>
         <KeptMemoryContents playerName={keptGame.playerName} heroineName={keptGame.heroineName}
           numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-          views={{ onEndRoll: () => setKeptEndRoll(true), onMusicRoom: () => setMusicRoom(true), onRecords: () => setKeptLogOpen(true) }} />
+          views={{ onEndRoll: () => setKeptEndRoll(true), onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true),
+            onRecords: () => setKeptLogOpen(true) }} />
       </Modal>}
       {keptEndRoll && keptGame && <EndRollDialog roll={endRollOf(keptGame)} numbers={journeyNumbers(keptGame, learnedWords.learned)}
         reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
@@ -1411,13 +1456,17 @@ export function GameApp({
           bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
       </LazyDialog>}
+      {miniGamesOpen && game && <LazyDialog onClose={() => setMiniGamesOpen(false)}>
+        <MiniGameCollection game={keptGame ?? game} play={collectionPlay} onClose={() => setMiniGamesOpen(false)} />
+      </LazyDialog>}
       {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
-        <TravelLogDialog game={keptGame} onClose={() => setKeptLogOpen(false)} />
+        <TravelLogDialog game={keptGame} missedPhotos={showsMissedPhotos(keptGame, true)} onClose={() => setKeptLogOpen(false)} />
       </LazyDialog>}
 
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
-      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} onAllCredits={() => setCreditsOpen(true)}
+      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} factSources={explanationSources} answer={screenAnswer}
+        clues={screenClues} onAllCredits={() => setCreditsOpen(true)}
         onClose={() => setScreenCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
@@ -1428,19 +1477,14 @@ export function GameApp({
           onDiscoverDocument={(id) => commit((state) => discoverClue(state, id, game.revision))}
           onClose={() => setNotebook(false)}
           reasoning={
+            caseClueIds &&
             reasoningRule &&
-            currentBattle &&
             game.activeBattle &&
-            reasoningContext &&
-            !game.activeTourism
+            reasoningContext
               ? {
-                  caseClueIds: reasoningRule.caseClueIds,
+                  caseClueIds,
                   clues: activeBattleContent!.clues,
                   claimText: reasoningContext.claimText,
-                  questionEn:
-                    activeBattleContent!.quiz.questions[
-                      game.activeBattle.roundIndex
-                    ].questionEn,
                   selectedIds:
                     game.activeBattle.reasoning?.selectedClueIds ?? [],
                   maxSelections: reasoningEvidenceCount(reasoningRule) as 1 | 2,
@@ -1559,5 +1603,6 @@ export function GameApp({
       {travelEffects}
       {moments.overlays}
     </div>
+    </WornCostumeContext.Provider>
   );
 }

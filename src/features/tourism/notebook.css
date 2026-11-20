@@ -42,12 +42,6 @@ dialog.modal.clue-notebook {
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
-.case-question {
-  margin-top: 3px;
-  font-size: 13px;
-  line-height: 1.35;
-  font-weight: 600;
-}
 .clue-notebook .cluebook-body {
   flex: 1;
   min-height: 100px;
@@ -98,9 +92,6 @@ dialog.modal.clue-notebook {
 .clue-notebook .notebook-clue h3 { line-height: 1.4; }
 .clue-notebook .claim-types { margin-top: 3px; }
 .clue-notebook .cluebook-body .clue-description { margin: 4px 0 6px; line-height: 1.6; }
-.clue-notebook .clue-sources { display: inline-block; vertical-align: top; margin: 0; }
-.clue-notebook .clue-sources[open] { display: block; width: 100%; }
-.clue-notebook .clue-sources > summary { min-height: 44px; }
 /* Display-only labels of a clue: pills (§2.3). */
 .case-provenance {
   display: inline-block;
@@ -221,12 +212,6 @@ dialog.modal.clue-notebook {
   }
   .clue-notebook .cluebook-body { padding-bottom: 4px; }
 }
-/* Keep the picture and the text together on small case sheets. */
-.clue-notebook .clue-meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
-.clue-notebook .clue-meta .claim-types { margin: 0; }
-.clue-notebook .clue-meta .clue-sources { flex: 0 1 auto; }
-.clue-notebook .clue-meta:has(.clue-sources[open]) { flex-wrap: wrap; }
-.clue-notebook .clue-meta .clue-sources[open] { flex: 1 0 100%; }
 /* In a reasoning battle the pill already says where the clue came from; the heading of its form stays for screen readers.
    (A clue heard in conversation has no such heading next to its pill 「会話で聞いた」: ClueNotebook leaves it out.) */
 .case-notebook .notebook-clue .clue-kind {

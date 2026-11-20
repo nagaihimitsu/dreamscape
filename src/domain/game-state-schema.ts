@@ -182,6 +182,11 @@ export const gameStateSchema = z.object({
   recoveryAfterRejection: z.boolean(),
   completedRecoveryCount: z.number().int().min(0).max(3),
   travelBudget: z.number().int().nonnegative().safe(),
+  // The heroine's outfits (2026-11-20, optional fields of save v23; src/domain/outfits.ts): those bought at a shop of the
+  // journey (shop/catalog.json outfit IDs, in the order bought), kept for the rest of the journey, and the one she wears
+  // (one of them; absent: 普段の服, the outfit the scene, the city or the region gives her). A save written before has neither.
+  outfits: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じ服が2つあります。").optional(),
+  outfit: stableContentId.optional(),
   inventory: z.record(stableContentId, z.enum(["held", "gifted", "used", "left_behind"])),
   completedEncounterIds: uniqueStrings,
   // Every encounter finished, with any choice (「また今度」 included); completedEncounterIds is a subset.

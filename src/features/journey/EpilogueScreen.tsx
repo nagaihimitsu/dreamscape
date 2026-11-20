@@ -142,8 +142,8 @@ export function EpilogueScreen({
         <ItemOutLayer card={showLogo ? undefined : itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots), the person alone in the
             middle while she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they
-            come in. Two people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as
-            the other goes). */}
+            come in. Two or three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as
+            another goes). */}
         <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
           data-together={cast.together}>
           {stage.heroine && <div className={opposite ? "encounter-character-slot encounter-character-heroine" : undefined}>
@@ -160,7 +160,7 @@ export function EpilogueScreen({
           </div>}
           {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => {
             const personLooks = figureIsEnemy(figure, stageScene);
-            return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+            return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "opposite" ? "enemy" : place}`}>
               <CharacterPortrait characterId={figure.figure} emotion={personLooks ? personEmotion : "neutral"} focus={at}>
                 {personLooks && personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
               </CharacterPortrait>

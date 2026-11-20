@@ -403,12 +403,14 @@ Agra? Your train is cancelled today.
 // 【4】都市の出発：道1（ロディ・ガーデンでドゥベイの話を聞いた人）。推理クイズB（矛盾追及）。
 // battles/catalog.json の gt_delhi_special_station_battle の storyId がこの knot を指す。主張・追及は手伝いの knot _claim・_press。
 // 道を渡る前に見抜くので、案内所の場面 gt_delhi_depart_scam_office（# when: not clue …）は流れない。
-// 報酬の AP はない。会話の選択肢の札（終わりの返事の3択の # rel:）は、このクイズを最初に遊んだときだけ当たる。
+// 報酬の AP は頭の # on_done: ap +2（地図のクイズの「初めて完了」「初めて規定数に正解」と同じくらい。2026-11-20のユーザー判断）。
+// 頭の # on_done: と会話の選択肢の札（終わりの返事の3択の # rel:）は、このクイズを最初に遊んだときだけ当たる。
 === gt_delhi_depart_scam_quiz ===
 # scene: battle
 # at: depart delhi
 # priority: -2
 # when: clue gt_delhi_clue_dubey_announcement
+# on_done: ap +2
 # background: gt_bg_delhi_station_front
 # bgm: gt_vadodora
 # ambience: gt_amb_street_traffic

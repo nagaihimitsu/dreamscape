@@ -6,6 +6,11 @@ import "./reasoning.css";
 /** The clue book (ClueNotebook's dialog) while it is on the page. */
 const notebookOpen = () => !!document.querySelector("dialog.clue-notebook");
 
+/**
+ * The reasoning's evidence step (the battle's phase `reasoning`): the claim, the evidence chosen, the clue book, 追及 and the
+ * submit. Only then: the question after it shows on its own (2026-11-20 user decision: no claim, evidence or 「英語の3択で答え
+ * ましょう」 over it).
+ */
 export function ReasoningPanel({
   game,
   onPress,
@@ -22,7 +27,6 @@ export function ReasoningPanel({
   const rule = definition.reasoning!;
   const reasoning = active.reasoning;
   const context = getReasoningContext(game);
-  const selecting = active.phase === "reasoning";
   const count = reasoningEvidenceCount(rule);
   const selected = reasoning?.selectedClueIds ?? [];
   const canSubmit = canSubmitBattleEvidence(game);
@@ -33,7 +37,7 @@ export function ReasoningPanel({
   const bookWasOpen = useRef(false);
   useEffect(() => {
     const open = notebookOpen();
-    if (bookWasOpen.current && !open && selecting && canSubmit && submit.current) {
+    if (bookWasOpen.current && !open && canSubmit && submit.current) {
       submit.current.scrollIntoView({ block: "nearest" });
       submit.current.focus({ preventScroll: true });
     }
@@ -47,13 +51,11 @@ export function ReasoningPanel({
     >
       <div className="reasoning-prompt">
         <h2>{rule.kind === "contradiction" ? "矛盾追及" : "証拠連結"}</h2>
-        {selecting && (
-          <p className="reasoning-help">
-            {rule.kind === "contradiction"
-              ? "相手の主張と食い違う証拠を1枚探そう。"
-              : "関連する2つの証拠を選ぼう。"}
-          </p>
-        )}
+        <p className="reasoning-help">
+          {rule.kind === "contradiction"
+            ? "相手の主張と食い違う証拠を1枚探そう。"
+            : "関連する2つの証拠を選ぼう。"}
+        </p>
         <div className="reasoning-claim">
           <p className="fine-print">{definition.enemyNameJa}の主張</p>
           <blockquote>{context?.claimText}</blockquote>
@@ -83,49 +85,41 @@ export function ReasoningPanel({
           </ul>
         )}
       </div>
-      {selecting ? (
-        <>
-          <div className="reasoning-actions">
-            {onNotebook && (
-              <button
-                type="button"
-                className={selected.length === count ? "secondary reasoning-notebook" : "primary reasoning-notebook"}
-                data-testid="reasoning-notebook"
-                onClick={onNotebook}
-              >
-                手がかり帳を開く
-              </button>
-            )}
-            {rule.kind === "contradiction" && (
-              <button
-                className="secondary"
-                data-testid="reasoning-press"
-                onClick={onPress}
-              >
-                {reasoning?.pressed ? "追及を読み直す" : "追及する"}
-              </button>
-            )}
-          </div>
+      <div className="reasoning-actions">
+        {onNotebook && (
           <button
-            ref={submit}
-            className="primary"
-            data-testid="reasoning-submit"
-            disabled={!canSubmit}
-            onClick={onSubmit}
+            type="button"
+            className={selected.length === count ? "secondary reasoning-notebook" : "primary reasoning-notebook"}
+            data-testid="reasoning-notebook"
+            onClick={onNotebook}
           >
-            {rule.kind === "contradiction"
-              ? "証拠を突きつける"
-              : "2つの証拠を組み合わせる"}
+            手がかり帳を開く
           </button>
-          <p className="fine-print">
-            間違えても選び直せます。時間制限・AP消費はありません。
-          </p>
-        </>
-      ) : (
-        <p className="reasoning-ready">
-          資料を確認しました。どのような理由になるか、英語の3択で答えましょう。
-        </p>
-      )}
+        )}
+        {rule.kind === "contradiction" && (
+          <button
+            className="secondary"
+            data-testid="reasoning-press"
+            onClick={onPress}
+          >
+            {reasoning?.pressed ? "追及を読み直す" : "追及する"}
+          </button>
+        )}
+      </div>
+      <button
+        ref={submit}
+        className="primary"
+        data-testid="reasoning-submit"
+        disabled={!canSubmit}
+        onClick={onSubmit}
+      >
+        {rule.kind === "contradiction"
+          ? "証拠を突きつける"
+          : "2つの証拠を組み合わせる"}
+      </button>
+      <p className="fine-print">
+        間違えても選び直せます。時間制限・AP消費はありません。
+      </p>
     </section>
   );
 }

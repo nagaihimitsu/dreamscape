@@ -4,12 +4,13 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { landmarks, tourismClues } from "../../content";
+import { battles, landmarks, tourismClues } from "../../content";
 import { completedCity, openTourismScene } from "../../dev/scenario-builders";
 import { listPlayerActions } from "../../domain/player-action";
 import { discoverClue, getReadableDocumentIds, skipTourismGuide } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { ClueNotebook } from "./ClueNotebook";
+import { shownNotebookClues } from "./notebook-clues";
 
 const landmark = landmarks.find((item) => tourismClues.some((clue) => clue.landmarkId === item.id && clue.kind === "document"))!;
 const isDocument = (id: string) => tourismClues.find((clue) => clue.id === id)?.kind === "document";
@@ -54,5 +55,30 @@ describe("the documents a player can read in an observation", () => {
     state = discoverClue(state, readable[0], state.revision);
     expect(notebook(state).listed.filter(isDocument)).toEqual(readable);
     expect(offeredDocuments(state)).toEqual(readable.slice(1));
+  });
+});
+
+describe("a reasoning quiz's clue book (2026-11-20 user decision)", () => {
+  const battle = battles.find((item) => item.reasoning && item.landmarkId)!;
+  const caseClueIds = battle.reasoning!.caseClueIds;
+  const markup = renderToStaticMarkup(createElement(ClueNotebook, {
+    landmarkId: battle.landmarkId!, discoveredIds: [], onClose: () => {},
+    reasoning: { caseClueIds, claimText: "今朝、決まった運休です", selectedIds: [], maxSelections: 1, selectionEnabled: true,
+      canToggle: () => true, onSelect: () => {} },
+  }));
+
+  it("quotes the claim with no question after it (no English, nothing naming the clue that answers it)", () => {
+    expect(markup).toContain("相手の主張");
+    expect(markup).toContain("今朝、決まった運休です");
+    expect(markup).not.toContain('lang="en"');
+  });
+
+  it("leaves its clues' sources to 「画面の出典」, which lists those of the whole case file, found or not", () => {
+    expect(markup).not.toContain("根拠と解釈");
+    expect(markup).not.toContain("<a ");
+    expect(shownNotebookClues({ landmarkId: battle.landmarkId!, discoveredIds: [], caseClueIds }).map((clue) => clue.id).sort())
+      .toEqual([...caseClueIds].sort());
+    // Outside a reasoning quiz, an unread document shows only its title: its sources are not listed.
+    expect(shownNotebookClues({ landmarkId: battle.landmarkId!, discoveredIds: [], readableDocumentIds: caseClueIds })).toEqual([]);
   });
 });

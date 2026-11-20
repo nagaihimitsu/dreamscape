@@ -7,7 +7,7 @@ import {
   blockedSleepWays, blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, chooseWay,
   defaultCardIndex, departureOf, joinedCardsJa, lockedCardId, lockedCardJa, newCardIds, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
   NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards,
-  sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
+  SHOP_CARD_ID, sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
   TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
 } from "./photo-cards";
 
@@ -91,6 +91,17 @@ describe("the row of cards", () => {
     // The card chosen first is still the first place's; without locked dates the row is as before.
     expect(defaultCardIndex(cards)).toBe(1);
     expect(rowCards(photoCardEntries(places, map), { tour: false, locked: [], debug: true }).map((item) => item.kind)).toEqual(["wait", "place", "place", "place", "place", "stay"]);
+  });
+
+  it("puts the city's shop at the right end, after 「ホテルに戻る」 (2026-11-20); it neither departs nor stands for a selection", () => {
+    const cards = rowCards(photoCardEntries(places, map), { tour: true, shop: "布地の店" });
+    expect(cards.map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", TOUR_CARD_ID, STAY_CARD_ID, SHOP_CARD_ID]);
+    const shop = cards.at(-1)!;
+    expect(shop).toEqual({ kind: "shop", id: SHOP_CARD_ID, nameJa: "布地の店" });
+    expect([takesSwipe(shop), cardTarget(shop), cardKinds(shop)]).toEqual([false, null, "none"]);
+    expect(defaultCardIndex(cards)).toBe(1);
+    // A city without a shop: the row as before.
+    expect(rowCards(photoCardEntries(places, map), { tour: false, shop: null }).at(-1)?.id).toBe(STAY_CARD_ID);
   });
 
   it("deals in a date's place as a new card once the date opens, the same as with Debug mode on", () => {

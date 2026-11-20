@@ -188,9 +188,17 @@ describe("special battle content contract", () => {
     tourism.clues.find(
       (clue) => clue.id === special("B").reasoning!.correctClueIds[0],
     )!.landmarkId = "duomo_milano";
-    expect(() => validateBattleEvidence(special("B"), tourism.clues)).toThrow(
+    expect(() => validateBattleEvidence(special("B"), tourism.clues, tourism.landmarks)).toThrow(
       "Unknown or mismatched battle evidence",
     );
+    // A city finale has no landmark: its case evidence may be any landmark's of its city, and no other city's.
+    const finale = { ...special("B"), landmarkId: null, scope: "city_finale" as const, cityId: "milano" };
+    const landmarks = [{ id: "duomo_milano", cityId: "milano" }];
+    expect(() => validateBattleEvidence(finale, tourism.clues, landmarks)).toThrow("Unknown or mismatched battle evidence");
+    for (const id of finale.reasoning!.caseClueIds) tourism.clues.find((clue) => clue.id === id)!.landmarkId = "duomo_milano";
+    expect(() => validateBattleEvidence(finale, tourism.clues, landmarks)).not.toThrow();
+    expect(() => validateBattleEvidence(finale, tourism.clues, [{ id: "duomo_milano", cityId: "venezia" }]))
+      .toThrow("Unknown or mismatched battle evidence");
   });
 
   it("keeps C's combined conclusion an interpretation, with a separately scored English choice", async () => {

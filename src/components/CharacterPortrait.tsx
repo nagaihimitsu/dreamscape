@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { characterAvatar, characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
+import { characterAvatar, characterFaceFrame, characterImage, characterPlacement, faceFrameStyle, resolveCharacterCostume } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
 import { loadPicture, pictureReady } from "../media/preload";
 import { characterCatalog as catalog } from "./character-catalog";
 import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import { LivePortrait } from "./LivePortrait";
+import { useWornCostume } from "./worn-costume";
 import "./character-portrait.css";
 
 const characters = catalog.characters;
@@ -35,13 +36,15 @@ export function CharacterPortrait({
   children?: ReactNode;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  // The outfit the player chose for the heroine (the header's 「服」), changed in free time only.
+  const worn = useWornCostume();
   // Resolve from the scene context only, never from a changing line or its
   // emotion. Unavailable expressions therefore cannot change the outfit.
   const selection = useMemo(
     () => character
-      ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, countryId, regionId, costume, pose })
+      ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, countryId, regionId, costume, pose, worn })
       : {},
-    [character, sceneId, cityId, countryId, regionId, costume, pose],
+    [character, sceneId, cityId, countryId, regionId, costume, pose, worn],
   );
   // The pose's moving picture (characters.json `avatar`, its shared face `avatarFace`): drawn over the still one once it
   // moves; "failed" keeps the still picture for this outfit (reduced motion, no WebGL, files that cannot load).
@@ -97,16 +100,20 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   cityId?: string;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  const worn = useWornCostume();
   const selection = useMemo(
-    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
-    [character, sceneId, cityId],
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, worn }) : {},
+    [character, sceneId, cityId, worn],
   );
   if (!character) return null;
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
+  // The outfit's own face frame (characters.json `face`, from its moving picture's eyes): her face fills the circle
+  // wherever the outfit's picture puts her head; without one, the frame of character-portrait.css.
+  const frame = characterFaceFrame(character, selection);
   return (
     <span className="character-face" aria-hidden="true">
-      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} imageStyle={frame ? faceFrameStyle(frame) : undefined} />
     </span>
   );
 }
@@ -122,9 +129,10 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
   cityId?: string;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  const worn = useWornCostume();
   const selection = useMemo(
-    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
-    [character, sceneId, cityId],
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, worn }) : {},
+    [character, sceneId, cityId, worn],
   );
   if (!character) return null;
   const image = characterImage(character, { ...selection, emotion });
@@ -142,10 +150,12 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
  * last picture stays up, so the figure never goes blank while a file arrives. A file that cannot be shown falls back to
  * the neutral picture, then to `fallback` or the placeholder.
  */
-function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
+function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf, imageStyle }: {
   path: string | null;
   neutralPath: string | null;
   color: string;
+  /** Where the picture sits in its box (CharacterFace's face frame), over its stylesheet's. */
+  imageStyle?: CSSProperties;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
   /** A standing portrait's character: its picture breathes (character-portrait.css). */
@@ -185,7 +195,8 @@ function CharacterImage({ path, neutralPath, color, fallback, onImageError, brea
   }, [candidate, shown, failedPaths]);
   // A figure on stage is what the scene is about: fetched before the music and the ambience streaming meanwhile.
   if (shown) return (
-    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" fetchPriority="high" style={breath} onError={() => fail(shown)} />
+    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" fetchPriority="high" style={imageStyle ? { ...breath, ...imageStyle } : breath}
+      onError={() => fail(shown)} />
   );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.

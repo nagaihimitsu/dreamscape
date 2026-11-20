@@ -49,6 +49,12 @@
       "descriptionJa": "シティ・パレスで、審判の報酬にもらった。"
     },
     {
+      "id": "gt_jaipur_gaura_radish",
+      "cityId": "jaipur",
+      "nameJa": "ガウラの大根",
+      "descriptionJa": "ハワー・マハルの前で、窓から見てきた報告のお礼にもらった一本。新聞紙でくるんである。宿の台所に渡せば、朝の皿に戻ってくるらしい。"
+    },
+    {
       "id": "gt_delhi_family_photo",
       "cityId": "delhi",
       "nameJa": "十四人の写真",

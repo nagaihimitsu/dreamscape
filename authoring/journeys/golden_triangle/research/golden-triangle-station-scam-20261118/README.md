@@ -8,7 +8,7 @@
 | 道 | 誰が通るか | 場面 |
 | --- | --- | --- |
 | 全員 | デリーの出発の時点（`# at: depart delhi`） | `gt_delhi_depart_scam`（−3。駅前の導入。最初の3択の後は終わる） |
-| 道1 | ロディ・ガーデンのデートを終えた人（手がかり `gt_delhi_clue_dubey_announcement` を持つ） | 推理クイズB `gt_delhi_depart_scam_quiz`（−2。道を渡る前に見抜く。報酬の AP なし） |
+| 道1 | ロディ・ガーデンのデートを終えた人（手がかり `gt_delhi_clue_dubey_announcement` を持つ） | 推理クイズB `gt_delhi_depart_scam_quiz`（−2。道を渡る前に見抜く。報酬は頭の `# on_done: ap +2`。2026-11-20のユーザー判断で、地図のクイズの「初めて完了」「初めて規定数に正解」と同じくらいに） |
 | 道2 | 手がかりがなく、`rel spark >= 6`（仮） | `gt_delhi_depart_scam_office`（−2）の `sees_through`：彼女がノートの筆跡で見抜く。手付金なし |
 | 道3 | それ以外 | 同じ場面の `taken_in`：見抜けない。使えるお金が 500 以上なら手付金 ₹500（額は案）を払う。足りなければ払えずに追い出される（お金は動かない） |
 

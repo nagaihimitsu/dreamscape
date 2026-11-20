@@ -1,6 +1,8 @@
 import path from "node:path";
 import { ALBUM_IMAGE_FOLDER, albumImageIdOf, type AlbumImage } from "../src/content/album-images";
+import { isPlaceStory } from "../src/content/story-address";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
+import { taggedLines, type TaggedLine } from "./line-tag-text";
 import { withoutComments } from "./place-files";
 
 // content:build's album images (2026-11-11 user decision; src/content/album-images.ts): the files of each journey's
@@ -89,4 +91,42 @@ export function checkAlbumTags(source: string, journeyId: string, images: readon
       : `アルバムの絵がありません：${where} の絵が ${albumFolder}/ にありません。${id}.webp（または .png・.jpg・.jpeg）をそこに置いてください` +
         `（Unknown album image: # ${tag}: ${id} is not a file of ${albumFolder}/）。`);
   }
+}
+
+/** A scene as withPhotoSpots reads it (the scene table's entry): its city, its story and the knots it calls. */
+export type PhotoScene = { cityId: string; story: { storyId: string; knot?: string }; knots: readonly string[] };
+
+/** Whether two tags belong to the same line of the story (line-tag-text.ts: its text, else the tag's own line). */
+const sameLine = (left: TaggedLine, right: TaggedLine) =>
+  left.knot === right.knot && (left.textLine !== null ? left.textLine === right.textLine : left.line === right.line);
+
+/**
+ * The album images with where a line's `# photo:` takes each (2026-11-20 user decision: once the journey is over, 旅の記録's
+ * 「写真」 shows in grey the photos not taken yet): the city of the scene whose lines have the first such line, in the order
+ * of `stories` (each story's ID and its authored source) and their lines, and that line's `# photo_caption:`. A place file's
+ * line is its knot's (`places/<file>.<knot>`), read by the scenes of that knot and by those that call it; a one-scene
+ * file's is the file's. An image no line takes (only a `# recall:` names it, or nothing does), or whose line no scene
+ * reads, has none. Pure.
+ */
+export function withPhotoSpots(images: readonly AlbumImage[], stories: readonly { id: string; source: string }[],
+  scenes: readonly PhotoScene[]): AlbumImage[] {
+  const cityOf = new Map<string, string>();
+  for (const { cityId, story: { storyId, knot }, knots } of scenes)
+    for (const address of knot === undefined ? [storyId] : [knot, ...knots].map((name) => `${storyId}.${name}`))
+      if (!cityOf.has(address)) cityOf.set(address, cityId);
+  const spots = new Map<string, NonNullable<AlbumImage["photo"]>>();
+  for (const { id, source } of stories) {
+    const tags = taggedLines(source, ["photo", "photo_caption"]);
+    for (const tag of tags) {
+      if (tag.key !== "photo" || !tag.value || spots.has(tag.value)) continue;
+      const cityId = cityOf.get(isPlaceStory(id) && tag.knot ? `${id}.${tag.knot}` : id);
+      if (cityId === undefined) continue;
+      const caption = tags.find((other) => other.key === "photo_caption" && other.value && sameLine(other, tag))?.value;
+      spots.set(tag.value, { cityId, ...(caption ? { caption } : {}) });
+    }
+  }
+  return images.map((image) => {
+    const photo = spots.get(image.id);
+    return photo ? { ...image, photo } : image;
+  });
 }

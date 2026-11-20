@@ -23,8 +23,9 @@ const quiz = (id: string, landmarkId: string | null, questionIds: string[]) =>
 const quizzes: Record<string, QuizDefinition> = {
   tower_quiz: quiz("tower_quiz", "a_tower", ["tower_q1", "tower_q2"]),
   gate_quiz: quiz("gate_quiz", "a_gate", ["gate_q1"]),
-  // A city finale quiz has no landmark.
-  finale_quiz: quiz("finale_quiz", null, ["finale_q1"]),
+  // A city finale quiz has no landmark; it names its city.
+  finale_quiz: { ...quiz("finale_quiz", null, ["finale_q1"]), scope: "city_finale", cityId: "a_city" },
+  other_finale_quiz: { ...quiz("other_finale_quiz", null, ["other_finale_q1"]), scope: "city_finale", cityId: "b_city" },
 };
 const battles = ["a_tower", "a_gate"].map((id) => ({ id: `${id}_battle`, landmarkId: id }) as BattleDefinition);
 
@@ -53,9 +54,13 @@ describe("clue links to quiz questions", () => {
     expect(validateWithLinks(["tower_q1", "tower_q2"])).toBe(2);
   });
 
+  it("accepts a question of its own city's finale (a reasoning finale's case evidence)", () => {
+    expect(validateWithLinks(["finale_q1"])).toBe(2);
+  });
+
   it.each([
     ["another landmark's quiz in the same city", "gate_q1"],
-    ["the city finale (its quiz has no landmark)", "finale_q1"],
+    ["another city's finale", "other_finale_q1"],
     ["no quiz", "missing_q"],
   ])("refuses a question of %s", (_, questionId) => {
     expect(() => validateWithLinks(["tower_q1", questionId])).toThrow(`Unknown related tourism question: ${questionId}`);

@@ -329,8 +329,9 @@ const uniqueEvidenceIds = z
   );
 // The battle's Ink writes the proof's lines: the claim in the helper knot <battle>_claim (the press in <battle>_press), the
 // rest after `-> reasoning ->` by reasoning_action and evidence_result.
+// roundIndex: the question the proof leads to (a normal quiz has 3, a city finale 5; content:build checks it against the quiz).
 const reasoningFields = {
-  roundIndex: z.number().int().min(0).max(2),
+  roundIndex: z.number().int().min(0).max(4),
   caseClueIds: uniqueEvidenceIds.min(3).max(5),
 };
 
@@ -395,9 +396,9 @@ export const battleSchema = z
   .refine(
     (battle) =>
       battle.scope === "city_finale"
-        ? battle.landmarkId === null && !!battle.cityId && !battle.reasoning
+        ? battle.landmarkId === null && !!battle.cityId
         : battle.landmarkId !== null && battle.cityId === undefined,
-    "Only a city finale has no landmark; it names its city and has no reasoning",
+    "Only a city finale has no landmark; it names its city",
   );
 
 export const battleCatalogSchema = z

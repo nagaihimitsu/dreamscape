@@ -127,7 +127,7 @@ describe("the fixed lines of the list", () => {
     expect(FONT_CREDIT.links.every((link) => link.url.startsWith("https://"))).toBe(true);
     // Only the places that do show fact sources are named (no date screen shows them).
     expect(OWN_ARTWORK_NOTE_JA).toBe("Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +
-      "情報の出典は、手がかり帳とクイズの解説に表示しています。");
+      "情報の出典は、手がかり帳と、クイズの解説を表示している間の「画面の出典」に表示しています。");
   });
 });
 

@@ -12,7 +12,8 @@ import { miniGameOptionId } from "../../../src/minigames/tag";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 /**
- * GT-4: the Golden Triangle's 13 inserted scenes (15 since the station scam was split into an opening, an office scene and a reasoning quiz, 2026-11-18) (talks at the stage-4 moments: the hotel's night and morning,
+ * GT-4: the Golden Triangle's 13 inserted scenes (15 since the station scam was split into an opening, an office scene and a reasoning quiz, 2026-11-18;
+ * 17 with Gaura's radish handed to the Jaipur hotel's kitchen at night and served back at breakfast, 2026-11-20) (talks at the stage-4 moments: the hotel's night and morning,
  * Delhi's departure, Agra's arrival, the Jaipur finale and the India Gate date), each played at its moment with the
  * real actions as the screens commit them, each step saved and loaded again. Their two items are given (the envelope
  * handed over once), their money is paid once (the station deposit through to Agra; each envelope gift in its scene,
@@ -122,7 +123,7 @@ const shown = (played: Played, text: string) => played.lines.some((line) => line
 const delhiStart = () => finishEpisode(newJourney("golden_triangle"), "gt_delhi_main_red_fort");
 
 describe("Golden Triangle inserted scenes (GT-4)", () => {
-  it("places the 15 scenes at their moments, with their sources, flags, items and backgrounds", () => {
+  it("places the 17 scenes at their moments, with their sources, flags, items and backgrounds", () => {
     const own = scenes.filter((scene) => /^places\/gt_(delhi|agra|jaipur)_inserts$/u.test(scene.story.storyId));
     const table = Object.fromEntries(own.map((scene) => [scene.id, [scene.kind, scene.at, scene.priority, scene.sources ?? "listed"]]));
     expect(table).toEqual({
@@ -138,6 +139,8 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       gt_agra_arrive_reel: ["talk", [{ arrive: "agra" }], 1, "none"],
       gt_jaipur_hotel_mehndi_night: ["talk", [{ hotel: "jaipur_hotel_hub" }], -1, "listed"],
       gt_jaipur_hotel_mehndi_morning: ["talk", [{ hotel: "jaipur_hotel_hub" }], 1, "listed"],
+      gt_jaipur_hotel_radish_night: ["talk", [{ hotel: "jaipur_hotel_hub" }], -2, "none"],
+      gt_jaipur_hotel_radish_morning: ["talk", [{ hotel: "jaipur_hotel_hub" }], 2, "listed"],
       gt_jaipur_finale_before_envelope: ["talk", [{ finale: "jaipur" }], -1, "listed"],
       gt_jaipur_finale_after_envelope: ["talk", [{ finale: "jaipur" }], 1, "listed"],
       gt_jaipur_finale_after_reel: ["talk", [{ finale: "jaipur" }], 2, "none"],
@@ -150,7 +153,7 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     expect(listed.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.kind !== "battle" && scene.sources !== "none").map((scene) => scene.id).sort());
     for (const source of listed.flatMap((scene) => scene.sources)) {
       expect(source.url).toMatch(/^https:\/\//u);
-      expect(source.checkedAt).toMatch(/^2026-11-(0[89]|18)$/u);
+      expect(source.checkedAt).toMatch(/^2026-11-(0[89]|18|20)$/u);
     }
     // The flags only the inserts set and read, and the two items they give.
     const reads = new Set(own.flatMap((scene) => scene.conds));
@@ -274,9 +277,11 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       const jalMahal = playDate(jaipurStart(), "gt_jaipur_date_jal_mahal", ["you_decide"]);
       expect(jalMahal.chosen).toContain("you_decide");
       const first = rest(jalMahal.state, 20 * 60, ["later", "did_hear"]);
-      expect(ids(first)).toEqual(["gt_jaipur_hotel_mehndi_night", "gt_jaipur_hotel_mehndi_morning"]);
+      // (Hawa Mahal is done, so Gaura's radish goes to the kitchen before the mehndi and comes back after its morning.)
+      expect(ids(first)).toEqual(["gt_jaipur_hotel_radish_night", "gt_jaipur_hotel_mehndi_night", "gt_jaipur_hotel_mehndi_morning", "gt_jaipur_hotel_radish_morning"]);
       expect(first.chosen).toContain("later");
-      expect(first.scenes.map((scene) => scene.day)).toEqual([jalMahal.state.travel.day, jalMahal.state.travel.day + 1]);
+      const day = jalMahal.state.travel.day;
+      expect(first.scenes.map((scene) => scene.day)).toEqual([day, day, day + 1, day + 1]);
       expect(shown(first, "逃げたね。いいよ。明日の方が、濃くて見つけやすいかも")).toBe(true);
       expect(shown(first, "あら。ここ、名前が書いてある。ヒンディー語で。")).toBe(true);
       // 「また今度」 (# later): seen, not done, so the night comes back; the morning is done.
@@ -290,6 +295,32 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       expect(shown(second, "けれど、何と書いてあるかは、もう知っている。")).toBe(true);
       expect(second.state.completedEncounterIds).toContain("gt_jaipur_hotel_mehndi_night");
       expect(ids(rest(second.state, 20 * 60))).toEqual([]);
+    }, 300_000);
+
+    it("gives Gaura's radish after Hawa Mahal; resting, the hotel's kitchen takes it (used, once) and serves it at breakfast", () => {
+      // Hawa Mahal gives the radish (its battle's # on_done: item), held until the hotel: no choice, the night scene uses it.
+      const start = jaipurStart();
+      expect(start.inventory.gt_jaipur_gaura_radish).toBe("held");
+      expect(encounters.items.find((item) => item.id === "gt_jaipur_gaura_radish")).toMatchObject({ cityId: "jaipur", nameJa: "ガウラの大根" });
+      // A daytime rest plays it too (the handover is not a night scene); the breakfast comes the morning after.
+      const first = rest(start, 14 * 60);
+      expect(ids(first)).toEqual(["gt_jaipur_hotel_radish_night", "gt_jaipur_hotel_radish_morning"]);
+      expect(first.scenes.map((scene) => scene.day)).toEqual([start.travel.day, start.travel.day + 1]);
+      expect(first.state.inventory.gt_jaipur_gaura_radish).toBe("used");
+      expect(shown(first, "あら、大根。……葉っぱが、まだぴんとしてる。")).toBe(true);
+      expect(shown(first, "だから、ムーリー・パラーター。")).toBe(true);
+      // Without the City Palace's lime pickle, no pickle from the bag.
+      expect(shown(first, "あ、漬物！　漬物なら、持ってる")).toBe(false);
+      expect(shown(first, "ガウラさん、四十年、あの窓の下でこういう大根を売ってきたんだね。")).toBe(true);
+      // Once: the next rest plays neither.
+      expect(ids(rest(first.state, 20 * 60))).toEqual([]);
+      // With the lime pickle (City Palace), she takes it out for the breakfast: shown, not used.
+      const pickle = rest(finishEpisode(start, "gt_jaipur_main_city_palace"), 20 * 60);
+      expect(ids(pickle)).toEqual(["gt_jaipur_hotel_radish_night", "gt_jaipur_hotel_radish_morning"]);
+      expect(shown(pickle, "あ、漬物！　漬物なら、持ってる")).toBe(true);
+      expect(pickle.state.inventory).toMatchObject({ gt_jaipur_gaura_radish: "used", gt_jaipur_sushma_lime_pickle: "held" });
+      // Before Hawa Mahal, no radish and no scene.
+      expect(ids(rest(cityStart("jaipur"), 20 * 60))).toEqual([]);
     }, 300_000);
 
     it("says the name found in the mehndi in Latin letters, or in Hindi letters when it has none: never in Japanese ones", () => {

@@ -1,5 +1,5 @@
 import { useId, useMemo, useRef, useState } from "react";
-import { battles, cityContents, dates, getTour, landmarks, scenes } from "../../content";
+import { cityContents, scenes } from "../../content";
 import sceneAudioJson from "../../content/generated/scene-audio.json";
 import type { SceneEntry } from "../../content/scene-schemas";
 import { getJourneyForCity } from "../../content/journeys";
@@ -10,7 +10,8 @@ import { Modal, ModalTitle } from "../../components/Modal";
 import { useLineVoice, type LineVoiceState } from "../../components/useVoice";
 import type { GameState } from "../../domain/game";
 import { withNames } from "../romance/names";
-import { heardTracks, heardVoices, sceneCompleted, sceneGroup, type RoomVoice, type SceneNames } from "./music-room";
+import { heardTracks, heardVoices, sceneCompleted, sceneGroup, type RoomVoice } from "./music-room";
+import { SCENE_NAMES } from "./scene-names";
 import { visitedPlaceIdsIn } from "./visited-places";
 import "./music-room.css";
 
@@ -19,16 +20,6 @@ const SCENE_AUDIO: SceneAudio = ((): SceneAudio => {
   const parsed = sceneAudioSchema.safeParse(sceneAudioJson as unknown);
   return parsed.success ? parsed.data : { schemaVersion: 1, stories: {} };
 })();
-
-/** The names the room's voice groups use (music-room.ts sceneGroup), from the content; each falls back to its ID. */
-const SCENE_NAMES: SceneNames = {
-  city: (cityId) => cityContents[cityId]?.city.nameJa ?? cityId,
-  landmark: (landmarkId) => landmarks.find((landmark) => landmark.id === landmarkId)?.nameJa ?? landmarkId,
-  place: (cityId, placeId) => cityContents[cityId]?.travel.places.find((place) => place.id === placeId)?.nameJa ?? placeId,
-  battle: (battleId) => battles.find((battle) => battle.id === battleId)?.titleJa ?? battleId,
-  date: (dateId) => dates.find((date) => date.id === dateId)?.titleJa ?? dateId,
-  tour: (tourId) => getTour(tourId)?.titleJa ?? tourId,
-};
 
 /** The voice the room plays, through the game's own voice player (useVoice.ts): its setting and volume, the music halved. */
 function VoicePlayback({ voiceId, onState }: { voiceId: string; onState: (state: LineVoiceState | null) => void }) {

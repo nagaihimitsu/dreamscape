@@ -265,6 +265,27 @@
       ]
     },
     {
+      "id": "gt_jaipur_hotel_radish_morning",
+      "sources": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Daikon",
+          "url": "https://en.wikipedia.org/wiki/Daikon",
+          "checkedAt": "2026-11-20",
+          "claimType": "documented_fact",
+          "claimJa": "大根は、ヒンディー語でムーリー（मूली）と呼ばれる。北インドでは、大根は詰め物をしたパラーターなどの材料としてよく使われる。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Paratha",
+          "url": "https://en.wikipedia.org/wiki/Paratha",
+          "checkedAt": "2026-11-20",
+          "claimType": "documented_fact",
+          "claimJa": "大根を詰めたパラーターをムーリー・パラーターと呼ぶ。パラーターは、ダヒー（ヨーグルト）や漬物を添えて食べることが多い。"
+        }
+      ]
+    },
+    {
       "id": "gt_jaipur_finale_before_envelope",
       "sources": [
         {

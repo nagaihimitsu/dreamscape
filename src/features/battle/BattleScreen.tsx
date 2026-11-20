@@ -375,11 +375,12 @@ export function BattleScreen({
   const stageScene = sceneStageOf("battle", opponentFigure);
   const line = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction }) : { enemyCue: true };
   const { stage, focus } = useSceneStage(line, stageScene);
-  // Who stands opposite her (two in a stretch of `# together:`: the first in the opponent's place, the second beside it).
-  // In the quiz (no line) the opponent asks, alone in their place, as without the tag.
+  // Who stands opposite her (two or three in a stretch of `# together:`: the first in the opponent's place, the second
+  // beside it, the third beyond). In the quiz (no line) the opponent asks, alone in their place, as without the tag.
   const opposite = oppositeFigures(stage, focus).filter(({ figure }) => isDialogue || figureIsEnemy(figure, stageScene));
   const inPlace = opposite[0];
   const beside = isDialogue ? opposite[1] : undefined;
+  const far = isDialogue ? opposite[2] : undefined;
   const opponentSpeaks = frame?.speaker === "enemy" || line.personFigure === opponentFigure;
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
   /** A figure opposite her: the opponent with their expression, mark and drawn fallback, or a person's one picture. */
@@ -442,8 +443,6 @@ export function BattleScreen({
   // What the quiz card shows of the answer: nothing yet while a right answer is held (the card stays as it was tapped).
   const shownAnswer = holding ? undefined : answer;
   const isSpecial = !!battle.reasoning;
-  const showReasoning =
-    !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
   // The quiz card (a question and its explanation): its speaker buttons stop reading when it goes or the next question comes.
   const quizCard = active.phase === "question" || active.phase === "feedback";
   const reader = useReadAloud(readAloud, quizCard ? `${active.roundIndex}:${question?.id}` : "", autoReadAloud);
@@ -531,7 +530,7 @@ export function BattleScreen({
           <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <div className="battle-characters" data-together={beside ? "three" : undefined}>
+        <div className="battle-characters" data-together={far ? "four" : beside ? "three" : undefined}>
           {isDialogue && stage.heroine && (
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
@@ -548,6 +547,7 @@ export function BattleScreen({
           )}
           <div className="battle-character-slot battle-enemy">{inPlace && oppositePortrait(inPlace.figure, inPlace.focus)}</div>
           {beside && <div className="battle-character-slot battle-beside">{oppositePortrait(beside.figure, beside.focus)}</div>}
+          {far && <div className="battle-character-slot battle-far">{oppositePortrait(far.figure, far.focus)}</div>}
         </div>
       </div>
       <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} data-remembered={remembered || undefined} aria-hidden={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined}>
@@ -581,7 +581,7 @@ export function BattleScreen({
         </div>}
         {isResult ? (
           <div className="battle-result" data-testid="battle-result">
-            <p className="eyebrow">今回の結果</p>
+            <p className="eyebrow">結果</p>
             <div className="battle-result-heading">
               <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
@@ -590,25 +590,6 @@ export function BattleScreen({
               </p>
             </div>
             <BattleRewards game={game} onClaim={onClaimRewards} />
-            <details className="battle-result-history">
-              <summary>今回の正誤と成績</summary>
-              <ol className="answer-history">
-                {active.answers.map((item, index) => (
-                  <li key={item.questionId}>
-                    <span>第{index + 1}問</span>
-                    <span className={item.correct ? "correct-label" : "incorrect-label"}>
-                      {item.correct ? "正解" : "不正解"}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-              {record && (
-                <p className="record-summary">
-                  挑戦 {record.attempts}回 · 初回 {record.firstScore}問 · 最高{" "}
-                  {record.bestScore}問正解
-                </p>
-              )}
-            </details>
             {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
                 mid-card), held there while a long result scrolls above it (battle.css). */}
             <div className="battle-result-foot">
@@ -701,13 +682,6 @@ export function BattleScreen({
           <div className="question-area" data-testid="battle-question">
             {/* The battle's progress, for screen readers only (the card shows no question count). */}
             <p className="sr-only">第{active.roundIndex + 1}問 / 全{quiz.questions.length}問</p>
-            {showReasoning && (
-              <ReasoningPanel
-                game={game}
-                onPress={onPress}
-                onSubmit={onSubmitEvidence}
-              />
-            )}
             {japaneseOnly ? (
               <h2 className="question-en question-ja" lang="ja">{quizTranslation?.questionJa}</h2>
             ) : (<>
@@ -786,7 +760,9 @@ export function BattleScreen({
                           }
                         />
                         </>}
-                        {shownAnswer && (
+                        {/* After a wrong answer only: which was chosen and which was right, in words (a right one is
+                            told by the verdict over it; 2026-11-20 user decision). */}
+                        {shownAnswer && !shownAnswer.correct && (
                           <span className="option-mark">
                             {selected ? "選んだ答え" : ""}
                             {correct ? " ✓ 正解" : ""}
@@ -857,20 +833,9 @@ export function BattleScreen({
                 >
                   英文を確認する
                 </button>}
-                <details className="quiz-sources">
-                  <summary>解説の根拠を読む</summary>
-                  <ul>
-                    {question.sources.map((source, index) => (
-                      <li key={`${source.url}:${index}`}>
-                        <a href={source.url} target="_blank" rel="noreferrer">
-                          {source.publisher}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
+                {/* Its sources, with the answer chosen, are in ≡メニュー's 「画面の出典」 while it shows (2026-11-20 user decision). */}
                 <button
-                  className="primary"
+                  className="primary quiz-feedback-next"
                   data-testid="battle-advance"
                   onClick={advanceSafely}
                 >

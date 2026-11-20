@@ -7,6 +7,8 @@ import "./journey-memories.css";
 export type MemoryViews = {
   onEndRoll: () => void;
   onMusicRoom: () => void;
+  /** ミニゲーム集 (MiniGameCollection.tsx): every mini-game of the journey, to play again. */
+  onMiniGames: () => void;
   /** 旅の記録 (TravelLog.tsx: the journey's 体験 and 写真, city by city). */
   onRecords: () => void;
 };
@@ -22,13 +24,14 @@ function MemoryContents({ playerName, heroineName, numbers, reduceMotion, views 
       <button type="button" className="secondary" data-testid="memories-end-roll" onClick={views.onEndRoll}>エンドロール</button>
       <button type="button" className="secondary" data-testid="memories-records" onClick={views.onRecords}>旅の記録</button>
       <button type="button" className="secondary" data-testid="memories-music-room" onClick={views.onMusicRoom}>旅の音楽室</button>
+      <button type="button" className="secondary" data-testid="memories-minigames" onClick={views.onMiniGames}>ミニゲーム集</button>
     </div>
   </>;
 }
 
 /**
  * 旅の思い出 (2026-11-19 user decision; docs/01 「クリア後・難易度・複数のセーブ」): the screen of a journey whose last city's
- * epilogue and end roll are over, in place of free time. It looks back (the end roll, 旅の記録, 旅の音楽室) and
+ * epilogue and end roll are over, in place of free time. It looks back (the end roll, 旅の記録, 旅の音楽室, ミニゲーム集) and
  * goes on: 「もう一度この旅を」 (the same names, from the start) or another journey (`selector`, the journey selector).
  */
 export function JourneyMemoriesScreen({ journeyJa, playerName, heroineName, numbers, reduceMotion, views, onAgain, selector }: {

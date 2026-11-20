@@ -3,8 +3,8 @@ import { SCENE_KINDS } from "../content/scene-schemas";
 import { miniGameTagText, type MiniGameTag } from "./tag";
 
 // Where the stories use the mini-games (docs/13 3.4): what content:build's full-branch walk found, one entry per tag
-// (src/content/generated/minigame-uses.json). The game never reads it; the content-driven tests and Debug's
-// 「ミニゲームの見本」 do.
+// (src/content/generated/minigame-uses.json). The story never reads it; the content-driven tests, Debug's
+// 「ミニゲームの見本」 and the journey's ミニゲーム集 (src/features/journey/MiniGameCollection.tsx) do.
 
 const word = z.string().regex(/^\S+$/u);
 export const miniGameUseSchema = z.object({
@@ -22,6 +22,11 @@ export const miniGameUseSchema = z.object({
   params: z.record(z.string(), word).optional(),
   /** `retry yes`: the result card offers 「もう一回」. */
   retry: z.literal(true).optional(),
+  /**
+   * The figure standing opposite the heroine as the game starts (the screen's `cast.person`: the stage's opposite, as
+   * src/components/scene-stage.ts walks it), on the path the walk met it last; none when no one stands there.
+   */
+  person: z.string().min(1).optional(),
   /** The tag's line (its text), to find it in the story. */
   line: z.string(),
 }).strict();

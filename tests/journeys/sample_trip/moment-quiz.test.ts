@@ -168,13 +168,13 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
     expect(passed.occasion).toMatchObject({ at: "main:epilogue", started: [] });
   });
 
-  it("shows the AP its tags gave on its result screen (a choice's # ap:, the head's # on_done: ap), and no rule's 初回報酬 it never had", () => {
+  it("shows the AP its tags gave in its result screen's total (a choice's # ap:, the head's # on_done: ap)", () => {
     const rewards = (state: GameState) => renderToStaticMarkup(createElement(BattleRewards, { game: state, onClaim: () => {} }));
-    // Without AP tags (the sample's): nothing gained, and no first-time reward rule to have received.
+    // Without AP tags (the sample's): nothing gained. The screen shows the total only (2026-11-20 user decision: no
+    // breakdown under it).
     const plain = playBattleToResult(toEpilogue(cleared(true)));
     expect(battleTagApGained(plain)).toBe(0);
     expect(rewards(plain)).toContain("＋0");
-    expect(rewards(plain)).toContain("このクイズで新しく得たAPはありません。");
     // As content:build would write `# on_done: ap +2` and the first choice's `# ap: +1` (with their scene_tag rules).
     patchScene(QUIZ, (scene) => ({ ...scene, done: { ap: 2 },
       options: scene.options.map((option) => (option.id === "ask_which_three" ? { ...option, ap: 1 } : option)) }));
@@ -191,7 +191,6 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
     expect(total(result) - total(started)).toBe(3);
     expect(battleTagApGained(result)).toBe(3);
     expect(rewards(result)).toContain("＋3");
-    expect(rewards(result)).toContain("クイズの中で得たAP");
     // A second play (repeat always, the records of the first) gives nothing, and says so.
     expect(battleTagApGained({ ...result, battleRecords: result.battleRecords.map((record) => ({ ...record, attempts: 2 })) })).toBe(0);
   });

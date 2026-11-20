@@ -46,8 +46,10 @@
 }
 .vn-character[data-live="ready"] > :is(img, svg) { visibility: hidden; }
 /* A face in a small round frame (CharacterFace): the standing picture, scaled so that its head
-   fills the frame. Every standing picture of the heroine is a 2:3 canvas with her head at the top
-   centre (about 12 % down); the placeholder figure's head sits lower in its own 2:3 canvas. */
+   fills the frame. A pose with a face frame (characters.json `face`, from its moving picture's eyes:
+   scripts/face-frames.ts) places the picture by it (inline style, faceFrameStyle); the rule below is the
+   frame of the others: a 2:3 canvas with her head at the top centre (about 12 % down); the placeholder
+   figure's head sits lower in its own 2:3 canvas. */
 .character-face {
   position: relative;
   flex: none;

@@ -1,6 +1,7 @@
 // Two people opposite the heroine on each story screen (`# together:`, 2026-11-15 user decision; scene-stage.ts): the
 // date, the guide, the epilogue, the battle and the talk draw her and the two the line's tag names, in the order written, laid out
-// three in a row (`data-together="three"`), or the two side by side while she is off stage (`pair`). Each screen is
+// three in a row (`data-together="three"`), or the two side by side while she is off stage (`pair`); with three names
+// (2026-11-20), four in a row (`four`), or the three in a row without her (`trio`). Each screen is
 // rendered at a line of a real India scene with the tag (the scene's first render: its stage starts there). The screens'
 // stages without the tag are scene-figures.test.ts's, unchanged.
 import { createElement } from "react";
@@ -32,7 +33,7 @@ type Figures = { figures: string[]; together: string | null; slots: string[] };
 function drawn(markup: string): Figures {
   const figures = [...markup.matchAll(/<div class="vn-character[ "][^>]*><img src="[^"]*\/assets\/characters\/([^/"]+)\//gu)].map((match) => match[1]);
   const together = /data-together="([a-z]+)"/u.exec(markup)?.[1] ?? null;
-  const slots = [...markup.matchAll(/class="(?:encounter|battle)-character-slot (?:encounter-character-|battle-)(enemy|beside)"/gu)].map((match) => match[1]);
+  const slots = [...markup.matchAll(/class="(?:encounter|battle)-character-slot (?:encounter-character-|battle-)(enemy|beside|far)"/gu)].map((match) => match[1]);
   return { figures, together, slots };
 }
 
@@ -97,6 +98,14 @@ describe("a battle with two people opposite her (BattleScreen): Jama Masjid, Ham
     expect(render(atLine(start, "activeBattle", zoheb))).toEqual({ figures: ["heroine", "gt_hamid", "gt_zoheb"], together: "three", slots: ["enemy", "beside"] });
   });
 
+  it("draws her, the opponent and two people beside them, four in a row, at a tag with three names (Hawa Mahal's finale)", () => {
+    const finale = openBattleScene(completedCity("jaipur"), "gt_jaipur_finale_battle");
+    const nani = { speaker: "person" as const, speakerPersonId: "gt_jaipur_bride_grandmother", text: "十六でこの家に来て、六十年。",
+      together: ["enemy", "gt_pooja", "gt_jaipur_bride_grandmother"] };
+    expect(render(atLine(finale, "activeBattle", nani)))
+      .toEqual({ figures: ["heroine", "gt_kamla", "gt_pooja", "gt_jaipur_bride_grandmother"], together: "four", slots: ["enemy", "beside", "far"] });
+  });
+
   it("shows the opponent alone over the quiz, as before", () => {
     const question = atLine(start, "activeBattle", zoheb);
     expect(render({ ...question, activeBattle: { ...question.activeBattle!, phase: "question" } }))
@@ -120,5 +129,12 @@ describe("a talk with two people opposite her (EncounterScreen): Delhi's sick mo
   it("draws the two side by side before she comes, and the three in a row once she is there", () => {
     expect(render(okami)).toEqual({ figures: ["gt_delhi_hotel_okami", "gt_roohi"], together: "pair", slots: ["enemy", "beside"] });
     expect(render({ ...okami, heroineCue: true })).toEqual({ figures: ["heroine", "gt_delhi_hotel_okami", "gt_roohi"], together: "three", slots: ["enemy", "beside"] });
+  });
+
+  it("draws three in a row before she comes, and four in a row once she is there, at a tag with three names", () => {
+    const three = { ...okami, together: [...okami.together, { figure: "gt_pooja" }] };
+    expect(render(three)).toEqual({ figures: ["gt_delhi_hotel_okami", "gt_roohi", "gt_pooja"], together: "trio", slots: ["enemy", "beside", "far"] });
+    expect(render({ ...three, heroineCue: true }))
+      .toEqual({ figures: ["heroine", "gt_delhi_hotel_okami", "gt_roohi", "gt_pooja"], together: "four", slots: ["enemy", "beside", "far"] });
   });
 });
