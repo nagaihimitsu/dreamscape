@@ -18,7 +18,7 @@ import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../
 import { advanceTourismGuide } from "../../domain/tourism";
 import { beginTravelEvent } from "../../domain/travel-game";
 import {
-  chapterStampOf, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, recapPicture,
+  chapterStampOf, completedDateId, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, recapPicture,
   resumeRecap, type RecapPicture,
 } from "./journey-moments";
 import { PhotoCredits, recapPhotos } from "./PhotoCredits";
@@ -329,10 +329,20 @@ describe("the stamp 「完」 as an episode ends", () => {
     expect(completedEpisodeId(before, { completedEpisodeIds: [CLOCK_TOWER, "not_an_episode"] })).toBe(CLOCK_TOWER);
   });
 
+  it("stamps a date with a destination on its first finish, by its title (2026-11-20)", () => {
+    const date = dates.find((item) => item.destinationId)!;
+    const before = { playedDateIds: [] };
+    expect(completedDateId(before, { playedDateIds: [date.id] })).toBe(date.id);
+    expect(completedDateId({ playedDateIds: [date.id] }, { playedDateIds: [date.id] })).toBeNull();
+    const elsewhere = dates.find((item) => !item.destinationId);
+    if (elsewhere) expect(completedDateId(before, { playedDateIds: [elsewhere.id] })).toBeNull();
+    expect(chapterStampOf(cityStart("delhi", ["航", "澪"]), date.id)).toEqual({ id: date.id, titleJa: date.titleJa.replaceAll("{heroine_name}", "澪").replaceAll("{player_name}", "航") });
+  });
+
   it("stamps the episode's title with the names filled in", () => {
     const game = cityStart("mihon", ["航", "澪"]);
     const tower = episode(CLOCK_TOWER);
-    expect(chapterStampOf(game, CLOCK_TOWER)).toEqual({ episodeId: CLOCK_TOWER, titleJa: tower.titleJa });
+    expect(chapterStampOf(game, CLOCK_TOWER)).toEqual({ id: CLOCK_TOWER, titleJa: tower.titleJa });
     expect(chapterStampOf(game, "not_an_episode")).toBeNull();
     const written = tower.titleJa;
     tower.titleJa = "{heroine_name}と三時の塔";

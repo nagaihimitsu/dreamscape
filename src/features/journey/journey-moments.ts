@@ -90,12 +90,25 @@ export function completedEpisodeId(previous: Pick<GameState, "completedEpisodeId
   return next.completedEpisodeIds.filter((id) => !previous.completedEpisodeIds.includes(id) && episodes.some((episode) => episode.id === id)).at(-1) ?? null;
 }
 
-/** The stamp of a completed episode: its title (the names filled in), stamped with 「完」. */
-export type ChapterStampCard = { episodeId: string; titleJa: string };
+/**
+ * The date this change finished for the first time (2026-11-20 user decision: a date is stamped as an episode is), or null:
+ * a date with a destination, as 旅の記録 keeps (travel-log.ts). playedDateIds only grows on a date's first finish
+ * (game.ts), so a replay finishes nothing new.
+ */
+export function completedDateId(previous: Pick<GameState, "playedDateIds">, next: Pick<GameState, "playedDateIds">): string | null {
+  return next.playedDateIds.filter((id) => !previous.playedDateIds.includes(id) && stampedDate(id)).at(-1) ?? null;
+}
 
-export function chapterStampOf(game: Pick<GameState, "playerName" | "heroineName">, episodeId: string): ChapterStampCard | null {
-  const episode = episodes.find((item) => item.id === episodeId);
-  return episode ? { episodeId, titleJa: withNames(episode.titleJa, game) } : null;
+function stampedDate(id: string): DateDefinition | undefined {
+  return dates.find((date) => date.id === id && date.destinationId);
+}
+
+/** The stamp of a completed episode or a finished date (`id`): its title (the names filled in), stamped with 「完」. */
+export type ChapterStampCard = { id: string; titleJa: string };
+
+export function chapterStampOf(game: Pick<GameState, "playerName" | "heroineName">, id: string): ChapterStampCard | null {
+  const titleJa = episodes.find((item) => item.id === id)?.titleJa ?? stampedDate(id)?.titleJa;
+  return titleJa === undefined ? null : { id, titleJa: withNames(titleJa, game) };
 }
 
 // ── 前回までのあらすじ ───────────────────────────────────────────────────────────────
