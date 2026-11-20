@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import type { MeshAvatar } from "mesh-avatar";
+import type { MeshAvatar, Rig } from "mesh-avatar";
+import { sharedFaceAssets } from "./live-portrait-assets";
 import { lineVoiceLevel, lineVoicePlaying } from "./useVoice";
 
 // The moving standing picture (2026-11-19 user decision; authoring/LIVE_PORTRAIT_TRIAL.md): a pose's mesh-avatar folder
@@ -8,6 +9,35 @@ import { lineVoiceLevel, lineVoicePlaying } from "./useVoice";
 // neutral); while its character says a line with a voice, the mouth follows that voice's loudness. Presentation only:
 // under reduced motion (the system's, or 「演出を短縮する」), without WebGL, or when its files cannot load, the still
 // picture stays (onFail), so nothing about the game depends on it. Its runtime is loaded only when a portrait needs it.
+
+async function json(url: string): Promise<unknown> {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: ${response.status}`);
+  return response.json();
+}
+
+/** The names of a mesh-avatar sheet's drawings (built/layers.json, sprites.json). */
+const namesOf = (sheet: unknown): string[] => {
+  const layers = (sheet as { layers?: unknown } | null)?.layers;
+  return layers && typeof layers === "object" ? Object.keys(layers) : [];
+};
+
+/**
+ * Loads a moving picture: from its folder alone, or with the face drawings of a shared face folder (`avatarFace`:
+ * the outfit's folder then holds only its rig and layers).
+ */
+async function loadAvatar(node: HTMLCanvasElement, folder: string, face: string | undefined): Promise<MeshAvatar> {
+  const base = import.meta.env.BASE_URL;
+  // The folder fills the portrait's box as its still picture does (contain, standing on the bottom edge).
+  const fit = { padTop: 0, padSide: 0 };
+  const runtime = await import("mesh-avatar");
+  if (!face) return runtime.loadMeshAvatar(node, `${base}${folder}`, fit);
+  const [rig, layers, sprites] = await Promise.all([
+    json(`${base}${folder}rig.json`), json(`${base}${folder}built/layers.json`), json(`${base}${face}sprites.json`),
+  ]);
+  const assets = sharedFaceAssets(`${base}${folder}`, `${base}${face}`, namesOf(layers), namesOf(sprites));
+  return runtime.createMeshAvatar(node, { rig: rig as Rig, assets, ...fit });
+}
 
 /** Whether a portrait at `node` may move: not under reduced motion. */
 function mayMove(node: Element): boolean {
@@ -19,9 +49,11 @@ function showFace(avatar: MeshAvatar, emotion: string | undefined) {
   avatar.setFace(emotion && emotion !== "neutral" ? emotion : null);
 }
 
-export function LivePortrait({ folder, emotion, speaking, onReady, onFail }: {
+export function LivePortrait({ folder, face, emotion, speaking, onReady, onFail }: {
   /** The pose's mesh-avatar folder below public/ (characters.json `avatar`, ending in "/"). */
   folder: string;
+  /** Its shared face drawings below public/ (characters.json `avatarFace`, ending in "/"), if any. */
+  face?: string;
   emotion?: string;
   /** The line on screen is this character's: her mouth follows its voice. */
   speaking: boolean;
@@ -45,9 +77,7 @@ export function LivePortrait({ folder, emotion, speaking, onReady, onFail }: {
     let gone = false;
     let frame = 0;
     let made: MeshAvatar | null = null;
-    import("mesh-avatar")
-      // The folder fills the portrait's box as its still picture does (contain, standing on the bottom edge).
-      .then(({ loadMeshAvatar }) => loadMeshAvatar(node, `${import.meta.env.BASE_URL}${folder}`, { padTop: 0, padSide: 0 }))
+    loadAvatar(node, folder, face)
       .then((loaded) => {
         if (gone) {
           loaded.destroy();
@@ -75,7 +105,7 @@ export function LivePortrait({ folder, emotion, speaking, onReady, onFail }: {
       made?.destroy();
       avatar.current = null;
     };
-  }, [folder]);
+  }, [folder, face]);
 
   useEffect(() => {
     if (avatar.current) showFace(avatar.current, emotion);

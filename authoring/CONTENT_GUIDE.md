@@ -880,10 +880,10 @@ EXTERNAL cond(text)
 
 ### 動く立ち絵
 
-衣装・ポーズに動く立ち絵（mesh-avatar のフォルダ）があると、その衣装のときは立ち絵が呼吸・まばたきし、髪や身体がわずかに揺れ、`# emotion:` の表情に変わり、声のある台詞を話す間は声に合わせて口が動きます（2026-11-19のユーザー判断。今は基本の衣装 `default_01` の `standing_01` だけ）。`characters.json` の同じポーズに `"avatar": "assets/characters/heroine/default_01/standing_01/avatar/"` と、`public/` からのフォルダのパス（最後に `/`）を書きます。表情ごとの顔は、そのフォルダの `built/sprites/face_<表情ID>.png` です（`neutral` は元の顔）。**表情を足すときは `face_<表情ID>.png` も必ず足します**。顔のない表情は、動く立ち絵では元の顔のまま話し、表情の静止画には切り替わりません。
+衣装・ポーズに動く立ち絵（mesh-avatar のフォルダ）があると、その衣装のときは立ち絵が呼吸・まばたきし、髪や身体がわずかに揺れ、`# emotion:` の表情に変わり、声のある台詞を話す間は声に合わせて口が動きます（2026-11-19のユーザー判断。今は基本の衣装 `default_01` の `standing_01` だけ）。`characters.json` の同じポーズに、衣装ごとのフォルダ `"avatar": "assets/characters/heroine/default_01/standing_01/avatar/"` と、全衣装で共通の顔のフォルダ `"avatarFace": "assets/characters/heroine/face/standing_01/"` を、`public/` からのパス（最後に `/`）で書きます。表情ごとの顔は、共通の顔のフォルダの `face_<表情ID>.png` です（`neutral` は元の顔）。頭（顔・髪・帽子）を同じに描いた衣装は、この顔を共通に使えるので、衣装の絵1枚から動く立ち絵と12表情の静止画を作れます（2026-11-20のユーザー判断。[動く立ち絵の作り方の「衣装を足すとき」](LIVE_PORTRAIT_GUIDE.md#3-衣装を足すとき顔は共通)）。**表情を足すときは `face_<表情ID>.png` も必ず足します**。顔のない表情は、動く立ち絵では元の顔のまま話し、表情の静止画には切り替わりません。
 
 - 上の `expressions` の絵は、そのまま必要です。動く立ち絵が使えないとき（「演出を短縮する」・端末の「視差効果を減らす」、WebGL が使えない、読み込めない）と、読み込みが終わるまでは、今までどおり表情の絵が出ます。
-- フォルダのファイル（`avatar.json`・`rig.json`・`built/` の絵）がそろっているか、顔の名前が表情IDかを `content:check` が確かめます。フォルダの絵も1枚ずつ `own-artwork.json` に書きます。
+- 衣装のフォルダ（`avatar.json`・`rig.json`・`built/` の絵）と共通の顔のフォルダのファイルがそろっているか、顔の名前が表情IDかを `content:check` が確かめます。フォルダの絵も1枚ずつ `own-artwork.json` に書きます。
 - 作り方は [動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)、試したこと・やめたことは [動く立ち絵の試作](LIVE_PORTRAIT_TRIAL.md) にあります。動かす部品は mesh-avatar 0.8.0 を Dreamscape 用に少し直したもので、`vendor/` に置いています。
 
 ### 配置・衣装・表情の指定

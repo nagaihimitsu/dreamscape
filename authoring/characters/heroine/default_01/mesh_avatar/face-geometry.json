@@ -1,0 +1,59 @@
+{
+ "_note": "The face drawings' geometry in the standing picture's pixels (1024x1536), shared by cut-faces.py and new-costume.py: the face box they are cut from, and the jaw line nothing below which is taken (the neck stays each outfit's own).",
+ "faceBox": [
+  395,
+  120,
+  650,
+  290
+ ],
+ "jaw": [
+  [
+   380,
+   170
+  ],
+  [
+   430,
+   205
+  ],
+  [
+   451,
+   224
+  ],
+  [
+   474,
+   247
+  ],
+  [
+   495,
+   258
+  ],
+  [
+   513,
+   264
+  ],
+  [
+   531,
+   255
+  ],
+  [
+   542,
+   249
+  ],
+  [
+   561,
+   233
+  ],
+  [
+   570,
+   215
+  ],
+  [
+   580,
+   195
+  ],
+  [
+   640,
+   160
+  ]
+ ]
+}

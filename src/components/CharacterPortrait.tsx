@@ -43,11 +43,12 @@ export function CharacterPortrait({
       : {},
     [character, sceneId, cityId, countryId, regionId, costume, pose],
   );
-  // The pose's moving picture (characters.json `avatar`): drawn over the still one once it moves; "failed" keeps the
-  // still picture for this outfit (reduced motion, no WebGL, files that cannot load).
+  // The pose's moving picture (characters.json `avatar`, its shared face `avatarFace`): drawn over the still one once it
+  // moves; "failed" keeps the still picture for this outfit (reduced motion, no WebGL, files that cannot load).
   const avatar = character ? characterAvatar(character, selection) : null;
-  const [live, setLive] = useState<{ folder: string; state: "ready" | "failed" } | null>(null);
-  const liveState = live && live.folder === avatar ? live.state : null;
+  const liveKey = avatar ? `${avatar.folder}|${avatar.face ?? ""}` : null;
+  const [live, setLive] = useState<{ key: string; state: "ready" | "failed" } | null>(null);
+  const liveState = live && live.key === liveKey ? live.state : null;
   if (!character) return null;
   const placement = characterPlacement(character, selection);
   const image = characterImage(character, { ...selection, emotion });
@@ -68,14 +69,15 @@ export function CharacterPortrait({
         onImageError={onImageError}
         breathOf={characterId}
       />
-      {avatar && liveState !== "failed" && (
+      {avatar && liveKey && liveState !== "failed" && (
         <LivePortrait
-          key={avatar}
-          folder={avatar}
+          key={liveKey}
+          folder={avatar.folder}
+          face={avatar.face}
           emotion={emotion}
           speaking={focus === "speaking"}
-          onReady={() => setLive({ folder: avatar, state: "ready" })}
-          onFail={() => setLive({ folder: avatar, state: "failed" })}
+          onReady={() => setLive({ key: liveKey, state: "ready" })}
+          onFail={() => setLive({ key: liveKey, state: "failed" })}
         />
       )}
       {children}

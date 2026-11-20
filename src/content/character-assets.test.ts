@@ -48,13 +48,20 @@ describe("character artwork registration", () => {
   it("gives the moving picture of the outfit's pose only, and only a safe folder path", () => {
     const pose = base.costumes![0].poses[0];
     const costume = base.costumes![0];
-    expect(characterAvatar(base, { costume: costume.id, pose: pose.id })).toBe(pose.avatar);
-    const still = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatar: undefined }] }] };
+    expect(characterAvatar(base, { costume: costume.id, pose: pose.id })).toEqual({ folder: pose.avatar, face: pose.avatarFace });
+    const own = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatarFace: undefined }] }] };
+    expect(characterAvatar(own, { costume: costume.id, pose: pose.id })).toEqual({ folder: pose.avatar });
+    const still = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatar: undefined, avatarFace: undefined }] }] };
     expect(characterAvatar(still, { costume: costume.id, pose: pose.id })).toBeNull();
     expect(characterAvatar(base, {})).toBeNull();
     for (const avatar of ["assets/a/../b/", "assets/a", "other/a/"]) {
-      const bad = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatar }] }] };
-      expect(characterCatalogSchema.safeParse({ schemaVersion: 1, characters: [bad] }).success).toBe(false);
+      for (const field of ["avatar", "avatarFace"]) {
+        const bad = { ...base, costumes: [{ ...costume, poses: [{ ...pose, [field]: avatar }] }] };
+        expect(characterCatalogSchema.safeParse({ schemaVersion: 1, characters: [bad] }).success).toBe(false);
+      }
     }
+    // A shared face without a moving picture of its own
+    const faceOnly = { ...base, costumes: [{ ...costume, poses: [{ ...pose, avatar: undefined }] }] };
+    expect(characterCatalogSchema.safeParse({ schemaVersion: 1, characters: [faceOnly] }).success).toBe(false);
   });
 });
