@@ -311,7 +311,7 @@ test("without a network the title opens a journey the device keeps, and index.ht
   await settled();
 });
 
-test("the golden triangle kept from ゲームの設定 plays its voices and its opening movie with the server stopped; a second journey loads only its own files; removing one keeps the other", { tag: tier.prod }, async ({ page, server }) => {
+test("the golden triangle kept from セーブ・ロード plays its voices and its opening movie with the server stopped; a second journey loads only its own files; removing one keeps the other", { tag: tier.prod }, async ({ page, server }) => {
   test.setTimeout(480_000);
   const list = builtList();
   const india = [...list.shared, ...list.journeys[INDIA]];
@@ -325,8 +325,8 @@ test("the golden triangle kept from ゲームの設定 plays its voices and its 
   await ops.waitKept(page, INDIA, 360_000);
   expectStored((await readOfflineStore(page))!.keys, server.url, india);
   await ops.closeDialog(dialog);
-  await expect(page.getByRole("dialog", { name: "ゲームの設定" }).getByTestId("offline-summary")).toHaveText(`この端末に入っています：${nameOf(INDIA)}`);
-  await ops.closeDialog(page.getByRole("dialog", { name: "ゲームの設定" }));
+  await expect(page.getByRole("dialog", { name: "セーブ・ロード" }).getByTestId("offline-summary")).toHaveText(`この端末に入っています：${nameOf(INDIA)}`);
+  await ops.closeDialog(page.getByRole("dialog", { name: "セーブ・ロード" }));
 
   // Without a network the game comes back from its save, and a voiced line's file is answered by the worker.
   await goOffline(page, server);
@@ -592,9 +592,9 @@ test("「端末から消す」 removes the kept journey and leaves the save, the
   expect(await readOfflineStore(page), "the store is gone whole").toBeNull();
   expect(await allStorage(page)).toEqual(game);
   await ops.closeDialog(dialog);
-  const settings = page.getByRole("dialog", { name: "ゲームの設定" });
-  await expect(settings.getByTestId("offline-summary")).toHaveText("旅行編をこの端末に入れておくと、通信がなくても遊べます。");
-  await ops.closeDialog(settings);
+  const saveLoad = page.getByRole("dialog", { name: "セーブ・ロード" });
+  await expect(saveLoad.getByTestId("offline-summary")).toHaveText("旅行編をこの端末に入れておくと、通信がなくても遊べます。");
+  await ops.closeDialog(saveLoad);
 
   // The journey plays on with the network; a new start of the page opens the site's page again, not a kept one.
   server.requests.length = 0;
