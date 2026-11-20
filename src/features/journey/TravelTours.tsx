@@ -79,7 +79,7 @@ export function TourBooking({ game, onBook, onClose }: {
   return <>
     <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={onClose} closeOnBackdrop>
       <ModalTitle id="travel-tours-title" onClose={onClose}>ツアー</ModalTitle>
-      <p>明日の朝9:00に宿を出る日帰りのツアーです。予約すると代金を今払い、取り消すと戻ります。料金はゲーム内の目安です。</p>
+      <p>明日の朝9:00に宿を出る日帰りのツアーです。予約すると代金を今払い、取り消すと戻ります。</p>
       {tours.map((tour) => {
         const here = offers.filter((choice) => choice.tour.id === tour.id);
         // A desk elsewhere (its condition holding): the card names its price too, sold only there.

@@ -26,7 +26,7 @@ export function TravelRentals({ game, onRent }: { game: GameState; onRent: (mode
     </button>}
     {open && <Modal labelledBy="travel-rent-title" className="travel-choice-modal" onClose={() => setOpen(false)} closeOnBackdrop>
       <ModalTitle id="travel-rent-title" onClose={() => setOpen(false)}>乗り物を借りる</ModalTitle>
-      <p>借りると、{city.nameJa}にいるあいだ乗れます。次の街へ出発するときに返します。料金はゲーム内の目安です。{forTwo && "料金は2人分です。"}</p>
+      <p>借りると、{city.nameJa}にいるあいだ乗れます。次の街へ出発するときに返します。{forTwo && "料金は2人分です。"}</p>
       <div className="travel-choice-routes">{offers.map((choice) => <div key={choice.offer.modeId}>
         <button type="button" className="secondary travel-route" data-testid={`travel-rent-${choice.offer.modeId}`} disabled={!choice.available}
           onClick={() => { if (onRent(choice.offer.modeId)) setOpen(false); }}>

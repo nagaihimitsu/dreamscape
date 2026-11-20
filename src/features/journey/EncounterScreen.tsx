@@ -224,7 +224,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
                 heroine: { emotion: view.stage.heroine.emotion, cityId: view.cityId, sceneId: view.sceneId },
                 ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId} /> } : {}),
               }}>
-                <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
+                <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
               </ChoicePoint>
             ) : view.ended ? (
               <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "街歩きへ" : "続きを読む"} <span aria-hidden="true">→</span></button>
