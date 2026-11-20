@@ -144,7 +144,7 @@ export function ResumeRecapCard({ recap, heroineName, onClose }: { recap: Resume
         <p>{recap.chapter.descriptionJa}</p>
       </div>
     </div>
-    {recap.heroine && <HeroineNote className="resume-recap-heroine" label={heroineName} text={recap.heroine.textJa} cityId={recap.heroine.cityId} testId="recap-heroine-line" />}
+    {recap.heroine && <HeroineNote className="resume-recap-heroine" label={heroineName} hideLabel text={recap.heroine.textJa} cityId={recap.heroine.cityId} testId="recap-heroine-line" />}
   </section>;
 }
 
