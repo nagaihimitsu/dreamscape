@@ -64,12 +64,12 @@ test("autosaved progress, a battle question, the English note and the text speed
   await expect(page.getByLabel(`残り${progress.ap}AP`)).toBeVisible();
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
   // 前回までのあらすじ shows the Duomo's photo with no credit on the card (2026-11-15 user decision): ≡メニュー's
-  // 「写真の出典」 lists it first, with its credit, its licence and the note on its reduced, cropped copy.
+  // 「画面の出典」 lists it first, with its credit, its licence and the note on its reduced, cropped copy.
   const recap = page.getByTestId("resume-recap");
   await expect(recap.getByRole("img")).toBeVisible();
   await expect(recap.locator("a")).toHaveCount(0);
-  await ops.menuItem(page, "写真の出典");
-  const photoCredits = page.getByRole("dialog", { name: "写真の出典" });
+  await ops.menuItem(page, "画面の出典");
+  const photoCredits = page.getByRole("dialog", { name: "画面の出典" });
   const recapCredit = photoCredits.getByTestId("photo-credits").getByRole("listitem").first();
   await expect(recapCredit.getByRole("heading")).toHaveText(/^前回までのあらすじ（.+）$/u);
   await expect(recapCredit.getByRole("link")).toHaveText(["画像の出典", /^CC /u]);
@@ -186,7 +186,8 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード (one item since 2026-11-19)・旅の記録・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the
+  // セーブ・ロード (one item since 2026-11-19)・旅の記録・英語ノート (ノート with 旅の図鑑 where a journey has terms)・画面の出典
+  // (in free time)・ゲームの設定 live in the
   // header's ≡メニュー (UI redesign §3.1, U2/U24/U28; named 「設定」 until 2026-11-14), a disclosure: by keyboard it opens on
   // セーブ・ロード, the arrows move between its items (past the rules between its groups), Esc closes it back on ≡メニュー,
   // and leaving it with Tab closes it.
@@ -195,7 +196,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("button")).toHaveText(["セーブ・ロード", "旅の記録", "英語ノート", "写真の出典", "ゲームの設定"]);
+  await expect(panel.getByRole("button")).toHaveText(["セーブ・ロード", "旅の記録", "英語ノート", "画面の出典", "ゲームの設定"]);
   await expect(item("セーブ・ロード")).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(item("旅の記録")).toBeFocused();
@@ -316,7 +317,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(prompts).toEqual(["beforeunload"]);
   expect(await readSave(page)).toEqual(manual);
-  const reopened = await ops.openSettings(page);
+  const reopened = await ops.openSaveLoad(page, "save");
   await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
   await ops.closeDialog(reopened);
 

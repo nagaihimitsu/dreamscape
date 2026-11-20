@@ -507,7 +507,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
           setSaveMark((count) => count + 1);
           setStatus("セーブの印と音だけを出しました（何も保存していません）。");
         }}
-        saveMark={saveMark} onRecords={notShown("旅の記録")} onEnglish={notShown("英語ノート")}
+        saveMark={saveMark} onRecords={notShown("旅の記録")} onNote={notShown("ノート")}
         onSettings={notShown("ゲームの設定")} />}
       {game && <NotebookCueContext.Provider value={clue}>
         <SceneNotebookTool onClick={() => {

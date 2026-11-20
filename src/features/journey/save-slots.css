@@ -41,4 +41,6 @@
 }
 .save-load-modes button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-parchment); }
 .save-load-modes .icon { width: 20px; height: 20px; }
-.save-load-auto { margin: 0 0 4px; }
+/* 自動保存 and 保存データの消去 under the slots (2026-11-20): set apart by a thin rule across, never a thick left line. */
+.save-load-settings { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
+.save-load-settings .setting-note { margin: -8px 0 6px 28px; }

@@ -45,6 +45,12 @@ export function recapPhotos(picture: RecapPicture | null | undefined): ShownPhot
 export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClose: () => void }) {
   return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose} closeOnBackdrop>
     <ModalTitle id="photo-credits-title" onClose={onClose}>写真の出典</ModalTitle>
+    <PhotoCreditList photos={photos} />
+  </Modal>;
+}
+
+function PhotoCreditList({ photos }: { photos: ShownPhoto[] }) {
+  return <>
     {photos.some((photo) => photo.kind !== "recap") && <p className="fine-print">{DERIVED_PHOTO_NOTE_JA}</p>}
     <ul className="photo-credits-list" data-testid="photo-credits">
       {photos.map((photo) => <li key={photo.key}>
@@ -56,5 +62,27 @@ export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClos
         </div>
       </li>)}
     </ul>
+  </>;
+}
+
+/**
+ * 「画面の出典」 (≡メニュー; 2026-11-20 user decision, one item in place of 写真の出典 and 画像の出典): what the screen shows
+ * now. A story scene's photo (`scenePhoto`: its background, a landmark's or a battle's photo) shows whole, with its
+ * description, credit and links at once (the scene shows no 出典 of its own, nor does a quiz answer's reveal of the same
+ * photo); free time's photos and the recap card's (`photos`) are listed under it with their credits. A dialog for viewing:
+ * 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc closes it. (A line's `# recall:` shows an album
+ * image, the author's own artwork, which has no credit.)
+ */
+export function ScreenCredits({ scenePhoto, photos, onClose }: { scenePhoto?: TourismAsset; photos: ShownPhoto[]; onClose: () => void }) {
+  const className = [scenePhoto && "date-background-viewer", photos.length > 0 && "photo-credits-modal"].filter(Boolean).join(" ");
+  return <Modal labelledBy="screen-credits-title" className={className} onClose={onClose} closeOnBackdrop>
+    <ModalTitle id="screen-credits-title" onClose={onClose}>画面の出典</ModalTitle>
+    {scenePhoto && <>
+      <img src={`${import.meta.env.BASE_URL}${scenePhoto.path}`} alt={scenePhoto.altJa} />
+      <div className="background-credit">
+        <ImageCredit asset={scenePhoto} />
+      </div>
+    </>}
+    {photos.length > 0 && <PhotoCreditList photos={photos} />}
   </Modal>;
 }

@@ -47,13 +47,15 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(line).toHaveText(text!);
   await expect(line).toBeFocused();
 
-  // ≡メニュー and its 「旅の図鑑」 carry the dot of something new; 旅の図鑑 shows the term with 「NEW」 and 1 / 1.
+  // ≡メニュー and its 「ノート」 carry the dot of something new; the note opens on 旅の図鑑 (the page with something new),
+  // which shows the term with 「NEW」 and 1 / 1.
   await expect(ops.settingsButton(page)).toHaveAccessibleName(/旅の図鑑に新しい項目あり/u);
   const panel = await ops.openMenu(page);
-  await expect(panel.getByRole("button", { name: /^旅の図鑑\s*、新しい言葉あり$/u })).toBeVisible();
-  await ops.menuItem(page, "旅の図鑑");
-  const book = page.getByRole("dialog", { name: "旅の図鑑" });
+  await expect(panel.getByRole("button", { name: /^ノート\s*、旅の図鑑に新しい項目あり$/u })).toBeVisible();
+  await ops.menuItem(page, "ノート");
+  const book = page.getByRole("dialog", { name: "ノート" });
   await expect(book).toBeVisible();
+  await expect(book.getByTestId("note-tab-glossary")).toHaveAttribute("aria-pressed", "true");
   await expect(book.getByTestId("glossary-progress")).toContainText("1 / 1");
   const entry = book.getByTestId(`glossary-card-${TERM}`);
   await expect(entry).toContainText("三時パン");
@@ -68,7 +70,7 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(larger).not.toContainText(CREDIT);
   await expect(larger.locator("a")).toHaveCount(0);
   await larger.getByRole("button", { name: "閉じる", exact: true }).click();
-  await page.getByTestId("glossary-close").click();
+  await page.getByTestId("note-close").click();
   await expect(book).toHaveCount(0);
   // Seen: the dots are gone, and the card does not come back for the term.
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");

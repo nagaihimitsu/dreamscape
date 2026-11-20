@@ -69,7 +69,8 @@ import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { clueRecordedNotice } from "../features/tourism/clue-source";
 import type { ClueNoticeWord } from "./ClueRecordedNotice";
 import { useLearning } from "../features/learning/useLearning";
-import { answeredQuestions, EnglishReview, latestAnsweredQuestionId, metQuestions } from "../features/learning/EnglishReview";
+import { answeredQuestions, latestAnsweredQuestionId, metQuestions } from "../features/learning/EnglishReview";
+import { NoteDialog, type NoteTab } from "./NoteDialog";
 import { useLocalWords } from "../features/learning/useLocalWords";
 import { LocalWordNotice } from "../features/learning/LocalWordNotice";
 import { lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
@@ -81,7 +82,7 @@ import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
 import { journeyNumbers } from "../features/journey/journey-numbers";
-import { freeTimePhotos, PhotoCredits, recapPhotos } from "../features/journey/PhotoCredits";
+import { freeTimePhotos, recapPhotos, ScreenCredits } from "../features/journey/PhotoCredits";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { DepartureLuggage, EndRollDialog } from "../features/journey/JourneyMoments";
@@ -104,7 +105,6 @@ import { useItemShowLeave } from "./useItemShowLeave";
 import { itemOutCard } from "../components/ItemOut";
 import { JourneyHud } from "./JourneyHud";
 import { hudView } from "./hud-view";
-import { BackgroundCredits } from "../components/BackgroundCredits";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { placeDisplayName, sceneBackdropPhoto } from "../features/journey/travel-labels";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, encounterChoiceDisplay, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
@@ -189,7 +189,6 @@ const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({
 const OfflinePlayDialog = lazy(() => import("./OfflinePlayDialog").then((module) => ({ default: module.OfflinePlayDialog })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
 const TravelLogDialog = lazy(() => import("../features/journey/TravelLog").then((module) => ({ default: module.TravelLogDialog })));
-const GlossaryDialog = lazy(() => import("../features/journey/GlossaryDialog").then((module) => ({ default: module.GlossaryDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -434,9 +433,12 @@ export function GameApp({
     // A notice not read yet (a refused save) stays: the commit clears it. (A load's or a tour's word is a toast of its own.)
     if (restAtDayEnd(dayEnd.way, game.revision, { by: "game" }) && notice) setNotice(notice);
   }, [game, travelEffectPlaying]);
-  const [englishOpen, setEnglishOpen] = useState(
-    () => !!learning.data.openQuestion,
-  );
+  // 「ノート」 (NoteDialog.tsx; 2026-11-20): the page it shows, none while it is closed. 英語ノート's question stays open
+  // over a reload (learning.data.openQuestion), and so does the note on that page.
+  const [noteTab, setNoteTab] = useState<NoteTab | null>(() => learning.data.openQuestion ? "english" : null);
+  const englishOpen = noteTab === "english";
+  // The page the note showed last in this tab (its memory only): the menu's 「ノート」 opens on it unless a page has a dot.
+  const lastNoteTab = useRef<NoteTab>("english");
   // The question 英語ノート showed last in this tab (its memory only). Opened without a question named (the menu's
   // 「英語ノート」, a quiz result's), the note shows that one again while it is listed, else the question answered last,
   // never an empty 「問題を選んでください」 (2026-11-14 user decision).
@@ -453,7 +455,12 @@ export function GameApp({
       openQuestion: shown,
       openTopic: null,
     }));
-    setEnglishOpen(true);
+    lastNoteTab.current = "english";
+    setNoteTab("english");
+  }
+  /** Leaving 英語ノート's page (closing the note, or 旅の図鑑): its question no longer opens again on a reload. */
+  function leaveEnglish() {
+    learning.update((s) => ({ ...s, openQuestion: null, openTopic: null }));
   }
   const [deleteSnapshot, setDeleteSnapshot] = useState<DeleteSnapshot | null>(null);
   const [confirmDeparture, setConfirmDeparture] = useState(false);
@@ -555,8 +562,8 @@ export function GameApp({
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
   const [musicRoom, setMusicRoom] = useState(false);
   const [roomTrack, setRoomTrack] = useState<string | null>(null);
-  const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
-  const [scenePhotoOpen, setScenePhotoOpen] = useState(false);
+  // 「画面の出典」 (2026-11-20: one item for 写真の出典 and 画像の出典).
+  const [screenCreditsOpen, setScreenCreditsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
   const speed = displaySettings.value.dialogueSpeed;
@@ -598,10 +605,25 @@ export function GameApp({
   const hasTerms = journeyTerms(glossaryJourneyId).length > 0;
   const metGlossary = game ? metTerms(game) : [];
   const glossaryNew = unseenIds(seenMarks?.glossary, metGlossary).length > 0;
-  const [glossaryOpen, setGlossaryOpen] = useState<{ newIds: string[] } | null>(null);
+  // The terms new as 旅の図鑑's page opened (its 「NEW」), counted as seen from then.
+  const [glossaryNewIds, setGlossaryNewIds] = useState<string[]>([]);
   function openGlossary() {
-    setGlossaryOpen({ newIds: unseenIds(seenMarks?.glossary, metGlossary) });
+    if (!hasTerms) return;
+    if (noteTab === "english") leaveEnglish();
+    setGlossaryNewIds(unseenIds(seenMarks?.glossary, metGlossary));
     setSeenMarks((marks) => marks && markSeen(marks, "glossary", metGlossary));
+    lastNoteTab.current = "glossary";
+    setNoteTab("glossary");
+  }
+  /** ≡メニュー's 「ノート」: on a page with something new (英語ノート first), else on the page shown last. */
+  function openNote() {
+    if (englishNew) openEnglish();
+    else if (hasTerms && (glossaryNew || lastNoteTab.current === "glossary")) openGlossary();
+    else openEnglish();
+  }
+  function closeNote() {
+    if (noteTab === "english") leaveEnglish();
+    setNoteTab(null);
   }
   // The card of the terms an action added waits for the line on screen to be drawn: 高速送り (and a scene a load brought
   // back) keeps it from opening (sceneCuesQuiet; the terms are in 旅の図鑑 all the same). The scene's own effects have run
@@ -658,12 +680,12 @@ export function GameApp({
     else startJourney(game.playerName, game.heroineName, game.playerNameReading, chosen, again);
   }
   /**
-   * 保存データの消去 (ゲームの設定's, or the title's): its confirmation opens over ゲームの設定, whose 「消去せず戻る」 goes
-   * back to it (2026-11-14 user decision); why it cannot be asked is said where it was asked.
+   * 保存データの消去 (「セーブ・ロード」's since 2026-11-20, or the title's): its confirmation opens over 「セーブ・ロード」, whose
+   * 「消去せず戻る」 goes back to it (2026-11-14 user decision); why it cannot be asked is said where it was asked.
    */
   function requestDelete() {
     setSettingsNotice(null);
-    const snapshot = session.prepareDelete(settings ? (text) => setSettingsNotice({ text, at: "delete" }) : undefined);
+    const snapshot = session.prepareDelete(saveLoadOpenedAt !== null ? (text) => setSettingsNotice({ text, at: "delete" }) : undefined);
     if (snapshot) setDeleteSnapshot(snapshot);
   }
   function reload() {
@@ -958,11 +980,13 @@ export function GameApp({
         scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
         onRecords={openRecords}
-        onGlossary={hasTerms ? openGlossary : undefined}
-        onEnglish={() => openEnglish()}
-        onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
-        onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
-        onSaveLoad={() => setSaveLoadOpenedAt(Date.now())}
+        onNote={openNote}
+        noteLabel={hasTerms ? "ノート" : "英語ノート"}
+        onScreenCredits={creditPhotos.length || scenePhoto ? () => setScreenCreditsOpen(true) : undefined}
+        onSaveLoad={() => {
+          setSettingsNotice(null);
+          setSaveLoadOpenedAt(Date.now());
+        }}
         saveMark={saveMark}
         toast={session.toast}
         clueNotice={clueWords[0] ?? null}
@@ -1470,13 +1494,11 @@ export function GameApp({
       {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
         <TravelLogDialog game={keptGame} onClose={() => setKeptLogOpen(false)} />
       </LazyDialog>}
-      {glossaryOpen && game && <LazyDialog onClose={() => setGlossaryOpen(null)}>
-        <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugMarks} onClose={() => setGlossaryOpen(null)} />
-      </LazyDialog>}
+
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
-      {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
-      {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
+      {screenCreditsOpen && (creditPhotos.length > 0 || scenePhoto) &&
+        <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} onClose={() => setScreenCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
           landmarkId={currentLandmarkId ?? undefined}
@@ -1521,22 +1543,10 @@ export function GameApp({
           }
         />
       )}
-      {englishOpen && game && (
-        <EnglishReview
-          game={game}
-          learning={learning}
-          learnedWords={learnedWords.learned}
-          readAloud={readAloud}
-          onClose={() => {
-            learning.update((s) => ({
-              ...s,
-              openQuestion: null,
-              openTopic: null,
-            }));
-            setEnglishOpen(false);
-          }}
-        />
-      )}
+      {noteTab && game && <NoteDialog tab={noteTab} onTab={(tab) => tab === "glossary" ? openGlossary() : openEnglish()}
+        game={game} learning={learning} learnedWords={learnedWords.learned} readAloud={readAloud}
+        glossary={hasTerms ? { journeyId: glossaryJourneyId, met: metGlossary, newIds: glossaryNewIds, revealAll: debugMarks } : undefined}
+        englishNew={englishNew} glossaryNew={glossaryNew} onClose={closeNote} />}
       {confirmLoad && (
         <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)} settlePresses>
           <ModalTitle id="load-title">保存した場面を読み込みますか？</ModalTitle>
@@ -1579,7 +1589,7 @@ export function GameApp({
             action={<ConfirmActionButton
               className="danger-button"
               onClick={() => {
-                if (!session.deleteConfirmed(deleteSnapshot, settings ? (text) => setSettingsNotice({ text, at: "delete" }) : undefined)) {
+                if (!session.deleteConfirmed(deleteSnapshot, saveLoadOpenedAt !== null ? (text) => setSettingsNotice({ text, at: "delete" }) : undefined)) {
                   setDeleteSnapshot(null);
                   return;
                 }
@@ -1590,10 +1600,12 @@ export function GameApp({
             </ConfirmActionButton>} />
         </Modal>
       )}
-      {saveLoadOpenedAt !== null && <SaveLoadDialog current={playedSlot} debug={!saves}
+      {saveLoadOpenedAt !== null && <SaveLoadDialog current={playedSlot} debug={isDebug}
         readSlots={() => saves ? slotSummaries(saves.base, journeyId) : [summarizeSlot(storage, journeyId, 1)]}
-        autoSaveNote={displaySettings.value.autoSave ? autoSaveLine(session.savedAt, saveLoadOpenedAt) : null}
-        onSave={saveIntoSlot} onLoad={loadFromSlot} onClose={() => setSaveLoadOpenedAt(null)} />}
+        autoSave={{ on: displaySettings.value.autoSave, disabled: !!displaySettings.error, onChange: setAutoSave,
+          savedLine: autoSaveLine(session.savedAt, saveLoadOpenedAt) }}
+        notice={settingsNotice} onSave={saveIntoSlot} onLoad={loadFromSlot} onDelete={requestDelete}
+        onClose={() => setSaveLoadOpenedAt(null)} />}
       {switchSlotTo !== null && saves && (
         <Modal labelledBy="switch-slot-title" onClose={() => setSwitchSlotTo(null)}>
           <ModalTitle id="switch-slot-title">セーブ{switchSlotTo}に切り替える</ModalTitle>
@@ -1772,12 +1784,8 @@ export function GameApp({
           <p className="fine-print">お金とAPのきびしさ：{economyLevelLabel(difficultyOf(game).economy).labelJa}（旅の始めに決めたもので、変えられません）</p>
           {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
           <h3>保存とデータ</h3>
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}
-              onChange={(event) => setAutoSave(event.target.checked)} /> ゲームの進行を自動保存する
-          </label>
-          {!displaySettings.value.autoSave && <p className="fine-print setting-note">オフの間は「セーブ」で進行を保存してください。</p>}
-          {settingsNotice?.at === "autosave" && <p role="status">{settingsNotice.text}</p>}
+          {/* 自動保存 and 保存データの消去 moved to ≡メニュー's 「セーブ・ロード」 (2026-11-20 user decision). */}
+          <p className="fine-print">自動保存と保存データの消去は、メニューの「セーブ・ロード」にあります。</p>
           {/* オフライン (2026-11-17): what this device keeps of the journeys, in one line (a status region that stays
               mounted; how far a run is shows beside it and is not announced), and the way into the dialog that does the rest. */}
           {offlineEntries && <>
@@ -1788,14 +1796,9 @@ export function GameApp({
               <button type="button" className="text-button offline-entry" data-testid="offline-settings-entry" onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ</button>
             </div>}
           </>}
-          <div className="settings-data-links">
-            {settingsOldData && <button type="button" className="text-button old-data-entry"
-              onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
-            <button type="button" className="text-button delete-entry" onClick={requestDelete}>
-              {isDebug ? "Debug用の一時データの消去" : "保存データの消去"}
-            </button>
-          </div>
-          {settingsNotice?.at === "delete" && <p role="status">{settingsNotice.text}</p>}
+          {settingsOldData && <div className="settings-data-links">
+            <button type="button" className="text-button old-data-entry" onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>
+          </div>}
           <div className="settings-data-links settings-credits">
             <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
           </div>

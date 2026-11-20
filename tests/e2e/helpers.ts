@@ -4,6 +4,7 @@ import type { JourneyCatalog } from "../../src/content/journey-catalog";
 import type { QuizDefinition } from "../../src/content/schemas";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
+import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
 import { openMiniGame } from "../../src/domain/minigame";
 import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
@@ -306,9 +307,9 @@ export const ops = {
   },
   /**
    * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ・ロード, 旅の記録,
-   * 英語ノート, 写真の出典 (free time) or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While
-   * 英語ノート has a new entry, its name and 「英語ノート」's go on with 「、…新しい項目あり」 (its dot; the browser may put a
-   * space before it, as the words are a separate visually hidden span).
+   * ノート (英語ノート and 旅の図鑑; 「英語ノート」 for a journey without terms), 画面の出典 (while the screen shows a credited
+   * photo) and ゲームの設定 (openMenu). While 英語ノート or 旅の図鑑 has something new, its name and 「ノート」's go on with
+   * 「、…に新しい項目あり」 (its dot; the browser may put a space before it, as the words are a separate visually hidden span).
    */
   settingsButton(page: Page): Locator {
     return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^メニュー\s*(?:、|$)/u });
@@ -322,7 +323,7 @@ export const ops = {
     return panel;
   },
   /** One of ≡メニュー's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ・ロード" | "旅の記録" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ・ロード" | "旅の記録" | "ノート" | "英語ノート" | "画面の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
@@ -429,10 +430,11 @@ export const ops = {
     await settings.getByLabel("文字送り").selectOption(String(speed));
     await ops.closeDialog(settings);
   },
+  /** 「セーブ・ロード」's 自動保存 (there since 2026-11-20, from ゲームの設定). */
   async setAutoSave(page: Page, on: boolean) {
-    const settings = await ops.openSettings(page);
-    await settings.getByLabel("自動保存する").setChecked(on);
-    await ops.closeDialog(settings);
+    const dialog = await ops.openSaveLoad(page, "save");
+    await dialog.getByLabel("自動保存する").setChecked(on);
+    await ops.closeDialog(dialog);
   },
   /** ゲームの設定's 自動送り (story lines read on by themselves after a reading time). */
   async setAutoAdvance(page: Page, on: boolean) {
@@ -544,11 +546,20 @@ export const ops = {
     await expect(detail).toBeVisible();
     return detail;
   },
-  /** ≡メニュー → 「英語ノート」. */
-  async openEnglishNote(page: Page): Promise<Locator> {
-    await ops.menuItem(page, "英語ノート");
-    const note = page.getByRole("dialog", { name: "英語ノート" });
+  /**
+   * ≡メニュー → 「ノート」 (「英語ノート」 for a journey without terms) on its 「英語ノート」 page; returns the note once it takes
+   * presses (it opens under the finger and waits a moment; `clockHeld`: the page's clock is held, so it is moved on past
+   * that moment).
+   */
+  async openEnglishNote(page: Page, { clockHeld = false }: { clockHeld?: boolean } = {}): Promise<Locator> {
+    await ops.openMenu(page);
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^(?:英語)?ノート\s*(?:、|$)/u }).click();
+    const note = page.getByRole("dialog", { name: /^(?:英語)?ノート$/u });
     await expect(note).toBeVisible();
+    if (clockHeld) await page.clock.fastForward(CONFIRM_SETTLE_MS);
+    await expect(note).not.toHaveAttribute("data-settling");
+    const englishPage = note.getByTestId("note-tab-english");
+    if (await englishPage.count() && await englishPage.getAttribute("aria-pressed") !== "true") await englishPage.click();
     return note;
   },
   /**

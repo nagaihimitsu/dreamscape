@@ -74,14 +74,23 @@ export type SaveLoadMode = "save" | "load";
  * scene; into another slot it copies this play there (an occupied slot asks first; one this version cannot read is never
  * written over), and play goes on in the slot played. ロード of the slot played brings its saved scene back; another
  * slot's opens that slot (an empty one starts a new journey from the title). Debug plays one isolated slot (`summaries`
- * holds it alone). Read once as it opens: only this tab can write the journey's saves (journey-lock.ts).
+ * holds it alone). Read once as it opens: only this tab can write the journey's saves (journey-lock.ts). Under the slots,
+ * what is about saving (2026-11-20 user decision, from ゲームの設定): 自動保存 and 保存データの消去 of the slot played.
  */
-export function SaveLoadDialog({ readSlots, current, autoSaveNote, debug = false, onSave, onLoad, onClose }: {
+export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, notice, onSave, onLoad, onDelete, onClose }: {
   readSlots: () => SlotSummary[]; current: SaveSlot;
-  /** While saving is automatic: when it last saved (journey-hud-text's autoSaveLine). */
-  autoSaveNote?: string | null;
+  /**
+   * 「ゲームの進行を自動保存する」 (moved here from ゲームの設定 on 2026-11-20): whether it is on, whether the setting can be
+   * changed (the display settings could be read), and while it is on, when it last saved (journey-hud-text's autoSaveLine).
+   */
+  autoSave: { on: boolean; disabled: boolean; savedLine: string | null; onChange: (on: boolean) => void };
   debug?: boolean;
-  onSave: (slot: SaveSlot) => void; onLoad: (slot: SaveSlot) => void; onClose: () => void;
+  /** Why turning automatic saving on or 保存データの消去 could not go on (said here, where it was asked). */
+  notice?: { text: string; at: "autosave" | "delete" } | null;
+  onSave: (slot: SaveSlot) => void; onLoad: (slot: SaveSlot) => void;
+  /** 「保存データの消去」 of the slot played (moved here from ゲームの設定 on 2026-11-20): its confirmation opens over this dialog. */
+  onDelete: () => void;
+  onClose: () => void;
 }) {
   const [summaries] = useState(readSlots);
   const [mode, setMode] = useState<SaveLoadMode>("save");
@@ -105,13 +114,26 @@ export function SaveLoadDialog({ readSlots, current, autoSaveNote, debug = false
         <Icon name={each} />{each === "save" ? "セーブ" : "ロード"}
       </button>)}
     </div>
-    {autoSaveNote && <p className="fine-print save-load-auto">{autoSaveNote}</p>}
     <SlotList summaries={summaries} current={current} action={mode === "save" ? saveAction : loadAction} />
     <p className="fine-print">{debug
       ? "Debug用の一時データです。通常のセーブには保存しません。"
       : mode === "save"
         ? "ほかの枠にセーブすると、今の旅をその枠に写します。遊ぶ枠は変わりません。英語ノート・既読の記録は、この旅行編の枠で共有します。"
         : "ほかの枠をロードすると、その枠の旅に切り替えます。"}</p>
+    <div className="save-load-settings">
+      <label className="translation-setting">
+        <input type="checkbox" checked={autoSave.on} disabled={autoSave.disabled}
+          onChange={(event) => autoSave.onChange(event.target.checked)} /> ゲームの進行を自動保存する
+      </label>
+      <p className="fine-print setting-note">{autoSave.on ? autoSave.savedLine : "オフの間は、ここで「セーブ」を押したときに保存します。"}</p>
+      {notice?.at === "autosave" && <p role="status">{notice.text}</p>}
+      <div className="settings-data-links">
+        <button type="button" className="text-button delete-entry" onClick={onDelete}>
+          {debug ? "Debug用の一時データの消去" : "保存データの消去"}
+        </button>
+      </div>
+      {notice?.at === "delete" && <p role="status">{notice.text}</p>}
+    </div>
     {overwrite && <Modal labelledBy="save-overwrite-title" onClose={() => setOverwrite(null)}>
       <ModalTitle id="save-overwrite-title">セーブ{overwrite.slot}に上書きしますか？</ModalTitle>
       <p>{slotLine(overwrite).title}（{slotLine(overwrite).detail}）のセーブは、今の旅に置き換わります。元には戻せません。</p>

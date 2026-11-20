@@ -7,7 +7,6 @@ import { getBattleContentByHash } from "../../domain/battle";
 import { quizAtLevel } from "../../content/english-levels";
 import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
-import { Modal, ModalTitle } from "../../components/Modal";
 import { playSe } from "../../audio/sound-effects";
 import type { Learning } from "./useLearning";
 import type { LearningState } from "./learning-storage";
@@ -74,12 +73,16 @@ export function metQuestions(game: GameState, learning: Pick<Learning, "data">) 
     ...(game.activeBattle ? { [game.activeBattle.battleId]: game.activeBattle } : {}),
   });
 }
+/**
+ * 英語ノート's contents, the 「英語ノート」 page of ≡メニュー's 「ノート」 (NoteDialog.tsx; 2026-11-20 user decision, one dialog
+ * with 旅の図鑑): the answered questions, the word book and the words of the country. Children of the note's dialog, whose
+ * frame is `english-review` while this page shows.
+ */
 export function EnglishReview({
   game,
   learning,
   learnedWords = [],
   readAloud = false,
-  onClose,
 }: {
   game: GameState;
   learning: Learning;
@@ -87,7 +90,6 @@ export function EnglishReview({
   learnedWords?: readonly string[];
   /** 「英語を読み上げるボタンを出す」 is on and this browser can read aloud (ReadAloud.tsx). */
   readAloud?: boolean;
-  onClose: () => void;
 }) {
   const [markedOnly, setMarkedOnly] = useState(false);
   // 「問題」 (the answered questions), 「単語帳」 (their words by place) or 「その国の言葉」 (the words of the country
@@ -142,13 +144,7 @@ export function EnglishReview({
   }
   const recorded = new Set(allEntries.map((e) => e.battle.id));
   return (
-    <Modal
-      labelledBy="english-review-title"
-      onClose={onClose}
-      className="english-review"
-      closeOnBackdrop
-    >
-      <ModalTitle id="english-review-title" className="english-review-header" onClose={onClose}>英語ノート</ModalTitle>
+    <>
       {(allEntries.length > 0 || localGroups.length > 0) && (
         <div className="review-views" role="group" aria-label="ノートの見方">
           <button type="button" className="secondary" aria-pressed={shown === "questions"} onClick={() => setView("questions")}>問題</button>
@@ -410,6 +406,6 @@ export function EnglishReview({
           );
         })()}
       </>}
-    </Modal>
+    </>
   );
 }

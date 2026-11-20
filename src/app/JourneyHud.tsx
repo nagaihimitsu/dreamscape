@@ -55,9 +55,9 @@ function closeWaitMenu() {
 }
 
 /**
- * What ≡メニュー's panel opens; 写真の出典 only while free time shows photos (cards, a backdrop photo) or the recap card a
- * place's photo (also on the night screen), 画像の出典 only while a story scene shows a registered photo (its credits: the
- * scene shows no 出典 of its own, nor does a quiz answer's reveal of the same photo; 2026-11-15).
+ * What ≡メニュー's panel opens; 画面の出典 only while free time shows photos (cards, a backdrop photo), the recap card a
+ * place's photo (also on the night screen) or a story scene a registered photo (its credits: the scene shows no 出典 of its
+ * own, nor does a quiz answer's reveal of the same photo; 2026-11-15).
  */
 type MenuActions = {
   /** 「セーブ・ロード」: the dialog of the journey's slots, to save into or load from one (SaveSlots.tsx's SaveLoadDialog). */
@@ -66,11 +66,12 @@ type MenuActions = {
   saveMark?: number;
   /** 「旅の記録」: the journey's 体験 and 写真, city by city (TravelLog.tsx; 2026-11-19, アルバム made one with it). */
   onRecords: () => void;
-  /** 「旅の図鑑」: the terms the journey's lines named (GlossaryDialog); only for a journey that has terms. */
-  onGlossary?: () => void;
-  onEnglish: () => void;
-  onPhotoCredits?: () => void;
-  onSceneCredits?: () => void;
+  /** 「ノート」: 英語ノート and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20). */
+  onNote: () => void;
+  /** Its name: 「ノート」, or 「英語ノート」 for a journey without terms (英語ノート alone). */
+  noteLabel?: string;
+  /** 「画面の出典」 (PhotoCredits.tsx's ScreenCredits; 2026-11-20): only while the screen shows a credited photo. */
+  onScreenCredits?: () => void;
   onSettings: () => void;
   /** 移動画面に戻る（Debug）: only while Debug mode offers it (src/app/free-time-return.ts). */
   onReturnToFreeTime?: () => void;
@@ -85,7 +86,7 @@ const noop = () => undefined;
  * pressed, side by side at its right end (user decision 2026-11-11): the held
  * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
  * 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」 until 2026-11-14) with
- * セーブ・ロード | 旅の記録・旅の図鑑・英語ノート | (free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定.
+ * セーブ・ロード | 旅の記録・ノート | 画面の出典 (while the screen shows a credited photo)・ゲームの設定.
  * Over a story scene
  * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
@@ -118,9 +119,9 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   seenItemIds?: ReadonlySet<string>;
   /** The detail opened on these held items: they are seen. */
   onItemsSeen?: (ids: readonly string[]) => void;
-  /** 英語ノート has an entry the player has not opened it on: a dot on ≡メニュー and on its 「英語ノート」. */
+  /** 英語ノート has an entry the player has not opened it on: a dot on ≡メニュー, on its 「ノート」 and on the note's 「英語ノート」. */
   englishNew?: boolean;
-  /** 旅の図鑑 has a term the player has not opened it on: a dot on ≡メニュー and on its 「旅の図鑑」. */
+  /** 旅の図鑑 has a term the player has not opened it on: a dot on ≡メニュー, on its 「ノート」 and on the note's 「旅の図鑑」. */
   glossaryNew?: boolean;
   /** The session's word for a moment (useGameSession's SessionToast; it goes by itself). */
   toast?: SessionToast | null;
@@ -290,24 +291,23 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * ≡メニュー (U2, U24; 「設定」 with a gear until 2026-11-14, renamed as it is the game's main menu): a disclosure button
  * with its small panel right under the header (APG Disclosure, not an ARIA menu: ordinary buttons, and Tab works as
  * everywhere else), its items in three groups split by thin rules (2026-11-19 user decision, as the menu had grown):
- * セーブ・ロード (one item since 2026-11-19: the dialog of the slots, SaveLoadDialog); 旅の記録, 旅の図鑑 (a journey with
- * terms) and 英語ノート, what the journey collected; 写真の出典 (free time's photos) or 画像の出典 (a story scene's photo)
- * and ゲームの設定 (U28). Debug's 移動画面に戻る comes last.
+ * セーブ・ロード (one item since 2026-11-19: the dialog of the slots, SaveLoadDialog); 旅の記録 and ノート (英語ノート and
+ * 旅の図鑑 in one dialog since 2026-11-20), what the journey collected; 画面の出典 (one item for free time's and a story
+ * scene's photos since 2026-11-20) and ゲームの設定 (U28). Debug's 移動画面に戻る comes last.
  * Opening moves the focus to the first item (ArrowUp/ArrowDown also move between the items); Esc closes and
  * returns it to ≡メニュー; leaving the group with the focus or a press elsewhere
  * closes it. A tap on the page outside the header only closes it (DismissLayer).
  * Choosing an item closes the panel and puts the focus on ≡メニュー before the action
  * runs, so a dialog it opens gives the focus back to ≡メニュー when it closes. The
- * panel then leaves from under the finger: セーブ・ロード and ゲームの設定 open dialogs
+ * panel then leaves from under the finger: セーブ・ロード, ノート and ゲームの設定 open dialogs
  * that take no press for a moment, so the second tap of a double tap presses nothing that lay under it.
- * 英語ノート and the credits open their dialogs at once, as their own buttons did (the second tap lands inside the dialog);
- * 旅の記録's and 旅の図鑑's dialogs take no press for that moment, as their photos and cards open larger on a tap.
+ * 画面の出典 opens its dialog at once (the second tap lands inside the dialog);
+ * 旅の記録's dialog takes no press for that moment, as its photos open larger on a tap.
  * Its marks (2026-11-13 user decision): while 英語ノート has an entry the player has not
- * opened it on (`englishNew`), a dot on ≡メニュー and on 「英語ノート」, said in their names;
- * likewise for 旅の図鑑's terms (`glossaryNew`) on ≡メニュー and 「旅の図鑑」;
+ * opened it on (`englishNew`), or 旅の図鑑 a term (`glossaryNew`), a dot on ≡メニュー and on 「ノート」, said in their names;
  * a save that succeeded (`saveMark`) drops a small ribbon onto ≡メニュー, which fades.
  */
-function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
+function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノート", onScreenCredits, onSettings, onReturnToFreeTime, englishNew,
   glossaryNew }: MenuActions & { englishNew: boolean; glossaryNew: boolean }) {
   const newIn = [englishNew && "英語ノート", glossaryNew && "旅の図鑑"].filter(Boolean).join("と");
   const [open, setOpen] = useState(false);
@@ -391,11 +391,9 @@ function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onGlossary, onEnglish, o
         <button type="button" onClick={choose(onSaveLoad)}><Icon name="save" />セーブ・ロード</button>
         <hr className="hud-menu-rule" />
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
-        {onGlossary && <button type="button" onClick={choose(onGlossary)}><Icon name="lens" />旅の図鑑{glossaryNew && <NewDot label="新しい言葉あり" />}</button>}
-        <button type="button" onClick={choose(onEnglish)}><Icon name="book" />英語ノート{englishNew && <NewDot label="新しい項目あり" />}</button>
+        <button type="button" onClick={choose(onNote)}><Icon name="book" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>
         <hr className="hud-menu-rule" />
-        {onPhotoCredits && <button type="button" onClick={choose(onPhotoCredits)}><Icon name="credit" />写真の出典</button>}
-        {onSceneCredits && <button type="button" onClick={choose(onSceneCredits)}><Icon name="credit" />画像の出典</button>}
+        {onScreenCredits && <button type="button" onClick={choose(onScreenCredits)}><Icon name="credit" />画面の出典</button>}
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>
         {/* Last, apart from the items of normal play; it opens a confirmation that settles presses. */}
         {onReturnToFreeTime && <button type="button" onClick={choose(onReturnToFreeTime)}><Icon name="map" />移動画面に戻る（Debug）</button>}
