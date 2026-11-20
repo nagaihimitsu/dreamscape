@@ -375,11 +375,12 @@ export function BattleScreen({
   const stageScene = sceneStageOf("battle", opponentFigure);
   const line = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction }) : { enemyCue: true };
   const { stage, focus } = useSceneStage(line, stageScene);
-  // Who stands opposite her (two in a stretch of `# together:`: the first in the opponent's place, the second beside it).
-  // In the quiz (no line) the opponent asks, alone in their place, as without the tag.
+  // Who stands opposite her (two or three in a stretch of `# together:`: the first in the opponent's place, the second
+  // beside it, the third beyond). In the quiz (no line) the opponent asks, alone in their place, as without the tag.
   const opposite = oppositeFigures(stage, focus).filter(({ figure }) => isDialogue || figureIsEnemy(figure, stageScene));
   const inPlace = opposite[0];
   const beside = isDialogue ? opposite[1] : undefined;
+  const far = isDialogue ? opposite[2] : undefined;
   const opponentSpeaks = frame?.speaker === "enemy" || line.personFigure === opponentFigure;
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
   /** A figure opposite her: the opponent with their expression, mark and drawn fallback, or a person's one picture. */
@@ -531,7 +532,7 @@ export function BattleScreen({
           <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <div className="battle-characters" data-together={beside ? "three" : undefined}>
+        <div className="battle-characters" data-together={far ? "four" : beside ? "three" : undefined}>
           {isDialogue && stage.heroine && (
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
@@ -548,6 +549,7 @@ export function BattleScreen({
           )}
           <div className="battle-character-slot battle-enemy">{inPlace && oppositePortrait(inPlace.figure, inPlace.focus)}</div>
           {beside && <div className="battle-character-slot battle-beside">{oppositePortrait(beside.figure, beside.focus)}</div>}
+          {far && <div className="battle-character-slot battle-far">{oppositePortrait(far.figure, far.focus)}</div>}
         </div>
       </div>
       <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} data-remembered={remembered || undefined} aria-hidden={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined}>

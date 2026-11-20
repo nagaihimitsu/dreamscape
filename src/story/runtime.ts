@@ -5,7 +5,7 @@ import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
 import {
   CUTIN_KINDS, ITEM_ID, LEAVE_WHO, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, SCENE_SHAKE_SIZES, STAND_POSITIONS, STORY_CALLS,
-  WEATHER_KINDS, type StoryCall,
+  TOGETHER_MAX, WEATHER_KINDS, type StoryCall,
 } from "../content/tags";
 import { readStoryFrame, STACK_MAX, storyChoicesOf, type FrameSticky, type Speaker, type StoryStep } from "./frame-reader";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
@@ -79,8 +79,8 @@ export const storyFrameSchema = z
     cutin: z.enum(CUTIN_KINDS).optional(),
     // `# leave:` (2026-11-13): who goes off the scene's stage at the line, as written (heroine, enemy or a person's ID).
     leave: z.array(imageIdSchema).min(1).optional(),
-    // `# together:` (2026-11-15): the two who stand opposite the heroine from the line, as written (enemy or a person's ID).
-    together: z.array(imageIdSchema).length(2).optional(),
+    // `# together:` (2026-11-15, three 2026-11-20): the two or three who stand opposite the heroine from the line, as written (enemy or a person's ID).
+    together: z.array(imageIdSchema).min(2).max(TOGETHER_MAX).optional(),
     voiceId: z.string().regex(VOICE_ID).optional(),
     seId: z.string().regex(SOUND_ID).optional(),
     // `# bgm:` (a track's ID or `stop`), kept to the scene's end (frame-reader.ts); a frame saved without it has the scene's usual track.

@@ -378,6 +378,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # se: wooden_window
+# together: enemy gt_pooja gt_jaipur_bride_grandmother
 そのとき、屋敷の二階の格子窓が、かたりと鳴った。窓の奥に、白い髪の老婦人の影がある。
 # speaker: narrator
 花嫁の祖母だった。プージャーが小声で言う。
@@ -402,14 +403,12 @@ INCLUDE modules.ink
     窓の上から、しわがれた声が答えた。
     # speaker: gt_jaipur_bride_grandmother
     # term: gt_term_gangaur
-    # leave: gt_jaipur_bride_grandmother
     # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_001
     ガンガウルよ。女神さまの、春のお祭り
 }
 # speaker: narrator
 窓の老婦人は、しばらく黙っていた。それから、窓越しに、ゆっくり話し始めた。プージャーが一言ずつ、こちらへ伝える。
 # speaker: gt_jaipur_bride_grandmother
-# leave: gt_jaipur_bride_grandmother
 # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_002
 十六でこの家に来て、六十年。ガンガウルの行列は、毎年この窓から見てきた。一度も、下を歩いたことはない
 # speaker: narrator
@@ -427,7 +426,6 @@ INCLUDE modules.ink
 # speaker: narrator
 窓の奥の声が、最後の問題を告げた。
 # speaker: gt_jaipur_bride_grandmother
-# leave: gt_jaipur_bride_grandmother
 # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_003
 この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
@@ -442,14 +440,15 @@ INCLUDE modules.ink
     窓の奥の声が、自分で答えた。
     # speaker: gt_jaipur_bride_grandmother
     # em: 見られずに
-    # leave: gt_jaipur_bride_grandmother
     # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_004
     見られずに、見るためよ。通りも、お祭りも、市場も
 }
 # speaker: narrator
+# leave: gt_jaipur_bride_grandmother
 格子の向こうで、老婦人が小さく笑った気配がした。
 # speaker: narrator
 # se: wooden_window
+# together: enemy gt_pooja gt_jaipur_bride_grandmother
 窓が閉まった。しばらくして、屋敷の門の奥から、杖をついた老婦人が姿を現した。花嫁側から、驚きの声が上がる。
 # speaker: gt_jaipur_bride_grandmother
 # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_005

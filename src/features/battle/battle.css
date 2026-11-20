@@ -73,10 +73,19 @@
   left: 50%;
 }
 /* Two people opposite her (# together:, 2026-11-15 user decision; BattleScreen's battle-beside): three in a row, a third
-   of the screen each (her, the first, the second), each place kept while someone is off stage. */
+   of the screen each (her, the first, the second), each place kept while someone is off stage. Three people opposite
+   her (2026-11-20; battle-far): four in a row (her, the first, the second, the third), centred a quarter of the screen
+   apart. Each place stays a third of the screen wide, so the four stand as large as three do, a little closer together
+   (a narrower place would make each figure smaller and, its picture scaled from its top, bring the face down behind
+   the talk's window on a small phone). */
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-heroine { right: calc(200% / 3); }
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-enemy { left: calc(100% / 3); right: calc(100% / 3); }
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-beside { left: calc(200% / 3); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-character-slot { right: auto; width: calc(100% / 3); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-heroine { left: calc(12.5% - 100% / 6); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-enemy { left: calc(37.5% - 100% / 6); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-beside { left: calc(62.5% - 100% / 6); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-far { left: calc(87.5% - 100% / 6); }
 .battle-screen .battle-stage-compact {
   min-height: 116px;
   padding-top: 8px;
@@ -888,7 +897,8 @@
   right: auto;
 }
 .battle-enemy .vn-character .comic-effect,
-.battle-beside .vn-character .comic-effect {
+.battle-beside .vn-character .comic-effect,
+.battle-far .vn-character .comic-effect {
   top: max(3%, calc((100% - 111.112cqw) / 2));
   right: auto;
   left: 25%;
@@ -896,7 +906,8 @@
 /* An opponent drawn on the heroine's 2:3 canvas (a journey's characters.json portrait, placed like hers):
    the mark sits by the head as hers does, on the inner side so it stays on the screen. */
 .battle-enemy .vn-character:has(> img) .comic-effect,
-.battle-beside .vn-character:has(> img) .comic-effect {
+.battle-beside .vn-character:has(> img) .comic-effect,
+.battle-far .vn-character:has(> img) .comic-effect {
   top: max(3%, calc(100% - var(--figure-scale, 1) * 150cqw));
   left: auto;
   right: calc(50% + min(4vw, 5dvh, 15px));
@@ -906,13 +917,15 @@
      enough to keep its face above the reading window. */
   .battle-screen[data-phase="dialogue"] .battle-heroine { transform: translateY(-22dvh); }
   .battle-screen[data-phase="dialogue"] .battle-enemy,
-  .battle-screen[data-phase="dialogue"] .battle-beside {
+  .battle-screen[data-phase="dialogue"] .battle-beside,
+  .battle-screen[data-phase="dialogue"] .battle-far {
     transform: translateY(-7dvh) scale(.76);
     transform-origin: center top;
   }
   /* A drawn opponent stands as large as the heroine, beside her (and so does a person beside them: # together:). */
   .battle-screen[data-phase="dialogue"] .battle-enemy:has(.vn-character > img),
-  .battle-screen[data-phase="dialogue"] .battle-beside:has(.vn-character > img) {
+  .battle-screen[data-phase="dialogue"] .battle-beside:has(.vn-character > img),
+  .battle-screen[data-phase="dialogue"] .battle-far:has(.vn-character > img) {
     transform: translateY(-22dvh);
   }
   .battle-heroine .vn-character .comic-effect {
@@ -922,7 +935,8 @@
     width: clamp(28px, 5vw, 38px);
   }
   .battle-enemy .vn-character .comic-effect,
-  .battle-beside .vn-character .comic-effect {
+  .battle-beside .vn-character .comic-effect,
+  .battle-far .vn-character .comic-effect {
     top: 0;
     width: clamp(28px, 5vw, 38px);
   }

@@ -6,9 +6,9 @@ import { placeScenes } from "./scene-table";
 import { walkScene, type SceneWalkInput } from "./scene-walk";
 import { checkSpeakerPeople } from "./speaker-people";
 
-// content:build's checks of a line's `# together:` (2026-11-15): its form and people statically (speaker-people.ts, every
-// line with its knot and line number), and in the walk whether each of the two can stand opposite her in that scene
-// (scene-walk.ts checkTogether); a `# leave:` naming either of the two standing is quiet.
+// content:build's checks of a line's `# together:` (2026-11-15; three 2026-11-20): its form and people statically
+// (speaker-people.ts, every line with its knot and line number), and in the walk whether each of the two or three can
+// stand opposite her in that scene (scene-walk.ts checkTogether); a `# leave:` naming any of them standing is quiet.
 
 const people = [
   { id: "smp_x_toma", cityId: "x", nameJa: "トーマ", characterId: "smp_x_toma_art" },
@@ -36,6 +36,8 @@ describe("the walk's check of # together:", () => {
     expect(walk(two("smp_x_toma smp_x_ana") + "# speaker: narrator\n# leave: smp_x_ana\n# leave: smp_x_toma\n帰っていった。\n")).toEqual([]);
     expect(walk(two("enemy smp_x_ana") + "# speaker: narrator\n# leave: enemy\n去った。\n", { enemyFigure: "smp_x_toma_art" })).toEqual([]);
     expect(walk(two("smp_x_toma smp_x_ana"), { kind: "date" })).toEqual([]);
+    expect(walk(two("enemy smp_x_toma smp_x_ana") + "# speaker: narrator\n# leave: smp_x_ana\n去った。\n", { enemyFigure: "smp_x_enemy_art" }))
+      .toEqual([]);
   });
 
   it("stops, in Japanese with the line, at a person without a figure", () => {
@@ -54,6 +56,7 @@ describe("the walk's check of # together:", () => {
   it("stops at two names of one figure: a person's other name, or the enemy's own figure", () => {
     expect(() => walk(two("smp_x_toma smp_x_toma_alias"))).toThrow("# together: の smp_x_toma と smp_x_toma_alias は、同じ絵の人です");
     expect(() => walk(two("enemy smp_x_toma"), { enemyFigure: "smp_x_toma_art" })).toThrow("# together: の enemy と smp_x_toma は、同じ絵の人です");
+    expect(() => walk(two("smp_x_ana smp_x_toma smp_x_toma_alias"))).toThrow("# together: の smp_x_toma と smp_x_toma_alias は、同じ絵の人です");
   });
 });
 
@@ -61,15 +64,17 @@ describe("the static check of # together: (speaker-people.ts)", () => {
   const declared = new Set(people.map((person) => person.id));
   const source = (line: string) => `INCLUDE modules.ink\n-> DONE\n\n=== smp_x_talk ===\n# scene: talk\n# speaker: narrator\n広場。\n${line}\n今日は。\n-> END\n`;
 
-  it("accepts two declared people or the enemy and one, on their own tag line or with other tags", () => {
-    for (const line of ["# together: smp_x_toma smp_x_ana", "# speaker: narrator # together: enemy smp_x_lili", "    # together: smp_x_ana enemy"])
+  it("accepts two or three declared people or the enemy among them, on their own tag line or with other tags", () => {
+    for (const line of ["# together: smp_x_toma smp_x_ana", "# speaker: narrator # together: enemy smp_x_lili", "    # together: smp_x_ana enemy",
+      "# together: enemy smp_x_toma smp_x_ana"])
       expect(() => checkSpeakerPeople(source(line), declared), line).not.toThrow();
   });
 
-  it("stops, naming the knot and the line, at one name or three, an undeclared person, the heroine, and one name twice", () => {
+  it("stops, naming the knot and the line, at one name or four, an undeclared person, the heroine, and one name twice", () => {
     expect(() => checkSpeakerPeople(source("# together: smp_x_toma"), declared))
-      .toThrow("knot smp_x_talk の8行目の # together: smp_x_toma：# together: には、向かいに立つ2人を書きます");
-    expect(() => checkSpeakerPeople(source("# together: smp_x_toma smp_x_ana enemy"), declared)).toThrow("# together: には、向かいに立つ2人を書きます");
+      .toThrow("knot smp_x_talk の8行目の # together: smp_x_toma：# together: には、向かいに立つ2人か3人を書きます");
+    expect(() => checkSpeakerPeople(source("# together: smp_x_toma smp_x_ana enemy smp_x_lili"), declared))
+      .toThrow("# together: には、向かいに立つ2人か3人を書きます");
     for (const name of ["smp_x_nobody", "heroine", "player"])
       expect(() => checkSpeakerPeople(source(`# together: smp_x_toma ${name}`), declared), name)
         .toThrow(`8行目の # together: smp_x_toma ${name}：# together: の ${name} は、向かいに立てる人ではありません`);

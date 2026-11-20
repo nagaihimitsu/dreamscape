@@ -169,7 +169,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
-      {/* Two people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as the other goes). */}
+      {/* Two or three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as another goes). */}
       {!quiz && (stage.heroine || stage.opposite) && <div className="vn-character-layer encounter-character-layer" data-two-characters={cast.two}
         data-together={cast.together}>
         {stage.heroine && <div className="encounter-character-slot encounter-character-heroine">
@@ -181,7 +181,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
         {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => {
           // The enemy's expression and mark on their figure (or the stranger's) wherever it stands.
           const enemyLook = figureIsEnemy(figure, view.stage.scene) ? view.stage.enemy : undefined;
-          return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+          return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "opposite" ? "enemy" : place}`}>
             <CharacterPortrait characterId={figure.figure} cityId={view.cityId} sceneId={view.sceneId} emotion={enemyLook?.emotion ?? "neutral"} focus={at}>
               {enemyLook?.mark && <ComicEffect effect={enemyLook.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
             </CharacterPortrait>

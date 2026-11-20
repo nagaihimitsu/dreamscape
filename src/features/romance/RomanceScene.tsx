@@ -202,8 +202,8 @@ export function RomanceScene({
         </aside>
       )}
       {/* With a person on stage the two stand side by side (the encounter's slots), the person alone in the middle while
-          she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. Two
-          people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as the other goes). */}
+          she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. Two or
+          three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as another goes). */}
       <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
         data-together={cast.together}>
         {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
@@ -219,7 +219,7 @@ export function RomanceScene({
           </CharacterPortrait>
         </div>}
         {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => (
-          <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+          <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "opposite" ? "enemy" : place}`}>
             <CharacterPortrait characterId={figure.figure} focus={at} />
           </div>
         ))}
