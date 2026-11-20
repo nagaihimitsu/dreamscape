@@ -75,27 +75,6 @@
     12px "Noto Sans JP",
     sans-serif;
 }
-.battle-rewards ul {
-  padding: 0;
-  margin: 12px 0;
-  list-style: none;
-}
-.battle-rewards li {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  font-size: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--ds-parchment-line);
-}
-.battle-rewards li > span:last-child {
-  flex-shrink: 0;
-  text-align: right;
-}
-.battle-rewards li small {
-  display: block;
-  font-size: 10px;
-}
 .current-ap {
   margin-top: 14px;
   font-size: 13px;

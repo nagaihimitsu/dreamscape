@@ -6,7 +6,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { DERIVED_PHOTO_NOTE_JA, RECAP_PHOTO_NOTE_JA } from "../../content/credits";
-import { dates, episodes, getAlbumImage, getCityContent, landmarks, scenes, storyState, tourismAssets } from "../../content";
+import { dates, episodes, getAlbumImage, getCityContent, landmarks, tourismAssets } from "../../content";
 import {
   cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue, startDateScene, withAp,
 } from "../../dev/scenario-builders";
@@ -207,6 +207,17 @@ describe("the recap's photo in ≡メニュー's 「画面の出典」 (2026-11-
     expect(withFreeTime).toContain(DERIVED_PHOTO_NOTE_JA);
     expect(withFreeTime.split(RECAP_PHOTO_NOTE_JA)).toHaveLength(2);
   });
+
+  it("lists a quiz explanation's sources under 「解説の出典」 (2026-11-20: the explanation shows none of its own)", () => {
+    const source = { publisher: "見本の出版社", title: "見本の資料", url: "https://example.com/dreamscape-sample", checkedAt: "2026-11-20",
+      claimType: "documented_fact" as const, claimJa: "見本の事実です。" };
+    const html = renderToStaticMarkup(createElement(ScreenCredits, { photos: [], factSources: [source], onAllCredits: () => {}, onClose: () => {} }));
+    expect(html).toContain(">解説の出典</h3>");
+    expect(html).toContain(`href="${source.url}"`);
+    expect(html).toContain("見本の出版社 · 見本の資料");
+    expect(html).not.toContain("出典を示す写真はありません");
+    expect(renderToStaticMarkup(createElement(ScreenCredits, { photos: [], onAllCredits: () => {}, onClose: () => {} }))).not.toContain("解説の出典");
+  });
 });
 
 describe("the recap's picture (the same story as its text)", () => {
@@ -376,23 +387,11 @@ describe("the credit roll at the end of a journey", () => {
     expect(journeyEnded(cityStart("mihon"), cleared)).toBe(false);
   });
 
-  it("names the two, then each city with its clear titles in the order completed, the people met and its photos", () => {
+  it("names the two, then each city with its photos right under its name (no clear titles or people met)", () => {
     const { ended } = journey();
-    const lili = storyState.people.find((person) => person.id === "smp_mihon_lili")!;
-    const liliScene = scenes.find((scene) => scene.people.includes(lili.id))!;
-    expect(liliScene).toBeDefined();
-    const state: GameState = { ...ended, album: photos, seenEncounterIds: [...ended.seenEncounterIds.filter((id) => id !== liliScene.id), liliScene.id] };
-    const endRoll = endRollOf(state);
+    const endRoll = endRollOf({ ...ended, album: photos });
     expect(endRoll).toMatchObject({ journeyJa: "見本の旅", playerName: "航", heroineName: "澪" });
-    expect(endRoll.cities.map((city) => city.id)).toEqual(["mihon"]);
-    const [city] = endRoll.cities;
-    expect(city.nameJa).toBe("見本の街");
-    expect(city.chapters).toEqual(state.completedEpisodeIds.map((id) => episode(id).clearTitleJa));
-    expect(city.chapters).toHaveLength(2);
-    expect(city.people).toContain(lili.nameJa);
-    expect(city.photos.map((photo) => photo.imageId)).toEqual(photos.map((photo) => photo.imageId));
-    // A person whose scene was not seen is not in it.
-    const unseen = { ...state, seenEncounterIds: state.seenEncounterIds.filter((id) => !scenes.some((scene) => scene.id === id && scene.people.includes(lili.id))) };
-    expect(endRollOf(unseen).cities[0].people).not.toContain(lili.nameJa);
+    expect(endRoll.cities).toEqual([{ id: "mihon", nameJa: "見本の街", photos: expect.any(Array) }]);
+    expect(endRoll.cities[0].photos.map((photo) => photo.imageId)).toEqual(photos.map((photo) => photo.imageId));
   });
 });

@@ -301,9 +301,6 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-city { margin-top: 64px; }
 .end-roll.is-still .end-roll-city { margin-top: 40px; }
 .end-roll-city h3 { margin: 0 0 16px; font-family: "Noto Serif JP", serif; font-size: 22px; letter-spacing: 0.1em; overflow-wrap: anywhere; }
-.end-roll-label { margin: 18px 0 6px; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; }
-.end-roll-list { margin: 0; padding: 0; list-style: none; }
-.end-roll-list li { font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
 .end-roll-photos { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
 .end-roll-photos figure { margin: 0; }
 /* The album's illustrations in the album's 3:2 frame. */

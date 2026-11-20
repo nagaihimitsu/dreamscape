@@ -201,8 +201,8 @@ function PackedList({ items }: { items: readonly PackedItem[] }) {
 
 /**
  * 旅の終わりのエンドロール: when the journey ends (its last city's epilogue read), a dialog over the whole screen: the two
- * names, then each city of the journey with the clear titles of its episodes, the people met there and its album photos
- * (the author's illustrations in a 3:2 frame, no credit), the names again at the end. It rolls up slowly by itself; a tap on it, Enter or
+ * names, then each city of the journey with its album photos right under its name (the author's illustrations in a 3:2
+ * frame, no credit; 2026-11-20 user decision: no clear titles or people met), the names again at the end. It rolls up slowly by itself; a tap on it, Enter or
  * Space (on the roll) or 「止める」 pauses it and 「続ける」 goes on; 「閉じる」 or Esc ends it. It stops at its end. With
  * reduced motion it does not roll: a list that scrolls by hand. Opened under the finger of the epilogue's last tap, it takes
  * no press for a moment (settlePresses). No relationship value is in it.
@@ -265,25 +265,14 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
         {numbers && <JourneyNumbersCard numbers={numbers} reduceMotion={reduceMotion} />}
         {roll.cities.map((city) => <section key={city.id} className="end-roll-city" aria-labelledby={`end-roll-city-${city.id}`}>
           <h3 id={`end-roll-city-${city.id}`}>{city.nameJa}</h3>
-          {city.chapters.length > 0 && <>
-            <p className="end-roll-label">物語</p>
-            <ol className="end-roll-list">{city.chapters.map((title, index) => <li key={index}>{title}</li>)}</ol>
-          </>}
-          {city.people.length > 0 && <>
-            <p className="end-roll-label">出会った人</p>
-            <ul className="end-roll-list">{city.people.map((name, index) => <li key={index}>{name}</li>)}</ul>
-          </>}
-          {city.photos.length > 0 && <>
-            <p className="end-roll-label">写真</p>
-            <ul className="end-roll-photos">
-              {city.photos.map((photo) => <li key={photo.imageId}>
-                <figure>
-                  <img src={served(photo.path)} alt={photo.altJa} loading="lazy" decoding="async" />
-                  <figcaption>{photo.caption ?? photo.placeJa} · {photo.whenJa}</figcaption>
-                </figure>
-              </li>)}
-            </ul>
-          </>}
+          {city.photos.length > 0 && <ul className="end-roll-photos">
+            {city.photos.map((photo) => <li key={photo.imageId}>
+              <figure>
+                <img src={served(photo.path)} alt={photo.altJa} loading="lazy" decoding="async" />
+                <figcaption>{photo.caption ?? photo.placeJa} · {photo.whenJa}</figcaption>
+              </figure>
+            </li>)}
+          </ul>}
         </section>)}
         <div className="end-roll-last">{names}</div>
       </div>
