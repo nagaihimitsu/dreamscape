@@ -40,7 +40,7 @@ export default function DebugVoiceRate({ rate, onChange, voiceOn, message }: {
       {voiceRateJa(VOICE_RATE_DEFAULT)}に戻す
     </button>
     <p className="fine-print">
-      録音した声を速く・ゆっくり聞いて、合う速さを確かめるための設定です。声の高さは変わらず、鳴っている声にもすぐ効きます。自動送りとBGMを下げる間も、この速さで声が終わるのに合わせます。この端末だけに残り（セーブ・英語ノート・表示設定とは別）、Debugモードがオフの間は{voiceRateJa(VOICE_RATE_DEFAULT)}で鳴ります。
+      録音した声を速く・ゆっくり聞いて、合う速さを確かめるための設定です。声の高さは変わらず、鳴っている声にもすぐ効きます。自動送りとBGMを下げる間も、この速さで声が終わるのに合わせます。この端末だけに残り（セーブ・クイズと旅のことばの記録・表示設定とは別）、Debugモードがオフの間は{voiceRateJa(VOICE_RATE_DEFAULT)}で鳴ります。
     </p>
     {!voiceOn && <p className="fine-print">「台詞の声を出す」がオフなので、今は声が鳴りません。</p>}
     {message && <p role="alert">{message}</p>}

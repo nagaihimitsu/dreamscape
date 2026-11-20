@@ -1,11 +1,12 @@
 // The words of the country (2026-11-11 user decision): a line's `# local_word:` teaches a word as it is shown; this
-// device remembers it per journey, apart from the save (learning a word again changes nothing); the English notes'
-// 「その国の言葉」 lists the words by city in the order learned. Failing or unreadable storage never stops reading and an
+// device remembers it per journey, apart from the save (learning a word again changes nothing); ノート's 「旅のことば」
+// (英語ノートの「その国の言葉」 until 2026-11-20) lists the words by city in the order learned. Failing or unreadable storage never stops reading and an
 // unreadable record is never overwritten. Read with the sample journey (fictional) for the catalog's own word.
 import { describe, expect, it } from "vitest";
 import type { LocalWord } from "../../content";
 import { LOCAL_WORDS_KEY } from "../../persistence";
 import { journeyStorage } from "../../persistence/journey-storage";
+import { getJourney } from "../../content/journeys";
 import {
   journeyHasLocalWords, JOURNEY_WORDS_TITLE_JA, learnedNoticeText, learnWords, lineWordsOnScreen, localWordGroups, openLearnedWords, parseLearnedWords,
   rememberWords, serializeLearnedWords, shownWordNotice, type SceneFrames,
@@ -133,6 +134,7 @@ describe("「旅のことば」 (英語ノートの「その国の言葉」 unti
   });
 
   it("lists the sample's word under its city, with its reading, meaning, note and sources", () => {
+    if (!getJourney("sample_trip")) throw new Error("見本の旅（sample_trip）が生成物にありません。npm run content:build -- --with-sample を実行してから、もう一度テストしてください。");
     expect(localWordGroups(["smp_mihon_word_trisol"])).toMatchObject([{ titleJa: "見本の街", words: [{
       word: "Trisól", reading: "トリソル", meaningJa: expect.any(String), noteJa: expect.any(String),
       sources: [{ url: "https://example.com/dreamscape-sample" }],

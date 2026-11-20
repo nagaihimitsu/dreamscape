@@ -296,7 +296,7 @@ export const OWN_ARTWORK_NOTE_JA =
   "情報の出典は、手がかり帳とクイズの解説に表示しています。";
 
 /**
- * The note of the free-time screen's 「写真の出典」 (UI step 1.5): its list rows and its backdrop show the
+ * The note of 「画面の出典」 over the free-time screen (「写真の出典」 until 2026-11-20) (UI step 1.5): its list rows and its backdrop show the
  * copies that content:build reduced (the rows also cropped) from the credited photo (derived-images.ts).
  * The copies keep the photo's own credit and licence; this note adds the change to `modificationJa`.
  */
@@ -305,6 +305,6 @@ export const DERIVED_PHOTO_NOTE_JA = "この画面では、写真を縮小して
 /**
  * The same note on the one photo of the resume recap (2026-11-13; journey-moments.ts recapPicture): a place's photo in
  * its `recap` copy, reduced and cropped to the card's 3:2 frame (derived-images.ts), with its credit in ≡メニュー's
- * 「写真の出典」 while the card shows (2026-11-15; PhotoCredits.tsx recapPhotos).
+ * 「画面の出典」 while the card shows (2026-11-15; PhotoCredits.tsx recapPhotos).
  */
 export const RECAP_PHOTO_NOTE_JA = "写真を縮小して表示しています（枠に合わせて切り抜きもしています）。";

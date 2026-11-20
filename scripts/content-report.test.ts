@@ -95,6 +95,25 @@ describe("unused album images", () => {
   });
 });
 
+describe("the moving standing picture's folder", () => {
+  it("counts every file inside a pose's avatar and avatarFace folders as used, and nothing beside them", () => {
+    const pose = { id: "standing_01", canvas: { width: 10, height: 20 }, expressions: {}, avatar: "assets/characters/h/avatar/",
+      avatarFace: "assets/characters/h/face/" };
+    const sources = load({
+      ...journey("trip_a", 10, "a_city"),
+      "content/presentation/characters.json": json({ schemaVersion: 1, characters: [{ id: "h", costumes: [{ id: "c", poses: [pose] }] }] }),
+      "public/assets/characters/h/avatar/avatar.json": null,
+      "public/assets/characters/h/avatar/built/layers.json": null,
+      "public/assets/characters/h/face/eyes_closed_0.png": null,
+      "public/assets/characters/h/avatar_old.png": null,
+    });
+    expect(messages(unusedPublicFiles(sources))).toEqual([
+      "Unused public file: public/assets/characters/h/avatar_old.png " +
+      "(neither content nor the game's code refers to assets/characters/h/avatar_old.png; it would be published without being used)",
+    ]);
+  });
+});
+
 describe("declared transport modes without routes", () => {
   it("names a declared mode that no route of the journey's cities uses", () => {
     const tram = { id: "tram", nameJa: "路面電車", movingJa: "路面電車で移動中", kind: "tram" };

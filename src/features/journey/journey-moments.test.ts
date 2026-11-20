@@ -21,7 +21,7 @@ import {
   chapterStampOf, completedDateId, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, recapPicture,
   resumeRecap, type RecapPicture,
 } from "./journey-moments";
-import { PhotoCredits, recapPhotos } from "./PhotoCredits";
+import { recapPhotos, ScreenCredits } from "./PhotoCredits";
 import { formatTravelTime } from "./travel-time";
 
 const roll = () => 0;
@@ -182,7 +182,7 @@ describe("the recap of a resumed game", () => {
   });
 });
 
-describe("the recap's photo in ≡メニュー's 「写真の出典」 (2026-11-15: the card shows no credit)", () => {
+describe("the recap's photo in ≡メニュー's 「画面の出典」 (2026-11-15: the card shows no credit)", () => {
   const jamaMasjid = placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド");
 
   it("lists a place's photo in its recap copy under the recap's name, and nothing for the author's own picture or no picture", () => {
@@ -192,8 +192,12 @@ describe("the recap's photo in ≡メニュー's 「写真の出典」 (2026-11-
   });
 
   it("shows the photo with its credit and the note on its cropped copy; the note on free time's copies only with them", () => {
-    const markup = (photos: Parameters<typeof PhotoCredits>[0]["photos"]) => renderToStaticMarkup(createElement(PhotoCredits, { photos, onClose: () => {} }));
+    const markup = (photos: Parameters<typeof ScreenCredits>[0]["photos"]) =>
+      renderToStaticMarkup(createElement(ScreenCredits, { photos, onAllCredits: () => {}, onClose: () => {} }));
     const recapOnly = markup(recapPhotos(jamaMasjid));
+    // Its foot is the way into 出典・権利の一覧 (2026-11-20); there is no line about a screen without photos.
+    expect(recapOnly).toContain(">出典・権利の一覧</button>");
+    expect(recapOnly).not.toContain("出典を示す写真はありません");
     expect(recapOnly).toContain(`src="/${jamaMasjid.path}"`);
     expect(recapOnly).toContain(jamaMasjid.credit!.creditJa);
     expect(recapOnly).toContain(`href="${jamaMasjid.credit!.licenseUrl}"`);

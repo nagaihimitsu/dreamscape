@@ -13,7 +13,7 @@ import type { RecapPicture } from "./journey-moments";
 export type ShownPhoto = { key: string; labelJa: string; asset: TourismAsset; kind: "backdrop" | "card" | "recap" };
 
 /**
- * Every photo free time shows now (≡メニュー's 「写真の出典」 lists them): the city's backdrop photo and each place's photo.
+ * Every photo free time shows now (≡メニュー's 「画面の出典」 lists them): the city's backdrop photo and each place's photo.
  * A city's own-artwork backdrop (backdropImagePath) is not a photo and has no credit: getCityBackdrop never returns it,
  * like the credits list leaves out every artwork made for Dreamscape (OWN_ARTWORK_NOTE_JA).
  */
@@ -30,23 +30,11 @@ export function freeTimePhotos(game: GameState): ShownPhoto[] {
 
 /**
  * The photo of 前回までのあらすじ while its card shows (2026-11-15 user decision: the card shows no credit of its own; in free
- * time and on the night screen, ≡メニュー's 「写真の出典」 lists it first): a place's photo in its `recap` copy. None for the
+ * time and on the night screen, ≡メニュー's 「画面の出典」 lists it first): a place's photo in its `recap` copy. None for the
  * author's own album picture, which has no credit.
  */
 export function recapPhotos(picture: RecapPicture | null | undefined): ShownPhoto[] {
   return picture?.credit ? [{ key: "recap", labelJa: `前回までのあらすじ（${picture.captionJa}）`, asset: picture.credit, kind: "recap" }] : [];
-}
-
-/**
- * 「写真の出典」 (UI redesign §3.4 item 6): the credit and licence of each photo on the free-time screen, and of the recap's
- * (recapPhotos; with its own note, as its copy is cropped to the card's frame). The note on the reduced copies heads the
- * list when it has free time's photos.
- */
-export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClose: () => void }) {
-  return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose} closeOnBackdrop>
-    <ModalTitle id="photo-credits-title" onClose={onClose}>写真の出典</ModalTitle>
-    <PhotoCreditList photos={photos} />
-  </Modal>;
 }
 
 function PhotoCreditList({ photos }: { photos: ShownPhoto[] }) {
