@@ -175,8 +175,10 @@ h3 {
   letter-spacing: 0.12em;
 }
 /* 旅の記録's header line: the couple's names (as text, never HTML) and 交際中. */
-/* 旅の音楽室 and 「エンドロールを見る」 at the top of 旅の記録 (2026-11-14), side by side (one alone takes the row). */
-.records-extras { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; margin: 0 0 14px; }
+/* 旅の音楽室, ミニゲーム集 and 「エンドロールを見る」 at the top of 旅の記録 (2026-11-14, 2026-11-20), two to a row (one alone, and
+   the last of three, takes the row). */
+.records-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 14px; }
+.records-extras > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 .records-extras > .secondary { min-height: 44px; margin: 0; padding: 6px 10px; }
 .records-kept { width: 100%; min-height: 44px; margin: 0 0 14px; }
 .records-progress { margin: 0 0 8px; font-size: 14px; font-weight: 600; }

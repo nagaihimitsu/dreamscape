@@ -1,0 +1,89 @@
+/* ミニゲーム集 (2026-11-20; MiniGameCollection.tsx): the list, one full-width row of at least 44 px per game (its name and
+   length, where the journey plays it), as 旅の音楽室's rows; no card has a thick edge on one side. */
+.minigame-collection-list {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+.minigame-collection-item {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: #fffaf1;
+  color: var(--ds-ink);
+  font: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.minigame-collection-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.minigame-collection-length,
+.minigame-collection-where {
+  color: var(--ds-ink-muted);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* A game's stage: a dialog over the whole screen (as the end roll), the story's scene box in the app's column. Its name
+   and 「× 閉じる」 on the title band over the top (as the header over a story scene: --scene-top is its reserve, and the
+   people stand below it), the game's start where the story's choices would be, in thumb reach; the play lies over the
+   box from the top and hides the rest, as in a story (host.css). */
+dialog.modal.minigame-collection-stage {
+  --modal-pad-top: 0px;
+  --modal-pad-inline: 0px;
+  --scene-top: calc(56px + env(safe-area-inset-top, 0px));
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: #1d2420;
+}
+.minigame-collection-scene {
+  width: 100%;
+  max-width: 880px;
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+}
+.minigame-collection-scene:has(> .minigame-slot > .minigame-layer) { --scene-top: env(safe-area-inset-top, 0px); }
+.minigame-collection-stage .minigame-collection-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding-top: calc(6px + env(safe-area-inset-top, 0px));
+}
+.minigame-collection-window {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  width: calc(100% - 16px);
+  margin: 0 auto calc(8px + env(safe-area-inset-bottom, 0px));
+  padding: 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+}
+.minigame-collection-window .choices { margin-top: 0; padding-top: 0; border-top: 0; }
+.minigame-collection-from { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: 13px; line-height: 1.5; }
