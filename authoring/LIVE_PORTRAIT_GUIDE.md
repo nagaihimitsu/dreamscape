@@ -7,7 +7,8 @@
 - [1. 仕組み](#1-仕組み)
 - [2. 表情を足すとき](#2-表情を足すとき)
 - [3. 衣装を足すとき（顔は共通）](#3-衣装を足すとき顔は共通)
-- [4. 新しい人物・頭の違う衣装に作るとき](#4-新しい人物頭の違う衣装に作るとき)
+  - [頭の違う衣装（髪を残す）](#頭の違う衣装髪を残す)
+- [4. 新しい人物・顔の違う衣装に作るとき](#4-新しい人物顔の違う衣装に作るとき)
 - [5. ゲームに入れる](#5-ゲームに入れる)
 - [6. 動かす部品を作り直すとき](#6-動かす部品を作り直すとき)
 - [7. 確かめること](#7-確かめること)
@@ -46,7 +47,7 @@
 
 1. いつもどおり表情の絵を足します（元の絵 `authoring/characters/…/<表情ID>.png`、配信用の WebP、`expressions`・`own-artwork.json` への登録。[コンテンツ制作ガイド](CONTENT_GUIDE.md#基本の衣装表情の画像を足す)）。
 2. その表情の絵の口が開いているなら、[`cut-faces.py`](characters/heroine/default_01/mesh_avatar/cut-faces.py) の `CLOSED` に、普段の閉じた口に使う絵を足します（明るい表情は `source.png`、驚きは `serious.png` など）。口を閉じた絵なら何もしません（その口は閉じている間だけ出し、話すときは「あ・う・お」の口になります）。口がとても大きい・横に広い（舌や口角の線が口から離れている）なら `WIDE` にも足します。足りないと、話すときにその表情の口の端が残って見えます（teasing の舌で起きた）。足したら、12表情すべての「閉じた口・あ・う・お」を並べて見ます（[7.](#7-確かめること)）。
-3. Mesh Avatar Studio の作業フォルダ `projects/<名前>/`（基本の衣装で [4.](#4-新しい人物頭の違う衣装に作るとき) を行ったもの。なければ4.の1〜8をやり直す）で、次を順に実行します。`<表情の絵>` は `authoring/characters/heroine/default_01/standing_01` のような、表情の元の絵のフォルダです。表情の一覧は、そのフォルダの `neutral` 以外の PNG から自動で作ります。
+3. Mesh Avatar Studio の作業フォルダ `projects/<名前>/`（基本の衣装で [4.](#4-新しい人物顔の違う衣装に作るとき) を行ったもの。なければ4.の1〜8をやり直す）で、次を順に実行します。`<表情の絵>` は `authoring/characters/heroine/default_01/standing_01` のような、表情の元の絵のフォルダです。表情の一覧は、そのフォルダの `neutral` 以外の PNG から自動で作ります。
 
    ```sh
    uv run --with pillow --with numpy --with opencv-python-headless python <mesh_avatar>/cut-faces.py <表情の絵>
@@ -59,7 +60,7 @@
 
 ## 3. 衣装を足すとき（顔は共通）
 
-頭（顔・髪・帽子）を基本の衣装 `default_01` と同じに描いた衣装は、**衣装の絵1枚**から、動く立ち絵と12表情の静止画を作れます。帽子・髪型・顔の向きが違う衣装は [4.](#4-新しい人物頭の違う衣装に作るとき) です。
+頭（顔・髪・帽子）を基本の衣装 `default_01` と同じに描いた衣装は、**衣装の絵1枚**から、動く立ち絵と12表情の静止画を作れます。帽子・髪型・耳飾りが違っても顔（目・鼻・口・輪郭）の位置が同じなら、[頭の違う衣装（髪を残す）](#頭の違う衣装髪を残す)で、やはり絵1枚から作れます。顔の向きや大きさが違う衣装は [4.](#4-新しい人物顔の違う衣装に作るとき) です。
 
 1. **衣装の絵を描いてもらう**：基本の衣装の `neutral` と同じ 1024×1536、同じポーズ・位置で、服だけを変えた絵（透過の PNG）を1枚。顔・髪・帽子は描き直さないように頼みます（描き直されても、2.で基本の衣装の頭に置き換えます）。
 2. **頭をそろえ、静止画を作る**：リポジトリの直下で次を実行します。
@@ -78,7 +79,31 @@
 5. **ゲームに入れる**：`projects/<衣装>/` の `avatar.json`・`rig.json`・`built/`（`sprites/` はない）を `public/assets/characters/heroine/<衣装>/standing_01/avatar/` に写し、PNG を `own-artwork.json` に書き、`characters.json` の衣装・ポーズに `"avatar": "assets/characters/heroine/<衣装>/standing_01/avatar/"` と `"avatarFace": "assets/characters/heroine/face/standing_01/"` を足します。
 6. [7. 確かめること](#7-確かめること) をします。動く立ち絵の大きさは衣装1つで約0.8MB（主に `base.png`）です。
 
-## 4. 新しい人物・頭の違う衣装に作るとき
+### 頭の違う衣装（髪を残す）
+
+帽子がない・髪型が違う・耳飾りがある衣装（例：サリー `saree_01`、2026-11-20）。衣装の絵の髪と耳飾りは残し、顔（目・眉・口・頬）だけを基本の衣装の顔にそろえます。共通の顔の差分はその衣装の髪を塗りつぶすので、衣装の髪を切り抜いた写しを衣装のフォルダに持ちます（`avatarFace` は書かない）。
+
+1. **衣装の絵**：基本の衣装と同じポーズで、顔の位置・大きさが同じ絵（背景が透明の PNG。大きさは少し違ってよい）。透ける布の所も、背景を抜いた絵を作者に用意してもらいます（白い背景から私たちが抜くと、透けた所が粗くなる）。
+2. **顔の位置をそろえる**：`new-costume.py <衣装の絵.png> --out <作業用のフォルダ> --align --align-only` で、顔を基本の衣装に合わせて 1024×1536 にした `aligned.png` を作ります。表示される大きさ・回転・ずれが大きいとき（大きさ 0.97〜1.03、回転 1度、ずれ 10px を超えるとき）は、ポーズや顔が違う絵なので [4.](#4-新しい人物顔の違う衣装に作るとき) にします。
+3. **衣装の髪を調べる**：Mesh Avatar Studio で `aligned.png` の作業フォルダを作り、`rig.draft.json` を基本の衣装のもので置き換えて `tools/build-layers.py` を1回実行し、`built/hairmask.png`（衣装の髪）を別の場所に写します。帽子がない分の頭の上の髪も入っているかを、重ねて見ます。
+4. **顔をそろえ、静止画と顔の差分を作る**：
+
+   ```sh
+   uv run --with pillow --with numpy --with opencv-python-headless python \
+     authoring/characters/heroine/default_01/mesh_avatar/new-costume.py <作業用>/aligned.png \
+     --out authoring/characters/heroine/<衣装>/standing_01 \
+     --keep-hair <写した hairmask.png> --sprites-out <作業用>/sprites
+   ```
+
+   - `neutral.png`：衣装の絵に、基本の衣装の顔を、どちらの絵でも髪でない所だけ重ねたもの（耳飾りは避ける）。
+   - `<表情ID>.png`：12表情の静止画。顔の差分は、衣装の髪と耳飾りを切り抜いて重ねる。
+   - `<作業用>/sprites/`：衣装の髪を切り抜いた顔の差分一式。
+   - 目のまわりの金色（瞳）は耳飾りと見なさない（2026-11-20、喜びの閉じ目から瞳がのぞいた）。
+5. **層を作り直す**：作業フォルダの `source.png` を `neutral.png` で置き換えて `tools/build-layers.py` をもう一度実行し、`built/sprites/` を `<作業用>/sprites/` で置き換えます。骨組みは基本の衣装と同じになります。
+6. **ゲームに入れる**：[3.](#3-衣装を足すとき顔は共通) の3.・5.と同じ。ただし `built/sprites/` も写し、`avatarFace` は書きません。元の衣装の絵は `authoring/characters/heroine/<衣装>/mesh_avatar/outfit.png` に残します。
+7. [7. 確かめること](#7-確かめること)。とくに前髪・眉・耳飾りのまわりに継ぎ目がないか、12表情とまばたきを並べて見ます。大きさは衣装の絵しだいで、サリーは動く立ち絵が約2.7MB（`base.png` 約1.5MB、顔の差分の写し約0.7MB）、静止画が12枚で約1.8MB。
+
+## 4. 新しい人物・顔の違う衣装に作るとき
 
 道具の準備：Node.js 22.17 以上、Python と [uv](https://docs.astral.sh/uv/)。Mesh Avatar Studio を手元に持ってきて `npm install`、（Mesh Avatar Studio の側で）`npm run doctor` で足りない物を確かめます。以下の `npm run …` と `tools/…` は、どれも Mesh Avatar Studio の側のコマンドです（このリポジトリの `package.json` にはありません）。手順の元は向こうの [agent-guide](https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/agent-guide.md) です。ここでは、この作品でのやり方だけを書きます。
 
