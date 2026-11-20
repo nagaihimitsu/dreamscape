@@ -565,6 +565,8 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 ゲームの一覧・遊び方・結果のID・札の引数・絵の名前・使っている場面は、Debug の「ミニゲームの見本」（`?debug` の場面の確認の下）に出ます。そこで、物語なしに自分で・おまかせの各結果で・動きを減らして遊べます。ゲームの一覧の元は `src/minigames/registry-list.ts`（1ゲーム1行）で、どのゲームをどの場面で使っているかは、`content:build` が書く `src/content/generated/minigame-uses.json` と、[13 ミニゲームの仕組み](../docs/13_MINIGAMES.md#22-エンジンと皮) の「作ったもの」の表にあります（下の例はクリケットの打席 `cricket_batting`。結果 `six`・`over_wall`・`edge`・`bowled`・`no_swing`、おまかせの既定 `six`）。
 
+旅行編の物語に書いたゲームは、旅を終えた後の「ミニゲーム集」（旅の音楽室の隣）にも、1ゲーム1行で自動で並びます（2026-11-20）。そこでは、その場面の最初のゲーム（`prefix` の無い札）の絵と引数で、ゲームが始まるときに向かいに立っている人と一緒に遊びます。書く人が足すものはありません。
+
 ```ink
 # speaker: heroine
 # emotion: serious

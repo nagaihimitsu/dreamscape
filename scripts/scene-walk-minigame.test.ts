@@ -134,4 +134,13 @@ describe("a line's # minigame: in the scene walk", () => {
     expect(uses[0]).toEqual({ sceneId: "smp_x_date", kind: "talk", storyId: "places/smp_x_tower", knot: "smp_x_date", game: "cricket_batting",
       auto: "edge", line: "Bowl." });
   });
+
+  it("reports who stands opposite her as the game starts (ミニゲーム集's cast)", () => {
+    const people = [{ id: "smp_x_toma", cityId: "x", nameJa: "トーマ", characterId: "smp_x_toma_art" }];
+    const uses: MiniGameUse[] = [];
+    walk(`# speaker: smp_x_toma\nBowl to me.\n# minigame: cricket_batting auto edge\n# speaker: narrator\nBowl.\n${choices()}- -> END\n`, {
+      context: { ...context, personIds: ["smp_x_toma"] }, stage: { kind: "talk", people },
+      scene: { id: "smp_x_date", kind: "talk", storyId: "places/smp_x_tower" }, onMiniGame: (use) => uses.push(use) });
+    expect(uses[0]?.person).toBe("smp_x_toma_art");
+  });
 });

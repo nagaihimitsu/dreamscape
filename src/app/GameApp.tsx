@@ -192,6 +192,7 @@ const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ d
 const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({ default: module.OldDataCleanup })));
 const OfflinePlayDialog = lazy(() => import("./OfflinePlayDialog").then((module) => ({ default: module.OfflinePlayDialog })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
+const MiniGameCollection = lazy(() => import("../features/journey/MiniGameCollection").then((module) => ({ default: module.MiniGameCollection })));
 const TravelLogDialog = lazy(() => import("../features/journey/TravelLog").then((module) => ({ default: module.TravelLogDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
@@ -550,6 +551,8 @@ export function GameApp({
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
   const [musicRoom, setMusicRoom] = useState(false);
   const [roomTrack, setRoomTrack] = useState<string | null>(null);
+  // ミニゲーム集 (MiniGameCollection.tsx; 2026-11-20): beside 旅の音楽室 once the journey is over.
+  const [miniGamesOpen, setMiniGamesOpen] = useState(false);
   // 「画面の出典」 (2026-11-20: one item for 写真の出典 and 画像の出典).
   const [screenCreditsOpen, setScreenCreditsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
@@ -846,6 +849,13 @@ export function GameApp({
     onMusic: (track) => setMiniGameTrack(track && hasTrack(track) ? track : null),
   }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugMarks, game?.playerName, game?.heroineName, game?.playerNameReading,
     revision, miniGameAvailable, commit, nextRomanceRoll]);
+  // ミニゲーム集's plays: the same settings and music as a story's, no choice to take (MiniGameCollection.tsx).
+  const collectionPlay = useMemo(() => ({
+    auto: displaySettings.value.miniGameAuto,
+    reduceMotion: displaySettings.value.reduceMotion,
+    onQuiet: setMiniGameQuiet,
+    onMusic: (track: string | null) => setMiniGameTrack(track && hasTrack(track) ? track : null),
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
@@ -1323,7 +1333,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <JourneyMemoriesScreen journeyJa={getJourney(journeyId)?.nameJa ?? ""} playerName={game.playerName} heroineName={game.heroineName}
               numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onRecords: openRecords }}
+              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true), onRecords: openRecords }}
               onAgain={openAgain}
               selector={!isDebug && onSwitchJourney ? <JourneySelection value={journeyId} onChange={requestJourneySwitch} /> : undefined} />
           </>
@@ -1384,8 +1394,8 @@ export function GameApp({
           }}>出発する</button>} />
       </Modal>}
       {/* 旅の記録 (2026-11-19: 旅の記録 and アルバム made one; TravelLog.tsx). 旅の音楽室 (2026-11-13: once the first city is
-          cleared), the credit roll (the journey over) and the journey kept as 旅の思い出 (2026-11-19) open over it and close back
-          to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
+          cleared), ミニゲーム集 beside it and the credit roll (the journey over; 2026-11-20) and the journey kept as 旅の思い出
+          (2026-11-19) open over it and close back to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
           missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
@@ -1393,6 +1403,8 @@ export function GameApp({
             {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
               {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
                 onClick={() => setMusicRoom(true)}>旅の音楽室</button>}
+              {isJourneyComplete(game) && <button type="button" className="secondary" data-testid="minigame-collection-open"
+                onClick={() => setMiniGamesOpen(true)}>ミニゲーム集</button>}
               {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
                 エンドロールを見る</button>}
             </div>}
@@ -1405,7 +1417,8 @@ export function GameApp({
         <ModalTitle id="kept-memory-title" onClose={closeKept}>前の旅の思い出</ModalTitle>
         <KeptMemoryContents playerName={keptGame.playerName} heroineName={keptGame.heroineName}
           numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-          views={{ onEndRoll: () => setKeptEndRoll(true), onMusicRoom: () => setMusicRoom(true), onRecords: () => setKeptLogOpen(true) }} />
+          views={{ onEndRoll: () => setKeptEndRoll(true), onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true),
+            onRecords: () => setKeptLogOpen(true) }} />
       </Modal>}
       {keptEndRoll && keptGame && <EndRollDialog roll={endRollOf(keptGame)} numbers={journeyNumbers(keptGame, learnedWords.learned)}
         reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
@@ -1427,6 +1440,9 @@ export function GameApp({
         <MusicRoom game={keptGame ?? game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
           bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
+      </LazyDialog>}
+      {miniGamesOpen && game && <LazyDialog onClose={() => setMiniGamesOpen(false)}>
+        <MiniGameCollection game={keptGame ?? game} play={collectionPlay} onClose={() => setMiniGamesOpen(false)} />
       </LazyDialog>}
       {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
         <TravelLogDialog game={keptGame} missedPhotos={showsMissedPhotos(keptGame, true)} onClose={() => setKeptLogOpen(false)} />
