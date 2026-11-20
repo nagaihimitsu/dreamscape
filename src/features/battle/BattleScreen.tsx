@@ -895,6 +895,7 @@ export function BattleScreen({
               <HeroineNote
                 className="hint-whisper"
                 label={`${game.heroineName}の耳打ち`}
+                hideLabel
                 text={question.hintHeroineJa ?? question.hintJa}
                 emotion="smile"
                 sceneId={battle.id}

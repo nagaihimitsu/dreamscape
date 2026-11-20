@@ -773,8 +773,8 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     padding: 8px 12px;
   }
 }
-/* ゲームの設定's groups (2026-11-14): 文字と表示, 音と振動, 難易度 (2026-11-19), 名前 and データ, each under its heading with a hairline above
-   (none under the title bar), then 「制作者向け」 folded. */
+/* ゲームの設定's groups (2026-11-14, regrouped 2026-11-19): 文字と演出, 英語, 音と振動, 旅 and 保存とデータ, each under its heading
+   with a hairline above (none under the title bar), then 出典・権利の一覧 and 「制作者向け」 folded. */
 dialog.modal[aria-labelledby="settings-title"] > h3 {
   margin: 14px 0 2px;
   padding-top: 12px;
@@ -788,6 +788,24 @@ dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + h3 {
   border-top: 0;
 }
 dialog.modal[aria-labelledby="settings-title"] .name-form .secondary { margin-top: 0; }
+/* A checkbox's note and a sound's volume sit under its label (past the 18-px box and its 10-px gap), so each reads as part
+   of the setting above it. */
+dialog.modal[aria-labelledby="settings-title"] .setting-note {
+  margin: -8px 0 6px 28px;
+}
+dialog.modal[aria-labelledby="settings-title"] .setting-sub {
+  margin-left: 28px;
+}
+/* 英語's quiz level: a little room before the checkboxes under it. */
+dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .translation-setting { margin-top: 4px; }
+/* 旅's line about money and AP, under the names. */
+dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: 6px 0 0; }
+/* 出典・権利の一覧: on its own, under a hairline, after the groups. */
+dialog.modal .settings-credits {
+  margin-top: 14px;
+  padding-top: 6px;
+  border-top: 1px solid var(--ds-parchment-line);
+}
 /* データ's ways into the credits, the old data and the deletion: one 44-px row each, evenly spaced, at the left. */
 dialog.modal .settings-data-links {
   display: grid;

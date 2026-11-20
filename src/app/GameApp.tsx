@@ -94,7 +94,7 @@ import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
 import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { DifficultyFields, EnglishLevelField } from "../features/journey/DifficultyFields";
-import { DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, type Difficulty } from "../domain/difficulty";
+import { DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
 import { nameOrDefault } from "../domain/player-names";
 import { playerLatinName } from "../domain/name-romaji";
@@ -235,8 +235,6 @@ export function GameApp({
   // speech, so that a question can be read with no press (iOS Safari speaks with no gesture only after one).
   const autoReadAloud = readAloudAvailable && displaySettings.value.autoReadAloud;
   useEffect(() => (autoReadAloud ? primeSpeechOnGesture() : undefined), [autoReadAloud]);
-  // 「英語オフ」 (2026-11-19): a quiz shows its Japanese translation only, so nothing of it is read aloud.
-  const englishOff = displaySettings.value.englishOff;
   // Said once under the reading settings, below the first one turned on.
   const noEnglishVoiceJa = "英語の声がない端末では、読まないか、ほかの言葉の声で読みます。";
   // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
@@ -332,6 +330,8 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // 「日本語のみ」 (the difficulty's English, 2026-11-19): a quiz shows its Japanese translation only, so nothing of it is read aloud.
+  const englishOff = !!game && isJapaneseOnly(game);
   // The background loading (src/media/preload-ahead.ts): after each saved change, the pictures and voices of the lines
   // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
   usePreloadAhead(game, journeyId, !!opening);
@@ -1597,14 +1597,15 @@ export function GameApp({
             action={<button type="button" className="primary" onClick={() => onSwitchJourney?.(switchJourneyTo)}>切り替える</button>} />
         </Modal>
       )}
-      {/* ゲームの設定 (2026-11-14 user decision): its groups under their headings, the most used first (文字と表示, 音と振動,
-          難易度, 名前, データ, オフライン), and the creator's tools last, folded away (open while Debug mode is on). The first focus is the
+      {/* ゲームの設定 (2026-11-14 user decision; regrouped 2026-11-19): its groups under their headings, the most used first
+          (文字と演出, 英語, 音と振動, 旅, 保存とデータ), then 出典・権利の一覧, and the creator's tools last, folded away (open while
+          Debug mode is on). A note or a volume under a checkbox is indented under its label (setting-note, setting-sub). The first focus is the
           title bar's 「× 閉じる」 (the first control). What it opens (the credits, the old data, a deletion's or a journey
           switch's confirmation) stacks over it and closes back to it. A form is in it: a tap beside it does not close it. */}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)} settlePresses>
           <ModalTitle id="settings-title" onClose={() => setSettings(false)}>ゲームの設定</ModalTitle>
-          <h3>文字と表示</h3>
+          <h3>文字と演出</h3>
           <label className="translation-setting">
             文字送り {" "}
             <select aria-label="文字送り" value={speed} disabled={!!displaySettings.error}
@@ -1622,7 +1623,7 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.skipUnread} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ skipUnread: event.target.checked })} /> 未読の台詞も高速送りする
           </label>
-          {!displaySettings.value.skipUnread && <p className="fine-print">オフの間、高速送りはまだ読んでいない台詞で止まります。</p>}
+          {!displaySettings.value.skipUnread && <p className="fine-print setting-note">オフの間、高速送りはまだ読んでいない台詞で止まります。</p>}
           <label className="translation-setting">
             <input
               type="checkbox"
@@ -1638,22 +1639,25 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.miniGameAuto} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ miniGameAuto: event.target.checked })} /> ミニゲームをおまかせにする
           </label>
-          {displaySettings.value.miniGameAuto && <p className="fine-print">ミニゲームは押さずに自動で進み、場面ごとに決まった結果になります。</p>}
+          {displaySettings.value.miniGameAuto && <p className="fine-print setting-note">ミニゲームは押さずに自動で進み、場面ごとに決まった結果になります。</p>}
+          {/* 英語 (2026-11-19): the quiz's English level (from the next quiz; one already started keeps its own), the
+              translation and the reading aloud, together. */}
+          <h3>英語</h3>
+          <div className="name-form difficulty-settings">
+            <EnglishLevelField value={difficultyOf(game).english}
+              note={game.activeBattle ? "解いている途中のクイズは、始めたときの英語のまま進みます。" : "次のクイズから変わります。"}
+              onChange={(level) => commit((state) => setEnglishLevel(state, level))} />
+          </div>
           {readAloudAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.autoReadAloud} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ autoReadAloud: event.target.checked })} /> 問題が出たら英語を自動で読み上げる
           </label>}
-          {autoReadAloud && <p className="fine-print">クイズの問題文を、出たときに一度読みます。答えると止まります。{noEnglishVoiceJa}</p>}
+          {autoReadAloud && <p className="fine-print setting-note">クイズの問題文を、出たときに一度読みます。答えると止まります。{noEnglishVoiceJa}</p>}
           {readAloudAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
           </label>}
-          {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
-          <label className="translation-setting">
-            <input type="checkbox" checked={englishOff} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ englishOff: event.target.checked })} /> 英語オフ（クイズは訳だけを表示する）
-          </label>
-          {englishOff && <p className="fine-print">クイズの問題文と選択肢を日本語訳だけで表示します。英語の読み上げも行いません。</p>}
+          {readAloud && <p className="fine-print setting-note">クイズと英語ノートの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
           <label className="translation-setting">
             <input
               type="checkbox"
@@ -1677,8 +1681,8 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ voice: event.target.checked })} /> 台詞の声を出す
           </label>
-          {displaySettings.value.voice && <label className="translation-setting volume-setting">
-            声の大きさ
+          {displaySettings.value.voice && <label className="translation-setting volume-setting setting-sub">
+            <span aria-hidden="true">大きさ</span>
             <input type="range" aria-label="声の大きさ" aria-valuetext={`${voicePercent}%`} min={0} max={100} step={10}
               value={voicePercent} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ voiceVolume: Number(event.target.value) / 100 })} />
@@ -1688,8 +1692,8 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.se} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ se: event.target.checked })} /> 効果音を出す
           </label>
-          {displaySettings.value.se && <label className="translation-setting volume-setting">
-            効果音の大きさ
+          {displaySettings.value.se && <label className="translation-setting volume-setting setting-sub">
+            <span aria-hidden="true">大きさ</span>
             <input type="range" aria-label="効果音の大きさ" aria-valuetext={`${sePercent}%`} min={0} max={100} step={10}
               value={sePercent} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ seVolume: Number(event.target.value) / 100 })} />
@@ -1699,8 +1703,8 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.bgm} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ bgm: event.target.checked })} /> BGMを流す
           </label>
-          {displaySettings.value.bgm && <label className="translation-setting volume-setting">
-            BGMの大きさ
+          {displaySettings.value.bgm && <label className="translation-setting volume-setting setting-sub">
+            <span aria-hidden="true">大きさ</span>
             <input type="range" aria-label="BGMの大きさ" aria-valuetext={`${bgmPercent}%`} min={0} max={100} step={10}
               value={bgmPercent} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ bgmVolume: Number(event.target.value) / 100 })} />
@@ -1710,25 +1714,17 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.ambience} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ ambience: event.target.checked })} /> 環境音を流す
           </label>
-          {displaySettings.value.ambience && <p className="fine-print">場所の音（雨・市場・鳥の声など）を、BGMの半分の大きさで流します。</p>}
+          {displaySettings.value.ambience && <p className="fine-print setting-note">場所の音（雨・市場・鳥の声など）を、BGMの半分の大きさで流します。</p>}
           {vibrationAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.vibration} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ vibration: event.target.checked })} /> 振動する
           </label>}
-          {vibrationAvailable && displaySettings.value.vibration && <p className="fine-print">品物や手がかりを手に入れたときに、端末が短く震えます。</p>}
+          {vibrationAvailable && displaySettings.value.vibration && <p className="fine-print setting-note">品物や手がかりを手に入れたときに、端末が短く震えます。</p>}
           {displaySettings.error && (
             <p role="status">{displaySettings.error}</p>
           )}
-          {/* The difficulty (2026-11-19): the English changes from the next quiz (one already started keeps its own); how tight
-              money and AP are was chosen at the title and stays for the journey. */}
-          <h3>難易度</h3>
-          <div className="name-form difficulty-settings">
-            <EnglishLevelField value={difficultyOf(game).english}
-              note={game.activeBattle ? "解いている途中のクイズは、始めたときの英語のまま進みます。" : "次のクイズから変わります。"}
-              onChange={(level) => commit((state) => setEnglishLevel(state, level))} />
-          </div>
-          <p className="fine-print">お金とAPのきびしさ：{economyLevelLabel(difficultyOf(game).economy).labelJa}（旅の始めに決めたもので、変えられません）</p>
-          <h3>名前</h3>
+          {/* 旅: the names, how tight money and AP are (chosen at the title, kept for the journey) and the journey itself. */}
+          <h3>旅</h3>
           {active ||
           game.activeEncounter ||
           game.activeBattle ||
@@ -1758,16 +1754,26 @@ export function GameApp({
               </button>
             </form>
           )}
-          <h3>データ</h3>
+          <p className="fine-print">お金とAPのきびしさ：{economyLevelLabel(difficultyOf(game).economy).labelJa}（旅の始めに決めたもので、変えられません）</p>
+          {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
+          <h3>保存とデータ</h3>
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}
               onChange={(event) => setAutoSave(event.target.checked)} /> ゲームの進行を自動保存する
           </label>
-          {!displaySettings.value.autoSave && <p className="fine-print">オフの間は「セーブ」で進行を保存してください。</p>}
+          {!displaySettings.value.autoSave && <p className="fine-print setting-note">オフの間は「セーブ」で進行を保存してください。</p>}
           {settingsNotice?.at === "autosave" && <p role="status">{settingsNotice.text}</p>}
-          {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
+          {/* オフライン (2026-11-17): what this device keeps of the journeys, in one line (a status region that stays
+              mounted; how far a run is shows beside it and is not announced), and the way into the dialog that does the rest. */}
+          {offlineEntries && <>
+                        <p role="status" className="offline-summary" data-testid="offline-summary">
+              {offlineLine.text}{offlineLine.live && <span className="offline-summary-live" aria-hidden="true">{offlineLine.live}</span>}
+            </p>
+            {offlineEntryShown && <div className="settings-data-links">
+              <button type="button" className="text-button offline-entry" data-testid="offline-settings-entry" onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ</button>
+            </div>}
+          </>}
           <div className="settings-data-links">
-            <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
             {settingsOldData && <button type="button" className="text-button old-data-entry"
               onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
             <button type="button" className="text-button delete-entry" onClick={requestDelete}>
@@ -1775,17 +1781,9 @@ export function GameApp({
             </button>
           </div>
           {settingsNotice?.at === "delete" && <p role="status">{settingsNotice.text}</p>}
-          {/* 「オフライン」 (2026-11-17): what this device keeps of the journeys, in one line (a status region that stays
-              mounted; how far a run is shows beside it and is not announced), and the way into the dialog that does the rest. */}
-          {offlineEntries && <>
-            <h3>オフライン</h3>
-            <p role="status" className="offline-summary" data-testid="offline-summary">
-              {offlineLine.text}{offlineLine.live && <span className="offline-summary-live" aria-hidden="true">{offlineLine.live}</span>}
-            </p>
-            {offlineEntryShown && <div className="settings-data-links">
-              <button type="button" className="text-button offline-entry" data-testid="offline-settings-entry" onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ</button>
-            </div>}
-          </>}
+          <div className="settings-data-links settings-credits">
+            <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
+          </div>
           {(!isDebug || debugOn) && <CreatorSettings initiallyOpen={debugOn}>
             {!isDebug && <DebugModeSetting debugMode={debugMode} />}
             {/* 撮影の形 (Debug mode only), loaded when shown. */}

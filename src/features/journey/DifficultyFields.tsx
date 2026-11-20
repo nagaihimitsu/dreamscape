@@ -1,6 +1,6 @@
 import {
-  ECONOMY_LEVELS, ENGLISH_LEVELS, economyLevelLabel, englishLevelLabel,
-  type Difficulty, type EconomyLevel, type EnglishLevel,
+  ECONOMY_LEVELS, ENGLISH_CHOICES, economyLevelLabel, englishLevelLabel,
+  type Difficulty, type EconomyLevel, type EnglishChoice,
 } from "../../domain/difficulty";
 
 /**
@@ -30,18 +30,21 @@ export function DifficultyFields({ value, onChange, journeyId }: { value: Diffic
   </details>;
 }
 
-/** The English of the quizzes: at the title, and in ゲームの設定 (where it can be changed during the journey). */
+/**
+ * The English of the quizzes: at the title, and in ゲームの設定 (where it can be changed during the journey).
+ * 「日本語のみ」 (the default) shows a quiz in its Japanese translation only.
+ */
 export function EnglishLevelField({ value, onChange, note = "あとから「ゲームの設定」で変えられます。", disabled = false }: {
-  value: EnglishLevel;
-  onChange: (value: EnglishLevel) => void;
+  value: EnglishChoice;
+  onChange: (value: EnglishChoice) => void;
   note?: string;
   disabled?: boolean;
 }) {
   return <label>
     英語クイズの難しさ
     <select name="englishLevel" value={value} disabled={disabled} aria-describedby="english-level-note"
-      onChange={(event) => onChange(event.target.value as EnglishLevel)}>
-      {ENGLISH_LEVELS.map((level) => <option key={level} value={level}>{englishLevelLabel(level).labelJa}</option>)}
+      onChange={(event) => onChange(event.target.value as EnglishChoice)}>
+      {ENGLISH_CHOICES.map((level) => <option key={level} value={level}>{englishLevelLabel(level).labelJa}</option>)}
     </select>
     <span className="fine-print difficulty-note" id="english-level-note">
       {englishLevelLabel(value).descriptionJa}{note}

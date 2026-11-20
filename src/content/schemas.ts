@@ -173,6 +173,12 @@ export const citySchema = z
 /** The levels of the difficulty (2026-11-19): the English of the quizzes by CEFR, and how tight money and AP are. */
 export const ENGLISH_LEVELS = ["A2", "B1", "B2"] as const;
 export type EnglishLevel = (typeof ENGLISH_LEVELS)[number];
+/**
+ * What the player chooses for the quizzes' English (2026-11-19 user decision): 「日本語のみ」 (`japanese`, the default: a quiz
+ * shows its question and options in their Japanese translation only, with no English) or a level of the English.
+ */
+export const ENGLISH_CHOICES = ["japanese", ...ENGLISH_LEVELS] as const;
+export type EnglishChoice = (typeof ENGLISH_CHOICES)[number];
 export const ECONOMY_LEVELS = ["relaxed", "standard", "tight"] as const;
 export type EconomyLevel = (typeof ECONOMY_LEVELS)[number];
 /** The rewards a level's AP bonus can add to (every reward kind but a scene's `ap` tag, which a writer sets in its scene). */
@@ -201,7 +207,7 @@ export const balanceSchema = z
      * each level, battleQuestionSchema `levels`) and how tight money and AP are, chosen apart when a journey starts.
      */
     difficulty: z.object({
-      english: z.object({ A2: difficultyLabel, B1: difficultyLabel, B2: difficultyLabel }).strict(),
+      english: z.object({ japanese: difficultyLabel, A2: difficultyLabel, B1: difficultyLabel, B2: difficultyLabel }).strict(),
       economy: z.object({ relaxed: economyLevel, standard: economyLevel, tight: economyLevel }).strict(),
     }).strict(),
   })

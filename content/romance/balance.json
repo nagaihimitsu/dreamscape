@@ -6,6 +6,7 @@
   "maxNameLength": 24,
   "difficulty": {
     "english": {
+      "japanese": { "labelJa": "日本語のみ", "descriptionJa": "クイズの問題文と選択肢を日本語訳だけで出します。英語は出しません。" },
       "A2": { "labelJa": "やさしい", "descriptionJa": "短い文と身近な言葉で問います（A2程度）。" },
       "B1": { "labelJa": "ふつう", "descriptionJa": "旅先で読む案内くらいの英文です（B1程度）。" },
       "B2": { "labelJa": "むずかしい", "descriptionJa": "長めの文や言い回しを使います（B2程度）。" }
