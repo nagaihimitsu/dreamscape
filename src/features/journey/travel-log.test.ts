@@ -1,5 +1,5 @@
-// 旅の記録 (2026-11-19 user decision: 旅の記録 and アルバム made one; travel-log.ts): a page per city with its two axes,
-// 「体験」 (each thing lived there with its picture and her few words looking back) and 「写真」 (the album's photos).
+// 旅の記録 (2026-11-19 user decision: 旅の記録 and アルバム made one; reshaped 2026-11-20; travel-log.ts): 「体験」, city by
+// city (each thing lived with its place's photo and her few words looking back), and 「写真」 (the album, the newest first).
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -9,7 +9,7 @@ import type { AlbumPhoto } from "../../domain/album-state";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../domain/player-action";
 import { validateGameState, type GameState } from "../../domain/game";
 import { formatTravelTime } from "./travel-time";
-import { travelLogPages } from "./travel-log";
+import { travelLogCities, travelLogPhotos } from "./travel-log";
 import { TravelLogDialog } from "./TravelLog";
 
 const roll = () => 0;
@@ -29,20 +29,16 @@ function playDate(state: GameState, dateId: string): GameState {
   return next;
 }
 
-describe("旅の記録's pages", () => {
-  it("always has the city the party is in, with its progress, even before anything is lived there", () => {
-    const pages = travelLogPages(cityStart("mihon"));
-    expect(pages).toHaveLength(1);
-    expect(pages[0]).toMatchObject({ cityId: "mihon", cityJa: "見本の街", experiences: [], photos: [] });
-    expect(pages[0].progressJa).toMatch(/^観光 0 \/ \d+/u);
+describe("旅の記録's 「体験」 and 「写真」", () => {
+  it("always has the city the party is in, even before anything is lived there", () => {
+    expect(travelLogCities(cityStart("mihon"))).toEqual([{ cityId: "mihon", cityJa: "見本の街", experiences: [], people: [] }]);
   });
 
   it("keeps each city lived in, in the journey's order: its episodes as completed, with her line looking back", () => {
     const agra = cityStart("agra", ["航", "澪"]);
-    const pages = travelLogPages(agra);
-    expect(pages.map((page) => page.cityId)).toEqual(["delhi", "agra"]);
-    const [delhi] = pages;
-    expect(delhi.progressJa).toBe("都市クリア");
+    const cities = travelLogCities(agra);
+    expect(cities.map((city) => city.cityId)).toEqual(["delhi", "agra"]);
+    const [delhi] = cities;
     const delhiDone = agra.completedEpisodeIds.filter((id) => episodes.find((item) => item.id === id)?.cityId === "delhi");
     expect(delhi.experiences.map((item) => item.id)).toEqual(delhiDone);
     expect(delhi.experiences.at(-1)?.kind).toBe("finale");
@@ -51,26 +47,20 @@ describe("旅の記録's pages", () => {
       kind: "visit", placeJa: place("delhi_jama_masjid").nameJa, titleJa: episodes.find((item) => item.id === JAMA_MASJID)!.clearTitleJa,
       heroine: { textJa: place("delhi_jama_masjid").recapLinesJa![0], cityId: "delhi" },
     });
-    expect(masjid.photo).toBeDefined();
   });
 
-  it("puts a date with a destination after the city's episodes, with its own photo on both axes", () => {
-    const state = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), "gt_delhi_date_agrasen_baoli");
-    const [delhi] = travelLogPages(state);
-    expect(delhi.experiences.map((item) => [item.id, item.kind])).toEqual([[JAMA_MASJID, "visit"], ["gt_delhi_date_agrasen_baoli", "date"]]);
-    const date = delhi.experiences[1];
-    expect(date.heroine?.textJa).toBe(place("delhi_agrasen_baoli").recapLinesJa![0]);
-    const taken = delhi.photos.find((photo) => photo.imageId === state.album.at(-1)!.imageId)!;
-    expect(date.photo).toMatchObject({ path: taken.path });
-    expect(date.photo?.credit).toBeUndefined();
+  it("shows the place's photo on a card even when its story took an album photo (2026-11-20)", () => {
+    const state = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI);
+    const date = travelLogCities(state)[0].experiences.find((item) => item.id === BAOLI)!;
+    expect(state.album.at(-1)?.storyId).toContain("gt_delhi_date_agrasen_baoli");
+    expect(date.picture).toMatchObject({ captionJa: place("delhi_agrasen_baoli").nameJa, credit: expect.anything() });
+    expect(date.picture?.path).toMatch(/\.recap\.webp$/u);
   });
 
-  it("puts each album photo on its city's 「写真」, and a city only photographed has its page", () => {
-    const state = { ...cityStart("delhi"), currentCityId: "agra", album: [delhiArrival] };
-    const pages = travelLogPages(state);
-    expect(pages.map((page) => page.cityId)).toEqual(["delhi", "agra"]);
-    expect(pages[0].photos.map((photo) => photo.imageId)).toEqual(["gt_album_d01"]);
-    expect(pages[1].photos).toEqual([]);
+  it("puts every album photo on 「写真」, the newest first", () => {
+    const state = playDate(finishEpisode({ ...cityStart("delhi"), album: [delhiArrival] }, JAMA_MASJID), BAOLI);
+    expect(state.album.map((photo) => photo.imageId)[0]).toBe("gt_album_d01");
+    expect(travelLogPhotos(state).map((photo) => photo.imageId)).toEqual(state.album.map((photo) => photo.imageId).reverse());
   });
 });
 
@@ -83,7 +73,7 @@ describe("旅の記録's times (save livedTimes)", () => {
     const state = finishEpisode(dated, RED_FORT);
     expect(validateGameState(state)).toEqual(state);
     expect(state.livedTimes?.map((item) => item.id).slice(-3)).toEqual([JAMA_MASJID, BAOLI, RED_FORT]);
-    const [delhi] = travelLogPages(state);
+    const [delhi] = travelLogCities(state);
     // The date came between the two episodes, though episodes come before dates when the save has no time.
     expect(delhi.experiences.map((item) => item.id).slice(-3)).toEqual([JAMA_MASJID, BAOLI, RED_FORT]);
     expect(delhi.experiences.find((item) => item.id === BAOLI)?.whenJa).toBe(`${datedAt!.day}日目 ${formatTravelTime(datedAt!.minute)}`);
@@ -92,7 +82,7 @@ describe("旅の記録's times (save livedTimes)", () => {
   it("puts what a save lived without times first, in the old order, and refuses a time of nothing lived", () => {
     const state = finishEpisode(playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI), RED_FORT);
     const { livedTimes: _times, ...untimed } = state;
-    const [delhi] = travelLogPages(untimed);
+    const [delhi] = travelLogCities(untimed);
     expect(delhi.experiences.map((item) => item.id).slice(-3)).toEqual([JAMA_MASJID, RED_FORT, BAOLI]);
     expect(delhi.experiences.every((item) => item.whenJa === undefined)).toBe(true);
     expect(() => validateGameState({ ...state, livedTimes: [{ id: "gt_agra_main_taj_mahal", day: 1, minute: 600 }] })).toThrow("旅の記録の時刻の参照先が見つかりません。");
@@ -110,23 +100,17 @@ describe("旅の記録's dialog", () => {
     expect(html).not.toMatch(/挑戦|最高|手がかり \d/u);
   });
 
-  it("opens all the photos an experience's stories took from its card, says their count, and seals a date too", () => {
+  it("seals a date too, folds a city by its name, and shows no progress line, credit or her name", () => {
     const state = playDate(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), BAOLI);
-    const dateStory = state.album.at(-1)!.storyId;
-    // A second photo taken in the same date's story (another illustration of the journey).
-    const twice = { ...state, album: [...state.album.filter((photo) => photo.imageId !== delhiArrival.imageId), { ...delhiArrival, storyId: dateStory }] };
-    const date = travelLogPages(twice)[0].experiences.find((item) => item.id === BAOLI)!;
-    expect(date.photos.map((photo) => photo.imageId)).toEqual(twice.album.filter((photo) => photo.storyId === dateStory).map((photo) => photo.imageId));
-    expect(date.photos).toHaveLength(2);
-    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: twice, onClose: () => {} }));
-    expect(html).toContain(`data-testid="log-photos-${BAOLI}"`);
-    expect(html).toContain("の写真2枚を大きく見る");
-    const card = html.slice(html.indexOf(`log-experience-${BAOLI}`));
-    expect(card).toContain("stop-seal");
+    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: state, onClose: () => {} }));
+    expect(html.slice(html.indexOf(`log-experience-${BAOLI}`))).toContain("stop-seal");
+    expect(html).toMatch(/aria-expanded="true" aria-controls="log-city-delhi"/u);
+    expect(html).not.toMatch(/観光 \d|都市クリア|画像の出典/u);
+    expect(html).not.toContain("heroine-note-name");
   });
 
   it("gives the people met their portrait when they have one", () => {
-    const people = travelLogPages(cityStart("agra")).find((page) => page.cityId === "delhi")!.people;
+    const people = travelLogCities(cityStart("agra")).find((city) => city.cityId === "delhi")!.people;
     expect(people.length).toBeGreaterThan(0);
     expect(people.some((person) => person.characterId)).toBe(true);
   });

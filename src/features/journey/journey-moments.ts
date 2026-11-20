@@ -172,13 +172,18 @@ export function subjectStoryIds(subject: RecapSubject): string[] {
   return subject.kind === "date" ? [subject.date.storyId] : episodeStoryIds(subject.episode);
 }
 
+/** The photo of a recap subject's place (free time's card photo, its larger `recap` copy, with its credit), or null. */
+export function subjectPlacePicture(subject: RecapSubject): RecapPicture | null {
+  const found = subjectPlace(subject);
+  const asset = found ? getPlacePhoto(found.cityId, found.place.id) : null;
+  return found && asset ? { path: derivedImagePath(asset, "recap"), altJa: asset.altJa, captionJa: found.place.nameJa, credit: asset } : null;
+}
+
 function subjectPicture(game: Pick<GameState, "album" | "currentCityId">, subject: RecapSubject): RecapPicture | null {
   const own = subjectStoryIds(subject);
   const photo = photoViews(game.album.filter((item) => own.includes(item.storyId)), game.currentCityId).at(-1);
   if (photo) return { path: photo.path, altJa: photo.altJa, captionJa: photo.caption ?? photo.placeJa };
-  const found = subjectPlace(subject);
-  const asset = found ? getPlacePhoto(found.cityId, found.place.id) : null;
-  return found && asset ? { path: derivedImagePath(asset, "recap"), altJa: asset.altJa, captionJa: found.place.nameJa, credit: asset } : null;
+  return subjectPlacePicture(subject);
 }
 
 /** The picture of an episode in the recap (subjectPicture). */

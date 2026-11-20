@@ -44,12 +44,6 @@ export function albumPages(album: readonly AlbumPhoto[], content: AlbumContent):
   });
 }
 
-/** The page the album opens on: the current city's, else the last city's that has photos (0 for an empty album). */
-export function initialAlbumPage(pages: readonly Pick<AlbumPage, "cityId">[], currentCityId: string): number {
-  const current = pages.findIndex((page) => page.cityId === currentCityId);
-  return current >= 0 ? current : Math.max(0, pages.length - 1);
-}
-
 /** How far a finger goes sideways (px) for a swipe to turn the page. */
 export const ALBUM_SWIPE_PX = 48;
 
