@@ -91,7 +91,7 @@ export function PhotoCardFreeTime({
   const planOf = (placeId: string) => plans.get(placeId) ?? NO_PLAN;
   const changePlan = (placeId: string, change: Partial<DeparturePlan>) =>
     setPlans((previous) => new Map(previous).set(placeId, { ...(previous.get(placeId) ?? NO_PLAN), ...change }));
-  const { current, nearby, other, candidates, recommendedMainId } = api.destinations;
+  const { current, nearby, other, candidates, recommendedMainId, nearestId } = api.destinations;
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
   // The dates not open yet whose writer gave a hint (# hint:, 2026-11-13): with Debug mode on only, locked cards after the
@@ -240,7 +240,7 @@ export function PhotoCardFreeTime({
       <div className="photo-stage">
         <CardProbe />
         <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
-          recommendedId={recommendedMainId} card={cardOf(chosen)} swipe={swipeFor(chosen)} joining={joining} />
+          recommendedId={recommendedMainId} nearestId={nearestId} card={cardOf(chosen)} swipe={swipeFor(chosen)} joining={joining} />
       </div>
       <TravelRentals game={game} onRent={onRent} />
       <Announce message={api.message} testId="travel-announce" />
