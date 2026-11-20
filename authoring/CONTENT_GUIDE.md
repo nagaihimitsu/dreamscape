@@ -884,11 +884,12 @@ EXTERNAL cond(text)
 
 - 上の `expressions` の絵は、そのまま必要です。動く立ち絵が使えないとき（「演出を短縮する」・端末の「視差効果を減らす」、WebGL が使えない、読み込めない）と、読み込みが終わるまでは、今までどおり表情の絵が出ます。
 - 衣装のフォルダ（`avatar.json`・`rig.json`・`built/` の絵）と共通の顔のフォルダのファイルがそろっているか、顔の名前が表情IDかを `content:check` が確かめます。フォルダの絵も1枚ずつ `own-artwork.json` に書きます。
-- 作り方は [動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)、試したこと・やめたことは [動く立ち絵の試作](LIVE_PORTRAIT_TRIAL.md) にあります。動かす部品は mesh-avatar 0.8.0 を Dreamscape 用に少し直したもので、`vendor/` に置いています。
+- 衣装を足すときは [着替えの作り方](COSTUME_GUIDE.md)（衣装の絵1枚から、1つのコマンドで静止画と動く立ち絵まで作る）。仕組みは [動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)、試したこと・やめたことは [動く立ち絵の試作](LIVE_PORTRAIT_TRIAL.md) にあります。動かす部品は mesh-avatar 0.8.0 を Dreamscape 用に少し直したもので、`vendor/` に置いています。
 
 ### 配置・衣装・表情の指定
 
 - 人物の配置は人物ごとの `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で書きます。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分の間で共有し、画像をゆがめずに出します。`imagePath`、`variants`、相手の `battleCharacters` の設定も使えます。観察用の画像と座標は別に管理します。
+- ヒロインの衣装を足して着替えさせる手順は [着替えの作り方](COSTUME_GUIDE.md) にまとめています。
 - `heroine` の `defaultCostume` と `defaultPose` が、地域に属さない基本の衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` で、都市・国・地域ごとの標準の衣装を指定できます。今の `milano` → `IT` → `south_europe` → `south_europe_01` の設定は残していますが、南欧の衣装は届いていないので、今は基本の衣装を出します。優先の順は、`scenes`、都市、国、地域の標準の衣装、基本の衣装、仮の素材です。`scenes` のキーにはデートID・バトルID・観光地ID・都市エピローグのエピソードIDを使い、たとえば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と書きます。届いていない衣装から、表情だけが別の衣装に切り替わることはありません。
 - すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（今はどの旅行編も使っていません）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
 
