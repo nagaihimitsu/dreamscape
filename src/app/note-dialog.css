@@ -1,5 +1,5 @@
-/* 「ノート」 (NoteDialog.tsx): its two pages side by side under the title, the one shown filled (aria-pressed). */
-.note-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 0 8px; }
+/* 「ノート」 (NoteDialog.tsx): its pages side by side under the title, the one shown filled (aria-pressed). */
+.note-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; margin: 0 0 8px; }
 .note-tabs button {
   position: relative;
   display: flex;
@@ -18,3 +18,13 @@
 .note-tabs button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 /* A page's dot (fx.css) at its button's top right, in the markers' rose on the parchment (a page shown has none). */
 .note-tabs .fx-dot { top: 6px; left: auto; right: 8px; background: var(--ds-marker); box-shadow: 0 0 0 1.5px var(--ds-parchment); }
+/* 旅のことば's page (2026-11-20): the frame of 旅の図鑑's, so the note keeps its size between the two. */
+dialog.modal.words-note {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(560px, calc(100% - 24px));
+  max-width: 560px;
+  max-height: calc(100dvh - 24px);
+}
+.words-note .modal-title-bar { margin-bottom: 4px; }
+.words-note > .fine-print { margin: 0 0 8px; }

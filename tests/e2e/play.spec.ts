@@ -57,9 +57,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.tapAt(page, picture);
   await expect.poll(async () => (await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
-  // The log (a control in the window) and the English note (in the header above the scene)
-  // open and close without moving the story or finishing the line, also when the note's
-  // 「閉じる」 gets a quick double tap: its second tap would land on the scene the note leaves
+  // The log (a control in the window) and 画面の出典 (in the header above the scene; 英語ノート until 2026-11-20)
+  // open and close without moving the story or finishing the line, also when its
+  // 「閉じる」 gets a quick double tap: its second tap would land on what the dialog leaves
   // behind, and a header's close holds every tap for a moment (Modal.tsx, 2026-11-14).
   await ops.closeDialog(await ops.openDialogueLog(page));
   // Its 「× 閉じる」 (2026-11-14: in the title bar, no longer at the foot) holds the taps for a moment; the page's clock
@@ -76,8 +76,10 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
-  // The note opens under the finger and takes no press for a moment (2026-11-20: 「ノート」, with 旅の図鑑).
-  const note = await ops.openEnglishNote(page, { clockHeld: true });
+  // 画面の出典 (the guide's photo) opens at once.
+  await ops.menuItem(page, "画面の出典");
+  const note = page.getByRole("dialog", { name: "画面の出典" });
+  await expect(note).toBeVisible();
   const closeNote = await ops.centerOf(note.getByRole("button", { name: "閉じる", exact: true }));
   await ops.doubleTap(page, closeNote);
   await expect(note).toBeHidden();
@@ -85,8 +87,12 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await expect(page.locator("html[data-tap-hold]"), "and lets them go").toHaveCount(0);
-  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), closeNote),
-    "the second tap's point is over the guide").toBe(true);
+  // Its close lies over the guide or, for a tall dialog like this one, the header: the second tap pressed neither.
+  expect(await page.evaluate(({ x, y }) => {
+    const under = document.elementFromPoint(x, y);
+    return under?.closest("#tourism-screen") ? "guide" : under?.closest(".journey-hud") ? "header" : "other";
+  }, closeNote), "the second tap's point is over the guide or the header").not.toBe("other");
+  await expect(page.getByTestId("hud-menu-panel")).toBeHidden();
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
   // ≡メニュー's panel over the guide (UI redesign §3.1): while it is open the line is not written
@@ -196,7 +202,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   // What to do next sits at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated mid-card).
   const resultCard = (await page.locator("#battle-content").boundingBox())!;
-  const review = (await page.getByRole("button", { name: "回答した問題を振り返る", exact: true }).boundingBox())!;
+  const review = (await page.locator("#battle-content").getByRole("button").last().boundingBox())!;
   expect(resultCard.y + resultCard.height - (review.y + review.height), "the result's buttons at its bottom").toBeLessThan(32);
   expect(result.activeBattle!.answers.length).toBeGreaterThan(0);
   expect(result.completedEpisodeIds).toEqual(["milano_duomo_episode"]);

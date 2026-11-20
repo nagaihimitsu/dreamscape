@@ -7,7 +7,7 @@ import type { LocalWord } from "../../content";
 import { LOCAL_WORDS_KEY } from "../../persistence";
 import { journeyStorage } from "../../persistence/journey-storage";
 import {
-  JOURNEY_WORDS_TITLE_JA, learnedNoticeText, learnWords, lineWordsOnScreen, localWordGroups, openLearnedWords, parseLearnedWords,
+  journeyHasLocalWords, JOURNEY_WORDS_TITLE_JA, learnedNoticeText, learnWords, lineWordsOnScreen, localWordGroups, openLearnedWords, parseLearnedWords,
   rememberWords, serializeLearnedWords, shownWordNotice, type SceneFrames,
 } from "./local-words";
 
@@ -105,10 +105,17 @@ describe("the words of the line on screen", () => {
   });
 });
 
-describe("「その国の言葉」 of the English notes", () => {
+describe("「旅のことば」 (英語ノートの「その国の言葉」 until 2026-11-20)", () => {
   const catalog = [word("namaste_word", "delhi"), word("chai_word"), word("shukriya_word", "agra"), word("dhanyavad_word", "delhi")];
   const names: Record<string, string> = { delhi: "デリー", agra: "アーグラ" };
   const cityName = (cityId: string) => names[cityId];
+
+  it("is a page of the note only for a journey with a word of one of its cities", () => {
+    const journeyOf = (cityId: string) => ({ delhi: "golden_triangle", agra: "golden_triangle", milano: "milano" } as Record<string, string>)[cityId];
+    expect(journeyHasLocalWords("golden_triangle", catalog, journeyOf)).toBe(true);
+    expect(journeyHasLocalWords("milano", catalog, journeyOf)).toBe(false);
+    expect(journeyHasLocalWords("milano", [word("chai_word")], journeyOf)).toBe(false);
+  });
 
   it("groups the words by city in the order learned, the cities in the order of their first word", () => {
     const groups = localWordGroups(["shukriya_word", "namaste_word", "chai_word", "dhanyavad_word"], catalog, cityName);

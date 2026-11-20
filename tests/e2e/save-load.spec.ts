@@ -39,21 +39,11 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(progress.completedEpisodeIds).toEqual(["milano_duomo_episode"]);
   expect(progress.ap).toBe(result.ap);
 
-  // The English note (its own save) keeps the answered questions and the marks,
-  // and the text speed (the presentation settings) is kept as chosen. The note opens on the question answered
-  // last, then on the one it showed last, never on an empty 「問題を選んでください」 (2026-11-14 user decision).
-  const note = await ops.openEnglishNote(page);
-  const picker = note.getByLabel("回答した問題を選ぶ");
-  await expect(note.getByTestId("review-question")).toBeVisible();
-  await expect(picker).toHaveValue((await picker.locator("option").last().getAttribute("value"))!);
-  const firstQuestion = await picker.locator("option").nth(1).getAttribute("value");
-  await picker.selectOption(firstQuestion!);
-  await note.getByRole("button", { name: "あとで復習する" }).click();
-  await expect(note.getByRole("button", { name: "復習の登録を解除" })).toHaveAttribute("aria-pressed", "true");
-  await ops.closeDialog(note);
-  const again = await ops.openEnglishNote(page);
-  await expect(again.getByLabel("回答した問題を選ぶ")).toHaveValue(firstQuestion!);
-  await ops.closeDialog(again);
+  // The English records (their own save; 英語ノート is not shown for now, 2026-11-20) are kept, and the text speed (the
+  // presentation settings) is kept as chosen. 英語ノート has no place in ≡メニュー (Milan has no other page of 「ノート」).
+  const menu = await ops.openMenu(page);
+  await expect(menu.getByRole("button", { name: /ノート/u })).toHaveCount(0);
+  await ops.settingsButton(page).click();
   await ops.setTextSpeed(page, 45);
   const kept = await allStorage(page);
   expect(kept[learningKey()]).toBeDefined();
@@ -79,10 +69,6 @@ test("autosaved progress, a battle question, the English note and the text speed
   const records = await ops.openRecords(page);
   await expect(records.locator('[data-testid^="log-experience-"]')).toHaveCount(1);
   await ops.closeDialog(records);
-  const reopened = await ops.openEnglishNote(page);
-  await reopened.getByLabel("回答した問題を選ぶ").selectOption(firstQuestion!);
-  await expect(reopened.getByRole("button", { name: "復習の登録を解除" })).toHaveAttribute("aria-pressed", "true");
-  await ops.closeDialog(reopened);
   const settings = await ops.openSettings(page);
   await expect(settings.getByLabel("文字送り")).toHaveValue("45");
   await ops.closeDialog(settings);
@@ -186,8 +172,8 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード (one item since 2026-11-19)・旅の記録・英語ノート (ノート with 旅の図鑑 where a journey has terms)・画面の出典
-  // (in free time)・ゲームの設定 live in the
+  // セーブ・ロード (one item since 2026-11-19)・旅の記録・画面の出典 (in free time)・ゲームの設定 live in the (Milan has no page
+  // of ノート: no words of the country, no terms, and 英語ノート is not shown for now)
   // header's ≡メニュー (UI redesign §3.1, U2/U24/U28; named 「設定」 until 2026-11-14), a disclosure: by keyboard it opens on
   // セーブ・ロード, the arrows move between its items (past the rules between its groups), Esc closes it back on ≡メニュー,
   // and leaving it with Tab closes it.
@@ -196,7 +182,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("button")).toHaveText(["セーブ・ロード", "旅の記録", "英語ノート", "画面の出典", "ゲームの設定"]);
+  await expect(panel.getByRole("button")).toHaveText(["セーブ・ロード", "旅の記録", "画面の出典", "ゲームの設定"]);
   await expect(item("セーブ・ロード")).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(item("旅の記録")).toBeFocused();
@@ -205,7 +191,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(gear).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(item("セーブ・ロード")).toBeFocused();
-  for (let step = 0; step < 5; step++) await page.keyboard.press("Tab");
+  for (let step = 0; step < 4; step++) await page.keyboard.press("Tab");
   await expect(panel).toBeHidden();
   // ゲームの設定 opens the settings dialog on its title bar's 「× 閉じる」 (2026-11-14), and gives the focus back to
   // ≡メニュー when it closes.

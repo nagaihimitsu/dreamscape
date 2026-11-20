@@ -123,7 +123,8 @@ function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar
 
 interface Props {
   learning: Learning;
-  onEnglish: (questionId?: string) => void;
+  /** 英語ノート on a question (none while it is not shown, NoteDialog.tsx's ENGLISH_NOTE_SHOWN: its buttons go too). */
+  onEnglish?: (questionId?: string) => void;
   game: GameState;
   speed: number;
   autoAdvanceEnabled?: boolean;
@@ -650,9 +651,9 @@ export function BattleScreen({
                     <span aria-hidden="true">→</span>
                   </button>
                 )}
-                <button className="secondary" onClick={() => onEnglish()}>
+                {onEnglish && <button className="secondary" onClick={() => onEnglish()}>
                   回答した問題を振り返る
-                </button>
+                </button>}
               </div>
             </div>
           </div>
@@ -850,7 +851,7 @@ export function BattleScreen({
                     captionJa={question.revealCaptionJa}
                   />
                 )}
-                {!japaneseOnly && <button
+                {!japaneseOnly && onEnglish && <button
                   className="secondary"
                   onClick={() => onEnglish(question.id)}
                 >

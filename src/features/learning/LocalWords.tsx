@@ -2,7 +2,7 @@ import type { LocalWordGroup } from "./local-words";
 import "./local-words.css";
 
 /**
- * 「その国の言葉」 of the English notes (2026-11-11 user decision): the words of the country learned on this device, by
+ * 「旅のことば」 (≡メニュー's 「ノート」; 2026-11-11 user decision, 英語ノートの「その国の言葉」 until 2026-11-20): the words of the country learned on this device, by
  * city in the order learned (localWordGroups): each word large in its own script, its reading, its meaning, its note
  * and its sources as links (the clue cards' 「根拠」 list). No score and no mastery.
  */

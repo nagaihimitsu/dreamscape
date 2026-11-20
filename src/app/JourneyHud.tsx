@@ -66,9 +66,9 @@ type MenuActions = {
   saveMark?: number;
   /** 「旅の記録」: the journey's 体験 and 写真, city by city (TravelLog.tsx; 2026-11-19, アルバム made one with it). */
   onRecords: () => void;
-  /** 「ノート」: 英語ノート and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20). */
-  onNote: () => void;
-  /** Its name: 「ノート」, or 「英語ノート」 for a journey without terms (英語ノート alone). */
+  /** 「ノート」: 旅のことば and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20); none for a journey with neither. */
+  onNote?: () => void;
+  /** Its name: 「ノート」, or its page's name for a note of one page (noteName). */
   noteLabel?: string;
   /** 「画面の出典」 (PhotoCredits.tsx's ScreenCredits; 2026-11-20): only while the screen shows a credited photo. */
   onScreenCredits?: () => void;
@@ -93,12 +93,12 @@ const noop = () => undefined;
  * Its height is measured as `--hud-h` for the reserves of the scenes it lies over.
  * Its feedback (2026-11-13 user decision; display only, for changes in play): the held items' キラリ, their
  * 「NEW」 and their float as one is given away, 「…を手に入れました」 under it (ItemGainNotice), coins and
- * stars flying into a rising budget and AP (HudFlight), the dots of 英語ノート and 旅の図鑑 and a save's ribbon on ≡メニュー, and a
+ * stars flying into a rising budget and AP (HudFlight), the dot of ノート and a save's ribbon on ≡メニュー, and a
  * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight), and an item taken out
  * (`# item_out:`) going back into them (ItemOutFlight). The session's short words (`toast`: a save, a load, a tour's end)
  * show in the same place for a moment, the clue's word (ClueRecordedNotice) and the item notices waiting behind them.
  */
-export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, glossaryNew = false, holdNotices = false,
+export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa, replaced = 0, seenItemIds, onItemsSeen, noteNew = [], holdNotices = false,
   itemFlight = null, itemOutFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
   /**
@@ -119,10 +119,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   seenItemIds?: ReadonlySet<string>;
   /** The detail opened on these held items: they are seen. */
   onItemsSeen?: (ids: readonly string[]) => void;
-  /** 英語ノート has an entry the player has not opened it on: a dot on ≡メニュー, on its 「ノート」 and on the note's 「英語ノート」. */
-  englishNew?: boolean;
-  /** 旅の図鑑 has a term the player has not opened it on: a dot on ≡メニュー, on its 「ノート」 and on the note's 「旅の図鑑」. */
-  glossaryNew?: boolean;
+  /** The pages of 「ノート」 with something the player has not opened them on (their names): a dot on ≡メニュー and on 「ノート」. */
+  noteNew?: readonly string[];
   /** The session's word for a moment (useGameSession's SessionToast; it goes by itself). */
   toast?: SessionToast | null;
   /** Holds 「…を手に入れました」 and the clue's word while something else shows under the header (ItemGainNotice's `hold`). */
@@ -209,7 +207,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
           newIds={newItemIds} onSeen={() => onItemsSeen?.(items.map((item) => item.id))} />
         <nav className="hud-tools" aria-label="旅の操作">
           <span id={HUD_SCREEN_TOOL_ID} className="hud-screen-tool" />
-          <HudMenu {...actions} englishNew={englishNew} glossaryNew={glossaryNew} />
+          <HudMenu {...actions} noteNew={noteNew} />
         </nav>
       </div>
       {/* One notice under the header at a time: the session's word first, then the clue's, then 「…を手に入れました」. */}
@@ -304,12 +302,13 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * 画面の出典 opens its dialog at once (the second tap lands inside the dialog);
  * 旅の記録's dialog takes no press for that moment, as its photos open larger on a tap.
  * Its marks (2026-11-13 user decision): while 英語ノート has an entry the player has not
- * opened it on (`englishNew`), or 旅の図鑑 a term (`glossaryNew`), a dot on ≡メニュー and on 「ノート」, said in their names;
+ * opened it on, or 旅のことば a word, or 旅の図鑑 a term (`noteNew`, their names), a dot on ≡メニュー and on 「ノート」, said in
+ * their names;
  * a save that succeeded (`saveMark`) drops a small ribbon onto ≡メニュー, which fades.
  */
-function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノート", onScreenCredits, onSettings, onReturnToFreeTime, englishNew,
-  glossaryNew }: MenuActions & { englishNew: boolean; glossaryNew: boolean }) {
-  const newIn = [englishNew && "英語ノート", glossaryNew && "旅の図鑑"].filter(Boolean).join("と");
+function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノート", onScreenCredits, onSettings, onReturnToFreeTime,
+  noteNew }: MenuActions & { noteNew: readonly string[] }) {
+  const newIn = noteNew.join("と");
   const [open, setOpen] = useState(false);
   const savePlaying = useCuePlaying(saveMark, SAVE_MARK_MS);
   const group = useRef<HTMLDivElement>(null);
@@ -391,7 +390,7 @@ function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノ
         <button type="button" onClick={choose(onSaveLoad)}><Icon name="save" />セーブ・ロード</button>
         <hr className="hud-menu-rule" />
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
-        <button type="button" onClick={choose(onNote)}><Icon name="book" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>
+        {onNote && <button type="button" onClick={choose(onNote)}><Icon name="book" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>}
         <hr className="hud-menu-rule" />
         {onScreenCredits && <button type="button" onClick={choose(onScreenCredits)}><Icon name="credit" />画面の出典</button>}
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>

@@ -4,7 +4,6 @@ import type { JourneyCatalog } from "../../src/content/journey-catalog";
 import type { QuizDefinition } from "../../src/content/schemas";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
-import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
 import { openMiniGame } from "../../src/domain/minigame";
 import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
@@ -307,8 +306,8 @@ export const ops = {
   },
   /**
    * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ・ロード, 旅の記録,
-   * ノート (英語ノート and 旅の図鑑; 「英語ノート」 for a journey without terms), 画面の出典 (while the screen shows a credited
-   * photo) and ゲームの設定 (openMenu). While 英語ノート or 旅の図鑑 has something new, its name and 「ノート」's go on with
+   * ノート (旅のことば and 旅の図鑑, for a journey with either; named after its page for a note of one page), 画面の出典 (while
+   * the screen shows a credited photo) and ゲームの設定 (openMenu). While 旅のことば or 旅の図鑑 has something new, its name and 「ノート」's go on with
    * 「、…に新しい項目あり」 (its dot; the browser may put a space before it, as the words are a separate visually hidden span).
    */
   settingsButton(page: Page): Locator {
@@ -323,7 +322,7 @@ export const ops = {
     return panel;
   },
   /** One of ≡メニュー's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ・ロード" | "旅の記録" | "ノート" | "英語ノート" | "画面の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ・ロード" | "旅の記録" | "ノート" | "画面の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
@@ -547,19 +546,15 @@ export const ops = {
     return detail;
   },
   /**
-   * ≡メニュー → 「ノート」 (「英語ノート」 for a journey without terms) on its 「英語ノート」 page; returns the note once it takes
-   * presses (it opens under the finger and waits a moment; `clockHeld`: the page's clock is held, so it is moved on past
-   * that moment).
+   * ≡メニュー → 「ノート」 (2026-11-20: 旅のことば and 旅の図鑑; named after its page for a note of one page): returns the note
+   * once it takes presses (it opens under the finger and waits a moment).
    */
-  async openEnglishNote(page: Page, { clockHeld = false }: { clockHeld?: boolean } = {}): Promise<Locator> {
+  async openNote(page: Page): Promise<Locator> {
     await ops.openMenu(page);
-    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^(?:英語)?ノート\s*(?:、|$)/u }).click();
-    const note = page.getByRole("dialog", { name: /^(?:英語)?ノート$/u });
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^(?:ノート|旅のことば|旅の図鑑)\s*(?:、|$)/u }).click();
+    const note = page.getByRole("dialog", { name: /^(?:ノート|旅のことば|旅の図鑑)$/u });
     await expect(note).toBeVisible();
-    if (clockHeld) await page.clock.fastForward(CONFIRM_SETTLE_MS);
     await expect(note).not.toHaveAttribute("data-settling");
-    const englishPage = note.getByTestId("note-tab-english");
-    if (await englishPage.count() && await englishPage.getAttribute("aria-pressed") !== "true") await englishPage.click();
     return note;
   },
   /**
