@@ -1,6 +1,6 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { albumImagesOf, albumTagsOf, checkAlbumTags } from "./album-images";
+import { albumImagesOf, albumTagsOf, checkAlbumTags, withPhotoSpots } from "./album-images";
 import { contentSourcesFromTree, contentTreeFromFiles } from "./content-sources";
 
 // The album's illustrations (2026-11-11 user decision): every file of a journey's public/assets/album/ is an album image
@@ -92,5 +92,42 @@ describe("a line's # photo: and # recall:", () => {
     expect(() => checkAlbumTags(story("# photo: a_tower_photo"), "trip_a", images, folder)).toThrow("アルバムの絵がありません：");
     // The root public/ has no album: its file is no album image.
     expect(() => checkAlbumTags(story("# photo: shared"), "trip_a", images, folder)).toThrow("アルバムの絵がありません：");
+  });
+});
+
+describe("where a line's # photo: takes an album image (2026-11-20: 「写真」 after the journey)", () => {
+  const images = albumImagesOf(load(files()));
+  const place = "places/a_town";
+  const scenes = [
+    { cityId: "a_town", story: { storyId: place, knot: "a_square" }, knots: ["a_helper"] },
+    { cityId: "a_port", story: { storyId: "dates/a_walk" }, knots: [] },
+  ];
+  const placeFile = [
+    "=== a_square ===",
+    "# photo: 01_square",
+    "# photo_caption: 広場の朝",
+    "広場に出た。",
+    "-> a_helper",
+    "=== a_helper ===",
+    "塔の下。 # photo: a_tower",
+    "-> END",
+    "=== a_unread ===",
+    "# photo: b_harbour # photo_caption: 港",
+    "-> END",
+  ].join("\n");
+
+  it("are the city of the scene that reads the line (its own knot or one it calls) and the caption of that line", () => {
+    const spotted = withPhotoSpots(images, [{ id: place, source: placeFile }], scenes);
+    expect(spotted.find((image) => image.id === "01_square")?.photo).toEqual({ cityId: "a_town", caption: "広場の朝" });
+    expect(spotted.find((image) => image.id === "a_tower")?.photo).toEqual({ cityId: "a_town" });
+    // No scene reads the knot of that line.
+    expect(spotted.find((image) => image.id === "b_harbour")?.photo).toBeUndefined();
+  });
+
+  it("are the first line's, in the order of the stories; a one-scene file's line is the file's; a # recall: takes none", () => {
+    const walk = "# photo: a_tower # photo_caption: 夕方の塔\n塔を見上げた。\n# recall: 01_square\n広場を思い出す。\n-> END\n";
+    const spotted = withPhotoSpots(images, [{ id: "dates/a_walk", source: walk }, { id: place, source: placeFile }], scenes);
+    expect(spotted.find((image) => image.id === "a_tower")?.photo).toEqual({ cityId: "a_port", caption: "夕方の塔" });
+    expect(withPhotoSpots(images, [{ id: "dates/a_walk", source: walk }], scenes).find((image) => image.id === "01_square")?.photo).toBeUndefined();
   });
 });

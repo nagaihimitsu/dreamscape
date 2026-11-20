@@ -82,6 +82,7 @@ import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
+import { showsMissedPhotos } from "../features/journey/album-pages";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, recapPhotos, ScreenCredits } from "../features/journey/PhotoCredits";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
@@ -1384,6 +1385,7 @@ export function GameApp({
           to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
+          missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
           extras={<>
             {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
               {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
@@ -1424,7 +1426,7 @@ export function GameApp({
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
       </LazyDialog>}
       {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
-        <TravelLogDialog game={keptGame} onClose={() => setKeptLogOpen(false)} />
+        <TravelLogDialog game={keptGame} missedPhotos={showsMissedPhotos(keptGame, true)} onClose={() => setKeptLogOpen(false)} />
       </LazyDialog>}
 
       {termCardShown && termCard && game &&
