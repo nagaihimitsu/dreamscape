@@ -61,7 +61,6 @@ import { RomanceScene } from "../features/romance/RomanceScene";
 import { MiniGameProvider, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
 import { chooseMiniGameOutcome, miniGameAvailableOutcomes } from "../domain/player-action";
 import { Modal, ModalAnswers, ModalTitle } from "../components/Modal";
-import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/names";
 import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
@@ -93,7 +92,6 @@ import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
 import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
-import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { DifficultyFields } from "../features/journey/DifficultyFields";
 import { DEFAULT_DIFFICULTY, difficultyOf, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
@@ -161,6 +159,8 @@ import { browserStorage, type AppProps, type SaveSlots } from "./app-storage";
 import { journeyStorage, type SaveSlot } from "../persistence/journey-storage";
 import { SaveLoadDialog, SaveSlotList } from "../features/journey/SaveSlots";
 import { SettingsDialog } from "./SettingsDialog";
+import { ConfirmDialog, DeleteSaveDialog } from "./ConfirmDialogs";
+import { TitleScreen } from "./TitleScreen";
 import { slotSummaries, summarizeSlot } from "./save-slots";
 import { autoSaveLine } from "./journey-hud-text";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
@@ -1058,78 +1058,22 @@ export function GameApp({
           </div>
         )}
         {!game ? (
-          <>
-            <div className="intro-art" data-testid="title-art" data-time-of-day={titleTint.period}>
-              <CanalScene compact artwork={getJourney(journeyId)?.titleArt} tint={titleTint.color ?? undefined} />
-            </div>
-            <section className="paper intro">
-              <p className="eyebrow">旅のはじまり</p>
-              <h1>
-                予定のない午後を、
-                <br />
-                きみと。
-              </h1>
-              <p className="lead">
-                街の風景に立ち止まり、奇妙な人々と出会う。
-                <br />
-                そのあとは、ふたりで街歩き。
-              </p>
-              {invalid && (
-                <div className="notice warning" role="alert">
-                  <strong>{loaded.status === "invalid" && loaded.kind === "newer"
-                    ? "新しいバージョンの保存データです"
-                    : "保存データを読み込めませんでした"}</strong>
-                  <p>{invalid}</p>
-                  {loaded.status === "invalid" && loaded.kind === "journey" ? <p>
-                    旅行編を切り替え、元の編のデータを確認してください。
-                  </p> : loaded.status === "invalid" && loaded.raw !== null && <p>
-                    {displaySettings.value.autoSave
-                      ? "元のデータは残っています。バックアップを保存してから新しく始めるか、保存データの消去を選べます。"
-                      : "元のデータは残っています。新しく始めた場合、手動セーブ時に元のデータをバックアップします。"}
-                  </p>}
-                  {titleActions.deletion !== "hidden" && <button
-                    className="secondary"
-                    type="button"
-                    onClick={requestDelete}
-                    disabled={titleActions.deletion === "disabled"}
-                  >
-                    保存データを消去する
-                  </button>}
-                  {titleOldData && <button type="button" className="text-button old-data-entry"
-                    onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
-                </div>
-              )}
+          <TitleScreen art={{ artwork: getJourney(journeyId)?.titleArt, tint: titleTint }}
+            problem={invalid ? { loaded, message: invalid, deletion: titleActions.deletion, onDelete: requestDelete,
+              onOldData: titleOldData ? () => setOldDataOpen(true) : undefined } : null}
+            journeyChoice={!isDebug && onSwitchJourney && <>
               {/* The way into 「オフラインで遊ぶ」 sits beside the selector's caption (the title shows only without a game: a
                   player with a save finds it in ≡メニューの「セーブ・ロード」). */}
-              {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus}
+              <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus}
                 aside={offlineEntries && offlineEntryShown ? <button type="button" className="text-button offline-entry" data-testid="offline-entry"
-                  onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ{offlineMark && `（${offlineMark}）`}</button> : undefined} />}
+                  onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ{offlineMark && `（${offlineMark}）`}</button> : undefined} />
               {offlineEntries && offlineEntryShown && <p role="status" className="sr-only" data-testid="offline-title-status">{offlineTitleStatus(offline, journeys)?.text}</p>}
               {offlineEntries && offlineTitleHint(offline, online, journeyId) && <p className="fine-print offline-hint">{offlineTitleHint(offline, online, journeyId)}</p>}
-              {saves && <SaveSlotList saves={saves} onChoose={requestSlotSwitch} />}
-              {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
-                <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine}
-                  playerRef={titleReading.ref} />
-                <DifficultyFields value={difficulty} onChange={setDifficulty} journeyId={journeyId} />
-                <button
-                  className="primary"
-                  data-testid="title-start"
-                  disabled={titleActions.start === "disabled"}
-                >
-                  {invalid
-                    ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"
-                    : "旅をはじめる"}
-                  <span aria-hidden="true"> →</span>
-                </button>
-              </form>}
-              <p className="fine-print">
-                {displaySettings.value.autoSave ? "このブラウザに進行を自動保存します。" : "進行は手動でセーブできます。"}
-                <br />
-                名前はあとから「メニュー」の「ゲームの設定」で変更できます。
-              </p>
-              <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
-            </section>
-          </>
+            </>}
+            saveSlots={saves && <SaveSlotList saves={saves} onChoose={requestSlotSwitch} />}
+            start={{ action: titleActions.start, player, heroine, onPlayer: setPlayer, onHeroine: setHeroine, playerRef: titleReading.ref,
+              difficulty, onDifficulty: setDifficulty, journeyId, onBegin: begin }}
+            autoSave={displaySettings.value.autoSave} onCredits={() => setCreditsOpen(true)} />
         ) : moments.packingScene ? moments.packingScene : activeEncounter && currentEncounter ? (
           <EncounterScreen
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
@@ -1451,7 +1395,7 @@ export function GameApp({
       {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>
         <ModalTitle id="again-title">もう一度この旅を</ModalTitle>
         <p>{game.playerName}と{game.heroineName}の名前で、{getJourney(journeyId)?.nameJa ?? "この旅行編"}を最初から始めます。進行・AP・旅行予算・品物・手がかり・ふたりの関係は、最初からになります。旅の記録の写真・旅の図鑑・旅のことばは、そのまま引き継ぎます。</p>
-        <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。その国の言葉・既読の記録も、そのまま残ります。
+        <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。既読の記録も、そのまま残ります。
           {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
           {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
         <DifficultyFields value={againDifficulty} onChange={setAgainDifficulty} journeyId={journeyId} />
@@ -1523,59 +1467,25 @@ export function GameApp({
         game={game} learning={learning} learnedWords={learnedWords.learned} readAloud={readAloud}
         glossary={hasTerms ? { journeyId: glossaryJourneyId, met: metGlossary, newIds: glossaryNewIds, revealAll: debugMarks } : undefined}
         newPages={newNotePages} onClose={closeNote} />}
-      {confirmLoad && (
-        <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)} settlePresses>
-          <ModalTitle id="load-title">保存した場面を読み込みますか？</ModalTitle>
-          <p>まだ保存していない進行は失われます。</p>
-          <ModalAnswers
-            cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmLoad(false)}>戻る</button>}
-            action={<button type="button" className="primary" onClick={() => { setConfirmLoad(false); loadSavedGame(); }}>ロードする</button>} />
-        </Modal>
-      )}
+      {confirmLoad && <ConfirmDialog id="load-title" title="保存した場面を読み込みますか？" action="ロードする" settlePresses
+        onCancel={() => setConfirmLoad(false)} onAction={() => { setConfirmLoad(false); loadSavedGame(); }}>
+        <p>まだ保存していない進行は失われます。</p>
+      </ConfirmDialog>}
       {/* Opened from the menu's panel, as ロード's confirmation: it takes no press for a moment (settlePresses). */}
-      {confirmReturn && game && (
-        <Modal labelledBy="free-time-return-title" onClose={() => setConfirmReturn(false)} settlePresses>
-          <ModalTitle id="free-time-return-title" eyebrow="Debug">移動画面に戻りますか？</ModalTitle>
-          <p>この出来事で変わったことは、すべて元に戻ります。</p>
-          <ModalAnswers
-            cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmReturn(false)}>やめる</button>}
-            action={<button type="button" className="primary" onClick={returnToFreeTime}>戻る</button>} />
-        </Modal>
-      )}
-      {deleteSnapshot && (
-        <Modal
-          labelledBy="delete-title"
-          onClose={() => setDeleteSnapshot(null)}
-        >
-          <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
-          {isDebug ? <p>Debug用の進行とクイズと旅のことばの記録を消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・クイズと旅のことばの記録・表示設定は消去しません。</p> : deleteSnapshot.sharedKept ? <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、旅の思い出を消去します。元には戻せません。
-          </p>
-          <p className="fine-print">
-            ほかのセーブの枠と、枠で共有するクイズの英語の記録・旅のことば・対訳設定・既読の記録は消去しません。文字の速さなどの表示設定、以前に退避したバックアップ、ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
-          </p></> : <><p>
-            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、クイズの英語の記録・旅のことばと対訳設定、既読の記録、旅の思い出を消去します。元には戻せません。
-          </p>
-          <p className="fine-print">
-            文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
-            {offlineEntries && offlineDeleteNote(offline)}
-          </p></>}
-          <ModalAnswers
-            cancel={<button type="button" className="secondary" autoFocus onClick={() => setDeleteSnapshot(null)}>消去せず戻る</button>}
-            action={<ConfirmActionButton
-              className="danger-button"
-              onClick={() => {
-                if (!session.deleteConfirmed(deleteSnapshot, saveLoadOpenedAt !== null ? (text) => setSaveLoadNotice({ text, at: "delete" }) : undefined)) {
-                  setDeleteSnapshot(null);
-                  return;
-                }
-                window.location.reload();
-              }}
-            >
-              {isDebug ? "Debug用の一時データを消去する" : "保存データを消去する"}
-            </ConfirmActionButton>} />
-        </Modal>
-      )}
+      {confirmReturn && game && <ConfirmDialog id="free-time-return-title" eyebrow="Debug" title="移動画面に戻りますか？" cancel="やめる"
+        action="戻る" settlePresses onCancel={() => setConfirmReturn(false)} onAction={returnToFreeTime}>
+        <p>この出来事で変わったことは、すべて元に戻ります。</p>
+      </ConfirmDialog>}
+      {deleteSnapshot && <DeleteSaveDialog debug={isDebug} journeyJa={getJourney(journeyId)?.nameJa ?? "この旅行編"} slot={saves?.slot ?? 1}
+        sharedKept={deleteSnapshot.sharedKept} offlineNote={offlineEntries ? offlineDeleteNote(offline) : undefined}
+        onCancel={() => setDeleteSnapshot(null)}
+        onConfirm={() => {
+          if (!session.deleteConfirmed(deleteSnapshot, saveLoadOpenedAt !== null ? (text) => setSaveLoadNotice({ text, at: "delete" }) : undefined)) {
+            setDeleteSnapshot(null);
+            return;
+          }
+          window.location.reload();
+        }} />}
       {saveLoadOpenedAt !== null && <SaveLoadDialog current={playedSlot} debug={isDebug}
         readSlots={() => saves ? slotSummaries(saves.base, journeyId) : [summarizeSlot(storage, journeyId, 1)]}
         autoSave={{ on: displaySettings.value.autoSave, disabled: !!displaySettings.error, onChange: setAutoSave,
@@ -1595,28 +1505,20 @@ export function GameApp({
           {saveLoadOldData && <div className="settings-data-links">
             <button type="button" className="text-button old-data-entry" onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>
           </div>}
-          {/* Another journey (from ゲームの設定 until 2026-11-20): its slots are its own. */}
-          {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
+          {/* Another journey (from ゲームの設定 until 2026-11-20): its slots are its own; set apart from the saved data by a thin rule. */}
+          {!isDebug && onSwitchJourney && <div className="save-load-journey">
+            <JourneySelection value={journeyId} onChange={requestJourneySwitch} />
+          </div>}
         </>}
         onClose={() => setSaveLoadOpenedAt(null)} />}
-      {switchSlotTo !== null && saves && (
-        <Modal labelledBy="switch-slot-title" onClose={() => setSwitchSlotTo(null)}>
-          <ModalTitle id="switch-slot-title">セーブ{switchSlotTo}に切り替える</ModalTitle>
-          <p>手動セーブしていない進行は失われます。切り替えますか？</p>
-          <ModalAnswers
-            cancel={<button type="button" className="secondary" autoFocus onClick={() => setSwitchSlotTo(null)}>戻る</button>}
-            action={<button type="button" className="primary" onClick={() => saves.onSwitch(switchSlotTo)}>切り替える</button>} />
-        </Modal>
-      )}
-      {switchJourneyTo && (
-        <Modal labelledBy="switch-journey-title" onClose={() => setSwitchJourneyTo(null)}>
-          <ModalTitle id="switch-journey-title">旅行編を切り替える</ModalTitle>
-          <p>手動セーブしていない進行は失われます。切り替えますか？</p>
-          <ModalAnswers
-            cancel={<button type="button" className="secondary" autoFocus onClick={() => setSwitchJourneyTo(null)}>戻る</button>}
-            action={<button type="button" className="primary" onClick={() => onSwitchJourney?.(switchJourneyTo)}>切り替える</button>} />
-        </Modal>
-      )}
+      {switchSlotTo !== null && saves && <ConfirmDialog id="switch-slot-title" title={`セーブ${switchSlotTo}に切り替える`} action="切り替える"
+        onCancel={() => setSwitchSlotTo(null)} onAction={() => saves.onSwitch(switchSlotTo)}>
+        <p>手動セーブしていない進行は失われます。切り替えますか？</p>
+      </ConfirmDialog>}
+      {switchJourneyTo && <ConfirmDialog id="switch-journey-title" title="旅行編を切り替える" action="切り替える"
+        onCancel={() => setSwitchJourneyTo(null)} onAction={() => onSwitchJourney?.(switchJourneyTo)}>
+        <p>手動セーブしていない進行は失われます。切り替えますか？</p>
+      </ConfirmDialog>}
       {settings && game && <SettingsDialog game={game} display={displaySettings} learning={learning}
         readAloudAvailable={readAloudAvailable} vibrationAvailable={vibrationAvailable}
         names={active || game.activeEncounter || game.activeBattle || game.activeTourism || game.activeEpilogue ? null : {

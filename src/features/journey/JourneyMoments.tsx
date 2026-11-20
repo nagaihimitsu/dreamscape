@@ -120,7 +120,7 @@ export function DepartureLuggage({ carried, left }: { carried: readonly PackedIt
  * with a save, 「ロード」): the city, day and time, the last episode completed (its clear title and record) and that
  * episode's picture in a 3:2 frame (recapPicture, 2026-11-13): its own album photo (the author's illustration with its
  * caption, no credit), else its place's photo (the one free time's card shows, in its larger `recap` copy) captioned with
- * the place's name. The card shows no credit (2026-11-15 user decision): while it shows, ≡メニュー's 「写真の出典」 lists the
+ * the place's name. The card shows no credit (2026-11-15 user decision): while it shows, ≡メニュー's 「画面の出典」 lists the
  * photo with its credit and the note that the copy is reduced and cropped (PhotoCredits.tsx recapPhotos). In the page's
  * flow; nothing waits for it, and it goes with 「閉じる」 or when the screen changes. Under it, her small face and a bubble
  * with her line looking back on the place finished last, when it has one (resumeRecap, 2026-11-19).

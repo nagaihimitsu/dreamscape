@@ -6,7 +6,7 @@ import type { TourismAsset } from "./tourism-schemas";
 /**
  * The city's free-time backdrop photo (`cities/<cityId>.json` backdropAssetId),
  * or null (no field, or a placeholder asset). Show its `backdrop` copy
- * (derivedImagePath); its credit is in 「写真の出典」.
+ * (derivedImagePath); its credit is in ≡メニュー's 「画面の出典」.
  */
 export function getCityBackdrop(cityId: string): TourismAsset | null {
   return chooseCityBackdrop(tourismAssets, getCityContent(cityId).city);

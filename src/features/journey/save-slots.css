@@ -44,3 +44,6 @@
 /* 自動保存 and 保存データの消去 under the slots (2026-11-20): set apart by a thin rule across, never a thick left line. */
 .save-load-settings { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
 .save-load-settings .setting-note { margin: -8px 0 6px 28px; }
+/* The journey's choice (2026-11-20, from ゲームの設定): apart from the saved data above it by a thin rule across. */
+.save-load-journey { margin-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
+.save-load-journey .journey-selection { margin-bottom: 0; }

@@ -170,7 +170,7 @@ describe("Debug's 撮影の形", () => {
     expect(html(false)).toMatch(/<h3 id="[^"]+">撮影の形（Debug）<\/h3><label class="debug-shot-row"><input type="checkbox" data-testid="debug-shot"\/>Debugの表示を隠す<\/label>/u);
     expect(html(true)).toContain('<input type="checkbox" data-testid="debug-shot" checked=""/>');
     expect(html(false)).toContain("関係の変化と場面の条件、鍵のかかった札");
-    expect(html(false)).toContain("この端末だけに残ります（セーブ・英語ノート・表示設定とは別）。");
+    expect(html(false)).toContain("この端末だけに残ります（セーブ・クイズと旅のことばの記録・表示設定とは別）。");
     expect(html(false)).not.toContain('role="alert"');
     expect(html(true, "保存できませんでした")).toContain('<p role="alert">保存できませんでした</p>');
     expect(renderToStaticMarkup(createElement(DebugShotSetting, { on: false, onChange: () => {}, message: "", heading: "h2" })))
