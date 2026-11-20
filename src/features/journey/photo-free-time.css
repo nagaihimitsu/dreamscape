@@ -29,7 +29,7 @@
 .photo-free-time .free-time-backdrop:not(.is-plain)::after { background: rgba(20, 24, 32, 0.3); }
 /* The colour of the time of day (time-of-day.ts timeOfDayTint, user decision 2026-11-11) over the backdrop or the
    pattern: one more fixed layer, after them in the same place, under every card. Every text over it sits on its own
-   ground, the count under the row included (its pill). When the clock moves while the screen shows (a wait), the colour
+   ground. When the clock moves while the screen shows (a wait), the colour
    eases over; at once under reduced motion. */
 .free-time-tint {
   position: fixed;
@@ -45,15 +45,6 @@
 @media (prefers-reduced-motion: reduce) {
   .free-time-tint { transition: none; }
 }
-.photo-free-time .photo-cards-count {
-  width: fit-content;
-  margin-inline: auto;
-  padding: 0 8px;
-  border-radius: 999px;
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-pill-shadow);
-}
-
 .photo-menu { display: flex; flex-direction: column; gap: 8px; }
 .photo-menu-note {
   margin: 0;
@@ -123,24 +114,24 @@
    tall): the name, the swipe cue and the marks over the photo fade in as a card comes to the centre (its --card-scale
    past 0.7) and are whole on the chosen card. The card's mat keeps its fill (what the place holds); readers hear every
    card's name and marks (its label). */
-.photo-cards:not(.is-list) > li > .photo-card :is(.photo-card-text, .photo-card-chip) {
-  opacity: clamp(0, calc((var(--card-scale, 1) - 0.7) / 0.25), 1);
+.photo-cards:not(.is-list) > li > .photo-card {
+  --card-text: clamp(0, calc((var(--card-scale, 1) - 0.7) / 0.25), 1);
+}
+.photo-cards:not(.is-list) > li > .photo-card :is(.photo-card-text, .photo-card-chip) { opacity: var(--card-text); }
+/* The side cards' mat under the photo shrinks with their hidden name (2026-11-20 user decision: no wide band of the
+   fill below a side card): each card keeps its own height, centred in the row, and the name's room opens as the card
+   comes to the centre. The chosen card is never clipped (its swipe cue moves). */
+.photo-cards:not(.is-list) > li { align-items: center; }
+.photo-cards:not(.is-list) > li:not([data-selected]) > .photo-card { padding-bottom: calc(4px + 4px * var(--card-text)); }
+.photo-cards:not(.is-list) > li:not([data-selected]) > .photo-card .photo-card-text {
+  max-height: calc(var(--card-text) * 120px);
+  padding-top: calc(var(--card-text) * 6px);
+  overflow: hidden;
 }
 /* Fingers scroll the row; a mouse keeps the scrollbar. */
 @media (pointer: coarse) {
   .photo-cards { scrollbar-width: none; }
   .photo-cards::-webkit-scrollbar { display: none; }
-}
-
-/* Where the chosen card is among them all (the cards beyond its neighbours are out of sight): display only. */
-.photo-cards-count {
-  margin: -6px 0 4px;
-  color: var(--ds-ink);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
 }
 
 /* A photo card: pressable (its edge), a mat around the photo, and the name under it. Chosen: a thicker edge drawn
@@ -520,6 +511,11 @@
    card's flow, so it covers nothing and a drag that starts on it moves the row or lifts the card as anywhere else
    (nothing in it is pressable). Each place chosen brings a new note, which comes in like a panel; under reduced motion
    it is simply there. */
+/* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
+.place-card .place-card-heroine { gap: 8px; }
+.place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
+.place-card .place-card-heroine .heroine-note-bubble { padding: 5px 12px 6px; font-size: 12px; line-height: 1.6; }
+.place-card .place-card-heroine .heroine-note-bubble::before { top: 11px; }
 .place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
 @keyframes place-card-heroine-in {
   from { opacity: 0; transform: translateY(4px) scale(0.98); }
@@ -618,7 +614,7 @@
 
 /* The small map: display only (a swipe over it scrolls the page), its credit's link the one thing to press. Leaflet's
    own layers (z-index 400–1000) stay inside it. */
-.place-card-map { display: grid; gap: 2px; }
+.place-card-map { position: relative; display: grid; gap: 2px; }
 .place-inset { display: grid; gap: 2px; }
 .place-inset-map {
   height: 120px;
@@ -632,7 +628,23 @@
 .place-inset-map .travel-map-marker-label { --map-label-max: 150px; }
 .place-inset-map .travel-map-marker-label.is-below { top: calc(100% + 4px); bottom: auto; }
 .place-inset-error { font-size: 12px; line-height: 1.5; }
-.place-card-direction { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+/* The direction: a display-only pill over the small map's top-left corner (above Leaflet's layers). */
+.place-card-direction {
+  position: absolute;
+  z-index: 1001;
+  top: 6px;
+  left: 6px;
+  margin: 0;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-pill-shadow);
+  color: var(--ds-ink);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 20px;
+  pointer-events: none;
+}
 
 /* The tour's line inside its card: no pill of its own. */
 .free-time-hub .place-card .travel-tours { margin: 0; padding: 0; background: none; box-shadow: none; }

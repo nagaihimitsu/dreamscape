@@ -90,7 +90,8 @@ export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map 
     {reserve > 0 && <p className="place-card-note">帰路用に{formatMoneyForCity(cityId, reserve)}を確保（所持金に含む）</p>}
     {map && <div className="place-card-map">
       <PlaceInsetMap here={here} there={place} name={name} glyph={dateOnly ? "♥" : "◆"} visited={visitedPlaceIds(game)} />
-      {here && <p className="place-card-direction">{isCurrent ? "現在地" : `${placeDisplayName(game, here)}から${getDirection(here, place)}`}</p>}
+      {/* The direction as a small pill over the map's corner (2026-11-20 user decision: the header already names the current place). */}
+      {here && <p className="place-card-direction">{isCurrent ? "現在地" : `現在地から${getDirection(here, place)}`}</p>}
     </div>}
   </section>;
 }

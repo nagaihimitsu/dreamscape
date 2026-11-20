@@ -36,8 +36,8 @@ function placeVisited(game: GameState, placeId: string): boolean {
  * B案's photo cards (docs/02 「街歩きの画面」): 「待機」, the places, the tour and 「ホテルに戻る」. As a row: three show whole, the
  * chosen one in the middle and a smaller one on each side (each card's size follows its distance from the centre), the
  * one that settles in the centre after a flick is chosen (CSS scroll snap; a sideways drag anywhere on the screen moves
- * the row too), a press on a side card brings it to the centre and chooses it, 「m / n」 under the row says where it is
- * (counting every card), and the chosen card's card (`card`) follows the row. The chosen place's card departs on a swipe
+ * the row too), a press on a side card brings it to the centre and chooses it, and the chosen card's card (`card`) follows the row
+ * (no 「m / n」 count under it: 2026-11-20 user decision). The chosen place's card departs on a swipe
  * up (`swipe`; useCardGestures: from the row, or from anywhere on the screen once the page has nothing left below) or
  * Enter, never on a press; 「待機」's waits and 「ホテルに戻る」's rests the same way (photo-cards.ts takesSwipe). As a list
  * (short screens, large text, sideways): a press chooses its row, the card opens
@@ -215,7 +215,6 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
         </li>;
       })}
     </ul>
-    {row && <p className="photo-cards-count" aria-hidden="true">{ids.indexOf(chosenId) + 1} / {cards.length}</p>}
     {row && card}
   </>;
 }
