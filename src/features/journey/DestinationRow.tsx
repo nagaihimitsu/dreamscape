@@ -110,7 +110,7 @@ function TravelChoices({ game, place, choices, api, scope, id, hintId }: {
   const several = choices.events.length > 1;
   const only = choices.events[0];
   const header = several ? `ここでできること（${choices.events.length}件）`
-    : `移動手段を選んでください。時間・料金はゲーム内の目安です。${getJourneyForCity(cityId)?.farePartySize === 2 ? "料金は2人分です。" : ""}${only.event.admissionCost ? `入場料 ${formatMoneyForCity(cityId, only.event.admissionCost)}（2人分・ゲーム設定）` : ""}`;
+    : `移動手段を選んでください。${getJourneyForCity(cityId)?.farePartySize === 2 ? "料金は2人分です。" : ""}${only.event.admissionCost ? `入場料 ${formatMoneyForCity(cityId, only.event.admissionCost)}（2人分・ゲーム設定）` : ""}`;
   return <div className="travel-choices" id={id} data-testid={`travel-choices-${place.id}`}>
     <div className="travel-choices-head">
       <p id={hintId}>{header}</p>
@@ -192,7 +192,7 @@ export function SleepChoice({ game, sleep, api, scope = "page", hintId }: {
   const cityId = game.currentCityId;
   return <div className="travel-sleep-choices" data-testid="travel-sleep-choices">
     <div className="travel-choices-head">
-      <p id={hintId}>滞在先へ戻り、翌日9:00に出発します。{game.tour?.status === "booked" && "明日の朝、予約したツアーが始まります。"}ゲーム内の宿泊費は{formatMoneyForCity(cityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(cityId)?.farePartySize === 2 && "移動料金は2人分のゲーム内の目安です。"}{sleep.onlyWay ? (scope === "page" ? "もう一度『休む』を押すと休みます。" : "") : "帰り方を選んでください。"}</p>
+      <p id={hintId}>滞在先へ戻り、翌日9:00に出発します。{game.tour?.status === "booked" && "明日の朝、予約したツアーが始まります。"}宿泊費は{formatMoneyForCity(cityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(cityId)?.farePartySize === 2 && "移動料金は2人分です。"}{sleep.onlyWay ? (scope === "page" ? "もう一度『休む』を押すと休みます。" : "") : "帰り方を選んでください。"}</p>
       <ClearButton api={api} />
     </div>
     <div className="travel-routes">{sleep.options.map(({ route, plan }) => {

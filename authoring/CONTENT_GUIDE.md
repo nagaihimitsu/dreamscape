@@ -34,6 +34,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 | `<旅行編>/glossary/terms.json` | 旅の図鑑の言葉（任意。下の「旅の図鑑の言葉」） |
 | `<旅行編>/presentation/` | 人物の絵（`characters.json`）、BGM・環境音・効果音（`music.json`・`ambience.json`・`sounds.json`。共通の分は `<共通>/presentation/`）、自作の絵の一覧（`own-artwork.json`） |
 | `<旅行編>/tours/<ツアーID>.json` | 日帰りツアー（任意。下の「ツアー」） |
+| `<旅行編>/shop/catalog.json` | 街歩きのお店と、そこで売るヒロインの服（任意。下の「お店と服」） |
 
 ## Inkで会話と演出を作る
 
@@ -90,6 +91,8 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 # photo: smp_album_clock_tower # photo_caption: 三時までの席。お茶のあとも、針は三時のまま
 お茶を飲み終えても、針は三時のままだった。
 ```
+
+旅を終えると、旅の記録の「写真」に、まだ撮っていない写真も灰色で並びます（クリア後のご褒美。2026-11-20のユーザー判断）。並ぶのは `# photo:` を書いた絵だけで（`# recall:` だけの絵は出ません）、撮った写真の後ろに、旅の都市の順、同じ都市の中では絵の ID の順（数字は数の大きさで比べます。`gt_album_d9` は `gt_album_d10` の前）に並びます。ID に物語の順の番号を付けておくと（インド編の `gt_album_d01`〜`d84` など）、その順に並びます。都市と説明は、その絵を撮る最初の行（物語のファイルの順と行の順）のものです。灰色は同じ絵から画面で作るので、灰色の絵を別に用意する必要はありません。
 
 写真が入ると、上の帯の下に絵の小さな写しと「写真に残しました」・説明が数秒出ます（押せず、そのまま読み進められます）。山場の1枚は、同じ行に `# photo_show: large` と書くと、その行のあいだ絵を画面の真ん中に大きく見せます（人物は後ろで少し暗くなり、会話の窓はそのまま読めます）。次の行へ進むと、絵は上の小さな写しになって消えます。大きく見せるのは、その行を読むたびです（アルバムに入るのは一度だけ）。
 
@@ -784,7 +787,7 @@ EXTERNAL cond(text)
 
 交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("blue_pick", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿した場合、過去の途中セーブを再開できなくなることがあります。
 
-都市（`cities/<都市ID>.json`）の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`progression/journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。`titleJa` は、そのエピソードを初めて始めたときに場所の写真の上に大きく出る題名の札にもなり、`clearTitleJa` と `clearDescriptionJa` は、対決の結果のほか、セーブから再開したときの「前回までのあらすじ」（最後に終えたエピソード。その後にデートを終えていればデート）、夜の「今日の見出し」（その日に終えたエピソードの `clearTitleJa`）、旅の終わりのエンドロールにも出ます（2026-11-11。`{player_name}`・`{heroine_name}` は名前に変わります）。エンドロールの「出会った人」は、`progression/story.json` の `people` の `nameJa` のうち、その人を `# person:` で挙げた場面を見た人です。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
+都市（`cities/<都市ID>.json`）の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`progression/journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。`titleJa` は、そのエピソードを初めて始めたときに場所の写真の上に大きく出る題名の札にもなり、`clearTitleJa` と `clearDescriptionJa` は、対決の結果のほか、セーブから再開したときの「前回までのあらすじ」（最後に終えたエピソード。その後にデートを終えていればデート）、夜の「今日の見出し」（その日に終えたエピソードの `clearTitleJa`）にも出ます（2026-11-11。`{player_name}`・`{heroine_name}` は名前に変わります。旅の終わりのエンドロールには、2026-11-20から題も出会った人も出さず、都市ごとの写真だけを並べます）。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`（このほかに、ビルドが場面の札 `# ap: +N` から作る `scene_tag` がありますが、作者はこのJSONに書きません。書くと `content:build` が止まります）。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。
 
@@ -892,6 +895,17 @@ EXTERNAL cond(text)
 - ヒロインの衣装を足して着替えさせる手順は [着替えの作り方](COSTUME_GUIDE.md) にまとめています。
 - `heroine` の `defaultCostume` と `defaultPose` が、地域に属さない基本の衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` で、都市・国・地域ごとの標準の衣装を指定できます。今の `milano` → `IT` → `south_europe` → `south_europe_01` の設定は残していますが、南欧の衣装は届いていないので、今は基本の衣装を出します。優先の順は、`scenes`、都市、国、地域の標準の衣装、基本の衣装、仮の素材です。`scenes` のキーにはデートID・バトルID・観光地ID・都市エピローグのエピソードIDを使い、たとえば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と書きます。届いていない衣装から、表情だけが別の衣装に切り替わることはありません。
 - すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（今はどの旅行編も使っていません）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
+
+### お店と服
+
+ヒロインの服は、街歩きのお店で買って、上の帯の「服」で着替えます（2026-11-20）。服を足す手順：
+
+1. 衣装の絵を `characters.json` の `heroine` の `costumes` に登録します（上の「基本の衣装・表情の画像を足す」と[動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)。`neutral` の絵が要ります）。
+2. 旅行編の `shop/catalog.json` の `outfits` に、服（`id`・衣装 `costume`・名前 `nameJa`・説明 `descriptionJa`・値段 `price`・買ったときの彼女の一言 `boughtLineJa`）を書きます。値段は旅行編の通貨の整数です。
+3. 同じファイルの `shops` に、お店（`id`・都市 `cityId`・札の名前 `nameJa`・紹介 `descriptionJa`・彼女の一言 `heroineLineJa`（任意）・売る服 `outfitIds`）を書きます。1都市に1軒までで、お店の札は街歩きの写真札の列の右端に出ます。同じ服を何都市で売ってもかまいません（買えるのは1回）。
+4. `npm run content:check` で確かめます（知らない衣装・絵のない衣装・都市、1都市に2軒などで止まります）。
+
+例は [インド編の `shop/catalog.json`](../content/journeys/golden_triangle/shop/catalog.json)（青いサリー）。着ている服は、場面ごとに決めた服（`wardrobe.scenes`）より下、都市・国・地域の服より上です。くわしい決まりは[技術設計の「お店と服」](../docs/02_TECH_ARCHITECTURE.md#お店と服)。
 
 ### プレビュー
 

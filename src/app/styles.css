@@ -802,8 +802,13 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + 
 dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .setting-english-off { margin: 8px 0 4px; }
 /* 旅's line about money and AP, under the names (or the line that they cannot change now). */
 dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: 6px 0 0; }
-/* 画面の出典's sources (PhotoCredits.tsx, SourceNotes): a quiz answer's explanation's and the clue book's clues', each part
-   under a hairline (none right under the title bar). Each source: its kind's pill, what it supports and its link. */
+/* 「解説の出典」: the quiz explanation's sources, first under the title bar, each a link on its own 44-px row. */
+dialog.modal .fact-sources h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+dialog.modal .fact-sources ul { margin: 0 0 12px; padding: 0; list-style: none; }
+dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+dialog.modal .fact-sources .screen-credits-choice { margin: 0; font-size: 13px; line-height: 1.6; }
+/* 「手がかりの根拠と解釈」 (PhotoCredits.tsx, SourceNotes): the clue book's clues' sources, after the photo, under a hairline.
+   Each source: its kind's pill, what it supports and its link. */
 dialog.modal .screen-credits-sources {
   margin-top: 12px;
   padding-top: 8px;
@@ -812,7 +817,6 @@ dialog.modal .screen-credits-sources {
 dialog.modal .modal-title-bar + .screen-credits-sources { margin-top: 0; padding-top: 0; border-top: 0; }
 dialog.modal .screen-credits-sources h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
 dialog.modal .screen-credits-sources h4 { margin: 10px 0 0; font-size: 13px; font-weight: 600; }
-dialog.modal .screen-credits-choice { margin: 0 0 4px; font-size: 13px; line-height: 1.6; }
 .source-notes { margin: 0; padding: 0; list-style: none; }
 .source-notes li { padding-top: 8px; }
 .source-notes p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
@@ -1367,12 +1371,22 @@ dialog.modal[open] {
   padding: 15px;
   background: var(--ds-parchment-2);
 }
-/* The correct answer: the done colour's edge (the verdict over the explanation says 正解 or 不正解 in words, and a wrong
-   answer's explanation names the right one; the marks 「選んだ答え」「✓ 正解」 are in 画面の出典 since 2026-11-20). */
+/* The correct answer: the done colour's edge (after a wrong answer its mark says 正解 in words; after a right one the
+   verdict over the explanation does, and 画面の出典 names the answer chosen: 2026-11-20). */
 .quiz-choice.correct {
   border: 2px solid var(--ds-here);
   padding: 15px;
   background: #eef3e6;
+}
+.option-mark {
+  grid-column: 2;
+  font-size: 10px;
+  color: var(--ds-ink-muted);
+  letter-spacing: 0.04em;
+  min-height: 0;
+}
+.option-mark:empty {
+  display: none;
 }
 .vocabulary {
   margin-top: 24px;
@@ -1459,29 +1473,6 @@ dialog.modal[open] {
 }
 .battle-score > span {
   font-size: 13px;
-}
-.answer-history {
-  list-style: none;
-  padding: 0;
-  margin: 15px 0;
-}
-.answer-history li {
-  border-top: 1px solid var(--ds-parchment-line);
-  display: flex;
-  gap: 20px;
-  padding: 12px 0;
-  font-size: 12px;
-}
-.correct-label {
-  color: var(--ds-here);
-}
-.incorrect-label {
-  color: #8a674c;
-}
-.record-summary {
-  font-size: 11px;
-  color: var(--ds-ink-muted);
-  margin: 20px 0 25px;
 }
 .battle-screen .paused {
   padding-top: 25px;

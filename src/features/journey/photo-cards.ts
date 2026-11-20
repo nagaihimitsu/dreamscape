@@ -46,6 +46,8 @@ export function photoCardEntries(places: readonly TravelDestinationPlace[], choi
 export const WAIT_CARD_ID = ":wait";
 export const TOUR_CARD_ID = ":tour";
 export const STAY_CARD_ID = ":stay";
+/** The id of the city's shop's card (2026-11-20; no place id starts with a colon). */
+export const SHOP_CARD_ID = ":shop";
 
 /** The id of a locked date's card (`:locked:<date ID>`; no place id starts with a colon). */
 const LOCKED_PREFIX = ":locked:";
@@ -53,31 +55,35 @@ export const lockedCardId = (dateId: string): string => `${LOCKED_PREFIX}${dateI
 
 /**
  * A card of the row: 「待機」 (the waits), a place, a date not open yet whose writer gave it a hint (`# hint:`, 2026-11-13;
- * date-rules.ts hintedLockedDates; only while Debug mode is on), the city's tour (booking, cancelling) or 「ホテルに戻る」 (休む).
+ * date-rules.ts hintedLockedDates; only while Debug mode is on), the city's tour (booking, cancelling), 「ホテルに戻る」 (休む)
+ * or the city's shop (its outfits; 2026-11-20, shop/catalog.json: `nameJa` is its name).
  */
 export type RowCard =
   | { kind: "wait"; id: typeof WAIT_CARD_ID }
   | { kind: "place"; id: string; entry: PhotoCardEntry }
   | { kind: "locked"; id: string; dateId: string; hintJa: string }
   | { kind: "tour"; id: typeof TOUR_CARD_ID }
-  | { kind: "stay"; id: typeof STAY_CARD_ID };
+  | { kind: "stay"; id: typeof STAY_CARD_ID }
+  | { kind: "shop"; id: typeof SHOP_CARD_ID; nameJa: string };
 
 /**
  * The row: 「待機」 at the left end (always), the places' cards, then the tour while one is offered or booked here, then
- * 「ホテルに戻る」 at the right end (always). A destination not open yet is not in the row (2026-11-13 user decision: it joins
- * as a new card once it opens, newCardIds); a place open but not usable now (its hours, AP, the way back by 21:00) is, with
- * its reasons. Only while Debug mode is on (`debug`, the writer's check) do the dates not open yet whose writer gave a hint
- * (`locked`, in their order) stand as locked cards after the places'.
+ * 「ホテルに戻る」 (always), then the city's shop at the right end when it has one (`shop`, its name; 2026-11-20 user decision).
+ * A destination not open yet is not in the row (2026-11-13 user decision: it joins as a new card once it opens,
+ * newCardIds); a place open but not usable now (its hours, AP, the way back by 21:00) is, with its reasons. Only while
+ * Debug mode is on (`debug`, the writer's check) do the dates not open yet whose writer gave a hint (`locked`, in their
+ * order) stand as locked cards after the places'.
  */
-export function rowCards(entries: readonly PhotoCardEntry[], { tour, locked = [], debug = false }: {
+export function rowCards(entries: readonly PhotoCardEntry[], { tour, shop = null, locked = [], debug = false }: {
   tour: boolean;
+  shop?: string | null;
   locked?: readonly { dateId: string; hintJa: string }[];
   debug?: boolean;
 }): RowCard[] {
   const places = entries.map((entry): RowCard => ({ kind: "place", id: entry.place.id, entry }));
   const lockedCards = debug ? locked.map((date): RowCard => ({ kind: "locked", id: lockedCardId(date.dateId), dateId: date.dateId, hintJa: date.hintJa })) : [];
   return [{ kind: "wait", id: WAIT_CARD_ID }, ...places, ...lockedCards, ...(tour ? [{ kind: "tour", id: TOUR_CARD_ID } as const] : []),
-    { kind: "stay", id: STAY_CARD_ID }];
+    { kind: "stay", id: STAY_CARD_ID }, ...(shop !== null ? [{ kind: "shop", id: SHOP_CARD_ID, nameJa: shop } as const] : [])];
 }
 
 /** What a locked date's card says (its face's words for readers, and the live regions' when it is chosen): the writer's hint only. */
@@ -108,11 +114,11 @@ export function defaultCardIndex(cards: readonly RowCard[]): number {
 
 /**
  * Whether a card takes a swipe up (and, in the row, Enter on it): a place's departs (or starts there), 「待機」's waits
- * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; the tour's and a
- * locked date's never.
+ * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; the tour's, the
+ * shop's and a locked date's never.
  */
 export function takesSwipe(card: RowCard): boolean {
-  return card.kind !== "tour" && card.kind !== "locked";
+  return card.kind !== "tour" && card.kind !== "locked" && card.kind !== "shop";
 }
 
 /** The selection a card stands for: its place, the hotel's 休む (「ホテルに戻る」), or none (「待機」, a locked date, the tour). */
@@ -278,7 +284,7 @@ export function blockedWays(routes: readonly RouteChoice[]): { modes: TravelMode
 /** What a card's fill says at a glance (no words: the selected place's card under the row keeps its tags). */
 export type CardKinds = "story" | "date" | "both" | "none";
 
-/** The kinds of events a card stands for: a place's own (a date, else the story), none for 「待機」, the tour and 「ホテルに戻る」. */
+/** The kinds of events a card stands for: a place's own (a date, else the story), none for 「待機」, the tour, 「ホテルに戻る」 and the shop. */
 export function cardKinds(card: RowCard): CardKinds {
   if (card.kind !== "place") return "none";
   const date = card.entry.events.some((choice) => choice.event.category === "date");
@@ -303,6 +309,8 @@ export function photoCardLabel({ position, count, name, marks = [] }: {
 
 /** The live regions' words when the tour's card is chosen. */
 export const TOUR_CHOSEN_JA = "ツアーを選びました。予約の案内を出しています。";
+/** The live regions' words when the shop's card is chosen (`name`: the shop's). */
+export const shopChosenJa = (name: string): string => `${name}を選びました。売っている服を出しています。`;
 
 /** The live regions' words when 「待機」's card is chosen: the wait its swipe up (and 「待つ」) takes (`wait`, in words), or none. */
 export function waitChosenJa(wait: string | null): string {

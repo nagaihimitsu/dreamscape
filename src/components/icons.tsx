@@ -53,6 +53,9 @@ const paths = {
   music: `M9 17.5V5.5l10-2v12${circle(6.8, 17.5, 2.2)}${circle(16.8, 15.5, 2.2)}`,
   // 旅の図鑑: a magnifying glass.
   lens: `${circle(10.5, 10.5, 6)}M15 15l5.5 5.5`,
+  // The header's 「服」 (2026-11-20): a clothes hanger. Free time's shop: an awning over a counter.
+  hanger: "M12 7.5a2 2 0 1 1 2-2c0 1.2-2 1.6-2 3.3M12 8.8L3.2 15.4c-.8.6-.4 1.6.6 1.6h16.4c1 0 1.4-1 .6-1.6z",
+  shop: "M4 9.5l1.5-5h13l1.5 5M4 9.5h16M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12.2v7.3h13v-7.3M10 19.5v-4.5h4v4.5",
 } as const;
 
 export type IconName = keyof typeof paths;

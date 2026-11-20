@@ -17,6 +17,8 @@ import sharedPartData from "./generated/shared-part.json";
 import { bundledParts, partLoaders } from "./journey-part-files";
 import generatedTours from "./generated/tours.json";
 import { tourCatalogSchema, type Tour } from "./tour-schemas";
+import shopData from "./generated/content/shop/catalog.json";
+import { shopCatalogSchema, type Outfit, type Shop } from "./shop";
 import progressionData from "./generated/content/romance/progression.json";
 import dateData from "./generated/content/romance/date_catalog.json";
 import destinationData from "./generated/content/romance/date_destinations.json";
@@ -139,6 +141,15 @@ export function getCityTours(cityId: string): Tour[] {
 export function getTour(tourId: string): Tour | undefined {
   return tours.find((tour) => tour.id === tourId);
 }
+/** Free time's shops and the heroine's outfits they sell, of every journey (shop/catalog.json; src/content/shop.ts). */
+export const shopCatalog = shopCatalogSchema.parse(shopData);
+/** The shop of a city (at most one), or undefined. */
+export function getCityShop(cityId: string): Shop | undefined {
+  return shopCatalog.shops.find((shop) => shop.cityId === cityId);
+}
+export function getOutfit(outfitId: string): Outfit | undefined {
+  return shopCatalog.outfits.find((outfit) => outfit.id === outfitId);
+}
 export const progression = progressionSchema.parse(progressionData);
 export const dates = dateCatalogSchema.parse(dateData).dates;
 export const dateDestinations = dateDestinationsSchema.parse(destinationData).destinations;
@@ -255,6 +266,7 @@ export type { AlbumImage } from "./album-images";
 export type { LocalWord } from "./local-words";
 export type { GlossaryTerm, ListedTerm } from "./glossary";
 export type { Tour, TourStep, TourLeg, TourEventStep, TourOffer } from "./tour-schemas";
+export type { Outfit, Shop } from "./shop";
 export type {
   EpisodeDefinition,
   StoryBattle,

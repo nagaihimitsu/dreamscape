@@ -250,6 +250,13 @@
     },
     {
       "fileMatch": [
+        "/content/journeys/*/shop/catalog.json",
+        "/authoring/templates/*/shop/catalog.json"
+      ],
+      "url": "./authoring/schemas/shop-catalog.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/journeys/*/tourism/catalog.json",
         "/authoring/templates/*/tourism/catalog.json"
       ],

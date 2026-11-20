@@ -239,6 +239,13 @@
 .option-body {
   min-width: 0;
 }
+.option-body .option-mark {
+  display: block;
+  margin-top: 8px;
+}
+.option-body .option-mark:empty {
+  display: none;
+}
 .answer-submit {
   grid-column: 2;
   min-height: 44px;

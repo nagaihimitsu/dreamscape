@@ -288,12 +288,12 @@ export const FONT_CREDIT = {
 
 /**
  * The footnote of the list (decision D5): own artwork is left out on purpose, and where fact sources are
- * shown (the clue book's cards, ClueDetails, and a quiz's explanation, BattleScreen; no date screen shows
- * fact sources, only its background's image credit).
+ * shown (the clue book's cards, ClueDetails, and, while a quiz's explanation shows, ≡メニュー's 「画面の出典」,
+ * PhotoCredits.tsx; no date screen shows fact sources, only its background's image credit).
  */
 export const OWN_ARTWORK_NOTE_JA =
   "Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +
-  "情報の出典は、手がかり帳とクイズの解説に表示しています。";
+  "情報の出典は、手がかり帳と、クイズの解説を表示している間の「画面の出典」に表示しています。";
 
 /**
  * The note of 「画面の出典」 over the free-time screen (「写真の出典」 until 2026-11-20) (UI step 1.5): its list rows and its backdrop show the

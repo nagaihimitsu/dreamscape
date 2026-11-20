@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "shops": [
+    {
+      "id": "gt_delhi_cloth_shop",
+      "cityId": "delhi",
+      "nameJa": "布地の店",
+      "descriptionJa": "色とりどりの布が、天井近くまで積み上がった小さな店。広げて見せてもらえる。",
+      "heroineLineJa": "布の色だけで、目が忙しいね。……ちょっとだけ、見ていってもいい？",
+      "outfitIds": ["gt_saree_blue"]
+    },
+    {
+      "id": "gt_agra_cloth_shop",
+      "cityId": "agra",
+      "nameJa": "布地の店",
+      "descriptionJa": "通りに面して、畳んだ布を棚いっぱいに並べた店。店の奥に鏡がある。",
+      "heroineLineJa": "棚の上から下まで、全部ちがう色。見てるだけで楽しくなっちゃう",
+      "outfitIds": ["gt_saree_blue"]
+    },
+    {
+      "id": "gt_jaipur_cloth_shop",
+      "cityId": "jaipur",
+      "nameJa": "布地の店",
+      "descriptionJa": "店先に布を吊るして、風に揺らしている店。奥で着付けも手伝ってくれる。",
+      "heroineLineJa": "ここの布、光に透けるときれいだね。……着たら、どんな感じなんだろう",
+      "outfitIds": ["gt_saree_blue"]
+    }
+  ],
+  "outfits": [
+    {
+      "id": "gt_saree_blue",
+      "costume": "saree_01",
+      "nameJa": "青いサリー",
+      "descriptionJa": "縫い目のない一枚の長い布を、体に巻きつけて着るインドの装い。深い青に、銀の花模様が散っている。",
+      "price": 2500,
+      "boughtLineJa": "……ほんとに買っちゃった。似合わなかったら、ちゃんと言ってね？ 言わなくても、顔でわかるけど"
+    }
+  ]
+}

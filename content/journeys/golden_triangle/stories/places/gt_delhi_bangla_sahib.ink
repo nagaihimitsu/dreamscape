@@ -50,7 +50,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ハルバンスが、新しい生地の玉を一つ、こちらの前に置いた。麺棒を渡される。
 # speaker: gt_harbans
-# minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar retry yes
+# minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar
 # voice: gt_delhi_date_bangla_sahib_harbans_004
 押して、回す。押して、回す。……あとは、手に聞け
 * [ローティー：まん丸に伸ばした # option: round]

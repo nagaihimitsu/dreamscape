@@ -32,6 +32,24 @@
         "english": {
           "type": "object",
           "properties": {
+            "japanese": {
+              "type": "object",
+              "properties": {
+                "labelJa": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "descriptionJa": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "labelJa",
+                "descriptionJa"
+              ],
+              "additionalProperties": false
+            },
             "A2": {
               "type": "object",
               "properties": {
@@ -88,6 +106,7 @@
             }
           },
           "required": [
+            "japanese",
             "A2",
             "B1",
             "B2"

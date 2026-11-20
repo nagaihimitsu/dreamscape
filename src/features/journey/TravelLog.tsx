@@ -4,8 +4,8 @@ import { CharacterFigure } from "../../components/CharacterPortrait";
 import { Icon } from "../../components/icons";
 import type { GameState } from "../../domain/game";
 import { HeroineNote } from "../battle/HeroineNote";
-import { albumSwipeStep, type AlbumPhotoView } from "./album-pages";
-import { travelLogCities, travelLogPhotos, type LogCity } from "./travel-log";
+import { albumSwipeStep } from "./album-pages";
+import { MISSED_PHOTO_JA, travelLogCities, travelLogPhotos, type LogCity, type LogPhoto } from "./travel-log";
 import "../battle/battle.css";
 import "./city.css";
 import "./travel-log.css";
@@ -16,7 +16,7 @@ const served = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 type Axis = "lived" | "photos";
 const KIND_JA: Record<"visit" | "finale" | "date", string> = { visit: "観光", finale: "都市フィナーレ", date: "デート" };
 /** Photos opened larger: the list they are turned through and the one shown first. */
-type Viewing = { photos: readonly AlbumPhotoView[]; index: number };
+type Viewing = { photos: readonly LogPhoto[]; index: number };
 
 /**
  * A sideways swipe on an element (albumSwipeStep): `onStep` with +1 (to the left: the next) or -1, and the click the
@@ -59,19 +59,23 @@ function useSwipe(onStep: (step: -1 | 1) => void) {
  *   the save has it, place, clear title and record with its seal 「完」, and her few words looking back on the place, her
  *   face saying who speaks), then the people met there with their small standing pictures. `footer` (旅の数字) under it.
  * - 「写真」: every photo of the journey's album, the newest at the top left, as a close grid of square thumbnails; a tap
- *   opens them larger, in their own dialog over the log (PhotoViewer), which closes back to it.
+ *   opens them larger, in their own dialog over the log (PhotoViewer), which closes back to it. With `missedPhotos`
+ *   (travel-log.ts showsMissedPhotos: the journey is over), the photos not taken yet follow in the story's order, in grey
+ *   in the grid and opened larger alike (2026-11-20 user decision), a line above the grid saying what the grey ones are.
  * It takes no press for a moment (settlePresses) and closes with 「× 閉じる」, a tap on the dimmed page around, or Esc. It
  * shows no names, no city progress, no credit, no relationship value and no quiz score (the place photos' credits are in
  * 出典・権利の一覧).
  */
-export function TravelLogDialog({ game, extras, footer, onClose }: {
+export function TravelLogDialog({ game, missedPhotos = false, extras, footer, onClose }: {
   game: GameState;
+  missedPhotos?: boolean;
   extras?: ReactNode;
   footer?: ReactNode;
   onClose: () => void;
 }) {
   const cities = useMemo(() => travelLogCities(game), [game]);
-  const photos = useMemo(() => travelLogPhotos(game), [game]);
+  const photos = useMemo(() => travelLogPhotos(game, missedPhotos), [game, missedPhotos]);
+  const taken = photos.filter((photo) => !photo.missed).length;
   const [axis, setAxis] = useState<Axis>("lived");
   const [folded, setFolded] = useState<ReadonlySet<string>>(() => new Set());
   const [viewing, setViewing] = useState<Viewing | null>(null);
@@ -90,7 +94,7 @@ export function TravelLogDialog({ game, extras, footer, onClose }: {
         <button type="button" aria-pressed={axis === "lived"} data-testid="travel-log-lived" onClick={() => setAxis("lived")}>
           体験<span className="travel-log-count">{lived}</span></button>
         <button type="button" aria-pressed={axis === "photos"} data-testid="travel-log-photos" onClick={() => setAxis("photos")}>
-          写真<span className="travel-log-count">{photos.length}</span></button>
+          写真<span className="travel-log-count">{taken}</span></button>
       </div>
       {axis === "lived" ? <>
         {cities.map((city) => <LivedCity key={city.cityId} city={city} heroineName={game.heroineName}
@@ -151,22 +155,32 @@ function LivedCity({ city, heroineName, open, onToggle }: { city: LogCity; heroi
   </section>;
 }
 
-/** 「写真」: the journey's album photos, the newest first, as a close grid of square thumbnails. */
-function PhotoGrid({ photos, onOpen }: { photos: readonly AlbumPhotoView[]; onOpen: (index: number) => void }) {
+/**
+ * 「写真」: the journey's album photos, the newest first, then any not taken yet (grey), as a close grid of square thumbnails.
+ * Grey is not the only sign of one not taken: a line above the grid says what the grey ones are, and its button's name says so.
+ */
+export function PhotoGrid({ photos, onOpen }: { photos: readonly LogPhoto[]; onOpen: (index: number) => void }) {
   if (photos.length === 0) return <p className="travel-log-empty" data-testid="album-empty">まだ写真はありません。</p>;
-  return <ul className="travel-log-grid" data-testid="travel-log-grid">
-    {photos.map((photo, index) => <li key={photo.imageId}>
-      <button type="button" aria-label={`${photo.caption ?? photo.placeJa}の写真を大きく見る`} onClick={() => onOpen(index)}>
-        <img src={served(photo.path)} alt="" loading="lazy" decoding="async" />
-      </button>
-    </li>)}
-  </ul>;
+  return <>
+    {photos.some((photo) => photo.missed) &&
+      <p className="travel-log-photos-note" data-testid="album-missed-note">灰色の写真は、まだ残していない写真です。</p>}
+    <ul className="travel-log-grid" data-testid="travel-log-grid">
+      {photos.map((photo, index) => <li key={photo.imageId}>
+        <button type="button" className={photo.missed ? "is-missed" : undefined} data-testid={photo.missed ? "album-missed" : undefined}
+          aria-label={photo.missed ? `${photo.titleJa}（${MISSED_PHOTO_JA}）を大きく見る` : `${photo.titleJa}の写真を大きく見る`}
+          onClick={() => onOpen(index)}>
+          <img src={served(photo.path)} alt="" loading="lazy" decoding="async" />
+        </button>
+      </li>)}
+    </ul>
+  </>;
 }
 
 /**
- * Photos opened larger, over the log: the whole picture, its caption as the title, 「n日目 hh:mm · 場所」, and with more than
- * one photo 「前の写真」「次の写真」 and 「2 / 5」 at the foot (a sideways swipe on the picture and the arrow keys turn them
- * too, in the grid's order). It closes back to the log with 「× 閉じる」, a tap on the dimmed page around, or Esc.
+ * Photos opened larger, over the log: the whole picture, its caption as the title, 「n日目 hh:mm · 場所」 (a photo not taken
+ * yet: grey, 「都市 · まだ残していない写真」), and with more than one photo 「前の写真」「次の写真」 and 「2 / 5」 at the foot
+ * (a sideways swipe on the picture and the arrow keys turn them too, in the grid's order). It closes back to the log with
+ * 「× 閉じる」, a tap on the dimmed page around, or Esc.
  */
 function PhotoViewer({ viewing, onClose }: { viewing: Viewing; onClose: () => void }) {
   const [index, setIndex] = useState(viewing.index);
@@ -194,11 +208,12 @@ function PhotoViewer({ viewing, onClose }: { viewing: Viewing; onClose: () => vo
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [photos.length]);
   return <Modal labelledBy="album-photo-title" className="album-photo-viewer" onClose={onClose} closeOnBackdrop>
-    <ModalTitle id="album-photo-title" onClose={onClose}>{photo.caption ?? photo.placeJa}</ModalTitle>
+    <ModalTitle id="album-photo-title" onClose={onClose}>{photo.titleJa}</ModalTitle>
     <div ref={frame} className="photo-viewer-frame" {...swipe}>
-      <img key={photo.imageId} src={served(photo.path)} alt={photo.altJa} data-testid="album-photo-large" />
+      <img key={photo.imageId} src={served(photo.path)} alt={photo.altJa} className={photo.missed ? "is-missed" : undefined}
+        data-testid="album-photo-large" />
     </div>
-    <p className="album-meta">{photo.whenJa} · {photo.placeJa}</p>
+    <p className="album-meta">{photo.metaJa}</p>
     {photos.length > 1 && <nav className="photo-viewer-pager" aria-label="写真">
       <button type="button" className="album-page-button" disabled={index === 0} onClick={() => go(-1)}>前の写真</button>
       <p className="album-page-count" aria-live="polite">{index + 1} / {photos.length}</p>

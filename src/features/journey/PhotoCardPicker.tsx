@@ -33,7 +33,7 @@ function placeVisited(game: GameState, placeId: string): boolean {
 }
 
 /**
- * B案's photo cards (docs/02 「街歩きの画面」): 「待機」, the places, the tour and 「ホテルに戻る」. As a row: three show whole, the
+ * B案's photo cards (docs/02 「街歩きの画面」): 「待機」, the places, the tour, 「ホテルに戻る」 and the shop. As a row: three show whole, the
  * chosen one in the middle and a smaller one on each side (each card's size follows its distance from the centre), the
  * one that settles in the centre after a flick is chosen (CSS scroll snap; a sideways drag anywhere on the screen moves
  * the row too), a press on a side card brings it to the centre and chooses it, and the chosen card's card (`card`) follows the row
@@ -248,6 +248,10 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
         ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={240} height={160} loading="lazy" decoding="async" draggable={false} />
         : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
   }
+  // The city's shop (2026-11-20): its name over an awning, at the right end of the row.
+  if (card.kind === "shop")
+    return { testId: "travel-shop", name: card.nameJa, available: true, top: null, bottom: null, kinds, swipeable,
+      photo: <PlainTile><Icon name="shop" /></PlainTile> };
   if (card.kind === "tour")
     return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, swipeable,
       photo: <PlainTile><Icon name="ticket" /></PlainTile> };
@@ -275,6 +279,7 @@ export function rowCardName(game: GameState, card: RowCard): string {
   if (card.kind === "wait") return "待機";
   if (card.kind === "stay") return "ホテルに戻る";
   if (card.kind === "tour") return "ツアー";
+  if (card.kind === "shop") return card.nameJa;
   if (card.kind === "locked") return lockedCardJa(card.hintJa);
   return placeDisplayName(game, card.entry.place.events[0].place);
 }
