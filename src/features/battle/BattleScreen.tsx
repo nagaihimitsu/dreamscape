@@ -442,8 +442,6 @@ export function BattleScreen({
   // What the quiz card shows of the answer: nothing yet while a right answer is held (the card stays as it was tapped).
   const shownAnswer = holding ? undefined : answer;
   const isSpecial = !!battle.reasoning;
-  const showReasoning =
-    !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
   // The quiz card (a question and its explanation): its speaker buttons stop reading when it goes or the next question comes.
   const quizCard = active.phase === "question" || active.phase === "feedback";
   const reader = useReadAloud(readAloud, quizCard ? `${active.roundIndex}:${question?.id}` : "", autoReadAloud);
@@ -701,13 +699,6 @@ export function BattleScreen({
           <div className="question-area" data-testid="battle-question">
             {/* The battle's progress, for screen readers only (the card shows no question count). */}
             <p className="sr-only">第{active.roundIndex + 1}問 / 全{quiz.questions.length}問</p>
-            {showReasoning && (
-              <ReasoningPanel
-                game={game}
-                onPress={onPress}
-                onSubmit={onSubmitEvidence}
-              />
-            )}
             {japaneseOnly ? (
               <h2 className="question-en question-ja" lang="ja">{quizTranslation?.questionJa}</h2>
             ) : (<>
@@ -786,12 +777,6 @@ export function BattleScreen({
                           }
                         />
                         </>}
-                        {shownAnswer && (
-                          <span className="option-mark">
-                            {selected ? "選んだ答え" : ""}
-                            {correct ? " ✓ 正解" : ""}
-                          </span>
-                        )}
                       </div>
                       {!japaneseOnly && <Translation
                         learning={learning}
@@ -857,20 +842,10 @@ export function BattleScreen({
                 >
                   英文を確認する
                 </button>}
-                <details className="quiz-sources">
-                  <summary>解説の根拠を読む</summary>
-                  <ul>
-                    {question.sources.map((source, index) => (
-                      <li key={`${source.url}:${index}`}>
-                        <a href={source.url} target="_blank" rel="noreferrer">
-                          {source.publisher}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
+                {/* The answer chosen and the explanation's sources are in ≡メニュー's 「画面の出典」 (2026-11-20 user decision:
+                    not on the card; GameApp's screenAnswer). */}
                 <button
-                  className="primary"
+                  className="primary quiz-feedback-next"
                   data-testid="battle-advance"
                   onClick={advanceSafely}
                 >

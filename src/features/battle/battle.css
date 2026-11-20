@@ -939,9 +939,8 @@
   color: var(--ds-on-slate);
   box-shadow: var(--ds-pill-shadow);
 }
-/* Links, translations and sources on the parchment read in ink. */
-.battle-screen .battle-paper:not(.battle-dialogue) .text-button,
-.battle-screen .quiz-sources summary {
+/* Links and translations on the parchment read in ink. */
+.battle-screen .battle-paper:not(.battle-dialogue) .text-button {
   color: var(--ds-ink);
 }
 

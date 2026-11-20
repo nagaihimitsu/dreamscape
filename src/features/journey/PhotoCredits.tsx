@@ -3,9 +3,10 @@ import { getCityBackdrop } from "../../content/city-backdrop";
 import { DERIVED_PHOTO_NOTE_JA, RECAP_PHOTO_NOTE_JA } from "../../content/credits";
 import { derivedImagePath } from "../../content/derived-images";
 import { getPlacePhoto } from "../../content/place-photo";
-import type { TourismAsset } from "../../content/tourism-schemas";
+import type { TourismAsset, TourismClue } from "../../content/tourism-schemas";
 import { ImageCredit } from "../../components/ImageCredit";
 import { Modal, ModalTitle } from "../../components/Modal";
+import { SourceNotes, type SourceNote } from "../../components/SourceNotes";
 import type { GameState } from "../../domain/game";
 import { getTravelDestinations } from "../../domain/travel-destinations";
 import type { RecapPicture } from "./journey-moments";
@@ -53,9 +54,18 @@ function PhotoCreditList({ photos }: { photos: ShownPhoto[] }) {
   </>;
 }
 
+/** A quiz question's answer while its explanation shows: the option chosen, the right one and the explanation's sources. */
+export interface ScreenAnswer {
+  optionId: string;
+  correctOptionId: string;
+  sources: readonly SourceNote[];
+}
+
 /**
  * 「画面の出典」 (≡メニュー; 2026-11-20 user decision, one item in place of 写真の出典 and 画像の出典): what the screen shows
- * now. A story scene's photo (`scenePhoto`: its background, a landmark's or a battle's photo) shows whole, with its
+ * now. While a quiz's explanation shows, first the answer chosen and the explanation's sources (`answer`; 2026-11-20 user
+ * decision: off the quiz card). Where the screen's clue book can be opened (a visit, a reasoning quiz), the sources of the
+ * clues it shows (`clues`; 2026-11-20 user decision: 「根拠と解釈を確認する」 off the clue book), after the photo. A story scene's photo (`scenePhoto`: its background, a landmark's or a battle's photo) shows whole, with its
  * description, credit and links at once (the scene shows no 出典 of its own, nor does a quiz answer's reveal of the same
  * photo); free time's photos and the recap card's (`photos`) are listed under it with their credits. A dialog for viewing:
  * 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc closes it. (A line's `# recall:` shows an album
@@ -63,23 +73,39 @@ function PhotoCreditList({ photos }: { photos: ShownPhoto[] }) {
  * from ゲームの設定 until 2026-11-20), at its foot, so it is on ≡メニュー on every screen, saying so when the screen shows no
  * credited photo.
  */
-export function ScreenCredits({ scenePhoto, photos, onAllCredits, onClose }: {
-  scenePhoto?: TourismAsset; photos: ShownPhoto[];
+export function ScreenCredits({ scenePhoto, photos, answer, clues = [], onAllCredits, onClose }: {
+  scenePhoto?: TourismAsset; photos: ShownPhoto[]; answer?: ScreenAnswer; clues?: readonly TourismClue[];
   /** Opens 「出典・権利の一覧」 over this dialog (closing it comes back here). */
   onAllCredits: () => void;
   onClose: () => void;
 }) {
-  const className = [scenePhoto && "date-background-viewer", photos.length > 0 && "photo-credits-modal"].filter(Boolean).join(" ");
+  const className = [scenePhoto && "date-background-viewer", photos.length > 0 && "photo-credits-modal", "screen-credits"]
+    .filter(Boolean).join(" ");
+  const right = answer && answer.optionId === answer.correctOptionId;
   return <Modal labelledBy="screen-credits-title" className={className} onClose={onClose} closeOnBackdrop>
     <ModalTitle id="screen-credits-title" onClose={onClose}>画面の出典</ModalTitle>
+    {answer && <section className="screen-credits-sources" aria-labelledby="screen-credits-answer" data-testid="screen-credits-answer">
+      <h3 id="screen-credits-answer">答えと解説の根拠</h3>
+      <p className="screen-credits-choice">
+        選んだ答え <b>{answer.optionId}</b>{right ? " ✓ 正解" : <>　✓ 正解 <b>{answer.correctOptionId}</b></>}
+      </p>
+      <SourceNotes sources={answer.sources} />
+    </section>}
     {scenePhoto && <>
       <img src={`${import.meta.env.BASE_URL}${scenePhoto.path}`} alt={scenePhoto.altJa} />
       <div className="background-credit">
         <ImageCredit asset={scenePhoto} />
       </div>
     </>}
+    {clues.length > 0 && <section className="screen-credits-sources" aria-labelledby="screen-credits-clues" data-testid="screen-credits-clues">
+      <h3 id="screen-credits-clues">手がかりの根拠と解釈</h3>
+      {clues.map((clue) => <div key={clue.id} className="screen-credits-clue">
+        <h4>{clue.titleJa}</h4>
+        <SourceNotes sources={clue.sources} />
+      </div>)}
+    </section>}
     {photos.length > 0 && <PhotoCreditList photos={photos} />}
-    {!scenePhoto && photos.length === 0 && <p>いまの画面には、出典を示す写真はありません。</p>}
+    {!scenePhoto && photos.length === 0 && !answer && clues.length === 0 && <p>いまの画面には、出典を示す写真はありません。</p>}
     <div className="settings-data-links screen-credits-all">
       <button type="button" className="text-button credits-entry" onClick={onAllCredits}>出典・権利の一覧</button>
     </div>

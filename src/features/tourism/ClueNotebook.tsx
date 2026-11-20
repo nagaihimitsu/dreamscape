@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { getCityContent, landmarks, tourismClues } from "../../content";
+import { notebookClues } from "./notebook-clues";
 import { Modal, ModalTitle } from "../../components/Modal";
 import { playSe } from "../../audio/sound-effects";
 import { ClueDetails } from "./ClueDetails";
@@ -9,8 +10,9 @@ import "./notebook.css";
 
 export interface NotebookReasoning {
   caseClueIds: string[];
+  /** The opponent's claim, quoted over the case file. No question with it (2026-11-20 user decision): the question
+   * after the evidence named the clue that answers it, and its English showed with 英語オフ on too. */
   claimText: string;
-  questionEn: string;
   selectedIds: string[];
   maxSelections: 1 | 2;
   selectionEnabled: boolean;
@@ -41,16 +43,9 @@ export function ClueNotebook({
   reasoning?: NotebookReasoning;
 }) {
   const landmark = landmarks.find((item) => item.id === landmarkId);
-  const availableLandmarks = cityId
-    ? landmarks.filter((item) => item.cityId === cityId).map((item) => item.id)
-    : [landmarkId];
-  const clues = (reasoning?.clues ?? tourismClues).filter(
-    (clue) =>
-      availableLandmarks.includes(clue.landmarkId) &&
-      (discoveredIds.includes(clue.id) ||
-        readableDocumentIds.includes(clue.id) ||
-        reasoning?.caseClueIds.includes(clue.id)),
-  );
+  const clues = notebookClues({
+    landmarkId, cityId, discoveredIds, readableDocumentIds, caseClueIds: reasoning?.caseClueIds, clues: reasoning?.clues,
+  });
   const [currentId, setCurrentId] = useState(
     () => [...(reasoning?.selectedIds ?? [])].reverse().find((id) => clues.some((clue) => clue.id === id)) ?? clues[0]?.id ?? "",
   );
@@ -84,21 +79,14 @@ export function ClueNotebook({
       >
         手がかり帳
       </ModalTitle>
-      {reasoning && (
+      {reasoning?.claimText && (
         <aside
           className="case-context"
-          aria-label="照らし合わせる主張と問題"
+          aria-label="照らし合わせる主張"
           data-testid="case-context"
         >
-          {reasoning.claimText && (
-            <>
-              <p className="case-context-label">相手の主張</p>
-              <blockquote>{reasoning.claimText}</blockquote>
-            </>
-          )}
-          <p className="case-question" lang="en">
-            {reasoning.questionEn}
-          </p>
+          <p className="case-context-label">相手の主張</p>
+          <blockquote>{reasoning.claimText}</blockquote>
         </aside>
       )}
       {clues.length > 0 && (
