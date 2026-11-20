@@ -50,15 +50,22 @@ export function checkHelperKnot(compiled: string, knot: string, conds: readonly 
   }
 }
 
-/** A single explicit answer set prevents order-dependent or ambiguous proof recipes. */
+/**
+ * A single explicit answer set prevents order-dependent or ambiguous proof recipes. The case evidence belongs to the
+ * battle's landmark; a city finale's (it has none) to a landmark of its city, as its clue book shows the city's clues.
+ */
 export function validateBattleEvidence(
   battle: BattleDefinition,
   clues: TourismClue[],
+  landmarks: readonly { id: string; cityId: string }[],
 ): void {
   if (!battle.reasoning) return;
+  const own = (landmarkId: string) => battle.scope === "city_finale"
+    ? landmarks.some((landmark) => landmark.id === landmarkId && landmark.cityId === battle.cityId)
+    : landmarkId === battle.landmarkId;
   for (const id of battle.reasoning.caseClueIds) {
     const clue = clues.find((item) => item.id === id);
-    if (!clue || clue.landmarkId !== battle.landmarkId)
+    if (!clue || !own(clue.landmarkId))
       throw new Error(`Unknown or mismatched battle evidence: ${id}`);
   }
 }

@@ -1532,7 +1532,12 @@
       "guideStoryId": "places/gt_agra_taj_mahal.gt_agra_taj_mahal_guide",
       "battleId": "gt_agra_main_taj_mahal_battle",
       "observation": false,
-      "clueIds": []
+      "clueIds": [
+        "gt_agra_clue_tavernier_tomb",
+        "gt_agra_clue_moonlight_garden_dig",
+        "gt_agra_clue_twenty_thousand",
+        "gt_agra_clue_garden_marble"
+      ]
     },
     {
       "id": "agra_agra_fort",
@@ -1723,6 +1728,90 @@
           "checkedAt": "2026-11-18",
           "claimType": "documented_fact",
           "claimJa": "2019年、デリー警察は私設の旅行会社に、看板に政府のロゴを使って客を惑わさないこと、正規の代理店になりすまさないことを申し渡した。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_clue_tavernier_tomb",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "document",
+      "titleJa": "いちばん古い記録・タヴェルニエ",
+      "descriptionJa": "1665年にアーグラを訪れたフランスの宝石商タヴェルニエは、旅行記にこう書いた。「シャー・ジャハーンは川の向こう岸に自分の墓を建て始めたが、息子たちとの戦いで計画は途切れ、今のアウラングゼーブ帝は完成させる気がない」。黒い墓の話は、この一文が出どころとされる。ただ、この記録には「黒い」という言葉がない。",
+      "factId": "gt_agra_fact_tavernier_tomb",
+      "relatedQuestionIds": [
+        "gt_agra_finale_moonlight_garden"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Internet Archive（ジャン＝バティスト・タヴェルニエ『インド旅行記』V・ボール英訳、1889年、第1巻）",
+          "title": "Travels in India, Vol. 1 (Book I, Chapter VII)",
+          "url": "https://archive.org/details/travelsinindia00unkngoog",
+          "checkedAt": "2026-11-20",
+          "claimType": "documented_fact",
+          "claimJa": "タヴェルニエの旅行記（第1部第7章）は、シャー・ジャハーンが川の向こう岸に自分の墓を建て始めたが、息子たちとの戦いで中断し、アウラングゼーブは完成させる気がないと書く。この箇所に、墓が黒いという記述はない。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_clue_moonlight_garden_dig",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "document",
+      "titleJa": "この岸の土・メヘターブ・バーグの調査",
+      "descriptionJa": "タージの対岸のメヘターブ・バーグ（月光の庭）を、インド考古調査局と米国スミソニアンが七年かけて調べた。出てきたのは墓の土台ではなく、一段高い八角形の池を持つ庭だった。調査は、タージとその水に映る姿を眺めるための庭だった可能性が高いとし、黒大理石の墓の予定地という俗説を退けた。",
+      "factId": "gt_agra_fact_moonlight_garden_dig",
+      "relatedQuestionIds": [
+        "gt_agra_finale_moonlight_garden"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Smithsonian Freer and Sackler Galleries",
+          "title": "The Moonlight Garden Reveals New Discoveries at the Taj Mahal",
+          "url": "https://archive.asia.si.edu/press/past/prmoonlightgarden.htm",
+          "checkedAt": "2026-11-20",
+          "claimType": "interpretation",
+          "claimJa": "インド考古調査局と共同の七年間の調査は、庭がタージとその八角形の池に映る姿を眺めるために設計された可能性が高いとし、シャー・ジャハーンの黒大理石の墓のための場所という俗説を退けた。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_clue_twenty_thousand",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "document",
+      "titleJa": "同じ旅行記・二万人と二十二年",
+      "descriptionJa": "タヴェルニエは妃の墓について、工事の始まりと完成を自分の目で見たと書き、二十二年のあいだ二万人が休みなく働いたと記した。アンワルの語る「二万の職人」と同じ数だ。ただし、その手のその後については何も書いていない。",
+      "factId": "gt_agra_fact_twenty_thousand",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Internet Archive（ジャン＝バティスト・タヴェルニエ『インド旅行記』V・ボール英訳、1889年、第1巻）",
+          "title": "Travels in India, Vol. 1 (Book I, Chapter VII)",
+          "url": "https://archive.org/details/travelsinindia00unkngoog",
+          "checkedAt": "2026-11-20",
+          "claimType": "documented_fact",
+          "claimJa": "タヴェルニエは妃の墓の工事の始まりと完成を見たと書き、二十二年のあいだ二万人が休みなく働いたと記す。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_clue_garden_marble",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "document",
+      "titleJa": "同じ旅行記・庭の小道の大理石",
+      "descriptionJa": "タヴェルニエによれば、タージの庭では、ヨーロッパなら砂利を敷くところに白と黒の大理石が敷かれていた。黒い石は、白い墓の庭にも最初から使われていた。",
+      "factId": "gt_agra_fact_garden_marble",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Internet Archive（ジャン＝バティスト・タヴェルニエ『インド旅行記』V・ボール英訳、1889年、第1巻）",
+          "title": "Travels in India, Vol. 1 (Book I, Chapter VII)",
+          "url": "https://archive.org/details/travelsinindia00unkngoog",
+          "checkedAt": "2026-11-20",
+          "claimType": "documented_fact",
+          "claimJa": "タヴェルニエは、墓の庭ではヨーロッパで砂利を敷くところに白と黒の大理石が敷かれていると書く。"
         }
       ]
     }

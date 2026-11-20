@@ -310,15 +310,42 @@ INCLUDE modules.ink
 皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
+# speaker: heroine
+その黒いタージの話、最初に書いたのは誰なんですか
+# speaker: enemy
+フランスの宝石商、タヴェルニエだよ。三百六十年前、タージが建っていくのをその目で見た男だ。手を切る話の二万という数も、あの男の旅行記にある
+# speaker: narrator
+アンワルは杖の先で、足もとの土を軽く突いた。
+-> gt_agra_finale_battle_claim ->
+# speaker: heroine
+# emotion: serious
+昔の人が書いたことと、この岸から出てきたもの。手帳で、並べてみます
+- (stop)
+-> reasoning ->
+{ evidence_result == "failure":
+    # speaker: enemy
+    それは黒い墓の話ではないね。昔の人が向こう岸について何と書いたか。この岸の土から何が出たか。わしが聞きたいのは、その二つだ
+    -> stop
+}
+# speaker: heroine
+タヴェルニエさんの記録は、川の向こうに自分の墓を建て始めた、とだけ書いてるんです。黒いとは、一言も書いてない
+# speaker: heroine
+それに、この岸を何年もかけて掘った人たちがいます
+# speaker: narrator
+アンワルの杖が、土の上で止まった。
 -> quiz(2) ->
 # background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
     # speaker: heroine
     # voice: gt_agra_finale_004
     調べた人たちが見つけたのは、黒い墓の土台じゃなくて、庭でした。タージと、水に映るタージを眺めるための
+    # speaker: enemy
+    ……黒、は誰が足したのだろうね。わしの前の、誰かのガイドか。わしの前の前か
 - else:
     # speaker: narrator
     岸辺の案内板に、調査の結果が書いてあった。見つかったのは墓の土台ではなく、水に映るタージを眺めるための庭だった。
+    # speaker: enemy
+    黒いとは書いていない、か。……古い本は、わしの話を半分しか手伝ってくれなかったらしい
 }
 # speaker: narrator
 アンワルは杖をついたまま、しばらく黙った。それから、観客に向かって両手を広げた。
@@ -473,3 +500,11 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_017
 ……それは、受け取ります。そこは、譲らないです
 -> END
+
+// 推理クイズC（証拠連結）の主張。battles/catalog.json の gt_agra_finale_battle の reasoning（roundIndex 1）が、quiz(1) の後にここを読む。
+// 証拠は tourism/catalog.json のタージ・マハルの手がかり4つ。正しい組は、タヴェルニエの記録（「黒い」と書いていない）と、メヘターブ・バーグの調査（池のある庭）。
+=== gt_agra_finale_battle_claim ===
+# background: gt_bg_agra_mehtab_bagh_sunset
+# speaker: enemy
+黒い墓は、この岸に建つはずだった。違うと言うなら、昔の記録から一つ、この岸の土から一つ。二つ並べて、わしの話のどこが嘘か見せてみなさい
+->->
