@@ -30,7 +30,11 @@ const poseSchema = z.object({
   // built/), ending in "/". Its whole-face drawings are named by the expressions (built/sprites/face_<expression>.png);
   // the pictures above stay its fallback (no WebGL, reduced motion, before it has loaded). authoring/LIVE_PORTRAIT_TRIAL.md
   avatar: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\/$/).optional(),
-}).strict();
+  // The face drawings this pose's moving picture shares with the character's other outfits (2026-11-20 user decision):
+  // a folder of mesh-avatar sprites (sprites.json, face_<expression>.png, the blinks and the mouths), ending in "/".
+  // Without it, the avatar folder's own built/sprites/. Outfits share it only when their heads are drawn the same.
+  avatarFace: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\/$/).optional(),
+}).strict().refine((pose) => !pose.avatarFace || pose.avatar, "avatarFace needs avatar");
 const costumeSchema = z.object({
   id,
   poses: z.array(poseSchema).min(1),
@@ -175,11 +179,15 @@ export function characterImage(character: CharacterAsset, selection: CharacterSe
   return selected;
 }
 
-/** The moving standing picture's folder (pose `avatar`) of the outfit chosen for the scene, or null when it has none. */
-export function characterAvatar(character: CharacterAsset, selection: { costume?: string; pose?: string }): string | null {
+/** Where a pose's moving standing picture is: its folder (pose `avatar`) and its shared face drawings (`avatarFace`). */
+export type CharacterAvatar = { folder: string; face?: string };
+
+/** The moving standing picture of the outfit chosen for the scene, or null when it has none. */
+export function characterAvatar(character: CharacterAsset, selection: { costume?: string; pose?: string }): CharacterAvatar | null {
   const costume = character.costumes?.find((item) => item.id === selection.costume);
   const pose = selection.pose ? costume?.poses.find((item) => item.id === selection.pose) : costume?.poses[0];
-  return pose?.expressions.neutral ? pose.avatar ?? null : null;
+  if (!pose?.expressions.neutral || !pose.avatar) return null;
+  return pose.avatarFace ? { folder: pose.avatar, face: pose.avatarFace } : { folder: pose.avatar };
 }
 
 /** All expression images for one pose share one placement to avoid jumping. */

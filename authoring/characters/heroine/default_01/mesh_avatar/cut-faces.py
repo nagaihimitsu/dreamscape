@@ -6,10 +6,11 @@ src=np.asarray(Image.open('source.png').convert('RGBA'))
 hair=np.asarray(Image.open('built/hairmask.png').convert('L'))>140
 sheet=json.load(open('built/sprites/sprites.json'))
 for k in [k for k in sheet['layers'] if k.startswith('face_')]: del sheet['layers'][k]
-X0,Y0,X1,Y1=395,120,650,290
 # every expression picture of the pose but neutral (an expression added there gets its face on the next run)
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
+GEOMETRY=json.load(open(HERE/'face-geometry.json'))
+X0,Y0,X1,Y1=GEOMETRY['faceBox']
 names=sorted(p.stem for p in Path(A).glob('*.png') if p.stem!='neutral')
 total=0
 # Expressions drawn with an open mouth rest with a closed one painted in (from these full-size pictures)
@@ -56,7 +57,7 @@ def cut(name,img,alpha):
 yy,xx=np.mgrid[0:src.shape[0],0:src.shape[1]]
 # Nothing below the jaw line: the neck (and its shadow, drawn a little differently in every picture)
 # always stays the base illustration's.
-JAW=np.array([(380,170),(430,205),(451,224),(474,247),(495,258),(513,264),(531,255),(542,249),(561,233),(570,215),(580,195),(640,160)],np.float32)
+JAW=np.array(GEOMETRY['jaw'],np.float32)
 jaw_y=np.interp(np.arange(src.shape[1]),JAW[:,0],JAW[:,1])
 above=(yy<=jaw_y[None,:]+1).astype(np.float32)
 above=cv2.GaussianBlur(above,(0,0),0.8)
