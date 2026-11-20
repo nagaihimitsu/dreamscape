@@ -62,7 +62,7 @@ function choose(story: Story, index: number, result: "positive" | "negative" | u
 
 describe("Golden Triangle authored branching contracts", () => {
   it("covers the complete published cast and independent date set", () => {
-    expect(indiaDates).toHaveLength(25);
+    expect(indiaDates).toHaveLength(24);
     // 15 on the map and the departure moment quiz at New Delhi station (gt_delhi_special_station_battle, 2026-11-18),
     // the India battles with reasoning: a B quiz at # at: depart delhi (its knot in the Delhi inserts file) and the Agra
     // finale, an evidence connection C (2026-11-20).
@@ -81,7 +81,7 @@ describe("Golden Triangle authored branching contracts", () => {
       expect(date.storyId).toMatch(new RegExp(`^places/gt_${date.chapterId}_[a-z_]+\\.${date.id}$`));
     }
     expect(indiaDates.filter((date) => date.kind !== "normal").map((date) => date.kind).sort())
-      .toEqual(["answer", "confession", "confession", "confession", "reassurance", "reassurance", "reassurance"]);
+      .toEqual(["answer", "confession", "confession", "confession", "reassurance", "reassurance"]);
   });
 
   // The 18 normal dates (place-file knots with tags, GT-3b): every path, with every cond text true and false and both

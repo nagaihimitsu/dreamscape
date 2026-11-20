@@ -194,8 +194,13 @@ describe("authored Golden Triangle journey", () => {
       // only the departure's scenes may change the money and the relationship.
       const moved = cityIndex < journey.cities.length - 1;
       if (moved) for (const field of fields) expect(state[field], field).toEqual(departed.leaving[field]);
-      // (Its reasoning quiz, for a player who heard Dubey, also records its result.)
-      const scenesChange = departureScenes ? ["travelBudget", "affection", "trust", "spark", "romanceStage", "battleRecords"] : [];
+      // (Its reasoning quiz, for a player who heard Dubey, also records its result and gives its # on_done: ap +2.)
+      const scenesChange = departureScenes ? ["ap", "travelBudget", "affection", "trust", "spark", "romanceStage", "battleRecords"] : [];
+      if (departureScenes) {
+        const stationQuiz = state.battleRecords.some((record) => record.battleId === "gt_delhi_special_station_battle")
+          && !completed.battleRecords.some((record) => record.battleId === "gt_delhi_special_station_battle");
+        expect(state.ap).toBe(completed.ap + (stationQuiz ? 2 : 0));
+      }
       for (const field of fields.filter((item) => !scenesChange.includes(item))) expect(state[field], field).toEqual(completed[field]);
       // The station's deposit (# money: -500 with # set: gt_delhi_scam_paid) is the only money spent there.
       if (departureScenes)

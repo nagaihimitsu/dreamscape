@@ -169,9 +169,9 @@ describe("special battle content contract", () => {
     expect(() =>
       battleSchema.parse({
         ...b,
-        reasoning: { ...b.reasoning, roundIndex: 3 },
+        reasoning: { ...b.reasoning, roundIndex: 5 },
       }),
-    ).toThrow(/roundIndex[\s\S]*Too big: expected number to be <=2/);
+    ).toThrow(/roundIndex[\s\S]*Too big: expected number to be <=4/);
   });
 
   it("rejects missing case evidence and evidence from a different landmark", async () => {
