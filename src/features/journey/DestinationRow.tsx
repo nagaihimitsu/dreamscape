@@ -51,12 +51,13 @@ export function getTravelEventDescription(eventId: string): string {
  * pressed twice), and, once selected, the hint strip inside it or the inline choices
  * after it. The button keeps its name; 「選択中。」 and the hint are its description.
  */
-export function DestinationRow({ game, place, choices, current, recommended, api, scope = "page", testId = "travel-place" }: {
+export function DestinationRow({ game, place, choices, current, recommended, nearest, api, scope = "page", testId = "travel-place" }: {
   game: GameState;
   place: TravelDestinationPlace;
   choices: DestinationChoices;
   current: TravelPlace;
   recommended?: boolean;
+  nearest?: boolean;
   api: TravelSelectionApi;
   scope?: PressScope;
   testId?: string;
@@ -78,7 +79,7 @@ export function DestinationRow({ game, place, choices, current, recommended, api
       <span className="travel-destination-text">
         <span className="travel-destination-head">
           <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>
-          {recommended && <small className="travel-recommended">おすすめ</small>}
+          {recommended ? <small className="travel-recommended">おすすめ</small> : nearest && <small className="travel-recommended">最寄り</small>}
         </span>
         <span className="travel-destination-title">
           <span>{event.place.nameJa}</span>

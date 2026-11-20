@@ -22,10 +22,10 @@ export function TravelMenu({ game, api, onRent, onBookTour, onCancelTour }: {
   onCancelTour: () => boolean;
 }) {
   const { city } = getCityContent(game.currentCityId);
-  const { current, candidates, nearby, other, recommendedMainId } = api.destinations;
+  const { current, candidates, nearby, other, recommendedMainId, nearestId } = api.destinations;
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
   const row = (place: (typeof nearby)[number], recommended = false) =>
-    <DestinationRow key={place.id} game={game} place={place} choices={api.choices.get(place.id)!} current={current} recommended={recommended} api={api} />;
+    <DestinationRow key={place.id} game={game} place={place} choices={api.choices.get(place.id)!} current={current} recommended={recommended} nearest={place.id === nearestId} api={api} />;
   // The expanded map's 「選んだ行き先」: the selected row (its own testids), or the ways home.
   const target = api.target;
   const selectedRow = target?.kind === "place" ? [...nearby, ...other].find((place) => place.id === target.placeId) : undefined;

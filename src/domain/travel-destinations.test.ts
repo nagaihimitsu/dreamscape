@@ -2,8 +2,17 @@ import { describe, expect, it } from "vitest";
 import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { createGame } from "./game";
 import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked, isUnclearedMainTravelEvent, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
-import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
+import { getTravelDestinations, getTravelWaitOptions, nearestDestinationId } from "./travel-destinations";
 import { groupDestinationEvents, selectNearbyDestinations } from "./travel";
+
+describe("nearest destination", () => {
+  it("marks the nearest walkable place, skipping the current place and the recommended one", () => {
+    const places = [{ id: "here", walkMinutes: 0 }, { id: "near", walkMinutes: 3 }, { id: "far", walkMinutes: 9 }];
+    expect(nearestDestinationId(places, "here", null)).toBe("near");
+    expect(nearestDestinationId(places, "here", "near")).toBe("far");
+    expect(nearestDestinationId([{ id: "bus", walkMinutes: null }], undefined, null)).toBeNull();
+  });
+});
 
 describe("main travel event completion", () => {
   it("does not offer or restart completed episodes, special battles or ordinary dates", () => {
