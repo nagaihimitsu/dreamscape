@@ -96,13 +96,15 @@ describe("unused album images", () => {
 });
 
 describe("the moving standing picture's folder", () => {
-  it("counts every file inside a pose's avatar folder as used, and nothing beside it", () => {
-    const pose = { id: "standing_01", canvas: { width: 10, height: 20 }, expressions: {}, avatar: "assets/characters/h/avatar/" };
+  it("counts every file inside a pose's avatar and avatarFace folders as used, and nothing beside them", () => {
+    const pose = { id: "standing_01", canvas: { width: 10, height: 20 }, expressions: {}, avatar: "assets/characters/h/avatar/",
+      avatarFace: "assets/characters/h/face/" };
     const sources = load({
       ...journey("trip_a", 10, "a_city"),
       "content/presentation/characters.json": json({ schemaVersion: 1, characters: [{ id: "h", costumes: [{ id: "c", poses: [pose] }] }] }),
       "public/assets/characters/h/avatar/avatar.json": null,
-      "public/assets/characters/h/avatar/built/sprites/eyes_closed_0.png": null,
+      "public/assets/characters/h/avatar/built/layers.json": null,
+      "public/assets/characters/h/face/eyes_closed_0.png": null,
       "public/assets/characters/h/avatar_old.png": null,
     });
     expect(messages(unusedPublicFiles(sources))).toEqual([

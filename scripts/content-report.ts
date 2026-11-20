@@ -119,8 +119,9 @@ export function unknownJourneyFiles(sources: ContentSources): ContentWarning[] {
  * line's `# photo:` or `# recall:` names, the voices a line's `# voice:`
  * names, the sound effects a presentation/sounds.json registers, the tracks
  * a presentation/music.json or presentation/ambience.json registers, every
- * file inside the moving standing picture's folder a pose's `avatar` names in
- * presentation/characters.json, which the game reads by the folder) nor the
+ * file inside the moving standing picture's folders a pose's `avatar` and
+ * `avatarFace` name in presentation/characters.json, which the game reads by
+ * the folder) nor the
  * game's code (CODE_IMAGE_FILES) refers to: every file of a
  * journey's public/ folder and of the root public/assets/. The rest of the
  * root public/ (browser icons, the web app manifest) is linked from
@@ -143,11 +144,12 @@ export function unusedPublicFiles(sources: ContentSources): ContentWarning[] {
   const ambienceCatalog = sources.catalogs["presentation/ambience.json"]?.value;
   const registeredAmbienceIds = new Set(list(isObject(ambienceCatalog) ? ambienceCatalog.tracks : undefined).map((track) => track.id)
     .filter((id): id is string => typeof id === "string"));
-  // A pose's moving standing picture (`avatar`, a folder ending in "/"): the game reads its files by the folder (avatar.json,
-  // rig.json, built/), so every file inside it counts as used (character-assets.ts checks the field's form).
+  // A pose's moving standing picture (`avatar`, a folder ending in "/", and `avatarFace`, the face's folder all costumes
+  // share, 2026-11-20): the game reads their files by the folder (avatar.json, rig.json, built/; the face's drawings and
+  // sprites.json), so every file inside them counts as used (character-assets.ts checks the fields' form).
   const characterCatalog = sources.catalogs["presentation/characters.json"]?.value;
   const avatarFolders = list(isObject(characterCatalog) ? characterCatalog.characters : undefined)
-    .flatMap((character) => list(character.costumes)).flatMap((costume) => list(costume.poses)).map((pose) => pose.avatar)
+    .flatMap((character) => list(character.costumes)).flatMap((costume) => list(costume.poses)).flatMap((pose) => [pose.avatar, pose.avatarFace])
     .filter((folder): folder is string => typeof folder === "string" && folder.endsWith("/"));
   const named = (assetPath: string) => namedAlbumIds.has(albumImageIdOf(assetPath) ?? "") || namedVoiceIds.has(voiceIdOf(assetPath) ?? "") ||
     registeredSoundIds.has(soundIdOf(assetPath) ?? "") || registeredTrackIds.has(trackIdOf(assetPath) ?? "") ||
