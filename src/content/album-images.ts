@@ -26,11 +26,17 @@ export function albumImageIdOf(assetPath: string): string | undefined {
   return dot > 0 && ALBUM_IMAGE_ID.test(id) && (ALBUM_IMAGE_EXTENSIONS as readonly string[]).includes(extension) ? id : undefined;
 }
 
-/** One album image of a journey: its ID, its served path and the journey whose public/ folder serves it. */
+/**
+ * One album image of a journey: its ID, its served path and the journey whose public/ folder serves it, and where a line's
+ * `# photo:` takes it (scripts/album-images.ts withPhotoSpots; 2026-11-20 user decision: once the journey is over, 旅の記録's
+ * 「写真」 shows in grey the photos not taken yet): the city of the first such line and that line's `# photo_caption:`. An
+ * image no line takes has no `photo` (only a `# recall:` names it, or nothing does).
+ */
 export const albumImageSchema = z.object({
   id: z.string().regex(ALBUM_IMAGE_ID),
   path: z.string().min(1),
   journeyId: z.string().min(1),
+  photo: z.object({ cityId: z.string().min(1), caption: z.string().min(1).optional() }).strict().optional(),
 }).strict();
 export type AlbumImage = z.infer<typeof albumImageSchema>;
 

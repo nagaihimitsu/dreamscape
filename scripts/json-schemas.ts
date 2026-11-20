@@ -15,6 +15,7 @@ import { localWordsCatalogSchema } from "../src/content/local-words";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { soundCatalogSchema } from "../src/content/sounds";
+import { shopCatalogSchema } from "../src/content/shop";
 import { musicCatalogSchema } from "../src/content/music";
 import { ambienceCatalogSchema } from "../src/content/ambience";
 import { tourSchema } from "../src/content/tour-schemas";
@@ -81,6 +82,7 @@ export const CATALOG_SCHEMAS: Record<MergedKind, { titleJa: string; schema: z.Zo
   "romance/progression.json": { titleJa: "恋の段階", schema: content.progressionSchema },
   "romance/response_profiles.json": { titleJa: "言葉の特性", schema: content.responseProfileCatalogSchema },
   "scenes/catalog.json": { titleJa: "場面のデータ", schema: sceneDataCatalogSchema },
+  "shop/catalog.json": { titleJa: "お店と服", schema: shopCatalogSchema },
   "tourism/catalog.json": { titleJa: "観光地・手がかり・画像", schema: tourismCatalogSchema },
 };
 

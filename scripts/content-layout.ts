@@ -113,6 +113,8 @@ export const CATALOG_RULES = [
   { kind: "romance/response_profiles.json", file: "core" },
   // The scene JSON: what a place file's tags cannot say, by scene ID (sources; stage 3a, 3.7).
   { kind: "scenes/catalog.json", fields: { schemaVersion: same, scenes: concat } },
+  // Free time's shops and the heroine's outfits they sell (optional; 2026-11-20; src/content/shop.ts).
+  { kind: "shop/catalog.json", fields: { schemaVersion: same, shops: concat, outfits: concat } },
   { kind: "tourism/catalog.json", fields: { schemaVersion: same, assets: concat, landmarks: concat, clues: concat } },
 ] as const satisfies readonly CatalogRule[];
 

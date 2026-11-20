@@ -37,6 +37,15 @@ describe("regional costume selection", () => {
     expect(resolveCharacterCostume(heroine, wardrobe, { costume: "country_outfit", sceneId: "date_scene", cityId: "milano" })).toEqual({ costume: "country_outfit", pose: "standing_01" });
   });
 
+  it("dresses her in the outfit the player chose over the city's, country's and region's, never over the scene's own", () => {
+    const { heroine, wardrobe } = catalogue();
+    expect(resolveCharacterCostume(heroine, wardrobe, { cityId: "milano", worn: "region_outfit" })).toEqual({ costume: "region_outfit", pose: "standing_01" });
+    expect(resolveCharacterCostume(heroine, wardrobe, { regionId: "south_europe", worn: "city_outfit" })).toEqual({ costume: "city_outfit", pose: "standing_01" });
+    expect(resolveCharacterCostume(heroine, wardrobe, { sceneId: "date_scene", cityId: "milano", worn: "region_outfit" })).toEqual({ costume: "scene_outfit", pose: "standing_01" });
+    // An outfit without pictures falls back to the basic outfit (none here: the legacy placeholder), as any other.
+    expect(resolveCharacterCostume(heroine, wardrobe, { cityId: "milano", worn: "empty_outfit" })).toEqual({});
+  });
+
   it("keeps the pose's neutral image for every expression when the pose has only neutral, never the heroine's variants shy image", () => {
     const { heroine, wardrobe } = catalogue();
     const outfit = resolveCharacterCostume(heroine, wardrobe, { cityId: "milano" });

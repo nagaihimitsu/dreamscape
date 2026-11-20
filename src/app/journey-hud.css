@@ -117,7 +117,8 @@
 .hud-tools { display: flex; gap: 4px; }
 .hud-screen-tool { display: contents; }
 .hud-tool,
-.journey-hud .held-item-button {
+.journey-hud .held-item-button,
+.journey-hud .hud-outfits-button {
   min-height: 44px;
   margin: 0;
   border: 1px solid var(--ds-gold-hairline);
@@ -129,7 +130,8 @@
   cursor: pointer;
 }
 .hud-tool,
-.journey-hud .held-item-button {
+.journey-hud .held-item-button,
+.journey-hud .hud-outfits-button {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -141,6 +143,7 @@
 .hud-tool .icon { width: 20px; height: 20px; }
 .hud-tool-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
 .journey-hud .held-item-button[aria-expanded="true"],
+.journey-hud .hud-outfits-button[aria-expanded="true"],
 .hud-tool[aria-expanded="true"] { background: var(--ds-slate-900); border-color: var(--ds-gold); }
 
 /* Over a story scene that waits for no choice (hud-view.ts, user decision
@@ -148,7 +151,7 @@
    and AP, the held items and the screen's tool (手がかり帳) keep their room,
    so neither the header nor the scene under it moves when they show at a
    choice; hidden, they are neither seen, pressed, focused nor read. */
-.journey-hud[data-view="talk"] :is(.hud-wallet, .held-items, .hud-screen-tool > *) { visibility: hidden; }
+.journey-hud[data-view="talk"] :is(.hud-wallet, .held-items, .hud-outfits, .hud-screen-tool > *) { visibility: hidden; }
 /* While a quiet line reads (`# quiet:`, hud-view.ts "quiet") the whole header steps aside, its shade over the
    photo too, and keeps its room the same way; it comes back at once with the next line that is not quiet, or a choice.
    The line, the window's tools and 「会話を表示」 stay where they are. */

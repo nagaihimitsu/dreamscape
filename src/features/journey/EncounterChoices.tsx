@@ -34,7 +34,7 @@ export function EncounterChoices({
   /** The journey's money format (formatMoneyForCity). */
   formatMoney: (amount: number) => string;
   disabled?: boolean;
-  /** 「英語オフ」 (a quiz's options only): each option's translation in its English's place, with no 「訳を見る」. */
+  /** 「日本語のみ」 (a quiz's options and an encounter's replies): each option's translation in its English's place, with no 「訳を見る」. */
   japaneseOnly?: boolean;
   onChoose: (index: number) => void;
 }) {
