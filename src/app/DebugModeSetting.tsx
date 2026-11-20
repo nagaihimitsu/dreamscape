@@ -69,7 +69,7 @@ export function DebugModeSetting({ debugMode }: { debugMode: ReturnType<typeof u
     <section className="debug-mode-setting" aria-labelledby="debug-mode-setting-title" data-testid="debug-mode-setting">
       <h3 id="debug-mode-setting-title">Debugモード</h3>
       <p className="fine-print">
-        制作・確認用の機能です。オンにすると「場面の確認」から場面を直接開けて、遊びの中で親しさ・信頼・恋愛の意識の変化が画面に出ます。通常のセーブ・英語ノート・表示設定は変わりません。
+        制作・確認用の機能です。オンにすると「場面の確認」から場面を直接開けて、遊びの中で親しさ・信頼・恋愛の意識の変化が画面に出ます。通常のセーブ・クイズと旅のことばの記録・表示設定は変わりません。
       </p>
       {/* Always on the page, so screen readers announce the text when it is put in (a status
           region added together with its text is often not read). Empty, it takes no space. */}

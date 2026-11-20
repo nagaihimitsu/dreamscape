@@ -306,8 +306,8 @@ export const ops = {
   },
   /**
    * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ・ロード, 旅の記録,
-   * ノート (旅のことば and 旅の図鑑, for a journey with either; named after its page for a note of one page), 画面の出典 (while
-   * the screen shows a credited photo) and ゲームの設定 (openMenu). While 旅のことば or 旅の図鑑 has something new, its name and 「ノート」's go on with
+   * ノート (旅のことば and 旅の図鑑, for a journey with either; named after its page for a note of one page), 画面の出典 (the
+   * screen's photos and the way into 出典・権利の一覧) and ゲームの設定 (openMenu). While 旅のことば or 旅の図鑑 has something new, its name and 「ノート」's go on with
    * 「、…に新しい項目あり」 (its dot; the browser may put a space before it, as the words are a separate visually hidden span).
    */
   settingsButton(page: Page): Locator {
@@ -327,7 +327,7 @@ export const ops = {
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
   /**
-   * ≡メニュー → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data)
+   * ≡メニュー → 「ゲームの設定」: returns the settings dialog (文字送り, 英語, 音, names)
    * once it takes presses (it opens under the finger and waits a moment: Modal's settlePresses).
    */
   async openSettings(page: Page): Promise<Locator> {
@@ -338,22 +338,26 @@ export const ops = {
     return settings;
   },
   /**
-   * Settings → 「古い保存データの整理」 (listed only while there is old data): the cleanup opens over the settings, and
-   * closes back to them.
+   * セーブ・ロード → 「古い保存データの整理」 (listed only while there is old data; in ゲームの設定 until 2026-11-20): the
+   * cleanup opens over セーブ・ロード, and closes back to it.
    */
   async openOldDataCleanup(page: Page): Promise<Locator> {
-    const settings = await ops.openSettings(page);
-    await settings.getByRole("button", { name: "古い保存データの整理" }).click();
+    const saveLoad = await ops.openSaveLoad(page);
+    await saveLoad.getByRole("button", { name: "古い保存データの整理" }).click();
     const cleanup = page.getByRole("dialog", { name: "古い保存データの整理" });
     await expect(cleanup).toBeVisible();
     return cleanup;
   },
   /**
-   * 「出典・権利の一覧」 from the title screen (under its note) or from ≡メニュー → ゲームの設定 (over which it opens);
-   * returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
+   * 「出典・権利の一覧」 from the title screen (under its note) or from ≡メニュー → 「画面の出典」 (over which it opens; from
+   * ゲームの設定 until 2026-11-20); returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
    */
-  async openCredits(page: Page, from: "title" | "settings"): Promise<Locator> {
-    const scope = from === "title" ? page.getByRole("main") : await ops.openSettings(page);
+  async openCredits(page: Page, from: "title" | "menu"): Promise<Locator> {
+    let scope = page.getByRole("main");
+    if (from === "menu") {
+      await ops.menuItem(page, "画面の出典");
+      scope = page.getByRole("dialog", { name: "画面の出典" });
+    }
     await scope.getByRole("button", { name: "出典・権利の一覧", exact: true }).click();
     const credits = page.getByRole("dialog", { name: "出典・権利の一覧" });
     await expect(credits).toBeVisible();
@@ -368,12 +372,12 @@ export const ops = {
     return page.getByRole("dialog").filter({ has: page.getByTestId("offline-play") });
   },
   /**
-   * 「オフラインで遊ぶ」 from the title screen (beside 「旅行編」) or from ≡メニュー → ゲームの設定 (over which it opens);
-   * returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
+   * 「オフラインで遊ぶ」 from the title screen (beside 「旅行編」) or from ≡メニュー → 「セーブ・ロード」 (over which it opens;
+   * from ゲームの設定 until 2026-11-20); returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
    */
-  async openOfflinePlay(page: Page, from: "title" | "settings"): Promise<Locator> {
+  async openOfflinePlay(page: Page, from: "title" | "saveLoad"): Promise<Locator> {
     if (from === "title") await page.getByTestId("offline-entry").click();
-    else await (await ops.openSettings(page)).getByTestId("offline-settings-entry").click();
+    else await (await ops.openSaveLoad(page)).getByTestId("offline-save-load-entry").click();
     const dialog = ops.offlinePlay(page);
     await expect(dialog).toBeVisible();
     await expect(dialog).not.toHaveAttribute("data-settling");
@@ -482,14 +486,15 @@ export const ops = {
   },
   /**
    * ≡メニュー → 「セーブ・ロード」 (2026-11-19: one item, a dialog of the slots): returns that dialog in the mode asked
-   * (「セーブ」 or 「ロード」), once it takes presses (it opens under the finger and waits a moment).
+   * (「セーブ」 or 「ロード」; none: as it opens), once it takes presses (it opens under the finger and waits a moment).
+   * Under the slots: 自動保存, 保存データの消去, オフラインで遊ぶ, 古い保存データの整理 and 「旅行編」 (2026-11-20).
    */
-  async openSaveLoad(page: Page, mode: "save" | "load"): Promise<Locator> {
+  async openSaveLoad(page: Page, mode?: "save" | "load"): Promise<Locator> {
     await ops.menuItem(page, "セーブ・ロード");
     const dialog = page.getByRole("dialog", { name: "セーブ・ロード" });
     await expect(dialog).toBeVisible();
     await expect(dialog).not.toHaveAttribute("data-settling");
-    await dialog.getByTestId(`save-load-${mode}`).click();
+    if (mode) await dialog.getByTestId(`save-load-${mode}`).click();
     return dialog;
   },
   /** ≡メニュー → 「セーブ・ロード」 → 「セーブ」 of the slot played. */

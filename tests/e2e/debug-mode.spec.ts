@@ -38,11 +38,11 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
     if (url.origin === new URL(baseURL!).origin && ["script", "stylesheet"].includes(request.resourceType())) requested.push(url.pathname);
   });
   await ops.startJourney(page);
+  // (The game's own セーブ・ロード has the way into 「オフラインで遊ぶ」; Debug's has none: below.)
+  const gameSaveLoad = await ops.openSaveLoad(page);
+  await expect(gameSaveLoad.getByTestId("offline-save-load-entry")).toBeVisible();
+  await ops.closeDialog(gameSaveLoad);
   let settings = await ops.openSettings(page);
-  // (The game's own ゲームの設定 has the way into 「オフラインで遊ぶ」; Debug's has none: below.)
-  await expect(settings.getByTestId("offline-settings-entry")).toBeVisible();
-  await ops.closeDialog(settings);
-  settings = await ops.openSettings(page);
   const before = await allStorage(page);
   // While it is off, it waits folded in ゲームの設定's 「制作者向け」 (2026-11-14), the last group.
   await expect(settings.locator("details.settings-creator")).not.toHaveAttribute("open");
@@ -118,6 +118,7 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   // Debug's own ゲームの設定 has no Debug-mode switch, and its 「セーブ・ロード」 keeps Debug's wording (also in production).
   const saveLoad = await ops.openSaveLoad(page, "save");
   await expect(saveLoad.getByRole("button", { name: "Debug用の一時データの消去" })).toBeVisible();
+  await expect(saveLoad.getByTestId("offline-save-load-entry")).toHaveCount(0);
   await ops.closeDialog(saveLoad);
   settings = await ops.openSettings(page);
   await expect(settings.getByTestId("debug-mode-setting")).toHaveCount(0);

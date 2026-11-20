@@ -35,7 +35,7 @@ test("the title's 「出典・権利の一覧」 lists a photo with its source, 
   await expect(page.getByRole("main").getByRole("button", { name: "出典・権利の一覧", exact: true })).toBeFocused();
 });
 
-test("「出典・権利の一覧」 opens from the title and from ゲームの設定 with the keyboard, says where the library list appears, and gives the focus back", { tag: tier.gate }, async ({ page }) => {
+test("「出典・権利の一覧」 opens from the title and from 画面の出典 with the keyboard, says where the library list appears, and gives the focus back", { tag: tier.gate }, async ({ page }) => {
   await page.goto("/");
   const entry = page.getByRole("main").getByRole("button", { name: "出典・権利の一覧", exact: true });
   await entry.focus();
@@ -48,30 +48,28 @@ test("「出典・権利の一覧」 opens from the title and from ゲームの�
   await expect(credits).toBeHidden();
   await expect(entry).toBeFocused();
 
-  // From ゲームの設定 it opens over the settings and closes back to them where they were, the focus on its entry
-  // (2026-11-14 user decision), by Esc or by a tap on the dimmed page around it.
+  // In play, ≡メニュー's 「画面の出典」 has the way into it at its foot (ゲームの設定 until 2026-11-20): it opens over
+  // 画面の出典 and closes back to it, the focus on its entry, by Esc or by a tap on the dimmed page around it.
   await ops.startJourney(page);
-  const settings = await ops.openSettings(page);
-  const settingsEntry = settings.getByRole("button", { name: "出典・権利の一覧", exact: true });
-  await settingsEntry.focus();
-  const scrolled = await settings.evaluate((dialog) => dialog.scrollTop);
-  expect(scrolled, "the entry lies below the settings' first screen").toBeGreaterThan(0);
+  await ops.menuItem(page, "画面の出典");
+  const screen = page.getByRole("dialog", { name: "画面の出典" });
+  const screenEntry = screen.getByRole("button", { name: "出典・権利の一覧", exact: true });
+  await screenEntry.focus();
   await page.keyboard.press("Enter");
-  const fromSettings = page.getByRole("dialog", { name: "出典・権利の一覧" });
-  await expect(fromSettings.getByRole("button", { name: "閉じる", exact: true })).toBeFocused();
-  await expect(settings).toBeVisible();
+  const fromScreen = page.getByRole("dialog", { name: "出典・権利の一覧" });
+  await expect(fromScreen.getByRole("button", { name: "閉じる", exact: true })).toBeFocused();
+  await expect(screen).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(fromSettings).toBeHidden();
-  await expect(settings).toBeVisible();
-  await expect(settingsEntry).toBeFocused();
-  expect(await settings.evaluate((dialog) => dialog.scrollTop)).toBe(scrolled);
-  await settingsEntry.click();
-  await expect(fromSettings).not.toHaveAttribute("data-settling");
+  await expect(fromScreen).toBeHidden();
+  await expect(screen).toBeVisible();
+  await expect(screenEntry).toBeFocused();
+  await screenEntry.click();
+  await expect(fromScreen).not.toHaveAttribute("data-settling");
   await ops.tapAt(page, { x: 4, y: (page.viewportSize()!.height) / 2 });
-  await expect(fromSettings).toBeHidden();
-  await expect(settings).toBeVisible();
+  await expect(fromScreen).toBeHidden();
+  await expect(screen).toBeVisible();
   await ops.settled(page);
   await page.keyboard.press("Escape");
-  await expect(settings).toBeHidden();
+  await expect(screen).toBeHidden();
   await expect(ops.settingsButton(page)).toBeFocused();
 });

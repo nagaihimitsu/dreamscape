@@ -93,7 +93,7 @@ export function loadLearning(storage: StorageLike) {
       raw: null,
       data: fresh(),
       error:
-        "英語ノートの保存データを確認できないため、上書きせず保護しています。",
+        "クイズと旅のことばの記録の保存データを確認できないため、上書きせず保護しています。",
     };
   }
 }

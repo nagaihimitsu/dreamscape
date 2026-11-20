@@ -55,9 +55,9 @@ function closeWaitMenu() {
 }
 
 /**
- * What ≡メニュー's panel opens; 画面の出典 only while free time shows photos (cards, a backdrop photo), the recap card a
- * place's photo (also on the night screen) or a story scene a registered photo (its credits: the scene shows no 出典 of its
- * own, nor does a quiz answer's reveal of the same photo; 2026-11-15).
+ * What ≡メニュー's panel opens; 画面の出典 lists the photos free time shows (cards, a backdrop photo), the recap card's
+ * place photo (also on the night screen) or a story scene's registered photo (its credits: the scene shows no 出典 of its
+ * own, nor does a quiz answer's reveal of the same photo; 2026-11-15), and opens 出典・権利の一覧 (2026-11-20).
  */
 type MenuActions = {
   /** 「セーブ・ロード」: the dialog of the journey's slots, to save into or load from one (SaveSlots.tsx's SaveLoadDialog). */
@@ -70,7 +70,7 @@ type MenuActions = {
   onNote?: () => void;
   /** Its name: 「ノート」, or its page's name for a note of one page (noteName). */
   noteLabel?: string;
-  /** 「画面の出典」 (PhotoCredits.tsx's ScreenCredits; 2026-11-20): only while the screen shows a credited photo. */
+  /** 「画面の出典」 (PhotoCredits.tsx's ScreenCredits; 2026-11-20): the screen's photos, and the way into 出典・権利の一覧. */
   onScreenCredits?: () => void;
   onSettings: () => void;
   /** 移動画面に戻る（Debug）: only while Debug mode offers it (src/app/free-time-return.ts). */
@@ -86,7 +86,7 @@ const noop = () => undefined;
  * pressed, side by side at its right end (user decision 2026-11-11): the held
  * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
  * 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」 until 2026-11-14) with
- * セーブ・ロード | 旅の記録・ノート | 画面の出典 (while the screen shows a credited photo)・ゲームの設定.
+ * セーブ・ロード | 旅の記録・ノート | 画面の出典・ゲームの設定.
  * Over a story scene
  * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
@@ -289,9 +289,10 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * ≡メニュー (U2, U24; 「設定」 with a gear until 2026-11-14, renamed as it is the game's main menu): a disclosure button
  * with its small panel right under the header (APG Disclosure, not an ARIA menu: ordinary buttons, and Tab works as
  * everywhere else), its items in three groups split by thin rules (2026-11-19 user decision, as the menu had grown):
- * セーブ・ロード (one item since 2026-11-19: the dialog of the slots, SaveLoadDialog); 旅の記録 and ノート (英語ノート and
+ * セーブ・ロード (one item since 2026-11-19: the dialog of the slots, SaveLoadDialog); 旅の記録 and ノート (旅のことば and
  * 旅の図鑑 in one dialog since 2026-11-20), what the journey collected; 画面の出典 (one item for free time's and a story
- * scene's photos since 2026-11-20) and ゲームの設定 (U28). Debug's 移動画面に戻る comes last.
+ * scene's photos since 2026-11-20, on every screen with the way into 出典・権利の一覧) and ゲームの設定 (U28). Debug's
+ * 移動画面に戻る comes last.
  * Opening moves the focus to the first item (ArrowUp/ArrowDown also move between the items); Esc closes and
  * returns it to ≡メニュー; leaving the group with the focus or a press elsewhere
  * closes it. A tap on the page outside the header only closes it (DismissLayer).

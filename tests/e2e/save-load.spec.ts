@@ -283,16 +283,16 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.getByTestId("tourism-skip").click();
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano")!.id;
-  const settings = await ops.openSettings(page);
-  await settings.getByLabel("旅行編").selectOption(otherJourney);
+  const slots = await ops.openSaveLoad(page);
+  await slots.getByLabel("旅行編").selectOption(otherJourney);
   const switching = page.getByRole("dialog", { name: "旅行編を切り替える" });
   await expect(switching).toContainText("手動セーブしていない進行は失われます。");
   await switching.getByRole("button", { name: "戻る", exact: true }).click();
   await expect(switching).toBeHidden();
-  // 「戻る」 goes back to ゲームの設定, which the confirmation opened over (2026-11-14), on this journey.
-  await expect(settings).toBeVisible();
-  await expect(settings.getByLabel("旅行編")).toHaveValue("milano");
-  await ops.closeDialog(settings);
+  // 「戻る」 goes back to セーブ・ロード, which the confirmation opened over (ゲームの設定 until 2026-11-20), on this journey.
+  await expect(slots).toBeVisible();
+  await expect(slots.getByLabel("旅行編")).toHaveValue("milano");
+  await ops.closeDialog(slots);
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
 
@@ -371,8 +371,8 @@ test("a quick double tap on 「切り替える」 does not read on the other jou
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await ops.settled(page);
-  const settings = await ops.openSettings(page);
-  await settings.getByLabel("旅行編").selectOption(other!.id);
+  const saveLoad = await ops.openSaveLoad(page);
+  await saveLoad.getByLabel("旅行編").selectOption(other!.id);
   const confirm = await ops.centerOf(page.getByRole("dialog", { name: "旅行編を切り替える" }).getByRole("button", { name: "切り替える", exact: true }));
   await ops.holdClock(page);
   await page.touchscreen.tap(confirm.x, confirm.y);
@@ -678,7 +678,7 @@ test("old saved data is listed with its keys, removed only after confirmation an
   cleanup = await ops.openOldDataCleanup(page);
   await expect(cleanup.getByText(saveKey("golden_triangle"), { exact: true })).toHaveCount(0);
   await expect(cleanup.getByText("dreamscape.learning.v1", { exact: true })).toBeVisible();
-  confirm = await ops.chooseOldData(page, cleanup, [/以前のミラノ編のセーブ/, /以前のミラノ編の英語ノート/]);
+  confirm = await ops.chooseOldData(page, cleanup, [/以前のミラノ編のセーブ/, /以前のミラノ編のクイズと旅のことばの記録/]);
   await confirm.getByRole("button", { name: "消去する", exact: true }).click();
   await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
   const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = kept;
