@@ -1,6 +1,7 @@
-import { dates, episodes } from "../../content";
+import { albumImages, dates, episodes } from "../../content";
+import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
-import { albumPages, type AlbumPhotoView } from "./album-pages";
+import { ALBUM_IMAGE_ALT_JA, albumPages } from "./album-pages";
 import { journeyAlbumContent, lookBackOf, subjectPlacePicture, type LookBack, type RecapPicture, type RecapSubject } from "./journey-moments";
 import { metPeopleGroups, type MetPerson } from "./met-people";
 import { formatTravelTime } from "./travel-time";
@@ -8,8 +9,9 @@ import { formatTravelTime } from "./travel-time";
 // 旅の記録 (2026-11-19 user decisions: 旅の記録 and アルバム made one; reshaped 2026-11-20): the journey kept on two axes.
 // 「体験」 is what was lived, city by city in the journey's order (each episode completed and each date with a destination
 // played, with its place's photo and her few words looking back on the place, then the people met there); 「写真」 is every
-// photo the lines took on the journey, the newest first. Pure rules apart from the dialog (TravelLog.tsx). Never a
-// relationship value, a quiz score or a place not visited yet.
+// photo the lines took on the journey, the newest first, and once the journey is over the photos not taken yet after them,
+// in grey (2026-11-20). Pure rules apart from the dialog (TravelLog.tsx). Never a relationship value, a quiz score or a
+// place not visited yet.
 
 /** One thing lived in a city: an episode (a landmark's or the city's finale) or a date, looked back on. */
 export type LogExperience = Omit<LookBack, "photo"> & {
@@ -68,10 +70,38 @@ export function travelLogCities(game: GameState): LogCity[] {
 }
 
 /**
- * 「写真」: every photo of the album the journey's content can show, the newest first (2026-11-20 user decision: a new
- * photo always at the grid's top left), across the cities.
+ * A photo of 「写真」, as its thumbnail and its larger view show it: the picture (its served path and alternative text), the
+ * title (the caption, else the place), the line under it, and whether it is one the album has (in colour) or one no line
+ * has taken yet (`missed`, in grey; shown once the journey is over).
  */
-export function travelLogPhotos(game: GameState): AlbumPhotoView[] {
-  const views = new Map(albumPages(game.album, journeyAlbumContent(game.currentCityId)).flatMap((page) => page.photos).map((photo) => [photo.imageId, photo]));
-  return [...game.album].reverse().flatMap((photo) => views.get(photo.imageId) ?? []);
+export type LogPhoto = { imageId: string; path: string; altJa: string; titleJa: string; metaJa: string; missed: boolean };
+/** The line under a photo not taken yet, after its city. */
+export const MISSED_PHOTO_JA = "まだ残していない写真";
+
+const byId = new Intl.Collator("en", { numeric: true }).compare;
+
+/**
+ * 「写真」: every photo of the album the journey's content can show, the newest first (2026-11-20 user decision: a new
+ * photo always at the grid's top left), across the cities. With `missed` (album-pages.ts showsMissedPhotos), after them
+ * the journey's other photos (2026-11-20 user decision: the album images a line's `# photo:` takes, generated
+ * album-images.json), in the story's order: by the journey's cities, and in a city by their IDs (numbers by their value:
+ * gt_album_d9 before gt_album_d10), titled by their first line's caption, else the city.
+ */
+export function travelLogPhotos(game: GameState, missed = false): LogPhoto[] {
+  const content = journeyAlbumContent(game.currentCityId);
+  const views = new Map(albumPages(game.album, content).flatMap((page) => page.photos).map((photo) => [photo.imageId, photo]));
+  const taken = [...game.album].reverse().flatMap((photo): LogPhoto[] => {
+    const view = views.get(photo.imageId);
+    return view ? [{ imageId: view.imageId, path: view.path, altJa: view.altJa, titleJa: view.caption ?? view.placeJa,
+      metaJa: `${view.whenJa} · ${view.placeJa}`, missed: false }] : [];
+  });
+  if (!missed) return taken;
+  const journeyId = getJourneyForCity(game.currentCityId)?.id;
+  const kept = new Set(game.album.map((photo) => photo.imageId));
+  const notTaken = content.cities.flatMap((city) => albumImages
+    .filter((image) => image.journeyId === journeyId && image.photo?.cityId === city.id && !kept.has(image.id))
+    .sort((left, right) => byId(left.id, right.id))
+    .map((image): LogPhoto => ({ imageId: image.id, path: image.path, altJa: image.photo?.caption ?? ALBUM_IMAGE_ALT_JA,
+      titleJa: image.photo?.caption ?? city.nameJa, metaJa: `${city.nameJa} · ${MISSED_PHOTO_JA}`, missed: true })));
+  return [...taken, ...notTaken];
 }

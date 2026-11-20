@@ -1,4 +1,6 @@
 import type { AlbumPhoto } from "../../domain/album-state";
+import { isJourneyComplete } from "../../domain/city-travel";
+import type { GameState } from "../../domain/game";
 import { placeDisplayName } from "./travel-labels";
 import { formatTravelTime } from "./travel-time";
 
@@ -43,6 +45,13 @@ export function albumPages(album: readonly AlbumPhoto[], content: AlbumContent):
     return photos.length ? [{ cityId: city.id, cityJa: city.nameJa, photos }] : [];
   });
 }
+
+/**
+ * Whether 旅の記録's 「写真」 shows the photos not taken yet too, in grey (2026-11-20 user decision: the reward of a finished
+ * journey, which is long and seldom played twice; travel-log.ts travelLogPhotos): once the journey is over, and from then on
+ * in the journey 「もう一度この旅を」 started from it (`kept`: the slot keeps the finished journey as its 旅の思い出).
+ */
+export const showsMissedPhotos = (game: GameState, kept: boolean): boolean => kept || isJourneyComplete(game);
 
 /** How far a finger goes sideways (px) for a swipe to turn the page. */
 export const ALBUM_SWIPE_PX = 48;

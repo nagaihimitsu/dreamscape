@@ -56,7 +56,7 @@ import {
   type DateDefinition,
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
-import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
+import { albumFolderPath, albumImagesOf, checkAlbumTags, withPhotoSpots } from "./album-images";
 import { checkMiniGameArtTags, miniGameArtOf } from "./minigame-art";
 import { miniGameUseKey, type MiniGameUse } from "../src/minigames/uses";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
@@ -1806,8 +1806,11 @@ export function validateContent(sources: ContentSources,
     tourismGuides,
     epilogueScenarios,
     journey,
-    /** The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts). */
-    albumImages,
+    /**
+     * The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts), with the city and
+     * caption of the line that takes each (旅の記録's 「写真」 after the journey, 2026-11-20).
+     */
+    albumImages: withPhotoSpots(albumImages, sources.storyFiles.map(({ id, source }) => ({ id, source })), generatedScenes.scenes),
     /** 旅の図鑑's terms of every journey with their journeys (generated/glossary.json; src/content/glossary.ts). */
     glossaryTerms,
     /** The mini-games' pictures of every layer (generated/minigame-art.json; src/minigames/art.ts). */
