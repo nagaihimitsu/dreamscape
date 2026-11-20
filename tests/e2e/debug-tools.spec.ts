@@ -89,14 +89,14 @@ test("the bar's 「フラグ・時刻・段階」 sets a flag that a hotel scene
   expect((await debugGame(page))!.activeEncounter?.encounterId).toBe("gt_delhi_hotel_sick_morning");
 });
 
-test("恋の段階 2 offers Delhi's rooftop confession at night, from 場面の確認 and from the bar, and stage 1 does not", { tag: tier.debug }, async ({ page }) => {
-  // The confession: `# when: episodes delhi >= 1`, `not couple`, `time night`, and its catalog's minRomanceStage 2. Debug's
-  // cleared Delhi opens its epilogue at once (India goes on to Agra after it), so the Red Fort's quiz is played from the start.
+test("恋の段階 2 offers Agra's rooftop confession (the journey's first) at night, from 場面の確認 and from the bar, and stage 1 does not", { tag: tier.debug }, async ({ page }) => {
+  // The confession: `# when: episodes agra >= 1`, `not couple`, `time night`, and its catalog's minRomanceStage 2. Debug's
+  // cleared Agra opens its epilogue at once (India goes on to Jaipur after it), so the Taj Mahal's quiz is played from the start.
   await page.goto("/?debug");
   await ops.debugShown(page.getByTestId("debug-panel"));
-  await page.getByTestId("debug-city").selectOption("delhi");
+  await page.getByTestId("debug-city").selectOption("agra");
   await page.getByTestId("debug-scene").selectOption("battle");
-  await page.getByTestId("debug-target").selectOption("gt_delhi_main_red_fort_battle");
+  await page.getByTestId("debug-target").selectOption("gt_agra_main_taj_mahal_battle");
   await page.getByTestId("debug-progress").selectOption("initial");
   await expect(page.getByTestId("debug-url")).not.toHaveValue(/stage=/u);
   await page.getByTestId("debug-stage").selectOption("2");
@@ -109,14 +109,14 @@ test("恋の段階 2 offers Delhi's rooftop confession at night, from 場面の�
   await page.getByRole("button", { name: "街歩きへ進む", exact: true }).click();
   const free = await playUntil(page, (state) => !state.activeBattle && !state.activeEncounter && !state.occasion, { source: debugGame });
   await expect(page.getByTestId("travel-menu")).toBeVisible();
-  expect(free.completedEpisodeIds).toContain("gt_delhi_main_red_fort");
+  expect(free.completedEpisodeIds).toContain("gt_agra_main_taj_mahal");
 
   // Offered: the hotel's card in free time's row, with the date and its 「行く」.
-  const hotel = page.getByTestId("travel-menu").getByTestId("travel-place-delhi_hotel_hub");
+  const hotel = page.getByTestId("travel-menu").getByTestId("travel-place-agra_hotel_hub");
   const offered = async () => {
-    const card = await ops.selectDestination(page, "delhi_hotel_hub");
-    await expect(card.getByTestId("place-event-gt_delhi_date_confession")).toBeVisible();
-    await expect(ops.wayButton(card, "gt_delhi_date_confession")).toBeEnabled();
+    const card = await ops.selectDestination(page, "agra_hotel_hub");
+    await expect(card.getByTestId("place-event-gt_agra_date_confession")).toBeVisible();
+    await expect(ops.wayButton(card, "gt_agra_date_confession")).toBeEnabled();
   };
   let dialog = await openEdit(page);
   await expect(dialog.getByTestId("debug-edit-stage-2")).toHaveAttribute("aria-pressed", "true");

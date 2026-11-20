@@ -93,16 +93,16 @@ describe("Debug's 恋の段階 (2026-11-16)", () => {
     expect(() => withDebugStage(start, 5 as DebugRomanceStage)).toThrow("恋の段階は1〜4にしてください。");
   });
 
-  it("opens Delhi's rooftop confession at night at stage 2 and not at stage 1", () => {
-    // `# when: episodes delhi >= 1`, `not couple`, `time night`; minRomanceStage 2 (date_catalog.json).
-    const night = withDebugClock(atPlace(finishEpisode(cityStart("delhi"), "gt_delhi_main_red_fort"), "delhi_hotel_hub"), { minute: 19 * 60 });
+  it("opens Agra's rooftop confession (the journey's first) at night at stage 2 and not at stage 1", () => {
+    // `# when: episodes agra >= 1`, `not couple`, `time night`; minRomanceStage 2 (date_catalog.json).
+    const night = withDebugClock(atPlace(finishEpisode(cityStart("agra"), "gt_agra_main_taj_mahal"), "agra_hotel_hub"), { minute: 19 * 60 });
     expect(night.romanceStage).toBe(1);
-    expect(isEventVisible(night, "gt_delhi_date_confession")).toBe(false);
-    expect(getDateAvailability(night, "gt_delhi_date_confession")).toEqual({ available: false, reason: "もう少し、一緒の時間を過ごしてから。" });
+    expect(isEventVisible(night, "gt_agra_date_confession")).toBe(false);
+    expect(getDateAvailability(night, "gt_agra_date_confession")).toEqual({ available: false, reason: "もう少し、一緒の時間を過ごしてから。" });
     const second = setDebugStage(night, 2);
-    expect(isEventVisible(second, "gt_delhi_date_confession")).toBe(true);
-    expect(getDateAvailability(second, "gt_delhi_date_confession")).toEqual({ available: true, reason: "" });
-    expect(isEventVisible(setDebugStage(second, 1), "gt_delhi_date_confession")).toBe(false);
+    expect(isEventVisible(second, "gt_agra_date_confession")).toBe(true);
+    expect(getDateAvailability(second, "gt_agra_date_confession")).toEqual({ available: true, reason: "" });
+    expect(isEventVisible(setDebugStage(second, 1), "gt_agra_date_confession")).toBe(false);
   });
 
   it("leaves play's rule as it is: a stage below what the relationship values and completed dates reach rises where play evaluates it", () => {
