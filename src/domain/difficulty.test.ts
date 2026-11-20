@@ -7,7 +7,7 @@ import { cityStart, openBattleScene } from "../dev/scenario-builders";
 import { getActiveBattleContent } from "./battle";
 import { createGame, setEnglishLevel, validateGameState, type GameState } from "./game";
 import { canConfessSuccessfully } from "./conditions";
-import { confessionThresholds, DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, rewardApBonus, startingBudget } from "./difficulty";
+import { confessionThresholds, DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, isJapaneseOnly, rewardApBonus, startingBudget } from "./difficulty";
 import { earnRewards } from "./rewards";
 
 // The difficulty (2026-11-19 user decision; src/domain/difficulty.ts): the English of the quizzes and how tight money and AP
@@ -23,7 +23,7 @@ describe("the difficulty's money and AP", () => {
   const india = (economy: "relaxed" | "standard" | "tight") =>
     createGame("たいち", "あゆみ", { journeyId: "golden_triangle", difficulty: { english: "B1", economy } });
 
-  it("starts at ふつう and ふつう, and keeps what was chosen in the save", () => {
+  it("starts at 日本語のみ and ふつう, and keeps what was chosen in the save", () => {
     const state = createGame();
     expect(state.difficulty).toEqual(DEFAULT_DIFFICULTY);
     expect(restore(india("tight")).difficulty).toEqual({ english: "B1", economy: "tight" });
@@ -127,5 +127,14 @@ describe("the difficulty's English", () => {
     // At the quiz's own level the run keeps no level (the quiz's English as written).
     const own = withDifficulty(cityStart("mihon"), { english: quiz.englishLevel, economy: "standard" });
     expect(openBattleScene(own, BATTLE).activeBattle!.englishLevel).toBeUndefined();
+  });
+
+  it("is 「日本語のみ」 by default, which asks the quiz's own English (shown as its translation)", () => {
+    expect(DEFAULT_DIFFICULTY.english).toBe("japanese");
+    const fresh = createGame();
+    expect(isJapaneseOnly(fresh)).toBe(true);
+    const japanese = withDifficulty(cityStart("mihon"), { english: "japanese", economy: "standard" });
+    expect(openBattleScene(japanese, BATTLE).activeBattle!.englishLevel).toBeUndefined();
+    expect(isJapaneseOnly(setEnglishLevel(japanese, "B2"))).toBe(false);
   });
 });

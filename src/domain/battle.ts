@@ -42,7 +42,7 @@ import {
 import { storyFileOf } from "../content/story-address";
 import type { GameState, Availability } from "./game";
 import { scoreQuizAnswer } from "./quiz-answer";
-import { difficultyOf } from "./difficulty";
+import { quizEnglishLevel } from "./difficulty";
 import { ENGLISH_LEVELS } from "../content/schemas";
 import { quizAtLevel } from "../content/english-levels";
 
@@ -490,7 +490,7 @@ export function startVisitBattle(state: GameState, battleId: string, mapChecked:
 function startBattleInternal(state: GameState, battleId: string, mapChecked: boolean): GameState {
   if (!battleAvailability(state, battleId, mapChecked).available) return state;
   const battle = battles.find((item) => item.id === battleId)!;
-  const { english } = difficultyOf(state);
+  const english = quizEnglishLevel(state);
   const active: ActiveBattle = {
     battleId,
     runId: `${battleId}:${state.revision + 1}`,
@@ -507,7 +507,8 @@ function startBattleInternal(state: GameState, battleId: string, mapChecked: boo
     turns: 0,
     appliedOptionIds: [],
     // The English of the difficulty (2026-11-19), kept for the run: a change in ゲームの設定 asks it from the next quiz.
-    ...(english !== battleQuizzes[battle.quizId].englishLevel ? { englishLevel: english } : {}),
+    // 「日本語のみ」 asks the quiz's own English (its translation is what is shown).
+    ...(english && english !== battleQuizzes[battle.quizId].englishLevel ? { englishLevel: english } : {}),
   };
   return startFlowBattle({ ...state, revision: state.revision + 1, battleRewardReceipt: null }, active, battle);
 }

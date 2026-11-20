@@ -230,7 +230,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect(await readSave(page)).toEqual(untouched);
   // A quick double tap on 「ゲームの設定」 (AGENTS.md 選択肢の誤タップ防止): the dialog opens under the
-  // finger, and on a phone the point lies on it, among its settings (文字と表示's rows at 320–390 px).
+  // finger, and on a phone the point lies on it, among its settings (文字と演出's rows at 320–390 px).
   // The second tap changes nothing, as the dialog takes no press for a moment (Modal's
   // settlePresses), then takes them as usual. The page's clock is held, so the second tap comes
   // within that moment however slow the machine.

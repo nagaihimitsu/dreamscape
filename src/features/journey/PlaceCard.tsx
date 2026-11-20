@@ -85,7 +85,7 @@ export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map 
     <CardName id={`${id}-name`} name={name} heading={heading} />
     {place.descriptionJa && <p className="place-card-hook">{place.descriptionJa}</p>}
     {/* A new note for each place chosen, so it comes in again (place-card-heroine; none under reduced motion). */}
-    {line !== null && <HeroineNote key={place.id} className="place-card-heroine" label={game.heroineName} text={line} cityId={cityId} testId="place-heroine-line" />}
+    {line !== null && <HeroineNote key={place.id} className="place-card-heroine" label={game.heroineName} hideLabel text={line} cityId={cityId} testId="place-heroine-line" />}
     {several ? <div className="place-card-event-list" role="group" aria-label="することを選ぶ">{events}</div> : events}
     {reserve > 0 && <p className="place-card-note">帰路用に{formatMoneyForCity(cityId, reserve)}を確保（所持金に含む）</p>}
     {map && <div className="place-card-map">
