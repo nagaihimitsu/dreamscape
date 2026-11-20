@@ -19,6 +19,8 @@ describe("album image paths", () => {
     expect(albumImageListSchema.safeParse([image, { ...image, id: "b_tower", path: "assets/album/b_tower.png" }]).success).toBe(true);
     expect(albumImageListSchema.safeParse([image, { ...image, path: "assets/album/a_tower.png", journeyId: "trip_b" }]).success).toBe(false);
     expect(albumImageListSchema.safeParse([{ ...image, credit: "x" }]).success).toBe(false);
+    expect(albumImageListSchema.safeParse([{ ...image, photo: { cityId: "a_town", caption: "塔の下で" } }]).success).toBe(true);
+    expect(albumImageListSchema.safeParse([{ ...image, photo: { cityId: "a_town", day: 1 } }]).success).toBe(false);
   });
 });
 
@@ -26,10 +28,12 @@ describe("the generated album images", () => {
   it("are what a line's # photo: and # recall: may name; the sample's three, when it is built in", () => {
     expect(tagContext.photoIds).toEqual(albumImages.map((image) => image.id));
     if (!cityContents.mihon) return;
+    // With the city and caption of the line whose # photo: takes each (2026-11-20: 「写真」 after the journey).
     expect(albumImages.filter((image) => image.journeyId === "sample_trip")).toEqual([
-      { id: "smp_album_clock_tower", path: "assets/album/smp_album_clock_tower.webp", journeyId: "sample_trip" },
-      { id: "smp_album_library", path: "assets/album/smp_album_library.webp", journeyId: "sample_trip" },
-      { id: "smp_album_market", path: "assets/album/smp_album_market.webp", journeyId: "sample_trip" },
+      { id: "smp_album_clock_tower", path: "assets/album/smp_album_clock_tower.webp", journeyId: "sample_trip",
+        photo: { cityId: "mihon", caption: "三時までの席。お茶のあとも、針は三時のまま" } },
+      { id: "smp_album_library", path: "assets/album/smp_album_library.webp", journeyId: "sample_trip", photo: { cityId: "mihon" } },
+      { id: "smp_album_market", path: "assets/album/smp_album_market.webp", journeyId: "sample_trip", photo: { cityId: "mihon" } },
     ]);
     expect(getAlbumImage("smp_album_market")?.path).toBe("assets/album/smp_album_market.webp");
     // A tourism photo is no album image.

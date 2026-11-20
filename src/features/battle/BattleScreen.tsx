@@ -583,7 +583,7 @@ export function BattleScreen({
         </div>}
         {isResult ? (
           <div className="battle-result" data-testid="battle-result">
-            <p className="eyebrow">今回の結果</p>
+            <p className="eyebrow">結果</p>
             <div className="battle-result-heading">
               <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
@@ -592,25 +592,6 @@ export function BattleScreen({
               </p>
             </div>
             <BattleRewards game={game} onClaim={onClaimRewards} />
-            <details className="battle-result-history">
-              <summary>今回の正誤と成績</summary>
-              <ol className="answer-history">
-                {active.answers.map((item, index) => (
-                  <li key={item.questionId}>
-                    <span>第{index + 1}問</span>
-                    <span className={item.correct ? "correct-label" : "incorrect-label"}>
-                      {item.correct ? "正解" : "不正解"}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-              {record && (
-                <p className="record-summary">
-                  挑戦 {record.attempts}回 · 初回 {record.firstScore}問 · 最高{" "}
-                  {record.bestScore}問正解
-                </p>
-              )}
-            </details>
             {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
                 mid-card), held there while a long result scrolls above it (battle.css). */}
             <div className="battle-result-foot">
@@ -788,7 +769,9 @@ export function BattleScreen({
                           }
                         />
                         </>}
-                        {shownAnswer && (
+                        {/* After a wrong answer only: which was chosen and which was right, in words (a right one is
+                            told by the verdict over it; 2026-11-20 user decision). */}
+                        {shownAnswer && !shownAnswer.correct && (
                           <span className="option-mark">
                             {selected ? "選んだ答え" : ""}
                             {correct ? " ✓ 正解" : ""}
@@ -859,18 +842,7 @@ export function BattleScreen({
                 >
                   英文を確認する
                 </button>}
-                <details className="quiz-sources">
-                  <summary>解説の根拠を読む</summary>
-                  <ul>
-                    {question.sources.map((source, index) => (
-                      <li key={`${source.url}:${index}`}>
-                        <a href={source.url} target="_blank" rel="noreferrer">
-                          {source.publisher}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
+                {/* Its sources are in ≡メニュー's 「画面の出典」 while it shows (2026-11-20 user decision). */}
                 <button
                   className="primary"
                   data-testid="battle-advance"

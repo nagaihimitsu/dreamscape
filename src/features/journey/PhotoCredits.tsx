@@ -3,6 +3,7 @@ import { getCityBackdrop } from "../../content/city-backdrop";
 import { DERIVED_PHOTO_NOTE_JA, RECAP_PHOTO_NOTE_JA } from "../../content/credits";
 import { derivedImagePath } from "../../content/derived-images";
 import { getPlacePhoto } from "../../content/place-photo";
+import type { QuizQuestion } from "../../content/schemas";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import { ImageCredit } from "../../components/ImageCredit";
 import { Modal, ModalTitle } from "../../components/Modal";
@@ -61,10 +62,13 @@ function PhotoCreditList({ photos }: { photos: ShownPhoto[] }) {
  * 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc closes it. (A line's `# recall:` shows an album
  * image, the author's own artwork, which has no credit.) In play it is the way into 「出典・権利の一覧」 (`onAllCredits`;
  * from ゲームの設定 until 2026-11-20), at its foot, so it is on ≡メニュー on every screen, saying so when the screen shows no
- * credited photo.
+ * credited photo. While a quiz's explanation shows, its sources (`factSources`) come first, under 「解説の出典」 (2026-11-20
+ * user decision: the explanation shows no sources of its own).
  */
-export function ScreenCredits({ scenePhoto, photos, onAllCredits, onClose }: {
+export function ScreenCredits({ scenePhoto, photos, factSources = [], onAllCredits, onClose }: {
   scenePhoto?: TourismAsset; photos: ShownPhoto[];
+  /** The sources of the quiz explanation on screen. */
+  factSources?: QuizQuestion["sources"];
   /** Opens 「出典・権利の一覧」 over this dialog (closing it comes back here). */
   onAllCredits: () => void;
   onClose: () => void;
@@ -72,6 +76,14 @@ export function ScreenCredits({ scenePhoto, photos, onAllCredits, onClose }: {
   const className = [scenePhoto && "date-background-viewer", photos.length > 0 && "photo-credits-modal"].filter(Boolean).join(" ");
   return <Modal labelledBy="screen-credits-title" className={className} onClose={onClose} closeOnBackdrop>
     <ModalTitle id="screen-credits-title" onClose={onClose}>画面の出典</ModalTitle>
+    {factSources.length > 0 && <section className="fact-sources" aria-labelledby="fact-sources-title" data-testid="fact-sources">
+      <h3 id="fact-sources-title">解説の出典</h3>
+      <ul>
+        {factSources.map((source, index) => <li key={`${source.url}:${index}`}>
+          <a href={source.url} target="_blank" rel="noreferrer">{source.publisher} · {source.title}</a>
+        </li>)}
+      </ul>
+    </section>}
     {scenePhoto && <>
       <img src={`${import.meta.env.BASE_URL}${scenePhoto.path}`} alt={scenePhoto.altJa} />
       <div className="background-credit">
@@ -79,7 +91,7 @@ export function ScreenCredits({ scenePhoto, photos, onAllCredits, onClose }: {
       </div>
     </>}
     {photos.length > 0 && <PhotoCreditList photos={photos} />}
-    {!scenePhoto && photos.length === 0 && <p>いまの画面には、出典を示す写真はありません。</p>}
+    {!scenePhoto && photos.length === 0 && factSources.length === 0 && <p>いまの画面には、出典を示す写真はありません。</p>}
     <div className="settings-data-links screen-credits-all">
       <button type="button" className="text-button credits-entry" onClick={onAllCredits}>出典・権利の一覧</button>
     </div>

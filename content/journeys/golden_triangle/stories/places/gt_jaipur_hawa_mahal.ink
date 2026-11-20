@@ -37,8 +37,11 @@ INCLUDE modules.ink
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の gt_jaipur_main_hawa_mahal_battle の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+// 頭の札（結果を初めて記録したとき1回当たる）：報告のお礼のガウラの大根を受け取る。宿で休むと、眠る前に宿の台所へ渡り（持ち物から消える）、
+// 起きた後の朝食に戻ってくる（gt_jaipur_inserts.ink の gt_jaipur_hotel_radish_night・gt_jaipur_hotel_radish_morning）。
 === gt_jaipur_main_hawa_mahal_battle ===
 # scene: battle
+# on_done: item gt_jaipur_gaura_radish
 # background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
 ハワー・マハルの正面は、通りに向かって無数の小窓を広げていた。{heroine_name}が見上げて立ち止まると、足もとから声が飛んだ。
@@ -214,6 +217,7 @@ INCLUDE modules.ink
     答えは、まあ、外れが多かったわね。でも、一番大事な頼みごとは、ちゃんとやってきた
 }
 # speaker: narrator
+# item_show: gt_jaipur_gaura_radish
 ガウラは大根を一本、新聞紙でくるんで差し出した。報告のお礼だという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

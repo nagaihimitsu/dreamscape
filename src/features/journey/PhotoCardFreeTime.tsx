@@ -19,12 +19,14 @@ import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import { hintedLockedDates } from "../../domain/date-rules";
 import {
   cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, joinedCardsJa, lockedCardJa, newCardIds, NO_PLAN,
-  photoCardAnnouncement, photoCardEntries, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards, sleepRefusalJa, sleepRefusalReasonsJa, syncRow, takesSwipe,
+  photoCardAnnouncement, photoCardEntries, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards, shopChosenJa, sleepRefusalJa, sleepRefusalReasonsJa, syncRow, takesSwipe,
   TOUR_CHOSEN_JA, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitLabelJa,
   type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
 } from "./photo-cards";
 import { armedAt, type PressKind } from "./travel-selection";
 import { TravelRentals } from "./TravelRentals";
+import { ShopCard } from "./ShopCard";
+import { currentShop } from "../../domain/outfits";
 import type { CardSwipe } from "./useCardGestures";
 import { useTravelSelection, type PressScope } from "./useTravelSelection";
 import { playSe } from "../../audio/sound-effects";
@@ -34,7 +36,8 @@ import "./photo-free-time.css";
 
 /**
  * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」): the epilogue's button, one row of photo cards (「待機」,
- * the places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」; the first place's
+ * the places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」, then the city's shop when
+ * it has one (2026-11-20); the first place's
  * card is chosen first; the chosen card is the selection, and its card under the row has the waits, the event and the
  * way to choose and a small map, the booking, or the ways home; a swipe up departs with that event and way, waits the
  * chosen wait or rests by the chosen way home, only the chosen card flying; in the row a sideways drag or a swipe up may
@@ -45,8 +48,8 @@ import "./photo-free-time.css";
  * shared selection (useTravelSelection) travels and rests through the same handlers.
  */
 export function PhotoCardFreeTime({
-  game, onClaimRewards, onEpilogue, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, nextCityName, onDepart,
-  seenCards, debug = false,
+  game, onClaimRewards, onEpilogue, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, onBuyOutfit, onWearOutfit,
+  nextCityName, onDepart, seenCards, debug = false,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
   const backdrop = getCityBackdropPath(game.currentCityId) !== null;
@@ -94,12 +97,14 @@ export function PhotoCardFreeTime({
   const { current, nearby, other, candidates, recommendedMainId, nearestId } = api.destinations;
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
+  // The city's shop (2026-11-20): its card at the right end of the row.
+  const shop = currentShop(game)?.nameJa ?? null;
   // The dates not open yet whose writer gave a hint (# hint:, 2026-11-13): with Debug mode on only, locked cards after the
   // places', never chosen to go (players never see them: a date joins the row as a new card once it opens).
   const locked = useMemo(() => (debug ? hintedLockedDates(game) : []), [game, debug]);
   const lockedKey = locked.map((date) => `${date.dateId}:${date.hintJa}`).join("\n");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour, locked, debug }), [places, api.choices, tour, lockedKey, debug]);
+  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour, shop, locked, debug }), [places, api.choices, tour, shop, lockedKey, debug]);
   const joining = useJoiningCards(game, cards, seenCards, (fresh) => {
     // The row turns to the first new card (quietly, as the screen's own choice), and the live region names them all.
     setPick(fresh[0].id);
@@ -158,6 +163,7 @@ export function PhotoCardFreeTime({
     setPick(cardId);
     api.choose(cardTarget(card));
     if (card.kind === "tour") api.announce(TOUR_CHOSEN_JA);
+    if (card.kind === "shop") api.announce(shopChosenJa(card.nameJa));
     if (card.kind === "locked") api.announce(lockedCardJa(card.hintJa));
     if (card.kind === "wait") {
       // The wait its swipe up takes (newly chosen: the first, 「30分待つ」).
@@ -185,6 +191,7 @@ export function PhotoCardFreeTime({
     if (card.kind === "stay")
       return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} onAgain={onAgain} scope={scope} heading={heading} quietGo={quietGo} go={go} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
+    if (card.kind === "shop") return <ShopCard game={game} onBuy={onBuyOutfit} onWear={onWearOutfit} heading={heading} />;
     if (card.kind === "locked") return <LockedCard hintJa={card.hintJa} heading={heading} />;
     return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
       plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} go={go} />;

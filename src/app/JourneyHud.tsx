@@ -8,6 +8,9 @@ import type { TravelPlace } from "../content/travel-schemas";
 import { DismissLayer } from "../components/DismissLayer";
 import { DIALOGUE_LINE_ATTRIBUTE } from "../components/scene-tap";
 import { HeldItems } from "../components/HeldItems";
+import { HudOutfits, type OutfitOption } from "../components/HudOutfits";
+import { characterPicture } from "../components/character-catalog";
+import { canChangeOutfit, ownedOutfits } from "../domain/outfits";
 import { HUD_SCREEN_TOOL_ID } from "../components/HudScreenTool";
 import { Icon } from "../components/icons";
 import { NewDot, useCuePlaying } from "../components/fx";
@@ -83,8 +86,8 @@ const noop = () => undefined;
  * The header of every game screen (UI redesign §3.1): row 1 shows where and when
  * the couple are and what they have (display only; the budget above the AP at
  * the right end; the place name is never cut: it wraps), row 2 holds what can be
- * pressed, side by side at its right end (user decision 2026-11-11): the held
- * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
+ * pressed, side by side at its right end (user decision 2026-11-11): 「服」 once an outfit is bought (HudOutfits,
+ * 2026-11-20), the held items, the screen's own tool (free time's 「地図」, a guide's or a battle's
  * 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」 until 2026-11-14) with
  * セーブ・ロード | 旅の記録・ノート | 画面の出典・ゲームの設定.
  * Over a story scene
@@ -99,8 +102,10 @@ const noop = () => undefined;
  * show in the same place for a moment, the clue's word (ClueRecordedNotice) and the item notices waiting behind them.
  */
 export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa, replaced = 0, seenItemIds, onItemsSeen, noteNew = [], holdNotices = false,
-  itemFlight = null, itemOutFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, ...actions }: {
+  itemFlight = null, itemOutFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, onWearOutfit, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
+  /** 「服」's choice (2026-11-20; outfits.ts wearOutfit): an outfit bought, or 普段の服 (null). */
+  onWearOutfit?: (outfitId: string | null) => void;
   /**
    * The clock to show instead of the game's (GameApp: the night a rest slept from, while the night screen's 「ホテルで休みました。」
    * still shows; 2026-11-15: the morning's 「2日目 09:00」 and its sun waited for the tap).
@@ -143,6 +148,15 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
     .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, lines: itemLines(game, item.linesJa), iconPath: item.iconPath,
       ...(item.cityId !== game.currentCityId ? { origin: `${getCities().find((city) => city.id === item.cityId)?.nameJa ?? item.cityId}から持ってきた` } : {}) }));
   const shown = view === "all";
+  // 「服」 (2026-11-20): 普段の服 (the outfit this city gives her) and each outfit bought, her small picture in each.
+  const bought = ownedOutfits(game);
+  const outfitOptions: OutfitOption[] = [
+    { id: null, name: "普段の服", picture: characterPicture("heroine", "neutral", { cityId: game.currentCityId }) },
+    ...bought.map((outfit) => ({ id: outfit.id, name: outfit.nameJa, picture: characterPicture("heroine", "neutral", { costume: outfit.costume }) })),
+  ];
+  const outfitsCue = useSeenChange(bought.map((outfit) => outfit.id).join("\n"), shown, itemsChange, replaced);
+  // The outfits' dot: one bought since the panel was last opened (a load brings none).
+  const [outfitsOpenedAt, setOutfitsOpenedAt] = useState(0);
   // A quiet line hides the header (journey-hud.css): a focus left on one of its buttons goes to the line, which reads on.
   useEffect(() => {
     const focused = document.activeElement;
@@ -202,6 +216,9 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
         </p>
       </div>
       <div className="hud-actions">
+        <HudOutfits options={outfitOptions} worn={game.outfit ?? null} canChange={canChangeOutfit(game)} onOpen={closeWaitMenu}
+          onWear={(id) => onWearOutfit?.(id)} gained={outfitsCue?.count} fresh={(outfitsCue?.count ?? 0) > outfitsOpenedAt}
+          onSeen={() => setOutfitsOpenedAt(outfitsCue?.count ?? 0)} />
         <HeldItems items={items} gained={itemsCue?.count} onOpen={closeWaitMenu}
           spent={spentCue ? { count: spentCue.count, iconPath: spentIcon } : undefined}
           newIds={newItemIds} onSeen={() => onItemsSeen?.(items.map((item) => item.id))} />

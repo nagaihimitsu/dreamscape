@@ -20,6 +20,8 @@ import { waitForTravel } from "../domain/travel-game";
 import { getDayEnd } from "../domain/day-end";
 import { rentTransport } from "../domain/transport";
 import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
+import { buyOutfit, wearOutfit, wornCostume } from "../domain/outfits";
+import { WornCostumeContext } from "../components/worn-costume";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture, isJourneyComplete } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
@@ -80,6 +82,7 @@ import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
+import { showsMissedPhotos } from "../features/journey/album-pages";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, recapPhotos, ScreenCredits } from "../features/journey/PhotoCredits";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
@@ -920,6 +923,9 @@ export function GameApp({
   const photoOf = (id: string | undefined) => (id ? tourismAssets.find((asset) => asset.id === id) : undefined);
   const landmarkPhoto = (id: string | null | undefined) => photoOf(landmarks.find((landmark) => landmark.id === id)?.imageAssetId);
   const backdropPhoto = (backgroundId: string) => photoOf(presentation.backgrounds[backgroundId]?.imageAssetId);
+  // The sources of the quiz explanation on screen, listed there too (2026-11-20: the explanation shows none of its own).
+  const explanationSources = game?.activeBattle?.phase === "feedback" && activeBattleContent
+    ? activeBattleContent.quiz.questions[game.activeBattle.roundIndex]?.sources : undefined;
   const scenePhoto = !game ? undefined
     : activeEncounter && currentEncounter ? encounterImage ?? encounterBackdrop?.asset
     : game.activeEpilogue ? undefined
@@ -939,8 +945,15 @@ export function GameApp({
     : game.activeBattle && currentBattle
       ? (landmarkPhoto(currentBattle.landmarkId) && !momentQuiz ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
     : active?.frame.background;
+  /** 「服」's or the shop's change of clothes (outfits.ts wearOutfit): in free time only, with a short sound once she has changed. */
+  function wear(outfitId: string | null): boolean {
+    const changed = commit((state) => wearOutfit(state, outfitId, state.revision));
+    if (changed) playSe("ui_confirm");
+    return changed;
+  }
   const scenePlaceJa = momentQuiz && currentBattle ? landmarks.find((landmark) => landmark.id === currentBattle.landmarkId)?.nameJa : undefined;
   return (
+    <WornCostumeContext.Provider value={game ? wornCostume(game) : undefined}>
     <div
       className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
     >
@@ -989,6 +1002,7 @@ export function GameApp({
           shot.refresh();
           setSettings(true);
         }}
+        onWearOutfit={wear}
         onReturnToFreeTime={debugMarks && canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
       />}
       {game && (
@@ -1341,6 +1355,8 @@ export function GameApp({
             onCancelTour={() => commit((state) => cancelTourBooking(state, game.revision))}
             onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
             onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
+            onBuyOutfit={(outfitId) => commit((state) => buyOutfit(state, outfitId, game.revision))}
+            onWearOutfit={(outfitId) => wear(outfitId)}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}
@@ -1372,6 +1388,7 @@ export function GameApp({
           to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
+          missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
           extras={<>
             {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
               {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
@@ -1412,12 +1429,12 @@ export function GameApp({
           onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
       </LazyDialog>}
       {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
-        <TravelLogDialog game={keptGame} onClose={() => setKeptLogOpen(false)} />
+        <TravelLogDialog game={keptGame} missedPhotos={showsMissedPhotos(keptGame, true)} onClose={() => setKeptLogOpen(false)} />
       </LazyDialog>}
 
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
-      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} onAllCredits={() => setCreditsOpen(true)}
+      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} factSources={explanationSources} onAllCredits={() => setCreditsOpen(true)}
         onClose={() => setScreenCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
@@ -1559,5 +1576,6 @@ export function GameApp({
       {travelEffects}
       {moments.overlays}
     </div>
+    </WornCostumeContext.Provider>
   );
 }

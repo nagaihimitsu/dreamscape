@@ -270,9 +270,6 @@
   line-height: 1.5;
 }
 .battle-result-actions .secondary { margin-top: 0; }
-.battle-result-history { margin-top: 12px; }
-.battle-result-history summary,
-.reward-details summary,
 .result-pending summary {
   cursor: pointer;
   color: var(--ds-ink);
@@ -317,9 +314,7 @@
   .battle-result .battle-rewards { margin: 4px 0; padding-top: 6px; }
   .battle-result .reward-total strong { font-size: 23px; }
   .battle-result .current-ap { margin: 2px 0; }
-  .battle-result .reward-details summary,
-  .battle-result .result-pending summary,
-  .battle-result .battle-result-history summary { padding: 4px 0; }
+  .battle-result .result-pending summary { padding: 4px 0; }
   .battle-result .episode-clear { margin: 4px 0; padding: 8px 10px; }
   .battle-result .episode-clear h2 { font-size: 16px; margin: 1px 0; }
   .battle-result .episode-clear > p:not(.eyebrow) { margin: 2px 0 0; line-height: 1.8; }
@@ -328,7 +323,6 @@
   .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .battle-result-actions .primary { grid-column: 1 / -1; }
   .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: 1.4; }
-  .battle-result-history { margin-top: 4px; }
 }
 
 /* Wide, short screens use their horizontal space for the three choices.
@@ -953,9 +947,8 @@
   color: var(--ds-on-slate);
   box-shadow: var(--ds-pill-shadow);
 }
-/* Links, translations and sources on the parchment read in ink. */
-.battle-screen .battle-paper:not(.battle-dialogue) .text-button,
-.battle-screen .quiz-sources summary {
+/* Links and translations on the parchment read in ink. */
+.battle-screen .battle-paper:not(.battle-dialogue) .text-button {
   color: var(--ds-ink);
 }
 

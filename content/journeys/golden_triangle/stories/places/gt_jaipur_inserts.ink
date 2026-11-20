@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // ジャイプールの差し込み（宿・フィナーレの前後）。どれも【4】の時点を使う。
-// 土地の事実を言う場面は scenes/catalog.json に出典を書く（gt_jaipur_hotel_mehndi_night・gt_jaipur_hotel_mehndi_morning・gt_jaipur_finale_before_envelope・gt_jaipur_finale_after_envelope）。ほかは # sources: none。
+// 土地の事実を言う場面は scenes/catalog.json に出典を書く（gt_jaipur_hotel_mehndi_night・gt_jaipur_hotel_mehndi_morning・gt_jaipur_hotel_radish_morning・gt_jaipur_finale_before_envelope・gt_jaipur_finale_after_envelope）。ほかは # sources: none。
 // 服装は別の作業（ジャイプール用の衣装）で決まるので、服の色や種類は書かない。
 
 // 【4】宿・眠る前：手のひらの模様の中を探す（「明日にする」は # later。夜だけ）
@@ -199,6 +199,89 @@ INCLUDE modules.ink
     # voice: gt_jaipur_hotel_mehndi_morning_005
     ……だよね。うん。隠したのは、わたしだから。わたしが選んだ名前だから
 - -> END
+
+// 【4】宿・眠る前：ハワー・マハルでガウラにもらった大根を、宿の台所に預ける（大根を持っているときだけ。終えると持ち物から消える）
+// ガウラの「宿の台所に渡しなさい。明日の朝、あんたの皿に戻ってくるから」を受ける。選択肢はなく、休めば自動で流れる。
+// 昼に休んでも流れる（背景は時刻の色に任せる）。priority -2 なので、メヘンディの夜（-1）より先。
+=== gt_jaipur_hotel_radish_night ===
+# scene: talk
+# at: hotel jaipur_hotel_hub
+# priority: -2
+# when: item gt_jaipur_gaura_radish held
+# on_done: use gt_jaipur_gaura_radish
+# sources: none
+# background: gt_bg_jaipur_hotel_hub
+# speaker: narrator
+宿に戻ると、{heroine_name}は新聞紙の包みを抱えて、まっすぐ帳場へ向かった。
+# speaker: narrator
+# item_out: gt_jaipur_gaura_radish
+包みの端から、大根の葉がはみ出している。ハワー・マハルの前で、ガウラにもらった一本だ。
+# speaker: heroine
+あの、これ……台所に渡しなさいって、言われたんです。通りで野菜を売ってる、ガウラさんに
+# speaker: gt_jaipur_hotel_front
+あら、大根。……葉っぱが、まだぴんとしてる。朝いちばんの市場で仕入れた顔ね
+# speaker: gt_jaipur_hotel_front
+いいわ、料理人に渡しておく。明日の朝ね
+# speaker: heroine
+# reaction: heroine,surprised,question
+本当に、お皿に戻ってくるんだ……。何になるんですか？
+# speaker: gt_jaipur_hotel_front
+それは、朝のお楽しみ
+# speaker: narrator
+# leave: gt_jaipur_hotel_front
+フロントの女性は包みを抱え、帳場の奥の扉へ消えた。
+# speaker: heroine
+# reaction: heroine,teasing,music
+ホテルで大根どうしよう、って思ってたのに。ガウラさん、全部分かってたんだね
+-> END
+
+// 【4】宿・起きた後：預けた大根が、朝食の大根のパラーターになって戻ってくる（眠る前に大根を預けたときだけ。一度きり）
+// 土地の事実（大根はヒンディー語でムーリー、北インドでは大根をパラーターに詰める、ダヒーと漬物を添える）は scenes/catalog.json に出典。
+// ライムの漬物（シティ・パレスの審判の報酬）を持っていれば、取り出して添える（品物は使わない）。priority +2 なので、メヘンディの朝（+1）の後。
+=== gt_jaipur_hotel_radish_morning ===
+# scene: talk
+# at: hotel jaipur_hotel_hub
+# priority: +2
+# when: item gt_jaipur_gaura_radish used
+# background: gt_bg_jaipur_hotel_courtyard
+# bgm: morning
+# speaker: narrator
+# term: gt_term_paratha
+朝、宿の中庭。テーブルに着くと、焼きたての平たいパンが運ばれてきた。こんがりした生地の合わせ目から、白い細切りがのぞいている。
+# speaker: gt_jaipur_hotel_front
+お待たせ。ゆうべの大根よ。刻んで、香辛料と混ぜて、小麦の生地に包んで焼いたの
+# speaker: heroine
+# reaction: heroine,surprised_big,sparkle
+ほんとに戻ってきた……！　ガウラさんの大根が、パンになってる
+# speaker: gt_jaipur_hotel_front
+大根は、こっちの言葉でムーリー。だから、ムーリー・パラーター。北インドじゃ、大根はよくパラーターに詰めるのよ
+# speaker: gt_jaipur_hotel_front
+ダヒーと、漬物を添えて食べてね。ダヒーは、ヨーグルトのこと
+# speaker: narrator
+# leave: gt_jaipur_hotel_front
+小さな器の白いダヒーを置いて、フロントの女性は帳場へ戻っていった。{heroine_name}はパラーターの端をちぎって、ダヒーにつけた。
+# speaker: heroine
+# reaction: heroine,happy,sparkle
+……おいしい！　外はぱりっとしてて、中の大根が、ちょっと辛くて、ちょっと甘い
+{ cond("item gt_jaipur_sushma_lime_pickle held"):
+    # speaker: heroine
+    # reaction: heroine,surprised,exclamation
+    あ、漬物！　漬物なら、持ってる
+    # speaker: narrator
+    # item_out: gt_jaipur_sushma_lime_pickle
+    彼女は鞄から小瓶を取り出し、ふたを開けた。シティ・パレスで、スシュマに握らされたライムの漬物だ。酸っぱい匂いが、中庭に広がる。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    ガウラさんの大根に、スシュマさんの漬物。この朝ごはん、ジャイプールでもらったものだけで出来てる
+- else:
+    # speaker: heroine
+    # emotion: smile
+    ガウラさん、四十年、あの窓の下でこういう大根を売ってきたんだね。毎朝四時に、市場で選んで
+}
+# speaker: heroine
+# emotion: smile
+今度ハワー・マハルの前を通ったら、ガウラさんに言わなきゃ。おいしかったです、って。……日傘の下で、ちゃんと
+-> END
 
 // フィナーレの前：旅の最後の日の朝、祝儀袋を用意する（封筒は品物。フィナーレの後の差し込みで渡す）
 // 本筋のフィナーレは「昼のうちに、行列の道を確かめておいた」から始まるので、その前の朝にする。

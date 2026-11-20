@@ -23,8 +23,9 @@ import { defineMiniGame } from "../contract";
  * practice ends with no finish word or card, and the host's cut-in 「次は本番！」 starts the real play. Then the host's
  * 3・2・1 (his beat starts on スタート), the calm mini-game track, ★ from how round and big (rules.ts), a finish word per
  * outcome (a hole's tone is a mishap's thud) and her face on the card (Harbans speaks in the field; she reacts in the
- * band at a skid, the ring and the hot tava). The tag's use lets the real play be rolled again (`retry yes`: Harbans's
- * 「生地は、何度でもやり直せる」 after a hole; a helper scene with no relationship effects). Her reaction lines are her
+ * band at a skid, the ring and the hot tava). The real play is played once and its outcome always goes on in the story
+ * (2026-11-20 user decision: no `retry yes`, whatever the outcome; a hole is Harbans's 「生地は、何度でもやり直せる」 in
+ * the story's words, not a replay). Her reaction lines are her
  * first breath at the end and fit both of the story's branches after it (romance_result); the story's lines (Harbans's
  * joke, then hers) follow at once and are never repeated here.
  *
