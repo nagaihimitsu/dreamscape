@@ -154,8 +154,13 @@ function subjectPlace(subject: RecapSubject): { cityId: string; place: TravelPla
  * a date's story); else the photo free time's card shows for its place (getPlacePhoto) in its larger `recap` copy, with
  * its credit; else none (a place without a photo, or with only a placeholder).
  */
+/** The stories a recap subject's own photos are taken in: an episode's parts (episodeStoryIds), a date's story. */
+export function subjectStoryIds(subject: RecapSubject): string[] {
+  return subject.kind === "date" ? [subject.date.storyId] : episodeStoryIds(subject.episode);
+}
+
 function subjectPicture(game: Pick<GameState, "album" | "currentCityId">, subject: RecapSubject): RecapPicture | null {
-  const own = subject.kind === "date" ? [subject.date.storyId] : episodeStoryIds(subject.episode);
+  const own = subjectStoryIds(subject);
   const photo = photoViews(game.album.filter((item) => own.includes(item.storyId)), game.currentCityId).at(-1);
   if (photo) return { path: photo.path, altJa: photo.altJa, captionJa: photo.caption ?? photo.placeJa };
   const found = subjectPlace(subject);
