@@ -190,13 +190,13 @@ test("the sample journey plays from a new journey through its city finale and ep
   await playUntil(page, (state) => !state.activeEncounter && state.activeTourism?.phase === "exploring", { source, pick });
   await page.getByTestId("observation-proceed").click();
   // The first answer's reveal on the tower's photo (revealRegion) has no credit under it (2026-11-15 user decision): it is
-  // the battle's photo, whose credit ≡メニュー's 「画像の出典」 shows.
+  // the battle's photo, whose credit ≡メニュー's 「画面の出典」 shows.
   await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source, pick });
   const reveal = page.getByTestId("battle-reveal");
   await expect(reveal).toBeVisible();
   await expect(reveal.locator("a")).toHaveCount(0);
-  await ops.menuItem(page, "画像の出典");
-  const viewer = page.getByRole("dialog", { name: "画像の出典" });
+  await ops.menuItem(page, "画面の出典");
+  const viewer = page.getByRole("dialog", { name: "画面の出典" });
   await expect(viewer.getByRole("img")).toHaveAttribute("src", (await reveal.getByRole("img").getAttribute("src"))!);
   await expect(viewer.getByRole("link", { name: "画像の出典" })).toBeVisible();
   await ops.closeDialog(viewer);

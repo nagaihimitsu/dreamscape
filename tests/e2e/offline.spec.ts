@@ -343,9 +343,9 @@ test("the golden triangle kept from ゲームの設定 plays its voices and its 
   expect(voices().filter((answer) => !answer.worker || answer.status !== 200)).toEqual([]);
   await expectPictures(page);
 
-  // The save is deleted in ゲームの設定 (its confirmation says the kept files stay): the store is as it was.
-  const settings = await ops.openSettings(page);
-  await settings.getByRole("button", { name: "保存データの消去", exact: true }).click();
+  // The save is deleted in 「セーブ・ロード」 (its confirmation says the kept files stay): the store is as it was.
+  const saveLoad = await ops.openSaveLoad(page, "save");
+  await saveLoad.getByRole("button", { name: "保存データの消去", exact: true }).click();
   const confirm = page.getByRole("dialog", { name: "保存データを消去しますか？" });
   await expect(confirm).toContainText("この端末に入れた旅行編のファイル（オフラインで遊ぶ）は消えません。");
   await ops.pressOffline(confirm.getByRole("button", { name: "保存データを消去する", exact: true }));

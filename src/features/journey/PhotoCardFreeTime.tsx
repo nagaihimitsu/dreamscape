@@ -167,9 +167,12 @@ export function PhotoCardFreeTime({
   }
 
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
-  /** The card under the row (on the page: a visible name only in the row, where no chosen row above names it). */
+  /**
+   * The card under the row. Its name is visible only in the expanded map: on the page the chosen photo card right above
+   * (row or list) already names it (2026-11-20 user decision), so there it is for readers only.
+   */
   const cardOf = (card: RowCard, scope: PressScope = "page") => {
-    const heading = scope === "dialog" || arrangement === "row";
+    const heading = scope === "dialog";
     // In the row a swipe up on the photo card goes, waits or rests: the card's own button is for readers and keys only.
     const quietGo = scope === "page" && arrangement === "row";
     // The chosen wait or way home pressed again: in the row (where the swipe up waits or rests) the photo card's cue nudges.
@@ -235,7 +238,7 @@ export function PhotoCardFreeTime({
       {/* 「待機」 is named only while one of its waits can be made (late in the evening none can). Out of money for good in this
           city, the line says so and points to ロード instead (B1, 2026-11-13: running short is part of play, and nothing ends the trip). */}
       {noPlace && <p className="photo-menu-note">{outOfMoney
-        ? <>旅行予算が足りず、この街で今できることがありません。<span className="photo-menu-note-word">メニュー</span>の「ロード」で前のセーブに戻れます。</>
+        ? <>旅行予算が足りず、この街で今できることがありません。<span className="photo-menu-note-word">メニュー</span>の「セーブ・ロード」で前のセーブに戻れます。</>
         : wait ? "今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。" : "今すぐ行ける場所はありません。「ホテルに戻る」で休めます。"}</p>}
       <div className="photo-stage">
         <CardProbe />

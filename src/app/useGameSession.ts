@@ -12,6 +12,7 @@ import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
 import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
 import type { Difficulty } from "../domain/difficulty";
+import { saveToAnotherSlot } from "./save-slots";
 
 export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
@@ -39,6 +40,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
   const savedGameRef = useRef<GameState | null>(loaded.status === "loaded" ? loaded.state : null);
   // An unreadable original stays protected until an explicit save backs it up.
   const protectedOriginalRef = useRef<string | null>(null);
+  // The game as 「セーブ・ロード」 last put it into another slot (saveTo): that play is not lost on leaving.
+  const copiedGameRef = useRef<GameState | null>(null);
   const [invalid, setInvalid] = useState(loaded.status === "invalid" ? loaded.message : "");
   const [notice, setNotice] = useState("");
   const [toast, setToast] = useState<SessionToast | null>(null);
@@ -53,7 +56,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
 
   function getCurrent() { return gameRef.current; }
   function hasUnsavedProgress() {
-    return unsavedProgress(gameRef.current, savedGameRef.current);
+    return unsavedProgress(gameRef.current, savedGameRef.current)
+      && (!copiedGameRef.current || unsavedProgress(gameRef.current, copiedGameRef.current));
   }
   function adopt(next: GameState) {
     gameRef.current = next;
@@ -122,6 +126,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     // and name a term of 旅の図鑑 (none under the arrival's title card, which covers its first line).
     const next = recordGlossaryTerms(recordAlbumPhoto(openOccasion(initial, { kind: "arrive" }, initial.revision)));
     if (!adoptBaseline(writeNewGame(storage, next, loaded, autoSave))) return;
+    copiedGameRef.current = null;
     adopt(next);
     setInvalid("");
     setNotice("");
@@ -144,6 +149,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     if (!written.ok) { setNotice(written.message); return false; }
     savedGameRef.current = next;
     protectedOriginalRef.current = null;
+    copiedGameRef.current = null;
     setSavedAt(Date.now());
     adopt(next);
     setNotice("");
@@ -163,6 +169,17 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     showToast("現在の場面を保存しました。");
     return true;
   }
+  /** 「セーブ・ロード」's セーブ into another slot (`target`, named `label`); play goes on in this one. Whether it was saved. */
+  function saveTo(target: GameStorage, label: string): boolean {
+    const current = gameRef.current;
+    if (!current) return false;
+    const result = saveToAnotherSlot(storage, target, current);
+    if (!result.ok) { setNotice(result.message); return false; }
+    copiedGameRef.current = current;
+    setNotice("");
+    showToast(`${label}に保存しました。`);
+    return true;
+  }
   function restore() {
     const restored = loadGame(storage);
     if (restored.status !== "loaded") {
@@ -171,6 +188,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     }
     savedGameRef.current = restored.state;
     protectedOriginalRef.current = null;
+    copiedGameRef.current = null;
     adopt(restored.state);
     setNotice("");
     showToast("保存した場面から再開しました。");
@@ -193,5 +211,5 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     return true;
   }
   return { game, loaded, invalid, notice, setNotice, toast, showToast, savedAt, getCurrent, hasUnsavedProgress,
-    commit, replace, begin, beginAgain, persistCurrent, save, restore, prepareDelete, deleteConfirmed };
+    commit, replace, begin, beginAgain, persistCurrent, save, saveTo, restore, prepareDelete, deleteConfirmed };
 }

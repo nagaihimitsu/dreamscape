@@ -1,7 +1,8 @@
 import { getJourney } from "../content/journeys";
 import { isJourneyComplete } from "../domain/city-travel";
 import { difficultyOf, type Difficulty } from "../domain/difficulty";
-import { loadGame, type StorageLike } from "../persistence";
+import { loadGame, MEMORY_KEY, replaceWithNewJourney, type SaveResult, type StorageLike } from "../persistence";
+import type { GameState } from "../domain/game";
 import { SAVE_SLOTS, isSaveSlot, journeyStorage, type SaveSlot } from "../persistence/journey-storage";
 
 /**
@@ -39,16 +40,41 @@ export type SlotSummary =
 
 /** Each slot of the journey in order: empty, a save this version loads (names, city, day), or one it cannot read. */
 export function slotSummaries(base: StorageLike & { removeItem(key: string): void }, journeyId: string): SlotSummary[] {
+  return SAVE_SLOTS.map((slot) => summarizeSlot(journeyStorage(base, journeyId, slot), journeyId, slot));
+}
+
+/** What one slot's storage holds (also Debug's isolated storage, shown as its only slot). */
+export function summarizeSlot(storage: StorageLike, journeyId: string, slot: SaveSlot): SlotSummary {
+  const loaded = loadGame(storage);
+  if (loaded.status === "empty") return { slot, status: "empty" };
+  if (loaded.status === "invalid") return { slot, status: "unreadable" };
+  const { state } = loaded;
   const cities = getJourney(journeyId)?.cities ?? [];
-  return SAVE_SLOTS.map((slot): SlotSummary => {
-    const loaded = loadGame(journeyStorage(base, journeyId, slot));
-    if (loaded.status === "empty") return { slot, status: "empty" };
-    if (loaded.status === "invalid") return { slot, status: "unreadable" };
-    const { state } = loaded;
-    return {
-      slot, status: "saved", playerName: state.playerName, heroineName: state.heroineName,
-      cityJa: cities.find((city) => city.id === state.currentCityId)?.nameJa ?? "",
-      day: state.travel.day, finished: isJourneyComplete(state), difficulty: difficultyOf(state),
-    };
-  });
+  return {
+    slot, status: "saved", playerName: state.playerName, heroineName: state.heroineName,
+    cityJa: cities.find((city) => city.id === state.currentCityId)?.nameJa ?? "",
+    day: state.travel.day, finished: isJourneyComplete(state), difficulty: difficultyOf(state),
+  };
+}
+
+/**
+ * 「セーブ・ロード」's セーブ into a slot other than the one played (2026-11-19 user decision): the game as it is now goes
+ * into `target` in place of what it holds (an empty slot, or a save the player chose to overwrite), with the played
+ * slot's 旅の思い出, so the slot becomes a copy of this play. Play goes on in the slot played. A slot this version cannot
+ * read is never written over (replaceWithNewJourney refuses it).
+ */
+export function saveToAnotherSlot(from: StorageLike & { removeItem(key: string): void }, target: StorageLike & { removeItem(key: string): void },
+  state: GameState): SaveResult {
+  const before = loadGame(target);
+  if (before.status === "invalid") return { ok: false, message: "読み込めないセーブを保護するため、上書きしませんでした。" };
+  const written = replaceWithNewJourney(target, state, before.status === "loaded" ? before.state : null);
+  if (!written.ok) return written;
+  try {
+    const memory = from.getItem(MEMORY_KEY);
+    if (memory === null) target.removeItem(MEMORY_KEY);
+    else target.setItem(MEMORY_KEY, memory);
+  } catch {
+    return { ok: false, message: "セーブは保存しましたが、旅の思い出を写せませんでした。空き容量やブラウザの保存設定を確認してください。" };
+  }
+  return { ok: true };
 }

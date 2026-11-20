@@ -195,8 +195,8 @@
   text-align: left;
 }
 .hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
-/* Under セーブ・ロード while saving is automatic (2026-11-14): when it last saved; display only, never pressed. */
-.hud-menu-note { margin: -2px 4px 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.4; }
+/* Between ≡メニュー's groups (2026-11-19): a thin rule across, never a thick left line. */
+.hud-menu-rule { width: 100%; margin: 2px 0; border: 0; border-top: 1px solid var(--ds-parchment-line); }
 @keyframes hud-menu-in {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: none; }

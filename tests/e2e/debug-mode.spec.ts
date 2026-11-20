@@ -115,10 +115,12 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   const strip = page.getByTestId("relationship-change");
   await expect(strip).toContainText(/(親しさ|信頼|恋愛の意識) [+−]\d+（−?\d+→−?\d+）/u);
   await expect(strip).toContainText(/反応：噛み合った（噛み合う確率 \d+%）/u);
-  // Debug's own ゲームの設定 has no Debug-mode switch and keeps Debug's wording (also in production).
+  // Debug's own ゲームの設定 has no Debug-mode switch, and its 「セーブ・ロード」 keeps Debug's wording (also in production).
+  const saveLoad = await ops.openSaveLoad(page, "save");
+  await expect(saveLoad.getByRole("button", { name: "Debug用の一時データの消去" })).toBeVisible();
+  await ops.closeDialog(saveLoad);
   settings = await ops.openSettings(page);
   await expect(settings.getByTestId("debug-mode-setting")).toHaveCount(0);
-  await expect(settings.getByRole("button", { name: "Debug用の一時データの消去" })).toBeVisible();
   // …and no 「オフライン」 group: nothing is kept on a device from a Debug page.
   await expect(settings.getByRole("heading", { name: "オフライン", exact: true })).toHaveCount(0);
   await expect(settings.getByText("オフラインで遊ぶ")).toHaveCount(0);

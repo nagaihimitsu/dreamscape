@@ -64,12 +64,12 @@ test("autosaved progress, a battle question, the English note and the text speed
   await expect(page.getByLabel(`残り${progress.ap}AP`)).toBeVisible();
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
   // 前回までのあらすじ shows the Duomo's photo with no credit on the card (2026-11-15 user decision): ≡メニュー's
-  // 「写真の出典」 lists it first, with its credit, its licence and the note on its reduced, cropped copy.
+  // 「画面の出典」 lists it first, with its credit, its licence and the note on its reduced, cropped copy.
   const recap = page.getByTestId("resume-recap");
   await expect(recap.getByRole("img")).toBeVisible();
   await expect(recap.locator("a")).toHaveCount(0);
-  await ops.menuItem(page, "写真の出典");
-  const photoCredits = page.getByRole("dialog", { name: "写真の出典" });
+  await ops.menuItem(page, "画面の出典");
+  const photoCredits = page.getByRole("dialog", { name: "画面の出典" });
   const recapCredit = photoCredits.getByTestId("photo-credits").getByRole("listitem").first();
   await expect(recapCredit.getByRole("heading")).toHaveText(/^前回までのあらすじ（.+）$/u);
   await expect(recapCredit.getByRole("link")).toHaveText(["画像の出典", /^CC /u]);
@@ -186,26 +186,26 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード・セーブの枠・旅の記録・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ≡メニュー
-  // (UI redesign §3.1, U2/U24/U28; named 「設定」 until 2026-11-14), a disclosure: by keyboard it opens on セーブ, the
-  // arrows move between its items, Esc closes it back on ≡メニュー, and leaving it with Tab closes it. While saving is
-  // automatic, a line under セーブ・ロード says when it last saved (display only: the arrows and Tab pass it).
+  // セーブ・ロード (one item since 2026-11-19)・旅の記録・英語ノート (ノート with 旅の図鑑 where a journey has terms)・画面の出典
+  // (in free time)・ゲームの設定 live in the
+  // header's ≡メニュー (UI redesign §3.1, U2/U24/U28; named 「設定」 until 2026-11-14), a disclosure: by keyboard it opens on
+  // セーブ・ロード, the arrows move between its items (past the rules between its groups), Esc closes it back on ≡メニュー,
+  // and leaving it with Tab closes it.
   const gear = ops.settingsButton(page);
   const panel = page.getByTestId("hud-menu-panel");
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "セーブの枠", "旅の記録", "英語ノート", "写真の出典", "ゲームの設定"]);
-  await expect(panel.getByText(/^自動保存：(?:たった今|オン)$/u)).toBeVisible();
-  await expect(item("セーブ")).toBeFocused();
+  await expect(panel.getByRole("button")).toHaveText(["セーブ・ロード", "旅の記録", "英語ノート", "画面の出典", "ゲームの設定"]);
+  await expect(item("セーブ・ロード")).toBeFocused();
   await page.keyboard.press("ArrowDown");
-  await expect(item("ロード")).toBeFocused();
+  await expect(item("旅の記録")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(panel).toBeHidden();
   await expect(gear).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(item("セーブ")).toBeFocused();
-  for (let step = 0; step < 7; step++) await page.keyboard.press("Tab");
+  await expect(item("セーブ・ロード")).toBeFocused();
+  for (let step = 0; step < 5; step++) await page.keyboard.press("Tab");
   await expect(panel).toBeHidden();
   // ゲームの設定 opens the settings dialog on its title bar's 「× 閉じる」 (2026-11-14), and gives the focus back to
   // ≡メニュー when it closes.
@@ -219,8 +219,12 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   // A tap outside the panel only closes it: nothing under it is pressed (here a destination),
   // the save stays as it was, and the focus is back on ≡メニュー.
   const untouched = await readSave(page);
+  // While saving is automatic, セーブ・ロード's dialog says when it last saved.
+  const saveLoad = await ops.openSaveLoad(page, "save");
+  await expect(saveLoad.getByText(/^自動保存：(?:たった今|オン)$/u)).toBeVisible();
+  await ops.closeDialog(saveLoad);
   await ops.openMenu(page);
-  await expect(item("セーブ")).toBeFocused();
+  await expect(item("セーブ・ロード")).toBeFocused();
   await ops.tapAt(page, await ops.centerOf(await ops.destination(page, "p_duomo")));
   await expect(panel).toBeHidden();
   await expect(gear).toBeFocused();
@@ -263,23 +267,23 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(await readSave(page)).toEqual(initial);
-  // A quick double tap on ≡メニュー → 「セーブ」 over the guide (AGENTS.md 選択肢の誤タップ防止): the panel
-  // leaves from under the finger, and on a phone the guide's picture lies under セーブ's point, where a
-  // tap reads the line on. The scene is saved, and the second tap reads nothing on: no tap reaches the
-  // page for a moment after セーブ, as after a scene change. The page's clock is held, so the second tap
-  // comes within that moment however slow the machine.
+  // A quick double tap on ≡メニュー → 「セーブ・ロード」 over the guide (AGENTS.md 選択肢の誤タップ防止): the dialog opens
+  // under the finger and takes no press for a moment, so the second tap saves nothing; then 「セーブ」 of the slot played
+  // saves the scene, the dialog closes and the guide's line stays where it was. The page's clock is held, so the second
+  // tap comes within that moment however slow the machine.
   const guideLine = await page.getByTestId("dialogue-text").textContent();
-  const savePoint = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "セーブ", exact: true }));
+  const savePoint = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "セーブ・ロード", exact: true }));
   await ops.holdClock(page);
   await page.touchscreen.tap(savePoint.x, savePoint.y);
-  await expect(panel).toBeHidden();
-  expect(await page.evaluate(({ x, y }) => {
-    const box = document.querySelector('#tourism-screen [data-testid="scene-picture"]')!.getBoundingClientRect();
-    return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
-  }, savePoint), "the second tap's point is on the guide's picture").toBe(true);
+  const saveDialog = page.getByRole("dialog", { name: "セーブ・ロード" });
+  await expect(saveDialog).toBeVisible();
   await page.touchscreen.tap(savePoint.x, savePoint.y);
-  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.fastForward(CONFIRM_SETTLE_MS);
   await page.clock.resume();
+  await expect(saveDialog).toBeVisible();
+  expect(await readSave(page)).toEqual(initial);
+  await expect(saveDialog).not.toHaveAttribute("data-settling");
+  await saveDialog.locator(".save-slot.playing").getByRole("button", { name: /にセーブ$/u }).click();
   await ops.settled(page);
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
@@ -313,7 +317,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(prompts).toEqual(["beforeunload"]);
   expect(await readSave(page)).toEqual(manual);
-  const reopened = await ops.openSettings(page);
+  const reopened = await ops.openSaveLoad(page, "save");
   await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
   await ops.closeDialog(reopened);
 
@@ -336,6 +340,39 @@ test("a manual save keeps the saved position and settings when unsaved changes a
 // AGENTS.md 選択肢の誤タップ防止, docs/02 「UX/スマホ」: 「切り替える」 rebuilds the screen with the other
 // journey's saved scene under the finger. With lines shown whole (reduced motion), the second tap of a
 // quick double tap would read its first line on unseen: no tap is taken for a moment after a switch.
+// 「セーブ・ロード」 (2026-11-19 user decision): the player chooses the slot to save into or load from. Saving into another
+// slot copies this play there and play goes on in the slot played; an occupied slot asks before it is written over;
+// loading another slot switches to its journey.
+test("セーブ・ロード saves into the slot chosen and loads another slot's journey", { tag: tier.gate }, async ({ page }) => {
+  await ops.startJourney(page);
+  const slot2 = "dreamscape.journey.milano.slot2.save.v1";
+  let dialog = await ops.openSaveLoad(page, "save");
+  await expect(dialog.getByTestId("save-slot-2")).toContainText("空き");
+  await dialog.getByTestId("save-slot-2").getByRole("button", { name: /にセーブ$/u }).click();
+  await expect(ops.sessionToast(page)).toHaveText("セーブ2に保存しました。");
+  const played = await readSave(page);
+  expect(JSON.parse((await allStorage(page))[slot2]!)).toEqual(played);
+
+  // Over a save there, it asks first; 戻る writes nothing.
+  await ops.goTo(page, "p_duomo");
+  dialog = await ops.openSaveLoad(page, "save");
+  await expect(dialog.getByTestId("save-slot-1")).toContainText("遊んでいる枠");
+  await dialog.getByTestId("save-slot-2").getByRole("button", { name: /にセーブ$/u }).click();
+  const overwrite = page.getByRole("dialog", { name: "セーブ2に上書きしますか？" });
+  await overwrite.getByRole("button", { name: "戻る", exact: true }).click();
+  await expect(overwrite).toBeHidden();
+  expect(JSON.parse((await allStorage(page))[slot2]!)).toEqual(played);
+  await ops.closeDialog(dialog);
+
+  // ロード of セーブ2 switches to its journey (saving is automatic: nothing is lost, so it asks nothing).
+  dialog = await ops.openSaveLoad(page, "load");
+  await dialog.getByTestId("save-slot-2").getByRole("button", { name: /をロード$/u }).click();
+  await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
+  dialog = await ops.openSaveLoad(page, "load");
+  await expect(dialog.getByTestId("save-slot-2")).toContainText("遊んでいる枠");
+  await ops.closeDialog(dialog);
+});
+
 test("a quick double tap on 「切り替える」 does not read on the other journey's saved story scene", { tag: tier.gate }, async ({ page }) => {
   const other = journeyCatalog().journeys.find((journey) => journey.id !== "milano" && journey.status === "available");
   expect(other, "an available journey besides Milan").toBeDefined();
