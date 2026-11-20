@@ -160,7 +160,7 @@ function LivedPage({ page, heroineName, onEnlarge }: { page: LogPage; heroineNam
               <p className="travel-log-where">{[KIND_JA[item.kind], item.whenJa, item.placeJa].filter(Boolean).join(" · ")}</p>
               <div className="stop-title">
                 <h4 id={`log-title-${item.id}`}>{item.titleJa}</h4>
-                {item.kind !== "date" && <span className="stop-seal" aria-hidden="true">完</span>}
+                <span className="stop-seal" aria-hidden="true">完</span>
               </div>
               <p className="travel-log-record">{item.descriptionJa}</p>
             </div>

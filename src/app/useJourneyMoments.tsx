@@ -3,7 +3,7 @@ import { focusSceneHeading } from "../components/scene-focus";
 import type { GameState } from "../domain/game";
 import { ChapterStamp, EndRollDialog, EpisodeTitle, PackingScene, ResumeRecapCard } from "../features/journey/JourneyMoments";
 import {
-  chapterStampOf, completedEpisodeId, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, resumeRecap, type Packing,
+  chapterStampOf, completedDateId, completedEpisodeId, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, resumeRecap, type Packing,
 } from "../features/journey/journey-moments";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 
@@ -20,7 +20,7 @@ const STAMP_WAITS_ON = /^battle:/u;
  * never brings one back (no save format change for them):
  * - the title card of an episode whose first part began, after any ride's or night's art (`effectPlaying`) and the packing;
  *   while it waits a hidden mark keeps the scene from reading on (`data-obstructs-dialogue`);
- * - the stamp 「完」 of an episode completed (2026-11-13), once its battle's result has given way to the next screen and no
+ * - the stamp 「完」 of an episode completed (2026-11-13) or of a date first finished (2026-11-20), once its battle's result has given way to the next screen and no
  *   ride's or night's art, packing or title card covers it; it takes nothing, and one covered after it began is not replayed;
  * - the packing of a departure, which GameApp shows in place of the screen (the next city's arrival waits for it);
  * - the credit roll when the journey ended (and again from 旅の記録: `openEndRoll`);
@@ -67,7 +67,7 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
     const packed = packingOf(previous, next);
     if (packed) setPacking(packed);
     if (journeyEnded(previous, next)) setEndRoll(true);
-    const completed = completedEpisodeId(previous, next);
+    const completed = completedEpisodeId(previous, next) ?? completedDateId(previous, next);
     if (completed) {
       stampStarted.current = false;
       setStampId(completed);
@@ -119,7 +119,7 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
     overlays: <>
       {titleCard && (titleWaits ? <span hidden data-obstructs-dialogue="" />
         : <EpisodeTitle key={titleCard.episodeId} card={titleCard} reduceMotion={reduceMotion} onEnd={() => setTitleId(null)} />)}
-      {stamp && stampShown && <ChapterStamp key={stamp.episodeId} stamp={stamp} reduceMotion={reduceMotion}
+      {stamp && stampShown && <ChapterStamp key={stamp.id} stamp={stamp} reduceMotion={reduceMotion}
         onStart={() => { stampStarted.current = true; }} onEnd={endStamp} />}
       {roll && endRollShown && <EndRollDialog roll={roll} numbers={numbers} reduceMotion={reduceMotion} onClose={closeEndRoll} />}
     </>,
