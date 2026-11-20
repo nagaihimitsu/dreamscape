@@ -920,6 +920,9 @@ export function GameApp({
   const photoOf = (id: string | undefined) => (id ? tourismAssets.find((asset) => asset.id === id) : undefined);
   const landmarkPhoto = (id: string | null | undefined) => photoOf(landmarks.find((landmark) => landmark.id === id)?.imageAssetId);
   const backdropPhoto = (backgroundId: string) => photoOf(presentation.backgrounds[backgroundId]?.imageAssetId);
+  // The sources of the quiz explanation on screen, listed there too (2026-11-20: the explanation shows none of its own).
+  const explanationSources = game?.activeBattle?.phase === "feedback" && activeBattleContent
+    ? activeBattleContent.quiz.questions[game.activeBattle.roundIndex]?.sources : undefined;
   const scenePhoto = !game ? undefined
     : activeEncounter && currentEncounter ? encounterImage ?? encounterBackdrop?.asset
     : game.activeEpilogue ? undefined
@@ -1417,7 +1420,7 @@ export function GameApp({
 
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
-      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} onAllCredits={() => setCreditsOpen(true)}
+      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} factSources={explanationSources} onAllCredits={() => setCreditsOpen(true)}
         onClose={() => setScreenCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook

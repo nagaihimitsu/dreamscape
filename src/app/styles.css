@@ -802,6 +802,10 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + 
 dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .setting-english-off { margin: 8px 0 4px; }
 /* 旅's line about money and AP, under the names (or the line that they cannot change now). */
 dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: 6px 0 0; }
+/* 「解説の出典」: the quiz explanation's sources, first under the title bar, each a link on its own 44-px row. */
+dialog.modal .fact-sources h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+dialog.modal .fact-sources ul { margin: 0 0 12px; padding: 0; list-style: none; }
+dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
 /* 画面の出典's way into 出典・権利の一覧: on its own, under a hairline, after the screen's photos. */
 dialog.modal .screen-credits-all {
   margin-top: 14px;
@@ -1422,24 +1426,6 @@ dialog.modal[open] {
   line-height: 2;
   overflow-wrap: anywhere;
 }
-.quiz-sources {
-  font-size: 11px;
-  margin: 17px 0 22px;
-}
-.quiz-sources summary {
-  cursor: pointer;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.quiz-sources ul {
-  padding-left: 18px;
-}
-.quiz-sources a {
-  overflow-wrap: anywhere;
-}
 .battle-result {
   padding-top: 25px;
 }
@@ -1467,29 +1453,6 @@ dialog.modal[open] {
 }
 .battle-score > span {
   font-size: 13px;
-}
-.answer-history {
-  list-style: none;
-  padding: 0;
-  margin: 15px 0;
-}
-.answer-history li {
-  border-top: 1px solid var(--ds-parchment-line);
-  display: flex;
-  gap: 20px;
-  padding: 12px 0;
-  font-size: 12px;
-}
-.correct-label {
-  color: var(--ds-here);
-}
-.incorrect-label {
-  color: #8a674c;
-}
-.record-summary {
-  font-size: 11px;
-  color: var(--ds-ink-muted);
-  margin: 20px 0 25px;
 }
 .battle-screen .paused {
   padding-top: 25px;

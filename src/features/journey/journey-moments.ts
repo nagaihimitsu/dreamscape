@@ -12,7 +12,6 @@ import type { GameState } from "../../domain/game";
 import { eventPlace } from "../../domain/moments";
 import { withNames } from "../romance/names";
 import { albumPages, type AlbumContent, type AlbumPhotoView } from "./album-pages";
-import { metPeopleGroups } from "./met-people";
 import { formatTravelTime } from "./travel-time";
 
 // The journey's moments (2026-11-11 user decision) as pure rules, apart from their screens: the title card when an
@@ -292,19 +291,17 @@ export function packingOf(previous: GameState, next: GameState): Packing | null 
 /** This change ended the journey: its last city cleared and that city's epilogue read (isJourneyComplete turned true). */
 export const journeyEnded = (previous: GameState, next: GameState) => !isJourneyComplete(previous) && isJourneyComplete(next);
 
-/** A city of the credit roll: the episodes completed there (their clear titles, in the order completed), the people met, the photos. */
-export type EndRollCity = { id: string; nameJa: string; chapters: string[]; people: string[]; photos: MomentPhoto[] };
+/** A city of the credit roll: its name and the album's photos taken there (2026-11-20 user decision: no clear titles or people met). */
+export type EndRollCity = { id: string; nameJa: string; photos: MomentPhoto[] };
 export type EndRoll = { journeyJa: string; playerName: string; heroineName: string; cities: EndRollCity[] };
 
 /**
- * The credit roll of the journey: the two names, then each city of the journey in its order with the clear titles of
- * its completed episodes, the people met there (旅の記録's 「出会った人」: met-people.ts metPeopleGroups) and the album's
- * photos taken there. Never a relationship value.
+ * The credit roll of the journey: the two names, then each city of the journey in its order with the album's photos
+ * taken there. Never a relationship value.
  */
 export function endRollOf(game: GameState): EndRoll {
   const journey = getJourneyForCity(game.currentCityId);
   const photos = photoViews(game.album, game.currentCityId);
-  const met = metPeopleGroups(game);
   const cityIds = journey?.cities.map((city) => city.id) ?? [game.currentCityId];
   return {
     journeyJa: journey?.nameJa ?? "",
@@ -313,9 +310,6 @@ export function endRollOf(game: GameState): EndRoll {
     cities: cityIds.map((id) => ({
       id,
       nameJa: cityNameJa(id),
-      chapters: game.completedEpisodeIds.flatMap((episodeId) => episodes.filter((episode) => episode.id === episodeId && episode.cityId === id))
-        .map((episode) => withNames(episode.clearTitleJa, game)),
-      people: met.find((group) => group.cityId === id)?.people.map((person) => person.nameJa) ?? [],
       photos: photos.filter((photo) => photo.cityId === id),
     })),
   };
