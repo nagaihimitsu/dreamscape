@@ -808,6 +808,21 @@ dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin
 dialog.modal .fact-sources h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
 dialog.modal .fact-sources ul { margin: 0 0 12px; padding: 0; list-style: none; }
 dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+dialog.modal .fact-sources .screen-credits-choice { margin: 0; font-size: 13px; line-height: 1.6; }
+/* 「手がかりの根拠と解釈」 (PhotoCredits.tsx, SourceNotes): the clue book's clues' sources, after the photo, under a hairline.
+   Each source: its kind's pill, what it supports and its link. */
+dialog.modal .screen-credits-sources {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ds-parchment-line);
+}
+dialog.modal .modal-title-bar + .screen-credits-sources { margin-top: 0; padding-top: 0; border-top: 0; }
+dialog.modal .screen-credits-sources h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+dialog.modal .screen-credits-sources h4 { margin: 10px 0 0; font-size: 13px; font-weight: 600; }
+.source-notes { margin: 0; padding: 0; list-style: none; }
+.source-notes li { padding-top: 8px; }
+.source-notes p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.source-notes a { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 /* 画面の出典's way into 出典・権利の一覧: on its own, under a hairline, after the screen's photos. */
 dialog.modal .screen-credits-all {
   margin-top: 14px;
@@ -1358,7 +1373,8 @@ dialog.modal[open] {
   padding: 15px;
   background: var(--ds-parchment-2);
 }
-/* The correct answer: the done colour's edge (its mark says 正解 in words). */
+/* The correct answer: the done colour's edge (after a wrong answer its mark says 正解 in words; after a right one the
+   verdict over the explanation does, and 画面の出典 names the answer chosen: 2026-11-20). */
 .quiz-choice.correct {
   border: 2px solid var(--ds-here);
   padding: 15px;
@@ -1427,6 +1443,10 @@ dialog.modal[open] {
   font-size: 14px;
   line-height: 2;
   overflow-wrap: anywhere;
+}
+/* 「相手の反応を見る」, a little apart from the explanation and 「英文を確認する」 above it. */
+.quiz-feedback .quiz-feedback-next {
+  margin-top: 17px;
 }
 .battle-result {
   padding-top: 25px;

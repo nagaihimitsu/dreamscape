@@ -74,11 +74,6 @@
 }
 /* The submit, brought into view on the return from the clue book (ReasoningPanel), stops a little inside the edge. */
 .reasoning-panel > .primary { scroll-margin-block: 16px; }
-.reasoning-ready {
-  font-size: 0.85rem;
-  line-height: 1.8;
-  color: var(--ds-here);
-}
 .special-entry-heading {
   margin: 28px 0 8px;
   font-size: 1.2rem;
@@ -129,5 +124,4 @@
   .reasoning-actions > button { min-height: 44px; padding-block: 6px; line-height: 1.4; }
   .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: 44px; padding: 6px 12px; line-height: 1.4; }
   .reasoning-panel > .fine-print { grid-column: 2; grid-row: 4; margin: 0; line-height: 1.35; }
-  .reasoning-ready { grid-column: 2; grid-row: 2; }
 }

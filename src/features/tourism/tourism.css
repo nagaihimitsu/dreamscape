@@ -424,9 +424,6 @@
     font-size: 13px;
     line-height: 1.55;
   }
-  .mobile-observation-active .observation-detail .clue-sources {
-    margin-top: 3px;
-  }
   .mobile-observation-active .observation-notes-open {
     display: block;
     flex: none;

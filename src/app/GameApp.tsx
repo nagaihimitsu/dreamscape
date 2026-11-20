@@ -84,7 +84,8 @@ import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
 import { showsMissedPhotos } from "../features/journey/album-pages";
 import { journeyNumbers } from "../features/journey/journey-numbers";
-import { freeTimePhotos, recapPhotos, ScreenCredits } from "../features/journey/PhotoCredits";
+import { freeTimePhotos, recapPhotos, ScreenCredits, type ScreenAnswer } from "../features/journey/PhotoCredits";
+import { shownNotebookClues } from "../features/tourism/notebook-clues";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { DepartureLuggage, EndRollDialog } from "../features/journey/JourneyMoments";
@@ -962,6 +963,20 @@ export function GameApp({
     return changed;
   }
   const scenePlaceJa = momentQuiz && currentBattle ? landmarks.find((landmark) => landmark.id === currentBattle.landmarkId)?.nameJa : undefined;
+  // A reasoning quiz's case file in the clue book (not while a visit's observation opened from it shows).
+  const caseClueIds = game?.activeBattle && reasoningRule && reasoningContext && !game.activeTourism ? reasoningRule.caseClueIds : undefined;
+  // ≡メニュー's 「画面の出典」 (2026-11-20 user decision): the sources of what the screen's clue book shows, where it opens (a
+  // visit, a reasoning quiz; 「根拠と解釈を確認する」 is off the clue book).
+  const screenClues = game && !activeEncounter && (canObserve || cityNotebook) && (game.activeTourism || caseClueIds)
+    ? shownNotebookClues({ landmarkId: currentLandmarkId ?? undefined, cityId: cityNotebook ? currentBattle.cityId : undefined,
+      discoveredIds: game.discoveredClueIds, readableDocumentIds: getReadableDocumentIds(game), caseClueIds,
+      clues: caseClueIds ? activeBattleContent?.clues : undefined })
+    : [];
+  // The answer of the explanation on screen, said over its sources there (2026-11-20: a right one shows no mark of its own).
+  const explainedQuestion = explanationSources && game?.activeBattle ? activeBattleContent?.quiz.questions[game.activeBattle.roundIndex] : undefined;
+  const explainedAnswer = explainedQuestion && game?.activeBattle?.answers[game.activeBattle.roundIndex];
+  const screenAnswer: ScreenAnswer | undefined = explainedQuestion && explainedAnswer
+    ? { optionId: explainedAnswer.optionId, correctOptionId: explainedQuestion.correctOptionId } : undefined;
   return (
     <WornCostumeContext.Provider value={game ? wornCostume(game) : undefined}>
     <div
@@ -1450,7 +1465,8 @@ export function GameApp({
 
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
-      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} factSources={explanationSources} onAllCredits={() => setCreditsOpen(true)}
+      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} factSources={explanationSources} answer={screenAnswer}
+        clues={screenClues} onAllCredits={() => setCreditsOpen(true)}
         onClose={() => setScreenCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
@@ -1461,19 +1477,14 @@ export function GameApp({
           onDiscoverDocument={(id) => commit((state) => discoverClue(state, id, game.revision))}
           onClose={() => setNotebook(false)}
           reasoning={
+            caseClueIds &&
             reasoningRule &&
-            currentBattle &&
             game.activeBattle &&
-            reasoningContext &&
-            !game.activeTourism
+            reasoningContext
               ? {
-                  caseClueIds: reasoningRule.caseClueIds,
+                  caseClueIds,
                   clues: activeBattleContent!.clues,
                   claimText: reasoningContext.claimText,
-                  questionEn:
-                    activeBattleContent!.quiz.questions[
-                      game.activeBattle.roundIndex
-                    ].questionEn,
                   selectedIds:
                     game.activeBattle.reasoning?.selectedClueIds ?? [],
                   maxSelections: reasoningEvidenceCount(reasoningRule) as 1 | 2,

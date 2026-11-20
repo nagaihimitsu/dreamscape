@@ -60,7 +60,8 @@ function closeWaitMenu() {
 /**
  * What ≡メニュー's panel opens; 画面の出典 lists the photos free time shows (cards, a backdrop photo), the recap card's
  * place photo (also on the night screen) or a story scene's registered photo (its credits: the scene shows no 出典 of its
- * own, nor does a quiz answer's reveal of the same photo; 2026-11-15), and opens 出典・権利の一覧 (2026-11-20).
+ * own, nor does a quiz answer's reveal of the same photo; 2026-11-15), the sources of a quiz answer's explanation and of
+ * the clue book's clues (2026-11-20: off the quiz card and the clue book), and opens 出典・権利の一覧 (2026-11-20).
  */
 type MenuActions = {
   /** 「セーブ・ロード」: the dialog of the journey's slots, to save into or load from one (SaveSlots.tsx's SaveLoadDialog). */
@@ -73,7 +74,7 @@ type MenuActions = {
   onNote?: () => void;
   /** Its name: 「ノート」, or its page's name for a note of one page (noteName). */
   noteLabel?: string;
-  /** 「画面の出典」 (PhotoCredits.tsx's ScreenCredits; 2026-11-20): the screen's photos, and the way into 出典・権利の一覧. */
+  /** 「画面の出典」 (PhotoCredits.tsx's ScreenCredits; 2026-11-20): the screen's photos and sources, and the way into 出典・権利の一覧. */
   onScreenCredits?: () => void;
   onSettings: () => void;
   /** 移動画面に戻る（Debug）: only while Debug mode offers it (src/app/free-time-return.ts). */

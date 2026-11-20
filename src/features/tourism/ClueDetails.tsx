@@ -1,35 +1,17 @@
 import type { TourismClue } from "../../content";
 import type { ReactNode } from "react";
+import { claimLabels } from "../../components/SourceNotes";
 import { clueKindLabel, isHeardClue } from "./clue-source";
 
-const claimLabels: Record<string, string> = {
-  documented_fact: "確認された事実",
-  interpretation: "美術史の解釈",
-  hypothesis: "学説・仮説",
-  legend: "伝承",
-};
-
 /**
+ * A clue's heading, kinds of claim, picture and words. Its sources are not here (2026-11-20 user decision: 「根拠と解釈を
+ * 確認する」 went from the clue): ≡メニュー's 「画面の出典」 lists those of the clues the screen's clue book reads.
  * `heard`: the clue was heard in conversation (a scene gives it; clue-source.ts), read from the scene list when not given.
  * `kind: false`: no heading of its kind over its title (where a mark next to it already says where it came from).
  */
 export function ClueDetails({ clue, action, image, heard = isHeardClue(clue.id), kind = true }: {
   clue: TourismClue; action?: ReactNode; image?: ReactNode; heard?: boolean; kind?: boolean;
 }) {
-  const sources = (
-    <details className="clue-sources">
-      <summary>根拠と解釈を確認する</summary>
-      {clue.sources.map((source, index) => (
-        <div key={`${source.url}:${index}`}>
-          <span className="pill">{claimLabels[source.claimType]}</span>
-          <p>{source.claimJa}</p>
-          <a href={source.url} target="_blank" rel="noreferrer">
-            {source.publisher} · {source.title}
-          </a>
-        </div>
-      ))}
-    </details>
-  );
   return (
     <>
       <div className="clue-heading">
@@ -39,21 +21,17 @@ export function ClueDetails({ clue, action, image, heard = isHeardClue(clue.id),
         </div>
         {action}
       </div>
-      <div className={image ? "clue-meta" : undefined}>
-        <div className="claim-types">
-          {Array.from(
-            new Set(clue.sources.map((source) => source.claimType)),
-          ).map((type) => (
-            <span key={type} className="pill">
-              {claimLabels[type]}
-            </span>
-          ))}
-        </div>
-        {image && sources}
+      <div className="claim-types">
+        {Array.from(
+          new Set(clue.sources.map((source) => source.claimType)),
+        ).map((type) => (
+          <span key={type} className="pill">
+            {claimLabels[type]}
+          </span>
+        ))}
       </div>
       {image}
       <p className="clue-description">{clue.descriptionJa}</p>
-      {!image && sources}
     </>
   );
 }
