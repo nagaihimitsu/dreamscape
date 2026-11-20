@@ -76,7 +76,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
-  const note = await ops.openEnglishNote(page);
+  // The note opens under the finger and takes no press for a moment (2026-11-20: 「ノート」, with 旅の図鑑).
+  const note = await ops.openEnglishNote(page, { clockHeld: true });
   const closeNote = await ops.centerOf(note.getByRole("button", { name: "閉じる", exact: true }));
   await ops.doubleTap(page, closeNote);
   await expect(note).toBeHidden();
@@ -95,7 +96,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
   const left = await unrevealed();
   const panel = await ops.openMenu(page);
-  await expect(panel.getByRole("button", { name: "セーブ", exact: true })).toBeFocused();
+  await expect(panel.getByRole("button", { name: "セーブ・ロード", exact: true })).toBeFocused();
   await page.clock.fastForward(2_000);
   expect(await unrevealed(), "the line waits while the panel is open").toBe(left);
   await ops.tapAt(page, picture);

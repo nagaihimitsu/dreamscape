@@ -83,10 +83,10 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
     expect((await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds).toEqual(chosen);
     // Its 「閉じる」 brings the submit forward the same way.
     await expect(submit).toBeFocused();
-    // In the clue book (a dialog) ≡メニュー cannot be opened; on the battle, its 「画像の出典」 shows the same landmark photo
+    // In the clue book (a dialog) ≡メニュー cannot be opened; on the battle, its 「画面の出典」 shows the same landmark photo
     // with its credit, and closes back on ≡メニュー.
-    await ops.menuItem(page, "画像の出典");
-    const viewer = page.getByRole("dialog", { name: "画像の出典" });
+    await ops.menuItem(page, "画面の出典");
+    const viewer = page.getByRole("dialog", { name: "画面の出典" });
     await expect(viewer.getByRole("img")).toHaveAttribute("src", cluePhoto!);
     await expect(viewer.getByRole("link", { name: "画像の出典" })).toBeVisible();
     await ops.closeDialog(viewer);
@@ -539,19 +539,19 @@ test("tourism: on a wide screen the page's margin beside the guide reads one ste
 
 // The credits of a story scene's photo (licence attribution) are in ≡メニュー while the scene shows: over a
 // conversation only the header shows (user decision 2026-11-11). Over a landmark battle's question,
-// 「画像の出典」 opens the photo with its credits shown at once, under the item's own name (2026-11-14). A dialog
+// 「画面の出典」 (「画像の出典」 until 2026-11-20) opens the photo with its credits shown at once, under the item's own name (2026-11-14). A dialog
 // for viewing: a tap on the dimmed page around it closes it as its 「× 閉じる」 does, holding taps for a moment.
-test("battle: ≡メニュー's 「画像の出典」 opens the battle's photo and its credits", { tag: tier.debug }, async ({ page }) => {
+test("battle: ≡メニュー's 「画面の出典」 opens the battle's photo and its credits", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a landmark battle that Debug opens in its default city").toBeDefined();
   await ops.openDebugScene(page, settings(target!));
   const question = await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
-  await ops.menuItem(page, "画像の出典");
-  const viewer = page.getByRole("dialog", { name: "画像の出典" });
+  await ops.menuItem(page, "画面の出典");
+  const viewer = page.getByRole("dialog", { name: "画面の出典" });
   await expect(viewer).toBeVisible();
   await expect(viewer.getByRole("link", { name: "画像の出典" })).toBeVisible();
   await ops.closeDialog(viewer);
-  await ops.menuItem(page, "画像の出典");
+  await ops.menuItem(page, "画面の出典");
   await expect(viewer).toBeVisible();
   const box = (await viewer.boundingBox())!;
   await ops.tapAt(page, { x: box.x + box.width / 2, y: Math.max(2, box.y / 2) });

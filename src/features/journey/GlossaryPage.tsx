@@ -9,26 +9,24 @@ const photoOf = (term: ListedTerm) => tourismAssets.find((asset) => asset.id ===
 const source = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 /**
- * 「旅の図鑑」 (the header menu, 2026-11-13 user decision): the journey's terms as small cards by group (glossary-book.ts), with how
+ * 「旅の図鑑」, the page of ≡メニュー's 「ノート」 (NoteDialog.tsx; its own item 2026-11-13, one dialog with 英語ノート since
+ * 2026-11-20): the journey's terms as small cards by group (glossary-book.ts), with how
  * far the save has come (「12 / 30」). A term met shows its photo and name (「NEW」 on one met since 旅の図鑑 was last
  * opened, `newIds`); a term not met yet is an empty card with neither. A card opens larger in its own dialog: the photo
- * whole, the name with its reading or other name, its group and the line, 「閉じる」 in its title bar, over the book,
+ * whole, the name with its reading or other name, its group and the line, 「閉じる」 in its title bar, over the note,
  * which it closes back to. The photo's credit is not shown here (2026-11-15 user decision): ゲームの設定 →
  * 出典・権利の一覧 lists every tourism photo the journey serves, these included. In Debug mode (`revealAll`) every term
- * shows, those not met marked 「未入手」.
- * Opened from the header menu's panel, it takes no press for a moment (settlePresses). Both are dialogs for viewing: a tap
- * on the dimmed page around also closes them (2026-11-14). It shows no relationship value.
+ * shows, those not met marked 「未入手」. Children of the note's dialog, whose frame is `glossary-modal` while this page
+ * shows. It shows no relationship value.
  */
-export function GlossaryDialog({ journeyId, met, newIds, revealAll = false, onClose }: {
-  journeyId: string; met: readonly string[]; newIds: readonly string[]; revealAll?: boolean; onClose: () => void;
+export function GlossaryPage({ journeyId, met, newIds, revealAll = false }: {
+  journeyId: string; met: readonly string[]; newIds: readonly string[]; revealAll?: boolean;
 }) {
   const book = useMemo(() => glossaryBook(journeyTerms(journeyId), met, newIds), [journeyId, met, newIds]);
   const [opened, setOpened] = useState<{ term: ListedTerm; met: boolean } | null>(null);
   const openedPhoto = opened && photoOf(opened.term);
   const openedSubtitle = opened && termSubtitle(opened.term);
   return <>
-    <Modal labelledBy="glossary-title" className="glossary-modal" onClose={onClose} settlePresses closeOnBackdrop>
-      <ModalTitle id="glossary-title" onClose={onClose} closeTestId="glossary-close">旅の図鑑</ModalTitle>
       <p className="glossary-progress" data-testid="glossary-progress">
         <span aria-hidden="true">{glossaryProgress(book)}</span><span className="sr-only">{glossaryProgressSpoken(book)}</span>
       </p>
@@ -58,7 +56,6 @@ export function GlossaryDialog({ journeyId, met, newIds, revealAll = false, onCl
           })}
         </ul>
       </section>)}
-    </Modal>
     {opened && <Modal labelledBy="glossary-entry-title" className="glossary-entry" onClose={() => setOpened(null)} closeOnBackdrop>
       <ModalTitle id="glossary-entry-title" eyebrow={GLOSSARY_CATEGORY_LABELS_JA[opened.term.category]} onClose={() => setOpened(null)}
         closeTestId="glossary-entry-close">{opened.term.nameJa}</ModalTitle>

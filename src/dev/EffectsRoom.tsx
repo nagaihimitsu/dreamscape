@@ -422,6 +422,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
   const [stamp, setStamp] = useState<{ key: number; card: ChapterStampCard } | null>(null);
   const [status, setStatus] = useState("");
+  const [saveMark, setSaveMark] = useState(0);
   const line = useRef<HTMLParagraphElement>(null);
   const itemLeave = useItemShowLeave(itemShow, game?.inventory, replaced);
   const outLeave = useItemShowLeave(itemOut?.itemId, game?.inventory, replaced);
@@ -501,12 +502,12 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
       {game && <JourneyHud game={game} place={place} view="all" replaced={replaced} seenItemIds={seenItems}
         onItemsSeen={(ids) => setSeenItems((seen) => new Set([...seen, ...ids]))} englishNew={englishNew}
         holdNotices={!!photoNotice || !!itemShow || !!itemLeave || !!itemOut || !!outLeave} itemFlight={itemLeave} itemOutFlight={outLeave}
-        onSave={() => {
+        onSaveLoad={() => {
           playSe("save");
+          setSaveMark((count) => count + 1);
           setStatus("セーブの印と音だけを出しました（何も保存していません）。");
-          return true;
         }}
-        onLoad={notShown("ロード")} onRecords={notShown("旅の記録")} onEnglish={notShown("英語ノート")}
+        saveMark={saveMark} onRecords={notShown("旅の記録")} onNote={notShown("ノート")}
         onSettings={notShown("ゲームの設定")} />}
       {game && <NotebookCueContext.Provider value={clue}>
         <SceneNotebookTool onClick={() => {
@@ -659,7 +660,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
         <button type="button" className="effects-room-chip" aria-pressed={englishNew} onClick={() => setEnglishNew((on) => !on)}>英語ノートの点</button>
         <button type="button" className="effects-room-chip" onClick={() => restart(cityId)}>元に戻す</button>
       </div>
-      <p>セーブの印は、上の帯の「設定」から「セーブ」で出ます（何も保存しません）。所持品の「NEW」の点は、所持品を開くと消えます。
+      <p>セーブの印は、上の帯の「メニュー」から「セーブ・ロード」で出ます（何も保存しません）。所持品の「NEW」の点は、所持品を開くと消えます。
         {!cityItems.length && "この都市には品物がないので、品物の手応えはほかの都市で見られます。"}</p>
       <p role="status">{status}</p>
     </> : <p>上の帯の見本がないため、この欄は使えません。</p>}

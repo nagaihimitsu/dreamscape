@@ -214,7 +214,7 @@ export function SleepChoice({ game, sleep, api, scope = "page", hintId }: {
 /**
  * The row's photo (UI redesign §3.6): the reduced `card` copy of the place's
  * registered photo, or a plain tile in the place's background colour with the
- * category mark. Decorative (the name is beside it); its credit is in 「写真の出典」.
+ * category mark. Decorative (the name is beside it); its credit is in ≡メニュー's 「画面の出典」.
  */
 function PlaceThumbnail({ game, place, glyph }: { game: GameState; place: TravelPlace; glyph: string }) {
   const photo = getPlacePhoto(game.currentCityId, place.id);
