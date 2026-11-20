@@ -34,6 +34,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 | `<旅行編>/glossary/terms.json` | 旅の図鑑の言葉（任意。下の「旅の図鑑の言葉」） |
 | `<旅行編>/presentation/` | 人物の絵（`characters.json`）、BGM・環境音・効果音（`music.json`・`ambience.json`・`sounds.json`。共通の分は `<共通>/presentation/`）、自作の絵の一覧（`own-artwork.json`） |
 | `<旅行編>/tours/<ツアーID>.json` | 日帰りツアー（任意。下の「ツアー」） |
+| `<旅行編>/shop/catalog.json` | 街歩きのお店と、そこで売るヒロインの服（任意。下の「お店と服」） |
 
 ## Inkで会話と演出を作る
 
@@ -891,6 +892,17 @@ EXTERNAL cond(text)
 - 人物の配置は人物ごとの `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で書きます。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分の間で共有し、画像をゆがめずに出します。`imagePath`、`variants`、相手の `battleCharacters` の設定も使えます。観察用の画像と座標は別に管理します。
 - `heroine` の `defaultCostume` と `defaultPose` が、地域に属さない基本の衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` で、都市・国・地域ごとの標準の衣装を指定できます。今の `milano` → `IT` → `south_europe` → `south_europe_01` の設定は残していますが、南欧の衣装は届いていないので、今は基本の衣装を出します。優先の順は、`scenes`、都市、国、地域の標準の衣装、基本の衣装、仮の素材です。`scenes` のキーにはデートID・バトルID・観光地ID・都市エピローグのエピソードIDを使い、たとえば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と書きます。届いていない衣装から、表情だけが別の衣装に切り替わることはありません。
 - すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（今はどの旅行編も使っていません）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
+
+### お店と服
+
+ヒロインの服は、街歩きのお店で買って、上の帯の「服」で着替えます（2026-11-20）。服を足す手順：
+
+1. 衣装の絵を `characters.json` の `heroine` の `costumes` に登録します（上の「基本の衣装・表情の画像を足す」と[動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)。`neutral` の絵が要ります）。
+2. 旅行編の `shop/catalog.json` の `outfits` に、服（`id`・衣装 `costume`・名前 `nameJa`・説明 `descriptionJa`・値段 `price`・買ったときの彼女の一言 `boughtLineJa`）を書きます。値段は旅行編の通貨の整数です。
+3. 同じファイルの `shops` に、お店（`id`・都市 `cityId`・札の名前 `nameJa`・紹介 `descriptionJa`・彼女の一言 `heroineLineJa`（任意）・売る服 `outfitIds`）を書きます。1都市に1軒までで、お店の札は街歩きの写真札の列の右端に出ます。同じ服を何都市で売ってもかまいません（買えるのは1回）。
+4. `npm run content:check` で確かめます（知らない衣装・絵のない衣装・都市、1都市に2軒などで止まります）。
+
+例は [インド編の `shop/catalog.json`](../content/journeys/golden_triangle/shop/catalog.json)（青いサリー）。着ている服は、場面ごとに決めた服（`wardrobe.scenes`）より下、都市・国・地域の服より上です。くわしい決まりは[技術設計の「お店と服」](../docs/02_TECH_ARCHITECTURE.md#お店と服)。
 
 ### プレビュー
 

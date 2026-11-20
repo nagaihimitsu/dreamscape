@@ -7,6 +7,7 @@ import { characterCatalog as catalog } from "./character-catalog";
 import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import { LivePortrait } from "./LivePortrait";
+import { useWornCostume } from "./worn-costume";
 import "./character-portrait.css";
 
 const characters = catalog.characters;
@@ -35,13 +36,15 @@ export function CharacterPortrait({
   children?: ReactNode;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  // The outfit the player chose for the heroine (the header's 「服」), changed in free time only.
+  const worn = useWornCostume();
   // Resolve from the scene context only, never from a changing line or its
   // emotion. Unavailable expressions therefore cannot change the outfit.
   const selection = useMemo(
     () => character
-      ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, countryId, regionId, costume, pose })
+      ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, countryId, regionId, costume, pose, worn })
       : {},
-    [character, sceneId, cityId, countryId, regionId, costume, pose],
+    [character, sceneId, cityId, countryId, regionId, costume, pose, worn],
   );
   // The pose's moving picture (characters.json `avatar`, its shared face `avatarFace`): drawn over the still one once it
   // moves; "failed" keeps the still picture for this outfit (reduced motion, no WebGL, files that cannot load).
@@ -97,9 +100,10 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   cityId?: string;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  const worn = useWornCostume();
   const selection = useMemo(
-    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
-    [character, sceneId, cityId],
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, worn }) : {},
+    [character, sceneId, cityId, worn],
   );
   if (!character) return null;
   const image = characterImage(character, { ...selection, emotion });
@@ -122,9 +126,10 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
   cityId?: string;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  const worn = useWornCostume();
   const selection = useMemo(
-    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
-    [character, sceneId, cityId],
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, worn }) : {},
+    [character, sceneId, cityId, worn],
   );
   if (!character) return null;
   const image = characterImage(character, { ...selection, emotion });

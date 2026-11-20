@@ -24,6 +24,9 @@ export type FreeTimeHubProps = {
   onCancelTour: () => boolean;
   onTravelWait: (minutes: number) => boolean;
   onTravelSleep: (mode: TravelRoute["mode"], viaPlaceId: string | null) => boolean;
+  /** The shop's 「買う」 and 「着てみる」 (ShopCard; 2026-11-20): the outfit bought or worn, true when it happened. */
+  onBuyOutfit: (outfitId: string) => boolean;
+  onWearOutfit: (outfitId: string) => boolean;
   nextCityName?: string;
   onDepart: () => void;
   /** The cards free time's row has shown during this play, per city (GameApp's memory): a card it has not is dealt in. */

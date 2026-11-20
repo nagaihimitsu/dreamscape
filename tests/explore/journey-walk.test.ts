@@ -134,6 +134,9 @@ function weight(state: GameState, action: PlayerAction): number {
     // A tour (stage 2a): booked readily when it holds a main part the city's finale needs, rarely cancelled.
     case "book_tour": return tourIsRequired(action.tourId) ? 3 : 1;
     case "cancel_tour": return 0.1;
+    // The shop's outfits (2026-11-20): bought now and then, changed into rarely (it changes only her pictures).
+    case "buy_outfit": return 0.2;
+    case "wear_outfit": return 0.05;
     default: return 1;
   }
 }

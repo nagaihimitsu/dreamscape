@@ -127,9 +127,20 @@ export const characterCatalogSchema = z.object({
 export type CharacterAsset = z.infer<typeof characterSchema>;
 export type Wardrobe = z.infer<typeof wardrobeSchema>;
 export type CharacterSelection = { emotion?: string; costume?: string; pose?: string };
-export type CostumeContext = { sceneId?: string; cityId?: string; countryId?: string; regionId?: string; costume?: string; pose?: string };
+export type CostumeContext = {
+  sceneId?: string; cityId?: string; countryId?: string; regionId?: string; costume?: string; pose?: string;
+  /**
+   * The heroine's costume the player chose (the header's 「服」, 2026-11-20; src/domain/outfits.ts wornCostume): over the
+   * city's, country's and region's outfit, under the scene's own (wardrobe.scenes: the writer's choice for that scene).
+   */
+  worn?: string;
+};
 
-/** Resolve once per scene; unavailable outfits use the character's basic outfit. */
+/**
+ * Resolve once per scene; unavailable outfits use the character's basic outfit. The heroine wears, first found: the
+ * caller's `costume` (Debug's preview), the scene's (wardrobe.scenes), the one the player chose (`worn`), the city's, the
+ * country's, then the region's.
+ */
 export function resolveCharacterCostume(character: CharacterAsset, wardrobe: Wardrobe | undefined, context: CostumeContext): CharacterSelection {
   if (character.id !== "heroine") return { costume: context.costume, pose: context.pose };
   const scene = context.sceneId ? wardrobe?.scenes[context.sceneId] : undefined;
@@ -138,7 +149,8 @@ export function resolveCharacterCostume(character: CharacterAsset, wardrobe: War
   const country = countryKey ? wardrobe?.countries[countryKey] : undefined;
   const regionKey = context.regionId ?? country?.region;
   const region = regionKey ? wardrobe?.regions[regionKey] : undefined;
-  const chosen = context.costume ? { costume: context.costume } : scene?.costume ? scene : city?.costume ? city : country?.costume ? country : region ? { costume: region.defaultCostume } : undefined;
+  const chosen = context.costume ? { costume: context.costume } : scene?.costume ? scene : context.worn ? { costume: context.worn }
+    : city?.costume ? city : country?.costume ? country : region ? { costume: region.defaultCostume } : undefined;
   const costumeId = chosen?.costume;
   const costume = character.costumes?.find((item) => item.id === costumeId);
   const poseId = context.pose ?? (chosen && "pose" in chosen ? chosen.pose : undefined) ?? costume?.poses[0]?.id;

@@ -25,6 +25,7 @@ import {
 } from "../src/content/schemas";
 import { prepareContentFixture } from "../src/content/test-fixtures";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
+import { shopCatalogSchema } from "../src/content/shop";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { wordMeaningsSchema } from "../src/content/word-meanings";
 import { GENERATED_PUBLIC_DIRECTORY, journeyDirectory, MIRROR_DIRECTORY, SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID, type CatalogKind } from "./content-layout";
@@ -87,6 +88,7 @@ const runtimeSchemas = {
   "romance/progression.json": progressionSchema,
   "romance/response_profiles.json": responseProfileCatalogSchema,
   "scenes/catalog.json": sceneDataCatalogSchema,
+  "shop/catalog.json": shopCatalogSchema,
   "tourism/catalog.json": tourismCatalogSchema,
 } satisfies Record<CatalogKind, { parse(value: unknown): unknown }>;
 
