@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { dates } from "../../../src/content";
-import { finishEpisode, newJourney, withAp, withRelationship } from "../../../src/dev/scenario-builders";
+import { clearCity, departFromClearedCity, finishEpisode, newJourney, withAp, withRelationship } from "../../../src/dev/scenario-builders";
 import { evaluateProgression } from "../../../src/domain/date-rules";
 import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 
@@ -37,16 +37,17 @@ const WORD = /まだ、?いたい|また、?いたい/u;
 /** The values that give an accepted confession (romance/progression.json; rooftop-dates.test.ts). */
 const ACCEPTED = { affection: 8, trust: 4, spark: 4 };
 
-/** Delhi after its first sightseeing, the given dates played (the Lotus Temple's with `answer`), the confession accepted at 19:00. */
+/** Delhi after its first sightseeing, the given dates played (the Lotus Temple's with `answer`), then Agra's first sightseeing; the journey's first confession (Agra's) accepted at 19:00. */
 function acceptedConfession(withLotus: boolean, answer?: string): { lotus: string[]; confession: string[] } {
   let state = finishEpisode(newJourney("golden_triangle"), "gt_delhi_main_red_fort");
   let lotus: string[] = [];
   if (withLotus) ({ state, lines: lotus } = playDate(state, LOTUS, answer ? [answer] : []));
   const others = dates.filter((date) => date.chapterId === "delhi" && date.kind === "normal" && date.id !== LOTUS).map((date) => date.id);
   for (const dateId of others.slice(0, withLotus ? 2 : 3)) state = playDate(state, dateId).state;
+  state = finishEpisode(departFromClearedCity(clearCity(state)), "gt_agra_main_taj_mahal");
   state = evaluateProgression(withRelationship(state, ACCEPTED));
   state = validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
-  const { state: after, lines: confession } = playDate(state, "gt_delhi_date_confession");
+  const { state: after, lines: confession } = playDate(state, "gt_agra_date_confession");
   expect(after.confessionStatus).toBe("accepted");
   return { lotus, confession };
 }

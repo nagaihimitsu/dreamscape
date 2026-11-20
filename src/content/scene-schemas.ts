@@ -107,6 +107,12 @@ export const sceneOptionSchema = z.object({
   effect: id.optional(),
   /** `# later` (「また今度」): the scene ends seen, not done. */
   later: z.literal(true).optional(),
+  /**
+   * `# withhold` (告白を見送る; 2026-11-20 user decision): a choice of a confession date's own knot that does not confess.
+   * The date ends played (a memory like any date; a confession date is not played twice) but decides nothing: the
+   * confession status stays as it was. Only a confession date (kind confession) takes it (content:build).
+   */
+  withhold: z.literal(true).optional(),
   then: sceneThenSchema.optional(),
   /** The choice has a `# translation:` (the player can open it). */
   translated: z.literal(true).optional(),

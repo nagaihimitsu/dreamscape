@@ -158,6 +158,8 @@ export function validateActiveDateState(state: GameState): void {
     if (
       active.choiceCount > date.choiceCount ||
       (active.pendingOutcome && !decidesConfession(date)) ||
+      // Only a confession date's own choice withholds the confession (# withhold; 2026-11-20).
+      (active.confessionWithheld && (date.kind !== "confession" || active.choiceCount === 0)) ||
       // Her answer is fixed when it starts, and is never another deferral (2026-11-13).
       (date.kind === "answer" && (!active.pendingOutcome || active.pendingOutcome === "deferred"))
     )

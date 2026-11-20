@@ -3,8 +3,13 @@ INCLUDE modules.ink
 
 // アーグラの宿の屋上：告白のデートと、「待って」と言われた後のデート（どちらも2026-11-09 に足すと決めたデート）。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
-// 都市ごとに同じ形のファイルがある（gt_delhi_hotel_hub_dates.ink ほか）。
-// 前の都市の告白で断られた後は、新しい通常デートを1つ終えてから告白のデートが出る（# when: date_since_rejection。2026-11-15 から書く人が決める）。
+// 都市ごとに同じ形のファイルがある（gt_jaipur_hotel_hub_dates.ink）。デリーには告白のデートを置かない（2026-11-20 のユーザー判断：
+// 告白は物語の中盤〜後半の方が盛り上がる）。旅で最初の告白は、アーグラのこのデート。
+// 選択肢は、告白する3つと、告白しない2つ（# withhold。2026-11-20 のユーザー判断）。告白しない選択肢を選ぶと、返事は決まらず
+// （告白の記録は前のまま）、このデートは遊んだことになるので、アーグラではもう告白できない。告白した選択肢は gt_agra_confessed を立てる
+// （ジャイプールの告白の言い出し・彼女からの告白が読む）。
+// 告白のデートが出るのは、断られた後に新しい通常デートを1つ終えてから（# when: date_since_rejection。2026-11-15 から書く人が決める）。
+// 旅で最初の告白なので、今は通らない（このデートを繰り返せるように JSON の repeatable にしたときに通る）。
 
 // 【3】
 === gt_agra_date_confession ===
@@ -31,15 +36,24 @@ INCLUDE modules.ink
 }
 -> gt_agra_confession_lead ->
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
+    # set: gt_agra_confessed
     # speaker: narrator
     洗濯物が一枚、風にふくらんで、またしぼんだ。そのあいだ、彼女はまばたきもしなかった。
 * [「好きだ。君は、どう思ってる？」 # option: ask_her_heart]
+    # set: gt_agra_confessed
     # speaker: narrator
     彼女は縁に腰かけたまま、背筋を伸ばして、こちらを見上げた。
 * [「黙っていたら、誰も気づかない。だから言う。……好きです」 # option: say_it_now]
+    # set: gt_agra_confessed
     # speaker: narrator
     # emotion: smile
     デリーで、カムラが言った言葉だ。彼女は小さく吹き出して、すぐに口を結んだ。
+* [「……ううん。それより、君の話を聞かせて」 # option: hear_her_out]
+    # withhold
+    -> listen_to_her
+* [「夜風が、気持ちいいね」 # option: night_breeze]
+    # withhold
+    -> night_breeze
 -
 {
 - confession_result == "accepted":
@@ -61,78 +75,107 @@ INCLUDE modules.ink
     # emotion: smile
     # voice: gt_agra_date_confession_006
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
-// デリーで告白していた場合（2026-11-15）：デリーと同じ断り方・「待って」を二度聞かせない。
-// デリーの返事が断りだったか「待って」だったかはゲームの記録で分けられないので、どちらの後でも本当になる言い方にする。
 - confession_result == "rejected":
-    {
-    - cond("date gt_delhi_date_confession"):
-        # speaker: heroine
-        # emotion: serious
-        # voice: gt_agra_date_confession_013
-        デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね
-        # speaker: heroine
-        # voice: gt_agra_date_confession_014
-        だから、わたしもごまかさない。ごめんなさい。今は、その気持ちに応えられない
-        # speaker: narrator
-        # emotion: smile
-        彼女は、自分の腰かけている縁の隣を、手のひらでぽんと叩いた。
-        # speaker: heroine
-        # emotion: smile
-        # voice: gt_agra_date_confession_015
-        座って。こっち向きの席、半分あげる。ドームの見えない、地味な席だけど
-    - else:
-        # speaker: heroine
-        # emotion: serious
-        # voice: gt_agra_date_confession_007
-        ありがとう。言ってくれて、うれしかった。それは、本当
-        # speaker: heroine
-        # voice: gt_agra_date_confession_008
-        でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
-        # speaker: narrator
-        # emotion: serious
-        彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
-        # speaker: heroine
-        # emotion: smile
-        # voice: gt_agra_date_confession_009
-        旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
-    }
+    # speaker: heroine
+    # emotion: serious
+    # voice: gt_agra_date_confession_007
+    ありがとう。言ってくれて、うれしかった。それは、本当
+    # speaker: heroine
+    # voice: gt_agra_date_confession_008
+    でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
+    # speaker: narrator
+    # emotion: serious
+    彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
+    # speaker: heroine
+    # emotion: smile
+    # voice: gt_agra_date_confession_009
+    旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
 - else:
-    {
-    - cond("date gt_delhi_date_confession"):
-        # speaker: heroine
-        # emotion: serious
-        # voice: gt_agra_date_confession_016
-        デリーの夜のこと、忘れてないよ。今夜の言葉も、ちゃんと届いてる
-        # speaker: heroine
-        # emotion: worried
-        # voice: gt_agra_date_confession_017
-        でも、まだ答えが出ないの。こっち向きに座って、ちゃんと考えてるのに
-        # speaker: heroine
-        # emotion: serious
-        # voice: gt_agra_date_confession_018
-        いいかげんな『はい』も、『いいえ』も、したくない。もう少しだけ、待ってて
-        # speaker: narrator
-        # stand: close
-        彼女は少し座り直して、こちらの手の横に、自分の手を置いた。重ねは、しなかった。
-    - else:
-        # speaker: heroine
-        # emotion: serious
-        # voice: gt_agra_date_confession_010
-        うれしい。本当に、うれしい
-        # speaker: heroine
-        # voice: gt_agra_date_confession_019
-        でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに
-        # speaker: heroine
-        # voice: gt_agra_date_confession_020
-        ……それは、嫌なの。ちゃんと、わたしが決めたいから
-        # speaker: heroine
-        # emotion: worried
-        # voice: gt_agra_date_confession_012
-        待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
-        # speaker: narrator
-        # stand: close
-        彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
-    }
+    # speaker: heroine
+    # emotion: serious
+    # voice: gt_agra_date_confession_010
+    うれしい。本当に、うれしい
+    # speaker: heroine
+    # voice: gt_agra_date_confession_019
+    でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに
+    # speaker: heroine
+    # voice: gt_agra_date_confession_020
+    ……それは、嫌なの。ちゃんと、わたしが決めたいから
+    # speaker: heroine
+    # emotion: worried
+    # voice: gt_agra_date_confession_012
+    待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
+    # speaker: narrator
+    # stand: close
+    彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
+}
+-> END
+
+// 告白しない選択肢（# withhold）の後。返事は決まらない。前置きで彼女から誘った（confession_result が accepted）か、
+// こちらから誘ったかで、彼女の受け止め方を分ける。彼女から誘った道では、彼女も言いかけたことを言わずに終わる
+// （ジャイプールの彼女からの告白 gt_jaipur_date_her_confession が、この夜を受ける）。
+= listen_to_her
+{
+- confession_result == "accepted":
+    # speaker: narrator
+    彼女は、まばたきを二回した。それから、縁に置いていた手を、膝の上に戻した。
+    # speaker: heroine
+    # reaction: heroine,teasing,sweat
+    わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
+    # speaker: heroine
+    # emotion: serious
+    話したいことは、あるの。あるんだけど。……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
+    # speaker: narrator
+    物干しの綱で、シャツが一枚、風にあおられて裏返った。
+    # speaker: heroine
+    # emotion: smile
+    今夜は、やめておく。カムラさんに、言いたいことは言いなさいって言われたのにね
+    # speaker: heroine
+    ……でも、ちゃんと言える日が来たら、自分で言う。それは、約束
+- else:
+    # speaker: heroine
+    # reaction: heroine,surprised,question
+    わたしの話？　……てっきり、そっちが何か言うのかと思った
+    # speaker: narrator
+    彼女は少し考えてから、背中の方のドームを、親指で指した。
+    # speaker: heroine
+    じゃあ、白鳥の話。サミールさんの白鳥、まだ部屋にいるの。毎晩、首でハートを作ったまま、こっちを見てる
+    # speaker: heroine
+    # reaction: heroine,teasing,sweat
+    片付けてくださいって、言えばいいだけなのにね。言えないまま、今夜も白鳥と寝るの。……笑っていいよ
+    # speaker: narrator
+    笑うと、彼女もつられて笑った。言いかけたことは、ドームの見えない側の夜に、そのまま置いてきた。
+}
+-> END
+
+= night_breeze
+{
+- confession_result == "accepted":
+    # speaker: narrator
+    彼女は、こちらの顔を少しのあいだ見ていた。それから、ふっと肩の力を抜いた。
+    # speaker: heroine
+    # emotion: smile
+    ……うん。気持ちいいね。昼間あんなに暑かったのが、うそみたい
+    # speaker: heroine
+    # reaction: heroine,teasing
+    言いかけてた顔、まだしてるけど。……いいよ、今夜は風の話で。わたしの話も、また今度にする
+    # speaker: heroine
+    今夜は、二人とも言いそびれた夜ってことで
+    # speaker: narrator
+    洗濯物が、風にふくらんで、またしぼんだ。二人とも、それ以上は何も言わなかった。
+- else:
+    # speaker: heroine
+    # reaction: heroine,surprised,question
+    うん。……え、それだけ？　すごく改まった顔してたのに
+    # speaker: narrator
+    彼女は、くすっと笑って、膝を抱えた。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    夜風の話をするのに、そんなに覚悟がいるんだ。ふふ。……でも、分かる。ここ、いい風
+    # speaker: heroine
+    タージの方から吹いてるのかな。……ううん、向こうを向くと落ち着かないから、確かめない
+    # speaker: narrator
+    言うはずだった言葉は、喉の奥で、もう一度眠った。
 }
 -> END
 
@@ -140,8 +183,9 @@ INCLUDE modules.ink
 // 交際が始まる道だけ、彼女から屋上に誘い、背中の字を明かす（交際は旅で1回なので、背中の字も1回）。ロータス寺院のデートを
 // した人に明かす（あの場面では読めない。「読めなかった」と答えた人には、約束どおり声で言い直す形で）。
 // 断る・「待って」の道は、主人公から誘って言い出す。前に告白していれば、挑み直しの言い出しにする。
-// 告白のデートは、ほかのデートと同じく各都市で1回（2026-11-13。返事にかかわらず思い出になる）。前の告白はデリーのもので、
-// 下の cond("date gt_agra_date_confession") は、この告白のデートを繰り返せるように（JSON の repeatable）したときだけ真になる。
+// 告白のデートは、ほかのデートと同じく各都市で1回（2026-11-13。返事にかかわらず思い出になる）。アーグラは旅で最初の告白なので、
+// 下の cond("date gt_agra_date_confession")・cond("date gt_agra_date_reassurance") は、この告白のデートを繰り返せるように
+// （JSON の repeatable）したときだけ真になる（声の収録があるので消さない）。
 // 【3】手伝いの knot：告白の前置き（選択なし）
 === gt_agra_confession_lead ===
 # speaker: narrator
@@ -150,7 +194,7 @@ INCLUDE modules.ink
 {
 - confession_result == "accepted":
     {
-    - cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance"):
+    - cond("date gt_agra_date_reassurance"):
         # speaker: heroine
         # emotion: serious
         # voice: gt_agra_confession_lead_001
@@ -158,7 +202,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # voice: gt_agra_confession_lead_002
         でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから
-    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession"):
+    - cond("date gt_agra_date_confession"):
         # speaker: heroine
         # emotion: serious
         # voice: gt_agra_confession_lead_003
@@ -205,10 +249,10 @@ INCLUDE modules.ink
     }
 - else:
     {
-    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession"):
+    - cond("date gt_agra_date_confession"):
         # speaker: narrator
         屋上に誘ったのは、今夜もこちらだった。彼女も、たぶん分かっている。縁に腰かけたまま、こちらが口を開くのを待っていた。
-        { cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance"):
+        { cond("date gt_agra_date_reassurance"):
             # speaker: narrator
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。
         }
@@ -233,7 +277,6 @@ INCLUDE modules.ink
 # when: episodes agra >= 1
 # when: not couple
 # when: time night
-# until: date gt_delhi_date_reassurance
 # background: gt_bg_agra_hotel_rooftop_night
 # tint: off
 # bgm: stages_of_grief

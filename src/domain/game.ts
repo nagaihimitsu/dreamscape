@@ -461,7 +461,9 @@ function chooseTaggedDate(state: GameState, active: ActiveDate, scene: NonNullab
     const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, {
       relationship_tone: tone, relationship_tone_before: toneBefore, relationship_tone_after: tone,
     }, next.inventory, sceneConditionReader(next));
-    return applyStep({ ...next, revision }, { ...active, choiceCount: active.choiceCount + (direct ? 1 : 0),
+    // A confession's `# withhold` choice (2026-11-20): the date goes on and ends, deciding nothing.
+    const withheld = direct && option.withhold && date.kind === "confession" ? { confessionWithheld: true as const } : {};
+    return applyStep({ ...next, revision }, { ...active, ...withheld, choiceCount: active.choiceCount + (direct ? 1 : 0),
       turnCount: active.turnCount + 1, step: active.step + 1 }, step);
   }
   const ticket = active.randomPlan[active.choiceCount];
@@ -497,7 +499,8 @@ export function finishDate(
   )
     return state;
   // A confession's outcome, or her answer to a deferral (accepted or rejected; 2026-11-13), is the confession status now.
-  const deciding = decidesConfession(date);
+  // A confession whose `# withhold` choice was chosen (2026-11-20) decides nothing: it ends like any other date.
+  const deciding = decidesConfession(date) && !active.confessionWithheld;
   const confessionStatus = deciding ? active.pendingOutcome! : state.confessionStatus;
   // The date's main # on_done: (a place file's knot or a one-scene file's head), the first time it is finished.
   const doneScene = mainScene({ date: date.id });

@@ -106,7 +106,7 @@ Debug は、遊びではそうは届かない状態（フラグだけ立てた�
 
 **告白・夜の書き出し・宿の場面を、URL一つで開く（2026-11-16）。** 画面を撮るためにコードを一時的に書き換えていた場面です。
 
-- **告白のデート**：`/?debug&city=delhi&scene=date&target=gt_delhi_date_confession&affection=8&trust=4&spark=4` ✓。恋の段階・告白が数えるデート・夜は Debug がそろえ、返事は関係の値だけで決まります（この値で受け入れ、`affection=4&trust=2` で保留、省くと断る）。9.1 の手順を踏まずに開けます。場面の確認の「デート」の一覧では「（告白）」が付きます。
+- **告白のデート**：`/?debug&city=agra&scene=date&target=gt_agra_date_confession&affection=8&trust=4&spark=4`。恋の段階・告白が数えるデート・夜は Debug がそろえ、返事は関係の値だけで決まります（この値で受け入れ、`affection=4&trust=2` で保留、省くと断る）。9.1 の手順を踏まずに開けます。場面の確認の「デート」の一覧では「（告白）」が付きます。
 - **夜の書き出し**：`time=` は街歩き以外の場面にも使えます（4.3）。`/?debug&city=delhi&scene=date&target=gt_delhi_date_chandni_chowk&time=19:00` ✓ は、`cond("time night")` の夜の側から始まります。
 - **宿の場面**：`scene=hotel` は、`# at: hotel` の場面を「休む」から開きます。`/?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_sick_morning` ✓（お腹を壊した翌朝）。`&flags=gt_delhi_player_sick&time=19:00` を足すと、夜に休んで夜中の廊下の場面を見た後の朝になります。初めて出るときの形だけを開きます。
 - **撮影の形**：URLの最後に `&shot=1` を足すと、Debug の帯と印（関係の変化、場面の条件、この時点の候補、鍵の札など）を隠し、遊ぶ人と同じ画面で開きます（保存はしません）。この端末に残すときは、≡メニュー →「ゲームの設定」→「制作者向け」か、場面の確認の「撮影の形（Debug）」で「Debugの表示を隠す」をオンにします。オフにすると、すぐにまた出ます。帯も隠れるので、場面の選択へ戻るときはオフにします。

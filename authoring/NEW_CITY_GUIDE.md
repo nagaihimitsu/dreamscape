@@ -353,7 +353,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - `npm run journey:readthrough -- --journey <旅行編ID>`：観光地ごと・時点ごとの場面の並びと、`# at:` で置いた場面（道中交流・差し込みの場面など）の行を道ごとに読む（何も検査しない。点検の読み物。観光案内・クイズの会話・デートなどの行は、並びに名前が出るだけ）。
   - Debug 起動URL で場面を直接開く（例 `/?debug&city=<都市ID>&scene=battle&target=<バトルID>&progress=initial`。[Debug起動URL](../docs/10_DEVELOPMENT_CHECKS.md#debug起動url)）。
   - 終わりの目安：`content:build` が通り、台本の点検（文章の規格のレビュー基準、キャラクターバイブル）が済む。書き終えたら、次の手順10bで編集者が改稿する。
-- インド編では：場所のファイル40本。到着とエピローグは `places/gt_delhi_hotel_hub.ink`、宿の屋上の告白と「待って」の後は `places/gt_delhi_hotel_hub_dates.ink`、差し込みの場面は `places/gt_delhi_inserts.ink`。
+- インド編では：場所のファイル40本。到着とエピローグは `places/gt_delhi_hotel_hub.ink`、宿の屋上の告白と「待って」の後は `places/gt_agra_hotel_hub_dates.ink`（デリーには告白を置かない）、差し込みの場面は `places/gt_delhi_inserts.ink`。
 
 ### 手順10b. 編集者が改稿する
 

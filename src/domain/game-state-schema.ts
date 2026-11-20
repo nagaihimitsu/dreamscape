@@ -69,6 +69,8 @@ const activeDateSchema = z.object({
   step: z.number().int().positive(),
   appliedEffectIds: uniqueStrings,
   pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable(),
+  /** A confession date's `# withhold` choice was chosen (2026-11-20): the date ends without deciding the confession. */
+  confessionWithheld: z.literal(true).optional(),
   // Confession conversations use fixed effects; other events use saved random tickets.
   resolutionMode: z.enum(["fixed", "random_v1"]),
   randomPlan: z.array(romanceRollTicketSchema),

@@ -236,33 +236,34 @@ describe("Debug launch URLs for the confession, the clock of any scene and the h
     if (resolved.kind !== "scene") throw new Error(`not a scene: ${search}`);
     return resolved.settings;
   };
-  const confession = "?debug&city=delhi&scene=date&target=gt_delhi_date_confession";
+  const confession = "?debug&city=agra&scene=date&target=gt_agra_date_confession";
 
   it("lists each city's confession and opens it at night, at its stage, with the dates it counts: the values alone decide her answer", () => {
-    for (const [cityId, id] of [["milano", "milano_confession_01"], ["delhi", "gt_delhi_date_confession"], ["agra", "gt_agra_date_confession"],
-      ["jaipur", "gt_jaipur_date_confession"]] as const)
+    for (const [cityId, id] of [["milano", "milano_confession_01"], ["agra", "gt_agra_date_confession"], ["jaipur", "gt_jaipur_date_confession"],
+      ["jaipur", "gt_jaipur_date_her_confession"]] as const)
       expect(debugTargets(cityId).date.find((target) => target.id === id)?.name, id).toMatch(/（告白）$/u);
     for (const [values, outcome] of [["", "rejected"], ["&affection=4&trust=2", "deferred"], ["&affection=8&trust=4&spark=4", "accepted"]] as const) {
       const state = createDebugState(launch(`${confession}${values}`));
       expect(validateGameState(state)).toEqual(state);
-      expect(state.activeDate, values).toMatchObject({ dateId: "gt_delhi_date_confession", pendingOutcome: outcome });
+      expect(state.activeDate, values).toMatchObject({ dateId: "gt_agra_date_confession", pendingOutcome: outcome });
       expect(state.romanceStage).toBeGreaterThanOrEqual(2);
       // Its `# when: time night` (18:00 on); three ordinary dates of the city recorded as played (the confession counts three).
       expect(state.travel.minute).toBeGreaterThanOrEqual(18 * 60);
-      expect(state.playedDateIds).toEqual(["gt_delhi_date_india_gate", "gt_delhi_date_chandni_chowk", "gt_delhi_date_lodhi_garden"]);
+      expect(state.playedDateIds).toEqual(["gt_agra_date_mehtab_bagh", "gt_agra_date_akbar_tomb", "gt_agra_date_ram_bagh"]);
     }
     // Before the city's first episode, the date's own condition says what is missing.
     expect(() => createDebugState(launch(`${confession}&progress=initial`)))
-      .toThrow("デートの条件を満たしていません：デリーのエピソードを1つ以上終えた");
+      .toThrow("デートの条件を満たしていません：アーグラのエピソードを1つ以上終えた");
   }, 120_000);
 
   it("does not record a date the confession's story asks about (cond(\"date …\")), so its branch stays the player's", () => {
-    const scene = scenes.find((item) => item.main && "date" in item.main && item.main.date === "gt_delhi_date_confession")!;
+    const scene = scenes.find((item) => item.main && "date" in item.main && item.main.date === "gt_agra_date_confession")!;
     const kept = scene.conds;
-    (scene as { conds: string[] }).conds = [...kept, "date gt_delhi_date_chandni_chowk"];
+    // Agra's story already asks about gt_agra_date_chini_rauza (its own cond), so that one is skipped too.
+    (scene as { conds: string[] }).conds = [...kept, "date gt_agra_date_akbar_tomb"];
     try {
       expect(createDebugState(launch(confession)).playedDateIds)
-        .toEqual(["gt_delhi_date_india_gate", "gt_delhi_date_lodhi_garden", "gt_delhi_date_agrasen_baoli"]);
+        .toEqual(["gt_agra_date_mehtab_bagh", "gt_agra_date_ram_bagh", "gt_agra_date_mariam_tomb"]);
     } finally {
       (scene as { conds: string[] }).conds = kept;
     }
@@ -307,8 +308,8 @@ describe("Debug launch URLs for the confession, the clock of any scene and the h
 
   it.each([
     [{ dataMode: "real", cityId: "milano", scene: "hotel" }, "ミラノには「宿の場面（休む）」の場面がありません。"],
-    [{ dataMode: "real", cityId: "delhi", scene: "hotel", target: "gt_delhi_date_confession" }, "「gt_delhi_date_confession」はデリーの「宿の場面（休む）」にありません。"],
-    [{ dataMode: "real", cityId: "delhi", scene: "date", target: "gt_delhi_date_reassurance" }, "「gt_delhi_date_reassurance」はデリーの「デート」にありません。"],
+    [{ dataMode: "real", cityId: "delhi", scene: "hotel", target: "gt_agra_date_confession" }, "「gt_agra_date_confession」はデリーの「宿の場面（休む）」にありません。"],
+    [{ dataMode: "real", cityId: "delhi", scene: "date", target: "gt_agra_date_reassurance" }, "「gt_agra_date_reassurance」はデリーの「デート」にありません。"],
   ] satisfies Array<[DebugQuery, string]>)("explains a hotel or confession URL that does not fit the content: %o", (query, message) => {
     expect(() => resolveDebugLaunch(query)).toThrow(message);
   });
