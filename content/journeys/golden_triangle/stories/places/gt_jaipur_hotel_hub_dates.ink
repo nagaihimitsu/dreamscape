@@ -3,9 +3,13 @@ INCLUDE modules.ink
 
 // ジャイプールの宿の屋上：告白のデートと、「待って」と言われた後のデート（どちらも2026-11-09 に足すと決めたデート）。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
-// 都市ごとに同じ形のファイルがある（gt_delhi_hotel_hub_dates.ink ほか）。
+// 都市ごとに同じ形のファイルがある（gt_agra_hotel_hub_dates.ink）。デリーには告白のデートを置かない（2026-11-20 のユーザー判断）。
 // ジャイプールだけ、最後に「待って」の後の彼女の返事（gt_jaipur_date_answer。2026-11-13）がある。地図の出来事は宿で、場面は宿の近くの通り。
+// ジャイプールだけ、彼女から先に告白するデート（gt_jaipur_date_her_confession。2026-11-20）がある。出る間は、主人公の告白のデートは出ない。
 // 前の都市の告白で断られた後は、新しい通常デートを1つ終えてから告白のデートが出る（# when: date_since_rejection。2026-11-15 から書く人が決める）。
+// 選択肢は、告白する3つと、告白しない2つ（# withhold。2026-11-20 のユーザー判断）。告白しない選択肢を選ぶと、返事は決まらず
+// （告白の記録は前のまま）、このデートは遊んだことになるので、ジャイプールではもう告白できない。告白した選択肢は gt_jaipur_confessed を立てる
+// （「待って」の後の彼女の返事が読む）。前の町で告白したかは、アーグラの告白で立つ gt_agra_confessed で読む（告白しない選択肢では立たない）。
 
 // 【3】
 === gt_jaipur_date_confession ===
@@ -15,6 +19,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # when: date_since_rejection
+# when: not condition gt_jaipur_her_turn
 # background: gt_bg_jaipur_hotel_rooftop_night
 # tint: off
 # bgm: immersed
@@ -25,15 +30,24 @@ INCLUDE modules.ink
 この町、毎晩、誰かが結婚してるのかな。楽隊の音って、知らない人のなのに、こっちまでうれしくなるね
 -> gt_jaipur_confession_lead ->
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
+    # set: gt_jaipur_confessed
     # speaker: narrator
     眼下の旧市街を、よその花婿の行列が、ゆっくり横切っていく。彼女は息を止めたまま、それが角を曲がるまで動かなかった。
 * [「好きだ。君は、どう思ってる？」 # option: ask_her_heart]
+    # set: gt_jaipur_confessed
     # speaker: narrator
     遠くの楽隊の音が、ふっと途切れた。彼女は、こちらから目をそらさなかった。
 * [「黙っていたら、誰も気づかない。だから言う。……好きです」 # option: say_it_now]
+    # set: gt_jaipur_confessed
     # speaker: narrator
     # emotion: smile
     カムラから借りた言葉だ。言った本人も、今はこの町のどこかにいる。彼女は旧市街の方をちらりと見て、ふっと笑った。
+* [「……ううん。それより、君の話を聞かせて」 # option: hear_her_out]
+    # withhold
+    -> listen_to_her
+* [「夜風が、気持ちいいね」 # option: night_breeze]
+    # withhold
+    -> night_breeze
 -
 {
 - confession_result == "accepted":
@@ -59,12 +73,12 @@ INCLUDE modules.ink
     # emotion: smile
     # voice: gt_jaipur_date_confession_005
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
-// 前の町（デリーかアーグラ）で告白していた場合（2026-11-15）：前と同じ断り方・「待って」を二度聞かせない。
+// 前の町（アーグラ）で告白していた場合（2026-11-15）：前と同じ断り方・「待って」を二度聞かせない。
 // 前の返事が断りだったか「待って」だったかはゲームの記録で分けられないので、どちらの後でも本当になる言い方にする。
 // ここの「待って」の後は、次の日の昼の返事（gt_jaipur_date_answer）が「楽隊と、灯りのせいに」を受けるので、その言葉を残す。
 - confession_result == "rejected":
     {
-    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
+    - cond("flag gt_agra_confessed"):
         # speaker: heroine
         # emotion: serious
         # voice: gt_jaipur_date_confession_012
@@ -95,7 +109,7 @@ INCLUDE modules.ink
     }
 - else:
     {
-    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
+    - cond("flag gt_agra_confessed"):
         # speaker: heroine
         # emotion: serious
         # voice: gt_jaipur_date_confession_015
@@ -133,12 +147,78 @@ INCLUDE modules.ink
 }
 -> END
 
+// 告白しない選択肢（# withhold）の後。返事は決まらない。前置きで彼女から誘った（confession_result が accepted）か、
+// こちらから誘ったかで、彼女の受け止め方を分ける。彼女から誘った道では、彼女も言いかけたことを言わずに終わる
+// （この後、彼女からの告白 gt_jaipur_date_her_confession が出ることがある。アーグラの告白で告白していなければ）。
+= listen_to_her
+{
+- confession_result == "accepted":
+    # speaker: narrator
+    彼女は、言葉の途中で止められたみたいな顔をした。
+    # speaker: heroine
+    # reaction: heroine,teasing,sweat
+    わたし？　……先に聞かせてって言ったの、わたしなのに。順番、ずるくない？
+    # speaker: heroine
+    # emotion: serious
+    話したいことは、ある。アーグラで、人前でちゃんと言えた日から、ずっと
+    # speaker: heroine
+    ……でも、いざ番が回ってきたら、楽隊の音に全部持っていかれちゃった
+    # speaker: narrator
+    遠くの通りで、ラッパがひときわ高く鳴った。
+    # speaker: heroine
+    # emotion: smile
+    今夜は、いい。言いたいことは、言いたいときに言う。……今は、まだその『とき』じゃないみたい。来たら、ちゃんと言うね
+- else:
+    # speaker: heroine
+    # reaction: heroine,surprised,question
+    わたしの話？　……てっきり、そっちから何か言うのかと思った
+    # speaker: narrator
+    彼女は手すりにもたれ直して、楽隊の鳴る方を見た。
+    # speaker: heroine
+    この町の楽隊、毎晩ちがう曲なの、気づいてた？　昨日のは、ラッパが一本だけ、ずっと半音ずれてた
+    # speaker: heroine
+    ずれてるのに、いちばん楽しそうだったの。ずれても、鳴らした方がいいんだよ、きっと
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    ……今の、誰かさんに言ったんじゃないからね
+    # speaker: narrator
+    言うはずだった言葉は、楽隊の音にまぎれて、どこかへ行ってしまった。
+}
+-> END
+
+= night_breeze
+{
+- confession_result == "accepted":
+    # speaker: narrator
+    彼女はこちらの顔をじっと見て、それから、ふふ、と小さく笑った。
+    # speaker: heroine
+    # emotion: smile
+    ……うん、気持ちいい。昼の熱が、石から抜けていく感じ
+    # speaker: heroine
+    # reaction: heroine,teasing
+    言いかけた顔のまま、風の話。……いいよ、付き合う。わたしも、今夜は言いそびれることにする
+    # speaker: narrator
+    楽隊の音が遠ざかって、また近づいた。二人とも言いそびれたまま、橙色の町を見ていた。
+- else:
+    # speaker: heroine
+    # reaction: heroine,surprised,question
+    うん、気持ちいいね。……え、それを言うのに、あの顔？
+    # speaker: narrator
+    彼女は吹き出しそうになって、口元を手で隠した。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    夜風の感想に、そんなに覚悟がいるんだ。……ふふ。でも、この町の夜風なら、それくらい言う価値あるかも
+    # speaker: narrator
+    言うはずだった言葉は、楽隊の拍子にまぎれて、もう一度、胸の奥へ戻っていった。
+}
+-> END
+
 // 告白の前置き。返事（confession_result）はデートを始めたときに決まっているので、前置きもそれで分ける。
 // 交際が始まる道だけ、彼女から屋上に誘い、背中の字を明かす（交際は旅で1回なので、背中の字も1回）。ロータス寺院のデートを
 // した人に明かす（あの場面では読めない。「読めなかった」と答えた人には、約束どおり声で言い直す形で）。
 // 断る・「待って」の道は、主人公から誘って言い出す。前に告白していれば、挑み直しの言い出しにする。
-// 告白のデートは、ほかのデートと同じく各都市で1回（2026-11-13。返事にかかわらず思い出になる）。前の告白はデリーかアーグラのもので、
-// 下の cond("date gt_jaipur_date_confession") は、この告白のデートを繰り返せるように（JSON の repeatable）したときだけ真になる。
+// 告白のデートは、ほかのデートと同じく各都市で1回（2026-11-13。返事にかかわらず思い出になる）。前の告白はアーグラのもので、
+// アーグラで告白する選択肢を選んだときに立つ gt_agra_confessed で読む。
 // 【3】手伝いの knot：告白の前置き（選択なし）
 === gt_jaipur_confession_lead ===
 # speaker: narrator
@@ -147,7 +227,7 @@ INCLUDE modules.ink
 {
 - confession_result == "accepted":
     {
-    - cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
+    - cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
         # speaker: heroine
         # emotion: serious
         # voice: gt_jaipur_confession_lead_001
@@ -155,7 +235,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # voice: gt_jaipur_confession_lead_002
         でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから
-    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
+    - cond("flag gt_agra_confessed"):
         # speaker: heroine
         # emotion: serious
         # voice: gt_jaipur_confession_lead_003
@@ -207,25 +287,16 @@ INCLUDE modules.ink
     }
 - else:
     {
-    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
+    - cond("flag gt_agra_confessed"):
         # speaker: narrator
         屋上に誘ったのは、今夜もこちらだった。彼女も、たぶん分かっている。楽隊の音のする方を見たまま、こちらが口を開くのを待っていた。
-        { cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
+        { cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
             # speaker: narrator
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。
         }
-        // デリーとアーグラの両方で告白していれば、アーグラで「話、あるんでしょ」をもう聞いている（2026-11-15）。三度目は、別の言い出しにする。
-        {
-        - cond("date gt_delhi_date_confession") and cond("date gt_agra_date_confession"):
-            # speaker: heroine
-            # emotion: smile
-            # voice: gt_jaipur_confession_lead_011
-            今夜も、話があるんだね。いいよ。楽隊に負けないくらいの声で、聞かせて
-        - else:
-            # speaker: heroine
-            # voice: gt_jaipur_confession_lead_009
-            話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
-        }
+        # speaker: heroine
+        # voice: gt_jaipur_confession_lead_009
+        話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
     - else:
         # speaker: narrator
         夕食のあと、少し涼もうと屋上に誘ったのは、こちらだった。彼女は手すりにもたれて、遠くの楽隊に合わせて、指で拍子をとっている。
@@ -244,7 +315,6 @@ INCLUDE modules.ink
 # when: episodes jaipur >= 1
 # when: not couple
 # when: time night
-# until: date gt_delhi_date_reassurance
 # until: date gt_agra_date_reassurance
 # background: gt_bg_jaipur_hotel_rooftop_night
 # tint: off
@@ -318,7 +388,8 @@ INCLUDE modules.ink
 // 【3】「待って」の後の、彼女の返事（kind: answer。2026-11-13 のユーザー判断「彼女から返事をする場面を足す」）。
 // ジャイプールは旅の最後の都市なので、ここの告白で「待って」と言われると、後の都市の告白で告白し直せない。そこで、彼女から返事をする。
 // 主人公はもう一度告白しない（告白は各都市で1回）。彼女が誘い、彼女が先に話す。
-// 地図に出るのは、ジャイプールの告白のデートで「待って」と言われた後（JSON の needsDeferred と、頭の # when: date）の昼（# when: time day）。
+// 地図に出るのは、ジャイプールの告白のデートで「待って」と言われた後（JSON の needsDeferred と、頭の # when: flag。ジャイプールで告白する
+// 選択肢を選んだ印。告白しない選択肢を選んだときは、アーグラの「待って」が残っていても出ない）の昼（# when: time day）。
 // 告白は夜にしか出ないので、返事は早くても次の日の昼になる（「旅の夜のせいにしたくない」と言った彼女が、昼を選ぶ）。
 // インド編はフィナーレを終えるとすぐエピローグが始まり、旅が終わる（manifest.json の cityTransition）。「待って」は夜で、フィナーレは昼なので、
 // 次の日の朝、宿の出来事として、フィナーレより先に選べる（強制はしない）。フィナーレを先に遊んでも、旅の後の街歩きにまだ出る（# until: を書かない）。
@@ -331,7 +402,7 @@ INCLUDE modules.ink
 === gt_jaipur_date_answer ===
 # scene: date
 # title: 夜のせいにしない返事
-# when: date gt_jaipur_date_confession
+# when: flag gt_jaipur_confessed
 # when: time day
 # background: gt_bg_jaipur_hawa_mahal
 # bgm: inner_light
@@ -347,7 +418,7 @@ INCLUDE modules.ink
 # emotion: serious
 # voice: gt_jaipur_date_answer_002
 屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に
-{ cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
+{ cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
     # speaker: heroine
     # voice: gt_jaipur_date_answer_003
     答えは、わたしから言うって約束したもんね。だから、今日はわたしから
@@ -432,4 +503,142 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 通りの向こうで、また一枚、シャッターが上がった。町は、いつもどおりに動いていた。
+-> END
+
+// 【3】彼女から先に告白するデート（kind: confession。2026-11-20 のユーザー判断「インド編ではヒロインから先に告白される展開も作りたい」）。
+// デリーでカムラに言われた「言いたいことは言いなさい」（デリーのエピローグ）と、アーグラで、人前で自分の言葉で言えたこと（アーグラの
+// フィナーレとエピローグ）を受けて、彼女が自分から言う。アーグラはフィナーレの後すぐエピローグが始まり、そのままジャイプールへ出発する
+// （manifest.json の cityTransition）ので、成長の後の最初の夜は、ジャイプールにある。そこで、ジャイプールにだけ置く。
+// 出る条件は名前付きの条件 gt_jaipur_her_turn（progression/story.json）：まだ恋人でない、今告白すれば受け入れられる関係
+// （confession_ready。親しさ・信頼・恋愛の意識・終えたデートの数が、告白が成立するしきい値に届いている）、主人公がアーグラ・
+// ジャイプールの告白のデートで告白していない（gt_agra_confessed・gt_jaipur_confessed）、まだこのデートを遊んでいない。
+// アーグラで条件を満たしていれば、ジャイプールで観光を1つ終えた最初の夜から、ジャイプールで満たせば、その後の夜から出る。
+// これが出る間は、主人公の告白のデート（gt_jaipur_date_confession）は出ない（彼女が先）。
+// 返事（confession_result）は、ほかの告白と同じく、デートを始めたときの関係の値で決まる（乱数では決めない）。出る条件が
+// confession_ready なので、ふつうは accepted。始めるまでに関係の値が変わって受け入れられない値になったときだけ、彼女は言いかけて
+// やめる（告白しない選択肢 # withhold だけの道。返事は決まらず、主人公の告白のデートがまた出る）。
+// 交際が始まる道では、ほかの屋上の告白と同じく、背中の字（ロータス寺院）とメヘンディの名前を一度だけ受ける。
+=== gt_jaipur_date_her_confession ===
+# scene: date
+# title: 先に、言わせて
+# when: episodes jaipur >= 1
+# when: time night
+# when: condition gt_jaipur_her_turn
+# background: gt_bg_jaipur_hotel_rooftop_night
+# tint: off
+# bgm: immersed
+# speaker: narrator
+夕食のあと、部屋へ戻る階段の前で、袖を引かれた。振り向くと、彼女が上を指さしていた。
+# speaker: heroine
+# emotion: serious
+屋上、来て。……今夜は、わたしが誘う番
+# speaker: narrator
+屋上から見下ろす旧市街は、橙色ににじんでいた。遠くの通りで、今夜もどこかの楽隊が鳴っている。
+彼女は手すりの前で振り返り、こちらが隣に並ぶ前に、正面に立った。
+# speaker: heroine
+並ばないで。……今夜は、顔を見て言いたいから
+{ confession_result == "accepted":
+    -> say_it
+- else:
+    -> not_tonight
+}
+
+= say_it
+# speaker: heroine
+# emotion: serious
+デリーの最後の朝、カムラさんが言ってたでしょ。言いたいことは言いなさいって
+# speaker: heroine
+六十年、言わなかった人の言葉だから、重かった。アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
+# speaker: heroine
+# emotion: smile
+でも、タージの前で、人前で、ちゃんと言えた。言えたら、思ってたより、こわくなかった
+{ cond("date gt_agra_date_confession"):
+    # speaker: heroine
+    アーグラの屋上で、何か言いかけてたでしょ。……わたしも、あのとき、言いかけてた
+}
+# speaker: heroine
+# quiet: scene
+# pause: 800
+だから、言うね。……好き
+# speaker: heroine
+# emotion: serious
+わたしが立ち止まると、何も言わずに待ってくれるところ。決めてって言わないで、どうしたいって聞いてくれるところ
+# speaker: heroine
+……そういうところが、好き
+# speaker: heroine
+付き合ってほしい。旅が終わっても、一緒にいたい。誰かに言われたからじゃなくて、わたしが、そうしたいの
+{
+- cond("flag gt_delhi_back_word_secret"):
+    // 「読めなかった」と答えた人：ロータス寺院で約束したとおり、声で言い直す。
+    # speaker: heroine
+    # recall: gt_album_d61
+    ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
+    # speaker: heroine
+    # reaction: heroine,shy,blush
+    背中じゃなくて、声で言うって約束したから。……今のが、その続き
+- cond("date gt_delhi_date_lotus_temple"):
+    # speaker: heroine
+    # recall: gt_album_d61
+    ロータス寺院で、最後に背中に書いた字。あれね、『まだいたい』って書いたの
+    # speaker: heroine
+    # reaction: heroine,shy,blush
+    書いたときは、声に出す勇気がなかったの。……今のが、その続き
+}
+{ cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
+    # speaker: narrator
+    # recall: gt_album_j26
+    彼女は、握っていた手のひらを開いた。孔雀の羽の付け根に、こちらの名前が、まだ濃く残っている。
+}
+# speaker: narrator
+言い終えると、彼女は大きく息を吐いた。耳まで赤いのが、橙色の灯りの中でも分かった。
+# speaker: heroine
+# reaction: heroine,teasing,blush
+……はい、言った。六十年は、かからなかったよ。次は、そっちの番
+* [「僕も、好きだ。……先に言われるとは思わなかった」 # option: me_too]
+    # speaker: heroine
+    # reaction: heroine,teasing_big,music
+    ふふ。言ったもの勝ち、ってことで
+    # speaker: heroine
+    # reaction: heroine,shy_deep,heart
+    ……でも、聞けてよかった。こわかったの、本当だから
+* [「ずっと、言おうと思ってた。……一緒にいよう」 # option: stay_together]
+    # speaker: heroine
+    # reaction: heroine,teasing,heart
+    知ってた。屋上に来るたび、そういう顔してたもん
+    # speaker: heroine
+    # reaction: heroine,shy_deep,blush
+    ……うん。一緒にいよう
+* [「カムラさんに、報告しなきゃね」 # option: tell_kamla]
+    # speaker: heroine
+    # reaction: heroine,surprised,interrobang
+    ……それ、今言う？　返事より先に？
+    # speaker: narrator
+    好きだ、と短く返すと、彼女は吹き出して、それから、こちらの肩に額を一度だけ押し当てた。
+    # speaker: heroine
+    # reaction: heroine,shy,blush
+    うん。報告しよう。二人で。『言いたいことは、ちゃんと言いました』って
+-
+# speaker: heroine
+# reaction: heroine,teasing,heart
+# photo: gt_album_j43 # photo_caption: 先に言われた屋上
+旅が終わったあとのことは、一緒に決めようね。……最初の一個は、わたしが決めちゃったけど
+# speaker: narrator
+遠くの楽隊が、ひときわ大きく鳴った。よその人のお祝いだと分かっていても、今夜は少しだけ、自分たちのために鳴っている気がした。
+-> END
+
+// 始めるまでに関係の値が変わり、今は受け入れられない値になった道（ふつうは通らない）。彼女は言いかけてやめる。返事は決まらない。
+= not_tonight
+# speaker: heroine
+# emotion: worried
+……あのね。……ごめん。やっぱり、今夜はやめておく
+# speaker: heroine
+言おうと思ってたことが、急に、ちゃんとした形にならなくなっちゃった。呼び出しておいて、ごめんね
+* [「いつでも聞くよ」 # option: anytime]
+    # withhold
+    # speaker: heroine
+    # emotion: smile
+    ……うん。ありがとう。そう言ってくれるの、分かってた
+-
+# speaker: narrator
+二人はしばらく、楽隊の音を聞いていた。言いかけたことは、まだ、彼女の手の中にあった。
 -> END

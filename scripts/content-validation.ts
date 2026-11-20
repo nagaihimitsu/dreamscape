@@ -924,6 +924,9 @@ export function validateContent(sources: ContentSources,
       languageNotes.push({ kind: "data-language", message: `\`# title:\` に日本語がありません：${scene.id}「${scene.title}」。道中交流の題名や保留 AP の題名として、そのまま出ます（止めません）。` });
     for (const option of scene.options) if (option.profile && scene.kind === "date" && decidesConfession(dateOf(scene) ?? { kind: "normal" }))
       throw new Error(`A ${dateOf(scene)!.kind === "answer" ? "date of her answer" : "confession date"} takes no # profile: (its outcome is never random; B2): ${label}`);
+    // # withhold (告白を見送る; 2026-11-20): only a direct choice of a confession date (its own knot) does not confess.
+    for (const option of scene.options) if (option.withhold && !(scene.kind === "date" && dateOf(scene)?.kind === "confession" && option.knot === scene.story.knot))
+      throw new Error(`# withhold (the choice ${option.id}) goes only on a choice of a confession date's own knot (kind confession): ${label}`);
   }
   // A date knot's # title: and the date catalog's titleJa (what the map and the records show) are kept equal (DA-5; a note, not stopped).
   for (const scene of placeEntries) if (scene.kind === "date") {
@@ -958,6 +961,8 @@ export function validateContent(sources: ContentSources,
     const event = encounterCatalog.encounters.find((item) => item.storyId === id);
     const date = dates.find((item) => item.storyId === id);
     if (event) {
+      if (options.some((option) => option.withhold))
+        throw new Error(`# withhold goes only on a choice of a confession date's own knot: ${storyLabel(id)}`);
       for (const option of options) for (const key of ["give", "use", "later", "profile"] as const) if (option[key] !== undefined)
         throw new Error(`# ${key === "later" ? "later" : key}: in ${storyLabel(id)} (${option.id}): the catalog of this one-scene encounter says it ` +
           `(${{ give: "giftItemId", use: "consumeItemId", later: "deferCompletion", profile: "responseProfileId" }[key]}); write it once (A4)`);
@@ -965,6 +970,8 @@ export function validateContent(sources: ContentSources,
     } else if (date) {
       if (decidesConfession(date) && options.some((option) => option.profile))
         throw new Error(`A ${date.kind === "answer" ? "date of her answer" : "confession date"} takes no # profile: (B2): ${storyLabel(id)}`);
+      if (options.some((option) => option.withhold))
+        throw new Error(`# withhold goes only on a choice of a confession date written in a place file's knot: ${storyLabel(id)}`);
       if (fileEntries.some((entry) => entry.story.storyId === id)) { fileEntries.find((entry) => entry.story.storyId === id)!.options.push(...options); continue; }
       fileEntries.push({ id: mainFileSceneId({ date: date.id }), kind: "date", title: date.titleJa, cityId: date.chapterId, story: { storyId: id }, main: { date: date.id },
         at: [], order: 0, repeat: "once", people: [], options, done: {}, conds: storyConditionTexts[id] ?? [], knots: [], fingerprint: fnvHash(stories[id]), origin: "file" });

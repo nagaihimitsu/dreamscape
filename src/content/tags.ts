@@ -308,7 +308,7 @@ export function parseStoryTags(
   let show: "large" | undefined;
   for (const tag of tags) {
     const bare = tag.trim();
-    if (bare === "later") continue;
+    if (bare === "later" || bare === "withhold") continue;
     // `# remembered` alone (2026-11-16): checked with the line's speaker after the loop.
     if (bare === REMEMBERED_TAG) {
       if (result.remembered) throw new Error("1つの行に # remembered が2つあります。1つにしてください（Duplicate remembered tag）。");

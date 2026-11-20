@@ -6693,6 +6693,16 @@
       "admissionCost": 0
     },
     {
+      "id": "gt_jaipur_date_her_confession",
+      "cityId": "jaipur",
+      "placeId": "jaipur_hotel_hub",
+      "category": "date",
+      "titleJa": "先に、言わせて",
+      "activityMinutes": 15,
+      "apCost": 0,
+      "admissionCost": 0
+    },
+    {
       "id": "gt_jaipur_date_reassurance",
       "cityId": "jaipur",
       "placeId": "jaipur_hotel_hub",

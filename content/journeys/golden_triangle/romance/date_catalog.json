@@ -488,99 +488,6 @@
       "allowAfterEnding": true
     },
     {
-      "id": "gt_delhi_date_confession",
-      "kind": "confession",
-      "chapterId": "delhi",
-      "titleJa": "屋上の、言いたいこと",
-      "descriptionJa": "デリーの宿の屋上で、夜。言いかけている顔を、彼女は見逃さない。「先に、聞かせて」",
-      "apCost": 0,
-      "minRomanceStage": 2,
-      "minAffection": 0,
-      "storyId": "places/gt_delhi_hotel_hub_dates.gt_delhi_date_confession",
-      "rewardOnlyOnce": true,
-      "backgroundId": "gt_bg_hotel_rooftop_night",
-      "repeatable": false,
-      "needsDeferred": false,
-      "choiceCount": 1,
-      "effectCount": 1,
-      "validationContexts": [
-        {
-          "romanceStage": 2,
-          "confessionReady": false,
-          "confessionResult": "rejected"
-        },
-        {
-          "romanceStage": 2,
-          "confessionReady": false,
-          "confessionResult": "deferred"
-        },
-        {
-          "romanceStage": 3,
-          "confessionReady": true,
-          "confessionResult": "accepted"
-        },
-        {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "confessionResult": "rejected"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": false,
-          "confessionResult": "deferred"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "confessionResult": "accepted"
-        }
-      ]
-    },
-    {
-      "id": "gt_delhi_date_reassurance",
-      "kind": "reassurance",
-      "chapterId": "delhi",
-      "titleJa": "チャイが冷めるまで",
-      "descriptionJa": "「待って」と言われた後の屋上。返事の話はしない。チャイが冷めるまで、いつもの、どうでもいい話をする。",
-      "apCost": 0,
-      "minRomanceStage": 2,
-      "minAffection": 0,
-      "storyId": "places/gt_delhi_hotel_hub_dates.gt_delhi_date_reassurance",
-      "rewardOnlyOnce": true,
-      "backgroundId": "gt_bg_hotel_rooftop_night",
-      "repeatable": false,
-      "needsDeferred": true,
-      "choiceCount": 1,
-      "effectCount": 1,
-      "validationContexts": [
-        {
-          "romanceStage": 1,
-          "confessionReady": false,
-          "endingReached": false
-        },
-        {
-          "romanceStage": 2,
-          "confessionReady": false,
-          "endingReached": false
-        },
-        {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
-        }
-      ]
-    },
-    {
       "id": "gt_agra_date_confession",
       "kind": "confession",
       "chapterId": "agra",
@@ -683,6 +590,55 @@
       "minRomanceStage": 2,
       "minAffection": 0,
       "storyId": "places/gt_jaipur_hotel_hub_dates.gt_jaipur_date_confession",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_jaipur_hotel_rooftop_night",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_date_her_confession",
+      "kind": "confession",
+      "chapterId": "jaipur",
+      "titleJa": "先に、言わせて",
+      "descriptionJa": "ジャイプールの宿の屋上で、夜。今夜は、彼女のほうから袖を引いた。「屋上、来て。……今夜は、わたしが誘う番」",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_jaipur_hotel_hub_dates.gt_jaipur_date_her_confession",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_hotel_rooftop_night",
       "repeatable": false,

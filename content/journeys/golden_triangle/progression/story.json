@@ -6,6 +6,10 @@
       "noteJa": "アクバル廟で、猿が落とした雨の匂いの小瓶を受け止め損ね（ミニゲーム「猿の落とし物」の fumbled・missed）、小瓶が割れてブラックバックのいる芝生にこぼれた"
     },
     {
+      "id": "gt_agra_confessed",
+      "noteJa": "アーグラの屋上の告白のデートで、告白する選択肢を選んだ（告白しない選択肢 # withhold では立たない。返事にかかわらず立つ）"
+    },
+    {
       "id": "gt_agra_said_for_now",
       "noteJa": "ラーム・バーグの茶屋で「新婚じゃありません。……今のところは」と答えた"
     },
@@ -96,6 +100,10 @@
     {
       "id": "gt_jaipur_envelope_letter",
       "noteJa": "祝儀袋を、一ルピーと手紙にした"
+    },
+    {
+      "id": "gt_jaipur_confessed",
+      "noteJa": "ジャイプールの屋上の告白のデートで、告白する選択肢を選んだ（告白しない選択肢 # withhold では立たない。返事にかかわらず立つ。「待って」の後の彼女の返事 gt_jaipur_date_answer が読む）"
     },
     {
       "id": "gt_jaipur_parasol_hard_to_find",
@@ -645,5 +653,34 @@
       "titleJa": "地下へ下りられない女の子",
       "characterId": "gt_kavya"
     }
-  ]
+  ],
+  "conditions": {
+    "gt_jaipur_her_turn": {
+      "all": [
+        {
+          "not": {
+            "couple": true
+          }
+        },
+        {
+          "confessionReady": true
+        },
+        {
+          "not": {
+            "flag": "gt_agra_confessed"
+          }
+        },
+        {
+          "not": {
+            "flag": "gt_jaipur_confessed"
+          }
+        },
+        {
+          "not": {
+            "datePlayed": "gt_jaipur_date_her_confession"
+          }
+        }
+      ]
+    }
+  }
 }

@@ -239,7 +239,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 | デート・恋愛の出来事 | `places/<頭>_<地点>.<デートID>`（デートの地点の場所のファイルの knot。デートIDは `<頭>_date_<行き先・出来事>`） | なし |
 | 道中交流・会話 | `places/<頭>_<場所>.<交流ID>`（交流IDは `<頭>_<交流>`） | なし |
 | 到着・エピローグ | `places/<頭>_<宿>.<頭>_arrival`・`<頭>_epilogue`（宿の場所のファイルの knot。例：`places/gt_delhi_hotel_hub.gt_delhi_epilogue`） | なし |
-| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。例：`places/gt_delhi_red_fort`、`places/gt_delhi_lodhi_garden`、`places/gt_delhi_hotel_hub`）。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい（例：宿の屋上の告白と「待って」の後の `places/gt_delhi_hotel_hub_dates`）。ツアーの行程の場面は、ツアーIDの名前の場所のファイル（`places/<ツアーID>`、例：`places/gt_agra_tour_fatehpur_sikri`） | なし |
+| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。例：`places/gt_delhi_red_fort`、`places/gt_delhi_lodhi_garden`、`places/gt_delhi_hotel_hub`）。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい（例：宿の屋上の告白と「待って」の後の `places/gt_agra_hotel_hub_dates`）。ツアーの行程の場面は、ツアーIDの名前の場所のファイル（`places/<ツアーID>`、例：`places/gt_agra_tour_fatehpur_sikri`） | なし |
 | 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし |
 
 - 1場面1ファイル（1つの場面を1本のInkに書く形）も、今も使える。置き場所と名前は `battles/<頭>_main_<観光地>`（特殊戦は `battles/<頭>_special_b_<観光地>`、フィナーレは `battles/<頭>_finale`）、`tourism/<頭>_<観光地>_guide`、`dates/<頭>_date_<行き先・出来事>`、`encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`）、`arrivals/<都市ID>`・`epilogues/<都市ID>`。クイズとくじのある道中交流は、この形で書く。
