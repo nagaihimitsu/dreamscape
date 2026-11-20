@@ -809,7 +809,7 @@ export function GameApp({
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
-  // Free time on show (its photos are in ≡メニュー's 「写真の出典」: creditPhotos below).
+  // Free time on show (its photos are in ≡メニュー's 「画面の出典」: creditPhotos below).
   const freeTimeShown = !!idle && !showRomanceEnding && !nightScreen;
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
@@ -845,7 +845,7 @@ export function GameApp({
   const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
     reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying, learnedWords: learnedWords.learned });
   momentsRef.current = moments.committed;
-  // ≡メニュー's 「写真の出典」: the photos free time shows (the cards' and a backdrop photo's) and, in free time or on the night
+  // ≡メニュー's 「画面の出典」: the photos free time shows (the cards' and a backdrop photo's) and, in free time or on the night
   // screen, the recap card's place photo while it shows (2026-11-15: the card shows no credit of its own).
   const creditPhotos = useMemo(() => [
     ...recapPhotos(moments.recapPicture),
@@ -910,7 +910,7 @@ export function GameApp({
   const resultExits = game ? getBattleResultExits(game) : { epilogue: false, leave: false };
   const observationLandmarkId = game ? getBattleObservationLandmarkId(game) : null;
   // The registered photo behind the story scene on screen (in the order of the screens below), whose credits
-  // ≡メニュー's 「画像の出典」 opens: a scene shows no 出典 of its own (user decision 2026-11-11).
+  // ≡メニュー's 「画面の出典」 opens: a scene shows no 出典 of its own (user decision 2026-11-11).
   const photoOf = (id: string | undefined) => (id ? tourismAssets.find((asset) => asset.id === id) : undefined);
   const landmarkPhoto = (id: string | null | undefined) => photoOf(landmarks.find((landmark) => landmark.id === id)?.imageAssetId);
   const backdropPhoto = (backgroundId: string) => photoOf(presentation.backgrounds[backgroundId]?.imageAssetId);

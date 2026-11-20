@@ -525,11 +525,11 @@ export const ops = {
     await expect(records).toBeVisible();
     return records;
   },
-  /** 「{player} と {heroine}」 from 旅の記録's header line (the names are not in the header): opens 旅の記録, reads the line, closes it. */
+  /** 「{player} と {heroine}」 from ゲームの設定's name fields (the names are not in the header): opens the settings, reads them, closes them. */
   async readTravelers(page: Page): Promise<string> {
-    const records = await ops.openRecords(page);
-    const travelers = await records.getByTestId("travelers").innerText();
-    await ops.closeDialog(records);
+    const settings = await ops.openSettings(page);
+    const travelers = `${await settings.getByLabel("主人公の名前").inputValue()} と ${await settings.getByLabel("ヒロインの名前").inputValue()}`;
+    await ops.closeDialog(settings);
     return travelers;
   },
   /**

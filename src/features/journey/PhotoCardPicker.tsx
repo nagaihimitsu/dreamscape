@@ -44,7 +44,7 @@ function placeVisited(game: GameState, placeId: string): boolean {
  * under it (with its 「行く」), and the pressed row stays where it was. The chosen card is the list's one Tab stop; ←→ (in
  * the list also ↑↓), Home and End move the choice.
  */
-export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, recommendedId, card, swipe, joining = NONE_JOINING }: {
+export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, recommendedId, nearestId, card, swipe, joining = NONE_JOINING }: {
   game: GameState;
   /** At least one card. */
   cards: readonly RowCard[];
@@ -53,6 +53,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   onChoose: (cardId: string) => void;
   arrangement: CardArrangement;
   recommendedId?: string | null;
+  /** The nearest place (「最寄り」, after 「おすすめ」). */
+  nearestId?: string | null;
   /** The chosen card's card (a place's introduction, 「ホテルに戻る」's or the tour's). */
   card: ReactNode;
   /** The chosen card's swipe up (a place's, 「待機」's or 「ホテルに戻る」's), or null. */
@@ -169,7 +171,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   return <>
     <ul ref={list} className={`photo-cards${row ? "" : " is-list"}`} aria-label="行き先" onScroll={onScroll}>
       {cards.map((rowCard, index) => {
-        const face = cardFace(game, rowCard, recommendedId);
+        const face = cardFace(game, rowCard, recommendedId, nearestId);
         const isChosen = rowCard.id === chosenId;
         const locked = rowCard.kind === "locked";
         const marks = [face.top, face.bottom, face.available ? null : "今は行けない"].filter((mark): mark is string => !!mark);
@@ -223,7 +225,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
  * place holds), whether a swipe up takes it (takesSwipe: a place's departing, or at the current place starting there;
  * 「待機」's waiting; 「ホテルに戻る」's resting; shown by the swipe cue's motion, no words) and its testid.
  */
-function cardFace(game: GameState, card: RowCard, recommendedId: string | null | undefined): {
+function cardFace(game: GameState, card: RowCard, recommendedId: string | null | undefined, nearestId?: string | null): {
   testId: string;
   name: string;
   available: boolean;
@@ -261,7 +263,7 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
     testId: `travel-place-${placeId}`,
     name: rowCardName(game, card),
     available: entry.available,
-    top: here ? "現在地" : placeId === recommendedId ? "おすすめ" : null,
+    top: here ? "現在地" : placeId === recommendedId ? "おすすめ" : placeId === nearestId ? "最寄り" : null,
     bottom: placeVisited(game, placeId) ? "訪問済み" : null,
     photo: <PlacePhoto game={game} entry={entry} />,
     kinds,

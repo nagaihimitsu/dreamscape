@@ -10,11 +10,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // A name that looks like markup is shown as plain text (AGENTS.md: player input is text, never HTML).
   await ops.startJourney(page, "milano", ["<b>航</b>", "澪"]);
   const menu = page.getByTestId("travel-menu");
-  // The names head 旅の記録 (opened from ≡メニュー).
-  const records = await ops.openRecords(page);
-  await expect(records.getByTestId("travelers")).toContainText("<b>航</b>");
-  await expect(records.getByTestId("travelers").locator("b")).toHaveCount(0);
-  await ops.closeDialog(records);
+  // The name is kept as written (ゲームの設定's field).
+  expect(await ops.readTravelers(page)).toBe("<b>航</b> と 澪");
   await expect(page.getByLabel("残り0AP")).toBeVisible();
 
   // Walking to the Duomo opens its sightseeing guide on arrival.

@@ -9,7 +9,7 @@ function clueAsset(clue: TourismClue) {
 /**
  * A view of the same source image; the outlined region never modifies the asset. No credit beside it (2026-11-15 user
  * decision; before, a line at the end of 「根拠と解釈を確認する」): the photo is its landmark's, whose credit is in
- * 出典・権利の一覧 and, behind the clue book, in the scene's own (≡メニュー's 「画像の出典」 over a guide or a battle,
+ * 出典・権利の一覧 and, behind the clue book, in the scene's own (≡メニュー's 「画面の出典」 over a guide or a battle,
  * the observation's 「画像の出典と利用条件」).
  */
 export function ClueImage({ clue }: { clue: TourismClue }) {

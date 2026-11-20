@@ -41,7 +41,13 @@ export function getTravelDestinations(state: GameState) {
       unclearedMain: isUnclearedMainTravelEvent(state, event.id) }];
   });
   const places = groupDestinationEvents(candidates);
-  return { current, candidates, places, ...selectNearbyDestinations(places) };
+  const selected = selectNearbyDestinations(places);
+  return { current, candidates, places, ...selected, nearestId: nearestDestinationId(selected.nearby, current?.id, selected.recommendedMainId) };
+}
+
+/** The 「最寄り」 place: the nearest by walking time among the open ones, not the current place nor the 「おすすめ」 one. */
+export function nearestDestinationId(nearby: readonly Pick<TravelDestinationPlace, "id" | "walkMinutes">[], currentId: string | undefined, recommendedId: string | null): string | null {
+  return nearby.find((place) => place.walkMinutes !== null && place.id !== currentId && place.id !== recommendedId)?.id ?? null;
 }
 
 export type TravelWaitOption = { minutes: number; until: number | null; available: boolean };
