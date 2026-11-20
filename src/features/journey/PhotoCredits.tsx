@@ -71,9 +71,16 @@ function PhotoCreditList({ photos }: { photos: ShownPhoto[] }) {
  * description, credit and links at once (the scene shows no 出典 of its own, nor does a quiz answer's reveal of the same
  * photo); free time's photos and the recap card's (`photos`) are listed under it with their credits. A dialog for viewing:
  * 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc closes it. (A line's `# recall:` shows an album
- * image, the author's own artwork, which has no credit.)
+ * image, the author's own artwork, which has no credit.) In play it is the way into 「出典・権利の一覧」 (`onAllCredits`;
+ * from ゲームの設定 until 2026-11-20), at its foot, so it is on ≡メニュー on every screen, saying so when the screen shows no
+ * credited photo.
  */
-export function ScreenCredits({ scenePhoto, photos, onClose }: { scenePhoto?: TourismAsset; photos: ShownPhoto[]; onClose: () => void }) {
+export function ScreenCredits({ scenePhoto, photos, onAllCredits, onClose }: {
+  scenePhoto?: TourismAsset; photos: ShownPhoto[];
+  /** Opens 「出典・権利の一覧」 over this dialog (closing it comes back here). */
+  onAllCredits: () => void;
+  onClose: () => void;
+}) {
   const className = [scenePhoto && "date-background-viewer", photos.length > 0 && "photo-credits-modal"].filter(Boolean).join(" ");
   return <Modal labelledBy="screen-credits-title" className={className} onClose={onClose} closeOnBackdrop>
     <ModalTitle id="screen-credits-title" onClose={onClose}>画面の出典</ModalTitle>
@@ -84,5 +91,9 @@ export function ScreenCredits({ scenePhoto, photos, onClose }: { scenePhoto?: To
       </div>
     </>}
     {photos.length > 0 && <PhotoCreditList photos={photos} />}
+    {!scenePhoto && photos.length === 0 && <p>いまの画面には、出典を示す写真はありません。</p>}
+    <div className="settings-data-links screen-credits-all">
+      <button type="button" className="text-button credits-entry" onClick={onAllCredits}>出典・権利の一覧</button>
+    </div>
   </Modal>;
 }

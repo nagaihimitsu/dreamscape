@@ -80,8 +80,8 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
   await expect(card).toHaveCount(0);
 
-  // The photo's credit: ゲームの設定 → 出典・権利の一覧 lists it with the journey's photos, with its licence.
-  const credits = await ops.openCredits(page, "settings");
+  // The photo's credit: 画面の出典 → 出典・権利の一覧 lists it with the journey's photos, with its licence.
+  const credits = await ops.openCredits(page, "menu");
   const journey = credits.getByTestId("credits-journey-sample_trip");
   await journey.locator("summary").click();
   const photo = journey.getByRole("listitem").filter({ hasText: "見本の街の架空のパン「三時パン」を描いた簡単な絵。" });

@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Modal, ModalAnswers, ModalTitle } from "../../components/Modal";
 import { ConfirmActionButton } from "../../components/ConfirmActionButton";
 import { Icon } from "../../components/icons";
+import { SettingCheck } from "../../components/SettingCheck";
 import type { SaveSlot } from "../../persistence/journey-storage";
 import { slotSummaries, type SlotSummary } from "../../app/save-slots";
 import type { SaveSlots } from "../../app/app-storage";
@@ -75,9 +76,10 @@ export type SaveLoadMode = "save" | "load";
  * written over), and play goes on in the slot played. ロード of the slot played brings its saved scene back; another
  * slot's opens that slot (an empty one starts a new journey from the title). Debug plays one isolated slot (`summaries`
  * holds it alone). Read once as it opens: only this tab can write the journey's saves (journey-lock.ts). Under the slots,
- * what is about saving (2026-11-20 user decision, from ゲームの設定): 自動保存 and 保存データの消去 of the slot played.
+ * what is about saving (2026-11-20 user decisions, from ゲームの設定): 自動保存 and 保存データの消去 of the slot played,
+ * then the rest of the saved data and the journeys (`more`).
  */
-export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, notice, onSave, onLoad, onDelete, onClose }: {
+export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, notice, onSave, onLoad, onDelete, more, onClose }: {
   readSlots: () => SlotSummary[]; current: SaveSlot;
   /**
    * 「ゲームの進行を自動保存する」 (moved here from ゲームの設定 on 2026-11-20): whether it is on, whether the setting can be
@@ -90,6 +92,11 @@ export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, no
   onSave: (slot: SaveSlot) => void; onLoad: (slot: SaveSlot) => void;
   /** 「保存データの消去」 of the slot played (moved here from ゲームの設定 on 2026-11-20): its confirmation opens over this dialog. */
   onDelete: () => void;
+  /**
+   * The rest of the saved data, under 保存データの消去 (moved here from ゲームの設定 on 2026-11-20): オフラインで遊ぶ, 古い
+   * 保存データの整理 and the switch of journeys (each journey has slots of its own). What they open stacks over this dialog.
+   */
+  more?: ReactNode;
   onClose: () => void;
 }) {
   const [summaries] = useState(readSlots);
@@ -118,14 +125,11 @@ export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, no
     <p className="fine-print">{debug
       ? "Debug用の一時データです。通常のセーブには保存しません。"
       : mode === "save"
-        ? "ほかの枠にセーブすると、今の旅をその枠に写します。遊ぶ枠は変わりません。英語ノート・既読の記録は、この旅行編の枠で共有します。"
+        ? "ほかの枠にセーブすると、今の旅をその枠に写します。遊ぶ枠は変わりません。クイズの英語の記録・旅のことば・既読の記録は、この旅行編のどの枠でも共有します。"
         : "ほかの枠をロードすると、その枠の旅に切り替えます。"}</p>
     <div className="save-load-settings">
-      <label className="translation-setting">
-        <input type="checkbox" checked={autoSave.on} disabled={autoSave.disabled}
-          onChange={(event) => autoSave.onChange(event.target.checked)} /> ゲームの進行を自動保存する
-      </label>
-      <p className="fine-print setting-note">{autoSave.on ? autoSave.savedLine : "オフの間は、ここで「セーブ」を押したときに保存します。"}</p>
+      <SettingCheck checked={autoSave.on} disabled={autoSave.disabled} onChange={autoSave.onChange}
+        note={autoSave.on ? autoSave.savedLine : "オフの間は、ここで「セーブ」を押したときに保存します。"}>ゲームの進行を自動保存する</SettingCheck>
       {notice?.at === "autosave" && <p role="status">{notice.text}</p>}
       <div className="settings-data-links">
         <button type="button" className="text-button delete-entry" onClick={onDelete}>
@@ -133,6 +137,7 @@ export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, no
         </button>
       </div>
       {notice?.at === "delete" && <p role="status">{notice.text}</p>}
+      {more}
     </div>
     {overwrite && <Modal labelledBy="save-overwrite-title" onClose={() => setOverwrite(null)}>
       <ModalTitle id="save-overwrite-title">セーブ{overwrite.slot}に上書きしますか？</ModalTitle>

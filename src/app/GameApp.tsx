@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   albumImages,
   balance,
@@ -94,8 +94,8 @@ import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
 import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
-import { DifficultyFields, EnglishLevelField } from "../features/journey/DifficultyFields";
-import { DEFAULT_DIFFICULTY, difficultyOf, economyLevelLabel, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
+import { DifficultyFields } from "../features/journey/DifficultyFields";
+import { DEFAULT_DIFFICULTY, difficultyOf, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
 import { nameOrDefault } from "../domain/player-names";
 import { playerLatinName } from "../domain/name-romaji";
@@ -160,6 +160,7 @@ import {
 import { browserStorage, type AppProps, type SaveSlots } from "./app-storage";
 import { journeyStorage, type SaveSlot } from "../persistence/journey-storage";
 import { SaveLoadDialog, SaveSlotList } from "../features/journey/SaveSlots";
+import { SettingsDialog } from "./SettingsDialog";
 import { slotSummaries, summarizeSlot } from "./save-slots";
 import { autoSaveLine } from "./journey-hud-text";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
@@ -195,19 +196,6 @@ function changeScreenKey(state: GameState): string {
   return storySceneOnScreen(state) ?? `screen:${state.revision}`;
 }
 
-/**
- * ゲームの設定's 「制作者向け」 (2026-11-14 user decision): Debug mode and its tools, folded away for players; open as
- * ゲームの設定 opens while Debug mode is on. It stays as the player leaves it while ゲームの設定 is open (turning Debug
- * mode off inside it does not fold it under the finger).
- */
-function CreatorSettings({ initiallyOpen, children }: { initiallyOpen: boolean; children: ReactNode }) {
-  const [open, setOpen] = useState(initiallyOpen);
-  return <details className="settings-creator" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
-    <summary>制作者向け</summary>
-    {children}
-  </details>;
-}
-
 export function GameApp({
   storage = browserStorage,
   nextRomanceRoll = secureRomanceRoll,
@@ -236,20 +224,15 @@ export function GameApp({
   // speech, so that a question can be read with no press (iOS Safari speaks with no gesture only after one).
   const autoReadAloud = readAloudAvailable && displaySettings.value.autoReadAloud;
   useEffect(() => (autoReadAloud ? primeSpeechOnGesture() : undefined), [autoReadAloud]);
-  // Said once under the reading settings, below the first one turned on.
-  const noEnglishVoiceJa = "英語の声がない端末では、読まないか、ほかの言葉の声で読みます。";
   // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
   useVoiceSettings(displaySettings.value.voice, displaySettings.value.voiceVolume);
-  const voicePercent = Math.round(displaySettings.value.voiceVolume * 100);
   // 「効果音を出す」 and 「効果音の大きさ」 for the game's sounds and every line's `# se:` (src/audio/sound-effects.ts).
   useSoundEffectSettings(displaySettings.value.se, displaySettings.value.seVolume);
-  const sePercent = Math.round(displaySettings.value.seVolume * 100);
   // 「振動する」 (src/audio/vibration.ts): the setting only where the browser can vibrate.
   const [vibrationAvailable] = useState(() => canVibrate(typeof navigator === "undefined" ? undefined : navigator));
   useVibrationSetting(vibrationAvailable && displaySettings.value.vibration);
   // 「BGMを流す」 and 「BGMの大きさ」 for the background music (src/audio/bgm.ts).
   useBgmSettings(displaySettings.value.bgm, displaySettings.value.bgmVolume);
-  const bgmPercent = Math.round(displaySettings.value.bgmVolume * 100);
   // 「環境音を流す」 for the places' ambience, at half of 「BGMの大きさ」 (src/audio/ambience.ts).
   useAmbienceSettings(displaySettings.value.ambience, displaySettings.value.bgmVolume);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
@@ -337,7 +320,7 @@ export function GameApp({
   // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
   usePreloadAhead(game, journeyId, !!opening);
   // 「オフラインで遊ぶ」 (2026-11-17; src/offline/): what this device keeps of the journeys, for the entries on the title and
-  // in ゲームの設定 and the dialog they open. Not in Debug, nor on a page given another storage (a test's): the entries
+  // in セーブ・ロード and the dialog they open. Not in Debug, nor on a page given another storage (a test's): the entries
   // belong to the game's own page. A journey being loaded starts no new file while the opening movie streams.
   const offline = useOfflineStatus();
   const online = useOnline();
@@ -466,17 +449,10 @@ export function GameApp({
   const [deleteSnapshot, setDeleteSnapshot] = useState<DeleteSnapshot | null>(null);
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
-  // What ゲームの設定 says about its own actions (2026-11-14): why automatic saving could not be turned on, under its
-  // checkbox, or why the save data cannot be deleted, under 「保存データの消去」. Other words of the game stay on its page.
-  const [settingsNotice, setSettingsNotice] = useState<{ text: string; at: "autosave" | "delete" } | null>(null);
+  // What セーブ・ロード says about its own actions (in ゲームの設定 until 2026-11-20): why automatic saving could not be turned
+  // on, under its checkbox, or why the save data cannot be deleted, under 「保存データの消去」. Other words of the game stay on its page.
+  const [saveLoadNotice, setSaveLoadNotice] = useState<{ text: string; at: "autosave" | "delete" } | null>(null);
   const [oldDataOpen, setOldDataOpen] = useState(false);
-  // ゲームの設定's way into 「古い保存データの整理」: only when the list has something, as on the title (read as ゲームの
-  // 設定 opens; the entry stays while it is open, where the cleanup gives the focus back, and the cleanup says so if it
-  // has emptied the list since).
-  const settingsOldData = useMemo(() => {
-    if (!settings || isDebug || !oldDataStorage) return false;
-    try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
-  }, [settings, isDebug, oldDataStorage, journeyId]);
   // The title's way into 「古い保存データの整理」, beside its notice of a save it cannot open: only when the list has
   // something (read as the notice appears; the dialog says so if a cleanup has emptied it since).
   const titleOldData = useMemo(() => {
@@ -484,7 +460,7 @@ export function GameApp({
     try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
   }, [game, invalid, isDebug, oldDataStorage, journeyId]);
   const [creditsOpen, setCreditsOpen] = useState(false);
-  // ゲームの設定's line under 「オフライン」; on the title, the same words for screen readers and a short mark on the entry
+  // セーブ・ロード's line about 「オフラインで遊ぶ」; on the title, the same words for screen readers and a short mark on the entry
   // (a run goes on when the dialog is closed, and no line is added above 「旅をはじめる」 on a short screen).
   const offlineLine = offlineSummary(offline, journeys);
   const offlineMark = offlineEntryMark(offline);
@@ -508,6 +484,14 @@ export function GameApp({
   const [saveMark, setSaveMark] = useState(0);
   const [switchSlotTo, setSwitchSlotTo] = useState<SaveSlot | null>(null);
   const playedSlot: SaveSlot = saves?.slot ?? 1;
+  // セーブ・ロード's way into 「古い保存データの整理」 (in ゲームの設定 until 2026-11-20): only when the list has something, as
+  // on the title (read as セーブ・ロード opens; the entry stays while it is open, where the cleanup gives the focus back, and
+  // the cleanup says so if it has emptied the list since).
+  const saveLoadOpen = saveLoadOpenedAt !== null;
+  const saveLoadOldData = useMemo(() => {
+    if (!saveLoadOpen || isDebug || !oldDataStorage) return false;
+    try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
+  }, [saveLoadOpen, isDebug, oldDataStorage, journeyId]);
   function saveIntoSlot(slot: SaveSlot) {
     setSaveLoadOpenedAt(null);
     const saved = slot === playedSlot || !saves
@@ -531,7 +515,7 @@ export function GameApp({
   function requestJourneySwitch(id: string) {
     if (!onSwitchJourney) return;
     const step = leaveStep({ way: "switch_journey", from: journeyId, to: id }, session.hasUnsavedProgress());
-    // Its confirmation opens over ゲームの設定, whose 「戻る」 goes back to it (2026-11-14 user decision).
+    // In play its confirmation opens over セーブ・ロード (ゲームの設定 until 2026-11-20), whose 「戻る」 goes back to it.
     if (step === "ask") setSwitchJourneyTo(id);
     else if (step === "leave") onSwitchJourney(id);
   }
@@ -706,8 +690,8 @@ export function GameApp({
    * 「消去せず戻る」 goes back to it (2026-11-14 user decision); why it cannot be asked is said where it was asked.
    */
   function requestDelete() {
-    setSettingsNotice(null);
-    const snapshot = session.prepareDelete(saveLoadOpenedAt !== null ? (text) => setSettingsNotice({ text, at: "delete" }) : undefined);
+    setSaveLoadNotice(null);
+    const snapshot = session.prepareDelete(saveLoadOpenedAt !== null ? (text) => setSaveLoadNotice({ text, at: "delete" }) : undefined);
     if (snapshot) setDeleteSnapshot(snapshot);
   }
   function reload() {
@@ -780,8 +764,8 @@ export function GameApp({
     return () => { debugAccess.current = null; };
   });
   function setAutoSave(enabled: boolean) {
-    setSettingsNotice(null);
-    if (enabled && !session.persistCurrent((text) => setSettingsNotice({ text, at: "autosave" }))) return;
+    setSaveLoadNotice(null);
+    if (enabled && !session.persistCurrent((text) => setSaveLoadNotice({ text, at: "autosave" }))) return;
     if (displaySettings.update({ autoSave: enabled })) setNotice("");
   }
   const active = game?.activeDate;
@@ -956,34 +940,6 @@ export function GameApp({
       ? (landmarkPhoto(currentBattle.landmarkId) && !momentQuiz ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
     : active?.frame.background;
   const scenePlaceJa = momentQuiz && currentBattle ? landmarks.find((landmark) => landmark.id === currentBattle.landmarkId)?.nameJa : undefined;
-  const nameForm = (
-    <>
-      <label>
-        主人公の名前
-        <input
-          ref={settingsReading.ref}
-          name="playerName"
-          value={player}
-          maxLength={balance.maxNameLength}
-          required
-          onChange={(e) => setPlayer(e.target.value)}
-          autoComplete="off"
-        />
-      </label>
-      <label>
-        ヒロインの名前
-        <input
-          name="heroineName"
-          value={heroine}
-          maxLength={balance.maxNameLength}
-          required
-          onChange={(e) => setHeroine(e.target.value)}
-          autoComplete="off"
-        />
-      </label>
-    </>
-  );
-
   return (
     <div
       className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
@@ -1004,9 +960,11 @@ export function GameApp({
         onRecords={openRecords}
         onNote={notePages.length ? openNote : undefined}
         noteLabel={noteName(notePages)}
-        onScreenCredits={creditPhotos.length || scenePhoto ? () => setScreenCreditsOpen(true) : undefined}
+        onScreenCredits={() => setScreenCreditsOpen(true)}
         onSaveLoad={() => {
-          setSettingsNotice(null);
+          setSaveLoadNotice(null);
+          // What the device keeps for 「オフラインで遊ぶ」 may have changed meanwhile (a run that ended, another tab).
+          if (offlineEntries) void refreshOffline();
           setSaveLoadOpenedAt(Date.now());
         }}
         saveMark={saveMark}
@@ -1025,13 +983,10 @@ export function GameApp({
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
-          setSettingsNotice(null);
           // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices or 撮影の形, meanwhile.
           debugMode.refresh();
           voiceRate.refresh();
           shot.refresh();
-          // What the device keeps for 「オフラインで遊ぶ」 may have changed too (a run that ended, another tab).
-          if (offlineEntries) void refreshOffline();
           setSettings(true);
         }}
         onReturnToFreeTime={debugMarks && canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
@@ -1145,7 +1100,7 @@ export function GameApp({
                 </div>
               )}
               {/* The way into 「オフラインで遊ぶ」 sits beside the selector's caption (the title shows only without a game: a
-                  player with a save finds it in ゲームの設定). */}
+                  player with a save finds it in ≡メニューの「セーブ・ロード」). */}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus}
                 aside={offlineEntries && offlineEntryShown ? <button type="button" className="text-button offline-entry" data-testid="offline-entry"
                   onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ{offlineMark && `（${offlineMark}）`}</button> : undefined} />}
@@ -1518,8 +1473,8 @@ export function GameApp({
 
       {termCardShown && termCard && game &&
         <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
-      {screenCreditsOpen && (creditPhotos.length > 0 || scenePhoto) &&
-        <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} onClose={() => setScreenCreditsOpen(false)} />}
+      {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} onAllCredits={() => setCreditsOpen(true)}
+        onClose={() => setScreenCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
           landmarkId={currentLandmarkId ?? undefined}
@@ -1593,7 +1548,7 @@ export function GameApp({
           onClose={() => setDeleteSnapshot(null)}
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
-          {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : deleteSnapshot.sharedKept ? <><p>
+          {isDebug ? <p>Debug用の進行とクイズと旅のことばの記録を消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・クイズと旅のことばの記録・表示設定は消去しません。</p> : deleteSnapshot.sharedKept ? <><p>
             このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}のセーブ{saves?.slot ?? 1}の名前、旅の進行、AP、恋愛・クイズの記録、旅の記録の写真、旅の思い出を消去します。元には戻せません。
           </p>
           <p className="fine-print">
@@ -1610,7 +1565,7 @@ export function GameApp({
             action={<ConfirmActionButton
               className="danger-button"
               onClick={() => {
-                if (!session.deleteConfirmed(deleteSnapshot, saveLoadOpenedAt !== null ? (text) => setSettingsNotice({ text, at: "delete" }) : undefined)) {
+                if (!session.deleteConfirmed(deleteSnapshot, saveLoadOpenedAt !== null ? (text) => setSaveLoadNotice({ text, at: "delete" }) : undefined)) {
                   setDeleteSnapshot(null);
                   return;
                 }
@@ -1625,7 +1580,24 @@ export function GameApp({
         readSlots={() => saves ? slotSummaries(saves.base, journeyId) : [summarizeSlot(storage, journeyId, 1)]}
         autoSave={{ on: displaySettings.value.autoSave, disabled: !!displaySettings.error, onChange: setAutoSave,
           savedLine: autoSaveLine(session.savedAt, saveLoadOpenedAt) }}
-        notice={settingsNotice} onSave={saveIntoSlot} onLoad={loadFromSlot} onDelete={requestDelete}
+        notice={saveLoadNotice} onSave={saveIntoSlot} onLoad={loadFromSlot} onDelete={requestDelete}
+        more={<>
+          {/* オフライン (2026-11-17): what this device keeps of the journeys, in one line (a status region that stays
+              mounted; how far a run is shows beside it and is not announced), and the way into the dialog that does the rest. */}
+          {offlineEntries && <>
+            <p role="status" className="offline-summary" data-testid="offline-summary">
+              {offlineLine.text}{offlineLine.live && <span className="offline-summary-live" aria-hidden="true">{offlineLine.live}</span>}
+            </p>
+            {offlineEntryShown && <div className="settings-data-links">
+              <button type="button" className="text-button offline-entry" data-testid="offline-save-load-entry" onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ</button>
+            </div>}
+          </>}
+          {saveLoadOldData && <div className="settings-data-links">
+            <button type="button" className="text-button old-data-entry" onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>
+          </div>}
+          {/* Another journey (from ゲームの設定 until 2026-11-20): its slots are its own. */}
+          {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
+        </>}
         onClose={() => setSaveLoadOpenedAt(null)} />}
       {switchSlotTo !== null && saves && (
         <Modal labelledBy="switch-slot-title" onClose={() => setSwitchSlotTo(null)}>
@@ -1645,198 +1617,30 @@ export function GameApp({
             action={<button type="button" className="primary" onClick={() => onSwitchJourney?.(switchJourneyTo)}>切り替える</button>} />
         </Modal>
       )}
-      {/* ゲームの設定 (2026-11-14 user decision; regrouped 2026-11-19): its groups under their headings, the most used first
-          (文字と演出, 英語, 音と振動, 旅, 保存とデータ), then 出典・権利の一覧, and the creator's tools last, folded away (open while
-          Debug mode is on). A note or a volume under a checkbox is indented under its label (setting-note, setting-sub). The first focus is the
-          title bar's 「× 閉じる」 (the first control). What it opens (the credits, the old data, a deletion's or a journey
-          switch's confirmation) stacks over it and closes back to it. A form is in it: a tap beside it does not close it. */}
-      {settings && game && (
-        <Modal labelledBy="settings-title" onClose={() => setSettings(false)} settlePresses>
-          <ModalTitle id="settings-title" onClose={() => setSettings(false)}>ゲームの設定</ModalTitle>
-          <h3>文字と演出</h3>
-          <label className="translation-setting">
-            文字送り {" "}
-            <select aria-label="文字送り" value={speed} disabled={!!displaySettings.error}
-              onChange={(event) => setSpeed(Number(event.target.value))}>
-              <option value={45}>ゆっくり</option>
-              <option value={25}>ふつう</option>
-              <option value={0}>一括表示</option>
-            </select>
-          </label>
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.autoAdvance} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ autoAdvance: event.target.checked })} /> 自動送りする
-          </label>
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.skipUnread} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ skipUnread: event.target.checked })} /> 未読の台詞も高速送りする
-          </label>
-          {!displaySettings.value.skipUnread && <p className="fine-print setting-note">オフの間、高速送りはまだ読んでいない台詞で止まります。</p>}
-          <label className="translation-setting">
-            <input
-              type="checkbox"
-              checked={displaySettings.value.reduceMotion}
-              disabled={!!displaySettings.error}
-              onChange={(event) =>
-                displaySettings.update({ reduceMotion: event.target.checked })
-              }
-            />{" "}
-            演出を短縮する
-          </label>
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.miniGameAuto} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ miniGameAuto: event.target.checked })} /> ミニゲームをおまかせにする
-          </label>
-          {displaySettings.value.miniGameAuto && <p className="fine-print setting-note">ミニゲームは押さずに自動で進み、場面ごとに決まった結果になります。</p>}
-          {/* 英語 (2026-11-19): the quiz's English level (from the next quiz; one already started keeps its own), the
-              translation and the reading aloud, together. */}
-          <h3>英語</h3>
-          <div className="name-form difficulty-settings">
-            <EnglishLevelField value={difficultyOf(game).english}
-              note={game.activeBattle ? "解いている途中のクイズは、始めたときの英語のまま進みます。" : "次のクイズから変わります。"}
-              onChange={(level) => commit((state) => setEnglishLevel(state, level))} />
-          </div>
-          {readAloudAvailable && <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.autoReadAloud} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ autoReadAloud: event.target.checked })} /> 問題が出たら英語を自動で読み上げる
-          </label>}
-          {autoReadAloud && <p className="fine-print setting-note">クイズの問題文を、出たときに一度読みます。答えると止まります。{noEnglishVoiceJa}</p>}
-          {readAloudAvailable && <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
-          </label>}
-          {readAloud && <p className="fine-print setting-note">クイズの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
-          <label className="translation-setting">
-            <input
-              type="checkbox"
-              checked={learning.data.alwaysTranslate}
-              disabled={!!learning.error}
-              onChange={(event) =>
-                learning.update((s) => ({
-                  ...s,
-                  alwaysTranslate: event.target.checked,
-                  revealed: {},
-                }))
-              }
-            />{" "}
-            常に日本語訳を表示する
-          </label>
-          {learning.error && <p role="status">{learning.error}</p>}
-          {/* The voices, the sound effects and the music together, each with its own volume (shown while it is on), and
-              the vibration where the browser can vibrate. */}
-          <h3>{vibrationAvailable ? "音と振動" : "音"}</h3>
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ voice: event.target.checked })} /> 台詞の声を出す
-          </label>
-          {displaySettings.value.voice && <label className="translation-setting volume-setting setting-sub">
-            <span aria-hidden="true">大きさ</span>
-            <input type="range" aria-label="声の大きさ" aria-valuetext={`${voicePercent}%`} min={0} max={100} step={10}
-              value={voicePercent} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ voiceVolume: Number(event.target.value) / 100 })} />
-            <span className="volume-value" aria-hidden="true">{voicePercent}%</span>
-          </label>}
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.se} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ se: event.target.checked })} /> 効果音を出す
-          </label>
-          {displaySettings.value.se && <label className="translation-setting volume-setting setting-sub">
-            <span aria-hidden="true">大きさ</span>
-            <input type="range" aria-label="効果音の大きさ" aria-valuetext={`${sePercent}%`} min={0} max={100} step={10}
-              value={sePercent} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ seVolume: Number(event.target.value) / 100 })} />
-            <span className="volume-value" aria-hidden="true">{sePercent}%</span>
-          </label>}
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.bgm} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ bgm: event.target.checked })} /> BGMを流す
-          </label>
-          {displaySettings.value.bgm && <label className="translation-setting volume-setting setting-sub">
-            <span aria-hidden="true">大きさ</span>
-            <input type="range" aria-label="BGMの大きさ" aria-valuetext={`${bgmPercent}%`} min={0} max={100} step={10}
-              value={bgmPercent} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ bgmVolume: Number(event.target.value) / 100 })} />
-            <span className="volume-value" aria-hidden="true">{bgmPercent}%</span>
-          </label>}
-          <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.ambience} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ ambience: event.target.checked })} /> 環境音を流す
-          </label>
-          {displaySettings.value.ambience && <p className="fine-print setting-note">場所の音（雨・市場・鳥の声など）を、BGMの半分の大きさで流します。</p>}
-          {vibrationAvailable && <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.vibration} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ vibration: event.target.checked })} /> 振動する
-          </label>}
-          {vibrationAvailable && displaySettings.value.vibration && <p className="fine-print setting-note">品物や手がかりを手に入れたときに、端末が短く震えます。</p>}
-          {displaySettings.error && (
-            <p role="status">{displaySettings.error}</p>
-          )}
-          {/* 旅: the names, how tight money and AP are (chosen at the title, kept for the journey) and the journey itself. */}
-          <h3>旅</h3>
-          {active ||
-          game.activeEncounter ||
-          game.activeBattle ||
-          game.activeTourism ||
-          game.activeEpilogue ? (
-            <p>進行中の会話やクイズ・観光を閉じると、名前を変更できます。</p>
-          ) : (
-            <form
-              className="name-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (player.trim() && heroine.trim()) {
-                  const reading = settingsReading.read(player.trim());
-                  commit((state) =>
-                    setNames(state, player.trim(), heroine.trim(), reading),
-                  );
-                  setSettings(false);
-                }
-              }}
-            >
-              {nameForm}
-              <button
-                className="secondary"
-                disabled={!player.trim() || !heroine.trim()}
-              >
-                名前を保存
-              </button>
-            </form>
-          )}
-          <p className="fine-print">お金とAPのきびしさ：{economyLevelLabel(difficultyOf(game).economy).labelJa}（旅の始めに決めたもので、変えられません）</p>
-          {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
-          <h3>保存とデータ</h3>
-          {/* 自動保存 and 保存データの消去 moved to ≡メニュー's 「セーブ・ロード」 (2026-11-20 user decision). */}
-          <p className="fine-print">自動保存と保存データの消去は、メニューの「セーブ・ロード」にあります。</p>
-          {/* オフライン (2026-11-17): what this device keeps of the journeys, in one line (a status region that stays
-              mounted; how far a run is shows beside it and is not announced), and the way into the dialog that does the rest. */}
-          {offlineEntries && <>
-                        <p role="status" className="offline-summary" data-testid="offline-summary">
-              {offlineLine.text}{offlineLine.live && <span className="offline-summary-live" aria-hidden="true">{offlineLine.live}</span>}
-            </p>
-            {offlineEntryShown && <div className="settings-data-links">
-              <button type="button" className="text-button offline-entry" data-testid="offline-settings-entry" onClick={() => setOfflineOpen(true)}>オフラインで遊ぶ</button>
-            </div>}
-          </>}
-          {settingsOldData && <div className="settings-data-links">
-            <button type="button" className="text-button old-data-entry" onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>
-          </div>}
-          <div className="settings-data-links settings-credits">
-            <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
-          </div>
-          {(!isDebug || debugOn) && <CreatorSettings initiallyOpen={debugOn}>
-            {!isDebug && <DebugModeSetting debugMode={debugMode} />}
-            {/* 撮影の形 (Debug mode only), loaded when shown. */}
-            {debugOn && <Suspense fallback={null}><DebugShotSetting on={shot.on} onChange={shot.change} message={shot.message} /></Suspense>}
-            {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
-            {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
-            {/* 台詞の声の速さ (Debug mode only), loaded when shown. */}
-            {debugOn && <Suspense fallback={null}>
-              <DebugVoiceRate rate={voiceRate.rate} onChange={voiceRate.change} voiceOn={displaySettings.value.voice} message={voiceRate.message} />
-            </Suspense>}
-          </CreatorSettings>}
-        </Modal>
-      )}
-      {/* From the title, or over ゲームの設定 (closing goes back to it, where it was). */}
+      {settings && game && <SettingsDialog game={game} display={displaySettings} learning={learning}
+        readAloudAvailable={readAloudAvailable} vibrationAvailable={vibrationAvailable}
+        names={active || game.activeEncounter || game.activeBattle || game.activeTourism || game.activeEpilogue ? null : {
+          player, heroine, onPlayer: setPlayer, onHeroine: setHeroine, playerRef: settingsReading.ref,
+          onSave: () => {
+            const reading = settingsReading.read(player.trim());
+            commit((state) => setNames(state, player.trim(), heroine.trim(), reading));
+            setSettings(false);
+          },
+        }}
+        onEnglishLevel={(level) => commit((state) => setEnglishLevel(state, level))}
+        creator={!isDebug || debugOn ? { open: debugOn, children: <>
+          {!isDebug && <DebugModeSetting debugMode={debugMode} />}
+          {/* 撮影の形 (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}><DebugShotSetting on={shot.on} onChange={shot.change} message={shot.message} /></Suspense>}
+          {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
+          {/* 台詞の声の速さ (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}>
+            <DebugVoiceRate rate={voiceRate.rate} onChange={voiceRate.change} voiceOn={displaySettings.value.voice} message={voiceRate.message} />
+          </Suspense>}
+        </> } : undefined}
+        onClose={() => setSettings(false)} />}
+      {/* From the title, or over 「画面の出典」 (closing goes back to it, where it was). */}
       {creditsOpen && <LazyDialog onClose={() => setCreditsOpen(false)}><CreditsDialog onClose={() => setCreditsOpen(false)} /></LazyDialog>}
       {opening && <OpeningMovie key={opening.videoPath} src={`${import.meta.env.BASE_URL}${opening.videoPath}`}
         muted={!displaySettings.value.bgm} onEnd={() => {
@@ -1844,9 +1648,9 @@ export function GameApp({
           setOpening(null);
           startJourney(opening.player, opening.heroine, opening.reading, opening.difficulty, opening.again);
         }} />}
-      {/* From the title's selector, or over ゲームの設定 (closing goes back to it, where it was). Closing never stops a run. */}
+      {/* From the title's selector, or over セーブ・ロード (closing goes back to it, where it was). Closing never stops a run. */}
       {offlineOpen && <LazyDialog onClose={() => setOfflineOpen(false)}><OfflinePlayDialog onClose={() => setOfflineOpen(false)} journeys={journeys} /></LazyDialog>}
-      {/* From the title's notice, or over ゲームの設定 (closing goes back to it, where it was). */}
+      {/* From the title's notice, or over セーブ・ロード (closing goes back to it, where it was). */}
       {oldDataOpen && oldDataStorage && <LazyDialog onClose={() => setOldDataOpen(false)}>
         <OldDataCleanup storage={oldDataStorage} context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />
       </LazyDialog>}

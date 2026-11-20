@@ -773,8 +773,8 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     padding: 8px 12px;
   }
 }
-/* ゲームの設定's groups (2026-11-14, regrouped 2026-11-19): 文字と演出, 英語, 音と振動, 旅 and 保存とデータ, each under its heading
-   with a hairline above (none under the title bar), then 出典・権利の一覧 and 「制作者向け」 folded. */
+/* ゲームの設定's groups (2026-11-14, regrouped 2026-11-19 and 2026-11-20): 文字と演出, 英語, 音と振動 and 旅, each under its
+   heading with a hairline above (none under the title bar, nor under a status line above them), then 「制作者向け」 folded. */
 dialog.modal[aria-labelledby="settings-title"] > h3 {
   margin: 14px 0 2px;
   padding-top: 12px;
@@ -782,7 +782,8 @@ dialog.modal[aria-labelledby="settings-title"] > h3 {
   font-size: 15px;
   font-weight: 600;
 }
-dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + h3 {
+dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + h3,
+dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + [role="status"] + h3 {
   margin-top: 0;
   padding-top: 0;
   border-top: 0;
@@ -796,17 +797,18 @@ dialog.modal[aria-labelledby="settings-title"] .setting-note {
 dialog.modal[aria-labelledby="settings-title"] .setting-sub {
   margin-left: 28px;
 }
-/* 英語's quiz level: a little room before the checkboxes under it. */
+/* 英語's quiz level: a little room before the checkboxes, or the line under 「日本語のみ」, under it. */
 dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .translation-setting { margin-top: 4px; }
-/* 旅's line about money and AP, under the names. */
+dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .setting-english-off { margin: 8px 0 4px; }
+/* 旅's line about money and AP, under the names (or the line that they cannot change now). */
 dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: 6px 0 0; }
-/* 出典・権利の一覧: on its own, under a hairline, after the groups. */
-dialog.modal .settings-credits {
+/* 画面の出典's way into 出典・権利の一覧: on its own, under a hairline, after the screen's photos. */
+dialog.modal .screen-credits-all {
   margin-top: 14px;
   padding-top: 6px;
   border-top: 1px solid var(--ds-parchment-line);
 }
-/* データ's ways into the credits, the old data and the deletion: one 44-px row each, evenly spaced, at the left. */
+/* The ways into the credits, the old data, オフラインで遊ぶ and the deletion: one 44-px row each, evenly spaced, at the left. */
 dialog.modal .settings-data-links {
   display: grid;
   justify-items: start;
@@ -820,7 +822,7 @@ dialog.modal .settings-data-links > .text-button {
   padding: 0 4px;
   font-size: 13px;
 }
-/* 「オフライン」's line in ゲームの設定: what this device keeps of the journeys (how far a run is beside it, in digits of one width). */
+/* 「オフライン」's line in セーブ・ロード: what this device keeps of the journeys (how far a run is beside it, in digits of one width). */
 dialog.modal .offline-summary {
   margin: 8px 0 0;
   font-size: 13px;
@@ -1614,7 +1616,7 @@ dialog.modal[open] {
   }
 }
 
-/* ゲームの設定's 「保存データの消去」 (in its データ, settings-data-links): the colour of what deletes. */
+/* セーブ・ロード's 「保存データの消去」 (settings-data-links): the colour of what deletes. */
 .delete-entry {
   color: #93443c;
 }

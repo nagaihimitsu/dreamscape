@@ -49,7 +49,7 @@
 
 ## 3. 新しい衣装・人物に作るとき
 
-道具の準備：Node.js 22.17 以上、Python と [uv](https://docs.astral.sh/uv/)。Mesh Avatar Studio を手元に持ってきて `npm install`、`npm run doctor` で足りない物を確かめます。手順の元は向こうの [agent-guide](https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/agent-guide.md) です。ここでは、この作品でのやり方だけを書きます。
+道具の準備：Node.js 22.17 以上、Python と [uv](https://docs.astral.sh/uv/)。Mesh Avatar Studio を手元に持ってきて `npm install`、（Mesh Avatar Studio の側で）`npm run doctor` で足りない物を確かめます。以下の `npm run …` と `tools/…` は、どれも Mesh Avatar Studio の側のコマンドです（このリポジトリの `package.json` にはありません）。手順の元は向こうの [agent-guide](https://github.com/shinshin86/mesh-avatar-studio/blob/main/docs/agent-guide.md) です。ここでは、この作品でのやり方だけを書きます。
 
 1. **元の絵**：その衣装・ポーズの `neutral` の元の絵（可逆の PNG。配信用の WebP ではなく）で、`uv run tools/new-project.py <neutral.png> <名前>` を実行します。全身の絵のままで構いません。
 2. **骨組み**：`rig.draft.json` に、頭・顔の部品・目の輪郭・口・頬・髪の毛束・身体を、拡大した方眼（`tools/grid.py --region …`）で読んで書きます。ヒロインの下書き [`rig.draft.json`](characters/heroine/default_01/mesh_avatar/rig.draft.json) が見本です。この作品の絵で気をつけること：

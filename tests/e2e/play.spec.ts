@@ -421,8 +421,8 @@ test("in each available journey a new trip's first vehicle route is named and sh
   expect(journeys.map((journey) => journey.id)).toEqual(expect.arrayContaining(["milano", "golden_triangle"]));
   await page.goto("/");
   for (const [index, journey] of journeys.entries()) {
-    // The next journey from 設定 (a page load would resume the journey just played).
-    if (index > 0) await (await ops.openSettings(page)).getByLabel("旅行編").selectOption(journey.id);
+    // The next journey from セーブ・ロード (a page load would resume the journey just played).
+    if (index > 0) await (await ops.openSaveLoad(page)).getByLabel("旅行編").selectOption(journey.id);
     await ops.beginJourney(page, journey.id);
     // Through the arrival, if the journey opens with one.
     await playUntil(page, (state) => state.activeEpilogue === null, { source: savedGame(journey.id) });

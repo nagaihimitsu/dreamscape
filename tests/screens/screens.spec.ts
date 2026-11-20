@@ -70,7 +70,7 @@ const flows: FlowScene[] = [
     await expect(section.getByRole("alert")).toBeVisible();
     await section.scrollIntoViewIfNeeded();
   } },
-  { scene: "flow-old-data", titleJa: "古い保存データの整理", descriptionJa: "旅を始め、旧版のセーブ・バックアップ・以前のミラノ編の英語ノートを置いて「メニュー」→「ゲームの設定」→「古い保存データの整理」", open: async (page) => {
+  { scene: "flow-old-data", titleJa: "古い保存データの整理", descriptionJa: "旅を始め、旧版のセーブ・バックアップ・以前のミラノ編のクイズと旅のことばの記録を置いて「メニュー」→「ゲームの設定」→「古い保存データの整理」", open: async (page) => {
     await ops.startJourney(page);
     await page.evaluate(() => {
       localStorage.setItem("dreamscape.journey.golden_triangle.save.v1", JSON.stringify({ schemaVersion: 13, revision: 3 }));

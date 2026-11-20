@@ -114,7 +114,7 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
             <KeyList item={item} />
           </li>)}
         </ul>
-        <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定など）は残ります。選んだ旅行編を別のタブで開いている間は消去できません。</p>
+        <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編のクイズと旅のことばの記録、表示設定など）は残ります。選んだ旅行編を別のタブで開いている間は消去できません。</p>
       </> : <>
         <p>このブラウザに残っている、今のゲームでは使わない保存データです。消去するものを選んでください。</p>
         {notice && <p className="old-data-notice" role={notice.role} ref={noticeLine} tabIndex={-1}>{notice.text}</p>}
@@ -131,7 +131,7 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
               <KeyList item={item} />
             </li>)}
           </ul>}
-        <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定などは一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
+        <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編のクイズと旅のことばの記録、表示設定などは一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
       </>}
     </div>
     {confirming ? <div className="old-data-actions">

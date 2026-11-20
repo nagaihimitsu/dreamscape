@@ -18,14 +18,14 @@ export function useLearning(game: GameState | null, storage: StorageLike = windo
       const result = commitLearning(storage, rawRef.current, dataRef.current, change);
       if (result.status === "stale") {
         setError(
-          "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
+          "別の画面でクイズと旅のことばの記録が更新されました。この画面を再読み込みしてください。",
         );
         blocked.current = true;
         return false;
       }
       if (result.status === "failed") {
         setError(
-          "英語ノートを保存できませんでした。保存データは変更していません。",
+          "クイズと旅のことばの記録を保存できませんでした。保存データは変更していません。",
         );
         return false;
       }
@@ -71,7 +71,7 @@ export function useLearning(game: GameState | null, storage: StorageLike = windo
         (e.key === storagePhysicalKey(storage, SAVE_KEY) && e.newValue === null)
       ) {
         setError(
-          "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
+          "別の画面でクイズと旅のことばの記録が更新されました。この画面を再読み込みしてください。",
         );
         blocked.current = true;
       }

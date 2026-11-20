@@ -265,7 +265,7 @@ describe("the confirmations", () => {
         "入れている間も遊べます。止めても、続きから入れられます。",
         "ゲームが新しくなったときは、通信があるときに変わった分だけを入れ直します（約30 MBまでは自動で、それより大きいときはここで選べます）。",
       ],
-      fine: "保存データ（ゲームの進行）・英語ノート・設定は変わりません。", cancel: "やめる", action: "入れる", danger: false,
+      fine: "保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は変わりません。", cancel: "やめる", action: "入れる", danger: false,
     });
   });
 
@@ -288,7 +288,7 @@ describe("the confirmations", () => {
         "ほかの旅行編と共通のファイル（約38 MB）は、ミラノ編が使うので残ります。",
         "通信がない間は、この旅行編を遊べなくなります。通信があれば、これまでどおり遊べます。もう一度入れることもできます（また約133 MBを読み込みます）。",
       ],
-      fine: "保存データ（ゲームの進行）・英語ノート・設定は消えません。", cancel: "消さずに戻る", action: "端末から消す", danger: true,
+      fine: "保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は消えません。", cancel: "消さずに戻る", action: "端末から消す", danger: true,
     });
     // The last one: the shared files go too.
     expect(removeConfirm(milanoKept(), catalog, "milano").body).toEqual([
@@ -327,7 +327,7 @@ describe("the confirmations", () => {
 
   it("asks once more before everything of an unreadable store goes", () => {
     expect(removeConfirm(snapshot({ store: "unreadable" }), catalog, "all")).toMatchObject({
-      title: "端末に入れたオフライン用のファイルを、すべて消しますか？", fine: "保存データ（ゲームの進行）・英語ノート・設定は消えません。", cancel: "消さずに戻る", action: "端末から消す", danger: true,
+      title: "端末に入れたオフライン用のファイルを、すべて消しますか？", fine: "保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は消えません。", cancel: "消さずに戻る", action: "端末から消す", danger: true,
     });
   });
 });

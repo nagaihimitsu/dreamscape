@@ -52,7 +52,7 @@ const NOT_PERSISTED_JA = "ブラウザは、端末の空きが少なくなると
 const NO_FONTS_JA = "文字の形（フォント）は入れられませんでした。通信がないときは、端末にある文字で表示します。通信があるときにページを開くと、もう一度入れます。";
 const FONTS_LOADING_JA = "文字の形（フォント）を入れています。入れ終えるまで、ページを開いたまま通信を切らないでください。";
 const WAITING_JA = "通信を待っています";
-const SAVES_STAY_JA = "保存データ（ゲームの進行）・英語ノート・設定は";
+const SAVES_STAY_JA = "保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は";
 
 const REMOVE: OfflineAction = { id: "remove", label: "端末から消す" };
 const STOP: OfflineAction = { id: "stop", label: "止める" };

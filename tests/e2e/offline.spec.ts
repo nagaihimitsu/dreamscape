@@ -149,11 +149,11 @@ test("nothing is loaded for 「オフラインで遊ぶ」 until the player asks
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expectPictures(page);
-  // ゲームの設定 looks at what the device keeps as it opens: nothing, and it asks the server nothing.
-  const settings = await ops.openSettings(page);
-  await expect(settings.getByTestId("offline-summary")).toHaveText("旅行編をこの端末に入れておくと、通信がなくても遊べます。");
-  await expect(settings.getByTestId("offline-settings-entry")).toBeVisible();
-  await ops.closeDialog(settings);
+  // セーブ・ロード looks at what the device keeps as it opens: nothing, and it asks the server nothing.
+  const saveLoad = await ops.openSaveLoad(page);
+  await expect(saveLoad.getByTestId("offline-summary")).toHaveText("旅行編をこの端末に入れておくと、通信がなくても遊べます。");
+  await expect(saveLoad.getByTestId("offline-save-load-entry")).toBeVisible();
+  await ops.closeDialog(saveLoad);
 
   expect(await readOfflineStore(page), "no store on a device that keeps nothing").toBeNull();
   expect(offlineAsks(server)).toEqual([]);
@@ -185,7 +185,7 @@ test("Milano kept from the title plays with the server stopped: the page, the pi
   await ops.pressOffline(keep);
   await expect(dialog.getByRole("heading", { name: `${nameOf(MILANO)}をこの端末に入れますか？` })).toBeFocused();
   await expect(dialog).toContainText(`${size}をこの端末に入れます（ほかの旅行編と共通の分を含みます）。`);
-  await expect(dialog).toContainText("保存データ（ゲームの進行）・英語ノート・設定は変わりません。");
+  await expect(dialog).toContainText("保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は変わりません。");
   await dialog.getByRole("button", { name: "やめる", exact: true }).click();
   await expect(keep).toBeFocused();
   expect(downloads(server)).toEqual([]);
@@ -251,7 +251,7 @@ test("Milano kept from the title plays with the server stopped: the page, the pi
   await ops.closeDialog(records);
   const licences = JSON.parse(readFileSync("dist/third-party-licenses.json", "utf8")) as { name: string; version: string; identifier: string }[];
   const react = licences.find((licence) => licence.name === "react")!;
-  const credits = await ops.openCredits(page, "settings");
+  const credits = await ops.openCredits(page, "menu");
   await expect(credits.getByTestId("credits-licences").getByText(`${react.name} ${react.version}（${react.identifier}）`, { exact: true })).toBeVisible();
   await expect(page.getByRole("dialog", { name: "開けませんでした" })).toHaveCount(0);
   // (The error guard fails this test on any file of the game that did not arrive.)
@@ -311,7 +311,7 @@ test("without a network the title opens a journey the device keeps, and index.ht
   await settled();
 });
 
-test("the golden triangle kept from ゲームの設定 plays its voices and its opening movie with the server stopped; a second journey loads only its own files; removing one keeps the other", { tag: tier.prod }, async ({ page, server }) => {
+test("the golden triangle kept from セーブ・ロード plays its voices and its opening movie with the server stopped; a second journey loads only its own files; removing one keeps the other", { tag: tier.prod }, async ({ page, server }) => {
   test.setTimeout(480_000);
   const list = builtList();
   const india = [...list.shared, ...list.journeys[INDIA]];
@@ -319,14 +319,14 @@ test("the golden triangle kept from ゲームの設定 plays its voices and its 
   await ops.beginJourney(page, INDIA);
   await expect(page.getByTestId("dialogue-text")).toBeVisible();
 
-  let dialog = await ops.openOfflinePlay(page, "settings");
+  let dialog = await ops.openOfflinePlay(page, "saveLoad");
   await expect(ops.offlineRow(page, INDIA)).toContainText(`入れると${formatOfflineSize(bytes(india))}です。`);
   await ops.keepJourney(page, INDIA);
   await ops.waitKept(page, INDIA, 360_000);
   expectStored((await readOfflineStore(page))!.keys, server.url, india);
   await ops.closeDialog(dialog);
-  await expect(page.getByRole("dialog", { name: "ゲームの設定" }).getByTestId("offline-summary")).toHaveText(`この端末に入っています：${nameOf(INDIA)}`);
-  await ops.closeDialog(page.getByRole("dialog", { name: "ゲームの設定" }));
+  await expect(page.getByRole("dialog", { name: "セーブ・ロード" }).getByTestId("offline-summary")).toHaveText(`この端末に入っています：${nameOf(INDIA)}`);
+  await ops.closeDialog(page.getByRole("dialog", { name: "セーブ・ロード" }));
 
   // Without a network the game comes back from its save, and a voiced line's file is answered by the worker.
   await goOffline(page, server);
@@ -364,7 +364,7 @@ test("the golden triangle kept from ゲームの設定 plays its voices and its 
   // With the network back, Milano is added: only its own files are loaded (what the journeys share is there).
   await goOnline(page, server);
   server.requests.length = 0;
-  dialog = await ops.openOfflinePlay(page, "settings");
+  dialog = await ops.openOfflinePlay(page, "saveLoad");
   const own = list.journeys[MILANO];
   await expect(ops.offlineRow(page, MILANO)).toContainText(`入れると${formatOfflineSize(bytes(own))}です（ほかの旅行編と共通の分は入っています）。`);
   // Its run counts toward the size its row named (Milano's own files), from nothing: not toward all the device then holds.
@@ -389,8 +389,8 @@ test("the golden triangle kept from ゲームの設定 plays its voices and its 
   const voice = list.journeys[INDIA].find(([path]) => path.startsWith("assets/voice/"))!;
   expect(left.keys).not.toContain(offlineKey(server.url, voice[0], voice[2]));
   await ops.closeDialog(dialog);
-  // Milano opens from ゲームの設定 and plays without a network.
-  await page.getByRole("dialog", { name: "ゲームの設定" }).getByLabel("旅行編").selectOption(MILANO);
+  // Milano opens from セーブ・ロード and plays without a network.
+  await page.getByRole("dialog", { name: "セーブ・ロード" }).getByLabel("旅行編").selectOption(MILANO);
   await expect(ops.startButton(page)).toBeVisible();
   await goOffline(page, server);
   expect((await page.reload())?.fromServiceWorker()).toBe(true);
@@ -560,7 +560,7 @@ test("「端末から消す」 removes the kept journey and leaves the save, the
   const list = builtList();
   const files = [...list.shared, ...list.journeys[MILANO]];
   await ops.startJourney(page, MILANO);
-  const dialog = await ops.openOfflinePlay(page, "settings");
+  const dialog = await ops.openOfflinePlay(page, "saveLoad");
   await ops.keepJourney(page, MILANO);
   await ops.waitKept(page, MILANO);
   // The fonts could not be copied (their hosts are cut off in the tests): the journey is kept all the same, and the dialog says so.
@@ -579,7 +579,7 @@ test("「端末から消す」 removes the kept journey and leaves the save, the
   await expect(dialog).toContainText(`この端末に入れた${nameOf(MILANO)}の絵・音・声・ムービー・物語（${formatOfflineSize(bytes(list.journeys[MILANO]))}）を消します。`);
   await expect(dialog).toContainText(`ほかの旅行編と共通のファイル（${formatOfflineSize(bytes(list.shared))}）も消します。`);
   await expect(dialog).toContainText(`もう一度入れることもできます（また${formatOfflineSize(bytes(files))}を読み込みます）。`);
-  await expect(dialog).toContainText("保存データ（ゲームの進行）・英語ノート・設定は消えません。");
+  await expect(dialog).toContainText("保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は消えません。");
   // 「消さずに戻る」 removes nothing.
   await dialog.getByRole("button", { name: "消さずに戻る", exact: true }).click();
   await expect(row.getByRole("button", { name: "端末から消す", exact: true })).toBeFocused();
@@ -592,9 +592,9 @@ test("「端末から消す」 removes the kept journey and leaves the save, the
   expect(await readOfflineStore(page), "the store is gone whole").toBeNull();
   expect(await allStorage(page)).toEqual(game);
   await ops.closeDialog(dialog);
-  const settings = page.getByRole("dialog", { name: "ゲームの設定" });
-  await expect(settings.getByTestId("offline-summary")).toHaveText("旅行編をこの端末に入れておくと、通信がなくても遊べます。");
-  await ops.closeDialog(settings);
+  const saveLoad = page.getByRole("dialog", { name: "セーブ・ロード" });
+  await expect(saveLoad.getByTestId("offline-summary")).toHaveText("旅行編をこの端末に入れておくと、通信がなくても遊べます。");
+  await ops.closeDialog(saveLoad);
 
   // The journey plays on with the network; a new start of the page opens the site's page again, not a kept one.
   server.requests.length = 0;

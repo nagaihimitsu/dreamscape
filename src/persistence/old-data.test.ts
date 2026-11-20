@@ -98,14 +98,14 @@ describe("which old saved data can be removed", () => {
       id: "old_version:trip_b",
       lock: { name: "dreamscape:dreamscape.journey.trip_b.save.v1", ownerJa: "見本B編" },
       titleJa: "見本B編のセーブ（旧版）",
-      impactJa: "バージョン13の形式のため、今の版では再開できません。消去すると、見本B編は次に開いたとき新しい旅から始まります。英語ノートは消えません。",
+      impactJa: "バージョン13の形式のため、今の版では再開できません。消去すると、見本B編は次に開いたとき新しい旅から始まります。クイズと旅のことばの記録は消えません。",
       keys: [{ key: "dreamscape.journey.trip_b.save.v1", noteJa: "バージョン13の旧版のセーブ", chars: "dreamscape.journey.trip_b.save.v1".length + v13.length, backedUpAt: null }],
     }]);
     for (const version of [1, 12]) expect(list({ [save("trip_b")]: JSON.stringify({ schemaVersion: version }) })[0].keys[0].noteJa)
       .toBe(`バージョン${version}の旧版のセーブ`);
     // A preparing journey opens its preparation page, not a new journey: the impact says so.
     expect(list({ [save("trip_c")]: v13 })).toMatchObject([{ id: "old_version:trip_c", titleJa: "見本C編のセーブ（旧版）",
-      impactJa: "バージョン13の形式のため、今の版では再開できません。見本C編は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。英語ノートは消えません。" }]);
+      impactJa: "バージョン13の形式のため、今の版では再開できません。見本C編は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。クイズと旅のことばの記録は消えません。" }]);
     // The journey open in this tab: its slot is the title's and 「保存データの消去」's, not the cleanup's.
     expect(list({ ...kept, [save("milano")]: v13 })).toEqual([]);
     expect(list({ [save("trip_b")]: v13 }, { ...context, currentJourneyId: "trip_b" })).toEqual([]);
@@ -118,7 +118,7 @@ describe("which old saved data can be removed", () => {
       id: "old_version:trip_b:slot2",
       lock: { name: "dreamscape:dreamscape.journey.trip_b.save.v1", ownerJa: "見本B編" },
       titleJa: "見本B編のセーブ2（旧版）",
-      impactJa: "バージョン13の形式のため、今の版では再開できません。消去すると、見本B編のセーブ2は次に開いたとき新しい旅から始まります。英語ノートは消えません。",
+      impactJa: "バージョン13の形式のため、今の版では再開できません。消去すると、見本B編のセーブ2は次に開いたとき新しい旅から始まります。クイズと旅のことばの記録は消えません。",
       keys: [{ key: second, noteJa: "バージョン13の旧版のセーブ", chars: second.length + v13.length, backedUpAt: null }],
     }]);
     expect(list({ ...kept, [journeyStorage(memory(), "milano", 3).physicalKey(SAVE_KEY)]: v13 })).toEqual([]);
@@ -142,7 +142,7 @@ describe("which old saved data can be removed", () => {
       { key: "dreamscape.journey.milano.save.v1.backup.1762500000000.1", noteJa: "退避したデータ（バージョン13の旧版のセーブ）", backedUpAt: 1762500000000 },
     ]);
     expect(items[1].keys[0].noteJa).toBe("退避したデータ（新しい版（バージョン24）のセーブ）");
-    expect(items[0].impactJa).toBe("読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブと英語ノートは消えません。");
+    expect(items[0].impactJa).toBe("読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブとクイズと旅のことばの記録は消えません。");
     // Only backups that load in this version: nothing to list.
     expect(list({ ...kept, [backup("milano", "1")]: current })).toEqual([]);
   });
@@ -159,7 +159,7 @@ describe("which old saved data can be removed", () => {
       {
         id: "old_milano:save", lock: null,
         titleJa: "以前のミラノ編のセーブ",
-        impactJa: "旅行編ごとに保存先を分ける前の、ミラノ編のセーブです。今のゲームは読み込みません。今のミラノ編のセーブと英語ノートは消えません。",
+        impactJa: "旅行編ごとに保存先を分ける前の、ミラノ編のセーブです。今のゲームは読み込みません。今のミラノ編のセーブとクイズと旅のことばの記録は消えません。",
         keys: [
           { key: "dreamscape.save.v1", noteJa: "バージョン13の旧版のセーブ", chars: "dreamscape.save.v1".length + v13.length, backedUpAt: null },
           { key: "dreamscape.save.v1.backup.1700000000000", noteJa: "退避したデータ（読み込めないデータ）", chars: "dreamscape.save.v1.backup.1700000000000".length + damaged.length, backedUpAt: 1700000000000 },
@@ -167,9 +167,9 @@ describe("which old saved data can be removed", () => {
       },
       {
         id: "old_milano:learning", lock: null,
-        titleJa: "以前のミラノ編の英語ノート",
-        impactJa: "旅行編ごとに保存先を分ける前の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。今のミラノ編の英語ノートは消えません。",
-        keys: [{ key: "dreamscape.learning.v1", noteJa: "英語ノート", chars: "dreamscape.learning.v1".length + notebook.length, backedUpAt: null }],
+        titleJa: "以前のミラノ編のクイズと旅のことばの記録",
+        impactJa: "旅行編ごとに保存先を分ける前のクイズと旅のことばの記録です。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。今のミラノ編のクイズと旅のことばの記録は消えません。",
+        keys: [{ key: "dreamscape.learning.v1", noteJa: "クイズと旅のことばの記録", chars: "dreamscape.learning.v1".length + notebook.length, backedUpAt: null }],
       },
     ]);
   });
@@ -181,9 +181,9 @@ describe("which old saved data can be removed", () => {
     const items = list({ ...kept, ...removed });
     const zetaLock = { name: "dreamscape:dreamscape.journey.zeta.save.v1", ownerJa: "旅行編「zeta」" };
     expect(items.map(({ id, titleJa, lock }) => ({ id, titleJa, lock }))).toEqual([
-      { id: "removed:alpha:learning", titleJa: "この版にない旅行編「alpha」の英語ノート", lock: { name: "dreamscape:dreamscape.journey.alpha.save.v1", ownerJa: "旅行編「alpha」" } },
+      { id: "removed:alpha:learning", titleJa: "この版にない旅行編「alpha」のクイズと旅のことばの記録", lock: { name: "dreamscape:dreamscape.journey.alpha.save.v1", ownerJa: "旅行編「alpha」" } },
       { id: "removed:zeta:save", titleJa: "この版にない旅行編「zeta」のセーブ", lock: zetaLock },
-      { id: "removed:zeta:learning", titleJa: "この版にない旅行編「zeta」の英語ノート", lock: zetaLock },
+      { id: "removed:zeta:learning", titleJa: "この版にない旅行編「zeta」のクイズと旅のことばの記録", lock: zetaLock },
       { id: "removed:zeta:read_lines", titleJa: "この版にない旅行編「zeta」の既読の記録", lock: zetaLock },
       { id: "removed:zeta:local_words", titleJa: "この版にない旅行編「zeta」の覚えたその国の言葉", lock: zetaLock },
     ]);
@@ -193,7 +193,7 @@ describe("which old saved data can be removed", () => {
       ["dreamscape.journey.zeta.save.v1.backup.6", "退避したデータ（この版では読み込めないセーブ）"],
     ]);
     expect(items[1].impactJa).toBe("この版のゲームにない旅行編のため、読み込みません。その旅行編がある版で開くと使われることがあります。消去すると戻せません。");
-    expect(items[2].impactJa).toBe("この版のゲームにない旅行編の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。");
+    expect(items[2].impactJa).toBe("この版のゲームにない旅行編のクイズと旅のことばの記録です。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。");
     expect(items[3].keys).toEqual([{ key: "dreamscape.journey.zeta.read-lines.v1", noteJa: "既読の記録",
       chars: "dreamscape.journey.zeta.read-lines.v1".length + readRecord.length, backedUpAt: null }]);
     expect(items[4].keys).toEqual([{ key: "dreamscape.journey.zeta.local-words.v1", noteJa: "覚えたその国の言葉",

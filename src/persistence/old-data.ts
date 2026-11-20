@@ -179,7 +179,7 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
         titleJa: `${journey.nameJa}のセーブ${slotJa}（旧版）`,
         impactJa: `バージョン${content.version}の形式のため、今の版では再開できません。` + (journey.status === "available"
           ? `消去すると、${journey.nameJa}${saveSlot === 1 ? "" : `のセーブ${saveSlot}`}は次に開いたとき新しい旅から始まります。`
-          : `${journey.nameJa}は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。`) + "英語ノートは消えません。",
+          : `${journey.nameJa}は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。`) + "クイズと旅のことばの記録は消えません。",
         keys: [entry(saveKey, raw, contentNote(content))],
       });
     }
@@ -187,7 +187,7 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
     if (backups.length) items.push({
       id: `backup:${journey.id}`, lock,
       titleJa: `${journey.nameJa}のバックアップ（${backups.length}件）`,
-      impactJa: "読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブと英語ノートは消えません。",
+      impactJa: "読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブとクイズと旅のことばの記録は消えません。",
       keys: backups,
     });
   }
@@ -197,15 +197,15 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
   if (rootSaves.length) items.push({
     id: "old_milano:save", lock: null,
     titleJa: "以前のミラノ編のセーブ",
-    impactJa: "旅行編ごとに保存先を分ける前の、ミラノ編のセーブです。今のゲームは読み込みません。今のミラノ編のセーブと英語ノートは消えません。",
+    impactJa: "旅行編ごとに保存先を分ける前の、ミラノ編のセーブです。今のゲームは読み込みません。今のミラノ編のセーブとクイズと旅のことばの記録は消えません。",
     keys: rootSaves,
   });
   const rootNotes = entries.get(LEARNING_KEY);
   if (rootNotes !== undefined) items.push({
     id: "old_milano:learning", lock: null,
-    titleJa: "以前のミラノ編の英語ノート",
-    impactJa: "旅行編ごとに保存先を分ける前の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。今のミラノ編の英語ノートは消えません。",
-    keys: [entry(LEARNING_KEY, rootNotes, "英語ノート")],
+    titleJa: "以前のミラノ編のクイズと旅のことばの記録",
+    impactJa: "旅行編ごとに保存先を分ける前のクイズと旅のことばの記録です。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。今のミラノ編のクイズと旅のことばの記録は消えません。",
+    keys: [entry(LEARNING_KEY, rootNotes, "クイズと旅のことばの記録")],
   });
 
   for (const [journeyId, slot] of [...byJourney].filter(([id]) => !known.has(id)).sort(([a], [b]) => a.localeCompare(b))) {
@@ -220,9 +220,9 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
     });
     if (slot.learning !== undefined) items.push({
       id: `removed:${journeyId}:learning`, lock,
-      titleJa: `この版にない${name}の英語ノート`,
-      impactJa: "この版のゲームにない旅行編の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。",
-      keys: [entry(slot.learning, entries.get(slot.learning)!, "英語ノート")],
+      titleJa: `この版にない${name}のクイズと旅のことばの記録`,
+      impactJa: "この版のゲームにない旅行編のクイズと旅のことばの記録です。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。",
+      keys: [entry(slot.learning, entries.get(slot.learning)!, "クイズと旅のことばの記録")],
     });
     if (slot.readLines !== undefined) items.push({
       id: `removed:${journeyId}:read_lines`, lock,
