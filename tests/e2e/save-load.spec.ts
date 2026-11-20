@@ -635,6 +635,8 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await expect(other.getByRole("alert")).toContainText("別のタブで開いています");
   await ops.chooseJourney(other, "golden_triangle");
   await expect(other.getByRole("alert")).toContainText("保存データの形式はバージョン13です");
+  // Back to this tab (the other keeps the journey's lock): a tab in the background answers each read of its storage slowly.
+  await page.bringToFront();
   // Choosing it remembers the journey on this device (a preference, never listed for removal); the
   // other tab writes nothing else (the old save it reports stays as it was).
   await expect.poll(async () => (await allStorage(page))[LAST_JOURNEY_KEY]).toBe("golden_triangle");
@@ -643,14 +645,14 @@ test("old saved data is listed with its keys, removed only after confirmation an
   expect(JSON.parse(before[RECENT_JOURNEYS_KEY])[0]).toBe("golden_triangle");
   expect(before).toEqual({ ...seeded, [LAST_JOURNEY_KEY]: "golden_triangle", [RECENT_JOURNEYS_KEY]: before[RECENT_JOURNEYS_KEY] });
 
-  let cleanup = await ops.openOldDataCleanup(page);
+  const cleanup = await ops.openOldDataCleanup(page);
   for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();
   // The save in use, every journey's English notes, the settings, the remembered journey, the Debug-mode switch and other apps' keys are not listed.
   for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, LAST_JOURNEY_KEY, RECENT_JOURNEYS_KEY, DEBUG_MODE_KEY, "another-app.on-this-origin"])
     await expect(cleanup.getByText(key, { exact: true })).toHaveCount(0);
 
   // 「消去せず戻る」 changes nothing.
-  let confirm = await ops.chooseOldData(page, cleanup, [new RegExp(`${indiaName}のセーブ（旧版）`), /ミラノ編のバックアップ/]);
+  const confirm = await ops.chooseOldData(page, cleanup, [new RegExp(`${indiaName}のセーブ（旧版）`), /ミラノ編のバックアップ/]);
   await expect(confirm.getByText(saveKey("golden_triangle"), { exact: true })).toBeVisible();
   await confirm.getByRole("button", { name: "消去せず戻る" }).click();
   expect(await allStorage(page)).toEqual(before);
@@ -670,19 +672,29 @@ test("old saved data is listed with its keys, removed only after confirmation an
   const { [saveKey("golden_triangle")]: _removedSave, [`${saveKey()}.backup.1762500000000`]: _removedBackup, ...kept } = before;
   expect(after).toEqual(kept);
   await ops.closeDialog(cleanup);
-  // The reload opens the journey last chosen on this device (the other tab's Indian journey): choose Milan again.
+  // The reload opens the journey last chosen on this device (the other tab's Indian journey).
   await page.reload();
   await expect(page.getByLabel("旅行編")).toHaveValue("golden_triangle");
-  await ops.chooseJourney(page, "milano");
-  await expect(page.getByTestId("travel-menu")).toBeVisible();
-  cleanup = await ops.openOldDataCleanup(page);
-  await expect(cleanup.getByText(saveKey("golden_triangle"), { exact: true })).toHaveCount(0);
+});
+
+// The same cleanup for the data of the time before journeys had their own slots (no lock: no version that wrote these
+// keys took one): Milan's old save and its learning record are listed with their keys and go together, and then the
+// list says there is nothing left. Apart from the test above, so that neither nears the test's time limit.
+test("Milan's data from before the journeys' own slots is listed and removed, and the list is then empty", { tag: tier.gate }, async ({ page }) => {
+  await ops.startJourney(page);
+  await page.evaluate(() => {
+    localStorage.setItem("dreamscape.save.v1", JSON.stringify({ schemaVersion: 9, revision: 30 }));
+    localStorage.setItem("dreamscape.learning.v1", JSON.stringify({ schemaVersion: 1, records: {} }));
+  });
+  const before = await allStorage(page);
+  const cleanup = await ops.openOldDataCleanup(page);
+  await expect(cleanup.getByText("dreamscape.save.v1", { exact: true })).toBeVisible();
   await expect(cleanup.getByText("dreamscape.learning.v1", { exact: true })).toBeVisible();
-  confirm = await ops.chooseOldData(page, cleanup, [/以前のミラノ編のセーブ/, /以前のミラノ編のクイズと旅のことばの記録/]);
+  const confirm = await ops.chooseOldData(page, cleanup, [/以前のミラノ編のセーブ/, /以前のミラノ編のクイズと旅のことばの記録/]);
   await confirm.getByRole("button", { name: "消去する", exact: true }).click();
   await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
-  const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = kept;
-  expect(await allStorage(page)).toEqual({ ...left, [LAST_JOURNEY_KEY]: "milano", [RECENT_JOURNEYS_KEY]: JSON.stringify(["milano", "golden_triangle"]) });
+  const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = before;
+  expect(await allStorage(page)).toEqual(left);
 });
 
 // The cleanup opened from a journey other than the default one (here the Indian journey) treats that

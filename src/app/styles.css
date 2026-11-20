@@ -822,11 +822,13 @@ dialog.modal .settings-data-links > .text-button {
   padding: 0 4px;
   font-size: 13px;
 }
-/* 「オフライン」's line in セーブ・ロード: what this device keeps of the journeys (how far a run is beside it, in digits of one width). */
+/* 「オフライン」's line in セーブ・ロード: what this device keeps of the journeys (how far a run is beside it, in digits of one
+   width), a note of the size and colour of the notes around it, so the rows that can be pressed stand out. */
 dialog.modal .offline-summary {
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.7;
+  color: var(--ds-ink-muted);
 }
 .offline-summary-live {
   margin-left: 0.6em;

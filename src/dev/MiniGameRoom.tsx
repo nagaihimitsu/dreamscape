@@ -252,7 +252,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
       <p className="minigame-room-note">
         Debug専用の確認の部屋です。登録されているミニゲームを、物語やセーブなしに、札の引数の例で遊べます（自分で・おまかせの各結果で・動きを減らして・押す遅れを足して）。
         結果のカードの「もう一回」ですぐやり直せ、調整の値は次の1回から変えて試せます。
-        セーブ・英語ノート・ゲームの設定・ゲームの進行は何も変えません。書き方は authoring/CONTENT_GUIDE.md の「ミニゲーム」にあります。
+        セーブ・クイズと旅のことばの記録・ゲームの設定・ゲームの進行は何も変えません。書き方は authoring/CONTENT_GUIDE.md の「ミニゲーム」にあります。
       </p>
       {usesProblem && <p className="minigame-room-off" role="alert">使っている場面の一覧（minigame-uses.json）を読めませんでした。npm run content:build で作り直してください。</p>}
       {MINI_GAME_IDS.map((id) => {

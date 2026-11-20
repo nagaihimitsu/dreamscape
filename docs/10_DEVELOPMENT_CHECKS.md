@@ -133,7 +133,7 @@
 | WebKitでの `@smoke` | `npm run test:e2e:webkit`（WebKitを入れた環境だけ。`npx playwright install webkit` が必要） |
 | 1ファイル・1件 | `npx playwright test tests/e2e/play.spec.ts`、`npx playwright test -g "読めないセーブ"` |
 | 新規・変更したテスト | `npx playwright test <ファイル> --repeat-each=3` |
-| 別の版のChromiumで実行 | `DREAMSCAPE_CHROMIUM=<Chromiumの実行ファイルの絶対パス> npx playwright test`（入れてあるブラウザが別のPlaywrightの版のものの手元用。設定すると、Chromiumを使う設定（`playwright.config.ts` とそれを使う本番ビルド・見本の編・探索の設定、`playwright.screens.config.ts`）がそのファイルで起動する。WebKitの設定は使わない。CIでは設定せず、Playwrightが入れたブラウザを使う） |
+| 別の版のChromiumで実行 | `DREAMSCAPE_CHROMIUM=<Chromiumの実行ファイルの絶対パス> npx playwright test`（入れてあるブラウザが別のPlaywrightの版のものの手元用。クラウドの作業環境（Claude Code on the web）では、入っているブラウザの版が合わず、付けないとE2Eが1件も起動しないので、`DREAMSCAPE_CHROMIUM=/opt/pw-browsers/chromium` を付ける。設定すると、Chromiumを使う設定（`playwright.config.ts` とそれを使う本番ビルド・見本の編・探索の設定、`playwright.screens.config.ts`）がそのファイルで起動する。WebKitの設定は使わない。CIでは設定せず、Playwrightが入れたブラウザを使う） |
 
 見本の編の段は、見本を含めて生成した開発サーバーを専用のポート（4175番）で毎回起動し、起動済みのサーバーは使い回さない（見本のないサーバーで動いて失敗することがない）。`npm run dev` とほかの段のサーバーは見本を含めない。ただし生成物（`src/content/generated/`）は1つなので、この段の実行中は、起動している `npm run dev` にも見本が出る。段が終わると `tests/e2e/sample-teardown.ts` が見本なしで生成し直す（約4秒）。
 

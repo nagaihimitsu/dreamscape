@@ -1,4 +1,4 @@
-import type { StorageLike } from "../persistence";
+import type { StorageLike } from "../persistence/index.ts";
 // With its extension: vite.config.ts loads this module through scripts/journey-parts-build.ts (Vite's native config loader asks for it).
 import { parseJourneyList } from "../offline/kept-journeys.ts";
 

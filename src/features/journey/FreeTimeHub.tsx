@@ -1,15 +1,14 @@
-import { useCallback, useMemo, type KeyboardEvent } from "react";
+import { useCallback, type KeyboardEvent } from "react";
 import { getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { Icon } from "../../components/icons";
 import { CityProgress } from "./CityProgress";
 import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
-import { FreeTimeCredits, FreeTimeExtras } from "./FreeTimeExtras";
+import { FreeTimeExtras } from "./FreeTimeExtras";
 import { mapSticks, SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { PhotoCardFreeTime } from "./PhotoCardFreeTime";
 import type { SeenCards } from "./photo-cards";
-import { freeTimePhotos } from "./PhotoCredits";
 import { TravelActions } from "./TravelActions";
 import { TravelMenu } from "./TravelMenu";
 import { useTravelSelection } from "./useTravelSelection";
@@ -45,7 +44,7 @@ export function FreeTimeHub(props: FreeTimeHubProps) {
 /**
  * The previous free-time screen (UI redesign §3.4): the city's picture behind the screen, the visible
  * heading drawn as the map's banner, the destinations (map and list), the city's
- * remaining actions, 「写真の出典」 and the bottom band with 待機 and 休む.
+ * remaining actions and the bottom band with 待機 and 休む (its photos' credits are ≡メニュー's 「画面の出典」, 2026-11-20).
  */
 export function MapListFreeTime({
   game,
@@ -61,7 +60,6 @@ export function MapListFreeTime({
   onDepart,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
-  const photos = useMemo(() => freeTimePhotos(game), [game]);
   const layout = useFreeTimeLayout();
   // One selection for the list, both maps and the band's 休む (§3.5).
   const selection = useTravelSelection(game, { onTravelEvent, onTravelSleep });
@@ -95,7 +93,6 @@ export function MapListFreeTime({
       <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} onBookTour={onBookTour} onCancelTour={onCancelTour} />
 
       <FreeTimeExtras game={game} onClaimRewards={onClaimRewards} nextCityName={nextCityName} onDepart={onDepart} />
-      <FreeTimeCredits photos={photos} />
       {/* Hidden: its height is the visible height with the browser's bars shown (100svh). */}
       <div className="free-time-svh-probe" aria-hidden="true" />
       <TravelActions game={game} api={selection} onTravelWait={onTravelWait} />

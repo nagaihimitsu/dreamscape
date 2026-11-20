@@ -141,23 +141,7 @@
 /* The page ends above the previous screen's bottom band (its measured height, --bottom-h); B案 has no band. */
 .app-shell.free-time-active { padding-bottom: var(--bottom-h, 0px); }
 
-/* 「写真の出典」 (§3.4 item 6): a pressable rectangle on its own parchment. */
-.free-time-credits-open {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  margin: 0;
-  padding: 4px 14px;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
-  font-size: 13px;
-  font-weight: 600;
-}
-.free-time-credits-open .icon { width: 18px; height: 18px; }
+/* 「画面の出典」's list of free time's photos (PhotoCredits.tsx's ScreenCredits). */
 dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16px; width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
 .photo-credits-modal .modal-title-bar { margin-bottom: 8px; }
 .photo-credits-list { display: grid; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
