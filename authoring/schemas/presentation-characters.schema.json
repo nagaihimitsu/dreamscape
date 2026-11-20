@@ -230,6 +230,27 @@
                       "avatarFace": {
                         "type": "string",
                         "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\/$"
+                      },
+                      "face": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "size": {
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y",
+                          "size"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [

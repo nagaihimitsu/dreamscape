@@ -20,6 +20,8 @@ import { waitForTravel } from "../domain/travel-game";
 import { getDayEnd } from "../domain/day-end";
 import { rentTransport } from "../domain/transport";
 import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
+import { buyOutfit, wearOutfit, wornCostume } from "../domain/outfits";
+import { WornCostumeContext } from "../components/worn-costume";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture, isJourneyComplete } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
@@ -939,8 +941,15 @@ export function GameApp({
     : game.activeBattle && currentBattle
       ? (landmarkPhoto(currentBattle.landmarkId) && !momentQuiz ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
     : active?.frame.background;
+  /** 「服」's or the shop's change of clothes (outfits.ts wearOutfit): in free time only, with a short sound once she has changed. */
+  function wear(outfitId: string | null): boolean {
+    const changed = commit((state) => wearOutfit(state, outfitId, state.revision));
+    if (changed) playSe("ui_confirm");
+    return changed;
+  }
   const scenePlaceJa = momentQuiz && currentBattle ? landmarks.find((landmark) => landmark.id === currentBattle.landmarkId)?.nameJa : undefined;
   return (
+    <WornCostumeContext.Provider value={game ? wornCostume(game) : undefined}>
     <div
       className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
     >
@@ -989,6 +998,7 @@ export function GameApp({
           shot.refresh();
           setSettings(true);
         }}
+        onWearOutfit={wear}
         onReturnToFreeTime={debugMarks && canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
       />}
       {game && (
@@ -1341,6 +1351,8 @@ export function GameApp({
             onCancelTour={() => commit((state) => cancelTourBooking(state, game.revision))}
             onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
             onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
+            onBuyOutfit={(outfitId) => commit((state) => buyOutfit(state, outfitId, game.revision))}
+            onWearOutfit={(outfitId) => wear(outfitId)}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}
@@ -1559,5 +1571,6 @@ export function GameApp({
       {travelEffects}
       {moments.overlays}
     </div>
+    </WornCostumeContext.Provider>
   );
 }

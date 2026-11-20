@@ -77,6 +77,8 @@ import { validateTourism } from "./tourism-validation";
 import { isTourOnlyPlace, travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
 import { tourSchema } from "../src/content/tour-schemas";
+import { shopCatalogSchema } from "../src/content/shop";
+import { withFaceFrames } from "./face-frames";
 import { parseTourFiles, validateTours } from "./tour-validation";
 import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
@@ -517,6 +519,32 @@ export function validateContent(sources: ContentSources,
     battleIds: new Set(battles.map((battle) => battle.id)),
     sceneIds: wardrobeSceneIds,
   });
+  // The poses' face frames for the small round face, from the moving pictures' eyes (2026-11-20; face-frames.ts).
+  const facedCharacters = withFaceFrames(sources.catalogs["presentation/characters.json"]?.value, publicFiles);
+  // Free time's shops and the outfits they sell (optional; 2026-11-20): each outfit shows a heroine costume that has its
+  // pictures, each shop is in a city (one shop per city) and sells outfits of the catalog.
+  const shopCatalog = parseCatalog(shopCatalogSchema, "shop/catalog.json");
+  unique(shopCatalog.outfits.map((outfit) => outfit.id), "outfit ID", entryFiles("shop/catalog.json", "outfits"));
+  unique(shopCatalog.shops.map((shop) => shop.id), "shop ID", entryFiles("shop/catalog.json", "shops"));
+  unique(shopCatalog.shops.map((shop) => shop.cityId), "shop city (one shop per city)", entryFiles("shop/catalog.json", "shops"));
+  const heroine = characters.characters.find((character) => character.id === "heroine");
+  const heroineCostumes = heroine?.costumes ?? [];
+  for (const outfit of shopCatalog.outfits) {
+    const costume = heroineCostumes.find((item) => item.id === outfit.costume);
+    if (!costume?.poses.some((pose) => pose.expressions.neutral))
+      throw new Error(`服の衣装がありません：shop/catalog.json の outfits "${outfit.id}" の costume "${outfit.costume}" は、` +
+        `presentation/characters.json のヒロインの衣装（neutral の絵があるもの）にありません（Unknown outfit costume: ${outfit.id}/${outfit.costume}）`);
+    if (outfit.costume === heroine?.defaultCostume)
+      throw new Error(`普段の服は売りません：shop/catalog.json の outfits "${outfit.id}" の costume "${outfit.costume}" は、ヒロインの基本の衣装です` +
+        `（An outfit may not sell the basic costume: ${outfit.id}）`);
+  }
+  for (const shop of shopCatalog.shops) {
+    if (!cities.some((item) => item.id === shop.cityId)) throw new Error(`Unknown shop city: ${shop.id}/${shop.cityId}`);
+    unique(shop.outfitIds, `outfit of shop ${shop.id}`);
+    for (const outfitId of shop.outfitIds)
+      if (!shopCatalog.outfits.some((outfit) => outfit.id === outfitId))
+        throw new Error(`お店の服がありません：shop/catalog.json の shops "${shop.id}" の outfitIds "${outfitId}" が outfits にありません（Unknown shop outfit: ${shop.id}/${outfitId}）`);
+  }
   const progression = parseCatalog(progressionSchema, "romance/progression.json");
   unique(dates.map((date) => date.id), "dateId", entryFiles("romance/date_catalog.json", "dates"));
   unique(effects.map((effect) => effect.id), "effectId", entryFiles("romance/effect_catalog.json", "effects"));
@@ -1847,6 +1875,8 @@ export function validateContent(sources: ContentSources,
         "encounters/entry-rules.json": { schemaVersion: 2, entries: runtimeEntryRules },
       } : {}),
       ...knotWhenOverrides,
+      // Checked again with the frames (each inside its canvas), as the game reads it.
+      ...(facedCharacters ? { "presentation/characters.json": (characterCatalogSchema.parse(facedCharacters), facedCharacters) } : {}),
     } as Partial<Record<CatalogKind, unknown>>,
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,

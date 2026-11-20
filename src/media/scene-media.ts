@@ -12,6 +12,8 @@ export type SceneLook = {
   /** The heroine's outfit is chosen by the scene and its city (CharacterPortrait's sceneId and cityId). */
   sceneId?: string;
   cityId?: string;
+  /** The costume the player chose for the heroine (the header's 「服」; src/domain/outfits.ts wornCostume), none: 普段の服. */
+  worn?: string;
   /** The figure who stands for `# speaker: enemy` (the scene's `# person:` with a figure, a battle's opponent). */
   enemyFigure?: string;
   /**

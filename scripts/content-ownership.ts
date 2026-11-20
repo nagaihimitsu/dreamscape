@@ -16,7 +16,7 @@ import { normalizeWord, wordPattern } from "../src/content/word-meanings";
 
 type Namespace =
   | "city" | "landmark" | "asset" | "clue" | "battle" | "episode" | "reward" | "date" | "destination" | "effect"
-  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord" | "place" | "term";
+  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord" | "place" | "term" | "outfit";
 /** A reference: what it points to, through which field, and the referenced ID(s). */
 type Reference = { namespace: Namespace | readonly Namespace[]; field: string; ids: unknown };
 type Definition = { layer: string; file: string; cityId?: string };
@@ -76,6 +76,8 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   // A 旅の図鑑 term's picture is a tourism photo of its own journey.
   "glossary/terms.json": { terms: (entry) => fields(entry, "asset", ["imageId"]) },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
+  // A shop sells its own journey's outfits in one of its cities.
+  "shop/catalog.json": { shops: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "outfit", ["outfitIds"])] },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],
     "wardrobe.cities": (_, key) => [ref("city", "city ID", key)],
@@ -130,6 +132,7 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
   ["encounters/catalog.json", "items", "item"],
   ["learning/local-words.json", "words", "localWord"],
   ["glossary/terms.json", "terms", "term"],
+  ["shop/catalog.json", "outfits", "outfit"],
 ];
 
 /** `# background: id`, `# effect: id`, `# local_word: id` and `# term: id` tags of an Ink source, and a `# minigame:`'s `bg` and `art.<slot>`. */

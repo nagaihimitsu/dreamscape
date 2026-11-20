@@ -11,6 +11,7 @@ import { getActiveEncounterDefinition } from "../domain/encounter";
 import { activeEpilogueStoryId, epilogueScene } from "../domain/epilogue";
 import { createGame, type GameState } from "../domain/game";
 import { openOccasion } from "../domain/occasion";
+import { wornCostume } from "../domain/outfits";
 import { sceneConditionReader } from "../domain/scene-conditions";
 import { scenePerson, speakingPerson } from "../domain/scene-person";
 import { activeGuideStoryId } from "../domain/tourism";
@@ -35,7 +36,7 @@ export const contentMediaCatalog: MediaCatalog = {
     if (!backdrop) return undefined;
     return backdrop.imageAssetId ? tourismAssets.find((asset) => asset.id === backdrop.imageAssetId)?.path : backdrop.imagePath ?? undefined;
   },
-  figure: (characterId, emotion, look) => characterPicture(characterId, emotion, { sceneId: look.sceneId, cityId: look.cityId }) ?? undefined,
+  figure: (characterId, emotion, look) => characterPicture(characterId, emotion, { sceneId: look.sceneId, cityId: look.cityId, worn: look.worn }) ?? undefined,
   personFigure: (frame) => speakingPerson(storyState.people, frame),
   albumImage: (imageId) => getAlbumImage(imageId)?.path,
   termPhoto(termId) {
@@ -61,6 +62,12 @@ function landmarkPhoto(landmarkId: string | null | undefined): Pick<SceneLook, "
  * a date), or null: none, or one whose story cannot be read (changed content keeps its own screen's message).
  */
 export function sceneStoryOnScreen(state: GameState): SceneStory | null {
+  const scene = sceneStoryOf(state);
+  // The heroine in the outfit the player chose for her (the header's 「服」; outfits.ts), as CharacterPortrait shows her.
+  const worn = wornCostume(state);
+  return scene && worn ? { ...scene, look: { ...scene.look, worn } } : scene;
+}
+function sceneStoryOf(state: GameState): SceneStory | null {
   try {
     const encounter = state.activeEncounter;
     if (encounter) {
@@ -138,7 +145,7 @@ export function freeTimeRequests(cityId: string, priority: PreloadPriority): Pre
 export function gameRequests(state: GameState): PreloadRequest[] {
   const scene = sceneRequests(state);
   if (scene.length) return [...scene, ...freeTimeRequests(state.currentCityId, "idle")];
-  const heroine = characterPicture("heroine", "neutral", { cityId: state.currentCityId });
+  const heroine = characterPicture("heroine", "neutral", { cityId: state.currentCityId, worn: wornCostume(state) });
   return [...freeTimeRequests(state.currentCityId, "soon"), ...(heroine ? [{ kind: "image" as const, key: heroine, priority: "idle" as const }] : [])];
 }
 
