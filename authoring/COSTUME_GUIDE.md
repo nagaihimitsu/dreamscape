@@ -107,6 +107,8 @@ uv run --with pillow --with numpy --with opencv-python-headless python \
 - `cities` のキー：都市ID。`country` に国のコード（インド編は `IN`）を書きます。
 - 国ごと・地域ごとの標準は、共通の `content/presentation/characters.json` の `countries`・`regions` に書きます。
 - 衣装の絵が届いていない（`neutral` がない）衣装を書くと、基本の衣装が出ます。
+- 遊ぶ人が選んで着る服にするときは、`wardrobe` の代わりに（または一緒に）旅行編の `shop/catalog.json` で街歩きのお店に並べます（[コンテンツ制作ガイドの「お店と服」](CONTENT_GUIDE.md#お店と服)）。遊ぶ人が選んだ服は、`scenes` より下、都市・国・地域より上です。
+- 吹き出しの横の小さな丸い顔（耳打ち・街歩きやあらすじの一言）のための絵は要りません。着ている衣装の絵から、動く立ち絵の目の位置に合わせて自動で切り抜きます（[動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)）。
 
 ## 8. ゲームに入れる
 
