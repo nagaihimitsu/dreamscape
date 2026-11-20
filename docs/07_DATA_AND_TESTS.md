@@ -15,7 +15,7 @@
 - 開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、[技術設計](02_TECH_ARCHITECTURE.md#見本の編)）は `content/journeys/` に含めない。生成物に加えるのは `npm run content:build -- --with-sample`（単体テストと `npm run verify` の最初の生成、`npm run dev:sample`、E2Eの見本の編の段）だけで、本番ビルドには入れない。テストの一時コピー（`prepareContentFixture`）にも含めず、見本を使うテストが自分で複製する。
 
 ## 観察だけの手がかり
-- 観光の手がかり（`tourism/catalog.json` の `clues`）の `relatedQuestionIds` には、同じ観光地のクイズの問題のうち、問題文・正解・解説がその手がかりの示す事実を必要とするものだけを書く。同じ場所や同じ時代の話題というだけでは書かない。
+- 観光の手がかり（`tourism/catalog.json` の `clues`）の `relatedQuestionIds` には、同じ観光地のクイズの問題（都市フィナーレの問題は、その都市の観光地の手がかりから）のうち、問題文・正解・解説がその手がかりの示す事実を必要とするものだけを書く。同じ場所や同じ時代の話題というだけでは書かない。
 - `relatedQuestionIds: []` の手がかりを「観察だけの手がかり」と呼び、正式に認める。どの問題の根拠にもならないが、その場所の見え方を変える観察・資料として手がかり帳に残す。ゲームの表示と判定はこの項目を使わず（特殊戦B・Cの保存指紋への影響は下記）、手がかり帳は問題と結び付いた手がかりと同じように表示する（手がかりを見つけていなくても、覚えていなくても問題に答えられる。手がかり帳はバトル中も開け、特殊戦B・Cの証拠は事件の手がかりとしていつでも選べる。[観光・対決](04_BATTLE_TOURISM.md#バトル)）。観察資料（`observation-cards.json`）の観察ポイントは問題より先に書くので `[]` のままとし、そこから `journey:release --apply` で登録した手がかり（定義は `journey:scaffold` が表示する断片と同じ）は観察だけの手がかりとして始まる。問題IDは、都市の公開後に旅行編の `tourism/catalog.json` の側に書く。
 - 会話で渡す手がかり（場面の `# clue:`・`# on_done: clue`）と、観察のない観光地の手がかり（推理クイズのケース資料など）は、問題IDが空でも観察だけの手がかりに数えない（2026-11-18）。
 - `content:build` は、書いた問題IDが手がかりと同じ観光地のクイズの問題であることを確かめる（例のクイズ `*.example.json` と、観光地を持たない都市フィナーレのクイズの問題は書けない）。旅行編ごとの行には観察だけの手がかりの数を出し、その後に会話で渡す手がかりの数を出す（どちらも0件なら省略。例：`clues 38, observation-only clues 19`、見本の編は `clues 11, observation-only clues 4, conversation clues 1`。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。

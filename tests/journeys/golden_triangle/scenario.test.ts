@@ -3,7 +3,7 @@ import { dates, episodes } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
-import { advanceBattle, answerBattle, getActiveBattleContent } from "../../../src/domain/battle";
+import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, submitBattleEvidence } from "../../../src/domain/battle";
 import { getBattleResultExits, leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { advanceCompletedJourneyCity, getNextCity } from "../../../src/domain/city-travel";
 import { isDateUnlockedForTravel } from "../../../src/domain/date-rules";
@@ -261,6 +261,11 @@ it("finishes the three-city story without any date or optional memory, in altern
           expect(answerBattle(state, option, beforeAnswer.revision)).toBe(state);
           state = roundtrip(state);
           if (correct) score++;
+        } else if (active.phase === "reasoning") {
+          // The Agra finale's evidence connection (C, 2026-11-20): pick the two correct clues, then show them.
+          const rule = getActiveBattleContent(active).battle.reasoning!;
+          const missing = rule.correctClueIds.find((clueId) => !active.reasoning!.selectedClueIds.includes(clueId));
+          state = roundtrip(missing !== undefined ? selectReasoningClue(state, missing, state.revision) : submitBattleEvidence(state, state.revision));
         } else if (openMiniGame(state)) {
           // A # minigame: in the conversation (docs/13; the Jaipur finale's dance): its 「おまかせ」 outcome takes its choice.
           const revision = state.revision;

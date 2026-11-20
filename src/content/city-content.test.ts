@@ -105,11 +105,11 @@ describe("Milan city content", () => {
     ).toThrow("A normal quiz needs three questions; a city finale needs five");
     expect(() =>
       battleSchema.parse({ ...boss, landmarkId: "last_supper" }),
-    ).toThrow("Only a city finale has no landmark; it names its city and has no reasoning");
+    ).toThrow("Only a city finale has no landmark; it names its city");
     const ordinary = result.battles.find((battle) => battle.landmarkId !== null)!;
     expect(() =>
       battleSchema.parse({ ...ordinary, landmarkId: null }),
-    ).toThrow("Only a city finale has no landmark; it names its city and has no reasoning");
+    ).toThrow("Only a city finale has no landmark; it names its city");
   });
 
   it("rejects a finale quiz from another city", async () => {

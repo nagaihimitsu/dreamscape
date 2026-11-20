@@ -139,126 +139,146 @@
     },
     {
       "id": "gt_agra_finale_moonlight_garden",
-      "questionEn": "He also says a 'Black Taj' was planned across the river at Mehtab Bagh. What did researchers find there?",
+      "questionEn": "Put the two records together. What can you say about the 'Black Taj' across the river?",
       "options": [
         {
           "id": "A",
-          "textEn": "A garden with a large pool for viewing the Taj and its reflection, not a black tomb."
+          "textEn": "Black marble from the Taj's garden paths was saved for a second tomb."
         },
         {
           "id": "B",
-          "textEn": "The base of a black marble tomb that was never finished."
+          "textEn": "The oldest record never calls it black, and the site was a garden for viewing the Taj."
         },
         {
           "id": "C",
-          "textEn": "A secret tunnel under the river joining the two banks."
+          "textEn": "Twenty thousand workers built a black tomb, but the river washed it away."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "planned",
-          "meaning": "計画された"
+          "word": "record",
+          "meaning": "記録"
         },
         {
-          "word": "researchers",
-          "meaning": "研究者"
+          "word": "site",
+          "meaning": "（建物などの）場所、跡地"
         },
         {
-          "word": "reflection",
-          "meaning": "（水面に）映った姿"
+          "word": "viewing",
+          "meaning": "眺めること"
         },
         {
-          "word": "tunnel",
-          "meaning": "トンネル、地下道"
+          "word": "washed away",
+          "meaning": "押し流した"
         }
       ],
-      "hintJa": "対岸の庭は、タージの真正面にある。何かを建てるためではなく、何かを見るための場所だったとしたら？",
-      "correctExplanationJa": "インド考古調査局と米国スミソニアンの研究で、メヘターブ・バーグはタージとその水に映る姿を眺めるための庭だったと考えられるようになりました。黒い墓のための土台だという説は否定されています。",
-      "incorrectExplanationJa": "見つかったのは黒い墓の土台ではなく、八角形の池を持つ庭でした。タージとその映り姿を眺める庭だったと考えられ、黒いタージの伝説は退けられました。",
+      "hintJa": "いちばん古い記録に何が書いてあって、何が書いていないか。そして、この岸の土から何が出てきたか。",
+      "correctExplanationJa": "黒い墓の話の出どころとされるタヴェルニエの記録は、川の向こうに自分の墓を建て始めたと書くだけで、「黒い」とは書いていません。そして対岸を調べて出てきたのは、タージを眺めるための池のある庭でした。二つを重ねると、「黒いタージ」は記録にも土の中にも見当たらない、と言えます。",
+      "incorrectExplanationJa": "庭の黒い大理石を二つ目の墓に回したという記録も、川が墓を流したという調査結果もありません。タヴェルニエの記録は「黒い」と書かず、対岸から出てきたのはタージを眺めるための池のある庭でした。",
       "sources": [
         {
+          "publisher": "Internet Archive（ジャン＝バティスト・タヴェルニエ『インド旅行記』V・ボール英訳、1889年、第1巻）",
+          "title": "Travels in India, Vol. 1 (Book I, Chapter VII)",
+          "url": "https://archive.org/details/travelsinindia00unkngoog",
+          "checkedAt": "2026-11-20",
+          "claimType": "documented_fact",
+          "claimJa": "タヴェルニエの旅行記は、シャー・ジャハーンが川の向こう岸に自分の墓を建て始めたが息子たちとの戦いで中断したと書き、墓が黒いとは書かない。"
+        },
+        {
           "publisher": "Smithsonian Freer and Sackler Galleries",
-          "title": "The Moonlight Garden: New Discoveries at the Taj Mahal (press release)",
+          "title": "The Moonlight Garden Reveals New Discoveries at the Taj Mahal",
           "url": "https://archive.asia.si.edu/press/past/prmoonlightgarden.htm",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-20",
           "claimType": "interpretation",
-          "claimJa": "インド考古調査局と共同の七年間の調査は、庭がタージとその八角形の池に映る姿を眺めるために設計された可能性を示し、シャー・ジャハーンの黒大理石の墓のための場所という俗説を退けた。"
+          "claimJa": "インド考古調査局と共同の七年間の調査は、庭がタージとその八角形の池に映る姿を眺めるために設計された可能性が高いとし、黒大理石の墓のための場所という俗説を退けた。"
         }
       ],
       "difficulty": "medium",
       "levels": {
         "A2": {
-          "questionEn": "He also says there was a plan for a 'Black Taj' across the river, at Mehtab Bagh. What did researchers find there?",
+          "questionEn": "Look at the two records together. What can you say about the 'Black Taj' across the river?",
           "options": [
             {
               "id": "A",
-              "textEn": "A garden with a big pool. From there, you could see the Taj in the water. There was no black tomb."
+              "textEn": "They kept black stones from the Taj garden for a second tomb."
             },
             {
               "id": "B",
-              "textEn": "The bottom of a black marble tomb. Nobody finished it."
+              "textEn": "The oldest record does not call it black, and the place was a garden to look at the Taj."
             },
             {
               "id": "C",
-              "textEn": "A secret way under the river between the two sides."
+              "textEn": "Twenty thousand workers built a black tomb, and then the river took it away."
             }
           ],
           "vocabularyJa": [
             {
-              "word": "plan",
-              "meaning": "計画"
+              "word": "record",
+              "meaning": "記録"
             },
             {
-              "word": "researchers",
-              "meaning": "研究者"
+              "word": "oldest",
+              "meaning": "いちばん古い"
             },
             {
-              "word": "marble",
-              "meaning": "大理石"
+              "word": "stones",
+              "meaning": "石"
             },
             {
-              "word": "secret",
-              "meaning": "秘密の"
+              "word": "took it away",
+              "meaning": "それを持ち去った"
             }
           ]
         },
         "B2": {
-          "questionEn": "He goes on to claim that a 'Black Taj' was planned on the opposite bank, at Mehtab Bagh. What did researchers actually uncover there?",
+          "questionEn": "Taking both records together, what conclusion can be drawn about the so-called 'Black Taj' across the river?",
           "options": [
             {
               "id": "A",
-              "textEn": "A garden with a vast pool designed for viewing the Taj and its reflection, rather than a black tomb."
+              "textEn": "Black marble from the Taj's garden walkways was being set aside for a second mausoleum."
             },
             {
               "id": "B",
-              "textEn": "The foundations of a black marble tomb that was abandoned before completion."
+              "textEn": "The earliest account never describes it as black, and the site proved to be a garden for viewing the Taj."
             },
             {
               "id": "C",
-              "textEn": "A hidden tunnel beneath the river connecting the two banks."
+              "textEn": "Twenty thousand labourers completed a black tomb, which the river subsequently swept away."
             }
           ],
           "vocabularyJa": [
             {
-              "word": "opposite bank",
-              "meaning": "対岸"
+              "word": "so-called",
+              "meaning": "いわゆる"
             },
             {
-              "word": "uncover",
-              "meaning": "掘り出す、明らかにする"
+              "word": "conclusion",
+              "meaning": "結論"
             },
             {
-              "word": "reflection",
-              "meaning": "（水面に）映った姿"
+              "word": "earliest account",
+              "meaning": "最も古い記述"
             },
             {
-              "word": "foundations",
-              "meaning": "基礎"
+              "word": "set aside",
+              "meaning": "取っておく"
             },
             {
-              "word": "abandoned",
-              "meaning": "放棄された"
+              "word": "mausoleum",
+              "meaning": "霊廟"
+            },
+            {
+              "word": "proved to be",
+              "meaning": "〜だと分かった"
+            },
+            {
+              "word": "subsequently",
+              "meaning": "その後"
+            },
+            {
+              "word": "swept away",
+              "meaning": "押し流した"
             }
           ]
         }

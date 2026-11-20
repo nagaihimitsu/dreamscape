@@ -64,10 +64,12 @@ describe("Golden Triangle authored branching contracts", () => {
   it("covers the complete published cast and independent date set", () => {
     expect(indiaDates).toHaveLength(25);
     // 15 on the map and the departure moment quiz at New Delhi station (gt_delhi_special_station_battle, 2026-11-18),
-    // the one India battle with reasoning (a B quiz at # at: depart delhi, its knot in the Delhi inserts file).
+    // the India battles with reasoning: a B quiz at # at: depart delhi (its knot in the Delhi inserts file) and the Agra
+    // finale, an evidence connection C (2026-11-20).
     expect(indiaBattles).toHaveLength(16);
     expect(indiaBattles.filter((battle) => battle.reasoning).map((battle) => [battle.id, battle.storyId]))
-      .toEqual([["gt_delhi_special_station_battle", "places/gt_delhi_inserts.gt_delhi_depart_scam_quiz"]]);
+      .toEqual([["gt_delhi_special_station_battle", "places/gt_delhi_inserts.gt_delhi_depart_scam_quiz"],
+        ["gt_agra_finale_battle", "places/gt_agra_taj_mahal.gt_agra_finale_battle"]]);
     const normal = indiaDates.filter((date) => date.kind === "normal");
     expect(normal).toHaveLength(18);
     for (const date of normal) {

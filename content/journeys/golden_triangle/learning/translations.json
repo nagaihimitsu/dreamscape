@@ -2577,80 +2577,80 @@
     },
     "gt_agra_finale_moonlight_garden": {
       "source": {
-        "questionEn": "He also says a 'Black Taj' was planned across the river at Mehtab Bagh. What did researchers find there?",
+        "questionEn": "Put the two records together. What can you say about the 'Black Taj' across the river?",
         "options": [
           {
             "id": "A",
-            "textEn": "A garden with a large pool for viewing the Taj and its reflection, not a black tomb."
+            "textEn": "Black marble from the Taj's garden paths was saved for a second tomb."
           },
           {
             "id": "B",
-            "textEn": "The base of a black marble tomb that was never finished."
+            "textEn": "The oldest record never calls it black, and the site was a garden for viewing the Taj."
           },
           {
             "id": "C",
-            "textEn": "A secret tunnel under the river joining the two banks."
+            "textEn": "Twenty thousand workers built a black tomb, but the river washed it away."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
-      "questionJa": "ガイドはさらに、川向こうのメヘターブ・バーグに「黒いタージ」が計画されていたと言います。研究者たちはそこで何を見つけましたか？",
+      "questionJa": "二つの記録を合わせると、川向こうの「黒いタージ」について何が言えますか？",
       "optionsJa": {
-        "A": "黒い墓ではなく、タージと水面に映るその姿を眺めるための、大きな池のある庭園。",
-        "B": "完成しなかった、黒い大理石の墓の土台。",
-        "C": "両岸を結ぶ、川の下の秘密のトンネル。"
+        "A": "タージの庭の小道の黒い大理石が、二つ目の墓のために取っておかれた。",
+        "B": "いちばん古い記録はそれを黒いとは書いておらず、その場所はタージを眺めるための庭だった。",
+        "C": "二万人の職人が黒い墓を建てたが、川がそれを押し流した。"
       }
     },
     "gt_agra_finale_moonlight_garden@A2": {
       "source": {
-        "questionEn": "He also says there was a plan for a 'Black Taj' across the river, at Mehtab Bagh. What did researchers find there?",
+        "questionEn": "Look at the two records together. What can you say about the 'Black Taj' across the river?",
         "options": [
           {
             "id": "A",
-            "textEn": "A garden with a big pool. From there, you could see the Taj in the water. There was no black tomb."
+            "textEn": "They kept black stones from the Taj garden for a second tomb."
           },
           {
             "id": "B",
-            "textEn": "The bottom of a black marble tomb. Nobody finished it."
+            "textEn": "The oldest record does not call it black, and the place was a garden to look at the Taj."
           },
           {
             "id": "C",
-            "textEn": "A secret way under the river between the two sides."
+            "textEn": "Twenty thousand workers built a black tomb, and then the river took it away."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
-      "questionJa": "彼はまた、川の向こうのメータブ・バーグに「黒いタージ」の計画があったとも言います。研究者たちはそこで何を見つけましたか？",
+      "questionJa": "二つの記録をいっしょに見てください。川の向こうの「黒いタージ」について、何が言えますか？",
       "optionsJa": {
-        "A": "大きな池のある庭園。そこから、水に映るタージが見えた。黒い墓はなかった。",
-        "B": "黒い大理石の墓の下の部分。誰も完成させなかった。",
-        "C": "川の下を通って両岸を結ぶ秘密の道。"
+        "A": "タージの庭の黒い石を、二つ目の墓のために取っておいた。",
+        "B": "いちばん古い記録はそれを黒いとは呼んでいない。そして、その場所はタージを見るための庭だった。",
+        "C": "二万人の職人が黒い墓を建て、そのあと川がそれを持ち去った。"
       }
     },
     "gt_agra_finale_moonlight_garden@B2": {
       "source": {
-        "questionEn": "He goes on to claim that a 'Black Taj' was planned on the opposite bank, at Mehtab Bagh. What did researchers actually uncover there?",
+        "questionEn": "Taking both records together, what conclusion can be drawn about the so-called 'Black Taj' across the river?",
         "options": [
           {
             "id": "A",
-            "textEn": "A garden with a vast pool designed for viewing the Taj and its reflection, rather than a black tomb."
+            "textEn": "Black marble from the Taj's garden walkways was being set aside for a second mausoleum."
           },
           {
             "id": "B",
-            "textEn": "The foundations of a black marble tomb that was abandoned before completion."
+            "textEn": "The earliest account never describes it as black, and the site proved to be a garden for viewing the Taj."
           },
           {
             "id": "C",
-            "textEn": "A hidden tunnel beneath the river connecting the two banks."
+            "textEn": "Twenty thousand labourers completed a black tomb, which the river subsequently swept away."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
-      "questionJa": "彼はさらに、対岸のメータブ・バーグに「黒いタージ」が計画されていたと主張します。研究者たちがそこで実際に掘り出したものは何ですか？",
+      "questionJa": "両方の記録を突き合わせると、川向こうのいわゆる「黒いタージ」について、どんな結論が導けますか？",
       "optionsJa": {
-        "A": "黒い墓ではなく、タージと水に映るその姿を眺めるために造られた広い池のある庭園。",
-        "B": "完成前に放棄された、黒い大理石の墓の基礎。",
-        "C": "川の下を通って両岸を結ぶ隠れたトンネル。"
+        "A": "タージの庭の通路の黒大理石が、二つ目の霊廟のために取り置かれていた。",
+        "B": "最も古い記述はそれを黒いとは一度も書いておらず、その場所はタージを眺めるための庭だと分かった。",
+        "C": "二万人の労働者が黒い墓を完成させたが、その後、川に押し流された。"
       }
     },
     "gt_agra_finale_builders_next": {

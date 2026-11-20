@@ -1408,6 +1408,9 @@ export function validateContent(sources: ContentSources,
       quiz.scope
     )
       throw new Error(`Battle landmark mismatch: ${battle.id}`);
+    if (battle.reasoning && battle.reasoning.roundIndex >= quiz.questions.length)
+      throw new Error(`Reasoning round past the quiz: ${battle.id} has roundIndex ${battle.reasoning.roundIndex}, ` +
+        `but ${battle.quizId} has ${quiz.questions.length} questions (the proof leads to question roundIndex + 1)`);
     const battleAddress = splitStoryAddress(battle.storyId);
     if (!stories[battleAddress.storyId] || (battleAddress.path !== undefined && !placeEntries.some((scene) => scene.main && "battle" in scene.main && scene.main.battle === battle.id)))
       throw new Error(`Unknown battle storyId: ${battle.storyId}`);
@@ -1503,7 +1506,7 @@ export function validateContent(sources: ContentSources,
     if (!users?.size || [...users].some((dateId) => !dates.find((date) => date.id === dateId)?.recovery))
       throw new Error(`Effect has neither memory nor outcome outside recovery: ${effect.id}`);
   }
-  for (const battle of battles) validateBattleEvidence(battle, tourism.clues);
+  for (const battle of battles) validateBattleEvidence(battle, tourism.clues, tourism.landmarks);
   for (const storyId of encounterStoryIds) {
     if (dates.some((date) => date.storyId === storyId) ||
         battles.some((battle) => battle.storyId === storyId) ||

@@ -159,7 +159,22 @@
       "storyId": "places/gt_agra_taj_mahal.gt_agra_finale_battle",
       "quizId": "gt_agra_finale_quiz",
       "backgroundId": "gt_bg_agra_taj_mahal",
-      "portrait": "abstract"
+      "portrait": "abstract",
+      "format": "C",
+      "reasoning": {
+        "kind": "connection",
+        "roundIndex": 1,
+        "caseClueIds": [
+          "gt_agra_clue_tavernier_tomb",
+          "gt_agra_clue_moonlight_garden_dig",
+          "gt_agra_clue_twenty_thousand",
+          "gt_agra_clue_garden_marble"
+        ],
+        "correctClueIds": [
+          "gt_agra_clue_tavernier_tomb",
+          "gt_agra_clue_moonlight_garden_dig"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_main_amber_fort_battle",
