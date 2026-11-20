@@ -208,7 +208,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(free.inventory.blue_pick).toBe("held");
   await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
   const cleared = await ops.openRecords(page);
-  await expect(cleared.getByTestId("city-progress")).toContainText("観光 1 / 4");
+  // 旅の記録's 「体験」 keeps the Duomo as its one card.
+  await expect(cleared.locator('[data-testid^="log-experience-"]')).toHaveCount(1);
   await ops.closeDialog(cleared);
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).

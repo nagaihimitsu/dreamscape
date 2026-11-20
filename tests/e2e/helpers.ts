@@ -518,7 +518,7 @@ export const ops = {
     await expect(dialog).not.toHaveAttribute("data-settling");
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
-  /** ≡メニュー → 「旅の記録」 (its first line, `city-progress`, is the city's progress: 観光・クイズ / 都市クリア); returns that dialog. */
+  /** ≡メニュー → 「旅の記録」 (on 「体験」: each thing lived is a `log-experience-<id>` card); returns that dialog. */
   async openRecords(page: Page): Promise<Locator> {
     await ops.menuItem(page, "旅の記録");
     const records = page.getByRole("dialog", { name: "旅の記録" });

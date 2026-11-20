@@ -77,7 +77,7 @@ test("autosaved progress, a battle question, the English note and the text speed
   await ops.closeDialog(photoCredits);
   await expect(ops.settingsButton(page)).toBeFocused();
   const records = await ops.openRecords(page);
-  await expect(records.getByTestId("city-progress")).toContainText("観光 1 / 4");
+  await expect(records.locator('[data-testid^="log-experience-"]')).toHaveCount(1);
   await ops.closeDialog(records);
   const reopened = await ops.openEnglishNote(page);
   await reopened.getByLabel("回答した問題を選ぶ").selectOption(firstQuestion!);

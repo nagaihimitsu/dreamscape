@@ -300,7 +300,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   await page.getByTestId("end-roll-close").click();
   await memories.getByTestId("memories-records").click();
   const records = page.getByRole("dialog", { name: "旅の記録" });
-  await expect(records.getByTestId("city-progress")).toHaveText("都市クリア");
+  await expect(records.locator('[data-testid^="log-experience-"]').first()).toBeVisible();
   await expect(records.getByTestId("kept-memory-open")).toHaveCount(0);
   await ops.closeDialog(records);
   await expect(page.getByRole("button", { name: /へ出発/ })).toHaveCount(0);
