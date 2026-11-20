@@ -79,6 +79,8 @@
 5. **ゲームに入れる**：`projects/<衣装>/` の `avatar.json`・`rig.json`・`built/`（`sprites/` はない）を `public/assets/characters/heroine/<衣装>/standing_01/avatar/` に写し、PNG を `own-artwork.json` に書き、`characters.json` の衣装・ポーズに `"avatar": "assets/characters/heroine/<衣装>/standing_01/avatar/"` と `"avatarFace": "assets/characters/heroine/face/standing_01/"` を足します。
 6. [7. 確かめること](#7-確かめること) をします。動く立ち絵の大きさは衣装1つで約0.8MB（主に `base.png`）です。
 
+吹き出しの横の小さな丸い顔（クイズの耳打ち・街歩きや「前回までのあらすじ」の一言）のために、顔だけの絵を作る必要はありません。着ている衣装の静止画を丸く切り抜いて出し、切り抜く位置は `content:build` が動く立ち絵の目の位置（`built/layers.json` の `eyes`）から衣装・ポーズごとに求めます（`characters.json` の生成物のポーズの `face`。`scripts/face-frames.ts`）。頭の位置や大きさが基本の衣装と違っても、顔に合わせて切り抜かれます。動く立ち絵のない衣装は、基本の衣装と同じ位置で切り抜きます（ずれるときは、ポーズに `"face": { "x": 中心のx, "y": 中心のy, "size": 一辺 }` を絵の画素で書けます）。
+
 ### 頭の違う衣装（髪を残す）
 
 帽子がない・髪型が違う・耳飾りがある衣装（例：サリー `saree_01`、2026-11-20）。衣装の絵の髪と耳飾りは残し、顔（目・眉・口・頬）だけを基本の衣装の顔にそろえます。共通の顔の差分はその衣装の髪を塗りつぶすので、衣装の髪を切り抜いた写しを衣装のフォルダに持ちます（`avatarFace` は書かない）。

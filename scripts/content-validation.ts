@@ -78,6 +78,7 @@ import { isTourOnlyPlace, travelCatalogSchema, travelSettingsSchema } from "../s
 import { validateTravelContent } from "./travel-validation";
 import { tourSchema } from "../src/content/tour-schemas";
 import { shopCatalogSchema } from "../src/content/shop";
+import { withFaceFrames } from "./face-frames";
 import { parseTourFiles, validateTours } from "./tour-validation";
 import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
@@ -518,6 +519,8 @@ export function validateContent(sources: ContentSources,
     battleIds: new Set(battles.map((battle) => battle.id)),
     sceneIds: wardrobeSceneIds,
   });
+  // The poses' face frames for the small round face, from the moving pictures' eyes (2026-11-20; face-frames.ts).
+  const facedCharacters = withFaceFrames(sources.catalogs["presentation/characters.json"]?.value, publicFiles);
   // Free time's shops and the outfits they sell (optional; 2026-11-20): each outfit shows a heroine costume that has its
   // pictures, each shop is in a city (one shop per city) and sells outfits of the catalog.
   const shopCatalog = parseCatalog(shopCatalogSchema, "shop/catalog.json");
@@ -1872,6 +1875,8 @@ export function validateContent(sources: ContentSources,
         "encounters/entry-rules.json": { schemaVersion: 2, entries: runtimeEntryRules },
       } : {}),
       ...knotWhenOverrides,
+      // Checked again with the frames (each inside its canvas), as the game reads it.
+      ...(facedCharacters ? { "presentation/characters.json": (characterCatalogSchema.parse(facedCharacters), facedCharacters) } : {}),
     } as Partial<Record<CatalogKind, unknown>>,
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,

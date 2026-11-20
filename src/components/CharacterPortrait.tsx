@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { characterAvatar, characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
+import { characterAvatar, characterFaceFrame, characterImage, characterPlacement, faceFrameStyle, resolveCharacterCostume } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
 import { loadPicture, pictureReady } from "../media/preload";
 import { characterCatalog as catalog } from "./character-catalog";
@@ -108,9 +108,12 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   if (!character) return null;
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
+  // The outfit's own face frame (characters.json `face`, from its moving picture's eyes): her face fills the circle
+  // wherever the outfit's picture puts her head; without one, the frame of character-portrait.css.
+  const frame = characterFaceFrame(character, selection);
   return (
     <span className="character-face" aria-hidden="true">
-      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} imageStyle={frame ? faceFrameStyle(frame) : undefined} />
     </span>
   );
 }
@@ -147,10 +150,12 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
  * last picture stays up, so the figure never goes blank while a file arrives. A file that cannot be shown falls back to
  * the neutral picture, then to `fallback` or the placeholder.
  */
-function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
+function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf, imageStyle }: {
   path: string | null;
   neutralPath: string | null;
   color: string;
+  /** Where the picture sits in its box (CharacterFace's face frame), over its stylesheet's. */
+  imageStyle?: CSSProperties;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
   /** A standing portrait's character: its picture breathes (character-portrait.css). */
@@ -190,7 +195,8 @@ function CharacterImage({ path, neutralPath, color, fallback, onImageError, brea
   }, [candidate, shown, failedPaths]);
   // A figure on stage is what the scene is about: fetched before the music and the ambience streaming meanwhile.
   if (shown) return (
-    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" fetchPriority="high" style={breath} onError={() => fail(shown)} />
+    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" fetchPriority="high" style={imageStyle ? { ...breath, ...imageStyle } : breath}
+      onError={() => fail(shown)} />
   );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.

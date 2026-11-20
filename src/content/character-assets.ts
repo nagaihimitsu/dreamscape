@@ -34,7 +34,13 @@ const poseSchema = z.object({
   // a folder of mesh-avatar sprites (sprites.json, face_<expression>.png, the blinks and the mouths), ending in "/".
   // Without it, the avatar folder's own built/sprites/. Outfits share it only when their heads are drawn the same.
   avatarFace: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\/$/).optional(),
-}).strict().refine((pose) => !pose.avatarFace || pose.avatar, "avatarFace needs avatar");
+  // Where the face is in this pose's pictures (2026-11-20 user decision): the centre and the side of the square the
+  // small round face (CharacterFace) shows, in the canvas's pixels. content:build writes it from the moving picture's
+  // eyes (scripts/face-frames.ts) unless written here; without either, the frame every heroine picture shares.
+  face: z.object({ x: z.number(), y: z.number(), size: z.number().positive() }).strict().optional(),
+}).strict().refine((pose) => !pose.avatarFace || pose.avatar, "avatarFace needs avatar")
+  .refine((pose) => !pose.face || (pose.face.x >= 0 && pose.face.x <= pose.canvas.width && pose.face.y >= 0 && pose.face.y <= pose.canvas.height &&
+    pose.face.size <= Math.max(pose.canvas.width, pose.canvas.height)), "face lies outside the canvas");
 const costumeSchema = z.object({
   id,
   poses: z.array(poseSchema).min(1),
@@ -200,6 +206,30 @@ export function characterAvatar(character: CharacterAsset, selection: { costume?
   const pose = selection.pose ? costume?.poses.find((item) => item.id === selection.pose) : costume?.poses[0];
   if (!pose?.expressions.neutral || !pose.avatar) return null;
   return pose.avatarFace ? { folder: pose.avatar, face: pose.avatarFace } : { folder: pose.avatar };
+}
+
+/** The face frame of a pose's pictures (characters.json `face`): its centre and side in the canvas's pixels. */
+export type FaceFrame = { x: number; y: number; size: number };
+
+/** The face frame of the outfit chosen for the scene, with its picture's canvas, or null (none known: the default frame). */
+export function characterFaceFrame(character: CharacterAsset, selection: { costume?: string; pose?: string }):
+  { face: FaceFrame; canvas: { width: number; height: number } } | null {
+  const costume = character.costumes?.find((item) => item.id === selection.costume);
+  const pose = selection.pose ? costume?.poses.find((item) => item.id === selection.pose) : costume?.poses[0];
+  return pose?.expressions.neutral && pose.face ? { face: pose.face, canvas: pose.canvas } : null;
+}
+
+/**
+ * Where the picture goes in the small round frame so that the face frame fills it (CharacterFace): its width, left and
+ * top as percentages of the frame (a square), so the frame's size never matters.
+ */
+export function faceFrameStyle({ face, canvas }: { face: FaceFrame; canvas: { width: number } }): { width: string; left: string; top: string } {
+  const percent = (value: number) => `${Math.round(value * 10000) / 100}%`;
+  return {
+    width: percent(canvas.width / face.size),
+    left: percent(-(face.x - face.size / 2) / face.size),
+    top: percent(-(face.y - face.size / 2) / face.size),
+  };
 }
 
 /** All expression images for one pose share one placement to avoid jumping. */
