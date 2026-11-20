@@ -167,9 +167,12 @@ export function PhotoCardFreeTime({
   }
 
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
-  /** The card under the row (on the page: a visible name only in the row, where no chosen row above names it). */
+  /**
+   * The card under the row. Its name is visible only in the expanded map: on the page the chosen photo card right above
+   * (row or list) already names it (2026-11-20 user decision), so there it is for readers only.
+   */
   const cardOf = (card: RowCard, scope: PressScope = "page") => {
-    const heading = scope === "dialog" || arrangement === "row";
+    const heading = scope === "dialog";
     // In the row a swipe up on the photo card goes, waits or rests: the card's own button is for readers and keys only.
     const quietGo = scope === "page" && arrangement === "row";
     // The chosen wait or way home pressed again: in the row (where the swipe up waits or rests) the photo card's cue nudges.
