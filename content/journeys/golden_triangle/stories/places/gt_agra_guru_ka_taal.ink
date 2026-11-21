@@ -15,6 +15,8 @@ INCLUDE modules.ink
 デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。
 雨水をためる池として、四百年あまり前に造られた。そのそばに、シク教の礼拝所が建っている。
 # speaker: narrator
+# term: gt_term_tegh_bahadur
+# term: gt_term_aurangzeb
 言い伝えでは、九代目のグル、テーグ・バハードゥルが、ここで皇帝アウラングゼーブの前に自ら進み出て、捕らえられたという。
 # speaker: heroine
 # voice: gt_agra_date_guru_ka_taal_001

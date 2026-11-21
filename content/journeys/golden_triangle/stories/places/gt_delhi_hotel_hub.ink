@@ -38,6 +38,7 @@ INCLUDE modules.ink
 わたしのデリーの地図だよ。赤い城、暗くなってから。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_004
+# term: gt_term_humayun
 フマユーン廟、東の門から三本目の木陰。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
 # speaker: narrator
 五行目だけは、場所の名前がなかった。

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { glossaryTerms, tourismAssets } from "../../content";
-import { termSubtitle } from "../../content/glossary";
+import { photoNote, termSubtitle } from "../../content/glossary";
 import { playCue } from "../../audio/sound-effects";
 import { DOUBLE_TAP_WINDOW_MS } from "../../components/double-tap";
 import { HOLDS_READING_ATTRIBUTE } from "../../components/dialogueObstructed";
@@ -92,6 +92,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
         <p className="glossary-term-mark" id={markId}><Icon name="lens" />旅の図鑑に追加</p>
         {asset && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} width={asset.width}
           height={asset.height} decoding="async" />}
+        {asset && photoNote(term) && <p className="glossary-term-photo-note" data-testid="glossary-term-photo-note">{photoNote(term)}</p>}
         <h2 className="glossary-term-name" id={nameId}>{term.nameJa}</h2>
         {subtitle && <p className="glossary-term-subtitle">{subtitle}</p>}
         <p className="glossary-term-line" id={lineId}>{term.lineJa}</p>

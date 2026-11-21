@@ -64,6 +64,18 @@
             "minLength": 1,
             "language": "ja"
           },
+          "photoNoteJa": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "imageId": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$"

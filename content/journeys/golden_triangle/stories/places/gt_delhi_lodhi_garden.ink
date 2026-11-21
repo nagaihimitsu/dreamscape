@@ -292,6 +292,9 @@ INCLUDE modules.ink
 ドゥベイが、二人の前に立った。会の最後に、新入りには、いつも一つ頼むことがあるという。
 # speaker: gt_dubey
 # voice: gt_delhi_date_lodhi_garden_dubey_006
+# local_word: gt_delhi_word_yatrigan
+# local_word: gt_delhi_word_kripya
+# local_word: gt_delhi_word_dhyan
 わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_016

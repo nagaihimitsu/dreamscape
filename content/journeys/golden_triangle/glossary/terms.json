@@ -324,6 +324,231 @@
       "category": "custom",
       "lineJa": "女神ガウリーを祝う、ラージャスターンの春の祭り。女性たちの行列が出る。",
       "imageId": "gt_img_term_gangaur"
+    },
+    {
+      "id": "gt_term_tavernier",
+      "nameJa": "タヴェルニエ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "17世紀フランスの宝石商。ペルシアとインドへ6度旅し、旅行記を残した。",
+      "imageId": "gt_img_term_tavernier"
+    },
+    {
+      "id": "gt_term_shah_jahan",
+      "nameJa": "シャー・ジャハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第5代皇帝。亡き妃のためにタージ・マハルを建てた。",
+      "imageId": "gt_img_term_shah_jahan"
+    },
+    {
+      "id": "gt_term_mumtaz_mahal",
+      "nameJa": "ムムターズ・マハル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シャー・ジャハーンの妃。本名はアルジュマンド・バーヌー。タージ・マハルに眠る。",
+      "photoNoteJa": "画像は後の時代に想像で描かれた肖像",
+      "imageId": "gt_img_term_mumtaz_mahal"
+    },
+    {
+      "id": "gt_term_akbar",
+      "nameJa": "アクバル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第3代皇帝。帝国を大きく広げ、異なる信仰に寛容だった。",
+      "imageId": "gt_img_term_akbar"
+    },
+    {
+      "id": "gt_term_humayun",
+      "nameJa": "フマユーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第2代皇帝。一度は国を追われ、15年後にデリーを取り戻した。",
+      "imageId": "gt_img_term_humayun"
+    },
+    {
+      "id": "gt_term_babur",
+      "nameJa": "バーブル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国を開いた初代皇帝。中央アジアのフェルガナ出身で、自伝を残した。",
+      "imageId": "gt_img_term_babur"
+    },
+    {
+      "id": "gt_term_aurangzeb",
+      "nameJa": "アウラングゼーブ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第6代皇帝（在位1658〜1707年）。帝国の領土をいちばん広げた。",
+      "imageId": "gt_img_term_aurangzeb"
+    },
+    {
+      "id": "gt_term_jahanara",
+      "nameJa": "ジャハーナーラー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シャー・ジャハーンの皇女。宮廷で大きな力を持ち、聖者の伝記も書いた。",
+      "imageId": "gt_img_term_jahanara"
+    },
+    {
+      "id": "gt_term_nur_jahan",
+      "nameJa": "ヌール・ジャハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "皇帝ジャハーンギールの皇妃。政治の実権を握り、自分の名で硬貨を出させた。",
+      "photoNoteJa": "画像は後の時代に理想化して描かれた肖像",
+      "imageId": "gt_img_term_nur_jahan"
+    },
+    {
+      "id": "gt_term_man_singh",
+      "nameJa": "マーン・シング1世",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "アンベールの王。アクバルの重臣として戦い、ベンガルなどの総督を務めた。",
+      "imageId": "gt_img_term_man_singh"
+    },
+    {
+      "id": "gt_term_amir_khusrau",
+      "nameJa": "アミール・フスロー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "デリーの詩人・音楽家（1253〜1325年）。聖者ニザームッディーンの弟子。",
+      "imageId": "gt_img_term_amir_khusrau"
+    },
+    {
+      "id": "gt_term_tegh_bahadur",
+      "nameJa": "テーグ・バハードゥル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シク教の9代目のグル（師）。1675年、デリーで処刑された。",
+      "imageId": "gt_img_term_tegh_bahadur"
+    },
+    {
+      "id": "gt_term_itimad_ud_daula",
+      "nameJa": "イティマード・ウッダウラ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "称号で、意味は「国家の柱」。本名はミールザー・ギヤース・ベグ。",
+      "imageId": "gt_img_term_itimad_ud_daula"
+    },
+    {
+      "id": "gt_term_isa_khan",
+      "nameJa": "イーサー・ハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "16世紀のアフガン系の貴族。ニヤーズィー族の出で、1548年に没した。",
+      "photoNoteJa": "画像は彼の墓廟の内部の写真",
+      "imageId": "gt_img_term_isa_khan"
+    },
+    {
+      "id": "gt_term_shiva",
+      "nameJa": "シヴァ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の神（神話の存在）。破壊と再生の神で、ヨーガ行者の姿でも描かれる。",
+      "imageId": "gt_img_term_shiva"
+    },
+    {
+      "id": "gt_term_parvati",
+      "nameJa": "パールヴァティー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の女神（神話の存在）。シヴァの妃で、山の王ヒマヴァットの娘とされる。",
+      "imageId": "gt_img_term_parvati"
+    },
+    {
+      "id": "gt_term_krishna",
+      "nameJa": "クリシュナ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の神（神話の存在）。ヴィシュヌの化身。笛を吹く牛飼いの姿で描かれる。",
+      "imageId": "gt_img_term_krishna"
+    },
+    {
+      "id": "gt_term_ganesha",
+      "nameJa": "ガネーシャ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の神（神話の存在）。象の頭を持つ、シヴァとパールヴァティーの子。",
+      "imageId": "gt_img_term_ganesha"
+    },
+    {
+      "id": "gt_term_nahar_singh_bhomia",
+      "nameJa": "ナハル・シン・ボーミヤー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "言い伝えの人物。その霊が砦の工事を妨げ、砦の中に彼の寺が建てられたという。",
+      "photoNoteJa": "画像は彼の名に由来するとされるナハルガル砦の写真",
+      "imageId": "gt_img_term_nahar_singh_bhomia"
+    },
+    {
+      "id": "gt_term_vidyadhar",
+      "nameJa": "ヴィディヤーダル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ベンガル出身のバラモン。アンベール王国の会計役で、ジャイ・シング2世に仕えた。",
+      "photoNoteJa": "画像は彼の名を冠したヴィディヤーダル庭園の回廊の写真",
+      "imageId": "gt_img_term_vidyadhar"
+    },
+    {
+      "id": "gt_term_mariam_uz_zamani",
+      "nameJa": "マリアム・ウッザマーニー",
+      "readingJa": null,
+      "aliasJa": "ジョーダー・バーイー",
+      "category": "person",
+      "lineJa": "アクバルの妃で、皇帝ジャハーンギールの母。「ジョーダー」は後に広まった呼び名。",
+      "photoNoteJa": "画像は彼女が建てさせたラホールのモスクの壁画の写真",
+      "imageId": "gt_img_term_mariam_uz_zamani"
+    },
+    {
+      "id": "gt_term_amanat_khan",
+      "nameJa": "アマーナト・ハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シーラーズ出身の書家。兄は宰相アフザル・ハーン。自分の名の隊商宿を建てた。",
+      "photoNoteJa": "画像は彼が建てた隊商宿、サライ・アマーナト・ハーンの門の写真",
+      "imageId": "gt_img_term_amanat_khan"
+    },
+    {
+      "id": "gt_term_sher_shah",
+      "nameJa": "シェール・シャー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "スール朝を開いた王。フマユーンを破り、ルピー銀貨を出して街道を整えた。",
+      "photoNoteJa": "画像はサーサーラームにある彼の墓廟の写真",
+      "imageId": "gt_img_term_sher_shah"
+    },
+    {
+      "id": "gt_term_afzal_khan",
+      "nameJa": "アフザル・ハーン・シーラーズィー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シーラーズ出身の学者。シャー・ジャハーンの宰相を務め、1639年に亡くなった。",
+      "photoNoteJa": "画像は彼が眠るチーニー・カ・ラウザーの外壁のタイルの写真",
+      "imageId": "gt_img_term_afzal_khan"
     }
   ]
 }

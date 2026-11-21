@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_nahargarh_fort
 # speaker: narrator
 ナハルガル城は、ジャイプールの町を見下ろす尾根の上にあった。城壁の端に立つと、桃色の旧市街が、碁盤の目のまま足もとに広がっている。
+# term: gt_term_nahar_singh_bhomia
 砦の名には、言い伝えがある。この地には、ナハル・シン・ボーミヤーという人の霊がいて、砦の工事を邪魔したのだという。砦の中に彼のための祠を建てると霊は鎮まり、砦は彼の名で呼ばれるようになった。
 # speaker: heroine
 # voice: gt_jaipur_date_nahargarh_fort_001

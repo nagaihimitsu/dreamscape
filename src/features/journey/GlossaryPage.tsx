@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { journeyTerms, tourismAssets } from "../../content";
-import { GLOSSARY_CATEGORY_LABELS_JA, termSubtitle, type ListedTerm } from "../../content/glossary";
+import { GLOSSARY_CATEGORY_LABELS_JA, photoNote, termSubtitle, type ListedTerm } from "../../content/glossary";
 import { Modal, ModalTitle } from "../../components/Modal";
 import { glossaryBook, glossaryProgress, glossaryProgressSpoken } from "./glossary-book";
 import "./glossary.css";
@@ -61,6 +61,7 @@ export function GlossaryPage({ journeyId, met, newIds, revealAll = false }: {
         closeTestId="glossary-entry-close">{opened.term.nameJa}</ModalTitle>
       {openedSubtitle && <p className="glossary-entry-subtitle">{openedSubtitle}</p>}
       {openedPhoto && <img className="glossary-entry-photo" src={source(openedPhoto.path)} alt={openedPhoto.altJa} data-testid="glossary-entry-photo" />}
+      {openedPhoto && photoNote(opened.term) && <p className="glossary-entry-photo-note" data-testid="glossary-entry-photo-note">{photoNote(opened.term)}</p>}
       <p className="glossary-entry-line">{opened.term.lineJa}</p>
       {!opened.met && <p className="fine-print">Debug：この言葉には、まだ出会っていません。</p>}
     </Modal>}

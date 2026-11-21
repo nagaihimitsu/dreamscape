@@ -91,12 +91,14 @@ INCLUDE modules.ink
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
 # speaker: enemy
 # voice: gt_agra_main_taj_mahal_battle_nikhil_005
+# term: gt_term_shah_jahan
 シャー・ジャハーンは、ムムターズをそれほど愛して……
 # speaker: narrator
 タンヴィが静かに遮った。
 # speaker: gt_tanvi
 # cutin: name
 # voice: gt_agra_main_taj_mahal_battle_tanvi_001
+# term: gt_term_mumtaz_mahal
 ねえ、ニキル。ムムターズがどこで、どうやって亡くなったか、知ってる？
 -> quiz(1) ->
 # background: gt_bg_agra_taj_mahal
@@ -313,6 +315,7 @@ INCLUDE modules.ink
 # speaker: heroine
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
+# term: gt_term_tavernier
 フランスの宝石商、タヴェルニエだよ。三百六十年前、タージが建っていくのをその目で見た男だ。手を切る話の二万という数も、あの男の旅行記にある
 # speaker: narrator
 アンワルは杖の先で、足もとの土を軽く突いた。
@@ -403,10 +406,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # voice: gt_agra_finale_010
+    # term: gt_term_amanat_khan
     書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて
 - else:
     # speaker: enemy
     # voice: gt_agra_finale_battle_anwar_012
+    # term: gt_term_amanat_khan
     ……アマーナト・ハーン。書家だ。知っていたとも。わしは、その話をしたことがないだけだ
 }
 # speaker: narrator

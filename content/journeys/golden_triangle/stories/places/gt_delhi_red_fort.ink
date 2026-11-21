@@ -101,12 +101,14 @@ INCLUDE modules.ink
     アンジャリの眉が、少しだけ下がった。外国人が知っていたのが、ほんの少し悔しいらしい。それでもすぐに付け足す。
     # speaker: gt_anjali
     # voice: gt_delhi_main_red_fort_battle_anjali_002
+    # term: gt_term_amir_khusrau
     書いたのはアミール・フスローです！
 - else:
     # speaker: narrator
     アンジャリが胸を張って正解を読み上げる。
     # speaker: gt_anjali
     # voice: gt_delhi_main_red_fort_battle_anjali_003
+    # term: gt_term_amir_khusrau
     地上に楽園があるなら、それはここ！　書いたのはアミール・フスローです！
 }
 # speaker: narrator

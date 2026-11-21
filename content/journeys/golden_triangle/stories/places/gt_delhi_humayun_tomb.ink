@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_delhi_humayun_tomb
 # speaker: narrator
+# term: gt_term_humayun
 フマユーン廟の庭は、まっすぐな水路で四つに区切られていた。その奥に、赤い石と白い大理石の廟が、ゆったり座っている。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
@@ -143,12 +144,15 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     # voice: gt_delhi_main_humayun_tomb_battle_suresh_009
+    # term: gt_term_isa_khan
     イーサー・ハーン。正解だ。……フマユーンの廟の入口で、別の王に仕えた男の墓が出迎える。面白いだろう
     # speaker: narrator
     スレーシュは問題を出した側なのに、少し得意そうだった。
 - else:
     # speaker: enemy
     # voice: gt_delhi_main_humayun_tomb_battle_suresh_010
+    # term: gt_term_isa_khan
+    # term: gt_term_sher_shah
     違う。イーサー・ハーン、シェール・シャーの宮廷の男だ。フマユーンの廟より古い。入口の申告で、もうつまずいたな
     # speaker: narrator
     メヘルの手が、{heroine_name}の袖を強く握った。

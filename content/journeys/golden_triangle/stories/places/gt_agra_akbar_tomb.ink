@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_akbar_tomb
 # speaker: narrator
+# term: gt_term_akbar
 シカンドラのアクバル廟は、門だけで一つの宮殿のようだった。赤い砂岩の大門をくぐると、広い芝生の向こうに、墓廟が低く横たわっている。
 # term: gt_term_blackbuck
 芝生の上で、背中の黒い獣が数頭、草を食んでいた。ブラックバックだ。この廟の庭では、その群れが見られる。

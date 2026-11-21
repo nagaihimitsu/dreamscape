@@ -27,6 +27,8 @@ INCLUDE modules.ink
 今からでも、叔父を呼べます。この町で一番泣かせるガイドです
 # speaker: gt_samir
 # voice: gt_agra_tour_morning_samir_003
+# term: gt_term_akbar
+# term: gt_term_mariam_uz_zamani
 皇帝アクバルと、お妃ジョーダーの恋の話なら、叔父の右に出る者はおりません
 # speaker: heroine
 # voice: gt_agra_tour_morning_001

@@ -13,6 +13,8 @@ INCLUDE modules.ink
 # hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_mariam_tomb
 # speaker: narrator
+# term: gt_term_akbar
+# term: gt_term_mariam_uz_zamani
 アクバル廟から少し離れた所に、赤い砂岩の四角い建物が、芝生の真ん中に静かに建っていた。マリアム・ウッザマーニーの墓廟。訪れる人は、ずっと少ない。
 木陰で、ピクニックの家族が弁当を広げていた。父親が、子どもたちに得意げに説明している。
 # speaker: gt_agra_mariam_father
