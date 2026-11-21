@@ -1038,6 +1038,34 @@
       "checkedAt": "2026-11-13"
     },
     {
+      "id": "gt_img_term_saree",
+      "path": "assets/tourism/india/term_saree.webp",
+      "width": 1000,
+      "height": 1000,
+      "altJa": "店先のマネキン3体に着せたサリー。腰に巻いた布の端を肩から垂らし、金の刺繍の縁が胸元から裾へ斜めに流れている。右は赤地に金の丸模様、中央は桃色、左は青緑。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sari_on_mannequin_for_demo.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Suyash.dwivedi／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commonsの元画像（1080×1080px）を使用。左端の奥に小さく写る通行人を外すため、左を80px、下を80px切り落として1000×1000pxにしました（縮小はしていません）。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
+      "id": "gt_img_term_salwar_kameez",
+      "path": "assets/tourism/india/term_salwar_kameez.webp",
+      "width": 983,
+      "height": 771,
+      "altJa": "店先に並んだマネキンが着るサルワール・カミーズ。赤や紫、白の長い上着に同じ色のズボンを合わせ、右の2体は薄い布のドゥパッターを手や腕に掛けている。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://www.flickr.com/photos/64924693@N00/6387773781",
+      "licenseName": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "creditJa": "写真：Nagarjun（Pretty ladies in salwar kameez）／Flickr／CC BY 2.0",
+      "modificationJa": "Flickrの元画像（1683×1051px）から、右上の店の看板と左側のマネキン・吊るした布を外すため、右下の983×771pxの範囲を切り抜きました（縮小はしていません）。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
       "id": "gt_img_term_langar",
       "path": "assets/tourism/india/term_langar.webp",
       "width": 1200,

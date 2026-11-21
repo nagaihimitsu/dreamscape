@@ -52,6 +52,11 @@ describe("the notes of 旅の図鑑", () => {
       .toEqual([expect.stringContaining("Term without a # term: tag: gt_term_golgappa")]);
   });
 
+  it("say nothing of a term no tag names when an outfit puts it in 旅の図鑑", () => {
+    const terms = [term("gt_term_golgappa", "golden_triangle"), term("gt_term_saree", "golden_triangle")];
+    expect(glossaryWarnings(story(source) as never, terms, ["gt_term_saree"]).map((warning) => warning.message)).toEqual([]);
+  });
+
   it("warn about the same term twice in one scene (not in two scenes) and a tag on a choice", () => {
     const twice = `${source}\n# term: gt_term_golgappa\nもう一度。`;
     expect(notes(twice, [term("gt_term_golgappa", "golden_triangle")])).toEqual([expect.stringContaining("Term tagged twice in one scene: gt_term_golgappa")]);

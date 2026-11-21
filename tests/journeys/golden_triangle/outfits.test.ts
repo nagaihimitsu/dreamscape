@@ -2,15 +2,17 @@ import { describe, expect, it } from "vitest";
 import { getCityShop, getOutfit, landmarks } from "../../../src/content";
 import { cityStart, openTourismScene } from "../../../src/dev/scenario-builders";
 import { validateGameState, type GameState } from "../../../src/domain/game";
+import { metTerms, termsAdded } from "../../../src/domain/glossary";
 import { buyOutfit, canChangeOutfit, ownedOutfits, shopOutfits, wearOutfit, wornCostume } from "../../../src/domain/outfits";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { usableMoney } from "../../../src/domain/reservations";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
-// The heroine's outfits (2026-11-20 user decision): Delhi's cloth shop sells the blue sari (shop/catalog.json); bought once
+// The heroine's outfits (2026-11-20 user decision): Delhi's cloth shop sells the blue sari and the navy salwar kameez (shop/catalog.json); bought once
 // with the travel budget, it stays the party's, and 「服」 changes between it and 普段の服 in free time only.
 
 const SAREE = "gt_saree_blue";
+const SALWAR_KAMEEZ = "gt_salwar_kameez_navy";
 const price = getOutfit(SAREE)!.price;
 
 function memoryStorage(): StorageLike {
@@ -29,7 +31,7 @@ describe("the shop's outfits", () => {
     for (const cityId of ["delhi", "agra", "jaipur"]) expect(getCityShop(cityId)?.outfitIds).toContain(SAREE);
     const state = delhi();
     expect(canChangeOutfit(state)).toBe(true);
-    expect(shopOutfits(state)).toEqual([{ outfit: getOutfit(SAREE), owned: false, available: true, reason: "" }]);
+    expect(shopOutfits(state)).toEqual([SAREE, SALWAR_KAMEEZ].map((id) => ({ outfit: getOutfit(id), owned: false, available: true, reason: "" })));
     expect(listPlayerActions(state)).toContainEqual({ kind: "buy_outfit", outfitId: SAREE });
     // Nothing to change into before something is bought.
     expect(listPlayerActions(state).some((action) => action.kind === "wear_outfit")).toBe(false);
@@ -43,9 +45,28 @@ describe("the shop's outfits", () => {
     expect(wornCostume(bought)).toBeUndefined();
     expect(buyOutfit(bought, SAREE, bought.revision)).toBe(bought);
     expect(shopOutfits(bought)[0]).toMatchObject({ owned: true, available: false });
-    expect(listPlayerActions(bought).some((action) => action.kind === "buy_outfit")).toBe(false);
+    expect(listPlayerActions(bought)).not.toContainEqual({ kind: "buy_outfit", outfitId: SAREE });
+    // The shop's other outfit is still for sale.
+    expect(listPlayerActions(bought)).toContainEqual({ kind: "buy_outfit", outfitId: SALWAR_KAMEEZ });
     // A stale revision (a double press) changes nothing.
     expect(buyOutfit(state, SAREE, state.revision - 1)).toBe(state);
+  });
+
+  it("puts the sari in 旅の図鑑 as it is bought (once: a term met already is not added again)", () => {
+    const state = delhi();
+    expect(getOutfit(SAREE)?.termId).toBe("gt_term_saree");
+    expect(getOutfit(SALWAR_KAMEEZ)?.termId).toBe("gt_term_salwar_kameez");
+    const bought = validateGameState(applyPlayerAction(state, playerActionChange({ kind: "buy_outfit", outfitId: SAREE }, () => 0)));
+    expect(termsAdded(state, bought)).toEqual(["gt_term_saree"]);
+    // The term is kept through a save and a load, as a line's # term: is.
+    const storage = memoryStorage();
+    expect(saveGame(storage, bought).ok).toBe(true);
+    const loaded = loadGame(storage);
+    expect(loaded.status === "loaded" && metTerms(loaded.state)).toContain("gt_term_saree");
+    const metBefore = { ...state, glossary: ["gt_term_saree"] };
+    expect(metTerms(buyOutfit(metBefore, SAREE, metBefore.revision))).toEqual(["gt_term_saree"]);
+    // A refused purchase meets nothing.
+    expect(metTerms(buyOutfit(state, SAREE, state.revision - 1))).toEqual([]);
   });
 
   it("refuses a purchase the money that can be spent now does not cover, saying why", () => {
