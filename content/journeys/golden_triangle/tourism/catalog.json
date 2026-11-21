@@ -1066,6 +1066,20 @@
       "checkedAt": "2026-11-21"
     },
     {
+      "id": "gt_img_term_anarkali",
+      "path": "assets/tourism/india/term_anarkali.webp",
+      "width": 1086,
+      "height": 1200,
+      "altJa": "ファッションショーの舞台で、青緑のアナルカリを着た人の首から下。金の刺繍の帯の下から裾が大きく広がり、細身のズボンの足首にしわが寄る。透ける薄布を片手で広げている。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yogita_Grover,_Well_Groomed_Fashion_Show_(5420850558).jpg",
+      "licenseName": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "creditJa": "写真：Brendan Lally（Dance Photographer）／Flickr（Wikimedia Commons）／CC BY 2.0",
+      "modificationJa": "Flickr配信の2048×1360px版（元画像は3888×2582px）から、人物の顔を外すため首から下を1280×1415pxの範囲で切り抜きました。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。さらに縦横比を保って1086×1200pxに縮小し、WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
       "id": "gt_img_term_langar",
       "path": "assets/tourism/india/term_langar.webp",
       "width": 1200,
