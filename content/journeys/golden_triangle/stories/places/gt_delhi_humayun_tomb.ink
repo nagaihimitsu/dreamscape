@@ -152,6 +152,7 @@ INCLUDE modules.ink
     # speaker: enemy
     # voice: gt_delhi_main_humayun_tomb_battle_suresh_010
     # term: gt_term_isa_khan
+    # term: gt_term_sher_shah
     違う。イーサー・ハーン、シェール・シャーの宮廷の男だ。フマユーンの廟より古い。入口の申告で、もうつまずいたな
     # speaker: narrator
     メヘルの手が、{heroine_name}の袖を強く握った。

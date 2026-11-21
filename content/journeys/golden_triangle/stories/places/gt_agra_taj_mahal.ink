@@ -406,10 +406,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # voice: gt_agra_finale_010
+    # term: gt_term_amanat_khan
     書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて
 - else:
     # speaker: enemy
     # voice: gt_agra_finale_battle_anwar_012
+    # term: gt_term_amanat_khan
     ……アマーナト・ハーン。書家だ。知っていたとも。わしは、その話をしたことがないだけだ
 }
 # speaker: narrator

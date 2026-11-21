@@ -28,6 +28,7 @@ INCLUDE modules.ink
 # speaker: gt_samir
 # voice: gt_agra_tour_morning_samir_003
 # term: gt_term_akbar
+# term: gt_term_mariam_uz_zamani
 皇帝アクバルと、お妃ジョーダーの恋の話なら、叔父の右に出る者はおりません
 # speaker: heroine
 # voice: gt_agra_tour_morning_001

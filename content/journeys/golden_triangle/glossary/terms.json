@@ -504,6 +504,42 @@
       "category": "person",
       "lineJa": "ベンガル出身のバラモン。アンベール王国の会計役で、ジャイ・シング2世に仕えた。",
       "imageId": "gt_img_term_vidyadhar"
+    },
+    {
+      "id": "gt_term_mariam_uz_zamani",
+      "nameJa": "マリアム・ウッザマーニー",
+      "readingJa": null,
+      "aliasJa": "ジョーダー・バーイー",
+      "category": "person",
+      "lineJa": "アクバルの妃で、皇帝ジャハーンギールの母。「ジョーダー」は後に広まった呼び名。",
+      "imageId": "gt_img_term_mariam_uz_zamani"
+    },
+    {
+      "id": "gt_term_amanat_khan",
+      "nameJa": "アマーナト・ハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シーラーズ出身の書家。兄は宰相アフザル・ハーン。自分の名の隊商宿を建てた。",
+      "imageId": "gt_img_term_amanat_khan"
+    },
+    {
+      "id": "gt_term_sher_shah",
+      "nameJa": "シェール・シャー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "スール朝を開いた王。フマユーンを破り、ルピー銀貨を出して街道を整えた。",
+      "imageId": "gt_img_term_sher_shah"
+    },
+    {
+      "id": "gt_term_afzal_khan",
+      "nameJa": "アフザル・ハーン・シーラーズィー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シーラーズ出身の学者。シャー・ジャハーンの宰相を務め、1639年に亡くなった。",
+      "imageId": "gt_img_term_afzal_khan"
     }
   ]
 }

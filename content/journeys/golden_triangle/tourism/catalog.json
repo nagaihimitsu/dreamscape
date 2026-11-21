@@ -1778,6 +1778,62 @@
       "creditJa": "写真：Vineet Sharma 1992／Wikimedia Commons／CC BY-SA 4.0",
       "modificationJa": "Wikimedia Commons 配信の960×1186px縮小版（元画像は1080×1334px）を使用。切り抜きはしていません。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
       "checkedAt": "2026-11-21"
+    },
+    {
+      "id": "gt_img_term_mariam_uz_zamani",
+      "path": "assets/tourism/india/term_mariam_uz_zamani.webp",
+      "width": 960,
+      "height": 712,
+      "altJa": "ラホールの、彼女が建てさせたモスク（マリアム・ザマーニー・モスク）の礼拝室の中。赤茶色の壁と天井のアーチに、星や花の模様の壁画がびっしり描かれ、青地に白い文字の帯がある。本人の確かな肖像は残っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mosque_of_Mariyam_Zamani_Begum_5_(WCLA).jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：The Walled City of Lahore Authority／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons 配信の960×712px縮小版（元画像は5069×3758px）を使用。切り抜きはしていません。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
+      "id": "gt_img_term_amanat_khan",
+      "path": "assets/tourism/india/term_amanat_khan.webp",
+      "width": 800,
+      "height": 720,
+      "altJa": "アーグラとラホールを結ぶ道に彼が建てた隊商宿（サライ・アマーナト・ハーン）の門。両脇に八角の塔が立つ赤茶色の門で、アーチの奥に道が続いている。本人の肖像は残っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sarai_Amanat_Khan.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Agg.Shubhang／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "Wikimedia Commons 配信の960×720px縮小版（元画像は4096×3072px）から、右下に小さく写る人を外すため、左の800×720pxを切り抜きました。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
+      "id": "gt_img_term_sher_shah",
+      "path": "assets/tourism/india/term_sher_shah.webp",
+      "width": 960,
+      "height": 640,
+      "altJa": "ビハール州サーサーラームの、人工の池の中に建つ彼の墓廟。大きなドームの周りに小さな丸屋根の塔が並び、細い参道が水面を渡っている。同じ時代の肖像は残っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sher_Shah_Suri_Tomb.jpg",
+      "licenseName": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "creditJa": "写真：Nandanupadhyay／Wikimedia Commons／CC BY-SA 3.0",
+      "modificationJa": "Wikimedia Commons 配信の960×640px縮小版（元画像は4608×3072px）を使用。切り抜きはしていません。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
+      "id": "gt_img_term_afzal_khan",
+      "path": "assets/tourism/india/term_afzal_khan.webp",
+      "width": 960,
+      "height": 960,
+      "altJa": "彼が眠るアーグラのチーニー・カ・ラウザーの外壁。青・黄・緑の釉薬のタイルで、花や幾何学の模様が四角い枠ごとに埋め込まれている。本人の肖像は残っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chini-Ka-Rauza,_Agra_-_External_Art_2-1.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Braja Sorensen／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons 配信の960×1280px縮小版（元画像は1704×2272px）から、上の空を外して下の960×960pxを切り抜きました。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
     }
   ],
   "landmarks": [
