@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_ram_bagh
 # speaker: narrator
 ラーム・バーグには、ほとんど人がいなかった。一段高い石の通路が庭を四つに分け、水のない水路が、川の方へまっすぐ下りていく。木の上で、緑のインコが騒いでいた。
+# term: gt_term_babur
 インドでいちばん古いムガル庭園の一つで、帝国を開いたバーブルが造らせたと伝えられている。
 # speaker: heroine
 # voice: gt_agra_date_ram_bagh_001

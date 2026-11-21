@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_delhi_humayun_tomb
 # speaker: narrator
+# term: gt_term_humayun
 フマユーン廟の庭は、まっすぐな水路で四つに区切られていた。その奥に、赤い石と白い大理石の廟が、ゆったり座っている。
 # speaker: heroine
 # reaction: heroine,happy,sparkle

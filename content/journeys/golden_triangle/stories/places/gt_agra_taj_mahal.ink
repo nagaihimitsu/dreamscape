@@ -91,12 +91,14 @@ INCLUDE modules.ink
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
 # speaker: enemy
 # voice: gt_agra_main_taj_mahal_battle_nikhil_005
+# term: gt_term_shah_jahan
 シャー・ジャハーンは、ムムターズをそれほど愛して……
 # speaker: narrator
 タンヴィが静かに遮った。
 # speaker: gt_tanvi
 # cutin: name
 # voice: gt_agra_main_taj_mahal_battle_tanvi_001
+# term: gt_term_mumtaz_mahal
 ねえ、ニキル。ムムターズがどこで、どうやって亡くなったか、知ってる？
 -> quiz(1) ->
 # background: gt_bg_agra_taj_mahal

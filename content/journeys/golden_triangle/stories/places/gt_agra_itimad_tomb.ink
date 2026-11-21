@@ -120,6 +120,7 @@ INCLUDE modules.ink
 - else:
     # speaker: enemy
     # voice: gt_agra_main_itimad_tomb_battle_vimla_011
+    # term: gt_term_nur_jahan
     ペルシアから来た貴族よ。宮廷に来て、自分の力で一番上まで上った。その娘が、皇妃ヌール・ジャハーン
 }
 # speaker: heroine
@@ -133,6 +134,7 @@ INCLUDE modules.ink
 三つ目の主張は、一番下に、一番大きな字で書いてあった。
 # speaker: narrator
 # letter: note
+# term: gt_term_nur_jahan
 この墓を建てた皇妃ヌール・ジャハーンは、タージ・マハルの設計にも関わった
 # speaker: narrator
 {heroine_name}のペンが、紙の上で止まった。ヴィムラーがその手元をのぞき込む。
@@ -145,6 +147,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: serious
     # voice: gt_agra_main_itimad_tomb_006
+    # term: gt_term_shah_jahan
     三つ目だけ、資料で確かめられないと思います。タージは、シャー・ジャハーンの建物ですよね
 - else:
     # speaker: narrator

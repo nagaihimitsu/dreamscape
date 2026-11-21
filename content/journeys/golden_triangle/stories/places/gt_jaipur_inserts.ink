@@ -254,8 +254,10 @@ INCLUDE modules.ink
 # reaction: heroine,surprised_big,sparkle
 ほんとに戻ってきた……！　ガウラさんの大根が、パンになってる
 # speaker: gt_jaipur_hotel_front
+# local_word: gt_jaipur_word_mooli
 大根は、こっちの言葉でムーリー。だから、ムーリー・パラーター。北インドじゃ、大根はよくパラーターに詰めるのよ
 # speaker: gt_jaipur_hotel_front
+# local_word: gt_jaipur_word_dahi
 ダヒーと、漬物を添えて食べてね。ダヒーは、ヨーグルトのこと
 # speaker: narrator
 # leave: gt_jaipur_hotel_front

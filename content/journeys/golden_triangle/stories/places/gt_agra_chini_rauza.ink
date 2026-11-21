@@ -15,6 +15,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ヤムナー川の東岸、細い道の突き当たりに、四角い墓廟がぽつんと建っていた。チーニー・カ・ラウザー。
 # speaker: narrator
+# term: gt_term_shah_jahan
 眠っているのは、アフザル・ハーン・シーラーズィー。学者で詩人で、シャー・ジャハーンの宰相を務めた人だ。
 # speaker: narrator
 壁は一面、色とりどりの釉薬のタイルで覆われていたという。今はほとんど剥がれ落ちて、青と緑と黄色が、島のように残っている。

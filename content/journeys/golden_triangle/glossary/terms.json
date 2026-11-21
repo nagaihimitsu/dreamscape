@@ -333,6 +333,105 @@
       "category": "person",
       "lineJa": "17世紀フランスの宝石商。ペルシアとインドへ6度旅し、旅行記を残した。",
       "imageId": "gt_img_term_tavernier"
+    },
+    {
+      "id": "gt_term_shah_jahan",
+      "nameJa": "シャー・ジャハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第5代皇帝。亡き妃のためにタージ・マハルを建てた。",
+      "imageId": "gt_img_term_shah_jahan"
+    },
+    {
+      "id": "gt_term_mumtaz_mahal",
+      "nameJa": "ムムターズ・マハル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シャー・ジャハーンの妃。本名はアルジュマンド・バーヌー。タージ・マハルに眠る。",
+      "imageId": "gt_img_term_mumtaz_mahal"
+    },
+    {
+      "id": "gt_term_akbar",
+      "nameJa": "アクバル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第3代皇帝。帝国を大きく広げ、異なる信仰に寛容だった。",
+      "imageId": "gt_img_term_akbar"
+    },
+    {
+      "id": "gt_term_humayun",
+      "nameJa": "フマユーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第2代皇帝。一度は国を追われ、15年後にデリーを取り戻した。",
+      "imageId": "gt_img_term_humayun"
+    },
+    {
+      "id": "gt_term_babur",
+      "nameJa": "バーブル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国を開いた初代皇帝。中央アジアのフェルガナ出身で、自伝を残した。",
+      "imageId": "gt_img_term_babur"
+    },
+    {
+      "id": "gt_term_aurangzeb",
+      "nameJa": "アウラングゼーブ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国の第6代皇帝（在位1658〜1707年）。帝国の領土をいちばん広げた。",
+      "imageId": "gt_img_term_aurangzeb"
+    },
+    {
+      "id": "gt_term_jahanara",
+      "nameJa": "ジャハーナーラー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シャー・ジャハーンの皇女。宮廷で大きな力を持ち、聖者の伝記も書いた。",
+      "imageId": "gt_img_term_jahanara"
+    },
+    {
+      "id": "gt_term_nur_jahan",
+      "nameJa": "ヌール・ジャハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "皇帝ジャハーンギールの皇妃。政治の実権を握り、自分の名で硬貨を出させた。",
+      "imageId": "gt_img_term_nur_jahan"
+    },
+    {
+      "id": "gt_term_man_singh",
+      "nameJa": "マーン・シング1世",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "アンベールの王。アクバルの重臣として戦い、ベンガルなどの総督を務めた。",
+      "imageId": "gt_img_term_man_singh"
+    },
+    {
+      "id": "gt_term_amir_khusrau",
+      "nameJa": "アミール・フスロー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "デリーの詩人・音楽家（1253〜1325年）。聖者ニザームッディーンの弟子。",
+      "imageId": "gt_img_term_amir_khusrau"
+    },
+    {
+      "id": "gt_term_tegh_bahadur",
+      "nameJa": "テーグ・バハードゥル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シク教の9代目のグル（師）。1675年、デリーで処刑された。",
+      "imageId": "gt_img_term_tegh_bahadur"
     }
   ]
 }

@@ -170,6 +170,67 @@
       ]
     },
     {
+      "id": "gt_delhi_word_yatrigan",
+      "cityId": "delhi",
+      "word": "यात्रीगण",
+      "reading": "ヤートリーガン",
+      "meaningJa": "乗客の皆さま、旅の皆さま",
+      "noteJa": "यात्री（ヤートリー、旅人・乗客）に、人の集まりを表す गण（ガン）が付いた形。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（यात्री、p. 843）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AF%E0%A4%BE%E0%A4%A4%E0%A5%8D%E0%A4%B0%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "यात्री（yātrī）の項：「旅人、巡礼者」「乗客」「旅行者」。"
+        },
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（गण、p. 253）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%97%E0%A4%A3&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "गण（gaṇ）の項：「集団、一団」。文法では、まとめて複数を表す語。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_kripya",
+      "cityId": "delhi",
+      "word": "कृपया",
+      "reading": "クリプヤー",
+      "meaningJa": "どうぞ、どうか（ていねいにお願いする言葉）",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（कृपया、p. 212）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%95%E0%A5%83%E0%A4%AA%E0%A4%AF%E0%A4%BE&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "कृपया（kr̥payā）の項：副詞。कृपा करके（ご親切に、どうか）と同じ。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_dhyan",
+      "cityId": "delhi",
+      "word": "ध्यान",
+      "reading": "ディヤーン",
+      "meaningJa": "注意、心を向けること",
+      "noteJa": "ध्यान देना（ディヤーン・デーナー）で「注意を向ける」。「瞑想」という意味もある。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（ध्यान、p. 536）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%A8&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "ध्यान（dhyān）の項：「瞑想」「熟慮」「注意、心」。ध्यान देना で「注意を向ける」。"
+        }
+      ]
+    },
+    {
       "id": "gt_agra_word_haan",
       "cityId": "agra",
       "word": "हाँ",
@@ -257,6 +318,24 @@
       ]
     },
     {
+      "id": "gt_jaipur_word_nana",
+      "cityId": "jaipur",
+      "word": "नाना",
+      "reading": "ナーナー",
+      "meaningJa": "母方のおじいさん",
+      "noteJa": "母方のおばあさんは、ナーニー。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（नाना、p. 552）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A8%E0%A4%BE%E0%A4%A8%E0%A4%BE&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "नाना（nānā）の項：「母方の祖父」。"
+        }
+      ]
+    },
+    {
       "id": "gt_jaipur_word_sawai",
       "cityId": "jaipur",
       "word": "सवाई",
@@ -270,6 +349,41 @@
           "checkedAt": "2026-11-12",
           "claimType": "documented_fact",
           "claimJa": "सवाई（savāī）の項：形容詞「一と四分の一倍の、四分の一だけ大きい」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_word_mooli",
+      "cityId": "jaipur",
+      "word": "मूली",
+      "reading": "ムーリー",
+      "meaningJa": "大根",
+      "noteJa": "くだけた言い方では「取るに足りないもの」という意味にも使う。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（मूली、p. 830）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AE%E0%A5%82%E0%A4%B2%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "मूली（mūlī）の項：「大根」。口語で「価値のない、取るに足りないもの」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_word_dahi",
+      "cityId": "jaipur",
+      "word": "दही",
+      "reading": "ダヒー",
+      "meaningJa": "ヨーグルト（牛乳を固めた、酸味のある凝乳）",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（दही、p. 486）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A6%E0%A4%B9%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-21",
+          "claimType": "documented_fact",
+          "claimJa": "दही（dahī）の項：「濃い酸乳、凝乳、ヨーグルト」。"
         }
       ]
     }

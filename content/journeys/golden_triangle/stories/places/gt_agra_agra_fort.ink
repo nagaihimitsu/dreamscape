@@ -70,6 +70,7 @@ INCLUDE modules.ink
 バス、と聞いたとたん、老人は駐車場の方から顔をそむけた。
 # speaker: gt_agra_fort_old_man
 # voice: gt_agra_main_agra_fort_battle_duggal_002
+# term: gt_term_shah_jahan
 タージを建てたシャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
 老人の視線が、近くにいた{heroine_name}たちを捉えた。背筋がさらに伸びる。
@@ -101,6 +102,7 @@ INCLUDE modules.ink
 - else:
     # speaker: enemy
     # voice: gt_agra_main_agra_fort_battle_duggal_007
+    # term: gt_term_aurangzeb
     実の息子、アウラングゼーブだよ。……そして今、わしを閉じ込めようとしているのは、旅行会社のバスだ
 }
 # speaker: narrator
@@ -129,10 +131,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     # voice: gt_agra_main_agra_fort_battle_duggal_011
+    # term: gt_term_jahanara
     娘だ。ジャハーナーラー。……娘というのは、ありがたいものだ
 - else:
     # speaker: enemy
     # voice: gt_agra_main_agra_fort_battle_duggal_012
+    # term: gt_term_jahanara
     娘のジャハーナーラーだよ。……娘というのは、ありがたいものだ
 }
 # speaker: enemy

@@ -153,10 +153,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # voice: gt_jaipur_main_amber_fort_008
+    # term: gt_term_man_singh
     城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_amber_fort_battle_saleem_011
+    # term: gt_term_man_singh
     城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前。向こうは王を取り違えている。……描いた奴は、ここに来たこともない
 }
 # speaker: narrator

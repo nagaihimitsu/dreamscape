@@ -110,6 +110,7 @@ INCLUDE modules.ink
 最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。小さな茶屋で、白いひげの老人が、チャイを煮ていた。
 # speaker: gt_raju
 # voice: gt_jaipur_date_jaigarh_fort_raju_010
+# local_word: gt_jaipur_word_nana
 宝は、ここ。うちのナーナー……じいちゃんのチャイ。ジャイプールでいちばんうまいんだ。本当だよ
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
