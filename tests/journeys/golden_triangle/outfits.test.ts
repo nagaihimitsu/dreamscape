@@ -7,7 +7,7 @@ import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../
 import { usableMoney } from "../../../src/domain/reservations";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
-// The heroine's outfits (2026-11-20 user decision): Delhi's cloth shop sells the blue sari (shop/catalog.json); bought once
+// The heroine's outfits (2026-11-20 user decision): Delhi's cloth shop sells the blue sari among others (shop/catalog.json); bought once
 // with the travel budget, it stays the party's, and 「服」 changes between it and 普段の服 in free time only.
 
 const SAREE = "gt_saree_blue";
@@ -29,7 +29,9 @@ describe("the shop's outfits", () => {
     for (const cityId of ["delhi", "agra", "jaipur"]) expect(getCityShop(cityId)?.outfitIds).toContain(SAREE);
     const state = delhi();
     expect(canChangeOutfit(state)).toBe(true);
-    expect(shopOutfits(state)).toEqual([{ outfit: getOutfit(SAREE), owned: false, available: true, reason: "" }]);
+    // Every outfit the shop lists is on offer, in the shop's order; the sari among them.
+    expect(shopOutfits(state).map((offer) => offer.outfit.id)).toEqual(getCityShop("delhi")!.outfitIds);
+    expect(shopOutfits(state)).toContainEqual({ outfit: getOutfit(SAREE), owned: false, available: true, reason: "" });
     expect(listPlayerActions(state)).toContainEqual({ kind: "buy_outfit", outfitId: SAREE });
     // Nothing to change into before something is bought.
     expect(listPlayerActions(state).some((action) => action.kind === "wear_outfit")).toBe(false);
@@ -43,7 +45,7 @@ describe("the shop's outfits", () => {
     expect(wornCostume(bought)).toBeUndefined();
     expect(buyOutfit(bought, SAREE, bought.revision)).toBe(bought);
     expect(shopOutfits(bought)[0]).toMatchObject({ owned: true, available: false });
-    expect(listPlayerActions(bought).some((action) => action.kind === "buy_outfit")).toBe(false);
+    expect(listPlayerActions(bought)).not.toContainEqual({ kind: "buy_outfit", outfitId: SAREE });
     // A stale revision (a double press) changes nothing.
     expect(buyOutfit(state, SAREE, state.revision - 1)).toBe(state);
   });
