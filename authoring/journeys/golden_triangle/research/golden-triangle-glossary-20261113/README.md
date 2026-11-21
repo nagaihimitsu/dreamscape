@@ -66,7 +66,7 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 ユーザーの判断で、お店で買う服（伝統衣装・地域の衣装）は、買ったときに旅の図鑑にも入れる（`shop/catalog.json` の服の `termId`）。
 写真はゲームの絵ではなく、ほかの言葉と同じく出典つきの実写の写真にする。あわせて図鑑に分類「衣装」（`clothing`）を足し、
 もとは「もの」にあった衣服の4語（ドゥパッター・クルタ・ドーティー・セーラー）を「衣装」へ移した。同じ日に、制作者が足した紺のサルワール・カミーズの服（#205）にも
-言葉を付けた。インド編は35語になった。
+言葉を付けた。続けて、木版プリントのクルタ（#208）と翡翠色のアナルカリ（#209）の服にも付けた。インド編は36語になった。
 
 ### サリー（`gt_term_saree`）
 
@@ -118,6 +118,30 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 | Flickr「Punjabi suit shop」（lucyrfisher／CC BY 2.0） | ロンドンの店の飾り窓。奥に通行人。 |
 | File:Salwar kameez in Forest Fields - geograph.org.uk - 1408883.jpg | イギリスの店の外観で、服が小さい。 |
 | File:Shalwar kameez (1710604).jpg ほか（Pixabay） | 写っているのはクルティーとレギンスで、モデルの顔が主題。 |
+
+### クルタ（`gt_term_kurta`）
+
+- 服：木版プリントのクルタ（`gt_kurta_block_print`）を買うと入る。言葉と写真は 2026-11-13 からあるもの（フマーユーン廟の案内の行の札でも入る）をそのまま使った。
+  先に物語で出会っていれば、買っても何もしない。
+
+### アナルカリ（`gt_term_anarkali`）
+
+- 服：翡翠色のアナルカリ（`gt_anarkali_jade`）を買うと入る。
+- 名前：服の名前に合わせて「アナルカリ」。別名「アナルカリ・スーツ」。
+- 1行の説明：「裾の広がる長いドレスのような上着に、細身のズボンを合わせる女性の装い。」（35字）
+  - 根拠：英語版ウィキペディア「Anarkali salwar kameez」（Anarkali suit から転送。2026-11-21 に読んだ。冒頭）。
+    “An anarkali is a type of women's suit consisting of a long, frock-style top and a slim-fitting bottom.”、
+    “The top varies in length … ranging from knee-length to floor-length designs.”
+  - 名前の由来は同じ記事で “Anarkali suits owe their name to the eponymous character played by actress Madhubala in the 1960 Indian epic film
+    Mughal-e-Azam.”（宮廷の踊り手アナールカリーの話は、記事では伝説と書いていない）。1行に入らないのと、史実と伝説の区別が要るので、説明文には入れていない。
+  - 記事には胸の下での切り替えやドゥパッターの記述がないので、説明文に入れていない（服の説明 `descriptionJa` と写真には出ている）。
+- 写真：[File:Yogita Grover, Well Groomed Fashion Show (5420850558).jpg](https://commons.wikimedia.org/wiki/File:Yogita_Grover,_Well_Groomed_Fashion_Show_(5420850558).jpg)
+  （Brendan Lally（Flickr の Dance Photographer）／CC BY 2.0。Flickr のページと Commons の FlickreviewR（2020-02-01）で確認）。
+  2011年のファッションショーで、青緑のアナルカリにチュリダールとドゥパッターを合わせた姿の全身。顔を外すため、Flickr の 2048px 版から首から下を切り抜き、
+  長い辺1200px に縮めた（WebP 品質80）。
+- 見て外した候補：Commons の Category:Anarkali Salwar Suit の写真は、ほとんどが芸能人の催しの写真で顔が主題。
+  File:Woman sitting wearing red anarkali dress.jpg（CC0）は座った姿で裾の広がりが見えず、花嫁の装身具が主題。
+  File:IMG-20230408-WA0382.jpg は店の字（品番と店名）が重ねてある。Openverse の「anarkali」は廟（アナールカリーの墓）と映画の写真が中心だった。
 
 ---
 

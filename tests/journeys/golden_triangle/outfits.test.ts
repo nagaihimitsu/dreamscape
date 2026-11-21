@@ -8,12 +8,11 @@ import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../
 import { usableMoney } from "../../../src/domain/reservations";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
-// The heroine's outfits (2026-11-20 user decision): Delhi's cloth shop sells the blue sari, the navy salwar kameez and the jade anarkali (shop/catalog.json); bought once
+// The heroine's outfits (2026-11-20 user decision): Delhi's cloth shop sells the blue sari among others (shop/catalog.json); bought once
 // with the travel budget, it stays the party's, and 「服」 changes between it and 普段の服 in free time only.
 
 const SAREE = "gt_saree_blue";
 const SALWAR_KAMEEZ = "gt_salwar_kameez_navy";
-const ANARKALI = "gt_anarkali_jade";
 const price = getOutfit(SAREE)!.price;
 
 function memoryStorage(): StorageLike {
@@ -32,7 +31,9 @@ describe("the shop's outfits", () => {
     for (const cityId of ["delhi", "agra", "jaipur"]) expect(getCityShop(cityId)?.outfitIds).toContain(SAREE);
     const state = delhi();
     expect(canChangeOutfit(state)).toBe(true);
-    expect(shopOutfits(state)).toEqual([SAREE, SALWAR_KAMEEZ, ANARKALI].map((id) => ({ outfit: getOutfit(id), owned: false, available: true, reason: "" })));
+    // Every outfit the shop lists is on offer, in the shop's order; the sari among them.
+    expect(shopOutfits(state).map((offer) => offer.outfit.id)).toEqual(getCityShop("delhi")!.outfitIds);
+    expect(shopOutfits(state)).toContainEqual({ outfit: getOutfit(SAREE), owned: false, available: true, reason: "" });
     expect(listPlayerActions(state)).toContainEqual({ kind: "buy_outfit", outfitId: SAREE });
     // Nothing to change into before something is bought.
     expect(listPlayerActions(state).some((action) => action.kind === "wear_outfit")).toBe(false);
@@ -57,6 +58,8 @@ describe("the shop's outfits", () => {
     const state = delhi();
     expect(getOutfit(SAREE)?.termId).toBe("gt_term_saree");
     expect(getOutfit(SALWAR_KAMEEZ)?.termId).toBe("gt_term_salwar_kameez");
+    expect(getOutfit("gt_kurta_block_print")?.termId).toBe("gt_term_kurta");
+    expect(getOutfit("gt_anarkali_jade")?.termId).toBe("gt_term_anarkali");
     const bought = validateGameState(applyPlayerAction(state, playerActionChange({ kind: "buy_outfit", outfitId: SAREE }, () => 0)));
     expect(termsAdded(state, bought)).toEqual(["gt_term_saree"]);
     // The term is kept through a save and a load, as a line's # term: is.

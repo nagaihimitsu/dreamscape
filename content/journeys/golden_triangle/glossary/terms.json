@@ -47,6 +47,15 @@
       "imageId": "gt_img_term_salwar_kameez"
     },
     {
+      "id": "gt_term_anarkali",
+      "nameJa": "アナルカリ",
+      "readingJa": null,
+      "aliasJa": "アナルカリ・スーツ",
+      "category": "clothing",
+      "lineJa": "裾の広がる長いドレスのような上着に、細身のズボンを合わせる女性の装い。",
+      "imageId": "gt_img_term_anarkali"
+    },
+    {
       "id": "gt_term_langar",
       "nameJa": "ランガル",
       "readingJa": null,

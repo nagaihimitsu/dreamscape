@@ -147,6 +147,42 @@
           ]
         },
         {
+          "id": "kurta_01",
+          "poses": [
+            {
+              "id": "standing_01",
+              "canvas": {
+                "width": 1024,
+                "height": 1536
+              },
+              "placement": {
+                "x": 50,
+                "bottom": 0,
+                "width": 80,
+                "height": 62,
+                "scale": 1.4,
+                "originX": 50,
+                "originY": 0
+              },
+              "expressions": {
+                "neutral": "assets/characters/heroine/kurta_01/standing_01/neutral.webp",
+                "smile": "assets/characters/heroine/kurta_01/standing_01/smile.webp",
+                "happy": "assets/characters/heroine/kurta_01/standing_01/happy.webp",
+                "shy": "assets/characters/heroine/kurta_01/standing_01/shy.webp",
+                "shy_deep": "assets/characters/heroine/kurta_01/standing_01/shy_deep.webp",
+                "surprised": "assets/characters/heroine/kurta_01/standing_01/surprised.webp",
+                "surprised_big": "assets/characters/heroine/kurta_01/standing_01/surprised_big.webp",
+                "worried": "assets/characters/heroine/kurta_01/standing_01/worried.webp",
+                "serious": "assets/characters/heroine/kurta_01/standing_01/serious.webp",
+                "teasing": "assets/characters/heroine/kurta_01/standing_01/teasing.webp",
+                "teasing_big": "assets/characters/heroine/kurta_01/standing_01/teasing_big.webp",
+                "exasperated": "assets/characters/heroine/kurta_01/standing_01/exasperated.webp"
+              },
+              "avatar": "assets/characters/heroine/kurta_01/standing_01/avatar/"
+            }
+          ]
+        },
+        {
           "id": "anarkali_01",
           "poses": [
             {
