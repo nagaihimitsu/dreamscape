@@ -324,6 +324,15 @@
       "category": "custom",
       "lineJa": "女神ガウリーを祝う、ラージャスターンの春の祭り。女性たちの行列が出る。",
       "imageId": "gt_img_term_gangaur"
+    },
+    {
+      "id": "gt_term_tavernier",
+      "nameJa": "タヴェルニエ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "17世紀フランスの宝石商。ペルシアとインドへ6度旅し、旅行記を残した。",
+      "imageId": "gt_img_term_tavernier"
     }
   ]
 }

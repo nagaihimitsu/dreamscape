@@ -1498,6 +1498,20 @@
       "creditJa": "写真：Kaushlendrapathe／Wikimedia Commons／CC BY-SA 4.0",
       "modificationJa": "Wikimedia Commons配信の1920×2550px縮小版（元画像は3072×4080px）を使用。そこから横371〜1920px・縦765〜2319pxの範囲（1549×1554px）を切り抜きました。右上に写る店の人と、左下の撮影機種名の表示（透かし）を外し、色とりどりの像だけを残しています。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。さらに縦横比を保って1196×1200pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
       "checkedAt": "2026-11-13"
+    },
+    {
+      "id": "gt_img_term_tavernier",
+      "path": "assets/tourism/india/term_tavernier.webp",
+      "width": 960,
+      "height": 1200,
+      "altJa": "油彩の肖像画の上半身。金と緑の縞のターバンを巻き、金地に花模様の長い衣と毛皮の縁の外套をまとった年配の男が、腰の帯に右手を当てて立つ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jean-Baptist_Tavernier,_by_Nicolas_de_Largilli%C3%A8re.jpg",
+      "licenseName": "パブリックドメイン",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-Art",
+      "creditJa": "絵：ニコラ・ド・ラルジリエール《ジャン＝バティスト・タヴェルニエの肖像》（1678年頃、ヘルツォーク・アントン・ウルリッヒ美術館）／Wikimedia Commons／パブリックドメイン",
+      "modificationJa": "Wikimedia Commons配信の960×1703px縮小版（元画像は3814×6764px）から、旅の図鑑の一覧で正方形に切り抜いたときに顔が入るよう、上の960×1200px（膝より上）を切り抜きました。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
     }
   ],
   "landmarks": [

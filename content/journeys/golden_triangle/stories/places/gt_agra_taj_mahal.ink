@@ -313,6 +313,7 @@ INCLUDE modules.ink
 # speaker: heroine
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
+# term: gt_term_tavernier
 フランスの宝石商、タヴェルニエだよ。三百六十年前、タージが建っていくのをその目で見た男だ。手を切る話の二万という数も、あの男の旅行記にある
 # speaker: narrator
 アンワルは杖の先で、足もとの土を軽く突いた。
