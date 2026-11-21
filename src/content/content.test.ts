@@ -230,7 +230,12 @@ describe("content build acceptance", () => {
     const heroine = data.characters.find((character: { id: string }) => character.id === "heroine");
     expect(heroine.defaultCostume).toBe("default_01");
     expect(heroine.defaultPose).toBe("standing_01");
-    expect(heroine.costumes.find((costume: { id: string }) => costume.id === "default_01").poses[0].expressions).toEqual({});
+    // A costume without its drawings yet (no expressions, no moving portrait) still builds.
+    const pose = heroine.costumes.find((costume: { id: string }) => costume.id === "default_01").poses[0];
+    pose.expressions = {};
+    delete pose.avatar;
+    delete pose.avatarFace;
+    await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     heroine.defaultCostume = "missing_costume";
     await writeFile(file, JSON.stringify(data));

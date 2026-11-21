@@ -74,7 +74,9 @@ async function addSecondCity() {
     const quiz = await read(`${mi}/quizzes/${name}.json`);
     const copy = { ...quiz, id: prefix(quiz.id), ...(quiz.cityId ? { cityId: second.id } : {}),
       landmarkId: quiz.landmarkId && prefix(quiz.landmarkId), questions: quiz.questions.map((question: any) => {
-        if (learning.questions[question.id]) learning.questions[prefix(question.id)] = learning.questions[question.id];
+        // The question's translation and those of its other English levels (<question ID>@<level>).
+        for (const key of Object.keys(learning.questions))
+          if (key === question.id || key.startsWith(`${question.id}@`)) learning.questions[prefix(question.id) + key.slice(question.id.length)] = learning.questions[key];
         return { ...question, id: prefix(question.id) };
       }) };
     // A quiz file is named after its id (content:build checks it).

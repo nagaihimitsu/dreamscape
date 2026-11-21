@@ -37,7 +37,9 @@ describe("standalone content inspection", () => {
     const quiz = JSON.parse(
       await readFile(path.resolve(duomoQuiz), "utf8"),
     );
-    quiz.questions[0].options[0].id = quiz.questions[0].options[1].id;
+    // Its other English levels keep the same marks in order (checked first), so they change with it.
+    for (const options of [quiz.questions[0].options, ...Object.values(quiz.questions[0].levels ?? {}).map((level: any) => level.options)])
+      options[0].id = options[1].id;
     await writeFile(draft, JSON.stringify(quiz));
     try {
       await inspectFile(draft, "quiz");

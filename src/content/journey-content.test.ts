@@ -103,7 +103,7 @@ describe("integrated journey content contract", () => {
     );
     expect(otherClears.length).toBeGreaterThan(0);
     expect(otherClears.every((rule) => rule.ap === 1)).toBe(true);
-    expect(result.tourismGuides).toBe(result.tourism.landmarks.length);
+    expect(result.tourismGuides).toBe(result.tourism.landmarks.filter((landmark) => landmark.guideStoryId).length);
     const cityConversations = result.journey.episodes.filter((episode) => episode.epilogueStoryId).length +
       getCities().filter((city) => city.arrivalStoryId).length;
     expect(result.epilogueScenarios).toBe(8 * cityConversations);

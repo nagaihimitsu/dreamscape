@@ -905,7 +905,7 @@ EXTERNAL cond(text)
 
 1. 衣装の絵を `characters.json` の `heroine` の `costumes` に登録します（上の「基本の衣装・表情の画像を足す」と[動く立ち絵の作り方](LIVE_PORTRAIT_GUIDE.md)。`neutral` の絵が要ります）。
 2. 旅行編の `shop/catalog.json` の `outfits` に、服（`id`・衣装 `costume`・名前 `nameJa`・説明 `descriptionJa`・値段 `price`・買ったときの彼女の一言 `boughtLineJa`）を書きます。値段は旅行編の通貨の整数です。
-   - 伝統衣装や地域の衣装なら、任意の `termId` に旅の図鑑の言葉の ID を書きます（2026-11-21）。買ったときにその言葉が旅の図鑑に入り、言葉の小窓が出ます（もう図鑑にあれば何もしません）。言葉は上の「旅の図鑑の言葉」の手順で、同じ旅行編の `glossary/terms.json` に分類 `clothing`（衣装）で足し、写真はゲームの絵ではなく、出典つきの実写の写真にします。例はインド編の青いサリー（`gt_term_saree`）。
+   - 伝統衣装や地域の衣装なら、任意の `termId` に旅の図鑑の言葉の ID を書きます（2026-11-21）。買ったときにその言葉が旅の図鑑に入り、言葉の小窓が出ます（もう図鑑にあれば何もしません）。言葉は上の「旅の図鑑の言葉」の手順で、同じ旅行編の `glossary/terms.json` に分類 `clothing`（衣装）で足し、写真はゲームの絵ではなく、出典つきの実写の写真にします。例はインド編の青いサリー（`gt_term_saree`）と紺のサルワール・カミーズ（`gt_term_salwar_kameez`）。
 3. 同じファイルの `shops` に、お店（`id`・都市 `cityId`・札の名前 `nameJa`・紹介 `descriptionJa`・彼女の一言 `heroineLineJa`（任意）・売る服 `outfitIds`）を書きます。1都市に1軒までで、お店の札は街歩きの写真札の列の右端に出ます。同じ服を何都市で売ってもかまいません（買えるのは1回）。
 4. `npm run content:check` で確かめます（知らない衣装・絵のない衣装・都市、1都市に2軒、`glossary/terms.json` にない `termId` などで止まります）。
 

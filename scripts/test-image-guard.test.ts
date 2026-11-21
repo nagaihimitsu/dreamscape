@@ -3,11 +3,12 @@ import { describe, expect, it } from "vitest";
 import { changedFiles, changedImagesMessage, journeyImageStates } from "./test-image-guard";
 
 describe("journey image guard", () => {
-  it("records every file of the journeys' public folders, not the shared public/", () => {
+  it("records every file of the journeys' public folders and of the characters' folder, not the rest of the shared public/", () => {
     const root = path.resolve(".");
     const files = [...journeyImageStates(root).keys()].map((file) => path.relative(root, file));
-    expect(files.length).toBeGreaterThan(0);
-    expect(files.every((file) => /^content\/journeys\/[a-z][a-z0-9_]*\/public\//u.test(file))).toBe(true);
+    expect(files.some((file) => file.startsWith("content/journeys/"))).toBe(true);
+    expect(files.some((file) => file.startsWith("public/assets/characters/"))).toBe(true);
+    expect(files.every((file) => /^(content\/journeys\/[a-z][a-z0-9_]*\/public|public\/assets\/characters)\//u.test(file))).toBe(true);
   });
 
   it("reports changed, added and removed files", () => {

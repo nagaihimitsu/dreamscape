@@ -38,6 +38,15 @@
       "imageId": "gt_img_term_saree"
     },
     {
+      "id": "gt_term_salwar_kameez",
+      "nameJa": "サルワール・カミーズ",
+      "readingJa": null,
+      "aliasJa": "シャルワール・カミーズ",
+      "category": "clothing",
+      "lineJa": "長い上着カミーズに、足首ですぼまるズボンのサルワールを合わせた南アジアの装い。",
+      "imageId": "gt_img_term_salwar_kameez"
+    },
+    {
       "id": "gt_term_langar",
       "nameJa": "ランガル",
       "readingJa": null,

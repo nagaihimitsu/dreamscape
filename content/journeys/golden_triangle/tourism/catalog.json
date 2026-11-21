@@ -1052,6 +1052,20 @@
       "checkedAt": "2026-11-21"
     },
     {
+      "id": "gt_img_term_salwar_kameez",
+      "path": "assets/tourism/india/term_salwar_kameez.webp",
+      "width": 983,
+      "height": 771,
+      "altJa": "店先に並んだマネキンが着るサルワール・カミーズ。赤や紫、白の長い上着に同じ色のズボンを合わせ、右の2体は薄い布のドゥパッターを手や腕に掛けている。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://www.flickr.com/photos/64924693@N00/6387773781",
+      "licenseName": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "creditJa": "写真：Nagarjun（Pretty ladies in salwar kameez）／Flickr／CC BY 2.0",
+      "modificationJa": "Flickrの元画像（1683×1051px）から、右上の店の看板と左側のマネキン・吊るした布を外すため、右下の983×771pxの範囲を切り抜きました（縮小はしていません）。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
       "id": "gt_img_term_langar",
       "path": "assets/tourism/india/term_langar.webp",
       "width": 1200,

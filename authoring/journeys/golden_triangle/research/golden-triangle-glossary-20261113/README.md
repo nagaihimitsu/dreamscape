@@ -65,7 +65,8 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 
 ユーザーの判断で、お店で買う服（伝統衣装・地域の衣装）は、買ったときに旅の図鑑にも入れる（`shop/catalog.json` の服の `termId`）。
 写真はゲームの絵ではなく、ほかの言葉と同じく出典つきの実写の写真にする。あわせて図鑑に分類「衣装」（`clothing`）を足し、
-もとは「もの」にあった衣服の4語（ドゥパッター・クルタ・ドーティー・セーラー）を「衣装」へ移した。インド編は34語になった。
+もとは「もの」にあった衣服の4語（ドゥパッター・クルタ・ドーティー・セーラー）を「衣装」へ移した。同じ日に、制作者が足した紺のサルワール・カミーズの服（#205）にも
+言葉を付けた。インド編は35語になった。
 
 ### サリー（`gt_term_saree`）
 
@@ -91,6 +92,32 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 | File:Indian Woman in Saree.jpg | 着方はよく分かるが、人の顔が主題。 |
 | File:Saree with pallu.jpg・File:Saree with silver border.jpg | 畳んだ布に「Pallu」「Saree」などの英字と人形が重ねてある。 |
 | File:Sambhalpuri Saree (Blue).jpg・File:India (Madhya Pradesh), sari, 1980s - Bunka Gakuen Costume Museum - DSC05305.JPG | 布だけで、着た形が分からない。 |
+
+### サルワール・カミーズ（`gt_term_salwar_kameez`）
+
+- 服：紺のサルワール・カミーズ（`gt_salwar_kameez_navy`）を買うと入る。
+- 名前：服の名前に合わせて「サルワール・カミーズ」。パキスタンなどでの呼び方（英語版ウィキペディアの記事名 Shalwar kameez）を別名「シャルワール・カミーズ」にした。
+- 1行の説明：「長い上着カミーズに、足首ですぼまるズボンのサルワールを合わせた南アジアの装い。」（39字）
+  - 根拠：英語版ウィキペディア「Shalwar kameez」（2026-11-21 に読んだ。冒頭・Description・Styles）。“The kameez is a long shirt or tunic.”、
+    “The shalwar are loose pyjama-like trousers. The legs are wide at the top, and narrow at the ankle.”、
+    “a traditional combination dress worn by men and women in South Asia”、“the shalwar kameez has now become popular across the Indian subcontinent.”
+  - 「膝下まで」などの丈は、読んだ部分では確かめられなかったので説明文に入れていない（服の説明 `descriptionJa` の「膝下まである」は服そのものの描写として残した）。
+  - 男女とも着る（パキスタンでは国の服）。インドではおもに女性の服なので「女性の」とは書かず、「南アジアの装い」とした。
+  - ドゥパッターは「一部の地域で女性が合わせる」もので、組み合わせの決まった一部ではないため、説明文には入れていない（写真には写っている）。
+- 写真：[Pretty ladies in salwar kameez](https://www.flickr.com/photos/64924693@N00/6387773781)（Nagarjun／Flickr／CC BY 2.0。
+  2026-11-21 に Flickr のページでライセンスを確認。説明は「Colours of Deepavali in Bhopal」、2011-10-24 撮影）。店先に並んだマネキンで、
+  人の顔が写らない。元画像（1683×1051px）から、右上の店の看板（店名と「SALWAR KAMEEZ …」の字）と左側のマネキン・吊るした布を外すため、
+  右下の983×771px を切り抜いた（縮小なし。WebP 品質80）。
+- 見て外した候補（Commons の Category:Shalwar kameez・Punjabi dress と Openverse）：
+
+| 候補 | 判断 |
+| --- | --- |
+| File:Girl in salwar kameez.jpg（Samantha McNamara／CC BY 2.0） | 黒い上着に赤いドゥパッターで形はよいが、顔が主題で、胸の前に字の入った本を持っている。 |
+| File:In my salwar suit.jpg（Linda／CC BY 2.0） | 形はよく分かるが、顔が主題で、後ろの人たちの顔と服の字も写る。 |
+| File:Shalwar kameez.jpg（Lunaloop／CC BY-SA 4.0） | 男性3人の後ろ姿。ゲームの服は女性の装いなので外した。 |
+| Flickr「Punjabi suit shop」（lucyrfisher／CC BY 2.0） | ロンドンの店の飾り窓。奥に通行人。 |
+| File:Salwar kameez in Forest Fields - geograph.org.uk - 1408883.jpg | イギリスの店の外観で、服が小さい。 |
+| File:Shalwar kameez (1710604).jpg ほか（Pixabay） | 写っているのはクルティーとレギンスで、モデルの顔が主題。 |
 
 ---
 
