@@ -1,6 +1,5 @@
 import { copyFile, cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { characterCatalogSchema } from "./character-assets";
 import { ownArtworkCatalogSchema, type OwnArtworkCatalog } from "./own-artwork-schema";
 import type { MergedKind } from "../../scripts/content-layout";
 import { loadContentSources, publicRoots, storyFile } from "../../scripts/content-sources";
@@ -8,12 +7,12 @@ import { OWN_ARTWORK_KIND } from "../../scripts/image-rights";
 import { copyVoiceRecords } from "../../scripts/voice-records";
 
 /**
- * Build an isolated, artwork-undelivered fixture for tests of other content.
- * Production content and its artwork are still validated by content:build;
- * image-specific tests can register their own images in this fixture.
+ * Build an isolated fixture for tests of content.
+ * Image-specific tests can register their own images in this fixture.
  *
  * The images of the journeys (`content/journeys/<journeyId>/public/`, most of
- * the repository's size) are not copied: their folders are real, but each file
+ * the repository's size) and of the characters (`public/assets/characters/`)
+ * are not copied: their folders are real, but each file
  * is a symbolic link to the repository's file (a copy where links cannot be
  * made, see linkFiles). A test may add or remove files
  * there, but must never write over a linked file, since that would change the
@@ -37,23 +36,10 @@ export async function prepareContentFixture(fixture: string): Promise<void> {
     recursive: true,
     filter: (source) => source !== characterAssets,
   });
+  // The characters' images (still pictures and the moving portraits' folders) are linked the same way.
+  await linkFiles(characterAssets, path.join(fixture, path.relative(root, characterAssets)));
   // content:build reads what the delivered voices say (a voice recorded up to the player's name passes only with it).
   copyVoiceRecords(root, fixture);
-  const file = path.join(fixture, "content/presentation/characters.json");
-  const catalog = characterCatalogSchema.parse(JSON.parse(await readFile(file, "utf8")));
-  for (const character of catalog.characters)
-    for (const costume of character.costumes ?? [])
-      for (const pose of costume.poses) pose.expressions = {};
-  await writeFile(file, JSON.stringify(catalog));
-  // content:build refuses a listed own artwork that is not served: the fixture's
-  // list leaves out the character images the fixture does not copy.
-  const uncopied = `${path.relative(path.join(root, "public"), characterAssets).split(path.sep).join("/")}/`;
-  const ownFile = path.join(fixture, "content", OWN_ARTWORK_KIND);
-  const own = ownArtworkCatalogSchema.parse(JSON.parse(await readFile(ownFile, "utf8")));
-  own.artworks = own.artworks
-    .map((group) => ({ ...group, paths: group.paths.filter((assetPath) => !assetPath.startsWith(uncopied)) }))
-    .filter((group) => group.paths.length > 0);
-  await writeFile(ownFile, JSON.stringify(own));
 }
 
 /**
