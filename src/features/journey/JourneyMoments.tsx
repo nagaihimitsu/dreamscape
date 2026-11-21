@@ -25,8 +25,11 @@ const STAMP_LAND_MS = 260;
 /** How long the packing shows (ms; its items come in one after another). Reduced motion: still. */
 const PACKING_MS = 4200;
 const PACKING_REDUCED_MS = 3600;
-/** The credit roll's pace (px a second). */
+/** The credit roll's pace (px a second); held down (a long press, or Enter・Space held), it goes this many times as fast. */
 const ROLL_PX_PER_SECOND = 32;
+const ROLL_FAST_TIMES = 8;
+/** How long a press is held before the roll goes fast (ms). */
+const ROLL_HOLD_MS = 350;
 
 const served = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -205,7 +208,8 @@ function PackedList({ items }: { items: readonly PackedItem[] }) {
  * right under its name (the author's illustrations in a 3:2 frame, set left and right in turn, no credit; 2026-11-20 user
  * decision: no clear titles or people met), and 「Fin」 with the journey's name at the end. The two's names are not in it
  * (2026-11-21 user decision). It rolls up slowly by itself; a tap on it, Enter or
- * Space (on the roll) or 「止める」 pauses it and 「続ける」 goes on; 「閉じる」 or Esc ends it. It stops at its end. With
+ * Space (on the roll) or 「止める」 pauses it and 「続ける」 goes on; held down (a long press on it, or Enter・Space held)
+ * it fast-forwards until let go, a paused roll too, which then goes on rolling (2026-11-21 user decision); 「閉じる」 or Esc ends it. It stops at its end. With
  * reduced motion it does not roll: a list that scrolls by hand. Opened under the finger of the epilogue's last tap, it takes
  * no press for a moment (settlePresses). No relationship value is in it.
  */
@@ -222,6 +226,31 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
   const scroller = useRef<HTMLDivElement>(null);
   const toggleButton = useRef<HTMLButtonElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
+  const [fast, setFast] = useState(false);
+  const fastRef = useRef(false);
+  const holdTimer = useRef<number | undefined>(undefined);
+  /** A press that went fast is not also a tap (its click does not pause the roll). */
+  const heldLong = useRef(false);
+  /** Enter・Space went down on the roll (the key that opened it, let go here, is not a press on it). */
+  const keyDown = useRef(false);
+  const goFast = (on: boolean) => {
+    fastRef.current = on;
+    setFast(on);
+  };
+  const startHold = () => {
+    window.clearTimeout(holdTimer.current);
+    heldLong.current = false;
+    holdTimer.current = window.setTimeout(() => {
+      heldLong.current = true;
+      goFast(true);
+      setPlaying(true);
+    }, ROLL_HOLD_MS);
+  };
+  const endHold = () => {
+    window.clearTimeout(holdTimer.current);
+    if (fastRef.current) goFast(false);
+  };
+  useEffect(() => () => window.clearTimeout(holdTimer.current), []);
   useEffect(() => {
     const area = scroller.current;
     if (!playing || !area) return;
@@ -229,7 +258,7 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
     let carried = 0;
     let frame = window.requestAnimationFrame(function step(now) {
       // Whole pixels only (a fraction set to scrollTop is dropped); the rest is carried to the next frame.
-      carried += last === null ? 0 : ((now - last) * ROLL_PX_PER_SECOND) / 1000;
+      carried += last === null ? 0 : ((now - last) * ROLL_PX_PER_SECOND * (fastRef.current ? ROLL_FAST_TIMES : 1)) / 1000;
       last = now;
       const whole = Math.floor(carried);
       if (whole > 0) {
@@ -239,6 +268,7 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
       if (area.scrollTop + area.clientHeight >= area.scrollHeight - 1) {
         setPlaying(false);
         setEnded(true);
+        endHold();
         return;
       }
       frame = window.requestAnimationFrame(step);
@@ -253,12 +283,41 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
   return <Modal labelledBy="end-roll-title" className={`end-roll${still ? " is-still" : ""}`} onClose={onClose} settlePresses>
     <div className="end-roll-sky" aria-hidden="true" />
     <div ref={scroller} className="end-roll-scroller" tabIndex={0} role="region" aria-labelledby="end-roll-title" data-testid="end-roll"
-      onClick={(event) => { if (!(event.target as Element).closest("a, button, summary")) toggle(); }}
+      onClick={(event) => {
+        if (heldLong.current) {
+          heldLong.current = false;
+          return;
+        }
+        if (!(event.target as Element).closest("a, button, summary")) toggle();
+      }}
+      onPointerDown={(event) => {
+        if (still || ended || event.button !== 0 || (event.target as Element).closest("a, button, summary")) return;
+        startHold();
+      }}
+      onPointerUp={endHold}
+      onPointerCancel={endHold}
+      onPointerLeave={endHold}
+      onContextMenu={(event) => { if (!still) event.preventDefault(); }}
       onKeyDown={(event) => {
-        // (A still list keeps Space for scrolling.)
+        // (A still list keeps Space for scrolling.) Pressed, Enter or Space pauses or goes on as it is let go; held, it goes fast.
         if (still || event.target !== event.currentTarget || (event.key !== "Enter" && event.key !== " ")) return;
         event.preventDefault();
-        toggle();
+        if (!event.repeat) keyDown.current = true;
+        if (event.repeat && keyDown.current && !ended && !fastRef.current) {
+          heldLong.current = true;
+          goFast(true);
+          setPlaying(true);
+        }
+      }}
+      onKeyUp={(event) => {
+        if (still || event.target !== event.currentTarget || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+        if (!keyDown.current) return;
+        keyDown.current = false;
+        if (heldLong.current) {
+          heldLong.current = false;
+          endHold();
+        } else toggle();
       }}>
       <div className="end-roll-content">
         <header className="end-roll-opening">
@@ -286,6 +345,7 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
         </footer>
       </div>
     </div>
+    {fast && <p className="end-roll-fast" aria-hidden="true"><span>▶▶</span>早送り</p>}
     <div className="end-roll-bar">
       {!still && <button ref={toggleButton} type="button" className="secondary" disabled={ended} onClick={toggle}>{playing ? "止める" : "続ける"}</button>}
       <button ref={closeButton} type="button" className="primary" data-testid="end-roll-close" onClick={onClose}>閉じる</button>

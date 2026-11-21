@@ -320,6 +320,27 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
 }
 .end-roll-scroller::-webkit-scrollbar { display: none; }
+/* Rolling, a long press fast-forwards: no text selection or callout under the finger. */
+.end-roll:not(.is-still) .end-roll-scroller { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* While held: a small mark at the top right, over the roll (the roll's own pace shows it too). */
+.end-roll-fast {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top));
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 4px 12px;
+  border: 1px solid var(--roll-line);
+  border-radius: 999px;
+  background: rgba(7, 11, 22, 0.72);
+  color: var(--roll-gold);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  pointer-events: none;
+}
+.end-roll-fast span { font-size: 10px; letter-spacing: 0; }
 /* By hand: a narrow fade only, and the scroll bar comes back. */
 .end-roll.is-still .end-roll-scroller {
   cursor: auto;
