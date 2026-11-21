@@ -432,6 +432,69 @@
       "category": "person",
       "lineJa": "シク教の9代目のグル（師）。1675年、デリーで処刑された。",
       "imageId": "gt_img_term_tegh_bahadur"
+    },
+    {
+      "id": "gt_term_itimad_ud_daula",
+      "nameJa": "イティマード・ウッダウラ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "称号で、意味は「国家の柱」。本名はミールザー・ギヤース・ベグ。",
+      "imageId": "gt_img_term_itimad_ud_daula"
+    },
+    {
+      "id": "gt_term_isa_khan",
+      "nameJa": "イーサー・ハーン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "16世紀のアフガン系の貴族。ニヤーズィー族の出で、1548年に没した。",
+      "imageId": "gt_img_term_isa_khan"
+    },
+    {
+      "id": "gt_term_shiva",
+      "nameJa": "シヴァ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の神（神話の存在）。破壊と再生の神で、ヨーガ行者の姿でも描かれる。",
+      "imageId": "gt_img_term_shiva"
+    },
+    {
+      "id": "gt_term_parvati",
+      "nameJa": "パールヴァティー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の女神（神話の存在）。シヴァの妃で、山の王ヒマヴァットの娘とされる。",
+      "imageId": "gt_img_term_parvati"
+    },
+    {
+      "id": "gt_term_krishna",
+      "nameJa": "クリシュナ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の神（神話の存在）。ヴィシュヌの化身。笛を吹く牛飼いの姿で描かれる。",
+      "imageId": "gt_img_term_krishna"
+    },
+    {
+      "id": "gt_term_ganesha",
+      "nameJa": "ガネーシャ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ヒンドゥー教の神（神話の存在）。象の頭を持つ、シヴァとパールヴァティーの子。",
+      "imageId": "gt_img_term_ganesha"
+    },
+    {
+      "id": "gt_term_nahar_singh_bhomia",
+      "nameJa": "ナハル・シン・ボーミヤー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "言い伝えの人物。その霊が砦の工事を妨げ、砦の中に彼の寺が建てられたという。",
+      "imageId": "gt_img_term_nahar_singh_bhomia"
     }
   ]
 }

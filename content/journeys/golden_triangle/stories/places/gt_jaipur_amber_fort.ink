@@ -90,10 +90,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # voice: gt_jaipur_main_amber_fort_004
+    # term: gt_term_ganesha
     サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_amber_fort_battle_saleem_004
+    # term: gt_term_ganesha
     ガネーシャだ。ガネーシュ・ポール、ガネーシャの門。名前を読めば分かる。向こうのは孔雀になっている
 }
 # speaker: narrator

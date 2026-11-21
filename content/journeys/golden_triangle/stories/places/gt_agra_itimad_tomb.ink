@@ -101,6 +101,7 @@ INCLUDE modules.ink
 二つ目の主張は、ここに眠る人についてだった。{heroine_name}が読み上げかけると、ヴィムラーが先に言った。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_008
+# term: gt_term_itimad_ud_daula
 イティマード・ウッダウラは名前じゃなくて称号。『国家の柱』という意味。どんな人だったか、分かる？
 # speaker: heroine
 # voice: gt_agra_main_itimad_tomb_004

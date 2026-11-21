@@ -65,6 +65,8 @@ INCLUDE modules.ink
 ナスリーンは、腕輪をはめながら話してくれた。
 # speaker: gt_nasreen
 # voice: gt_jaipur_date_johari_bazaar_nasreen_004
+# term: gt_term_parvati
+# term: gt_term_shiva
 昔ね、女神パールヴァティーがシヴァと結婚するとき、腕輪職人たちがラックの腕輪を作ったの。それからずっと、花嫁や結婚した女の人は、ラックの腕輪で手首を飾るのよ
 # speaker: gt_nasreen
 # voice: gt_jaipur_date_johari_bazaar_nasreen_005

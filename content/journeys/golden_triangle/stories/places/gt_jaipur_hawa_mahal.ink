@@ -92,10 +92,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     # voice: gt_jaipur_main_hawa_mahal_battle_gaura_008
+    # term: gt_term_krishna
     クリシュナ様の冠！　それそれ。四十年かかって、やっと最後まで聞けた
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_hawa_mahal_battle_gaura_009
+    # term: gt_term_krishna
     ……今、隣のガイドが言ったわ。クリシュナ様の冠だって。あんたのおかげで、四十年ぶりに最後まで聞けた
 }
 # speaker: narrator
