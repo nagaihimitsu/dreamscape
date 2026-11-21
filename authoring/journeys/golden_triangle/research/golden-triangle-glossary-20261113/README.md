@@ -61,6 +61,64 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 | WordPress 写真集「Dulhe ka Sehra」 | Makarand Mane | CC0 | 写っているのは房の付かない婚礼のターバン（サファ）で、セーラーではない。 |
 | File:Bridegroom headgear for Indian wedding.jpg ほか | Wikilover90 ほか | CC BY-SA 4.0 | ターバンや飾りだけで、セーラーは写っていない。 |
 
+## 服から入る言葉と「衣装」の分類（2026-11-21）
+
+ユーザーの判断で、お店で買う服（伝統衣装・地域の衣装）は、買ったときに旅の図鑑にも入れる（`shop/catalog.json` の服の `termId`）。
+写真はゲームの絵ではなく、ほかの言葉と同じく出典つきの実写の写真にする。あわせて図鑑に分類「衣装」（`clothing`）を足し、
+もとは「もの」にあった衣服の4語（ドゥパッター・クルタ・ドーティー・セーラー）を「衣装」へ移した。同じ日に、制作者が足した紺のサルワール・カミーズの服（#205）にも
+言葉を付けた。インド編は35語になった。
+
+### サリー（`gt_term_saree`）
+
+- 服：青いサリー（`gt_saree_blue`）を買うと入る。台本の行には札を置いていない（「サリー姿の女性」などの行はあるが、今回は服からだけ）。
+- 1行の説明：「縫わない一枚の長い布を腰に巻き、端を肩に掛けて着る、南アジアの女性の装い。」（37字）
+  - 根拠：英語版ウィキペディア「Sari」（2026-11-21 に読んだ。冒頭と「Styles of draping」）。“an un-stitched stretch of woven fabric
+    arranged over the body as a dress”、“with one end attached to the waist, while the other end rests over one shoulder as a stole”、
+    “The most common style is for the sari to be wrapped around the waist, with the loose end of the drape to be worn over the shoulder”、
+    “women's garment in the Indian subcontinent”。長さは4.1〜8.2m とあるが、説明文には入れていない。
+    ブリタニカの「sari」は取得を拒まれ（403）、読めていない。
+  - 地域：インドだけでなくバングラデシュ・ネパール・スリランカなどでも着るので、「南アジアの」とした。
+  - 着方は80通り以上あり（同記事）、説明文はいちばん多い着方（ニヴィ）に合わせた。
+- 写真：[File:Sari on mannequin for demo.jpg](https://commons.wikimedia.org/wiki/File:Sari_on_mannequin_for_demo.jpg)
+  （Suyash.dwivedi／CC BY-SA 4.0、`{{self|cc-by-sa-4.0}}` をファイルのページで確認。2018-01-10、Sant Hirdaram Nagar（マディヤ・プラデーシュ州）。
+  英語版ウィキペディアの「Sari」の記事でも使われている）。店先のマネキン3体に着せたサリーで、腰に巻いて端を肩に掛ける着方が分かり、
+  人の顔が写らない。元画像（1080×1080px）の左端の奥に小さく写る通行人を外すため、左と下を80pxずつ切り落として1000×1000px にした
+  （縮小なし。WebP 品質80）。
+- 見て外した候補（どれも Category:Saris）：
+
+| 候補 | 判断 |
+| --- | --- |
+| File:Sari draping style of Cuttack, Odisha state museum, Bhubaneswar 2013.JPG | オリッサの地方の着方の展示で、一般的な着方の説明に合わない。針金の顔の人形が目立つ。 |
+| File:Indian Woman in Saree.jpg | 着方はよく分かるが、人の顔が主題。 |
+| File:Saree with pallu.jpg・File:Saree with silver border.jpg | 畳んだ布に「Pallu」「Saree」などの英字と人形が重ねてある。 |
+| File:Sambhalpuri Saree (Blue).jpg・File:India (Madhya Pradesh), sari, 1980s - Bunka Gakuen Costume Museum - DSC05305.JPG | 布だけで、着た形が分からない。 |
+
+### サルワール・カミーズ（`gt_term_salwar_kameez`）
+
+- 服：紺のサルワール・カミーズ（`gt_salwar_kameez_navy`）を買うと入る。
+- 名前：服の名前に合わせて「サルワール・カミーズ」。パキスタンなどでの呼び方（英語版ウィキペディアの記事名 Shalwar kameez）を別名「シャルワール・カミーズ」にした。
+- 1行の説明：「長い上着カミーズに、足首ですぼまるズボンのサルワールを合わせた南アジアの装い。」（39字）
+  - 根拠：英語版ウィキペディア「Shalwar kameez」（2026-11-21 に読んだ。冒頭・Description・Styles）。“The kameez is a long shirt or tunic.”、
+    “The shalwar are loose pyjama-like trousers. The legs are wide at the top, and narrow at the ankle.”、
+    “a traditional combination dress worn by men and women in South Asia”、“the shalwar kameez has now become popular across the Indian subcontinent.”
+  - 「膝下まで」などの丈は、読んだ部分では確かめられなかったので説明文に入れていない（服の説明 `descriptionJa` の「膝下まである」は服そのものの描写として残した）。
+  - 男女とも着る（パキスタンでは国の服）。インドではおもに女性の服なので「女性の」とは書かず、「南アジアの装い」とした。
+  - ドゥパッターは「一部の地域で女性が合わせる」もので、組み合わせの決まった一部ではないため、説明文には入れていない（写真には写っている）。
+- 写真：[Pretty ladies in salwar kameez](https://www.flickr.com/photos/64924693@N00/6387773781)（Nagarjun／Flickr／CC BY 2.0。
+  2026-11-21 に Flickr のページでライセンスを確認。説明は「Colours of Deepavali in Bhopal」、2011-10-24 撮影）。店先に並んだマネキンで、
+  人の顔が写らない。元画像（1683×1051px）から、右上の店の看板（店名と「SALWAR KAMEEZ …」の字）と左側のマネキン・吊るした布を外すため、
+  右下の983×771px を切り抜いた（縮小なし。WebP 品質80）。
+- 見て外した候補（Commons の Category:Shalwar kameez・Punjabi dress と Openverse）：
+
+| 候補 | 判断 |
+| --- | --- |
+| File:Girl in salwar kameez.jpg（Samantha McNamara／CC BY 2.0） | 黒い上着に赤いドゥパッターで形はよいが、顔が主題で、胸の前に字の入った本を持っている。 |
+| File:In my salwar suit.jpg（Linda／CC BY 2.0） | 形はよく分かるが、顔が主題で、後ろの人たちの顔と服の字も写る。 |
+| File:Shalwar kameez.jpg（Lunaloop／CC BY-SA 4.0） | 男性3人の後ろ姿。ゲームの服は女性の装いなので外した。 |
+| Flickr「Punjabi suit shop」（lucyrfisher／CC BY 2.0） | ロンドンの店の飾り窓。奥に通行人。 |
+| File:Salwar kameez in Forest Fields - geograph.org.uk - 1408883.jpg | イギリスの店の外観で、服が小さい。 |
+| File:Shalwar kameez (1710604).jpg ほか（Pixabay） | 写っているのはクルティーとレギンスで、モデルの顔が主題。 |
+
 ---
 
 ## 調査の記録

@@ -87,6 +87,10 @@
             "type": "string",
             "minLength": 1,
             "language": "ja"
+          },
+          "termId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
           }
         },
         "required": [

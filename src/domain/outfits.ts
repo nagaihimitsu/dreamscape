@@ -2,13 +2,15 @@ import { getCityShop, getOutfit, shopCatalog, type Outfit, type Shop } from "../
 import { formatMoneyForCity } from "../content/currency";
 import { getJourneyForCity } from "../content/journeys";
 import { hasActiveScene, type GameState } from "./game-state-schema";
+import { meetTerms } from "./glossary";
 import { usableMoney } from "./reservations";
 
 // The heroine's outfits (2026-11-20 user decision): a city's shop (shop/catalog.json) sells outfits in free time; one bought
 // is the party's for the rest of the journey (the save's `outfits`), and the header's 「服」 chooses what she wears (`outfit`;
 // none: 普段の服, the outfit the scene, the city or the region gives her: src/content/character-assets.ts). Buying pays once
 // from the travel budget and passes no game time; changing passes none and costs nothing. Both happen only in free time
-// (no scene open), so a scene never changes her clothes halfway. Pure.
+// (no scene open), so a scene never changes her clothes halfway. An outfit with a 旅の図鑑 term (a traditional or a regional
+// garment, `termId`; 2026-11-21 user decision) puts it in 旅の図鑑 as it is bought, and its card shows (GameApp). Pure.
 
 /** The outfits bought in this journey, in the order bought. */
 export const ownedOutfitIds = (state: Pick<GameState, "outfits">): readonly string[] => state.outfits ?? [];
@@ -56,13 +58,17 @@ export function shopOutfits(state: GameState): ShopOutfitChoice[] {
   });
 }
 
-/** Buy an outfit at the shop here: its price is paid once, and it is the party's for the rest of the journey. She does not change by it. */
+/**
+ * Buy an outfit at the shop here: its price is paid once, and it is the party's for the rest of the journey. She does not
+ * change by it. Its 旅の図鑑 term (`termId`), if it has one, goes in 旅の図鑑 unless met already.
+ */
 export function buyOutfit(state: GameState, outfitId: string, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision) return state;
   const choice = shopOutfits(state).find((item) => item.outfit.id === outfitId);
   if (!choice?.available) return state;
-  return { ...state, revision: state.revision + 1, travelBudget: state.travelBudget - choice.outfit.price,
-    outfits: [...ownedOutfitIds(state), outfitId] };
+  const { price, termId } = choice.outfit;
+  return meetTerms({ ...state, revision: state.revision + 1, travelBudget: state.travelBudget - price,
+    outfits: [...ownedOutfitIds(state), outfitId] }, termId ? [termId] : []);
 }
 
 /** Change into an outfit bought in this journey, or into 普段の服 (`null`). Unchanged when it is worn already or she cannot change now. */
