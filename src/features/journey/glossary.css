@@ -71,6 +71,14 @@
   border-radius: 10px;
   background: #e9dcc4;
 }
+/* What the photo shows when it stands in for the term (photoNoteJa): small and quiet, right under the photo. */
+.glossary-term-photo-note {
+  margin: 2px 0 0;
+  color: var(--ds-ink-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
 .glossary-term-name {
   margin: 4px 0 0;
   font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
@@ -244,6 +252,7 @@ dialog.modal.glossary-entry {
   margin: 0 auto;
   border-radius: 8px;
 }
+.glossary-entry-photo-note { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .glossary-entry-line { margin: 10px 0 0; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
 
 /* Reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion): the card and the dimming show at once. */

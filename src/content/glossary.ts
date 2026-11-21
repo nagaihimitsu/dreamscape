@@ -33,7 +33,9 @@ const optionalText = japaneseText.nullable().optional();
  * another name it goes by), its group (`category`), one line that lets the reader picture it (`lineJa`, 40 characters
  * advised, 60 at most) and its picture (`imageId`: a tourism photo of the same journey's tourism/catalog.json `assets`,
  * whose credit 旅の図鑑 and the credits list show; artwork made for the game is registered there too, with its credit).
- * `readingJa` and `aliasJa` may be left out or null.
+ * `readingJa` and `aliasJa` may be left out or null. `photoNoteJa` (optional, 2026-11-21 user decision) says what the photo shows
+ * when it stands in for the term itself (a person with no portrait left: 「画像は彼の名を冠したヴィディヤーダル庭園の回廊の写真」);
+ * the card and 旅の図鑑's entry show it in brackets under the photo.
  */
 export const glossaryTermSchema = z.object({
   id: z.string().regex(TERM_ID, "Expected an ID of a-z, 0-9 and _ (the journey's prefix first)"),
@@ -42,6 +44,7 @@ export const glossaryTermSchema = z.object({
   aliasJa: optionalText,
   category: z.enum(GLOSSARY_CATEGORIES),
   lineJa: japaneseText,
+  photoNoteJa: optionalText,
   imageId: z.string().regex(TERM_ID, "Expected the ID of a tourism photo (tourism/catalog.json assets)"),
 }).strict();
 export type GlossaryTerm = z.infer<typeof glossaryTermSchema>;
@@ -64,3 +67,6 @@ export function termSubtitle(term: Pick<GlossaryTerm, "readingJa" | "aliasJa">):
   const parts = [term.readingJa, term.aliasJa ? `別名：${term.aliasJa}` : null].filter((part): part is string => !!part);
   return parts.length ? parts.join("　") : null;
 }
+
+/** The note under a term's photo, in brackets (「（画像は…）」), or nothing. */
+export const photoNote = (term: Pick<GlossaryTerm, "photoNoteJa">): string | null => (term.photoNoteJa ? `（${term.photoNoteJa}）` : null);
