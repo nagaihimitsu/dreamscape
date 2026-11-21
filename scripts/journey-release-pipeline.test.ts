@@ -54,12 +54,19 @@ function prepareUnpublishedFixture(root: string) {
     data.episodes = data.episodes.filter((entry: any) => !cityIds.has(entry.cityId));
     data.rewards = data.rewards.filter((entry: any) => !eventIds.has(entry.episodeId));
   });
-  edit(`${layer}/battles/catalog.json`, (data) => { data.battles = data.battles.filter((entry: any) => !battleIds.has(entry.id)); });
+  // The battles at India's landmarks outside the scaffold (the moment quiz at New Delhi station, #156) go with them, and their quizzes.
+  const cityLandmarks = new Set(JSON.parse(readFileSync(path.join(root, layer, "tourism/catalog.json"), "utf8")).landmarks
+    .filter((entry: any) => cityIds.has(entry.cityId)).map((entry: any) => entry.id as string));
+  edit(`${layer}/battles/catalog.json`, (data) => {
+    for (const entry of data.battles)
+      if (cityLandmarks.has(entry.landmarkId) || cityIds.has(entry.cityId)) { battleIds.add(entry.id); quizIds.add(entry.quizId); }
+    data.battles = data.battles.filter((entry: any) => !battleIds.has(entry.id));
+  });
   // Every India date, also the rooftop dates at the hotel (no scaffold dates: their knots go with the place files below).
   edit(`${layer}/romance/date_catalog.json`, (data) => { data.dates = data.dates.filter((entry: any) => !cityIds.has(entry.chapterId)); });
   edit(`${layer}/tourism/catalog.json`, (data) => {
     data.landmarks = data.landmarks.filter((entry: any) => !cityIds.has(entry.cityId));
-    data.clues = data.clues.filter((entry: any) => !landmarkIds.has(entry.landmarkId));
+    data.clues = data.clues.filter((entry: any) => !cityLandmarks.has(entry.landmarkId));
   });
   edit(`${layer}/romance/presentation.json`, (data) => { for (const id of memoryIds) delete data.memories[id]; });
   // The people drawn for India's battles (its battleCharacters, #72) go with the battles.
@@ -70,7 +77,8 @@ function prepareUnpublishedFixture(root: string) {
   // the items and flags those scenes give and set.
   rmSync(path.join(root, layer, "stories/places"), { recursive: true, force: true });
   edit(`${layer}/encounters/catalog.json`, (data) => { data.items = data.items.filter((item: any) => !cityIds.has(item.cityId)); });
-  edit(`${layer}/progression/story.json`, (data) => { data.flags = []; });
+  // The named conditions read those flags (Jaipur's confession from her, 2026-11-20).
+  edit(`${layer}/progression/story.json`, (data) => { data.flags = []; data.conditions = {}; });
   // The sources of their inserted scenes (GT-4) go with them too.
   edit(`${layer}/scenes/catalog.json`, (data) => { data.scenes = []; });
   const questionIds = new Set<string>();
@@ -82,7 +90,10 @@ function prepareUnpublishedFixture(root: string) {
     for (const question of quiz.questions) questionIds.add(question.id);
     rmSync(target);
   }
-  edit(`${layer}/learning/translations.json`, (data) => { for (const id of questionIds) delete data.questions[id]; });
+  // Each question's translations: its ID and <ID>@<level> for its other English levels.
+  edit(`${layer}/learning/translations.json`, (data) => {
+    for (const key of Object.keys(data.questions)) if (questionIds.has(key.split("@")[0])) delete data.questions[key];
+  });
 }
 
 // Test-only scripts and questions are copied into a temporary project. They
@@ -94,6 +105,11 @@ const scene = { titleJa: "試験", descriptionJa: "試験の場面", clearTitleJ
 const date = { titleJa: "試験", descriptionJa: "試験の場面", memoryTitleJa: "試験の思い出", memoryDescriptionJa: "試験の記録" };
 const originalQuiz = JSON.parse(read(`${milano}/quizzes/milano_main_duomo_quiz.json`));
 const originalTranslations = JSON.parse(read(`${milano}/learning/translations.json`)).questions;
+/** Milan's translations of a question (its ID and <ID>@<level> for its other English levels), under a new question ID. */
+const copyTranslations = (into: Record<string, { questionJa: string; optionsJa: Record<string, string> }>, from: string, to: string) => {
+  for (const [key, translated] of Object.entries(originalTranslations) as [string, any][])
+    if (key === from || key.startsWith(`${from}@`)) into[to + key.slice(from.length)] = { questionJa: translated.questionJa, optionsJa: translated.optionsJa };
+};
 /**
  * A knot of Milan's place files (with its stitches) as a template for India's folder: Milan's own backgrounds become the
  * shared default background. India's scaffold names knots of place files, as Milan's scenes are.
@@ -168,9 +184,8 @@ function authorCity(root: string, input: ReturnType<typeof loadJourneyScaffold>,
     add(item.battleStoryId, battleTemplate("milano_duomo_01"));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
-      const translated = originalTranslations[question.id];
+      copyTranslations(translations, question.id, `${item.quizId}_${index}`);
       question.id = `${item.quizId}_${index}`;
-      translations[question.id] = { questionJa: translated.questionJa, optionsJa: translated.optionsJa };
     });
     write(`${layer}/quizzes/${item.quizId}.json`, JSON.stringify(quiz));
   }
@@ -182,9 +197,8 @@ function authorCity(root: string, input: ReturnType<typeof loadJourneyScaffold>,
   const finalQuiz = JSON.parse(read(`${milano}/quizzes/milano_finale_quiz.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {
-    const translated = originalTranslations[question.id];
+    copyTranslations(translations, question.id, `${plan.finale.quizId}_${index}`);
     question.id = `${plan.finale.quizId}_${index}`;
-    translations[question.id] = { questionJa: translated.questionJa, optionsJa: translated.optionsJa };
   });
   write(`${layer}/quizzes/${plan.finale.quizId}.json`, JSON.stringify(finalQuiz));
   const translationsFile = path.join(root, `${name}translations.json`);

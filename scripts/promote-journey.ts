@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "./content-pipeline";
 import { z } from "zod";
-import { learningCatalogSchema, questionSource, translationSchema } from "../src/content/learning-schema";
+import { askedLevels, learningCatalogSchema, questionSource, translationSchema } from "../src/content/learning-schema";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildJourneyFragments, loadJourneyScaffold } from "./journey-scaffold";
 import { authoringProfileOf, getJourneyAuthoringProfile, journeyAuthoringProfiles, unknownAuthoringJourney } from "./journey-authoring";
@@ -157,17 +157,19 @@ export function mergeJourneyReleaseFragments(original: ReleaseFiles, release: Re
   for (const quizId of quizIds) {
     const quiz = quizzes.find((item) => item.id === quizId);
     if (!quiz) throw new Error(`クイズがありません: ${quizId}`);
-    for (const question of quiz.questions) {
-      usedQuestions.add(question.id);
-      const translated = supplied[question.id];
-      const own = Object.hasOwn(learning.questions, question.id);
-      const existing = own ? learning.questions[question.id] : mergedQuestions[question.id];
-      if (!translated && !existing) throw new Error(`クイズの和訳がありません: ${question.id}（--translations のファイルに書きます）`);
+    // One translation for each English level the question is asked at: its ID, and <ID>@<level> for its other levels.
+    for (const asked of quiz.questions.flatMap((question) => askedLevels(quiz, question))) {
+      const key = asked.textKey;
+      usedQuestions.add(key);
+      const translated = supplied[key];
+      const own = Object.hasOwn(learning.questions, key);
+      const existing = own ? learning.questions[key] : mergedQuestions[key];
+      if (!translated && !existing) throw new Error(`クイズの和訳がありません: ${key}（--translations のファイルに書きます）`);
       if (translated) {
-        const entry = translationSchema.parse({ source: questionSource(question), ...translated });
-        if (existing && !isDeepStrictEqual(existing, entry)) throw new Error(`登録済みの和訳と内容が違います: ${question.id}`);
-        if (own || !existing) learning.questions[question.id] = entry;
-      } else if (!isDeepStrictEqual(existing.source, questionSource(question))) throw new Error(`登録済みの和訳の元の英文が、今のクイズと違います: ${question.id}（和訳を直して --translations で渡します）`);
+        const entry = translationSchema.parse({ source: questionSource(asked), ...translated });
+        if (existing && !isDeepStrictEqual(existing, entry)) throw new Error(`登録済みの和訳と内容が違います: ${key}`);
+        if (own || !existing) learning.questions[key] = entry;
+      } else if (!isDeepStrictEqual(existing.source, questionSource(asked))) throw new Error(`登録済みの和訳の元の英文が、今のクイズと違います: ${key}（和訳を直して --translations で渡します）`);
     }
   }
   if (Object.keys(supplied).some((id) => !usedQuestions.has(id))) throw new Error("和訳のファイルに、知らない問題か、今回公開しない都市の問題があります。");

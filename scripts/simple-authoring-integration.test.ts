@@ -119,6 +119,13 @@ VAR heroine_name = ""
     }
     await writeFile(path.join(root, "content/journeys/milano/stories/dates/fixture_simple_date.ink"), dateInk);
 
+    // The encounters' English words whose meanings only India's folder has: a Milan encounter gives them in Milan's own list.
+    const indiaWords = JSON.parse(await readFile(path.join(root, "content/journeys/golden_triangle/learning/word-meanings.json"), "utf8")).words;
+    const encounterText = (await Promise.all(["fixture_simple_encounter", "fixture_paid_encounter"].map((name) =>
+      readFile(path.join(root, `content/journeys/milano/stories/encounters/${name}.ink`), "utf8")))).join("\n").toLowerCase();
+    const milanWords = Object.fromEntries(Object.entries(indiaWords).filter(([word]) => new RegExp(`\\b${word}\\b`, "u").test(encounterText)));
+    await writeFile(path.join(root, "content/journeys/milano/learning/word-meanings.json"), JSON.stringify({ schemaVersion: 1, words: milanWords }));
+
     const result = await buildContent(root, false);
     expect(result.dates.find((date) => date.id === "fixture_simple_date")).toMatchObject({
       kind: "normal", apCost: 2, choiceCount: 2, effectCount: 2,

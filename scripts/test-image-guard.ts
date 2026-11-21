@@ -3,12 +3,13 @@ import path from "node:path";
 import { publicRoots } from "./content-sources";
 
 // prepareContentFixture (src/content/test-fixtures.ts) links each journey's
-// images into its fixtures instead of copying them, so a test that writes over
+// images and the characters' images (public/assets/characters) into its
+// fixtures instead of copying them, so a test that writes over
 // such a link changes the repository's file. The unit test run (vitest
 // globalSetup) records every journey image before the tests and fails the run
 // when one of them changed.
 
-/** Size and modification time of every file in the journeys' public folders, by path. */
+/** Size and modification time of every file in the journeys' public folders and the characters' folder, by path. */
 export function journeyImageStates(root: string): Map<string, string> {
   const states = new Map<string, string>();
   const visit = (directory: string) => {
@@ -22,6 +23,7 @@ export function journeyImageStates(root: string): Map<string, string> {
     }
   };
   for (const directory of publicRoots(root)) if (directory !== path.join(root, "public")) visit(directory);
+  visit(path.join(root, "public/assets/characters"));
   return states;
 }
 
