@@ -1038,6 +1038,20 @@
       "checkedAt": "2026-11-13"
     },
     {
+      "id": "gt_img_term_saree",
+      "path": "assets/tourism/india/term_saree.webp",
+      "width": 1000,
+      "height": 1000,
+      "altJa": "店先のマネキン3体に着せたサリー。腰に巻いた布の端を肩から垂らし、金の刺繍の縁が胸元から裾へ斜めに流れている。右は赤地に金の丸模様、中央は桃色、左は青緑。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sari_on_mannequin_for_demo.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Suyash.dwivedi／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commonsの元画像（1080×1080px）を使用。左端の奥に小さく写る通行人を外すため、左を80px、下を80px切り落として1000×1000pxにしました（縮小はしていません）。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
+    },
+    {
       "id": "gt_img_term_langar",
       "path": "assets/tourism/india/term_langar.webp",
       "width": 1200,

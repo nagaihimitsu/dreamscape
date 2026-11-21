@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getCityShop, getOutfit, landmarks } from "../../../src/content";
 import { cityStart, openTourismScene } from "../../../src/dev/scenario-builders";
 import { validateGameState, type GameState } from "../../../src/domain/game";
+import { metTerms, termsAdded } from "../../../src/domain/glossary";
 import { buyOutfit, canChangeOutfit, ownedOutfits, shopOutfits, wearOutfit, wornCostume } from "../../../src/domain/outfits";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { usableMoney } from "../../../src/domain/reservations";
@@ -46,6 +47,22 @@ describe("the shop's outfits", () => {
     expect(listPlayerActions(bought).some((action) => action.kind === "buy_outfit")).toBe(false);
     // A stale revision (a double press) changes nothing.
     expect(buyOutfit(state, SAREE, state.revision - 1)).toBe(state);
+  });
+
+  it("puts the sari in 旅の図鑑 as it is bought (once: a term met already is not added again)", () => {
+    const state = delhi();
+    expect(getOutfit(SAREE)?.termId).toBe("gt_term_saree");
+    const bought = validateGameState(applyPlayerAction(state, playerActionChange({ kind: "buy_outfit", outfitId: SAREE }, () => 0)));
+    expect(termsAdded(state, bought)).toEqual(["gt_term_saree"]);
+    // The term is kept through a save and a load, as a line's # term: is.
+    const storage = memoryStorage();
+    expect(saveGame(storage, bought).ok).toBe(true);
+    const loaded = loadGame(storage);
+    expect(loaded.status === "loaded" && metTerms(loaded.state)).toContain("gt_term_saree");
+    const metBefore = { ...state, glossary: ["gt_term_saree"] };
+    expect(metTerms(buyOutfit(metBefore, SAREE, metBefore.revision))).toEqual(["gt_term_saree"]);
+    // A refused purchase meets nothing.
+    expect(metTerms(buyOutfit(state, SAREE, state.revision - 1))).toEqual([]);
   });
 
   it("refuses a purchase the money that can be spent now does not cover, saying why", () => {

@@ -24,9 +24,18 @@
       "nameJa": "ドゥパッター",
       "readingJa": null,
       "aliasJa": null,
-      "category": "thing",
+      "category": "clothing",
       "lineJa": "長いショールのような布。肩や胸元に掛けたり、頭からかぶったりする。",
       "imageId": "gt_img_term_dupatta"
+    },
+    {
+      "id": "gt_term_saree",
+      "nameJa": "サリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "clothing",
+      "lineJa": "縫わない一枚の長い布を腰に巻き、端を肩に掛けて着る、南アジアの女性の装い。",
+      "imageId": "gt_img_term_saree"
     },
     {
       "id": "gt_term_langar",
@@ -96,7 +105,7 @@
       "nameJa": "クルタ",
       "readingJa": null,
       "aliasJa": null,
-      "category": "thing",
+      "category": "clothing",
       "lineJa": "ゆったりした襟なしの長い上着。男女とも、ズボンと合わせて着る。",
       "imageId": "gt_img_term_kurta"
     },
@@ -249,7 +258,7 @@
       "nameJa": "ドーティー",
       "readingJa": null,
       "aliasJa": "腰布",
-      "category": "thing",
+      "category": "clothing",
       "lineJa": "縫わない一枚の長い布を、腰から脚に巻きつけてはく男性の衣服。",
       "imageId": "gt_img_term_dhoti"
     },
@@ -285,7 +294,7 @@
       "nameJa": "セーラー",
       "readingJa": null,
       "aliasJa": "花婿の顔を覆う花の房",
-      "category": "thing",
+      "category": "clothing",
       "lineJa": "婚礼で花婿の額から垂らし、顔を覆う花や飾りの房。",
       "imageId": "gt_img_term_sehra"
     },

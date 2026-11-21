@@ -77,10 +77,12 @@ export function checkTermTags(source: string, journeyId: string, termJourneys: R
 
 /**
  * The notes that do not stop the build (kind "glossary"): a term's line over TERM_LINE_ADVISED characters, a term no
- * `# term:` of its journey's stories names (it can never be met), the same term tagged twice in one scene (a knot, or a
+ * `# term:` of its journey's stories names and no outfit puts in 旅の図鑑 (`outfitTermIds`: the outfits' `termId`, each its
+ * own journey's; content-ownership.ts) — it can never be met —, the same term tagged twice in one scene (a knot, or a
  * file without knots: fine when each branch has its own), and a tag on a choice (it shows with the line after the choice).
  */
-export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, terms: readonly ListedTerm[]): ContentWarning[] {
+export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, terms: readonly ListedTerm[],
+  outfitTermIds: readonly string[] = []): ContentWarning[] {
   const notes: string[] = [];
   const tagged = new Set<string>();
   for (const story of sources.storyFiles) {
@@ -105,8 +107,9 @@ export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFi
     if (length > TERM_LINE_ADVISED)
       notes.push(`言葉の説明が${TERM_LINE_ADVISED}字を超えています：旅行編 ${term.journeyId} の "${term.id}" の lineJa（${length}字）。小窓では短いほど読みやすくなります` +
         `（Term line over ${TERM_LINE_ADVISED} characters: ${term.id}, ${length}）。`);
-    if (!tagged.has(`${term.journeyId}\u0000${term.id}`))
-      notes.push(`どの行にも札のない言葉です：旅行編 ${term.journeyId} の "${term.id}"。# term: ${term.id} を、その言葉が初めて出る行の前に置いてください` +
+    if (!tagged.has(`${term.journeyId}\u0000${term.id}`) && !outfitTermIds.includes(term.id))
+      notes.push(`どの行にも札がなく、服からも入らない言葉です：旅行編 ${term.journeyId} の "${term.id}"。# term: ${term.id} を、その言葉が初めて出る行の前に置くか、` +
+        `服（shop/catalog.json の outfits）の termId に書いてください` +
         `（Term without a # term: tag: ${term.id}）。`);
   }
   return notes.map((message) => ({ kind: "glossary", message }));

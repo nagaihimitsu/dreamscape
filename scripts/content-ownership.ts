@@ -76,8 +76,11 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   // A 旅の図鑑 term's picture is a tourism photo of its own journey.
   "glossary/terms.json": { terms: (entry) => fields(entry, "asset", ["imageId"]) },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
-  // A shop sells its own journey's outfits in one of its cities.
-  "shop/catalog.json": { shops: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "outfit", ["outfitIds"])] },
+  // A shop sells its own journey's outfits in one of its cities; an outfit's 旅の図鑑 term is its own journey's.
+  "shop/catalog.json": {
+    shops: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "outfit", ["outfitIds"])],
+    outfits: (entry) => fields(entry, "term", ["termId"]),
+  },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],
     "wardrobe.cities": (_, key) => [ref("city", "city ID", key)],
