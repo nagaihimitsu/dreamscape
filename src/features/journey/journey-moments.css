@@ -270,9 +270,11 @@
   .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
 }
 
-/* ── 旅の終わりのエンドロール ── a dialog over the whole screen at night's colour; the roll scrolls in its own area, the bar
-   with 「止める・続ける」 and 「閉じる」 stays at the foot within thumb reach. */
+/* ── 旅の終わりのエンドロール ── a dialog over the whole screen under a night sky (a deep blue with a faint glow above and a
+   few still stars); the roll scrolls in its own area and fades out at its top and foot, the bar with 「止める・続ける」 and
+   「閉じる」 stays at the foot within thumb reach. */
 dialog.modal.end-roll {
+  position: fixed;
   width: 100vw;
   max-width: 100vw;
   height: 100dvh;
@@ -282,37 +284,183 @@ dialog.modal.end-roll {
   border: 0;
   border-radius: 0;
   overflow: hidden;
-  background: #111a2f;
+  box-shadow: none;
+  background: #070b16;
   color: var(--ds-on-slate);
+  --roll-gold: #d8b878; /* text on the night ground only (about 9:1) */
+  --roll-muted: rgba(255, 250, 241, 0.62);
+  --roll-line: rgba(216, 184, 120, 0.45);
 }
 dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
-.end-roll-scroller { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; cursor: pointer; }
-.end-roll.is-still .end-roll-scroller { cursor: auto; }
+.end-roll-sky {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 250, 241, 0.7), transparent 60%),
+    radial-gradient(1px 1px at 78% 12%, rgba(255, 250, 241, 0.55), transparent 60%),
+    radial-gradient(1.5px 1.5px at 64% 34%, rgba(255, 250, 241, 0.45), transparent 60%),
+    radial-gradient(1px 1px at 28% 58%, rgba(255, 250, 241, 0.4), transparent 60%),
+    radial-gradient(1px 1px at 88% 66%, rgba(255, 250, 241, 0.5), transparent 60%),
+    radial-gradient(1.5px 1.5px at 42% 82%, rgba(255, 250, 241, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 6% 90%, rgba(255, 250, 241, 0.45), transparent 60%),
+    radial-gradient(120% 60% at 50% -10%, rgba(88, 104, 160, 0.38), transparent 70%),
+    radial-gradient(90% 50% at 50% 110%, rgba(150, 110, 60, 0.16), transparent 70%),
+    linear-gradient(180deg, #0e1630 0%, #0a1022 55%, #070b16 100%);
+}
+.end-roll-scroller {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  cursor: pointer;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+}
+.end-roll-scroller::-webkit-scrollbar { display: none; }
+/* By hand: a narrow fade only, and the scroll bar comes back. */
+.end-roll.is-still .end-roll-scroller {
+  cursor: auto;
+  scrollbar-width: auto;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+}
+.end-roll.is-still .end-roll-scroller::-webkit-scrollbar { display: initial; }
 .end-roll-scroller:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: -3px; }
-/* Rolling: the first lines start a third of the way down, the last names end mid-screen. */
-.end-roll-content { width: min(520px, 100%); margin: 0 auto; padding: 35dvh 20px 45dvh; text-align: center; }
-.end-roll.is-still .end-roll-content { padding: calc(24px + env(safe-area-inset-top)) 20px 24px; }
-.end-roll-eyebrow { color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; }
+/* Rolling: the first lines start half way down, the last lines end mid-screen. */
+.end-roll-content { width: min(480px, 100%); margin: 0 auto; padding: 50dvh 20px 50dvh; text-align: center; }
+.end-roll.is-still .end-roll-content { padding: calc(40px + env(safe-area-inset-top)) 20px 48px; }
+.end-roll-opening { display: grid; justify-items: center; gap: 14px; }
+/* 「旅の終わり」 between two short gold lines. */
+.end-roll-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  color: var(--roll-gold);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+}
+.end-roll-eyebrow::before, .end-roll-eyebrow::after { content: ""; width: 36px; height: 1px; background: var(--roll-line); }
 /* The journey's name breaks only between its words (after 「・」 and the like: keep-all), never inside one (「…トライアン／グル編」);
-   a word longer than the line still breaks (anywhere). From 7vw so that its longest word fits a 320-px phone. */
-.end-roll .end-roll-title { margin: 8px 0 12px; font-size: clamp(20px, 7vw, 34px); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
-.end-roll-names { font-family: "Noto Serif JP", serif; font-size: 20px; letter-spacing: 0.08em; overflow-wrap: anywhere; }
-.end-roll-names span { color: var(--ds-on-slate-muted); font-size: 14px; }
-.end-roll-city { margin-top: 64px; }
-.end-roll.is-still .end-roll-city { margin-top: 40px; }
-.end-roll-city h3 { margin: 0 0 16px; font-family: "Noto Serif JP", serif; font-size: 22px; letter-spacing: 0.1em; overflow-wrap: anywhere; }
-.end-roll-photos { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
+   a word longer than the line still breaks (anywhere). From 6vw so that its longest word, spaced, fits a 320-px phone. */
+.end-roll .end-roll-title {
+  margin: 0;
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(18px, 6vw, 34px);
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 24px rgba(216, 184, 120, 0.25);
+}
+/* A small diamond between two fading lines. */
+.end-roll-ornament {
+  position: relative;
+  display: block;
+  width: 120px;
+  height: 9px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--roll-line) 35%, transparent 45%, transparent 55%, var(--roll-line) 65%, transparent) center / 100% 1px no-repeat;
+}
+.end-roll-ornament::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--roll-gold);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.end-roll-city { margin-top: 30dvh; }
+.end-roll.is-still .end-roll-city { margin-top: 72px; }
+.end-roll-chapter {
+  margin: 0 0 6px;
+  color: var(--roll-gold);
+  font-family: "Noto Serif JP", serif;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+}
+.end-roll-city h3 {
+  margin: 0 0 36px;
+  font-family: "Noto Serif JP", serif;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  overflow-wrap: anywhere;
+}
+.end-roll-city h3::after { content: ""; display: block; width: 28px; height: 1px; margin: 16px auto 0; background: var(--roll-line); }
+.end-roll-photos { display: grid; gap: 44px; margin: 0; padding: 0; list-style: none; }
+/* The photos sit left and right in turn, each in a thin print frame; the caption keeps to the photo's side. */
+.end-roll-photos li { width: 88%; }
+.end-roll-photos li:nth-child(even) { justify-self: end; }
+.end-roll-photos li:nth-child(odd) { justify-self: start; }
 .end-roll-photos figure { margin: 0; }
 /* The album's illustrations in the album's 3:2 frame. */
-.end-roll-photos img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 10px; background: #26342e; }
-.end-roll-photos figcaption { margin-top: 6px; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
-.end-roll-last { margin-top: 72px; }
+.end-roll-photos img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  padding: 6px;
+  border: 1px solid rgba(255, 250, 241, 0.16);
+  border-radius: 2px;
+  background: rgba(255, 250, 241, 0.05);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+.end-roll-photos figcaption {
+  margin-top: 12px;
+  color: var(--ds-on-slate);
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.end-roll-photos li:nth-child(even) figcaption { text-align: right; }
+.end-roll-photos figcaption span { color: var(--roll-muted); font-size: 12px; }
+/* While it rolls, each photo comes up out of the dark as it enters the view (where the browser can tie it to the scroll). */
+@supports (animation-timeline: view()) {
+  .end-roll:not(.is-still) .end-roll-photos figure {
+    animation: end-roll-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+}
+@keyframes end-roll-rise {
+  from { opacity: 0; transform: translateY(28px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .end-roll .end-roll-photos figure { animation: none; }
+}
+.end-roll-last { display: grid; justify-items: center; gap: 18px; margin-top: 36dvh; }
+.end-roll.is-still .end-roll-last { margin-top: 88px; }
+.end-roll-fin {
+  margin: 0;
+  color: var(--roll-gold);
+  font-family: Georgia, "Noto Serif JP", serif;
+  font-size: 40px;
+  font-style: italic;
+  letter-spacing: 0.12em;
+}
+.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: 12px; letter-spacing: 0.3em; overflow-wrap: anywhere; }
 .end-roll-bar {
+  position: relative;
   flex: none;
   display: flex;
   gap: 10px;
   padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-  background: #0b1222;
-  border-top: 1px solid var(--ds-gold-hairline);
+  background: rgba(7, 11, 22, 0.88);
+  border-top: 1px solid rgba(216, 184, 120, 0.22);
 }
 .end-roll-bar button { flex: 1 1 0; min-height: 48px; margin: 0; justify-content: center; text-align: center; }

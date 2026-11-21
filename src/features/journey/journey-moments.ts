@@ -293,11 +293,11 @@ export const journeyEnded = (previous: GameState, next: GameState) => !isJourney
 
 /** A city of the credit roll: its name and the album's photos taken there (2026-11-20 user decision: no clear titles or people met). */
 export type EndRollCity = { id: string; nameJa: string; photos: MomentPhoto[] };
-export type EndRoll = { journeyJa: string; playerName: string; heroineName: string; cities: EndRollCity[] };
+export type EndRoll = { journeyJa: string; cities: EndRollCity[] };
 
 /**
- * The credit roll of the journey: the two names, then each city of the journey in its order with the album's photos
- * taken there. Never a relationship value.
+ * The credit roll of the journey: each city of the journey in its order with the album's photos taken there (no names
+ * of the two: 2026-11-21 user decision). Never a relationship value.
  */
 export function endRollOf(game: GameState): EndRoll {
   const journey = getJourneyForCity(game.currentCityId);
@@ -305,8 +305,6 @@ export function endRollOf(game: GameState): EndRoll {
   const cityIds = journey?.cities.map((city) => city.id) ?? [game.currentCityId];
   return {
     journeyJa: journey?.nameJa ?? "",
-    playerName: game.playerName,
-    heroineName: game.heroineName,
     cities: cityIds.map((id) => ({
       id,
       nameJa: cityNameJa(id),

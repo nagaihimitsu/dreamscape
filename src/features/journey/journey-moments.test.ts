@@ -387,10 +387,10 @@ describe("the credit roll at the end of a journey", () => {
     expect(journeyEnded(cityStart("mihon"), cleared)).toBe(false);
   });
 
-  it("names the two, then each city with its photos right under its name (no clear titles or people met)", () => {
+  it("rolls each city with its photos right under its name (no names, clear titles or people met)", () => {
     const { ended } = journey();
     const endRoll = endRollOf({ ...ended, album: photos });
-    expect(endRoll).toMatchObject({ journeyJa: "見本の旅", playerName: "航", heroineName: "澪" });
+    expect(endRoll).toEqual({ journeyJa: "見本の旅", cities: expect.any(Array) });
     expect(endRoll.cities).toEqual([{ id: "mihon", nameJa: "見本の街", photos: expect.any(Array) }]);
     expect(endRoll.cities[0].photos.map((photo) => photo.imageId)).toEqual(photos.map((photo) => photo.imageId));
   });
