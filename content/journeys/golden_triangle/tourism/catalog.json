@@ -1764,6 +1764,20 @@
       "creditJa": "写真：Harshit Tiwary／Wikimedia Commons／CC BY-SA 4.0",
       "modificationJa": "Wikimedia Commons の元画像（1024×768px）から、上の空を外して下の1024×488pxを切り抜きました。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
       "checkedAt": "2026-11-21"
+    },
+    {
+      "id": "gt_img_term_vidyadhar",
+      "path": "assets/tourism/india/term_vidyadhar.webp",
+      "width": 960,
+      "height": 1186,
+      "altJa": "ジャイプールのヴィディヤーダル庭園（彼の名を冠した庭園）の回廊。波形のアーチと細い柱が奥へ連なり、石の通路に柱の影が落ちている。本人の肖像は残っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vineet_Sharma-Vidhyadhar_Ka_Bagh_18(1).jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Vineet Sharma 1992／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons 配信の960×1186px縮小版（元画像は1080×1334px）を使用。切り抜きはしていません。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-21"
     }
   ],
   "landmarks": [

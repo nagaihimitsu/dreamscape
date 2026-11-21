@@ -371,12 +371,14 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # voice: gt_jaipur_finale_008
+    # term: gt_term_vidyadhar
     ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です
     # speaker: narrator
     いとこたちが、そろって唸った。花婿側の親戚が、なぜか拍手している。
 - else:
     # speaker: gt_pooja
     # voice: gt_jaipur_finale_battle_pooja_009
+    # term: gt_term_vidyadhar
     ヴィディヤーダル！　建築の手引きに沿って、一本ずつ線を引いたの
     # speaker: gt_pooja
     # voice: gt_jaipur_finale_battle_pooja_010

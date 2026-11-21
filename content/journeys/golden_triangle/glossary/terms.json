@@ -495,6 +495,15 @@
       "category": "person",
       "lineJa": "言い伝えの人物。その霊が砦の工事を妨げ、砦の中に彼の寺が建てられたという。",
       "imageId": "gt_img_term_nahar_singh_bhomia"
+    },
+    {
+      "id": "gt_term_vidyadhar",
+      "nameJa": "ヴィディヤーダル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ベンガル出身のバラモン。アンベール王国の会計の役人で、ジャイ・シング2世に仕えた。",
+      "imageId": "gt_img_term_vidyadhar"
     }
   ]
 }
