@@ -6,6 +6,7 @@ import { SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID, journeyDirectory } from ".
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture, quizSourceFile } from "./test-fixtures";
 import { quizSchema } from "./schemas";
+import { askedLevels, questionSource } from "./learning-schema";
 
 const root = path.resolve(".");
 let fixture: string;
@@ -69,15 +70,15 @@ describe("content authoring workflow", () => {
       "content/journeys/sample_trip/learning/translations.json",
     );
     const learning = JSON.parse(await readFile(learningFile, "utf8"));
+    // A translation for each English level the question is asked at (<question ID>@<level> for its other levels).
     direct.questions.forEach((question, index) => {
-      learning.questions[question.id] = {
-        ...learning.questions[template.questions[index].id],
-        source: {
-          questionEn: question.questionEn,
-          options: question.options,
-          correctOptionId: question.correctOptionId,
-        },
-      };
+      const templateLevels = askedLevels(template, template.questions[index]);
+      askedLevels(direct, question).forEach((asked, level) => {
+        learning.questions[asked.textKey] = {
+          ...learning.questions[templateLevels[level].textKey],
+          source: questionSource(asked),
+        };
+      });
     });
     await writeFile(learningFile, JSON.stringify(learning));
     for (const authoredQuiz of [direct, transcribed]) {

@@ -144,7 +144,9 @@ describe("battle content contract", () => {
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("A normal quiz needs three questions; a city finale needs five");
     await changeQuiz((quiz) => {
-      quiz.questions[0].options[0].id = quiz.questions[0].options[1].id;
+      // Its other English levels keep the same marks in order (checked first), so they change with it.
+      for (const options of [quiz.questions[0].options, ...Object.values(quiz.questions[0].levels ?? {}).map((level: any) => level.options)])
+        options[0].id = options[1].id;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate quiz option ID",

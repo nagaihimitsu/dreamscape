@@ -64,7 +64,7 @@ describe("tourism content contract", () => {
   it("compiles one short guide, four visual discoveries and three unpositioned research cards", async () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBeGreaterThanOrEqual(105);
-    expect(result.tourismGuides).toBe(result.tourism.landmarks.length);
+    expect(result.tourismGuides).toBe(result.tourism.landmarks.filter((landmark) => landmark.guideStoryId).length);
     expect(
       result.tourism.clues.filter(
         (clue) => clue.landmarkId === "last_supper" && clue.kind === "hotspot",

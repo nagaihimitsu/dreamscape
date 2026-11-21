@@ -16,18 +16,16 @@ afterEach(async () => {
   if (fixture) await rm(fixture, { recursive: true, force: true });
 });
 
-it("creates an isolated undelivered-artwork fixture without changing the source catalog", async () => {
+it("creates an isolated fixture without changing the source catalog, linking the character images", async () => {
   const original = path.resolve("content/presentation/characters.json");
   const source = await readFile(original, "utf8");
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-fixture-check-"));
   await prepareContentFixture(fixture);
   const catalog = JSON.parse(await readFile(path.join(fixture, "content/presentation/characters.json"), "utf8"));
-  const expected = JSON.parse(source);
-  for (const character of expected.characters)
-    for (const costume of character.costumes ?? [])
-      for (const pose of costume.poses) pose.expressions = {};
-  expect(catalog).toEqual(expected);
-  await expect(access(path.join(fixture, "public/assets/characters"))).rejects.toThrow(/ENOENT/);
+  expect(catalog).toEqual(JSON.parse(source));
+  const neutral = "public/assets/characters/heroine/default_01/standing_01/neutral.webp";
+  expect((await lstat(path.join(fixture, neutral))).isSymbolicLink()).toBe(true);
+  expect(await readlink(path.join(fixture, neutral))).toBe(path.resolve(neutral));
   await expect(access(path.join(fixture, "public/assets/presentation/heroine_shy_placeholder.svg"))).resolves.toBeUndefined();
   expect(await readFile(original, "utf8")).toBe(source);
 });
@@ -38,12 +36,8 @@ it("lists as own artwork only the images the fixture serves, and lets a test reg
   const repository = ownArtworkByLayer(loadContentSources(path.resolve("."))).byLayer;
   let sources = loadContentSources(fixture);
   const listed = ownArtworkByLayer(sources).byLayer;
-  // The character images are not copied, so their lines are dropped; every other line stays.
-  const kept = [...repository.get("core")!.keys()].filter((assetPath) => !assetPath.startsWith("assets/characters/"));
-  expect(kept.length).toBeLessThan(repository.get("core")!.size);
-  expect([...listed.get("core")!.keys()]).toEqual(kept);
-  // A journey's own images (India's characters and backdrops) are linked, so its whole list stays.
-  for (const layer of ["milano", "golden_triangle"])
+  // The character images and a journey's own images (India's characters and backdrops) are linked, so every list stays.
+  for (const layer of ["core", "milano", "golden_triangle"])
     expect([...listed.get(layer)!.keys()], layer).toEqual([...repository.get(layer)!.keys()]);
   const tourismAssets = tourismData.assets;
   expect(() => checkImageRights(sources, tourismAssets)).not.toThrow();

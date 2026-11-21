@@ -66,8 +66,9 @@ describe("special battle content contract", () => {
     )!;
     expect(original.battleId).toBe(plainA.id);
     expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")!.battleId).toBe(plainA.id);
+    // Milan's episodes keep plain battles; a city finale may be B or C (Agra's is a C, 2026-11-20).
     expect(
-      result.journey.episodes.every(
+      result.journey.episodes.filter((episode) => episode.cityId === "milano").every(
         (episode) =>
           !result.battles.find((battle) => battle.id === episode.battleId)
             ?.reasoning,
@@ -76,7 +77,7 @@ describe("special battle content contract", () => {
     for (const battle of result.battles.filter((item) => item.reasoning)) {
       const reasoning = battle.reasoning!;
       const quiz = result.quizzes[battle.quizId];
-      expect(quiz.questions).toHaveLength(3);
+      expect(quiz.questions).toHaveLength(quiz.cityId ? 5 : 3);
       for (const question of quiz.questions) {
         expect(new Set(question.options.map((option) => option.id)).size).toBe(3);
         expect(question.options.filter((option) => option.id === question.correctOptionId)).toHaveLength(1);
