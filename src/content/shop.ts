@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { contentId as id } from "./content-id";
+import { TERM_ID } from "./glossary";
 import { japaneseText } from "./text-language";
 
 // The shops of free time and the heroine's outfits they sell (2026-11-20 user decision): an optional catalog of a journey
@@ -10,8 +11,10 @@ import { japaneseText } from "./text-language";
 
 /**
  * One outfit the heroine can wear: the costume it shows (a costume of the heroine in presentation/characters.json with a
- * neutral picture), its name and description, its price in the journey's currency (paid once from the travel budget) and
- * the heroine's few words as it is bought ({heroine} and {player} are the names; src/features/romance/names.ts).
+ * neutral picture), its name and description, its price in the journey's currency (paid once from the travel budget),
+ * the heroine's few words as it is bought ({heroine} and {player} are the names; src/features/romance/names.ts) and the
+ * 旅の図鑑 term buying it puts in 旅の図鑑 (optional, a term of the same journey's glossary/terms.json: a traditional or a
+ * regional garment, 2026-11-21 user decision).
  */
 export const outfitSchema = z.object({
   id,
@@ -20,6 +23,7 @@ export const outfitSchema = z.object({
   descriptionJa: japaneseText,
   price: z.number().int().positive().safe(),
   boughtLineJa: japaneseText,
+  termId: z.string().regex(TERM_ID, "Expected the ID of a 旅の図鑑 term (glossary/terms.json)").optional(),
 }).strict();
 
 /**
