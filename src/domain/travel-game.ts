@@ -108,6 +108,12 @@ export const reasonJa: Record<string, string> = {
   time: "今日はホテルへの帰路を含めると時間が足りません。", budget: "移動や帰りのための予算が足りません。",
   ap: "APが足りません。", route: "この移動経路はまだ利用できません。",
 };
+/**
+ * The same two reasons where the party is already at the event's place (2026-11-23): no arrival to wait for, and, at the
+ * hotel, no way back: the scene itself would end after the day's end (21:00).
+ */
+const hereReasonJa: Record<string, string> = { closed: "今の時間には、この出来事を始められません。" };
+const atHotelReasonJa: Record<string, string> = { ...hereReasonJa, time: "今日は21:00までに終えられません。" };
 
 /** Existing availability, confirmed directed routes and return feasibility are all checked before spending. */
 export function getTravelEventAvailability(state: GameState, eventId: string, mode: TravelMode): TravelAvailability {
@@ -132,6 +138,9 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   const current = snapshot(state);
   const planWith = (returnRoute: HomeRoute, travelBudget = current.travelBudget) =>
     planTravelEvent({ ...current, travelBudget }, event, outbound, returnRoute, place);
+  const here = event.placeId === state.travel.currentPlaceId;
+  const ownReasons = here && event.placeId === state.travel.hotelPlaceId ? atHotelReasonJa : here ? hereReasonJa : {};
+  const reasonText = (key: string) => ownReasons[key] ?? reasonJa[key];
   // Why each way home cannot be taken (cheapest first).
   const blocked: BlockedWay[] = [];
   for (const returnRoute of returns) {
@@ -140,7 +149,7 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
     if (plan.ok) return { available: true, reason: "", plan: { ...plan, returnReserve: returnRoute.cost } };
     blocked.push({ returnRoute, key: plan.reason, text: plan.reason === "budget" && (event.admissionCost ?? 0) > 0
       ? "移動・入場や帰りのための予算が足りません。"
-      : reasonJa[plan.reason] });
+      : reasonText(plan.reason) });
   }
   // When the ways fail for different reasons, money stays a way's reason only where money alone keeps it back: a way
   // that would still be too late (or closed, or short of AP) with the money enough says that instead.
@@ -148,7 +157,7 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   const reasons = !differ ? blocked : blocked.map((way) => {
     if (way.key !== "budget") return way;
     const funded = planWith(way.returnRoute, Number.MAX_SAFE_INTEGER);
-    return funded.ok ? way : { ...way, key: funded.reason, text: reasonJa[funded.reason] };
+    return funded.ok ? way : { ...way, key: funded.reason, text: reasonText(funded.reason) };
   });
   return { available: false, reason: blockedWaysReasonJa(reasons) };
 }

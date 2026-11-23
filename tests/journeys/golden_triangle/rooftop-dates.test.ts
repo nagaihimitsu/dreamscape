@@ -2,7 +2,7 @@ import { describe, expect, it, onTestFinished } from "vitest";
 import { contentSourcesFromTree, readContentTree, selectJourneys } from "../../../scripts/content-sources";
 import { validateContent } from "../../../scripts/content-validation";
 import { dates, scenes } from "../../../src/content";
-import { cityStart, clearCity, departFromClearedCity, finishEpisode, newJourney, nextMorning, withAp, withRelationship } from "../../../src/dev/scenario-builders";
+import { atPlace, cityStart, clearCity, departFromClearedCity, finishEpisode, newJourney, nextMorning, withAp, withRelationship } from "../../../src/dev/scenario-builders";
 import type { Condition } from "../../../src/content/condition-schemas";
 import { completedDateCount, meets } from "../../../src/domain/conditions";
 import { evaluateProgression } from "../../../src/domain/date-rules";
@@ -10,7 +10,7 @@ import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, getDateAvailabi
 import { closeRomanceEnding } from "../../../src/domain/occasion";
 import { applyPlayerAction } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
-import { beginTravelEvent, isCompletedTravelEvent, isTravelEventUnlocked } from "../../../src/domain/travel-game";
+import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked } from "../../../src/domain/travel-game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { installRepeatableDate } from "../../fixtures/repeatable-date";
 
@@ -54,7 +54,9 @@ function playDate(initial: GameState, dateId: string, prefer: readonly string[] 
   return { state: roundtrip(state), lines, chosen };
 }
 
-const atNight = (state: GameState): GameState => validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
+/** `state` at `minute` of the same day (at the place it is). */
+const at = (state: GameState, minute: number): GameState => validateGameState({ ...state, travel: { ...state.travel, minute } });
+const atNight = (state: GameState): GameState => at(state, 19 * 60);
 const normalDates = (cityId: string) => dates.filter((date) => date.chapterId === cityId && date.kind === "normal").map((date) => date.id);
 
 type Values = Pick<GameState, "affection" | "trust" | "spark">;
@@ -193,6 +195,17 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
       .toEqual([AGRA, "gt_jaipur_date_confession"]);
   });
 
+  it("says, at the hotel at night, that the scene would not end by 21:00, not that the way back is too long (2026-11-23)", () => {
+    const evening = agraEvening(outcomeValues.accepted);
+    // A 15-minute scene at the hotel: 20:45 is the last start.
+    expect(getTravelEventAvailability(at(evening, 20 * 60 + 45), AGRA, "walk").available).toBe(true);
+    expect(getTravelEventAvailability(at(evening, 20 * 60 + 46), AGRA, "walk"))
+      .toEqual({ available: false, reason: "今日は21:00までに終えられません。" });
+    // Away from the hotel (an hour from Mariam's tomb by auto rickshaw), the way there still counts in the reason.
+    expect(getTravelEventAvailability(atPlace(at(evening, 19 * 60 + 50), "agra_mariam_tomb"), AGRA, "auto_rickshaw"))
+      .toEqual({ available: false, reason: "今日はホテルへの帰路を含めると時間が足りません。" });
+  }, 60_000);
+
   it("opens Agra's confession, the journey's first, at night after a sightseeing there, with nothing recorded before", () => {
     // Delhi cleared (no confession there; 2026-11-20), then the departure to Agra.
     const agra = departFromClearedCity(clearCity(newJourney("golden_triangle")));
@@ -301,6 +314,20 @@ describe("her answer in Jaipur after a deferral there (2026-11-13)", () => {
     expect(getDateAvailability(validateGameState({ ...morning, confessionStatus: "none", playedDateIds: morning.playedDateIds
       .filter((id) => id !== "gt_jaipur_date_confession"),
     livedTimes: morning.livedTimes?.filter((item) => item.id !== "gt_jaipur_date_confession") }), answer).available).toBe(false);
+  }, 300_000);
+
+  it("ends by 18:00: the map does not set out for it when it would start after 17:30 (2026-11-23)", () => {
+    // The map reads `# when: time day` before leaving, and the date starts on arrival without reading it again: its
+    // event's endWindows keep the daytime scene out of the evening.
+    const morning = morningAfter(deferredInJaipur(), outcomeValues.deferred);
+    // At the hotel: the last start is 17:30 (a 30-minute scene), in the words for a scene where the party already is.
+    expect(getTravelEventAvailability(at(morning, 17 * 60 + 30), answer, "walk").available).toBe(true);
+    expect(getTravelEventAvailability(at(morning, 17 * 60 + 31), answer, "walk"))
+      .toEqual({ available: false, reason: "今の時間には、この出来事を始められません。" });
+    // From the Amber Fort (35 minutes by auto rickshaw): at 16:55 it arrives at 17:30, at 17:30 it would arrive at 18:05.
+    expect(getTravelEventAvailability(atPlace(at(morning, 16 * 60 + 55), "jaipur_amber_fort"), answer, "auto_rickshaw").available).toBe(true);
+    expect(getTravelEventAvailability(atPlace(at(morning, 17 * 60 + 30), "jaipur_amber_fort"), answer, "auto_rickshaw"))
+      .toEqual({ available: false, reason: "到着する時間には、この出来事を始められません。" });
   }, 300_000);
 
   it("says not now when the confession's condition is not met: a final rejection, after keeping her promise", () => {

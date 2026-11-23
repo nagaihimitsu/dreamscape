@@ -6720,7 +6720,13 @@
       "titleJa": "夜のせいにしない返事",
       "activityMinutes": 30,
       "apCost": 0,
-      "admissionCost": 0
+      "admissionCost": 0,
+      "endWindows": [
+        {
+          "start": 0,
+          "end": 1080
+        }
+      ]
     }
   ],
   "nightLinesJa": [
