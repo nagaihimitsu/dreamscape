@@ -18,8 +18,10 @@ INCLUDE modules.ink
 十八世紀に、ジャイプールを築いた王が造らせた天文台。望遠鏡ではなく、肉眼で星や太陽の位置を測るための、石の道具たちだ。
 # speaker: heroine
 # voice: gt_jaipur_jantar_mantar_guide_002
+# photo: gt_album_j016 # photo_caption: 空を測る、石の道具
 道具の中に、人が歩いて入れるんだ。道具の方が、わたしより大きい
 # speaker: narrator
+# photo: gt_album_j017 # photo_caption: 帽子のつばと、くっきりした影
 日差しが強い。{heroine_name}は帽子のつばを下げ、地面に落ちた影の濃さに目を細めた。
 # speaker: heroine
 # emotion: neutral
@@ -103,6 +105,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_jaipur_main_jantar_mantar_003
+# photo: gt_album_j019 # photo_caption: 目盛りが、すごく細かい
 わ……目盛りが、すごく細かい。大きいのは、見せびらかすためじゃなかったんだ
 -> quiz(2) ->
 # background: gt_bg_jaipur_jantar_mantar

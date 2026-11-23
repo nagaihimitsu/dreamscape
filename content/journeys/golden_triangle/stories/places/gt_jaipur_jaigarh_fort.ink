@@ -174,6 +174,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
+# photo: gt_album_j055 # photo_caption: 模型のようなアンベール城
 チャイのカップを手に、城壁のふちに立つ。下には、アンベール城と、その前の湖が、模型のように小さく見えた。
 { cond("episode gt_jaipur_main_amber_fort"):
     # speaker: heroine

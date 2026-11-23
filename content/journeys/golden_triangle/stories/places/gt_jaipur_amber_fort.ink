@@ -13,11 +13,13 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
 # voice: gt_jaipur_amber_fort_guide_001
+# photo: gt_album_j006 # photo_caption: 峰に続く城壁
 お城の後ろの山に、まだ壁が続いてる。……万里の長城みたい
 # speaker: narrator
 坂を上りきると、大きな中庭に出た。その向こうに、色鮮やかな絵で飾られた門が見える。王の私的な宮殿へ入る門だ。
 # speaker: heroine
 # voice: gt_jaipur_amber_fort_guide_002
+# photo: gt_album_j007 # photo_caption: くぐるのがもったいない門
 門って、くぐる所なのに。ここまで飾られてると、くぐるのがもったいないね
 # speaker: narrator
 中庭の隅に、小さな露店が出ていた。若い男が板に紙を留め、極細の筆で絵を描いている。手のひらほどの紙に、この城がまるごと入っていた。
@@ -36,6 +38,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,music
 # voice: gt_jaipur_amber_fort_guide_005
+# photo: gt_album_j009 # photo_caption: 自分のための、初めての買い物
 自分のための買い物、この旅で初めてかも。……ちょっと、どきどきした
 # speaker: narrator
 包みを大事そうに鞄にしまい、二人は門の方へ歩き出した。門の脇には、大きな土産物屋が口を開けている。
@@ -54,6 +57,7 @@ INCLUDE modules.ink
 # leave: enemy
 門の脇の土産物屋の前で、{heroine_name}は鞄の包みに手を当てた。中庭の露店で、自分のために買ったばかりの、この城の細密画。
 # speaker: narrator
+# photo: gt_album_j010 # photo_caption: 店先に並ぶ、三十枚の同じ絵
 その絵が、店先に三十枚並んでいた。同じ構図。同じ色。値段は三分の一。光沢のある紙に、印刷されている。
 # speaker: heroine
 # reaction: heroine,surprised,gloom

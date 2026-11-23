@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_jaipur_hawa_mahal_guide_001
+# photo: gt_album_j022 # photo_caption: 窓でできた壁
 窓、窓、窓……！　建物というより、窓でできた壁みたい
 # speaker: narrator
 小窓の一つひとつに、細かな格子がはまっている。張り出した出窓が、上へ行くほど少しずつ細くなり、とがった屋根へ集まっていく。
@@ -25,6 +26,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_jaipur_hawa_mahal_guide_003
+# photo: gt_album_j023 # photo_caption: 横断歩道より、牛
 渡れた……。横断歩道より、牛の方が信号っぽかった
 # speaker: narrator
 歩道には、野菜や果物を並べた露店が続いている。古い日傘の下で、女性が大根の土を払っていた。
@@ -116,12 +118,15 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # voice: gt_jaipur_main_hawa_mahal_006
+    # photo: gt_album_j026 # photo_caption: 階段のない宮殿
     坂道だ。階段じゃなくて、ゆるい坂でぐるぐる上がっていくんだ
 - else:
     # speaker: narrator
+    # photo: gt_album_j026 # photo_caption: 階段のない宮殿
     係員が指さした先に、ゆるい坂道があった。階段ではなく、傾斜路で上の階へ上がるのだ。
 }
 # speaker: narrator
+# photo: gt_album_j027 # photo_caption: 小窓の格子に顔を寄せて
 上の階へ行くほど、通路は細くなっていった。小窓の格子に顔を寄せると、通りが真下に広がっていた。
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
@@ -224,6 +229,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_jaipur_main_hawa_mahal_013
+# photo: gt_album_j030 # photo_caption: 新聞紙にくるんだ大根
 だ、大根……。ホテルで、どうしよう……
 # speaker: enemy
 # voice: gt_jaipur_main_hawa_mahal_battle_gaura_018
@@ -290,6 +296,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_finale_battle_kamla_004
 答えを言うだけ。言いたいことを言う練習よ。……できるでしょう
 # speaker: narrator
+# photo: gt_album_j119 # photo_caption: 「わたしが、答えます」
 何十人もの目が、こちらを向いた。{heroine_name}は一度だけ深く息を吸い、門の前に進み出た。
 # speaker: heroine
 # emotion: serious
@@ -500,9 +507,11 @@ INCLUDE modules.ink
 ……はい。……怖いけど、踊りたいです
 # speaker: narrator
 # stand: apart
+# photo: gt_album_j125 # photo_caption: 怖いけど、踊りたいです
 通りの真ん中へ、一歩。手拍子に合わせて、ぎこちなく腕を上げる。誰かが笑い、誰かが真似をし、それがすぐに踊りの輪になった。
 # speaker: narrator
 # stand: close
+# photo: gt_album_j126 # photo_caption: 迷いのない手
 {heroine_name}は振り返り、行列の端に残っていたこちらの手を取った。迷いのない手だった。
 # speaker: heroine
 # reaction: heroine,happy,sparkle

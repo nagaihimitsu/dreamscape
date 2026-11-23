@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # hint: ジャイプールの観光を一つ終えてから
 # background: gt_bg_jaipur_albert_hall
 # speaker: narrator
+# photo: gt_album_j040 # photo_caption: 灰色に揺れる広場
 アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。その正面の広場が、灰色に揺れている。鳩だ。何百羽もの鳩が、地面を埋めつくしていた。
 # speaker: narrator
 広場の端で、男が小さな袋に入った穀物を売っている。
@@ -41,6 +42,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # emotion: surprised_big
         # voice: gt_jaipur_date_albert_hall_003
+        # photo: gt_album_j042 # photo_caption: 「やだ、肩に！」
         やだ、肩に！　は、早く払って！
     - else:
         # speaker: narrator
@@ -181,5 +183,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_jaipur_date_albert_hall_016
+# photo: gt_album_j048 # photo_caption: ミイラより、鳩の方が怖い
 それにしても、ミイラより、鳩の方がよっぽど元気。わたし、やっぱり鳩の方が怖いかも
 -> END
