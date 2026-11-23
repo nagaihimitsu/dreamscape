@@ -126,7 +126,6 @@ INCLUDE modules.ink
     係員が指さした先に、ゆるい坂道があった。階段ではなく、傾斜路で上の階へ上がるのだ。
 }
 # speaker: narrator
-# photo: gt_album_j027 # photo_caption: 小窓の格子に顔を寄せて
 上の階へ行くほど、通路は細くなっていった。小窓の格子に顔を寄せると、通りが真下に広がっていた。
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
@@ -151,7 +150,7 @@ INCLUDE modules.ink
     ほら、あそこ。……ね、見えた？
 -
 # speaker: narrator
-# photo: gt_album_j13 # photo_caption: 格子の小窓から見下ろす、古い日傘
+# photo: gt_album_j027 # photo_caption: 格子の小窓から見下ろす、古い日傘
 ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
 # speaker: heroine
 # emotion: neutral

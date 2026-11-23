@@ -148,7 +148,7 @@ INCLUDE modules.ink
     }
     # speaker: narrator
     # emotion: smile
-    # photo: gt_album_j22 # photo_caption: 手が使えない彼女に、焼きとうもろこし
+    # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
     一口かじって、彼女は目を細めた。唐辛子とライムが、あとから追いかけてくる。
 * [わざと少し遠ざける # option: tease_corn]
     # profile: provocative
@@ -159,7 +159,7 @@ INCLUDE modules.ink
         今は本当にやめて。手、動かしたら模様がつぶれちゃう
         # speaker: narrator
         # emotion: exasperated
-        # photo: gt_album_j062 # photo_caption: 差し出された焼きとうもろこし
+        # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
         すぐに差し出すと、彼女はまだ少しむくれたまま、一口かじった。
     - else:
         # speaker: heroine
@@ -168,7 +168,7 @@ INCLUDE modules.ink
         いじわる！　手が乾いたら、覚えてなさいね
         # speaker: narrator
         # emotion: teasing
-        # photo: gt_album_j062 # photo_caption: 差し出された焼きとうもろこし
+        # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
         三回目で、ようやく一口かじらせてもらえた。彼女は、勝った人の顔で、もぐもぐと口を動かした。
     }
 * [自分でおいしそうに食べてみせる # option: eat_corn_myself]
@@ -186,7 +186,7 @@ INCLUDE modules.ink
     }
     # speaker: narrator
     # emotion: exasperated
-    # photo: gt_album_j062 # photo_caption: 差し出された焼きとうもろこし
+    # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
     残りの半分を差し出すと、彼女は、まだ少しむくれたまま、それをかじった。
 -
 # speaker: narrator

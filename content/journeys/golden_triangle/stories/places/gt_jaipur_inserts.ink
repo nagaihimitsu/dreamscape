@@ -182,13 +182,12 @@ INCLUDE modules.ink
 # voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
-# photo: gt_album_j26 # photo_caption: 読み上げられた名前
+# photo: gt_album_j096 # photo_caption: 読み上げられた名前
 # pause: 900
 帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
 # emotion: shy_deep
 # voice: gt_jaipur_hotel_mehndi_morning_003
-# photo: gt_album_j096 # photo_caption: 「教えないって、言ったのに」
 教えないって、言ったのに。……もう。聞かなかったことに、してくれる？
 * [「聞かなかった」 # option: didnt_hear]
     # rel: affection +1
@@ -374,7 +373,7 @@ INCLUDE modules.ink
     デリーで買った雨の匂いの小瓶は、もう無い。アーグラの廟で猿に取られ、石の通路で割れてしまった。
     # speaker: heroine
     # reaction: heroine,teasing,music
-    # recall: gt_album_a39
+    # recall: gt_album_a073
     # voice: gt_jaipur_finale_before_envelope_010
     雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど
 }

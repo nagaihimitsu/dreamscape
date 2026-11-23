@@ -132,11 +132,10 @@ INCLUDE modules.ink
 もう一度、と彼女が井戸の方を向いた、そのときだった。
 # speaker: narrator
 # se: pigeon_flutter
-# photo: gt_album_d078 # photo_caption: くぼみから、灰色の塊が顔の前に
+# photo: gt_album_d078 # photo_caption: 鳩が顔の前に、本物の悲鳴
 すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
-# photo: gt_album_d55 # photo_caption: 鳩が顔の前に、本物の悲鳴
 # shake: window
 # size: large
 # voice: gt_delhi_date_agrasen_baoli_013

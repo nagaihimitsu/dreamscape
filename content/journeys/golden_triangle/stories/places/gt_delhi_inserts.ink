@@ -178,7 +178,6 @@ INCLUDE modules.ink
 # voice: gt_delhi_hotel_sick_night_player_008
 屋台のおじさん、明日もあそこで、誰かのお腹を壊してるのかな
 # speaker: narrator
-# photo: gt_album_d40 # photo_caption: 夜中二時の廊下、看病の人が先に眠る
 返事を考えているうちに、隣から静かな寝息が聞こえてきた。看病に来た人が、先に眠っている。扇風機だけが、律儀に回り続けていた。
 -> END
 
@@ -246,11 +245,10 @@ INCLUDE modules.ink
     じゃあ、わたしの青いポーチも持ってきて。粉の袋が入ってる。心配性で持ってきたのが、自分に効くとは思わなかった
 -
 # speaker: narrator
-# photo: gt_album_d41 # photo_caption: 最後の一個を譲った夜
+# photo: gt_album_d103 # photo_caption: 最後の一個を譲った夜
 天井の扇風機が、ゆっくり回っている。彼女は膝にあごをのせて、小さく息を吐いた。
 # speaker: heroine
 # voice: gt_delhi_hotel_sick_night_heroine_008
-# photo: gt_album_d103 # photo_caption: 「今度は、言う」
 お腹いっぱいって、言えばよかった。バスって、言えればよかった。……今度は、言う。屋台でも、ほかの所でも
 -> END
 

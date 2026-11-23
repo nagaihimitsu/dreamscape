@@ -56,7 +56,6 @@ INCLUDE modules.ink
     # reaction: heroine,shy_deep,blush
     # pause: 800
     # voice: gt_jaipur_date_confession_002
-    # photo: gt_album_j100 # photo_caption: 「……うん。わたしも、好き」
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
@@ -68,7 +67,7 @@ INCLUDE modules.ink
     ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
-    # photo: gt_album_j43 # photo_caption: 楽隊の音の屋上の告白
+    # photo: gt_album_j100 # photo_caption: 楽隊の音の屋上の告白
     # voice: gt_jaipur_date_confession_004
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
@@ -297,7 +296,7 @@ INCLUDE modules.ink
     }
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
-        # recall: gt_album_j26
+        # recall: gt_album_j096
         彼女は、手のひらを一度開いて、また閉じた。孔雀の羽の付け根に、こちらの名前が、まだ濃く残っている。
     }
 - else:
@@ -621,7 +620,7 @@ INCLUDE modules.ink
 }
 { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
     # speaker: narrator
-    # recall: gt_album_j26
+    # recall: gt_album_j096
     彼女は、握っていた手のひらを開いた。孔雀の羽の付け根に、こちらの名前が、まだ濃く残っている。
 }
 # speaker: narrator
@@ -663,11 +662,10 @@ INCLUDE modules.ink
 -
 # speaker: heroine
 # reaction: heroine,teasing,heart
-# photo: gt_album_j43 # photo_caption: 先に言われた屋上
+# photo: gt_album_j109 # photo_caption: 先に言われた屋上
 # voice: gt_jaipur_date_her_confession_022
 旅が終わったあとのことは、一緒に決めようね。……最初の一個は、わたしが決めちゃったけど
 # speaker: narrator
-# photo: gt_album_j109 # photo_caption: 遠くの楽隊が、ひときわ大きく
 遠くの楽隊が、ひときわ大きく鳴った。よその人のお祝いだと分かっていても、今夜は少しだけ、自分たちのために鳴っている気がした。
 -> END
 

@@ -60,11 +60,10 @@ INCLUDE modules.ink
         # speaker: narrator
         名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。どこから自分の声が戻ってくるのかも分からない。
         # stand: close
-        # photo: gt_album_j076 # photo_caption: 三回目に呼んだら、駆け寄ってきた
+        # photo: gt_album_j076 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
         三回目に呼んだとき、笑い声のしていた扉が開いて、彼女が駆け寄ってきた。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
         # voice: gt_jaipur_date_nahargarh_fort_005
         ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方
     }

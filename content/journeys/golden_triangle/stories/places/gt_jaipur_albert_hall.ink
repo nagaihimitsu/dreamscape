@@ -23,7 +23,7 @@ INCLUDE modules.ink
 { cond("date gt_delhi_date_agrasen_baoli"):
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
-    # recall: gt_album_d55
+    # recall: gt_album_d078
     # voice: gt_jaipur_date_albert_hall_001
     鳩……。デリーの階段井戸以来、鳩には、ちょっと思うところがあるんだけど
 - else:
