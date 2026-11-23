@@ -90,6 +90,7 @@ INCLUDE modules.ink
 # tint: off
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo
+# photo: gt_album_d117 # photo_caption: 五行のデリー、全部行った
 夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。五行のデリー。全部、行った。
 # speaker: narrator
 # se: door_knock
@@ -137,6 +138,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # quiet: scene
 # leave: gt_aman
+# photo: gt_album_d120 # photo_caption: 窓の外、積み終わったトラック
 アマンが帰ったあと、{heroine_name}はチャイの最後の一口を飲み干し、窓の外を見た。路地のトラックは、もう全部積み終わっている。
 {
 - ending_reached:

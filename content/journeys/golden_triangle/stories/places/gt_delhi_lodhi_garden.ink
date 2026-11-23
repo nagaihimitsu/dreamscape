@@ -19,6 +19,7 @@ INCLUDE modules.ink
 ロディ・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_001
+# photo: gt_album_d089 # photo_caption: 五百年前の墓の間をジョギング
 お墓の間を、みんなジョギングしてる。日本だと、ちょっと考えられないね
 # speaker: narrator
 もっとも、先にいたのは墓の方だ。公園は1930年代に、墓のまわりに後から作られた。
@@ -287,6 +288,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing,heart
 # voice: gt_delhi_date_lodhi_garden_015
+# photo: gt_album_d095 # photo_caption: 胸に薔薇の老人と、別々の門
 見た？　あのおじいさん、胸に薔薇さしてた。デートかな。別々に帰るところまで、本気だね
 # speaker: narrator
 ドゥベイが、二人の前に立った。会の最後に、新入りには、いつも一つ頼むことがあるという。
@@ -422,6 +424,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_date_lodhi_garden_024
+# photo: gt_album_d097 # photo_caption: ドームの墓の階段で、真顔の「ハ、ハ、ハ」
 ハ、ハ、ハ
 # speaker: narrator
 # emotion: happy

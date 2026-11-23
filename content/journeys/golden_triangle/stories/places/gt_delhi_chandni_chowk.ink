@@ -17,10 +17,12 @@ INCLUDE modules.ink
     # background: gt_bg_delhi_chandni_chowk_night
     # tint: off
     # speaker: narrator
+    # photo: gt_album_d043 # photo_caption: 電線の毛糸玉の下の路地
     日が落ちても、チャンドニー・チョークの路地は眠らない。頭の上で電線が黒い毛糸玉みたいに絡まり、裸電球の下で、大鍋の油がずっと鳴っている。
 - else:
     # background: gt_bg_delhi_chandni_chowk
     # speaker: narrator
+    # photo: gt_album_d043 # photo_caption: 電線の毛糸玉の下の路地
     チャンドニー・チョークの路地は、昼でも薄暗い。頭の上で電線が黒い毛糸玉みたいに絡まり、その下で、大鍋の油がずっと鳴っている。
 }
 # speaker: narrator
@@ -40,11 +42,13 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_delhi_date_chandni_chowk_003
+# photo: gt_album_d044 # photo_caption: 一つ目「口の中で、割れた！」
 すっぱ、からっ、おいしい！　口の中で、割れた！
 # speaker: narrator
 感想を言い終わる前に、二つ目が来た。飲み込む前に、三つ目。屋台の男は客の顔を見ていない。手だけが、正確に、休まずに動いている。
 # speaker: narrator
 # emotion: smile
+# photo: gt_album_d045 # photo_caption: 涙目で、律儀にうなずく
 四つ目。五つ目。彼女は涙目のまま、律儀に笑ってうなずいている。口がいっぱいで、何も言えない。
 隣の男の客が、短く何か言った。
 # speaker: gt_delhi_chandni_customer
@@ -164,6 +168,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_chandni_chowk_012
 ……食べたい。食べたいけど、もう入らないかも。でも、せっかくくれたのに
 # speaker: narrator
+# photo: gt_album_d050 # photo_caption: 最後の一つを三回ずつ見比べる
 彼女は器の上の一つと、こちらの顔を、三回ずつ見比べた。
 * [自分が食べる # option: eat_last_myself]
     # profile: provocative
@@ -201,6 +206,7 @@ INCLUDE modules.ink
     }
     # speaker: narrator
     # emotion: happy
+    # photo: gt_album_d051 # photo_caption: 勝った人の顔で、空の器
     彼女は目を閉じて、最後の一つを丸ごと味わった。それから、勝った人の顔で、空の器を屋台の男に見せた。
 * [「二人で言おう。せーの」 # option: say_bas_together]
     # profile: playful
@@ -227,6 +233,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,happy,sparkle
     # voice: gt_delhi_date_chandni_chowk_020
+    # photo: gt_album_d052 # photo_caption: 水なしの、おまけのおまけ
     水なしの、おまけのおまけ。断ったのに、もらえちゃった。言ってみるものだね
 -
 # speaker: narrator

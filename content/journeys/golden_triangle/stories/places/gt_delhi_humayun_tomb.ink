@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_delhi_humayun_tomb_guide_001
+# photo: gt_album_d023 # photo_caption: 水路で四つに区切られた庭
 静か……。さっきまでの道路の音、どこに行ったの？
 # speaker: narrator
 クラクションの洪水を抜けてきた耳に、鳥の声がやけに大きく聞こえる。オウムの緑が、木から木へ飛んだ。
@@ -22,6 +23,7 @@ INCLUDE modules.ink
 {heroine_name}は段ボールの切れ端を開き、三行目を読み上げた。
 # speaker: heroine
 # voice: gt_delhi_humayun_tomb_guide_002
+# photo: gt_album_d024 # photo_caption: 三本目の木陰を数える
 三本目……一、二、三。あの木かな。ベンチがあって、確かに涼しそう
 # speaker: narrator
 木陰のベンチには、若い男女が座っていた。間に、人ひとり分の隙間を空けて。ほかの木陰にも、似たような二人組がいる。
@@ -40,6 +42,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_humayun_tomb_guide_005
+# photo: gt_album_d025 # photo_caption: 「……でも、ちょっとだけ想像しちゃった」
 ……でも、ちょっとだけ想像しちゃった。廟の中も見に行こう。水路沿いに歩いたら、正面から見えるはず
 -> END
 
