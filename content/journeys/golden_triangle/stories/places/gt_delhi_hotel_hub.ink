@@ -5,6 +5,9 @@ INCLUDE modules.ink
 
 // 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 // 【3】足した札：カムラの段ボールのメモを受け取る
+// 旅の最初の場面は、この前の空港の場面（gt_delhi_inserts.ink の gt_delhi_arrive_hands。ロゴの前）。
+// 落花生の前振り（2026-11-23）：彼女が落花生を目で追う → カムラが一粒くれて「欲しいものは、欲しいと言いなさい」。
+// 一粒は、目の前の落花生と、「旅の連れです！」と言ったばかりの連れの両方を指す。
 === gt_delhi_arrival ===
 # scene: arrival
 # person: gt_kamla
@@ -50,6 +53,8 @@ INCLUDE modules.ink
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_006
 説明したら、つまらない。
+# speaker: narrator
+落花生の殻が、また小気味よく割れた。{heroine_name}の目が、ついその手もとを追う。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_007
 出かけるなら、地下鉄にしなさい。わたしは女性車両。オートリキシャの運転手とは、値段で喧嘩になるからね。

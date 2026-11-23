@@ -234,6 +234,16 @@
       "characterId": "gt_faiz"
     },
     {
+      "id": "gt_delhi_airport_girl",
+      "cityId": "delhi",
+      "nameJa": "隣の列の女の子"
+    },
+    {
+      "id": "gt_delhi_immigration_officer",
+      "cityId": "delhi",
+      "nameJa": "入国審査官"
+    },
+    {
       "id": "gt_delhi_red_fort_children",
       "cityId": "delhi",
       "nameJa": "子どもたち"

@@ -492,6 +492,20 @@
       "checkedAt": "2026-11-13"
     },
     {
+      "id": "gt_img_delhi_airport_mudras",
+      "path": "assets/tourism/india/delhi_airport_mudras.webp",
+      "width": 1600,
+      "height": 1067,
+      "altJa": "インディラ・ガンディー国際空港第3ターミナルの広間。銅色の円盤を敷きつめた壁から、白い大きな手の彫刻がいくつも突き出している。手はどれも違う形で、てのひらに花の模様がある。磨かれた床に灯りが映り、左奥に手荷物の受取所と、スーツケースを引く人が小さく見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%22Hands%22_Sculpture_(6036336624).jpg",
+      "licenseName": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "creditJa": "写真：David Brossard／Wikimedia Commons（元は Flickr）／CC BY-SA 2.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1280px縮小版を使用。元画像は5361×3574px（2011年8月撮影。Flickrからの転載で、Commonsのライセンス確認済み）。縦横比を維持し、切り抜き・色の調整・描き足し・AI生成は行っていません。表示時は画面比率により端が切れる場合があります。写っている彫刻は、空港の到着の広間に常設されている作品（Ayush Kasliwal 制作、2010年）です。この縮小版もCC BY-SA 2.0で提供します。さらに縦横比を保って1600×1067pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 2.0で提供。",
+      "checkedAt": "2026-11-23"
+    },
+    {
       "id": "gt_img_delhi_paharganj_room_night",
       "path": "assets/tourism/india/delhi_paharganj_room_night.webp",
       "width": 1600,
