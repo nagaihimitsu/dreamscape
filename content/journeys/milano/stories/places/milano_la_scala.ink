@@ -3,51 +3,58 @@ INCLUDE modules.ink
 
 // スカラ座の場所のファイル（2026-11-13 に1場面1ファイルから移した）。
 // 観光案内、特殊戦B、道中交流（推理クイズの後とデートの後の「喉飴を噛む人」）とデート。
+// 2026-11-22 の改稿：椅子の修理屋アダは、祖母の家を引き払う日、「スカラ座の平土間にあった」と言い伝えられた台所色の椅子を売るか決めたい。
+// 叔父は祖母の作り話だと言う。平土間の椅子は昔は動かせた（古道具屋の「絶対」が崩れる）。戦後、正式な再開の前の演奏会で客は普通の椅子に座った（第3問）。
+// 祖母が十四の年に台所の椅子を担いで行ったというのは家の話で、記録ではない（本文でもそう言う）。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === la_scala_case_guide ===
 # scene: guide
 # background: milano_la_scala_date
 # speaker: narrator
-スカラ座の前で、女が椅子を一脚持ち上げている。通りかかった男が腰掛けようとした寸前だった。
+スカラ座の前の広場で、女の人が古い木の椅子を一脚、両手で持ち上げていた。
 # speaker: narrator
-女は一度「すみません」と言い、よく考えてもう一度、「私のです」と言った。
+通りかかった男の人が、その椅子に腰を下ろそうとした寸前だった。
+# speaker: narrator
+女の人は「すみません」と言いかけて、少し考えてから、言い直した。私のです、と。
 # speaker: heroine
-座らせてもらえない椅子。劇場の外にもあるんですね
+座らせてもらえない椅子……。どうして劇場の前に、椅子を一脚だけ持ってきたんだろう
 -> END
 
 // ───── 特殊戦B（矛盾追及）。battles/catalog.json の milano_la_scala_b01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。主張・追及は手伝いの knot milano_la_scala_b01_claim、milano_la_scala_b01_press（knot の名前＋_claim・_press）。
 === milano_la_scala_b01 ===
 # scene: battle
 # background: milano_la_scala_date
-# speaker: enemy
-祖母の椅子を片づけに来た。家族の話じゃ「スカラ座の平土間にあった」。買い手は鼻で笑った
 # speaker: narrator
-椅子を裏返すと、薄緑の塗料が桟に垂れている。祖母が台所を塗った年と同じ色だという。
-# speaker: heroine
-劇場の椅子だと分かったら、売れるんですか？
+二人に気づくと、女の人は椅子を石畳に下ろした。座面は薄緑に塗られ、桟には同じ色の塗料が垂れて固まっている。
 # speaker: enemy
-# reaction: heroine,worried
-高くなる。……そしたら、捨てない口実ができる。持って帰るのに、口実ひとつ要る家なの
+# cutin: name
+アダ。椅子の修理屋よ。……でもこれは、修理の客の椅子じゃなくて、祖母の
+# speaker: enemy
+今日、祖母の家を引き払うの。家の言い伝えだと、この椅子は『スカラ座の平土間にあった椅子』
+# speaker: enemy
+叔父は、ばあちゃんのいつもの作り話だって。古道具屋は鼻で笑った。売るか残すか、今日決めなきゃいけない
+# speaker: heroine
+それで、本物の劇場の前まで持ってきたんですか
+# speaker: enemy
+ここに置いたら、何か分かるかと思って。……分かるわけないけど。この薄緑だって、祖母の台所の壁と同じ色だし
+# speaker: enemy
+ばあちゃんは、話を盛る人だった。スカラ座の桟敷の壁紙の色まで、見てきたみたいに話してた
 -> quiz(1) ->
 # background: milano_la_scala_date
 { quiz_correct:
-# speaker: enemy
-客席の壁紙にまで持ち主の好みがあったのね
+    # speaker: heroine
+    桟敷は、持ち主の家族が自分たちの好みで飾れたんだ。壁紙の色が席ごとに違っても、おかしくない
 - else:
-# speaker: enemy
-桟敷は借りるだけだと思ってた。持ち主が好きなふうに飾れたのね
+    # speaker: enemy
+    桟敷は、持ち主の家族が好きなように飾れたのね。壁紙の色の話も、作り話とは限らないってこと
 }
-# speaker: narrator
-アダは椅子の足を手のひらで払った。縁には、何度も持ち上げられた跡がある。
 # speaker: enemy
-祖母はここにあったと言う。買い手は、そんなことは絶対にないと言う。どっちかが嘘をついたのかな
-# speaker: player
-「絶対」のほうから調べてみよう
+でも、問題は桟敷じゃなくて、平土間。古道具屋の言い分は、こう
 -> milano_la_scala_b01_claim ->
 # background: milano_la_scala_date
 # speaker: heroine
-触って分かるのはこの椅子のことだけ。他の椅子も全部そうかは、記録を開きましょう
+『昔から全部』……。この椅子だけ見ても、ほかの椅子のことは分からない。記録で確かめてみよう
 - (stop)
 -> reasoning ->
 { reasoning_action == "press":
@@ -57,61 +64,72 @@ INCLUDE modules.ink
 { evidence_result == "failure":
     # background: milano_la_scala_date
     # speaker: enemy
-    面白い。でも私が知りたいのは、平土間の床から椅子を動かせたかどうか。別の場所の話じゃ、買い手には通じない
+    それは平土間の椅子の話じゃないでしょ。古道具屋が言ってるのは、平土間の椅子が床から動かせたかどうか
     -> stop
 }
 # background: milano_la_scala_date
 # speaker: heroine
-平土間では椅子を借りて座った、しかも動かせた。買い手の理由は崩れます。ただ、この一脚がそこから来た証明はまだありません
+昔の平土間の椅子は動かせたし、座りたい人が借りてた。『昔から全部固定』は、これで崩れます
+# speaker: heroine
+ただ、この一脚がそこにあった証拠には、まだなりません
 -> quiz(2) ->
 # background: milano_la_scala_date
 { quiz_correct:
-# speaker: enemy
-違う時代の座り方が一つ見えた
+    # speaker: enemy
+    平土間で、客が椅子を借りてたっていう記録。……古道具屋の『絶対』は、これでおしまい
 - else:
-# speaker: enemy
-買い手は平土間の椅子を知らなかった。動かして、客に貸してたのよ
+    # speaker: enemy
+    平土間で、動かせる椅子を客が借りてた、と。古道具屋の『絶対』は、これでおしまいね
 }
 # speaker: enemy
-動かせた椅子が、うちまで動いてきた。そこをつないでくれる人がいればね
-# speaker: heroine
-# emotion: serious
-わたし、そこの証人にはなれません
+でもね。この椅子は、どう見ても劇場の椅子じゃない。台所の椅子よ
 # speaker: narrator
-アダの手から布が落ちた。彼女は拾って、椅子の上に置いた。
+アダは椅子を裏返した。座面の裏に、子どもの字で小さく彫ってある。
+# speaker: narrator
+# letter: card
+SCALA ♪
+# speaker: enemy
+子どものいたずら書きだと思ってた。……ばあちゃん、言ってたの。屋根の焼けた劇場で、音楽を聴いたって
+# speaker: enemy
+それも、作り話だと思ってた
 -> quiz(3) ->
 # background: milano_la_scala_date
 { quiz_correct:
-# speaker: enemy
-席を持ち寄ってでも、演奏を聴きたかったのね
+    # speaker: heroine
+    正式に再開する前、傷ついた劇場で演奏会があった。そのとき、お客さんは普通の椅子に座ってたんだ
 - else:
-# speaker: enemy
-正式な再開を待てない人がいたのね。瓦礫の中、普通の椅子で演奏を聴いた
+    # speaker: enemy
+    再開の前に、傷ついた劇場で演奏会があって、客は普通の椅子に座った……。オークションでも、稽古の舞台でもなく
 }
-# speaker: narrator
-アダは買い手に電話をかけた。
 # speaker: enemy
-劇場の椅子だとは保証しません。はい。……じゃあ取りやめで
-# speaker: narrator
-切って、ようやく腰掛けた。彼女の膝の高さに、ぴったりだった。
-# speaker: enemy
-子どもの頃ね、足が床につかないから、ばあちゃんがあの桟に板を渡した。いま見たら、傷が両方にある
+……ばあちゃんの話だと、十四の年、台所の椅子を担いで、焼けた劇場まで聴きに行ったって
 # speaker: heroine
-値札、どうします？
+並んだ椅子がどこから来たかまでは、記録には書いてありません。でも、おばあさんの話と食い違うところも、ありません
+# speaker: narrator
+アダは長いあいだ、座面の裏の字を見ていた。それから、古道具屋に電話をかけた。
 # speaker: enemy
-取る。家で文句が出たら、今度は私が座ってるところをどかしてもらう
+売りません。……劇場の椅子だとは言いません。劇場へ行った椅子です。はい。取りやめで
+# speaker: narrator
+電話を切ると、アダはようやく、その椅子に腰を下ろした。
+# speaker: enemy
+叔父には、私から言う。ばあちゃんは話を盛る人だった。でも、この話は盛ってなかったかもしれないって
+# speaker: heroine
+# emotion: smile
+スカラ座の平土間にあった椅子、ですね
+# speaker: enemy
+そう。うちの中では、これからもそう呼ぶ
 -> END
 
 === milano_la_scala_b01_claim ===
 # background: milano_la_scala_date
 # speaker: enemy
-買い手の言い分はこう。「スカラ座の平土間の席は昔から全部固定。家に持って帰れた椅子なんてあるはずない」
+古道具屋の言い分は、こう。『スカラ座の平土間の席は、昔から全部床に固定。持ち出せる椅子なんて、あるはずがない』
 ->->
 
 === milano_la_scala_b01_press ===
 # background: milano_la_scala_date
 # speaker: heroine
-この椅子の来歴じゃなくて、「昔から全部」の部分ですね。どの客席のどんな記録なら確かめられるかな
+見るのは、この椅子の来歴じゃなくて、『昔から全部』のところ。平土間の椅子について書いた記録を探そう
 ->->
 
 // 道中交流「喉飴を噛む人」（knot の名前 scala_mint が交流のID）。
@@ -151,16 +169,16 @@ INCLUDE modules.ink
 * [A small bag, please. # option: buy # translation: 小袋を一つください。]
     # money: -2
     # speaker: narrator
-    受け取った彼女が一粒を口に入れた。かり、と音がして、二人の客が同時に振り向いた。
+    彼女が一粒、口に入れた。かりっと噛む音に、二人の客が同時に振り向いた。
     # speaker: heroine
-    ……三秒、もたなかったです
+    ……なめてるつもりが、三秒で噛んじゃった
     -> END
 
 * [Who usually gets the last word? # option: ask # translation: いつもは、どっちが最後に言い返すの？]
     # speaker: milano_la_scala_candy_seller
     私。口論が長いと、開演前にもう一袋売れるの
     # speaker: narrator
-    客がそろって袋を握りしめた。
+    客の二人は、そろって飴の袋を握りしめた。
     # speaker: heroine
     今日は長くなりそう
     -> END
@@ -168,33 +186,34 @@ INCLUDE modules.ink
 * [No sweets for me, thanks. # option: leave # translation: 飴は遠慮しておきます。]
     # later
     # speaker: milano_la_scala_candy_seller
-    あんたたちも、たまにはこの人を見習って黙ってみたら
+    あんたたちも、この子みたいに、たまには黙って聞いてみたら
     # speaker: narrator
-    二人は同時に抗議した。飴が頬の同じ側でふくらんだ。
+    二人は同時に抗議した。飴で、頬の同じ側がふくらんでいた。
     -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_la_scala_date_01 の storyId がこの knot を指す。
 // 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。
+// 推理クイズBより先に遊べるので、その答え（桟敷の内装など）は言わない。
 === milano_la_scala_date_01 ===
 # scene: date
 # title: 故意のアンコール
 # background: milano_la_scala_date
 # speaker: narrator
-スカラ座前の広場で彼女が一礼した。拍手をすると手で制される。
+スカラ座の前の広場で、彼女が深く一礼した。拍手しかけると、手で止められた。
 # speaker: heroine
 # emotion: teasing
 まだ始まってません。お客さん、気が早すぎます
 # speaker: player
 何が始まるの？
 # speaker: heroine
-学芸会。台詞ひとつだったのに、前の子と一緒に言っちゃった。その一言の、やり直し
+小学校の学芸会のやり直し。台詞が一つだけだったのに、前の子とかぶって言っちゃったの。その一言を、ここで言い直したい
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
-彼女は声がどこまで届くか、靴先で距離を測った。
+彼女は、声がどこまで届くか、靴の先で距離を測った。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
-彼女は主人公の前だけに、小さくお辞儀し直した。
+彼女は、こちらに向かってだけ、小さくお辞儀をし直した。
 }
 
 * [「客席で黙って待つ」 # option: first_attentive]
@@ -206,7 +225,7 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: smile
-        いいお客さんですね。あ、こうやっておしゃべりしてるの、わたしのほうだ
+        いいお客さんですね。……あ、こうやっておしゃべりしてるの、わたしのほうだ
     }
     -> join_1
 
@@ -214,7 +233,7 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        その役までいるとあの日そっくりで。今日は一人でやってみる
+        その役までいたら、あの日とそっくりになっちゃう。今日は一人でやってみる
     - else:
         # speaker: heroine
         うん！　あなたの台詞は「誰かいるのか」。最後までちゃんと言ってね
@@ -225,32 +244,33 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        笑われる前提はやっぱり怖い。ちょっと背中向けて
+        笑われる前提だと、やっぱり怖い。ちょっと背中向けてて
     - else:
         # speaker: heroine
-        そっちの方が安心する。笑わせたら二度目もやるかも
+        そのほうが安心する。笑わせたら、二回目もやるかも
     }
     -> join_1
 
 = join_1
 # speaker: narrator
-彼女は劇場の入口を背に、深く息を吸った。
+彼女は劇場の入口を背にして、深く息を吸った。
 # speaker: heroine
 ここにいるよ
 # speaker: narrator
 向こうの信号が変わるまで、誰も続きをかぶせなかった。
 # speaker: heroine
-昔のスカラ座では客が桟敷を好きに飾ったんだって。いまの客席、どこがいい？
+この劇場も、前の劇場が火事で焼けたあとに建てられたんだって。やり直しの舞台にしては、ちょうどいいでしょ
+ねえ。もしここに客席があったら、今、どの席で見てた？
 
 * [「もう半歩、前の席」 # option: second_bold]
     # profile: bold
     # memory: sound_memory_la_scala_date_01
     { romance_result == "negative":
         # speaker: heroine
-        そこだと顔まで全部見える。今はこのくらいで
+        そこだと、顔まで全部見えちゃう。今はこのくらいで
     - else:
         # speaker: heroine
-        ……近いね。でも今の一言なら、そこに届いたって分かる
+        ……近いね。でも今の一言なら、そこまで届いたって分かる
     }
     -> join_2
 
@@ -259,10 +279,10 @@ INCLUDE modules.ink
     # memory: sound_memory_la_scala_date_01
     { romance_result == "negative":
         # speaker: heroine
-        そんなに下がらなくていいよ。今度は普通の声で話したい
+        そんなに下がらなくていいよ。今度は、普通の声で話したい
     - else:
         # speaker: heroine
-        いいな。いちばん遠くにいた人も待っててくれたって、役者はうれしい
+        いいな。いちばん遠くの人も待っててくれたって、役者はうれしいの
     }
     -> join_2
 
@@ -274,15 +294,15 @@ INCLUDE modules.ink
         もう一本だけ、わたしが役者でいたい。いい？
     - else:
         # speaker: heroine
-        役者交代！　わたしは拍手しないよ、ちゃんと最後までは
+        役者交代！　拍手は、最後まで見てからにするね
     }
     -> join_2
 
 = join_2
 { relationship_tone_after == "romantic_tension" || relationship_tone_after == "guarded_attraction":
 # speaker: narrator
-礼が終わっても、彼女は少しの間こちらを見ていた。
+お辞儀が終わっても、彼女は少しのあいだ、こちらを見ていた。
 }
 # speaker: narrator
-広場の雑踏の中で、二人分だけの公演が終わった。カーテンの代わりに信号がもう一度変わった。
+広場の雑踏の中で、二人だけの公演が終わった。幕の代わりに、信号がもう一度変わった。
 -> END

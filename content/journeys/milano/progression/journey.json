@@ -9,9 +9,9 @@
       "battleId": "milano_duomo_01",
       "requiredEpisodeIds": [],
       "titleJa": "無人の広場、一名追加",
-      "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
+      "descriptionJa": "広場で、頭から布をかぶった録音屋が、無人の十秒を待っている。",
       "clearTitleJa": "ドゥオモ編 クリア",
-      "clearDescriptionJa": "袖の音を持って、広場を歩き出す。"
+      "clearDescriptionJa": "四十人が黙った十秒。笑い声のところで、録音は切られた。"
     },
     {
       "id": "milano_galleria_episode",
@@ -21,9 +21,9 @@
       "battleId": "milano_galleria_01",
       "requiredEpisodeIds": [],
       "titleJa": "そこ、映っています",
-      "descriptionJa": "二人の後ろで、見知らぬ人が同じ動きを繰り返している。",
+      "descriptionJa": "香水の広告の写真屋に、いつの間にか「恋人役」にされていた。",
       "clearTitleJa": "ガッレリア編 クリア",
-      "clearDescriptionJa": "録音を消した広場に、今度は自分の足で戻れる。"
+      "clearDescriptionJa": "広告の写真は消えた。自分の写った一枚だけが、手もとに残る。"
     },
     {
       "id": "milano_last_supper_episode",
@@ -32,9 +32,9 @@
       "landmarkId": "last_supper",
       "battleId": "milano_last_supper_01",
       "titleJa": "五本の指で話す人",
-      "descriptionJa": "旧食堂で声を出さない兄と、その手を見て席を立つ妹がいる。",
+      "descriptionJa": "旧食堂で、声を休める兄の手を、妹が「あと五分」と訳している。",
       "clearTitleJa": "最後の晩餐編 クリア",
-      "clearDescriptionJa": "三秒のままの録音をしまい、旧食堂を出る。",
+      "clearDescriptionJa": "「一緒に」の答えは、今夜の客席で。角を曲がる兄妹に手を振る。",
       "requiredEpisodeIds": []
     },
     {
@@ -45,9 +45,9 @@
       "battleId": "milano_castello_01",
       "requiredEpisodeIds": [],
       "titleJa": "鼻がなくなる前に",
-      "descriptionJa": "城の中庭で、父親が自分の鼻をかばっている。",
+      "descriptionJa": "城の中庭で、くしゃみが粘土の鼻をつぶした。父親は、そのままにしてくれと言う。",
       "clearTitleJa": "スフォルツェスコ城編 クリア",
-      "clearDescriptionJa": "笑った顔のまま、中庭に人を残して歩き出す。"
+      "clearDescriptionJa": "前から見ると父、横から見ると祖父。粘土の顔は二つになった。"
     },
     {
       "id": "milano_finale",
@@ -62,10 +62,10 @@
         "milano_castello_episode"
       ],
       "epilogueStoryId": "places/milano_darsena.milano_epilogue",
-      "titleJa": "この十秒を誰に渡す",
-      "descriptionJa": "ダルセナで小さなラジオが始まる。旅の音を一つだけ選んでほしいという。",
+      "titleJa": "日暮れのダルセナ、人の気配なし",
+      "descriptionJa": "ダルセナで、録音屋が頭を抱えている。今度の注文は、人であふれる岸の「無人の十秒」。",
       "clearTitleJa": "ミラノ 都市クリア",
-      "clearDescriptionJa": "放送は終わった。水辺を離れる時間は、まだ二人で決められる。"
+      "clearDescriptionJa": "十秒を過ぎても、録音は止まらなかった。岸に戻る時間は、まだ二人で決められる。"
     }
   ],
   "storyBattles": [
@@ -90,7 +90,7 @@
       },
       "requiredEpisodeIds": [],
       "titleJa": "青い布をほどくまで",
-      "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
+      "descriptionJa": "ブレラで、演出家の姉と衣装係の弟が、同じ布の両端を持っている。",
       "actionLabelJa": "ブレラ絵画館へ行く"
     }
   ],

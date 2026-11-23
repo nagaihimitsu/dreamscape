@@ -14,16 +14,16 @@ INCLUDE modules.ink
 # reaction: heroine,worried,sweat
 ロースタリーの焙煎を見ていたら、彼女の小さいカップだけ先に届いた。鼻を近づけて、ちょっと困った顔をする。
 # speaker: heroine
-湯気はすごく好き。飲むほうは……まだ舌が信用できません
+湯気はすごく好き。でも飲むのは……まだ、自分の舌が信用できない
 # speaker: player
 熱いの苦手だった？
 # speaker: heroine
-猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味
+猫舌なのに、いちばんいい匂いのときに飲みたいの。かなり不利な趣味でしょ
 あの透明な管、焙煎する前の豆が通ってるんだって。追いかけているうちに冷めるかな
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
-彼女はカップの取っ手を自分の方へ向けた。
+彼女は、カップの取っ手を自分のほうへ向けた。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
 彼女は二人のカップを並べてから、そっと取っ手をこちらに向けた。
@@ -123,18 +123,18 @@ INCLUDE modules.ink
 # speaker: narrator
 豆を選ぶ人の手元を眺めながら、彼女が自分のポケットを両方裏返した。糸くずが一つ落ちた。
 # speaker: heroine
-今日は豆を買いません。買わない日のほうが、値段を見ずに好きなのを選べるから
+今日は、豆は買わない。買わない日のほうが、値段を見ないで好きなのを選べるから
 # speaker: player
 じゃあ、どれを僕に選ぶ？
 # speaker: heroine
-待って。そこ、当ててもらう側も参加する仕組みにしたい
+待って。選ばれる側も、ちょっと参加して。ヒントをちょうだい
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
 彼女はポケットの口を丁寧に整えた。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
-彼女は主人公のポケットまでのぞくふりをした。
+彼女は、こちらのポケットまでのぞくふりをした。
 }
 
 * [「僕のヒントは朝寝坊」 # option: first_playful]

@@ -17,10 +17,10 @@ const presentation = presentationSchema.parse(presentationData);
 // Each is present in a shared passage so no choice silently removes it.
 const currentPlaceDetails: Record<string, RegExp> = {
   milano_cafe_01: /透明な管、焙煎する前の豆/,
-  milano_walk_01: /地下には昔の礼拝施設/,
+  milano_walk_01: /広場の下には、昔の礼拝堂の跡/,
   milano_night_01: /入口をつなぐ共同の廊下/,
   milano_city_date_01: /ドゥオモ広場とスカラ広場/,
-  milano_la_scala_date_01: /昔のスカラ座では客が桟敷を好きに飾った/,
+  milano_la_scala_date_01: /前の劇場が火事で焼けたあと/,
   milano_brera_date_01: /片方だけ階段にかかってる/,
   milano_navigli_date_01: /洗濯する人たちが水を引いて/,
   milano_san_satiro_date_01: /漆喰で作られた見せかけ/,

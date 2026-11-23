@@ -11,18 +11,22 @@ INCLUDE modules.ink
 # title: 別々に見て、ここで会う
 # background: milano_san_maurizio_sound
 # speaker: narrator
-サン・マウリツィオ教会の内部は壁で二つに分かれている。かつて一般の人と、修道院の内側で暮らす女性たちが、それぞれの側でミサにあずかった。
+サン・マウリツィオ教会の中は、壁で二つに分かれている。
+# speaker: narrator
+かつては、一般の人と、修道院の内側で暮らす女性たちが、それぞれの側でミサにあずかった。
 # speaker: heroine
 修道女たちがいた向こう側にも壁画が残ってるんだって。どんな色に見えていたんだろう
-別々に絵を見て、一色だけ覚えて、ここで会いませんか。わたし、好きな人と同じものを見るのがデートだと思ってたから、逆をしてみたい
+別々に絵を見て、一色だけ覚えて、ここでまた会わない？
+# speaker: heroine
+デートって、同じものを一緒に見ることだと思ってたから。逆をやってみたいの
 # speaker: player
 待ち合わせに遅れたら？
 # speaker: heroine
-わたしのほうが遅いと思います。いまから謝っておきます
+たぶん、わたしのほうが遅れる。今のうちに謝っておくね
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
-彼女は仕切りのそばに戻る場所を指で示した。
+彼女は、仕切りの前の待ち合わせ場所を指でさした。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
 先に去りかけて、彼女は一度だけ小さく手を振った。

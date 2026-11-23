@@ -13,10 +13,10 @@ INCLUDE modules.ink
 # speaker: narrator
 ナヴィリオの夜。向こう岸の声が水を越えてくる。隣の足音だけ、ときどき半拍遅れる。
 # speaker: heroine
-さっきから歩幅を合わせようとして、歩き方を忘れました
+さっきから歩幅を合わせようとしてたら、歩き方を忘れちゃった
 # speaker: player
 # reaction: heroine,exasperated,sigh
-どうりで右足だけ偉そうだった
+どうりで、右足だけ張り切ってた
 # speaker: heroine
 # emotion: exasperated
 見てたの、それ。先に言ってよ
@@ -24,7 +24,7 @@ INCLUDE modules.ink
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
-彼女は水際から一人分あけて歩く。
+彼女は、こちらとのあいだを一人ぶん空けて歩いた。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
 二つの足音がそろった瞬間だけ、彼女がこちらの手を見た。
@@ -37,7 +37,7 @@ INCLUDE modules.ink
         競争すると余計に頑張っちゃうよ。今日はゆっくりがいい
     - else:
         # speaker: heroine
-        三歩なら勝つ。よーい、って言った人がもう一歩出てるから
+        三歩なら勝てる。よーい、って言いながら、わたしもう一歩出てるから
     }
     -> join_1
 
@@ -45,10 +45,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        先頭はちょっと恥ずかしい。一緒にいて、遅くなったらそのままで
+        前を歩くのは、ちょっと恥ずかしい。隣にいて。遅くなっても、そのままで
     - else:
         # speaker: heroine
-        じゃあ、この辺。わたし、運河側だといつも遅くなる
+        じゃあ、この辺まで。わたし、運河の側を歩くと、いつも遅くなるの
     }
     -> join_1
 
@@ -98,7 +98,7 @@ INCLUDE modules.ink
     # memory: sound_memory_night_01
     { romance_result == "negative":
         # speaker: heroine
-        座らずに、そばで立っててくれる？　今そこで灯りが切れそう
+        座らないで、そばに立っててくれる？　もうすぐ、また歩きだしたくなるから
     - else:
         # speaker: heroine
         ありがとう。座った途端、もう一周する元気が出てきた。困ったね
@@ -172,7 +172,9 @@ INCLUDE modules.ink
 
 = join_1
 # speaker: narrator
-洗い場の石には、人がそこで働いていた頃の傾きが残っている。彼女が同じ高さに手を置くと、さっきの親子が戻ってきた。
+洗い場の石には、人がそこで働いていたころの傾きが残っている。彼女が同じ高さに手を置いた。
+# speaker: narrator
+そのとき、通りの向こうから、片手だけ手袋をした子どもが、母親に手を引かれて戻ってきた。
 # speaker: heroine
 持ち主、見つかった。なのに、立ちたくない。いまの高さだと、水の色がちょっと違う
 
@@ -193,7 +195,7 @@ INCLUDE modules.ink
     # memory: sound_memory_navigli_date_01
     { romance_result == "negative":
         # speaker: heroine
-        もう少し待ちたかったな。手袋じゃなくて、この景色に
+        もう少し、ここにいたかったな。手袋のためじゃなくて、この景色のために
     - else:
         # speaker: heroine
         うん。何もしないで待つの、わたしは意外と苦手。付き合ってくれてありがとう
@@ -218,5 +220,5 @@ INCLUDE modules.ink
 彼女は立つ前に、こちらの膝についた砂を指さした。
 }
 # speaker: narrator
-親子の後ろで赤い手が二つ揺れた。二人は水に近い道を選んだ。
+手袋のそろった小さな手が、二つ揺れながら遠ざかっていった。二人は、水に近いほうの道を選んだ。
 -> END

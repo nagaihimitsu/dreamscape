@@ -14,7 +14,7 @@ INCLUDE modules.ink
 サン・サティロ教会。祭壇の奥を見た彼女が「あれ」と言い、すぐ自分の口を押さえた。
 # speaker: heroine
 # emotion: teasing
-わたし、先に気づいちゃったかも。答えを言うのと、びっくりする顔を見るの、いま迷ってます
+わたし、先に気づいちゃったかも。答えを言うか、びっくりする顔を見るか、いま迷ってる
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -59,7 +59,7 @@ INCLUDE modules.ink
 
 = join_1
 # speaker: narrator
-背後の道に限られた奥行きを、遠近法が補っている。二人は互いのいた場所を入れ替わった。
+奥行きの取れなかった祭壇の奥を、遠近法が補っている。二人は、互いの立っていた場所を入れ替えた。
 # speaker: heroine
 奥に見える天井、漆喰で作られた見せかけなんだって。正面からだと気づかなかった
 秘密を知る前に戻れたら、今度は何を見る？

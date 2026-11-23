@@ -20,7 +20,7 @@ INCLUDE modules.ink
 # sources: none
 # background: milano_darsena_finale
 # speaker: narrator
-岸の階段の途中で、小さなギターを膝にのせた少年がいた。城の中庭のティノだ。今日も親指で弾いている。
+岸の階段の途中で、小さなギターを膝にのせた男の子がいた。城の中庭にいたティノだ。今日も親指で弾いている。
 # speaker: milano_tino
 あ、お城の。……ここ、水の音があるから、間違えても目立たないんだ
 # speaker: narrator
@@ -43,123 +43,277 @@ INCLUDE modules.ink
     # speaker: narrator
     ピックはポケットに戻った。ティノは気にしたふうもなく、また親指で弦をはじいた。
     # speaker: heroine
-    わたしは、渡してもいいと思ったけどな。……決めたなら、旅の終わりまでちゃんと持ってて
+    わたしは、渡してもいいと思ったけどな。……持っておくって決めたなら、旅の終わりまで、ちゃんと持っててね
     -> END
 
 // ───── 都市フィナーレ。battles/catalog.json の milano_city_boss_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+// 2026-11-22 の改稿：リヴィオの「人の気配なし」の注文の客は、八年口をきいていない娘キアラだった（ドゥオモの回の前振りを回収する）。
+// 流れ：ダルセナの岸（第1問：港）→ 注文帳の四か所（第2問：大理石）→ ヒロインが「子どもの日曜日の散歩」と気づき、客が娘だと分かる
+// → なぜ十秒ずつなのか（第3問：旧食堂の人数の制限）→ 階段の端の女の人が消える → 椅子を片づけて踊りだす岸（第4問：スカラ座の平土間）
+// → 洗濯屋小路（第5問：洗い場）→ 最後の十秒。知っている足音。十秒を過ぎても停止を押さない。
+// 四か所の「子ども」は、本筋の4回にいる（ドゥオモの鳩を追う子と団体の子、ガッレリアの雄牛で回る男の子、城のルチア）。フィナーレは4回を終えた後にしか出ない。
+// 締め切りは「今夜のうち」（フィナーレは 9:00–22:00 のどこで始まってもよいので、時刻を言わない）。物語の中で日暮れまで時間を進める。
+// キアラは名札だけの人物（milano_chiara）。外国に住み、仕事で数日だけミラノに来ている（本文では言わない。設計は drafts/SCENARIO_REWRITE.md）。
 === milano_city_boss_01 ===
 # scene: battle
 # background: milano_darsena_finale
 # speaker: narrator
-ダルセナの岸に折り畳み椅子と小さな送信機がある。椅子に座ったリヴィオは、膝にパン屑を落としたまま片手を挙げた。
+ダルセナの岸の階段に、折り畳み椅子が一脚。マイクを立てた男が、膝に肘をついて頭を抱えていた。
+# speaker: narrator
+録音機の側面に、色あせたイルカのシール。ドゥオモ広場で会った録音屋の、リヴィオだ。
 # speaker: enemy
 # cutin: name
-# reaction: heroine,surprised
-一枠だけ空いた。十秒。ミラノを知らない人に何を聴かせる？
+……ああ、袖の二人か。ちょうどいい。手を貸してくれ。今度は払う。たぶん
 # speaker: heroine
-先に聞きたいです。誰が、どこで聴いてるの？
+また、人の気配なしの注文ですか？
 # speaker: enemy
-小さなネット放送だ。仕事帰りにひとり、飯作りながらひとり。あとは知らない。知らん人の夕飯にお邪魔するんだ
+いつもの客だ。今度は『日暮れのダルセナ、人の気配なし』。今夜のうちに十秒
+# speaker: narrator
+リヴィオは顎で岸を示した。散歩する人、自転車、グラスを手にした人の輪。水ぎわの段は、座る場所を探す人で埋まっている。
+# speaker: enemy
+夕方になると、人が集まる岸だ。そこで無人の十秒。客は、ここを静かな水辺だと思ってる
 # speaker: player
-じゃあ、空腹の音は避けたほうが
+ミラノに来たことがない人、でしたっけ
 # speaker: enemy
-あれは朝の番組に取っといた
+本人はそう書いてくる。毎月『初めてミラノの音を聴きます』ってな。五年間、毎月だ
+# speaker: heroine
+ここって、静かな水辺だったことがあるのかな
 -> quiz(1) ->
 # background: milano_darsena_finale
 { quiz_correct:
-# speaker: heroine
-昔は、水辺で荷を待つ人がいたんですね
+    # speaker: heroine
+    二つの運河が出合う港だったんだ。夕方の散歩道になる前は、舟と荷物と、それを待つ人の場所
 - else:
-# speaker: heroine
-あの散歩道、昔は港だったんだ。岸で待つ人にも、別の用事があった
+    # speaker: enemy
+    港だよ。運河が二本、ここで出合う。舟と荷を待つ人で、いっぱいだったはずだ。……録ってないから、音は知らんがな
 }
-# speaker: narrator
-岸を歩く足音に自転車のベルが重なる。リヴィオは水面にマイクを向けた。
 # speaker: enemy
-水だけじゃ、ここが何に使われてきたかまでは録れんな
+静かだったことなんか、一度もないってわけか。客に教えてやりたいね
+# speaker: narrator
+リヴィオは試しにマイクを上げた。
+# speaker: narrator
+階段の端に、ひとりで座っている女の人がいた。マイクが上がると、彼女は口を閉じ、膝を抱えて息を止めた。
 # speaker: heroine
-広場だって地下に人がいた。最初の十秒、上ばっかり向いてましたね
+……あの人、マイクが上がったとたん、息を止めた
+# speaker: enemy
+いい客だ。全員ああなら、仕事が早い
+# speaker: narrator
+# se: bicycle_bell
+試しの十秒は、自転車のベルと、誰かの乾杯の声で終わった。
+# speaker: narrator
+リヴィオは上着のポケットから手帳を出した。ドゥオモで見た、注文の帳面だ。
+# speaker: enemy
+見てくれ。五年分の、無理な注文だ
+# speaker: narrator
+# letter: note
+ドゥオモ広場、朝。人の気配なし。
+# speaker: narrator
+# letter: note
+ガッレリア、雄牛の前。人の気配なし。
+# speaker: narrator
+# letter: note
+スフォルツェスコ城、中庭。人の気配なし。
+# speaker: narrator
+# letter: note
+ダルセナ、日暮れ。人の気配なし。
+# speaker: enemy
+この四つの繰り返しだ。毎月一か所ずつ、この順番で。物好きな客だよ
+# speaker: heroine
+ドゥオモ広場で始まって、ダルセナで終わる。……ドゥオモとここって、何かつながってるのかな
 -> quiz(2) ->
 # background: milano_darsena_finale
 { quiz_correct:
-# speaker: heroine
-ここからあの広場まで、石も旅をした
+    # speaker: heroine
+    大聖堂の大理石は、この水の道を通って運ばれたんだ。始まりの広場と終わりの水辺が、水でつながってる
 - else:
-# speaker: heroine
-運ばれたのは大聖堂の石。広場の重さを、ここの水が引き受けたんですね
+    # speaker: enemy
+    大聖堂を建てる大理石だ。この水の道を通って、街の真ん中まで運ばれた。……始まりと終わりが、つながってやがる
 }
-# speaker: heroine
-荷物を下ろす人の声、録れてたら聴きたいな
-# speaker: enemy
-ない音をあるとは言えない。代わりに君がそう言えば、聴く人は想像できる
 # speaker: narrator
-差し出されたマイクを、彼女はまだ受け取らなかった。
+{heroine_name}は帳面の四行を、もう一度指でたどった。
+# speaker: heroine
+鳩のいる広場。雄牛の上で回る通路。お城の中庭。最後に水辺
+# speaker: heroine
+わたし、ここに来るまでに、三つとも歩いたの。どこにも子どもがいた。鳩を追いかける子、雄牛の上で回る子、お父さんの顔を粘土で作る子
+# speaker: heroine
+……これ、子どもの日曜日の散歩みたい
+# speaker: narrator
+リヴィオの手から、帳面が落ちかけた。
+# speaker: enemy
+……日曜は、ドゥオモで鳩を追いかけた。ガッレリアで雄牛の上を三回まわって、城の中庭で鬼ごっこ。最後に、ここでジェラート
+# speaker: enemy
+あいつが小さいころ、毎週その順で歩いた。俺と、娘で
+# speaker: player
+娘さん？
+# speaker: enemy
+キアラ。今は外国にいる。……八年、口をきいてない。ミラノに来たことがないだなんて、よく言う
+# speaker: narrator
+リヴィオは、録音機のイルカのシールを親指でこすった。前の持ち主の趣味だと、ドゥオモでは言っていた。
+# speaker: enemy
+あいつが二十のとき、小さな店で、初めて人前で歌った。俺が録った。二番で、声が裏返った
+# speaker: enemy
+だから消した。失敗した音は残さない。あいつのためだと思った
+# speaker: enemy
+次の朝、あいつは家を出ていった。『わたしの失敗も、わたしなのに』ってな
+# speaker: heroine
+# emotion: serious
+……ドゥオモでも、子どもの笑い声を切ってましたよね
+# speaker: enemy
+癖だ。直らん
+# speaker: narrator
+リヴィオは帳面を閉じて、膝の上で握りしめた。
+# speaker: enemy
+五年分、全部十秒だ。言いたいことがあるなら、電話の一本でもすりゃいい。なんで十秒なんだ
+# speaker: heroine
+『最後の晩餐』の部屋も、少しの人数ずつ、決まった時間しか入れなかった
 -> quiz(3) ->
 # background: milano_darsena_finale
 { quiz_correct:
-# speaker: heroine
-見られる時間の短さにも、絵を守る理由があった
+    # speaker: heroine
+    傷みやすい壁の絵を守るために、近づける人と時間を区切ってるんだ
 - else:
-# speaker: heroine
-短い時間ずつ案内するのは絵のため。あの三秒は、自分で持っていよう
+    # speaker: enemy
+    絵を守るため、か。傷みやすい壁の絵だから、人と時間を区切る
 }
-# speaker: narrator
-旧食堂で止めた三秒を、彼女は自分だけで聴いた。消さず、人にも渡さず、鞄へ戻した。
 # speaker: heroine
-残しておくのと、聴かせるのって、別ですね
+壊れやすいものに近づくときは、少しずつなのかも。……キアラさんの十秒も
+# speaker: heroine
+それに、人の気配なしの十秒なら、聞こえる人は一人だけになる
 # speaker: enemy
-放送屋としては残念だが、本人の持ち物だ
+……俺か
+# speaker: heroine
+ドゥオモで、四十人は黙ってくれたのに、あなたの息だけは残ってた
+# speaker: heroine
+キアラさんが一度も文句を言わなかったのは、たぶん、それが聴きたかったから
+# speaker: narrator
+リヴィオは何も言わなかった。{heroine_name}は、ふと階段の端を見た。
+# speaker: narrator
+さっきの女の人が座っていた場所が、空いていた。
+# speaker: heroine
+# reaction: heroine,surprised,question
+……リヴィオさん。さっき、マイクが上がるたびに息を止めてた人
+# speaker: narrator
+リヴィオが振り向いた。階段の端には、もう誰もいない。
+# speaker: enemy
+顔は見てない。……この人ごみじゃ、足音も聞き分けられん
+# speaker: enemy
+どうせ今夜も、十秒送って終わりだ。いつもどおりにな
+# speaker: narrator
+岸の端で、アコーディオンが鳴りだした。店の人が椅子を重ねて片づけ、空いた石畳で、何組かが踊り始める。
+# speaker: enemy
+なんで椅子をどけるんだ、あいつら。これじゃ一秒も録れん
+# speaker: heroine
+スカラ座も、昔は似たようなことをしてたみたいですよ
 -> quiz(4) ->
 # background: milano_darsena_finale
 { quiz_correct:
-# speaker: heroine
-床を空けると、聴く人が踊る人に変わる
+    # speaker: heroine
+    平土間の椅子は、昔は動かせた。椅子をどければ、床で踊れる。聴いてた人が、踊る人になるんだ
 - else:
-# speaker: heroine
-桟敷じゃなく、動かせる平土間の椅子。片づければ、その足で踊れる
+    # speaker: enemy
+    平土間の椅子が動かせたのか。片づければ床が空いて、舞踏会になる、と
 }
 # speaker: narrator
-リヴィオは椅子から腰を上げ、彼女に席を譲った。ポケットからパン屑が落ちる。
+リヴィオは、踊る人たちをしばらく眺めていた。
+# speaker: enemy
+……キアラが六つのとき、居間のソファをどけろってうるさくてな。床を空けて、二人で踊った
+# speaker: enemy
+あいつは三回転んだ。三回とも、笑い転げた。……あの録音は、消してない
 # speaker: heroine
 # emotion: smile
-これ、生放送でしゃべってもいいですか？
+失敗、入ってるのに？
 # speaker: enemy
-# reaction: heroine,teasing
-椅子の話はいい。パンの話なら提供料を払ってほしい
+……ああ。入ってるのに、だ
 # speaker: narrator
-彼女が吹き出した。まだスイッチは入っていない。
+リヴィオは椅子をたたみ、マイクを肩にかついだ。
+# speaker: enemy
+ここは無理だ。静かなところへ行く。今夜のうちなら、まだ間に合う
+# background: milano_navigli_date
+# speaker: narrator
+運河沿いを少し歩くと、細い小路が口を開けていた。洗濯屋小路。岸のざわめきが、建物ひとつ向こうへ遠のく。
+# speaker: narrator
+いつの間にか、運河の水に灯りが映り始めていた。小路の水ぎわに、斜めに傾いた石の台が並んでいる。
+# speaker: enemy
+ここならいける。……この石の台は、何だ。荷の積みおろしか？
 -> quiz(5) ->
-# background: milano_darsena_finale
+# background: milano_navigli_date
 { quiz_correct:
-# speaker: heroine
-水の音の中に、働いていた人の手が見える気がします
+    # speaker: heroine
+    洗濯の洗い場。洗濯を仕事にしてた人たちが、ここで毎日、服を洗ってたんだ
 - else:
-# speaker: heroine
-石だからって荷役の道具とは限らない。あの小路では衣服を洗うのが仕事だったんだ
+    # speaker: heroine
+    荷物の台じゃなくて、石の洗い場。洗濯を仕事にしてた人たちが、ここで服を洗ってたんだって
 }
-# speaker: narrator
-指が三、二、一と折れた。彼女は岸に向き直って、マイクを持った。
 # speaker: heroine
-ミラノのダルセナにいます。隣に、一緒にここまで歩いた人がいます。……ちょっとだけ、聴いていってください
+ここで働いてた人の名前は、たぶん、どこにも残ってない。でも、仕事の跡は、石に残ってる
 # speaker: narrator
-残りは水が岸を打つ音だった。リヴィオは指を下ろした。誰もすぐにはしゃべらなかった。
+{heroine_name}はスマホを出して、一つの録音を開いた。
+# speaker: heroine
+これ、ドゥオモで最初に録った十秒。広場の音を録るつもりだったのに、わたしの袖の音しか入ってなかったの
+# speaker: narrator
+再生すると、ごそっ、ごそっ、と布のこすれる音がした。
+# speaker: heroine
+恥ずかしくて、何回も消そうとした。でも今聴くと、あの広場で、わたしがわくわくしてたのが分かる
+# speaker: heroine
+# emotion: serious
+キアラさんが五年間買ってたのも、きっとこういう音です。……今夜は、消さないであげてください
 # speaker: enemy
-俺だったら、あの隙間に曲を入れた
+俺の息なんか、ただの雑音だ
 # speaker: heroine
-知ってます。だから今日は、わたしが持ってたんです
+雑音じゃないです。あなたがそこにいたっていう音です
 # speaker: narrator
-マイクを返すと、掌に網目がついていた。
+リヴィオは長いあいだ、洗い場の石を見ていた。それから、イヤホンを耳に入れた。
+# speaker: enemy
+……十秒だ。二人とも、息は止めなくていい
+# speaker: narrator
+# pause: 1000
+録音ボタンが押された。
+# speaker: narrator
+# quiet: line
+水が石に当たる音。遠くのアコーディオン。リヴィオの、少し長い息。
+# speaker: narrator
+# se: footstep
+五秒目に、小路の入口で足音がした。
+# speaker: narrator
+リヴィオの肩が、びくりと跳ねた。目を閉じたまま、彼は停止ボタンから指を離した。
+# speaker: enemy
+……この足音は、知ってる
+# speaker: narrator
+足音はまっすぐ近づいてきて、洗い場の手前で止まった。さっき階段の端で息を止めていた女の人だった。
+# speaker: milano_chiara
+# cutin: name
+……パパ。人の気配、入っちゃったね
+# speaker: enemy
+……注文と違うぞ
+# speaker: milano_chiara
+いいの。注文主は、わたしだから
+# speaker: narrator
+# pause: 1200
+十秒が過ぎた。リヴィオは、停止ボタンを押さなかった。
+# speaker: enemy
+……腹は、減ってるか
+# speaker: milano_chiara
+え？
+# speaker: enemy
+ジェラート。日曜のやつだ
+# speaker: narrator
+キアラが笑った。笑い声の終わりが、少し裏返った。録音機の赤い光は、ついたままだった。
 { battle_score >= 3:
-# speaker: enemy
-番組名、君がつけてよ
-# speaker: heroine
-「十秒のミラノ」。次は、聴く側でもいいですか？
+    # speaker: enemy
+    注文は台無しだ。……君たちのせいだからな。払わんぞ
+    # speaker: heroine
+    # emotion: smile
+    払わなくていいです
 - else:
-# speaker: enemy
-俺の番組、また聴いてくれるか。たまに場所を取り違える
-# speaker: heroine
-その時は、お便りを出します。匿名で
+    # speaker: enemy
+    ずいぶん遠回りしたが、着いたな。……俺もだ
 }
+# speaker: narrator
+# leave: enemy
+二人は、そっと小路を出た。振り返ると、洗い場の前に、親子の影が並んでいた。
+# speaker: heroine
+# emotion: smile
+録音、まだ止まってなかったね
 -> END
 
 // デート（本筋）「橋の途中で、こちらを向く」。romance/date_catalog.json の milano_confession_01 の storyId がこの knot を指す（地図の出来事はダルセナ、場面はナヴィリオの橋）。
@@ -173,12 +327,12 @@ INCLUDE modules.ink
 # title: 橋の途中で、こちらを向く
 # background: milano_night_landmark
 # speaker: narrator
-ナヴィリオの橋に半分ほど上がったところで、彼女の方から立ち止まった。運河を見ないで、こちらを向いている。
+ナヴィリオの橋を半分ほど上がったところで、彼女のほうから立ち止まった。運河ではなく、こちらを向いている。
 # speaker: heroine
-何か言いかけたよね。渡り切る前に聞きたい
+さっき、何か言いかけたよね。渡り切る前に聞きたい
 { cond("date milano_maurizio_date_sound"):
     # speaker: heroine
-    あの教会で、別々に見て戻ったときも思った。待ち合わせるの、わたしけっこう好きです
+    あの教会で、別々に見てから会ったときも思ったの。わたし、待ち合わせるの、けっこう好き
 }
 * [「恋人として、これからも会いたい」 # option: as_lovers]
     # memory: milano_confession_promise
@@ -187,7 +341,7 @@ INCLUDE modules.ink
 * [「好きです。あなたはどう思ってる？」 # option: ask_her_heart]
     # memory: milano_confession_promise
     # speaker: narrator
-    彼女は一度だけうなずいた。問いを受け取った、という小さな動きだった。
+    彼女は一度だけうなずいた。問いを受け取った、という小さなうなずきだった。
 * [「帰った後の僕の予定に、君がいてほしい。付き合ってほしい」 # option: after_the_trip]
     # memory: milano_confession_promise
     # speaker: narrator
@@ -204,7 +358,7 @@ INCLUDE modules.ink
     # emotion: teasing
     それは恋人に相談します。……あなたなんだけど
     # speaker: narrator
-    彼女が先に手を出した。指が重なったところで、ようやく二人は橋の残り半分を渡った。
+    彼女のほうが先に手を出した。指が重なったところで、ようやく二人は、橋の残り半分を渡った。
 - confession_result == "deferred":
     # speaker: heroine
     うれしい。だからこそ、その勢いで「うん」って言うのを待って。わたしはもう少し、自分の言葉で考えたい
@@ -213,17 +367,17 @@ INCLUDE modules.ink
     # speaker: heroine
     うん。普通に会いたいっていうのは、いま答えられる
     # speaker: narrator
-    先に足を出したのは彼女だった。橋の下で、水が一度だけ石に当たった。
+    先に足を踏み出したのは彼女だった。橋の下で、水が一度だけ石に当たった。
 - else:
     # speaker: heroine
     # emotion: serious
-    恋人としては、今は会えません。遠回しにすると、あなたに待たせてしまうから
+    恋人としては、会えない。遠回しに言うと、あなたを待たせてしまうから
     # speaker: player
     聞かせてくれてありがとう。……少しだけ、ここで休んでいく
     # speaker: heroine
-    うん。先に橋の向こうにいるね
+    うん。先に、橋の向こうにいるね
     # speaker: narrator
-    すぐ隣にいなくても見えるところで、彼女は運河の方を向いた。
+    すぐ隣ではなくても、こちらから見えるところで、彼女は運河のほうを向いていた。
 }
 -> END
 
@@ -238,7 +392,7 @@ INCLUDE modules.ink
 // 選択は、返事を聞いた後の主人公の返し（1回。choiceCount）。交際が始まる道だけ、思い出 milano_answer_memory を残す。
 // 場所：ダルセナから運河沿いに延びる通り Alzaia Naviglio Grande の入口。alzaia は「水路で舟を岸から引く綱」と「その引き道」
 // （Treccani「alzaia」）。市内の区間は、昔は舟を綱で上流へ引いた二本の引き道に沿う（italia.it「Naviglio Grande」ドイツ語版）。どちらも2026-11-13に確認。
-// 港・大理石・洗い場はフィナーレのクイズの答えなので、ここでは言わない。フィナーレの後なら、ラジオの十秒を一言。
+// 港・大理石・洗い場はフィナーレのクイズの答えなので、ここでは言わない。フィナーレの後なら、リヴィオが最後の十秒を止めなかったことを一言。
 === milano_answer_01 ===
 # scene: date
 # title: 今日は返事をする日
@@ -252,13 +406,16 @@ INCLUDE modules.ink
 アルザイアって、岸から舟を引っぱる綱のこと。昔は、流れに逆らって上る舟を、この道から綱で引いてたんだって
 # speaker: heroine
 # emotion: serious
-橋の上で「待って」って言ったのは、流れで「うん」って言いたくなかったから。勢いに運ばれるんじゃなくて、自分で引っぱって行きたかった
+橋の上で「待って」って言ったのは、流れで「うん」って言いたくなかったから
+# speaker: heroine
+# emotion: serious
+勢いに運ばれるんじゃなくて、自分で引っぱって行きたかった
 # speaker: heroine
 # reaction: heroine,teasing
 ……今の、ちょっと格好つけた。でも、本当にそう思ってたの
 { cond("episode milano_finale"):
     # speaker: heroine
-    ラジオで十秒しゃべったとき、分かった気がする。自分の声って、出してみると、ちゃんと自分のなんだって
+    リヴィオさん、最後の十秒を止めなかったでしょ。あれを見て、わたしも自分の声は消さないって決めたの
 }
 # speaker: heroine
 ガッレリアで、今日は返事をしないって言った。だから、今日はする。わたしから
@@ -294,7 +451,7 @@ INCLUDE modules.ink
     一回で覚えてほしかったな。……付き合いたい。はい。今の、録っておけばよかったね
 -
 # speaker: narrator
-差し出された手を取ると、彼女は標識の下を通って、運河沿いを歩き出した。綱を引くみたいに、ほんの少しだけ前を。
+差し出された手を取ると、彼女は標識の下をくぐって、運河沿いを歩きだした。綱を引くみたいに、ほんの少しだけ前を。
 -> END
 
 = not_now
@@ -322,33 +479,53 @@ INCLUDE modules.ink
 水に映った空が、風で少しだけ揺れて、また元に戻った。
 -> END
 
-// エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。放送の後のダルセナ。
+// エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。洗濯屋小路を出た後のダルセナ。
+// 2026-11-22 の改稿：いつも録る側だったヒロインが、初めて主人公に自分の十秒を録ってもらう。最初に袖の音が入るが、今度は押さえない。
 === milano_epilogue ===
 # scene: epilogue
 # background: milano_darsena_finale
 # speaker: narrator
-放送が終わったダルセナで、彼女は左の掌を開いた。さっきの網目はもう消えている。
+ダルセナの岸に戻ると、アコーディオンはもう止んでいた。キアラが座っていた階段の端が、空いている。
+# speaker: narrator
+二人は、そこに並んで座った。
 # speaker: player
-最後に自分で話すって、いつ決めた？
+消さないでって言ったとき、声、震えてなかった
 # speaker: heroine
-あの人が椅子を空けてくれたとき。座ってみたら、水がよく聴こえたから
+震えてたよ。……ドゥオモのときより、少しだけましだったけど
+# speaker: narrator
+{heroine_name}は自分のスマホをしばらく見つめてから、こちらに差し出した。録音の画面が開いている。
+# speaker: heroine
+わたし、自分の声が入ってる録音、一つも持ってないの。いつも、録るほうだったから
+# speaker: heroine
+十秒、わたしを録って
+# speaker: narrator
+# pause: 800
+録音ボタンを押した。彼女は水のほうを向いて、小さく息を吸った。
 {
 - ending_reached:
 # speaker: heroine
 # emotion: shy
-帰ったら、うちで聴こう。恋人の声って、録ると他人みたいか、試したい
+ミラノのダルセナにいます。隣に、恋人がいます。……帰ったら、これ、一緒に聴こうね
 - romance_stage >= 3:
 # speaker: heroine
 # emotion: teasing
-今の話も録りたかった？　もう一回聞いてくれたら、違う答えを言うかも
+ミラノのダルセナにいます。隣の人に言いたいことは、録音じゃなくて、ちゃんと顔を見て言います
 - romance_stage == 2:
 # speaker: heroine
 # emotion: smile
-次はそっちの好きな音も教えて。十秒、わたしが黙ってるから
+ミラノのダルセナにいます。今日は、知らない人の十秒を手伝いました。……次は、わたしの番
 - else:
 # speaker: heroine
-いまは、マイクなしで少しだけ歩きたいです。一緒にどうですか
+ミラノのダルセナにいます。旅の連れと、ここまで歩きました。……以上です
 }
 # speaker: narrator
-上着がかすかに鳴った。彼女は袖を押さえなかった。
+停止を押して、再生した。いちばん初めに、ごそっ、と袖の音が入っていた。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+……また袖
+# speaker: heroine
+# emotion: smile
+でも、消さない。これも、わたしだから
+# speaker: narrator
+上着がかすかに鳴った。彼女は、袖を押さえなかった。
 -> END

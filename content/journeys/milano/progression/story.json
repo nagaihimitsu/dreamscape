@@ -10,7 +10,7 @@
     {
       "id": "milano_galleria_boy",
       "cityId": "milano",
-      "nameJa": "少年",
+      "nameJa": "男の子",
       "descriptionJa": "ガッレリアの雄牛のモザイクの前で、買ったばかりの靴を脱いでいた男の子。"
     },
     {
@@ -22,7 +22,8 @@
     {
       "id": "milano_galleria_bag_woman",
       "cityId": "milano",
-      "nameJa": "鞄の女"
+      "nameJa": "ヴァンダ",
+      "descriptionJa": "広告屋サンドロに雇われた通行人。赤い鞄を提げて、朝からガッレリアを三十七往復した。"
     },
     {
       "id": "milano_rina",
@@ -33,12 +34,13 @@
     {
       "id": "milano_brera_woman",
       "cityId": "milano",
-      "nameJa": "女"
+      "nameJa": "女の人"
     },
     {
       "id": "milano_brera_brother",
       "cityId": "milano",
-      "nameJa": "弟"
+      "nameJa": "ルカ",
+      "descriptionJa": "演出家ミーナの弟で、劇団の衣装係。来月から、トリノの劇場で働く。"
     },
     {
       "id": "milano_brera_student",
@@ -49,7 +51,8 @@
     {
       "id": "milano_castello_daughter",
       "cityId": "milano",
-      "nameJa": "娘"
+      "nameJa": "ルチア",
+      "descriptionJa": "城の中庭で、学校の宿題の「家族の顔」を粘土で作っていたダヴィデの娘。"
     },
     {
       "id": "milano_tino",
@@ -83,13 +86,25 @@
       "id": "milano_ida",
       "cityId": "milano",
       "nameJa": "イーダ",
-      "descriptionJa": "声を休める兄に付き添っていた妹。兄の身振りを読む係。"
+      "descriptionJa": "声を休める兄ニコの身振りを訳していた妹。兄と並んで歌うのを、子どものころにやめた。"
     },
     {
       "id": "milano_last_supper_brother",
       "cityId": "milano",
-      "nameJa": "兄",
-      "descriptionJa": "夕方の舞台のために、声を休めていた兄。夕食の注文も手でする。"
+      "nameJa": "ニコ",
+      "descriptionJa": "夜の舞台のために声を休めていた歌手。妹イーダの兄。言いたいことは、指と腕と顔の向きで伝える。"
+    },
+    {
+      "id": "milano_duomo_tour_leader",
+      "cityId": "milano",
+      "nameJa": "旗の案内係",
+      "descriptionJa": "ドゥオモ広場で、四十人の団体を旗一本で静かにさせた案内係。"
+    },
+    {
+      "id": "milano_chiara",
+      "cityId": "milano",
+      "nameJa": "キアラ",
+      "descriptionJa": "録音屋リヴィオの娘。八年前に家を出た。"
     }
   ]
 }

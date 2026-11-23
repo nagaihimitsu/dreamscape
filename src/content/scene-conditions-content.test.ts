@@ -14,7 +14,7 @@ let fixture: string;
 // The Milan epilogue: a knot of the Darsena's place file, whose modules.ink declares cond.
 const epilogueFile = "places/milano_darsena";
 const epilogue = storySourceFile(epilogueFile);
-const line = "放送が終わったダルセナで、彼女は左の掌を開いた。さっきの網目はもう消えている。";
+const line = "二人は、そこに並んで座った。";
 // A one-scene file (the tests' wish in its catalog form, added to the fixture's Milan): it declares cond itself (decision 40).
 
 beforeEach(async () => {
@@ -31,7 +31,7 @@ async function epilogueWith(text: string) {
   const source = await readFile(path.resolve(epilogue), "utf8");
   expect(source.split(line)).toHaveLength(2);
   await writeFile(file, source
-    .replace(line, `放送が終わったダルセナで、彼女は左の掌を開いた。{ cond("${text}"): さっきの網目はもう消えている。| 網目はまだ少し残っている。}`));
+    .replace(line, `二人は、{ cond("${text}"): そこに並んで座った。| 少し間を空けて座った。}`));
 }
 
 describe("cond in a scene's Ink", () => {

@@ -13,19 +13,19 @@ INCLUDE modules.ink
 # speaker: narrator
 元蒸留所を生かしたプラダ財団。金色の建物の前で、彼女は上着を一度脱いで、すぐに着直した。
 # speaker: heroine
-昔、真っ黄色のコートを買ったんです。一度も外に着ていけなかった。ここの隣なら、だいぶ地味だったかも
+昔、真っ黄色のコートを買ったの。一度も外に着ていけなかった。この建物の隣なら、だいぶ地味に見えたかも
 # speaker: player
 返品した？
 # speaker: heroine
 # emotion: smile
-できませんでした。家の中で着すぎて
+できなかった。家の中で着すぎて
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
 彼女は上着のボタンをいちばん上まで留めた。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
-彼女は主人公の上着の色と自分の袖を並べた。
+彼女は、こちらの上着の袖と自分の袖を並べて、色を比べた。
 }
 
 * [「家では一軍だったんだ」 # option: first_playful]
@@ -54,7 +54,7 @@ INCLUDE modules.ink
     # profile: bold
     { romance_result == "negative":
         # speaker: heroine
-        見せるってなるとまた着られなくなりそう。自分から出てくるまで待って
+        見せるってなると、また着られなくなりそう。わたしが自分から着てくるまで待って
     - else:
         # speaker: heroine
         帰ったら一度だけ。見たあとに「よく目立つね」は禁止ね
@@ -110,5 +110,5 @@ INCLUDE modules.ink
 彼女の袖の裏だけが、さっきより少し長く出ていた。
 }
 # speaker: narrator
-帰り道で彼女は自分の袖口をひと折りした。裏の色が、細い一本だけのぞいた。
+帰り道で、彼女は自分の袖口をひと折りした。裏の色が、細い一本だけのぞいた。
 -> END

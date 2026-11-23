@@ -170,9 +170,9 @@ describe("confession and relationship ending", () => {
       return lines.join("\n");
     };
     expect(opening(["milano_maurizio_date_sound"]))
-      .toContain("あの教会で、別々に見て戻ったときも思った");
+      .toContain("あの教会で、別々に見てから会ったときも思った");
     expect(opening(["milano_cafe_01"]))
-      .not.toContain("あの教会で、別々に見て戻ったときも思った");
+      .not.toContain("あの教会で、別々に見てから会ったときも思った");
   });
   it("offers confession from stage 2 even before success is guaranteed, without charging AP", () => {
     const early = toWalk();
@@ -224,7 +224,7 @@ describe("confession and relationship ending", () => {
     state = play(state, confession, [1], transcript);
     expect(state.confessionStatus).toBe("rejected");
     expect(state.memories).toContain("sound_memory_cafe_01");
-    expect(transcript.join("\n")).toContain("恋人としては、今は会えません");
+    expect(transcript.join("\n")).toContain("恋人としては、会えない");
     expect(transcript.join("\n")).not.toContain("あの教会で、別々に見て");
     expect(startDate(state, confession)).toBe(state);
     state = play(state, walk, [0, 0]);

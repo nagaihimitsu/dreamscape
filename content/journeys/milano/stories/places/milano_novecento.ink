@@ -19,14 +19,14 @@ INCLUDE modules.ink
 当ててみる。今のは何？
 # speaker: heroine
 # emotion: surprised
-まだ一画。そこで当てたら、ちょっと怖いです
+まだ一画目だよ。そこで当てたら、ちょっと怖い
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
 人差し指は胸の前で、自分にしか読めない速さで動いた。
 - relationship_tone == "romantic_tension" || relationship_tone == "warm":
 # speaker: narrator
-彼女は主人公の視線と重なる高さで、もう一度指を動かした。
+彼女は、こちらの目の高さで、もう一度指を動かした。
 }
 
 * [「最後まで見てから読む」 # option: first_attentive]
@@ -55,7 +55,7 @@ INCLUDE modules.ink
     # profile: bold
     { romance_result == "negative":
         # speaker: heroine
-        どう似てるか言ってくれないと、褒められたのか困るな
+        どう似てるのか言ってくれないと、褒められたのか分からないよ
     - else:
         # speaker: heroine
         何それ。……でも、途中で止めて考えるところは、たしかにわたしだ
@@ -64,7 +64,7 @@ INCLUDE modules.ink
 
 = join_1
 # speaker: narrator
-線は光らず、次の一画を描くと前の一画が消える。彼女は最後のところで、人差し指を握った。
+指の線は光らない。次の一画を書くと、前の一画は消えてしまう。最後のところで、彼女は人さし指を握りこんだ。
 # speaker: heroine
 ほんとは自分の名前。最後まで書くと、ここに落書きした気がして
 
@@ -101,7 +101,7 @@ INCLUDE modules.ink
         すぐ「作品」って呼ばれると恥ずかしいよ。ただ遊んでいたい
     - else:
         # speaker: heroine
-        作者もう一人見つけた。じゃあ撤収は一瞬。手を下ろして、おしまい
+        作者がもう一人いた。じゃあ、片づけは一瞬。手を下ろして、おしまい
     }
     -> join_2
 
