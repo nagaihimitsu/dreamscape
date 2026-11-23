@@ -217,6 +217,7 @@ INCLUDE modules.ink
 # item_out: gt_jaipur_gaura_radish
 包みの端から、大根の葉がはみ出している。ハワー・マハルの前で、ガウラにもらった一本だ。
 # speaker: heroine
+# voice: gt_jaipur_hotel_radish_night_001
 あの、これ……台所に渡しなさいって、言われたんです。通りで野菜を売ってる、ガウラさんに
 # speaker: gt_jaipur_hotel_front
 あら、大根。……葉っぱが、まだぴんとしてる。朝いちばんの市場で仕入れた顔ね
@@ -224,6 +225,7 @@ INCLUDE modules.ink
 いいわ、料理人に渡しておく。明日の朝ね
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_hotel_radish_night_002
 本当に、お皿に戻ってくるんだ……。何になるんですか？
 # speaker: gt_jaipur_hotel_front
 それは、朝のお楽しみ
@@ -232,6 +234,7 @@ INCLUDE modules.ink
 フロントの女性は包みを抱え、帳場の奥の扉へ消えた。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_jaipur_hotel_radish_night_003
 ホテルで大根どうしよう、って思ってたのに。ガウラさん、全部分かってたんだね
 -> END
 
@@ -252,6 +255,7 @@ INCLUDE modules.ink
 お待たせ。ゆうべの大根よ。刻んで、香辛料と混ぜて、小麦の生地に包んで焼いたの
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
+# voice: gt_jaipur_hotel_radish_morning_001
 ほんとに戻ってきた……！　ガウラさんの大根が、パンになってる
 # speaker: gt_jaipur_hotel_front
 # local_word: gt_jaipur_word_mooli
@@ -264,24 +268,29 @@ INCLUDE modules.ink
 小さな器の白いダヒーを置いて、フロントの女性は帳場へ戻っていった。{heroine_name}はパラーターの端をちぎって、ダヒーにつけた。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_jaipur_hotel_radish_morning_002
 ……おいしい！　外はぱりっとしてて、中の大根が、ちょっと辛くて、ちょっと甘い
 { cond("item gt_jaipur_sushma_lime_pickle held"):
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_jaipur_hotel_radish_morning_003
     あ、漬物！　漬物なら、持ってる
     # speaker: narrator
     # item_out: gt_jaipur_sushma_lime_pickle
     彼女は鞄から小瓶を取り出し、ふたを開けた。シティ・パレスで、スシュマに握らされたライムの漬物だ。酸っぱい匂いが、中庭に広がる。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_jaipur_hotel_radish_morning_004
     ガウラさんの大根に、スシュマさんの漬物。この朝ごはん、ジャイプールでもらったものだけで出来てる
 - else:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_hotel_radish_morning_005
     ガウラさん、四十年、あの窓の下でこういう大根を売ってきたんだね。毎朝四時に、市場で選んで
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_hotel_radish_morning_006
 今度ハワー・マハルの前を通ったら、ガウラさんに言わなきゃ。おいしかったです、って。……日傘の下で、ちゃんと
 -> END
 
