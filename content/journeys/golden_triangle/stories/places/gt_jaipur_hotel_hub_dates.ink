@@ -24,6 +24,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: immersed
 # speaker: narrator
+# photo: gt_album_j098 # photo_caption: 楽隊の鳴る、夜の屋上
 宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
 # speaker: heroine
 # voice: gt_jaipur_date_confession_001
@@ -66,7 +67,7 @@ INCLUDE modules.ink
     ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
-    # photo: gt_album_j43 # photo_caption: 楽隊の音の屋上の告白
+    # photo: gt_album_j100 # photo_caption: 楽隊の音の屋上の告白
     # voice: gt_jaipur_date_confession_004
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
@@ -184,6 +185,7 @@ INCLUDE modules.ink
     この町の楽隊、毎晩ちがう曲なの、気づいてた？　昨日のは、ラッパが一本だけ、ずっと半音ずれてた
     # speaker: heroine
     # voice: gt_jaipur_date_confession_028
+    # photo: gt_album_j102 # photo_caption: 半音ずれたラッパ
     ずれてるのに、いちばん楽しそうだったの。ずれても、鳴らした方がいいんだよ、きっと
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -294,7 +296,7 @@ INCLUDE modules.ink
     }
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
-        # recall: gt_album_j26
+        # recall: gt_album_j096
         彼女は、手のひらを一度開いて、また閉じた。孔雀の羽の付け根に、こちらの名前が、まだ濃く残っている。
     }
 - else:
@@ -332,6 +334,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
+# photo: gt_album_j104 # photo_caption: チャイ、二つ
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。橙色の旧市街を背に、湯気が二本、並んで上っている。
 # speaker: heroine
 # voice: gt_jaipur_date_reassurance_001
@@ -425,6 +428,7 @@ INCLUDE modules.ink
 ハワー・マハルの正面に、日の光が当たっていた。夜の屋上からは橙色に見えた町が、いまは、ちゃんと桃色をしている。
 # speaker: heroine
 # voice: gt_jaipur_date_answer_001
+# photo: gt_album_j110 # photo_caption: 昼の桃色の町で
 見て。夜と、ぜんぜん色がちがう。……こっちが、この町のふだんの顔なのかな
 # speaker: narrator
 どこかの店のシャッターが上がる音。牛が一頭、ゆっくり通りを渡っていく。楽隊の音は、どこにもしない。
@@ -458,6 +462,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing,blush
 # voice: gt_jaipur_date_answer_006
+# photo: gt_album_j111 # photo_caption: 牛の横で言う「好き」
 昼間に、牛の横で言ってるんだからね。もう、夜のせいにはできないよ
 # speaker: narrator
 すぐ後ろを、さっきの牛が通っていった。彼女は笑いそうになるのをこらえて、こちらを見たままでいた。
@@ -552,6 +557,7 @@ INCLUDE modules.ink
 彼女は手すりの前で振り返り、こちらが隣に並ぶ前に、正面に立った。
 # speaker: heroine
 # voice: gt_jaipur_date_her_confession_002
+# photo: gt_album_j107 # photo_caption: 「並ばないで」
 並ばないで。……今夜は、顔を見て言いたいから
 { confession_result == "accepted":
     -> say_it
@@ -614,10 +620,11 @@ INCLUDE modules.ink
 }
 { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
     # speaker: narrator
-    # recall: gt_album_j26
+    # recall: gt_album_j096
     彼女は、握っていた手のひらを開いた。孔雀の羽の付け根に、こちらの名前が、まだ濃く残っている。
 }
 # speaker: narrator
+# photo: gt_album_j108 # photo_caption: だから、言うね
 言い終えると、彼女は大きく息を吐いた。耳まで赤いのが、橙色の灯りの中でも分かった。
 # speaker: heroine
 # reaction: heroine,teasing,blush
@@ -655,7 +662,7 @@ INCLUDE modules.ink
 -
 # speaker: heroine
 # reaction: heroine,teasing,heart
-# photo: gt_album_j43 # photo_caption: 先に言われた屋上
+# photo: gt_album_j109 # photo_caption: 先に言われた屋上
 # voice: gt_jaipur_date_her_confession_022
 旅が終わったあとのことは、一緒に決めようね。……最初の一個は、わたしが決めちゃったけど
 # speaker: narrator

@@ -18,6 +18,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,dizzy
 # voice: gt_jaipur_date_panna_meena_kund_001
+# photo: gt_album_j082 # photo_caption: 交差する階段で、目が回る
 目が回る。全部、同じ階段に見える。どこから下りて、どこへ着くの、これ
 # speaker: narrator
 この井戸には、言い伝えがある。下りたときと同じ階段で、上ってくることはできない、と。
@@ -32,6 +33,7 @@ INCLUDE modules.ink
 それって、文字どおりの井戸端会議だね。日本語の『井戸端会議』って、本当に井戸の端でしてたんだもんね
 # speaker: heroine
 # voice: gt_jaipur_date_panna_meena_kund_004
+# photo: gt_album_j083 # photo_caption: 井戸のふちの日陰で、井戸端会議
 ねえ、しよう。井戸端会議。この旅で会った人たちの噂話。悪口じゃなくて、勝手な想像だけ
 * [「サミールさんから」 # option: gossip_samir]
     # profile: playful
@@ -135,6 +137,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # se: pigeon_flutter
+# photo: gt_album_j084 # photo_caption: 斜めの階段を伝って、鳩が一羽
 井戸の底の方から、鳩が一羽、斜めの階段を伝って飛び上がっていった。
 # speaker: heroine
 # emotion: teasing
@@ -179,6 +182,7 @@ INCLUDE modules.ink
             # speaker: heroine
             # reaction: heroine,shy,heart
             # voice: gt_jaipur_date_panna_meena_kund_025
+            # photo: gt_album_j085 # photo_caption: 「一組だもん」
             ……一組だもん。噂じゃなくて、本当のこと
         - cond("stage >= 3"):
             # speaker: heroine
@@ -201,5 +205,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_jaipur_date_panna_meena_kund_029
+# photo: gt_album_j086 # photo_caption: 井戸の底に置いていこう
 ここで聞いた噂話も、全部、井戸の底に置いていこう。わたしたちの分だけ、持って帰って
 -> END

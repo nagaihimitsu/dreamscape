@@ -269,7 +269,7 @@ INCLUDE modules.ink
     振った板きれに、手ごたえがあった。
 }
 # speaker: narrator
-# photo: gt_album_a32 # photo_caption: 最後の一球、塀を越えてアウト
+# photo: gt_album_a117 # photo_caption: 最後の一球、塀を越えてアウト
 打球は高く上がり、そのまま――庭の塀を越えていった。一瞬の静けさのあと、ソニアが両手を上げた。
 # speaker: gt_sonia
 # voice: gt_agra_mehtab_bagh_ball_over_wall_sonia_001
@@ -277,7 +277,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing_big,music
 # voice: gt_agra_date_mehtab_bagh_012
-# photo: gt_album_a117 # photo_caption: 「打てたのに負けてる！」
 ふふっ、あははっ！　打てたのに負けてる！　今日いちばんの当たりだったのに！
 # speaker: heroine
 # voice: gt_agra_date_mehtab_bagh_013

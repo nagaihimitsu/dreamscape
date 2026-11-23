@@ -15,7 +15,7 @@ INCLUDE modules.ink
 # speaker: narrator
 帳場の前で、彼女がサミールに声をかけた。とたんに彼は携帯の画面を見て、彼女を見て、もう一度画面を見た。
 # speaker: gt_samir
-# recall: gt_album_d55
+# recall: gt_album_d078
 # voice: gt_agra_arrive_reel_samir_001
 失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の
 # speaker: heroine

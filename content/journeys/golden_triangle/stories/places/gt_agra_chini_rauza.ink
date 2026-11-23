@@ -105,14 +105,13 @@ INCLUDE modules.ink
 # voice: gt_agra_date_chini_rauza_jagdeep_007
 よし。次が本番の構図だ。膝をついて、これを差し出す
 # speaker: narrator
-# photo: gt_album_a47 # photo_caption: 空っぽの指輪の箱、膝をつく代役
+# photo: gt_album_a097 # photo_caption: 空っぽの指輪の箱、膝をつく代役
 # stand: near
 # emotion: shy
 渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
 # speaker: heroine
 # emotion: surprised_big
 # voice: gt_agra_date_chini_rauza_009
-# photo: gt_album_a097 # photo_caption: 「こ、これ、代役だよね？」
 こ、これ、代役だよね？　分かってるけど。分かってるんだけど
 * [黙って、空の箱を開ける # option: open_empty_box]
     # profile: honest

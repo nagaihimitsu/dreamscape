@@ -152,12 +152,12 @@ INCLUDE modules.ink
 - ending_reached:
     # speaker: heroine
     # emotion: smile
-    # recall: gt_album_a66
+    # recall: gt_album_a138
     # voice: gt_agra_epilogue_009
     今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:
     # speaker: heroine
-    # recall: gt_album_a66
+    # recall: gt_album_a138
     # voice: gt_agra_epilogue_010
     今日、『二人で来たのは本当です』って言ったの、覚えてる？　……あれは、本当だから
 - romance_stage == 2:

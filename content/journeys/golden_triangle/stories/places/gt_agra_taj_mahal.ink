@@ -15,10 +15,9 @@ INCLUDE modules.ink
 # voice: gt_agra_taj_mahal_guide_001
 ここで全部食べちゃうんだ。わたしも見習って、心の準備を全部しておこう
 # speaker: narrator
-# photo: gt_album_a008 # photo_caption: 暗いアーチの向こうの、四角い白
 赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
 # speaker: narrator
-# photo: gt_album_a05 # photo_caption: 門のアーチからはみ出していく白 # photo_show: large
+# photo: gt_album_a008 # photo_caption: 門のアーチからはみ出していく白 # photo_show: large
 一歩進むごとに、白がアーチからはみ出していく。最後の一歩で、全体が現れた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -435,7 +434,7 @@ INCLUDE modules.ink
 {heroine_name}は観客に向き直った。耳が熱い。それでも、声は最初より通っていた。
 # speaker: heroine
 # reaction: heroine,shy,blush
-# photo: gt_album_a66 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
+# photo: gt_album_a138 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
 # voice: gt_agra_finale_012
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator
@@ -443,7 +442,6 @@ INCLUDE modules.ink
 一瞬の静寂。
 # speaker: narrator
 # se: applause
-# photo: gt_album_a138 # photo_caption: さっきより、ずっと温かい拍手
 それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。

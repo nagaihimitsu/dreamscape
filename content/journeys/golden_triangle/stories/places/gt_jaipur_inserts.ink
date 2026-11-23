@@ -42,6 +42,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: teasing
     # voice: gt_jaipur_hotel_mehndi_night_002
+    # photo: gt_album_j090 # photo_caption: ランプの下、差し出された手のひら
     はい。探して。ちゃんと、隠したものがあるんだから
 }
 {
@@ -83,6 +84,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing,question
         # voice: gt_jaipur_hotel_mehndi_night_018
+        # photo: gt_album_j094 # photo_caption: 自信満々に、違う所を
         さっき、自信満々に違う所を指してたでしょ。……ふふ、あの顔、見せてあげたかったな
     }
     -> found
@@ -126,6 +128,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # voice: gt_jaipur_hotel_mehndi_night_010
+        # photo: gt_album_j093 # photo_caption: 見つけたけど、読めない
         見つけたけど、読めない。ふふ、セーフ。ファルハーナさん、ヒンディー語の文字で書いてくれたんだ
         # speaker: heroine
         # voice: gt_jaipur_hotel_mehndi_night_011
@@ -179,7 +182,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
-# photo: gt_album_j26 # photo_caption: 読み上げられた名前
+# photo: gt_album_j096 # photo_caption: 読み上げられた名前
 # pause: 900
 帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
@@ -269,6 +272,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_jaipur_hotel_radish_morning_002
+# photo: gt_album_j088 # photo_caption: ガウラさんの大根が、パンになった
 ……おいしい！　外はぱりっとしてて、中の大根が、ちょっと辛くて、ちょっと甘い
 { cond("item gt_jaipur_sushma_lime_pickle held"):
     # speaker: heroine
@@ -306,6 +310,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: morning
 # speaker: narrator
+# photo: gt_album_j114 # photo_caption: 白い封筒と、一ルピー
 今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
 # voice: gt_jaipur_finale_before_envelope_001
@@ -357,6 +362,7 @@ INCLUDE modules.ink
 - cond("item gt_delhi_rain_attar held"):
     # speaker: narrator
     # item_out: gt_delhi_rain_attar
+    # photo: gt_album_j115 # photo_caption: 手首に一滴、デリーの雨
     彼女は鞄から小瓶を取り出し、栓を抜いて、手首にほんの一滴だけのせた。デリーの路地で買った、雨の匂い。
     # speaker: heroine
     # item_out: gt_delhi_rain_attar
@@ -367,7 +373,7 @@ INCLUDE modules.ink
     デリーで買った雨の匂いの小瓶は、もう無い。アーグラの廟で猿に取られ、石の通路で割れてしまった。
     # speaker: heroine
     # reaction: heroine,teasing,music
-    # recall: gt_album_a39
+    # recall: gt_album_a073
     # voice: gt_jaipur_finale_before_envelope_010
     雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど
 }
@@ -450,6 +456,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: gt_pooja
 # emotion: shy
+# photo: gt_album_j132 # photo_caption: 指のすきまから
 プージャーはけらけら笑い、いとこたちを呼びに戻っていった。彼女は両手で顔を覆い、それから、指のすきまからこちらを見た。
 # speaker: heroine
 # emotion: smile

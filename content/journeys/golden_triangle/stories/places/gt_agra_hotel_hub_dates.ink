@@ -62,7 +62,6 @@ INCLUDE modules.ink
     # reaction: heroine,shy_deep,blush
     # pause: 800
     # voice: gt_agra_date_confession_003
-    # photo: gt_album_a125 # photo_caption: 「……うん。わたしも、好き」
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
@@ -70,7 +69,7 @@ INCLUDE modules.ink
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
-    # photo: gt_album_a59 # photo_caption: タージに背を向けた告白
+    # photo: gt_album_a125 # photo_caption: タージに背を向けた告白
     # voice: gt_agra_date_confession_005
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine

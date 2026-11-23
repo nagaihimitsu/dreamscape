@@ -222,14 +222,13 @@ Many handwritten books were collected at his court.
     # speaker: narrator
     # se: glass_break_small
     石の通路で、かしゃん、と小さな音。
-    # photo: gt_album_a073 # photo_caption: 芝生に広がる、雨の匂い
     次の瞬間、匂いが広がった。乾ききった芝生の上に、夏の終わりの最初の雨が降ったような、土の匂い。少し離れたところで、ブラックバックたちが、いっせいに顔を上げた。
     # speaker: heroine
     # reaction: heroine,surprised,question
     # voice: gt_agra_akbar_tomb_monkey_attar_004
     ……鹿が、雨だと思ってる
     # speaker: narrator
-    # photo: gt_album_a39 # photo_caption: 雨の匂いになったアクバル廟
+    # photo: gt_album_a073 # photo_caption: 雨の匂いになったアクバル廟
     # emotion: happy
     彼女は割れた瓶を見下ろして、しばらく何も言わなかった。それから、こらえきれずに笑い出した。
     # speaker: heroine
