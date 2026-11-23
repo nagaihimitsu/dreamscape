@@ -20,6 +20,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_date_india_gate_print_001
+# photo: gt_album_d098 # photo_caption: 十四人の刷り上がり写真
 十四人。旅のアルバムに、知らない親戚が増えちゃった
 -> END
 
@@ -171,6 +172,7 @@ INCLUDE modules.ink
     勝負してたの？　もう、ふふっ。夜中なのに、笑わせないでよ
 -
 # speaker: narrator
+# photo: gt_album_d101 # photo_caption: 長椅子の端の、看病の人
 ボトルを受け取って飲むと、塩の薄いスポーツドリンクのような味がした。彼女は長椅子の端に座り、壁に頭をもたせかける。
 # speaker: heroine
 # voice: gt_delhi_hotel_sick_night_player_008
@@ -206,6 +208,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_hotel_corridor
 # speaker: narrator
 # emotion: worried
+# photo: gt_album_d102 # photo_caption: 膝を抱えた白い顔
 廊下に出ると、彼女が長椅子で膝を抱えていた。顔が白い。
 # speaker: heroine
 # emotion: worried
@@ -247,6 +250,7 @@ INCLUDE modules.ink
 天井の扇風機が、ゆっくり回っている。彼女は膝にあごをのせて、小さく息を吐いた。
 # speaker: heroine
 # voice: gt_delhi_hotel_sick_night_heroine_008
+# photo: gt_album_d103 # photo_caption: 「今度は、言う」
 お腹いっぱいって、言えばよかった。バスって、言えればよかった。……今度は、言う。屋台でも、ほかの所でも
 -> END
 
@@ -325,6 +329,7 @@ INCLUDE modules.ink
 - else:
     # speaker: narrator
     # emotion: smile
+    # photo: gt_album_d105 # photo_caption: 毛布にくるまって、弱々しく笑う
     彼女は毛布にくるまったまま扉にもたれて、親子のやりとりを聞きながら、弱々しく笑っていた。
     # speaker: heroine
     # emotion: smile
@@ -852,6 +857,7 @@ No, thank you.
 運休だと言われて、ここまで走ってくる人は、毎日いますよ。……間に合った人は、運がいい
 # speaker: narrator
 # leave: gt_delhi_ticket_checker
+# photo: gt_album_d129 # photo_caption: ホームのベンチで、少し震える手
 ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
 # speaker: heroine
 # voice: gt_delhi_depart_scam_013
@@ -911,6 +917,7 @@ No, thank you.
     # speaker: heroine
     # reaction: heroine,happy,sparkle
     # voice: gt_delhi_depart_station_002
+    # photo: gt_album_d131 # photo_caption: 宿の主人からの伝言
     よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います
 - else:
     # speaker: gt_delhi_hotel_owner
@@ -919,6 +926,7 @@ No, thank you.
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_depart_station_003
+    # photo: gt_album_d131 # photo_caption: 宿の主人からの伝言
     そっか。書いたんだ。ふふ、よかった
 }
 # speaker: narrator
@@ -956,6 +964,7 @@ No, thank you.
     # speaker: heroine
     # reaction: heroine,happy,heart
     # voice: gt_delhi_depart_station_005
+    # photo: gt_album_d132 # photo_caption: 自主申告の知らせ
     二人とも、自分の口で言えたんだ。叔父さんが先に言ったから、メヘルさんも言えたのかな
 - cond("flag gt_delhi_suresh_kept_secret"):
     # speaker: narrator
@@ -966,11 +975,13 @@ No, thank you.
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     # voice: gt_delhi_depart_station_006
+    # photo: gt_album_d132 # photo_caption: 薔薇の絵を貼った集合写真
     ふふっ。顔は隠れてるのに、誰だかすぐ分かる
 }
 # background: gt_bg_delhi_train_window
 # speaker: narrator
 # se: old_bell
+# photo: gt_album_d133 # photo_caption: 発車のベル、流れていく赤いシャツ
 発車のベルが鳴った。窓の外を、赤いシャツが一つ、また一つと流れていく。
 # speaker: heroine
 # voice: gt_delhi_depart_station_007

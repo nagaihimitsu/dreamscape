@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
+# photo: gt_album_d006 # photo_caption: ラホール門の男女別の列
 赤い城壁は、近づくほど空を削っていった。ラホール門の前には、手荷物検査の列が男女別に二本。{heroine_name}は女性の列に並び、振り返って小さく手を振った。
 # speaker: heroine
 # reaction: heroine,smile,music
@@ -36,6 +37,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_red_fort_guide_004
 お城の中に、商店街？　入ってすぐ買い物から始まるお城、初めて
 # speaker: narrator
+# photo: gt_album_d008 # photo_caption: お城の中に商店街、「見るだけです」
 腕輪の棚の前で、彼女の足が自然に遅くなる。遠くから、子どもたちの大合唱のようなざわめきが近づいてきた。
 # speaker: heroine
 # voice: gt_delhi_red_fort_guide_005
@@ -473,6 +475,7 @@ INCLUDE modules.ink
 三人は城へ急いだ。昼の見学は、とうに終わっている。ラホール門で、アマンが次の回の券を三枚買った。
 # speaker: narrator
 # se: switch_clunk
+# photo: gt_album_d112 # photo_caption: 暗い城壁に光が走る
 中へ入ると、暗い城壁に光が走った。問屋の言っていた『城の灯り』だ。
 # speaker: narrator
 語り手の姿はどこにもない。どこからか、録音の語りが流れ出した。この城の皇帝たちの時代の話だ。
@@ -587,6 +590,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_finale_015
+# photo: gt_album_d116 # photo_caption: 「……嫌われちゃったかな」
 ……嫌われちゃったかな
 # speaker: heroine
 # emotion: smile

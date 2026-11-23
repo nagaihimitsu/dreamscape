@@ -79,9 +79,9 @@ describe("旅の記録's 「体験」 and 「写真」", () => {
     // Delhi's, then Agra's, then Jaipur's, each city's in the order of their IDs.
     const cityOf = (imageId: string) => taken.find((image) => image.id === imageId)!.photo!.cityId;
     expect([...new Set(missed.map((photo) => cityOf(photo.imageId)))]).toEqual(["delhi", "agra", "jaipur"]);
-    expect(missed.slice(0, 3).map((photo) => photo.imageId)).toEqual(["gt_album_d25", "gt_album_d40", "gt_album_d41"]);
-    expect(missed[0]).toEqual({ imageId: "gt_album_d25", path: "assets/album/gt_album_d25.webp", altJa: "十三人目", titleJa: "十三人目",
-      metaJa: `デリー · ${MISSED_PHOTO_JA}`, missed: true });
+    expect(missed.slice(0, 3).map((photo) => photo.imageId)).toEqual(["gt_album_d006", "gt_album_d008", "gt_album_d015"]);
+    expect(missed[0]).toEqual({ imageId: "gt_album_d006", path: "assets/album/gt_album_d006.webp", altJa: "ラホール門の男女別の列",
+      titleJa: "ラホール門の男女別の列", metaJa: `デリー · ${MISSED_PHOTO_JA}`, missed: true });
   });
 
   it("shows the photos not taken yet once the journey is over, and in the journey started again from it", () => {

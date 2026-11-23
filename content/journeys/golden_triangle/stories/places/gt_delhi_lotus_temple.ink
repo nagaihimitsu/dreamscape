@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_lotus_temple
 # speaker: narrator
+# photo: gt_album_d064 # photo_caption: 芝生の向こうの白い蓮
 芝生の向こうに、白い大理石の花びらを重ねた建物が浮かんでいた。
 # speaker: narrator
 ロータス寺院。蓮の花をかたどった、バハイ信仰の礼拝堂だ。
@@ -28,9 +29,11 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: teasing
 # voice: gt_delhi_date_lotus_temple_002
+# photo: gt_album_d065 # photo_caption: 「中で笑わせてきたら、怒るから」
 先に言っておくね。中で笑わせてきたら、怒るから
 # speaker: narrator
 # quiet: line
+# photo: gt_album_d066 # photo_caption: 素足で白い階段を上る
 靴を預け、素足で白い階段を上る。扉をくぐったとたん、音が消えた。
 天井は高く、花びらの重なりの隙間から、白い光が落ちてくる。木の長椅子に、たくさんの人が黙って座っていた。目を閉じる人。手を合わせる人。ただ天井を見上げている人。
 並んで座って、一分。二分。彼女の指先が、こちらの背中に触れた。
@@ -49,6 +52,7 @@ INCLUDE modules.ink
         # speaker: narrator
         三文字目を書き終える前に、彼女の肩が震えだした。声を出さずに笑うのは、声を出して笑うより、ずっと難しい。
         # emotion: exasperated
+        # photo: gt_album_d068 # photo_caption: 両手で口を押さえて、涙目でにらむ
         彼女は両手で口を押さえ、涙目でこちらをにらんだ。怒るから、と言ったでしょ、という目だった。
     }
 * [背中に「しずかに」と書き返す # option: hush_back]
@@ -97,6 +101,7 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 # stand: near
 # voice: gt_delhi_date_lotus_temple_003
+# photo: gt_album_d070 # photo_caption: 「はあっ。しゃべれる！」
 はあっ。しゃべれる！　すごかった。何もないのに、ずっと見ていられた
 # speaker: heroine
 # voice: gt_delhi_date_lotus_temple_004
@@ -110,6 +115,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: teasing
 # voice: gt_delhi_date_lotus_temple_006
+# photo: gt_album_d071 # photo_caption: 「……で。最後の、読めた？」
 ……で。最後の、読めた？
 * [「読めたよ。……でも、内緒」 # option: bluff_read]
     # profile: provocative
@@ -169,6 +175,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
+# photo: gt_album_d072 # photo_caption: 池に映る、もう一枚の花びら
 池の水面に、白い花びらがもう一つ映っていた。彼女はしばらくそれを眺めてから、靴のかかとを直した。
 # speaker: heroine
 # voice: gt_delhi_date_lotus_temple_017

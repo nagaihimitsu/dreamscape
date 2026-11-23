@@ -19,6 +19,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_delhi_date_bangla_sahib_001
+# photo: gt_album_d082 # photo_caption: 橙色の布、「ずっとそれっぽい」
 待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい
 # speaker: narrator
 靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。
@@ -221,6 +222,7 @@ INCLUDE modules.ink
 # speaker: narrator
 食事の広間では、細長い敷物が何列も敷かれ、人々が床に並んで座っていた。隣はスーツの男、その隣は裸足の子ども。誰がどこに座っても、出てくるものは同じだ。
 奉仕の人が籠を持って回ってくる。二人は、裸足の子どもの手つきを真似て、両手をお椀の形にして差し出した。
+# photo: gt_album_d086 # photo_caption: 自分の地図が、手のひらに戻る
 ハルバンスが、わざわざ二枚を選んで、二人の手のひらに落とした。インドの形と、もう一枚。自分で丸めたものが、自分の手に戻ってきた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -266,6 +268,7 @@ INCLUDE modules.ink
 外に出ると、大きな池が、金色の丸屋根を逆さに映していた。この池の水には、病を癒やす力があると信じられている。
 # speaker: narrator
 昔、ここに滞在したシク教の師、八代目のグルが、天然痘やコレラに苦しむ人たちを、井戸の水で助けたという話が伝わっている。
+# photo: gt_album_d088 # photo_caption: 金色の丸屋根を映す池
 二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。
 # speaker: heroine
 # voice: gt_delhi_date_bangla_sahib_021
