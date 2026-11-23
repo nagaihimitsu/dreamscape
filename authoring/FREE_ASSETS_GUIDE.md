@@ -75,7 +75,7 @@
 | --- | --- | --- |
 | 効果音 | Kenney の CC0 の素材集（OpenGameArt で公開）、OpenGameArt のほかの CC0・CC BY の音。見つからない音は合成して `own` にした（今は8つ。レールの継ぎ目・携帯の振動・笛・太鼓など） | 効果音ラボ・魔王魂・Pixabay：サイトの決まりで、素材を配り直すことを禁じている |
 | 曲 | Kevin MacLeod（incompetech.com、CC BY 4.0）の23曲、OpenGameArt の6曲（CC0 が5、CC BY 3.0 が1） | Pixabay：曲だけを配り直すことを禁じている。Silverman Sound：曲は CC BY 4.0 と書いてあるが、サイトの決まりで「曲だけを配ること」を禁じている。Purple Planet：自社サイトの規約が読めず、以前は曲だけの配り直しを禁じていた。FreePD：サービスを終えていた。非営利だけ（NC）・改変禁止（ND）の曲 |
-| 環境音 | Internet Archive にある radio aporee ::: maps の録音10本（共通6・インド編4。CC BY 3.0 と CC BY-SA 3.0） | 書き残していない（[6.2](#62-調べた跡をリポジトリに残す)） |
+| 環境音 | Internet Archive にある radio aporee ::: maps の録音10本（共通6・インド編4。CC BY 3.0 と CC BY-SA 3.0）。インド編の寺院の鐘（`gt_amb_temple_bells`）は、どの場面にも合う所がなく使わなかったので、2026-11-23 に外した（今はインド編3） | 書き残していない（[6.2](#62-調べた跡をリポジトリに残す)） |
 
 ほかに外したもの：
 

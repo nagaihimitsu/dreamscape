@@ -22,16 +22,6 @@
       "creditJa": "\"Bijapur, Central Market, Above the market\" by François-Emmanuel Fodéré, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_12130_14220. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。この加工版も CC BY-SA 3.0 で提供します。"
     },
     {
-      "id": "aporee_11575_fodere",
-      "titleJa": "Hubli, Sri Gurunathrudha Swami Math, Bells & Co",
-      "author": "François-Emmanuel Fodéré",
-      "license": "CC BY-SA 3.0",
-      "checkedAt": "2026-11-13",
-      "url": "https://archive.org/details/aporee_9667_11575",
-      "site": "Internet Archive (radio aporee ::: maps)",
-      "creditJa": "\"Hubli, Sri Gurunathrudha Swami Math, Bells & Co\" by François-Emmanuel Fodéré, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_9667_11575. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。この加工版も CC BY-SA 3.0 で提供します。"
-    },
-    {
       "id": "aporee_11100_fodere",
       "titleJa": "Bangalore, BANGALORE CY JN railway station, prayer snack & chai",
       "author": "François-Emmanuel Fodéré",
@@ -58,14 +48,6 @@
         "aporee_14220_fodere"
       ],
       "fromJa": "インド・カルナータカ州ビジャープルの中央市場を見下ろす場所で録った録音の48秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、90Hz以下と14kHz以上を弱め、-24 LUFSに整えた。"
-    },
-    {
-      "id": "gt_amb_temple_bells",
-      "useJa": "ヒンドゥー寺院の鐘が鳴り続ける境内",
-      "sources": [
-        "aporee_11575_fodere"
-      ],
-      "fromJa": "インド・カルナータカ州フブリの寺院（マハー・シヴァラートリの日）で録った録音の34.2秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、100Hz以下と14kHz以上を弱め、-24 LUFSに整えた。"
     },
     {
       "id": "gt_amb_railway_station",

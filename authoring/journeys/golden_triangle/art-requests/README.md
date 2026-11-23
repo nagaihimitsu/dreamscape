@@ -55,7 +55,7 @@
 
 ### 4 アルバムの絵（返事の「はい」の道）
 
-- 使う所：ジャイプールの「待って」の後の、彼女からの返事のデート `gt_jaipur_date_answer`（`content/journeys/golden_triangle/stories/places/gt_jaipur_hotel_hub_dates.ink:273`、題「夜のせいにしない返事」）の「はい」の道（`= yes`、305〜336行）。3つの屋上の告白の「はい」には絵がある（デリー `gt_album_d69`：`gt_delhi_hotel_hub_dates.ink:49`、アーグラ `gt_album_a59`：`gt_agra_hotel_hub_dates.ink:57`、ジャイプール `gt_album_j43`：`gt_jaipur_hotel_hub_dates.ink:51`）が、この返事の「はい」にはない（11-15の「おすすめ」A7(2)）。
+- 使う所：ジャイプールの「待って」の後の、彼女からの返事のデート `gt_jaipur_date_answer`（`content/journeys/golden_triangle/stories/places/gt_jaipur_hotel_hub_dates.ink:273`、題「夜のせいにしない返事」）の「はい」の道（`= yes`、305〜336行）。3つの屋上の告白の「はい」には絵がある（デリー `gt_album_d69`：`gt_delhi_hotel_hub_dates.ink:49`、アーグラ `gt_album_a59`：`gt_agra_hotel_hub_dates.ink:57`、ジャイプール `gt_album_j43`：`gt_jaipur_hotel_hub_dates.ink:51`）が、この返事の「はい」にはない（11-15の「おすすめ」A7(2)）。デリーの屋上の告白は 2026-11-20 に外したので（#199）、`gt_album_d69` は使わなくなり、2026-11-23 に絵のファイルも消した。
 - 絵にした瞬間：312行「昼間に、牛の横で言ってるんだからね。もう、夜のせいにはできないよ」と、313〜314行の地の文「すぐ後ろを、さっきの牛が通っていった。彼女は笑いそうになるのをこらえて、こちらを見たままでいた。」。選択の前なので、3つの選択のどれを選んでも読む。
 - 札（案。台本はまだ変えていない）：314行の地の文に `# photo: gt_album_j59 # photo_caption: 昼間に、牛の横で`。
 - 届いたら：`content/journeys/golden_triangle/public/assets/album/gt_album_j59.webp`（WebP がおすすめ。登録・出典は要らない）。ID の数字は、2026-11-11の「絵にしたい場面の一覧」（J-01〜J-58）の続き。
