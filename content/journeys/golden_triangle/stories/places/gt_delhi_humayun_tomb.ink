@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_humayun_tomb_guide_001
 静か……。さっきまでの道路の音、どこに行ったの？
 # speaker: narrator
+# term: gt_term_rose_ringed_parakeet
 クラクションの洪水を抜けてきた耳に、鳥の声がやけに大きく聞こえる。オウムの緑が、木から木へ飛んだ。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 3

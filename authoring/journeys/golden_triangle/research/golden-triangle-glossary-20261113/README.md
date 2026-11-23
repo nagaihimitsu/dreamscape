@@ -229,6 +229,29 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 出典は、ほかの語と同じ McGregor のヒンディー語英語辞典（Digital South Asia Library、2026-11-21に確認）。ヤートリーガンは見出し語がないので、
 यात्री（乗客）と गण（集まり）の二つの項を出典にした。
 
+## オープニングの空港の場面と、ならわしの見直し（2026-11-23）
+
+ユーザーの依頼：「首を左右に揺らす……こういうのも旅の図鑑の、ならわし？に登録できますかね。旅の図鑑に書けるものを考えて追加してください」。
+旅の最初に足した空港の場面（`gt_delhi_inserts.ink` の `gt_delhi_arrive_hands`。記録は `../golden-triangle-delhi-opening-20261123/`）と、
+11-13 に低・見送りにした言葉を、同じ基準（日本の旅行者がぱっと思い浮かべられない・台本で説明し切っていない・見せる写真がある）で見直した。
+
+入れた言葉（5語。インド編65語）：
+
+| 言葉 | 分類 | 札の行 | 説明の根拠 | 写真 |
+| --- | --- | --- | --- | --- |
+| ムドラー（`gt_term_mudra`） | ならわし | 空港の場面、女の子の「あれ、ムドラーだよ。…」 | Wikipedia「List of mudras (dance)」（古典舞踊の手のしぐさ。マユーラ＝孔雀）、Natyasutra Online のマユーラ・ハスタ | File:Mayura-Hasta.jpg（Arpitha05、CC BY-SA 4.0）。女の子が見せた「くじゃく」の手。右下の撮影日時の表示を切り落とした |
+| 首を揺らすしぐさ（`gt_term_head_bobble`、別名 ヘッド・ボブル） | ならわし | 空港の場面、地の文「パスポートには、ちゃんとスタンプが押してある。たぶん、いいという意味だ。」（彼女が戸惑った後の行。戸惑いの前に小窓で答えを出さない） | Wikipedia「Head bobble」（インドでよく見られ、場面により yes・okay・I understand など。いちばん多いのは yes か、分かったという合図） | 写真が見つからなかった（Commons で head bobble・head wobble を探しても、人のしぐさの写真・図はない）。**自作の図**（`../golden-triangle-delhi-opening-20261123/head_bobble.svg`、CC0 1.0）にし、`photoNoteJa`「画像は、首の動きを表した図」 |
+| 願いの糸（`gt_term_wish_threads`） | ならわし | ツアーの帰りの車、ヴィノードの「それに母は、聖者のお墓の格子に糸を結んで、…」 | Trawell.in の Sheikh Salim Chisti Tomb のページ（"tying a thread on the marble screens of the main tomb building serves as a constant reminder to the saint of their wishes"）。Wikipedia の廟の記事には糸の話がない。Lonely Planet・Deccan Herald は 403 で読めなかった | File:Threads for Fertility Twined in Latticework - Tomb of Shaikh Salim Chishti …（Adam Jones、Flickr から転載、CC BY-SA 2.0、FlickreviewR 確認済み）。人は写っていない |
+| ワカケホンセイインコ（`gt_term_rose_ringed_parakeet`） | 生き物 | フマユーン廟の案内（初めての訪問だけ）の「…オウムの緑が、木から木へ飛んだ。」。アーグラのラーム・バーグの「緑のインコ」は必ず後なので札を置かない | Wikipedia「Rose-ringed parakeet」（"adult males have a pink and black neck ring"） | File:Rose-ringed Parakeet, Delhi AMSM0345.jpg（Savithri Singh、CC BY-SA 4.0）。デリーで撮った雄（首の輪が見える） |
+| ジャイヴァーナ（`gt_term_jaivana`） | もの | ジャイガル城のデートの「最初の印は、巨大な大砲だった。…」 | Wikipedia「Jaivana Cannon」（1720年、ジャイガルの鋳造所で造られた。造られた当時、車輪のついた大砲として世界最大）。説明は年と場所だけにし、台本の「三十五キロ」の言い伝えには触れない | File:Jaivana Cannon, January 2024 01.jpg（Noon Plastic、CC BY 4.0）。右端の係員を切り落とした。もう一つの候補（2016年の写真）は観光客の顔が多く写るので使わなかった |
+
+見送った言葉：
+
+- 祝い金の一ルピー（シャグン）：使える写真がない（Commons の「shagun envelope」は0件）。百一・千一の例を書いた信頼できる資料も見つからなかった。台本（ジャイプール到着のフロントの女性）が説明している。
+- 笑う会（笑いヨガ）：インドで撮った写真がない（フィンランド・オーストラリアの講習の写真だけで、参加者の顔が主題）。台本（ドゥベイ）が説明している。始まりは Wikipedia「Laughter yoga」（1995年、ムンバイ、マダン・カタリア医師と妻マドゥリ）。
+- 葉の器（ドーナー）：葉の皿（パッタル）の写真しかなく、台本の「葉っぱを固めた小さな器」と形が違う。
+- 女性車両・靴を預ける・頭を布で覆う・値切り：日本の旅行者にも分かる、または台本が説明し切っている（11-13 と同じ判断）。
+
 ## 調査の記録
 
 設計（`glossary/design.md`）に沿って、インド編の物語に初めて出る「日本の旅行者がぱっと思い浮かべられない言葉」を集め、1行の説明と写真の候補を付けた。リポジトリには何も書いていない。

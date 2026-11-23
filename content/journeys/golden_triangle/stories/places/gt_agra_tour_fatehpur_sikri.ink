@@ -347,6 +347,7 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_back_leg_vinod_003
 皇帝が出ていった町だから、誰かが残らないといけない、と言います
 # speaker: gt_vinod
+# term: gt_term_wish_threads
 # voice: gt_agra_tour_back_leg_vinod_004
 それに母は、聖者のお墓の格子に糸を結んで、子どもを願ったそうです。それで授かったのが、わたし
 # speaker: gt_vinod

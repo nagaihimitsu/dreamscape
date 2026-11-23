@@ -33,6 +33,7 @@ INCLUDE modules.ink
 # speaker: narrator
 隣の列から、くすっと笑う声がした。仕切りのベルトの向こうで、十歳くらいの女の子がこちらを見上げている。
 # speaker: gt_delhi_airport_girl
+# term: gt_term_mudra
 あれ、ムドラーだよ。踊りの手。わたしの習ってる踊りもね、手でお話しするの
 # speaker: narrator
 女の子は片手を上げ、親指と薬指の先をくっつけて、ほかの指をまっすぐにそろえた。
@@ -100,6 +101,7 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,question
 ねえ、今の首。いいってこと？　だめってこと？
 # speaker: narrator
+# term: gt_term_head_bobble
 パスポートには、ちゃんとスタンプが押してある。たぶん、いいという意味だ。
 # speaker: heroine
 # reaction: heroine,teasing,music

@@ -326,6 +326,52 @@
       "imageId": "gt_img_term_gangaur"
     },
     {
+      "id": "gt_term_mudra",
+      "nameJa": "ムドラー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "インドの古典の踊りなどで使う手の形。くじゃく、花など、形ごとに意味がある。",
+      "imageId": "gt_img_term_mudra"
+    },
+    {
+      "id": "gt_term_head_bobble",
+      "nameJa": "首を揺らすしぐさ",
+      "readingJa": null,
+      "aliasJa": "ヘッド・ボブル",
+      "category": "custom",
+      "lineJa": "首を左右に小さく傾けるしぐさ。場面により「はい」「いいよ」「分かった」。",
+      "imageId": "gt_img_term_head_bobble",
+      "photoNoteJa": "画像は、首の動きを表した図"
+    },
+    {
+      "id": "gt_term_wish_threads",
+      "nameJa": "願いの糸",
+      "readingJa": "ねがいのいと",
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "聖者の廟の大理石の格子に糸を結び、願いを聖者に覚えていてもらう習わし。",
+      "imageId": "gt_img_term_wish_threads"
+    },
+    {
+      "id": "gt_term_rose_ringed_parakeet",
+      "nameJa": "ワカケホンセイインコ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "creature",
+      "lineJa": "インドなどにすむ緑のインコ。雄の首には、黒と桃色の細い輪がある。",
+      "imageId": "gt_img_term_rose_ringed_parakeet"
+    },
+    {
+      "id": "gt_term_jaivana",
+      "nameJa": "ジャイヴァーナ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "ジャイガル城にある、車輪のついた巨大な大砲。1720年に城の鋳造所で造られた。",
+      "imageId": "gt_img_term_jaivana"
+    },
+    {
       "id": "gt_term_tavernier",
       "nameJa": "タヴェルニエ",
       "readingJa": null,

@@ -29,6 +29,7 @@ INCLUDE modules.ink
 宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた
 -> gt_jaipur_jaigarh_fort_map ->
 # speaker: narrator
+# term: gt_term_jaivana
 最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。この砦で造られ、当時は、車輪のついた大砲として世界最大だったという。
 # speaker: gt_raju
 # voice: gt_jaipur_date_jaigarh_fort_raju_003
