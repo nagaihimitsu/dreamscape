@@ -3,156 +3,211 @@ INCLUDE modules.ink
 
 // スフォルツェスコ城の場所のファイル（2026-11-13 に1場面1ファイルから移した）。
 // 観光案内、通常戦と道中交流（バトルの後の「弦を一本、余らせて」）。
-// 2026-11-22 の改稿：くしゃみで粘土の鼻がつぶれ、亡き祖父に似た顔になる。父ダヴィデはその顔を残したい、娘ルチアは宿題の「パパの顔」を作りたい。
-// 二人の審判にされたヒロインは、作る人の側に立つ。反転：鼻は、祖父の話を一度もしない父に話させたくて、娘がわざと押していた。
-// 結末は第3問（像を周りから見られる）から：前からは父、横からは祖父の顔。
-// 父と娘は、フィナーレでヒロインが注文帳を「子どもの日曜日」と読む手がかりの一つ。
+// 2026-11-23 の全面改稿：ヴィオラのリストの「仕上げ」。ショーの前に姿を消した相棒の仕立て屋ルーカが、城の中庭で一着の上着を縫ってはほどいている。
+// 言い訳は「ミケランジェロだって死ぬまで直した」（第2問）。ヒロインは「直しかけの像も、今はまわりから見てもらっている」（第3問）と返す。
+// 反転：その上着はヴィオラの寸法の服で、仕上げて渡せば、気持ちを言うことになる。結末は「考えとく」（フィナーレで、ほつれた裾の場面に現れる）。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === castello_sforzesco_guide ===
 # scene: guide
 # background: milano_castello
 # speaker: narrator
-スフォルツェスコ城の中庭。煉瓦の壁の前のベンチで、小さな女の子が粘土をこねながら、隣に座った父親の顔をにらんでいる。
+スフォルツェスコ城の中庭。煉瓦の壁の前のベンチで、若い男の人が膝に上着を広げ、縫い目を小さな刃でほどいていた。
 # speaker: narrator
-父親は背筋を伸ばして動かずにいたが、鼻がひくひくしていた。くしゃみをこらえているらしい。
+足もとには、ほどいた糸が、鳥の巣みたいに丸まっている。
 # speaker: heroine
-似顔絵……じゃなくて、粘土の似顔だ
+せっかく縫ってあるのに……ほどいちゃうのかな
 # speaker: narrator
-女の子の手のひらには、こぶしほどの大きさの頭がのっている。そのとき、父親が盛大にくしゃみをした。
-# speaker: narrator
-女の子の指が跳ねて、粘土の鼻がぺしゃんこになった。
-# speaker: heroine
-# reaction: heroine,surprised,exclamation
-あっ
+男の人は顔も上げずに、もう一目、糸を切った。
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の milano_castello_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+// リストの5行目（仕上げ）を見せる。
 === milano_castello_01 ===
 # scene: battle
 # background: milano_castello
+{ not cond("episode milano_duomo_episode") and not cond("episode milano_galleria_episode") and not cond("episode milano_last_supper_episode"):
+    -> milano_castello_01_viola ->
+}
+# speaker: heroine
+あの……その上着、もうきれいに縫えてるのに
+# speaker: enemy
+まだだ。左の肩が、一ミリ落ちてる
 # speaker: narrator
-女の子が、つぶれた鼻を指で戻そうとした。
+彼はまた一目、糸を切った。めくれた襟の裏に、細い刺繍が見えた。ヴィオラの服と、同じ刺繍だ。
+# speaker: narrator
+# letter: note
+仕上げ：相棒のルーカが消えた。あいつは迷うと、城の中庭に行く。
+# speaker: heroine
+……もしかして、ルーカさん？　ヴィオラさんの
 # speaker: enemy
 # cutin: name
-待て、直すな！　……今の顔、うちの親父にそっくりだ
-# speaker: milano_castello_daughter
-# cutin: name
-だめ。これ、学校の宿題なの。『家族の顔』。パパの顔を作るんだから
-# speaker: enemy
-親父だって家族だろ
-# speaker: milano_castello_daughter
-おじいちゃんには、会ったことないもん
-# speaker: narrator
-父と娘は、同時にこちらを向いた。
-# speaker: enemy
-そこの人。どっちが正しいか、決めてくれ
+……あいつに言われて来たのか
 # speaker: heroine
-# reaction: heroine,surprised,sweat
-わ、わたしが決めるんですか？
+いいえ。リストに、迷うとお城の中庭に行くって、書いてあって
 # speaker: enemy
-ダヴィデだ。こっちは娘のルチア。頼む、公平にな
-# speaker: heroine
-……お父さんのお父さんって、どんな人だったんですか
+あいつ、余計なことを
 # speaker: enemy
-まあ、いいだろ、親父の話は
+ショーには出ない。あいつの服は、まだ人に見せられる出来じゃない。俺の仕上げが、追いつかないんだ
 # speaker: narrator
-ダヴィデは目をそらした。ルチアは粘土の頭を小箱にしまいながら、その横顔をじっと見ていた。
-# speaker: milano_castello_daughter
-宿題、もう一つあるの。お城の中の、ミケランジェロの最後の像を見てくること
-# speaker: narrator
-四人は城の博物館に入った。像の置かれた部屋は、天井の高い、細長い部屋だった。
+ルーカは上着を抱えて立ち上がった。
 # speaker: enemy
-城の部屋ってことは、王様の広間か何かだろ
+迷ったときは、あの像を見に行くことにしてる。……ついてきてもいいけど
+# speaker: narrator
+城の博物館の奥。天井の高い、細長い部屋に、白い石の像が立っていた。寄りそう二人の人の形が、途中で溶けたように見える。
+# speaker: enemy
+この部屋、昔は何の部屋だったと思う？
 -> quiz(1) ->
 # background: milano_castello
 { quiz_correct:
     # speaker: heroine
-    ここ、昔は病院だったんですね。病気の兵士たちが、ここで寝てた
+    病院、ですよね。病気の兵士たちが、ここで寝てた
 - else:
-    # speaker: heroine
-    王様の広間じゃなくて、病院だったんだ。病気の兵士たちが、ここで療養してた
+    # speaker: enemy
+    病院だよ。病気の兵士たちが、ここで療養してた
 }
-# speaker: narrator
-ルチアが天井を見上げた。
-# speaker: milano_castello_daughter
-寝てたら、天井がいちばんよく見えるね
 # speaker: enemy
-……親父も、最後は病院だった。天井のしみの話ばっかりしてたよ。あれは馬に見える、あれは鍋だ、ってな
-# speaker: enemy
-俺は毎回、外の天気の話だけして帰った
+治るのを待つ部屋だったんだ。……俺も、ここで、自分が治るのを待ってる
 # speaker: heroine
-しみの形、聞いてみたことはありますか？
-# speaker: narrator
-ダヴィデは天井を見上げたまま、首を振った。
+どこか、具合が悪いんですか？
 # speaker: enemy
-……ない
+縫っても縫っても、まだ足りない気がする病気
 # speaker: narrator
-部屋の奥に、白い石の像が立っていた。寄りそう二人の人の形が、途中で溶けたように見える。
-# speaker: milano_castello_daughter
-先生が言ってた。これ、ミケランジェロが最後まで作ってた像なんだって。だったら、わたしも直していいでしょ
+ルーカは像を見上げた。
+# speaker: enemy
+ミケランジェロは、この像を、死ぬまで直してたんだ
 -> quiz(2) ->
 # background: milano_castello
 { quiz_correct:
     # speaker: heroine
-    何年も、何度も作り変えた像。直した時間も、今の形に入ってるんだ
+    晩年の十年くらい、何度も作り変えた像なんですね
 - else:
     # speaker: enemy
-    ひと彫りでできたんじゃなく、晩年の十年近く、作り変え続けたのか。……ミケランジェロでも
+    一回で彫ったんじゃない。晩年の十年近く、作り変え続けた
 }
+# speaker: enemy
+だから、俺もまだ直していい。ミケランジェロだって、そうしたんだから
 # speaker: heroine
-# emotion: serious
-作ってるのはルチアちゃんだから、直すかどうかは、ルチアちゃんが決めていいと思います
-# speaker: enemy
-……審判まで、そっちにつくのか
-# speaker: narrator
-ルチアは小箱を胸に抱いたまま、しばらく足もとを見ていた。
-# speaker: milano_castello_daughter
-……鼻がつぶれたの、くしゃみのせいだけじゃないよ
-# speaker: enemy
-は？
-# speaker: milano_castello_daughter
-冷蔵庫の写真のおじいちゃんに似るように、わたしが、もう少し押したの。パパ、おじいちゃんの話を一回もしないから
-# speaker: milano_castello_daughter
-似てたら、話すかなって
-# speaker: narrator
-ダヴィデは口を開けたまま、何も言わなかった。像の前で、しばらく誰も動かなかった。
-# speaker: enemy
-……それで、どっちの顔にするんだ。親父か、俺か
-# speaker: heroine
-あの像、前からだけじゃなくて、まわりを歩いて見られましたよね
+……でも、この像、今は、みんなに見てもらってますよね
 -> quiz(3) ->
 # background: milano_castello
 { quiz_correct:
     # speaker: heroine
-    ぐるっと回って、どこからでも見られる。正面の一枚だけが、この像の顔じゃないんだ
+    正面からだけじゃなくて、まわりを歩いて、どこからでも見られる。直してる途中の形のまま
 - else:
     # speaker: enemy
-    回りこんで見られるのか。正面の写真一枚が、この像の全部じゃない、と
+    まわりを歩いて見られるように置いてある。……直してる途中の形のまま
 }
 # speaker: heroine
-じゃあ、前から見たらパパ、横から見たらおじいちゃん。……っていうのは、どうかな
-# speaker: milano_castello_daughter
-できる！
+直しかけのままでも、ここに置いてある。みんな、ぐるっと回って見てる。……それでも、きれいだと思います
 # speaker: narrator
-中庭のベンチに戻ると、ルチアは粘土の頭を出して、鼻の正面だけを指でつまみ直した。横顔は、そのまま残した。
-# speaker: milano_castello_daughter
-動かないで。おじいちゃんの話、して
+ルーカは、黙って像のまわりを一周した。戻ってきたとき、腕の中の上着を、少しだけ強く抱えていた。
 # speaker: enemy
-……親父はな、くしゃみが三回続く人だった。一回目が出ると、みんな次を待つんだ
+……この上着は、ショーの服じゃないんだ
+# speaker: enemy
+あいつの寸法で作ってる。初めてのショーの日に、渡そうと思って。……三か月、ほどいては縫ってる
+# speaker: heroine
+どうして、仕上げないんですか
+# speaker: enemy
+仕上げたら、渡さなきゃいけない。渡したら、何か言わなきゃいけなくなる
 # speaker: narrator
-言い終わらないうちに、ダヴィデがくしゃみをした。一回。二回。
-# speaker: milano_castello_daughter
-三回目はだめ！
-# speaker: narrator
-ダヴィデは鼻をつまんで、三回目をこらえた。ルチアの指は、もう止まらなかった。
+{heroine_name}は、言いかけたことを一度飲みこんだ。それから、口を開いた。
+# speaker: heroine
+# emotion: serious
+渡すかどうかは、ルーカさんが決めていいと思います。……でもヴィオラさんは、仕上げてくれる人を待ってます。それは、上着とは別に
+# speaker: enemy
+……考えとく
 # speaker: narrator
 # leave: enemy
-二人のそばを、{heroine_name}はそっと通り過ぎた。
+ルーカは、ほどきかけた糸を一本、指に巻きつけた。今度は、切らなかった。
+# speaker: heroine
+仕上げは、『考えとく』。……待つしかないね
+-> END
+
+// ヴィオラとの出会い（手伝いの knot）。本筋4回のうち、この回を最初に遊んだときだけ、クイズの頭で流れる（ルーカを探しに来たヴィオラから、ルーカが隠れる）。
+// ショーとリスト（4つの空欄と心当たり）を見せる。品物は渡さない（クイズの中では品物を渡せないため、リストは # letter: で見せる）。
+=== milano_castello_01_viola ===
+# speaker: narrator
+そのとき、中庭の門から、衣装袋をいくつも抱えた女の人が駆けこんできた。
+# speaker: narrator
+ベンチの男の人がさっと立ち上がって、{heroine_name}の背中に隠れた。
+# speaker: milano_viola
+ルーカ！　……いない？　ここにもいないの？
+# speaker: narrator
+# se: cloth_flap
+きょろきょろしながら走ってきた彼女と、{heroine_name}は正面からぶつかった。衣装袋が、いくつも石畳に散らばる。
+# speaker: milano_viola
+# cutin: name
+ごめん、ごめん、ごめん！　拾って、でも踏まないで！　……あ、それ引きずらないで。世界に一着しかないの
+# speaker: heroine
+# reaction: heroine,surprised,sweat
+は、はい！
+# speaker: narrator
+{heroine_name}が拾い上げたのは、厚い木綿の上着だった。仕事着みたいに丈夫そうなのに、襟の裏にだけ、細い刺繍がある。
+# speaker: heroine
+……きれい。作業着みたいなのに、裏だけ、すごく丁寧
+# speaker: milano_viola
+裏に気づいた人、初めて。ヴィオラ。服を作ってる。……作ってるけど、まだ誰にも見せたことがない
+# speaker: narrator
+ヴィオラは荷物を抱え直すと、{heroine_name}を頭からつま先まで眺めた。
+# speaker: milano_viola
+ねえ、あなた。モデルやらない？
+# speaker: heroine
+む、無理です
+# speaker: milano_viola
+即答。いいね、正直で
+# speaker: milano_viola
+大きなショーには、全部断られたの。『働く人の服なんて地味すぎる』って。だから、自分でやる。ダルセナの岸で、日暮れに
+# speaker: milano_viola
+ミラノで働く人の服を、ミラノで働く人に着て歩いてもらうショー。……でも、穴だらけ
+# speaker: narrator
+ヴィオラは、ポケットから折りたたんだ紙を出して広げた。
+# speaker: narrator
+# letter: note
+音楽：まだ。ドゥオモの前に、昔すごいアコーディオン弾きがいた。今もいる？
+# speaker: narrator
+# letter: note
+モデル：まだ。ガッレリアで五十年、毎日お茶をしてる夫婦がいるらしい。
+# speaker: narrator
+# letter: note
+お客の整理：まだ。『最後の晩餐』の係の人は、行列をさばくのが鬼のようにうまい。
+# speaker: narrator
+# letter: note
+仕上げ：まだ。相棒のルーカが消えた。あいつは迷うと、城の中庭に行く。
+# speaker: milano_viola
+心当たりは書いたけど、探して回る暇がないの。針が二本しかないのに、穴が四つ
+# speaker: narrator
+{heroine_name}は紙を見つめたまま、しばらく黙っていた。それから、ゆっくり顔を上げた。
+# speaker: heroine
+# emotion: serious
+モデルは、無理です。でも……旅のあいだに、この人たちに会えたら、声をかけてみます
+# speaker: milano_viola
+それ、モデルより大変だよ？　ミラノの人は、みんな忙しいから
+# speaker: milano_viola
+その紙、あげる。四つ埋まったら、ダルセナで会おう
+# speaker: milano_viola
+最後の一着は、もう縫い始めてるから！　モデルが決まってないだけ！
+# speaker: narrator
+ヴィオラは中庭をもう一度見回して、ため息をつくと、門のほうへ駆けていった。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+……言っちゃった。知らない人に頼みごとするの、いちばん苦手なのに
+# speaker: player
+手伝うよ
 # speaker: heroine
 # emotion: smile
-お父さんの顔、おじいちゃんの話をしてるときが、いちばん似てたね
--> END
+うん、ありがとう。……でも、頼むのはわたしがやる。言いだしたの、わたしだから
+# speaker: narrator
+背中のほうで、男の人が小さく息を吐いた。
+# speaker: enemy
+……行った？
+# speaker: heroine
+……今の人から、隠れてました？
+# speaker: enemy
+見つかったら、連れ戻される
+# speaker: narrator
+彼はベンチに戻ると、何事もなかったように、また縫い目をほどき始めた。
+->->
 
 // 道中交流「弦を一本、余らせて」（knot の名前 castello_pick が交流のID）。
 // スフォルツェスコ城の訪問の本筋の後（# priority: +1）：城のバトルの結果を閉じた後。条件はない（城にはデートがないので「また今度」もない）。

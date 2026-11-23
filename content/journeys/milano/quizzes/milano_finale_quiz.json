@@ -239,6 +239,121 @@
       }
     },
     {
+      "id": "milano_finale_q5",
+      "questionEn": "Which trace of work can you still find in Vicolo dei Lavandai?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A stone basin for washing clothes."
+        },
+        {
+          "id": "B",
+          "textEn": "A stone table for cutting marble."
+        },
+        {
+          "id": "C",
+          "textEn": "A stone counter for selling tickets."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "basin",
+          "meaning": "水を受ける槽"
+        }
+      ],
+      "hintJa": "荷を積む人と同じ水辺で、別の人は何をしていたのだろう。",
+      "correctExplanationJa": "洗濯を仕事にしていた人々の石の洗い場が残る。",
+      "incorrectExplanationJa": "石材加工台でも乗船券売り場でもない。 洗濯を仕事にしていた人々の石の洗い場が残る。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "A Walk on the Navigli",
+          "url": "https://www.yesmilano.it/en/neighborhoods/navigli-see-and-do",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "洗濯を仕事にしていた人々の石の洗い場が残る。"
+        }
+      ],
+      "difficulty": "easy",
+      "levels": {
+        "A2": {
+          "questionEn": "In Vicolo dei Lavandai, what can you still see from the work people did there?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A stone tub for washing clothes."
+            },
+            {
+              "id": "B",
+              "textEn": "A stone table for cutting marble."
+            },
+            {
+              "id": "C",
+              "textEn": "A stone counter for selling tickets."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "tub",
+              "meaning": "たらい、水槽"
+            },
+            {
+              "word": "washing",
+              "meaning": "洗うこと"
+            },
+            {
+              "word": "clothes",
+              "meaning": "服"
+            },
+            {
+              "word": "counter",
+              "meaning": "カウンター、売り台"
+            }
+          ]
+        },
+        "B2": {
+          "questionEn": "Which vestige of former labour can still be seen in Vicolo dei Lavandai?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "A stone trough once used for laundering clothes."
+            },
+            {
+              "id": "B",
+              "textEn": "A stone slab used for cutting marble."
+            },
+            {
+              "id": "C",
+              "textEn": "A stone counter where tickets were sold."
+            }
+          ],
+          "vocabularyJa": [
+            {
+              "word": "vestige",
+              "meaning": "名残"
+            },
+            {
+              "word": "labour",
+              "meaning": "労働"
+            },
+            {
+              "word": "trough",
+              "meaning": "水槽"
+            },
+            {
+              "word": "laundering",
+              "meaning": "洗濯すること"
+            },
+            {
+              "word": "slab",
+              "meaning": "厚板"
+            }
+          ]
+        }
+      }
+    },
+    {
       "id": "milano_finale_q3",
       "questionEn": "Why limit the number of people in the old refectory?",
       "options": [
@@ -475,121 +590,6 @@
             {
               "word": "performed",
               "meaning": "演奏した"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "milano_finale_q5",
-      "questionEn": "Which trace of work can you still find in Vicolo dei Lavandai?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "A stone basin for washing clothes."
-        },
-        {
-          "id": "B",
-          "textEn": "A stone table for cutting marble."
-        },
-        {
-          "id": "C",
-          "textEn": "A stone counter for selling tickets."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "basin",
-          "meaning": "水を受ける槽"
-        }
-      ],
-      "hintJa": "荷を積む人と同じ水辺で、別の人は何をしていたのだろう。",
-      "correctExplanationJa": "洗濯を仕事にしていた人々の石の洗い場が残る。",
-      "incorrectExplanationJa": "石材加工台でも乗船券売り場でもない。 洗濯を仕事にしていた人々の石の洗い場が残る。",
-      "sources": [
-        {
-          "publisher": "YesMilano",
-          "title": "A Walk on the Navigli",
-          "url": "https://www.yesmilano.it/en/neighborhoods/navigli-see-and-do",
-          "checkedAt": "2026-11-02",
-          "claimType": "documented_fact",
-          "claimJa": "洗濯を仕事にしていた人々の石の洗い場が残る。"
-        }
-      ],
-      "difficulty": "easy",
-      "levels": {
-        "A2": {
-          "questionEn": "In Vicolo dei Lavandai, what can you still see from the work people did there?",
-          "options": [
-            {
-              "id": "A",
-              "textEn": "A stone tub for washing clothes."
-            },
-            {
-              "id": "B",
-              "textEn": "A stone table for cutting marble."
-            },
-            {
-              "id": "C",
-              "textEn": "A stone counter for selling tickets."
-            }
-          ],
-          "vocabularyJa": [
-            {
-              "word": "tub",
-              "meaning": "たらい、水槽"
-            },
-            {
-              "word": "washing",
-              "meaning": "洗うこと"
-            },
-            {
-              "word": "clothes",
-              "meaning": "服"
-            },
-            {
-              "word": "counter",
-              "meaning": "カウンター、売り台"
-            }
-          ]
-        },
-        "B2": {
-          "questionEn": "Which vestige of former labour can still be seen in Vicolo dei Lavandai?",
-          "options": [
-            {
-              "id": "A",
-              "textEn": "A stone trough once used for laundering clothes."
-            },
-            {
-              "id": "B",
-              "textEn": "A stone slab used for cutting marble."
-            },
-            {
-              "id": "C",
-              "textEn": "A stone counter where tickets were sold."
-            }
-          ],
-          "vocabularyJa": [
-            {
-              "word": "vestige",
-              "meaning": "名残"
-            },
-            {
-              "word": "labour",
-              "meaning": "労働"
-            },
-            {
-              "word": "trough",
-              "meaning": "水槽"
-            },
-            {
-              "word": "laundering",
-              "meaning": "洗濯すること"
-            },
-            {
-              "word": "slab",
-              "meaning": "厚板"
             }
           ]
         }

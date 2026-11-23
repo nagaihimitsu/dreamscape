@@ -4,171 +4,232 @@ INCLUDE modules.ink
 // ガッレリアの場所のファイル。
 // 観光案内、通常戦、道中交流と会話、デート（告白を除く特別なデートも、地図の出来事がガッレリアにある）。
 // 訪問の流れ：案内 → 観察 → 「回らない願掛け」 → 「券を一枚」 → バトル → 「リナの紋章室」。観察の後の場面は、終わると次の場面か観察へ戻る。
-// 2026-11-22 の改稿：広告屋サンドロに「恋人役」にされる回。案内で二度通る赤い鞄の女は、雇われた通行人ヴァンダ。
-// ヒロインも人の声を勝手に録っていたと分かって消し、最後に自分が写った一枚を「わたしにください」と頼む（録る係の旅の一歩）。
-// 雄牛の上で回る男の子は、フィナーレでヒロインが注文帳を「子どもの日曜日」と読む手がかりの一つ。
+// 2026-11-23 の全面改稿：ヴィオラのリストの「モデル」。結婚五十年の夫婦。妻ピエラは毎日雄牛の上で回るのに、夫エツィオは五十年、一度も回らない。
+// 表向きの理由は「トリノ生まれが自分の街の紋章を踏めるか」（第3問の答え）。本当の理由：五十年前、ここで回った妻がよろけて彼の腕に倒れこんだのが出会いで、
+// 運はあの一回で使い切ったと思っている。ヒロインは二人を撮り、ショーに誘う。二人とも来る。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === galleria_vittorio_emanuele_ii_guide ===
 # scene: guide
 # background: milano_galleria
 # speaker: narrator
-ガッレリアのガラスの屋根の下に、靴音がいくつも響いている。{heroine_name}はスマホを掲げて、十秒の録音を始めた。
+ガッレリアのガラスの屋根の下に、靴音がいくつも響いている。床の真ん中、モザイクの雄牛の前には、短い列ができていた。
 # speaker: narrator
-録音のあいだ、こちらは息まで止めていた。
+並んだ人が一人ずつ、雄牛の上にかかとをのせて、くるりと回っていく。
 # speaker: heroine
-# emotion: smile
-そこまでしなくていいのに。息くらい、入ってもいいよ
-# speaker: player
-じゃあ、息もミラノの音ってことで
+あれ、願掛けなんだって。回ると、いいことがあるって言われてるみたい
 # speaker: narrator
-目の前を、赤い鞄の女の人が、電話で早口にしゃべりながら通り過ぎた。
+列の横のカフェの席に、きちんと上着を着た老夫婦が座っていた。
 # speaker: narrator
-少しして、同じ人が引き返してきた。同じ速さで、同じ電話をしながら、もう一度通り過ぎていく。
-# speaker: heroine
-# reaction: heroine,surprised,question
-……今の人、二回通ったよね。巻き戻したの、わたしじゃないよ？
+妻のほうが立ち上がり、慣れた足取りで雄牛の上を一回転して、席に戻っていく。
+# speaker: narrator
+夫は腕を組んだまま、雄牛をにらんでいた。
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の milano_galleria_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+// 相手は妻ピエラ。夫エツィオ（milano_ezio）は名札だけの人物。リストの3行目（モデル）を見せる。
 === milano_galleria_01 ===
 # scene: battle
 # background: milano_galleria
+{ not cond("episode milano_duomo_episode") and not cond("episode milano_last_supper_episode") and not cond("episode milano_castello_episode"):
+    -> milano_galleria_01_viola ->
+}
 # speaker: enemy
-そのまま、そのまま！　そこの二人、動かないで！
+ねえ、そこのお嬢さん。そのカメラ、ちょっといいかしら
 # speaker: narrator
-柱の陰に三脚が立っていた。カメラの後ろで、細身の男が両手を振っている。手前の台には、香水の瓶が一本。
+老婦人が、{heroine_name}の首から下がったカメラを指さしていた。銀色の髪をきれいにまとめ、上着の胸に小さなブローチを留めている。
 # speaker: enemy
 # cutin: name
-サンドロ。広告の写真屋だ。今度は、恋人どうしが初めて会ったみたいな感じで、こっちに笑って
+ピエラよ。こっちは夫のエツィオ。今日で、結婚して五十年なの
+# speaker: milano_ezio
+# cutin: name
+四十九年と、三百六十四日だ。式は明日だった
+# speaker: enemy
+細かい人でしょう。……お願い。この人が雄牛の上で回るところを、一枚撮ってほしいの。五十年、一度も回ってくれないのよ
+# speaker: milano_ezio
+回らん
 # speaker: heroine
-# reaction: heroine,surprised,blush
-こ、恋人じゃないです！　それに、初めて会ったわけでも……
+……あの、お二人は、毎日ここに？
 # speaker: enemy
-最高。その照れ方が欲しかった
+毎日五時。お茶を一杯ずつ
 # speaker: narrator
-# se: camera_shutter_burst
-シャッターの音が続いた。画面の中で、香水の瓶の向こうに、二人がしっかり写っている。
-# speaker: player
-誰が撮っていいって言いました？
+# letter: note
+モデル：ガッレリアで五十年、毎日お茶をしてる夫婦がいるらしい。
+# speaker: heroine
+……この人たちだ
 # speaker: enemy
-香水の広告でね、題は『ミラノの恋人たち』。瓶だけじゃ客は買わない。後ろに恋人がいると、続きが気になるんだ
-# speaker: enemy
-それに、ここは通り道だ。ガッレリアを歩いてて、背景にならないほうが難しい
+私たち、ここで出会ったの。私はドゥオモのほうから、この人は反対側から歩いてきて
 -> quiz(1) ->
 # background: milano_galleria
 { quiz_correct:
     # speaker: heroine
-    ドゥオモ広場とスカラ座の広場をつなぐ道。買い物の人も、劇場へ行く人も、ここを通るんだ
+    ドゥオモ広場と、スカラ座の広場。ガッレリアは、その二つをつなぐ道なんですね
 - else:
     # speaker: enemy
-    ドゥオモ広場から、スカラ座の広場へ抜ける道さ。店に用がなくても、誰でも通る
+    反対側は、スカラ座の広場よ。ガッレリアは、ドゥオモ広場とスカラ座の広場をつなぐ道なの
 }
-# speaker: heroine
-# emotion: serious
-通り道なのは分かりました。でも、通る人の顔まで、あなたの商品じゃないです
 # speaker: enemy
-# reaction: heroine,worried
-へえ。じゃあ、君のそれは？
+ちょうど真ん中で、雄牛の上で回ってた私がよろけて、この人が受け止めたの。……すてきでしょう？
+# speaker: milano_ezio
+人に話すほどのことじゃない
 # speaker: narrator
-サンドロが顎で示したのは、{heroine_name}のスマホだった。さっき録った十秒が、画面に残っている。
-# speaker: narrator
-再生すると、靴音の中に、知らない女の人の声がはっきり入っていた。電話で、何かの値段を言い争っている。
+エツィオはカップを持ち上げて、口をつけずに戻した。
 # speaker: heroine
-……ほんとだ。わたしも、知らない人の声を勝手に持って帰ろうとしてた
-# speaker: narrator
-彼女はサンドロの前で、その録音を消した。
-# speaker: heroine
-# emotion: serious
-わたしのは消しました。だから、あなたも消してください
+それから五十年、毎日ここでお茶を？　ここ、通り抜けるだけの道だと思ってました
 # speaker: enemy
-ミラノの人は、ここを『街の客間』って呼ぶ。客間ってのは、着飾って人に見せる部屋だろ。撮られるのも込みなのさ
+ミラノの人は、ここを『街の客間』って呼ぶのよ
 -> quiz(2) ->
 # background: milano_galleria
 { quiz_correct:
     # speaker: heroine
-    客間は、人と会って過ごす部屋。見せるための部屋っていうより、人を迎える部屋なんだ
+    客間……人と会って、時間を過ごす部屋。だから、毎日ここで会うんですね
 - else:
-    # speaker: heroine
-    客間って、人と会って過ごす部屋なんだ。立ち話の二人も、お茶を飲む人も、ここで誰かと会ってる
+    # speaker: enemy
+    家具の話じゃないの。人と会って、時間を過ごす場所。だから客間
 }
+# speaker: enemy
+この人とは五十年、ここで会ってきたの。家でも会ってるけどね
 # speaker: heroine
-客間に来た人には、先に『撮っていいですか』って聞くのが礼儀だと思います
-# speaker: narrator
-サンドロは口を開け、閉じて、それからしぶしぶ言った。
-# speaker: enemy
-……撮っていいか？
-# speaker: heroine
-恋人の役は、お断りします
-# speaker: enemy
-じゃあ、何の役ならいい
-# speaker: heroine
-通行人の役なら
-# speaker: milano_galleria_bag_woman
-# cutin: name
-それ、私の役なんだけど
-# speaker: narrator
-赤い鞄の女の人が、腕を組んで立っていた。さっきから、同じ速さで何度も前を通っていた人だ。
-# speaker: milano_galleria_bag_woman
-ヴァンダ。この人に雇われた通行人よ。朝から三十七往復。さっきの電話は、私の出演料の話
-# speaker: heroine
-# reaction: heroine,exasperated,sweat
-……わたしが録ったの、ヴァンダさんの値段の交渉だったんだ
-# speaker: milano_galleria_bag_woman
-恋人役がただで見つかるなら、通行人役の値段も上げてもらわないとね。これからは一往復ごとに払って
-# speaker: enemy
-待て待て。まだ、いちばんいい画が残ってる
-# speaker: narrator
-サンドロは床の真ん中を指さした。モザイクの雄牛の上で、男の子がかかとをつけて、くるりと回っている。
-# speaker: enemy
-次はあれだ。『ミラノの幸運の香り』。雄牛の上で回る子どもと、その後ろの恋人たち
-# speaker: enemy
-この街の牛に願いをかける。説明はいらないだろ
-# speaker: milano_galleria_bag_woman
-三十七回、あの牛の横を通ったけど。その牛、ほんとにミラノの牛？
+# emotion: smile
+……エツィオさんは、どうして回らないんですか？
+# speaker: milano_ezio
+わしはトリノの生まれだ。それで分かるだろう
 -> quiz(3) ->
 # background: milano_galleria
 { quiz_correct:
     # speaker: heroine
-    雄牛はトリノの紋章。ミラノの真ん中で、みんなトリノの牛の上を回ってるんだ
+    雄牛は、トリノの紋章……。自分の生まれた街の印を、かかとで踏めないってことですか
 - else:
-    # speaker: milano_galleria_bag_woman
-    トリノよ。あれはトリノの紋章の牛。ミラノの真ん中で、よその街の牛に願いをかけてるの
+    # speaker: enemy
+    トリノの紋章なのよ、あの牛。この人の生まれた街の。……五十年、その言い訳
 }
+# speaker: milano_ezio
+そうだ。トリノの男が、トリノの牛を踏めるか
 # speaker: enemy
-……『ミラノの幸運の香り』が、トリノの幸運か。書き直しだ
+五十年、それしか言わないの
 # speaker: narrator
-サンドロは三脚にもたれて、天井のガラスを見上げた。
+ピエラは笑った。それから少しだけ寂しそうに、雄牛のほうを見た。
+# speaker: narrator
+{heroine_name}は、エツィオの手もとを見ていた。さっきから、カップの取っ手を、ずっと親指でなでている。
 # speaker: heroine
-わたしは、そういうの好きですけど。よその街の印に、ここの人たちが願いをかけてるの
+……エツィオさん。本当に、それだけですか
+# speaker: narrator
+エツィオは長いあいだ黙っていた。それから、妻のほうを見ないで言った。
+# speaker: milano_ezio
+五十年前、あの牛の上で、お前がよろけて倒れてきた。それを受け止めて、それから五十年だ
+# speaker: milano_ezio
+運なら、あの一回で使い切った。二回目なんか頼んだら、罰が当たる
+# speaker: narrator
+ピエラは口を開けたまま、夫を見ていた。
 # speaker: enemy
-広告にするには、話が一つ多すぎる
+……あなた、五十年、そんなことを考えてたの
+# speaker: milano_ezio
+言ったら、毎日回らされるだろう
 # speaker: narrator
-彼はカメラの画面を開き、二人の写った写真を一枚ずつ消し始めた。
-# speaker: narrator
-最後の一枚のところで、{heroine_name}が手を上げた。
-# speaker: heroine
-あの……消す前に、それだけ見せてもらえますか
-# speaker: narrator
-画面の中で、彼女は笑っていた。香水の瓶も、カメラも見ていない。隣を見て、笑っている。
-# speaker: heroine
-わたしが写ってる旅の写真って、ほとんどないんです。いつも、撮るほうだから
-# speaker: heroine
-# emotion: shy
-これ、広告じゃなくて、わたしにください
+ピエラが吹き出した。笑いながら、目もとを指で押さえている。
 # speaker: enemy
-広告屋が写真をただで渡すのは、これが初めてだ
+じゃあ、今日は私が、あなたの分も回る。……お嬢さん、撮って。二人一緒に入るように
 # speaker: narrator
-# se: phone_receive
-彼女のスマホが短く震えた。写真が一枚、届いていた。
-# speaker: player
-……こっち見てる
+ピエラが雄牛の上で回った。エツィオはその手をしっかり握って、隣に立っていた。
+# speaker: narrator
+# se: camera_shutter
+{heroine_name}は、シャッターを切った。
 # speaker: heroine
-# reaction: heroine,shy,blush
-見てない。……見てたかもしれないけど、言わないで
+撮れました。……二人とも、ちゃんと真ん中です
 # speaker: narrator
-ヴァンダは出演料を受け取ると、赤い鞄を提げて歩きだした。三十八回目は、出口までまっすぐだった。
+画面を見せると、ピエラは「あとで送ってね」と三回言った。その横で、{heroine_name}は小さく息を吸った。
+# speaker: heroine
+# emotion: serious
+あの。もう一つ、お願いがあって。……ダルセナで、服のショーがあるんです。ミラノで働いてきた人が、着て歩くショーで
+# speaker: enemy
+モデル？　私たちが？
+# speaker: heroine
+はい。五十年ここを歩いてきたお二人に、歩いてほしくて
+# speaker: milano_ezio
+日暮れは冷える
+# speaker: enemy
+この人ね、上着を自分で選ばせてもらえるなら、どこへでも行くのよ
+# speaker: milano_ezio
+……仕立てによる
+# speaker: enemy
+行くわ。二人で
+# speaker: heroine
+# emotion: smile
+モデル、埋まった
 -> END
+
+// ヴィオラとの出会い（手伝いの knot）。本筋4回のうち、この回を最初に遊んだときだけ、クイズの頭で流れる（雄牛の列を眺めているときにぶつかる）。
+// ショーとリスト（4つの空欄と心当たり）を見せる。品物は渡さない（クイズの中では品物を渡せないため、リストは # letter: で見せる）。
+=== milano_galleria_01_viola ===
+# speaker: narrator
+雄牛の列を眺めていたら、柱の陰から飛び出してきた誰かと、正面からぶつかった。
+# speaker: narrator
+# se: cloth_flap
+抱えられていた衣装袋が、いくつも床に散らばった。口から、袖や裾がのぞいている。
+# speaker: milano_viola
+# cutin: name
+ごめん、ごめん、ごめん！　拾って、でも踏まないで！　……あ、それ引きずらないで。世界に一着しかないの
+# speaker: heroine
+# reaction: heroine,surprised,sweat
+は、はい！
+# speaker: narrator
+{heroine_name}が拾い上げたのは、厚い木綿の上着だった。仕事着みたいに丈夫そうなのに、襟の裏にだけ、細い刺繍がある。
+# speaker: heroine
+……きれい。作業着みたいなのに、裏だけ、すごく丁寧
+# speaker: milano_viola
+裏に気づいた人、初めて。ヴィオラ。服を作ってる。……作ってるけど、まだ誰にも見せたことがない
+# speaker: narrator
+ヴィオラは荷物を抱え直すと、{heroine_name}を頭からつま先まで眺めた。
+# speaker: milano_viola
+ねえ、あなた。モデルやらない？
+# speaker: heroine
+む、無理です
+# speaker: milano_viola
+即答。いいね、正直で
+# speaker: milano_viola
+大きなショーには、全部断られたの。『働く人の服なんて地味すぎる』って。だから、自分でやる。ダルセナの岸で、日暮れに
+# speaker: milano_viola
+ミラノで働く人の服を、ミラノで働く人に着て歩いてもらうショー。……でも、穴だらけ
+# speaker: narrator
+ヴィオラは、ポケットから折りたたんだ紙を出して広げた。
+# speaker: narrator
+# letter: note
+音楽：まだ。ドゥオモの前に、昔すごいアコーディオン弾きがいた。今もいる？
+# speaker: narrator
+# letter: note
+モデル：まだ。ガッレリアで五十年、毎日お茶をしてる夫婦がいるらしい。
+# speaker: narrator
+# letter: note
+お客の整理：まだ。『最後の晩餐』の係の人は、行列をさばくのが鬼のようにうまい。
+# speaker: narrator
+# letter: note
+仕上げ：まだ。相棒のルーカが消えた。あいつは迷うと、城の中庭に行く。
+# speaker: milano_viola
+心当たりは書いたけど、探して回る暇がないの。針が二本しかないのに、穴が四つ
+# speaker: narrator
+{heroine_name}は紙を見つめたまま、しばらく黙っていた。それから、ゆっくり顔を上げた。
+# speaker: heroine
+# emotion: serious
+モデルは、無理です。でも……旅のあいだに、この人たちに会えたら、声をかけてみます
+# speaker: milano_viola
+それ、モデルより大変だよ？　ミラノの人は、みんな忙しいから
+# speaker: milano_viola
+その紙、あげる。四つ埋まったら、ダルセナで会おう
+# speaker: milano_viola
+最後の一着は、もう縫い始めてるから！　モデルが決まってないだけ！
+# speaker: narrator
+返事をする前に、ヴィオラはスカラ座のほうの出口へ駆けていった。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+……言っちゃった。知らない人に頼みごとするの、いちばん苦手なのに
+# speaker: player
+手伝うよ
+# speaker: heroine
+# emotion: smile
+うん、ありがとう。……でも、頼むのはわたしがやる。言いだしたの、わたしだから
+# speaker: narrator
+顔を上げると、カフェの席から、さっきの老婦人がこちらを手招きしていた。
+->->
 
 // 道中交流「回らない願掛け」（knot の名前 galleria_fortune が交流のID。2026-11-13 に 1場面1ファイル・encounters/catalog.json から移した）。
 // ガッレリアの観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。どの選択肢でも完了する（「また今度」はない）。

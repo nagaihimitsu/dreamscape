@@ -69,7 +69,7 @@ it("integrates date and battle annotations through the real content pipeline", a
       schemaVersion: 1,
       entries: [
         { storyId: "places/milano_roastery", speaker: "heroine", text: "猫舌なのに、いちばんいい匂いのときに飲みたいの。かなり不利な趣味でしょ", targetCharacterId: "heroine", expression: "smile" },
-        { storyId: "places/milano_castello", speaker: "enemy", text: "親父だって家族だろ", targetCharacterId: "enemy", mark: "question" },
+        { storyId: "places/milano_castello", speaker: "enemy", text: "まだだ。左の肩が、一ミリ落ちてる", targetCharacterId: "enemy", mark: "question" },
         { storyId: "places/milano_la_scala", speaker: "heroine", text: "それで、本物の劇場の前まで持ってきたんですか", targetCharacterId: "heroine", mark: "question" },
       ],
     }));

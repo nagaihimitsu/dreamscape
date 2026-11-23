@@ -20,12 +20,6 @@
       "descriptionJa": "少年の母親。ガッレリアの出店の券を、何枚か預かっていた。"
     },
     {
-      "id": "milano_galleria_bag_woman",
-      "cityId": "milano",
-      "nameJa": "ヴァンダ",
-      "descriptionJa": "広告屋サンドロに雇われた通行人。赤い鞄を提げて、朝からガッレリアを三十七往復した。"
-    },
-    {
       "id": "milano_rina",
       "cityId": "milano",
       "nameJa": "リナ",
@@ -39,7 +33,7 @@
     {
       "id": "milano_brera_brother",
       "cityId": "milano",
-      "nameJa": "ルカ",
+      "nameJa": "テオ",
       "descriptionJa": "演出家ミーナの弟で、劇団の衣装係。来月から、トリノの劇場で働く。"
     },
     {
@@ -47,12 +41,6 @@
       "cityId": "milano",
       "nameJa": "学生",
       "descriptionJa": "ブレラの中庭で素描をしていた学生。動き出す直前の膝が描けずにいた。"
-    },
-    {
-      "id": "milano_castello_daughter",
-      "cityId": "milano",
-      "nameJa": "ルチア",
-      "descriptionJa": "城の中庭で、学校の宿題の「家族の顔」を粘土で作っていたダヴィデの娘。"
     },
     {
       "id": "milano_tino",
@@ -83,28 +71,58 @@
       "nameJa": "常連の女"
     },
     {
-      "id": "milano_ida",
+      "id": "milano_viola",
       "cityId": "milano",
-      "nameJa": "イーダ",
-      "descriptionJa": "声を休める兄ニコの身振りを訳していた妹。兄と並んで歌うのを、子どものころにやめた。"
+      "nameJa": "ヴィオラ",
+      "descriptionJa": "大きなショーに全部断られたデザイナー。ダルセナの岸で、ミラノで働く人の服のショーを開く。"
     },
     {
-      "id": "milano_last_supper_brother",
+      "id": "milano_giada",
       "cityId": "milano",
-      "nameJa": "ニコ",
-      "descriptionJa": "夜の舞台のために声を休めていた歌手。妹イーダの兄。言いたいことは、指と腕と顔の向きで伝える。"
+      "nameJa": "ジャーダ",
+      "descriptionJa": "ドゥオモの前で弾く若いバンドのバイオリン弾き。作者不明の古い歌を、十八番にしていた。"
     },
     {
-      "id": "milano_duomo_tour_leader",
+      "id": "milano_nello",
       "cityId": "milano",
-      "nameJa": "旗の案内係",
-      "descriptionJa": "ドゥオモ広場で、四十人の団体を旗一本で静かにさせた案内係。"
+      "nameJa": "ネッロ",
+      "descriptionJa": "ドゥオモの前の同じ場所で、四十年アコーディオンを弾いてきた人。"
     },
     {
-      "id": "milano_chiara",
+      "id": "milano_ezio",
       "cityId": "milano",
-      "nameJa": "キアラ",
-      "descriptionJa": "録音屋リヴィオの娘。八年前に家を出た。"
+      "nameJa": "エツィオ",
+      "descriptionJa": "ピエラの夫。トリノ生まれ。五十年、ガッレリアの雄牛の上で一度も回らなかった。"
+    },
+    {
+      "id": "milano_assunta",
+      "cityId": "milano",
+      "nameJa": "アッスンタ",
+      "descriptionJa": "係員ジョヴァンナの母。娘の働く姿を見るために、毎週『最後の晩餐』の予約を取る。"
+    },
+    {
+      "id": "milano_giovanna",
+      "cityId": "milano",
+      "nameJa": "ジョヴァンナ",
+      "descriptionJa": "『最後の晩餐』の旧食堂の係員。見学の人数と時間を、一秒も狂わせない。"
+    },
+    {
+      "id": "milano_luca",
+      "cityId": "milano",
+      "nameJa": "ルーカ",
+      "descriptionJa": "ヴィオラの相棒の仕立て屋。ほどくのは遅いが、縫うのは速い。"
+    },
+    {
+      "id": "milano_ada",
+      "cityId": "milano",
+      "nameJa": "アダ",
+      "descriptionJa": "椅子の修理屋。スカラ座の前で、祖母の椅子を売るか決めかねていた。"
+    },
+    {
+      "id": "milano_mina",
+      "cityId": "milano",
+      "nameJa": "ミーナ",
+      "descriptionJa": "ブレラで会った、小劇団の演出家。"
     }
   ]
 }

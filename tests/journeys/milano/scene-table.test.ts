@@ -22,7 +22,7 @@ const inserted: Inserted[] = [
     when: episode("milano_duomo_episode"), done: { items: ["blue_pick"] }, people: ["milano_nora"],
     options: [{ id: "coil" }, { id: "case" }, { id: "leave", later: true }] },
   { id: "supper_pantomime", title: "広場の無声映画", landmark: "last_supper", file: "places/milano_last_supper", priority: 1,
-    people: ["milano_ida", "milano_last_supper_brother"], options: [{ id: "act" }, { id: "ask" }, { id: "leave" }] },
+    people: ["milano_assunta", "milano_giovanna"], options: [{ id: "act" }, { id: "ask" }, { id: "leave" }] },
   { id: "galleria_fortune", title: "回らない願掛け", landmark: "galleria_vittorio_emanuele_ii", file: "places/milano_galleria",
     done: { reward: "victory_galleria_first" }, repeat: "always", people: ["milano_galleria_boy", "milano_galleria_mother"],
     options: [{ id: "believe" }, { id: "doubt" }, { id: "leave" }] },

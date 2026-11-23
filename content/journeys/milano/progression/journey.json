@@ -8,10 +8,10 @@
       "landmarkId": "duomo_milano",
       "battleId": "milano_duomo_01",
       "requiredEpisodeIds": [],
-      "titleJa": "無人の広場、一名追加",
-      "descriptionJa": "広場で、頭から布をかぶった録音屋が、無人の十秒を待っている。",
+      "titleJa": "三小節目は、上がる",
+      "descriptionJa": "ドゥオモの前の一等地を、老いたアコーディオン弾きと若いバンドが取り合っている。",
       "clearTitleJa": "ドゥオモ編 クリア",
-      "clearDescriptionJa": "四十人が黙った十秒。笑い声のところで、録音は切られた。"
+      "clearDescriptionJa": "四人の音が、三小節目でそろって上がった。"
     },
     {
       "id": "milano_galleria_episode",
@@ -20,10 +20,10 @@
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "battleId": "milano_galleria_01",
       "requiredEpisodeIds": [],
-      "titleJa": "そこ、映っています",
-      "descriptionJa": "香水の広告の写真屋に、いつの間にか「恋人役」にされていた。",
+      "titleJa": "五十年、回らない人",
+      "descriptionJa": "ガッレリアの雄牛の前で、結婚五十年の妻が、夫に一回転をせがんでいる。",
       "clearTitleJa": "ガッレリア編 クリア",
-      "clearDescriptionJa": "広告の写真は消えた。自分の写った一枚だけが、手もとに残る。"
+      "clearDescriptionJa": "雄牛の上の二人を、写真の真ん中に撮った。"
     },
     {
       "id": "milano_last_supper_episode",
@@ -31,10 +31,10 @@
       "cityId": "milano",
       "landmarkId": "last_supper",
       "battleId": "milano_last_supper_01",
-      "titleJa": "五本の指で話す人",
-      "descriptionJa": "旧食堂で、声を休める兄の手を、妹が「あと五分」と訳している。",
+      "titleJa": "時計を見る人",
+      "descriptionJa": "旧食堂で、時間に厳しい係員が、絵を見ない老婦人を急かしている。",
       "clearTitleJa": "最後の晩餐編 クリア",
-      "clearDescriptionJa": "「一緒に」の答えは、今夜の客席で。角を曲がる兄妹に手を振る。",
+      "clearDescriptionJa": "残りのわずかな時間、母と娘は並んで絵を見上げた。",
       "requiredEpisodeIds": []
     },
     {
@@ -44,10 +44,10 @@
       "landmarkId": "castello_sforzesco",
       "battleId": "milano_castello_01",
       "requiredEpisodeIds": [],
-      "titleJa": "鼻がなくなる前に",
-      "descriptionJa": "城の中庭で、くしゃみが粘土の鼻をつぶした。父親は、そのままにしてくれと言う。",
+      "titleJa": "ほどき続ける人",
+      "descriptionJa": "城の中庭で、若い仕立て屋が、縫い上げた上着をほどいている。",
       "clearTitleJa": "スフォルツェスコ城編 クリア",
-      "clearDescriptionJa": "前から見ると父、横から見ると祖父。粘土の顔は二つになった。"
+      "clearDescriptionJa": "ほどきかけた糸を、今度は切らなかった。"
     },
     {
       "id": "milano_finale",
@@ -62,10 +62,10 @@
         "milano_castello_episode"
       ],
       "epilogueStoryId": "places/milano_darsena.milano_epilogue",
-      "titleJa": "日暮れのダルセナ、人の気配なし",
-      "descriptionJa": "ダルセナで、録音屋が頭を抱えている。今度の注文は、人であふれる岸の「無人の十秒」。",
+      "titleJa": "ダルセナのランウェイ",
+      "descriptionJa": "日暮れのダルセナで、ヴィオラのショーが始まる。来ると言ったのは、まだ半分。",
       "clearTitleJa": "ミラノ 都市クリア",
-      "clearDescriptionJa": "十秒を過ぎても、録音は止まらなかった。岸に戻る時間は、まだ二人で決められる。"
+      "clearDescriptionJa": "椅子を片づけた岸で、みんなが踊った。"
     }
   ],
   "storyBattles": [

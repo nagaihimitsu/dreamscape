@@ -4690,7 +4690,7 @@
       "cityId": "milano",
       "placeId": "p_duomo",
       "category": "main",
-      "titleJa": "無人の広場、一名追加",
+      "titleJa": "三小節目は、上がる",
       "activityMinutes": 75,
       "apCost": 0
     },
@@ -4699,7 +4699,7 @@
       "cityId": "milano",
       "placeId": "p_galleria",
       "category": "main",
-      "titleJa": "そこ、映っています",
+      "titleJa": "五十年、回らない人",
       "activityMinutes": 75,
       "apCost": 0
     },
@@ -4708,7 +4708,7 @@
       "cityId": "milano",
       "placeId": "p_supper",
       "category": "main",
-      "titleJa": "五本の指で話す人",
+      "titleJa": "時計を見る人",
       "activityMinutes": 75,
       "apCost": 0,
       "startWindows": [
@@ -4729,7 +4729,7 @@
       "cityId": "milano",
       "placeId": "p_castello",
       "category": "main",
-      "titleJa": "鼻がなくなる前に",
+      "titleJa": "ほどき続ける人",
       "activityMinutes": 75,
       "apCost": 0,
       "startWindows": [
@@ -4750,7 +4750,7 @@
       "cityId": "milano",
       "placeId": "p_darsena",
       "category": "main",
-      "titleJa": "日暮れのダルセナ、人の気配なし",
+      "titleJa": "ダルセナのランウェイ",
       "activityMinutes": 45,
       "apCost": 0
     },

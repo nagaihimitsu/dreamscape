@@ -3,10 +3,9 @@ INCLUDE modules.ink
 
 // ドゥオモ（ミラノ大聖堂）の場所のファイル（2026-11-13 に1場面1ファイルから移した）。
 // 観光案内、通常戦、道中交流（バトルの後と散歩のデートの後の「切れた三本目」）とデート。
-// 2026-11-22 の改稿：録音屋リヴィオの初登場。フィナーレ（milano_darsena.ink）の前振りを置く回。
-// 前振り：一度聴いた足音は忘れない／録音機のイルカのシール（娘キアラのもの。本人は「前の持ち主の趣味」とごまかす）／
-// いちばんの客は外国の匿名の客で、毎月「人の気配なし」を買う／失敗した音は消す主義／自分の息だけは消せず、客は一度も文句を言わない／
-// 注文の帳面（フィナーレで # letter: で見せる）／「夕方はたいていダルセナ」。設計は authoring/journeys/milano/drafts/SCENARIO_REWRITE.md。
+// 2026-11-23 の全面改稿：ヴィオラのリストの「音楽」。大聖堂の前の一等地を四十年守るアコーディオン弾きネッロと、場所を取った若いバンドのジャーダ。
+// 反転：ジャーダたちの「作者不明の古い歌」は、ネッロが五十年前に妻のために作った歌だった（三小節目が上がる）。
+// 結末：ジャーダは来る。ネッロは「考えとく」（フィナーレで、演奏の途中に現れる）。設計は authoring/journeys/milano/drafts/SCENARIO_REWRITE.md。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === duomo_milano_guide ===
@@ -18,213 +17,211 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,exclamation
 わ……写真で見たのと、大きさが全然違う
 # speaker: narrator
-{heroine_name}はスマホを出し、カメラではなく録音の画面を開いた。
-# speaker: heroine
-十秒だけ録らせて。帰ってから目をつぶって聴くと、ここに戻ってこられるの
-# speaker: player
-写真じゃなくて？
-# speaker: heroine
-写真は、いつも誰かを撮る係だから。音は自分のために録るの。……しーっ
+{heroine_name}はカメラを構えかけて、手を止めた。広場の両端から、音楽が聞こえてくる。
 # speaker: narrator
-十秒。再生すると、ごそっ、ごそっ、と布のこすれる音がした。広場のざわめきより、ずっと大きい。
+右からはアコーディオン。左からは、バイオリンとギターと太鼓。二つは、同じ旋律を、違う速さで弾いていた。
 # speaker: heroine
-# reaction: heroine,exasperated,sweat
-……わたしの袖の音しか入ってない
+同じ曲……だよね？　追いかけっこしてるみたい
 # speaker: narrator
-すぐそばに、頭から大きな布をかぶった人がいた。布の下から棒つきのマイクが突き出していて、その先が、彼女の袖を向いている。
+曲の途中で、アコーディオンが止まった。弾いていた老人は楽器を下ろすと、まっすぐ左のほうへ歩きだした。
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の milano_duomo_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
-// 団体の案内係（milano_duomo_tour_leader）は名札だけの人物。
+// ジャーダ（milano_giada）は名札だけの人物。リストの2行目（音楽）を見せる。
 === milano_duomo_01 ===
 # scene: battle
 # background: milano_duomo
+{ not cond("episode milano_galleria_episode") and not cond("episode milano_last_supper_episode") and not cond("episode milano_castello_episode"):
+    -> milano_duomo_01_viola ->
+}
+# speaker: enemy
+その歌を、やめろ
 # speaker: narrator
-布がめくれ、中から男が顔を出した。鼻の頭に、布の目の跡がついている。
-# speaker: enemy
-その袖。三本目だ
-# speaker: heroine
-# reaction: heroine,surprised,question
-え……わたし、ですか？
-# speaker: enemy
-朝から録って、一本目は鳩、二本目は俺の腹の虫。三本目が、君の袖の『ごそっ』
-# speaker: narrator
-男は録音機をかざして見せた。側面に、色あせたイルカのシールが貼ってある。
-# speaker: heroine
-ごめんなさい。すぐ向こうへ行きます
-# speaker: enemy
-動くな！　今動いたら、足音で四本目もだめになる
-# speaker: narrator
-二人はその場で固まった。男は目を閉じ、こちらの足もとへ耳を向けた。
-# speaker: enemy
-そっちの彼。靴が新しい。右足に体重が乗ってる。旅に慣れてない足音だ
-# speaker: player
-……当たってる
+アコーディオンの老人が、若い三人組の前に立ちはだかった。バイオリンを構えた女の子が、弓を下ろさずに言い返す。
+# speaker: milano_giada
+# cutin: name
+ジャーダ。この広場は、誰のものでもないでしょ。おじいさんこそ、向こうで弾いてれば
 # speaker: enemy
 # cutin: name
-一度聴いた足音は忘れない。商売道具でね。リヴィオだ。十秒のミラノを売ってる
-# speaker: heroine
-十秒の、ミラノ？
-# speaker: enemy
-広場の十秒、運河の十秒。映画やお店に売る。今日のはいちばんの得意客で、注文はいつも同じ。『ドゥオモ広場、人の気配なし』
+ネッロだ。この場所は、四十年わしの場所だ。お前たちが生まれる前からな
 # speaker: narrator
-二人は広場を見回した。観光客、鳩、写真を撮る人。自撮りの棒が、あちこちで揺れている。
+{heroine_name}は、ヴィオラにもらったリストを取り出した。
+# speaker: narrator
+# letter: note
+音楽：ドゥオモの前に、昔すごいアコーディオン弾きがいた。今もいる？
 # speaker: heroine
-……ここで、ですか
-# speaker: enemy
-客は外国の人で、ミラノに来たことがないそうだ。毎月、人のいないミラノを十秒だけ買っていく。家賃の半分は、そいつの払いだ
-# speaker: enemy
-今日じゅうに送らないと、今月の分はなし。広場なんてのは、もともと空っぽの場所だろ。人さえどけば、本当の音がするはずなんだ
+……あの人だ。でも、今は頼めそうにないね
+# speaker: milano_giada
+ねえ、そこの二人。どっちが正しいと思う？　旅の人なら、どっちの味方でもないでしょ
 # speaker: heroine
-最初から、空っぽだったのかな
+# reaction: heroine,surprised,sweat
+えっ、わたしたちが決めるの？
+# speaker: enemy
+決めるまでもない。わしが来たとき、ここには誰もいなかった。空っぽの広場だった
+# speaker: heroine
+この広場、最初から空っぽだったのかな
 -> quiz(1) ->
 # background: milano_duomo
 { quiz_correct:
     # speaker: heroine
-    空っぽの場所があったんじゃなくて、空けたんだ。新しい大聖堂を建てるために、前の建物を壊して、埋めて
+    空っぽだったんじゃなくて、空けたんだ。新しい大聖堂を建てるために、前の建物を壊して、埋めて
 - else:
-    # speaker: enemy
-    埋めたのは、洪水よけでも市場のためでもない。新しい大聖堂の場所を空けるため、か
+    # speaker: milano_giada
+    新しい大聖堂を建てるために、前の建物を壊して埋めたんだって。……ほら、おじいさんより先に、誰かいたじゃない
 }
 # speaker: enemy
-空っぽにするにも、誰かが片づけたってわけだ。俺の仕事と同じだな
+ふん。なら、なおさら来た順だ。先にいた者が、場所を空けてやったんだからな
+# speaker: milano_giada
+空けたのは建物でしょ。おじいさんじゃない
 # speaker: narrator
-そのとき、小さな男の子が鳩の群れに突っこんだ。
-# speaker: narrator
-# se: pigeons_takeoff
-羽音が広場をおおった。リヴィオは録音機を胸に抱えて、空を仰いだ。
-# speaker: enemy
-四本目
+にらみ合う二人のあいだで、太鼓の男の子が、こっそりスティックを回している。
 # speaker: heroine
-埋められたのって、どんな建物だったんですか？
-# speaker: enemy
-知らん。音のしないものに興味はない
+……その、下に埋められた建物って、何だったんだろう
 # speaker: narrator
-{heroine_name}はスマホで調べ始めた。広場の下には今も古い建物の跡が残っていて、見学もできるらしい。
-# speaker: heroine
-跡の真ん中に、水盤があるんだって。……何に使った水だろう
+{heroine_name}はスマホで調べた。広場の下には今も古い建物の跡が残っていて、真ん中に水盤があるらしい。
 -> quiz(2) ->
 # background: milano_duomo
 { quiz_correct:
     # speaker: heroine
-    洗礼の水盤。ここで洗礼を受けた人たちがいたんだ。アウグスティヌスも、ここで
+    洗礼の水盤。アウグスティヌスも、ここで洗礼を受けたんだって
 - else:
     # speaker: heroine
     洗い場じゃなくて、洗礼の水盤だったんだ。アウグスティヌスも、ここで洗礼を受けたって
 }
 # speaker: heroine
-誰かにとっての、一生に一度の日。その上で、わたしたちは鳩を追いかけてるんだね
+この広場の下は、誰かが新しく仲間に迎えられた場所だったのかも。……先にいた人が、あとから来た人を追い出す場所じゃなくて
 # speaker: enemy
-……人の集まった場所の上で、人のいない音を録ってるわけか、俺は
+……説教は、司祭に任せてある
+# speaker: milano_giada
+分かった、分かった。じゃあ最後に一曲だけ。それで今日は移るから
 # speaker: narrator
-リヴィオがマイクを構え直したとき、広場の向こうから小さな旗が近づいてきた。
+ジャーダが弓を構えて、三人がさっきの曲を弾き始めた。広場の人が、何人か足を止める。
 # speaker: narrator
-旗の後ろに、団体客の列が続いている。四十人はいる。全員が、しゃべっている。
+ネッロの顔から、すうっと血の気が引いた。
 # speaker: enemy
-終わった。家賃が、旗を持って歩いてくる
+……三小節目が違う。そこは、上がるんだ
 # speaker: narrator
-リヴィオはマイクを下ろし、布をたたみ始めた。
-# speaker: heroine
-# emotion: worried
-……あの。十秒だけで、いいんですよね
+ネッロはアコーディオンを構えて、同じ旋律を弾いた。三小節目で、音がふわりと上がった。
+# speaker: milano_giada
+……なんで知ってるの。この曲、フリーマーケットで買った古いカセットに入ってたの。作った人の名前もなかった
 # speaker: enemy
-十秒あれば、あの人数は百回しゃべる
+五十年前に、わしが女房のために作った。名前なんか書くか。照れくさい
 # speaker: narrator
-{heroine_name}は団体を見て、それから自分の手を見た。指先が少し冷たくなっている。
-# speaker: heroine
-知らない人に話しかけるの、得意じゃないんだけど。……十秒なら、頼めるかも
-# speaker: player
-一緒に行こうか
-# speaker: heroine
-# emotion: serious
-隣にいて。言うのは、わたしが言う
-# speaker: narrator
-彼女は旗の前まで歩いていき、息を吸った。
-# speaker: heroine
-Excuse me! Could everyone be quiet for just ten seconds?
-# speaker: narrator
-十秒だけ、静かにしてもらえませんか。最後のところで、声が少し裏返った。
-# speaker: narrator
-旗を持った案内係が目を丸くし、リヴィオのマイクを見て、吹き出した。
-# speaker: milano_duomo_tour_leader
-# cutin: name
-はい皆さん、十秒だけお静かに！　録音中です！
-# speaker: narrator
-旗が高く上がった。四十人の口が、ぴたりと閉じた。子どもが二人、唇に指を当てている。
-# speaker: narrator
-# pause: 800
-リヴィオが録音ボタンを押した。
-# speaker: narrator
-# quiet: line
-風の音。遠くの路面電車。鳩が一羽、石畳を歩く爪の音。
-# speaker: narrator
-九秒目で、団体の中の子どもが、こらえきれずにくすっと笑った。
-# speaker: narrator
-# se: applause
-停止の音が鳴ると、四十人が自分たちに拍手した。
+三人組は、楽器を持ったまま固まった。
 # speaker: enemy
-……四十人が黙った十秒。これなら『人の気配なし』で送れる
+……もういい。名前なんか、どうでもいい。歌は、誰かが歌ってくれれば残る
 # speaker: heroine
-四十人もいたのに、どこにも残らないんですね
-# speaker: enemy
-音は残る。誰がいたかは残らん。そういう商売だ
-# speaker: heroine
-名前を残すのは、石に彫ることだけじゃないみたいですよ。この大聖堂でも
+名前を残すのって、そんなに大げさなことじゃないみたいですよ。この大聖堂でも
 -> quiz(3) ->
 # background: milano_duomo
 { quiz_correct:
     # speaker: heroine
-    寄付した人は、紙とネットの名簿に名前を残せる。建物に彫らなくても、ちゃんと残るんだ
+    寄付した人は、紙とネットの名簿に名前を残せる。石に彫らなくても、名前は残せるんだ
 - else:
-    # speaker: enemy
-    入口でも瓦でもなく、名簿か。紙とネットに名前が残る。……石よりずっと軽いな
+    # speaker: milano_giada
+    入口でも瓦でもなくて、名簿。紙とネットに、名前が残る……。石に彫らなくていいんだ
 }
-# speaker: narrator
-リヴィオはしばらく黙ってから、上着のポケットから手帳を出した。角が丸くなるまで使いこんだ、注文の帳面だ。
-# speaker: narrator
-# letter: note
-ドゥオモ広場。人の気配なし。
-# speaker: narrator
-# letter: note
-（四十人と、案内の旗が一本）
+# speaker: milano_giada
+じゃあ、これからは毎回言う。『この曲は、ネッロの作曲です』って
 # speaker: enemy
-名簿ってほどじゃないがな
+……やめろ。照れくさい
 # speaker: narrator
-彼はイヤホンで今の十秒を聴き直した。九秒目で、指が止まった。
-# speaker: heroine
-子どもが笑ったところ？
-# speaker: enemy
-切る。客が買うのは『人の気配なし』だ。君の『Excuse me』も、頭から切る
+そう言いながら、ネッロはアコーディオンを下ろさなかった。四人で、もう一度、頭から弾き始める。
+# speaker: narrator
+三小節目で、四つの音が、そろって上がった。
+# speaker: narrator
+曲が終わると、{heroine_name}はリストを握りしめて、一歩前へ出た。
 # speaker: heroine
 # emotion: serious
-あの笑い声、いちばんいいところだと思うけど
+あの……ダルセナで、服のショーがあるんです。音楽がなくて。……弾いてもらえませんか
+# speaker: milano_giada
+行く！　日暮れでしょ。この子たちも連れてく
 # speaker: enemy
-失敗した音は残さない。それが俺のやり方だ
-# speaker: narrator
-画面の上で、九秒目から先が消えた。{heroine_name}は何か言いかけて、口を閉じた。
-# speaker: narrator
-消えた音の下に、細い線が一本だけ続いていた。
-# speaker: heroine
-この線は？
+年寄りは早く寝る
+# speaker: milano_giada
+またそういう……
 # speaker: enemy
-俺の息だ。録ってるあいだは、どうしても入る。これだけは消せない
-# speaker: enemy
-妙な客でな。人の気配なしと言うくせに、俺の息には一度も文句を言ってこない
-# speaker: narrator
-リヴィオは録音機をしまうと、二人に名刺を一枚よこした。裏に、手書きで『夕方はたいていダルセナ』とある。
-# speaker: enemy
-助かった。次に俺の録音を邪魔したら、そのときは払ってもらう
+……考えとく
 # speaker: narrator
 # leave: enemy
-布を肩にかけて、彼は広場の向こうへ歩いていった。
-# speaker: heroine
-知らない人に話しかけちゃった。……四十人も
-# speaker: player
-声、ちゃんと届いてた
+ネッロは楽器を背負って、自分の場所へ戻っていった。三小節目のところを、口笛で吹きながら。
 # speaker: heroine
 # emotion: smile
-最後、裏返ったけどね。……あそこ、切ってもらえてよかったのかな
+音楽は、半分だけ埋まった。……でも、ちゃんと頼めた
 -> END
+
+// ヴィオラとの出会い（手伝いの knot）。本筋4回のうち、この回を最初に遊んだときだけ、クイズの頭で流れる（広場で、二つの音楽に気を取られているときにぶつかる）。
+// ショーとリスト（4つの空欄と心当たり）を見せる。品物は渡さない（クイズの中では品物を渡せないため、リストは # letter: で見せる）。
+=== milano_duomo_01_viola ===
+# speaker: narrator
+アコーディオンの老人を目で追いかけていたら、横から誰かと正面からぶつかった。
+# speaker: narrator
+# se: cloth_flap
+抱えられていた衣装袋が、いくつも石畳に散らばった。口から、袖や裾がのぞいている。
+# speaker: milano_viola
+# cutin: name
+ごめん、ごめん、ごめん！　拾って、でも踏まないで！　……あ、それ引きずらないで。世界に一着しかないの
+# speaker: heroine
+# reaction: heroine,surprised,sweat
+は、はい！
+# speaker: narrator
+{heroine_name}が拾い上げたのは、厚い木綿の上着だった。仕事着みたいに丈夫そうなのに、襟の裏にだけ、細い刺繍がある。
+# speaker: heroine
+……きれい。作業着みたいなのに、裏だけ、すごく丁寧
+# speaker: milano_viola
+裏に気づいた人、初めて。ヴィオラ。服を作ってる。……作ってるけど、まだ誰にも見せたことがない
+# speaker: narrator
+ヴィオラは荷物を抱え直すと、{heroine_name}を頭からつま先まで眺めた。
+# speaker: milano_viola
+ねえ、あなた。モデルやらない？
+# speaker: heroine
+む、無理です
+# speaker: milano_viola
+即答。いいね、正直で
+# speaker: milano_viola
+大きなショーには、全部断られたの。『働く人の服なんて地味すぎる』って。だから、自分でやる。ダルセナの岸で、日暮れに
+# speaker: milano_viola
+ミラノで働く人の服を、ミラノで働く人に着て歩いてもらうショー。……でも、穴だらけ
+# speaker: narrator
+ヴィオラは、ポケットから折りたたんだ紙を出して広げた。
+# speaker: narrator
+# letter: note
+音楽：まだ。ドゥオモの前に、昔すごいアコーディオン弾きがいた。今もいる？
+# speaker: narrator
+# letter: note
+モデル：まだ。ガッレリアで五十年、毎日お茶をしてる夫婦がいるらしい。
+# speaker: narrator
+# letter: note
+お客の整理：まだ。『最後の晩餐』の係の人は、行列をさばくのが鬼のようにうまい。
+# speaker: narrator
+# letter: note
+仕上げ：まだ。相棒のルーカが消えた。あいつは迷うと、城の中庭に行く。
+# speaker: milano_viola
+心当たりは書いたけど、探して回る暇がないの。針が二本しかないのに、穴が四つ
+# speaker: narrator
+{heroine_name}は紙を見つめたまま、しばらく黙っていた。それから、ゆっくり顔を上げた。
+# speaker: heroine
+# emotion: serious
+モデルは、無理です。でも……旅のあいだに、この人たちに会えたら、声をかけてみます
+# speaker: milano_viola
+それ、モデルより大変だよ？　ミラノの人は、みんな忙しいから
+# speaker: milano_viola
+その紙、あげる。四つ埋まったら、ダルセナで会おう
+# speaker: milano_viola
+最後の一着は、もう縫い始めてるから！　モデルが決まってないだけ！
+# speaker: narrator
+返事をする前に、ヴィオラは鳩の群れを突っ切って、人ごみに消えた。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+……言っちゃった。知らない人に頼みごとするの、いちばん苦手なのに
+# speaker: player
+手伝うよ
+# speaker: heroine
+# emotion: smile
+うん、ありがとう。……でも、頼むのはわたしがやる。言いだしたの、わたしだから
+# speaker: narrator
+広場の左のほうで、老人の怒鳴り声が上がった。
+->->
 
 // 道中交流「切れた三本目」（knot の名前 duomo_string が交流のID）。
 // ドゥオモの場所（p_duomo）の本筋の後（# priority: +1）：ドゥオモのバトルの結果を閉じた後と、散歩のデート（milano_walk_01）の後。ドゥオモを終えた後だけ。
