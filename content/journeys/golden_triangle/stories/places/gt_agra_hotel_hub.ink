@@ -47,6 +47,7 @@ INCLUDE modules.ink
     どうしよう。白鳥、すごく仲良さそう。……見ないで、白鳥
 }
 # speaker: narrator
+# photo: gt_album_a004 # photo_caption: グラスに浮かべた花びら
 彼女は花びらを集め、捨てようとして手を止めた。洗面所のグラスに水を張って浮かべ、窓辺に置く。
 # speaker: heroine
 # voice: gt_agra_arrival_004
@@ -61,6 +62,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_agra_arrival_006
+# photo: gt_album_a005 # photo_caption: 屋根の向こうにのぞく白いドーム
 あ……見えた。あれ、タージ・マハルの屋根だよね。写真で百回は見たのに、指先がそわそわする。……よし。誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
 
@@ -114,6 +116,7 @@ INCLUDE modules.ink
     ほっとした。……ほっとしたのに、少しだけ寂しいのは、なんでだろう
 }
 # speaker: narrator
+# photo: gt_album_a142 # photo_caption: ただの白い寝台
 窓辺のグラスにだけ、着いた日の花びらが浮かんでいた。片付ける人も、それには手を出さなかったらしい。
 # background: gt_bg_agra_hotel_rooftop_night
 # tint: off
@@ -124,6 +127,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,music
 # voice: gt_agra_epilogue_005
+# photo: gt_album_a143 # photo_caption: 屋上のペーター
 甘い……。でも、思ったより軽い。冬瓜って、こんなに化けるんだ
 # speaker: narrator
 暗い屋根の連なりの向こうに、タージの白いドームが、ぼんやり浮かんでいる。
@@ -139,6 +143,7 @@ INCLUDE modules.ink
 彼女は鞄から、カムラの孫のアマンがくれた案内を取り出した。
 # speaker: narrator
 # item_out: gt_delhi_aman_wedding_invitation
+# photo: gt_album_a144 # photo_caption: 結婚式の日付を、指でなぞる
 行くかどうかは自分で決めたくて、返事はまだ待ってもらっている。ジャイプールの式の日付を、指でなぞる。
 # speaker: heroine
 # voice: gt_agra_epilogue_008
@@ -166,5 +171,6 @@ INCLUDE modules.ink
     人前で話すの、すごく怖かった。隣にいてくれて、助かった。……ありがとう
 }
 # speaker: narrator
+# photo: gt_album_a145 # photo_caption: 半分に割った最後の一切れ
 ペーターの最後の一切れを半分に割って、彼女は片方をこちらへ差し出した。新婚ではない二人の、アーグラ最後の夜だった。
 -> END

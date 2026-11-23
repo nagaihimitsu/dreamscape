@@ -15,6 +15,7 @@ INCLUDE modules.ink
 # voice: gt_agra_taj_mahal_guide_001
 ここで全部食べちゃうんだ。わたしも見習って、心の準備を全部しておこう
 # speaker: narrator
+# photo: gt_album_a008 # photo_caption: 暗いアーチの向こうの、四角い白
 赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
 # speaker: narrator
 # photo: gt_album_a05 # photo_caption: 門のアーチからはみ出していく白 # photo_show: large
@@ -26,18 +27,21 @@ INCLUDE modules.ink
 ……あ
 # speaker: narrator
 # emotion: surprised
+# photo: gt_album_a009 # photo_caption: 「……あ」と立ち尽くす
 {heroine_name}は足を止めたまま、しばらく何も言わなかった。
 # speaker: heroine
 # emotion: neutral
 # voice: gt_agra_taj_mahal_guide_003
 写真と、同じ形なのに。全然、同じじゃない。……大きいのに、浮いてるみたい
 # speaker: narrator
+# photo: gt_album_a010 # photo_caption: 水路に揺れる逆さのタージ
 まっすぐな水路が、建物まで続いている。水面に、もう一つのタージが逆さに揺れていた。
 # speaker: narrator
 水路の途中に、白い大理石のベンチ。その前に、記念写真の列が長く伸びている。
 # speaker: heroine
 # reaction: heroine,smile,question
 # voice: gt_agra_taj_mahal_guide_004
+# photo: gt_album_a011 # photo_caption: 二人組ばかりのベンチの列
 あのベンチ、写真でよく見るやつだ。みんな、あそこで撮るんだね。……並んでる人、ほとんど二人組
 # speaker: narrator
 列の脇で、胸ポケットを何度も押さえている青年が、きょろきょろと誰かを探していた。
@@ -221,6 +225,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,shy,blush
 # voice: gt_agra_main_taj_mahal_007
+# photo: gt_album_a019 # photo_caption: 「ふりで、だけど」
 ……ねえ。わたしたち、世界で一番ロマンチックなベンチに座っちゃったね。ふりで、だけど
 -> END
 
@@ -271,6 +276,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_finale_002
+# photo: gt_album_a133 # photo_caption: 結んだ唇、カムラの言葉
 ……アンワルさん。その、職人の手を切ったっていう話。本当なんですか
 # speaker: narrator
 観客が、一斉にこちらを振り向いた。アンワルの笑顔は崩れない。
@@ -360,6 +366,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_anwar_008
 皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう。あなたの本当の話で、この人たちを泣かせてみなさい
 # speaker: narrator
+# photo: gt_album_a136 # photo_caption: 五十人の目の前へ
 観客が、拍手で彼女を前へ押し出した。逃げ場はない。五十人の目が、こちらを見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
@@ -436,6 +443,7 @@ INCLUDE modules.ink
 一瞬の静寂。
 # speaker: narrator
 # se: applause
+# photo: gt_album_a138 # photo_caption: さっきより、ずっと温かい拍手
 それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。
