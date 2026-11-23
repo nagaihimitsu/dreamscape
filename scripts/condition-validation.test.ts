@@ -218,9 +218,9 @@ describe("condition build warnings", () => {
     expect(warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { time: "night" } },
       { id: "beta_date", chapterId: "beta", until: { rides: { mode: "tram", atLeast: 3 } } },
       { id: "gamma_date", chapterId: "alpha", when: { money: { atLeast: 300 } } }] }).map((warning) => [warning.kind, warning.message.slice(0, 60)]))
-      .toEqual([["date-condition-trip", "Date condition read before and after the trip: date alpha_da"],
-        ["date-condition-trip", "Date condition read before and after the trip: date beta_dat"],
-        ["date-condition-trip", "Date condition read before and after the trip: date gamma_da"]]);
+      .toEqual([["date-condition-trip", "Date condition read before the trip only: date alpha_date (w"],
+        ["date-condition-trip", "Date condition read before the trip only: date beta_date (un"],
+        ["date-condition-trip", "Date condition read before the trip only: date gamma_date (w"]]);
     // Entry rules read the moment's own state: no such warning.
     expect(warn({}, [{ encounterId: "alpha_meeting", when: { time: "night" } }])).toEqual([]);
   });
