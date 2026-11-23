@@ -6901,6 +6901,258 @@
     "gt_delhi_date_lodhi_garden_028": {
       "text": "放送で言われると、忘れられなさそう",
       "script": "2026-11-18"
+    },
+    "gt_agra_date_confession_021": {
+      "text": "わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_022": {
+      "text": "話したいことは、あるの。あるんだけど。……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_023": {
+      "text": "今夜は、やめておく。カムラさんに、言いたいことは言いなさいって言われたのにね",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_024": {
+      "text": "……でも、ちゃんと言える日が来たら、自分で言う。それは、約束",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_025": {
+      "text": "わたしの話？　……てっきり、そっちが何か言うのかと思った",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_026": {
+      "text": "じゃあ、白鳥の話。サミールさんの白鳥、まだ部屋にいるの。毎晩、首でハートを作ったまま、こっちを見てる",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_027": {
+      "text": "片付けてくださいって、言えばいいだけなのにね。言えないまま、今夜も白鳥と寝るの。……笑っていいよ",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_028": {
+      "text": "……うん。気持ちいいね。昼間あんなに暑かったのが、うそみたい",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_029": {
+      "text": "言いかけてた顔、まだしてるけど。……いいよ、今夜は風の話で。わたしの話も、また今度にする",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_030": {
+      "text": "今夜は、二人とも言いそびれた夜ってことで",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_031": {
+      "text": "うん。……え、それだけ？　すごく改まった顔してたのに",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_032": {
+      "text": "夜風の話をするのに、そんなに覚悟がいるんだ。ふふ。……でも、分かる。ここ、いい風",
+      "script": "2026-11-23"
+    },
+    "gt_agra_date_confession_033": {
+      "text": "タージの方から吹いてるのかな。……ううん、向こうを向くと落ち着かないから、確かめない",
+      "script": "2026-11-23"
+    },
+    "gt_agra_finale_battle_003": {
+      "text": "その黒いタージの話、最初に書いたのは誰なんですか",
+      "script": "2026-11-23"
+    },
+    "gt_agra_finale_battle_004": {
+      "text": "昔の人が書いたことと、この岸から出てきたもの。手帳で、並べてみます",
+      "script": "2026-11-23"
+    },
+    "gt_agra_finale_battle_005": {
+      "text": "タヴェルニエさんの記録は、川の向こうに自分の墓を建て始めた、とだけ書いてるんです。黒いとは、一言も書いてない",
+      "script": "2026-11-23"
+    },
+    "gt_agra_finale_battle_006": {
+      "text": "それに、この岸を何年もかけて掘った人たちがいます",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_022": {
+      "text": "わたし？　……先に聞かせてって言ったの、わたしなのに。順番、ずるくない？",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_023": {
+      "text": "話したいことは、ある。アーグラで、人前でちゃんと言えた日から、ずっと",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_024": {
+      "text": "……でも、いざ番が回ってきたら、楽隊の音に全部持っていかれちゃった",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_025": {
+      "text": "今夜は、いい。言いたいことは、言いたいときに言う。……今は、まだその『とき』じゃないみたい。来たら、ちゃんと言うね",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_026": {
+      "text": "わたしの話？　……てっきり、そっちから何か言うのかと思った",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_027": {
+      "text": "この町の楽隊、毎晩ちがう曲なの、気づいてた？　昨日のは、ラッパが一本だけ、ずっと半音ずれてた",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_028": {
+      "text": "ずれてるのに、いちばん楽しそうだったの。ずれても、鳴らした方がいいんだよ、きっと",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_029": {
+      "text": "……今の、誰かさんに言ったんじゃないからね",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_030": {
+      "text": "……うん、気持ちいい。昼の熱が、石から抜けていく感じ",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_031": {
+      "text": "言いかけた顔のまま、風の話。……いいよ、付き合う。わたしも、今夜は言いそびれることにする",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_032": {
+      "text": "うん、気持ちいいね。……え、それを言うのに、あの顔？",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_confession_033": {
+      "text": "夜風の感想に、そんなに覚悟がいるんだ。……ふふ。でも、この町の夜風なら、それくらい言う価値あるかも",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_001": {
+      "text": "屋上、来て。……今夜は、わたしが誘う番",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_002": {
+      "text": "並ばないで。……今夜は、顔を見て言いたいから",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_003": {
+      "text": "デリーの最後の朝、カムラさんが言ってたでしょ。言いたいことは言いなさいって",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_004": {
+      "text": "六十年、言わなかった人の言葉だから、重かった。アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_005": {
+      "text": "でも、タージの前で、人前で、ちゃんと言えた。言えたら、思ってたより、こわくなかった",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_006": {
+      "text": "アーグラの屋上で、何か言いかけてたでしょ。……わたしも、あのとき、言いかけてた",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_007": {
+      "text": "だから、言うね。……好き",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_008": {
+      "text": "わたしが立ち止まると、何も言わずに待ってくれるところ。決めてって言わないで、どうしたいって聞いてくれるところ",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_009": {
+      "text": "……そういうところが、好き",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_010": {
+      "text": "付き合ってほしい。旅が終わっても、一緒にいたい。誰かに言われたからじゃなくて、わたしが、そうしたいの",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_011": {
+      "text": "ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_012": {
+      "text": "背中じゃなくて、声で言うって約束したから。……今のが、その続き",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_013": {
+      "text": "ロータス寺院で、最後に背中に書いた字。あれね、『まだいたい』って書いたの",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_014": {
+      "text": "書いたときは、声に出す勇気がなかったの。……今のが、その続き",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_015": {
+      "text": "……はい、言った。六十年は、かからなかったよ。次は、そっちの番",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_016": {
+      "text": "ふふ。言ったもの勝ち、ってことで",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_017": {
+      "text": "……でも、聞けてよかった。こわかったの、本当だから",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_018": {
+      "text": "知ってた。屋上に来るたび、そういう顔してたもん",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_019": {
+      "text": "……うん。一緒にいよう",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_020": {
+      "text": "……それ、今言う？　返事より先に？",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_021": {
+      "text": "うん。報告しよう。二人で。『言いたいことは、ちゃんと言いました』って",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_022": {
+      "text": "旅が終わったあとのことは、一緒に決めようね。……最初の一個は、わたしが決めちゃったけど",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_023": {
+      "text": "……あのね。……ごめん。やっぱり、今夜はやめておく",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_024": {
+      "text": "言おうと思ってたことが、急に、ちゃんとした形にならなくなっちゃった。呼び出しておいて、ごめんね",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_date_her_confession_025": {
+      "text": "……うん。ありがとう。そう言ってくれるの、分かってた",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_night_001": {
+      "text": "あの、これ……台所に渡しなさいって、言われたんです。通りで野菜を売ってる、ガウラさんに",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_night_002": {
+      "text": "本当に、お皿に戻ってくるんだ……。何になるんですか？",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_night_003": {
+      "text": "ホテルで大根どうしよう、って思ってたのに。ガウラさん、全部分かってたんだね",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_morning_001": {
+      "text": "ほんとに戻ってきた……！　ガウラさんの大根が、パンになってる",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_morning_002": {
+      "text": "……おいしい！　外はぱりっとしてて、中の大根が、ちょっと辛くて、ちょっと甘い",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_morning_003": {
+      "text": "あ、漬物！　漬物なら、持ってる",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_morning_004": {
+      "text": "ガウラさんの大根に、スシュマさんの漬物。この朝ごはん、ジャイプールでもらったものだけで出来てる",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_morning_005": {
+      "text": "ガウラさん、四十年、あの窓の下でこういう大根を売ってきたんだね。毎朝四時に、市場で選んで",
+      "script": "2026-11-23"
+    },
+    "gt_jaipur_hotel_radish_morning_006": {
+      "text": "今度ハワー・マハルの前を通ったら、ガウラさんに言わなきゃ。おいしかったです、って。……日傘の下で、ちゃんと",
+      "script": "2026-11-23"
     }
   }
 }

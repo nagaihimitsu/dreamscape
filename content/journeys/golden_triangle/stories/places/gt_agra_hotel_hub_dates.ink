@@ -121,27 +121,34 @@ INCLUDE modules.ink
     彼女は、まばたきを二回した。それから、縁に置いていた手を、膝の上に戻した。
     # speaker: heroine
     # reaction: heroine,teasing,sweat
+    # voice: gt_agra_date_confession_021
     わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_022
     話したいことは、あるの。あるんだけど。……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
     # speaker: narrator
     物干しの綱で、シャツが一枚、風にあおられて裏返った。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_023
     今夜は、やめておく。カムラさんに、言いたいことは言いなさいって言われたのにね
     # speaker: heroine
+    # voice: gt_agra_date_confession_024
     ……でも、ちゃんと言える日が来たら、自分で言う。それは、約束
 - else:
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_agra_date_confession_025
     わたしの話？　……てっきり、そっちが何か言うのかと思った
     # speaker: narrator
     彼女は少し考えてから、背中の方のドームを、親指で指した。
     # speaker: heroine
+    # voice: gt_agra_date_confession_026
     じゃあ、白鳥の話。サミールさんの白鳥、まだ部屋にいるの。毎晩、首でハートを作ったまま、こっちを見てる
     # speaker: heroine
     # reaction: heroine,teasing,sweat
+    # voice: gt_agra_date_confession_027
     片付けてくださいって、言えばいいだけなのにね。言えないまま、今夜も白鳥と寝るの。……笑っていいよ
     # speaker: narrator
     笑うと、彼女もつられて笑った。言いかけたことは、ドームの見えない側の夜に、そのまま置いてきた。
@@ -155,24 +162,30 @@ INCLUDE modules.ink
     彼女は、こちらの顔を少しのあいだ見ていた。それから、ふっと肩の力を抜いた。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_028
     ……うん。気持ちいいね。昼間あんなに暑かったのが、うそみたい
     # speaker: heroine
     # reaction: heroine,teasing
+    # voice: gt_agra_date_confession_029
     言いかけてた顔、まだしてるけど。……いいよ、今夜は風の話で。わたしの話も、また今度にする
     # speaker: heroine
+    # voice: gt_agra_date_confession_030
     今夜は、二人とも言いそびれた夜ってことで
     # speaker: narrator
     洗濯物が、風にふくらんで、またしぼんだ。二人とも、それ以上は何も言わなかった。
 - else:
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_agra_date_confession_031
     うん。……え、それだけ？　すごく改まった顔してたのに
     # speaker: narrator
     彼女は、くすっと笑って、膝を抱えた。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_date_confession_032
     夜風の話をするのに、そんなに覚悟がいるんだ。ふふ。……でも、分かる。ここ、いい風
     # speaker: heroine
+    # voice: gt_agra_date_confession_033
     タージの方から吹いてるのかな。……ううん、向こうを向くと落ち着かないから、確かめない
     # speaker: narrator
     言うはずだった言葉は、喉の奥で、もう一度眠った。

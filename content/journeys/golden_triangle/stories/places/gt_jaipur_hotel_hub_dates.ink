@@ -157,29 +157,37 @@ INCLUDE modules.ink
     彼女は、言葉の途中で止められたみたいな顔をした。
     # speaker: heroine
     # reaction: heroine,teasing,sweat
+    # voice: gt_jaipur_date_confession_022
     わたし？　……先に聞かせてって言ったの、わたしなのに。順番、ずるくない？
     # speaker: heroine
     # emotion: serious
+    # voice: gt_jaipur_date_confession_023
     話したいことは、ある。アーグラで、人前でちゃんと言えた日から、ずっと
     # speaker: heroine
+    # voice: gt_jaipur_date_confession_024
     ……でも、いざ番が回ってきたら、楽隊の音に全部持っていかれちゃった
     # speaker: narrator
     遠くの通りで、ラッパがひときわ高く鳴った。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_confession_025
     今夜は、いい。言いたいことは、言いたいときに言う。……今は、まだその『とき』じゃないみたい。来たら、ちゃんと言うね
 - else:
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_jaipur_date_confession_026
     わたしの話？　……てっきり、そっちから何か言うのかと思った
     # speaker: narrator
     彼女は手すりにもたれ直して、楽隊の鳴る方を見た。
     # speaker: heroine
+    # voice: gt_jaipur_date_confession_027
     この町の楽隊、毎晩ちがう曲なの、気づいてた？　昨日のは、ラッパが一本だけ、ずっと半音ずれてた
     # speaker: heroine
+    # voice: gt_jaipur_date_confession_028
     ずれてるのに、いちばん楽しそうだったの。ずれても、鳴らした方がいいんだよ、きっと
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_jaipur_date_confession_029
     ……今の、誰かさんに言ったんじゃないからね
     # speaker: narrator
     言うはずだった言葉は、楽隊の音にまぎれて、どこかへ行ってしまった。
@@ -193,20 +201,24 @@ INCLUDE modules.ink
     彼女はこちらの顔をじっと見て、それから、ふふ、と小さく笑った。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_confession_030
     ……うん、気持ちいい。昼の熱が、石から抜けていく感じ
     # speaker: heroine
     # reaction: heroine,teasing
+    # voice: gt_jaipur_date_confession_031
     言いかけた顔のまま、風の話。……いいよ、付き合う。わたしも、今夜は言いそびれることにする
     # speaker: narrator
     楽隊の音が遠ざかって、また近づいた。二人とも言いそびれたまま、橙色の町を見ていた。
 - else:
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_jaipur_date_confession_032
     うん、気持ちいいね。……え、それを言うのに、あの顔？
     # speaker: narrator
     彼女は吹き出しそうになって、口元を手で隠した。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_jaipur_date_confession_033
     夜風の感想に、そんなに覚悟がいるんだ。……ふふ。でも、この町の夜風なら、それくらい言う価値あるかも
     # speaker: narrator
     言うはずだった言葉は、楽隊の拍子にまぎれて、もう一度、胸の奥へ戻っていった。
@@ -533,11 +545,13 @@ INCLUDE modules.ink
 夕食のあと、部屋へ戻る階段の前で、袖を引かれた。振り向くと、彼女が上を指さしていた。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_her_confession_001
 屋上、来て。……今夜は、わたしが誘う番
 # speaker: narrator
 屋上から見下ろす旧市街は、橙色ににじんでいた。遠くの通りで、今夜もどこかの楽隊が鳴っている。
 彼女は手すりの前で振り返り、こちらが隣に並ぶ前に、正面に立った。
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_002
 並ばないで。……今夜は、顔を見て言いたいから
 { confession_result == "accepted":
     -> say_it
@@ -548,42 +562,54 @@ INCLUDE modules.ink
 = say_it
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_her_confession_003
 デリーの最後の朝、カムラさんが言ってたでしょ。言いたいことは言いなさいって
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_004
 六十年、言わなかった人の言葉だから、重かった。アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_date_her_confession_005
 でも、タージの前で、人前で、ちゃんと言えた。言えたら、思ってたより、こわくなかった
 { cond("date gt_agra_date_confession"):
     # speaker: heroine
+    # voice: gt_jaipur_date_her_confession_006
     アーグラの屋上で、何か言いかけてたでしょ。……わたしも、あのとき、言いかけてた
 }
 # speaker: heroine
 # quiet: scene
 # pause: 800
+# voice: gt_jaipur_date_her_confession_007
 だから、言うね。……好き
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_date_her_confession_008
 わたしが立ち止まると、何も言わずに待ってくれるところ。決めてって言わないで、どうしたいって聞いてくれるところ
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_009
 ……そういうところが、好き
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_010
 付き合ってほしい。旅が終わっても、一緒にいたい。誰かに言われたからじゃなくて、わたしが、そうしたいの
 {
 - cond("flag gt_delhi_back_word_secret"):
     // 「読めなかった」と答えた人：ロータス寺院で約束したとおり、声で言い直す。
     # speaker: heroine
     # recall: gt_album_d61
+    # voice: gt_jaipur_date_her_confession_011
     ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_jaipur_date_her_confession_012
     背中じゃなくて、声で言うって約束したから。……今のが、その続き
 - cond("date gt_delhi_date_lotus_temple"):
     # speaker: heroine
     # recall: gt_album_d61
+    # voice: gt_jaipur_date_her_confession_013
     ロータス寺院で、最後に背中に書いた字。あれね、『まだいたい』って書いたの
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_jaipur_date_her_confession_014
     書いたときは、声に出す勇気がなかったの。……今のが、その続き
 }
 { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
@@ -595,34 +621,42 @@ INCLUDE modules.ink
 言い終えると、彼女は大きく息を吐いた。耳まで赤いのが、橙色の灯りの中でも分かった。
 # speaker: heroine
 # reaction: heroine,teasing,blush
+# voice: gt_jaipur_date_her_confession_015
 ……はい、言った。六十年は、かからなかったよ。次は、そっちの番
 * [「僕も、好きだ。……先に言われるとは思わなかった」 # option: me_too]
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_jaipur_date_her_confession_016
     ふふ。言ったもの勝ち、ってことで
     # speaker: heroine
     # reaction: heroine,shy_deep,heart
+    # voice: gt_jaipur_date_her_confession_017
     ……でも、聞けてよかった。こわかったの、本当だから
 * [「ずっと、言おうと思ってた。……一緒にいよう」 # option: stay_together]
     # speaker: heroine
     # reaction: heroine,teasing,heart
+    # voice: gt_jaipur_date_her_confession_018
     知ってた。屋上に来るたび、そういう顔してたもん
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
+    # voice: gt_jaipur_date_her_confession_019
     ……うん。一緒にいよう
 * [「カムラさんに、報告しなきゃね」 # option: tell_kamla]
     # speaker: heroine
     # reaction: heroine,surprised,interrobang
+    # voice: gt_jaipur_date_her_confession_020
     ……それ、今言う？　返事より先に？
     # speaker: narrator
     好きだ、と短く返すと、彼女は吹き出して、それから、こちらの肩に額を一度だけ押し当てた。
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_jaipur_date_her_confession_021
     うん。報告しよう。二人で。『言いたいことは、ちゃんと言いました』って
 -
 # speaker: heroine
 # reaction: heroine,teasing,heart
 # photo: gt_album_j43 # photo_caption: 先に言われた屋上
+# voice: gt_jaipur_date_her_confession_022
 旅が終わったあとのことは、一緒に決めようね。……最初の一個は、わたしが決めちゃったけど
 # speaker: narrator
 遠くの楽隊が、ひときわ大きく鳴った。よその人のお祝いだと分かっていても、今夜は少しだけ、自分たちのために鳴っている気がした。
@@ -632,13 +666,16 @@ INCLUDE modules.ink
 = not_tonight
 # speaker: heroine
 # emotion: worried
+# voice: gt_jaipur_date_her_confession_023
 ……あのね。……ごめん。やっぱり、今夜はやめておく
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_024
 言おうと思ってたことが、急に、ちゃんとした形にならなくなっちゃった。呼び出しておいて、ごめんね
 * [「いつでも聞くよ」 # option: anytime]
     # withhold
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_date_her_confession_025
     ……うん。ありがとう。そう言ってくれるの、分かってた
 -
 # speaker: narrator

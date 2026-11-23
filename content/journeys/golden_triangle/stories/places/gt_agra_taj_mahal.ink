@@ -313,6 +313,7 @@ INCLUDE modules.ink
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
 # speaker: heroine
+# voice: gt_agra_finale_battle_003
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
 # term: gt_term_tavernier
@@ -322,6 +323,7 @@ INCLUDE modules.ink
 -> gt_agra_finale_battle_claim ->
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_finale_battle_004
 昔の人が書いたことと、この岸から出てきたもの。手帳で、並べてみます
 - (stop)
 -> reasoning ->
@@ -331,8 +333,10 @@ INCLUDE modules.ink
     -> stop
 }
 # speaker: heroine
+# voice: gt_agra_finale_battle_005
 タヴェルニエさんの記録は、川の向こうに自分の墓を建て始めた、とだけ書いてるんです。黒いとは、一言も書いてない
 # speaker: heroine
+# voice: gt_agra_finale_battle_006
 それに、この岸を何年もかけて掘った人たちがいます
 # speaker: narrator
 アンワルの杖が、土の上で止まった。
