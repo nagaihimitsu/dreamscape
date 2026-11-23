@@ -25,6 +25,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_agra_date_mehtab_bagh_001
+# photo: gt_album_a111 # photo_caption: 塀の外のクリケット、対岸のタージ
 見て。タージ・マハルの前で、クリケット。誰もタージの方、見てないね
 # speaker: narrator
 打者の後ろ、本当なら三本の棒を立てる所に、煉瓦が三つ積んである。投げた球でこれを崩せば、打者はアウトだ。
@@ -51,6 +52,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_date_mehtab_bagh_003
+# photo: gt_album_a113 # photo_caption: 「わたし、やりたい。投げる方」
 わたし、やりたい。投げる方。体育のチーム分けで、いつも最後まで残ってた方なんだけど。それでも
 * [「いいね。自分は打つ方に入る」 # option: rival_team]
     # profile: playful
@@ -121,6 +123,7 @@ INCLUDE modules.ink
 # voice: gt_agra_date_mehtab_bagh_sonia_006
 最後の一球。今、同点。あなたが打って。この人が投げる。打てなかったら、わたしたちの勝ち
 # speaker: narrator
+# photo: gt_album_a115 # photo_caption: 「本気で投げるから。本気で打ってね」
 板きれのバットを渡された。マウンドの代わりの土の盛り上がりに、彼女が立つ。ボールを握り直して、まっすぐこちらを見た。
 # speaker: heroine
 # emotion: serious
@@ -184,6 +187,7 @@ INCLUDE modules.ink
 -> gt_agra_mehtab_bagh_photo ->
 # speaker: narrator
 # leave: gt_sonia
+# photo: gt_album_a122 # photo_caption: 塀に背中をあずけて
 子どもたちが散っていくと、空き地には土ぼこりと、二人だけが残った。彼女は服の土を払いながら、塀に背中をあずけた。
 # speaker: heroine
 # voice: gt_agra_date_mehtab_bagh_021
@@ -273,6 +277,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing_big,music
 # voice: gt_agra_date_mehtab_bagh_012
+# photo: gt_album_a117 # photo_caption: 「打てたのに負けてる！」
 ふふっ、あははっ！　打てたのに負けてる！　今日いちばんの当たりだったのに！
 # speaker: heroine
 # voice: gt_agra_date_mehtab_bagh_013

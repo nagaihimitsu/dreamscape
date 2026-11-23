@@ -12,6 +12,7 @@ INCLUDE modules.ink
 # hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_guru_ka_taal
 # speaker: narrator
+# photo: gt_album_a103 # photo_caption: 幹線道路のそばの、古い石の池
 デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。
 雨水をためる池として、四百年あまり前に造られた。そのそばに、シク教の礼拝所が建っている。
 # speaker: narrator
@@ -193,6 +194,7 @@ INCLUDE modules.ink
     食堂を出て、古い貯水池のふちに立つ。
 }
 # speaker: narrator
+# photo: gt_album_a109 # photo_caption: 四百年分の雨の底
 四百年分の雨を受けとめてきた、深い石の底。道路の向こうでは、相変わらずトラックが走っている。
 # speaker: heroine
 # voice: gt_agra_date_guru_ka_taal_010
@@ -234,6 +236,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # voice: gt_agra_date_guru_ka_taal_016
+        # photo: gt_album_a110 # photo_caption: 洗車係の、助手の助手
         ふふっ、洗車係の、助手の助手？　ハルバンスさん、絶対に口出ししてくるよ。ホースの持ち方から
     }
 -

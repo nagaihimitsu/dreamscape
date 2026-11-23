@@ -13,19 +13,23 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_agra_agra_fort_guide_001
+# photo: gt_album_a020 # photo_caption: 兄弟みたいな赤い城壁
 デリーのお城と、色がそっくり。……兄弟みたいだね
 # speaker: narrator
 城壁の上を、猿が一列になって歩いていた。一匹が、観光客の持つ水のボトルをじっと見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
 # voice: gt_agra_agra_fort_guide_002
+# photo: gt_album_a021 # photo_caption: ボトルを狙う猿
 あの子、狙ってる。ボトル、しまっておこう。……目、合わせないようにしよう
 # speaker: narrator
+# photo: gt_album_a022 # photo_caption: 赤い宮殿と白い宮殿
 門の中は、赤い石の宮殿と白い大理石の宮殿が、隣り合って並んでいた。旗を掲げた添乗員のあとを、ツアーの一行が列になって進んでいく。
 # speaker: heroine
 # voice: gt_agra_agra_fort_guide_003
 赤い建物と、白い建物。同じお城の中で、こんなに雰囲気が違うんだ
 # speaker: narrator
+# photo: gt_album_a023 # photo_caption: テラスから見える小さなタージ
 白い建物のテラスに出ると、川の向こうに、小さく白いドームが見えた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -39,6 +43,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: neutral
 # voice: gt_agra_agra_fort_guide_005
+# photo: gt_album_a024 # photo_caption: 八角形の塔、皇帝の最後の年月
 最後の年月を、遠くのタージを見ながら……。どんな気持ちだったんだろう
 # speaker: narrator
 # leave: gt_agra_fort_tourist
@@ -205,6 +210,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_main_agra_fort_006
+# photo: gt_album_a030 # photo_caption: 勲章は、生姜の飴
 勲章、ちょっと辛い……
 # speaker: narrator
 出口へ向かう一行の先頭で、大佐が誰より大きな声で、城の説明を始めていた。リヤが振り返り、こちらに小さく手を合わせた。

@@ -24,6 +24,7 @@ INCLUDE modules.ink
 # bgm: immersed
 # speaker: narrator
 宿の屋上からは、タージのドームが見えた。夜の中で、そこだけが白く、薄く光っている。
+# photo: gt_album_a123 # photo_caption: タージに背を向けて座る
 彼女は手すりの前まで行きかけて、くるりと向きを変えた。ドームに背を向けて、反対側の、洗濯物と貯水タンクしかない方の縁に腰を下ろす。
 # speaker: heroine
 # voice: gt_agra_date_confession_001
@@ -61,6 +62,7 @@ INCLUDE modules.ink
     # reaction: heroine,shy_deep,blush
     # pause: 800
     # voice: gt_agra_date_confession_003
+    # photo: gt_album_a125 # photo_caption: 「……うん。わたしも、好き」
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
@@ -85,6 +87,7 @@ INCLUDE modules.ink
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
     # emotion: serious
+    # photo: gt_album_a126 # photo_caption: 背中に隠れたドーム
     彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
     # speaker: heroine
     # emotion: smile
@@ -145,6 +148,7 @@ INCLUDE modules.ink
     彼女は少し考えてから、背中の方のドームを、親指で指した。
     # speaker: heroine
     # voice: gt_agra_date_confession_026
+    # photo: gt_album_a128 # photo_caption: 白鳥と寝る話
     じゃあ、白鳥の話。サミールさんの白鳥、まだ部屋にいるの。毎晩、首でハートを作ったまま、こっちを見てる
     # speaker: heroine
     # reaction: heroine,teasing,sweat
@@ -172,6 +176,7 @@ INCLUDE modules.ink
     # voice: gt_agra_date_confession_030
     今夜は、二人とも言いそびれた夜ってことで
     # speaker: narrator
+    # photo: gt_album_a129 # photo_caption: 二人とも言いそびれた夜
     洗濯物が、風にふくらんで、またしぼんだ。二人とも、それ以上は何も言わなかった。
 - else:
     # speaker: heroine
@@ -179,6 +184,7 @@ INCLUDE modules.ink
     # voice: gt_agra_date_confession_031
     うん。……え、それだけ？　すごく改まった顔してたのに
     # speaker: narrator
+    # photo: gt_album_a129 # photo_caption: 二人とも言いそびれた夜
     彼女は、くすっと笑って、膝を抱えた。
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -245,6 +251,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,shy,blush
         # voice: gt_agra_confession_lead_008
+        # photo: gt_album_a124 # photo_caption: 背中の字は『まだいたい』
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
     - cond("date gt_delhi_date_lotus_temple"):
         // ほかの答えの人：あの場面では読めなかった字を、ここで初めて明かす（2026-11-16）。
@@ -258,6 +265,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,shy,blush
         # voice: gt_agra_confession_lead_015
+        # photo: gt_album_a124 # photo_caption: 背中の字は『まだいたい』
         書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番
     }
 - else:
@@ -294,6 +302,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
+# photo: gt_album_a130 # photo_caption: チャイが冷めるまで
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が二本、タージのドームの方へ流れていく。
 # speaker: heroine
 # voice: gt_agra_date_reassurance_001
