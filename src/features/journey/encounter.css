@@ -94,12 +94,12 @@
    with object-fit letterboxing: cues can then stay next to the actual head.
    --fig-w is the figure's width seen whole: the layer is its query container, so a slot's share of the layer is
    written in cqw. Under the scene's camera (figure-zoom.ts, romance-scene.css) the box grows by --vn-zoom and comes
-   down so that the eyes (--face-at, from CharacterPortrait) stay where they were. */
+   down so that the top of its picture (--picture-top, from CharacterPortrait) stays where it was: the head never rises. */
 .encounter-character-layer { container-type: size; }
 .encounter-character-slot .vn-character {
   --fig-w: min(100cqw, 42dvh);
   left: 50% !important;
-  bottom: calc(clamp(54px, 17cqh, 155px) - (var(--vn-zoom, 1) - 1) * 1.5 * var(--fig-w) * (1 - var(--face-at, 0.12))) !important;
+  bottom: calc(clamp(54px, 17cqh, 155px) - (var(--vn-zoom, 1) - 1) * 1.5 * var(--fig-w) * (1 - var(--picture-top, 0))) !important;
   width: calc(var(--fig-w) * var(--vn-zoom, 1)) !important;
   height: auto !important;
   aspect-ratio: 2 / 3;
@@ -112,17 +112,21 @@
 .encounter-character-layer[data-two-characters="true"] .encounter-character-slot .vn-character {
   --fig-w: min(75cqw, 46dvh);
 }
-/* Two people opposite her (# together:, 2026-11-15 user decision; scene-stage.ts stageCast): with her, three in a row
-   (her on the left, the first named in the middle, the second on the right), each a third of the screen and about four
-   fifths as tall as two side by side; without her, the two side by side as she and one person stand. Three people
+/* Two people opposite her (# together:, 2026-11-15 user decision; scene-stage.ts stageCast): with her, she on the left
+   and the two on the right, close together (2026-11-25, below), the first named nearer her; without her, the two side
+   by side as she and one person stand. Three people
    opposite her (2026-11-20): with her, four in a row (her, the first, the second, the third), each a quarter of the
    screen and about nine tenths as tall as three in a row (standing a little into each other's place, so the faces
    stay about as high); without her, the three in a row as she and two stand. */
 .encounter-character-layer[data-together] .encounter-character-slot { right: auto; }
 .encounter-character-layer[data-together="three"] .encounter-character-slot,
 .encounter-character-layer[data-together="trio"] .encounter-character-slot { width: calc(100% / 3); }
-.encounter-character-layer[data-together="three"] .encounter-character-enemy { left: calc(100% / 3); }
-.encounter-character-layer[data-together="three"] .encounter-character-beside { left: calc(200% / 3); }
+/* With her and two others (2026-11-25 user decision): she on the left, the two she meets together on the right, close,
+   one a little over the other, so all three stand larger than in a row of thirds (yet smaller than two side by side).
+   Their places' middles: a quarter, three fifths and 86 % across (name-band.ts speakerSpot follows them). */
+.encounter-character-layer[data-together="three"] .encounter-character-heroine { left: calc(25% - 100% / 6); }
+.encounter-character-layer[data-together="three"] .encounter-character-enemy { left: calc(60% - 100% / 6); }
+.encounter-character-layer[data-together="three"] .encounter-character-beside { left: calc(86% - 100% / 6); }
 .encounter-character-layer[data-together="trio"] .encounter-character-beside { left: calc(100% / 3); }
 .encounter-character-layer[data-together="trio"] .encounter-character-far { left: calc(200% / 3); }
 .encounter-character-layer[data-together="four"] .encounter-character-slot { width: 25%; }
@@ -131,7 +135,9 @@
 .encounter-character-layer[data-together="four"] .encounter-character-far { left: 75%; }
 .encounter-character-layer[data-together="pair"] .encounter-character-slot { width: 50%; }
 .encounter-character-layer[data-together="pair"] .encounter-character-beside { left: 50%; }
-.encounter-character-layer[data-together="three"] .encounter-character-slot .vn-character,
+.encounter-character-layer[data-together="three"] .encounter-character-slot .vn-character {
+  --fig-w: min(66cqw, 41dvh);
+}
 .encounter-character-layer[data-together="trio"] .encounter-character-slot .vn-character {
   --fig-w: min(60cqw, 37dvh);
 }
@@ -143,7 +149,10 @@
 }
 /* The camera comes less near as more stand side by side, so that each face stays whole beside the others. */
 .encounter-character-layer:is([data-two-characters="true"], [data-together="pair"]) { --vn-zoom: 1.3; }
-.encounter-character-layer:is([data-together="three"], [data-together="trio"]) { --vn-zoom: 1.18; }
+.encounter-character-layer[data-together="three"] { --vn-zoom: 1.24; }
+.encounter-character-layer[data-together="trio"] { --vn-zoom: 1.18; }
+/* Where figures overlap, the one speaking stands in front. */
+.encounter-character-slot:has(> .vn-character.is-speaking) { z-index: 1; }
 .encounter-character-layer[data-together="four"] { --vn-zoom: 1.1; }
 .encounter-character-slot .comic-effect {
   /* By the head, which a smaller figure (figureScale) has lower in its box. */

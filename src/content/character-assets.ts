@@ -14,6 +14,12 @@ const placementSchema = z.object({
   originX: z.number().min(0).max(100),
   originY: z.number().min(0).max(100),
 }).strict();
+// The speaker's name band over the talk's window (2026-11-25 user decision): the colours of the character's clothes, its
+// main colour (`fill`, behind the name) and a second one (`edge`, its rim), so the band says whose words they are at a
+// glance. The name's ink is chosen, and the fill adjusted, so the name keeps 4.5:1 (src/components/name-band.ts).
+const hexColour = z.string().regex(/^#[0-9a-fA-F]{6}$/);
+const nameBandSchema = z.object({ fill: hexColour, edge: hexColour }).strict();
+export type NameBandColours = z.infer<typeof nameBandSchema>;
 const variantSchema = z.object({
   emotion: id.optional(),
   costume: id.optional(),
@@ -44,6 +50,8 @@ const poseSchema = z.object({
 const costumeSchema = z.object({
   id,
   poses: z.array(poseSchema).min(1),
+  // Its own name band's colours (the heroine's outfits differ); else the character's.
+  nameBand: nameBandSchema.optional(),
 }).strict();
 const characterSchema = z.object({
   id,
@@ -53,6 +61,8 @@ const characterSchema = z.object({
   // smaller, feet where they were (character-portrait.css). Every screen that shows the character follows it.
   figureScale: z.number().min(0.5).max(1.2).optional(),
   placeholderColor: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+  // The colours of its name band (nameBandSchema); without them the band is the window's blue.
+  nameBand: nameBandSchema.optional(),
   variants: z.array(variantSchema),
   costumes: z.array(costumeSchema).optional(),
   // The basic outfit belongs to the character, not to a geographical region.
@@ -230,6 +240,11 @@ export function faceFrameStyle({ face, canvas }: { face: FaceFrame; canvas: { wi
     left: percent(-(face.x - face.size / 2) / face.size),
     top: percent(-(face.y - face.size / 2) / face.size),
   };
+}
+
+/** The colours of a character's name band in the outfit chosen for the scene: the outfit's own, else the character's. */
+export function characterNameBand(character: CharacterAsset, selection: { costume?: string }): NameBandColours | undefined {
+  return character.costumes?.find((item) => item.id === selection.costume)?.nameBand ?? character.nameBand;
 }
 
 /** All expression images for one pose share one placement to avoid jumping. */

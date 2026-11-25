@@ -18,16 +18,15 @@
   /* A choice: a warm terracotta press over the scene, set apart from the glass of the words (white words at 4.6:1 or more). */
   --vn-choice-bg: linear-gradient(180deg, #c64e2f, #ad3d26);
   --vn-choice-shadow: 0 2px 0 rgba(110, 36, 18, 0.45), 0 6px 18px rgba(20, 12, 8, 0.28);
-  /* The window's head (the speaker's band and the controls) straddles the window's
-     top edge by this much, half a control, whatever the band holds (decision H). */
-  --vn-head-overhang: 22px;
+  /* The window's head (the speaker's name band) straddles the window's top edge by this much, about half the band
+     (decision H). */
+  --vn-head-overhang: 16px;
   /* The scene's camera (figure-zoom.ts): how much nearer than whole the people on stage are seen, and how fast it comes in. */
   --vn-camera: 700ms;
 }
-/* The glass, on the window and on what lies on the scene with it (its tools, the choices' words beside their presses). */
+/* The glass, on the window and on what lies on the scene with it (the choices' words beside their presses). */
 .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-window::before,
-.dialogue-controls .text-button,
 .vn-choices .choice-hint,
 .vn-choices :is(.text-button, p),
 .vn-choices .encounter-choice {
@@ -105,7 +104,8 @@
   pointer-events: none;
 }
 /* The scene's camera (2026-11-25 user decision; figure-zoom.ts): in a talk the people on stage are seen from about the
-   thighs up, their eyes where they stood whole and their feet below the window. Nearer for one, less near as more stand
+   thighs up, the top of their picture where it was as they stood whole (so a head is never cut under the header) and
+   their feet below the window. Nearer for one, less near as more stand
    side by side (encounter.css), so each face stays whole on the screen. The scene's first line shows them whole (its
    establishing shot: their clothes, where they stand; useEstablishingShot), and the camera comes in with the next one.
    Each figure's box grows in the layout (figure-zoom.ts, encounter.css), never by a transform: the pictures stay sharp. */

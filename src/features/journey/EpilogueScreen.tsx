@@ -21,7 +21,7 @@ import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { useSceneStage } from "../../components/useSceneStage";
 import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -36,6 +36,7 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { CityArrivalLogo } from "./CityArrivalLogo";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 
 export function EpilogueScreen({
   game,
@@ -123,6 +124,7 @@ export function EpilogueScreen({
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   const establishing = useEstablishingShot(active.episodeId, game.revision);
+  const band = useNameBand(speakerSpot(stage, focus), frame.speaker === "heroine", { sceneId: active.episodeId, cityId: episode?.cityId ?? game.currentCityId });
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
@@ -140,6 +142,7 @@ export function EpilogueScreen({
         <WeatherLayer weather={frame.weather} />
         <RecallLayer imageId={frame.recall} />
         <PhotoShowLayer photo={frame.photo} />
+        <NameCutInPlate cutIn={nameCut} />
         {/* Not under an arrival's title card, which holds the first line. */}
         <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} quiet={!!frame.quiet} />
         <ItemOutLayer card={showLogo ? undefined : itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
@@ -181,11 +184,10 @@ export function EpilogueScreen({
         >
           <div className="vn-window">
             <DialogueWindowHead
-              cutIn={nameCut}
               speaker={showsSpeakerPlate(frame) && speaker}
               narration={narration}
               remembered={remembered}
-              controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+              band={band}
             />
             <div ref={dialogueRef} className="vn-window-body">
               {/* The scene label names the scene (an arrival's city also has its title card): the heading stays for
@@ -219,6 +221,8 @@ export function EpilogueScreen({
               </button>}
             </div>
           </div>
+          {/* The talk's tools, in a row under its window (DialogueControls). */}
+          <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
           {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
           {frame.choices.length > 0 && onChoose && <div className="vn-choices">
             <ChoicePoint minigame={frame.minigame} ready={ready} cast={{

@@ -536,9 +536,9 @@ footer span {
 .speaker-dot.shy {
   background: #b4867c;
 }
-/* The words of a talk in a plain Gothic face, easy to read over the glass at a glance (2026-11-25 user decision: as
-   readable as Yu Gothic; Noto Sans JP, a web font every phone loads, so every phone breaks the lines alike). A letter's
-   sheet keeps its serif (line-stage.css). */
+/* The words of a talk in the game's Gothic face, easy to read over the glass at a glance (2026-11-25 user decisions:
+   Gothic, not Mincho; Noto Sans JP, the face of the rest of the game, a web font every phone loads, so every phone
+   breaks the lines alike). A letter's sheet keeps its serif (line-stage.css). */
 .dialogue-text {
   font-family: "Noto Sans JP", sans-serif;
   font-weight: 500;
