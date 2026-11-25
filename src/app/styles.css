@@ -44,10 +44,11 @@
   --ds-card-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
   --ds-window-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
   /* The light frosted glass over a scene (2026-11-25 user decisions): the talk's window, then free time's cards and a
-     quiz's result, so the place shows on, softened, behind what is read. Its ink keeps 8:1 or more over any picture
-     (its 20 % show-through counted at black), its muted ink 4.5:1. A pressable on it stands on --ds-glass-press, a
+     quiz's result, so the place shows on, softened, behind what is read. A bright, nearly white pane (2026-11-25 user
+     remark on free time on an iPhone: everything looked dark; the cooler, thinner pane went grey over a dark photo).
+     Its ink keeps 8:1 or more over any picture (its 12 % show-through counted at black), its muted ink 4.5:1. A pressable on it stands on --ds-glass-press, a
      chosen one on --ds-glass-chosen with its slate edge drawn inside. */
-  --ds-glass-bg: rgba(248, 250, 255, 0.8);
+  --ds-glass-bg: rgba(255, 254, 251, 0.88);
   --ds-glass-blur: blur(14px) saturate(1.2);
   --ds-glass-ink: #1d2740;
   --ds-glass-muted: #47536b;
@@ -59,7 +60,7 @@
   --ds-glass-radius: 22px;
   /* A band that stays over what scrolls under it on the glass (a dialog's title bar): the glass, nearly opaque. */
   --ds-glass-bar: rgba(244, 246, 252, 0.94);
-  /* A field's edge on the glass: 3:1 on it whatever lies behind (its 20 % show-through counted at black). */
+  /* A field's edge on the glass: 3:1 on it whatever lies behind (its 12 % show-through counted at black). */
   --ds-glass-field-edge: #646b7e;
   /* The smoked glass (2026-11-25 user decision, after free time's header on an iPhone: its slate pills and buttons sat on
      the city as a form's parts): the header's plates and buttons over the scene, which shows through them blurred. White
@@ -71,13 +72,15 @@
   --ds-smoke-muted: #e6e9ee;
   /* White words over a scene, without a ground (the header's): a soft dark shadow round each. */
   --ds-scene-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 8px rgba(0, 0, 0, 0.35);
-  /* The shade that falls from the screen's top behind the header (journey-hud.css; 2026-11-25 user decision: more and
-     more see-through as it goes down, so it melts into the scene with no edge): the header's words and marks lie on
-     its upper half (white words 5:1 or more and white marks 4.5:1 over anything behind it, white counted), and below
-     the header it thins out on an easing curve. */
+  /* The shade that falls from the screen's top behind the header (journey-hud.css; 2026-11-25 user decisions: more and
+     more see-through as it goes down, so it melts into the scene with no edge; then, the screen looked dark: as light
+     as the header's reading allows, and a short fall). It is even over the header itself (white words 5:1 and white
+     marks 4.5:1 or more over anything behind it, white counted: 0.6 at least), and fades out over the 56 px below the
+     header on an easing curve (its height: the header's + 56 px). */
   --ds-hud-shade: linear-gradient(
-    rgba(10, 14, 24, 0.68), rgba(10, 14, 24, 0.62) 42%, rgba(10, 14, 24, 0.5) 56%, rgba(10, 14, 24, 0.36) 67%,
-    rgba(10, 14, 24, 0.23) 77%, rgba(10, 14, 24, 0.12) 86%, rgba(10, 14, 24, 0.05) 93%, rgba(10, 14, 24, 0));
+    rgba(10, 14, 24, 0.62), rgba(10, 14, 24, 0.6) calc(100% - 56px), rgba(10, 14, 24, 0.42) calc(100% - 44px),
+    rgba(10, 14, 24, 0.24) calc(100% - 30px), rgba(10, 14, 24, 0.1) calc(100% - 16px), rgba(10, 14, 24, 0.03) calc(100% - 6px),
+    rgba(10, 14, 24, 0));
   /* The same falling shade, lighter, over a talk (only the place, for a while, and ≡メニュー's mark lie on it). */
   --ds-talk-shade: linear-gradient(
     rgba(20, 24, 32, 0.55), rgba(20, 24, 32, 0.44) 30%, rgba(20, 24, 32, 0.3) 50%, rgba(20, 24, 32, 0.17) 68%,

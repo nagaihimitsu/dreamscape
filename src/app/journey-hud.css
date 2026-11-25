@@ -32,7 +32,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: calc(100% + 96px);
+  height: calc(100% + 56px);
   background: var(--ds-hud-shade);
   pointer-events: none;
 }
