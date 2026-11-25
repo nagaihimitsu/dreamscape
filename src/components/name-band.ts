@@ -57,27 +57,41 @@ const mix = (hex: string, toward: string, amount: number) => {
 };
 
 /**
+ * The share of the band's fill over what lies behind it (dialogue-controls.css: the band is a little see-through, so it
+ * melts into the scene; 2026-11-25 user decision).
+ */
+export const BAND_FILL_SHARE = 0.82;
+
+/** The least contrast of the name on its fill, whatever lies behind the see-through band (black or white at worst). */
+const leastContrast = (fill: string, ink: string) =>
+  Math.min(...["#000000", "#ffffff"].map((behind) => contrast(mix(fill, behind, 1 - BAND_FILL_SHARE), ink)));
+
+/**
  * A band's colours as shown: the name's ink is white or the window's navy, whichever reads better on the fill, and the
- * fill is darkened (under white) or lightened (under navy) only as far as the name needs to keep 4.5:1. The edge as written.
+ * fill is darkened (under white) or lightened (under navy) only as far as the name needs to keep 4.5:1 over anything
+ * behind the see-through band. The edge as written.
  */
 export function bandColours({ fill, edge }: NameBandColours): Required<Omit<NameBand, "x">> {
-  const ink = contrast(fill, INK_LIGHT) >= contrast(fill, INK_DARK) ? INK_LIGHT : INK_DARK;
+  const ink = leastContrast(fill, INK_LIGHT) >= leastContrast(fill, INK_DARK) ? INK_LIGHT : INK_DARK;
   let shown = fill.toLowerCase();
-  for (let step = 1; contrast(shown, ink) < 4.5 && step <= 20; step++) {
+  for (let step = 1; leastContrast(shown, ink) < 4.5 && step <= 20; step++) {
     shown = mix(fill, ink === INK_LIGHT ? "#000000" : "#ffffff", step * 0.05);
   }
   return { fill: shown, edge: edge.toLowerCase(), ink };
 }
 
+/** The band of a speaker without colours of their own: the window's blue (romance-scene.css --vn-name-bg), a lighter rim. */
+const PLAIN_BAND: NameBandColours = { fill: "#3d6aa6", edge: "#a9c0e0" };
+
 /**
  * The name band of the line on screen: over the speaker's place on the stage (speakerSpot; else at the window's left),
  * in the colours of the figure speaking in the outfit the scene shows (the heroine's as her portrait: `context`, the
- * player's chosen outfit), or of the heroine when she speaks off the stage. Without colours, the window's blue.
+ * player's chosen outfit), or of the heroine when she speaks off the stage. Without colours, the window's blue (PLAIN_BAND).
  */
 export function useNameBand(spot: { figure: string; x: number } | undefined, heroineSpeaks: boolean, context: CostumeContext): NameBand {
   const worn = useWornCostume();
   const figure = spot?.figure ?? (heroineSpeaks ? "heroine" : undefined);
   const character = figure ? catalog.characters.find((item) => item.id === figure) : undefined;
   const colours = character && characterNameBand(character, resolveCharacterCostume(character, catalog.wardrobe, { ...context, worn }));
-  return { ...(spot ? { x: spot.x } : {}), ...(colours ? bandColours(colours) : {}) };
+  return { ...(spot ? { x: spot.x } : {}), ...bandColours(colours ?? PLAIN_BAND) };
 }

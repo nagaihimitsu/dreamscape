@@ -274,12 +274,13 @@ export const MAP_CREDIT = {
  * the scene away, as the spelling field did, the user's word of 2026-11-17).
  */
 export const FONT_CREDIT = {
-  textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
+  textJa: "Noto Sans JP・Noto Serif JP・Zen Kaku Gothic New（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
     "Fasol SP Demo（Sasha Pavljenko。デモ版の利用許諾：商用を含めて無料、フォントの再販売は禁止、作者へのリンクを添えて共有できる）。" +
     "ゲームの中の飾り文字に使い、ゲームと一緒に配っています。",
   links: [
     { labelJa: "Noto Sans JP", url: "https://fonts.google.com/noto/specimen/Noto+Sans+JP" },
     { labelJa: "Noto Serif JP", url: "https://fonts.google.com/noto/specimen/Noto+Serif+JP" },
+    { labelJa: "Zen Kaku Gothic New", url: "https://fonts.google.com/specimen/Zen+Kaku+Gothic+New" },
     { labelJa: "SIL Open Font License", url: "https://openfontlicense.org/" },
     { labelJa: "Sasha Pavljenko（Fasol SP の作者）", url: "https://pavljenko.ru/" },
     { labelJa: "Fasol SP（JustFreeFonts.com）", url: "https://justfreefonts.com/fonts/fasol-sp/" },

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bandColours, contrast, speakerSpot } from "./name-band";
+import { BAND_FILL_SHARE, bandColours, contrast, speakerSpot } from "./name-band";
 import type { Stage, StageFocus } from "./scene-stage";
 
 const her = (stage: Omit<Stage, "heroine">): Stage => ({ heroine: true, ...stage });
@@ -30,15 +30,19 @@ describe("the speaker's name band (name-band)", () => {
     expect(speakerSpot(her({ opposite: person("a") }), { heroine: "listening", opposite: "listening" })).toBeUndefined();
   });
 
-  it("writes the name in white or navy, whichever reads, and moves the fill only as far as 4.5:1 needs", () => {
+  it("writes the name in white or navy, whichever reads, and moves the fill only as far as 4.5:1 needs over any backdrop", () => {
     // White clothes: navy ink, the fill as it is.
     expect(bandColours({ fill: "#F8F4F2", edge: "#3B3739" })).toEqual({ fill: "#f8f4f2", edge: "#3b3739", ink: "#1d2740" });
     // Deep blue: white ink, the fill as it is.
-    expect(bandColours({ fill: "#132455", edge: "#4d5679" }).ink).toBe("#ffffff");
-    // Mid grey reads in neither at 4.5:1: the fill moves until it does.
-    for (const fill of ["#918788", "#7f7f7f", "#c64e2f", "#e7a3a0"]) {
+    expect(bandColours({ fill: "#132455", edge: "#4d5679" })).toMatchObject({ fill: "#132455", ink: "#ffffff" });
+    // Mid tones read in neither at 4.5:1 once the band lets the scene through: the fill moves until they do.
+    const seenOver = (fill: string, behind: number) => {
+      const channel = (at: number) => Math.round(parseInt(fill.slice(at, at + 2), 16) * BAND_FILL_SHARE + behind * (1 - BAND_FILL_SHARE));
+      return `#${[1, 3, 5].map((at) => channel(at).toString(16).padStart(2, "0")).join("")}`;
+    };
+    for (const fill of ["#918788", "#7f7f7f", "#c64e2f", "#e7a3a0", "#3d6aa6"]) {
       const shown = bandColours({ fill, edge: "#000000" });
-      expect(contrast(shown.fill, shown.ink)).toBeGreaterThanOrEqual(4.5);
+      for (const behind of [0, 255]) expect(contrast(seenOver(shown.fill, behind), shown.ink)).toBeGreaterThanOrEqual(4.5);
     }
   });
 });

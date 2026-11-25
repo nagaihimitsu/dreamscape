@@ -12,9 +12,10 @@
   min-height: calc(var(--vn-head-overhang) + 8px);
   padding: 0 10px;
 }
-/* The name band (2026-11-25 user decision): a rounded tag in the colours of the speaker's clothes (name-band.ts: its
+/* The name band (2026-11-25 user decisions): a rounded tag in the colours of the speaker's clothes (name-band.ts: its
    fill behind the name, its edge as the rim, the name in white or navy at 4.5:1 or more), standing over the speaker on
-   the stage. --band-x is the speaker's place across the stage (0 to 1, name-band.ts); the stage is about a tenth wider
+   the stage, and melting into the scene: its fill a little see-through (BAND_FILL_SHARE, 82 %) over a blur of what lies
+   behind, a fine soft rim, a faint shadow. --band-x is the speaker's place across the stage (0 to 1, name-band.ts); the stage is about a tenth wider
    than the window's head on a phone and on a wide screen alike, so the band's middle goes to that place over the stage
    (1.1 head widths across), held inside the head at either end. With no one on stage speaking it stands at the left.
    It moves there (none under reduced motion). Without colours: the window's blue. No line at its left. */
@@ -26,14 +27,16 @@
   max-width: 100%;
   margin: 0;
   padding: 4px 18px 5px;
-  border: 2px solid var(--band-edge, #a9c0e0);
+  border: 1.5px solid color-mix(in srgb, var(--band-edge, #a9c0e0) 70%, transparent);
   border-radius: 999px;
-  background: var(--band-fill, var(--vn-name-bg));
-  box-shadow: 0 2px 8px rgba(20, 28, 48, 0.28);
+  background: color-mix(in srgb, var(--band-fill, var(--vn-name-bg)) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  backdrop-filter: blur(10px) saturate(1.1);
+  box-shadow: 0 1px 8px rgba(20, 28, 48, 0.14);
   color: var(--band-ink, var(--vn-name-ink, #fff));
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.3;
   letter-spacing: 0.04em;
   overflow-wrap: anywhere;
