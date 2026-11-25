@@ -24,7 +24,7 @@ import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import type { MiniGameTag } from "../../minigames/tag";
 import { figureIsEnemy, oppositeFigures, stageCast, type StageLine, type StageScene } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { loggedSpeaker, type NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
@@ -171,6 +171,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       <WeatherLayer weather={view.staging?.weather} />
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
+      <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
@@ -196,7 +197,6 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} data-remembered={remembered || undefined} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <div className="vn-window">
           <DialogueWindowHead
-            cutIn={nameCut}
             speaker={showsSpeakerPlate(staging) && view.speaker}
             narration={view.narration}
             remembered={remembered}

@@ -9,7 +9,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
@@ -193,6 +193,7 @@ export function RomanceScene({
       <WeatherLayer weather={frame.weather} />
       <RecallLayer imageId={frame.recall} />
       <PhotoShowLayer photo={frame.photo} />
+      <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
       <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
@@ -250,7 +251,6 @@ export function RomanceScene({
           <DialogueWindowHead
             narration={narration}
             remembered={remembered}
-            cutIn={nameCut}
             speaker={showsSpeakerPlate(frame) && speaker}
             band={band}
           />

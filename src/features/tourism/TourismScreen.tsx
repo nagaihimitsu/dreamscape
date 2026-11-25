@@ -26,7 +26,7 @@ import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
@@ -224,6 +224,7 @@ export function TourismScreen({
           <WeatherLayer weather={frame.weather} />
           <RecallLayer imageId={frame.recall} />
           <PhotoShowLayer photo={frame.photo} />
+          <NameCutInPlate cutIn={nameCut} />
           <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
           <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
           <span className="sr-only">{asset.altJa}</span>
@@ -274,7 +275,6 @@ export function TourismScreen({
                 speaker={showsSpeakerPlate(frame) && speaker}
                 narration={plate.narration}
                 remembered={plate.remembered}
-                cutIn={nameCut}
                 band={band}
               />
               <div ref={dialogueRef} className="vn-window-body">

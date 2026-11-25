@@ -1,15 +1,15 @@
-/* A name plate (NameCutInPlate, `# cutin: name`): on the glass of the dialogue window (2026-11-25). It stands in the name
-   band's place (2026-11-25 user decision: the plate and the band said the name twice and touched): its foot on the
-   band's, straddling the window's top edge, over the speaker on the stage (--cutin-x, as the band's --band-x; in the
-   middle when no one on stage speaks) and kept inside the window's head; the band waits under it unseen
-   (dialogue-controls.css) and is there when it goes. It is laid over the scene (no reflow), takes no taps and goes at
-   once; it comes in with a short rise, none under reduced motion. */
+/* A name plate (NameCutInPlate, `# cutin: name`): on the glass of the dialogue window (2026-11-25), high on the scene,
+   just below the header and the notices under it (--notices-h), in the middle (2026-11-25 user decision: by the window
+   it touched the speaker's name band; high up it covers no face and no name band). It is laid over the scene (no reflow),
+   over the people and under the header, takes no taps and goes at once; it comes in with a short rise, none under
+   reduced motion. */
 .name-cutin {
   position: absolute;
-  bottom: calc(100% - 4px - 33px);
-  left: 0;
-  translate: clamp(0px, calc(50cqw + (var(--cutin-x, 0.5) - 0.5) * 110cqw - 50%), calc(100cqw - 100%)) 0;
-  width: min(calc(100cqw - 16px), 380px);
+  z-index: 3;
+  top: calc(var(--scene-top, 0px) + max(12px, var(--notices-h, 0px) + 8px));
+  left: 50%;
+  translate: -50% 0;
+  width: min(calc(100% - 32px), 380px);
   padding: 8px 18px 10px;
   border-radius: 14px;
   background: var(--vn-window-bg);

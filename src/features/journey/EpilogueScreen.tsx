@@ -21,7 +21,7 @@ import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { useSceneStage } from "../../components/useSceneStage";
 import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -142,6 +142,7 @@ export function EpilogueScreen({
         <WeatherLayer weather={frame.weather} />
         <RecallLayer imageId={frame.recall} />
         <PhotoShowLayer photo={frame.photo} />
+        <NameCutInPlate cutIn={nameCut} />
         {/* Not under an arrival's title card, which holds the first line. */}
         <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} quiet={!!frame.quiet} />
         <ItemOutLayer card={showLogo ? undefined : itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
@@ -183,7 +184,6 @@ export function EpilogueScreen({
         >
           <div className="vn-window">
             <DialogueWindowHead
-              cutIn={nameCut}
               speaker={showsSpeakerPlate(frame) && speaker}
               narration={narration}
               remembered={remembered}

@@ -30,7 +30,7 @@ import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
@@ -518,6 +518,7 @@ export function BattleScreen({
       <WeatherLayer weather={atmosphere.weather} />
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
+      <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <ItemOutLayer card={itemOutCard(game, staging?.itemOut)} quiet={!!staging?.quiet} />
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
@@ -561,7 +562,6 @@ export function BattleScreen({
       <div className="battle-window">
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
-        cutIn={nameCut}
         narration={!!frame && plate.narration}
         remembered={remembered}
         speaker={frame && showsSpeakerPlate(frame) && speaker}
