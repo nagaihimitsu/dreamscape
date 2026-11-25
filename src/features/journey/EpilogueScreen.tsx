@@ -11,6 +11,7 @@ import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
 import { ItemOutLayer, itemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "./time-of-day";
@@ -141,10 +142,10 @@ export function EpilogueScreen({
         </div>
         <WeatherLayer weather={frame.weather} />
         <RecallLayer imageId={frame.recall} />
-        <PhotoShowLayer photo={frame.photo} />
+        <PhotoShowLayer photo={frame.photo} aboveHeads={keepsAboveHeads(frame.speaker)} />
         <NameCutInPlate cutIn={nameCut} />
         {/* Not under an arrival's title card, which holds the first line. */}
-        <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} quiet={!!frame.quiet} />
+        <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} aboveHeads={keepsAboveHeads(frame.speaker)} quiet={!!frame.quiet} />
         <ItemOutLayer card={showLogo ? undefined : itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots), the person alone in the
             middle while she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they

@@ -14,6 +14,7 @@ import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
 import { ItemOutLayer, itemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "../journey/time-of-day";
@@ -192,9 +193,9 @@ export function RomanceScene({
       </div>
       <WeatherLayer weather={frame.weather} />
       <RecallLayer imageId={frame.recall} />
-      <PhotoShowLayer photo={frame.photo} />
+      <PhotoShowLayer photo={frame.photo} aboveHeads={keepsAboveHeads(frame.speaker)} />
       <NameCutInPlate cutIn={nameCut} />
-      <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
+      <ItemShowLayer itemId={frame.itemShow} aboveHeads={keepsAboveHeads(frame.speaker)} quiet={!!frame.quiet} />
       <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
       <SceneHeading label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"} />

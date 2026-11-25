@@ -37,16 +37,20 @@ function CardBody({ card }: { card: ItemCard }) {
  * as it appears (not on a quiet line, nor for a scene a load brought back, nor during 高速送り: playCue); a line after it
  * with the same item keeps the card as it is. An item the catalog does not have shows nothing.
  */
-export function ItemShowLayer({ itemId, quiet = false }: { itemId?: string; quiet?: boolean }) {
+export function ItemShowLayer({ itemId, quiet = false, aboveHeads = false }: {
+  itemId?: string; quiet?: boolean;
+  /** The line is someone's (keepsAboveHeads): the card keeps above the heads on stage (figures-top.ts). */
+  aboveHeads?: boolean;
+}) {
   const card = itemCard(itemId);
   if (!card) return null;
-  return <ItemShowCard key={card.id} card={card} quiet={quiet} />;
+  return <ItemShowCard key={card.id} card={card} quiet={quiet} aboveHeads={aboveHeads} />;
 }
 
-function ItemShowCard({ card, quiet }: { card: ItemCard; quiet: boolean }) {
+function ItemShowCard({ card, quiet, aboveHeads }: { card: ItemCard; quiet: boolean; aboveHeads: boolean }) {
   const layer = useRef<HTMLDivElement>(null);
   // Above the heads on stage (figures-top.ts), measured before the card's own box is.
-  useFiguresTop(layer);
+  useFiguresTop(layer, aboveHeads);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!quiet) playCue("item_get");
@@ -66,7 +70,7 @@ function ItemShowCard({ card, quiet }: { card: ItemCard; quiet: boolean }) {
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [card.id]);
+  }, [card.id, aboveHeads]);
   return <div className="item-show-layer" ref={layer} aria-hidden="true" data-testid="item-show">
     <div className="item-show-card" ref={ref}>
       <span className="item-show-gleam" />
