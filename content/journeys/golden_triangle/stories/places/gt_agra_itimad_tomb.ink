@@ -44,6 +44,7 @@ INCLUDE modules.ink
 通称、ベビー・タージ、だって。かわいい名前。……確かに、タージを小さくしたみたいだもんね
 # speaker: narrator
 # term: gt_term_neem
+# photo: gt_album_a036 # photo_caption: ニームの木の下の白髪の女性
 庭の隅のニームの木の下で、白髪の女性が一人、布の手提げを膝に置いて座っていた。その目が、こちらを向いた気がした。
 -> END
 
