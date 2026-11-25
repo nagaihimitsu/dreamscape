@@ -17,6 +17,7 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { dialogueObstructed, readingHeld } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
@@ -159,6 +160,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: (!!quiz && !resultShown) || view.choices.length > 0, resultShown,
     windowHidden: windowVisibility.hidden, onResult: continueFromResult });
   const establishing = useEstablishingShot(view.id, view.revision);
+  const band = useNameBand(speakerSpot(stage, focus), staging?.speaker === "heroine", { sceneId: view.sceneId, cityId: view.cityId });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet}
       data-establishing={establishing || undefined} {...sceneTap.props}>
@@ -198,7 +200,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
             speaker={showsSpeakerPlate(staging) && view.speaker}
             narration={view.narration}
             remembered={remembered}
-            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+            band={band}
           />
           <div className="vn-window-body">
             {quiz ? (
@@ -228,6 +230,8 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
             )}
           </div>
         </div>
+        {/* The talk's tools, in a row under its window (DialogueControls). */}
+        <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
         {/* The replies float above the window, which keeps the line or the question they answer (romance-scene.css .vn-choices). */}
         {quiz ? (!quiz.result && <div className="vn-choices">
           <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />

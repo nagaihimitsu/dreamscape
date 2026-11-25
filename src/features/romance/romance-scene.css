@@ -18,9 +18,9 @@
   /* A choice: a warm terracotta press over the scene, set apart from the glass of the words (white words at 4.6:1 or more). */
   --vn-choice-bg: linear-gradient(180deg, #c64e2f, #ad3d26);
   --vn-choice-shadow: 0 2px 0 rgba(110, 36, 18, 0.45), 0 6px 18px rgba(20, 12, 8, 0.28);
-  /* The window's head (the speaker's band and the controls) straddles the window's
-     top edge by this much, half a control, whatever the band holds (decision H). */
-  --vn-head-overhang: 22px;
+  /* The window's head (the speaker's name band) straddles the window's top edge by this much, about half the band
+     (decision H). */
+  --vn-head-overhang: 16px;
   /* The scene's camera (figure-zoom.ts): how much nearer than whole the people on stage are seen, and how fast it comes in. */
   --vn-camera: 700ms;
 }

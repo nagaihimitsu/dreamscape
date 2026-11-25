@@ -36,6 +36,7 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { CityArrivalLogo } from "./CityArrivalLogo";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 
 export function EpilogueScreen({
   game,
@@ -123,6 +124,7 @@ export function EpilogueScreen({
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   const establishing = useEstablishingShot(active.episodeId, game.revision);
+  const band = useNameBand(speakerSpot(stage, focus), frame.speaker === "heroine", { sceneId: active.episodeId, cityId: episode?.cityId ?? game.currentCityId });
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
@@ -185,7 +187,7 @@ export function EpilogueScreen({
               speaker={showsSpeakerPlate(frame) && speaker}
               narration={narration}
               remembered={remembered}
-              controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+              band={band}
             />
             <div ref={dialogueRef} className="vn-window-body">
               {/* The scene label names the scene (an arrival's city also has its title card): the heading stays for
@@ -219,6 +221,8 @@ export function EpilogueScreen({
               </button>}
             </div>
           </div>
+          {/* The talk's tools, in a row under its window (DialogueControls). */}
+          <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
           {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
           {frame.choices.length > 0 && onChoose && <div className="vn-choices">
             <ChoicePoint minigame={frame.minigame} ready={ready} cast={{

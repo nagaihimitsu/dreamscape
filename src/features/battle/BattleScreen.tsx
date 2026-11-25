@@ -7,6 +7,7 @@ import type { GameState } from "../../domain/game";
 import { battleBackgroundId, battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
@@ -434,6 +435,7 @@ export function BattleScreen({
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
   // Each part of the battle's talk opens on its establishing shot (the camera comes in with its next line; battle.css).
   const establishing = useEstablishingShot(`${battle.id}:${active.phase}`, game.revision);
+  const band = useNameBand(isDialogue ? speakerSpot(stage, focus, "battle") : undefined, frame?.speaker === "heroine", { sceneId: battle.id, cityId: heroineCityId });
   // A line's `# cutin: name` shows its speaker's name plate over the scene for a moment (NameCutIn): the opponent's
   // heading (role, name, the quote when written), or a person's. An episode's title card over the opening holds it.
   const nameCut = useNameCutIn(isDialogue && frame
@@ -563,7 +565,7 @@ export function BattleScreen({
         narration={!!frame && plate.narration}
         remembered={remembered}
         speaker={frame && showsSpeakerPlate(frame) && speaker}
-        controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
+        band={band}
       />}
       <section
         ref={readingArea}
@@ -873,6 +875,8 @@ export function BattleScreen({
         )}
       </section>
       </div>
+      {/* The talk's tools, in a row under its window (DialogueControls). */}
+      {isDialogue && <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
       {/* The talk's choices float above its window, which keeps the line they answer (romance-scene.css .vn-choices). */}
       {isDialogue && frame && choosing && onChoose && <div className="vn-choices">
         <ChoicePoint minigame={frame.minigame} ready={ready} cast={{

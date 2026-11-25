@@ -35,6 +35,7 @@ import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -149,6 +150,7 @@ export function TourismScreen({
   });
   const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: !!frame?.choices.length, windowHidden: windowVisibility.hidden });
   const establishing = useEstablishingShot(active.landmarkId, game.revision);
+  const band = useNameBand(frame ? speakerSpot(stage, focus) : undefined, frame?.speaker === "heroine", { sceneId: landmark.id, cityId: landmark.cityId });
   useEffect(() => {
     const media = window.matchMedia(COMPACT_OBSERVATION);
     const update = () => setCompactObservation(media.matches);
@@ -273,7 +275,7 @@ export function TourismScreen({
                 narration={plate.narration}
                 remembered={plate.remembered}
                 cutIn={nameCut}
-                controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+                band={band}
               />
               <div ref={dialogueRef} className="vn-window-body">
                 <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
@@ -302,6 +304,8 @@ export function TourismScreen({
                 </button>}
               </div>
             </div>
+            {/* The talk's tools, in a row under its window (DialogueControls). */}
+            <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
             {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
             {frame.choices.length > 0 && onChooseGuide && <div className="vn-choices">
               <ChoicePoint minigame={frame.minigame} ready={ready} cast={{

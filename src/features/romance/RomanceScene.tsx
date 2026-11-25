@@ -28,6 +28,7 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { SceneHeading } from "../../components/SceneHeading";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
@@ -182,6 +183,7 @@ export function RomanceScene({
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   const establishing = useEstablishingShot(active.dateId, game.revision);
+  const band = useNameBand(speakerSpot(stage, focus), frame.speaker === "heroine", { sceneId: active.dateId, cityId: game.currentCityId });
   return (
     <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} data-quiet={frame.quiet} data-establishing={establishing || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">
@@ -250,7 +252,7 @@ export function RomanceScene({
             remembered={remembered}
             cutIn={nameCut}
             speaker={showsSpeakerPlate(frame) && speaker}
-            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+            band={band}
           />
           <div ref={dialogueRef} className="vn-window-body">
             <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
@@ -279,6 +281,8 @@ export function RomanceScene({
             ) : null}
           </div>
         </div>
+        {/* The talk's tools, in a row under its window (DialogueControls). */}
+        <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
         {/* The replies float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
         {frame.choices.length ? (
           <div className="vn-choices">

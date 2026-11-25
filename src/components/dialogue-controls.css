@@ -1,42 +1,46 @@
-/* The dialogue window's head (UI redesign §3.3, decision H; DialogueWindowHead):
-   the speaker's name band and the window's controls in one row that straddles
-   the window's top edge (the window paints itself from --vn-head-overhang down).
-   The band takes what the controls leave and wraps there, so a long name never
-   runs under them; the row then grows down into the window, never upward. When
-   the controls would leave the band less than 5.5em (about four of its
-   characters; enlarged text on a narrow phone), they go to a row of their own
-   under the band, at the right: the head still grows downward only. */
+/* The dialogue window's head (UI redesign §3.3, decision H; DialogueWindowHead): the speaker's name band on the
+   window's top edge, which it straddles (the window paints itself from --vn-head-overhang down). Without a band (the
+   narration) the head keeps the room the band's lower half would take, so the words start as far into the glass. */
 .vn-window-head {
   position: relative;
   z-index: 1;
   flex: none;
+  /* The band's room across (cqw), to stand it over the speaker and keep it inside. */
+  container-type: inline-size;
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
-  gap: 6px;
-  padding: 0 6px 0 10px;
+  min-height: calc(var(--vn-head-overhang) + 8px);
+  padding: 0 10px;
 }
-/* The name band (2026-11-25 user decision): the speaker's name in white on a blue band laid along the window's top
-   edge, its right end fading into the scene. No edge and no line at its left. Its basis only decides when the controls
-   go below it: it then takes the room up to its own width. */
+/* The name band (2026-11-25 user decision): a rounded tag in the colours of the speaker's clothes (name-band.ts: its
+   fill behind the name, its edge as the rim, the name in white or navy at 4.5:1 or more), standing over the speaker on
+   the stage. --band-x is the speaker's place across the stage (0 to 1, name-band.ts); the stage is about a tenth wider
+   than the window's head on a phone and on a wide screen alike, so the band's middle goes to that place over the stage
+   (1.1 head widths across), held inside the head at either end. With no one on stage speaking it stands at the left.
+   It moves there (none under reduced motion). Without colours: the window's blue. No line at its left. */
 .vn-window-head > .speaker {
+  position: relative;
+  translate: clamp(0px, calc(50cqw + (var(--band-x, -1) - 0.5) * 110cqw - 50%), calc(100cqw - 100%)) 0;
   display: block;
-  flex: 1000 1 5.5em;
-  min-width: min(8em, 100%);
-  max-width: max-content;
-  margin: 6px 0 0;
-  padding: 5px 44px 5px 14px;
-  border-radius: 10px 0 0 10px;
-  background: linear-gradient(90deg, var(--vn-name-bg) calc(100% - 44px), transparent);
-  color: var(--vn-name-ink, #fff);
+  flex: none;
+  max-width: 100%;
+  margin: 0;
+  padding: 4px 18px 5px;
+  border: 2px solid var(--band-edge, #a9c0e0);
+  border-radius: 999px;
+  background: var(--band-fill, var(--vn-name-bg));
+  box-shadow: 0 2px 8px rgba(20, 28, 48, 0.28);
+  color: var(--band-ink, var(--vn-name-ink, #fff));
   font-family: "Noto Sans JP", sans-serif;
   font-size: 15px;
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: 0.04em;
   overflow-wrap: anywhere;
+  transition: translate var(--motion-medium) var(--ease-out);
 }
-/* The narration has no band (DialogueWindowHead): the controls alone straddle the edge, at the right. */
+.reduce-motion .vn-window-head > .speaker { transition: none; }
+@media (prefers-reduced-motion: reduce) { .vn-window-head > .speaker { transition: none; } }
 /* A remembered line's 「回想」 beside the name (`# remembered`, 2026-11-16): a small outlined label in the band's own
    colours, unfilled and flat, so it reads as part of the name, not as a button (it takes no tap of its own: a tap on
    the band reads on). It never breaks inside; a long name wraps before it. */
@@ -53,15 +57,17 @@
   vertical-align: 0.08em;
   white-space: nowrap;
 }
-/* The controls (2026-11-25 user decision: the talk's tools step back): round buttons of the window's glass, 44 px,
-   showing their marks only, in the order 隠す · ログ · 高速送り; their words are their names for screen readers and
-   voice control (dialogue-tool-word). */
+/* The controls (2026-11-25 user decisions: the talk's tools step back, under the window): a row at the window's lower
+   left, below it, of round buttons of the window's glass, 44 px, showing their marks only, in the order 隠す · ログ ·
+   高速送り; their words are their names for screen readers and voice control (dialogue-tool-word). The window stands
+   that much higher above the scene's foot. */
 .dialogue-controls {
   flex: none;
+  align-self: flex-start;
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-left: auto;
+  gap: 8px;
+  margin: 8px 0 0 4px;
 }
 .dialogue-controls .text-button {
   display: inline-flex;
@@ -90,8 +96,8 @@
   white-space: nowrap;
 }
 @container vn-window (width < 24em) {
-  .vn-window-head { gap: 4px; padding: 0 4px 0 8px; }
-  .vn-window-head > .speaker { padding: 5px 40px 5px 12px; font-size: 14px; }
+  .vn-window-head { padding: 0 8px; }
+  .vn-window-head > .speaker { padding: 4px 14px 5px; font-size: 14px; }
 }
 /* 高速送り while on: filled with the name band's blue, a white mark (with its 「高速送り中」 and aria-pressed). */
 .dialogue-controls .text-button[aria-pressed="true"] {

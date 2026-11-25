@@ -1,22 +1,23 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { DialogueLog, type DialogueLogEntry } from "./DialogueLog";
 import { NameCutInPlate } from "./NameCutIn";
+import type { NameBand } from "./name-band";
 import { REMEMBERED_MARK, type NameCutIn } from "./speaker-plate";
 import { DIALOGUE_TOOLS_ATTRIBUTE } from "./scene-tap";
 import { AutoAdvanceButton, type useAutoAdvance } from "./useAutoAdvance";
 import "./dialogue-controls.css";
 
 /**
- * The dialogue window's head (UI redesign §3.3, decision H): the speaker's
- * name band and the window's controls in one row on the window's top edge, which
- * it straddles by a fixed 22 px. The band takes what the controls leave and
- * its name wraps there, so a long name never runs under the controls; the head
- * then grows down into the window, never upward. The band is part of the
- * window (a tap on it reads on, as on the window); the controls are not.
+ * The dialogue window's head (UI redesign §3.3, decision H): the speaker's name band on the window's top edge, which it
+ * straddles (--vn-head-overhang). The band stands over the speaker on the stage, in the colours of their clothes
+ * (`band`, useNameBand; 2026-11-25 user decision), and stays inside the window; a long name wraps and the head grows
+ * down into the window, never upward. The band is part of the window (a tap on it reads on, as on the window). The
+ * window's controls are under the window (DialogueControls), not here.
  */
-export function DialogueWindowHead({ speaker, controls, narration = false, remembered = false, plateClassName, cutIn }: {
+export function DialogueWindowHead({ speaker, band, narration = false, remembered = false, plateClassName, cutIn }: {
   speaker: ReactNode;
-  controls: ReactNode;
+  /** Where the band stands and its colours (name-band.ts); without it, at the window's left in the window's blue. */
+  band?: NameBand;
   /**
    * The line is the narration (「旅の風景」): no band at all (2026-11-25 user decision: words no one says need no name over
    * them); the log still names it.
@@ -31,25 +32,29 @@ export function DialogueWindowHead({ speaker, controls, narration = false, remem
   /** The line's name plate while it lasts (`# cutin: name`, useNameCutIn): shown just above the head. */
   cutIn?: NameCutIn;
 }) {
-  return <div className="vn-window-head">
+  // Over no one: -1 holds it at the left (dialogue-controls.css).
+  const at = { "--band-x": band?.x === undefined ? -1 : Math.round(band.x * 1000) / 1000 } as CSSProperties;
+  const colours = band?.fill ? { "--band-fill": band.fill, "--band-edge": band.edge, "--band-ink": band.ink } as CSSProperties : undefined;
+  return <div className="vn-window-head" style={at}>
     <NameCutInPlate cutIn={cutIn} />
-    {speaker && !narration && <div className={["speaker", plateClassName].filter(Boolean).join(" ")}>
+    {speaker && !narration && <div className={["speaker", plateClassName].filter(Boolean).join(" ")} style={colours}>
       {speaker}
       {remembered && <span className="speaker-remembered" data-testid="speaker-remembered">
         <span className="sr-only">（</span>{REMEMBERED_MARK}<span className="sr-only">）</span>
       </span>}
     </div>}
-    {controls}
   </div>;
 }
 
 /**
- * Presentation-only tools in the window's head, in this order: 「隠す」 (U6; a
+ * Presentation-only tools of the talk, in a row under its window at the left
+ * (2026-11-25 user decision: the window rises a little, the tools below it, the
+ * name band free to stand over the speaker), in this order: 「隠す」 (U6; a
  * sightseeing guide's too since 2026-11-14), 「ログ」, 「高速送り」, a group named
- * 「会話の操作」. Round buttons of the window's glass showing their marks only
- * (2026-11-25 user decision: the talk's tools step back); their words stay as
- * their names for screen readers and voice control (dialogue-controls.css). A tap
- * in the gaps between them is a near miss, not a tap on the scene.
+ * 「会話の操作」. Round buttons of the window's glass showing their marks only;
+ * their words stay as their names for screen readers and voice control
+ * (dialogue-controls.css). A tap in the gaps between them is a near miss, not a
+ * tap on the scene. They come after the line in the reading order.
  */
 export function DialogueControls({ close, entries, auto }: {
   close: ReactNode;
