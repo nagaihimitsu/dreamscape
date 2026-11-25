@@ -95,6 +95,15 @@
   --ds-glass-mark-hover: rgba(255, 255, 255, 0.14);
   --ds-glass-mark-on: rgba(255, 255, 255, 0.24);
   --ds-glass-mark-full: #ffffff; /* a white mark at its fullest: one that is on, the eye that shows the window again */
+  /* The night over the city (the night screen and its card, 2026-11-25): the night colour, the dusk it deepens from, the veil
+     over the city's picture (--ds-on-slate keeps 9:1 or more on it over any picture) and a pane of glass on it (a secondary
+     button, its white words at 7:1 or more). */
+  --ds-night: #111a2f;
+  --ds-night-dusk: #3a416c;
+  --ds-night-veil: rgba(17, 26, 47, 0.84);
+  --ds-night-veil-dusk: rgba(58, 65, 108, 0.6);
+  --ds-night-glass: rgba(255, 255, 255, 0.1);
+  --ds-night-glass-hover: rgba(255, 255, 255, 0.18);
   /* Motion of the UI's feedback: short, transform and opacity only, and never holding
      input back. Each animation that uses these stops, in its own stylesheet, under
      prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
@@ -120,26 +129,35 @@ body {
   margin: 0;
 }
 
-/* The glass surfaces over a scene (--ds-glass-*): free time's cards over the city and a quiz's result card over its
-   place. What lies on them was written for the parchment, so its colours are pointed at the glass's here (ink, muted
-   ink, a pressable's ground, the chosen ground, the hairlines); a dialog opened from inside one keeps the parchment's
-   (below). The glass itself is the surface's ::before, so its feathered edge never fades the words or a focus ring. */
+/* The glass surfaces over a scene (--ds-glass-*): free time's cards over the city, a quiz's panels over its place (its
+   question, explanation and reasoning, its result's card) and the night's (night-rest.css). What lies on them was written
+   for the parchment, so its colours are pointed at the glass's here (ink, muted ink, a pressable's ground, the chosen
+   ground, the hairlines); a dialog opened from inside one keeps the parchment's (below). */
 .photo-menu .place-card,
 .photo-free-time .photo-menu-note,
 .photo-free-time .free-time-extras,
 .photo-free-time .photo-menu .travel-rentals,
-.battle-result-card {
+.battle-result-card,
+.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
   --ds-ink: var(--ds-glass-ink);
   --ds-ink-muted: var(--ds-glass-muted);
   --ds-parchment: var(--ds-glass-press);
   --ds-parchment-2: var(--ds-glass-chosen);
   --ds-parchment-line: var(--ds-glass-line);
+  color: var(--ds-ink);
+}
+/* A pane that does not scroll: the glass is its ::before, so its feathered edge never fades the words or a focus ring. (A
+   pane that scrolls, the quiz's panel, is the glass itself: battle.css.) */
+.photo-menu .place-card,
+.photo-free-time .photo-menu-note,
+.photo-free-time .free-time-extras,
+.photo-free-time .photo-menu .travel-rentals,
+.battle-result-card {
   position: relative;
   isolation: isolate;
   border: 0;
   border-radius: var(--ds-glass-radius);
   background: none;
-  color: var(--ds-ink);
   box-shadow: none;
 }
 :is(.photo-menu .place-card, .photo-free-time .photo-menu-note, .photo-free-time .free-time-extras,
@@ -162,9 +180,10 @@ body {
   mask-composite: intersect;
   pointer-events: none;
 }
-/* A dialog opened from a glass surface (a tour's booking, the shop, the rentals) is parchment again (the :root values). */
+/* A dialog opened from a glass surface (a tour's booking, the shop, the rentals, a word's window) is parchment again (the
+   :root values). */
 :is(.photo-menu .place-card, .photo-free-time .free-time-extras, .photo-free-time .photo-menu .travel-rentals,
-  .battle-result-card) dialog {
+  .battle-result-card, .battle-screen .battle-paper, .observation-detail) dialog {
   --ds-ink: #3b2f2a;
   --ds-ink-muted: #6b5a4a;
   --ds-parchment: #fbf3e6;

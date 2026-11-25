@@ -396,18 +396,30 @@
     overscroll-behavior: contain;
     margin: 0;
     padding: 0 16px calc(12px + env(safe-area-inset-bottom, 0px));
-    border: 1px solid var(--ds-parchment-line);
-    border-bottom: 0;
-    border-radius: 16px 16px 0 0;
-    background: var(--ds-parchment-2);
-    box-shadow: 0 -4px 18px rgba(20, 24, 32, 0.28);
+    /* The light glass over the picture (2026-11-25 user decision, as the quiz's panels): the place shows on, softened,
+       behind the clue's words, its colours the glass's. It scrolls, so the sheet is the glass itself; its heading held at
+       the top keeps the glass over the words scrolled behind it. */
+    --ds-ink: var(--ds-glass-ink);
+    --ds-ink-muted: var(--ds-glass-muted);
+    --ds-parchment: var(--ds-glass-press);
+    --ds-parchment-2: var(--ds-glass-chosen);
+    --ds-parchment-line: var(--ds-glass-line);
+    border: 0;
+    border-radius: var(--ds-glass-radius) var(--ds-glass-radius) 0 0;
+    background: var(--ds-glass-bg);
+    color: var(--ds-ink);
+    box-shadow: none;
+    -webkit-backdrop-filter: var(--ds-glass-blur);
+    backdrop-filter: var(--ds-glass-blur);
   }
   .mobile-observation-active .observation-detail .clue-heading {
     position: sticky;
     z-index: 1;
     top: 0;
     padding-top: 6px;
-    background: var(--ds-parchment-2);
+    background: var(--ds-glass-bg);
+    -webkit-backdrop-filter: var(--ds-glass-blur);
+    backdrop-filter: var(--ds-glass-blur);
   }
   .mobile-observation-active .observation-detail .clue-kind {
     margin: 0;
