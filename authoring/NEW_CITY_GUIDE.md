@@ -422,7 +422,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 ### 手順15. アルバムの絵
 
 - 目的と前に要るもの：思い出の場面を、アルバムに残る1枚の絵（横長 3:2）にする。手順10の初稿（どの行で撮るか）の後。
-- 作るもの：`<旅行編>/public/assets/album/<ID>.webp`（登録も出典も要らない）と、行の `# photo: <ID>`（任意で `# photo_caption:`・`# photo_show: large`。呼び戻しは `# recall: <ID>`）。札は絵を置いてから書く。
+- 作るもの：`<旅行編>/public/assets/album/<ID>.webp`（登録も出典も要らない）と、行の `# photo: <ID>`（任意で `# photo_caption:`・小さく見せるだけの `# photo_show: small`。呼び戻しは `# recall: <ID>`）。札は絵を置いてから書く。
 - 頼み方・受け取り方と決まり：[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章。確かめ方：`npm run content:build`（ない ID、ID にならないファイル名、重なる ID で止まる。どの札も使わない絵は注意）。
 - インド編では：アルバムに25枚（#99）。
 

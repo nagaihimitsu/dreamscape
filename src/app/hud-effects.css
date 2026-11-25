@@ -147,3 +147,17 @@
   .hud-save-ribbon { display: none; }
   .hud-save-mark { animation: hud-save-highlight 700ms ease-out both; }
 }
+
+/* A photo's print lands on ≡メニュー (PhotoShowFlight, 2026-11-25): as its flight ends, the button gives a small bounce. */
+.hud-tool[data-photo-landing] {
+  animation: hud-photo-landing 420ms 560ms var(--ease-out) both;
+}
+@keyframes hud-photo-landing {
+  0%, 100% { transform: none; }
+  35% { transform: scale(1.14); }
+  65% { transform: scale(0.96); }
+}
+.reduce-motion .hud-tool[data-photo-landing] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hud-tool[data-photo-landing] { animation: none; }
+}

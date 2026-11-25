@@ -31,6 +31,7 @@ import { ClueRecordedNotice, type ClueNoticeWord } from "./ClueRecordedNotice";
 import { ItemGainNotice } from "./ItemGainNotice";
 import { ItemShowFlight } from "../components/ItemShow";
 import { ItemOutFlight } from "../components/ItemOut";
+import { PhotoShowFlight, type PrintFlight } from "../components/PhotoShow";
 import type { ItemShowLeave } from "./useItemShowLeave";
 import type { SessionToast } from "./useGameSession";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
@@ -43,6 +44,8 @@ const mapCities = (): MapCity[] => getCities().map((city) => {
   return { hotelPlaceId: travelSettings.hotelPlaceId, places: travel.places };
 });
 
+/** How long ≡メニュー's bounce as a photo's print lands plays, its flight included (milliseconds; hud-effects.css). */
+const PHOTO_LANDING_MS = 1100;
 /** How long a save's ribbon plays on ≡メニュー (milliseconds; hud-effects.css). */
 const SAVE_MARK_MS = 900;
 
@@ -70,6 +73,8 @@ type MenuActions = {
   saveMark?: number;
   /** 「旅の記録」: the journey's 体験 and 写真, city by city (TravelLog.tsx; 2026-11-19, アルバム made one with it). */
   onRecords: () => void;
+  /** A photo taken that 旅の記録's 「写真」 has not shown yet (2026-11-25): a dot on ≡メニュー and on 「旅の記録」. */
+  recordsNew?: boolean;
   /** 「ノート」: 旅のことば and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20); none for a journey with neither. */
   onNote?: () => void;
   /** Its name: 「ノート」, or its page's name for a note of one page (noteName). */
@@ -103,7 +108,7 @@ const noop = () => undefined;
  * show in the same place for a moment, the clue's word (ClueRecordedNotice) and the item notices waiting behind them.
  */
 export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa, replaced = 0, seenItemIds, onItemsSeen, noteNew = [], holdNotices = false,
-  itemFlight = null, itemOutFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, onWearOutfit, ...actions }: {
+  itemFlight = null, itemOutFlight = null, photoFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, onWearOutfit, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
   /** 「服」's choice (2026-11-20; outfits.ts wearOutfit): an outfit bought, or 普段の服 (null). */
   onWearOutfit?: (outfitId: string | null) => void;
@@ -138,6 +143,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   itemFlight?: ItemShowLeave | null;
   /** A line's item taken out on its way back (`# item_out:`, GameApp's useItemShowLeave): into the bag when held and shown, else it fades. */
   itemOutFlight?: ItemShowLeave | null;
+  /** A photo just taken whose large print's line has gone (GameApp, 2026-11-25): the print flies into ≡メニュー, which bounces as it lands. */
+  photoFlight?: PrintFlight | null;
 } & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
   const shownClock = clock ?? game.travel;
@@ -226,7 +233,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
           newIds={newItemIds} onSeen={() => onItemsSeen?.(items.map((item) => item.id))} />
         <nav className="hud-tools" aria-label="旅の操作">
           <span id={HUD_SCREEN_TOOL_ID} className="hud-screen-tool" />
-          <HudMenu {...actions} noteNew={noteNew} />
+          <HudMenu {...actions} noteNew={noteNew} photoMark={photoFlight?.key} />
         </nav>
       </div>
       {/* One notice under the header at a time: the session's word first, then the clue's, then 「…を手に入れました」. */}
@@ -240,6 +247,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
       {coinsFlying && <HudFlight key={`coins-${budgetCue?.count}`} kind="coin" count={coins} to={budgetRef} />}
       {starsFlying && <HudFlight key={`stars-${apCue?.count}`} kind="star" count={stars} to={apRef} />}
       {itemFlight && <ItemShowFlight key={itemFlight.key} itemId={itemFlight.itemId} toBag={itemFlight.held && shown} />}
+      {photoFlight && <PhotoShowFlight key={`photo-${photoFlight.key}`} flight={photoFlight} toMenu={view !== "quiet"} />}
       {itemOutFlight && <ItemOutFlight key={`out-${itemOutFlight.key}`} itemId={itemOutFlight.itemId} toBag={itemOutFlight.held && shown} />}
     </div>
   );
@@ -326,9 +334,12 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * their names;
  * a save that succeeded (`saveMark`) drops a small ribbon onto ≡メニュー, which fades.
  */
-function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノート", onScreenCredits, onSettings, onReturnToFreeTime,
-  noteNew }: MenuActions & { noteNew: readonly string[] }) {
+function HudMenu({ onSaveLoad, saveMark = 0, onRecords, recordsNew = false, onNote, noteLabel = "ノート", onScreenCredits, onSettings,
+  onReturnToFreeTime, noteNew, photoMark }: MenuActions & { noteNew: readonly string[]; photoMark?: number }) {
   const newIn = noteNew.join("と");
+  const menuNewIn = [...(recordsNew ? ["旅の記録"] : []), ...noteNew].join("と");
+  // A photo's print lands on the button as its flight ends (PhotoShowFlight): the button bounces (hud-effects.css).
+  const photoLanding = useCuePlaying(photoMark, PHOTO_LANDING_MS);
   const [open, setOpen] = useState(false);
   const savePlaying = useCuePlaying(saveMark, SAVE_MARK_MS);
   const group = useRef<HTMLDivElement>(null);
@@ -393,6 +404,7 @@ function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノ
         ref={gear}
         type="button"
         className="hud-tool fx-host"
+        data-photo-landing={photoLanding || undefined}
         data-testid="hud-menu"
         aria-expanded={open}
         aria-controls="hud-menu-panel"
@@ -403,13 +415,13 @@ function HudMenu({ onSaveLoad, saveMark = 0, onRecords, onNote, noteLabel = "ノ
         }}
       >
         <Icon name="menu" /><span className="hud-tool-word">メニュー</span>
-        {newIn && <NewDot label={`${newIn}に新しい項目あり`} />}
+        {menuNewIn && <NewDot label={`${menuNewIn}に新しい項目あり`} />}
         {savePlaying && <span key={saveMark} className="hud-save-mark" aria-hidden="true"><span className="hud-save-ribbon" /></span>}
       </button>
       <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
         <button type="button" onClick={choose(onSaveLoad)}><Icon name="save" />セーブ・ロード</button>
         <hr className="hud-menu-rule" />
-        <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
+        <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録{recordsNew && <NewDot label="新しい写真あり" />}</button>
         {onNote && <button type="button" onClick={choose(onNote)}><Icon name="book" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>}
         <hr className="hud-menu-rule" />
         {onScreenCredits && <button type="button" onClick={choose(onScreenCredits)}><Icon name="credit" />画面の出典</button>}
