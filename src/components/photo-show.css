@@ -4,7 +4,8 @@
    in the area below the header, below the notices under the header (--notices-h, as the item card). The picture keeps
    its own ratio and fits within the width and the upper part of the scene, so the window below stays readable. It takes
    no taps (a tap reads the line on, as anywhere on the scene). The album's pictures are the author's own art (never
-   credited), so a print just taken may develop through a filter. */
+   credited), so a print just taken may develop through a filter. The veil dims the whole scene, behind the header too
+   (2026-11-25 user decision, after an iPhone: the band behind the header was left brighter than the dimmed scene). */
 
 :root {
   --photo-print-margin: #fbfaf6; /* the print's paper */
@@ -15,11 +16,11 @@
 .photo-show-layer {
   position: absolute;
   z-index: 1;
-  inset: var(--scene-top, 0px) 0 0;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: max(clamp(12px, 4dvh, 40px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
+  padding: calc(var(--scene-top, 0px) + max(clamp(12px, 4dvh, 40px), calc(var(--notices-h, 0px) + 8px))) 16px 0;
   background: var(--stage-photo-veil);
   pointer-events: none;
   animation: stage-fade-in var(--motion-scene) var(--ease-out);
