@@ -204,6 +204,9 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
             }}>
             <span className="photo-card-photo">
               {face.photo}
+              {face.kinds !== "none" && <span className={`photo-card-kind is-${face.kinds}`} aria-hidden="true">
+                {face.kinds !== "date" && <Icon name="book" />}{face.kinds !== "story" && <Icon name="heart" />}
+              </span>}
               {face.top && <span className="photo-card-chip is-top" aria-hidden="true">{face.top}</span>}
               {face.bottom && <span className="photo-card-chip is-bottom" aria-hidden="true">{face.bottom}</span>}
             </span>
@@ -222,8 +225,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
 }
 
 /**
- * What a card shows: its name, its photo or plain tile, its marks over the photo (top and bottom), its fill (what the
- * place holds), whether a swipe up takes it (takesSwipe: a place's departing, or at the current place starting there;
+ * What a card shows: its name, its photo or plain tile, its marks over the photo (top and bottom), what the place holds
+ * (a book for the story, a heart for a date, at the photo's corner; 2026-11-25), whether a swipe up takes it (takesSwipe: a place's departing, or at the current place starting there;
  * 「待機」's waiting; 「ホテルに戻る」's resting; shown by the swipe cue's motion, no words) and its testid.
  */
 function cardFace(game: GameState, card: RowCard, recommendedId: string | null | undefined, nearestId?: string | null): {
