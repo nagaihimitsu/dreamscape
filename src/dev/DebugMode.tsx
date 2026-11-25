@@ -21,8 +21,8 @@ import { PrototypePreview } from "./PrototypePreview";
 import { OccasionCandidatesView } from "./OccasionCandidatesView";
 import { EffectsRoom } from "./EffectsRoom";
 import { MiniGameRoom } from "./MiniGameRoom";
-import { debugClueGroups, debugClueIds, debugFlagGroups, debugFlagIds } from "./debug-edits";
-import { DebugClockFields, DebugClueChooser, DebugEditDialog, DebugFlagChooser, DebugStageField } from "./DebugStateTools";
+import { debugClueGroups, debugClueIds, debugEpisodes, debugFlagGroups, debugFlagIds } from "./debug-edits";
+import { DebugClockFields, DebugClueChooser, DebugEditDialog, DebugEpisodeChooser, DebugFlagChooser, DebugStageField } from "./DebugStateTools";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -61,6 +61,7 @@ export default function DebugMode() {
   const options = debugTargets(cityId);
   const flagGroups = useMemo(() => debugFlagGroups(cityId), [cityId, dataMode]);
   const clueGroups = useMemo(() => debugClueGroups(cityId), [cityId, dataMode]);
+  const cityEpisodes = useMemo(() => debugEpisodes(cityId), [cityId, dataMode]);
   const [session, setSession] = useState<Session | null>(null);
   // The Debug bar's 「フラグ・時刻・段階」 (DebugEditDialog) and its way into the running game (GameApp sets it).
   const [editing, setEditing] = useState(false);
@@ -106,11 +107,13 @@ export default function DebugMode() {
   function update(next: DebugSettings) {
     // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it. The flags
     // and clues chosen belong to the city's journey (another city keeps those of its journey); the day and time, to any scene.
-    const { step: _step, ...rest } = next;
+    // The episodes finished first belong to the city, from the journey's start (a cleared city has finished them all).
+    const { step: _step, episodes, ...rest } = next;
+    const keepEpisodes = !!episodes?.length && next.cityId === settings.cityId && next.progress === "initial";
     const keepStep = !next.step || (next.scene === "tour" && next.id === settings.id && next.cityId === settings.cityId);
     const offered = next.flags?.length && next.cityId !== settings.cityId ? debugFlagIds(next.cityId ?? defaultDebugCityId) : null;
     const offeredClues = next.clues?.length && next.cityId !== settings.cityId ? debugClueIds(next.cityId ?? defaultDebugCityId) : null;
-    setSettings({ ...rest, ...(keepStep && next.step ? { step: next.step } : {}),
+    setSettings({ ...rest, ...(keepStep && next.step ? { step: next.step } : {}), ...(keepEpisodes ? { episodes } : {}),
       ...(offered ? { flags: next.flags!.filter((flag) => offered.includes(flag)) } : {}),
       ...(offeredClues ? { clues: next.clues!.filter((clue) => offeredClues.includes(clue)) } : {}) });
     setCopyMessage("");
@@ -290,6 +293,8 @@ export default function DebugMode() {
             <option value="positive">成功寄り（抽選値 0）</option><option value="negative">失敗寄り（抽選値 9999）</option>
           </select>
         </label>
+        {settings.progress === "initial" && <DebugEpisodeChooser episodes={cityEpisodes} cityNameJa={getCityContent(cityId).city.nameJa}
+          chosen={settings.episodes ?? []} onChange={(episodes) => update({ ...settings, episodes })} />}
         <DebugFlagChooser groups={flagGroups} cityId={cityId} chosen={settings.flags ?? []} onChange={(flags) => update({ ...settings, flags })} />
         <DebugClueChooser groups={clueGroups} cityId={cityId} chosen={settings.clues ?? []} onChange={(clues) => update({ ...settings, clues })} />
         </>}

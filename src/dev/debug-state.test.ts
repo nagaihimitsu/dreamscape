@@ -7,7 +7,8 @@ import { advanceDate, chooseDate, validateGameState } from "../domain/game";
 import { screenFor } from "../domain/screen";
 import { debugExampleUrls, debugSessionExampleUrls } from "../../scripts/dev/screen-gallery";
 import { installPreparingJourneyTestCities } from "./test-cities";
-import { parseDebugQuery, type DebugQuery } from "./debug-query";
+import { debugQueryString, parseDebugQuery, settingsQuery, type DebugQuery } from "./debug-query";
+import { debugEpisodes } from "./debug-edits";
 import { createDebugState, debugSceneLocation, debugTargets, defaultDebugSettings, firstDebugTarget, resolveDebugLaunch, type DebugSettings, type DebugTarget } from "./debug-state";
 import { installTourTestCity, testTour } from "./test-tours";
 
@@ -402,3 +403,49 @@ describe("the URL list in docs/10", () => {
   });
 });
 
+
+// 2026-11-25 user request: 「〇〇のエピソードを終えた状態を得る」 for a scene whose `# when: episodes <city> >= 1` the journey's start lacks.
+describe("Debug's episodes finished first (episodes=…; from the journey's start)", () => {
+  const launch = (search: string) => {
+    const parsed = parseDebugQuery(search);
+    if (parsed.kind !== "launch") throw new Error(parsed.kind === "error" ? parsed.message : `not a launch URL: ${search}`);
+    const resolved = resolveDebugLaunch(parsed.query);
+    if (resolved.kind !== "scene") throw new Error(`not a scene: ${search}`);
+    return resolved.settings;
+  };
+  const indiaGate = "?debug&city=delhi&scene=date&target=gt_delhi_date_india_gate&progress=initial";
+
+  it("lists the city's episodes without its finale, and opens a date that needs one finished", () => {
+    expect(debugEpisodes("delhi").map((episode) => episode.id))
+      .toEqual(["gt_delhi_main_red_fort", "gt_delhi_main_qutb_minar", "gt_delhi_main_humayun_tomb", "gt_delhi_main_jama_masjid"]);
+    expect(() => createDebugState(launch(indiaGate))).toThrow("デートの条件を満たしていません：デリーのエピソードを1つ以上終えた");
+    const settings = launch(`${indiaGate}&episodes=gt_delhi_main_red_fort&ap=5&flags=gt_delhi_golgappa_sick`);
+    expect(settings.episodes).toEqual(["gt_delhi_main_red_fort"]);
+    const state = createDebugState(settings);
+    expect(validateGameState(state)).toEqual(state);
+    expect(state.completedEpisodeIds).toEqual(["gt_delhi_main_red_fort"]);
+    expect(state.activeDate?.dateId).toBe("gt_delhi_date_india_gate");
+    expect(state.storyProgress.flags).toContain("gt_delhi_golgappa_sick");
+    // The date's own cost is taken from Debug's AP, set after the episode's rewards.
+    expect(state.ap).toBeLessThan(5);
+    // The URL keeps the episodes.
+    expect(debugQueryString(settingsQuery("real", settings))).toContain("&episodes=gt_delhi_main_red_fort&");
+  }, 120_000);
+
+  it("opens the hotel's scene that needs an episode finished", () => {
+    const state = createDebugState(launch("?debug&city=delhi&scene=hotel&target=gt_delhi_hotel_homework&progress=initial&episodes=gt_delhi_main_qutb_minar"));
+    expect(state.activeEncounter?.encounterId).toBe("gt_delhi_hotel_homework");
+  }, 120_000);
+
+  it.each([
+    ["&episodes=gt_delhi_finale", "エピソード「gt_delhi_finale」はデリーのフィナーレです。"],
+    ["&episodes=gt_agra_main_taj_mahal", "エピソード「gt_agra_main_taj_mahal」はデリーのエピソードではありません"],
+  ])("refuses an episode Debug does not offer for the city: %s", (item, message) => {
+    expect(() => launch(`${indiaGate}${item}`)).toThrow(message);
+  });
+
+  it("refuses episodes after the city is cleared (it has finished them all)", () => {
+    expect(() => launch("?debug&city=delhi&scene=date&target=gt_delhi_date_india_gate&episodes=gt_delhi_main_red_fort"))
+      .toThrow("episodes は旅の進行が「旅の開始時」（progress=initial）のときに使います。");
+  });
+});
