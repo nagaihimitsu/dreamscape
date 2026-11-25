@@ -12,6 +12,7 @@
 import { describe, expect, it } from "vitest";
 import { battles, dates, episodes, getCityContent, journeyConfig, rewardRules } from "../../../src/content";
 import { newJourney } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { advanceBattle, answerBattle, getActiveBattleContent, getReasoningContext, selectReasoningClue, submitBattleEvidence } from "../../../src/domain/battle";
 import { leaveBattleResult } from "../../../src/domain/chapter";
 import {
@@ -21,7 +22,7 @@ import {
 import { advanceCityEpilogue, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, confessionResult, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { claimPendingRewards } from "../../../src/domain/rewards";
-import { advanceTourismGuide, skipTourismGuide } from "../../../src/domain/tourism";
+import { advanceTourismGuide } from "../../../src/domain/tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "../../../src/domain/travel-destinations";
 import { applyPlayerAction } from "../../../src/domain/player-action";
 import { beginTravelEvent, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
@@ -109,7 +110,7 @@ function playMilano(allCorrect: boolean): GameState {
       const { landmarkId } = s.activeTourism;
       if (!guidesOpened.includes(landmarkId)) guidesOpened.push(landmarkId);
       const before = s;
-      s = act(s, (current) => allCorrect ? advanceTourismGuide(current, current.revision) : skipTourismGuide(current, current.revision));
+      s = act(s, (current) => advanceTourismGuide(current, current.revision));
       if (s.activeTourism?.phase !== "guide") guideEndRewards.set(landmarkId, s.claimedRewardIds.filter((id) => !before.claimedRewardIds.includes(id)));
     } else if (s.activeEncounter) s = encounterStep(s, allCorrect);
     else if (s.activeTourism) s = act(s, (current) => proceedFromTourism(current, current.revision, roll));
@@ -127,13 +128,13 @@ function playMilano(allCorrect: boolean): GameState {
   for (const battleId of specialBattles) {
     const landmarkId = battles.find((battle) => battle.id === battleId)!.landmarkId!;
     // The first visit opens the special battle's guide like any sightseeing stop; reading it to the end
-    // credits its reward at once (skipping does not), and the reward is kept through the city.
+    // credits its reward at once, and the reward is kept through the city.
     expect(guidesOpened).toContain(landmarkId);
     expect(guideRewards(battleId)).toHaveLength(1);
-    expect(guideEndRewards.get(landmarkId)).toEqual(allCorrect ? guideRewards(battleId) : []);
+    expect(guideEndRewards.get(landmarkId)).toEqual(guideRewards(battleId));
     for (const rewardId of guideRewards(battleId))
-      expect(s.claimedRewardIds.includes(rewardId), rewardId).toBe(allCorrect);
-    expect(s.completedGuideIds.includes(landmarkId)).toBe(allCorrect);
+      expect(s.claimedRewardIds.includes(rewardId), rewardId).toBe(true);
+    expect(s.completedGuideIds).toContain(landmarkId);
   }
   // The Galleria's observation runs its fortune-teller encounter before the battle; finishing it earns
   // the Galleria's first-win reward even after wrong answers (one shared reward ID, never twice).
@@ -142,7 +143,7 @@ function playMilano(allCorrect: boolean): GameState {
   expect(new Set(s.claimedRewardIds).size).toBe(s.claimedRewardIds.length);
   // Every battle pays its first completion and first clear (Last Supper +4 chapter, finale +3 city clear);
   // read guides (the four stops and the special battles B and C) and first wins add 1 each.
-  expect(totalAp(s)).toBe(allCorrect ? 32 : 20);
+  expect(totalAp(s)).toBe(allCorrect ? 32 : 26);
   s = act(s, (current) => startCityEpilogue(current, CITY, current.revision));
   while (s.activeEpilogue) s = act(s, (current) => advanceCityEpilogue(current, current.revision));
   expect(s.viewedEpilogueCityIds).toContain(CITY);
@@ -167,7 +168,7 @@ function playDate(initial: GameState, id: string, amount = 9999, picks = [0, 0])
 }
 
 describe("full Milan route", () => {
-  it("clears all seven battles from the map with skipped guides and wrong answers", () => {
+  it("clears all seven battles from the map with wrong answers", () => {
     playMilano(false);
   });
 

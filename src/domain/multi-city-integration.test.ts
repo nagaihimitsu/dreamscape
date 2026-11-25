@@ -3,6 +3,7 @@ import { effects, scenes } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
+import { readGuide } from "../../tests/fixtures/read-guide";
 import { departToNextCity, getNextCity } from "./city-travel";
 import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "./chapter";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, proceedFromTourism } from "./encounter";
@@ -13,7 +14,7 @@ import { installTestCity } from "../dev/test-cities";
 import { encounters } from "../content/encounters";
 import { itemUsableIn } from "./item-cities";
 import { choiceDisplay } from "./scene-effects";
-import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
+import { closeTourism, openTourism, startTourismBattle } from "./tourism";
 import { beginTravelEvent, waitForTravel } from "./travel-game";
 
 class MemoryStorage implements StorageLike {
@@ -147,7 +148,7 @@ describe("two registered cities through the real game runtime", () => {
     expect(saveGame(storage, cityState, after).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: cityState });
     expect(departToNextCity(cityState, cityState.revision)).toBe(cityState);
-    cityState = skipTourismGuide(cityState, cityState.revision);
+    cityState = readGuide(cityState);
     cityState = proceedFromTourism(cityState, cityState.revision, () => 0);
     expect(cityState.activeEncounter?.encounterId).toBe("test_encounter");
     expect(departToNextCity(cityState, cityState.revision)).toBe(cityState);
@@ -173,7 +174,7 @@ describe("two registered cities through the real game runtime", () => {
     for (const [index, battleId] of ["test_special_b", "test_special_c"].entries()) {
       cityState = beginTravelEvent(cityState, battleId, "walk", cityState.revision);
       expect(cityState.activeTourism?.landmarkId).toBe(`${battleId}_landmark`);
-      cityState = skipTourismGuide(cityState, cityState.revision);
+      cityState = readGuide(cityState);
       cityState = startTourismBattle(cityState, cityState.revision);
       expect(cityState.activeBattle?.battleId).toBe(battleId);
       cityState = finishBattle(cityState);

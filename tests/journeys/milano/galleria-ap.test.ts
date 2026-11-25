@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { playBattleToResult } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, startTourismEncounter } from "../../../src/domain/encounter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { earnRewards, settlePendingAp } from "../../../src/domain/rewards";
-import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { startTourismBattle } from "../../../src/domain/tourism";
 
 const rewardId = "victory_galleria_first";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
@@ -18,7 +19,7 @@ describe("Galleria encounter and battle AP reward", () => {
     state = finishBattle(startTourismBattle(state, state.revision));
     state = leaveBattleResult(state, state.revision);
     state = startEpisode(state, "milano_galleria_episode");
-    state = skipTourismGuide(state, state.revision);
+    state = readGuide(state);
     state = restore({ ...state, ap: 12 });
     state = startTourismEncounter(state, "galleria_fortune", state.revision, () => 0);
     for (let i = 0; state.activeEncounter && i < 80; i++) {

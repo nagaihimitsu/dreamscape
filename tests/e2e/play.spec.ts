@@ -22,12 +22,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
-  // The window's head holds the harmless 「隠す」 as in every scene; 「案内をとばす（観察へ）」 lies apart, top left under the
-  // header, so a habitual tap on the head never ends the guide (2026-11-14, the user's decision after the phone UI audit).
+  // The window's head holds the harmless 「隠す」 as in every scene. The guide has no way to skip it (2026-11-25 user decision).
   await expect(page.getByTestId("tourism-guide").getByRole("button", { name: "会話ウィンドウを隠す", exact: true })).toBeVisible();
-  const skip = page.getByTestId("tourism-skip");
-  await expect(skip).toHaveText("案内をとばす（観察へ）");
-  expect((await skip.boundingBox())!.y, "「案内をとばす」 above the window").toBeLessThan((await page.getByTestId("tourism-guide").boundingBox())!.y);
   // Over the guide the header shows the place and time and ≡メニュー; the budget and AP wait for a choice (user decision 2026-11-11).
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
   await expect(page.getByLabel("残り0AP")).toBeHidden();

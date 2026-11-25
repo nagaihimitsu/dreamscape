@@ -37,7 +37,6 @@ import {
   leaveBattleResult,
 } from "../../../src/domain/chapter";
 import {
-  skipTourismGuide,
   startTourismBattle,
   openTourism,
   getTourismAvailability,
@@ -45,6 +44,7 @@ import {
 import { startCityEpilogue, advanceCityEpilogue } from "../../../src/domain/epilogue";
 import { meetEncounter } from "../../fixtures/encounter-moment";
 import { playInsertedScenes } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const restore = (state: GameState) => {
@@ -130,7 +130,7 @@ function finishEpisode(
   let state = startEpisode(initial, episode.id);
   if (episode.kind !== "city_finale") {
     expect(state.activeTourism?.landmarkId).toBe(episode.landmarkId);
-    state = skipTourismGuide(state, state.revision);
+    state = readGuide(state);
     state = startTourismBattle(state, state.revision);
   }
   return finishBattle(state, score);
@@ -375,7 +375,7 @@ describe("Milan's four episodes and distinct city finale", () => {
   it("funds optional dates and a deferred confession from zero-score city play; the confession is played once", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
-    expect(totalAp(state)).toBe(19);
+    expect(totalAp(state)).toBe(23);
     state = playDate(state, "milano_cafe_01", [0, 0]);
     state = playDate(state, "milano_walk_01", [0, 1]);
     state = playDate(state, "milano_invitation_01", [0]);
@@ -388,7 +388,7 @@ describe("Milan's four episodes and distinct city finale", () => {
       .toEqual({ available: false, reason: "このひとときは、もう思い出になりました。" });
     expect(startDate(state, "milano_confession_01")).toBe(state);
     expect(state.endingReached).toBe(false);
-    expect(totalAp(state)).toBe(11);
+    expect(totalAp(state)).toBe(15);
     expect(state.completedCityIds).toEqual(["milano"]);
   });
   it("changes the short city epilogue with the existing relationship, without advancing it", () => {

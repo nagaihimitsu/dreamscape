@@ -130,16 +130,11 @@ describe("scenario builders", () => {
     expect(() => completedCity("mihon", { after: notCleared })).toThrow(/都市クリア/u);
   });
 
-  it("reads or skips the guide of a main episode", () => {
-    const fresh = newJourney("sample_trip");
-    const read = finishEpisode(fresh, "smp_mihon_main_clock_tower", { guide: "read" });
-    const skipped = finishEpisode(fresh, "smp_mihon_main_clock_tower");
+  it("reads the guide of a main episode", () => {
+    const read = finishEpisode(newJourney("sample_trip"), "smp_mihon_main_clock_tower");
     expect(read).toMatchObject(noScene);
     expect(read.completedEpisodeIds).toEqual(["smp_mihon_main_clock_tower"]);
     expect(read.completedGuideIds.length).toBe(1);
-    expect(skipped.completedGuideIds).toEqual([]);
-    const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
-    expect(totalAp(read)).toBe(totalAp(skipped) + 1);
   });
 
   it("settles a map event at the battle result like the game screen", () => {

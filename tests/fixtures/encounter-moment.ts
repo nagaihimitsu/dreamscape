@@ -5,9 +5,10 @@ import {
 import { landmarks } from "../../src/content";
 import { advanceOccasion } from "../../src/domain/occasion";
 import type { Availability, GameState } from "../../src/domain/game";
-import { closeTourism, openTourism, skipTourismGuide } from "../../src/domain/tourism";
+import { closeTourism, openTourism } from "../../src/domain/tourism";
 import { finishTravelEventIfComplete } from "../../src/domain/travel-game";
 import { playBattleToResult, startEncounterScene } from "../../src/dev/scenario-builders";
+import { readGuide } from "./read-guide";
 
 // An encounter never starts from free time (that start was removed with the save
 // format v14; condition system decision 7). These helpers meet one at its
@@ -27,7 +28,7 @@ const landmarkOf = (encounterId: string): string => {
 export function observeLandmark(state: GameState, landmarkId: string): GameState {
   let next = state.activeTourism ? closeTourism(state, state.revision) : state;
   next = openTourism(next, landmarkId);
-  if (next.activeTourism?.phase === "guide") next = skipTourismGuide(next, next.revision);
+  if (next.activeTourism?.phase === "guide") next = readGuide(next);
   if (next.activeTourism?.landmarkId !== landmarkId || next.activeTourism.phase !== "exploring")
     throw new Error(`the observation of ${landmarkId} does not open in this state`);
   return next;

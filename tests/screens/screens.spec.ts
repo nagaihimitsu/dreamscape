@@ -29,7 +29,7 @@ type FlowScene = { scene: string; titleJa: string; descriptionJa: string; open: 
 const toBattle = async (page: Page) => {
   await ops.startJourney(page);
   await ops.goTo(page, "p_duomo");
-  await ops.skipGuideToBattle(page);
+  await ops.readGuideToBattle(page);
 };
 /** The Golden Triangle journey at the start of Agra (its arrival read), free time at the inn: where its tour is sold (tour stage 2a). */
 const toAgra = async (page: Page) => {

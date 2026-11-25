@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { landmarks, tourismClues } from "../content";
 import { createGame } from "../domain/game";
-import { discoverClue, openTourism, skipTourismGuide } from "../domain/tourism";
+import { discoverClue, openTourism } from "../domain/tourism";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "./index";
+import { readGuide } from "../../tests/fixtures/read-guide";
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -26,7 +27,7 @@ describe("tourism saves protect inconsistent input", () => {
     let state = openTourism(createGame(), landmark.id);
     expect(state.activeTourism?.landmarkId).toBe(landmark.id);
     if (kind.includes("clue")) {
-      state = skipTourismGuide(state, state.revision);
+      state = readGuide(state);
       const clue = tourismClues.find((item) => item.landmarkId === landmark.id)!;
       state = discoverClue(state, clue.id, state.revision);
     }

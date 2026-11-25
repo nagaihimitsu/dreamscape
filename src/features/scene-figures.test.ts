@@ -67,7 +67,7 @@ describe("a date's figures (RomanceScene): the India Gate date", () => {
 describe("a guide's figures (TourismScreen): the Red Fort", () => {
   const start = openTourismScene(cityStart("delhi"), "delhi_red_fort");
   const render = (game: GameState) => drawn(renderToStaticMarkup(createElement(TourismScreen, {
-    game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onSkip: nothing, onDiscover: () => false, onNotebook: nothing,
+    game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onDiscover: () => false, onNotebook: nothing,
     onBattle: nothing, onReplayGuide: nothing })));
 
   it("has her from the start, as before, and draws no one once she leaves (# leave: heroine)", () => {

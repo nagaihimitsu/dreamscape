@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, episodes } from "../../../src/content";
 import { playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { enterFreeTime, getEpisodeAvailability, getNextStoryBattle, startEpisode } from "../../../src/domain/chapter";
-import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { startTourismBattle } from "../../../src/domain/tourism";
 import { advanceBattle, answerBattle, selectReasoningClue, startBattle } from "../../../src/domain/battle";
 
 const roundTrip = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
@@ -14,7 +15,7 @@ const finish = (state: GameState) => roundTrip(playBattleToResult(state, { answe
 function completeEpisode(state: GameState, episodeId: string): GameState {
   state = startEpisode(state, episodeId);
   expect(state.activeTourism).not.toBeNull();
-  state = skipTourismGuide(state, state.revision);
+  state = readGuide(state);
   state = startTourismBattle(state, state.revision);
   state = finish(state);
   return enterFreeTime(state, state.revision);

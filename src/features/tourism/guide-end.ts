@@ -14,15 +14,6 @@ function partAfterGuide(landmark: GuidedLandmark, replay: boolean): VisitPart | 
 }
 
 /**
- * Where a sightseeing guide's 「案内をとばす」 leads, said after its words (2026-11-14, the phone UI audit): the part after
- * the guide (partAfterGuide). Nothing when the guide is the visit's last part.
- */
-export function guideSkipDestination(landmark: GuidedLandmark, replay: boolean): string {
-  const next = partAfterGuide(landmark, replay);
-  return next === "observe" ? "観察へ" : next === "battle" ? "クイズへ" : "";
-}
-
-/**
  * The words of the button on a guide's last line, which opens the part after it (partAfterGuide; 2026-11-16 user
  * decision: 「観察を始める」 also started the quiz of a landmark without an observation): 「観察を始める」 before the
  * observation, 「クイズへ進む」 before the quiz, 「次へ」 when the guide is the visit's last part.

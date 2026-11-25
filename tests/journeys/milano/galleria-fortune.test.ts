@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles } from "../../../src/content";
 import { firstCorrect, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, getTourismEncounterAvailability, proceedFromTourism, startTourismEncounter } from "../../../src/domain/encounter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
-import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { closeTourism, openTourism, startTourismBattle } from "../../../src/domain/tourism";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 // The Galleria's wish (galleria_fortune, a knot of places/milano_galleria.ink since 2026-11-13): met after the observation,
@@ -31,7 +32,7 @@ function enterGalleria(): GameState {
 
 function exploreGalleria(): GameState {
   const state = enterGalleria();
-  return restore(skipTourismGuide(state, state.revision));
+  return restore(readGuide(state));
 }
 
 /**

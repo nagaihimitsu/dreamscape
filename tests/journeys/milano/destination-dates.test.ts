@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { allRewardRules, dates, episodes as allEpisodes, progression } from "../../../src/content";
 import { conditionLeaves } from "../../../src/content/condition-schemas";
 import { nextMorning, playBattleToResult, withAp, withRelationship, wrongAnswer } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import {
   advanceDate, chooseDate, createGame, evaluateProgression, finishDate, getDateAvailability,
   isEventVisible, startDate, taggedDateScene, validateGameState, type GameState,
@@ -12,7 +13,7 @@ import { applyPlayerAction } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
 import { enterFreeTime, getNextStoryBattle, startEpisode } from "../../../src/domain/chapter";
 import { leaveBattle, startBattle } from "../../../src/domain/battle";
-import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { startTourismBattle } from "../../../src/domain/tourism";
 
 const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const ids = ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_san_satiro_date_01", "milano_starbucks_roastery_date_01", "milano_fondazione_prada_date_01", "milano_novecento_date_01"] as const;
@@ -51,7 +52,7 @@ function clearEpisode(initial: GameState, episodeId: string): GameState {
   state = startEpisode(state, episodeId);
   expect(state.activeTourism || state.activeBattle).toBeTruthy();
   if (state.activeTourism) {
-    state = skipTourismGuide(state, state.revision);
+    state = readGuide(state);
     state = startTourismBattle(state, state.revision);
   }
   state = finishBattle(state);
@@ -212,17 +213,17 @@ describe("real-place optional dates", () => {
 
   it("can visit all seven places once with finite zero-score travel rewards", () => {
     // This checkpoint was reached through every real episode and A/B/C battle,
-    // with every guide skipped and every quiz answered incorrectly.
+    // with every guide read and every quiz answered incorrectly.
     let state = checkpoints.at(-1)!;
     const totalAp = (game: GameState) => game.ap +
       game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
     expect(state.completedEpisodeIds).toEqual(episodes.map((episode) => episode.id));
     expect(state.completedCityIds).toContain("milano");
-    expect(state.completedGuideIds).toEqual([]);
+    expect(state.completedGuideIds).toHaveLength(4);
     expect(state.playedDateIds).toEqual([]);
     expect(state.battleRecords.every((record) => record.firstScore === 0)).toBe(true);
     const initialAp = totalAp(state);
-    expect(initialAp).toBe(19);
+    expect(initialAp).toBe(23);
 
     const route: readonly [string, [number, number]][] = [
       ["milano_novecento_date_01", [2, 0]],
@@ -247,7 +248,7 @@ describe("real-place optional dates", () => {
       expect(startDate(state, id)).toBe(state);
     }
     expect(spent).toBe(13);
-    expect(totalAp(state)).toBe(6);
+    expect(totalAp(state)).toBe(10);
     expect(state.pendingApRewards).toEqual([]);
     expect(state.playedDateIds).toEqual(route.map(([id]) => id));
     expect(state.memories).toHaveLength(7);

@@ -240,37 +240,7 @@ function recordVisit(state: GameState, landmarkId: string): string[] {
     : [...state.visitedLandmarkIds, landmarkId];
 }
 
-/**
- * 「とばす」 (4.7, decision 37): the guide reads on to its next choice and stops there (choose, then skip
- * again); with no choice ahead it closes, without counting as read (no AP, no # on_done:, no `guide`).
- */
-export function skipTourismGuide(
-  state: GameState,
-  expectedRevision: number,
-): GameState {
-  const active = state.activeTourism;
-  if (
-    state.revision !== expectedRevision ||
-    !active ||
-    active.phase !== "guide"
-  )
-    return state;
-  if (active.frame?.choices.length) return state;
-  const storyId = activeGuideStoryId(active);
-  if (active.frame && active.storyState && storyId) {
-    let step: StoryStep | undefined;
-    let current = { storyState: active.storyState, frame: active.frame };
-    for (let guard = 0; !current.frame.ended && !current.frame.choices.length && guard < 1000; guard++) {
-      step = continueStory(storyId, current.storyState, current.frame, state.memories, {}, state.inventory, sceneConditionReader(state));
-      current = { storyState: step.storyState, frame: step.frame };
-    }
-    if (step && current.frame.choices.length)
-      return { ...state, revision: state.revision + 1, activeTourism: fromGuide(active, step) };
-  }
-  return advanceOccasion(closeGuide(state, active));
-}
-
-/** Close the guide: to the observation, or (a landmark without one) to its battle. Not counted as read here. */
+/** Close the guide: to the observation, or (a landmark without one) to its battle. Not counted as read here (the caller records it). */
 function closeGuide(state: GameState, active: ActiveTourism): GameState {
   // In a visit's occasion (stage 3b) the guide is one main part: it closes, the occasion starts what follows (its order).
   if (state.occasion && !active.replay) return { ...state, revision: state.revision + 1, activeTourism: null };
@@ -329,7 +299,7 @@ export function advanceTourismGuide(
   };
 }
 
-/** Re-reading is available after a skip; its reward still has one stable ID. */
+/** Reading the guide again from the observation; its reward still has one stable ID. */
 export function replayTourismGuide(
   state: GameState,
   expectedRevision: number,

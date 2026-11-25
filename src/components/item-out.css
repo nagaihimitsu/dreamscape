@@ -18,11 +18,8 @@
   padding: max(clamp(10px, 3dvh, 28px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
   pointer-events: none;
 }
-/* Clear of what a scene keeps in the top left corner, drawn over this layer: the guide's 「案内をとばす」 (tourism.css: 8 px
-   under the header, 44 px tall; lower under 「仮画像です…」) and a date's reference note (romance-scene.css: its width
-   beside the portrait). */
-.vn-scene:has(> .guide-skip) > .item-out-layer { padding-top: max(60px, calc(var(--notices-h, 0px) + 8px)); }
-.image-placeholder-note ~ .vn-scene:has(> .guide-skip) > .item-out-layer { padding-top: max(92px, calc(var(--notices-h, 0px) + 8px)); }
+/* Clear of what a scene keeps in the top left corner, drawn over this layer: a date's reference note (romance-scene.css:
+   its width beside the portrait). */
 .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - 8px) + 16px); }
 @media (min-width: 701px) {
   .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + 16px); }

@@ -234,7 +234,7 @@ test("Milano kept from the title plays with the server stopped: the page, the pi
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expectPictures(page);
-  await ops.skipGuideToBattle(page);
+  await ops.readGuideToBattle(page);
   await playUntil(page, (state) => state.activeBattle?.phase === "question");
   await expect(page.getByTestId("answer-A")).toBeVisible();
   await expectPictures(page);

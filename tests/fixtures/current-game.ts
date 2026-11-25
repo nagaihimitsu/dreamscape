@@ -7,5 +7,5 @@ import { finishEpisode } from "../../src/dev/scenario-builders";
  * the `when` of Milan's ordinary dates asks for) and earns its four first-time rewards (4 AP).
  */
 export function seedCurrentFreeTime(initial: GameState = createGame()): GameState {
-  return finishEpisode(initial, "milano_duomo_episode", { guide: "read" });
+  return finishEpisode(initial, "milano_duomo_episode");
 }

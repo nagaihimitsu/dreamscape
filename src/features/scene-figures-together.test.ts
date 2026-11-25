@@ -65,7 +65,7 @@ describe("a date with two people opposite her (RomanceScene): Guru ka Taal, the 
 describe("a guide with two people opposite her (TourismScreen): the Red Fort", () => {
   const start = openTourismScene(cityStart("delhi"), "delhi_red_fort");
   const render = (game: GameState) => drawn(renderToStaticMarkup(createElement(TourismScreen, {
-    game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onSkip: nothing, onDiscover: () => false, onNotebook: nothing,
+    game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onDiscover: () => false, onNotebook: nothing,
     onBattle: nothing, onReplayGuide: nothing })));
 
   it("draws her and the two in a row", () => {

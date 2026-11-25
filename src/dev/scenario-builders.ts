@@ -33,7 +33,7 @@ import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueC
 import { completedDateCount, createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import {
   advanceTourismGuide, beginLandmarkGuide, chooseTourismGuide, clueRecordAllowed, getTourismAvailability, guideChoiceDisplay, openTourism, replayTourismGuide,
-  skipTourismGuide, startTourismBattle,
+  startTourismBattle,
 } from "../domain/tourism";
 
 /** The first shown, choosable choice of the open guide (stage 3a: a guide may have choices), if any. */
@@ -46,11 +46,6 @@ const firstEpilogueChoice = (state: GameState) =>
 const guideStep = (current: GameState) => {
   const choice = firstGuideChoice(current);
   return choice ? chooseTourismGuide(current, choice.index, current.revision) : advanceTourismGuide(current, current.revision);
-};
-/** Skip the open guide (「閉じる」): it stops at a choice (decision 37), where the first is taken. */
-const guideSkip = (current: GameState) => {
-  const choice = firstGuideChoice(current);
-  return choice ? chooseTourismGuide(current, choice.index, current.revision) : skipTourismGuide(current, current.revision);
 };
 /** Go on in the open arrival or epilogue: its first choice when it shows choices, else its next line. */
 const epilogueStep = (current: GameState) => {
@@ -82,10 +77,7 @@ export interface PlayOptions {
   /** Called after every action with the new and the previous state, e.g. a save/restore round trip or a check. */
   after?: (next: GameState, previous: GameState) => GameState;
 }
-export interface EpisodePlayOptions extends PlayOptions {
-  /** Read the sightseeing guide to the end (earns its reward) or skip it (default). */
-  guide?: "read" | "skip";
-}
+export type EpisodePlayOptions = PlayOptions;
 export interface CityPlayOptions extends EpisodePlayOptions {
   /** Called at each battle's result, before it is left. */
   onResult?: (state: GameState) => void;
@@ -157,16 +149,10 @@ export function readGuide(initial: GameState, options: PlayOptions = {}): GameSt
   return validateGameState(state);
 }
 
-/** From an opened guide or observation, go on to the landmark's battle (read or skip the guide first). */
+/** From an opened guide or observation, go on to the landmark's battle (read the guide first). */
 function tourismToBattle(initial: GameState, options: EpisodePlayOptions): GameState {
   let state = initial;
-  if (state.activeTourism?.phase === "guide") {
-    if (options.guide === "read") state = readGuide(state, options);
-    else for (let step = 0; state.activeTourism?.phase === "guide"; step++) {
-      if (step > MAX_STEPS) throw new Error("観光案内を飛ばせませんでした。");
-      state = act(state, guideSkip, "観光案内を飛ばす", options);
-    }
-  }
+  if (state.activeTourism?.phase === "guide") state = readGuide(state, options);
   if (state.activeTourism)
     state = act(state, (current) => startTourismBattle(current, current.revision), "観光地のクイズ", options);
   return state;
@@ -456,7 +442,7 @@ export function nextMorning(state: GameState): GameState {
 }
 
 /**
- * Play a running tour's current step like a player: an event step's visit (the guide, read or skipped by `options.guide`, the
+ * Play a running tour's current step like a player: an event step's visit (the guide read with its first choices, the
  * observation's 「進む」, the scenes with their first choices, the battle to its result (`options.onResult` there) and 「ツアーを続ける」),
  * or a leg's moment (its scenes with their first choices and its narration; tour stages 2b, 3). Stops when the tour has moved past
  * the step (its next step's moment, or its end).
@@ -470,7 +456,7 @@ function playTourStep(initial: GameState, options: CityPlayOptions = {}): GameSt
       options.onResult?.(state);
       state = act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => rollTickets.positive), "ツアーを続ける", options);
     } else if (state.activeBattle) state = playBattleToResult(state, options);
-    else if (state.activeTourism?.phase === "guide") state = options.guide === "read" ? readGuide(state, options) : act(state, guideSkip, "観光案内を飛ばす", options);
+    else if (state.activeTourism?.phase === "guide") state = readGuide(state, options);
     else state = playOccasionStep(state, rollTickets.positive);
   }
   return state;
@@ -607,14 +593,14 @@ function untilEncounter(initial: GameState, encounterId: string, ticket: number)
 }
 
 /**
- * From an opened guide or observation, on to the landmark's battle as a player goes: the guide skipped, then the
+ * From an opened guide or observation, on to the landmark's battle as a player goes: the guide read, then the
  * observation's 「進む」, its scenes played with their first choices, until the battle starts.
  */
 function throughObservation(initial: GameState, ticket: number): GameState {
   let state = initial;
   for (let step = 0; !state.activeBattle; step++) {
     if (step > MAX_STEPS) throw new Error("観察からクイズへ進めませんでした。");
-    if (state.activeTourism?.phase === "guide") state = act(state, guideSkip, "観光案内を飛ばす");
+    if (state.activeTourism?.phase === "guide") state = readGuide(state);
     else if (state.activeEncounter) state = playEncounterFirstChoice(state, ticket);
     else if (state.activeTourism) state = act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
     else throw new Error("観察からクイズへ進めませんでした。");
@@ -650,8 +636,8 @@ function departToLandmark(initial: GameState, landmarkId: string, ticket: number
  * landmark's visit its rule names (the unified event design, stage 1):
  * - before the main part (a negative priority): depart to the landmark from the map (beginTravelEvent);
  * - after it (a positive priority): depart, play the landmark's battle to its result with the real
- *   functions (guide skipped, every answer correct) and leave it with 「街歩きへ」;
- * - while observing: at its place the landmark's observation opens (a first visit skips the guide)
+ *   functions (guides read, every answer correct) and leave it with 「街歩きへ」;
+ * - while observing: at its place the landmark's observation opens (a first visit reads the guide)
  *   and the encounter starts there under the observation's own rule (getTourismEncounterAvailability);
  *   after the scene the observation goes on.
  * The encounters that run before it in the same moment are played with their first choices. Free time never starts one.
@@ -682,7 +668,7 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
   }
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
   let observing = encounter?.landmarkId ? openTourism(placed, encounter.landmarkId) : placed;
-  for (let step = 0; observing.activeTourism?.phase === "guide" && step < MAX_STEPS; step++) observing = guideSkip(observing);
+  if (observing.activeTourism?.phase === "guide") observing = readGuide(observing);
   let next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
   // A scene whose condition an earlier scene of the same observation meets (the Galleria's ticket talk after its wish): the
   // observation's scenes before it are played with their first choices, as play meets them, until it starts.
@@ -739,7 +725,7 @@ export function startOccasionScene(state: GameState, landmarkId: string, from: s
         .map((item) => item.id);
       throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}` +
         `${earlier.length ? `${earlier.map((item) => `${item.cityNameJa}の品物 ${item.itemId} ${item.statusJa}こと`).join("、")}が要ります` +
-          "（Debug は前の都市を本筋（到着・クイズ・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
+          "（Debug は前の都市を本筋（到着・クイズ・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は読む）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
           "選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。" : ""}` +
         `${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
     }
@@ -763,7 +749,7 @@ function playOccasionStep(state: GameState, ticket: number): GameState {
   }
   // A tour leg's narration (tour stage 2b): read to its end, then its leg's moment goes on.
   if (state.activeEpilogue?.kind === "tour_leg") return act(state, epilogueStep, "ツアーの区間の語り");
-  if (state.activeTourism?.phase === "guide") return guideSkip(state);
+  if (state.activeTourism?.phase === "guide") return act(state, guideStep, "観光案内");
   if (state.activeTourism) return act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
   if (state.activeBattle?.phase === "result") return act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "クイズの結果を閉じる");
   if (state.activeBattle) return playBattleToResult(state);

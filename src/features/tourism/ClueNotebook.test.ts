@@ -6,8 +6,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { battles, landmarks, tourismClues } from "../../content";
 import { completedCity, openTourismScene } from "../../dev/scenario-builders";
+import { readGuide } from "../../../tests/fixtures/read-guide";
 import { listPlayerActions } from "../../domain/player-action";
-import { discoverClue, getReadableDocumentIds, skipTourismGuide } from "../../domain/tourism";
+import { discoverClue, getReadableDocumentIds } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { ClueNotebook } from "./ClueNotebook";
 import { shownNotebookClues } from "./notebook-clues";
@@ -35,14 +36,14 @@ describe("the documents a player can read in an observation", () => {
     expect(guide.activeTourism?.phase).toBe("guide");
     expect(getReadableDocumentIds(guide)).toEqual([]);
     expect(offeredDocuments(guide)).toEqual([]);
-    const exploring = skipTourismGuide(guide, guide.revision);
+    const exploring = readGuide(guide);
     expect(getReadableDocumentIds(exploring)).toEqual(
       tourismClues.filter((clue) => clue.landmarkId === landmark.id && clue.kind === "document").map((clue) => clue.id));
   });
 
   it("are what the notebook lists and what the action list offers, until each is read", () => {
     const guide = openTourismScene(completedCity(landmark.cityId), landmark.id);
-    let state = skipTourismGuide(guide, guide.revision);
+    let state = readGuide(guide);
     state = { ...state, discoveredClueIds: state.discoveredClueIds.filter((id) => !isDocument(id)) };
     const readable = getReadableDocumentIds(state);
     expect(readable.length).toBeGreaterThan(0);
