@@ -77,7 +77,7 @@ export function checkTermTags(source: string, journeyId: string, termJourneys: R
 
 /**
  * The notes that do not stop the build (kind "glossary"): a term's line over TERM_LINE_ADVISED characters, a term no
- * `# term:` of its journey's stories names and no outfit puts in 旅の図鑑 (`outfitTermIds`: the outfits' `termId`, each its
+ * `# term:` of its journey's stories names and no outfit puts in 旅の図鑑 (`outfitTermIds`: the outfits' `termIds`, each its
  * own journey's; content-ownership.ts) — it can never be met —, the same term tagged twice in one scene (a knot, or a
  * file without knots: fine when each branch has its own), and a tag on a choice (it shows with the line after the choice).
  */
@@ -109,7 +109,7 @@ export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFi
         `（Term line over ${TERM_LINE_ADVISED} characters: ${term.id}, ${length}）。`);
     if (!tagged.has(`${term.journeyId}\u0000${term.id}`) && !outfitTermIds.includes(term.id))
       notes.push(`どの行にも札がなく、服からも入らない言葉です：旅行編 ${term.journeyId} の "${term.id}"。# term: ${term.id} を、その言葉が初めて出る行の前に置くか、` +
-        `服（shop/catalog.json の outfits）の termId に書いてください` +
+        `服（shop/catalog.json の outfits）の termIds に書いてください` +
         `（Term without a # term: tag: ${term.id}）。`);
   }
   return notes.map((message) => ({ kind: "glossary", message }));

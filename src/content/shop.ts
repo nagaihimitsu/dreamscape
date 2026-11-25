@@ -13,8 +13,9 @@ import { japaneseText } from "./text-language";
  * One outfit the heroine can wear: the costume it shows (a costume of the heroine in presentation/characters.json with a
  * neutral picture), its name and description, its price in the journey's currency (paid once from the travel budget),
  * the heroine's few words as it is bought ({heroine} and {player} are the names; src/features/romance/names.ts) and the
- * 旅の図鑑 term buying it puts in 旅の図鑑 (optional, a term of the same journey's glossary/terms.json: a traditional or a
- * regional garment, 2026-11-21 user decision).
+ * 旅の図鑑 terms buying it puts in 旅の図鑑, in this order (optional, terms of the same journey's glossary/terms.json: the
+ * garment itself and the words its description uses, e.g. a kurta and its block print; 2026-11-21 and 2026-11-25 user
+ * decisions).
  */
 export const outfitSchema = z.object({
   id,
@@ -23,7 +24,8 @@ export const outfitSchema = z.object({
   descriptionJa: japaneseText,
   price: z.number().int().positive().safe(),
   boughtLineJa: japaneseText,
-  termId: z.string().regex(TERM_ID, "Expected the ID of a 旅の図鑑 term (glossary/terms.json)").optional(),
+  termIds: z.array(z.string().regex(TERM_ID, "Expected the ID of a 旅の図鑑 term (glossary/terms.json)")).min(1)
+    .refine((ids) => new Set(ids).size === ids.length, "Expected each 旅の図鑑 term once").optional(),
 }).strict();
 
 /**
