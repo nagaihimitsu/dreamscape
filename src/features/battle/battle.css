@@ -1169,3 +1169,24 @@
   .battle-reveal :is(.battle-reveal-zoom, .battle-reveal-region) { animation: none; }
 }
 
+
+/* A question, its explanation and the reasoning on a phone held upright (2026-11-25 user decision, after seeing a question
+   on an iPhone: its glass ran empty to the screen's foot over the place, and the person asking stood small in a strip
+   above it). The panel is as tall as what it holds, at the foot (a long explanation still scrolls inside it); the stage
+   above takes the rest of the screen, the opponent's name at its top and the opponent standing in it nearer, from about
+   the thighs up (the scene's camera, figure-zoom.ts), the lower part seen softened through the glass. A long panel gives
+   the stage back down to its least height. */
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-stage-compact {
+    flex: 1 1 auto;
+    align-items: flex-start;
+    height: auto;
+    min-height: 96px;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
+    flex: 0 1 auto;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-characters {
+    --vn-zoom: 1.3;
+  }
+}
