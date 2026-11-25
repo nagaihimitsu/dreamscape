@@ -245,12 +245,25 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 | ワカケホンセイインコ（`gt_term_rose_ringed_parakeet`） | 生き物 | フマユーン廟の案内（初めての訪問だけ）の「…オウムの緑が、木から木へ飛んだ。」。アーグラのラーム・バーグの「緑のインコ」は必ず後なので札を置かない | Wikipedia「Rose-ringed parakeet」（"adult males have a pink and black neck ring"） | File:Rose-ringed Parakeet, Delhi AMSM0345.jpg（Savithri Singh、CC BY-SA 4.0）。デリーで撮った雄（首の輪が見える） |
 | ジャイヴァーナ（`gt_term_jaivana`） | もの | ジャイガル城のデートの「最初の印は、巨大な大砲だった。…」 | Wikipedia「Jaivana Cannon」（1720年、ジャイガルの鋳造所で造られた。造られた当時、車輪のついた大砲として世界最大）。説明は年と場所だけにし、台本の「三十五キロ」の言い伝えには触れない | File:Jaivana Cannon, January 2024 01.jpg（Noon Plastic、CC BY 4.0）。右端の係員を切り落とした。もう一つの候補（2016年の写真）は観光客の顔が多く写るので使わなかった |
 
-見送った言葉：
+見送った言葉（この日の判断。下の「インドの言葉でも探し直した5語」で、どれも入れた）：
 
-- 祝い金の一ルピー（シャグン）：使える写真がない（Commons の「shagun envelope」は0件）。百一・千一の例を書いた信頼できる資料も見つからなかった。台本（ジャイプール到着のフロントの女性）が説明している。
-- 笑う会（笑いヨガ）：インドで撮った写真がない（フィンランド・オーストラリアの講習の写真だけで、参加者の顔が主題）。台本（ドゥベイ）が説明している。始まりは Wikipedia「Laughter yoga」（1995年、ムンバイ、マダン・カタリア医師と妻マドゥリ）。
-- 葉の器（ドーナー）：葉の皿（パッタル）の写真しかなく、台本の「葉っぱを固めた小さな器」と形が違う。
-- 女性車両・靴を預ける・頭を布で覆う・値切り：日本の旅行者にも分かる、または台本が説明し切っている（11-13 と同じ判断）。
+- 祝い金の一ルピー（シャグン）・笑う会・葉の器（ドーナー）：英語の検索では写真が見つからなかった。
+- 女性車両・靴を預ける：日本の旅行者にも分かると判断した。
+
+### インドの言葉でも探し直した5語（2026-11-25）
+
+ユーザーの依頼：「もっと探して。インドの言語でも探す。」。写真は Wikimedia Commons（検索とカテゴリ）と Flickr（CC の絞り込み）を、
+英語に加えてヒンディー語・パンジャーブ語・ウルドゥー語・マラーティー語・グジャラート語・タミル語・カンナダ語・テルグ語・オリヤー語・ベンガル語の語でも探した
+（例：शगुन का लिफाफा・ਸ਼ਗਨ・ચાંલ્લો・आहेर・மொய்／हास्य योग・लाफ्टर क्लब・हास्ययोग／दोना पत्तल・द्रोण・ದೊನ್ನೆ・దొన్నె・தொன்னை・ଦନା／ਜੋੜਾ ਘਰ・जोड़ा घर／केवल महिलाओं के लिए・महिला कोच）。
+出典も英語とインドの言葉で探した（インドの言葉のページで、説明を支える文のあるものは見つからなかった。使ったのは英語の新聞・大学・団体のページ）。入れた5語（インド編70語）：
+
+| 言葉 | 分類 | 札の行 | 説明の根拠 | 画像 |
+| --- | --- | --- | --- | --- |
+| シャグン（`gt_term_shagun`、別名 祝い金の一ルピー） | ならわし | ジャイプール到着、フロントの女性の「お祝いはね、封筒に入れた現金。…」 | The Quint「Curious Case of The One Rupee: Why It's in Your 'Shagun' Envelope」（2015。"it is considered auspicious for the amount gifted, to end in one"、"an amount that ends in zero suggests the end of a transaction. But the additional rupee connotes continuity"）、The Tribune（IANS）「7 reasons why Indians add one rupee in money gifting」（2024。"'zero' (shunya) indicates the end and 'one' is the beginning"）、DNA India（2024） | **自作の図**（`../golden-triangle-delhi-opening-20261123/shagun_envelope.svg`、CC0 1.0）。どの言葉で探しても、封筒の写真は Commons にも Flickr の CC の写真にもなかった（近いのはパンジャーブの祝いの盆の写真と、人が主題の儀式の写真だけ）。図は「शगुन」と書いた赤い封筒と、手前に置いた一ルピー硬貨。硬貨を封筒に貼る形にはしていない（貼ると書いた資料が見つからなかったため）。`photoNoteJa`「画像は、シャグンの封筒と一ルピー硬貨を表した図」 |
+| 笑う会（`gt_term_laughter_club`、別名 笑いヨガ） | ならわし | ロディ・ガーデンのデート、ドゥベイの「ここは、笑うために集まる会。…」（輪が笑い出す行には置かない。理由が分かる前に小窓で明かさない） | Laughter Yoga International「History of Laughter Yoga」（"First Laughter Club started in Lokhandwala Park in Mumbai on 13th March 1995"）、Gulf News（AFP）、Outlook India のカタリア医師の聞き書き、Wikipedia「Laughter yoga」 | インドで撮った写真はなかった（Commons の Laughter yoga のカテゴリはフィンランド・オーストラリア・イギリス・イランだけ。Flickr も同じ）。File:Laughter_Yoga.jpg（Nauravainenanu、CC BY-SA 3.0、2009年フィンランドの講習、真ん中にカタリア医師）を切り抜き、ほかの参加者4人の顔をぼかした。`photoNoteJa` で撮った場所を書いた。カタリア医師の肖像（File:Dr._Madan_Kataria.jpg）は、白背景のスタジオの写真なのに「own work」で、撮った人の写真か分からないので使わなかった（[落とし穴集 5.2](../../../../RESEARCH_PITFALLS.md#52-own-workでも本人の写真とは限らない)） |
+| ドーナー（`gt_term_dona`、別名 葉の器） | もの | チャンドニー・チョークのデート、「人だかりのできた屋台があった。客はみんな、葉っぱを固めた小さな器を…」 | Wikipedia「Leaf plate」（ヒンディー語名 पत्तल/दोना、"stitching 6 to 8 leaves with tiny wooden sticks"、屋台とお供えに使う）、Down To Earth「Feast on pattal」（2019。"donas (bowls)"）、Business Today（2026。"Known as pattals, patravalis and donas"、細い竹ひごで縫う） | File:Dosa Served in Handmade "Pattal".jpg（Sachin Gupta、CC BY-SA 4.0）。説明は「pattal」だが、写っているのは平らな皿でなく葉の器（手と袖だけが写る）。中身はゴルガッパでなく屋台のドーサ |
+| ジョーラー・ガル（`gt_term_jora_ghar`、別名 靴の預かり所） | ならわし | グルドワーラー・バングラー・サーヒブのデート、「靴を預け、素足で白い石の上を歩く。…」 | サセックス大学 Pilgrimonics「Sevacation」（黄金寺院。"Even shoes are polished in the shoe houses (jora ghar)"、"Doing seva (selfless service) by tending to shoes in the jora ghar"）、Sikh Missionary Society「Seva」、The Pioneer（2026。デリーの副知事がバングラー・サーヒブで靴を清める奉仕をした） | Flickr「A closer view of the receiving counters for footwear」（shankar s.、CC BY 2.0、2017年、アムリトサルの黄金寺院）。窓口の「FREE SERVICE / SHOE STAND」とパンジャーブ語「ਜੋੜੇ ਘਰ」が写る。写っている3人の顔をぼかした。Commons にはバングラー・サーヒブや黄金寺院の靴の預かり所の写真がなかった。`photoNoteJa` で場所を書いた。名前は、パンジャーブ語の発音に近い「ジョーラー・ガル」にした（英語では Joda/Jora Ghar） |
+| 女性車両（`gt_term_ladies_coach`） | 乗り物 | デリーのフィナーレ、クイズ1問目の後の「病院の番号を押しかけていた指が、止まった。…」。**このクイズの答え（先頭の一両は女性専用）なので、答えた後の行にだけ置く**。宿の宿題の場面やカムラの到着の台詞には置かない | クイズと宿の宿題の場面の出典（India TV News、Deccan Herald／PTI、Business Standard） | File:Women Only (5722040111).jpg（Chris Brown、Flickr から転載、CC BY-SA 2.0、FlickreviewR 確認済み）。ホームの床の桃色の案内「केवल महिलायें / Women Only」。人は写っていない |
 
 ## 調査の記録
 

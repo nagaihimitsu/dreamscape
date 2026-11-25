@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_bangla_sahib_001
 待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい
 # speaker: narrator
+# term: gt_term_jora_ghar
 靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。
 # speaker: narrator
 # local_word: gt_delhi_word_langar

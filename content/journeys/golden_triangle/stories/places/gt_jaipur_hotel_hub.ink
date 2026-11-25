@@ -33,6 +33,7 @@ INCLUDE modules.ink
 # speaker: narrator
 何を着ていくのか、お祝いには何を持っていくのか。帳場で尋ねると、フロントの女性が笑った。
 # speaker: gt_jaipur_hotel_front
+# term: gt_term_shagun
 # voice: gt_jaipur_arrival_jaipur_hotel_front_001
 お祝いはね、封筒に入れた現金。金額の最後に、一ルピー足すの。割り切れない数は、縁起がいいから
 # speaker: heroine

@@ -146,6 +146,15 @@
       "imageId": "gt_img_term_auto_rickshaw"
     },
     {
+      "id": "gt_term_ladies_coach",
+      "nameJa": "女性車両",
+      "readingJa": "じょせいしゃりょう",
+      "aliasJa": null,
+      "category": "transport",
+      "lineJa": "デリーの地下鉄で、進行方向の先頭の一両は女性専用。",
+      "imageId": "gt_img_term_ladies_coach"
+    },
+    {
       "id": "gt_term_paratha",
       "nameJa": "パラーター",
       "readingJa": null,
@@ -354,6 +363,36 @@
       "imageId": "gt_img_term_wish_threads"
     },
     {
+      "id": "gt_term_shagun",
+      "nameJa": "シャグン",
+      "readingJa": null,
+      "aliasJa": "祝い金の一ルピー",
+      "category": "custom",
+      "lineJa": "祝いに贈るお金。101のように1を足し、ゼロで終わらない額にする。",
+      "imageId": "gt_img_term_shagun",
+      "photoNoteJa": "画像は、シャグンの封筒と一ルピー硬貨を表した図"
+    },
+    {
+      "id": "gt_term_jora_ghar",
+      "nameJa": "ジョーラー・ガル",
+      "readingJa": null,
+      "aliasJa": "靴の預かり所",
+      "category": "custom",
+      "lineJa": "グルドワーラーの靴の預かり所。靴を預かり、磨くことも奉仕の一つ。",
+      "imageId": "gt_img_term_jora_ghar",
+      "photoNoteJa": "写真は、アムリトサルの黄金寺院の靴の預かり所"
+    },
+    {
+      "id": "gt_term_laughter_club",
+      "nameJa": "笑う会",
+      "readingJa": "わらうかい",
+      "aliasJa": "笑いヨガ",
+      "category": "custom",
+      "lineJa": "冗談なしに声を出して笑う集まり。1995年、ムンバイの公園で始まった。",
+      "imageId": "gt_img_term_laughter_club",
+      "photoNoteJa": "写真は2009年、フィンランドでの講習。真ん中が、始めたマダン・カタリア医師"
+    },
+    {
       "id": "gt_term_rose_ringed_parakeet",
       "nameJa": "ワカケホンセイインコ",
       "readingJa": null,
@@ -370,6 +409,15 @@
       "category": "thing",
       "lineJa": "ジャイガル城にある、車輪のついた巨大な大砲。1720年に城の鋳造所で造られた。",
       "imageId": "gt_img_term_jaivana"
+    },
+    {
+      "id": "gt_term_dona",
+      "nameJa": "ドーナー",
+      "readingJa": null,
+      "aliasJa": "葉の器",
+      "category": "thing",
+      "lineJa": "乾いた葉を重ね、細い竹ひごなどで留めた器。屋台の軽食やお供えを盛る。",
+      "imageId": "gt_img_term_dona"
     },
     {
       "id": "gt_term_tavernier",

@@ -24,6 +24,7 @@ INCLUDE modules.ink
     チャンドニー・チョークの路地は、昼でも薄暗い。頭の上で電線が黒い毛糸玉みたいに絡まり、その下で、大鍋の油がずっと鳴っている。
 }
 # speaker: narrator
+# term: gt_term_dona
 人だかりのできた屋台があった。客はみんな、葉っぱを固めた小さな器を手に、屋台の男の前に半円を作っている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation

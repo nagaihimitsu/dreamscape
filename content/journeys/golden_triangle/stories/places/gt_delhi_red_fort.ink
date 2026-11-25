@@ -348,6 +348,7 @@ INCLUDE modules.ink
     ……知らなかった。祖母は、一人で地下鉄に乗れるんだ
 }
 # speaker: narrator
+# term: gt_term_ladies_coach
 病院の番号を押しかけていた指が、止まった。アマンは携帯を、ゆっくりポケットに戻した。
 # speaker: heroine
 # voice: gt_delhi_finale_004
