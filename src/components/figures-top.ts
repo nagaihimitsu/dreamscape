@@ -3,9 +3,9 @@ import { useEffect, useLayoutEffect, type RefObject } from "react";
 // A line's large photo and its item card keep clear of the faces of the people on stage (2026-11-25 user decisions,
 // after an iPhone: a card over their faces hid how they looked as they spoke). The layer measures the stage: where the
 // highest head begins and where the lowest face ends (the standing pictures are drawn from near their top edge, the chin
-// about a fifth down), and where the dialogue window begins. The photo or the card goes in the larger room of the two,
-// above the heads or between the faces and the window (one person seen close, their head near the header: under the
-// chin). The room goes to the CSS as --room-top (only under the faces) and --room-bottom, in px from the layer's own
+// about a fifth down), and where the dialogue window begins. The photo or the card goes between the faces and the
+// window when there is room enough there (alone or with others: 2026-11-25 user decision, the place under the chins
+// reads better on a phone), and else in the larger room of the two. The room goes to the CSS as --room-top (only under the faces) and --room-bottom, in px from the layer's own
 // top; it fits the photo or the card in it, down to a smallest size it keeps (photo-show.css, item-show.css). Only on a
 // line someone says: on the narration's lines no one's expression is read, so the photo and the card keep their full
 // size and place. No one on stage, or the narration: the variables are unset and nothing limits them.
@@ -14,21 +14,21 @@ import { useEffect, useLayoutEffect, type RefObject } from "react";
 const FACE_BOTTOM = 0.22;
 /** About where the photo or the card begins under the header: the room above the heads is counted from there. */
 const ABOVE_FROM = 40;
-/** The room under the faces is taken only when it is clearly the larger (the place above the heads reads better). */
-const BELOW_PREFERRED = 1.25;
+/** Room enough under the faces for the photo or the card (px): it goes there even when the room above is larger. */
+const BELOW_ENOUGH = 180;
 
 export type Figure = { top: number; height: number };
 /** The room for the photo or the card, in px from the layer's top: under the faces (`top`) or above the heads. */
 export type StageRoom = { top?: number; bottom: number };
 
-/** The larger room of the stage: above the heads, or between the faces and the window's top (`windowTop`). */
+/** The room between the faces and the window's top (`windowTop`) when it is enough or the larger; else above the heads. */
 export function stageRoom(figures: readonly Figure[], windowTop: number): StageRoom | undefined {
   if (figures.length === 0) return undefined;
   const headTop = Math.min(...figures.map((figure) => figure.top));
   const faceBottom = Math.max(...figures.map((figure) => figure.top + figure.height * FACE_BOTTOM));
   const above = headTop - ABOVE_FROM;
   const below = windowTop - faceBottom;
-  return below > above * BELOW_PREFERRED
+  return below >= BELOW_ENOUGH || below > above
     ? { top: Math.round(faceBottom), bottom: Math.round(windowTop) }
     : { bottom: Math.round(headTop) };
 }
