@@ -81,7 +81,6 @@ import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
-import { musicRoomOpen } from "../features/journey/music-room";
 import { albumPages, showsMissedPhotos } from "../features/journey/album-pages";
 import { PhotoShowContext, shownPrintOf, type PhotoShowCue, type PrintFlight } from "../components/PhotoShow";
 import { ITEM_LEAVE_MS } from "../components/item-show";
@@ -1450,21 +1449,21 @@ export function GameApp({
             }
           }}>出発する</button>} />
       </Modal>}
-      {/* 旅の記録 (2026-11-19: 旅の記録 and アルバム made one; TravelLog.tsx). 旅の音楽室 (2026-11-13: once the first city is
-          cleared), ミニゲーム集 beside it and the credit roll (the journey over; 2026-11-20) and the journey kept as 旅の思い出
+      {/* 旅の記録 (2026-11-19: 旅の記録 and アルバム made one; TravelLog.tsx). 旅の音楽室, ミニゲーム集 beside it and the
+          credit roll (rewards once the journey is over; 2026-11-20, the room 2026-11-25) and the journey kept as 旅の思い出
           (2026-11-19) open over it and close back to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
           photosNew={albumNew} onPhotosShown={() => setSeenMarks((marks) => marks && markSeen(marks, "album", albumIds))}
           missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
           extras={<>
-            {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
-              {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
-                onClick={() => setMusicRoom(true)}>旅の音楽室</button>}
-              {isJourneyComplete(game) && <button type="button" className="secondary" data-testid="minigame-collection-open"
-                onClick={() => setMiniGamesOpen(true)}>ミニゲーム集</button>}
-              {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
-                エンドロールを見る</button>}
+            {isJourneyComplete(game) && <div className="records-extras">
+              <button type="button" className="secondary" data-testid="music-room-open"
+                onClick={() => setMusicRoom(true)}>旅の音楽室</button>
+              <button type="button" className="secondary" data-testid="minigame-collection-open"
+                onClick={() => setMiniGamesOpen(true)}>ミニゲーム集</button>
+              <button type="button" className="secondary" onClick={() => moments.openEndRoll()}>
+                エンドロールを見る</button>
             </div>}
             {keptMemory?.status === "loaded" && <button type="button" className="secondary records-kept" data-testid="kept-memory-open"
               onClick={() => setKeptOpen(true)}>前の旅の思い出</button>}

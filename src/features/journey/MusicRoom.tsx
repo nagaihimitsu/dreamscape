@@ -30,7 +30,7 @@ function VoicePlayback({ voiceId, onState }: { voiceId: string; onState: (state:
 type VoicePlay = { id: string; count: number; state: LineVoiceState | "stopped" };
 
 /**
- * 旅の音楽室 (2026-11-13 user decision; rules in music-room.ts), opened from the top of 旅の記録 once a city is cleared
+ * 旅の音楽室 (2026-11-13 user decision; rules in music-room.ts), opened from the top of 旅の記録 once the journey is over
  * (over it: closing goes back to it, 2026-11-14): the tracks
  * of the places visited and of the scenes completed, and the heroine's voiced lines of those scenes that this device has
  * read (`isRead`: read-skip's record, the one 高速送り reads; a branch not taken is not listed), with their text.
