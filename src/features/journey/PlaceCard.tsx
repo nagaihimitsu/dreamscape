@@ -21,6 +21,7 @@ import { TravelTours } from "./TravelTours";
 import { pressKindOf, type PressScope, type TravelSelectionApi } from "./useTravelSelection";
 import { visitedPlaceIds } from "./visited-places";
 import "../battle/battle.css";
+import { FitText } from "../../components/FitText";
 
 /** A held key repeats its keydown: only its first press counts (the travel guards). */
 function ignoreRepeat(event: KeyboardEvent) {
@@ -32,7 +33,7 @@ function ignoreRepeat(event: KeyboardEvent) {
  * selected mark before it (user decision 2026-11-11): the chosen card and the map already show the choice.
  */
 function CardName({ id, name, heading }: { id: string; name: string; heading: boolean }) {
-  return <h2 id={id} className={heading ? "place-card-name" : "sr-only"}><span>{name}</span></h2>;
+  return <h2 id={id} className={heading ? "place-card-name" : "sr-only"}><FitText text={name} /></h2>;
 }
 
 /**

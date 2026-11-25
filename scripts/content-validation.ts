@@ -648,12 +648,13 @@ export function validateContent(sources: ContentSources,
   const glossaryTerms = glossaryTermsOf(sources, parseCatalog(glossaryCatalogSchema, "glossary/terms.json").terms,
     new Set(tourism.assets.map((asset) => asset.id)));
   const termJourneys = new Map(glossaryTerms.map((term) => [term.id, term.journeyId]));
-  // An outfit's 旅の図鑑 term (optional; 2026-11-21) goes in 旅の図鑑 as it is bought: a term of a glossary/terms.json (of
-  // the outfit's own journey: content-ownership.ts).
+  // An outfit's 旅の図鑑 terms (optional; 2026-11-21, several since 2026-11-25) go in 旅の図鑑 as it is bought: terms of a
+  // glossary/terms.json (of the outfit's own journey: content-ownership.ts).
   for (const outfit of shopCatalog.outfits)
-    if (outfit.termId !== undefined && !termJourneys.has(outfit.termId))
-      throw new Error(`服の旅の図鑑の言葉がありません：shop/catalog.json の outfits "${outfit.id}" の termId "${outfit.termId}" が、` +
-        `この旅行編の glossary/terms.json にありません。先に terms に書いてください（Unknown outfit term: ${outfit.id}/${outfit.termId}）`);
+    for (const termId of outfit.termIds ?? [])
+      if (!termJourneys.has(termId))
+        throw new Error(`服の旅の図鑑の言葉がありません：shop/catalog.json の outfits "${outfit.id}" の termIds の "${termId}" が、` +
+          `この旅行編の glossary/terms.json にありません。先に terms に書いてください（Unknown outfit term: ${outfit.id}/${termId}）`);
   // The mini-games' pictures (2026-11-13): the files of each layer's public/assets/minigames/, the ID their file name; an art
   // slot names one of them or a tourism photo by its ID, so no ID is both.
   const miniGameArt = miniGameArtOf(sources);
@@ -1917,7 +1918,7 @@ export function validateContent(sources: ContentSources,
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
     warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes,
-      ...glossaryWarnings(sources, glossaryTerms, shopCatalog.outfits.flatMap((outfit) => outfit.termId ?? [])), ...openingMovieWarnings(journeyCatalog.journeys, (id) => manifestFiles.get(id) ?? id)],
+      ...glossaryWarnings(sources, glossaryTerms, shopCatalog.outfits.flatMap((outfit) => outfit.termIds ?? [])), ...openingMovieWarnings(journeyCatalog.journeys, (id) => manifestFiles.get(id) ?? id)],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources, heardClues),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

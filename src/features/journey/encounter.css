@@ -6,7 +6,7 @@
   margin-top: 8px;
 }
 .encounter-translation-tools { display: flex; justify-content: flex-end; }
-.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: 12px; }
+.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: var(--ds-text-caption); }
 
 /* An English choice of an encounter (UI redesign stage 2.4): a display row in the window
    (its words and translation are reading targets); the letter is its pressable, slate with
@@ -17,9 +17,9 @@
   align-items: center;
   gap: 3px 6px;
   padding: 4px 7px;
-  border: 1px solid rgba(255, 255, 255, .22);
+  border: 0;
   border-radius: 12px;
-  background: rgba(255, 255, 255, .06);
+  background: var(--ds-glass-bg);
 }
 .encounter-choice[data-translated] { grid-template-columns: 44px minmax(0, 1fr) 64px; }
 .encounter-choice > .encounter-choice-select { grid-column: 1; grid-row: 1; }
@@ -31,7 +31,7 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 2px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
 }
 /* The translation and a reason it cannot be chosen: under the words, across to the row's right edge. */
 .encounter-choice > p { grid-column: 2 / -1; }
@@ -45,7 +45,7 @@
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-family: Georgia, serif;
-  font-size: 18px;
+  font-size: var(--ds-text-reading);
   font-weight: 400;
   cursor: pointer;
 }
@@ -61,8 +61,8 @@
 .encounter-choice-content {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-size: 15px;
-  line-height: 1.4;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-snug);
 }
 
 /* Its price and AP under its words. */
@@ -70,13 +70,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 
 .encounter-choice > p {
   margin: 2px 0 8px;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
 }
 
 .encounter-choice-reason { font-weight: 700; }
@@ -84,7 +84,7 @@
 .encounter-background { width: 100%; height: 100%; display: block; object-fit: cover; }
 .encounter-character-layer { inset: var(--scene-top, 0px) 0 0; height: auto; transform: none; clip-path: none; overflow: hidden; }
 /* Without the shared layer's transform the layer would not keep its portraits (z-index 1) to itself: isolated, it stacks
-   as one like her portrait's layer alone, so a large photo (# photo_show: large, z-index 1, line-stage.css) lies over
+   as one like her portrait's layer alone, so a large photo (a line's # photo:, z-index 1, photo-show.css) lies over
    the people and under the window. */
 .encounter-character-layer { isolation: isolate; }
 .encounter-character-slot { position: absolute; inset: 0; }
@@ -94,12 +94,12 @@
    with object-fit letterboxing: cues can then stay next to the actual head.
    --fig-w is the figure's width seen whole: the layer is its query container, so a slot's share of the layer is
    written in cqw. Under the scene's camera (figure-zoom.ts, romance-scene.css) the box grows by --vn-zoom and comes
-   down so that the eyes (--face-at, from CharacterPortrait) stay where they were. */
+   down so that the top of its picture (--picture-top, from CharacterPortrait) stays where it was: the head never rises. */
 .encounter-character-layer { container-type: size; }
 .encounter-character-slot .vn-character {
   --fig-w: min(100cqw, 42dvh);
   left: 50% !important;
-  bottom: calc(clamp(54px, 17cqh, 155px) - (var(--vn-zoom, 1) - 1) * 1.5 * var(--fig-w) * (1 - var(--face-at, 0.12))) !important;
+  bottom: calc(clamp(54px, 17cqh, 155px) - (var(--vn-zoom, 1) - 1) * 1.5 * var(--fig-w) * (1 - var(--picture-top, 0))) !important;
   width: calc(var(--fig-w) * var(--vn-zoom, 1)) !important;
   height: auto !important;
   aspect-ratio: 2 / 3;
@@ -112,17 +112,21 @@
 .encounter-character-layer[data-two-characters="true"] .encounter-character-slot .vn-character {
   --fig-w: min(75cqw, 46dvh);
 }
-/* Two people opposite her (# together:, 2026-11-15 user decision; scene-stage.ts stageCast): with her, three in a row
-   (her on the left, the first named in the middle, the second on the right), each a third of the screen and about four
-   fifths as tall as two side by side; without her, the two side by side as she and one person stand. Three people
+/* Two people opposite her (# together:, 2026-11-15 user decision; scene-stage.ts stageCast): with her, she on the left
+   and the two on the right, close together (2026-11-25, below), the first named nearer her; without her, the two side
+   by side as she and one person stand. Three people
    opposite her (2026-11-20): with her, four in a row (her, the first, the second, the third), each a quarter of the
    screen and about nine tenths as tall as three in a row (standing a little into each other's place, so the faces
    stay about as high); without her, the three in a row as she and two stand. */
 .encounter-character-layer[data-together] .encounter-character-slot { right: auto; }
 .encounter-character-layer[data-together="three"] .encounter-character-slot,
 .encounter-character-layer[data-together="trio"] .encounter-character-slot { width: calc(100% / 3); }
-.encounter-character-layer[data-together="three"] .encounter-character-enemy { left: calc(100% / 3); }
-.encounter-character-layer[data-together="three"] .encounter-character-beside { left: calc(200% / 3); }
+/* With her and two others (2026-11-25 user decision): she on the left, the two she meets together on the right, close,
+   one a little over the other, so all three stand larger than in a row of thirds (yet smaller than two side by side).
+   Their places' middles: a quarter, three fifths and 86 % across (name-band.ts speakerSpot follows them). */
+.encounter-character-layer[data-together="three"] .encounter-character-heroine { left: calc(25% - 100% / 6); }
+.encounter-character-layer[data-together="three"] .encounter-character-enemy { left: calc(60% - 100% / 6); }
+.encounter-character-layer[data-together="three"] .encounter-character-beside { left: calc(86% - 100% / 6); }
 .encounter-character-layer[data-together="trio"] .encounter-character-beside { left: calc(100% / 3); }
 .encounter-character-layer[data-together="trio"] .encounter-character-far { left: calc(200% / 3); }
 .encounter-character-layer[data-together="four"] .encounter-character-slot { width: 25%; }
@@ -131,7 +135,9 @@
 .encounter-character-layer[data-together="four"] .encounter-character-far { left: 75%; }
 .encounter-character-layer[data-together="pair"] .encounter-character-slot { width: 50%; }
 .encounter-character-layer[data-together="pair"] .encounter-character-beside { left: 50%; }
-.encounter-character-layer[data-together="three"] .encounter-character-slot .vn-character,
+.encounter-character-layer[data-together="three"] .encounter-character-slot .vn-character {
+  --fig-w: min(66cqw, 41dvh);
+}
 .encounter-character-layer[data-together="trio"] .encounter-character-slot .vn-character {
   --fig-w: min(60cqw, 37dvh);
 }
@@ -143,7 +149,10 @@
 }
 /* The camera comes less near as more stand side by side, so that each face stays whole beside the others. */
 .encounter-character-layer:is([data-two-characters="true"], [data-together="pair"]) { --vn-zoom: 1.3; }
-.encounter-character-layer:is([data-together="three"], [data-together="trio"]) { --vn-zoom: 1.18; }
+.encounter-character-layer[data-together="three"] { --vn-zoom: 1.24; }
+.encounter-character-layer[data-together="trio"] { --vn-zoom: 1.18; }
+/* Where figures overlap, the one speaking stands in front. */
+.encounter-character-slot:has(> .vn-character.is-speaking) { z-index: 1; }
 .encounter-character-layer[data-together="four"] { --vn-zoom: 1.1; }
 .encounter-character-slot .comic-effect {
   /* By the head, which a smaller figure (figureScale) has lower in its box. */
@@ -169,12 +178,12 @@
   left: auto;
   right: 64%;
 }
-.encounter-dialogue .encounter-quiz-prompt { font-size: 17px; line-height: 1.5; }
+.encounter-dialogue .encounter-quiz-prompt { font-size: var(--ds-text-reading); line-height: var(--ds-leading-body); }
 .encounter-dialogue .english-word { color: inherit; }
-.encounter-dialogue .word-meaning { color: #263c32; }
+.encounter-dialogue .word-meaning { color: var(--ds-ink); }
 
 /* An encounter's replies floating above the window (romance-scene.css .vn-choices, 2026-11-25): each row one pane of the
-   window's glass, its words and translation in the window's ink, its letter the terracotta press of every choice (a
+   window's glass, its words and translation in the window's ink, its letter the smoked press of every choice (a
    reply that cannot be chosen: the disabled grey, its reason under its words). Nothing inside a row has a glass of its own. */
 .vn-choices .encounter-choices { gap: 10px; margin: 0; }
 .vn-choices .encounter-choice {
@@ -182,7 +191,7 @@
   border: 0;
   border-radius: 14px;
   background: var(--vn-window-bg);
-  box-shadow: 0 2px 10px rgba(20, 28, 48, 0.2);
+  box-shadow: var(--ds-glass-shadow);
   color: var(--vn-text);
 }
 .vn-choices .encounter-choice :is(.text-button, p) {
@@ -196,7 +205,7 @@
   border: 0;
   background: var(--vn-choice-bg);
   box-shadow: var(--vn-choice-shadow);
-  color: #fff;
+  color: var(--ds-action-ink);
 }
 .vn-choices .encounter-choice-select:disabled {
   background: var(--ds-disabled-bg);

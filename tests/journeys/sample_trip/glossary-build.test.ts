@@ -1,6 +1,6 @@
 // content:build's checks of 旅の図鑑 (2026-11-13 user decision), on the sample journey's fictional term (三時パン)
 // changed in memory: it stops a tag naming no term, a term whose picture is not registered, a line over 60 characters
-// and an ID twice; it warns about a line over 40 characters, a term no tag names and a term tagged twice in one scene.
+// and an ID twice; it warns about a line over 40 characters, a term no tag names and a term tagged twice on one path of a scene.
 import path from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID } from "../../../scripts/content-layout";
@@ -63,12 +63,12 @@ describe("content:build's checks of 旅の図鑑", () => {
       .not.toThrow();
   });
 
-  it("warns about a line over 40 characters, a term no tag names and a term tagged twice in one scene", () => {
+  it("warns about a line over 40 characters, a term no tag names and a term tagged twice on one path of a scene", () => {
     expect(glossaryNotes(sampleWith({ [TERMS]: terms((list) => list.map((item) => ({ ...item, lineJa: "あ".repeat(41) }))) })))
       .toEqual([expect.stringContaining(`Term line over 40 characters: ${TERM}, 41`)]);
     expect(glossaryNotes(sampleWith({ [GUIDE]: (text) => text.replace(TAG, "") })))
       .toEqual([expect.stringContaining(`Term without a # term: tag: ${TERM}`)]);
     expect(glossaryNotes(sampleWith({ [GUIDE]: (text) => text.replace("# speaker: heroine\n# emotion: happy\n", `# speaker: heroine\n# emotion: happy\n${TAG}`) })))
-      .toEqual([expect.stringContaining(`Term tagged twice in one scene: ${TERM}`)]);
+      .toEqual([expect.stringContaining(`Term tagged twice on one path of a scene: ${TERM}`)]);
   });
 });

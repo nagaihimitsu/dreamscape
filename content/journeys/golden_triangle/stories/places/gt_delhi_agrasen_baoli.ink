@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # photo: gt_album_d073 # photo_caption: ビルの谷間に口を開けた階段井戸
 ガラス張りのビルに囲まれた路地の奥に、それは突然口を開けていた。石の階段が、まっすぐ地面の下へ下りていく。両側の壁には、アーチの形のくぼみが何層も並んでいる。
+# term: gt_term_stepwell
 アグラセン・キ・バオリ。階段で水面まで下りる、昔の井戸だ。今は水が涸れて、底には鳩の声だけが溜まっている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle

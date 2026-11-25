@@ -29,7 +29,8 @@ export function recordGlossaryTerms(state: GameState, terms: readonly Pick<Liste
 /**
  * The state with `named` added to 旅の図鑑, in that order: each a term of the save's journey not met before (`terms`: the
  * content's). Unchanged when none is new. Besides a line's `# term:` (recordGlossaryTerms), an outfit bought with its
- * `termId` meets its term (outfits.ts buyOutfit; 2026-11-21 user decision); either way GameApp shows its card.
+ * `termIds` meets its terms (outfits.ts buyOutfit; 2026-11-21 and 2026-11-25 user decisions); either way GameApp shows
+ * their cards.
  */
 export function meetTerms<S extends Pick<GameState, "glossary" | "currentCityId">>(state: S, named: readonly string[],
   terms: readonly Pick<ListedTerm, "id" | "journeyId">[] = glossaryTerms): S {

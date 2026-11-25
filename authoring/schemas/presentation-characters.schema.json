@@ -88,6 +88,24 @@
             "type": "string",
             "pattern": "^#[0-9a-fA-F]{6}$"
           },
+          "nameBand": {
+            "type": "object",
+            "properties": {
+              "fill": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              "edge": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              }
+            },
+            "required": [
+              "fill",
+              "edge"
+            ],
+            "additionalProperties": false
+          },
           "variants": {
             "type": "array",
             "items": {
@@ -260,6 +278,24 @@
                     ],
                     "additionalProperties": false
                   }
+                },
+                "nameBand": {
+                  "type": "object",
+                  "properties": {
+                    "fill": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "edge": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  },
+                  "required": [
+                    "fill",
+                    "edge"
+                  ],
+                  "additionalProperties": false
                 }
               },
               "required": [

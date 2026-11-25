@@ -15,6 +15,10 @@
         "originY": 100
       },
       "placeholderColor": "#6d716c",
+      "nameBand": {
+        "fill": "#f8f4f2",
+        "edge": "#3b3739"
+      },
       "defaultCostume": "default_01",
       "defaultPose": "standing_01",
       "variants": [
@@ -59,7 +63,11 @@
               "avatar": "assets/characters/heroine/default_01/standing_01/avatar/",
               "avatarFace": "assets/characters/heroine/face/standing_01/"
             }
-          ]
+          ],
+          "nameBand": {
+            "fill": "#f8f4f2",
+            "edge": "#3b3739"
+          }
         },
         {
           "id": "south_europe_01",
@@ -108,7 +116,11 @@
               },
               "avatar": "assets/characters/heroine/saree_01/standing_01/avatar/"
             }
-          ]
+          ],
+          "nameBand": {
+            "fill": "#2a5495",
+            "edge": "#9ba0b0"
+          }
         },
         {
           "id": "salwar_kameez_01",
@@ -144,7 +156,11 @@
               },
               "avatar": "assets/characters/heroine/salwar_kameez_01/standing_01/avatar/"
             }
-          ]
+          ],
+          "nameBand": {
+            "fill": "#132455",
+            "edge": "#4d5679"
+          }
         },
         {
           "id": "kurta_01",
@@ -180,7 +196,11 @@
               },
               "avatar": "assets/characters/heroine/kurta_01/standing_01/avatar/"
             }
-          ]
+          ],
+          "nameBand": {
+            "fill": "#e0d3cc",
+            "edge": "#793b35"
+          }
         },
         {
           "id": "anarkali_01",
@@ -216,7 +236,11 @@
               },
               "avatar": "assets/characters/heroine/anarkali_01/standing_01/avatar/"
             }
-          ]
+          ],
+          "nameBand": {
+            "fill": "#8c977d",
+            "edge": "#c5673e"
+          }
         }
       ]
     },

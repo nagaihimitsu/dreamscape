@@ -38,7 +38,7 @@
   inset: 0;
   pointer-events: none;
 }
-/* The portraits (z-index 1) stack as one layer, so a large photo (# photo_show: large, z-index 1, line-stage.css) lies
+/* The portraits (z-index 1) stack as one layer, so a large photo (a line's # photo:, z-index 1, photo-show.css) lies
    over them and under the talk's window. */
 .battle-characters { isolation: isolate; }
 .battle-screen[data-phase="dialogue"] .battle-stage {
@@ -78,9 +78,15 @@
    apart. Each place stays a third of the screen wide, so the four stand as large as three do, a little closer together
    (a narrower place would make each figure smaller and, its picture scaled from its top, bring the face down behind
    the talk's window on a small phone). */
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-heroine { right: calc(200% / 3); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-enemy { left: calc(100% / 3); right: calc(100% / 3); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-beside { left: calc(200% / 3); }
+/* With two opposite her (2026-11-25 user decision): she on the left, the two together on the right, close, one a little
+   over the other, each place wider than a third (42 %), so the three stand larger than in thirds, yet smaller than two
+   side by side; their middles a quarter, three fifths and 86 % across (name-band.ts speakerSpot follows them). */
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-character-slot { right: auto; width: 42%; }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-heroine { left: calc(25% - 21%); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-enemy { left: calc(60% - 21%); }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-beside { left: calc(86% - 21%); }
+/* Where figures overlap, the one speaking stands in front. */
+.battle-screen[data-phase="dialogue"] .battle-character-slot:has(.vn-character.is-speaking) { z-index: 1; }
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-character-slot { right: auto; width: calc(100% / 3); }
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-heroine { left: calc(12.5% - 100% / 6); }
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-enemy { left: calc(37.5% - 100% / 6); }
@@ -116,6 +122,24 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+/* A question, its explanation and the reasoning (2026-11-25 user decision): the panel is the light glass over the place, as
+   the talk's window and the result's card are, its colours the glass's (styles.css). It scrolls, so the panel is the glass
+   itself (a feathered edge would fade its words). Under it the verdict's bar keeps the glass over the words scrolled
+   behind it, and an answer's ground is a pressable's on the glass (a right one keeps its green). */
+.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
+  border: 0;
+  border-radius: var(--ds-glass-radius);
+  background: var(--ds-glass-bg);
+  box-shadow: none;
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+}
+.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-roundbar {
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+}
+.battle-screen .quiz-choice:not(.chosen):not(.correct) { background: var(--ds-glass-press); }
 .battle-screen .battle-stage:before {
   display: none;
 }
@@ -144,10 +168,11 @@
   bottom: clamp(65px, 22%, 140px);
   min-height: 0;
 }
-/* The scene's camera (romance-scene.css, figure-zoom.ts): the two (or more) seen nearer, their eyes where they stood
-   whole and their feet behind the window; each part of the talk opens on them whole (its establishing shot). */
+/* The scene's camera (romance-scene.css, figure-zoom.ts): the two (or more) seen nearer, the top of their picture where
+   it was as they stood whole and their feet behind the window; each part of the talk opens on them whole (its establishing shot). */
 .battle-screen[data-phase="dialogue"] .battle-characters { --vn-zoom: 1.3; }
-.battle-screen[data-phase="dialogue"] .battle-characters:is([data-together="three"], [data-together="four"]) { --vn-zoom: 1.15; }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] { --vn-zoom: 1.22; }
+.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] { --vn-zoom: 1.15; }
 .battle-screen[data-phase="dialogue"][data-establishing] .battle-characters { --vn-zoom: 1; }
 .battle-paper-shell,
 .battle-window { display: contents; }
@@ -198,8 +223,8 @@
 .battle-dialogue .dialogue-text {
   margin: 10px 0 8px;
   min-height: 2.5em;
-  font-size: var(--vn-body-size, 18px);
-  line-height: 1.8;
+  font-size: var(--vn-body-size);
+  line-height: var(--ds-leading-reading);
 }
 .battle-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .battle-dialogue .next:disabled { visibility: hidden; }
@@ -207,7 +232,7 @@
 .battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
 .battle-dialogue .next,
 .battle-dialogue .text-button {
-  color: var(--vn-text, #fffaf4);
+  color: var(--vn-text);
 }
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .battle-screen[data-phase="dialogue"] .battle-characters {
@@ -229,43 +254,122 @@
   }
 }
 
-/* A result is a compact summary and a choice of what to do next.  Detailed
-   receipts and history remain available, but do not push those choices away:
-   the choices sit at the card's bottom in thumb reach, as the explanation's
-   「相手の反応を見る」 does (2026-11-14, the phone UI audit: they floated
-   mid-card), and stay there while a long result (an open breakdown, enlarged
-   text) scrolls above them. */
+/* A result (2026-11-25 user decision: part of the place, not a sheet laid over it). The stage gives its room to the
+   place's picture; the outcome and the score stand over it in light words; the rest (the AP, the trip's milestone,
+   what to do next) is a glass card at the foot (styles.css's glass surfaces). Its choices sit at the card's bottom in
+   thumb reach (2026-11-14, the phone UI audit: they floated mid-card) under the part that scrolls when the result is
+   long (an open breakdown, enlarged text); if even that leaves too little, the whole result scrolls. */
+.battle-screen[data-phase="result"] .battle-stage { display: none; }
+.battle-screen[data-phase="result"] .battle-backdrop { opacity: 0.92; }
 .battle-screen[data-phase="result"] .battle-paper {
   display: flex;
   flex-direction: column;
+  width: min(100% - 24px, 680px);
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 0 4px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
 .battle-result {
   display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+}
+.battle-result-heading {
+  position: relative;
+  display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 8px 24px;
+  color: var(--ds-glass-mark-full);
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 0, 0, 0.45);
 }
-.battle-result-foot {
-  position: sticky;
-  z-index: 2;
-  bottom: 0;
-  display: grid;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 12px;
-  background: var(--ds-parchment);
-}
-/* It sticks above the reading area's bottom padding: fill that strip too, so
-   the result scrolled behind it is not left showing below it (as the round
-   bar's top fill). The scrolling paper clips the fill to its own box. */
-.battle-result-foot::after {
+/* A soft shade behind the light words, whatever the picture (no edge: it fades out). */
+.battle-result-heading::before {
   content: "";
   position: absolute;
   z-index: -1;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 40px;
-  background: inherit;
+  inset: 0 -12px;
+  background: radial-gradient(closest-side, rgba(12, 16, 24, 0.55), rgba(12, 16, 24, 0.25) 60%, transparent);
+  pointer-events: none;
+}
+.battle-result-heading .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+}
+.battle-result-heading .eyebrow::before,
+.battle-result-heading .eyebrow::after {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: var(--ds-gold);
+  box-shadow: none;
+}
+.battle-result .outcome {
+  margin: 6px 0 0;
+  color: var(--ds-glass-mark-full);
+  font-size: clamp(40px, 12vw, 64px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+}
+/* Every question answered right: the word in a warm gold light. */
+.battle-result[data-outcome="perfect"] .outcome {
+  color: #ffe6a8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 22px rgba(246, 196, 69, 0.6);
+}
+.battle-result .battle-score {
+  justify-content: center;
+  gap: 6px;
+  margin: 4px 0 0;
+  color: var(--ds-glass-mark-full);
+}
+.battle-result .battle-score strong { font-size: 36px; }
+.battle-result .battle-score > span { font-size: 14px; font-weight: 600; }
+/* It may give way down to its choices and a few lines of the part that scrolls (its least height). */
+.battle-result-card {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  padding: 16px 16px 14px;
+}
+.battle-result-body {
+  flex: 0 1 auto;
+  min-height: 4.5em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.battle-result-card .battle-rewards { margin: 0; padding: 0; border: 0; }
+.battle-result-card .reward-total strong { font-size: 30px; }
+.battle-result-card .current-ap { margin: 4px 0 0; }
+/* The trip's milestone on the glass: a warm light, its words in the glass's ink. */
+.battle-result-card .episode-clear {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(201, 163, 95, 0.2);
+}
+.battle-result-card .episode-clear h2 { margin: 2px 0 4px; font-size: 18px; }
+.battle-result-card .episode-clear > p:not(.eyebrow):not(.fine-print) { margin: 0; line-height: 1.9; }
+.battle-result-foot {
+  display: grid;
+  flex: none;
+  gap: 8px;
+  padding-top: 14px;
 }
 .battle-result-actions {
   display: grid;
@@ -285,48 +389,41 @@
   padding: 8px 0;
 }
 .result-pending .pending-rewards { margin: 0; }
-/* The result comes in: the outcome and the score rise into place, then the AP earned pops
-   (nothing pressable moves; its buttons show at once). */
+/* The result comes in: the outcome and the score rise into place, the card follows, then the AP earned pops (nothing
+   pressable moves; its buttons show at once). */
 .battle-result-heading { animation: battle-result-in var(--motion-medium) var(--ease-out); }
+.battle-result .outcome { animation: battle-result-word 700ms var(--ease-out) backwards; }
+/* The card only rises (its opacity stays whole, so its glass blurs the place from the first frame). */
+.battle-result-card { animation: battle-result-card-in var(--motion-medium) var(--ease-out); }
 .battle-result .reward-total strong {
   transform-origin: 100% 50%;
-  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 140ms backwards;
+  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 260ms backwards;
 }
 @keyframes battle-result-in {
   from { opacity: 0; transform: translateY(8px); }
+}
+@keyframes battle-result-card-in {
+  from { transform: translateY(14px); }
+}
+/* The word opens out from close letters, as a title card does. */
+@keyframes battle-result-word {
+  from { opacity: 0; letter-spacing: -0.02em; }
 }
 @keyframes battle-reward-pop {
   from { opacity: 0; transform: scale(0.7); }
   60% { opacity: 1; transform: scale(1.08); }
 }
-.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .reward-total strong) { animation: none; }
+.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total strong) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .battle-screen :is(.battle-result-heading, .reward-total strong) { animation: none; }
+  .battle-screen :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total strong) { animation: none; }
 }
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .battle-screen[data-phase="result"] .battle-stage { display: none; }
-  .battle-screen[data-phase="result"] .battle-paper { padding: 6px 12px 12px; }
-  .battle-result { padding-top: 0; }
-  .battle-result-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 4px 12px;
-  }
-  .battle-result .outcome { font-size: 23px; margin: 2px 0; }
-  .battle-result .battle-score { margin: 0; gap: 3px; }
-  .battle-result .battle-score strong { font-size: 28px; }
-  .battle-result .battle-rewards { margin: 4px 0; padding-top: 6px; }
-  .battle-result .reward-total strong { font-size: 23px; }
-  .battle-result .current-ap { margin: 2px 0; }
+  .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 4px; }
+  .battle-result-card { padding: 14px 14px 12px; }
   .battle-result .result-pending summary { padding: 4px 0; }
-  .battle-result .episode-clear { margin: 4px 0; padding: 8px 10px; }
-  .battle-result .episode-clear h2 { font-size: 16px; margin: 1px 0; }
-  .battle-result .episode-clear > p:not(.eyebrow) { margin: 2px 0 0; line-height: 1.8; }
   .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: 1.5; }
-  .battle-result-foot { gap: 6px; padding-top: 8px; }
+  .battle-result-foot { gap: 6px; padding-top: 12px; }
   .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .battle-result-actions .primary { grid-column: 1 / -1; }
   .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: 1.4; }
@@ -1072,3 +1169,24 @@
   .battle-reveal :is(.battle-reveal-zoom, .battle-reveal-region) { animation: none; }
 }
 
+
+/* A question, its explanation and the reasoning on a phone held upright (2026-11-25 user decision, after seeing a question
+   on an iPhone: its glass ran empty to the screen's foot over the place, and the person asking stood small in a strip
+   above it). The panel is as tall as what it holds, at the foot (a long explanation still scrolls inside it); the stage
+   above takes the rest of the screen, the opponent's name at its top and the opponent standing in it nearer, from about
+   the thighs up (the scene's camera, figure-zoom.ts), the lower part seen softened through the glass. A long panel gives
+   the stage back down to its least height. */
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-stage-compact {
+    flex: 1 1 auto;
+    align-items: flex-start;
+    height: auto;
+    min-height: 96px;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
+    flex: 0 1 auto;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-characters {
+    --vn-zoom: 1.3;
+  }
+}

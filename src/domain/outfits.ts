@@ -10,7 +10,8 @@ import { usableMoney } from "./reservations";
 // none: 普段の服, the outfit the scene, the city or the region gives her: src/content/character-assets.ts). Buying pays once
 // from the travel budget and passes no game time; changing passes none and costs nothing. Both happen only in free time
 // (no scene open), so a scene never changes her clothes halfway. An outfit with a 旅の図鑑 term (a traditional or a regional
-// garment, `termId`; 2026-11-21 user decision) puts it in 旅の図鑑 as it is bought, and its card shows (GameApp). Pure.
+// garment and its words, `termIds`; 2026-11-21 and 2026-11-25 user decisions) puts them in 旅の図鑑 as it is bought, and
+// their cards show (GameApp). Pure.
 
 /** The outfits bought in this journey, in the order bought. */
 export const ownedOutfitIds = (state: Pick<GameState, "outfits">): readonly string[] => state.outfits ?? [];
@@ -60,15 +61,15 @@ export function shopOutfits(state: GameState): ShopOutfitChoice[] {
 
 /**
  * Buy an outfit at the shop here: its price is paid once, and it is the party's for the rest of the journey. She does not
- * change by it. Its 旅の図鑑 term (`termId`), if it has one, goes in 旅の図鑑 unless met already.
+ * change by it. Its 旅の図鑑 terms (`termIds`), if it has any, go in 旅の図鑑 in that order, each unless met already.
  */
 export function buyOutfit(state: GameState, outfitId: string, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision) return state;
   const choice = shopOutfits(state).find((item) => item.outfit.id === outfitId);
   if (!choice?.available) return state;
-  const { price, termId } = choice.outfit;
+  const { price, termIds } = choice.outfit;
   return meetTerms({ ...state, revision: state.revision + 1, travelBudget: state.travelBudget - price,
-    outfits: [...ownedOutfitIds(state), outfitId] }, termId ? [termId] : []);
+    outfits: [...ownedOutfitIds(state), outfitId] }, termIds ?? []);
 }
 
 /** Change into an outfit bought in this journey, or into 普段の服 (`null`). Unchanged when it is worn already or she cannot change now. */

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { holdTaps } from "../../components/tap-hold";
+import { getCityBackdropPath } from "../../content/city-backdrop";
 import { playSe } from "../../audio/sound-effects";
 import { DAY_END_REST_JA } from "./night-rest-text";
 import { hasNightRecap, headlinesSentenceJa, routeSentenceJa, type NightRecap } from "./night-recap";
@@ -24,6 +25,19 @@ const STARS: readonly (readonly [number, number, number])[] = [[26, 24, 1.2], [1
 /** The game's 「演出を短縮する」 or the system's reduced motion, read once when a night visual starts. */
 export function reducedMotionNow(reduceMotion: boolean): boolean {
   return reduceMotion || (typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+}
+
+/**
+ * The city at night behind the card and the night screen (2026-11-25 user decision: the night falls on the place, not on a
+ * blank screen): the city's free-time backdrop (its own artwork or its photo), fixed and cropped to fill the screen, under a
+ * night colour that deepens from dusk (night-rest.css). A city without one keeps the plain night colour. Decorative.
+ */
+export function NightBackdrop({ cityId }: { cityId?: string }) {
+  const path = cityId ? getCityBackdropPath(cityId) : null;
+  if (!path) return null;
+  return <div className="night-backdrop" aria-hidden="true">
+    <img src={`${import.meta.env.BASE_URL}${path}`} alt="" decoding="async" />
+  </div>;
 }
 
 /** The night's motif (the card, the night screen): a crescent moon and a few stars. Decorative. */
@@ -100,7 +114,9 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * The same card, its `line` 「ホテルで休みました。」, is the night of a rest before 21:00 whose night has a recap (2026-11-13;
  * night-recap.ts restNightCard), in place of 「次の日」.
  */
-export function NightRest({ recap, line = DAY_END_REST_JA, reduceMotion, onEnd }: {
+export function NightRest({ cityId, recap, line = DAY_END_REST_JA, reduceMotion, onEnd }: {
+  /** The city the night falls on (its backdrop behind the card). */
+  cityId?: string;
   recap?: NightRecap;
   /** The card's line: the day's end's (21:00), or 「ホテルで休みました。」 for an earlier rest. */
   line?: string;
@@ -115,6 +131,7 @@ export function NightRest({ recap, line = DAY_END_REST_JA, reduceMotion, onEnd }
   // dialog (dialogueObstructed: no typing, auto-advance or reading on), and the tap that ends it does not read on either.
   return createPortal(<div className={`night-rest${reduced ? " is-reduced" : ""}${shown ? " has-recap" : ""}`} data-testid="night-rest" data-obstructs-dialogue=""
     onClick={end}>
+    <NightBackdrop cityId={cityId} />
     <div className="night-rest-content">
       <NightSky />
       {/* Seen here; read from the live region below (not twice). */}

@@ -42,8 +42,9 @@ describe("journey catalog", () => {
       copy.journeys[0].titleArt = titleArt;
       return journeyCatalogSchema.safeParse(copy);
     };
-    // Only India has art (its Taj Mahal photo, #54); the other journeys' title shows the shared default background.
+    // India has its Taj Mahal photo (#54), Milan its Duomo (2026-11-25: the title over a photograph, as every screen).
     expect(journeys.filter((journey) => journey.titleArt).map((journey) => [journey.id, journey.titleArt])).toEqual([
+      ["milano", { imagePath: "assets/tourism/duomo-milano.webp", captionJa: "ミラノ ／ ドゥオモ" }],
       ["golden_triangle", { imagePath: "assets/tourism/india/agra_taj_mahal.webp", captionJa: "アーグラ ／ タージ・マハル" }],
     ]);
     expect(withArt({ imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" }).success).toBe(true);

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <!-- 首を左右に小さく傾けるしぐさ（ヘッド・ボブル）の説明図。Dreamscape のために図形だけで描いた（2026-11-23）。 -->
+  <defs>
+    <g id="head">
+      <!-- 首の付け根（600, 730）を軸に、耳を肩へ寄せるように傾ける -->
+      <circle cx="600" cy="500" r="175" fill="#c08457"/>
+      <path d="M425 492 Q430 300 600 300 Q770 300 775 492 Q742 380 600 372 Q458 380 425 492 Z" fill="#2b2119"/>
+      <circle cx="425" cy="520" r="24" fill="#b37549"/>
+      <circle cx="775" cy="520" r="24" fill="#b37549"/>
+      <path d="M520 520 q24 -22 48 0" stroke="#2b2119" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <path d="M632 520 q24 -22 48 0" stroke="#2b2119" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <path d="M548 600 q52 40 104 0" stroke="#7a3b22" stroke-width="12" fill="none" stroke-linecap="round"/>
+    </g>
+    <marker id="tip" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="1200" fill="#f4e9d6"/>
+  <circle cx="600" cy="640" r="470" fill="#ead9bd"/>
+  <!-- 首（動かない） -->
+  <rect x="558" y="600" width="84" height="200" rx="38" fill="#b77b4f"/>
+  <!-- 肩 -->
+  <path d="M230 1200 Q245 800 600 765 Q955 800 970 1200 Z" fill="#2f6f73"/>
+  <path d="M522 768 L600 852 L678 768" fill="none" stroke="#24585b" stroke-width="14" stroke-linejoin="round"/>
+  <!-- 左右に傾いた頭（薄く） -->
+  <use href="#head" transform="rotate(-18 600 730)" opacity="0.28"/>
+  <use href="#head" transform="rotate(18 600 730)" opacity="0.28"/>
+  <!-- まっすぐの頭 -->
+  <use href="#head"/>
+  <!-- 動きの矢印（傾ける軸を中心にした弧） -->
+  <path d="M356 300 A480 480 0 0 1 844 300" fill="none" stroke="#c0392b" stroke-width="20" stroke-linecap="round"
+        marker-start="url(#tip)" marker-end="url(#tip)"/>
+</svg>

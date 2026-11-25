@@ -69,17 +69,20 @@
   .episode-title-card, .episode-title-text { animation: none; }
 }
 
-/* ── 前回までのあらすじ ── a parchment card at the top of free time or the night screen, in the page's flow as the notices are. */
+/* ── 前回までのあらすじ ── a card of the glass (2026-11-25: every screen in the one immersive look) at the top of free time
+   or the night screen, over the place, in the page's flow as the notices are (its colours: styles.css, the glass surfaces). */
 .resume-recap {
   width: calc(100% - 16px);
   max-width: 680px;
   margin: 8px auto;
   padding: 10px 12px 12px;
-  border: 1px solid var(--ds-parchment-line);
+  border: 0;
   border-radius: 14px;
-  background: var(--ds-parchment);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-glass-shadow);
   animation: resume-recap-in var(--motion-fast) var(--ease-out);
 }
 @keyframes resume-recap-in { from { opacity: 0; transform: translateY(-6px); } }
@@ -367,8 +370,8 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   text-indent: 0.5em;
 }
 .end-roll-eyebrow::before, .end-roll-eyebrow::after { content: ""; width: 36px; height: 1px; background: var(--roll-line); }
-/* The journey's name breaks only between its words (after 「・」 and the like: keep-all), never inside one (「…トライアン／グル編」);
-   a word longer than the line still breaks (anywhere). From 6vw so that its longest word, spaced, fits a 320-px phone. */
+/* The journey's name breaks only between its phrases (FitText: after 「・」 and the like), never inside a word
+   (「…トライアン／グル編」), and shrinks a little before it takes two lines. From 6vw, as on a 320-px phone. */
 .end-roll .end-roll-title {
   margin: 0;
   font-family: "Noto Serif JP", serif;
@@ -376,8 +379,6 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   font-weight: 500;
   line-height: 1.6;
   letter-spacing: 0.06em;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
   text-shadow: 0 0 24px rgba(216, 184, 120, 0.25);
 }
 /* A small diamond between two fading lines. */

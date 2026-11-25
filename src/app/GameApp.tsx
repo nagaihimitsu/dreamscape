@@ -82,14 +82,17 @@ import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
-import { showsMissedPhotos } from "../features/journey/album-pages";
+import { albumPages, showsMissedPhotos } from "../features/journey/album-pages";
+import { PhotoShowContext, shownPrintOf, type PhotoShowCue, type PrintFlight } from "../components/PhotoShow";
+import { ITEM_LEAVE_MS } from "../components/item-show";
+import { photoShowsLarge } from "../content/tags";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, recapPhotos, ScreenCredits, type ScreenAnswer } from "../features/journey/PhotoCredits";
 import { shownNotebookClues } from "../features/tourism/notebook-clues";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { DepartureLuggage, EndRollDialog } from "../features/journey/JourneyMoments";
-import { departureLuggage, endRollOf } from "../features/journey/journey-moments";
+import { departureLuggage, endRollOf, journeyAlbumContent } from "../features/journey/journey-moments";
 import { JourneyMemoriesScreen, KeptMemoryContents } from "../features/journey/JourneyMemories";
 import { loadJourneyMemory, type MemoryLoad } from "../persistence";
 import { titleArtTint } from "../features/journey/time-of-day";
@@ -180,6 +183,7 @@ import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 import { sceneStageOf, stageLine } from "../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
+import { FitText } from "../components/FitText";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ゲームの設定 shows it (scripts/dist-guard.ts). */
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
@@ -291,12 +295,15 @@ export function GameApp({
     playMoveRef.current?.(previous, next);
     momentsRef.current?.(previous, next);
     // A line's # photo: just put a photo in the album: its card, and its sound unless the line is quiet or rings its own
-    // # se: (and not during 高速送り: playCue). A load or a new game is no action, so it never shows what they bring.
+    // # se: (and not during 高速送り: playCue). A photo shown large (2026-11-25: the default) rings the shutter as its print
+    // appears (PhotoShow.tsx), the small card album_photo. A load or a new game is no action, so it never shows what they bring.
     const photo = photoTaken(previous, next);
     if (photo) {
       const line = lineFrameOnScreen(next);
-      setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1, fromLarge: line?.photo?.show === "large" }));
-      if (!line?.quiet && !line?.seId) playCue("album_photo");
+      const large = photoShowsLarge(line?.photo);
+      const sound = !line?.quiet && !line?.seId;
+      setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1, fromLarge: large, sound }));
+      if (sound && !large) playCue("album_photo");
     }
     // A line's # term: just put terms in 旅の図鑑: their card shows, unless 高速送り passes the line (the effect below).
     const terms = termsAdded(previous, next);
@@ -577,8 +584,9 @@ export function GameApp({
     [!!game, game?.battleRecords, game?.pastBattleIds, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
   );
   const englishIds = englishKey ? englishKey.split("\n") : [];
+  const albumIds = game?.album.map((photo) => photo.imageId) ?? [];
   useEffect(() => {
-    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds, glossary: metTerms(game) }));
+    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds, glossary: metTerms(game), album: albumIds }));
   });
   useEffect(() => {
     if (notebook && game) setSeenMarks((marks) => marks && markSeen(marks, "clues", game.discoveredClueIds));
@@ -593,6 +601,8 @@ export function GameApp({
   // The entries as a key: the list itself is made again at each render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [noteTab, englishKey]);
+  // 旅の記録's 「写真」: its dot while a photo taken in play has not been shown there (2026-11-25); 旅の記録 then opens on it.
+  const albumNew = unseenIds(seenMarks?.album, albumIds).length > 0;
   const notebookCue = { gleam: clueGleam, unseen: !!game && unseenIds(seenMarks?.clues, game.discoveredClueIds).length > 0 };
   const englishNew = unseenIds(seenMarks?.english, questionMarks).length > 0;
   const wordsNew = unseenIds(seenMarks?.english, wordMarks).length > 0;
@@ -785,10 +795,43 @@ export function GameApp({
     game?.activeTourism?.phase === "guide" ||
     (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
   );
-  // A photo shown large (# photo_show: large, PhotoShowLayer) has its card only once its line has gone: the card then
-  // comes from the large picture. The card goes after its few seconds, or with the story scene it was shown over.
+  // A photo shown large (PhotoShowLayer; the default since 2026-11-25) has its card only once its line has gone: the
+  // journey's first comes from the large picture (with where the album is), any other flies as a print into ≡メニュー
+  // (PhotoShowFlight) and its card is only said. The card goes after its few seconds, or with the story scene it was
+  // shown over.
   const linePhoto = lineFrameOnScreen(game)?.photo;
-  const largePhotoId = linePhoto?.show === "large" ? linePhoto.imageId : undefined;
+  const largePhotoId = photoShowsLarge(linePhoto) ? linePhoto.imageId : undefined;
+  const printLeave = useItemShowLeave(largePhotoId, undefined, replacedGame);
+  const [printFlight, setPrintFlight] = useState<PrintFlight | null>(null);
+  // Read before paint as the print's line goes: whether its print was on screen (高速送り may have run past it) and is
+  // the photo just taken (a line read again only takes its print away).
+  useLayoutEffect(() => {
+    if (!printLeave) return;
+    const notice = photoNotice?.photo.imageId === printLeave.itemId ? photoNotice : null;
+    if (!notice) return;
+    const box = shownPrintOf(printLeave.itemId);
+    if (!box || !notice.first) setPhotoNotice((last) => (last?.id === notice.id ? { ...last, fromLarge: !!box, flown: !!box } : last));
+    if (box && !notice.first) setPrintFlight({ key: printLeave.key, imageId: printLeave.itemId, caption: notice.photo.caption, box });
+  // Once for each print's leaving (the notice as it is then).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [printLeave?.key]);
+  const printFlightKey = printFlight?.key;
+  useEffect(() => {
+    if (printFlightKey === undefined) return;
+    const timer = window.setTimeout(() => setPrintFlight((last) => (last?.key === printFlightKey ? null : last)), ITEM_LEAVE_MS);
+    return () => window.clearTimeout(timer);
+  }, [printFlightKey]);
+  // What the prints are told (PhotoShowContext): the photo just taken, and each photo's stamp, its place and time.
+  const album = game?.album;
+  const albumCityId = game?.currentCityId;
+  const photoShowCue = useMemo<PhotoShowCue>(() => ({
+    fresh: photoNotice ? { imageId: photoNotice.photo.imageId, sound: !!photoNotice.sound } : undefined,
+    stampOf: (imageId) => {
+      const record = album?.find((photo) => photo.imageId === imageId);
+      const view = record && albumCityId ? albumPages([record], journeyAlbumContent(albumCityId))[0]?.photos[0] : undefined;
+      return view && `${view.placeJa} · ${view.whenJa}`;
+    },
+  }), [photoNotice, album, albumCityId]);
   // 旅の図鑑's card holds the photo's card as it holds 「ことばを覚えた」: it shows (its whole time) once the card closes.
   const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown ? photoNotice : null;
   const shownPhotoNoticeId = shownPhotoNotice?.id;
@@ -979,6 +1022,7 @@ export function GameApp({
     ? { optionId: explainedAnswer.optionId, correctOptionId: explainedQuestion.correctOptionId } : undefined;
   return (
     <WornCostumeContext.Provider value={game ? wornCostume(game) : undefined}>
+    <PhotoShowContext.Provider value={photoShowCue}>
     <div
       className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
     >
@@ -1015,8 +1059,10 @@ export function GameApp({
         noteNew={newNotePages.map((page) => NOTE_PAGE_NAMES[page])}
         // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
         // line's item card (# item_show:, # item_out:) shows or flies into the bag.
-        holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
+        holdNotices={(!!shownPhotoNotice && !shownPhotoNotice.flown) || !!printFlight || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
         itemFlight={itemLeave}
+        photoFlight={printFlight}
+        recordsNew={albumNew}
         itemOutFlight={itemOutLeave}
         onSettings={() => {
           setPlayer(game.playerName);
@@ -1326,7 +1372,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <section className="paper ending" data-testid="romance-ending">
               <p className="eyebrow">交際開始</p>
-              <h1 tabIndex={-1}>{presentation.ending.titleJa}</h1>
+              <h1 tabIndex={-1}><FitText text={presentation.ending.titleJa} /></h1>
               <p className="ending-names">
                 {game.playerName}
                 <span> & </span>
@@ -1413,6 +1459,7 @@ export function GameApp({
           (2026-11-19) open over it and close back to it; 旅の数字 (2026-11-13) at its foot counts up as it opens. */}
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
+          photosNew={albumNew} onPhotosShown={() => setSeenMarks((marks) => marks && markSeen(marks, "album", albumIds))}
           missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
           extras={<>
             {(musicRoomOpen(game) || isJourneyComplete(game)) && <div className="records-extras">
@@ -1603,6 +1650,7 @@ export function GameApp({
       {travelEffects}
       {moments.overlays}
     </div>
+    </PhotoShowContext.Provider>
     </WornCostumeContext.Provider>
   );
 }

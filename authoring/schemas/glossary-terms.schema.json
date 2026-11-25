@@ -52,9 +52,13 @@
               "food",
               "creature",
               "thing",
+              "design",
               "clothing",
               "building",
+              "place",
               "custom",
+              "music",
+              "legend",
               "person",
               "transport"
             ]

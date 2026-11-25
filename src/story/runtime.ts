@@ -4,7 +4,7 @@ import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
 import {
-  CUTIN_KINDS, ITEM_ID, LEAVE_WHO, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, SCENE_SHAKE_SIZES, STAND_POSITIONS, STORY_CALLS,
+  CUTIN_KINDS, ITEM_ID, LEAVE_WHO, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, PHOTO_SHOWS, QUIET_SPANS, SCENE_SHAKE_SIZES, STAND_POSITIONS, STORY_CALLS,
   TOGETHER_MAX, WEATHER_KINDS, type StoryCall,
 } from "../content/tags";
 import { readStoryFrame, STACK_MAX, storyChoicesOf, type FrameSticky, type Speaker, type StoryStep } from "./frame-reader";
@@ -52,7 +52,7 @@ export const storyFrameSchema = z
     photo: z.object({
       imageId: albumImageIdSchema,
       caption: z.string().min(1).optional(),
-      show: z.literal("large").optional(),
+      show: z.enum(PHOTO_SHOWS).optional(),
     }).strict().optional(),
     localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
     // `# term:` (旅の図鑑, 2026-11-13): the terms the line names first.

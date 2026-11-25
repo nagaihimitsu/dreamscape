@@ -4,7 +4,7 @@ import { holdTaps } from "../../components/tap-hold";
 import { playSe } from "../../audio/sound-effects";
 import type { NightAction } from "../../domain/day-end";
 import type { GameState } from "../../domain/game";
-import { NIGHT_TAP_HINT_JA, NightSky, reducedMotionNow, useAnnounced, useNightCard } from "./NightRest";
+import { NIGHT_TAP_HINT_JA, NightBackdrop, NightSky, reducedMotionNow, useAnnounced, useNightCard } from "./NightRest";
 import { NIGHT_REST_BUTTON_JA, NIGHT_RESTED_JA, NIGHT_SCREEN_JA, nightActionLabelJa } from "./night-rest-text";
 import { TourBooking, TourCancelDialog } from "./TravelTours";
 import { hasNightRecap, nightRecap, todayWord, type NightRecap, type TodayWord } from "./night-recap";
@@ -64,7 +64,7 @@ export function NightScreen({ game, buttons, reduceMotion, onAction, onBookTour,
     else if (kind === "cancel_tour") setCancelling(true);
     else onAction(kind);
   }
-  return <NightLayout rootRef={root} line={NIGHT_SCREEN_JA} recap={recap} word={word} buttons={buttons} reduced={reduced} announced={announced} onPress={press}>
+  return <NightLayout rootRef={root} cityId={game.currentCityId} line={NIGHT_SCREEN_JA} recap={recap} word={word} buttons={buttons} reduced={reduced} announced={announced} onPress={press}>
     {tours && <TourBooking game={game} onBook={onBookTour} onClose={() => setTours(false)} />}
     {cancelling && <TourCancelDialog game={game} onCancel={onCancelTour} onClose={() => setCancelling(false)} />}
   </NightLayout>;
@@ -77,7 +77,9 @@ export function NightScreen({ game, buttons, reduceMotion, onAction, onBookTour,
  * faded to it (2 s; a tap or Enter, Space or Esc ends it at once). With reduced motion it does not fade: the line shows plainly
  * until a tap or 1.4 s. Inside the app shell (not a portal), so it lies under the header as the night screen does.
  */
-export function NightLeaving({ buttons, recap, word = null, reduceMotion, onEnd }: {
+export function NightLeaving({ cityId, buttons, recap, word = null, reduceMotion, onEnd }: {
+  /** The city the night falls on (its backdrop behind the screen). */
+  cityId?: string;
   buttons: readonly NightButton[];
   recap?: NightRecap;
   /** The night's 今日の一語 (the night before the rest), so it stays in place as the screen fades. */
@@ -90,12 +92,13 @@ export function NightLeaving({ buttons, recap, word = null, reduceMotion, onEnd 
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: null, reducedMs: null, onEnd });
   // The night's rest from this screen: the same sound as the card of a rest the game took by itself (NightRest).
   useEffect(() => playSe("night_rest"), []);
-  return <NightLayout line={NIGHT_RESTED_JA} recap={recap} word={word} buttons={buttons} reduced={reduced} announced={announced} leaving onClick={end} />;
+  return <NightLayout cityId={cityId} line={NIGHT_RESTED_JA} recap={recap} word={word} buttons={buttons} reduced={reduced} announced={announced} leaving onClick={end} />;
 }
 
 /** The night screen's layout, shared by the screen and its leaving so that its moon and line stay in place. */
-function NightLayout({ rootRef, line, recap, word = null, buttons, reduced, announced, leaving = false, onPress, onClick, children }: {
+function NightLayout({ rootRef, cityId, line, recap, word = null, buttons, reduced, announced, leaving = false, onPress, onClick, children }: {
   rootRef?: RefObject<HTMLElement | null>;
+  cityId?: string;
   line: string;
   recap?: NightRecap;
   word?: TodayWord | null;
@@ -110,6 +113,7 @@ function NightLayout({ rootRef, line, recap, word = null, buttons, reduced, anno
   // Leaving: a scene under it (the hotel's after waking, a tour's morning) waits for it (dialogueObstructed), as under the card.
   return <section ref={rootRef} className={`night-screen${leaving ? " is-leaving" : ""}${reduced ? " is-reduced" : ""}`}
     data-testid={leaving ? "night-leaving" : "night-screen"} data-obstructs-dialogue={leaving ? "" : undefined} onClick={onClick}>
+    <NightBackdrop cityId={cityId} />
     <div className={`night-screen-content${hasNightRecap(recap) ? " has-recap" : ""}`}>
       <NightSky />
       <h1 className="night-screen-line" tabIndex={-1}>{line}</h1>

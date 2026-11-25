@@ -17,13 +17,14 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { dialogueObstructed, readingHeld } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import type { MiniGameTag } from "../../minigames/tag";
 import { figureIsEnemy, oppositeFigures, stageCast, type StageLine, type StageScene } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { loggedSpeaker, type NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
@@ -159,6 +160,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: (!!quiz && !resultShown) || view.choices.length > 0, resultShown,
     windowHidden: windowVisibility.hidden, onResult: continueFromResult });
   const establishing = useEstablishingShot(view.id, view.revision);
+  const band = useNameBand(speakerSpot(stage, focus), staging?.speaker === "heroine", { sceneId: view.sceneId, cityId: view.cityId });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet}
       data-establishing={establishing || undefined} {...sceneTap.props}>
@@ -169,6 +171,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       <WeatherLayer weather={view.staging?.weather} />
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
+      <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
@@ -194,11 +197,10 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} data-remembered={remembered || undefined} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <div className="vn-window">
           <DialogueWindowHead
-            cutIn={nameCut}
             speaker={showsSpeakerPlate(staging) && view.speaker}
             narration={view.narration}
             remembered={remembered}
-            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+            band={band}
           />
           <div className="vn-window-body">
             {quiz ? (
@@ -228,6 +230,8 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
             )}
           </div>
         </div>
+        {/* The talk's tools, in a row under its window (DialogueControls). */}
+        <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
         {/* The replies float above the window, which keeps the line or the question they answer (romance-scene.css .vn-choices). */}
         {quiz ? (!quiz.result && <div className="vn-choices">
           <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />

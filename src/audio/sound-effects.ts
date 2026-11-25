@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import soundVolumeData from "../content/generated/sound-volumes.json";
 import { soundPath, type SystemSoundId } from "../content/sounds";
 import {
@@ -137,9 +137,25 @@ export function holdSceneCues(held: boolean): void {
   cuesHeld = held;
 }
 
+/** Who follows 高速送り (useSceneFastForward). */
+const fastForwardListeners = new Set<() => void>();
+
 /** The scene's 高速送り (useAutoAdvance): its cues stay silent while it runs. */
 export function setSceneFastForward(on: boolean): void {
+  if (fastForward === on) return;
   fastForward = on;
+  for (const listener of fastForwardListeners) listener();
+}
+
+/**
+ * Whether 高速送り runs now, as a component follows it (2026-11-25: a photo shown large waits for the line 高速送り stops
+ * at, so the lines it runs past do not flash their pictures).
+ */
+export function useSceneFastForward(): boolean {
+  return useSyncExternalStore((listener) => {
+    fastForwardListeners.add(listener);
+    return () => { fastForwardListeners.delete(listener); };
+  }, () => fastForward);
 }
 
 /**

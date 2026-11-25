@@ -1,7 +1,7 @@
 import type { StoryStateCatalog } from "../content/scene-schemas";
 import type { StoryFrame } from "../story/frame-reader";
 
-/** The narration's plate (UI redesign §3.3, decision H). */
+/** The narration's name in the log (UI redesign §3.3, decision H); the window shows no band for it (2026-11-25). */
 export const NARRATION_PLATE = "旅の風景";
 
 /**
@@ -9,7 +9,7 @@ export const NARRATION_PLATE = "旅の風景";
  * the heroine's and the player's names; `enemy` the one opposite on this screen (a battle's
  * opponent, a scene's `# person:`), when there is one; `# speaker: <person ID>` that person's
  * `nameJa` (progression/story.json people; 2026-11-11). Narration, and a speaker the screen
- * cannot name, show 旅の風景. A remembered line (`# remembered`, 2026-11-16) with a name on its
+ * cannot name, are the narration: the window shows no band, the log 旅の風景. A remembered line (`# remembered`, 2026-11-16) with a name on its
  * plate is `remembered`: the plate shows REMEMBERED_MARK beside the name (DialogueWindowHead),
  * the window a memory's tone, and the log the name with it (loggedSpeaker).
  */

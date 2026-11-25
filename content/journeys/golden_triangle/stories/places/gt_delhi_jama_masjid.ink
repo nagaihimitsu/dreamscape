@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_delhi_jama_masjid
 # speaker: narrator
+# term: gt_term_mosque_robe
 ジャーマー・マスジドの門の前で、靴を脱いで預ける。{heroine_name}は門の係から薄い上着を借りて羽織り、袖の長さを確かめた。
 # speaker: heroine
 # reaction: heroine,smile,question
@@ -19,6 +20,7 @@ INCLUDE modules.ink
 裸足の足の裏に、日差しを吸った石の温度が伝わる。広い中庭の向こうで、赤と白の塔が空へ伸びていた。
 # speaker: narrator
 # photo: gt_album_d033 # photo_caption: 中庭の端から、旧市街が全部見える
+# term: gt_term_kabootarbazi
 中庭の端から見下ろすと、町が足もとにある。屋根、物干しの洗濯物、給水タンク、旋回する鳩の群れ。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -27,6 +29,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: bicycle_bell
 # term: gt_term_cycle_rickshaw
+# term: gt_term_kebab
 見学を終えて、また長い階段を下りる。段の下は、もう別の世界だった。焼いた肉の煙、呼び込みの声、自転車リキシャの鈴。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 4
@@ -144,6 +147,7 @@ INCLUDE modules.ink
 ……あれ。これ、雨？　降り始めの、乾いた地面の匂い
 # speaker: enemy
 # local_word: gt_delhi_word_mitti
+# term: gt_term_mitti_attar
 # voice: gt_delhi_main_jama_masjid_battle_hamid_009
 ミッティ。土を焼いて閉じこめる。夏の終わりの、最初の雨だ
 # speaker: narrator
@@ -218,6 +222,7 @@ INCLUDE modules.ink
     断食を終える時刻だよ。合図の直前は、通りが一番いい匂いになる。揚げ物と、香油と、人の汗で
 }
 # speaker: narrator
+# term: gt_term_iftar
 ゾヘブが小さく笑った。
 # speaker: gt_zoheb
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_011
@@ -261,6 +266,7 @@ INCLUDE modules.ink
     話はまた覚えればいい。香りの方は、もう覚えたろう
 }
 # speaker: narrator
+# term: gt_term_rupee
 代金を出すと、ハミードは一ルピーもまけなかった。
 # speaker: enemy
 # voice: gt_delhi_main_jama_masjid_battle_hamid_022

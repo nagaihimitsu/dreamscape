@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <!-- バクシーシ（心づけ・施し）を表す説明図：上に向けて差し出した手のひらと、そこへ落ちる硬貨。Dreamscape のために図形だけで描いた（2026-11-25）。 -->
+  <rect width="1200" height="1200" fill="#f4e9d6"/>
+  <circle cx="600" cy="640" r="470" fill="#ead9bd"/>
+  <!-- 袖と手首（下から） -->
+  <path d="M430 1200 L470 930 L760 930 L800 1200 Z" fill="#2f6f73"/>
+  <!-- 手のひら（上を向けて少しくぼめる） -->
+  <path d="M400 760 Q400 640 470 620 L800 620 Q860 640 860 730 Q850 860 760 930 L470 930 Q400 880 400 760 Z" fill="#c08457"/>
+  <path d="M480 700 Q620 760 780 690" fill="none" stroke="#a3683f" stroke-width="10" stroke-linecap="round"/>
+  <path d="M500 800 Q620 840 740 790" fill="none" stroke="#a3683f" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+  <!-- 指（奥へ、そろえて上を向く） -->
+  <g fill="#c08457">
+    <rect x="470" y="470" width="70" height="200" rx="35"/>
+    <rect x="550" y="440" width="72" height="230" rx="36"/>
+    <rect x="632" y="450" width="72" height="220" rx="36"/>
+    <rect x="714" y="490" width="66" height="180" rx="33"/>
+  </g>
+  <!-- 親指（手前の左） -->
+  <path d="M410 760 Q330 700 330 620 Q332 590 362 596 Q392 604 410 650 Q426 690 470 700 Z" fill="#b37549"/>
+  <!-- 落ちてくる硬貨（₹ の記号を図形で） -->
+  <circle cx="640" cy="300" r="95" fill="#d9a441"/>
+  <circle cx="640" cy="300" r="76" fill="none" stroke="#b9862b" stroke-width="8"/>
+  <g stroke="#8a5f1a" stroke-width="14" stroke-linecap="round" fill="none">
+    <path d="M600 258 L682 258"/>
+    <path d="M600 284 L682 284"/>
+    <path d="M610 258 Q668 258 668 284 Q668 312 612 312 L662 352"/>
+  </g>
+  <!-- 落ちる動きの線 -->
+  <g stroke="#b9862b" stroke-width="12" stroke-linecap="round" opacity="0.6">
+    <path d="M540 230 L540 180"/>
+    <path d="M740 230 L740 170"/>
+  </g>
+</svg>

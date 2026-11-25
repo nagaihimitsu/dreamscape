@@ -415,14 +415,14 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 ### 手順14. 立ち絵と大きさ
 
 - 目的と前に要るもの：クイズの相手や出会う人に、全身の絵（1024×1536px・透明）を付ける。手順7（人物の設計）の後。台本の完成は待たなくてよい。
-- 作るもの：元の絵は `<制作資料>/characters/<人物ID>/neutral.png`、配信するのは `npm run images:optimize -- --journey <旅行編ID> --write` が作る `<旅行編>/public/assets/characters/<人物ID>/neutral.webp`。登録は `<旅行編>/presentation/characters.json`（`characters`・`battleCharacters`）、`people` の `characterId`、`own-artwork.json`。大きく見える人は `figureScale`（0.5〜1.2）。
+- 作るもの：元の絵は `<制作資料>/characters/<人物ID>/neutral.png`、配信するのは `npm run images:optimize -- --journey <旅行編ID> --write` が作る `<旅行編>/public/assets/characters/<人物ID>/neutral.webp`。登録は `<旅行編>/presentation/characters.json`（`characters`・`battleCharacters`）、`people` の `characterId`、`own-artwork.json`。大きく見える人は `figureScale`（0.5〜1.2）。会話の名前札の色は `nameBand`（`fill`・`edge`。服の色。[JOURNEY_AUTHORING](JOURNEY_AUTHORING.md)）。
 - 頼み方・参考の絵・受け取り方と決まり：[発注マニュアル](ORDERING_MANUAL.md#6-絵の大きさと参考の絵)の5〜7章。確かめ方：`npm run content:build` と、`npm run dev` の URL に `?character-preview` を付けて大きさと透過の縁を見る。
 - インド編では：登場人物67人の立ち絵（#88）。年齢・体格・姿勢に合わせて `figureScale` を付けた（#103・#104。例 `gt_mehr`）。
 
 ### 手順15. アルバムの絵
 
 - 目的と前に要るもの：思い出の場面を、アルバムに残る1枚の絵（横長 3:2）にする。手順10の初稿（どの行で撮るか）の後。
-- 作るもの：`<旅行編>/public/assets/album/<ID>.webp`（登録も出典も要らない）と、行の `# photo: <ID>`（任意で `# photo_caption:`・`# photo_show: large`。呼び戻しは `# recall: <ID>`）。札は絵を置いてから書く。
+- 作るもの：`<旅行編>/public/assets/album/<ID>.webp`（登録も出典も要らない）と、行の `# photo: <ID>`（任意で `# photo_caption:`・小さく見せるだけの `# photo_show: small`。呼び戻しは `# recall: <ID>`）。札は絵を置いてから書く。
 - 頼み方・受け取り方と決まり：[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章。確かめ方：`npm run content:build`（ない ID、ID にならないファイル名、重なる ID で止まる。どの札も使わない絵は注意）。
 - インド編では：アルバムに25枚（#99）。
 

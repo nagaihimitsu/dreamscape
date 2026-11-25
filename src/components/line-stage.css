@@ -5,6 +5,28 @@
    only faded, a quiet backdrop only veiled. (The talk's window is a frosted glass, 2026-11-25 user decision: what lies
    behind the window alone is softened, by the window's own backdrop-filter, as through glass; the picture itself is not.) */
 
+/* The materials of the scene tags, named once: every colour below is one of these or of the design's rules (styles.css
+   --ds-*; 2026-11-25). */
+:root {
+  --stage-recall-ground: #2b2d33; /* the quiet grey a memory comes up in */
+  --stage-photo-veil: rgba(16, 20, 28, 0.5);
+  --stage-photo-frame: #ffffff; /* a print's white border */
+  --stage-photo-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(24, 28, 38, 0.14), rgba(24, 28, 38, 0.46));
+  --stage-remembered-rim: inset 0 0 26px rgba(120, 80, 30, 0.3);
+  --phone-body: #10141c;
+  --phone-slot: #3a4152;
+  --phone-screen: #e9edf1;
+  --phone-name: #4b5563; /* 6.4:1 on the screen */
+  --phone-bubble: #ffffff;
+  --phone-sent-ink: #ffffff;
+  --letter-grain: rgba(120, 90, 50, 0.03);
+  --letter-paper: linear-gradient(170deg, #fdf8ec, #f4e9d2);
+  --letter-rule: rgba(77, 101, 138, 0.3);
+  --note-paper: #fffbea;
+  --card-paper: #fffdf8;
+}
+
 /* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
    feedback: the backdrop, the Taj Mahal, and the photo together were cluttered; the backdrop should grow transparent
    gradually as the memory begins, and fade out entirely: even a tenth of it left the dome showing above the photo). The scene's picture (and its weather) is always on screen, so it fades out when a
@@ -17,7 +39,7 @@
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: #2b2d33;
+  background: var(--stage-recall-ground);
   opacity: 0;
   pointer-events: none;
   transition: opacity 1000ms ease-in-out;
@@ -57,11 +79,11 @@
   object-fit: cover;
   opacity: 0.66;
   /* Its edges dissolve into the grey; the top edge too (under the header), so no straight line shows there. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%),
-    radial-gradient(ellipse 75% 70% at 50% 40%, #000 45%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 18%),
+    radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to bottom, transparent, #000 18%),
-    radial-gradient(ellipse 75% 70% at 50% 40%, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent, black 18%),
+    radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
   mask-composite: intersect;
   animation: recall-photo-in 700ms 300ms var(--ease-out) both;
 }
@@ -72,39 +94,6 @@
   from { opacity: 0; }
 }
 
-/* # photo_show: large (PhotoShowLayer, 2026-11-12): the line's album picture, whole, large in a white frame like a
-   print, over the portraits (dimmed by the layer's veil) and under the window (z-index 2), in the area below the
-   header. The picture keeps its own ratio and fits within the width and the upper part of the scene, so the window
-   below stays readable, and below the notices under the header (--notices-h, as the item card). It takes no taps (a
-   tap reads the line on, as anywhere on the scene). */
-.photo-show-layer {
-  position: absolute;
-  z-index: 1;
-  inset: var(--scene-top, 0px) 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: max(clamp(12px, 4dvh, 40px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
-  background: rgba(16, 20, 28, 0.5);
-  pointer-events: none;
-  animation: stage-fade-in var(--motion-scene) var(--ease-out);
-}
-.photo-show-layer img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(100%, 640px);
-  max-height: 46dvh;
-  border: 6px solid #fff;
-  border-radius: 3px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  transform: rotate(-1.5deg);
-  animation: photo-show-in var(--motion-scene) var(--ease-out);
-}
-@keyframes photo-show-in {
-  from { opacity: 0; transform: rotate(-1.5deg) scale(0.94); }
-}
-
 /* # quiet: a soft veil over the scene's picture, darker towards its edges, and the visited place's reference (a
    date's) steps aside with the header (hud-view.ts "quiet"); the window, its controls and the line stay as they are.
    The veil comes in over --motion-scene and goes at once. */
@@ -113,7 +102,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(24, 28, 38, 0.14), rgba(24, 28, 38, 0.46));
+  background: var(--stage-quiet-veil);
   pointer-events: none;
   animation: stage-fade-in var(--motion-scene) var(--ease-out);
 }
@@ -135,7 +124,7 @@
 }
 .vn-dialogue[data-remembered] .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-paper-shell[data-remembered] .battle-window::before {
-  box-shadow: inset 0 0 26px rgba(120, 80, 30, 0.3);
+  box-shadow: var(--stage-remembered-rim);
 }
 
 /* # phone: a phone in the window: a dark body with a hairline edge, a light screen whose messages scroll inside it
@@ -148,7 +137,7 @@
   padding: 14px 7px 8px;
   border: 1px solid var(--ds-gold-hairline);
   border-radius: 28px;
-  background: #10141c;
+  background: var(--phone-body);
   box-shadow: var(--ds-card-shadow);
 }
 /* The speaker slot at the top of the phone (decoration). */
@@ -161,7 +150,7 @@
   height: 4px;
   margin-left: -20px;
   border-radius: 2px;
-  background: #3a4152;
+  background: var(--phone-slot);
 }
 .phone-thread {
   display: flex;
@@ -173,7 +162,7 @@
   -webkit-overflow-scrolling: touch;
   padding: 12px 10px;
   border-radius: 21px;
-  background: #e9edf1;
+  background: var(--phone-screen);
   color: var(--ds-slate-900);
 }
 /* Choices follow the message: the phone keeps less room, so they stay in view. */
@@ -193,11 +182,11 @@
 }
 .phone-name {
   margin: 0 0 2px 6px;
-  color: #4b5563; /* 6.4:1 on the screen */
+  color: var(--phone-name);
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
 .phone-bubble {
@@ -205,18 +194,18 @@
   margin: 0;
   padding: 10px 12px;
   border-radius: 16px 16px 16px 4px;
-  background: #fff;
+  background: var(--phone-bubble);
   color: var(--ds-slate-900);
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 .phone-message[data-side="sent"] .phone-bubble {
   border-radius: 16px 16px 4px 16px;
   background: var(--ds-plate-blue); /* white text at 5.9:1 */
-  color: #fff;
+  color: var(--phone-sent-ink);
 }
 /* The line on screen is its whole bubble, in the bubble's own type: the bubble's padding is the line's, so a
    one-line message is still a 44 px tap row (docs/10 「タップ領域」), as high as the other bubbles. */
@@ -252,25 +241,25 @@
   -webkit-overflow-scrolling: touch;
   border-radius: 4px;
   background:
-    repeating-linear-gradient(115deg, rgba(120, 90, 50, 0.03) 0 2px, transparent 2px 7px),
-    linear-gradient(170deg, #fdf8ec, #f4e9d2);
+    repeating-linear-gradient(115deg, var(--letter-grain) 0 2px, transparent 2px 7px),
+    var(--letter-paper);
   color: var(--ds-ink);
   box-shadow: var(--ds-card-shadow);
   font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  font-size: 19px;
+  font-size: var(--ds-text-lead);
 }
 .letter-sheet[data-kind="note"] {
   border-radius: 2px;
   background:
-    repeating-linear-gradient(to bottom, transparent 0 calc(var(--letter-line) - 1px), rgba(77, 101, 138, 0.3) calc(var(--letter-line) - 1px) var(--letter-line)),
-    #fffbea;
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--letter-line) - 1px), var(--letter-rule) calc(var(--letter-line) - 1px) var(--letter-line)),
+    var(--note-paper);
   background-attachment: local;
   background-origin: content-box;
   background-clip: padding-box;
 }
 .letter-sheet[data-kind="card"] {
   border-radius: 10px;
-  background: #fffdf8;
+  background: var(--card-paper);
   outline: 1px solid var(--ds-parchment-line);
   outline-offset: -8px;
   text-align: center;
@@ -307,7 +296,7 @@
 }
 .letter-sheet:not([data-kind="note"]) .letter-entry > .letter-line,
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet:not([data-kind="note"]) .letter-entry > p.dialogue-text {
-  line-height: 1.55;
+  line-height: var(--ds-leading-body);
 }
 .letter-sheet[data-kind="card"] .letter-entry > * {
   text-wrap: balance;
@@ -318,7 +307,7 @@
   color: var(--ds-ink-muted);
   font-family: "Noto Sans JP", sans-serif;
   font-size: calc(var(--letter-gloss) * 1em);
-  line-height: 1.65;
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.02em;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -335,7 +324,6 @@
 @media (max-width: 700px) {
   .letter-sheet {
     padding: 14px 16px;
-    font-size: 18px;
   }
 }
 
@@ -345,8 +333,6 @@
 .reduce-motion :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
 .reduce-motion :is(.vn-scene, .battle-screen) > .weather-layer { transition: none; }
 .reduce-motion .recall-layer img,
-.reduce-motion .photo-show-layer,
-.reduce-motion .photo-show-layer img,
 .reduce-motion [data-quiet] > .vn-background::after,
 .reduce-motion [data-quiet] > .battle-backdrop::after { animation: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -354,8 +340,6 @@
   :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
   :is(.vn-scene, .battle-screen) > .weather-layer { transition: none; }
   .recall-layer img,
-  .photo-show-layer,
-  .photo-show-layer img,
   [data-quiet] > .vn-background::after,
   [data-quiet] > .battle-backdrop::after { animation: none; }
 }

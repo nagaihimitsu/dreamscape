@@ -24,8 +24,8 @@ import { requireServedFile } from "./public-assets";
 
 /** How each copy is made. A change here (or in libvips) gives every copy a new cache key. */
 export const DERIVED_IMAGE_SETTINGS = {
-  /** A 240×160 cover crop (target ≤ 20 KiB). */
-  card: { width: 240, height: 160, fit: "cover", withoutEnlargement: false, quality: 68 },
+  /** A 480×320 cover crop: free time's chosen card (about 190 px wide on a phone) sharp at 2.5× (2026-11-25; target ≤ 32 KiB). */
+  card: { width: 480, height: 320, fit: "cover", withoutEnlargement: false, quality: 62 },
   /** The longest side 1280 px, never enlarged (target ≤ 200 KiB). */
   backdrop: { width: 1280, height: 1280, fit: "inside", withoutEnlargement: true, quality: 60 },
   /** An 840×560 cover crop: the recap's 3:2 frame (160 px wide, 280 px on a 320-px phone) at 3× (target ≤ 80 KiB). */
@@ -34,7 +34,7 @@ export const DERIVED_IMAGE_SETTINGS = {
 
 /** Bump when the way a copy is encoded changes outside the settings. */
 const cacheFormat = 1;
-/** Cached copies kept (about 20 KiB a card, up to 80 KiB a recap, up to 200 KiB a backdrop); beyond this the least recently used are removed. */
+/** Cached copies kept (about 30 KiB a card, up to 80 KiB a recap, up to 200 KiB a backdrop); beyond this the least recently used are removed. */
 const keptEntries = 600;
 const repositoryRoot = path.resolve(import.meta.dirname, "..");
 export const DERIVED_IMAGE_CACHE_DIRECTORY = path.join(repositoryRoot, "node_modules", ".cache", "dreamscape", "derived-images");

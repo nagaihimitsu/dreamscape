@@ -1,5 +1,7 @@
-import { getCities, getCityContent, scenes, storyState, tourismClues } from "../content";
+import { episodes, getCities, getCityContent, landmarks, scenes, storyState, tourismClues } from "../content";
 import { sceneGivenClues } from "../content/scene-schemas";
+import { isTourOnlyPlace } from "../content/travel-schemas";
+import { getEpisodeAvailability } from "../domain/chapter";
 import { formatMoneyForCity } from "../content/currency";
 import { getJourneyForCity } from "../content/journeys";
 import { validateGameState, type GameState } from "../domain/game";
@@ -9,7 +11,7 @@ import { clueRecordAllowed } from "../domain/tourism";
 import { getUsableRoutes } from "../domain/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { clockText, debugDayRange, debugRomanceStages, debugTimeRange, type DebugRomanceStage } from "./debug-query";
-import { withClues } from "./scenario-builders";
+import { finishEpisode, withClues } from "./scenario-builders";
 
 /**
  * Debug's changes to a game state (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」; 2026-11-16
@@ -127,6 +129,59 @@ export function withDebugClues(state: GameState, ids: readonly string[]): GameSt
   if (!ids.length) return state;
   checkDebugClues(state.currentCityId, ids);
   return withClues(state, ids);
+}
+
+/** An episode of a city (not its finale) Debug can record as finished, with its landmark's name. */
+export type DebugEpisode = { id: string; nameJa: string };
+
+/**
+ * The episodes Debug offers to finish for a city (2026-11-25 user request 「〇〇のエピソードを終えた状態を得る」; the scene picker's
+ * 「エピソードを終えたことにする」, a launch URL's `episodes`): the city's episodes in their order, without its finale (finishing it
+ * clears the city: 旅の進行「都市クリア後」) and without those at a tour-only place (played on their tour: scene=tour).
+ */
+export function debugEpisodes(cityId: string): DebugEpisode[] {
+  const { travel } = getCityContent(cityId);
+  const tourOnly = new Set(travel.places.filter((place) => isTourOnlyPlace(place)).flatMap((place) => [place.id, ...(place.landmarkIds ?? [])]));
+  return episodes.filter((episode) => episode.cityId === cityId && episode.kind !== "city_finale" && !(episode.landmarkId && tourOnly.has(episode.landmarkId)))
+    .map((episode) => ({ id: episode.id, nameJa: landmarks.find((item) => item.id === episode.landmarkId)?.nameJa ?? episode.id }));
+}
+
+/** Throws the reason when an episode is not one Debug offers to finish for the city (a launch URL's `episodes`). */
+export function checkDebugEpisodes(cityId: string, ids: readonly string[]): void {
+  if (!ids.length) return;
+  const offered = debugEpisodes(cityId).map((episode) => episode.id);
+  const refused = ids.find((id) => !offered.includes(id));
+  if (refused === undefined) return;
+  const city = getCityContent(cityId).city.nameJa;
+  const episode = episodes.find((item) => item.id === refused);
+  if (episode?.cityId === cityId && episode.kind === "city_finale")
+    throw new Error(`エピソード「${refused}」は${city}のフィナーレです。フィナーレを終えた状態は、旅の進行を「都市クリア後」にして開きます。`);
+  if (episode?.cityId === cityId)
+    throw new Error(`エピソード「${refused}」はツアーで訪ねる場所のエピソードです。ツアーの場面（scene=tour）から遊んでください。`);
+  throw new Error(`エピソード「${refused}」は${city}のエピソードではありません（progression/journey.json の episodes のID）。`);
+}
+
+/**
+ * The state with these episodes of the current city finished, as a player finishes them (finishEpisode: the guide skipped, the quiz
+ * answered right, each choice the first open one, the scenes after it played), one by one in the city's order; one already finished
+ * is passed over. Only from free time (a scene's starting state); an episode that cannot start yet says why.
+ */
+export function withDebugEpisodes(state: GameState, ids: readonly string[]): GameState {
+  if (!ids.length) return state;
+  checkDebugEpisodes(state.currentCityId, ids);
+  let next = state;
+  for (const episode of debugEpisodes(state.currentCityId)) {
+    if (!ids.includes(episode.id) || next.completedEpisodeIds.includes(episode.id)) continue;
+    const availability = getEpisodeAvailability(next, episode.id);
+    if (!availability.available)
+      throw new Error(`エピソード「${episode.nameJa}」（${episode.id}）を終えたことにできません：${availability.reason}`);
+    try {
+      next = finishEpisode(next, episode.id);
+    } catch (error) {
+      throw new Error(`エピソード「${episode.nameJa}」（${episode.id}）を終えたことにできません：${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  return next;
 }
 
 /**

@@ -62,13 +62,17 @@ function useSwipe(onStep: (step: -1 | 1) => void) {
  *   opens them larger, in their own dialog over the log (PhotoViewer), which closes back to it. With `missedPhotos`
  *   (travel-log.ts showsMissedPhotos: the journey is over), the photos not taken yet follow in the story's order, in grey
  *   in the grid and opened larger alike (2026-11-20 user decision), a line above the grid saying what the grey ones are.
+ * With `photosNew` (a photo taken since 「写真」 was last open, 2026-11-25) it opens on 「写真」; `onPhotosShown` tells when
+ * 「写真」 is on show, so its photos count as seen.
  * It takes no press for a moment (settlePresses) and closes with 「× 閉じる」, a tap on the dimmed page around, or Esc. It
  * shows no names, no city progress, no credit, no relationship value and no quiz score (the place photos' credits are in
  * 出典・権利の一覧).
  */
-export function TravelLogDialog({ game, missedPhotos = false, extras, footer, onClose }: {
+export function TravelLogDialog({ game, missedPhotos = false, photosNew = false, onPhotosShown, extras, footer, onClose }: {
   game: GameState;
   missedPhotos?: boolean;
+  photosNew?: boolean;
+  onPhotosShown?: () => void;
   extras?: ReactNode;
   footer?: ReactNode;
   onClose: () => void;
@@ -76,7 +80,12 @@ export function TravelLogDialog({ game, missedPhotos = false, extras, footer, on
   const cities = useMemo(() => travelLogCities(game), [game]);
   const photos = useMemo(() => travelLogPhotos(game, missedPhotos), [game, missedPhotos]);
   const taken = photos.filter((photo) => !photo.missed).length;
-  const [axis, setAxis] = useState<Axis>("lived");
+  const [axis, setAxis] = useState<Axis>(photosNew ? "photos" : "lived");
+  useEffect(() => {
+    if (axis === "photos") onPhotosShown?.();
+  // As 「写真」 comes on show (and while it shows, a photo taken meanwhile: `game`).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [axis, game.album]);
   const [folded, setFolded] = useState<ReadonlySet<string>>(() => new Set());
   const [viewing, setViewing] = useState<Viewing | null>(null);
   const lived = cities.reduce((sum, city) => sum + city.experiences.length, 0);

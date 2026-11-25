@@ -2,6 +2,7 @@ import { TERM_LINE_ADVISED, TERM_LINE_MAX, textLength, type GlossaryTerm, type L
 import type { ContentWarning } from "./content-report";
 import { displayPath, type ContentSources } from "./content-sources";
 import { layerOfFile } from "./image-rights";
+import { alwaysBefore, branchPaths, type BranchStep } from "./ink-branches";
 import { taggedLines } from "./line-tag-text";
 
 // content:build's 旅の図鑑 (2026-11-13 user decision; src/content/glossary.ts): the terms of every journey's
@@ -77,9 +78,10 @@ export function checkTermTags(source: string, journeyId: string, termJourneys: R
 
 /**
  * The notes that do not stop the build (kind "glossary"): a term's line over TERM_LINE_ADVISED characters, a term no
- * `# term:` of its journey's stories names and no outfit puts in 旅の図鑑 (`outfitTermIds`: the outfits' `termId`, each its
- * own journey's; content-ownership.ts) — it can never be met —, the same term tagged twice in one scene (a knot, or a
- * file without knots: fine when each branch has its own), and a tag on a choice (it shows with the line after the choice).
+ * `# term:` of its journey's stories names and no outfit puts in 旅の図鑑 (`outfitTermIds`: the outfits' `termIds`, each its
+ * own journey's; content-ownership.ts) — it can never be met —, the same term tagged twice on one path of a scene (a
+ * knot, or a file without knots; once on each arm of a conditional or each choice of a menu is not counted:
+ * ink-branches.ts), and a tag on a choice (it shows with the line after the choice).
  */
 export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, terms: readonly ListedTerm[],
   outfitTermIds: readonly string[] = []): ContentWarning[] {
@@ -87,16 +89,23 @@ export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFi
   const tagged = new Set<string>();
   for (const story of sources.storyFiles) {
     const file = displayPath(sources.root, story.file);
-    const inScene = new Set<string>();
+    const paths = branchPaths(story.source);
+    const inScene = new Map<string, BranchStep[][]>();
     for (const { value, line, knot, choice } of termTagsOf(story.source)) {
       if (!value) continue;
       tagged.add(`${story.layer}\u0000${value}`);
       const where = `${file} の${knot ? `knot ${knot} の` : ""}${line}行目の # term: ${value}`;
       const scene = `${knot ?? ""}\u0000${value}`;
-      if (inScene.has(scene))
-        notes.push(`同じ場面に同じ言葉の札がもう1つあります：${where}。言葉の小窓は最初の1回しか出ません。分かれ道のそれぞれに置いたのなら、そのままで構いません` +
-          `（Term tagged twice in one scene: ${value}）。`);
-      inScene.add(scene);
+      const path = paths[line - 1] ?? [];
+      const earlier = inScene.get(scene) ?? [];
+      // A tag on each branch (the arms of a conditional, the choices of a menu), and one after the branches for the walks
+      // that did not meet it on theirs, are as they should be: only a tag every walk to this one has passed makes it idle.
+      if (earlier.some((other) => alwaysBefore(other, path)))
+        notes.push(`同じ場面の同じ道に、同じ言葉の札がもう1つあります：${where}。この行に来るまでに、どの道でも前の札を通っています。` +
+          "言葉の小窓は最初の1回しか出ないので、この札は外せます（条件や選択肢の分かれ道のそれぞれに置いた札、" +
+          "分かれ道の一つで先に出会う言葉にその後で置いた札には、この注意は出ません）" +
+          `（Term tagged twice on one path of a scene: ${value}）。`);
+      inScene.set(scene, [...earlier, path]);
       if (choice)
         notes.push(`選択肢に言葉の札があります：${where}。選択肢の文には置かず、その言葉が出る台詞か地の文の行の前に置いてください（選んだ後の行で小窓が出ます）` +
           `（# term: on a choice: ${value}）。`);
@@ -109,7 +118,7 @@ export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFi
         `（Term line over ${TERM_LINE_ADVISED} characters: ${term.id}, ${length}）。`);
     if (!tagged.has(`${term.journeyId}\u0000${term.id}`) && !outfitTermIds.includes(term.id))
       notes.push(`どの行にも札がなく、服からも入らない言葉です：旅行編 ${term.journeyId} の "${term.id}"。# term: ${term.id} を、その言葉が初めて出る行の前に置くか、` +
-        `服（shop/catalog.json の outfits）の termId に書いてください` +
+        `服（shop/catalog.json の outfits）の termIds に書いてください` +
         `（Term without a # term: tag: ${term.id}）。`);
   }
   return notes.map((message) => ({ kind: "glossary", message }));

@@ -10,9 +10,12 @@ export const FIRST_ALBUM_PHOTO_NOTICE_MS = 6000;
 
 /**
  * The photo just taken, said for a moment (`id` changes with each new notice; `first`: the journey's first photo;
- * `fromLarge`: its line showed it large, `# photo_show: large`, so the card comes from that picture once the line goes).
+ * `fromLarge`: its line showed it large (the default since 2026-11-25; not `# photo_show: small`, nor a line 高速送り ran
+ * past), so the card comes from that picture once the line goes; `flown`: that picture flew into ≡メニュー instead
+ * (PhotoShowFlight; every photo but the journey's first), so the card is only said, not shown; `sound`: its line lets
+ * the photo's sound ring (not quiet, no `# se:` of its own)).
  */
-export type AlbumPhotoNoticeState = { id: number; photo: AlbumPhoto; first: boolean; fromLarge?: boolean };
+export type AlbumPhotoNoticeState = { id: number; photo: AlbumPhoto; first: boolean; fromLarge?: boolean; flown?: boolean; sound?: boolean };
 
 /** Where the album is, said once, with the journey's first photo. */
 export const ALBUM_PLACE_HINT_JA = "メニューの「旅の記録」の「写真」で見られます";
@@ -30,7 +33,8 @@ export function AlbumPhotoNotice({ notice }: { notice: AlbumPhotoNoticeState | n
   const duration = notice?.first ? FIRST_ALBUM_PHOTO_NOTICE_MS : ALBUM_PHOTO_NOTICE_MS;
   return (
     <div className="album-photo-notice-region" role="status" data-testid="album-photo-notice">
-      {notice && (
+      {notice?.flown && <p key={notice.id} className="sr-only">写真に残しました：{notice.photo.caption ?? ALBUM_IMAGE_ALT_JA}</p>}
+      {notice && !notice.flown && (
         <div key={notice.id} className="album-photo-notice" data-from-large={notice.fromLarge || undefined}
           style={{ "--album-notice-ms": `${duration}ms` } as CSSProperties}>
           {image && <img className="album-photo-notice-picture" src={`${import.meta.env.BASE_URL}${image.path}`} alt="" decoding="async" />}

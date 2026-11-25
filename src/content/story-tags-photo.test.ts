@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseStoryTags } from "./tags";
+import { parseStoryTags, photoShowsLarge } from "./tags";
 
 // The album images the context lists (content:build: the files of the journeys' public/assets/album/).
 const context = { effectIds: [], backgroundIds: ["cafe"], emotionIds: ["neutral", "smile"], photoIds: ["tower_photo", "cafe_art"] };
@@ -26,12 +26,17 @@ describe("a line's photo tags (the album, 2026-11-11)", () => {
     expect(() => parseStoryTags(["photo: tower_photo", "photo_caption: a", "photo_caption: b"], context)).toThrow("Duplicate photo caption tag");
   });
 
-  it("read # photo_show: large with its # photo: (2026-11-12: the picture shown large on its line), and refuse it alone, another value or twice", () => {
-    expect(parseStoryTags(["photo_show: large", "photo: cafe_art", "photo_caption: 窓ぎわで"], context).photo)
-      .toEqual({ imageId: "cafe_art", caption: "窓ぎわで", show: "large" });
+  it("read # photo_show: with its # photo: (large by default since 2026-11-25; small keeps it to the card), and refuse it alone, another value or twice", () => {
+    expect(parseStoryTags(["photo_show: small", "photo: cafe_art", "photo_caption: 窓ぎわで"], context).photo)
+      .toEqual({ imageId: "cafe_art", caption: "窓ぎわで", show: "small" });
+    expect(parseStoryTags(["photo: cafe_art", "photo_show: large"], context).photo).toEqual({ imageId: "cafe_art", show: "large" });
     expect(parseStoryTags(["photo: cafe_art"], context).photo).not.toHaveProperty("show");
-    expect(() => parseStoryTags(["photo_show: large"], context)).toThrow("Photo show without a photo");
+    expect(photoShowsLarge(parseStoryTags(["photo: cafe_art"], context).photo)).toBe(true);
+    expect(photoShowsLarge(parseStoryTags(["photo: cafe_art", "photo_show: large"], context).photo)).toBe(true);
+    expect(photoShowsLarge(parseStoryTags(["photo: cafe_art", "photo_show: small"], context).photo)).toBe(false);
+    expect(photoShowsLarge(undefined)).toBe(false);
+    expect(() => parseStoryTags(["photo_show: small"], context)).toThrow("Photo show without a photo");
     expect(() => parseStoryTags(["photo: cafe_art", "photo_show: big"], context)).toThrow("Invalid photo_show tag: big");
-    expect(() => parseStoryTags(["photo: cafe_art", "photo_show: large", "photo_show: large"], context)).toThrow("Duplicate photo_show tag");
+    expect(() => parseStoryTags(["photo: cafe_art", "photo_show: small", "photo_show: small"], context)).toThrow("Duplicate photo_show tag");
   });
 });

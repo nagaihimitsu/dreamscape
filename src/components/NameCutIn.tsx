@@ -33,7 +33,8 @@ export function useNameCutIn(cutIn: NameCutIn | undefined, lineKey: string, held
 
 /**
  * A name plate (`# cutin: name`, 2026-11-11 user decision): the speaker's role, name and, for a battle's opponent, their
- * quote when written, on the window's slate just above the dialogue window's head (DialogueWindowHead), over the scene.
+ * quote when written, on the window's glass high on the scene, below the header (name-cutin.css; each talk screen puts it
+ * on its scene).
  */
 export function NameCutInPlate({ cutIn }: { cutIn: NameCutIn | undefined }) {
   if (!cutIn) return null;

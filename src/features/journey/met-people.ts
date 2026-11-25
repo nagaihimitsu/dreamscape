@@ -41,8 +41,10 @@ type Met = MetPerson & { cityId: string };
  * - the people of progression/story.json named in the `# person:` of a scene the player has completed (music-room.ts
  *   sceneCompleted): a city's arrival once past it, a talk or an encounter seen (the `met` rule of src/domain/conditions.ts),
  *   a guide read, a date played, an epilogue read;
- * - the partner of each quiz played: the declared person whose portrait the quiz shows (presentation/characters.json
- *   `battleCharacters`) or who has the partner's name in the same city, else the quiz's own partner (its name and role).
+ * - the partner of each quiz played, always under the name the quiz gives them (`enemyNameJa`; 2026-11-25 user decision): the
+ *   declared person of the same city with that name, else the one whose portrait the quiz shows (presentation/characters.json
+ *   `battleCharacters`; often declared under what the lines call them before the name, 老人 or 青年), else the quiz's own
+ *   partner (its name and role).
  * Grouped by their city in the journey's travel order; in a city, the arrival's people, then those of the talks and
  * encounters in the order seen, the quiz partners in the order played and the other scenes' (the epilogue's last). One
  * entry a person (the same name in the same city is the same person). Each has the writer's few words: the person's
@@ -80,10 +82,14 @@ export function metPeopleGroups(game: Readonly<GameState>): MetPeopleGroup[] {
     const cityId = battle && battleCityId(battle.id);
     if (!battle || !cityId) continue;
     const characterId = BATTLE_CHARACTERS[battle.id];
-    const person = storyState.people.find((item) => item.cityId === cityId &&
-      ((characterId !== undefined && item.characterId === characterId) || item.nameJa === battle.enemyNameJa));
+    const inCity = storyState.people.filter((item) => item.cityId === cityId);
+    const named = inCity.find((item) => item.nameJa === battle.enemyNameJa);
+    // The quiz's partner by their own name (enemyNameJa): a person of the partner's portrait is often declared under what the
+    // lines call them before they give their name (老人, 青年), so that person lends the entry its ID and words, not its name.
+    const person = named ?? (characterId === undefined ? undefined : inCity.find((item) => item.characterId === characterId));
     add(person
-      ? { id: person.id, cityId: person.cityId, nameJa: person.nameJa, ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa), ...portrait(person.characterId ?? characterId) }
+      ? { id: person.id, cityId: person.cityId, nameJa: named ? person.nameJa : battle.enemyNameJa,
+        ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa), ...portrait(person.characterId ?? characterId) }
       : { id: `quiz:${battle.id}`, cityId, nameJa: battle.enemyNameJa, ...words(battle.enemyTitleJa), ...portrait(characterId) });
   }
   const other = scenes.filter((scene) => !isArrival(scene) && !INSERTED_KINDS.includes(scene.kind) && sceneCompleted(scene, game, reached));

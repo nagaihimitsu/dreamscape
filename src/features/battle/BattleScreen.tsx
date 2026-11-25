@@ -7,6 +7,7 @@ import type { GameState } from "../../domain/game";
 import { battleBackgroundId, battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
+import { speakerSpot, useNameBand } from "../../components/name-band";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
@@ -29,7 +30,7 @@ import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
-import { useNameCutIn } from "../../components/NameCutIn";
+import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
@@ -434,6 +435,7 @@ export function BattleScreen({
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
   // Each part of the battle's talk opens on its establishing shot (the camera comes in with its next line; battle.css).
   const establishing = useEstablishingShot(`${battle.id}:${active.phase}`, game.revision);
+  const band = useNameBand(isDialogue ? speakerSpot(stage, focus, "battle") : undefined, frame?.speaker === "heroine", { sceneId: battle.id, cityId: heroineCityId });
   // A line's `# cutin: name` shows its speaker's name plate over the scene for a moment (NameCutIn): the opponent's
   // heading (role, name, the quote when written), or a person's. An episode's title card over the opening holds it.
   const nameCut = useNameCutIn(isDialogue && frame
@@ -516,6 +518,7 @@ export function BattleScreen({
       <WeatherLayer weather={atmosphere.weather} />
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
+      <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <ItemOutLayer card={itemOutCard(game, staging?.itemOut)} quiet={!!staging?.quiet} />
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
@@ -559,11 +562,10 @@ export function BattleScreen({
       <div className="battle-window">
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
-        cutIn={nameCut}
         narration={!!frame && plate.narration}
         remembered={remembered}
         speaker={frame && showsSpeakerPlate(frame) && speaker}
-        controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
+        band={band}
       />}
       <section
         ref={readingArea}
@@ -586,61 +588,67 @@ export function BattleScreen({
           </span>
         </div>}
         {isResult ? (
-          <div className="battle-result" data-testid="battle-result">
-            <p className="eyebrow">結果</p>
+          <div className="battle-result" data-testid="battle-result" data-outcome={outcome}>
+            {/* The outcome over the scene, the rest on a glass card at the foot (2026-11-25 user decision: the result
+                as part of the place, not a sheet over it; battle.css). */}
             <div className="battle-result-heading">
+              <p className="eyebrow">結果</p>
               <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
                 <strong>{active.score}</strong>
                 <span> / {quiz.questions.length} 問正解</span>
               </p>
             </div>
-            <BattleRewards game={game} onClaim={onClaimRewards} />
-            {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
-                mid-card), held there while a long result scrolls above it (battle.css). */}
-            <div className="battle-result-foot">
-              {nextStoryBattle && onNextStoryBattle && (
-                <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
-              )}
-              <div className="battle-result-actions">
+            <div className="battle-result-card">
+              <div className="battle-result-body">
+                <BattleRewards game={game} onClaim={onClaimRewards} />
+              </div>
+              {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
+                  mid-card), held there while a long result scrolls above it (battle.css). */}
+              <div className="battle-result-foot">
                 {nextStoryBattle && onNextStoryBattle && (
-                  <button
-                    className="primary"
-                    data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
-                    onClick={onNextStoryBattle}
-                  >
-                    {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
-                  </button>
+                  <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
                 )}
-                {onEpilogue && (
-                  <button
-                    className="primary"
-                    data-testid="city-epilogue-start"
-                    onClick={onEpilogue}
+                <div className="battle-result-actions">
+                  {nextStoryBattle && onNextStoryBattle && (
+                    <button
+                      className="primary"
+                      data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
+                      onClick={onNextStoryBattle}
+                    >
+                      {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                  {onEpilogue && (
+                    <button
+                      className="primary"
+                      data-testid="city-epilogue-start"
+                      onClick={onEpilogue}
+                    >
+                      エピローグへ進む <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                  {onLeave && <button
+                    className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
+                    onClick={onLeave}
                   >
-                    エピローグへ進む <span aria-hidden="true">→</span>
-                  </button>
-                )}
-                {onLeave && <button
-                  className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
-                  onClick={onLeave}
-                >
-                  {leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む")}{" "}
-                  <span aria-hidden="true">→</span>
-                </button>}
-                {onNextEpisode && (
-                  <button
-                    className="secondary"
-                    data-testid="next-tourism"
-                    onClick={onNextEpisode}
-                  >
-                    {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                    {leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む")}{" "}
                     <span aria-hidden="true">→</span>
-                  </button>
-                )}
-                {onEnglish && <button className="secondary" onClick={() => onEnglish()}>
-                  回答した問題を振り返る
-                </button>}
+                  </button>}
+                  {onNextEpisode && (
+                    <button
+                      className="secondary"
+                      data-testid="next-tourism"
+                      onClick={onNextEpisode}
+                    >
+                      {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                  {onEnglish && <button className="secondary" onClick={() => onEnglish()}>
+                    回答した問題を振り返る
+                  </button>}
+                </div>
               </div>
             </div>
           </div>
@@ -873,6 +881,8 @@ export function BattleScreen({
         )}
       </section>
       </div>
+      {/* The talk's tools, in a row under its window (DialogueControls). */}
+      {isDialogue && <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
       {/* The talk's choices float above its window, which keeps the line they answer (romance-scene.css .vn-choices). */}
       {isDialogue && frame && choosing && onChoose && <div className="vn-choices">
         <ChoicePoint minigame={frame.minigame} ready={ready} cast={{

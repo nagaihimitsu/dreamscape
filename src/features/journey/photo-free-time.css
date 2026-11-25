@@ -1,6 +1,7 @@
-/* B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」). Every text sits on its own opaque card over the background;
-   pressables keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no
-   card has a thick accent line on its left (AGENTS.md). */
+/* B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」). Every text sits on its own ground over the background: the photo
+   cards' mats, and the light glass of the cards under them (styles.css's glass surfaces, 2026-11-25); pressables on the
+   glass keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no card has
+   a thick accent line on its left (AGENTS.md). */
 
 .free-time-hub.photo-free-time { max-width: 680px; }
 
@@ -23,10 +24,13 @@
     var(--ds-parchment-2);
 }
 
-/* A city's backdrop (FreeTimeBackdrop: its own artwork or its photo, fixed, cropped to fill the screen) is dimmed a little
-   more here than on the previous screen, so the cards and the transparent header's own pills stand out from a busy
-   picture. */
-.photo-free-time .free-time-backdrop:not(.is-plain)::after { background: rgba(20, 24, 32, 0.3); }
+/* A city's backdrop (FreeTimeBackdrop: its own artwork or its photo, fixed, cropped to fill the screen) is dimmed so the
+   transparent header's own pills and the cards stand out from a busy picture: more at the top (the header) and at the
+   foot, less in the middle, where the street shows through the glass of the cards (2026-11-25 user decision: the
+   screen as the place, not a form laid over it). */
+.photo-free-time .free-time-backdrop:not(.is-plain)::after {
+  background: linear-gradient(rgba(20, 24, 32, 0.5), rgba(20, 24, 32, 0.18) 28%, rgba(20, 24, 32, 0.18) 62%, rgba(20, 24, 32, 0.45));
+}
 /* The colour of the time of day (time-of-day.ts timeOfDayTint, user decision 2026-11-11) over the backdrop or the
    pattern: one more fixed layer, after them in the same place, under every card. Every text over it sits on its own
    ground. When the clock moves while the screen shows (a wait), the colour
@@ -118,16 +122,9 @@
   --card-text: clamp(0, calc((var(--card-scale, 1) - 0.7) / 0.25), 1);
 }
 .photo-cards:not(.is-list) > li > .photo-card :is(.photo-card-text, .photo-card-chip) { opacity: var(--card-text); }
-/* The side cards' mat under the photo shrinks with their hidden name (2026-11-20 user decision: no wide band of the
-   fill below a side card): each card keeps its own height, centred in the row, and the name's room opens as the card
-   comes to the centre. The chosen card is never clipped (its swipe cue moves). */
+/* Each card keeps its own height, centred in the row (2026-11-20 user decision: no wide band of the fill below a side
+   card; since 2026-11-25 the name lies on the photo, so no card has a band under it). */
 .photo-cards:not(.is-list) > li { align-items: center; }
-.photo-cards:not(.is-list) > li:not([data-selected]) > .photo-card { padding-bottom: calc(4px + 4px * var(--card-text)); }
-.photo-cards:not(.is-list) > li:not([data-selected]) > .photo-card .photo-card-text {
-  max-height: calc(var(--card-text) * 120px);
-  padding-top: calc(var(--card-text) * 6px);
-  overflow: hidden;
-}
 /* Fingers scroll the row; a mouse keeps the scrollbar. */
 @media (pointer: coarse) {
   .photo-cards { scrollbar-width: none; }
@@ -170,6 +167,133 @@
 .photo-card:is(.is-story, .is-date, .is-both) { color: var(--ds-on-slate); }
 .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
   box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 3px 9px rgba(40, 30, 20, 0.3);
+}
+/* Over the city (2026-11-25 user decision) the cards lie on the street as prints: no slate edge (its line would draw a
+   form over the picture), a shadow cast on the picture under them, and the chosen one held up in a soft gold light
+   (its edge stays drawn inside: the paper's slate, a fill's yellow). */
+.photo-cards .photo-card:not(.is-locked) {
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(8, 10, 16, 0.42);
+}
+/* In the row each card is the photo itself (2026-11-25 user decisions, after free time on an iPhone: the slate band of
+   the name under the photo was a form's part laid over the city; then, the immersion before the colours decided
+   earlier): the photo fills the card, with no frame or fill of what the place holds, and the name lies on the photo's
+   foot over a shade, in white (8:1 or more on the shade's foot), the swipe's cue under it. What the place holds shows
+   as a small mark on the photo's corner (a book for the story, a heart for a date; the card under the row names it).
+   The chosen card is held up in a thin white ring and a soft gold light (it is also the largest: never the colour
+   alone). A card without a photo (待機, the tour, the shop, a place without one, a date not open yet) is a pane of the
+   smoked glass, the scene blurred through it, with its mark. */
+.photo-cards:not(.is-list) .photo-card,
+.photo-card-ghost {
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: none;
+  color: var(--ds-on-slate);
+}
+.photo-cards:not(.is-list) .photo-card:not(.is-locked)[aria-current="true"] {
+  box-shadow: 0 0 0 2px var(--ds-glass-mark), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 28px rgba(246, 196, 69, 0.32);
+}
+.photo-cards:not(.is-list) .photo-card-photo,
+.photo-card-ghost .photo-card-photo {
+  aspect-ratio: 5 / 4;
+  border-radius: inherit;
+  background: none;
+}
+.photo-cards:not(.is-list) .photo-card-text,
+.photo-card-ghost .photo-card-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  padding: 30px 10px 6px;
+  border-radius: 0 0 16px 16px;
+  background: linear-gradient(to bottom, transparent, rgba(8, 12, 22, 0.62) 45%, rgba(8, 12, 22, 0.86));
+  color: var(--ds-on-slate);
+  pointer-events: none;
+}
+.photo-cards:not(.is-list) .photo-card-name,
+.photo-card-ghost .photo-card-name {
+  align-self: stretch;
+  color: inherit;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.photo-cards:not(.is-list) .photo-card.is-unavailable .photo-card-name,
+.photo-card-ghost.is-unavailable .photo-card-name { color: var(--ds-smoke-muted); }
+.photo-cards:not(.is-list) .photo-card-cue { margin-top: 2px; }
+.photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked),
+.photo-card-ghost:has(.photo-card-plain) {
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+}
+.photo-cards:not(.is-list) .photo-card.is-locked {
+  border: 1px dashed var(--ds-smoke-muted);
+  box-shadow: none;
+}
+.photo-cards:not(.is-list) .photo-card-plain:not([style]),
+.photo-card-ghost .photo-card-plain:not([style]) { background: none; color: var(--ds-on-slate); }
+.photo-cards:not(.is-list) .photo-card-plain { padding-bottom: 24px; }
+.photo-cards:not(.is-list) .photo-card.is-locked .photo-card-name { color: var(--ds-smoke-muted); }
+/* The marks over the photo are smoked glass: what the place holds and 訪問済み at the top left (clear of the name), the
+   current place, 「おすすめ」 or 「最寄り」 at the top right. */
+.photo-card-kind {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  color: var(--ds-on-slate);
+}
+.photo-card-kind .icon { width: 12px; height: 12px; }
+.photo-cards:not(.is-list) > li > .photo-card .photo-card-kind { opacity: var(--card-text); }
+.photo-cards:not(.is-list) :is(.photo-card-chip, .photo-card-kind),
+.photo-card-ghost :is(.photo-card-chip, .photo-card-kind),
+.photo-cards.is-list .photo-card-kind {
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-smoke-edge);
+}
+.photo-cards:not(.is-list) .photo-card-chip.is-top,
+.photo-card-ghost .photo-card-chip.is-top { top: 6px; right: 6px; }
+.photo-cards:not(.is-list) .photo-card-chip.is-bottom,
+.photo-card-ghost .photo-card-chip.is-bottom { top: 6px; bottom: auto; left: 6px; line-height: 22px; }
+.photo-cards:not(.is-list) .photo-card-kind ~ .photo-card-chip.is-bottom,
+.photo-card-ghost .photo-card-kind ~ .photo-card-chip.is-bottom { left: 34px; }
+.photo-cards:not(.is-list) .photo-card-kind.is-both ~ .photo-card-chip.is-bottom,
+.photo-card-ghost .photo-card-kind.is-both ~ .photo-card-chip.is-bottom { left: 49px; }
+.photo-cards:not(.is-list) .photo-card-chip.is-top,
+.photo-card-ghost .photo-card-chip.is-top { line-height: 22px; }
+/* The list (short screens, large text, sideways): rows of the light glass, the photo at their left with its marks. */
+.photo-cards.is-list .photo-card {
+  border: 0;
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  color: var(--ds-glass-ink);
+}
+.photo-cards.is-list .photo-card:not(.is-locked)[aria-current="true"] {
+  background: var(--ds-glass-bg);
+  box-shadow: inset 0 0 0 1.5px var(--ds-glass-ink), var(--ds-glass-shadow);
+}
+.photo-cards.is-list .photo-card.is-unavailable .photo-card-name { color: var(--ds-glass-muted); }
+.photo-cards.is-list .photo-card-plain:not([style]) {
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+}
+.photo-cards .photo-card:not(.is-locked)[aria-current="true"] {
+  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 26px rgba(246, 196, 69, 0.32);
+}
+.photo-cards .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
+  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 26px rgba(246, 196, 69, 0.32);
 }
 .photo-card-photo {
   position: relative;
@@ -435,7 +559,8 @@
 .photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: 2px 0 0; }
 .photo-cards.is-list .place-card { margin-top: 6px; }
 
-/* The card under the row: a place's introduction, 「待機」's waits, 「ホテルに戻る」's 休む or the tour. */
+/* The card under the row: a place's introduction, 「待機」's waits, 「ホテルに戻る」's 休む or the tour. On the page it is
+   glass over the city (styles.css's glass surfaces); in the expanded map's dialog, parchment. */
 .place-card {
   display: grid;
   gap: 8px;
@@ -474,7 +599,7 @@
   min-height: 44px;
   margin: 0;
   padding: 6px 10px;
-  border: 1.5px solid var(--ds-slate-800);
+  border: 1px solid var(--ds-field-edge);
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
@@ -485,19 +610,19 @@
   text-align: left;
   cursor: pointer;
 }
-.place-card-event-choice[aria-pressed="true"] { background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1.5px var(--ds-slate-800); }
+.place-card-event-choice[aria-pressed="true"] { background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1px var(--ds-ink); }
 .place-card-event-choice .place-card-tag { margin-right: 0; }
 .place-card-event-choice > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .place-card-event-mark { flex: none; font-size: 12px; }
 .place-card-event-meta { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
-/* What an event is, before its title or its time: a display-only pill whose word says it (「ストーリー」, 「デート」);
-   the date's colour only helps. */
+/* What an event is, before its title or its time: a display-only pill whose word says it (「ストーリー」, 「デート」), on
+   the smoked glass for both (2026-11-25 user decision: the immersion before the colours decided earlier). */
 .place-card-tag {
   display: inline-block;
   margin-right: 6px;
   padding: 0 8px;
   border-radius: 999px;
-  background: var(--ds-slate-800);
+  background: var(--ds-smoke);
   color: var(--ds-on-slate);
   font-size: 11px;
   font-weight: 600;
@@ -505,7 +630,6 @@
   white-space: nowrap;
   vertical-align: 1px;
 }
-.place-card-tag.is-date { background: var(--ds-marker); }
 .place-card-hook { font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
 /* The heroine's few words about the chosen place (HeroineNote, its heroineLinesJa; 2026-11-11 user decision): in the
    card's flow, so it covers nothing and a drag that starts on it moves the row or lifts the card as anywhere else
@@ -529,7 +653,9 @@
 
 /* The way: the modes in one row, each with its time and fare (pressing one only chooses it), or the one way as a line;
    then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「待機」's waits and
-   「ホテルに戻る」's ways home are chips (below), then the same button (「待つ」, 「休む」). */
+   「ホテルに戻る」's ways home are chips (below), then the same button (「待つ」, 「休む」). On the glass (2026-11-25 user
+   decision: the immersion first) a mode or chip is the glass's light ground with a thin edge (3:1), the chosen one the
+   smoked glass of the talk's choices with its gold hairline, one that cannot be chosen only its dashed edge. */
 .place-card-ways { display: grid; gap: 6px; margin-top: 2px; }
 .place-card-modes { display: flex; gap: 6px; }
 .place-card-mode {
@@ -538,7 +664,7 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 6px;
-  border: 1.5px solid var(--ds-slate-800);
+  border: 1px solid var(--ds-field-edge);
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
@@ -549,13 +675,20 @@
   overflow-wrap: anywhere;
   cursor: pointer;
 }
-.place-card-mode[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
-.place-card-mode:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); cursor: default; }
+.place-card-mode[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--ds-action-fill);
+  color: var(--ds-action-ink);
+  box-shadow: inset 0 0 0 1px var(--ds-gold-hairline);
+  text-shadow: var(--ds-action-text-shadow);
+}
+.place-card-mode:disabled,
+.place-card-option:disabled { opacity: 1; border-style: dashed; background: none; color: var(--ds-ink-muted); cursor: default; }
 .place-card-mode-cost { display: block; font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
-   so they are chips, not the filled look of a button that acts: pills with the pressables' slate edge on the paper, the
-   chosen one with ✓, its edge drawn thicker inside and the darker paper (the event choice's way). Their longer words wrap
-   the row, each chip at least about eight characters wide; a greyed one cannot be chosen. */
+   so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
+   on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one with
+   only its dashed edge cannot be chosen. */
 .place-card-options { display: flex; flex-wrap: wrap; gap: 8px; }
 .place-card-option {
   display: inline-flex;
@@ -567,7 +700,7 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 14px;
-  border: 1.5px solid var(--ds-slate-800);
+  border: 1px solid var(--ds-field-edge);
   border-radius: 999px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
@@ -578,14 +711,19 @@
   overflow-wrap: anywhere;
   cursor: pointer;
 }
-.place-card-option[aria-pressed="true"] { background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1.5px var(--ds-slate-800); }
-.place-card-option:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); cursor: default; }
+.place-card-option[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--ds-action-fill);
+  color: var(--ds-action-ink);
+  box-shadow: inset 0 0 0 1px var(--ds-gold-hairline);
+  text-shadow: var(--ds-action-text-shadow);
+}
 .place-card-option-mark { flex: none; font-size: 15px; font-weight: 700; line-height: 1; }
 .place-card-option-text { min-width: 0; }
 /* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. */
 .place-card-way { margin: 0 2px; font-size: 13px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
 .place-card-way .place-card-mode-cost { display: inline; }
-.place-card-way.is-unavailable { color: var(--ds-disabled-ink); }
+.place-card-way.is-unavailable { color: var(--ds-ink-muted); }
 .place-card .place-card-go {
   flex-wrap: wrap;
   gap: 2px 10px;

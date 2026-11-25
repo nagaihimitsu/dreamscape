@@ -60,6 +60,7 @@
     "text:check": "tsx scripts/text-check-cli.ts"
   },
   "dependencies": {
+    "budoux": "file:vendor/budoux-0.10.4-dreamscape.1.tgz",
     "inkjs": "^2.4.0",
     "leaflet": "^1.9.4",
     "mesh-avatar": "file:vendor/mesh-avatar-0.8.0-dreamscape.3.tgz",

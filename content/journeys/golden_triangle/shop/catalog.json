@@ -7,7 +7,12 @@
       "nameJa": "布地の店",
       "descriptionJa": "色とりどりの布が、天井近くまで積み上がった小さな店。広げて見せてもらえる。",
       "heroineLineJa": "布の色だけで、目が忙しいね。……ちょっとだけ、見ていってもいい？",
-      "outfitIds": ["gt_saree_blue", "gt_salwar_kameez_navy", "gt_kurta_block_print", "gt_anarkali_jade"]
+      "outfitIds": [
+        "gt_saree_blue",
+        "gt_salwar_kameez_navy",
+        "gt_kurta_block_print",
+        "gt_anarkali_jade"
+      ]
     },
     {
       "id": "gt_agra_cloth_shop",
@@ -15,7 +20,12 @@
       "nameJa": "布地の店",
       "descriptionJa": "通りに面して、畳んだ布を棚いっぱいに並べた店。店の奥に鏡がある。",
       "heroineLineJa": "棚の上から下まで、全部ちがう色。見てるだけで楽しくなっちゃう",
-      "outfitIds": ["gt_saree_blue", "gt_salwar_kameez_navy", "gt_kurta_block_print", "gt_anarkali_jade"]
+      "outfitIds": [
+        "gt_saree_blue",
+        "gt_salwar_kameez_navy",
+        "gt_kurta_block_print",
+        "gt_anarkali_jade"
+      ]
     },
     {
       "id": "gt_jaipur_cloth_shop",
@@ -23,7 +33,12 @@
       "nameJa": "布地の店",
       "descriptionJa": "店先に布を吊るして、風に揺らしている店。奥で着付けも手伝ってくれる。",
       "heroineLineJa": "ここの布、光に透けるときれいだね。……着たら、どんな感じなんだろう",
-      "outfitIds": ["gt_saree_blue", "gt_salwar_kameez_navy", "gt_kurta_block_print", "gt_anarkali_jade"]
+      "outfitIds": [
+        "gt_saree_blue",
+        "gt_salwar_kameez_navy",
+        "gt_kurta_block_print",
+        "gt_anarkali_jade"
+      ]
     }
   ],
   "outfits": [
@@ -34,7 +49,9 @@
       "descriptionJa": "縫い目のない一枚の長い布を、体に巻きつけて着るインドの装い。深い青に、銀の花模様が散っている。",
       "price": 2500,
       "boughtLineJa": "……ほんとに買っちゃった。似合わなかったら、ちゃんと言ってね？ 言わなくても、顔でわかるけど",
-      "termId": "gt_term_saree"
+      "termIds": [
+        "gt_term_saree"
+      ]
     },
     {
       "id": "gt_salwar_kameez_navy",
@@ -43,7 +60,10 @@
       "descriptionJa": "膝下まである長い上着（カミーズ）に、足首ですぼまるゆったりしたズボン（サルワール）、肩には透ける薄布（ドゥパッタ）を合わせるインドの装い。紺の地に、銀の花の刺繍。",
       "price": 1800,
       "boughtLineJa": "ズボンなのに、ちゃんとよそ行きなんだね。……これなら、一日じゅう歩いても平気そう",
-      "termId": "gt_term_salwar_kameez"
+      "termIds": [
+        "gt_term_salwar_kameez",
+        "gt_term_dupatta"
+      ]
     },
     {
       "id": "gt_kurta_block_print",
@@ -52,7 +72,10 @@
       "descriptionJa": "彫った木の版に染料をつけて、手で一つずつ押して柄を付けた綿のクルタ（長い上着）に、揃いのゆったりしたズボン。生成りの地に、赤い花の小さな模様が並ぶ。",
       "price": 1200,
       "boughtLineJa": "よく見ると、花がひとつずつちょっとずつ違うの。手で押したんだって思うと、なんだか愛おしくない？",
-      "termId": "gt_term_kurta"
+      "termIds": [
+        "gt_term_kurta",
+        "gt_term_block_print"
+      ]
     },
     {
       "id": "gt_anarkali_jade",
@@ -61,7 +84,11 @@
       "descriptionJa": "胸の下で切り替えて、裾まで傘のように広がる長い上着に、足首にしわを寄せてはく細身のズボン（チュリダール）と、肩に透ける薄布（ドゥパッタ）を合わせるインドの装い。翡翠色の地に、金と赤の花の刺繍。薄布は橙色。",
       "price": 2200,
       "boughtLineJa": "くるっと回ると、裾がぜんぶ広がるんだって。……一回だけね。笑わないで見てて",
-      "termId": "gt_term_anarkali"
+      "termIds": [
+        "gt_term_anarkali",
+        "gt_term_churidar",
+        "gt_term_dupatta"
+      ]
     }
   ]
 }

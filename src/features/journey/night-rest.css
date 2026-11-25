@@ -76,6 +76,29 @@
   .night-rest, .night-rest-content, .night-rest-star, .night-tap-hint { animation: none; }
 }
 
+/* The city at night behind the card and the night screen (NightBackdrop, 2026-11-25 user decision): the city's backdrop,
+   fixed and cropped to fill the screen, under a veil that deepens from dusk to night with the screen's own colour (the
+   plain night colour shows where a city has no backdrop). Above the screen's colour, under its moon, line and buttons. */
+.night-backdrop {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+.night-backdrop img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.night-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ds-night-veil);
+  animation: night-backdrop-veil 1.4s ease both;
+}
+@keyframes night-backdrop-veil { from { background-color: var(--ds-night-veil-dusk); } }
+.is-reduced .night-backdrop::after { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .night-backdrop::after { animation: none; }
+}
+
 /* The night screen (NightScreen, docs/02 「一日の終わり」): free time at 21:00 or later with night actions open. The night of the
    card under the header (z-index 20; its panel's layer 19) and over the page; it scrolls by itself when its buttons do not fit. */
 .night-screen {
@@ -120,8 +143,18 @@
   width: 100%;
   margin-top: 18px;
 }
-/* The night actions: the game's secondary pressables (parchment, slate edge, ink). */
-.night-screen-actions .secondary { margin-top: 10px; font-size: 14px; }
+/* The night actions: panes of glass on the night (2026-11-25: the parchment buttons lit the city's night like a form), the
+   gold hairline of a pressable on the dark, white words. */
+.night-screen-actions .secondary {
+  margin-top: 10px;
+  border: 1.5px solid var(--ds-gold-hairline);
+  background: var(--ds-night-glass);
+  color: var(--ds-on-slate);
+  font-size: var(--ds-text-body);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+}
+.night-screen-actions .secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-night-glass-hover); }
 /* 「ホテルで休む」: the screen's main step, in the moon's colour (slate ink on it: about 13:1). */
 .night-screen-rest {
   width: 100%;

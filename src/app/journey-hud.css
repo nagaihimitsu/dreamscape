@@ -1,12 +1,15 @@
-/* The header of every game screen (UI redesign §3.1): row 1 shows (status pills,
-   no edge), row 2 is pressed (rectangles with a gold hairline). Shape tells the
+/* The header of every game screen (UI redesign §3.1): row 1 shows (status pills),
+   row 2 is pressed (rounded keys with their word under the mark). Shape tells the
    role, never the colour alone (§2.3). Its height is measured into --hud-h.
    The band itself is transparent (user decision 2026-11-11): the screen shows
-   through around its parts, and each pill and button keeps its own slate ground
-   (the pills' 84 % slate keeps their text at 8:1 or more over white), so they
-   read over a photo, the parchment or text scrolling under the header alike. */
+   through around its parts. Each pill and key is a pane of the smoked glass
+   (2026-11-25 user decision, after free time on an iPhone: the slate pills and
+   gold-edged buttons sat on the city as a form's parts): the scene shows through
+   it blurred, its edge catches the light, and its words keep 5.5:1 over anything
+   behind (styles.css --ds-smoke), so they read over a photo, the parchment or
+   text scrolling under the header alike. */
 .journey-hud {
-  --hud-pill-bg: var(--ds-chip-bg);
+  --hud-pill-bg: var(--ds-smoke);
   /* Its width is the screen's (never its content's), so it can be the query
      container for enlarged text (row 1, below). */
   container: journey-hud / inline-size;
@@ -35,7 +38,9 @@
   min-height: 40px;
   border-radius: 999px;
   background: var(--hud-pill-bg);
-  box-shadow: var(--ds-pill-shadow);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-smoke-edge);
 }
 /* The plate takes the row beside the money. It needs at least about nine
    characters (9em) and never less than its time line (its minimum: the place's
@@ -68,7 +73,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--ds-on-slate-muted);
+  color: var(--ds-smoke-muted);
   font-size: 12px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -121,9 +126,12 @@
 .journey-hud .hud-outfits-button {
   min-height: 44px;
   margin: 0;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
-  background: var(--ds-slate-800);
+  border: 0;
+  border-radius: 14px;
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-smoke-edge);
   color: var(--ds-on-slate);
   font: inherit;
   text-decoration: none;
@@ -141,10 +149,14 @@
   padding: 3px 4px;
 }
 .hud-tool .icon { width: 20px; height: 20px; }
+/* The keys' marks are white, as the talk's tools (the gold stays on the status pills' small marks); an open key is
+   darker, its edge and mark gold. */
+.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon { color: var(--ds-on-slate); }
 .hud-tool-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
 .journey-hud .held-item-button[aria-expanded="true"],
 .journey-hud .hud-outfits-button[aria-expanded="true"],
-.hud-tool[aria-expanded="true"] { background: var(--ds-slate-900); border-color: var(--ds-gold); }
+.hud-tool[aria-expanded="true"] { background: var(--ds-smoke-on); box-shadow: inset 0 0 0 1px var(--ds-gold); }
+.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button)[aria-expanded="true"] .icon { color: var(--ds-gold); }
 
 /* Over a story scene that waits for no choice (hud-view.ts, user decision
    2026-11-11) the header shows only the place and time and ≡メニュー. The budget
@@ -155,7 +167,7 @@
 /* In such a talk the header steps back further (2026-11-25 user decision, after comparing the talk with a romance game
    on an iPhone): the place and time show as the talk begins (and when its place changes: the plate's key), then fade
    away after five seconds, keeping their room (still read by screen readers); ≡メニュー stays, a round mark without its
-   word (its name for screen readers and voice control), on a lighter ground. At a choice ("all") the whole header shows
+   word (its name for screen readers and voice control), on the same smoked glass. At a choice ("all") the whole header shows
    again; back in the talk, the place and time show again for a while. */
 .journey-hud[data-view="talk"] .hud-plate { animation: hud-plate-away 5s linear forwards; }
 @keyframes hud-plate-away {
@@ -165,9 +177,6 @@
 .journey-hud[data-view="talk"] .hud-menu > .hud-tool {
   width: 44px;
   border-radius: 50%;
-  background: rgba(31, 36, 48, 0.62);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
 }
 .journey-hud[data-view="talk"] .hud-menu > .hud-tool .hud-tool-word {
   position: absolute;
@@ -200,11 +209,14 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 8px;
-  border: 1px solid var(--ds-parchment-line);
+  /* A pane of the glass over the scene (2026-11-25: every screen in the one immersive look); its colours: styles.css, the glass surfaces. */
+  border: 0;
   border-radius: 16px;
-  background: var(--ds-parchment);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-glass-shadow);
   animation: hud-menu-in var(--motion-fast) var(--ease-out);
 }
 .hud-menu-panel[hidden] { display: none; }
