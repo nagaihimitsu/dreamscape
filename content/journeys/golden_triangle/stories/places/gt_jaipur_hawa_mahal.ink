@@ -36,6 +36,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_hawa_mahal_guide_004
 この通りの人たちは、毎日この窓の下で暮らしてるんだね。見上げもしないで
 # speaker: narrator
+# photo: gt_album_j024 # photo_caption: 画面の端に、日傘と大根
 彼女はカメラを構えた。画面の端に、日傘と大根が入り込む。
 -> END
 
@@ -56,6 +57,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sweat
 # voice: gt_jaipur_main_hawa_mahal_001
+# photo: gt_album_j025 # photo_caption: 「うちの大根に影が落ちてるよ」
 す、すみません！　……写真を撮ろうとしてて
 # speaker: gt_jaipur_hawa_woman
 # voice: gt_jaipur_main_hawa_mahal_battle_gaura_002
@@ -189,6 +191,7 @@ INCLUDE modules.ink
 ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
 # speaker: heroine
 # voice: gt_jaipur_main_hawa_mahal_010
+# photo: gt_album_j028 # photo_caption: 通りで一番、生きてる
 ……上から見たガウラさんが、通りで一番、生きてるって感じがしました
 # speaker: narrator
 ガウラは何も言わず、日傘の竿を握り直した。目が、少し赤かった。
@@ -202,6 +205,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_battle_gaura_013
 施しはいらないよ
 # speaker: narrator
+# photo: gt_album_j029 # photo_caption: 「施しはいらないよ」
 ぴしゃりとした声だった。{heroine_name}は、自分の言葉が何をしたのかに気づいた。
 # speaker: heroine
 # emotion: worried
@@ -257,9 +261,10 @@ INCLUDE modules.ink
 # term: gt_term_light_bearers
 赤い制服の楽隊。頭に灯りを載せて歩く男たち。白い馬の上には、花の房で顔を隠した花婿、アマン。その前で、親戚たちが道いっぱいに踊っている。
 # speaker: narrator
+# photo: gt_album_j116 # photo_caption: 照明に浮かぶハワー・マハルと、花婿の行列
 招待客の二人は、行列の端を歩いていた。踊る人たちの輪から、半歩だけ離れて。
 # speaker: narrator
-# recall: gt_album_d79
+# recall: gt_album_d113
 輪の真ん中で、鮮やかな桃色のサリーが跳ねた。デリーで見た、ショールの小さな老婦人と同じ人だとは思えない。
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_001
@@ -267,6 +272,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_jaipur_finale_001
+# photo: gt_album_j117 # photo_caption: 桃色のサリーが跳ねた
 カ、カムラさん！？　踊ってる……！
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_002
@@ -283,6 +289,7 @@ INCLUDE modules.ink
 門には赤いリボンが張られ、その前に、花嫁のいとこたちが腕を組んで立ちはだかっていた。先頭の娘が、高らかに宣言する。
 # speaker: gt_jaipur_bride_cousin
 # voice: gt_jaipur_finale_battle_pooja_001
+# photo: gt_album_j118 # photo_caption: 門の赤いリボン
 花婿さんを通すには、五万一千ルピー！　まけてほしかったら、ジャイプールの問題に答えてもらいます！
 # speaker: narrator
 あちこちから、ブーイングと笑い声が一緒に上がった。本気で怒っている顔は、一つもない。
@@ -351,11 +358,13 @@ INCLUDE modules.ink
     # voice: gt_jaipur_finale_006
     一と、四分の一。……です！
     # speaker: narrator
+    # photo: gt_album_j120 # photo_caption: 一と、四分の一
     今度は、さっきより大きな声が出た。プージャーが目を丸くする。
 - else:
     # speaker: gt_pooja
     # local_word: gt_jaipur_word_sawai
     # voice: gt_jaipur_finale_battle_pooja_006
+    # photo: gt_album_j120 # photo_caption: 一と、四分の一
     一と四分の一！
     # speaker: narrator
     プージャーが得意げに笑った。
@@ -404,6 +413,7 @@ INCLUDE modules.ink
 花嫁の祖母だった。プージャーが小声で言う。
 # speaker: gt_pooja
 # voice: gt_jaipur_finale_battle_pooja_011
+# photo: gt_album_j121 # photo_caption: 格子窓の奥の、白い髪
 おばあちゃん、足が悪いの。行列は、窓から見ることになってる
 # speaker: narrator
 窓の老婦人が、プージャーに何か伝えた。プージャーがうなずき、声を張る。
@@ -442,6 +452,7 @@ INCLUDE modules.ink
 六十年見てたなら、もう十分でしょう。……わたしも、六十年黙ってたのよ
 # speaker: narrator
 # quiet: line
+# photo: gt_album_j122 # photo_caption: 窓の内と外の、二人の祖母
 二人の祖母が、窓の内と外で見つめ合う。通りの喧騒が、一瞬遠のいた。
 # speaker: narrator
 窓の奥の声が、最後の問題を告げた。
@@ -470,6 +481,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: wooden_window
 # together: enemy gt_pooja gt_jaipur_bride_grandmother
+# photo: gt_album_j123 # photo_caption: 杖をついて、門の奥から
 窓が閉まった。しばらくして、屋敷の門の奥から、杖をついた老婦人が姿を現した。花嫁側から、驚きの声が上がる。
 # speaker: gt_jaipur_bride_grandmother
 # voice: gt_jaipur_finale_battle_jaipur_bride_grandmother_005
@@ -503,6 +515,7 @@ INCLUDE modules.ink
 リボンが切られた。楽隊が一斉に鳴り出し、通りが揺れる。カムラが、{heroine_name}の手首をつかんだ。
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_008
+# photo: gt_album_j124 # photo_caption: リボンが切られた
 デリーで、あんたはわたしに言ったね。黙っていなくなるのは、自由とは違うって
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_009
@@ -536,6 +549,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,surprised,sweat
     # voice: gt_jaipur_finale_battle_001
+    # photo: gt_album_j127 # photo_caption: 下手なの、わたしだけだった # photo_show: small
     下手なの、わたしだけだった……！
 * [踊り：ずれたまま、二人で踊った # option: off_beat_together]
     # speaker: narrator
@@ -543,6 +557,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing,music
     # voice: gt_jaipur_finale_battle_002
+    # photo: gt_album_j128 # photo_caption: 輪の真ん中へ、引っぱり込まれる # photo_show: small
     ずれてる。でも、二人で同じだけずれてる
 * [踊り：足がもつれた # option: stumble]
     # speaker: narrator
@@ -550,6 +565,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     # voice: gt_jaipur_finale_battle_003
+    # photo: gt_album_j128 # photo_caption: 輪の真ん中へ、引っぱり込まれる # photo_show: small
     ふふっ。今のも、踊りってことにしよう
 * [踊り：立ったままだった # option: stood_still]
     # speaker: narrator
@@ -559,10 +575,11 @@ INCLUDE modules.ink
     # voice: gt_jaipur_finale_battle_004
     見てるだけは、自由とは違うんでしょ。……ほら
     # speaker: narrator
+    # photo: gt_album_j128 # photo_caption: 輪の真ん中へ、引っぱり込まれる # photo_show: small
     つかまれた手ごと、輪の真ん中へ引っぱり込まれた。
 -
 // 踊りの写真は、どの結果の後も、合流したこの行で1回（踊りの前の行に付けると、遊ぶ場の上に写真の札が重なるため）。
 # speaker: narrator
-# photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
+# photo: gt_album_j129 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
 -> END

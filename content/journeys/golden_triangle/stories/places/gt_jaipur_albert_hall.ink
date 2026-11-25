@@ -81,6 +81,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,shy,blush
         # voice: gt_jaipur_date_albert_hall_008
+        # photo: gt_album_j043 # photo_caption: 鳩よけの背中に、一羽
         守ってくれてる？　鳩から？　……ふふ、ありがと。でも、背中に一羽、乗ってるよ
     }
 -
@@ -107,6 +108,7 @@ INCLUDE modules.ink
 階段の先で、先生が手を振っていた。ほかの子たちは、もう展示室の前に集まっている。
 # speaker: heroine
 # voice: gt_jaipur_date_albert_hall_011
+# photo: gt_album_j044 # photo_caption: 柱の陰の女の子
 先生、あそこで待ってるね。下まで、一緒に行こうか。わたしも怖いから、手、つないでくれる？
 # speaker: narrator
 カヴィヤは、少し考えてから、彼女の手を握った。
@@ -143,6 +145,7 @@ INCLUDE modules.ink
     - else:
         # speaker: gt_kavya
         # voice: gt_jaipur_date_albert_hall_kavya_003
+        # photo: gt_album_j045 # photo_caption: エーク、ドー、ティーン
         ……エーク、ドー、ティーン
         # speaker: heroine
         # emotion: smile
@@ -153,6 +156,7 @@ INCLUDE modules.ink
 # speaker: narrator
 展示室の真ん中に、ガラスの箱があった。中に、布にくるまれた細長い姿が横たわっている。
 # speaker: narrator
+# photo: gt_album_j046 # photo_caption: トゥトゥに会いに
 カヴィヤは彼女の手を握ったまま、案内の字を、指でたどって声に出した。
 # speaker: gt_kavya
 # voice: gt_jaipur_date_albert_hall_kavya_004
@@ -172,6 +176,7 @@ INCLUDE modules.ink
 # speaker: gt_kavya
 # leave: gt_kavya
 # voice: gt_jaipur_date_albert_hall_kavya_007
+# photo: gt_album_j047 # photo_caption: 「先生！　わたし、見た！」
 先生！　わたし、見た！
 # speaker: narrator
 自慢しに行ったのだ。

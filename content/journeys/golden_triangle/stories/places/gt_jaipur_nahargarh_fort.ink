@@ -204,6 +204,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_jaipur_date_nahargarh_fort_035
+# photo: gt_album_j080 # photo_caption: 正面から来てほしい
 わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って
 # speaker: heroine
 # emotion: serious

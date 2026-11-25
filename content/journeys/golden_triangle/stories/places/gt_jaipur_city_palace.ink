@@ -15,6 +15,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_jaipur_city_palace_guide_001
+# photo: gt_album_j031 # photo_caption: 門番のひげ
 ひげ、すごい……。あの形、毎朝どうやって作ってるんだろう
 # speaker: narrator
 観光客が次々と門番と並んで写真を撮っていく。門番は表情を変えず、ひげの角度だけを完璧に保っていた。
@@ -22,6 +23,7 @@ INCLUDE modules.ink
 門をくぐると、中庭がいくつも連なっていた。白と桃色の建物、細かな彫刻の柱。奥の方の建物には、見学者の入れない階もある。
 # speaker: heroine
 # voice: gt_jaipur_city_palace_guide_002
+# photo: gt_album_j032 # photo_caption: 町の中の、もう一つの町
 お城っていうより、町の中に、もう一つ町があるみたい
 # speaker: narrator
 ある中庭の真ん中で、{heroine_name}の足が止まった。人の背丈ほどもある銀の壺が、二つ並んでいる。
@@ -50,6 +52,7 @@ INCLUDE modules.ink
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
 # together: enemy gt_vishal
+# photo: gt_album_j034 # photo_caption: 漬物五キロと、荷物の秤
 サリー姿の女性と、二十代半ばの青年。青年が女性の手提げを荷物用の秤に吊るすと、中の瓶が鳴り、針が大きく振れた。
 # speaker: gt_jaipur_city_palace_young_man
 # term: gt_term_achar
@@ -104,6 +107,7 @@ INCLUDE modules.ink
 王様には、荷物の重量制限がなかったんだよ、母さん
 # speaker: narrator
 # emotion: happy
+# photo: gt_album_j035 # photo_caption: 審判、吹き出す
 ヴィシャールの切り返しに、{heroine_name}は思わず吹き出した。慌てて口を押さえたが、もう遅い。
 # speaker: enemy
 # reaction: enemy,anger
@@ -128,10 +132,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     # voice: gt_jaipur_main_city_palace_battle_sushma_010
+    # photo: gt_album_j036 # photo_caption: 四つの季節の門
     四つの季節。春も、夏も、秋も、冬も。……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_city_palace_battle_sushma_011
+    # photo: gt_album_j036 # photo_caption: 四つの季節の門
     四季よ。孔雀が秋で、蓮が夏。……うちの台所にも、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 }
 # speaker: narrator
@@ -147,6 +153,7 @@ INCLUDE modules.ink
 わたし、旅の途中で、家のお味噌汁が恋しくなることがあります。我慢したら、もっと恋しくなりました
 # speaker: heroine
 # voice: gt_jaipur_main_city_palace_005
+# photo: gt_album_j037 # photo_caption: 恋しくなるのは、帰る場所があるってこと
 恋しくなるのは、帰る場所があるってことだと思います。……恥ずかしいことじゃ、ないです
 # speaker: narrator
 スシュマが、こちらを見た。得意げな顔ではなかった。それから、隣に立つ息子を、黙って見上げた。
@@ -181,6 +188,7 @@ INCLUDE modules.ink
 スシュマとヴィシャールが、同時に黙った。先に口を開いたのは、母親の方だった。
 # speaker: enemy
 # voice: gt_jaipur_main_city_palace_battle_sushma_014
+# photo: gt_album_j038 # photo_caption: 二キロと、毎週の電話
 ……毎週よ。日曜の朝。時差があるなら、そっちに合わせてあげる
 # speaker: gt_vishal
 # voice: gt_jaipur_main_city_palace_battle_vishal_007
