@@ -7,6 +7,7 @@ import { ClueDetails } from "./ClueDetails";
 import { ClueImage } from "./ClueImage";
 import { caseProvenanceLabel, cityProvenanceLabel, isHeardClue } from "./clue-source";
 import "./notebook.css";
+import { FitText } from "../../components/FitText";
 
 export interface NotebookReasoning {
   caseClueIds: string[];
@@ -155,7 +156,7 @@ export function ClueNotebook({
                 <p className="case-provenance">{cityProvenanceLabel(current, heard)}</p>
               )}
               {unreadDocument ? <>
-                <h3>{current.titleJa}</h3>
+                <h3><FitText text={current.titleJa} /></h3>
                 <button className="secondary" data-testid={`read-document-${current.id}`} onClick={() => onDiscoverDocument(current.id)}>資料を読む</button>
               </> : <ClueDetails clue={current} heard={heard} kind={!(heard && marked)} image={heard ? undefined : <ClueImage clue={current} />} />}
             </article>

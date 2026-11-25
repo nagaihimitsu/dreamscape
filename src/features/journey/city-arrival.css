@@ -13,7 +13,8 @@
 .city-arrival-mark { display: grid; justify-items: center; gap: 12px; width: min(260px, 78vw); }
 .city-arrival-mark svg { width: 180px; height: 64px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 .city-arrival-mark path { stroke-dasharray: 1; animation: city-arrival-draw 1s ease-out both; }
-.city-arrival-mark strong { font: 500 clamp(28px, 8vw, 40px) "Noto Serif JP", serif; letter-spacing: .2em; padding-left: .2em; }
+/* As wide as the mark, so the name's FitText fits it there (a long name smaller, or two lines at the phrases). */
+.city-arrival-mark strong { font: 500 clamp(28px, 8vw, 40px) "Noto Serif JP", serif; letter-spacing: .2em; padding-left: .2em; justify-self: stretch; text-align: center; }
 .city-arrival-line { width: 60px; height: 1px; background: #b38c4b; }
 .city-arrival-continue { min-height: 44px; }
 @keyframes city-arrival-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }

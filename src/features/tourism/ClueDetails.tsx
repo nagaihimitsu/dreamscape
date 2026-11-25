@@ -2,6 +2,7 @@ import type { TourismClue } from "../../content";
 import type { ReactNode } from "react";
 import { claimLabels } from "../../components/SourceNotes";
 import { clueKindLabel, isHeardClue } from "./clue-source";
+import { FitText } from "../../components/FitText";
 
 /**
  * A clue's heading, kinds of claim, picture and words. Its sources are not here (2026-11-20 user decision: 「根拠と解釈を
@@ -17,7 +18,7 @@ export function ClueDetails({ clue, action, image, heard = isHeardClue(clue.id),
       <div className="clue-heading">
         <div>
           {kind && <p className="clue-kind">{clueKindLabel(clue, heard)}</p>}
-          <h3>{clue.titleJa}</h3>
+          <h3><FitText text={clue.titleJa} /></h3>
         </div>
         {action}
       </div>

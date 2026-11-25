@@ -8,6 +8,7 @@ import { meets } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import { getTourOffers, type TourOfferChoice } from "../../domain/tour";
 import { tourItinerary, tourSellerBadge } from "./tour-labels";
+import { FitText } from "../../components/FitText";
 
 /**
  * Free time's tours (tour stage 2a), a place-action line like the rentals: 「ツアーを見る」 opens the city's tours (each card: name,
@@ -86,7 +87,7 @@ export function TourBooking({ game, onBook, onClose }: {
         const elsewhere = tour.offers.filter((offer) => offer.placeIds && !offer.placeIds.includes(game.travel.currentPlaceId) && meets(game, offer.when));
         const itinerary = tourItinerary(tour);
         return <section key={tour.id} className="travel-tour-card" data-testid={`travel-tour-${tour.id}`} aria-labelledby={`travel-tour-${tour.id}-title`}>
-          <h3 id={`travel-tour-${tour.id}-title`}>{tour.titleJa}</h3>
+          <h3 id={`travel-tour-${tour.id}-title`}><FitText text={tour.titleJa} /></h3>
           <p className="travel-tour-when">明日 9:00 から</p>
           <p>{tour.summaryJa}</p>
           <ol className="travel-tour-itinerary">
