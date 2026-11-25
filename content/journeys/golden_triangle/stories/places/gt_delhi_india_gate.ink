@@ -227,6 +227,7 @@ Photo, please!
     # voice: gt_delhi_date_india_gate_021
     け、結婚は、まだ。でも、ちゃんと付き合ってます。……それ、通訳しなくていいからね！
     # speaker: narrator
+    # term: gt_term_blessing_hand
     モヌは全部訳した。祖母は満足そうにうなずき、二人の頭に順番に手を置いた。
 - cond("stage >= 3"):
     # speaker: heroine

@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_bangla_sahib
 # speaker: narrator
 # local_word: gt_delhi_word_gurdwara
+# term: gt_term_head_covering
 金色の丸屋根の下で、入口の人たちが、次々に頭を布で覆っていた。グルドワーラー・バングラー・サーヒブ。シク教の礼拝所で、ここでは男も女も、頭を覆って入る。
 # emotion: happy
 入口で配られる橙色の布を、彼女は手際よく結んだ。それから、こちらを見て、こらえきれずに笑った。

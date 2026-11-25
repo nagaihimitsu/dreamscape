@@ -624,6 +624,16 @@
       "imageId": "gt_img_term_churidar"
     },
     {
+      "id": "gt_term_head_covering",
+      "nameJa": "頭を覆う布",
+      "readingJa": null,
+      "aliasJa": "ルマール",
+      "category": "clothing",
+      "lineJa": "シク教の寺院では、誰もが頭を布で覆う。持っていなければ入口で貸してくれる。",
+      "imageId": "gt_img_term_head_covering",
+      "photoNoteJa": "画像は、頭を布で覆った後ろ姿と、貸し出しの布の籠を表した図"
+    },
+    {
       "id": "gt_term_gangaur",
       "nameJa": "ガンガウル",
       "readingJa": null,
@@ -903,6 +913,16 @@
       "lineJa": "シク教の寺院では、甘い供物カラー・プラサードなどを、くぼめた両手で受け取る。",
       "photoNoteJa": "写真は、カラー・プラサードを受け取る手",
       "imageId": "gt_img_term_cupped_hands"
+    },
+    {
+      "id": "gt_term_blessing_hand",
+      "nameJa": "頭に手を置く祝福",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "年長者は、足に触れて敬意を示す年下の頭に手を置き、祝福を返す。",
+      "imageId": "gt_img_term_blessing_hand",
+      "photoNoteJa": "画像は、頭に手を置く祝福を表した図"
     },
     {
       "id": "gt_term_rose_ringed_parakeet",
