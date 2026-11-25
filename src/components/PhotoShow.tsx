@@ -3,6 +3,7 @@ import { getAlbumImage } from "../content";
 import { photoShowsLarge, type StoryPhoto } from "../content/tags";
 import { playCue, useSceneFastForward } from "../audio/sound-effects";
 import { CardFlight } from "./ItemShow";
+import { useFiguresTop } from "./figures-top";
 import type { Box } from "./item-show";
 import "./photo-show.css";
 
@@ -49,6 +50,9 @@ function PhotoPrint({ imageId, path, caption }: { imageId: string; path: string;
   // Taken now (read once, as the print appears): a re-reading of the line, a load's scene, shows the print as it is.
   const [taken] = useState(() => fresh?.imageId === imageId);
   const stamp = stampOf?.(imageId);
+  const layer = useRef<HTMLDivElement>(null);
+  // Above the heads on stage (figures-top.ts), measured before the print's own box is.
+  useFiguresTop(layer);
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     if (taken && fresh?.sound) playCue("camera_shutter");
@@ -74,7 +78,7 @@ function PhotoPrint({ imageId, path, caption }: { imageId: string; path: string;
       window.removeEventListener("resize", measure);
     };
   }, [imageId]);
-  return <div className="photo-show-layer" aria-hidden="true" data-testid="photo-show" data-taken={taken || undefined}>
+  return <div className="photo-show-layer" ref={layer} aria-hidden="true" data-testid="photo-show" data-taken={taken || undefined}>
     <PrintBody ref={ref} path={path} caption={caption} stamp={stamp} />
     {taken && <span className="photo-show-flash" />}
   </div>;
