@@ -144,14 +144,23 @@
   bottom: clamp(65px, 22%, 140px);
   min-height: 0;
 }
-.battle-paper-shell { display: contents; }
+/* The scene's camera (romance-scene.css, figure-zoom.ts): the two (or more) seen nearer, their eyes where they stood
+   whole and their feet behind the window; each part of the talk opens on them whole (its establishing shot). */
+.battle-screen[data-phase="dialogue"] .battle-characters { --vn-zoom: 1.3; }
+.battle-screen[data-phase="dialogue"] .battle-characters:is([data-together="three"], [data-together="four"]) { --vn-zoom: 1.15; }
+.battle-screen[data-phase="dialogue"][data-establishing] .battle-characters { --vn-zoom: 1; }
+.battle-paper-shell,
+.battle-window { display: contents; }
 /* The battle's talk uses the story scenes' window (romance-scene.css, §3.3): the
-   shell is the window, painted from its head's overhang down, its head (plate and
-   controls, DialogueWindowHead) straddles the top edge and the paper below scrolls.
-   Its placement stays the battle's own; the head's overhang is added to its room.
-   The room it leaves above for the faces gives way to enlarged text: the window may
-   always be 9em high (its head and about two lines of the talk at 200 %; at normal
-   text the faces' room leaves it more on every screen), up to the whole stage. */
+   shell holds the window (.battle-window), painted from its head's overhang down
+   in the same glass, its head (band and controls, DialogueWindowHead) straddling
+   the top edge and the paper below scrolling, and, while the talk waits for one,
+   its choices floating above it (.vn-choices). Its placement stays the battle's
+   own; the head's overhang is added to its room. The room it leaves above for the
+   faces gives way to enlarged text: the window may always be 9em high (its head
+   and about two lines of the talk at 200 %; at normal text the faces' room leaves
+   it more on every screen), up to the whole stage; with choices it may take the
+   whole stage. */
 .battle-screen[data-phase="dialogue"] .battle-paper-shell {
   position: relative;
   z-index: 2;
@@ -162,16 +171,13 @@
   max-height: max(calc(100% - clamp(110px, 22vh, 190px) + var(--vn-head-overhang, 22px)), min(calc(100% - 16px), 9em));
   margin: auto auto 16px;
 }
-.battle-screen[data-phase="dialogue"] .battle-paper-shell::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: var(--vn-head-overhang, 22px) 0 0;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: var(--vn-window-radius, 22px);
-  background: var(--vn-window-bg);
-  box-shadow: var(--ds-window-shadow);
-  pointer-events: none;
+.battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 16px); }
+.battle-screen[data-phase="dialogue"] .battle-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: min(7.5em, 100%);
 }
 .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
   flex: 0 1 auto;
@@ -216,6 +222,7 @@
     max-height: max(calc(100% - 140px + var(--vn-head-overhang, 22px)), min(calc(100% - 8px), 9em));
     margin: auto 8px 8px;
   }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px); }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
     margin: 0;
     padding: 2px 16px 8px;

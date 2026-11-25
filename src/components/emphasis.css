@@ -1,10 +1,10 @@
 /* A line's # em: and # em_shake: words (2026-11-13; DialogueText, emphasis.ts): bold in the accent colour of the
-   window they are read in (gold on the dark window and a sent message, the map markers' rose on paper and a received
-   message). # em: gives one small pop as its first character appears; # em_shake: trembles a little, character by
+   window they are read in (a deep crimson on the window's glass, 2026-11-25: 4.9:1 or more over any picture; light
+   gold on a sent message, the map markers' rose on paper and a received message). # em: gives one small pop as its first character appears; # em_shake: trembles a little, character by
    character, while it is on screen. Both are inline blocks from the start, shown or not, so the line never reflows
    as it is typed. Reduced motion (the system's and 「演出を短縮する」): bold only, still. */
 .dialogue-text {
-  --em-accent: #f6c445;
+  --em-accent: #93233a;
 }
 .phone-bubble .dialogue-text,
 .letter-sheet .dialogue-text {

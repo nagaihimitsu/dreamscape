@@ -128,7 +128,7 @@ export function AutoAdvanceButton({
         disabled={!state.canStart}
         onClick={state.toggle}
       >
-        <Icon name="fast" />{state.active ? "高速送り中" : "高速送り"}
+        <Icon name="fast" /><span className="dialogue-tool-word">{state.active ? "高速送り中" : "高速送り"}</span>
       </button>
       {/* Seen as the button's release; heard from here (read-skip). Out of the row's flow (sr-only). */}
       <span className="sr-only" role="status">{state.stoppedAtUnread ? "まだ読んでいない台詞で、高速送りを止めました。" : ""}</span>

@@ -139,8 +139,12 @@ export default function CharacterPreview() {
         </div>
         {showDialogue && (
           <div className="vn-dialogue preview-dialogue">
-            <span className="speaker">名前</span>
-            <p className="dialogue-text">台詞と顔が重ならないか確認できます。</p>
+            <div className="vn-window">
+              <div className="vn-window-head"><span className="speaker">名前</span></div>
+              <div className="vn-window-body">
+                <p className="dialogue-text">台詞と顔が重ならないか確認できます。</p>
+              </div>
+            </div>
           </div>
         )}
       </div>

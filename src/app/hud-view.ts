@@ -15,7 +15,8 @@ export interface HudState {
  * What the header shows (user decision 2026-11-11, after playing on an iPhone).
  * - "talk": a story scene that the header lies over (an encounter, an arrival, an epilogue, a tour
  *   leg's narration, a sightseeing guide, a battle, a date) while nothing waits for the player's
- *   choice. The header shows only the place and time and ≡メニュー.
+ *   choice. The header shows only the place and time and ≡メニュー; the place and time fade away after a while, and
+ *   ≡メニュー is a round mark (2026-11-25 user decision; journey-hud.css).
  * - "all": every part, also the budget and AP, the held items and the screen's own tool (free time's
  *   地図; a guide's or a battle's 手がかり帳). Such a scene while it waits for a choice (one of
  *   the story's, a quiz's answer, the evidence of a battle's reasoning), and every other screen (free

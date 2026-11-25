@@ -91,7 +91,7 @@
   align-items: flex-end;
   justify-content: center;
   padding: 2px 14px;
-  /* The lines' Mincho, a web font every phone loads (2026-11-16: Georgia, missing on Android and many Linux phones, drew
+  /* The place name's Mincho, a web font every phone loads (2026-11-16: Georgia, missing on Android and many Linux phones, drew
      the figures in another serif there). Its figures share one width but its 1 (about 0.09em narrower), and it has no
      tabular figures; tabular-nums keeps a fallback serif's figures of one width while the web font has not loaded. */
   font-family: "Noto Serif JP", serif;
@@ -152,6 +152,35 @@
    so neither the header nor the scene under it moves when they show at a
    choice; hidden, they are neither seen, pressed, focused nor read. */
 .journey-hud[data-view="talk"] :is(.hud-wallet, .held-items, .hud-outfits, .hud-screen-tool > *) { visibility: hidden; }
+/* In such a talk the header steps back further (2026-11-25 user decision, after comparing the talk with a romance game
+   on an iPhone): the place and time show as the talk begins (and when its place changes: the plate's key), then fade
+   away after five seconds, keeping their room (still read by screen readers); ≡メニュー stays, a round mark without its
+   word (its name for screen readers and voice control), on a lighter ground. At a choice ("all") the whole header shows
+   again; back in the talk, the place and time show again for a while. */
+.journey-hud[data-view="talk"] .hud-plate { animation: hud-plate-away 5s linear forwards; }
+@keyframes hud-plate-away {
+  0%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.journey-hud[data-view="talk"] .hud-menu > .hud-tool {
+  width: 44px;
+  border-radius: 50%;
+  background: rgba(31, 36, 48, 0.62);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.journey-hud[data-view="talk"] .hud-menu > .hud-tool .hud-tool-word {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.reduce-motion .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
+@media (prefers-reduced-motion: reduce) {
+  .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
+}
 /* While a quiet line reads (`# quiet:`, hud-view.ts "quiet") the whole header steps aside, its shade over the
    photo too, and keeps its room the same way; it comes back at once with the next line that is not quiet, or a choice.
    The line, the window's tools and 「会話を表示」 stay where they are. */
