@@ -171,6 +171,7 @@ INCLUDE modules.ink
     -> gt_agra_mehtab_bagh_another_ball ->
 -
 # speaker: narrator
+# term: gt_term_baksheesh
 試合が終わると、ソニアは手を差し出した。握手かと思ったら、手のひらは上を向いていた。
 # speaker: gt_sonia
 # voice: gt_agra_date_mehtab_bagh_sonia_008

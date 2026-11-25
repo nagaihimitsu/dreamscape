@@ -3192,6 +3192,48 @@
       "creditJa": "図：Dreamscape のための自作の図（写真ではありません）",
       "modificationJa": "Dreamscape のために図形だけで描いた図（SVG。元のファイルは制作資料の authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/blessing_hand.svg）を、1200×1200pxのPNGに書き出しました。写真や他人の作品はもとにしていません。さらに同じ寸法のままWebP形式（品質80）に変換。",
       "checkedAt": "2026-11-25"
+    },
+    {
+      "id": "gt_img_term_taj_electric_bus",
+      "path": "assets/tourism/india/term_taj_electric_bus.webp",
+      "width": 1280,
+      "height": 960,
+      "altJa": "「アーグラ開発公社」の文字が入った屋根付きの電動カートと、乗り降りする観光客。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Taj_Mahal_vrtmrgmpksk_(157).jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Vinayaraj／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の幅1280px（1280x960px）の縮小版を使用。縦横比を維持し、切り抜きはしていません。写っている観光客の顔など9か所をぼかしました。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。この加工版もCC BY-SA 4.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "id": "gt_img_term_prewedding",
+      "path": "assets/tourism/india/term_prewedding.webp",
+      "width": 960,
+      "height": 640,
+      "altJa": "宮殿の中庭で、赤いクラシックカーに乗った男女を撮影している様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:S%C3%A9ance_de_photos_de_mariage_%C3%A0_Jaipur_(1).jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Ji-Elle／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の幅960px（960x640px）の縮小版を使用。縦横比を維持し、切り抜きはしていません。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。この加工版もCC BY-SA 4.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "id": "gt_img_term_baksheesh",
+      "path": "assets/tourism/india/term_baksheesh.webp",
+      "width": 1200,
+      "height": 1200,
+      "altJa": "上に向けて差し出した手のひらと、その上へ落ちてくるルピーの記号の金色の硬貨の図。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/baksheesh.svg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "図：Dreamscape のための自作の図（写真ではありません）",
+      "modificationJa": "Dreamscape のために図形だけで描いた図（SVG。元のファイルは制作資料の authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/baksheesh.svg）を、1200×1200pxのPNGに書き出しました。写真や他人の作品はもとにしていません。さらに同じ寸法のままWebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-25"
     }
   ],
   "landmarks": [

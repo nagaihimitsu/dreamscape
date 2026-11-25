@@ -3378,6 +3378,52 @@
   "notes": "NO IMAGE: I found no free photo of the Taj shuttle bus on Commons (searches for electric bus / battery bus / parking returned only PDFs). Suggest either none, or \"same thing elsewhere\", e.g. a Taj-area battery rickshaw/cart photo if one is found later. The line states the rule as on the official ASI page (battery buses and golf carts, no polluting vehicles within 500 m); I deliberately did not state the reason (protecting marble) as a fact, though the Supreme Court judgment text shows the pollution concern (petitioner described acid rain as corroding the marble, a claim in the judgment). Official page does not give a date; some third-party sites say the ride costs extra for Indian citizens (golf cart Rs 25) - do not state \"free\"."
  },
  {
+  "batch": "agra2",
+  "id": "gt_term_taj_electric_bus",
+  "nameJa": "電動の小さなバス",
+  "aliasJa": null,
+  "category": "transport",
+  "lineJa": "タージの500m以内には排ガスを出す車が入れない。駐車場からは電動バスかカートで向かう。",
+  "lineChars": 44,
+  "photoNoteJa": "アーグラー開発公社の電動カート。タージ近くの観光客用駐車場周辺で撮影されたもの（位置情報による）。",
+  "altJa": "アーグラー開発公社（Agra Development Authority）の文字が入った屋根付きの電動カートに、観光客が乗り降りしている様子。",
+  "image": {
+   "file": "gt_term_taj_electric_bus.jpg",
+   "commonsOrFlickrPage": "https://commons.wikimedia.org/wiki/File:Taj_Mahal_vrtmrgmpksk_(157).jpg",
+   "title": "Taj Mahal vrtmrgmpksk (157).jpg",
+   "author": "Vinayaraj",
+   "license": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "licenseEvidence": "{{self|cc-by-sa-4.0}}; source {{own}}",
+   "flickrReview": null,
+   "originalSize": "unchecked (API rate-limited); 1280x960 thumbnail downloaded",
+   "downloadedSize": "1280x960",
+   "date": "2022-09-05",
+   "place": "Agra, EXIF geotag 27.1735083,78.0343944 (about 0.9 km west of the Taj; probably West Gate side parking, not confirmed). Categories: Vehicles in Agra, Shuttle carts in India",
+   "description": "North India photos from September 4 to 11, 2022",
+   "facesSignsPlates": "Many incidental faces of visitors: foreground man right (approx x740-830,y310-380 of 960px), woman centre (approx x400-440,y300-340), small background crowd; man left has back turned. Signs: Agra Vikas Pradhikaran / Agra Development Authority on canopy, Fatehpur Sikri and Sikandra pictures on cart panels. No number plates readable. Blue/pink buses in background.",
+   "suggestedCrop": "x0,y150,w700,h560 of the 960px version (cart front, canopy, seats; excludes most right-side faces but includes woman centre); or blur faces",
+   "notes": "Does not say it is at the Taj itself; photoNoteJa says nearby parking. Other Agra shuttle photos not found."
+  },
+  "facts": [
+   {
+    "publisher": "Department of Tourism, Government of Uttar Pradesh (official Taj Mahal website)",
+    "title": "Dos and Donts",
+    "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+    "date": "no date on page",
+    "quote": "No Polluting vehicles are allowed within 500 mts. radius of Taj Mahal. ... Parking Facility is available at Shilpgram for east gate entry & at Amrood ka Teela for west gate entry. ... From parking to Taj Mahal gate battery buses & golf carts are available."
+   },
+   {
+    "publisher": "Lok Sabha reply via India Environment Portal",
+    "title": "Petrol, Diesel Vehicles Banned Within 500 Metre Of Taj Mahal: Harsh Vardhan",
+    "url": "https://indiaenvironmentportal.org.in/news-clippings/petrol-diesel-vehicles-banned-within-500-metre-of-taj-mahal-harsh-vardhan",
+    "date": "2017",
+    "quote": "(search snippet, not fetched) TTZ Authority has banned petrol and diesel vehicles within 500 metre of Taj Mahal"
+   }
+  ],
+  "notes": "Line wording: official page says 'polluting vehicles' and 'battery buses & golf carts'; I changed to 電動バスかカート. Official page says 'No Polluting vehicles are allowed' (not specifically 'emission-gas cars'); Down To Earth 2000 says Supreme Court banned passing/parking within 500 m (unfetched snippet)."
+ },
+ {
   "batch": "agra",
   "id": "gt_term_makrana_marble",
   "nameJa": "マクラナの大理石",
@@ -3605,6 +3651,35 @@
   "notes": "WEAK / UNVERIFIED. I found no source that states the specific habit (rebar left sticking out of roofs for a later floor) as an Indian custom; only general material on incremental housing in India (SPARC \"Incremental Housing\", Studio Matrx, Knight Frank). The wording \"のちに階を足す備えだという\" is an explicit hedge but still unsupported; I recommend either dropping this term's fact claim, or confirming by a better source. No suitable free photo was found (Commons search returned only UK/US/Kolkata construction photos; \"Rebar on the Roof - geograph.org.uk - 5026043.jpg\" is a UK building site)."
  },
  {
+  "batch": "agra2",
+  "id": "gt_term_rebar_roof",
+  "nameJa": "屋上に突き出た鉄筋",
+  "aliasJa": null,
+  "category": "custom",
+  "lineJa": "屋上に鉄筋を突き出した家が多い。のちに階を足すための備えとされる。",
+  "lineChars": 33,
+  "photoNoteJa": null,
+  "altJa": null,
+  "image": null,
+  "facts": [
+   {
+    "publisher": "Nepali Times (Kanak Mani Dixit)",
+    "title": "Waiting for tomorrow",
+    "url": "https://nepalitimes.com/waiting-for-tomorrow",
+    "date": "2005-08-12",
+    "quote": "The ungainly rods poking off the top of concrete rooftops therefore may indicate not greed, but hope for a better tomorrow. ... Hope to add a floor some day."
+   },
+   {
+    "publisher": "Sketchplanations",
+    "title": "Pillars of hope",
+    "url": "https://sketchplanations.com/pillars-of-hope",
+    "date": "2024-06-30",
+    "quote": "Leaving starter bars sticking out is a pragmatic approach, saving time and money when adding the next floor, as the structure is already partially prepared for the expansion. ... while travelling through Central America and Asia, I was surprised to see these exposed rods in many towns and cities."
+   }
+  ],
+  "notes": "NO source specific to India found. Nepal (Nepali Times, an opinion essay, 2005) and a non-country-specific sketch blog (Central America and Asia) only. The line should say 南アジアでも/とされる or the term should be dropped/made Nepal-neutral. No usable image: Commons categories (Construction in India, House construction in India, Unfinished buildings in India, Housing in India) checked, files viewed (My homeee.jpg, Aerial view of house constructed.jpg) show no protruding rebar; Half built Hawa mahal.jpg and Housing unit construction.jpg not viewed (thumbnail failed). Flickr not searchable here."
+ },
+ {
   "batch": "agra",
   "id": "gt_term_monkey",
   "nameJa": "猿（アカゲザル）",
@@ -3729,6 +3804,37 @@
    }
   ],
   "notes": "Wikipedia only, enough for the etymology/meanings. The line avoids saying it is used by children/beggars specifically. NO IMAGE: nothing suitable and free found; a photo of a child with an outstretched palm would make a child's face the subject, so I propose \"none\" (or a close-up of coins/rupee notes in a hand, not searched for)."
+ },
+ {
+  "batch": "agra2",
+  "id": "gt_term_baksheesh",
+  "nameJa": "バクシーシ",
+  "aliasJa": null,
+  "category": "custom",
+  "lineJa": "ペルシア語由来の言葉。チップや施し、時には賄賂も意味する。",
+  "lineChars": 29,
+  "photoNoteJa": "インドではなく、1879年のエジプトの本の挿絵（題は「Backsheesh!」）。言葉自体が中東から南アジアまで広く使われる例として。",
+  "altJa": "フードをかぶり、鉢を前に座る人物を描いた白黒の挿絵。題は「バクシーシ！」。",
+  "image": {
+   "file": "gt_term_baksheesh.jpg",
+   "commonsOrFlickrPage": "https://commons.wikimedia.org/wiki/File:%22Backsheesh!%22_(1879)_-_TIMEA.jpg",
+   "title": "\"Backsheesh!\" (1879) - TIMEA.jpg",
+   "author": "George Grahame; Miss Evans (illustration), via TIMEA",
+   "license": "CC BY-SA 2.5",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+   "licenseEvidence": "{{cc-by-sa-2.5}} (the 1879 drawing itself is old; Commons page asserts CC BY-SA 2.5 for the TIMEA scan)",
+   "flickrReview": null,
+   "originalSize": "unchecked",
+   "downloadedSize": "960x1139",
+   "date": "1879 (book 1886)",
+   "place": "Egypt (Loftie, A Ride in Egypt from Sioot, p. 60)",
+   "description": "Drawing of a female beggar holding a large bowl.",
+   "facesSignsPlates": "Drawn face only; caption text 'BACKSHEESH!' at bottom",
+   "suggestedCrop": null,
+   "notes": "WEAK fallback: Egypt, not India, and a drawn figure of a beggar. REJECTED the Commons candidate 'Baksheesh India.jpg' (CC BY-SA 2.0, Mac Dor, FlickreviewR pass): it shows two sadhu/mendicants with faces as the clear subject at Bhavnath, Junagadh. No hand/coin/tip photo in India found (Commons search is poor/rate-limited)."
+  },
+  "facts": [],
+  "notes": "No fact sources searched for the etymology (line unchanged, not verified by me). Image is a weak substitute; consider 'none'."
  },
  {
   "batch": "agra",
@@ -3857,6 +3963,52 @@
    }
   ],
   "notes": "MODERATE: the trend claim is from ThePrint (journalism, strong wording \"mandatory ritual\" - I used \"流行\"). The Taj-as-backdrop claim is only from commercial/tourism pages and from a search summary mentioning photographers complaining about crowds and permits at the Taj (source not opened). NO IMAGE: Commons has no Indian pre-wedding shoot photo (search \"prewedding\" returned Indonesian, Nigerian and Iranian ones); a couple posing is also a faces-as-subject problem."
+ },
+ {
+  "batch": "agra2",
+  "id": "gt_term_prewedding",
+  "nameJa": "前撮り（プレウェディング撮影）",
+  "aliasJa": null,
+  "category": "custom",
+  "lineJa": "式の前に二人で記念写真を撮る前撮りが流行中。遺跡や宮殿が人気の背景。",
+  "lineChars": 34,
+  "photoNoteJa": "ジャイプルのシティ・パレスでの婚礼写真の撮影風景（アーグラーではない）。",
+  "altJa": "シティ・パレスの中庭で、赤いクラシックカーに乗った男女をカメラマンが車のボンネットに座って撮影している様子。",
+  "image": {
+   "file": "gt_term_prewedding.jpg",
+   "commonsOrFlickrPage": "https://commons.wikimedia.org/wiki/File:S%C3%A9ance_de_photos_de_mariage_%C3%A0_Jaipur_(1).jpg",
+   "title": "Séance de photos de mariage à Jaipur (1).jpg",
+   "author": "Ji-Elle",
+   "license": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "licenseEvidence": "{{self|cc-by-sa-4.0}}; source {{own}}",
+   "flickrReview": null,
+   "originalSize": "unchecked; 960x640 downloaded",
+   "downloadedSize": "960x640",
+   "date": "2019-11-19",
+   "place": "City Palace, Jaipur, Rajasthan",
+   "description": "Séance de photos de mariage au City Palace de Jaipur (Rajasthan).",
+   "facesSignsPlates": "Couple in car: both wearing sunglasses, small in frame (woman approx x235-285,y255-300; man approx x320-360,y265-300); photographer has his back to the camera; bystanders far right (approx x845-885,y235-280) and right edge, all small. No signs/plates.",
+   "suggestedCrop": "x100,y40,w640,h540 (car, couple, photographer; excludes right bystander)",
+   "notes": "Description says 'wedding photo session', not explicitly 'pre-wedding'; it is the same kind of staged shoot at a palace. Sibling files (2)-(5) show the same shoot; (1) has the smallest faces. Alternative: 'Couple Photoshoot at The Lodhi Garden.jpg' (CC BY-SA 4.0, Akarshan sapra, 2017, Lodhi Garden tomb, Delhi) but the couple's faces are the clear subject."
+  },
+  "facts": [
+   {
+    "publisher": "ThePrint (Manisha Mondal)",
+    "title": "The grand spectacle of pre-wedding shoots in India",
+    "url": "https://theprint.in/ground-reports/the-grand-spectacle-of-pre-wedding-shoots-in-india-living-the-bollywood-fantasy-selling-main-character-energy/2982253/",
+    "date": "2026-07-10",
+    "quote": "Pre-wedding shoots have become a mandatory ritual in the already big and bloated Indian weddings. ... It started as an urban trend, and now even rural India, Tier-I and Tier-II cities are jumping in. ... Corners of Lodhi Gardens, Humayun's Tomb, Purana Qila, Mehrauli Archaeological Park and India Gate are dotted with couples"
+   },
+   {
+    "publisher": "Taj Mahal tourism site (tajmahaltourism.com; private tourism operator, not official)",
+    "title": "Getting married at Taj Mahal",
+    "url": "https://mail.tajmahaltourism.com/getting-married-at-tajmahal.html",
+    "date": "unknown",
+    "quote": "(search-result snippet, page not fetchable) many couples choose to have a pre-wedding photoshoot at the Taj Mahal"
+   }
+  ],
+  "notes": "Popularity: well supported (ThePrint). Taj/Agra as backdrop: only supported by a private tourism/wedding-vendor site snippet (weak); ThePrint does not mention Taj. Line therefore rewritten to 遺跡や宮殿が人気の背景 (supported by ThePrint's Delhi monuments). If the Taj must be named, keep only as 'よく選ばれる' from vendor sources or drop."
  },
  {
   "batch": "agra",

@@ -31,6 +31,7 @@ INCLUDE modules.ink
 # speaker: gt_jagdeep
 # cutin: name
 # voice: gt_agra_date_chini_rauza_jagdeep_002
+# term: gt_term_prewedding
 ジャグディープだ。アーグラで、結婚前の二人の写真を撮ってる
 # speaker: heroine
 # emotion: surprised

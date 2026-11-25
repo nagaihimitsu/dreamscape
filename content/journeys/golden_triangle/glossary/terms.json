@@ -174,6 +174,16 @@
       "imageId": "gt_img_term_delhi_metro"
     },
     {
+      "id": "gt_term_taj_electric_bus",
+      "nameJa": "電動の小さなバス",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "transport",
+      "lineJa": "タージの500m以内は排ガスの出る車が禁止。駐車場から電動バスやカートで向かう。",
+      "photoNoteJa": "写真は、タージ近くの駐車場の電動カート",
+      "imageId": "gt_img_term_taj_electric_bus"
+    },
+    {
       "id": "gt_term_paratha",
       "nameJa": "パラーター",
       "readingJa": null,
@@ -923,6 +933,26 @@
       "lineJa": "年長者は、足に触れて敬意を示す年下の頭に手を置き、祝福を返す。",
       "imageId": "gt_img_term_blessing_hand",
       "photoNoteJa": "画像は、頭に手を置く祝福を表した図"
+    },
+    {
+      "id": "gt_term_prewedding",
+      "nameJa": "前撮り",
+      "readingJa": null,
+      "aliasJa": "プレウェディング撮影",
+      "category": "custom",
+      "lineJa": "式の前に二人で記念写真を撮る前撮りが流行中。遺跡や宮殿が人気の背景。",
+      "photoNoteJa": "写真は、ジャイプールのシティ・パレスでの写真の撮影",
+      "imageId": "gt_img_term_prewedding"
+    },
+    {
+      "id": "gt_term_baksheesh",
+      "nameJa": "バクシーシ",
+      "readingJa": null,
+      "aliasJa": "心づけ",
+      "category": "custom",
+      "lineJa": "ペルシア語由来の言葉で、チップや施し、時に賄賂も指す。中東から南アジアで使う。",
+      "imageId": "gt_img_term_baksheesh",
+      "photoNoteJa": "画像は、差し出した手のひらと硬貨を表した図"
     },
     {
       "id": "gt_term_rose_ringed_parakeet",

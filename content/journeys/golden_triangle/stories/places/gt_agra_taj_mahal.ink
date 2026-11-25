@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
+# term: gt_term_taj_electric_bus
 タージ・マハルの手前で、車は入れない。二人は電動の小さなバスに乗り換え、手荷物検査の列に並んだ。前の家族が、持ち込めないお菓子を慌てて食べている。
 # speaker: heroine
 # reaction: heroine,teasing,music
