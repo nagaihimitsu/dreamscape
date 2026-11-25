@@ -77,6 +77,7 @@ INCLUDE modules.ink
 運転手が何か文句を言っている。料金を半分に値切られたらしい。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# photo: gt_album_j133 # photo_caption: オートリキシャで、カムラが来た
 # voice: gt_jaipur_epilogue_001
 カムラさん！　昨日の今日なのに、もう値切ってる……
 # speaker: enemy
@@ -120,6 +121,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # voice: gt_jaipur_epilogue_003
+    # photo: gt_album_j136 # photo_caption: 「もう、言いました」
     はい。……もう、言いました。これからも、言いたいときに言います
     # speaker: enemy
     # voice: gt_jaipur_epilogue_kamla_007
