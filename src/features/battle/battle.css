@@ -1058,7 +1058,9 @@
 
 /* The heroine's few words by the quiz card (HeroineNote): her face and a speech bubble whose
    tail points at it, headed by her name. Her whispered hint comes in like a panel; her line on a
-   right answer comes with the explanation it sits in. Nothing here is pressable. */
+   right answer comes with the explanation it sits in. Nothing here is pressable.
+   The bubble's ground is see-through on the glass, so it has no edge line and its tail is a
+   triangle wholly outside it in the same ground: nothing overlaps, so the two read as one shape. */
 .heroine-note {
   display: flex;
   align-items: flex-start;
@@ -1070,8 +1072,7 @@
   position: relative;
   flex: 1 1 auto;
   min-width: 0;
-  padding: 6px 14px 9px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: 7px 15px 10px;
   border-radius: 14px;
   background: var(--ds-parchment-2);
   color: var(--ds-ink);
@@ -1082,14 +1083,12 @@
 .heroine-note-bubble::before {
   content: "";
   position: absolute;
-  top: 15px;
-  left: -6px;
-  width: 10px;
-  height: 10px;
-  border: solid var(--ds-parchment-line);
-  border-width: 0 0 1px 1px;
+  top: 14px;
+  left: -7px;
+  width: 7px;
+  height: 12px;
   background: inherit;
-  transform: rotate(45deg);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 .heroine-note-name {
   display: block;
@@ -1097,7 +1096,7 @@
   font-size: 11px;
   line-height: 1.7;
 }
-.heroine-note-bubble--unlabeled { padding-top: 8px; }
+.heroine-note-bubble--unlabeled { padding-top: 9px; }
 .hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
 @keyframes heroine-note-in {
   from { opacity: 0; transform: translateY(4px); }
