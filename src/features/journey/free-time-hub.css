@@ -44,11 +44,13 @@
 /* iOS draws a play button on a video it will not start by itself (Low Power Mode): the artwork shows instead. */
 .free-time-backdrop video::-webkit-media-controls-start-playback-button { display: none; }
 .free-time-backdrop video::-webkit-media-controls { display: none; }
+/* A faint veil only (2026-11-25 user remark: the screen looked dark): the city stays bright, as in daylight. Every text
+   has its own ground (the header its shade, the cards the glass), so the photo needs no darkening to be read over. */
 .free-time-backdrop:not(.is-plain)::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(20, 24, 32, 0.25);
+  background: rgba(20, 24, 32, 0.06);
 }
 
 .free-time-hub {
