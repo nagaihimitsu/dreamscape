@@ -4,7 +4,7 @@ import { cityContents, episodes, landmarks, scenes } from "../../content";
 import sceneAudioJson from "../../content/generated/scene-audio.json";
 import { mergeMusicPlay } from "../../content/music";
 import { sceneAudioSchema, type SceneAudio } from "../../content/scene-audio";
-import { heardTracks, heardVoices, musicRoomOpen, readStoryKey, sceneAddresses, sceneCompleted, sceneGroup, type RoomGame, type RoomScene, type SceneNames } from "./music-room";
+import { heardTracks, heardVoices, readStoryKey, sceneAddresses, sceneCompleted, sceneGroup, type RoomGame, type RoomScene, type SceneNames } from "./music-room";
 
 const SCENE_AUDIO_INDEX = sceneAudioSchema.parse(sceneAudioJson);
 
@@ -19,11 +19,6 @@ const scene = (id: string, extra: Partial<RoomScene> = {}): RoomScene =>
 const nowhere = () => false;
 
 describe("the music room", () => {
-  it("opens once a city is cleared", () => {
-    expect(musicRoomOpen({ completedCityIds: [] })).toBe(false);
-    expect(musicRoomOpen({ completedCityIds: ["ta_city"] })).toBe(true);
-  });
-
   it("counts a scene completed by its own record", () => {
     expect(sceneCompleted(scene("ta_talk"), game({ seenEncounterIds: ["ta_talk"] }), nowhere)).toBe(true);
     expect(sceneCompleted(scene("ta_talk"), game(), nowhere)).toBe(false);

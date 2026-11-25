@@ -9,11 +9,8 @@ import type { GameState } from "../../domain/game";
 // from what the game and this device keep (no new saved data): the tracks of the places visited and the `# bgm:` of the
 // scenes completed, and, of those scenes' `# voice:` lines (content:build's index, scene-audio.json), only the ones this
 // device has read (read-skip's record, src/components/read-skip.ts), so the branch not taken is never shown. It opens once
-// the player has cleared a city. Pure: MusicRoom.tsx gives it the content and plays what is chosen through the game's own
+// the journey is over (a reward after clearing it, 2026-11-25; GameApp's isJourneyComplete). Pure: MusicRoom.tsx gives it the content and plays what is chosen through the game's own
 // players. Nothing here reads a relationship value.
-
-/** The room opens once the player has cleared their first city. */
-export const musicRoomOpen = (game: Pick<GameState, "completedCityIds">): boolean => game.completedCityIds.length > 0;
 
 /** A scene as the room reads it (the scene table's entry). */
 export type RoomScene = Pick<SceneEntry, "id" | "kind" | "main" | "at" | "story" | "knots" | "cityId" | "title">;
