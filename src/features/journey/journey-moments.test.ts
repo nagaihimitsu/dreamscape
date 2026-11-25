@@ -290,8 +290,8 @@ describe("the packing of a departure", () => {
     expect(arrived.currentCityId).toBe("jaipur");
     expect(packingOf(leaving, arrived)).toEqual({
       fromCityJa: "アーグラ", toCityJa: "ジャイプール",
-      carried: [{ id: "gt_delhi_kamla_memo", nameJa: "カムラの段ボールのメモ" }],
-      left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター" }],
+      carried: [{ id: "gt_delhi_kamla_memo", nameJa: "カムラの段ボールのメモ", iconPath: "assets/items/gt_delhi_kamla_memo.webp" }],
+      left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター", iconPath: "assets/items/gt_agra_anwar_petha.webp" }],
     });
   });
 
@@ -311,8 +311,8 @@ describe("the departure dialog's items (「{都市}へ出発」)", () => {
     } };
     const luggage = departureLuggage(leaving);
     expect(luggage).toEqual({
-      carried: [{ id: "gt_delhi_kamla_memo", nameJa: "カムラの段ボールのメモ" }],
-      left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター" }],
+      carried: [{ id: "gt_delhi_kamla_memo", nameJa: "カムラの段ボールのメモ", iconPath: "assets/items/gt_delhi_kamla_memo.webp" }],
+      left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター", iconPath: "assets/items/gt_agra_anwar_petha.webp" }],
     });
     // The same split the departure makes (leaveForNextCity, then the packing).
     const packed = packingOf(leaving, leaveForNextCity(leaving))!;
@@ -323,7 +323,7 @@ describe("the departure dialog's items (「{都市}へ出発」)", () => {
     const cleared = completedCity("agra");
     expect(departureLuggage({ ...cleared, inventory: {} })).toEqual({ carried: [], left: [] });
     expect(departureLuggage({ ...cleared, inventory: { gt_delhi_rain_attar: "gifted", gt_agra_anwar_petha: "held" } }))
-      .toEqual({ carried: [], left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター" }] });
+      .toEqual({ carried: [], left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター", iconPath: "assets/items/gt_agra_anwar_petha.webp" }] });
   });
 });
 

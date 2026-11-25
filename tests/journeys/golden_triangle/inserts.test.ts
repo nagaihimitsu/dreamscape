@@ -13,8 +13,8 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 /**
  * GT-4: the Golden Triangle's 13 inserted scenes (15 since the station scam was split into an opening, an office scene and a reasoning quiz, 2026-11-18;
- * 17 with Gaura's radish handed to the Jaipur hotel's kitchen at night and served back at breakfast, 2026-11-20) (talks at the stage-4 moments: the hotel's night and morning,
- * Delhi's departure, Agra's arrival, the Jaipur finale and the India Gate date), each played at its moment with the
+ * 17 with Gaura's radish handed to the Jaipur hotel's kitchen at night and served back at breakfast, 2026-11-20; 18 with the airport scene before the opening logo, 2026-11-23) (talks at the stage-4 moments: the hotel's night and morning,
+ * Delhi's arrival and departure, Agra's arrival, the Jaipur finale and the India Gate date), each played at its moment with the
  * real actions as the screens commit them, each step saved and loaded again. Their two items are given (the envelope
  * handed over once), their money is paid once (the station deposit through to Agra; each envelope gift in its scene,
  * nothing more after the battle up to the epilogue), and some are also tried where their conditions do not hold:
@@ -123,10 +123,11 @@ const shown = (played: Played, text: string) => played.lines.some((line) => line
 const delhiStart = () => finishEpisode(newJourney("golden_triangle"), "gt_delhi_main_red_fort");
 
 describe("Golden Triangle inserted scenes (GT-4)", () => {
-  it("places the 17 scenes at their moments, with their sources, flags, items and backgrounds", () => {
+  it("places the 18 scenes at their moments, with their sources, flags, items and backgrounds", () => {
     const own = scenes.filter((scene) => /^places\/gt_(delhi|agra|jaipur)_inserts$/u.test(scene.story.storyId));
     const table = Object.fromEntries(own.map((scene) => [scene.id, [scene.kind, scene.at, scene.priority, scene.sources ?? "listed"]]));
     expect(table).toEqual({
+      gt_delhi_arrive_hands: ["talk", [{ arrive: "delhi" }], -1, "listed"],
       gt_delhi_date_india_gate_print: ["talk", [{ date: "gt_delhi_date_india_gate" }], 1, "none"],
       gt_delhi_hotel_homework: ["talk", [{ hotel: "delhi_hotel_hub" }], -2, "listed"],
       gt_delhi_hotel_sick_night_player: ["talk", [{ hotel: "delhi_hotel_hub" }], -1, "none"],
@@ -153,7 +154,7 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     expect(listed.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.kind !== "battle" && scene.sources !== "none").map((scene) => scene.id).sort());
     for (const source of listed.flatMap((scene) => scene.sources)) {
       expect(source.url).toMatch(/^https:\/\//u);
-      expect(source.checkedAt).toMatch(/^2026-11-(0[89]|18|20)$/u);
+      expect(source.checkedAt).toMatch(/^2026-11-(0[89]|18|2[03])$/u);
     }
     // The flags only the inserts set and read, and the two items they give.
     const reads = new Set(own.flatMap((scene) => scene.conds));

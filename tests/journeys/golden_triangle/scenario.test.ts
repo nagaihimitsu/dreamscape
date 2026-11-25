@@ -108,15 +108,18 @@ describe("authored Golden Triangle journey", () => {
       state = playScenes(state, (current) => !!current.activeEncounter, checkpoint);
       expect(state.occasion).toBeNull();
       const { revision: arrivalRevision, activeEpilogue: arrivalScene, inventory: arrivalInventory, occasion: arrivalMoment,
-        seenEncounterIds: arrivalSeen, completedEncounterIds: arrivalDone, ...beforeWelcome } = arrival;
+        seenEncounterIds: arrivalSeen, completedEncounterIds: arrivalDone, album: arrivalAlbum, ...beforeWelcome } = arrival;
       const { revision: welcomedRevision, activeEpilogue: welcomedScene, inventory: welcomedInventory, occasion: welcomedMoment,
-        seenEncounterIds: welcomedSeen, completedEncounterIds: welcomedDone, ...afterWelcome } = state;
+        seenEncounterIds: welcomedSeen, completedEncounterIds: welcomedDone, album: welcomedAlbum, ...afterWelcome } = state;
       void arrivalRevision; void arrivalScene; void welcomedRevision; void arrivalMoment; void welcomedMoment;
       expect(welcomedScene).toBeNull();
       expect(afterWelcome).toEqual(beforeWelcome);
       const reel = cityId === "agra" ? ["gt_agra_arrive_reel"] : [];
       expect(welcomedSeen).toEqual([...arrivalSeen, ...reel]);
       expect(welcomedDone).toEqual([...arrivalDone, ...reel]);
+      // The reel's photo goes into the album (its # photo: line); nothing else is added there.
+      expect(welcomedAlbum.slice(0, arrivalAlbum.length)).toEqual(arrivalAlbum);
+      expect(welcomedAlbum.slice(arrivalAlbum.length).map((entry) => entry.imageId)).toEqual(cityId === "agra" ? ["gt_album_a006"] : []);
       // Only Delhi's arrival gives something when it ends: Kamla's memo (its knot's head # on_done: item).
       expect(welcomedInventory).toEqual({ ...arrivalInventory, ...(cityId === "delhi" ? { gt_delhi_kamla_memo: "held" } : {}) });
       const main = episodes.filter((episode) => episode.cityId === cityId && episode.kind === "episode").reverse();

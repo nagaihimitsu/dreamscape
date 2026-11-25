@@ -155,7 +155,7 @@ export function useSceneFastForward(): boolean {
   return useSyncExternalStore((listener) => {
     fastForwardListeners.add(listener);
     return () => { fastForwardListeners.delete(listener); };
-  }, () => fastForward);
+  }, () => fastForward, () => false);
 }
 
 /**
