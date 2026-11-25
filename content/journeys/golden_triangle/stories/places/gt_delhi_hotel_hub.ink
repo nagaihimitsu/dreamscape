@@ -101,9 +101,11 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_hotel_room
 # tint: off
 # speaker: narrator
-# item_out: gt_delhi_kamla_memo
 # photo: gt_album_d117 # photo_caption: 五行のデリー、全部行った
-夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。五行のデリー。全部、行った。
+夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。
+# speaker: narrator
+# item_out: gt_delhi_kamla_memo
+五行のデリー。全部、行った。
 # speaker: narrator
 # se: door_knock
 # term: gt_term_kulhad

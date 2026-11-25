@@ -85,9 +85,11 @@ INCLUDE modules.ink
 # speaker: narrator
 カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
 # speaker: narrator
-# item_out: gt_delhi_kamla_memo 6
 # photo: gt_album_j57 # photo_caption: 段ボールの六行目「通りで踊った夜」
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
+# speaker: narrator
+# item_out: gt_delhi_kamla_memo 6
+返ってきた切れ端の、いちばん下。インクがまだ乾いていない。
 # speaker: enemy
 # recall: gt_album_j129
 # voice: gt_jaipur_epilogue_kamla_002
@@ -152,8 +154,10 @@ INCLUDE modules.ink
 # speaker: narrator
 # quiet: scene
 # item_out: gt_delhi_kamla_memo
+{heroine_name}は段ボールの切れ端を見つめた。デリーの五行と、ジャイプールの一行。
+# speaker: narrator
 # photo: gt_album_j137 # photo_caption: アーグラの分は、空いている
-{heroine_name}は段ボールの切れ端を見つめた。デリーの五行と、ジャイプールの一行。アーグラの分は、空いている。
+アーグラの分は、空いている。
 # speaker: narrator
 アーグラでは、名物ガイドの伝説の代わりに、人前で本当の話をした。
 # speaker: heroine
