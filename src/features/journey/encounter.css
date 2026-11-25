@@ -183,7 +183,7 @@
 .encounter-dialogue .word-meaning { color: var(--ds-ink); }
 
 /* An encounter's replies floating above the window (romance-scene.css .vn-choices, 2026-11-25): each row one pane of the
-   window's glass, its words and translation in the window's ink, its letter the terracotta press of every choice (a
+   window's glass, its words and translation in the window's ink, its letter the smoked press of every choice (a
    reply that cannot be chosen: the disabled grey, its reason under its words). Nothing inside a row has a glass of its own. */
 .vn-choices .encounter-choices { gap: 10px; margin: 0; }
 .vn-choices .encounter-choice {

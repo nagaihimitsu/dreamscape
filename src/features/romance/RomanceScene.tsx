@@ -293,8 +293,8 @@ export function RomanceScene({
               ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
             }}>
               <div className="choices">
-                {/* No 「返答を選んでください」 under it (2026-11-11, the user's decision): the replies coming in one after another say it. */}
-                <p className="choice-hint">あなたは、どう返す？</p>
+                {/* No heading over them (2026-11-25 user decision: 「あなたは、どう返す？」 went, as 「返答を選んでください」 did on
+                    2026-11-11): the replies coming in one after another say it. */}
                 {frame.choices.filter((choice) => choiceDisplay?.(choice.index).show !== "hidden").map((choice, index) => (
                   <button
                     disabled={!ready || choiceReadyRevision !== game.revision || choiceDisplay?.(choice.index).show === "grey"}

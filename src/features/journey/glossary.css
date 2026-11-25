@@ -17,7 +17,7 @@
   padding: max(16px, 7dvh, env(safe-area-inset-top)) 16px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: radial-gradient(ellipse 90% 62% at 50% 40%, rgba(14, 12, 10, 0.68), rgba(14, 12, 10, 0.44) 62%, rgba(14, 12, 10, 0.16));
+  background: radial-gradient(ellipse 90% 62% at 50% 40%, rgba(14, 12, 10, 0.5), rgba(14, 12, 10, 0.3) 62%, rgba(14, 12, 10, 0.08));
   cursor: pointer;
   animation: glossary-dim-in var(--motion-medium) var(--ease-out) both;
 }
@@ -33,11 +33,20 @@
   width: min(100%, 320px);
   margin: 0 auto;
   padding: 12px 16px 12px;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: 18px;
-  background: radial-gradient(circle at 50% 30%, #fffaf0, var(--ds-parchment) 70%);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(246, 196, 69, 0.22);
+  /* The light glass over the scene (2026-11-25 user decision, as the talk's window): the place shows on, softened, around
+     the photo and the words; a soft gold light says something was found. Its colours are the glass's. */
+  --ds-ink: var(--ds-glass-ink);
+  --ds-ink-muted: var(--ds-glass-muted);
+  --ds-parchment: var(--ds-glass-press);
+  --ds-parchment-2: var(--ds-glass-chosen);
+  --ds-parchment-line: var(--ds-glass-line);
+  border: 0;
+  border-radius: var(--ds-glass-radius);
+  background: var(--ds-glass-bg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 0 28px rgba(246, 196, 69, 0.28);
   color: var(--ds-ink);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   text-align: center;
   animation: glossary-card-in var(--motion-scene) var(--ease-out) both;
 }

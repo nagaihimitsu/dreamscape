@@ -15,7 +15,7 @@
   --vn-feather: var(--ds-glass-feather);
   --vn-body-size: var(--ds-text-reading);
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
-  /* A choice: a warm terracotta press over the scene, set apart from the glass of the words (white words at 4.6:1 or more). */
+  /* A choice: a pane of smoked glass over the scene (--ds-action), set apart from the light glass of the words. */
   --vn-choice-bg: var(--ds-action-fill);
   --vn-choice-shadow: var(--ds-action-shadow);
   /* The window's head (the speaker's name band) straddles the window's top edge by this much, about half the band
@@ -24,9 +24,11 @@
   /* The scene's camera (figure-zoom.ts): how much nearer than whole the people on stage are seen, and how fast it comes in. */
   --vn-camera: 700ms;
 }
-/* The glass, on the window and on what lies on the scene with it (the choices' words beside their presses). */
+/* The glass, on the window and on what lies on the scene with it (the choices, smoked, and the words beside them). */
 .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-window::before,
+.vn-choices .choice,
+.vn-choice-exit,
 .vn-choices .choice-hint,
 .vn-choices :is(.text-button, p),
 .vn-choices .encounter-choice {
@@ -215,7 +217,8 @@
 .vn-dialogue h1 { font-size: var(--ds-text-heading); margin: 2px 0 8px; color: var(--vn-text); }
 
 /* The choices (2026-11-25 user decision): above the window, which stays as it was and keeps the line they answer, they
-   float over the scene as warm terracotta presses, set apart from the glass of the words. They come before the window
+   float over the scene as panes of smoked glass with a gold hairline (--ds-action; no longer terracotta, 2026-11-25),
+   set apart from the light glass of the words. They come before the window
    on the screen and after it in the reading order (the line, then what to answer). Many or long ones scroll in their own
    place, the window keeping its head and two lines. 10 px between two choices, which cannot be undone (AGENTS
    選択肢の誤タップ防止). Their help (the hint, a translation and its button, why one cannot be chosen) sits on the glass. */
