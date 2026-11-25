@@ -42,6 +42,20 @@
   --ds-pill-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
   --ds-card-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
   --ds-window-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  /* The light frosted glass over a scene (2026-11-25 user decisions): the talk's window, then free time's cards and a
+     quiz's result, so the place shows on, softened, behind what is read. Its ink keeps 8:1 or more over any picture
+     (its 20 % show-through counted at black), its muted ink 4.5:1. A pressable on it stands on --ds-glass-press, a
+     chosen one on --ds-glass-chosen with its slate edge drawn inside. */
+  --ds-glass-bg: rgba(248, 250, 255, 0.8);
+  --ds-glass-blur: blur(14px) saturate(1.2);
+  --ds-glass-ink: #1d2740;
+  --ds-glass-muted: #47536b;
+  --ds-glass-press: rgba(255, 255, 255, 0.72);
+  --ds-glass-chosen: rgba(61, 106, 166, 0.18);
+  --ds-glass-line: rgba(29, 39, 64, 0.16);
+  /* Its edges melt into the scene over this much: no edge line, no shadow. */
+  --ds-glass-feather: 10px;
+  --ds-glass-radius: 22px;
   /* Motion of the UI's feedback: short, transform and opacity only, and never holding
      input back. Each animation that uses these stops, in its own stylesheet, under
      prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
@@ -57,6 +71,58 @@
 }
 body {
   margin: 0;
+}
+
+/* The glass surfaces over a scene (--ds-glass-*): free time's cards over the city and a quiz's result card over its
+   place. What lies on them was written for the parchment, so its colours are pointed at the glass's here (ink, muted
+   ink, a pressable's ground, the chosen ground, the hairlines); a dialog opened from inside one keeps the parchment's
+   (below). The glass itself is the surface's ::before, so its feathered edge never fades the words or a focus ring. */
+.photo-menu .place-card,
+.photo-free-time .photo-menu-note,
+.photo-free-time .free-time-extras,
+.photo-free-time .photo-menu .travel-rentals,
+.battle-result-card {
+  --ds-ink: var(--ds-glass-ink);
+  --ds-ink-muted: var(--ds-glass-muted);
+  --ds-parchment: var(--ds-glass-press);
+  --ds-parchment-2: var(--ds-glass-chosen);
+  --ds-parchment-line: var(--ds-glass-line);
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: var(--ds-glass-radius);
+  background: none;
+  color: var(--ds-ink);
+  box-shadow: none;
+}
+:is(.photo-menu .place-card, .photo-free-time .photo-menu-note, .photo-free-time .free-time-extras,
+  .photo-free-time .photo-menu .travel-rentals, .battle-result-card)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 var(--ds-glass-feather), #000 calc(100% - var(--ds-glass-feather)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--ds-glass-feather), #000 calc(100% - var(--ds-glass-feather)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 var(--ds-glass-feather), #000 calc(100% - var(--ds-glass-feather)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--ds-glass-feather), #000 calc(100% - var(--ds-glass-feather)), transparent);
+  mask-composite: intersect;
+  pointer-events: none;
+}
+/* A dialog opened from a glass surface (a tour's booking, the shop, the rentals) is parchment again (the :root values). */
+:is(.photo-menu .place-card, .photo-free-time .free-time-extras, .photo-free-time .photo-menu .travel-rentals,
+  .battle-result-card) dialog {
+  --ds-ink: #3b2f2a;
+  --ds-ink-muted: #6b5a4a;
+  --ds-parchment: #fbf3e6;
+  --ds-parchment-2: #f3e4c8;
+  --ds-parchment-line: #d9c39a;
 }
 button,
 input,
@@ -1451,9 +1517,6 @@ dialog.modal[open] {
 /* 「相手の反応を見る」, a little apart from the explanation and 「英文を確認する」 above it. */
 .quiz-feedback .quiz-feedback-next {
   margin-top: 17px;
-}
-.battle-result {
-  padding-top: 25px;
 }
 .outcome {
   font-family: Georgia, serif;
