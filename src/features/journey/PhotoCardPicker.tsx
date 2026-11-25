@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import { getCityContent, presentation } from "../../content";
 import { derivedImagePath } from "../../content/derived-images";
 import { getPlacePhoto } from "../../content/place-photo";
+import { FitText } from "../../components/FitText";
 import { Icon } from "../../components/icons";
 import { battlePlayed } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
@@ -207,7 +208,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
               {face.bottom && <span className="photo-card-chip is-bottom" aria-hidden="true">{face.bottom}</span>}
             </span>
             <span className="photo-card-text" aria-hidden="true">
-              <span className="photo-card-name">{face.name}</span>
+              {/* A place's name breaks between phrases and shrinks a little to keep to one line (FitText); a hint stays as written. */}
+              <span className="photo-card-name">{locked ? face.name : <FitText text={face.name} />}</span>
               {face.swipeable && <span className="photo-card-cue" />}
             </span>
           </button>
@@ -245,7 +247,7 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
     const hotelPhoto = getPlacePhoto(game.currentCityId, game.travel.hotelPlaceId);
     return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, swipeable,
       photo: hotelPhoto
-        ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={240} height={160} loading="lazy" decoding="async" draggable={false} />
+        ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={480} height={320} loading="lazy" decoding="async" draggable={false} />
         : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
   }
   // The city's shop (2026-11-20): its name over an awning, at the right end of the row.
@@ -296,7 +298,7 @@ function PlainTile({ color, children }: { color?: string; children: ReactNode })
 function PlacePhoto({ game, entry }: { game: GameState; entry: PhotoCardEntry }) {
   const place = entry.place.events[0].place;
   const photo = getPlacePhoto(game.currentCityId, place.id);
-  if (photo) return <img src={`${import.meta.env.BASE_URL}${derivedImagePath(photo, "card")}`} alt="" width={240} height={160} loading="lazy" decoding="async" draggable={false} />;
+  if (photo) return <img src={`${import.meta.env.BASE_URL}${derivedImagePath(photo, "card")}`} alt="" width={480} height={320} loading="lazy" decoding="async" draggable={false} />;
   const date = entry.events.every((choice) => choice.event.category === "date");
   return <PlainTile color={presentation.backgrounds[place.backgroundId]?.color}>{date ? "♡" : "◇"}</PlainTile>;
 }

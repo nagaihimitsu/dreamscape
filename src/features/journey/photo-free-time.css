@@ -122,16 +122,9 @@
   --card-text: clamp(0, calc((var(--card-scale, 1) - 0.7) / 0.25), 1);
 }
 .photo-cards:not(.is-list) > li > .photo-card :is(.photo-card-text, .photo-card-chip) { opacity: var(--card-text); }
-/* The side cards' mat under the photo shrinks with their hidden name (2026-11-20 user decision: no wide band of the
-   fill below a side card): each card keeps its own height, centred in the row, and the name's room opens as the card
-   comes to the centre. The chosen card is never clipped (its swipe cue moves). */
+/* Each card keeps its own height, centred in the row (2026-11-20 user decision: no wide band of the fill below a side
+   card; since 2026-11-25 the name lies on the photo, so no card has a band under it). */
 .photo-cards:not(.is-list) > li { align-items: center; }
-.photo-cards:not(.is-list) > li:not([data-selected]) > .photo-card { padding-bottom: calc(4px + 4px * var(--card-text)); }
-.photo-cards:not(.is-list) > li:not([data-selected]) > .photo-card .photo-card-text {
-  max-height: calc(var(--card-text) * 120px);
-  padding-top: calc(var(--card-text) * 6px);
-  overflow: hidden;
-}
 /* Fingers scroll the row; a mouse keeps the scrollbar. */
 @media (pointer: coarse) {
   .photo-cards { scrollbar-width: none; }
@@ -182,6 +175,66 @@
   border-color: transparent;
   box-shadow: 0 6px 18px rgba(8, 10, 16, 0.42);
 }
+/* In the row each card is the photo itself (2026-11-25 user decision, after free time on an iPhone: the slate band of
+   the name under the photo was a form's part laid over the city): the photo fills the card inside a thin frame of what
+   the place holds (the paper, the story's slate, a date's rose, both split), and the name lies on the photo's foot over
+   a shade, in white (8:1 or more on the shade's foot), the swipe's cue under it. A card without a photo (待機, the tour,
+   the shop, a place without one) is a pane of the smoked glass, the scene blurred through it, with its mark. */
+.photo-cards:not(.is-list) .photo-card,
+.photo-card-ghost {
+  --print-frame: 3px;
+  padding: var(--print-frame);
+  border-radius: 16px;
+}
+.photo-cards:not(.is-list) .photo-card-photo,
+.photo-card-ghost .photo-card-photo {
+  aspect-ratio: 5 / 4;
+  border-radius: calc(16px - var(--print-frame));
+}
+.photo-cards:not(.is-list) .photo-card-text,
+.photo-card-ghost .photo-card-text {
+  position: absolute;
+  left: var(--print-frame);
+  right: var(--print-frame);
+  bottom: var(--print-frame);
+  align-items: center;
+  padding: 30px 10px 4px;
+  border-radius: 0 0 calc(16px - var(--print-frame)) calc(16px - var(--print-frame));
+  background: linear-gradient(to bottom, transparent, rgba(8, 12, 22, 0.62) 45%, rgba(8, 12, 22, 0.86));
+  color: var(--ds-on-slate);
+  pointer-events: none;
+}
+.photo-cards:not(.is-list) .photo-card-name,
+.photo-card-ghost .photo-card-name {
+  align-self: stretch;
+  color: inherit;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.photo-cards:not(.is-list) .photo-card.is-unavailable .photo-card-name { color: var(--ds-smoke-muted); }
+.photo-cards:not(.is-list) .photo-card-cue { margin-top: 2px; }
+.photo-cards:not(.is-list) .photo-card:not(.is-story, .is-date, .is-both, .is-locked):has(.photo-card-plain),
+.photo-card-ghost:not(.is-story, .is-date, .is-both, .is-locked):has(.photo-card-plain) {
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  color: var(--ds-on-slate);
+}
+.photo-cards:not(.is-list) :is(.photo-card-plain:not([style]), .photo-card-photo:has(> .photo-card-plain:not([style]))),
+.photo-card-ghost :is(.photo-card-plain:not([style]), .photo-card-photo:has(> .photo-card-plain:not([style]))) { background: none; }
+.photo-cards:not(.is-list) .photo-card-plain { padding-bottom: 24px; }
+/* Its marks over the photo are smoked glass too; 訪問済み goes to the top left, clear of the name. */
+.photo-cards:not(.is-list) .photo-card-chip,
+.photo-card-ghost .photo-card-chip {
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-smoke-edge);
+}
+.photo-cards:not(.is-list) .photo-card-chip.is-top,
+.photo-card-ghost .photo-card-chip.is-top { top: 6px; right: 6px; }
+.photo-cards:not(.is-list) .photo-card-chip.is-bottom,
+.photo-card-ghost .photo-card-chip.is-bottom { top: 6px; bottom: auto; left: 6px; }
 .photo-cards .photo-card:not(.is-locked)[aria-current="true"] {
   box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 26px rgba(246, 196, 69, 0.32);
 }

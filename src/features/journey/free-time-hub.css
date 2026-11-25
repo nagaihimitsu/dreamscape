@@ -2,11 +2,25 @@
    text on its own opaque card (§2.4). The picture shows around the header's
    pills (its band is transparent: journey-hud.css), in the side gutters and
    between the cards. */
-.app-shell.free-time-active { background: transparent; }
-/* Wide screens keep the site's header lines; they sit on their own paper. */
-.free-time-active > .masthead,
-.free-time-active > .journey-stage,
-.free-time-active > footer { background: var(--paper); }
+.app-shell.free-time-active { border-color: transparent; background: transparent; box-shadow: none; }
+/* Wide screens keep the site's header lines, over the city too (2026-11-25 user decision: every screen in the one
+   immersive look; they were bands of paper across the picture): the site's name in white on the header's shade (over
+   the backdrop's own darker top), the progress line and the foot on the smoked glass. */
+.free-time-active > .masthead {
+  border-bottom: 0;
+  background: linear-gradient(var(--ds-photo-shade), transparent);
+  color: var(--ds-on-slate);
+}
+.free-time-active > .masthead :is(.brand, .brand span, .edition) { color: var(--ds-on-slate); }
+.free-time-active > :is(.journey-stage, footer) {
+  border-bottom: 0;
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  color: var(--ds-on-slate);
+}
+.free-time-active > footer { color: var(--ds-smoke-muted); }
+.free-time-active > .journey-stage span:last-child { background: var(--ds-on-slate); color: var(--ds-slate-900); }
 
 /* A fixed layer under the page's flow (no ancestor makes a stacking context in
    free time, so z-index -1 places it under every card and over the canvas only).

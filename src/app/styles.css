@@ -61,6 +61,14 @@
   --ds-glass-bar: rgba(244, 246, 252, 0.94);
   /* A field's edge on the glass: 3:1 on it whatever lies behind (its 20 % show-through counted at black). */
   --ds-glass-field-edge: #646b7e;
+  /* The smoked glass (2026-11-25 user decision, after free time's header on an iPhone: its slate pills and buttons sat on
+     the city as a form's parts): the header's plates and buttons over the scene, which shows through them blurred. White
+     words on it read 5.5:1 whatever lies behind (its show-through counted at white), its muted words 4.7:1. */
+  --ds-smoke: rgba(18, 23, 36, 0.66);
+  --ds-smoke-on: rgba(12, 16, 26, 0.86); /* an open tool */
+  --ds-smoke-blur: blur(14px) saturate(1.4);
+  --ds-smoke-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.14); /* its edge catching the light */
+  --ds-smoke-muted: #e6e9ee;
   /* The design's rules (2026-11-25 user decision, after learning from a product designer's practice: a few named sizes
      and colours, decided first and used everywhere, so every screen reads as one). The talk's stylesheets use only
      these (src/app/design-tokens.test.ts holds them to it); a new stylesheet uses them; the other screens move to them
