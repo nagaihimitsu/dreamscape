@@ -27,7 +27,7 @@
   height: 30px;
   padding: 3px;
   border-radius: 50%;
-  background: var(--ds-parchment);
+  background: var(--ds-glass-mark);
 }
 .held-items-bag-icon { position: relative; display: block; line-height: 0; }
 .held-items-bag-icon .icon { width: 20px; height: 20px; }
@@ -39,12 +39,15 @@
   min-width: 1.4em;
   padding: 0 0.25em;
   border-radius: 999px;
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
-  font-family: Georgia, serif;
+  background: var(--ds-glass-mark-full);
+  color: var(--ds-slate-900);
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   line-height: 1.4;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 .held-items-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
 .held-item-detail {

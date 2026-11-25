@@ -4,7 +4,7 @@ import { imageJourneyIndexSchema } from "./credits";
 import type { TourismAsset } from "./tourism-schemas";
 
 // content:build writes a reduced copy of every photo that getPlacePhoto
-// (`card`, 240×160) or getCityBackdrop (`backdrop`, longest side 1280) can
+// (`card`, 480×320) or getCityBackdrop (`backdrop`, longest side 1280) can
 // return, below the folder of the journey that provides the photo. The copies
 // keep the photo's credit; the screens that show them say they are reduced
 // and cropped (credits.ts DERIVED_PHOTO_NOTE_JA).

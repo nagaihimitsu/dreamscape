@@ -58,9 +58,9 @@ describe("derived photo copies", () => {
     ]);
   });
 
-  it("makes a 240×160 card, an 840×560 recap and a backdrop of at most 1280 px that is never enlarged", async () => {
+  it("makes a 480×320 card, an 840×560 recap and a backdrop of at most 1280 px that is never enlarged", async () => {
     const wide = await photo(2000, 1000);
-    expect(await sharp(await encodeDerivedImage(wide, "card")).metadata()).toMatchObject({ format: "webp", width: 240, height: 160 });
+    expect(await sharp(await encodeDerivedImage(wide, "card")).metadata()).toMatchObject({ format: "webp", width: 480, height: 320 });
     expect(await sharp(await encodeDerivedImage(wide, "recap")).metadata()).toMatchObject({ format: "webp", width: 840, height: 560 });
     expect(await sharp(await encodeDerivedImage(wide, "backdrop")).metadata()).toMatchObject({ format: "webp", width: 1280, height: 640 });
     expect(await sharp(await encodeDerivedImage(await photo(600, 900), "backdrop")).metadata()).toMatchObject({ width: 600, height: 900 });
