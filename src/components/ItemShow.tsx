@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import { DEFAULT_ITEM_ICON } from "../content/code-images";
 import { encounters } from "../content/encounters";
 import { playCue } from "../audio/sound-effects";
+import { useFiguresTop } from "./figures-top";
 import { isVectorIcon, itemFlight, type Box } from "./item-show";
 import "./item-show.css";
 
@@ -43,6 +44,9 @@ export function ItemShowLayer({ itemId, quiet = false }: { itemId?: string; quie
 }
 
 function ItemShowCard({ card, quiet }: { card: ItemCard; quiet: boolean }) {
+  const layer = useRef<HTMLDivElement>(null);
+  // Above the heads on stage (figures-top.ts), measured before the card's own box is.
+  useFiguresTop(layer);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!quiet) playCue("item_get");
@@ -63,7 +67,7 @@ function ItemShowCard({ card, quiet }: { card: ItemCard; quiet: boolean }) {
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
   }, [card.id]);
-  return <div className="item-show-layer" aria-hidden="true" data-testid="item-show">
+  return <div className="item-show-layer" ref={layer} aria-hidden="true" data-testid="item-show">
     <div className="item-show-card" ref={ref}>
       <span className="item-show-gleam" />
       <CardBody card={card} />
