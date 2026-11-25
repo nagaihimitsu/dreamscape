@@ -52,7 +52,7 @@
 - `# item_show:` は、その行のあいだ札を見せて `item_get` の音を鳴らすだけ。品物は増えません。もう持っている品物でも、音は鳴ります（`src/components/ItemShow.tsx`）。
 - 「…を手に入れました」は、持ち物が本当に増えたときだけ出ます（`src/app/ItemGainNotice.tsx`）。
 - 選択肢の `# money:`・`# give:`・`# use:` は、選んだその場で効きます（`src/domain/scene-effects.ts`）。
-- `# on_done:` は、場面の終わりに効きます。案内の `# on_done:` は、最後まで読んだ初回だけです。案内を「飛ばす」と、読んだことにならず、効きません（`src/domain/chapter.ts`、`src/domain/tourism.ts` の `skipTourismGuide`）。
+- `# on_done:` は、場面の終わりに効きます。案内の `# on_done:` は、最後まで読んだ初回だけです（読み直しでは効きません。`src/domain/chapter.ts`）。案内を飛ばすボタンは、2026-11-25になくしました。
 - 入場料（出来事の `admissionCost`）は、その場面が始まるときに二人分払います（`src/domain/travel.ts`）。
 
 **なぜ先に確かめるか。** 案内の `# on_done:` の動きを知らないと、アンベール城の細密画の代金を、絵を買う案内の頭へ移したくなります。そうすると、案内を飛ばした人は、払わずに絵を手に入れます（6.1）。

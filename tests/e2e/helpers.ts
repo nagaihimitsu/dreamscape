@@ -665,9 +665,35 @@ export const ops = {
     await page.getByTestId("travel-tour-confirm").click();
     await expect(page.getByTestId("travel-tour-booked")).toBeVisible();
   },
-  /** Close a sightseeing guide and go on to the landmark's battle. */
-  async skipGuideToBattle(page: Page) {
-    await page.getByTestId("tourism-skip").click();
+  /**
+   * Read the open sightseeing guide to its end as a player does, from the screen alone (also with the autosave off): its
+   * first choice at each choice, a tap on each line, the button on its last line.
+   */
+  async readGuide(page: Page) {
+    const guide = page.getByTestId("tourism-guide");
+    const line = page.getByTestId("dialogue-text");
+    const choice = page.getByTestId("guide-choice");
+    const end = page.getByTestId("tourism-advance");
+    for (let step = 0; await guide.count(); step++) {
+      if (step > 300) throw new Error("The guide did not end within 300 taps");
+      await ops.closeTermCards(page);
+      if (await choice.count()) await choice.first().click();
+      else if (await end.isVisible()) await end.click();
+      else {
+        await expect(line).toHaveAttribute("data-ready", "true");
+        const text = await line.textContent();
+        await line.click();
+        // The next line (or a choice, the last line's button, the guide's end) before the next tap.
+        await expect.poll(async () => !(await guide.count()) || await choice.count() > 0 || await end.isVisible() ||
+          await line.textContent() !== text).toBe(true);
+        continue;
+      }
+      await ops.settled(page);
+    }
+  },
+  /** Read a sightseeing guide to its end (ops.readGuide) and go on from its observation to the landmark's battle. */
+  async readGuideToBattle(page: Page) {
+    await ops.readGuide(page);
     await page.getByRole("button", { name: "進む", exact: true }).click();
   },
   /**

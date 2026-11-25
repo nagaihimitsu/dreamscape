@@ -2,17 +2,18 @@
 // applied once with the choice or the scene's end, the AP of a tag (its scene_tag rule, stored as
 // "<rule>@<revision>" over the cap), hidden and greyed-out choices (decision 43), the story state
 // (flags, met, a named condition), a date written with tags (its in-scene choice in a helper knot),
-// the guide's skip stopping before a choice (decision 37) and the epilogue's choice (decision 36).
+// and the epilogue's choice (decision 36).
 // Every state goes through the save's own checks.
 import { beforeAll, describe, expect, it } from "vitest";
 import { allRewardRules, balance } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { cityStart, rollTickets, startEncounterScene, withAp } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { meets } from "../../../src/domain/conditions";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterChoiceDisplay, finishEncounter } from "../../../src/domain/encounter";
 import { advanceDate, chooseDate, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { choiceDisplay } from "../../../src/domain/scene-effects";
-import { chooseTourismGuide, guideChoiceDisplay, openTourism, skipTourismGuide } from "../../../src/domain/tourism";
+import { chooseTourismGuide, guideChoiceDisplay, openTourism } from "../../../src/domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete } from "../../../src/domain/travel-game";
 import { advanceCityEpilogue, chooseCityEpilogue } from "../../../src/domain/epilogue";
 import { earnSceneTagAp, validateRewardState } from "../../../src/domain/rewards";
@@ -49,7 +50,9 @@ describe("the clock tower's place file at play", () => {
     expect(talk.activeEncounter).toMatchObject({ encounterId: "smp_mihon_clock_gears" });
     const done = play(talk);
     expect(done.ap).toBe(balance.apCap);
-    expect(done.pendingApRewards).toEqual([{ rewardId: expect.stringMatching(/^smp_mihon_clock_gears__on_done@\d+$/u), earnedAp: 1, remainingAp: 1 }]);
+    // The clock tower's guide, read on the way to the talk, keeps its AP aside too.
+    expect(done.pendingApRewards.filter((reward) => reward.rewardId.startsWith("smp_mihon_clock_gears__on_done")))
+      .toEqual([{ rewardId: expect.stringMatching(/^smp_mihon_clock_gears__on_done@\d+$/u), earnedAp: 1, remainingAp: 1 }]);
     expect(done.claimedRewardIds).not.toContain("smp_mihon_clock_gears__on_done");
     expect(done.completedEncounterIds).toContain("smp_mihon_clock_gears");
     // A stored tag AP is checked by its shape only; one without @ naming a tag's rule is refused.
@@ -58,7 +61,7 @@ describe("the clock tower's place file at play", () => {
       .toThrow("未受取の報酬記録が一致しません。");
     // Two plays of a repeated tag store two records (other revisions).
     const twice = earnSceneTagAp(earnSceneTagAp(done, "smp_mihon_clock_gears__on_done", done.revision + 1), "smp_mihon_clock_gears__on_done", done.revision + 2);
-    expect(twice.pendingApRewards).toHaveLength(3);
+    expect(twice.pendingApRewards).toHaveLength(done.pendingApRewards.length + 2);
   });
 
   it("greys the bell's AP choice out when AP runs short, spends it once and changes spark with it", () => {
@@ -136,26 +139,6 @@ describe("the clock tower's place file at play", () => {
     }
     expect(s.playedDateIds).toEqual(["smp_mihon_date_tower_square"]);
     expect(s.trust).toBeGreaterThanOrEqual(before.trust - 10);
-  });
-
-  it("stops the guide's skip before its choice, and a skipped guide is not read (decision 37)", () => {
-    const start = cityStart("mihon");
-    const trip = saved(beginTravelEvent(start, "smp_mihon_main_clock_tower", "walk", start.revision, () => 0));
-    const guide = play(trip, "ask");
-    expect(guide.activeTourism?.phase).toBe("guide");
-    const atChoice = saved(skipTourismGuide(guide, guide.revision));
-    expect(atChoice.activeTourism?.phase).toBe("guide");
-    expect(atChoice.activeTourism?.frame?.choices.map((choice) => choice.optionId)).toEqual(["look_around", "ask_keeper"]);
-    expect(skipTourismGuide(atChoice, atChoice.revision)).toBe(atChoice);
-    expect(guideChoiceDisplay(atChoice, atChoice.activeTourism!.frame!.choices[0].index).show).toBe("open");
-    const chosen = saved(chooseTourismGuide(atChoice, atChoice.activeTourism!.frame!.choices[0].index, atChoice.revision));
-    const closed = saved(skipTourismGuide(chosen, chosen.revision));
-    expect(closed.activeTourism?.phase).toBe("exploring");
-    expect(closed.completedGuideIds).not.toContain("mihon_clock_tower");
-    expect(closed.claimedRewardIds).not.toContain("smp_mihon_main_clock_tower_guide_read");
-    expect(closed.visitedLandmarkIds).toContain("mihon_clock_tower");
-    // Opened again from the observation, the guide is read to its end: now it counts (and its choices apply nothing).
-    expect(openTourism(closed, "mihon_clock_tower")).toBe(closed);
   });
 
   it("applies the epilogue's choice once, with a save in between (decision 36)", () => {

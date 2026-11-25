@@ -41,7 +41,7 @@ function playUntil(initial: GameState, done: (state: GameState) => boolean): Gam
     if (state.activeBattle && state.activeBattle.phase !== "result") { state = playBattleToResult(state); continue; }
     const actions = listPlayerActions(state);
     const first = (...kinds: PlayerAction["kind"][]) => kinds.map((kind) => actions.find((action) => action.kind === kind)).find(Boolean);
-    const action = first("guide_choose", "guide_close", "observation_next", "encounter_answer", "encounter_choose", "encounter_finish",
+    const action = first("guide_choose", "guide_next", "observation_next", "encounter_answer", "encounter_choose", "encounter_finish",
       "encounter_next", "battle_leave", "epilogue_choose", "epilogue_next");
     expect(action, `no action to go on with: ${actions.map((item) => item.kind).join(", ")}`).toBeDefined();
     state = act(state, action!);

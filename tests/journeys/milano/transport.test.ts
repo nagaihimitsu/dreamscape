@@ -5,8 +5,9 @@ import { getCityContent } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { leaveBattleResultAndScenes, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
-import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { startTourismBattle } from "../../../src/domain/tourism";
 import { beginTravelEvent, getTravelHomeRoutes, sleepAtHotel } from "../../../src/domain/travel-game";
 import { composeHomeRoutes } from "../../../src/domain/travel-routes";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
@@ -101,7 +102,7 @@ describe("Milano transport", () => {
     expect(state.travel).toMatchObject({ currentPlaceId: "p_supper" });
     expect(state.travel.rideCounts).toEqual({ tram: 1 });
     // The visit to its result and back to free time, through the scene after the battle (the square's silent film).
-    state = skipTourismGuide(state, state.revision);
+    state = readGuide(state);
     state = playBattleToResult(startTourismBattle(state, state.revision));
     state = roundTrip(leaveBattleResultAndScenes(state));
     expect(state.activeEncounter).toBeNull();

@@ -66,7 +66,7 @@ describe("a remembered line on the date (RomanceScene)", () => {
 describe("a remembered line in the guide (TourismScreen)", () => {
   const start = openTourismScene(cityStart("delhi"), "delhi_red_fort");
   const render = (game: GameState) => shown(renderToStaticMarkup(createElement(TourismScreen, {
-    game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onSkip: nothing, onDiscover: () => false, onNotebook: nothing,
+    game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onDiscover: () => false, onNotebook: nothing,
     onBattle: nothing, onReplayGuide: nothing })));
 
   it("shows her name with 「回想」 over the remembering window, and no figure of hers", () => {

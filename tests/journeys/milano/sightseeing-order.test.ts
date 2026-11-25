@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { getEpisodeAvailability, startEpisode } from "../../../src/domain/chapter";
-import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { startTourismBattle } from "../../../src/domain/tourism";
 import { startBattle } from "../../../src/domain/battle";
 import { leaveBattleResultAndScenes, playBattleToResult, playInsertedScenes } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
 
 const mainEpisodes = ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"];
@@ -32,7 +33,7 @@ describe("Milan independent main destinations", () => {
         expect(getEpisodeAvailability(state, episodeId).available).toBe(true);
         state = startEpisode(state, episodeId);
         expect(state.activeTourism).not.toBeNull();
-        state = skipTourismGuide(state, state.revision);
+        state = readGuide(state);
         state = completeBattle(startTourismBattle(state, state.revision));
         expect(state.completedEpisodeIds).toContain(episodeId);
       }
@@ -58,7 +59,7 @@ describe("Milan independent main destinations", () => {
         expect(getEpisodeAvailability(state, id).available).toBe(true);
         state = startEpisode(state, id);
         expect(state.activeTourism).not.toBeNull();
-        state = skipTourismGuide(state, state.revision);
+        state = readGuide(state);
         state = completeBattle(startTourismBattle(state, state.revision));
       }
     }
@@ -76,7 +77,7 @@ describe("Milan real travel itineraries", () => {
     const initial = createGame();
     let first = beginTravelEvent(initial, id, "walk", initial.revision);
     expect(first.activeTourism?.phase).toBe("guide");
-    first = skipTourismGuide(first, first.revision);
+    first = readGuide(first);
     const completed = completeBattle(startTourismBattle(first, first.revision));
     const revisit = beginTravelEvent(completed, id, "walk", completed.revision);
     expect(revisit).toBe(completed);
@@ -103,7 +104,7 @@ describe("Milan real travel itineraries", () => {
         // The scenes before the main part (the finale's 「ダルセナの一音」 when Tino was met without the pick first).
         state = playInsertedScenes(started);
         if (state.activeTourism) {
-          if (state.activeTourism.phase === "guide") state = skipTourismGuide(state, state.revision);
+          if (state.activeTourism.phase === "guide") state = readGuide(state);
           state = startTourismBattle(state, state.revision);
         }
         state = completeBattle(state);
@@ -143,7 +144,7 @@ describe("Milan real travel itineraries", () => {
     const playBattle = (id: string) => {
       depart(id);
       if (state.activeTourism) {
-        if (state.activeTourism.phase === "guide") state = skipTourismGuide(state, state.revision);
+        if (state.activeTourism.phase === "guide") state = readGuide(state);
         state = startTourismBattle(state, state.revision);
       }
       state = completeBattle(state);

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, type BattleDefinition } from "../content";
 import { firstCorrect, playBattleToResult } from "../dev/scenario-builders";
+import { readGuide } from "../../tests/fixtures/read-guide";
 import {
   startBattle,
   advanceBattle,
@@ -13,7 +14,7 @@ import {
 } from "./battle";
 import { createGame, validateGameState, type GameState } from "./game";
 import { canAccessFreeTime, startEpisode } from "./chapter";
-import { skipTourismGuide, startTourismBattle } from "./tourism";
+import { startTourismBattle } from "./tourism";
 
 const special = (kind: "contradiction" | "connection") =>
   battles.find((battle) => battle.id === (kind === "contradiction" ? "milano_la_scala_b01" : "milano_brera_c01"))!;
@@ -248,7 +249,7 @@ describe("small proof steps inside three-round battles", () => {
   it("preserves relationship values and stores special battle AP when the wallet is full", () => {
     let initial: GameState = { ...createGame(), ap: 12, affection: 2, trust: -1, spark: 3 };
     initial = startEpisode(initial, "milano_duomo_episode");
-    initial = skipTourismGuide(initial, initial.revision);
+    initial = readGuide(initial);
     initial = startTourismBattle(initial, initial.revision);
     initial = finish(initial, 3);
     initial = leaveBattle(initial, initial.revision);

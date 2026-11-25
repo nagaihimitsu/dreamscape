@@ -141,7 +141,6 @@ import "../features/journey/journey.css";
 import {
   openTourism,
   advanceTourismGuide,
-  skipTourismGuide,
   discoverClue,
   getReadableDocumentIds,
   replayTourismGuide,
@@ -1275,9 +1274,6 @@ export function GameApp({
             onSpeed={setSpeed}
             onAdvance={() =>
               commit((state) => advanceTourismGuide(state, game.revision))
-            }
-            onSkip={() =>
-              commit((state) => skipTourismGuide(state, game.revision))
             }
             onReplayGuide={() =>
               commit((state) => replayTourismGuide(state, game.revision))

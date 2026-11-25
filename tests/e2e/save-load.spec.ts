@@ -14,7 +14,7 @@ test("autosaved progress, a battle question, the English note and the text speed
   const balance = generated<{ defaultPlayerName: string; defaultHeroineName: string }>("romance/balance.json");
   expect(await readSave(page)).toMatchObject({ playerName: balance.defaultPlayerName, heroineName: balance.defaultHeroineName });
   await ops.goTo(page, "p_duomo");
-  await ops.skipGuideToBattle(page);
+  await ops.readGuideToBattle(page);
   const beforeBattle = await readSave(page);
 
   // docs/07 acceptance 5 and 「将来のテスト」 (battle save): reloading on a question
@@ -100,7 +100,7 @@ test("a quiz's first question comes with a short 「Quiz」 cut-in from its talk
   await page.clock.install();
   await ops.startJourney(page, "milano");
   await ops.goTo(page, "p_duomo");
-  await ops.skipGuideToBattle(page);
+  await ops.readGuideToBattle(page);
   // The talk's line before the first quiz call, with its 「問題へ進む」.
   const talk = await playUntil(page, (state) => state.activeBattle?.phase === "dialogue" && state.activeBattle.answers.length === 0 &&
     !!state.activeBattle.frame?.choices.some((choice) => choice.call === "quiz"));
@@ -279,8 +279,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");
 
   // Progress after the manual save is not stored. Switching journeys asks first; 戻る keeps this scene.
-  // 「案内をとばす」 (top left under the header since 2026-11-14) steps below the save's notice, which lies there.
-  await page.getByTestId("tourism-skip").click();
+  await ops.readGuide(page);
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano")!.id;
   const slots = await ops.openSaveLoad(page);
@@ -309,7 +308,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
 
   // ロード asks too: 戻る keeps the scene and gives the focus back to ≡メニュー, and loading brings
   // the manual save's scene back (its word shows under the header for a moment).
-  await page.getByTestId("tourism-skip").click();
+  await ops.readGuide(page);
   const asked = await ops.askToLoad(page);
   await asked.dialog.getByRole("button", { name: "戻る", exact: true }).click();
   await expect(asked.dialog).toBeHidden();

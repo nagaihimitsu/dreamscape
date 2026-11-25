@@ -8,7 +8,7 @@ import { createGame, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
 import { claimPendingRewards } from "./rewards";
 import { beginTravelEvent } from "./travel-game";
-import { openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "./tourism";
+import { openTourism, replayTourismGuide, startTourismBattle } from "./tourism";
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -70,9 +70,8 @@ describe.each([
     expect(beginTravelEvent(state, battleId, "walk", state.revision)).toBe(state);
   });
 
-  it("does not give the guide bonus for skipping and preserves all overflow AP", () => {
+  it("preserves all overflow AP when the quiz starts from the guide (its reward unread)", () => {
     let state = openTourism({ ...createGame(), ap: balance.apCap }, landmarkId);
-    state = skipTourismGuide(state, state.revision);
     expect(state.completedGuideIds).not.toContain(landmarkId);
     expect(state.claimedRewardIds).toEqual([]);
     state = finishBattle(startTourismBattle(state, state.revision), 2);

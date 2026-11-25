@@ -27,9 +27,9 @@ import {
   discoverClue,
   getTourismAvailability,
   openTourism,
-  skipTourismGuide,
   startTourismBattle,
 } from "./tourism";
+import { readGuide } from "../../tests/fixtures/read-guide";
 
 const landmarkId = () => landmarks[0].id;
 const clues = () =>
@@ -62,7 +62,7 @@ function romance(state: GameState) {
 function explore(initial = createGame()) {
   const state = openTourism(initial, landmarkId());
   return state.activeTourism?.phase === "guide"
-    ? skipTourismGuide(state, state.revision)
+    ? readGuide(state)
     : state;
 }
 
@@ -154,8 +154,7 @@ describe("optional tourism and discoveries", () => {
     let state = openTourism(initial, landmarkId());
     expect(discoverClue(state, clues()[0].id, state.revision)).toBe(state);
     expect(openTourism(state, landmarkId())).toBe(state);
-    state = skipTourismGuide(state, state.revision);
-    expect(skipTourismGuide(state, state.revision)).toBe(state);
+    state = readGuide(state);
     expect(discoverClue(state, "missing", state.revision)).toBe(state);
     expect(discoverClue(state, clues()[0].id, state.revision - 1)).toBe(state);
     expect(closeTourism(state, state.revision - 1)).toBe(state);

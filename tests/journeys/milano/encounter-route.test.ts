@@ -14,10 +14,10 @@ import {
   validateEncounterState,
 } from "../../../src/domain/encounter";
 import { leaveBattleResult } from "../../../src/domain/chapter";
-import { skipTourismGuide } from "../../../src/domain/tourism";
 import { beginTravelEvent, getTravelEventAvailability, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
 import { encounterOffered, meetEncounter } from "../../fixtures/encounter-moment";
 import { finishEpisode, firstCorrect, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { readGuide } from "../../fixtures/read-guide";
 
 function play(state: GameState, id: string, optionId: string, roll = 0): GameState {
   const initialRevision = state.revision;
@@ -68,7 +68,7 @@ function visit(initial: GameState, eventId: string, prefer: Record<string, strin
       state = choice ? chooseEncounter(state, choice.index, state.revision)
         : encounterCanFinish(state) ? continueTourismEncounters(state, finishEncounter(state, state.revision), () => 0)
           : advanceEncounter(state, state.revision);
-    } else if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
+    } else if (state.activeTourism?.phase === "guide") state = readGuide(state);
     else if (state.activeTourism) state = proceedFromTourism(state, state.revision, () => 0);
     else if (state.activeBattle?.phase === "result") state = leaveBattleResult(state, state.revision, () => 0);
     else if (state.activeBattle) state = playBattleToResult(state);
@@ -164,7 +164,8 @@ describe("Milan place entry", () => {
       validateEncounterState(state);
       state = encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
     }
-    expect(state.ap).toBe(second.ap + 1);
+    // The Galleria's guide, read on the way to its observation, and the wish give 1 each.
+    expect(state.ap).toBe(second.ap + 2);
     expect(state.inventory).toEqual({});
     expect(state.encounterRewards).toEqual({});
     expect(state.completedEncounterIds).toEqual(["galleria_fortune"]);

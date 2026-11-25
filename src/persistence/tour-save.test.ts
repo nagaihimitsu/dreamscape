@@ -41,7 +41,7 @@ function visitStops(initial: GameState): GameState[] {
     expect(step).toBeLessThan(300);
     stops.push(state);
     if (state.activeBattle && state.activeBattle.phase !== "result") { state = playBattleToResult(state); continue; }
-    state = act(state, first(state, "guide_choose", "guide_close", "observation_next", "encounter_answer", "encounter_choose", "encounter_finish",
+    state = act(state, first(state, "guide_choose", "guide_next", "observation_next", "encounter_answer", "encounter_choose", "encounter_finish",
       "encounter_next", "battle_leave"));
   }
   stops.push(state);

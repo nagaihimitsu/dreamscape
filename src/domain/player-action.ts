@@ -14,7 +14,7 @@ import { advanceCityEpilogue, canReadCityEpilogue, chooseCityEpilogue, completeA
 import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, type GameState } from "./game";
 import { getDayEnd, type NightAction } from "./day-end";
 import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
-import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
+import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { miniGameOutcomeChoice, openMiniGame, type MiniGameScene } from "./minigame";
 import { miniGameDefinition } from "../minigames/registry";
@@ -72,7 +72,6 @@ export type PlayerAction =
   // Sightseeing: TourismScreen, ObservationViewer, the clue book's 「資料を読む」.
   | { kind: "guide_next" }
   | { kind: "guide_choose"; index: number }
-  | { kind: "guide_close" }
   | { kind: "guide_again" }
   | { kind: "discover"; clueId: string }
   | { kind: "observation_next" }
@@ -136,7 +135,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     if (tourism.phase === "guide" && tourism.frame?.choices.length)
       return played ?? tourism.frame.choices.filter((choice) => guideChoiceDisplay(state, choice.index).show === "open")
         .map((choice) => ({ kind: "guide_choose", index: choice.index }));
-    if (tourism.phase === "guide") return [{ kind: "guide_next" }, { kind: "guide_close" }];
+    if (tourism.phase === "guide") return [{ kind: "guide_next" }];
     return [
       { kind: "observation_next" }, ...(landmarkHasGuide(tourism.landmarkId) ? [{ kind: "guide_again" as const }] : []),
       ...getDiscoverableClueIds(state).map((clueId) => ({ kind: "discover" as const, clueId })),
@@ -271,7 +270,6 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "epilogue_choose": return chooseCityEpilogue(state, action.index, revision, nextRoll);
       case "guide_next": return advanceTourismGuide(state, revision);
       case "guide_choose": return chooseTourismGuide(state, action.index, revision, nextRoll);
-      case "guide_close": return skipTourismGuide(state, revision);
       case "guide_again": return replayTourismGuide(state, revision);
       case "discover": return discoverClue(state, action.clueId, revision);
       case "observation_next": return proceedFromTourism(state, revision, nextRoll);

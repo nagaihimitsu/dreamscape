@@ -13,7 +13,6 @@ import {
   startBattle,
   createGame,
   startTourismBattle,
-  skipTourismGuide,
   replayTourismGuide,
   validateGameState,
   startDate,
@@ -116,12 +115,9 @@ describe("integrated tourism, battle, and free time", () => {
     },
   );
 
-  it("skips guide rewards, then permits an actual later read exactly once", () => {
+  it("gives the guide's reward on its first read only, not again when it is read again", () => {
     let state = startEpisode(createGame());
-    state = skipTourismGuide(state, state.revision);
-    expect(state.ap).toBe(0);
-    expect(state.completedGuideIds).toEqual([]);
-    state = readGuide(replayTourismGuide(state, state.revision));
+    state = readGuide(state);
     expect(state.ap).toBe(1);
     state = readGuide(replayTourismGuide(state, state.revision));
     expect(state.ap).toBe(1);

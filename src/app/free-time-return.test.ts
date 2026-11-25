@@ -3,9 +3,10 @@
 import { describe, expect, it } from "vitest";
 import { landmarks, tourismClues } from "../content";
 import { completedCity, openTourismScene } from "../dev/scenario-builders";
+import { readGuide } from "../../tests/fixtures/read-guide";
 import { validateGameState } from "../domain/game";
 import { screenFor } from "../domain/screen";
-import { discoverClue, getReadableDocumentIds, skipTourismGuide } from "../domain/tourism";
+import { discoverClue, getReadableDocumentIds } from "../domain/tourism";
 import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn } from "./free-time-return";
 
 // A landmark with documents to read (as the clue book's test picks it), visited from free time after its city's clear.
@@ -13,7 +14,7 @@ const landmark = landmarks.find((item) => tourismClues.some((clue) => clue.landm
 const journeyId = "this_journey";
 const free = completedCity(landmark.cityId);
 const guide = openTourismScene(free, landmark.id);
-const exploring = skipTourismGuide(guide, guide.revision);
+const exploring = readGuide(guide);
 const observed = discoverClue(exploring, getReadableDocumentIds(exploring)[0], exploring.revision);
 
 describe("Debug's return to the free-time screen", () => {

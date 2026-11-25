@@ -126,7 +126,7 @@ describe("a clue heard in conversation", () => {
     for (let step = 0; state.activeTourism?.phase === "guide"; step++) {
       expect(step).toBeLessThan(300);
       const actions = listPlayerActions(state);
-      state = restore(applyPlayerAction(state, playerActionChange(actions.find((action) => action.kind === "guide_close") ?? actions[0], () => 0), () => 0));
+      state = restore(applyPlayerAction(state, playerActionChange(actions[0], () => 0), () => 0));
     }
     expect(state.activeBattle).not.toBeNull();
     expect(screenFor(state)).toBe("tourism");
