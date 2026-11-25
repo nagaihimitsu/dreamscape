@@ -77,13 +77,16 @@
   --ds-leading-reading: 1.75; /* the talk's words (1.8 on a wide screen) */
   /* The colours, by role, with those above: --ds-glass-* the glass and its ink, --ds-gold the hairlines and icons,
      --ds-parchment the paper, --ds-slate-* the header's tools, --ds-focus the focus ring. */
-  --ds-action: #c64e2f; /* what is pressed to go on: a choice (its white words at 4.6:1) */
-  --ds-action-deep: #ad3d26; /* its lower end */
+  /* What is pressed to go on, a choice: a pane of smoked glass over the scene with a gold hairline (2026-11-25 user decision:
+     the terracotta presses cut across the scene), apart from the light glass of the words. Its white words keep 6:1 or
+     more over any picture (its show-through counted at white). */
+  --ds-action: rgba(22, 28, 44, 0.72);
+  --ds-action-deep: rgba(14, 18, 30, 0.8); /* its lower end */
   --ds-action-ink: #ffffff;
   --ds-action-fill: linear-gradient(180deg, var(--ds-action), var(--ds-action-deep));
-  --ds-action-shadow: 0 2px 0 rgba(110, 36, 18, 0.45), 0 6px 18px rgba(20, 12, 8, 0.28);
-  --ds-action-pressed-shadow: 0 1px 0 rgba(110, 36, 18, 0.45), 0 3px 10px rgba(20, 12, 8, 0.28);
-  --ds-action-text-shadow: 0 1px 1px rgba(80, 24, 10, 0.35);
+  --ds-action-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 6px 18px rgba(8, 10, 16, 0.28);
+  --ds-action-pressed-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 2px 8px rgba(8, 10, 16, 0.28);
+  --ds-action-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   --ds-emphasis: #93233a; /* emphasised words on the glass (# em:): 4.9:1 */
   --ds-speaker: #3d6aa6; /* the name band of a speaker without colours of their own */
   --ds-speaker-edge: #a9c0e0;
