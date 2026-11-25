@@ -8,6 +8,7 @@ INCLUDE modules.ink
 # scene: arrival
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
+# photo: gt_album_a001 # photo_caption: 薔薇の花びらの道
 アーグラの宿は、タージ・マハルの南門に近い路地の奥にあった。若い支配人のサミールが自ら彼女の部屋まで案内し、扉を開けた瞬間、{heroine_name}が固まった。
 # background: gt_bg_agra_hotel_room_heart
 # speaker: narrator
@@ -44,6 +45,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy,blush
     # voice: gt_agra_arrival_003
+    # photo: gt_album_a003 # photo_caption: 「見ないで、白鳥」 # photo_show: small
     どうしよう。白鳥、すごく仲良さそう。……見ないで、白鳥
 }
 # speaker: narrator
@@ -54,7 +56,7 @@ INCLUDE modules.ink
 用意してくれた人がいるんだもんね
 # speaker: heroine
 # emotion: worried
-# recall: gt_album_d01
+# recall: gt_album_d001
 # voice: gt_agra_arrival_005
 カムラさんに言われたのにな。言いたいことは言いなさいって。……今の、全然言えてなかった
 # speaker: narrator
@@ -94,6 +96,7 @@ INCLUDE modules.ink
 # voice: gt_agra_epilogue_samir_001
 叔父から、電話で聞きました。新婚では、なかったんですね。……失礼いたしました
 # speaker: narrator
+# photo: gt_album_a141 # photo_caption: ロビーのチャイ、帳面の一本線
 サミールは帳面を開き、一行に、ていねいに線を引いた。それから、その横に、また何か書き足した。
 # background: gt_bg_agra_hotel_room
 # leave: gt_samir

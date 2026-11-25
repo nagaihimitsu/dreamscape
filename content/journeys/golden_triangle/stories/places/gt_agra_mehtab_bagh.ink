@@ -41,6 +41,7 @@ INCLUDE modules.ink
 # voice: gt_agra_date_mehtab_bagh_sonia_002
 ソニア、十二歳。この空き地のキャプテン。ルールは三つ。川まで飛ばしたら六点。ただし、自分で拾いに行くこと。庭の塀を越えたら、アウト
 # speaker: narrator
+# photo: gt_album_a112 # photo_caption: 空き地のキャプテン、ソニア
 指を折りながら、そう教えてくれた。
 # speaker: gt_sonia
 # voice: gt_agra_date_mehtab_bagh_sonia_003
@@ -113,6 +114,7 @@ INCLUDE modules.ink
 二球目は、煉瓦の手前で失速した。
 # speaker: narrator
 # se: bricks_fall
+# photo: gt_album_a114 # photo_caption: 三球目、煉瓦が一つ落ちた
 三球目で、煉瓦が一つ落ちた。アウト。打った少年が信じられないという顔をして、ソニアが一番大きな声で叫んだ。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -148,6 +150,7 @@ INCLUDE modules.ink
     # profile: provocative
     # speaker: narrator
     # emotion: serious
+    # photo: gt_album_a119 # photo_caption: 見送った一球、笑っていない彼女
     板きれは、肩の上で止まったままだった。ボールは脇を抜けて、後ろの煉瓦を落とした。子どもたちが歓声を上げる。彼女だけが、笑っていなかった。
     { romance_result == "negative":
         # speaker: heroine
@@ -178,6 +181,7 @@ INCLUDE modules.ink
 試合が終わると、ソニアは手を差し出した。握手かと思ったら、手のひらは上を向いていた。
 # speaker: gt_sonia
 # voice: gt_agra_date_mehtab_bagh_sonia_008
+# photo: gt_album_a120 # photo_caption: 写真代を請求するキャプテン
 タージと、クリケットと、あなたたち。写真代、ちょうだい。外国の人は、みんな撮りたがるから
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
@@ -236,6 +240,7 @@ INCLUDE modules.ink
 // 【3】手伝いの knot：結果ごとの出来事と彼女の反応（一球目と二球目で共通。ボールの音はミニゲームが鳴らしたので、行の # se: は書かない）
 === gt_agra_mehtab_bagh_ball_six ===
 # speaker: narrator
+# photo: gt_album_a116 # photo_caption: 頭の上を越えていく六点
 板きれの真ん中で、乾いた音がした。打球は彼女の頭の上を越えて、まっすぐ川の方へ飛んでいった。
 # speaker: gt_sonia
 # voice: gt_agra_mehtab_bagh_ball_six_sonia_001
@@ -316,6 +321,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
     # voice: gt_agra_mehtab_bagh_ball_bowled_001
+    # photo: gt_album_a118 # photo_caption: 空振りと、二つ目の煉瓦
     落ちた！　二つ目！　わたしの球で、今日、二つ目！
     # speaker: heroine
     # reaction: heroine,shy,sweat
@@ -325,6 +331,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
     # voice: gt_agra_mehtab_bagh_ball_bowled_003
+    # photo: gt_album_a118 # photo_caption: 空振りと、二つ目の煉瓦
     また落ちた！　二つ目！　今日、わたし、二つ目だよ！
     # speaker: heroine
     # reaction: heroine,teasing_big,music
@@ -341,6 +348,7 @@ INCLUDE modules.ink
 * [写真代を払って、みんなで撮る # option: pay_photo]
     # money: -10
     # speaker: narrator
+    # photo: gt_album_a121 # photo_caption: 煉瓦の前の集合写真 # photo_show: small
     子どもたちが煉瓦の前に並び、真ん中にソニアが板きれを構えて立った。後ろの白いドームは、写真の中で、ちょうど打球の行き先みたいに見えた。
 * [「撮る前に、写真代の使い道を聞いてもいい？」 # option: ask_photo_money]
     # money: -10
@@ -353,6 +361,7 @@ INCLUDE modules.ink
     # voice: gt_agra_mehtab_bagh_photo_001
     正直なキャプテン。払う価値、あるね
     # speaker: narrator
+    # photo: gt_album_a121 # photo_caption: 煉瓦の前の集合写真 # photo_show: small
     写真代を渡すと、子どもたちが煉瓦の前に並んだ。
 * [「写真はいいから、もう一回握手しよう」 # option: shake_instead]
     # speaker: narrator

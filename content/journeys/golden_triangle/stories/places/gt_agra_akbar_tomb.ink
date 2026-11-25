@@ -117,6 +117,7 @@ Many handwritten books were collected at his court.
         ごめん、途中で鹿見てた。皇帝、失格だね
     - else:
         # speaker: narrator
+        # photo: gt_album_a077 # photo_caption: 皇帝の気分で聞く
         書いてあるとおりに、一行ずつ読んだ。彼女は腕を組み、目を閉じて、いかにも皇帝らしくうなずいていた。
         # speaker: heroine
         # emotion: smile
@@ -136,6 +137,7 @@ Many handwritten books were collected at his court.
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # voice: gt_agra_date_akbar_tomb_013
+        # photo: gt_album_a078 # photo_caption: 「声が大きい！」
         ふふっ、声が大きい！　皇帝は、そこまで頼んでない
     }
 * [一行だけ、嘘を混ぜて読む # option: read_with_a_lie]
@@ -207,6 +209,7 @@ Many handwritten books were collected at his court.
         # voice: gt_agra_akbar_tomb_monkey_attar_007
         取引成立、だね。……ありがとうございました？
         # speaker: narrator
+        # photo: gt_album_a071 # photo_caption: 壁の上の猿に、律儀なお辞儀
         彼女は壁の上の猿に、律儀に頭を下げた。猿はジュースを飲みながら、それを見ていなかった。
     }
 * [壁の下まで追いかける # option: attar_chase]
@@ -217,6 +220,7 @@ Many handwritten books were collected at his court.
 * [「待とう。猿にも、考える時間がいる」 # option: attar_wait]
     # rel: affection +1
     # speaker: narrator
+    # photo: gt_album_a070 # photo_caption: くしゃみをする猿
     待っていると、猿は布袋の口を開け、中の小瓶を取り出した。栓を歯でくわえて、引っぱる。抜けない。栓のまわりの匂いを嗅いで――大きなくしゃみを一つ。小瓶が、手から離れた。
     -> gt_agra_akbar_tomb_monkey_catch_attar ->
 -
@@ -260,6 +264,7 @@ Many handwritten books were collected at his court.
     # item_out: gt_delhi_rain_attar
     # reaction: heroine,surprised_big,sparkle
     # voice: gt_agra_akbar_tomb_monkey_catch_attar_001
+    # photo: gt_album_a072 # photo_caption: わたしの雨、無事だった
     わたしの雨、無事だった！
     # speaker: heroine
     # emotion: teasing
@@ -311,6 +316,7 @@ Many handwritten books were collected at his court.
     # speaker: heroine
     # emotion: teasing
     # voice: gt_agra_akbar_tomb_monkey_glasses_002
+    # photo: gt_album_a076 # photo_caption: 歯形つきのサングラス
     歯形がついてる。でも、かけられる。記念になっちゃった
 * [壁の下まで追いかける # option: glasses_chase]
     # rel: spark +1

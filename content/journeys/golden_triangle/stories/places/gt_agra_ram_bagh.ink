@@ -48,6 +48,7 @@ INCLUDE modules.ink
 -> gt_agra_ram_bagh_complaints ->
 # speaker: heroine
 # voice: gt_agra_date_ram_bagh_005
+# photo: gt_album_a088 # photo_caption: 裏表紙の不満リスト
 わたしのも、いい？　道を聞くと、知らなくても全員が教えてくれる。しかも、全員違う方向
 # speaker: heroine
 # voice: gt_agra_date_ram_bagh_006
@@ -110,6 +111,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
+# photo: gt_album_a090 # photo_caption: 不満を裏返すと
 裏表紙いっぱいになった不満のリストを、二人で頭から読み返した。今度は一つずつ、帰ったら恋しくなるものに裏返して。
 # speaker: heroine
 # voice: gt_agra_date_ram_bagh_030
@@ -150,6 +152,7 @@ INCLUDE modules.ink
 ど、どうして知ってるんですか！　しかも新婚じゃないです！
 # speaker: gt_agra_ram_bagh_tea_master
 # voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_002
+# photo: gt_album_a091 # photo_caption: 噂は麺より早く茹で上がる
 サミールが、会う人ごとに話してるからな。この町じゃ、噂は麺より早く茹で上がる
 * [「新婚じゃありません」 # option: not_newlyweds]
     # profile: honest
@@ -177,6 +180,7 @@ INCLUDE modules.ink
         ……そういう冗談、ここで言う？　お店の人、本気にするよ
         # speaker: narrator
         # leave: gt_agra_ram_bagh_tea_master
+        # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ
         茶屋の主人は本気にしたらしく、頼んでいないゆで卵を二つ置いていった。
     - else:
         # speaker: heroine
@@ -186,6 +190,7 @@ INCLUDE modules.ink
         # speaker: narrator
         # emotion: shy
         # leave: gt_agra_ram_bagh_tea_master
+        # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ
         茶屋の主人は満足そうにうなずき、頼んでいないゆで卵を二つ置いていった。彼女は麺をすすりながら、しばらくこちらを見なかった。
     }
 * [笑ってごまかす # option: laugh_it_off]

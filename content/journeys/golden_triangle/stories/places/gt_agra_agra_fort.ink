@@ -67,6 +67,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_agra_fort_battle_duggal_001
 断る
 # speaker: narrator
+# photo: gt_album_a025 # photo_caption: 座り込みの大佐と、頭を下げる添乗員
 添乗員の若い女性が、携帯を二台握ったまま頭を下げる。胸の名札にはリヤとある。
 # speaker: gt_riya
 # cutin: name
@@ -93,6 +94,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_agra_fort_battle_duggal_004
 ドゥッガル。退役した陸軍大佐だ。観光客でも、目は二つある。十分だ
 # speaker: narrator
+# photo: gt_album_a026 # photo_caption: 国際監視団に任命される
 リヤが、すがるような目でこちらを見た。{heroine_name}は、おそるおそる大佐の隣にしゃがむ。
 # speaker: heroine
 # voice: gt_agra_main_agra_fort_002
@@ -122,6 +124,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_main_agra_fort_003
+# photo: gt_album_a027 # photo_caption: 「その言い方はひどいと思います」
 大佐。……リヤさんに、その言い方はひどいと思います。リヤさんは、ほかの人たちを五時間運ばなきゃいけないんです
 # speaker: narrator
 大佐の眉が跳ね上がった。監視団が抗議するとは、予定になかったらしい。
@@ -154,6 +157,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: worried
 # voice: gt_agra_main_agra_fort_004
+# photo: gt_album_a028 # photo_caption: 生姜の飴と、白い顔
 ……大佐。もしかして、車、苦手ですか？
 # speaker: enemy
 # reaction: enemy,anger
@@ -182,6 +186,7 @@ INCLUDE modules.ink
     城の一部は、今も陸軍が使っている。……つまり、わしがいなくても守りは万全ということか。理屈では、ぐうの音も出んな
 }
 # speaker: narrator
+# photo: gt_album_a029 # photo_caption: リヤへの耳打ち
 大佐が言い返す言葉を探している間に、{heroine_name}はリヤのそばへ行き、小声で何か話した。
 # speaker: narrator
 リヤの顔が、ぱっと明るくなる。彼女は旗を下ろし、大佐の前に立った。
@@ -215,5 +220,6 @@ INCLUDE modules.ink
 # photo: gt_album_a030 # photo_caption: 勲章は、生姜の飴
 勲章、ちょっと辛い……
 # speaker: narrator
+# photo: gt_album_a031 # photo_caption: 先頭で解説する大佐、手を合わせるリヤ # photo_show: small
 出口へ向かう一行の先頭で、大佐が誰より大きな声で、城の説明を始めていた。リヤが振り返り、こちらに小さく手を合わせた。
 -> END

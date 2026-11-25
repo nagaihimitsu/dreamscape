@@ -61,6 +61,7 @@ INCLUDE modules.ink
 # speaker: gt_agra_itimad_woman
 # leave: gt_agra_itimad_woman
 # voice: gt_agra_main_itimad_tomb_battle_vimla_001
+# photo: gt_album_a037 # photo_caption: 「ベビーではありません！」
 ベビーではありません！
 # speaker: narrator
 ニームの木陰から、サリー姿の女性が立ち上がった。白髪をきっちり結い、布の手提げを肩にかけている。手提げから、紙の束がのぞいていた。
@@ -85,6 +86,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_003
 あの……読んでからでも、いいですか？
 # speaker: narrator
+# photo: gt_album_a038 # photo_caption: 署名の前に読む人
 ヴィムラーの手が止まった。教師の目で、{heroine_name}を上から下まで見る。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_005
@@ -164,6 +166,7 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,sweat
 # voice: gt_agra_main_itimad_tomb_battle_vimla_014
+# photo: gt_album_a039 # photo_caption: 止まったペン、「盛ったの」
 ……知ってるわよ。盛ったの
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_015
@@ -177,6 +180,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_008
 この紙には署名できません。……でも、白い紙を一枚もらえますか
 # speaker: narrator
+# photo: gt_album_a040 # photo_caption: 白い紙の、短くて強い一文
 {heroine_name}は新しい紙に短く書き、下に自分の名前と国名を添えた。
 # speaker: narrator
 # letter: card
@@ -199,6 +203,7 @@ INCLUDE modules.ink
     点数は低いけれど、署名の前に読んだ。それだけで、この三年で一番の人よ
 }
 # speaker: narrator
+# photo: gt_album_a041 # photo_caption: 線を引かれた三つ目の行、そして発音の授業
 ヴィムラーは新しい紙を、請願書の一番上にクリップで留めた。一番大きな字の三つ目の行は、ボールペンで一本、線を引かれていた。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_020
