@@ -4,7 +4,7 @@ Steps: measure the camera's slow drift on the upper part of the picture (buildin
 whose end looks most like its start (avoiding a jump inside the source); fade its last second into its first; write a
 silent H.264 MP4 and the WebP of its first frame (the city's backdropImagePath).
 
-    python3 make_loop.py <source.mp4> <out.mp4> <out_poster.webp> [--avoid <frame>]
+    python3 make_loop.py <source.mp4> <out.mp4> <out_poster.webp> [--avoid <frame>] [--length <seconds>]
 
 Needs opencv-python-headless, numpy, Pillow and ffmpeg. Settings used for Delhi: see README.md.
 """
@@ -75,6 +75,7 @@ def main():
     parser.add_argument("poster")
     parser.add_argument("--avoid", type=int, help="a frame after which the source jumps (two clips joined)")
     parser.add_argument("--crf", default="24")
+    parser.add_argument("--length", type=float, help="the loop's length in seconds (else the best of 6 to 10)")
     args = parser.parse_args()
 
     frames = read_frames(args.source)
@@ -83,7 +84,8 @@ def main():
     small = [cv2.resize(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY), (96, 168), interpolation=cv2.INTER_AREA).astype(np.float32)
              for f in steadied]
     fade = FPS
-    score, start, length = best_loop(small, fade, range(6 * FPS, 10 * FPS + 1, 2), args.avoid)
+    lengths = [round(args.length * FPS)] if args.length else range(6 * FPS, 10 * FPS + 1, 2)
+    score, start, length = best_loop(small, fade, lengths, args.avoid)
     print(f"loop: start {start / FPS:.2f}s, length {length / FPS:.2f}s, fade {fade / FPS:.2f}s, score {score:.2f}")
 
     clip = [f.astype(np.float32) for f in steadied[start:start + length + fade]]
