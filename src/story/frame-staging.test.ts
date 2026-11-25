@@ -130,6 +130,19 @@ describe("stageFrame", () => {
     ]);
   });
 
+  it("shows a line's large photo without its item card, and the card the next line keeps then (2026-11-25)", () => {
+    const story = new Story(compileInk("# item_out: memo 1\n# photo: 3pm_tower\n一行目\n# item_out: memo 1\n二行目\n"
+      + "# item_show: memo\n# photo: 3pm_tower # photo_show: small\n三行目\n-> END\n"));
+    const frames: StoryFrame[] = [];
+    for (let previous: StoryFrame | undefined; !previous?.ended;) {
+      previous = readStoryFrame(story, context, previous, []).frame;
+      frames.push(storyFrameSchema.parse(JSON.parse(JSON.stringify(previous))));
+    }
+    expect(frames.map((frame) => [frame.text, frame.photo?.imageId ?? null, frame.itemOut?.itemId ?? frame.itemShow ?? null])).toEqual([
+      ["一行目", "3pm_tower", null], ["二行目", null, "memo"], ["三行目", "3pm_tower", "memo"],
+    ]);
+  });
+
   it("keeps at most STACK_MAX earlier messages, the newest", () => {
     const earlier = Array.from({ length: STACK_MAX }, (_, index) => ({ side: "sent" as const, speaker: "player" as const, text: `${index}` }));
     const next = stageFrame({ phone: { side: "received" } }, line({ phone: { side: "sent", earlier } }), true);
