@@ -367,8 +367,8 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   text-indent: 0.5em;
 }
 .end-roll-eyebrow::before, .end-roll-eyebrow::after { content: ""; width: 36px; height: 1px; background: var(--roll-line); }
-/* The journey's name breaks only between its words (after 「・」 and the like: keep-all), never inside one (「…トライアン／グル編」);
-   a word longer than the line still breaks (anywhere). From 6vw so that its longest word, spaced, fits a 320-px phone. */
+/* The journey's name breaks only between its phrases (FitText: after 「・」 and the like), never inside a word
+   (「…トライアン／グル編」), and shrinks a little before it takes two lines. From 6vw, as on a 320-px phone. */
 .end-roll .end-roll-title {
   margin: 0;
   font-family: "Noto Serif JP", serif;
@@ -376,8 +376,6 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   font-weight: 500;
   line-height: 1.6;
   letter-spacing: 0.06em;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
   text-shadow: 0 0 24px rgba(216, 184, 120, 0.25);
 }
 /* A small diamond between two fading lines. */

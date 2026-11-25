@@ -2,6 +2,7 @@ import { episodes } from "../../content";
 import { battleTagApGained } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import { PendingRewards } from "./PendingRewards";
+import { FitText } from "../../components/FitText";
 
 export function BattleRewards({
   game,
@@ -52,7 +53,7 @@ export function BattleRewards({
           <p className="eyebrow">
             {episode.kind === "city_finale" ? "都市クリア" : "旅の一区切り"}
           </p>
-          <h2>{episode.clearTitleJa}</h2>
+          <h2><FitText text={episode.clearTitleJa} /></h2>
           {/* Shown open, not folded under 「旅の記録を読む」 (user decision 2026-11-11). */}
           <p>{episode.clearDescriptionJa}</p>
         </section>
