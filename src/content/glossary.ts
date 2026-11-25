@@ -11,12 +11,17 @@ import { japaneseText } from "./text-language";
 /** A term's ID, as `# term:` names it (the journey's prefix first, e.g. gt_term_golgappa). */
 export const TERM_ID = /^[a-z][a-z0-9_]*$/u;
 
-/** What a term is, in the order 旅の図鑑 shows its groups. */
-export const GLOSSARY_CATEGORIES = ["food", "creature", "thing", "clothing", "building", "custom", "person", "transport"] as const;
+/**
+ * What a term is, in the order 旅の図鑑 shows its groups. 2026-11-25 user decision: design (patterns, crafts, ornament), place
+ * (towns, districts, markets), music (music, dance and gesture) and legend (deities, legends, beliefs) were added.
+ */
+export const GLOSSARY_CATEGORIES = ["food", "creature", "thing", "design", "clothing", "building", "place", "custom", "music",
+  "legend", "person", "transport"] as const;
 export type GlossaryCategory = (typeof GLOSSARY_CATEGORIES)[number];
 /** The heading of each group in 旅の図鑑. */
 export const GLOSSARY_CATEGORY_LABELS_JA: Readonly<Record<GlossaryCategory, string>> = {
-  food: "食べ物", creature: "生き物", thing: "もの", clothing: "衣装", building: "建物", custom: "ならわし", person: "人", transport: "乗り物",
+  food: "食べ物", creature: "生き物", thing: "もの", design: "意匠と工芸", clothing: "衣装", building: "建物", place: "町と場所",
+  custom: "ならわし", music: "音楽と踊り", legend: "神話と言い伝え", person: "人", transport: "乗り物",
 };
 
 /** The most characters a term's line may have (content:build stops a longer one: the card has room for about two lines). */

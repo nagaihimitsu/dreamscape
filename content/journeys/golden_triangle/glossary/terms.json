@@ -204,7 +204,7 @@
       "nameJa": "パルチン・カーリー",
       "readingJa": null,
       "aliasJa": "石の象眼（ピエトラ・ドゥーラ）",
-      "category": "building",
+      "category": "design",
       "lineJa": "色とりどりの石を切って磨き、大理石にはめこんで花や模様を描く技。",
       "imageId": "gt_img_term_parchin_kari"
     },
@@ -213,7 +213,7 @@
       "nameJa": "ジャーリー",
       "readingJa": null,
       "aliasJa": "透かし彫りの格子",
-      "category": "building",
+      "category": "design",
       "lineJa": "石を幾何学や花の模様に透かし彫りにした格子。光と風を通す。",
       "imageId": "gt_img_term_jali"
     },
@@ -231,7 +231,7 @@
       "nameJa": "黒いタージ",
       "readingJa": "くろいタージ",
       "aliasJa": null,
-      "category": "building",
+      "category": "legend",
       "lineJa": "皇帝がタージの対岸に、黒い墓を建てるつもりだったという言い伝え。",
       "imageId": "gt_img_term_black_taj",
       "photoNoteJa": "写真は、対岸のメヘターブ・バーグに残る、庭の大きな池の跡"
@@ -250,7 +250,7 @@
       "nameJa": "ホーン・オーケー・プリーズ",
       "readingJa": null,
       "aliasJa": null,
-      "category": "thing",
+      "category": "design",
       "lineJa": "インドのトラックの後ろによく描かれる文字。追い越すなら警笛を、の合図。",
       "imageId": "gt_img_term_horn_ok_please"
     },
@@ -322,7 +322,7 @@
       "nameJa": "細密画",
       "readingJa": "さいみつが",
       "aliasJa": "ミニアチュール",
-      "category": "thing",
+      "category": "design",
       "lineJa": "極細の筆で細部まで描きこむ小さな絵。インドの宮廷で栄えた。",
       "imageId": "gt_img_term_miniature"
     },
@@ -340,7 +340,7 @@
       "nameJa": "ラックの腕輪",
       "readingJa": null,
       "aliasJa": null,
-      "category": "thing",
+      "category": "design",
       "lineJa": "虫が出す樹脂ラックを熱して形にし、色ガラスや石で飾った腕輪。",
       "imageId": "gt_img_term_lac_bangles"
     },
@@ -367,7 +367,7 @@
       "nameJa": "ムドラー",
       "readingJa": null,
       "aliasJa": null,
-      "category": "custom",
+      "category": "music",
       "lineJa": "インドの古典の踊りなどで使う手の形。くじゃく、花など、形ごとに意味がある。",
       "imageId": "gt_img_term_mudra"
     },
@@ -610,7 +610,7 @@
       "nameJa": "シヴァ",
       "readingJa": null,
       "aliasJa": null,
-      "category": "person",
+      "category": "legend",
       "lineJa": "ヒンドゥー教の神（神話の存在）。破壊と再生の神で、ヨーガ行者の姿でも描かれる。",
       "imageId": "gt_img_term_shiva"
     },
@@ -619,7 +619,7 @@
       "nameJa": "パールヴァティー",
       "readingJa": null,
       "aliasJa": null,
-      "category": "person",
+      "category": "legend",
       "lineJa": "ヒンドゥー教の女神（神話の存在）。シヴァの妃で、山の王ヒマヴァットの娘とされる。",
       "imageId": "gt_img_term_parvati"
     },
@@ -628,7 +628,7 @@
       "nameJa": "クリシュナ",
       "readingJa": null,
       "aliasJa": null,
-      "category": "person",
+      "category": "legend",
       "lineJa": "ヒンドゥー教の神（神話の存在）。ヴィシュヌの化身。笛を吹く牛飼いの姿で描かれる。",
       "imageId": "gt_img_term_krishna"
     },
@@ -637,7 +637,7 @@
       "nameJa": "ガネーシャ",
       "readingJa": null,
       "aliasJa": null,
-      "category": "person",
+      "category": "legend",
       "lineJa": "ヒンドゥー教の神（神話の存在）。象の頭を持つ、シヴァとパールヴァティーの子。",
       "imageId": "gt_img_term_ganesha"
     },
@@ -646,7 +646,7 @@
       "nameJa": "ナハル・シン・ボーミヤー",
       "readingJa": null,
       "aliasJa": null,
-      "category": "person",
+      "category": "legend",
       "lineJa": "言い伝えの人物。その霊が砦の工事を妨げ、砦の中に彼の寺が建てられたという。",
       "photoNoteJa": "画像は彼の名に由来するとされるナハルガル砦の写真",
       "imageId": "gt_img_term_nahar_singh_bhomia"
