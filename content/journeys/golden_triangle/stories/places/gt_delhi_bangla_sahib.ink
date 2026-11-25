@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_bangla_sahib
 # speaker: narrator
 # local_word: gt_delhi_word_gurdwara
+# term: gt_term_head_covering
 金色の丸屋根の下で、入口の人たちが、次々に頭を布で覆っていた。グルドワーラー・バングラー・サーヒブ。シク教の礼拝所で、ここでは男も女も、頭を覆って入る。
 # emotion: happy
 入口で配られる橙色の布を、彼女は手際よく結んだ。それから、こちらを見て、こらえきれずに笑った。
@@ -22,11 +23,14 @@ INCLUDE modules.ink
 # photo: gt_album_d082 # photo_caption: 橙色の布、「ずっとそれっぽい」
 待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい
 # speaker: narrator
+# term: gt_term_jora_ghar
+# term: gt_term_shabad_kirtan
 靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。
 # speaker: narrator
 # local_word: gt_delhi_word_langar
 # term: gt_term_langar
 その奥に、大きな台所があった。ランガル。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
+# term: gt_term_dal
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
 # term: gt_term_roti
@@ -49,6 +53,7 @@ INCLUDE modules.ink
 // ゲームの結果と同じ ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。地図のようにいびつな形（country）は、ハルバンスが
 // 「ハート」と読み、前の「ハートの形にしてみる」の道の台詞へつなぐ。
 # speaker: narrator
+# term: gt_term_belan
 ハルバンスが、新しい生地の玉を一つ、こちらの前に置いた。麺棒を渡される。
 # speaker: gt_harbans
 # minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar
@@ -143,6 +148,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
+# term: gt_term_chai
 生地を丸めながら、ハルバンスは街道の話をした。どの町の茶屋のチャイが一番濃いか。夜中の検問で、どうやって眠気をこらえたか。川が溢れて、三日動けなかった夏のこと。
 # speaker: gt_harbans
 # voice: gt_delhi_date_bangla_sahib_harbans_011
@@ -221,6 +227,7 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 食事の広間では、細長い敷物が何列も敷かれ、人々が床に並んで座っていた。隣はスーツの男、その隣は裸足の子ども。誰がどこに座っても、出てくるものは同じだ。
+# term: gt_term_cupped_hands
 奉仕の人が籠を持って回ってくる。二人は、裸足の子どもの手つきを真似て、両手をお椀の形にして差し出した。
 # photo: gt_album_d086 # photo_caption: 自分の地図が、手のひらに戻る
 ハルバンスが、わざわざ二枚を選んで、二人の手のひらに落とした。インドの形と、もう一枚。自分で丸めたものが、自分の手に戻ってきた。
@@ -265,8 +272,10 @@ INCLUDE modules.ink
     残しちゃいけないんだよね。うん。食べる。食べるけど……断り方、誰か教えて
 }
 # speaker: narrator
+# term: gt_term_sarovar
 外に出ると、大きな池が、金色の丸屋根を逆さに映していた。この池の水には、病を癒やす力があると信じられている。
 # speaker: narrator
+# term: gt_term_guru_harkrishan
 昔、ここに滞在したシク教の師、八代目のグルが、天然痘やコレラに苦しむ人たちを、井戸の水で助けたという話が伝わっている。
 # photo: gt_album_d088 # photo_caption: 金色の丸屋根を映す池
 二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。

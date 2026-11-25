@@ -79,7 +79,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   // A shop sells its own journey's outfits in one of its cities; an outfit's 旅の図鑑 term is its own journey's.
   "shop/catalog.json": {
     shops: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "outfit", ["outfitIds"])],
-    outfits: (entry) => fields(entry, "term", ["termId"]),
+    outfits: (entry) => fields(entry, "term", ["termIds"]),
   },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],

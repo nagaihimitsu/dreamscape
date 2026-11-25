@@ -98,6 +98,7 @@ INCLUDE modules.ink
 鳴らさないんですね
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_001
+# term: gt_term_cow
 牛は、鳴らしても急ぎません。急ぐのは、こっちの心臓だけ
 # background: gt_bg_agra_tour_road
 # speaker: narrator
@@ -130,6 +131,7 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_out_leg_vinod_005
 皇帝の所の、すぐ下の町に。お二人が中にいる間、わたしは母の家で昼ごはんです。このツアーは、わたしにも、いいツアー
 # speaker: narrator
+# term: gt_term_water_buffalo
 窓の外を、畑が流れていく。水路の脇で、子どもが一人、水牛の群れを棒で追っていた。
 -> END
 
@@ -332,6 +334,7 @@ INCLUDE modules.ink
 一度だけ。学校の遠足で。あとは、ずっと外です。外にも、見るものはあります
 # speaker: narrator
 # photo: gt_album_a061 # photo_caption: 屋上から突き出た鉄の棒
+# term: gt_term_rebar_roof
 道沿いの家の屋上から、鉄の棒が何本も突き出していた。どの家も、まだ上に何かを建てるつもりのように見える。
 { cond("battle gt_agra_main_fatehpur_sikri_battle"):
     # speaker: heroine
@@ -350,6 +353,7 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_back_leg_vinod_003
 皇帝が出ていった町だから、誰かが残らないといけない、と言います
 # speaker: gt_vinod
+# term: gt_term_wish_threads
 # voice: gt_agra_tour_back_leg_vinod_004
 それに母は、聖者のお墓の格子に糸を結んで、子どもを願ったそうです。それで授かったのが、わたし
 # speaker: gt_vinod

@@ -1,9 +1,113 @@
 INCLUDE modules.ink
 -> DONE
 
-// デリーの差し込み（デートの後・宿・都市の出発）。どれも【4】の時点を使う。
-// 土地の事実を言う場面は scenes/catalog.json に出典を書く（gt_delhi_hotel_homework・gt_delhi_hotel_sick_morning・gt_delhi_depart_scam・gt_delhi_depart_scam_office・gt_delhi_depart_station）。ほかは # sources: none。
+// デリーの差し込み（旅の始まり・デートの後・宿・都市の出発）。どれも【4】の時点を使う。
+// 土地の事実を言う場面は scenes/catalog.json に出典を書く（gt_delhi_arrive_hands・gt_delhi_hotel_homework・gt_delhi_hotel_sick_morning・gt_delhi_depart_scam・gt_delhi_depart_scam_office・gt_delhi_depart_station）。ほかは # sources: none。
 // 推理クイズ（# scene: battle）の gt_delhi_depart_scam_quiz は出典の決まりの対象外。事実の出典は、問題と手がかりの出典に書く。
+
+// 【4】到着・ロゴの前（-1）：旅のいちばん最初の場面。オープニングムービーの後、「デリー」のロゴの前に流れる（2026-11-23）。
+// 意図：空港の到着の広間の「手の彫刻（ムドラー）」で、インド編の通し線「言わなかった言葉」を、最初の一枚の絵で見せる。
+// 手で話す（ムドラー）→ 首で話す（首を揺らすしぐさ）→ 彼女は自分の声で答える、の三段。看板は読めるが、手と首はまだ読めない。
+// 彼女の答え「写真でしか知らなかったものを、自分の目で」は、すぐ後のカムラの「写真がきれいすぎる」と、旅の願い（バイブル第II部02）につながる。
+// 主人公の答え（英語の3択）に正解はない。どれも彼女が後ろで聞いていて、ひとこと返す。
+// 「くじゃく」の手は、後の場面では回収していない（拾うなら、旅のどこで手の形を見せてもよい）。
+=== gt_delhi_arrive_hands ===
+# scene: talk
+# at: arrive delhi
+# priority: -1
+# background: gt_bg_delhi_airport_mudras
+# bgm: gt_mystical_bazaar
+# speaker: narrator
+動く歩道を乗り継いで、入国審査の広間に出たとたん、{heroine_name}の足が止まった。
+# speaker: narrator
+銅色の円盤を敷きつめた壁から、白く大きな手が、いくつも突き出している。
+# speaker: heroine
+# reaction: heroine,surprised_big,sparkle
+わ……見て。手だよ。壁から、おっきな手が生えてる
+# speaker: heroine
+# emotion: smile
+指の形が、全部ちがうね。てのひらに、お花まで彫ってある
+# speaker: heroine
+# reaction: heroine,surprised,question
+何か、言ってるみたい。……看板なら読めるのに、これは読めないな
+# speaker: narrator
+隣の列から、くすっと笑う声がした。仕切りのベルトの向こうで、十歳くらいの女の子がこちらを見上げている。
+# speaker: gt_delhi_airport_girl
+# term: gt_term_mudra
+あれ、ムドラーだよ。踊りの手。わたしの習ってる踊りもね、手でお話しするの
+# speaker: narrator
+女の子は片手を上げ、親指と薬指の先をくっつけて、ほかの指をまっすぐにそろえた。
+# speaker: gt_delhi_airport_girl
+これ、なーんだ
+# speaker: heroine
+# reaction: heroine,surprised,sweat
+えっ。えっと……キツネ？
+# speaker: gt_delhi_airport_girl
+# term: gt_term_peacock
+ちがうよ。くじゃく！
+# speaker: narrator
+女の子が手首をくるりと返すと、そろえた指が、ふわりと揺れた。
+# speaker: heroine
+# reaction: heroine,happy,sparkle
+ほんとだ、くじゃく。くっつけた指がくちばしで、そろえた指が頭の羽なんだ
+# speaker: narrator
+並んでいた祖母らしい人が女の子の肩をたたき、てのひらで小さく前をあおいだ。列が進んでいる。
+# speaker: gt_delhi_airport_girl
+今のは、踊りの手じゃないよ。『早く進みなさい』の手
+# speaker: narrator
+女の子は手を振って、祖母と窓口のほうへ進んでいった。
+# speaker: narrator
+{heroine_name}は自分の指で、くじゃくを作ってみた。薬指が、なかなか親指に届かない。
+# speaker: heroine
+# emotion: happy
+見て、くじゃく。……インドで最初に覚えた言葉、手だった
+# speaker: narrator
+やがて、こちらの番が来た。係官がパスポートの写真とこちらの顔を見比べ、短く聞く。
+# speaker: gt_delhi_immigration_officer
+入国の目的は？
+* [Sightseeing. Delhi, Agra, Jaipur. # option: say_the_route # translation: 観光です。デリー、アーグラ、ジャイプール。]
+    # speaker: narrator
+    係官はうなずき、何も聞き返さずにパスポートを返した。
+    # speaker: heroine
+    # reaction: heroine,exasperated,sweat
+    一行で通った……。わたし、答えを三通りも練習してきたのに
+* [To see the Taj Mahal. # option: say_the_taj # translation: タージ・マハルを見に。]
+    # rel: affection +1
+    # speaker: gt_delhi_immigration_officer
+    タージだけ？　デリーにも、見るものはたくさんありますよ
+    # speaker: heroine
+    # reaction: heroine,shy,sweat
+    ですよね！　……あ、すみません。今のは、わたしの番じゃなかった
+* [I don't know yet. That's why I came. # option: say_not_yet # translation: まだ分かりません。だから来ました。]
+    # rel: spark +1
+    # speaker: narrator
+    係官は顔を上げ、こちらを少し眺めてから、パスポートを返した。
+    # speaker: gt_delhi_immigration_officer
+    分かったら、帰りに教えてください
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    ふふ。今の、ちょっと格好つけたでしょ
+-
+# speaker: narrator
+次は、{heroine_name}の番だ。窓口の前に立つと、彼女は一度だけ、先に抜けたこちらを見た。
+# speaker: gt_delhi_immigration_officer
+入国の目的は？
+# speaker: heroine
+# emotion: serious
+観光です。……それと、写真でしか知らなかったものを、自分の目で見に来ました
+# speaker: narrator
+# se: stamp
+係官はスタンプを押し、パスポートを返した。それから、首を左右に小さく揺らした。
+# speaker: heroine
+# reaction: heroine,surprised,question
+ねえ、今の首。いいってこと？　だめってこと？
+# speaker: narrator
+# term: gt_term_head_bobble
+パスポートには、ちゃんとスタンプが押してある。たぶん、いいという意味だ。
+# speaker: heroine
+# reaction: heroine,teasing,music
+看板は読める。手は、一つ覚えた。首は……まだ、読めないな
+-> END
 
 // 【4】デートの後：写真屋に頼んだときだけ、刷った写真をもらう
 === gt_delhi_date_india_gate_print ===
@@ -36,6 +140,7 @@ INCLUDE modules.ink
 # tint: off
 { cond("seen gt_delhi_hotel_sick_morning"):
     # speaker: narrator
+    # term: gt_term_cumin_water
     宿の帳場の机で、ルーヒーが鉛筆をかじっていた。クミンの水を持ってきてくれた、宿の娘だ。
     # speaker: enemy
     # voice: gt_delhi_hotel_homework_roohi_001
@@ -294,11 +399,13 @@ INCLUDE modules.ink
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
     # voice: gt_delhi_hotel_sick_morning_roohi_001
+    # term: gt_term_cumin_water
     クミンの水。わたしが作った。……宿題を手伝ってくれたお礼、半分ね
 - else:
     # speaker: enemy
     # cutin: name
     # voice: gt_delhi_hotel_sick_morning_roohi_002
+    # term: gt_term_cumin_water
     わたし、ルーヒー。十三歳。これは、クミンを煮出した水
     # speaker: enemy
     # voice: gt_delhi_hotel_sick_morning_roohi_003
@@ -355,6 +462,7 @@ INCLUDE modules.ink
 # bgm: gt_vadodora
 # ambience: gt_amb_street_traffic
 # speaker: narrator
+# term: gt_term_paharganj
 宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
 # speaker: gt_delhi_scam_young_man
@@ -618,6 +726,7 @@ Thank you. We'll check it ourselves.
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
 # voice: gt_delhi_depart_scam_delhi_scam_suit_man_001
+# term: gt_term_chai
 座ってください。まずはチャイを
 # speaker: gt_delhi_scam_suit_man
 # voice: gt_delhi_depart_scam_delhi_scam_suit_man_002
@@ -765,6 +874,7 @@ No, thank you.
 
 = short_of_money
 # speaker: narrator
+# term: gt_term_rupee
 手付金は、五百ルピーだという。財布を開いてみたが、二人の手持ちを合わせても届かなかった。
 # speaker: gt_delhi_scam_suit_man
 # voice: gt_delhi_depart_scam_office_delhi_scam_suit_man_002
@@ -894,6 +1004,7 @@ No, thank you.
 # speaker: narrator
 ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
 # local_word: gt_delhi_word_sahayak
+# term: gt_term_sahayak
 昔は「クーリー」と呼ばれた彼らは、今は「サハーヤク」――助ける人、という名前に変わっている。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation

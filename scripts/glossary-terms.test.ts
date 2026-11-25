@@ -57,14 +57,28 @@ describe("the notes of 旅の図鑑", () => {
     expect(glossaryWarnings(story(source) as never, terms, ["gt_term_saree"]).map((warning) => warning.message)).toEqual([]);
   });
 
-  it("warn about the same term twice in one scene (not in two scenes) and a tag on a choice", () => {
+  it("say nothing of a term tagged once on each branch of a scene (the arms of a conditional, the choices of a menu), or after the branch it is met on first", () => {
+    const terms = [term("gt_term_golgappa", "golden_triangle")];
+    const arms = "=== gt_quiz ===\n{ quiz_correct:\n    # term: gt_term_golgappa\n    正解。\n- else:\n    # term: gt_term_golgappa\n    不正解。\n}\n-> END";
+    expect(notes(arms, terms)).toEqual([]);
+    const choices = "=== gt_date ===\n* [Yes]\n    # term: gt_term_golgappa\n    はい。\n* [No]\n    # term: gt_term_golgappa\n    いいえ。\n- -> END";
+    expect(notes(choices, terms)).toEqual([]);
+    // Met first on the wrong answer's arm: the walk past the right answer meets it after the conditional.
+    const oneArm = arms.replace("    # term: gt_term_golgappa\n    正解。", "    正解。").replace("\n-> END", "\n# term: gt_term_golgappa\nその後。");
+    expect(notes(oneArm, terms)).toEqual([]);
+    // A tag before the conditional is passed by every walk into its arms.
+    expect(notes(`=== gt_quiz ===\n# term: gt_term_golgappa\n前。\n${arms.replace("=== gt_quiz ===\n", "")}`, terms))
+      .toEqual([expect.stringContaining("Term tagged twice on one path of a scene"), expect.stringContaining("Term tagged twice on one path of a scene")]);
+  });
+
+  it("warn about the same term twice on one path of a scene (not in two scenes) and a tag on a choice", () => {
     const twice = `${source}\n# term: gt_term_golgappa\nもう一度。`;
-    expect(notes(twice, [term("gt_term_golgappa", "golden_triangle")])).toEqual([expect.stringContaining("Term tagged twice in one scene: gt_term_golgappa")]);
+    expect(notes(twice, [term("gt_term_golgappa", "golden_triangle")])).toEqual([expect.stringContaining("Term tagged twice on one path of a scene: gt_term_golgappa")]);
     const twoScenes = `${source}\n=== gt_other ===\n# term: gt_term_golgappa\nもう一度。`;
     expect(notes(twoScenes, [term("gt_term_golgappa", "golden_triangle")])).toEqual([]);
     const onChoice = source.replace("* [Spicy? # option: spicy]", "* [Spicy? # option: spicy # term: gt_term_golgappa]");
     expect(notes(onChoice, [term("gt_term_golgappa", "golden_triangle")])).toEqual([
-      expect.stringContaining("Term tagged twice in one scene: gt_term_golgappa"),
+      expect.stringContaining("Term tagged twice on one path of a scene: gt_term_golgappa"),
       expect.stringContaining("# term: on a choice: gt_term_golgappa"),
     ]);
   });

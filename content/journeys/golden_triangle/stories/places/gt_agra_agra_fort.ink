@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # photo: gt_album_a020 # photo_caption: 兄弟みたいな赤い城壁
 デリーのお城と、色がそっくり。……兄弟みたいだね
 # speaker: narrator
+# term: gt_term_monkey
 城壁の上を、猿が一列になって歩いていた。一匹が、観光客の持つ水のボトルをじっと見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
@@ -76,6 +77,7 @@ INCLUDE modules.ink
 # speaker: gt_agra_fort_old_man
 # voice: gt_agra_main_agra_fort_battle_duggal_002
 # term: gt_term_shah_jahan
+# term: gt_term_dharna
 タージを建てたシャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
 老人の視線が、近くにいた{heroine_name}たちを捉えた。背筋がさらに伸びる。
