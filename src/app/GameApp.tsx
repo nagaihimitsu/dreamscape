@@ -388,15 +388,19 @@ export function GameApp({
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
+  // The episode's title card (waiting or on screen) or a ride's or night's art covers the screen (set below, before paint, from
+  // useJourneyMoments and useTravelEffects): what the scene under it brings of its own (旅の図鑑's card, a large photo, the
+  // notices under the header) waits until it has gone (2026-11-25 user request: nothing shows before the title has shown).
+  const [momentCovers, setMomentCovers] = useState(false);
   // 旅の図鑑's card shows over its scene (below): the notices under the header wait for it to close, not lost behind it.
-  const termCardShown = !!termCard && termCard.scene === storyScene;
+  const termCardShown = !!termCard && termCard.scene === storyScene && !momentCovers;
   // A large photo (PhotoShowLayer) does not show under the card (2026-11-25 user request: the two overlapped): it waits from
   // the line's first drawing, while the card is yet to be decided on, and comes (taken then) once the card has closed.
-  const photoHeld = termCardShown || (!!addedTerms && addedTerms.key !== termsDecidedKey);
+  const photoHeld = momentCovers || termCardShown || (!!addedTerms && addedTerms.key !== termsDecidedKey);
   // The words of the country this device has learned in this journey (local-words.ts): the line on screen teaches its
   // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory. A word of a line
   // that also names a term is learned at once; its 「ことばを覚えた」 shows once the term's card has closed.
-  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game), termCardShown);
+  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game), termCardShown || momentCovers);
   // 「ことばを覚えた」 rings (local_word) as its notice comes, but not on a quiet line nor during 高速送り (playCue).
   const learnedNoticeId = learnedWords.notice?.id;
   const quietLine = !!lineFrameOnScreen(game)?.quiet;
@@ -838,7 +842,7 @@ export function GameApp({
     },
   }), [photoNotice, album, albumCityId, photoHeld]);
   // 旅の図鑑's card holds the photo's card as it holds 「ことばを覚えた」: it shows (its whole time) once the card closes.
-  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown ? photoNotice : null;
+  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown && !momentCovers ? photoNotice : null;
   const shownPhotoNoticeId = shownPhotoNotice?.id;
   useEffect(() => {
     if (!shownPhotoNotice) return;
@@ -913,6 +917,9 @@ export function GameApp({
   const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
     reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying, learnedWords: learnedWords.learned });
   momentsRef.current = moments.committed;
+  // Before paint, so a card or notice of the scene under the title card or the art never shows for a frame (momentCovers).
+  const covers = moments.titleHolding || travelEffectPlaying;
+  useLayoutEffect(() => setMomentCovers(covers), [covers]);
   // ≡メニュー's 「画面の出典」: the photos free time shows (the cards' and a backdrop photo's) and, in free time or on the night
   // screen, the recap card's place photo while it shows (2026-11-15: the card shows no credit of its own).
   const creditPhotos = useMemo(() => [
@@ -1063,8 +1070,8 @@ export function GameApp({
         onItemsSeen={(ids) => setSeenMarks((marks) => marks && markSeen(marks, "items", ids))}
         noteNew={newNotePages.map((page) => NOTE_PAGE_NAMES[page])}
         // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
-        // line's item card (# item_show:, # item_out:) shows or flies into the bag.
-        holdNotices={(!!shownPhotoNotice && !shownPhotoNotice.flown) || !!printFlight || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
+        // line's item card (# item_show:, # item_out:) shows or flies into the bag, and under the title card or a ride's art.
+        holdNotices={momentCovers || (!!shownPhotoNotice && !shownPhotoNotice.flown) || !!printFlight || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
         itemFlight={itemLeave}
         photoFlight={printFlight}
         recordsNew={albumNew}
@@ -1651,7 +1658,7 @@ export function GameApp({
       {oldDataOpen && oldDataStorage && <LazyDialog onClose={() => setOldDataOpen(false)}>
         <OldDataCleanup storage={oldDataStorage} context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />
       </LazyDialog>}
-      {travelEffects}
+      {travelEffects(moments.titleHolding)}
       {moments.overlays}
     </div>
     </PhotoShowContext.Provider>

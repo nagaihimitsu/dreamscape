@@ -20,11 +20,16 @@ const RIDE_REDUCED_MS = 450;
  * as dots with their names and a straight dotted line that draws itself from the place left to
  * the place reached over the ride (2026-11-13; ride-map.ts), whole at once under reduced motion.
  * Like the rest of the transition it is a picture only (aria-hidden).
+ * It lies on a dark ground over the whole screen (2026-11-25 user request), dark from its first frame: the place reached does
+ * not show while the party moves. The ground fades to that place at the end, or stays dark (`held`) when another ride or the
+ * episode's title card comes next, so the screen never brightens between them.
  */
-export function TravelTransition({ mode, route, reduceMotion = false, onEnd }: {
+export function TravelTransition({ mode, route, held = false, reduceMotion = false, onEnd }: {
   mode: TransportMode;
   /** The places left and reached (useTravelEffects; none when either is unknown). */
   route?: RideRoute;
+  /** Something dark comes next (another ride, the episode's title card): the ground stays dark to the end. */
+  held?: boolean;
   reduceMotion?: boolean;
   onEnd: () => void;
 }) {
@@ -55,7 +60,7 @@ export function TravelTransition({ mode, route, reduceMotion = false, onEnd }: {
   const onRails = railKinds.has(mode.kind);
   const map = route ? rideMapLayout(route) : null;
 
-  return createPortal(<div className={`travel-transition${reduced ? " is-reduced" : ""}`}
+  return createPortal(<div className={`travel-transition${reduced ? " is-reduced" : ""}${held ? " is-held" : ""}`}
     data-testid="travel-transition" data-mode={mode.id} data-kind={mode.kind} aria-hidden="true" onClick={end}>
     <div className="travel-transition-scene" data-pace={sceneryPace(mode.kind)}>
       <span className="travel-transition-label">{mode.movingJa}</span>
