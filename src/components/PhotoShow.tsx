@@ -33,7 +33,11 @@ export const shownPrintOf = (imageId: string): Box | undefined => (shownPrint?.i
  * and under the window. Not while 高速送り runs past the line (a line it stops at shows it), nor while 旅の図鑑's card is
  * open (it comes as the card closes).
  */
-export function PhotoShowLayer({ photo }: { photo?: StoryPhoto }) {
+export function PhotoShowLayer({ photo, aboveHeads = false }: {
+  photo?: StoryPhoto;
+  /** The line is someone's (keepsAboveHeads): the print keeps above the heads on stage (figures-top.ts). */
+  aboveHeads?: boolean;
+}) {
   const fast = useSceneFastForward();
   const { held } = useContext(PhotoShowContext);
   const image = photoShowsLarge(photo) ? getAlbumImage(photo.imageId) : undefined;
@@ -42,17 +46,17 @@ export function PhotoShowLayer({ photo }: { photo?: StoryPhoto }) {
     if (fast) shownPrint = null;
   }, [fast]);
   if (!image || !photo || fast || held) return null;
-  return <PhotoPrint key={image.id} imageId={image.id} path={image.path} caption={photo.caption} />;
+  return <PhotoPrint key={image.id} imageId={image.id} path={image.path} caption={photo.caption} aboveHeads={aboveHeads} />;
 }
 
-function PhotoPrint({ imageId, path, caption }: { imageId: string; path: string; caption?: string }) {
+function PhotoPrint({ imageId, path, caption, aboveHeads }: { imageId: string; path: string; caption?: string; aboveHeads: boolean }) {
   const { fresh, stampOf } = useContext(PhotoShowContext);
   // Taken now (read once, as the print appears): a re-reading of the line, a load's scene, shows the print as it is.
   const [taken] = useState(() => fresh?.imageId === imageId);
   const stamp = stampOf?.(imageId);
   const layer = useRef<HTMLDivElement>(null);
   // Above the heads on stage (figures-top.ts), measured before the print's own box is.
-  useFiguresTop(layer);
+  useFiguresTop(layer, aboveHeads);
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     if (taken && fresh?.sound) playCue("camera_shutter");
@@ -77,7 +81,7 @@ function PhotoPrint({ imageId, path, caption }: { imageId: string; path: string;
       image?.removeEventListener("load", measure);
       window.removeEventListener("resize", measure);
     };
-  }, [imageId]);
+  }, [imageId, aboveHeads]);
   return <div className="photo-show-layer" ref={layer} aria-hidden="true" data-testid="photo-show" data-taken={taken || undefined}>
     <PrintBody ref={ref} path={path} caption={caption} stamp={stamp} />
     {taken && <span className="photo-show-flash" />}

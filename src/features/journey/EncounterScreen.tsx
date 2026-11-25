@@ -4,6 +4,7 @@ import { SceneHeading } from "../../components/SceneHeading";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
 import { ItemOutLayer, type ItemOutCard } from "../../components/ItemOut";
 import { sceneTimeTint } from "./time-of-day";
@@ -170,9 +171,9 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       {/* The scene's weather stays over its quiz too. */}
       <WeatherLayer weather={view.staging?.weather} />
       <RecallLayer imageId={staging?.recall} />
-      <PhotoShowLayer photo={staging?.photo} />
+      <PhotoShowLayer photo={staging?.photo} aboveHeads={keepsAboveHeads(staging?.speaker)} />
       <NameCutInPlate cutIn={nameCut} />
-      <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
+      <ItemShowLayer itemId={staging?.itemShow} aboveHeads={keepsAboveHeads(staging?.speaker)} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {/* Two or three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as another goes). */}
