@@ -66,7 +66,7 @@ dialog.modal.clue-notebook {
   padding: 6px 8px;
   border: 1px solid var(--ds-field-edge);
   border-radius: 8px;
-  background: #fffaf1;
+  background: var(--ds-field);
   color: var(--ds-ink);
   font-size: 14px;
 }

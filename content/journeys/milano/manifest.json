@@ -4,6 +4,10 @@
   "id": "milano",
   "nameJa": "ミラノ編",
   "status": "available",
+  "titleArt": {
+    "imagePath": "assets/tourism/duomo-milano.webp",
+    "captionJa": "ミラノ ／ ドゥオモ"
+  },
   "cities": [
     {
       "id": "milano",

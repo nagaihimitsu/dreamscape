@@ -35,6 +35,7 @@
   --ds-focus: #ffd27a; /* focus ring, with a --ds-slate-900 halo */
   --ds-disabled-bg: #e6dfd2;
   --ds-disabled-ink: #5c544a;
+  --ds-field: #fffaf1; /* the ground of a text field, a select, a row to press in a dialog's list */
   --ds-field-edge: #8f7c66; /* text fields and selects: 3.6:1 on --ds-parchment */
   --ds-gold-hairline: rgba(201, 163, 95, 0.7); /* --ds-gold at 70 %: the edge of pressables on slate */
   --ds-photo-shade: rgba(20, 24, 32, 0.55); /* top of the gradient behind the header over a photo (§2.4) */
@@ -56,6 +57,10 @@
   /* Its edges melt into the scene over this much: no edge line, no shadow. */
   --ds-glass-feather: 10px;
   --ds-glass-radius: 22px;
+  /* A band that stays over what scrolls under it on the glass (a dialog's title bar): the glass, nearly opaque. */
+  --ds-glass-bar: rgba(244, 246, 252, 0.94);
+  /* A field's edge on the glass: 3:1 on it whatever lies behind (its 20 % show-through counted at black). */
+  --ds-glass-field-edge: #646b7e;
   /* The design's rules (2026-11-25 user decision, after learning from a product designer's practice: a few named sizes
      and colours, decided first and used everywhere, so every screen reads as one). The talk's stylesheets use only
      these (src/app/design-tokens.test.ts holds them to it); a new stylesheet uses them; the other screens move to them
@@ -132,21 +137,30 @@ body {
   margin: 0;
 }
 
-/* The glass surfaces over a scene (--ds-glass-*): free time's cards over the city, a quiz's panels over its place (its
-   question, explanation and reasoning, its result's card) and the night's (night-rest.css). What lies on them was written
-   for the parchment, so its colours are pointed at the glass's here (ink, muted ink, a pressable's ground, the chosen
-   ground, the hairlines); a dialog opened from inside one keeps the parchment's (below). */
+/* The glass surfaces over a scene (--ds-glass-*; 2026-11-25 user decision: every screen in the one immersive look): free
+   time's cards over the city, a quiz's panels over its place (its question, explanation and reasoning, its result's card),
+   every dialog, the menu's panels, the title's and 交際開始's cards, 前回までのあらすじ (and the night's: night-rest.css).
+   What lies on them was written for the parchment, so its colours are pointed at the glass's here: the ink, the muted
+   ink, a pressable's ground, the chosen ground, the hairlines, a field's ground and edge. */
 .photo-menu .place-card,
 .photo-free-time .photo-menu-note,
 .photo-free-time .free-time-extras,
 .photo-free-time .photo-menu .travel-rentals,
 .battle-result-card,
-.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
+.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper,
+.modal,
+.hud-menu-panel,
+.held-item-detail,
+.resume-recap,
+.intro-art + .paper.intro,
+.paper.ending {
   --ds-ink: var(--ds-glass-ink);
   --ds-ink-muted: var(--ds-glass-muted);
   --ds-parchment: var(--ds-glass-press);
   --ds-parchment-2: var(--ds-glass-chosen);
   --ds-parchment-line: var(--ds-glass-line);
+  --ds-field: var(--ds-glass-press);
+  --ds-field-edge: var(--ds-glass-field-edge);
   color: var(--ds-ink);
 }
 /* A pane that does not scroll: the glass is its ::before, so its feathered edge never fades the words or a focus ring. (A
@@ -182,16 +196,6 @@ body {
     linear-gradient(to bottom, transparent, #000 var(--ds-glass-feather), #000 calc(100% - var(--ds-glass-feather)), transparent);
   mask-composite: intersect;
   pointer-events: none;
-}
-/* A dialog opened from a glass surface (a tour's booking, the shop, the rentals, a word's window) is parchment again (the
-   :root values). */
-:is(.photo-menu .place-card, .photo-free-time .free-time-extras, .photo-free-time .photo-menu .travel-rentals,
-  .battle-result-card, .battle-screen .battle-paper, .observation-detail) dialog {
-  --ds-ink: #3b2f2a;
-  --ds-ink-muted: #6b5a4a;
-  --ds-parchment: #fbf3e6;
-  --ds-parchment-2: #f3e4c8;
-  --ds-parchment-line: #d9c39a;
 }
 button,
 input,
@@ -437,7 +441,7 @@ h3 {
   width: 100%;
   min-width: 0;
   min-height: 50px;
-  background: #fffaf1;
+  background: var(--ds-field);
   border: 1px solid var(--ds-field-edge);
   border-radius: 8px;
   padding: 10px 15px;
@@ -476,7 +480,7 @@ h3 {
   width: 100%;
   min-width: 0;
   min-height: 50px;
-  background: #fffaf1;
+  background: var(--ds-field);
   border: 1px solid var(--ds-field-edge);
   border-radius: 8px;
   padding: 10px 15px;
@@ -724,10 +728,17 @@ footer span {
   font-size: 13px;
   margin-bottom: 24px;
 }
+/* A notice (a session's word, a save that cannot be opened): a pane of the glass over the place (2026-11-25: every
+   screen in the one immersive look), its ink the glass's. */
 .notice {
-  background: #e9efe2;
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  color: var(--ds-glass-ink);
+  border-radius: 14px;
+  box-shadow: var(--ds-glass-shadow);
   padding: 16px 24px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   overflow-wrap: anywhere;
 }
 .notice .text-button {
@@ -779,23 +790,27 @@ footer span {
   overflow: auto;
   backdrop-filter: blur(4px);
 }
-/* The shared dialog frame (UI redesign stage 2.3): parchment with its hairline and 16-px
-   corners, ink text, a title bar (ModalTitle) across its top. A dialog sets its padding
-   through --modal-pad-top / --modal-pad-inline, so the title bar can reach its edges.
-   Every dialog keeps 12 px of the dimmed page beside it on a phone (2026-11-14), as the
-   wider ones (album, credits...) do, so its rounded corners never touch the screen's edge. */
+/* The shared dialog frame (UI redesign stage 2.3; 2026-11-25 user decision: every screen in the one immersive look):
+   a pane of the light glass (--ds-glass-*) over the place it opens on, which shows on behind it, softened and a little
+   dimmed (its ::backdrop, below), with a title bar (ModalTitle) across its top. No edge line; a soft shadow. What lies
+   in a dialog takes the glass's colours (the glass surfaces' rule, above). A dialog of its own look (the end
+   roll's night, a mini-game's stage) sets its own frame over this. A dialog sets its padding through --modal-pad-top /
+   --modal-pad-inline, so the title bar can reach its edges. Every dialog keeps 12 px of the scene beside it on a phone
+   (2026-11-14), so its rounded corners never touch the screen's edge. */
 .modal {
   --modal-pad-top: 30px;
   --modal-pad-inline: 30px;
-  background: var(--ds-parchment);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   padding: var(--modal-pad-top) var(--modal-pad-inline);
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
+  border: 0;
+  border-radius: var(--ds-glass-radius);
   max-width: min(440px, calc(100% - 24px));
   width: 100%;
   max-height: 90dvh;
   overflow: auto;
-  box-shadow: var(--ds-window-shadow);
+  box-shadow: var(--ds-glass-shadow);
 }
 /* Opened under the finger (Modal's settlePresses): no press reaches it for a moment. */
 .modal[data-settling] { pointer-events: none; }
@@ -803,8 +818,9 @@ footer span {
   font-size: 22px;
   margin: 10px 0 20px;
 }
-/* The title bar: a display-only parchment band (no edge, §2.3) that stays at the top while
-   the dialog scrolls; the heading wraps, the close keeps its 44 px. */
+/* The title bar: a display-only band of the glass, nearly opaque (--ds-glass-bar, so what scrolls under it does not
+   show through), with a hairline under it, that stays at the top while the dialog scrolls; the heading wraps, the
+   close keeps its 44 px. */
 .modal-title-bar {
   position: sticky;
   /* Chrome and Safari hold a sticky box inside the scroller's padding: reach its edge. */
@@ -817,7 +833,9 @@ footer span {
   min-height: 56px;
   margin: calc(-1 * var(--modal-pad-top, 0px)) calc(-1 * var(--modal-pad-inline, 0px)) 16px;
   padding: 6px 10px 6px max(16px, var(--modal-pad-inline, 0px));
-  background: var(--ds-parchment-2);
+  background: var(--ds-glass-bar);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   border-bottom: 1px solid var(--ds-parchment-line);
 }
 .modal .modal-title-bar h2 {
@@ -889,7 +907,7 @@ footer span {
 /* Checkboxes in the slate of the pressables (the native box keeps its size and focus). */
 input[type="checkbox"] { accent-color: var(--ds-slate-800); }
 /* The text speed select fills its 44 px row instead of the browser's ~19 px box (field look, stage 2.3). */
-.modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 8px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: #fffaf1; color: var(--ds-ink); }
+.modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 8px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: var(--ds-field); color: var(--ds-ink); }
 /* 「声の大きさ」 and 「効果音の大きさ」: the slider fills its 44 px row between its label and its value (the row's input rule sizes checkboxes). */
 .modal .volume-setting { align-items: center; }
 .modal .volume-setting input[type="range"] { flex: 1 1 auto; width: auto; min-width: 0; height: 44px; margin: -10px 0; accent-color: var(--ds-slate-800); }
@@ -1281,9 +1299,13 @@ dialog.modal {
   color: var(--ds-ink);
   margin: auto;
 }
+/* Around a dialog, the place it opened on stays in sight, softened and a little dimmed (2026-11-25), so the dialog
+   reads as a pane over the scene, not a page over a curtain. (Its values are written here: a ::backdrop does not take
+   the page's custom properties in every browser.) */
 dialog.modal::backdrop {
-  background: rgba(20, 24, 32, 0.72);
-  backdrop-filter: blur(4px);
+  background: rgba(16, 20, 30, 0.4);
+  -webkit-backdrop-filter: blur(8px) saturate(1.1);
+  backdrop-filter: blur(8px) saturate(1.1);
 }
 /* A dialog rises into place as it opens (only its frame: the blurred backdrop comes at
    once). It closes at once, so a quick second tap lands on what it leaves behind, as
@@ -1345,6 +1367,40 @@ dialog.modal[open] {
   border: 1px solid var(--ds-parchment-line);
   border-radius: 16px;
   box-shadow: var(--ds-card-shadow);
+}
+/* The title and 交際開始 over their place's picture (2026-11-25 user decision: every screen in the one immersive look). The
+   picture fills the screen behind the page (its band keeps its place and height, and its caption stays on it), the
+   header's words lie on a shade over it, and the card is a pane of the glass, what lies on it pointing at the glass's
+   colours. The picture's own place is written on its element (CanalScene), so it is overruled here, for these two only. */
+.app-shell:has(.intro-art + .paper.intro, .canal-scene + .paper.ending) {
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+:is(.intro-art .canal-scene, .canal-scene:has(+ .paper.ending)) { background: transparent !important; }
+:is(.intro-art .canal-scene, .canal-scene:has(+ .paper.ending)) > :is(svg, .scene-artwork, .canal-scene-tint) {
+  position: fixed !important;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+/* Over a photograph, the header's words are white on a shade; over the drawn scene or its colour (a journey without title
+   art), they keep their ink. */
+.app-shell:has(.intro-art + .paper.intro) > .masthead { border-bottom: 0; }
+.app-shell:has(.intro-art .scene-artwork) > .masthead {
+  background: linear-gradient(to bottom, var(--ds-photo-shade), transparent);
+  color: var(--ds-on-slate);
+}
+.app-shell:has(.intro-art .scene-artwork) > .masthead :is(.brand, .brand span, .edition) { color: var(--ds-on-slate); }
+.intro-art + .paper.intro,
+.paper.ending {
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  border-color: transparent;
+  box-shadow: var(--ds-glass-shadow);
 }
 /* The picture's caption stays clear of the card's rounded top. */
 .canal-scene:has(+ .paper.ending) .scene-stamp {
@@ -1489,7 +1545,7 @@ dialog.modal[open] {
   padding: 16px;
   text-align: left;
   border: 1px solid var(--ds-parchment-line);
-  background: #fffaf1;
+  background: var(--ds-field);
   color: var(--ds-ink);
   border-radius: 12px;
   font-size: 16px;

@@ -24,7 +24,7 @@
   padding: 8px 12px;
   border: 1px solid var(--ds-parchment-line);
   border-radius: 12px;
-  background: #fffaf1;
+  background: var(--ds-field);
   color: var(--ds-ink);
   font: inherit;
   font-size: 15px;

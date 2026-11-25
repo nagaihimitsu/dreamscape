@@ -50,7 +50,7 @@
   min-height: 44px;
   padding: 6px 8px;
   color: var(--ds-ink);
-  background: #fffaf1;
+  background: var(--ds-field);
   border: 1px solid var(--ds-field-edge);
   border-radius: 8px;
 }

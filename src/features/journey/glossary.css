@@ -189,7 +189,7 @@ dialog.modal.glossary-modal {
   overflow: hidden;
   border: 1px solid var(--ds-parchment-line);
   border-radius: 10px;
-  background: #fffaf1;
+  background: var(--ds-field);
   color: var(--ds-ink);
   font: inherit;
   text-align: left;
