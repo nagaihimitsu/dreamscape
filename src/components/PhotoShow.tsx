@@ -15,9 +15,10 @@ import "./photo-show.css";
 /**
  * What GameApp tells the prints: the photo the player's last action has just put in the album (`fresh`; its print is
  * taken: a flash, the shutter unless `sound` is false, and it develops), and the stamp of a photo of the album (its
- * place and 「n日目 hh:mm」), which the print shows under its caption.
+ * place and 「n日目 hh:mm」), which the print shows under its caption. `held`: 旅の図鑑's card is over the scene (or about to
+ * open for the line), so the print waits and comes once the card has closed, not under it (a photo just taken is taken then).
  */
-export type PhotoShowCue = { fresh?: { imageId: string; sound: boolean }; stampOf?: (imageId: string) => string | undefined };
+export type PhotoShowCue = { fresh?: { imageId: string; sound: boolean }; stampOf?: (imageId: string) => string | undefined; held?: boolean };
 export const PhotoShowContext = createContext<PhotoShowCue>({});
 
 /** Where the print on screen is (its box in the window, without its coming-in tilt and scale): its flight starts there. */
@@ -28,16 +29,18 @@ export const shownPrintOf = (imageId: string): Box | undefined => (shownPrint?.i
 
 /**
  * The line's photo (`photo`, the frame's) large, unless the line keeps it small: over the portraits (dimmed by a veil)
- * and under the window. Not while 高速送り runs past the line (a line it stops at shows it).
+ * and under the window. Not while 高速送り runs past the line (a line it stops at shows it), nor while 旅の図鑑's card is
+ * open (it comes as the card closes).
  */
 export function PhotoShowLayer({ photo }: { photo?: StoryPhoto }) {
   const fast = useSceneFastForward();
+  const { held } = useContext(PhotoShowContext);
   const image = photoShowsLarge(photo) ? getAlbumImage(photo.imageId) : undefined;
   // 高速送り took the print away: it has no place to fly from.
   useEffect(() => {
     if (fast) shownPrint = null;
   }, [fast]);
-  if (!image || !photo || fast) return null;
+  if (!image || !photo || fast || held) return null;
   return <PhotoPrint key={image.id} imageId={image.id} path={image.path} caption={photo.caption} />;
 }
 

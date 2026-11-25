@@ -273,6 +273,8 @@ export function GameApp({
   // not to be passed by 高速送り (below).
   const [addedTerms, setAddedTerms] = useState<{ key: number; ids: string[]; quiet: boolean } | null>(null);
   const [termCard, setTermCard] = useState<{ key: number; ids: string[]; quiet: boolean; scene: string | null } | null>(null);
+  // The last action's terms whose card has been decided on (the effect below): till then a large photo waits (photoHeld).
+  const [termsDecidedKey, setTermsDecidedKey] = useState<number | null>(null);
   // The notices' height under the header (--notices-h): an item card or a large photo starts below them (item-show.css).
   const noticesHeight = useMeasuredHeight("--notices-h");
   // What the player has looked at during this play (seen-marks.ts): the held items in their open detail, the clues in
@@ -388,6 +390,9 @@ export function GameApp({
   const learning = useLearning(game, storage, !isDebug);
   // 旅の図鑑's card shows over its scene (below): the notices under the header wait for it to close, not lost behind it.
   const termCardShown = !!termCard && termCard.scene === storyScene;
+  // A large photo (PhotoShowLayer) does not show under the card (2026-11-25 user request: the two overlapped): it waits from
+  // the line's first drawing, while the card is yet to be decided on, and comes (taken then) once the card has closed.
+  const photoHeld = termCardShown || (!!addedTerms && addedTerms.key !== termsDecidedKey);
   // The words of the country this device has learned in this journey (local-words.ts): the line on screen teaches its
   // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory. A word of a line
   // that also names a term is learned at once; its 「ことばを覚えた」 shows once the term's card has closed.
@@ -652,6 +657,7 @@ export function GameApp({
   useEffect(() => {
     const ids = addedTerms ? termsToShow(addedTerms.ids, sceneCuesQuiet()) : [];
     if (addedTerms && ids.length) setTermCard({ ...addedTerms, ids, scene: storyScene });
+    if (addedTerms) setTermsDecidedKey(addedTerms.key);
   // Once for each action that added terms (the scene on screen is read as it is then).
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addedTerms]);
@@ -823,13 +829,14 @@ export function GameApp({
   const album = game?.album;
   const albumCityId = game?.currentCityId;
   const photoShowCue = useMemo<PhotoShowCue>(() => ({
+    held: photoHeld,
     fresh: photoNotice ? { imageId: photoNotice.photo.imageId, sound: !!photoNotice.sound } : undefined,
     stampOf: (imageId) => {
       const record = album?.find((photo) => photo.imageId === imageId);
       const view = record && albumCityId ? albumPages([record], journeyAlbumContent(albumCityId))[0]?.photos[0] : undefined;
       return view && `${view.placeJa} · ${view.whenJa}`;
     },
-  }), [photoNotice, album, albumCityId]);
+  }), [photoNotice, album, albumCityId, photoHeld]);
   // 旅の図鑑's card holds the photo's card as it holds 「ことばを覚えた」: it shows (its whole time) once the card closes.
   const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown ? photoNotice : null;
   const shownPhotoNoticeId = shownPhotoNotice?.id;
