@@ -1492,7 +1492,9 @@ export function GameApp({
         <p>今の旅は「旅の思い出」として残り、新しい旅の「旅の記録」から見返せます。既読の記録も、そのまま残ります。
           {confirmAgain.status === "loaded" && "前に残した旅の思い出は、今の旅に置き換わります。"}
           {confirmAgain.status === "invalid" && confirmAgain.raw !== null && "前に残した旅の思い出は今の版では読み込めないため、今の旅に置き換わります。"}</p>
-        <DifficultyFields value={againDifficulty} onChange={setAgainDifficulty} journeyId={journeyId} />
+        <div className="name-form">
+          <DifficultyFields value={againDifficulty} onChange={setAgainDifficulty} journeyId={journeyId} />
+        </div>
         {confirmAgain.status === "invalid" && confirmAgain.raw === null && <p role="alert">このブラウザの保存領域を読み取れないため、始められません。保存の設定を確認してください。</p>}
         <ModalAnswers
           cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmAgain(null)}>戻る</button>}
