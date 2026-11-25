@@ -3,24 +3,22 @@
    pills (its band is transparent: journey-hud.css), in the side gutters and
    between the cards. */
 .app-shell.free-time-active { border-color: transparent; background: transparent; box-shadow: none; }
-/* Wide screens keep the site's header lines, over the city too (2026-11-25 user decision: every screen in the one
-   immersive look; they were bands of paper across the picture): the site's name in white on the header's shade (over
-   the backdrop's own darker top), the progress line and the foot on the smoked glass. */
-.free-time-active > .masthead {
-  border-bottom: 0;
-  background: linear-gradient(var(--ds-photo-shade), transparent);
-  color: var(--ds-on-slate);
+/* The header melts into the city as far as it can (2026-11-25 user decisions; journey-hud.css): on wide screens too the
+   site's header lines step aside in free time, as on phones, and the header lies at the screen's top. Its shade spans
+   the whole width, and blurs what scrolls under it (the cards' words never read through its marks), fading out with
+   the shade. */
+.free-time-active > .masthead,
+.free-time-active > .journey-stage,
+.free-time-active > footer { display: none; }
+.app-shell.free-time-active { margin-top: 0; }
+.free-time-active > .journey-hud::before {
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(#000 70%, transparent);
+  mask-image: linear-gradient(#000 70%, transparent);
 }
-.free-time-active > .masthead :is(.brand, .brand span, .edition) { color: var(--ds-on-slate); }
-.free-time-active > :is(.journey-stage, footer) {
-  border-bottom: 0;
-  background: var(--ds-smoke);
-  -webkit-backdrop-filter: var(--ds-smoke-blur);
-  backdrop-filter: var(--ds-smoke-blur);
-  color: var(--ds-on-slate);
-}
-.free-time-active > footer { color: var(--ds-smoke-muted); }
-.free-time-active > .journey-stage span:last-child { background: var(--ds-on-slate); color: var(--ds-slate-900); }
 
 /* A fixed layer under the page's flow (no ancestor makes a stacking context in
    free time, so z-index -1 places it under every card and over the canvas only).
@@ -181,10 +179,6 @@ dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 /* Phones held sideways (§3.4): the map on the left (40 %, as tall as the space
    between the header and the band, sticky), the notes and the list on the right. */
 @media (orientation: landscape) and (max-height: 559px) {
-  /* As on narrow phones (styles.css), the site's header lines give their height to the screen. */
-  .free-time-active > .masthead,
-  .free-time-active > .journey-stage,
-  .free-time-active > footer { display: none; }
   .free-time-hub { max-width: none; }
   .free-time-hub .travel-menu {
     display: grid;

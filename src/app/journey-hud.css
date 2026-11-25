@@ -1,15 +1,14 @@
-/* The header of every game screen (UI redesign §3.1): row 1 shows (status pills),
-   row 2 is pressed (rounded keys with their word under the mark). Shape tells the
-   role, never the colour alone (§2.3). Its height is measured into --hud-h.
-   The band itself is transparent (user decision 2026-11-11): the screen shows
-   through around its parts. Each pill and key is a pane of the smoked glass
-   (2026-11-25 user decision, after free time on an iPhone: the slate pills and
-   gold-edged buttons sat on the city as a form's parts): the scene shows through
-   it blurred, its edge catches the light, and its words keep 5.5:1 over anything
-   behind (styles.css --ds-smoke), so they read over a photo, the parchment or
-   text scrolling under the header alike. */
+/* The header of every game screen (UI redesign §3.1): row 1 shows (where and when,
+   the money), row 2 is pressed (round marks). Its height is measured into --hud-h.
+   It melts into the scene as far as it can (2026-11-25 user decisions, after free
+   time on an iPhone: "as far as possible, blended in"; the immersion first): no
+   plates or keys, only white words and white marks over the scene, as the talk's
+   tools. They keep their reading on a shade that falls from the screen's top and
+   fades out below the header (--hud-shade: white words 4.9:1 or more, the marks
+   4.4:1, whatever lies behind, white counted; a soft dark shadow round each), so
+   they read over a photo or text scrolling under the header alike. The keys'
+   words are their names for screen readers and voice control (visually hidden). */
 .journey-hud {
-  --hud-pill-bg: var(--ds-smoke);
   /* Its width is the screen's (never its content's), so it can be the query
      container for enlarged text (row 1, below). */
   container: journey-hud / inline-size;
@@ -26,21 +25,28 @@
   font-size: 12px;
   line-height: 1.2;
 }
+.journey-hud::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(100% + 40px);
+  background: var(--ds-hud-shade);
+  pointer-events: none;
+}
 .journey-hud p { margin: 0; }
 .journey-hud .icon { flex: none; color: var(--ds-gold); }
 
 /* Row 1: where and when, then the budget above the AP at the right end. Nothing
    here is pressed. When the plate and the money do not fit side by side, the
    money goes below the plate: the row wraps (the header's height is measured). */
-.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 40px; }
+.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 40px; text-shadow: var(--ds-scene-text-shadow); }
 .hud-plate,
 .hud-wallet {
   min-height: 40px;
   border-radius: 999px;
-  background: var(--hud-pill-bg);
-  -webkit-backdrop-filter: var(--ds-smoke-blur);
-  backdrop-filter: var(--ds-smoke-blur);
-  box-shadow: var(--ds-smoke-edge);
 }
 /* The plate takes the row beside the money. It needs at least about nine
    characters (9em) and never less than its time line (its minimum: the place's
@@ -73,7 +79,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--ds-smoke-muted);
+  color: var(--ds-on-slate);
   font-size: 12px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -116,7 +122,8 @@
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
    a guide's or a battle's 「手がかり帳」), then ≡メニュー. On other screens the tool's
-   place is empty and takes no room. Words stay at every width. */
+   place is empty and takes no room. Each is a white mark; its word is its name
+   (visually hidden since 2026-11-25: the header as blended as it can be). */
 .hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: 4px; }
 .hud-actions > * { flex: none; }
 .hud-tools { display: flex; gap: 4px; }
@@ -124,15 +131,13 @@
 .hud-tool,
 .journey-hud .held-item-button,
 .journey-hud .hud-outfits-button {
+  position: relative;
   min-height: 44px;
   margin: 0;
   border: 0;
-  border-radius: 14px;
-  background: var(--ds-smoke);
-  -webkit-backdrop-filter: var(--ds-smoke-blur);
-  backdrop-filter: var(--ds-smoke-blur);
-  box-shadow: var(--ds-smoke-edge);
-  color: var(--ds-on-slate);
+  border-radius: 50%;
+  background: none;
+  color: var(--ds-glass-mark-full);
   font: inherit;
   text-decoration: none;
   cursor: pointer;
@@ -145,17 +150,31 @@
   align-items: center;
   justify-content: center;
   gap: 3px;
+  width: 44px;
   min-width: 44px;
-  padding: 3px 4px;
+  padding: 0;
 }
-.hud-tool .icon { width: 20px; height: 20px; }
-/* The keys' marks are white, as the talk's tools (the gold stays on the status pills' small marks); an open key is
-   darker, its edge and mark gold. */
-.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon { color: var(--ds-on-slate); }
-.hud-tool-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
+/* The keys' marks: white with the talk's tools' soft shadow (the gold stays on row 1's small marks); under a finger or
+   while its panel is open a key shows a faint white disc, and an open key's mark is gold. */
+.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon {
+  width: 24px;
+  height: 24px;
+  color: var(--ds-glass-mark-full);
+  filter: var(--ds-glass-mark-shadow);
+}
+.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button):hover { background: var(--ds-glass-mark-hover); }
+.hud-tool-word,
+.journey-hud .held-items-word {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .journey-hud .held-item-button[aria-expanded="true"],
 .journey-hud .hud-outfits-button[aria-expanded="true"],
-.hud-tool[aria-expanded="true"] { background: var(--ds-smoke-on); box-shadow: inset 0 0 0 1px var(--ds-gold); }
+.hud-tool[aria-expanded="true"] { background: var(--ds-glass-mark-on); }
 .hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button)[aria-expanded="true"] .icon { color: var(--ds-gold); }
 
 /* Over a story scene that waits for no choice (hud-view.ts, user decision
@@ -167,24 +186,12 @@
 /* In such a talk the header steps back further (2026-11-25 user decision, after comparing the talk with a romance game
    on an iPhone): the place and time show as the talk begins (and when its place changes: the plate's key), then fade
    away after five seconds, keeping their room (still read by screen readers); ≡メニュー stays, a round mark without its
-   word (its name for screen readers and voice control), on the same smoked glass. At a choice ("all") the whole header shows
+   word, as every key (its name for screen readers and voice control). At a choice ("all") the whole header shows
    again; back in the talk, the place and time show again for a while. */
 .journey-hud[data-view="talk"] .hud-plate { animation: hud-plate-away 5s linear forwards; }
 @keyframes hud-plate-away {
   0%, 88% { opacity: 1; }
   100% { opacity: 0; }
-}
-.journey-hud[data-view="talk"] .hud-menu > .hud-tool {
-  width: 44px;
-  border-radius: 50%;
-}
-.journey-hud[data-view="talk"] .hud-menu > .hud-tool .hud-tool-word {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 .reduce-motion .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
 @media (prefers-reduced-motion: reduce) {
