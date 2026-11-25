@@ -63,6 +63,16 @@ describe("the people met on the journey", () => {
       .toEqual({ id: "quiz:gt_delhi_main_red_fort_battle", nameJa: redFort.enemyNameJa, descriptionJa: redFort.enemyTitleJa, characterId: "gt_nidhi" });
   });
 
+  it("lists a quiz partner by the name they give, not what the lines call them before it (2026-11-25)", () => {
+    // ジャーマー・マスジドの相手は、名乗る前の台詞の札では「老人」（gt_delhi_jama_old_man、立ち絵 gt_hamid）。
+    const jama = battles.find((battle) => battle.id === "gt_delhi_main_jama_masjid_battle")!;
+    expect(metPeopleGroups(played(cityStart("delhi"), [jama.id]))[0].people[1])
+      .toEqual({ id: "gt_delhi_jama_old_man", nameJa: "ハミード", descriptionJa: jama.enemyTitleJa, characterId: "gt_hamid" });
+    // アーグラでも、名乗る前の「青年」「老人」ではなく、ニキルとドゥッガル大佐として載る。
+    expect(names(played(cityStart("agra"), ["gt_agra_main_taj_mahal_battle", "gt_agra_main_agra_fort_battle"]))
+      .find(([cityId]) => cityId === "agra")?.[1]).toEqual(expect.arrayContaining(["ニキル", "ドゥッガル大佐"]));
+  });
+
   it("never reads a relationship value", () => {
     const state = played(seen(["smp_mihon_bookmark_stall"]), ["smp_mihon_special_b_market"]);
     expect(metPeopleGroups({ ...state, affection: 99, trust: 99, spark: 99 })).toEqual(metPeopleGroups(state));
