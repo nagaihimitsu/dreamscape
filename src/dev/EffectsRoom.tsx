@@ -528,9 +528,11 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
             {portrait && <CharacterPortrait characterId="heroine" cityId={cityId} />}
           </div>
           <div className="vn-dialogue effects-room-window" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}>
-            <div className="vn-window-head"><span className="speaker">見本</span></div>
-            <div className="vn-window-body">
-              <p ref={line} className="dialogue-text">見本の台詞です。揺れ・窓の揺れ・品物の札は、この場面に出ます。</p>
+            <div className="vn-window">
+              <div className="vn-window-head"><span className="speaker">見本</span></div>
+              <div className="vn-window-body">
+                <p ref={line} className="dialogue-text">見本の台詞です。揺れ・窓の揺れ・品物の札は、この場面に出ます。</p>
+              </div>
             </div>
           </div>
         </div>

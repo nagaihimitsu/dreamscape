@@ -91,7 +91,7 @@ export function DialogueLog({
   return (
     <>
       <button className="text-button" aria-label="会話ログ" onClick={() => setOpen(true)}>
-        <Icon name="log" />{label}
+        <Icon name="log" /><span className="dialogue-tool-word">{label}</span>
       </button>
       {/* A dialog for viewing (2026-11-14): 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc. */}
       {open && (

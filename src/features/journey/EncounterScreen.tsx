@@ -16,6 +16,7 @@ import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { dialogueObstructed, readingHeld } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
+import { useEstablishingShot } from "../../components/useEstablishingShot";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
@@ -157,8 +158,10 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
   }
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: (!!quiz && !resultShown) || view.choices.length > 0, resultShown,
     windowHidden: windowVisibility.hidden, onResult: continueFromResult });
+  const establishing = useEstablishingShot(view.id, view.revision);
   return (
-    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet} {...sceneTap.props}>
+    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet}
+      data-establishing={establishing || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" decoding="async" fetchPriority="high" /> : <CanalScene backgroundId={view.background} />}
         <SceneTint color={sceneTimeTint(view.minute, view.staging?.tint === "off")} />
       </div>
@@ -189,49 +192,53 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
         })}
       </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} data-remembered={remembered || undefined} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
-        <DialogueWindowHead
-          cutIn={nameCut}
-          speaker={showsSpeakerPlate(staging) && view.speaker}
-          narration={view.narration}
-          remembered={remembered}
-          controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
-        />
-        <div className="vn-window-body">
-        {quiz ? (
-          <>
-            {/* Its words open their meanings: a tap beside one (or on a meaning shown) does not go on past the result. */}
-            {englishOff && quiz.questionJa ? <p className="encounter-quiz-prompt" lang="ja">{quiz.questionJa}</p> : <>
-            <p className="encounter-quiz-prompt" data-no-advance>
-              <InteractiveEnglish text={quiz.questionEn} vocabulary={[]} label="問題文" onDoubleTap={() => revealTranslation(learning, quiz.id, "question")} />
-            </p>
-            <button type="button" className="text-button" aria-expanded={visible(learning, quiz.id, "question")} onClick={() => toggleTranslation(learning, quiz.id, "question")}>
-              {visible(learning, quiz.id, "question") ? "訳を閉じる" : "訳を見る"}
-            </button>
-            {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
-            </>}
-            {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={continueFromResult}>続きを読む <span aria-hidden="true">→</span></button></> : (
-              <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
+        <div className="vn-window">
+          <DialogueWindowHead
+            cutIn={nameCut}
+            speaker={showsSpeakerPlate(staging) && view.speaker}
+            narration={view.narration}
+            remembered={remembered}
+            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+          />
+          <div className="vn-window-body">
+            {quiz ? (
+              <>
+                {/* Its words open their meanings: a tap beside one (or on a meaning shown) does not go on past the result. */}
+                {englishOff && quiz.questionJa ? <p className="encounter-quiz-prompt" lang="ja">{quiz.questionJa}</p> : <>
+                <p className="encounter-quiz-prompt" data-no-advance>
+                  <InteractiveEnglish text={quiz.questionEn} vocabulary={[]} label="問題文" onDoubleTap={() => revealTranslation(learning, quiz.id, "question")} />
+                </p>
+                <button type="button" className="text-button" aria-expanded={visible(learning, quiz.id, "question")} onClick={() => toggleTranslation(learning, quiz.id, "question")}>
+                  {visible(learning, quiz.id, "question") ? "訳を閉じる" : "訳を見る"}
+                </button>
+                {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
+                </>}
+                {quiz.result && <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={continueFromResult}>続きを読む <span aria-hidden="true">→</span></button></>}
+              </>
+            ) : (
+              <>
+                <LineStage frame={staging ?? { speaker: "narrator" }} names={view.phoneNames ?? {}} compact={view.choices.length > 0}>
+                  <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} delivery={view.delivery} speed={autoAdvance.fast ? 0 : lineSpeed(speed, staging)}
+                    voiceId={view.voiceId} seId={view.seId} cues={lineCues(staging, !!nameCut)} voice={autoAdvance.voice} onReady={onReady} onAdvance={advance} />
+                </LineStage>
+                {!view.choices.length && view.ended ? (
+                  <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "街歩きへ" : "続きを読む"} <span aria-hidden="true">→</span></button>
+                ) : null}
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <LineStage frame={staging ?? { speaker: "narrator" }} names={view.phoneNames ?? {}} compact={view.choices.length > 0}>
-              <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} delivery={view.delivery} speed={autoAdvance.fast ? 0 : lineSpeed(speed, staging)}
-                voiceId={view.voiceId} seId={view.seId} cues={lineCues(staging, !!nameCut)} voice={autoAdvance.voice} onReady={onReady} onAdvance={advance} />
-            </LineStage>
-            {view.choices.length ? (
-              <ChoicePoint minigame={view.minigame} ready={ready} cast={{
-                heroine: { emotion: view.stage.heroine.emotion, cityId: view.cityId, sceneId: view.sceneId },
-                ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId} /> } : {}),
-              }}>
-                <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
-              </ChoicePoint>
-            ) : view.ended ? (
-              <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "街歩きへ" : "続きを読む"} <span aria-hidden="true">→</span></button>
-            ) : null}
-          </>
-        )}
+          </div>
         </div>
+        {/* The replies float above the window, which keeps the line or the question they answer (romance-scene.css .vn-choices). */}
+        {quiz ? (!quiz.result && <div className="vn-choices">
+          <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
+        </div>) : (view.choices.length > 0 && <div className="vn-choices">
+          <ChoicePoint minigame={view.minigame} ready={ready} cast={{
+            heroine: { emotion: view.stage.heroine.emotion, cityId: view.cityId, sceneId: view.sceneId },
+            ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId} /> } : {}),
+          }}>
+            <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
+          </ChoicePoint>
+        </div>)}
       </section>
       <DialogueWindowRestore state={windowVisibility} />
       <MiniGameSlot />

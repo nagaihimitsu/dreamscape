@@ -34,6 +34,7 @@ import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
+import { useEstablishingShot } from "../../components/useEstablishingShot";
 import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -147,6 +148,7 @@ export function TourismScreen({
     lineId: active.phase === "guide" && frame?.text ? readLineId(guideStoryId || active.landmarkId, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: !!frame?.choices.length, windowHidden: windowVisibility.hidden });
+  const establishing = useEstablishingShot(active.landmarkId, game.revision);
   useEffect(() => {
     const media = window.matchMedia(COMPACT_OBSERVATION);
     const update = () => setCompactObservation(media.matches);
@@ -211,7 +213,8 @@ export function TourismScreen({
         </p>
       )}
       {active.phase === "guide" && frame ? (
-        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={frame.quiet}>
+        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0}
+          data-quiet={frame.quiet} data-establishing={establishing || undefined}>
           <div className="vn-background" data-testid="scene-picture">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
             <SceneTint color={sceneTimeTint(game.travel.minute, frame.tint === "off")} />
@@ -259,49 +262,55 @@ export function TourismScreen({
             className="tourism-guide paper vn-dialogue"
             {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
             data-testid="tourism-guide"
+            data-has-choices={frame.choices.length > 0}
             data-remembered={plate.remembered}
             inert={windowVisibility.hidden}
             aria-hidden={windowVisibility.hidden || undefined}
           >
-            <DialogueWindowHead
-              speaker={showsSpeakerPlate(frame) && speaker}
-              narration={plate.narration}
-              remembered={plate.remembered}
-              cutIn={nameCut}
-              controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
-            />
-            <div ref={dialogueRef} className="vn-window-body">
-            <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
-              <DialogueText
-                key={game.revision}
-                ref={sceneTap.line}
-                text={frame.text}
-                delivery={frame.delivery}
-                voiceId={frame.voiceId}
-                seId={frame.seId}
-                cues={lineCues(frame, !!nameCut)}
-                voice={autoAdvance.voice}
-                speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
-                onReady={onReady}
-                onAdvance={advanceSafely}
+            <div className="vn-window">
+              <DialogueWindowHead
+                speaker={showsSpeakerPlate(frame) && speaker}
+                narration={plate.narration}
+                remembered={plate.remembered}
+                cutIn={nameCut}
+                controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
               />
-            </LineStage>
-            {frame.choices.length > 0 && onChooseGuide && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-              heroine: { emotion: reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame), sceneId: landmark.id, cityId: landmark.cityId },
-              ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
-            }}>
-              <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />
-            </ChoicePoint>}
-            {frame.ended && <button
-              className="next"
-              data-testid="tourism-advance"
-              disabled={!ready}
-              onClick={advanceSafely}
-            >
-              {endLabel}
-              <span aria-hidden="true"> →</span>
-            </button>}
+              <div ref={dialogueRef} className="vn-window-body">
+                <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
+                  <DialogueText
+                    key={game.revision}
+                    ref={sceneTap.line}
+                    text={frame.text}
+                    delivery={frame.delivery}
+                    voiceId={frame.voiceId}
+                    seId={frame.seId}
+                    cues={lineCues(frame, !!nameCut)}
+                    voice={autoAdvance.voice}
+                    speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
+                    onReady={onReady}
+                    onAdvance={advanceSafely}
+                  />
+                </LineStage>
+                {frame.ended && <button
+                  className="next"
+                  data-testid="tourism-advance"
+                  disabled={!ready}
+                  onClick={advanceSafely}
+                >
+                  {endLabel}
+                  <span aria-hidden="true"> →</span>
+                </button>}
+              </div>
             </div>
+            {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
+            {frame.choices.length > 0 && onChooseGuide && <div className="vn-choices">
+              <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+                heroine: { emotion: reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame), sceneId: landmark.id, cityId: landmark.cityId },
+                ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
+              }}>
+                <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />
+              </ChoicePoint>
+            </div>}
           </div>
           <DialogueWindowRestore state={windowVisibility} />
           <MiniGameSlot />

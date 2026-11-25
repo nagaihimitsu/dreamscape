@@ -470,11 +470,15 @@ footer span {
 .speaker-dot.shy {
   background: #b4867c;
 }
+/* The words of a talk in a plain Gothic face, easy to read over the glass at a glance (2026-11-25 user decision: as
+   readable as Yu Gothic; Noto Sans JP, a web font every phone loads, so every phone breaks the lines alike). A letter's
+   sheet keeps its serif (line-stage.css). */
 .dialogue-text {
-  font-family: "Noto Serif JP", serif;
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: 500;
   font-size: 19px;
   line-height: 2.1;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.03em;
   margin: 18px 0 24px;
   min-height: 90px;
   white-space: pre-wrap;

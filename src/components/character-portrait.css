@@ -1,11 +1,14 @@
 .vn-character {
+  --vn-camera-moves: width var(--vn-camera, 0s) var(--ease-out), height var(--vn-camera, 0s) var(--ease-out),
+    bottom var(--vn-camera, 0s) var(--ease-out);
   position: absolute;
   z-index: 1;
   pointer-events: none;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  transition: opacity 180ms ease, scale var(--motion-fast) var(--ease-out);
+  /* Its box follows the scene's camera (figure-zoom.ts) over --vn-camera: the coming in after a scene's first line. */
+  transition: opacity 180ms ease, scale var(--motion-fast) var(--ease-out), var(--vn-camera-moves);
   /* A character who comes into the scene fades in (a change of expression does not: the
      portrait stays, only its picture changes). */
   animation: vn-character-in var(--motion-medium) var(--ease-out);
@@ -87,7 +90,8 @@
 .vn-character[data-stand] {
   translate: var(--stand-x) var(--stand-y);
   scale: var(--stand-scale);
-  transition: opacity 180ms ease, scale var(--motion-scene) var(--ease-out), translate var(--motion-scene) var(--ease-out);
+  transition: opacity 180ms ease, scale var(--motion-scene) var(--ease-out), translate var(--motion-scene) var(--ease-out),
+    var(--vn-camera-moves);
 }
 .vn-character[data-stand="near"] { --stand-x: 0%; --stand-y: 0%; --stand-scale: 1; }
 .vn-character[data-stand="apart"] { --stand-x: 14%; --stand-y: 4%; --stand-scale: 0.88; }
