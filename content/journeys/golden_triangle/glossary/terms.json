@@ -375,6 +375,24 @@
       "imageId": "gt_img_term_jawab"
     },
     {
+      "id": "gt_term_stepwell",
+      "nameJa": "バーオリー",
+      "readingJa": null,
+      "aliasJa": "階段井戸",
+      "category": "building",
+      "lineJa": "水をためる井戸であり、人の集まる場所や、旅人の休み場でもあった。",
+      "imageId": "gt_img_term_stepwell"
+    },
+    {
+      "id": "gt_term_sarovar",
+      "nameJa": "サローヴァル",
+      "readingJa": null,
+      "aliasJa": "聖なる池",
+      "category": "building",
+      "lineJa": "グルドワーラーの聖なる池。水に癒やしの力があるとされ、持ち帰る人もいる。",
+      "imageId": "gt_img_term_sarovar"
+    },
+    {
       "id": "gt_term_petha",
       "nameJa": "ペーター",
       "readingJa": null,
@@ -420,6 +438,34 @@
       "category": "food",
       "lineJa": "道ばたで焼き、レモンと唐辛子と塩をすり込むとうもろこし。雨の季節の屋台の定番。",
       "imageId": "gt_img_term_bhutta"
+    },
+    {
+      "id": "gt_term_dal",
+      "nameJa": "ダール",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "豆の煮込みのダールは毎日の食事の柱。インドは豆の生産も消費も世界最大級。",
+      "imageId": "gt_img_term_dal"
+    },
+    {
+      "id": "gt_term_chai",
+      "nameJa": "チャイ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "牛乳と香辛料で煮出す紅茶。インドで広まったのは、20世紀の茶の宣伝から。",
+      "imageId": "gt_img_term_chai"
+    },
+    {
+      "id": "gt_term_cumin_water",
+      "nameJa": "ジーラー・パーニー",
+      "readingJa": null,
+      "aliasJa": "クミンの水",
+      "category": "food",
+      "lineJa": "クミンの種を煮出した水は、お腹の張りに効くとされる。インドはクミン最大の産地。",
+      "photoNoteJa": "写真は、クミンの種",
+      "imageId": "gt_img_term_cumin_water"
     },
     {
       "id": "gt_term_baraat",
@@ -532,6 +578,15 @@
       "imageId": "gt_img_term_calligraphy_band"
     },
     {
+      "id": "gt_term_qutb_calligraphy",
+      "nameJa": "クトゥブ・ミナールの文字の帯",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "design",
+      "lineJa": "塔の帯には、コーランの章句や君主の名と称号が、アラビア文字で刻まれている。",
+      "imageId": "gt_img_term_qutb_calligraphy"
+    },
+    {
       "id": "gt_term_sehra",
       "nameJa": "セーラー",
       "readingJa": null,
@@ -605,6 +660,16 @@
       "lineJa": "両面を打つ太鼓。結婚式の行列や祭りで、にぎやかに鳴らされる。",
       "photoNoteJa": "写真は、ウッタラーカンドの結婚式のドール",
       "imageId": "gt_img_term_dhol"
+    },
+    {
+      "id": "gt_term_shabad_kirtan",
+      "nameJa": "シャバド・キールタン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "music",
+      "lineJa": "シク教の聖典の賛歌を歌う礼拝。ハルモニウムとタブラーの伴奏がよく使われる。",
+      "photoNoteJa": "写真は、1935年のラホールのグルドワーラーでのキールタン",
+      "imageId": "gt_img_term_shabad_kirtan"
     },
     {
       "id": "gt_term_head_bobble",
@@ -810,6 +875,36 @@
       "imageId": "gt_img_term_dharna"
     },
     {
+      "id": "gt_term_pillar_hug",
+      "nameJa": "鉄の柱を抱く願掛け",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "鉄の柱に背中をつけ、両手が後ろで回れば幸運が来る、と信じられていた。",
+      "imageId": "gt_img_term_iron_pillar",
+      "photoNoteJa": "写真は、クトゥブ・ミナールの鉄の柱"
+    },
+    {
+      "id": "gt_term_bahai",
+      "nameJa": "バハイ信仰",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "19世紀に生まれた宗教。礼拝堂はどの宗教の人にも開かれ、説教はなく聖典を読む。",
+      "photoNoteJa": "写真は、デリーの蓮の寺院（バハイの礼拝堂）",
+      "imageId": "gt_img_term_bahai"
+    },
+    {
+      "id": "gt_term_cupped_hands",
+      "nameJa": "両手で受け取る",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "シク教の寺院では、甘い供物カラー・プラサードなどを、くぼめた両手で受け取る。",
+      "photoNoteJa": "写真は、カラー・プラサードを受け取る手",
+      "imageId": "gt_img_term_cupped_hands"
+    },
+    {
       "id": "gt_term_rose_ringed_parakeet",
       "nameJa": "ワカケホンセイインコ",
       "readingJa": null,
@@ -863,6 +958,24 @@
       "category": "creature",
       "lineJa": "水牛の乳は脂肪とたんぱく質が多く、インドの牛乳生産でも大きな割合を占める。",
       "imageId": "gt_img_term_water_buffalo"
+    },
+    {
+      "id": "gt_term_lotus",
+      "nameJa": "蓮",
+      "readingJa": null,
+      "aliasJa": "カマル",
+      "category": "creature",
+      "lineJa": "インドの国花。ヒンドゥー教や仏教で、清らかさや悟りを表す花とされる。",
+      "imageId": "gt_img_term_lotus"
+    },
+    {
+      "id": "gt_term_peacock",
+      "nameJa": "孔雀",
+      "readingJa": null,
+      "aliasJa": "モール",
+      "category": "creature",
+      "lineJa": "インドの国鳥。法律で守られ、神話や寺院の絵にも多く描かれる。",
+      "imageId": "gt_img_term_peacock"
     },
     {
       "id": "gt_term_jaivana",
@@ -985,6 +1098,25 @@
       "lineJa": "ムガル帝国の祖バーブルの自伝。テュルク語で書かれ、細密画つきの写本も作られた。",
       "photoNoteJa": "画像は、写本の一頁「カーブルに入るバーブル」",
       "imageId": "gt_img_term_baburnama"
+    },
+    {
+      "id": "gt_term_red_sandstone",
+      "nameJa": "赤い砂岩",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "赤い城や多くの廟の石。クトゥブ・ミナールは赤と淡黄色の砂岩が帯を成す。",
+      "photoNoteJa": "写真は、クトゥブ・ミナール",
+      "imageId": "gt_img_term_red_sandstone"
+    },
+    {
+      "id": "gt_term_belan",
+      "nameJa": "ベーラン",
+      "readingJa": null,
+      "aliasJa": "麺棒",
+      "category": "thing",
+      "lineJa": "細い麺棒。円い台（チャクラー）の上で、チャパティなどの生地を薄く伸ばす。",
+      "imageId": "gt_img_term_belan"
     },
     {
       "id": "gt_term_tavernier",
@@ -1258,6 +1390,16 @@
       "imageId": "gt_img_term_salim_chishti"
     },
     {
+      "id": "gt_term_guru_harkrishan",
+      "nameJa": "グル・ハルクリシャン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "シク教の第8代グル。5歳で継ぎ、デリーの天然痘の流行で病人を看たと伝わる。",
+      "photoNoteJa": "絵は、1820年ごろの細密画",
+      "imageId": "gt_img_term_guru_harkrishan"
+    },
+    {
       "id": "gt_term_khari_baoli",
       "nameJa": "カーリー・バーオリー",
       "readingJa": null,
@@ -1304,6 +1446,15 @@
       "lineJa": "シャー・ジャハーンがアーグラから遷都して築いた都。今のオールド・デリー。",
       "photoNoteJa": "写真は、今のオールド・デリーの路地",
       "imageId": "gt_img_term_shahjahanabad"
+    },
+    {
+      "id": "gt_term_paharganj",
+      "nameJa": "パハールガンジ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "place",
+      "lineJa": "ニューデリー駅前の安宿街。1970年代からヒッピーや旅人が集まるようになった。",
+      "imageId": "gt_img_term_paharganj"
     }
   ]
 }

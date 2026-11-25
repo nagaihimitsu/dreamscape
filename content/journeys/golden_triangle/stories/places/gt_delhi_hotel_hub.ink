@@ -110,6 +110,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_epilogue_001
 いえ。……わたしも、アマンさんの立場だったら、同じことを言ったと思います
 # speaker: narrator
+# term: gt_term_chai
 アマンはチャイを一つずつ、二人の手に渡した。器が、まだ熱い。
 # speaker: enemy
 # voice: gt_delhi_epilogue_aman_002

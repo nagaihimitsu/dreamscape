@@ -43,6 +43,7 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,sweat
 えっ。えっと……キツネ？
 # speaker: gt_delhi_airport_girl
+# term: gt_term_peacock
 ちがうよ。くじゃく！
 # speaker: narrator
 女の子が手首をくるりと返すと、そろえた指が、ふわりと揺れた。
@@ -138,6 +139,7 @@ INCLUDE modules.ink
 # tint: off
 { cond("seen gt_delhi_hotel_sick_morning"):
     # speaker: narrator
+    # term: gt_term_cumin_water
     宿の帳場の机で、ルーヒーが鉛筆をかじっていた。クミンの水を持ってきてくれた、宿の娘だ。
     # speaker: enemy
     # voice: gt_delhi_hotel_homework_roohi_001
@@ -395,11 +397,13 @@ INCLUDE modules.ink
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
     # voice: gt_delhi_hotel_sick_morning_roohi_001
+    # term: gt_term_cumin_water
     クミンの水。わたしが作った。……宿題を手伝ってくれたお礼、半分ね
 - else:
     # speaker: enemy
     # cutin: name
     # voice: gt_delhi_hotel_sick_morning_roohi_002
+    # term: gt_term_cumin_water
     わたし、ルーヒー。十三歳。これは、クミンを煮出した水
     # speaker: enemy
     # voice: gt_delhi_hotel_sick_morning_roohi_003
@@ -455,6 +459,7 @@ INCLUDE modules.ink
 # bgm: gt_vadodora
 # ambience: gt_amb_street_traffic
 # speaker: narrator
+# term: gt_term_paharganj
 宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
 # speaker: gt_delhi_scam_young_man
@@ -718,6 +723,7 @@ Thank you. We'll check it ourselves.
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
 # voice: gt_delhi_depart_scam_delhi_scam_suit_man_001
+# term: gt_term_chai
 座ってください。まずはチャイを
 # speaker: gt_delhi_scam_suit_man
 # voice: gt_delhi_depart_scam_delhi_scam_suit_man_002

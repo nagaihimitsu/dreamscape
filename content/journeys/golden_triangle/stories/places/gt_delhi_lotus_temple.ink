@@ -16,6 +16,8 @@ INCLUDE modules.ink
 # speaker: narrator
 芝生の向こうに、白い大理石の花びらを重ねた建物が浮かんでいた。
 # speaker: narrator
+# term: gt_term_lotus
+# term: gt_term_bahai
 ロータス寺院。蓮の花をかたどった、バハイ信仰の礼拝堂だ。
 # speaker: narrator
 入口の手前で、ボランティアの若者が静かに説明していた。どの宗教の人でも入れる。決まった儀式も、説教も、楽器の演奏もない。
