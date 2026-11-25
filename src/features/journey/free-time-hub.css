@@ -5,8 +5,7 @@
 .app-shell.free-time-active { border-color: transparent; background: transparent; box-shadow: none; }
 /* The header melts into the city as far as it can (2026-11-25 user decisions; journey-hud.css): on wide screens too the
    site's header lines step aside in free time, as on phones, and the header lies at the screen's top. Its shade spans
-   the whole width, and blurs what scrolls under it (the cards' words never read through its marks), fading out with
-   the shade. */
+   the whole width. (No blur under it: an iPhone's Safari does not fade a blur with the shade, and its edge showed.) */
 .free-time-active > .masthead,
 .free-time-active > .journey-stage,
 .free-time-active > footer { display: none; }
@@ -14,10 +13,6 @@
 .free-time-active > .journey-hud::before {
   left: calc(50% - 50vw);
   right: calc(50% - 50vw);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  -webkit-mask-image: linear-gradient(#000 70%, transparent);
-  mask-image: linear-gradient(#000 70%, transparent);
 }
 
 /* A fixed layer under the page's flow (no ancestor makes a stacking context in
