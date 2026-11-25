@@ -35,15 +35,15 @@
   background: color-mix(in srgb, var(--band-fill, var(--vn-name-bg)) 82%, transparent);
   /* The rim: firm at the fill, then ever fainter outwards. */
   box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--band-edge, #a9c0e0) 92%, transparent),
-    0 0 4px 6px color-mix(in srgb, var(--band-edge, #a9c0e0) 60%, transparent),
-    0 0 10px 8px color-mix(in srgb, var(--band-edge, #a9c0e0) 30%, transparent),
-    0 0 18px 9px color-mix(in srgb, var(--band-edge, #a9c0e0) 12%, transparent);
-  color: var(--band-ink, var(--vn-name-ink, #fff));
+    0 0 0 4px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 92%, transparent),
+    0 0 4px 6px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 60%, transparent),
+    0 0 10px 8px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 30%, transparent),
+    0 0 18px 9px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 12%, transparent);
+  color: var(--band-ink, var(--vn-name-ink));
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   letter-spacing: 0.04em;
   overflow-wrap: anywhere;
   transition: translate var(--motion-medium) var(--ease-out);
@@ -59,9 +59,9 @@
   padding: 0 0.4em;
   border: 1px solid currentColor;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 500;
-  line-height: 1.45;
+  line-height: var(--ds-leading-snug);
   letter-spacing: 0.08em;
   vertical-align: 0.08em;
   white-space: nowrap;
@@ -93,13 +93,13 @@
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: rgba(255, 255, 255, 0.86);
-  filter: drop-shadow(0 1px 2px rgba(10, 14, 24, 0.6));
+  color: var(--ds-glass-mark);
+  filter: var(--ds-glass-mark-shadow);
   line-height: 1;
   text-decoration: none;
   transition: background-color var(--motion-fast) var(--ease-out);
 }
-.dialogue-controls button.text-button:hover:enabled { background: rgba(255, 255, 255, 0.14); }
+.dialogue-controls button.text-button:hover:enabled { background: var(--ds-glass-mark-hover); }
 .dialogue-controls .icon { display: block; width: 20px; height: 20px; color: currentColor; }
 .dialogue-controls .dialogue-tool-word {
   position: absolute;
@@ -111,12 +111,12 @@
 }
 @container vn-window (width < 24em) {
   .vn-window-head { padding: 0 8px; }
-  .vn-window-head > .speaker { padding: 4px 14px 5px; font-size: 14px; }
+  .vn-window-head > .speaker { padding: 4px 14px 5px; }
 }
 /* 高速送り while on: its mark whole on a faint round ground (with its 「高速送り中」 and aria-pressed). */
 .dialogue-controls button.text-button[aria-pressed="true"] {
-  background: rgba(255, 255, 255, 0.24);
-  color: #fff;
+  background: var(--ds-glass-mark-on);
+  color: var(--ds-glass-mark-full);
 }
 .dialogue-controls .text-button:disabled { opacity: 0.4; cursor: default; }
 .dialogue-controls .text-button:focus-visible {
@@ -132,7 +132,7 @@
   position: absolute;
   right: -11px;
   bottom: -2px;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   line-height: 1;
   white-space: nowrap;
 }

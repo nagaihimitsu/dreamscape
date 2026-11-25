@@ -6,7 +6,7 @@
   margin-top: 8px;
 }
 .encounter-translation-tools { display: flex; justify-content: flex-end; }
-.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: 12px; }
+.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: var(--ds-text-caption); }
 
 /* An English choice of an encounter (UI redesign stage 2.4): a display row in the window
    (its words and translation are reading targets); the letter is its pressable, slate with
@@ -17,9 +17,9 @@
   align-items: center;
   gap: 3px 6px;
   padding: 4px 7px;
-  border: 1px solid rgba(255, 255, 255, .22);
+  border: 0;
   border-radius: 12px;
-  background: rgba(255, 255, 255, .06);
+  background: var(--ds-glass-bg);
 }
 .encounter-choice[data-translated] { grid-template-columns: 44px minmax(0, 1fr) 64px; }
 .encounter-choice > .encounter-choice-select { grid-column: 1; grid-row: 1; }
@@ -31,7 +31,7 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 2px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
 }
 /* The translation and a reason it cannot be chosen: under the words, across to the row's right edge. */
 .encounter-choice > p { grid-column: 2 / -1; }
@@ -45,7 +45,7 @@
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-family: Georgia, serif;
-  font-size: 18px;
+  font-size: var(--ds-text-reading);
   font-weight: 400;
   cursor: pointer;
 }
@@ -61,8 +61,8 @@
 .encounter-choice-content {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-size: 15px;
-  line-height: 1.4;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-snug);
 }
 
 /* Its price and AP under its words. */
@@ -70,13 +70,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 
 .encounter-choice > p {
   margin: 2px 0 8px;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
 }
 
 .encounter-choice-reason { font-weight: 700; }
@@ -178,9 +178,9 @@
   left: auto;
   right: 64%;
 }
-.encounter-dialogue .encounter-quiz-prompt { font-size: 17px; line-height: 1.5; }
+.encounter-dialogue .encounter-quiz-prompt { font-size: var(--ds-text-reading); line-height: var(--ds-leading-body); }
 .encounter-dialogue .english-word { color: inherit; }
-.encounter-dialogue .word-meaning { color: #263c32; }
+.encounter-dialogue .word-meaning { color: var(--ds-ink); }
 
 /* An encounter's replies floating above the window (romance-scene.css .vn-choices, 2026-11-25): each row one pane of the
    window's glass, its words and translation in the window's ink, its letter the terracotta press of every choice (a
@@ -191,7 +191,7 @@
   border: 0;
   border-radius: 14px;
   background: var(--vn-window-bg);
-  box-shadow: 0 2px 10px rgba(20, 28, 48, 0.2);
+  box-shadow: var(--ds-glass-shadow);
   color: var(--vn-text);
 }
 .vn-choices .encounter-choice :is(.text-button, p) {
@@ -205,7 +205,7 @@
   border: 0;
   background: var(--vn-choice-bg);
   box-shadow: var(--vn-choice-shadow);
-  color: #fff;
+  color: var(--ds-action-ink);
 }
 .vn-choices .encounter-choice-select:disabled {
   background: var(--ds-disabled-bg);

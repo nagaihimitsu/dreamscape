@@ -18,7 +18,7 @@
   padding: 20px;
   border: 0;
   background: transparent;
-  color: #fff;
+  color: var(--ds-glass-mark-full);
 }
 /* Its visible cue (D7), without words (2026-11-11, the user's decision): a
    44-px pressable square with an eye at the bottom, where the window was, above
