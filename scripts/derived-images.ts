@@ -4,14 +4,14 @@ import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { derivedImageFile, type DerivedImageKind } from "../src/content/code-images";
-import { chooseCityBackdrop, choosePlacePhoto, type PhotoContent } from "../src/content/photo-choice";
+import { chooseCardPhotos, chooseCityBackdrop, choosePlacePhoto, type PhotoContent } from "../src/content/photo-choice";
 import type { TourismAsset } from "../src/content/tourism-schemas";
 import type { TravelPlace } from "../src/content/travel-schemas";
 import { requireServedFile } from "./public-assets";
 
 // Reduced copies of the photos the free-time screen shows (UI spec §4.2): a
 // `card` for every photo a place's row can show (photo-choice.ts
-// choosePlacePhoto) and a `backdrop` for every city backdrop; and a `recap`
+// choosePlacePhoto) and 「待機」's, the tour's and the shop's (chooseCardPhotos) and a `backdrop` for every city backdrop; and a `recap`
 // (2026-11-13) of the photo of each episode's map place, which the resume
 // recap shows when the episode took no album photo (journey-moments.ts
 // recapPicture: sharp on a 3× phone at its 280 px). content:build
@@ -62,6 +62,9 @@ export function derivedImageList(input: {
     hotelPlaceId: string;
     /** The places of the city's episodes' map events (a landmark's place, or where a finale is set). */
     episodePlaceIds: readonly string[];
+    /** Its travel settings and shop, for the photos of 「待機」's, the tour's and the shop's cards (none: no such photos). */
+    settings?: { waitPhotoAssetId?: string; tourPhotoAssetId?: string };
+    shop?: { photoAssetId?: string };
   }[];
   journeyOf: ReadonlyMap<string, string>;
   publicFiles: ReadonlyMap<string, string>;
@@ -74,8 +77,9 @@ export function derivedImageList(input: {
     const served = derivedImageFile(journeyId, asset.id, kind);
     if (!images.has(served)) images.set(served, { path: served, kind, assetId: asset.id, source: requireServedFile(input.publicFiles, asset.path) });
   };
-  for (const { city, places, hotelPlaceId, episodePlaceIds } of input.cities) {
+  for (const { city, places, hotelPlaceId, episodePlaceIds, settings = {}, shop } of input.cities) {
     for (const place of places) add(choosePlacePhoto(input.content, place, hotelPlaceId), "card");
+    for (const asset of Object.values(chooseCardPhotos(input.content.assets, { settings, shop }))) add(asset, "card");
     add(chooseCityBackdrop(input.content.assets, city), "backdrop");
     // 前回までのあらすじ's photo: an episode's place, or a date's destination (a date finished last, 2026-11-19).
     for (const place of places.filter((item) => episodePlaceIds.includes(item.id) || item.destinationIds?.length))

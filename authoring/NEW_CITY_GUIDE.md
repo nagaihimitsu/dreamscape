@@ -408,7 +408,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 ### 手順13. 背景・移動画面・タイトルの絵
 
 - 目的と前に要るもの：会話の背景、街歩きの背景、地点の写真札、品物のアイコン、タイトルの絵（場合Bだけ）を整える。写真は手順5の後。描いた絵は手順2の後ならいつでも頼める。
-- 作るもの：会話の背景は `romance/presentation.json`（写真 `imageAssetId`、描いた絵 `imagePath`）、街歩きは都市ファイルの `backdropImagePath` か `backdropAssetId`（どちらか一方）、地点の写真札は `travel/<都市ID>.json` の `photoAssetId`（宿はこの欄だけ）、品物は `iconPath`、タイトルは `manifest.json` の `titleArt`。
+- 作るもの：会話の背景は `romance/presentation.json`（写真 `imageAssetId`、描いた絵 `imagePath`）、街歩きは都市ファイルの `backdropImagePath` か `backdropAssetId`（どちらか一方）、地点の写真札は `travel/<都市ID>.json` の `photoAssetId`（宿はこの欄だけ）、「待機」「ツアー」の札は `travel/<都市ID>-settings.json` の `waitPhotoAssetId`・`tourPhotoAssetId`、店の札は `shop/catalog.json` の `photoAssetId`、品物は `iconPath`、タイトルは `manifest.json` の `titleArt`。
 - 描いた絵の頼み方・大きさ・受け取り方（WebP、自作の絵の一覧 `own-artwork.json`）：[発注マニュアル](ORDERING_MANUAL.md#5-絵の依頼書)の5〜7章。確かめ方：`npm run content:build` と、スマートフォンの幅で街歩きと会話の画面を見る。
 - インド編では：3都市の移動画面の背景を自作の絵にした（#57。元のJPEGは `authoring/journeys/golden_triangle/backdrops/`）。
 

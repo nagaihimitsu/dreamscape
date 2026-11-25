@@ -73,6 +73,10 @@
     "backdropImagePath": {
       "type": "string",
       "pattern": "^assets\\/(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\.(?:webp|png|jpe?g)$"
+    },
+    "backdropVideoPath": {
+      "type": "string",
+      "pattern": "^assets\\/(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\.mp4$"
     }
   },
   "additionalProperties": false,

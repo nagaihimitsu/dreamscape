@@ -58,6 +58,20 @@ describe("derived photo copies", () => {
     ]);
   });
 
+  it("lists a card for 「待機」's, the tour's and the shop's photos (a placeholder or none gives no copy)", () => {
+    const assets = [asset("a_cow"), asset("a_cloth"), asset("a_draft", true)];
+    const images = derivedImageList({
+      content: { assets, landmarks: [], backgrounds: { plain_bg: {} } },
+      cities: [{
+        city: {}, hotelPlaceId: "p_hotel", episodePlaceIds: [], places: [{ id: "p_hotel", backgroundId: "plain_bg" }] as never,
+        settings: { waitPhotoAssetId: "a_cow", tourPhotoAssetId: "a_draft" }, shop: { photoAssetId: "a_cloth" },
+      }],
+      journeyOf: new Map(assets.map((item) => [item.id, "trip_a"])),
+      publicFiles: new Map(assets.map((item) => [item.path, `/photos/${item.id}.jpg`])),
+    });
+    expect(images.map((image) => image.path)).toEqual(["assets/derived/trip_a/a_cow.card.webp", "assets/derived/trip_a/a_cloth.card.webp"]);
+  });
+
   it("makes a 480×320 card, an 840×560 recap and a backdrop of at most 1280 px that is never enlarged", async () => {
     const wide = await photo(2000, 1000);
     expect(await sharp(await encodeDerivedImage(wide, "card")).metadata()).toMatchObject({ format: "webp", width: 480, height: 320 });

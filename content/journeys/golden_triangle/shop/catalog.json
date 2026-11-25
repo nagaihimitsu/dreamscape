@@ -12,7 +12,8 @@
         "gt_salwar_kameez_navy",
         "gt_kurta_block_print",
         "gt_anarkali_jade"
-      ]
+      ],
+      "photoAssetId": "gt_img_delhi_cloth_shop"
     },
     {
       "id": "gt_agra_cloth_shop",
@@ -25,7 +26,8 @@
         "gt_salwar_kameez_navy",
         "gt_kurta_block_print",
         "gt_anarkali_jade"
-      ]
+      ],
+      "photoAssetId": "gt_img_agra_cloth_shop"
     },
     {
       "id": "gt_jaipur_cloth_shop",
@@ -38,7 +40,8 @@
         "gt_salwar_kameez_navy",
         "gt_kurta_block_print",
         "gt_anarkali_jade"
-      ]
+      ],
+      "photoAssetId": "gt_img_jaipur_cloth_shop"
     }
   ],
   "outfits": [
