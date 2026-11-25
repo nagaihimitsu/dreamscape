@@ -36,8 +36,7 @@
   letter-spacing: 0.04em;
   overflow-wrap: anywhere;
 }
-/* The narration's band (「旅の風景」) is slate: no one speaks. */
-.vn-window-head > .speaker[data-narration] { background: linear-gradient(90deg, var(--ds-slate-800) calc(100% - 44px), transparent); }
+/* The narration has no band (DialogueWindowHead): the controls alone straddle the edge, at the right. */
 /* A remembered line's 「回想」 beside the name (`# remembered`, 2026-11-16): a small outlined label in the band's own
    colours, unfilled and flat, so it reads as part of the name, not as a button (it takes no tap of its own: a tap on
    the band reads on). It never breaks inside; a long name wraps before it. */

@@ -105,7 +105,8 @@
   pointer-events: none;
 }
 /* The scene's camera (2026-11-25 user decision; figure-zoom.ts): in a talk the people on stage are seen from about the
-   thighs up, their eyes where they stood whole and their feet below the window. Nearer for one, less near as more stand
+   thighs up, the top of their picture where it was as they stood whole (so a head is never cut under the header) and
+   their feet below the window. Nearer for one, less near as more stand
    side by side (encounter.css), so each face stays whole on the screen. The scene's first line shows them whole (its
    establishing shot: their clothes, where they stand; useEstablishingShot), and the camera comes in with the next one.
    Each figure's box grows in the layout (figure-zoom.ts, encounter.css), never by a transform: the pictures stay sharp. */

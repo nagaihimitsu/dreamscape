@@ -17,7 +17,10 @@ import "./dialogue-controls.css";
 export function DialogueWindowHead({ speaker, controls, narration = false, remembered = false, plateClassName, cutIn }: {
   speaker: ReactNode;
   controls: ReactNode;
-  /** The line is the narration (「旅の風景」): its plate is slate instead of blue (D2). */
+  /**
+   * The line is the narration (「旅の風景」): no band at all (2026-11-25 user decision: words no one says need no name over
+   * them); the log still names it.
+   */
   narration?: boolean;
   /**
    * The line is remembered (`# remembered`, speakerPlate's `remembered`): a small 「回想」 beside the name, a label (screen
@@ -30,7 +33,7 @@ export function DialogueWindowHead({ speaker, controls, narration = false, remem
 }) {
   return <div className="vn-window-head">
     <NameCutInPlate cutIn={cutIn} />
-    {speaker && <div className={["speaker", plateClassName].filter(Boolean).join(" ")} data-narration={narration || undefined}>
+    {speaker && !narration && <div className={["speaker", plateClassName].filter(Boolean).join(" ")}>
       {speaker}
       {remembered && <span className="speaker-remembered" data-testid="speaker-remembered">
         <span className="sr-only">（</span>{REMEMBERED_MARK}<span className="sr-only">）</span>

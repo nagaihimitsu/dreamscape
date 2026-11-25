@@ -144,8 +144,8 @@
   bottom: clamp(65px, 22%, 140px);
   min-height: 0;
 }
-/* The scene's camera (romance-scene.css, figure-zoom.ts): the two (or more) seen nearer, their eyes where they stood
-   whole and their feet behind the window; each part of the talk opens on them whole (its establishing shot). */
+/* The scene's camera (romance-scene.css, figure-zoom.ts): the two (or more) seen nearer, the top of their picture where
+   it was as they stood whole and their feet behind the window; each part of the talk opens on them whole (its establishing shot). */
 .battle-screen[data-phase="dialogue"] .battle-characters { --vn-zoom: 1.3; }
 .battle-screen[data-phase="dialogue"] .battle-characters:is([data-together="three"], [data-together="four"]) { --vn-zoom: 1.15; }
 .battle-screen[data-phase="dialogue"][data-establishing] .battle-characters { --vn-zoom: 1; }

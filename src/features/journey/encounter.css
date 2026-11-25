@@ -94,12 +94,12 @@
    with object-fit letterboxing: cues can then stay next to the actual head.
    --fig-w is the figure's width seen whole: the layer is its query container, so a slot's share of the layer is
    written in cqw. Under the scene's camera (figure-zoom.ts, romance-scene.css) the box grows by --vn-zoom and comes
-   down so that the eyes (--face-at, from CharacterPortrait) stay where they were. */
+   down so that the top of its picture (--picture-top, from CharacterPortrait) stays where it was: the head never rises. */
 .encounter-character-layer { container-type: size; }
 .encounter-character-slot .vn-character {
   --fig-w: min(100cqw, 42dvh);
   left: 50% !important;
-  bottom: calc(clamp(54px, 17cqh, 155px) - (var(--vn-zoom, 1) - 1) * 1.5 * var(--fig-w) * (1 - var(--face-at, 0.12))) !important;
+  bottom: calc(clamp(54px, 17cqh, 155px) - (var(--vn-zoom, 1) - 1) * 1.5 * var(--fig-w) * (1 - var(--picture-top, 0))) !important;
   width: calc(var(--fig-w) * var(--vn-zoom, 1)) !important;
   height: auto !important;
   aspect-ratio: 2 / 3;
