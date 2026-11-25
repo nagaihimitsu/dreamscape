@@ -27,6 +27,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_qutb_minar_guide_003
 鉄の柱……あ、あれかな。塔の近くの、黒い柱
 # speaker: narrator
+# term: gt_term_iron_pillar
 塔の足元の中庭に、黒っぽい鉄の柱が立っていた。人の背丈の何倍か。根元は、低い柵にぐるりと囲まれている。
 # speaker: heroine
 # emotion: neutral

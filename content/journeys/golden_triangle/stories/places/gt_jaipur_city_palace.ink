@@ -96,6 +96,7 @@ INCLUDE modules.ink
     ガンジスの水よ！　王様だって、自分の家の水を壺に詰めて持っていったの。漬物五キロくらい、何よ
 }
 # speaker: gt_vishal
+# term: gt_term_gangajali
 # voice: gt_jaipur_main_city_palace_battle_vishal_004
 王様には、荷物の重量制限がなかったんだよ、母さん
 # speaker: narrator

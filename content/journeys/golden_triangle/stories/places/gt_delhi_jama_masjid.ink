@@ -139,6 +139,7 @@ INCLUDE modules.ink
 ……あれ。これ、雨？　降り始めの、乾いた地面の匂い
 # speaker: enemy
 # local_word: gt_delhi_word_mitti
+# term: gt_term_mitti_attar
 # voice: gt_delhi_main_jama_masjid_battle_hamid_009
 ミッティ。土を焼いて閉じこめる。夏の終わりの、最初の雨だ
 # speaker: narrator

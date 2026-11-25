@@ -351,6 +351,7 @@ INCLUDE modules.ink
     黒いとは書いていない、か。……古い本は、わしの話を半分しか手伝ってくれなかったらしい
 }
 # speaker: narrator
+# term: gt_term_black_taj
 アンワルは杖をついたまま、しばらく黙った。それから、観客に向かって両手を広げた。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_008

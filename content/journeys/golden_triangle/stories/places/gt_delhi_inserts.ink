@@ -993,6 +993,7 @@ No, thank you.
 # speaker: narrator
 ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
 # local_word: gt_delhi_word_sahayak
+# term: gt_term_sahayak
 昔は「クーリー」と呼ばれた彼らは、今は「サハーヤク」――助ける人、という名前に変わっている。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation

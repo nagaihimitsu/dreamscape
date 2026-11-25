@@ -155,6 +155,15 @@
       "imageId": "gt_img_term_ladies_coach"
     },
     {
+      "id": "gt_term_e_rickshaw",
+      "nameJa": "電動リキシャ",
+      "readingJa": "でんどうリキシャ",
+      "aliasJa": "イー・リキシャ",
+      "category": "transport",
+      "lineJa": "電池で走る、三輪の小さな乗り合いの車。2010年ごろ、デリーから広まった。",
+      "imageId": "gt_img_term_e_rickshaw"
+    },
+    {
       "id": "gt_term_paratha",
       "nameJa": "パラーター",
       "readingJa": null,
@@ -207,6 +216,25 @@
       "category": "building",
       "lineJa": "石を幾何学や花の模様に透かし彫りにした格子。光と風を通す。",
       "imageId": "gt_img_term_jali"
+    },
+    {
+      "id": "gt_term_iron_pillar",
+      "nameJa": "デリーの鉄柱",
+      "readingJa": "デリーのてっちゅう",
+      "aliasJa": "鉄の柱",
+      "category": "building",
+      "lineJa": "クトゥブ・ミナールの中庭に立つ、高さ約7mの古い鉄の柱。約1600年前のもの。",
+      "imageId": "gt_img_term_iron_pillar"
+    },
+    {
+      "id": "gt_term_black_taj",
+      "nameJa": "黒いタージ",
+      "readingJa": "くろいタージ",
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "皇帝がタージの対岸に、黒い墓を建てるつもりだったという言い伝え。",
+      "imageId": "gt_img_term_black_taj",
+      "photoNoteJa": "写真は、対岸のメヘターブ・バーグに残る、庭の大きな池の跡"
     },
     {
       "id": "gt_term_neem",
@@ -409,6 +437,35 @@
       "category": "thing",
       "lineJa": "ジャイガル城にある、車輪のついた巨大な大砲。1720年に城の鋳造所で造られた。",
       "imageId": "gt_img_term_jaivana"
+    },
+    {
+      "id": "gt_term_gangajali",
+      "nameJa": "銀の大壺",
+      "readingJa": "ぎんのおおつぼ",
+      "aliasJa": "ガンガージャリ",
+      "category": "thing",
+      "lineJa": "シティ・パレスにある、一対の大きな銀の壺。世界最大の銀の器とされる。",
+      "imageId": "gt_img_term_gangajali"
+    },
+    {
+      "id": "gt_term_panchang",
+      "nameJa": "パンチャーング",
+      "readingJa": null,
+      "aliasJa": "ヒンドゥーの暦",
+      "category": "thing",
+      "lineJa": "名は「五つの肢」。日の吉凶や祭りの日取りを見る、ヒンドゥーの暦。",
+      "imageId": "gt_img_term_panchang",
+      "photoNoteJa": "画像は、1871〜72年のラージャスターンの布の暦"
+    },
+    {
+      "id": "gt_term_mitti_attar",
+      "nameJa": "ミッティ",
+      "readingJa": null,
+      "aliasJa": "雨の匂いの香油",
+      "category": "thing",
+      "lineJa": "焼いた土の香りを、白檀の油に移した香油。カンナウジで銅の釜を使って作る。",
+      "imageId": "gt_img_term_mitti_attar",
+      "photoNoteJa": "写真は、カンナウジで香油を寝かせるのに使う、ラクダの革の瓶"
     },
     {
       "id": "gt_term_dona",
@@ -643,6 +700,15 @@
       "lineJa": "シーラーズ出身の学者。シャー・ジャハーンの宰相を務め、1639年に亡くなった。",
       "photoNoteJa": "画像は彼が眠るチーニー・カ・ラウザーの外壁のタイルの写真",
       "imageId": "gt_img_term_afzal_khan"
+    },
+    {
+      "id": "gt_term_sahayak",
+      "nameJa": "サハーヤク",
+      "readingJa": null,
+      "aliasJa": "駅の荷運び",
+      "category": "person",
+      "lineJa": "インドの鉄道の駅で荷物を運ぶ人。2016年に、呼び名が「クーリー」から変わった。",
+      "imageId": "gt_img_term_sahayak"
     }
   ]
 }

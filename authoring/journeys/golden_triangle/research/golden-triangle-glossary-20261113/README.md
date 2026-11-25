@@ -265,6 +265,31 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 | ジョーラー・ガル（`gt_term_jora_ghar`、別名 靴の預かり所） | ならわし | グルドワーラー・バングラー・サーヒブのデート、「靴を預け、素足で白い石の上を歩く。…」 | サセックス大学 Pilgrimonics「Sevacation」（黄金寺院。"Even shoes are polished in the shoe houses (jora ghar)"、"Doing seva (selfless service) by tending to shoes in the jora ghar"）、Sikh Missionary Society「Seva」、The Pioneer（2026。デリーの副知事がバングラー・サーヒブで靴を清める奉仕をした） | Flickr「A closer view of the receiving counters for footwear」（shankar s.、CC BY 2.0、2017年、アムリトサルの黄金寺院）。窓口の「FREE SERVICE / SHOE STAND」とパンジャーブ語「ਜੋੜੇ ਘਰ」が写る。写っている3人の顔をぼかした。Commons にはバングラー・サーヒブや黄金寺院の靴の預かり所の写真がなかった。`photoNoteJa` で場所を書いた。名前は、パンジャーブ語の発音に近い「ジョーラー・ガル」にした（英語では Joda/Jora Ghar） |
 | 女性車両（`gt_term_ladies_coach`） | 乗り物 | デリーのフィナーレ、クイズ1問目の後の「病院の番号を押しかけていた指が、止まった。…」。**このクイズの答え（先頭の一両は女性専用）なので、答えた後の行にだけ置く**。宿の宿題の場面やカムラの到着の台詞には置かない | クイズと宿の宿題の場面の出典（India TV News、Deccan Herald／PTI、Business Standard） | File:Women Only (5722040111).jpg（Chris Brown、Flickr から転載、CC BY-SA 2.0、FlickreviewR 確認済み）。ホームの床の桃色の案内「केवल महिलायें / Women Only」。人は写っていない |
 
+### 前に見送った言葉を、同じやり方で探し直した7語（2026-11-25）
+
+ユーザーの依頼：「過去に収録を写真や出典がないからと見送ったものを探す」「今回と同様の手法で探す」「実装する」。
+この記録の中で、写真や出典がなくて見送った言葉を洗い出した：優先度 低で写真を探していなかった6語（プーリー・電動リキシャ・デリーの鉄柱・銀の大壺・パンチャーング・サハーヤク）、
+「言い伝えで、写真で見せる物がない」とした黒いタージ、「写真で見せるものがない」とした土地の言葉のうちの物（ミッティ・グルドワーラー）。
+次の3つは対象から外した：プーリー（見送った理由は写真ではなく、インド門の同じ行にアチャールの小窓があり、二枚続けて出さないため）、
+グルドワーラー（場面の背景写真がバングラー・サーヒブを見せる）、ほかの土地の言葉（バス・ダーディーなど。見せる物がない）。
+
+探し方は前の5語と同じ（[無料の素材の探し方 7.7〜7.11](../../../../FREE_ASSETS_GUIDE.md#77-その土地の言葉でも探す)）。写真と出典の担当を同時に頼み（Sonnet）、
+英語とヒンディー語・ベンガル語・タミル語・テルグ語・カンナダ語・グジャラート語の語で探した（例：ई-रिक्शा・টোটো、लौह स्तंभ、गंगाजली、पंचांग・পঞ্জিকা・பஞ்சாங்கம்・పంచాంగం・ಪಂಚಾಂಗ、कुली・सहायक、काला ताजमहल・मेहताब बाग、मिट्टी अत्तर・कन्नौज इत्र）。
+インドの言葉の語で見つかった写真はなく、写真はどれも英語の語か分類から見つかった。出典ではパンチャーングの語の意味（ヒンディー語の Astrobix「पंचांग शब्द का अर्थ है - पाँच अंग」）と、カンナウジの香油（Aaj Tak のヒンディー語の記事）がインドの言葉のページだった。
+入れた7語（インド編77語）：
+
+| 言葉 | 分類 | 札の行 | 説明の根拠 | 画像 |
+| --- | --- | --- | --- | --- |
+| 電動リキシャ（`gt_term_e_rickshaw`） | 乗り物 | イティマード廟の案内の最初の行 | TERI「The E-rickshaw story」（2018。デリーで2010年の初めに始まった）、自動車法の2015年の改正の e-rickshaw の定義（SCC Online） | File:Electric rickshaw in Meerut, Uttar Pradesh, India.jpg（Libreravi、CC BY-SA 4.0）。アーグラ・デリーには、車が主題で人や番号札の写らない写真がなかった。下の道路を切り落とした |
+| デリーの鉄柱（`gt_term_iron_pillar`） | 建物 | クトゥブ・ミナールの案内の「塔の足元の中庭に、黒っぽい鉄の柱が立っていた。…」。到着のカムラの一覧にも「鉄の柱」と出るが、そこはふつうの言葉として読めるので、実物が見える行に置いた | Live History India（2020。高さ7.3m、4世紀）、Wikipedia「Iron pillar of Delhi」（7.21m、5世紀）。数字が食い違うので「約7m」「約1600年前」にした。クイズの3問（柵の理由・錆びない理由・最初に立っていた所）には触れない | File:Iron Pillar 01.jpg（Indrajit Das、CC BY-SA 4.0）。人は写っていない |
+| 銀の大壺（`gt_term_gangajali`、別名 ガンガージャリ） | もの | シティ・パレスの本筋、クイズ1問目（イギリスへ持っていった理由）の**後**のヴィシャールの行。案内の最初に壺が出る行には置かない（別名のガンガージャリが答えのガンジスの水を思わせるため） | ギネス世界記録「Largest pieces of silverware」（"The largest single pieces of silver are a pair of water jugs"、今はシティ・パレスにある）。重さと容量は資料ごとに大きく違う（ギネス 242.7kg・1,800L、ほかの記事 345kg・4,000L）ので書かない | File:Lascar Gangajalis - The biggest silver objects of the world (4499234941).jpg（Jorge Láscar、Flickr から転載、CC BY 2.0、FlickreviewR 確認済み）。壺を中心に切り抜いた |
+| パンチャーング（`gt_term_panchang`、別名 ヒンドゥーの暦） | もの | ジャンタル・マンタルの本筋の「声の主は、眼鏡の若い女性だった。…膝の上に、使い込んだ暦の冊子。」 | The Hans India「Panchanga: The Glossary」（2020。"Panchanga literally means five angas or limbs"）、Astrobix（ヒンディー語）、HinduTone（祭りの日取り。ブログ）。クイズ（地方時と標準時）には触れない | 冊子の写真は、どの言葉で探しても見つからなかった（テルグ語で見つかったのは、読み上げる人の顔が主題の写真）。File:Hindu calendar 1871-72.jpg（1871〜72年のラージャスターンの布の暦、アメリカ議会図書館、PD-Art）の上の部分を切り抜き、`photoNoteJa` に書いた。ジャイプールのあるラージャスターンの暦なので、場面に近い |
+| サハーヤク（`gt_term_sahayak`、別名 駅の荷運び） | 人 | デリーの出発の駅の「昔は「クーリー」と呼ばれた彼らは、…」（土地の言葉と同じ行。小窓の後に「ことばを覚えた」が出る） | The Daily Star（AFP、2016）、The Goan（2016）、The Asian Age（2016。鉄道相が2016-17年の鉄道予算で呼び名を変えると発表）。別名に「クーリー」は使わない（植民地時代の呼び名として変えられたため） | File:1996 -229-18 New Delhi Train Station (2234206340).jpg（Dan Lundberg、Flickr から転載、CC BY-SA 2.0、FlickreviewR 確認済み）。ニューデリー駅の階段を上る赤いシャツの荷運びの後ろ姿で、顔は写っていない |
+| 黒いタージ（`gt_term_black_taj`） | 建物 | アーグラのフィナーレ、推理クイズの2問目（黒いタージについて何が言えるか）の**後**の「アンワルは杖をついたまま、しばらく黙った。」 | Rana Safvi「The garden opposite the Taj」（The Hindu、2018。著者のサイトの転載で確かめた。タヴェルニエが最初に書いた、発掘で建物の土台は見つからなかった）、Wikipedia「Black Taj Mahal」。説明は「言い伝え」だけにした | File:The remnants of the Black Taj, attempted by Aurangzeb.JPG（g.kaustav、CC BY-SA 3.0）。メヘターブ・バーグの池の跡。ファイルの名前は「アウラングゼーブが試みた黒いタージの跡」だが、それは裏付けがないので、`photoNoteJa` と代替テキストには池の跡とだけ書いた |
+| ミッティ（`gt_term_mitti_attar`、別名 雨の匂いの香油） | もの | ジャーマー・マスジドの本筋、ハミードの「ミッティ。土を焼いて閉じこめる。…」（土地の言葉と同じ行） | The Better India（2016。焼いた土のかけらを銅の釜（デーグ）で蒸し、白檀の油に移す。カンナウジの香油は地理的表示）、National Geographic（2020）、地理的表示の登録（IP India、Kannauj Perfume） | カンナウジの蒸留の釜や焼いた土の写真は見つからなかった。File:Camel skin Perfume Bottles from Kannauj.jpg（David Prasad、Flickr から転載、CC BY-SA 2.0、FlickreviewR 確認済み。香油を寝かせるラクダの革の瓶）を、`photoNoteJa` に書いて使った |
+
+- 写真の担当が、Flickr の画像を取るときにブラウザの名乗り（User-Agent）と参照元を付けていた。この手引きでは、その取り方をしない（7.8）。荷運びの写真は、Commons の元画像をページを読む道具で取り直して使った。
+
 ## 調査の記録
 
 設計（`glossary/design.md`）に沿って、インド編の物語に初めて出る「日本の旅行者がぱっと思い浮かべられない言葉」を集め、1行の説明と写真の候補を付けた。リポジトリには何も書いていない。

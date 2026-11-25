@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_agra_itimad_tomb
 # speaker: narrator
+# term: gt_term_e_rickshaw
 電動リキシャでヤムナー川の橋を渡ると、町の音が一段遠くなった。対岸の道は細く、牛がのんびり横切っていく。
 # speaker: heroine
 # reaction: heroine,smile,music

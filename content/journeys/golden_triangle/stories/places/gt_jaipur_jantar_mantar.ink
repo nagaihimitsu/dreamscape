@@ -45,6 +45,7 @@ INCLUDE modules.ink
 十一時四十三分？　天体物理学の博士論文を、占いの時刻に提出しろって言うんですか！
 # speaker: narrator
 # together: enemy gt_shastri
+# term: gt_term_panchang
 声の主は、眼鏡の若い女性だった。向かいの石段には、白い腰布の老人が座っている。膝の上に、使い込んだ暦の冊子。
 # speaker: narrator
 老人は、こちらに軽く会釈した。
