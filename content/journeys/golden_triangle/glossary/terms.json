@@ -955,6 +955,16 @@
       "photoNoteJa": "画像は、差し出した手のひらと硬貨を表した図"
     },
     {
+      "id": "gt_term_rebar_roof",
+      "nameJa": "屋上に突き出た鉄筋",
+      "readingJa": null,
+      "aliasJa": "サリヤー",
+      "category": "custom",
+      "lineJa": "家は一度に建てず、数年ごとに階を足す。その備えの鉄筋が、何年も屋上に残る。",
+      "imageId": "gt_img_term_rebar_roof",
+      "photoNoteJa": "画像は、1階の家の柱から突き出た鉄筋と、後で足す階を表した図"
+    },
+    {
       "id": "gt_term_rose_ringed_parakeet",
       "nameJa": "ワカケホンセイインコ",
       "readingJa": null,

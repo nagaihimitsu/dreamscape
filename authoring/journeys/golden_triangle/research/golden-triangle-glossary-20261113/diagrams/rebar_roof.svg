@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <!-- 屋上に突き出た鉄筋の説明図：1階だけの家の柱の頭から鉄筋が突き出し、上に足すつもりの階を点線で示す。Dreamscape のために図形だけで描いた（2026-11-25）。 -->
+  <rect width="1200" height="1200" fill="#f4e9d6"/>
+  <circle cx="600" cy="640" r="470" fill="#ead9bd"/>
+  <!-- 地面 -->
+  <rect x="0" y="1010" width="1200" height="190" fill="#cdb48e"/>
+  <!-- 後で足す階（点線） -->
+  <g fill="none" stroke="#8a7a66" stroke-width="10" stroke-dasharray="26 20" stroke-linecap="round">
+    <rect x="300" y="300" width="600" height="290"/>
+    <rect x="400" y="380" width="120" height="120"/>
+    <rect x="680" y="380" width="120" height="120"/>
+  </g>
+  <!-- 1階の家 -->
+  <rect x="280" y="640" width="640" height="370" fill="#e6a77a"/>
+  <rect x="262" y="604" width="676" height="46" fill="#9c9c96"/>
+  <!-- 柱（壁の中の線） -->
+  <g fill="#d18f63">
+    <rect x="290" y="650" width="44" height="360"/>
+    <rect x="578" y="650" width="44" height="360"/>
+    <rect x="866" y="650" width="44" height="360"/>
+  </g>
+  <!-- 戸と窓 -->
+  <rect x="660" y="800" width="130" height="210" fill="#2f6f73"/>
+  <rect x="380" y="760" width="150" height="120" fill="#f4e9d6" stroke="#7d5530" stroke-width="12"/>
+  <path d="M455 760 L455 880 M380 820 L530 820" stroke="#7d5530" stroke-width="8"/>
+  <!-- 柱の頭から突き出た鉄筋（4本ずつ。先が少し曲がる） -->
+  <g stroke="#5a4636" stroke-width="9" stroke-linecap="round" fill="none">
+    <path d="M296 604 L294 470 Q294 452 304 446"/>
+    <path d="M312 604 L312 455"/>
+    <path d="M326 604 L328 480 Q330 462 340 458"/>
+    <path d="M340 604 L340 468"/>
+    <path d="M584 604 L582 462 Q582 446 592 440"/>
+    <path d="M600 604 L600 450"/>
+    <path d="M614 604 L616 476"/>
+    <path d="M628 604 L628 458 Q628 442 618 436"/>
+    <path d="M872 604 L870 470"/>
+    <path d="M888 604 L888 452 Q888 436 898 432"/>
+    <path d="M902 604 L904 478"/>
+    <path d="M916 604 L916 462"/>
+  </g>
+  <!-- 屋上の水のタンク -->
+  <rect x="720" y="530" width="100" height="74" rx="14" fill="#3a3a3a"/>
+  <rect x="736" y="516" width="68" height="20" rx="8" fill="#3a3a3a"/>
+</svg>

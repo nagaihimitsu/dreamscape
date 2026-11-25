@@ -331,6 +331,7 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_back_leg_vinod_001
 一度だけ。学校の遠足で。あとは、ずっと外です。外にも、見るものはあります
 # speaker: narrator
+# term: gt_term_rebar_roof
 道沿いの家の屋上から、鉄の棒が何本も突き出していた。どの家も、まだ上に何かを建てるつもりのように見える。
 { cond("battle gt_agra_main_fatehpur_sikri_battle"):
     # speaker: heroine
