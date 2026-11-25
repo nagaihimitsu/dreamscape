@@ -68,7 +68,7 @@ INCLUDE modules.ink
     伸ばした生地は、ほとんど丸かった。ハルバンスはそれを持ち上げて、光にかざした。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_005
-    # photo: gt_album_d085 # photo_caption: 主人公のローティー（丸・荷台・ハート・トンネル）
+    # photo: gt_album_d085 # photo_caption: ほとんど丸いローティー
     丸い。……四十年で、いちばんつまらん地図だ
     { romance_result == "negative":
         # speaker: heroine
@@ -89,7 +89,7 @@ INCLUDE modules.ink
         全力で伸ばした生地は、なぜか四角くなった。
         # speaker: gt_harbans
         # voice: gt_delhi_date_bangla_sahib_harbans_006
-        # photo: gt_album_d085 # photo_caption: 主人公のローティー（丸・荷台・ハート・トンネル）
+        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー
         ……荷台だな
         # speaker: heroine
         # emotion: exasperated
@@ -100,7 +100,7 @@ INCLUDE modules.ink
         全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
         # speaker: gt_harbans
         # voice: gt_delhi_date_bangla_sahib_harbans_007
-        # photo: gt_album_d085 # photo_caption: 主人公のローティー（丸・荷台・ハート・トンネル）
+        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー
         トラックの荷台だな。積みやすくていい
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -114,7 +114,7 @@ INCLUDE modules.ink
     生地は、思ったようには伸びてくれなかった。ハルバンスが、目を細める。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_008
-    # photo: gt_album_d085 # photo_caption: 主人公のローティー（丸・荷台・ハート・トンネル）
+    # photo: gt_album_d085 # photo_caption: ハートの形のローティー
     ほう。……これは、ハートか
     { romance_result == "negative":
         # speaker: heroine
@@ -140,7 +140,7 @@ INCLUDE modules.ink
     もう一押し、と力を込めたところで、生地の真ん中に、ぽっかり穴が開いた。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_010
-    # photo: gt_album_d085 # photo_caption: 主人公のローティー（丸・荷台・ハート・トンネル）
+    # photo: gt_album_d085 # photo_caption: 真ん中に穴の開いたローティー
     トンネルだな。……丸め直せ。生地は、何度でもやり直せる
     { romance_result == "negative":
         # speaker: heroine
