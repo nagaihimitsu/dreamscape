@@ -4,7 +4,7 @@ import type { DialogueReaction, ReactionTarget } from "../content/dialogue-react
 import { BGM_DEFAULT } from "../content/music";
 import type { MiniGameTag } from "../minigames/tag";
 import {
-  parseStoryTags, WEATHER_STOP, type CutInKind, type ItemOutTag, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan,
+  parseStoryTags, photoShowsLarge, WEATHER_STOP, type CutInKind, type ItemOutTag, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan,
   type StandPosition, type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,
 } from "../content/tags";
 
@@ -351,6 +351,13 @@ export function readStoryFrame(
   for (const key of ["recall", "recallKept", "remembered", "phone", "letter", "quiet", "stand", "itemShow", "itemOut", "leave", "together"] as const)
     delete frame[key];
   Object.assign(frame, staging);
+  // A line's large photo takes the place of its item card (2026-11-25 user request: the card covered the print, and a card
+  // kept on the next line outlived it, so the photo was never seen): the line shows the photo alone, and a card the next
+  // line keeps comes then (an item taken out goes back into the bag as the photo's line comes).
+  if (lineRead && photoShowsLarge(frame.photo)) {
+    delete frame.itemShow;
+    delete frame.itemOut;
+  }
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)
     throw new Error("バトルの呼び口は、ほかの選択肢と一緒に出せません。");
