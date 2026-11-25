@@ -84,7 +84,6 @@
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
-.hud-plate .icon { width: 13px; height: 13px; margin-right: 3px; vertical-align: -2px; }
 /* Enlarged text on a phone held upright: when the header holds fewer than
    about 25 of its characters across (at normal text even a 320-px phone holds
    more, so this never applies there), the plate is as wide as its name (the
@@ -117,7 +116,6 @@
 .hud-wallet .travel-budget[data-length="longer"] { font-size: 13px; }
 .hud-wallet .ap { font-size: 13px; }
 .hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.1em; }
-.hud-wallet .icon { width: 12px; height: 12px; margin-right: 3px; vertical-align: -1px; }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
@@ -154,7 +152,7 @@
   min-width: 44px;
   padding: 0;
 }
-/* The keys' marks: white with the talk's tools' soft shadow (the gold stays on row 1's small marks); under a finger or
+/* The keys' marks: white with the talk's tools' soft shadow (row 1 has words only); under a finger or
    while its panel is open a key shows a faint white disc, and an open key's mark is gold. */
 .hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon {
   width: 24px;
