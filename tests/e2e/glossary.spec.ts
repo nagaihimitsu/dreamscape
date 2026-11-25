@@ -21,7 +21,7 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
 
   // The second line names 三時パン (read on from the keyboard, so the focus is on the line): its card shows over the
-  // scene, a dialog that says the name and the line, with the focus on 「閉じる」.
+  // scene, a dialog that says the name and the line, with the focus on it (it has no 「閉じる」 button).
   await ops.settled(page);
   await line.focus();
   await page.keyboard.press("Enter");
@@ -30,7 +30,8 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(page.getByRole("dialog", { name: "三時パン" })).toHaveAccessibleDescription(/見本の街の朝市で焼く架空の丸パン。.*旅の図鑑に追加/u);
   await expect(card).toContainText("さんじパン");
   await expect(card.getByRole("img")).toHaveAttribute("alt", /三時パン/u);
-  await expect(page.getByTestId("glossary-term-close")).toBeFocused();
+  await expect(card).toBeFocused();
+  await expect(card.getByRole("button")).toHaveCount(0);
   const shown = (await debugGame(page))!;
   expect(shown.glossary).toEqual([TERM]);
   expect(shown.activeTourism?.frame?.termIds).toEqual([TERM]);

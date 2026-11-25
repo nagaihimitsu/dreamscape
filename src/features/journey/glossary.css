@@ -110,18 +110,14 @@
   text-align: left;
   overflow-wrap: anywhere;
 }
-.glossary-term-close.secondary {
-  min-height: 44px;
-  margin-top: 6px;
-  font-size: 14px;
-}
-.glossary-term-count { margin-left: 4px; font-size: 12px; color: var(--ds-ink-muted); }
+/* No ring on the window the focus rests on (it is the whole screen, and only a target for keys and readers). */
+.glossary-term-window:focus { outline: none; }
+.glossary-term-count { margin-left: 4px; font-variant-numeric: tabular-nums; }
 /* A short phone held upright (320×568): a tighter card higher up, so the dialogue window's lines stay in sight below it. */
 @media (orientation: portrait) and (max-height: 700px) {
   .glossary-term-window { padding-top: max(10px, 4dvh, env(safe-area-inset-top)); }
   .glossary-term-card { gap: 4px; padding: 10px 14px; }
   .glossary-term-photo { max-height: min(190px, 24dvh); }
-  .glossary-term-close.secondary { margin-top: 2px; }
 }
 /* A short screen held sideways: the photo beside the words, so the card stays within the screen. */
 @media (orientation: landscape) and (max-height: 500px) {
@@ -129,7 +125,7 @@
   .glossary-term-card {
     display: grid;
     grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
-    grid-template-areas: "photo mark" "photo name" "photo subtitle" "photo line" "photo close";
+    grid-template-areas: "photo mark" "photo name" "photo subtitle" "photo line";
     align-content: start;
     column-gap: 14px;
     row-gap: 4px;
@@ -141,7 +137,6 @@
   .glossary-term-name { grid-area: name; margin: 0; font-size: 18px; }
   .glossary-term-subtitle { grid-area: subtitle; }
   .glossary-term-line { grid-area: line; margin: 0; }
-  .glossary-term-close.secondary { grid-area: close; }
 }
 
 /* 「旅の図鑑」 in ≡メニュー: the shared frame, how far it has come under its title, then a group per category (told apart

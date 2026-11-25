@@ -840,14 +840,14 @@ export const ops = {
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene], [data-testid=quiz-cutin]")).toHaveCount(0);
   },
   /**
-   * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): 「閉じる」 on each, as a player
+   * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): a tap on each, as a player
    * reads them, until none is left (each takes no tap for the moment of a double tap: settled waits for it).
    */
   async closeTermCards(page: Page) {
     const card = page.getByTestId("glossary-term-window");
     for (let shown = 0; shown < 20 && await card.isVisible(); shown++) {
       await ops.settled(page);
-      await page.getByTestId("glossary-term-close").click();
+      await card.click();
     }
     await expect(card).toHaveCount(0);
     await ops.settled(page);
