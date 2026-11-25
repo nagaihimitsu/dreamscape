@@ -325,6 +325,29 @@ describe("the confirmations", () => {
     ]);
   });
 
+  it("offers to remove everything at once under the journeys, but not while a run or another tab is at work", () => {
+    expect(offlineRows(snapshot(), catalog).all).toBeNull();
+    expect(offlineRows(bothKept(), catalog).all).toEqual({
+      kind: "all", heading: "この端末に入れたファイル", line: "入れた旅行編と、共通のファイル・文字の形（フォント）を、まとめて消せます。", actions: [{ id: "remove", label: "すべて消す" }],
+    });
+    expect(offlineRows(snapshot({ store: "kept", partial: ["golden_triangle"], storedBytes: 1 }), catalog).all).not.toBeNull();
+    expect(offlineRows(milanoKept({ run: { kind: "first", journeyId: "golden_triangle", done: 0, total: 1 } }), catalog).all).toBeNull();
+    expect(offlineRows(milanoKept({ otherTab: true }), catalog).all).toBeNull();
+    expect(offlineRows(snapshot({ store: "unreadable" }), catalog).all).toBeNull();
+  });
+
+  it("says what removing everything removes, and to load the page anew when it runs an older build", () => {
+    expect(removeConfirm(bothKept(), catalog, "all")).toEqual({
+      title: "この端末に入れたファイルを、すべて消しますか？",
+      body: [
+        "この端末に入れたミラノ編、インド・ゴールデントライアングル編の絵・音・声・ムービー・物語と、共通のファイル（約178 MB）を、すべて消します。文字の形（フォント）も消します。",
+        "通信がない間は、入れた旅行編を遊べなくなります。通信があれば、これまでどおり遊べます。もう一度入れるときは、最初から読み込みます。",
+      ],
+      fine: "保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は消えません。", cancel: "消さずに戻る", action: "端末から消す", danger: true,
+    });
+    expect(removeConfirm(milanoKept({ newer: true, pending: 1 }), catalog, "all").body[1]).toContain("消したあとはページを読み込み直してください");
+  });
+
   it("asks once more before everything of an unreadable store goes", () => {
     expect(removeConfirm(snapshot({ store: "unreadable" }), catalog, "all")).toMatchObject({
       title: "端末に入れたオフライン用のファイルを、すべて消しますか？", fine: "保存データ（ゲームの進行）・クイズと旅のことばの記録・設定は消えません。", cancel: "消さずに戻る", action: "端末から消す", danger: true,

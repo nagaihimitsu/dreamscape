@@ -28,6 +28,9 @@ export type OfflineRow = RowText & {
   kind: "none" | "running" | "partial" | "held" | "waiting" | "offline" | "other-tab";
 };
 
+/** Everything the device holds (the journeys, the files they share, the fonts), removed at once (user request 2026-11-25). */
+export type OfflineAllRow = RowText & { kind: "all"; heading: string };
+
 /** The kept journeys' newer build or missing files: on offer, being loaded, or loaded for the next start. */
 export type OfflineVersionRow = RowText & { kind: "update" | "updating" | "missing" | "repairing" | "switched"; heading: string };
 
@@ -40,6 +43,8 @@ export type OfflineView = {
   notice?: OfflineNotice;
   version: OfflineVersionRow | null;
   rows: OfflineRow[];
+  /** The removal of everything this version reads, under the journeys' rows (not while a run or another tab is at work). */
+  all: OfflineAllRow | null;
   /** What to know before and while keeping; then what the device holds and what still needs a network. */
   advice: string;
   foot: string[];
@@ -193,9 +198,15 @@ function versionRow(snapshot: OfflineSnapshot): OfflineVersionRow | null {
   return null;
 }
 
+function allRow(snapshot: OfflineSnapshot): OfflineAllRow | null {
+  const held = snapshot.installed.length + snapshot.partial.length > 0 || snapshot.storedBytes > 0;
+  if (snapshot.store !== "kept" || !held || snapshot.run || snapshot.otherTab) return null;
+  return { kind: "all", heading: "この端末に入れたファイル", line: "入れた旅行編と、共通のファイル・文字の形（フォント）を、まとめて消せます。", actions: [{ id: "remove", label: "すべて消す" }] };
+}
+
 /** The dialog's list step. `catalog`: the journeys in the title's order; only the playable ones have a row. */
 export function offlineRows(snapshot: OfflineSnapshot, catalog: readonly OfflineJourney[]): OfflineView {
-  const view = { lead: LEAD_JA, version: null, rows: [], advice: ADVICE_JA, foot: [ONLINE_ONLY_JA] };
+  const view = { lead: LEAD_JA, version: null, rows: [], all: null, advice: ADVICE_JA, foot: [ONLINE_ONLY_JA] };
   if (snapshot.support === "unsupported") return { ...view, lead: "", blocked: { role: "status", text: OFFLINE_UNSUPPORTED_JA, removeAll: false } };
   if (snapshot.support === "development") return { ...view, blocked: { role: "status", text: "開発用のサーバーでは使えません。公開版（本番ビルド）で使えます。", removeAll: false } };
   if (snapshot.store === "unknown") return { ...view, blocked: { role: "status", text: "この端末に入っているものを確かめています。", removeAll: false } };
@@ -211,6 +222,7 @@ export function offlineRows(snapshot: OfflineSnapshot, catalog: readonly Offline
     ...view, blocked: null, ...(notice ? { notice } : {}),
     version: versionRow(snapshot),
     rows: catalog.filter((journey) => journey.status === "available").map((journey) => journeyRow(snapshot, journey)),
+    all: allRow(snapshot),
     foot: [
       ...(snapshot.storedBytes > 0 ? [`この端末に入れたファイル：${formatOfflineSize(snapshot.storedBytes)}`] : []),
       ONLINE_ONLY_JA,
@@ -240,9 +252,23 @@ export function keepConfirm(snapshot: OfflineSnapshot, catalog: readonly Offline
   };
 }
 
-/** Before a journey is removed ("all": everything, for a store this version cannot read): what goes, what stays, how to get it back. */
+/** Before a journey is removed ("all": everything, of a store this version reads or of one it cannot read): what goes, what stays, how to get it back. */
 export function removeConfirm(snapshot: OfflineSnapshot, catalog: readonly OfflineJourney[], target: string | "all"): OfflineConfirm {
   const answers = { fine: `${SAVES_STAY_JA}消えません。`, cancel: "消さずに戻る", action: "端末から消す", danger: true };
+  if (target === "all" && snapshot.store !== "unreadable") {
+    const names = journeyNames([...snapshot.installed, ...snapshot.partial], catalog);
+    const size = snapshot.storedBytes ? `（${formatOfflineSize(snapshot.storedBytes)}）` : "";
+    const outdated = snapshot.reachable && (snapshot.newer || snapshot.switched);
+    const online = outdated ? "ゲームが新しくなっているので、消したあとはページを読み込み直してください（通信があれば、新しい版でこれまでどおり遊べます）。" : "通信があれば、これまでどおり遊べます。";
+    return {
+      title: "この端末に入れたファイルを、すべて消しますか？",
+      body: [
+        `この端末に入れた${names ? `${names}の` : ""}絵・音・声・ムービー・物語と、共通のファイル${size}を、すべて消します。文字の形（フォント）も消します。`,
+        `${snapshot.installed.length ? "通信がない間は、入れた旅行編を遊べなくなります。" : ""}${online}もう一度入れるときは、最初から読み込みます。`,
+      ],
+      ...answers,
+    };
+  }
   if (target === "all") {
     return {
       title: "端末に入れたオフライン用のファイルを、すべて消しますか？",

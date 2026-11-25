@@ -5,7 +5,7 @@ import { offlineController } from "../offline/offline-controller";
 import { useOfflineStatus } from "../offline/offline-status";
 import {
   keepConfirm, offlineRows, removeConfirm,
-  type OfflineAction, type OfflineActionId, type OfflineNotice, type OfflineRow, type OfflineVersionRow,
+  type OfflineAction, type OfflineActionId, type OfflineAllRow, type OfflineNotice, type OfflineRow, type OfflineVersionRow,
 } from "./offline-rows";
 import type { OfflineJourney } from "./offline-summary";
 import "./offline.css";
@@ -18,6 +18,8 @@ type FocusRequest = { target: "heading" } | { target: "action"; row: string; act
 /** The row of the kept journeys' newer or missing files, and of everything (the removal of a store that cannot be read). */
 const VERSION_ROW = "version";
 const ALL_ROW = "all";
+/** The line of a result or problem of no single journey (the removal of everything says so there). */
+const NOTICE_ROW = "notice";
 
 /** A button that takes no press while `wait` (it stays in the Tab order, shown and announced as disabled): the second tap of a double tap does nothing. */
 function GuardedButton({ wait, action, className, onPress }: { wait: boolean; action: OfflineAction; className: string; onPress: () => void }) {
@@ -39,7 +41,7 @@ function Notice({ notice }: { notice: OfflineNotice }) {
  * change of the row's state, as the list's buttons do after a confirmation (`wait`).
  */
 function Row({ id, heading, row, wait, onAction }: {
-  id: string; heading: string; row: OfflineRow | OfflineVersionRow; wait: boolean; onAction: (action: OfflineActionId) => void;
+  id: string; heading: string; row: OfflineRow | OfflineVersionRow | OfflineAllRow; wait: boolean; onAction: (action: OfflineActionId) => void;
 }) {
   const headingId = useId();
   const lineId = useId();
@@ -96,7 +98,7 @@ export function OfflinePlayDialog({ onClose, journeys }: { onClose: () => void; 
   // Everything was removed: the row that held the focus is gone, and the line that says so takes it.
   const removedAll = snapshot.result?.journeyId === null && snapshot.result.kind === "removed";
   useEffect(() => {
-    if (removedAll) setFocusRequest({ target: "line", row: ALL_ROW });
+    if (removedAll) setFocusRequest({ target: "line", row: NOTICE_ROW });
   }, [removedAll]);
 
   const view = offlineRows(snapshot, journeys);
@@ -141,9 +143,10 @@ export function OfflinePlayDialog({ onClose, journeys }: { onClose: () => void; 
             <GuardedButton wait={settling} action={{ id: "remove", label: "端末から消す" }} className="text-button delete-entry" onPress={() => act(ALL_ROW, "remove")} />
           </div>}
         </section>}
-        {!view.blocked && view.notice && <div className="offline-row" data-row={ALL_ROW}><Notice notice={view.notice} /></div>}
+        {!view.blocked && view.notice && <div className="offline-row" data-row={NOTICE_ROW}><Notice notice={view.notice} /></div>}
         {view.version && <Row id={VERSION_ROW} heading={view.version.heading} row={view.version} wait={settling} onAction={(action) => act(VERSION_ROW, action)} />}
         {view.rows.map((row) => <Row key={row.journeyId} id={row.journeyId} heading={row.nameJa} row={row} wait={settling} onAction={(action) => act(row.journeyId, action)} />)}
+        {view.all && <Row id={ALL_ROW} heading={view.all.heading} row={view.all} wait={settling} onAction={(action) => act(ALL_ROW, action)} />}
         {!view.blocked && <p className="fine-print offline-advice">{view.advice}</p>}
         {!view.blocked && view.foot.map((text) => <p key={text} className="fine-print offline-foot">{text}</p>)}
       </>}
