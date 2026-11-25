@@ -638,8 +638,8 @@
 /* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
 .place-card .place-card-heroine { gap: 8px; }
 .place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
-.place-card .place-card-heroine .heroine-note-bubble { padding: 5px 12px 6px; font-size: 12px; line-height: 1.6; }
-.place-card .place-card-heroine .heroine-note-bubble::before { top: 11px; }
+.place-card .place-card-heroine .heroine-note-bubble { padding: 6px 13px 7px; font-size: 12px; line-height: 1.6; }
+.place-card .place-card-heroine .heroine-note-bubble::before { top: 12px; height: 10px; }
 .place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
 @keyframes place-card-heroine-in {
   from { opacity: 0; transform: translateY(4px) scale(0.98); }
