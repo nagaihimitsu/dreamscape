@@ -10,12 +10,14 @@ INCLUDE modules.ink
 # background: gt_bg_agra_itimad_tomb
 # speaker: narrator
 # term: gt_term_e_rickshaw
+# term: gt_term_cow
 電動リキシャでヤムナー川の橋を渡ると、町の音が一段遠くなった。対岸の道は細く、牛がのんびり横切っていく。
 # speaker: heroine
 # reaction: heroine,smile,music
 # voice: gt_agra_itimad_tomb_guide_001
 川を一本越えただけで、急に静か。タージの近くの賑やかさが、うそみたい
 # speaker: narrator
+# term: gt_term_bhutta
 門の前の露店で、水と、焼いたとうもろこしを売っている。客は、ほとんどいない。
 # speaker: narrator
 門をくぐると、庭の奥に白い墓廟が座っていた。タージよりずっと小さい。けれど、壁一面に、色のついた石で模様が描かれている。

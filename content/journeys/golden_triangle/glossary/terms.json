@@ -357,6 +357,24 @@
       "imageId": "gt_img_term_madhavendra_bhawan"
     },
     {
+      "id": "gt_term_buland_darwaza",
+      "nameJa": "ブランド・ダルワーザ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "「そびえる門」の意。世界屈指の高さとされ、アクバルが戦勝記念に建てた。",
+      "imageId": "gt_img_term_buland_darwaza"
+    },
+    {
+      "id": "gt_term_jawab",
+      "nameJa": "ジャワーブ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "タージの東の赤い建物。西のモスクと左右対称にするために造られた。",
+      "imageId": "gt_img_term_jawab"
+    },
+    {
       "id": "gt_term_petha",
       "nameJa": "ペーター",
       "readingJa": null,
@@ -393,6 +411,15 @@
       "category": "food",
       "lineJa": "ジャーマー・マスジドの近くに、1913年創業のムガル料理の老舗がある。",
       "imageId": "gt_img_term_kebab"
+    },
+    {
+      "id": "gt_term_bhutta",
+      "nameJa": "ブッター",
+      "readingJa": null,
+      "aliasJa": "焼きとうもろこし",
+      "category": "food",
+      "lineJa": "道ばたで焼き、レモンと唐辛子と塩をすり込むとうもろこし。雨の季節の屋台の定番。",
+      "imageId": "gt_img_term_bhutta"
     },
     {
       "id": "gt_term_baraat",
@@ -494,6 +521,15 @@
       "category": "design",
       "lineJa": "木の版を手で押して布に柄を刷る技。ジャイプール近郊のバグルが名高い産地。",
       "imageId": "gt_img_term_block_print"
+    },
+    {
+      "id": "gt_term_calligraphy_band",
+      "nameJa": "書の帯",
+      "readingJa": null,
+      "aliasJa": "カリグラフィー",
+      "category": "design",
+      "lineJa": "アーチを縁どる文字の帯。ムガルの建築では、書そのものが飾りとして使われた。",
+      "imageId": "gt_img_term_calligraphy_band"
     },
     {
       "id": "gt_term_sehra",
@@ -746,6 +782,34 @@
       "imageId": "gt_img_term_purdah"
     },
     {
+      "id": "gt_term_kite",
+      "nameJa": "凧揚げ",
+      "readingJa": null,
+      "aliasJa": "パタン",
+      "category": "custom",
+      "lineJa": "祭りの季節の風物詩。ガラス粉を塗った糸で、相手の凧の糸を切り合う遊びもある。",
+      "imageId": "gt_img_term_kite"
+    },
+    {
+      "id": "gt_term_cricket",
+      "nameJa": "クリケット",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "インドで一番人気のスポーツ。路地で遊ぶ「ガリー・クリケット」も盛ん。",
+      "imageId": "gt_img_term_cricket"
+    },
+    {
+      "id": "gt_term_dharna",
+      "nameJa": "ダルナー",
+      "readingJa": null,
+      "aliasJa": "座り込み",
+      "category": "custom",
+      "lineJa": "要求がかなうまで、相手の家や役所の前に座り込む。インドに古くからある抗議の形。",
+      "photoNoteJa": "写真は、座り込みの横断幕（マラーティー語）",
+      "imageId": "gt_img_term_dharna"
+    },
+    {
       "id": "gt_term_rose_ringed_parakeet",
       "nameJa": "ワカケホンセイインコ",
       "readingJa": null,
@@ -762,6 +826,43 @@
       "category": "creature",
       "lineJa": "ラージャスターン州の動物（2014年から）。インドのラクダの大半がこの州にいる。",
       "imageId": "gt_img_term_camel"
+    },
+    {
+      "id": "gt_term_cow",
+      "nameJa": "牛",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "creature",
+      "lineJa": "牛を神聖視するヒンドゥー教徒が多く、インドのマクドナルドは牛肉を出さない。",
+      "imageId": "gt_img_term_cow"
+    },
+    {
+      "id": "gt_term_monkey",
+      "nameJa": "アカゲザル",
+      "readingJa": null,
+      "aliasJa": "猿",
+      "category": "creature",
+      "lineJa": "猿は神ハヌマーンと重ねられ、えさをやる人が多い。アーグラでは増えすぎが悩み。",
+      "imageId": "gt_img_term_monkey"
+    },
+    {
+      "id": "gt_term_vrindavan_monkeys",
+      "nameJa": "ヴリンダーヴァンの猿",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "creature",
+      "lineJa": "ヴリンダーヴァンの猿は、人の眼鏡を奪い、ジュースと引き換えに返すことで知られる。",
+      "photoNoteJa": "写真は、ヴリンダーヴァンの寺町の猿",
+      "imageId": "gt_img_term_vrindavan_monkeys"
+    },
+    {
+      "id": "gt_term_water_buffalo",
+      "nameJa": "水牛",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "creature",
+      "lineJa": "水牛の乳は脂肪とたんぱく質が多く、インドの牛乳生産でも大きな割合を占める。",
+      "imageId": "gt_img_term_water_buffalo"
     },
     {
       "id": "gt_term_jaivana",
@@ -854,6 +955,36 @@
       "category": "thing",
       "lineJa": "神官の家の娘とされるミイラ。カイロの博物館から贈られ、ジャイプルへ来た。",
       "imageId": "gt_img_term_tutu"
+    },
+    {
+      "id": "gt_term_diana_bench",
+      "nameJa": "ダイアナ・ベンチ",
+      "readingJa": null,
+      "aliasJa": "大理石のベンチ",
+      "category": "thing",
+      "lineJa": "1992年、ダイアナ妃が一人で座った写真から「ダイアナ・ベンチ」と呼ばれる。",
+      "photoNoteJa": "写真は、タージの庭のベンチ（ダイアナ妃が座ったものとは別）",
+      "imageId": "gt_img_term_diana_bench"
+    },
+    {
+      "id": "gt_term_makrana_marble",
+      "nameJa": "マクラナの大理石",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "タージの白い大理石は、ラージャスターン州マクラナ産。今も名石として知られる。",
+      "photoNoteJa": "写真は、マクラナの大理石の置物",
+      "imageId": "gt_img_term_makrana_marble"
+    },
+    {
+      "id": "gt_term_baburnama",
+      "nameJa": "バーブル・ナーマ",
+      "readingJa": null,
+      "aliasJa": "バーブルの自伝",
+      "category": "thing",
+      "lineJa": "ムガル帝国の祖バーブルの自伝。テュルク語で書かれ、細密画つきの写本も作られた。",
+      "photoNoteJa": "画像は、写本の一頁「カーブルに入るバーブル」",
+      "imageId": "gt_img_term_baburnama"
     },
     {
       "id": "gt_term_tavernier",
@@ -1031,6 +1162,16 @@
       "imageId": "gt_img_term_nahar_singh_bhomia"
     },
     {
+      "id": "gt_term_cut_hands_legend",
+      "nameJa": "手を切られた職人の伝説",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "legend",
+      "lineJa": "タージの職人が手を切られたという話は言い伝えで、歴史家は裏づけを見つけていない。",
+      "photoNoteJa": "写真は、今のアーグラの象嵌職人の手元",
+      "imageId": "gt_img_term_cut_hands_legend"
+    },
+    {
       "id": "gt_term_vidyadhar",
       "nameJa": "ヴィディヤーダル",
       "readingJa": null,
@@ -1108,6 +1249,15 @@
       "imageId": "gt_img_term_chaiwala"
     },
     {
+      "id": "gt_term_salim_chishti",
+      "nameJa": "サリーム・チシュティー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "子を願うアクバルが頼ったスーフィーの聖者。皇子が生まれ、その地に都が築かれた。",
+      "imageId": "gt_img_term_salim_chishti"
+    },
+    {
       "id": "gt_term_khari_baoli",
       "nameJa": "カーリー・バーオリー",
       "readingJa": null,
@@ -1134,6 +1284,26 @@
       "lineJa": "1727年に築かれた計画都市。古い建築書の考えに沿って、町を碁盤の目に割った。",
       "photoNoteJa": "写真は、ナハルガル城から見たジャイプールの町",
       "imageId": "gt_img_term_grid_city"
+    },
+    {
+      "id": "gt_term_burhanpur",
+      "nameJa": "ブルハーンプル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "place",
+      "lineJa": "ムムターズ・マハルが亡くなった町。半年ほど庭に葬られ、のちアーグラへ移された。",
+      "photoNoteJa": "写真は、ブルハーンプルの離宮アーフーカーナー",
+      "imageId": "gt_img_term_burhanpur"
+    },
+    {
+      "id": "gt_term_shahjahanabad",
+      "nameJa": "シャージャハーナーバード",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "place",
+      "lineJa": "シャー・ジャハーンがアーグラから遷都して築いた都。今のオールド・デリー。",
+      "photoNoteJa": "写真は、今のオールド・デリーの路地",
+      "imageId": "gt_img_term_shahjahanabad"
     }
   ]
 }

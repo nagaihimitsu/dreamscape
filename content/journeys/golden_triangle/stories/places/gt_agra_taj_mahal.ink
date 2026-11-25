@@ -18,6 +18,7 @@ INCLUDE modules.ink
 赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
 # speaker: narrator
 # photo: gt_album_a05 # photo_caption: 門のアーチからはみ出していく白 # photo_show: large
+# term: gt_term_makrana_marble
 一歩進むごとに、白がアーチからはみ出していく。最後の一歩で、全体が現れた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -34,6 +35,7 @@ INCLUDE modules.ink
 # speaker: narrator
 まっすぐな水路が、建物まで続いている。水面に、もう一つのタージが逆さに揺れていた。
 # speaker: narrator
+# term: gt_term_diana_bench
 水路の途中に、白い大理石のベンチ。その前に、記念写真の列が長く伸びている。
 # speaker: heroine
 # reaction: heroine,smile,question
@@ -52,6 +54,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
 # leave: enemy
+# term: gt_term_diana_bench
 タージ・マハルへ続く長い水路の途中に、白い大理石のベンチがある。記念写真の列が、今日も二十人ほど伸びていた。
 # speaker: narrator
 列に並んでいた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
@@ -139,6 +142,7 @@ INCLUDE modules.ink
 }
 # speaker: enemy
 # voice: gt_agra_main_taj_mahal_battle_nikhil_007
+# term: gt_term_burhanpur
 タンヴィ……君は、タージが嫌いなの？
 # speaker: gt_tanvi
 # voice: gt_agra_main_taj_mahal_battle_tanvi_007
@@ -172,6 +176,7 @@ INCLUDE modules.ink
     釣り合いのためよ。モスクの写し。きれいだけど、片方のためだけにある
 }
 # speaker: narrator
+# term: gt_term_jawab
 タンヴィはニキルに向き直った。
 # speaker: gt_tanvi
 # voice: gt_agra_main_taj_mahal_battle_tanvi_011
@@ -291,6 +296,7 @@ INCLUDE modules.ink
     歴史家は、記録がない伝説だって言ってますよ
 }
 # speaker: narrator
+# term: gt_term_cut_hands_legend
 観客がざわめく。さっき目を拭っていた何人かが、そそくさとハンカチをしまった。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_005
@@ -393,6 +399,7 @@ INCLUDE modules.ink
     ……デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない
 }
 # speaker: narrator
+# term: gt_term_shahjahanabad
 観客が静かになった。泣いてはいない。けれど、さっきとは違う顔で、川向こうの白い建物を見ている。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_011

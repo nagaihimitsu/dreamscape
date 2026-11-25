@@ -172,6 +172,7 @@ Many handwritten books were collected at his court.
 # speaker: narrator
 # shake: window
 # se: snatch
+# term: gt_term_monkey
 言い終わる前に、灰色の影が横から走り抜けた。布袋が消えていた。猿が一匹、門の壁をするすると登り、袋を片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -185,6 +186,7 @@ Many handwritten books were collected at his court.
 追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます
 # speaker: gt_agra_akbar_guard
 # voice: gt_agra_akbar_tomb_monkey_attar_agra_akbar_guard_002
+# term: gt_term_vrindavan_monkeys
 ヴリンダーヴァンって町の猿は、眼鏡を盗んでジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
 * [売店でパックのジュースを買って、交換を申し込む # option: attar_trade]
     # money: -20
@@ -278,6 +280,7 @@ Many handwritten books were collected at his court.
 # speaker: narrator
 まぶしさに目を細めて、彼女が頭の上のサングラスを下ろそうとした。その手が、空を切った。
 # se: snatch
+# term: gt_term_monkey
 猿が一匹、門の壁をするすると登り、サングラスを片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -292,6 +295,7 @@ Many handwritten books were collected at his court.
 追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます
 # speaker: gt_agra_akbar_guard
 # voice: gt_agra_akbar_tomb_monkey_glasses_agra_akbar_guard_002
+# term: gt_term_vrindavan_monkeys
 ヴリンダーヴァンって町の猿は、眼鏡を盗んでジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
 * [売店でパックのジュースを買って、交換を申し込む # option: glasses_trade]
     # money: -20

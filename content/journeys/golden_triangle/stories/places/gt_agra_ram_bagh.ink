@@ -20,6 +20,7 @@ INCLUDE modules.ink
 # voice: gt_agra_date_ram_bagh_001
 最初の皇帝の庭なのに、静かだね。タージの十分の一も、人がいない
 # speaker: narrator
+# term: gt_term_baburnama
 彼女のガイドブックに、バーブルが自伝に書き残した言葉が載っていた。この国にないもの、の一覧だ。
 # speaker: narrator
 # letter: card

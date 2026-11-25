@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: narrator
 メヘターブ・バーグの庭をひと回りして、塀の外へ出た。そこは、隣の村の空き地だった。
 # speaker: narrator
+# term: gt_term_cricket
 乾いた土の上で、子どもたちがクリケットをしている。打席の向こう、川の対岸には、白いドームが浮かんでいた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle

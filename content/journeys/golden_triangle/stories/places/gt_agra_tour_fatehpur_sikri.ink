@@ -98,6 +98,7 @@ INCLUDE modules.ink
 鳴らさないんですね
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_001
+# term: gt_term_cow
 牛は、鳴らしても急ぎません。急ぐのは、こっちの心臓だけ
 # background: gt_bg_agra_tour_road
 # speaker: narrator
@@ -129,6 +130,7 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_out_leg_vinod_005
 皇帝の所の、すぐ下の町に。お二人が中にいる間、わたしは母の家で昼ごはんです。このツアーは、わたしにも、いいツアー
 # speaker: narrator
+# term: gt_term_water_buffalo
 窓の外を、畑が流れていく。水路の脇で、子どもが一人、水牛の群れを棒で追っていた。
 -> END
 

@@ -22,12 +22,14 @@ INCLUDE modules.ink
 # voice: gt_agra_fatehpur_sikri_guide_002
 きれいなのに、ちょっと不思議。お店も家もあるのに、誰も住んでないみたい
 # speaker: narrator
+# term: gt_term_buland_darwaza
 町の一角に、巨大な門がそびえていた。見上げるほど高いアーチ。その下へ、急な石段が延々と続く。
 # speaker: heroine
 # reaction: heroine,exasperated,dizzy
 # voice: gt_agra_fatehpur_sikri_guide_003
 この階段を、上るの……？　門って、くぐるものじゃなくて、登るものだったんだ
 # speaker: narrator
+# term: gt_term_calligraphy_band
 途中で三回休み、{heroine_name}はやっとアーチの真下にたどり着いた。見上げると、石の表面に、流れるような文字が帯になって刻まれている。
 # speaker: heroine
 # voice: gt_agra_fatehpur_sikri_guide_004
@@ -45,6 +47,8 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_agra_fatehpur_sikri
 # speaker: narrator
+# term: gt_term_buland_darwaza
+# term: gt_term_calligraphy_band
 巨大な門へ続く急な石段を上りきって、{heroine_name}はまだ息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
 # speaker: narrator
 同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
@@ -131,9 +135,11 @@ INCLUDE modules.ink
     跡継ぎ、か。聖者に会いに来て、息子が生まれて、それで町を建てた。……息子のために、町を一つ
 }
 # speaker: narrator
+# term: gt_term_salim_chishti
 ムケーシュの声の調子が変わった。携帯を膝に置き、画面を伏せる。
 # speaker: enemy
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_014
+# term: gt_term_kite
 わたしの家もね、息子のためなんです。二階は全部、息子夫婦の部屋。孫ができたら、屋上で凧を揚げる
 # speaker: enemy
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_015
