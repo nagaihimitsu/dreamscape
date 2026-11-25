@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <!-- シャグン（祝い金）の封筒の説明図。Dreamscape のために図形と文字だけで描いた（2026-11-25）。
+       表に「शगुन」（シャグン）と書いた封筒と、その手前に添えた一ルピー硬貨。実在の店の封筒・硬貨・紙幣の写しではない。 -->
+  <rect width="1200" height="1200" fill="#f4e9d6"/>
+  <circle cx="600" cy="610" r="470" fill="#ead9bd"/>
+  <g transform="rotate(-7 600 610)">
+    <!-- 封筒の影 -->
+    <rect x="232" y="378" width="760" height="500" rx="22" fill="#000" opacity="0.12"/>
+    <!-- 封筒 -->
+    <rect x="215" y="355" width="770" height="500" rx="22" fill="#b3202a"/>
+    <rect x="245" y="385" width="710" height="440" rx="12" fill="none" stroke="#e0ad45" stroke-width="10"/>
+    <rect x="265" y="405" width="670" height="400" rx="8" fill="none" stroke="#e0ad45" stroke-width="3" stroke-dasharray="14 10"/>
+    <!-- ふた -->
+    <path d="M215 377 Q215 355 237 355 L963 355 Q985 355 985 377 L600 590 Z" fill="#9a1a23"/>
+    <path d="M232 372 L600 575 L968 372" fill="none" stroke="#e0ad45" stroke-width="6"/>
+    <circle cx="600" cy="575" r="30" fill="#e0ad45"/>
+    <circle cx="600" cy="575" r="16" fill="#b3202a"/>
+    <!-- 文字 -->
+    <text x="560" y="740" text-anchor="middle" font-family="FreeSerif" font-weight="bold" font-size="120" fill="#f2c45a">शगुन</text>
+    <!-- 角の飾り -->
+    <g fill="#e0ad45">
+      <circle cx="290" cy="780" r="12"/><circle cx="318" cy="780" r="7"/><circle cx="290" cy="752" r="7"/>
+      <circle cx="910" cy="440" r="12"/><circle cx="882" cy="440" r="7"/><circle cx="910" cy="468" r="7"/>
+    </g>
+  </g>
+  <!-- 一ルピー硬貨（封筒の手前に置いた） -->
+  <ellipse cx="905" cy="880" rx="100" ry="26" fill="#000" opacity="0.13"/>
+  <circle cx="890" cy="800" r="100" fill="#8e9398"/>
+  <circle cx="890" cy="792" r="100" fill="#d7dade"/>
+  <circle cx="890" cy="792" r="82" fill="none" stroke="#aeb3b8" stroke-width="6"/>
+  <text x="890" y="832" text-anchor="middle" font-family="DejaVu Serif" font-weight="bold" font-size="104" fill="#5d6267">₹1</text>
+</svg>

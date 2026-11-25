@@ -2,6 +2,67 @@
   "schemaVersion": 1,
   "scenes": [
     {
+      "id": "gt_delhi_arrive_hands",
+      "sources": [
+        {
+          "publisher": "India Empire",
+          "title": "Delhi Airport Makes Every Overseas Indian Proud（Kul Bhushan、2010年8月号）",
+          "url": "https://www.indiaempire.com/v1/2010/August/DELHI_AIRPORT.asp",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "第3ターミナルに着いた人は、動く歩道で入国審査の広間へ進む。広間には金色の円盤の上に女性の手の「ムドラー」の大きな彫刻が並び、その下に入国審査の窓口がある（2010年の記事。窓口の数はその後変わっている）。"
+        },
+        {
+          "publisher": "Wikimedia Commons（Krokodyl）",
+          "title": "File:Mudras at Indira Gandhi Delhi 1007.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Mudras_at_Indira_Gandhi_Delhi_1007.jpg",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "2011年の写真の説明に「第3ターミナルの到着の広間のムドラー」とある（撮影者の説明）。"
+        },
+        {
+          "publisher": "The Tribune",
+          "title": "Visual symphony at T3（2010-07-17）",
+          "url": "https://tribuneindia.com/2010/20100717/saturday/main2.htm",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "彫刻は踊りのムドラー（手のしぐさ）を円盤と組み合わせたもので、インドのあらゆる踊りの手を含む。円盤はモラーダーバードの工場で手で絞ったアルミニウム。デザインを手がけた人は、ムドラーを「平和な意図を表す、宗派によらない印」として選んだと話している。"
+        },
+        {
+          "publisher": "Art@Site（The Wall Street Journal, India Real Time の記事を引用）",
+          "title": "Ayush Kasliwal, Mudra Sculptures, New Delhi",
+          "url": "https://www.artatsite.com/Delhi/details/Kasliwal-Ayush-Mudra-Indira-Gandhi-Airport-statue-sculpture-art-at-site-New-Delhi.html",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "手の彫刻はジャイプールのデザイナー、アーユシュ・カースリーワールが作って据えた（2010年）。インドの古典の踊りはどれもムドラーを使い、共通の語彙になっている、とデザインの担当者が話している。"
+        },
+        {
+          "publisher": "Natyasutra Online",
+          "title": "Mayura Hasta Mudra | Single-Hand Gesture | Bharatanatyam",
+          "url": "https://www.natyasutraonline.com/picture-gallery/asamyuta-hasta-bharatanatyam/Mayura-Hasta",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "バラタナーティヤムの片手のしぐさ「マユーラ」は、薬指の先と親指の先を合わせ、ほかの指をまっすぐそろえる。孔雀の頭や首、鳥などを表す。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "List of mudras (dance)",
+          "url": "https://en.wikipedia.org/wiki/List_of_mudras_(dance)",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "インドの古典舞踊の手のしぐさの一覧で、マユーラ（Mayura）の意味は「孔雀、または孔雀のくちばし」。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Head bobble",
+          "url": "https://en.wikipedia.org/wiki/Head_bobble",
+          "checkedAt": "2026-11-23",
+          "claimType": "documented_fact",
+          "claimJa": "首を左右に小さく揺らすしぐさは、南アジア、とくにインドでよく見られる。場面によって「はい」「いいよ」「分かった」などを表し、いちばん多いのは「はい」か、分かったという合図。"
+        }
+      ]
+    },
+    {
       "id": "gt_delhi_hotel_homework",
       "sources": [
         {

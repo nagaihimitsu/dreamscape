@@ -280,6 +280,18 @@
       },
       "placeId": "delhi_hotel_hub"
     },
+    "gt_bg_delhi_airport_mudras": {
+      "nameJa": "インディラ・ガンディー国際空港",
+      "captionJa": "デリー ／ インディラ・ガンディー国際空港（第3ターミナルの到着の広間）",
+      "color": "#6b4a2e",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_airport_mudras",
+      "imagePosition": {
+        "x": 15,
+        "y": 50
+      },
+      "placeJa": "インディラ・ガンディー国際空港"
+    },
     "gt_bg_delhi_hotel_alley": {
       "nameJa": "滞在先のホテルの路地（デリー）",
       "captionJa": "デリー ／ 滞在先の路地（オールドデリーの古い家並みの路地を用いたイメージ）",

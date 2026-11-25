@@ -5,7 +5,9 @@ import { weekdayLabel } from "../app/journey-hud-text";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { clockText, debugClockPresets, debugDayRange, debugRomanceStages, debugTimeRange, parseClockText, type DebugRomanceStage, type DebugScene } from "./debug-query";
-import { debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugClueGroup, type DebugFlagGroup } from "./debug-edits";
+import {
+  debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugClueGroup, type DebugEpisode, type DebugFlagGroup,
+} from "./debug-edits";
 
 /**
  * Debug's flags, free time's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」) and 恋の段階
@@ -161,6 +163,27 @@ export function DebugClueChooser({ groups, cityId, chosen, onChange }: {
     <DebugCheckList testId="debug-clue" cityId={cityId} checked={chosen}
       groups={groups.map((group) => ({ ...group, rows: group.clues.map((clue) => ({ id: clue.id, text: clue.titleJa })) }))}
       onChange={(id, obtained) => onChange(obtained ? [...chosen, id] : chosen.filter((clue) => clue !== id))} />
+  </details>;
+}
+
+/**
+ * 場面の確認's episodes of the city to finish first (2026-11-25 user request; debugEpisodes), folded like the flags. Shown with
+ * 旅の進行「旅の開始時」 only: a cleared city has finished them all.
+ */
+export function DebugEpisodeChooser({ episodes, cityNameJa, chosen, onChange }: {
+  episodes: readonly DebugEpisode[];
+  cityNameJa: string;
+  chosen: readonly string[];
+  onChange: (episodes: string[]) => void;
+}) {
+  const [open, setOpen] = useState(chosen.length > 0);
+  if (!episodes.length) return null;
+  return <details className="debug-flags" data-testid="debug-episodes" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+    <summary>エピソードを終えたことにする（{chosen.length ? `${chosen.length}件を選択中` : "なし"}）</summary>
+    <p className="debug-note">旅の開始時から、チェックしたエピソードを遊びと同じ決まりで終えてから場面を開きます（案内は飛ばし、クイズは正解、選択肢は最初に選べるもの）。エピソードで得るフラグ・品物・時刻の進みもそのまま残り、その後に上で選んだ値・下で選んだフラグと手がかりが入ります。フィナーレを終えた状態は「都市クリア後」で開きます。</p>
+    <DebugCheckList testId="debug-episode" cityId="" checked={chosen}
+      groups={[{ cityId: null, nameJa: cityNameJa, rows: episodes.map((episode) => ({ id: episode.id, text: episode.nameJa })) }]}
+      onChange={(id, finished) => onChange(finished ? [...chosen, id] : chosen.filter((episode) => episode !== id))} />
   </details>;
 }
 

@@ -236,43 +236,122 @@
   }
 }
 
-/* A result is a compact summary and a choice of what to do next.  Detailed
-   receipts and history remain available, but do not push those choices away:
-   the choices sit at the card's bottom in thumb reach, as the explanation's
-   「相手の反応を見る」 does (2026-11-14, the phone UI audit: they floated
-   mid-card), and stay there while a long result (an open breakdown, enlarged
-   text) scrolls above them. */
+/* A result (2026-11-25 user decision: part of the place, not a sheet laid over it). The stage gives its room to the
+   place's picture; the outcome and the score stand over it in light words; the rest (the AP, the trip's milestone,
+   what to do next) is a glass card at the foot (styles.css's glass surfaces). Its choices sit at the card's bottom in
+   thumb reach (2026-11-14, the phone UI audit: they floated mid-card) under the part that scrolls when the result is
+   long (an open breakdown, enlarged text); if even that leaves too little, the whole result scrolls. */
+.battle-screen[data-phase="result"] .battle-stage { display: none; }
+.battle-screen[data-phase="result"] .battle-backdrop { opacity: 0.92; }
 .battle-screen[data-phase="result"] .battle-paper {
   display: flex;
   flex-direction: column;
+  width: min(100% - 24px, 680px);
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 0 4px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
 .battle-result {
   display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+}
+.battle-result-heading {
+  position: relative;
+  display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 8px 24px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 0, 0, 0.45);
 }
-.battle-result-foot {
-  position: sticky;
-  z-index: 2;
-  bottom: 0;
-  display: grid;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 12px;
-  background: var(--ds-parchment);
-}
-/* It sticks above the reading area's bottom padding: fill that strip too, so
-   the result scrolled behind it is not left showing below it (as the round
-   bar's top fill). The scrolling paper clips the fill to its own box. */
-.battle-result-foot::after {
+/* A soft shade behind the light words, whatever the picture (no edge: it fades out). */
+.battle-result-heading::before {
   content: "";
   position: absolute;
   z-index: -1;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 40px;
-  background: inherit;
+  inset: 0 -12px;
+  background: radial-gradient(closest-side, rgba(12, 16, 24, 0.55), rgba(12, 16, 24, 0.25) 60%, transparent);
+  pointer-events: none;
+}
+.battle-result-heading .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+}
+.battle-result-heading .eyebrow::before,
+.battle-result-heading .eyebrow::after {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: var(--ds-gold);
+  box-shadow: none;
+}
+.battle-result .outcome {
+  margin: 6px 0 0;
+  color: #fff;
+  font-size: clamp(40px, 12vw, 64px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+}
+/* Every question answered right: the word in a warm gold light. */
+.battle-result[data-outcome="perfect"] .outcome {
+  color: #ffe6a8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 22px rgba(246, 196, 69, 0.6);
+}
+.battle-result .battle-score {
+  justify-content: center;
+  gap: 6px;
+  margin: 4px 0 0;
+  color: #fff;
+}
+.battle-result .battle-score strong { font-size: 36px; }
+.battle-result .battle-score > span { font-size: 14px; font-weight: 600; }
+/* It may give way down to its choices and a few lines of the part that scrolls (its least height). */
+.battle-result-card {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  padding: 16px 16px 14px;
+}
+.battle-result-body {
+  flex: 0 1 auto;
+  min-height: 4.5em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.battle-result-card .battle-rewards { margin: 0; padding: 0; border: 0; }
+.battle-result-card .reward-total strong { font-size: 30px; }
+.battle-result-card .current-ap { margin: 4px 0 0; }
+/* The trip's milestone on the glass: a warm light, its words in the glass's ink. */
+.battle-result-card .episode-clear {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(201, 163, 95, 0.2);
+}
+.battle-result-card .episode-clear h2 { margin: 2px 0 4px; font-size: 18px; }
+.battle-result-card .episode-clear > p:not(.eyebrow):not(.fine-print) { margin: 0; line-height: 1.9; }
+.battle-result-foot {
+  display: grid;
+  flex: none;
+  gap: 8px;
+  padding-top: 14px;
 }
 .battle-result-actions {
   display: grid;
@@ -292,48 +371,41 @@
   padding: 8px 0;
 }
 .result-pending .pending-rewards { margin: 0; }
-/* The result comes in: the outcome and the score rise into place, then the AP earned pops
-   (nothing pressable moves; its buttons show at once). */
+/* The result comes in: the outcome and the score rise into place, the card follows, then the AP earned pops (nothing
+   pressable moves; its buttons show at once). */
 .battle-result-heading { animation: battle-result-in var(--motion-medium) var(--ease-out); }
+.battle-result .outcome { animation: battle-result-word 700ms var(--ease-out) backwards; }
+/* The card only rises (its opacity stays whole, so its glass blurs the place from the first frame). */
+.battle-result-card { animation: battle-result-card-in var(--motion-medium) var(--ease-out); }
 .battle-result .reward-total strong {
   transform-origin: 100% 50%;
-  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 140ms backwards;
+  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 260ms backwards;
 }
 @keyframes battle-result-in {
   from { opacity: 0; transform: translateY(8px); }
+}
+@keyframes battle-result-card-in {
+  from { transform: translateY(14px); }
+}
+/* The word opens out from close letters, as a title card does. */
+@keyframes battle-result-word {
+  from { opacity: 0; letter-spacing: -0.02em; }
 }
 @keyframes battle-reward-pop {
   from { opacity: 0; transform: scale(0.7); }
   60% { opacity: 1; transform: scale(1.08); }
 }
-.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .reward-total strong) { animation: none; }
+.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total strong) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .battle-screen :is(.battle-result-heading, .reward-total strong) { animation: none; }
+  .battle-screen :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total strong) { animation: none; }
 }
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .battle-screen[data-phase="result"] .battle-stage { display: none; }
-  .battle-screen[data-phase="result"] .battle-paper { padding: 6px 12px 12px; }
-  .battle-result { padding-top: 0; }
-  .battle-result-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 4px 12px;
-  }
-  .battle-result .outcome { font-size: 23px; margin: 2px 0; }
-  .battle-result .battle-score { margin: 0; gap: 3px; }
-  .battle-result .battle-score strong { font-size: 28px; }
-  .battle-result .battle-rewards { margin: 4px 0; padding-top: 6px; }
-  .battle-result .reward-total strong { font-size: 23px; }
-  .battle-result .current-ap { margin: 2px 0; }
+  .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 4px; }
+  .battle-result-card { padding: 14px 14px 12px; }
   .battle-result .result-pending summary { padding: 4px 0; }
-  .battle-result .episode-clear { margin: 4px 0; padding: 8px 10px; }
-  .battle-result .episode-clear h2 { font-size: 16px; margin: 1px 0; }
-  .battle-result .episode-clear > p:not(.eyebrow) { margin: 2px 0 0; line-height: 1.8; }
   .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: 1.5; }
-  .battle-result-foot { gap: 6px; padding-top: 8px; }
+  .battle-result-foot { gap: 6px; padding-top: 12px; }
   .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .battle-result-actions .primary { grid-column: 1 / -1; }
   .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: 1.4; }

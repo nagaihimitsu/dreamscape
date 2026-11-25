@@ -25,6 +25,7 @@ INCLUDE modules.ink
 # bgm: immersed
 # speaker: narrator
 # photo: gt_album_j098 # photo_caption: 楽隊の鳴る、夜の屋上
+# term: gt_term_dhol
 宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
 # speaker: heroine
 # voice: gt_jaipur_date_confession_001

@@ -56,6 +56,12 @@ export type DebugSettings = {
    */
   clues?: string[];
   /**
+   * Episodes of the city (not its finale; debug-edits.ts debugEpisodes) the scene's state has finished, as a player finishes them
+   * (2026-11-25 user request): from 旅の進行「旅の開始時」 only (a cleared city has finished them all); the flags, clues and values
+   * chosen are given after them.
+   */
+  episodes?: string[];
+  /**
    * 恋の段階 (GameState.romanceStage; 2026-11-16 user request) the scene's state starts at (any scene); left out keeps the
    * progress's own. Debug only: set as chosen, higher or lower (debug-edits.ts withDebugStage).
    */
@@ -111,6 +117,7 @@ export interface DebugQuery {
   time?: number;
   flags?: string[];
   clues?: string[];
+  episodes?: string[];
   stage?: DebugRomanceStage;
   /**
    * 撮影の形 (shot mode, 2026-11-16): the page opens with Debug's own marks hidden (its bar, the relationship-change strip, the
@@ -134,13 +141,13 @@ const choices = {
 } as const;
 /** URL items in the order a copied URL lists them. */
 export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "stage", "roll", "from", "prep", "step", "without",
-  "before", "day", "time", "flags", "clues", "shot"] as const;
+  "before", "day", "time", "episodes", "flags", "clues", "shot"] as const;
 type QueryKey = (typeof debugQueryKeys)[number];
 const idPattern = /^[a-z][a-z0-9_]*$/;
-const listNames = { prep: "場面", without: "品物", flags: "フラグ", clues: "手がかり" } as const;
+const listNames = { prep: "場面", without: "品物", episodes: "エピソード", flags: "フラグ", clues: "手がかり" } as const;
 
 function parseValue(key: QueryKey, value: string): string | number {
-  if (key === "prep" || key === "without" || key === "flags" || key === "clues") {
+  if (key === "prep" || key === "without" || key === "episodes" || key === "flags" || key === "clues") {
     const ids = value.split(",");
     if (ids.some((id) => !idPattern.test(id))) throw new Error(`「${key}=${value}」はIDの形ではありません（${listNames[key]}のIDを , で区切ります）。`);
     return value;
@@ -214,6 +221,7 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     if (values.before !== undefined) query.before = values.before as string;
     if (values.day !== undefined) query.day = values.day as number;
     if (values.time !== undefined) query.time = values.time as number;
+    if (values.episodes !== undefined) query.episodes = (values.episodes as string).split(",");
     if (values.flags !== undefined) query.flags = (values.flags as string).split(",");
     if (values.clues !== undefined) query.clues = (values.clues as string).split(",");
     if (values.stage !== undefined) query.stage = values.stage as DebugRomanceStage;
@@ -222,7 +230,7 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     if (query.step && query.scene !== "tour") throw new Error("step は scene=tour（ツアー）で使います。");
     if ((query.without || query.before) && query.scene !== "date") throw new Error("without と before は scene=date（デート）で使います。");
     // The map check shows a prototype city's data, without a game state or Debug's marks.
-    const sceneOnly = (["day", "time", "flags", "clues", "stage", "shot"] as const).filter((key) => values[key] !== undefined);
+    const sceneOnly = (["day", "time", "episodes", "flags", "clues", "stage", "shot"] as const).filter((key) => values[key] !== undefined);
     if (sceneOnly.length && query.scene === "map")
       throw new Error(`${sceneOnly.join(" と ")} は scene=map（地図・交通の確認）では使えません。物語のある場面で使います。`);
     return { kind: "launch", query };
@@ -238,7 +246,7 @@ export function debugQueryString(query: DebugQuery): string {
     target: query.target, progress: query.progress, ap: query.ap, affection: query.affection,
     trust: query.trust, spark: query.spark, stage: query.stage, roll: query.roll, from: query.from, prep: query.prep?.join(","), step: query.step,
     without: query.without?.join(","), before: query.before, day: query.day,
-    time: query.time === undefined ? undefined : clockText(query.time), flags: query.flags?.join(","), clues: query.clues?.join(","),
+    time: query.time === undefined ? undefined : clockText(query.time), episodes: query.episodes?.join(","), flags: query.flags?.join(","), clues: query.clues?.join(","),
     shot: query.shot ? 1 : undefined,
   };
   // A time keeps its colon (allowed in a query), so that the URL reads time=19:00.
@@ -253,6 +261,7 @@ export function settingsQuery(dataMode: DebugDataMode, settings: DebugSettings):
     ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}), ...(settings.step ? { step: settings.step } : {}),
     ...(settings.without?.length ? { without: settings.without } : {}), ...(settings.before ? { before: settings.before } : {}),
     ...(settings.day !== undefined ? { day: settings.day } : {}), ...(settings.time !== undefined ? { time: settings.time } : {}),
+    ...(settings.episodes?.length ? { episodes: settings.episodes } : {}),
     ...(settings.flags?.length ? { flags: settings.flags } : {}), ...(settings.clues?.length ? { clues: settings.clues } : {}),
     ...(settings.stage !== undefined ? { stage: settings.stage } : {}) };
 }

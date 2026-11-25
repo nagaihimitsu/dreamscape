@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <!-- 年長者が、頭を下げた年下の人の頭に手を置いて祝福する様子の説明図。Dreamscape のために図形だけで描いた（2026-11-25）。 -->
+  <rect width="1200" height="1200" fill="#f4e9d6"/>
+  <circle cx="600" cy="640" r="470" fill="#ead9bd"/>
+  <!-- 頭を下げた人（頭頂と肩） -->
+  <path d="M250 1200 Q262 940 600 905 Q938 940 950 1200 Z" fill="#2f6f73"/>
+  <ellipse cx="600" cy="790" rx="220" ry="180" fill="#2b2119"/>
+  <path d="M600 625 Q594 700 606 780" stroke="#4a3a2d" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- 年長者の腕（白い袖） -->
+  <path d="M1200 170 L1200 400 Q1040 420 930 520 L850 380 Q1000 230 1200 170 Z" fill="#f3efe6"/>
+  <path d="M852 382 L930 520" stroke="#d9d2c3" stroke-width="12" stroke-linecap="round"/>
+  <!-- 手首と手の甲（頭頂に、手のひらを下にして置く） -->
+  <path d="M880 430 Q930 500 900 560 Q850 650 760 700 L690 720 Q660 690 680 650 Q740 560 800 480 Z" fill="#a8693f"/>
+  <ellipse cx="730" cy="705" rx="110" ry="62" fill="#a8693f" transform="rotate(-20 730 705)"/>
+  <!-- 指（少し開いて、頭の丸みに沿わせる） -->
+  <g fill="#a8693f">
+    <rect x="500" y="648" width="200" height="44" rx="22" transform="rotate(14 700 670)"/>
+    <rect x="490" y="690" width="215" height="46" rx="23" transform="rotate(4 705 713)"/>
+    <rect x="502" y="734" width="200" height="44" rx="22" transform="rotate(-6 702 756)"/>
+    <rect x="540" y="776" width="160" height="40" rx="20" transform="rotate(-16 700 796)"/>
+  </g>
+  <g fill="none" stroke="#8d5532" stroke-width="5" stroke-linecap="round" opacity="0.6">
+    <path d="M520 690 L690 688"/>
+    <path d="M520 738 L690 732"/>
+  </g>
+  <!-- 親指（手前へ） -->
+  <path d="M790 720 Q770 800 712 830 Q688 840 682 820 Q682 800 712 780 Q748 756 760 716 Z" fill="#9c6139"/>
+  <!-- 祝福のしるし -->
+  <g stroke="#e0a43a" stroke-width="16" stroke-linecap="round">
+    <path d="M380 470 L320 410"/>
+    <path d="M350 560 L270 552"/>
+    <path d="M470 420 L450 340"/>
+  </g>
+</svg>

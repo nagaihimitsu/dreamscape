@@ -16,6 +16,8 @@ INCLUDE modules.ink
 # voice: gt_delhi_qutb_minar_guide_001
 高い……！　近くで見ると、塔の表面に、文字がびっしり彫ってある
 # speaker: narrator
+# term: gt_term_red_sandstone
+# term: gt_term_qutb_calligraphy
 赤い砂岩の帯の間を、文字の帯が巻き上がっていく。家族連れが塔を背に並び、誰かが毎回「もうちょっと下がって」と叫んでいた。
 # speaker: heroine
 # reaction: heroine,exasperated,dizzy
@@ -29,10 +31,12 @@ INCLUDE modules.ink
 # voice: gt_delhi_qutb_minar_guide_003
 鉄の柱……あ、あれかな。塔の近くの、黒い柱
 # speaker: narrator
+# term: gt_term_iron_pillar
 塔の足元の中庭に、黒っぽい鉄の柱が立っていた。人の背丈の何倍か。根元は、低い柵にぐるりと囲まれている。
 # speaker: heroine
 # emotion: neutral
 # voice: gt_delhi_qutb_minar_guide_004
+# term: gt_term_pillar_hug
 『もう抱けない』ってことは、昔は抱けたんだ。……カムラさん、抱いたことあるのかな。誰かと一緒に
 # speaker: narrator
 # emotion: smile
@@ -74,6 +78,7 @@ INCLUDE modules.ink
 ラームキシャンです。ウッタル・プラデーシュ州の町から、夜行バスで来ました
 # speaker: enemy
 # voice: gt_delhi_main_qutb_minar_battle_ramkishan_003
+# term: gt_term_pillar_hug
 祖父は結婚の前に、この柱を抱きました。父は就職の面接の前に。来月、娘が高校の卒業試験を受けるんです
 # speaker: heroine
 # voice: gt_delhi_main_qutb_minar_002

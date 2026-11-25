@@ -5,6 +5,9 @@ INCLUDE modules.ink
 
 // 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 // 【3】足した札：カムラの段ボールのメモを受け取る
+// 旅の最初の場面は、この前の空港の場面（gt_delhi_inserts.ink の gt_delhi_arrive_hands。ロゴの前）。
+// 落花生の前振り（2026-11-23）：彼女が落花生を目で追う → カムラが一粒くれて「欲しいものは、欲しいと言いなさい」。
+// 一粒は、目の前の落花生と、「旅の連れです！」と言ったばかりの連れの両方を指す。
 === gt_delhi_arrival ===
 # scene: arrival
 # person: gt_kamla
@@ -13,6 +16,7 @@ INCLUDE modules.ink
 # speaker: narrator
 デリーの宿は、住宅街の路地にあった。隣の古い家から、段ボールが次々に運び出されている。
 # speaker: narrator
+# term: gt_term_peanuts
 路地の真ん中で、ショールの小柄な老婦人が椅子に陣取り、落花生を割りながら運び手に指図している。将軍みたいに。
 # speaker: enemy
 # cutin: name
@@ -29,6 +33,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_arrival_001
 わたしのガイドブック、初対面で不合格になった……
 # speaker: narrator
+# term: gt_term_devanagari
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。ガイドブックの代わりだという。
 # speaker: narrator
 # item_show: gt_delhi_kamla_memo
@@ -50,8 +55,11 @@ INCLUDE modules.ink
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_006
 説明したら、つまらない。
+# speaker: narrator
+落花生の殻が、また小気味よく割れた。{heroine_name}の目が、ついその手もとを追う。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_007
+# term: gt_term_delhi_metro
 出かけるなら、地下鉄にしなさい。わたしは女性車両。オートリキシャの運転手とは、値段で喧嘩になるからね。
 # speaker: narrator
 それから彼女は、{heroine_name}の後ろに立つこちらを顎で示した。
@@ -103,6 +111,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_epilogue_001
 いえ。……わたしも、アマンさんの立場だったら、同じことを言ったと思います
 # speaker: narrator
+# term: gt_term_chai
 アマンはチャイを一つずつ、二人の手に渡した。器が、まだ熱い。
 # speaker: enemy
 # voice: gt_delhi_epilogue_aman_002

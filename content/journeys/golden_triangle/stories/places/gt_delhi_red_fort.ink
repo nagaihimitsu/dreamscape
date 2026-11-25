@@ -68,6 +68,7 @@ INCLUDE modules.ink
 ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
 # speaker: enemy
 # voice: gt_delhi_main_red_fort_battle_nidhi_002
+# term: gt_term_indian_english
 英語の宿題なんです。『外国人観光客に遺産について質問する』。一時間後にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
 # emotion: worried
@@ -95,6 +96,7 @@ INCLUDE modules.ink
 # speaker: narrator
 列の最後に、一人だけノートを閉じたままの少年がいる。前の子の背中ばかり見ていた。
 # speaker: narrator
+# term: gt_term_diwan_i_khas
 アンジャリが胸を張り、宮殿の奥、白い大理石の広間を指さした。外国人がどれくらい知っているか、試す顔だった。
 -> quiz(1) ->
 # background: gt_bg_delhi_red_fort
@@ -162,6 +164,7 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,anger
 # voice: gt_delhi_main_red_fort_battle_nidhi_007
+# term: gt_term_independence_day
 ソーヌー！　鈴の代金はお父さんに請求します！　……はい、ここまで。バスに向かいます
 # speaker: narrator
 列が崩れて歩き出す。最後の少年もノートを抱えて歩き出した。一度も開かないまま。
@@ -210,6 +213,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # em: 囚人
+# term: gt_term_bahadur_shah_zafar
 声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -350,6 +354,7 @@ INCLUDE modules.ink
     ……知らなかった。祖母は、一人で地下鉄に乗れるんだ
 }
 # speaker: narrator
+# term: gt_term_ladies_coach
 病院の番号を押しかけていた指が、止まった。アマンは携帯を、ゆっくりポケットに戻した。
 # speaker: heroine
 # voice: gt_delhi_finale_004
@@ -409,6 +414,7 @@ INCLUDE modules.ink
 # speaker: gt_delhi_sweet_shopkeeper
 # term: gt_term_jalebi
 # voice: gt_delhi_finale_battle_delhi_sweet_shopkeeper_001
+# term: gt_term_bargaining
 ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。一年分の香辛料を、一番安く買えるのはどこかって
 # speaker: enemy
 # voice: gt_delhi_finale_battle_aman_013
@@ -425,11 +431,13 @@ INCLUDE modules.ink
     カーリー・バーオリーだ。西の端の、香辛料の卸の通り。……子どもの頃、祖母に連れていかれた
 }
 # speaker: narrator
+# term: gt_term_khari_baoli
 西へ歩くにつれて、空気が辛くなった。唐辛子の袋の山。三人そろって、くしゃみが止まらない。
 # speaker: narrator
 年配の問屋が、目を細めて覚えていた。
 # speaker: gt_delhi_spice_trader
 # voice: gt_delhi_finale_battle_delhi_spice_trader_001
+# term: gt_term_garam_masala
 来たよ。ガラムマサラを一年分。ジャイプールのは甘すぎるんだそうだ
 # speaker: gt_delhi_spice_trader
 # voice: gt_delhi_finale_battle_delhi_spice_trader_002
@@ -476,6 +484,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: switch_clunk
 # photo: gt_album_d112 # photo_caption: 暗い城壁に光が走る
+# term: gt_term_light_sound_show
 中へ入ると、暗い城壁に光が走った。問屋の言っていた『城の灯り』だ。
 # speaker: narrator
 語り手の姿はどこにもない。どこからか、録音の語りが流れ出した。この城の皇帝たちの時代の話だ。

@@ -57,7 +57,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "sound": "sound effect note(s) (a journey's sound nothing plays, system sounds missing from the shared list)",
   "music": "music note(s) (a track that no play value or # bgm: plays)",
   "ambience": "ambience note(s) (a journey's ambience track that no play.places value or # ambience: plays)",
-  "glossary": "glossary note(s) (旅の図鑑: a term's line over 40 characters, a term no # term: names, a term tagged twice in one scene or on a choice)",
+  "glossary": "glossary note(s) (旅の図鑑: a term's line over 40 characters, a term no # term: names, a term tagged again where every path has passed its tag, or on a choice)",
   "voice-changed": "recorded line(s) whose text is no longer what their voice says, or not in recorded.json (record again; npm run voice:changes)",
   "moment-quiz-landmark": "moment quiz landmark(s) with a guide or an observation, which never run (no map event opens the visit)",
   "moment-quiz-repeat-tags": "moment quiz(zes) repeated always whose tags apply on the first play only",

@@ -15,6 +15,8 @@ INCLUDE modules.ink
 # on_done: item gt_jaipur_lac_bangles
 # background: gt_bg_jaipur_johari_bazaar
 # speaker: narrator
+# term: gt_term_kundan
+# term: gt_term_meenakari
 ジョーハリー・バザールは、宝石商の通りだった。桃色のアーケードの下に、金と宝石の店が、ガラスの扉を並べている。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

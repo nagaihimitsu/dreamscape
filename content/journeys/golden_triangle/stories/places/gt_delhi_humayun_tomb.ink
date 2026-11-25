@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_humayun_tomb
 # speaker: narrator
 # term: gt_term_humayun
+# term: gt_term_charbagh
 フマユーン廟の庭は、まっすぐな水路で四つに区切られていた。その奥に、赤い石と白い大理石の廟が、ゆったり座っている。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
@@ -17,6 +18,7 @@ INCLUDE modules.ink
 # photo: gt_album_d023 # photo_caption: 水路で四つに区切られた庭
 静か……。さっきまでの道路の音、どこに行ったの？
 # speaker: narrator
+# term: gt_term_rose_ringed_parakeet
 クラクションの洪水を抜けてきた耳に、鳥の声がやけに大きく聞こえる。オウムの緑が、木から木へ飛んだ。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 3
@@ -124,6 +126,7 @@ INCLUDE modules.ink
     スレーシュの目が細くなった。
 }
 # speaker: narrator
+# term: gt_term_sher_mandal
 スレーシュが手帳に何か書き込む隙に、メヘルが{heroine_name}の耳元でささやく。
 # speaker: gt_mehr
 # voice: gt_delhi_main_humayun_tomb_battle_mehr_005
@@ -192,6 +195,7 @@ INCLUDE modules.ink
     最後の皇帝が、ここで捕まったんだ。先祖の墓に逃げ込んでな。……まあ、いい。合格にしてやる
 }
 # speaker: narrator
+# term: gt_term_bahadur_shah_zafar
 そのとき、東の門の方から女性の声がした。
 # speaker: gt_delhi_humayun_woman
 # voice: gt_delhi_main_humayun_tomb_battle_meena_001

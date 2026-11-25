@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <!-- シク教の寺院で頭を布で覆う様子の説明図（後ろ姿）。Dreamscape のために図形だけで描いた（2026-11-25）。 -->
+  <rect width="1200" height="1200" fill="#f4e9d6"/>
+  <circle cx="600" cy="640" r="470" fill="#ead9bd"/>
+  <!-- 肩と首（後ろ姿） -->
+  <path d="M230 1200 Q245 820 600 790 Q955 820 970 1200 Z" fill="#2f6f73"/>
+  <rect x="548" y="640" width="104" height="190" rx="44" fill="#b77b4f"/>
+  <!-- 後頭部 -->
+  <circle cx="600" cy="520" r="190" fill="#2b2119"/>
+  <circle cx="410" cy="560" r="26" fill="#b37549"/>
+  <circle cx="790" cy="560" r="26" fill="#b37549"/>
+  <!-- 頭を覆う布（頭頂から後ろへ。結び目と垂れ） -->
+  <path d="M398 540 Q392 318 600 300 Q808 318 802 540 Q760 560 600 566 Q440 560 398 540 Z" fill="#e8892c"/>
+  <path d="M420 520 Q600 552 780 520" fill="none" stroke="#c96f1c" stroke-width="10" stroke-linecap="round"/>
+  <path d="M470 420 Q600 444 730 420" fill="none" stroke="#c96f1c" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+  <!-- 結び目 -->
+  <ellipse cx="600" cy="572" rx="46" ry="34" fill="#d77a22"/>
+  <path d="M572 590 Q540 680 520 742 L572 736 Q588 670 604 600 Z" fill="#e8892c"/>
+  <path d="M628 590 Q660 680 682 742 L630 736 Q614 670 598 600 Z" fill="#e8892c"/>
+  <!-- 入口の籠に畳んだ布 -->
+  <path d="M846 1010 L1086 1010 L1062 1130 L870 1130 Z" fill="#9a6b3b"/>
+  <path d="M846 1010 L1086 1010" stroke="#7d5530" stroke-width="12" stroke-linecap="round"/>
+  <rect x="872" y="968" width="86" height="46" rx="10" fill="#e8892c"/>
+  <rect x="962" y="962" width="92" height="52" rx="10" fill="#3d6fb6"/>
+  <rect x="910" y="928" width="98" height="44" rx="10" fill="#e9c540"/>
+</svg>

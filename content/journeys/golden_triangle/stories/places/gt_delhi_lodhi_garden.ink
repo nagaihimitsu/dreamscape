@@ -39,6 +39,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_dubey_002
 ドゥベイと申します。鉄道の駅で、三十年、列車の案内放送をしておりました
 # speaker: gt_dubey
+# term: gt_term_laughter_club
 # voice: gt_delhi_date_lodhi_garden_dubey_003
 ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていくんです
 # speaker: narrator

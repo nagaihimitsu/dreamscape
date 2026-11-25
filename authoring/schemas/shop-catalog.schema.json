@@ -88,9 +88,13 @@
             "minLength": 1,
             "language": "ja"
           },
-          "termId": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9_]*$"
+          "termIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
           }
         },
         "required": [
