@@ -24,10 +24,9 @@
   /* The scene's camera (figure-zoom.ts): how much nearer than whole the people on stage are seen, and how fast it comes in. */
   --vn-camera: 700ms;
 }
-/* The glass, on the window and on what lies on the scene with it (its tools, the choices' words beside their presses). */
+/* The glass, on the window and on what lies on the scene with it (the choices' words beside their presses). */
 .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-window::before,
-.dialogue-controls .text-button,
 .vn-choices .choice-hint,
 .vn-choices :is(.text-button, p),
 .vn-choices .encounter-choice {

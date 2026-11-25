@@ -57,10 +57,12 @@
   vertical-align: 0.08em;
   white-space: nowrap;
 }
-/* The controls (2026-11-25 user decisions: the talk's tools step back, under the window): a row at the window's lower
-   left, below it, of round buttons of the window's glass, 44 px, showing their marks only, in the order 隠す · ログ ·
-   高速送り; their words are their names for screen readers and voice control (dialogue-tool-word). The window stands
-   that much higher above the scene's foot. */
+/* The controls (2026-11-25 user decisions: the talk's tools step back, under the window, and melt into the scene): a
+   row at the window's lower left, below it, of marks only, in the order 隠す · ログ · 高速送り: white, a little
+   see-through, with a soft shadow that keeps them seen over a light picture, on no ground of their own; each still a
+   44-px press. A faint round ground shows under the finger or the focus, and under 高速送り while it runs. Their words
+   are their names for screen readers and voice control (dialogue-tool-word). The window stands that much higher above
+   the scene's foot. */
 .dialogue-controls {
   flex: none;
   align-self: flex-start;
@@ -69,7 +71,8 @@
   gap: 8px;
   margin: 8px 0 0 4px;
 }
-.dialogue-controls .text-button {
+/* (button.text-button: over the window's own .vn-dialogue .text-button colour.) */
+.dialogue-controls button.text-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,12 +83,14 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--vn-window-bg);
-  box-shadow: 0 1px 6px rgba(20, 28, 48, 0.22);
-  color: var(--vn-muted);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.86);
+  filter: drop-shadow(0 1px 2px rgba(10, 14, 24, 0.6));
   line-height: 1;
   text-decoration: none;
+  transition: background-color var(--motion-fast) var(--ease-out);
 }
+.dialogue-controls button.text-button:hover:enabled { background: rgba(255, 255, 255, 0.14); }
 .dialogue-controls .icon { display: block; width: 20px; height: 20px; color: currentColor; }
 .dialogue-controls .dialogue-tool-word {
   position: absolute;
@@ -99,12 +104,12 @@
   .vn-window-head { padding: 0 8px; }
   .vn-window-head > .speaker { padding: 4px 14px 5px; font-size: 14px; }
 }
-/* 高速送り while on: filled with the name band's blue, a white mark (with its 「高速送り中」 and aria-pressed). */
-.dialogue-controls .text-button[aria-pressed="true"] {
-  background: var(--vn-name-bg);
-  color: var(--vn-name-ink, #fff);
+/* 高速送り while on: its mark whole on a faint round ground (with its 「高速送り中」 and aria-pressed). */
+.dialogue-controls button.text-button[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.24);
+  color: #fff;
 }
-.dialogue-controls .text-button:disabled { opacity: 0.45; cursor: default; }
+.dialogue-controls .text-button:disabled { opacity: 0.4; cursor: default; }
 .dialogue-controls .text-button:focus-visible {
   outline: 3px solid var(--ds-focus);
   outline-offset: 0;
