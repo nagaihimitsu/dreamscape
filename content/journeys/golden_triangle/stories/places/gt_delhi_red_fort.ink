@@ -23,6 +23,7 @@ INCLUDE modules.ink
 あっ、カムラさんの暗号！　これは大事なものです、すみません
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
+# photo: gt_album_d007 # photo_caption: 落ちた暗号を係員が拾う
 係員が先に拾い上げ、一行目のヒンディー語を読んで、「暗くなってから、ね」とだけ言って少し笑った。次の鞄が、もう台に載っている。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
@@ -54,6 +55,7 @@ INCLUDE modules.ink
 十二、三歳の子どもたち。四十人近く。全員がノートを開き、全員が同時に言った。
 # speaker: gt_delhi_red_fort_children
 # voice: gt_delhi_main_red_fort_battle_delhi_red_fort_children_001
+# photo: gt_album_d009 # photo_caption: 紺のセーターの波「インタビュー、プリーズ！」
 インタビュー、プリーズ！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -88,6 +90,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_red_fort_battle_nidhi_004
 聞いた？　一列！　約束を破った人は、バスで歌を歌ってもらいます
 # speaker: narrator
+# photo: gt_album_d010 # photo_caption: 歌が嫌で一瞬でできた列
 一瞬で列ができた。歌はよほど嫌らしい。先頭は三つ編みの女の子。ノートの文字は几帳面で、質問には番号まで振ってある。
 # speaker: gt_anjali
 # cutin: name
@@ -149,6 +152,7 @@ INCLUDE modules.ink
     ソーヌーはそう叫んで、城壁に向かって演説の真似を始めた。
     # speaker: narrator
     # se: shop_bells
+    # photo: gt_album_d011 # photo_caption: ソーヌーの演説、鈴が一斉に鳴る
     手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 - else:
     # speaker: gt_sonu
@@ -159,6 +163,7 @@ INCLUDE modules.ink
     ソーヌーはそう言って、城壁の上で国旗を掲げる首相の真似を始めた。
     # speaker: narrator
     # se: shop_bells
+    # photo: gt_album_d011 # photo_caption: ソーヌーの演説、鈴が一斉に鳴る
     手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 }
 # speaker: enemy
@@ -189,6 +194,7 @@ INCLUDE modules.ink
 {heroine_name}は少年の前にしゃがんだ。目の高さが合う。何も聞かず、ただ待つ。
 # speaker: narrator
 # pause: 1000
+# photo: gt_album_d012 # photo_caption: しゃがんで、ただ待つ一分
 三十秒。ファイズはノートを開き、一行書いて、こちらへ向けた。それから、かすれた声で読み上げた。
 # speaker: gt_faiz
 # cutin: name
@@ -214,6 +220,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # em: 囚人
 # term: gt_term_bahadur_shah_zafar
+# photo: gt_album_d013 # photo_caption: 三十八人が黙って聞いた話
 声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -256,6 +263,7 @@ INCLUDE modules.ink
 先生は答えず、笛を鳴らした。列が動き出す。歩きながら、一度だけ振り返った。
 # speaker: enemy
 # voice: gt_delhi_main_red_fort_battle_nidhi_012
+# photo: gt_album_d014 # photo_caption: 「聞いていたのは、三十九人でした」
 さっき三十八人と言いましたけど。聞いていたのは、三十九人でした
 # speaker: narrator
 # leave: enemy
@@ -277,6 +285,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_battle_delhi_red_fort_guide_001
 暗くなってから？　昼の券で入れるのは、日没までですよ
 # speaker: narrator
+# photo: gt_album_d107 # photo_caption: 日没の城門、「暗くなってから？」
 夜まで待つか、出直すか。二人は顔を見合わせた。
 # speaker: narrator
 # se: phone_ring
@@ -291,6 +300,7 @@ INCLUDE modules.ink
 # bgm: gt_a_newcomer
 急いで宿に戻ると、路地が騒がしかった。半分だけ荷を積んだトラック。集まった近所の人たち。段ボールには、どれも「JAIPUR」と書いてある。
 # speaker: narrator
+# photo: gt_album_d108 # photo_caption: 「JAIPUR」の段ボールと、怒鳴る孫
 その真ん中で、しわの寄ったワイシャツの青年が電話に向かって怒鳴っていた。ヒンディー語と英語が、一文ごとに入れ替わる。
 # speaker: narrator
 宿の主人が、こちらを指さした。青年が電話を切り、まっすぐ歩いてくる。
@@ -401,6 +411,7 @@ INCLUDE modules.ink
 いつ壊れた。今朝か？　さっきか？
 # speaker: narrator
 # emotion: smile
+# photo: gt_album_d109 # photo_caption: メーターは壊れてる、三十秒で半額
 値段が半分になるまで、三十秒。{heroine_name}は思わず小さく笑った。言い方が、路地で会ったカムラにそっくりだった。
 # background: gt_bg_delhi_chandni_chowk_night
 # tint: off
@@ -410,6 +421,7 @@ INCLUDE modules.ink
 # term: gt_term_cycle_rickshaw
 夜のチャンドニー・チョークは、昼より人が多い。揚げたてのパラーターの匂い。自転車リキシャの鈴。ショールの老婦人なら、百人はいる。
 # speaker: narrator
+# photo: gt_album_d110 # photo_caption: 夜のチャンドニー・チョークで写真を見せて回る
 アマンが写真を見せて回る。三軒目の揚げ菓子屋で、店主が手を打った。
 # speaker: gt_delhi_sweet_shopkeeper
 # term: gt_term_jalebi
@@ -432,6 +444,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # term: gt_term_khari_baoli
+# photo: gt_album_d111 # photo_caption: 香辛料の市場で、三人そろってくしゃみ
 西へ歩くにつれて、空気が辛くなった。唐辛子の袋の山。三人そろって、くしゃみが止まらない。
 # speaker: narrator
 年配の問屋が、目を細めて覚えていた。
@@ -518,11 +531,12 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_battle_aman_021
 ……六十年前。祖母は、十九だ
 # speaker: narrator
+# photo: gt_album_d113 # photo_caption: 光と音のショー、内謁の間の小さな人影
 内謁の間のアーチの下、光の届かない端の段に、ショールの小さな人影が座っていた。膝の上に、香辛料の袋。カムラだ。
 # speaker: narrator
 すぐ隣は、空いている。カムラはそちらへ顔を向け、誰かと話すように唇を動かしていた。
 # speaker: narrator
-# photo: gt_album_d79 # photo_caption: 光と音のショー、内謁の間の小さな人影
+# photo: gt_album_d114 # photo_caption: 「一分だけ。……待ってください」
 駆け出しかけたアマンの前に、{heroine_name}が立った。
 # speaker: heroine
 # emotion: serious
@@ -563,6 +577,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_battle_kamla_006
 生意気な外国の娘だね
 # speaker: narrator
+# photo: gt_album_d115 # photo_caption: 空いていた隣に、孫が座る
 カムラの声は怒っていた。けれど、空いていた隣に孫が座るのを、止めはしなかった。
 # speaker: enemy
 # local_word: gt_delhi_word_dadi

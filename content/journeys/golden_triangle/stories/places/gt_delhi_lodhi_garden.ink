@@ -30,6 +30,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_002
 え、なに？　何がおかしかったの？　誰も、何も言ってないよね？
 # speaker: narrator
+# photo: gt_album_d090 # photo_caption: 理由なく笑い出す二十人の輪
 輪の中心にいた白い口ひげの老人が、二人に気づいて手招きした。張りのある、よく通る声だった。
 # speaker: gt_delhi_lodhi_old_man
 # voice: gt_delhi_date_lodhi_garden_dubey_001
@@ -60,10 +61,12 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_lodhi_garden_004
         ちょ、ちょっと、声が大きい。みんな、こっち見てる……
         # speaker: narrator
+        # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
         それでも、隣の老人がつられて笑い出し、輪の笑い声が一段大きくなった。彼女は、少し遅れて、小さく笑った。
     - else:
         # speaker: narrator
         # emotion: happy
+        # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
         架空の相手は、よほど面白いことを言ったらしい。こちらが膝を叩いて笑い転げると、彼女が先に吹き出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -79,6 +82,7 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_lodhi_garden_006
         見てるだけ？　……一人でやるの、恥ずかしいって分かってるのに
         # speaker: narrator
+        # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
         彼女は少しだけ肩を落とし、一人で輪に入った。こちらが後から加わると、何も言わずに隣を空けた。
     - else:
         # speaker: heroine
@@ -87,6 +91,7 @@ INCLUDE modules.ink
         あっ、見てるだけ？　ずるい。わたしだけ変な顔させる気？
         # speaker: narrator
         # emotion: happy
+        # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
         腕をつかまれ、輪の中へ引っぱり込まれた。隣の老人が、こちらの肩を叩いて、頼まれてもいないのに笑い出す。結局、二人とも笑っていた。
     }
 * [「一緒に入ろう」と手を差し出す # option: join_hand]
@@ -99,6 +104,7 @@ INCLUDE modules.ink
         あ、手は……ううん、大丈夫。並んでやろう
         # speaker: narrator
         # emotion: smile
+        # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
         差し出した手は、見えない電話を持つ手になった。並んで笑ううち、彼女の声も、だんだん本物になっていった。
     - else:
         # speaker: heroine
@@ -107,6 +113,7 @@ INCLUDE modules.ink
         ……うん。一人だと恥ずかしいけど、二人なら、恥ずかしさも半分だね
         # speaker: narrator
         # emotion: happy
+        # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
         手をつないだまま、二人で見えない電話を耳に当てた。相手のいない電話に笑ううち、彼女の笑い声が、だんだん本物になっていった。
     }
 -
@@ -134,6 +141,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_date_lodhi_garden_028
+# photo: gt_album_d092 # photo_caption: 元・放送係のお知らせ
 放送で言われると、忘れられなさそう
 { cond("episode gt_delhi_main_humayun_tomb"):
     -> suresh_again
@@ -158,6 +166,7 @@ INCLUDE modules.ink
 逃げ場はなかった。スレーシュは彼女の手を握り、律儀に笑いながら、早口でささやいた。
 # speaker: gt_suresh
 # voice: gt_delhi_date_lodhi_garden_suresh_001
+# photo: gt_album_d093 # photo_caption: 握手しながら「誰にも会わなかった。ハ、ハ」
 ハ、ハ、ハ。……今日も、誰も、誰にも会わなかった。ハ、ハ
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_011
@@ -166,6 +175,7 @@ INCLUDE modules.ink
 フマユーン廟で、全員で口裏を合わせた、あの一言だった。
 # speaker: narrator
 # se: camera_shutter
+# photo: gt_album_d094 # photo_caption: 集合写真の端、新聞で顔を隠す人
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
 # together: gt_suresh gt_meena
 それから、観念したように、女性を連れてやってきた。
@@ -309,6 +319,7 @@ INCLUDE modules.ink
 // 彼女の「せー」「の」の次の拍で、主人公が「言う」を押す。大きさではなく、出だしのタイミングを合わせる（2026-11-13 ユーザー判断）。
 // ゲームの結果と同じ ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。結果の後は、ドゥベイの「合格」へ合流する。
 # speaker: narrator
+# photo: gt_album_d096 # photo_caption: 「ヤートリーガン、クリプヤー……」せーので言う
 彼女が、こちらの袖を引いた。一緒に、と口の形だけで言う。こちらがうなずくと、彼女も小さくうなずき返した。
 { romance_result == "negative":
     # speaker: heroine

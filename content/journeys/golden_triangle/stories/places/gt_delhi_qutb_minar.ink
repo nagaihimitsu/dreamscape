@@ -61,6 +61,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # shake: window
 # se: cloth_grab
+# photo: gt_album_d018 # photo_caption: とっさにリュックの肩紐をつかむ
 考えるより先に、{heroine_name}の手がリュックの肩紐をつかんでいた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -126,6 +127,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_qutb_minar_battle_ramkishan_009
 なので、あなたにも聞きます。千六百年、雨ざらしで、なぜ錆びないのか
 # speaker: narrator
+# photo: gt_album_d019 # photo_caption: ボールペンの先がこちらを向く
 ボールペンの先が、こちらに向いた。教室で何百回も繰り返した角度だった。
 -> quiz(2) ->
 # background: gt_bg_delhi_qutb_minar
@@ -200,6 +202,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # se: camera_shutter
+# photo: gt_album_d021 # photo_caption: 柵の外から、正面を向けて一枚
 彼はスマートフォンで柱の碑文を一枚だけ撮った。柵の外から、背中ではなく正面を向けて。
 # speaker: enemy
 # voice: gt_delhi_main_qutb_minar_battle_ramkishan_020

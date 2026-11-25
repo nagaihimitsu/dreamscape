@@ -41,11 +41,11 @@ const JAMA_MASJID = "gt_delhi_main_jama_masjid";
 const RED_FORT = "gt_delhi_main_red_fort";
 const TAJ_MAHAL = "gt_agra_main_taj_mahal";
 /** Delhi's arrival, the Agrasen ki Baoli date (the user's 2026-11-13 case), Delhi's finale battle at the Red Fort. */
-const delhiArrival = indiaPhoto("gt_album_d01", "delhi", "delhi_hotel_hub", "gt_delhi_hotel_hub.gt_delhi_arrival", "路地の将軍カムラ");
+const delhiArrival = indiaPhoto("gt_album_d001", "delhi", "delhi_hotel_hub", "gt_delhi_hotel_hub.gt_delhi_arrival", "路地の将軍カムラ");
 const baoliDate = indiaPhoto("gt_album_d078", "delhi", "delhi_agrasen_baoli", "gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli", "鳩が顔の前に、本物の悲鳴");
 /** The Agrasen ki Baoli date's last photo (2026-11-23), at the top of the 108 steps. */
 const baoliDateLast = indiaPhoto("gt_album_d081", "delhi", "delhi_agrasen_baoli", "gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli", "百八段の上で、煩悩一個も減ってない");
-const delhiFinale = indiaPhoto("gt_album_d79", "delhi", "delhi_red_fort", "gt_delhi_red_fort.gt_delhi_finale_battle", "光と音のショー、内謁の間の小さな人影");
+const delhiFinale = indiaPhoto("gt_album_d113", "delhi", "delhi_red_fort", "gt_delhi_red_fort.gt_delhi_finale_battle", "光と音のショー、内謁の間の小さな人影");
 /** The Taj Mahal's guide, Agra's finale battle in the same place file, a date at the Mehtab Bagh; Jaipur's epilogue. */
 const tajGuide = indiaPhoto("gt_album_a008", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_taj_mahal_guide", "門のアーチからはみ出していく白");
 const agraFinale = indiaPhoto("gt_album_a138", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_finale_battle", "「わたしたちのことは、わたしたちで決めます」");

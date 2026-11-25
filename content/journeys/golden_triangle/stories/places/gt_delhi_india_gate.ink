@@ -29,6 +29,7 @@ Photo, please!
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_india_gate_002
+# photo: gt_album_d055 # photo_caption: 十二人を撮る「寄りすぎ」
 十二人！　ええと、もう少し寄ってください。あ、寄りすぎ。おばあさんが、おじさんの肘で隠れてる
 # speaker: narrator
 祖母が、細い手で彼女を招いた。
@@ -78,6 +79,7 @@ Photo, please!
         二人とも？　うん、それがいい。せっかくだもん
     }
     # speaker: narrator
+    # photo: gt_album_d057 # photo_caption: 写真屋を呼んで、十四人
     芝生を回っていた写真屋が、首から小さな印刷機を下げてやってきた。その場で刷って、一枚ずつ売っている。十四人が並び、誰かの子が泣きだし、もう一枚撮り直した。
 * [「アイスを人数分、買ってきます」 # option: buy_ice]
     # profile: playful
@@ -95,6 +97,7 @@ Photo, please!
         人数分って、十四本だよ？　いってらっしゃい。並べておくね
     }
     # speaker: narrator
+    # photo: gt_album_d058 # photo_caption: 両手にアイスを抱えて走ってくる一人
     十四本のアイスを抱えて戻ると、写真はもう撮り終わっていた。撮ったのは彼女で、写っていたのは十二人と、両手にアイスを抱えて走ってくる一人だった。
 -
 # speaker: narrator
@@ -113,6 +116,7 @@ Photo, please!
 去年も柵の前で一時間。僕は飽きた。名前が一万三千もあって、遠くて読めないんだ
 # speaker: heroine
 # voice: gt_delhi_date_india_gate_011
+# photo: gt_album_d059 # photo_caption: 門を見上げたまま動かない祖母
 ……探したいな。おばあさんが見たいのは、たぶん写真より、そっちだと思う
 * [「一緒に探そう」 # option: search_together]
     # profile: attentive
@@ -176,6 +180,7 @@ Photo, please!
     貸すだけだからね。ラーム・シン、だっけ。あ、待って
 }
 # speaker: narrator
+# photo: gt_album_d060 # photo_caption: 携帯の望遠で、石の文字を寄せる
 画面に、同じ名前がいくつも並んだ。ラーム・シン。ラーム・シン。もう一人、ラーム・シン。
 # speaker: heroine
 # emotion: surprised_big
@@ -185,6 +190,7 @@ Photo, please!
 モヌが画面を見せると、祖母は目を細め、しばらく黙っていた。それから、画面の中の一番近くの一つを指さした。
 # speaker: gt_monu
 # voice: gt_delhi_date_india_gate_monu_009
+# photo: gt_album_d061 # photo_caption: 「どれでもいい」と指さす祖母
 ……どれでもいいって。全部、誰かのおじいさんだから、どれに手を合わせても怒られないって
 # speaker: heroine
 # emotion: smile
@@ -207,6 +213,7 @@ Photo, please!
 # voice: gt_delhi_date_india_gate_monu_011
 名前は、去年まででいいって。今年は、ひ孫がここで走ってるのを見に来たんだって。……初耳なんだけど
 # speaker: narrator
+# photo: gt_album_d062 # photo_caption: 鳩を追いかけるひ孫
 芝生の上で、よちよち歩きの子が鳩を追いかけていた。祖母はそれを、門を見上げるときと同じ目で見ていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -220,6 +227,7 @@ Photo, please!
 帰りぎわ、母親たちが弁当箱を差し出した。揚げたパンに、辛い漬物。断ると、もう一つ増えた。
 # speaker: gt_monu
 # voice: gt_delhi_date_india_gate_monu_012
+# photo: gt_album_d063 # photo_caption: 「二人はいつ結婚するのか」
 あと、ダーディーが聞いてって。二人はいつ結婚するのかって。……ごめん、うちの村ではこれ、あいさつだから
 {
 - cond("couple"):

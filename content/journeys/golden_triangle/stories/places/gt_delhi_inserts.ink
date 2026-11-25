@@ -210,6 +210,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_hotel_homework_005
+# photo: gt_album_d099 # photo_caption: 帳場の机のルーヒーと「女性車両」の作文
 わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。回ってる洗濯物を見てると、落ち着くから
 # speaker: heroine
 # reaction: heroine,teasing,music
@@ -244,6 +245,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_hotel_sick_night_player_001
 やっぱり。扉の音が、三回したから。最後の一個でしょ
 # speaker: narrator
+# photo: gt_album_d100 # photo_caption: 夜中二時、ポーチを持ったフード姿
 彼女は小さなポーチを持って出てきた。中には、薬、絆創膏、使い捨てのカイロ、粉の袋が、きっちり並んでいる。
 # speaker: heroine
 # voice: gt_delhi_hotel_sick_night_player_002
@@ -277,12 +279,12 @@ INCLUDE modules.ink
     勝負してたの？　もう、ふふっ。夜中なのに、笑わせないでよ
 -
 # speaker: narrator
-# photo: gt_album_d101 # photo_caption: 長椅子の端の、看病の人
 ボトルを受け取って飲むと、塩の薄いスポーツドリンクのような味がした。彼女は長椅子の端に座り、壁に頭をもたせかける。
 # speaker: heroine
 # voice: gt_delhi_hotel_sick_night_player_008
 屋台のおじさん、明日もあそこで、誰かのお腹を壊してるのかな
 # speaker: narrator
+# photo: gt_album_d101 # photo_caption: 夜中二時の廊下、看病の人が先に眠る
 返事を考えているうちに、隣から静かな寝息が聞こえてきた。看病に来た人が、先に眠っている。扇風機だけが、律儀に回り続けていた。
 -> END
 
@@ -395,6 +397,7 @@ INCLUDE modules.ink
 キチュリー。うちでは、お腹を壊したら、これ
 # speaker: gt_delhi_hotel_okami
 # voice: gt_delhi_hotel_sick_morning_delhi_hotel_okami_002
+# photo: gt_album_d104 # photo_caption: キチュリーの鍋とクミンの水
 ……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
@@ -426,6 +429,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_hotel_sick_morning_001
+    # photo: gt_album_d106 # photo_caption: 「今日は、わたしが決める日」
     今日は、わたしが決める日。午前中は休み。異議は受けつけません
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -467,6 +471,7 @@ INCLUDE modules.ink
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
 # speaker: gt_delhi_scam_young_man
 # voice: gt_delhi_depart_scam_delhi_scam_young_man_001
+# photo: gt_album_d122 # photo_caption: 「Your train is cancelled today.」
 Agra? Your train is cancelled today.
 # speaker: narrator
 アーグラ行きの列車は、今日は運休だという。今朝、決まったのだと。
@@ -587,6 +592,7 @@ Agra? Your train is cancelled today.
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_depart_scam_quiz_004
+# photo: gt_album_d123 # photo_caption: 「Thank you. We'll check it ourselves.」
 Thank you. We'll check it ourselves.
 # speaker: narrator
 お礼と、自分たちで確かめます、のひとこと。にこやかで、譲る気のない声だった。
@@ -644,6 +650,7 @@ Thank you. We'll check it ourselves.
 # speaker: narrator
 # leave: enemy
 青年とベストの男は、もうこちらを見ていなかった。大きなスーツケースを引いた老夫婦の方へ、並んで歩いていく。
+# photo: gt_album_d124 # photo_caption: 掲示板を黙って指さす
 彼女は老夫婦と目が合うと、入口の上の掲示板を、黙って指さして見せた。
 # speaker: heroine
 # reaction: heroine,teasing,music
@@ -751,6 +758,7 @@ Thank you. We'll check it ourselves.
 # voice: gt_delhi_depart_scam_004
 この値段！？
 # speaker: narrator
+# photo: gt_album_d125 # photo_caption: 偽の案内所と、三年分同じ字のノート
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。
 // 道2の条件：rel spark のしきい値 6 は仮（作者があとで計算して決める。README の「作者に確かめてほしいこと」5）。
 { cond("rel spark >= 6"):
@@ -798,7 +806,7 @@ Thank you. We'll check it ourselves.
 # se: book_close
 彼女は、手をつけていないチャイの横にノートを閉じて置き、立ち上がった。背広の男の目を、まっすぐ見る。
 # speaker: heroine
-# photo: gt_album_d84 # photo_caption: 偽の案内所で「No, thank you.」
+# photo: gt_album_d126 # photo_caption: 偽の案内所で「No, thank you.」
 # size: large
 # voice: gt_delhi_depart_scam_009
 No, thank you.
@@ -904,6 +912,7 @@ No, thank you.
     # voice: gt_delhi_depart_scam_delhi_scam_suit_man_008
     返金はできません。契約の決まりです
     # speaker: narrator
+    # photo: gt_album_d127 # photo_caption: 鍵のかかった引き出し
     机の向こうで、引き出しはもう鍵がかかっていた。
     # speaker: heroine
     # emotion: serious
@@ -945,6 +954,7 @@ No, thank you.
 # background: gt_bg_delhi_station_front
 # ambience: gt_amb_street_traffic
 # speaker: narrator
+# photo: gt_album_d128 # photo_caption: 赤いシャツの荷運びが首を振る
 階段を駆け下り、道を渡る。駅の入口で、赤いシャツの荷運びの男が、こちらの出てきた路地を見て、首を振った。
 # speaker: gt_delhi_porter
 # voice: gt_delhi_depart_scam_delhi_porter_001
@@ -1009,6 +1019,7 @@ No, thank you.
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_delhi_depart_station_001
+# photo: gt_album_d130 # photo_caption: 頭の上にスーツケース三つ
 見て、頭の上に三つ！　しかも走ってる。あれ、首、どうなってるんだろう
 { cond("seen gt_delhi_hotel_homework"):
     -> roohi_news
