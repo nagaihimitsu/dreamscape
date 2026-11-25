@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import { getCityContent, presentation } from "../../content";
 import { derivedImagePath } from "../../content/derived-images";
-import { getPlacePhoto } from "../../content/place-photo";
+import { getCardPhotos, getPlacePhoto } from "../../content/place-photo";
+import type { TourismAsset } from "../../content/tourism-schemas";
 import { FitText } from "../../components/FitText";
 import { Icon } from "../../components/icons";
 import { battlePlayed } from "../../domain/conditions";
@@ -241,25 +242,27 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
 } {
   const kinds = cardKinds(card);
   const swipeable = takesSwipe(card);
+  // 「待機」's, the tour's and the shop's own photos when the city registers them (2026-11-25), else their marks on the plain tile.
+  const photos = getCardPhotos(game.currentCityId);
   if (card.kind === "wait")
     return { testId: "travel-wait", name: "待機", available: true, top: null, bottom: null, kinds, swipeable,
-      photo: <PlainTile><Icon name="hourglass" /></PlainTile> };
+      photo: photos.wait ? <CardPhoto asset={photos.wait} /> : <PlainTile><Icon name="hourglass" /></PlainTile> };
   if (card.kind === "stay") {
     const hotel = getCityContent(game.currentCityId).travel.places.find((place) => place.id === game.travel.hotelPlaceId);
     // The inn's own photo (a travel place's photoAssetId) when it has one, else the bed on its background colour.
     const hotelPhoto = getPlacePhoto(game.currentCityId, game.travel.hotelPlaceId);
     return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, swipeable,
       photo: hotelPhoto
-        ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={480} height={320} loading="lazy" decoding="async" draggable={false} />
+        ? <CardPhoto asset={hotelPhoto} />
         : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
   }
   // The city's shop (2026-11-20): its name over an awning, at the right end of the row.
   if (card.kind === "shop")
     return { testId: "travel-shop", name: card.nameJa, available: true, top: null, bottom: null, kinds, swipeable,
-      photo: <PlainTile><Icon name="shop" /></PlainTile> };
+      photo: photos.shop ? <CardPhoto asset={photos.shop} /> : <PlainTile><Icon name="shop" /></PlainTile> };
   if (card.kind === "tour")
     return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, swipeable,
-      photo: <PlainTile><Icon name="ticket" /></PlainTile> };
+      photo: photos.tour ? <CardPhoto asset={photos.tour} /> : <PlainTile><Icon name="ticket" /></PlainTile> };
   // A date not open yet (2026-11-13, # hint:): a grey silhouette with a lock, its name the writer's hint (nothing else).
   if (card.kind === "locked")
     return { testId: `travel-locked-${card.dateId}`, name: card.hintJa, available: false, top: null, bottom: null, kinds, swipeable,
@@ -289,6 +292,11 @@ export function rowCardName(game: GameState, card: RowCard): string {
   return placeDisplayName(game, card.entry.place.events[0].place);
 }
 
+/** A card's photo: the reduced `card` copy of a registered photo (its credit is in ≡メニュー's 「画面の出典」). */
+function CardPhoto({ asset }: { asset: TourismAsset }) {
+  return <img src={`${import.meta.env.BASE_URL}${derivedImagePath(asset, "card")}`} alt="" width={480} height={320} loading="lazy" decoding="async" draggable={false} />;
+}
+
 /** A tile in place of a photo: the place's background colour (else the slate) with a mark. */
 function PlainTile({ color, children }: { color?: string; children: ReactNode }) {
   return <span className="photo-card-plain" style={color ? { backgroundColor: color } : undefined}>{children}</span>;
@@ -301,7 +309,7 @@ function PlainTile({ color, children }: { color?: string; children: ReactNode })
 function PlacePhoto({ game, entry }: { game: GameState; entry: PhotoCardEntry }) {
   const place = entry.place.events[0].place;
   const photo = getPlacePhoto(game.currentCityId, place.id);
-  if (photo) return <img src={`${import.meta.env.BASE_URL}${derivedImagePath(photo, "card")}`} alt="" width={480} height={320} loading="lazy" decoding="async" draggable={false} />;
+  if (photo) return <CardPhoto asset={photo} />;
   const date = entry.events.every((choice) => choice.event.category === "date");
   return <PlainTile color={presentation.backgrounds[place.backgroundId]?.color}>{date ? "♡" : "◇"}</PlainTile>;
 }

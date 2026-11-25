@@ -27,6 +27,14 @@
       "type": "string",
       "pattern": "^[a-z][a-z0-9_]*$"
     },
+    "waitPhotoAssetId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "tourPhotoAssetId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
     "rentals": {
       "type": "array",
       "items": {

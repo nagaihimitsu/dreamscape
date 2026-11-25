@@ -30,7 +30,8 @@ export const outfitSchema = z.object({
 
 /**
  * A city's shop (at most one per city): the name its card shows (short), what kind of shop it is, the heroine's few words
- * there (none: no line) and the outfits it sells (the same journey's, in this order).
+ * there (none: no line), the outfits it sells (the same journey's, in this order) and the photo of its free-time card
+ * (a tourism asset of the same journey, 2026-11-25; none: the awning on the plain tile).
  */
 export const shopSchema = z.object({
   id,
@@ -39,6 +40,7 @@ export const shopSchema = z.object({
   descriptionJa: japaneseText,
   heroineLineJa: japaneseText.optional(),
   outfitIds: z.array(id).min(1),
+  photoAssetId: id.optional(),
 }).strict();
 
 export const shopCatalogSchema = z.object({

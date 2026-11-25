@@ -628,6 +628,17 @@ export function validateContent(sources: ContentSources,
       if (place.photoAssetId && !tourism.assets.some((asset) => asset.id === place.photoAssetId))
         throw new Error(`Unknown travel place photo asset: ${travelFile} places["${place.id}"] photoAssetId ` +
           `"${place.photoAssetId}" is not an asset of tourism/catalog.json; use the ID of a registered tourism photo or remove the field`);
+  // So do the photos of 「待機」's, the tour's and the shop's cards (2026-11-25).
+  const unknownCardPhoto = (where: string, field: string, assetId: string | undefined) => {
+    if (assetId && !tourism.assets.some((asset) => asset.id === assetId))
+      throw new Error(`カードの写真がありません：${where} の ${field} "${assetId}" は tourism/catalog.json に登録された写真ではありません` +
+        `（Unknown card photo asset: ${where} ${field} "${assetId}"; use the ID of a registered tourism photo or remove the field）`);
+  };
+  for (const { settings, settingsFile } of travels) {
+    unknownCardPhoto(settingsFile, "waitPhotoAssetId", settings.waitPhotoAssetId);
+    unknownCardPhoto(settingsFile, "tourPhotoAssetId", settings.tourPhotoAssetId);
+  }
+  for (const shop of shopCatalog.shops) unknownCardPhoto(`shop/catalog.json shops["${shop.id}"]`, "photoAssetId", shop.photoAssetId);
   if (
     balance.defaultPlayerName.length > balance.maxNameLength ||
     balance.defaultHeroineName.length > balance.maxNameLength
@@ -1896,7 +1907,7 @@ export function validateContent(sources: ContentSources,
      */
     photoContent: {
       cities: travels.map(({ city, travel, settings }) => ({
-        city, places: travel.places, hotelPlaceId: settings.hotelPlaceId,
+        city, places: travel.places, hotelPlaceId: settings.hotelPlaceId, settings, shop: shopCatalog.shops.find((shop) => shop.cityId === city.id),
         episodePlaceIds: travel.events.filter((event) => journey.episodes.some((episode) => episode.id === event.id)).map((event) => event.placeId),
       })),
       backgrounds: presentation.backgrounds,

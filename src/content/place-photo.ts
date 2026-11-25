@@ -1,5 +1,5 @@
-import { getCityContent, landmarks, presentation, tourismAssets } from "./index";
-import { choosePlacePhoto } from "./photo-choice";
+import { getCityContent, getCityShop, landmarks, presentation, tourismAssets } from "./index";
+import { chooseCardPhotos, choosePlacePhoto } from "./photo-choice";
 import type { TourismAsset } from "./tourism-schemas";
 
 /**
@@ -13,4 +13,9 @@ export function getPlacePhoto(cityId: string, placeId: string): TourismAsset | n
   return place
     ? choosePlacePhoto({ assets: tourismAssets, landmarks, backgrounds: presentation.backgrounds }, place, travelSettings.hotelPlaceId)
     : null;
+}
+
+/** The photos of a city's 「待機」, tour and shop cards (photo-choice.ts chooseCardPhotos), each null for a plain tile. */
+export function getCardPhotos(cityId: string): ReturnType<typeof chooseCardPhotos> {
+  return chooseCardPhotos(tourismAssets, { settings: getCityContent(cityId).travelSettings, shop: getCityShop(cityId) });
 }

@@ -38,6 +38,21 @@ export function choosePlacePhoto(
   return usableAsset(content.assets, landmarkAsset) ?? usableAsset(content.assets, content.backgrounds[place.backgroundId]?.imageAssetId);
 }
 
+/**
+ * The photos of a city's other free-time cards (2026-11-25): 「待機」's and the tour's (travel settings `waitPhotoAssetId`,
+ * `tourPhotoAssetId`) and its shop's (shop/catalog.json `photoAssetId`), each null for the plain tile.
+ */
+export function chooseCardPhotos(
+  assets: readonly TourismAsset[],
+  input: { settings: { waitPhotoAssetId?: string; tourPhotoAssetId?: string }; shop?: { photoAssetId?: string } },
+): { wait: TourismAsset | null; tour: TourismAsset | null; shop: TourismAsset | null } {
+  return {
+    wait: usableAsset(assets, input.settings.waitPhotoAssetId),
+    tour: usableAsset(assets, input.settings.tourPhotoAssetId),
+    shop: usableAsset(assets, input.shop?.photoAssetId),
+  };
+}
+
 /** A city's free-time backdrop (`cities/<cityId>.json` backdropAssetId), or null for the plain background. */
 export function chooseCityBackdrop(assets: readonly TourismAsset[], city: { backdropAssetId?: string }): TourismAsset | null {
   return usableAsset(assets, city.backdropAssetId);

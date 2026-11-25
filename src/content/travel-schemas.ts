@@ -165,6 +165,12 @@ export const travelSettingsSchema = z.object({
    * its place (or of the hotel).
    */
   storyBackgroundId: id.optional(),
+  /**
+   * The photos of free time's 「待機」 card and of the tour's card (2026-11-25): tourism assets of the same journey
+   * (content:build checks them). Without one the card shows its mark on the plain tile.
+   */
+  waitPhotoAssetId: id.optional(),
+  tourPhotoAssetId: id.optional(),
   /** Rental offers of the city, at most one per mode. */
   rentals: z.array(rentalOfferSchema).refine((offers) => new Set(offers.map((offer) => offer.modeId)).size === offers.length,
     "Duplicate rental offer for a mode").optional(),

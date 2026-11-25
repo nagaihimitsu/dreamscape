@@ -78,7 +78,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
   // A shop sells its own journey's outfits in one of its cities; an outfit's 旅の図鑑 term is its own journey's.
   "shop/catalog.json": {
-    shops: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "outfit", ["outfitIds"])],
+    shops: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "outfit", ["outfitIds"]), ...fields(entry, "asset", ["photoAssetId"])],
     outfits: (entry) => fields(entry, "term", ["termIds"]),
   },
   "presentation/characters.json": {
@@ -434,7 +434,9 @@ export function checkContentOwnership(sources: ContentSources): void {
         ref("city", "nextCityId", data.nextCityId), ref("story", "arrivalStoryId", data.arrivalStoryId),
         ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned), ref("asset", "backdropAssetId", data.backdropAssetId),
       ]);
-    if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundId"]));
+    if (isObject(settings))
+      checkReferences(city.settingsFile, "", [...fields(settings, "background", ["storyBackgroundId"]),
+        ...fields(settings, "asset", ["waitPhotoAssetId", "tourPhotoAssetId"])]);
     if (!isObject(travel)) continue;
     checkReferences(city.travelFile, "", fields(travel, "city", ["cityId"]));
     for (const place of list(travel.places))
