@@ -57,8 +57,8 @@ const mix = (hex: string, toward: string, amount: number) => {
 };
 
 /**
- * The share of the band's fill over what lies behind it (dialogue-controls.css: the band is a little see-through, so it
- * melts into the scene; 2026-11-25 user decision).
+ * The share of the band's fill over what lies behind it (dialogue-controls.css: the band is a little see-through and
+ * its rim fades outwards, so it melts into the scene; 2026-11-25 user decision).
  */
 export const BAND_FILL_SHARE = 0.82;
 
