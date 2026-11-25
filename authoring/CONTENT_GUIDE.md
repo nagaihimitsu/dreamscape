@@ -832,6 +832,8 @@ EXTERNAL cond(text)
 
 街歩きの画面の後ろには、都市ごとに1枚の背景を敷けます（任意。なければ地図風の模様）。出典のある写真なら `cities/<都市ID>.json` の `backdropAssetId` に `tourism/catalog.json` の画像のIDを、作者が描いた絵なら `backdropImagePath` に配信時のパス（例 `assets/backdrops/delhi-free-time.webp`）を書きます（どちらか一方）。絵はその旅行編の `public/assets/` に置き、同じ旅行編の `presentation/own-artwork.json` に1枚ずつ登録します（自作の絵は出典の一覧に載りません）。画面は縦長なので、縦長の絵を1080×1920pxの枠に収めたWebPにすると軽く、画面いっぱいに切り抜いて少し暗くして表示します（[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
 
+作者の絵を動かした動画（音なしのMP4。つなぎ目なく繰り返せるもの）があれば、`backdropVideoPath` に配信時のパス（例 `assets/backdrops/delhi-free-time.mp4`）を書くと、絵の上で繰り返し流れます（2026-11-25）。`backdropImagePath` の絵は、動画の最初のコマと同じ絵にします（読み込むまでと、動きを減らす設定のときに出るため）。作り方の例は `authoring/journeys/golden_triangle/backdrops/README.md` にあります。
+
 ### 都市内の移動（乗り物）
 
 - 乗り物は旅行編の `manifest.json` の `transportModes` に、徒歩のほかに2つまで宣言します（名前・移動中の文字・絵の種類。[技術設計](../docs/02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)）。経路の `mode` には宣言したIDを書きます。

@@ -168,6 +168,15 @@ export const citySchema = z
     backdropImagePath: z.string()
       .regex(/^assets\/(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\.(?:webp|png|jpe?g)$/)
       .optional(),
+    /**
+     * A moving version of that artwork (2026-11-25 user decision): the served path of a silent MP4 in the same
+     * journey's public/ folder, played muted in a loop behind free time over backdropImagePath (its first frame,
+     * shown while it loads and instead of it under reduced motion or データセーバー). content:build checks that the
+     * file is served by the city's own journey and that the city has backdropImagePath.
+     */
+    backdropVideoPath: z.string()
+      .regex(/^assets\/(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\.mp4$/)
+      .optional(),
   })
   .strict();
 /** The levels of the difficulty (2026-11-19): the English of the quizzes by CEFR, and how tight money and AP are. */

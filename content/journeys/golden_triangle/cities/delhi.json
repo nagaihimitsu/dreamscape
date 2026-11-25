@@ -18,5 +18,6 @@
   ],
   "productionStatus": "complete",
   "arrivalStoryId": "places/gt_delhi_hotel_hub.gt_delhi_arrival",
-  "backdropImagePath": "assets/backdrops/delhi-free-time.webp"
+  "backdropImagePath": "assets/backdrops/delhi-free-time.webp",
+  "backdropVideoPath": "assets/backdrops/delhi-free-time.mp4"
 }
