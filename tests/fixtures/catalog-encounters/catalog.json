@@ -5,7 +5,7 @@
       "cityId": "milano",
       "nameJa": "試験用の展示券",
       "descriptionJa": "試験用の願掛けのくじで当たる券。",
-      "iconPath": "assets/items/galleria-ticket.svg"
+      "iconPath": "assets/items/galleria_ticket.webp"
     }
   ],
   "entryRules": [

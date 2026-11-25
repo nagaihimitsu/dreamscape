@@ -4,10 +4,6 @@
   "id": "milano",
   "nameJa": "ミラノ編",
   "status": "available",
-  "titleArt": {
-    "imagePath": "assets/tourism/duomo-milano.webp",
-    "captionJa": "ミラノ ／ ドゥオモ"
-  },
   "cities": [
     {
       "id": "milano",
@@ -34,5 +30,9 @@
       "movingJa": "タクシーで移動中",
       "kind": "car"
     }
-  ]
+  ],
+  "titleArt": {
+    "imagePath": "assets/tourism/duomo-milano.webp",
+    "captionJa": "ミラノ ／ ドゥオモ"
+  }
 }
