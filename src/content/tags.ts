@@ -220,15 +220,21 @@ function readSceneTag(key: SceneTagKey, value: string, result: StoryTags): void 
 /**
  * The photo a line takes into the album when it is read (src/domain/album.ts): `# photo: <imageId>`, an album image
  * (the author's illustration at a journey's public/assets/album/<imageId>.<ext>, album-images.ts; never credited),
- * with an optional `# photo_caption: <text>` among the same line's tags. `# photo_show: large` (2026-11-12) shows the
- * picture large over the scene while the line is on screen (LineStage's PhotoShowLayer), as the writer's staging of a
- * high point; without it the photo goes into the album with the small card only.
+ * with an optional `# photo_caption: <text>` among the same line's tags. The picture shows large over the scene while
+ * the line is on screen (LineStage's PhotoShowLayer; the default since 2026-11-25, `# photo_show: large` says the same);
+ * `# photo_show: small` keeps it to the small card under the header, the writer's choice for a line that should not
+ * stop the reading.
  */
 export interface StoryPhoto {
   imageId: string;
   caption?: string;
-  show?: "large";
+  show?: PhotoShow;
 }
+/** How a line's photo shows: large over the scene (the default) or only as the small card. */
+export const PHOTO_SHOWS = ["large", "small"] as const;
+export type PhotoShow = (typeof PHOTO_SHOWS)[number];
+/** Whether a line's photo shows large over the scene (everything but `# photo_show: small`). */
+export const photoShowsLarge = (photo: StoryPhoto | undefined): photo is StoryPhoto => !!photo && photo.show !== "small";
 
 /**
  * How one line is shown, from its tags (presentation only; never the story or the game state):
@@ -310,7 +316,7 @@ export function parseStoryTags(
 ): StoryTags {
   const result: StoryTags = { effects: [] };
   let caption: string | undefined;
-  let show: "large" | undefined;
+  let show: PhotoShow | undefined;
   for (const tag of tags) {
     const bare = tag.trim();
     if (bare === "later" || bare === "withhold") continue;
@@ -432,9 +438,10 @@ export function parseStoryTags(
       if (caption !== undefined) throw new Error("Duplicate photo caption tag");
       caption = value;
     } else if (key === "photo_show") {
-      if (value !== "large") throw new Error(`Invalid photo_show tag: ${value} (write # photo_show: large)`);
+      if (!(PHOTO_SHOWS as readonly string[]).includes(value))
+        throw new Error(`Invalid photo_show tag: ${value} (write # photo_show: small to keep it to the small card; large is the default)`);
       if (show !== undefined) throw new Error("Duplicate photo_show tag");
-      show = value;
+      show = value as PhotoShow;
     } else if (key === "recall") {
       if (!context.photoIds?.includes(value))
         throw new Error(`Unknown recall image: ${value} (name an album image, as # photo: does: the file name of public/assets/album/<ID>.webp, .png, .jpg or .jpeg)`);
@@ -511,7 +518,7 @@ export function parseStoryTags(
     result.photo = { ...result.photo, caption };
   }
   if (show !== undefined) {
-    if (!result.photo) throw new Error("Photo show without a photo: write # photo_show: large on the line of its # photo:");
+    if (!result.photo) throw new Error("Photo show without a photo: write # photo_show: on the line of its # photo:");
     result.photo = { ...result.photo, show };
   }
   if (result.phone && result.letter)

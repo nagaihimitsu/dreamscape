@@ -94,39 +94,6 @@
   from { opacity: 0; }
 }
 
-/* # photo_show: large (PhotoShowLayer, 2026-11-12): the line's album picture, whole, large in a white frame like a
-   print, over the portraits (dimmed by the layer's veil) and under the window (z-index 2), in the area below the
-   header. The picture keeps its own ratio and fits within the width and the upper part of the scene, so the window
-   below stays readable, and below the notices under the header (--notices-h, as the item card). It takes no taps (a
-   tap reads the line on, as anywhere on the scene). */
-.photo-show-layer {
-  position: absolute;
-  z-index: 1;
-  inset: var(--scene-top, 0px) 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: max(clamp(12px, 4dvh, 40px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
-  background: var(--stage-photo-veil);
-  pointer-events: none;
-  animation: stage-fade-in var(--motion-scene) var(--ease-out);
-}
-.photo-show-layer img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(100%, 640px);
-  max-height: 46dvh;
-  border: 6px solid var(--stage-photo-frame);
-  border-radius: 3px;
-  box-shadow: var(--stage-photo-shadow);
-  transform: rotate(-1.5deg);
-  animation: photo-show-in var(--motion-scene) var(--ease-out);
-}
-@keyframes photo-show-in {
-  from { opacity: 0; transform: rotate(-1.5deg) scale(0.94); }
-}
-
 /* # quiet: a soft veil over the scene's picture, darker towards its edges, and the visited place's reference (a
    date's) steps aside with the header (hud-view.ts "quiet"); the window, its controls and the line stay as they are.
    The veil comes in over --motion-scene and goes at once. */
@@ -366,8 +333,6 @@
 .reduce-motion :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
 .reduce-motion :is(.vn-scene, .battle-screen) > .weather-layer { transition: none; }
 .reduce-motion .recall-layer img,
-.reduce-motion .photo-show-layer,
-.reduce-motion .photo-show-layer img,
 .reduce-motion [data-quiet] > .vn-background::after,
 .reduce-motion [data-quiet] > .battle-backdrop::after { animation: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -375,8 +340,6 @@
   :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
   :is(.vn-scene, .battle-screen) > .weather-layer { transition: none; }
   .recall-layer img,
-  .photo-show-layer,
-  .photo-show-layer img,
   [data-quiet] > .vn-background::after,
   [data-quiet] > .battle-backdrop::after { animation: none; }
 }

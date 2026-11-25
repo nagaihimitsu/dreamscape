@@ -278,7 +278,7 @@ ID は `voice:script` が付けます。手で付けません。
 | 絵 | 置く所（配信する絵） | 自作の絵の一覧 | つなぐ所 |
 | --- | --- | --- | --- |
 | 立ち絵 | `<旅行編>/public/assets/characters/<人物ID>/<名前>.webp`（元の PNG は `<制作資料>/characters/<人物ID>/<名前>.png`） | 載せる | `presentation/characters.json`（人物の `imagePath`・`placement`、対決の `battleCharacters`）。名前で話す人は `progression/story.json` の `people` の `characterId`。大きく見える人は `figureScale`（0.5〜1.2） |
-| アルバムの絵 | `<旅行編>/public/assets/album/<ID>.webp`（ID は英小文字・数字・`_`。すべての旅行編で1つだけ） | 載せない（置き場所で自作の絵とみなす。`tourism/catalog.json` に載せると止まる） | 行の `# photo: <ID>`（任意で `# photo_caption:`・`# photo_show: large`）、思い出の呼び戻しは `# recall: <ID>` |
+| アルバムの絵 | `<旅行編>/public/assets/album/<ID>.webp`（ID は英小文字・数字・`_`。すべての旅行編で1つだけ） | 載せない（置き場所で自作の絵とみなす。`tourism/catalog.json` に載せると止まる） | 行の `# photo: <ID>`（任意で `# photo_caption:`・小さく見せるだけの `# photo_show: small`）、思い出の呼び戻しは `# recall: <ID>` |
 | ミニゲームの絵 | `<旅行編>/public/assets/minigames/<絵のID>.webp`（人物・物の枠は webp か png） | 載せる | `# minigame:` の行に `art.<枠> <絵のID>`。枠を足すときはコードの作業 |
 | 会話の背景 | `<旅行編>/public/assets/…`（決まったフォルダはまだない。png・webp・svg） | 載せる | `romance/presentation.json` の背景の `imagePath`（写真なら `imageAssetId`） |
 | 街歩きの背景 | `<旅行編>/public/assets/backdrops/<名前>.webp`（元の絵は `<制作資料>/backdrops/`） | 載せる | 都市ファイルの `backdropImagePath`（写真なら `backdropAssetId`。どちらか一方） |

@@ -1,0 +1,161 @@
+/* A line's photo shown large (PhotoShow.tsx; 2026-11-12, the default since 2026-11-25): the album picture as a print
+   with a white border and a wider margin under it, where its caption is written by hand and its stamp (the place and
+   「n日目 hh:mm」) is pressed. It lies over the portraits (dimmed by the layer's veil) and under the window (z-index 2),
+   in the area below the header, below the notices under the header (--notices-h, as the item card). The picture keeps
+   its own ratio and fits within the width and the upper part of the scene, so the window below stays readable. It takes
+   no taps (a tap reads the line on, as anywhere on the scene). The album's pictures are the author's own art (never
+   credited), so a print just taken may develop through a filter. */
+
+:root {
+  --photo-print-margin: #fbfaf6; /* the print's paper */
+  --photo-print-stamp: #b4532a; /* a date stamp's orange ink */
+  --photo-print-hand: "Klee One", "Noto Serif JP", serif; /* a pen's hand */
+}
+
+.photo-show-layer {
+  position: absolute;
+  z-index: 1;
+  inset: var(--scene-top, 0px) 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: max(clamp(12px, 4dvh, 40px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
+  background: var(--stage-photo-veil);
+  pointer-events: none;
+  animation: stage-fade-in var(--motion-scene) var(--ease-out);
+}
+
+/* The print: as wide as its picture, which keeps its ratio within the width and the height allowed (a block, not a
+   flex column, so the picture is never stretched); the margin's words wrap within it. */
+.photo-print {
+  display: block;
+  width: fit-content;
+  max-width: min(100%, 600px);
+  margin: 0;
+  padding: 7px 7px 0;
+  border-radius: 3px;
+  background: var(--photo-print-margin);
+  box-shadow: var(--stage-photo-shadow);
+  transform: rotate(-1.5deg);
+  animation: photo-show-in var(--motion-scene) var(--ease-out);
+}
+.photo-print img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 40dvh;
+  border-radius: 1px;
+}
+.photo-print-margin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+  /* Not wider than the picture: the margin takes the print's width, never gives it one. */
+  width: 0;
+  min-width: 100%;
+  padding: 7px 4px 9px;
+  color: var(--ds-ink);
+}
+.photo-print-caption {
+  font-family: var(--photo-print-hand);
+  font-size: var(--ds-text-body);
+  font-weight: 600;
+  line-height: var(--ds-leading-snug);
+  overflow-wrap: anywhere;
+}
+.photo-print-stamp {
+  margin-left: auto;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: 0.04em;
+  color: var(--photo-print-stamp);
+  white-space: nowrap;
+}
+@keyframes photo-show-in {
+  from { opacity: 0; transform: rotate(-1.5deg) scale(0.94); }
+}
+
+/* A photo just taken (data-taken): a short flash over the scene, then the print comes up a little turned and its picture
+   develops, from a pale wash into its colours. */
+.photo-show-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  animation: photo-show-flash 420ms ease-out;
+}
+@keyframes photo-show-flash {
+  0% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+[data-taken] > .photo-print {
+  animation: photo-show-taken 700ms 80ms var(--ease-out) both;
+}
+[data-taken] > .photo-print img {
+  animation: photo-show-develop 1100ms 200ms ease-out both;
+}
+@keyframes photo-show-taken {
+  from { opacity: 0; transform: translateY(14px) rotate(-5deg) scale(0.9); }
+}
+@keyframes photo-show-develop {
+  from { filter: brightness(1.8) saturate(0.1) contrast(0.6); }
+}
+
+/* As its line goes (PhotoShowFlight, in the header's layer over the screen): the print, as it was, shrinks and flies
+   into ≡メニュー and fades on it (`fly`), or fades where it was (`fade`). */
+.photo-print.photo-print-leaving {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  animation: item-show-fade 400ms var(--ease-out) both;
+}
+.photo-print.photo-print-leaving[data-mode="fly"] {
+  animation: photo-print-fly 650ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+}
+.photo-print-leaving img {
+  width: 100%;
+  max-height: none;
+  min-height: 0;
+  flex: 1;
+  object-fit: cover;
+}
+@keyframes photo-print-fly {
+  0% { opacity: 1; transform: rotate(-1.5deg); }
+  18% { transform: rotate(-1.5deg) scale(1.03); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(8deg) scale(var(--to-scale, 0.2)); }
+}
+
+/* A short landscape screen: a smaller picture, so the window below stays clear. */
+@media (max-height: 500px) {
+  .photo-show-layer { padding-top: 8px; }
+  .photo-print img { max-height: 32dvh; }
+  .photo-print-margin { padding: 4px 4px 6px; }
+}
+
+/* Reduced motion and 「演出を短縮する」: no flash, no flight; the print and its veil come at once, developed, and go by
+   fading where they were. */
+.reduce-motion .photo-show-layer,
+.reduce-motion .photo-print,
+.reduce-motion [data-taken] > .photo-print,
+.reduce-motion .photo-print img,
+.reduce-motion [data-taken] > .photo-print img { animation: none; }
+.reduce-motion .photo-show-flash { display: none; }
+.reduce-motion .photo-print.photo-print-leaving,
+.reduce-motion .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .photo-show-layer,
+  .photo-print,
+  [data-taken] > .photo-print,
+  .photo-print img,
+  [data-taken] > .photo-print img { animation: none; }
+  .photo-show-flash { display: none; }
+  .photo-print.photo-print-leaving,
+  .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+}

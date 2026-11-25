@@ -89,17 +89,21 @@ export const bagBox = (): DOMRect | undefined => document.querySelector<HTMLElem
 
 /**
  * A line's card on its way out, in the header's own layer over the screen (JourneyHud): from `box`, where the card was on
- * screen, it shrinks and flies into the held items' button (`toBag`, when the button has a box), or else it fades where
- * it was. `className` is the card's own, with how it leaves (item-show.css; item-out.css for a `# item_out:` card).
+ * screen, it shrinks and flies into the held items' button (`toBag`, when the button has a box; `target`: another
+ * button), or else it fades where it was. `className` is the card's own, with how it leaves (item-show.css; item-out.css for a `# item_out:` card).
  */
-export function CardFlight({ box, toBag, className, children }: { box: Box; toBag: boolean; className: string; children: ReactNode }) {
+export function CardFlight({ box, toBag, target = bagBox, className, children }: {
+  box: Box; toBag: boolean; className: string; children: ReactNode;
+  /** Where it flies (the bag; ≡メニュー for a photo's print, PhotoShow.tsx). */
+  target?: () => DOMRect | undefined;
+}) {
   const layer = useRef<HTMLSpanElement>(null);
   const [flight, setFlight] = useState<{ mode: "fly" | "fade"; style: CSSProperties } | null>(null);
   // Measured once as it starts: where the layer is, where the card was and where the bag is.
   useLayoutEffect(() => {
     const origin = layer.current?.getBoundingClientRect();
     if (!origin) return;
-    const bag = toBag ? bagBox() : undefined;
+    const bag = toBag ? target() : undefined;
     const fly = bag && bag.width > 0 && bag.height > 0 ? itemFlight(box, bag) : undefined;
     setFlight({
       mode: fly ? "fly" : "fade",

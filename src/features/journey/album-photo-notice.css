@@ -25,7 +25,7 @@
   88% { opacity: 1; transform: none; }
   100% { opacity: 0; transform: translate(min(32vw, 150px), -28px) scale(.35); }
 }
-/* After a picture shown large (# photo_show: large), the card comes from it: larger and lower at first, then up into
+/* After a picture shown large (the journey's first photo; any other flies into ≡メニュー: PhotoShowFlight), the card comes from it: larger and lower at first, then up into
    its place under the header, as if the picture shrank into the card. */
 .album-photo-notice[data-from-large] { animation-name: album-photo-notice-from-large; }
 @keyframes album-photo-notice-from-large {
