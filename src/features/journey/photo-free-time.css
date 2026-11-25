@@ -25,11 +25,11 @@
 }
 
 /* A city's backdrop (FreeTimeBackdrop: its own artwork or its photo, fixed, cropped to fill the screen) is dimmed so the
-   transparent header's own pills and the cards stand out from a busy picture: more at the top (the header) and at the
-   foot, less in the middle, where the street shows through the glass of the cards (2026-11-25 user decision: the
-   screen as the place, not a form laid over it). */
+   cards stand out from a busy picture: a little more at the foot, less in the middle, where the street shows through
+   the glass of the cards (2026-11-25 user decision: the screen as the place, not a form laid over it). The header
+   brings its own shade (journey-hud.css), so the top is dimmed only as the middle. */
 .photo-free-time .free-time-backdrop:not(.is-plain)::after {
-  background: linear-gradient(rgba(20, 24, 32, 0.5), rgba(20, 24, 32, 0.18) 28%, rgba(20, 24, 32, 0.18) 62%, rgba(20, 24, 32, 0.45));
+  background: linear-gradient(rgba(20, 24, 32, 0.18), rgba(20, 24, 32, 0.18) 62%, rgba(20, 24, 32, 0.45));
 }
 /* The colour of the time of day (time-of-day.ts timeOfDayTint, user decision 2026-11-11) over the backdrop or the
    pattern: one more fixed layer, after them in the same place, under every card. Every text over it sits on its own

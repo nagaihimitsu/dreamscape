@@ -69,6 +69,11 @@
   --ds-smoke-blur: blur(14px) saturate(1.4);
   --ds-smoke-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.14); /* its edge catching the light */
   --ds-smoke-muted: #e6e9ee;
+  /* White words over a scene, without a ground (the header's): a soft dark shadow round each. */
+  --ds-scene-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 8px rgba(0, 0, 0, 0.35);
+  /* The shade that falls from the screen's top behind the header (journey-hud.css): white words on it 4.9:1 or more and
+     white marks 4.4:1 over anything behind it, white counted. */
+  --ds-hud-shade: linear-gradient(rgba(10, 14, 24, 0.66), rgba(10, 14, 24, 0.55) 70%, rgba(10, 14, 24, 0));
   /* The design's rules (2026-11-25 user decision, after learning from a product designer's practice: a few named sizes
      and colours, decided first and used everywhere, so every screen reads as one). The talk's stylesheets use only
      these (src/app/design-tokens.test.ts holds them to it); a new stylesheet uses them; the other screens move to them
@@ -1330,13 +1335,6 @@ dialog.modal[open] {
   dialog.modal[open] { animation: none; }
 }
 
-/* In free time, the next stop and the available dates are the primary
-   choices. Keep supporting records below them on narrow screens. */
-@media (max-width: 600px) {
-  .free-time-active > .masthead,
-  .free-time-active > .journey-stage,
-  .free-time-active > footer { display: none; }
-}
 
 .sr-only {
   position: absolute;
