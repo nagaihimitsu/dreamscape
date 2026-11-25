@@ -182,7 +182,7 @@
    as a small mark on the photo's corner (a book for the story, a heart for a date; the card under the row names it).
    The chosen card is held up in a thin white ring and a soft gold light (it is also the largest: never the colour
    alone). A card without a photo (待機, the tour, the shop, a place without one, a date not open yet) is a pane of the
-   smoked glass, the scene blurred through it, with its mark. */
+   light glass, the scene blurred through it, with its mark. */
 .photo-cards:not(.is-list) .photo-card,
 .photo-card-ghost {
   padding: 0;
@@ -223,20 +223,29 @@
 .photo-cards:not(.is-list) .photo-card.is-unavailable .photo-card-name,
 .photo-card-ghost.is-unavailable .photo-card-name { color: var(--ds-smoke-muted); }
 .photo-cards:not(.is-list) .photo-card-cue { margin-top: 2px; }
+/* A card without a photo is a pane of the light glass (2026-11-25 user remark: the dark panes made the screen look
+   dark), its mark and name in the glass's ink with no shade under them. */
 .photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked),
 .photo-card-ghost:has(.photo-card-plain) {
-  background: var(--ds-smoke);
-  -webkit-backdrop-filter: var(--ds-smoke-blur);
-  backdrop-filter: var(--ds-smoke-blur);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  color: var(--ds-glass-ink);
 }
+.photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked) .photo-card-text,
+.photo-card-ghost:has(.photo-card-plain) .photo-card-text { background: none; color: var(--ds-glass-ink); }
+.photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked) .photo-card-name,
+.photo-card-ghost:has(.photo-card-plain) .photo-card-name { text-shadow: none; }
+.photo-cards:not(.is-list) .photo-card.is-unavailable:has(.photo-card-plain) .photo-card-name,
+.photo-card-ghost.is-unavailable:has(.photo-card-plain) .photo-card-name { color: var(--ds-glass-muted); }
 .photo-cards:not(.is-list) .photo-card.is-locked {
-  border: 1px dashed var(--ds-smoke-muted);
+  border: 1px dashed var(--ds-glass-muted);
   box-shadow: none;
 }
 .photo-cards:not(.is-list) .photo-card-plain:not([style]),
-.photo-card-ghost .photo-card-plain:not([style]) { background: none; color: var(--ds-on-slate); }
+.photo-card-ghost .photo-card-plain:not([style]) { background: none; color: var(--ds-glass-ink); }
 .photo-cards:not(.is-list) .photo-card-plain { padding-bottom: 24px; }
-.photo-cards:not(.is-list) .photo-card.is-locked .photo-card-name { color: var(--ds-smoke-muted); }
+.photo-cards:not(.is-list) .photo-card.is-locked .photo-card-name { color: var(--ds-glass-muted); }
 /* The marks over the photo are smoked glass: what the place holds and 訪問済み at the top left (clear of the name), the
    current place, 「おすすめ」 or 「最寄り」 at the top right. */
 .photo-card-kind {
@@ -638,8 +647,8 @@
 /* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
 .place-card .place-card-heroine { gap: 8px; }
 .place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
-.place-card .place-card-heroine .heroine-note-bubble { padding: 5px 12px 6px; font-size: 12px; line-height: 1.6; }
-.place-card .place-card-heroine .heroine-note-bubble::before { top: 11px; }
+.place-card .place-card-heroine .heroine-note-bubble { padding: 6px 13px 7px; font-size: 12px; line-height: 1.6; }
+.place-card .place-card-heroine .heroine-note-bubble::before { top: 12px; height: 10px; }
 .place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
 @keyframes place-card-heroine-in {
   from { opacity: 0; transform: translateY(4px) scale(0.98); }
