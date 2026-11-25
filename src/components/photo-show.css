@@ -2,8 +2,9 @@
    with a white border and a wider margin under it, where its caption is written by hand and its stamp (the place and
    「n日目 hh:mm」) is pressed. It lies over the portraits (dimmed by the layer's veil) and under the window (z-index 2),
    in the area below the header, below the notices under the header (--notices-h, as the item card), and above the heads
-   of the people on stage (--figures-top; 2026-11-25 user decision: their faces stay seen as they speak). The picture
-   keeps its own ratio and fits within the width and the room above the heads, so the window below stays readable. It takes
+   of the people on stage or under their faces (--room-top, --room-bottom: figures-top.ts; 2026-11-25 user decisions: their
+   faces stay seen as they speak). The picture keeps its own ratio and fits within the width and that room, so the
+   window below stays readable. It takes
    no taps (a tap reads the line on, as anywhere on the scene). The album's pictures are the author's own art (never
    credited), so a print just taken may develop through a filter. The veil dims the whole scene, behind the header too
    (2026-11-25 user decision, after an iPhone: the band behind the header was left brighter than the dimmed scene). */
@@ -22,7 +23,8 @@
   justify-content: center;
   align-items: flex-start;
   /* The print's top (its upper edge, from the scene's top), which its picture's height counts from. */
-  --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px)));
+  --photo-top: max(calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px))),
+    calc(var(--room-top, 0px) + 8px));
   padding: var(--photo-top) 16px 0;
   background: var(--stage-photo-veil);
   pointer-events: none;
@@ -48,10 +50,10 @@
   width: auto;
   height: auto;
   max-width: 100%;
-  /* Above the heads on stage (--figures-top, figures-top.ts): the room left under the print's top, less its white
+  /* Clear of the faces on stage (--room-bottom, figures-top.ts): the room left under the print's top, less its white
      border, its margin's words on up to two lines and a little air; never smaller than 120 px (on a short screen it may
-     then lie over a head), never larger than 40 % of the screen. */
-  max-height: clamp(120px, calc(var(--figures-top, 100dvh) - var(--photo-top) - 80px), 40dvh);
+     then lie over a face), never larger than 40 % of the screen. */
+  max-height: clamp(120px, calc(var(--room-bottom, 100dvh) - var(--photo-top) - 80px), 40dvh);
   border-radius: 1px;
 }
 .photo-print-margin {
@@ -79,7 +81,8 @@
   line-height: var(--ds-leading-tight);
   letter-spacing: 0.04em;
   color: var(--photo-print-stamp);
-  white-space: nowrap;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 @keyframes photo-show-in {
   from { opacity: 0; transform: rotate(-1.5deg) scale(0.94); }
@@ -141,8 +144,8 @@
 
 /* A short landscape screen: a smaller picture, so the window below stays clear. */
 @media (max-height: 500px) {
-  .photo-show-layer { --photo-top: 8px; }
-  .photo-print img { max-height: clamp(min(120px, 32dvh), calc(var(--figures-top, 100dvh) - var(--photo-top) - 80px), 32dvh); }
+  .photo-show-layer { --photo-top: max(8px, calc(var(--room-top, 0px) + 8px)); }
+  .photo-print img { max-height: clamp(min(120px, 32dvh), calc(var(--room-bottom, 100dvh) - var(--photo-top) - 80px), 32dvh); }
   .photo-print-margin { padding: 4px 4px 6px; }
 }
 

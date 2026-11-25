@@ -3,8 +3,8 @@
    parchment tile with a gold hairline all round and a soft gold glow. */
 
 /* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
-   header; the card sits at its top middle, above the heads of the people on stage (2026-11-25 user decision: their
-   faces stay seen as they speak), and below the notices under the header (「写真の札」, 「ことばを覚えた」: their
+   header; the card sits at its top middle, above the heads of the people on stage or under their faces (figures-top.ts;
+   2026-11-25 user decisions: their faces stay seen as they speak), and below the notices under the header (「写真の札」, 「ことばを覚えた」: their
    measured height --notices-h, GameApp), which would otherwise cover its top. */
 .item-show-layer {
   position: absolute;
@@ -14,10 +14,10 @@
   justify-content: center;
   align-items: flex-start;
   /* The card's top (from the layer's top), which its picture's size counts from. */
-  --item-top: max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px));
-  /* Above the heads on stage (--figures-top, figures-top.ts): the room left under the card's top, less its padding,
+  --item-top: max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px), calc(var(--room-top, 0px) + 8px));
+  /* Clear of the faces on stage (--room-bottom, figures-top.ts): the room left under the card's top, less its padding,
      its name on up to two lines and a little air; never smaller than 56 px, never larger than 160 px. */
-  --item-picture-max: min(160px, max(56px, calc(var(--figures-top, 100dvh) - var(--item-top) - 92px)));
+  --item-picture-max: min(160px, max(56px, calc(var(--room-bottom, 100dvh) - var(--item-top) - 92px)));
   padding: var(--item-top) 16px 0;
   pointer-events: none;
 }
@@ -99,7 +99,7 @@
 }
 /* A short landscape screen: a smaller card, so the window below stays clear. */
 @media (max-height: 500px) {
-  .item-show-layer { --item-top: 8px; }
+  .item-show-layer { --item-top: max(8px, calc(var(--room-top, 0px) + 8px)); }
   .item-show-card { gap: 4px; padding: 10px 14px 8px; }
   .item-show-name { font-size: 14px; }
 }
