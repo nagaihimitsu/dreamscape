@@ -12,10 +12,12 @@ describe("the speaker's name band (name-band)", () => {
     // She and one person: halves; the person on the right speaks.
     expect(speakerSpot(her({ opposite: person("gt_zoheb") }), { heroine: "listening", opposite: "speaking" }))
       .toEqual({ figure: "gt_zoheb", x: 0.75 });
-    // Three in a row: the one in the middle speaks (Hamid between her and Zoheb).
+    // She and two others: she on the left, the two together on the right (Hamid nearer her, Zoheb at the right).
     const three = her({ opposite: person("gt_hamid"), beside: person("gt_zoheb") });
-    expect(speakerSpot(three, { heroine: "listening", opposite: "speaking", beside: "listening" })).toEqual({ figure: "gt_hamid", x: 0.5 });
-    expect(speakerSpot(three, { heroine: "listening", opposite: "listening", beside: "speaking" })?.x).toBeCloseTo(5 / 6);
+    expect(speakerSpot(three, { heroine: "speaking" })?.x).toBe(0.25);
+    expect(speakerSpot(three, { heroine: "listening", opposite: "speaking", beside: "listening" })).toEqual({ figure: "gt_hamid", x: 0.6 });
+    expect(speakerSpot(three, { heroine: "listening", opposite: "listening", beside: "speaking" })?.x).toBe(0.86);
+    expect(speakerSpot({ heroine: false, opposite: person("a"), beside: person("b") }, { beside: "speaking" }, "battle")?.x).toBe(0.86);
     // Four in a row: quarters.
     const four = her({ opposite: person("a"), beside: person("b"), far: person("c") });
     expect(speakerSpot(four, { far: "speaking" })?.x).toBeCloseTo(7 / 8);

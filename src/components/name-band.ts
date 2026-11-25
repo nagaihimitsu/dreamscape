@@ -14,11 +14,15 @@ export type NameBand = { x?: number; fill?: string; edge?: string; ink?: string 
 
 type StagePlace = "heroine" | OppositePlace;
 
+/** The middles of her place and the two others' when three stand with her (2026-11-25 user decision; encounter.css, battle.css). */
+const SHE_AND_TWO = [0.25, 0.6, 0.86] as const;
+
 /**
  * Where the one speaking the line stands (the figure, and across the stage: 0 its left, 1 its right), or none when no
  * one on stage says it (the narration, the player, someone off stage, a phone, a letter, a remembered line). The places
  * follow the stage's layouts (romance-scene.css, encounter.css, battle.css): the figures standing share the width
- * equally, her first; one alone stands in the middle. The battle's stage keeps her place whether or not she stands.
+ * equally, her first; one alone stands in the middle; she and two others: she on the left, the two together on the
+ * right (SHE_AND_TWO). The battle's stage keeps her place whether or not she stands.
  */
 export function speakerSpot(stage: Stage, focus: StageFocus, layout: "scene" | "battle" = "scene"): { figure: string; x: number } | undefined {
   const places: StagePlace[] = [
@@ -28,6 +32,8 @@ export function speakerSpot(stage: Stage, focus: StageFocus, layout: "scene" | "
   const speaking = places.find((place) => focus[place] === "speaking");
   if (!speaking) return undefined;
   const figure = speaking === "heroine" ? "heroine" : stage[speaking]!.figure;
+  // She and two others: she on the left, the two together on the right (encounter.css, battle.css).
+  if (places.length === 3 && places[0] === "heroine") return { figure, x: SHE_AND_TWO[places.indexOf(speaking)] };
   const shares = places.length === 1 && layout === "scene" ? 1 : Math.max(places.length, 2);
   return { figure, x: (places.indexOf(speaking) + 0.5) / shares };
 }
