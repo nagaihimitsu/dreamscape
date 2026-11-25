@@ -4,7 +4,7 @@
    character, while it is on screen. Both are inline blocks from the start, shown or not, so the line never reflows
    as it is typed. Reduced motion (the system's and 「演出を短縮する」): bold only, still. */
 .dialogue-text {
-  --em-accent: #93233a;
+  --em-accent: var(--ds-emphasis);
 }
 .phone-bubble .dialogue-text,
 .letter-sheet .dialogue-text {

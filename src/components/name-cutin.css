@@ -16,7 +16,7 @@
   -webkit-backdrop-filter: var(--vn-window-blur);
   backdrop-filter: var(--vn-window-blur);
   color: var(--vn-text);
-  box-shadow: 0 2px 12px rgba(20, 28, 48, 0.22);
+  box-shadow: var(--ds-glass-shadow);
   text-align: center;
   pointer-events: none;
   animation: name-cutin-in var(--motion-medium) var(--ease-out);
@@ -24,23 +24,23 @@
 .name-cutin p { margin: 0; overflow-wrap: anywhere; }
 .name-cutin .name-cutin-title {
   color: var(--vn-muted);
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.06em;
 }
 /* The name in the headings' type, as the battle opponent's heading shows it. */
 .name-cutin .name-cutin-name {
   color: var(--vn-text);
   font-family: "Noto Serif JP", serif;
-  font-size: 22px;
+  font-size: var(--ds-text-title);
   font-weight: 500;
   letter-spacing: 0.045em;
-  line-height: 1.5;
+  line-height: var(--ds-leading-tight);
 }
 .name-cutin .name-cutin-quote {
   margin-top: 4px;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 @keyframes name-cutin-in {
   from { opacity: 0; transform: translateY(8px); }
