@@ -16,5 +16,6 @@
   ],
   "productionStatus": "complete",
   "arrivalStoryId": "places/gt_jaipur_hotel_hub.gt_jaipur_arrival",
-  "backdropImagePath": "assets/backdrops/jaipur-free-time.webp"
+  "backdropImagePath": "assets/backdrops/jaipur-free-time.webp",
+  "backdropVideoPath": "assets/backdrops/jaipur-free-time.mp4"
 }

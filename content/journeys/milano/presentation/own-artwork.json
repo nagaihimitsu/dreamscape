@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "artworks": [
     {
-      "noteJa": "Dreamscape のために作った品物のアイコン（SVG）",
+      "noteJa": "Dreamscape のために作った品物のイラスト（自作の絵）",
       "paths": [
-        "assets/items/blue-pick.svg",
-        "assets/items/galleria-ticket.svg"
+        "assets/items/blue_pick.webp",
+        "assets/items/galleria_ticket.webp"
       ]
     }
   ]

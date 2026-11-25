@@ -17,5 +17,6 @@
   ],
   "productionStatus": "complete",
   "arrivalStoryId": "places/gt_agra_hotel_hub.gt_agra_arrival",
-  "backdropImagePath": "assets/backdrops/agra-free-time.webp"
+  "backdropImagePath": "assets/backdrops/agra-free-time.webp",
+  "backdropVideoPath": "assets/backdrops/agra-free-time.mp4"
 }
