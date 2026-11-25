@@ -201,7 +201,7 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
   for (const manifest of sources.manifests)
     if (isObject(manifest.data.openingMovie)) add(manifest.file, "", [["openingMovie.videoPath", manifest.data.openingMovie.videoPath]]);
   for (const city of sources.cities)
-    if (isObject(city.data)) add(city.file, "", [["backdropImagePath", city.data.backdropImagePath]]);
+    if (isObject(city.data)) add(city.file, "", [["backdropImagePath", city.data.backdropImagePath], ["backdropVideoPath", city.data.backdropVideoPath]]);
   return images;
 }
 

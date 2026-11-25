@@ -606,6 +606,22 @@ export function validateContent(sources: ContentSources,
         `出典のある写真なら、tourism/catalog.json に登録して backdropAssetId で指定します` +
         `（City backdrop image is not listed as own artwork of its journey: ${imagePath}）`);
   });
+  // Its moving version (backdropVideoPath, 2026-11-25): a movie the city's own journey serves, over the artwork it starts from.
+  cities.forEach((item, index) => {
+    const videoPath = item.backdropVideoPath;
+    if (videoPath === undefined) return;
+    const source = sources.cities[index];
+    const cityFile = displayPath(root, source.file);
+    const layer = sources.layers.find((entry) => entry.id === source.layer)!;
+    if (item.backdropImagePath === undefined)
+      throw new Error(`動く背景の静止画がありません：${cityFile} の backdropVideoPath には、動画の最初のコマの絵を backdropImagePath に書いてください` +
+        `（City backdrop video without backdropImagePath: ${cityFile}）`);
+    const served = servedFile(publicFiles, videoPath);
+    const publicFolder = displayPath(root, path.join(layer.directory, "public"));
+    if (!served || servingLayer(sources, served) !== layer)
+      throw new Error(`動く背景の動画がありません：${cityFile} backdropVideoPath "${videoPath}" は ${publicFolder}/ にありません。同じ旅行編の public/ に置いてください` +
+        `（Missing city backdrop video: ${videoPath} is not served by ${publicFolder}/）`);
+  });
   // A travel place's own card photo (photoAssetId) names a tourism asset in the same way.
   for (const { travel, travelFile } of travels)
     for (const place of travel.places)

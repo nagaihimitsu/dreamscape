@@ -24,3 +24,8 @@ export function getCityBackdropPath(cityId: string): string | null {
   const photo = getCityBackdrop(cityId);
   return photo ? derivedImagePath(photo, "backdrop") : null;
 }
+
+/** The served path of the city's moving backdrop (`backdropVideoPath`, over its own artwork), or null. */
+export function getCityBackdropVideoPath(cityId: string): string | null {
+  return getCityContent(cityId).city.backdropVideoPath ?? null;
+}
