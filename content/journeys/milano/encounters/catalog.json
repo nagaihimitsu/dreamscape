@@ -6,14 +6,14 @@
       "cityId": "milano",
       "nameJa": "ガッレリアの展示券",
       "descriptionJa": "ガッレリアの手回しの版画の出店『リナの紋章室』で使える券。",
-      "iconPath": "assets/items/galleria-ticket.svg"
+      "iconPath": "assets/items/galleria_ticket.webp"
     },
     {
       "id": "blue_pick",
       "cityId": "milano",
       "nameJa": "青いピック",
       "descriptionJa": "ドゥオモ広場の演奏者からもらった予備の一枚。城で弦を弾く人に渡せる。",
-      "iconPath": "assets/items/blue-pick.svg"
+      "iconPath": "assets/items/blue_pick.webp"
     }
   ],
   "encounters": []
