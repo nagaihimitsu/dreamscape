@@ -42,6 +42,7 @@
 - [大きな作り替えで「前と同じ」を確かめる](authoring/SAME_AS_BEFORE_GUIDE.md)：変える前の結果を残し、変えた後と比べる道具を先に作るやり方。
 - [計ってから速く・軽くする](authoring/MEASURE_FIRST_GUIDE.md)：読み込み・生成・画像を、同じ条件で計ってから直すやり方。
 - [画面を作り直す進め方](authoring/UI_REDESIGN_GUIDE.md)：今の画面を一覧にして測り、小さな直しから入れて、実機で見るまでの順番。
+- [没入感を上げる進め方](authoring/UI_IMMERSION_GUIDE.md)：見本の画面と iPhone の感想から、すりガラス・人物の寄せ方・名前札などを直す順番。デザインの決まりの使い方と、ほかの会話と同時に進めるときの GitHub の流れ。
 
 ### 作る人へ（[authoring/](authoring/)）
 
