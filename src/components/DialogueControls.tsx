@@ -29,15 +29,18 @@ export function DialogueWindowHead({ speaker, band, narration = false, remembere
    */
   remembered?: boolean;
   plateClassName?: string;
-  /** The line's name plate while it lasts (`# cutin: name`, useNameCutIn): shown just above the head. */
+  /** The line's name plate while it lasts (`# cutin: name`, useNameCutIn): shown in the band's place, over the speaker. */
   cutIn?: NameCutIn;
 }) {
-  // Over no one: -1 holds it at the left (dialogue-controls.css).
-  const at = { "--band-x": band?.x === undefined ? -1 : Math.round(band.x * 1000) / 1000 } as CSSProperties;
+  // Over no one: -1 holds the band at the left, and the name plate stands in the middle (dialogue-controls.css).
+  const x = band?.x === undefined ? undefined : Math.round(band.x * 1000) / 1000;
+  const at = { "--band-x": x ?? -1, "--cutin-x": x ?? 0.5 } as CSSProperties;
   const colours = band?.fill ? { "--band-fill": band.fill, "--band-edge": band.edge, "--band-ink": band.ink } as CSSProperties : undefined;
   return <div className="vn-window-head" style={at}>
     <NameCutInPlate cutIn={cutIn} />
-    {speaker && !narration && <div className={["speaker", plateClassName].filter(Boolean).join(" ")} style={colours}>
+    {/* While the line's name plate shows, it stands in the band's place and the band waits under it (the name once). */}
+    {speaker && !narration && <div className={["speaker", plateClassName].filter(Boolean).join(" ")} style={colours}
+      data-under-cutin={cutIn ? "" : undefined}>
       {speaker}
       {remembered && <span className="speaker-remembered" data-testid="speaker-remembered">
         <span className="sr-only">（</span>{REMEMBERED_MARK}<span className="sr-only">）</span>

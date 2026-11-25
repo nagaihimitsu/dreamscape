@@ -1,12 +1,15 @@
-/* A name plate (NameCutInPlate, `# cutin: name`): on the glass of the dialogue window (2026-11-25), centred just above its head,
-   over the scene (the characters' bodies, not their faces). It is laid over the scene (no reflow), takes no taps and
-   goes at once; it comes in with a short rise, none under reduced motion. */
+/* A name plate (NameCutInPlate, `# cutin: name`): on the glass of the dialogue window (2026-11-25). It stands in the name
+   band's place (2026-11-25 user decision: the plate and the band said the name twice and touched): its foot on the
+   band's, straddling the window's top edge, over the speaker on the stage (--cutin-x, as the band's --band-x; in the
+   middle when no one on stage speaks) and kept inside the window's head; the band waits under it unseen
+   (dialogue-controls.css) and is there when it goes. It is laid over the scene (no reflow), takes no taps and goes at
+   once; it comes in with a short rise, none under reduced motion. */
 .name-cutin {
   position: absolute;
-  bottom: calc(100% + 12px);
-  left: 50%;
-  translate: -50% 0;
-  width: min(calc(100% - 32px), 380px);
+  bottom: calc(100% - 4px - 33px);
+  left: 0;
+  translate: clamp(0px, calc(50cqw + (var(--cutin-x, 0.5) - 0.5) * 110cqw - 50%), calc(100cqw - 100%)) 0;
+  width: min(calc(100cqw - 16px), 380px);
   padding: 8px 18px 10px;
   border-radius: 14px;
   background: var(--vn-window-bg);

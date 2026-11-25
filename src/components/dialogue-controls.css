@@ -48,6 +48,8 @@
   overflow-wrap: anywhere;
   transition: translate var(--motion-medium) var(--ease-out);
 }
+/* While the line's name plate (# cutin: name) shows, it stands in the band's place: the band waits, unseen, under it. */
+.vn-window-head > .speaker[data-under-cutin] { visibility: hidden; }
 .reduce-motion .vn-window-head > .speaker { transition: none; }
 @media (prefers-reduced-motion: reduce) { .vn-window-head > .speaker { transition: none; } }
 /* A remembered line's 「回想」 beside the name (`# remembered`, 2026-11-16): a small outlined label in the band's own
