@@ -12,7 +12,7 @@ import {
   atPlace, cityStart, completedCity, finishEpisode, isHotelInsert, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
   startDateScene, startEncounterScene, startHotelInsertScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
-import { checkDebugClues, checkDebugFlags, withDebugClock, withDebugClues, withDebugFlags, withDebugStage } from "./debug-edits";
+import { checkDebugClues, checkDebugEpisodes, checkDebugFlags, withDebugClock, withDebugClues, withDebugEpisodes, withDebugFlags, withDebugStage } from "./debug-edits";
 
 export type { DebugScene, DebugSettings } from "./debug-query";
 
@@ -129,16 +129,19 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
     throw new Error(`「${id}」（${target.name}）は、${target.unavailable}。${target.unavailableKind === "item" ? "Debugの場面は品物を持たない状態から始まります。" : ""}`);
   checkDebugFlags(cityId, query.flags ?? []);
   checkDebugClues(cityId, query.clues ?? []);
+  checkDebugEpisodes(cityId, query.episodes ?? []);
   const defaults = defaultDebugSettings(cityId);
   // A tour is booked before the city is cleared (a cleared city has played its tour): it starts at the city's start.
   const progress = query.progress ?? (query.scene === "tour" ? "initial" : defaults.progress);
+  if (query.episodes && progress === "completed" && !query.before)
+    throw new Error("episodes は旅の進行が「旅の開始時」（progress=initial）のときに使います。都市クリア後は、どのエピソードも終えています。");
   return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
     progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
     trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll,
     ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}),
     ...(query.without ? { without: query.without } : {}), ...(query.before ? { before: query.before } : {}),
     ...(query.day !== undefined ? { day: query.day } : {}), ...(query.time !== undefined ? { time: query.time } : {}),
-    ...(query.flags ? { flags: query.flags } : {}), ...(query.clues ? { clues: query.clues } : {}),
+    ...(query.episodes ? { episodes: query.episodes } : {}), ...(query.flags ? { flags: query.flags } : {}), ...(query.clues ? { clues: query.clues } : {}),
     ...(query.stage !== undefined ? { stage: query.stage } : {}) } };
 }
 
@@ -179,6 +182,7 @@ function withoutHeldItems(state: GameState, itemIds: readonly string[]): GameSta
 function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: string): GameState {
   if (!episodes.some((episode) => episode.id === before && episode.cityId === cityId && episode.kind !== "city_finale"))
     throw new Error(`before の「${before}」は、${getCityContent(cityId).city.nameJa}のフィナーレでないエピソードではありません。`);
+  if (settings.episodes?.includes(before)) throw new Error(`「${before}」は before（まだ終えていない）と、終えたことにするエピソードの両方に選ばれています。`);
   const others = episodes.filter((episode) => episode.cityId === cityId && episode.kind !== "city_finale" && episode.id !== before);
   let state = cityStart(cityId);
   for (const next of [...others, null]) {
@@ -198,12 +202,13 @@ function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: stri
 }
 
 /**
- * The scene's starting state from its progress's: without the items `without` names, with the flags and the clues it adds, at its day and
+ * The scene's starting state from its progress's: with the episodes it finishes (played first), without the items `without` names, with the flags and the clues it adds, at its day and
  * time when one is chosen (the party at the hotel, where every scene's opener starts from; free time sets its clock at its
  * own place: openFreeTime), Debug's AP and relationship values, and its 恋の段階 when one is chosen (else the progress's own).
  */
 function prepared(state: GameState, settings: DebugSettings): GameState {
-  const base = withDebugClues(withDebugFlags(withoutHeldItems(state, settings.without ?? []), settings.flags ?? []), settings.clues ?? []);
+  const played = withDebugEpisodes(state, settings.episodes ?? []);
+  const base = withDebugClues(withDebugFlags(withoutHeldItems(played, settings.without ?? []), settings.flags ?? []), settings.clues ?? []);
   const clocked = settings.scene === "free" || (settings.day === undefined && settings.time === undefined) ? base
     : withDebugClock(atPlace(base, base.travel.hotelPlaceId), { day: settings.day, minute: settings.time });
   const related = withRelationship(withAp(clocked, settings.ap), settings);
