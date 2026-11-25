@@ -11,6 +11,7 @@ import type { ChapterStampCard, EndRoll, EpisodeTitleCard, PackedItem, Packing, 
 import type { JourneyNumbers } from "./journey-numbers";
 import { JourneyNumbersCard } from "./JourneyNumbers";
 import "./journey-moments.css";
+import { FitText } from "../../components/FitText";
 
 // The journey's moments (2026-11-11 user decision; the rules in journey-moments.ts, GameApp's useJourneyMoments shows them):
 // the title card as an episode begins, the stamp as it ends (2026-11-13), the recap of a resumed game, the packing as the party
@@ -143,7 +144,7 @@ export function ResumeRecapCard({ recap, heroineName, onClose }: { recap: Resume
       {recap.photo && <RecapPhoto photo={recap.photo} />}
       <div className="resume-recap-chapter">
         {recap.chapter.cityJa && <p className="resume-recap-city">{recap.chapter.cityJa}で</p>}
-        <h3>{recap.chapter.titleJa}</h3>
+        <h3><FitText text={recap.chapter.titleJa} /></h3>
         <p>{recap.chapter.descriptionJa}</p>
       </div>
     </div>
@@ -322,13 +323,13 @@ export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
       <div className="end-roll-content">
         <header className="end-roll-opening">
           <p className="end-roll-eyebrow">旅の終わり</p>
-          <h2 id="end-roll-title" className="end-roll-title">{roll.journeyJa || "旅の記録"}</h2>
+          <h2 id="end-roll-title" className="end-roll-title"><FitText text={roll.journeyJa || "旅の記録"} /></h2>
           <span className="end-roll-ornament" aria-hidden="true" />
         </header>
         {numbers && <JourneyNumbersCard numbers={numbers} reduceMotion={reduceMotion} />}
         {roll.cities.map((city, index) => <section key={city.id} className="end-roll-city" aria-labelledby={`end-roll-city-${city.id}`}>
           <p className="end-roll-chapter" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
-          <h3 id={`end-roll-city-${city.id}`}>{city.nameJa}</h3>
+          <h3 id={`end-roll-city-${city.id}`}><FitText text={city.nameJa} /></h3>
           {city.photos.length > 0 && <ul className="end-roll-photos">
             {city.photos.map((photo) => <li key={photo.imageId}>
               <figure>

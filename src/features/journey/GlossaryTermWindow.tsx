@@ -8,6 +8,7 @@ import { Icon } from "../../components/icons";
 import { DIALOGUE_LINE_ATTRIBUTE } from "../../components/scene-tap";
 import { focusQuietly } from "../../components/scene-focus";
 import "./glossary.css";
+import { FitText } from "../../components/FitText";
 
 /**
  * 旅の図鑑's card in the story (2026-11-13 user decision): the terms a line's `# term:` has just put in 旅の図鑑 (GameApp:
@@ -93,7 +94,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
         {asset && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} width={asset.width}
           height={asset.height} decoding="async" />}
         {asset && photoNote(term) && <p className="glossary-term-photo-note" data-testid="glossary-term-photo-note">{photoNote(term)}</p>}
-        <h2 className="glossary-term-name" id={nameId}>{term.nameJa}</h2>
+        <h2 className="glossary-term-name" id={nameId}><FitText text={term.nameJa} /></h2>
         {subtitle && <p className="glossary-term-subtitle">{subtitle}</p>}
         <p className="glossary-term-line" id={lineId}>{term.lineJa}</p>
         <button ref={closeButton} type="button" className="secondary glossary-term-close" data-testid="glossary-term-close" onClick={tap}>

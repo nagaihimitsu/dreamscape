@@ -9,6 +9,7 @@ import { currentShop, shopOutfits, type ShopOutfitChoice } from "../../domain/ou
 import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
 import "./shop-card.css";
+import { FitText } from "../../components/FitText";
 
 /** The served path of the heroine in a costume (its neutral picture), or null when it has none. */
 function outfitPicture(costume: string): string | null {
@@ -41,7 +42,7 @@ export function ShopCard({ game, onBuy, onWear, heading = true }: {
   // Her words about what was just bought, else her words about the shop (none: no note).
   const line = boughtOutfit ? boughtOutfit.boughtLineJa : shop.heroineLineJa;
   return <section className="place-card shop-card" data-testid="shop-card" aria-labelledby={`${id}-name`}>
-    <h2 id={`${id}-name`} className={heading ? "place-card-name" : "sr-only"}><span>{shop.nameJa}</span></h2>
+    <h2 id={`${id}-name`} className={heading ? "place-card-name" : "sr-only"}><FitText text={shop.nameJa} /></h2>
     <p className="place-card-hook">{shop.descriptionJa}</p>
     {/* A new note when something is bought, so it comes in again (place-card-heroine). */}
     {line && <HeroineNote key={boughtOutfit?.id ?? "shop"} className="place-card-heroine" label={game.heroineName} hideLabel

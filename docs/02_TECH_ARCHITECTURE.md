@@ -480,6 +480,16 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
   - 上の帯の道具：`--ds-slate-*`
   - フォーカスの枠：`--ds-focus`
   - 影：`--ds-glass-shadow`・`--ds-action-shadow` ほか
+- **見出しの字の収め方**（2026-11-25のユーザー判断。iPhoneで旅の図鑑の「ディーワーニ・ハース（内謁の間）」が「（内謁の／間）」と切れたため）：制作者が書く名前を出す見出し（地名・用語・品物・章・旅の名前など）は、共通の部品 `src/components/FitText.tsx` で出す。
+  - 書き方：見出しの要素はそのままにし、中身を `<h2 className="…"><FitText text={name} /></h2>` にする。大きさ・字体・幅は見出しのCSSが決める（字の大きさは上の `--ds-text-*`）。見出しの幅は、字の長さで決まらないようにする（グリッドの `justify-items: center` の中なら `justify-self: stretch`）。
+  - 改行：文節の間でだけ改行する。文節は BudouX（Googleの日本語の文節モデル。どのブラウザでも同じに動く）で分け、`<wbr>` を入れて `word-break: keep-all` にする。「・」の後でも切れる。括弧（「（…）」「『…』」など）の中では切らない。
+  - 大きさ：ゲームの自動の大きさ合わせ（Unity の TextMeshPro の Auto Size など）にならう。見出しの大きさから80%（`minScale`）まで、1行に入るいちばん大きい字にする。80%でも1行に入らない名前は、見出しの大きさのまま2行にし、2行の長さをそろえる（`text-wrap: balance`）。2行（`maxLines`）にも入らなければ縮める。大きさは1pxずつ測る（`src/components/fit-text.ts` の `fitScale`。単体テストあり）。
+  - 見出しの幅と文字の大きさの設定が変わったとき、Webフォントが届いたときに測り直す。
+  - 使わない所：
+    - 台詞と長い文。台詞は `word-break: auto-phrase`。Chrome だけに効き、iPhone の Safari では効かない。
+    - 1語の札。
+    - 幅が字の長さで決まる所（品物の札 `item-show`、名乗りなど）。
+  - `word-break: auto-phrase` は Chrome にしかなく、CSS の `text-fit` は Chrome だけで試している段階なので、どちらもこの部品の代わりにしない（2026-11）。
 - **物そのものの色**（携帯の本体、手紙の紙、写真の白い縁など）は、そのスタイルシートの頭で一度だけ名前を付けた変数にし（例：`line-stage.css` の `--phone-body`・`--letter-paper`）、名前で使う。
 - **新しく書く所の決まり**：
   - 字の大きさ・行の高さ・色を、数字や色の値で直接書かない。合う段階がないときは、この表に役目を足してから使う。

@@ -180,6 +180,7 @@ import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 import { sceneStageOf, stageLine } from "../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
+import { FitText } from "../components/FitText";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ゲームの設定 shows it (scripts/dist-guard.ts). */
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
@@ -1326,7 +1327,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <section className="paper ending" data-testid="romance-ending">
               <p className="eyebrow">交際開始</p>
-              <h1 tabIndex={-1}>{presentation.ending.titleJa}</h1>
+              <h1 tabIndex={-1}><FitText text={presentation.ending.titleJa} /></h1>
               <p className="ending-names">
                 {game.playerName}
                 <span> & </span>
