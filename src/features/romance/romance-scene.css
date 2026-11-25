@@ -3,16 +3,16 @@
    panel ended the scene where it began): the people and the place show on, softened, behind its words. Its ink keeps
    8:1 or more on the glass over any picture (its 20 % show-through counted at black), its muted ink 4.5:1. */
 :root {
-  --vn-window-bg: rgba(248, 250, 255, 0.8);
-  --vn-window-blur: blur(14px) saturate(1.2);
-  --vn-text: #1d2740;
-  --vn-muted: #47536b;
+  --vn-window-bg: var(--ds-glass-bg);
+  --vn-window-blur: var(--ds-glass-blur);
+  --vn-text: var(--ds-glass-ink);
+  --vn-muted: var(--ds-glass-muted);
   /* The speaker's name band: white words on it (5.5:1). */
   --vn-name-bg: #3d6aa6;
   --vn-name-ink: #fff;
-  --vn-window-radius: 22px;
+  --vn-window-radius: var(--ds-glass-radius);
   /* The glass's edges melt into the scene over this much: no edge line, no shadow. */
-  --vn-feather: 10px;
+  --vn-feather: var(--ds-glass-feather);
   --vn-body-size: 18px;
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
   /* A choice: a warm terracotta press over the scene, set apart from the glass of the words (white words at 4.6:1 or more). */

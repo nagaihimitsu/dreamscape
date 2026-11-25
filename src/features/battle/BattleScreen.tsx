@@ -586,61 +586,67 @@ export function BattleScreen({
           </span>
         </div>}
         {isResult ? (
-          <div className="battle-result" data-testid="battle-result">
-            <p className="eyebrow">結果</p>
+          <div className="battle-result" data-testid="battle-result" data-outcome={outcome}>
+            {/* The outcome over the scene, the rest on a glass card at the foot (2026-11-25 user decision: the result
+                as part of the place, not a sheet over it; battle.css). */}
             <div className="battle-result-heading">
+              <p className="eyebrow">結果</p>
               <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
                 <strong>{active.score}</strong>
                 <span> / {quiz.questions.length} 問正解</span>
               </p>
             </div>
-            <BattleRewards game={game} onClaim={onClaimRewards} />
-            {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
-                mid-card), held there while a long result scrolls above it (battle.css). */}
-            <div className="battle-result-foot">
-              {nextStoryBattle && onNextStoryBattle && (
-                <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
-              )}
-              <div className="battle-result-actions">
+            <div className="battle-result-card">
+              <div className="battle-result-body">
+                <BattleRewards game={game} onClaim={onClaimRewards} />
+              </div>
+              {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
+                  mid-card), held there while a long result scrolls above it (battle.css). */}
+              <div className="battle-result-foot">
                 {nextStoryBattle && onNextStoryBattle && (
-                  <button
-                    className="primary"
-                    data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
-                    onClick={onNextStoryBattle}
-                  >
-                    {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
-                  </button>
+                  <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
                 )}
-                {onEpilogue && (
-                  <button
-                    className="primary"
-                    data-testid="city-epilogue-start"
-                    onClick={onEpilogue}
+                <div className="battle-result-actions">
+                  {nextStoryBattle && onNextStoryBattle && (
+                    <button
+                      className="primary"
+                      data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
+                      onClick={onNextStoryBattle}
+                    >
+                      {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                  {onEpilogue && (
+                    <button
+                      className="primary"
+                      data-testid="city-epilogue-start"
+                      onClick={onEpilogue}
+                    >
+                      エピローグへ進む <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                  {onLeave && <button
+                    className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
+                    onClick={onLeave}
                   >
-                    エピローグへ進む <span aria-hidden="true">→</span>
-                  </button>
-                )}
-                {onLeave && <button
-                  className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
-                  onClick={onLeave}
-                >
-                  {leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む")}{" "}
-                  <span aria-hidden="true">→</span>
-                </button>}
-                {onNextEpisode && (
-                  <button
-                    className="secondary"
-                    data-testid="next-tourism"
-                    onClick={onNextEpisode}
-                  >
-                    {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                    {leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む")}{" "}
                     <span aria-hidden="true">→</span>
-                  </button>
-                )}
-                {onEnglish && <button className="secondary" onClick={() => onEnglish()}>
-                  回答した問題を振り返る
-                </button>}
+                  </button>}
+                  {onNextEpisode && (
+                    <button
+                      className="secondary"
+                      data-testid="next-tourism"
+                      onClick={onNextEpisode}
+                    >
+                      {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                  {onEnglish && <button className="secondary" onClick={() => onEnglish()}>
+                    回答した問題を振り返る
+                  </button>}
+                </div>
               </div>
             </div>
           </div>
