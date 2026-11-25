@@ -9,8 +9,21 @@
   gap: 10px;
   /* Takes stray taps while it shows (a double tap on a destination never reaches the next scene, §3.3 H22). */
   pointer-events: auto;
-  animation: travel-transition-overlay 1.8s ease both;
 }
+/* The ride's dark ground (2026-11-25 user request): the place reached does not show while the party moves. It is dark from
+   the first frame (the scene under it is already the place reached, which must not flash), and only the scene and the map
+   fade in over it. At the end it fades to the place reached, or (.is-held: another ride or the episode's title card comes
+   next, on the same dark) stays, so the screen never brightens between them. */
+.travel-transition::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: #111a2f;
+  animation: travel-transition-dark 1.8s ease both;
+}
+.travel-transition.is-held::before { animation: none; }
+.travel-transition-scene, .travel-ride-map { animation: travel-transition-overlay 1.8s ease both; }
 /* The little scene in the dialogs' frame (UI redesign stage 2.3): a parchment mount with its
    hairline and 16-px corners; the caption is a display-only parchment pill (§2.3). */
 .travel-transition-scene {
@@ -93,9 +106,9 @@
 .travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate-reverse; }
 .travel-transition-arm.is-second { animation-direction: alternate; }
 @keyframes travel-transition-overlay { 0%, 100% { opacity: 0; } 10%, 88% { opacity: 1; } }
+@keyframes travel-transition-dark { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes travel-transition-crossing { 0% { transform: translateX(-105px); } 50% { transform: translateX(0); } 100% { transform: translateX(105px); } }
 @keyframes travel-transition-step { from { transform: rotate(-19deg); } to { transform: rotate(19deg); } }
-@keyframes travel-transition-still { from, to { opacity: 1; } }
 @keyframes travel-scenery-pass { to { transform: translateX(-120px); } }
 /* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its parchment mount; the place left ringed in the
    current place's green, the place reached in the markers' colour, their names in ink with a light halo (about 11:1 on the
@@ -130,9 +143,9 @@
 }
 @keyframes travel-ride-dot { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .travel-transition { animation: travel-transition-still .45s steps(1, end); }
+  .travel-transition::before, .travel-transition-scene, .travel-ride-map,
   .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm, .travel-scenery, .travel-ride-dot { animation: none; }
 }
-.travel-transition.is-reduced { animation: travel-transition-still .45s steps(1, end); }
+.travel-transition.is-reduced::before, .travel-transition.is-reduced .travel-transition-scene, .travel-transition.is-reduced .travel-ride-map,
 .travel-transition.is-reduced .travel-transition-vehicle, .travel-transition.is-reduced .travel-transition-leg, .travel-transition.is-reduced .travel-transition-arm,
 .travel-transition.is-reduced .travel-scenery, .travel-transition.is-reduced .travel-ride-dot { animation: none; }

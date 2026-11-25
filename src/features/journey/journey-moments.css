@@ -29,6 +29,7 @@
   object-fit: cover;
   /* The photo stays recognisable; the title's ground is the dark below (about 12:1 for --ds-on-slate). */
   filter: brightness(0.5);
+  animation: episode-title-photo 2.4s ease both;
 }
 .episode-title-card::after {
   content: "";
@@ -59,14 +60,17 @@
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
-@keyframes episode-title-card { 0% { opacity: 0; } 12%, 84% { opacity: 1; } 100% { opacity: 0; } }
+/* Dark from its first frame (2026-11-25 user request: the scene under it, or a ride's dark ground before it, never flashes
+   bright): the photo and the title come in over the dark, and only once the title has shown does the card fade to the scene. */
+@keyframes episode-title-card { 0%, 84% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes episode-title-photo { 0% { opacity: 0; } 12%, 100% { opacity: 1; } }
 @keyframes episode-title-text {
   0%, 10% { opacity: 0; transform: translateY(12px); }
   34%, 100% { opacity: 1; transform: none; }
 }
-.episode-title-card.is-reduced, .episode-title-card.is-reduced .episode-title-text { animation: none; }
+.episode-title-card.is-reduced, .episode-title-card.is-reduced .episode-title-photo, .episode-title-card.is-reduced .episode-title-text { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .episode-title-card, .episode-title-text { animation: none; }
+  .episode-title-card, .episode-title-photo, .episode-title-text { animation: none; }
 }
 
 /* ── 前回までのあらすじ ── a card of the glass (2026-11-25: every screen in the one immersive look) at the top of free time

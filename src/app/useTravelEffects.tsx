@@ -180,8 +180,13 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
     if (!rest.length) pending.current = false;
   }
   const current = queue[0];
-  const effects = <>
-    {current?.kind === "move" && <TravelTransition key={`${queue.length}:${current.mode.id}`} mode={current.mode} route={current.route} reduceMotion={reduceMotion} onEnd={done} />}
+  /**
+   * The effect on screen. `darkAfter`: what waits for the effects is dark from its first frame (the episode's title card):
+   * a ride before it, as before another ride, keeps its dark ground to the end (TravelTransition's `held`).
+   */
+  const effects = (darkAfter: boolean) => <>
+    {current?.kind === "move" && <TravelTransition key={`${queue.length}:${current.mode.id}`} mode={current.mode} route={current.route}
+      held={queue[1] ? queue[1].kind === "move" : darkAfter} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night" && <TimePassage key={`${queue.length}:night`} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "day_end" && <NightRest key={`${queue.length}:day_end`} cityId={current.cityId} recap={current.recap} line={current.line} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night_left" && <NightLeaving key={`${queue.length}:night_left`} cityId={current.cityId} buttons={current.buttons} recap={current.recap} word={current.word} reduceMotion={reduceMotion} onEnd={done} />}

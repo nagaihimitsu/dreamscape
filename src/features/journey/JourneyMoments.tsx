@@ -17,7 +17,7 @@ import { FitText } from "../../components/FitText";
 // the title card as an episode begins, the stamp as it ends (2026-11-13), the recap of a resumed game, the packing as the party
 // leaves a city, the credit roll at the end of a journey. None of them changes the game or shows a relationship value.
 
-/** How long the title card shows (ms): it fades in, holds and fades to the scene. Reduced motion: still, a little shorter. */
+/** How long the title card shows (ms): dark at once, its photo and title come in, it holds and fades to the scene. Reduced motion: still, a little shorter. */
 const TITLE_MS = 2400;
 const TITLE_REDUCED_MS = 1800;
 /** The chapter's stamp (ms): it drops on and lands (its sound then), holds about a second and fades; journey-moments.css's timeline matches. */
