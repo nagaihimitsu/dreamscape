@@ -200,11 +200,14 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 8px;
-  border: 1px solid var(--ds-parchment-line);
+  /* A pane of the glass over the scene (2026-11-25: every screen in the one immersive look); its colours: styles.css, the glass surfaces. */
+  border: 0;
   border-radius: 16px;
-  background: var(--ds-parchment);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-glass-shadow);
   animation: hud-menu-in var(--motion-fast) var(--ease-out);
 }
 .hud-menu-panel[hidden] { display: none; }

@@ -23,9 +23,12 @@
   margin: 0;
   padding: 5px 14px 5px 6px;
   border-radius: 16px;
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
+  /* On the glass, as the header's panels (2026-11-25). */
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  color: var(--ds-glass-ink);
+  box-shadow: var(--ds-glass-shadow);
   font-size: 14px;
   line-height: 1.5;
   overflow-wrap: anywhere;

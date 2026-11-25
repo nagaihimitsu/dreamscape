@@ -69,17 +69,20 @@
   .episode-title-card, .episode-title-text { animation: none; }
 }
 
-/* ── 前回までのあらすじ ── a parchment card at the top of free time or the night screen, in the page's flow as the notices are. */
+/* ── 前回までのあらすじ ── a card of the glass (2026-11-25: every screen in the one immersive look) at the top of free time
+   or the night screen, over the place, in the page's flow as the notices are (its colours: styles.css, the glass surfaces). */
 .resume-recap {
   width: calc(100% - 16px);
   max-width: 680px;
   margin: 8px auto;
   padding: 10px 12px 12px;
-  border: 1px solid var(--ds-parchment-line);
+  border: 0;
   border-radius: 14px;
-  background: var(--ds-parchment);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-glass-shadow);
   animation: resume-recap-in var(--motion-fast) var(--ease-out);
 }
 @keyframes resume-recap-in { from { opacity: 0; transform: translateY(-6px); } }

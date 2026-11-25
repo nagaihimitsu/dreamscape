@@ -42,7 +42,7 @@ dialog.modal.credits-modal {
 .credits-licences pre {
   margin: 0 0 10px;
   padding: 8px;
-  background: #fffaf1;
+  background: var(--ds-field);
   border-radius: 8px;
   font-size: 11px;
   line-height: 1.5;
