@@ -18,7 +18,7 @@ INCLUDE modules.ink
 # speaker: narrator
 赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
 # speaker: narrator
-# photo: gt_album_a05 # photo_caption: 門のアーチからはみ出していく白 # photo_show: large
+# photo: gt_album_a008 # photo_caption: 門のアーチからはみ出していく白 # photo_show: large
 # term: gt_term_makrana_marble
 一歩進むごとに、白がアーチからはみ出していく。最後の一歩で、全体が現れた。
 # speaker: heroine
@@ -28,12 +28,14 @@ INCLUDE modules.ink
 ……あ
 # speaker: narrator
 # emotion: surprised
+# photo: gt_album_a009 # photo_caption: 「……あ」と立ち尽くす
 {heroine_name}は足を止めたまま、しばらく何も言わなかった。
 # speaker: heroine
 # emotion: neutral
 # voice: gt_agra_taj_mahal_guide_003
 写真と、同じ形なのに。全然、同じじゃない。……大きいのに、浮いてるみたい
 # speaker: narrator
+# photo: gt_album_a010 # photo_caption: 水路に揺れる逆さのタージ
 まっすぐな水路が、建物まで続いている。水面に、もう一つのタージが逆さに揺れていた。
 # speaker: narrator
 # term: gt_term_diana_bench
@@ -41,6 +43,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,question
 # voice: gt_agra_taj_mahal_guide_004
+# photo: gt_album_a011 # photo_caption: 二人組ばかりのベンチの列
 あのベンチ、写真でよく見るやつだ。みんな、あそこで撮るんだね。……並んでる人、ほとんど二人組
 # speaker: narrator
 列の脇で、胸ポケットを何度も押さえている青年が、きょろきょろと誰かを探していた。
@@ -227,6 +230,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,shy,blush
 # voice: gt_agra_main_taj_mahal_007
+# photo: gt_album_a019 # photo_caption: 「ふりで、だけど」
 ……ねえ。わたしたち、世界で一番ロマンチックなベンチに座っちゃったね。ふりで、だけど
 -> END
 
@@ -277,6 +281,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_finale_002
+# photo: gt_album_a133 # photo_caption: 結んだ唇、カムラの言葉
 ……アンワルさん。その、職人の手を切ったっていう話。本当なんですか
 # speaker: narrator
 観客が、一斉にこちらを振り向いた。アンワルの笑顔は崩れない。
@@ -320,6 +325,7 @@ INCLUDE modules.ink
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
 # speaker: heroine
+# voice: gt_agra_finale_battle_003
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
 # term: gt_term_tavernier
@@ -329,6 +335,7 @@ INCLUDE modules.ink
 -> gt_agra_finale_battle_claim ->
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_finale_battle_004
 昔の人が書いたことと、この岸から出てきたもの。手帳で、並べてみます
 - (stop)
 -> reasoning ->
@@ -338,8 +345,10 @@ INCLUDE modules.ink
     -> stop
 }
 # speaker: heroine
+# voice: gt_agra_finale_battle_005
 タヴェルニエさんの記録は、川の向こうに自分の墓を建て始めた、とだけ書いてるんです。黒いとは、一言も書いてない
 # speaker: heroine
+# voice: gt_agra_finale_battle_006
 それに、この岸を何年もかけて掘った人たちがいます
 # speaker: narrator
 アンワルの杖が、土の上で止まった。
@@ -364,6 +373,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_anwar_008
 皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう。あなたの本当の話で、この人たちを泣かせてみなさい
 # speaker: narrator
+# photo: gt_album_a136 # photo_caption: 五十人の目の前へ
 観客が、拍手で彼女を前へ押し出した。逃げ場はない。五十人の目が、こちらを見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
@@ -433,7 +443,7 @@ INCLUDE modules.ink
 {heroine_name}は観客に向き直った。耳が熱い。それでも、声は最初より通っていた。
 # speaker: heroine
 # reaction: heroine,shy,blush
-# photo: gt_album_a66 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
+# photo: gt_album_a138 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
 # voice: gt_agra_finale_012
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator

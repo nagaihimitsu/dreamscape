@@ -8,6 +8,7 @@ import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import { LivePortrait } from "./LivePortrait";
 import { useWornCostume } from "./worn-costume";
+import { faceAt, zoomedPlacement } from "./figure-zoom";
 import "./character-portrait.css";
 
 const characters = catalog.characters;
@@ -54,16 +55,20 @@ export function CharacterPortrait({
   const liveState = live && live.key === liveKey ? live.state : null;
   if (!character) return null;
   const placement = characterPlacement(character, selection);
+  const eyes = faceAt(characterFaceFrame(character, selection), character.figureScale);
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} data-live={liveState ?? undefined}
       aria-hidden="true" style={{
-      left: `${placement.x}%`, bottom: `${placement.bottom}%`, width: `${placement.width}%`, height: `${placement.height}%`,
+      // Its box under the scene's camera (figure-zoom.ts): the placement as it is where the scene sets no --vn-zoom.
+      ...zoomedPlacement(placement, eyes),
       transform: `translateX(-50%) scale(${placement.scale})`, transformOrigin: `${placement.originX}% ${placement.originY}%`,
+      // Where its eyes lie down its picture, for the layouts that place the box themselves (encounter.css).
+      "--face-at": eyes,
       // The character's own size (characters.json figureScale): its picture, not its box (character-portrait.css).
-      ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } as CSSProperties : {}),
-    }}>
+      ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } : {}),
+    } as CSSProperties}>
       <CharacterImage
         path={image}
         neutralPath={neutral}

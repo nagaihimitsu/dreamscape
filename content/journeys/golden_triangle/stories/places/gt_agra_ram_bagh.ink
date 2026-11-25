@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # on_done: money -80
 # background: gt_bg_agra_ram_bagh
 # speaker: narrator
+# photo: gt_album_a086 # photo_caption: 最初の皇帝の、静かな庭
 ラーム・バーグには、ほとんど人がいなかった。一段高い石の通路が庭を四つに分け、水のない水路が、川の方へまっすぐ下りていく。木の上で、緑のインコが騒いでいた。
 # term: gt_term_babur
 インドでいちばん古いムガル庭園の一つで、帝国を開いたバーブルが造らせたと伝えられている。
@@ -31,6 +32,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: surprised_big
 # voice: gt_agra_date_ram_bagh_002
+# photo: gt_album_a087 # photo_caption: 「全部、文句！？」
 全部、文句！？　国を手に入れた人が書く文章じゃない
 # speaker: narrator
 カーブルから届いたメロンを切って、泣いたという話も残っている。亡骸は一度この庭に葬られ、のちにカーブルへ運ばれた。
@@ -56,6 +58,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: worried
 # voice: gt_agra_date_ram_bagh_007
+# photo: gt_album_a089 # photo_caption: 鮭のおにぎりの夢
 実はね、昨日の夜、コンビニのおにぎりの夢を見たの。鮭の。包装、ちゃんと三か所はがすところまで、夢に出てきた
 # speaker: heroine
 # voice: gt_agra_date_ram_bagh_008
@@ -206,6 +209,7 @@ INCLUDE modules.ink
 マギーは、日本のどのインスタント麺にも似ていなかった。香辛料が強くて、少しだけ甘い。
 # speaker: heroine
 # voice: gt_agra_date_ram_bagh_028
+# photo: gt_album_a093 # photo_caption: 日本の味じゃないのに、懐かしい
 全然、日本の味じゃないのに、なんでだろう。ちょっと、懐かしい
 # speaker: heroine
 # emotion: smile

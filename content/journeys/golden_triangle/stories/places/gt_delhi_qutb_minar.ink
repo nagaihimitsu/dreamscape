@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_delhi_qutb_minar
 # speaker: narrator
+# photo: gt_album_d015 # photo_caption: 見上げたら帽子がずり落ちた
 クトゥブ・ミナールを見上げた{heroine_name}の帽子が、後ろへずり落ちた。押さえ直しても、顔はまだ空を向いている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
@@ -21,6 +22,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,dizzy
 # voice: gt_delhi_qutb_minar_guide_002
+# photo: gt_album_d016 # photo_caption: 「背の高いものって、ずるいね」
 首が痛い。背の高いものって、ずるいね。目を全部持っていく
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 2
@@ -38,6 +40,7 @@ INCLUDE modules.ink
 『もう抱けない』ってことは、昔は抱けたんだ。……カムラさん、抱いたことあるのかな。誰かと一緒に
 # speaker: narrator
 # emotion: smile
+# photo: gt_album_d017 # photo_caption: 鉄の柱と、メモの二行目
 想像したらしく、彼女は一人で小さく笑った。それから、柵の前で何かを測るように手を動かしている男の人に気づいて、首をかしげた。
 # speaker: heroine
 # reaction: heroine,worried,question
@@ -155,6 +158,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_qutb_minar_006
 抱く代わりになるもの、何か……
 # speaker: narrator
+# photo: gt_album_d020 # photo_caption: 案内板の小さな文字を指でたどる
 {heroine_name}は案内板の前へ回り込んだ。小さな文字を、指でたどる。この柱が、どこから来たのか。
 -> quiz(3) ->
 # background: gt_bg_delhi_qutb_minar
@@ -211,6 +215,7 @@ INCLUDE modules.ink
 止めたのに、叱られた……
 # speaker: narrator
 # leave: enemy
+# photo: gt_album_d022 # photo_caption: 止めたのに、叱られた
 男の背中が人混みに消える。{heroine_name}は自分の手のひらを見た。肩紐の重さが、まだ残っている。
 # speaker: heroine
 # voice: gt_delhi_main_qutb_minar_010

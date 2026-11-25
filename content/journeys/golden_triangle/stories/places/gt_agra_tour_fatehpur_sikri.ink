@@ -107,6 +107,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_agra_tour_out_leg_002
+# photo: gt_album_a045 # photo_caption: HORN OK PLEASE
 ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？　どういう意味なんだろう。あ、あっちのトラックにも書いてある
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_002
@@ -271,6 +272,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
 # voice: gt_agra_tour_mathri_001
+# photo: gt_album_a059 # photo_caption: しょっぱいマトリー
 あ、しょっぱい！　甘いクッキーだと思ってた
 # speaker: heroine
 # emotion: happy
@@ -331,6 +333,7 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_back_leg_vinod_001
 一度だけ。学校の遠足で。あとは、ずっと外です。外にも、見るものはあります
 # speaker: narrator
+# photo: gt_album_a061 # photo_caption: 屋上から突き出た鉄の棒
 # term: gt_term_rebar_roof
 道沿いの家の屋上から、鉄の棒が何本も突き出していた。どの家も、まだ上に何かを建てるつもりのように見える。
 { cond("battle gt_agra_main_fatehpur_sikri_battle"):
@@ -370,6 +373,7 @@ INCLUDE modules.ink
     頭が、こちらの肩に、こつんと落ちた。
 - else:
     # speaker: narrator
+    # photo: gt_album_a063 # photo_caption: 窓ガラスに、こつん
     頭が、窓ガラスに、こつんと当たった。
 }
 -> END

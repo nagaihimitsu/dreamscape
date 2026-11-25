@@ -19,6 +19,7 @@ INCLUDE modules.ink
 # term: gt_term_shah_jahan
 眠っているのは、アフザル・ハーン・シーラーズィー。学者で詩人で、シャー・ジャハーンの宰相を務めた人だ。
 # speaker: narrator
+# photo: gt_album_a094 # photo_caption: 島のように残るタイルの色
 壁は一面、色とりどりの釉薬のタイルで覆われていたという。今はほとんど剥がれ落ちて、青と緑と黄色が、島のように残っている。
 # speaker: heroine
 # voice: gt_agra_date_chini_rauza_001
@@ -105,7 +106,7 @@ INCLUDE modules.ink
 # voice: gt_agra_date_chini_rauza_jagdeep_007
 よし。次が本番の構図だ。膝をついて、これを差し出す
 # speaker: narrator
-# photo: gt_album_a47 # photo_caption: 空っぽの指輪の箱、膝をつく代役
+# photo: gt_album_a097 # photo_caption: 空っぽの指輪の箱、膝をつく代役
 # stand: near
 # emotion: shy
 渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
@@ -232,6 +233,7 @@ INCLUDE modules.ink
 -> gt_agra_chini_rauza_test_shot ->
 # speaker: narrator
 # leave: gt_jagdeep
+# photo: gt_album_a102 # photo_caption: 落ちなかった青いタイル
 帰りぎわ、彼女は墓廟の壁に残った青いタイルの前で立ち止まった。四百年近く、雨と日差しを受けて、それでも落ちなかった一枚。
 # speaker: heroine
 # voice: gt_agra_date_chini_rauza_018

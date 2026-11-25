@@ -24,6 +24,7 @@ INCLUDE modules.ink
 # bgm: immersed
 # speaker: narrator
 宿の屋上からは、タージのドームが見えた。夜の中で、そこだけが白く、薄く光っている。
+# photo: gt_album_a123 # photo_caption: タージに背を向けて座る
 彼女は手すりの前まで行きかけて、くるりと向きを変えた。ドームに背を向けて、反対側の、洗濯物と貯水タンクしかない方の縁に腰を下ろす。
 # speaker: heroine
 # voice: gt_agra_date_confession_001
@@ -68,7 +69,7 @@ INCLUDE modules.ink
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
-    # photo: gt_album_a59 # photo_caption: タージに背を向けた告白
+    # photo: gt_album_a125 # photo_caption: タージに背を向けた告白
     # voice: gt_agra_date_confession_005
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
@@ -85,6 +86,7 @@ INCLUDE modules.ink
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
     # emotion: serious
+    # photo: gt_album_a126 # photo_caption: 背中に隠れたドーム
     彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
     # speaker: heroine
     # emotion: smile
@@ -121,27 +123,35 @@ INCLUDE modules.ink
     彼女は、まばたきを二回した。それから、縁に置いていた手を、膝の上に戻した。
     # speaker: heroine
     # reaction: heroine,teasing,sweat
+    # voice: gt_agra_date_confession_021
     わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_022
     話したいことは、あるの。あるんだけど。……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
     # speaker: narrator
     物干しの綱で、シャツが一枚、風にあおられて裏返った。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_023
     今夜は、やめておく。カムラさんに、言いたいことは言いなさいって言われたのにね
     # speaker: heroine
+    # voice: gt_agra_date_confession_024
     ……でも、ちゃんと言える日が来たら、自分で言う。それは、約束
 - else:
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_agra_date_confession_025
     わたしの話？　……てっきり、そっちが何か言うのかと思った
     # speaker: narrator
     彼女は少し考えてから、背中の方のドームを、親指で指した。
     # speaker: heroine
+    # voice: gt_agra_date_confession_026
+    # photo: gt_album_a128 # photo_caption: 白鳥と寝る話
     じゃあ、白鳥の話。サミールさんの白鳥、まだ部屋にいるの。毎晩、首でハートを作ったまま、こっちを見てる
     # speaker: heroine
     # reaction: heroine,teasing,sweat
+    # voice: gt_agra_date_confession_027
     片付けてくださいって、言えばいいだけなのにね。言えないまま、今夜も白鳥と寝るの。……笑っていいよ
     # speaker: narrator
     笑うと、彼女もつられて笑った。言いかけたことは、ドームの見えない側の夜に、そのまま置いてきた。
@@ -155,24 +165,32 @@ INCLUDE modules.ink
     彼女は、こちらの顔を少しのあいだ見ていた。それから、ふっと肩の力を抜いた。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_028
     ……うん。気持ちいいね。昼間あんなに暑かったのが、うそみたい
     # speaker: heroine
     # reaction: heroine,teasing
+    # voice: gt_agra_date_confession_029
     言いかけてた顔、まだしてるけど。……いいよ、今夜は風の話で。わたしの話も、また今度にする
     # speaker: heroine
+    # voice: gt_agra_date_confession_030
     今夜は、二人とも言いそびれた夜ってことで
     # speaker: narrator
+    # photo: gt_album_a129 # photo_caption: 二人とも言いそびれた夜
     洗濯物が、風にふくらんで、またしぼんだ。二人とも、それ以上は何も言わなかった。
 - else:
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_agra_date_confession_031
     うん。……え、それだけ？　すごく改まった顔してたのに
     # speaker: narrator
+    # photo: gt_album_a129 # photo_caption: 二人とも言いそびれた夜
     彼女は、くすっと笑って、膝を抱えた。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_date_confession_032
     夜風の話をするのに、そんなに覚悟がいるんだ。ふふ。……でも、分かる。ここ、いい風
     # speaker: heroine
+    # voice: gt_agra_date_confession_033
     タージの方から吹いてるのかな。……ううん、向こうを向くと落ち着かないから、確かめない
     # speaker: narrator
     言うはずだった言葉は、喉の奥で、もう一度眠った。
@@ -232,6 +250,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,shy,blush
         # voice: gt_agra_confession_lead_008
+        # photo: gt_album_a124 # photo_caption: 背中の字は『まだいたい』
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
     - cond("date gt_delhi_date_lotus_temple"):
         // ほかの答えの人：あの場面では読めなかった字を、ここで初めて明かす（2026-11-16）。
@@ -245,6 +264,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,shy,blush
         # voice: gt_agra_confession_lead_015
+        # photo: gt_album_a124 # photo_caption: 背中の字は『まだいたい』
         書いたときは、声に出す勇気がなかったの。……はい、言った。じゃあ、次はそっちの番
     }
 - else:
@@ -281,6 +301,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
+# photo: gt_album_a130 # photo_caption: チャイが冷めるまで
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が二本、タージのドームの方へ流れていく。
 # speaker: heroine
 # voice: gt_agra_date_reassurance_001

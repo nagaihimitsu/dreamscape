@@ -27,6 +27,7 @@ import { DialogueControls, DialogueWindowHead } from "../../components/DialogueC
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
+import { useEstablishingShot } from "../../components/useEstablishingShot";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { SceneHeading } from "../../components/SceneHeading";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
@@ -180,8 +181,9 @@ export function RomanceScene({
     lineId: frame.text ? readLineId(active.dateId, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
+  const establishing = useEstablishingShot(active.dateId, game.revision);
   return (
-    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} data-quiet={frame.quiet} {...sceneTap.props}>
+    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} data-quiet={frame.quiet} data-establishing={establishing || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">
         <CanalScene backgroundId={frame.background} />
         <SceneTint color={sceneTimeTint(game.travel.minute, frame.tint === "off")} />
@@ -242,14 +244,15 @@ export function RomanceScene({
             {exitingChoice}
           </div>
         )}
-        <DialogueWindowHead
-          narration={narration}
-          remembered={remembered}
-          cutIn={nameCut}
-          speaker={showsSpeakerPlate(frame) && speaker}
-          controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
-        />
-        <div ref={dialogueRef} className="vn-window-body">
+        <div className="vn-window">
+          <DialogueWindowHead
+            narration={narration}
+            remembered={remembered}
+            cutIn={nameCut}
+            speaker={showsSpeakerPlate(frame) && speaker}
+            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+          />
+          <div ref={dialogueRef} className="vn-window-body">
             <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
               <DialogueText
                 key={game.revision}
@@ -265,13 +268,26 @@ export function RomanceScene({
                 onAdvance={advance}
               />
             </LineStage>
-            {frame.choices.length ? (
-              // A line's # minigame: plays instead of the choices; its outcome takes its choice (ChoicePoint).
-              <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-                // Her face on the line (it follows her reactions while the game plays), never a fixed one.
-                heroine: { emotion, sceneId: active.dateId, cityId: game.currentCityId },
-                ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
-              }}>
+            {!frame.choices.length && frame.ended ? (
+              // The scene's last step in the right-aligned 「… →」 of every scene's end (2026-11-14, the phone UI audit).
+              <button disabled={!ready} className="next" data-testid="date-finish" onClick={advance}>
+                {date?.kind === "normal"
+                  ? "デートを終える"
+                  : "この時間を終える"}{" "}
+                <span aria-hidden="true">→</span>
+              </button>
+            ) : null}
+          </div>
+        </div>
+        {/* The replies float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
+        {frame.choices.length ? (
+          <div className="vn-choices">
+            {/* A line's # minigame: plays instead of the choices; its outcome takes its choice (ChoicePoint). */}
+            <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+              // Her face on the line (it follows her reactions while the game plays), never a fixed one.
+              heroine: { emotion, sceneId: active.dateId, cityId: game.currentCityId },
+              ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
+            }}>
               <div className="choices">
                 {/* No 「返答を選んでください」 under it (2026-11-11, the user's decision): the replies coming in one after another say it. */}
                 <p className="choice-hint">あなたは、どう返す？</p>
@@ -290,17 +306,9 @@ export function RomanceScene({
                   </button>
                 ))}
               </div>
-              </ChoicePoint>
-            ) : frame.ended ? (
-              // The scene's last step in the right-aligned 「… →」 of every scene's end (2026-11-14, the phone UI audit).
-              <button disabled={!ready} className="next" data-testid="date-finish" onClick={advance}>
-                {date?.kind === "normal"
-                  ? "デートを終える"
-                  : "この時間を終える"}{" "}
-                <span aria-hidden="true">→</span>
-              </button>
-            ) : null}
-        </div>
+            </ChoicePoint>
+          </div>
+        ) : null}
       </section>
       <DialogueWindowRestore state={windowVisibility} />
       <MiniGameSlot />

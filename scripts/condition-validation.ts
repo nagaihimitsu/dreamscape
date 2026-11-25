@@ -329,12 +329,17 @@ function cyclicDateWarnings(content: ConditionContent): ConditionWarning[] {
     message: `Date never offered: ${date.id} waits (datePlayed) for dates that wait for it in turn` }));
 }
 
-/** Time, rides and money change on the way to a date: the map lists the date by the state before the trip, the start re-checks it on arrival. */
+/**
+ * Time, rides and money change on the way to a date: the map lists the date by the state before the trip, and the date
+ * it sets out for starts on arrival without reading it again (its occasion decides it; game.ts startDate `decided`).
+ * Checked 2026-11-23: a day-only date left for just before 18:00 started in the evening.
+ */
 function dateTripWarnings(content: ConditionContent): ConditionWarning[] {
   return dateConditionOwners(content).flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
     conditionLeaves(condition).some((leaf) => "time" in leaf || "rides" in leaf || "money" in leaf)
-      ? [{ kind: "date-condition-trip", message: `Date condition read before and after the trip: ${owner.label} (${field}) reads time, rides or money, ` +
-        `which the trip to the date changes; the map may offer the date and the start refuse it on arrival (prefer the place's opening windows)` }]
+      ? [{ kind: "date-condition-trip", message: `Date condition read before the trip only: ${owner.label} (${field}) reads time, rides or money, ` +
+        `which the trip to the date changes; the map reads it before leaving and the date starts on arrival without reading it again, so it may ` +
+        `start when it no longer holds (limit the time with the event's startWindows/endWindows or the place's opening windows)` }]
       : []));
 }
 

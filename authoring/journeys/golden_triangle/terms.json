@@ -15,7 +15,7 @@
     {
       "preferred": "相手",
       "avoid": ["敵"],
-      "allow": ["素敵", "無敵", "匹敵", "不敵", "敵わ", "敵う"],
+      "allow": ["素敵", "無敵", "匹敵", "不敵", "敵わ", "敵う", "敵同士"],
       "reasonJa": "クイズの人は「相手」と呼ぶ。2026-11-11 のユーザー判断。AGENTS.md「文章と言語」"
     },
     {
@@ -27,6 +27,11 @@
       "preferred": "ナハルガル城",
       "avoid": ["ナハルガル砦"],
       "reasonJa": "2026-11-15 に、遊ぶ人に見える nameJa の表記にそろえた。authoring/RESEARCH_PITFALLS.md 4.1"
+    },
+    {
+      "preferred": "ジャイガル城",
+      "avoid": ["ジャイガル砦"],
+      "reasonJa": "2026-11-23 に、遊ぶ人に見える nameJa（地図・デートの題）の表記にそろえた。authoring/RESEARCH_PITFALLS.md 4.1"
     },
     {
       "preferred": "ナハル",

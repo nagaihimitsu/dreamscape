@@ -1,4 +1,4 @@
-/* A name plate (NameCutInPlate, `# cutin: name`): on the slate of the dialogue window, centred just above its head,
+/* A name plate (NameCutInPlate, `# cutin: name`): on the glass of the dialogue window (2026-11-25), centred just above its head,
    over the scene (the characters' bodies, not their faces). It is laid over the scene (no reflow), takes no taps and
    goes at once; it comes in with a short rise, none under reduced motion. */
 .name-cutin {
@@ -8,25 +8,26 @@
   translate: -50% 0;
   width: min(calc(100% - 32px), 380px);
   padding: 8px 18px 10px;
-  border: 1px solid var(--ds-gold-hairline);
   border-radius: 14px;
-  background: var(--ds-window-bg);
-  color: var(--ds-on-slate);
-  box-shadow: var(--ds-window-shadow);
+  background: var(--vn-window-bg);
+  -webkit-backdrop-filter: var(--vn-window-blur);
+  backdrop-filter: var(--vn-window-blur);
+  color: var(--vn-text);
+  box-shadow: 0 2px 12px rgba(20, 28, 48, 0.22);
   text-align: center;
   pointer-events: none;
   animation: name-cutin-in var(--motion-medium) var(--ease-out);
 }
 .name-cutin p { margin: 0; overflow-wrap: anywhere; }
 .name-cutin .name-cutin-title {
-  color: var(--ds-on-slate-muted);
+  color: var(--vn-muted);
   font-size: 12px;
   line-height: 1.6;
   letter-spacing: 0.06em;
 }
 /* The name in the headings' type, as the battle opponent's heading shows it. */
 .name-cutin .name-cutin-name {
-  color: var(--ds-on-slate);
+  color: var(--vn-text);
   font-family: "Noto Serif JP", serif;
   font-size: 22px;
   font-weight: 500;

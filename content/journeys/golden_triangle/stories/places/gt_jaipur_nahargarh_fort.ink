@@ -15,6 +15,7 @@ INCLUDE modules.ink
 # hint: ジャイプールの観光を一つ終えてから
 # background: gt_bg_jaipur_nahargarh_fort
 # speaker: narrator
+# photo: gt_album_j073 # photo_caption: 碁盤の目の旧市街
 ナハルガル城は、ジャイプールの町を見下ろす尾根の上にあった。城壁の端に立つと、桃色の旧市街が、碁盤の目のまま足もとに広がっている。
 # term: gt_term_nahar_singh_bhomia
 砦の名には、言い伝えがある。この地には、ナハル・シン・ボーミヤーという人の霊がいて、砦の工事を邪魔したのだという。砦の中に彼のための祠を建てると霊は鎮まり、砦は彼の名で呼ばれるようになった。
@@ -27,6 +28,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_date_nahargarh_fort_002
+# photo: gt_album_j074 # photo_caption: 同じ部屋が、ずらっと
 同じ部屋が、ずらっと……。どこにいるのか、すぐ分からなくなりそう
 # speaker: narrator
 部屋どうしは廊下でつながっていて、王はそこを通って、ほかの王妃に知られずに、誰の部屋にでも行けた、と伝えられている。
@@ -36,6 +38,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: teasing
 # voice: gt_jaipur_date_nahargarh_fort_003
+# photo: gt_album_j075 # photo_caption: 「かくれんぼしよう」
 ねえ、かくれんぼしよう。わたしが隠れる。百数えたら、探しに来て。ちゃんと数えてね
 # speaker: narrator
 # se: footsteps_run
@@ -58,10 +61,10 @@ INCLUDE modules.ink
         # speaker: narrator
         名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。どこから自分の声が戻ってくるのかも分からない。
         # stand: close
+        # photo: gt_album_j076 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
         三回目に呼んだとき、笑い声のしていた扉が開いて、彼女が駆け寄ってきた。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
         # voice: gt_jaipur_date_nahargarh_fort_005
         ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方
     }
@@ -79,6 +82,7 @@ INCLUDE modules.ink
     - else:
         # speaker: narrator
         # se: door_creak
+        # photo: gt_album_j077 # photo_caption: 壁の絵の前で、振り向く
         扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁の絵を見ていた彼女が、振り向いた。
         # speaker: heroine
         # reaction: heroine,surprised,blush
@@ -107,6 +111,7 @@ INCLUDE modules.ink
     - else:
         # speaker: narrator
         # se: door_creak
+        # photo: gt_album_j078 # photo_caption: 息を止めて立っていた
         扉を開けると、もう、そこに彼女がいた。壁の絵の前で、息を止めて立っている。
         # speaker: heroine
         # reaction: heroine,surprised_big,interrobang
@@ -127,6 +132,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: narrator
         # stand: apart
+        # photo: gt_album_j079 # photo_caption: 廊下の角から、そっと
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。
         # speaker: heroine
         # emotion: worried
@@ -135,6 +141,7 @@ INCLUDE modules.ink
     - else:
         # speaker: narrator
         # stand: apart
+        # photo: gt_album_j079 # photo_caption: 廊下の角から、そっと
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。ちょっと不満そうな顔だった。
         # speaker: heroine
         # emotion: exasperated
@@ -207,5 +214,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_jaipur_date_nahargarh_fort_020
+# photo: gt_album_j081 # photo_caption: 屋上から、町の全部
 あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
 -> END

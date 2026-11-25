@@ -28,6 +28,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_jaipur_city_palace_guide_003
+# photo: gt_album_j033 # photo_caption: 銀の壺は、お風呂？
 なに、これ……！　お風呂？　……じゃないよね。何を入れるための壺なんだろう
 # speaker: narrator
 壺の陰で、サリー姿の女性と青年が、何やら言い合いをしていた。青年の手には、小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
@@ -204,6 +205,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_jaipur_main_city_palace_009
+# photo: gt_album_j039 # photo_caption: 審判の報酬、ライムの漬物
 あ、ありがとうございます。……わたしにも、重量制限が……
 # speaker: enemy
 # voice: gt_jaipur_main_city_palace_battle_sushma_018

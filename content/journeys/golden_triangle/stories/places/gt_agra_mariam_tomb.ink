@@ -48,6 +48,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_date_mariam_tomb_003
+# photo: gt_album_a081 # photo_caption: 「自分が違う名前で呼ばれるようになったら」
 ねえ。もし死んだ後で、自分が違う名前で呼ばれるようになって、みんながそっちの名前で覚えちゃったら、どうする？
 * [「訂正して回る」 # option: correct_everyone]
     # profile: honest
@@ -218,6 +219,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # emotion: smile
         # voice: gt_agra_date_mariam_tomb_022
+        # photo: gt_album_a085 # photo_caption: 「名前で。今みたいに」
         名前で。今みたいに。それで十分。ちゃんと、わたしの名前だから
     }
 - -> END

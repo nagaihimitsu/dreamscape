@@ -201,7 +201,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
-        <p className="hud-plate" data-testid="journey-context">
+        {/* A new place shows its plate again in a talk, where it fades after a while (journey-hud.css). */}
+        <p key={placeJa} className="hud-plate" data-testid="journey-context">
           <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeJa}</span>
           <span className="hud-time">
             <Icon name={getTimePeriod(shownClock.minute) === "day" ? "sun" : "moon"} />

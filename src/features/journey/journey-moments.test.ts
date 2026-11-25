@@ -42,12 +42,14 @@ const RED_FORT = "gt_delhi_main_red_fort";
 const TAJ_MAHAL = "gt_agra_main_taj_mahal";
 /** Delhi's arrival, the Agrasen ki Baoli date (the user's 2026-11-13 case), Delhi's finale battle at the Red Fort. */
 const delhiArrival = indiaPhoto("gt_album_d01", "delhi", "delhi_hotel_hub", "gt_delhi_hotel_hub.gt_delhi_arrival", "路地の将軍カムラ");
-const baoliDate = indiaPhoto("gt_album_d55", "delhi", "delhi_agrasen_baoli", "gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli", "鳩が顔の前に、本物の悲鳴");
+const baoliDate = indiaPhoto("gt_album_d078", "delhi", "delhi_agrasen_baoli", "gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli", "鳩が顔の前に、本物の悲鳴");
+/** The Agrasen ki Baoli date's last photo (2026-11-23), at the top of the 108 steps. */
+const baoliDateLast = indiaPhoto("gt_album_d081", "delhi", "delhi_agrasen_baoli", "gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli", "百八段の上で、煩悩一個も減ってない");
 const delhiFinale = indiaPhoto("gt_album_d79", "delhi", "delhi_red_fort", "gt_delhi_red_fort.gt_delhi_finale_battle", "光と音のショー、内謁の間の小さな人影");
 /** The Taj Mahal's guide, Agra's finale battle in the same place file, a date at the Mehtab Bagh; Jaipur's epilogue. */
-const tajGuide = indiaPhoto("gt_album_a05", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_taj_mahal_guide", "門のアーチからはみ出していく白");
-const agraFinale = indiaPhoto("gt_album_a66", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_finale_battle", "「わたしたちのことは、わたしたちで決めます」");
-const mehtabDate = indiaPhoto("gt_album_a32", "agra", "agra_mehtab_bagh", "gt_agra_mehtab_bagh.gt_agra_mehtab_bagh_ball_over_wall", "最後の一球、塀を越えてアウト");
+const tajGuide = indiaPhoto("gt_album_a008", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_taj_mahal_guide", "門のアーチからはみ出していく白");
+const agraFinale = indiaPhoto("gt_album_a138", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_finale_battle", "「わたしたちのことは、わたしたちで決めます」");
+const mehtabDate = indiaPhoto("gt_album_a117", "agra", "agra_mehtab_bagh", "gt_agra_mehtab_bagh.gt_agra_mehtab_bagh_ball_over_wall", "最後の一球、塀を越えてアウト");
 const jaipurEpilogue = indiaPhoto("gt_album_j57", "jaipur", "jaipur_hotel_hub", "gt_jaipur_hotel_hub.gt_jaipur_epilogue", "段ボールの六行目「通りで踊った夜」");
 /** The recap's album picture: the author's illustration with its caption, no credit. */
 const albumPicture = (photo: AlbumPhoto): RecapPicture =>
@@ -165,14 +167,14 @@ describe("the recap of a resumed game", () => {
     }
     expect(state.recapDateId).toBe("gt_delhi_date_agrasen_baoli");
     expect(validateGameState(state)).toEqual(state);
-    // The date is the recap now: its clear title and record (without them, its title and description), its own album photo, her line about the baoli.
+    // The date is the recap now: its clear title and record (without them, its title and description), its own latest album photo, her line about the baoli.
     expect(state.completedEpisodeIds.at(-1)).toBe(JAMA_MASJID);
-    expect(state.album.at(-1)).toMatchObject({ imageId: baoliDate.imageId, storyId: baoliDate.storyId });
+    expect(state.album.at(-1)).toMatchObject({ imageId: baoliDateLast.imageId, storyId: baoliDateLast.storyId });
     const date = dates.find((item) => item.id === "gt_delhi_date_agrasen_baoli")!;
     expect(resumeRecap(state)).toEqual({
       cityJa: "デリー", whenJa: `${state.travel.day}日目 ${formatTravelTime(state.travel.minute)}`,
       chapter: { titleJa: "質問みたいな悲鳴", descriptionJa: date.clearDescriptionJa!.replace("{heroine_name}", "澪") },
-      photo: albumPicture(baoliDate),
+      photo: albumPicture(baoliDateLast),
       heroine: { textJa: place("delhi_agrasen_baoli").recapLinesJa![0], cityId: "delhi" },
     });
     const next = finishEpisode(state, RED_FORT);

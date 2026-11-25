@@ -17,10 +17,12 @@ INCLUDE modules.ink
     # tint: off
     # ambience: amb_night_insects
     # speaker: narrator
+    # photo: gt_album_j056 # photo_caption: 湖に浮かぶ宮殿
     湖の真ん中に、灯りに縁どられた宮殿が浮かんでいた。ジャル・マハル。水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
 - else:
     # background: gt_bg_jaipur_jal_mahal
     # speaker: narrator
+    # photo: gt_album_j056 # photo_caption: 湖に浮かぶ宮殿
     湖の真ん中に、黄土色の宮殿が浮かんでいた。ジャル・マハル。水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
 }
 # speaker: narrator
@@ -129,6 +131,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: exasperated
 # voice: gt_jaipur_date_jal_mahal_012
+# photo: gt_album_j061 # photo_caption: 食べたい。でも、手が使えない
 食べたい。今、いちばん食べたい。でも、手が使えない
 # speaker: narrator
 ファルハーナに代金を払い、屋台で一本買って戻ると、彼女の目が、とうもろこしから離れなくなった。
@@ -147,7 +150,7 @@ INCLUDE modules.ink
     }
     # speaker: narrator
     # emotion: smile
-    # photo: gt_album_j22 # photo_caption: 手が使えない彼女に、焼きとうもろこし
+    # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
     一口かじって、彼女は目を細めた。唐辛子とライムが、あとから追いかけてくる。
 * [わざと少し遠ざける # option: tease_corn]
     # profile: provocative
@@ -158,6 +161,7 @@ INCLUDE modules.ink
         今は本当にやめて。手、動かしたら模様がつぶれちゃう
         # speaker: narrator
         # emotion: exasperated
+        # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
         すぐに差し出すと、彼女はまだ少しむくれたまま、一口かじった。
     - else:
         # speaker: heroine
@@ -166,6 +170,7 @@ INCLUDE modules.ink
         いじわる！　手が乾いたら、覚えてなさいね
         # speaker: narrator
         # emotion: teasing
+        # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
         三回目で、ようやく一口かじらせてもらえた。彼女は、勝った人の顔で、もぐもぐと口を動かした。
     }
 * [自分でおいしそうに食べてみせる # option: eat_corn_myself]
@@ -183,10 +188,12 @@ INCLUDE modules.ink
     }
     # speaker: narrator
     # emotion: exasperated
+    # photo: gt_album_j062 # photo_caption: 手が使えない彼女に、焼きとうもろこし
     残りの半分を差し出すと、彼女は、まだ少しむくれたまま、それをかじった。
 -
 # speaker: narrator
 # leave: gt_farhana
+# photo: gt_album_j064 # photo_caption: 乾きかけた両手で、湖を眺める
 遊歩道のはずれで、二人は湖を眺めた。彼女は、乾きかけた両手を、まだ胸の前に上げている。
 # speaker: heroine
 # voice: gt_jaipur_date_jal_mahal_019

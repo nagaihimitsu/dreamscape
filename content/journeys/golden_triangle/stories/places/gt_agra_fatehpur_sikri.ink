@@ -10,12 +10,14 @@ INCLUDE modules.ink
 # background: gt_bg_agra_fatehpur_sikri
 # weather: dust
 # speaker: narrator
+# photo: gt_album_a049 # photo_caption: 尾根の上に、町が丸ごと
 アーグラから車で一時間ほど。畑の中の道の先、尾根の上に、赤い石の町が丸ごと載っていた。
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
 # voice: gt_agra_fatehpur_sikri_guide_001
 町が、まるごと？　お城じゃなくて、町なの？
 # speaker: narrator
+# photo: gt_album_a050 # photo_caption: 暮らしの音だけが抜けた町
 宮殿、広場、柱廊。どこまでも赤い砂岩。けれど、洗濯物も、呼び込みの声もない。人の暮らしの音だけが、すっぽり抜けている。
 # speaker: heroine
 # emotion: neutral
@@ -27,6 +29,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,dizzy
 # voice: gt_agra_fatehpur_sikri_guide_003
+# photo: gt_album_a051 # photo_caption: 門って、登るものだった
 この階段を、上るの……？　門って、くぐるものじゃなくて、登るものだったんだ
 # speaker: narrator
 # term: gt_term_calligraphy_band
@@ -47,6 +50,7 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_agra_fatehpur_sikri
 # speaker: narrator
+# photo: gt_album_a052 # photo_caption: アーチの真下、文字の帯
 # term: gt_term_buland_darwaza
 # term: gt_term_calligraphy_band
 巨大な門へ続く急な石段を上りきって、{heroine_name}はまだ息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
@@ -184,6 +188,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_main_fatehpur_sikri_009
+# photo: gt_album_a056 # photo_caption: 「橋を渡るな、とは書いてないです」
 い、今のは感想です。決めたわけじゃないです
 # speaker: narrator
 # pause: 900

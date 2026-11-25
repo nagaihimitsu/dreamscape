@@ -6,6 +6,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { battleBackgroundId, battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
+import { useEstablishingShot } from "../../components/useEstablishingShot";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
@@ -431,6 +432,8 @@ export function BattleScreen({
     lineId: isDialogue && frame?.text ? readLineId(battle.id, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
+  // Each part of the battle's talk opens on its establishing shot (the camera comes in with its next line; battle.css).
+  const establishing = useEstablishingShot(`${battle.id}:${active.phase}`, game.revision);
   // A line's `# cutin: name` shows its speaker's name plate over the scene for a moment (NameCutIn): the opponent's
   // heading (role, name, the quote when written), or a person's. An episode's title card over the opening holds it.
   const nameCut = useNameCutIn(isDialogue && frame
@@ -483,6 +486,7 @@ export function BattleScreen({
       data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
+      data-establishing={isDialogue && establishing || undefined}
       data-quiet={staging?.quiet}
       {...sceneTap.props}
     >
@@ -551,6 +555,8 @@ export function BattleScreen({
         </div>
       </div>
       <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} data-remembered={remembered || undefined} aria-hidden={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || coveredByCutIn || undefined}>
+      {/* The talk's window (battle.css): its head and the reading area; a box of its own only in the talk. */}
+      <div className="battle-window">
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
         cutIn={nameCut}
@@ -655,12 +661,6 @@ export function BattleScreen({
                 onAdvance={advanceSafely}
               />
             </LineStage>
-            {choosing && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-              heroine: { emotion: heroineEmotion, sceneId: battle.id, cityId: heroineCityId },
-              ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} /> } : {}),
-            }}>
-              <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />
-            </ChoicePoint>}
             {chrome.advance && <button
               className="next"
               data-testid={chrome.advance.testId}
@@ -872,6 +872,16 @@ export function BattleScreen({
           </div>
         )}
       </section>
+      </div>
+      {/* The talk's choices float above its window, which keeps the line they answer (romance-scene.css .vn-choices). */}
+      {isDialogue && frame && choosing && onChoose && <div className="vn-choices">
+        <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+          heroine: { emotion: heroineEmotion, sceneId: battle.id, cityId: heroineCityId },
+          ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} /> } : {}),
+        }}>
+          <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />
+        </ChoicePoint>
+      </div>}
       </div>
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
       <MiniGameSlot />

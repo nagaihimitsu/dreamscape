@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// ジャイガル砦のデート（噛み合いの選択は2回）。
+// ジャイガル城のデート（噛み合いの選択は2回）。
 // 宝の地図と、祖父が1976年の宝探しで水を運んだという話は、人物の作り話。砦の事実と分けて書く。
 // 地図の値段は手伝いの knot のミニゲーム（raju_haggle）で決める（買わなくても話は進む）。二人分のチャイは頭の # on_done: で払う。
 
@@ -14,7 +14,7 @@ INCLUDE modules.ink
 # on_done: money -20
 # background: gt_bg_jaipur_jaigarh_fort
 # speaker: narrator
-ジャイガル砦は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
+ジャイガル城は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
 門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
 # speaker: gt_jaipur_jaigarh_boy
 # voice: gt_jaipur_date_jaigarh_fort_raju_001
@@ -176,6 +176,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
+# photo: gt_album_j055 # photo_caption: 模型のようなアンベール城
 チャイのカップを手に、城壁のふちに立つ。下には、アンベール城と、その前の湖が、模型のように小さく見えた。
 { cond("episode gt_jaipur_main_amber_fort"):
     # speaker: heroine

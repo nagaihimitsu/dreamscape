@@ -23,6 +23,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
 # voice: gt_agra_date_akbar_tomb_001
+# photo: gt_album_a067 # photo_caption: 王さまのお墓に、鹿
 鹿！　王さまのお墓に、鹿がいる。角、ねじれてる。あれ、どうやって伸びるんだろう
 * [「近づかずに、ここから見よう」 # option: watch_from_here]
     # profile: attentive
@@ -68,6 +69,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # emotion: surprised
         # voice: gt_agra_date_akbar_tomb_007
+        # photo: gt_album_a068 # photo_caption: まつ毛の長い一頭
         近い！　目、まつ毛が長い
     }
 -
@@ -157,6 +159,7 @@ Many handwritten books were collected at his court.
 帰り道、芝生のはずれで、ブラックバックが一頭、こちらをじっと見ていた。
 # speaker: heroine
 # voice: gt_agra_date_akbar_tomb_017
+# photo: gt_album_a079 # photo_caption: 主人みたいな鹿と猿
 ここ、王さまのお墓なのに、鹿と猿の方が主人みたいだね。わたしたち、お客さんなのに、すっかり振り回されちゃった
 -> END
 
@@ -177,6 +180,7 @@ Many handwritten books were collected at his court.
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_akbar_tomb_monkey_attar_002
+# photo: gt_album_a069 # photo_caption: 「わたしの雨！」
 あっ！　ちょっと、それ、雨！　わたしの雨！
 # speaker: narrator
 # se: whistle
@@ -226,7 +230,7 @@ Many handwritten books were collected at his court.
     # voice: gt_agra_akbar_tomb_monkey_attar_004
     ……鹿が、雨だと思ってる
     # speaker: narrator
-    # photo: gt_album_a39 # photo_caption: 雨の匂いになったアクバル廟
+    # photo: gt_album_a073 # photo_caption: 雨の匂いになったアクバル廟
     # emotion: happy
     彼女は割れた瓶を見下ろして、しばらく何も言わなかった。それから、こらえきれずに笑い出した。
     # speaker: heroine
@@ -278,6 +282,7 @@ Many handwritten books were collected at his court.
 // 【3】手伝いの knot：サングラスを盗まれたとき（噛み合いでない選択）
 === gt_agra_akbar_tomb_monkey_glasses ===
 # speaker: narrator
+# photo: gt_album_a074 # photo_caption: 頭の上から消えたサングラス
 まぶしさに目を細めて、彼女が頭の上のサングラスを下ろそうとした。その手が、空を切った。
 # se: snatch
 # term: gt_term_monkey
@@ -317,6 +322,7 @@ Many handwritten books were collected at his court.
     似合ってる。ふふっ、どうしよう、すごく似合ってる
     # speaker: narrator
     # emotion: teasing_big
+    # photo: gt_album_a075 # photo_caption: サングラスがすごく似合う猿
     彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放り上げた。思ったより暗かったらしい。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
 * [「待とう。猿にも、考える時間がいる」 # option: glasses_wait]

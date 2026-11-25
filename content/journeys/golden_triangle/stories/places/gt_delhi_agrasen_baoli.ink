@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_agrasen_baoli
 # speaker: narrator
+# photo: gt_album_d073 # photo_caption: ビルの谷間に口を開けた階段井戸
 ガラス張りのビルに囲まれた路地の奥に、それは突然口を開けていた。石の階段が、まっすぐ地面の下へ下りていく。両側の壁には、アーチの形のくぼみが何層も並んでいる。
 # term: gt_term_stepwell
 アグラセン・キ・バオリ。階段で水面まで下りる、昔の井戸だ。今は水が涸れて、底には鳩の声だけが溜まっている。
@@ -106,6 +107,7 @@ INCLUDE modules.ink
     怖いけど、ちょっとやってみたい。こういうの、旅じゃないと、たぶん一生やらないから
 -
 # speaker: narrator
+# photo: gt_album_d076 # photo_caption: 一段ごとに冷たくなる空気
 一段下りるごとに、空気が冷たくなっていく。上の路地の暑さが、嘘みたいだった。彼女は小さな声で、段を数えている。
 # speaker: gt_jasmeet
 # voice: gt_delhi_date_agrasen_baoli_jasmeet_002
@@ -118,6 +120,7 @@ INCLUDE modules.ink
 底に着いた。涸れた井戸の口には柵があり、覗き込むと、丸い暗がりがずっと下まで続いている。クナールが手で合図をした。本番だ。
 # speaker: heroine
 # voice: gt_delhi_date_agrasen_baoli_011
+# photo: gt_album_d077 # photo_caption: 「きゃ、きゃー……？」
 きゃ、きゃー……？
 # speaker: gt_kunal
 # voice: gt_delhi_date_agrasen_baoli_kunal_005
@@ -130,10 +133,10 @@ INCLUDE modules.ink
 もう一度、と彼女が井戸の方を向いた、そのときだった。
 # speaker: narrator
 # se: pigeon_flutter
+# photo: gt_album_d078 # photo_caption: 鳩が顔の前に、本物の悲鳴
 すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
-# photo: gt_album_d55 # photo_caption: 鳩が顔の前に、本物の悲鳴
 # shake: window
 # size: large
 # voice: gt_delhi_date_agrasen_baoli_013
@@ -239,6 +242,7 @@ INCLUDE modules.ink
 # reaction: heroine,exasperated,sweat
 # pause: 700
 # voice: gt_delhi_date_agrasen_baoli_026
+# photo: gt_album_d081 # photo_caption: 百八段の上で、煩悩一個も減ってない
 ……だめだ。冷たいものが飲みたい。煩悩、一個も減ってない
 -> END
 

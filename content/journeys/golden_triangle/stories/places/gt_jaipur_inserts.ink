@@ -42,6 +42,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: teasing
     # voice: gt_jaipur_hotel_mehndi_night_002
+    # photo: gt_album_j090 # photo_caption: ランプの下、差し出された手のひら
     はい。探して。ちゃんと、隠したものがあるんだから
 }
 {
@@ -83,6 +84,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing,question
         # voice: gt_jaipur_hotel_mehndi_night_018
+        # photo: gt_album_j094 # photo_caption: 自信満々に、違う所を
         さっき、自信満々に違う所を指してたでしょ。……ふふ、あの顔、見せてあげたかったな
     }
     -> found
@@ -126,6 +128,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # voice: gt_jaipur_hotel_mehndi_night_010
+        # photo: gt_album_j093 # photo_caption: 見つけたけど、読めない
         見つけたけど、読めない。ふふ、セーフ。ファルハーナさん、ヒンディー語の文字で書いてくれたんだ
         # speaker: heroine
         # voice: gt_jaipur_hotel_mehndi_night_011
@@ -180,7 +183,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
-# photo: gt_album_j26 # photo_caption: 読み上げられた名前
+# photo: gt_album_j096 # photo_caption: 読み上げられた名前
 # pause: 900
 帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
@@ -218,6 +221,7 @@ INCLUDE modules.ink
 # item_out: gt_jaipur_gaura_radish
 包みの端から、大根の葉がはみ出している。ハワー・マハルの前で、ガウラにもらった一本だ。
 # speaker: heroine
+# voice: gt_jaipur_hotel_radish_night_001
 あの、これ……台所に渡しなさいって、言われたんです。通りで野菜を売ってる、ガウラさんに
 # speaker: gt_jaipur_hotel_front
 あら、大根。……葉っぱが、まだぴんとしてる。朝いちばんの市場で仕入れた顔ね
@@ -225,6 +229,7 @@ INCLUDE modules.ink
 いいわ、料理人に渡しておく。明日の朝ね
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_hotel_radish_night_002
 本当に、お皿に戻ってくるんだ……。何になるんですか？
 # speaker: gt_jaipur_hotel_front
 それは、朝のお楽しみ
@@ -233,6 +238,7 @@ INCLUDE modules.ink
 フロントの女性は包みを抱え、帳場の奥の扉へ消えた。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_jaipur_hotel_radish_night_003
 ホテルで大根どうしよう、って思ってたのに。ガウラさん、全部分かってたんだね
 -> END
 
@@ -253,6 +259,7 @@ INCLUDE modules.ink
 お待たせ。ゆうべの大根よ。刻んで、香辛料と混ぜて、小麦の生地に包んで焼いたの
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
+# voice: gt_jaipur_hotel_radish_morning_001
 ほんとに戻ってきた……！　ガウラさんの大根が、パンになってる
 # speaker: gt_jaipur_hotel_front
 # local_word: gt_jaipur_word_mooli
@@ -265,24 +272,30 @@ INCLUDE modules.ink
 小さな器の白いダヒーを置いて、フロントの女性は帳場へ戻っていった。{heroine_name}はパラーターの端をちぎって、ダヒーにつけた。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_jaipur_hotel_radish_morning_002
+# photo: gt_album_j088 # photo_caption: ガウラさんの大根が、パンになった
 ……おいしい！　外はぱりっとしてて、中の大根が、ちょっと辛くて、ちょっと甘い
 { cond("item gt_jaipur_sushma_lime_pickle held"):
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_jaipur_hotel_radish_morning_003
     あ、漬物！　漬物なら、持ってる
     # speaker: narrator
     # item_out: gt_jaipur_sushma_lime_pickle
     彼女は鞄から小瓶を取り出し、ふたを開けた。シティ・パレスで、スシュマに握らされたライムの漬物だ。酸っぱい匂いが、中庭に広がる。
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_jaipur_hotel_radish_morning_004
     ガウラさんの大根に、スシュマさんの漬物。この朝ごはん、ジャイプールでもらったものだけで出来てる
 - else:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_hotel_radish_morning_005
     ガウラさん、四十年、あの窓の下でこういう大根を売ってきたんだね。毎朝四時に、市場で選んで
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_hotel_radish_morning_006
 今度ハワー・マハルの前を通ったら、ガウラさんに言わなきゃ。おいしかったです、って。……日傘の下で、ちゃんと
 -> END
 
@@ -298,6 +311,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: morning
 # speaker: narrator
+# photo: gt_album_j114 # photo_caption: 白い封筒と、一ルピー
 今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
 # voice: gt_jaipur_finale_before_envelope_001
@@ -349,6 +363,7 @@ INCLUDE modules.ink
 - cond("item gt_delhi_rain_attar held"):
     # speaker: narrator
     # item_out: gt_delhi_rain_attar
+    # photo: gt_album_j115 # photo_caption: 手首に一滴、デリーの雨
     彼女は鞄から小瓶を取り出し、栓を抜いて、手首にほんの一滴だけのせた。デリーの路地で買った、雨の匂い。
     # speaker: heroine
     # item_out: gt_delhi_rain_attar
@@ -359,7 +374,7 @@ INCLUDE modules.ink
     デリーで買った雨の匂いの小瓶は、もう無い。アーグラの廟で猿に取られ、石の通路で割れてしまった。
     # speaker: heroine
     # reaction: heroine,teasing,music
-    # recall: gt_album_a39
+    # recall: gt_album_a073
     # voice: gt_jaipur_finale_before_envelope_010
     雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど
 }
@@ -442,6 +457,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: gt_pooja
 # emotion: shy
+# photo: gt_album_j132 # photo_caption: 指のすきまから
 プージャーはけらけら笑い、いとこたちを呼びに戻っていった。彼女は両手で顔を覆い、それから、指のすきまからこちらを見た。
 # speaker: heroine
 # emotion: smile

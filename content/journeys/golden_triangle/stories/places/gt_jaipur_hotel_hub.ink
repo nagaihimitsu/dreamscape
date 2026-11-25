@@ -12,6 +12,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_jaipur_arrival_001
+# photo: gt_album_j001 # photo_caption: 町じゅうがピンク
 本当に、町じゅうがピンク……。写真より、ちょっと赤っぽいね。夕方の空みたいな色
 # background: gt_bg_jaipur_hotel_room
 # speaker: narrator
@@ -54,6 +55,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_jaipur_arrival_007
+# photo: gt_album_j005 # photo_caption: 今度は、わたしからも
 ……今度は、行きたい所、わたしからも言うね
 -> END
 
@@ -146,6 +148,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # quiet: scene
 # item_out: gt_delhi_kamla_memo
+# photo: gt_album_j137 # photo_caption: アーグラの分は、空いている
 {heroine_name}は段ボールの切れ端を見つめた。デリーの五行と、ジャイプールの一行。アーグラの分は、空いている。
 # speaker: narrator
 アーグラでは、名物ガイドの伝説の代わりに、人前で本当の話をした。
@@ -161,6 +164,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing,blush
     # voice: gt_jaipur_epilogue_009
+    # photo: gt_album_j138 # photo_caption: 六十年待たなかった分
     ふふ。今のは、六十年待たなかった分
 - romance_stage >= 3:
     # speaker: heroine
@@ -178,5 +182,6 @@ INCLUDE modules.ink
     ありがとう。一人だったら、きっと窓の内側から、見てるだけだった
 }
 # speaker: narrator
+# photo: gt_album_j139 # photo_caption: 一番軽くて、一番大事なもの
 彼女は切れ端をガイドブックの一番前に挟み直し、鞄の口を閉めた。旅の荷物の中で、それが一番軽くて、一番大事なものになっていた。
 -> END

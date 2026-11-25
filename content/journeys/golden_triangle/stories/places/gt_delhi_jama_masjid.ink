@@ -14,10 +14,12 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,question
 # voice: gt_delhi_jama_masjid_guide_001
+# photo: gt_album_d032 # photo_caption: 借りた上着「似合ってる？」
 似合ってる？　……あ、そういう場所じゃないね。ちゃんと見てきます
 # speaker: narrator
 裸足の足の裏に、日差しを吸った石の温度が伝わる。広い中庭の向こうで、赤と白の塔が空へ伸びていた。
 # speaker: narrator
+# photo: gt_album_d033 # photo_caption: 中庭の端から、旧市街が全部見える
 # term: gt_term_kabootarbazi
 中庭の端から見下ろすと、町が足もとにある。屋根、物干しの洗濯物、給水タンク、旋回する鳩の群れ。
 # speaker: heroine
@@ -40,6 +42,7 @@ INCLUDE modules.ink
 ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……朝ごはんの時間、もう過ぎちゃった。完全に出遅れた
 # speaker: narrator
 # emotion: worried
+# photo: gt_album_d034 # photo_caption: 底の見えた鍋を一つずつのぞく
 彼女は本気で悔しがり、通りの鍋を一つずつのぞき込んだ。どの鍋も、もう底が見えている。
 # speaker: heroine
 # voice: gt_delhi_jama_masjid_guide_004
@@ -49,6 +52,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_jama_masjid_guide_005
+# photo: gt_album_d035 # photo_caption: 路地の奥から、甘い匂い
 ちょっとだけ寄ってもいい？　ごはんの代わりに、匂いだけでも
 -> END
 
@@ -76,6 +80,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_delhi_main_jama_masjid_001
+# photo: gt_album_d036 # photo_caption: 手首にひと筋の薔薇のアタル
 わ……。薔薇なのに、甘すぎない。ずっと嗅いでいられる
 # speaker: gt_delhi_jama_young_man
 # together: enemy gt_zoheb
@@ -146,6 +151,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_battle_hamid_009
 ミッティ。土を焼いて閉じこめる。夏の終わりの、最初の雨だ
 # speaker: narrator
+# photo: gt_album_d038 # photo_caption: 雨の匂い、ミッティ
 {heroine_name}は手首を鼻に近づけたまま、しばらく動かなかった。ゾヘブが店先から口を挟む。
 # speaker: gt_zoheb
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_006
@@ -222,6 +228,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_011
 うちの親父、その時間にここで毎年、同じ瓶を買ってた
 # speaker: narrator
+# photo: gt_album_d040 # photo_caption: ミッティの小瓶を手に取る
 柱時計が、賭けの一時間まであと数分を指している。{heroine_name}はミッティの小瓶を手に取った。
 # speaker: heroine
 # emotion: serious
@@ -275,5 +282,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_main_jama_masjid_008
+# photo: gt_album_d042 # photo_caption: 雨の匂い、まだしてる
 ……雨の匂い、まだしてる。日本で雨が降ったら、たぶん、この路地を思い出すね
 -> END

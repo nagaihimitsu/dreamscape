@@ -5,7 +5,7 @@ import {
 } from "./content-warnings";
 
 const info = { savedAt: "2026-11-16T07:00:00.000Z", head: "996c3f7abcdef0123456789", withSample: false };
-const date = (id: string) => ({ kind: "date-condition-trip", message: `Date condition read before and after the trip: date ${id} (when)` });
+const date = (id: string) => ({ kind: "date-condition-trip", message: `Date condition read before the trip only: date ${id} (when)` });
 const before = warningSnapshot([date("a"), date("b"), { kind: "music", message: "Unused track x" }], [], info);
 
 describe("content:warnings arguments", () => {

@@ -54,7 +54,7 @@ export function DialogueWindowHide({
         onHide?.();
       }}
     >
-      <Icon name="eye-off" />隠す
+      <Icon name="eye-off" /><span className="dialogue-tool-word">隠す</span>
     </button>
   );
 }

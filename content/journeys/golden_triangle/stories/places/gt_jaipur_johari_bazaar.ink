@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_jaipur_date_johari_bazaar_001
+# photo: gt_album_j065 # photo_caption: まぶしすぎる宝石の通り
 どのお店も、まぶしすぎる……。値札、見るのも怖い
 # speaker: narrator
 # term: gt_term_lac_bangles
@@ -109,9 +110,11 @@ INCLUDE modules.ink
         # voice: gt_jaipur_date_johari_bazaar_009
         ……迷ってるの、見て分からない？　一緒に見てほしかったのに
         # speaker: narrator
+        # photo: gt_album_j069 # photo_caption: 夕方のジャイプールの色
         それでも彼女は、棚の前で長いこと迷ってから、桃色と橙色がまだらに混ざった一組を、自分で指さした。
     - else:
         # speaker: narrator
+        # photo: gt_album_j069 # photo_caption: 夕方のジャイプールの色
         彼女は棚の前で、長いこと迷っていた。そして、桃色と橙色がまだらに混ざった一組を、自分で指さした。
         # speaker: heroine
         # emotion: smile
@@ -216,6 +219,7 @@ INCLUDE modules.ink
 割れやすいから、はめっぱなしにしない方がいいわ。はめるのは、特別な日だけ
 # speaker: narrator
 # se: bangles_clink
+# photo: gt_album_j072 # photo_caption: 一歩ごとに、からん
 アーケードの下を歩くと、彼女の手首で、試しにはめたままの一本が小さく鳴った。一歩ごとに、からん、と。
 # speaker: heroine
 # emotion: smile

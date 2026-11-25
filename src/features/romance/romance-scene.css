@@ -1,18 +1,38 @@
-/* Change these values to retheme every VN dialogue window (UI redesign §2.1, §3.3). */
+/* Change these values to retheme every VN dialogue window (UI redesign §2.1, §3.3). The window is a light frosted glass
+   over the scene (2026-11-25 user decision, after comparing the talk with a romance game on an iPhone: the dark slate
+   panel ended the scene where it began): the people and the place show on, softened, behind its words. Its ink keeps
+   8:1 or more on the glass over any picture (its 20 % show-through counted at black), its muted ink 4.5:1. */
 :root {
-  --vn-window-bg: var(--ds-window-bg);
-  --vn-text: var(--ds-on-slate);
-  --vn-muted: var(--ds-on-slate-muted);
-  --vn-name-bg: var(--ds-plate-blue);
+  --vn-window-bg: rgba(248, 250, 255, 0.8);
+  --vn-window-blur: blur(14px) saturate(1.2);
+  --vn-text: #1d2740;
+  --vn-muted: #47536b;
+  /* The speaker's name band: white words on it (5.5:1). */
+  --vn-name-bg: #3d6aa6;
+  --vn-name-ink: #fff;
   --vn-window-radius: 22px;
+  /* The glass's edges melt into the scene over this much: no edge line, no shadow. */
+  --vn-feather: 10px;
   --vn-body-size: 18px;
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
-  /* A choice in the window: a pressable on slate (§2.3), gold hairline (UI redesign stage 2.4). */
-  --vn-choice-bg: var(--ds-slate-800);
-  --vn-choice-border: var(--ds-gold-hairline);
-  /* The window's head (the speaker's plate and the controls) straddles the window's
-     top edge by this much, half a control, whatever the plate holds (decision H). */
+  /* A choice: a warm terracotta press over the scene, set apart from the glass of the words (white words at 4.6:1 or more). */
+  --vn-choice-bg: linear-gradient(180deg, #c64e2f, #ad3d26);
+  --vn-choice-shadow: 0 2px 0 rgba(110, 36, 18, 0.45), 0 6px 18px rgba(20, 12, 8, 0.28);
+  /* The window's head (the speaker's band and the controls) straddles the window's
+     top edge by this much, half a control, whatever the band holds (decision H). */
   --vn-head-overhang: 22px;
+  /* The scene's camera (figure-zoom.ts): how much nearer than whole the people on stage are seen, and how fast it comes in. */
+  --vn-camera: 700ms;
+}
+/* The glass, on the window and on what lies on the scene with it (its tools, the choices' words beside their presses). */
+.vn-window::before,
+.battle-screen[data-phase="dialogue"] .battle-window::before,
+.dialogue-controls .text-button,
+.vn-choices .choice-hint,
+.vn-choices :is(.text-button, p),
+.vn-choices .encounter-choice {
+  -webkit-backdrop-filter: var(--vn-window-blur);
+  backdrop-filter: var(--vn-window-blur);
 }
 .vn-scene {
   position: relative;
@@ -51,7 +71,7 @@
   padding: 6px 8px 8px;
   border-radius: 12px;
   background: var(--ds-chip-bg);
-  color: var(--vn-text);
+  color: var(--ds-on-slate);
   font-size: 12px;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -67,7 +87,7 @@
   border: 1px solid var(--ds-gold-hairline);
   border-radius: 12px;
   background: var(--ds-slate-800);
-  color: var(--vn-text);
+  color: var(--ds-on-slate);
   font-weight: 600;
   text-decoration: none;
 }
@@ -84,12 +104,19 @@
   clip-path: polygon(-50% 30.714%, 150% 30.714%, 150% 200%, -50% 200%);
   pointer-events: none;
 }
+/* The scene's camera (2026-11-25 user decision; figure-zoom.ts): in a talk the people on stage are seen from about the
+   thighs up, their eyes where they stood whole and their feet below the window. Nearer for one, less near as more stand
+   side by side (encounter.css), so each face stays whole on the screen. The scene's first line shows them whole (its
+   establishing shot: their clothes, where they stand; useEstablishingShot), and the camera comes in with the next one.
+   Each figure's box grows in the layout (figure-zoom.ts, encounter.css), never by a transform: the pictures stay sharp. */
+.vn-character-layer { --vn-zoom: 1.45; }
+.vn-scene[data-establishing] .vn-character-layer { --vn-zoom: 1; }
 .reduce-motion .vn-character { transition: none; }
-/* The window (D1): a box whose painted part starts --vn-head-overhang below its
-   top, where its head straddles the edge (DialogueWindowHead), and whose body
-   scrolls under the head when the text is long. The window may grow up to 8 px
-   below what lies over the scene's top (the header, --scene-top): long or
-   enlarged text stays readable, the head never goes under it (UI redesign §3.1). */
+/* The talk (D1): its window (.vn-window) and, while the scene waits for one, its choices floating above it (.vn-choices).
+   The window is a box whose painted part starts --vn-head-overhang below its top, where its head straddles the edge
+   (DialogueWindowHead), and whose body scrolls under the head when the text is long. The talk may grow up to 8 px
+   below what lies over the scene's top (the header, --scene-top): long or enlarged text stays readable, the head never
+   goes under it (UI redesign §3.1). */
 .vn-scene .vn-dialogue {
   position: relative;
   z-index: 2;
@@ -109,15 +136,32 @@
   border-radius: 0;
   box-shadow: none;
 }
-.vn-scene .vn-dialogue::before {
+.vn-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  /* With choices above it, it keeps its head and about two lines of the talk before they give way (they scroll). */
+  min-height: min(7.5em, 100%);
+}
+/* The glass: no edge line and no shadow; its edges melt into the scene (--vn-feather), as a soft light over it. The
+   battle's talk has the same window (battle.css). */
+.vn-window::before,
+.battle-screen[data-phase="dialogue"] .battle-window::before {
   content: "";
   position: absolute;
   z-index: -1;
   inset: var(--vn-head-overhang) 0 0;
-  border: 1px solid var(--ds-gold-hairline);
   border-radius: var(--vn-window-radius);
   background: var(--vn-window-bg);
-  box-shadow: var(--ds-window-shadow);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 var(--vn-feather), #000 calc(100% - var(--vn-feather)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--vn-feather), #000 calc(100% - var(--vn-feather)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 var(--vn-feather), #000 calc(100% - var(--vn-feather)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--vn-feather), #000 calc(100% - var(--vn-feather)), transparent);
+  mask-composite: intersect;
   pointer-events: none;
 }
 .vn-scene .vn-window-body {
@@ -137,12 +181,12 @@
   max-width: min(65%, 260px);
   max-height: 48px;
   overflow: hidden;
-  padding: 8px 12px;
-  border: 1px solid var(--vn-choice-border);
-  border-radius: 12px;
-  background: var(--vn-window-bg);
-  color: var(--vn-text);
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: var(--vn-choice-bg);
+  color: #fff;
   font-size: 13px;
+  font-weight: 600;
   pointer-events: none;
   animation: vn-choice-away 220ms ease-in forwards;
 }
@@ -167,34 +211,96 @@
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
 .vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
 .vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
-.vn-dialogue .choices { margin-top: 4px; padding-top: 6px; border-color: rgba(255, 255, 255, .24); }
-.vn-dialogue .choice-hint { margin-bottom: 4px; color: var(--vn-muted); }
-/* 8 px between two choices, which cannot be undone (AGENTS 選択肢の誤タップ防止; 2026-11-14, the phone UI audit:
-   they were 4–5 px apart). */
-.vn-dialogue .choice {
-  min-height: 44px;
-  margin: 8px 0;
-  padding: 7px 14px;
-  line-height: 1.5;
+.vn-dialogue .paused { color: var(--vn-text); }
+.vn-dialogue h1 { font-size: 18px; margin: 2px 0 8px; color: var(--vn-text); }
+
+/* The choices (2026-11-25 user decision): above the window, which stays as it was and keeps the line they answer, they
+   float over the scene as warm terracotta presses, set apart from the glass of the words. They come before the window
+   on the screen and after it in the reading order (the line, then what to answer). Many or long ones scroll in their own
+   place, the window keeping its head and two lines. 10 px between two choices, which cannot be undone (AGENTS
+   選択肢の誤タップ防止). Their help (the hint, a translation and its button, why one cannot be chosen) sits on the glass. */
+.vn-choices {
+  order: -1;
+  flex: 0 1 auto;
+  align-self: center;
+  /* On a wide screen they keep to a readable width in the middle, as the words of a reply do. */
+  width: min(100% - 4px, 680px);
+  min-height: 0;
+  margin: 0 0 8px;
+  /* Room for the presses' shadows inside the scrolling place. */
+  padding: 2px 2px 8px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   color: var(--vn-text);
-  background: var(--vn-choice-bg);
-  border: 1px solid var(--vn-choice-border);
-  border-radius: 12px;
 }
-/* The trailing chevron of a pressable row (§2.3), drawn in the gold of the icons. */
-.vn-dialogue .choice::after {
+.vn-choices .choices {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.vn-choices .choices > div { display: grid; justify-items: end; gap: 4px; }
+.vn-choices .choice-hint {
+  justify-self: start;
+  margin: 0;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--vn-window-bg);
+  color: var(--vn-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+.vn-choices .choice {
+  justify-self: stretch;
+  min-height: 48px;
+  margin: 0;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--vn-choice-bg);
+  box-shadow: var(--vn-choice-shadow);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-shadow: 0 1px 1px rgba(80, 24, 10, 0.35);
+}
+/* The trailing chevron of a pressable row (§2.3). */
+.vn-choices .choice::after {
   content: "›" / "";
   flex: none;
   margin-left: auto;
-  color: var(--ds-gold);
-  font-size: 20px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 22px;
   line-height: 1;
 }
-.vn-dialogue .choice:hover:enabled, .vn-dialogue .choice:focus-visible { background: var(--ds-slate-900); }
-.vn-dialogue .choice-number { color: var(--ds-gold); }
-.vn-dialogue .choice:disabled { opacity: 1; color: var(--ds-on-slate-muted); background: rgba(255, 255, 255, .06); border-color: transparent; }
-.vn-dialogue .paused { color: var(--vn-text); }
-.vn-dialogue h1 { font-size: 18px; margin: 2px 0 8px; color: var(--vn-text); }
+.vn-choices .choice-number { color: rgba(255, 255, 255, 0.82); }
+.vn-choices .choice:hover:enabled, .vn-choices .choice:focus-visible { filter: brightness(1.08); }
+.vn-choices .choice:active:enabled { translate: 0 1px; box-shadow: 0 1px 0 rgba(110, 36, 18, 0.45), 0 3px 10px rgba(20, 12, 8, 0.28); }
+.vn-choices .choice:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+/* One that cannot be chosen yet or at all: the glass, its words muted (its reason under it). */
+.vn-choices .choice:disabled {
+  opacity: 1;
+  background: var(--vn-window-bg);
+  box-shadow: none;
+  color: var(--vn-muted);
+  text-shadow: none;
+}
+.vn-choices .choice:disabled .choice-number,
+.vn-choices .choice:disabled::after { color: var(--vn-muted); }
+.vn-choices .text-button,
+.vn-choices :is(.choices, .encounter-choices) p {
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: var(--vn-window-bg);
+  color: var(--vn-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.vn-choices .text-button { min-height: 44px; }
 
 /* The app supplies the visible play area; exceptionally long text remains
    reachable inside the window instead of being clipped. */
@@ -217,8 +323,8 @@
     margin-bottom: 8px;
     max-height: calc(100% - 16px);
   }
-  .vn-scene .vn-window-body { padding: 0 14px 10px; }
-  .vn-dialogue .dialogue-text { font-size: 17px; line-height: 1.6; }
+  .vn-scene .vn-window-body { padding: 0 16px 12px; }
+  .vn-dialogue .dialogue-text { font-size: 17px; line-height: 1.75; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
-  .vn-dialogue .choice { line-height: 1.4; padding: 7px 11px; margin: 8px 0; }
+  .vn-choices .choice { padding: 9px 14px; font-size: 15px; line-height: 1.4; }
 }

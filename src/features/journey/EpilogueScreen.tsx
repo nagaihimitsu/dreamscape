@@ -35,6 +35,7 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { useSceneTap } from "../../components/useSceneTap";
 import { CityArrivalLogo } from "./CityArrivalLogo";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
+import { useEstablishingShot } from "../../components/useEstablishingShot";
 
 export function EpilogueScreen({
   game,
@@ -121,6 +122,7 @@ export function EpilogueScreen({
     lineId: frame.text ? readLineId(storyId || active.episodeId, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
+  const establishing = useEstablishingShot(active.episodeId, game.revision);
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
@@ -129,7 +131,8 @@ export function EpilogueScreen({
   return (
     <div id="city-epilogue-screen" data-testid={label.testId}>
       {showLogo && <CityArrivalLogo nameJa={city.nameJa} reduceMotion={reduceMotion} onEnd={onLogoComplete ?? (() => undefined)} />}
-      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={frame.quiet} {...sceneTap.props}>
+      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} data-quiet={frame.quiet}
+        data-establishing={establishing || undefined} {...sceneTap.props}>
         <div className="vn-background" data-testid="scene-picture">
           <CanalScene backgroundId={frame.background} />
           <SceneTint color={sceneTimeTint(game.travel.minute, frame.tint === "off")} />
@@ -171,55 +174,61 @@ export function EpilogueScreen({
           className="paper story-paper vn-dialogue"
           {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
           aria-label={label.region}
+          data-has-choices={frame.choices.length > 0}
           data-remembered={remembered}
           inert={windowVisibility.hidden || showLogo}
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
-          <DialogueWindowHead
-            cutIn={nameCut}
-            speaker={showsSpeakerPlate(frame) && speaker}
-            narration={narration}
-            remembered={remembered}
-            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
-          />
-          <div ref={dialogueRef} className="vn-window-body">
-          {/* The scene label names the scene (an arrival's city also has its title card): the heading stays for
-              screen readers and for the focus only, in an arrival, an epilogue and a tour leg (2026-11-11 user decision). */}
-          <p className="eyebrow sr-only">{label.eyebrow}</p>
-          {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
-          <h1 className="sr-only" tabIndex={-1}>{label.heading}</h1>
-          <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName, enemy: enemyName }} compact={frame.choices.length > 0}>
-            <DialogueText
-              key={game.revision}
-              ref={sceneTap.line}
-              text={frame.text}
-              delivery={frame.delivery}
-              voiceId={frame.voiceId}
-              seId={frame.seId}
-              cues={lineCues(frame, !!nameCut)}
-              voice={autoAdvance.voice}
-              speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
-              onReady={onReady}
-              onAdvance={advanceSafely}
+          <div className="vn-window">
+            <DialogueWindowHead
+              cutIn={nameCut}
+              speaker={showsSpeakerPlate(frame) && speaker}
+              narration={narration}
+              remembered={remembered}
+              controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
             />
-          </LineStage>
-          {frame.choices.length > 0 && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-            heroine: { emotion: reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame), sceneId: active.episodeId,
-              cityId: episode?.cityId ?? game.currentCityId },
-            ...(opposite ? { person: <CharacterFigure characterId={opposite} /> } : {}),
-          }}>
-            <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />
-          </ChoicePoint>}
-          {frame.ended && <button
-            className="next"
-            disabled={!ready}
-            data-testid={arrival ? "arrival-advance" : "epilogue-advance"}
-            onClick={advanceSafely}
-          >
-            {label.next}{" "}
-            <span aria-hidden="true">→</span>
-          </button>}
+            <div ref={dialogueRef} className="vn-window-body">
+              {/* The scene label names the scene (an arrival's city also has its title card): the heading stays for
+                  screen readers and for the focus only, in an arrival, an epilogue and a tour leg (2026-11-11 user decision). */}
+              <p className="eyebrow sr-only">{label.eyebrow}</p>
+              {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
+              <h1 className="sr-only" tabIndex={-1}>{label.heading}</h1>
+              <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName, enemy: enemyName }} compact={frame.choices.length > 0}>
+                <DialogueText
+                  key={game.revision}
+                  ref={sceneTap.line}
+                  text={frame.text}
+                  delivery={frame.delivery}
+                  voiceId={frame.voiceId}
+                  seId={frame.seId}
+                  cues={lineCues(frame, !!nameCut)}
+                  voice={autoAdvance.voice}
+                  speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
+                  onReady={onReady}
+                  onAdvance={advanceSafely}
+                />
+              </LineStage>
+              {frame.ended && <button
+                className="next"
+                disabled={!ready}
+                data-testid={arrival ? "arrival-advance" : "epilogue-advance"}
+                onClick={advanceSafely}
+              >
+                {label.next}{" "}
+                <span aria-hidden="true">→</span>
+              </button>}
+            </div>
           </div>
+          {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
+          {frame.choices.length > 0 && onChoose && <div className="vn-choices">
+            <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+              heroine: { emotion: reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame), sceneId: active.episodeId,
+                cityId: episode?.cityId ?? game.currentCityId },
+              ...(opposite ? { person: <CharacterFigure characterId={opposite} /> } : {}),
+            }}>
+              <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />
+            </ChoicePoint>
+          </div>}
         </section>
         <DialogueWindowRestore state={windowVisibility} />
         <MiniGameSlot />
