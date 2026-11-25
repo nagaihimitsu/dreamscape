@@ -29,6 +29,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_jaipur_arrival_002
+# photo: gt_album_j002 # photo_caption: 「お、踊らせる……！？」
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！
 # background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
@@ -36,6 +37,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_hotel_front
 # term: gt_term_shagun
 # voice: gt_jaipur_arrival_jaipur_hotel_front_001
+# photo: gt_album_j003 # photo_caption: 割り切れない数は、縁起がいい
 お祝いはね、封筒に入れた現金。金額の最後に、一ルピー足すの。割り切れない数は、縁起がいいから
 # speaker: heroine
 # reaction: heroine,smile,question
@@ -47,6 +49,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_jaipur_arrival_004
+# photo: gt_album_j004 # photo_caption: 「踊りは要相談」に二本線
 相談の余地、なさそうだもんね。カムラさんだし
 # speaker: heroine
 # emotion: smile
@@ -86,7 +89,7 @@ INCLUDE modules.ink
 # photo: gt_album_j57 # photo_caption: 段ボールの六行目「通りで踊った夜」
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
 # speaker: enemy
-# recall: gt_album_j54
+# recall: gt_album_j129
 # voice: gt_jaipur_epilogue_kamla_002
 ジャイプール。通りで踊った夜
 # speaker: heroine
@@ -103,11 +106,12 @@ INCLUDE modules.ink
 # voice: gt_jaipur_epilogue_kamla_005
 来年のガンガウルは、あの人と二人で見に行く。窓じゃなくて、下から
 # speaker: narrator
-# recall: gt_album_d01
+# recall: gt_album_d001
 # se: pen_click
 カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
 # voice: gt_jaipur_epilogue_kamla_006
+# photo: gt_album_j135 # photo_caption: 「あんたは黙らないこと」
 あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと
 {
 - ending_reached:

@@ -37,6 +37,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: surprised
 # voice: gt_agra_date_chini_rauza_002
+# photo: gt_album_a095 # photo_caption: 反射板の写真家に代役を頼まれる
 代役……カップルの？
 # speaker: gt_jagdeep
 # voice: gt_agra_date_chini_rauza_jagdeep_003
@@ -62,6 +63,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
         # voice: gt_agra_date_chini_rauza_004
+        # photo: gt_album_a096 # photo_caption: おでこがくっつくくらい
         ……代役、だからね。光を見るための
     }
 * [「これ以上は、彼女に聞いてから」 # option: ask_her_first]
@@ -99,6 +101,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         # voice: gt_agra_date_chini_rauza_008
+        # photo: gt_album_a096 # photo_caption: おでこがくっつくくらい
         ふふっ！　だめ、もう、顔が戻らない。代役が笑ってたら、光、決まらないよね
     }
 -
@@ -160,6 +163,7 @@ INCLUDE modules.ink
         # speaker: narrator
         # se: camera_shutter
         # emotion: shy_deep
+        # photo: gt_album_a098 # photo_caption: 「代役でも、ずるい」
         彼女は顔を手であおぎ、反射板の向こうのジャグディープをにらんだ。シャッターの音が、何度も鳴っていた。
     }
 -
@@ -198,6 +202,7 @@ INCLUDE modules.ink
     # pause: 800
     # leave: gt_tanvi
     # voice: gt_agra_date_chini_rauza_tanvi_005
+    # photo: gt_album_a099 # photo_caption: 「……ハーン」
     ……ハーン
     # speaker: narrator
     # local_word: gt_agra_word_haan
@@ -219,6 +224,7 @@ INCLUDE modules.ink
     # leave: gt_agra_chini_bride
     撮影が始まると、代役の二人は柱の陰に下がった。アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。
     # speaker: narrator
+    # photo: gt_album_a100 # photo_caption: 構図にない一枚
     ジャグディープは、構図にない、その一枚を一番長く撮っていた。
     # speaker: heroine
     # emotion: smile
@@ -226,6 +232,7 @@ INCLUDE modules.ink
     決めた構図より、決めてない方が、いい写真になるんだね
 }
 # speaker: narrator
+# photo: gt_album_a101 # photo_caption: 代役の試し撮り
 撮影の終わりに、ジャグディープが携帯を見せてくれた。光を決めるための試し撮り。アーチの下で膝をつく一人と、どこを見ればいいか分からない顔で立つ一人。
 # speaker: gt_jagdeep
 # voice: gt_agra_date_chini_rauza_jagdeep_008

@@ -17,13 +17,14 @@ INCLUDE modules.ink
 デリーの宿は、住宅街の路地にあった。隣の古い家から、段ボールが次々に運び出されている。
 # speaker: narrator
 # term: gt_term_peanuts
+# photo: gt_album_d001 # photo_caption: 路地の将軍カムラ
 路地の真ん中で、ショールの小柄な老婦人が椅子に陣取り、落花生を割りながら運び手に指図している。将軍みたいに。
 # speaker: enemy
 # cutin: name
 # voice: gt_delhi_arrival_kamla_001
 カムラ、七十九歳。この家に六十年。夫のプラカーシュは先に逝った。数日のうちに、ジャイプールの息子の家へ移る。
 # speaker: narrator
-# photo: gt_album_d01 # photo_caption: 路地の将軍カムラ
+# photo: gt_album_d002 # photo_caption: ガイドブック、初対面で不合格 # photo_show: small
 そこまでを三十秒で言い切ると、彼女は{heroine_name}のガイドブックを取り上げ、鼻を鳴らした。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_002
@@ -34,6 +35,7 @@ INCLUDE modules.ink
 わたしのガイドブック、初対面で不合格になった……
 # speaker: narrator
 # term: gt_term_devanagari
+# photo: gt_album_d003 # photo_caption: 段ボールの切れ端の地図
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。ガイドブックの代わりだという。
 # speaker: narrator
 # item_show: gt_delhi_kamla_memo
@@ -65,6 +67,7 @@ INCLUDE modules.ink
 それから彼女は、{heroine_name}の後ろに立つこちらを顎で示した。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_008
+# photo: gt_album_d004 # photo_caption: 「た、旅の連れです！」
 あんたの連れ、さっきから黙ってるね。いい男は黙ってるもんだ。
 { ending_reached:
     # speaker: heroine
@@ -78,6 +81,7 @@ INCLUDE modules.ink
     た、旅の連れです！　……今の、通訳しないでくださいね
 }
 # speaker: narrator
+# photo: gt_album_d005 # photo_caption: 手のひらに落花生一粒
 カムラは笑わず、落花生を一粒、{heroine_name}の手のひらに載せた。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_009
@@ -112,6 +116,7 @@ INCLUDE modules.ink
 いえ。……わたしも、アマンさんの立場だったら、同じことを言ったと思います
 # speaker: narrator
 # term: gt_term_chai
+# photo: gt_album_d118 # photo_caption: 指に挟んだ素焼きのチャイ三つ
 アマンはチャイを一つずつ、二人の手に渡した。器が、まだ熱い。
 # speaker: enemy
 # voice: gt_delhi_epilogue_aman_002
@@ -140,6 +145,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_epilogue_003
+# photo: gt_album_d119 # photo_caption: 結婚式の案内、「自分で決めたいので」
 ありがとうございます。……行くかどうか、少しだけ考えさせてください。自分で決めたいので
 # speaker: enemy
 # voice: gt_delhi_epilogue_aman_007
@@ -182,6 +188,7 @@ INCLUDE modules.ink
 アーグラでも、言いたいことは言いなさい
 # speaker: narrator
 # leave: gt_kamla
+# photo: gt_album_d121 # photo_caption: 朝六時、ずっと揺れていた小さな手
 それだけ言って、窓は上がった。車が角を曲がるまで、後ろの窓の小さな手は、ずっと揺れていた。
 # speaker: heroine
 # reaction: heroine,teasing,music

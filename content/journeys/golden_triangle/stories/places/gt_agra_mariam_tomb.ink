@@ -33,6 +33,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: surprised
 # voice: gt_agra_date_mariam_tomb_001
+# photo: gt_album_a080 # photo_caption: 映画の名前と、本当の名前
 名前が、違うの？　お墓の人の？
 # speaker: gt_agra_mariam_daughter
 # voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_002
@@ -105,6 +106,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_agra_date_mariam_tomb_010
+# photo: gt_album_a082 # photo_caption: ヴィムラー先生、ふたたび
 ヴィムラー先生！
 # speaker: gt_vimla
 # voice: gt_agra_date_mariam_tomb_vimla_001
@@ -135,6 +137,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_agra_date_mariam_tomb_012
+# photo: gt_album_a083 # photo_caption: 「ヴィムラー先生。ヴィムラー先生」
 名前って、呼んでもらえないと、なくなっちゃうみたいですね。……ヴィムラー先生。ヴィムラー先生
 # speaker: gt_vimla
 # voice: gt_agra_date_mariam_tomb_vimla_006
@@ -157,6 +160,7 @@ INCLUDE modules.ink
 おばあちゃんは、結婚してから、ずっと『誰々の嫁』『誰々の母』だったから。……初めて聞いた、そんな話
 # speaker: narrator
 # term: gt_term_tiffin
+# photo: gt_album_a084 # photo_caption: 黙りこむ父と、涼しい顔の祖母
 父親が、弁当箱のふたを持ったまま、黙りこんだ。祖母は涼しい顔で、揚げ菓子をもう一つ取った。
 # speaker: heroine
 # emotion: serious

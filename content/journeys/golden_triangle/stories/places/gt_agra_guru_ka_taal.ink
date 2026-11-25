@@ -30,6 +30,7 @@ INCLUDE modules.ink
     奥の長い敷物の端から、聞き覚えのある大声が飛んできた。
     # speaker: gt_harbans
     # voice: gt_agra_date_guru_ka_taal_harbans_001
+    # photo: gt_album_a104 # photo_caption: 「世界地図の娘じゃないか！」
     世界地図！　世界地図の娘じゃないか！
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
@@ -75,6 +76,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_date_guru_ka_taal_003
+# photo: gt_album_a105 # photo_caption: 一人分の隙間
 ……隣に座ってるのに
 * [「君が決めていいよ」と、目で合図する # option: leave_it_to_her]
     # profile: attentive
@@ -122,6 +124,7 @@ INCLUDE modules.ink
 ごめんなさい。伝言は、運べません
 # speaker: heroine
 # voice: gt_agra_date_guru_ka_taal_008
+# photo: gt_album_a107 # photo_caption: 「何が、怖いんですか」
 わたしが伝えたら、お二人の言葉じゃなくなっちゃうから。……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
 # speaker: narrator
 二人とも、同時に彼女を見た。怒っているというより、そんなことを聞かれたのは初めてだ、という顔だった。
@@ -151,6 +154,7 @@ INCLUDE modules.ink
 運ばなくていいんだ。生きててくれれば、それで
 # speaker: narrator
 # se: truck_horn
+# photo: gt_album_a108 # photo_caption: 長い警笛、「冬は、だめだ。道が白い」
 食堂の窓の外を、トラックが一台、長い警笛を鳴らして通り過ぎた。ハルバンスは、その音が遠ざかるまで、黙って聞いていた。
 # speaker: gt_harbans
 # pause: 900
@@ -170,6 +174,7 @@ INCLUDE modules.ink
 { cond("flag gt_agra_sat_between"):
     # speaker: narrator
     # emotion: happy
+    # photo: gt_album_a106 # photo_caption: 隙間に座って、左右から同じため息
     隙間に座っていたこちらが、二人に挟まれて身動きできなくなった。彼女が、それを見て吹き出した。
 }
 # speaker: gt_harbans

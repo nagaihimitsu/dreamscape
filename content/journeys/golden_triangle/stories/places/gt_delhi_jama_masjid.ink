@@ -92,6 +92,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_battle_hamid_003
 隣のゾヘブだ。気にするな。……いや、気にしてもらうことになるか
 # speaker: narrator
+# photo: gt_album_d037 # photo_caption: 「客だ！　時計、スタート！」
 店の奥で、古い柱時計の長い針が、かちりと一つ進んだ。ハミードの説明は短かった。
 # speaker: enemy
 # voice: gt_delhi_main_jama_masjid_battle_hamid_004
@@ -182,6 +183,7 @@ INCLUDE modules.ink
 # se: phone_ring
 そのとき、ゾヘブの電話が鳴った。画面を見て、彼は路地の角まで離れる。
 # speaker: narrator
+# photo: gt_album_d039 # photo_caption: 路地の角の電話
 声を落としても、狭い路地では全部聞こえた。
 # speaker: gt_zoheb
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_008
@@ -267,6 +269,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # term: gt_term_rupee
+# photo: gt_album_d041 # photo_caption: 一ルピーもまけない、布袋の小瓶
 代金を出すと、ハミードは一ルピーもまけなかった。
 # speaker: enemy
 # voice: gt_delhi_main_jama_masjid_battle_hamid_022

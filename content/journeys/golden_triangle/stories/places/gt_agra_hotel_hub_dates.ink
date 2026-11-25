@@ -109,6 +109,7 @@ INCLUDE modules.ink
     待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
     # speaker: narrator
     # stand: close
+    # photo: gt_album_a127 # photo_caption: 袖のはしを、そっと
     彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
 }
 -> END

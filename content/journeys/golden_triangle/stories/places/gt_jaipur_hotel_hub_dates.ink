@@ -34,6 +34,7 @@ INCLUDE modules.ink
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
     # set: gt_jaipur_confessed
     # speaker: narrator
+    # photo: gt_album_j099 # photo_caption: よその花婿の行列が、角を曲がるまで
     眼下の旧市街を、よその花婿の行列が、ゆっくり横切っていく。彼女は息を止めたまま、それが角を曲がるまで動かなかった。
 * [「好きだ。君は、どう思ってる？」 # option: ask_her_heart]
     # set: gt_jaipur_confessed
@@ -144,6 +145,7 @@ INCLUDE modules.ink
         待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
         # speaker: narrator
         # stand: close
+        # photo: gt_album_j101 # photo_caption: 袖のはしを、小さく
         言い終えると、彼女は橙色の町を見下ろしたまま、指先で、こちらの袖のはしを小さくつまんだ。
     }
 }
@@ -218,6 +220,7 @@ INCLUDE modules.ink
     # voice: gt_jaipur_date_confession_032
     うん、気持ちいいね。……え、それを言うのに、あの顔？
     # speaker: narrator
+    # photo: gt_album_j103 # photo_caption: 夜風の感想に、そんな覚悟
     彼女は吹き出しそうになって、口元を手で隠した。
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -394,6 +397,7 @@ INCLUDE modules.ink
 チャイが冷めるまで、二人は本当に、どうでもいい話だけをした。カップの底に、香辛料の粒が沈んでいく。
 # speaker: heroine
 # voice: gt_jaipur_date_reassurance_010
+# photo: gt_album_j105 # photo_caption: チャイが冷めるまで
 待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの
 # speaker: heroine
 # emotion: smile
@@ -486,6 +490,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy,blush
     # voice: gt_jaipur_date_answer_009
+    # photo: gt_album_j112 # photo_caption: 窓がこんなにあるのに
     ……ふふ。窓がこんなにあるのに。まあ、いいか。見られても
 -
 # speaker: heroine
@@ -503,6 +508,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_answer_012
 恋人としては、今は、一緒にいられない。これが、わたしの答え。待たせたのに、ごめんなさい
 # speaker: narrator
+# photo: gt_album_j113 # photo_caption: たくさんの小さな窓の下で
 彼女は目をそらさなかった。たくさんの小さな窓が、上から二人を見下ろしていた。
 # speaker: heroine
 # voice: gt_jaipur_date_answer_013
@@ -552,6 +558,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: serious
 # voice: gt_jaipur_date_her_confession_001
+# photo: gt_album_j106 # photo_caption: 「屋上、来て」
 屋上、来て。……今夜は、わたしが誘う番
 # speaker: narrator
 屋上から見下ろす旧市街は、橙色ににじんでいた。遠くの通りで、今夜もどこかの楽隊が鳴っている。

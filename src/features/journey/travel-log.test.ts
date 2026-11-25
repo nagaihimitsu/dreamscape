@@ -19,7 +19,7 @@ const place = (id: string) => getCityContent(id.split("_")[0]).travel.places.fin
 const JAMA_MASJID = "gt_delhi_main_jama_masjid";
 const RED_FORT = "gt_delhi_main_red_fort";
 const BAOLI = "gt_delhi_date_agrasen_baoli";
-const delhiArrival: AlbumPhoto = { imageId: "gt_album_d01", caption: "路地の将軍カムラ", cityId: "delhi", day: 1, minute: 600,
+const delhiArrival: AlbumPhoto = { imageId: "gt_album_d001", caption: "路地の将軍カムラ", cityId: "delhi", day: 1, minute: 600,
   placeId: "delhi_hotel_hub", storyId: "places/gt_delhi_hotel_hub.gt_delhi_arrival" };
 
 function playDate(state: GameState, dateId: string): GameState {
@@ -61,7 +61,7 @@ describe("旅の記録's 「体験」 and 「写真」", () => {
 
   it("puts every album photo on 「写真」, the newest first", () => {
     const state = playDate(finishEpisode({ ...cityStart("delhi"), album: [delhiArrival] }, JAMA_MASJID), BAOLI);
-    expect(state.album.map((photo) => photo.imageId)[0]).toBe("gt_album_d01");
+    expect(state.album.map((photo) => photo.imageId)[0]).toBe("gt_album_d001");
     expect(travelLogPhotos(state).map((photo) => photo.imageId)).toEqual(state.album.map((photo) => photo.imageId).reverse());
   });
 
@@ -69,19 +69,19 @@ describe("旅の記録's 「体験」 and 「写真」", () => {
     const state = { ...cityStart("agra"), album: [delhiArrival] };
     expect(travelLogPhotos(state).every((photo) => !photo.missed)).toBe(true);
     const photos = travelLogPhotos(state, true);
-    expect(photos[0]).toEqual({ imageId: "gt_album_d01", path: "assets/album/gt_album_d01.webp", altJa: "路地の将軍カムラ",
+    expect(photos[0]).toEqual({ imageId: "gt_album_d001", path: "assets/album/gt_album_d001.webp", altJa: "路地の将軍カムラ",
       titleJa: "路地の将軍カムラ", metaJa: `1日目 ${formatTravelTime(600)} · 滞在先のホテル`, missed: false });
     const missed = photos.slice(1);
     // Every other photo a line of the journey takes, once; the album images no # photo: takes are not among them.
     const taken = albumImages.filter((image) => image.journeyId === "golden_triangle" && image.photo);
-    expect(missed.map((photo) => photo.imageId).sort()).toEqual(taken.map((image) => image.id).filter((id) => id !== "gt_album_d01").sort());
+    expect(missed.map((photo) => photo.imageId).sort()).toEqual(taken.map((image) => image.id).filter((id) => id !== "gt_album_d001").sort());
     expect(missed.every((photo) => photo.missed)).toBe(true);
     // Delhi's, then Agra's, then Jaipur's, each city's in the order of their IDs.
     const cityOf = (imageId: string) => taken.find((image) => image.id === imageId)!.photo!.cityId;
     expect([...new Set(missed.map((photo) => cityOf(photo.imageId)))]).toEqual(["delhi", "agra", "jaipur"]);
-    expect(missed.slice(0, 3).map((photo) => photo.imageId)).toEqual(["gt_album_d006", "gt_album_d008", "gt_album_d015"]);
-    expect(missed[0]).toEqual({ imageId: "gt_album_d006", path: "assets/album/gt_album_d006.webp", altJa: "ラホール門の男女別の列",
-      titleJa: "ラホール門の男女別の列", metaJa: `デリー · ${MISSED_PHOTO_JA}`, missed: true });
+    expect(missed.slice(0, 3).map((photo) => photo.imageId)).toEqual(["gt_album_d002", "gt_album_d003", "gt_album_d004"]);
+    expect(missed[0]).toEqual({ imageId: "gt_album_d002", path: "assets/album/gt_album_d002.webp", altJa: "ガイドブック、初対面で不合格",
+      titleJa: "ガイドブック、初対面で不合格", metaJa: `デリー · ${MISSED_PHOTO_JA}`, missed: true });
   });
 
   it("shows the photos not taken yet once the journey is over, and in the journey started again from it", () => {

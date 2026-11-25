@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
 # term: gt_term_taj_electric_bus
+# photo: gt_album_a007 # photo_caption: 手荷物検査の列でお菓子を食べる家族
 タージ・マハルの手前で、車は入れない。二人は電動の小さなバスに乗り換え、手荷物検査の列に並んだ。前の家族が、持ち込めないお菓子を慌てて食べている。
 # speaker: heroine
 # reaction: heroine,teasing,music
@@ -49,6 +50,7 @@ INCLUDE modules.ink
 列の脇で、胸ポケットを何度も押さえている青年が、きょろきょろと誰かを探していた。
 # speaker: heroine
 # voice: gt_agra_taj_mahal_guide_005
+# photo: gt_album_a012 # photo_caption: 建物より緊張している青年
 なんだか、あの人の方が、建物より緊張してるみたい
 -> END
 
@@ -64,6 +66,7 @@ INCLUDE modules.ink
 列に並んでいた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
 # speaker: gt_agra_taj_young_man
 # voice: gt_agra_main_taj_mahal_battle_nikhil_001
+# photo: gt_album_a013 # photo_caption: 「ベンチを十分だけ確保してください！」
 お願いがあります！　あのベンチを、十分だけ確保してください！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
@@ -84,15 +87,18 @@ INCLUDE modules.ink
 # voice: gt_agra_main_taj_mahal_002
 わたしたちが、あそこに？　二人で？　……ゆっくり？
 # speaker: narrator
+# photo: gt_album_a014 # photo_caption: 三十枚のスライド、七枚目に赤い丸
 ニキルは携帯を見せた。プロポーズの手順が三十枚のスライドになっている。七枚目に、ベンチの写真と赤い丸。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_main_taj_mahal_003
 スライドまで……。わ、分かりました。ゆっくり、ですね
 # speaker: narrator
+# photo: gt_album_a015 # photo_caption: 世界一ロマンチックなベンチで、髪を三回 # photo_show: small
 列の順番が来て、二人はベンチに並んで座った。後ろの視線が痛い。{heroine_name}は、意味もなく三回、髪を直した。
 # speaker: narrator
 # together: enemy gt_tanvi
+# photo: gt_album_a016 # photo_caption: すべてを理解した顔のタンヴィ
 予定より早く、緑のクルタの女性が戻ってきた。タンヴィだ。ベンチの二人と、汗だくの恋人と、彼の胸ポケットを順に見て、彼女はすべてを理解した顔になった。
 # speaker: narrator
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
@@ -196,6 +202,7 @@ INCLUDE modules.ink
 沈黙。{heroine_name}は、ずっと引っかかっていたことを、やっと言葉にした。
 # speaker: heroine
 # voice: gt_agra_main_taj_mahal_006
+# photo: gt_album_a017 # photo_caption: 「一度も、聞かれなかったこと、ですよね」
 タンヴィさんが嫌なのは、タージじゃなくて……一度も、聞かれなかったこと、ですよね
 # speaker: narrator
 タンヴィは少し驚いた顔をして、それから、ゆっくりうなずいた。
@@ -226,6 +233,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: enemy
 # leave: gt_tanvi
+# photo: gt_album_a018 # photo_caption: ベンチではなく出口へ、少し近い距離で # photo_show: small
 二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
 # speaker: heroine
 # reaction: heroine,shy,blush
@@ -252,6 +260,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_anwar_001
 そして最後の石が置かれた日。皇帝は命じたのです。二度とこれほどのものを造らせぬよう、二万の職人の手を、切り落とせと
 # speaker: narrator
+# photo: gt_album_a131 # photo_caption: 一番泣かせるガイドの人だかり
 観客から、悲鳴に近い溜め息が漏れた。何人かは本当に目を拭っている。アンワルは満足げに杖を鳴らし、ぐるりと見回して、こちらで目を止めた。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_002
@@ -262,6 +271,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_finale_001
+# photo: gt_album_a132 # photo_caption: 「日本から来た新婚のお二人です」
 ち、違います！　わたしたち、新婚じゃ……！
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_003
@@ -269,12 +279,12 @@ INCLUDE modules.ink
 # speaker: narrator
 笑いと拍手が大きくなる。{heroine_name}の言葉は、そのたびに物語の一部にされていく。
 # speaker: narrator
-# recall: gt_album_d01
+# recall: gt_album_d001
 # emotion: serious
 彼女は唇を結んだ。デリーの最後の朝、車の窓からカムラが言った言葉が、頭の中で聞こえた。
 # speaker: gt_kamla
 # remembered
-# recall: gt_album_d01
+# recall: gt_album_d001
 # reaction: heroine,serious
 # voice: gt_agra_finale_battle_kamla_001
 アーグラでも、言いたいことは言いなさい。
@@ -326,6 +336,7 @@ INCLUDE modules.ink
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
 # speaker: heroine
 # voice: gt_agra_finale_battle_003
+# photo: gt_album_a134 # photo_caption: 夕日の対岸、正面のタージ
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
 # term: gt_term_tavernier
@@ -351,6 +362,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_006
 それに、この岸を何年もかけて掘った人たちがいます
 # speaker: narrator
+# photo: gt_album_a135 # photo_caption: 土の上で止まった杖
 アンワルの杖が、土の上で止まった。
 -> quiz(2) ->
 # background: gt_bg_agra_mehtab_bagh_sunset
@@ -435,6 +447,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # em: 名前
+# photo: gt_album_a137 # photo_caption: 白い壁のどこかに、一人の名前
 観客の何人かが、川向こうのタージを、目を細めて見つめた。あの白い壁のどこかに、一人の名前がある。
 # speaker: heroine
 # voice: gt_agra_finale_011
@@ -485,6 +498,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_015
 手を切られた人の話じゃなくて、手を受け継いだ人の話。タージと一緒に生まれた町に、七代、住んでる人の話
 # speaker: narrator
+# photo: gt_album_a139 # photo_caption: 白から灰色へ、杖を握る手
 アンワルは答えなかった。杖を握る指に、少し力が入った。日が沈み、川向こうのタージが、白から灰色へ変わっていく。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_016
@@ -518,6 +532,7 @@ INCLUDE modules.ink
 それから、二人に紙の箱を差し出した。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_021
+# photo: gt_album_a140 # photo_caption: 詫びのペーター
 詫びの印だ。新婚でなくても、甘いものは食べられる
 # speaker: heroine
 # reaction: heroine,teasing,music

@@ -26,6 +26,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_lac_bangles
 アーケードの端に、一軒だけ、まるで色の洪水のような店があった。天井まで積み上げられた、ラックの腕輪。赤、緑、黄、桃色。小さなガラスや石がはめこまれて、裸電球の下で光っている。
+# photo: gt_album_j066 # photo_caption: 色の洪水の腕輪の店
 店番の女性が、顔を上げた。
 # speaker: gt_nasreen
 # cutin: name
@@ -54,6 +55,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
 # voice: gt_jaipur_date_johari_bazaar_023
+# photo: gt_album_j067 # photo_caption: 「花嫁さん？」「違います！」
 ち、違います！　ただの招待客です！
 { cond("flag gt_agra_said_for_now"):
     # speaker: heroine
@@ -80,6 +82,7 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,exclamation
 # se: bangles_clink
 # voice: gt_jaipur_date_johari_bazaar_006
+# photo: gt_album_j068 # photo_caption: 手首で、からんって鳴った
 い、いたた……！　あ、入った。手首で、からんって鳴った
 * [「赤が似合う」 # option: red_suits_you]
     # profile: bold
@@ -153,6 +156,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,gloom
 # voice: gt_jaipur_date_johari_bazaar_015
+# photo: gt_album_j070 # photo_caption: 欲しい、を先に言ったら
 ……カムラさんの教え、値切りには向いてなかった
 * [黙って、彼女の交渉を見守る # option: watch_her_bargain]
     # profile: attentive
@@ -209,6 +213,7 @@ INCLUDE modules.ink
     # voice: gt_jaipur_date_johari_bazaar_nasreen_013
     旦那さんの分よ
     # speaker: narrator
+    # photo: gt_album_j071 # photo_caption: 旦那さんの分
     そう言って、こちらの手首にはめてくれた。
 -
 # speaker: narrator

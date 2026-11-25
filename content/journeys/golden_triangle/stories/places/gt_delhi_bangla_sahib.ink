@@ -31,6 +31,7 @@ INCLUDE modules.ink
 # term: gt_term_langar
 その奥に、大きな台所があった。ランガル。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
 # term: gt_term_dal
+# photo: gt_album_d083 # photo_caption: ランガルの大台所に手招き
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
 # term: gt_term_roti
@@ -41,6 +42,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_bangla_sahib_harbans_002
 ハルバンス・シンだ。四十年、トラックで国を縦断する大きな街道を走ってきた。降りてからは、毎日ここで生地を丸めている
 # speaker: narrator
+# photo: gt_album_d084 # photo_caption: インドの形のローティー
 彼女が丸めた一枚目は、どこから見ても丸くなかった。ハルバンスはそれを持ち上げて、光にかざした。
 # speaker: gt_harbans
 # voice: gt_delhi_date_bangla_sahib_harbans_003
@@ -66,6 +68,7 @@ INCLUDE modules.ink
     伸ばした生地は、ほとんど丸かった。ハルバンスはそれを持ち上げて、光にかざした。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_005
+    # photo: gt_album_d085 # photo_caption: ほとんど丸いローティー
     丸い。……四十年で、いちばんつまらん地図だ
     { romance_result == "negative":
         # speaker: heroine
@@ -86,6 +89,7 @@ INCLUDE modules.ink
         全力で伸ばした生地は、なぜか四角くなった。
         # speaker: gt_harbans
         # voice: gt_delhi_date_bangla_sahib_harbans_006
+        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー
         ……荷台だな
         # speaker: heroine
         # emotion: exasperated
@@ -96,6 +100,7 @@ INCLUDE modules.ink
         全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
         # speaker: gt_harbans
         # voice: gt_delhi_date_bangla_sahib_harbans_007
+        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー
         トラックの荷台だな。積みやすくていい
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -109,6 +114,7 @@ INCLUDE modules.ink
     生地は、思ったようには伸びてくれなかった。ハルバンスが、目を細める。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_008
+    # photo: gt_album_d085 # photo_caption: ハートの形のローティー
     ほう。……これは、ハートか
     { romance_result == "negative":
         # speaker: heroine
@@ -134,6 +140,7 @@ INCLUDE modules.ink
     もう一押し、と力を込めたところで、生地の真ん中に、ぽっかり穴が開いた。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_010
+    # photo: gt_album_d085 # photo_caption: 真ん中に穴の開いたローティー
     トンネルだな。……丸め直せ。生地は、何度でもやり直せる
     { romance_result == "negative":
         # speaker: heroine
@@ -247,6 +254,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_date_bangla_sahib_017
+    # photo: gt_album_d087 # photo_caption: 「バス。ありがとうございます」
     バス。ありがとうございます
     # speaker: narrator
     桶を持った人はにっこり笑って、次の人へ移っていった。彼女が、こちらを見て小さく胸を張る。
@@ -262,6 +270,7 @@ INCLUDE modules.ink
     # voice: gt_delhi_date_bangla_sahib_019
     今度は自分で言う。バス！
     # speaker: narrator
+    # photo: gt_album_d087 # photo_caption: 「バス。ありがとうございます」
     少し声が大きすぎて、列の三人先まで振り返った。それでも桶を持った人は、ちゃんと止まってくれた。
 - else:
     # speaker: narrator

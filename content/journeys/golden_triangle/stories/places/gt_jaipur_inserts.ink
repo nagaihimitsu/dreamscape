@@ -110,6 +110,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
     # voice: gt_jaipur_hotel_mehndi_night_007
+    # photo: gt_album_j091 # photo_caption: 親指の付け根の、自分の名前
     ……見つけた、ね。自分の名前、人の手のひらで見るの、どんな気分？
     # speaker: heroine
     # voice: gt_jaipur_hotel_mehndi_night_008
@@ -144,6 +145,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     # voice: gt_jaipur_hotel_mehndi_night_013
+    # photo: gt_album_j092 # photo_caption: 隠してあったのは、FARHANA
     ふふっ、あはは！　すごい、本気だ。自分の店、絶対持てると思う、あの人
 }
 -> END
@@ -165,6 +167,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
 # voice: gt_jaipur_hotel_mehndi_morning_001
+# photo: gt_album_j095 # photo_caption: 一晩で濃くなった色
 だ、旦那さまはいないです！
 { cond("flag gt_jaipur_mehndi_her_secret"):
     -> secret_read
@@ -201,6 +204,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy_deep,heart
     # voice: gt_jaipur_hotel_mehndi_morning_005
+    # photo: gt_album_j097 # photo_caption: わたしが選んだ名前だから
     ……だよね。うん。隠したのは、わたしだから。わたしが選んだ名前だから
 - -> END
 
@@ -230,6 +234,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_hotel_radish_night_002
+# photo: gt_album_j087 # photo_caption: 新聞紙の包みを、帳場へ
 本当に、お皿に戻ってくるんだ……。何になるんですか？
 # speaker: gt_jaipur_hotel_front
 それは、朝のお楽しみ
@@ -286,6 +291,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing,music
     # voice: gt_jaipur_hotel_radish_morning_004
+    # photo: gt_album_j089 # photo_caption: ジャイプールでもらったものだけの朝ごはん
     ガウラさんの大根に、スシュマさんの漬物。この朝ごはん、ジャイプールでもらったものだけで出来てる
 - else:
     # speaker: heroine
@@ -402,6 +408,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_finale_after_envelope_001
 アマンさんに
 # speaker: narrator
+# photo: gt_album_j130 # photo_caption: アマンさんに
 カムラは封筒を光にかざし、中の一ルピー玉を、指で確かめた。
 { cond("flag gt_jaipur_envelope_letter"):
     # speaker: enemy
@@ -440,6 +447,7 @@ INCLUDE modules.ink
 踊りの輪がほどけたころ、花嫁のいとこのプージャーが、携帯を握りしめて走ってきた。画面と彼女の顔を、交互に見る。
 # speaker: gt_pooja
 # voice: gt_jaipur_finale_after_reel_pooja_001
+# photo: gt_album_j131 # photo_caption: 「きゃー？」の人
 やっぱり！　デリーの階段井戸の、『きゃー？』の人でしょ！　いとこ全員で見たの、あの動画！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang

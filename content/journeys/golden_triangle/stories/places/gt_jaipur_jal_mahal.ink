@@ -51,6 +51,7 @@ INCLUDE modules.ink
 結婚式なら、手の甲と手のひら、両方ね。……花嫁さんの手には、模様の中に花婿の名前を隠すの。初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
 # speaker: gt_farhana
 # voice: gt_jaipur_date_jal_mahal_farhana_005
+# photo: gt_album_j057 # photo_caption: 遊歩道のメヘンディ屋
 あなたも、何か隠す？
 * [「自分の名前を隠して」 # option: hide_my_name]
     # profile: bold
@@ -67,6 +68,7 @@ INCLUDE modules.ink
         ……でも、いいよ。断れないからじゃなくて、わたしが、いいって決めたから
         # speaker: narrator
         # emotion: shy
+        # photo: gt_album_j059 # photo_caption: 耳まで赤くして、手を差し出す
         ファルハーナが声を立てて笑い、筒を構えた。彼女は耳まで赤くして、手を差し出した。
     - else:
         # speaker: heroine
@@ -76,6 +78,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing,blush
         # voice: gt_jaipur_date_jal_mahal_005
+        # photo: gt_album_j059 # photo_caption: 耳まで赤くして、手を差し出す
         ……いいよ。ただし、自分で見つけられたらね。見つけられなかったら、ずっと言うから
     }
 * [「君が決めて」 # option: you_decide]
@@ -94,6 +97,7 @@ INCLUDE modules.ink
         わたしが？　じゃあ、こっちに耳を貸して、ファルハーナさん
     }
     # speaker: narrator
+    # photo: gt_album_j058 # photo_caption: 耳打ちの秘密
     彼女が何かをささやくと、ファルハーナは目を丸くし、それから、たまらないという顔で笑った。
     # speaker: heroine
     # voice: gt_jaipur_date_jal_mahal_008
@@ -122,6 +126,7 @@ INCLUDE modules.ink
 筒の先から、こげ茶色のペーストが細い線になって出てくる。花びら。蔓。孔雀の羽。手首から指先まで、迷いのない線が、見る見るうちに彼女の手を埋めていった。
 # speaker: heroine
 # voice: gt_jaipur_date_jal_mahal_011
+# photo: gt_album_j060 # photo_caption: 自分の手じゃないみたい
 すごい。下書きもないのに。手のひらが、だんだん自分の手じゃないみたいになっていく
 # speaker: gt_farhana
 # voice: gt_jaipur_date_jal_mahal_farhana_007
@@ -158,6 +163,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # emotion: exasperated
         # voice: gt_jaipur_date_jal_mahal_015
+        # photo: gt_album_j063 # photo_caption: 「いじわる！」 # photo_show: small
         今は本当にやめて。手、動かしたら模様がつぶれちゃう
         # speaker: narrator
         # emotion: exasperated
@@ -167,6 +173,7 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,anger
         # voice: gt_jaipur_date_jal_mahal_016
+        # photo: gt_album_j063 # photo_caption: 「いじわる！」 # photo_show: small
         いじわる！　手が乾いたら、覚えてなさいね
         # speaker: narrator
         # emotion: teasing

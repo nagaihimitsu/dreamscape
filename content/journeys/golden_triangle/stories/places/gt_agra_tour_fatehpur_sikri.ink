@@ -32,6 +32,7 @@ INCLUDE modules.ink
 皇帝アクバルと、お妃ジョーダーの恋の話なら、叔父の右に出る者はおりません
 # speaker: heroine
 # voice: gt_agra_tour_morning_001
+# photo: gt_album_a042 # photo_caption: 叔父を薦めるサミール、自分で断る彼女
 ありがとうございます。でも、今日は、二人で見て回りたいんです
 # speaker: narrator
 # emotion: surprised
@@ -76,6 +77,7 @@ INCLUDE modules.ink
 娘が書きました。わたしの字は、道に迷った牛みたいだそうです
 # speaker: narrator
 # emotion: happy
+# photo: gt_album_a043 # photo_caption: 娘さんが書いた、名前の紙
 彼女は吹き出し、それから、こちらにだけ聞こえる声で言った。
 # speaker: heroine
 # emotion: smile
@@ -92,6 +94,7 @@ INCLUDE modules.ink
 # ambience: stop
 # speaker: narrator
 アーグラの町を抜けるまでが、いちばん長かった。オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
+# photo: gt_album_a044 # photo_caption: 鳴らさないクラクション、信号のかわりの牛
 ヴィノードは、クラクションを鳴らさなかった。牛の後ろで、ただ待っている。
 # speaker: heroine
 # voice: gt_agra_tour_out_leg_001
@@ -120,6 +123,7 @@ INCLUDE modules.ink
 書いてあると、なんだか安心する。それだけです
 # speaker: narrator
 # term: gt_term_nimbu_mirchi
+# photo: gt_album_a046 # photo_caption: バックミラーのレモンと青唐辛子
 バックミラーの下で、糸に通した小さなレモンと青唐辛子が揺れていた。彼女の視線に気づいて、ヴィノードが顎で示す。
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_004
@@ -201,6 +205,7 @@ INCLUDE modules.ink
     彼女は少し考えてから、前の座席の背に手をかけた。
     # speaker: heroine
     # voice: gt_agra_tour_out_mother_007
+    # photo: gt_album_a047 # photo_caption: 母への土産話
     同じ町を、同じ日に見たかった二人です。……って、伝えてください
     { cond("couple"):
         # speaker: heroine
@@ -233,13 +238,14 @@ INCLUDE modules.ink
 シークリーの下の町に入ると、ヴィノードは大きな木の陰に車を停めた。
 # speaker: narrator
 エンジンを切ると、外の音が急に近くなった。呼び込みの声、バイクの音、どこかで鳴る鈴。
+# photo: gt_album_a048 # photo_caption: 木陰の車、牛の字の電話番号
 ヴィノードは名前の紙を裏返し、電話番号を書いて、こちらに渡した。娘さんのきれいな字の裏に、道に迷った牛の字が並んだ。
 # speaker: gt_vinod
 # voice: gt_agra_tour_arrive_vinod_001
 入口で、ガイドが要ると言う人がいます。切符だけでは足りない、と言う人も。足ります。お二人の切符で、ちゃんと全部です
 # speaker: heroine
 # emotion: smile
-# recall: gt_album_d84
+# recall: gt_album_d126
 # voice: gt_agra_tour_arrive_001
 大丈夫です。ノー・サンキューは、デリーで練習してきました
 # speaker: gt_vinod
@@ -286,6 +292,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_tour_she_answered"):
     # speaker: gt_vinod
     # voice: gt_agra_tour_mathri_vinod_003
+    # photo: gt_album_a060 # photo_caption: お母さんの返事
     母に、伝えました。同じ町を、同じ日に見たかった二人。母はしばらく黙って、それから言いました。それはもう、旅の話じゃなくて、二人の話だね、と
     # speaker: heroine
     # reaction: heroine,shy,blush
@@ -294,6 +301,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_tour_told_reader"):
     # speaker: gt_vinod
     # voice: gt_agra_tour_mathri_vinod_004
+    # photo: gt_album_a060 # photo_caption: お母さんの返事
     母に、伝えました。何でも読む人。母は笑って、それなら帰りの道も、ずっと何か読んでいるんだろう、運転は静かにね、と
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -302,6 +310,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_tour_told_traveling"):
     # speaker: gt_vinod
     # voice: gt_agra_tour_mathri_vinod_005
+    # photo: gt_album_a060 # photo_caption: お母さんの返事
     母に、伝えました。一緒に旅をしている二人。母は、『一緒に』のところだけ、二回聞き返しました
     # speaker: heroine
     # reaction: heroine,surprised,sweat
@@ -399,6 +408,7 @@ INCLUDE modules.ink
 * [Always. She notices what I miss. # option: notices_more # translation: いつもです。自分が見落とすものに、気づく人です。]
     # rel: affection +1
     # speaker: narrator
+    # photo: gt_album_a064 # photo_caption: 眠ったふり
     目を閉じたまま、彼女の口元だけが、ゆっくり笑った。
     # speaker: heroine
     # reaction: heroine,shy,blush
@@ -407,6 +417,7 @@ INCLUDE modules.ink
 * [Only when she's having fun. # option: when_happy # translation: 楽しいときだけです。]
     # rel: spark +1
     # speaker: narrator
+    # photo: gt_album_a064 # photo_caption: 眠ったふり
     目を閉じたまま、彼女が言った。
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -415,6 +426,7 @@ INCLUDE modules.ink
 * [Ask her when she wakes up. # option: ask_when_awake # translation: 起きたら、本人に聞いてください。]
     # rel: trust +1
     # speaker: narrator
+    # photo: gt_album_a064 # photo_caption: 眠ったふり
     すると、閉じていたはずの目が、片方だけ開いた。
     # speaker: heroine
     # reaction: heroine,teasing,question
@@ -444,6 +456,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_agra_tour_home_001
+# photo: gt_album_a065 # photo_caption: 白い車と、最後まで揺れるレモン
 次は、って言ってくれるんですね。はい。マトリーのお礼、お母さんに、自分で言いたいです
 # speaker: narrator
 # leave: gt_vinod
@@ -465,5 +478,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
 # voice: gt_agra_tour_home_003
+# photo: gt_album_a066 # photo_caption: 誤解は、今度、まとめて
 ……誤解は、今度、まとめて、ちゃんと解きます
 -> END
