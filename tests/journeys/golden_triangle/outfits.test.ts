@@ -58,8 +58,8 @@ describe("the shop's outfits", () => {
     const state = delhi();
     expect(getOutfit(SAREE)?.termIds).toEqual(["gt_term_saree"]);
     expect(getOutfit(SALWAR_KAMEEZ)?.termIds).toEqual(["gt_term_salwar_kameez", "gt_term_dupatta"]);
-    expect(getOutfit("gt_kurta_block_print")?.termIds).toEqual(["gt_term_kurta"]);
-    expect(getOutfit("gt_anarkali_jade")?.termIds).toEqual(["gt_term_anarkali", "gt_term_dupatta"]);
+    expect(getOutfit("gt_kurta_block_print")?.termIds).toEqual(["gt_term_kurta", "gt_term_block_print"]);
+    expect(getOutfit("gt_anarkali_jade")?.termIds).toEqual(["gt_term_anarkali", "gt_term_churidar", "gt_term_dupatta"]);
     const bought = validateGameState(applyPlayerAction(state, playerActionChange({ kind: "buy_outfit", outfitId: SAREE }, () => 0)));
     expect(termsAdded(state, bought)).toEqual(["gt_term_saree"]);
     // The term is kept through a save and a load, as a line's # term: is.

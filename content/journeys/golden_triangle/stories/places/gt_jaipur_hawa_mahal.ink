@@ -15,6 +15,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_hawa_mahal_guide_001
 窓、窓、窓……！　建物というより、窓でできた壁みたい
 # speaker: narrator
+# term: gt_term_jharokha
 小窓の一つひとつに、細かな格子がはまっている。張り出した出窓が、上へ行くほど少しずつ細くなり、とがった屋根へ集まっていく。
 # speaker: heroine
 # voice: gt_jaipur_hawa_mahal_guide_002
@@ -122,6 +123,7 @@ INCLUDE modules.ink
     係員が指さした先に、ゆるい坂道があった。階段ではなく、傾斜路で上の階へ上がるのだ。
 }
 # speaker: narrator
+# term: gt_term_hawa_ramps
 上の階へ行くほど、通路は細くなっていった。小窓の格子に顔を寄せると、通りが真下に広がっていた。
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
@@ -247,6 +249,7 @@ INCLUDE modules.ink
 夜の旧市街。照明に浮かぶハワー・マハルの前を、花婿の行列がゆっくり進んでいた。
 # speaker: narrator
 # term: gt_term_sehra
+# term: gt_term_light_bearers
 赤い制服の楽隊。頭に灯りを載せて歩く男たち。白い馬の上には、花の房で顔を隠した花婿、アマン。その前で、親戚たちが道いっぱいに踊っている。
 # speaker: narrator
 招待客の二人は、行列の端を歩いていた。踊る人たちの輪から、半歩だけ離れて。
@@ -271,6 +274,7 @@ INCLUDE modules.ink
 押し問答をしているうちに、行列が止まった。ハワー・マハルの向かいの、古い屋敷の門の前。花嫁の家だ。
 # speaker: narrator
 # together: enemy gt_pooja
+# term: gt_term_ribbon_ceremony
 門には赤いリボンが張られ、その前に、花嫁のいとこたちが腕を組んで立ちはだかっていた。先頭の娘が、高らかに宣言する。
 # speaker: gt_jaipur_bride_cousin
 # voice: gt_jaipur_finale_battle_pooja_001
@@ -320,6 +324,7 @@ INCLUDE modules.ink
 }
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_005
+# term: gt_term_pink_city
 声が小さい。もっと大きく言いなさい。ここは通りよ
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -387,6 +392,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: wooden_window
 # together: enemy gt_pooja gt_jaipur_bride_grandmother
+# term: gt_term_grid_city
 そのとき、屋敷の二階の格子窓が、かたりと鳴った。窓の奥に、白い髪の老婦人の影がある。
 # speaker: narrator
 花嫁の祖母だった。プージャーが小声で言う。
@@ -453,6 +459,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # leave: gt_jaipur_bride_grandmother
+# term: gt_term_purdah
 格子の向こうで、老婦人が小さく笑った気配がした。
 # speaker: narrator
 # se: wooden_window
@@ -486,6 +493,7 @@ INCLUDE modules.ink
 # se: scissors_snip
 # shake
 # weather: petals
+# term: gt_term_dhol
 リボンが切られた。楽隊が一斉に鳴り出し、通りが揺れる。カムラが、{heroine_name}の手首をつかんだ。
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_008

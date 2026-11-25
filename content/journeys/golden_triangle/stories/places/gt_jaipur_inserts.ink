@@ -157,6 +157,7 @@ INCLUDE modules.ink
 朝、宿の帳場。手のひらの模様は、一晩で、オレンジから赤茶色のほうへ、ぐっと濃くなっていた。フロントの女性が、それを見て声を上げた。
 # speaker: gt_jaipur_hotel_front
 # voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_001
+# term: gt_term_mehndi_colour
 まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ。旦那さまに、ってね。お姑さんに、って言う人もいるけど
 # speaker: heroine
 # reaction: heroine,surprised_big,blush

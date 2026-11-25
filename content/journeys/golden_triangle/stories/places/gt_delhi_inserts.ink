@@ -865,6 +865,7 @@ No, thank you.
 
 = short_of_money
 # speaker: narrator
+# term: gt_term_rupee
 手付金は、五百ルピーだという。財布を開いてみたが、二人の手持ちを合わせても届かなかった。
 # speaker: gt_delhi_scam_suit_man
 # voice: gt_delhi_depart_scam_office_delhi_scam_suit_man_002

@@ -24,6 +24,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: immersed
 # speaker: narrator
+# term: gt_term_dhol
 宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
 # speaker: heroine
 # voice: gt_jaipur_date_confession_001

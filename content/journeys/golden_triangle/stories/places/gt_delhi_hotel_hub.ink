@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # speaker: narrator
 デリーの宿は、住宅街の路地にあった。隣の古い家から、段ボールが次々に運び出されている。
 # speaker: narrator
+# term: gt_term_peanuts
 路地の真ん中で、ショールの小柄な老婦人が椅子に陣取り、落花生を割りながら運び手に指図している。将軍みたいに。
 # speaker: enemy
 # cutin: name
@@ -32,6 +33,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_arrival_001
 わたしのガイドブック、初対面で不合格になった……
 # speaker: narrator
+# term: gt_term_devanagari
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。ガイドブックの代わりだという。
 # speaker: narrator
 # item_show: gt_delhi_kamla_memo
@@ -57,6 +59,7 @@ INCLUDE modules.ink
 落花生の殻が、また小気味よく割れた。{heroine_name}の目が、ついその手もとを追う。
 # speaker: enemy
 # voice: gt_delhi_arrival_kamla_007
+# term: gt_term_delhi_metro
 出かけるなら、地下鉄にしなさい。わたしは女性車両。オートリキシャの運転手とは、値段で喧嘩になるからね。
 # speaker: narrator
 それから彼女は、{heroine_name}の後ろに立つこちらを顎で示した。

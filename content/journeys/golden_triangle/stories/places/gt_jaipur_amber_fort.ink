@@ -99,6 +99,7 @@ INCLUDE modules.ink
     ガネーシャだ。ガネーシュ・ポール、ガネーシャの門。名前を読めば分かる。向こうのは孔雀になっている
 }
 # speaker: narrator
+# term: gt_term_ganesh_pol
 土産物屋の店主が、騒ぎを聞きつけてやってきた。腹の出た男で、首から金の鎖を下げている。
 # speaker: gt_jaipur_amber_shopkeeper
 # voice: gt_jaipur_main_amber_fort_battle_jaipur_amber_shopkeeper_001
@@ -135,6 +136,7 @@ INCLUDE modules.ink
     鏡だ。何千もの、小さな鏡。星に見えるのは、写真がぼやけていたからだ。実物を見ていない証拠だ
 }
 # speaker: narrator
+# term: gt_term_sheesh_mahal
 {heroine_name}には、もう分かっていた。印刷の方は、サリームの絵を写真に撮って刷ったものだ。写真でぼやけた所だけ、別のものにすり替わっている。
 # speaker: narrator
 疑ったのは、自分の方だった。

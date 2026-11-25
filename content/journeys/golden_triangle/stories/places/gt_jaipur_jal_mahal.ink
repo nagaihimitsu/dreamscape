@@ -25,6 +25,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 もとは鴨猟のための館だったという。湖の水が満ちると、下の階は水に沈むと言われている。
+# term: gt_term_camel
 遊歩道には、焼きとうもろこしの屋台、写真用に飾り立てたラクダ、風船売り。その間に、低い椅子を並べた女性がいた。手の中には、絞り袋のような、細い円錐の筒。
 # speaker: gt_jaipur_jal_mahal_woman
 # voice: gt_jaipur_date_jal_mahal_farhana_001
@@ -44,6 +45,7 @@ INCLUDE modules.ink
 わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか
 # speaker: gt_farhana
 # voice: gt_jaipur_date_jal_mahal_farhana_004
+# term: gt_term_mehndi_name
 結婚式なら、手の甲と手のひら、両方ね。……花嫁さんの手には、模様の中に花婿の名前を隠すの。初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
 # speaker: gt_farhana
 # voice: gt_jaipur_date_jal_mahal_farhana_005

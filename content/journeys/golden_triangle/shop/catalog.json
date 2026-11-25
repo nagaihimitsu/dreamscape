@@ -73,7 +73,8 @@
       "price": 1200,
       "boughtLineJa": "よく見ると、花がひとつずつちょっとずつ違うの。手で押したんだって思うと、なんだか愛おしくない？",
       "termIds": [
-        "gt_term_kurta"
+        "gt_term_kurta",
+        "gt_term_block_print"
       ]
     },
     {
@@ -85,6 +86,7 @@
       "boughtLineJa": "くるっと回ると、裾がぜんぶ広がるんだって。……一回だけね。笑わないで見てて",
       "termIds": [
         "gt_term_anarkali",
+        "gt_term_churidar",
         "gt_term_dupatta"
       ]
     }

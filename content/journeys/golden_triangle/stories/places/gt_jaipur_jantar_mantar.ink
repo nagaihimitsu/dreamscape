@@ -9,6 +9,8 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_jaipur_jantar_mantar
 # speaker: narrator
+# term: gt_term_samrat_yantra
+# term: gt_term_jai_prakash
 ジャンタル・マンタルの敷地には、見たことのない形が並んでいた。巨大な階段、半球のくぼみ、空に向かって傾いた三角の壁。
 # speaker: heroine
 # reaction: heroine,surprised,question
@@ -52,6 +54,7 @@ INCLUDE modules.ink
 # speaker: gt_shastri
 # cutin: name
 # voice: gt_jaipur_main_jantar_mantar_battle_shastri_001
+# term: gt_term_muhurat
 シャーストリー。毎朝ここで、影を眺めている。町の占星術師だよ
 # speaker: enemy
 # cutin: name

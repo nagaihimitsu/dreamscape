@@ -164,6 +164,16 @@
       "imageId": "gt_img_term_e_rickshaw"
     },
     {
+      "id": "gt_term_delhi_metro",
+      "nameJa": "デリー・メトロ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "transport",
+      "lineJa": "2002年末に最初の区間が開業し、今では世界有数の規模の路線網になった。",
+      "photoNoteJa": "写真は、ラージーヴ・チョーク駅の駅名標",
+      "imageId": "gt_img_term_delhi_metro"
+    },
+    {
       "id": "gt_term_paratha",
       "nameJa": "パラーター",
       "readingJa": null,
@@ -291,6 +301,62 @@
       "imageId": "gt_img_term_caravanserai"
     },
     {
+      "id": "gt_term_sher_mandal",
+      "nameJa": "シェール・マンダル（書庫の塔）",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "八角形の赤砂岩の塔。フマユーンが書庫にし、この階段で転んで亡くなった。",
+      "imageId": "gt_img_term_sher_mandal"
+    },
+    {
+      "id": "gt_term_diwan_i_khas",
+      "nameJa": "ディーワーニ・ハース（内謁の間）",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "皇帝が限られた客と会った白大理石の広間。孔雀の玉座が置かれていた。",
+      "imageId": "gt_img_term_diwan_i_khas"
+    },
+    {
+      "id": "gt_term_sheesh_mahal",
+      "nameJa": "鏡の間",
+      "readingJa": null,
+      "aliasJa": "シーシュ・マハル",
+      "category": "building",
+      "lineJa": "壁と天井を小さな鏡で埋めた間。鏡は凸面で、ろうそくの灯りにきらめく。",
+      "photoNoteJa": "写真は、1883年ごろに撮られた鏡の間",
+      "imageId": "gt_img_term_sheesh_mahal"
+    },
+    {
+      "id": "gt_term_ganesh_pol",
+      "nameJa": "ガネーシュ・ポール",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "ガネーシャにちなむ門。ガネーシャは人生の障害を取り除く神とされる。",
+      "imageId": "gt_img_term_ganesh_pol"
+    },
+    {
+      "id": "gt_term_hawa_ramps",
+      "nameJa": "ハワー・マハルの傾斜路",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "ハワー・マハルの上の階へは、階段でなく傾斜路で上がる造り。",
+      "photoNoteJa": "写真は、ハワー・マハルの外観",
+      "imageId": "gt_img_term_hawa_ramps"
+    },
+    {
+      "id": "gt_term_madhavendra_bhawan",
+      "nameJa": "マーダヴェーンドラ・バワン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "building",
+      "lineJa": "九つに分かれた同じ造りの居室が中庭を囲む。王と妃たちのための宮殿。",
+      "imageId": "gt_img_term_madhavendra_bhawan"
+    },
+    {
       "id": "gt_term_petha",
       "nameJa": "ペーター",
       "readingJa": null,
@@ -298,6 +364,35 @@
       "category": "food",
       "lineJa": "冬瓜を砂糖で煮つめた、白く半透明のお菓子。アーグラの名物。",
       "imageId": "gt_img_term_petha"
+    },
+    {
+      "id": "gt_term_peanuts",
+      "nameJa": "落花生（ムーングファリー）",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "冬の路上の定番。熱い砂や塩で炒った落花生を、新聞紙の袋に入れて売る。",
+      "photoNoteJa": "写真は、ラージャスターンの町の落花生の屋台",
+      "imageId": "gt_img_term_peanuts"
+    },
+    {
+      "id": "gt_term_garam_masala",
+      "nameJa": "ガラムマサラ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "「熱い（温める）香辛料」の意の混合香辛料。配合は地方や好みで違う。",
+      "photoNoteJa": "写真は、混ぜる前の、ガラムマサラに使う香辛料",
+      "imageId": "gt_img_term_garam_masala"
+    },
+    {
+      "id": "gt_term_kebab",
+      "nameJa": "カバーブ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "ジャーマー・マスジドの近くに、1913年創業のムガル料理の老舗がある。",
+      "imageId": "gt_img_term_kebab"
     },
     {
       "id": "gt_term_baraat",
@@ -345,6 +440,62 @@
       "imageId": "gt_img_term_lac_bangles"
     },
     {
+      "id": "gt_term_charbagh",
+      "nameJa": "チャハール・バーグ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "design",
+      "lineJa": "水路で四つに区切る、楽園を表す庭。フマユーン廟はインド最初の庭園墓とされる。",
+      "imageId": "gt_img_term_charbagh"
+    },
+    {
+      "id": "gt_term_pritam_niwas",
+      "nameJa": "シティ・パレスの四つの門",
+      "readingJa": null,
+      "aliasJa": "プリタム・ニワスの門",
+      "category": "design",
+      "lineJa": "四つの小さな門が四季を表す。孔雀は秋、蓮は夏、緑は春、バラは冬。",
+      "photoNoteJa": "写真は、秋を表す孔雀の門",
+      "imageId": "gt_img_term_pritam_niwas"
+    },
+    {
+      "id": "gt_term_jharokha",
+      "nameJa": "ジャローカー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "design",
+      "lineJa": "張り出した格子の出窓。王宮の女性は、通りの様子を人目に触れずに眺められた。",
+      "imageId": "gt_img_term_jharokha"
+    },
+    {
+      "id": "gt_term_kundan",
+      "nameJa": "クンダン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "design",
+      "lineJa": "金箔をはさんで宝石をはめ込む技法。ジャイプルは昔からその中心地。",
+      "photoNoteJa": "写真は、ジャイプールで作られた19世紀の金の腕飾り",
+      "imageId": "gt_img_term_kundan"
+    },
+    {
+      "id": "gt_term_meenakari",
+      "nameJa": "ミーナーカーリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "design",
+      "lineJa": "金属の表面を釉薬で彩色する琺瑯細工。ラージャスターンが名高い産地。",
+      "imageId": "gt_img_term_meenakari"
+    },
+    {
+      "id": "gt_term_block_print",
+      "nameJa": "木版プリント",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "design",
+      "lineJa": "木の版を手で押して布に柄を刷る技。ジャイプール近郊のバグルが名高い産地。",
+      "imageId": "gt_img_term_block_print"
+    },
+    {
       "id": "gt_term_sehra",
       "nameJa": "セーラー",
       "readingJa": null,
@@ -352,6 +503,34 @@
       "category": "clothing",
       "lineJa": "婚礼で花婿の額から垂らし、顔を覆う花や飾りの房。",
       "imageId": "gt_img_term_sehra"
+    },
+    {
+      "id": "gt_term_mosque_robe",
+      "nameJa": "貸し上着（モスクの入口）",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "clothing",
+      "lineJa": "肩や脚を覆うのが入場の決まり。足りない人には、入口で上着を貸している。",
+      "imageId": "gt_img_term_mosque_robe"
+    },
+    {
+      "id": "gt_term_pagri",
+      "nameJa": "パグリー",
+      "readingJa": null,
+      "aliasJa": "ターバン",
+      "category": "clothing",
+      "lineJa": "ターバンの色や形は、地域・身分・場面で変わる。敬意と名誉のしるしでもある。",
+      "imageId": "gt_img_term_pagri"
+    },
+    {
+      "id": "gt_term_churidar",
+      "nameJa": "チュリダール",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "clothing",
+      "lineJa": "足首に腕輪のようなしわが寄る細身のズボン。丈が脚より長く、余りが折り重なる。",
+      "photoNoteJa": "画像は、19世紀の衣装の図",
+      "imageId": "gt_img_term_churidar"
     },
     {
       "id": "gt_term_gangaur",
@@ -370,6 +549,26 @@
       "category": "music",
       "lineJa": "インドの古典の踊りなどで使う手の形。くじゃく、花など、形ごとに意味がある。",
       "imageId": "gt_img_term_mudra"
+    },
+    {
+      "id": "gt_term_light_sound_show",
+      "nameJa": "光と音のショー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "music",
+      "lineJa": "夜のレッド・フォートで、俳優と映像の投影を使い、城で起きた出来事を語るショー。",
+      "photoNoteJa": "写真は、色の光で照らされたレッド・フォートの建物（2011年）",
+      "imageId": "gt_img_term_light_sound_show"
+    },
+    {
+      "id": "gt_term_dhol",
+      "nameJa": "ドール",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "music",
+      "lineJa": "両面を打つ太鼓。結婚式の行列や祭りで、にぎやかに鳴らされる。",
+      "photoNoteJa": "写真は、ウッタラーカンドの結婚式のドール",
+      "imageId": "gt_img_term_dhol"
     },
     {
       "id": "gt_term_head_bobble",
@@ -421,6 +620,132 @@
       "photoNoteJa": "写真は2009年、フィンランドでの講習。真ん中が、始めたマダン・カタリア医師"
     },
     {
+      "id": "gt_term_independence_day",
+      "nameJa": "独立記念日（8月15日）",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "8月15日、首相がレッド・フォートの城壁で国旗を掲げ、独立を祝う演説をする。",
+      "photoNoteJa": "写真は、国旗の立つレッド・フォートのラホール門",
+      "imageId": "gt_img_term_independence_day"
+    },
+    {
+      "id": "gt_term_indian_english",
+      "nameJa": "インドの英語",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "官庁ではヒンディー語と英語を使う。予定を早める「prepone」はインド英語。",
+      "photoNoteJa": "写真は、ヒンディー語と英語が並ぶ駅名標",
+      "imageId": "gt_img_term_indian_english"
+    },
+    {
+      "id": "gt_term_bargaining",
+      "nameJa": "値切り",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "市場や小さな店では、値段を交渉して買うのがふつう。定価の店では値切りにくい。",
+      "photoNoteJa": "写真は、デリーのサロージニー・ナガル市場の入口",
+      "imageId": "gt_img_term_bargaining"
+    },
+    {
+      "id": "gt_term_kabootarbazi",
+      "nameJa": "鳩飼い（カブータルバーズィー）",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "旧市街の屋上で鳩の群れを飛ばす趣味。17世紀には通信にも鳩が使われた。",
+      "photoNoteJa": "写真は、デリーの屋上から見た夕暮れの鳩の群れ",
+      "imageId": "gt_img_term_kabootarbazi"
+    },
+    {
+      "id": "gt_term_iftar",
+      "nameJa": "イフタール",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "ラマダン中、日没後にとる食事。ナツメヤシと水で始めるのが習わし。",
+      "photoNoteJa": "写真は、ラマダンの夕方のジャーマー・マスジドの回廊",
+      "imageId": "gt_img_term_iftar"
+    },
+    {
+      "id": "gt_term_moustache",
+      "nameJa": "口ひげ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "ラージプートの口ひげは誇りの印とされ、プシュカルの祭りでは長さを競う大会がある。",
+      "photoNoteJa": "写真は、シティ・パレスの門の衛兵",
+      "imageId": "gt_img_term_moustache"
+    },
+    {
+      "id": "gt_term_muhurat",
+      "nameJa": "ムフールタ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "結婚式のような大事な儀式は、占星術師が吉とされる時刻を選んで行う。",
+      "imageId": "gt_img_term_panchang",
+      "photoNoteJa": "画像は、吉時を調べる暦（パンチャーング）"
+    },
+    {
+      "id": "gt_term_pigeon_feeding",
+      "nameJa": "鳩に穀物を撒く",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "ジャイナ教徒やヒンドゥー教徒には、鳩などへの餌やりを信仰の一部とする人がいる。",
+      "photoNoteJa": "写真は、アルバート・ホール前の広場の鳩",
+      "imageId": "gt_img_term_pigeon_feeding"
+    },
+    {
+      "id": "gt_term_light_bearers",
+      "nameJa": "頭に灯りを載せる人",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "花婿の行列では、灯りを頭に載せた人たちが夜道を照らす。発電機につなぐ灯りもある。",
+      "imageId": "gt_img_term_light_bearers"
+    },
+    {
+      "id": "gt_term_mehndi_name",
+      "nameJa": "花婿の名前を隠すメヘンディ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "花嫁の手のメヘンディに花婿の名を隠し、花婿がそれを探す風習がある。",
+      "imageId": "gt_img_term_mehndi_name"
+    },
+    {
+      "id": "gt_term_mehndi_colour",
+      "nameJa": "濃く染まるメヘンディ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "濃く染まるほど愛されるという言い伝え。姑に好かれるとも言う。",
+      "imageId": "gt_img_term_mehndi_colour"
+    },
+    {
+      "id": "gt_term_ribbon_ceremony",
+      "nameJa": "門の通せんぼ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "花嫁側の親族が花婿一行の行く手をふさぎ、通すかわりに祝儀を求める風習がある。",
+      "photoNoteJa": "写真は、プシュカルの花婿の行列",
+      "imageId": "gt_img_term_ribbon_ceremony"
+    },
+    {
+      "id": "gt_term_purdah",
+      "nameJa": "パルダー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "パルダーは「幕」の意味。格子の窓や幕越しに、女性は外を見ても姿は見られない。",
+      "imageId": "gt_img_term_purdah"
+    },
+    {
       "id": "gt_term_rose_ringed_parakeet",
       "nameJa": "ワカケホンセイインコ",
       "readingJa": null,
@@ -428,6 +753,15 @@
       "category": "creature",
       "lineJa": "インドなどにすむ緑のインコ。雄の首には、黒と桃色の細い輪がある。",
       "imageId": "gt_img_term_rose_ringed_parakeet"
+    },
+    {
+      "id": "gt_term_camel",
+      "nameJa": "ラクダ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "creature",
+      "lineJa": "ラージャスターン州の動物（2014年から）。インドのラクダの大半がこの州にいる。",
+      "imageId": "gt_img_term_camel"
     },
     {
       "id": "gt_term_jaivana",
@@ -475,6 +809,51 @@
       "category": "thing",
       "lineJa": "乾いた葉を重ね、細い竹ひごなどで留めた器。屋台の軽食やお供えを盛る。",
       "imageId": "gt_img_term_dona"
+    },
+    {
+      "id": "gt_term_devanagari",
+      "nameJa": "デーヴァナーガリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "ヒンディー語などを書く文字。文字の上に横線が通り、字がそこからぶら下がる。",
+      "imageId": "gt_img_term_devanagari"
+    },
+    {
+      "id": "gt_term_rupee",
+      "nameJa": "ルピー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "₹は2010年に決まった記号。ヒンディー語の「र」とローマ字「R」を合わせた形。",
+      "imageId": "gt_img_term_rupee"
+    },
+    {
+      "id": "gt_term_jai_prakash",
+      "nameJa": "ジャイ・プラカーシュ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "半球形のくぼみが二つ並ぶ観測器。内側に空の像を逆さまに写して、天体を読む。",
+      "imageId": "gt_img_term_jai_prakash"
+    },
+    {
+      "id": "gt_term_samrat_yantra",
+      "nameJa": "サムラート・ヤントラ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "世界最大級の日時計。ジャイ・シング2世が造った天文台の中にある。",
+      "imageId": "gt_img_term_samrat_yantra"
+    },
+    {
+      "id": "gt_term_tutu",
+      "nameJa": "ミイラ「トゥトゥ」",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "神官の家の娘とされるミイラ。カイロの博物館から贈られ、ジャイプルへ来た。",
+      "imageId": "gt_img_term_tutu"
     },
     {
       "id": "gt_term_tavernier",
@@ -709,6 +1088,52 @@
       "category": "person",
       "lineJa": "インドの鉄道の駅で荷物を運ぶ人。2016年に、呼び名が「クーリー」から変わった。",
       "imageId": "gt_img_term_sahayak"
+    },
+    {
+      "id": "gt_term_bahadur_shah_zafar",
+      "nameJa": "バハードゥル・シャー・ザファル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "ムガル帝国最後の皇帝で、ウルドゥー語の詩人。詩人の号「ザファル」は「勝利」の意。",
+      "imageId": "gt_img_term_bahadur_shah_zafar"
+    },
+    {
+      "id": "gt_term_chaiwala",
+      "nameJa": "チャイ屋",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "person",
+      "lineJa": "チャイ売りは南アジアの街に欠かせない存在。炭火で煮出して売る屋台もある。",
+      "imageId": "gt_img_term_chaiwala"
+    },
+    {
+      "id": "gt_term_khari_baoli",
+      "nameJa": "カーリー・バーオリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "place",
+      "lineJa": "「アジア最大」とされる香辛料の卸市場。名は「塩辛い階段井戸」の意。",
+      "imageId": "gt_img_term_khari_baoli"
+    },
+    {
+      "id": "gt_term_pink_city",
+      "nameJa": "ピンク・シティ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "place",
+      "lineJa": "1876年、英国の皇太子を迎えるために町を塗ったとされ、今もこの色を守る。",
+      "imageId": "gt_img_term_pink_city"
+    },
+    {
+      "id": "gt_term_grid_city",
+      "nameJa": "碁盤の目の町割り",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "place",
+      "lineJa": "1727年に築かれた計画都市。古い建築書の考えに沿って、町を碁盤の目に割った。",
+      "photoNoteJa": "写真は、ナハルガル城から見たジャイプールの町",
+      "imageId": "gt_img_term_grid_city"
     }
   ]
 }

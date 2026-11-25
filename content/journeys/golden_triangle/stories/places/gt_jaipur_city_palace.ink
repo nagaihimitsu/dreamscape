@@ -9,6 +9,8 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_jaipur_city_palace
 # speaker: narrator
+# term: gt_term_pagri
+# term: gt_term_moustache
 シティ・パレスの門の前に、赤いターバンと白い制服の門番が立っていた。立派な口ひげが、左右にくるりと巻き上がっている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -132,6 +134,7 @@ INCLUDE modules.ink
     四季よ。孔雀が秋で、蓮が夏。……うちの台所にも、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 }
 # speaker: narrator
+# term: gt_term_pritam_niwas
 ヴィシャールは、緑の門を見上げたまま黙った。それから、母親に聞こえないくらいの声で言った。
 # speaker: gt_vishal
 # voice: gt_jaipur_main_city_palace_battle_vishal_006

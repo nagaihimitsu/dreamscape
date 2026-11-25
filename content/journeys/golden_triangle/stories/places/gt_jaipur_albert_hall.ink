@@ -15,6 +15,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。その正面の広場が、灰色に揺れている。鳩だ。何百羽もの鳩が、地面を埋めつくしていた。
 # speaker: narrator
+# term: gt_term_pigeon_feeding
 広場の端で、男が小さな袋に入った穀物を売っている。
 # speaker: narrator
 # se: pigeons_takeoff
@@ -95,6 +96,7 @@ INCLUDE modules.ink
 # cutin: name
 # em_shake: 怖い
 # voice: gt_jaipur_date_albert_hall_kavya_001
+# term: gt_term_tutu
 ……わたし、カヴィヤ。あそこに、ミイラがいるの。エジプトの、本物の。……みんな、平気だって。でも、わたし、怖い
 # speaker: heroine
 # voice: gt_jaipur_date_albert_hall_010

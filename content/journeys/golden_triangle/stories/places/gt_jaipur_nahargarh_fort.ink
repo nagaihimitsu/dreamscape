@@ -22,6 +22,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_nahargarh_fort_001
 幽霊に、ちゃんとあいさつしたら、工事が進んだんだ。怖い話なのに、ちょっと礼儀正しいね
 # speaker: narrator
+# term: gt_term_madhavendra_bhawan
 砦の奥に、二階建ての宮殿が建っていた。マーダヴェーンドラ・バワン。王と王妃たちの部屋が、九つの区画に分かれて、中庭を囲んでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question

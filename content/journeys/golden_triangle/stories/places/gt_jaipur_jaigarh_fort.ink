@@ -108,6 +108,7 @@ INCLUDE modules.ink
     地図の三つ目の印は、アンベールへ下りる通路を指していた。砦とアンベール城は、地下の通路でつながっているという。今日は、入口をのぞくだけにした。
 }
 # speaker: narrator
+# term: gt_term_chaiwala
 最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。小さな茶屋で、白いひげの老人が、チャイを煮ていた。
 # speaker: gt_raju
 # voice: gt_jaipur_date_jaigarh_fort_raju_010
