@@ -20,7 +20,7 @@ import type { GameState } from "../domain/game";
 import { itemDefinition } from "../domain/item-cities";
 import { spentItemIds } from "../domain/item-changes";
 import { tourLegUnderway } from "../domain/tour";
-import { getGameWeekday, getTimePeriod } from "../domain/travel";
+import { getGameWeekday } from "../domain/travel";
 import { hudPlaceName, placeDisplayName, type MapCity } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
 import { moneyLength, weekdayLabel } from "./journey-hud-text";
@@ -208,20 +208,20 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
-        {/* A new place shows its plate again in a talk, where it fades after a while (journey-hud.css). */}
+        {/* A new place shows its plate again in a talk, where it fades after a while (journey-hud.css). Words only, no
+            marks before them (2026-11-25 user decision: the header as blended as it can be). */}
         <p key={placeJa} className="hud-plate" data-testid="journey-context">
-          <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeJa}</span>
+          <span className="hud-place"><span className="sr-only">現在地：</span>{placeJa}</span>
           <span className="hud-time">
-            <Icon name={getTimePeriod(shownClock.minute) === "day" ? "sun" : "moon"} />
             {shownClock.day}日目{weekday === undefined ? null : <span aria-label={weekdayLabel(weekday).spoken}>{weekdayLabel(weekday).short}</span>} {formatTravelTime(shownClock.minute)}
           </span>
         </p>
         <p className="hud-wallet">
           {/* A new key per change the player sees plays its cue once (journey-hud.css). */}
           <span key={`budget-${budgetCue?.count ?? 0}`} ref={budgetRef} className="travel-budget" data-cue={budgetCue?.change.direction} data-fly={coins ? "" : undefined}
-            data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}><Icon name="coin" />{money}</span>
+            data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}>{money}</span>
           <span key={`ap-${apCue?.count ?? 0}`} ref={apRef} className="ap" data-cue={apCue?.change.direction} data-fly={stars ? "" : undefined}
-            aria-label={`残り${game.ap}AP`}><Icon name="star" />{game.ap}<small> AP</small></span>
+            aria-label={`残り${game.ap}AP`}>{game.ap}<small> AP</small></span>
         </p>
       </div>
       <div className="hud-actions">

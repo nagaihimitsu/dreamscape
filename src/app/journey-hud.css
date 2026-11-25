@@ -4,9 +4,9 @@
    time on an iPhone: "as far as possible, blended in"; the immersion first): no
    plates or keys, only white words and white marks over the scene, as the talk's
    tools. They keep their reading on a shade that falls from the screen's top and
-   fades out below the header (--hud-shade: white words 4.9:1 or more, the marks
-   4.4:1, whatever lies behind, white counted; a soft dark shadow round each), so
-   they read over a photo or text scrolling under the header alike. The keys'
+   thins out below the header with no edge (--ds-hud-shade: white words 5:1 or
+   more, the marks 4.5:1, whatever lies behind, white counted; a soft dark shadow
+   round each), so they read over a photo or text scrolling under the header. The keys'
    words are their names for screen readers and voice control (visually hidden). */
 .journey-hud {
   /* Its width is the screen's (never its content's), so it can be the query
@@ -32,7 +32,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: calc(100% + 40px);
+  height: calc(100% + 96px);
   background: var(--ds-hud-shade);
   pointer-events: none;
 }
@@ -84,7 +84,6 @@
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
-.hud-plate .icon { width: 13px; height: 13px; margin-right: 3px; vertical-align: -2px; }
 /* Enlarged text on a phone held upright: when the header holds fewer than
    about 25 of its characters across (at normal text even a 320-px phone holds
    more, so this never applies there), the plate is as wide as its name (the
@@ -117,7 +116,6 @@
 .hud-wallet .travel-budget[data-length="longer"] { font-size: 13px; }
 .hud-wallet .ap { font-size: 13px; }
 .hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.1em; }
-.hud-wallet .icon { width: 12px; height: 12px; margin-right: 3px; vertical-align: -1px; }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
@@ -154,7 +152,7 @@
   min-width: 44px;
   padding: 0;
 }
-/* The keys' marks: white with the talk's tools' soft shadow (the gold stays on row 1's small marks); under a finger or
+/* The keys' marks: white with the talk's tools' soft shadow (row 1 has words only); under a finger or
    while its panel is open a key shows a faint white disc, and an open key's mark is gold. */
 .hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon {
   width: 24px;
@@ -194,6 +192,12 @@
   100% { opacity: 0; }
 }
 .reduce-motion .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
+/* Out of a talk the place and time show again at once, also where a finished fade's last frame would linger (an iPhone
+   showed free time without them): a new one-frame animation replaces the fade's. */
+.journey-hud:not([data-view="talk"]) .hud-plate { animation: hud-plate-back 1ms forwards; }
+@keyframes hud-plate-back {
+  from, to { opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
   .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
 }
