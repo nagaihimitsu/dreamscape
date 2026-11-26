@@ -338,7 +338,8 @@ test("the golden triangle kept from セーブ・ロード plays its voices and i
   expect((await page.reload())?.fromServiceWorker()).toBe(true);
   await expect(page.getByTestId("dialogue-text")).toBeVisible();
   const voices = () => answered.filter((answer) => answer.path.includes("/assets/voice/"));
-  await playUntil(page, (state) => voices().length > 0 || state.activeEpilogue === null, { source: savedGame(INDIA) });
+  // (Through the arrival's moment: India's airport talk before it, GT-4, then the arrival itself.)
+  await playUntil(page, (state) => voices().length > 0 || (!state.activeEpilogue && !state.activeEncounter && !state.occasion), { source: savedGame(INDIA) });
   expect(voices().length, "a voiced line of the arrival was asked for").toBeGreaterThan(0);
   expect(voices().filter((answer) => !answer.worker || answer.status !== 200)).toEqual([]);
   await expectPictures(page);

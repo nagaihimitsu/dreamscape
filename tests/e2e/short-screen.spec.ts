@@ -1,4 +1,4 @@
-import { devModules, expect, ops, playUntil, savedGame, test, tier } from "./helpers";
+import { devModules, expect, longExplanationBattle, ops, playUntil, savedGame, test, tier } from "./helpers";
 
 // Below 500 px of portrait height the page scrolls instead of the battle's reading area
 // (battle.css), and the battle holds its round bar (an answer's verdict) at the top of
@@ -11,8 +11,8 @@ import { devModules, expect, ops, playUntil, savedGame, test, tier } from "./hel
 // shortcut (lane 2 in docs/10): reaching a city's battles takes minutes of play, so the page's
 // own scene builders open the battle on a cleared city and the game's own saveGame stores it
 // as a normal save; the answer and the reading are played in the UI. The battle and the
-// answer are chosen as in debug-scenes.spec.ts's long explanation (the default Debug city's
-// first ordinary battle, a wrong first answer).
+// answer are chosen as in debug-scenes.spec.ts's long explanation (the ordinary battle whose first
+// question's explanation is the longest, a wrong first answer: helpers.ts longExplanationBattle).
 test.use({ viewport: { width: 320, height: 480 } });
 
 // Long flow (docs/10「不安定さと時間の決まり」), with the same budget as debug-scenes.spec.ts in this
@@ -42,28 +42,30 @@ function feedbackStart() {
 
 test("battle on a 320×480 screen: after a wrong answer the round bar and the explanation's first line are not under the journey bar", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
-  const placed = await page.evaluate(async ({ modules }) => {
-    const { battles, battleQuizzes } = await import(/* @vite-ignore */ modules.content);
-    const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
+  const target = await longExplanationBattle(page);
+  // The layout under test needs an explanation taller than this screen, and the content's quizzes (the longest is chosen)
+  // may all fit 320×480 as they are written: the dev server's journey part this page loads has that one four times as long,
+  // from here on (every load of the test; the save is placed with it, so its quiz fingerprint matches).
+  await page.route(/\/src\/content\/generated\/journey-parts\/[a-z_]+\.json/u, async (route) => {
+    const response = await route.fetch();
+    const body = (await response.text()).split(target.explanation).join(target.explanation.repeat(4));
+    await route.fulfill({ response, body });
+  });
+  await page.goto("/");
+  const placed = await page.evaluate(async ({ modules, target }) => {
     const builders = await import(/* @vite-ignore */ modules.builders);
     const { saveGame } = await import(/* @vite-ignore */ modules.persistence);
     const { journeyStorage } = await import(/* @vite-ignore */ modules.journeyStorage);
     const { getJourneyForCity } = await import(/* @vite-ignore */ modules.journeys);
-    const cityId: string = defaultDebugCityId;
-    const battle = battles.find((item: { id: string; reasoning?: unknown }) => !item.reasoning &&
-      debugTargets(cityId).battle.some((target: { id: string; unavailable?: string }) => target.id === item.id && !target.unavailable));
-    const question = battleQuizzes[battle.quizId].questions[0];
-    const journeyId: string = getJourneyForCity(cityId).id;
-    const state = builders.openBattleScene(builders.completedCity(cityId, { names: ["航", "澪"] }), battle.id);
-    return {
-      journeyId, saved: saveGame(journeyStorage(localStorage, journeyId), state),
-      wrong: question.options.find((option: { id: string }) => option.id !== question.correctOptionId).id as string,
-    };
-  }, { modules: devModules });
+    const journeyId: string = getJourneyForCity(target.cityId).id;
+    const state = builders.openBattleScene(builders.completedCity(target.cityId, { names: ["航", "澪"] }), target.id);
+    return { journeyId, saved: saveGame(journeyStorage(localStorage, journeyId), state), wrong: target.wrong };
+  }, { modules: devModules, target });
   expect(placed.saved, "the battle placed as a normal save").toEqual({ ok: true });
-  // The default Debug city belongs to the default journey: opening the page again brings its
-  // saved battle back at once, without the title.
+  // Its journey chosen on the title (the title opens the default journey when none was opened before), the
+  // saved battle comes back at once.
   await page.goto("/");
+  await ops.chooseJourney(page, placed.journeyId);
   const battle = page.getByRole("region", { name: "クイズ", exact: true });
   await expect(battle).toBeVisible();
   await expect(page.getByTestId("debug-session")).toHaveCount(0);

@@ -3,7 +3,7 @@ import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, type DebugSettings } from "../../src/dev/debug-query";
 import { describeRelationshipChange, relationshipChange } from "../../src/domain/relationship-change";
-import { test as base, bothStorages, debugGame, devModules, expect, ops, placeSave, playUntil, tier, type Page } from "./helpers";
+import { test as base, bothStorages, debugGame, devModules, expect, longExplanationBattle, ops, placeSave, playUntil, tier, type Page } from "./helpers";
 
 // Lane 3 (docs/10「Debugを場面の起動台にする」): Debug opens scenes that the real
 // flow reaches only after many steps. These tests check that a scene can be played
@@ -83,11 +83,14 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
     expect((await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds).toEqual(chosen);
     // Its 「閉じる」 brings the submit forward the same way.
     await expect(submit).toBeFocused();
-    // In the clue book (a dialog) ≡メニュー cannot be opened; on the battle, its 「画面の出典」 shows the same landmark photo
-    // with its credit, and closes back on ≡メニュー.
+    // In the clue book (a dialog) ≡メニュー cannot be opened; on the battle, its 「画面の出典」 shows the photo the battle shows
+    // behind it with its credit (the scene's own background when its lines changed it, e.g. Agra's finale at the Mehtab Bagh;
+    // else the landmark's), and closes back on ≡メニュー.
+    const shown = await page.locator(".canal-scene img.scene-artwork").last().getAttribute("src");
+    expect(shown, "the battle shows a photo behind it").toBeTruthy();
     await ops.menuItem(page, "画面の出典");
     const viewer = page.getByRole("dialog", { name: "画面の出典" });
-    await expect(viewer.getByRole("img")).toHaveAttribute("src", cluePhoto!);
+    await expect(viewer.getByRole("img")).toHaveAttribute("src", shown!);
     await expect(viewer.getByRole("link", { name: "画像の出典" })).toBeVisible();
     await ops.closeDialog(viewer);
     await expect(ops.settingsButton(page)).toBeFocused();
@@ -405,11 +408,11 @@ test("battle: the 「Quiz」 cut-in ends by Esc or a hidden page, and one Esc cl
 // the player scrolls the reading area until the button shows at its bottom edge and taps it there;
 // the second tap falls on the reaction's line, where a tap reads on.
 test("battle: a double tap on 「相手の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
-  const target = (await tapTargets(page)).battle;
-  expect(target, "a battle that Debug opens in its default city").toBeDefined();
+  await page.goto("/");
+  const target = await longExplanationBattle(page);
   await page.clock.install();
-  await ops.openDebugScene(page, settings(target!));
-  const feedback = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame });
+  await ops.openDebugScene(page, settings({ cityId: target.cityId, scene: "battle", id: target.id }));
+  const feedback = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => target.wrong });
   const advance = page.getByTestId("battle-advance");
   await advance.evaluate((button) => button.scrollIntoView({ block: "end" }));
   const reaction = await ops.centerOf(advance);
@@ -477,15 +480,10 @@ test("battle: a remembered line shows 「回想」 by its speaker's name and in 
 // edge (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの
 // 重要部分だけが見切れる」 is avoided).
 test("battle: a long explanation after a wrong answer starts below the round bar, and 「相手の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
-  const target = (await tapTargets(page)).battle;
-  expect(target, "a battle that Debug opens in its default city").toBeDefined();
-  const wrong = await page.evaluate(async ({ modules, battleId }) => {
-    const { battles, battleQuizzes } = await import(/* @vite-ignore */ modules.content);
-    const question = battleQuizzes[battles.find((battle: { id: string }) => battle.id === battleId).quizId].questions[0];
-    return question.options.find((option: { id: string }) => option.id !== question.correctOptionId).id as string;
-  }, { modules: devModules, battleId: target!.id });
-  await ops.openDebugScene(page, settings(target!));
-  await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => wrong });
+  await page.goto("/");
+  const target = await longExplanationBattle(page);
+  await ops.openDebugScene(page, settings({ cityId: target.cityId, scene: "battle", id: target.id }));
+  await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => target.wrong });
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
   const start = await page.evaluate(() => {
     const area = document.getElementById("battle-content")!;

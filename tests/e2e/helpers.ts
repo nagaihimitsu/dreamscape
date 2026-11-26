@@ -193,6 +193,36 @@ export const devModules = {
 } as const;
 
 /**
+ * The landmark's ordinary battle (no reasoning, not a finale: a cleared last city has ended its journey) that Debug lists, in a
+ * city with stories, whose first question's explanation after a wrong
+ * answer is the longest (its 「正しい答え：…」 line and the explanation), with that wrong answer: the tests of a long explanation
+ * read it on a phone, where it is taller than the reading area. Chosen from the dev server's content, not a fixed battle, so a
+ * rewritten quiz (a shorter explanation in Debug's default city) does not take the long explanation away from them.
+ */
+export function longExplanationBattle(page: Page): Promise<{ cityId: string; id: string; wrong: string; explanation: string }> {
+  return page.evaluate(async (modules) => {
+    const { battles, battleQuizzes, getCities } = await import(/* @vite-ignore */ modules.content);
+    const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
+    type Question = { questionEn: string; correctOptionId: string; incorrectExplanationJa: string; options: { id: string; textEn?: string }[] };
+    let best: { cityId: string; id: string; wrong: string; explanation: string; length: number } | undefined;
+    for (const city of getCities().filter((item: { productionStatus?: string }) => item.productionStatus !== "prototype"))
+      for (const target of debugTargets(city.id).battle as { id: string; unavailable?: string }[]) {
+        const battle = battles.find((item: { id: string; reasoning?: unknown; scope?: string }) => item.id === target.id && !item.reasoning &&
+          item.scope !== "city_finale");
+        if (!battle || target.unavailable) continue;
+        const question: Question = battleQuizzes[battle.quizId].questions[0];
+        const correct = question.options.find((option) => option.id === question.correctOptionId);
+        const length = question.incorrectExplanationJa.length + (correct?.textEn?.length ?? 0);
+        if (!best || length > best.length)
+          best = { cityId: city.id, id: battle.id, wrong: question.options.find((option) => option.id !== question.correctOptionId)!.id,
+            explanation: question.incorrectExplanationJa, length };
+      }
+    if (!best) throw new Error("No ordinary battle that Debug opens.");
+    return { cityId: best.cityId, id: best.id, wrong: best.wrong, explanation: best.explanation };
+  }, devModules);
+}
+
+/**
  * Lane 2 (docs/10): build a state with the real game functions of the dev server
  * (src/dev/scenario-builders.ts) and store it with the game's own saveGame, as a
  * normal save of `journeyId`. Development server only. The test then plays on in the UI.
