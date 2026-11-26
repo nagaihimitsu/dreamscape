@@ -15,6 +15,7 @@ import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { timeOfDayTint } from "./time-of-day";
 import { PhotoCardPicker, rowCardName } from "./PhotoCardPicker";
 import { LockedCard, PlaceCard, PlaceGoBar, sleepWayJa, StayCard, StayGoBar, TourCard, WaitCard } from "./PlaceCard";
+import { HeldStateProvider } from "./held-state";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import { hintedLockedDates } from "../../domain/date-rules";
 import {
@@ -249,8 +250,12 @@ export function PhotoCardFreeTime({
         : wait ? "今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。" : "今すぐ行ける場所はありません。「ホテルに戻る」で休めます。"}</p>}
       <div className="photo-stage">
         <CardProbe />
-        <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
-          recommendedId={recommendedMainId} nearestId={nearestId} card={cardOf(chosen)} swipe={swipeFor(chosen)} joining={joining} />
+        {/* The chosen card's sheets and confirmations are held here: the row and the list draw the card in different
+            places, and turning the phone moves it between them (held-state.tsx). */}
+        <HeldStateProvider chosenId={chosen.id}>
+          <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
+            recommendedId={recommendedMainId} nearestId={nearestId} card={cardOf(chosen)} swipe={swipeFor(chosen)} joining={joining} />
+        </HeldStateProvider>
       </div>
       <TravelRentals game={game} onRent={onRent} />
       <Announce message={api.message} testId="travel-announce" />

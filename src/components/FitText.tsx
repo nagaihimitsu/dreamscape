@@ -44,10 +44,17 @@ export function FitText({ text, className, minScale = 0.8, maxLines = 2 }: { tex
     };
     fit();
     const refit = () => { seen = ""; fit(); };
-    const observer = typeof ResizeObserver === "function" ? new ResizeObserver(fit) : undefined;
+    // Fitted on the next frame, not inside the observer: the fit changes the heading's height, which inside the
+    // observer's callback is a size change it cannot deliver in the same frame (「ResizeObserver loop completed with
+    // undelivered notifications」, an error on the page).
+    let frame = 0;
+    const observer = typeof ResizeObserver === "function"
+      ? new ResizeObserver(() => { cancelAnimationFrame(frame); frame = requestAnimationFrame(fit); })
+      : undefined;
     observer?.observe(heading);
     document.fonts?.addEventListener?.("loadingdone", refit);
     return () => {
+      cancelAnimationFrame(frame);
       observer?.disconnect();
       document.fonts?.removeEventListener?.("loadingdone", refit);
     };

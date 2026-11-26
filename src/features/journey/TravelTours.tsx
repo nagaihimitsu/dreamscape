@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { getTour } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
 import { ConfirmActionButton } from "../../components/ConfirmActionButton";
+import { useHeldState } from "./held-state";
 import { Modal, ModalAnswers, ModalTitle } from "../../components/Modal";
 import { meets } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
@@ -21,7 +21,7 @@ export function TravelTours({ game, onBook, onCancel }: {
   onBook: (tourId: string, offerId: string) => boolean;
   onCancel: () => boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useHeldState("tours:open", false);
   const offers = getTourOffers(game);
   const booked = game.tour?.status === "booked" ? game.tour : null;
   const bookedTour = booked && getTour(booked.tourId);
@@ -35,7 +35,7 @@ export function TravelTours({ game, onBook, onCancel }: {
 
 /** A booked tour's line 「明日の予定：…」 and its 「予約を取り消す」 with the cancel's dialog; nothing without a booking. */
 function TourBookedLine({ game, onCancel }: { game: GameState; onCancel: () => boolean }) {
-  const [cancelling, setCancelling] = useState(false);
+  const [cancelling, setCancelling] = useHeldState("tours:cancelling", false);
   const booked = game.tour?.status === "booked" ? game.tour : null;
   const bookedTour = booked && getTour(booked.tourId);
   if (!booked || !bookedTour) return null;
@@ -71,7 +71,7 @@ export function TourBooking({ game, onBook, onClose }: {
   onBook: (tourId: string, offerId: string) => boolean;
   onClose: () => void;
 }) {
-  const [confirm, setConfirm] = useState<TourOfferChoice | null>(null);
+  const [confirm, setConfirm] = useHeldState<TourOfferChoice | null>("tours:confirm", null);
   const cityId = game.currentCityId;
   const offers = getTourOffers(game);
   const money = (amount: number) => formatMoneyForCity(cityId, amount);
