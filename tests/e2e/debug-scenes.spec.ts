@@ -3,7 +3,7 @@ import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, type DebugSettings } from "../../src/dev/debug-query";
 import { describeRelationshipChange, relationshipChange } from "../../src/domain/relationship-change";
-import { test as base, bothStorages, debugGame, devModules, expect, longExplanationBattle, ops, placeSave, playUntil, tier, type Page } from "./helpers";
+import { test as base, bothStorages, debugGame, devModules, expect, lengthenExplanation, longExplanationBattle, ops, placeSave, playUntil, tier, type Page } from "./helpers";
 
 // Lane 3 (docs/10「Debugを場面の起動台にする」): Debug opens scenes that the real
 // flow reaches only after many steps. These tests check that a scene can be played
@@ -410,6 +410,8 @@ test("battle: the 「Quiz」 cut-in ends by Esc or a hidden page, and one Esc cl
 test("battle: a double tap on 「相手の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const target = await longExplanationBattle(page);
+  // An explanation taller than the reading area (helpers.ts lengthenExplanation).
+  await lengthenExplanation(page, target.explanation);
   await page.clock.install();
   await ops.openDebugScene(page, settings({ cityId: target.cityId, scene: "battle", id: target.id }));
   const feedback = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => target.wrong });
@@ -427,6 +429,9 @@ test("battle: a double tap on 「相手の反応を見る」 opens the reaction 
   await ops.settled(page);
   expect(await ops.readsOnAt(page, reaction), "the second tap landed where a tap reads the reaction on").toBe(true);
   expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
+  // Where it landed a tap of its own does read on: only the hold kept the second tap from doing so.
+  await page.touchscreen.tap(reaction.x, reaction.y);
+  await expect.poll(async () => (await debugGame(page))!.revision).toBe(feedback.revision + 2);
 });
 
 // A remembered line (`# remembered`, 2026-11-16 user decision): in the Agra finale at the Taj Mahal, Kamla's words from Delhi
@@ -482,6 +487,8 @@ test("battle: a remembered line shows 「回想」 by its speaker's name and in 
 test("battle: a long explanation after a wrong answer starts below the round bar, and 「相手の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const target = await longExplanationBattle(page);
+  // An explanation taller than the reading area (helpers.ts lengthenExplanation).
+  await lengthenExplanation(page, target.explanation);
   await ops.openDebugScene(page, settings({ cityId: target.cityId, scene: "battle", id: target.id }));
   await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => target.wrong });
   await expect(page.getByTestId("battle-feedback")).toBeFocused();

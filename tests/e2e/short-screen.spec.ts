@@ -1,4 +1,4 @@
-import { devModules, expect, longExplanationBattle, ops, playUntil, savedGame, test, tier } from "./helpers";
+import { devModules, expect, lengthenExplanation, longExplanationBattle, ops, playUntil, savedGame, test, tier } from "./helpers";
 
 // Below 500 px of portrait height the page scrolls instead of the battle's reading area
 // (battle.css), and the battle holds its round bar (an answer's verdict) at the top of
@@ -43,14 +43,8 @@ function feedbackStart() {
 test("battle on a 320×480 screen: after a wrong answer the round bar and the explanation's first line are not under the journey bar", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const target = await longExplanationBattle(page);
-  // The layout under test needs an explanation taller than this screen, and the content's quizzes (the longest is chosen)
-  // may all fit 320×480 as they are written: the dev server's journey part this page loads has that one four times as long,
-  // from here on (every load of the test; the save is placed with it, so its quiz fingerprint matches).
-  await page.route(/\/src\/content\/generated\/journey-parts\/[a-z_]+\.json/u, async (route) => {
-    const response = await route.fetch();
-    const body = (await response.text()).split(target.explanation).join(target.explanation.repeat(4));
-    await route.fulfill({ response, body });
-  });
+  // The layout under test needs an explanation taller than this screen (helpers.ts lengthenExplanation).
+  await lengthenExplanation(page, target.explanation);
   await page.goto("/");
   const placed = await page.evaluate(async ({ modules, target }) => {
     const builders = await import(/* @vite-ignore */ modules.builders);

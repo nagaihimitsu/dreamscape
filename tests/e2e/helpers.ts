@@ -223,6 +223,20 @@ export function longExplanationBattle(page: Page): Promise<{ cityId: string; id:
 }
 
 /**
+ * The dev server's journey parts this page loads from here on (every load of the test) have `explanation` four times as long:
+ * the tests of a long explanation need one taller than the reading area, and the content's quizzes (longExplanationBattle
+ * chooses the longest) may all fit as they are written. Set it before the save or the Debug scene is made, so its quiz
+ * fingerprint is the lengthened quiz's.
+ */
+export async function lengthenExplanation(page: Page, explanation: string) {
+  await page.route(/\/src\/content\/generated\/journey-parts\/[a-z_]+\.json/u, async (route) => {
+    const response = await route.fetch();
+    const body = (await response.text()).split(explanation).join(explanation.repeat(4));
+    await route.fulfill({ response, body });
+  });
+}
+
+/**
  * Lane 2 (docs/10): build a state with the real game functions of the dev server
  * (src/dev/scenario-builders.ts) and store it with the game's own saveGame, as a
  * normal save of `journeyId`. Development server only. The test then plays on in the UI.
@@ -760,11 +774,12 @@ export const ops = {
   },
   /**
    * Whether a tap at the point would read the story scene on: it shows the line (a button that
-   * reads on), or the scene's picture with no control or `data-no-advance` area there (the same
-   * rule as sceneBackgroundPoint).
+   * reads on), the dialogue window around it (a battle's paper in its dialogue), or the scene's picture, with no control or
+   * `data-no-advance` area there (the same rule as sceneBackgroundPoint).
    */
   async readsOnAt(page: Page, point: { x: number; y: number }): Promise<boolean> {
-    return await showsAt(page, point, '[data-testid="dialogue-text"]') || await showsAt(page, point, '[data-testid="scene-picture"]');
+    return await showsAt(page, point, '[data-testid="dialogue-text"]') || await showsAt(page, point, "[data-dialogue-window]") ||
+      await showsAt(page, point, '[data-testid="scene-picture"]');
   },
   /**
    * The heading of a sightseeing guide, a battle, a date or an encounter (level 1: the landmark, the battle's
