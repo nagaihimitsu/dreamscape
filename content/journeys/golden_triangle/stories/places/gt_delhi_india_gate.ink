@@ -21,7 +21,8 @@ INCLUDE modules.ink
 記念碑の前って、もっと静かな場所だと思ってた。みんな、ピクニックしてる
 # speaker: narrator
 敷物の一つから、十六くらいの男の子が走ってきた。携帯を差し出して、英語で一言。
-# speaker: gt_delhi_india_gate_boy
+# speaker: gt_monu
+# unnamed
 # voice: gt_delhi_date_india_gate_monu_001
 Photo, please!
 # speaker: narrator

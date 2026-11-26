@@ -54,7 +54,8 @@ INCLUDE modules.ink
 # together: enemy gt_vishal
 # photo: gt_album_j034 # photo_caption: 漬物五キロと、荷物の秤
 サリー姿の女性と、二十代半ばの青年。青年が女性の手提げを荷物用の秤に吊るすと、中の瓶が鳴り、針が大きく振れた。
-# speaker: gt_jaipur_city_palace_young_man
+# speaker: gt_vishal
+# unnamed
 # term: gt_term_achar
 # voice: gt_jaipur_main_city_palace_battle_vishal_001
 母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって

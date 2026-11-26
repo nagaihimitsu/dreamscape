@@ -8,21 +8,22 @@ export const NARRATION_PLATE = "旅の風景";
  * The name on a line's plate (the dialogue window and its log) and whether the line is narration:
  * the heroine's and the player's names; `enemy` the one opposite on this screen (a battle's
  * opponent, a scene's `# person:`), when there is one; `# speaker: <person ID>` that person's
- * `nameJa` (progression/story.json people; 2026-11-11). Narration, and a speaker the screen
+ * `nameJa` (progression/story.json people; 2026-11-11), or their `callJa` on a line of theirs with `# unnamed` (before they
+ * give their name; 2026-11-27). Narration, and a speaker the screen
  * cannot name, are the narration: the window shows no band, the log 旅の風景. A remembered line (`# remembered`, 2026-11-16) with a name on its
  * plate is `remembered`: the plate shows REMEMBERED_MARK beside the name (DialogueWindowHead),
  * the window a memory's tone, and the log the name with it (loggedSpeaker).
  */
 export function speakerPlate(
-  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "remembered">,
+  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "remembered" | "unnamed">,
   names: { heroine: string; player: string; enemy?: string },
   people: StoryStateCatalog["people"],
 ): SpeakerPlate {
+  const person = frame.speaker === "person" ? people.find((item) => item.id === frame.speakerPersonId) : undefined;
   const name = frame.speaker === "heroine" ? names.heroine
     : frame.speaker === "player" ? names.player
       : frame.speaker === "enemy" ? names.enemy
-        : frame.speaker === "person" ? people.find((person) => person.id === frame.speakerPersonId)?.nameJa
-          : undefined;
+        : person && (frame.unnamed && person.callJa ? person.callJa : person.nameJa);
   if (name === undefined) return { name: NARRATION_PLATE, narration: true };
   return frame.remembered ? { name, narration: false, remembered: true } : { name, narration: false };
 }

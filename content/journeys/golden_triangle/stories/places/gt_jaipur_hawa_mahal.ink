@@ -287,7 +287,8 @@ INCLUDE modules.ink
 # together: enemy gt_pooja
 # term: gt_term_ribbon_ceremony
 門には赤いリボンが張られ、その前に、花嫁のいとこたちが腕を組んで立ちはだかっていた。先頭の娘が、高らかに宣言する。
-# speaker: gt_jaipur_bride_cousin
+# speaker: gt_pooja
+# unnamed
 # voice: gt_jaipur_finale_battle_pooja_001
 # photo: gt_album_j118 # photo_caption: 門の赤いリボン
 花婿さんを通すには、五万一千ルピー！　まけてほしかったら、ジャイプールの問題に答えてもらいます！

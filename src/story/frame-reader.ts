@@ -81,6 +81,11 @@ export interface StoryFrame {
    */
   remembered?: true;
   /**
+   * `# unnamed` (2026-11-27), with the `# speaker:` it is written beside, to the next `# speaker:`: the person speaking has
+   * not given their name yet, so the plate shows their call (`callJa`; speaker-plate.ts).
+   */
+  unnamed?: true;
+  /**
    * The line's `# leave:` (only the line it is written on): who goes off the scene's stage at it (heroine, enemy or a
    * person's ID, as written); src/components/scene-stage.ts keeps them off until they come on again.
    */
@@ -179,6 +184,9 @@ function readTags(
     // `# remembered` goes with the `# speaker:` beside it (parseStoryTags refuses it alone): a later speaker's line is not remembered.
     if (parsed.remembered) frame.remembered = true;
     else delete frame.remembered;
+    // `# unnamed` goes with the `# speaker:` beside it too, and lasts as long as that speaker does (to the next `# speaker:`).
+    if (parsed.unnamed) frame.unnamed = true;
+    else delete frame.unnamed;
   }
   if (parsed.background) frame.background = parsed.background;
   if (parsed.emotion) {
@@ -317,6 +325,7 @@ export function readStoryFrame(
     text: previous?.text ?? "",
     speaker: previous?.speaker ?? "narrator",
     ...(previous?.speakerPersonId ? { speakerPersonId: previous.speakerPersonId } : {}),
+    ...(previous?.unnamed ? { unnamed: true as const } : {}),
     ...stickyOf(previous ?? initialSticky),
     background: previous?.background ?? initialBackground,
     emotion: "neutral",

@@ -59,8 +59,9 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 # voice: gt_agra_main_itimad_tomb_001
 わあ……これが『ベビー・タージ』だね。名前どおり、かわいい
-# speaker: gt_agra_itimad_woman
-# leave: gt_agra_itimad_woman
+# speaker: gt_vimla
+# unnamed
+# leave: gt_vimla
 # voice: gt_agra_main_itimad_tomb_battle_vimla_001
 # photo: gt_album_a037 # photo_caption: 「ベビーではありません！」
 ベビーではありません！

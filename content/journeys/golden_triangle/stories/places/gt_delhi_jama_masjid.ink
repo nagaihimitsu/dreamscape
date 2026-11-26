@@ -82,7 +82,8 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_001
 # photo: gt_album_d036 # photo_caption: 手首にひと筋の薔薇のアタル
 わ……。薔薇なのに、甘すぎない。ずっと嗅いでいられる
-# speaker: gt_delhi_jama_young_man
+# speaker: gt_zoheb
+# unnamed
 # together: enemy gt_zoheb
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_001
 客だ！　時計、スタート！

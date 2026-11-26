@@ -698,6 +698,7 @@ export function validateContent(sources: ContentSources,
     localWordIds: localWords.map((word) => word.id),
     termIds: glossaryTerms.map((term) => term.id),
     personIds: storyStateCatalog.people.map((person) => person.id),
+    calledPersonIds: storyStateCatalog.people.filter((person) => person.callJa).map((person) => person.id),
     // A line's # minigame: runs where the full-branch walk (scene-walk.ts) reads it; every other reading refuses it (docs/13 1.3).
     miniGames: false,
     // A # minigame:'s art.<slot> names a mini-game picture (of the story's own journey or the root: checkMiniGameArtTags below),

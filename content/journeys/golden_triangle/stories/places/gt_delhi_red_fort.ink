@@ -356,7 +356,8 @@ INCLUDE modules.ink
 - else:
     # speaker: narrator
     宿の娘が、窓から身を乗り出した。
-    # speaker: gt_delhi_hotel_daughter
+    # speaker: gt_roohi
+    # unnamed
     # voice: gt_delhi_finale_battle_roohi_001
     アマン兄さん、女性車両はあるよ。先頭の車両
     # speaker: enemy

@@ -57,7 +57,8 @@ INCLUDE modules.ink
 水路沿いの木陰で、{heroine_name}が廟のドームを見上げていたとき、誰かに腕をつかまれた。
 # speaker: narrator
 二十歳くらいの女の子だった。隣に、同じくらいの年の青年。二人とも、顔から血の気が引いている。
-# speaker: gt_delhi_humayun_girl
+# speaker: gt_mehr
+# unnamed
 # voice: gt_delhi_main_humayun_tomb_battle_mehr_001
 # photo: gt_album_d026 # photo_caption: 「お願い、十分だけ友達になって！」
 お願い、十分だけ友達になって！
@@ -85,13 +86,15 @@ INCLUDE modules.ink
 # emotion: worried
 # voice: gt_delhi_main_humayun_tomb_002
 え、でも、わたし、嘘は……
-# speaker: gt_delhi_humayun_man
+# speaker: gt_suresh
+# unnamed
 # voice: gt_delhi_main_humayun_tomb_battle_suresh_001
 メヘル！
 # speaker: narrator
 # term: gt_term_kurta
 返事より先に、太い声が飛んできた。口ひげ、腹の上で張ったクルタ、手にはなぜか新聞。大股で近づいてくる。
-# speaker: gt_delhi_humayun_man
+# speaker: gt_suresh
+# unnamed
 # voice: gt_delhi_main_humayun_tomb_battle_suresh_002
 こんな所で何をしている。……そっちの若いのは誰だ
 # speaker: narrator
@@ -200,7 +203,8 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_bahadur_shah_zafar
 そのとき、東の門の方から女性の声がした。
-# speaker: gt_delhi_humayun_woman
+# speaker: gt_meena
+# unnamed
 # voice: gt_delhi_main_humayun_tomb_battle_meena_001
 スレーシュ！
 # speaker: narrator

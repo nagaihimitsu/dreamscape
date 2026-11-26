@@ -242,6 +242,8 @@ export const tagContext = {
   termIds: glossaryTerms.map((term) => term.id),
   /** The people a line's `# speaker: <person ID>` may name (progression/story.json people of every journey). */
   personIds: storyState.people.map((person) => person.id),
+  /** The people a line's `# unnamed` may name: those with a call (callJa) until they give their name (2026-11-27). */
+  calledPersonIds: storyState.people.filter((person) => person.callJa).map((person) => person.id),
   /** The pictures a # minigame:'s art.<slot> may name (ID → served path). */
   miniGameArt: Object.fromEntries(miniGameArt.map((image) => [image.id, image.path])) as Readonly<Record<string, string>>,
   /** The tourism photos a # minigame:'s backdrop slot may name (ID → served path; docs/13 2.12). */

@@ -16,6 +16,8 @@ export interface TagContext {
   termIds?: readonly string[];
   /** The people of progression/story.json, for `# speaker: <person ID>`; absent: a tool that only reads the lines (not checked). */
   personIds?: readonly string[];
+  /** The people of progression/story.json with a call (`callJa`), for `# unnamed`; absent: a tool that only reads the lines (not checked). */
+  calledPersonIds?: readonly string[];
   /**
    * Whether a line may start a mini-game (`# minigame:`; docs/13 1.3): content:build's full-branch walk (scene-walk.ts)
    * says true, every other reading false, a confession date or her answer "confession" (refused, docs/13 1.4); absent: allowed (the
@@ -74,6 +76,11 @@ export interface StoryTags {
    * head (the line it is written on only). Written with its `# speaker:` (a person, enemy or the heroine).
    */
   remembered?: true;
+  /**
+   * `# unnamed` (2026-11-27; no value): the line's speaker, a person, has not given their name yet: the plate shows their
+   * call (`callJa` of progression/story.json people) instead. Written with its `# speaker: <person ID>`.
+   */
+  unnamed?: true;
   /** `# leave: <who>` (one tag per figure): who goes off the scene's stage at this line (src/components/scene-stage.ts). */
   leave?: string[];
   /** `# together: <who> <who> [<who>]` (2026-11-15, three 2026-11-20): the two or three who stand opposite the heroine from this line (src/components/scene-stage.ts). */
@@ -166,6 +173,15 @@ export type CutInKind = (typeof CUTIN_KINDS)[number];
  * speaks), nor a phone message or a letter (read there, not heard; and they show no name plate).
  */
 export const REMEMBERED_TAG = "remembered";
+
+/**
+ * `# unnamed` (2026-11-27), written alone like `# remembered`: the line's speaker has not given their name yet, so their
+ * plate (and the conversation log) shows what the lines call them (`callJa`: 老人, 宿の娘) instead of their name. One
+ * person keeps one ID before and after their name comes out (2026-11-27: a person was once declared twice, under the call
+ * and under the name). It goes with the line's own `# speaker: <person ID>`, to the next `# speaker:`; the person needs a
+ * `callJa`. Not with `# cutin: name` (that line shows the name).
+ */
+export const UNNAMED_TAG = "unnamed";
 
 /**
  * `# leave: <who>` (2026-11-13 user decision): a figure goes off the scene's stage from its line until they come on again
@@ -309,6 +325,18 @@ function checkRemembered(tags: StoryTags): void {
       "# remembered is for words heard, not a phone message or a letter）。");
 }
 
+/** Throws for a `# unnamed` that has no call to show (UNNAMED_TAG); Japanese first. */
+function checkUnnamed(tags: StoryTags, context: TagContext): void {
+  if (tags.speaker !== "person" || !tags.speakerPersonId)
+    throw new Error("# unnamed は、まだ名乗っていない人の行の印です。同じ行に # speaker: <人物ID> を書いてください" +
+      "（# unnamed needs the line's own # speaker: <person ID>）。");
+  if (tags.cutin)
+    throw new Error("# unnamed と # cutin: name は同じ行に書けません。名乗りの行は名前で出します（# unnamed with # cutin: name）。");
+  if (context.calledPersonIds && !context.calledPersonIds.includes(tags.speakerPersonId))
+    throw new Error(`# unnamed：${tags.speakerPersonId} には呼び名がありません。progression/story.json の people に callJa（名乗るまでの呼び名）を` +
+      `書いてください（# unnamed: ${tags.speakerPersonId} has no callJa）。`);
+}
+
 /** Interpret Ink's official currentTags/choice.tags output, never Ink source. */
 export function parseStoryTags(
   tags: readonly string[],
@@ -324,6 +352,12 @@ export function parseStoryTags(
     if (bare === REMEMBERED_TAG) {
       if (result.remembered) throw new Error("1つの行に # remembered が2つあります。1つにしてください（Duplicate remembered tag）。");
       result.remembered = true;
+      continue;
+    }
+    // `# unnamed` alone (2026-11-27): checked with the line's speaker after the loop.
+    if (bare === UNNAMED_TAG) {
+      if (result.unnamed) throw new Error("1つの行に # unnamed が2つあります。1つにしてください（Duplicate unnamed tag）。");
+      result.unnamed = true;
       continue;
     }
     // `# shake` alone: the scene's shake (2026-11-13).
@@ -342,6 +376,8 @@ export function parseStoryTags(
       throw new Error(`Invalid ${key} tag: name the word (write # ${key}: <a word of the line>)`);
     if (key === REMEMBERED_TAG)
       throw new Error(`# remembered には値を書きません。# remembered だけを1行に書いてください（# remembered takes no value: ${tag}）。`);
+    if (key === UNNAMED_TAG)
+      throw new Error(`# unnamed には値を書きません。# unnamed だけを1行に書いてください（# unnamed takes no value: ${tag}）。`);
     if (separator < 1 || !value) throw new Error(`Invalid story tag: ${tag}`);
     if (key === "effect") {
       if (!context.effectIds.includes(value))
@@ -528,6 +564,7 @@ export function parseStoryTags(
   if (result.cutin && (result.phone || result.letter))
     throw new Error("# cutin: name is for a line said in the scene, not a phone message or a letter");
   if (result.remembered) checkRemembered(result);
+  if (result.unnamed) checkUnnamed(result, context);
   if (result.itemShow && result.itemOut)
     throw new Error(`A line shows an item or takes one out, not both: # item_show: ${result.itemShow} and # item_out: ${result.itemOut.itemId}`);
   return result;

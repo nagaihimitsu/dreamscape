@@ -17,7 +17,8 @@ INCLUDE modules.ink
 ジャイガル城は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
 # photo: gt_album_j049 # photo_caption: 赤いバツ印の宝の地図
 門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
-# speaker: gt_jaipur_jaigarh_boy
+# speaker: gt_raju
+# unnamed
 # voice: gt_jaipur_date_jaigarh_fort_raju_001
 宝の地図、買わない？　この砦には、王さまの宝が隠されてる。本当だよ。昔、国が、何か月も掘って探したんだから
 # speaker: gt_raju

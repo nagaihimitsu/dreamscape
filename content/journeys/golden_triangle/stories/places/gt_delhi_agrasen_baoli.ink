@@ -26,7 +26,8 @@ INCLUDE modules.ink
 # together: gt_kunal gt_jasmeet
 # term: gt_term_dupatta
 階段の途中で、大学生くらいの二人が言い争っていた。携帯を構えた青年と、白いドゥパッターを頭からかぶった女の子。
-# speaker: gt_delhi_agrasen_young_man
+# speaker: gt_kunal
+# unnamed
 # voice: gt_delhi_date_agrasen_baoli_kunal_001
 ジャスミート、今のは悲鳴じゃない。あくびだ
 # speaker: gt_jasmeet
