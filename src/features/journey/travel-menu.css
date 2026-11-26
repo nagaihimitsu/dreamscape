@@ -17,6 +17,8 @@
 .travel-tour-itinerary li { padding: 1px 0; }
 .travel-tour-end { color: var(--ds-ink-muted); }
 .travel-tour-seller { font-weight: 600; }
+/* What one offer adds (2026-11-26: a guide, a shared car), right under its button. */
+.travel-tour-offer-note { margin: 2px 0 6px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .travel-map-frame .leaflet-control-zoom a { display: grid; place-items: center; width: 44px; height: 44px; line-height: 1; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
 .travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--ds-marker); font-size: var(--ds-text-subhead); font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white, 0 1px 3px color-mix(in srgb, var(--ds-shade) 30%, transparent); }

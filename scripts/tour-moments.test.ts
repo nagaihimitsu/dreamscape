@@ -8,7 +8,7 @@ import type { SceneEntry } from "../src/content/scene-schemas";
 // A tour's steps in the scene table (tour stages 2b, 3; `# at: tour <tour> <step>`): a leg's narration (`# scene: tour_leg`), its
 // in-car encounter (`# priority: after leg`) and the scenes before and after a step, and what content:build refuses: an unknown
 // tour or step, `after leg` off a leg, a narration elsewhere than at one leg or with choices or effects, two narrations or two
-// in-car encounters on one leg, and money, an AP reward, 「また今度」 or a repetition in an in-car encounter.
+// in-car encounters on one leg (unless each has a # when:, 2026-11-26), and money, an AP reward, 「また今度」 or a repetition in an in-car encounter.
 
 const top = "INCLUDE modules.ink\n-> DONE\n";
 /** The fictional tour smp_x_tour_fort: out (a leg), visit (an event step), back (a leg), in the city x. */
@@ -66,8 +66,12 @@ describe("a tour's steps in the scene table (tour stages 2b, 3)", () => {
   it("refuses two narrations or two in-car encounters on one leg, and money, an AP reward, 「また今度」 or a repetition in the car", () => {
     expect(tourMomentErrors(scenesOf(["smp_x_a", narration("out")], ["smp_x_b", narration("out")])))
       .toEqual(["A tour leg has one narration: smp_x_a, smp_x_b are all # scene: tour_leg at # at: tour smp_x_tour_fort step out"]);
-    expect(tourMomentErrors(scenesOf(["smp_x_a", encounter("back")], ["smp_x_b", encounter("back")])))
-      .toEqual(["A tour leg has at most one in-car encounter: smp_x_a, smp_x_b are all # priority: after leg at # at: tour smp_x_tour_fort step back"]);
+    expect(tourMomentErrors(scenesOf(["smp_x_a", encounter("back")], ["smp_x_b", encounter("back", "# when: couple\n")])))
+      .toEqual(["A tour leg has at most one in-car encounter, or each has a # when: (e.g. # when: tour <tour> by <offer>): smp_x_a, smp_x_b are all " +
+        "# priority: after leg at # at: tour smp_x_tour_fort step back, and smp_x_a has no # when:"]);
+    // 2026-11-26: one for each offer the tour is bought through, each with its # when:.
+    expect(tourMomentErrors(scenesOf(["smp_x_a", encounter("back", "# when: tour smp_x_tour_fort by desk\n")],
+      ["smp_x_b", encounter("back", "# when: tour smp_x_tour_fort by web\n")]))).toEqual([]);
     // One narration and one in-car encounter on each leg is the shape.
     expect(tourMomentErrors(scenesOf(["smp_x_a", narration("out")], ["smp_x_b", narration("back")], ["smp_x_c", encounter("out")], ["smp_x_d", encounter("back")])))
       .toEqual([]);

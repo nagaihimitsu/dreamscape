@@ -53,7 +53,8 @@ export type RelationshipDelta = z.infer<typeof relationshipDeltaSchema>;
  * city), `arrive <city>` (the first city's is the opening), `hotel` (`any`: the scene's city's hotel) or `hotel <place>`,
  * `trip <mode>` (`walk` for walking; `from <place>`, `to <place>` narrow it) and `ticket <place>` (the ticket counter
  * of an admission there). Tour stages 2b and 3: `tour <tour> <step>`, a step of a tour (a leg: its narration, the scenes
- * before it, `after leg` and after it; an event step: before and after its visit).
+ * before it, `after leg` and after it; an event step: before and after its visit). 2026-11-26: `shop <shop>`, a city's shop
+ * (shop/catalog.json): its scenes run, in priority order, when the party goes in from free time (no main part).
  */
 export const sceneAtSchema = z.union([
   z.object({ visit: id }).strict(),
@@ -67,6 +68,7 @@ export const sceneAtSchema = z.union([
   z.object({ trip: id, from: id.optional(), to: id.optional() }).strict(),
   z.object({ ticket: id }).strict(),
   z.object({ tour: id, step: id }).strict(),
+  z.object({ shop: id }).strict(),
 ]);
 export type SceneAt = z.infer<typeof sceneAtSchema>;
 /**
@@ -100,6 +102,8 @@ export const sceneOptionSchema = z.object({
   set: z.array(id).optional(),
   /** `# clue: <clue ID>` (2026-11-18): the clues of tourism/catalog.json the choice records in 手がかり帳 (heard in conversation). */
   clues: z.array(id).optional(),
+  /** `# outfit: <outfit ID>` (2026-11-26): the party gets that outfit (bought with the choice's `# money:`, or given); hidden once owned. */
+  outfit: id.optional(),
   memory: z.array(id).optional(),
   /** `# profile:` (docs/03 「噛み合い」): the reaction profile the choice resolves with. */
   profile: id.optional(),

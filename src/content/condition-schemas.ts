@@ -105,6 +105,13 @@ export type LeafValues = {
    * (`# clue:`, `# on_done: clue`; 2026-11-18). Recorded clues stay.
    */
   clue: string;
+  /**
+   * The tour is booked or running through that offer (2026-11-26: a tour's scenes differ by how it was bought). False before
+   * it is booked and after it ends: a scene that needs it later sets a flag.
+   */
+  tourOffer: { tour: string; offer: string };
+  /** The party owns the outfit (shop/catalog.json; bought at a shop or got in a scene's `# outfit:`; 2026-11-26). */
+  outfit: string;
 };
 export type LeafKind = keyof LeafValues;
 export type Leaf = { [K in LeafKind]: { [P in K]: LeafValues[K] } }[LeafKind];
@@ -150,6 +157,8 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
   met: id,
   condition: id,
   clue: id,
+  tourOffer: z.object({ tour: id, offer: id }).strict(),
+  outfit: id,
 };
 export const LEAF_KINDS = Object.keys(LEAF_VALUE_SCHEMAS) as LeafKind[];
 const COMBINATORS = ["all", "any", "not", "atLeast"] as const;
@@ -260,8 +269,11 @@ export function requiredLeaves(condition: Condition): Leaf[] {
 }
 
 export type LeafReference = {
-  kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode" | "flag" | "person" | "condition" | "clue";
+  kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode" | "flag" | "person" | "condition" | "clue" |
+    "tour" | "outfit";
   id: string;
+  /** A tour's offer (`tourOffer`). */
+  offer?: string;
 };
 /** What a leaf names (situational leaves such as time and days name nothing). */
 export function leafReference(leaf: Leaf): LeafReference | undefined {
@@ -284,5 +296,7 @@ export function leafReference(leaf: Leaf): LeafReference | undefined {
   if ("met" in leaf) return { kind: "person", id: leaf.met };
   if ("condition" in leaf) return { kind: "condition", id: leaf.condition };
   if ("clue" in leaf) return { kind: "clue", id: leaf.clue };
+  if ("tourOffer" in leaf) return { kind: "tour", id: leaf.tourOffer.tour, offer: leaf.tourOffer.offer };
+  if ("outfit" in leaf) return { kind: "outfit", id: leaf.outfit };
   return undefined;
 }

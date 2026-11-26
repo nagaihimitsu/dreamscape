@@ -49,6 +49,11 @@ export const tourOfferSchema = z.object({
   channel: z.enum(["web", "desk", "introduced"]),
   /** Who sells it, as the card shows it (「宿のフロント」「ツアー予約サイト」). */
   sellerJa: japanese,
+  /**
+   * What this offer adds or changes, as the card shows it under its button (optional, one short sentence; 2026-11-26: e.g. a guide,
+   * a shared car). The tour's own `summaryJa` says what every offer has.
+   */
+  summaryJa: japanese.optional(),
   /** Where it is offered: a desk's places (required); an introduced offer's, if any; never a website's. */
   placeIds: z.array(id).min(1).refine((ids) => new Set(ids).size === ids.length, "Duplicate offer place").optional(),
   /** The whole party's price in the journey's currency, admissions included. */

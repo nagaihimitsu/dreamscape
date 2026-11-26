@@ -1,5 +1,5 @@
 import { encounters } from "../content/encounters";
-import { balance, responseProfiles, scenes } from "../content";
+import { balance, getOutfit, responseProfiles, scenes } from "../content";
 import { INSERTED_KINDS, type SceneDone, type SceneEntry, type SceneOption } from "../content/scene-schemas";
 import { responseProfileSchema } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -10,6 +10,7 @@ import { usableAp, usableMoney } from "./reservations";
 import { decideThen, thenPlanOf } from "./occasion-hooks";
 import { earnRewards, earnSceneTagAp, settlePendingAp } from "./rewards";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
+import { meetTerms } from "./glossary";
 
 /**
  * The tags' effects (the unified event design, stage 3a, 4.4): how a choice shows (hidden, greyed
@@ -36,7 +37,7 @@ export const insertedDoneReserve = (sceneId: string) => {
 };
 
 export type ChoiceDisplay =
-  /** A `# requires:`, `# give:` or `# use:` that does not hold: not shown at all (no reason; decision 43). */
+  /** A `# requires:`, `# give:` or `# use:` that does not hold, or a `# outfit:` owned already: not shown at all (no reason; decision 43). */
   | { show: "hidden" }
   /** Not affordable: shown greyed out with the reason (money, AP). */
   | { show: "grey"; reason: string }
@@ -54,6 +55,8 @@ export function choiceDisplay(state: Readonly<GameState>, option: SceneOption | 
   if (!option) return { show: "open" };
   if (option.requires?.some((condition) => !meets(state, condition))) return { show: "hidden" };
   for (const item of [option.give?.item, option.use]) if (item && !holds(state, item)) return { show: "hidden" };
+  // An outfit the party has already (2026-11-26): it is never bought or given twice.
+  if (option.outfit && (state.outfits ?? []).includes(option.outfit)) return { show: "hidden" };
   const money = -(option.money ?? 0);
   const ap = -(option.ap ?? 0);
   // A choice that decides a # then: (2.3, 4.4) is read as it decides it: after its own tags (applyChoiceEffects decides it then),
@@ -117,6 +120,12 @@ function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: Ga
   next = addRelationship(next, option.rel);
   next = addFlags(next, option.set);
   next = addClues(next, option.clues);
+  // `# outfit:` (2026-11-26): the party's for the rest of the journey, as one bought at the shop; its 旅の図鑑 terms come with it.
+  if (option.outfit) {
+    const outfit = getOutfit(option.outfit);
+    if (!outfit || (next.outfits ?? []).includes(outfit.id)) throw new Error("服の記録が一致しません。");
+    next = meetTerms({ ...next, outfits: [...(next.outfits ?? []), outfit.id] }, outfit.termIds ?? []);
+  }
   const memories = (option.memory ?? []).filter((id) => !next.memories.includes(id));
   if (memories.length) next = { ...next, memories: [...next.memories, ...memories] };
   for (const [item, status] of [[option.give?.item, "gifted"], [option.use, "used"]] as const) {

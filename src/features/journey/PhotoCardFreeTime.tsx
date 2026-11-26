@@ -49,7 +49,7 @@ import "./photo-free-time.css";
  */
 export function PhotoCardFreeTime({
   game, onClaimRewards, onEpilogue, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, onBuyOutfit, onWearOutfit,
-  nextCityName, onDepart, seenCards, debug = false,
+  onEnterShop, nextCityName, onDepart, seenCards, debug = false,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
   const backdrop = getCityBackdropPath(game.currentCityId) !== null;
@@ -191,7 +191,7 @@ export function PhotoCardFreeTime({
     if (card.kind === "stay")
       return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} onAgain={onAgain} scope={scope} heading={heading} quietGo={quietGo} go={go} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
-    if (card.kind === "shop") return <ShopCard game={game} onBuy={onBuyOutfit} onWear={onWearOutfit} heading={heading} />;
+    if (card.kind === "shop") return <ShopCard game={game} onBuy={onBuyOutfit} onWear={onWearOutfit} onEnter={onEnterShop} heading={heading} />;
     if (card.kind === "locked") return <LockedCard hintJa={card.hintJa} heading={heading} />;
     return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
       plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} go={go} />;

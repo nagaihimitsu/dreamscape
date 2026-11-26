@@ -35,6 +35,10 @@ export type ConditionContent = {
    * scene gives belongs to its landmark's city.
    */
   clues?: readonly { id: string; landmarkId: string; heardIn?: readonly string[] }[];
+  /** The tours (tour design stage 2a) and their offers, read by `tour <tour> by <offer>` (2026-11-26). */
+  tours?: readonly { id: string; cityId: string; offers: readonly { id: string }[] }[];
+  /** The outfits of the shops (shop/catalog.json), read by `outfit <outfit>` (2026-11-26). */
+  outfits?: readonly string[];
   /** Scenes that also run at other moments than their landmark's visit (stage 4: a `place` with a date or a finale): 「また今度」 brings them back there. */
   returningScenes?: ReadonlySet<string>;
 };
@@ -44,7 +48,7 @@ export type ConditionOwner = { label: string; cityId: string; conditions: { fiel
 const KIND_LABELS: Record<LeafReference["kind"], string> = {
   episode: "episode", city: "city", battle: "battle", landmark: "landmark", encounter: "encounter", date: "date", item: "item", mode: "transport mode",
   flag: "flag (progression/story.json)", person: "person (progression/story.json)", condition: "named condition (progression/story.json)",
-  clue: "clue (tourism/catalog.json)",
+  clue: "clue (tourism/catalog.json)", tour: "tour or its offer (tours/)", outfit: "outfit (shop/catalog.json)",
 };
 
 /** The dates' `when` and `until`, checked in each date's city (its chapterId). */
@@ -112,7 +116,8 @@ export function referenceCity(content: ConditionContent, reference: LeafReferenc
       const places = [...clue.heardIn, ...(landmark && landmark.observation !== false ? [landmark.cityId] : [])];
       return places.reduce((first, cityId) => (cityOrder(content, cityId) < cityOrder(content, first) ? cityId : first));
     }
-    case "mode": case "flag": case "condition": return undefined;
+    case "tour": return content.tours?.find((item) => item.id === reference.id)?.cityId;
+    case "mode": case "flag": case "condition": case "outfit": return undefined;
   }
 }
 
@@ -130,6 +135,8 @@ function exists(content: ConditionContent, reference: LeafReference): boolean {
     case "person": return !!content.people?.some((item) => item.id === reference.id);
     case "condition": return !!content.namedConditions && Object.hasOwn(content.namedConditions, reference.id);
     case "clue": return !!content.clues?.some((item) => item.id === reference.id);
+    case "tour": return !!content.tours?.find((item) => item.id === reference.id)?.offers.some((offer) => offer.id === reference.offer);
+    case "outfit": return !!content.outfits?.includes(reference.id);
   }
 }
 
@@ -144,7 +151,8 @@ function leafErrors(content: ConditionContent, owner: ConditionOwner, field: str
   const where = `a condition of ${owner.label} (${field})`;
   const reference = leafReference(leaf);
   if (!reference) return [];
-  if (!exists(content, reference)) return [`Unknown ${KIND_LABELS[reference.kind]} in ${where}: ${reference.id}`];
+  if (!exists(content, reference))
+    return [`Unknown ${KIND_LABELS[reference.kind]} in ${where}: ${reference.id}${reference.offer ? ` by ${reference.offer}` : ""}`];
   // A named condition is declared once for the journey: only its names are checked (each use is read in its own city).
   if (!owner.cityId) return [];
   const journey = journeyOfCity(content, owner.cityId);

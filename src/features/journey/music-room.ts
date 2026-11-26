@@ -73,6 +73,7 @@ function momentLabelJa(at: SceneAt, cityId: string, names: SceneNames): string {
   if ("hotel" in at) return `${names.city(cityId)}の宿で`;
   if ("trip" in at) return `${names.city(cityId)}の移動中に`;
   if ("ticket" in at) return `${names.place(cityId, at.ticket)}の窓口で`;
+  if ("shop" in at) return `${names.city(cityId)}の店で`;
   return `${names.tour(at.tour)}で`;
 }
 

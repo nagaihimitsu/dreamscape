@@ -204,6 +204,11 @@
             "minLength": 1,
             "language": "ja"
           },
+          "summaryJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
           "placeIds": {
             "minItems": 1,
             "type": "array",
