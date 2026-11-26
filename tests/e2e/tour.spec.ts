@@ -30,6 +30,8 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   await expect(card).toContainText("14:00ごろ解散");
   await expect(card.getByTestId("travel-tour-book-hotel_desk")).toContainText(rupees(price("hotel_desk")));
   await expect(card.getByTestId("travel-tour-book-web")).toContainText(rupees(price("web")));
+  // What each offer adds (2026-11-26: the desk's guide, the website's shared car) shows under its button.
+  await expect(card).toContainText(tour.offers.find((offer) => offer.id === "hotel_desk")!.summaryJa!);
   await card.getByTestId("travel-tour-book-hotel_desk").click();
   await expect(page.getByTestId("travel-tour-confirm")).toBeVisible();
   await page.getByTestId("travel-tour-confirm").click();
@@ -69,13 +71,14 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   expect(await readSave(page, journeyId)).toEqual(guide);
 
   // The battle (the visit has no observation since 2026-11-11, the user's decision), and its result's 「ツアーを続ける」: the
-  // scene after the visit, the car back (its narration and encounter, the car), the scene at the inn, then free time at the inn.
+  // scenes after the visit (the desk's guide first, 2026-11-26), the car back (its narration and encounter, the car), the scene
+  // at the inn, then free time at the inn.
   await ops.settled(page);
   await playUntil(page, (state) => state.activeBattle?.phase === "result", { source });
   const leave = page.getByRole("button", { name: /ツアーを続ける/ });
   await expect(leave).toBeVisible();
   await leave.click();
-  await expect.poll(async () => (await readSave(page, journeyId)).activeEncounter?.encounterId).toBe("gt_agra_tour_mathri");
+  await expect.poll(async () => (await readSave(page, journeyId)).activeEncounter?.encounterId).toBe("gt_agra_tour_guide_palace");
   await playUntil(page, (state) => state.activeEncounter?.encounterId === "gt_agra_tour_home", { source });
   const home = await readSave(page, journeyId);
   expect(home.travel).toMatchObject({ currentPlaceId: "agra_hotel_hub", minute: 840 });

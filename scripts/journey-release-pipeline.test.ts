@@ -81,6 +81,9 @@ function prepareUnpublishedFixture(root: string) {
   edit(`${layer}/progression/story.json`, (data) => { data.flags = []; data.conditions = {}; });
   // The sources of their inserted scenes (GT-4) go with them too.
   edit(`${layer}/scenes/catalog.json`, (data) => { data.scenes = []; });
+  // A tour's offer sold once a scene was seen (Agra's Vinod, 2026-11-26) reads a scene of those place files: its condition goes with them.
+  for (const file of readdirSync(path.join(root, layer, "tours")).filter((name) => name.endsWith(".json")))
+    edit(`${layer}/tours/${file}`, (data) => { for (const offer of data.offers) delete offer.when; });
   const questionIds = new Set<string>();
   for (const file of readdirSync(path.join(root, layer, "quizzes"))) {
     if (!file.endsWith(".json")) continue;
