@@ -179,7 +179,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await answer.scrollIntoViewIfNeeded();
   const box = (await answer.boundingBox())!;
   await ops.holdClock(page);
-  await page.mouse.dblclick(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.dblclick(box.x + 6, box.y + 12);
   await expect(page.getByTestId("battle-feedback")).toBeVisible();
   const answered = await readSave(page);
   expect(answered.revision).toBe(question.revision + 1);

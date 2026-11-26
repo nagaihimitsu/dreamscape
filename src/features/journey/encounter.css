@@ -8,24 +8,25 @@
 .encounter-translation-tools { display: flex; justify-content: flex-end; }
 .encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: var(--ds-text-caption); }
 
-/* An English choice of an encounter (UI redesign stage 2.4): a display row in the window
-   (its words and translation are reading targets); the letter is its pressable, slate with
-   the gold hairline like the battle's A·B·C. */
+/* An English choice of an encounter (UI redesign stage 2.4): a row in the window, the whole row its press (2026-11-26
+   user decision: no A·B·C letter). The select button lies under the row's words (stretched over it); the words let a
+   press through to it, except their own buttons (a word's meaning, its close) and 「訳を見る」. */
 .encounter-choice {
+  position: relative;
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 3px 6px;
-  padding: 4px 7px;
+  min-height: 48px;
+  padding: 4px 14px;
   border: 0;
   border-radius: 12px;
   background: var(--ds-glass-bg);
 }
-.encounter-choice[data-translated] { grid-template-columns: 44px minmax(0, 1fr) 64px; }
-.encounter-choice > .encounter-choice-select { grid-column: 1; grid-row: 1; }
-.encounter-choice > .encounter-choice-content { grid-column: 2; grid-row: 1; }
+.encounter-choice[data-translated] { grid-template-columns: minmax(0, 1fr) 64px; padding-right: 7px; }
+.encounter-choice > .encounter-choice-content { grid-column: 1; grid-row: 1; }
 .encounter-choice > .encounter-choice-translate {
-  grid-column: 3;
+  grid-column: 2;
   grid-row: 1;
   justify-self: end;
   min-height: 44px;
@@ -34,29 +35,27 @@
   font-size: var(--ds-text-caption);
 }
 /* The translation and a reason it cannot be chosen: under the words, across to the row's right edge. */
-.encounter-choice > p { grid-column: 2 / -1; }
+.encounter-choice > p { grid-column: 1 / -1; }
+.encounter-choice > :not(.encounter-choice-select) { position: relative; }
+.encounter-choice > :is(.encounter-choice-content, p) { pointer-events: none; }
+.encounter-choice-content :is(button, .word-meaning) { pointer-events: auto; }
 
 .encounter-choice-select {
-  min-width: 44px;
-  min-height: 44px;
-  padding: 5px;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
-  font-family: Georgia, serif;
-  font-size: var(--ds-text-reading);
-  font-weight: 400;
+  position: absolute;
+  inset: 0;
+  grid-area: auto; /* not a cell's: an absolute child placed in a cell would cover that cell only */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
   cursor: pointer;
 }
-
-.encounter-choice-select:disabled {
-  opacity: 1;
-  border-color: transparent;
-  background: var(--ds-disabled-bg);
-  color: var(--ds-disabled-ink);
-  cursor: not-allowed;
-}
+.encounter-choice-select:disabled { cursor: not-allowed; }
+.encounter-choice:has(> .encounter-choice-select:active:enabled) { translate: 0 1px; }
+/* One that cannot be chosen at all: its words muted (its reason under them). */
+.encounter-choice[data-unavailable] { color: var(--ds-disabled-ink); }
 
 .encounter-choice-content {
   min-width: 0;
@@ -187,7 +186,8 @@
    reply that cannot be chosen: the disabled grey, its reason under its words). Nothing inside a row has a glass of its own. */
 .vn-choices .encounter-choices { gap: 10px; margin: 0; }
 .vn-choices .encounter-choice {
-  padding: 6px 8px;
+  min-height: 52px;
+  padding: 6px 16px;
   border: 0;
   border-radius: 14px;
   background: var(--vn-window-bg);
@@ -201,15 +201,6 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-.vn-choices .encounter-choice-select {
-  border: 0;
-  background: var(--vn-choice-bg);
-  box-shadow: var(--vn-choice-shadow);
-  color: var(--ds-action-ink);
-}
-.vn-choices .encounter-choice-select:disabled {
-  background: var(--ds-disabled-bg);
-  box-shadow: none;
-  color: var(--ds-disabled-ink);
-}
-.vn-choices .encounter-choice-select:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+.vn-choices .encounter-choice[data-translated] { padding-right: 8px; }
+.vn-choices .encounter-choice[data-unavailable] { color: var(--vn-muted); }
+.encounter-choice-select:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }

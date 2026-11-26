@@ -16,8 +16,10 @@ export type EncounterChoiceView = {
 
 /**
  * An encounter's English replies, laid out as a quiz's three options (2026-11-14, the phone UI audit): 「すべての訳を見る」
- * at the top right, then a row per reply with its letter (the press that chooses it) on the left, its words, and its
- * 「訳を見る」 on the right, 44 px high; the translation opens under the words.
+ * at the top right, then a row per reply with its words and its 「訳を見る」 on the right, 44 px high; the translation
+ * opens under the words. The whole row is its press (2026-11-26 user decision: no A·B·C letter): the select button
+ * lies under the row, and only the words' own buttons (a word's meaning, 「訳を見る」) are pressed instead of it.
+ * The letter stays as the reply's internal mark (`data-choice`, the translation's part).
  */
 export function EncounterChoices({
   id,
@@ -49,17 +51,17 @@ export function EncounterChoices({
         const isOpen = visible(learning, id, part);
         const jaOnly = japaneseOnly && !!choice.translationJa;
         return (
-          <div className="encounter-choice" key={choice.index} data-translated={choice.translationJa ? true : undefined}>
+          <div className="encounter-choice" key={choice.index} data-translated={choice.translationJa && !jaOnly ? true : undefined}
+            data-unavailable={choice.unavailableReason ? true : undefined}>
             <button
               type="button"
               className="encounter-choice-select"
-              aria-label={`${part}を選ぶ`}
+              data-choice={part}
+              aria-label={jaOnly ? choice.translationJa : choice.textEn}
               aria-describedby={choice.unavailableReason ? `${id}-${part}-reason` : undefined}
               disabled={disabled || !!choice.unavailableReason}
               onClick={() => onChoose(choice.index)}
-            >
-              {part}
-            </button>
+            />
             <div className="encounter-choice-content">
               {jaOnly ? <span lang="ja">{choice.translationJa}</span> : <InteractiveEnglish
                 text={choice.textEn}
