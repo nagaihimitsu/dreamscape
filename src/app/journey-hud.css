@@ -215,7 +215,7 @@
   right: 8px;
   display: grid;
   gap: 4px;
-  width: 168px;
+  width: 180px; /* 「セーブ・ロード」 on one line beside its icon at 15 px */
   max-height: calc(100dvh - var(--hud-h, 96px) - 8px);
   overflow-y: auto;
   overscroll-behavior: contain;
