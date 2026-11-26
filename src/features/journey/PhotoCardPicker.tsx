@@ -70,6 +70,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   const swipeRef = useRef(swipe);
   swipeRef.current = swipe;
   const settle = useRef(0);
+  /** Set by a press, a wheel or a key on the row (and a drag of the screen): only then may the row choose when it stops. */
+  const moved = useRef(false);
   /** Set while a sideways drag of the screen moves the row (useCardGestures): the row chooses once it is let go. */
   const driving = useRef(false);
   /** The arrangement the row was last placed in (a first placement is instant). */
@@ -77,7 +79,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   /** In the list, the pressed row's top before the press (the card above it may close). */
   const anchor = useRef<{ cardId: string; top: number } | null>(null);
   const row = arrangement === "row";
-  const gestures = useCardGestures({ row, chosen, swipe: swipeRef, list, driving, settle: settleSoon });
+  const gestures = useCardGestures({ row, chosen, swipe: swipeRef, list, driving, settle: () => { moved.current = true; settleSoon(); } });
   const ids = cards.map((item) => item.id);
   const idsKey = ids.join(" ");
   const itemOf = (cardId: string) => list.current?.querySelector<HTMLElement>(`:scope > li[data-card-id="${CSS.escape(cardId)}"]`) ?? null;
@@ -141,7 +143,11 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [joiningKey, row]);
 
-  /** After a flick or a drag let go: the card that came to rest in the centre is chosen. */
+  /**
+   * After a flick or a drag let go: the card that came to rest in the centre is chosen. A row the player did not move
+   * (the browser moved it: the phone turned, the page's height changed for a moment) chooses nothing: the chosen card
+   * goes back to its centre, so an open sheet on it stays open.
+   */
   function settleSoon() {
     window.clearTimeout(settle.current);
     settle.current = window.setTimeout(() => {
@@ -153,11 +159,20 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
       const items = rowItems(scroller);
       const index = nearestIndex(items.map(centreOf), scroller.scrollLeft + scroller.clientWidth / 2);
       const cardId = index === null ? undefined : items[index].dataset.cardId;
+      if (!moved.current) {
+        const item = itemOf(chosen.current);
+        if (cardId !== chosen.current && item) centreItem(scroller, item, INSTANT);
+        return;
+      }
+      moved.current = false;
       if (cardId && cardId !== chosen.current) onChoose(cardId);
     }, SETTLE_MS);
   }
   function onScroll() {
     if (row && !driving.current) settleSoon();
+  }
+  function onPlayerMove() {
+    moved.current = true;
   }
 
   function choose(cardId: string) {
@@ -171,7 +186,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
 
   const tabStop = ids.includes(chosenId) ? chosenId : ids[0];
   return <>
-    <ul ref={list} className={`photo-cards${row ? "" : " is-list"}`} aria-label="行き先" onScroll={onScroll}>
+    <ul ref={list} className={`photo-cards${row ? "" : " is-list"}`} aria-label="行き先" onScroll={onScroll}
+      onPointerDown={onPlayerMove} onTouchStart={onPlayerMove} onWheel={onPlayerMove} onKeyDown={onPlayerMove}>
       {cards.map((rowCard, index) => {
         const face = cardFace(game, rowCard, recommendedId, nearestId);
         const isChosen = rowCard.id === chosenId;

@@ -905,6 +905,9 @@ footer span {
   font-size: var(--ds-text-heading);
   line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
+  /* A heading on two lines keeps them even (「選んだ保存データを／消去しますか？」, not 「…します／か？」). An author's name
+     in a heading is FitText's (its own balance). */
+  text-wrap: balance;
 }
 .modal-title-text { min-width: 0; }
 .modal-title-text .eyebrow { margin: 0; line-height: var(--ds-leading-snug); }
