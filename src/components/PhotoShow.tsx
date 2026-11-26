@@ -4,7 +4,6 @@ import { photoShowsLarge, type StoryPhoto } from "../content/tags";
 import { playCue, useSceneFastForward } from "../audio/sound-effects";
 import { CardFlight } from "./ItemShow";
 import { useFiguresTop } from "./figures-top";
-import { Icon } from "./icons";
 import type { Box } from "./item-show";
 import { Modal } from "./Modal";
 import { holdTaps } from "./tap-hold";
@@ -14,7 +13,8 @@ import "./photo-show.css";
 // card): the picture as a print in the middle of the scene while its line is on screen (PhotoShowLayer), and, for a photo
 // just put in the album, its way into ≡メニュー as the line goes (PhotoShowFlight, drawn by JourneyHud). Presentation only,
 // on every reading of the line: the album takes the photo once (src/domain/album.ts). A tap on the print (2026-11-25 user
-// request) opens it larger over the scene (PhotoViewer), which closes on any tap; it reads nothing on, and the line waits
+// request) opens it larger over the scene (PhotoViewer), which closes on any tap (no 「閉じる」 button: 2026-11-26 user
+// decision, the dimmed scene is enough); it reads nothing on, and the line waits
 // while it is open (a modal: dialogueObstructed). The photo card's status region (AlbumPhotoNotice) says the photo is taken.
 
 /**
@@ -102,7 +102,8 @@ function PhotoPrint({ imageId, path, caption, aboveHeads }: { imageId: string; p
 
 /**
  * The print opened larger (a tap on it): over the dimmed scene, as large as the screen allows, with its caption and stamp.
- * A tap anywhere closes it (on the print, around it, or its 「閉じる」), as Esc does; the tap that closes it reads nothing on.
+ * A tap anywhere closes it (on the print or the dimmed scene around it; it has no 「閉じる」 button, 2026-11-26 user decision),
+ * as Esc does; the tap that closes it reads nothing on. For keys the print takes the focus and Enter or Space closes it too.
  */
 function PhotoViewer({ path, caption, stamp, onClose }: { path: string; caption?: string; stamp?: string; onClose: () => void }) {
   const close = () => {
@@ -111,10 +112,12 @@ function PhotoViewer({ path, caption, stamp, onClose }: { path: string; caption?
   };
   return <Modal labelledBy="photo-show-viewer-title" className="photo-show-viewer" onClose={onClose} closeOnBackdrop>
     <h2 id="photo-show-viewer-title" className="sr-only">{caption ?? "写真"}</h2>
-    <button type="button" className="modal-close photo-show-viewer-close" data-testid="photo-show-viewer-close" onClick={close}>
-      <Icon name="close" />閉じる
-    </button>
-    <PrintBody path={path} caption={caption} stamp={stamp} onClick={close} data-testid="photo-show-large" />
+    <PrintBody path={path} caption={caption} stamp={stamp} role="button" tabIndex={0} aria-label="写真を閉じる" autoFocus
+      onClick={close} onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        close();
+      }} data-testid="photo-show-large" />
   </Modal>;
 }
 

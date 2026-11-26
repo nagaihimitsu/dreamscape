@@ -93,14 +93,15 @@
   cursor: zoom-in;
   -webkit-tap-highlight-color: transparent;
 }
-.photo-show-layer > .photo-print:focus-visible {
+.photo-show-layer > .photo-print:focus-visible,
+.photo-show-viewer .photo-print:focus-visible {
   outline: 3px solid var(--ds-focus, #2f6fd6);
   outline-offset: 3px;
 }
 
 /* The print opened larger (PhotoViewer): no glass pane, only the print itself over the dimmed scene, untilted, as large
-   as the screen allows with its margin's words (a wide picture takes the width, a tall one the height), and 「閉じる」
-   above it at the right. A tap anywhere closes it. */
+   as the screen allows with its margin's words (a wide picture takes the width, a tall one the height). No 「閉じる」
+   (2026-11-26 user decision): a tap anywhere closes it. */
 dialog.modal.photo-show-viewer {
   --modal-pad-top: 0px;
   --modal-pad-inline: 0px;
@@ -115,20 +116,18 @@ dialog.modal.photo-show-viewer {
   box-shadow: none;
   border-radius: 0;
 }
-.photo-show-viewer-close {
-  display: flex;
-  margin: 0 0 10px auto;
-}
 .photo-show-viewer .photo-print {
   max-width: min(100%, 1100px);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   transform: none;
   cursor: zoom-out;
   animation: photo-show-viewer-in var(--motion-scene) var(--ease-out);
 }
 .photo-show-viewer .photo-print img {
   max-width: 100%;
-  /* The screen less the 「閉じる」 above it, the margin's words under it and the dialog's own room. */
-  max-height: calc(100dvh - 150px);
+  /* The screen less the margin's words under it and the dialog's own room. */
+  max-height: calc(100dvh - 96px);
 }
 @keyframes photo-show-viewer-in {
   from { opacity: 0; transform: scale(0.94); }
