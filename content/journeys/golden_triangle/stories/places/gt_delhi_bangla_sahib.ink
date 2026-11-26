@@ -33,7 +33,8 @@ INCLUDE modules.ink
 # term: gt_term_dal
 # photo: gt_album_d083 # photo_caption: ランガルの大台所に手招き
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
-# speaker: gt_delhi_bangla_old_man
+# speaker: gt_harbans
+# unnamed
 # term: gt_term_roti
 # voice: gt_delhi_date_bangla_sahib_harbans_001
 見てるだけか。手を洗って、こっちへ来なさい。ローティーは、見るより丸める方がうまい

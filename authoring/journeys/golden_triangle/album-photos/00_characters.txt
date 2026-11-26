@@ -103,7 +103,7 @@ gt_divya ｜ 女性（台本では名乗らない。ジャンタル・マンタ�
   見た目: 20代後半の細身の女性。黒髪を高い位置の無造作なポニーテールにし、黒い四角い縁の眼鏡、小さな赤いビンディ、小さなフープイヤリングと耳の軟骨のピアス。白い丸首Tシャツの上に、縁に同系色の刺繍がある紺のロング丈の羽織（前開きのクルタ風）、濃紺のスキニージーンズ、紺の線入りの白いスニーカー、黒いバンドの腕時計。グラフの映ったスマートフォンを持つ。
   en: a slim Indian woman in her late twenties, with black hair in a high messy ponytail, black rectangular glasses, a small red bindi, small hoop earrings and a cartilage piercing, wearing a white crew-neck t-shirt under a long open navy kurta-style jacket with tonal embroidered borders, dark blue skinny jeans and white sneakers with navy stripes, a black band watch, holding a smartphone showing a bar graph
 
-gt_dubey ｜ ドゥベイ（元・駅の案内放送係。名乗る前はロディー庭園の「老人」）｜ 話し手ID: gt_dubey, gt_delhi_lodhi_old_man ｜ 都市: delhi
+gt_dubey ｜ ドゥベイ（元・駅の案内放送係。名乗る前はロディー庭園の「老人」）｜ 話し手ID: gt_dubey ｜ 都市: delhi
   見た目: 70代の恰幅のよい男性。頭頂がはげ、両脇に白髪、白くふさふさした口ひげ、細い金属縁の丸眼鏡。袖をまくった無地の白い立ち襟クルタに白いゆったりしたパジャマズボン、白いスニーカー、黒い革ベルトの腕時計。
   en: a portly elderly Indian man in his seventies, bald on top with white hair at the sides, a bushy white moustache and round thin metal-rimmed glasses, wearing a plain long white mandarin-collar kurta with rolled sleeves, loose white pyjama trousers, white sneakers and a black leather-strap wristwatch
 
@@ -115,7 +115,7 @@ gt_faiz ｜ ファイズ（ノートを閉じたままの生徒）｜ 話し手I
   見た目: 12歳前後の細身の男子生徒。目にかかるほど長くぼさぼさの黒髪。白い襟付きシャツに紺のVネックのセーター、グレーの学生ズボン、白い底の黒いスニーカー。紺の表紙の閉じたノートを胸に抱える。
   en: a slim Indian schoolboy around twelve, with shaggy, messy black hair falling over his eyes, wearing a white collared school shirt under a navy V-neck pullover sweater, grey school trousers and black sneakers with white soles, clutching a closed navy hardcover notebook to his chest
 
-gt_farhana ｜ ファルハーナ（遊歩道のメヘンディ描き。名乗る前はジャル・マハルの「女性」）｜ 話し手ID: gt_farhana, gt_jaipur_jal_mahal_woman ｜ 都市: jaipur
+gt_farhana ｜ ファルハーナ（遊歩道のメヘンディ描き。名乗る前はジャル・マハルの「女性」）｜ 話し手ID: gt_farhana ｜ 都市: jaipur
   見た目: 20代の細身の女性。真ん中分けの黒髪を長い一本の三つ編みにして肩の前に垂らし、額に小さな暗い色の点、耳に小さなピアスがいくつか。金のペイズリーと草花の刺繍がある深緑の膝丈クルタに白いサルワール、房飾り付きの淡いピンクのドゥパッタ、金の細い腕輪、茶色のサンダル。手はヘナで染まり、ヘナのコーンを持つ。
   en: a slim young Indian woman in her twenties, with center-parted black hair in a long single braid over one shoulder, a tiny dark dot on her forehead and several small ear studs, wearing a dark green knee-length kurta with gold paisley and floral embroidery, white salwar trousers, a tasselled pale pink dupatta, thin gold bangles and brown sandals, her hands stained with henna, holding a henna cone
 
@@ -131,11 +131,11 @@ gt_hamid ｜ 老人（台本では名乗らない。ジャマー・マスジド�
   見た目: 80歳前後の痩せた男性。白い透かし編みの丸い帽子（タキーヤ）、うなじまでの白髪、胸まで届く白く長いあごひげと口ひげ、深いしわ。白い立ち襟の長いクルタと白いゆったりしたサルワールに、銅色のペイズリー刺繍の焦げ茶の袖なしベスト、茶色の革サンダル。琥珀色の香油が入ったカットガラスの小瓶と細いガラス棒を持つ。
   en: a thin elderly Indian Muslim man around eighty, wearing a white crocheted skullcap, with white hair to the nape, a long white beard and moustache and a deeply wrinkled face, dressed in a long white mandarin-collar kurta and loose white salwar under a dark brown sleeveless waistcoat with copper paisley embroidery, brown leather sandals, holding a small cut-glass bottle of amber attar and a thin glass applicator rod
 
-gt_harbans ｜ ハルバンス（ローティーを丸める元トラック運転手。名乗る前はバングラ・サーヒブの「老人」）｜ 話し手ID: gt_harbans, gt_delhi_bangla_old_man ｜ 都市: delhi
+gt_harbans ｜ ハルバンス（ローティーを丸める元トラック運転手。名乗る前はバングラ・サーヒブの「老人」）｜ 話し手ID: gt_harbans ｜ 都市: delhi
   見た目: 70歳前後のがっしりしたシク教徒の男性。紺のターバン、ふさふさした白いあごひげと先の巻いた白い口ひげ、太い灰色の眉。粉で白くなった白い立ち襟の長いクルタ（袖まくり）に白いパジャマズボン、裸足。右手首に鋼のカラー（腕輪）。木の麺棒とローティーを持つ。
   en: a sturdy elderly Sikh man around seventy, wearing a navy blue turban, with a full white beard, a curled white moustache and thick grey eyebrows, dressed in a long flour-dusted white mandarin-collar kurta with rolled sleeves and white pyjama trousers, barefoot, a steel kara bangle on his right wrist, holding a wooden rolling pin and a round roti
 
-gt_jagdeep ｜ ジャグディープ（結婚前の二人を撮る写真家。名乗る前はチーニー・カ・ラウザの「男」）｜ 話し手ID: gt_jagdeep, gt_agra_chini_man ｜ 都市: agra
+gt_jagdeep ｜ ジャグディープ（結婚前の二人を撮る写真家。名乗る前はチーニー・カ・ラウザの「男」）｜ 話し手ID: gt_jagdeep ｜ 都市: agra
   見た目: 40代のがっしりした男性。短い黒髪、太い眉、濃い黒の口ひげ。黒い半袖Tシャツの上に、ペンやレンズキャップを詰めたオリーブ色の多ポケットの撮影用ベスト、カーキのカーゴパンツ、黒いベルト、黒い運動靴、黒い腕時計。首から一眼レフを提げ、脇に銀色の丸いレフ板を抱える。
   en: a stocky Indian man in his forties, with short black hair, heavy brows and a thick black moustache, wearing a black t-shirt under an olive multi-pocket photographer's vest stuffed with pens and lens caps, khaki cargo trousers with a black belt, black running shoes and a black wristwatch, a DSLR camera hanging from a strap around his neck and a folded silver reflector under one arm
 
@@ -171,19 +171,19 @@ gt_kavya ｜ カヴィヤ（地下へ下りられない女の子）｜ 話し手
   見た目: 8歳くらいの女の子。真ん中分けの黒髪を2本の長い三つ編みにし、額に小さな赤い点、大きな黒い瞳。水色の半袖の襟付きブラウスに紺のジャンパースカートの制服、白い靴下、黒いストラップ靴。
   en: an 8-year-old Indian girl with black hair parted in the middle and worn in two long braids, a tiny red bindi and large dark eyes, wearing a school uniform of a light blue short-sleeved collared blouse under a navy blue pinafore dress with a front pocket, white socks and black Mary Jane shoes
 
-gt_kunal ｜ クナール（怖い動画を撮る大学生）｜ 話し手ID: gt_kunal, gt_delhi_agrasen_young_man（青年）｜ 都市: delhi
+gt_kunal ｜ クナール（怖い動画を撮る大学生）｜ 話し手ID: gt_kunal（名乗る前の呼び名「青年」）｜ 都市: delhi
   見た目: 20歳前後のすらりとした青年。耳にかかる長さのくせのある波打つ黒髪、ひげなし。無地の黒いTシャツ、青いジーンズ、白いスニーカー。白い有線イヤホンを首にかけ、黒いスマートフォンを横に構えて撮る。
   en: a slim, athletic Indian young man around twenty with tousled, wavy, ear-length black hair and a clean-shaven face, wearing a plain black crew-neck T-shirt, straight blue jeans and white sneakers, with white wired earphones hanging around his neck and a black smartphone held sideways for filming
 
-gt_meena ｜ ミーナ（スレーシュの大学の同級生）｜ 話し手ID: gt_meena, gt_delhi_humayun_woman（女性）｜ 都市: delhi
+gt_meena ｜ ミーナ（スレーシュの大学の同級生）｜ 話し手ID: gt_meena（名乗る前の呼び名「女性」）｜ 都市: delhi
   見た目: 60歳前後のほっそりした女性。灰色の髪を低いまげにし、小さな赤いビンディ、穏やかなしわ、小さな金の耳飾り。青い葉模様を刷った淡い水色の木綿のサリーと七分袖のブラウス、左手首に細い銀の腕輪、茶色のサンダル。生成りの布のトートバッグを肩に掛ける。
   en: a slim Indian woman around sixty with grey hair pulled back into a low bun, a small red bindi, soft wrinkles and small gold stud earrings, wearing a pale sky-blue cotton saree printed with blue leaves and a matching three-quarter-sleeve blouse, thin silver bangles on her left wrist, brown sandals and a cream canvas tote bag on her shoulder
 
-gt_mehr ｜ メヘル（叔父さんに見つかりたくない大学生）｜ 話し手ID: gt_mehr, gt_delhi_humayun_girl（女の子）｜ 都市: delhi
+gt_mehr ｜ メヘル（叔父さんに見つかりたくない大学生）｜ 話し手ID: gt_mehr（名乗る前の呼び名「女の子」）｜ 都市: delhi
   見た目: 20歳くらいのほっそりした女性。長い黒髪を黒いシュシュで高いポニーテールにし、顔の横に後れ毛、小さな金の耳飾り。銀白の花の刺繍が入ったターコイズブルーの膝丈クルタ、青いデニムのレギンス、白いスニーカー。ベージュの帆布のショルダーバッグを斜めに掛ける。
   en: a slender Indian young woman around twenty with long black hair in a high ponytail tied with a black scrunchie, loose strands framing her face and tiny gold stud earrings, wearing a knee-length turquoise-blue kurta with silvery-white floral embroidery at the collar, cuffs and hem, blue denim jeggings, white sneakers and a khaki canvas messenger bag worn crossbody
 
-gt_monu ｜ モヌ（村から来た男の子）｜ 話し手ID: gt_monu, gt_delhi_india_gate_boy（男の子）｜ 都市: delhi
+gt_monu ｜ モヌ（村から来た男の子）｜ 話し手ID: gt_monu（名乗る前の呼び名「男の子」）｜ 都市: delhi
   見た目: 16歳くらいのやせてひょろ長い少年。短いぼさぼさの黒髪で、口元にうっすらひげ。赤いポロシャツ、色あせた細身のジーンズ、茶色のサンダル。画面の割れたスマートフォンを持つ。
   en: a skinny, gangly Indian teenage boy of about sixteen with short, messy black hair and a faint wisp of a mustache, wearing a plain red polo shirt, faded slim blue jeans worn pale at the knees and brown strap sandals, carrying an old black smartphone with a cracked screen
 
@@ -199,15 +199,15 @@ gt_nidhi ｜ ニディ先生（一時間後のバスを守る引率教師・ク�
   見た目: 40代後半の中肉の女性。黒髪を後ろで低くまとめ、後れ毛、小さな赤いビンディ、細い銀縁の眼鏡、小さな金の耳飾り。白い花の型染めの青いクルタに白いサルワール、房の付いた白い木綿のストールを肩にかけ、首に銀の笛を下げ、黒い革ベルトの腕時計、黒い平たい靴。黒い手帳を持つ。
   en: a medium-built Indian woman in her late forties with black hair in a low bun with loose strands, a small red bindi, thin silver-rimmed glasses and tiny gold stud earrings, wearing a blue kurta block-printed with white flowers, white salwar trousers, a white tasseled cotton stole over her shoulders, a silver whistle on a chain around her neck, a black-strap wristwatch and black flat shoes, holding a black notebook
 
-gt_nikhil ｜ ニキル（三十枚のスライドで求婚する銀行員・クイズの相手）｜ 話し手ID: gt_nikhil, gt_agra_taj_young_man（青年）、クイズでは enemy ｜ 都市: agra
+gt_nikhil ｜ ニキル（三十枚のスライドで求婚する銀行員・クイズの相手）｜ 話し手ID: gt_nikhil（名乗る前の呼び名「青年」）、クイズでは enemy ｜ 都市: agra
   見た目: 20代後半のやせた男。短く整えた黒髪、ひげなし。水色の長袖のワイシャツを袖まくりし、胸ポケットに折りたたんだメモの紙束を押し込み、紺のスラックス、黒い革靴、茶色の革ベルトの腕時計。スマートフォンを持つ。
   en: a slim Indian man in his late twenties with short, neatly cut black hair and a clean-shaven face, wearing a light blue long-sleeved button-down shirt with rolled cuffs, its chest pocket stuffed with folded paper notes, navy blue trousers, black leather dress shoes and a brown leather-strap wristwatch, with a black smartphone in hand
 
-gt_pooja ｜ プージャー（花嫁のいとこ）｜ 話し手ID: gt_pooja, gt_jaipur_bride_cousin（花嫁のいとこ）｜ 都市: jaipur
+gt_pooja ｜ プージャー（花嫁のいとこ）｜ 話し手ID: gt_pooja（名乗る前の呼び名「花嫁のいとこ」）｜ 都市: jaipur
   見た目: 20歳前後のすらりとした女性。黒髪を長い一本の三つ編みにして肩の前に垂らし、オレンジのマリーゴールドと白いジャスミンの花を編み込む。赤いビンディ、きりっとした眉、小さな金の輪の耳飾り。金のペイズリー刺繍の深緑のチョーリーとオダニ、金の模様と深緑の裾の鮮やかな黄色いレヘンガ、両手首に色とりどりのガラスの腕輪、金の足首飾りと金色の刺繍の靴。
   en: a slim Indian young woman around twenty with a long single black braid over her shoulder woven with orange marigolds and white jasmine, a small red bindi, sharp eyebrows and small gold hoop earrings, wearing a dark green choli and odhni with gold paisley embroidery over a bright yellow lehenga skirt with gold motifs and a dark green hem, stacks of multicolored glass bangles, gold anklets and gold juttis
 
-gt_raju ｜ ラージュー（地図を描く男の子）｜ 話し手ID: gt_raju, gt_jaipur_jaigarh_boy（男の子）｜ 都市: jaipur
+gt_raju ｜ ラージュー（地図を描く男の子）｜ 話し手ID: gt_raju（名乗る前の呼び名「男の子」）｜ 都市: jaipur
   見た目: 10歳くらいの小柄な男の子。くしゃくしゃのくせのある黒髪、頬と鼻にそばかす、耳に黄色い鉛筆をはさむ。汚れの付いた大きめの深緑のTシャツ、オリーブ色のひも付き半ズボン、茶色のサンダル。罫線ノートの紙に手描きした地図を持つ。
   en: a small 10-year-old Indian boy with messy, curly black hair, freckles across his cheeks and nose and a yellow pencil tucked behind his ear, wearing a baggy, smudged dark green T-shirt, olive-brown drawstring shorts and worn brown sandals, holding a hand-drawn map on torn lined notebook paper
 
@@ -219,7 +219,7 @@ gt_riya ｜ リヤ（ツアーの添乗員）｜ 話し手ID: gt_riya ｜ 都市
   見た目: 20代半ばのすらりとした女性。黒髪を高いポニーテールにし、小さな赤いビンディと小さな金の耳飾り。胸に「GUIDE」の名札を付けた青いポロシャツ、黒い細身のパンツ、青いランニングシューズ、銀の腕時計。「GROUP 7」と書いたオレンジの三角旗とスマートフォン2台を持つ。
   en: a slim Indian woman in her mid-twenties with black hair in a high ponytail, a small red bindi and tiny gold stud earrings, wearing a blue polo shirt with a white GUIDE name badge clipped to the chest, slim black trousers, blue running shoes and a silver wristwatch, carrying an orange pennant flag reading GROUP 7 on a stick and two smartphones
 
-gt_roohi ｜ ルーヒー（宿の娘）｜ 話し手ID: gt_roohi, gt_delhi_hotel_daughter（宿の娘）｜ 都市: delhi
+gt_roohi ｜ ルーヒー（宿の娘）｜ 話し手ID: gt_roohi（名乗る前の呼び名「宿の娘」）｜ 都市: delhi
   見た目: 13歳のほっそりした女の子。真ん中分けの黒髪を2本の三つ編みにして紺のリボンで結び、小さな耳飾り。白い半袖のブラウスに紺と赤の斜めじまのネクタイ、紺のプリーツスカートの制服、白いハイソックス、黒い学校の靴。紺の表紙のノートを抱え、鉛筆を持つ。
   en: a slim 13-year-old Indian girl with black hair parted in the middle and worn in two braids tied with navy blue ribbon bows and tiny stud earrings, wearing a school uniform of a white short-sleeved shirt, a navy and red striped tie and a navy pleated knee-length skirt, white knee socks and black school shoes, hugging a navy blue notebook with a pencil
 
@@ -235,7 +235,7 @@ gt_shastri ｜ シャーストリー（町の占星術師）｜ 話し手ID: gt_
   見た目: 70代のやせた老人。頭頂ははげ、両脇に白い髪がふわりと残り、額に白い灰の横線3本、深いしわ。白い半袖の丸首クルタに白いドーティ、肩に端のほつれた生成りのショール、はだし。節のある木の杖をつき、古びた茶色の写本の束を抱える。
   en: a thin elderly Indian man in his seventies, balding on top with wispy white hair at the sides, three horizontal white ash lines on his forehead and a deeply wrinkled face, wearing a white short-sleeved round-neck kurta, a white dhoti and a frayed beige shawl over one shoulder, barefoot, with a knotted wooden walking staff and a bundle of worn brown manuscripts
 
-gt_sonia ｜ ソニア（空き地のキャプテン）｜ 話し手ID: gt_sonia, gt_agra_mehtab_girl（女の子）｜ 都市: agra
+gt_sonia ｜ ソニア（空き地のキャプテン）｜ 話し手ID: gt_sonia（名乗る前の呼び名「女の子」）｜ 都市: agra
   見た目: 12歳の日焼けした細身の女の子。黒髪を頭の上でぼさっとまげにし、頬にそばかす、小さな耳飾り。泥汚れの付いたからし色のTシャツ、紺のカーゴ半ズボン、すり切れた茶色のサンダル、手首に黒い紐。古い木のクリケットのバットと、テープを巻いた手作りのボールを持つ。
   en: a wiry, sun-tanned 12-year-old Indian girl with black hair in a messy top bun, freckles on her cheeks and tiny stud earrings, wearing a dirt-stained mustard-yellow T-shirt, navy blue cargo shorts and worn brown sandals, a thin black cord bracelet on her wrist, carrying a battered wooden cricket bat on her shoulder and a homemade ball wrapped in tape
 
@@ -243,7 +243,7 @@ gt_sonu ｜ ソーヌー（敬礼が本格的な生徒）｜ 話し手ID: gt_son
   見た目: 12〜13歳の細身の男の子。短く刈った黒髪、丸い顔に大きな黒い瞳。白い襟付きシャツの上に紺のVネックのセーターの制服、グレーのスラックス、黒いスニーカー。
   en: a 12-year-old Indian schoolboy of slight build with short-cropped black hair, a round face and large dark eyes, wearing a school uniform of a navy blue V-neck knit sweater over a white collared shirt, pleated grey school trousers and black sneakers with white soles
 
-gt_suresh ｜ スレーシュ（申告の嘘を嗅ぎ分ける叔父・クイズの相手）｜ 話し手ID: gt_suresh, gt_delhi_humayun_man（男）、クイズでは enemy ｜ 都市: delhi
+gt_suresh ｜ スレーシュ（申告の嘘を嗅ぎ分ける叔父・クイズの相手）｜ 話し手ID: gt_suresh（名乗る前の呼び名「男」）、クイズでは enemy ｜ 都市: delhi
   見た目: 60歳前後の大きな太鼓腹の男。灰色の髪を後ろへなでつけ、太い眉と太い黒い口ひげ、たるんだ頬。白い立ち襟のクルタと白いパジャマズボン、胸ポケットに赤い薔薇を一輪、銀の腕時計、茶色の革サンダル。丸めた書類を持つ。
   en: a heavy-set Indian man around sixty with a large round belly, grey hair combed straight back, thick dark eyebrows, a bushy black mustache and jowly cheeks, wearing a white cotton kurta with a mandarin collar and white pajama trousers, a single red rose tucked in his chest pocket, a silver wristwatch and brown leather sandals, holding a rolled-up document
 
@@ -255,7 +255,7 @@ gt_tanvi ｜ タンヴィ（ニキルの恋人）｜ 話し手ID: gt_tanvi ｜ �
   見た目: 20代後半のすらりとした女性。肩までの波打つ黒髪を下ろし、小さな赤いビンディ、小さな金の揺れる耳飾り、細い金のペンダント。金の刺繍が襟・前立て・袖口・裾に入った深緑の膝下丈クルタ、白いチュリダール、茶色の革サンダル、銀の腕時計。焦げ茶の革のショルダーバッグを肩に掛ける。
   en: a slim Indian woman in her late twenties with shoulder-length wavy black hair worn loose, a small red bindi, small gold drop earrings and a thin gold pendant necklace, wearing a long bottle-green kurta with gold embroidery on the collar, placket, cuffs and hem, white churidar leggings, brown leather sandals and a silver wristwatch, with a dark brown leather messenger bag on her shoulder
 
-gt_vimla ｜ ヴィムラー先生（墓の名誉を回復したい元教師・クイズの相手）｜ 話し手ID: gt_vimla, gt_agra_itimad_woman（女性）、クイズでは enemy ｜ 都市: agra
+gt_vimla ｜ ヴィムラー先生（墓の名誉を回復したい元教師・クイズの相手）｜ 話し手ID: gt_vimla（名乗る前の呼び名「女性」）、クイズでは enemy ｜ 都市: agra
   見た目: 70歳前後のやせた女性。白髪を低いまげにし、細い金属縁の眼鏡、深いしわ、小さな金の耳飾りと細い金の鎖。葉模様を型染めしたくすんだ薄紫のサリーと半袖のブラウス、両手首に細い金の腕輪、黒いつっかけサンダル。署名用紙をはさんだクリップボードとペン、書類を詰めた生成りの布のトートバッグを持つ。
   en: a thin elderly Indian woman around seventy with white hair in a low bun, thin wire-rimmed glasses, deep wrinkles, tiny gold stud earrings and a thin gold chain, wearing a dusty lavender-purple saree with a block-printed leaf pattern and border, a thin gold bangle on each wrist and black flip-flops, holding a clipboard of signature sheets and a pen, with a canvas tote bag stuffed with papers
 
@@ -263,10 +263,10 @@ gt_vinod ｜ ヴィノード（ツアーの運転手）｜ 話し手ID: gt_vinod
   見た目: 40歳前後の姿勢のよいすらりとした男。横分けに整えた短い黒髪、手入れされた太い黒い口ひげ。白い長袖のワイシャツをきちんと入れ、焦げ茶の革ベルト、紺のスラックス、磨いた黒い革靴、黒い革ベルトの腕時計。何も書いていない白い紙の札を両手で持つ。
   en: a trim, upright Indian man around forty with short black hair neatly side-parted and a well-groomed thick black mustache, wearing a crisp white long-sleeved dress shirt tucked in, a dark brown leather belt with a silver buckle, navy blue pleated trousers, polished black lace-up shoes and a black-strap wristwatch, holding a blank white card sign
 
-gt_vishal ｜ ヴィシャール（来週ドイツへ発つ息子）｜ 話し手ID: gt_vishal, gt_jaipur_city_palace_young_man（青年）｜ 都市: jaipur
+gt_vishal ｜ ヴィシャール（来週ドイツへ発つ息子）｜ 話し手ID: gt_vishal（名乗る前の呼び名「青年」）｜ 都市: jaipur
   見た目: 20代半ばのやせた男。短いぼさぼさの黒髪、うっすら無精ひげ。前を開けて袖まくりした水色のシャンブレーのシャツに白いTシャツ、茶色のベルトとベージュのチノパン、白いスニーカー、黒い革ベルトの腕時計。荷物用の吊りばかりを手に提げる。
   en: a slim Indian man in his mid-twenties with short, messy black hair and light stubble, wearing an open light blue chambray shirt with rolled sleeves over a plain white T-shirt, beige chinos with a brown belt, white sneakers and a black-strap wristwatch, holding a hanging dial luggage scale with a hook
 
-gt_zoheb ｜ ゾヘブ（隣の店で携帯ケースを売る若者）｜ 話し手ID: gt_zoheb, gt_delhi_jama_young_man（若い男）｜ 都市: delhi
+gt_zoheb ｜ ゾヘブ（隣の店で携帯ケースを売る若者）｜ 話し手ID: gt_zoheb（名乗る前の呼び名「若い男」）｜ 都市: delhi
   見た目: 20代前半のすらりとした男。両脇を刈り上げ、上は波打つ黒髪を無造作に流し、短い無精ひげ、耳に黒い小さなピアス。灰色のペイズリー柄の半袖シャツ、チャコールの細身ジーンズ、白いスニーカー。黒い有線イヤホンを首にかけ、黒いスマートフォンを持つ。
   en: a lean Indian young man in his early twenties with an undercut and tousled wavy black hair on top, short stubble and a small black stud earring, wearing a short-sleeved grey button-up shirt with a paisley print, charcoal slim-fit jeans and white sneakers, with black wired earphones draped around his neck and a black smartphone in hand

@@ -26,7 +26,8 @@ INCLUDE modules.ink
 色が、少しだけ残ってる。全部残ってたら、どんなだったんだろう。目が痛いくらい、きらきらしてたのかな
 # speaker: narrator
 アーチの下で、口ひげの男が、銀色の反射板を抱えて電話に怒鳴っていた。電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
-# speaker: gt_agra_chini_man
+# speaker: gt_jagdeep
+# unnamed
 # voice: gt_agra_date_chini_rauza_jagdeep_001
 お願いがある。カップルが橋の渋滞で遅れてる。光を決めたいのに、立つ人がいない。……二人とも、身長がちょうどいい。代役をやってくれないか
 # speaker: gt_jagdeep

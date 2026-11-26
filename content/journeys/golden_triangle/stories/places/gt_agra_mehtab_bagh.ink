@@ -33,7 +33,8 @@ INCLUDE modules.ink
 # speaker: narrator
 バットは板きれ。一人だけ、髪を後ろで固く結んだ女の子が、全員に指示を飛ばしていた。
 その子が、こちらに気づいて走ってきた。英語は短く、迷いがない。
-# speaker: gt_agra_mehtab_girl
+# speaker: gt_sonia
+# unnamed
 # voice: gt_agra_date_mehtab_bagh_sonia_001
 一人足りない。入って。どっちでもいい。……ううん、やっぱり、投げられる方
 # speaker: gt_sonia

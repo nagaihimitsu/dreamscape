@@ -64,7 +64,8 @@ INCLUDE modules.ink
 タージ・マハルへ続く長い水路の途中に、白い大理石のベンチがある。記念写真の列が、今日も二十人ほど伸びていた。
 # speaker: narrator
 列に並んでいた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
-# speaker: gt_agra_taj_young_man
+# speaker: gt_nikhil
+# unnamed
 # voice: gt_agra_main_taj_mahal_battle_nikhil_001
 # photo: gt_album_a013 # photo_caption: 「ベンチを十分だけ確保してください！」
 お願いがあります！　あのベンチを、十分だけ確保してください！

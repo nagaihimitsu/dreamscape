@@ -43,8 +43,7 @@ type Met = MetPerson & { cityId: string };
  *   a guide read, a date played, an epilogue read;
  * - the partner of each quiz played, always under the name the quiz gives them (`enemyNameJa`; 2026-11-25 user decision): the
  *   declared person of the same city with that name, else the one whose portrait the quiz shows (presentation/characters.json
- *   `battleCharacters`; often declared under what the lines call them before the name, 老人 or 青年), else the quiz's own
- *   partner (its name and role).
+ *   `battleCharacters`; declared under another name), else the quiz's own partner (its name and role).
  * Grouped by their city in the journey's travel order; in a city, the arrival's people, then those of the talks and
  * encounters in the order seen, the quiz partners in the order played and the other scenes' (the epilogue's last). One
  * entry a person (the same name in the same city is the same person). Each has the writer's few words: the person's
@@ -84,8 +83,8 @@ export function metPeopleGroups(game: Readonly<GameState>): MetPeopleGroup[] {
     const characterId = BATTLE_CHARACTERS[battle.id];
     const inCity = storyState.people.filter((item) => item.cityId === cityId);
     const named = inCity.find((item) => item.nameJa === battle.enemyNameJa);
-    // The quiz's partner by their own name (enemyNameJa): a person of the partner's portrait is often declared under what the
-    // lines call them before they give their name (老人, 青年), so that person lends the entry its ID and words, not its name.
+    // The quiz's partner by their own name (enemyNameJa): a person of the partner's portrait declared under another name lends
+    // the entry its ID and words, not its name.
     const person = named ?? (characterId === undefined ? undefined : inCity.find((item) => item.characterId === characterId));
     add(person
       ? { id: person.id, cityId: person.cityId, nameJa: named ? person.nameJa : battle.enemyNameJa,

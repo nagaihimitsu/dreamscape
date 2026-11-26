@@ -26,6 +26,20 @@ describe("the name plate of a line", () => {
   });
 });
 
+describe("the name plate of a line before the person gives their name (# unnamed, 2026-11-27)", () => {
+  const called = [...people, { id: "smp_mihon_ana", cityId: "mihon", nameJa: "アナ", callJa: "宿の娘" }];
+  it("shows the person's call on an unnamed line, and their name on the others", () => {
+    expect(speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_ana", unnamed: true }, names, called)).toEqual({ name: "宿の娘", narration: false });
+    expect(speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_ana" }, names, called)).toEqual({ name: "アナ", narration: false });
+    expect(loggedSpeaker(speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_ana", unnamed: true, remembered: true }, names, called)))
+      .toBe("宿の娘（回想）");
+  });
+
+  it("shows the name of a person without a call (a frame from another content version)", () => {
+    expect(speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_lili", unnamed: true }, names, called)).toEqual({ name: "リリ", narration: false });
+  });
+});
+
 describe("the name plate of a remembered line (# remembered, 2026-11-16)", () => {
   it("keeps the speaker's own name, marks it remembered, and logs 「<name>（回想）」", () => {
     const lili = speakerPlate({ speaker: "person", speakerPersonId: "smp_mihon_lili", remembered: true }, names, people);

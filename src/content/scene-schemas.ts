@@ -220,10 +220,13 @@ export const storyStateCatalogSchema = z.object({
    * `descriptionJa`: a line about the person in 旅の記録's 出会った人; `characterId`: the portrait
    * (presentation/characters.json) that stands for the person in a scene with their `# person:`,
    * and from their own lines (`# speaker: <person ID>`) in any scene (speakingPerson); `titleJa`: their role, shown with
-   * the name on the name plate of a `# cutin: name` line (nameCutIn).
+   * the name on the name plate of a `# cutin: name` line (nameCutIn); `callJa`: what the lines call them until they give
+   * their name (老人, 宿の娘; 2026-11-27), shown on the plate of their lines with `# unnamed` (speakerPlate). One person, one
+   * ID, before and after the name.
    */
   people: z.array(z.object({
-    id, cityId: id, nameJa: text, titleJa: japaneseText.optional(), descriptionJa: japaneseText.optional(), characterId: id.optional(),
+    id, cityId: id, nameJa: text, callJa: japaneseText.optional(), titleJa: japaneseText.optional(), descriptionJa: japaneseText.optional(),
+    characterId: id.optional(),
   }).strict()).default([]),
   conditions: z.record(id, conditionSchema).default({}),
 }).strict();

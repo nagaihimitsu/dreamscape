@@ -63,6 +63,8 @@ export const storyFrameSchema = z
     recallKept: z.literal(true).optional(),
     // `# remembered` (2026-11-16): the line is its speaker's earlier words, heard again.
     remembered: z.literal(true).optional(),
+    // `# unnamed` (2026-11-27): the speaking person has not given their name yet (the plate shows their call).
+    unnamed: z.literal(true).optional(),
     phone: z.object({
       side: z.enum(PHONE_SIDES),
       earlier: z.array(z.object({ side: z.enum(PHONE_SIDES), speaker: speakerSchema, personId: imageIdSchema.optional(), text: z.string().min(1) }).strict()).min(1).max(STACK_MAX).optional(),
@@ -409,6 +411,8 @@ export function validateStorySnapshot(
     // A person's line names a declared person (and only a person's line names one).
     (frame.speaker === "person") !== (frame.speakerPersonId !== undefined) ||
     (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId)) ||
+    // An unnamed line is a person's with a call (as parseStoryTags reads `# unnamed`).
+    (frame.unnamed !== undefined && !tagContext.calledPersonIds.includes(frame.speakerPersonId ?? "")) ||
     // Who leaves the stage at the line: the heroine, the scene's enemy or a declared person (as parseStoryTags reads `# leave:`).
     (frame.leave?.some((who) => !(LEAVE_WHO as readonly string[]).includes(who) && !tagContext.personIds.includes(who)) ?? false) ||
     // Who stands together from the line: the scene's enemy or declared people (as parseStoryTags reads `# together:`).

@@ -32,7 +32,8 @@ INCLUDE modules.ink
 # speaker: narrator
 # photo: gt_album_d090 # photo_caption: 理由なく笑い出す二十人の輪
 輪の中心にいた白い口ひげの老人が、二人に気づいて手招きした。張りのある、よく通る声だった。
-# speaker: gt_delhi_lodhi_old_man
+# speaker: gt_dubey
+# unnamed
 # voice: gt_delhi_date_lodhi_garden_dubey_001
 乗客の皆さま、ご注意ください。まもなく、新しい笑いが到着いたします
 # speaker: gt_dubey

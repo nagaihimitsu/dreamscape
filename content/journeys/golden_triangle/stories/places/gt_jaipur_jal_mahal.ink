@@ -29,10 +29,12 @@ INCLUDE modules.ink
 もとは鴨猟のための館だったという。湖の水が満ちると、下の階は水に沈むと言われている。
 # term: gt_term_camel
 遊歩道には、焼きとうもろこしの屋台、写真用に飾り立てたラクダ、風船売り。その間に、低い椅子を並べた女性がいた。手の中には、絞り袋のような、細い円錐の筒。
-# speaker: gt_jaipur_jal_mahal_woman
+# speaker: gt_farhana
+# unnamed
 # voice: gt_jaipur_date_jal_mahal_farhana_001
 あの宮殿、中には入れないのよ。眺めてるだけなら、手が暇でしょ
-# speaker: gt_jaipur_jal_mahal_woman
+# speaker: gt_farhana
+# unnamed
 # local_word: gt_jaipur_word_mehndi
 # term: gt_term_mehndi
 # voice: gt_jaipur_date_jal_mahal_farhana_002
