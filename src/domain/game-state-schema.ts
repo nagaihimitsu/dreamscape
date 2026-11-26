@@ -12,6 +12,7 @@ import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
 import { livedTimesSchema } from "./lived-times";
+import { metTimesSchema } from "./met-times";
 import { difficultySchema } from "./difficulty";
 import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
@@ -160,6 +161,9 @@ export const gameStateSchema = z.object({
   // 旅の記録's times (2026-11-19, an optional field; src/domain/lived-times.ts): when each episode was completed and each
   // date first finished (the city's day and minute), in that order. Absent in a save written before it.
   livedTimes: livedTimesSchema.optional(),
+  // When and where each person was first met (2026-11-26, an optional field; src/domain/met-times.ts): the city, its day, the
+  // minute and the place, in the order met. Absent in a save written before it (the people it had met stay without a time).
+  metTimes: metTimesSchema.optional(),
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),

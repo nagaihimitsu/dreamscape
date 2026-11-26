@@ -3,6 +3,7 @@ import { getBattleResultExits } from "./chapter";
 import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
 import { recordAlbumPhoto } from "./album";
 import { recordGlossaryTerms } from "./glossary";
+import { metPersonIds, recordMetTimes } from "./met-people";
 import { advanceOccasion, closeRomanceEnding, enterShop, openOccasion, shopScenesNow } from "./occasion";
 import { screenFor } from "./screen";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -39,10 +40,13 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
   // Nothing runs after an action that changed nothing (a load is never changed).
   const changed = finishTravelEventIfComplete(previous, advanceOccasion(change(previous), nextRoll));
   if (changed === previous) return previous;
-  const toured = continueTour(changed, nextRoll);
+  // The people the action meets are recorded where and when it met them (met-times.ts): those met before the city's
+  // automatic move at the city left, the others (its arrival's) after it.
+  const before = metPersonIds(previous);
+  const toured = recordMetTimes(continueTour(changed, nextRoll), before);
   // The line the action leaves on screen takes its # photo: into the album (once per image; album.ts) and its # term:
   // terms into 旅の図鑑 (once per term; glossary.ts).
-  return recordGlossaryTerms(recordAlbumPhoto(advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll)));
+  return recordMetTimes(recordGlossaryTerms(recordAlbumPhoto(advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll))), before);
 }
 
 /**
