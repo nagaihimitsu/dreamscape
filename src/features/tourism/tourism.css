@@ -8,7 +8,7 @@
   color: var(--ds-ink);
   background: var(--ds-parchment);
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   padding: 8px 18px;
   font-size: var(--ds-text-note);
   min-height: 48px;
@@ -21,8 +21,8 @@
   justify-content: flex-end;
   margin: -12px 0 20px;
   padding: 6px 0;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
+  background: var(--ds-parchment);
+  border-bottom: 1px solid var(--ds-parchment-line);
 }
 .tourism-observation {
   padding: 0 24px;
@@ -45,7 +45,7 @@
   border: 1.5px solid var(--ds-slate-800);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   font-size: var(--ds-text-note);
 }
 /* The open point: the selected-row look (2-px slate edge, parchment fill). */
@@ -61,20 +61,20 @@
   place-items: center;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #dddcc9;
+  background: var(--ds-parchment-2);
   font-family: Georgia, serif;
 }
 .discovered-mark {
   margin-left: auto;
   flex-shrink: 0;
   font-size: var(--ds-text-mark);
-  color: var(--muted);
+  color: var(--ds-ink-muted);
 }
 .discovery-detail {
   margin-top: 16px;
   padding: 20px;
   background: var(--ds-parchment-2);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
 }
 /* A found clue's explanation fades in as it opens (no movement: its 「説明を閉じる」 takes
    a press at once); choosing another clue changes it in place. */
@@ -143,7 +143,7 @@
 .clue-sources > div {
   margin-top: 9px;
   padding: 9px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--ds-parchment-line);
 }
 .clue-sources p {
   margin: 9px 0;
@@ -166,20 +166,20 @@
   text-align: left;
   padding: 16px;
   margin-top: 12px;
-  border: 1px solid #d2c7ae;
-  border-radius: 4px;
-  background: #f2edde;
-  color: var(--green);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: var(--ds-radius-small);
+  background: var(--ds-parchment);
+  color: var(--ds-here);
   font-size: var(--ds-text-body);
 }
 .document-card small {
   font-size: var(--ds-text-mark);
-  color: var(--muted);
+  color: var(--ds-ink-muted);
 }
 .tourism-credits {
   margin: 24px 36px 0;
   font-size: var(--ds-text-mark);
-  color: var(--muted);
+  color: var(--ds-ink-muted);
   overflow-wrap: anywhere;
 }
 .tourism-credits summary {
@@ -201,7 +201,7 @@
   margin: 0 24px 16px;
   padding: 12px;
   font-size: var(--ds-text-caption);
-  background: #f0e5cb;
+  background: var(--ds-parchment-2);
 }
 .modal:has(.cluebook-header) {
   --modal-pad-top: 0px;
@@ -410,13 +410,13 @@
   .mobile-observation-active .observation-notes {
     display: none;
     position: absolute;
-    z-index: 10;
+    z-index: var(--ds-layer-observation-notes);
     inset: 6px;
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 0 16px 18px;
     border: 1px solid var(--ds-parchment-line);
-    border-radius: 16px;
+    border-radius: var(--ds-radius-pane);
     background: var(--ds-parchment);
     box-shadow: var(--ds-card-shadow);
   }
@@ -428,7 +428,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    background: var(--paper);
+    background: var(--ds-parchment);
   }
   .mobile-observation-active .observation-list-help {
     display: none;

@@ -43,7 +43,7 @@ dialog.modal.credits-modal {
   margin: 0 0 10px;
   padding: 8px;
   background: var(--ds-field);
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
   font-size: var(--ds-text-mark);
   line-height: var(--ds-leading-snug);
   white-space: pre-wrap;

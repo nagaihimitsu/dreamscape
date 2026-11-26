@@ -8,7 +8,7 @@
 .reasoning-claim {
   background: var(--ds-parchment-2);
   padding: 12px 15px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
 }
 .reasoning-claim .fine-print {
   margin: 0 0 5px;
@@ -42,7 +42,7 @@
   margin: 16px 0;
   padding: 14px;
   border: 1px dashed var(--ds-ink-muted);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
 }
 .selected-evidence p {
   margin: 0;
@@ -82,7 +82,7 @@
   line-height: var(--ds-leading-reading);
   font-size: var(--ds-text-note);
   padding: 14px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment-2);
 }
 

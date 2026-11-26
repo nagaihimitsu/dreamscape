@@ -15,6 +15,7 @@
   --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(24, 28, 38, 0.14), rgba(24, 28, 38, 0.46));
   --stage-remembered-rim: inset 0 0 26px rgba(120, 80, 30, 0.3);
   --phone-body: #10141c;
+  --phone-corner: 28px; /* the rounded corners of the phone's glass */
   --phone-slot: #3a4152;
   --phone-screen: #e9edf1;
   --phone-name: #4b5563; /* 6.4:1 on the screen */
@@ -136,7 +137,7 @@
   margin: 6px auto 8px;
   padding: 14px 7px 8px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 28px;
+  border-radius: var(--phone-corner);
   background: var(--phone-body);
   box-shadow: var(--ds-card-shadow);
 }
@@ -149,7 +150,7 @@
   width: 40px;
   height: 4px;
   margin-left: -20px;
-  border-radius: 2px;
+  border-radius: var(--ds-radius-hair);
   background: var(--phone-slot);
 }
 .phone-thread {
@@ -161,7 +162,7 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: 12px 10px;
-  border-radius: 21px;
+  border-radius: var(--ds-glass-radius);
   background: var(--phone-screen);
   color: var(--ds-slate-900);
 }
@@ -193,7 +194,7 @@
   max-width: 100%;
   margin: 0;
   padding: 10px 12px;
-  border-radius: 16px 16px 16px 4px;
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small);
   background: var(--phone-bubble);
   color: var(--ds-slate-900);
   font-family: "Noto Sans JP", sans-serif;
@@ -203,7 +204,7 @@
   overflow-wrap: anywhere;
 }
 .phone-message[data-side="sent"] .phone-bubble {
-  border-radius: 16px 16px 4px 16px;
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small) var(--ds-radius-pane);
   background: var(--ds-plate-blue); /* white text at 5.9:1 */
   color: var(--phone-sent-ink);
 }
@@ -239,7 +240,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background:
     repeating-linear-gradient(115deg, var(--letter-grain) 0 2px, transparent 2px 7px),
     var(--letter-paper);
@@ -249,7 +250,7 @@
   font-size: var(--ds-text-lead);
 }
 .letter-sheet[data-kind="note"] {
-  border-radius: 2px;
+  border-radius: var(--ds-radius-hair);
   background:
     repeating-linear-gradient(to bottom, transparent 0 calc(var(--letter-line) - 1px), var(--letter-rule) calc(var(--letter-line) - 1px) var(--letter-line)),
     var(--note-paper);
@@ -258,7 +259,7 @@
   background-clip: padding-box;
 }
 .letter-sheet[data-kind="card"] {
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--card-paper);
   outline: 1px solid var(--ds-parchment-line);
   outline-offset: -8px;

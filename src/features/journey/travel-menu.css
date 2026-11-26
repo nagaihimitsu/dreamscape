@@ -1,17 +1,17 @@
 .travel-menu { margin: 4px 0 0; }
 .travel-menu h2 { margin: 16px 0 8px; font-size: var(--ds-text-subhead); }
-.travel-reserve { margin: 0; color: var(--muted); font-size: var(--ds-text-caption); }
+.travel-reserve { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
 .travel-rentals { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
-.travel-rented { margin: 0; color: var(--muted); font-size: var(--ds-text-caption); }
+.travel-rented { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
 .travel-rent-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
 /* Tours (tour stage 2a): the same place-action line as the rentals; the sheet's cards. */
 .travel-tours { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
 .travel-tour-booked { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 /* (Scoped: the shared .secondary is loaded later and would widen the line's buttons.) */
 .travel-tours .travel-tour-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
-.travel-tour-card { margin: 12px 0 0; padding: 10px 12px 8px; border: 1px solid var(--ds-parchment-line); border-radius: 12px; }
+.travel-tour-card { margin: 12px 0 0; padding: 10px 12px 8px; border: 1px solid var(--ds-parchment-line); border-radius: var(--ds-radius-control); }
 .travel-tour-card h3 { margin: 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); }
-.travel-choice-modal .travel-tour-when { display: inline-block; margin: 6px 0 0; padding: 2px 10px; border-radius: 999px;
+.travel-choice-modal .travel-tour-when { display: inline-block; margin: 6px 0 0; padding: 2px 10px; border-radius: var(--ds-radius-pill);
   background: var(--ds-chip-bg); color: var(--ds-on-slate); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
 .travel-tour-itinerary { margin: 6px 0; padding: 0; list-style: none; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .travel-tour-itinerary li { padding: 1px 0; }
@@ -19,8 +19,8 @@
 .travel-tour-seller { font-weight: 600; }
 .travel-map-frame .leaflet-control-zoom a { display: grid; place-items: center; width: 44px; height: 44px; line-height: 1; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
-.travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--ds-marker); font-size: var(--ds-text-subhead); font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white, 0 1px 3px rgba(0, 0, 0, 0.3); }
-.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); border-radius: 50%; background: #fff9; }
+.travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--ds-marker); font-size: var(--ds-text-subhead); font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white, 0 1px 3px color-mix(in srgb, var(--ds-shade) 30%, transparent); }
+.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); border-radius: 50%; background: color-mix(in srgb, var(--ds-light) 60%, transparent); }
 /* Where the couple are: a ring in the current place's green widens and fades from the mark,
    slowly (every 2.4 s), so the eye finds it on the map. Display only, never pressed. */
 .travel-map-marker.is-here::before {
@@ -43,7 +43,7 @@
 /* A place the party has been to (「行った場所」, visited-places.ts; 2026-11-11 user decision): its mark on a warm paper
    disc, with a stamp (a tick in a dark ink circle) at its lower right, so it differs from a plain mark by its shape, not
    by colour alone. The selected marker's slate disc and yellow mark (later rules) still win; the stamp stays on it. */
-.travel-map-marker.is-visited { position: relative; border-radius: 50%; background: var(--ds-parchment-2); box-shadow: 0 0 0 1.5px var(--ds-gold), 0 1px 3px rgba(0, 0, 0, 0.25); }
+.travel-map-marker.is-visited { position: relative; border-radius: 50%; background: var(--ds-parchment-2); box-shadow: 0 0 0 1.5px var(--ds-gold), 0 1px 3px color-mix(in srgb, var(--ds-shade) 25%, transparent); }
 .travel-map-marker.is-here.is-visited { box-shadow: none; }
 .travel-map-marker.is-visited::after {
   content: "✓";
@@ -61,7 +61,7 @@
   font-weight: 700;
   line-height: 1;
   text-shadow: none;
-  box-shadow: 0 0 0 1.5px #fff;
+  box-shadow: 0 0 0 1.5px var(--ds-light);
 }
 .travel-list { display: grid; }
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
@@ -83,7 +83,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .free-time-hub .travel-reserve {
   align-self: flex-start;
   padding: 4px 12px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
   color: var(--ds-ink-muted);
   box-shadow: var(--ds-pill-shadow);
@@ -93,7 +93,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .free-time-hub .travel-rentals {
   margin: 0;
   padding: 0 12px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
 }
@@ -101,7 +101,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .free-time-hub .travel-tours {
   margin: 0;
   padding: 6px 12px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
 }
@@ -110,7 +110,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-list-card {
   padding: 0 8px 4px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-card-shadow);
@@ -137,7 +137,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   margin: 0;
   padding: 8px 4px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: none;
   color: inherit;
   font: inherit;
@@ -150,14 +150,14 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   width: 64px;
   height: 43px;
   margin-top: 2px;
-  border-radius: 6px;
+  border-radius: var(--ds-radius-field);
   object-fit: cover;
   background: var(--ds-parchment-2);
 }
 .travel-thumb.is-plain {
   display: grid;
   place-items: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: color-mix(in srgb, var(--ds-light) 90%, transparent);
   font-size: var(--ds-text-subhead);
 }
 .travel-destination-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
@@ -167,7 +167,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-recommended {
   flex: none;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-mark);
@@ -198,7 +198,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   justify-content: space-between;
   min-height: 44px;
   padding: 4px 12px;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background: var(--ds-parchment-2);
   font-size: var(--ds-text-body);
   font-weight: 600;
@@ -213,7 +213,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
    header (z 20) and ≡メニュー's dismiss layer (z 19), over the stuck map (z 3). */
 .travel-band {
   position: fixed;
-  z-index: 10;
+  z-index: var(--ds-layer-band);
   left: 0;
   right: 0;
   bottom: 0;
@@ -221,7 +221,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   border-top: 1px solid var(--ds-parchment-line);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  box-shadow: 0 -2px 10px rgba(40, 30, 20, 0.18);
+  box-shadow: 0 -2px 10px color-mix(in srgb, var(--ds-paper-shade) 18%, transparent);
   touch-action: manipulation;
 }
 .travel-band-row { display: flex; gap: 8px; max-width: 648px; margin: 0 auto; }
@@ -234,7 +234,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   margin: 0;
   padding: 4px 14px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
@@ -260,7 +260,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   max-width: calc(100% - 32px);
   padding: 8px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   box-shadow: var(--ds-card-shadow);
 }
@@ -279,10 +279,10 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   color: var(--ds-marker-selected);
   font-size: var(--ds-text-subhead);
   text-shadow: none;
-  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: scale(1.25);
 }
-.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--ds-here), 0 2px 6px rgba(0, 0, 0, 0.35); }
+.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .travel-map-marker-label {
   position: absolute;
   bottom: calc(100% + 9px);
@@ -291,7 +291,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   max-width: var(--map-label-max, 144px);
   overflow: hidden;
   padding: 1px 8px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
@@ -307,14 +307,14 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 /* The selected row (§3.6): a slate edge all round the row and the darker parchment, then the hint strip (or
    its choices) inside it. No mark before its name (2026-11-13 user decision, like the cards: no ◆ badge).
    Drawn inside the row (no border or margin), so selecting a row never moves what is under the finger. */
-.travel-destination.is-selected { border-radius: 12px; background: var(--ds-parchment-2); box-shadow: inset 0 0 0 2px var(--ds-slate-800); }
+.travel-destination.is-selected { border-radius: var(--ds-radius-control); background: var(--ds-parchment-2); box-shadow: inset 0 0 0 2px var(--ds-slate-800); }
 .travel-destination-title { justify-content: flex-start; }
 .travel-destination-title > .icon { margin-left: auto; }
 .travel-hint-strip {
   display: block;
   margin-top: 8px;
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-note);
@@ -338,7 +338,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   margin: 0;
   padding: 0;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   cursor: pointer;
@@ -357,7 +357,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   margin: 0;
   padding: 6px 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
@@ -397,7 +397,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   padding: 8px 16px 0;
   border-top: 1px solid var(--ds-parchment-line);
   background: var(--ds-parchment);
-  box-shadow: 0 -4px 10px rgba(40, 30, 20, 0.16);
+  box-shadow: 0 -4px 10px color-mix(in srgb, var(--ds-paper-shade) 16%, transparent);
 }
 .travel-band-sleep .travel-sleep-choices { display: grid; gap: 6px; max-width: 648px; margin: 0 auto; padding-bottom: 4px; }
 .travel-band .travel-sleep-toggle.is-selected { border-width: 2px; background: var(--ds-parchment-2); }

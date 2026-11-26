@@ -18,7 +18,7 @@
   gap: 3px 6px;
   padding: 4px 7px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-glass-bg);
 }
 .encounter-choice[data-translated] { grid-template-columns: 44px minmax(0, 1fr) 64px; }
@@ -41,7 +41,7 @@
   min-height: 44px;
   padding: 5px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-family: Georgia, serif;
@@ -189,7 +189,7 @@
 .vn-choices .encounter-choice {
   padding: 6px 8px;
   border: 0;
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--vn-window-bg);
   box-shadow: var(--ds-glass-shadow);
   color: var(--vn-text);

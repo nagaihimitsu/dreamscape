@@ -2,6 +2,10 @@
    way into the header's bag. Display only: no presses, no focus, aria-hidden. No thick edge on one side: the card is a
    parchment tile with a gold hairline all round and a soft gold glow. */
 
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --item-show-card-ground: #fff7dc;
+}
 /* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
    header; the card sits at its top middle, above the heads of the people on stage or under their faces (figures-top.ts;
    2026-11-25 user decisions: their faces stay seen as they speak), and below the notices under the header (「写真の札」, 「ことばを覚えた」: their
@@ -34,9 +38,9 @@
   padding: 18px 20px 12px;
   overflow: hidden;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 18px;
-  background: radial-gradient(circle at 50% 36%, #fff7dc, var(--ds-parchment) 68%);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 28px rgba(246, 196, 69, 0.32);
+  border-radius: var(--ds-radius-pane);
+  background: radial-gradient(circle at 50% 36%, var(--item-show-card-ground), var(--ds-parchment) 68%);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--ds-shade) 35%, transparent), 0 0 28px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
   color: var(--ds-ink);
   animation: item-show-in var(--motion-scene) var(--ease-out) both;
 }
@@ -56,7 +60,7 @@
   position: absolute;
   inset: -28%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(246, 196, 69, 0.42), rgba(246, 196, 69, 0) 66%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--ds-marker-selected) 42%, transparent), transparent 66%);
   animation: item-show-glow 2.4s ease-in-out infinite alternate;
 }
 @keyframes item-show-glow {
@@ -90,7 +94,7 @@
 .item-show-gleam {
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 65%);
+  background: linear-gradient(115deg, transparent 35%, color-mix(in srgb, var(--ds-light) 70%, transparent) 50%, transparent 65%);
   transform: translateX(-120%);
   animation: item-show-gleam 1100ms var(--ease-out) 250ms both;
 }

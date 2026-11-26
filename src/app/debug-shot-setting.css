@@ -38,7 +38,7 @@
   padding: 0;
 }
 .debug-shot-setting [role="alert"] {
-  color: #873b34;
+  color: var(--ds-danger);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
 }

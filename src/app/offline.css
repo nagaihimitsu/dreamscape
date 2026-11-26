@@ -41,7 +41,7 @@ dialog.offline-play .modal-title-bar {
   grid-auto-rows: minmax(56px, auto);
 }
 .offline-answers .modal-answers > .primary {
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
 }
 /* A row: a journey (or the kept journeys' newer build) under its heading, its state line, its buttons. */
 .offline-row {
@@ -86,7 +86,7 @@ dialog.offline-play h2:focus {
   margin: 8px 0 2px;
   appearance: none;
   border: 1px solid var(--ds-field-edge);
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment-2);
   overflow: hidden;
 }

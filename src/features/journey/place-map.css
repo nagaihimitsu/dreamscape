@@ -2,12 +2,12 @@
    so the sticky journey bar stays on top (and tappable) when the map scrolls
    under it. */
 .travel-map-preview { position: relative; isolation: isolate; }
-.travel-map-frame { width: 100%; height: clamp(170px, 26vh, 210px); border-radius: 10px; background: #e8ece8; }
+.travel-map-frame { width: 100%; height: clamp(170px, 26vh, 210px); border-radius: var(--ds-radius-control); background: var(--ds-map-ground); }
 /* F8: 「大きく」 in the frame's top-right corner (10-px insets like Leaflet's zoom
    column), above the markers (Leaflet's controls are at 1000 too). */
 .travel-map-expand {
   position: absolute;
-  z-index: 1000;
+  z-index: var(--ds-layer-map-control);
   top: 10px;
   right: 10px;
   display: inline-flex;
@@ -20,7 +20,7 @@
   margin: 0;
   padding: 3px 2px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
@@ -40,11 +40,11 @@
 /* The trail (PlaceMap, visited-places.ts trailPlaceIds): a place been to that has no mark of its own keeps the stamp
    alone, smaller and under the marks; it is not a control (no taps, no focus). */
 .travel-map-trail-wrap { background: transparent; border: 0; pointer-events: none; }
-.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-parchment); font-size: var(--ds-text-mark); font-weight: 700; line-height: 1; box-shadow: 0 0 0 1.5px #fff, 0 1px 3px rgba(0, 0, 0, 0.25); }
+.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-parchment); font-size: var(--ds-text-mark); font-weight: 700; line-height: 1; box-shadow: 0 0 0 1.5px var(--ds-light), 0 1px 3px color-mix(in srgb, var(--ds-shade) 25%, transparent); }
 .free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: 6px; }
 .travel-map-error { margin: 4px 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--ds-slate-900); box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--ds-slate-900); vertical-align: -1px; }
-.leaflet-container .leaflet-control-zoom { border: 1.5px solid var(--ds-slate-800); border-radius: 12px; overflow: hidden; }
+.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--ds-slate-900); box-shadow: 0 0 0 1.5px var(--ds-light), 0 0 0 2.5px var(--ds-slate-900); vertical-align: -1px; }
+.leaflet-container .leaflet-control-zoom { border: 1.5px solid var(--ds-slate-800); border-radius: var(--ds-radius-control); overflow: hidden; }
 
 /* Free time (§3.4): the map block is the part that stays under the header while
    the list scrolls (z 3 over the rows, with an opaque background including its
@@ -57,21 +57,21 @@
   top: var(--hud-h, 96px);
   margin: 0;
   padding: 0 0 8px;
-  border-radius: 16px 16px 0 0;
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
   background: var(--ds-parchment);
 }
 .free-time-hub[data-map-sticky="false"] .travel-map { position: relative; top: auto; }
 .free-time-hub .travel-map-frame {
   height: clamp(140px, calc(100svh - var(--hud-h, 96px) - var(--bottom-h, 60px) - 272px), 210px);
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px 16px 10px 10px;
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-control);
 }
 .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: -8px; }
 /* No bottom padding under the tile error: the unscrolled first row must clear the
    band at 320×568 and 375×553 (§3.4's arithmetic, measured). */
 .free-time-hub .travel-map-notes {
   padding: 0 12px;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 var(--ds-radius-pane) var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
 }

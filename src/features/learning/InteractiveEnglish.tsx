@@ -1,3 +1,4 @@
+import { Icon } from "../../components/icons";
 import { useEffect, useRef, useState } from "react";
 import { wordMeanings } from "../../content";
 import { normalizeWord, wordPattern } from "../../content/word-meanings";
@@ -130,7 +131,7 @@ export function InteractiveEnglish({
               setWord(null);
             }}
           >
-            ×
+            <Icon name="close" />
           </button>
         </span>
       )}

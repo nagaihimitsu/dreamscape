@@ -3,6 +3,13 @@
    glass keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no card has
    a thick accent line on its left (AGENTS.md). */
 
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --photo-free-time-photo-backdrop-ground: rgba(86, 128, 80, 0.13);
+  --photo-free-time-photo-backdrop-ground-2: rgba(84, 132, 160, 0.17);
+  --photo-free-time-photo-card-ground: #fffdf8;
+  --photo-free-time-photo-card-silhouette-ground: #cfc8bb;
+}
 /* The height of the marks over a card's photo, named once: the kind mark and the chips beside it stand in one line. */
 :root { --photo-card-mark: 22px; }
 
@@ -19,11 +26,11 @@
   height: 100lvh;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 140px 90px at 82% 26%, rgba(86, 128, 80, 0.13), transparent 70%),
-    linear-gradient(158deg, transparent 0 57%, rgba(84, 132, 160, 0.17) 57% 60.5%, transparent 60.5%),
-    repeating-linear-gradient(34deg, transparent 0 168px, rgba(107, 90, 74, 0.09) 168px 171px),
-    repeating-linear-gradient(0deg, transparent 0 46px, rgba(107, 90, 74, 0.06) 46px 47px),
-    repeating-linear-gradient(90deg, transparent 0 46px, rgba(107, 90, 74, 0.06) 46px 47px),
+    radial-gradient(ellipse 140px 90px at 82% 26%, var(--photo-free-time-photo-backdrop-ground), transparent 70%),
+    linear-gradient(158deg, transparent 0 57%, var(--photo-free-time-photo-backdrop-ground-2) 57% 60.5%, transparent 60.5%),
+    repeating-linear-gradient(34deg, transparent 0 168px, color-mix(in srgb, var(--ds-ink-muted) 9%, transparent) 168px 171px),
+    repeating-linear-gradient(0deg, transparent 0 46px, color-mix(in srgb, var(--ds-ink-muted) 6%, transparent) 46px 47px),
+    repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--ds-ink-muted) 6%, transparent) 46px 47px),
     var(--ds-parchment-2);
 }
 
@@ -32,7 +39,7 @@
    the glass of the cards (2026-11-25 user decision: the screen as the place, not a form laid over it). The header
    brings its own shade (journey-hud.css), so the top is dimmed only as the middle. */
 .photo-free-time .free-time-backdrop:not(.is-plain)::after {
-  background: linear-gradient(rgba(20, 24, 32, 0.18), rgba(20, 24, 32, 0.18) 62%, rgba(20, 24, 32, 0.45));
+  background: linear-gradient(color-mix(in srgb, var(--ds-veil) 18%, transparent), color-mix(in srgb, var(--ds-veil) 18%, transparent) 62%, color-mix(in srgb, var(--ds-veil) 45%, transparent));
 }
 /* The colour of the time of day (time-of-day.ts timeOfDayTint, user decision 2026-11-11) over the backdrop or the
    pattern: one more fixed layer, after them in the same place, under every card. Every text over it sits on its own
@@ -56,7 +63,7 @@
 .photo-menu-note {
   margin: 0;
   padding: 8px 12px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
   font-size: var(--ds-text-note);
@@ -146,10 +153,10 @@
   margin: 0;
   padding: 4px 4px 8px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
-  background: #fffdf8;
+  border-radius: var(--ds-radius-control);
+  background: var(--photo-free-time-photo-card-ground);
   color: var(--ds-ink);
-  box-shadow: 0 2px 8px rgba(40, 30, 20, 0.18);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-paper-shade) 18%, transparent);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -159,7 +166,7 @@
 }
 .photo-card[aria-current="true"] {
   background: var(--ds-parchment-2);
-  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 3px 9px rgba(40, 30, 20, 0.3);
+  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 3px 9px color-mix(in srgb, var(--ds-paper-shade) 30%, transparent);
 }
 /* What the place holds, at a glance and without words (photo-cards.ts cardKinds; the card under the row names it):
    the story's slate (its tag's), a date's rose (its tag's), both split on the diagonal. The tour and 「ホテルに戻る」
@@ -169,14 +176,14 @@
 .photo-card.is-both { background: linear-gradient(135deg, var(--ds-slate-800) 50%, var(--ds-marker) 50%); }
 .photo-card:is(.is-story, .is-date, .is-both) { color: var(--ds-on-slate); }
 .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 3px 9px rgba(40, 30, 20, 0.3);
+  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 3px 9px color-mix(in srgb, var(--ds-paper-shade) 30%, transparent);
 }
 /* Over the city (2026-11-25 user decision) the cards lie on the street as prints: no slate edge (its line would draw a
    form over the picture), a shadow cast on the picture under them, and the chosen one held up in a soft gold light
    (its edge stays drawn inside: the paper's slate, a fill's yellow). */
 .photo-cards .photo-card:not(.is-locked) {
   border-color: transparent;
-  box-shadow: 0 6px 18px rgba(8, 10, 16, 0.42);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--ds-veil) 42%, transparent);
 }
 /* In the row each card is the photo itself (2026-11-25 user decisions, after free time on an iPhone: the slate band of
    the name under the photo was a form's part laid over the city; then, the immersion before the colours decided
@@ -190,12 +197,12 @@
 .photo-card-ghost {
   padding: 0;
   border: 0;
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: none;
   color: var(--ds-on-slate);
 }
 .photo-cards:not(.is-list) .photo-card:not(.is-locked)[aria-current="true"] {
-  box-shadow: 0 0 0 2px var(--ds-glass-mark), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 28px rgba(246, 196, 69, 0.32);
+  box-shadow: 0 0 0 2px var(--ds-glass-mark), 0 10px 26px color-mix(in srgb, var(--ds-veil) 50%, transparent), 0 0 28px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
 }
 .photo-cards:not(.is-list) .photo-card-photo,
 .photo-card-ghost .photo-card-photo {
@@ -211,8 +218,8 @@
   bottom: 0;
   align-items: center;
   padding: 30px 10px 6px;
-  border-radius: 0 0 16px 16px;
-  background: linear-gradient(to bottom, transparent, rgba(8, 12, 22, 0.62) 45%, rgba(8, 12, 22, 0.86));
+  border-radius: 0 0 var(--ds-radius-pane) var(--ds-radius-pane);
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ds-veil) 62%, transparent) 45%, color-mix(in srgb, var(--ds-veil) 86%, transparent));
   color: var(--ds-on-slate);
   pointer-events: none;
 }
@@ -221,7 +228,7 @@
   align-self: stretch;
   color: inherit;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 50%, transparent);
 }
 .photo-cards:not(.is-list) .photo-card.is-unavailable .photo-card-name,
 .photo-card-ghost.is-unavailable .photo-card-name { color: var(--ds-smoke-muted); }
@@ -260,7 +267,7 @@
   gap: 3px;
   height: var(--photo-card-mark);
   padding: 0 6px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   color: var(--ds-on-slate);
 }
 .photo-card-kind .icon { width: 12px; height: 12px; }
@@ -302,10 +309,10 @@
   backdrop-filter: var(--ds-smoke-blur);
 }
 .photo-cards .photo-card:not(.is-locked)[aria-current="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 26px rgba(246, 196, 69, 0.32);
+  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 10px 26px color-mix(in srgb, var(--ds-veil) 50%, transparent), 0 0 26px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
 }
 .photo-cards .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 10px 26px rgba(8, 10, 16, 0.5), 0 0 26px rgba(246, 196, 69, 0.32);
+  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 10px 26px color-mix(in srgb, var(--ds-veil) 50%, transparent), 0 0 26px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
 }
 .photo-card-photo {
   position: relative;
@@ -313,7 +320,7 @@
   flex: none;
   overflow: hidden;
   aspect-ratio: 4 / 3;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
   background: var(--ds-parchment-2);
 }
 .photo-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -324,7 +331,7 @@
   width: 100%;
   height: 100%;
   background: var(--ds-slate-800);
-  color: rgba(255, 255, 255, 0.92);
+  color: color-mix(in srgb, var(--ds-light) 92%, transparent);
   font-size: var(--ds-text-title);
 }
 .photo-card-plain .icon { width: 32px; height: 32px; }
@@ -344,7 +351,7 @@
   cursor: default;
 }
 .photo-card.is-locked[aria-current="true"] { background: var(--ds-disabled-bg); box-shadow: inset 0 0 0 1.5px var(--ds-disabled-ink); }
-.photo-card-plain.photo-card-silhouette { background: #cfc8bb; color: var(--ds-disabled-ink); }
+.photo-card-plain.photo-card-silhouette { background: var(--photo-free-time-photo-card-silhouette-ground); color: var(--ds-disabled-ink); }
 .photo-card.is-locked .photo-card-name {
   display: -webkit-box;
   overflow: hidden;
@@ -359,7 +366,7 @@
   position: absolute;
   max-width: calc(100% - 8px);
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-mark);
@@ -476,7 +483,7 @@
 /* The card a swipe lifts, floating over the screen (and the header) while the finger holds it (useCardGestures). */
 .photo-card.photo-card-ghost {
   position: fixed;
-  z-index: 25;
+  z-index: var(--ds-layer-drag);
   margin: 0;
   pointer-events: none;
   will-change: transform;
@@ -489,13 +496,13 @@
  */
 .photo-card-refusal {
   position: fixed;
-  z-index: 26;
+  z-index: var(--ds-layer-drag-note);
   translate: -50% -50%;
   width: max-content;
   max-width: min(calc(100vw - 32px), 320px);
   padding: 8px 18px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-window-bg);
   color: var(--ds-on-slate);
   box-shadow: var(--ds-window-shadow);
@@ -538,20 +545,20 @@
 .photo-cards > li[data-joining] { animation: photo-card-join 760ms var(--ease-out) 220ms both; }
 .photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-list; }
 @keyframes photo-card-join {
-  0% { opacity: 0; scale: 0.4; translate: 0 -8px; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
-  55% { opacity: 1; scale: 1.06; translate: 0 0; filter: drop-shadow(0 0 8px rgba(201, 163, 95, 0.95)); }
+  0% { opacity: 0; scale: 0.4; translate: 0 -8px; filter: drop-shadow(0 0 0 transparent); }
+  55% { opacity: 1; scale: 1.06; translate: 0 0; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-gold) 95%, transparent)); }
   78% { scale: 0.98; }
-  100% { opacity: 1; scale: 1; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+  100% { opacity: 1; scale: 1; filter: drop-shadow(0 0 0 transparent); }
 }
 @keyframes photo-card-join-list {
-  0% { opacity: 0; translate: 32px 0; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
-  60% { opacity: 1; translate: -4px 0; filter: drop-shadow(0 0 8px rgba(201, 163, 95, 0.95)); }
-  100% { opacity: 1; translate: 0 0; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+  0% { opacity: 0; translate: 32px 0; filter: drop-shadow(0 0 0 transparent); }
+  60% { opacity: 1; translate: -4px 0; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-gold) 95%, transparent)); }
+  100% { opacity: 1; translate: 0 0; filter: drop-shadow(0 0 0 transparent); }
 }
 @keyframes photo-card-join-still {
-  0% { opacity: 0; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
-  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(201, 163, 95, 0.95)); }
-  100% { opacity: 1; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+  0% { opacity: 0; filter: drop-shadow(0 0 0 transparent); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-gold) 95%, transparent)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 0 transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .photo-cards > li[data-joining],
@@ -579,7 +586,7 @@
   margin: 0;
   padding: 12px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-card-shadow);
@@ -612,7 +619,7 @@
   margin: 0;
   padding: 6px 10px;
   border: 1px solid var(--ds-field-edge);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
@@ -633,7 +640,7 @@
   display: inline-block;
   margin-right: 6px;
   padding: 0 8px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-smoke);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-mark);
@@ -677,7 +684,7 @@
   margin: 0;
   padding: 4px 6px;
   border: 1px solid var(--ds-field-edge);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
@@ -713,7 +720,7 @@
   margin: 0;
   padding: 4px 14px;
   border: 1px solid var(--ds-field-edge);
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
@@ -769,8 +776,8 @@
 .place-inset-map {
   height: 120px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 10px;
-  background: #e8ece8;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-map-ground);
   isolation: isolate;
   pointer-events: none;
 }
@@ -781,12 +788,12 @@
 /* The direction: a display-only pill over the small map's top-left corner (above Leaflet's layers). */
 .place-card-direction {
   position: absolute;
-  z-index: 1001;
+  z-index: var(--ds-layer-map-note);
   top: 6px;
   left: 6px;
   margin: 0;
   padding: 1px 8px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
   color: var(--ds-ink);

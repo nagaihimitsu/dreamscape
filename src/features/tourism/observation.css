@@ -1,3 +1,7 @@
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --observation-viewport-ground: #282e29;
+}
 .observation-viewer {
   margin-block: 22px;
 }
@@ -6,7 +10,7 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #282e29;
+  background: var(--observation-viewport-ground);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -70,7 +74,7 @@
   background: var(--ds-slate-900);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-note);
-  box-shadow: 0 1px 5px #0009;
+  box-shadow: 0 1px 5px color-mix(in srgb, var(--ds-shade) 60%, transparent);
 }
 .observation-hotspot.is-found > span {
   background: var(--ds-parchment);
@@ -82,7 +86,7 @@
   color: var(--ds-marker-selected);
   box-shadow:
     0 0 0 3px var(--ds-marker-selected),
-    0 1px 8px #0009;
+    0 1px 8px color-mix(in srgb, var(--ds-shade) 60%, transparent);
 }
 /* A clue found in this observation: its mark pops once as it turns to ✓ (the button, its
    48-px target, stays where it is). */
@@ -103,7 +107,7 @@
   inset: 12px;
   border: 2px solid var(--ds-on-slate);
   border-radius: 50%;
-  box-shadow: 0 0 4px #0009;
+  box-shadow: 0 0 4px color-mix(in srgb, var(--ds-shade) 60%, transparent);
   opacity: 0;
   pointer-events: none;
   animation: hotspot-call 1.1s var(--ease-out) 300ms 2;
@@ -128,7 +132,7 @@
 .observation-controls button {
   min-width: 48px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-heading);
@@ -161,7 +165,7 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   font-size: var(--ds-text-caption);
 }
 
@@ -212,7 +216,7 @@
 /* Over the photo (§2.4): the place as a display-only pill, 手がかり帳 as a slate pressable. */
 .observation-location {
   padding: 5px 10px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
   box-shadow: var(--ds-pill-shadow);
@@ -241,7 +245,7 @@
   margin: 0;
   padding: 6px 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);

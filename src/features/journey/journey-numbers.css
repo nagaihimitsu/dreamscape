@@ -1,10 +1,14 @@
 /* 旅の数字 (2026-11-13; JourneyNumbers.tsx): a parchment card of label and number pairs, two to a row where they fit,
    one to a row on the narrowest phones; the numbers in the serif face, large enough to read at a glance. */
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --journey-numbers-journey-numbers-edge: rgba(216, 184, 120, 0.3);
+}
 .journey-numbers {
   margin: 12px 0;
   padding: 12px 14px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
 }
@@ -41,7 +45,7 @@
   max-width: 32rem;
   padding: 22px 4px;
   border: 0;
-  border-block: 1px solid rgba(216, 184, 120, 0.3);
+  border-block: 1px solid var(--journey-numbers-journey-numbers-edge);
   border-radius: 0;
   background: transparent;
   color: var(--ds-on-slate);

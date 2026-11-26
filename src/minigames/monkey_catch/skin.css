@@ -2,6 +2,38 @@
    bottom. Over the scene's picture (or the use's bg); with the use's art.wall, that picture in place of the drawn wall.
    What the play judges (the falling thing, the ring, the hands) and the monkey have a dark edge and a shadow, so they
    stand out of a photo's detail. */
+/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --monkey-catch-wall-ground-018: rgba(70, 24, 12, 0.18);
+  --monkey-catch-wall-ground: #b85a3e;
+  --monkey-catch-wall-ground-2: #9a4630;
+  --monkey-catch-wall-ground-3: #7e3826;
+  --monkey-catch-coping-ground: #d88a66;
+  --monkey-catch-coping-ground-2: #b45e40;
+  --monkey-catch-coping-shadow-035: rgba(40, 14, 6, 0.35);
+  --monkey-catch-inlay-edge-08: rgba(250, 244, 232, 0.8);
+  --monkey-catch-inlay-ground-072: rgba(250, 244, 232, 0.72);
+  --monkey-catch-ring-edge: #f6cf6a;
+  --monkey-catch-ring-shadow-08: rgba(40, 24, 8, 0.8);
+  --monkey-catch-ring-shadow-06: rgba(246, 207, 106, 0.6);
+  --monkey-catch-thing-shadow-095: rgba(255, 255, 255, 0.95);
+  --monkey-catch-thing-shadow-045: rgba(0, 0, 0, 0.45);
+  --monkey-catch-bottle-edge: #1d2925;
+  --monkey-catch-bottle-ground-085: rgba(255, 255, 255, 0.85);
+  --monkey-catch-bottle-ground: #e3f3ea;
+  --monkey-catch-bottle-ground-2: #8fc6ad;
+  --monkey-catch-bottle-ground-3: #b98a55;
+  --monkey-catch-glasses-edge: #141416;
+  --monkey-catch-glasses-ground-06: rgba(255, 255, 255, 0.6);
+  --monkey-catch-glasses-ground: #2c3138;
+  --monkey-catch-ledge-ground: #efb48e;
+  --monkey-catch-ledge-ground-2: #c0663f;
+  --monkey-catch-ledge-ground-3: #8f4128;
+  --monkey-catch-ledge-ground-4: #5e2716;
+  --monkey-catch-ledge-shadow-05: rgba(40, 14, 6, 0.5);
+  --monkey-catch-ledge-shadow-075: rgba(40, 14, 6, 0.75);
+  --monkey-catch-shell-figure-shadow-05: rgba(0, 0, 0, 0.5);
+}
 .mg-monkey-catch { position: absolute; inset: 0; }
 .mg-monkey-catch-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; }
 /* The gate's photo is full of fine inlay: a little darker and greyer than other photos (D1), so the drawn monkey, the
@@ -12,8 +44,8 @@
   position: absolute;
   inset: 30% 0 0;
   background:
-    repeating-linear-gradient(0deg, rgba(70, 24, 12, 0.18) 0 2px, transparent 2px 46px),
-    linear-gradient(to bottom, #b85a3e, #9a4630 55%, #7e3826);
+    repeating-linear-gradient(0deg, var(--monkey-catch-wall-ground-018) 0 2px, transparent 2px 46px),
+    linear-gradient(to bottom, var(--monkey-catch-wall-ground), var(--monkey-catch-wall-ground-2) 55%, var(--monkey-catch-wall-ground-3));
 }
 .mg-monkey-catch-coping {
   position: absolute;
@@ -21,9 +53,9 @@
   left: -2%;
   right: -2%;
   height: 12px;
-  border-radius: 2px;
-  background: linear-gradient(to bottom, #d88a66, #b45e40);
-  box-shadow: 0 3px 6px rgba(40, 14, 6, 0.35);
+  border-radius: var(--ds-radius-hair);
+  background: linear-gradient(to bottom, var(--monkey-catch-coping-ground), var(--monkey-catch-coping-ground-2));
+  box-shadow: 0 3px 6px var(--monkey-catch-coping-shadow-035);
 }
 .mg-monkey-catch-inlay {
   position: absolute;
@@ -31,11 +63,11 @@
   left: 0;
   right: 0;
   height: 30px;
-  border-top: 2px solid rgba(250, 244, 232, 0.8);
-  border-bottom: 2px solid rgba(250, 244, 232, 0.8);
+  border-top: 2px solid var(--monkey-catch-inlay-edge-08);
+  border-bottom: 2px solid var(--monkey-catch-inlay-edge-08);
   background:
-    repeating-linear-gradient(45deg, transparent 0 9px, rgba(250, 244, 232, 0.72) 9px 12px),
-    repeating-linear-gradient(-45deg, transparent 0 9px, rgba(250, 244, 232, 0.72) 9px 12px);
+    repeating-linear-gradient(45deg, transparent 0 9px, var(--monkey-catch-inlay-ground-072) 9px 12px),
+    repeating-linear-gradient(-45deg, transparent 0 9px, var(--monkey-catch-inlay-ground-072) 9px 12px);
   opacity: 0.85;
 }
 /* A wall picture shows its own wall. */
@@ -73,9 +105,9 @@
   top: 80%;
   width: 66px;
   height: 66px;
-  border: 3px solid #f6cf6a;
+  border: 3px solid var(--monkey-catch-ring-edge);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(40, 24, 8, 0.8), inset 0 0 0 2px rgba(40, 24, 8, 0.8), 0 0 10px rgba(246, 207, 106, 0.6);
+  box-shadow: 0 0 0 2px var(--monkey-catch-ring-shadow-08), inset 0 0 0 2px var(--monkey-catch-ring-shadow-08), 0 0 10px var(--monkey-catch-ring-shadow-06);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -113,7 +145,7 @@
   width: 52px;
   height: 50px;
   transform-origin: 50% 70%;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 0 2px var(--monkey-catch-thing-shadow-095)) drop-shadow(0 2px 3px var(--monkey-catch-thing-shadow-045));
   pointer-events: none;
 }
 /* The small bottle: clear glass with a highlight, its neck and cork. */
@@ -121,11 +153,11 @@
   position: relative;
   width: 30px;
   height: 32px;
-  border: 2.5px solid #1d2925;
-  border-radius: 10px 10px 12px 12px;
+  border: 2.5px solid var(--monkey-catch-bottle-edge);
+  border-radius: var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control);
   background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0.85) 0 18%, transparent 18% 100%),
-    linear-gradient(to bottom, #e3f3ea, #8fc6ad);
+    linear-gradient(100deg, var(--monkey-catch-bottle-ground-085) 0 18%, transparent 18% 100%),
+    linear-gradient(to bottom, var(--monkey-catch-bottle-ground), var(--monkey-catch-bottle-ground-2));
 }
 .mg-monkey-catch-bottle::before {
   content: "";
@@ -134,9 +166,9 @@
   top: -16px;
   width: 12px;
   height: 14px;
-  border: 2.5px solid #1d2925;
-  border-radius: 3px;
-  background: linear-gradient(to bottom, #b98a55 0 60%, #e3f3ea 60%);
+  border: 2.5px solid var(--monkey-catch-bottle-edge);
+  border-radius: var(--ds-radius-hair);
+  background: linear-gradient(to bottom, var(--monkey-catch-bottle-ground-3) 0 60%, var(--monkey-catch-bottle-ground) 60%);
   transform: translateX(-50%);
 }
 /* The sunglasses: two dark lenses with a glint, the bridge between them. */
@@ -144,9 +176,9 @@
 .mg-monkey-catch-glasses > span {
   width: 23px;
   height: 17px;
-  border: 2.5px solid #141416;
-  border-radius: 5px 5px 10px 10px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0 22%, #2c3138 22% 100%);
+  border: 2.5px solid var(--monkey-catch-glasses-edge);
+  border-radius: var(--ds-radius-small) var(--ds-radius-small) var(--ds-radius-control) var(--ds-radius-control);
+  background: linear-gradient(135deg, var(--monkey-catch-glasses-ground-06) 0 22%, var(--monkey-catch-glasses-ground) 22% 100%);
 }
 .mg-monkey-catch-glasses::before {
   content: "";
@@ -155,8 +187,8 @@
   top: 3px;
   width: 10px;
   height: 3px;
-  border-radius: 2px;
-  background: #141416;
+  border-radius: var(--ds-radius-hair);
+  background: var(--monkey-catch-glasses-edge);
   transform: translateX(-50%);
 }
 
@@ -168,14 +200,14 @@
   left: 32%;
   width: 22%;
   height: 15px;
-  border-radius: 2px 2px 1px 1px;
+  border-radius: var(--ds-radius-hair) var(--ds-radius-hair) var(--ds-radius-hair) var(--ds-radius-hair);
   /* A sandstone cornice: a lit lip, then a row of small carved brackets in its shadow. */
   background:
-    linear-gradient(to bottom, #efb48e 0 4px, #c0663f 4px 7px, transparent 7px),
-    repeating-linear-gradient(to right, #8f4128 0 5px, #5e2716 5px 7px);
-  box-shadow: 0 5px 6px rgba(40, 14, 6, 0.5), 0 0 0 1px rgba(40, 14, 6, 0.75);
+    linear-gradient(to bottom, var(--monkey-catch-ledge-ground) 0 4px, var(--monkey-catch-ledge-ground-2) 4px 7px, transparent 7px),
+    repeating-linear-gradient(to right, var(--monkey-catch-ledge-ground-3) 0 5px, var(--monkey-catch-ledge-ground-4) 5px 7px);
+  box-shadow: 0 5px 6px var(--monkey-catch-ledge-shadow-05), 0 0 0 1px var(--monkey-catch-ledge-shadow-075);
   transform: translateY(-50%);
   pointer-events: none;
 }
 .mg-monkey-catch-shell { position: absolute; z-index: 5; left: 58%; top: 25%; width: 34px; height: 22px; opacity: 0; pointer-events: none; }
-.mg-monkey-catch-shell-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)); }
+.mg-monkey-catch-shell-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px var(--monkey-catch-shell-figure-shadow-05)); }

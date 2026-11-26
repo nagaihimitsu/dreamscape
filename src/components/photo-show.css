@@ -9,6 +9,10 @@
    credited), so a print just taken may develop through a filter. The veil dims the whole scene, behind the header too
    (2026-11-25 user decision, after an iPhone: the band behind the header was left brighter than the dimmed scene). */
 
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --photo-show-photo-print-edge: #2f6fd6;
+}
 :root {
   --photo-print-margin: #fbfaf6; /* the print's paper */
   --photo-print-stamp: #b4532a; /* a date stamp's orange ink */
@@ -39,7 +43,7 @@
   max-width: min(100%, 600px);
   margin: 0;
   padding: 7px 7px 0;
-  border-radius: 3px;
+  border-radius: var(--ds-radius-hair);
   background: var(--photo-print-margin);
   box-shadow: var(--stage-photo-shadow);
   transform: rotate(-1.5deg);
@@ -54,7 +58,7 @@
      border, its margin's words on up to two lines and a little air; never smaller than 120 px (on a short screen it may
      then lie over a face), never larger than 40 % of the screen. */
   max-height: clamp(120px, calc(var(--room-bottom, 100dvh) - var(--photo-top) - 80px), 40dvh);
-  border-radius: 1px;
+  border-radius: var(--ds-radius-hair);
 }
 .photo-print-margin {
   display: flex;
@@ -95,7 +99,7 @@
 }
 .photo-show-layer > .photo-print:focus-visible,
 .photo-show-viewer .photo-print:focus-visible {
-  outline: 3px solid var(--ds-focus, #2f6fd6);
+  outline: 3px solid var(--ds-focus, var(--photo-show-photo-print-edge));
   outline-offset: 3px;
 }
 
@@ -138,7 +142,7 @@ dialog.modal.photo-show-viewer {
 .photo-show-flash {
   position: absolute;
   inset: 0;
-  background: #fff;
+  background: var(--ds-light);
   opacity: 0;
   animation: photo-show-flash 420ms ease-out;
 }

@@ -15,9 +15,9 @@
   place-items: center;
   width: 26px;
   height: 26px;
-  border: 1.5px solid #8a3324;
+  border: 1.5px solid var(--ds-seal);
   border-radius: 50%;
-  color: #8a3324;
+  color: var(--ds-seal);
   font-family: "Noto Serif JP", serif;
   font-size: var(--ds-text-note);
   font-weight: 700;
@@ -32,7 +32,7 @@
 .met-people {
   margin-top: 6px;
   padding-top: 14px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--ds-parchment-line);
 }
 .met-people h3 {
   margin: 0 0 4px;
@@ -58,7 +58,7 @@
   padding: 8px 0;
 }
 .met-people dl > div + div {
-  border-top: 1px dashed var(--line);
+  border-top: 1px dashed var(--ds-parchment-line);
 }
 .met-people dt {
   font-size: var(--ds-text-body);

@@ -3,7 +3,7 @@
 .dismiss-layer {
   position: fixed;
   inset: 0;
-  z-index: 19;
+  z-index: var(--ds-layer-dismiss);
   background: transparent;
   -webkit-tap-highlight-color: transparent;
 }

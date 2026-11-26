@@ -2,6 +2,34 @@
    would be (in the dialogue window); the play lies over the whole scene, below what lies over the scene's top (--scene-top):
    the top band, the game's stage (its field and, at the bottom in thumb reach, its controls), the count, the finish word,
    the heroine's reaction and the result card. */
+/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --host-minigame-practice-ground-014: rgba(127, 127, 127, 0.14);
+  --host-minigame-hand-finger-fill: #f6dcc4;
+  --host-minigame-hand-finger-line: #2a211c;
+  --host-minigame-hand-spot-fill-025: rgba(255, 250, 241, 0.25);
+  --host-minigame-hand-meter-fill-03: rgba(255, 250, 241, 0.3);
+  --host-minigame-hand-zone-fill: #f0c860;
+  --host-minigame-hand-needle-fill: #fffaf1;
+  --host-minigame-hand-beat-fill: #fff3cf;
+  --host-minigame-layer-ground-02: rgba(20, 24, 32, 0.2);
+  --host-minigame-layer-ground-015: rgba(20, 24, 32, 0.15);
+  --host-minigame-layer-ground-088: rgba(20, 24, 32, 0.88);
+  --host-minigame-band-ground-055: rgba(20, 24, 32, 0.55);
+  --host-minigame-quit-edge-035: rgba(255, 250, 241, 0.35);
+  --host-minigame-burst-ring-edge: #f6d36b;
+  --host-minigame-particle-dust-ground: #d8bf94;
+  --host-minigame-particle-splash-ground: #e8f4ff;
+  --host-minigame-count-shadow-045: rgba(0, 0, 0, 0.45);
+  --host-minigame-cutin-ground-0: rgba(42, 33, 28, 0);
+  --host-minigame-cutin-ground-086: rgba(42, 33, 28, 0.86);
+  --host-character-face-shadow-035: rgba(0, 0, 0, 0.35);
+  --host-minigame-result-ground-096: rgba(31, 36, 48, 0.96);
+  --host-primary-ground: #ffd666;
+  --host-secondary-edge-055: rgba(255, 250, 241, 0.55);
+  --host-secondary-ground-012: rgba(255, 250, 241, 0.12);
+  --host-minigame-pause-ground-078: rgba(20, 24, 32, 0.78);
+}
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/02 「デザインの決まり」). */
 :root {
@@ -25,22 +53,22 @@
 /* 練習 is optional (UI_RULES A-5, A-9): an outlined button in the window's own ink, quieter than the start on a dark window
    or a light one. */
 .minigame-card-actions .minigame-practice { justify-content: center; min-height: 48px; margin: 0; border-color: currentColor; background: transparent; color: inherit; font-size: var(--ds-text-body); }
-.minigame-card-actions .minigame-practice:hover:enabled { background: rgba(127, 127, 127, 0.14); }
+.minigame-card-actions .minigame-practice:hover:enabled { background: var(--host-minigame-practice-ground-014); }
 .minigame-card-actions .minigame-start { min-height: 54px; }
 
 /* The hand (HandDemo.tsx): 52 px, 36 in the one-line card; one round in 2.4 s; still at the press with less motion. */
 .minigame-hand { flex: none; width: 52px; height: 52px; overflow: hidden; }
 .minigame-card[data-brief] .minigame-hand { width: 36px; height: 36px; }
-.minigame-hand-finger { fill: #f6dcc4; stroke: #2a211c; stroke-width: 2; stroke-linejoin: round; transform: translate(-2px, 4px); }
-.minigame-hand-button { fill: var(--ds-gold); stroke: #2a211c; stroke-width: 2; transform-box: fill-box; transform-origin: center; }
+.minigame-hand-finger { fill: var(--host-minigame-hand-finger-fill); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; stroke-linejoin: round; transform: translate(-2px, 4px); }
+.minigame-hand-button { fill: var(--ds-gold); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; transform-box: fill-box; transform-origin: center; }
 .minigame-hand-ripple { fill: none; stroke: var(--ds-gold); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
-.minigame-hand-spot { fill: rgba(255, 250, 241, 0.25); stroke: #2a211c; stroke-width: 1.5; }
+.minigame-hand-spot { fill: var(--host-minigame-hand-spot-fill-025); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
 .minigame-hand-spot-hit { fill: var(--ds-gold); }
 .minigame-hand-trail { fill: none; stroke: var(--ds-gold); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
-.minigame-hand-meter { fill: rgba(255, 250, 241, 0.3); stroke: #2a211c; stroke-width: 1.5; }
-.minigame-hand-zone { fill: #f0c860; }
-.minigame-hand-needle { fill: #fffaf1; stroke: #2a211c; stroke-width: 1; }
-.minigame-hand-beat { fill: var(--ds-gold); stroke: #2a211c; stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
+.minigame-hand-meter { fill: var(--host-minigame-hand-meter-fill-03); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
+.minigame-hand-zone { fill: var(--host-minigame-hand-zone-fill); }
+.minigame-hand-needle { fill: var(--host-minigame-hand-needle-fill); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1; }
+.minigame-hand-beat { fill: var(--ds-gold); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
 .minigame-hand[data-kind="tap-target"] .minigame-hand-finger { transform: translate(-2px, 6px); }
 .minigame-hand[data-kind="drag"] .minigame-hand-finger { transform: translate(6px, 0); }
 .minigame-hand[data-kind="timing"] .minigame-hand-finger,
@@ -64,7 +92,7 @@
   0%, 15% { transform: translate(-22px, 12px); } 35%, 45% { transform: translate(18px, 12px); }
   65% { transform: translate(-2px, 12px); } 72%, 80% { transform: translate(-2px, 6px); } 90%, 100% { transform: translate(-22px, 12px); }
 }
-@keyframes minigame-hand-found { 0%, 72% { fill: rgba(255, 250, 241, 0.25); } 76%, 92% { fill: var(--ds-gold); } 100% { fill: rgba(255, 250, 241, 0.25); } }
+@keyframes minigame-hand-found { 0%, 72% { fill: var(--host-minigame-hand-spot-fill-025); } 76%, 92% { fill: var(--ds-gold); } 100% { fill: var(--host-minigame-hand-spot-fill-025); } }
 @keyframes minigame-hand-drag {
   0% { transform: translate(-24px, 10px); } 25% { transform: translate(-12px, 2px); } 50% { transform: translate(6px, 2px); }
   75% { transform: translate(14px, -2px); } 90%, 100% { transform: translate(22px, 2px); }
@@ -73,7 +101,7 @@
 @keyframes minigame-hand-needle { 0% { transform: translateX(-33px); } 66% { transform: translateX(15px); } 100% { transform: translateX(15px); } }
 @keyframes minigame-hand-time { 0%, 36%, 54%, 100% { transform: translate(-2px, 16px); } 42%, 48% { transform: translate(-2px, 10px); } }
 @keyframes minigame-hand-beat-tap { 0%, 30%, 100% { transform: translate(-2px, 16px); } 8%, 16% { transform: translate(-2px, 10px); } }
-@keyframes minigame-hand-beat { 0%, 12%, 100% { transform: scale(1); fill: var(--ds-gold); } 4% { transform: scale(1.35); fill: #fff3cf; } }
+@keyframes minigame-hand-beat { 0%, 12%, 100% { transform: scale(1); fill: var(--ds-gold); } 4% { transform: scale(1.35); fill: var(--host-minigame-hand-beat-fill); } }
 .reduce-motion .minigame-hand *, .minigame-hand[data-still] * { animation: none !important; }
 @media (prefers-reduced-motion: reduce) { .minigame-hand * { animation: none !important; } }
 /* How to play with keys: only where a keyboard is likely (a fine pointer that hovers). */
@@ -95,7 +123,7 @@
   padding-top: var(--scene-top, 0px);
   color: var(--ds-on-slate);
   /* The scene's picture (or the use's bg) stays behind the field; the bottom darkens under the controls. */
-  background: linear-gradient(to bottom, rgba(20, 24, 32, 0.2), rgba(20, 24, 32, 0.15) 45%, rgba(20, 24, 32, 0.88));
+  background: linear-gradient(to bottom, var(--host-minigame-layer-ground-02), var(--host-minigame-layer-ground-015) 45%, var(--host-minigame-layer-ground-088));
   animation: minigame-in var(--motion-fast, 180ms) var(--ease-out, ease-out);
   outline: none;
 }
@@ -110,7 +138,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(20, 24, 32, 0.2), rgba(20, 24, 32, 0.15) 45%, rgba(20, 24, 32, 0.88));
+  background: linear-gradient(to bottom, var(--host-minigame-layer-ground-02), var(--host-minigame-layer-ground-015) 45%, var(--host-minigame-layer-ground-088));
 }
 /* The top band: the game's name, its short status, 「中断する」 (a quiet secondary control). */
 .minigame-band {
@@ -120,7 +148,7 @@
   gap: 8px;
   min-height: 44px;
   padding: 4px 8px 4px 16px;
-  background: rgba(20, 24, 32, 0.55);
+  background: var(--host-minigame-band-ground-055);
   font-size: var(--ds-text-note);
 }
 /* The name, 「練習」 and the status: one line where they fit; on a narrow phone the status (or 「練習」 too) wraps under the
@@ -141,8 +169,8 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid rgba(255, 250, 241, 0.35);
-  border-radius: 10px;
+  border: 1px solid var(--host-minigame-quit-edge-035);
+  border-radius: var(--ds-radius-control);
   background: transparent;
   color: var(--ds-on-slate);
   font-size: var(--ds-text-note);
@@ -152,7 +180,7 @@
   flex: none;
   padding: 1px 8px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   color: var(--ds-marker-selected);
   font-size: var(--ds-text-caption);
   font-weight: 700;
@@ -166,15 +194,15 @@
 .minigame-flash { position: absolute; inset: 0; }
 /* Particles and rings: a dark 2 px edge so they read over a bright photo (group3 6.4). */
 .minigame-burst-ring, .minigame-particle { position: absolute; display: block; translate: -50% -50%; }
-.minigame-burst-ring { border: 3px solid #f6d36b; border-radius: 50%; box-shadow: 0 0 0 2px #2a211c, inset 0 0 0 2px #2a211c; }
-.minigame-particle { filter: drop-shadow(0 0 1px #2a211c) drop-shadow(0 0 1px #2a211c); }
+.minigame-burst-ring { border: 3px solid var(--host-minigame-burst-ring-edge); border-radius: 50%; box-shadow: 0 0 0 2px var(--host-minigame-hand-finger-line), inset 0 0 0 2px var(--host-minigame-hand-finger-line); }
+.minigame-particle { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)); }
 .minigame-particle > i { display: block; width: 100%; height: 100%; }
 .minigame-particle-star > i {
-  background: #f6d36b;
+  background: var(--host-minigame-burst-ring-edge);
   clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
-.minigame-particle-dust > i { border-radius: 50%; background: #d8bf94; }
-.minigame-particle-splash > i { border-radius: 50% 50% 50% 0; background: #e8f4ff; rotate: -45deg; }
+.minigame-particle-dust > i { border-radius: 50%; background: var(--host-minigame-particle-dust-ground); }
+.minigame-particle-splash > i { border-radius: 50% 50% 50% 0; background: var(--host-minigame-particle-splash-ground); rotate: -45deg; }
 
 /* The host's count: 3・2・1・スタート in the middle of the field, 72 px, a pop as each comes (none with less motion). */
 .minigame-layer :is(.minigame-count, .minigame-finish) {
@@ -184,13 +212,13 @@
   left: 0;
   right: 0;
   margin: 0;
-  color: #fffaf1;
+  color: var(--ds-on-slate);
   font-weight: 800;
   line-height: var(--ds-leading-display);
   text-align: center;
   pointer-events: none;
   /* A dark edge: readable over any photo. */
-  text-shadow: 0 0 2px #2a211c, 0 0 2px #2a211c, 0 2px 0 #2a211c, 0 4px 10px rgba(0, 0, 0, 0.45);
+  text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line), 0 4px 10px var(--host-minigame-count-shadow-045);
   transform: translateY(-50%);
 }
 .minigame-layer .minigame-count { font-size: var(--minigame-count-size); animation: minigame-count-in 120ms var(--ease-out, ease-out) both; }
@@ -214,14 +242,14 @@
   justify-items: center;
   gap: 2px;
   padding: 10px 16px 12px;
-  background: linear-gradient(90deg, rgba(42, 33, 28, 0), rgba(42, 33, 28, 0.86) 16%, rgba(42, 33, 28, 0.86) 84%, rgba(42, 33, 28, 0));
+  background: linear-gradient(90deg, var(--host-minigame-cutin-ground-0), var(--host-minigame-cutin-ground-086) 16%, var(--host-minigame-cutin-ground-086) 84%, var(--host-minigame-cutin-ground-0));
   pointer-events: none;
   transform: translateY(-50%);
 }
 .minigame-layer:not([data-still]) .minigame-cutin { animation: minigame-cutin-in 220ms var(--ease-out, ease-out) both; }
 @keyframes minigame-cutin-in { from { opacity: 0; transform: translate(18%, -50%); } }
-.minigame-layer .minigame-cutin p { margin: 0; text-align: center; text-shadow: 0 0 2px #2a211c, 0 2px 0 #2a211c; }
-.minigame-layer .minigame-cutin-sub { color: #fffaf1; font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-snug); }
+.minigame-layer .minigame-cutin p { margin: 0; text-align: center; text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line); }
+.minigame-layer .minigame-cutin-sub { color: var(--ds-on-slate); font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-snug); }
 .minigame-layer .minigame-cutin-main { color: var(--ds-marker-selected); font-size: var(--minigame-cutin-size); font-weight: 800; line-height: var(--ds-leading-display); }
 
 /* The heroine's quick reaction: her face (64 px) and a short bubble, under the band on the left, for 0.9 s. */
@@ -237,12 +265,12 @@
   pointer-events: none;
   animation: minigame-react-in 140ms var(--ease-out, ease-out) both;
 }
-.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: 2px solid #2a211c; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35); }
+.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: 2px solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px var(--host-character-face-shadow-035); }
 .minigame-layer .minigame-react-line {
   margin: 0;
   padding: 6px 12px;
-  border: 1.5px solid #2a211c;
-  border-radius: 14px;
+  border: 1.5px solid var(--host-minigame-hand-finger-line);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
@@ -271,9 +299,9 @@
   margin: 0 auto;
   padding: 12px 14px 14px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   /* Nearly opaque: the dead controls under it do not show through. */
-  background: rgba(31, 36, 48, 0.96);
+  background: var(--host-minigame-result-ground-096);
   box-shadow: var(--ds-window-shadow);
   color: var(--ds-on-slate);
   text-align: center;
@@ -299,7 +327,7 @@
 .minigame-result-react:not(:has(.character-face)) .minigame-result-texts { align-items: center; }
 .minigame-layer .minigame-result[data-compact] .minigame-result-score { font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
 .minigame-layer .minigame-result[data-compact] .minigame-result-detail { font-size: var(--ds-text-caption); line-height: var(--ds-leading-tight); }
-.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: 2px 8px; border-radius: 10px; font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
+.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: 2px 8px; border-radius: var(--ds-radius-control); font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
 .minigame-result[data-compact] .minigame-result-actions { margin-top: 4px; }
 .minigame-result[data-compact] .minigame-result-actions > button { min-height: 44px; padding-top: 6px; padding-bottom: 6px; line-height: var(--ds-leading-snug); }
 @keyframes minigame-result-in { from { opacity: 0; transform: translateY(12px); } }
@@ -308,7 +336,7 @@
 /* ★ one by one (120 ms apart), ★3 bigger; an unearned one dim and outlined (not told by colour alone). */
 .minigame-stars { display: flex; align-items: flex-end; gap: 4px; font-size: var(--ds-text-title); line-height: 1; }
 .minigame-star { color: transparent; -webkit-text-stroke: 1.5px var(--ds-on-slate-muted); animation: minigame-star-in 200ms var(--ease-out, ease-out) both; }
-.minigame-star[data-on] { color: #f6d36b; -webkit-text-stroke: 1.5px #2a211c; }
+.minigame-star[data-on] { color: var(--host-minigame-burst-ring-edge); -webkit-text-stroke: 1.5px var(--host-minigame-hand-finger-line); }
 .minigame-star[data-big] { font-size: var(--minigame-big-star-size); }
 @keyframes minigame-star-in { from { opacity: 0; transform: scale(1.6); } }
 .minigame-layer .minigame-result p { margin: 0; }
@@ -319,7 +347,7 @@
 .minigame-result-react .character-face { width: 56px; height: 56px; }
 .minigame-layer .minigame-result-line {
   padding: 6px 10px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
@@ -329,10 +357,10 @@
 .minigame-result-actions > button { flex: 1 1 0; justify-content: center; min-height: 52px; margin: 0; }
 /* On the dark card the main button is gold (it stands out from the card), もう一回 an outline. */
 .minigame-result-actions > .primary { flex-grow: 1.4; background: var(--ds-marker-selected); box-shadow: none; color: var(--ds-slate-900); font-size: var(--ds-text-subhead); font-weight: 700; }
-.minigame-result-actions > .primary:hover:enabled { background: #ffd666; }
+.minigame-result-actions > .primary:hover:enabled { background: var(--host-primary-ground); }
 .minigame-result-actions > .primary:focus-visible { box-shadow: 0 0 0 3px var(--ds-slate-900), 0 0 0 5px var(--ds-focus); }
-.minigame-result-actions > .secondary { border-color: rgba(255, 250, 241, 0.55); background: transparent; color: var(--ds-on-slate); font-size: var(--ds-text-body); }
-.minigame-result-actions > .secondary:hover:enabled { background: rgba(255, 250, 241, 0.12); }
+.minigame-result-actions > .secondary { border-color: var(--host-secondary-edge-055); background: transparent; color: var(--ds-on-slate); font-size: var(--ds-text-body); }
+.minigame-result-actions > .secondary:hover:enabled { background: var(--host-secondary-ground-012); }
 /* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
    the buttons a bar of their own at the bottom in the controls' place, as on every other game (2026-11-14). Between
    them the field shows, and a press there reaches the ended play, which takes none. */
@@ -352,8 +380,8 @@
   box-sizing: border-box;
   width: 100%;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 16px;
-  background: rgba(31, 36, 48, 0.96);
+  border-radius: var(--ds-radius-pane);
+  background: var(--host-minigame-result-ground-096);
   box-shadow: var(--ds-window-shadow);
   pointer-events: auto;
 }
@@ -379,7 +407,7 @@
   filter: saturate(0.78) contrast(0.9) brightness(0.82) blur(1.5px);
   scale: 1.03;
 }
-.mg-play-object { filter: drop-shadow(0 0 1px #2a211c) drop-shadow(0 0 1px #2a211c) drop-shadow(0 2px 1px rgba(0, 0, 0, 0.35)); }
+.mg-play-object { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 2px 1px var(--host-character-face-shadow-035)); }
 /* 一時停止中 (a timed game after the page was hidden): over the play, 「続ける」 first. */
 .minigame-pause {
   position: absolute;
@@ -391,7 +419,7 @@
   justify-content: center;
   gap: 10px;
   padding: 16px;
-  background: rgba(20, 24, 32, 0.78);
+  background: var(--host-minigame-pause-ground-078);
 }
 .minigame-pause p { margin: 0 0 6px; font-size: var(--ds-text-subhead); font-weight: 700; text-align: center; }
 .minigame-pause button { justify-content: center; min-height: 52px; }

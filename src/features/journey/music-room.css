@@ -23,7 +23,7 @@
   min-height: 44px;
   padding: 8px 12px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
   font: inherit;

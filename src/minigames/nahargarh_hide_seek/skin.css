@@ -3,6 +3,58 @@
    ceiling's beams and the wall lamps' light above them. The doors take most of the field's height (the thing to press,
    large). With the use's art.bay / art.room / art.peek, those pictures in place of the drawn wall and doorway (the leaves
    stay), room and her. */
+/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --nahargarh-hide-seek-skin-ground: #2e251d;
+  --nahargarh-hide-seek-skin-ground-2: #4a3c2e;
+  --nahargarh-hide-seek-skin-ground-3: #b9a585;
+  --nahargarh-hide-seek-skin-ground-4: #e3d4b8;
+  --nahargarh-hide-seek-skin-ground-5: #dccbab;
+  --nahargarh-hide-seek-row-ground: #3b2c20;
+  --nahargarh-hide-seek-row-ground-2: #5a4532;
+  --nahargarh-hide-seek-row-ground-3: #4c3a2a;
+  --nahargarh-hide-seek-row-ground-042: rgba(255, 214, 150, 0.42);
+  --nahargarh-hide-seek-row-ground-012: rgba(255, 214, 150, 0.12);
+  --nahargarh-hide-seek-row-ground-4: #b8925a;
+  --nahargarh-hide-seek-row-ground-5: #a65a3a;
+  --nahargarh-hide-seek-row-ground-6: #5f7d55;
+  --nahargarh-hide-seek-row-ground-018: rgba(120, 90, 50, 0.18);
+  --nahargarh-hide-seek-bay-ground: #dccaa6;
+  --nahargarh-hide-seek-bay-ground-2: #d5c09a;
+  --nahargarh-hide-seek-bay-ground-3: #7d6b56;
+  --nahargarh-hide-seek-bay-ground-4: #ad9b82;
+  --nahargarh-hide-seek-bay-ground-5: #8e7d67;
+  --nahargarh-hide-seek-door-shadow: #c49a5a;
+  --nahargarh-hide-seek-door-shadow-045: rgba(110, 76, 36, 0.45);
+  --nahargarh-hide-seek-door-shadow-025: rgba(60, 40, 20, 0.25);
+  --nahargarh-hide-seek-room-ground-055: rgba(255, 228, 170, 0.55);
+  --nahargarh-hide-seek-room-ground: #4a3a2b;
+  --nahargarh-hide-seek-room-ground-2: #2a2018;
+  --nahargarh-hide-seek-room-ground-3: #3a2e22;
+  --nahargarh-hide-seek-leaf-ground: #e2bd6e;
+  --nahargarh-hide-seek-leaf-ground-2: #7a4a28;
+  --nahargarh-hide-seek-leaf-ground-3: #5c3519;
+  --nahargarh-hide-seek-leaf-shadow-035: rgba(40, 22, 10, 0.35);
+  --nahargarh-hide-seek-handle-shadow-06: rgba(30, 16, 6, 0.6);
+  --nahargarh-hide-seek-room-shadow-012: rgba(255, 226, 168, 0.12);
+  --nahargarh-hide-seek-fingers-edge: #5a3a26;
+  --nahargarh-hide-seek-fingers-ground: #e2b690;
+  --nahargarh-hide-seek-gasp-ground-092: rgba(255, 250, 241, 0.92);
+  --nahargarh-hide-seek-gasp-ink: #8a3a2a;
+  --nahargarh-hide-seek-event-ground-09: rgba(255, 236, 196, 0.9);
+  --nahargarh-hide-seek-event-shadow-08: rgba(255, 230, 180, 0.8);
+  --nahargarh-hide-seek-event-ground-085: rgba(196, 92, 72, 0.85);
+  --nahargarh-hide-seek-event-ground-07: rgba(226, 140, 104, 0.7);
+  --nahargarh-hide-seek-event-ground-08: rgba(196, 92, 72, 0.8);
+  --nahargarh-hide-seek-echo-ground-09: rgba(255, 250, 241, 0.9);
+  --nahargarh-hide-seek-fade-left-ground-05: rgba(40, 30, 20, 0.5);
+  --nahargarh-hide-seek-chevron-shadow-06: rgba(0, 0, 0, 0.6);
+  --nahargarh-hide-seek-peek-her-shadow-03: rgba(40, 30, 20, 0.3);
+  --nahargarh-hide-seek-peek-corner-ground: #b9a583;
+  --nahargarh-hide-seek-peek-corner-ground-2: #d9c8a8;
+  --nahargarh-hide-seek-peek-corner-ground-3: #cdbb99;
+  --nahargarh-hide-seek-peek-corner-shadow-035: rgba(40, 30, 20, 0.35);
+}
 .mg-nahargarh-hide-seek {
   /* A bay (a door and the wall beside it) takes most of the field's height, or a third of its width (three doors show on a
      phone: 2026-11-14 playtest, about two showed and a door-by-door search ran long); its width keeps the doorway photo's
@@ -14,7 +66,7 @@
   overflow: hidden;
   container-type: size;
   /* The ceiling's shadow, then the lime-plastered wall, a little brighter where the courtyard's light falls. */
-  background: linear-gradient(to bottom, #2e251d 0, #4a3c2e 9%, #b9a585 22%, #e3d4b8 46%, #dccbab 100%);
+  background: linear-gradient(to bottom, var(--nahargarh-hide-seek-skin-ground) 0, var(--nahargarh-hide-seek-skin-ground-2) 9%, var(--nahargarh-hide-seek-skin-ground-3) 22%, var(--nahargarh-hide-seek-skin-ground-4) 46%, var(--nahargarh-hide-seek-skin-ground-5) 100%);
 }
 .mg-nahargarh-hide-seek-corridor {
   position: absolute;
@@ -38,13 +90,13 @@
   width: max-content;
   height: 100%;
   background:
-    linear-gradient(to bottom, #3b2c20 0 6%, #5a4532 6% 7%, transparent 7%) 0 0 / 100% 100% no-repeat,
-    linear-gradient(to right, transparent 0 calc(50% - 9px), #4c3a2a calc(50% - 9px) calc(50% + 9px), transparent calc(50% + 9px)) 0 0 / var(--bay-w) 11% repeat-x,
-    radial-gradient(ellipse 46% 42% at 50% 62%, rgba(255, 214, 150, 0.42), rgba(255, 214, 150, 0.12) 60%, transparent 100%) 0 0 / var(--bay-w) var(--frieze-y) repeat-x,
-    linear-gradient(to bottom, #b8925a 0 1.5px, transparent 1.5px 12.5px, #b8925a 12.5px) 0 var(--frieze-y) / var(--bay-w) 14px repeat-x,
-    radial-gradient(circle at 50% 50%, #a65a3a 0 3px, transparent 3.6px) 0 var(--frieze-y) / calc(var(--bay-w) / 3) 14px repeat-x,
-    radial-gradient(ellipse 3px 2px at 0 50%, #5f7d55 0 100%, transparent 100%) calc(var(--bay-w) / 6) var(--frieze-y) / calc(var(--bay-w) / 3) 14px repeat-x,
-    linear-gradient(to right, rgba(120, 90, 50, 0.18) 0 2px, transparent 2px calc(100% - 2px), rgba(120, 90, 50, 0.18) calc(100% - 2px)) 0 0 / var(--bay-w) 100% repeat-x;
+    linear-gradient(to bottom, var(--nahargarh-hide-seek-row-ground) 0 6%, var(--nahargarh-hide-seek-row-ground-2) 6% 7%, transparent 7%) 0 0 / 100% 100% no-repeat,
+    linear-gradient(to right, transparent 0 calc(50% - 9px), var(--nahargarh-hide-seek-row-ground-3) calc(50% - 9px) calc(50% + 9px), transparent calc(50% + 9px)) 0 0 / var(--bay-w) 11% repeat-x,
+    radial-gradient(ellipse 46% 42% at 50% 62%, var(--nahargarh-hide-seek-row-ground-042), var(--nahargarh-hide-seek-row-ground-012) 60%, transparent 100%) 0 0 / var(--bay-w) var(--frieze-y) repeat-x,
+    linear-gradient(to bottom, var(--nahargarh-hide-seek-row-ground-4) 0 1.5px, transparent 1.5px 12.5px, var(--nahargarh-hide-seek-row-ground-4) 12.5px) 0 var(--frieze-y) / var(--bay-w) 14px repeat-x,
+    radial-gradient(circle at 50% 50%, var(--nahargarh-hide-seek-row-ground-5) 0 3px, transparent 3.6px) 0 var(--frieze-y) / calc(var(--bay-w) / 3) 14px repeat-x,
+    radial-gradient(ellipse 3px 2px at 0 50%, var(--nahargarh-hide-seek-row-ground-6) 0 100%, transparent 100%) calc(var(--bay-w) / 6) var(--frieze-y) / calc(var(--bay-w) / 3) 14px repeat-x,
+    linear-gradient(to right, var(--nahargarh-hide-seek-row-ground-018) 0 2px, transparent 2px calc(100% - 2px), var(--nahargarh-hide-seek-row-ground-018) calc(100% - 2px)) 0 0 / var(--bay-w) 100% repeat-x;
 }
 /* One bay: wall, its door, the floor under it (the bays side by side make one wall and one floor). A button. */
 .mg-nahargarh-hide-seek-bay {
@@ -56,7 +108,7 @@
   padding: 0;
   border: 0;
   border-radius: 0;
-  background: linear-gradient(to bottom, transparent 64%, #dccaa6 64%, #d5c09a 87.4%, #7d6b56 87.4%, #7d6b56 88%, #ad9b82 88%, #8e7d67 100%);
+  background: linear-gradient(to bottom, transparent 64%, var(--nahargarh-hide-seek-bay-ground) 64%, var(--nahargarh-hide-seek-bay-ground-2) 87.4%, var(--nahargarh-hide-seek-bay-ground-3) 87.4%, var(--nahargarh-hide-seek-bay-ground-3) 88%, var(--nahargarh-hide-seek-bay-ground-4) 88%, var(--nahargarh-hide-seek-bay-ground-5) 100%);
   color: inherit;
   scroll-snap-align: center;
   scroll-snap-stop: always;
@@ -78,15 +130,15 @@
   bottom: 12%;
   overflow: hidden;
   border-radius: 50% 50% 0 0 / 28% 28% 0 0;
-  box-shadow: 0 0 0 4px #c49a5a, 0 0 0 6px rgba(110, 76, 36, 0.45), 0 6px 10px rgba(60, 40, 20, 0.25);
+  box-shadow: 0 0 0 4px var(--nahargarh-hide-seek-door-shadow), 0 0 0 6px var(--nahargarh-hide-seek-door-shadow-045), 0 6px 10px var(--nahargarh-hide-seek-door-shadow-025);
 }
 .mg-nahargarh-hide-seek-room {
   position: absolute;
   inset: 0;
   /* An empty room: dim, a small window's light on the far wall (or the use's art.room, drawn over it). */
   background:
-    radial-gradient(ellipse 22% 14% at 50% 34%, rgba(255, 228, 170, 0.55), transparent 100%),
-    linear-gradient(to bottom, #4a3a2b, #2a2018 70%, #3a2e22);
+    radial-gradient(ellipse 22% 14% at 50% 34%, var(--nahargarh-hide-seek-room-ground-055), transparent 100%),
+    linear-gradient(to bottom, var(--nahargarh-hide-seek-room-ground), var(--nahargarh-hide-seek-room-ground-2) 70%, var(--nahargarh-hide-seek-room-ground-3));
 }
 .mg-nahargarh-hide-seek-room-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 /* A bay picture (e.g. a photo of a doorway) has its own frame; the field still draws the leaves and opens them. */
@@ -98,9 +150,9 @@
   bottom: 0;
   width: 50%;
   background:
-    radial-gradient(circle, #e2bd6e 0 1.6px, transparent 2.2px) 0 0 / 12px 16px,
-    linear-gradient(to bottom, #7a4a28, #5c3519);
-  box-shadow: inset 0 0 0 2px rgba(40, 22, 10, 0.35);
+    radial-gradient(circle, var(--nahargarh-hide-seek-leaf-ground) 0 1.6px, transparent 2.2px) 0 0 / 12px 16px,
+    linear-gradient(to bottom, var(--nahargarh-hide-seek-leaf-ground-2), var(--nahargarh-hide-seek-leaf-ground-3));
+  box-shadow: inset 0 0 0 2px var(--nahargarh-hide-seek-leaf-shadow-035);
   transition: transform 420ms cubic-bezier(0.2, 0.8, 0.3, 1), filter 420ms;
 }
 .mg-nahargarh-hide-seek-leaf-left { left: 0; transform-origin: 0 50%; }
@@ -111,9 +163,9 @@
   top: 54%;
   width: max(8px, 14%);
   aspect-ratio: 1;
-  border: 2px solid #e2bd6e;
+  border: 2px solid var(--nahargarh-hide-seek-leaf-ground);
   border-radius: 50%;
-  box-shadow: 0 1px 1px rgba(30, 16, 6, 0.6);
+  box-shadow: 0 1px 1px var(--nahargarh-hide-seek-handle-shadow-06);
 }
 .mg-nahargarh-hide-seek-leaf-left > .mg-nahargarh-hide-seek-handle { right: 6%; }
 .mg-nahargarh-hide-seek-leaf-right > .mg-nahargarh-hide-seek-handle { left: 6%; }
@@ -130,7 +182,7 @@
 @keyframes mg-nahargarh-hide-seek-overshoot { 0% { transform: scaleX(1); } 65% { transform: scaleX(0.02); } 100% { transform: scaleX(0.12); } }
 /* She peeks out: the right leaf opens a crack and her fingers curl round its edge; ducked back, it stays ajar a while (a
    line of light between the leaves). */
-.mg-nahargarh-hide-seek-bay[data-peek] > .mg-nahargarh-hide-seek-door > .mg-nahargarh-hide-seek-room { box-shadow: inset 0 0 0 999px rgba(255, 226, 168, 0.12); }
+.mg-nahargarh-hide-seek-bay[data-peek] > .mg-nahargarh-hide-seek-door > .mg-nahargarh-hide-seek-room { box-shadow: inset 0 0 0 999px var(--nahargarh-hide-seek-room-shadow-012); }
 .mg-nahargarh-hide-seek-bay[data-peek="peek"] > .mg-nahargarh-hide-seek-door > .mg-nahargarh-hide-seek-leaf-right { transform: scaleX(0.62); }
 .mg-nahargarh-hide-seek-bay[data-peek="ajar"] > .mg-nahargarh-hide-seek-door > .mg-nahargarh-hide-seek-leaf-right { transform: scaleX(0.88); }
 .mg-nahargarh-hide-seek-fingers {
@@ -143,7 +195,7 @@
   pointer-events: none;
   transition: opacity 120ms linear;
 }
-.mg-nahargarh-hide-seek-fingers > i { display: block; width: 13px; height: 7px; border: 1px solid #5a3a26; border-radius: 3px 6px 6px 3px; background: #e2b690; }
+.mg-nahargarh-hide-seek-fingers > i { display: block; width: 13px; height: 7px; border: 1px solid var(--nahargarh-hide-seek-fingers-edge); border-radius: var(--ds-radius-hair) var(--ds-radius-field) var(--ds-radius-field) var(--ds-radius-hair); background: var(--nahargarh-hide-seek-fingers-ground); }
 .mg-nahargarh-hide-seek-bay[data-peek="peek"] .mg-nahargarh-hide-seek-fingers { opacity: 1; }
 [data-still] .mg-nahargarh-hide-seek-leaf, [data-still] .mg-nahargarh-hide-seek-fingers { transition: none; }
 /* Her gasp through the wall of the room next to hers, on her side. */
@@ -152,9 +204,9 @@
   z-index: 1;
   top: 36%;
   padding: 2px 8px;
-  border-radius: 10px;
-  background: rgba(255, 250, 241, 0.92);
-  color: #8a3a2a;
+  border-radius: var(--ds-radius-control);
+  background: var(--nahargarh-hide-seek-gasp-ground-092);
+  color: var(--nahargarh-hide-seek-gasp-ink);
   font-size: var(--ds-text-subhead);
   font-weight: 700;
   line-height: var(--ds-leading-snug);
@@ -182,8 +234,8 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(255, 236, 196, 0.9);
-  box-shadow: 0 0 4px rgba(255, 230, 180, 0.8);
+  background: var(--nahargarh-hide-seek-event-ground-09);
+  box-shadow: 0 0 4px var(--nahargarh-hide-seek-event-shadow-08);
   animation: mg-nahargarh-hide-seek-dust 1400ms ease-out 120ms both;
 }
 .mg-nahargarh-hide-seek-event[data-event="dust"] > i:nth-child(1) { left: 34%; }
@@ -207,7 +259,7 @@
   width: 26%;
   height: 72%;
   border-radius: 0 0 40% 20%;
-  background: linear-gradient(to right, rgba(196, 92, 72, 0.85), rgba(226, 140, 104, 0.7) 60%, rgba(196, 92, 72, 0.8));
+  background: linear-gradient(to right, var(--nahargarh-hide-seek-event-ground-085), var(--nahargarh-hide-seek-event-ground-07) 60%, var(--nahargarh-hide-seek-event-ground-08));
   transform-origin: 50% 0;
   animation: mg-nahargarh-hide-seek-sway 1200ms ease-in-out both;
 }
@@ -244,8 +296,8 @@
   width: max-content;
   max-width: 116%;
   padding: 3px 8px;
-  border-radius: 10px;
-  background: rgba(255, 250, 241, 0.9);
+  border-radius: var(--ds-radius-control);
+  background: var(--nahargarh-hide-seek-echo-ground-09);
   color: var(--ds-ink);
   font-size: var(--ds-text-caption);
   line-height: var(--ds-leading-snug);
@@ -255,7 +307,7 @@
   animation: mg-nahargarh-hide-seek-echo 1400ms ease-out both;
 }
 .mg-nahargarh-hide-seek-echo[data-hers] { font-size: var(--ds-text-body); font-weight: 700; }
-.mg-nahargarh-hide-seek-giggle-line { font-size: var(--ds-text-note); font-weight: 700; color: #8a3a2a; }
+.mg-nahargarh-hide-seek-giggle-line { font-size: var(--ds-text-note); font-weight: 700; color: var(--nahargarh-hide-seek-gasp-ink); }
 @keyframes mg-nahargarh-hide-seek-echo {
   0% { opacity: 0; transform: translate(-50%, 8px); }
   20%, 70% { opacity: 1; transform: translate(-50%, 0); }
@@ -268,9 +320,9 @@
   left: 50%;
   top: 40%;
   padding: 2px 8px;
-  border-radius: 10px;
-  background: rgba(255, 250, 241, 0.92);
-  color: #8a3a2a;
+  border-radius: var(--ds-radius-control);
+  background: var(--nahargarh-hide-seek-gasp-ground-092);
+  color: var(--nahargarh-hide-seek-gasp-ink);
   font-size: var(--ds-text-body);
   font-weight: 700;
   line-height: var(--ds-leading-snug);
@@ -297,10 +349,10 @@
 .mg-nahargarh-hide-seek-fade { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; width: 30px; pointer-events: none; }
 .mg-nahargarh-hide-seek-fade::before { position: absolute; inset: 0; content: ""; opacity: 0; transition: opacity 200ms; }
 .mg-nahargarh-hide-seek-fade-left { left: 0; }
-.mg-nahargarh-hide-seek-fade-left::before { background: linear-gradient(to right, rgba(40, 30, 20, 0.5), transparent); }
+.mg-nahargarh-hide-seek-fade-left::before { background: linear-gradient(to right, var(--nahargarh-hide-seek-fade-left-ground-05), transparent); }
 .mg-nahargarh-hide-seek-fade-right { right: 0; justify-content: flex-end; }
-.mg-nahargarh-hide-seek-fade-right::before { background: linear-gradient(to left, rgba(40, 30, 20, 0.5), transparent); }
-.mg-nahargarh-hide-seek-chevron { position: relative; padding: 0 4px; color: var(--ds-on-slate); font-size: var(--ds-text-display); line-height: 1; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); opacity: 0; transition: opacity 200ms; }
+.mg-nahargarh-hide-seek-fade-right::before { background: linear-gradient(to left, var(--nahargarh-hide-seek-fade-left-ground-05), transparent); }
+.mg-nahargarh-hide-seek-chevron { position: relative; padding: 0 4px; color: var(--ds-on-slate); font-size: var(--ds-text-display); line-height: 1; text-shadow: 0 1px 3px var(--nahargarh-hide-seek-chevron-shadow-06); opacity: 0; transition: opacity 200ms; }
 .mg-nahargarh-hide-seek[data-more-left] .mg-nahargarh-hide-seek-fade-left::before,
 .mg-nahargarh-hide-seek[data-more-right] .mg-nahargarh-hide-seek-fade-right::before,
 .mg-nahargarh-hide-seek[data-more-left] .mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-chevron,
@@ -314,7 +366,7 @@
   bottom: 0;
   height: min(80%, 330px);
   aspect-ratio: 2 / 3;
-  filter: drop-shadow(-4px 0 8px rgba(40, 30, 20, 0.3));
+  filter: drop-shadow(-4px 0 8px var(--nahargarh-hide-seek-peek-her-shadow-03));
   transform: rotate(-12deg);
   transform-origin: 100% 100%;
   animation: mg-nahargarh-hide-seek-peek 600ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
@@ -331,8 +383,8 @@
   right: 0;
   bottom: 0;
   width: 24%;
-  background: linear-gradient(to right, #b9a583, #d9c8a8 30%, #cdbb99);
-  box-shadow: -6px 0 10px rgba(40, 30, 20, 0.35);
+  background: linear-gradient(to right, var(--nahargarh-hide-seek-peek-corner-ground), var(--nahargarh-hide-seek-peek-corner-ground-2) 30%, var(--nahargarh-hide-seek-peek-corner-ground-3));
+  box-shadow: -6px 0 10px var(--nahargarh-hide-seek-peek-corner-shadow-035);
 }
 /* A cold room (far from her door) leans nowhere: the pigeon goes straight up and out, the cloth only stirs, the painted
    lady's eyes look round and back. */

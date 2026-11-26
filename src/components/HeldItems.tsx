@@ -146,10 +146,10 @@ export function HeldItems({ items, gained, spent, newIds = [], onOpen, onSeen }:
           <div className="held-item-detail-heading">
             <strong id={`${id}-name`}>{single ? single.name : `所持品（${items.length}個）`}</strong>
             {single && isNew(single) && <NewTag />}
-            <button type="button" className="held-item-close" aria-label={single ? "アイテムの詳細を閉じる" : "所持品を閉じる"} onClick={() => {
+            <button type="button" className="modal-close held-item-close" aria-label={single ? "アイテムの詳細を閉じる" : "所持品を閉じる"} onClick={() => {
               setOpen(false);
               buttonRef.current?.focus();
-            }}>×</button>
+            }}><Icon name="close" />閉じる</button>
           </div>
           {single
             ? <><p>{single.description}</p><ItemLines item={single} /></>

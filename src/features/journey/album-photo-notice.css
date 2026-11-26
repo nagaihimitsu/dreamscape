@@ -13,7 +13,7 @@
   gap: 10px;
   max-width: min(100%, 340px);
   padding: 6px 12px 6px 8px;
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
@@ -40,9 +40,9 @@
   width: 66px;
   aspect-ratio: 3 / 2;
   object-fit: cover;
-  border: 3px solid #fff;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--ds-light);
+  border-radius: var(--ds-radius-hair);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 30%, transparent);
   transform: rotate(-3deg);
   background: var(--ds-parchment-line);
 }

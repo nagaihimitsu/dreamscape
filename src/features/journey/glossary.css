@@ -9,7 +9,7 @@
 .glossary-term-window {
   position: fixed;
   inset: 0;
-  z-index: 1800;
+  z-index: var(--ds-layer-term);
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -17,7 +17,7 @@
   padding: max(16px, 7dvh, env(safe-area-inset-top)) 16px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: radial-gradient(ellipse 90% 62% at 50% 40%, rgba(14, 12, 10, 0.5), rgba(14, 12, 10, 0.3) 62%, rgba(14, 12, 10, 0.08));
+  background: radial-gradient(ellipse 90% 62% at 50% 40%, color-mix(in srgb, var(--ds-shade) 50%, transparent), color-mix(in srgb, var(--ds-shade) 30%, transparent) 62%, color-mix(in srgb, var(--ds-shade) 8%, transparent));
   cursor: pointer;
   animation: glossary-dim-in var(--motion-medium) var(--ease-out) both;
 }
@@ -43,7 +43,7 @@
   border: 0;
   border-radius: var(--ds-glass-radius);
   background: var(--ds-glass-bg);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 0 28px rgba(246, 196, 69, 0.28);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--ds-shade) 30%, transparent), 0 0 28px color-mix(in srgb, var(--ds-marker-selected) 28%, transparent);
   color: var(--ds-ink);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -60,8 +60,8 @@
   gap: 4px;
   margin: 0;
   padding: 2px 10px;
-  border-radius: 999px;
-  background: rgba(201, 163, 95, 0.22);
+  border-radius: var(--ds-radius-pill);
+  background: color-mix(in srgb, var(--ds-gold) 22%, transparent);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-caption);
   line-height: var(--ds-leading-chip);
@@ -77,8 +77,8 @@
   height: auto;
   max-height: min(190px, 28dvh);
   margin: 0 auto;
-  border-radius: 10px;
-  background: #e9dcc4;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-parchment-2);
 }
 /* What the photo shows when it stands in for the term (photoNoteJa): small and quiet, right under the photo. */
 .glossary-term-photo-note {
@@ -183,7 +183,7 @@ dialog.modal.glossary-modal {
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
   font: inherit;
@@ -195,7 +195,7 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  background: #e9dcc4;
+  background: var(--ds-parchment-2);
 }
 .glossary-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .glossary-card-name {
@@ -211,9 +211,9 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   top: 4px;
   right: 4px;
   padding: 0 5px;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background: var(--ds-marker);
-  color: #fff;
+  color: var(--ds-on-slate);
   font-family: Georgia, serif;
   font-size: var(--ds-text-mark);
   font-weight: 700;
@@ -226,7 +226,7 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   top: 4px;
   left: 4px;
   padding: 0 5px;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-mark);
@@ -254,7 +254,7 @@ dialog.modal.glossary-entry {
   height: auto;
   max-height: min(50dvh, 420px);
   margin: 0 auto;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
 }
 .glossary-entry-photo-note { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .glossary-entry-line { margin: 10px 0 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }

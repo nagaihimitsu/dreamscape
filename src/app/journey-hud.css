@@ -14,7 +14,7 @@
   container: journey-hud / inline-size;
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: var(--ds-layer-hud);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -46,7 +46,7 @@
 .hud-plate,
 .hud-wallet {
   min-height: 40px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
 }
 /* The plate takes the row beside the money. It needs at least about nine
    characters (9em) and never less than its time line (its minimum: the place's
@@ -63,7 +63,7 @@
   justify-content: center;
   gap: 1px;
   padding: 3px 14px;
-  border-radius: 20px;
+  border-radius: var(--ds-radius-pane);
 }
 .hud-place {
   min-width: 0;
@@ -222,7 +222,7 @@
   padding: 8px;
   /* A pane of the glass over the scene (2026-11-25: every screen in the one immersive look); its colours: styles.css, the glass surfaces. */
   border: 0;
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -240,7 +240,7 @@
   margin: 0;
   padding: 0 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;

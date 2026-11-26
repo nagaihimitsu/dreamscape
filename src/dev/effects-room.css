@@ -1,6 +1,10 @@
 /* Debug's 「音と演出の見本」 (EffectsRoom.tsx): a working page for one hand on a phone (320–390 px), 44 px targets.
    Pressables are parchment rectangles with a slate edge (pressed: slate), state notes sit on their own ground, and no
    card has a thick edge on one side. The sample stage reuses the game's own scene, header and notices. */
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --effects-room-off-ground: #f1e7d1;
+}
 .effects-room {
   max-width: 720px;
   margin: 0 auto;
@@ -23,7 +27,7 @@
   min-height: 44px;
   padding: 6px 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
@@ -31,14 +35,14 @@
 .effects-room-note {
   padding: 10px 12px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
 }
 /* A setting that is off, a missing list: a note on its own ground, not a pressable. */
 .effects-room p.effects-room-off {
   padding: 8px 10px;
-  border-radius: 8px;
-  background: #f1e7d1;
+  border-radius: var(--ds-radius-field);
+  background: var(--effects-room-off-ground);
 }
 
 /* The jumps to the sections. */
@@ -49,7 +53,7 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 14px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment-2);
   font-size: var(--ds-text-note);
   text-decoration: none;
@@ -62,7 +66,7 @@
   min-height: 44px;
   padding: 6px 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
@@ -121,8 +125,8 @@
   min-height: 44px;
   padding: 6px 8px;
   border: 1px solid var(--ds-field-edge);
-  border-radius: 8px;
-  background: #fff;
+  border-radius: var(--ds-radius-field);
+  background: var(--ds-light);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
 }
@@ -148,7 +152,7 @@
 .effects-room-now {
   position: sticky;
   bottom: 0;
-  z-index: 30;
+  z-index: var(--ds-layer-cutin);
   display: grid;
   gap: 4px;
   margin: 20px -16px 0;
@@ -163,7 +167,7 @@
   min-width: 64px;
   min-height: 44px;
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);

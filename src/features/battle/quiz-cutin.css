@@ -9,14 +9,14 @@
 .quiz-cutin {
   position: absolute;
   inset: 0;
-  z-index: 30;
+  z-index: var(--ds-layer-cutin);
   display: flex;
   align-items: center;
   justify-content: center;
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
   padding: max(12px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) 0 max(12px, env(safe-area-inset-bottom));
   overflow: hidden;
-  background: rgba(18, 24, 32, 0.52);
+  background: color-mix(in srgb, var(--ds-veil) 52%, transparent);
   /* In quickly, out over its last moment (the screen removes it at 900 ms, QUIZ_CUTIN_MS). */
   animation: quiz-cutin-veil 900ms linear both;
 }
@@ -38,7 +38,7 @@
   line-height: var(--ds-leading-display);
   letter-spacing: 0.04em;
   text-align: center;
-  text-shadow: 0 3px 0 #0008;
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
   animation: quiz-cutin-word 300ms 50ms var(--ease-out) both;
 }
 @keyframes quiz-cutin-veil {

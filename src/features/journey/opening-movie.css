@@ -1,13 +1,17 @@
 /* A journey's opening movie (OpeningMovie.tsx): full screen over everything, the portrait movie fitted in black, the
    sound and skip buttons in the top corner clear of the notch, a play button in the middle when the browser refused to
    start it. */
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --opening-movie-button-ground: rgba(16, 20, 28, 0.6);
+}
 .opening-movie {
   position: fixed;
-  z-index: 2100;
+  z-index: var(--ds-layer-movie);
   inset: 0;
   display: grid;
   place-items: center;
-  background: #000;
+  background: var(--ds-shade);
 }
 /* The box is the screen: without min-height and max-height a grid item keeps the movie's 9:16 height, so on a screen
    wider than 9:16 (a phone held sideways, a PC) its lower part, the title, was cut off below the screen. */
@@ -17,7 +21,7 @@
   min-height: 0;
   max-height: 100%;
   object-fit: contain;
-  background: #000;
+  background: var(--ds-shade);
 }
 .opening-movie-controls {
   position: absolute;
@@ -32,10 +36,10 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 18px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 999px;
-  background: rgba(16, 20, 28, 0.6);
-  color: #fff;
+  border: 1px solid color-mix(in srgb, var(--ds-light) 70%, transparent);
+  border-radius: var(--ds-radius-pill);
+  background: var(--opening-movie-button-ground);
+  color: var(--ds-light);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
@@ -45,7 +49,7 @@
   cursor: default;
 }
 .opening-movie-button:focus-visible {
-  outline: 3px solid #fff;
+  outline: 3px solid var(--ds-light);
   outline-offset: 2px;
 }
 .opening-movie-play {

@@ -16,7 +16,7 @@
   width: 64px;
   aspect-ratio: 2 / 3;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment-2);
 }
 .shop-outfit-figure img { display: block; width: 100%; height: 100%; object-fit: contain; }

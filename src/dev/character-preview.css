@@ -1,3 +1,10 @@
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --character-preview-preview-path-ink: #536258;
+  --character-preview-preview-stage-light-ground: #eeeade;
+  --character-preview-preview-stage-dark-ground: #27332e;
+  --character-preview-preview-guides-ground: #c38a44;
+}
 .character-preview {
   width: min(100%, 720px);
   margin: 0 auto;
@@ -15,15 +22,15 @@
 .preview-controls label { display: grid; gap: 2px; font-size: var(--ds-text-note); min-width: 0; }
 .preview-controls select { min-height: 40px; width: 100%; min-width: 0; padding: 5px; font-size: var(--ds-text-body); }
 .preview-status, .preview-path, .preview-caption { margin: 6px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
-.preview-path { color: #536258; }
+.preview-path { color: var(--character-preview-preview-path-ink); }
 .preview-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: end; }
 .preview-layout { display: grid; gap: 2px; font-size: var(--ds-text-note); min-width: 0; }
 .preview-layout select { width: 100%; min-width: 0; min-height: 40px; padding: 5px; font-size: var(--ds-text-body); }
 .preview-dialogue-toggle { display: flex; align-items: center; gap: 8px; min-height: 40px; font-size: var(--ds-text-body); }
 .preview-dialogue-toggle input { width: 20px; height: 20px; }
 .vn-scene.preview-stage { height: max(480px, calc(100dvh - 44px)); min-height: 480px; }
-.vn-scene.preview-stage-light { background: #eeeade; }
-.vn-scene.preview-stage-dark { background: #27332e; }
+.vn-scene.preview-stage-light { background: var(--character-preview-preview-stage-light-ground); }
+.vn-scene.preview-stage-dark { background: var(--character-preview-preview-stage-dark-ground); }
 .preview-stage-fit .vn-character-layer { inset: 0; height: 100%; transform: none; }
 /* Whole-image inspection must not inherit the in-game zoom or its anchor:
    the actual game layout remains available in the separate layout mode. */
@@ -36,8 +43,8 @@
   transform-origin: center bottom !important;
 }
 .preview-guides { position: absolute; inset: 0; pointer-events: none; background:
-  linear-gradient(to right, transparent calc(50% - .5px), #c38a44 50%, transparent calc(50% + .5px)),
-  repeating-linear-gradient(to bottom, transparent 0, transparent calc(25% - 1px), #c38a44 25%); opacity: .55; }
+  linear-gradient(to right, transparent calc(50% - .5px), var(--character-preview-preview-guides-ground) 50%, transparent calc(50% + .5px)),
+  repeating-linear-gradient(to bottom, transparent 0, transparent calc(25% - 1px), var(--character-preview-preview-guides-ground) 25%); opacity: .55; }
 .vn-scene .preview-dialogue { width: 90%; }
 .preview-dialogue .dialogue-text { cursor: default; }
 @media (max-width: 700px) {
