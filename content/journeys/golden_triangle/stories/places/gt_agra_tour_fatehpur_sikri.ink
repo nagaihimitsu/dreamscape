@@ -421,7 +421,7 @@ INCLUDE modules.ink
     ガイドさんは、もうすぐ来ます。ルクサーナさんなら、心配いりません。この町で、いちばん口の休まない人です
     # speaker: heroine
     # reaction: heroine,teasing,music
-    ヴィノードさんと足して、ちょうど半分ずつですね
+    ヴィノードさんと足したら、ちょうどいいくらいですね
 - else:
     # speaker: gt_vinod
     # voice: gt_agra_tour_arrive_vinod_001
