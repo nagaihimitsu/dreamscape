@@ -50,7 +50,7 @@ const delhiFinale = indiaPhoto("gt_album_d113", "delhi", "delhi_red_fort", "gt_d
 const tajGuide = indiaPhoto("gt_album_a008", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_taj_mahal_guide", "門のアーチからはみ出していく白");
 const agraFinale = indiaPhoto("gt_album_a138", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_finale_battle", "「わたしたちのことは、わたしたちで決めます」");
 const mehtabDate = indiaPhoto("gt_album_a117", "agra", "agra_mehtab_bagh", "gt_agra_mehtab_bagh.gt_agra_mehtab_bagh_ball_over_wall", "最後の一球、塀を越えてアウト");
-const jaipurEpilogue = indiaPhoto("gt_album_j57", "jaipur", "jaipur_hotel_hub", "gt_jaipur_hotel_hub.gt_jaipur_epilogue", "段ボールの六行目「通りで踊った夜」");
+const jaipurEpilogue = indiaPhoto("gt_album_j134", "jaipur", "jaipur_hotel_hub", "gt_jaipur_hotel_hub.gt_jaipur_epilogue", "段ボールの六行目「通りで踊った夜」");
 /** The recap's album picture: the author's illustration with its caption, no credit. */
 const albumPicture = (photo: AlbumPhoto): RecapPicture =>
   ({ path: getAlbumImage(photo.imageId)!.path, altJa: photo.caption!, captionJa: photo.caption! });
