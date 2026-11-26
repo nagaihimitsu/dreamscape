@@ -1,13 +1,19 @@
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --city-arrival-logo-ground: #f4f1e6ed;
+  --city-arrival-logo-ink: #294b40;
+  --city-arrival-line-ground: #b38c4b;
+}
 .city-arrival-logo {
   position: fixed;
-  z-index: 1900;
+  z-index: var(--ds-layer-arrival);
   inset: 0;
   display: grid;
   align-content: center;
   justify-items: center;
   gap: 24px;
-  background: #f4f1e6ed;
-  color: #294b40;
+  background: var(--city-arrival-logo-ground);
+  color: var(--city-arrival-logo-ink);
   animation: city-arrival-fade 1.8s ease both;
 }
 .city-arrival-mark { display: grid; justify-items: center; gap: 12px; width: min(260px, 78vw); }
@@ -15,7 +21,7 @@
 .city-arrival-mark path { stroke-dasharray: 1; animation: city-arrival-draw 1s ease-out both; }
 /* As wide as the mark, so the name's FitText fits it there (a long name smaller, or two lines at the phrases). */
 .city-arrival-mark strong { font: 500 clamp(28px, 8vw, 40px) "Noto Serif JP", serif; letter-spacing: .2em; padding-left: .2em; justify-self: stretch; text-align: center; }
-.city-arrival-line { width: 60px; height: 1px; background: #b38c4b; }
+.city-arrival-line { width: 60px; height: 1px; background: var(--city-arrival-line-ground); }
 .city-arrival-continue { min-height: 44px; }
 @keyframes city-arrival-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes city-arrival-fade { 0% { opacity: 0; } 15%, 100% { opacity: 1; } }

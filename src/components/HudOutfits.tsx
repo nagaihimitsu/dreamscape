@@ -117,10 +117,10 @@ export function HudOutfits({ options, worn, canChange, onWear, onOpen, gained, f
           data-testid="hud-outfits-panel">
           <div className="held-item-detail-heading">
             <strong id={`${id}-name`}>服を選ぶ</strong>
-            <button type="button" className="held-item-close" aria-label="服を閉じる" onClick={() => {
+            <button type="button" className="modal-close held-item-close" aria-label="服を閉じる" onClick={() => {
               setOpen(false);
               buttonRef.current?.focus();
-            }}>×</button>
+            }}><Icon name="close" />閉じる</button>
           </div>
           <ul className="hud-outfits-list">
             {options.map((option) => {

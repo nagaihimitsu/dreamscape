@@ -2,6 +2,26 @@
    right with her bubble over her head, the player's bubble from the bottom left (lifted clear of the result card as the
    play ends). Over the scene's picture (or the use's bg); with the use's art.lawn, that picture in place of the drawn lawn
    and tomb. */
+/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --say-together-lawn-ground-09: rgba(52, 78, 44, 0.9);
+  --say-together-lawn-ground-085: rgba(60, 86, 50, 0.85);
+  --say-together-lawn-ground-09-2: rgba(48, 72, 42, 0.9);
+  --say-together-lawn-ground-042: rgba(236, 232, 218, 0.42);
+  --say-together-lawn-ground-02: rgba(236, 232, 218, 0.2);
+  --say-together-lawn-ground: #8fae5f;
+  --say-together-lawn-ground-2: #6f9446;
+  --say-together-lawn-ground-3: #557a36;
+  --say-together-tomb-figure-fill: #cdb89a;
+  --say-together-tomb-arches-fill: #8f7a62;
+  --say-together-bubble-shadow-03: rgba(0, 0, 0, 0.3);
+  --say-together-bubble-edge: #e8b94a;
+  --say-together-bubble-shadow-045: rgba(240, 200, 96, 0.45);
+  --say-together-bubble-shadow-075: rgba(240, 200, 96, 0.75);
+  --say-together-word-ink: #7a4c08;
+  --say-together-word-ink-2: #8a5a10;
+  --say-together-word-shadow-09: rgba(240, 200, 96, 0.9);
+}
 .mg-say-together { position: absolute; inset: 0; overflow: hidden; container-type: size; }
 .mg-say-together-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
 /* The drawn lawn: a hazy morning sky over the scene's picture, a line of trees, the grass from the horizon (46%) down. */
@@ -9,16 +29,16 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 22% 7% at 8% 46%, rgba(52, 78, 44, 0.9) 0 96%, transparent 100%),
-    radial-gradient(ellipse 18% 6% at 52% 46%, rgba(60, 86, 50, 0.85) 0 96%, transparent 100%),
-    radial-gradient(ellipse 30% 8% at 88% 45%, rgba(48, 72, 42, 0.9) 0 96%, transparent 100%),
-    linear-gradient(to bottom, rgba(236, 232, 218, 0.42), rgba(236, 232, 218, 0.2) 40%, transparent 46%),
-    linear-gradient(to bottom, transparent 46%, #8fae5f 46%, #6f9446 70%, #557a36);
+    radial-gradient(ellipse 22% 7% at 8% 46%, var(--say-together-lawn-ground-09) 0 96%, transparent 100%),
+    radial-gradient(ellipse 18% 6% at 52% 46%, var(--say-together-lawn-ground-085) 0 96%, transparent 100%),
+    radial-gradient(ellipse 30% 8% at 88% 45%, var(--say-together-lawn-ground-09-2) 0 96%, transparent 100%),
+    linear-gradient(to bottom, var(--say-together-lawn-ground-042), var(--say-together-lawn-ground-02) 40%, transparent 46%),
+    linear-gradient(to bottom, transparent 46%, var(--say-together-lawn-ground) 46%, var(--say-together-lawn-ground-2) 70%, var(--say-together-lawn-ground-3));
 }
 /* The tomb, small and pale with distance, on the horizon at the left (clear of her bubble). */
 .mg-say-together-tomb { position: absolute; left: 5%; bottom: 54%; width: 32%; aspect-ratio: 12 / 7; pointer-events: none; }
-.mg-say-together-tomb-figure { display: block; width: 100%; height: 100%; fill: #cdb89a; opacity: 0.88; }
-.mg-say-together-tomb-arches { fill: #8f7a62; }
+.mg-say-together-tomb-figure { display: block; width: 100%; height: 100%; fill: var(--say-together-tomb-figure-fill); opacity: 0.88; }
+.mg-say-together-tomb-arches { fill: var(--say-together-tomb-arches-fill); }
 /* Her: a step away on the right, feet at the bottom, her box the standing picture's shape (2:3): 72% of the field's
    height, no wider than its right half, and low enough to leave room above her head for her bubble (about 100px). */
 .mg-say-together-her {
@@ -49,14 +69,14 @@
   box-sizing: border-box;
   padding: 6px 10px 8px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px var(--say-together-bubble-shadow-03);
   color: var(--ds-ink);
   pointer-events: none;
 }
-.mg-say-together-bubble small { color: var(--ds-ink-muted); font-size: 10px; line-height: 1.3; overflow-wrap: anywhere; }
-.mg-say-together-text { font-size: 15px; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.mg-say-together-bubble small { color: var(--ds-ink-muted); font-size: var(--ds-text-mark); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
+.mg-say-together-text { font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 /* A word stays whole on its line (a katakana word broken in two reads as two words). */
 .mg-say-together-word { display: inline-block; max-width: 100%; }
 .mg-say-together-bubble::after {
@@ -70,8 +90,8 @@
   background: var(--ds-parchment);
   transform: rotate(45deg);
 }
-.mg-say-together-bubble[data-together] { border: 3px solid #e8b94a; box-shadow: 0 0 0 3px rgba(240, 200, 96, 0.45), 0 0 18px rgba(240, 200, 96, 0.75); }
-.mg-say-together-bubble[data-together]::after { border-color: #e8b94a; border-width: 0 3px 3px 0; bottom: -9px; }
+.mg-say-together-bubble[data-together] { border: 3px solid var(--say-together-bubble-edge); box-shadow: 0 0 0 3px var(--say-together-bubble-shadow-045), 0 0 18px var(--say-together-bubble-shadow-075); }
+.mg-say-together-bubble[data-together]::after { border-color: var(--say-together-bubble-edge); border-width: 0 3px 3px 0; bottom: -9px; }
 /* Hers: over her head, a little wider than her, to her right edge; its tail at her head. */
 .mg-say-together-bubble-her { right: 0; bottom: calc(100% + 6px); width: max(118%, 150px); min-height: 64px; }
 .mg-say-together-bubble-her::after { right: 40%; margin-right: -6px; }
@@ -91,7 +111,7 @@
   padding: 5px 8px 7px;
 }
 /* Lifted, its words smaller: the longest (ヤートリーガン、) stays on one line even at 320 px. */
-.mg-say-together-bubble-yours[data-lifted] .mg-say-together-text { font-size: 12px; }
+.mg-say-together-bubble-yours[data-lifted] .mg-say-together-text { font-size: var(--ds-text-caption); }
 .mg-say-together-bubble-yours::after { left: 18px; }
 .mg-say-together[data-still] .mg-say-together-bubble-yours { transition: none; }
 /* A word as it is said: pops in (not with less motion). The player's word on her beat is gold and heavy; off it, plain
@@ -99,11 +119,11 @@
 .mg-say-together-word { animation: mg-say-together-pop 140ms cubic-bezier(0.2, 0.9, 0.3, 1.2); }
 .mg-say-together[data-still] .mg-say-together-word { animation: none; }
 @keyframes mg-say-together-pop { from { transform: scale(0.8); opacity: 0.4; } }
-.mg-say-together-word[data-state="together"] { color: #7a4c08; }
+.mg-say-together-word[data-state="together"] { color: var(--say-together-word-ink); }
 .mg-say-together-word[data-state="off"] { color: var(--ds-ink-muted); font-weight: 500; text-decoration: underline dotted 1.5px; text-underline-offset: 3px; }
 /* The last word, 「デーン！」, is the loudest: written large; together (the peak), it glows in both bubbles. */
-.mg-say-together-word[data-last] { font-size: 1.3em; line-height: 1.15; letter-spacing: 0.02em; }
-.mg-say-together-bubble[data-peak] .mg-say-together-word[data-last] { color: #8a5a10; text-shadow: 0 0 10px rgba(240, 200, 96, 0.9); }
+.mg-say-together-word[data-last] { font-size: 1.3em; line-height: var(--ds-leading-display); letter-spacing: 0.02em; }
+.mg-say-together-bubble[data-peak] .mg-say-together-word[data-last] { color: var(--say-together-word-ink-2); text-shadow: 0 0 10px var(--say-together-word-shadow-09); }
 /* After she said them alone: she turns to the player (？ by her head, on the side away from the outcome's label). */
 .mg-say-together-mark {
   position: absolute;
@@ -116,16 +136,16 @@
   min-width: 32px;
   height: 32px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 19px;
+  font-size: var(--ds-text-heading);
   font-weight: 700;
   line-height: 1;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px var(--say-together-bubble-shadow-03);
 }
 @media (max-height: 620px) {
-  .mg-say-together-text { font-size: 13px; }
+  .mg-say-together-text { font-size: var(--ds-text-note); }
   .mg-say-together-bubble { padding: 4px 8px 6px; }
   .mg-say-together-bubble-her { min-height: 56px; }
 }

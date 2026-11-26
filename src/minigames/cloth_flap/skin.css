@@ -1,7 +1,50 @@
 /* The flap's field (Skin.tsx): the view from inside a niche of the stepwell, through its arch, of the stairs she comes
    down. Over the scene's picture (or the use's bg); with the use's art.stairs, that picture in place of the drawn stairs.
    What the play judges (her, her steps' marks, the cloth) has a dark edge and a shadow, so it stands out of a photo. */
-.mg-cloth-flap { position: absolute; inset: 0; container-type: size; background: #2e241c; }
+/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --cloth-flap-skin-ground: #2e241c;
+  --cloth-flap-far-wall-ground-09: rgba(214, 190, 150, 0.9);
+  --cloth-flap-far-wall-ground-092: rgba(150, 124, 92, 0.92);
+  --cloth-flap-far-wall-ground-095: rgba(96, 78, 58, 0.95);
+  --cloth-flap-far-wall-ground-055: rgba(52, 40, 30, 0.55);
+  --cloth-flap-far-wall-edge-045: rgba(80, 62, 44, 0.45);
+  --cloth-flap-stairs-shadow-07: rgba(40, 28, 18, 0.7);
+  --cloth-flap-tread-line-075: rgba(255, 238, 205, 0.75);
+  --cloth-flap-lip-shadow-fill-038: rgba(40, 26, 14, 0.38);
+  --cloth-flap-joint-line-028: rgba(50, 34, 20, 0.28);
+  --cloth-flap-mark-step-ground-035: rgba(255, 250, 240, 0.35);
+  --cloth-flap-mark-step-shadow-055: rgba(40, 26, 14, 0.55);
+  --cloth-flap-mark-step-ground: #fff8ea;
+  --cloth-flap-mark-step-ground-075: rgba(240, 200, 96, 0.75);
+  --cloth-flap-mark-step-shadow-08: rgba(60, 36, 10, 0.8);
+  --cloth-flap-mark-step-shadow-055-2: rgba(240, 200, 96, 0.55);
+  --cloth-flap-mark-step-ground-2: #ffd970;
+  --cloth-flap-mark-step-shadow-085: rgba(60, 36, 10, 0.85);
+  --cloth-flap-mark-step-shadow-09: rgba(255, 214, 110, 0.9);
+  --cloth-flap-walker-ground-04: rgba(30, 20, 12, 0.4);
+  --cloth-flap-bubble-edge: #3a2a1c;
+  --cloth-flap-bubble-shadow-035: rgba(0, 0, 0, 0.35);
+  --cloth-flap-shriek-shadow-05: rgba(0, 0, 0, 0.5);
+  --cloth-flap-arch-edge: #7d6a55;
+  --cloth-flap-arch-shadow-045: rgba(0, 0, 0, 0.45);
+  --cloth-flap-cloth-folded-edge: #5a4a36;
+  --cloth-flap-cloth-folded-ground-06: rgba(200, 196, 186, 0.6);
+  --cloth-flap-cloth-folded-ground: #fbf8f1;
+  --cloth-flap-cloth-folded-ground-2: #e2dbcc;
+  --cloth-flap-hem-a-line: #4e3f2e;
+  --cloth-flap-cloth-fold-line-06: rgba(150, 138, 118, 0.6);
+  --cloth-flap-gauge-edge-045: rgba(255, 250, 241, 0.45);
+  --cloth-flap-gauge-ink-06: rgba(255, 250, 241, 0.6);
+  --cloth-flap-gauge-edge-09: rgba(240, 200, 96, 0.9);
+  --cloth-flap-gauge-ground-018: rgba(240, 200, 96, 0.18);
+  --cloth-flap-gauge-shadow-05: rgba(240, 200, 96, 0.5);
+  --cloth-flap-gauge-shadow-06: rgba(60, 36, 10, 0.6);
+  --cloth-flap-gauge-ground-04: rgba(240, 200, 96, 0.4);
+  --cloth-flap-bubble-ground-09: rgba(255, 250, 241, 0.9);
+  --cloth-flap-boy-figure-shadow-09: rgba(20, 14, 8, 0.9);
+}
+.mg-cloth-flap { position: absolute; inset: 0; container-type: size; background: var(--cloth-flap-skin-ground); }
 /* The stage: 3:4, as large as the field holds, in its middle (the stairs picture is drawn for this shape). */
 .mg-cloth-flap-stage {
   position: absolute;
@@ -20,15 +63,15 @@
   grid-template-rows: repeat(3, 1fr);
   gap: 6%;
   padding: 10% 8% 30%;
-  background: linear-gradient(to bottom, rgba(214, 190, 150, 0.9), rgba(150, 124, 92, 0.92) 70%, rgba(96, 78, 58, 0.95));
+  background: linear-gradient(to bottom, var(--cloth-flap-far-wall-ground-09), var(--cloth-flap-far-wall-ground-092) 70%, var(--cloth-flap-far-wall-ground-095));
 }
 .mg-cloth-flap-far-wall > span {
   background:
-    radial-gradient(ellipse 9% 60% at 12% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%),
-    radial-gradient(ellipse 9% 60% at 37% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%),
-    radial-gradient(ellipse 9% 60% at 62% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%),
-    radial-gradient(ellipse 9% 60% at 87% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%);
-  border-bottom: 2px solid rgba(80, 62, 44, 0.45);
+    radial-gradient(ellipse 9% 60% at 12% 100%, var(--cloth-flap-far-wall-ground-055) 0 98%, transparent 100%),
+    radial-gradient(ellipse 9% 60% at 37% 100%, var(--cloth-flap-far-wall-ground-055) 0 98%, transparent 100%),
+    radial-gradient(ellipse 9% 60% at 62% 100%, var(--cloth-flap-far-wall-ground-055) 0 98%, transparent 100%),
+    radial-gradient(ellipse 9% 60% at 87% 100%, var(--cloth-flap-far-wall-ground-055) 0 98%, transparent 100%);
+  border-bottom: 2px solid var(--cloth-flap-far-wall-edge-045);
 }
 /* The stairs (Skin.tsx draws them): worn sandstone, each tread's lit edge with its lip's shadow under it, the blocks'
    joints; a dark line along the flight's edge sets it apart from the wall behind. */
@@ -37,11 +80,11 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 -1px 0 rgba(40, 28, 18, 0.7));
+  filter: drop-shadow(0 -1px 0 var(--cloth-flap-stairs-shadow-07));
 }
-.mg-cloth-flap-tread { fill: none; stroke: rgba(255, 238, 205, 0.75); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
-.mg-cloth-flap-lip-shadow { fill: rgba(40, 26, 14, 0.38); }
-.mg-cloth-flap-joint { fill: none; stroke: rgba(50, 34, 20, 0.28); stroke-width: 1px; vector-effect: non-scaling-stroke; }
+.mg-cloth-flap-tread { fill: none; stroke: var(--cloth-flap-tread-line-075); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.mg-cloth-flap-lip-shadow { fill: var(--cloth-flap-lip-shadow-fill-038); }
+.mg-cloth-flap-joint { fill: none; stroke: var(--cloth-flap-joint-line-028); stroke-width: 1px; vector-effect: non-scaling-stroke; }
 /* A stairs picture shows its own wall and steps; a far-wall picture (art.wall) only the wall, under the drawn steps. */
 .mg-cloth-flap[data-art-stairs] .mg-cloth-flap-far-wall,
 .mg-cloth-flap[data-art-wall] .mg-cloth-flap-far-wall { display: none; }
@@ -52,22 +95,22 @@
   z-index: 2;
   width: 3.2%;
   height: 4px;
-  border-radius: 2px;
-  background: rgba(255, 250, 240, 0.35);
-  box-shadow: 0 0 0 1px rgba(40, 26, 14, 0.55);
+  border-radius: var(--ds-radius-hair);
+  background: var(--cloth-flap-mark-step-ground-035);
+  box-shadow: 0 0 0 1px var(--cloth-flap-mark-step-shadow-055);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
-.mg-cloth-flap-mark-step[data-lit] { background: #fff8ea; }
+.mg-cloth-flap-mark-step[data-lit] { background: var(--cloth-flap-mark-step-ground); }
 /* (At least 28 × 9 px: on a 320-px phone 7.2% alone is a thin strip.) */
 .mg-cloth-flap-mark-step[data-gold] {
   width: max(7.2%, 28px);
   height: 9px;
-  border-radius: 3px;
-  background: rgba(240, 200, 96, 0.75);
-  box-shadow: 0 0 0 1.5px rgba(60, 36, 10, 0.8), 0 0 8px rgba(240, 200, 96, 0.55);
+  border-radius: var(--ds-radius-hair);
+  background: var(--cloth-flap-mark-step-ground-075);
+  box-shadow: 0 0 0 1.5px var(--cloth-flap-mark-step-shadow-08), 0 0 8px var(--cloth-flap-mark-step-shadow-055-2);
 }
-.mg-cloth-flap-mark-step[data-gold][data-lit] { background: #ffd970; box-shadow: 0 0 0 1.5px rgba(60, 36, 10, 0.85), 0 0 14px 2px rgba(255, 214, 110, 0.9); }
+.mg-cloth-flap-mark-step[data-gold][data-lit] { background: var(--cloth-flap-mark-step-ground-2); box-shadow: 0 0 0 1.5px var(--cloth-flap-mark-step-shadow-085), 0 0 14px 2px var(--cloth-flap-mark-step-shadow-09); }
 /* The one coming down: her feet on the point the play's frames move (Skin.tsx), one step at a time; a dark edge and a
    shadow at her feet keep her on the stone, over a photo too. */
 .mg-cloth-flap-walker {
@@ -88,7 +131,7 @@
   width: 120%;
   height: 7px;
   border-radius: 50%;
-  background: rgba(30, 20, 12, 0.4);
+  background: var(--cloth-flap-walker-ground-04);
   transform: translateX(-50%);
   z-index: -1;
 }
@@ -127,33 +170,33 @@
   justify-content: center;
   min-width: 34px;
   height: 34px;
-  border: 2px solid #3a2a1c;
-  border-radius: 17px;
+  border: 2px solid var(--cloth-flap-bubble-edge);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 21px;
+  font-size: var(--ds-text-heading);
   font-weight: 700;
   line-height: 1;
   transform: translateX(-50%);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 6px var(--cloth-flap-bubble-shadow-035);
 }
 /* Her scream, written large beside her (on the side she faces). */
 .mg-cloth-flap-shriek {
   position: absolute;
   left: 92%;
   top: -2%;
-  color: #fff8ea;
-  font-size: 26px;
+  color: var(--cloth-flap-mark-step-ground);
+  font-size: var(--ds-text-title);
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
-  -webkit-text-stroke: 1px #3a2a1c;
-  text-shadow: 0 2px 0 #3a2a1c, 0 0 6px rgba(0, 0, 0, 0.5);
+  -webkit-text-stroke: 1px var(--cloth-flap-bubble-edge);
+  text-shadow: 0 2px 0 var(--cloth-flap-bubble-edge), 0 0 6px var(--cloth-flap-shriek-shadow-05);
   transform: rotate(-10deg);
   transform-origin: 0 100%;
 }
 .mg-cloth-flap-shriek[data-turned] { left: auto; right: 92%; transform: rotate(10deg); transform-origin: 100% 100%; }
-@container (max-width: 300px) { .mg-cloth-flap-shriek { font-size: 21px; } }
+@container (max-width: 300px) { .mg-cloth-flap-shriek { font-size: var(--ds-text-heading); } }
 /* The niche's arch around the view: dark stone outside the opening, a lighter edge. */
 .mg-cloth-flap-arch {
   position: absolute;
@@ -162,10 +205,10 @@
   right: 5%;
   top: 5%;
   bottom: -4%;
-  border: 5px solid #7d6a55;
+  border: 5px solid var(--cloth-flap-arch-edge);
   border-bottom: 0;
   border-radius: 48% 48% 0 0 / 26% 26% 0 0;
-  box-shadow: 0 0 0 200vmax #2e241c, inset 0 8px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 200vmax var(--cloth-flap-skin-ground), inset 0 8px 18px var(--cloth-flap-arch-shadow-045);
   pointer-events: none;
 }
 /* The dupatta in the player's hands at the bottom of the niche: folded, then spread wide on the tap (never over her: at
@@ -186,12 +229,12 @@
   bottom: 0;
   width: 46%;
   height: 34%;
-  border: 2px solid #5a4a36;
+  border: 2px solid var(--cloth-flap-cloth-folded-edge);
   border-radius: 40% 40% 30% 30% / 60% 60% 40% 40%;
   background:
-    repeating-linear-gradient(100deg, rgba(200, 196, 186, 0.6) 0 3px, transparent 3px 14px),
-    linear-gradient(to bottom, #fbf8f1, #e2dbcc);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    repeating-linear-gradient(100deg, var(--cloth-flap-cloth-folded-ground-06) 0 3px, transparent 3px 14px),
+    linear-gradient(to bottom, var(--cloth-flap-cloth-folded-ground), var(--cloth-flap-cloth-folded-ground-2));
+  box-shadow: 0 2px 8px var(--cloth-flap-bubble-shadow-035);
   transform: translateX(-50%);
 }
 .mg-cloth-flap-cloth-spread {
@@ -203,8 +246,8 @@
   animation: mg-cloth-flap-spread 160ms cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
 }
 .mg-cloth-flap-cloth-spread path { vector-effect: non-scaling-stroke; }
-.mg-cloth-flap-hem-a, .mg-cloth-flap-hem-b { fill: #fbf8f1; stroke: #4e3f2e; stroke-width: 2px; stroke-linejoin: round; }
-.mg-cloth-flap-cloth-fold { fill: none; stroke: rgba(150, 138, 118, 0.6); stroke-width: 1.5px; }
+.mg-cloth-flap-hem-a, .mg-cloth-flap-hem-b { fill: var(--cloth-flap-cloth-folded-ground); stroke: var(--cloth-flap-hem-a-line); stroke-width: 2px; stroke-linejoin: round; }
+.mg-cloth-flap-cloth-fold { fill: none; stroke: var(--cloth-flap-cloth-fold-line-06); stroke-width: 1.5px; }
 /* The hem flutters: its two shapes in turn. */
 .mg-cloth-flap-hem-b { opacity: 0; }
 .mg-cloth-flap-hem-a { animation: mg-cloth-flap-flutter-a 160ms steps(1) infinite; }
@@ -252,23 +295,23 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-  border: 1.5px solid rgba(255, 250, 241, 0.45);
+  border: 1.5px solid var(--cloth-flap-gauge-edge-045);
   border-radius: 50%;
-  color: rgba(255, 250, 241, 0.6);
-  font-size: 11px;
+  color: var(--cloth-flap-gauge-ink-06);
+  font-size: var(--ds-text-mark);
   font-weight: 700;
   line-height: 1;
 }
-.mg-cloth-flap-gauge > span[data-lit] { border-color: #fff8ea; background: #fff8ea; color: #3a2a1c; }
+.mg-cloth-flap-gauge > span[data-lit] { border-color: var(--cloth-flap-mark-step-ground); background: var(--cloth-flap-mark-step-ground); color: var(--cloth-flap-bubble-edge); }
 .mg-cloth-flap-gauge > span[data-gold] {
   width: 26px;
   height: 26px;
-  border: 2px solid rgba(240, 200, 96, 0.9);
-  background: rgba(240, 200, 96, 0.18);
-  box-shadow: 0 0 6px rgba(240, 200, 96, 0.5);
+  border: 2px solid var(--cloth-flap-gauge-edge-09);
+  background: var(--cloth-flap-gauge-ground-018);
+  box-shadow: 0 0 6px var(--cloth-flap-gauge-shadow-05);
 }
-.mg-cloth-flap-gauge > span[data-gold][data-lit] { background: #ffd970; box-shadow: 0 0 0 2px rgba(60, 36, 10, 0.6), 0 0 14px 3px rgba(255, 214, 110, 0.9); }
-.mg-cloth-flap-gauge > span[data-gold][data-past] { background: rgba(240, 200, 96, 0.4); box-shadow: none; }
+.mg-cloth-flap-gauge > span[data-gold][data-lit] { background: var(--cloth-flap-mark-step-ground-2); box-shadow: 0 0 0 2px var(--cloth-flap-gauge-shadow-06), 0 0 14px 3px var(--cloth-flap-mark-step-shadow-09); }
+.mg-cloth-flap-gauge > span[data-gold][data-past] { background: var(--cloth-flap-gauge-ground-04); box-shadow: none; }
 @media (max-height: 620px) { .mg-cloth-flap-gauge { height: 22px; margin-bottom: 6px; } }
 
 /* Round 3: her tells and the boy. She crouches as she bobs to leap (the play's frames set --mg-cloth-flap-crouch, 0 to 1;
@@ -279,9 +322,9 @@
   min-width: 28px;
   height: 28px;
   border-width: 1.5px;
-  border-radius: 14px;
-  background: rgba(255, 250, 241, 0.9);
-  font-size: 17px;
+  border-radius: var(--ds-radius-pane);
+  background: var(--cloth-flap-bubble-ground-09);
+  font-size: var(--ds-text-subhead);
 }
 /* The boy who runs down past her: smaller than her, in front of her on the stairs, a dark edge and a shadow at his feet. */
 .mg-cloth-flap-boy {
@@ -303,11 +346,11 @@
   width: 110%;
   height: 5px;
   border-radius: 50%;
-  background: rgba(30, 20, 12, 0.4);
+  background: var(--cloth-flap-walker-ground-04);
   transform: translateX(-50%);
   z-index: -1;
 }
-.mg-cloth-flap-boy-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 1px rgba(20, 14, 8, 0.9)); }
+.mg-cloth-flap-boy-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 1px var(--cloth-flap-boy-figure-shadow-09)); }
 .mg-cloth-flap-boy[data-startled] .mg-cloth-flap-boy-figure { animation: mg-cloth-flap-boy-jump 320ms ease-out both; }
 @keyframes mg-cloth-flap-boy-jump { 40% { transform: translateY(-18%) rotate(8deg); } }
 .mg-cloth-flap[data-still] .mg-cloth-flap-boy-figure { animation: none; }

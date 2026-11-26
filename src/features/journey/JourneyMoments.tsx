@@ -138,7 +138,7 @@ export function ResumeRecapCard({ recap, heroineName, onClose }: { recap: Resume
         <h2 id="resume-recap-title" className="resume-recap-title">前回までのあらすじ</h2>
         <p className="resume-recap-when">{recap.cityJa} · {recap.whenJa}</p>
       </div>
-      <button type="button" className="resume-recap-close" onClick={onClose}><Icon name="close" />閉じる</button>
+      <button type="button" className="modal-close resume-recap-close" onClick={onClose}><Icon name="close" />閉じる</button>
     </div>
     <div className="resume-recap-body">
       {recap.photo && <RecapPhoto photo={recap.photo} />}

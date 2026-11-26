@@ -70,7 +70,7 @@
      A compact width also leaves room for the lower choice window. */
   width: min(118px, calc(35% - 8px));
   padding: 6px 8px 8px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-caption);
@@ -86,7 +86,7 @@
   min-height: 44px;
   padding: 4px 8px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-weight: 600;
@@ -184,7 +184,7 @@
   max-height: 48px;
   overflow: hidden;
   padding: 8px 14px;
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--vn-choice-bg);
   color: var(--ds-action-ink);
   font-size: var(--ds-text-note);
@@ -249,7 +249,7 @@
   justify-self: start;
   margin: 0;
   padding: 3px 12px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--vn-window-bg);
   color: var(--vn-text);
   font-size: var(--ds-text-note);
@@ -261,7 +261,7 @@
   margin: 0;
   padding: 9px 16px;
   border: 0;
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--vn-choice-bg);
   box-shadow: var(--vn-choice-shadow);
   color: var(--ds-action-ink);
@@ -297,7 +297,7 @@
 .vn-choices :is(.choices, .encounter-choices) p {
   margin: 0;
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--vn-window-bg);
   color: var(--vn-text);
   font-size: var(--ds-text-note);

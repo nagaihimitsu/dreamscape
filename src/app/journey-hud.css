@@ -14,7 +14,7 @@
   container: journey-hud / inline-size;
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: var(--ds-layer-hud);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -22,8 +22,8 @@
   color: var(--ds-on-slate);
   background: none;
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 12px;
-  line-height: 1.2;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-tight);
 }
 .journey-hud::before {
   content: "";
@@ -46,7 +46,7 @@
 .hud-plate,
 .hud-wallet {
   min-height: 40px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
 }
 /* The plate takes the row beside the money. It needs at least about nine
    characters (9em) and never less than its time line (its minimum: the place's
@@ -63,15 +63,15 @@
   justify-content: center;
   gap: 1px;
   padding: 3px 14px;
-  border-radius: 20px;
+  border-radius: var(--ds-radius-pane);
 }
 .hud-place {
   min-width: 0;
   overflow-wrap: anywhere;
   font-family: "Noto Serif JP", serif;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: var(--ds-leading-tight);
 }
 .hud-time {
   display: block;
@@ -80,7 +80,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--ds-on-slate);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
@@ -106,16 +106,16 @@
      tabular figures; tabular-nums keeps a fallback serif's figures of one width while the web font has not loaded. */
   font-family: "Noto Serif JP", serif;
   font-variant-numeric: tabular-nums;
-  line-height: 1.1;
+  line-height: var(--ds-leading-display);
   white-space: nowrap;
 }
 /* At the row's right end, also on a line of its own. */
 .hud-status > .hud-wallet { margin-left: auto; }
-.hud-wallet .travel-budget { font-size: 16px; }
-.hud-wallet .travel-budget[data-length="long"] { font-size: 14px; }
-.hud-wallet .travel-budget[data-length="longer"] { font-size: 13px; }
-.hud-wallet .ap { font-size: 13px; }
-.hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.1em; }
+.hud-wallet .travel-budget { font-size: var(--ds-text-body); }
+.hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-note); }
+.hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-caption); }
+.hud-wallet .ap { font-size: var(--ds-text-note); }
+.hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: var(--ds-text-mark); letter-spacing: 0.1em; }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
@@ -222,7 +222,7 @@
   padding: 8px;
   /* A pane of the glass over the scene (2026-11-25: every screen in the one immersive look); its colours: styles.css, the glass surfaces. */
   border: 0;
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -240,13 +240,13 @@
   margin: 0;
   padding: 0 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: var(--ds-leading-tight);
   text-align: left;
 }
 .hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
@@ -299,13 +299,13 @@
 }
 
 @media (min-width: 380px) {
-  .hud-wallet .travel-budget { font-size: 17px; }
-  .hud-wallet .travel-budget[data-length="long"] { font-size: 15px; }
-  .hud-wallet .travel-budget[data-length="longer"] { font-size: 14px; }
-  .hud-wallet .ap { font-size: 14px; }
+  .hud-wallet .travel-budget { font-size: var(--ds-text-subhead); }
+  .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-body); }
+  .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-note); }
+  .hud-wallet .ap { font-size: var(--ds-text-note); }
 }
 @media (max-width: 359px) {
-  .hud-place { font-size: 13px; }
+  .hud-place { font-size: var(--ds-text-note); }
 }
 
 /* Wide screens and phones on their side: one row of about 52 px. */

@@ -1,5 +1,11 @@
 /* Small feedback marks (components/fx.tsx, 2026-11-13 user decision): decorative, aria-hidden, no presses.
    A button that carries one is an fx-host. */
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --fx-sparkle-sweep-ground: rgba(255, 248, 225, 0);
+  --fx-sparkle-sweep-ground-2: rgba(255, 248, 225, 0.85);
+  --fx-star-ground: #fffbea;
+}
 .fx-host { position: relative; }
 
 /* キラリ: after the bag's pop (260 ms) a light crosses the button diagonally, then three tiny sparkles burst out and
@@ -23,7 +29,7 @@
   bottom: -20%;
   left: 0;
   width: 45%;
-  background: linear-gradient(90deg, rgba(255, 248, 225, 0), rgba(255, 248, 225, 0.85), rgba(255, 248, 225, 0));
+  background: linear-gradient(90deg, var(--fx-sparkle-sweep-ground), var(--fx-sparkle-sweep-ground-2), var(--fx-sparkle-sweep-ground));
   transform: translateX(-130%) skewX(-22deg);
   animation: fx-sweep 420ms var(--ease-out) 180ms both;
 }
@@ -35,7 +41,7 @@
   width: 9px;
   height: 9px;
   margin: -4.5px 0 0 -4.5px;
-  background: radial-gradient(circle, #fffbea 0 30%, var(--ds-marker-selected) 70%);
+  background: radial-gradient(circle, var(--fx-star-ground) 0 30%, var(--ds-marker-selected) 70%);
   clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
   opacity: 0;
   animation: fx-star 440ms var(--ease-out) both;
@@ -50,8 +56,8 @@
 }
 /* Under reduced motion and 「演出を短縮する」: one soft gold glow on the button, nothing moves. */
 @keyframes fx-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 163, 95, 0); }
-  35% { box-shadow: 0 0 10px 3px rgba(201, 163, 95, 0.8); }
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  35% { box-shadow: 0 0 10px 3px color-mix(in srgb, var(--ds-gold) 80%, transparent); }
 }
 .reduce-motion .fx-sparkle-sweep,
 .reduce-motion .fx-star { display: none; }

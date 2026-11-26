@@ -1,4 +1,12 @@
 /* The cue_tap engine (EnginePlay.tsx): the skin's field fills the middle, the controls sit at the bottom in thumb reach. */
+/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --cue-tap-hint-shadow-06: rgba(0, 0, 0, 0.6);
+  --cue-tap-meter-ground-016: rgba(255, 250, 241, 0.16);
+  --cue-tap-meter-near-ground-042: rgba(201, 163, 95, 0.42);
+  --cue-tap-meter-clean-ground: #f0c860;
+  --cue-tap-meter-clean-shadow-07: rgba(240, 200, 96, 0.7);
+}
 .mg-engine-cue-tap { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .mg-engine-cue-tap .mg-cue-tap-field {
   position: relative;
@@ -12,8 +20,8 @@
 }
 .mg-engine-cue-tap .mg-cue-tap-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
 /* How to play, right above the meter it speaks of (read at a glance mid-play: 15px, 13px where a line would not fit). */
-.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 6px; font-size: 15px; line-height: 1.45; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
-@media (max-width: 360px) { .mg-engine-cue-tap .mg-cue-tap-hint { font-size: 13px; } }
+.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 6px; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px var(--cue-tap-hint-shadow-06); }
+@media (max-width: 360px) { .mg-engine-cue-tap .mg-cue-tap-hint { font-size: var(--ds-text-note); } }
 /* The meter: its needle crosses it from the thing's start to the end of the play; gold where it arrives. The clean zone is
    brighter, narrower and glows (not told by colour alone). */
 .mg-engine-cue-tap .mg-cue-tap-meter {
@@ -21,19 +29,19 @@
   height: 14px;
   margin: 0 0 12px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 7px;
-  background: rgba(255, 250, 241, 0.16);
+  border-radius: var(--ds-radius-field);
+  background: var(--cue-tap-meter-ground-016);
 }
 .mg-engine-cue-tap .mg-cue-tap-meter-near, .mg-engine-cue-tap .mg-cue-tap-meter-clean { position: absolute; top: 0; bottom: 0; }
-.mg-engine-cue-tap .mg-cue-tap-meter-near { background: rgba(201, 163, 95, 0.42); }
-.mg-engine-cue-tap .mg-cue-tap-meter-clean { border-radius: 3px; background: #f0c860; box-shadow: 0 0 6px rgba(240, 200, 96, 0.7); }
+.mg-engine-cue-tap .mg-cue-tap-meter-near { background: var(--cue-tap-meter-near-ground-042); }
+.mg-engine-cue-tap .mg-cue-tap-meter-clean { border-radius: var(--ds-radius-hair); background: var(--cue-tap-meter-clean-ground); box-shadow: 0 0 6px var(--cue-tap-meter-clean-shadow-07); }
 .mg-engine-cue-tap .mg-cue-tap-meter-needle {
   position: absolute;
   top: -5px;
   bottom: -5px;
   left: 0;
   width: 4px;
-  border-radius: 2px;
+  border-radius: var(--ds-radius-hair);
   background: var(--ds-on-slate);
   box-shadow: 0 0 0 1px var(--ds-slate-900);
   transform: translateX(-50%);
@@ -42,7 +50,7 @@
   justify-content: center;
   width: 100%;
   min-height: 64px;
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   font-weight: 700;
   letter-spacing: 0.3em;
   text-align: center;
@@ -55,9 +63,9 @@
   justify-content: center;
   min-height: 64px;
   margin: 0;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-chip-bg);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
 }
 @media (max-height: 620px) {
   .mg-engine-cue-tap .mg-cue-tap-controls { padding-top: 6px; }

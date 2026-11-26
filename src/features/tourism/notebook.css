@@ -1,3 +1,8 @@
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --notebook-case-image-placeholder-ground: rgba(24, 36, 30, .92);
+  --notebook-case-image-ground: #39372d;
+}
 dialog.modal.clue-notebook {
   display: flex;
   flex-direction: column;
@@ -16,8 +21,8 @@ dialog.modal.clue-notebook {
   padding: 6px 10px 6px 20px;
 }
 .clue-notebook .cluebook-header h2 {
-  font-size: 20px;
-  line-height: 1.3;
+  font-size: var(--ds-text-heading);
+  line-height: var(--ds-leading-tight);
   margin: 0;
 }
 .case-context {
@@ -31,14 +36,14 @@ dialog.modal.clue-notebook {
 }
 .case-context-label {
   color: var(--ds-ink-muted);
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   letter-spacing: .08em;
   margin-bottom: 4px;
 }
 .case-context blockquote {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
@@ -65,20 +70,20 @@ dialog.modal.clue-notebook {
   min-height: 44px;
   padding: 6px 8px;
   border: 1px solid var(--ds-field-edge);
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
   background: var(--ds-field);
   color: var(--ds-ink);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
 .clue-page-button {
   flex: none;
   min-height: 44px;
   padding: 6px 10px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .clue-page-button:disabled {
   opacity: 1;
@@ -89,21 +94,21 @@ dialog.modal.clue-notebook {
 .clue-notebook .notebook-clue { padding: 0; }
 .clue-notebook .notebook-clue .case-provenance,
 .clue-notebook .notebook-clue .clue-kind { display: inline-block; margin: 0 6px 2px 0; }
-.clue-notebook .notebook-clue h3 { line-height: 1.4; }
+.clue-notebook .notebook-clue h3 { line-height: var(--ds-leading-snug); }
 .clue-notebook .claim-types { margin-top: 3px; }
-.clue-notebook .cluebook-body .clue-description { margin: 4px 0 6px; line-height: 1.6; }
+.clue-notebook .cluebook-body .clue-description { margin: 4px 0 6px; line-height: var(--ds-leading-body); }
 /* Display-only labels of a clue: pills (§2.3). */
 .case-provenance {
   display: inline-block;
   padding: 3px 8px;
   margin-bottom: 10px;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   background: var(--ds-parchment-2);
   color: var(--ds-ink);
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
 }
 .case-selected .case-provenance {
-  background: #e6eedb;
+  background: var(--ds-parchment-2);
 }
 /* Choosing a clue as evidence: a secondary pressable; chosen = the selected-row look. */
 .case-select {
@@ -112,10 +117,10 @@ dialog.modal.clue-notebook {
   margin: 0;
   padding: 10px 12px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .case-select[aria-pressed="true"] {
   border: 2px solid var(--ds-slate-800);
@@ -139,14 +144,14 @@ dialog.modal.clue-notebook {
   z-index: 1;
   padding: 2px 6px;
   color: white;
-  background: rgba(24, 36, 30, .92);
-  font-size: 11px;
+  background: var(--notebook-case-image-placeholder-ground);
+  font-size: var(--ds-text-mark);
 }
 .case-image svg {
   display: block;
   width: 100%;
   height: min(78px, 13dvh);
-  background: #39372d;
+  background: var(--notebook-case-image-ground);
 }
 .case-image-toggle {
   position: relative;
@@ -161,13 +166,13 @@ dialog.modal.clue-notebook {
   right: 5px;
   bottom: 5px;
   padding: 2px 7px;
-  border-radius: 3px;
-  background: rgba(24, 36, 30, .92);
+  border-radius: var(--ds-radius-hair);
+  background: var(--notebook-case-image-placeholder-ground);
   color: white;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
 }
 .case-image .fine-print,
-.clue-image-unavailable { margin: 4px 0 0; font-size: 11px; line-height: 1.4; }
+.clue-image-unavailable { margin: 4px 0 0; font-size: var(--ds-text-mark); line-height: var(--ds-leading-snug); }
 .case-footer {
   flex-shrink: 0;
   padding: 6px 20px max(8px, env(safe-area-inset-bottom));
@@ -180,14 +185,14 @@ dialog.modal.clue-notebook {
 .clue-footer .secondary { min-height: 44px; margin: 0; }
 .case-footer p {
   margin-bottom: 4px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   color: var(--ds-ink);
-  line-height: 1.35;
+  line-height: var(--ds-leading-tight);
 }
 .case-footer p span {
   display: block;
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-snug);
 }
 .case-footer .primary {
   margin: 0;
@@ -201,7 +206,7 @@ dialog.modal.clue-notebook {
     height: 96dvh;
     max-height: 96dvh;
     margin: auto 0 0;
-    border-radius: 16px 16px 0 0;
+    border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
   }
   .clue-notebook .cluebook-header,
   .case-context,

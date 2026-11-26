@@ -1,12 +1,20 @@
 /* The day's end (NightRest, docs/02 「休む」): the whole screen at night over what the rest led to, until the card ends. */
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --night-rest-sky-shade: rgba(246, 231, 174, 0.35);
+  --night-rest-moon-fill: #f6e7ae;
+  --night-rest-star-fill: #fff4cc;
+  --night-rest-night-screen-rest-shade: rgba(246, 231, 174, 0.25);
+  --night-rest-night-screen-rest-ground: #fbefc4;
+}
 .night-rest {
   position: fixed;
-  z-index: 2000;
+  z-index: var(--ds-layer-night-rest);
   inset: 0;
   display: grid;
   place-items: center;
   padding: 24px 16px;
-  background: #111a2f;
+  background: var(--ds-night);
   /* Takes every tap while it shows (a tap ends it); a swipe does not scroll the page under it. */
   pointer-events: auto;
   touch-action: none;
@@ -28,10 +36,10 @@
   width: min(180px, 52vw);
   height: auto;
   overflow: visible;
-  filter: drop-shadow(0 0 10px rgba(246, 231, 174, 0.35));
+  filter: drop-shadow(0 0 10px var(--night-rest-sky-shade));
 }
-.night-rest-moon { fill: #f6e7ae; }
-.night-rest-star { fill: #fff4cc; animation: night-rest-twinkle 1.6s ease-in-out infinite alternate; }
+.night-rest-moon { fill: var(--night-rest-moon-fill); }
+.night-rest-star { fill: var(--night-rest-star-fill); animation: night-rest-twinkle 1.6s ease-in-out infinite alternate; }
 .night-rest-star:nth-of-type(2n) { animation-delay: -0.8s; }
 .night-rest-star:nth-of-type(3n) { animation-delay: -0.4s; }
 /* --ds-on-slate on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
@@ -40,9 +48,9 @@
   max-width: 100%;
   color: var(--ds-on-slate);
   font-family: "Noto Serif JP", serif;
-  font-size: clamp(16px, 4.8vw, 20px);
+  font-size: var(--ds-text-lead);
   font-weight: 500;
-  line-height: 1.8;
+  line-height: var(--ds-leading-reading);
   letter-spacing: 0.04em;
   text-align: center;
   word-break: keep-all;
@@ -50,8 +58,8 @@
 }
 /* Dusk deepens to night and the moon, stars and line come out; then the card stays until a tap (2026-11-15). */
 @keyframes night-rest-overlay {
-  from { background-color: #3a416c; }
-  to { background-color: #111a2f; }
+  from { background-color: var(--ds-night-dusk); }
+  to { background-color: var(--ds-night); }
 }
 @keyframes night-rest-content {
   0%, 25% { opacity: 0; transform: translateY(10px); }
@@ -62,7 +70,7 @@
 .night-tap-hint {
   margin: 18px 0 0;
   color: var(--ds-on-slate-muted);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   letter-spacing: 0.08em;
   text-align: center;
   animation: night-tap-hint-in 2s ease both;
@@ -103,14 +111,14 @@
    card under the header (z-index 20; its panel's layer 19) and over the page; it scrolls by itself when its buttons do not fit. */
 .night-screen {
   position: fixed;
-  z-index: 15;
+  z-index: var(--ds-layer-night-screen);
   inset: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: calc(var(--hud-h, 96px) + 12px) 16px calc(24px + env(safe-area-inset-bottom));
-  background: #111a2f;
+  background: var(--ds-night);
   color: var(--ds-on-slate);
   animation: night-screen-in 0.6s ease both;
 }
@@ -129,9 +137,9 @@
   margin-top: 14px;
   color: var(--ds-on-slate);
   font-family: "Noto Serif JP", serif;
-  font-size: clamp(18px, 5.2vw, 22px);
+  font-size: var(--ds-text-lead);
   font-weight: 500;
-  line-height: 1.7;
+  line-height: var(--ds-leading-reading);
   letter-spacing: 0.06em;
   text-align: center;
   word-break: keep-all;
@@ -161,14 +169,14 @@
   min-height: 54px;
   margin-top: 16px;
   padding: 12px 20px;
-  border-radius: 12px;
-  background: #f6e7ae;
+  border-radius: var(--ds-radius-control);
+  background: var(--night-rest-moon-fill);
   color: var(--ds-slate-900);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  box-shadow: 0 0 18px rgba(246, 231, 174, 0.25);
+  box-shadow: 0 0 18px var(--night-rest-night-screen-rest-shade);
 }
-.night-screen-rest:hover:enabled { background: #fbefc4; }
+.night-screen-rest:hover:enabled { background: var(--night-rest-night-screen-rest-ground); }
 /* After 「ホテルで休む」 has slept (NightLeaving): the line changes in place, the buttons go from sight (their room stays, with
    「タップして次へ」 in it), and the screen stays until a tap (2026-11-15). */
 .night-screen.is-leaving {
@@ -183,7 +191,7 @@
 .night-screen.is-leaving .night-screen-actions { position: relative; visibility: hidden; }
 /* At the top of the buttons' room, over it: nothing under it moves. */
 .night-screen.is-leaving .night-tap-hint { position: absolute; top: 12px; right: 0; left: 0; margin: 0; visibility: visible; }
-@keyframes night-screen-in { from { background-color: #3a416c; } to { background-color: #111a2f; } }
+@keyframes night-screen-in { from { background-color: var(--ds-night-dusk); } to { background-color: var(--ds-night); } }
 @keyframes night-screen-content-in {
   0%, 20% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: none; }
@@ -198,14 +206,14 @@
 /* While the night screen or its leaving shows: the site's header lines and the footer give way to it, and what <main> shows
    beside it (a notice, Debug's relationship strip and panel) stays above it. */
 .night-active > .masthead, .night-active > .journey-stage, .night-active > footer { display: none; }
-.night-active > main > :is(.notice, .relationship-change-region, .debug-candidates) { position: relative; z-index: 16; }
+.night-active > main > :is(.notice, .relationship-change-region, .debug-candidates) { position: relative; z-index: var(--ds-layer-night-over); }
 
 /* The plain fade to the morning (NightFade): the night colour, nothing on it, fading out; a tap ends it. */
 .night-fade {
   position: fixed;
-  z-index: 2000;
+  z-index: var(--ds-layer-night-rest);
   inset: 0;
-  background: #111a2f;
+  background: var(--ds-night);
   pointer-events: auto;
   touch-action: none;
   animation: night-fade-out 0.7s ease both;
@@ -221,19 +229,19 @@
 .night-screen-actions + .night-recap { margin-top: 22px; }
 .today-route { margin: 0; }
 /* --ds-on-slate-muted on the night colour: about 13:1. */
-.today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-align: center; }
+.today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; text-align: center; }
 /* A picture only: taps go to the screen (the card ends on one), the OSM credit stays readable (and pressable on the night screen). */
 .today-route-map {
   height: clamp(110px, 22vh, 160px);
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
-  background: #e8ece8;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-map-ground);
   isolation: isolate;
   pointer-events: none;
 }
-.today-route-map .leaflet-control-attribution { pointer-events: auto; font-size: 10px; }
+.today-route-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-mark); }
 .night-rest .today-route-map .leaflet-control-attribution, .night-screen.is-leaving .today-route-map .leaflet-control-attribution { pointer-events: none; }
-.today-route-error { margin: 4px 0 0; color: var(--ds-on-slate); font-size: 12px; line-height: 1.5; text-align: center; }
+.today-route-error { margin: 4px 0 0; color: var(--ds-on-slate); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); text-align: center; }
 /* The stops in the day's order, numbered as on the map. */
 .today-route-stops {
   display: flex;
@@ -244,8 +252,8 @@
   padding: 0;
   list-style: none;
   color: var(--ds-on-slate);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 .today-route-stops li { display: inline-flex; align-items: center; gap: 4px; overflow-wrap: anywhere; }
 .today-route-number {
@@ -254,10 +262,10 @@
   place-items: center;
   min-width: 18px;
   height: 18px;
-  border-radius: 9px;
+  border-radius: var(--ds-radius-field);
   background: var(--ds-marker-selected);
   color: var(--ds-slate-900);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 600;
   line-height: 1;
 }
@@ -269,16 +277,16 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-slate-900);
   color: var(--ds-marker-selected);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
-.today-route-mark.is-last { box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--ds-here), 0 2px 6px rgba(0, 0, 0, 0.35); }
+.today-route-mark.is-last { box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .night-recap .heroine-note { margin: 0; text-align: left; }
 /* Today's headlines (TodayHeadlines, save v23): the clear titles of the day's episodes above the route, in the serif of the
    night's line, told apart by their heading (no side accent); hairlines of the moon's gold between them. */
@@ -287,10 +295,10 @@
   margin: 0 0 4px;
   color: var(--ds-on-slate-muted);
   font-family: inherit;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 600;
   letter-spacing: 0.08em;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
   text-align: center;
 }
 .today-headlines ol { margin: 0; padding: 0; list-style: none; }
@@ -298,8 +306,8 @@
   padding: 4px 0;
   color: var(--ds-on-slate);
   font-family: "Noto Serif JP", serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-body);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -315,12 +323,12 @@
   width: 100%;
   margin: 18px 0 0;
   color: var(--ds-on-slate);
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
   text-align: center;
 }
-.today-word-label { flex-basis: 100%; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
-.today-word-en { font-family: "Noto Serif JP", serif; font-size: 17px; letter-spacing: 0.02em; overflow-wrap: anywhere; }
-.today-word-meaning { font-size: 13px; overflow-wrap: anywhere; }
+.today-word-label { flex-basis: 100%; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; }
+.today-word-en { font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.today-word-meaning { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
 @media (max-height: 480px) {
   .night-rest.has-recap .night-rest-sky { display: none; }

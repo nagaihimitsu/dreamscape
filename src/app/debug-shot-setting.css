@@ -13,7 +13,7 @@
   margin: 0;
 }
 .debug-shot-setting h2 {
-  font-size: 17px;
+  font-size: var(--ds-text-subhead);
   letter-spacing: 0;
 }
 .debug-shot-setting p {
@@ -25,8 +25,8 @@
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   cursor: pointer;
 }
 .debug-shot-row input[type="checkbox"] {
@@ -38,7 +38,7 @@
   padding: 0;
 }
 .debug-shot-setting [role="alert"] {
-  color: #873b34;
-  font-size: 13px;
-  line-height: 1.7;
+  color: var(--ds-danger);
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }

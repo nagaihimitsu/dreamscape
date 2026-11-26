@@ -3,6 +3,14 @@
    (the compositor's work), standing still while the page is hidden ([data-paused]). Every movement has its still form
    under reduced motion (the system's and 「演出を短縮する」, .reduce-motion; at the end of this file). */
 
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --scene-atmosphere-weather-layer-ground: rgba(64, 80, 104, 0.14);
+  --scene-atmosphere-weather-layer-ground-2: rgba(214, 178, 120, 0.06);
+  --scene-atmosphere-weather-layer-ground-3: rgba(214, 178, 120, 0.14);
+  --scene-atmosphere-weather-layer-ground-4: rgba(222, 190, 136, 0.26);
+  --scene-atmosphere-weather-layer-ground-5: rgba(222, 190, 136, 0.22);
+}
 /* The colour of the time of day (SceneTint): inside the picture's own layer, over the picture and its quiet veil's
    layer, so it never lies over a face or the window. A change passes over --motion-scene. */
 .scene-tint {
@@ -43,7 +51,7 @@
 /* Rain: a faint grey-blue veil and two sheets of thin streaks falling at two speeds (each moves down by its own tile
    and starts again, so the loop never shows). */
 .weather-layer[data-weather="rain"] {
-  background: rgba(64, 80, 104, 0.14);
+  background: var(--scene-atmosphere-weather-layer-ground);
 }
 .weather-layer[data-weather="rain"]::before,
 .weather-layer[data-weather="rain"]::after {
@@ -73,7 +81,7 @@
 
 /* Dust: a warm haze rising from the ground that sways slowly, and fine motes drifting sideways through it. */
 .weather-layer[data-weather="dust"] {
-  background: linear-gradient(to bottom, rgba(214, 178, 120, 0.06), rgba(214, 178, 120, 0.14));
+  background: linear-gradient(to bottom, var(--scene-atmosphere-weather-layer-ground-2), var(--scene-atmosphere-weather-layer-ground-3));
 }
 .weather-layer[data-weather="dust"]::before {
   top: 0;
@@ -86,8 +94,8 @@
 }
 .weather-layer[data-weather="dust"]::after {
   inset: 30% -10% -10%;
-  background: radial-gradient(ellipse 60% 55% at 30% 80%, rgba(222, 190, 136, 0.26), transparent 70%),
-    radial-gradient(ellipse 55% 50% at 75% 85%, rgba(222, 190, 136, 0.22), transparent 70%);
+  background: radial-gradient(ellipse 60% 55% at 30% 80%, var(--scene-atmosphere-weather-layer-ground-4), transparent 70%),
+    radial-gradient(ellipse 55% 50% at 75% 85%, var(--scene-atmosphere-weather-layer-ground-5), transparent 70%);
   animation: weather-dust-haze 15s ease-in-out infinite alternate;
 }
 @keyframes weather-dust-motes {

@@ -1,6 +1,16 @@
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --time-passage-sun-ground: #ffd873;
+  --time-passage-sun-shade: #ffd87388;
+  --time-passage-moon-ground: #fff3c8;
+  --time-passage-moon-shade: #fff3c855;
+  --time-passage-moon-ground-2: #354a65;
+  --time-passage-horizon-ground: #506d5d;
+  --time-passage-sky-ground: #bddbe1;
+}
 .time-passage {
   position: fixed;
-  z-index: 2000;
+  z-index: var(--ds-layer-night-rest);
   inset: 0;
   display: grid;
   place-items: center;
@@ -14,7 +24,7 @@
   width: min(230px, 68vw);
   height: 112px;
   border: 4px solid var(--ds-parchment);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
   animation: time-passage-sky 2.8s ease both;
 }
@@ -26,13 +36,13 @@
   max-width: calc(100% - 12px);
   transform: translateX(-50%);
   padding: 2px 12px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: var(--ds-leading-body);
   letter-spacing: .12em;
   text-align: center;
   width: max-content;
@@ -45,12 +55,12 @@
   height: 30px;
   border-radius: 50%;
 }
-.time-passage-sun { background: #ffd873; box-shadow: 0 0 18px #ffd87388; animation: time-passage-sun 2.8s linear both; }
-.time-passage-moon { background: #fff3c8; box-shadow: 0 0 12px #fff3c855; animation: time-passage-moon 2.8s linear both; }
-.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: 9px; width: 28px; height: 28px; border-radius: 50%; background: #354a65; }
-.time-passage-horizon { position: absolute; inset: auto 0 0; height: 22px; background: #506d5d; }
+.time-passage-sun { background: var(--time-passage-sun-ground); box-shadow: 0 0 18px var(--time-passage-sun-shade); animation: time-passage-sun 2.8s linear both; }
+.time-passage-moon { background: var(--time-passage-moon-ground); box-shadow: 0 0 12px var(--time-passage-moon-shade); animation: time-passage-moon 2.8s linear both; }
+.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: 9px; width: 28px; height: 28px; border-radius: 50%; background: var(--time-passage-moon-ground-2); }
+.time-passage-horizon { position: absolute; inset: auto 0 0; height: 22px; background: var(--time-passage-horizon-ground); }
 @keyframes time-passage-overlay { 0%, 100% { opacity: 0; } 8%, 92% { opacity: 1; } }
-@keyframes time-passage-sky { 0%, 100% { background: #bddbe1; } 34%, 66% { background: #354a65; } }
+@keyframes time-passage-sky { 0%, 100% { background: var(--time-passage-sky-ground); } 34%, 66% { background: var(--time-passage-moon-ground-2); } }
 @keyframes time-passage-sun {
   0% { transform: translate(0, 0); }
   25% { transform: translate(-90px, 65px); }
@@ -67,11 +77,11 @@
 @keyframes time-passage-still { from, to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .time-passage { animation: time-passage-still 900ms steps(1, end); }
-  .time-passage-sky { animation: none; background: #bddbe1; }
+  .time-passage-sky { animation: none; background: var(--time-passage-sky-ground); }
   .time-passage-sun { animation: none; }
   .time-passage-moon { display: none; }
 }
 .time-passage.is-reduced { animation: time-passage-still 900ms steps(1, end); }
-.time-passage.is-reduced .time-passage-sky { animation: none; background: #bddbe1; }
+.time-passage.is-reduced .time-passage-sky { animation: none; background: var(--time-passage-sky-ground); }
 .time-passage.is-reduced .time-passage-sun { animation: none; }
 .time-passage.is-reduced .time-passage-moon { display: none; }

@@ -6,7 +6,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 24px;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   background: var(--ds-parchment-2);
   color: var(--ds-ink);
   border-bottom: 1px solid var(--ds-parchment-line);
@@ -14,7 +14,7 @@
 .journey-stage span:last-child {
   flex-shrink: 0;
   padding: 2px 10px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
   font-weight: 600;
@@ -25,19 +25,19 @@
   max-width: 576px;
   background: var(--ds-parchment);
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
 }
 .pending-rewards h2 {
-  font-size: 18px;
+  font-size: var(--ds-text-subhead);
   margin-bottom: 8px;
 }
 .pending-rewards p,
 .pending-rewards li {
-  font-size: 12px;
-  line-height: 1.9;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-reading);
 }
 .pending-rewards summary {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   min-height: 44px;
   padding: 12px 0;
   cursor: pointer;
@@ -48,7 +48,7 @@
 }
 .pending-rewards .fine-print {
   margin-top: 12px;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
 }
 .battle-rewards {
   border-top: 1px solid var(--ds-parchment-line);
@@ -61,7 +61,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
 }
 .reward-total strong {
   font:
@@ -77,7 +77,7 @@
 }
 .current-ap {
   margin-top: 14px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   display: flex;
   justify-content: space-between;
 }
@@ -87,22 +87,22 @@
   background: var(--ds-parchment-2);
   margin: 24px 0 20px;
   text-align: left;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
 }
 .episode-clear h2 {
-  font-size: 21px;
+  font-size: var(--ds-text-heading);
   margin: 7px 0 13px;
 }
 .episode-clear > p:not(.eyebrow):not(.fine-print) {
   font-family: "Noto Serif JP", serif;
-  font-size: 14px;
-  line-height: 2.1;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-reading);
 }
 .episode-clear .fine-print {
   margin-top: 14px;
 }
 .guide-reward-note {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-here);
   margin-top: 12px;
 }
@@ -115,30 +115,30 @@
 @media (max-width: 480px) {
   .journey-stage {
     padding: 10px 24px;
-    font-size: 10px;
+    font-size: var(--ds-text-mark);
   }
   main > .pending-rewards {
     margin: 16px 24px;
   }
 }
 
-.journey-selection { display: grid; gap: 7px; margin: 16px 0; font-size: 12px; }
+.journey-selection { display: grid; gap: 7px; margin: 16px 0; font-size: var(--ds-text-caption); }
 /* The caption's row when something sits beside it (the title's 「オフラインで遊ぶ」): the row keeps the caption's height, and
    the button's 44 px reach up into the selector's top margin, never over the select under it. */
 .journey-selection-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0 12px; }
 .journey-selection-head > label { flex: none; white-space: nowrap; }
-.journey-selection-head > .text-button { display: inline-flex; align-items: flex-end; min-height: 44px; margin: -26px -5px -6px auto; padding: 0 5px 6px; font-size: 12px; line-height: inherit; white-space: nowrap; }
+.journey-selection-head > .text-button { display: inline-flex; align-items: flex-end; min-height: 44px; margin: -26px -5px -6px auto; padding: 0 5px 6px; font-size: var(--ds-text-caption); line-height: inherit; white-space: nowrap; }
 .journey-select { position: relative; display: block; }
 /* The journey select looks like the text fields (stage 2.2) with its own chevron (⌄). */
-.journey-select-value { display: block; min-height: 48px; padding: 12px 40px 12px 10px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: var(--ds-field); color: var(--ds-ink); font-size: 16px; line-height: 1.4; word-break: auto-phrase; overflow-wrap: anywhere; }
+.journey-select-value { display: block; min-height: 48px; padding: 12px 40px 12px 10px; border: 1px solid var(--ds-field-edge); border-radius: var(--ds-radius-field); background: var(--ds-field); color: var(--ds-ink); font-size: var(--ds-text-field); line-height: var(--ds-leading-snug); word-break: auto-phrase; overflow-wrap: anywhere; }
 .journey-select-value::after { content: ""; position: absolute; top: 50%; right: 16px; width: 8px; height: 8px; border-right: 2px solid var(--ds-ink); border-bottom: 2px solid var(--ds-ink); transform: translateY(-70%) rotate(45deg); }
-.journey-select select { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 48px; margin: 0; opacity: 0; font-size: 16px; cursor: pointer; }
+.journey-select select { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 48px; margin: 0; opacity: 0; font-size: var(--ds-text-field); cursor: pointer; }
 /* The select is transparent, so its focus ring is drawn on the value box. Browsers
    without :has() (Safari before 15.4) show it whenever the select has focus;
    the others keep it to keyboard focus, like the global :focus-visible rings. */
 .journey-select:focus-within .journey-select-value { outline: 3px solid var(--ds-focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ds-slate-900); }
 .journey-select:has(select:focus:not(:focus-visible)) .journey-select-value { outline: none; box-shadow: none; }
 .journey-preparation h1 { margin-top: 24px; }
-.journey-preparation > p:not(.eyebrow) { line-height: 1.8; }
+.journey-preparation > p:not(.eyebrow) { line-height: var(--ds-leading-reading); }
 .journey-route-stop { display: inline-block; white-space: nowrap; }
-.journey-preparation-saved { margin-top: 24px; padding: 18px; border-radius: 12px; background: var(--ds-parchment-2); }
+.journey-preparation-saved { margin-top: 24px; padding: 18px; border-radius: var(--ds-radius-control); background: var(--ds-parchment-2); }

@@ -1,4 +1,36 @@
 /* The portrait and dialogue share one scene; the reading surfaces stay opaque. */
+/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+:root {
+  --battle-screen-ground: #70816d;
+  --battle-screen-ground-2: #344e42;
+  --battle-paper-ground: #fcfaf4;
+  --battle-outcome-ink: #ffe6a8;
+  --battle-answer-effect-ground: #1f3a2b40;
+  --battle-answer-effect-incorrect-ground: #4f29362b;
+  --battle-answer-effect-stamp-ink: #fffdf5;
+  --battle-answer-effect-stamp-shade: #fff9eec9;
+  --battle-answer-effect-stamp-shade-2: #16251e82;
+  --battle-answer-effect-rays-shade: #26382e80;
+  --battle-answer-effect-stamp-shade-3: #16251e4d;
+  --battle-answer-effect-perfect-ground: #31594133;
+  --battle-answer-effect-stamp-ground: #367559;
+  --battle-answer-effect-stamp-ground-2: #194330;
+  --battle-answer-effect-stamp-shade-4: #fff7dfd9;
+  --battle-answer-effect-stamp-shade-5: #f2ca7380;
+  --battle-answer-effect-stamp-shade-6: #16251e66;
+  --battle-answer-effect-perfect-title-ink: #fff6d7;
+  --battle-answer-effect-stamp-ink-2: #f6d687;
+  --battle-reveal-region-edge: #fff3b0;
+}
+/* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
+   docs/02 「デザインの決まり」). */
+:root {
+  --result-outcome-size: clamp(40px, 12vw, 64px);
+  --result-score-size: 36px;
+  --answer-symbol-size: clamp(58px, 17vw, 82px);
+  --answer-stamp-size: clamp(25px, 7vw, 34px);
+  --answer-perfect-title-size: clamp(26px, 8vw, 36px);
+}
 .battle-screen {
   --scene-edge: #263d35;
   position: relative;
@@ -7,7 +39,7 @@
   flex-direction: column;
   min-height: 0;
   height: 100%;
-  background: radial-gradient(ellipse at 75% 18%, #70816d, #344e42 48%, var(--scene-edge) 100%);
+  background: radial-gradient(ellipse at 75% 18%, var(--battle-screen-ground), var(--battle-screen-ground-2) 48%, var(--scene-edge) 100%);
   /* The backdrop runs on behind the header where it lies over the battle
      (--scene-top, styles.css); the stage and the reading panels start below it. */
   padding-top: var(--scene-top, 0px);
@@ -54,7 +86,7 @@
 }
 .battle-screen[data-phase="dialogue"] .battle-enemy-info h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--ds-text-subhead);
 }
 .battle-screen[data-phase="dialogue"] .battle-enemy-info .eyebrow,
 .battle-screen[data-phase="dialogue"] .enemy-title,
@@ -113,7 +145,7 @@
   color: var(--ds-ink);
   background: var(--ds-parchment);
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
+  border-radius: var(--ds-radius-pane);
   box-shadow: var(--ds-window-shadow);
 }
 .battle-screen:not([data-phase="dialogue"]) .battle-paper {
@@ -145,7 +177,7 @@
 }
 .battle-screen[data-phase="dialogue"] .battle-paper {
   margin-top: -28px;
-  background: #fcfaf4;
+  background: var(--battle-paper-ground);
 }
 
 /* Conversation and quiz share the same background. Only the readable panel
@@ -290,7 +322,7 @@
   padding: 20px 8px 24px;
   color: var(--ds-glass-mark-full);
   text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 0, 0, 0.45);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 18px color-mix(in srgb, var(--ds-shade) 45%, transparent);
 }
 /* A soft shade behind the light words, whatever the picture (no edge: it fades out). */
 .battle-result-heading::before {
@@ -298,7 +330,7 @@
   position: absolute;
   z-index: -1;
   inset: 0 -12px;
-  background: radial-gradient(closest-side, rgba(12, 16, 24, 0.55), rgba(12, 16, 24, 0.25) 60%, transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--ds-veil) 55%, transparent), color-mix(in srgb, var(--ds-veil) 25%, transparent) 60%, transparent);
   pointer-events: none;
 }
 .battle-result-heading .eyebrow {
@@ -306,8 +338,8 @@
   align-items: center;
   gap: 10px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 12px;
+  color: color-mix(in srgb, var(--ds-light) 90%, transparent);
+  font-size: var(--ds-text-caption);
   font-weight: 600;
   letter-spacing: 0.4em;
 }
@@ -322,15 +354,15 @@
 .battle-result .outcome {
   margin: 6px 0 0;
   color: var(--ds-glass-mark-full);
-  font-size: clamp(40px, 12vw, 64px);
+  font-size: var(--result-outcome-size);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: var(--ds-leading-display);
   letter-spacing: 0.08em;
 }
 /* Every question answered right: the word in a warm gold light. */
 .battle-result[data-outcome="perfect"] .outcome {
-  color: #ffe6a8;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 22px rgba(246, 196, 69, 0.6);
+  color: var(--battle-outcome-ink);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 22px color-mix(in srgb, var(--ds-marker-selected) 60%, transparent);
 }
 .battle-result .battle-score {
   justify-content: center;
@@ -338,8 +370,8 @@
   margin: 4px 0 0;
   color: var(--ds-glass-mark-full);
 }
-.battle-result .battle-score strong { font-size: 36px; }
-.battle-result .battle-score > span { font-size: 14px; font-weight: 600; }
+.battle-result .battle-score strong { font-size: var(--result-score-size); }
+.battle-result .battle-score > span { font-size: var(--ds-text-note); font-weight: 600; }
 /* It may give way down to its choices and a few lines of the part that scrolls (its least height). */
 .battle-result-card {
   display: flex;
@@ -354,17 +386,17 @@
   overscroll-behavior: contain;
 }
 .battle-result-card .battle-rewards { margin: 0; padding: 0; border: 0; }
-.battle-result-card .reward-total strong { font-size: 30px; }
+.battle-result-card .reward-total strong { font-size: var(--ds-text-display); }
 .battle-result-card .current-ap { margin: 4px 0 0; }
 /* The trip's milestone on the glass: a warm light, its words in the glass's ink. */
 .battle-result-card .episode-clear {
   margin: 12px 0 0;
   padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(201, 163, 95, 0.2);
+  border-radius: var(--ds-radius-pane);
+  background: color-mix(in srgb, var(--ds-gold) 20%, transparent);
 }
-.battle-result-card .episode-clear h2 { margin: 2px 0 4px; font-size: 18px; }
-.battle-result-card .episode-clear > p:not(.eyebrow):not(.fine-print) { margin: 0; line-height: 1.9; }
+.battle-result-card .episode-clear h2 { margin: 2px 0 4px; font-size: var(--ds-text-subhead); }
+.battle-result-card .episode-clear > p:not(.eyebrow):not(.fine-print) { margin: 0; line-height: var(--ds-leading-reading); }
 .battle-result-foot {
   display: grid;
   flex: none;
@@ -377,15 +409,15 @@
 }
 .next-story-battle-note {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
 }
 .battle-result-actions .secondary { margin-top: 0; }
 .result-pending summary {
   cursor: pointer;
   color: var(--ds-ink);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
   padding: 8px 0;
 }
 .result-pending .pending-rewards { margin: 0; }
@@ -422,11 +454,11 @@
   .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 4px; }
   .battle-result-card { padding: 14px 14px 12px; }
   .battle-result .result-pending summary { padding: 4px 0; }
-  .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: 1.5; }
+  .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: var(--ds-leading-body); }
   .battle-result-foot { gap: 6px; padding-top: 12px; }
   .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .battle-result-actions .primary { grid-column: 1 / -1; }
-  .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: 1.4; }
+  .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: var(--ds-leading-snug); }
 }
 
 /* Wide, short screens use their horizontal space for the three choices.
@@ -440,8 +472,8 @@
   }
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact h2 {
     margin: 0;
-    font-size: 16px;
-    line-height: 1.35;
+    font-size: var(--ds-text-subhead);
+    line-height: var(--ds-leading-tight);
   }
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .battle-enemy-info { padding-bottom: 8px; }
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .eyebrow,
@@ -453,7 +485,7 @@
     margin: 0 auto 8px;
     padding: 8px 18px 16px;
   }
-  .battle-screen .question-en { font-size: 18px; line-height: 1.4; margin: 4px 0 0; }
+  .battle-screen .question-en { font-size: var(--ds-text-lead); line-height: var(--ds-leading-snug); margin: 4px 0 0; }
   .battle-screen .question-translation-tools > .translation,
   .battle-screen .question-translation-tools > .translation-all { margin: 0; }
   .battle-screen .quiz-choices { gap: 4px; }
@@ -465,8 +497,8 @@
     gap: 4px 8px;
     min-height: 52px;
     padding: 4px 8px 4px 16px;
-    font-size: 16px;
-    line-height: 1.45;
+    font-size: var(--ds-text-body);
+    line-height: var(--ds-leading-snug);
   }
   .battle-screen .quiz-choice > .translation { display: contents; }
   .battle-screen .quiz-choice .translation-actions { grid-column: 2; grid-row: 1; justify-content: flex-end; }
@@ -539,7 +571,7 @@
   position: relative;
   grid-template-columns: minmax(0, 1fr) 64px;
   align-items: center;
-  box-shadow: 0 1px 2px rgba(40, 30, 20, 0.12);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-paper-shade) 12%, transparent);
 }
 .battle-screen .quiz-feedback {
   margin: 18px 0;
@@ -564,15 +596,15 @@
   gap: 3px;
   padding: 3px 8px;
   border: 2px solid currentColor;
-  border-radius: 999px;
-  font-size: 13px;
+  border-radius: var(--ds-radius-pill);
+  font-size: var(--ds-text-note);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: var(--ds-leading-tight);
   white-space: nowrap;
 }
-.battle-screen .answer-verdict b { font-size: 19px; line-height: 1; }
-.battle-screen .answer-verdict-correct { color: #245a42; background: #e2efda; }
-.battle-screen .answer-verdict-incorrect { color: #8b363c; background: #f9e9e4; }
+.battle-screen .answer-verdict b { font-size: var(--ds-text-heading); line-height: 1; }
+.battle-screen .answer-verdict-correct { color: var(--ds-right-ink); background: var(--ds-right-ground); }
+.battle-screen .answer-verdict-incorrect { color: var(--ds-wrong-ink); background: var(--ds-wrong-ground); }
 
 /* Presentation only: the answer has already been saved.  This layer never
    intercepts input and naturally disappears without an animation callback. */
@@ -580,19 +612,19 @@
   --effect-ink: #245a42;
   --effect-bright: #f9d66d;
   position: absolute;
-  z-index: 10;
+  z-index: var(--ds-layer-answer-effect);
   inset: var(--scene-top, 0px) 0 0;
   display: grid;
   place-items: center;
   overflow: hidden;
   pointer-events: none;
-  background: radial-gradient(circle, #1f3a2b40, transparent 70%);
+  background: radial-gradient(circle, var(--battle-answer-effect-ground), transparent 70%);
   animation: answer-effect-visibility 900ms ease-out both;
 }
 .battle-screen .answer-effect-incorrect {
   --effect-ink: #853941;
   --effect-bright: #f2ad84;
-  background: radial-gradient(circle, #4f29362b, transparent 70%);
+  background: radial-gradient(circle, var(--battle-answer-effect-incorrect-ground), transparent 70%);
 }
 .battle-screen .answer-effect-stamp {
   z-index: 1;
@@ -604,9 +636,9 @@
   aspect-ratio: 1;
   border: 6px solid var(--effect-bright);
   border-radius: 50%;
-  color: #fffdf5;
+  color: var(--battle-answer-effect-stamp-ink);
   background: var(--effect-ink);
-  box-shadow: 0 0 0 6px #fff9eec9, 0 10px 28px #16251e82;
+  box-shadow: 0 0 0 6px var(--battle-answer-effect-stamp-shade), 0 10px 28px var(--battle-answer-effect-stamp-shade-2);
   transform: rotate(-7deg);
   animation: answer-stamp-enter 650ms cubic-bezier(.2,.8,.25,1) both;
 }
@@ -617,15 +649,15 @@
 }
 .battle-screen .answer-effect-symbol {
   font-family: sans-serif;
-  font-size: clamp(58px, 17vw, 82px);
+  font-size: var(--answer-symbol-size);
   font-weight: 700;
-  line-height: .95;
+  line-height: 1;
 }
 .battle-screen .answer-effect-stamp strong {
   margin-top: 4px;
-  font-size: clamp(25px, 7vw, 34px);
+  font-size: var(--answer-stamp-size);
   font-weight: 900;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   letter-spacing: .06em;
 }
 .battle-screen .answer-effect-rays {
@@ -640,9 +672,9 @@
   left: -3px;
   width: 6px;
   height: 25px;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background: var(--effect-bright);
-  box-shadow: 0 1px 4px #26382e80;
+  box-shadow: 0 1px 4px var(--battle-answer-effect-rays-shade);
   transform: rotate(var(--ray-angle)) translateY(calc(-1 * min(36vw, 145px)));
 }
 .battle-screen .answer-effect-rays i:nth-child(1) { --ray-angle: 0deg; }
@@ -659,10 +691,10 @@
 .battle-screen .answer-effect-subtle .answer-effect-stamp {
   width: 70px;
   border-width: 3px;
-  box-shadow: 0 2px 10px #16251e4d;
+  box-shadow: 0 2px 10px var(--battle-answer-effect-stamp-shade-3);
 }
-.battle-screen .answer-effect-subtle .answer-effect-symbol { font-size: 30px; }
-.battle-screen .answer-effect-subtle .answer-effect-stamp strong { font-size: 13px; margin-top: 1px; }
+.battle-screen .answer-effect-subtle .answer-effect-symbol { font-size: var(--ds-text-display); }
+.battle-screen .answer-effect-subtle .answer-effect-stamp strong { font-size: var(--ds-text-note); margin-top: 1px; }
 .battle-screen .answer-effect-subtle .answer-effect-rays i {
   width: 3px;
   height: 10px;
@@ -671,35 +703,35 @@
 .battle-screen .answer-effect-perfect {
   --effect-ink: #23543e;
   --effect-bright: #f6d687;
-  background: radial-gradient(circle, #31594133, transparent 65%);
+  background: radial-gradient(circle, var(--battle-answer-effect-perfect-ground), transparent 65%);
   animation-duration: 1300ms;
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp {
   position: relative;
   width: min(48vw, 180px);
   border-width: 4px;
-  background: linear-gradient(145deg, #367559, #194330);
-  box-shadow: 0 0 0 4px #fff7dfd9, 0 0 24px #f2ca7380, 0 8px 24px #16251e66;
+  background: linear-gradient(145deg, var(--battle-answer-effect-stamp-ground), var(--battle-answer-effect-stamp-ground-2));
+  box-shadow: 0 0 0 4px var(--battle-answer-effect-stamp-shade-4), 0 0 24px var(--battle-answer-effect-stamp-shade-5), 0 8px 24px var(--battle-answer-effect-stamp-shade-6);
 }
 .battle-screen .answer-effect-perfect-title {
-  color: #fff6d7;
+  color: var(--battle-answer-effect-perfect-title-ink);
   font-family: Georgia, serif;
-  font-size: clamp(26px, 8vw, 36px);
+  font-size: var(--answer-perfect-title-size);
   font-style: italic;
   line-height: 1;
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp strong {
   margin-top: 8px;
-  font-size: 17px;
+  font-size: var(--ds-text-subhead);
   letter-spacing: .12em;
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp::before,
 .battle-screen .answer-effect-perfect .answer-effect-stamp::after {
   position: absolute;
   top: 23%;
-  color: #f6d687;
+  color: var(--battle-answer-effect-stamp-ink-2);
   content: "✦";
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp::before { left: 18%; }
 .battle-screen .answer-effect-perfect .answer-effect-stamp::after { right: 18%; }
@@ -767,8 +799,8 @@
   animation: answer-glow 560ms var(--ease-out);
 }
 @keyframes answer-glow {
-  0%, 100% { box-shadow: 0 1px 2px rgba(40, 30, 20, 0.12); }
-  30% { box-shadow: 0 0 0 4px rgba(246, 196, 69, 0.95), 0 0 20px 6px rgba(246, 196, 69, 0.55); }
+  0%, 100% { box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-paper-shade) 12%, transparent); }
+  30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-marker-selected) 95%, transparent), 0 0 20px 6px color-mix(in srgb, var(--ds-marker-selected) 55%, transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .battle-screen[data-answer-held] .selected-panel .quiz-choice { scale: none; }
@@ -850,8 +882,8 @@
     padding-bottom: 9px;
   }
   .battle-screen .battle-stage-compact h2 {
-    font-size: 15px;
-    line-height: 1.35;
+    font-size: var(--ds-text-body);
+    line-height: var(--ds-leading-tight);
   }
   .battle-screen .battle-stage-compact .enemy-title,
   .battle-screen .battle-stage-compact .eyebrow {
@@ -866,7 +898,7 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
-    border-radius: 14px;
+    border-radius: var(--ds-radius-pane);
   }
   .battle-screen[data-phase="dialogue"] .battle-paper {
     margin-top: 0;
@@ -875,8 +907,8 @@
     padding: 2px 0;
   }
   .battle-screen .question-en {
-    font-size: 18px;
-    line-height: 1.4;
+    font-size: var(--ds-text-lead);
+    line-height: var(--ds-leading-snug);
     margin: 7px 0 2px;
   }
   .battle-screen .question-translation-tools > .translation {
@@ -895,8 +927,8 @@
     align-items: center;
     gap: 3px 6px;
     padding: 4px 7px 4px 14px;
-    font-size: 15px;
-    line-height: 1.4;
+    font-size: var(--ds-text-body);
+    line-height: var(--ds-leading-snug);
   }
   .battle-screen .quiz-choice > .translation {
     display: contents;
@@ -911,7 +943,7 @@
     width: auto;
     min-height: 44px;
     padding: 4px 2px;
-    font-size: 12px;
+    font-size: var(--ds-text-caption);
   }
   .battle-screen .quiz-choice .translation > p {
     grid-column: 1 / -1;
@@ -1041,7 +1073,7 @@
   display: inline-block;
   max-width: 100%;
   padding: 0 10px;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-pill);
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
   box-shadow: var(--ds-pill-shadow);
@@ -1068,11 +1100,11 @@
   flex: 1 1 auto;
   min-width: 0;
   padding: 7px 15px 10px;
-  border-radius: 14px;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment-2);
   color: var(--ds-ink);
-  font-size: 13px;
-  line-height: 1.8;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-reading);
   overflow-wrap: anywhere;
 }
 .heroine-note-bubble::before {
@@ -1088,8 +1120,8 @@
 .heroine-note-name {
   display: block;
   color: var(--ds-ink-muted);
-  font-size: 11px;
-  line-height: 1.7;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-body);
 }
 .heroine-note-bubble--unlabeled { padding-top: 9px; }
 .hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
@@ -1119,7 +1151,7 @@
   aspect-ratio: var(--reveal-width) / var(--reveal-height);
   margin: 0 auto;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
 }
 .battle-reveal-zoom {
@@ -1136,10 +1168,10 @@
 }
 .battle-reveal-region {
   position: absolute;
-  border: calc(2px / var(--reveal-scale)) solid #fff3b0;
+  border: calc(2px / var(--reveal-scale)) solid var(--battle-reveal-region-edge);
   border-radius: calc(4px / var(--reveal-scale));
-  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) rgba(20, 24, 32, 0.65),
-    inset 0 0 0 calc(1px / var(--reveal-scale)) rgba(20, 24, 32, 0.65);
+  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-veil) 65%, transparent),
+    inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-veil) 65%, transparent);
   animation: battle-reveal-outline var(--motion-medium) ease-out 1.6s both;
 }
 @keyframes battle-reveal-zoom { to { transform: scale(var(--reveal-scale)); } }
@@ -1147,8 +1179,8 @@
 .battle-reveal figcaption {
   margin: 6px 0 0;
   color: var(--ds-ink);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
   text-align: center;
   overflow-wrap: anywhere;
 }

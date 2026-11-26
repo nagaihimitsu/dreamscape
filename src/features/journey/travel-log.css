@@ -9,12 +9,12 @@ dialog.modal.travel-log {
   max-height: calc(100dvh - 24px);
 }
 .travel-log .modal-title-bar { margin-bottom: 8px; }
-.travel-log-empty { margin: 4px 0 8px; font-size: 14px; line-height: 1.7; }
+.travel-log-empty { margin: 4px 0 8px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .travel-log-axes {
   display: flex;
   margin: 0 0 12px;
   padding: 3px;
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment-2);
 }
 .travel-log-axes button {
@@ -26,19 +26,19 @@ dialog.modal.travel-log {
   margin: 0;
   padding: 6px 12px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: transparent;
   color: var(--ds-ink-muted);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   justify-content: center;
 }
 .travel-log-axes button[aria-pressed="true"] {
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-weight: 700;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 18%, transparent);
 }
-.travel-log-count { font-size: 12px; font-weight: 400; color: var(--ds-ink-muted); }
+.travel-log-count { font-size: var(--ds-text-caption); font-weight: 400; color: var(--ds-ink-muted); }
 /* 「体験」: each city under its name, a full-width button with its count and a chevron that turns as the city folds. */
 .travel-log-city + .travel-log-city, .travel-log .journey-numbers { border-top: 1px solid var(--ds-parchment-line); }
 .travel-log-city-name { margin: 0; }
@@ -54,13 +54,13 @@ dialog.modal.travel-log {
   background: transparent;
   color: var(--ds-ink);
   font-family: "Noto Serif JP", serif;
-  font-size: 18px;
-  line-height: 1.4;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-snug);
   text-align: left;
   overflow-wrap: anywhere;
 }
 .travel-log-city-name button > span:first-child { flex: 0 1 auto; min-width: 0; }
-.travel-log-city-count { flex: none; font-family: inherit; font-size: 13px; color: var(--ds-ink-muted); }
+.travel-log-city-count { flex: none; font-family: inherit; font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
 .travel-log-city-name svg { flex: none; margin-left: auto; transition: transform var(--motion-fast, 120ms) ease; }
 .travel-log-city-name button[aria-expanded="false"] svg { transform: rotate(-90deg); }
 .travel-log-city > div { padding-bottom: 16px; }
@@ -69,22 +69,22 @@ dialog.modal.travel-log {
 .travel-log-card {
   overflow: hidden;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
 }
 .travel-log-card > .travel-log-picture { border-radius: 0; }
 .travel-log-card-body { padding: 10px 12px 4px; }
-.travel-log-where { margin: 0 0 2px; font-size: 12px; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.travel-log-where { margin: 0 0 2px; font-size: var(--ds-text-caption); color: var(--ds-ink-muted); overflow-wrap: anywhere; }
 .travel-log-card .stop-title { margin: 0 0 4px; }
 .travel-log-card h4 {
   min-width: 0;
   margin: 0;
   font-family: "Noto Serif JP", serif;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
-.travel-log-record { margin: 0 0 6px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
+.travel-log-record { margin: 0 0 6px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .travel-log-heroine { margin: 0 12px 12px; }
 /* 出会った人: each person's standing picture, small, beside the name and words. The whole picture is laid from the frame's
    top at 1.7 times its height, so the frame shows the head to about the waist and the feet are cut off; any character
@@ -97,22 +97,22 @@ dialog.modal.travel-log {
   margin-top: 2px;
   overflow: hidden;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment-2);
 }
 .travel-log-person-figure .character-figure { height: 170%; }
 .travel-log-person-figure .character-figure img,
 .travel-log-person-figure .character-figure svg { object-position: center top; }
 .travel-log-person > div { min-width: 0; }
-.travel-log-people-title { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: 1rem; }
+.travel-log-people-title { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); }
 .travel-log .met-people { margin-top: 16px; }
 .travel-log .journey-numbers { margin-top: 0; padding-top: 14px; }
 .album-photo {
   display: block;
   width: 100%;
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   overflow: hidden;
-  background: #26342e;
+  background: var(--ds-photo-mat);
 }
 /* A card's picture fills a fixed 3:2 frame (one of another shape keeps its middle), so the file's own size is never needed. A short screen held sideways keeps the frame low by narrowing it. */
 .album-photo img {
@@ -144,7 +144,7 @@ dialog.modal.travel-log {
   padding: 0;
   border: 0;
   border-radius: 0;
-  background: #26342e;
+  background: var(--ds-photo-mat);
   aspect-ratio: 1;
   overflow: hidden;
 }
@@ -152,20 +152,20 @@ dialog.modal.travel-log {
 .travel-log-grid button:focus-visible { outline: 3px solid var(--ds-slate-800); outline-offset: -3px; }
 /* A photo not taken yet (once the journey is over; 2026-11-20 user decision): the same picture in grey, by a filter rather
    than a second file, a little faded on the grid's dark ground; opened larger, grey too. The line above the grid says so. */
-.travel-log-photos-note { margin: 0 0 8px; font-size: 13px; line-height: 1.6; color: var(--ds-ink-muted); }
+.travel-log-photos-note { margin: 0 0 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
 .travel-log-grid .is-missed img { filter: grayscale(1); opacity: 0.7; }
 .photo-viewer-frame img.is-missed { filter: grayscale(1); }
-.album-meta { font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.album-meta { font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); overflow-wrap: anywhere; }
 .album-page-button {
   flex: none;
   min-width: 88px;
   min-height: 44px;
   padding: 6px 14px;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
 .album-page-button:hover:enabled { background: var(--ds-parchment-2); }
 .album-page-button:disabled {
@@ -174,7 +174,7 @@ dialog.modal.travel-log {
   background: var(--ds-disabled-bg);
   color: var(--ds-disabled-ink);
 }
-.album-page-count { flex: 1 1 auto; min-width: 3em; font-size: 13px; color: var(--ds-ink-muted); text-align: center; }
+.album-page-count { flex: 1 1 auto; min-width: 3em; font-size: var(--ds-text-note); color: var(--ds-ink-muted); text-align: center; }
 /* The photo opened larger: the whole picture, its time and place, 「前の写真」「次の写真」 at the foot with more than one. The frame is the
    picture's own shape (2026-11-13 user decision: no empty band around a wide picture on a phone held upright), as wide as
    the dialog and no taller than its share of the screen; a picture taller than that keeps its shape, narrower. */
@@ -194,7 +194,7 @@ dialog.modal.album-photo-viewer {
   height: auto;
   max-height: min(60dvh, 520px);
   margin: 0 auto;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
 }
 .album-photo-viewer > .album-meta { margin: 6px 0 8px; }
 @media (orientation: landscape) and (max-height: 500px) {

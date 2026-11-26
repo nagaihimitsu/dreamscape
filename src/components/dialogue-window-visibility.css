@@ -9,7 +9,7 @@
 .vn-window-restore {
   position: absolute;
   inset: 0;
-  z-index: 12;
+  z-index: var(--ds-layer-window-restore);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -36,7 +36,7 @@
   width: 44px;
   height: 44px;
   border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-slate-800);
   box-shadow: var(--ds-pill-shadow);
 }

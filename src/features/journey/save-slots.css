@@ -8,20 +8,20 @@
   min-height: 56px;
   padding: 8px 10px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
 }
 .save-slot.playing { background: var(--ds-parchment-2); }
-.save-slot-number { display: grid; gap: 2px; min-width: 5.6em; font-size: 0.8rem; font-weight: 700; color: var(--ds-ink-muted); white-space: nowrap; }
+.save-slot-number { display: grid; gap: 2px; min-width: 5.6em; font-size: var(--ds-text-caption); font-weight: 700; color: var(--ds-ink-muted); white-space: nowrap; }
 .save-slot-text { display: grid; gap: 2px; min-width: 0; }
 .save-slot-text strong { overflow-wrap: anywhere; }
-.save-slot-text span { font-size: 0.85rem; color: var(--ds-ink-muted); }
-.save-slot-mark { font-size: 0.72rem; color: var(--ds-here); font-weight: 700; white-space: nowrap; }
+.save-slot-text span { font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
+.save-slot-mark { font-size: var(--ds-text-mark); color: var(--ds-here); font-weight: 700; white-space: nowrap; }
 .save-slot > .secondary { min-height: 44px; margin: 0; padding: 6px 12px; white-space: nowrap; }
 .save-slots-title { margin: 4px 0 8px; }
-.save-slots-caption { margin: 16px 0 0; font-size: 12px; }
-.save-slot-off { font-size: 0.8rem; color: var(--ds-ink-muted); white-space: nowrap; }
+.save-slots-caption { margin: 16px 0 0; font-size: var(--ds-text-caption); }
+.save-slot-off { font-size: var(--ds-text-caption); color: var(--ds-ink-muted); white-space: nowrap; }
 
 /* 「セーブ・ロード」: the two modes side by side, the one shown filled (aria-pressed). */
 .save-load-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0 8px; }
@@ -33,7 +33,7 @@
   min-height: 44px;
   margin: 0;
   border: 1.5px solid var(--ds-slate-800);
-  border-radius: 12px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;

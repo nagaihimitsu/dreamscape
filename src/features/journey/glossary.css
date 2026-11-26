@@ -9,7 +9,7 @@
 .glossary-term-window {
   position: fixed;
   inset: 0;
-  z-index: 1800;
+  z-index: var(--ds-layer-term);
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -17,7 +17,7 @@
   padding: max(16px, 7dvh, env(safe-area-inset-top)) 16px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: radial-gradient(ellipse 90% 62% at 50% 40%, rgba(14, 12, 10, 0.5), rgba(14, 12, 10, 0.3) 62%, rgba(14, 12, 10, 0.08));
+  background: radial-gradient(ellipse 90% 62% at 50% 40%, color-mix(in srgb, var(--ds-shade) 50%, transparent), color-mix(in srgb, var(--ds-shade) 30%, transparent) 62%, color-mix(in srgb, var(--ds-shade) 8%, transparent));
   cursor: pointer;
   animation: glossary-dim-in var(--motion-medium) var(--ease-out) both;
 }
@@ -43,7 +43,7 @@
   border: 0;
   border-radius: var(--ds-glass-radius);
   background: var(--ds-glass-bg);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 0 28px rgba(246, 196, 69, 0.28);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--ds-shade) 30%, transparent), 0 0 28px color-mix(in srgb, var(--ds-marker-selected) 28%, transparent);
   color: var(--ds-ink);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -60,11 +60,11 @@
   gap: 4px;
   margin: 0;
   padding: 2px 10px;
-  border-radius: 999px;
-  background: rgba(201, 163, 95, 0.22);
+  border-radius: var(--ds-radius-pill);
+  background: color-mix(in srgb, var(--ds-gold) 22%, transparent);
   color: var(--ds-ink-muted);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-chip);
   letter-spacing: 0.04em;
 }
 .glossary-term-mark .icon { width: 14px; height: 14px; }
@@ -77,36 +77,36 @@
   height: auto;
   max-height: min(190px, 28dvh);
   margin: 0 auto;
-  border-radius: 10px;
-  background: #e9dcc4;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-parchment-2);
 }
 /* What the photo shows when it stands in for the term (photoNoteJa): small and quiet, right under the photo. */
 .glossary-term-photo-note {
   margin: 2px 0 0;
   color: var(--ds-ink-muted);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
 }
 .glossary-term-name {
   margin: 4px 0 0;
   font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   font-weight: 600;
-  line-height: 1.35;
+  line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
 .glossary-term-subtitle {
   margin: 0;
   color: var(--ds-ink-muted);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
 }
 .glossary-term-line {
   margin: 2px 0 0;
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   text-align: left;
   overflow-wrap: anywhere;
 }
@@ -134,7 +134,7 @@
   }
   .glossary-term-photo { grid-area: photo; align-self: start; max-height: 70dvh; }
   .glossary-term-mark { grid-area: mark; justify-self: start; }
-  .glossary-term-name { grid-area: name; margin: 0; font-size: 18px; }
+  .glossary-term-name { grid-area: name; margin: 0; font-size: var(--ds-text-subhead); }
   .glossary-term-subtitle { grid-area: subtitle; }
   .glossary-term-line { grid-area: line; margin: 0; }
 }
@@ -149,9 +149,9 @@ dialog.modal.glossary-modal {
   max-height: calc(100dvh - 24px);
 }
 .glossary-modal .modal-title-bar { margin-bottom: 4px; }
-.glossary-progress { margin: 0 0 4px; font-size: 15px; font-weight: 600; line-height: 1.6; }
+.glossary-progress { margin: 0 0 4px; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); }
 .glossary-debug-note { margin: 0 0 4px; }
-.glossary-empty { margin: 0 0 8px; font-size: 14px; line-height: 1.7; }
+.glossary-empty { margin: 0 0 8px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .glossary-group h3 {
   display: flex;
   align-items: baseline;
@@ -159,10 +159,10 @@ dialog.modal.glossary-modal {
   gap: 8px;
   margin: 12px 0 8px;
   font-family: "Noto Serif JP", serif;
-  font-size: 17px;
-  line-height: 1.4;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-snug);
 }
-.glossary-group-count { font-family: inherit; font-size: 12px; font-weight: 400; color: var(--ds-ink-muted); }
+.glossary-group-count { font-family: inherit; font-size: var(--ds-text-caption); font-weight: 400; color: var(--ds-ink-muted); }
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
@@ -183,7 +183,7 @@ dialog.modal.glossary-modal {
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: 10px;
+  border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
   font: inherit;
@@ -195,14 +195,14 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  background: #e9dcc4;
+  background: var(--ds-parchment-2);
 }
 .glossary-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .glossary-card-name {
   padding: 4px 6px 6px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
 }
 /* 「NEW」 on a term met since 旅の図鑑 was last opened (as beside a held item: held-items.css). */
@@ -211,14 +211,14 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   top: 4px;
   right: 4px;
   padding: 0 5px;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background: var(--ds-marker);
-  color: #fff;
+  color: var(--ds-on-slate);
   font-family: Georgia, serif;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   font-weight: 700;
   letter-spacing: 0.06em;
-  line-height: 16px;
+  line-height: var(--ds-leading-chip);
 }
 /* Debug: a term not met yet, shown with its mark. */
 .glossary-card-unmet {
@@ -226,16 +226,16 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   top: 4px;
   left: 4px;
   padding: 0 5px;
-  border-radius: 4px;
+  border-radius: var(--ds-radius-small);
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
-  font-size: 10px;
-  line-height: 16px;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-chip);
 }
 button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: 0.55; }
 /* A term not met yet: an empty card, dashed, with neither its photo nor its name. */
 .glossary-card-empty { border-style: dashed; background: transparent; }
-.glossary-card-empty .glossary-card-photo { background: transparent; color: var(--ds-ink-muted); font-size: 22px; }
+.glossary-card-empty .glossary-card-photo { background: transparent; color: var(--ds-ink-muted); font-size: var(--ds-text-heading); }
 
 /* A card opened larger: the photo whole and its words; 「閉じる」 in the title bar, which stays at the top while the dialog
    scrolls. */
@@ -246,7 +246,7 @@ dialog.modal.glossary-entry {
   max-width: 560px;
 }
 .glossary-entry .modal-title-bar { margin-bottom: 4px; }
-.glossary-entry-subtitle { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: 13px; line-height: 1.5; }
+.glossary-entry-subtitle { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .glossary-entry-photo {
   display: block;
   width: auto;
@@ -254,10 +254,10 @@ dialog.modal.glossary-entry {
   height: auto;
   max-height: min(50dvh, 420px);
   margin: 0 auto;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-field);
 }
-.glossary-entry-photo-note { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
-.glossary-entry-line { margin: 10px 0 0; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.glossary-entry-photo-note { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.glossary-entry-line { margin: 10px 0 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 
 /* Reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion): the card and the dimming show at once. */
 .reduce-motion .glossary-term-window,
