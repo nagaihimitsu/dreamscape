@@ -383,10 +383,13 @@ test("a quick double tap on 「切り替える」 does not read on the other jou
   await page.clock.resume();
   await ops.settled(page);
   await expect(line).toContainText(placed.activeTourism!.frame!.text);
-  // It reads on only where a tap would: the picture or the line, not one of the guide's controls.
+  // It lands where a tap would act on the guide: the picture or the line (a tap reads on), or the line's photo print (a tap
+  // opens it larger, 2026-11-25), not a gap or one of the guide's controls; and it did neither.
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), confirm),
     "the second tap landed on the other journey's guide").toBe(true);
-  expect(await ops.readsOnAt(page, confirm), "the second tap landed on the guide's picture or line, not on a control").toBe(true);
+  const onPrint = await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="photo-show"] figure'), confirm);
+  expect(onPrint || await ops.readsOnAt(page, confirm), "the second tap landed on the guide's picture, line or photo print, not on a control").toBe(true);
+  await expect(page.locator(".photo-show-viewer"), "the photo print did not open").toHaveCount(0);
   expect(await readSave(page, other!.id)).toEqual(placed);
 });
 

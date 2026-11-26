@@ -420,8 +420,8 @@ test("in each available journey a new trip's first vehicle route is named and sh
     // The next journey from セーブ・ロード (a page load would resume the journey just played).
     if (index > 0) await (await ops.openSaveLoad(page)).getByLabel("旅行編").selectOption(journey.id);
     await ops.beginJourney(page, journey.id);
-    // Through the arrival, if the journey opens with one.
-    await playUntil(page, (state) => state.activeEpilogue === null, { source: savedGame(journey.id) });
+    // Through the arrival, if the journey opens with one, and the scenes of its moment (India's airport before it: GT-4).
+    await playUntil(page, (state) => !state.activeEpilogue && !state.activeEncounter && !state.occasion, { source: savedGame(journey.id) });
     await expect(page.getByTestId("travel-menu")).toBeVisible();
     const before = await readSave(page, journey.id);
     type Route = { fromPlaceId: string; toPlaceId: string; mode: string; minutes: number; cost: number };

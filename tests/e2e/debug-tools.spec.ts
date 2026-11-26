@@ -77,8 +77,10 @@ test("the bar's 「フラグ・時刻・段階」 sets a flag that a hotel scene
   await expect.poll(async () => (await debugGame(page))?.storyProgress.flags).toEqual(["gt_delhi_golgappa_sick"]);
   await dialog.getByTestId("debug-edit-close").click();
 
-  // 休む: the morning's scene `# when: flag gt_delhi_golgappa_sick` plays (without the flag the next morning comes at once).
+  // 休む: the morning's scene `# when: flag gt_delhi_golgappa_sick` plays (without the flag the next morning comes at once). The
+  // night's 「ホテルで休みました。」 card waits for a tap over it (2026-11-15), as a player reads it.
   await ops.sleep(page);
+  await ops.settled(page);
   await expect.poll(async () => (await debugGame(page))?.activeEncounter?.encounterId, { timeout: 15_000 }).toBe("gt_delhi_hotel_sick_morning");
   dialog = await openEdit(page);
   await expect(dialog.getByTestId("debug-edit-refusal")).toContainText("場面の途中なので変えられません");
