@@ -136,6 +136,8 @@ function weight(state: GameState, action: PlayerAction): number {
     case "cancel_tour": return 0.1;
     // The shop's outfits (2026-11-20): bought now and then, changed into rarely (it changes only her pictures).
     case "buy_outfit": return 0.2;
+    // A talking shop (2026-11-26): gone into now and then (its scenes may buy an outfit).
+    case "enter_shop": return 0.2;
     case "wear_outfit": return 0.05;
     default: return 1;
   }

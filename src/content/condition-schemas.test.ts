@@ -37,6 +37,8 @@ const EXAMPLES: Record<(typeof LEAF_KINDS)[number], Leaf> = {
   met: { met: "a_person" },
   condition: { condition: "a_condition" },
   clue: { clue: "a_clue" },
+  tourOffer: { tourOffer: { tour: "a_tour", offer: "an_offer" } },
+  outfit: { outfit: "an_outfit" },
 };
 const messages = (value: unknown) => conditionIssues(value).map((issue) => issue.message);
 

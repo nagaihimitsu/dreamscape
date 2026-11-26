@@ -41,7 +41,7 @@ export const occasionTripSchema = z.object({
 }).strict();
 export type OccasionTrip = z.infer<typeof occasionTripSchema>;
 
-export const OCCASION_KINDS = ["visit", "battle", "date", "hotel", "epilogue", "depart", "arrive", "tour"] as const;
+export const OCCASION_KINDS = ["visit", "battle", "date", "hotel", "epilogue", "depart", "arrive", "tour", "shop"] as const;
 export type OccasionKind = (typeof OCCASION_KINDS)[number];
 
 /** The tour step an occasion runs (tour stages 2b, 3): its `# at: tour <tour> <step>` scenes run around it. */
@@ -51,13 +51,15 @@ export type OccasionTour = z.infer<typeof occasionTourSchema>;
 export const occasionSchema = z.object({
   /**
    * A landmark's visit, a battle (a finale), a date (the map's); stage 4: a rest at the hotel, the city's epilogue, its departure, an
-   * arrival; tour stages 2b, 3: a running tour's leg (its scenes, its narration, its move).
+   * arrival; tour stages 2b, 3: a running tour's leg (its scenes, its narration, its move); 2026-11-26: a city's shop.
    */
   kind: z.enum(OCCASION_KINDS),
   /** The city of a hotel's, an epilogue's, a departure's, an arrival's or a tour leg's moment (stage 4). */
   cityId: stableContentId.optional(),
   /** A running tour's step (tour stages 2b, 3): a tour leg's own occasion, or the visit of the tour's event step. */
   tour: occasionTourSchema.optional(),
+  /** The shop gone into from free time (2026-11-26): its `# at: shop <shop>` scenes run, with no main part. */
+  shop: stableContentId.optional(),
   /** The trip before the moment (stage 4; the "move" part applies it). */
   trip: occasionTripSchema.optional(),
   /** The ticket counter's place (stage 4; the "ticket" part is the entry, admission paid on departing). */

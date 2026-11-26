@@ -292,6 +292,130 @@
       ]
     },
     {
+      "id": "gt_agra_tour_out_shared",
+      "sources": [
+        {
+          "publisher": "Triveni Cabs",
+          "title": "Fatehpur Sikri Guide: Buland Darwaza, Salim Chishti",
+          "url": "https://www.trivenicabs.in/blog/fatehpur-sikri-guide-buland-darwaza-salim-chishti",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の旅行案内（記事の日付は2026年11月10日）では、モスクでは靴を脱いで置いていき、中庭の石は春から先はとても熱くなる。"
+        },
+        {
+          "publisher": "Solo Backpacker",
+          "title": "Fatehpur Sikri Trip",
+          "url": "https://solobackpacker.com/fatehpur-sikri-trip/",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "旅行記（2019年9月更新）では、モスクの一角に入る前に靴を脱ぐ必要があり、決まった靴置き場はなく、座っている人たちが少しのお金で靴を見ていてくれた。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_tour_guide_gate",
+      "sources": [
+        {
+          "publisher": "Triveni Cabs",
+          "title": "Fatehpur Sikri Day Trip with Guide",
+          "url": "https://www.trivenicabs.in/tours-with-guide/fatehpur-sikri-day-trip-with-guide",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の案内では、ファテープル・シークリーのガイドは観光省の許可を持つ地域ガイド（Regional Level Tourist Guide）で、許可の証を予約の確認のときに送るとある。"
+        },
+        {
+          "publisher": "Gulf News（IANS）",
+          "title": "Unlicensed guide accompanies US envoy to Fatehpur Sikri in India",
+          "url": "https://gulfnews.com/world/asia/india/unlicensed-guide-accompanies-us-envoy-to-fatehpur-sikri-in-india-1.1708226957646",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "無許可のガイド（地元で「ラプカ」と呼ばれる）が、アーグラの名所の駐車場やファテープル・シークリーに多く集まっていると報じられた（2024年2月）。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_tour_guide_palace",
+      "sources": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Jodha Bai Mahal（版 1365598923）",
+          "url": "https://en.wikipedia.org/wiki/Jodha_Bai_Mahal",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "ファテープル・シークリーで最も大きな宮殿で、赤い砂岩で造られ、白鳥・象・オウムなどの模様が彫られている。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Jodha Bai Mahal（版 1365598923）",
+          "url": "https://en.wikipedia.org/wiki/Jodha_Bai_Mahal",
+          "checkedAt": "2026-11-26",
+          "claimType": "interpretation",
+          "claimJa": "宮殿の中の寺院とトゥルシー（聖なるバジル）の台は、ヒンドゥーの女性が住んでいたしるしとされる。「ジョード・バーイーの宮殿」という呼び名は正しくないとされる。"
+        },
+        {
+          "publisher": "Google Arts & Culture（American Institute of Indian Studies）",
+          "title": "Power Behind the Veil",
+          "url": "https://artsandculture.google.com/story/power-behind-the-veil-american-institute-of-indian-studies/rQUxOyzx-bmNLQ?hl=en",
+          "checkedAt": "2026-11-26",
+          "claimType": "interpretation",
+          "claimJa": "ファテープル・シークリーの後宮の建物の多くは、誰の住まいだったかが推測で、住む人は建物を分け合っていた。ジョーダー・バーイーの家の飾りのある壁龕は、祈りに使われたのかもしれない。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Mariam-uz-Zamani（版 1380057125）",
+          "url": "https://en.wikipedia.org/wiki/Mariam-uz-Zamani",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "アンベールの王バールマルの娘で、1562年、サーンバルのアクバルの陣で結婚した。ムガル帝国とアンベールの政治的な同盟の一部だった。結婚の後も、宮殿の中でヒンドゥーの信仰と儀式を続けることを許された。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Mariam-uz-Zamani（版 1380057125）",
+          "url": "https://en.wikipedia.org/wiki/Mariam-uz-Zamani",
+          "checkedAt": "2026-11-26",
+          "claimType": "interpretation",
+          "claimJa": "「ジョーダー・バーイー」という呼び名は、同時代のムガルの年代記には出てこない誤りとされ、19世紀のジェームズ・トッドの著作にさかのぼるとされる。皇子サリーム（のちのジャハーンギール）が生まれた後、「時代のマリアム」を意味する称号を受けた。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Mariam-uz-Zamani（版 1380057125）",
+          "url": "https://en.wikipedia.org/wiki/Mariam-uz-Zamani",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "自分の名で勅令（ファルマーン）を出す権限を持った。船を持ち、メッカへの巡礼者を運び、絹や香辛料を商った。1613年9月、巡礼船ラヒーミー号がポルトガルに奪われると、ジャハーンギールは主な港の海上交易を止め、ポルトガルの町ダマンを囲ませた。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Jodhaa Akbar（版 1376672435）",
+          "url": "https://en.wikipedia.org/wiki/Jodhaa_Akbar",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "2008年の映画『ジョーダー・アクバル』は、政治的な結婚から始まり、姫が信仰を続けることと祠を願い、刺客に傷を負った皇帝を看病して愛が育つ筋。物語の多くは創作で、「ジョーダー」という名も争われている。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_tour_shared_sandals",
+      "sources": [
+        {
+          "publisher": "Triveni Cabs",
+          "title": "Fatehpur Sikri Guide: Buland Darwaza, Salim Chishti",
+          "url": "https://www.trivenicabs.in/blog/fatehpur-sikri-guide-buland-darwaza-salim-chishti",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の旅行案内（記事の日付は2026年11月10日）では、モスクでは靴を脱いで置いていく。"
+        },
+        {
+          "publisher": "Solo Backpacker",
+          "title": "Fatehpur Sikri Trip",
+          "url": "https://solobackpacker.com/fatehpur-sikri-trip/",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "旅行記（2019年9月更新）では、モスクの一角に入る前に靴を脱ぐ必要があり、決まった靴置き場はなく、座っている人たちが少しのお金で靴を見ていてくれた。"
+        }
+      ]
+    },
+    {
       "id": "gt_jaipur_hotel_mehndi_night",
       "sources": [
         {
@@ -369,6 +493,138 @@
           "checkedAt": "2026-11-08",
           "claimType": "documented_fact",
           "claimJa": "祝儀の金額は、最後が一で終わるのが縁起がよいとされる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_cloth_shop_intro",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism（デリー観光局）",
+          "title": "Old Delhi Shopping（Chandni Chowk）",
+          "url": "https://delhitourism.gov.in/shopping/chandni_chowk.html",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "チャンドニー・チョークの布の市場カトラー・ニールでは、絹・サテン・クレープ・綿・モスリンなど、あらゆる布が売られている。店の主人ゴーヴィンドと織り手イクバールは、物語のために作った人物。"
+        },
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Banaras Brocades and Sarees- Weaving Timeless Stories in Silk",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/banaras-brocades-and-sarees",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "バナーラスの錦織とサリーの特徴は「ザリー」と呼ぶ緯糸の技法で、ふつう金か銀の金属の糸を布に織り込んで、模様や縁を作る。上質の絹糸を染めて使う。バナーラス（ヴァーラーナシー）はガンガー（ガンジス川）沿いの町。"
+        },
+        {
+          "publisher": "Intellectual Property India（インド知的財産庁）地理的表示登録簿",
+          "title": "Application Details: Banaras Brocades and Sarees（Application Number 99）",
+          "url": "https://search.ipindia.gov.in/GIRPublicSearch/Application/Details/99",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "「バナーラスの錦織とサリー」（Banaras Brocades and Sarees）は、ウッタル・プラデーシュ州の地理的表示として登録されている（出願2007年7月4日、登録証2009年9月4日、状態は Registered）。よそで織った布を「バナーラス」と呼ぶのは嘘だ、という言い方はゴーヴィンドの考え。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_cloth_shop_intro",
+      "sources": [
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Places to Visit in Agra",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/agra",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラでは、金属の糸で刺す刺繍ザルドージーに出会える。かつては王と王妃の衣装のためのものだったが、今はレヘンガやサリー、靴などにも使われる。店の主人ラフィークとその奥さんは、物語のために作った人物。"
+        },
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Banaras Zardozi: Exquisite Uttar Pradesh Craft",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/varanasi/banaras-zardozi",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "ザルドージーは、金や銀の糸と宝石・半貴石で布を飾る金属の刺繍。技はムガル時代のインドにさかのぼり、皇帝や貴族に好まれた。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Zardozi",
+          "url": "https://en.wikipedia.org/wiki/Zardozi",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "ザルドージーの名は、ペルシャ語の zar（金）と dozi（縫うこと）から。今の職人は、金や銀の色をかけた銅の針金と絹糸を組み合わせて使う。アーグラは、ザルドージーの小さな中心地の一つに挙げられている。"
+        },
+        {
+          "publisher": "Google Arts & Culture（Dastkari Haat Samiti）",
+          "title": "Zari Zardozi: Embroidery with metallic threads",
+          "url": "https://artsandculture.google.com/story/fgWBrx-kemIoKw",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "刺繍する布は「アッダ」と呼ぶ木の枠に張って、ぴんと伸ばす。職人は両手を使い、布の下で糸を導き、布の上で図柄を作る。昔は本物の金と銀の針金が使われたが、今は安い代用品に代わった。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_cloth_shop_haggle",
+      "sources": [
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Banaras Brocades and Sarees- Weaving Timeless Stories in Silk",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/banaras-brocades-and-sarees",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "バナーラスの錦織とサリーは、金や銀の金属の糸を布に織り込んで模様を作る（デリーのサリーの銀の花は、織り込み）。"
+        },
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Banaras Zardozi: Exquisite Uttar Pradesh Craft",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/varanasi/banaras-zardozi",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "ザルドージーは、職人が金や銀の糸で布に図柄を縫い付ける刺繍（アーグラの服の花は、上から縫ったもの）。日数や値段、最初に縫った花の話は、物語のための設定。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_cloth_shop_intro",
+      "sources": [
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Sanganeri Hand Block Printing- Rajasthan's Artistry in Fabric",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/sanganeri-hand-block-printing",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "サーンガーネールの木版プリントは、ジャイプール近くのサーンガーネールで生まれた技。刷り師はチッパー（Chippa）と呼ばれ、その名は「押す・刷る」を意味するチャーパー（Chappa）から来ている。乾かしたチークの版に図柄を彫り、天然の染料をつけて布に押し、日に干す。白か生成りの地に細かな柄をあしらうのが特徴で、花や蔓の模様が多い。店の主人スミトラーとその息子は、物語のために作った人物。"
+        },
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Sanganeri Hand Block Printing- Rajasthan's Artistry in Fabric",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/sanganeri-hand-block-printing",
+          "checkedAt": "2026-11-26",
+          "claimType": "legend",
+          "claimJa": "サーンガーネールの布が独特の冴えを持つのは、サラスワティー川の水のおかげだと言われる（同じページの説明。台本では、土地の年寄りの言い伝えとして言う）。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Bagru print",
+          "url": "https://en.wikipedia.org/wiki/Bagru_print",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプール近くの木版プリント（バグルー）でも、版はシーシャムやチークの堅い木を彫って作り、天然の染料には、青を出す藍がある。チッパーの人々が受け継ぐ技。"
+        },
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Banaras Brocades and Sarees- Weaving Timeless Stories in Silk",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/banaras-brocades-and-sarees",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "バナーラスの錦織は、金属の糸を布に織り込んで模様を作る（三つの町の店を回ったときの「デリーは織って」の行）。"
+        },
+        {
+          "publisher": "Incredible India（インド政府観光省）",
+          "title": "Banaras Zardozi: Exquisite Uttar Pradesh Craft",
+          "url": "https://www.incredibleindia.gov.in/en/uttar-pradesh/varanasi/banaras-zardozi",
+          "checkedAt": "2026-11-26",
+          "claimType": "documented_fact",
+          "claimJa": "ザルドージーは、金や銀の糸で布に図柄を縫い付ける刺繍（同じ行の「アーグラは縫って」）。"
         }
       ]
     }

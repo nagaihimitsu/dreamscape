@@ -1,4 +1,4 @@
-import { battles, dates, episodes, getCityContent, getTour, landmarks } from "../content";
+import { battles, dates, episodes, getCityContent, getCityShop, getTour, landmarks } from "../content";
 import { landmarkParts } from "../content/tourism-schemas";
 import { decidesConfession } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -169,6 +169,7 @@ export function occasionMoment(occasion: Occasion): Moment | undefined {
     case "hotel": return { kind: "hotel", cityId: city, placeId: getCityContent(city).travelSettings.hotelPlaceId };
     case "epilogue": case "depart": case "arrive": return { kind: occasion.kind, cityId: city };
     case "tour": return occasion.tour ? tourMoment(occasion.tour) : undefined;
+    case "shop": return occasion.shop ? { kind: "shop", shopId: occasion.shop } : undefined;
   }
 }
 
@@ -550,7 +551,13 @@ export function validateOccasionState(state: GameState): void {
   // A tour step's occasion (tour stages 2b, 3): a leg's own, or the visit its event step opened; no other occasion names a tour.
   const tour = occasion.kind === "tour" ? runningTourStep(state) : occasion.kind === "visit" && occasion.eventId !== null ? runningTourStep(state, occasion.eventId) : undefined;
   if (occasion.tour?.id !== tour?.id || occasion.tour?.step !== tour?.step || (occasion.kind === "tour" && !tour)) fail();
-  if (occasion.kind === "hotel" || occasion.kind === "epilogue" || occasion.kind === "depart" || occasion.kind === "arrive" || occasion.kind === "tour") {
+  // A shop's occasion (2026-11-26): the current city's shop, free time's (no tour, no map event), no main part.
+  if ((occasion.kind === "shop") !== !!occasion.shop) fail();
+  if (occasion.kind === "shop") {
+    if (occasion.cityId !== state.currentCityId || getCityShop(state.currentCityId)?.id !== occasion.shop || occasion.eventId !== null ||
+        occasion.landmarkId !== null || state.travel.activeEvent || state.tour?.status === "running" || occasion.parts.length || occasion.trip ||
+        occasion.ticket || occasion.then) fail();
+  } else if (occasion.kind === "hotel" || occasion.kind === "epilogue" || occasion.kind === "depart" || occasion.kind === "arrive" || occasion.kind === "tour") {
     // A stage-4 moment of its own: its city (the current one), its fixed main parts, no map event nor landmark.
     const parts = { hotel: ["move", "sleep"], epilogue: ["epilogue"], depart: ["depart"], arrive: ["logo", "arrival"], tour: ["leg", "leg_move"] }[occasion.kind];
     if (occasion.cityId !== state.currentCityId || occasion.eventId !== null || occasion.landmarkId !== null || state.travel.activeEvent ||
@@ -596,7 +603,7 @@ export function openOccasion(state: GameState, entry: OccasionEntry, expectedRev
 // ── Stage 4's moments that open by themselves (2.3): the epilogue, the departure, the arrival, the hotel ───────────
 
 /** A moment's occasion with no map event (the hotel's, the epilogue's, the departure's, an arrival's, a tour leg's). */
-const momentOccasion = (kind: "hotel" | "epilogue" | "depart" | "arrive" | "tour", cityId: string, parts: OccasionPart[], trip?: OccasionTrip): Occasion =>
+const momentOccasion = (kind: "hotel" | "epilogue" | "depart" | "arrive" | "tour" | "shop", cityId: string, parts: OccasionPart[], trip?: OccasionTrip): Occasion =>
   ({ kind, cityId, eventId: null, landmarkId: null, parts, ran: [], at: null, started: [], ...(trip ? { trip } : {}) });
 
 /** Whether a main part's scene has a `# then:` (its head or a choice; an arrival's or an epilogue's runs only inside its moment). */
@@ -662,6 +669,26 @@ export function openTourLeg(state: GameState, tourId: string, legId: string, nex
   const cityId = getTour(tourId)?.cityId;
   if (!cityId || state.occasion || (!momentHasScenes(moment) && !narrationAt(moment))) return undefined;
   return advanceOccasion({ ...state, occasion: { ...momentOccasion("tour", cityId, ["leg", "leg_move"]), tour: { id: tourId, step: legId } } }, nextRoll);
+}
+
+/** The shop's scenes that can run now, in order (2026-11-26: free time's 「店に入る」 shows while one does). */
+export function shopScenesNow(state: GameState): string[] {
+  const shop = getCityShop(state.currentCityId);
+  if (!shop || sceneRunning(state) || state.occasion || state.tour?.status === "running" || state.travel.activeEvent) return [];
+  const schedule = momentSchedule({ kind: "shop", shopId: shop.id });
+  return [...schedule.before, ...schedule.after].filter((sceneId) => momentStepEligible(state, sceneId));
+}
+
+/**
+ * Go into the city's shop from free time (2026-11-26): its `# at: shop <shop>` scenes run in priority order (no main part, no game
+ * time passes), and free time comes back after the last. Unchanged when none can run now.
+ */
+export function enterShop(state: GameState, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
+  const shop = getCityShop(state.currentCityId);
+  if (state.revision !== expectedRevision || !shop || !shopScenesNow(state).length) return state;
+  const opened = advanceOccasion({ ...state, revision: state.revision + 1,
+    occasion: { ...momentOccasion("shop", state.currentCityId, []), shop: shop.id } }, nextRoll);
+  return sceneRunning(opened) ? opened : state;
 }
 
 registerMomentOpeners({ depart: (state) => openDeparture(state), epilogue: (state) => openEpilogue(state, false) });

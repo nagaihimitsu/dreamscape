@@ -27,6 +27,8 @@ export type FreeTimeHubProps = {
   /** The shop's 「買う」 and 「着てみる」 (ShopCard; 2026-11-20): the outfit bought or worn, true when it happened. */
   onBuyOutfit: (outfitId: string) => boolean;
   onWearOutfit: (outfitId: string) => boolean;
+  /** A talking shop's 「店に入る」 (ShopCard; 2026-11-26): its scenes open, true when they did. */
+  onEnterShop: () => boolean;
   nextCityName?: string;
   onDepart: () => void;
   /** The cards free time's row has shown during this play, per city (GameApp's memory): a card it has not is dealt in. */

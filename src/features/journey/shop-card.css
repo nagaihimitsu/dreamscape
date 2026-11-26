@@ -35,3 +35,7 @@
 }
 .shop-outfit-price { margin-left: auto; font-size: var(--ds-text-note); font-weight: 500; font-variant-numeric: tabular-nums; }
 .shop-outfit-state { margin: 4px 0 0; color: var(--ds-here); font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-snug); }
+/* A talking shop (2026-11-26): 「店に入る」 under her words, and what the shop first asks for each outfit not owned (the price is
+   agreed inside). */
+.shop-card .shop-enter { width: 100%; min-height: 48px; margin: 6px 0 10px; font-size: var(--ds-text-body); font-weight: 600; }
+.shop-outfit-asking { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-variant-numeric: tabular-nums; line-height: var(--ds-leading-snug); }

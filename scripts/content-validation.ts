@@ -78,6 +78,7 @@ import { isTourOnlyPlace, travelCatalogSchema, travelSettingsSchema } from "../s
 import { validateTravelContent } from "./travel-validation";
 import { tourSchema } from "../src/content/tour-schemas";
 import { shopCatalogSchema } from "../src/content/shop";
+import { shopSceneErrors } from "./shop-scenes";
 import { withFaceFrames } from "./face-frames";
 import { parseTourFiles, validateTours } from "./tour-validation";
 import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
@@ -867,7 +868,7 @@ export function validateContent(sources: ContentSources,
     const read = withContext(storyLabel(file.storyId), () => placeScenes({
       file, compiled: stories[file.storyId], apCap: balance.apCap, mains, landmarkCity, placeCity,
       dateCity: (dateId) => dates.find((date) => date.id === dateId)?.chapterId, cityExists: (cityId) => cities.some((city) => city.id === cityId),
-      tourStep, onWarning: sceneWarn,
+      tourStep, shopCity: (shopId) => shopCatalog.shops.find((shop) => shop.id === shopId)?.cityId, onWarning: sceneWarn,
     }));
     if (!read.length) throw new Error(`A place file without scenes: ${storyLabel(file.storyId)} (give a knot the head tag # scene:)`);
     placeEntries.push(...read.map((item) => item.entry));
@@ -875,6 +876,12 @@ export function validateContent(sources: ContentSources,
   // A tour's steps across the files (tour stages 2b, 3): one narration and one in-car encounter per leg, and what that encounter takes.
   const tourProblems = tourMomentErrors(placeEntries);
   if (tourProblems.length) throw new Error(tourProblems.join("\n"));
+  // A shop's scenes and the outfits scenes give (2026-11-26; shop-scenes.ts).
+  const shopProblems = shopSceneErrors(placeEntries, {
+    shops: shopCatalog.shops, outfits: shopCatalog.outfits.map((outfit) => outfit.id),
+    journeyOf: (cityId) => journeyCatalog.journeys.find((item) => item.cities.some((city) => city.id === cityId))?.id,
+  });
+  if (shopProblems.length) throw new Error(shopProblems.join("\n"));
   // The moment quizzes (時点のクイズ, 2026-11-18; 4.1, 4.2): reasoning only, on no map, a head # on_done: that only gives; their notes.
   const momentQuizContext: MomentQuizContext = {
     battle: (battleId) => {
@@ -1607,6 +1614,7 @@ export function validateContent(sources: ContentSources,
       const heardIn = [...new Set([...taggedScenes, ...catalogEntries].filter((scene) => sceneGivenClues([scene]).has(clue.id)).map((scene) => scene.cityId))];
       return { id: clue.id, landmarkId: clue.landmarkId, ...(heardIn.length ? { heardIn } : {}) };
     }),
+    tours: tourFiles.map(({ tour }) => tour), outfits: shopCatalog.outfits.map((outfit) => outfit.id),
     returningScenes: new Set(placeEntries.filter((scene) => scene.at.some((moment) => !("visit" in moment) &&
       (!("place" in moment) || datesAtPlace(moment.place).length > 0 || finalesAtPlace(moment.place).length > 0))).map((scene) => scene.id)),
   };

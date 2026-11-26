@@ -55,14 +55,16 @@ describe("India city travel data", () => {
     expect(ledgerOf("agra").decisions.filter((decision) => decision.fromPlaceId === fs || decision.toPlaceId === fs)).toEqual([]);
     expect(Object.keys(ledgerOf("agra").sourceRefs)).not.toContain("fatehpur_provisional_model");
     expect(inspectJourneyTransit(process.cwd(), "golden_triangle").cities.find((city) => city.cityId === "agra")!.unsupportedRoutes).toEqual([]);
-    // Its main episode is the event step of the tour, sold at the inn's front desk and on a booking website, both open from the start.
+    // Its main episode is the event step of the tour, sold at the inn's front desk (with a guide) and on a booking website (a shared
+    // car), both open from the start, and by Vinod himself once he was met (2026-11-26).
     const tour = getTour("gt_agra_tour_fatehpur_sikri")!;
     expect(tour.cityId).toBe("agra");
     expect(tour.steps.map((step) => step.kind === "event" ? step.eventId : step.toPlaceId))
       .toEqual([fs, "gt_agra_main_fatehpur_sikri", travelSettings.hotelPlaceId]);
     expect(tour.offers.map(({ id, channel, placeIds, when }) => ({ id, channel, placeIds, when })))
       .toEqual([{ id: "hotel_desk", channel: "desk", placeIds: [travelSettings.hotelPlaceId], when: undefined },
-        { id: "web", channel: "web", placeIds: undefined, when: undefined }]);
+        { id: "web", channel: "web", placeIds: undefined, when: undefined },
+        { id: "vinod_direct", channel: "introduced", placeIds: undefined, when: { encounterSeen: "gt_agra_hotel_vinod" } }]);
   });
 
   it("lodges the party in Taj Ganj near the Taj Mahal South Gate, a walk from the Taj Mahal and a ride from the fort", () => {

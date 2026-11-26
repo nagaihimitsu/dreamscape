@@ -25,13 +25,14 @@ const content: ProgressionContent = {
 };
 
 describe("Golden Triangle budget", () => {
-  it("covers every city's required main parts, Fatehpur Sikri at its tour's front-desk price", () => {
+  it("covers every city's required main parts, Fatehpur Sikri at its tour's shared-car price", () => {
     const spend = Object.fromEntries(journey.cities.map((city) => [city.id, requiredCitySpend(content, city.id)]));
     expect(spend.agra.eventIds).toContain("gt_agra_main_fatehpur_sikri");
-    // The tour's cheapest offer without a condition is the inn's desk (₹3,200 for two, the ₹1,220 admission included).
-    const desk = tours.find((tour) => tour.id === "gt_agra_tour_fatehpur_sikri")!.offers.find((offer) => offer.id === "hotel_desk")!;
+    // The tour's cheapest offer without a condition is the booking website's shared car (₹2,400 for two, the admission included;
+    // 2026-11-26: the inn's desk adds a guide, Vinod's own car needs meeting him first).
+    const shared = tours.find((tour) => tour.id === "gt_agra_tour_fatehpur_sikri")!.offers.find((offer) => offer.id === "web")!;
     const withoutTour = requiredCitySpend({ ...content, tours: [] }, "agra").money;
-    expect(spend.agra.money - withoutTour).toBe(desk.price);
+    expect(spend.agra.money - withoutTour).toBe(shared.price);
     // The battles' # on_done: payments are counted (Jama Masjid ₹300, Amber Fort ₹900 and ₹300).
     expect(content.mainPayments).toMatchObject({ gt_delhi_main_jama_masjid: 300, gt_jaipur_main_amber_fort: 1200 });
     const total = Object.values(spend).reduce((sum, city) => sum + city.money, 0);

@@ -24,7 +24,7 @@ import { buyOutfit, wearOutfit, wornCostume } from "../domain/outfits";
 import { WornCostumeContext } from "../components/worn-costume";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture, isJourneyComplete } from "../domain/city-travel";
-import { closeRomanceEnding, openOccasion } from "../domain/occasion";
+import { closeRomanceEnding, enterShop, openOccasion } from "../domain/occasion";
 import { isMomentQuiz } from "../domain/moments";
 import { resultExitLabel, screenFor } from "../domain/screen";
 import {
@@ -1437,6 +1437,7 @@ export function GameApp({
             onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
             onBuyOutfit={(outfitId) => commit((state) => buyOutfit(state, outfitId, game.revision))}
             onWearOutfit={(outfitId) => wear(outfitId)}
+            onEnterShop={() => commit((state) => enterShop(state, game.revision, nextRomanceRoll))}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}

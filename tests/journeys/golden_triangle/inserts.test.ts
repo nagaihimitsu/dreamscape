@@ -149,7 +149,9 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     // The scenes that state a fact of the place list their sources (B4): https pages, with the date they were checked.
     // (The Fatehpur Sikri tour's scenes, places/gt_agra_tour_fatehpur_sikri, list theirs in the same file.)
     const catalog = JSON.parse(readFileSync(`${GT}/scenes/catalog.json`, "utf8")) as { scenes: { id: string; sources: { url: string; checkedAt: string; claimType: string }[] }[] };
-    const listed = catalog.scenes.filter((scene) => !scene.id.startsWith("gt_agra_tour_"));
+    // (Only the inserts' own entries: the tour's, the shops' and the other place files' scenes list theirs there too.)
+    const ownIds = new Set(own.map((scene) => scene.id));
+    const listed = catalog.scenes.filter((scene) => ownIds.has(scene.id));
     // (The station's reasoning quiz lists its sources in its quiz file and clue cards, not here.)
     expect(listed.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.kind !== "battle" && scene.sources !== "none").map((scene) => scene.id).sort());
     for (const source of listed.flatMap((scene) => scene.sources)) {

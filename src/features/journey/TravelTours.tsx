@@ -12,7 +12,7 @@ import { FitText } from "../../components/FitText";
 
 /**
  * Free time's tours (tour stage 2a), a place-action line like the rentals: 「ツアーを見る」 opens the city's tours (each card: name,
- * what it includes, the itinerary, tomorrow 9:00, the offers here with their seller and price for the party, the ones sold
+ * what it includes, the itinerary, tomorrow 9:00, the offers here with their seller, price for the party and what each adds, the ones sold
  * elsewhere, any reason an offer cannot be taken), and booking asks once more in a dialog. Once booked, the line names tomorrow's
  * tour and offers its cancel (confirmed in a dialog: the price comes back, the booking is gone).
  */
@@ -100,9 +100,10 @@ export function TourBooking({ game, onBook, onClose }: {
               <span><span className="travel-tour-seller">{tourSellerBadge(choice.offer)}</span>で予約する</span>
               <span className="travel-route-cost">{money(choice.offer.price)}{forTwo}</span>
             </button>
+            {choice.offer.summaryJa && <p className="travel-tour-offer-note">{choice.offer.summaryJa}</p>}
             {!choice.available && <p className="fine-print">{choice.reason}</p>}
           </div>)}</div>
-          {elsewhere.map((offer) => <p key={offer.id} className="fine-print">{offer.sellerJa}では{money(offer.price)}{forTwo}で予約できます。</p>)}
+          {elsewhere.map((offer) => <p key={offer.id} className="fine-print">{offer.sellerJa}では{money(offer.price)}{forTwo}で予約できます。{offer.summaryJa ?? ""}</p>)}
         </section>;
       })}
     </Modal>

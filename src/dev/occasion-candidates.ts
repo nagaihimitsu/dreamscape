@@ -75,11 +75,11 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
     const option = sceneOption(scene, choice.optionId);
     return { text: choice.text, parts: (option?.requires ?? []).flatMap((condition) => partsOf(state, condition)).filter((part) => !part.value) };
   }) : [];
-  const kindNames = { date: "デート", battle: "クイズ", hotel: "宿", epilogue: "エピローグ", depart: "都市の出発", arrive: "到着", tour: "ツアーの区間" } as const;
+  const kindNames = { date: "デート", battle: "クイズ", hotel: "宿", epilogue: "エピローグ", depart: "都市の出発", arrive: "到着", tour: "ツアーの区間", shop: "お店" } as const;
   const tourStep = occasion.tour ? `${occasion.tour.id} ${occasion.tour.step}` : undefined;
   const title = (occasion.trip ? `移動（${occasion.trip.modeId}：${occasion.trip.from} → ${occasion.trip.to}）→ ` : "") + (occasion.ticket ? "窓口 → " : "") +
     (occasion.kind === "visit" ? (occasion.landmarkId === null ? "街歩き（観光地なし）" : `観光地：${landmark?.nameJa ?? occasion.landmarkId}${occasion.eventId ? "" : "（本筋なし）"}` +
       (tourStep ? `（ツアー：${tourStep}）` : ""))
-      : `${kindNames[occasion.kind]}：${tourStep ?? occasion.eventId ?? occasion.cityId}`);
+      : `${kindNames[occasion.kind]}：${tourStep ?? occasion.shop ?? occasion.eventId ?? occasion.cityId}`);
   return { title, rows: [...rows, ...epilogueNote], hiddenChoices, mapConditions };
 }

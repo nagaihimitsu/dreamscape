@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// 宿の場所のファイル：到着とエピローグ（新しい書き方への形の移し替え。文は今のまま）
+// 宿の場所のファイル：到着とエピローグ（新しい書き方への形の移し替え。文は今のまま）と、宿で休む前のヴィノード（ツアーの紹介。2026-11-26）
 
 // 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 === gt_agra_arrival ===
@@ -66,6 +66,91 @@ INCLUDE modules.ink
 # voice: gt_agra_arrival_006
 # photo: gt_album_a005 # photo_caption: 屋根の向こうにのぞく白いドーム
 あ……見えた。あれ、タージ・マハルの屋根だよね。写真で百回は見たのに、指先がそわそわする。……よし。誤解は、ちゃんと解く。その前に、どこから行こうか
+-> END
+
+// 宿で休む前（-1）：路地の入口の大通りで、駅の客を待つ運転手のヴィノードに会う。
+// 夜だけ。ファテープル・シークリーをまだ見ておらず、ツアーを宿のフロントや予約サイトで買っていないとき（一度きり）。
+// この場面を見ると、ファテープル・シークリー日帰りツアー（tours/gt_agra_tour_fatehpur_sikri.json）の紹介の販売 vinod_direct が出る（when: encounterSeen）。
+// ツアーの朝は、cond("seen gt_agra_hotel_vinod") で顔見知りとして迎える（places/gt_agra_tour_fatehpur_sikri.ink）。ここで母のことは言わない（ツアーの車の中で初めて聞く）。金額と時刻は書かない。
+=== gt_agra_hotel_vinod ===
+# scene: talk
+# at: hotel agra_hotel_hub
+# priority: -1
+# when: time night
+# when: not episode gt_agra_main_fatehpur_sikri
+# when: not tour gt_agra_tour_fatehpur_sikri by hotel_desk
+# when: not tour gt_agra_tour_fatehpur_sikri by web
+# person: gt_vinod
+# sources: none
+# background: gt_bg_agra_fatehabad_road
+# bgm: late_night_radio
+# ambience: gt_amb_street_traffic
+# speaker: narrator
+宿へ戻る路地の入口で、大通りの端に、白い車が一台寄せてあった。運転席の横に立った男が、紙を一枚、胸の前に掲げている。
+# speaker: narrator
+紙には、名前らしいものが書いてあった。らしい、としか言えない字だった。
+# speaker: heroine
+# reaction: heroine,surprised,question
+ラ……ラ、ジ……？　あっ、ごめんなさい。じっと読んじゃって
+# speaker: gt_vinod
+# cutin: name
+ラジーヴさんです。駅から来るお客さん。列車が遅れています。……ヴィノードです。運転をしています
+# speaker: gt_vinod
+その字は、わたしが書きました。読めなくて、当然です
+# speaker: heroine
+# reaction: heroine,teasing,music
+読めなかったの、わたしだけじゃなくて、よかった
+# speaker: gt_vinod
+明日の朝、このお客さんを、シークリーへ乗せていきます。ファテープル・シークリー。……お二人は、もう？
+# speaker: heroine
+まだです。宿の帳場で、ツアーの紙は見ました
+# speaker: gt_vinod
+宿で買うと、ガイドがつきます。予約のサイトで買うと、ほかのお客さんと乗り合い。運転は、どちらも、わたしです
+# speaker: heroine
+# reaction: heroine,surprised,exclamation
+え、どっちも？
+# speaker: gt_vinod
+車は、わたしのものです。会社が、あちこちで売ってくれる。……わたしに直接頼めば、間に入る分が要りません。ガイドはいない。乗り合いでもない。わたしと、お二人だけ
+# speaker: narrator
+彼女が、半歩だけ下がった。
+# speaker: heroine
+# emotion: worried
+ごめんなさい。デリーの駅で、道の上で親切な話をされたことがあって
+# speaker: gt_vinod
+それは、正しい。道の上の話は、疑ってください
+# speaker: gt_vinod
+宿の帳場で、ヴィノードの白い車か、と聞いてください。サミールさんが、知っています
+# speaker: narrator
+ちょうどそのとき、路地の奥から、サミールが顔を出した。
+# speaker: gt_samir
+あっ、ヴィノードさん！　今夜もお迎えですか。……そちらは、うちのハネムーンのお二人です
+# speaker: heroine
+# reaction: heroine,surprised_big,interrobang
+ち、違います！
+# speaker: narrator
+# leave: gt_samir
+サミールは手を振って、帳場へ戻っていった。確かめるまでもなく、確かめられてしまった。
+# speaker: gt_vinod
+……ハネムーン
+# speaker: heroine
+# reaction: heroine,exasperated,sigh
+違うんです。サミールさんの帳面の中だけ、です
+# speaker: gt_vinod
+分かりました。帳面の中だけ
+# speaker: narrator
+ヴィノードは、ダッシュボードから通行料の受け取りを一枚取り、裏に数字を並べた。名前の字よりは、ずっと読めた。
+# speaker: heroine
+# reaction: heroine,teasing,music
+数字は、読めます
+# speaker: gt_vinod
+数字だけは、ちゃんと書けます。運転手なので
+# speaker: gt_vinod
+どれで行くかは、お二人が決めることです。帳場でも、サイトでも、わたしでも
+# speaker: heroine
+# emotion: smile
+ちゃんと、選ばせてくれるんですね
+# speaker: narrator
+ヴィノードの携帯が鳴った。列車が着いたらしい。彼は読めない名前の紙を助手席に置き、駅の方へ車を出した。
 -> END
 
 // エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。

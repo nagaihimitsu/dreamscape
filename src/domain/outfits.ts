@@ -4,6 +4,7 @@ import { getJourneyForCity } from "../content/journeys";
 import { hasActiveScene, type GameState } from "./game-state-schema";
 import { meetTerms } from "./glossary";
 import { usableMoney } from "./reservations";
+import { momentHasScenes } from "./moments";
 
 // The heroine's outfits (2026-11-20 user decision): a city's shop (shop/catalog.json) sells outfits in free time; one bought
 // is the party's for the rest of the journey (the save's `outfits`), and the header's 「服」 chooses what she wears (`outfit`;
@@ -35,22 +36,33 @@ export const canChangeOutfit = (state: GameState): boolean => !hasActiveScene(st
 /** The shop of the city the party is in, or undefined. */
 export const currentShop = (state: Pick<GameState, "currentCityId">): Shop | undefined => getCityShop(state.currentCityId);
 
+/**
+ * Whether the shop is a talking one (2026-11-26): scenes run at its moment (`# at: shop <shop>`), so its outfits are bought in
+ * them (a choice's `# outfit:` and `# money:`, the price agreed there) after 「店に入る」, never by free time's 「買う」. The
+ * catalog's price is then what the shop first asks (言い値).
+ */
+export const shopTalks = (shopId: string): boolean => momentHasScenes({ kind: "shop", shopId });
+
 /** An outfit of the shop here: whether it is bought already, and whether (or why not) it can be bought now. */
 export type ShopOutfitChoice = { outfit: Outfit; owned: boolean; available: boolean; reason: string };
 
 /**
  * The outfits of the shop here, in its order: one bought is owned (never sold twice); one not bought can be bought in free
  * time while the money that can be spent now (the fare home and the payments kept back left aside: usableMoney) covers it.
+ * A talking shop's (shopTalks) is not: it is bought in the shop's scenes.
  */
 export function shopOutfits(state: GameState): ShopOutfitChoice[] {
   const shop = currentShop(state);
   if (!shop) return [];
   const owned = ownedOutfitIds(state);
   const scene = hasActiveScene(state);
+  const talks = shopTalks(shop.id);
   return shop.outfitIds.flatMap((id): ShopOutfitChoice[] => {
     const outfit = getOutfit(id);
     if (!outfit) return [];
     if (owned.includes(id)) return [{ outfit, owned: true, available: false, reason: "" }];
+    // A talking shop's outfit is bought in its scenes (the price agreed there), not here.
+    if (talks) return [{ outfit, owned: false, available: false, reason: "" }];
     const reason = scene ? "今は買えません。"
       : state.travelBudget < outfit.price ? "旅行予算が足りません。"
       : usableMoney(state) < outfit.price ? `帰りの交通費（${formatMoneyForCity(state.currentCityId, state.travel.returnReserve)}）を確保しているため、今は買えません。`

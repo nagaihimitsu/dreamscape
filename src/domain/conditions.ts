@@ -105,6 +105,9 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   condition: (state, name) => Object.hasOwn(storyState.conditions, name) && meets(state, storyState.conditions[name]),
   // A clue in 手がかり帳: found in an observation or heard in a scene (# clue:, # on_done: clue; 2026-11-18).
   clue: (state, id) => state.discoveredClueIds.includes(id),
+  // Booked or running through that offer (2026-11-26): the record keeps the offer until the tour ends.
+  tourOffer: (state, { tour, offer }) => state.tour?.tourId === tour && state.tour.offerId === offer,
+  outfit: (state, id) => (state.outfits ?? []).includes(id),
 };
 
 function meetsLeaf(state: Readonly<GameState>, leaf: Leaf): boolean {

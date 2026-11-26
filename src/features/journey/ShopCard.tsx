@@ -6,7 +6,8 @@ import { Modal, ModalAnswers, ModalTitle } from "../../components/Modal";
 import { characterImage } from "../../content/character-assets";
 import { findCharacter } from "../../components/character-catalog";
 import type { GameState } from "../../domain/game";
-import { currentShop, shopOutfits, type ShopOutfitChoice } from "../../domain/outfits";
+import { currentShop, shopOutfits, shopTalks, type ShopOutfitChoice } from "../../domain/outfits";
+import { shopScenesNow } from "../../domain/occasion";
 import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
 import "./shop-card.css";
@@ -24,11 +25,14 @@ function outfitPicture(costume: string): string | null {
  * with her small standing picture in it, its description and price. 「買う」 asks once more in a dialog (the budget after
  * it), then pays once (outfits.ts buyOutfit); an outfit bought offers 「着てみる」 (or says she wears it). Bought outfits
  * stay the party's for the rest of the journey: the header's 「服」 changes between them and 普段の服.
+ * A talking shop (2026-11-26: scenes at `# at: shop <shop>`, outfits.ts shopTalks) has no 「買う」: its 「店に入る」 opens its
+ * scenes, where the price is agreed and the outfit is got, and each outfit not owned shows what the shop first asks (言い値).
  */
-export function ShopCard({ game, onBuy, onWear, heading = true }: {
+export function ShopCard({ game, onBuy, onWear, onEnter, heading = true }: {
   game: GameState;
   onBuy: (outfitId: string) => boolean;
   onWear: (outfitId: string) => boolean;
+  onEnter: () => boolean;
   heading?: boolean;
 }) {
   const id = useId();
@@ -39,6 +43,8 @@ export function ShopCard({ game, onBuy, onWear, heading = true }: {
   const cityId = game.currentCityId;
   const money = (amount: number) => formatMoneyForCity(cityId, amount);
   const choices = shopOutfits(game);
+  const talks = shopTalks(shop.id);
+  const canEnter = talks && shopScenesNow(game).length > 0;
   const boughtOutfit = choices.find((choice) => choice.outfit.id === bought && choice.owned)?.outfit;
   // Her words about what was just bought, else her words about the shop (none: no note).
   const line = boughtOutfit ? boughtOutfit.boughtLineJa : shop.heroineLineJa;
@@ -48,6 +54,7 @@ export function ShopCard({ game, onBuy, onWear, heading = true }: {
     {/* A new note when something is bought, so it comes in again (place-card-heroine). */}
     {line && <HeroineNote key={boughtOutfit?.id ?? "shop"} className="place-card-heroine" label={game.heroineName} hideLabel
       text={withNames(line, game)} emotion={boughtOutfit ? "happy" : "smile"} cityId={cityId} testId="shop-heroine-line" />}
+    {canEnter && <button type="button" className="primary shop-enter" data-testid="shop-enter" onClick={() => onEnter()}>店に入る</button>}
     <ul className="shop-outfits" aria-label="売っている服">
       {choices.map((choice) => {
         const { outfit } = choice;
@@ -64,7 +71,9 @@ export function ShopCard({ game, onBuy, onWear, heading = true }: {
               ? worn
                 ? <p className="shop-outfit-state" data-testid="shop-outfit-worn">着ています</p>
                 : <button type="button" className="secondary shop-outfit-action" data-testid="shop-outfit-wear" onClick={() => onWear(outfit.id)}>着てみる</button>
-              : <button type="button" className="primary shop-outfit-action" data-testid="shop-outfit-buy" disabled={!choice.available}
+              : talks
+                ? <p className="shop-outfit-asking" data-testid="shop-outfit-asking">店の言い値 {money(outfit.price)}</p>
+                : <button type="button" className="primary shop-outfit-action" data-testid="shop-outfit-buy" disabled={!choice.available}
                 onClick={() => setConfirm(choice)}>
                 <span>買う</span><span className="shop-outfit-price">{money(outfit.price)}</span>
               </button>}

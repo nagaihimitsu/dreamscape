@@ -18,7 +18,7 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 // Light module (no content loading): unit tests use it directly.
 
 export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources", "hint"] as const;
-export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "clue", "money", "ap", "then", "later", "withhold"] as const;
+export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "clue", "outfit", "money", "ap", "then", "later", "withhold"] as const;
 /**
  * Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place
  * file; a tour's file, `places/<tourId>`, holds its legs' narrations, `tour_leg`).
@@ -298,6 +298,8 @@ export function choiceOption(choice: PlaceChoice, apCap: number, onWarning?: (me
       case "set": option.set = [...(option.set ?? []), ident(tag.value, "# set:")]; break;
       // A clue heard in conversation (2026-11-18): recorded in 手がかり帳 when the choice is chosen.
       case "clue": option.clues = [...(option.clues ?? []), ident(tag.value, "# clue:")]; break;
+      // An outfit got with the choice (2026-11-26): bought with its # money:, or given.
+      case "outfit": if (option.outfit) throw new Error(`One # outfit: per choice ${where}`); option.outfit = ident(tag.value, "# outfit:"); break;
       case "memory": option.memory = [...(option.memory ?? []), ident(tag.value, "# memory:")]; break;
       case "profile": if (option.profile) throw new Error(`One # profile: per choice ${where}`); option.profile = ident(tag.value, "# profile:"); break;
       case "effect": if (option.effect) throw new Error(`One # effect: per choice ${where}`); option.effect = ident(tag.value, "# effect:"); break;
@@ -367,6 +369,7 @@ const AT_FORMS: { pattern: RegExp; read: (match: RegExpExecArray) => SceneAt }[]
   { pattern: /^hotel(?:\s+([a-z][a-z0-9_]*))?$/u, read: (match) => ({ hotel: match[1] ?? "any" }) },
   { pattern: /^ticket\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ ticket: match[1] }) },
   { pattern: /^tour\s+([a-z][a-z0-9_]*)\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ tour: match[1], step: match[2] }) },
+  { pattern: /^shop\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ shop: match[1] }) },
   { pattern: /^trip\s+([a-z][a-z0-9_]*)((?:\s+(?:from|to)\s+[a-z][a-z0-9_]*)*)$/u, read: (match) => {
     const words = match[2].trim().split(/\s+/u).filter(Boolean);
     const at: SceneAt = { trip: match[1] };
@@ -386,7 +389,7 @@ export function parseAt(value: string): SceneAt {
     if (match) return form.read(match);
   }
   throw new Error(`# at: takes visit <landmark>, visit any, place <place>, date <date>, finale <city>, epilogue <city>, depart <city>, ` +
-    `arrive <city>, hotel [<place>], trip <mode> [from <place>] [to <place>], ticket <place> or tour <tour> <step>: ${value}`);
+    `arrive <city>, hotel [<place>], trip <mode> [from <place>] [to <place>], ticket <place>, tour <tour> <step> or shop <shop>: ${value}`);
 }
 
 /**
@@ -397,7 +400,7 @@ export function positionProblem(at: SceneAt, priority: number | `after ${AfterPa
   const kind = Object.keys(at)[0] as string;
   const afters: Record<string, readonly AfterPart[]> = {
     visit: ["guide", "observe", "battle"], place: ["guide", "observe", "battle", "date"], date: ["date"], finale: ["battle"], arrive: ["logo"],
-    epilogue: [], depart: [], hotel: [], trip: [], ticket: [], tour: ["leg"],
+    epilogue: [], depart: [], hotel: [], trip: [], ticket: [], tour: ["leg"], shop: [],
   };
   const name = Object.entries(at).map(([key, value]) => `${key} ${value}`).join(" ");
   if (typeof priority === "string") {

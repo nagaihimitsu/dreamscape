@@ -84,6 +84,11 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
     { ...base, seenEncounterIds: ["smp_mihon_bookmark_stall"] }],
   // 2026-11-18: a clue in 手がかり帳, however it was recorded (an observation, a scene's # clue: or # on_done: clue).
   clue: [{ clue: "k1" }, { ...base, discoveredClueIds: ["k1"] }, { ...base, discoveredClueIds: ["k2"] }],
+  // 2026-11-26: the tour booked (or running) through that offer; another offer of it is not.
+  tourOffer: [{ tourOffer: { tour: "t1", offer: "desk" } },
+    { ...base, tour: { status: "booked", tourId: "t1", offerId: "desk", pricePaid: 100, bookedDay: 1 } },
+    { ...base, tour: { status: "booked", tourId: "t1", offerId: "web", pricePaid: 100, bookedDay: 1 } }],
+  outfit: [{ outfit: "o1" }, { ...base, outfits: ["o1"] }, base],
 };
 
 describe("meets", () => {

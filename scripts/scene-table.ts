@@ -43,6 +43,8 @@ export type PlaceTableInput = {
   cityExists?: (cityId: string) => boolean;
   /** A tour's step (`# at: tour <tour> <step>`; tour stages 2b, 3): its tour's city and whether it is a leg or an event step. */
   tourStep?: (tourId: string, stepId: string) => { cityId: string; kind: "leg" | "event" } | undefined;
+  /** The city of a shop (shop/catalog.json; `# at: shop <shop>`, 2026-11-26). */
+  shopCity?: (shopId: string) => string | undefined;
   /** The file's position among all place files (scenes of one priority: written order, then file name). */
   onWarning?: (message: string) => void;
 };
@@ -168,6 +170,7 @@ function momentCity(input: PlaceTableInput, moment: SceneAt, label: string): str
     return cities[0] ?? null;
   }
   if ("tour" in moment) return known(input.tourStep?.(moment.tour, moment.step)?.cityId, "tour or tour step");
+  if ("shop" in moment) return known(input.shopCity?.(moment.shop), "shop (shop/catalog.json)");
   const city = "finale" in moment ? moment.finale : "epilogue" in moment ? moment.epilogue : "depart" in moment ? moment.depart : moment.arrive;
   return known(input.cityExists?.(city) ? city : undefined, "city");
 }
@@ -719,7 +722,7 @@ export function momentQuizWarnings(scenes: readonly SceneEntry[], context: Momen
 /**
  * The rules of a tour's steps across the place files (tour stages 2b, 3; `# at: tour <tour> <step>`): a leg has at most one narration
  * (`# scene: tour_leg`) and at most one scene after it (`# priority: after leg`: the in-car encounter, before the leg moves the
- * party). That scene runs once on the one day of the tour, whose price covers it: it neither spends nor gives money, gives no AP,
+ * party; 2026-11-26: more than one when each has a `# when:`, e.g. one for each offer the tour is bought through). That scene runs once on the one day of the tour, whose price covers it: it neither spends nor gives money, gives no AP,
  * offers no 「また今度」 and does not repeat. Returns the errors (content:build stops on them).
  */
 export function tourMomentErrors(scenes: readonly SceneEntry[]): string[] {
@@ -746,7 +749,10 @@ export function tourMomentErrors(scenes: readonly SceneEntry[]): string[] {
   }
   for (const [key, leg] of legs) {
     if (leg.narrations.length > 1) errors.push(`A tour leg has one narration: ${leg.narrations.join(", ")} are all # scene: tour_leg at # at: ${key}`);
-    if (leg.inCar.length > 1) errors.push(`A tour leg has at most one in-car encounter: ${leg.inCar.join(", ")} are all # priority: after leg at # at: ${key}`);
+    const unconditioned = leg.inCar.filter((id) => !scenes.find((scene) => scene.id === id)?.when);
+    if (leg.inCar.length > 1 && unconditioned.length)
+      errors.push(`A tour leg has at most one in-car encounter, or each has a # when: (e.g. # when: tour <tour> by <offer>): ` +
+        `${leg.inCar.join(", ")} are all # priority: after leg at # at: ${key}, and ${unconditioned.join(", ")} has no # when:`);
   }
   return errors;
 }

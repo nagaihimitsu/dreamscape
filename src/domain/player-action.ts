@@ -3,7 +3,7 @@ import { getBattleResultExits } from "./chapter";
 import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
 import { recordAlbumPhoto } from "./album";
 import { recordGlossaryTerms } from "./glossary";
-import { advanceOccasion, closeRomanceEnding, openOccasion } from "./occasion";
+import { advanceOccasion, closeRomanceEnding, enterShop, openOccasion, shopScenesNow } from "./occasion";
 import { screenFor } from "./screen";
 import { secureRomanceRoll } from "../random/romance-source";
 import {
@@ -59,6 +59,7 @@ export type PlayerAction =
   | { kind: "cancel_tour" }
   // The shop's card (ShopCard: 買う) and the header's 「服」 (HudOutfits: 普段の服 or an outfit bought; 2026-11-20).
   | { kind: "buy_outfit"; outfitId: string }
+  | { kind: "enter_shop" }
   | { kind: "wear_outfit"; outfitId: string | null }
   | { kind: "wait"; minutes: number }
   | { kind: "rest"; mode: TravelMode; viaPlaceId: string | null }
@@ -194,6 +195,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     ...getTourOffers(state).filter((choice) => choice.available).map((choice) => ({ kind: "book_tour" as const, tourId: choice.tour.id, offerId: choice.offer.id })),
     ...(state.tour?.status === "booked" ? [{ kind: "cancel_tour" as const }] : []),
     ...shopOutfits(state).filter((choice) => choice.available).map((choice) => ({ kind: "buy_outfit" as const, outfitId: choice.outfit.id })),
+    ...(shopScenesNow(state).length ? [{ kind: "enter_shop" as const }] : []),
     ...(canChangeOutfit(state) ? [null, ...ownedOutfitIds(state)].filter((id) => id !== (state.outfit ?? null))
       .map((outfitId) => ({ kind: "wear_outfit" as const, outfitId })) : []),
     ...getTravelSleepOptions(state).filter((option) => option.plan.ok)
@@ -260,6 +262,7 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "book_tour": return bookTour(state, action.tourId, action.offerId, revision);
       case "cancel_tour": return cancelTourBooking(state, revision);
       case "buy_outfit": return buyOutfit(state, action.outfitId, revision);
+      case "enter_shop": return enterShop(state, revision, nextRoll);
       case "wear_outfit": return wearOutfit(state, action.outfitId, revision);
       case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId, nextRoll);
       case "depart": return openOccasion(state, { kind: "depart" }, revision, nextRoll);

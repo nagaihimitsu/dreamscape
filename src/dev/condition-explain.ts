@@ -1,6 +1,6 @@
 // Debug only (the development server, or a production build with Debug mode on): what a condition (src/content/condition-schemas.ts) reads and why
 // it is false. The game itself gives no reason text for a condition (hidden values stay hidden).
-import { battles, dates, episodes, getCities, landmarks, tourismClues } from "../content";
+import { battles, dates, episodes, getCities, getOutfit, getTour, landmarks, tourismClues } from "../content";
 import { encounters } from "../content/encounters";
 import { transportLabel } from "../content/transport";
 import { isLeaf, leafKind, type Condition, type Leaf } from "../content/condition-schemas";
@@ -52,6 +52,12 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("confessionReady" in leaf) return "今告白すれば受け入れられる（関係の値と終えたデートの数を読む）";
   if ("normalDateAvailable" in leaf) return "この都市で、通常デートを今始められる（APも足りる）";
   if ("clue" in leaf) return `手がかり「${tourismClues.find((item) => item.id === leaf.clue)?.titleJa ?? leaf.clue}」を持っている`;
+  if ("tourOffer" in leaf) {
+    const tour = getTour(leaf.tourOffer.tour);
+    const seller = tour?.offers.find((offer) => offer.id === leaf.tourOffer.offer)?.sellerJa ?? leaf.tourOffer.offer;
+    return `「${tour?.titleJa ?? leaf.tourOffer.tour}」を${seller}で予約中か参加中`;
+  }
+  if ("outfit" in leaf) return `服「${getOutfit(leaf.outfit)?.nameJa ?? leaf.outfit}」を持っている`;
   return leafKind(leaf);
 }
 

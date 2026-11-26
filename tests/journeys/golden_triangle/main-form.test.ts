@@ -58,8 +58,8 @@ describe("Golden Triangle main story in place files (GT-3a)", () => {
     expect(state.inventory).toMatchObject({ gt_jaipur_salim_miniature: "held", gt_jaipur_sushma_lime_pickle: "held" });
     // The drafted prices: the attar (₹300) and the miniature with its print (₹900 + ₹300); the deposit of Delhi's
     // departure scene (GT-4, ₹500), which the builders' first choices pay; and Agra's Fatehpur Sikri tour, booked at the
-    // inn's front desk (₹3,200 for two, its admission included; tour stage 2a).
+    // inn's front desk (₹5,000 for two, its admission and the guide included; tour stage 2a, 2026-11-26).
     expect(state.completedTourIds).toEqual(["gt_agra_tour_fatehpur_sikri"]);
-    expect(state.travelBudget).toBe(start - 300 - 1200 - 500 - 3200);
+    expect(state.travelBudget).toBe(start - 300 - 1200 - 500 - 5000);
   }, 120_000);
 });
