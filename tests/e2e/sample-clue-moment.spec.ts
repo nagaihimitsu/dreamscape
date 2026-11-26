@@ -42,7 +42,7 @@ test("a clue heard at the bell says so under the header, and stays long enough t
   const stay = page.locator('[data-choice="B"]');
   await expect(stay).toBeVisible();
   await ops.settled(page);
-  await stay.click();
+  await ops.pressChoice(stay);
   await expect.poll(async () => (await readSave(page, JOURNEY)).discoveredClueIds).toContain(BELL);
   const word = page.getByTestId("clue-notice");
   await expect(word).toHaveText("手がかり帳に「夕方の鐘の合図」を記録しました。");

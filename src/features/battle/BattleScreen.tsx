@@ -732,7 +732,7 @@ export function BattleScreen({
                         type="button"
                         data-testid={`answer-${option.id}`}
                         className="option-id answer-submit"
-                        aria-label={`選択肢${option.id}「${japaneseOnly ? quizTranslation?.optionsJa[option.id] : option.textEn}」を答える`}
+                        aria-label={`「${japaneseOnly ? quizTranslation?.optionsJa[option.id] : option.textEn}」を答える`}
                         disabled={active.phase !== "question"}
                         onClick={() => {
                           if (onAnswer(option.id)) {
@@ -751,9 +751,7 @@ export function BattleScreen({
                             else if (beat === "stamp") setEffectAnswer(key);
                           }
                         }}
-                      >
-                        {option.id}
-                      </button>
+                      />
                       <div className="option-body">
                         {/* At the right of the option's text, before its 「訳を見る」 and away from its answer button. */}
                         {japaneseOnly ? <span lang="ja">{quizTranslation?.optionsJa[option.id]}</span> : <>

@@ -460,19 +460,18 @@
   .battle-screen .quiz-choice,
   .battle-screen .quiz-choice.chosen,
   .battle-screen .quiz-choice.correct {
-    grid-template-columns: 44px minmax(0, 1fr) 64px;
+    grid-template-columns: minmax(0, 1fr) 64px;
     align-items: center;
     gap: 4px 8px;
     min-height: 52px;
-    padding: 4px 8px;
+    padding: 4px 8px 4px 16px;
     font-size: 16px;
     line-height: 1.45;
   }
   .battle-screen .quiz-choice > .translation { display: contents; }
-  .battle-screen .quiz-choice .translation-actions { grid-column: 3; grid-row: 1; justify-content: flex-end; }
-  .battle-screen .quiz-choice .answer-submit,
+  .battle-screen .quiz-choice .translation-actions { grid-column: 2; grid-row: 1; justify-content: flex-end; }
   .battle-screen .quiz-choice .translation-toggle { min-height: 44px; }
-  .battle-screen .quiz-choice .translation > p { grid-column: 2 / -1; margin: 2px 0 8px; }
+  .battle-screen .quiz-choice .translation > p { grid-column: 1 / -1; margin: 2px 0 8px; }
 }
 
 /* Below 500px of portrait height the scene cannot fit a readable dialogue
@@ -537,7 +536,8 @@
   margin: 14px 0 6px;
 }
 .battle-screen .quiz-choice {
-  grid-template-columns: 44px minmax(0, 1fr) 64px;
+  position: relative;
+  grid-template-columns: minmax(0, 1fr) 64px;
   align-items: center;
   box-shadow: 0 1px 2px rgba(40, 30, 20, 0.12);
 }
@@ -757,13 +757,9 @@
   to { opacity: 1; transform: translateY(0); }
 }
 /* ためと決め (2026-11-13; BattleScreen CORRECT_HOLD_MS): while a right answer is held still, the card stays as it was
-   tapped (the letters keep their look, nothing else comes yet) and the chosen option sits pressed in a little; then its
+   tapped (nothing else comes yet) and the chosen option sits pressed in a little; then its
    gold pulse (a ring of light, no movement of its own) comes with quiz_correct and the feedback. Reduced motion: no hold,
    a shorter glow. */
-.battle-screen[data-answer-held] .quiz-choice .answer-submit:disabled {
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
-}
 .battle-screen[data-answer-held] .selected-panel .quiz-choice {
   scale: 0.985;
 }
@@ -895,10 +891,10 @@
   .battle-screen .quiz-choice,
   .battle-screen .quiz-choice.chosen,
   .battle-screen .quiz-choice.correct {
-    grid-template-columns: 44px minmax(0, 1fr) 64px;
+    grid-template-columns: minmax(0, 1fr) 64px;
     align-items: center;
     gap: 3px 6px;
-    padding: 4px 7px;
+    padding: 4px 7px 4px 14px;
     font-size: 15px;
     line-height: 1.4;
   }
@@ -906,12 +902,11 @@
     display: contents;
   }
   .battle-screen .quiz-choice .translation-actions {
-    grid-column: 3;
+    grid-column: 2;
     grid-row: 1;
     flex-direction: row;
     gap: 2px;
   }
-  .battle-screen .quiz-choice .answer-submit,
   .battle-screen .quiz-choice .translation-toggle {
     width: auto;
     min-height: 44px;
@@ -919,7 +914,7 @@
     font-size: 12px;
   }
   .battle-screen .quiz-choice .translation > p {
-    grid-column: 2 / -1;
+    grid-column: 1 / -1;
     margin: 2px 0 8px;
   }
   .battle-screen .vocabulary {
@@ -941,16 +936,23 @@
   .battle-screen .battle-roundbar { padding: 0; }
 }
 
-/* Letter badges are the answer controls; English and translation remain
-   separate reading targets, so their taps can never submit an answer. */
+/* The whole row is the answer's press (2026-11-26 user decision: no A·B·C letter; it was the press, and the words
+   only reading targets). The answer button lies under the row (stretched over it); the words and the translation let
+   a press through to it, except their own buttons (a word's meaning, its close, the speaker, 「訳を見る」). */
 .battle-screen .quiz-choice > .translation { display: contents; }
+.battle-screen .quiz-choice > .option-body { grid-column: 1; grid-row: 1; }
+.battle-screen .quiz-choice > :not(.answer-submit),
+.battle-screen .quiz-choice .translation > * { position: relative; }
+.battle-screen .quiz-choice > .option-body,
+.battle-screen .quiz-choice .translation > p { pointer-events: none; }
+.battle-screen .quiz-choice .option-body :is(button, .word-meaning) { pointer-events: auto; }
 .battle-screen .quiz-choice .translation-actions {
-  grid-column: 3;
+  grid-column: 2;
   grid-row: 1;
   justify-content: flex-end;
 }
 .battle-screen .quiz-choice .translation > p {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   margin: 2px 0 8px;
 }
 /* An option's speaker (ReadAloud.tsx, with 「英語を読み上げるボタンを出す」): at the right of its text, next to its
@@ -960,30 +962,23 @@
   float: right;
   margin: 0 0 2px 6px;
 }
-/* A·B·C: the answer is the primary action of its row (slate, gold hairline, §2.3). */
+/* The answer button: the row's whole face, clear (the row's own look shows it), its focus ring around the row. */
 .battle-screen .quiz-choice .answer-submit {
-  grid-column: 1;
-  grid-row: 1;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
+  position: absolute;
+  inset: 0;
+  grid-area: auto; /* not a cell's: an absolute child placed in a cell would cover that cell only */
+  width: 100%;
+  min-height: 0;
+  margin: 0;
   padding: 0;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: 12px;
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
-  font-family: Georgia, serif;
-  font-size: 18px;
-  line-height: 1;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
 }
-/* After the answer the letters only label the rows (§2.1 disabled colours, no edge). */
-.battle-screen .quiz-choice .answer-submit:disabled {
-  opacity: 1;
-  border-color: transparent;
-  background: var(--ds-disabled-bg);
-  color: var(--ds-disabled-ink);
-}
+.battle-screen .quiz-choice .answer-submit:disabled { opacity: 1; cursor: default; }
+.battle-screen .quiz-choice .answer-submit:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
+.battle-screen .quiz-choice:has(> .answer-submit:active:enabled) { translate: 0 1px; }
 
 /* Place reaction marks by the painted image, not the often much taller
    portrait box. Heroine art shares a 2:3 canvas; the fallback enemy is a

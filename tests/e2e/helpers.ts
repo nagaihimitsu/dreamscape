@@ -770,6 +770,13 @@ export const ops = {
    * edge of a scrolling area (the battle's reading area after a long explanation, whose length
    * depends on the fonts) has its middle outside that area, where a tap reaches something else.
    */
+  /**
+   * A choice's row pressed where its words are not (2026-11-26: a quiz's option and an encounter's reply are pressed
+   * anywhere on their row, but a word with a meaning is its own button): just inside the row's left edge.
+   */
+  pressChoice(locator: Locator) {
+    return locator.click({ position: { x: 6, y: 12 } });
+  },
   async centerOf(locator: Locator): Promise<{ x: number; y: number }> {
     await expect(locator).toBeVisible();
     await locator.scrollIntoViewIfNeeded();
@@ -968,7 +975,7 @@ async function act(page: Page, state: GameState, pick: Pick) {
   await ops.closeTermCards(page);
   const date = state.activeDate;
   const encounter = state.activeEncounter;
-  if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
+  if (state.activeBattle?.phase === "question") return ops.pressChoice(page.getByTestId(`answer-${pick(state)}`));
   // A line's # minigame: in any scene (docs/13 6.4) shows its start in place of the choices. Started, a tap on the play
   // after the start's double-tap guard ends it: with ≡メニュー's おまかせ on (a play-through test writes it in the presentation
   // settings' key) it skips to the tag's auto outcome; otherwise the game's field takes the tap (the cricket swings) and
@@ -989,7 +996,7 @@ async function act(page: Page, state: GameState, pick: Pick) {
     return page.getByTestId("battle-choice").first().click();
   if (encounter && !(await page.locator(nextButtons).filter({ visible: true }).count())) {
     const choose = page.locator(`[data-choice="${pick(state)}"]`);
-    if (await choose.count()) return choose.click();
+    if (await choose.count()) return ops.pressChoice(choose);
   }
   // The arrival logo finishes by itself and saves its completion.
   if (state.activeEpilogue?.kind === "arrival" && !state.activeEpilogue.logoComplete) return;

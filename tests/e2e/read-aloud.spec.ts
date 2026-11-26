@@ -96,7 +96,7 @@ test("a quiz's question is read aloud as it shows, stops at the answer, waits fo
 
   // The answer stops the reading (still going: the fake ends it only when cancelled).
   const before = await cancels();
-  await page.getByTestId(`answer-${first.right}`).click();
+  await ops.pressChoice(page.getByTestId(`answer-${first.right}`));
   await expect.poll(cancels, { message: "the answer stopped the reading" }).toBeGreaterThan(before);
   await expect.poll(async () => (await source(page))!.activeBattle?.phase).toBe("feedback");
 

@@ -43,6 +43,7 @@
 .encounter-choice-select {
   position: absolute;
   inset: 0;
+  grid-area: auto; /* not a cell's: an absolute child placed in a cell would cover that cell only */
   width: 100%;
   margin: 0;
   padding: 0;
