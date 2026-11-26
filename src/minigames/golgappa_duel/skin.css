@@ -3,58 +3,47 @@
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
   --golgappa-duel-puri-drawn-shadow: #2a1a0c;
-  --golgappa-duel-puri-drawn-shadow-06: rgba(0, 0, 0, 0.6);
   --golgappa-duel-pot-edge: #c4c8cc;
   --golgappa-duel-pot-ground: #9cc35f;
   --golgappa-duel-pot-ground-2: #5a8a33;
   --golgappa-duel-pot-shadow: #8d9297;
-  --golgappa-duel-pot-shadow-035: rgba(0, 0, 0, 0.35);
   --golgappa-duel-heap-ground: #b98b4e;
   --golgappa-duel-heap-ground-2: #8c6334;
   --golgappa-duel-heap-ground-3: #f3d18a;
   --golgappa-duel-heap-ground-4: #d79b45;
   --golgappa-duel-heap-ground-5: #a8702c;
   --golgappa-duel-counter-edge: #b88a55;
-  --golgappa-duel-counter-ground-018: rgba(60, 34, 14, 0.18);
   --golgappa-duel-counter-ground: #8a5a32;
   --golgappa-duel-counter-ground-2: #5f3b1f;
-  --golgappa-duel-her-webkitmaskimage: #000;
   --golgappa-duel-hand-ground: #a86f45;
   --golgappa-duel-hand-ground-2: #8a5634;
   --golgappa-duel-hand-ground-3: #9a6340;
-  --golgappa-duel-hand-shadow: #f6d27a;
   --golgappa-duel-bowl-drawn-ground: #3e5a24;
   --golgappa-duel-bowl-drawn-ground-2: #7d9a45;
   --golgappa-duel-bowl-drawn-ground-3: #4f6c2a;
-  --golgappa-duel-bowl-drawn-shadow-015: rgba(255, 255, 255, 0.15);
-  --golgappa-duel-bowl-drawn-shadow-04: rgba(0, 0, 0, 0.4);
   --golgappa-duel-puri-drawn-ground: #6f9c3c;
   --golgappa-duel-puri-drawn-ground-2: #3d2a14;
   --golgappa-duel-puri-drawn-ground-3: #f5d796;
   --golgappa-duel-puri-drawn-ground-4: #d89b45;
   --golgappa-duel-puri-drawn-ground-5: #a46a28;
-  --golgappa-duel-bite-shadow-07: rgba(0, 0, 0, 0.7);
   --golgappa-duel-bite-ink: #fff6d8;
   --golgappa-duel-bite-ink-2: #ffd76a;
   --golgappa-duel-clack-ink: #c9ccd2;
   --golgappa-duel-say-her-edge: #e2b54e;
   --golgappa-duel-feint-edge: #ffe0b8;
   --golgappa-duel-feint-ground: #a04826;
-  --golgappa-duel-feint-shadow-05: rgba(0, 0, 0, 0.5);
-  --golgappa-duel-gauge-ground-06: rgba(31, 36, 48, 0.6);
   --golgappa-duel-drop-edge: #b9d98a;
   --golgappa-duel-drop-edge-2: #e9f7cf;
   --golgappa-duel-drop-ground: #7fb240;
   --golgappa-duel-drop-ground-2: #c8743a;
-  --golgappa-duel-count-shadow-08: rgba(0, 0, 0, 0.8);
 }
 .mg-golgappa-duel { position: absolute; inset: 0; }
 .mg-golgappa-duel-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
 /* A stall picture (a photo has heaps of golgappa of its own) is a little darker, and the falling ones have a dark edge,
    so the eye follows the one that falls. */
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-backdrop.mg-photo { filter: saturate(0.78) contrast(0.9) brightness(0.7) blur(1.5px); }
-.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall .mg-golgappa-duel-puri-drawn { box-shadow: 0 0 0 2px var(--golgappa-duel-puri-drawn-shadow), 0 3px 6px var(--golgappa-duel-puri-drawn-shadow-06); }
-.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall > img { filter: drop-shadow(0 0 1.5px var(--golgappa-duel-puri-drawn-shadow)) drop-shadow(0 3px 4px var(--golgappa-duel-puri-drawn-shadow-06)); }
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall .mg-golgappa-duel-puri-drawn { box-shadow: 0 0 0 2px var(--golgappa-duel-puri-drawn-shadow), 0 3px 6px color-mix(in srgb, var(--ds-shade) 60%, transparent); }
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall > img { filter: drop-shadow(0 0 1.5px var(--golgappa-duel-puri-drawn-shadow)) drop-shadow(0 3px 4px color-mix(in srgb, var(--ds-shade) 60%, transparent)); }
 /* The vendor's side: a steel pot of green water on the left, a heap of fried shells on the right, the wooden counter. */
 .mg-golgappa-duel-pot {
   position: absolute;
@@ -65,7 +54,7 @@
   border: 4px solid var(--golgappa-duel-pot-edge);
   border-radius: 50%;
   background: radial-gradient(ellipse at 45% 40%, var(--golgappa-duel-pot-ground), var(--golgappa-duel-pot-ground-2) 70%);
-  box-shadow: 0 3px 0 var(--golgappa-duel-pot-shadow), 0 6px 10px var(--golgappa-duel-pot-shadow-035);
+  box-shadow: 0 3px 0 var(--golgappa-duel-pot-shadow), 0 6px 10px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
 .mg-golgappa-duel-heap {
   position: absolute;
@@ -95,7 +84,7 @@
   bottom: 0;
   border-top: 3px solid var(--golgappa-duel-counter-edge);
   background:
-    repeating-linear-gradient(90deg, var(--golgappa-duel-counter-ground-018) 0 2px, transparent 2px 46px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ds-paper-shade) 18%, transparent) 0 2px, transparent 2px 46px),
     linear-gradient(var(--golgappa-duel-counter-ground), var(--golgappa-duel-counter-ground-2));
 }
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-counter { display: none; }
@@ -118,8 +107,8 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   /* The cut at her waist fades into the stall (no hard line across the photo). */
-  -webkit-mask-image: linear-gradient(var(--golgappa-duel-her-webkitmaskimage) 80%, transparent);
-  mask-image: linear-gradient(var(--golgappa-duel-her-webkitmaskimage) 80%, transparent);
+  -webkit-mask-image: linear-gradient(var(--ds-shade) 80%, transparent);
+  mask-image: linear-gradient(var(--ds-shade) 80%, transparent);
 }
 /* (The standing picture is 2:3, nearly the box's shape: drawn twice the box's width from its top, head to waist show.) */
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-her:not([data-art]) img { width: 200%; max-width: none; height: auto; margin-left: -50%; }
@@ -139,7 +128,7 @@
   aspect-ratio: 34 / 46;
   border-radius: 40% 40% 45% 45% / 30% 30% 35% 35%;
   background: linear-gradient(var(--golgappa-duel-hand-ground), var(--golgappa-duel-hand-ground-2));
-  box-shadow: 0 3px 6px var(--golgappa-duel-pot-shadow-035);
+  box-shadow: 0 3px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: translateX(-50%);
   transition: left 160ms ease-out;
 }
@@ -170,7 +159,7 @@
    it only rises, with a gold edge. After it the hand wags a moment (it gave nothing). */
 .mg-golgappa-duel-hand[data-windup="up"] {
   translate: 0 -40%;
-  box-shadow: 0 0 0 3px var(--golgappa-duel-hand-shadow), 0 3px 6px var(--golgappa-duel-pot-shadow-035);
+  box-shadow: 0 0 0 3px var(--ds-game-gold), 0 3px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
 .minigame-layer:not([data-still]) .mg-golgappa-duel-hand[data-windup="up"] { animation: mg-golgappa-duel-windup 140ms ease-in-out infinite alternate; }
 @keyframes mg-golgappa-duel-windup { from { rotate: -9deg; } to { rotate: 9deg; } }
@@ -196,7 +185,7 @@
   background:
     radial-gradient(ellipse at 50% 18%, var(--golgappa-duel-bowl-drawn-ground) 0 34%, transparent 35%),
     linear-gradient(var(--golgappa-duel-bowl-drawn-ground-2), var(--golgappa-duel-bowl-drawn-ground-3));
-  box-shadow: inset 0 3px 0 var(--golgappa-duel-bowl-drawn-shadow-015), 0 4px 8px var(--golgappa-duel-bowl-drawn-shadow-04);
+  box-shadow: inset 0 3px 0 color-mix(in srgb, var(--ds-light) 15%, transparent), 0 4px 8px color-mix(in srgb, var(--ds-shade) 40%, transparent);
 }
 .mg-golgappa-duel-bowl-you[data-choked] { animation: mg-golgappa-duel-shake 380ms ease-in-out 2; }
 @keyframes mg-golgappa-duel-shake {
@@ -219,7 +208,7 @@
   background:
     radial-gradient(ellipse at 50% 30%, var(--golgappa-duel-puri-drawn-ground) 0 22%, var(--golgappa-duel-puri-drawn-ground-2) 23% 28%, transparent 29%),
     radial-gradient(circle at 40% 45%, var(--golgappa-duel-puri-drawn-ground-3), var(--golgappa-duel-puri-drawn-ground-4) 62%, var(--golgappa-duel-puri-drawn-ground-5));
-  box-shadow: 0 2px 3px var(--golgappa-duel-pot-shadow-035);
+  box-shadow: 0 2px 3px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
 /* What is said and heard: a bite (golden and bigger right on the landing), a clack at nothing, the onlookers' count, her
    「バス」 beside her face, the player's over their bowl, the cough. The words have a 3-px dark edge (readable on the photo). */
@@ -234,7 +223,7 @@
   font-weight: 700;
   -webkit-text-stroke: 3px var(--golgappa-duel-puri-drawn-shadow);
   paint-order: stroke fill;
-  text-shadow: 0 2px 4px var(--golgappa-duel-bite-shadow-07);
+  text-shadow: 0 2px 4px color-mix(in srgb, var(--ds-shade) 70%, transparent);
 }
 .mg-golgappa-duel-bite {
   color: var(--golgappa-duel-bite-ink);
@@ -298,14 +287,14 @@
   background: var(--golgappa-duel-feint-ground);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-subhead);
-  box-shadow: 0 2px 6px var(--golgappa-duel-feint-shadow-05);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 50%, transparent);
 }
 .mg-golgappa-duel-seen {
   color: var(--golgappa-duel-bite-ink-2);
   font-size: var(--ds-text-heading);
   -webkit-text-stroke: 3px var(--golgappa-duel-puri-drawn-shadow);
   paint-order: stroke fill;
-  text-shadow: 0 2px 4px var(--golgappa-duel-bite-shadow-07);
+  text-shadow: 0 2px 4px color-mix(in srgb, var(--ds-shade) 70%, transparent);
 }
 .mg-golgappa-duel-say-choke { font-style: italic; }
 /* The choke gauge beside the player's bowl: three drops of the sour water, hollow until a bite at nothing fills one. */
@@ -318,7 +307,7 @@
   align-items: center;
   padding: 4px 3px 2px;
   border-radius: var(--ds-radius-control);
-  background: var(--golgappa-duel-gauge-ground-06);
+  background: color-mix(in srgb, var(--ds-slate-900) 60%, transparent);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -348,13 +337,12 @@
   font-weight: 700;
   line-height: var(--ds-leading-display);
   text-align: center;
-  text-shadow: 0 1px 3px var(--golgappa-duel-count-shadow-08);
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 80%, transparent);
 }
 .mg-golgappa-duel-count small { font-size: var(--ds-text-mark); font-weight: 400; overflow-wrap: anywhere; }
 /* A short screen: smaller counts, so they stay under the bowls. */
 @media (max-height: 620px) {
   .mg-golgappa-duel-count { font-size: var(--ds-text-body); }
-  .mg-golgappa-duel-count small { font-size: var(--ds-text-mark); }
 }
 /* A short screen: the engine sends 「バス」 up into the field (its top left); here it goes to the top right instead, under
    where the host shows her face (her 10th, a laugh at a bitten feint), clear of the band's 「中断する」 and right of the

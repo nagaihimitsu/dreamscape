@@ -10,29 +10,20 @@
   --monkey-catch-wall-ground-3: #7e3826;
   --monkey-catch-coping-ground: #d88a66;
   --monkey-catch-coping-ground-2: #b45e40;
-  --monkey-catch-coping-shadow-035: rgba(40, 14, 6, 0.35);
   --monkey-catch-inlay-edge-08: rgba(250, 244, 232, 0.8);
   --monkey-catch-inlay-ground-072: rgba(250, 244, 232, 0.72);
   --monkey-catch-ring-edge: #f6cf6a;
-  --monkey-catch-ring-shadow-08: rgba(40, 24, 8, 0.8);
   --monkey-catch-ring-shadow-06: rgba(246, 207, 106, 0.6);
-  --monkey-catch-thing-shadow-095: rgba(255, 255, 255, 0.95);
-  --monkey-catch-thing-shadow-045: rgba(0, 0, 0, 0.45);
   --monkey-catch-bottle-edge: #1d2925;
-  --monkey-catch-bottle-ground-085: rgba(255, 255, 255, 0.85);
   --monkey-catch-bottle-ground: #e3f3ea;
   --monkey-catch-bottle-ground-2: #8fc6ad;
   --monkey-catch-bottle-ground-3: #b98a55;
   --monkey-catch-glasses-edge: #141416;
-  --monkey-catch-glasses-ground-06: rgba(255, 255, 255, 0.6);
   --monkey-catch-glasses-ground: #2c3138;
   --monkey-catch-ledge-ground: #efb48e;
   --monkey-catch-ledge-ground-2: #c0663f;
   --monkey-catch-ledge-ground-3: #8f4128;
   --monkey-catch-ledge-ground-4: #5e2716;
-  --monkey-catch-ledge-shadow-05: rgba(40, 14, 6, 0.5);
-  --monkey-catch-ledge-shadow-075: rgba(40, 14, 6, 0.75);
-  --monkey-catch-shell-figure-shadow-05: rgba(0, 0, 0, 0.5);
 }
 .mg-monkey-catch { position: absolute; inset: 0; }
 .mg-monkey-catch-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; }
@@ -55,7 +46,7 @@
   height: 12px;
   border-radius: var(--ds-radius-hair);
   background: linear-gradient(to bottom, var(--monkey-catch-coping-ground), var(--monkey-catch-coping-ground-2));
-  box-shadow: 0 3px 6px var(--monkey-catch-coping-shadow-035);
+  box-shadow: 0 3px 6px color-mix(in srgb, var(--ds-paper-shade) 35%, transparent);
 }
 .mg-monkey-catch-inlay {
   position: absolute;
@@ -107,7 +98,7 @@
   height: 66px;
   border: 3px solid var(--monkey-catch-ring-edge);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px var(--monkey-catch-ring-shadow-08), inset 0 0 0 2px var(--monkey-catch-ring-shadow-08), 0 0 10px var(--monkey-catch-ring-shadow-06);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ds-paper-shade) 80%, transparent), inset 0 0 0 2px color-mix(in srgb, var(--ds-paper-shade) 80%, transparent), 0 0 10px var(--monkey-catch-ring-shadow-06);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -145,7 +136,7 @@
   width: 52px;
   height: 50px;
   transform-origin: 50% 70%;
-  filter: drop-shadow(0 0 2px var(--monkey-catch-thing-shadow-095)) drop-shadow(0 2px 3px var(--monkey-catch-thing-shadow-045));
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--ds-light) 95%, transparent)) drop-shadow(0 2px 3px color-mix(in srgb, var(--ds-shade) 45%, transparent));
   pointer-events: none;
 }
 /* The small bottle: clear glass with a highlight, its neck and cork. */
@@ -156,7 +147,7 @@
   border: 2.5px solid var(--monkey-catch-bottle-edge);
   border-radius: var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control);
   background:
-    linear-gradient(100deg, var(--monkey-catch-bottle-ground-085) 0 18%, transparent 18% 100%),
+    linear-gradient(100deg, color-mix(in srgb, var(--ds-light) 85%, transparent) 0 18%, transparent 18% 100%),
     linear-gradient(to bottom, var(--monkey-catch-bottle-ground), var(--monkey-catch-bottle-ground-2));
 }
 .mg-monkey-catch-bottle::before {
@@ -178,7 +169,7 @@
   height: 17px;
   border: 2.5px solid var(--monkey-catch-glasses-edge);
   border-radius: var(--ds-radius-small) var(--ds-radius-small) var(--ds-radius-control) var(--ds-radius-control);
-  background: linear-gradient(135deg, var(--monkey-catch-glasses-ground-06) 0 22%, var(--monkey-catch-glasses-ground) 22% 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--ds-light) 60%, transparent) 0 22%, var(--monkey-catch-glasses-ground) 22% 100%);
 }
 .mg-monkey-catch-glasses::before {
   content: "";
@@ -205,9 +196,9 @@
   background:
     linear-gradient(to bottom, var(--monkey-catch-ledge-ground) 0 4px, var(--monkey-catch-ledge-ground-2) 4px 7px, transparent 7px),
     repeating-linear-gradient(to right, var(--monkey-catch-ledge-ground-3) 0 5px, var(--monkey-catch-ledge-ground-4) 5px 7px);
-  box-shadow: 0 5px 6px var(--monkey-catch-ledge-shadow-05), 0 0 0 1px var(--monkey-catch-ledge-shadow-075);
+  box-shadow: 0 5px 6px color-mix(in srgb, var(--ds-paper-shade) 50%, transparent), 0 0 0 1px color-mix(in srgb, var(--ds-paper-shade) 75%, transparent);
   transform: translateY(-50%);
   pointer-events: none;
 }
 .mg-monkey-catch-shell { position: absolute; z-index: 5; left: 58%; top: 25%; width: 34px; height: 22px; opacity: 0; pointer-events: none; }
-.mg-monkey-catch-shell-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px var(--monkey-catch-shell-figure-shadow-05)); }
+.mg-monkey-catch-shell-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--ds-shade) 50%, transparent)); }

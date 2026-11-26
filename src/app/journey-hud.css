@@ -215,7 +215,7 @@
   right: 8px;
   display: grid;
   gap: 4px;
-  width: 168px;
+  width: 180px; /* 「セーブ・ロード」 on one line beside its icon at 15 px */
   max-height: calc(100dvh - var(--hud-h, 96px) - 8px);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -302,7 +302,6 @@
   .hud-wallet .travel-budget { font-size: var(--ds-text-subhead); }
   .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-body); }
   .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-note); }
-  .hud-wallet .ap { font-size: var(--ds-text-note); }
 }
 @media (max-width: 359px) {
   .hud-place { font-size: var(--ds-text-note); }

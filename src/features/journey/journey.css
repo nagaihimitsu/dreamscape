@@ -115,7 +115,6 @@
 @media (max-width: 480px) {
   .journey-stage {
     padding: 10px 24px;
-    font-size: var(--ds-text-mark);
   }
   main > .pending-rewards {
     margin: 16px 24px;

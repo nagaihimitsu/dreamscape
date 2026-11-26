@@ -2,12 +2,9 @@
    him (his face and his words), the paper of his prices on the right. */
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --raju-haggle-drawn-map-shadow-035: rgba(0, 0, 0, 0.35);
   --raju-haggle-bubble-edge: #c8302a;
   --raju-haggle-paper-ground-028: rgba(120, 160, 200, 0.28);
   --raju-haggle-paper-ground: #f6f0e2;
-  --raju-haggle-paper-ground-07: rgba(255, 255, 255, 0.7);
-  --raju-haggle-stamp-ground-088: rgba(255, 250, 241, 0.88);
   --raju-haggle-stamp-ink: #b2241f;
 }
 .mg-raju-haggle { position: absolute; inset: 0; color: var(--ds-ink); container-type: size; }
@@ -16,7 +13,7 @@
 .mg-raju-haggle-flinch { display: block; width: 100%; height: 100%; }
 .mg-raju-haggle-flinch > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 .mg-raju-haggle-raju[data-figure="drawn"] .mg-raju-haggle-flinch { display: flex; align-items: center; justify-content: center; }
-.mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px var(--raju-haggle-drawn-map-shadow-035)); }
+.mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent)); }
 /* His look, big enough to read on a phone (round 3: how a stare lands is read from him, so each look has its own pose,
    and his bubble's face and words say it too): boasting, chin up and puffed out, bobbing; eyes wandering, he fidgets
    from side to side, leaning back; recovering after a landed stare, he shrinks back; the fake walk-away, he turns his
@@ -111,7 +108,7 @@
   background:
     repeating-linear-gradient(to bottom, transparent 0 25px, var(--raju-haggle-paper-ground-028) 25px 26px),
     var(--raju-haggle-paper-ground);
-  box-shadow: 0 4px 12px var(--raju-haggle-drawn-map-shadow-035);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: rotate(1.5deg);
 }
 .mg-raju-haggle-paper-title { margin: 0 0 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; text-align: center; }
@@ -136,7 +133,7 @@
 .mg-raju-haggle-paper li[data-state="passed"] { opacity: 0.55; }
 .mg-raju-haggle-paper li[data-state="passed"] .mg-raju-haggle-price { text-decoration: line-through 2px var(--raju-haggle-bubble-edge); }
 .mg-raju-haggle-paper li[data-state="coming"] { opacity: 0.45; font-size: var(--ds-text-subhead); }
-.mg-raju-haggle-paper li[data-state="now"] { border-color: var(--ds-ink); background: var(--raju-haggle-paper-ground-07); font-size: var(--ds-text-title); }
+.mg-raju-haggle-paper li[data-state="now"] { border-color: var(--ds-ink); background: color-mix(in srgb, var(--ds-light) 70%, transparent); font-size: var(--ds-text-title); }
 .mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: var(--ds-text-subhead); }
 /* Nothing he could sell for what the player has: the prices are the paper's words, smaller. */
 .mg-raju-haggle-paper[data-none] li[data-state] { font-size: var(--ds-text-body); }
@@ -149,7 +146,7 @@
   padding: 0 8px;
   border: 2px solid var(--raju-haggle-bubble-edge);
   border-radius: var(--ds-radius-field);
-  background: var(--raju-haggle-stamp-ground-088);
+  background: color-mix(in srgb, var(--ds-on-slate) 88%, transparent);
   color: var(--raju-haggle-stamp-ink);
   font-size: var(--ds-text-body);
   font-weight: 700;
@@ -163,7 +160,6 @@
 
 @media (max-height: 620px) {
   .mg-raju-haggle-bubble { top: 2%; }
-  .mg-raju-haggle-line { font-size: var(--ds-text-body); }
   .mg-raju-haggle-paper { top: 28%; }
   .mg-raju-haggle-paper li { min-height: 30px; font-size: var(--ds-text-subhead); }
   .mg-raju-haggle-paper li[data-state="now"] { font-size: var(--ds-text-heading); }
