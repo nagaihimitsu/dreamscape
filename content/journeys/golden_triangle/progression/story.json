@@ -2,6 +2,14 @@
   "schemaVersion": 1,
   "flags": [
     {
+      "id": "gt_delhi_govind_card",
+      "noteJa": "デリーの布の問屋で、青いサリーを言い値で買い、ゴーヴィンドからアーグラの刺繍の店（ラフィーク）への名刺をもらった（アーグラでは、問屋の値段で売ってもらえる）"
+    },
+    {
+      "id": "gt_agra_rafiq_low",
+      "noteJa": "アーグラの刺繍の店で、ラフィークに値段を任されて、札よりずっと安い値を付けた（二着目は札の値段でしか売らない）"
+    },
+    {
       "id": "gt_agra_rain_on_lawn",
       "noteJa": "アクバル廟で、猿が落とした雨の匂いの小瓶を受け止め損ね（ミニゲーム「猿の落とし物」の fumbled・missed）、小瓶が割れてブラックバックのいる芝生にこぼれた"
     },
@@ -28,6 +36,18 @@
     {
       "id": "gt_agra_tour_told_traveling",
       "noteJa": "ファテープル・シークリーへ行く車の中で、運転手のヴィノードに「一緒に旅をしている二人だ、とだけ伝えてください」と答えた（母への土産話）"
+    },
+    {
+      "id": "gt_agra_tour_shared_both",
+      "noteJa": "ファテープル・シークリーへ行く乗り合いの車の中で、パドマとスンダルのサンダルの言い合いに「お二人とも、信じます」と答えた（四十年前のサンダル）"
+    },
+    {
+      "id": "gt_agra_tour_shared_witness",
+      "noteJa": "ファテープル・シークリーへ行く乗り合いの車の中で、パドマとスンダルに、サンダルがなくなったのを見ていた人はいたかを聞いた（四十年前のサンダル）"
+    },
+    {
+      "id": "gt_agra_tour_shared_barefoot",
+      "noteJa": "ファテープル・シークリーへ行く乗り合いの車の中で、パドマとスンダルに、靴なしでどうやって戻ったかを聞いた（四十年前のサンダル）"
     },
     {
       "id": "gt_delhi_back_word_secret",
@@ -537,6 +557,33 @@
       "characterId": "gt_vinod"
     },
     {
+      "id": "gt_vinod_mother",
+      "cityId": "agra",
+      "nameJa": "ヴィノードの母",
+      "descriptionJa": "シークリーの下の町に住む、ヴィノードの母。息子の車のバックミラーに下げるレモンと青唐辛子を、戸口で糸に通していた。"
+    },
+    {
+      "id": "gt_rukhsana",
+      "cityId": "agra",
+      "nameJa": "ルクサーナ",
+      "titleJa": "シークリーのガイド",
+      "descriptionJa": "シークリーに住む、政府の許可を受けたガイド。サミールの叔父アンワルに仕事を仕込まれ、先生の決まりを書いた厚紙を、首の札の後ろに入れている。"
+    },
+    {
+      "id": "gt_padma",
+      "cityId": "agra",
+      "nameJa": "パドマ",
+      "titleJa": "乗り合いの客",
+      "descriptionJa": "チェンナイから来た、結婚四十年目の旅人。夫のスンダルと、新婚旅行と同じ道を同じ順番で回っている。シークリーでなくした赤いサンダルの話を、四十年続けている。"
+    },
+    {
+      "id": "gt_sundar",
+      "cityId": "agra",
+      "nameJa": "スンダル",
+      "titleJa": "パドマの夫",
+      "descriptionJa": "パドマの夫。四十年前、シークリーで妻のサンダルをなくしたのではなく、妻が預けた場所を間違えたのだと、今も言い張っている。"
+    },
+    {
       "id": "gt_agra_akbar_guard",
       "cityId": "agra",
       "nameJa": "番人",
@@ -662,9 +709,40 @@
       "nameJa": "カヴィヤ",
       "titleJa": "地下へ下りられない女の子",
       "characterId": "gt_kavya"
+    },
+    {
+      "id": "gt_govind",
+      "cityId": "delhi",
+      "nameJa": "ゴーヴィンド",
+      "titleJa": "布の問屋の主人",
+      "descriptionJa": "旧市街の布の市場カトラー・ニールの問屋。電話を二台使い分けて、北の町の店に布を卸す。バナーラスの絹を三十年仕入れているが、バナーラスへは行ったことがない。"
+    },
+    {
+      "id": "gt_rafiq",
+      "cityId": "agra",
+      "nameJa": "ラフィーク",
+      "titleJa": "金糸刺繍の職人",
+      "descriptionJa": "路地の店先で、木の枠に張った布に金や銀の糸を刺す職人。何日かかったかは言えても、値段は言えない。値札は奥さんの字。"
+    },
+    {
+      "id": "gt_sumitra",
+      "cityId": "jaipur",
+      "nameJa": "スミトラー",
+      "titleJa": "木版の刷り師",
+      "descriptionJa": "サーンガーネールから毎朝バスで布を運んでくる刷り師。指先が藍で青い。値段は一度しか言わない。"
     }
   ],
   "conditions": {
+    "gt_agra_cloth_all_owned": {
+      "all": [
+        {
+          "outfit": "gt_anarkali_jade"
+        },
+        {
+          "outfit": "gt_salwar_kameez_navy"
+        }
+      ]
+    },
     "gt_jaipur_her_turn": {
       "all": [
         {

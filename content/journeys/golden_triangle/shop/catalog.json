@@ -4,42 +4,34 @@
     {
       "id": "gt_delhi_cloth_shop",
       "cityId": "delhi",
-      "nameJa": "布地の店",
-      "descriptionJa": "色とりどりの布が、天井近くまで積み上がった小さな店。広げて見せてもらえる。",
-      "heroineLineJa": "布の色だけで、目が忙しいね。……ちょっとだけ、見ていってもいい？",
+      "nameJa": "布の問屋",
+      "descriptionJa": "旧市街の布の市場カトラー・ニールの、間口の狭い問屋。よその土地から届いた布が、天井近くまで積み上がっている。",
+      "heroineLineJa": "お店というより、布の倉庫みたい。……あの山の向こうに、人がいる？",
       "outfitIds": [
-        "gt_saree_blue",
-        "gt_salwar_kameez_navy",
-        "gt_kurta_block_print",
-        "gt_anarkali_jade"
+        "gt_saree_blue"
       ],
       "photoAssetId": "gt_img_delhi_cloth_shop"
     },
     {
       "id": "gt_agra_cloth_shop",
       "cityId": "agra",
-      "nameJa": "布地の店",
-      "descriptionJa": "通りに面して、畳んだ布を棚いっぱいに並べた店。店の奥に鏡がある。",
-      "heroineLineJa": "棚の上から下まで、全部ちがう色。見てるだけで楽しくなっちゃう",
+      "nameJa": "金糸刺繍の店",
+      "descriptionJa": "大通りから路地へ入った、ザルドージー（金や銀の糸の刺繍）の店。店先で、職人が木の枠に張った布に針を刺している。",
+      "heroineLineJa": "あの人、さっきから一度も顔を上げないね。針の音しか聞こえない",
       "outfitIds": [
-        "gt_saree_blue",
-        "gt_salwar_kameez_navy",
-        "gt_kurta_block_print",
-        "gt_anarkali_jade"
+        "gt_anarkali_jade",
+        "gt_salwar_kameez_navy"
       ],
       "photoAssetId": "gt_img_agra_cloth_shop"
     },
     {
       "id": "gt_jaipur_cloth_shop",
       "cityId": "jaipur",
-      "nameJa": "布地の店",
-      "descriptionJa": "店先に布を吊るして、風に揺らしている店。奥で着付けも手伝ってくれる。",
-      "heroineLineJa": "ここの布、光に透けるときれいだね。……着たら、どんな感じなんだろう",
+      "nameJa": "木版プリントの店",
+      "descriptionJa": "サーンガーネールの刷り師が、旧市街に出している店。刷った布を店先に吊るし、奥の台では木の版で花を押している。",
+      "heroineLineJa": "吊るしてある布、どれも小さな花が並んでる。近くで見たら、ひとつずつ違ったりして",
       "outfitIds": [
-        "gt_saree_blue",
-        "gt_salwar_kameez_navy",
-        "gt_kurta_block_print",
-        "gt_anarkali_jade"
+        "gt_kurta_block_print"
       ],
       "photoAssetId": "gt_img_jaipur_cloth_shop"
     }
@@ -49,8 +41,8 @@
       "id": "gt_saree_blue",
       "costume": "saree_01",
       "nameJa": "青いサリー",
-      "descriptionJa": "縫い目のない一枚の長い布を、体に巻きつけて着るインドの装い。深い青に、銀の花模様が散っている。",
-      "price": 2500,
+      "descriptionJa": "バナーラス（ヴァーラーナシー）で織られた絹のサリー。縫い目のない一枚の長い布を、体に巻きつけて着る。深い青の地に、銀の糸を織り込んだ花が散っている。",
+      "price": 2800,
       "boughtLineJa": "……ほんとに買っちゃった。似合わなかったら、ちゃんと言ってね？ 言わなくても、顔でわかるけど",
       "termIds": [
         "gt_term_saree"
@@ -60,7 +52,7 @@
       "id": "gt_salwar_kameez_navy",
       "costume": "salwar_kameez_01",
       "nameJa": "紺のサルワール・カミーズ",
-      "descriptionJa": "膝下まである長い上着（カミーズ）に、足首ですぼまるゆったりしたズボン（サルワール）、肩には透ける薄布（ドゥパッタ）を合わせるインドの装い。紺の地に、銀の花の刺繍。",
+      "descriptionJa": "膝下まである長い上着（カミーズ）に、足首ですぼまるゆったりしたズボン（サルワール）、肩には透ける薄布（ドゥパッタ）を合わせるインドの装い。紺の地に、銀の糸で刺した小さな花（ザルドージー）。",
       "price": 1800,
       "boughtLineJa": "ズボンなのに、ちゃんとよそ行きなんだね。……これなら、一日じゅう歩いても平気そう",
       "termIds": [
@@ -72,7 +64,7 @@
       "id": "gt_kurta_block_print",
       "costume": "kurta_01",
       "nameJa": "木版プリントのクルタ",
-      "descriptionJa": "彫った木の版に染料をつけて、手で一つずつ押して柄を付けた綿のクルタ（長い上着）に、揃いのゆったりしたズボン。生成りの地に、赤い花の小さな模様が並ぶ。",
+      "descriptionJa": "サーンガーネールの刷り師が、彫った木の版に染料をつけ、手で一つずつ押して柄を付けた綿のクルタ（長い上着）に、揃いのゆったりしたズボン。生成りの地に、赤い花の小さな模様が並ぶ。",
       "price": 1200,
       "boughtLineJa": "よく見ると、花がひとつずつちょっとずつ違うの。手で押したんだって思うと、なんだか愛おしくない？",
       "termIds": [
@@ -84,8 +76,8 @@
       "id": "gt_anarkali_jade",
       "costume": "anarkali_01",
       "nameJa": "翡翠色のアナルカリ",
-      "descriptionJa": "胸の下で切り替えて、裾まで傘のように広がる長い上着に、足首にしわを寄せてはく細身のズボン（チュリダール）と、肩に透ける薄布（ドゥパッタ）を合わせるインドの装い。翡翠色の地に、金と赤の花の刺繍。薄布は橙色。",
-      "price": 2200,
+      "descriptionJa": "胸の下で切り替えて、裾まで傘のように広がる長い上着に、足首にしわを寄せてはく細身のズボン（チュリダール）と、肩に透ける薄布（ドゥパッター）を合わせるインドの装い。翡翠色の地に、金の糸で縁どった赤い花の刺繍（ザルドージー）。薄布は橙色。",
+      "price": 2400,
       "boughtLineJa": "くるっと回ると、裾がぜんぶ広がるんだって。……一回だけね。笑わないで見てて",
       "termIds": [
         "gt_term_anarkali",
