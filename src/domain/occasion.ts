@@ -4,6 +4,7 @@ import { decidesConfession } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
 import { momentBattleAvailability, startVisitBattle } from "./battle";
 import { battlePlayed, meets } from "./conditions";
+import { deliverSns } from "./sns";
 import { beginMomentScene, momentSceneAvailability, nextObservationScene, sceneSchedule, visitedLandmarkOfEvent } from "./encounter";
 import { beginArrival, beginCityEpilogue, beginTourLegNarration, canBeginArrival, canStartAuthoredEpilogue, epilogueOpening, startCityEpilogue } from "./epilogue";
 import { canDepart, departToNextCity, leaveForNextCity, registerMomentOpeners } from "./city-travel";
@@ -344,7 +345,9 @@ function moveTourLeg(state: GameState): GameState {
 }
 
 /** The night (the hotel's main part): the next day's morning (decision 44: night until waking), its route and headlines still empty. */
-function sleep(state: GameState): GameState {
+function sleep(night: GameState): GameState {
+  // The night's SNS (src/domain/sns.ts): what the hotel's scenes made arrive tonight.
+  const state = deliverSns(night);
   const calendar = state.travel.calendar;
   return { ...state, travel: { ...state.travel, day: state.travel.day + 1, minute: DAY_START, todayPlaceIds: [], todayEpisodeIds: [],
     ...(calendar ? { calendar: { ...calendar, journeyDay: calendar.journeyDay + 1 } } : {}) } };

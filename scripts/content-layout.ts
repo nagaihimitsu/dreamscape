@@ -97,7 +97,7 @@ export const CATALOG_RULES = [
   { kind: "presentation/sounds.json", fields: { schemaVersion: same, sources: concat, sounds: concat } },
   { kind: "progression/journey.json", fields: { schemaVersion: same, episodes: concat, storyBattles: concat, rewards: concat } },
   // The story state an author declares (flags, people, named conditions; the unified event design, stage 3a).
-  { kind: "progression/story.json", fields: { schemaVersion: same, flags: concat, people: concat, conditions: record } },
+  { kind: "progression/story.json", fields: { schemaVersion: same, flags: concat, people: concat, conditions: record, heroineSns: record } },
   { kind: "romance/balance.json", file: "core" },
   { kind: "romance/date_catalog.json", fields: { schemaVersion: same, dates: concat } },
   { kind: "romance/date_destinations.json", fields: { schemaVersion: same, destinations: concat } },
@@ -218,6 +218,8 @@ export type ContentFileType =
   /** `travel/<city>.json` (routes), `-settings.json` (settings) or `-transit.json` (the per-city transit ledger). */
   | { type: "travel"; cityId: string; part: "routes" | "settings" | "transit" }
   | { type: "story"; id: string }
+  /** `stories/posts/<city>.ink`: the SNS's posts of a city (a journey layer only; 2026-11-26, scripts/sns-posts.ts). */
+  | { type: "posts"; cityId: string }
   | { type: "quiz"; example: boolean }
   /** `tours/<tourId>.json` (a journey layer only; tour design stage 2a). */
   | { type: "tour"; id: string }
@@ -245,7 +247,10 @@ export function classifyContentFile(relative: string, layer: LayerType): Content
   const travel = /^travel\/([^/]+?)(?:-(settings|transit))?\.json$/u.exec(relative);
   if (travel) return { type: "travel", cityId: travel[1], part: travel[2] === "settings" ? "settings" : travel[2] === "transit" ? "transit" : "routes" };
   // A copy of the game's modules.ink next to a place file is for Inky's preview only (content:build uses src/story/modules.ink).
-  if (relative === "stories/places/modules.ink") return { type: "other" };
+  if (relative === "stories/places/modules.ink" || relative === "stories/posts/modules.ink") return { type: "other" };
+  // The SNS's posts are read apart from the stories: never played as scenes.
+  const posts = /^stories\/posts\/([^/]+)\.ink$/u.exec(relative);
+  if (posts) return layer === "journey" ? { type: "posts", cityId: posts[1] } : { type: "unknown" };
   const story = storyIdFromPath(relative);
   if (story !== undefined) return { type: "story", id: story };
   if (/^quizzes\/.+\.json$/u.test(relative)) return { type: "quiz", example: relative.endsWith(".example.json") };

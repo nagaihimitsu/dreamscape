@@ -1,3 +1,4 @@
+import { snsImageIdOf } from "../src/content/sns";
 import path from "node:path";
 import { CATALOG_RULES, classifyContentFile, type FieldTable, type MergedKind } from "./content-layout";
 import { localIssuePath } from "./catalog-merge";
@@ -18,7 +19,7 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo" | "portrait"
+export type ContentWarningKind = "sns-reading" | "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo" | "portrait"
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
@@ -27,6 +28,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
+  "sns-reading": "SNS post(s) with many comments (4 or more, or 2 or more # timing: later)",
   "tour-note": "tour note(s) (schedule windows, offer places, sources, then: on a tour day)",
   "scene-tag": "scene tag note(s) (place files and choice tags)",
   "special-date-ap": "special date(s) that cost AP",
@@ -151,7 +153,10 @@ export function unusedPublicFiles(sources: ContentSources): ContentWarning[] {
   const avatarFolders = list(isObject(characterCatalog) ? characterCatalog.characters : undefined)
     .flatMap((character) => list(character.costumes)).flatMap((costume) => list(costume.poses)).flatMap((pose) => [pose.avatar, pose.avatarFace])
     .filter((folder): folder is string => typeof folder === "string" && folder.endsWith("/"));
-  const named = (assetPath: string) => namedAlbumIds.has(albumImageIdOf(assetPath) ?? "") || namedVoiceIds.has(voiceIdOf(assetPath) ?? "") ||
+  // An album image or SNS picture a post's # images: names (sns-posts.ts).
+  const namedSnsIds = new Set((sources.postFiles ?? []).flatMap((posts) => [...posts.source.matchAll(/#\s*images\s*:\s*([^#\n]*)/gu)]
+    .flatMap((match) => match[1].trim().split(/\s+/u))));
+  const named = (assetPath: string) => namedAlbumIds.has(albumImageIdOf(assetPath) ?? "") || namedSnsIds.has(albumImageIdOf(assetPath) ?? snsImageIdOf(assetPath) ?? "") || namedVoiceIds.has(voiceIdOf(assetPath) ?? "") ||
     registeredSoundIds.has(soundIdOf(assetPath) ?? "") || registeredTrackIds.has(trackIdOf(assetPath) ?? "") ||
     registeredAmbienceIds.has(ambienceIdOf(assetPath) ?? "") || avatarFolders.some((folder) => assetPath.startsWith(folder));
   const checked = [path.join(sources.root, "public", "assets"), ...sources.layers.filter((layer) => layer.type === "journey")

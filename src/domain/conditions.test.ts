@@ -89,6 +89,8 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
     { ...base, tour: { status: "booked", tourId: "t1", offerId: "desk", pricePaid: 100, bookedDay: 1 } },
     { ...base, tour: { status: "booked", tourId: "t1", offerId: "web", pricePaid: 100, bookedDay: 1 } }],
   outfit: [{ outfit: "o1" }, { ...base, outfits: ["o1"] }, base],
+  snsComment: [{ snsComment: "p1.c1" }, { ...base, sns: { posts: [], comments: [{ id: "p1.c1", cityId: "c", day: 1, minute: 1260 }], liked: [] } }, base],
+  snsLiked: [{ snsLiked: "p1" }, { ...base, sns: { posts: [], comments: [], liked: ["p1"] } }, base],
 };
 
 describe("meets", () => {

@@ -112,6 +112,10 @@ export type LeafValues = {
   tourOffer: { tour: string; offer: string };
   /** The party owns the outfit (shop/catalog.json; bought at a shop or got in a scene's `# outfit:`; 2026-11-26). */
   outfit: string;
+  /** The SNS comment `<post>.<comment>` (stories/posts/; 2026-11-26) has arrived. Arrived comments stay. */
+  snsComment: string;
+  /** The player likes the SNS post now (2026-11-26): read when the condition is read; a like taken back later changes nothing already done. */
+  snsLiked: string;
 };
 export type LeafKind = keyof LeafValues;
 export type Leaf = { [K in LeafKind]: { [P in K]: LeafValues[K] } }[LeafKind];
@@ -159,6 +163,8 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
   clue: id,
   tourOffer: z.object({ tour: id, offer: id }).strict(),
   outfit: id,
+  snsComment: z.string().regex(/^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$/u),
+  snsLiked: id,
 };
 export const LEAF_KINDS = Object.keys(LEAF_VALUE_SCHEMAS) as LeafKind[];
 const COMBINATORS = ["all", "any", "not", "atLeast"] as const;
@@ -270,7 +276,7 @@ export function requiredLeaves(condition: Condition): Leaf[] {
 
 export type LeafReference = {
   kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode" | "flag" | "person" | "condition" | "clue" |
-    "tour" | "outfit";
+    "tour" | "outfit" | "post" | "comment";
   id: string;
   /** A tour's offer (`tourOffer`). */
   offer?: string;
@@ -298,5 +304,7 @@ export function leafReference(leaf: Leaf): LeafReference | undefined {
   if ("clue" in leaf) return { kind: "clue", id: leaf.clue };
   if ("tourOffer" in leaf) return { kind: "tour", id: leaf.tourOffer.tour, offer: leaf.tourOffer.offer };
   if ("outfit" in leaf) return { kind: "outfit", id: leaf.outfit };
+  if ("snsComment" in leaf) return { kind: "comment", id: leaf.snsComment };
+  if ("snsLiked" in leaf) return { kind: "post", id: leaf.snsLiked };
   return undefined;
 }

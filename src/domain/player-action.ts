@@ -1,6 +1,7 @@
 import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, canSubmitBattleEvidence, canToggleReasoningClue, chooseBattle, pressBattleClaim, selectReasoningClue, submitBattleEvidence } from "./battle";
 import { getBattleResultExits } from "./chapter";
-import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
+import { advanceCompletedJourneyCity, getPlayerDeparture, isJourneyComplete } from "./city-travel";
+import { deliverSns } from "./sns";
 import { recordAlbumPhoto } from "./album";
 import { recordGlossaryTerms } from "./glossary";
 import { metPersonIds, recordMetTimes } from "./met-people";
@@ -46,7 +47,10 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
   const toured = recordMetTimes(continueTour(changed, nextRoll), before);
   // The line the action leaves on screen takes its # photo: into the album (once per image; album.ts) and its # term:
   // terms into 旅の図鑑 (once per term; glossary.ts).
-  return recordMetTimes(recordGlossaryTerms(recordAlbumPhoto(advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll))), before);
+  const done = recordMetTimes(recordGlossaryTerms(recordAlbumPhoto(advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll))), before);
+  // The SNS (src/domain/sns.ts): what arrives is checked at night, as the night screen shows (getDayEnd: free time at 21:00 or
+  // later with nothing open; a rest and leaving a city check in their own steps), and once more as the journey ends.
+  return getDayEnd(done) || (isJourneyComplete(done) && !isJourneyComplete(previous)) ? deliverSns(done) : done;
 }
 
 /**

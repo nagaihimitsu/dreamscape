@@ -108,6 +108,9 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   // Booked or running through that offer (2026-11-26): the record keeps the offer until the tour ends.
   tourOffer: (state, { tour, offer }) => state.tour?.tourId === tour && state.tour.offerId === offer,
   outfit: (state, id) => (state.outfits ?? []).includes(id),
+  // The SNS (2026-11-26; src/domain/sns.ts): a comment arrived (it stays), a post the player likes now.
+  snsComment: (state, id) => !!state.sns?.comments.some((comment) => comment.id === id),
+  snsLiked: (state, id) => !!state.sns?.liked.includes(id),
 };
 
 function meetsLeaf(state: Readonly<GameState>, leaf: Leaf): boolean {
