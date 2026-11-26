@@ -493,7 +493,8 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
   - 光：`--ds-light`（白。光り・写真の白い縁・白い輪）
   - 答えの色：`--ds-right-ink`・`--ds-right-ground`・`--ds-right-edge`（正解）、`--ds-wrong-ink`・`--ds-wrong-ground`（答えが違ったとき）
   - 取り返せない操作（消去）とDebugの注意：`--ds-danger`・`--ds-danger-edge`
-  - その他の役目：`--ds-page`・`--ds-page-edge`・`--ds-page-shadow`（広い画面でゲームの周り）、`--ds-backdrop`（開いたダイアログの後ろ）、`--ds-photo-mat`（写真が届く前の地・写真の台）、`--ds-map-ground`（地図の地）、`--ds-seal`（赤い判の色）、`--ds-mask`（マスクの不透明な所）
+  - その他の役目：`--ds-page`・`--ds-page-edge`・`--ds-page-shadow`（広い画面でゲームの周り）、`--ds-backdrop`（開いたダイアログの後ろ）、`--ds-photo-mat`（写真が届く前の地・写真の台）、`--ds-map-ground`（地図の地）、`--ds-seal`（赤い判の色）、`--ds-game-gold`（ミニゲームの金色：打つ輪・印・ゲージ・よい判定）、`--ds-mask`（マスクの不透明な所）
+  - ミニゲームの絵の色も、黒の影・白の光・金・暗い茶色の影は上の役目の色で書き、その遊びだけの物の色（布・生地・壁など）だけに名前を付ける。
   - 決まりの色を薄めて使うときは `color-mix(in srgb, var(--ds-…) N%, transparent)` と書く（金の光は `--ds-marker-selected`、金の細い線は `--ds-gold`）。透明の値は `transparent`
 - **角の丸み**（`--ds-radius-*`。2026-11-26）：`hair` 2px（細い棒・線）、`small` 4px（小さな札・印）、`field` 8px（入力欄・選ぶ欄・小さな写真）、`control` 12px（ボタン・押す行・カードの中の写真）、`pane` 16px（カード・知らせ・吹き出し・会話の選択肢）、ガラスの面は `--ds-glass-radius` 22px、`pill` 999px（丸い札）。円は `50%`。物そのものの形（携帯の角 `--phone-corner`、絵の形の%）は、そのスタイルシートで名前を付けるか%で書く。
 - **重なりの順**（`--ds-layer-*`。2026-11-26）：部品の中の自分の部品どうしの順は0〜9の数で書く。それより上の層は、すべて `src/app/styles.css` の `:root` の一覧（下から順に、上の帯・知らせ・夜の画面・写真札の移動・地図の操作・用語の窓・到着・章の判・題名の札・移動の演出・夜の休み・オープニングムービー・無視したタップの輪）の名前で書く。新しい層は、この一覧に値と何が載るかを足してから使う。

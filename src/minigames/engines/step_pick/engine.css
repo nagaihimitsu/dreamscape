@@ -1,16 +1,10 @@
 /* The step_pick engine (EnginePlay.tsx): the skin's field fills the middle, the three buttons sit at the bottom in thumb
    reach: the leave button narrower, lower and quieter on the left, the push button (the main one, pressed again and
    again) in the middle, the take button with the step on show on the right (apart, so a thumb does not hit two). */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --step-pick-hint-shadow-06: rgba(0, 0, 0, 0.6);
-  --step-pick-buttons-edge-045: rgba(255, 250, 241, 0.45);
-  --step-pick-buttons-ground-045: rgba(31, 36, 48, 0.45);
-}
 .mg-engine-step-pick { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .mg-engine-step-pick .mg-step-pick-field { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; user-select: none; -webkit-user-select: none; }
 .mg-engine-step-pick .mg-step-pick-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px var(--step-pick-hint-shadow-06); text-wrap: balance; word-break: auto-phrase; }
+.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); text-wrap: balance; word-break: auto-phrase; }
 .mg-engine-step-pick .mg-step-pick-buttons {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr) minmax(0, 1.12fr);
@@ -41,8 +35,8 @@
 .mg-engine-step-pick .mg-step-pick-buttons > .mg-step-pick-leave { min-height: 48px; font-size: var(--ds-text-body); }
 /* Not pressable now (the play is decided, or the take button has nothing to take): a dashed outline, not a filled button. */
 .mg-engine-step-pick .mg-step-pick-buttons > button[aria-disabled="true"] {
-  border: 1.5px dashed var(--step-pick-buttons-edge-045);
-  background: var(--step-pick-buttons-ground-045);
+  border: 1.5px dashed color-mix(in srgb, var(--ds-on-slate) 45%, transparent);
+  background: color-mix(in srgb, var(--ds-slate-900) 45%, transparent);
   box-shadow: none;
   color: var(--ds-on-slate-muted);
   cursor: default;

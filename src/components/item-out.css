@@ -183,7 +183,7 @@
   .item-out-picture img[data-vector] { width: 28px; height: 28px; }
   .item-out-name { font-size: var(--ds-text-body); }
   .item-out-lines,
-  .item-out-description { margin-top: 6px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+  .item-out-description { margin-top: 6px; }
 }
 
 /* Reduced motion and 「演出を短縮する」: no movement; the card simply appears, and simply goes (no copy on its way out). */

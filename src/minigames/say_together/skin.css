@@ -14,13 +14,9 @@
   --say-together-lawn-ground-3: #557a36;
   --say-together-tomb-figure-fill: #cdb89a;
   --say-together-tomb-arches-fill: #8f7a62;
-  --say-together-bubble-shadow-03: rgba(0, 0, 0, 0.3);
   --say-together-bubble-edge: #e8b94a;
-  --say-together-bubble-shadow-045: rgba(240, 200, 96, 0.45);
-  --say-together-bubble-shadow-075: rgba(240, 200, 96, 0.75);
   --say-together-word-ink: #7a4c08;
   --say-together-word-ink-2: #8a5a10;
-  --say-together-word-shadow-09: rgba(240, 200, 96, 0.9);
 }
 .mg-say-together { position: absolute; inset: 0; overflow: hidden; container-type: size; }
 .mg-say-together-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
@@ -71,7 +67,7 @@
   border: 1px solid var(--ds-gold-hairline);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
-  box-shadow: 0 2px 8px var(--say-together-bubble-shadow-03);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-shade) 30%, transparent);
   color: var(--ds-ink);
   pointer-events: none;
 }
@@ -90,7 +86,7 @@
   background: var(--ds-parchment);
   transform: rotate(45deg);
 }
-.mg-say-together-bubble[data-together] { border: 3px solid var(--say-together-bubble-edge); box-shadow: 0 0 0 3px var(--say-together-bubble-shadow-045), 0 0 18px var(--say-together-bubble-shadow-075); }
+.mg-say-together-bubble[data-together] { border: 3px solid var(--say-together-bubble-edge); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-game-gold) 45%, transparent), 0 0 18px color-mix(in srgb, var(--ds-game-gold) 75%, transparent); }
 .mg-say-together-bubble[data-together]::after { border-color: var(--say-together-bubble-edge); border-width: 0 3px 3px 0; bottom: -9px; }
 /* Hers: over her head, a little wider than her, to her right edge; its tail at her head. */
 .mg-say-together-bubble-her { right: 0; bottom: calc(100% + 6px); width: max(118%, 150px); min-height: 64px; }
@@ -123,7 +119,7 @@
 .mg-say-together-word[data-state="off"] { color: var(--ds-ink-muted); font-weight: 500; text-decoration: underline dotted 1.5px; text-underline-offset: 3px; }
 /* The last word, 「デーン！」, is the loudest: written large; together (the peak), it glows in both bubbles. */
 .mg-say-together-word[data-last] { font-size: 1.3em; line-height: var(--ds-leading-display); letter-spacing: 0.02em; }
-.mg-say-together-bubble[data-peak] .mg-say-together-word[data-last] { color: var(--say-together-word-ink-2); text-shadow: 0 0 10px var(--say-together-word-shadow-09); }
+.mg-say-together-bubble[data-peak] .mg-say-together-word[data-last] { color: var(--say-together-word-ink-2); text-shadow: 0 0 10px color-mix(in srgb, var(--ds-game-gold) 90%, transparent); }
 /* After she said them alone: she turns to the player (？ by her head, on the side away from the outcome's label). */
 .mg-say-together-mark {
   position: absolute;
@@ -142,7 +138,7 @@
   font-size: var(--ds-text-heading);
   font-weight: 700;
   line-height: 1;
-  box-shadow: 0 2px 6px var(--say-together-bubble-shadow-03);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 30%, transparent);
 }
 @media (max-height: 620px) {
   .mg-say-together-text { font-size: var(--ds-text-note); }

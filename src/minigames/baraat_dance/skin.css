@@ -12,17 +12,13 @@
   --baraat-dance-drum-ground-2: #e6d2ab;
   --baraat-dance-drum-shadow: #d8a63c;
   --baraat-dance-drum-shadow-2: #2a1a0c;
-  --baraat-dance-drum-shadow-045: rgba(0, 0, 0, 0.45);
   --baraat-dance-drum-ground-3: #e9c98c;
   --baraat-dance-drum-ground-4: #a9783c;
   --baraat-dance-drum-ground-5: #fffaf0;
   --baraat-dance-drum-ground-6: #f6dc9a;
-  --baraat-dance-drum-shadow-3: #f0c860;
-  --baraat-dance-drum-shadow-09: rgba(240, 200, 96, 0.9);
   --baraat-dance-count-ink: #8a1f24;
   --baraat-dance-grade-ink: #ffd76a;
   --baraat-dance-faster-ground-088: rgba(138, 31, 36, 0.88);
-  --baraat-dance-tangle-ground-082: rgba(42, 26, 12, 0.82);
   --baraat-dance-grade-ink-2: #ffb08a;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
@@ -69,7 +65,7 @@
   border: 6px solid var(--baraat-dance-drum-edge);
   border-radius: 50%;
   background: radial-gradient(circle at 45% 40%, var(--baraat-dance-drum-ground), var(--baraat-dance-drum-ground-2) 70%);
-  box-shadow: 0 0 0 3px var(--baraat-dance-drum-shadow), 0 0 0 5px var(--baraat-dance-drum-shadow-2), 0 6px 14px var(--baraat-dance-drum-shadow-045);
+  box-shadow: 0 0 0 3px var(--baraat-dance-drum-shadow), 0 0 0 5px var(--baraat-dance-drum-shadow-2), 0 6px 14px color-mix(in srgb, var(--ds-shade) 45%, transparent);
   transition: transform 90ms ease-out;
 }
 /* The stick, raised; down on the beat. */
@@ -87,13 +83,13 @@
 }
 .mg-baraat-dance[data-beat] .mg-baraat-dance-drum {
   background: radial-gradient(circle at 45% 40%, var(--baraat-dance-drum-ground-5), var(--baraat-dance-drum-ground-6) 70%);
-  box-shadow: 0 0 0 3px var(--baraat-dance-drum-shadow-3), 0 0 0 5px var(--baraat-dance-drum-shadow-2), 0 0 22px var(--baraat-dance-drum-shadow-09);
+  box-shadow: 0 0 0 3px var(--ds-game-gold), 0 0 0 5px var(--baraat-dance-drum-shadow-2), 0 0 22px color-mix(in srgb, var(--ds-game-gold) 90%, transparent);
   transform: scale(1.08);
 }
 /* The last two beats: the big 「ドン・ドン」. */
 .mg-baraat-dance[data-beat][data-big] .mg-baraat-dance-drum { transform: scale(1.25); }
 .mg-baraat-dance[data-beat] .mg-baraat-dance-drum > span { transform: rotate(8deg); }
-.mg-baraat-dance[data-beat] .mg-baraat-dance-drummer > img { filter: drop-shadow(0 0 10px var(--baraat-dance-drum-shadow-09)); }
+.mg-baraat-dance[data-beat] .mg-baraat-dance-drummer > img { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ds-game-gold) 90%, transparent)); }
 .minigame-layer[data-still] .mg-baraat-dance[data-beat] .mg-baraat-dance-drum { transform: none; }
 /* The count-in's numbers on the drum's face (not to tap: the lane shows them as crosses). */
 .mg-baraat-dance-count {
@@ -192,7 +188,7 @@
   top: 27%;
   padding: 2px 10px;
   border-radius: var(--ds-radius-control);
-  background: var(--baraat-dance-tangle-ground-082);
+  background: color-mix(in srgb, var(--ds-paper-shade) 82%, transparent);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-body);
   font-weight: 700;
@@ -221,12 +217,12 @@
   height: 100%;
   transform: translateY(42%) rotate(-12deg);
 }
-.mg-baraat-dance-hands svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 2px 4px var(--baraat-dance-drum-shadow-045)); }
+.mg-baraat-dance-hands svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--ds-shade) 45%, transparent)); }
 /* The left hand: the right one, mirrored. */
 .mg-baraat-dance-hands > span:first-child svg { transform: scaleX(-1); }
 .mg-baraat-dance-hands > span:last-child { transform: translateY(42%) rotate(12deg); }
 .mg-baraat-dance-hands[data-hands="met"] > span { transform: translateY(0) rotate(-6deg); }
-.mg-baraat-dance-hands[data-hands="met"] svg { filter: drop-shadow(0 0 3px var(--baraat-dance-drum-shadow-3)) drop-shadow(0 0 10px var(--baraat-dance-drum-shadow-09)); }
+.mg-baraat-dance-hands[data-hands="met"] svg { filter: drop-shadow(0 0 3px var(--ds-game-gold)) drop-shadow(0 0 10px color-mix(in srgb, var(--ds-game-gold) 90%, transparent)); }
 .mg-baraat-dance-hands[data-hands="met"] > span:last-child { transform: translateY(0) rotate(6deg); }
 .mg-baraat-dance-hands[data-hands="off"] > span { transform: translateY(14%) rotate(-28deg); }
 .mg-baraat-dance-hands[data-hands="off"] > span:last-child { transform: translateY(24%) rotate(4deg); }

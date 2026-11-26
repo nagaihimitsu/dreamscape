@@ -7,28 +7,11 @@
   --host-minigame-practice-ground-014: rgba(127, 127, 127, 0.14);
   --host-minigame-hand-finger-fill: #f6dcc4;
   --host-minigame-hand-finger-line: #2a211c;
-  --host-minigame-hand-spot-fill-025: rgba(255, 250, 241, 0.25);
-  --host-minigame-hand-meter-fill-03: rgba(255, 250, 241, 0.3);
-  --host-minigame-hand-zone-fill: #f0c860;
-  --host-minigame-hand-needle-fill: #fffaf1;
   --host-minigame-hand-beat-fill: #fff3cf;
-  --host-minigame-layer-ground-02: rgba(20, 24, 32, 0.2);
-  --host-minigame-layer-ground-015: rgba(20, 24, 32, 0.15);
-  --host-minigame-layer-ground-088: rgba(20, 24, 32, 0.88);
-  --host-minigame-band-ground-055: rgba(20, 24, 32, 0.55);
-  --host-minigame-quit-edge-035: rgba(255, 250, 241, 0.35);
   --host-minigame-burst-ring-edge: #f6d36b;
   --host-minigame-particle-dust-ground: #d8bf94;
   --host-minigame-particle-splash-ground: #e8f4ff;
-  --host-minigame-count-shadow-045: rgba(0, 0, 0, 0.45);
-  --host-minigame-cutin-ground-0: rgba(42, 33, 28, 0);
-  --host-minigame-cutin-ground-086: rgba(42, 33, 28, 0.86);
-  --host-character-face-shadow-035: rgba(0, 0, 0, 0.35);
-  --host-minigame-result-ground-096: rgba(31, 36, 48, 0.96);
   --host-primary-ground: #ffd666;
-  --host-secondary-edge-055: rgba(255, 250, 241, 0.55);
-  --host-secondary-ground-012: rgba(255, 250, 241, 0.12);
-  --host-minigame-pause-ground-078: rgba(20, 24, 32, 0.78);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/02 「デザインの決まり」). */
@@ -62,12 +45,12 @@
 .minigame-hand-finger { fill: var(--host-minigame-hand-finger-fill); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; stroke-linejoin: round; transform: translate(-2px, 4px); }
 .minigame-hand-button { fill: var(--ds-gold); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; transform-box: fill-box; transform-origin: center; }
 .minigame-hand-ripple { fill: none; stroke: var(--ds-gold); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
-.minigame-hand-spot { fill: var(--host-minigame-hand-spot-fill-025); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
+.minigame-hand-spot { fill: color-mix(in srgb, var(--ds-on-slate) 25%, transparent); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
 .minigame-hand-spot-hit { fill: var(--ds-gold); }
 .minigame-hand-trail { fill: none; stroke: var(--ds-gold); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
-.minigame-hand-meter { fill: var(--host-minigame-hand-meter-fill-03); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
-.minigame-hand-zone { fill: var(--host-minigame-hand-zone-fill); }
-.minigame-hand-needle { fill: var(--host-minigame-hand-needle-fill); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1; }
+.minigame-hand-meter { fill: color-mix(in srgb, var(--ds-on-slate) 30%, transparent); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
+.minigame-hand-zone { fill: var(--ds-game-gold); }
+.minigame-hand-needle { fill: var(--ds-on-slate); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1; }
 .minigame-hand-beat { fill: var(--ds-gold); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
 .minigame-hand[data-kind="tap-target"] .minigame-hand-finger { transform: translate(-2px, 6px); }
 .minigame-hand[data-kind="drag"] .minigame-hand-finger { transform: translate(6px, 0); }
@@ -92,7 +75,7 @@
   0%, 15% { transform: translate(-22px, 12px); } 35%, 45% { transform: translate(18px, 12px); }
   65% { transform: translate(-2px, 12px); } 72%, 80% { transform: translate(-2px, 6px); } 90%, 100% { transform: translate(-22px, 12px); }
 }
-@keyframes minigame-hand-found { 0%, 72% { fill: var(--host-minigame-hand-spot-fill-025); } 76%, 92% { fill: var(--ds-gold); } 100% { fill: var(--host-minigame-hand-spot-fill-025); } }
+@keyframes minigame-hand-found { 0%, 72% { fill: color-mix(in srgb, var(--ds-on-slate) 25%, transparent); } 76%, 92% { fill: var(--ds-gold); } 100% { fill: color-mix(in srgb, var(--ds-on-slate) 25%, transparent); } }
 @keyframes minigame-hand-drag {
   0% { transform: translate(-24px, 10px); } 25% { transform: translate(-12px, 2px); } 50% { transform: translate(6px, 2px); }
   75% { transform: translate(14px, -2px); } 90%, 100% { transform: translate(22px, 2px); }
@@ -123,7 +106,7 @@
   padding-top: var(--scene-top, 0px);
   color: var(--ds-on-slate);
   /* The scene's picture (or the use's bg) stays behind the field; the bottom darkens under the controls. */
-  background: linear-gradient(to bottom, var(--host-minigame-layer-ground-02), var(--host-minigame-layer-ground-015) 45%, var(--host-minigame-layer-ground-088));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--ds-veil) 20%, transparent), color-mix(in srgb, var(--ds-veil) 15%, transparent) 45%, color-mix(in srgb, var(--ds-veil) 88%, transparent));
   animation: minigame-in var(--motion-fast, 180ms) var(--ease-out, ease-out);
   outline: none;
 }
@@ -138,7 +121,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, var(--host-minigame-layer-ground-02), var(--host-minigame-layer-ground-015) 45%, var(--host-minigame-layer-ground-088));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--ds-veil) 20%, transparent), color-mix(in srgb, var(--ds-veil) 15%, transparent) 45%, color-mix(in srgb, var(--ds-veil) 88%, transparent));
 }
 /* The top band: the game's name, its short status, 「中断する」 (a quiet secondary control). */
 .minigame-band {
@@ -148,7 +131,7 @@
   gap: 8px;
   min-height: 44px;
   padding: 4px 8px 4px 16px;
-  background: var(--host-minigame-band-ground-055);
+  background: color-mix(in srgb, var(--ds-veil) 55%, transparent);
   font-size: var(--ds-text-note);
 }
 /* The name, 「練習」 and the status: one line where they fit; on a narrow phone the status (or 「練習」 too) wraps under the
@@ -169,7 +152,7 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid var(--host-minigame-quit-edge-035);
+  border: 1px solid color-mix(in srgb, var(--ds-on-slate) 35%, transparent);
   border-radius: var(--ds-radius-control);
   background: transparent;
   color: var(--ds-on-slate);
@@ -218,7 +201,7 @@
   text-align: center;
   pointer-events: none;
   /* A dark edge: readable over any photo. */
-  text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line), 0 4px 10px var(--host-minigame-count-shadow-045);
+  text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line), 0 4px 10px color-mix(in srgb, var(--ds-shade) 45%, transparent);
   transform: translateY(-50%);
 }
 .minigame-layer .minigame-count { font-size: var(--minigame-count-size); animation: minigame-count-in 120ms var(--ease-out, ease-out) both; }
@@ -242,7 +225,7 @@
   justify-items: center;
   gap: 2px;
   padding: 10px 16px 12px;
-  background: linear-gradient(90deg, var(--host-minigame-cutin-ground-0), var(--host-minigame-cutin-ground-086) 16%, var(--host-minigame-cutin-ground-086) 84%, var(--host-minigame-cutin-ground-0));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ds-paper-shade) 0%, transparent), color-mix(in srgb, var(--ds-paper-shade) 86%, transparent) 16%, color-mix(in srgb, var(--ds-paper-shade) 86%, transparent) 84%, color-mix(in srgb, var(--ds-paper-shade) 0%, transparent));
   pointer-events: none;
   transform: translateY(-50%);
 }
@@ -265,7 +248,7 @@
   pointer-events: none;
   animation: minigame-react-in 140ms var(--ease-out, ease-out) both;
 }
-.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: 2px solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px var(--host-character-face-shadow-035); }
+.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: 2px solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .minigame-layer .minigame-react-line {
   margin: 0;
   padding: 6px 12px;
@@ -301,7 +284,7 @@
   border: 1px solid var(--ds-gold-hairline);
   border-radius: var(--ds-radius-pane);
   /* Nearly opaque: the dead controls under it do not show through. */
-  background: var(--host-minigame-result-ground-096);
+  background: color-mix(in srgb, var(--ds-slate-900) 96%, transparent);
   box-shadow: var(--ds-window-shadow);
   color: var(--ds-on-slate);
   text-align: center;
@@ -359,8 +342,8 @@
 .minigame-result-actions > .primary { flex-grow: 1.4; background: var(--ds-marker-selected); box-shadow: none; color: var(--ds-slate-900); font-size: var(--ds-text-subhead); font-weight: 700; }
 .minigame-result-actions > .primary:hover:enabled { background: var(--host-primary-ground); }
 .minigame-result-actions > .primary:focus-visible { box-shadow: 0 0 0 3px var(--ds-slate-900), 0 0 0 5px var(--ds-focus); }
-.minigame-result-actions > .secondary { border-color: var(--host-secondary-edge-055); background: transparent; color: var(--ds-on-slate); font-size: var(--ds-text-body); }
-.minigame-result-actions > .secondary:hover:enabled { background: var(--host-secondary-ground-012); }
+.minigame-result-actions > .secondary { border-color: color-mix(in srgb, var(--ds-on-slate) 55%, transparent); background: transparent; color: var(--ds-on-slate); font-size: var(--ds-text-body); }
+.minigame-result-actions > .secondary:hover:enabled { background: color-mix(in srgb, var(--ds-on-slate) 12%, transparent); }
 /* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
    the buttons a bar of their own at the bottom in the controls' place, as on every other game (2026-11-14). Between
    them the field shows, and a press there reaches the ended play, which takes none. */
@@ -381,7 +364,7 @@
   width: 100%;
   border: 1px solid var(--ds-gold-hairline);
   border-radius: var(--ds-radius-pane);
-  background: var(--host-minigame-result-ground-096);
+  background: color-mix(in srgb, var(--ds-slate-900) 96%, transparent);
   box-shadow: var(--ds-window-shadow);
   pointer-events: auto;
 }
@@ -407,7 +390,7 @@
   filter: saturate(0.78) contrast(0.9) brightness(0.82) blur(1.5px);
   scale: 1.03;
 }
-.mg-play-object { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 2px 1px var(--host-character-face-shadow-035)); }
+.mg-play-object { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 2px 1px color-mix(in srgb, var(--ds-shade) 35%, transparent)); }
 /* 一時停止中 (a timed game after the page was hidden): over the play, 「続ける」 first. */
 .minigame-pause {
   position: absolute;
@@ -419,7 +402,7 @@
   justify-content: center;
   gap: 10px;
   padding: 16px;
-  background: var(--host-minigame-pause-ground-078);
+  background: color-mix(in srgb, var(--ds-veil) 78%, transparent);
 }
 .minigame-pause p { margin: 0 0 6px; font-size: var(--ds-text-subhead); font-weight: 700; text-align: center; }
 .minigame-pause button { justify-content: center; min-height: 52px; }

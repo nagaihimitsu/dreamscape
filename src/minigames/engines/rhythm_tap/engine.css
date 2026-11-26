@@ -2,22 +2,6 @@
    the stop button (away from the big button: the lane lies between them), the lane of beats, the big tap button. */
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --rhythm-tap-hint-shadow-06: rgba(0, 0, 0, 0.6);
-  --rhythm-tap-stop-shadow-045: rgba(0, 0, 0, 0.45);
-  --rhythm-tap-stop-shadow: #f6d27a;
-  --rhythm-tap-stop-shadow-09: rgba(246, 210, 122, 0.9);
-  --rhythm-tap-lane-ground-055: rgba(31, 36, 48, 0.55);
-  --rhythm-tap-ring-edge-08: rgba(240, 200, 96, 0.8);
-  --rhythm-tap-ring-shadow-08: rgba(31, 36, 48, 0.8);
-  --rhythm-tap-ring-edge: #fffaf1;
-  --rhythm-tap-ring-ground-03: rgba(255, 250, 241, 0.3);
-  --rhythm-tap-ring-ground-045: rgba(240, 200, 96, 0.45);
-  --rhythm-tap-ring-shadow-095: rgba(240, 200, 96, 0.95);
-  --rhythm-tap-mark-edge-07: rgba(255, 250, 241, 0.7);
-  --rhythm-tap-mark-shadow-09: rgba(240, 200, 96, 0.9);
-  --rhythm-tap-mark-edge-08: rgba(255, 250, 241, 0.8);
-  --rhythm-tap-mark-ground-085: rgba(31, 36, 48, 0.85);
-  --rhythm-tap-mark-ground-085-2: rgba(255, 250, 241, 0.85);
   --rhythm-tap-mark-edge: #e39a6c;
   --rhythm-tap-mark-ground-06: rgba(160, 72, 38, 0.6);
 }
@@ -42,7 +26,7 @@
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-snug);
   text-wrap: balance;
-  text-shadow: 0 1px 2px var(--rhythm-tap-hint-shadow-06);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent);
 }
 /* The stop: smaller than the tap and above the lane (a fast thumb does not reach it by chance); filled plum with a palm,
    so it reads as a button apart from anything the field says (a speech bubble is parchment). */
@@ -63,14 +47,14 @@
   font-size: var(--ds-text-subhead);
   font-weight: 700;
   letter-spacing: 0.1em;
-  box-shadow: 0 2px 6px var(--rhythm-tap-stop-shadow-045);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 45%, transparent);
   touch-action: manipulation;
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-palm { width: 20px; height: 20px; fill: currentColor; }
 .mg-engine-rhythm-tap .mg-rhythm-tap-stop[aria-disabled="true"] { opacity: 0.55; }
 /* The partner has just stopped: the stop button lights (a gold ring and a pulse; still: the ring only). */
 .mg-engine-rhythm-tap .mg-rhythm-tap-stop[data-partner="up"]:not([aria-disabled="true"]) {
-  box-shadow: 0 0 0 3px var(--rhythm-tap-stop-shadow), 0 0 16px var(--rhythm-tap-stop-shadow-09);
+  box-shadow: 0 0 0 3px var(--ds-game-gold), 0 0 16px color-mix(in srgb, var(--ds-game-gold) 90%, transparent);
   animation: mg-rhythm-tap-stop-pulse 400ms ease-out 2;
 }
 @keyframes mg-rhythm-tap-stop-pulse { 50% { transform: scale(1.1); } }
@@ -83,7 +67,7 @@
   overflow: hidden;
   border: 1px solid var(--ds-gold-hairline);
   border-radius: var(--ds-glass-radius);
-  background: var(--rhythm-tap-lane-ground-055);
+  background: color-mix(in srgb, var(--ds-slate-900) 55%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring,
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark {
@@ -96,19 +80,19 @@
   left: 16%;
   width: 40px;
   height: 40px;
-  border: 3px solid var(--rhythm-tap-ring-edge-08);
-  box-shadow: 0 0 0 1px var(--rhythm-tap-ring-shadow-08);
+  border: 3px solid color-mix(in srgb, var(--ds-game-gold) 80%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ds-slate-900) 80%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="good"] {
   border-width: 5px;
-  border-color: var(--rhythm-tap-ring-edge);
-  background: var(--rhythm-tap-ring-ground-03);
+  border-color: var(--ds-on-slate);
+  background: color-mix(in srgb, var(--ds-on-slate) 30%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="perfect"] {
   border-width: 7px;
-  border-color: var(--rhythm-tap-stop-shadow);
-  background: var(--rhythm-tap-ring-ground-045);
-  box-shadow: 0 0 14px var(--rhythm-tap-ring-shadow-095);
+  border-color: var(--ds-game-gold);
+  background: color-mix(in srgb, var(--ds-game-gold) 45%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ds-game-gold) 95%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark {
   left: 110%;
@@ -129,7 +113,7 @@
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-state="count"] {
   width: 20px;
   height: 20px;
-  border: 2px dashed var(--rhythm-tap-mark-edge-07);
+  border: 2px dashed color-mix(in srgb, var(--ds-on-slate) 70%, transparent);
   background: transparent;
   box-shadow: none;
 }
@@ -142,7 +126,7 @@
   width: 12px;
   height: 2px;
   border-radius: var(--ds-radius-hair);
-  background: var(--rhythm-tap-mark-edge-07);
+  background: color-mix(in srgb, var(--ds-on-slate) 70%, transparent);
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-state="count"]::after { transform: translate(-50%, -50%) rotate(-45deg); }
@@ -150,15 +134,15 @@
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-big][data-state="coming"] {
   width: 30px;
   height: 30px;
-  box-shadow: 0 0 0 2px var(--ds-slate-900), 0 0 0 4px var(--rhythm-tap-mark-shadow-09);
+  box-shadow: 0 0 0 2px var(--ds-slate-900), 0 0 0 4px color-mix(in srgb, var(--ds-game-gold) 90%, transparent);
 }
 /* A rest (not to tap: the dance's break, the vendor's feint once it shows): a hollow circle with a bar across (a rest
    sign); tapped, the bar turns into a cross on a terracotta ring; kept, it passes dim. Shape, not colour alone. */
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"], [data-state="fooled"]) {
   width: 22px;
   height: 22px;
-  border: 2px solid var(--rhythm-tap-mark-edge-08);
-  background: var(--rhythm-tap-mark-ground-085);
+  border: 2px solid color-mix(in srgb, var(--ds-on-slate) 80%, transparent);
+  background: color-mix(in srgb, var(--ds-slate-900) 85%, transparent);
   box-shadow: none;
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"])::before,
@@ -171,7 +155,7 @@
   width: 12px;
   height: 3px;
   border-radius: var(--ds-radius-hair);
-  background: var(--rhythm-tap-mark-ground-085-2);
+  background: color-mix(in srgb, var(--ds-on-slate) 85%, transparent);
   transform: translate(-50%, -50%);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="kept"] { opacity: 0.4; }
