@@ -2,20 +2,29 @@
    would be (in the dialogue window); the play lies over the whole scene, below what lies over the scene's top (--scene-top):
    the top band, the game's stage (its field and, at the bottom in thumb reach, its controls), the count, the finish word,
    the heroine's reaction and the result card. */
-.minigame-ready .minigame-start { justify-content: center; gap: 8px; font-size: 16px; font-weight: 700; }
+/* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
+   docs/02 「デザインの決まり」). */
+:root {
+  --minigame-count-size: 72px;
+  --minigame-go-size: 48px;
+  --minigame-finish-size: 40px;
+  --minigame-cutin-size: 40px;
+  --minigame-big-star-size: 36px;
+}
+.minigame-ready .minigame-start { justify-content: center; gap: 8px; font-size: var(--ds-text-subhead); font-weight: 700; }
 /* The instruction card: the hand, the title and length, the goal (what to do and how). One line after the first play. */
 .minigame-card { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
 .minigame-card-text { min-width: 0; }
-.minigame-card-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; margin: 0; font-size: 16px; font-weight: 700; line-height: 1.4; }
-.minigame-card-length { font-size: 12px; font-weight: 400; opacity: 0.82; }
-.minigame-ready .minigame-card-goal { margin: 2px 0 0; color: inherit; font-size: 14px; line-height: 1.5; }
+.minigame-card-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; margin: 0; font-size: var(--ds-text-subhead); font-weight: 700; line-height: var(--ds-leading-snug); }
+.minigame-card-length { font-size: var(--ds-text-caption); font-weight: 400; opacity: 0.82; }
+.minigame-ready .minigame-card-goal { margin: 2px 0 0; color: inherit; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .minigame-card[data-brief] { margin-bottom: 8px; }
-.minigame-card[data-brief] .minigame-card-goal { margin: 0; font-size: 13px; }
+.minigame-card[data-brief] .minigame-card-goal { margin: 0; font-size: var(--ds-text-note); }
 /* 「練習する」 (secondary, left) and the start (primary, right, the larger). */
 .minigame-card-actions[data-practice] { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 8px; align-items: stretch; }
 /* 練習 is optional (UI_RULES A-5, A-9): an outlined button in the window's own ink, quieter than the start on a dark window
    or a light one. */
-.minigame-card-actions .minigame-practice { justify-content: center; min-height: 48px; margin: 0; border-color: currentColor; background: transparent; color: inherit; font-size: 14px; }
+.minigame-card-actions .minigame-practice { justify-content: center; min-height: 48px; margin: 0; border-color: currentColor; background: transparent; color: inherit; font-size: var(--ds-text-body); }
 .minigame-card-actions .minigame-practice:hover:enabled { background: rgba(127, 127, 127, 0.14); }
 .minigame-card-actions .minigame-start { min-height: 54px; }
 
@@ -75,7 +84,7 @@
 .minigame-failed-actions > button { justify-content: center; min-height: 44px; }
 .minigame-debug { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 8px; margin-top: 10px; }
 .minigame-debug .fine-print { grid-column: 1 / -1; margin: 0; }
-.minigame-debug .secondary { min-height: 44px; margin-top: 6px; padding: 6px 8px; font-size: 12px; line-height: 1.4; }
+.minigame-debug .secondary { min-height: 44px; margin-top: 6px; padding: 6px 8px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
 
 .minigame-layer {
   position: absolute;
@@ -112,7 +121,7 @@
   min-height: 44px;
   padding: 4px 8px 4px 16px;
   background: rgba(20, 24, 32, 0.55);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 /* The name, 「練習」 and the status: one line where they fit; on a narrow phone the status (or 「練習」 too) wraps under the
    name instead of being cut (two lines still fit the band's 44 px: no jump when the status first shows). */
@@ -123,7 +132,7 @@
   align-items: center;
   gap: 0 8px;
   min-width: 0;
-  line-height: 1.25;
+  line-height: var(--ds-leading-tight);
 }
 .minigame-band-title { max-width: 100%; overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .minigame-band-status { flex: 0 1 auto; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-slate-muted); }
@@ -136,7 +145,7 @@
   border-radius: 10px;
   background: transparent;
   color: var(--ds-on-slate);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 /* 「練習」 in the band: a chip, so a practice play is never mistaken for the real one. */
 .minigame-band-practice {
@@ -145,7 +154,7 @@
   border: 1px solid var(--ds-gold-hairline);
   border-radius: 999px;
   color: var(--ds-marker-selected);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 700;
 }
 .minigame-stage { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
@@ -177,18 +186,18 @@
   margin: 0;
   color: #fffaf1;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: var(--ds-leading-display);
   text-align: center;
   pointer-events: none;
   /* A dark edge: readable over any photo. */
   text-shadow: 0 0 2px #2a211c, 0 0 2px #2a211c, 0 2px 0 #2a211c, 0 4px 10px rgba(0, 0, 0, 0.45);
   transform: translateY(-50%);
 }
-.minigame-layer .minigame-count { font-size: 72px; animation: minigame-count-in 120ms var(--ease-out, ease-out) both; }
-.minigame-layer .minigame-count[data-phase="go"] { color: var(--ds-marker-selected); font-size: 48px; }
+.minigame-layer .minigame-count { font-size: var(--minigame-count-size); animation: minigame-count-in 120ms var(--ease-out, ease-out) both; }
+.minigame-layer .minigame-count[data-phase="go"] { color: var(--ds-marker-selected); font-size: var(--minigame-go-size); }
 @keyframes minigame-count-in { from { opacity: 0.4; transform: translateY(-50%) scale(1.3); } }
 /* The finish word (「そこまで！」): 40 px for 0.5 s as the play ends. */
-.minigame-layer .minigame-finish { font-size: 40px; animation: minigame-finish-in 160ms var(--ease-out, ease-out) both; }
+.minigame-layer .minigame-finish { font-size: var(--minigame-finish-size); animation: minigame-finish-in 160ms var(--ease-out, ease-out) both; }
 .minigame-layer .minigame-finish[data-level="great"] { color: var(--ds-marker-selected); }
 @keyframes minigame-finish-in { from { opacity: 0; transform: translateY(-50%) scale(1.4); } }
 /* High, under the band (finishAnchor "top"): off a key picture in the middle of the field (her scream). */
@@ -212,8 +221,8 @@
 .minigame-layer:not([data-still]) .minigame-cutin { animation: minigame-cutin-in 220ms var(--ease-out, ease-out) both; }
 @keyframes minigame-cutin-in { from { opacity: 0; transform: translate(18%, -50%); } }
 .minigame-layer .minigame-cutin p { margin: 0; text-align: center; text-shadow: 0 0 2px #2a211c, 0 2px 0 #2a211c; }
-.minigame-layer .minigame-cutin-sub { color: #fffaf1; font-size: 15px; font-weight: 700; line-height: 1.4; }
-.minigame-layer .minigame-cutin-main { color: var(--ds-marker-selected); font-size: 40px; font-weight: 800; line-height: 1.15; }
+.minigame-layer .minigame-cutin-sub { color: #fffaf1; font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-snug); }
+.minigame-layer .minigame-cutin-main { color: var(--ds-marker-selected); font-size: var(--minigame-cutin-size); font-weight: 800; line-height: var(--ds-leading-display); }
 
 /* The heroine's quick reaction: her face (64 px) and a short bubble, under the band on the left, for 0.9 s. */
 .minigame-react {
@@ -236,9 +245,9 @@
   border-radius: 14px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
 }
 @keyframes minigame-react-in { from { opacity: 0; transform: scale(0.85); transform-origin: 32px 32px; } }
 
@@ -281,31 +290,31 @@
    44 px. The key picture of the field stays in view above it. */
 .minigame-layer .minigame-result[data-compact] { gap: 2px; padding: 6px 10px 8px; }
 .minigame-result-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: 8px; max-width: 100%; }
-.minigame-result[data-compact] .minigame-stars { gap: 2px; font-size: 18px; }
-.minigame-result[data-compact] .minigame-star[data-big] { font-size: 22px; }
-.minigame-layer .minigame-result[data-compact] .minigame-result-label { font-size: 17px; line-height: 1.3; }
+.minigame-result[data-compact] .minigame-stars { gap: 2px; font-size: var(--ds-text-subhead); }
+.minigame-result[data-compact] .minigame-star[data-big] { font-size: var(--ds-text-heading); }
+.minigame-layer .minigame-result[data-compact] .minigame-result-label { font-size: var(--ds-text-subhead); line-height: var(--ds-leading-tight); }
 .minigame-result[data-compact] .minigame-result-react { justify-content: center; gap: 8px; margin-top: 2px; }
 .minigame-result[data-compact] .minigame-result-react .character-face { flex: none; width: 36px; height: 36px; border-width: 1.5px; }
 .minigame-result-texts { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
 .minigame-result-react:not(:has(.character-face)) .minigame-result-texts { align-items: center; }
-.minigame-layer .minigame-result[data-compact] .minigame-result-score { font-size: 14px; line-height: 1.3; }
-.minigame-layer .minigame-result[data-compact] .minigame-result-detail { font-size: 12px; line-height: 1.3; }
-.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: 2px 8px; border-radius: 10px; font-size: 13px; line-height: 1.35; }
+.minigame-layer .minigame-result[data-compact] .minigame-result-score { font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
+.minigame-layer .minigame-result[data-compact] .minigame-result-detail { font-size: var(--ds-text-caption); line-height: var(--ds-leading-tight); }
+.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: 2px 8px; border-radius: 10px; font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
 .minigame-result[data-compact] .minigame-result-actions { margin-top: 4px; }
-.minigame-result[data-compact] .minigame-result-actions > button { min-height: 44px; padding-top: 6px; padding-bottom: 6px; line-height: 1.4; }
+.minigame-result[data-compact] .minigame-result-actions > button { min-height: 44px; padding-top: 6px; padding-bottom: 6px; line-height: var(--ds-leading-snug); }
 @keyframes minigame-result-in { from { opacity: 0; transform: translateY(12px); } }
 .minigame-result-head { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 0; }
 .minigame-result-head:empty { display: none; }
 /* ★ one by one (120 ms apart), ★3 bigger; an unearned one dim and outlined (not told by colour alone). */
-.minigame-stars { display: flex; align-items: flex-end; gap: 4px; font-size: 28px; line-height: 1; }
+.minigame-stars { display: flex; align-items: flex-end; gap: 4px; font-size: var(--ds-text-title); line-height: 1; }
 .minigame-star { color: transparent; -webkit-text-stroke: 1.5px var(--ds-on-slate-muted); animation: minigame-star-in 200ms var(--ease-out, ease-out) both; }
 .minigame-star[data-on] { color: #f6d36b; -webkit-text-stroke: 1.5px #2a211c; }
-.minigame-star[data-big] { font-size: 36px; }
+.minigame-star[data-big] { font-size: var(--minigame-big-star-size); }
 @keyframes minigame-star-in { from { opacity: 0; transform: scale(1.6); } }
 .minigame-layer .minigame-result p { margin: 0; }
-.minigame-layer .minigame-result-label { font-size: 22px; font-weight: 700; line-height: 1.4; }
-.minigame-layer .minigame-result-score { font-size: 16px; font-weight: 700; color: var(--ds-marker-selected); font-variant-numeric: tabular-nums; }
-.minigame-layer .minigame-result-detail { font-size: 13px; color: var(--ds-on-slate-muted); }
+.minigame-layer .minigame-result-label { font-size: var(--ds-text-heading); font-weight: 700; line-height: var(--ds-leading-snug); }
+.minigame-layer .minigame-result-score { font-size: var(--ds-text-subhead); font-weight: 700; color: var(--ds-marker-selected); font-variant-numeric: tabular-nums; }
+.minigame-layer .minigame-result-detail { font-size: var(--ds-text-note); color: var(--ds-on-slate-muted); }
 .minigame-result-react { display: flex; align-items: center; gap: 8px; margin-top: 4px; max-width: 100%; text-align: left; }
 .minigame-result-react .character-face { width: 56px; height: 56px; }
 .minigame-layer .minigame-result-line {
@@ -313,16 +322,16 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
 }
 .minigame-result-actions { display: flex; gap: 8px; width: 100%; margin-top: 8px; }
 .minigame-result-actions > button { flex: 1 1 0; justify-content: center; min-height: 52px; margin: 0; }
 /* On the dark card the main button is gold (it stands out from the card), もう一回 an outline. */
-.minigame-result-actions > .primary { flex-grow: 1.4; background: var(--ds-marker-selected); box-shadow: none; color: var(--ds-slate-900); font-size: 16px; font-weight: 700; }
+.minigame-result-actions > .primary { flex-grow: 1.4; background: var(--ds-marker-selected); box-shadow: none; color: var(--ds-slate-900); font-size: var(--ds-text-subhead); font-weight: 700; }
 .minigame-result-actions > .primary:hover:enabled { background: #ffd666; }
 .minigame-result-actions > .primary:focus-visible { box-shadow: 0 0 0 3px var(--ds-slate-900), 0 0 0 5px var(--ds-focus); }
-.minigame-result-actions > .secondary { border-color: rgba(255, 250, 241, 0.55); background: transparent; color: var(--ds-on-slate); font-size: 14px; }
+.minigame-result-actions > .secondary { border-color: rgba(255, 250, 241, 0.55); background: transparent; color: var(--ds-on-slate); font-size: var(--ds-text-body); }
 .minigame-result-actions > .secondary:hover:enabled { background: rgba(255, 250, 241, 0.12); }
 /* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
    the buttons a bar of their own at the bottom in the controls' place, as on every other game (2026-11-14). Between
@@ -384,7 +393,7 @@
   padding: 16px;
   background: rgba(20, 24, 32, 0.78);
 }
-.minigame-pause p { margin: 0 0 6px; font-size: 18px; font-weight: 700; text-align: center; }
+.minigame-pause p { margin: 0 0 6px; font-size: var(--ds-text-subhead); font-weight: 700; text-align: center; }
 .minigame-pause button { justify-content: center; min-height: 52px; }
 
 /* 「演出を短縮する」 and the device's reduced motion: no fade, run-up, sweep, tumble or pop (what the play needs still moves,

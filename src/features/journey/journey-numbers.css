@@ -10,7 +10,7 @@
 }
 .journey-numbers h3 {
   margin: 0 0 8px;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
 }
 .journey-numbers dl {
   display: grid;
@@ -23,15 +23,15 @@
 }
 .journey-numbers dt {
   color: var(--ds-ink-muted);
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-snug);
 }
 .journey-numbers dd {
   margin: 2px 0 0;
   font-family: "Noto Serif JP", serif;
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
@@ -50,11 +50,11 @@
 .end-roll .journey-numbers h3 {
   margin-bottom: 16px;
   color: var(--roll-gold);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 500;
   letter-spacing: 0.4em;
   text-indent: 0.4em;
 }
 .end-roll .journey-numbers dl { gap: 18px 14px; }
-.end-roll .journey-numbers dt { color: var(--roll-muted); font-size: 11px; letter-spacing: 0.12em; }
-.end-roll .journey-numbers dd { margin-top: 4px; font-size: 22px; font-weight: 500; }
+.end-roll .journey-numbers dt { color: var(--roll-muted); font-size: var(--ds-text-mark); letter-spacing: 0.12em; }
+.end-roll .journey-numbers dd { margin-top: 4px; font-size: var(--ds-text-heading); font-weight: 500; }

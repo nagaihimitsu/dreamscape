@@ -2,6 +2,15 @@
    credit roll. Every animation stops under the game's 「演出を短縮する」 (.is-reduced / .is-still, read once by each moment)
    and under prefers-reduced-motion. No card has a side accent line; parts are told apart by headings and grounds. */
 
+/* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
+   docs/02 「デザインの決まり」). */
+:root {
+  --episode-title-size: clamp(26px, 8.2vw, 44px);
+  --packing-title-size: clamp(22px, 6.4vw, 30px);
+  --chapter-stamp-size: 44px;
+  --end-roll-title-size: clamp(18px, 6vw, 34px);
+  --end-roll-fin-size: 40px;
+}
 /* ── 話の始まりの題名の札 ── over the whole screen; the place's photo, darkened at its foot, the title large over it. */
 .episode-title-card {
   position: fixed;
@@ -49,13 +58,13 @@
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
   animation: episode-title-text 2.4s ease both;
 }
-.episode-title-place { font-size: 13px; font-weight: 600; letter-spacing: 0.16em; overflow-wrap: anywhere; }
+.episode-title-place { font-size: var(--ds-text-note); font-weight: 600; letter-spacing: 0.16em; overflow-wrap: anywhere; }
 .episode-title-rule { width: 56px; height: 1px; background: var(--ds-gold); }
 .episode-title-name {
   font-family: "Noto Serif JP", serif;
-  font-size: clamp(26px, 8.2vw, 44px);
+  font-size: var(--episode-title-size);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.08em;
   word-break: keep-all;
   overflow-wrap: anywhere;
@@ -96,8 +105,8 @@
 }
 .resume-recap-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .resume-recap-head > div { min-width: 0; }
-.resume-recap-title { margin: 0; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
-.resume-recap-when { margin: 0; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.resume-recap-title { margin: 0; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.resume-recap-when { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
 .resume-recap-close {
   flex: none;
   display: inline-flex;
@@ -109,7 +118,7 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 600;
 }
 .resume-recap-close:hover { background: var(--ds-parchment-2); }
@@ -119,11 +128,11 @@
 /* The album's illustration in the same 3:2 frame as the album (a picture of another shape keeps its middle); a place's
    photo is its 3:2 card copy. */
 .resume-recap-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; background: #26342e; }
-.resume-recap-photo figcaption { margin-top: 4px; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.resume-recap-photo figcaption { margin-top: 4px; font-size: var(--ds-text-mark); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .resume-recap-chapter { min-width: 0; }
-.resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: 12px; }
-.resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }
-.resume-recap-chapter p:last-child { margin: 4px 0 0; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
+.resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.resume-recap-chapter p:last-child { margin: 4px 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* Her line looking back on the place finished last, under the record (resumeRecap). */
 .resume-recap .resume-recap-heroine { margin: 10px 0 0; }
 /* A narrow phone: the photo above the record, so the record keeps the card's width. */
@@ -165,9 +174,9 @@
 }
 /* Centred in the screen; from its top when it does not fit (auto margins). */
 .packing-content { display: grid; justify-items: center; gap: 12px; width: min(360px, 100%); margin: auto; text-align: center; }
-.packing-eyebrow { color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; }
-.packing-title { font-family: "Noto Serif JP", serif; font-size: clamp(22px, 6.4vw, 30px); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
-.packing-label { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
+.packing-eyebrow { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.2em; }
+.packing-title { font-family: "Noto Serif JP", serif; font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
+.packing-label { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; overflow-wrap: anywhere; }
 .packing-case {
   position: relative;
   width: 100%;
@@ -197,14 +206,14 @@
   align-items: center;
   gap: 6px;
   max-width: 100%;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   animation: packing-item 0.4s var(--ease-out) both;
   animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
 }
 .packing-items img { flex: none; width: 32px; height: 32px; }
-.packing-next { margin-top: 6px; font-family: "Noto Serif JP", serif; font-size: 16px; letter-spacing: 0.08em; }
+.packing-next { margin-top: 6px; font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); letter-spacing: 0.08em; }
 @keyframes packing-scene { 0% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes packing-item { from { opacity: 0; transform: translateY(-10px); } }
 .packing-scene.is-reduced, .packing-scene.is-reduced .packing-items li { animation: none; }
@@ -215,9 +224,9 @@
 /* ── 出発の確認の品物 ── (DepartureLuggage, 2026-11-13) in the departure's dialog: each part told by its small heading, the
    items as icon and name in a wrapping row; what stays behind dimmed a little, as in the packing. No side accent. */
 .departure-items { margin: 14px 0 0; }
-.departure-items h3 { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; line-height: 1.5; }
+.departure-items h3 { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.06em; line-height: var(--ds-leading-snug); }
 .departure-items ul { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; }
-.departure-items li { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.departure-items li { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .departure-items img { flex: none; width: 28px; height: 28px; }
 .departure-items.is-left img { opacity: 0.75; }
 .departure-items + .primary { margin-top: 20px; }
@@ -256,15 +265,15 @@
   display: -webkit-box;
   overflow: hidden;
   max-width: 100%;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
-.chapter-stamp-mark { font-family: "Noto Serif JP", serif; font-size: 44px; font-weight: 700; line-height: 1.1; }
+.chapter-stamp-mark { font-family: "Noto Serif JP", serif; font-size: var(--chapter-stamp-size); font-weight: 700; line-height: var(--ds-leading-display); }
 @keyframes chapter-stamp-drop {
   0% { opacity: 0; transform: rotate(-8deg) scale(1.8); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
   16% { opacity: 1; transform: rotate(-8deg) scale(0.92); animation-timing-function: var(--ease-out); }
@@ -343,11 +352,11 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   border-radius: 999px;
   background: rgba(7, 11, 22, 0.72);
   color: var(--roll-gold);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   letter-spacing: 0.2em;
   pointer-events: none;
 }
-.end-roll-fast span { font-size: 10px; letter-spacing: 0; }
+.end-roll-fast span { font-size: var(--ds-text-mark); letter-spacing: 0; }
 /* By hand: a narrow fade only, and the scroll bar comes back. */
 .end-roll.is-still .end-roll-scroller {
   cursor: auto;
@@ -368,7 +377,7 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   gap: 14px;
   margin: 0;
   color: var(--roll-gold);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 500;
   letter-spacing: 0.5em;
   text-indent: 0.5em;
@@ -379,9 +388,9 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll .end-roll-title {
   margin: 0;
   font-family: "Noto Serif JP", serif;
-  font-size: clamp(18px, 6vw, 34px);
+  font-size: var(--end-roll-title-size);
   font-weight: 500;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.06em;
   text-shadow: 0 0 24px rgba(216, 184, 120, 0.25);
 }
@@ -410,14 +419,14 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   margin: 0 0 6px;
   color: var(--roll-gold);
   font-family: "Noto Serif JP", serif;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   letter-spacing: 0.4em;
   text-indent: 0.4em;
 }
 .end-roll-city h3 {
   margin: 0 0 36px;
   font-family: "Noto Serif JP", serif;
-  font-size: 24px;
+  font-size: var(--ds-text-title);
   font-weight: 500;
   letter-spacing: 0.24em;
   text-indent: 0.24em;
@@ -446,14 +455,14 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-photos figcaption {
   margin-top: 12px;
   color: var(--ds-on-slate);
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.06em;
   text-align: left;
   overflow-wrap: anywhere;
 }
 .end-roll-photos li:nth-child(even) figcaption { text-align: right; }
-.end-roll-photos figcaption span { color: var(--roll-muted); font-size: 12px; }
+.end-roll-photos figcaption span { color: var(--roll-muted); font-size: var(--ds-text-caption); }
 /* While it rolls, each photo comes up out of the dark as it enters the view (where the browser can tie it to the scroll). */
 @supports (animation-timeline: view()) {
   .end-roll:not(.is-still) .end-roll-photos figure {
@@ -475,11 +484,11 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   margin: 0;
   color: var(--roll-gold);
   font-family: Georgia, "Noto Serif JP", serif;
-  font-size: 40px;
+  font-size: var(--end-roll-fin-size);
   font-style: italic;
   letter-spacing: 0.12em;
 }
-.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: 12px; letter-spacing: 0.3em; overflow-wrap: anywhere; }
+.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: var(--ds-text-caption); letter-spacing: 0.3em; overflow-wrap: anywhere; }
 .end-roll-bar {
   position: relative;
   flex: none;

@@ -6,7 +6,7 @@
 }
 .music-room-part h3 {
   margin: 0 0 6px;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
 }
 .music-room-list {
   display: grid;
@@ -27,8 +27,8 @@
   background: var(--ds-field);
   color: var(--ds-ink);
   font: inherit;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   text-align: left;
   overflow-wrap: anywhere;
 }
@@ -69,10 +69,10 @@
   gap: 8px;
   min-height: 44px;
   margin: 2px 0 0;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-snug);
 }
 .music-room-now .icon { flex: none; width: 18px; height: 18px; }
 .music-room-now-label { flex: 1 1 auto; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
-.music-room-now-idle { color: var(--ds-ink-muted); font-size: 13px; }
+.music-room-now-idle { color: var(--ds-ink-muted); font-size: var(--ds-text-note); }
 .music-room-now .music-room-stop { flex: none; width: auto; min-height: 44px; margin: 0; padding: 4px 14px; }

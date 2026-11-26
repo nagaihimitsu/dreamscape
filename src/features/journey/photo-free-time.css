@@ -3,6 +3,9 @@
    glass keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no card has
    a thick accent line on its left (AGENTS.md). */
 
+/* The height of the marks over a card's photo, named once: the kind mark and the chips beside it stand in one line. */
+:root { --photo-card-mark: 22px; }
+
 .free-time-hub.photo-free-time { max-width: 680px; }
 
 /* The background of a city without a backdrop: a map-like pattern (faint streets, an avenue, a river and a park), not a
@@ -56,8 +59,8 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
 }
 /* The name of a header button (「≡メニュー」) kept on one line. */
 .photo-menu-note-word { white-space: nowrap; }
@@ -255,7 +258,7 @@
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  height: 22px;
+  height: var(--photo-card-mark);
   padding: 0 6px;
   border-radius: 999px;
   color: var(--ds-on-slate);
@@ -273,13 +276,13 @@
 .photo-cards:not(.is-list) .photo-card-chip.is-top,
 .photo-card-ghost .photo-card-chip.is-top { top: 6px; right: 6px; }
 .photo-cards:not(.is-list) .photo-card-chip.is-bottom,
-.photo-card-ghost .photo-card-chip.is-bottom { top: 6px; bottom: auto; left: 6px; line-height: 22px; }
+.photo-card-ghost .photo-card-chip.is-bottom { top: 6px; bottom: auto; left: 6px; line-height: var(--photo-card-mark); }
 .photo-cards:not(.is-list) .photo-card-kind ~ .photo-card-chip.is-bottom,
 .photo-card-ghost .photo-card-kind ~ .photo-card-chip.is-bottom { left: 34px; }
 .photo-cards:not(.is-list) .photo-card-kind.is-both ~ .photo-card-chip.is-bottom,
 .photo-card-ghost .photo-card-kind.is-both ~ .photo-card-chip.is-bottom { left: 49px; }
 .photo-cards:not(.is-list) .photo-card-chip.is-top,
-.photo-card-ghost .photo-card-chip.is-top { line-height: 22px; }
+.photo-card-ghost .photo-card-chip.is-top { line-height: var(--photo-card-mark); }
 /* The list (short screens, large text, sideways): rows of the light glass, the photo at their left with its marks. */
 .photo-cards.is-list .photo-card {
   border: 0;
@@ -322,7 +325,7 @@
   height: 100%;
   background: var(--ds-slate-800);
   color: rgba(255, 255, 255, 0.92);
-  font-size: 26px;
+  font-size: var(--ds-text-title);
 }
 .photo-card-plain .icon { width: 32px; height: 32px; }
 /* No filter on photos (their pixels stay as credited): a cannot-go card only fades its photo. */
@@ -349,7 +352,7 @@
   -webkit-line-clamp: 2;
   line-clamp: 2;
   color: var(--ds-disabled-ink);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
 /* Status over the photo: display-only pills on a solid ground. */
 .photo-card-chip {
@@ -359,9 +362,9 @@
   border-radius: 999px;
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 600;
-  line-height: 18px;
+  line-height: var(--ds-leading-chip);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -371,9 +374,9 @@
 .photo-card-text { display: flex; flex-direction: column; min-width: 0; padding: 6px 4px 0; }
 .photo-card-name {
   font-family: "Noto Serif JP", serif;
-  font-size: 16px;
+  font-size: var(--ds-text-subhead);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
 /* The swipe's cue, without words (2026-11-11, the user's decision): two up chevrons under the name that rise and fade
@@ -496,9 +499,9 @@
   background: var(--ds-window-bg);
   color: var(--ds-on-slate);
   box-shadow: var(--ds-window-shadow);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.5;
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.03em;
   text-align: center;
   overflow-wrap: anywhere;
@@ -588,16 +591,16 @@
   gap: 6px;
   margin: 0;
   font-family: "Noto Serif JP", serif;
-  font-size: 17px;
+  font-size: var(--ds-text-subhead);
   font-weight: 600;
   letter-spacing: 0.02em;
-  line-height: 1.35;
+  line-height: var(--ds-leading-tight);
 }
 .place-card .place-card-name > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .place-card-event-list { display: grid; gap: 8px; }
 .place-card-event { display: grid; gap: 4px; }
 .place-card-event + .place-card-event { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
-.place-card-event-title { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
+.place-card-event-title { margin: 0; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 /* A place with several events: which one the swipe up (or 「行く」) takes, ● the chosen one; a press only chooses it
    (its ways show under it). */
 .place-card-event-choice {
@@ -613,17 +616,17 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.45;
+  line-height: var(--ds-leading-snug);
   text-align: left;
   cursor: pointer;
 }
 .place-card-event-choice[aria-pressed="true"] { background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1px var(--ds-ink); }
 .place-card-event-choice .place-card-tag { margin-right: 0; }
 .place-card-event-choice > span:last-child { min-width: 0; overflow-wrap: anywhere; }
-.place-card-event-mark { flex: none; font-size: 12px; }
-.place-card-event-meta { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.place-card-event-mark { flex: none; font-size: var(--ds-text-caption); }
+.place-card-event-meta { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
 /* What an event is, before its title or its time: a display-only pill whose word says it (「ストーリー」, 「デート」), on
    the smoked glass for both (2026-11-25 user decision: the immersion before the colours decided earlier). */
 .place-card-tag {
@@ -633,13 +636,13 @@
   border-radius: 999px;
   background: var(--ds-smoke);
   color: var(--ds-on-slate);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 600;
-  line-height: 18px;
+  line-height: var(--ds-leading-chip);
   white-space: nowrap;
   vertical-align: 1px;
 }
-.place-card-hook { font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.place-card-hook { font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* The heroine's few words about the chosen place (HeroineNote, its heroineLinesJa; 2026-11-11 user decision): in the
    card's flow, so it covers nothing and a drag that starts on it moves the row or lifts the card as anywhere else
    (nothing in it is pressable). Each place chosen brings a new note, which comes in like a panel; under reduced motion
@@ -647,7 +650,7 @@
 /* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
 .place-card .place-card-heroine { gap: 8px; }
 .place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
-.place-card .place-card-heroine .heroine-note-bubble { padding: 6px 13px 7px; font-size: 12px; line-height: 1.6; }
+.place-card .place-card-heroine .heroine-note-bubble { padding: 6px 13px 7px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); }
 .place-card .place-card-heroine .heroine-note-bubble::before { top: 12px; height: 10px; }
 .place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
 @keyframes place-card-heroine-in {
@@ -657,8 +660,8 @@
 @media (prefers-reduced-motion: reduce) {
   .place-card .place-card-heroine { animation: none; }
 }
-.place-card-note { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
-.place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.place-card-note { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
 
 /* The way: the modes in one row, each with its time and fare (pressing one only chooses it), or the one way as a line;
    then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「待機」's waits and
@@ -678,9 +681,9 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
   cursor: pointer;
 }
@@ -693,7 +696,7 @@
 }
 .place-card-mode:disabled,
 .place-card-option:disabled { opacity: 1; border-style: dashed; background: none; color: var(--ds-ink-muted); cursor: default; }
-.place-card-mode-cost { display: block; font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.place-card-mode-cost { display: block; font-size: var(--ds-text-caption); font-weight: 500; font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
    so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
    on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one with
@@ -714,9 +717,9 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
   cursor: pointer;
 }
@@ -727,10 +730,10 @@
   box-shadow: inset 0 0 0 1px var(--ds-gold-hairline);
   text-shadow: var(--ds-action-text-shadow);
 }
-.place-card-option-mark { flex: none; font-size: 15px; font-weight: 700; line-height: 1; }
+.place-card-option-mark { flex: none; font-size: var(--ds-text-body); font-weight: 700; line-height: 1; }
 .place-card-option-text { min-width: 0; }
 /* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. */
-.place-card-way { margin: 0 2px; font-size: 13px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.place-card-way { margin: 0 2px; font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .place-card-way .place-card-mode-cost { display: inline; }
 .place-card-way.is-unavailable { color: var(--ds-ink-muted); }
 .place-card .place-card-go {
@@ -739,12 +742,12 @@
   min-height: 48px;
   margin: 0;
   padding: 8px 14px;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
 }
 .place-card-go > span { min-width: 0; overflow-wrap: anywhere; }
-.place-card-go-cost { margin-left: auto; font-size: 13px; font-weight: 500; }
+.place-card-go-cost { margin-left: auto; font-size: var(--ds-text-note); font-weight: 500; }
 /* In the row: kept for screen readers and the keyboard (visually hidden until it has the focus). */
 .place-card .place-card-go.is-quiet:not(:focus) {
   position: absolute;
@@ -771,10 +774,10 @@
   isolation: isolate;
   pointer-events: none;
 }
-.place-inset-map .leaflet-control-attribution { pointer-events: auto; font-size: 10px; }
+.place-inset-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-mark); }
 .place-inset-map .travel-map-marker-label { --map-label-max: 150px; }
 .place-inset-map .travel-map-marker-label.is-below { top: calc(100% + 4px); bottom: auto; }
-.place-inset-error { font-size: 12px; line-height: 1.5; }
+.place-inset-error { font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
 /* The direction: a display-only pill over the small map's top-left corner (above Leaflet's layers). */
 .place-card-direction {
   position: absolute;
@@ -782,14 +785,14 @@
   top: 6px;
   left: 6px;
   margin: 0;
-  padding: 0 8px;
+  padding: 1px 8px;
   border-radius: 999px;
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
   color: var(--ds-ink);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 600;
-  line-height: 20px;
+  line-height: var(--ds-leading-chip);
   pointer-events: none;
 }
 

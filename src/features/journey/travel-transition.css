@@ -48,9 +48,9 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
-  font-size: 14px;
+  font-size: var(--ds-text-note);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: var(--ds-leading-snug);
   letter-spacing: .06em;
   text-align: center;
   width: max-content;
@@ -151,8 +151,8 @@
   border-top-left-radius: 6px;
   background: #fffaf1cc;
   color: var(--ds-ink);
-  font-size: 9px;
-  line-height: 1.6;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-body);
 }
 .travel-ride-dot {
   fill: var(--ds-slate-800);
@@ -169,7 +169,7 @@
 }
 .travel-ride-name {
   fill: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 700;
   letter-spacing: .02em;
   paint-order: stroke;

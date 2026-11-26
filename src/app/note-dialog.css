@@ -12,7 +12,7 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   font-weight: 700;
 }
 .note-tabs button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }

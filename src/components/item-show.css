@@ -79,9 +79,9 @@
   position: relative;
   max-width: 100%;
   font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  font-size: 16px;
+  font-size: var(--ds-text-subhead);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
   letter-spacing: 0.02em;
   text-align: center;
   overflow-wrap: anywhere;
@@ -101,7 +101,7 @@
 @media (max-height: 500px) {
   .item-show-layer { --item-top: max(8px, calc(var(--room-top, 0px) + 8px)); }
   .item-show-card { gap: 4px; padding: 10px 14px 8px; }
-  .item-show-name { font-size: 14px; }
+  .item-show-name { font-size: var(--ds-text-body); }
 }
 
 /* As its line goes (ItemShowFlight, in the header's layer over the screen): the card, as it was, shrinks and flies into

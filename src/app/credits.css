@@ -9,17 +9,17 @@ dialog.modal.credits-modal {
 .credits-modal .modal-title-bar { margin-bottom: 8px; }
 .credits-list > section { padding: 12px 0; border-top: 1px solid var(--ds-parchment-line); }
 .credits-list > section:first-child { padding-top: 0; border-top: 0; }
-.credits-list h3 { margin: 0 0 6px; font-size: 16px; }
-.credits-list h4 { margin: 12px 0 4px; font-size: 13px; color: var(--ds-ink-muted); }
-.credits-list p { margin: 4px 0; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
-.credits-list .fine-print { font-size: 12px; line-height: 1.7; }
+.credits-list h3 { margin: 0 0 6px; font-size: var(--ds-text-subhead); }
+.credits-list h4 { margin: 12px 0 4px; font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
+.credits-list p { margin: 4px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.credits-list .fine-print { font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); }
 .credits-list summary {
   cursor: pointer;
   min-height: 44px;
   padding: 11px 0;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 22px;
+  line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
 .credits-journey { border-bottom: 1px solid var(--ds-parchment-line); }
@@ -34,18 +34,18 @@ dialog.modal.credits-modal {
 .credits-photos li:first-child,
 .credits-sounds li:first-child { border-top: 0; }
 .credits-photos p,
-.credits-sounds p { margin: 2px 0; font-size: 12px; line-height: 1.5; }
-.credits-list .credits-place { font-size: 13px; font-weight: 600; }
+.credits-sounds p { margin: 2px 0; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.credits-list .credits-place { font-size: var(--ds-text-note); font-weight: 600; }
 .credits-licences { gap: 0; }
 .credits-licences li { border-bottom: 1px solid var(--ds-parchment-line); }
-.credits-licences summary { font-weight: 500; font-size: 13px; }
+.credits-licences summary { font-weight: 500; font-size: var(--ds-text-note); }
 .credits-licences pre {
   margin: 0 0 10px;
   padding: 8px;
   background: var(--ds-field);
   border-radius: 8px;
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-snug);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }

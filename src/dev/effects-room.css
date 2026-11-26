@@ -13,11 +13,11 @@
   justify-content: space-between;
   gap: 8px;
 }
-.effects-room h1 { margin: 0; font-size: 20px; line-height: 1.4; }
-.effects-room h2 { margin: 28px 0 8px; font-size: 18px; line-height: 1.4; letter-spacing: 0; }
+.effects-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-snug); }
+.effects-room h2 { margin: 28px 0 8px; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-snug); letter-spacing: 0; }
 /* The room's own text only: the sample screen keeps the game's own sizes and margins. */
-.effects-room h3:not(.effects-room-screen *) { margin: 16px 0 6px; font-size: 14px; font-weight: 600; line-height: 1.4; }
-.effects-room p:not(.effects-room-screen *) { margin: 6px 0; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.effects-room h3:not(.effects-room-screen *) { margin: 16px 0 6px; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); }
+.effects-room p:not(.effects-room-screen *) { margin: 6px 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .effects-room button.effects-room-close {
   flex: none;
   min-height: 44px;
@@ -26,7 +26,7 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .effects-room-note {
   padding: 10px 12px;
@@ -51,7 +51,7 @@
   padding: 0 14px;
   border-radius: 999px;
   background: var(--ds-parchment-2);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   text-decoration: none;
 }
 
@@ -65,8 +65,8 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
 }
 .effects-room button.effects-room-chip:hover:enabled:not([aria-pressed="true"], [data-playing]) { background: var(--ds-parchment-2); }
 .effects-room button.effects-room-chip:is([aria-pressed="true"], [data-playing]) { background: var(--ds-slate-800); color: var(--ds-on-slate); }
@@ -92,8 +92,8 @@
   height: 100%;
   text-align: left;
 }
-.effects-room-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; overflow-wrap: anywhere; }
-.effects-room-use { font-size: 12px; color: var(--ds-ink-muted); }
+.effects-room-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--ds-text-caption); overflow-wrap: anywhere; }
+.effects-room-use { font-size: var(--ds-text-caption); color: var(--ds-ink-muted); }
 .effects-room button[aria-pressed="true"] .effects-room-use { color: var(--ds-on-slate-muted); }
 .effects-room button:disabled .effects-room-use { color: inherit; }
 .effects-room-voice-group { margin: 8px 0 12px; }
@@ -101,7 +101,7 @@
 .effects-room-voice-group button.effects-room-chip { min-width: 56px; }
 
 /* Settings and fields. */
-.effects-room-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; line-height: 1.5; }
+.effects-room-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); }
 .effects-room-toggle input { flex: none; width: 22px; height: 22px; margin: 0; }
 .effects-room-volume {
   display: grid;
@@ -109,11 +109,11 @@
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
 .effects-room-volume input { width: 100%; min-height: 44px; margin: 0; }
 .effects-room-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 8px 0; }
-.effects-room-field { display: grid; gap: 4px; margin: 6px 0; font-size: 13px; }
+.effects-room-field { display: grid; gap: 4px; margin: 6px 0; font-size: var(--ds-text-note); }
 .effects-room-field select,
 .effects-room-field input {
   width: 100%;
@@ -124,9 +124,9 @@
   border-radius: 8px;
   background: #fff;
   color: var(--ds-ink);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
-.effects-room-elsewhere { margin: 6px 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+.effects-room-elsewhere { margin: 6px 0; padding-left: 20px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .effects-room-elsewhere li { margin: 4px 0; }
 
 /* The sample screen: the game's header over a short story scene. The header stays in the page's flow here (in the game
@@ -156,7 +156,7 @@
   background: var(--ds-slate-900);
   color: var(--ds-on-slate);
 }
-.effects-room-now-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 1.4; }
+.effects-room-now-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .effects-room-now-row span { min-width: 0; overflow-wrap: anywhere; }
 .effects-room-now-row button {
   flex: none;
@@ -166,5 +166,5 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }

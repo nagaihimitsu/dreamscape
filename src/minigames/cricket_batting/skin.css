@@ -146,7 +146,7 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 700;
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);

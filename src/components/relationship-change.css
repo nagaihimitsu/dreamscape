@@ -19,8 +19,8 @@
   background: var(--ds-parchment-2);
   border-bottom: 1px solid var(--ds-parchment-line);
   color: var(--ds-ink);
-  font-size: 13px;
-  line-height: 1.55;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 .relationship-change-label {
   flex: none;
@@ -29,7 +29,7 @@
   border: 1px solid var(--ds-ink-muted);
   border-radius: 3px;
   color: var(--ds-ink-muted);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 600;
   letter-spacing: 0.04em;
 }

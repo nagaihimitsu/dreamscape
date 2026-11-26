@@ -5,8 +5,8 @@
   background: #eeeae1;
   font-synthesis: none;
   font-weight: 400;
-  line-height: 1.8;
-  font-size: 15px;
+  line-height: var(--ds-leading-body);
+  font-size: var(--ds-text-body);
   font-feature-settings: "palt";
   --green: #294c40;
   --muted: #6d756a;
@@ -87,23 +87,27 @@
     rgba(20, 24, 32, 0.07) 84%, rgba(20, 24, 32, 0));
   /* The design's rules (2026-11-25 user decision, after learning from a product designer's practice: a few named sizes
      and colours, decided first and used everywhere, so every screen reads as one). The talk's stylesheets use only
-     these (src/app/design-tokens.test.ts holds them to it); a new stylesheet uses them; the other screens move to them
-     in turn. docs/02 「デザインの決まり」 lists them by role. Sizes that follow the screen's width are set below. */
+     these, and every stylesheet takes its font sizes and line heights from them (src/app/design-tokens.test.ts holds them to
+     it); the other screens' colours move to them in turn. docs/02 「デザインの決まり」 lists them by role. Sizes that follow the screen's width are set below. */
   /* The type scale, by role. */
   --ds-text-mark: 11px; /* a mark's word: ▼, a tool's word under its icon */
   --ds-text-caption: 12px; /* a label, a small note: a sender's name, a role over a name */
   --ds-text-note: 13px; /* a secondary line: a hint, a translation, a reason */
-  --ds-text-body: 15px; /* the UI's text: a name band, a choice, a message */
+  --ds-text-body: 15px; /* the UI's text: a name band, a choice, a button, a message */
+  --ds-text-field: 16px; /* the words in a text field or a select (an iPhone zooms into a field under 16px) */
+  --ds-text-subhead: 17px; /* a small heading: a card's or a row's name, a section's heading in a list; a mid-sized mark */
   --ds-text-reading: 17px; /* the talk's words (18px on a wide screen) */
   --ds-text-lead: 18px; /* a larger reading: a letter's sheet (20px on a wide screen) */
   --ds-text-heading: 20px; /* a heading in a panel; a large mark */
   --ds-text-title: 24px; /* a name presented: the name plate */
   --ds-text-display: 32px; /* a word shown large: a city's arrival, a result */
   /* The line heights that go with them. */
+  --ds-leading-display: 1.15; /* a large word: a title, a result, an effect's word */
   --ds-leading-tight: 1.3; /* names, headings, one-line labels */
   --ds-leading-snug: 1.45; /* choices, notes */
   --ds-leading-body: 1.6; /* the UI's text */
   --ds-leading-reading: 1.75; /* the talk's words (1.8 on a wide screen) */
+  --ds-leading-chip: 18px; /* the line of a one-line chip or badge: its height inside its padding */
   /* The colours, by role, with those above: --ds-glass-* the glass and its ink, --ds-gold the hairlines and icons,
      --ds-parchment the paper, --ds-slate-* the header's tools, --ds-focus the focus ring. */
   /* What is pressed to go on, a choice: a pane of smoked glass over the scene with a gold hairline (2026-11-25 user decision:
@@ -159,6 +163,12 @@
 }
 body {
   margin: 0;
+}
+
+/* The sizes of this stylesheet's effect words (a quiz result's score), named once (larger than the design's steps or following the screen:
+   docs/02 「デザインの決まり」). */
+:root {
+  --battle-score-size: 55px;
 }
 
 /* The glass surfaces over a scene (--ds-glass-*; 2026-11-25 user decision: every screen in the one immersive look): free
@@ -290,16 +300,16 @@ h2 {
   letter-spacing: 0.045em;
 }
 h1 {
-  font-size: clamp(25px, 5.6vw, 34px);
-  line-height: 1.65;
+  font-size: var(--ds-text-display);
+  line-height: var(--ds-leading-body);
   margin: 12px 0 20px;
 }
 h2 {
-  font-size: 24px;
-  line-height: 1.65;
+  font-size: var(--ds-text-title);
+  line-height: var(--ds-leading-body);
 }
 h3 {
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 500;
 }
 .app-shell {
@@ -319,21 +329,21 @@ h3 {
 }
 .brand {
   font-family: Georgia, serif;
-  font-size: 27px;
-  line-height: 1.3;
+  font-size: var(--ds-text-title);
+  line-height: var(--ds-leading-tight);
   letter-spacing: 0.035em;
   text-decoration: none;
 }
 .brand span {
   display: block;
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   letter-spacing: 0.35em;
   margin-top: 4px;
   color: var(--muted);
 }
 .edition {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--muted);
   letter-spacing: 0.12em;
 }
@@ -344,11 +354,11 @@ h3 {
 .records-extras > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 .records-extras > .secondary { min-height: 44px; margin: 0; padding: 6px 10px; }
 .records-kept { width: 100%; min-height: 44px; margin: 0 0 14px; }
-.records-progress { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+.records-progress { margin: 0 0 8px; font-size: var(--ds-text-body); font-weight: 600; }
 /* 「と」 between the names in 旅の記録 (6.2:1 on --paper). */
 .amp {
   color: var(--ds-ink-muted);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
 }
 /* The header stays a band of its own above an active scene's own layout where
    the scene does not lie under it (observation; short portrait screens). */
@@ -397,7 +407,7 @@ h3 {
   background: var(--ds-chip-bg);
   border-radius: 999px;
   box-shadow: var(--ds-pill-shadow);
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   padding: 5px 12px;
   letter-spacing: 0.16em;
 }
@@ -407,15 +417,15 @@ h3 {
   margin: auto;
 }
 .eyebrow {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   letter-spacing: 0.2em;
   /* Small text on paper or parchment: the muted ink (6.0:1), never the gold (§2.1). */
   color: var(--ds-ink-muted);
   font-weight: 500;
 }
 .lead {
-  font-size: 14px;
-  line-height: 2.1;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-reading);
   color: var(--ds-ink-muted);
   margin-bottom: 27px;
 }
@@ -455,7 +465,7 @@ h3 {
 .name-form label {
   display: grid;
   gap: 7px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   letter-spacing: 0.07em;
 }
 /* Text fields (title, settings, Debug password): a light field with an edge of 3.6:1 on
@@ -470,7 +480,7 @@ h3 {
   border-radius: 8px;
   padding: 10px 15px;
   color: var(--ds-ink);
-  font-size: 16px;
+  font-size: var(--ds-text-field);
 }
 /* Primary pressable (§2.3): a 12-px rectangle filled with slate and edged with the gold
    hairline (drawn inside, so the box keeps its size). */
@@ -486,8 +496,8 @@ h3 {
   padding: 15px 20px;
   min-height: 54px;
   width: 100%;
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-snug);
   text-align: left;
   transition: background 0.15s;
 }
@@ -509,12 +519,12 @@ h3 {
   border-radius: 8px;
   padding: 10px 15px;
   color: var(--ds-ink);
-  font-size: 16px;
+  font-size: var(--ds-text-field);
 }
 /* What the chosen level does, under its select (not spaced as a label's caption). */
 .name-form .difficulty-note {
   letter-spacing: normal;
-  line-height: 1.7;
+  line-height: var(--ds-leading-body);
 }
 /* The title's difficulty, folded (2026-11-19): the summary is a 44-px row over the form's width; open, its two fields stack. */
 .name-form .difficulty-fields {
@@ -531,7 +541,7 @@ h3 {
   gap: 8px;
   cursor: pointer;
   list-style: none;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   color: var(--ds-ink);
 }
 .name-form .difficulty-fields > summary::-webkit-details-marker {
@@ -567,9 +577,9 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
   margin: -8px 0 0;
 }
 .fine-print {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-ink-muted);
-  line-height: 1.9;
+  line-height: var(--ds-leading-reading);
 }
 .intro > .fine-print {
   margin-top: 21px;
@@ -583,11 +593,11 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
 }
 .chapter-note p {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 /* A display-only label (§2.3): a flat slate pill without an edge. */
 .pill {
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   letter-spacing: 0.09em;
   background: var(--ds-slate-800);
   color: var(--ds-on-slate);
@@ -603,7 +613,7 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
 footer {
   text-align: center;
   font-family: Georgia, "Noto Serif JP", serif;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   letter-spacing: 0.09em;
   color: #828675;
   padding: 20px 15px 28px;
@@ -619,7 +629,7 @@ footer span {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   margin-top: 25px;
   overflow-wrap: anywhere;
 }
@@ -673,7 +683,7 @@ footer span {
   text-decoration: underline;
   text-underline-offset: 4px;
   padding: 5px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
 }
 .reveal {
   display: block;
@@ -687,14 +697,14 @@ footer span {
   background: none;
   color: var(--green);
   margin-left: auto;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   padding: 10px 0 10px 22px;
 }
 .next span {
-  font-size: 23px;
+  font-size: var(--ds-text-title);
 }
 .choice-hint {
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   color: var(--gold);
   margin-bottom: 12px;
 }
@@ -731,8 +741,8 @@ footer span {
   padding: 16px 18px;
   margin: 10px 0;
   width: 100%;
-  font-size: 14px;
-  line-height: 1.9;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
   transition: background 0.15s;
 }
@@ -741,7 +751,7 @@ footer span {
 }
 .choice-number {
   font-family: Georgia, serif;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   color: #8a977b;
   flex-shrink: 0;
 }
@@ -749,7 +759,7 @@ footer span {
   padding-top: 15px;
 }
 .paused p {
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   margin-bottom: 24px;
 }
 /* A notice (a session's word, a save that cannot be opened): a pane of the glass over the place (2026-11-25: every
@@ -839,7 +849,7 @@ footer span {
 /* Opened under the finger (Modal's settlePresses): no press reaches it for a moment. */
 .modal[data-settling] { pointer-events: none; }
 .modal h2 {
-  font-size: 22px;
+  font-size: var(--ds-text-heading);
   margin: 10px 0 20px;
 }
 /* The title bar: a display-only band of the glass, nearly opaque (--ds-glass-bar, so what scrolls under it does not
@@ -865,12 +875,12 @@ footer span {
 .modal .modal-title-bar h2 {
   min-width: 0;
   margin: 0;
-  font-size: 19px;
-  line-height: 1.4;
+  font-size: var(--ds-text-heading);
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
 }
 .modal-title-text { min-width: 0; }
-.modal-title-text .eyebrow { margin: 0; line-height: 1.4; }
+.modal-title-text .eyebrow { margin: 0; line-height: var(--ds-leading-snug); }
 /* 「閉じる」 in the title bar: a secondary pressable with the × (§2.3, §2.5), 44 px. */
 .modal-close {
   flex: none;
@@ -886,9 +896,9 @@ footer span {
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: var(--ds-leading-tight);
   white-space: nowrap;
 }
 .modal-close:hover { background: var(--ds-parchment-2); }
@@ -911,7 +921,7 @@ footer span {
   padding: 8px 12px;
   justify-content: center;
   text-align: center;
-  line-height: 1.5;
+  line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
 }
 .modal .translation-setting {
@@ -920,7 +930,7 @@ footer span {
   gap: 10px;
   min-height: 44px;
   padding: 10px 0;
-  line-height: 1.5;
+  line-height: var(--ds-leading-body);
 }
 .modal .translation-setting input {
   flex: none;
@@ -962,7 +972,7 @@ dialog.modal[aria-labelledby="settings-title"] > h3 {
   margin: 14px 0 2px;
   padding-top: 12px;
   border-top: 1px solid var(--ds-parchment-line);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
 }
 dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + h3,
@@ -986,10 +996,10 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + 
 /* 旅's line about money and AP, under the names (or the line that they cannot change now). */
 dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: 6px 0 0; }
 /* 「解説の出典」: the quiz explanation's sources, first under the title bar, each a link on its own 44-px row. */
-dialog.modal .fact-sources h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+dialog.modal .fact-sources h3 { margin: 0 0 2px; font-size: var(--ds-text-body); font-weight: 600; }
 dialog.modal .fact-sources ul { margin: 0 0 12px; padding: 0; list-style: none; }
-dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
-dialog.modal .fact-sources .screen-credits-choice { margin: 0; font-size: 13px; line-height: 1.6; }
+dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+dialog.modal .fact-sources .screen-credits-choice { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 /* 「手がかりの根拠と解釈」 (PhotoCredits.tsx, SourceNotes): the clue book's clues' sources, after the photo, under a hairline.
    Each source: its kind's pill, what it supports and its link. */
 dialog.modal .screen-credits-sources {
@@ -998,12 +1008,12 @@ dialog.modal .screen-credits-sources {
   border-top: 1px solid var(--ds-parchment-line);
 }
 dialog.modal .modal-title-bar + .screen-credits-sources { margin-top: 0; padding-top: 0; border-top: 0; }
-dialog.modal .screen-credits-sources h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
-dialog.modal .screen-credits-sources h4 { margin: 10px 0 0; font-size: 13px; font-weight: 600; }
+dialog.modal .screen-credits-sources h3 { margin: 0 0 6px; font-size: var(--ds-text-body); font-weight: 600; }
+dialog.modal .screen-credits-sources h4 { margin: 10px 0 0; font-size: var(--ds-text-note); font-weight: 600; }
 .source-notes { margin: 0; padding: 0; list-style: none; }
 .source-notes li { padding-top: 8px; }
-.source-notes p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
-.source-notes a { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.source-notes p { margin: 6px 0 0; font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.source-notes a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 /* 画面の出典's way into 出典・権利の一覧: on its own, under a hairline, after the screen's photos. */
 dialog.modal .screen-credits-all {
   margin-top: 14px;
@@ -1022,14 +1032,14 @@ dialog.modal .settings-data-links > .text-button {
   min-height: 44px;
   margin: 0;
   padding: 0 4px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 /* 「オフライン」's line in セーブ・ロード: what this device keeps of the journeys (how far a run is beside it, in digits of one
    width), a note of the size and colour of the notes around it, so the rows that can be pressed stand out. */
 dialog.modal .offline-summary {
   margin: 8px 0 0;
-  font-size: 12px;
-  line-height: 1.7;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-snug);
   color: var(--ds-ink-muted);
 }
 .offline-summary-live {
@@ -1039,7 +1049,7 @@ dialog.modal .offline-summary {
 /* The title's line under the journey choice while offline: the chosen journey is not on the device. */
 .intro > .offline-hint {
   margin: -8px 0 12px;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
 }
 /* 「制作者向け」: Debug mode and its tools, folded away for players; its summary a 44-px row like the group headings. */
 .settings-creator {
@@ -1050,9 +1060,9 @@ dialog.modal .offline-summary {
   min-height: 44px;
   padding: 12px 0 6px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.5;
+  line-height: var(--ds-leading-snug);
 }
 .settings-creator .debug-mode-setting { margin-top: 4px; }
 /* Secondary pressable (§2.3): parchment with a 1.5-px slate edge. */
@@ -1061,7 +1071,7 @@ dialog.modal .offline-summary {
   background: var(--ds-parchment);
   color: var(--ds-ink);
   margin-top: 12px;
-  font-size: 13px;
+  font-size: var(--ds-text-body);
   border: 1.5px solid var(--ds-slate-800);
   border-radius: 12px;
 }
@@ -1107,10 +1117,10 @@ dialog.modal .offline-summary {
     padding: 16px 22px;
   }
   .brand {
-    font-size: 25px;
+    font-size: var(--ds-text-title);
   }
   .edition {
-    font-size: 9px;
+    font-size: var(--ds-text-mark);
     letter-spacing: 0.04em;
   }
   .canal-scene {
@@ -1122,13 +1132,13 @@ dialog.modal .offline-summary {
   .scene-stamp {
     left: 22px;
     bottom: 13px;
-    font-size: 9px;
+    font-size: var(--ds-text-mark);
   }
   .paper {
     padding: 27px 24px 30px;
   }
   .intro h1 {
-    font-size: 28px;
+    font-size: var(--ds-text-title);
   }
   .dialogue-text {
     min-height: 114px;
@@ -1141,7 +1151,7 @@ dialog.modal .offline-summary {
     padding-top: 21px;
   }
   .section-meta .eyebrow {
-    font-size: 10px;
+    font-size: var(--ds-text-mark);
     letter-spacing: 0.12em;
   }
   .modal {
@@ -1149,7 +1159,7 @@ dialog.modal .offline-summary {
     --modal-pad-inline: 23px;
   }
   .modal h2 {
-    font-size: 20px;
+    font-size: var(--ds-text-heading);
   }
 }
 
@@ -1251,8 +1261,8 @@ dialog.modal .offline-summary {
     background: var(--ds-parchment);
     color: var(--ds-ink);
     box-shadow: var(--ds-pill-shadow);
-    font-size: 12px;
-    line-height: 1.4;
+    font-size: var(--ds-text-caption);
+    line-height: var(--ds-leading-snug);
   }
   /* Keep the direct battle route available without a large action panel. */
   .mobile-play-active .guide-active > .tourism-actions {
@@ -1269,7 +1279,7 @@ dialog.modal .offline-summary {
     min-height: 44px;
     margin: 0;
     padding: 6px 8px;
-    font-size: 12px;
+    font-size: var(--ds-text-caption);
   }
   .mobile-play-active .guide-active .tourism-guide-scene {
     flex: 1 1 0;
@@ -1424,7 +1434,7 @@ dialog.modal[open] {
   }
 }
 .ending h1 {
-  font-size: 28px;
+  font-size: var(--ds-text-title);
 }
 .ending .lead {
   white-space: pre-line;
@@ -1432,14 +1442,14 @@ dialog.modal[open] {
 }
 .ending-names {
   font-family: "Noto Serif JP", serif;
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   margin: 24px 0;
   overflow-wrap: anywhere;
 }
 .ending-names span {
   font-family: Georgia, serif;
   color: var(--ds-ink-muted);
-  font-size: 24px;
+  font-size: var(--ds-text-title);
   margin: 0 10px;
 }
 .battle-stage {
@@ -1474,25 +1484,25 @@ dialog.modal[open] {
 }
 .battle-stage .eyebrow {
   color: #d8c49e;
-  font-size: 10px;
-  line-height: 1.9;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-reading);
 }
 .battle-stage h2 {
-  font-size: 27px;
-  line-height: 1.55;
+  font-size: var(--ds-text-title);
+  line-height: var(--ds-leading-body);
   letter-spacing: 0.035em;
   margin: 6px 0 12px;
   overflow-wrap: anywhere;
 }
 .enemy-title {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: #c7cbb6;
   margin-top: 17px;
   letter-spacing: 0.05em;
 }
 .enemy-detail {
-  font-size: 11px;
-  line-height: 1.9;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-reading);
   color: #d0d6c5;
   max-width: 265px;
 }
@@ -1510,7 +1520,7 @@ dialog.modal[open] {
   width: 112px;
 }
 .battle-stage-compact h2 {
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   margin-bottom: 0;
 }
 .battle-stage-compact .enemy-title {
@@ -1532,13 +1542,13 @@ dialog.modal[open] {
   border-bottom: 1px solid var(--ds-parchment-line);
   padding-bottom: 12px;
   color: var(--ds-ink-muted);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   letter-spacing: 0.08em;
 }
 .question-en {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 22px;
-  line-height: 1.6;
+  font-size: var(--ds-text-lead);
+  line-height: var(--ds-leading-body);
   font-weight: 500;
   letter-spacing: 0;
   margin: 24px 0;
@@ -1559,14 +1569,14 @@ dialog.modal[open] {
   background: var(--ds-field);
   color: var(--ds-ink);
   border-radius: 12px;
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .quiz-choice .option-id {
   font-family: Georgia, serif;
   color: var(--ds-ink-muted);
-  font-size: 18px;
+  font-size: var(--ds-text-subhead);
 }
 .quiz-choice:disabled {
   opacity: 1;
@@ -1587,7 +1597,7 @@ dialog.modal[open] {
 }
 .option-mark {
   grid-column: 2;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-ink-muted);
   letter-spacing: 0.04em;
   min-height: 0;
@@ -1601,7 +1611,7 @@ dialog.modal[open] {
   border-top: 1px solid var(--ds-parchment-line);
 }
 .vocabulary h3 {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-ink-muted);
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -1611,7 +1621,7 @@ dialog.modal[open] {
   display: flex;
   gap: 8px 15px;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
 }
 .vocabulary dl > div {
   display: flex;
@@ -1624,7 +1634,7 @@ dialog.modal[open] {
 .vocabulary dd {
   margin: 0;
   color: var(--ds-ink-muted);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
 }
 /* The explanation: a parchment panel inside the paper; the verdict pill above says right or wrong. */
 .quiz-feedback {
@@ -1639,14 +1649,14 @@ dialog.modal[open] {
   border-color: #b9c9ac;
 }
 .quiz-feedback h3 {
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   font-family: "Noto Serif JP", serif;
   font-weight: 500;
   margin-bottom: 12px;
 }
 .quiz-feedback > p {
-  font-size: 14px;
-  line-height: 2;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-reading);
   overflow-wrap: anywhere;
 }
 /* 「相手の反応を見る」, a little apart from the explanation and 「英文を確認する」 above it. */
@@ -1655,8 +1665,8 @@ dialog.modal[open] {
 }
 .outcome {
   font-family: Georgia, serif;
-  font-size: 35px;
-  line-height: 1.35;
+  font-size: var(--ds-text-display);
+  line-height: var(--ds-leading-tight);
   letter-spacing: 0.03em;
   margin: 15px 0;
   color: var(--ds-ink);
@@ -1671,12 +1681,12 @@ dialog.modal[open] {
 }
 .battle-score strong {
   font-family: Georgia, serif;
-  font-size: 55px;
+  font-size: var(--battle-score-size);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: var(--ds-leading-display);
 }
 .battle-score > span {
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .battle-screen .paused {
   padding-top: 25px;
@@ -1691,14 +1701,14 @@ dialog.modal[open] {
     min-height: 200px;
   }
   .battle-stage h2 {
-    font-size: 22px;
+    font-size: var(--ds-text-heading);
   }
   .enemy-portrait {
     width: 125px;
   }
   .enemy-detail {
-    font-size: 10px;
-    line-height: 1.85;
+    font-size: var(--ds-text-mark);
+    line-height: var(--ds-leading-reading);
   }
   .battle-enemy-info {
     padding-bottom: 23px;
@@ -1708,7 +1718,7 @@ dialog.modal[open] {
     min-height: 135px;
   }
   .battle-stage-compact h2 {
-    font-size: 18px;
+    font-size: var(--ds-text-subhead);
   }
   .battle-stage-compact .enemy-portrait {
     width: 95px;
@@ -1717,15 +1727,15 @@ dialog.modal[open] {
     padding-bottom: 19px;
   }
   .battle-stage .eyebrow {
-    font-size: 9px;
+    font-size: var(--ds-text-mark);
   }
   .question-en {
-    font-size: 19px;
+    font-size: var(--ds-text-lead);
     margin: 21px 0;
   }
   .quiz-choice {
     padding: 14px 12px;
-    font-size: 15px;
+    font-size: var(--ds-text-body);
     gap: 4px 8px;
     grid-template-columns: 23px 1fr;
   }
@@ -1737,7 +1747,7 @@ dialog.modal[open] {
     padding: 18px;
   }
   .outcome {
-    font-size: 31px;
+    font-size: var(--ds-text-display);
   }
 }
 
@@ -1756,11 +1766,11 @@ dialog.modal[open] {
   }
   .intro h1 {
     margin: 5px 0 10px;
-    font-size: 23px;
-    line-height: 1.4;
+    font-size: var(--ds-text-title);
+    line-height: var(--ds-leading-snug);
   }
   .intro .lead {
-    line-height: 1.7;
+    line-height: var(--ds-leading-body);
     margin-bottom: 15px;
   }
   .intro .name-form {
@@ -1877,16 +1887,16 @@ dialog.old-data .old-data-notice:focus {
   overflow-wrap: anywhere;
 }
 .old-data-impact {
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
   margin: 4px 0 6px;
 }
 .old-data-keys {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: var(--ds-text-mark);
+  line-height: var(--ds-leading-body);
   color: var(--ds-ink-muted);
 }
 .old-data-keys li + li {
@@ -1896,7 +1906,7 @@ dialog.old-data .old-data-notice:focus {
 .old-data-keys code {
   display: block;
   overflow-wrap: anywhere;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-ink);
 }
 .old-data-notice {
@@ -1907,8 +1917,8 @@ dialog.old-data .old-data-notice:focus {
 .old-data-hint {
   align-self: center;
   margin: 0;
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-snug);
 }
 /* ゲームの設定 → Debugモード (DebugModeSetting): after 名前の設定, before the data entries. Every control 44 px or more. */
 .debug-mode-setting {
@@ -1921,8 +1931,8 @@ dialog.old-data .old-data-notice:focus {
 }
 .debug-mode-setting [role="status"],
 .debug-mode-setting [role="alert"] {
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 .debug-mode-setting [role="alert"] {
   color: #873b34;
@@ -1953,7 +1963,7 @@ dialog.old-data .old-data-notice:focus {
 .debug-mode-password label {
   display: grid;
   gap: 6px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   letter-spacing: 0.07em;
 }
 /* 16 px text: phones do not zoom into the field (its look: the text fields above). */
@@ -1996,4 +2006,4 @@ dialog.date-background-viewer > img {
   background: #26342e;
 }
 /* Its description, credit and links shown at once under the photo, as 写真の出典 shows each photo's. */
-dialog.date-background-viewer .background-credit p { margin: 6px 0; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+dialog.date-background-viewer .background-credit p { margin: 6px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }

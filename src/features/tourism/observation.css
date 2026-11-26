@@ -26,8 +26,8 @@
   display: none;
   flex: 0 0 100%;
   margin: 0;
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-body);
   color: var(--ds-ink-muted);
 }
 .observation-viewport:focus-visible ~ .observation-key-hint { display: block; }
@@ -69,7 +69,7 @@
   border: 1px solid var(--ds-on-slate);
   background: var(--ds-slate-900);
   color: var(--ds-on-slate);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   box-shadow: 0 1px 5px #0009;
 }
 .observation-hotspot.is-found > span {
@@ -131,7 +131,7 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 22px;
+  font-size: var(--ds-text-heading);
 }
 .observation-controls button:disabled {
   opacity: 1;
@@ -141,14 +141,14 @@
 }
 .observation-controls output {
   min-width: 3.5em;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
 .observation-controls .observation-reset {
   margin-left: auto;
   padding-inline: 12px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .observation-options {
   display: flex;
@@ -162,7 +162,7 @@
   color: var(--ds-ink);
   border: 1.5px solid var(--ds-slate-800);
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
 }
 
 @media (max-width: 600px) {
@@ -216,8 +216,8 @@
   background: var(--ds-chip-bg);
   color: var(--ds-on-slate);
   box-shadow: var(--ds-pill-shadow);
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-snug);
 }
 /* The place's name gives way (it wraps) before 手がかり帳, which keeps its word on one line (2026-11-14, the phone UI
    audit: 「手がか／り帳」 under a long name). */
@@ -244,7 +244,7 @@
   border-radius: 12px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .observation-next .observation-proceed {
   flex: 1 1 auto;
@@ -253,11 +253,11 @@
   min-height: 48px;
   margin: 0;
   padding: 6px 16px;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
 }
-.observation-next .observation-proceed > span { font-size: 20px; font-weight: 400; }
+.observation-next .observation-proceed > span { font-size: var(--ds-text-heading); font-weight: 400; }
 @media (max-width: 600px) {
   .observation-controls { gap: 2px; min-width: 0; }
   .observation-controls output { min-width: 2.5em; }

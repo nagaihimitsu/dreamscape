@@ -1,4 +1,12 @@
 /* A short visual bridge; the saved reasoning state remains underneath it. */
+/* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
+   docs/02 「デザインの決まり」). */
+:root {
+  --reasoning-impact-size: clamp(46px, 9dvh, 76px);
+  --reasoning-copy-size: clamp(34px, 9vw, 64px);
+  --reasoning-impact-size-landscape: 40px;
+  --reasoning-copy-size-landscape: clamp(30px, 7dvh, 44px);
+}
 .reasoning-cutin {
   position: absolute;
   inset: 0;
@@ -51,7 +59,7 @@
 .reasoning-cutin-impact span {
   transform: rotate(-45deg);
   color: #fff5d1;
-  font-size: clamp(46px, 9dvh, 76px);
+  font-size: var(--reasoning-impact-size);
   font-weight: 800;
   line-height: 1;
 }
@@ -82,8 +90,8 @@
 .reasoning-cutin-copy { max-width: 100%; }
 .reasoning-cutin-copy strong {
   display: block;
-  font-size: clamp(34px, 9vw, 64px);
-  line-height: 1.2;
+  font-size: var(--reasoning-copy-size);
+  line-height: var(--ds-leading-display);
   font-weight: 800;
   letter-spacing: .05em;
   text-shadow: 0 3px 0 #0008;
@@ -92,8 +100,8 @@
 }
 .reasoning-cutin-copy p {
   margin: 8px 0 0;
-  font-size: clamp(16px, 4.5vw, 22px);
-  line-height: 1.45;
+  font-size: var(--ds-text-lead);
+  line-height: var(--ds-leading-snug);
   font-weight: 700;
   overflow-wrap: anywhere;
 }
@@ -133,7 +141,7 @@
   .reasoning-cutin-visual { height: 70px; }
   .reasoning-cutin-card { height: 58px; width: 48px; }
   .reasoning-cutin-impact { width: 60px; }
-  .reasoning-cutin-impact span { font-size: 40px; }
-  .reasoning-cutin-copy strong { font-size: clamp(30px, 7dvh, 44px); }
+  .reasoning-cutin-impact span { font-size: var(--reasoning-impact-size-landscape); }
+  .reasoning-cutin-copy strong { font-size: var(--reasoning-copy-size-landscape); }
   .reasoning-cutin-copy p { margin-top: 2px; }
 }

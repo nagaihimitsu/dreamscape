@@ -26,8 +26,8 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   animation: local-word-notice-in var(--motion-fast) var(--ease-out);
 }
@@ -41,13 +41,13 @@
 
 /* 「その国の言葉」 (LocalWords): the cities in the order their first word was learned, a row for each word. */
 .local-words { padding-bottom: 12px; }
-.local-words h3 { margin: 14px 0 2px; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.local-words h3 { margin: 14px 0 2px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .local-words-list { margin: 0; padding: 0; list-style: none; }
 .local-word { padding: 8px 0 0; border-top: 1px solid var(--ds-parchment-line); }
 .local-word > p { margin: 0; overflow-wrap: anywhere; }
 .local-word-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
-.local-word-script { font-size: 28px; font-weight: 500; line-height: 1.6; }
-.local-word-reading { font-size: 14px; line-height: 1.6; color: var(--ds-ink-muted); }
-.local-word-meaning { font-size: 15px; line-height: 1.6; }
-.local-word .local-word-note { margin-top: 4px; font-size: 13px; line-height: 1.6; color: var(--ds-ink-muted); }
+.local-word-script { font-size: var(--ds-text-title); font-weight: 500; line-height: var(--ds-leading-body); }
+.local-word-reading { font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
+.local-word-meaning { font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+.local-word .local-word-note { margin-top: 4px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
 .local-word .local-word-sources { margin-top: 2px; }

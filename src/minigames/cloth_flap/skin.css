@@ -131,7 +131,7 @@
   border-radius: 17px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
-  font-size: 21px;
+  font-size: var(--ds-text-heading);
   font-weight: 700;
   line-height: 1;
   transform: translateX(-50%);
@@ -143,7 +143,7 @@
   left: 92%;
   top: -2%;
   color: #fff8ea;
-  font-size: 26px;
+  font-size: var(--ds-text-title);
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
@@ -153,7 +153,7 @@
   transform-origin: 0 100%;
 }
 .mg-cloth-flap-shriek[data-turned] { left: auto; right: 92%; transform: rotate(10deg); transform-origin: 100% 100%; }
-@container (max-width: 300px) { .mg-cloth-flap-shriek { font-size: 21px; } }
+@container (max-width: 300px) { .mg-cloth-flap-shriek { font-size: var(--ds-text-heading); } }
 /* The niche's arch around the view: dark stone outside the opening, a lighter edge. */
 .mg-cloth-flap-arch {
   position: absolute;
@@ -255,7 +255,7 @@
   border: 1.5px solid rgba(255, 250, 241, 0.45);
   border-radius: 50%;
   color: rgba(255, 250, 241, 0.6);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 700;
   line-height: 1;
 }
@@ -281,7 +281,7 @@
   border-width: 1.5px;
   border-radius: 14px;
   background: rgba(255, 250, 241, 0.9);
-  font-size: 17px;
+  font-size: var(--ds-text-subhead);
 }
 /* The boy who runs down past her: smaller than her, in front of her on the stairs, a dark edge and a shadow at his feet. */
 .mg-cloth-flap-boy {

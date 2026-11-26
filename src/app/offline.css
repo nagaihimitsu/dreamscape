@@ -24,12 +24,12 @@ dialog.offline-play .modal-title-bar {
 }
 .offline-body > p {
   margin: 0 0 10px;
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-reading);
 }
 .offline-body > .fine-print {
-  font-size: 12px;
-  line-height: 1.8;
+  font-size: var(--ds-text-caption);
+  line-height: var(--ds-leading-reading);
 }
 .offline-answers {
   flex: none;
@@ -50,16 +50,16 @@ dialog.offline-play .modal-title-bar {
 }
 .offline-row > h3 {
   margin: 0 0 4px;
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.5;
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .offline-line,
 .offline-notice {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 /* The state line and a result take the focus after a step (read first); neither is a control. */
 .offline-line:focus,
@@ -118,7 +118,7 @@ dialog.offline-play h2:focus {
   min-height: 44px;
   margin: 0;
   padding: 0 6px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 .offline-actions > .text-button[data-settling] {
   color: var(--ds-disabled-ink);

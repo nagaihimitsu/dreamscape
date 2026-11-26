@@ -42,14 +42,14 @@
   background: var(--ds-glass-mark-full);
   color: var(--ds-slate-900);
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
-.held-items-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
+.held-items-word { font-size: var(--ds-text-mark); font-weight: 600; line-height: 1; white-space: nowrap; }
 .held-item-detail {
   position: absolute;
   z-index: 30;
@@ -69,8 +69,8 @@
   border-radius: 16px;
   box-shadow: var(--ds-glass-shadow);
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 13px;
-  line-height: 1.55;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 .held-item-detail-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .held-item-detail-heading strong { overflow-wrap: anywhere; padding-top: 10px; }
@@ -85,7 +85,7 @@
   border-radius: 12px;
   background: transparent;
   color: var(--ds-ink);
-  font-size: 22px;
+  font-size: var(--ds-text-heading);
   line-height: 1;
   cursor: pointer;
 }
@@ -132,10 +132,10 @@
   background: var(--ds-marker);
   color: #fff;
   font-family: Georgia, serif;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   font-weight: 700;
   letter-spacing: 0.06em;
-  line-height: 16px;
+  line-height: var(--ds-leading-chip);
   vertical-align: 1px;
 }
 .held-item-detail-heading .held-item-new { flex: none; margin: 12px auto 0 -2px; }

@@ -1,20 +1,20 @@
 .debug-panel { max-width: 620px; margin: 0 auto; padding: 18px 16px; }
-.debug-panel h1 { margin: 0; font-size: 22px; }
-.debug-panel p { font-size: 14px; line-height: 1.6; }
+.debug-panel h1 { margin: 0; font-size: var(--ds-text-heading); }
+.debug-panel p { font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .debug-panel .debug-template { margin: 8px 0 16px; }
 .debug-panel form, .debug-panel label { display: grid; gap: 6px; }
 .debug-panel form { gap: 12px; }
 .debug-panel select, .debug-panel input { width: 100%; min-width: 0; min-height: 44px; padding: 6px; }
 .debug-values { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.debug-session-bar { height: 56px; display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 0 10px; background: #263d35; color: white; font-size: 13px; }
+.debug-session-bar { height: 56px; display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 0 10px; background: #263d35; color: white; font-size: var(--ds-text-note); }
 .debug-session-bar div { flex: 1 1 auto; min-width: 0; }
 .debug-session-bar strong, .debug-session-bar span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.debug-session-bar span { font-size: 12px; }
-.debug-session-bar button { flex: none; min-height: 44px; padding: 4px 9px; line-height: 1.2; word-break: keep-all; }
+.debug-session-bar span { font-size: var(--ds-text-caption); }
+.debug-session-bar button { flex: none; min-height: 44px; padding: 4px 9px; line-height: var(--ds-leading-tight); word-break: keep-all; }
 /* On a phone the bar's buttons wrap at their <wbr> (「フラグ・」「時刻・段階」, 「場面の選択へ」「戻る」): the bar keeps its 56 px and
    its label keeps room for 「Debug · 通常セーブとは別」 and the place. A button's second line stays one line (not at its 「・」). */
 @media (max-width: 480px) {
-  .debug-session-bar button { width: min-content; padding: 4px 8px; font-size: 12px; }
+  .debug-session-bar button { width: min-content; padding: 4px 8px; font-size: var(--ds-text-caption); }
 }
 .debug-session-bar button .debug-bar-keep { display: inline; overflow: visible; font-size: inherit; white-space: nowrap; }
 /* 撮影の形 (data-shot) leaves the bar out: the play has the whole height, as in normal play. */
@@ -31,47 +31,47 @@
 .debug-panel [role="alert"] { background: #f1e7d1; padding: 10px 12px; border-radius: 4px; overflow-wrap: anywhere; }
 .debug-launch-error { display: grid; gap: 14px; align-content: start; }
 .debug-url { display: grid; gap: 8px; margin: 28px 0 20px; }
-.debug-url h2 { font-size: 17px; letter-spacing: 0; }
+.debug-url h2 { font-size: var(--ds-text-subhead); letter-spacing: 0; }
 .debug-url button { min-height: 44px; }
-.debug-url [role="status"] { font-size: 13px; overflow-wrap: anywhere; }
+.debug-url [role="status"] { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 .debug-room-entry { display: grid; gap: 8px; margin: 0 0 20px; }
-.debug-room-entry h2 { margin: 0; font-size: 17px; letter-spacing: 0; }
+.debug-room-entry h2 { margin: 0; font-size: var(--ds-text-subhead); letter-spacing: 0; }
 .debug-room-entry p { margin: 0; }
 .debug-room-entry button { min-height: 44px; margin-top: 0; }
-.debug-candidates { margin: 6px 10px; padding: 8px 10px; background: #f3efe4; border-radius: 4px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.debug-candidates { margin: 6px 10px; padding: 8px 10px; background: #f3efe4; border-radius: 4px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .debug-candidates summary { min-height: 36px; cursor: pointer; }
 .debug-candidates ol, .debug-candidates ul { margin: 6px 0; padding-left: 20px; }
 .debug-candidates p { margin: 2px 0; }
 
 /* Flags, free time's clock and 恋の段階 (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻・段階」. */
-.debug-note { margin: 0; font-size: 13px; line-height: 1.6; }
-.debug-panel .debug-note { font-size: 13px; }
+.debug-note { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.debug-panel .debug-note { font-size: var(--ds-text-note); }
 .debug-clock { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 10px 12px 12px; border: 1px solid #d8ccb4; border-radius: 8px; }
 .debug-clock legend { padding: 0 4px; font-weight: 600; }
 .debug-clock-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-.debug-clock-presets button { display: grid; justify-items: center; align-content: center; min-height: 52px; margin-top: 0; padding: 4px 2px; font-size: 13px; line-height: 1.3; }
+.debug-clock-presets button { display: grid; justify-items: center; align-content: center; min-height: 52px; margin-top: 0; padding: 4px 2px; font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
 .debug-clock-presets button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 .debug-stage { display: grid; gap: 6px; }
 .debug-stage-choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-.debug-stage-choices button { min-height: 44px; margin-top: 0; padding: 4px 2px; font-size: 15px; }
+.debug-stage-choices button { min-height: 44px; margin-top: 0; padding: 4px 2px; font-size: var(--ds-text-body); }
 .debug-stage-choices button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 /* The summary keeps its disclosure triangle (a list item), so the fold reads as one to open. */
 .debug-flags summary { box-sizing: border-box; min-height: 44px; padding: 10px 0; font-weight: 600; cursor: pointer; }
 .debug-flags > .debug-note { margin: 4px 0 8px; }
 .debug-flag-list section + section { margin-top: 12px; }
-.debug-flag-list h3 { margin: 0 0 4px; font-size: 14px; }
+.debug-flag-list h3 { margin: 0 0 4px; font-size: var(--ds-text-body); }
 .debug-flag-list ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
-.debug-panel .debug-flag, .debug-flag { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding: 8px 4px; font-size: 13px; line-height: 1.5; cursor: pointer; }
+.debug-panel .debug-flag, .debug-flag { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding: 8px 4px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); cursor: pointer; }
 .debug-flag input[type="checkbox"] { flex: none; width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; }
-.debug-flag code { display: block; color: #5b5048; font-size: 11px; overflow-wrap: anywhere; }
+.debug-flag code { display: block; color: #5b5048; font-size: var(--ds-text-mark); overflow-wrap: anywhere; }
 .debug-edit-dialog { --modal-pad-top: 16px; --modal-pad-inline: 16px; }
-.debug-edit-refusal { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #f1e7d1; font-size: 13px; line-height: 1.6; }
-.debug-edit-error { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #f6dede; color: #6b1f1f; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.debug-edit-refusal { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #f1e7d1; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.debug-edit-error { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: #f6dede; color: #6b1f1f; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .debug-edit-error:empty { margin: 0; padding: 0; }
 .debug-edit-section { display: grid; gap: 8px; margin: 18px 0 0; }
-.debug-edit-section h3 { margin: 0; font-size: 16px; }
-.debug-edit-section > p { margin: 0; font-size: 14px; }
+.debug-edit-section h3 { margin: 0; font-size: var(--ds-text-subhead); }
+.debug-edit-section > p { margin: 0; font-size: var(--ds-text-body); }
 .debug-clock-exact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 8px; align-items: end; }
-.debug-clock-exact label { display: grid; gap: 4px; font-size: 13px; }
-.debug-clock-exact input { width: 100%; min-width: 0; min-height: 44px; padding: 6px; font-size: 16px; }
+.debug-clock-exact label { display: grid; gap: 4px; font-size: var(--ds-text-note); }
+.debug-clock-exact input { width: 100%; min-width: 0; min-height: 44px; padding: 6px; font-size: var(--ds-text-field); }
 .debug-clock-exact button { grid-column: 1 / -1; min-height: 44px; margin-top: 0; }

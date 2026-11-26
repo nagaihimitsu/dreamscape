@@ -29,8 +29,8 @@
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-glass-ink);
   box-shadow: var(--ds-glass-shadow);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   animation: item-gain-notice 2500ms var(--ease-out) both;
 }

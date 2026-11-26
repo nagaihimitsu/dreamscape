@@ -20,7 +20,7 @@
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
 .debug-voice-rate-row input[type="range"] {
   width: 100%;
@@ -39,6 +39,6 @@
 }
 .debug-voice-rate [role="alert"] {
   color: #873b34;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }

@@ -40,9 +40,9 @@
   max-width: 100%;
   color: var(--ds-on-slate);
   font-family: "Noto Serif JP", serif;
-  font-size: clamp(16px, 4.8vw, 20px);
+  font-size: var(--ds-text-lead);
   font-weight: 500;
-  line-height: 1.8;
+  line-height: var(--ds-leading-reading);
   letter-spacing: 0.04em;
   text-align: center;
   word-break: keep-all;
@@ -62,7 +62,7 @@
 .night-tap-hint {
   margin: 18px 0 0;
   color: var(--ds-on-slate-muted);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   letter-spacing: 0.08em;
   text-align: center;
   animation: night-tap-hint-in 2s ease both;
@@ -129,9 +129,9 @@
   margin-top: 14px;
   color: var(--ds-on-slate);
   font-family: "Noto Serif JP", serif;
-  font-size: clamp(18px, 5.2vw, 22px);
+  font-size: var(--ds-text-lead);
   font-weight: 500;
-  line-height: 1.7;
+  line-height: var(--ds-leading-reading);
   letter-spacing: 0.06em;
   text-align: center;
   word-break: keep-all;
@@ -164,7 +164,7 @@
   border-radius: 12px;
   background: #f6e7ae;
   color: var(--ds-slate-900);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
   box-shadow: 0 0 18px rgba(246, 231, 174, 0.25);
 }
@@ -221,7 +221,7 @@
 .night-screen-actions + .night-recap { margin-top: 22px; }
 .today-route { margin: 0; }
 /* --ds-on-slate-muted on the night colour: about 13:1. */
-.today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-align: center; }
+.today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; text-align: center; }
 /* A picture only: taps go to the screen (the card ends on one), the OSM credit stays readable (and pressable on the night screen). */
 .today-route-map {
   height: clamp(110px, 22vh, 160px);
@@ -231,9 +231,9 @@
   isolation: isolate;
   pointer-events: none;
 }
-.today-route-map .leaflet-control-attribution { pointer-events: auto; font-size: 10px; }
+.today-route-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-mark); }
 .night-rest .today-route-map .leaflet-control-attribution, .night-screen.is-leaving .today-route-map .leaflet-control-attribution { pointer-events: none; }
-.today-route-error { margin: 4px 0 0; color: var(--ds-on-slate); font-size: 12px; line-height: 1.5; text-align: center; }
+.today-route-error { margin: 4px 0 0; color: var(--ds-on-slate); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); text-align: center; }
 /* The stops in the day's order, numbered as on the map. */
 .today-route-stops {
   display: flex;
@@ -244,8 +244,8 @@
   padding: 0;
   list-style: none;
   color: var(--ds-on-slate);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 .today-route-stops li { display: inline-flex; align-items: center; gap: 4px; overflow-wrap: anywhere; }
 .today-route-number {
@@ -257,7 +257,7 @@
   border-radius: 9px;
   background: var(--ds-marker-selected);
   color: var(--ds-slate-900);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 600;
   line-height: 1;
 }
@@ -272,7 +272,7 @@
   border-radius: 14px;
   background: var(--ds-slate-900);
   color: var(--ds-marker-selected);
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
@@ -287,10 +287,10 @@
   margin: 0 0 4px;
   color: var(--ds-on-slate-muted);
   font-family: inherit;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   font-weight: 600;
   letter-spacing: 0.08em;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
   text-align: center;
 }
 .today-headlines ol { margin: 0; padding: 0; list-style: none; }
@@ -298,8 +298,8 @@
   padding: 4px 0;
   color: var(--ds-on-slate);
   font-family: "Noto Serif JP", serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-body);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -315,12 +315,12 @@
   width: 100%;
   margin: 18px 0 0;
   color: var(--ds-on-slate);
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
   text-align: center;
 }
-.today-word-label { flex-basis: 100%; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
-.today-word-en { font-family: "Noto Serif JP", serif; font-size: 17px; letter-spacing: 0.02em; overflow-wrap: anywhere; }
-.today-word-meaning { font-size: 13px; overflow-wrap: anywhere; }
+.today-word-label { flex-basis: 100%; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; }
+.today-word-en { font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.today-word-meaning { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
 @media (max-height: 480px) {
   .night-rest.has-recap .night-rest-sky { display: none; }

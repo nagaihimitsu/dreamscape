@@ -26,16 +26,16 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 8px;
-  font-size: 16px;
+  font-size: var(--ds-text-subhead);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
 }
 .minigame-collection-length,
 .minigame-collection-where {
   color: var(--ds-ink-muted);
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 400;
-  line-height: 1.5;
+  line-height: var(--ds-leading-snug);
 }
 
 /* A game's stage: a dialog over the whole screen (as the end roll), the story's scene box in the app's column. Its name
@@ -86,4 +86,4 @@ dialog.modal.minigame-collection-stage {
   color: var(--ds-ink);
 }
 .minigame-collection-window .choices { margin-top: 0; padding-top: 0; border-top: 0; }
-.minigame-collection-from { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: 13px; line-height: 1.5; }
+.minigame-collection-from { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }

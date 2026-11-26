@@ -55,5 +55,5 @@
   min-height: 56px;
   padding: 0 28px;
   transform: translate(-50%, -50%);
-  font-size: 1.1rem;
+  font-size: var(--ds-text-subhead);
 }

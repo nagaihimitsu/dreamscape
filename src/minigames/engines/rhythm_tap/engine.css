@@ -18,8 +18,8 @@
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-snug);
   text-wrap: balance;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
@@ -39,7 +39,7 @@
   border-radius: 22px;
   background: var(--ds-marker);
   color: var(--ds-on-slate);
-  font-size: 17px;
+  font-size: var(--ds-text-subhead);
   font-weight: 700;
   letter-spacing: 0.1em;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
@@ -176,9 +176,9 @@
   border-radius: 8px;
   background: var(--ds-marker);
   color: var(--ds-on-slate);
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: var(--ds-leading-tight);
   white-space: nowrap;
   transform: translateX(-50%);
 }
@@ -186,7 +186,7 @@
   justify-content: center;
   width: 100%;
   min-height: 64px;
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   font-weight: 700;
   letter-spacing: 0.3em;
   text-align: center;
@@ -201,7 +201,7 @@
   margin: 0;
   border-radius: 12px;
   background: var(--ds-chip-bg);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
 }
 /* A short screen keeps the field: the hint (the start showed it just before) gives way, and the stop button goes up to the
    field's top left corner: far from the big button and from the band's 「中断する」 (top right), under the band's title. */

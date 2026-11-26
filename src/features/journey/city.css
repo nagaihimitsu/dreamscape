@@ -19,7 +19,7 @@
   border-radius: 50%;
   color: #8a3324;
   font-family: "Noto Serif JP", serif;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 700;
   line-height: 1;
   transform: rotate(-8deg);
@@ -37,19 +37,19 @@
 .met-people h3 {
   margin: 0 0 4px;
   font-family: "Noto Serif JP", serif;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-body);
 }
 .met-people > .fine-print {
   margin: 4px 0;
-  font-size: 0.8rem;
+  font-size: var(--ds-text-caption);
 }
 .met-people h4 {
   margin: 10px 0 2px;
   color: var(--ds-ink-muted);
-  font-size: 0.8rem;
+  font-size: var(--ds-text-caption);
   font-weight: 600;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
 }
 .met-people dl {
   margin: 0;
@@ -61,14 +61,14 @@
   border-top: 1px dashed var(--line);
 }
 .met-people dt {
-  font-size: 0.95rem;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .met-people dd {
   margin: 2px 0 0;
-  font-size: 0.85rem;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }

@@ -2,7 +2,7 @@
   margin: 0 0 24px;
 }
 .reasoning-panel h2 {
-  font-size: 1.25rem;
+  font-size: var(--ds-text-heading);
   margin: 8px 0 16px;
 }
 .reasoning-claim {
@@ -16,14 +16,14 @@
 .reasoning-claim blockquote {
   margin: 0;
   font-family: "Noto Serif JP", serif;
-  font-size: 1rem;
-  line-height: 1.9;
+  font-size: var(--ds-text-subhead);
+  line-height: var(--ds-leading-reading);
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
 .reasoning-help {
-  line-height: 1.9;
-  font-size: 0.9rem;
+  line-height: var(--ds-leading-reading);
+  font-size: var(--ds-text-note);
 }
 .reasoning-press-notes {
   margin: 12px 0;
@@ -35,8 +35,8 @@
 }
 .reasoning-press-notes p {
   white-space: pre-line;
-  font-size: 0.9rem;
-  line-height: 1.8;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-reading);
 }
 .selected-evidence {
   margin: 16px 0;
@@ -46,14 +46,14 @@
 }
 .selected-evidence p {
   margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.7;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
 }
 .selected-evidence ul {
   margin: 8px 0 0;
   padding-left: 1.3em;
-  line-height: 1.8;
-  font-size: 0.9rem;
+  line-height: var(--ds-leading-reading);
+  font-size: var(--ds-text-body);
 }
 .reasoning-actions {
   display: flex;
@@ -76,11 +76,11 @@
 .reasoning-panel > .primary { scroll-margin-block: 16px; }
 .special-entry-heading {
   margin: 28px 0 8px;
-  font-size: 1.2rem;
+  font-size: var(--ds-text-heading);
 }
 .special-result-note {
-  line-height: 1.8;
-  font-size: 0.9rem;
+  line-height: var(--ds-leading-reading);
+  font-size: var(--ds-text-note);
   padding: 14px;
   border-radius: 12px;
   background: var(--ds-parchment-2);
@@ -91,15 +91,15 @@
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .reasoning-panel { margin-bottom: 10px; }
   .reasoning-panel > .eyebrow { margin: 3px 0; }
-  .reasoning-panel h2 { font-size: 1.1rem; margin: 3px 0 8px; }
+  .reasoning-panel h2 { font-size: var(--ds-text-subhead); margin: 3px 0 8px; }
   .reasoning-claim { padding: 7px 10px; }
-  .reasoning-claim blockquote { line-height: 1.5; }
-  .reasoning-help { margin: 7px 0; line-height: 1.5; }
+  .reasoning-claim blockquote { line-height: var(--ds-leading-body); }
+  .reasoning-help { margin: 7px 0; line-height: var(--ds-leading-body); }
   .reasoning-press-notes { margin: 4px 0; }
   .selected-evidence { margin: 7px 0; padding: 7px 10px; }
-  .selected-evidence ul { margin: 2px 0 0; line-height: 1.5; }
+  .selected-evidence ul { margin: 2px 0 0; line-height: var(--ds-leading-body); }
   .reasoning-actions { margin-bottom: 6px; }
-  .reasoning-panel > .fine-print { margin: 5px 0; line-height: 1.45; }
+  .reasoning-panel > .fine-print { margin: 5px 0; line-height: var(--ds-leading-snug); }
 }
 
 /* In a short landscape viewport, put the evidence controls beside the claim
@@ -113,15 +113,15 @@
     margin-bottom: 8px;
   }
   .reasoning-prompt { grid-column: 1; grid-row: 1 / span 4; min-width: 0; }
-  .reasoning-panel h2 { font-size: 1rem; margin: 0 0 3px; }
-  .reasoning-help { margin: 0 0 4px; line-height: 1.4; }
+  .reasoning-panel h2 { font-size: var(--ds-text-subhead); margin: 0 0 3px; }
+  .reasoning-help { margin: 0 0 4px; line-height: var(--ds-leading-snug); }
   .reasoning-claim { padding: 7px 10px; }
-  .reasoning-claim blockquote { line-height: 1.45; }
+  .reasoning-claim blockquote { line-height: var(--ds-leading-snug); }
   .reasoning-press-notes { margin: 0; }
   .selected-evidence { grid-column: 2; grid-row: 1; margin: 0; padding: 3px 8px; }
-  .selected-evidence p, .selected-evidence ul { margin: 0; line-height: 1.35; }
+  .selected-evidence p, .selected-evidence ul { margin: 0; line-height: var(--ds-leading-tight); }
   .reasoning-actions { grid-column: 2; grid-row: 2; margin: 0; }
-  .reasoning-actions > button { min-height: 44px; padding-block: 6px; line-height: 1.4; }
-  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: 44px; padding: 6px 12px; line-height: 1.4; }
-  .reasoning-panel > .fine-print { grid-column: 2; grid-row: 4; margin: 0; line-height: 1.35; }
+  .reasoning-actions > button { min-height: 44px; padding-block: 6px; line-height: var(--ds-leading-snug); }
+  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: 44px; padding: 6px 12px; line-height: var(--ds-leading-snug); }
+  .reasoning-panel > .fine-print { grid-column: 2; grid-row: 4; margin: 0; line-height: var(--ds-leading-tight); }
 }

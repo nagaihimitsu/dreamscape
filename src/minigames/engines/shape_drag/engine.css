@@ -25,11 +25,11 @@
 }
 .mg-engine-shape-drag .mg-shape-drag-board[data-rolling] { cursor: grabbing; }
 .mg-engine-shape-drag .mg-shape-drag-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 8px; font-size: 15px; line-height: 1.45; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); text-wrap: balance; word-break: auto-phrase; }
+.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 8px; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); text-wrap: balance; word-break: auto-phrase; }
 /* The skin's meter over the hint: its name, a bar with a mark (where the outcome changes), the value in words. The bar
    fills brighter past the mark (and the words say the number: not colour alone). */
 .mg-engine-shape-drag .mg-shape-drag-meter { display: flex; gap: 10px; align-items: center; margin: 0 0 6px; }
-.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: 14px; font-weight: 700; }
+.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: var(--ds-text-body); font-weight: 700; }
 .mg-engine-shape-drag .mg-shape-drag-meter-bar {
   position: relative;
   flex: 1 1 auto;
@@ -58,12 +58,12 @@
   box-shadow: 0 0 0 1px var(--ds-slate-900);
   transform: translateX(-50%);
 }
-.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: 15px; font-weight: 700; text-align: right; }
+.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: var(--ds-text-body); font-weight: 700; text-align: right; }
 .mg-engine-shape-drag .mg-shape-drag-done {
   justify-content: center;
   width: 100%;
   min-height: 64px;
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-align: center;
@@ -78,11 +78,11 @@
   margin: 0;
   border-radius: 12px;
   background: var(--ds-chip-bg);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
 }
 @media (max-height: 620px) {
   .mg-engine-shape-drag .mg-shape-drag-controls { padding-top: 4px; }
-  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: 4px; font-size: 13px; }
+  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: 4px; font-size: var(--ds-text-note); }
   .mg-engine-shape-drag .mg-shape-drag-meter { margin-bottom: 2px; }
   .mg-engine-shape-drag .mg-shape-drag-done, .mg-engine-shape-drag .mg-shape-drag-auto { min-height: 54px; }
 }

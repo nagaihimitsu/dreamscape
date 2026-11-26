@@ -30,9 +30,9 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
-  font-size: 15px;
+  font-size: var(--ds-text-body);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: var(--ds-leading-body);
   letter-spacing: .12em;
   text-align: center;
   width: max-content;

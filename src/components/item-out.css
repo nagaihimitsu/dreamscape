@@ -77,9 +77,9 @@
 .item-out-name {
   min-width: 0;
   font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  font-size: 16px;
+  font-size: var(--ds-text-subhead);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: var(--ds-leading-snug);
   letter-spacing: 0.02em;
   overflow-wrap: anywhere;
 }
@@ -94,8 +94,8 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .item-out-lines {
@@ -175,9 +175,9 @@
   .item-out-picture { width: 32px; height: 32px; }
   .item-out-picture img { max-width: 28px; max-height: 28px; }
   .item-out-picture img[data-vector] { width: 28px; height: 28px; }
-  .item-out-name { font-size: 15px; }
+  .item-out-name { font-size: var(--ds-text-body); }
   .item-out-lines,
-  .item-out-description { margin-top: 6px; font-size: 14px; line-height: 1.55; }
+  .item-out-description { margin-top: 6px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 }
 
 /* Reduced motion and 「演出を短縮する」: no movement; the card simply appears, and simply goes (no copy on its way out). */

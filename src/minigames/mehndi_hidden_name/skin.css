@@ -183,7 +183,7 @@
   border-radius: 10px;
   background: rgba(20, 14, 8, 0.82);
   color: #ffe9b8;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   font-weight: 700;
   white-space: nowrap;
   transform: translateX(-50%);
@@ -222,9 +222,9 @@
   background: var(--ds-parchment);
   box-shadow: var(--ds-card-shadow);
   color: var(--ds-ink);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: 1.45;
+  line-height: var(--ds-leading-snug);
   text-align: center;
   word-break: auto-phrase;
   pointer-events: none;

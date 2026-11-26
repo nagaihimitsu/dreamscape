@@ -10,7 +10,7 @@
   border: 1.5px solid var(--ds-slate-800);
   border-radius: 12px;
   padding: 8px 18px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
   min-height: 48px;
 }
 .battle-notebook {
@@ -46,7 +46,7 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   border-radius: 12px;
-  font-size: 13px;
+  font-size: var(--ds-text-note);
 }
 /* The open point: the selected-row look (2-px slate edge, parchment fill). */
 .discovery-list button[aria-pressed="true"] {
@@ -67,7 +67,7 @@
 .discovered-mark {
   margin-left: auto;
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   color: var(--muted);
 }
 .discovery-detail {
@@ -87,7 +87,7 @@
   .observation-detail { animation: none; }
 }
 .recorded-label {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-here);
   padding-bottom: 12px;
   margin-bottom: 13px;
@@ -105,21 +105,21 @@
 }
 .clue-kind {
   color: var(--ds-ink-muted);
-  font-size: 10px;
+  font-size: var(--ds-text-mark);
   letter-spacing: 0.12em;
   margin-bottom: 5px;
 }
 .discovery-detail h3,
 .notebook-clue h3 {
   font-family: "Noto Serif JP", serif;
-  font-size: 18px;
+  font-size: var(--ds-text-subhead);
   font-weight: 500;
-  line-height: 1.6;
+  line-height: var(--ds-leading-body);
 }
 .clue-description {
   margin-top: 12px;
-  line-height: 2;
-  font-size: 14px;
+  line-height: var(--ds-leading-reading);
+  font-size: var(--ds-text-body);
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
@@ -131,7 +131,7 @@
 }
 .clue-sources {
   margin-top: 14px;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--ds-ink-muted);
   overflow-wrap: anywhere;
 }
@@ -156,7 +156,7 @@
   margin-top: 30px;
 }
 .document-cards h2 {
-  font-size: 20px;
+  font-size: var(--ds-text-heading);
   margin-bottom: 5px;
 }
 .document-card {
@@ -170,15 +170,15 @@
   border-radius: 4px;
   background: #f2edde;
   color: var(--green);
-  font-size: 14px;
+  font-size: var(--ds-text-body);
 }
 .document-card small {
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--muted);
 }
 .tourism-credits {
   margin: 24px 36px 0;
-  font-size: 11px;
+  font-size: var(--ds-text-mark);
   color: var(--muted);
   overflow-wrap: anywhere;
 }
@@ -200,7 +200,7 @@
 .image-placeholder-note {
   margin: 0 24px 16px;
   padding: 12px;
-  font-size: 12px;
+  font-size: var(--ds-text-caption);
   background: #f0e5cb;
 }
 .modal:has(.cluebook-header) {
@@ -219,8 +219,8 @@
   border-top: 1px solid var(--ds-parchment-line);
 }
 .empty-clues {
-  font-size: 14px;
-  line-height: 2;
+  font-size: var(--ds-text-body);
+  line-height: var(--ds-leading-reading);
   margin: 18px 0;
 }
 @media (max-width: 480px) {
@@ -275,8 +275,8 @@
     min-height: 48px;
     margin: 0;
     padding: 8px 10px;
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: var(--ds-text-note);
+    line-height: var(--ds-leading-snug);
   }
   .tourism-screen:not(.guide-active) > .tourism-actions .primary:last-child {
     grid-column: 1 / -1;
@@ -315,7 +315,7 @@
     flex: none;
     margin: 2px 12px;
     padding: 3px 6px;
-    line-height: 1.4;
+    line-height: var(--ds-leading-snug);
   }
   .mobile-observation-active .tourism-observation {
     display: flex;
@@ -388,16 +388,16 @@
     margin: 0;
   }
   .mobile-observation-active .observation-detail h3 {
-    font-size: 16px;
-    line-height: 1.4;
+    font-size: var(--ds-text-subhead);
+    line-height: var(--ds-leading-snug);
   }
   .mobile-observation-active .observation-detail .claim-types {
     margin-top: 3px;
   }
   .mobile-observation-active .observation-detail .clue-description {
     margin-top: 5px;
-    font-size: 13px;
-    line-height: 1.55;
+    font-size: var(--ds-text-note);
+    line-height: var(--ds-leading-body);
   }
   .mobile-observation-active .observation-notes-open {
     display: block;
@@ -405,7 +405,7 @@
     min-height: 44px;
     margin: 0;
     padding: 5px 10px;
-    font-size: 13px;
+    font-size: var(--ds-text-note);
   }
   .mobile-observation-active .observation-notes {
     display: none;
@@ -445,12 +445,12 @@
     margin-top: 12px;
   }
   .mobile-observation-active .document-cards h2 {
-    font-size: 16px;
+    font-size: var(--ds-text-subhead);
     margin-bottom: 2px;
   }
   .mobile-observation-active .document-cards .fine-print {
     margin: 0;
-    line-height: 1.4;
+    line-height: var(--ds-leading-snug);
   }
   .mobile-observation-active .document-card {
     display: flex;
