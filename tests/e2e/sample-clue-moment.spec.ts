@@ -39,7 +39,7 @@ test("a clue heard at the bell says so under the header, and stays long enough t
   await page.goto("/");
   await placeSampleSave(page, "bell");
   await ops.chooseJourney(page, JOURNEY);
-  const stay = page.getByRole("button", { name: "Bを選ぶ", exact: true });
+  const stay = page.locator('[data-choice="B"]');
   await expect(stay).toBeVisible();
   await ops.settled(page);
   await stay.click();

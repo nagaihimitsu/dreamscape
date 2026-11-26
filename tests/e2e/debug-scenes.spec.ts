@@ -149,10 +149,10 @@ test("an encounter answered in English gives its item, and its moment goes on (t
     const keeping = active?.frame.choices.findIndex((choice) => !encounter!.usingChoices.includes(`${active.encounterId}:${choice.optionId}`)) ?? 0;
     return String.fromCharCode(65 + Math.max(keeping, 0));
   };
-  // Its English replies are laid out as a quiz's options (2026-11-14, the phone UI audit): the letter that chooses at
-  // the left, each 「訳を見る」 44 px high at its row's right (it was under the words, 40 px high).
+  // Its English replies are laid out as a quiz's options (2026-11-14, the phone UI audit): the whole row chooses
+  // (2026-11-26: no letter), each 「訳を見る」 44 px high at its row's right (it was under the words, 40 px high).
   await playUntil(page, (state) => state.activeEncounter?.phase === "quiz" || !!state.activeEncounter?.frame.choices.length, { source: debugGame, pick });
-  const replies = page.getByRole("button", { name: /^[A-Z]を選ぶ$/u });
+  const replies = page.locator("[data-choice]");
   await expect(replies.first()).toBeVisible();
   for (const reply of await replies.all()) {
     const choose = (await reply.boundingBox())!;
@@ -161,7 +161,7 @@ test("an encounter answered in English gives its item, and its moment goes on (t
     if (!(await translate.count())) continue;
     const box = (await translate.boundingBox())!;
     expect(box.height).toBeGreaterThanOrEqual(44);
-    expect(box.x, "「訳を見る」 at the right of the reply").toBeGreaterThan(choose.x + choose.width + 40);
+    expect(box.x, "「訳を見る」 at the right of the reply").toBeGreaterThan(choose.x + choose.width / 2);
   }
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");

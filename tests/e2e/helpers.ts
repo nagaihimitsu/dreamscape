@@ -988,7 +988,7 @@ async function act(page: Page, state: GameState, pick: Pick) {
   if (state.activeBattle?.phase === "dialogue" && state.activeBattle.frame?.choices.some((choice) => !choice.call))
     return page.getByTestId("battle-choice").first().click();
   if (encounter && !(await page.locator(nextButtons).filter({ visible: true }).count())) {
-    const choose = page.getByRole("button", { name: `${pick(state)}を選ぶ`, exact: true });
+    const choose = page.locator(`[data-choice="${pick(state)}"]`);
     if (await choose.count()) return choose.click();
   }
   // The arrival logo finishes by itself and saves its completion.
