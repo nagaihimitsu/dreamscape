@@ -86,7 +86,7 @@ INCLUDE modules.ink
 # speaker: narrator
 カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
 # speaker: narrator
-# photo: gt_album_j57 # photo_caption: 段ボールの六行目「通りで踊った夜」
+# photo: gt_album_j134 # photo_caption: 段ボールの六行目「通りで踊った夜」
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 6
