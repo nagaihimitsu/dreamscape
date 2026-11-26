@@ -29,7 +29,7 @@
 .travel-transition-scene {
   position: relative;
   overflow: hidden;
-  width: min(230px, 68vw);
+  width: min(340px, calc(100vw - 32px));
   height: 112px;
   border: 4px solid var(--ds-parchment);
   border-radius: 16px;
@@ -110,20 +110,50 @@
 @keyframes travel-transition-crossing { 0% { transform: translateX(-105px); } 50% { transform: translateX(0); } 100% { transform: translateX(105px); } }
 @keyframes travel-transition-step { from { transform: rotate(-19deg); } to { transform: rotate(19deg); } }
 @keyframes travel-scenery-pass { to { transform: translateX(-120px); } }
-/* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its parchment mount; the place left ringed in the
-   current place's green, the place reached in the markers' colour, their names in ink with a light halo (about 11:1 on the
-   card's ground), each whole: on more lines when its side of the card is too narrow for it (wrapPlaceName), the card then
-   a little taller. The line's dots come one after another from the place left to the place reached, from 0.25 s to about
-   1.5 s of the 1.8-s ride (opacity only); under reduced motion the whole line shows at once. */
+/* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its parchment mount, as wide as the scene and about
+   three-fifths as tall (2026-11-26 user request: larger, on the OpenStreetMap tiles of the same view; the card's ground
+   until they come, or offline). The tiles are a little paled so the drawing reads on them. The place left ringed in the
+   current place's green, the place reached in the markers' colour, their names in ink with a light halo, each whole: on
+   more lines when its side of the card is too narrow for it (wrapPlaceName), the card then a little taller. The line's
+   dots come one after another from the place left to the place reached, from 0.25 s to about 1.5 s of the 1.8-s ride
+   (opacity only), the party's mark going along with them and the view drawing 6% nearer to the place reached; under
+   reduced motion the whole line shows at once, still, without the party's mark. */
 .travel-ride-map {
-  width: min(230px, 68vw);
+  position: relative;
+  width: min(340px, calc(100vw - 32px));
   overflow: hidden;
   border: 4px solid var(--ds-parchment);
   border-radius: 12px;
   background: #eef1df;
   box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
 }
-.travel-ride-map svg { display: block; width: 100%; height: auto; }
+.travel-ride-view {
+  position: absolute;
+  inset: 0;
+  animation: travel-ride-near 1.8s ease-in-out both;
+}
+.travel-ride-tiles {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  isolation: isolate;
+  background: #eef1df;
+  pointer-events: none;
+}
+.travel-ride-tiles .leaflet-tile-pane { opacity: .78; }
+.travel-ride-map svg { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; }
+.travel-ride-credit {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  padding: 0 5px;
+  border-top-left-radius: 6px;
+  background: #fffaf1cc;
+  color: var(--ds-ink);
+  font-size: 9px;
+  line-height: 1.6;
+}
 .travel-ride-dot {
   fill: var(--ds-slate-800);
   animation: travel-ride-dot .12s ease-out both;
@@ -131,21 +161,30 @@
 }
 .travel-ride-from { fill: #fffaf1; stroke: var(--ds-here); stroke-width: 3; }
 .travel-ride-to { fill: var(--ds-marker); stroke: #fffaf1; stroke-width: 2; }
+.travel-ride-party {
+  fill: var(--ds-here);
+  stroke: #fffaf1;
+  stroke-width: 2.5;
+  animation: travel-ride-go 1.2s .25s ease-in-out both;
+}
 .travel-ride-name {
   fill: var(--ds-ink);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: .02em;
   paint-order: stroke;
   stroke: #fffaf1;
-  stroke-width: 3px;
+  stroke-width: 3.5px;
   stroke-linejoin: round;
 }
+@keyframes travel-ride-go { from { transform: translate(0, 0); } to { transform: translate(var(--ride-dx), var(--ride-dy)); } }
+@keyframes travel-ride-near { from { transform: scale(1); } to { transform: scale(1.06); } }
 @keyframes travel-ride-dot { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .travel-transition::before, .travel-transition-scene, .travel-ride-map,
-  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm, .travel-scenery, .travel-ride-dot { animation: none; }
+  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm, .travel-scenery, .travel-ride-dot, .travel-ride-view { animation: none; }
+  .travel-ride-party { display: none; }
 }
 .travel-transition.is-reduced::before, .travel-transition.is-reduced .travel-transition-scene, .travel-transition.is-reduced .travel-ride-map,
 .travel-transition.is-reduced .travel-transition-vehicle, .travel-transition.is-reduced .travel-transition-leg, .travel-transition.is-reduced .travel-transition-arm,
-.travel-transition.is-reduced .travel-scenery, .travel-transition.is-reduced .travel-ride-dot { animation: none; }
+.travel-transition.is-reduced .travel-scenery, .travel-transition.is-reduced .travel-ride-dot, .travel-transition.is-reduced .travel-ride-view { animation: none; }

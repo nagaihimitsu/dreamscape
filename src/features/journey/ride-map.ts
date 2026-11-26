@@ -1,6 +1,7 @@
-// The small map card of a ride (2026-11-13 user decision; TravelTransition): the place left and the place reached as two
-// dots with their names, and a straight dotted line between them that draws itself over the ride (no road routing). Pure
-// geometry over the places' map positions, in the projection the maps use (Web Mercator: map-focus.ts project).
+// The map card of a ride (2026-11-13 user decision; TravelTransition): the place left and the place reached as two dots
+// with their names, and a straight dotted line between them that draws itself over the ride (no road routing), on the
+// OpenStreetMap tiles of the same view (2026-11-26 user request: a larger map, the party seen moving). Pure geometry over
+// the places' map positions, in the projection the maps use (Web Mercator: map-focus.ts project).
 import { cityContents } from "../../content";
 import type { GameState } from "../../domain/game";
 import { project, type LatLng } from "./map-focus";
@@ -30,20 +31,25 @@ export function rideRoute(
   return from && to ? { from, to } : undefined;
 }
 
-/** The card's drawing area (SVG units): room at the sides for the dots, above and below for the names. */
-export const RIDE_MAP = { width: 220, height: 84, padX: 16, padTop: 24, padBottom: 24 } as const;
+/** The card's drawing area (SVG units, about a CSS pixel each): room at the sides for the dots, above and below for the names. */
+export const RIDE_MAP = { width: 320, height: 200, padX: 44, padTop: 52, padBottom: 52 } as const;
+/**
+ * The most SVG units a zoom-0 pixel takes: a short walk is drawn no closer than zoom 17 of the tiles (about 300 m across
+ * the line's room), so the streets around it still show; the ride is then shorter than the room, centred.
+ */
+export const RIDE_MAX_SCALE = 2 ** 17;
 /** The gap between the line's dots, and the room the line leaves around each end's dot. */
-const DOT_SPACING = 7;
-const FROM_GAP = 8;
-const TO_GAP = 9;
-/** A name's lines (travel-transition.css: 12-unit type, .02em apart): a full-width character's width, the line height. */
-const NAME_EM = 12.24;
-export const RIDE_NAME_LINE = 14;
+const DOT_SPACING = 9;
+const FROM_GAP = 10;
+const TO_GAP = 11;
+/** A name's lines (travel-transition.css: 13-unit type, .02em apart): a full-width character's width, the line height. */
+const NAME_EM = 13.26;
+export const RIDE_NAME_LINE = 16;
 /** How far a name keeps from the card's sides and from the other name on its row. */
 const NAME_EDGE = 4;
 const NAME_GAP = 4;
 /** A name's ink above its baseline and below it (with its halo), and the room it keeps from the card's top and bottom. */
-const NAME_ASCENT = 11;
+const NAME_ASCENT = 12;
 const NAME_DESCENT = 3;
 const NAME_MARGIN = 2;
 /** The most lines a name takes; a name longer still ends its last line with 「…」 (no place name comes near). */
@@ -52,8 +58,11 @@ export const RIDE_NAME_LINES = 3;
 export type RidePoint = { x: number; y: number };
 /** A name: where its first line's baseline starts (or is centred, or ends), and its lines, top to bottom. */
 export type RideLabel = RidePoint & { anchor: "start" | "middle" | "end"; lines: string[] };
-/** `height`: the drawing's height (RIDE_MAP.height, more when a name takes more lines than the card has room for). */
-export type RideMapLayout = { height: number; from: RidePoint; to: RidePoint; dots: RidePoint[]; labels: { from: RideLabel; to: RideLabel } };
+/**
+ * `height`: the drawing's height (RIDE_MAP.height, more when a name takes more lines than the card has room for);
+ * `scale`: SVG units per pixel of the whole world at zoom 0 (project), for the tiles under the drawing.
+ */
+export type RideMapLayout = { height: number; scale: number; from: RidePoint; to: RidePoint; dots: RidePoint[]; labels: { from: RideLabel; to: RideLabel } };
 
 /** Where a name may go to its next line: after 「・」, 「、」, a closing bracket or a space, or before an opening bracket. */
 const breaksBetween = (char: string, next: string) => /[・、）)\s]/.test(char) || /[（(]/.test(next);
@@ -86,7 +95,8 @@ export function wrapPlaceName(name: string, maxChars: number, maxLines = RIDE_NA
 const round = (value: number) => Math.round(value * 10) / 10;
 
 /**
- * Where the card draws the ride: both places fitted into the drawing area at one scale (north up, as the maps), centred;
+ * Where the card draws the ride: both places fitted into the drawing area at one scale (north up, as the maps; no closer
+ * than RIDE_MAX_SCALE), centred;
  * the dots of the line from the place left to the place reached, in that order (the line draws itself in it); each name
  * above its dot when the dot is in the upper half, else below it, starting at the dot on the left third, ending at it on
  * the right third, centred between. Each name is whole (2026-11-13): in lines as wide as its side of the card leaves it
@@ -102,7 +112,7 @@ export function rideMapLayout(route: RideRoute): RideMapLayout | null {
   const { width, height, padX, padTop, padBottom } = RIDE_MAP;
   const innerWidth = width - 2 * padX;
   const innerHeight = height - padTop - padBottom;
-  const scale = Math.min(dx ? innerWidth / Math.abs(dx) : Infinity, dy ? innerHeight / Math.abs(dy) : Infinity);
+  const scale = Math.min(dx ? innerWidth / Math.abs(dx) : Infinity, dy ? innerHeight / Math.abs(dy) : Infinity, RIDE_MAX_SCALE);
   const centre = { x: padX + innerWidth / 2, y: padTop + innerHeight / 2 };
   const from = { x: round(centre.x - (dx * scale) / 2), y: round(centre.y - (dy * scale) / 2) };
   const to = { x: round(centre.x + (dx * scale) / 2), y: round(centre.y + (dy * scale) / 2) };
@@ -126,7 +136,7 @@ export function rideMapLayout(route: RideRoute): RideMapLayout | null {
       : anchor === "start" ? width - NAME_EDGE - x : anchor === "end" ? x - NAME_EDGE : 2 * Math.min(x - NAME_EDGE, width - NAME_EDGE - x);
   const [fromLabel, toLabel] = ends.map((end, index): RideLabel => {
     const lines = wrapPlaceName(index ? route.to.nameJa : route.from.nameJa, Math.max(1, Math.floor(room(end, ends[1 - index]) / NAME_EM)));
-    const y = end.above ? end.point.y - 10 - (lines.length - 1) * RIDE_NAME_LINE : end.point.y + 18;
+    const y = end.above ? end.point.y - 11 - (lines.length - 1) * RIDE_NAME_LINE : end.point.y + 20;
     return { x: end.x, y, anchor: end.anchor, lines };
   });
   // Room for names longer than a line: the drawing grows above or below, the ride where it was.
@@ -138,6 +148,7 @@ export function rideMapLayout(route: RideRoute): RideMapLayout | null {
   const down = <T extends RidePoint>(point: T): T => ({ ...point, y: round(point.y + extraTop) });
   return {
     height: height + extraTop + extraBottom,
+    scale,
     from: down(from), to: down(to), dots: dots.map(down), labels: { from: down(fromLabel), to: down(toLabel) },
   };
 }
