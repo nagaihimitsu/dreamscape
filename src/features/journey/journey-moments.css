@@ -75,7 +75,7 @@
 .episode-title-place { font-size: var(--ds-text-note); font-weight: 600; letter-spacing: 0.16em; overflow-wrap: anywhere; }
 .episode-title-rule { width: 56px; height: 1px; background: var(--ds-gold); }
 .episode-title-name {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--episode-title-size);
   font-weight: 500;
   line-height: var(--ds-leading-body);
@@ -129,7 +129,7 @@
 .resume-recap-photo figcaption { margin-top: 4px; font-size: var(--ds-text-mark); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .resume-recap-chapter { min-width: 0; }
 .resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
-.resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.resume-recap-chapter h3 { margin: 0; font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .resume-recap-chapter p:last-child { margin: 4px 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* Her line looking back on the place finished last, under the record (resumeRecap). */
 .resume-recap .resume-recap-heroine { margin: 10px 0 0; }
@@ -173,7 +173,7 @@
 /* Centred in the screen; from its top when it does not fit (auto margins). */
 .packing-content { display: grid; justify-items: center; gap: 12px; width: min(360px, 100%); margin: auto; text-align: center; }
 .packing-eyebrow { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.2em; }
-.packing-title { font-family: "Noto Serif JP", serif; font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
+.packing-title { font-family: var(--ds-font-serif); font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
 .packing-label { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; overflow-wrap: anywhere; }
 .packing-case {
   position: relative;
@@ -211,7 +211,7 @@
   animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
 }
 .packing-items img { flex: none; width: 32px; height: 32px; }
-.packing-next { margin-top: 6px; font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); letter-spacing: 0.08em; }
+.packing-next { margin-top: 6px; font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); letter-spacing: 0.08em; }
 @keyframes packing-scene { 0% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes packing-item { from { opacity: 0; transform: translateY(-10px); } }
 .packing-scene.is-reduced, .packing-scene.is-reduced .packing-items li { animation: none; }
@@ -271,7 +271,7 @@
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
-.chapter-stamp-mark { font-family: "Noto Serif JP", serif; font-size: var(--chapter-stamp-size); font-weight: 700; line-height: var(--ds-leading-display); }
+.chapter-stamp-mark { font-family: var(--ds-font-serif); font-size: var(--chapter-stamp-size); font-weight: 700; line-height: var(--ds-leading-display); }
 @keyframes chapter-stamp-drop {
   0% { opacity: 0; transform: rotate(-8deg) scale(1.8); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
   16% { opacity: 1; transform: rotate(-8deg) scale(0.92); animation-timing-function: var(--ease-out); }
@@ -385,7 +385,7 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
    (「…トライアン／グル編」), and shrinks a little before it takes two lines. From 6vw, as on a 320-px phone. */
 .end-roll .end-roll-title {
   margin: 0;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--end-roll-title-size);
   font-weight: 500;
   line-height: var(--ds-leading-body);
@@ -416,14 +416,14 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-chapter {
   margin: 0 0 6px;
   color: var(--roll-gold);
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-note);
   letter-spacing: 0.4em;
   text-indent: 0.4em;
 }
 .end-roll-city h3 {
   margin: 0 0 36px;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-title);
   font-weight: 500;
   letter-spacing: 0.24em;
@@ -481,7 +481,7 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-fin {
   margin: 0;
   color: var(--roll-gold);
-  font-family: Georgia, "Noto Serif JP", serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--end-roll-fin-size);
   font-style: italic;
   letter-spacing: 0.12em;

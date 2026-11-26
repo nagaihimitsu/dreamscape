@@ -82,7 +82,7 @@
 }
 .item-out-name {
   min-width: 0;
-  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   line-height: var(--ds-leading-snug);
@@ -99,7 +99,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
@@ -124,14 +124,14 @@
 .item-out-lines li + li { margin-top: 2px; }
 .item-out-lines li::marker {
   color: var(--ds-ink-muted);
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: 0.85em;
 }
 /* With a highlighted line, the others in the muted ink (5.5:1 on the paper), the highlighted one in full ink, heavier,
    with a marker band behind its words (wrapping with them). */
 .item-out-lines[data-highlight] li {
   color: var(--ds-ink-muted);
-  transition: color 200ms var(--ease-out);
+  transition: color var(--motion-fast) var(--ease-out);
 }
 .item-out-lines li[data-highlighted] {
   color: var(--ds-ink);

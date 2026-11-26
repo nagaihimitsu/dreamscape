@@ -1,6 +1,6 @@
 /* The web fonts (Noto Sans JP and Noto Serif JP) are linked from index.html, which starts loading them at once. */
 :root {
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   color: var(--ds-ink);
   background: var(--ds-page);
   font-synthesis: none;
@@ -84,6 +84,12 @@
      and colours, decided first and used everywhere, so every screen reads as one). The talk's stylesheets use only
      these, and every stylesheet takes its font sizes and line heights from them (src/app/design-tokens.test.ts holds them to
      it); the other screens' colours move to them in turn. docs/02 「デザインの決まり」 lists them by role. Sizes that follow the screen's width are set below. */
+  /* The typefaces, by role (2026-11-26). The two Noto faces are web fonts every phone loads (index.html); Georgia is
+     on Apple's and Microsoft's systems only, so the Latin face falls back to the loaded Mincho, not a system serif. */
+  --ds-font-sans: "Noto Sans JP", "Noto Sans", system-ui, sans-serif; /* the UI's words */
+  --ds-font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif; /* a story's words, a place's name, a title */
+  --ds-font-latin: Georgia, "Noto Serif JP", serif; /* Latin marks and figures: a choice's letter, NEW, a score */
+  --ds-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace; /* a storage key, Debug's codes */
   /* The type scale, by role. */
   --ds-text-mark: 11px; /* a mark's word: ▼, a tool's word under its icon */
   --ds-text-caption: 12px; /* a label, a small note: a sender's name, a role over a name */
@@ -354,7 +360,7 @@ p {
 }
 h1,
 h2 {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-weight: 500;
   letter-spacing: 0.045em;
 }
@@ -387,7 +393,7 @@ h3 {
   border-bottom: 1px solid var(--ds-parchment-line);
 }
 .brand {
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--ds-text-title);
   line-height: var(--ds-leading-tight);
   letter-spacing: 0.035em;
@@ -395,7 +401,7 @@ h3 {
 }
 .brand span {
   display: block;
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-mark);
   letter-spacing: 0.35em;
   margin-top: 4px;
@@ -558,7 +564,7 @@ h3 {
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-snug);
   text-align: left;
-  transition: background 0.15s;
+  transition: background var(--motion-fast) var(--ease-out);
 }
 .primary:hover:enabled:not(:where([data-settling])) {
   background: var(--ds-slate-900);
@@ -661,7 +667,7 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
 }
 footer {
   text-align: center;
-  font-family: Georgia, "Noto Serif JP", serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--ds-text-mark);
   letter-spacing: 0.09em;
   color: var(--ds-ink-muted);
@@ -686,7 +692,7 @@ footer span {
    Gothic, not Mincho; Noto Sans JP, the face of the rest of the game, a web font every phone loads, so every phone
    breaks the lines alike). A letter's sheet keeps its serif (line-stage.css). */
 .dialogue-text {
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-weight: 500;
   font-size: var(--ds-text-reading);
   line-height: var(--ds-leading-reading);
@@ -783,13 +789,13 @@ footer span {
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
-  transition: background 0.15s;
+  transition: background var(--motion-fast) var(--ease-out);
 }
 .choice:hover:enabled {
   background: var(--ds-parchment-2);
 }
 .choice-number {
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--ds-text-note);
   color: var(--ds-ink-muted);
   flex-shrink: 0;
@@ -1463,13 +1469,13 @@ dialog.modal[open] {
   overflow-wrap: anywhere;
 }
 .ending-names {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-heading);
   margin: 24px 0;
   overflow-wrap: anywhere;
 }
 .ending-names span {
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-title);
   margin: 0 10px;
@@ -1568,7 +1574,7 @@ dialog.modal[open] {
   letter-spacing: 0.08em;
 }
 .question-en {
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-lead);
   line-height: var(--ds-leading-body);
   font-weight: 500;
@@ -1596,7 +1602,7 @@ dialog.modal[open] {
   overflow-wrap: anywhere;
 }
 .quiz-choice .option-id {
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-subhead);
 }
@@ -1672,7 +1678,7 @@ dialog.modal[open] {
 }
 .quiz-feedback h3 {
   font-size: var(--ds-text-heading);
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-weight: 500;
   margin-bottom: 12px;
 }
@@ -1686,7 +1692,7 @@ dialog.modal[open] {
   margin-top: 17px;
 }
 .outcome {
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--ds-text-display);
   line-height: var(--ds-leading-tight);
   letter-spacing: 0.03em;
@@ -1702,7 +1708,7 @@ dialog.modal[open] {
   color: var(--ds-ink);
 }
 .battle-score strong {
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--battle-score-size);
   font-weight: 400;
   line-height: var(--ds-leading-display);

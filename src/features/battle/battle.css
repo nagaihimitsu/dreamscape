@@ -648,7 +648,7 @@
   animation-name: answer-stamp-enter-incorrect;
 }
 .battle-screen .answer-effect-symbol {
-  font-family: sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--answer-symbol-size);
   font-weight: 700;
   line-height: 1;
@@ -715,7 +715,7 @@
 }
 .battle-screen .answer-effect-perfect-title {
   color: var(--battle-answer-effect-perfect-title-ink);
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--answer-perfect-title-size);
   font-style: italic;
   line-height: 1;

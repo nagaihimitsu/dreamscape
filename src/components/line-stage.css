@@ -184,7 +184,7 @@
 .phone-name {
   margin: 0 0 2px 6px;
   color: var(--phone-name);
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-caption);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
@@ -197,7 +197,7 @@
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small);
   background: var(--phone-bubble);
   color: var(--ds-slate-900);
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   white-space: pre-wrap;
@@ -246,7 +246,7 @@
     var(--letter-paper);
   color: var(--ds-ink);
   box-shadow: var(--ds-card-shadow);
-  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-lead);
 }
 .letter-sheet[data-kind="note"] {
@@ -306,7 +306,7 @@
   --letter-gloss: 0.78;
   margin: 0.15em 0 0.85em;
   color: var(--ds-ink-muted);
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: calc(var(--letter-gloss) * 1em);
   line-height: var(--ds-leading-body);
   letter-spacing: 0.02em;

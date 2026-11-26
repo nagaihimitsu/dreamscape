@@ -49,11 +49,11 @@
 .minigame-room-delay legend { padding: 0; font-size: var(--ds-text-note); font-weight: 600; }
 /* The tuning numbers (E1, E2): a name and its field per line; the original value beside an edited one. */
 .minigame-room-tuning p { margin: 4px 0; }
-.minigame-room-controls .minigame-room-number { flex-wrap: wrap; justify-content: space-between; font-family: ui-monospace, monospace; font-size: var(--ds-text-note); }
+.minigame-room-controls .minigame-room-number { flex-wrap: wrap; justify-content: space-between; font-family: var(--ds-font-mono); font-size: var(--ds-text-note); }
 .minigame-room-number input[type="number"] { width: 7em; height: 44px; padding: 0 8px; font-size: var(--ds-text-body); }
 .minigame-room-was { flex-basis: 100%; font-family: inherit; font-size: var(--ds-text-caption); text-align: right; }
 .minigame-room-tuning .secondary { min-height: 44px; margin-top: 4px; }
 /* Numbers the engine finds unfair: said in words under them (not colour alone), on a warm ground, no edge on one side. */
 .minigame-room-unfair { margin: 6px 0 2px; padding: 8px 10px; border: 1.5px solid var(--ds-marker); border-radius: var(--ds-radius-field); background: var(--ds-parchment-2); color: var(--ds-ink); }
 .minigame-room-unfair p { margin: 0 0 4px; font-weight: 600; }
-.minigame-room-unfair li { font-family: ui-monospace, monospace; font-size: var(--ds-text-caption); }
+.minigame-room-unfair li { font-family: var(--ds-font-mono); font-size: var(--ds-text-caption); }

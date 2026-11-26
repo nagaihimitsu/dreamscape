@@ -119,7 +119,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-list-card h2 {
   margin: 0;
   padding: 5px 4px 3px;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
@@ -179,7 +179,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   line-height: var(--ds-leading-tight);

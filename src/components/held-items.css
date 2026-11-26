@@ -41,7 +41,7 @@
   border-radius: var(--ds-radius-pill);
   background: var(--ds-glass-mark-full);
   color: var(--ds-slate-900);
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-mark);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -68,7 +68,7 @@
   border: 0;
   border-radius: var(--ds-radius-pane);
   box-shadow: var(--ds-glass-shadow);
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
 }
@@ -103,7 +103,7 @@
 }
 .held-item-lines li { overflow-wrap: anywhere; }
 .held-item-lines li + li { margin-top: 4px; }
-.held-item-lines li::marker { font-family: Georgia, serif; font-size: 0.85em; }
+.held-item-lines li::marker { font-family: var(--ds-font-latin); font-size: 0.85em; }
 
 /* 「NEW」 beside an item the player had not looked at when the detail opened (2026-11-13 user decision): white on the
    markers' rose, 6:1. In the single item's heading it follows the name, before the ×. */
@@ -114,7 +114,7 @@
   border-radius: var(--ds-radius-small);
   background: var(--ds-marker);
   color: var(--ds-on-slate);
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--ds-text-mark);
   font-weight: 700;
   letter-spacing: 0.06em;

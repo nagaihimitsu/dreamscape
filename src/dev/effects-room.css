@@ -96,7 +96,7 @@
   height: 100%;
   text-align: left;
 }
-.effects-room-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--ds-text-caption); overflow-wrap: anywhere; }
+.effects-room-id { font-family: var(--ds-font-mono); font-size: var(--ds-text-caption); overflow-wrap: anywhere; }
 .effects-room-use { font-size: var(--ds-text-caption); color: var(--ds-ink-muted); }
 .effects-room button[aria-pressed="true"] .effects-room-use { color: var(--ds-on-slate-muted); }
 .effects-room button:disabled .effects-room-use { color: inherit; }

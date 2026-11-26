@@ -24,7 +24,9 @@ const COLOUR_LITERAL = /#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?)\((?!\s*var\()/;
 
 const typeErrors = (css: string) => {
   const wrong: string[] = [];
-  for (const { property, value } of declarations(css)) {
+  // A typeface of a thing's own: one this stylesheet loads itself (@font-face), as a mini-game's handwriting.
+  const ownFaces = [...css.matchAll(/@font-face\s*\{[^}]*font-family\s*:\s*([^;}]+)/g)].map(([, face]) => face.trim());
+  for (const { property, value } of declarations(css.replace(/@font-face\s*\{[^}]*\}/g, ""))) {
     if (property === "font-size" && !/^(?:var\(--[\w-]+\)|[\d.]+em|inherit|calc\(.*(?:var\(|em\b).*\))$/.test(value)) {
       wrong.push(`font-size: ${value} (not a step of the type scale)`);
     }
@@ -35,6 +37,10 @@ const typeErrors = (css: string) => {
       wrong.push(`${property}: ${value} (not one of the rules' corners)`);
     }
     if (property === "z-index" && /^\d{2,}$/.test(value)) wrong.push(`z-index: ${value} (a layer not named: --ds-layer-*)`);
+    if (property === "font" && value !== "inherit") wrong.push(`font: ${value} (write font-family, font-size and line-height from the rules)`);
+    if (property === "font-family" && !/^(?:var\(--[\w-]+\)|inherit)$/.test(value) && !ownFaces.some((face) => value.startsWith(face))) {
+      wrong.push(`font-family: ${value} (not one of the rules' typefaces)`);
+    }
   }
   return wrong;
 };
@@ -45,7 +51,7 @@ describe("the design's rules", () => {
   it("finds the stylesheets", () => expect(STYLESHEETS.length).toBeGreaterThan(50));
 
   for (const path of STYLESHEETS) {
-    it(`${path} takes its font sizes, line heights, corners and layers from the rules`, () => {
+    it(`${path} takes its type, corners and layers from the rules`, () => {
       const css = read(path);
       const wrong = typeErrors(css);
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);

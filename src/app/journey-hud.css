@@ -21,7 +21,7 @@
   padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
   color: var(--ds-on-slate);
   background: none;
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-caption);
   line-height: var(--ds-leading-tight);
 }
@@ -68,7 +68,7 @@
 .hud-place {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-body);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
@@ -104,7 +104,7 @@
   /* The place name's Mincho, a web font every phone loads (2026-11-16: Georgia, missing on Android and many Linux phones, drew
      the figures in another serif there). Its figures share one width but its 1 (about 0.09em narrower), and it has no
      tabular figures; tabular-nums keeps a fallback serif's figures of one width while the web font has not loaded. */
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-variant-numeric: tabular-nums;
   line-height: var(--ds-leading-display);
   white-space: nowrap;
@@ -115,7 +115,7 @@
 .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-note); }
 .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-caption); }
 .hud-wallet .ap { font-size: var(--ds-text-note); }
-.hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: var(--ds-text-mark); letter-spacing: 0.1em; }
+.hud-wallet .ap small { font-family: var(--ds-font-sans); font-size: var(--ds-text-mark); letter-spacing: 0.1em; }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,

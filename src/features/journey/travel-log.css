@@ -53,7 +53,7 @@ dialog.modal.travel-log {
   border: 0;
   background: transparent;
   color: var(--ds-ink);
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   line-height: var(--ds-leading-snug);
   text-align: left;
@@ -79,7 +79,7 @@ dialog.modal.travel-log {
 .travel-log-card h4 {
   min-width: 0;
   margin: 0;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
@@ -104,7 +104,7 @@ dialog.modal.travel-log {
 .travel-log-person-figure .character-figure img,
 .travel-log-person-figure .character-figure svg { object-position: center top; }
 .travel-log-person > div { min-width: 0; }
-.travel-log-people-title { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: var(--ds-text-subhead); }
+.travel-log-people-title { margin: 0 0 4px; font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); }
 .travel-log .met-people { margin-top: 16px; }
 .travel-log .journey-numbers { margin-top: 0; padding-top: 14px; }
 .album-photo {

@@ -15,7 +15,7 @@
 }
 .reasoning-claim blockquote {
   margin: 0;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   line-height: var(--ds-leading-reading);
   white-space: pre-line;

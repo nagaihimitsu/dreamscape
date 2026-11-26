@@ -64,16 +64,18 @@
   font-size: var(--ds-text-caption);
 }
 .reward-total strong {
-  font:
-    30px Georgia,
-    serif;
+  font-family: var(--ds-font-latin);
+  font-size: var(--ds-text-display);
+  font-weight: 400;
+  line-height: var(--ds-leading-display);
   color: var(--ds-ink);
   white-space: nowrap;
 }
 .reward-total small {
-  font:
-    12px "Noto Sans JP",
-    sans-serif;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-caption);
+  font-weight: 400;
+  line-height: var(--ds-leading-tight);
 }
 .current-ap {
   margin-top: 14px;
@@ -94,7 +96,7 @@
   margin: 7px 0 13px;
 }
 .episode-clear > p:not(.eyebrow):not(.fine-print) {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
 }

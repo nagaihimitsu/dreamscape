@@ -31,7 +31,7 @@
 /* The name in the headings' type, as the battle opponent's heading shows it. */
 .name-cutin .name-cutin-name {
   color: var(--vn-text);
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-title);
   font-weight: 500;
   letter-spacing: 0.045em;
