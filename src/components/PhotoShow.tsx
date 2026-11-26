@@ -1,17 +1,21 @@
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type Ref } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ComponentPropsWithoutRef, type Ref } from "react";
 import { getAlbumImage } from "../content";
 import { photoShowsLarge, type StoryPhoto } from "../content/tags";
 import { playCue, useSceneFastForward } from "../audio/sound-effects";
 import { CardFlight } from "./ItemShow";
 import { useFiguresTop } from "./figures-top";
+import { Icon } from "./icons";
 import type { Box } from "./item-show";
+import { Modal } from "./Modal";
+import { holdTaps } from "./tap-hold";
 import "./photo-show.css";
 
 // A line's `# photo:` shown large (2026-11-12; the default since 2026-11-25, `# photo_show: small` keeps it to the small
 // card): the picture as a print in the middle of the scene while its line is on screen (PhotoShowLayer), and, for a photo
 // just put in the album, its way into ≡メニュー as the line goes (PhotoShowFlight, drawn by JourneyHud). Presentation only,
-// on every reading of the line: the album takes the photo once (src/domain/album.ts). It takes no presses and no focus
-// and is aria-hidden: the photo card's status region (AlbumPhotoNotice) says it.
+// on every reading of the line: the album takes the photo once (src/domain/album.ts). A tap on the print (2026-11-25 user
+// request) opens it larger over the scene (PhotoViewer), which closes on any tap; it reads nothing on, and the line waits
+// while it is open (a modal: dialogueObstructed). The photo card's status region (AlbumPhotoNotice) says the photo is taken.
 
 /**
  * What GameApp tells the prints: the photo the player's last action has just put in the album (`fresh`; its print is
@@ -58,6 +62,7 @@ function PhotoPrint({ imageId, path, caption, aboveHeads }: { imageId: string; p
   // Above the heads on stage (figures-top.ts), measured before the print's own box is.
   useFiguresTop(layer, aboveHeads);
   const ref = useRef<HTMLElement>(null);
+  const [viewing, setViewing] = useState(false);
   useEffect(() => {
     if (taken && fresh?.sound) playCue("camera_shutter");
   // Once, as the print appears.
@@ -82,15 +87,42 @@ function PhotoPrint({ imageId, path, caption, aboveHeads }: { imageId: string; p
       window.removeEventListener("resize", measure);
     };
   }, [imageId, aboveHeads]);
-  return <div className="photo-show-layer" ref={layer} aria-hidden="true" data-testid="photo-show" data-taken={taken || undefined}>
-    <PrintBody ref={ref} path={path} caption={caption} stamp={stamp} />
-    {taken && <span className="photo-show-flash" />}
+  const open = () => setViewing(true);
+  return <div className="photo-show-layer" ref={layer} data-testid="photo-show" data-taken={taken || undefined}>
+    <PrintBody ref={ref} path={path} caption={caption} stamp={stamp} role="button" tabIndex={0} aria-label="写真を大きく見る"
+      onClick={open} onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        open();
+      }} />
+    {taken && <span className="photo-show-flash" aria-hidden="true" />}
+    {viewing && <PhotoViewer path={path} caption={caption} stamp={stamp} onClose={() => setViewing(false)} />}
   </div>;
 }
 
+/**
+ * The print opened larger (a tap on it): over the dimmed scene, as large as the screen allows, with its caption and stamp.
+ * A tap anywhere closes it (on the print, around it, or its 「閉じる」), as Esc does; the tap that closes it reads nothing on.
+ */
+function PhotoViewer({ path, caption, stamp, onClose }: { path: string; caption?: string; stamp?: string; onClose: () => void }) {
+  const close = () => {
+    holdTaps();
+    onClose();
+  };
+  return <Modal labelledBy="photo-show-viewer-title" className="photo-show-viewer" onClose={onClose} closeOnBackdrop>
+    <h2 id="photo-show-viewer-title" className="sr-only">{caption ?? "写真"}</h2>
+    <button type="button" className="modal-close photo-show-viewer-close" data-testid="photo-show-viewer-close" onClick={close}>
+      <Icon name="close" />閉じる
+    </button>
+    <PrintBody path={path} caption={caption} stamp={stamp} onClick={close} data-testid="photo-show-large" />
+  </Modal>;
+}
+
+type PrintProps = Omit<ComponentPropsWithoutRef<"figure">, "children" | "className"> & { "data-testid"?: string };
+
 /** The print itself: the picture in its white frame, the caption written in the margin under it, and its stamp. */
-function PrintBody({ ref, path, caption, stamp }: { ref: Ref<HTMLElement>; path: string; caption?: string; stamp?: string }) {
-  return <figure className="photo-print" ref={ref}>
+function PrintBody({ ref, path, caption, stamp, ...props }: PrintProps & { ref?: Ref<HTMLElement>; path: string; caption?: string; stamp?: string }) {
+  return <figure className="photo-print" ref={ref} {...props}>
     <img src={`${import.meta.env.BASE_URL}${path}`} alt="" decoding="async" />
     {(caption || stamp) && <figcaption className="photo-print-margin">
       {caption && <span className="photo-print-caption">{caption}</span>}
