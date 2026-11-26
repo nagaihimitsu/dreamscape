@@ -89,17 +89,27 @@
   line-height: 1;
   cursor: pointer;
 }
-.held-item-list { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.held-item-list { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
 /* Only the items themselves (the list's own rows): a note's lines inside an item are a list of their own. */
 .held-item-list > li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 8px; align-items: start; }
 .held-item-list > li > img { width: 32px; height: 32px; }
+/* A faint rule between items, fading out at both ends, so one item's description is not read as the next one's. */
+.held-item-list > li + li { position: relative; padding-top: 12px; }
+.held-item-list > li + li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, color-mix(in srgb, currentColor 16%, transparent) 20%, color-mix(in srgb, currentColor 16%, transparent) 80%, transparent);
+}
 .held-item-list strong { overflow-wrap: anywhere; }
 .held-item-close:focus-visible {
   outline: 3px solid var(--ds-focus);
   box-shadow: 0 0 0 6px var(--ds-slate-900);
   outline-offset: 0;
 }
-.held-item-detail .held-item-origin { font-size: 0.9em; }
 /* What is written on the item (a note's lines), on a slip of paper under the description. */
 .held-item-lines {
   margin: 8px 0 0;

@@ -153,8 +153,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   // This city's items, and those carried through the journey from an earlier city (the item design §2.6).
   const items = encounters.items
     .filter((item) => itemUsableIn(game, item.id, game.currentCityId) && game.inventory[item.id] === "held")
-    .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, lines: itemLines(game, item.linesJa), iconPath: item.iconPath,
-      ...(item.cityId !== game.currentCityId ? { origin: `${getCities().find((city) => city.id === item.cityId)?.nameJa ?? item.cityId}から持ってきた` } : {}) }));
+    .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, lines: itemLines(game, item.linesJa), iconPath: item.iconPath }));
   const shown = view === "all";
   // 「服」 (2026-11-20): 普段の服 (the outfit this city gives her) and each outfit bought, her small picture in each.
   const bought = ownedOutfits(game);

@@ -6,9 +6,8 @@ import { Icon } from "./icons";
 import "./held-items.css";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
-/** `origin`: for an item carried from an earlier city, where it came from (「デリーから持ってきた」; the item design §2.6). */
 /** `lines`: what is written on the item (a note's lines, the catalog's `linesJa`), shown in order under the description. */
-export type HeldItem = { id: string; name: string; description: string; lines?: string[]; iconPath?: string; origin?: string };
+export type HeldItem = { id: string; name: string; description: string; lines?: string[]; iconPath?: string };
 
 /** How long an item given away or used plays (milliseconds; held-items.css): the picture's shrink and its icon's float. */
 const SPENT_MS = 800;
@@ -153,10 +152,10 @@ export function HeldItems({ items, gained, spent, newIds = [], onOpen, onSeen }:
             }}>×</button>
           </div>
           {single
-            ? <><p>{single.description}</p><ItemLines item={single} />{single.origin && <p className="held-item-origin">{single.origin}</p>}</>
+            ? <><p>{single.description}</p><ItemLines item={single} /></>
             : <ul className="held-item-list">{items.map((item) => <li key={item.id}>
               <img src={iconSource(item)} alt="" />
-              <div><strong>{item.name}</strong>{isNew(item) && <NewTag />}<p>{item.description}</p><ItemLines item={item} />{item.origin && <p className="held-item-origin">{item.origin}</p>}</div>
+              <div><strong>{item.name}</strong>{isNew(item) && <NewTag />}<p>{item.description}</p><ItemLines item={item} /></div>
             </li>)}</ul>}
         </div>
       </>}
