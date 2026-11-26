@@ -40,7 +40,7 @@
     0 0 10px 8px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 30%, transparent),
     0 0 18px 9px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 12%, transparent);
   color: var(--band-ink, var(--vn-name-ink));
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   font-weight: 600;
   line-height: var(--ds-leading-tight);

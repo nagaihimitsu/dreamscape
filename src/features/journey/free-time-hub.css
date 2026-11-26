@@ -77,7 +77,7 @@
   background: var(--ds-parchment-2);
   color: var(--ds-ink);
   box-shadow: var(--ds-pill-shadow);
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   line-height: var(--ds-leading-tight);

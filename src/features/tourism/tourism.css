@@ -62,7 +62,7 @@
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--ds-parchment-2);
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
 }
 .discovered-mark {
   margin-left: auto;
@@ -111,7 +111,7 @@
 }
 .discovery-detail h3,
 .notebook-clue h3 {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 500;
   line-height: var(--ds-leading-body);

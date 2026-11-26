@@ -110,7 +110,7 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
 }
 .map-go-bar { display: flex; align-items: center; gap: 10px; }
 .map-go-bar-text { display: grid; flex: 1 1 auto; gap: 2px; min-width: 0; margin: 0; }
-.map-go-bar-name { font-family: "Noto Serif JP", serif; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
+.map-go-bar-name { font-family: var(--ds-font-serif); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
 .map-go-bar-detail { color: var(--ds-ink); font-size: var(--ds-text-caption); font-weight: 600; line-height: var(--ds-leading-snug); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .map-go-bar-detail .place-card-tag { margin-right: 6px; }
 .map-go-bar-detail.is-unavailable { color: var(--ds-ink-muted); font-weight: 500; }

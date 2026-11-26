@@ -380,7 +380,7 @@
 .photo-card-chip.is-bottom { bottom: 4px; left: 4px; }
 .photo-card-text { display: flex; flex-direction: column; min-width: 0; padding: 6px 4px 0; }
 .photo-card-name {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
@@ -597,7 +597,7 @@
   align-items: center;
   gap: 6px;
   margin: 0;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   letter-spacing: 0.02em;

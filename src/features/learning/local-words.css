@@ -5,7 +5,7 @@
    join; a line height with room for marks above and below the letters. */
 .local-word-script,
 .local-word-notice {
-  font-family: "Noto Sans JP", "Noto Sans", system-ui, sans-serif;
+  font-family: var(--ds-font-sans);
   letter-spacing: normal;
   font-feature-settings: normal;
 }

@@ -82,7 +82,7 @@
 .item-show-name {
   position: relative;
   max-width: 100%;
-  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   font-weight: 600;
   line-height: var(--ds-leading-snug);

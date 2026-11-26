@@ -18,7 +18,7 @@
   border: 1.5px solid var(--ds-seal);
   border-radius: 50%;
   color: var(--ds-seal);
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-note);
   font-weight: 700;
   line-height: 1;
@@ -36,7 +36,7 @@
 }
 .met-people h3 {
   margin: 0 0 4px;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   line-height: var(--ds-leading-body);
 }

@@ -48,7 +48,7 @@
   color: var(--ds-disabled-ink);
 }
 .music-room-item.is-voice span {
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
 }
 .music-room-group {
   margin: 6px 0;

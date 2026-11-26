@@ -90,7 +90,7 @@
 }
 .glossary-term-name {
   margin: 4px 0 0;
-  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-heading);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
@@ -158,7 +158,7 @@ dialog.modal.glossary-modal {
   justify-content: space-between;
   gap: 8px;
   margin: 12px 0 8px;
-  font-family: "Noto Serif JP", serif;
+  font-family: var(--ds-font-serif);
   font-size: var(--ds-text-subhead);
   line-height: var(--ds-leading-snug);
 }
@@ -214,7 +214,7 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   border-radius: var(--ds-radius-small);
   background: var(--ds-marker);
   color: var(--ds-on-slate);
-  font-family: Georgia, serif;
+  font-family: var(--ds-font-latin);
   font-size: var(--ds-text-mark);
   font-weight: 700;
   letter-spacing: 0.06em;

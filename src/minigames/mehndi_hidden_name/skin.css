@@ -91,7 +91,7 @@
 .mg-mehndi-hidden-name-ink { fill: none; stroke: var(--mehndi-hidden-name-ink-line); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .mg-mehndi-hidden-name-fill { fill: var(--mehndi-hidden-name-ink-line); stroke: none; }
 .mg-mehndi-hidden-name-fine { stroke-width: 1.2; }
-.mg-mehndi-hidden-name-writing { fill: var(--mehndi-hidden-name-writing-fill); font-family: "Noto Serif JP", serif; font-weight: 600; }
+.mg-mehndi-hidden-name-writing { fill: var(--mehndi-hidden-name-writing-fill); font-family: var(--ds-font-serif); font-weight: 600; }
 /* The hand of the player's name and of the decorations made of its letters (docs/13 2.10, 2.12; the user's decisions of
    2026-11-17): Fasol SP Demo by Sasha Pavljenko, the unmodified demo file bundled with the game (its licence:
    fonts/LICENSE-FasolSP.txt), declared here, in the play's own stylesheet, so the title page never loads it; the relative
