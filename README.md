@@ -65,6 +65,7 @@
 - [旅行編の制作手順](authoring/JOURNEY_AUTHORING.md)：下書きのシナリオとクイズを旅行編へ取り込む道具。
 - [都市データの編集](authoring/CITY_BUNDLES.md)：地点・交通・背景を都市ごとの作業用JSONでまとめて直す。
 - [都市の追加手順](authoring/FUTURE_CITIES.md)：都市のデータの登録と、都市の移り方・保存の決まり。
+- [SNSの仕様](authoring/SNS_PLAN.md)：旅の記録の「SNS」の欄（出会った人の投稿・コメントとヒロインの返事）の決めた形。まだ作っていない。
 - [見本の編](authoring/templates/sample_trip/README.md)：遊べる最小の旅行編（開発・テスト専用の架空の街）。
 - [新しい旅行編のチェックリストの元](authoring/templates/journey-new-checklist.md)：`journey:new` が書く `CHECKLIST.md` の元。
 - [旅行編ごとの制作資料](authoring/journeys/README.md)：旅行編ごとの下書き・調査記録。
