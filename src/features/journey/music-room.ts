@@ -1,9 +1,9 @@
 import { readLineId } from "../../components/read-skip";
 import type { MusicPlay } from "../../content/music";
 import type { SceneAudio } from "../../content/scene-audio";
-import type { SceneAt, SceneEntry } from "../../content/scene-schemas";
+import type { SceneAt } from "../../content/scene-schemas";
 import { knotAddress } from "../../content/story-address";
-import type { GameState } from "../../domain/game";
+import type { RoomScene } from "../../domain/scene-completed";
 
 // 旅の音楽室 (2026-11-13 user decision): the tracks and the heroine's voiced lines the player has already heard, derived
 // from what the game and this device keep (no new saved data): the tracks of the places visited and the `# bgm:` of the
@@ -12,28 +12,7 @@ import type { GameState } from "../../domain/game";
 // the journey is over (a reward after clearing it, 2026-11-25; GameApp's isJourneyComplete). Pure: MusicRoom.tsx gives it the content and plays what is chosen through the game's own
 // players. Nothing here reads a relationship value.
 
-/** A scene as the room reads it (the scene table's entry). */
-export type RoomScene = Pick<SceneEntry, "id" | "kind" | "main" | "at" | "story" | "knots" | "cityId" | "title">;
-/** The parts of the game the room reads. */
-export type RoomGame = Pick<GameState, "seenEncounterIds" | "completedTourIds" | "completedGuideIds" | "battleRecords" | "playedDateIds" |
-  "viewedEpilogueCityIds" | "activeEpilogue" | "currentCityId" | "completedCityIds">;
-
-/**
- * Whether the player has completed `scene`: an inserted scene seen to its end (any choice), a guide read, a battle
- * played to its result, a date played, an epilogue read, a tour's leg of a finished tour, a city's arrival once the
- * party has reached the city (`reached`) and is past it.
- */
-export function sceneCompleted(scene: RoomScene, game: RoomGame, reached: (cityId: string) => boolean): boolean {
-  if (scene.kind === "talk" || scene.kind === "encounter") return game.seenEncounterIds.includes(scene.id);
-  if (scene.kind === "tour_leg") return scene.at.some((at) => "tour" in at && game.completedTourIds.includes(at.tour));
-  const main = scene.main;
-  if (!main) return false;
-  if ("guide" in main) return game.completedGuideIds.includes(main.guide);
-  if ("battle" in main) return game.battleRecords.some((record) => record.battleId === main.battle);
-  if ("date" in main) return game.playedDateIds.includes(main.date);
-  if ("epilogue" in main) return game.viewedEpilogueCityIds.includes(main.epilogue);
-  return reached(main.arrival) && !(game.activeEpilogue?.kind === "arrival" && game.currentCityId === main.arrival);
-}
+export { sceneCompleted, type RoomGame, type RoomScene } from "../../domain/scene-completed";
 
 /** The story addresses a scene's lines come from: its knot and the knots it calls (a place file), or its one-scene file. */
 export function sceneAddresses(scene: Pick<RoomScene, "story" | "knots">): string[] {

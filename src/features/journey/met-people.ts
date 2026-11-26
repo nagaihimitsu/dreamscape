@@ -1,27 +1,16 @@
-import { z } from "zod";
 import { battles, cityContents, scenes, storyState } from "../../content";
-import characterData from "../../content/generated/content/presentation/characters.json";
-import { getJourneyForCity } from "../../content/journeys";
-import { INSERTED_KINDS } from "../../content/scene-schemas";
 import { battleCityId } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
+import { journeyCityIds, metPeople } from "../../domain/met-people";
 import { withNames } from "../romance/names";
-import { sceneCompleted } from "./music-room";
 
-/** One person met, as 旅の記録 lists them: the name and the writer's few words (optional). */
-/** `characterId`: the person's portrait (story.json `characterId`, or the quiz's partner in characters.json), when there is one. */
+/**
+ * One person met, as 旅の記録 lists them: the name and the writer's few words (optional). `characterId`: the person's
+ * portrait (story.json `characterId`, or the quiz's partner in characters.json), when there is one.
+ */
 export type MetPerson = { id: string; nameJa: string; descriptionJa?: string; characterId?: string };
 /** The people met in one city. */
 export type MetPeopleGroup = { cityId: string; cityNameJa: string; people: MetPerson[] };
-
-/** The quizzes whose partner a journey's portraits name (presentation/characters.json `battleCharacters`: quiz → character). */
-const BATTLE_CHARACTERS: Readonly<Record<string, string>> =
-  z.record(z.string(), z.string()).optional().parse((characterData as { battleCharacters?: unknown }).battleCharacters) ?? {};
-
-/** The current journey's cities in travel order (the current city alone when it is in no journey). */
-function journeyCityIds(game: Readonly<GameState>): string[] {
-  return getJourneyForCity(game.currentCityId)?.cities.map((city) => city.id) ?? [game.currentCityId];
-}
 
 /**
  * Whether the current journey has anyone to meet: a person of its cities (progression/story.json `people`) named in a
@@ -33,66 +22,13 @@ export function declaresPeople(game: Readonly<GameState>): boolean {
     battles.some((battle) => cityIds.includes(battleCityId(battle.id) ?? ""));
 }
 
-type Met = MetPerson & { cityId: string };
-
 /**
- * 旅の記録's 「出会った人」 (2026-11-11 user decision; widened 2026-11-13): the people met so far, from the records the game
- * keeps, never a relationship value:
- * - the people of progression/story.json named in the `# person:` of a scene the player has completed (music-room.ts
- *   sceneCompleted): a city's arrival once past it, a talk or an encounter seen (the `met` rule of src/domain/conditions.ts),
- *   a guide read, a date played, an epilogue read;
- * - the partner of each quiz played, always under the name the quiz gives them (`enemyNameJa`; 2026-11-25 user decision): the
- *   declared person of the same city with that name, else the one whose portrait the quiz shows (presentation/characters.json
- *   `battleCharacters`; declared under another name), else the quiz's own partner (its name and role).
- * Grouped by their city in the journey's travel order; in a city, the arrival's people, then those of the talks and
- * encounters in the order seen, the quiz partners in the order played and the other scenes' (the epilogue's last). One
- * entry a person (the same name in the same city is the same person). Each has the writer's few words: the person's
- * description, else their role, else the quiz's role for its partner; the names set are filled in.
+ * 旅の記録's 「出会った人」 (2026-11-11 user decision; widened 2026-11-13): the people met so far (src/domain/met-people.ts
+ * metPeople), grouped by their city in the journey's travel order, in a city in the order met; the names set are filled in.
  */
 export function metPeopleGroups(game: Readonly<GameState>): MetPeopleGroup[] {
   const cityIds = journeyCityIds(game);
-  const at = (cityId: string) => cityIds.indexOf(cityId);
-  const reached = (cityId: string) => cityId === game.currentCityId || game.completedCityIds.includes(cityId) ||
-    (at(cityId) >= 0 && at(cityId) < at(game.currentCityId));
-  const met: Met[] = [];
-  const add = (entry: Met) => {
-    const same = met.find((item) => item.id === entry.id || (item.cityId === entry.cityId && item.nameJa === entry.nameJa));
-    if (!same) met.push(entry);
-    else {
-      if (!same.descriptionJa && entry.descriptionJa) same.descriptionJa = entry.descriptionJa;
-      if (!same.characterId && entry.characterId) same.characterId = entry.characterId;
-    }
-  };
-  const words = (...texts: (string | undefined)[]) => {
-    const text = texts.find((item) => item);
-    return text ? { descriptionJa: text } : {};
-  };
-  const portrait = (characterId: string | undefined) => (characterId ? { characterId } : {});
-  const addPeopleOf = (sceneList: readonly (typeof scenes)[number][]) => {
-    for (const scene of sceneList)
-      for (const person of scene.people.flatMap((id) => storyState.people.filter((item) => item.id === id)))
-        add({ id: person.id, cityId: person.cityId, nameJa: person.nameJa, ...words(person.descriptionJa, person.titleJa), ...portrait(person.characterId) });
-  };
-  const isArrival = (scene: (typeof scenes)[number]) => !!scene.main && "arrival" in scene.main;
-  addPeopleOf(cityIds.flatMap((cityId) => scenes.filter((scene) => isArrival(scene) && scene.cityId === cityId && sceneCompleted(scene, game, reached))));
-  addPeopleOf(game.seenEncounterIds.flatMap((sceneId) => scenes.filter((scene) => scene.id === sceneId && INSERTED_KINDS.includes(scene.kind))));
-  for (const record of game.battleRecords) {
-    const battle = battles.find((item) => item.id === record.battleId);
-    const cityId = battle && battleCityId(battle.id);
-    if (!battle || !cityId) continue;
-    const characterId = BATTLE_CHARACTERS[battle.id];
-    const inCity = storyState.people.filter((item) => item.cityId === cityId);
-    const named = inCity.find((item) => item.nameJa === battle.enemyNameJa);
-    // The quiz's partner by their own name (enemyNameJa): a person of the partner's portrait declared under another name lends
-    // the entry its ID and words, not its name.
-    const person = named ?? (characterId === undefined ? undefined : inCity.find((item) => item.characterId === characterId));
-    add(person
-      ? { id: person.id, cityId: person.cityId, nameJa: named ? person.nameJa : battle.enemyNameJa,
-        ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa), ...portrait(person.characterId ?? characterId) }
-      : { id: `quiz:${battle.id}`, cityId, nameJa: battle.enemyNameJa, ...words(battle.enemyTitleJa), ...portrait(characterId) });
-  }
-  const other = scenes.filter((scene) => !isArrival(scene) && !INSERTED_KINDS.includes(scene.kind) && sceneCompleted(scene, game, reached));
-  addPeopleOf([...other.filter((scene) => !(scene.main && "epilogue" in scene.main)), ...other.filter((scene) => !!scene.main && "epilogue" in scene.main)]);
+  const met = metPeople(game);
   const rank = (cityId: string) => (cityIds.includes(cityId) ? cityIds.indexOf(cityId) : cityIds.length);
   const groups = new Map<string, MetPeopleGroup>();
   for (const person of [...met].sort((a, b) => rank(a.cityId) - rank(b.cityId))) {
