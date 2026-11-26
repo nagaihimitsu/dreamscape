@@ -38,12 +38,12 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   expect(booked.tour).toMatchObject({ status: "booked", tourId: tour.id, offerId: "hotel_desk", pricePaid: price("hotel_desk") });
   expect(booked.travelBudget).toBe(start.travelBudget - price("hotel_desk"));
 
-  // 休む: 「次の日」, then the tour's morning at the inn (its scene before the car, tagged 「ツアー」), the car's narration and its
-  // encounter, the car, the arrival, then the guide at Fatehpur Sikri.
+  // 休む: the night (「ホテルで休みました。」 with her word of the night until a tap, as Agra's inn has one; 「次の日」 by
+  // itself on a night without: 2026-11-13), then the tour's morning at the inn (its scene before the car, tagged
+  // 「ツアー」), the car's narration and its encounter, the car, the arrival, then the guide at Fatehpur Sikri.
   await ops.sleep(page);
-  await ops.holdClock(page);
-  await expect(page.getByTestId("time-passage")).toBeVisible();
-  await page.clock.resume();
+  await expect(page.locator("[data-testid=night-rest], [data-testid=time-passage]")).toBeVisible();
+  await ops.settled(page);
   // The night's overlay takes every tap while it shows: the morning is played after it.
   await expect(page.getByTestId("time-passage")).toHaveCount(0, { timeout: 10_000 });
   await expect.poll(async () => (await readSave(page, journeyId)).activeEncounter?.encounterId).toBe("gt_agra_tour_morning");

@@ -1,4 +1,5 @@
-import { useId, useState } from "react";
+import { useId } from "react";
+import { useHeldState } from "./held-state";
 import { formatMoneyForCity } from "../../content/currency";
 import { ConfirmActionButton } from "../../components/ConfirmActionButton";
 import { Modal, ModalAnswers, ModalTitle } from "../../components/Modal";
@@ -31,8 +32,8 @@ export function ShopCard({ game, onBuy, onWear, heading = true }: {
   heading?: boolean;
 }) {
   const id = useId();
-  const [confirm, setConfirm] = useState<ShopOutfitChoice | null>(null);
-  const [bought, setBought] = useState<string | null>(null);
+  const [confirm, setConfirm] = useHeldState<ShopOutfitChoice | null>("shop:confirm", null);
+  const [bought, setBought] = useHeldState<string | null>("shop:bought", null);
   const shop = currentShop(game);
   if (!shop) return null;
   const cityId = game.currentCityId;

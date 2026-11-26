@@ -156,8 +156,9 @@ test("ツアーの車の移動（通常の操作）", async ({ page }) => {
   await toAgra(page);
   await ops.bookTour(page, "hotel_desk");
   await ops.sleep(page);
-  // The night's overlay takes every tap while it shows: the morning is played after it.
-  await expect(page.getByTestId("time-passage")).toBeVisible();
+  // The night (「ホテルで休みました。」 with her word, until a tap; or 「次の日」 by itself), then the morning.
+  await expect(page.locator("[data-testid=night-rest], [data-testid=time-passage]")).toBeVisible();
+  await ops.settled(page);
   await expect(page.getByTestId("time-passage")).toHaveCount(0, { timeout: 10_000 });
   await playUntil(page, (state) => state.activeEncounter?.encounterId === inCar && !!state.activeEncounter.chosen?.length, { source });
   for (let step = 0; (await source(page))!.activeEncounter?.encounterId === inCar; step++) {
