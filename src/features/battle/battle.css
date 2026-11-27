@@ -182,7 +182,6 @@
 }
 /* Japanese only (no 「訳を見る」 beside it): the words take the whole row. */
 .battle-screen .quiz-choices .quiz-choice:not(:has(.translation)) { grid-template-columns: minmax(0, 1fr); }
-.battle-screen :is(.question-ja, .quiz-choice [lang="ja"]) { text-wrap: pretty; }
 .battle-screen .battle-stage:before {
   display: none;
 }
@@ -1246,10 +1245,8 @@
 
 /* An option shown in Japanese only has no 「訳を見る」, so its text takes the row's whole width: the 64-px column kept for
    that button stood empty at the right, and a line that would have fitted left its last 「で。」 alone below (2026-11-27,
-   seen on an iPhone). After the rules above, so it holds on every screen and for a chosen or right answer too. A long
-   option's last line keeps more than a word or two (text-wrap: pretty). */
+   seen on an iPhone). After the rules above, so it holds on every screen and for a chosen or right answer too. */
 .battle-screen .quiz-choice[data-japanese-only] {
   grid-template-columns: minmax(0, 1fr);
   padding-right: 14px;
 }
-.battle-screen .quiz-choice .option-body { text-wrap: pretty; }
