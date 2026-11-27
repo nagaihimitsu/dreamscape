@@ -3,6 +3,7 @@ INCLUDE modules.ink
 
 // インド門のデート（噛み合いの選択は2回）。
 // 写真屋を呼んだときの写真は、デートの後の差し込み（gt_delhi_inserts.ink）で渡す【4】。
+// 1回目の3択のフラグ（写真屋 gt_delhi_photo_both_in・アイス gt_delhi_india_gate_ice）で、SNS のモヌの投稿の写真が変わる（stories/posts/delhi.ink）。
 
 // 【3】
 === gt_delhi_date_india_gate ===
@@ -86,6 +87,7 @@ Photo, please!
     # profile: playful
     # memory: gt_delhi_date_india_gate_memory
     # money: -200
+    # set: gt_delhi_india_gate_ice
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sigh
