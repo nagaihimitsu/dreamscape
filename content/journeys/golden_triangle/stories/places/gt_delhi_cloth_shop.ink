@@ -8,7 +8,7 @@ INCLUDE modules.ink
 // ここで彼女は値切らない（「欲しい」と自分で言うことはある）。
 // 交渉の分かれ方（どれにも得と損）：
 //   haggle_hard ₹2,000・spark +1（安いが、ゴーヴィンドは織り手の話をやめる）
-//   pay_asking  ₹2,800・affection +1・フラグ gt_delhi_govind_card（高いが、アーグラの刺繍の店への名刺。アーグラで問屋の値段になる）
+//   pay_asking  ₹2,800・affection +1・品物 gt_delhi_govind_card（高いが、アーグラの刺繍の店への名刺。旅の間持ち歩き、アーグラで問屋の値段になる）
 //   ask_her     ₹2,400・trust +1（彼女が自分で「欲しい」と言う）
 //   kamla_way   ₹1,900（デリーのフィナーレで、ジャレビーを三回値切った話を聞いた後だけ。いちばん安い）
 //   think_later 「また今度」
@@ -130,9 +130,12 @@ INCLUDE modules.ink
 # voice: gt_delhi_cloth_shop_haggle_002
 ……二千八百。旅のお金は、二人のお金だし。わたし一人の服に、それは
 # speaker: narrator
+# recall: gt_album_d001
 黙って布を見ている彼女の横で、ふと、路地の老婦人の声を思い出した。
 # speaker: gt_kamla
 # remembered
+# recall: gt_album_d001
+# voice: gt_delhi_arrival_kamla_009
 デリーは押しの強い町だよ。欲しいものは、欲しいと言いなさい。黙っていたら、誰も気づかない。
 # speaker: gt_govind
 # term: gt_term_bargaining
@@ -161,7 +164,7 @@ INCLUDE modules.ink
     # outfit: gt_saree_blue
     # money: -2800
     # rel: affection +1
-    # set: gt_delhi_govind_card
+    # item: gt_delhi_govind_card
     # speaker: gt_govind
     値切らない客は、たいてい何か隠してる。何を隠してる
     # speaker: heroine
@@ -173,6 +176,7 @@ INCLUDE modules.ink
     # speaker: gt_govind
     イクバールの癖だ。最後の一本を、必ずこう結ぶ。三十年、この結び目で、あいつの布だと分かる
     # speaker: narrator
+    # item_show: gt_delhi_govind_card
     それから彼は名刺の裏に何か書きつけ、こちらの手に押しつけた。
     # speaker: gt_govind
     アーグラへ行くなら、ラフィークの店に寄れ。金の糸の刺繍屋だ。俺の名前を出せば、俺に売る値段で売る

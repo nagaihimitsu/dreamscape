@@ -341,10 +341,11 @@ export type SceneReferences = {
 /** Stop at an undeclared flag, person, item, memory, profile, effect or clue, at an item of another city (A2, A22) and at a clue of another journey. */
 export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): void {
   const where = `${scene.story.storyId}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
-  const item = (id: string, what: string) => {
+  // `got`: the scene gives the item (# on_done: item, a choice's # item:), only in its own city; a carried one is held, given and used later too.
+  const item = (id: string, what: string, got = false) => {
     const city = refs.items.get(id);
     if (!city) throw new Error(`Unknown item in ${what} of ${where}: ${id} (declare it in encounters/catalog.json items)`);
-    if (city !== scene.cityId && !(what !== "# on_done: item" && refs.carriedInto?.(id, scene.cityId)))
+    if (city !== scene.cityId && !(!got && refs.carriedInto?.(id, scene.cityId)))
       throw new Error(`An item of another city in ${what} of ${where}: ${id} belongs to ${city}, the scene is in ${scene.cityId} (A22; ` +
         `an item carried through the journey, "carry": "journey", is held, given and used in the journey's later cities)`);
   };
@@ -368,13 +369,14 @@ export function checkSceneReferences(scene: SceneEntry, refs: SceneReferences): 
         throw new Error(`# give: names no one known in ${where} (${option.id}): ${option.give.to} (heroine, or a person of progression/story.json)`);
     }
     if (option.use) item(option.use, `${what} (# use:)`);
+    for (const id of option.items ?? []) item(id, `${what} (# item:)`, true);
     for (const id of option.set ?? []) flag(id, `${what} (# set:)`);
     for (const id of option.clues ?? []) clue(id, `${what} (# clue:)`);
     for (const id of option.memory ?? []) if (!refs.memories.has(id)) throw new Error(`Unknown memory in ${what} of ${where}: ${id}`);
     if (option.profile && !refs.profiles.has(option.profile)) throw new Error(`Unknown reaction profile in ${what} of ${where}: ${option.profile}`);
     if (option.effect && !refs.effects.has(option.effect)) throw new Error(`Unknown effect in ${what} of ${where}: ${option.effect}`);
   }
-  for (const id of scene.done.items ?? []) item(id, "# on_done: item");
+  for (const id of scene.done.items ?? []) item(id, "# on_done: item", true);
   for (const id of scene.done.use ?? []) item(id, "# on_done: use");
   for (const id of scene.done.set ?? []) flag(id, "# on_done: set");
   for (const id of scene.done.clues ?? []) clue(id, "# on_done: clue");

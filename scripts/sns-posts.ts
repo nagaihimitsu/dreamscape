@@ -24,7 +24,7 @@ export const POST_HEAD_TAGS = ["post", "images", "where", "when", "until", "like
 export const COMMENT_HEAD_TAGS = ["when", "until", "one_of", "timing"] as const;
 export const SNS_LINE_TAGS = ["speaker", "translation"] as const;
 /** The effect tags of the scenes: a comment changes nothing in the game (authoring/SNS_PLAN.md 「作らないもの」). */
-const EFFECT_TAGS = ["give", "use", "rel", "profile", "memory", "set", "clue", "outfit", "money", "ap", "then", "requires", "on_done"];
+const EFFECT_TAGS = ["give", "use", "rel", "profile", "memory", "set", "clue", "outfit", "item", "money", "ap", "then", "requires", "on_done"];
 
 /** How many comments on one post, and how many later ones, make the build warn (2026-11-26: reading should not tire). */
 export const SNS_COMMENT_WARNING = 4;

@@ -70,6 +70,14 @@
       "carry": "journey"
     },
     {
+      "id": "gt_delhi_govind_card",
+      "cityId": "delhi",
+      "nameJa": "ゴーヴィンドの名刺",
+      "descriptionJa": "カトラー・ニールの布の問屋、ゴーヴィンドの名刺。裏に、アーグラの刺繍屋ラフィークへの走り書きがある。名前を出せば、問屋の値段で売ってもらえる。",
+      "iconPath": "assets/items/gt_delhi_govind_card.webp",
+      "carry": "journey"
+    },
+    {
       "id": "gt_jaipur_lac_bangles",
       "cityId": "jaipur",
       "nameJa": "ラックの腕輪",

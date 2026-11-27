@@ -112,7 +112,7 @@ const addClues = (state: GameState, clues: readonly string[] | undefined): GameS
 
 /**
  * A choice's own tags before its then: and its reaction profile: money, AP (`earn` gives a gain), relationship, flags, clues,
- * memories, the item given or used. The choice's display reads the then: on this state too, so it shows as the choice decides it.
+ * memories, the items got, the item given or used. The choice's display reads the then: on this state too, so it shows as the choice decides it.
  */
 function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: GameState, gain: number) => GameState, sceneId = ""): GameState {
   let next = applyMoney(state, option.money);
@@ -128,6 +128,8 @@ function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: Ga
   }
   const memories = (option.memory ?? []).filter((id) => !next.memories.includes(id));
   if (memories.length) next = { ...next, memories: [...next.memories, ...memories] };
+  // `# item:` (2026-11-27): as a scene's # on_done: item, an item recorded already (held, given, used, left behind) stays as it is.
+  for (const item of option.items ?? []) if (!(item in next.inventory)) next = { ...next, inventory: { ...next.inventory, [item]: "held" } };
   for (const [item, status] of [[option.give?.item, "gifted"], [option.use, "used"]] as const) {
     if (!item) continue;
     if (next.inventory[item] !== "held") throw new Error("必要な品物を持っていません。");
