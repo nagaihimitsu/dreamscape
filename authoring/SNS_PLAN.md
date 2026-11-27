@@ -286,6 +286,8 @@ SNSを作る前に、別の作業として片付ける。
 - セーブには何も残さない（届いた記録がない）。Debug の「Debug：SNS」は、都市ごとに過去の投稿の数だけ出す。
 - 仕組み：ビルドは `scripts/sns-posts.ts` の `checkPast`、届かないのは `src/domain/sns.ts` の `reachablePosts`、画面の読み口は `src/features/journey/sns.ts` の `snsPostView`（過去の投稿は `pastJa` があり `arrived` がない）・`snsPersonPage`・`snsPostPageTitle`。テストは `scripts/sns-posts.test.ts` と `src/features/journey/sns-past.test.ts`。
 
+- 過去の投稿（2026-11-27）：デリー76投稿・写真99枚、アーグラ44・58枚、ジャイプール36・51枚。立ち絵のある67人全員が3枚以上。依頼は `art-requests/2026-11-27-sns-india-past.md`（208枚）。新しい写真は合わせて235枚（旅の間に届く27枚と、過去の投稿208枚）、どれも今は仮の写真。
+
 ### 書いて分かった注意
 
 - 条件 `met <人>` は、場面の `# person:`（`# together:`）に名前のある人だけが真になる。クイズやデートでだけ会う人は、`battle <クイズ>`・`date <デート>` で書く。
