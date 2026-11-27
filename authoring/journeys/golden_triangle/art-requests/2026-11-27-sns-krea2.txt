@@ -1,0 +1,251 @@
+インド編 SNS の写真（出会った人が撮った日常の写真）27枚の Krea 2 用プロンプト
+作成: 2026-11-27 ／ デリー11・アーグラ9・ジャイプール7
+元: 2026-11-27-sns-delhi.md（4枚）と 2026-11-27-sns-india.md（23枚）。場面・写すものは依頼書のとおり。投稿は stories/posts/<都市>.ink にもう書いてあり、今は仮の写真が出ている。
+
+書き方（album-photos/08_strategy_krea2.md の作戦1と、09 の結果による）:
+- 画風の文は、アルバム（04_others_krea2_agra.txt）と同じ「Detailed modern anime illustration with rich soft shading, … highly detailed background」を使う。
+  - `fine detailed hair strands, sparkling eyes with bright highlights` は、顔のはっきり写る人がいる絵（SNS-02 ルーヒー・SNS-03 モヌ）だけに入れた。人のいない絵に髪と目の語を書くと、人が描かれやすいため。眠る子どもの絵（SNS-05）は髪の語だけにした（目を閉じる絵と、きらきらの目がぶつかる）。
+  - `warm sunlight` は、絵ごとの光（夜・ランプ・湯気など）に替えた。
+  - 「携帯で撮った写真」は `framed like a casual everyday snapshot` と書いた（smartphone の語は、携帯そのものが描かれやすいので使わない。携帯が写る SNS-03・SNS-13 だけに書いた）。
+- 否定の文を一切書かない（no ～・not ～・only ～・without・faceless・close-up・exactly … only once・締めの No text, no logos, no watermark）。cfg 1.0 では効かず、禁じた物を呼ぶ。
+  - 人のいない絵は、人に触れない（"No people" を書かない）。撮った本人・ヒロイン・主人公も書かない。
+  - 字の出やすい物（新聞・封筒・地図・紙・目盛り）は、たたみ方・伏せ方・模様・色・「走り書き」で書き、文字や看板の話題に触れない。
+- 手・腕だけの絵は `First-person view`（撮った本人の目）か、「画面の端から腕が入る」と書いた。
+- 決め手（その写真の見どころ：一本ぶんの隙間、空の胸ポケット、ずれた白鳥、カナダ形のローティーなど）を前の方に書き、物と人は1度だけ書く。長さは約100〜170語。
+- 写っている人の見た目は album-photos/00_characters.txt の en を短くした。
+
+生成の設定: アルバムと同じ（Krea 2 Turbo、8ステップ、cfg 1.0、1344×896＝3:2）。batch_size 2（種2つ）を勧める。
+ファイル名: ComfyUI の SaveImage の filename_prefix を、各項目のファイル名（例 gt_sns_nidhi_bus）にする。
+置き場所: 届いたら WebP（品質80）にして content/journeys/golden_triangle/public/assets/sns/<ファイル名>.webp の仮の写真と差し替える（札は変えない）。
+SNS の画面で見る所（点検のとき）:
+- 投稿の写真（3:2）の左上に投稿した人の顔アイコン、右下に場所の名前が重なる。その2つの角に見どころが来ていないか。
+- 人物ページの「その人の写真」は正方形に切り抜く（真ん中の約2/3の幅）。見どころが真ん中に入っているか。
+- 字・ロゴ・看板の字が出ていないか。撮った本人やヒロイン・主人公が写り込んでいないか。
+
+################################################################
+
+デリー編（11枚）
+
+[SNS-01] 引っ越しの朝の戸口
+  ファイル名: gt_sns_kamla_last_boxes
+  投稿: gt_post_delhi_kamla_boxes（カムラ）「段ボール、あと三つ。」
+  場面: 六十年住んだ家を引き払う朝、路地の椅子から自分の家の戸口を撮った一枚。段ボールが三つだけ残る。さっぱりした空気。
+  写る人: なし
+  注意: 年配の人が片手で撮ったように少し右に傾く。段ボールは無地（「brown cardboard boxes」とだけ書いた）。
+  prompt: Detailed modern anime illustration with rich soft shading, soft early-morning light, highly detailed background, framed like a casual everyday snapshot tilted slightly to the right. The view from a chair in a narrow old Delhi lane, at a seated person's eye level, looking straight at the doorway of an old house about five metres away, in the center of the frame. Its wooden double doors, painted blue-green and peeling, stand wide open. In front of the doors sit three brown cardboard boxes, stacked. Through the doorway, an emptied room with a bare white wall, where two rectangles are brighter white than the rest: marks left by picture frames that have been taken down. Peanut shells are scattered over the worn stone paving in the foreground. Reddish-brown plastered walls of the neighbouring houses close in on both sides, with tangled electric wires overhead. Soft morning sun slants down the lane; the air feels calm and tidy, a job finished.
+
+[SNS-02] 地下鉄の女性車両
+  ファイル名: gt_sns_roohi_metro
+  投稿: gt_post_delhi_roohi_metro（ルーヒー）「今日も、先頭の車両」
+  場面: 13歳のルーヒーが、学校の帰りに女性専用車両の床に座って宿題をしながら撮った一枚。おしゃべりとお菓子の、にぎやかで気楽な車内。
+  写る人: 撮った本人の膝と手（顔は写らない）、床に座る小学生の女の子2人、座席の女性6人
+  注意: 「男性を描かない」は否定なので、"every passenger is a woman or a girl" と肯定で書いた。お菓子の袋は色だけ。
+  prompt: Detailed modern anime illustration with rich soft shading, fine detailed hair strands, sparkling eyes with bright highlights, bright daylight, highly detailed background, framed like a casual everyday snapshot. First-person view from the floor of the ladies' coach of the Delhi Metro, at the eye level of a girl sitting on the floor, looking down the length of the coach; every passenger is a woman or a girl. At the bottom of the frame, her own knees in a navy pleated school skirt, an open navy-covered notebook on them and her hand holding a pencil. On the floor at right, two little schoolgirls in white blouses and navy skirts, hair in braids, do homework on their knees. Behind them, six women in colourful sarees and kurtas sit side by side on the long steel bench, chatting and laughing; one passes a shiny orange snack packet to her neighbour. Stainless steel grab poles, hanging straps, white ceiling lights and a pink band above the doors. Through the window, sunny city rooftops seen from an elevated track.
+
+[SNS-03] 村の写真の上映会
+  ファイル名: gt_sns_monu_village
+  投稿: gt_post_delhi_monu_village（モヌ）「ダーディー、村で上映会」
+  場面: モヌが、デリー見物から村に帰った夕方に撮った一枚。縄のベッドに座った祖母が、近所の女性たちに携帯の画面を見せて自慢している。
+  写る人: 祖母（インド門のアルバムの絵 D-059・D-062・D-063 の祖母と同じ人）、村の女性3人
+  注意: 画面の中身は描かない（光るだけ）。中身を書かないので、十三人目・十四人・アイスのどの道でも同じ絵で使える。
+  prompt: Detailed modern anime illustration with rich soft shading, fine detailed hair strands, sparkling eyes with bright highlights, warm golden late-afternoon light, highly detailed background, framed like a casual everyday snapshot from a standing person's eye level, about three metres away, looking slightly down. Four women in the courtyard of a village house in Haryana. In the center, a tiny, stooped grandmother with a deeply wrinkled face, the end of her printed cotton saree drawn over her head, sits on a low charpai, a wooden-framed bed woven with rope. Chin raised, eyebrows lifted, lips pressed in a satisfied curve, she holds out an old black smartphone whose cracked screen glows bright white. Three village women in red, yellow and green sarees, cloth over their heads, lean in from both sides to peer at the screen, eyes wide, laughing. Behind them, a mud-plastered wall with a bicycle leaning on it, round dried dung cakes stacked by the wall, and the head of a tethered water buffalo. Dry earth ground and low golden sunlight from the side.
+
+[SNS-04] 次の撮影の下見
+  ファイル名: gt_sns_kunal_location
+  投稿: gt_post_delhi_kunal_location（クナール）「次の現場、下見中」
+  場面: 怖い動画を撮る大学生が、夜の古い屋敷の石の階段を下見した一枚。階段の途中に仲間（ジャスミート）の白い布が掛けてあって、少し間が抜けている。
+  写る人: なし
+  注意: 前の案の「no ghosts, no faces in the stains」は消した（幽霊や顔を呼ぶ）。屋敷は実在の場所にしない。
+  prompt: Detailed modern anime illustration with rich soft shading, deep night darkness, highly detailed background, framed like a casual everyday snapshot lit by one round beam of white torchlight from the camera. Standing at the foot of a worn stone staircase inside an old abandoned mansion in Delhi, looking up the steps. The round pool of white light falls on the middle of the stairs; the edges fade into blue-black darkness. Halfway up, in the center of the frame, a long white dupatta with tassels hangs limply from a nail in the wall, glowing white and drooping like forgotten laundry, more silly than scary. Peeling lime-plaster walls with arched niches on both sides, and a pitch-black arched opening at the top of the stairs. Dust and a few dry leaves lie on the steps.
+
+[SNS-05] 帰りのバス
+  ファイル名: gt_sns_nidhi_bus
+  投稿: gt_post_delhi_nidhi_bus（ニディ）「帰りのバス、歌った子はゼロ」
+  場面: 引率の先生が、レッド・フォートからの帰りのバスで、いちばん前から振り返って撮った一枚。騒がしかった子どもたちが、ほとんど眠っている。
+  写る人: 紺のセーターの子ども（見えるのは18人ほど）。奥に一人だけ起きている小柄な男の子
+  注意: 眠る絵なので画風の文から sparkling eyes を外した。ノートの中身・車内の表示は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, fine detailed hair strands, low orange evening light, highly detailed background, framed like a casual everyday snapshot. The view from the very front of a school bus, a standing teacher's eye level, looking straight down the aisle and slightly downward. On both sides of the aisle, rows of twelve- and thirteen-year-old Indian schoolchildren in navy sweaters, about eighteen in view, have fallen asleep: eyes closed in soft curved lines, heads tipped onto a friend's shoulder or against the window, closed notebooks on their laps. On the aisle side, one boy sleeps with his head thrown back and his mouth wide open. Far at the back by a window, one small boy sits upright and awake, reading the open notebook on his knees, tiny in the distance. Water bottles and school backpacks crowd the overhead racks. Through the windows, an evening Delhi road with traffic. Low orange sunlight slants in sideways, and the bus is dim and quiet.
+
+[SNS-06] 柱の小さな土産
+  ファイル名: gt_sns_ramkishan_pillar
+  投稿: gt_post_delhi_ramkishan_souvenir（ラームキシャン）「抱けないので、小さいのを買った」
+  場面: 理科の教師が、娘への土産に買った鉄の柱の小さな置き物を、帰りの夜行バスの窓ぎわで手のひらにのせて撮った一枚。
+  写る人: 撮った本人の手のひらと前腕だけ
+  注意: 置き物は安っぽいつやの土産物。台座の字は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, warm yellow reading-lamp light at night, highly detailed background, framed like a casual everyday snapshot. First-person view from the window seat of a night bus: a man's sun-tanned open palm held about thirty centimetres from the eye, in the center of the frame, his bare forearm rising from the bottom edge. Standing on the palm, a ten-centimetre souvenir model of the Iron Pillar of Delhi: a slender dark metal column with a small ornamental bell-shaped capital on a square base, with a cheap glossy finish. Behind the hand, the bus window, where blurred dots of highway lights stream past in the blue-black night. A worn navy fabric backpack sits on the window ledge. The small yellow reading lamp overhead lights the hand and the little pillar.
+
+[SNS-07] 特記事項なしの机
+  ファイル名: gt_sns_suresh_desk
+  投稿: gt_post_delhi_suresh_desk（スレーシュ）「本日、特記事項なし」
+  場面: 元・税務調査官が、フマユーン廟から帰った夜に自宅の机を撮った、わざと退屈な一枚。ただ、椅子の背のクルタの胸ポケットが空になっている。
+  写る人: なし
+  注意: 薔薇は書かない（「薔薇がない」と書くと薔薇が出る）。ポケットは flat and empty とだけ書いた。新聞は折った形だけ。
+  prompt: Detailed modern anime illustration with rich soft shading, cool white desk-lamp light at night, highly detailed background, framed like a deliberately dull everyday snapshot. From a standing person's eye level about one metre away, looking slightly down at a wooden desk. On the desk: three newspapers folded into neat oblongs and squared into a pile, a glass of milky chai half drunk, a pair of reading glasses, a closed notebook with a black cover, and a fountain pen laid neatly parallel to it. In the foreground, a white cotton kurta hangs over the back of a wooden chair, its chest pocket facing the camera, flat and empty. An old wooden mantel clock stands against the back wall. The white desk lamp lights the desk alone, and the rest of the room falls into darkness.
+
+[SNS-08] 二本目の押し花
+  ファイル名: gt_sns_meena_book
+  投稿: gt_post_delhi_meena_book（ミーナ）「押し花、二本目になりました」
+  場面: ミーナが、もらった薔薇を押し花にして古い本に挟み、自分の机で撮った一枚。挟んだ花は二つ目。
+  写る人: なし
+  注意: 本の表紙・背は布の色だけを書いた。
+  prompt: Detailed modern anime illustration with rich soft shading, soft morning light through lace curtains, highly detailed background, framed like a casual everyday snapshot. From a seated person's eye level about fifty centimetres away, looking down at an angle at a small desk by a window. In the center, a thick old book bound in faded deep-green cloth, its corners worn, lies closed. From between its pages, two flattened red roses peek out a little: one dried to a deep wine colour, one still bright red. A round smooth stone sits on the book as a weight. Beside it, a pale sky-blue glasses case and a glass of water. Morning sun filters through a white lace curtain and lays a delicate lace pattern of light across the desk.
+
+[SNS-09] 雨が一本、売れた
+  ファイル名: gt_sns_hamid_shelf
+  投稿: gt_post_delhi_hamid_shelf（ハミード）「雨が一本、売れた」
+  場面: 香油屋のハミードが、店じまいのときに自分の棚を撮った一枚。並んだ小瓶の列に、雨の匂い（ミッティ）の一本ぶんの隙間がある。
+  写る人: なし
+  注意: 瓶のラベルは書かない（カットガラスの栓つきの瓶とだけ）。受話器はきちんと置いてある（息子と電話で話した後）。
+  prompt: Detailed modern anime illustration with rich soft shading, warm bare-bulb light at closing time, highly detailed background, framed like a casual everyday snapshot. From behind a shop counter in an Old Delhi lane, at eye level, facing a wooden shelf about one metre away. Three shelves are packed tight with small faceted glass bottles of perfume oil in gold, amber, green and pale rose, each with a glass stopper. In the very middle of the middle shelf, a single bottle-sized gap stands out between two bottles of earth-brown oil. On the counter in the foreground: a thin glass dipping rod, a closed old ledger, and an old beige push-button telephone with its receiver resting neatly in the cradle. An old pendulum clock hangs on the wall to one side. A bare yellow bulb makes the bottles cast coloured glints and shadows onto the shelf wood.
+
+[SNS-10] まん丸のローティー
+  ファイル名: gt_sns_harbans_roti
+  投稿: gt_post_delhi_harbans_roti（ハルバンス）「夕方の分は、全部まん丸。つまらん」
+  場面: 元トラック運転手のハルバンスが、無料の食堂（ランガル）の台所で、夕方に丸めた分を撮った一枚。きれいに丸いものばかりで、本人はつまらない。
+  写る人: 奥でぼける奉仕の人5〜6人（頭を布で覆う）
+  注意: 丸くない生地は書かない（perfectly round とだけ）。奥の人は小さくぼけるので、髪と目の語は入れていない。
+  prompt: Detailed modern anime illustration with rich soft shading, warm evening light through steam, highly detailed background, framed like a casual everyday snapshot. A tall person's view looking down at a large stainless steel tray in the langar kitchen of Gurudwara Bangla Sahib in Delhi. On the tray, in the center of the frame, about twenty discs of raw roti dough, every one perfectly round and dusted with flour, stacked neatly. Beside it, a thin wooden rolling pin on a flour-strewn wooden board. Behind, softly out of focus, five or six volunteers, men and women with their heads covered in cloth and orange scarves, roll out dough along a long table. Steam rises from huge cauldrons, and light from high windows melts into it.
+
+[SNS-11] 招待状、残り二百枚
+  ファイル名: gt_sns_aman_invitations
+  投稿: gt_post_delhi_aman_invitations（アマン）「招待状、残り二百枚」
+  場面: アマンが、荷物を運び出した祖母の家で、零時過ぎに結婚式の招待状を書いていた一枚。横で祖母（カムラ）が落花生を割っている。
+  写る人: カムラの手と腕だけ（左の端から入る）
+  注意: 封筒は伏せて、模様だけ。カムラの顔まで描かれたら作り直す。
+  prompt: Detailed modern anime illustration with rich soft shading, warm yellow light from a single bare bulb after midnight, highly detailed background, framed like a casual everyday snapshot. From the eye level of someone sitting on the floor, about one metre away, looking down at a brown cardboard box used as a desk in a bare, emptied room. On the box, in the center, two piles of red envelopes with gold paisley patterns, stacked face down: a low pile of finished ones and a tall pile still to do, with a pen and a few bundles held by rubber bands. From outside the frame at the left edge, an elderly woman's small wrinkled hand and forearm reach in, thin gold bangles at the wrist, the edge of a sage-green saree and a maroon shawl, cracking a peanut. Peanut shells litter the box and the floor. On the white wall behind, two rectangles brighter than the rest, where picture frames once hung.
+
+################################################################
+
+アーグラ編（9枚）
+
+[SNS-12] 本日のハネムーン・スペシャル
+  ファイル名: gt_sns_samir_swans
+  投稿: gt_post_agra_samir_swans（サミール）「ハネムーン・スペシャル、本日三組」
+  場面: 宿の若い支配人サミールが、朝の帳場で、その日の部屋に置くタオルの白鳥を三組並べて自慢している一枚。真ん中の組だけ首の角度が少しずれている。
+  写る人: なし
+  注意: 白鳥はタオルを折ったもの（本物の鳥にしない）。鍵の札・帳面の字は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, bright morning light, highly detailed background, framed like a proud casual snapshot. Looking slightly down from the end of a wooden reception counter, about fifty centimetres away, at three pairs of swans folded from white bath towels, set in a row along the counter. In each pair, the two towel swans touch beaks so that their necks form a heart. The middle pair is a little lopsided, one neck bent at a slightly wrong angle. Beside them, a stainless steel bowl heaped with red rose petals, a thick closed ledger and a single pen. Behind the counter, a wooden key rack with brass keys on hooks, and the bright doorway of a small Agra guesthouse opening onto the lane. Morning light pours in from the doorway and mixes with the yellow glow of the counter lamp.
+
+[SNS-13] 地図は一枚
+  ファイル名: gt_sns_nikhil_map
+  投稿: gt_post_agra_nikhil_map（ニキル）「地図は一枚。スライドは、ゼロ枚」
+  場面: ニキルが、タージ・マハルの騒ぎの後、恋人と入った食堂で撮った一枚。携帯のスライドをやめて、紙の地図を二人で広げている。
+  写る人: タンヴィの袖口と手首だけ（卓の向こう端）
+  注意: 地図は「絵だけで描いた地図」と書いた（地名を書かない）。携帯は伏せる。
+  prompt: Detailed modern anime illustration with rich soft shading, soft early-afternoon window light, highly detailed background, framed like a casual everyday snapshot. Almost straight overhead, looking down at a small metal café table in Agra. Spread across it is a paper tourist map drawn entirely in pictures: a blue band of river, green garden squares, thin road lines and tiny white domes. A blue ballpoint pen and a green ballpoint pen lie on top. In one spot, a small circle drawn in red pen has been half rubbed away into a pink smudge. Two small glasses of milky chai stand on either side of the map, and a smartphone lies face down at one corner. At the far edge of the table, a woman's wrist reaches in, in a bottle-green kurta sleeve with gold embroidery at the cuff and a silver wristwatch. Soft light comes from the café window.
+
+[SNS-14] 場所は、二人で
+  ファイル名: gt_sns_tanvi_ring
+  投稿: gt_post_agra_tanvi_ring（タンヴィ）「場所は、二人で決めました」
+  場面: タンヴィが、求婚を受けた日の夕方に自分の手を撮った一枚。手の下に、恋人が作った「撮ってほしい構図の一覧」を四つにたたんだ紙。
+  写る人: 撮った本人の左手と膝だけ
+  注意: 紙は四つにたたんで中を見せない。場所の分かる建物は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, soft slanting evening light, highly detailed background, framed like a casual everyday snapshot. First-person view of a woman looking down at her own left hand resting on her lap, back of the hand up, about thirty centimetres away, in the center of the frame. On her ring finger, a thin gold ring set with one small sparkling stone, and a silver wristwatch on her wrist. Under her hand lies a sheet of white paper folded into quarters. Around it, the bottle-green fabric of her kurta across her lap, with gold embroidery along the hem, and the brass clasp of a dark brown leather messenger bag at the edge. Soft slanting light through a car window falls across the hand and the ring.
+
+[SNS-15] 最前列より報告
+  ファイル名: gt_sns_duggal_front_seat
+  投稿: gt_post_agra_duggal_bus（ドゥッガル）「最前列より報告。異常なし。」
+  場面: 退役大佐のドゥッガルが、アーグラからジャイプールへ向かうツアーのバスの最前列の席から撮った一枚。窓の外の解説を引き受けて、合間に前を撮った。
+  写る人: 運転手の腕だけ（右の端。インドは右ハンドル）
+  注意: トラックの後ろの字は書かない（花・目・縞の絵だけ）。旗は巻いて字を見せない。
+  prompt: Detailed modern anime illustration with rich soft shading, strong afternoon sunlight, highly detailed background, framed like a casual everyday snapshot. From the front-row seat of a tour bus on the highway from Agra to Jaipur, at eye level, looking straight ahead through the wide windscreen. The road runs dead straight across dry, flat plains, glaring white in the sun. Ahead, a lorry painted all over with bright flowers, eyes and stripes. On the ledge in the foreground: a grey flat cap, a brown paper bag of ginger sweets, and a bus microphone with a coiled cord. On the dashboard, a small orange tour flag rolled around its stick. At the right edge of the frame, the driver's arm and the rim of the steering wheel of the right-hand-drive bus. The inside of the bus is a little dim against the bright road.
+
+[SNS-16] ニームの木の下の請願書
+  ファイル名: gt_sns_vimla_neem
+  投稿: gt_post_agra_vimla_petition（ヴィムラー）「四十三人目は、自分の文で」
+  場面: 元ヒンディー語教師のヴィムラーが、イティマード・ウッダウラ廟の庭のニームの木の下で撮った一枚。請願書の束の一番上に、その日もらった短い一文の紙が留めてある。
+  写る人: なし
+  注意: 一番上の紙は「短い走り書き一行と署名」。読める字になったら作り直す。
+  prompt: Detailed modern anime illustration with rich soft shading, dappled late-afternoon light, highly detailed background, framed like a casual everyday snapshot. Looking down at an angle from about one metre at a stone ledge in the shade of a neem tree. On the ledge, in the center, a brown clipboard holds a thick stack of papers. Clipped on top is a single white sheet with one short line of faint pencil scribbles in the middle and a looping scribbled signature below it. A black ballpoint pen lies beside it, and next to it an unbleached cotton tote bag with a brown base, more papers sticking out. Far back across the garden, small, stands the white marble tomb of Itimad-ud-Daulah in Agra, with coloured stone inlay and four short corner towers. The thin leaves of the neem scatter dappled light and shadow over everything.
+
+[SNS-17] 四時、屋根が乗った
+  ファイル名: gt_sns_mukesh_roof
+  投稿: gt_post_agra_mukesh_roof（ムケーシュ）「四時、予定どおり屋根が乗った」
+  場面: 建設業のムケーシュが、アーグラの郊外の自分の家の現場で撮った一枚。屋根のコンクリートを流し終えたところ。二階の奥に、壁のない一部屋分の場所がある。
+  写る人: 一息つく作業着の男2人（小さく）
+  注意: 「壁のない」は否定なので、「柱4本だけの枠」と書いた。車体・看板の字は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, low evening sunlight, highly detailed background, framed like a casual everyday snapshot. Standing on the ground about fifteen metres in front of a house under construction on the outskirts of Agra, with the whole two-storey house in view in the center of the frame. Red brick walls and grey concrete columns, and on top a freshly poured concrete roof slab, still wet and shining, with steel reinforcing bars sticking up from it. At the back of the upper floor, one corner is an open frame of four bare concrete columns, waiting to become a room. In the foreground, a concrete mixer truck drives away across the dusty lot, seen from behind. Two workers in work clothes lean on their shovels to catch their breath, small in the picture. Stacked bricks, a heap of sand and bamboo scaffolding. The low sun from the side makes the wet concrete gleam.
+
+[SNS-18] 七代目の窓
+  ファイル名: gt_sns_anwar_window
+  投稿: gt_post_agra_anwar_window（アンワル）「今日は、話を二つ壊された」
+  場面: 老ガイドのアンワルが、タージの南の町（タージ・ガンジ）の自分の家の窓から撮った一枚。客の前で話を二つ壊された日の夜。
+  写る人: なし
+  注意: タージはドームの先が屋根の向こうに少しだけ。大きく出たら作り直す。
+  prompt: Detailed modern anime illustration with rich soft shading, night darkness with warm lane lights, highly detailed background, framed like a quiet casual snapshot. From a seated person's eye level, looking out through an old wooden window frame from a dark room. On the windowsill, a wooden walking cane with a silver knob handle leans against the frame beside a single unglazed clay chai cup. Outside, the crowded low rooftops of Taj Ganj in Agra pile up one behind another: yellow lights in the lanes, washing lines strung across, water tanks on the roofs. Beyond the rooftops, small and faint, the white onion-shaped tip of the Taj Mahal's dome rises softly pale in the night.
+
+[SNS-19] 新しい悪い目よけ
+  ファイル名: gt_sns_vinod_lemons
+  投稿: gt_post_agra_vinod_lemons（ヴィノード）「母が、新しいのに替えました」
+  場面: 運転手のヴィノードが、ファテープル・シークリーからアーグラへ戻る途中、道ばたに停めた自分の車の運転席から撮った一枚。母が新しいのに替えてくれた、バックミラーの飾り。
+  写る人: なし
+  注意: ピントはレモン、道は少しぼける。紙・標識の字は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, golden late-afternoon light, highly detailed background, framed like a casual everyday snapshot. From the driver's seat of a white car parked at the side of a country road near Agra, at eye level, looking slightly up. In sharp focus in the center of the frame, a charm sways from the rear-view mirror: one small lemon and seven green chillies threaded on a black string. Through the windscreen, softly blurred, a straight country road runs between green fields, and far off in the middle of the road a single cow slowly crosses. On the dashboard lies a single folded sheet of white paper. Golden light pours in through the windscreen.
+
+[SNS-20] カナダのつもり
+  ファイル名: gt_sns_harbans_canada_roti
+  投稿: gt_post_agra_harbans_roti（ハルバンス）「カナダのつもりで焼いた」
+  場面: ハルバンスが、グル・カ・タールの礼拝所の台所で生地を丸めるのを手伝った夕方に撮った一枚。わざと国の形にしてみた一枚が、丸いローティーの山のいちばん上にのっている。
+  写る人: 手伝いの人の腕（画面の端、ぼける）
+  注意: 「カナダのつもり」なので、ぎざぎざの海岸線の形と書いた。地図や国名の字は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, warm evening light and steam, highly detailed background, framed like a playful casual snapshot. Looking down at an angle from about fifty centimetres at a big stainless steel platter in the kitchen of Guru ka Taal gurdwara in Agra. On it, in the center of the frame, a tall stack of neatly round cooked rotis. On the very top lies one roti rolled into a wonky, jagged shape, an attempt at the outline of Canada with a ragged coastline, its brown scorch spots dotted across it like islands. Beside it, a large round iron griddle, a flour-dusted wooden board, a rolling pin and a tray of dough balls in rows. In the background, a steaming cauldron, and the out-of-focus arms of helpers with cloth-wrapped heads at the edges of the frame. Window light mixes with the glow of the griddle fire and drifting steam.
+
+################################################################
+
+ジャイプール編（7枚）
+
+[SNS-21] 門の見える所の椅子
+  ファイル名: gt_sns_aman_grandma_chair
+  投稿: gt_post_jaipur_aman_chair（アマン）「祖母が来て、家の地図が変わりました」
+  場面: アマンが、ジャイプールの叔父の家で撮った一枚。移ってきた祖母のカムラが家具を動かし、中庭の真ん中に自分の椅子を置いた。デリーの路地の椅子と同じ、門を見張る場所。
+  写る人: なし
+  注意: 椅子の後ろから、椅子越しに門を見る。ソファ・プラスチックの椅子・スクーターは壁ぎわに押しやる。
+  prompt: Detailed modern anime illustration with rich soft shading, soft morning light, highly detailed background, framed like a casual everyday snapshot. From a house doorway at eye level, about three metres behind a chair, looking past it toward the gate of a small Jaipur courtyard with pink-washed walls. In the very middle of the courtyard stands a single wooden chair, facing the open iron gate, a folded pink shawl over its back. By the chair legs, a small pile of peanut shells and a low stool holding a paper cone of peanuts. A sofa, three plastic chairs and a scooter have all been shoved against the walls. Beyond the gate, a glimpse of a narrow lane. Soft light comes in from the gate, and the chair's shadow stretches toward the camera.
+
+[SNS-22] 早く空いた板
+  ファイル名: gt_sns_saleem_empty_board
+  投稿: gt_post_jaipur_saleem_board（サリーム）「今日は、板が早く空いた。」
+  場面: 細密画家のサリームが、アンベール城の中庭の露店で、店じまいの前に撮った一枚。いつもより早く絵が売れて、絵を留める板が空になった。
+  写る人: なし
+  注意: 洗濯ばさみは「空の（empty）」とだけ書いた。描きかけの絵の署名は書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, golden late-afternoon light, highly detailed background, framed like a casual everyday snapshot. From the eye level of someone seated on a rug, about two metres in front of a wooden display board leaning against a wall, in the center of the frame. Along the board run neat rows of about twenty small empty wooden clothes pegs. Here and there, rectangles of wood less sun-faded than the rest show where paintings used to hang. On the rug in front: a drawing board with a small half-finished miniature painting clipped to it, a small glass jar holding very fine brushes, three little paint dishes of red, ultramarine and gold, and a clay cup of chai. Behind, blurred, the honey-coloured courtyard of Amber Fort and a gateway covered in bright painted patterns. Slanting golden light falls across the courtyard.
+
+[SNS-23] 入場券の缶
+  ファイル名: gt_sns_gaura_ticket_tin
+  投稿: gt_post_jaipur_gaura_tin（ガウラ）「入場券の分、トマトで貯金中」
+  場面: ハワー・マハルの下で四十年野菜を売るガウラが、歩道の売り場で撮った一枚。自分のお金で宮殿に入るために、その日の売り上げから少しずつ貯め始めた缶。
+  写る人: なし
+  注意: 紙幣は小さく折る（絵柄・数字を見せない）。ハワー・マハルは画面の上の端に、壁の下の方と格子の小窓だけ。
+  prompt: Detailed modern anime illustration with rich soft shading, bright midday sun and soft shade, highly detailed background, framed like a casual everyday snapshot. From the eye level of someone sitting on the pavement, about seventy centimetres up, looking slightly down at a cloth spread on the sidewalk. In the center, a small round stainless steel tin with its lid open; inside, about ten coins and two or three banknotes folded small. Around the tin, three white radishes, carrots, a small heap of okra and a pile of small tomatoes. The shade of an old beige parasol tied to a pole falls over the cloth. Along the top edge of the frame, the base of a pink sandstone wall with two or three rows of small latticed windows: the Hawa Mahal in Jaipur. Inside the shade the light is soft; beyond it, the pavement and wall glare white in strong sun.
+
+[SNS-24] 二キロの袋
+  ファイル名: gt_sns_sushma_two_kilos
+  投稿: gt_post_jaipur_sushma_pickles（スシュマ）「二キロ、きっちり詰めたわよ」
+  場面: ドイツへ発つ息子を持つ母のスシュマが、家の台所で撮った一枚。決まった「二キロ」のとおりに漬物の瓶を袋に詰め、荷物用の秤に吊るした。残りの瓶は棚で次の電話を待っている。
+  写る人: なし
+  注意: 秤は針と小さな目盛りだけ。瓶のラベルは書かない。
+  prompt: Detailed modern anime illustration with rich soft shading, white kitchen ceiling light at night, highly detailed background, framed like a casual everyday snapshot. Standing at eye level about one and a half metres from a kitchen wall in a Jaipur home. From a hook on the wall, in the center of the frame, hangs a hand-held luggage scale with a round dial, a red needle and tiny tick marks, and from the scale hangs a cloth tote bag. Out of the bag's mouth peek two small glass jars, their lids covered with cloth and tied with string. On the wooden shelf behind, eight jars of pickles stand in a row: mango orange, lime yellow-green, chilli red and more. On the counter, a bundle of string and a pair of scissors. White ceiling light, and a dark window at night.
+
+[SNS-25] 影の読み方の帳面
+  ファイル名: gt_sns_divya_shadow_notes
+  投稿: gt_post_jaipur_divya_shadow（ディヴィヤ）「影を読む練習。誤差は、まだ五分」
+  場面: 天文学者のディヴィヤが、ジャンタル・マンタルの大日時計の日陰で撮った一枚。言い争いの後、占星術師のシャーストリーの隣に座り、影の読み方を習い始めた。
+  写る人: シャーストリーの白い腰布の端と杖の先だけ（右の端）
+  注意: 大日時計は目盛りの刻まれた石の弧の部分だけ（09 で「黄色い円錐」になったので、形を詳しく書いた）。ノートは図だけ。
+  prompt: Detailed modern anime illustration with rich soft shading, strong early-afternoon sun, highly detailed background, framed like a casual everyday snapshot. From the eye level of someone sitting on a stone step, looking at an angle at the curved stone quadrant of the Samrat Yantra, the giant sundial at Jantar Mantar in Jaipur: a sweeping arc of pale stone inlaid with white marble bands, engraved with rows of fine scale marks. The sharp edge of a shadow falls across the marks. On the stone step in the foreground, an open notebook with a pencil sketch of a slope and a shadow line, and a wristwatch laid on top of it. From the right edge of the frame, the hem of a white dhoti and the tip of a knotted wooden staff reach in, the staff pointing at one of the scale marks. The strong sun makes the shadow line crisp.
+
+[SNS-26] 階段の二足
+  ファイル名: gt_sns_kamla_two_sandals
+  投稿: gt_post_jaipur_kamla_sandals（カムラ）「二人とも、足が痛い。」
+  場面: カムラが、行列の夜の終わりに、花嫁の家の門の内側の階段で撮った一枚。踊り疲れた二人の祖母（カムラと花嫁の祖母）が、並んで履き物を脱いだ。
+  写る人: なし
+  注意: 「祖母」の語は書かない（人を呼ぶ）。履き物と杖だけで二人を表す。
+  prompt: Detailed modern anime illustration with rich soft shading, warm string-light glow late at night, highly detailed background, framed like a casual everyday snapshot. From the eye level of someone sitting on a step, about one metre away, looking slightly down at the bottom step of the stone staircase of an old Jaipur haveli, just inside the gate. Side by side on the step, in the center of the frame, sit two pairs of footwear, kicked off after a long night of dancing: flat brown leather sandals, and old red cloth juttis with embroidery. A gnarled wooden walking stick leans against the wall beside them. Orange marigold petals are scattered over the step, with one short snipped piece of red ribbon. On the wall behind, a string of small glowing bulbs. Warm light from the bulbs, and a faint glow from the street outside the gate.
+
+[SNS-27] 通行料の山分け
+  ファイル名: gt_sns_pooja_toll_split
+  投稿: gt_post_jaipur_pooja_toll（プージャー）「通行料、いとこで山分け会議中」
+  場面: 花嫁のいとこのプージャーが、行列の夜の後、花嫁の家の部屋で撮った一枚。門のリボンで花婿側から取った通行料を、いとこたちでベッドの上に広げて山分けしている。
+  写る人: いとこたちの手が四人分（四方から）
+  注意: 紙幣は折って絵柄・数字を見せない。手が多すぎる・少なすぎる絵は作り直す。
+  prompt: Detailed modern anime illustration with rich soft shading, white ceiling light and warm lamp glow late at night, highly detailed background, framed like a casual everyday snapshot. Looking almost straight down from beside a bed at a floral-print bedspread. In the center, four small piles of folded banknotes and coins. Four young women's hands reach in from the four sides of the frame, one from each side, all painted with brown mehndi patterns and stacked with colourful glass bangles. In the middle lie a few snipped pieces of red ribbon. At the edge of the bed, a stainless steel plate with half-eaten sweets. White ceiling light mixes with the warm glow of a bedside lamp.
