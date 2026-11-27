@@ -151,9 +151,14 @@
   display: flex;
   flex-direction: column;
   flex: 0 1 auto;
-  /* With choices above it, it keeps its head and about two lines of the talk before they give way (they scroll). */
-  min-height: min(7.5em, 100%);
+  /* Its one size (2026-11-27 user decision): its head, three lines of the talk and the room under them, however long
+     the line. A longer line scrolls inside it; the choices above give way to it (they scroll). A phone's messages, a
+     letter's sheet and a wayside quiz's question are no line of talk: the window grows for them from that size. */
+  --vn-window-height: calc(var(--vn-head-height) + 12px + 3 * var(--vn-body-size) * var(--ds-leading-reading)
+    + var(--vn-head-height) - var(--vn-head-overhang));
+  min-height: min(var(--vn-window-height), 100%);
 }
+.vn-window:not(:has(.phone-screen, .letter-sheet, .encounter-quiz-prompt)) { height: var(--vn-window-height); }
 /* The glass: no edge line and no shadow; its edges melt into the scene (--vn-feather), as a soft light over it. The
    battle's talk has the same window (battle.css). */
 .vn-window::before,
@@ -182,7 +187,7 @@
 }
 /* Under the words, as much room above the window's foot as over them below its top (2026-11-27 user request). */
 .vn-scene .vn-window-body {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
   padding: 0 var(--vn-window-padding) calc(var(--vn-head-height) - var(--vn-head-overhang));
   overflow-y: auto;
@@ -228,6 +233,16 @@
 .vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
 .vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
+/* A scene's last step (「… →」) keeps to the window's lower right corner, over the room under the words, so the window
+   keeps its size; it takes the place of the next mark. */
+.vn-scene .vn-window-body > .next {
+  position: absolute;
+  right: var(--vn-window-padding);
+  bottom: 0;
+  z-index: 1;
+  padding: 0 0 0 20px;
+}
+.vn-window-body:has(> .next) .dialogue-next-mark { display: none; }
 .vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
 .vn-dialogue .paused { color: var(--vn-text); }
 .vn-dialogue h1 { font-size: var(--ds-text-heading); margin: 2px 0 8px; color: var(--vn-text); }
@@ -343,6 +358,7 @@
     max-height: calc(100% - 16px - var(--vn-controls-row));
   }
   .vn-scene .vn-window-body { padding: 0 16px calc(var(--vn-head-height) - var(--vn-head-overhang)); }
+  .vn-scene .vn-window-body > .next { right: 16px; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
   .vn-choices .choice { padding: 9px 14px; }
 }
