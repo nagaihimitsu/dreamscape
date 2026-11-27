@@ -4,7 +4,7 @@ import type { AlbumPhoto } from "../../domain/album-state";
 import { ALBUM_IMAGE_ALT_JA } from "./album-pages";
 import "./album-photo-notice.css";
 
-/** How long the photo card stays (milliseconds); longer with the first photo's hint, which has a line more to read. */
+/** How long the photo card stays (milliseconds); longer with the journey's first photo. */
 export const ALBUM_PHOTO_NOTICE_MS = 4000;
 export const FIRST_ALBUM_PHOTO_NOTICE_MS = 6000;
 
@@ -42,7 +42,8 @@ export function AlbumPhotoNotice({ notice }: { notice: AlbumPhotoNoticeState | n
             <span className="album-photo-notice-label">写真に残しました</span>
             <span className="sr-only">：</span>
             <span className="album-photo-notice-caption">{notice.photo.caption ?? ALBUM_IMAGE_ALT_JA}</span>
-            {notice.first && <span className="album-photo-notice-hint">{ALBUM_PLACE_HINT_JA}</span>}
+            {/* Where the album is: for screen readers only (2026-11-27 user decision: no words of how-to on the scene). */}
+            {notice.first && <span className="sr-only">。{ALBUM_PLACE_HINT_JA}</span>}
           </p>
         </div>
       )}

@@ -23,7 +23,6 @@
 /* As wide as the mark, so the name's FitText fits it there (a long name smaller, or two lines at the phrases). */
 .city-arrival-mark strong { font-family: var(--ds-font-serif); font-size: var(--city-arrival-name-size); font-weight: 500; line-height: var(--ds-leading-display); letter-spacing: .2em; padding-left: .2em; justify-self: stretch; text-align: center; }
 .city-arrival-line { width: 60px; height: 1px; background: var(--city-arrival-line-ground); }
-.city-arrival-continue { min-height: 44px; }
 @keyframes city-arrival-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes city-arrival-fade { 0% { opacity: 0; } 15%, 100% { opacity: 1; } }
 @keyframes city-arrival-still { from, to { opacity: 1; } }

@@ -216,7 +216,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
                 </button>
                 {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
                 </>}
-                {quiz.result && <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={continueFromResult}>続きを読む <span aria-hidden="true">→</span></button></>}
+                {quiz.result && <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" aria-label="続きを読む" onClick={continueFromResult}><span aria-hidden="true">→</span></button></>}
               </>
             ) : (
               <>

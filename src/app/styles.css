@@ -587,6 +587,9 @@ h3 {
   text-align: left;
   transition: filter var(--motion-fast) var(--ease-out), translate var(--motion-fast) var(--ease-out);
 }
+/* A way on said by its arrow alone (2026-11-27 user decision: no words a tap tells; its name is for screen readers): the
+   arrow at the right, where a worded button has it. */
+.primary.arrow-only { justify-content: flex-end; }
 .primary:hover:enabled:not(:where([data-settling])) {
   filter: brightness(1.12);
 }

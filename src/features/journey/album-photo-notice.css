@@ -56,7 +56,6 @@
 }
 .album-photo-notice-label { font-size: var(--ds-text-caption); color: var(--ds-ink-muted); }
 .album-photo-notice-caption { font-size: var(--ds-text-note); }
-.album-photo-notice-hint { margin-top: 2px; font-size: var(--ds-text-caption); color: var(--ds-ink-muted); }
 /* Under reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion; Debug's 音と演出の見本 puts it on its
    stage) it comes and goes without moving. */
 .reduce-motion .album-photo-notice { animation: none; }

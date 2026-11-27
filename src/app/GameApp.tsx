@@ -1396,11 +1396,9 @@ export function GameApp({
               <p className="lead">
                 {withNames(presentation.ending.descriptionJa, game)}
               </p>
-              <p className="fine-print">
-                これからも、旅先でふたりの時間を過ごせます。
-              </p>
-              <button className="primary" onClick={() => commit((state) => closeRomanceEnding(state, game.revision, nextRomanceRoll))}>
-                {resultExitLabel(game) ?? "街歩きへ"} <span aria-hidden="true">→</span>
+              <button className="primary arrow-only" aria-label={resultExitLabel(game) ?? "街歩きへ"}
+                onClick={() => commit((state) => closeRomanceEnding(state, game.revision, nextRomanceRoll))}>
+                <span aria-hidden="true">→</span>
               </button>
             </section>
           </>

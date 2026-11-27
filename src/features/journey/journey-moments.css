@@ -171,7 +171,6 @@
 }
 /* Centred in the screen; from its top when it does not fit (auto margins). */
 .packing-content { display: grid; justify-items: center; gap: 12px; width: min(360px, 100%); margin: auto; text-align: center; }
-.packing-eyebrow { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.2em; }
 .packing-title { font-family: var(--ds-font-serif); font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
 .packing-label { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; overflow-wrap: anywhere; }
 .packing-case {
