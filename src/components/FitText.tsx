@@ -1,11 +1,10 @@
-import { Fragment, useLayoutEffect, useMemo, useRef } from "react";
-import { countLines, fitScale, headingPhrases } from "./fit-text";
+import { useLayoutEffect, useRef } from "react";
+import { countLines, fitScale } from "./fit-text";
 import "./fit-text.css";
 
 /**
  * A heading's words (a name a writer gives: a place, a term, an item, a chapter), set to fit the heading
- * (docs/02_TECH_ARCHITECTURE.md「見出しの字の収め方」): they break only between phrases (<wbr>, fit-text.ts), and take
- * the largest size, from the heading's own down to `minScale` of it, that keeps them to one line; failing that, the
+ * (docs/02_TECH_ARCHITECTURE.md「見出しの字の収め方」): they wrap as any Japanese text, and take the largest size, from the heading's own down to `minScale` of it, that keeps them to one line; failing that, the
  * heading's own size on two balanced lines (up to `maxLines`, then smaller). Put it inside the heading element, which
  * keeps its own size, font and width: the words are measured against the heading's width, so the heading must not take
  * its width from its words. Refits when the heading's width or size (the 文字の大きさ setting) changes, and when a web
@@ -13,7 +12,6 @@ import "./fit-text.css";
  */
 export function FitText({ text, className, minScale = 0.8, maxLines = 2 }: { text: string; className?: string; minScale?: number; maxLines?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const phrases = useMemo(() => headingPhrases(text), [text]);
   useLayoutEffect(() => {
     const words = ref.current;
     const heading = words?.parentElement;
@@ -58,8 +56,6 @@ export function FitText({ text, className, minScale = 0.8, maxLines = 2 }: { tex
       observer?.disconnect();
       document.fonts?.removeEventListener?.("loadingdone", refit);
     };
-  }, [phrases, minScale, maxLines]);
-  return <span ref={ref} className={className ? `fit-text ${className}` : "fit-text"}>
-    {phrases.map((phrase, index) => <Fragment key={index}>{index > 0 && <wbr />}{phrase}</Fragment>)}
-  </span>;
+  }, [text, minScale, maxLines]);
+  return <span ref={ref} className={className ? `fit-text ${className}` : "fit-text"}>{text}</span>;
 }

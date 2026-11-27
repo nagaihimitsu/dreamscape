@@ -59,7 +59,7 @@
   line-height: var(--ds-leading-tight);
 }
 .minigame-card-length { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: 600; color: var(--ds-glass-muted); }
-.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-reading); font-weight: 500; line-height: var(--ds-leading-snug); text-wrap: pretty; word-break: auto-phrase; }
+.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-reading); font-weight: 500; line-height: var(--ds-leading-snug); text-wrap: pretty; }
 .minigame-ready .minigame-card[data-brief] { padding: 10px 14px; }
 .minigame-ready .minigame-card[data-brief] .minigame-card-goal { font-size: var(--ds-text-body); }
 /* 「練習する」 (left) and the start (right, the larger): the start the talk's press of smoked glass (.primary), 練習 a pane

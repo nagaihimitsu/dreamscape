@@ -53,7 +53,6 @@
   line-height: var(--ds-leading-reading);
   letter-spacing: 0.04em;
   text-align: center;
-  word-break: keep-all;
   overflow-wrap: anywhere;
 }
 /* Dusk deepens to night and the moon, stars and line come out; then the card stays until a tap (2026-11-15). */
@@ -142,7 +141,6 @@
   line-height: var(--ds-leading-reading);
   letter-spacing: 0.06em;
   text-align: center;
-  word-break: keep-all;
   overflow-wrap: anywhere;
 }
 .night-screen-actions {

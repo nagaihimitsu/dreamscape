@@ -247,7 +247,6 @@
   font-weight: 600;
   line-height: var(--ds-leading-snug);
   text-align: center;
-  word-break: auto-phrase;
   pointer-events: none;
   transform: translate(clamp(-1 * var(--mehndi-said-x), -50%, 100cqw - var(--mehndi-said-x) - 100%), var(--mehndi-said-dy));
   animation: mg-mehndi-hidden-name-said 220ms ease-out both;

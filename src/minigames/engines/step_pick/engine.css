@@ -4,7 +4,7 @@
 .mg-engine-step-pick { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .mg-engine-step-pick .mg-step-pick-field { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; user-select: none; -webkit-user-select: none; }
 .mg-engine-step-pick .mg-step-pick-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); text-wrap: balance; word-break: auto-phrase; }
+.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); text-wrap: balance; }
 .mg-engine-step-pick .mg-step-pick-buttons {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr) minmax(0, 1.12fr);

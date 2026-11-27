@@ -92,8 +92,7 @@
 }
 @keyframes mg-raju-haggle-say { from { opacity: 0; transform: translateY(4px); } }
 .mg-raju-haggle-face { flex: none; width: 40px; height: 40px; }
-/* Breaks only between phrases (Skin.tsx marks them), never inside a word, on a 320px phone too. */
-.mg-raju-haggle-line { font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); word-break: keep-all; word-break: auto-phrase; overflow-wrap: anywhere; }
+.mg-raju-haggle-line { font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 
 /* The paper of his prices: a page torn from a notebook, the price on show large in a frame with a mark, passed ones struck
    out, coming ones faint (not colour alone). */

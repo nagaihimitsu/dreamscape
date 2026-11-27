@@ -312,8 +312,6 @@
   letter-spacing: 0.02em;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  /* Breaks between phrases where the browser can (「毎日」 stays whole); elsewhere as any Japanese text. */
-  word-break: auto-phrase;
 }
 .letter-entry:last-child > .letter-translation {
   margin-bottom: 0;

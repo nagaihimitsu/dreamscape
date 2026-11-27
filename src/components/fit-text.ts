@@ -1,35 +1,8 @@
-import { Parser, jaModel } from "budoux";
-
 // The way a heading's words sit (2026-11-25 user decision, docs/02_TECH_ARCHITECTURE.md「見出しの字の収め方」): a name
-// that a writer gives (a place, a term, an item, a chapter) breaks only between its phrases, never inside a word
-// (「（内謁の／間）」), and takes the largest size that keeps it to the fewest lines: first one line down to a smaller
+// that a writer gives (a place, a term, an item, a chapter) wraps as any Japanese text (2026-11-27: not only between
+// its phrases), and takes the largest size that keeps it to the fewest lines: first one line down to a smaller
 // size, then two lines at the full size, as a game's auto-size (Unity's TextMeshPro Auto Size and the like). Pure parts;
 // FitText.tsx measures and renders.
-
-const parser = new Parser(jaModel);
-const OPENING = "（「『【〈《〔［｛(\[{";
-const CLOSING = "）」』】〉》〕］｝)\]}";
-
-/**
- * The phrases of a heading, at whose ends the line may break (BudouX's Japanese model, which runs the same in every
- * browser, where `word-break: auto-phrase` is Chrome's only). Also after 「・」 (between a name's words); never inside
- * brackets (「（内謁の間）」 stays one, as 「…（内謁の／間）」 would read as a broken word). Joined, they are the text.
- */
-export function headingPhrases(text: string): string[] {
-  if (text.length === 0) return [];
-  const pieces = parser.parse(text).flatMap((phrase) => phrase.split(/(?<=・)(?=.)/u));
-  const phrases: string[] = [];
-  let depth = 0;
-  for (const piece of pieces) {
-    if (depth > 0 && phrases.length > 0) phrases[phrases.length - 1] += piece;
-    else phrases.push(piece);
-    for (const char of piece) {
-      if (OPENING.includes(char)) depth += 1;
-      else if (CLOSING.includes(char) && depth > 0) depth -= 1;
-    }
-  }
-  return phrases;
-}
 
 /**
  * The scale (of the heading's own size, 1) its words take: the largest that keeps them to one line, down to `minScale`;

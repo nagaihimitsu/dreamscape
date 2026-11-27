@@ -1,13 +1,11 @@
 /* A heading's words (FitText.tsx; docs/02_TECH_ARCHITECTURE.md「見出しの字の収め方」): a block as wide as the heading, at
-   the scale FitText measured (--fit-scale, of the heading's own size, which the heading keeps). They break only at their
-   <wbr> (between phrases) and after punctuation (keep-all), a phrase wider than the line anywhere (overflow-wrap), and
-   two lines are balanced (no lone 「間）」 below). Safari has had text-wrap: balance since 17.5. */
+   the scale FitText measured (--fit-scale, of the heading's own size, which the heading keeps). They wrap as any Japanese
+   text (a long Latin word anywhere: overflow-wrap), and two lines are balanced (no lone 「間）」 below). Safari has had text-wrap: balance since 17.5. */
 .fit-text {
   display: block;
   min-width: 0;
   max-width: 100%;
   font-size: calc(var(--fit-scale, 1) * 1em);
-  word-break: keep-all;
   overflow-wrap: anywhere;
   line-break: strict;
   text-wrap: balance;

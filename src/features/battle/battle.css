@@ -182,8 +182,7 @@
 }
 /* Japanese only (no 「訳を見る」 beside it): the words take the whole row. */
 .battle-screen .quiz-choices .quiz-choice:not(:has(.translation)) { grid-template-columns: minmax(0, 1fr); }
-/* A Japanese question and its answers break between phrases, not inside a word (「ハワ／ー・マハル」, 「蜂の／巣」). */
-.battle-screen :is(.question-ja, .quiz-choice [lang="ja"]) { word-break: auto-phrase; text-wrap: pretty; }
+.battle-screen :is(.question-ja, .quiz-choice [lang="ja"]) { text-wrap: pretty; }
 .battle-screen .battle-stage:before {
   display: none;
 }
