@@ -1,16 +1,9 @@
 import { episodes } from "../../content";
 import { battleTagApGained } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
-import { PendingRewards } from "./PendingRewards";
 import { FitText } from "../../components/FitText";
 
-export function BattleRewards({
-  game,
-  onClaim,
-}: {
-  game: GameState;
-  onClaim: () => void;
-}) {
+export function BattleRewards({ game }: { game: GameState }) {
   const active = game.activeBattle!;
   const episode = episodes.find((item) => item.battleId === active.battleId);
   const receipt =
@@ -19,7 +12,7 @@ export function BattleRewards({
       : null;
   // The AP the battle's own tags gave (a choice's # ap:, the head's # on_done: ap): a moment quiz's reward AP is written so.
   const tagAp = battleTagApGained(game);
-  // Only the total (2026-11-20 user decision: no breakdown under it; AP kept aside is under 「保管中のAP」).
+  // Only the total (2026-11-20 user decision: no breakdown under it).
   const earned =
     (receipt?.entries.reduce((total, entry) => total + entry.earnedAp, 0) ?? 0) + tagAp;
   return (
@@ -40,14 +33,6 @@ export function BattleRewards({
           所持AP <strong>{game.ap} AP</strong>
         </p>
       </section>
-      {game.pendingApRewards.length > 0 && (
-        <details className="result-pending">
-          <summary>
-            保管中のAP {game.pendingApRewards.reduce((total, item) => total + item.remainingAp, 0)} AP
-          </summary>
-          <PendingRewards game={game} onClaim={onClaim} />
-        </details>
-      )}
       {episode && game.completedEpisodeIds.includes(episode.id) && (
         <section className="episode-clear" data-testid="episode-clear">
           <p className="eyebrow">

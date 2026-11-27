@@ -151,7 +151,6 @@ interface Props {
   /** The leave button's words when it leads somewhere else than free time (a battle whose head says then: epilogue: 「エピローグへ進む」). */
   leaveLabel?: string;
   onNotebook?: () => void;
-  onClaimRewards: () => void;
   onPress: () => void;
   onSubmitEvidence: () => void;
   onNextEpisode?: () => void;
@@ -180,7 +179,6 @@ export function BattleScreen({
   onLeave,
   leaveLabel,
   onNotebook,
-  onClaimRewards,
   onPress,
   onSubmitEvidence,
   onNextEpisode,
@@ -601,7 +599,7 @@ export function BattleScreen({
             </div>
             <div className="battle-result-card">
               <div className="battle-result-body">
-                <BattleRewards game={game} onClaim={onClaimRewards} />
+                <BattleRewards game={game} />
               </div>
               {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
                   mid-card), held there while a long result scrolls above it (battle.css). */}

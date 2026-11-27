@@ -15,7 +15,7 @@ describe("place files", () => {
     const file = readPlaceFile("places/smp_x_tower", source);
     expect(file.source.split("\n")).toHaveLength(source.split("\n").length);
     expect(file.source).not.toContain("# at:");
-    const head = readHead(file.knots[0], 12)!;
+    const head = readHead(file.knots[0])!;
     expect(head).toMatchObject({ kind: "talk", at: [{ visit: "x_tower" }], priority: 2, when: { flag: "smp_x_flag" }, people: ["smp_x_lili"],
       done: { ap: 1, items: ["smp_x_card"] }, sources: "none" });
     expect(() => compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK })).not.toThrow();
@@ -37,7 +37,7 @@ describe("place files", () => {
       "* [Here. # option: give # translation: どうぞ]\n    # give: smp_x_card heroine\n    # rel: affection +1, trust -1\n    # rel: affection +1\n" +
       "    # money: -300\n    # money: +100\n    # ap: -1\n    # set: smp_x_flag\n    # speaker: heroine\n    「ありがとう」\n    -> END\n" +
       "* [Later. # option: later]\n    # later\n    -> END\n* [Just look.]\n    -> END\n"));
-    const [give, later, plain] = file.knots[0].choices.map((choice) => choiceOption(choice, 12));
+    const [give, later, plain] = file.knots[0].choices.map((choice) => choiceOption(choice));
     expect(give).toEqual({ id: "give", knot: "smp_x_talk", translated: true, give: { item: "smp_x_card", to: "heroine" },
       rel: { affection: 2, trust: -1 }, money: -200, ap: -1, set: ["smp_x_flag"] });
     expect(later).toEqual({ id: "later", knot: "smp_x_talk", later: true });
@@ -48,23 +48,23 @@ describe("place files", () => {
     const file = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n# on_done: clue smp_x_clue_heard\n# on_done: clue smp_x_clue_two\n",
       "* [Ask. # option: ask]\n    # clue: smp_x_clue_heard\n    # clue: smp_x_clue_two\n    # set: smp_x_flag\n    「駅の話です」\n    -> END\n" +
       "* [Nod. # option: nod]\n    -> END\n"));
-    const [ask, nod] = file.knots[0].choices.map((choice) => choiceOption(choice, 12));
+    const [ask, nod] = file.knots[0].choices.map((choice) => choiceOption(choice));
     expect(ask).toEqual({ id: "ask", knot: "smp_x_talk", set: ["smp_x_flag"], clues: ["smp_x_clue_heard", "smp_x_clue_two"] });
     // A choice without effects gives no option (and no clues key: the scene's fingerprint does not change).
     expect(nod).toEqual({ id: "nod", knot: "smp_x_talk" });
-    expect(readHead(file.knots[0], 12)?.done).toEqual({ clues: ["smp_x_clue_heard", "smp_x_clue_two"] });
-    expect(parseDone(["set smp_x_flag"], 12)).not.toHaveProperty("clues");
-    expect(() => parseDone(["clue"], 12)).toThrow("# on_done: clue takes one ID");
-    expect(() => parseDone(["clue a b"], 12)).toThrow("# on_done: clue takes one ID");
-    expect(() => parseDone(["clue Bad-Id"], 12)).toThrow("# on_done: clue takes an ID");
-    expect(() => parseDone(["hint x"], 12)).toThrow("(item, use, set, clue, rel, money, ap or reward)");
+    expect(readHead(file.knots[0])?.done).toEqual({ clues: ["smp_x_clue_heard", "smp_x_clue_two"] });
+    expect(parseDone(["set smp_x_flag"])).not.toHaveProperty("clues");
+    expect(() => parseDone(["clue"])).toThrow("# on_done: clue takes one ID");
+    expect(() => parseDone(["clue a b"])).toThrow("# on_done: clue takes one ID");
+    expect(() => parseDone(["clue Bad-Id"])).toThrow("# on_done: clue takes an ID");
+    expect(() => parseDone(["hint x"])).toThrow("(item, use, set, clue, rel, money, ap or reward)");
     // An effect tag on an ordinary line stops (A7); a clue on a choice needs its # option: (A6); the value is one ID.
     expect(() => readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "「駅の話」\n# clue: smp_x_clue_heard\n-> END\n")))
       .toThrow("An effect tag follows a choice");
     const bare = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [Ask.]\n    # clue: smp_x_clue_heard\n    -> END\n"));
-    expect(() => choiceOption(bare.knots[0].choices[0], 12)).toThrow("needs # option:");
+    expect(() => choiceOption(bare.knots[0].choices[0])).toThrow("needs # option:");
     const two = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [Ask. # option: ask]\n    # clue: smp_a smp_b\n    -> END\n"));
-    expect(() => choiceOption(two.knots[0].choices[0], 12)).toThrow("# clue: takes an ID");
+    expect(() => choiceOption(two.knots[0].choices[0])).toThrow("# clue: takes an ID");
     // A one-scene file's choice reads it too (readFileChoices).
     expect(readFileChoices("encounters/smp_x", "* [Ask. # option: ask]\n    # clue: smp_x_clue_heard\n    -> END\n")[0].tags)
       .toEqual([{ key: "clue", value: "smp_x_clue_heard", line: 2 }]);
@@ -72,22 +72,21 @@ describe("place files", () => {
 
   it.each([
     ["    # ap: +0\n", "# ap: 0 does nothing"],
-    ["    # ap: +13\n", "at most 12"],
     ["    # ap: 1\n", "with its sign"],
     ["    # money: 1.5\n", "with its sign"],
     ["    # rel: charm +1\n", "# rel: takes"],
   ])("refuses a choice tag's malformed number: %j", (tag, message) => {
     const file = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", `* [A # option: a]\n${tag}    x\n    -> END\n`));
-    expect(() => choiceOption(file.knots[0].choices[0], 12)).toThrow(message);
+    expect(() => choiceOption(file.knots[0].choices[0])).toThrow(message);
   });
 
-  it("warns, without stopping, about spending more AP than the cap; needs # option: on a choice with effects (A6)", () => {
-    const warnings: string[] = [];
+  it("reads any amount of AP a choice gives or spends (no cap); needs # option: on a choice with effects (A6)", () => {
     const spend = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [A # option: a]\n    # ap: -13\n    x\n    -> END\n"));
-    expect(choiceOption(spend.knots[0].choices[0], 12, (message) => warnings.push(message))?.ap).toBe(-13);
-    expect(warnings[0]).toContain("never be chosen");
+    expect(choiceOption(spend.knots[0].choices[0])?.ap).toBe(-13);
+    const give = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [A # option: a]\n    # ap: +13\n    x\n    -> END\n"));
+    expect(choiceOption(give.knots[0].choices[0])?.ap).toBe(13);
     const noId = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [A]\n    # rel: spark +1\n    x\n    -> END\n"));
-    expect(() => choiceOption(noId.knots[0].choices[0], 12)).toThrow("needs # option:");
+    expect(() => choiceOption(noId.knots[0].choices[0])).toThrow("needs # option:");
   });
 
   it("follows diverts to helper knots and refuses a target that is no knot, stitch or label (A2)", () => {
@@ -98,7 +97,7 @@ describe("place files", () => {
   });
 
   it("reads every moment and its positions, refuses a position its moment lacks (A2), and reads # on_done:", () => {
-    const head = (lines: string) => readHead(readPlaceFile("places/smp_x_tower", talk(lines)).knots[0], 12);
+    const head = (lines: string) => readHead(readPlaceFile("places/smp_x_tower", talk(lines)).knots[0]);
     // Stage 3b opens place, visit any, several moments and after guide / after battle; the other moments are stage 4.
     expect(head("# at: place x\n# at: visit any\n# priority: after guide\n")).toMatchObject({ at: [{ place: "x" }, { visit: "any" }], priority: "after guide" });
     expect(head("# at: visit x\n# priority: after battle\n")).toMatchObject({ priority: "after battle" });
@@ -117,9 +116,9 @@ describe("place files", () => {
     expect(() => head("# at: visit x\n# priority: after leg\n")).toThrow("has no after leg");
     expect(() => head("# at: tour x_tour\n# priority: -1\n")).toThrow("# at: takes");
     expect(() => head("# at: somewhere x\n# priority: -1\n")).toThrow("# at: takes");
-    expect(parseDone(["money -300", "rel affection +1", "use smp_x_card", "set smp_x_flag"], 12))
+    expect(parseDone(["money -300", "rel affection +1", "use smp_x_card", "set smp_x_flag"]))
       .toEqual({ money: -300, rel: { affection: 1 }, use: ["smp_x_card"], set: ["smp_x_flag"] });
-    expect(() => parseDone(["ap +13"], 12)).toThrow("at most 12");
+    expect(parseDone(["ap +13"])).toEqual({ ap: 13 });
   });
 
   it("reads the # on_done: and # then: at the top of a one-scene main file and blanks them", () => {
@@ -133,8 +132,8 @@ describe("place files", () => {
     const date = `${top}\n=== smp_x_date ===\n# scene: date\n# when: episodes x >= 1\n# hint: 塔の話を聞いたあとで\n「こんにちは」\n-> END\n`;
     const file = readPlaceFile("places/smp_x_tower", date);
     expect(file.source).not.toContain("# hint:");
-    expect(readHead(file.knots[0], 12)).toMatchObject({ kind: "date", hint: "塔の話を聞いたあとで" });
-    expect(() => readHead(readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n# hint: いつか\n")).knots[0], 12))
+    expect(readHead(file.knots[0])).toMatchObject({ kind: "date", hint: "塔の話を聞いたあとで" });
+    expect(() => readHead(readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n# hint: いつか\n")).knots[0]))
       .toThrow("# hint: is a date's head tag");
     expect(() => readPlaceFile("places/smp_x_tower", `${top}\n=== smp_x_date ===\n# scene: date\n# hint:\n「こんにちは」\n-> END\n`)).toThrow("Empty head tag");
     const head = readMainFileHead('VAR player_name = ""\n# hint: 朝市のあとで\n# speaker: heroine\nline\n-> END\n');

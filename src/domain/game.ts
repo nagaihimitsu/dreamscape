@@ -11,7 +11,6 @@ import {
   validateJourneyState,
 } from "./chapter";
 import {
-  settlePendingAp,
   validateRewardState,
 } from "./rewards";
 import { validateTourismState } from "./tourism";
@@ -89,7 +88,6 @@ export function createGame(
   const cityId = journey.cities[0].id;
   const { travelSettings } = getCityContent(cityId);
   const initial = options.initialState ?? journey.initialState;
-  if (initial && initial.pendingAp !== 0) throw new Error("Pending AP requires a reward record");
   const difficulty = difficultySchema.parse(options.difficulty ?? DEFAULT_DIFFICULTY);
   return {
     schemaVersion: GAME_STATE_VERSION,
@@ -139,7 +137,6 @@ export function createGame(
     completedEpisodeIds: [],
     completedCityIds: [],
     completedGuideIds: [],
-    pendingApRewards: [],
     battleRewardReceipt: null,
     activeEpilogue: null,
     viewedEpilogueCityIds: [],
@@ -280,7 +277,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
     ap: state.ap - date.apCost,
   };
   return applyStep(
-    settlePendingAp(next),
+    next,
     {
       dateId,
       runId: `${dateId}:${next.revision}`,
@@ -358,7 +355,7 @@ export function chooseDate(
   const fileTags = fileTagOption(date.id, active.frame.choices.find((choice) => choice.index === index)?.optionId);
   if (fileTags && !tagsApplied) {
     if (dateChoiceDisplay(state, index).show !== "open") return state;
-    if (!active.replay) return chooseDate(applyChoiceEffects(state, fileDateScene(date.id)!.id, fileTags, state.revision + 1).state, index, expectedRevision, true);
+    if (!active.replay) return chooseDate(applyChoiceEffects(state, fileDateScene(date.id)!.id, fileTags).state, index, expectedRevision, true);
   }
   if (active.resolutionMode === "fixed") {
     return applyStep(
@@ -461,7 +458,7 @@ function chooseTaggedDate(state: GameState, active: ActiveDate, scene: NonNullab
   // reaction, only their tags.
   const direct = own && decidesConfession(date);
   if (!own || direct) {
-    const next = active.replay ? state : applyChoiceEffects(state, scene.id, option, revision).state;
+    const next = active.replay ? state : applyChoiceEffects(state, scene.id, option).state;
     const tone = deriveRelationshipTone(next);
     const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, {
       relationship_tone: tone, relationship_tone_before: toneBefore, relationship_tone_after: tone,
@@ -479,7 +476,7 @@ function chooseTaggedDate(state: GameState, active: ActiveDate, scene: NonNullab
   let next: GameState = state;
   if (!active.replay) {
     next = { ...state, affection: before.affection + resolution.deltas.affection, trust: before.trust + resolution.deltas.trust, spark: before.spark + resolution.deltas.spark };
-    next = applyChoiceEffects(next, scene.id, { ...option, profile: undefined }, revision).state;
+    next = applyChoiceEffects(next, scene.id, { ...option, profile: undefined }).state;
   }
   const toneAfter = deriveRelationshipTone(next);
   const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {
@@ -510,7 +507,7 @@ export function finishDate(
   // The date's main # on_done: (a place file's knot or a one-scene file's head), the first time it is finished.
   const doneScene = mainScene({ date: date.id });
   if (doneScene && !active.replay && !state.playedDateIds.includes(date.id))
-    state = applyDoneEffects(state, doneScene.id, doneScene.done, state.revision + 1);
+    state = applyDoneEffects(state, doneScene.id, doneScene.done);
   const memories = [...state.memories];
   // A confession may follow a deferral (a later city's, or this one again when its writer made it repeatable; the
   // journeys' are played once, 2026-11-13); the first eventual acceptance still earns its one ending memory.

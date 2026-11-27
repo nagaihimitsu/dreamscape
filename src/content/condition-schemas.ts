@@ -92,7 +92,7 @@ export type LeafValues = {
    * only when no ordinary date is left.
    */
   normalDateAvailable: true;
-  /** The AP that can be spent: the AP less the AP kept back for a main part (stored AP not counted). Stage 3a. */
+  /** The AP that can be spent: the AP less the AP kept back for a main part. Stage 3a. */
   ap: { atLeast?: number; atMost?: number };
   /** A story flag (progression/story.json) was set by a scene's `# set:`; flags never clear. Stage 3a. */
   flag: string;

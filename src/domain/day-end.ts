@@ -2,7 +2,6 @@ import { getPlayerDeparture } from "./city-travel";
 import { canReadCityEpilogue } from "./epilogue";
 import type { GameState } from "./game";
 import { hasActiveScene } from "./game-state-schema";
-import { canClaimPendingRewards } from "./rewards";
 import { getTourOffers } from "./tour";
 import { DAY_END } from "./travel";
 import { getTravelSleepOptions } from "./travel-game";
@@ -12,7 +11,7 @@ import { compareRouteCost, type HomeRoute } from "./travel-routes";
  * The day's end (21:00; docs/02 「一日の終わり」). Free time at DAY_END or later offers nothing but these and the rest: travel,
  * waiting and renting end at 21:00 (planTravel, waitForTravel, getRentalOffers). In the night screen's order.
  */
-export type NightAction = "read_epilogue" | "depart" | "book_tour" | "cancel_tour" | "claim_ap";
+export type NightAction = "read_epilogue" | "depart" | "book_tour" | "cancel_tour";
 
 /**
  * The rest at the day's end: in free time at DAY_END (21:00) or later, with no scene, moment or trip open, the way home that
@@ -43,9 +42,8 @@ export function getDayEnd(state: GameState): DayEnd | null {
     depart: !!getPlayerDeparture(state),
     book_tour: getTourOffers(state).some((choice) => choice.available),
     cancel_tour: state.tour?.status === "booked",
-    claim_ap: canClaimPendingRewards(state),
   };
-  const order: NightAction[] = ["read_epilogue", "depart", "book_tour", "cancel_tour", "claim_ap"];
+  const order: NightAction[] = ["read_epilogue", "depart", "book_tour", "cancel_tour"];
   return { way, actions: order.filter((action) => open[action]) };
 }
 

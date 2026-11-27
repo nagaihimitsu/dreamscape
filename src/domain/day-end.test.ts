@@ -1,7 +1,7 @@
 // The day's end (21:00; docs/02 「一日の終わり」): dayEndRest picks the way home 「休む」 would take, getDayEnd the night actions
 // open (with none the game rests by itself; with some the night screen shows them and 「ホテルで休む」), and listPlayerActions
 // offers the same. The rest is sleepAtHotel (the same action as 「休む」), and the same night never rests twice.
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, onTestFinished } from "vitest";
 import { getCityContent } from "../content";
 import { cityStart, completedCity, finishEpisode, newJourney } from "../dev/scenario-builders";
 import { installTourTestCity, testTour } from "../dev/test-tours";
@@ -96,10 +96,12 @@ describe("the last wait of the evening", () => {
   });
 
   it("at the inn brings the night screen when a night action is open", () => {
-    const inn = { ...at(hotel, evening), pendingApRewards: [{ rewardId: "test_reward", earnedAp: 2, remainingAp: 2 }] };
+    onTestFinished(installTourTestCity());
+    const start = newJourney(testTour.journeyId);
+    const inn = { ...start, travel: { ...start.travel, currentPlaceId: testTour.hotelPlaceId, minute: DAY_END - 30 } };
     const waited = waitForTravel(inn, 30, inn.revision);
     expect(waited.travel.minute).toBe(DAY_END);
-    expect(getDayEnd(waited)?.actions).toEqual(["claim_ap"]);
+    expect(getDayEnd(waited)?.actions).toContain("book_tour");
   });
 
   it("away from the inn is refused when it would pass 21:00, as before", () => {
@@ -125,12 +127,6 @@ describe("the night actions at the day's end", () => {
     const late = at(hotel, DAY_END);
     expect(getDayEnd(late)?.actions).toEqual([]);
     expect(kinds(late)).toEqual(["rest"]);
-  });
-
-  it("offer the stored AP, then the rest", () => {
-    const late = { ...at(hotel, DAY_END), pendingApRewards: [{ rewardId: "test_reward", earnedAp: 2, remainingAp: 2 }] };
-    expect(getDayEnd(late)?.actions).toEqual(["claim_ap"]);
-    expect(kinds(late)).toEqual(["claim_ap", "rest"]);
   });
 
   it("offer a tour's booking, and once it is booked its cancel (no departure while it is booked)", () => {

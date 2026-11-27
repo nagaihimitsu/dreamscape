@@ -1,12 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { allRewardRules, balance, journeyConfig } from "../content";
+import { allRewardRules, journeyConfig } from "../content";
 import { firstCorrect, playBattleToResult, readGuide as readWholeGuide } from "../dev/scenario-builders";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
 import { leaveBattle, startBattle } from "./battle";
 import { finalizeBattleProgress } from "./chapter";
 import { createGame, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
-import { claimPendingRewards } from "./rewards";
 import { beginTravelEvent } from "./travel-game";
 import { openTourism, replayTourismGuide, startTourismBattle } from "./tourism";
 
@@ -25,7 +24,6 @@ function restore(state: GameState): GameState {
   expect(loaded.state).toEqual(state);
   return loaded.state;
 }
-const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
 const rulesFor = (battleId: string) => allRewardRules.filter((rule) => rule.battleId === battleId);
 
 /** Read the guide to its end, saving and restoring every line. */
@@ -51,41 +49,33 @@ describe.each([
     expect(rules.map((rule) => rule.trigger).sort()).toEqual(["battle_complete", "battle_score", "episode_clear", "guide_read"]);
     expect(rules.every((rule) => rule.ap === 1)).toBe(true);
     let state = readGuide(openTourism(createGame(), landmarkId));
-    expect(totalAp(state)).toBe(1);
+    expect(state.ap).toBe(1);
     const guideId = rules.find((rule) => rule.trigger === "guide_read")!.id;
     expect(state.claimedRewardIds).toEqual([guideId]);
     state = readGuide(replayTourismGuide(state, state.revision));
-    expect(totalAp(state)).toBe(1);
+    expect(state.ap).toBe(1);
     state = finishBattle(startTourismBattle(state, state.revision), score);
-    expect(totalAp(state)).toBe(score >= 2 ? 4 : 3);
+    expect(state.ap).toBe(score >= 2 ? 4 : 3);
     expect(state.battleRewardReceipt?.entries.reduce((sum, entry) => sum + entry.earnedAp, 0)).toBe(score >= 2 ? 3 : 2);
     expect(state.completedEpisodeIds).toEqual([]);
     expect(state.completedCityIds).toEqual([]);
     const claimed = [...state.claimedRewardIds];
-    const total = totalAp(state);
+    const total = state.ap;
     state = restore(finalizeBattleProgress(state));
     expect(state.claimedRewardIds).toEqual(claimed);
-    expect(totalAp(state)).toBe(total);
+    expect(state.ap).toBe(total);
     state = restore(leaveBattle(state, state.revision));
     expect(beginTravelEvent(state, battleId, "walk", state.revision)).toBe(state);
   });
 
-  it("preserves all overflow AP when the quiz starts from the guide (its reward unread)", () => {
-    let state = openTourism({ ...createGame(), ap: balance.apCap }, landmarkId);
+  it("adds all the AP above 12 when the quiz starts from the guide (its reward unread), once across save/load", () => {
+    let state = openTourism({ ...createGame(), ap: 12 }, landmarkId);
     expect(state.completedGuideIds).not.toContain(landmarkId);
     expect(state.claimedRewardIds).toEqual([]);
     state = finishBattle(startTourismBattle(state, state.revision), 2);
-    expect(state.ap).toBe(balance.apCap);
-    expect(state.pendingApRewards).toHaveLength(3);
-    expect(state.pendingApRewards.every((reward) => reward.earnedAp === 1 && reward.remainingAp === 1)).toBe(true);
-    const original = totalAp(state);
+    expect(state.ap).toBe(15);
     state = restore(finalizeBattleProgress(state));
-    expect(totalAp(state)).toBe(original);
-    state = restore({ ...state, ap: balance.apCap - 3 });
-    state = restore(claimPendingRewards(state, state.revision));
-    expect(state.ap).toBe(balance.apCap);
-    expect(state.pendingApRewards).toEqual([]);
-    expect(claimPendingRewards(state, state.revision)).toBe(state);
+    expect(state.ap).toBe(15);
   });
 
   it("keeps an existing current-version completion save readable without retroactive AP", () => {
@@ -125,7 +115,7 @@ it("keeps special rewards and guide records independent between cities", () => {
       travel: { ...milan.travel, currentPlaceId: "test_hotel", hotelPlaceId: "test_hotel" } };
     second = readGuide(openTourism(restore(second), "test_special_b_landmark"));
     second = finishBattle(startTourismBattle(second, second.revision), 3);
-    expect(totalAp(second)).toBe(totalAp(milan) + 4);
+    expect(second.ap).toBe(milan.ap + 4);
     expect(second.claimedRewardIds).toEqual(expect.arrayContaining(milanIds));
     expect(second.claimedRewardIds).toEqual(expect.arrayContaining(rulesFor("test_special_b").map((rule) => rule.id)));
     expect(second.completedEpisodeIds).toEqual([]);

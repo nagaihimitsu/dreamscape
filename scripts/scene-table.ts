@@ -31,7 +31,6 @@ export function placeFingerprint(compiled: string, knots: readonly string[], dat
 export type PlaceTableInput = {
   file: PlaceFile;
   compiled: string;
-  apCap: number;
   mains: MainAddresses;
   /** The landmark's city of each landmark (an inserted scene's city is its visit's). */
   landmarkCity: (landmarkId: string) => string | undefined;
@@ -45,8 +44,6 @@ export type PlaceTableInput = {
   tourStep?: (tourId: string, stepId: string) => { cityId: string; kind: "leg" | "event" } | undefined;
   /** The city of a shop (shop/catalog.json; `# at: shop <shop>`, 2026-11-26). */
   shopCity?: (shopId: string) => string | undefined;
-  /** The file's position among all place files (scenes of one priority: written order, then file name). */
-  onWarning?: (message: string) => void;
 };
 
 /** Every scene of one place file, with its head read and its options gathered (its knot and the helper knots it calls). */
@@ -55,14 +52,14 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
   const result: { entry: SceneEntry; head: PlaceHead }[] = [];
   file.knots.forEach((knot, order) => {
     if (knot.isFunction) return;
-    const head = readHead(knot, input.apCap);
+    const head = readHead(knot);
     if (!head) return;
     const label = `${file.storyId} (${knot.name})`;
     const address = knotAddress(file.storyId, knot.name);
     const reached = reachableKnots(file, knot.name);
     const options: SceneOption[] = [];
     for (const item of reached) for (const choice of item.choices) {
-      const option = choiceOption(choice, input.apCap, (message) => input.onWarning?.(`${label}: ${message}`));
+      const option = choiceOption(choice);
       if (!option) continue;
       if (options.some((other) => other.id === option.id))
         throw new Error(`The option ID ${option.id} is written twice in the scene ${label} (with the knots it calls): one ID per choice (the save and the AP rules name it)`);

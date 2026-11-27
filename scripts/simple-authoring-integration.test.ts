@@ -211,12 +211,11 @@ VAR heroine_name = ""
     expect(state.activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
     state = restore(closeTourism(state, state.revision));
 
-    const apTotal = (game: typeof state) => game.ap + game.pendingApRewards.reduce((total, reward) => total + reward.remainingAp, 0);
-    const initialAp = apTotal(state);
+    const initialAp = state.ap;
     const initialMemories = [...state.memories];
     state = startDate(state, dateId, () => 0);
     expect(state.activeDate?.dateId).toBe(dateId);
-    expect(apTotal(state)).toBe(initialAp - 2);
+    expect(state.ap).toBe(initialAp - 2);
     for (let steps = 0; state.activeDate && steps < 80; steps++) {
       state = restore(state);
       const current = state.activeDate!;
@@ -235,7 +234,7 @@ VAR heroine_name = ""
     state = restore(state);
     expect(state.activeDate).toBeNull();
     expect(state.playedDateIds).toContain(dateId);
-    expect(apTotal(state)).toBe(initialAp - 2);
+    expect(state.ap).toBe(initialAp - 2);
     expect(state.memories).toEqual(initialMemories);
   } finally {
     const encounterIndex = encounters.encounters.findIndex((entry) => entry.id === encounterId);

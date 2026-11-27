@@ -68,7 +68,7 @@ describe("automatic India city transition with development-only content", () => 
     expect(test_agra.inventory.test_delhi_item).toBe("left_behind");
     // The departure keeps the journey as the epilogue left it: the epilogue's own choice may change it (the sample's
     // first choice, which advanceCityEpilogue takes, gives affection +1).
-    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const)
+    for (const field of ["playerName", "heroineName", "ap", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const)
       expect(test_agra[field], field).toEqual(epilogue[field]);
     expect(validateGameState(test_agra)).toEqual(test_agra);
     expect(advanceCompletedJourneyCity(test_agra, lastStep.revision)).toBe(test_agra);

@@ -31,7 +31,6 @@ function closeBattleResult(result: GameState): GameState {
 
 type Save = (state: GameState) => GameState;
 /** The AP in hand and the AP stored for later (the cap holds the rest back). */
-const apTotal = (state: GameState) => state.ap + state.pendingApRewards.reduce((total, reward) => total + reward.remainingAp, 0);
 const firstAction = (state: GameState) => applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], () => 0), () => 0);
 
 /** Play a moment's inserted scenes (GT-4: Agra's arrival reel) with the first action the screen offers, each step through `save`, while `going` holds. */
@@ -150,14 +149,13 @@ describe("authored Golden Triangle journey", () => {
         // leaves some of its dates out of reach: such a date neither starts nor spends. The test then gives it the AP it lacks,
         // as Debug does, so that every published date is played.
         if (state.ap < date.apCost) {
-          expect(state.pendingApRewards).toEqual([]);
           expect(startDate(state, date.id, () => 4500)).toBe(state);
           state = withAp(state, date.apCost);
         }
-        const apBefore = apTotal(state);
+        const apBefore = state.ap;
         state = startDate(state, date.id, () => 4500);
         expect(state.activeDate?.dateId).toBe(date.id);
-        expect(apTotal(state)).toBe(apBefore - date.apCost);
+        expect(state.ap).toBe(apBefore - date.apCost);
         for (let steps = 0; state.activeDate; steps++) {
           expect(steps).toBeLessThan(100);
           state = checkpoint(state);
@@ -192,7 +190,7 @@ describe("authored Golden Triangle journey", () => {
       // Only Delhi's departure has scenes (GT-4: at the station); played in Delhi, they may spend and change the relationship.
       const departureScenes = cityId === "delhi";
       expect(departed.leaving.occasion?.kind === "depart").toBe(departureScenes);
-      const fields = ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const;
+      const fields = ["playerName", "heroineName", "ap", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const;
       // The move itself keeps all of them (the last city does not move: its state is the one it left with); since the clear,
       // only the departure's scenes may change the money and the relationship.
       const moved = cityIndex < journey.cities.length - 1;

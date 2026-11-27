@@ -63,7 +63,7 @@ function check(page: Page, source: Source): Promise<Check> {
     const { isJourneyComplete } = await import(/* @vite-ignore */ modules.cityTravel);
     try {
       const valid = validateGameState(state);
-      const error = valid.ap < 0 || valid.ap > balance.apCap ? `AP out of range: ${valid.ap}` : null;
+      const error = valid.ap < 0 ? `AP out of range: ${valid.ap}` : null;
       // Where the party is (city, place, day): the coverage line counts its changes.
       const place = `${valid.currentCityId} ${valid.travel.currentPlaceId} ${valid.travel.day}`;
       return { revision: valid.revision as number, error, ended: isJourneyComplete(valid) as boolean, place };

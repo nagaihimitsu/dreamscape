@@ -28,7 +28,6 @@ import {
   getEpisodeAvailability,
   startEpisode,
 } from "./chapter";
-import { claimPendingRewards } from "./rewards";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "../persistence";
 
 const episode = episodes[0];
@@ -36,8 +35,6 @@ const rule = (trigger: (typeof rewardRules)[number]["trigger"]) =>
   rewardRules.find(
     (item) => item.trigger === trigger && item.episodeId === episode.id,
   )!;
-const pendingTotal = (state: GameState) =>
-  state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
 function reload(state: GameState): GameState {
   const next = validateGameState(JSON.parse(JSON.stringify(state)));
   expect(next).toEqual(state);
@@ -98,7 +95,7 @@ describe("integrated tourism, battle, and free time", () => {
       expect(state.completedCityIds).toEqual([]);
       expect(
         state.battleRewardReceipt?.entries.reduce(
-          (sum, item) => sum + item.creditedAp,
+          (sum, item) => sum + item.earnedAp,
           0,
         ),
       ).toBe(battleAP);
@@ -159,30 +156,21 @@ describe("integrated tourism, battle, and free time", () => {
     });
   });
 
-  it("retains AP above the wallet cap and pays it once when a date makes room", () => {
+  it("adds every AP earned to the wallet, with no cap, and a date spends it once", () => {
     let state = startEpisode({ ...createGame(), ap: 11 });
     state = finishBattle(startTourismBattle(state, state.revision), 2);
-    expect(state.ap).toBe(balance.apCap);
-    expect(pendingTotal(state)).toBe(
-      rule("battle_complete").ap +
-        rule("episode_clear").ap +
-        rule("battle_score").ap -
-        1,
-    );
+    const earned = rule("battle_complete").ap + rule("episode_clear").ap + rule("battle_score").ap;
+    expect(state.ap).toBe(11 + earned);
     expect(
       state.battleRewardReceipt?.entries.reduce(
-        (sum, item) => sum + item.creditedAp,
+        (sum, item) => sum + item.earnedAp,
         0,
       ),
-    ).toBe(1);
-    const before = state.ap + pendingTotal(state);
-    expect(claimPendingRewards(state, state.revision)).toBe(state);
+    ).toBe(earned);
+    const before = state.ap;
     state = enterFreeTime(state, state.revision);
     state = startDate(state, "milano_cafe_01");
-    expect(state.ap).toBe(balance.apCap);
-    expect(pendingTotal(state)).toBe(Math.max(0, before - 2 - balance.apCap));
-    expect(state.ap + pendingTotal(state)).toBe(before - 2);
-    expect(claimPendingRewards(state, state.revision)).toBe(state);
+    expect(state.ap).toBe(before - 2);
     reload(state);
   });
 

@@ -52,9 +52,6 @@ const restore = (state: GameState) => {
   expect(next).toEqual(state);
   return next;
 };
-const totalAp = (state: GameState) =>
-  state.ap +
-  state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
 function finishBattle(initial: GameState, score: number): GameState {
   let state = initial;
   const battle = battles.find(
@@ -110,7 +107,7 @@ function finishPendingStory(initial: GameState): GameState {
     expect(state.battleRecords.find((record) => record.battleId === special.battleId)?.attempts).toBe(1);
     const earned = allRewardRules.filter((rule) => rule.battleId === special.battleId &&
       (rule.trigger === "battle_complete" || rule.trigger === "episode_clear"));
-    expect(totalAp(state)).toBe(totalAp(before) + earned.reduce((sum, rule) => sum + rule.ap, 0));
+    expect(state.ap).toBe(before.ap + earned.reduce((sum, rule) => sum + rule.ap, 0));
     expect(state.claimedRewardIds).toEqual([...before.claimedRewardIds, ...earned.map((rule) => rule.id)]);
     expect(state.affection).toBe(before.affection);
     expect(state.discoveredClueIds).toEqual(before.discoveredClueIds);
@@ -213,12 +210,11 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.inventory).toEqual(before.inventory);
     expect(state.travelBudget).toBe(before.travelBudget);
     expect(state.memories).toEqual(before.memories);
-    expect(state.ap).toBe(12);
-    expect(state.pendingApRewards.length).toBeGreaterThan(0);
+    expect(state.ap).toBeGreaterThan(12);
     const loaded = persisted(state);
     expect(loaded.schemaVersion).toBe(state.schemaVersion);
     expect(loaded.inventory.blue_pick).toBe("held");
-    expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
+    expect(loaded.ap).toBe(state.ap);
   });
 
   it("retains an unused local item and the existing relationship ending after save and load", () => {
@@ -232,7 +228,6 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(loaded.memories).toEqual(ending.memories);
     // Collecting the pick played the Duomo's battle again (its rewards are the battle's): the save keeps what it holds.
     expect(loaded.ap).toBe(state.ap);
-    expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
     expect(loaded.travelBudget).toBe(ending.travelBudget);
   });
   it("allows sightseeing in any order while keeping the city finale locked", () => {
@@ -267,7 +262,7 @@ describe("Milan's four episodes and distinct city finale", () => {
       const finished = state;
       expect(advanceBattle(state, state.revision)).toBe(state);
       state = finishBattle(startBattle(state, episode.battleId), 0);
-      expect(totalAp(state)).toBe(totalAp(finished));
+      expect(state.ap).toBe(finished.ap);
       state = enterFreeTime(state, state.revision);
       state = finishPendingStory(state);
     }
@@ -281,10 +276,10 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(getEpisodeAvailability(state, finale().id).available).toBe(true);
   });
   it.each([0, 1, 2, 3, 4, 5])(
-    "finishes the five-round boss with %i correct, stores one city clear and preserves AP at the cap",
+    "finishes the five-round boss with %i correct, stores one city clear and keeps all its AP (no cap)",
     (score) => {
       let state = tour();
-      const before = totalAp(state);
+      const before = state.ap;
       const boss = finale();
       expect(boss.landmarkId).toBeNull();
       state = finishEpisode(state, boss, score);
@@ -302,11 +297,10 @@ describe("Milan's four episodes and distinct city finale", () => {
             (rule.trigger !== "battle_score" || score >= rule.minScore!),
         )
         .reduce((sum, rule) => sum + rule.ap, 0);
-      expect(totalAp(state)).toBe(before + earned);
-      expect(state.ap).toBeLessThanOrEqual(12);
+      expect(state.ap).toBe(before + earned);
       const completed = state;
       state = finishBattle(startBattle(state, boss.battleId), score);
-      expect(totalAp(state)).toBe(totalAp(completed));
+      expect(state.ap).toBe(completed.ap);
       expect(state.completedCityIds).toEqual(["milano"]);
       expect(
         state.battleRecords.find((record) => record.battleId === boss.battleId)
@@ -343,7 +337,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.viewedEpilogueCityIds).toEqual(["milano"]);
     expect(state.endingReached).toBe(false);
     expect(state.affection).toBe(initial.affection);
-    expect(totalAp(state)).toBe(totalAp(initial));
+    expect(state.ap).toBe(initial.ap);
     expect(advanceCityEpilogue(state, state.revision)).toBe(state);
   });
   it("pays the two-choice date that opens after the Milan clear once and keeps a pre-existing relationship ending", () => {
@@ -357,17 +351,17 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = finishEpisode(state, finale(), 0);
     state = leaveBattleResult(state, state.revision);
     expect(startDate(createGame(), date.id).activeDate).toBeNull();
-    const before = totalAp(state);
+    const before = state.ap;
     state = playDate(state, date.id, [1, 2]);
-    expect(totalAp(state)).toBe(before - date.apCost);
+    expect(state.ap).toBe(before - date.apCost);
     expect(state.playedDateIds).toContain(date.id);
     expect(state.endingReached).toBe(false);
     let ended = inRelationship(tour());
     ended = finishEpisode(ended, finale(), 0);
     ended = leaveBattleResult(ended, ended.revision);
-    const beforeEnding = totalAp(ended);
+    const beforeEnding = ended.ap;
     ended = playDate(ended, date.id, [2, 1]);
-    expect(totalAp(ended)).toBe(beforeEnding - date.apCost);
+    expect(ended.ap).toBe(beforeEnding - date.apCost);
     expect(ended.endingReached).toBe(true);
     expect(ended.confessionStatus).toBe("accepted");
     expect(startDate(ended, date.id)).toBe(ended);
@@ -375,7 +369,7 @@ describe("Milan's four episodes and distinct city finale", () => {
   it("funds optional dates and a deferred confession from zero-score city play; the confession is played once", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
-    expect(totalAp(state)).toBe(23);
+    expect(state.ap).toBe(23);
     state = playDate(state, "milano_cafe_01", [0, 0]);
     state = playDate(state, "milano_walk_01", [0, 1]);
     state = playDate(state, "milano_invitation_01", [0]);
@@ -388,7 +382,7 @@ describe("Milan's four episodes and distinct city finale", () => {
       .toEqual({ available: false, reason: "このひとときは、もう思い出になりました。" });
     expect(startDate(state, "milano_confession_01")).toBe(state);
     expect(state.endingReached).toBe(false);
-    expect(totalAp(state)).toBe(15);
+    expect(state.ap).toBe(15);
     expect(state.completedCityIds).toEqual(["milano"]);
   });
   it("changes the short city epilogue with the existing relationship, without advancing it", () => {
@@ -405,7 +399,7 @@ describe("Milan's four episodes and distinct city finale", () => {
       }
       expect(current.affection).toBe(before.affection);
       expect(current.endingReached).toBe(before.endingReached);
-      expect(totalAp(current)).toBe(totalAp(before));
+      expect(current.ap).toBe(before.ap);
       texts.push(lines.join(" "));
     };
     // The revised epilogue has four intentional contexts: distant, stage 2,

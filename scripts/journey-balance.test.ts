@@ -35,7 +35,7 @@ const input: BalanceInput = {
   dates: [{ id: "x_date_park", chapterId: "x", kind: "normal", apCost: 2, titleJa: "公園" }],
   romance: { stages: [{ stage: 1, minAffection: 0, minTrust: 0, minSpark: 0, minCompletedDates: 0 }, { stage: 2, minAffection: 1, minTrust: 0, minSpark: 0, minCompletedDates: 1 }],
     confession: { minAffection: 4, minTrust: 1, minSpark: 1, minCompletedDates: 1 } },
-  profiles: [profile], apCap: 12, items: [{ id: "x_cup", nameJa: "茶碗" }],
+  profiles: [profile], items: [{ id: "x_cup", nameJa: "茶碗" }],
   // The date has two choice points: joke or tea first, then walk or nothing.
   paths: { x_date_park: { paths: [["joke", "walk"], ["tea", "walk"], ["joke"], ["tea"]] } },
 };

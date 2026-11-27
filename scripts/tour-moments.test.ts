@@ -22,7 +22,7 @@ function scenesOf(...knots: [name: string, head: string, body?: string][]): Scen
   const source = top + knots.map(([name, head, body = "x\n-> END\n"]) => `\n=== ${name} ===\n${head}${body}`).join("");
   const file = readPlaceFile("places/smp_x_tour_fort", source);
   const compiled = compileInk(file.source, "places/smp_x_tour_fort.ink", { [MODULES_FILE]: MODULES_INK });
-  return placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x", tourStep }).map((item) => item.entry);
+  return placeScenes({ file, compiled, mains: [], landmarkCity: () => "x", tourStep }).map((item) => item.entry);
 }
 const talk = (step: string, priority: string) => `# scene: talk\n${at(step)}# priority: ${priority}\n`;
 const encounter = (step: string, extra = "") => `# scene: encounter\n# title: 車の中\n${at(step)}# priority: after leg\n${extra}`;

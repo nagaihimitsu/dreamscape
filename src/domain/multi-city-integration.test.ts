@@ -111,7 +111,7 @@ describe("two registered cities through the real game runtime", () => {
     expect(after.inventory.blue_pick).toBe("left_behind");
     expect(after.completedEncounterIds).toContain("duomo_string");
     expect(after.seenEncounterIds).toEqual(before.seenEncounterIds);
-    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "tour", "completedTourIds"] as const)
+    for (const field of ["playerName", "heroineName", "ap", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "tour", "completedTourIds"] as const)
       expect(after[field], field).toEqual(before[field]);
     expect(departToNextCity(after, before.revision)).toBe(after);
     expect(getNextCity(after)).toBeUndefined();
@@ -135,8 +135,7 @@ describe("two registered cities through the real game runtime", () => {
     expect(getEpisodeAvailability(after, "test_finale").available).toBe(false);
     const date = beginTravelEvent(after, "test_date", "walk", after.revision, () => 0);
     expect(date.activeDate?.dateId).toBe("test_date");
-    const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
-    expect(totalAp(date)).toBe(totalAp(after) - 2);
+    expect(date.ap).toBe(after.ap - 2);
     const dateStorage = new MemoryStorage();
     expect(saveGame(dateStorage, date).ok).toBe(true);
     expect(loadGame(dateStorage)).toEqual({ status: "loaded", state: date });

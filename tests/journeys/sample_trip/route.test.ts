@@ -38,7 +38,6 @@ class MemoryStorage implements StorageLike {
 }
 
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
-const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
 
 /** Apply one player action like GameApp: settle the map event, then save and restore. */
 function act(state: GameState, next: (current: GameState) => GameState): GameState {
@@ -159,16 +158,16 @@ describe("sample journey route", () => {
     expect(s.activeEncounter).toMatchObject({ encounterId: "smp_mihon_clock_gears" });
     s = playEncounter(s);
     expect(s.activeTourism?.phase).toBe("exploring");
-    expect(totalAp(s)).toBe(2);
+    expect(s.ap).toBe(2);
     s = act(s, (current) => proceedFromTourism(current, current.revision, () => 0));
     // Then no encounter waits there now: the battle (+1 complete, +1 for 2 or more correct).
     expect(s.activeEncounter).toBeNull();
     expect(s.activeBattle?.battleId).toBe(BATTLE);
     const lastSave = playBattle(s, true);
-    expect(totalAp(lastSave)).toBe(2);
+    expect(lastSave.ap).toBe(2);
     s = playBattle(lastSave);
     expect(s.completedEpisodeIds).toEqual([EPISODE]);
-    expect(totalAp(s)).toBe(4);
+    expect(s.ap).toBe(4);
     // What a reload can repeat pays nothing twice: the final answer again from the save made before the result ...
     expect(playBattle(restore(lastSave))).toEqual(s);
     // ... leaving the restored result, also with a second (stale) tap: 「街歩きへ」 meets the gift encounter
@@ -186,14 +185,14 @@ describe("sample journey route", () => {
     expect(left.seenEncounterIds).toEqual(all);
     expect(left.itemUses).toEqual({ smp_mihon_three_bookmark: { encounterId: "smp_mihon_bookmark_gift", optionId: "give" } });
     expect(left).toMatchObject({ activeEncounter: null, activeBattle: null, activeTourism: null });
-    expect(totalAp(left)).toBe(4);
+    expect(left.ap).toBe(4);
     // ... and clearing the battle again from the map (re-clear), whose result meets no encounter now.
     const again = playBattle(act(left, (current) => startBattle(current, BATTLE)));
     expect(again.battleRewardReceipt?.entries ?? []).toEqual([]);
     const replayed = act(again, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(replayed.activeEncounter).toBeNull();
     expect(replayed.battleRecords.find((record) => record.battleId === BATTLE)?.attempts).toBe(2);
-    expect(totalAp(replayed)).toBe(4);
+    expect(replayed.ap).toBe(4);
     expect(replayed.claimedRewardIds).toEqual(left.claimedRewardIds);
     s = left;
 
@@ -207,15 +206,15 @@ describe("sample journey route", () => {
     // helping him earns a little money; then the date starts and spends its AP once.
     s = begin(s, DATE);
     expect(s.activeEncounter?.encounterId).toBe("smp_mihon_date_bench_painter");
-    expect(totalAp(s)).toBe(4);
+    expect(s.ap).toBe(4);
     const budget = s.travelBudget;
     s = playEncounter(s, "help");
     expect(s.travelBudget).toBe(budget + 20);
     expect(s.activeDate?.dateId).toBe(DATE);
-    expect(totalAp(s)).toBe(2);
+    expect(s.ap).toBe(2);
     s = playDate(s);
     expect(s.playedDateIds).toEqual([DATE]);
-    expect(totalAp(s)).toBe(2);
+    expect(s.ap).toBe(2);
 
     // (Optional part) Special battles B and C: first visit opens the place's guide, then the battle (+1 each).
     s = begin(s, "smp_mihon_special_b_market");
@@ -228,7 +227,7 @@ describe("sample journey route", () => {
     expect(s.activeBattle?.battleId).toBe("smp_mihon_special_c_library");
     s = playBattle(s);
     s = act(s, (current) => leaveBattle(current, current.revision));
-    expect(totalAp(s)).toBe(4);
+    expect(s.ap).toBe(4);
 
     // 3. City finale (+1 complete, +1 for 3 or more correct, +2 city clear). Before it, the sugar sweets (stage 4: the
     // finale's -1; its # on_done: money -20 is kept back while it runs and paid as it ends).
@@ -243,7 +242,7 @@ describe("sample journey route", () => {
     s = act(s, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(s.completedCityIds).toEqual([CITY]);
     expect(s.activeEncounter?.encounterId).toBe("smp_mihon_after_finale");
-    expect(totalAp(s)).toBe(8);
+    expect(s.ap).toBe(8);
 
     // A normal save of the cleared city resumes as it was (same save version).
     const storage = journeyStorage(new MemoryStorage(), JOURNEY);
@@ -261,7 +260,7 @@ describe("sample journey route", () => {
     // ... its result's exit says 「先へ進む」 (no free time inside the moment) and goes on with it: Lili's farewell (-1), the epilogue.
     expect(getBattleResultExits(s)).toEqual({ epilogue: false, leave: true });
     expect(resultExitLabel(s)).toBe("先へ進む");
-    expect(totalAp(s)).toBe(8);
+    expect(s.ap).toBe(8);
     s = act(s, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(s.activeEncounter?.encounterId).toBe("smp_mihon_lili_seeoff");
     s = playEncounter(s);
@@ -278,6 +277,6 @@ describe("sample journey route", () => {
     expect(s.affection).toBe(affection + 1);
     expect(s.viewedEpilogueCityIds).toEqual([CITY]);
     expect(s.currentCityId).toBe(CITY);
-    expect(totalAp(s)).toBe(8);
+    expect(s.ap).toBe(8);
   });
 });

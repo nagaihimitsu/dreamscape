@@ -105,7 +105,7 @@ describe("independent journey saves", () => {
       trust: 0, spark: 0, confessionStatus: "none", memories: [], claimedRewardIds: [],
       travel: { day: 1, minute: 540, hotelPlaceId: null, currentPlaceId: null } });
     expect(journeyDraftStartParameters(loaded.draft)).toMatchObject({ journeyId: "golden_triangle", cityId: "delhi", playerName: "旅人", heroineName: "小春",
-      initialState: { ap: 0, pendingAp: 0, affection: 0, trust: 0, spark: 0 } });
+      initialState: { ap: 0, affection: 0, trust: 0, spark: 0 } });
     expect(promoteJourneyDraft(india, loaded.raw).ok).toBe(false);
     expect(india.getItem(SAVE_KEY)).toBe(loaded.raw);
     expect(() => createGame("旅人", "小春", { journeyId: "golden_triangle" })).toThrow("Journey is not ready: golden_triangle");

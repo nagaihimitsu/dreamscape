@@ -18,8 +18,7 @@ export type NightButton = { kind: NightAction | "rest"; label: string };
 
 /** The night screen's buttons now: the night actions open (getDayEnd), in their order, then 「ホテルで休む」. */
 export function nightButtons(game: GameState, actions: readonly NightAction[], nextCityNameJa?: string): NightButton[] {
-  const pendingAp = game.pendingApRewards.reduce((total, item) => total + item.remainingAp, 0);
-  return [...actions.map((kind) => ({ kind, label: nightActionLabelJa(kind, { nextCityNameJa, pendingAp }) })),
+  return [...actions.map((kind) => ({ kind, label: nightActionLabelJa(kind, { nextCityNameJa }) })),
     { kind: "rest", label: NIGHT_REST_BUTTON_JA }];
 }
 
@@ -31,7 +30,7 @@ export function nightButtons(game: GameState, actions: readonly NightAction[], n
  * tonight (`sns`: its faces, words and first comment; it opens 旅の記録's 「SNS」 at that post), the heroine's line of the night
  * and today's route when there are any (NightRecap; 2026-11-11), then 今日の一語 when a word was met today (todayWord;
  * 2026-11-13). Each button opens what its control in free time
- * opens (the tours' sheet and the cancel's dialog here, the epilogue, the departure's dialog, the stored AP); the free-time
+ * opens (the tours' sheet and the cancel's dialog here, the epilogue, the departure's dialog); the free-time
  * screen (its photo cards included) is not there meanwhile. The screen is the game's state, not a saved mark: when a flow comes
  * back at 21:00 or later it shows again with what is left. Taps are held as it appears and when its buttons change (the second
  * tap of a double tap presses none of them); a lost focus goes to its first button (its ring only once a key has been pressed:

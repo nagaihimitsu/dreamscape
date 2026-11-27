@@ -1,11 +1,10 @@
 // The sample's clock tower place file at play (the unified event design, stage 3a): the tags' effects
-// applied once with the choice or the scene's end, the AP of a tag (its scene_tag rule, stored as
-// "<rule>@<revision>" over the cap), hidden and greyed-out choices (decision 43), the story state
+// applied once with the choice or the scene's end, the AP of a tag (its scene_tag rule), hidden and greyed-out choices (decision 43), the story state
 // (flags, met, a named condition), a date written with tags (its in-scene choice in a helper knot),
 // and the epilogue's choice (decision 36).
 // Every state goes through the save's own checks.
 import { beforeAll, describe, expect, it } from "vitest";
-import { allRewardRules, balance } from "../../../src/content";
+import { allRewardRules } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { cityStart, rollTickets, startEncounterScene, withAp } from "../../../src/dev/scenario-builders";
 import { readGuide } from "../../fixtures/read-guide";
@@ -16,7 +15,7 @@ import { choiceDisplay } from "../../../src/domain/scene-effects";
 import { chooseTourismGuide, guideChoiceDisplay, openTourism } from "../../../src/domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete } from "../../../src/domain/travel-game";
 import { advanceCityEpilogue, chooseCityEpilogue } from "../../../src/domain/epilogue";
-import { earnSceneTagAp, validateRewardState } from "../../../src/domain/rewards";
+import { earnSceneTagAp } from "../../../src/domain/rewards";
 import { openEpilogueScene, completedCity } from "../../../src/dev/scenario-builders";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 
@@ -43,25 +42,18 @@ beforeAll(() => {
 });
 
 describe("the clock tower's place file at play", () => {
-  it("gives the talk's # on_done: ap +1 once, stored as <rule>@<revision> over the cap", () => {
+  it("gives the talk's # on_done: ap +1 once, into the wallet above 12 too (no cap)", () => {
     expect(allRewardRules.find((rule) => rule.id === "smp_mihon_clock_gears__on_done"))
       .toMatchObject({ trigger: "scene_tag", sceneId: "smp_mihon_clock_gears", ap: 1, titleJa: "見本の時計塔" });
-    const talk = startEncounterScene(withAp(cityStart("mihon"), balance.apCap), "smp_mihon_clock_gears", rollTickets.positive);
+    const talk = startEncounterScene(withAp(cityStart("mihon"), 12), "smp_mihon_clock_gears", rollTickets.positive);
     expect(talk.activeEncounter).toMatchObject({ encounterId: "smp_mihon_clock_gears" });
     const done = play(talk);
-    expect(done.ap).toBe(balance.apCap);
-    // The clock tower's guide, read on the way to the talk, keeps its AP aside too.
-    expect(done.pendingApRewards.filter((reward) => reward.rewardId.startsWith("smp_mihon_clock_gears__on_done")))
-      .toEqual([{ rewardId: expect.stringMatching(/^smp_mihon_clock_gears__on_done@\d+$/u), earnedAp: 1, remainingAp: 1 }]);
+    expect(done.ap).toBe(talk.ap + 1);
     expect(done.claimedRewardIds).not.toContain("smp_mihon_clock_gears__on_done");
     expect(done.completedEncounterIds).toContain("smp_mihon_clock_gears");
-    // A stored tag AP is checked by its shape only; one without @ naming a tag's rule is refused.
-    expect(() => validateRewardState({ ...done, pendingApRewards: [{ rewardId: "gone_rule@3", earnedAp: 1, remainingAp: 1 }] })).not.toThrow();
-    expect(() => validateRewardState({ ...done, pendingApRewards: [{ rewardId: "smp_mihon_clock_gears__on_done", earnedAp: 1, remainingAp: 1 }] }))
-      .toThrow("未受取の報酬記録が一致しません。");
-    // Two plays of a repeated tag store two records (other revisions).
-    const twice = earnSceneTagAp(earnSceneTagAp(done, "smp_mihon_clock_gears__on_done", done.revision + 1), "smp_mihon_clock_gears__on_done", done.revision + 2);
-    expect(twice.pendingApRewards).toHaveLength(done.pendingApRewards.length + 2);
+    // A repeated tag gives its AP each time it is newly played.
+    const twice = earnSceneTagAp(earnSceneTagAp(done, "smp_mihon_clock_gears__on_done"), "smp_mihon_clock_gears__on_done");
+    expect(twice.ap).toBe(done.ap + 2);
   });
 
   it("greys the bell's AP choice out when AP runs short, spends it once and changes spark with it", () => {

@@ -6,9 +6,7 @@ import type {
 import type { LandmarkDefinition } from "../src/content/tourism-schemas";
 import { unique } from "./content-validation-utils";
 
-function validateRewardAmount(rule: RewardRule, quiz: QuizDefinition | undefined, apCap: number) {
-  if (rule.ap > apCap)
-    throw new Error(`Journey reward exceeds AP cap: ${rule.id}`);
+function validateRewardAmount(rule: RewardRule, quiz: QuizDefinition | undefined) {
   if (rule.minScore !== null && (!quiz || rule.minScore > quiz.questions.length))
     throw new Error(`Unreachable score reward: ${rule.id}`);
 }
@@ -20,7 +18,6 @@ export function validateJourney(
     id: string;
     firstClearReward: { rewardSourceId: string; ap: number };
   },
-  apCap: number,
   landmarks: LandmarkDefinition[],
   battles: BattleDefinition[],
   quizzes: Record<string, QuizDefinition>,
@@ -61,8 +58,6 @@ export function validateJourney(
     if (encounter.when && encounter.requiredEpisodeIds.length)
       throw new Error(`Map condition written twice: story battle ${encounter.battleId} has both when and requiredEpisodeIds (keep one; ` +
         `with when, leave requiredEpisodeIds empty)`);
-    if (encounter.completionReward && encounter.completionReward.ap > apCap)
-      throw new Error(`Journey reward exceeds AP cap: ${encounter.completionReward.id}`);
     unique(encounter.requiredEpisodeIds, "story battle prerequisite");
     if (encounter.requiredEpisodeIds.some((id) => !journey.episodes.some((episode) => episode.id === id && episode.kind !== "city_finale")))
       throw new Error(`Unknown story battle prerequisite: ${encounter.battleId}`);
@@ -77,7 +72,7 @@ export function validateJourney(
         throw new Error(`Reward trigger does not fit the story battle: ${encounter.battleId}`);
       if (rule.trigger === "guide_read" && !landmark?.guideStoryId)
         throw new Error(`Guide reward at a landmark without a guide: ${rule.id} (${battle.landmarkId} has no guideStoryId, so it can never be earned)`);
-      validateRewardAmount(rule, quizzes[battle.quizId], apCap);
+      validateRewardAmount(rule, quizzes[battle.quizId]);
     }
   }
   for (const [index, episode] of journey.episodes.entries()) {
@@ -152,7 +147,7 @@ export function validateJourney(
       }
     }
     const quiz = battle ? quizzes[battle.quizId] : undefined;
-    for (const rule of rules) validateRewardAmount(rule, quiz, apCap);
+    for (const rule of rules) validateRewardAmount(rule, quiz);
   }
   for (const rule of journey.rewards) {
     if (rule.episodeId !== undefined && !journey.episodes.some((episode) => episode.id === rule.episodeId)) {

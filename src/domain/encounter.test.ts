@@ -255,7 +255,6 @@ describe("travel encounters", () => {
       expect(state.activeTourism).toEqual(visitBefore);
       expect(state.occasion?.started).toEqual([WISH]);
       expect(state.ap).toBe(finished.ap);
-      expect(state.pendingApRewards).toEqual(finished.pendingApRewards);
       expect(state.claimedRewardIds).toEqual(finished.claimedRewardIds);
       expect(state.travelBudget).toBe(finished.travelBudget);
       expect(state.inventory).toEqual(finished.inventory);

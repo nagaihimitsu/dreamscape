@@ -310,7 +310,7 @@ export function recordGuideRead(
   let next = first ? { ...state, completedGuideIds: [...state.completedGuideIds, landmarkId] } : state;
   // The guide's main # on_done: (its knot head or its file's head): the first time it is read to its end (decision 37).
   const doneScene = first ? mainScene({ guide: landmarkId }) : undefined;
-  if (doneScene) next = applyDoneEffects(next, doneScene.id, doneScene.done, next.revision);
+  if (doneScene) next = applyDoneEffects(next, doneScene.id, doneScene.done);
   const ids = allRewardRules
     .filter(
       (rule) =>

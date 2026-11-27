@@ -10,12 +10,11 @@ export const NIGHT_RESTED_JA = "ホテルで休みました。";
 export const NIGHT_REST_BUTTON_JA = "ホテルで休む";
 
 /** A night action's button on the night screen (the same flow as its control in free time). */
-export function nightActionLabelJa(action: NightAction, about: { nextCityNameJa?: string; pendingAp: number }): string {
+export function nightActionLabelJa(action: NightAction, about: { nextCityNameJa?: string }): string {
   switch (action) {
     case "read_epilogue": return "エピローグを読む";
     case "depart": return `${about.nextCityNameJa ?? "次の街"}へ出発`;
     case "book_tour": return "ツアーを見る";
     case "cancel_tour": return "ツアーの予約を取り消す";
-    case "claim_ap": return `保管中のAPを受け取る（${about.pendingAp}AP）`;
   }
 }

@@ -136,7 +136,6 @@ import {
   getNextEpisode,
   getNextStoryBattle,
 } from "../domain/chapter";
-import { claimPendingRewards } from "../domain/rewards";
 import "../features/journey/journey.css";
 import {
   openTourism,
@@ -1330,9 +1329,6 @@ export function GameApp({
             onNotebook={
               canObserve || cityNotebook ? () => setNotebook(true) : undefined
             }
-            onClaimRewards={() =>
-              commit((state) => claimPendingRewards(state, game.revision))
-            }
             onAdvance={() =>
               commit((state) => advanceBattle(state, game.revision))
             }
@@ -1430,7 +1426,6 @@ export function GameApp({
                 if (commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll))) playSe("ui_confirm");
               }
               else if (kind === "depart") setConfirmDeparture(true);
-              else if (kind === "claim_ap") commit((state) => claimPendingRewards(state, game.revision));
               else restAtDayEnd(dayEnd.way, game.revision, { by: "night_screen", buttons: nightButtons(game, dayEnd.actions, departure?.city.nameJa) });
             }}
             onBookTour={(tourId, offerId) => commit((state) => bookTour(state, tourId, offerId, game.revision))}
@@ -1439,7 +1434,6 @@ export function GameApp({
         ) : (
           <FreeTimeHub
             game={game}
-            onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onEpilogue={() => commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}

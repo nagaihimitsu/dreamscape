@@ -90,7 +90,7 @@ describe("a remembered line in the battle's talk (BattleScreen): the Agra finale
   const start = openBattleScene(completedCity("agra"), "gt_agra_finale_battle");
   const render = (game: GameState) => shown(renderToStaticMarkup(createElement(BattleScreen, {
     learning, onEnglish: nothing, game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onAnswer: () => true,
-    onClaimRewards: nothing, onPress: nothing, onSubmitEvidence: nothing })));
+    onPress: nothing, onSubmitEvidence: nothing })));
 
   it("shows her name with 「回想」 over the remembering window, the opponent staying in their place", () => {
     expect(render(atLine(start, "activeBattle", remembered))).toEqual(remembering(["heroine", "gt_anwar"]));

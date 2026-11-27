@@ -73,7 +73,6 @@ describe("Milan's special battles among the sightseeing stops", () => {
       `episode_${suffix}_first`,
     ];
     expect(completed.claimedRewardIds).toEqual([...initial.claimedRewardIds, ...rewardIds]);
-    const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
-    expect(total(completed)).toBe(total(initial) + rewardIds.length);
+    expect(completed.ap).toBe(initial.ap + rewardIds.length);
   });
 });

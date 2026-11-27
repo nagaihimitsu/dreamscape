@@ -58,7 +58,6 @@ function checkJourney(change: (data: JourneyTestData) => void): void {
   validateJourney(
     journeySchema.parse(data),
     cityData,
-    balance.apCap,
     tourismCatalogSchema.parse(tourismData).landmarks,
     battleCatalogSchema.parse(battleData).battles,
     battleQuizzes,
@@ -205,7 +204,6 @@ describe("integrated journey content contract", () => {
       [0, "Too small: expected number to be >0"],
       [-1, "Too small: expected number to be >0"],
       [1.5, "Invalid input: expected int, received number"],
-      [13, "Journey reward exceeds AP cap: guide_last_supper_first_read"],
     ] as const) {
       expect(() => checkJourney((data) => {
         data.rewards[0].ap = amount;

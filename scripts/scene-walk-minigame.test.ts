@@ -19,7 +19,7 @@ function walk(body: string, extra: Partial<Parameters<typeof walkScene>[0]> = {}
   const source = `${top}\n=== smp_x_date ===\n# scene: talk\n# at: visit x\n# priority: +1\n${body}`;
   const file = readPlaceFile("places/smp_x_tower", source);
   const compiled = compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK });
-  const scene = placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x" })[0].entry;
+  const scene = placeScenes({ file, compiled, mains: [], landmarkCity: () => "x" })[0].entry;
   return walkScene({ compiled, start: scene.story.knot, label: scene.id, context, variables: {}, conds: scene.conds, options: scene.options,
     ...(scene.when ? { when: scene.when } : {}), itemIds: [], memoryIds: [], ...extra });
 }

@@ -32,7 +32,6 @@
   "startWeekday": 0,
   "initialState": {
     "ap": 0,
-    "pendingAp": 0,
     "affection": 0,
     "trust": 0,
     "spark": 0,

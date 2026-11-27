@@ -190,7 +190,6 @@ const noteShort = (kind: keyof typeof shortOf, cityId: string, seed: number) => 
 };
 const hasFinale = (cityId: string) => episodes.some((episode) => episode.cityId === cityId && episode.kind === "city_finale");
 
-const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
 function ruleAp(id: string): number {
   const rule = allRewardRules.find((item) => item.id === id);
   if (!rule) throw new Error(`no reward rule has the recorded ID ${id}`);
@@ -340,7 +339,7 @@ function walk(seed: number, total: number) {
     const previous = current;
     const changed = run(step, "the action", () => applyPlayerAction(previous, playerActionChange(action, roll)));
     if (changed === previous) fail(step, "an offered action changed nothing");
-    if (changed.ap < 0 || changed.ap > balance.apCap) fail(step, `AP out of range: ${changed.ap}`);
+    if (changed.ap < 0) fail(step, `AP out of range: ${changed.ap}`);
     // Stage 3b (4.8): what may never happen with the moment record.
     if (screenFor(changed) === "free_time" && changed.occasion) fail(step, "an occasion did not end: free time with the moment record still open");
     if (usableMoney(changed) < 0) fail(step, `the usable money is below 0: ${usableMoney(changed)}`);
@@ -371,9 +370,9 @@ function walk(seed: number, total: number) {
     const earned = changed.claimedRewardIds.filter((id) => !previous.claimedRewardIds.includes(id));
     const spent = run(step, "counting the AP of a started date", () => spentAp(previous, changed));
     const tags = run(step, "counting the AP of the scene tags", () => tagAp(previous, changed, action));
-    const expected = totalAp(previous) + run(step, "counting the AP of the new reward IDs", () => earned.reduce((sum, id) => sum + ruleAp(id), 0)) - spent + tags;
-    if (totalAp(changed) !== expected)
-      fail(step, `AP (held + stored) is ${totalAp(changed)}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spent}, AP of the scene tags ${tags}`);
+    const expected = previous.ap + run(step, "counting the AP of the new reward IDs", () => earned.reduce((sum, id) => sum + ruleAp(id), 0)) - spent + tags;
+    if (changed.ap !== expected)
+      fail(step, `AP (held + stored) is ${changed.ap}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spent}, AP of the scene tags ${tags}`);
     const storage = run(step, "opening the journey's storage", () => journeyStorage(base, journeyId));
     // saveGame validates the state (validateGameState) and refuses a revision that did not increase.
     // (No expected previous snapshot: one tab, so the other-tab check would only repeat a validation.)
@@ -395,7 +394,7 @@ function walk(seed: number, total: number) {
       if (!run(step, "the progression check", () => canStillClearCity(progressionContent, cityId, now)))
         fail(step, `the city can no longer be cleared: ${cityId}'s finale can never show on the map from this state (scripts/progression-check.ts)`);
       if (run(step, "the money summary", () => moneyShortNow(progressionContent, cityId, now)) !== undefined) noteShort("money", cityId, seed);
-      if (run(step, "the AP summary", () => apShortNow(progressionContent, cityId, now, totalAp(restored), new Set(restored.claimedRewardIds))) !== undefined)
+      if (run(step, "the AP summary", () => apShortNow(progressionContent, cityId, now, restored.ap, new Set(restored.claimedRewardIds))) !== undefined)
         noteShort("ap", cityId, seed);
     }
     state = restored;

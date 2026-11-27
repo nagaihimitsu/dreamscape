@@ -1,5 +1,5 @@
 import { encounters } from "../content/encounters";
-import { balance, getOutfit, responseProfiles, scenes } from "../content";
+import { getOutfit, responseProfiles, scenes } from "../content";
 import { INSERTED_KINDS, type SceneDone, type SceneEntry, type SceneOption } from "../content/scene-schemas";
 import { responseProfileSchema } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -8,7 +8,7 @@ import { itemUsableIn } from "./item-cities";
 import type { GameState } from "./game-state-schema";
 import { usableAp, usableMoney } from "./reservations";
 import { decideThen, thenPlanOf } from "./occasion-hooks";
-import { earnRewards, earnSceneTagAp, settlePendingAp } from "./rewards";
+import { earnRewards, earnSceneTagAp } from "./rewards";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { meetTerms } from "./glossary";
 
@@ -65,7 +65,7 @@ export function choiceDisplay(state: Readonly<GameState>, option: SceneOption | 
   if (option.then && state.occasion && !state.occasion.then) {
     if (money > 0 && state.travelBudget < money) return { show: "grey", reason: "旅行予算が足りません。" };
     if (ap > 0 && state.ap < ap) return { show: "grey", reason: `APが足りません（AP ${ap}）。` };
-    const after = applyChoiceTags(state as GameState, option, (current, gain) => ({ ...current, ap: current.ap + Math.min(gain, Math.max(0, balance.apCap - current.ap)) }));
+    const after = applyChoiceTags(state as GameState, option, (current, gain) => ({ ...current, ap: current.ap + gain }));
     const plan = thenPlanOf(after, option.then, option.later ? undefined : reserve);
     if (plan.ok === false) return { show: "grey", reason: plan.reason };
     if (plan.ok === true) return { show: "open" };
@@ -83,14 +83,14 @@ export type ProfileResult = { profileId: string; result: "positive" | "negative"
 const addRelationship = (state: GameState, rel: SceneOption["rel"]): GameState =>
   rel ? { ...state, affection: state.affection + (rel.affection ?? 0), trust: state.trust + (rel.trust ?? 0), spark: state.spark + (rel.spark ?? 0) } : state;
 
-/** Spend or give AP: spending pays from the wallet and then takes the stored AP into the freed room (settlePendingAp); giving goes by the tag's rule. */
-function applyAp(state: GameState, amount: number | undefined, ruleId: string, revision: number): GameState {
+/** Spend or give AP: spending pays from the wallet; giving goes by the tag's rule. */
+function applyAp(state: GameState, amount: number | undefined, ruleId: string): GameState {
   if (!amount) return state;
   if (amount < 0) {
     if (state.ap + amount < 0) throw new Error("APが足りません。");
-    return settlePendingAp({ ...state, ap: state.ap + amount });
+    return { ...state, ap: state.ap + amount };
   }
-  return earnSceneTagAp(state, ruleId, revision);
+  return earnSceneTagAp(state, ruleId);
 }
 
 function applyMoney(state: GameState, amount: number | undefined): GameState {
@@ -116,7 +116,7 @@ const addClues = (state: GameState, clues: readonly string[] | undefined): GameS
  */
 function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: GameState, gain: number) => GameState, sceneId = ""): GameState {
   let next = applyMoney(state, option.money);
-  next = (option.ap ?? 0) > 0 ? earn(next, option.ap!) : applyAp(next, option.ap, "", 0);
+  next = (option.ap ?? 0) > 0 ? earn(next, option.ap!) : applyAp(next, option.ap, "");
   next = addRelationship(next, option.rel);
   next = addFlags(next, option.set);
   next = addClues(next, option.clues);
@@ -138,13 +138,12 @@ function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: Ga
 
 /**
  * Apply a choice's tags, before the choice is passed to Ink: money, AP (giving by the rule
- * "<scene>__<option>", stored as "…@<revision>"), relationship, flags, clues, memories, the item given or
- * used (recorded in itemUses with the scene and option), and the reaction profile (one roll
- * drawn now; decision 39). `revision`: the revision the action saves.
+ * "<scene>__<option>"), relationship, flags, clues, memories, the item given or used (recorded in
+ * itemUses with the scene and option), and the reaction profile (one roll drawn now; decision 39).
  */
-export function applyChoiceEffects(state: GameState, sceneId: string, option: SceneOption, revision: number,
+export function applyChoiceEffects(state: GameState, sceneId: string, option: SceneOption,
   nextRoll: () => number = secureRomanceRoll): { state: GameState; profile?: ProfileResult } {
-  let next = applyChoiceTags(state, option, (current) => earnSceneTagAp(current, `${sceneId}__${option.id}`, revision), sceneId);
+  let next = applyChoiceTags(state, option, (current) => earnSceneTagAp(current, `${sceneId}__${option.id}`), sceneId);
   // A # then: is decided (its move paid) with the choice; it runs when the scene ends (stage 3b, 4.1), after an inserted
   // scene's # on_done: is paid (unless 「また今度」).
   if (option.then) next = decideThen(next, option.then, sceneId, option.later ? undefined : insertedDoneReserve(sceneId));
@@ -162,7 +161,7 @@ export function applyChoiceEffects(state: GameState, sceneId: string, option: Sc
  * recorded is left as it is: a repeated scene gives it once), the items it uses (when held;
  * recorded with the scene and no option), flags, clues, relationship, money and AP ("<scene>__on_done").
  */
-export function applyDoneEffects(state: GameState, sceneId: string, done: SceneDone, revision: number): GameState {
+export function applyDoneEffects(state: GameState, sceneId: string, done: SceneDone): GameState {
   let next = state;
   for (const item of done.items ?? []) if (!(item in next.inventory)) next = { ...next, inventory: { ...next.inventory, [item]: "held" } };
   for (const item of done.use ?? []) if (next.inventory[item] === "held")
@@ -171,7 +170,7 @@ export function applyDoneEffects(state: GameState, sceneId: string, done: SceneD
   next = addClues(next, done.clues);
   next = addRelationship(next, done.rel);
   next = applyMoney(next, done.money);
-  next = applyAp(next, done.ap, `${sceneId}__on_done`, revision);
+  next = applyAp(next, done.ap, `${sceneId}__on_done`);
   // `# on_done: reward` (an inserted scene): the one-off reward, claimed once whichever way earns it first (the battle's score, or this scene).
   return done.reward ? earnRewards(next, [done.reward]).state : next;
 }

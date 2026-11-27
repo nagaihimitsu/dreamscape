@@ -18,7 +18,7 @@ function scenesOf(...knots: [name: string, head: string, body?: string][]): Scen
   const source = top + knots.map(([name, head, body = "x\n-> END\n"]) => `\n=== ${name} ===\n${head}${body}`).join("");
   const file = readPlaceFile("places/smp_x_shop", source);
   const compiled = compileInk(file.source, "places/smp_x_shop.ink", { [MODULES_FILE]: MODULES_INK });
-  return placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x",
+  return placeScenes({ file, compiled, mains: [], landmarkCity: () => "x",
     shopCity: (shopId) => shops.find((shop) => shop.id === shopId)?.cityId }).map((item) => item.entry);
 }
 const haggle = (outfit: string, extra = "") => `# scene: encounter\n# title: 値段\n# at: shop smp_x_shop\n# priority: -1\n# repeat: always\n${extra}`;

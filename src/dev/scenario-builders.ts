@@ -496,9 +496,9 @@ export function tourScene(state: GameState, tourId: string, stepId?: string): Ga
   return validateGameState(current);
 }
 
-/** Debug's AP value: the whole balance (pending credits would otherwise be paid when a date starts), within the cap. */
+/** Debug's AP value: the whole balance (never below 0). */
 export function withAp(state: GameState, ap: number): GameState {
-  return validateGameState({ ...state, pendingApRewards: [], ap: Math.min(balance.apCap, Math.max(0, ap)) });
+  return validateGameState({ ...state, ap: Math.max(0, ap) });
 }
 
 /** Debug's relationship values, set directly. */

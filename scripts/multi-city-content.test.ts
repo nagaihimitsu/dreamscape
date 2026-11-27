@@ -191,14 +191,6 @@ describe("multi-city content build", () => {
       'No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
   }, 60000);
 
-  it("rejects journey initial AP above the configured cap", async () => {
-    const india = await read(manifest("golden_triangle"));
-    const balance = await read("content/romance/balance.json");
-    india.initialState.ap = balance.apCap + 1;
-    await write(manifest("golden_triangle"), india);
-    await expect(buildContent(root, false)).rejects.toThrow(/Journey initial AP exceeds cap/);
-  }, 60000);
-
   it("checks the city's actual finale reward against the journey plan", async () => {
     const milanJourney = await read(manifest("milano"));
     milanJourney.cityPlan = {

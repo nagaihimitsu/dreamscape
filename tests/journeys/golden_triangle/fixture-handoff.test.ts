@@ -52,7 +52,7 @@ describe("three-city journey using development-only fixtures", () => {
     expect(test_agra.travel).toMatchObject({ hotelPlaceId: "test_agra_hotel", currentPlaceId: "test_agra_hotel", day: 1, minute: 540 });
     expect(test_agra.inventory.test_delhi_item).toBe("left_behind");
     expect(test_agra.completedEncounterIds).toContain("test_delhi_encounter");
-    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const)
+    for (const field of ["playerName", "heroineName", "ap", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const)
       expect(test_agra[field]).toEqual(test_delhi[field]);
     expect(departToNextCity(test_agra, test_delhi.revision)).toBe(test_agra);
     expect(saveGame(storage, test_agra, test_delhi).ok).toBe(true);
@@ -105,7 +105,7 @@ describe("three-city journey using development-only fixtures", () => {
       } else {
         sawFinale = true;
         expect(entry).toMatchObject({ rewardId: clearReward.id, earnedAp: 4 });
-        expect(entry!.creditedAp + entry!.pendingAp).toBe(4);
+        expect(entry!.earnedAp).toBe(4);
       }
     } });
     expect(sawFinale).toBe(true);

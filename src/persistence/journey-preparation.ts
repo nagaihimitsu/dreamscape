@@ -15,8 +15,7 @@ const draftSchema = z.object({
   currentCityId: stableContentId,
   playerName: z.string().trim().min(1).max(balance.maxNameLength),
   heroineName: z.string().trim().min(1).max(balance.maxNameLength),
-  ap: z.number().int().min(0).max(balance.apCap),
-  pendingApRewards: z.tuple([]),
+  ap: z.number().int().min(0),
   travelBudget: z.null(),
   affection: z.number().int(),
   trust: z.number().int(),
@@ -68,7 +67,7 @@ export function loadJourneyDraft(storage: StorageLike): JourneyDraftLoadResult {
 export function journeyDraftStartParameters(draft: JourneyDraft) {
   const valid = draftSchema.parse(draft);
   return { journeyId: valid.journeyId, cityId: valid.currentCityId, playerName: valid.playerName, heroineName: valid.heroineName,
-    initialState: { ap: valid.ap, pendingAp: 0 as const, affection: valid.affection, trust: valid.trust,
+    initialState: { ap: valid.ap, affection: valid.affection, trust: valid.trust,
       spark: valid.spark, romanceStage: valid.romanceStage, confessionStatus: valid.confessionStatus } };
 }
 
@@ -82,7 +81,7 @@ export function saveJourneyDraft(storage: StorageLike, playerName: string, heroi
     const draft = draftSchema.parse({
       kind: "journey_preparation", schemaVersion: 1, journeyId: journey.id, currentCityId: journey.cities[0].id,
       playerName, heroineName, ap: initial.ap, affection: initial.affection, trust: initial.trust, spark: initial.spark,
-      romanceStage: initial.romanceStage, confessionStatus: initial.confessionStatus, pendingApRewards: [], travelBudget: null,
+      romanceStage: initial.romanceStage, confessionStatus: initial.confessionStatus, travelBudget: null,
       memories: [], claimedRewardIds: [], completedCityIds: [], completedEpisodeIds: [],
       visitedLandmarkIds: [], completedEncounterIds: [], playedDateIds: [], battleRecords: [], inventory: {},
       travel: { day: 1, minute: 540, currentPlaceId: null, hotelPlaceId: null },

@@ -269,8 +269,8 @@ const ident = (value: string, what: string) => {
   return value;
 };
 
-/** The effects of one choice's tags (3.1 「選択肢の札」). `apCap`: the most AP one tag may give. */
-export function choiceOption(choice: PlaceChoice, apCap: number, onWarning?: (message: string) => void): SceneOption | undefined {
+/** The effects of one choice's tags (3.1 「選択肢の札」). */
+export function choiceOption(choice: PlaceChoice): SceneOption | undefined {
   const option: SceneOption = { id: choice.optionId ?? "", knot: choice.knot, ...(choice.translated ? { translated: true as const } : {}) };
   let ap = 0;
   let hasAp = false;
@@ -310,8 +310,6 @@ export function choiceOption(choice: PlaceChoice, apCap: number, onWarning?: (me
   }
   if (hasAp) {
     if (ap === 0) throw new Error(`The # ap: lines of a choice add up to 0 (line ${choice.line})`);
-    if (ap > apCap) throw new Error(`A choice gives ${ap} AP (line ${choice.line}): at most ${apCap} (the AP cap; stored AP holds no more)`);
-    if (-ap > apCap) onWarning?.(`A choice spends ${-ap} AP (line ${choice.line}), more than the AP cap ${apCap}: it can never be chosen (always greyed out)`);
     option.ap = ap;
   }
   if (option.money === 0) delete option.money;
@@ -325,7 +323,7 @@ export function choiceOption(choice: PlaceChoice, apCap: number, onWarning?: (me
 }
 
 /** A head's `# on_done:` lines: what the scene does when it is done (main parts: the first time). */
-export function parseDone(values: readonly string[], apCap: number): SceneDone {
+export function parseDone(values: readonly string[]): SceneDone {
   const done: SceneDone = {};
   let ap = 0;
   for (const value of values) {
@@ -349,10 +347,7 @@ export function parseDone(values: readonly string[], apCap: number): SceneDone {
       ap += amount;
     } else throw new Error(`Unknown # on_done: ${value} (item, use, set, clue, rel, money, ap or reward)`);
   }
-  if (ap) {
-    if (ap > apCap) throw new Error(`# on_done: gives ${ap} AP: at most ${apCap} (the AP cap)`);
-    done.ap = ap;
-  }
+  if (ap) done.ap = ap;
   if (done.money === 0) delete done.money;
   return done;
 }
@@ -431,7 +426,7 @@ export type PlaceHead = {
 };
 
 /** Read a knot's head tags; throws for a value of the wrong form and for a position its moment lacks (A2, positionProblem). */
-export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined {
+export function readHead(knot: PlaceKnot): PlaceHead | undefined {
   if (!knot.head.length) return undefined;
   const values = (key: string) => knot.head.filter((tag) => tag.key === key).map((tag) => tag.value);
   const single = (key: string) => {
@@ -478,7 +473,7 @@ export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined 
     ...(when ? { when } : {}), whenTexts, untilTexts,
     ...(repeat ? { repeat } : {}),
     people: values("person").map((value) => ident(value, "# person:")),
-    done: parseDone(values("on_done"), apCap),
+    done: parseDone(values("on_done")),
     ...(then ? { then: parseThen(then) } : {}),
     ...(sources ? { sources } : {}),
     ...(hint ? { hint } : {}),

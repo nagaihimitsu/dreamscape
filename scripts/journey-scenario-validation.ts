@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
-import { balanceSchema, decidesConfession, presentationSchema } from "../src/content/schemas";
+import { decidesConfession, presentationSchema } from "../src/content/schemas";
 import { splitStoryAddress } from "../src/content/story-address";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import type { SceneKind } from "../src/content/scene-schemas";
@@ -65,7 +65,6 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const requirements = journeyRequirements(input, selectedCityId ? [selectedCityId] : undefined, narrativeFinalePlaces(narrative));
   const fragments = buildJourneyFragments(input, narrative, requirements.map((city) => city.cityId));
   const presentation = parseCatalog(sources, presentationSchema, "romance/presentation.json");
-  const { apCap } = parseCatalog(sources, balanceSchema, "romance/balance.json");
   // Any background of the journey's own romance/presentation.json (dates and scenes away from the
   // map's places), besides the backgrounds of the city's places.
   const journeyDirectory = journeyLayer(sources, journeyId).directory + path.sep;
@@ -174,14 +173,14 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       const label = `${displayPath(root, scene.draftFile)} (${scene.knot})`;
       withContext(label, () => {
         // The main part's knot, as content:build reads it (A5): its kind in its head, no moment, position or repetition of its own.
-        const head = readHead(knot, apCap);
+        const head = readHead(knot);
         if (!head || head.kind !== scene.kind)
           throw new Error(`The knot ${scene.knot} is the ${scene.kind} the catalogs will point at: give it the head tag # scene: ${scene.kind}`);
         for (const key of ["at", "priority", "repeat"] as const) if (knot.head.some((tag) => tag.key === key))
           throw new Error(`A main part's knot takes no # ${key}: (the catalog points at it, its order and repetition are the game's; A5)`);
         // The choices of the knot and of the helper knots it calls, and the cond texts they read.
         const reached = reachableKnots(file, scene.knot);
-        const options = reached.flatMap((item) => item.choices).flatMap((choice) => choiceOption(choice, apCap) ?? []);
+        const options = reached.flatMap((item) => item.choices).flatMap((choice) => choiceOption(choice) ?? []);
         unique(options.map((option) => option.id), "option ID (# option:)");
         const conds = [...new Set(reached.flatMap((item) => item.conds))];
         const walk = { compiled: compiled.get(scene.draftFile)!, start: scene.knot, label, context, conds, options, done: head.done, headThen: !!head.then,

@@ -38,10 +38,9 @@ function continueStoryBattles(initial: GameState): GameState {
     const before = state;
     const special = getNextStoryBattle(state)!;
     state = finishBattle(startBattle(state, special.battleId));
-    const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
     const rewardAp = allRewardRules.filter((rule) => rule.battleId === special.battleId &&
       (rule.trigger === "battle_complete" || rule.trigger === "episode_clear")).reduce((sum, rule) => sum + rule.ap, 0);
-    expect(total(state)).toBe(total(before) + rewardAp);
+    expect(state.ap).toBe(before.ap + rewardAp);
     state = leaveBattle(state, state.revision);
   }
   return state;
@@ -115,8 +114,7 @@ describe("real-place optional dates", () => {
     expect(getDateAvailability(poor, id).available).toBe(false);
     expect(startDate(poor, id)).toBe(poor);
     const started = startDate(state, id);
-    const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
-    expect(total(started)).toBe(total(state) - date.apCost);
+    expect(started.ap).toBe(state.ap - date.apCost);
     expect(startDate(started, id)).toBe(started);
     expect(validateGameState(JSON.parse(JSON.stringify(started)))).toEqual(started);
     const completed = playDate(state, id, [0, 1]);
@@ -215,14 +213,12 @@ describe("real-place optional dates", () => {
     // This checkpoint was reached through every real episode and A/B/C battle,
     // with every guide read and every quiz answered incorrectly.
     let state = checkpoints.at(-1)!;
-    const totalAp = (game: GameState) => game.ap +
-      game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
     expect(state.completedEpisodeIds).toEqual(episodes.map((episode) => episode.id));
     expect(state.completedCityIds).toContain("milano");
     expect(state.completedGuideIds).toHaveLength(4);
     expect(state.playedDateIds).toEqual([]);
     expect(state.battleRecords.every((record) => record.firstScore === 0)).toBe(true);
-    const initialAp = totalAp(state);
+    const initialAp = state.ap;
     expect(initialAp).toBe(23);
 
     const route: readonly [string, [number, number]][] = [
@@ -240,16 +236,13 @@ describe("real-place optional dates", () => {
       expect(getDateAvailability(state, id).available).toBe(true);
       state = playDate(state, id, choices);
       spent += date.apCost;
-      expect(totalAp(state)).toBe(initialAp - spent);
+      expect(state.ap).toBe(initialAp - spent);
       expect(state.ap).toBeGreaterThanOrEqual(0);
-      expect(state.ap).toBeLessThanOrEqual(12);
-      expect(state.pendingApRewards.every((reward) => reward.remainingAp > 0)).toBe(true);
       expect(state.playedDateIds.filter((played) => played === id)).toHaveLength(1);
       expect(startDate(state, id)).toBe(state);
     }
     expect(spent).toBe(13);
-    expect(totalAp(state)).toBe(10);
-    expect(state.pendingApRewards).toEqual([]);
+    expect(state.ap).toBe(10);
     expect(state.playedDateIds).toEqual(route.map(([id]) => id));
     expect(state.memories).toHaveLength(7);
     expect(new Set(state.memories).size).toBe(7);

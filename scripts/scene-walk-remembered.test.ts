@@ -17,7 +17,7 @@ const talk = (body: string) => `INCLUDE modules.ink\n-> DONE\n\n=== smp_x_talk =
 function walk(body: string): string[] {
   const file = readPlaceFile("places/smp_x_tower", talk(body));
   const compiled = compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK });
-  const scene = placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x" })[0].entry;
+  const scene = placeScenes({ file, compiled, mains: [], landmarkCity: () => "x" })[0].entry;
   const found: string[] = [];
   walkScene({ compiled, start: scene.story.knot, label: scene.id, context, variables: {}, conds: scene.conds, options: scene.options,
     itemIds: [], memoryIds: [], onWarning: (message) => found.push(message), stage: { kind: "talk", people } });

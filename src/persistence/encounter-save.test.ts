@@ -4,7 +4,6 @@ import { advanceEncounter, chooseEncounter } from "../domain/encounter";
 import { setNames, startDate, validateGameState } from "../domain/game";
 import { getBattleAvailability } from "../domain/battle";
 import { getTourismAvailability } from "../domain/tourism";
-import { claimPendingRewards } from "../domain/rewards";
 import { loadGame, saveGame, type StorageLike } from ".";
 
 class MemoryStorage implements StorageLike {
@@ -43,7 +42,6 @@ describe("encounter save protection", () => {
     expect(getTourismAvailability(state, "galleria_vittorio_emanuele_ii").available).toBe(false);
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(setNames(state, "name", "name")).toBe(state);
-    expect(claimPendingRewards(state, state.revision)).toBe(state);
     const battle = createDebugState({ ...initial, scene: "battle", id: "milano_duomo_01" });
     expect(() => validateGameState({ ...state, activeBattle: battle.activeBattle })).toThrow("道中の交流と他の進行が重複しています。");
   });

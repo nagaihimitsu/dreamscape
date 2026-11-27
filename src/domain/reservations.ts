@@ -140,7 +140,7 @@ export function usableMoney(state: Readonly<GameState>): number {
   return keep ? state.travelBudget - runningMainPayment(state).money - Math.max(state.travel.returnReserve, keep.money) - tourKeepBack(state).money
     : state.travelBudget - state.travel.returnReserve - reservedPayments(state).money;
 }
-/** The AP that can be spent now: stored AP is not counted, the main parts' AP is kept back (A23), and a decided then:'s. */
+/** The AP that can be spent now: the main parts' AP is kept back (A23), and a decided then:'s. */
 export function usableAp(state: Readonly<GameState>): number {
   const keep = keptByThen(state);
   return keep ? state.ap - keep.ap - runningMainPayment(state).ap - tourKeepBack(state).ap : state.ap - reservedPayments(state).ap;

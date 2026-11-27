@@ -51,7 +51,6 @@ export type BalanceInput = {
   romance: { stages: readonly ({ stage: number; minCompletedDates: number } & Record<`min${Capitalize<RelationshipAxis>}`, number>)[];
     confession: { minCompletedDates: number } & Record<`min${Capitalize<RelationshipAxis>}`, number> };
   profiles: readonly BalanceProfile[];
-  apCap: number;
   items: readonly { id: string; nameJa: string }[];
   /** Each walked scene's paths (walkOptionPaths): the option IDs one play takes, in order. Without one, its options are one choice point. */
   paths: Readonly<Record<string, { paths: readonly (readonly string[])[]; truncated?: boolean }>>;
@@ -305,7 +304,7 @@ export function formatJourneyBalance(input: BalanceInput, report: JourneyBalance
   out.push("## 旅全体", "");
   const budget = report.budget;
   out.push(`- 通貨：${input.journey.currency.code}（${symbol.trim()}）。開始時の旅行予算：${budget === null ? "なし" : money(budget)}。運賃の人数：${input.journey.farePartySize ?? "未設定"}`);
-  out.push(`- 開始時のAP：${input.journey.initialState?.ap ?? 0}。APの上限：${input.apCap}（超えた分は保留APになり、減ったときに入ります）`);
+  out.push(`- 開始時のAP：${input.journey.initialState?.ap ?? 0}。APに上限はありません（得た分はすべて手持ちに入ります）`);
   out.push(`- 関係値の初期値：${AXES.map((axis) => `${relationshipAxisLabels[axis]} ${input.journey.initialState?.[axis] ?? 0}`).join("、")}`, "");
   out.push("### お金（払う額）", "");
   table(["都市", "本筋の訪問", "本筋の場面", "デートの訪問", "デートの場面", "差し込みの場面", "貸し出し", "都市の計", "旅の累計", "予算の残り"],
