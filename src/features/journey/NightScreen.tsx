@@ -133,7 +133,6 @@ function NightLayout({ rootRef, cityId, line, recap, word = null, sns = null, on
         {buttons.map((button) => <button key={button.kind} type="button" data-testid={`night-action-${button.kind}`}
           className={button.kind === "rest" ? "night-screen-rest" : "secondary"} onClick={() => onPress?.(button.kind)}>{button.label}</button>)}
         {/* Where the buttons were (their room stays): how the leaving ends. */}
-        {leaving && <p className="night-tap-hint" aria-hidden="true">{NIGHT_TAP_HINT_JA}</p>}
       </div>
       {/* Under the buttons, so the night's actions stay in view on a short phone (the screen scrolls to the rest), and apart
           from them (a wider gap, a card of another shape), so a tap meant for a button does not open the SNS. */}

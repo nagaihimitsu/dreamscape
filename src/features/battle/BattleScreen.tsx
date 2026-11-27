@@ -596,7 +596,7 @@ export function BattleScreen({
             {/* The outcome over the scene, the rest on a glass card at the foot (2026-11-25 user decision: the result
                 as part of the place, not a sheet over it; battle.css). */}
             <div className="battle-result-heading">
-              <p className="eyebrow">結果</p>
+              <h2 className="sr-only">結果</h2>
               <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
                 <strong>{active.score}</strong>
@@ -632,13 +632,20 @@ export function BattleScreen({
                       エピローグへ進む <span aria-hidden="true">→</span>
                     </button>
                   )}
-                  {onLeave && <button
-                    className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
-                    onClick={onLeave}
-                  >
-                    {leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む")}{" "}
-                    <span aria-hidden="true">→</span>
-                  </button>}
+                  {/* The way back alone is only 「→」, its name for screen readers (2026-11-27 user decision: no words a
+                      tap tells); beside other ways on, its words tell them apart. */}
+                  {onLeave && (() => {
+                    const name = leaveLabel ?? (isSpecial ? "街歩きへ戻る" : "街歩きへ進む");
+                    const alone = !onEpilogue && !onNextStoryBattle && !onNextEpisode;
+                    return <button
+                      className={`${onEpilogue || onNextStoryBattle ? "secondary" : "primary"}${alone ? " arrow-only" : ""}`}
+                      aria-label={alone ? name : undefined}
+                      onClick={onLeave}
+                    >
+                      {!alone && <>{name}{" "}</>}
+                      <span aria-hidden="true">→</span>
+                    </button>;
+                  })()}
                   {onNextEpisode && (
                     <button
                       className="secondary"
@@ -677,9 +684,9 @@ export function BattleScreen({
               className="next"
               data-testid={chrome.advance.testId}
               disabled={!ready}
+              aria-label={chrome.advance.label}
               onClick={advanceSafely}
             >
-              {chrome.advance.label}{" "}
               <span aria-hidden="true">→</span>
             </button>}
           </>
@@ -846,11 +853,12 @@ export function BattleScreen({
                 </button>}
                 {/* Its sources, with the answer chosen, are in ≡メニュー's 「画面の出典」 while it shows (2026-11-20 user decision). */}
                 <button
-                  className="primary quiz-feedback-next"
+                  className="primary arrow-only quiz-feedback-next"
                   data-testid="battle-advance"
+                  aria-label="相手の反応を見る"
                   onClick={advanceSafely}
                 >
-                  相手の反応を見る <span aria-hidden="true">→</span>
+                  <span aria-hidden="true">→</span>
                 </button>
               </div>
             )}

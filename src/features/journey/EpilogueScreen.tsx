@@ -221,9 +221,9 @@ export function EpilogueScreen({
                 className="next"
                 disabled={!ready}
                 data-testid={arrival ? "arrival-advance" : "epilogue-advance"}
+                aria-label={label.next}
                 onClick={advanceSafely}
               >
-                {label.next}{" "}
                 <span aria-hidden="true">→</span>
               </button>}
             </div>

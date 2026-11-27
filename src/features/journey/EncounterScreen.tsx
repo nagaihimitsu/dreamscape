@@ -221,7 +221,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
                 </button>
                 {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
                 </>}
-                {quiz.result && <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={continueFromResult}>続きを読む <span aria-hidden="true">→</span></button></>}
+                {quiz.result && <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" aria-label="続きを読む" onClick={continueFromResult}><span aria-hidden="true">→</span></button></>}
               </>
             ) : (
               <>
@@ -230,7 +230,8 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
                     voiceId={view.voiceId} seId={view.seId} cues={lineCues(staging, !!nameCut)} voice={autoAdvance.voice} onReady={onReady} onAdvance={advance} />
                 </LineStage>
                 {!view.choices.length && view.ended ? (
-                  <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "街歩きへ" : "続きを読む"} <span aria-hidden="true">→</span></button>
+                  <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}
+                    aria-label={view.finishLabel ?? "街歩きへ"}><span aria-hidden="true">→</span></button>
                 ) : null}
               </>
             )}
