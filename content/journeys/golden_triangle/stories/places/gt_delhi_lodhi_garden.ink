@@ -320,7 +320,7 @@ INCLUDE modules.ink
 # local_word: gt_delhi_word_yatrigan
 # local_word: gt_delhi_word_kripya
 # local_word: gt_delhi_word_dhyan
-わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。
+わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』
 # speaker: gt_dubey
 ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: heroine
@@ -435,7 +435,7 @@ INCLUDE modules.ink
     お知らせいたします。列車が一本、運休となりました
 -
 # speaker: gt_dubey
-合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。
+合格。退職してから、毎日、誰にも話しかけることがなくなりましてね
 # speaker: gt_dubey
 それで、この会を始めたんです。声には、行き先が要る
 # speaker: narrator
@@ -464,7 +464,7 @@ INCLUDE modules.ink
 だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも
 # speaker: heroine
 # emotion: smile
-理由がなくても笑っていいって言われると、ちょっと楽になるね。
+理由がなくても笑っていいって言われると、ちょっと楽になるね
 # speaker: heroine
 わたし、いつも、笑っていい理由を探してから笑ってた気がする
 -> END

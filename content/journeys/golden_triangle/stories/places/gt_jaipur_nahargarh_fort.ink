@@ -235,7 +235,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # photo: gt_album_j081 # photo_caption: 屋上から、町の全部
-あ、見て。あの辺が、たぶん、わたしたちの宿。
+あ、見て。あの辺が、たぶん、わたしたちの宿
 # speaker: heroine
 この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
 -> END

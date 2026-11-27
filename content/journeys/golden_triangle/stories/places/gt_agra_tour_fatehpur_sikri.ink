@@ -261,14 +261,14 @@ HORN OK PLEASE。
 # speaker: narrator
 しばらく黙って走ってから、ヴィノードがバックミラー越しにこちらを見た。
 # speaker: gt_vinod
-一つ、聞いてもいいですか。母は、わたしが乗せたお客さんの話を、必ず聞きたがります。
+一つ、聞いてもいいですか。母は、わたしが乗せたお客さんの話を、必ず聞きたがります
 # speaker: gt_vinod
 どこから来て、何を見て、どういう二人か
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_mother_vinod_002
 母は、シークリーからほとんど出ません。だから、お客さんの話が、母の旅行です
 # speaker: gt_vinod
-サミールさんは、新婚さんだと言っていました。
+サミールさんは、新婚さんだと言っていました
 # speaker: gt_vinod
 でも、お二人は、新婚さんの顔には見えない。……母に、何と言えばいいですか
 # speaker: heroine
@@ -503,7 +503,7 @@ HORN OK PLEASE。
 # speaker: narrator
 彼女は首の札を持ち上げて表を見せ、裏返して裏も見せた。政府の許可を受けたガイドの証だという。
 # speaker: gt_rukhsana
-入口で、ガイドだと名乗る人が来たら、この札を見せてもらってください。
+入口で、ガイドだと名乗る人が来たら、この札を見せてもらってください
 # speaker: gt_rukhsana
 見せない人は、ガイドではありません。わたしも含めて
 # speaker: heroine
@@ -582,7 +582,7 @@ HORN OK PLEASE。
 # speaker: gt_rukhsana
 皇帝は、その願いを守った。宮殿の中に、姫の祈る場所を作らせた。そして、姫が心を開くまで、待ったのです。何年でも
 # speaker: gt_rukhsana
-ある夜、刺客に傷を負わされた皇帝を、姫は一晩じゅう看病しました。
+ある夜、刺客に傷を負わされた皇帝を、姫は一晩じゅう看病しました
 # speaker: gt_rukhsana
 夜が明けたとき、皇帝は初めて、その名を呼んだ。……ジョーダー、と
 # speaker: narrator
@@ -628,7 +628,7 @@ HORN OK PLEASE。
 # voice: gt_agra_tour_guide_palace_006
 じゃあ、ここは、ジョーダーさんじゃなくて、マリアムさんの宮殿なんですね
 # speaker: gt_rukhsana
-たぶん、です。この中で、誰がどの建物に住んだか、はっきり書いた記録は、あまりありません。
+たぶん、です。この中で、誰がどの建物に住んだか、はっきり書いた記録は、あまりありません
 # speaker: gt_rukhsana
 名前の多くは、あとの人が付けました
 # speaker: heroine
@@ -641,9 +641,9 @@ HORN OK PLEASE。
 # letter: card
 三、分からない、と言うな。
 # speaker: gt_rukhsana
-お客さまは、答えにお金を払います。
+お客さまは、答えにお金を払います
 # speaker: gt_rukhsana
-分からない、と言うガイドに、誰が払いますか。
+分からない、と言うガイドに、誰が払いますか
 # speaker: gt_rukhsana
 ……今日のお二人は、いちばん高いツアーを買ってくださったのに
 # speaker: narrator
@@ -681,7 +681,7 @@ HORN OK PLEASE。
 # speaker: gt_rukhsana
 この人は、自分の名前で、命令書を出せました。自分の船を持っていて、巡礼の人をメッカへ運び、絹や香辛料を商った
 # speaker: gt_rukhsana
-その船が、海でポルトガルに奪われたとき、息子の皇帝は怒って、港を止め、ポルトガルの町を囲ませました。
+その船が、海でポルトガルに奪われたとき、息子の皇帝は怒って、港を止め、ポルトガルの町を囲ませました
 # speaker: gt_rukhsana
 記録に、ちゃんと残っています
 # speaker: heroine
@@ -838,9 +838,9 @@ HORN OK PLEASE。
 - cond("flag gt_agra_tour_she_answered"):
     # speaker: gt_vinod
     # photo: gt_album_a060 # photo_caption: お母さんの返事 # photo_with: gt_vinod
-    母に、伝えました。同じ町を、同じ日に見たかった二人。
+    母に、伝えました。同じ町を、同じ日に見たかった二人
     # speaker: gt_vinod
-    母はしばらく黙って、それから言いました。
+    母はしばらく黙って、それから言いました
     # speaker: gt_vinod
     それはもう、旅の話じゃなくて、二人の話だね、と
     # speaker: heroine
@@ -1049,7 +1049,7 @@ HORN OK PLEASE。
 # voice: gt_agra_tour_back_awake_vinod_001
 眠りましたか。……一つ、いいですか。お客さんは、たいてい皇帝のことを聞きます。何年住んだか、妃は何人いたか
 # speaker: gt_vinod
-でも、この人は、わたしの母のことを聞きました。
+でも、この人は、わたしの母のことを聞きました
 # speaker: gt_vinod
 レモンのことも、娘の字のことも、トラックの OK のことも。いつも、こうですか
 * [Always. She notices what I miss. # option: notices_more # translation: いつもです。自分が見落とすものに、気づく人です。]

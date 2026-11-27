@@ -71,7 +71,7 @@ INCLUDE modules.ink
 シャーストリー。毎朝ここで、影を眺めている。町の占星術師だよ
 # speaker: enemy
 # cutin: name
-ディヴィヤです。ベンガルールの研究所で、星の研究をしています。
+ディヴィヤです。ベンガルールの研究所で、星の研究をしています
 # speaker: enemy
 母が、わたしに黙って、この人に時刻を決めさせたんです
 # speaker: heroine
@@ -88,7 +88,7 @@ INCLUDE modules.ink
 シャーストリーは何も言わず、日時計の斜面に落ちた影を、杖の先で示した。
 # speaker: enemy
 # photo: gt_album_j018 # photo_caption: 大日時計の日陰の言い争い # photo_with: gt_jaipur_jantar_woman gt_shastri
-ちょうどいい。あなた、外国の人ですよね。証人になってください。
+ちょうどいい。あなた、外国の人ですよね。証人になってください
 # speaker: enemy
 十二時になったら、この日時計が、わたしの正しさを証明しますから
 # speaker: narrator

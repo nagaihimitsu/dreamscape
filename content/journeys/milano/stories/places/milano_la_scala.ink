@@ -62,7 +62,7 @@ INCLUDE modules.ink
 }
 # background: milano_la_scala_date
 # speaker: heroine
-平土間では椅子を借りて座った、しかも動かせた。買い手の理由は崩れます。
+平土間では椅子を借りて座った、しかも動かせた。買い手の理由は崩れます
 # speaker: heroine
 ただ、この一脚がそこから来た証明はまだありません
 -> quiz(2) ->

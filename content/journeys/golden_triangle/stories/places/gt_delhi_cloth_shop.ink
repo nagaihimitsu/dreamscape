@@ -91,9 +91,9 @@ INCLUDE modules.ink
 # speaker: narrator
 ゴーヴィンドは帳面を閉じ、青い布の端をもう一度だけ撫でた。
 # speaker: gt_govind
-バナーラスの名前には、登録がある。
+バナーラスの名前には、登録がある
 # speaker: gt_govind
-よそで織った布をバナーラスと呼ぶのは、嘘つきのすることだ。
+よそで織った布をバナーラスと呼ぶのは、嘘つきのすることだ
 # speaker: gt_govind
 うちは、イクバールの布しかそう呼ばない
 # speaker: gt_govind

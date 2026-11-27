@@ -81,9 +81,9 @@ INCLUDE modules.ink
 # speaker: narrator
 今日の午後四時に、屋根のコンクリートを流すミキサー車が来るという。
 # speaker: enemy
-この町の聖者の墓に、しるしをくださいと頼みに来たんです。
+この町の聖者の墓に、しるしをくださいと頼みに来たんです
 # speaker: enemy
-そしたら門に、これだ。世界は橋だ、家を建てるな。
+そしたら門に、これだ。世界は橋だ、家を建てるな
 # speaker: enemy
 ……しるし、来ちゃったでしょう
 # speaker: narrator
@@ -128,9 +128,9 @@ INCLUDE modules.ink
 # speaker: narrator
 ムケーシュは、しばらく口を開けたままだった。それから、変なところに感心し始めた。
 # speaker: enemy
-皇帝ってのは、度量が大きいんだな。
+皇帝ってのは、度量が大きいんだな
 # speaker: enemy
-よその宗教の言葉を、自分の勝ちを祝う門に刻むなんて。
+よその宗教の言葉を、自分の勝ちを祝う門に刻むなんて
 # speaker: enemy
 ……うちの施主なら、絶対に許さない
 # speaker: heroine
@@ -166,7 +166,7 @@ INCLUDE modules.ink
 わたしの家もね、息子のためなんです。二階は全部、息子夫婦の部屋。孫ができたら、屋上で凧を揚げる
 # speaker: enemy
 # photo: gt_album_a055 # photo_caption: 伏せた携帯、誰も住まない二階 # photo_with: gt_agra_fatehpur_man
-先週、息子が言いました。ベンガルールで仕事が決まった。向こうで暮らすって。
+先週、息子が言いました。ベンガルールで仕事が決まった。向こうで暮らすって
 # speaker: enemy
 ……誰も住まない二階に、今日、屋根を流すんです
 # speaker: narrator
@@ -216,9 +216,9 @@ INCLUDE modules.ink
 ムケーシュは長いあいだ黙っていた。それから携帯を表に返し、現場監督の番号を押した。
 # speaker: enemy
 # photo: gt_album_a057 # photo_caption: 「四時、予定どおり屋根を流せ」 # photo_with: gt_agra_fatehpur_man
-わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。
+わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ
 # speaker: enemy
-二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ。
+二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ
 # speaker: enemy
 息子が帰ってきたら、そこで一緒に茶を飲む
 # speaker: narrator

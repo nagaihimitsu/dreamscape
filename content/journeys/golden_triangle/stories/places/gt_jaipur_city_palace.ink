@@ -142,7 +142,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     # photo: gt_album_j036 # photo_caption: 四つの季節の門 # photo_with: gt_jaipur_city_palace_woman gt_vishal
-    四つの季節。春も、夏も、秋も、冬も。
+    四つの季節。春も、夏も、秋も、冬も
     # speaker: enemy
     ……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 - else:
@@ -190,9 +190,9 @@ INCLUDE modules.ink
 審判の答えを、二人が待っていた。{heroine_name}は、ヴィシャールが提げた秤を指さした。
 # speaker: heroine
 # emotion: serious
-五キロは無理でも、二キロなら入りますよね。
+五キロは無理でも、二キロなら入りますよね
 # speaker: heroine
-……それで、漬物がなくなったら、電話してください。
+……それで、漬物がなくなったら、電話してください
 # speaker: heroine
 お母さんに、次の分を頼むって
 # speaker: heroine

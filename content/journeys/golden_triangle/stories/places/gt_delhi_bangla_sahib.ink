@@ -212,7 +212,7 @@ INCLUDE modules.ink
         ハルバンスの手が、初めて止まった。
     }
     # speaker: gt_harbans
-    向こうへ行ったら、わしは、何も運ばない人になる。
+    向こうへ行ったら、わしは、何も運ばない人になる
     # speaker: gt_harbans
     四十年、何かを運んできた。運ばないわしを、息子に見せるのが、嫌なんだ
     # speaker: heroine
@@ -309,7 +309,7 @@ INCLUDE modules.ink
 # photo: gt_album_d088 # photo_caption: 金色の丸屋根を映す池
 二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。
 # speaker: heroine
-誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね。
+誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね
 # speaker: heroine
 なんだか不思議。知らない人に、ちょっとだけ届いた感じ
 # speaker: heroine

@@ -174,7 +174,7 @@ INCLUDE modules.ink
 - else:
     # speaker: enemy
     # term: gt_term_man_singh
-    城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前。
+    城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前
     # speaker: enemy
     向こうは王を取り違えている。……描いた奴は、ここに来たこともない
 }

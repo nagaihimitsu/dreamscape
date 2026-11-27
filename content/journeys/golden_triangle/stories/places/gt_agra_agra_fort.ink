@@ -84,7 +84,7 @@ INCLUDE modules.ink
 # unnamed
 # term: gt_term_shah_jahan
 # term: gt_term_dharna
-タージを建てたシャー・ジャハーンは、この塔に八年座っていた。
+タージを建てたシャー・ジャハーンは、この塔に八年座っていた
 # speaker: gt_agra_fort_old_man # unnamed
 わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
@@ -175,7 +175,7 @@ INCLUDE modules.ink
 # speaker: narrator
 怒鳴った声は、すぐにしぼんだ。大佐は欄干の向こうのタージを見たまま、小さく言った。
 # speaker: enemy
-……後ろの席だと、十分でだめなんだ。今日の座席表では、わしは最後列だ。
+……後ろの席だと、十分でだめなんだ。今日の座席表では、わしは最後列だ
 # speaker: enemy
 言えるか、そんなこと。若い娘さんの前で、元大佐が
 # speaker: narrator
@@ -187,7 +187,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_agra_fort
 { quiz_correct:
     # speaker: heroine
-    はい。城の一部は、今も陸軍の区域ですよね。
+    はい。城の一部は、今も陸軍の区域ですよね
     # speaker: heroine
     ……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
 - else:
@@ -201,7 +201,7 @@ INCLUDE modules.ink
 # speaker: narrator
 リヤの顔が、ぱっと明るくなる。彼女は旗を下ろし、大佐の前に立った。
 # speaker: gt_riya
-大佐。ジャイプールまでの道中、一番前の席で、窓の外の解説をお願いできませんか。
+大佐。ジャイプールまでの道中、一番前の席で、窓の外の解説をお願いできませんか
 # speaker: gt_riya
 皆さん、大佐のお話を聞きたがっています
 # speaker: enemy

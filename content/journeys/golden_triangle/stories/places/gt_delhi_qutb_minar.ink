@@ -152,7 +152,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ラームキシャンはしばらく黙り、ボールペンを胸ポケットに戻した。
 # speaker: enemy
-娘には、魔法じゃないと教えました。九歳のときに。
+娘には、魔法じゃないと教えました。九歳のときに
 # speaker: enemy
 そしたら先月、あの子が泣きながら電話してきたんです。『パパ、抱いてきて』って
 # speaker: enemy

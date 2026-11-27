@@ -67,9 +67,9 @@ INCLUDE modules.ink
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
-    迷ったけど、ちゃんと、わたしの言葉で言いたかった。
+    迷ったけど、ちゃんと、わたしの言葉で言いたかった
     # speaker: heroine
-    言われたから、うなずくんじゃなくて。
+    言われたから、うなずくんじゃなくて
     # speaker: heroine
     ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
@@ -133,7 +133,7 @@ INCLUDE modules.ink
     わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
     # speaker: heroine
     # emotion: serious
-    話したいことは、あるの。あるんだけど。
+    話したいことは、あるの。あるんだけど
     # speaker: heroine
     ……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
     # speaker: narrator

@@ -173,7 +173,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_hotel_homework_001
 女性車両？　地下鉄の？
 # speaker: enemy
-先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ。
+先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ
 # speaker: enemy
 みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
 # speaker: enemy
@@ -223,7 +223,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # photo: gt_album_d099 # photo_caption: 帳場の机のルーヒーと「女性車両」の作文 # photo_with: gt_roohi
-わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。
+わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの
 # speaker: heroine
 回ってる洗濯物を見てると、落ち着くから
 # speaker: heroine
@@ -510,9 +510,9 @@ Agra? Your train is cancelled today.
 # voice: gt_delhi_depart_scam_001
 えっ、運休？
 # speaker: gt_delhi_scam_young_man
-外国の方の振り替えは、観光客の窓口でしかできません。
+外国の方の振り替えは、観光客の窓口でしかできません
 # speaker: gt_delhi_scam_young_man
-でも、駅の中の窓口は、今日は工事で閉まっています。
+でも、駅の中の窓口は、今日は工事で閉まっています
 # speaker: gt_delhi_scam_young_man
 臨時の窓口が、道の向かいに。歩いて五分です
 # speaker: narrator
@@ -780,7 +780,7 @@ Thank you. We'll check it ourselves.
 # voice: gt_delhi_depart_scam_delhi_scam_phone_voice_001
 運休です。運休です
 # speaker: gt_delhi_scam_suit_man
-ご安心を。車と運転手をご用意できます。アーグラとジャイプール、ホテル込み。
+ご安心を。車と運転手をご用意できます。アーグラとジャイプール、ホテル込み
 # speaker: gt_delhi_scam_suit_man
 特別価格です。手付金だけ先にいただければ、今すぐ車を押さえます
 # speaker: narrator
@@ -969,7 +969,7 @@ No, thank you.
 -> gt_delhi_depart_scam_on_platform ->
 { cond("flag gt_delhi_scam_paid"):
     # speaker: heroine
-    手付金は、高い授業料だったね。……ううん、やっぱり悔しい。
+    手付金は、高い授業料だったね。……ううん、やっぱり悔しい
     # speaker: heroine
     でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
 }
@@ -1017,14 +1017,14 @@ No, thank you.
 # photo: gt_album_d129 # photo_caption: ホームのベンチで、少し震える手
 ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
 # speaker: heroine
-親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も。
+親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も
 # speaker: heroine
 ……悔しい。最初に、ついて行こうって言ったの、わたしだから
 # speaker: heroine
 # emotion: serious
-でも、教えてくれた荷運びの人も、検札の人も、本物だった。
+でも、教えてくれた荷運びの人も、検札の人も、本物だった
 # speaker: heroine
-宿のご主人も、ルーヒーさんも。
+宿のご主人も、ルーヒーさんも
 # speaker: heroine
 ……疑うのは疲れるけど、全部を疑うようには、なりたくないな
 ->->

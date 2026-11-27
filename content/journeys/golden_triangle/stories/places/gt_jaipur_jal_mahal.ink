@@ -47,7 +47,7 @@ INCLUDE modules.ink
 メヘンディ、どう？　手に描く模様。ヘナで描いて、二週間くらい残るの
 # speaker: gt_farhana
 # cutin: name
-わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。
+わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの
 # speaker: gt_farhana
 いつか、扇風機と鏡のある自分のお店を持つのが夢
 # speaker: heroine
@@ -56,9 +56,9 @@ INCLUDE modules.ink
 わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか
 # speaker: gt_farhana
 # term: gt_term_mehndi_name
-結婚式なら、手の甲と手のひら、両方ね。
+結婚式なら、手の甲と手のひら、両方ね
 # speaker: gt_farhana
-……花嫁さんの手には、模様の中に花婿の名前を隠すの。
+……花嫁さんの手には、模様の中に花婿の名前を隠すの
 # speaker: gt_farhana
 初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
 # speaker: gt_farhana

@@ -88,7 +88,7 @@ INCLUDE modules.ink
 デリーは押しの強い町だよ。欲しいものは、欲しいと言いなさい。黙っていたら、誰も気づかない。
 # speaker: heroine
 # reaction: heroine,teasing,music
-……はい、覚えておきます。それにしても、地図というより暗号だね。
+……はい、覚えておきます。それにしても、地図というより暗号だね
 # speaker: heroine
 せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
 -> END
@@ -133,7 +133,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_epilogue_aman_004
 僕の結婚は、親が紹介してくれた相手です。不満はない。でも、どう話せばいいか、まだ分からない
 # speaker: enemy
-祖母に言われました。どう出会ったかより、毎日ちゃんと言葉にしなさい、と。
+祖母に言われました。どう出会ったかより、毎日ちゃんと言葉にしなさい、と
 # speaker: enemy
 ……六十年言わなかった人が、言うんですよ
 # speaker: heroine
@@ -179,7 +179,7 @@ INCLUDE modules.ink
     六十年って、長いね。……わたしは、そんなに待たせたくないな。誰を、とは言わないけど
 - romance_stage == 2:
     # speaker: heroine
-    言いそびれたことって、あとから重くなるんだね。
+    言いそびれたことって、あとから重くなるんだね
     # speaker: heroine
     わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
 - else:
