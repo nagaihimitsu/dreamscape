@@ -4,9 +4,12 @@ import { readingHeld } from "./dialogueObstructed";
 import { stopsFastForward, type ReadSkip } from "./read-skip";
 import type { LineVoiceState, VoiceLink } from "./useVoice";
 import { setSceneFastForward } from "../audio/sound-effects";
+import { photoTurn, usePhotoTurnOn } from "./photo-turn";
 
 /** How long auto mode waits after a line's voice has ended before it reads on (milliseconds). */
 const AFTER_VOICE_MS = 700;
+/** Auto mode's shortest reading time for a line, also how long it shows a line's large photo before its line (photo-turn.ts). */
+const MIN_READING_MS = 2000;
 
 /** Optional presentation state. It is never written to the game save. */
 export function useAutoAdvance({
@@ -87,7 +90,7 @@ export function useAutoAdvance({
     if (!fast && voice === "busy") return;
     // Reading time follows the actual line without delaying unusually long
     // lines indefinitely. A manual tap remains available throughout.
-    const delay = fast ? 250 : voice === "ended" ? AFTER_VOICE_MS : Math.min(7000, Math.max(2000, Array.from(text).length * 90));
+    const delay = fast ? 250 : voice === "ended" ? AFTER_VOICE_MS : Math.min(7000, Math.max(MIN_READING_MS, Array.from(text).length * 90));
     const timer = window.setTimeout(() => {
       if (!canAdvanceRef.current || readingHeld()) {
         setFast(false);
@@ -97,6 +100,16 @@ export function useAutoAdvance({
     }, delay);
     return () => window.clearTimeout(timer);
   }, [fast, defaultEnabled, blocked, ready, canAdvance, text, voice]);
+  // Auto mode also ends a line's photo turn by itself (2026-11-27 user decision), after its shortest reading time; a tap
+  // ends it sooner. Without auto mode only a tap does (高速送り shows no photo).
+  const photoUp = usePhotoTurnOn();
+  useEffect(() => {
+    if (!defaultEnabled || fast || blocked || !photoUp) return;
+    const timer = window.setTimeout(() => {
+      if (!readingHeld()) photoTurn()?.end();
+    }, MIN_READING_MS);
+    return () => window.clearTimeout(timer);
+  }, [defaultEnabled, fast, blocked, photoUp]);
   const voiceLink: VoiceLink = { muted: fast, onState: setVoice };
 
   return {
