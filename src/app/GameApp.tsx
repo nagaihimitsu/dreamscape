@@ -295,8 +295,8 @@ export function GameApp({
     playMoveRef.current?.(previous, next);
     momentsRef.current?.(previous, next);
     // A line's # photo: just put a photo in the album: its card, and its sound unless the line is quiet or rings its own
-    // # se: (and not during 高速送り: playCue). A photo shown large (2026-11-25: the default) rings the shutter as its print
-    // appears (PhotoShow.tsx), the small card album_photo. A load or a new game is no action, so it never shows what they bring.
+    // # se: (and not during 高速送り: playCue). A photo shown large (2026-11-25: the default) rings album_photo as its print
+    // appears (PhotoShow.tsx; no shutter sound, 2026-11-27), the small card at once. A load or a new game is no action, so it never shows what they bring.
     const photo = photoTaken(previous, next);
     if (photo) {
       const line = lineFrameOnScreen(next);

@@ -171,7 +171,6 @@ INCLUDE modules.ink
         # voice: gt_agra_date_chini_rauza_015
         ……っ。そういうの、代役でも、ずるい
         # speaker: narrator
-        # se: camera_shutter
         # emotion: shy_deep
         # photo: gt_album_a098 # photo_caption: 「代役でも、ずるい」 # photo_with: gt_jagdeep
         彼女は顔を手であおぎ、反射板の向こうのジャグディープをにらんだ。シャッターの音が、何度も鳴っていた。

@@ -17,7 +17,7 @@ import "./photo-show.css";
 
 /**
  * What GameApp tells the prints: the photo the player's last action has just put in the album (`fresh`; its print is
- * taken: a flash, the shutter unless `sound` is false, and it develops), and the stamp of a photo of the album (its
+ * taken: a flash, the album sound unless `sound` is false, and it develops), and the stamp of a photo of the album (its
  * place and 「n日目 hh:mm」), which the print shows under its caption. `held`: 旅の図鑑's card is over the scene (or about to
  * open for the line), so the print waits and comes once the card has closed, not under it (a photo just taken is taken then);
  * its turn holds the line all the same. `done`: the line's photo whose turn has ended (`onDone` says so), so it is not up
@@ -95,7 +95,7 @@ function PhotoPrint({ imageId, path, caption, leaving }: { imageId: string; path
   const stamp = stampOf?.(imageId);
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (taken && fresh?.sound) playCue("camera_shutter");
+    if (taken && fresh?.sound) playCue("album_photo");
   // Once, as the print appears.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
