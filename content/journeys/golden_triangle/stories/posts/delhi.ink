@@ -318,7 +318,7 @@ INCLUDE modules.ink
 # post: gt_suresh
 # images: gt_sns_suresh_desk
 # when: battle gt_delhi_main_humayun_tomb_battle
-# likes: gt_meena if met gt_meena
+# likes: gt_meena if date gt_delhi_date_lodhi_garden
 本日、特記事項なし
 
 = mehr

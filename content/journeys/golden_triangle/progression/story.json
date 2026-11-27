@@ -613,21 +613,41 @@
       "cityId": "agra",
       "nameJa": "タンヴィ",
       "titleJa": "ニキルの恋人",
-      "characterId": "gt_tanvi"
+      "characterId": "gt_tanvi",
+      "sns": {
+        "introJa": [
+          "建物なら、タージが世界一。",
+          "伝記は、寝る前に一冊ずつ。"
+        ]
+      }
     },
     {
       "id": "gt_nikhil",
       "cityId": "agra",
       "nameJa": "ニキル",
       "callJa": "青年",
-      "characterId": "gt_nikhil"
+      "characterId": "gt_nikhil",
+      "sns": {
+        "introJa": [
+          "ラクナウで、銀行員。",
+          "段取りは、スライドで組む。",
+          "汗かきです。"
+        ]
+      }
     },
     {
       "id": "gt_riya",
       "cityId": "agra",
       "nameJa": "リヤ",
       "titleJa": "ツアーの添乗員",
-      "characterId": "gt_riya"
+      "characterId": "gt_riya",
+      "sns": {
+        "introJa": [
+          "旗を振る仕事。",
+          "携帯は、いつも二台。",
+          "バスは、定刻に出したい。"
+        ]
+      }
     },
     {
       "id": "gt_agra_fort_old_man",
@@ -635,13 +655,26 @@
       "nameJa": "ドゥッガル",
       "callJa": "老人",
       "titleJa": "塔から動かない元陸軍大佐",
-      "characterId": "gt_duggal"
+      "characterId": "gt_duggal",
+      "sns": {
+        "introJa": [
+          "退役陸軍大佐。",
+          "鳥打ち帽は、四十年もの。",
+          "座る場所には、こだわる。"
+        ]
+      }
     },
     {
       "id": "gt_agra_finale_student",
       "cityId": "agra",
       "nameJa": "青年",
-      "characterId": "gt_agra_finale_student"
+      "characterId": "gt_agra_finale_student",
+      "sns": {
+        "introJa": [
+          "調べるのは、速い方。",
+          "ツアーは、学割で参加。"
+        ]
+      }
     },
     {
       "id": "gt_jagdeep",
@@ -649,40 +682,81 @@
       "nameJa": "ジャグディープ",
       "callJa": "男",
       "titleJa": "結婚前の二人を撮る写真家",
-      "characterId": "gt_jagdeep"
+      "characterId": "gt_jagdeep",
+      "sns": {
+        "introJa": [
+          "結婚前の二人を撮ってます。",
+          "反射板が相棒。",
+          "遅刻には、もう慣れた。"
+        ]
+      }
     },
     {
       "id": "gt_agra_chini_bride",
       "cityId": "agra",
       "nameJa": "花嫁になる人",
-      "characterId": "gt_agra_chini_bride"
+      "characterId": "gt_agra_chini_bride",
+      "sns": {
+        "introJa": [
+          "プネーから。式は半年後。",
+          "背景は、自分たちで選ぶ。"
+        ]
+      }
     },
     {
       "id": "gt_gurmeet",
       "cityId": "agra",
       "nameJa": "グルミート",
       "titleJa": "ハルバンスの息子",
-      "characterId": "gt_gurmeet"
+      "characterId": "gt_gurmeet",
+      "sns": {
+        "introJa": [
+          "カナダのブランプトンから。",
+          "トラックの会社をやってます。",
+          "鼻と肩幅は、親父ゆずり。"
+        ]
+      }
     },
     {
       "id": "gt_anwar",
       "cityId": "agra",
       "nameJa": "アンワル",
-      "characterId": "gt_anwar"
+      "characterId": "gt_anwar",
+      "sns": {
+        "introJa": [
+          "アーグラ一のガイド（甥いわく）。",
+          "ガイドして、四十年。",
+          "泣かない客は、帰さない。"
+        ]
+      }
     },
     {
       "id": "gt_samir",
       "cityId": "agra",
       "nameJa": "サミール",
       "titleJa": "宿の若い支配人",
-      "characterId": "gt_samir"
+      "characterId": "gt_samir",
+      "sns": {
+        "introJa": [
+          "南門近くの宿の、支配人です。",
+          "白鳥のタオル、折れます。",
+          "叔父は、アーグラ一のガイド。"
+        ]
+      }
     },
     {
       "id": "gt_vimla",
       "cityId": "agra",
       "nameJa": "ヴィムラー",
       "callJa": "女性",
-      "characterId": "gt_vimla"
+      "characterId": "gt_vimla",
+      "sns": {
+        "introJa": [
+          "ヒンディー語の教師を、三十八年。",
+          "ある墓の名誉回復をしています。",
+          "発音には、うるさいです。"
+        ]
+      }
     },
     {
       "id": "gt_agra_fatehpur_man",
@@ -690,19 +764,38 @@
       "nameJa": "ムケーシュ",
       "callJa": "男",
       "titleJa": "自分の家だけ建てられない建設業者",
-      "characterId": "gt_mukesh"
+      "characterId": "gt_mukesh",
+      "sns": {
+        "introJa": [
+          "建設業、三十年。",
+          "人の家は、たくさん建てた。",
+          "自分の家は、ただいま建設中。"
+        ]
+      }
     },
     {
       "id": "gt_agra_mariam_father",
       "cityId": "agra",
       "nameJa": "父親",
-      "characterId": "gt_agra_mariam_father"
+      "characterId": "gt_agra_mariam_father",
+      "sns": {
+        "introJa": [
+          "家族でピクニック中。",
+          "歴史は、映画で覚えた派。"
+        ]
+      }
     },
     {
       "id": "gt_agra_mariam_daughter",
       "cityId": "agra",
       "nameJa": "娘",
-      "characterId": "gt_agra_mariam_daughter"
+      "characterId": "gt_agra_mariam_daughter",
+      "sns": {
+        "introJa": [
+          "パパの説明を、訂正する係。",
+          "根拠は、携帯に。"
+        ]
+      }
     },
     {
       "id": "gt_sonia",
@@ -710,20 +803,40 @@
       "nameJa": "ソニア",
       "callJa": "女の子",
       "titleJa": "空き地のキャプテン",
-      "characterId": "gt_sonia"
+      "characterId": "gt_sonia",
+      "sns": {
+        "introJa": [
+          "空き地のキャプテン、十二歳。",
+          "目標は、州のチーム。",
+          "本物のバット、貯金中。"
+        ]
+      }
     },
     {
       "id": "gt_agra_ram_bagh_tea_master",
       "cityId": "agra",
       "nameJa": "茶屋の主人",
-      "characterId": "gt_agra_ram_bagh_tea_master"
+      "characterId": "gt_agra_ram_bagh_tea_master",
+      "sns": {
+        "introJa": [
+          "ラーム・バーグの向かいの茶屋。",
+          "噂は、麺より早く茹で上がる。"
+        ]
+      }
     },
     {
       "id": "gt_vinod",
       "cityId": "agra",
       "nameJa": "ヴィノード",
       "titleJa": "ツアーの運転手",
-      "characterId": "gt_vinod"
+      "characterId": "gt_vinod",
+      "sns": {
+        "introJa": [
+          "運転手。ガイドではありません。",
+          "白い車で、シークリーまで。",
+          "字は、娘の方がきれい。"
+        ]
+      }
     },
     {
       "id": "gt_vinod_mother",
@@ -756,13 +869,25 @@
       "id": "gt_agra_akbar_guard",
       "cityId": "agra",
       "nameJa": "番人",
-      "characterId": "gt_agra_akbar_guard"
+      "characterId": "gt_agra_akbar_guard",
+      "sns": {
+        "introJa": [
+          "シカンドラの番人。",
+          "猿とは、交渉で。"
+        ]
+      }
     },
     {
       "id": "gt_agra_fort_tourist",
       "cityId": "agra",
       "nameJa": "ツアーの客",
-      "characterId": "gt_agra_fort_tourist"
+      "characterId": "gt_agra_fort_tourist",
+      "sns": {
+        "introJa": [
+          "ツアーで、アーグラ城。",
+          "聞いた話は、すぐ言いたい。"
+        ]
+      }
     },
     {
       "id": "gt_pooja",

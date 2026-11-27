@@ -101,13 +101,47 @@ SNS（[SNS_PLAN.md](../../../SNS_PLAN.md)）の、出会った人の投稿に載
 | 3 | `gt_sns_monu_village.png` | モヌの投稿。村でダーディーが写真を見せる | 要らない |
 | 4 | `gt_sns_kunal_location.png` | クナールの投稿。次の撮影の下見 | 要らない |
 
-- 届いたら：WebP（品質80。アルバムと同じ）にして、`content/journeys/golden_triangle/public/assets/sns/<ID>.webp` に置く（自作の絵なので、登録も出典も要らない）。投稿は `stories/posts/delhi.ink` に `# post: <人物ID>` と `# images: <ID>` で書く。絵がないうちに `# images:` に書くと `content:build` が止まるので、投稿は絵が届いてから書く。
+- 届いたら：WebP（品質80。アルバムと同じ）にして、`content/journeys/golden_triangle/public/assets/sns/<ID>.webp` の仮の写真を差し替える（自作の絵なので、登録も出典も要らない。札は変えない）。投稿は 2026-11-27 に、仮の写真のまま `stories/posts/delhi.ink` に書いた（下の「2026-11-27-sns-india.md」）。
 - 投稿の案（文は仮。書くときに決める）：
   - 1 カムラ：`# where: delhi_hotel_hub`（宿の隣）、`# when: day >= 2`・`# until: epilogue delhi`（エピローグの翌朝に車で出るため）。一言「段ボール、あと三つ。」。コメント：ヒロイン「手伝いましょうか？」→カムラ「指図なら足りてる。」。
   - 2 ルーヒー：`# when: seen gt_delhi_hotel_homework`（作文の場面の後）。一言「今日も、先頭の車両」。作文の題の書き分け（`flag gt_delhi_roohi_metro_essay`）は、コメントの `# one_of:` で。
   - 3 モヌ：場所は村なので、`# where: 村の家`（場所の名前）。`# when: date gt_delhi_date_india_gate`（デートの夜より後にしたいなら `day >=` を足す）。一言「ダーディー、村で上映会」。携帯の画面の中身は描かないので、十三人目・十四人・アイスのどの道でも使える。
   - 4 クナール：`# where:` は書かない（下見の場所は明かさない）。`# when: date gt_delhi_date_agrasen_baoli`、アーグラに着いてからにするなら `# when: city delhi`。一言「次の現場、下見中」。コメント：ヒロイン「白い布、ジャスミートさんの？」→クナール「鳩よけです」。
 - 依頼書に書かなかったこと：4 の屋敷は実在の場所にしていない（SNS の日常の写真で、観光の場面ではないため）。3 の祖母は、インド門のアルバムの絵（D-059・D-062・D-063）の祖母と同じ人。
+
+## 2026-11-27-sns-india.md（SNS の、インド編で出会った人の写真）
+
+インド編の全員の SNS（[SNS_PLAN.md の「インド編：全員の SNS の方針」](../../../SNS_PLAN.md)）で、出会った人の投稿に載せる日常の写真23枚（デリー7・アーグラ9・ジャイプール7）。上の「2026-11-27-sns-delhi.md」の4枚と合わせて27枚。依頼書の各項目は「何の写真か・写すもの・写さないもの・視点・時間・光」までで、構図の％と Krea 2 の英文は、頼むときに足す。
+
+| 番号 | ファイル名 | 使う所（投稿） | つなぐのにコードの変更 |
+| --- | --- | --- | --- |
+| 1 | `gt_sns_nidhi_bus.png` | gt_post_delhi_nidhi_bus（ニディ） | 要らない |
+| 2 | `gt_sns_ramkishan_pillar.png` | gt_post_delhi_ramkishan_souvenir（ラームキシャン） | 要らない |
+| 3 | `gt_sns_suresh_desk.png` | gt_post_delhi_suresh_desk（スレーシュ） | 要らない |
+| 4 | `gt_sns_meena_book.png` | gt_post_delhi_meena_book（ミーナ） | 要らない |
+| 5 | `gt_sns_hamid_shelf.png` | gt_post_delhi_hamid_shelf（ハミード） | 要らない |
+| 6 | `gt_sns_harbans_roti.png` | gt_post_delhi_harbans_roti（ハルバンス） | 要らない |
+| 7 | `gt_sns_aman_invitations.png` | gt_post_delhi_aman_invitations（アマン） | 要らない |
+| 8 | `gt_sns_samir_swans.png` | gt_post_agra_samir_swans（サミール） | 要らない |
+| 9 | `gt_sns_nikhil_map.png` | gt_post_agra_nikhil_map（ニキル） | 要らない |
+| 10 | `gt_sns_tanvi_ring.png` | gt_post_agra_tanvi_ring（タンヴィ） | 要らない |
+| 11 | `gt_sns_duggal_front_seat.png` | gt_post_agra_duggal_bus（ドゥッガル） | 要らない |
+| 12 | `gt_sns_vimla_neem.png` | gt_post_agra_vimla_petition（ヴィムラー） | 要らない |
+| 13 | `gt_sns_mukesh_roof.png` | gt_post_agra_mukesh_roof（ムケーシュ） | 要らない |
+| 14 | `gt_sns_anwar_window.png` | gt_post_agra_anwar_window（アンワル） | 要らない |
+| 15 | `gt_sns_vinod_lemons.png` | gt_post_agra_vinod_lemons（ヴィノード） | 要らない |
+| 16 | `gt_sns_harbans_canada_roti.png` | gt_post_agra_harbans_roti（ハルバンス） | 要らない |
+| 17 | `gt_sns_aman_grandma_chair.png` | gt_post_jaipur_aman_chair（アマン） | 要らない |
+| 18 | `gt_sns_saleem_empty_board.png` | gt_post_jaipur_saleem_board（サリーム） | 要らない |
+| 19 | `gt_sns_gaura_ticket_tin.png` | gt_post_jaipur_gaura_tin（ガウラ） | 要らない |
+| 20 | `gt_sns_sushma_two_kilos.png` | gt_post_jaipur_sushma_pickles（スシュマ） | 要らない |
+| 21 | `gt_sns_divya_shadow_notes.png` | gt_post_jaipur_divya_shadow（ディヴィヤ） | 要らない |
+| 22 | `gt_sns_kamla_two_sandals.png` | gt_post_jaipur_kamla_sandals（カムラ） | 要らない |
+| 23 | `gt_sns_pooja_toll_split.png` | gt_post_jaipur_pooja_toll（プージャー） | 要らない |
+
+- 今は仮の写真：どの ID も `content/journeys/golden_triangle/public/assets/sns/<ID>.webp` に、無地の紙に「仮の写真」と ID を書いた絵（1344×896、WebP）を置き、投稿はもう書いてある（届けばゲームに出る）。
+- 届いたら：WebP（品質80）にして、同じ名前のファイルに差し替える。札は変えない。
+- 依頼書に書かなかったこと：場面にない後日談は、書いた人の作り（例：ラームキシャンの柱の置き物、ミーナの押し花、ガウラの缶の貯金、サリームの絵が早く売れたこと）。どの写真も、写っている人の見た目は [album-photos/00_characters.txt](../album-photos/00_characters.txt) の英文に合わせる。
 
 ## 2026-11-16.md
 
