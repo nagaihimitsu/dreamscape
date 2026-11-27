@@ -145,15 +145,17 @@
   --ds-layer-ignored-tap: 3000; /* the ring where an ignored tap landed, over everything */
   /* The colours, by role, with those above: --ds-glass-* the glass and its ink, --ds-gold the hairlines and icons,
      --ds-parchment the paper, --ds-slate-* the header's tools, --ds-focus the focus ring. */
-  /* What is pressed to go on, a choice: a pane of smoked glass over the scene with a gold hairline (2026-11-25 user decision:
+  /* What is pressed to go on, a choice: a pane of smoked glass over the scene with a white hairline (2026-11-25 user decision:
      the terracotta presses cut across the scene), apart from the light glass of the words. Its white words keep 6:1 or
      more over any picture (its show-through counted at white). */
   --ds-action: rgba(22, 28, 44, 0.72);
   --ds-action-deep: rgba(14, 18, 30, 0.8); /* its lower end */
   --ds-action-ink: #ffffff;
   --ds-action-fill: linear-gradient(180deg, var(--ds-action), var(--ds-action-deep));
-  --ds-action-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 6px 18px rgba(8, 10, 16, 0.28);
-  --ds-action-pressed-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 2px 8px rgba(8, 10, 16, 0.28);
+  /* Its edge: a white hairline catching the light (2026-11-27 user decision: no longer gold). */
+  --ds-action-edge: rgba(255, 255, 255, 0.32);
+  --ds-action-shadow: inset 0 0 0 1px var(--ds-action-edge), 0 6px 18px rgba(8, 10, 16, 0.28);
+  --ds-action-pressed-shadow: inset 0 0 0 1px var(--ds-action-edge), 0 2px 8px rgba(8, 10, 16, 0.28);
   --ds-action-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   --ds-emphasis: #93233a; /* emphasised words on the glass (# em:): 4.9:1 */
   --ds-speaker: #3d6aa6; /* the name band of a speaker without colours of their own */
@@ -550,7 +552,7 @@ h3 {
   color: var(--ds-ink);
   font-size: var(--ds-text-field);
 }
-/* Primary pressable (§2.3): a pane of smoked glass with the gold hairline, the same press as a talk's choice
+/* Primary pressable (§2.3): a pane of smoked glass with a white hairline, the same press as a talk's choice
    (--ds-action, 2026-11-25 user decision). It was an opaque slate rectangle; over a scene it cut the place off as a form's
    part (2026-11-27 user remark on the mini-game's start on an iPhone), so every primary press is now the glass. Its white
    words keep 6:1 or more over any picture and on the parchment (its show-through counted at white). */
@@ -578,7 +580,7 @@ h3 {
   filter: brightness(1.12);
 }
 .primary:active:enabled:not(:where([data-settling])) { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
-.primary:focus-visible { box-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 0 0 6px var(--ds-slate-900); }
+.primary:focus-visible { box-shadow: inset 0 0 0 1px var(--ds-action-edge), 0 0 0 6px var(--ds-slate-900); }
 .name-form .primary {
   margin-top: 7px;
 }
