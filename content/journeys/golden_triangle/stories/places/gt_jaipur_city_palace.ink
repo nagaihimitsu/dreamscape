@@ -11,7 +11,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_pagri
 # term: gt_term_moustache
-シティ・パレスの門の前に、赤いターバンと白い制服の門番が立っていた。立派な口ひげが、左右にくるりと巻き上がっている。
+シティ・パレスの門の前に、赤いターバンと白い制服の門番が立っていた。
+# speaker: narrator
+立派な口ひげが、左右にくるりと巻き上がっている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_jaipur_city_palace_guide_001
@@ -20,7 +22,9 @@ INCLUDE modules.ink
 # speaker: narrator
 観光客が次々と門番と並んで写真を撮っていく。門番は表情を変えず、ひげの角度だけを完璧に保っていた。
 # speaker: narrator
-門をくぐると、中庭がいくつも連なっていた。白と桃色の建物、細かな彫刻の柱。奥の方の建物には、見学者の入れない階もある。
+門をくぐると、中庭がいくつも連なっていた。白と桃色の建物、細かな彫刻の柱。
+# speaker: narrator
+奥の方の建物には、見学者の入れない階もある。
 # speaker: heroine
 # voice: gt_jaipur_city_palace_guide_002
 # photo: gt_album_j032 # photo_caption: 町の中の、もう一つの町
@@ -33,7 +37,9 @@ INCLUDE modules.ink
 # photo: gt_album_j033 # photo_caption: 銀の壺は、お風呂？
 なに、これ……！　お風呂？　……じゃないよね。何を入れるための壺なんだろう
 # speaker: narrator
-壺の陰で、サリー姿の女性と青年が、何やら言い合いをしていた。青年の手には、小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
+壺の陰で、サリー姿の女性と青年が、何やら言い合いをしていた。
+# speaker: narrator
+青年の手には、小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
 # speaker: heroine
 # voice: gt_jaipur_city_palace_guide_004
 ……あの二人、何か揉めてる。秤と、瓶……？
@@ -46,7 +52,9 @@ INCLUDE modules.ink
 # on_done: item gt_jaipur_sushma_lime_pickle
 # background: gt_bg_jaipur_city_palace
 # speaker: narrator
-人の背丈ほどもある銀の壺の陰で、言い合いは近づくほど大きくなった。{heroine_name}がそばまで来たところで、女性の声が跳ね上がった。
+人の背丈ほどもある銀の壺の陰で、言い合いは近づくほど大きくなった。
+# speaker: narrator
+{heroine_name}がそばまで来たところで、女性の声が跳ね上がった。
 # speaker: gt_jaipur_city_palace_woman
 # unnamed
 # voice: gt_jaipur_main_city_palace_battle_sushma_001
@@ -133,9 +141,10 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_city_palace
 { quiz_correct:
     # speaker: enemy
-    # voice: gt_jaipur_main_city_palace_battle_sushma_010
     # photo: gt_album_j036 # photo_caption: 四つの季節の門 # photo_with: gt_jaipur_city_palace_woman gt_vishal
-    四つの季節。春も、夏も、秋も、冬も。……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
+    四つの季節。春も、夏も、秋も、冬も
+    # speaker: enemy
+    ……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_city_palace_battle_sushma_011
@@ -181,8 +190,11 @@ INCLUDE modules.ink
 審判の答えを、二人が待っていた。{heroine_name}は、ヴィシャールが提げた秤を指さした。
 # speaker: heroine
 # emotion: serious
-# voice: gt_jaipur_main_city_palace_007
-五キロは無理でも、二キロなら入りますよね。……それで、漬物がなくなったら、電話してください。お母さんに、次の分を頼むって
+五キロは無理でも、二キロなら入りますよね
+# speaker: heroine
+……それで、漬物がなくなったら、電話してください
+# speaker: heroine
+お母さんに、次の分を頼むって
 # speaker: heroine
 # voice: gt_jaipur_main_city_palace_008
 なくなるたびに、電話する理由ができます

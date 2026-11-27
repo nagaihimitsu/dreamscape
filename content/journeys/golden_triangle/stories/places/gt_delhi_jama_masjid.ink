@@ -101,8 +101,9 @@ INCLUDE modules.ink
 こいつが、この店を売れと言ってきた。断った。そうしたら、賭けを持ちかけてきた
 # speaker: gt_zoheb
 # cutin: name
-# voice: gt_delhi_main_jama_masjid_battle_zoheb_002
-一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く。買わなきゃ、爺さんは店を売る。観光客が買うのは携帯のケースだけさ
+一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く
+# speaker: gt_zoheb
+買わなきゃ、爺さんは店を売る。観光客が買うのは携帯のケースだけさ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_delhi_main_jama_masjid_002
@@ -198,8 +199,11 @@ INCLUDE modules.ink
 # emotion: serious
 戻ってきたゾヘブは、{heroine_name}の顔を見て観念したように息を吐いた。ハミードには聞こえない声で言う。
 # speaker: gt_zoheb
-# voice: gt_delhi_main_jama_masjid_battle_zoheb_009
-爺さんの息子だよ。ドバイにいる。親父を引き取りたいけど、店がある限り動かないって。だから俺が買う役。賭けも、負けても納得できるようにって、俺が考えた
+爺さんの息子だよ。ドバイにいる
+# speaker: gt_zoheb
+親父を引き取りたいけど、店がある限り動かないって
+# speaker: gt_zoheb
+だから俺が買う役。賭けも、負けても納得できるようにって、俺が考えた
 # speaker: gt_zoheb
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_010
 俺は店なんか欲しくない。ガキの頃、冬じゅうここで匂いをかいでたんだ
@@ -283,7 +287,9 @@ INCLUDE modules.ink
 # se: phone_keypad
 # leave: enemy
 # leave: gt_zoheb
-店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
+店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。
+# speaker: narrator
+ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_main_jama_masjid_008

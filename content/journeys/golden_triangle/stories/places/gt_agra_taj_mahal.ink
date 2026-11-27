@@ -11,7 +11,11 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_taj_electric_bus
 # photo: gt_album_a007 # photo_caption: 手荷物検査の列でお菓子を食べる家族
-タージ・マハルの手前で、車は入れない。二人は電動の小さなバスに乗り換え、手荷物検査の列に並んだ。前の家族が、持ち込めないお菓子を慌てて食べている。
+タージ・マハルの手前で、車は入れない。
+# speaker: narrator
+二人は電動の小さなバスに乗り換え、手荷物検査の列に並んだ。
+# speaker: narrator
+前の家族が、持ち込めないお菓子を慌てて食べている。
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_agra_taj_mahal_guide_001
@@ -75,8 +79,11 @@ INCLUDE modules.ink
 か、確保？
 # speaker: enemy
 # cutin: name
-# voice: gt_agra_main_taj_mahal_battle_nikhil_002
-ニキルです。ラクナウで銀行員をしています。恋人のタンヴィが、今トイレの列に並んでいて。戻ってきたら、あのベンチで指輪を出すんです。三か月前から決めてたんです
+ニキルです。ラクナウで銀行員をしています
+# speaker: enemy
+恋人のタンヴィが、今トイレの列に並んでいて
+# speaker: enemy
+戻ってきたら、あのベンチで指輪を出すんです。三か月前から決めてたんです
 # speaker: enemy
 # voice: gt_agra_main_taj_mahal_battle_nikhil_003
 写真を撮るはずだった友達が、来られなくなって。僕が並び直したら、その間に彼女が戻ってきてしまう
@@ -100,7 +107,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # together: enemy gt_tanvi
 # photo: gt_album_a016 # photo_caption: すべてを理解した顔のタンヴィ # photo_with: gt_nikhil gt_tanvi
-予定より早く、緑のクルタの女性が戻ってきた。タンヴィだ。ベンチの二人と、汗だくの恋人と、彼の胸ポケットを順に見て、彼女はすべてを理解した顔になった。
+予定より早く、緑のクルタの女性が戻ってきた。タンヴィだ。
+# speaker: narrator
+ベンチの二人と、汗だくの恋人と、彼の胸ポケットを順に見て、彼女はすべてを理解した顔になった。
 # speaker: narrator
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
 # speaker: enemy
@@ -235,7 +244,9 @@ INCLUDE modules.ink
 # leave: enemy
 # leave: gt_tanvi
 # photo: gt_album_a018 # photo_caption: ベンチではなく出口へ、少し近い距離で # photo_show: small # photo_with: gt_nikhil gt_tanvi
-二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
+二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。
+# speaker: narrator
+さっきより、少しだけ近い距離で。
 # speaker: heroine
 # reaction: heroine,shy,blush
 # voice: gt_agra_main_taj_mahal_007
@@ -251,7 +262,9 @@ INCLUDE modules.ink
 # background: gt_bg_agra_taj_mahal
 # ambience: amb_crowd_outdoor
 # speaker: narrator
-タージ・マハルの正門の近くに、ひときわ大きな人だかりができていた。真ん中に、白いクルタに銀の握りの杖を持った老ガイドが立っている。
+タージ・マハルの正門の近くに、ひときわ大きな人だかりができていた。
+# speaker: narrator
+真ん中に、白いクルタに銀の握りの杖を持った老ガイドが立っている。
 # speaker: narrator
 アンワルだ、とツアーの客らしい男が連れにささやいた。この町で一番泣かせるガイドだよ、と。
 # speaker: narrator
@@ -262,7 +275,9 @@ INCLUDE modules.ink
 そして最後の石が置かれた日。皇帝は命じたのです。二度とこれほどのものを造らせぬよう、二万の職人の手を、切り落とせと
 # speaker: narrator
 # photo: gt_album_a131 # photo_caption: 一番泣かせるガイドの人だかり # photo_with: gt_anwar
-観客から、悲鳴に近い溜め息が漏れた。何人かは本当に目を拭っている。アンワルは満足げに杖を鳴らし、ぐるりと見回して、こちらで目を止めた。
+観客から、悲鳴に近い溜め息が漏れた。何人かは本当に目を拭っている。
+# speaker: narrator
+アンワルは満足げに杖を鳴らし、ぐるりと見回して、こちらで目を止めた。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_002
 おお、ご覧なさい！　甥の宿にお泊まりの、日本から来た新婚のお二人です。愛の記念碑に、愛を誓いに来られた
@@ -331,8 +346,9 @@ INCLUDE modules.ink
 # speaker: narrator
 夕方、一行は川を渡った。メヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
 # speaker: enemy
-# voice: gt_agra_finale_battle_anwar_007
-皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです
+皇帝は、この岸に、自分のための黒いタージを建てるつもりだった
+# speaker: enemy
+白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
 # speaker: heroine
@@ -341,7 +357,11 @@ INCLUDE modules.ink
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
 # term: gt_term_tavernier
-フランスの宝石商、タヴェルニエだよ。三百六十年前、タージが建っていくのをその目で見た男だ。手を切る話の二万という数も、あの男の旅行記にある
+フランスの宝石商、タヴェルニエだよ
+# speaker: enemy
+三百六十年前、タージが建っていくのをその目で見た男だ
+# speaker: enemy
+手を切る話の二万という数も、あの男の旅行記にある
 # speaker: narrator
 アンワルは杖の先で、足もとの土を軽く突いた。
 -> gt_agra_finale_battle_claim ->
@@ -353,7 +373,9 @@ INCLUDE modules.ink
 -> reasoning ->
 { evidence_result == "failure":
     # speaker: enemy
-    それは黒い墓の話ではないね。昔の人が向こう岸について何と書いたか。この岸の土から何が出たか。わしが聞きたいのは、その二つだ
+    それは黒い墓の話ではないね。昔の人が向こう岸について何と書いたか
+    # speaker: enemy
+    この岸の土から何が出たか。わしが聞きたいのは、その二つだ
     -> stop
 }
 # speaker: heroine
@@ -383,8 +405,9 @@ INCLUDE modules.ink
 # term: gt_term_black_taj
 アンワルは杖をついたまま、しばらく黙った。それから、観客に向かって両手を広げた。
 # speaker: enemy
-# voice: gt_agra_finale_battle_anwar_008
-皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう。あなたの本当の話で、この人たちを泣かせてみなさい
+皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう
+# speaker: enemy
+あなたの本当の話で、この人たちを泣かせてみなさい
 # speaker: narrator
 # photo: gt_album_a136 # photo_caption: 五十人の目の前へ # photo_with: gt_anwar
 観客が、拍手で彼女を前へ押し出した。逃げ場はない。五十人の目が、こちらを見ている。
@@ -458,8 +481,9 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,shy,blush
 # photo: gt_album_a138 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
-# voice: gt_agra_finale_012
-わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
+わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です
+# speaker: heroine
+わたしたちのことは、わたしたちで決めます
 # speaker: narrator
 # pause: 800
 一瞬の静寂。
@@ -469,8 +493,9 @@ INCLUDE modules.ink
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。
 # speaker: enemy
-# voice: gt_agra_finale_battle_anwar_013
-参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる
+参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね
+# speaker: enemy
+タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる
 -> quiz(5) ->
 # background: gt_bg_agra_mehtab_bagh_sunset
 { quiz_correct:
@@ -546,5 +571,9 @@ INCLUDE modules.ink
 === gt_agra_finale_battle_claim ===
 # background: gt_bg_agra_mehtab_bagh_sunset
 # speaker: enemy
-黒い墓は、この岸に建つはずだった。違うと言うなら、昔の記録から一つ、この岸の土から一つ。二つ並べて、わしの話のどこが嘘か見せてみなさい
+黒い墓は、この岸に建つはずだった
+# speaker: enemy
+違うと言うなら、昔の記録から一つ、この岸の土から一つ
+# speaker: enemy
+二つ並べて、わしの話のどこが嘘か見せてみなさい
 ->->

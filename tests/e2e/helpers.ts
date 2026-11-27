@@ -724,6 +724,7 @@ export const ops = {
       if (await choice.count()) await choice.first().click();
       else if (await end.isVisible()) await end.click();
       else {
+        await endPhotoTurn(line);
         await expect(line).toHaveAttribute("data-ready", "true");
         const text = await line.textContent();
         await line.click();
@@ -1050,8 +1051,14 @@ async function act(page: Page, state: GameState, pick: Pick) {
   // During a line's pause (# pause:) or its typing, a tap only shows the whole line and saves nothing: the line is let
   // finish first, so the tap goes on.
   const line = page.getByTestId("dialogue-text");
+  await endPhotoTurn(line);
   await expect(line).toHaveAttribute("data-ready", "true");
   return line.click();
+}
+
+/** A line's large photo has its turn first (photo-turn.ts): a tap ends it, and the line starts. */
+async function endPhotoTurn(line: Locator) {
+  if (await line.getAttribute("data-photo-turn") !== null) await line.click();
 }
 
 export interface PlayOptions {

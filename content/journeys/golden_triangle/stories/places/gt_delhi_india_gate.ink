@@ -14,7 +14,9 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_india_gate
 # speaker: narrator
 # term: gt_term_tiffin
-インド門の前の芝生は、敷物でまだら模様になっていた。風船売り、アイスの屋台、銀の弁当箱を開ける家族。戦没者の記念門の足もとで、デリーの人たちは、日曜の居間みたいにくつろいでいる。
+インド門の前の芝生は、敷物でまだら模様になっていた。風船売り、アイスの屋台、銀の弁当箱を開ける家族。
+# speaker: narrator
+戦没者の記念門の足もとで、デリーの人たちは、日曜の居間みたいにくつろいでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_delhi_date_india_gate_001
@@ -27,7 +29,11 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_india_gate_monu_001
 Photo, please!
 # speaker: narrator
-振り返ると、敷物の上に十二人いた。腰の曲がった祖母から、よちよち歩きの子まで。ハリヤーナー州の村から、年に一度のデリー見物に来たのだという。
+振り返ると、敷物の上に十二人いた。
+# speaker: narrator
+腰の曲がった祖母から、よちよち歩きの子まで。
+# speaker: narrator
+ハリヤーナー州の村から、年に一度のデリー見物に来たのだという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_india_gate_002
@@ -82,7 +88,11 @@ Photo, please!
     }
     # speaker: narrator
     # photo: gt_album_d057 # photo_caption: 写真屋を呼んで、十四人
-    芝生を回っていた写真屋が、首から小さな印刷機を下げてやってきた。その場で刷って、一枚ずつ売っている。十四人が並び、誰かの子が泣きだし、もう一枚撮り直した。
+    芝生を回っていた写真屋が、首から小さな印刷機を下げてやってきた。
+    # speaker: narrator
+    その場で刷って、一枚ずつ売っている。
+    # speaker: narrator
+    十四人が並び、誰かの子が泣きだし、もう一枚撮り直した。
 * [「アイスを人数分、買ってきます」 # option: buy_ice]
     # profile: playful
     # memory: gt_delhi_date_india_gate_memory
@@ -101,15 +111,18 @@ Photo, please!
     }
     # speaker: narrator
     # photo: gt_album_d058 # photo_caption: 両手にアイスを抱えて走ってくる一人
-    十四本のアイスを抱えて戻ると、写真はもう撮り終わっていた。撮ったのは彼女で、写っていたのは十二人と、両手にアイスを抱えて走ってくる一人だった。
+    十四本のアイスを抱えて戻ると、写真はもう撮り終わっていた。
+    # speaker: narrator
+    撮ったのは彼女で、写っていたのは十二人と、両手にアイスを抱えて走ってくる一人だった。
 -
 # speaker: narrator
 写真のあと、祖母は門を見上げたまま動かなくなった。イギリス軍として戦って亡くなった、インドの兵士たちの記念門だ。
 # speaker: narrator
 モヌが、面倒くさそうに通訳する。
 # speaker: gt_monu
-# voice: gt_delhi_date_india_gate_monu_003
-ダーディーのおじいさんの名前が、あの門に彫ってあるんだって。最初の世界大戦で、遠い国で死んだ兵士。毎年探して、毎年見つからない
+ダーディーのおじいさんの名前が、あの門に彫ってあるんだって
+# speaker: gt_monu
+最初の世界大戦で、遠い国で死んだ兵士。毎年探して、毎年見つからない
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_date_india_gate_010
@@ -171,13 +184,21 @@ Photo, please!
 柵の外から見上げる門は、思ったよりずっと高かった。名前は細かい文字で、壁一面に並んでいる。
 { cond("flag gt_delhi_monu_zoom"):
     # speaker: narrator
-    モヌが渋々、携帯のカメラを最大まで寄せた。画面の中で、石の文字が一つずつ大きくなる。気づけば彼は、誰よりも熱心に画面を動かしていた。
+    モヌが渋々、携帯のカメラを最大まで寄せた。
+    # speaker: narrator
+    画面の中で、石の文字が一つずつ大きくなる。
+    # speaker: narrator
+    気づけば彼は、誰よりも熱心に画面を動かしていた。
     # speaker: gt_monu
     # voice: gt_delhi_date_india_gate_monu_007
     ダーディー、名前、もう一回言って。……ラーム・シン。待って、今、それっぽいのが
 - else:
     # speaker: narrator
-    彼女は目を細め、文字の列を指でたどった。読めるのは、太い見出しの英字だけだ。見かねたモヌが、黙って携帯を差し出した。望遠にすると、石の文字がぐっと近づく。
+    彼女は目を細め、文字の列を指でたどった。
+    # speaker: narrator
+    読めるのは、太い見出しの英字だけだ。見かねたモヌが、黙って携帯を差し出した。
+    # speaker: narrator
+    望遠にすると、石の文字がぐっと近づく。
     # speaker: gt_monu
     # voice: gt_delhi_date_india_gate_monu_008
     貸すだけだからね。ラーム・シン、だっけ。あ、待って
@@ -211,7 +232,9 @@ Photo, please!
 # voice: gt_delhi_date_india_gate_019
 モヌくん、おばあさんに聞いてもらえる？　名前を、探したいですかって
 # speaker: narrator
-モヌが通訳すると、祖母は少し考え、もういいのよ、というように手のひらを小さく振った。それから、門ではなく、芝生の方を指さした。
+モヌが通訳すると、祖母は少し考え、もういいのよ、というように手のひらを小さく振った。
+# speaker: narrator
+それから、門ではなく、芝生の方を指さした。
 # speaker: gt_monu
 # voice: gt_delhi_date_india_gate_monu_011
 名前は、去年まででいいって。今年は、ひ孫がここで走ってるのを見に来たんだって。……初耳なんだけど

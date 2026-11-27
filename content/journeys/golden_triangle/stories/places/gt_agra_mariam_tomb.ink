@@ -15,7 +15,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_akbar
 # term: gt_term_mariam_uz_zamani
-アクバル廟から少し離れた所に、赤い砂岩の四角い建物が、芝生の真ん中に静かに建っていた。マリアム・ウッザマーニーの墓廟。訪れる人は、ずっと少ない。
+アクバル廟から少し離れた所に、赤い砂岩の四角い建物が、芝生の真ん中に静かに建っていた。
+# speaker: narrator
+マリアム・ウッザマーニーの墓廟。訪れる人は、ずっと少ない。
 木陰で、ピクニックの家族が弁当を広げていた。父親が、子どもたちに得意げに説明している。
 # speaker: gt_agra_mariam_father
 # voice: gt_agra_date_mariam_tomb_agra_mariam_father_001
@@ -102,15 +104,18 @@ INCLUDE modules.ink
 
 = vimla_again
 # speaker: narrator
-墓廟の入口に、見覚えのあるクリップボードがあった。白髪をきっちりまとめた女性が、ピクニックの父親に、静かに一枚の紙を差し出している。
+墓廟の入口に、見覚えのあるクリップボードがあった。
+# speaker: narrator
+白髪をきっちりまとめた女性が、ピクニックの父親に、静かに一枚の紙を差し出している。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_agra_date_mariam_tomb_010
 # photo: gt_album_a082 # photo_caption: ヴィムラー先生、ふたたび # photo_with: gt_vimla gt_agra_mariam_father
 ヴィムラー先生！
 # speaker: gt_vimla
-# voice: gt_agra_date_mariam_tomb_vimla_001
-あら。署名の前に読む人ね。……今度の請願書は、これ。案内やガイドの説明で、この方を正しい名前で呼んでほしい、という内容
+あら。署名の前に読む人ね。……今度の請願書は、これ
+# speaker: gt_vimla
+案内やガイドの説明で、この方を正しい名前で呼んでほしい、という内容
 # speaker: narrator
 紙には、小さな字で、三行だけ書いてあった。確かめられることだけを、確かめられる言葉で。大きな字は、どこにもない。
 # speaker: gt_vimla
@@ -153,8 +158,9 @@ INCLUDE modules.ink
 # speaker: narrator
 言い合う父と娘の横で、それまで黙っていた祖母が、ゆっくり口を開いた。娘が英語に訳してくれる。
 # speaker: gt_agra_mariam_daughter
-# voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_004
-おばあちゃんが言ってる。名前なんてどうでもいい、って男の人は言うけど、それは、ずっと自分の名前で呼ばれてきた人の言い方だって
+おばあちゃんが言ってる
+# speaker: gt_agra_mariam_daughter
+名前なんてどうでもいい、って男の人は言うけど、それは、ずっと自分の名前で呼ばれてきた人の言い方だって
 # speaker: gt_agra_mariam_daughter
 # voice: gt_agra_date_mariam_tomb_agra_mariam_daughter_005
 おばあちゃんは、結婚してから、ずっと『誰々の嫁』『誰々の母』だったから。……初めて聞いた、そんな話

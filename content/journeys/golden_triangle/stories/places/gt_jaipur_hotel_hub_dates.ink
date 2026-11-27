@@ -26,7 +26,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # photo: gt_album_j098 # photo_caption: 楽隊の鳴る、夜の屋上
 # term: gt_term_dhol
-宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
+宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。
+# speaker: narrator
+どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
 # speaker: heroine
 # voice: gt_jaipur_date_confession_001
 この町、毎晩、誰かが結婚してるのかな。楽隊の音って、知らない人のなのに、こっちまでうれしくなるね
@@ -307,7 +309,9 @@ INCLUDE modules.ink
     {
     - cond("flag gt_agra_confessed"):
         # speaker: narrator
-        屋上に誘ったのは、今夜もこちらだった。彼女も、たぶん分かっている。楽隊の音のする方を見たまま、こちらが口を開くのを待っていた。
+        屋上に誘ったのは、今夜もこちらだった。彼女も、たぶん分かっている。
+        # speaker: narrator
+        楽隊の音のする方を見たまま、こちらが口を開くのを待っていた。
         { cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
             # speaker: narrator
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。
@@ -317,7 +321,9 @@ INCLUDE modules.ink
         話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
     - else:
         # speaker: narrator
-        夕食のあと、少し涼もうと屋上に誘ったのは、こちらだった。彼女は手すりにもたれて、遠くの楽隊に合わせて、指で拍子をとっている。
+        夕食のあと、少し涼もうと屋上に誘ったのは、こちらだった。
+        # speaker: narrator
+        彼女は手すりにもたれて、遠くの楽隊に合わせて、指で拍子をとっている。
         言うなら、今だと思った。
         # speaker: heroine
         # voice: gt_jaipur_confession_lead_010
@@ -579,8 +585,9 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_her_confession_003
 デリーの最後の朝、カムラさんが言ってたでしょ。言いたいことは言いなさいって
 # speaker: heroine
-# voice: gt_jaipur_date_her_confession_004
-六十年、言わなかった人の言葉だから、重かった。アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
+六十年、言わなかった人の言葉だから、重かった
+# speaker: heroine
+アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
 # speaker: heroine
 # emotion: smile
 # voice: gt_jaipur_date_her_confession_005
@@ -674,7 +681,9 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_her_confession_022
 旅が終わったあとのことは、一緒に決めようね。……最初の一個は、わたしが決めちゃったけど
 # speaker: narrator
-遠くの楽隊が、ひときわ大きく鳴った。よその人のお祝いだと分かっていても、今夜は少しだけ、自分たちのために鳴っている気がした。
+遠くの楽隊が、ひときわ大きく鳴った。
+# speaker: narrator
+よその人のお祝いだと分かっていても、今夜は少しだけ、自分たちのために鳴っている気がした。
 -> END
 
 // 始めるまでに関係の値が変わり、今は受け入れられない値になった道（ふつうは通らない）。彼女は言いかけてやめる。返事は決まらない。

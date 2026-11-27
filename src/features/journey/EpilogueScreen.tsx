@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { battles, dialogueExpressions, dialogueReactions, episodes, getCityContent, storyState } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -23,7 +23,8 @@ import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
-import { useSceneStage } from "../../components/useSceneStage";
+import { stageLayout, useSceneStage } from "../../components/useSceneStage";
+import { useStageGlide } from "../../components/useStageGlide";
 import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -84,7 +85,10 @@ export function EpilogueScreen({
   // `# leave:` takes her or them off until they come again (her next line or reaction, their next line or reaction).
   // Only who stands there is drawn.
   const stageScene = sceneStageOf(active.kind ?? "epilogue", person?.characterId);
-  const { stage, focus } = useSceneStage(stageLine(frame, storyState.people, { heroine: !!reaction, enemy: !!personReaction }), stageScene);
+  const { stage, focus, leaving } = useSceneStage(stageLine(frame, storyState.people, { heroine: !!reaction, enemy: !!personReaction }), stageScene, "", reduceMotion);
+  // Those who stay walk to their new places as someone comes or goes (useStageGlide).
+  const stageLayer = useRef<HTMLDivElement>(null);
+  useStageGlide(stageLayer, stageLayout(stage), { reduceMotion });
   const opposite = stage.opposite?.figure;
   const cast = stageCast(stage);
   // The scene's person's expression and mark, on their figure wherever it stands (the other people have one picture each).
@@ -142,7 +146,7 @@ export function EpilogueScreen({
         </div>
         <WeatherLayer weather={frame.weather} />
         <RecallLayer imageId={frame.recall} />
-        <PhotoShowLayer photo={frame.photo} aboveHeads={keepsAboveHeads(frame.speaker)} />
+        <PhotoShowLayer photo={frame.photo} />
         <NameCutInPlate cutIn={nameCut} />
         {/* Not under an arrival's title card, which holds the first line. */}
         <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} aboveHeads={keepsAboveHeads(frame.speaker)} quiet={!!frame.quiet} />
@@ -151,9 +155,9 @@ export function EpilogueScreen({
             middle while she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they
             come in. Two or three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as
             another goes). */}
-        <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
+        <div ref={stageLayer} className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
           data-together={cast.together}>
-          {stage.heroine && <div className={opposite ? "encounter-character-slot encounter-character-heroine" : undefined}>
+          {stage.heroine && <div className={opposite ? "encounter-character-slot encounter-character-heroine" : "vn-character-slot"}>
             <CharacterPortrait
               characterId="heroine"
               sceneId={active.episodeId}
@@ -161,6 +165,7 @@ export function EpilogueScreen({
               emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
               focus={focus.heroine}
               stand={frame.stand}
+              leaving={leaving.includes("heroine")}
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
@@ -168,7 +173,8 @@ export function EpilogueScreen({
           {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => {
             const personLooks = figureIsEnemy(figure, stageScene);
             return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "opposite" ? "enemy" : place}`}>
-              <CharacterPortrait characterId={figure.figure} emotion={personLooks ? personEmotion : "neutral"} focus={at}>
+              <CharacterPortrait characterId={figure.figure} emotion={personLooks ? personEmotion : "neutral"} focus={at}
+                leaving={leaving.includes(figure.figure)}>
                 {personLooks && personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
               </CharacterPortrait>
             </div>;

@@ -37,7 +37,9 @@ INCLUDE modules.ink
         夜、宿の中庭のランプの下。彼女は、赤茶色に濃く染まった手のひらを、こちらへ差し出した。
     - else:
         # speaker: narrator
-        夜、宿の中庭のランプの下。乾いたペーストを指でこそげ落とすと、オレンジ色の模様が現れた。彼女は、その手のひらを、こちらへ差し出した。
+        夜、宿の中庭のランプの下。乾いたペーストを指でこそげ落とすと、オレンジ色の模様が現れた。
+        # speaker: narrator
+        彼女は、その手のひらを、こちらへ差し出した。
     }
     # speaker: heroine
     # emotion: teasing
@@ -105,7 +107,13 @@ INCLUDE modules.ink
         親指の付け根、蔓が三回巻いたところ。模様のふりをした文字が、小さく並んでいた。アルファベットで、{player_name_latin}。
     - else:
         # speaker: narrator
-        親指の付け根、蔓が三回巻いたところ。模様のふりをした文字が、小さく並んでいた。上に一本線の引かれた、ヒンディー語の文字。読めない。それでも、自分の名前だと分かった。
+        親指の付け根、蔓が三回巻いたところ。
+        # speaker: narrator
+        模様のふりをした文字が、小さく並んでいた。
+        # speaker: narrator
+        上に一本線の引かれた、ヒンディー語の文字。
+        # speaker: narrator
+        読めない。それでも、自分の名前だと分かった。
     }
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
@@ -117,7 +125,9 @@ INCLUDE modules.ink
     わたしは、ちょっと、くすぐったい。ずっと、持って歩いてたんだもん
 - cond("flag gt_jaipur_mehndi_her_secret"):
     # speaker: narrator
-    手のひらの真ん中、孔雀の羽の付け根に、小さな文字の列があった。上に一本、横線が引かれた文字。ヒンディー語だ。読めない。
+    手のひらの真ん中、孔雀の羽の付け根に、小さな文字の列があった。
+    # speaker: narrator
+    上に一本、横線が引かれた文字。ヒンディー語だ。読めない。
     { cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
         けれど、何と書いてあるかは、もう知っている。
@@ -159,11 +169,14 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hotel_hub
 # bgm: morning
 # speaker: narrator
-朝、宿の帳場。手のひらの模様は、一晩で、オレンジから赤茶色のほうへ、ぐっと濃くなっていた。フロントの女性が、それを見て声を上げた。
+朝、宿の帳場。手のひらの模様は、一晩で、オレンジから赤茶色のほうへ、ぐっと濃くなっていた。
+# speaker: narrator
+フロントの女性が、それを見て声を上げた。
 # speaker: gt_jaipur_hotel_front
-# voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_001
 # term: gt_term_mehndi_colour
-まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ。旦那さまに、ってね。お姑さんに、って言う人もいるけど
+まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ
+# speaker: gt_jaipur_hotel_front
+旦那さまに、ってね。お姑さんに、って言う人もいるけど
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
 # voice: gt_jaipur_hotel_mehndi_morning_001
@@ -259,7 +272,9 @@ INCLUDE modules.ink
 # bgm: morning
 # speaker: narrator
 # term: gt_term_paratha
-朝、宿の中庭。テーブルに着くと、焼きたての平たいパンが運ばれてきた。こんがりした生地の合わせ目から、白い細切りがのぞいている。
+朝、宿の中庭。テーブルに着くと、焼きたての平たいパンが運ばれてきた。
+# speaker: narrator
+こんがりした生地の合わせ目から、白い細切りがのぞいている。
 # speaker: gt_jaipur_hotel_front
 お待たせ。ゆうべの大根よ。刻んで、香辛料と混ぜて、小麦の生地に包んで焼いたの
 # speaker: heroine
@@ -287,7 +302,11 @@ INCLUDE modules.ink
     あ、漬物！　漬物なら、持ってる
     # speaker: narrator
     # item_out: gt_jaipur_sushma_lime_pickle
-    彼女は鞄から小瓶を取り出し、ふたを開けた。シティ・パレスで、スシュマに握らされたライムの漬物だ。酸っぱい匂いが、中庭に広がる。
+    彼女は鞄から小瓶を取り出し、ふたを開けた。
+    # speaker: narrator
+    シティ・パレスで、スシュマに握らされたライムの漬物だ。
+    # speaker: narrator
+    酸っぱい匂いが、中庭に広がる。
     # speaker: heroine
     # reaction: heroine,teasing,music
     # voice: gt_jaipur_hotel_radish_morning_004
@@ -318,7 +337,11 @@ INCLUDE modules.ink
 # bgm: morning
 # speaker: narrator
 # photo: gt_album_j114 # photo_caption: 白い封筒と、一ルピー
-今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
+今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。
+# speaker: narrator
+着いた日に、フロントの女性に教わったとおり。
+# speaker: narrator
+お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
 # voice: gt_jaipur_finale_before_envelope_001
 割り切れない数は、縁起がいい。終わりにしないで、続いていく感じ、だったよね
@@ -466,7 +489,9 @@ INCLUDE modules.ink
 # leave: gt_pooja
 # emotion: shy
 # photo: gt_album_j132 # photo_caption: 指のすきまから
-プージャーはけらけら笑い、いとこたちを呼びに戻っていった。彼女は両手で顔を覆い、それから、指のすきまからこちらを見た。
+プージャーはけらけら笑い、いとこたちを呼びに戻っていった。
+# speaker: narrator
+彼女は両手で顔を覆い、それから、指のすきまからこちらを見た。
 # speaker: heroine
 # emotion: smile
 # voice: gt_jaipur_finale_after_reel_003

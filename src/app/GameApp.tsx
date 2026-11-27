@@ -83,7 +83,7 @@ import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { albumPages, showsMissedPhotos } from "../features/journey/album-pages";
 import { PhotoShowContext, shownPrintOf, type PhotoShowCue, type PrintFlight } from "../components/PhotoShow";
 import { ITEM_LEAVE_MS } from "../components/item-show";
-import { photoShowsLarge } from "../content/tags";
+import { photoShowsLarge, type StoryPhoto } from "../content/tags";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 import { snsArrivedIds, snsNightCard } from "../features/journey/sns";
 import { toggleSnsLike } from "../domain/sns";
@@ -812,15 +812,16 @@ export function GameApp({
     game?.activeTourism?.phase === "guide" ||
     (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
   );
-  // A photo shown large (PhotoShowLayer; the default since 2026-11-25) has its card only once its line has gone: the
-  // journey's first comes from the large picture (with where the album is), any other flies as a print into ≡メニュー
-  // (PhotoShowFlight) and its card is only said. The card goes after its few seconds, or with the story scene it was
-  // shown over.
+  // A photo shown large (PhotoShowLayer; the default since 2026-11-25) has its card only once its turn has ended (a tap,
+  // before its line starts: photo-turn.ts, 2026-11-27): the journey's first comes from the large picture (with where the
+  // album is), any other flies as a print into ≡メニュー (PhotoShowFlight) and its card is only said. The card goes after
+  // its few seconds, or with the story scene it was shown over. `donePhoto`: the line's photo whose turn has ended.
   const linePhoto = lineFrameOnScreen(game)?.photo;
-  const largePhotoId = photoShowsLarge(linePhoto) ? linePhoto.imageId : undefined;
+  const [donePhoto, setDonePhoto] = useState<StoryPhoto | null>(null);
+  const largePhotoId = photoShowsLarge(linePhoto) && linePhoto !== donePhoto ? linePhoto.imageId : undefined;
   const printLeave = useItemShowLeave(largePhotoId, undefined, replacedGame);
   const [printFlight, setPrintFlight] = useState<PrintFlight | null>(null);
-  // Read before paint as the print's line goes: whether its print was on screen (高速送り may have run past it) and is
+  // Read before paint as the print goes (its turn ended, or its line went): whether its print was on screen (高速送り may have run past it) and is
   // the photo just taken (a line read again only takes its print away).
   useLayoutEffect(() => {
     if (!printLeave) return;
@@ -843,13 +844,15 @@ export function GameApp({
   const albumCityId = game?.currentCityId;
   const photoShowCue = useMemo<PhotoShowCue>(() => ({
     held: photoHeld,
+    done: donePhoto,
+    onDone: setDonePhoto,
     fresh: photoNotice ? { imageId: photoNotice.photo.imageId, sound: !!photoNotice.sound } : undefined,
     stampOf: (imageId) => {
       const record = album?.find((photo) => photo.imageId === imageId);
       const view = record && albumCityId ? albumPages([record], journeyAlbumContent(albumCityId))[0]?.photos[0] : undefined;
       return view && `${view.placeJa} · ${view.whenJa}`;
     },
-  }), [photoNotice, album, albumCityId, photoHeld]);
+  }), [photoNotice, album, albumCityId, photoHeld, donePhoto]);
   // 旅の図鑑's card holds the photo's card as it holds 「ことばを覚えた」: it shows (its whole time) once the card closes.
   const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown && !momentCovers ? photoNotice : null;
   const shownPhotoNoticeId = shownPhotoNotice?.id;

@@ -13,12 +13,16 @@ INCLUDE modules.ink
 # background: gt_bg_agra_guru_ka_taal
 # speaker: narrator
 # photo: gt_album_a103 # photo_caption: 幹線道路のそばの、古い石の池
-デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。
+デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。
+# speaker: narrator
+その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。
 雨水をためる池として、四百年あまり前に造られた。そのそばに、シク教の礼拝所が建っている。
 # speaker: narrator
 # term: gt_term_tegh_bahadur
 # term: gt_term_aurangzeb
-言い伝えでは、九代目のグル、テーグ・バハードゥルが、ここで皇帝アウラングゼーブの前に自ら進み出て、捕らえられたという。
+九代目のグル、テーグ・バハードゥルには、こんな言い伝えがある。
+# speaker: narrator
+ここで皇帝アウラングゼーブの前に自ら進み出て、捕らえられたのだという。
 # speaker: heroine
 # voice: gt_agra_date_guru_ka_taal_001
 道路の音が、すごい。でも、池の方を向くと、少しだけ静かになるね
@@ -38,7 +42,11 @@ INCLUDE modules.ink
     ハルバンスさん！　どうして、アーグラに？
 - else:
     # speaker: narrator
-    奥の長い敷物の端から、大きな声が飛んできた。白いひげの大柄な老人が、こちらを手招きしていた。外国の若い二人が珍しいらしい。
+    奥の長い敷物の端から、大きな声が飛んできた。
+    # speaker: narrator
+    白いひげの大柄な老人が、こちらを手招きしていた。
+    # speaker: narrator
+    外国の若い二人が珍しいらしい。
     # speaker: gt_harbans
     # cutin: name
     # voice: gt_agra_date_guru_ka_taal_harbans_002
@@ -46,7 +54,9 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # together: gt_harbans gt_gurmeet
-ハルバンスの隣には、同じ鼻と同じ肩幅の、四十代くらいの男が座っていた。二人のあいだには、ちょうど一人分の隙間が空いている。
+ハルバンスの隣には、同じ鼻と同じ肩幅の、四十代くらいの男が座っていた。
+# speaker: narrator
+二人のあいだには、ちょうど一人分の隙間が空いている。
 # speaker: gt_harbans
 # voice: gt_agra_date_guru_ka_taal_harbans_003
 息子のグルミートだ。カナダから来た。わしを連れて帰るつもりで
@@ -123,9 +133,10 @@ INCLUDE modules.ink
 # voice: gt_agra_date_guru_ka_taal_007
 ごめんなさい。伝言は、運べません
 # speaker: heroine
-# voice: gt_agra_date_guru_ka_taal_008
 # photo: gt_album_a107 # photo_caption: 「何が、怖いんですか」 # photo_with: gt_harbans gt_gurmeet
-わたしが伝えたら、お二人の言葉じゃなくなっちゃうから。……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
+わたしが伝えたら、お二人の言葉じゃなくなっちゃうから
+# speaker: heroine
+……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
 # speaker: narrator
 二人とも、同時に彼女を見た。怒っているというより、そんなことを聞かれたのは初めてだ、という顔だった。
 { cond("flag gt_delhi_harbans_fear_told"):
@@ -135,14 +146,16 @@ INCLUDE modules.ink
     # speaker: narrator
     ハルバンスは、しばらく豆の皿を見ていた。それから、息子の方を見ないまま、口を開いた。
     # speaker: gt_harbans
-    # voice: gt_agra_date_guru_ka_taal_harbans_006
-    ……向こうへ行ったら、わしは、何も運ばない人になる。四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
+    ……向こうへ行ったら、わしは、何も運ばない人になる
+    # speaker: gt_harbans
+    四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
     # speaker: narrator
     グルミートが、初めて父親の方を向いた。そんな話は、一度も聞いたことがなかったらしい。
 - else:
     # speaker: gt_harbans
-    # voice: gt_agra_date_guru_ka_taal_harbans_007
-    ……向こうへ行ったら、わしは、何も運ばない人になる。四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
+    ……向こうへ行ったら、わしは、何も運ばない人になる
+    # speaker: gt_harbans
+    四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
     # speaker: narrator
     グルミートが、初めて父親の方を向いた。
 }
@@ -155,7 +168,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: truck_horn
 # photo: gt_album_a108 # photo_caption: 長い警笛、「冬は、だめだ。道が白い」 # photo_with: gt_harbans gt_gurmeet
-食堂の窓の外を、トラックが一台、長い警笛を鳴らして通り過ぎた。ハルバンスは、その音が遠ざかるまで、黙って聞いていた。
+食堂の窓の外を、トラックが一台、長い警笛を鳴らして通り過ぎた。
+# speaker: narrator
+ハルバンスは、その音が遠ざかるまで、黙って聞いていた。
 # speaker: gt_harbans
 # pause: 900
 # voice: gt_agra_date_guru_ka_taal_harbans_008

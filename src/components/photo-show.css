@@ -1,18 +1,14 @@
 /* A line's photo shown large (PhotoShow.tsx; 2026-11-12, the default since 2026-11-25): the album picture as a print
    with a white border and a wider margin under it, where its caption is written by hand and its stamp (the place and
    「n日目 hh:mm」) is pressed. It lies over the portraits (dimmed by the layer's veil) and under the window (z-index 2),
-   in the area below the header, below the notices under the header (--notices-h, as the item card), and above the heads
-   of the people on stage or under their faces (--room-top, --room-bottom: figures-top.ts; 2026-11-25 user decisions: their
-   faces stay seen as they speak). The picture keeps its own ratio and fits within the width and that room, so the
-   window below stays readable. A tap on the print opens it larger (.photo-show-viewer, below; 2026-11-25 user request);
-   a tap anywhere else on the layer reads the line on, as anywhere on the scene. The album's pictures are the author's own art (never
+   in the area below the header, below the notices under the header (--notices-h, as the item card), at the same size on
+   every line (2026-11-27 user decision: not made smaller beside the faces of whoever speaks). The picture keeps its own
+   ratio and fits within the width and its height. The print has its own turn before its line (photo-turn.ts): a tap
+   anywhere, the print too, ends it and the print goes quickly (.photo-show-leaving). The album's pictures are the author's own art (never
    credited), so a print just taken may develop through a filter. The veil dims the whole scene, behind the header too
    (2026-11-25 user decision, after an iPhone: the band behind the header was left brighter than the dimmed scene). */
 
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --photo-show-photo-print-edge: #2f6fd6;
-}
 :root {
   --photo-print-margin: #fbfaf6; /* the print's paper */
   --photo-print-stamp: #b4532a; /* a date stamp's orange ink */
@@ -27,8 +23,7 @@
   justify-content: center;
   align-items: flex-start;
   /* The print's top (its upper edge, from the scene's top), which its picture's height counts from. */
-  --photo-top: max(calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px))),
-    calc(var(--room-top, 0px) + 8px));
+  --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px)));
   padding: var(--photo-top) 16px 0;
   background: var(--stage-photo-veil);
   pointer-events: none;
@@ -54,10 +49,8 @@
   width: auto;
   height: auto;
   max-width: 100%;
-  /* Clear of the faces on stage (--room-bottom, figures-top.ts): the room left under the print's top, less its white
-     border, its margin's words on up to two lines and a little air; never smaller than 120 px (on a short screen it may
-     then lie over a face), never larger than 40 % of the screen. */
-  max-height: clamp(120px, calc(var(--room-bottom, 100dvh) - var(--photo-top) - 80px), 40dvh);
+  /* Never larger than 40 % of the screen, so the window below stays clear. */
+  max-height: 40dvh;
   border-radius: var(--ds-radius-hair);
 }
 .photo-print-margin {
@@ -91,50 +84,12 @@
 @keyframes photo-show-in {
   from { opacity: 0; transform: rotate(-1.5deg) scale(0.94); }
 }
-/* The print on the scene takes a tap (it opens larger); the layer around it does not. */
-.photo-show-layer > .photo-print {
-  pointer-events: auto;
-  cursor: zoom-in;
-  -webkit-tap-highlight-color: transparent;
+/* Its turn ended (a tap): the print and its veil go quickly (PhotoShow.tsx PHOTO_LEAVE_MS), the line starting meanwhile. */
+.photo-show-layer.photo-show-leaving {
+  animation: photo-show-leave 160ms ease-in forwards;
 }
-.photo-show-layer > .photo-print:focus-visible,
-.photo-show-viewer .photo-print:focus-visible {
-  outline: 3px solid var(--ds-focus, var(--photo-show-photo-print-edge));
-  outline-offset: 3px;
-}
-
-/* The print opened larger (PhotoViewer): no glass pane, only the print itself over the dimmed scene, untilted, as large
-   as the screen allows with its margin's words (a wide picture takes the width, a tall one the height). No 「閉じる」
-   (2026-11-26 user decision): a tap anywhere closes it. */
-dialog.modal.photo-show-viewer {
-  --modal-pad-top: 0px;
-  --modal-pad-inline: 0px;
-  width: fit-content;
-  max-width: calc(100% - 24px);
-  max-height: calc(100dvh - 24px);
-  padding: 0;
-  overflow: visible;
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
-  border-radius: 0;
-}
-.photo-show-viewer .photo-print {
-  max-width: min(100%, 1100px);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  transform: none;
-  cursor: zoom-out;
-  animation: photo-show-viewer-in var(--motion-scene) var(--ease-out);
-}
-.photo-show-viewer .photo-print img {
-  max-width: 100%;
-  /* The screen less the margin's words under it and the dialog's own room. */
-  max-height: calc(100dvh - 96px);
-}
-@keyframes photo-show-viewer-in {
-  from { opacity: 0; transform: scale(0.94); }
+@keyframes photo-show-leave {
+  to { opacity: 0; }
 }
 
 /* A photo just taken (data-taken): a short flash over the scene, then the print comes up a little turned and its picture
@@ -193,8 +148,8 @@ dialog.modal.photo-show-viewer {
 
 /* A short landscape screen: a smaller picture, so the window below stays clear. */
 @media (max-height: 500px) {
-  .photo-show-layer { --photo-top: max(8px, calc(var(--room-top, 0px) + 8px)); }
-  .photo-print img { max-height: clamp(min(120px, 32dvh), calc(var(--room-bottom, 100dvh) - var(--photo-top) - 80px), 32dvh); }
+  .photo-show-layer { --photo-top: 8px; }
+  .photo-print img { max-height: 32dvh; }
   .photo-print-margin { padding: 4px 4px 6px; }
 }
 
@@ -206,7 +161,6 @@ dialog.modal.photo-show-viewer {
 .reduce-motion .photo-print img,
 .reduce-motion [data-taken] > .photo-print img { animation: none; }
 .reduce-motion .photo-show-flash { display: none; }
-.reduce-motion .photo-show-viewer .photo-print { animation: none; }
 .reduce-motion .photo-print.photo-print-leaving,
 .reduce-motion .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
 @media (prefers-reduced-motion: reduce) {
@@ -216,7 +170,6 @@ dialog.modal.photo-show-viewer {
   .photo-print img,
   [data-taken] > .photo-print img { animation: none; }
   .photo-show-flash { display: none; }
-  .photo-show-viewer .photo-print { animation: none; }
   .photo-print.photo-print-leaving,
   .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
 }

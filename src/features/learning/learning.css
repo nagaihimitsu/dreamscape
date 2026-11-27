@@ -197,9 +197,10 @@
   min-height: 44px;
   margin: 0;
   padding: 0;
-  border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-control);
-  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   vertical-align: middle;
 }
@@ -208,7 +209,7 @@
   height: 22px;
 }
 .read-aloud[aria-pressed="true"] {
-  border: 2px solid var(--ds-slate-800);
+  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-glass-shadow);
   background: var(--ds-parchment-2);
 }
 /* A word's meaning: a display-only parchment note under the sentence. */
@@ -285,11 +286,11 @@
   margin: 0;
 }
 
-/* The note's views, 「問題」, 「単語帳」 and 「その国の言葉」 (2026-11-11): the one shown is filled slate (and aria-pressed).
+/* The note's views, 「問題」, 「単語帳」 and 「その国の言葉」 (2026-11-11): the one shown is the smoked glass (and aria-pressed).
    Three fit one row at 320 px; with larger text a button moves to the next row instead of leaving the dialog. */
 .english-review .review-views { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: 44px; margin: 0; padding: 6px 10px; font-size: var(--ds-text-body); }
-.english-review .review-views .secondary[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+.english-review .review-views .secondary[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
 
 /* 「単語帳」 (WordBook): the places in the order met, each under its photo and name once, with its words' cards (words
    only), two to a row on a phone. */
@@ -364,3 +365,5 @@
 .word-book-credits li { padding: 6px 0; border-top: 1px solid var(--ds-parchment-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .word-book-credits h4 { margin: 0 0 2px; font-size: var(--ds-text-body); }
 .word-book-credits p { margin: 2px 0; overflow-wrap: anywhere; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.read-aloud:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

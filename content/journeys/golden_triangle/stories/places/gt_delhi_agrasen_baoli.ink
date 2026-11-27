@@ -15,7 +15,11 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_agrasen_baoli
 # speaker: narrator
 # photo: gt_album_d073 # photo_caption: ビルの谷間に口を開けた階段井戸
-ガラス張りのビルに囲まれた路地の奥に、それは突然口を開けていた。石の階段が、まっすぐ地面の下へ下りていく。両側の壁には、アーチの形のくぼみが何層も並んでいる。
+ガラス張りのビルに囲まれた路地の奥に、それは突然口を開けていた。
+# speaker: narrator
+石の階段が、まっすぐ地面の下へ下りていく。
+# speaker: narrator
+両側の壁には、アーチの形のくぼみが何層も並んでいる。
 # term: gt_term_stepwell
 アグラセン・キ・バオリ。階段で水面まで下りる、昔の井戸だ。今は水が涸れて、底には鳩の声だけが溜まっている。
 # speaker: heroine
@@ -59,10 +63,16 @@ INCLUDE modules.ink
         # voice: gt_delhi_date_agrasen_baoli_003
         幽霊……。ほんとに驚いて、階段で転んだらどうするの
         # speaker: narrator
-        結局、こちらは途中のくぼみに隠れることになった。彼女は一段ごとに、くぼみの数を数えながら下りてきた。どこにいるか、最初から分かっている顔だった。
+        結局、こちらは途中のくぼみに隠れることになった。
+        # speaker: narrator
+        彼女は一段ごとに、くぼみの数を数えながら下りてきた。
+        # speaker: narrator
+        どこにいるか、最初から分かっている顔だった。
     - else:
         # speaker: narrator
-        ジャスミートのドゥパッターを借りて頭からかぶり、途中のくぼみに身を隠した。彼女が一人で階段を下りてくる。足音が近づく。今だ。
+        ジャスミートのドゥパッターを借りて頭からかぶり、途中のくぼみに身を隠した。
+        # speaker: narrator
+        彼女が一人で階段を下りてくる。足音が近づく。今だ。
         # emotion: happy
         # photo: gt_album_d075 # photo_caption: 幽霊の足は、いつもの靴 # photo_with: gt_kunal
         飛び出した瞬間、彼女は悲鳴のかわりに、思いきり吹き出した。
@@ -113,14 +123,17 @@ INCLUDE modules.ink
 # photo: gt_album_d076 # photo_caption: 一段ごとに冷たくなる空気
 一段下りるごとに、空気が冷たくなっていく。上の路地の暑さが、嘘みたいだった。彼女は小さな声で、段を数えている。
 # speaker: gt_jasmeet
-# voice: gt_delhi_date_agrasen_baoli_jasmeet_002
-ここ、出るって言われてるんですよ。昔は底に黒い水が溜まっていて、その水に呼ばれて、飛び込んだ人がいたって。……言い伝えですけど
+ここ、出るって言われてるんですよ
+# speaker: gt_jasmeet
+昔は底に黒い水が溜まっていて、その水に呼ばれて、飛び込んだ人がいたって。……言い伝えですけど
 # speaker: heroine
 # emotion: worried
 # voice: gt_delhi_date_agrasen_baoli_010
 水がなくなっても、話だけは残ってるんだ。……今それ、聞きたくなかったな
 # speaker: narrator
-底に着いた。涸れた井戸の口には柵があり、覗き込むと、丸い暗がりがずっと下まで続いている。クナールが手で合図をした。本番だ。
+底に着いた。涸れた井戸の口には柵があり、覗き込むと、丸い暗がりがずっと下まで続いている。
+# speaker: narrator
+クナールが手で合図をした。本番だ。
 # speaker: heroine
 # voice: gt_delhi_date_agrasen_baoli_011
 # photo: gt_album_d077 # photo_caption: 「きゃ、きゃー……？」 # photo_with: gt_kunal
@@ -145,12 +158,16 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_013
 きゃああああっ！
 # speaker: narrator
-本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。鳩は何事もなかったように、反対側のくぼみに収まった。
+本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。
+# speaker: narrator
+鳩は何事もなかったように、反対側のくぼみに収まった。
 # speaker: gt_kunal
 # voice: gt_delhi_date_agrasen_baoli_kunal_006
 それだ！　撮れた！　今のが、今日の一番！
 # speaker: narrator
-クナールが飛び上がる。その後ろで、ジャスミートが拍手をしていた。笑ってはいたけれど、拍手は、ほんの少しだけ遅かった。
+クナールが飛び上がる。その後ろで、ジャスミートが拍手をしていた。
+# speaker: narrator
+笑ってはいたけれど、拍手は、ほんの少しだけ遅かった。
 * [「次は、ジャスミートさんの番だ」 # option: jasmeet_turn]
     # profile: attentive
     # set: gt_delhi_baoli_player_pigeon
@@ -278,7 +295,11 @@ INCLUDE modules.ink
     布の音に驚いた本物の鳩が、くぼみの奥から、こちらの肩を越えて飛び出した。
 * [布を広げた：遅すぎた # option: late]
     # speaker: narrator
-    遅かった。足音は、もうくぼみの前の段を離れていた。広げた布が、ジャスミートの背中の後ろで、ばさりと鳴る。振り返った彼女の目の前に、白い布が広がっていた。
+    遅かった。足音は、もうくぼみの前の段を離れていた。
+    # speaker: narrator
+    広げた布が、ジャスミートの背中の後ろで、ばさりと鳴る。
+    # speaker: narrator
+    振り返った彼女の目の前に、白い布が広がっていた。
 * [布を広げられなかった # option: frozen]
     # speaker: narrator
     手が、動かなかった。足音はくぼみの前を通り過ぎ、少し下で止まった。

@@ -25,13 +25,18 @@ INCLUDE modules.ink
 どのお店も、まぶしすぎる……。値札、見るのも怖い
 # speaker: narrator
 # term: gt_term_lac_bangles
-アーケードの端に、一軒だけ、まるで色の洪水のような店があった。天井まで積み上げられた、ラックの腕輪。赤、緑、黄、桃色。小さなガラスや石がはめこまれて、裸電球の下で光っている。
+アーケードの端に、一軒だけ、まるで色の洪水のような店があった。
+# speaker: narrator
+天井まで積み上げられた、ラックの腕輪。赤、緑、黄、桃色。
+# speaker: narrator
+小さなガラスや石がはめこまれて、裸電球の下で光っている。
 # photo: gt_album_j066 # photo_caption: 色の洪水の腕輪の店 # photo_with: gt_nasreen
 店番の女性が、顔を上げた。
 # speaker: gt_nasreen
 # cutin: name
-# voice: gt_jaipur_date_johari_bazaar_nasreen_001
-いらっしゃい。ナスリーンよ。腕輪は、夫と義理の弟が、近くの職人の路地で、小さな炉に向かって作ってるの。売るのは、女の仕事
+いらっしゃい。ナスリーンよ
+# speaker: gt_nasreen
+腕輪は、夫と義理の弟が、近くの職人の路地で、小さな炉に向かって作ってるの。売るのは、女の仕事
 { cond("battle gt_delhi_main_red_fort_battle"):
     # speaker: narrator
     彼女の足が、店の前で止まった。棚に伸ばしかけた手が、途中で止まる。
@@ -69,10 +74,11 @@ INCLUDE modules.ink
 # speaker: narrator
 ナスリーンは、腕輪をはめながら話してくれた。
 # speaker: gt_nasreen
-# voice: gt_jaipur_date_johari_bazaar_nasreen_004
 # term: gt_term_parvati
 # term: gt_term_shiva
-昔ね、女神パールヴァティーがシヴァと結婚するとき、腕輪職人たちがラックの腕輪を作ったの。それからずっと、花嫁や結婚した女の人は、ラックの腕輪で手首を飾るのよ
+昔ね、女神パールヴァティーがシヴァと結婚するとき、腕輪職人たちがラックの腕輪を作ったの
+# speaker: gt_nasreen
+それからずっと、花嫁や結婚した女の人は、ラックの腕輪で手首を飾るのよ
 # speaker: gt_nasreen
 # voice: gt_jaipur_date_johari_bazaar_nasreen_005
 ……言い伝えだけどね
@@ -163,7 +169,9 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: narrator
         # emotion: worried
-        彼女は何度か、助けを求めるようにこちらを振り返った。こちらが黙っていると、小さくため息をついて、ナスリーンに向き直った。
+        彼女は何度か、助けを求めるようにこちらを振り返った。
+        # speaker: narrator
+        こちらが黙っていると、小さくため息をついて、ナスリーンに向き直った。
         # speaker: gt_nasreen
         # voice: gt_jaipur_date_johari_bazaar_nasreen_009
         正直な人には、少しだけね

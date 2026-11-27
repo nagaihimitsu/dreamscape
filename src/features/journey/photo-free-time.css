@@ -592,6 +592,12 @@
   box-shadow: var(--ds-card-shadow);
   touch-action: manipulation;
 }
+/* On the glass under the row (2026-11-27 user requests: one UI with the talk's window): the window's room round its
+   words, and as much under the card's last part (its small map, its chips) as over its first words, whose line keeps
+   half its leading above them (the description's). */
+.photo-menu .place-card {
+  padding: var(--ds-glass-padding) var(--ds-glass-padding) calc(var(--ds-glass-padding) + var(--ds-text-note) * (var(--ds-leading-body) - 1) / 2);
+}
 .place-card .place-card-name {
   display: flex;
   align-items: center;
@@ -699,8 +705,9 @@
 /* The way: the modes in one row, each with its time and fare (pressing one only chooses it), or the one way as a line;
    then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「待機」's waits and
    「ホテルに戻る」's ways home are chips (below), then the same button (「待つ」, 「休む」). On the glass (2026-11-25 user
-   decision: the immersion first) a mode or chip is the glass's light ground with a thin edge (3:1), the chosen one the
-   smoked glass of the talk's choices with its gold hairline, one that cannot be chosen only its dashed edge. */
+   decision: the immersion first) a mode or chip is the light pane to press (--ds-press-shadow), the chosen one the
+   smoked glass of the talk's choices with its white hairline, one that cannot be chosen the disabled press (flat, a faint
+   grey, its words muted: styles.css, 2026-11-27 one UI). */
 .place-card-ways { display: grid; gap: 6px; margin-top: 2px; }
 .place-card-modes { display: flex; gap: 6px; }
 .place-card-mode {
@@ -709,9 +716,10 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 6px;
-  border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-control);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
+  box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
@@ -728,12 +736,12 @@
   text-shadow: var(--ds-action-text-shadow);
 }
 .place-card-mode:disabled,
-.place-card-option:disabled { opacity: 1; border-style: dashed; background: none; color: var(--ds-ink-muted); cursor: default; }
+.place-card-option:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; cursor: default; }
 .place-card-mode-cost { display: block; font-size: var(--ds-text-caption); font-weight: 500; font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
    so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
-   on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one with
-   only its dashed edge cannot be chosen. */
+   on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one that
+   cannot be chosen is the disabled press. */
 .place-card-options { display: flex; flex-wrap: wrap; gap: 8px; }
 .place-card-option {
   display: inline-flex;
@@ -745,9 +753,10 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 14px;
-  border: 1px solid var(--ds-field-edge);
+  border: 1px solid transparent;
   border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
+  box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
@@ -803,7 +812,7 @@
 .place-inset-map {
   height: 120px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-control);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-map-ground);
   isolation: isolate;
   pointer-events: none;

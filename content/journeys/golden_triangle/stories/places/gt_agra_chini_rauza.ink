@@ -20,16 +20,23 @@ INCLUDE modules.ink
 眠っているのは、アフザル・ハーン・シーラーズィー。学者で詩人で、シャー・ジャハーンの宰相を務めた人だ。
 # speaker: narrator
 # photo: gt_album_a094 # photo_caption: 島のように残るタイルの色
-壁は一面、色とりどりの釉薬のタイルで覆われていたという。今はほとんど剥がれ落ちて、青と緑と黄色が、島のように残っている。
+壁は一面、色とりどりの釉薬のタイルで覆われていたという。
+# speaker: narrator
+今はほとんど剥がれ落ちて、青と緑と黄色が、島のように残っている。
 # speaker: heroine
 # voice: gt_agra_date_chini_rauza_001
 色が、少しだけ残ってる。全部残ってたら、どんなだったんだろう。目が痛いくらい、きらきらしてたのかな
 # speaker: narrator
-アーチの下で、口ひげの男が、銀色の反射板を抱えて電話に怒鳴っていた。電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
+アーチの下で、口ひげの男が、銀色の反射板を抱えて電話に怒鳴っていた。
+# speaker: narrator
+電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
 # speaker: gt_jagdeep
 # unnamed
-# voice: gt_agra_date_chini_rauza_jagdeep_001
-お願いがある。カップルが橋の渋滞で遅れてる。光を決めたいのに、立つ人がいない。……二人とも、身長がちょうどいい。代役をやってくれないか
+お願いがある。カップルが橋の渋滞で遅れてる
+# speaker: gt_jagdeep # unnamed
+光を決めたいのに、立つ人がいない
+# speaker: gt_jagdeep # unnamed
+……二人とも、身長がちょうどいい。代役をやってくれないか
 # speaker: gt_jagdeep
 # cutin: name
 # voice: gt_agra_date_chini_rauza_jagdeep_002
@@ -113,7 +120,9 @@ INCLUDE modules.ink
 # photo: gt_album_a097 # photo_caption: 空っぽの指輪の箱、膝をつく代役
 # stand: near
 # emotion: shy
-渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
+渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。
+# speaker: narrator
+見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
 # speaker: heroine
 # emotion: surprised_big
 # voice: gt_agra_date_chini_rauza_009
@@ -190,7 +199,11 @@ INCLUDE modules.ink
     # voice: gt_agra_date_chini_rauza_tanvi_003
     それに、色が少しだけ残ってるでしょう。全部きれいに残ってるより、ちょっとだけ残ってる方が、本当っぽい
     # speaker: narrator
-    ニキルが、折りたたんだ紙をジャグディープに差し出した。撮ってほしい構図の一覧。三十枚。タンヴィが、その紙をそっと取り上げて、自分の鞄にしまった。
+    ニキルが、折りたたんだ紙をジャグディープに差し出した。
+    # speaker: narrator
+    撮ってほしい構図の一覧。三十枚。
+    # speaker: narrator
+    タンヴィが、その紙をそっと取り上げて、自分の鞄にしまった。
     # speaker: gt_tanvi
     # voice: gt_agra_date_chini_rauza_tanvi_004
     今日は、一枚も決めないで撮って。……写真屋さんを呼んだのは、この人の、唯一のわがままなの
@@ -223,7 +236,9 @@ INCLUDE modules.ink
     ここは、色が少しだけ残ってる。全部残ってるより、ちょっとだけ残ってる方が本当っぽくて、わたしたちに似てる気がして
     # speaker: narrator
     # leave: gt_agra_chini_bride
-    撮影が始まると、代役の二人は柱の陰に下がった。アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。
+    撮影が始まると、代役の二人は柱の陰に下がった。
+    # speaker: narrator
+    アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。
     # speaker: narrator
     # photo: gt_album_a100 # photo_caption: 構図にない一枚 # photo_with: gt_jagdeep
     ジャグディープは、構図にない、その一枚を一番長く撮っていた。
@@ -234,7 +249,11 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # photo: gt_album_a101 # photo_caption: 代役の試し撮り # photo_with: gt_jagdeep
-撮影の終わりに、ジャグディープが携帯を見せてくれた。光を決めるための試し撮り。アーチの下で膝をつく一人と、どこを見ればいいか分からない顔で立つ一人。
+撮影の終わりに、ジャグディープが携帯を見せてくれた。
+# speaker: narrator
+光を決めるための試し撮り。
+# speaker: narrator
+アーチの下で膝をつく一人と、どこを見ればいいか分からない顔で立つ一人。
 # speaker: gt_jagdeep
 # voice: gt_agra_date_chini_rauza_jagdeep_008
 代役の写真だ。いらなければ消す。……正直、今日の試し撮りで、一番いい顔をしてる
@@ -242,7 +261,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: gt_jagdeep
 # photo: gt_album_a102 # photo_caption: 落ちなかった青いタイル
-帰りぎわ、彼女は墓廟の壁に残った青いタイルの前で立ち止まった。四百年近く、雨と日差しを受けて、それでも落ちなかった一枚。
+帰りぎわ、彼女は墓廟の壁に残った青いタイルの前で立ち止まった。
+# speaker: narrator
+四百年近く、雨と日差しを受けて、それでも落ちなかった一枚。
 # speaker: heroine
 # voice: gt_agra_date_chini_rauza_018
 ちょっとだけ残る方が、本当っぽい、か。なんだか、分かる気がする

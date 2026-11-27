@@ -32,14 +32,15 @@
   gap: 6px;
   min-height: 44px;
   margin: 0;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  box-shadow: var(--ds-press-shadow);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
   font-weight: 700;
 }
-.save-load-modes button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-parchment); }
+.save-load-modes button[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
 .save-load-modes .icon { width: 20px; height: 20px; }
 /* 自動保存 and 保存データの消去 under the slots (2026-11-20): set apart by a thin rule across, never a thick left line. */
 .save-load-settings { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
@@ -47,3 +48,5 @@
 /* The journey's choice (2026-11-20, from ゲームの設定): apart from the saved data above it by a thin rule across. */
 .save-load-journey { margin-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
 .save-load-journey .journey-selection { margin-bottom: 0; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.save-load-modes button:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

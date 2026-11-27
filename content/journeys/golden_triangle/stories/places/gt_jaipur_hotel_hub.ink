@@ -8,7 +8,9 @@ INCLUDE modules.ink
 # scene: arrival
 # background: gt_bg_jaipur_hotel_window
 # speaker: narrator
-ジャイプールの宿は、旧市街の城壁の近くにあった。窓の外の壁も、向かいの家も、通りの門も、くすんだ桃色に塗られている。
+ジャイプールの宿は、旧市街の城壁の近くにあった。
+# speaker: narrator
+窓の外の壁も、向かいの家も、通りの門も、くすんだ桃色に塗られている。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_jaipur_arrival_001
@@ -70,7 +72,9 @@ INCLUDE modules.ink
 # tint: off
 # speaker: narrator
 # se: gt_auto_rickshaw_horn
-翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。降りてきたのは、桃色のサリーのカムラだった。
+翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。
+# speaker: narrator
+降りてきたのは、桃色のサリーのカムラだった。
 # speaker: narrator
 デリーでは、二人がカムラを見送った。今朝は、カムラの方から来た。
 # speaker: narrator
@@ -113,9 +117,10 @@ INCLUDE modules.ink
 # se: pen_click
 カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
-# voice: gt_jaipur_epilogue_kamla_006
 # photo: gt_album_j135 # photo_caption: 「あんたは黙らないこと」 # photo_with: gt_kamla
-あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと
+あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ
+# speaker: enemy
+……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと
 {
 - ending_reached:
     # speaker: heroine
@@ -152,7 +157,11 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # leave: enemy
-カムラは立ち上がり、待たせていたオートリキシャに乗り込んだ。運転手がまた何か言い、カムラが言い返す。笑い声と一緒に、桃色の町の角へ消えていった。
+カムラは立ち上がり、待たせていたオートリキシャに乗り込んだ。
+# speaker: narrator
+運転手がまた何か言い、カムラが言い返す。
+# speaker: narrator
+笑い声と一緒に、桃色の町の角へ消えていった。
 # speaker: narrator
 # quiet: scene
 # item_out: gt_delhi_kamla_memo
@@ -193,5 +202,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # photo: gt_album_j139 # photo_caption: 一番軽くて、一番大事なもの
-彼女は切れ端をガイドブックの一番前に挟み直し、鞄の口を閉めた。旅の荷物の中で、それが一番軽くて、一番大事なものになっていた。
+彼女は切れ端をガイドブックの一番前に挟み直し、鞄の口を閉めた。
+# speaker: narrator
+旅の荷物の中で、それが一番軽くて、一番大事なものになっていた。
 -> END

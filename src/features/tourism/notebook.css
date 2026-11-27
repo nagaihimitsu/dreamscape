@@ -79,8 +79,9 @@ dialog.modal.clue-notebook {
   flex: none;
   min-height: 44px;
   padding: 6px 10px;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  box-shadow: var(--ds-press-shadow);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
@@ -90,6 +91,7 @@ dialog.modal.clue-notebook {
   border-color: transparent;
   background: var(--ds-disabled-bg);
   color: var(--ds-disabled-ink);
+  box-shadow: none;
 }
 .clue-notebook .notebook-clue { padding: 0; }
 .clue-notebook .notebook-clue .case-provenance,
@@ -116,23 +118,20 @@ dialog.modal.clue-notebook {
   min-height: 48px;
   margin: 0;
   padding: 10px 12px;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  box-shadow: var(--ds-press-shadow);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
 .case-select[aria-pressed="true"] {
-  border: 2px solid var(--ds-slate-800);
+  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-glass-shadow);
   background: var(--ds-parchment-2);
   font-weight: 600;
 }
-.case-select:disabled {
-  opacity: .55;
-}
-.case-select[aria-pressed="true"]:disabled {
-  opacity: 1;
-}
+/* A clue that cannot be chosen now: the disabled press; the chosen one keeps its look. */
+.case-select:disabled:not([aria-pressed="true"]) { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
 .case-image {
   position: relative;
   margin: 5px 0 0;

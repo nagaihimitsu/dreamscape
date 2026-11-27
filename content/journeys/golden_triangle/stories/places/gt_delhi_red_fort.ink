@@ -10,13 +10,19 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
 # photo: gt_album_d006 # photo_caption: ラホール門の男女別の列
-赤い城壁は、近づくほど空を削っていった。ラホール門の前には、手荷物検査の列が男女別に二本。{heroine_name}は女性の列に並び、振り返って小さく手を振った。
+赤い城壁は、近づくほど空を削っていった。
+# speaker: narrator
+ラホール門の前には、手荷物検査の列が男女別に二本。
+# speaker: narrator
+{heroine_name}は女性の列に並び、振り返って小さく手を振った。
 # speaker: heroine
 # reaction: heroine,smile,music
 # voice: gt_delhi_red_fort_guide_001
 向こう側で会おうね。……なんだか、国境を越えるみたい
 # speaker: narrator
-列の前で、制服の女性係員が鞄を開けさせ、中のガイドブックを一瞥して閉じる。挟んであった段ボールの切れ端が、ひらりと落ちた。
+列の前で、制服の女性係員が鞄を開けさせ、中のガイドブックを一瞥して閉じる。
+# speaker: narrator
+挟んであった段ボールの切れ端が、ひらりと落ちた。
 # speaker: heroine
 # reaction: heroine,surprised,sweat
 # voice: gt_delhi_red_fort_guide_002
@@ -24,7 +30,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
 # photo: gt_album_d007 # photo_caption: 落ちた暗号を係員が拾う
-係員が先に拾い上げ、一行目のヒンディー語を読んで、「暗くなってから、ね」とだけ言って少し笑った。次の鞄が、もう台に載っている。
+係員が先に拾い上げ、一行目のヒンディー語を読んで、「暗くなってから、ね」とだけ言って少し笑った。
+# speaker: narrator
+次の鞄が、もう台に載っている。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 1
 返ってきた切れ端の一行目を、指でなぞる。今は、まだ明るい昼間だ。
@@ -32,7 +40,11 @@ INCLUDE modules.ink
 # voice: gt_delhi_red_fort_guide_003
 暗くなってからって、何だろう。夕日がきれい、とか？　カムラさんの言い方だと、もっと何かありそう
 # speaker: narrator
-門をくぐると、外の喧騒が一段遠くなった。天井のある古い商店街が、奥へまっすぐ続いている。両側の小さな店に、腕輪や刺繍の小物がぎっしり並ぶ。
+門をくぐると、外の喧騒が一段遠くなった。
+# speaker: narrator
+天井のある古い商店街が、奥へまっすぐ続いている。
+# speaker: narrator
+両側の小さな店に、腕輪や刺繍の小物がぎっしり並ぶ。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_delhi_red_fort_guide_004
@@ -50,7 +62,9 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
-城門の奥、天井のある古い商店街チャッタ・チョーク。{heroine_name}が腕輪の棚に手を伸ばしたとき、紺のセーターの波が押し寄せた。
+城門の奥、天井のある古い商店街チャッタ・チョーク。
+# speaker: narrator
+{heroine_name}が腕輪の棚に手を伸ばしたとき、紺のセーターの波が押し寄せた。
 # speaker: narrator
 十二、三歳の子どもたち。四十人近く。全員がノートを開き、全員が同時に言った。
 # speaker: gt_delhi_red_fort_children
@@ -69,9 +83,10 @@ INCLUDE modules.ink
 # speaker: narrator
 ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
 # speaker: enemy
-# voice: gt_delhi_main_red_fort_battle_nidhi_002
 # term: gt_term_indian_english
-英語の宿題なんです。『外国人観光客に遺産について質問する』。一時間後にバスが出ます。さっき韓国の団体に逃げられました
+英語の宿題なんです。『外国人観光客に遺産について質問する』
+# speaker: enemy
+一時間後にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
 # emotion: worried
 # voice: gt_delhi_main_red_fort_002
@@ -218,10 +233,14 @@ INCLUDE modules.ink
     最後の皇帝は、自分の家で裁判にかけられた。詩を書く人だった。それから、遠くへ送られた
 }
 # speaker: narrator
-# em: 囚人
 # term: gt_term_bahadur_shah_zafar
 # photo: gt_album_d013 # photo_caption: 三十八人が黙って聞いた話 # photo_with: gt_faiz
-声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
+声は小さい。けれど、もう途切れなかった。
+# speaker: narrator
+# em: 囚人
+楽園と書かれた広間の主が、同じ建物で囚人になった話。
+# speaker: narrator
+三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_delhi_main_red_fort_007
@@ -298,10 +317,14 @@ INCLUDE modules.ink
 # ambience: amb_crowd_outdoor
 # speaker: narrator
 # bgm: gt_a_newcomer
-急いで宿に戻ると、路地が騒がしかった。半分だけ荷を積んだトラック。集まった近所の人たち。段ボールには、どれも「JAIPUR」と書いてある。
+急いで宿に戻ると、路地が騒がしかった。半分だけ荷を積んだトラック。
+# speaker: narrator
+集まった近所の人たち。段ボールには、どれも「JAIPUR」と書いてある。
 # speaker: narrator
 # photo: gt_album_d108 # photo_caption: 「JAIPUR」の段ボールと、怒鳴る孫 # photo_with: gt_aman gt_delhi_hotel_owner
-その真ん中で、しわの寄ったワイシャツの青年が電話に向かって怒鳴っていた。ヒンディー語と英語が、一文ごとに入れ替わる。
+その真ん中で、しわの寄ったワイシャツの青年が電話に向かって怒鳴っていた。
+# speaker: narrator
+ヒンディー語と英語が、一文ごとに入れ替わる。
 # speaker: narrator
 宿の主人が、こちらを指さした。青年が電話を切り、まっすぐ歩いてくる。
 # speaker: enemy
@@ -338,9 +361,10 @@ INCLUDE modules.ink
 # speaker: narrator
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
 # speaker: heroine
-# voice: gt_delhi_finale_003
 # term: gt_term_auto_rickshaw
-待ってください。あの日のカムラさん、すごくはっきりしてました。オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
+待ってください。あの日のカムラさん、すごくはっきりしてました
+# speaker: heroine
+オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
 # speaker: enemy
 # reaction: enemy,anger
 # voice: gt_delhi_finale_battle_aman_006
@@ -420,15 +444,18 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_paratha
 # term: gt_term_cycle_rickshaw
-夜のチャンドニー・チョークは、昼より人が多い。揚げたてのパラーターの匂い。自転車リキシャの鈴。ショールの老婦人なら、百人はいる。
+夜のチャンドニー・チョークは、昼より人が多い。揚げたてのパラーターの匂い。
+# speaker: narrator
+自転車リキシャの鈴。ショールの老婦人なら、百人はいる。
 # speaker: narrator
 # photo: gt_album_d110 # photo_caption: 夜のチャンドニー・チョークで写真を見せて回る # photo_with: gt_aman gt_delhi_sweet_shopkeeper
 アマンが写真を見せて回る。三軒目の揚げ菓子屋で、店主が手を打った。
 # speaker: gt_delhi_sweet_shopkeeper
 # term: gt_term_jalebi
-# voice: gt_delhi_finale_battle_delhi_sweet_shopkeeper_001
 # term: gt_term_bargaining
-ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。一年分の香辛料を、一番安く買えるのはどこかって
+ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ
+# speaker: gt_delhi_sweet_shopkeeper
+一年分の香辛料を、一番安く買えるのはどこかって
 # speaker: enemy
 # voice: gt_delhi_finale_battle_aman_013
 一年分……？　ジャイプールにも店はあるのに
@@ -459,8 +486,11 @@ INCLUDE modules.ink
 # speaker: narrator
 アマンは香辛料の袋に手をつき、深く息を吐いた。
 # speaker: enemy
-# voice: gt_delhi_finale_battle_aman_015
-祖母は、誰にも何も頼まない人なんです。僕の結婚式の準備で、家族はみんな僕に頼みごとをする。祖母だけは何も言わない。だから、何を考えてるのか分からない
+祖母は、誰にも何も頼まない人なんです
+# speaker: enemy
+僕の結婚式の準備で、家族はみんな僕に頼みごとをする
+# speaker: enemy
+祖母だけは何も言わない。だから、何を考えてるのか分からない
 # speaker: heroine
 # voice: gt_delhi_finale_008
 カムラさん、迷子じゃないと思います。行きたい所に、一つずつ行ってるだけ
@@ -572,8 +602,9 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_battle_kamla_005
 ……あんたが連れてきたの
 # speaker: heroine
-# voice: gt_delhi_finale_014
-はい。黙っていなくなるのは、自由とは違うと思ったから。カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
+はい。黙っていなくなるのは、自由とは違うと思ったから
+# speaker: heroine
+カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
 # speaker: gt_kamla
 # voice: gt_delhi_finale_battle_kamla_006
 生意気な外国の娘だね

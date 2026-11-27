@@ -24,7 +24,8 @@ import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import type { MiniGameTag } from "../../minigames/tag";
 import { figureIsEnemy, oppositeFigures, stageCast, type StageLine, type StageScene } from "../../components/scene-stage";
-import { useSceneStage } from "../../components/useSceneStage";
+import { stageLayout, useSceneStage } from "../../components/useSceneStage";
+import { useStageGlide } from "../../components/useStageGlide";
 import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { loggedSpeaker, type NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -145,7 +146,10 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
   // The line's name plate for a moment (`# cutin: name`; none over a quiz, which shows no line).
   const nameCut = useNameCutIn(quiz ? undefined : view.cutIn, String(view.revision));
   // The heroine from her first line (or reaction) and the one opposite her, each to the scene's end or until another comes in.
-  const { stage, focus } = useSceneStage(view.stage.line, view.stage.scene);
+  const { stage, focus, leaving } = useSceneStage(view.stage.line, view.stage.scene, "", reduceMotion);
+  // Those who stay walk to their new places as someone comes or goes (useStageGlide).
+  const stageLayer = useRef<HTMLDivElement>(null);
+  useStageGlide(stageLayer, stageLayout(stage), { reduceMotion });
   const cast = stageCast(stage);
   // The quiz (its question, its feedback) shows no line: the line's staging waits for the next one.
   const staging = quiz ? undefined : view.staging;
@@ -171,17 +175,17 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       {/* The scene's weather stays over its quiz too. */}
       <WeatherLayer weather={view.staging?.weather} />
       <RecallLayer imageId={staging?.recall} />
-      <PhotoShowLayer photo={staging?.photo} aboveHeads={keepsAboveHeads(staging?.speaker)} />
+      <PhotoShowLayer photo={staging?.photo} />
       <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={staging?.itemShow} aboveHeads={keepsAboveHeads(staging?.speaker)} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {/* Two or three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as another goes). */}
-      {!quiz && (stage.heroine || stage.opposite) && <div className="vn-character-layer encounter-character-layer" data-two-characters={cast.two}
+      {!quiz && (stage.heroine || stage.opposite) && <div ref={stageLayer} className="vn-character-layer encounter-character-layer" data-two-characters={cast.two}
         data-together={cast.together}>
         {stage.heroine && <div className="encounter-character-slot encounter-character-heroine">
           <CharacterPortrait characterId="heroine" cityId={view.cityId} sceneId={view.sceneId} emotion={view.stage.heroine.emotion} focus={focus.heroine}
-            stand={view.staging?.stand}>
+            stand={view.staging?.stand} leaving={leaving.includes("heroine")}>
             {view.stage.heroine.mark && <ComicEffect effect={view.stage.heroine.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
           </CharacterPortrait>
         </div>}
@@ -189,7 +193,8 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
           // The enemy's expression and mark on their figure (or the stranger's) wherever it stands.
           const enemyLook = figureIsEnemy(figure, view.stage.scene) ? view.stage.enemy : undefined;
           return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "opposite" ? "enemy" : place}`}>
-            <CharacterPortrait characterId={figure.figure} cityId={view.cityId} sceneId={view.sceneId} emotion={enemyLook?.emotion ?? "neutral"} focus={at}>
+            <CharacterPortrait characterId={figure.figure} cityId={view.cityId} sceneId={view.sceneId} emotion={enemyLook?.emotion ?? "neutral"} focus={at}
+              leaving={leaving.includes(figure.figure)}>
               {enemyLook?.mark && <ComicEffect effect={enemyLook.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
             </CharacterPortrait>
           </div>;

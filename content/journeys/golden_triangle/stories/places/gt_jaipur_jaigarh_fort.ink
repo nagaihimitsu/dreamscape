@@ -14,9 +14,13 @@ INCLUDE modules.ink
 # on_done: money -20
 # background: gt_bg_jaipur_jaigarh_fort
 # speaker: narrator
-ジャイガル城は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
+ジャイガル城は、アンベール城の真上の尾根にあった。
+# speaker: narrator
+アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
 # photo: gt_album_j049 # photo_caption: 赤いバツ印の宝の地図 # photo_with: gt_raju
-門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
+門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。
+# speaker: narrator
+鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
 # speaker: gt_raju
 # unnamed
 # voice: gt_jaipur_date_jaigarh_fort_raju_001
@@ -33,7 +37,11 @@ INCLUDE modules.ink
 -> gt_jaipur_jaigarh_fort_map ->
 # speaker: narrator
 # term: gt_term_jaivana
-最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。この砦で造られ、当時は、車輪のついた大砲として世界最大だったという。
+最初の印は、巨大な大砲だった。
+# speaker: narrator
+屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。
+# speaker: narrator
+この砦で造られ、当時は、車輪のついた大砲として世界最大だったという。
 # speaker: gt_raju
 # voice: gt_jaipur_date_jaigarh_fort_raju_003
 # photo: gt_album_j052 # photo_caption: 世界最大の、車輪のついた大砲 # photo_with: gt_raju
@@ -45,7 +53,9 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_jaigarh_fort_memory
     { romance_result == "negative":
         # speaker: narrator
-        ラージューの話は、池から魚の話へ、魚から王さまの釣りの話へと、どこまでも続いた。彼女が、こっそりあくびをかみ殺した。
+        ラージューの話は、池から魚の話へ、魚から王さまの釣りの話へと、どこまでも続いた。
+        # speaker: narrator
+        彼女が、こっそりあくびをかみ殺した。
     - else:
         # speaker: narrator
         ラージューは、聞いてくれる客がうれしいらしい。池の大きさを、両腕をいっぱいに広げて見せた。
@@ -109,11 +119,17 @@ INCLUDE modules.ink
     三つ目の印は、アンベールへ抜ける秘密の通路。でも、今日は時間がないから、飛ばす。……最後の印が、いちばん大事だから
 - else:
     # speaker: narrator
-    地図の三つ目の印は、アンベールへ下りる通路を指していた。砦とアンベール城は、地下の通路でつながっているという。今日は、入口をのぞくだけにした。
+    地図の三つ目の印は、アンベールへ下りる通路を指していた。
+    # speaker: narrator
+    砦とアンベール城は、地下の通路でつながっているという。
+    # speaker: narrator
+    今日は、入口をのぞくだけにした。
 }
 # speaker: narrator
 # term: gt_term_chaiwala
-最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。小さな茶屋で、白いひげの老人が、チャイを煮ていた。
+最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。
+# speaker: narrator
+小さな茶屋で、白いひげの老人が、チャイを煮ていた。
 # speaker: gt_raju
 # voice: gt_jaipur_date_jaigarh_fort_raju_010
 # local_word: gt_jaipur_word_nana
@@ -131,9 +147,10 @@ INCLUDE modules.ink
 # speaker: narrator
 本人の話では、だが。
 # speaker: gt_jaipur_jaigarh_old_man
-# voice: gt_jaipur_date_jaigarh_fort_jaipur_jaigarh_old_man_002
 # photo: gt_album_j054 # photo_caption: 宝物の味のチャイ
-何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ。……でも、あの年だけは、この砦が、国でいちばん有名だった
+何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ
+# speaker: gt_jaipur_jaigarh_old_man
+……でも、あの年だけは、この砦が、国でいちばん有名だった
 * [「本当に、宝の味がする」 # option: treasure_taste]
     # profile: playful
     { romance_result == "negative":

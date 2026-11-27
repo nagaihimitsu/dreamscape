@@ -237,8 +237,9 @@ INCLUDE modules.ink
 メヘルが即答し、カビールが何度もうなずいた。三人の視線が、そろって{heroine_name}に向く。
 # speaker: heroine
 # emotion: serious
-# voice: gt_delhi_main_humayun_tomb_005
-わたしは、誰にも言いません。言う相手もいないですし。……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも
+わたしは、誰にも言いません。言う相手もいないですし
+# speaker: heroine
+……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも
 # speaker: enemy
 # voice: gt_delhi_main_humayun_tomb_battle_suresh_018
 二人とも、とは。……わしも入っているのか
@@ -248,8 +249,11 @@ INCLUDE modules.ink
 # speaker: narrator
 スレーシュは落ちた新聞を拾い、少し笑った。
 # speaker: enemy
-# voice: gt_delhi_main_humayun_tomb_battle_suresh_019
-税務署に三十五年いて分かったことがある。いちばん申告が合わないのは、家族の帳簿だ。わしの頃も、若いのはみんなここで会っていたよ
+税務署に三十五年いて分かったことがある
+# speaker: enemy
+いちばん申告が合わないのは、家族の帳簿だ
+# speaker: enemy
+わしの頃も、若いのはみんなここで会っていたよ
 {
 - battle_score == 3:
     # speaker: enemy

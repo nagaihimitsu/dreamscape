@@ -11,13 +11,17 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_samrat_yantra
 # term: gt_term_jai_prakash
-ジャンタル・マンタルの敷地には、見たことのない形が並んでいた。巨大な階段、半球のくぼみ、空に向かって傾いた三角の壁。
+ジャンタル・マンタルの敷地には、見たことのない形が並んでいた。
+# speaker: narrator
+巨大な階段、半球のくぼみ、空に向かって傾いた三角の壁。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_jantar_mantar_guide_001
 現代美術の公園……じゃないよね。全部、空を測るための道具なんだって
 # speaker: narrator
-十八世紀に、ジャイプールを築いた王が造らせた天文台。望遠鏡ではなく、肉眼で星や太陽の位置を測るための、石の道具たちだ。
+十八世紀に、ジャイプールを築いた王が造らせた天文台。
+# speaker: narrator
+望遠鏡ではなく、肉眼で星や太陽の位置を測るための、石の道具たちだ。
 # speaker: heroine
 # voice: gt_jaipur_jantar_mantar_guide_002
 # photo: gt_album_j016 # photo_caption: 空を測る、石の道具
@@ -31,7 +35,9 @@ INCLUDE modules.ink
 影が、すごくくっきりしてる。……ここだと、影も道具の一部なのかもね
 # speaker: narrator
 # term: gt_term_dhoti
-一番大きな三角の壁の日陰で、白い腰布の老人が、古い冊子を膝に広げて座っていた。そこへ、眼鏡の若い女性が、まっすぐ歩いていく。
+一番大きな三角の壁の日陰で、白い腰布の老人が、古い冊子を膝に広げて座っていた。
+# speaker: narrator
+そこへ、眼鏡の若い女性が、まっすぐ歩いていく。
 # speaker: heroine
 # reaction: heroine,worried,question
 # voice: gt_jaipur_jantar_mantar_guide_004
@@ -43,7 +49,11 @@ INCLUDE modules.ink
 # scene: battle
 # background: gt_bg_jaipur_jantar_mantar
 # speaker: narrator
-巨大な三角の斜面が、空に向かって伸びていた。世界でも指折りの大きな日時計、サムラート・ヤントラ。その日陰で、言い争いが始まっていた。
+巨大な三角の斜面が、空に向かって伸びていた。
+# speaker: narrator
+世界でも指折りの大きな日時計、サムラート・ヤントラ。
+# speaker: narrator
+その日陰で、言い争いが始まっていた。
 # speaker: gt_jaipur_jantar_woman
 # unnamed
 # voice: gt_jaipur_main_jantar_mantar_battle_divya_001
@@ -61,8 +71,9 @@ INCLUDE modules.ink
 シャーストリー。毎朝ここで、影を眺めている。町の占星術師だよ
 # speaker: enemy
 # cutin: name
-# voice: gt_jaipur_main_jantar_mantar_battle_divya_002
-ディヴィヤです。ベンガルールの研究所で、星の研究をしています。母が、わたしに黙って、この人に時刻を決めさせたんです
+ディヴィヤです。ベンガルールの研究所で、星の研究をしています
+# speaker: enemy
+母が、わたしに黙って、この人に時刻を決めさせたんです
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_main_jantar_mantar_001
@@ -76,9 +87,10 @@ INCLUDE modules.ink
 # speaker: narrator
 シャーストリーは何も言わず、日時計の斜面に落ちた影を、杖の先で示した。
 # speaker: enemy
-# voice: gt_jaipur_main_jantar_mantar_battle_divya_005
 # photo: gt_album_j018 # photo_caption: 大日時計の日陰の言い争い # photo_with: gt_jaipur_jantar_woman gt_shastri
-ちょうどいい。あなた、外国の人ですよね。証人になってください。十二時になったら、この日時計が、わたしの正しさを証明しますから
+ちょうどいい。あなた、外国の人ですよね。証人になってください
+# speaker: enemy
+十二時になったら、この日時計が、わたしの正しさを証明しますから
 # speaker: narrator
 {heroine_name}は、斜面の影と、女性の自信に満ちた顔を見比べた。ふと、素朴な疑問が浮かぶ。この影は、何の時刻を示しているのだろう。
 -> quiz(1) ->
@@ -149,7 +161,9 @@ INCLUDE modules.ink
 # photo: gt_album_j020 # photo_caption: 十二時ちょうど、届かない影 # photo_with: gt_jaipur_jantar_woman gt_shastri
 どうして？　太陽が一番高いのは、十二時のはずなのに
 # speaker: narrator
-シャーストリーは暦の冊子を閉じ、ようやく立ち上がった。若い天文学者に向ける目は、意地悪ではなかった。孫の宿題を見る目だった。
+シャーストリーは暦の冊子を閉じ、ようやく立ち上がった。
+# speaker: narrator
+若い天文学者に向ける目は、意地悪ではなかった。孫の宿題を見る目だった。
 -> quiz(3) ->
 # background: gt_bg_jaipur_jantar_mantar
 { quiz_correct:
@@ -167,7 +181,9 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_jantar_mantar_battle_divya_013
 ……ジャイプールは、標準時の基準より西。だから、ここの太陽が南中するのは、十二時より遅い
 # speaker: narrator
-ディヴィヤは自分の額に手を当てた。知っていたはずのことだった。ただ、目の前の老人が知っているとは、思っていなかった。
+ディヴィヤは自分の額に手を当てた。知っていたはずのことだった。
+# speaker: narrator
+ただ、目の前の老人が知っているとは、思っていなかった。
 # speaker: narrator
 シャーストリーが暦を開いて見せた。十一時四十三分の横に、細かな数字の換算が書き込まれている。
 # speaker: gt_shastri

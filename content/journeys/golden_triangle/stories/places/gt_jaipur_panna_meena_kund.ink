@@ -13,8 +13,12 @@ INCLUDE modules.ink
 # hint: ジャイプールの観光を一つ終えてから
 # background: gt_bg_jaipur_panna_meena_kund
 # speaker: narrator
-アンベールの町はずれに、四角い穴が、地面に深く口を開けていた。パンナー・ミーナー・カ・クンド。雨水をためるための、十六世紀の階段井戸だ。
-三方の壁を、細かな階段が、斜めに交差しながら埋めつくしている。上から見ると、模様のように整っていて、どの段がどこへつながっているのか、目で追うほど分からなくなる。
+アンベールの町はずれに、四角い穴が、地面に深く口を開けていた。
+# speaker: narrator
+パンナー・ミーナー・カ・クンド。雨水をためるための、十六世紀の階段井戸だ。
+三方の壁を、細かな階段が、斜めに交差しながら埋めつくしている。
+# speaker: narrator
+上から見ると、模様のように整っていて、どの段がどこへつながっているのか、目で追うほど分からなくなる。
 # speaker: heroine
 # reaction: heroine,surprised_big,dizzy
 # voice: gt_jaipur_date_panna_meena_kund_001
@@ -26,7 +30,9 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_panna_meena_kund_002
 ほんとだ。目で一段ずつ追いかけても、さっきの段に戻れない。一回下りたら、違う道で帰るしかないんだ
 # speaker: narrator
-二人は、井戸のふちの日陰に腰を下ろした。昔、ここには村の女たちが水をくみに集まり、そのついでに、家の話や町の噂を交わしていたのだという。
+二人は、井戸のふちの日陰に腰を下ろした。
+# speaker: narrator
+昔、ここには村の女たちが水をくみに集まり、そのついでに、家の話や町の噂を交わしていたのだという。
 # speaker: heroine
 # emotion: teasing
 # voice: gt_jaipur_date_panna_meena_kund_003
@@ -83,8 +89,9 @@ INCLUDE modules.ink
         わたしから？　じゃあ……
     }
     # speaker: heroine
-    # voice: gt_jaipur_date_panna_meena_kund_030
-    アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。カムラさんに『毎日言葉にしなさい』って言われたから
+    アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
+    # speaker: heroine
+    カムラさんに『毎日言葉にしなさい』って言われたから
     # speaker: narrator
     カムラの孫で、二人を結婚式に招いてくれた花婿のことだ。
 -

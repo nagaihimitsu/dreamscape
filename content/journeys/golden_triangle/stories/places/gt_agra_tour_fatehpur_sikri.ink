@@ -108,7 +108,11 @@ INCLUDE modules.ink
 # background: gt_bg_agra_fatehabad_road
 # speaker: narrator
 # leave: gt_samir
-路地を抜けた先の大通りに、白い車が停まっていた。横に、アイロンの効いたシャツの男が立っている。胸の前に掲げた紙には、こちらの名前が、整ったアルファベットで書いてあった。
+路地を抜けた先の大通りに、白い車が停まっていた。
+# speaker: narrator
+横に、アイロンの効いたシャツの男が立っている。
+# speaker: narrator
+胸の前に掲げた紙には、こちらの名前が、整ったアルファベットで書いてあった。
 { cond("tour gt_agra_tour_fatehpur_sikri by web"):
     # speaker: narrator
     名前の下に、もう一組、知らない名前が並んでいる。車の後ろの席から、白髪の夫婦が、そろってこちらに手を振っていた。
@@ -181,7 +185,11 @@ INCLUDE modules.ink
 # bgm: gt_india_rhythm
 # ambience: stop
 # speaker: narrator
-アーグラの町を抜けるまでが、いちばん長かった。オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
+アーグラの町を抜けるまでが、いちばん長かった。
+# speaker: narrator
+オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。
+# speaker: narrator
+交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
 # photo: gt_album_a044 # photo_caption: 鳴らさないクラクション、信号のかわりの牛 # photo_with: gt_vinod
 ヴィノードは、クラクションを鳴らさなかった。牛の後ろで、ただ待っている。
 # speaker: heroine
@@ -194,12 +202,17 @@ INCLUDE modules.ink
 # background: gt_bg_agra_tour_road
 # speaker: narrator
 # term: gt_term_horn_ok_please
-やがて道は西へまっすぐ伸び、建物の間に畑がのぞきはじめた。前を走るトラックの荷台の後ろに、色とりどりの文字が描いてある。HORN OK PLEASE。
+やがて道は西へまっすぐ伸び、建物の間に畑がのぞきはじめた。
+# speaker: narrator
+前を走るトラックの荷台の後ろに、色とりどりの文字が描いてある。
+# speaker: narrator
+HORN OK PLEASE。
 # speaker: heroine
 # reaction: heroine,surprised,question
-# voice: gt_agra_tour_out_leg_002
 # photo: gt_album_a045 # photo_caption: HORN OK PLEASE # photo_with: gt_vinod
-ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？　どういう意味なんだろう。あ、あっちのトラックにも書いてある
+ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？
+# speaker: heroine
+どういう意味なんだろう。あ、あっちのトラックにも書いてある
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_002
 その OK は、運転手の数だけ説があります。父の説と、わたしの説も違います
@@ -248,14 +261,16 @@ INCLUDE modules.ink
 # speaker: narrator
 しばらく黙って走ってから、ヴィノードがバックミラー越しにこちらを見た。
 # speaker: gt_vinod
-# voice: gt_agra_tour_out_mother_vinod_001
-一つ、聞いてもいいですか。母は、わたしが乗せたお客さんの話を、必ず聞きたがります。どこから来て、何を見て、どういう二人か
+一つ、聞いてもいいですか。母は、わたしが乗せたお客さんの話を、必ず聞きたがります
+# speaker: gt_vinod
+どこから来て、何を見て、どういう二人か
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_mother_vinod_002
 母は、シークリーからほとんど出ません。だから、お客さんの話が、母の旅行です
 # speaker: gt_vinod
-# voice: gt_agra_tour_out_mother_vinod_003
-サミールさんは、新婚さんだと言っていました。でも、お二人は、新婚さんの顔には見えない。……母に、何と言えばいいですか
+サミールさんは、新婚さんだと言っていました
+# speaker: gt_vinod
+でも、お二人は、新婚さんの顔には見えない。……母に、何と言えばいいですか
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_tour_out_mother_001
@@ -419,7 +434,9 @@ INCLUDE modules.ink
 エンジンを切ると、外の音が急に近くなった。呼び込みの声、バイクの音、どこかで鳴る鈴。
 { cond("tour gt_agra_tour_fatehpur_sikri by web"):
     # speaker: narrator
-    パドマとスンダルは、車を降りるなり、言い合いながら上の方へ歩いていった。四十年ぶりの現場検証に、遅れるわけにはいかないらしい。
+    パドマとスンダルは、車を降りるなり、言い合いながら上の方へ歩いていった。
+    # speaker: narrator
+    四十年ぶりの現場検証に、遅れるわけにはいかないらしい。
 }
 { cond("seen gt_agra_hotel_vinod"):
     # speaker: narrator
@@ -427,7 +444,9 @@ INCLUDE modules.ink
 - else:
     # speaker: narrator
     # photo: gt_album_a048 # photo_caption: 木陰の車、牛の字の電話番号 # photo_with: gt_vinod
-    ヴィノードは名前の紙を裏返し、電話番号を書いて、こちらに渡した。娘さんのきれいな字の裏に、道に迷った牛の字が並んだ。
+    ヴィノードは名前の紙を裏返し、電話番号を書いて、こちらに渡した。
+    # speaker: narrator
+    娘さんのきれいな字の裏に、道に迷った牛の字が並んだ。
 }
 { cond("tour gt_agra_tour_fatehpur_sikri by hotel_desk"):
     # speaker: gt_vinod
@@ -473,14 +492,20 @@ INCLUDE modules.ink
 # bgm: gt_vadodora
 # ambience: gt_amb_bazaar
 # speaker: narrator
-ヴィノードと入れ違いに、下の町の方から、女の人が一人、早足で上がってきた。藍色のサリーの肩に、ショールをきっちり留めている。首から下げた札には、写真と、役所の印。
+ヴィノードと入れ違いに、下の町の方から、女の人が一人、早足で上がってきた。
+# speaker: narrator
+藍色のサリーの肩に、ショールをきっちり留めている。
+# speaker: narrator
+首から下げた札には、写真と、役所の印。
 # speaker: gt_rukhsana
 # cutin: name
 サミールのお客さまですね。ルクサーナです。今日のガイドをします
 # speaker: narrator
 彼女は首の札を持ち上げて表を見せ、裏返して裏も見せた。政府の許可を受けたガイドの証だという。
 # speaker: gt_rukhsana
-入口で、ガイドだと名乗る人が来たら、この札を見せてもらってください。見せない人は、ガイドではありません。わたしも含めて
+入口で、ガイドだと名乗る人が来たら、この札を見せてもらってください
+# speaker: gt_rukhsana
+見せない人は、ガイドではありません。わたしも含めて
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_agra_tour_guide_gate_001
@@ -494,7 +519,9 @@ INCLUDE modules.ink
 # speaker: gt_rukhsana
 では、紙の中だけ、ということにしておきます
 # speaker: narrator
-ルクサーナは、首の札の後ろから、もう一枚、角の丸くなった厚紙を抜き出した。手書きの字が三行。こちらに見せるでもなく、一行目だけを確かめるように読む。
+ルクサーナは、首の札の後ろから、もう一枚、角の丸くなった厚紙を抜き出した。
+# speaker: narrator
+手書きの字が三行。こちらに見せるでもなく、一行目だけを確かめるように読む。
 # speaker: narrator
 # letter: card
 一、最初の眺めに、声を混ぜるな。
@@ -537,17 +564,27 @@ INCLUDE modules.ink
     石段では、よく誰かが、人生の相談をしています。今日は、お二人が相談される側だったんですね
 }
 # speaker: narrator
-中庭を、赤い石の建物がぐるりと囲んでいる。上の階の窓の下に、象やオウムの模様が彫ってあった。この町で、いちばん大きな宮殿だという。
+中庭を、赤い石の建物がぐるりと囲んでいる。
+# speaker: narrator
+上の階の窓の下に、象やオウムの模様が彫ってあった。
+# speaker: narrator
+この町で、いちばん大きな宮殿だという。
 # speaker: gt_rukhsana
 ジョーダー・バーイーの宮殿、と呼ばれています
 # speaker: narrator
-壁の一角に、祈りの場所らしい小さな壁龕があった。ルクサーナはその前で立ち止まり、一歩下がって、声を落とした。話し方が、さっきまでと違う。先生の口調を、そのまま借りてきたような声だった。
+壁の一角に、祈りの場所らしい小さな壁龕があった。
+# speaker: narrator
+ルクサーナはその前で立ち止まり、一歩下がって、声を落とした。
+# speaker: narrator
+話し方が、さっきまでと違う。先生の口調を、そのまま借りてきたような声だった。
 # speaker: gt_rukhsana
 アンベールの姫は、皇帝に嫁ぐとき、一つだけ願いました。自分の神さまに、祈り続けたい、と
 # speaker: gt_rukhsana
 皇帝は、その願いを守った。宮殿の中に、姫の祈る場所を作らせた。そして、姫が心を開くまで、待ったのです。何年でも
 # speaker: gt_rukhsana
-ある夜、刺客に傷を負わされた皇帝を、姫は一晩じゅう看病しました。夜が明けたとき、皇帝は初めて、その名を呼んだ。……ジョーダー、と
+ある夜、刺客に傷を負わされた皇帝を、姫は一晩じゅう看病しました
+# speaker: gt_rukhsana
+夜が明けたとき、皇帝は初めて、その名を呼んだ。……ジョーダー、と
 # speaker: narrator
 # pause: 700
 中庭の風が、一瞬止まったような気がした。ルクサーナの目が、少し潤んでいる。話している本人が、いちばん先に。
@@ -591,7 +628,9 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_guide_palace_006
 じゃあ、ここは、ジョーダーさんじゃなくて、マリアムさんの宮殿なんですね
 # speaker: gt_rukhsana
-たぶん、です。この中で、誰がどの建物に住んだか、はっきり書いた記録は、あまりありません。名前の多くは、あとの人が付けました
+たぶん、です。この中で、誰がどの建物に住んだか、はっきり書いた記録は、あまりありません
+# speaker: gt_rukhsana
+名前の多くは、あとの人が付けました
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_tour_guide_palace_007
@@ -602,7 +641,11 @@ INCLUDE modules.ink
 # letter: card
 三、分からない、と言うな。
 # speaker: gt_rukhsana
-お客さまは、答えにお金を払います。分からない、と言うガイドに、誰が払いますか。……今日のお二人は、いちばん高いツアーを買ってくださったのに
+お客さまは、答えにお金を払います
+# speaker: gt_rukhsana
+分からない、と言うガイドに、誰が払いますか
+# speaker: gt_rukhsana
+……今日のお二人は、いちばん高いツアーを買ってくださったのに
 # speaker: narrator
 彼女は、こちらを見た。言いにくいことを先に言ってしまった人の顔だった。
 * [We paid for you, not for an answer. # option: paid_for_you # translation: 払ったのは、答えにじゃなくて、あなたにです。]
@@ -638,7 +681,9 @@ INCLUDE modules.ink
 # speaker: gt_rukhsana
 この人は、自分の名前で、命令書を出せました。自分の船を持っていて、巡礼の人をメッカへ運び、絹や香辛料を商った
 # speaker: gt_rukhsana
-その船が、海でポルトガルに奪われたとき、息子の皇帝は怒って、港を止め、ポルトガルの町を囲ませました。記録に、ちゃんと残っています
+その船が、海でポルトガルに奪われたとき、息子の皇帝は怒って、港を止め、ポルトガルの町を囲ませました
+# speaker: gt_rukhsana
+記録に、ちゃんと残っています
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_agra_tour_guide_palace_011
@@ -658,7 +703,9 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_guide_palace_013
 わたしも、船の話の方を覚えて帰ります。泣いた話も、ちょっとだけ
 # speaker: narrator
-ルクサーナは、厚紙を札の後ろへ戻した。三行目は、書いてあるままだった。ただ、しまう手つきが、来たときより少しだけ雑だった。
+ルクサーナは、厚紙を札の後ろへ戻した。三行目は、書いてあるままだった。
+# speaker: narrator
+ただ、しまう手つきが、来たときより少しだけ雑だった。
 # speaker: gt_rukhsana
 車は、下の木の陰ですね。わたしは、ここまで。ヴィノードさんのお母さんに、よろしく
 # speaker: heroine
@@ -681,7 +728,9 @@ INCLUDE modules.ink
 # bgm: gt_vadodora
 # ambience: gt_amb_bazaar
 # speaker: narrator
-木陰へ下りる道の途中、履物の屋台の前で、パドマとスンダルが言い合っていた。……いや、よく見ると、二人とも笑っていた。
+木陰へ下りる道の途中、履物の屋台の前で、パドマとスンダルが言い合っていた。
+# speaker: narrator
+……いや、よく見ると、二人とも笑っていた。
 # speaker: narrator
 パドマの足もとで、新しい赤いサンダルが光っている。
 # speaker: heroine
@@ -763,7 +812,9 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # term: gt_term_mathri
-包みの中は、狐色の平たい揚げ菓子だった。マトリーというらしい。ヴィノードの母のは、アジョワンという種が入っている。
+包みの中は、狐色の平たい揚げ菓子だった。マトリーというらしい。
+# speaker: narrator
+ヴィノードの母のは、アジョワンという種が入っている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
 # voice: gt_agra_tour_mathri_001
@@ -786,9 +837,12 @@ INCLUDE modules.ink
 {
 - cond("flag gt_agra_tour_she_answered"):
     # speaker: gt_vinod
-    # voice: gt_agra_tour_mathri_vinod_003
     # photo: gt_album_a060 # photo_caption: お母さんの返事 # photo_with: gt_vinod
-    母に、伝えました。同じ町を、同じ日に見たかった二人。母はしばらく黙って、それから言いました。それはもう、旅の話じゃなくて、二人の話だね、と
+    母に、伝えました。同じ町を、同じ日に見たかった二人
+    # speaker: gt_vinod
+    母はしばらく黙って、それから言いました
+    # speaker: gt_vinod
+    それはもう、旅の話じゃなくて、二人の話だね、と
     # speaker: heroine
     # reaction: heroine,shy,blush
     # voice: gt_agra_tour_mathri_003
@@ -837,13 +891,17 @@ INCLUDE modules.ink
 # speaker: gt_vinod
 母の家は、この道の先です。ただし、上がったら、夕方まで出てこられません。戸口までにしてください
 # speaker: narrator
-下の町の細い路地を、二つ曲がった。突き当たりの青い戸の前に、小柄な女の人が腰かけて、糸に何かを通していた。レモンと、青唐辛子。
+下の町の細い路地を、二つ曲がった。
+# speaker: narrator
+突き当たりの青い戸の前に、小柄な女の人が腰かけて、糸に何かを通していた。レモンと、青唐辛子。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_agra_tour_mother_door_001
 あ……バックミラーの
 # speaker: narrator
-ヴィノードが声をかけると、女の人は顔を上げ、こちらを頭から足もとまで眺めた。それから、糸を膝に置いて、ゆっくり立ち上がった。
+ヴィノードが声をかけると、女の人は顔を上げ、こちらを頭から足もとまで眺めた。
+# speaker: narrator
+それから、糸を膝に置いて、ゆっくり立ち上がった。
 {
 - cond("flag gt_agra_tour_she_answered"):
     # speaker: gt_vinod_mother
@@ -898,7 +956,9 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_mother_door_007
 伝えてもらうのも、うれしかったんです。でも、これだけは、自分で言いたくて
 # speaker: narrator
-母は、通し終えたばかりのレモンと青唐辛子を、ヴィノードの手に押しつけた。帰りの車の分だという。それから、こちらに向き直って、もう一言足した。
+母は、通し終えたばかりのレモンと青唐辛子を、ヴィノードの手に押しつけた。
+# speaker: narrator
+帰りの車の分だという。それから、こちらに向き直って、もう一言足した。
 # speaker: gt_vinod_mother
 次は、上がっていきなさい。食べきれないほど、食べさせるから
 # speaker: narrator
@@ -989,8 +1049,9 @@ INCLUDE modules.ink
 # voice: gt_agra_tour_back_awake_vinod_001
 眠りましたか。……一つ、いいですか。お客さんは、たいてい皇帝のことを聞きます。何年住んだか、妃は何人いたか
 # speaker: gt_vinod
-# voice: gt_agra_tour_back_awake_vinod_002
-でも、この人は、わたしの母のことを聞きました。レモンのことも、娘の字のことも、トラックの OK のことも。いつも、こうですか
+でも、この人は、わたしの母のことを聞きました
+# speaker: gt_vinod
+レモンのことも、娘の字のことも、トラックの OK のことも。いつも、こうですか
 * [Always. She notices what I miss. # option: notices_more # translation: いつもです。自分が見落とすものに、気づく人です。]
     # rel: affection +1
     # speaker: narrator

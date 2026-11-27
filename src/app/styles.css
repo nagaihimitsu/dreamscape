@@ -50,9 +50,29 @@
   --ds-glass-press: rgba(255, 255, 255, 0.72);
   --ds-glass-chosen: rgba(61, 106, 166, 0.18);
   --ds-glass-line: rgba(29, 39, 64, 0.16);
-  /* Its edges melt into the scene over this much: no edge line, no shadow. */
-  --ds-glass-feather: 10px;
-  --ds-glass-radius: 22px;
+  /* A press that cannot be pressed now, on a pane of the glass: a faint grey, flat (no edge, no shadow), its words the
+     muted ink (2026-11-27 user request: one UI). Over the scene itself such a press is the plain light glass instead
+     (a talk's choice, the mini-game's start). */
+  --ds-glass-disabled: rgba(29, 39, 64, 0.08);
+  /* Its edges (2026-11-27 user requests: the talk's window made fluffier, then every pane of glass the same, as one UI):
+     no edge line and no shadow; the glass reaches --ds-glass-bleed past its box and melts into the scene over
+     --ds-glass-feather along an eased curve (smoothstep at quarter steps), so no rim of the fade shows. Smaller on a
+     phone held upright (below). A pane that scrolls or holds a bar (a dialog, a quiz's panel) keeps a plain edge with
+     the same corner. */
+  --ds-glass-feather: 26px;
+  --ds-glass-bleed: 10px;
+  --ds-glass-radius: 32px;
+  --ds-glass-fade-in: transparent, color-mix(in srgb, var(--ds-mask) 16%, transparent) calc(var(--ds-glass-feather) * 0.25),
+    color-mix(in srgb, var(--ds-mask) 50%, transparent) calc(var(--ds-glass-feather) * 0.5),
+    color-mix(in srgb, var(--ds-mask) 84%, transparent) calc(var(--ds-glass-feather) * 0.75), var(--ds-mask) var(--ds-glass-feather);
+  --ds-glass-fade-out: var(--ds-mask) calc(100% - var(--ds-glass-feather)),
+    color-mix(in srgb, var(--ds-mask) 84%, transparent) calc(100% - var(--ds-glass-feather) * 0.75),
+    color-mix(in srgb, var(--ds-mask) 50%, transparent) calc(100% - var(--ds-glass-feather) * 0.5),
+    color-mix(in srgb, var(--ds-mask) 16%, transparent) calc(100% - var(--ds-glass-feather) * 0.25), transparent;
+  --ds-glass-mask: linear-gradient(to right, var(--ds-glass-fade-in), var(--ds-glass-fade-out)),
+    linear-gradient(to bottom, var(--ds-glass-fade-in), var(--ds-glass-fade-out));
+  /* The room between a pane's edge and its words (the talk's window on a phone, a card under free time's row). */
+  --ds-glass-padding: 16px;
   /* A band that stays over what scrolls under it on the glass (a dialog's title bar): the glass, nearly opaque. */
   --ds-glass-bar: rgba(244, 246, 252, 0.94);
   /* A field's edge on the glass: 3:1 on it whatever lies behind (its 12 % show-through counted at black). */
@@ -185,6 +205,11 @@
   --ds-danger: #873b34; /* an action that cannot be undone (消去), a Debug warning */
   --ds-danger-edge: #93443c;
   --ds-glass-shadow: 0 2px 10px rgba(20, 28, 48, 0.2); /* a pane of glass over the scene: a reply, a plate */
+  /* The light pane to press (2026-11-27 user request: one UI over every screen): a secondary press, a tab, a row or a
+     way to choose, ≡メニュー's items, as a quiz's answer and the mini-game's 練習: the glass's fine edge and a soft shadow
+     on the light ground, the talk's choice's corner (--ds-radius-pane). Chosen: a tab or a way the smoked glass of the
+     talk's choices (--ds-action-*); a row with more in it the chosen ground with --ds-ink's edge drawn inside. */
+  --ds-press-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
   --ds-glass-mark: rgba(255, 255, 255, 0.86); /* a white mark over the scene: the talk's tools */
   --ds-glass-mark-shadow: drop-shadow(0 1px 2px rgba(10, 14, 24, 0.6));
   --ds-glass-mark-hover: rgba(255, 255, 255, 0.14);
@@ -202,10 +227,14 @@
   /* Motion of the UI's feedback: short, transform and opacity only, and never holding
      input back. Each animation that uses these stops, in its own stylesheet, under
      prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
-     app shell). What closes or leaves is never animated: it goes at once. */
+     app shell). What closes or leaves is never animated: it goes at once (but for someone on a scene's stage, who steps back
+     off it: --motion-leave, 2026-11-27). */
   --motion-fast: 160ms; /* a panel, a dialog, a notice or a choice coming in */
   --motion-medium: 260ms; /* a value or a mark that changed, a character or a result coming in */
   --motion-scene: 450ms; /* a scene's picture giving way to the next */
+  --motion-step: 1400ms; /* the heroine walking to a new `# stand:` place (2026-11-27 user decision: slowly) */
+  --motion-leave: 700ms; /* someone stepping back off the stage (useSceneStage STAGE_LEAVE_MS) */
+  --ease-step: cubic-bezier(0.45, 0, 0.3, 1);
   --motion-stagger: 40ms; /* between the items of a list coming in */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   /* A menu's panel coming out of its button's edge (2026-11-27 user decision: 「スーッと」; journey-hud.css, travel-menu.css). */
@@ -218,6 +247,14 @@
     --ds-text-reading: 18px;
     --ds-text-lead: 20px;
     --ds-leading-reading: 1.8;
+  }
+}
+/* The glass's edges on a phone held upright (the talk's window since 2026-11-27). */
+@media (max-width: 700px) and (orientation: portrait) {
+  :root {
+    --ds-glass-feather: 24px;
+    --ds-glass-bleed: 8px;
+    --ds-glass-radius: 28px;
   }
 }
 * {
@@ -254,7 +291,7 @@ body {
    time's cards over the city, a quiz's panels over its place (its question, explanation and reasoning, its result's card),
    every dialog, the menu's panels, the title's and 交際開始's cards, 前回までのあらすじ (and the night's: night-rest.css).
    What lies on them was written for the parchment, so its colours are pointed at the glass's here: the ink, the muted
-   ink, a pressable's ground, the chosen ground, the hairlines, a field's ground and edge. */
+   ink, a pressable's ground, the chosen ground, the hairlines, a field's ground and edge, a disabled press's ground and ink. */
 .photo-menu .place-card,
 .photo-free-time .photo-menu-note,
 .photo-free-time .free-time-extras,
@@ -274,6 +311,8 @@ body {
   --ds-parchment-line: var(--ds-glass-line);
   --ds-field: var(--ds-glass-press);
   --ds-field-edge: var(--ds-glass-field-edge);
+  --ds-disabled-bg: var(--ds-glass-disabled);
+  --ds-disabled-ink: var(--ds-glass-muted);
   color: var(--ds-ink);
 }
 /* A pane that does not scroll: the glass is its ::before, so its feathered edge never fades the words or a focus ring. (A
@@ -295,18 +334,15 @@ body {
   content: "";
   position: absolute;
   z-index: -1;
-  inset: 0;
-  border-radius: inherit;
+  inset: calc(0px - var(--ds-glass-bleed));
+  border-radius: var(--ds-glass-radius);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, var(--ds-mask) var(--ds-glass-feather), var(--ds-mask) calc(100% - var(--ds-glass-feather)), transparent),
-    linear-gradient(to bottom, transparent, var(--ds-mask) var(--ds-glass-feather), var(--ds-mask) calc(100% - var(--ds-glass-feather)), transparent);
+  /* The talk's window's edge (romance-scene.css): the same bleed, corner and eased fade. */
+  -webkit-mask-image: var(--ds-glass-mask);
   -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent, var(--ds-mask) var(--ds-glass-feather), var(--ds-mask) calc(100% - var(--ds-glass-feather)), transparent),
-    linear-gradient(to bottom, transparent, var(--ds-mask) var(--ds-glass-feather), var(--ds-mask) calc(100% - var(--ds-glass-feather)), transparent);
+  mask-image: var(--ds-glass-mask);
   mask-composite: intersect;
   pointer-events: none;
 }
@@ -574,7 +610,7 @@ h3 {
   gap: 12px;
   background: var(--ds-action-fill);
   color: var(--ds-action-ink);
-  border-radius: var(--ds-radius-control);
+  border-radius: var(--ds-radius-pane);
   box-shadow: var(--ds-action-shadow);
   text-shadow: var(--ds-action-text-shadow);
   -webkit-backdrop-filter: var(--ds-smoke-blur);
@@ -943,7 +979,7 @@ footer span {
 }
 .modal-title-text { min-width: 0; }
 .modal-title-text .eyebrow { margin: 0; line-height: var(--ds-leading-snug); }
-/* 「閉じる」 in the title bar: a secondary pressable with the × (§2.3, §2.5), 44 px. */
+/* 「閉じる」 in the title bar: a secondary pressable with the × (§2.3, §2.5), 44 px, the same pane to press. */
 .modal-close {
   flex: none;
   display: inline-flex;
@@ -954,9 +990,10 @@ footer span {
   min-height: 44px;
   margin: 0 0 0 auto;
   padding: 4px 12px 4px 8px;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
+  box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
   font-weight: 600;
@@ -1127,18 +1164,23 @@ dialog.modal .offline-summary {
   line-height: var(--ds-leading-snug);
 }
 .settings-creator .debug-mode-setting { margin-top: 4px; }
-/* Secondary pressable (§2.3): parchment with a 1.5-px slate edge. */
+/* Secondary pressable (§2.3): a pane of the glass to press (2026-11-27 user request: one UI), as a quiz's answer and the
+   mini-game's 練習: the glass's light ground with a fine edge and a soft shadow, the talk's choice's corner. It was
+   parchment with a 1.5-px slate edge, a form's part over the scene. On the glass its colours are the glass's
+   (the glass surfaces above). */
 .secondary {
   width: 100%;
   background: var(--ds-parchment);
   color: var(--ds-ink);
   margin-top: 12px;
   font-size: var(--ds-text-body);
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  border-radius: var(--ds-radius-pane);
+  box-shadow: var(--ds-press-shadow);
 }
 .secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-parchment-2); }
-/* Disabled (§2.1): its own ground and ink, no edge; the reason stays in the text beside it. */
+/* Disabled (§2.1): its own ground and ink, no edge and no shadow; the reason stays in the text beside it. Every light pane
+   to press (--ds-press-shadow) that cannot be pressed looks the same (2026-11-27 user request: one UI). */
 .primary:disabled,
 .secondary:disabled,
 .primary[data-settling],
@@ -1403,7 +1445,7 @@ dialog.modal[open] {
 dialog.modal[open]::backdrop {
   animation: modal-backdrop-in 340ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* :where(): a part with its own coming-in (the photo viewer's print, photo-show.css) keeps it. */
+/* :where(): a part with its own coming-in keeps it. */
 :where(dialog.modal[open]) > * { animation: modal-part-in calc(var(--motion-drop) + 60ms) var(--ease-drop) backwards; }
 :where(dialog.modal[open]) > :nth-child(1) { animation-delay: 30ms; }
 :where(dialog.modal[open]) > :nth-child(2) { animation-delay: calc(30ms + var(--motion-stagger)); }
@@ -2074,3 +2116,5 @@ dialog.date-background-viewer > img {
 }
 /* Its description, credit and links shown at once under the photo, as 写真の出典 shows each photo's. */
 dialog.date-background-viewer .background-credit p { margin: 6px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.modal-close:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

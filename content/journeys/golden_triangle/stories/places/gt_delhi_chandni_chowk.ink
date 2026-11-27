@@ -18,12 +18,16 @@ INCLUDE modules.ink
     # tint: off
     # speaker: narrator
     # photo: gt_album_d043 # photo_caption: 電線の毛糸玉の下の路地
-    日が落ちても、チャンドニー・チョークの路地は眠らない。頭の上で電線が黒い毛糸玉みたいに絡まり、裸電球の下で、大鍋の油がずっと鳴っている。
+    日が落ちても、チャンドニー・チョークの路地は眠らない。
+    # speaker: narrator
+    頭の上で電線が黒い毛糸玉みたいに絡まり、裸電球の下で、大鍋の油がずっと鳴っている。
 - else:
     # background: gt_bg_delhi_chandni_chowk
     # speaker: narrator
     # photo: gt_album_d043 # photo_caption: 電線の毛糸玉の下の路地
-    チャンドニー・チョークの路地は、昼でも薄暗い。頭の上で電線が黒い毛糸玉みたいに絡まり、その下で、大鍋の油がずっと鳴っている。
+    チャンドニー・チョークの路地は、昼でも薄暗い。
+    # speaker: narrator
+    頭の上で電線が黒い毛糸玉みたいに絡まり、その下で、大鍋の油がずっと鳴っている。
 }
 # speaker: narrator
 # term: gt_term_dona
@@ -34,7 +38,9 @@ INCLUDE modules.ink
 見て。あの人たち、丸いのを一口で食べてる。中に、水が入ってるの？
 # speaker: narrator
 # term: gt_term_golgappa
-ゴルガッパ。男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。それを、客の器に一つずつ置いていく。
+ゴルガッパ。男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。
+# speaker: narrator
+それを、客の器に一つずつ置いていく。
 # speaker: heroine
 # voice: gt_delhi_date_chandni_chowk_002
 やってみたい。一個だけ。ううん、一皿だけ
@@ -46,7 +52,9 @@ INCLUDE modules.ink
 # photo: gt_album_d044 # photo_caption: 一つ目「口の中で、割れた！」 # photo_with: gt_delhi_chandni_vendor
 すっぱ、からっ、おいしい！　口の中で、割れた！
 # speaker: narrator
-感想を言い終わる前に、二つ目が来た。飲み込む前に、三つ目。屋台の男は客の顔を見ていない。手だけが、正確に、休まずに動いている。
+感想を言い終わる前に、二つ目が来た。飲み込む前に、三つ目。
+# speaker: narrator
+屋台の男は客の顔を見ていない。手だけが、正確に、休まずに動いている。
 # speaker: narrator
 # emotion: smile
 # photo: gt_album_d045 # photo_caption: 涙目で、律儀にうなずく # photo_with: gt_delhi_chandni_vendor
@@ -66,18 +74,28 @@ INCLUDE modules.ink
 // 先に言った（you_first）：男の手が止まり、彼女は「わたしが言うところだった」（前の「代わりに言う」の道。gt_delhi_bas_for_her）。
 // むせた（choke）：彼女が「この人の分も、バス！」と自分で言う（gt_delhi_said_bas）。長く食べた（outlast）：拍手。フラグなし。
 # speaker: narrator
+男は、隣に立つこちらにも葉の器を持たせた。
+# speaker: narrator
+それから二人の器に、交互に置き始めた。
+# speaker: narrator
 # minigame: golgappa_duel auto together art.stall gt_img_delhi_golgappa_stall
-男は、隣に立つこちらにも葉の器を持たせた。それから二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
+一つ置くごとに、手が速くなる。周りの客が数を数え出す。
 * [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
     # profile: attentive
     # memory: gt_delhi_date_chandni_chowk_memory
     # set: gt_delhi_said_bas
     # speaker: narrator
     # photo: gt_album_d047 # photo_caption: 十四で、二人同時に手を上げた # photo_with: gt_delhi_chandni_vendor
-    十四で、二人の手が同時に上がった。けれど屋台の男は、手を見ていない。二人の器に、十五個目が置かれた。思わず「バス」と口に出すと、男の手が、こちらの器の上でだけ止まった。
+    十四で、二人の手が同時に上がった。
+    # speaker: narrator
+    けれど屋台の男は、手を見ていない。二人の器に、十五個目が置かれた。
+    # speaker: narrator
+    思わず「バス」と口に出すと、男の手が、こちらの器の上でだけ止まった。
     { romance_result == "negative":
         # speaker: narrator
-        彼女は口をいっぱいにしたまま、目だけで「バス？」と聞き返した。乗り物の、あのバスだ。飲み込んで、息を吸って、屋台の男に向かって言う。
+        彼女は口をいっぱいにしたまま、目だけで「バス？」と聞き返した。
+        # speaker: narrator
+        乗り物の、あのバスだ。飲み込んで、息を吸って、屋台の男に向かって言う。
         # speaker: heroine
         # voice: gt_delhi_date_chandni_chowk_006
         ば、ばす……
@@ -89,7 +107,9 @@ INCLUDE modules.ink
         ……言葉は合ってるのに、声が足りなかった
     - else:
         # speaker: narrator
-        彼女は口をいっぱいにしたまま、目だけで「バス？」と聞き返した。乗り物の、あのバスだ。飲み込んで、息を吸って、屋台の男に向かって言う。
+        彼女は口をいっぱいにしたまま、目だけで「バス？」と聞き返した。
+        # speaker: narrator
+        乗り物の、あのバスだ。飲み込んで、息を吸って、屋台の男に向かって言う。
         # speaker: heroine
         # voice: gt_delhi_date_chandni_chowk_008
         バ、バス！
@@ -148,7 +168,11 @@ INCLUDE modules.ink
     # memory: gt_delhi_date_chandni_chowk_memory
     # speaker: narrator
     # photo: gt_album_d049 # photo_caption: 長く食べて、拍手 # photo_with: gt_delhi_chandni_vendor
-    十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
+    十四で、彼女が手を上げた。こちらの手は、上がらなかった。
+    # speaker: narrator
+    数える声が、ひときわ大きくなる。
+    # speaker: narrator
+    屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
     { romance_result == "negative":
         # speaker: narrator
         拍手の中で、彼女だけが手を叩かずに、こちらの赤い顔を見ていた。

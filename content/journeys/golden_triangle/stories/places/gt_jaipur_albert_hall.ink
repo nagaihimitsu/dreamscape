@@ -14,7 +14,11 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_albert_hall
 # speaker: narrator
 # photo: gt_album_j040 # photo_caption: 灰色に揺れる広場
-アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。その正面の広場が、灰色に揺れている。鳩だ。何百羽もの鳩が、地面を埋めつくしていた。
+アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。
+# speaker: narrator
+その正面の広場が、灰色に揺れている。鳩だ。
+# speaker: narrator
+何百羽もの鳩が、地面を埋めつくしていた。
 # speaker: narrator
 # term: gt_term_pigeon_feeding
 広場の端で、男が小さな袋に入った穀物を売っている。
@@ -87,7 +91,11 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 # term: gt_term_miniature
-博物館の中は、ひんやりしていた。細密画、絨毯、金属や木の細工。ひときわ賑やかなのは、制服の子どもたちの遠足の一団だった。先生に連れられて、別の展示室に続く階段へ、列になって向かっていく。
+博物館の中は、ひんやりしていた。細密画、絨毯、金属や木の細工。
+# speaker: narrator
+ひときわ賑やかなのは、制服の子どもたちの遠足の一団だった。
+# speaker: narrator
+先生に連れられて、別の展示室に続く階段へ、列になって向かっていく。
 階段の手前の柱の陰に、一人だけ、取り残された女の子がいた。八歳くらい。三つ編みの先を、ぎゅっと握っている。
 # speaker: heroine
 # emotion: worried

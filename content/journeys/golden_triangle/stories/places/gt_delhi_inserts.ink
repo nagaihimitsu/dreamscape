@@ -173,8 +173,9 @@ INCLUDE modules.ink
 # voice: gt_delhi_hotel_homework_001
 女性車両？　地下鉄の？
 # speaker: enemy
-# voice: gt_delhi_hotel_homework_roohi_004
-先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ。みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
+先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ
+# speaker: enemy
+みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
 # speaker: enemy
 # voice: gt_delhi_hotel_homework_roohi_005
 隣のカムラおばあちゃんも常連なんだよ。オートの運転手と喧嘩しなくていいからって。……もうすぐ、引っ越しちゃうけど
@@ -221,9 +222,10 @@ INCLUDE modules.ink
 かじっていた鉛筆が、やっと紙の上で動きはじめた。
 # speaker: heroine
 # emotion: smile
-# voice: gt_delhi_hotel_homework_005
 # photo: gt_album_d099 # photo_caption: 帳場の机のルーヒーと「女性車両」の作文 # photo_with: gt_roohi
-わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。回ってる洗濯物を見てると、落ち着くから
+わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの
+# speaker: heroine
+回ってる洗濯物を見てると、落ち着くから
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_delhi_hotel_homework_006
@@ -297,7 +299,9 @@ INCLUDE modules.ink
 屋台のおじさん、明日もあそこで、誰かのお腹を壊してるのかな
 # speaker: narrator
 # photo: gt_album_d101 # photo_caption: 夜中二時の廊下、看病の人が先に眠る
-返事を考えているうちに、隣から静かな寝息が聞こえてきた。看病に来た人が、先に眠っている。扇風機だけが、律儀に回り続けていた。
+返事を考えているうちに、隣から静かな寝息が聞こえてきた。
+# speaker: narrator
+看病に来た人が、先に眠っている。扇風機だけが、律儀に回り続けていた。
 -> END
 
 // 【4】宿・眠る前：腹を壊したのがヒロインのとき（夜だけ）
@@ -383,7 +387,11 @@ INCLUDE modules.ink
 { cond("flag gt_delhi_player_sick"):
     # speaker: narrator
     # se: door_knock
-    朝、こちらの部屋の扉を叩く音がした。開けると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。後ろには、制服姿の娘が、コップを両手で持っている。
+    朝、こちらの部屋の扉を叩く音がした。
+    # speaker: narrator
+    開けると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。
+    # speaker: narrator
+    後ろには、制服姿の娘が、コップを両手で持っている。
     { cond("seen gt_delhi_hotel_sick_night_player"):
         # speaker: narrator
         # emotion: neutral
@@ -396,7 +404,11 @@ INCLUDE modules.ink
 - else:
     # speaker: narrator
     # se: door_knock
-    朝、隣の部屋の扉を叩く音がした。廊下に出てみると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。後ろには、制服姿の娘が、コップを両手で持っている。
+    朝、隣の部屋の扉を叩く音がした。
+    # speaker: narrator
+    廊下に出てみると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。
+    # speaker: narrator
+    後ろには、制服姿の娘が、コップを両手で持っている。
     # speaker: narrator
     # emotion: worried
     彼女の部屋の扉が、細く開いた。
@@ -437,7 +449,9 @@ INCLUDE modules.ink
 言ってない
 { cond("flag gt_delhi_player_sick"):
     # speaker: narrator
-    彼女が鍋を受け取り、身振りと片言の英語で、おかみと何か話をつけた。昼まで部屋で寝ていること。夕方に、もう一度お粥をもらうこと。
+    彼女が鍋を受け取り、身振りと片言の英語で、おかみと何か話をつけた。
+    # speaker: narrator
+    昼まで部屋で寝ていること。夕方に、もう一度お粥をもらうこと。
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_hotel_sick_morning_001
@@ -479,8 +493,12 @@ INCLUDE modules.ink
 # ambience: gt_amb_street_traffic
 # speaker: narrator
 # term: gt_term_paharganj
-宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
-アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
+宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。
+# speaker: narrator
+道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
+アーグラ行きの列車まで、あと五十分。
+# speaker: narrator
+彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
 # speaker: gt_delhi_scam_young_man
 # voice: gt_delhi_depart_scam_delhi_scam_young_man_001
 # photo: gt_album_d122 # photo_caption: 「Your train is cancelled today.」 # photo_with: gt_delhi_scam_young_man gt_delhi_scam_vest_man
@@ -492,8 +510,11 @@ Agra? Your train is cancelled today.
 # voice: gt_delhi_depart_scam_001
 えっ、運休？
 # speaker: gt_delhi_scam_young_man
-# voice: gt_delhi_depart_scam_delhi_scam_young_man_002
-外国の方の振り替えは、観光客の窓口でしかできません。でも、駅の中の窓口は、今日は工事で閉まっています。臨時の窓口が、道の向かいに。歩いて五分です
+外国の方の振り替えは、観光客の窓口でしかできません
+# speaker: gt_delhi_scam_young_man
+でも、駅の中の窓口は、今日は工事で閉まっています
+# speaker: gt_delhi_scam_young_man
+臨時の窓口が、道の向かいに。歩いて五分です
 # speaker: narrator
 そこへ、反射材のベストを着て、無線機を持った男が通りかかった。青年が声をかけると、男は面倒くさそうにうなずいた。
 # speaker: gt_delhi_scam_vest_man
@@ -759,8 +780,9 @@ Thank you. We'll check it ourselves.
 # voice: gt_delhi_depart_scam_delhi_scam_phone_voice_001
 運休です。運休です
 # speaker: gt_delhi_scam_suit_man
-# voice: gt_delhi_depart_scam_delhi_scam_suit_man_004
-ご安心を。車と運転手をご用意できます。アーグラとジャイプール、ホテル込み。特別価格です。手付金だけ先にいただければ、今すぐ車を押さえます
+ご安心を。車と運転手をご用意できます。アーグラとジャイプール、ホテル込み
+# speaker: gt_delhi_scam_suit_man
+特別価格です。手付金だけ先にいただければ、今すぐ車を押さえます
 # speaker: narrator
 示された額は、二人の旅の予算を全部足しても、まるで届かない数字だった。
 # speaker: heroine
@@ -794,7 +816,9 @@ Thank you. We'll check it ourselves.
     二人で、ノートをのぞきこんだ。
 -
 # speaker: narrator
-とても親切でした。この人はしんらいできます。わたしはまんぞくしました。名前は、タナカ、スズキ、サトウ。日付は、三年にわたっていた。
+とても親切でした。この人はしんらいできます。わたしはまんぞくしました。
+# speaker: narrator
+名前は、タナカ、スズキ、サトウ。日付は、三年にわたっていた。
 彼女の指が、ページの上で止まった。
 # speaker: heroine
 # emotion: serious
@@ -858,7 +882,9 @@ No, thank you.
 // 道3：見抜けない（手付金を払う／払えない）
 = taken_in
 # speaker: narrator
-とても親切でした。この人はしんらいできます。わたしはまんぞくしました。名前は、タナカ、スズキ、サトウ。日付は、三年にわたっていた。
+とても親切でした。この人はしんらいできます。わたしはまんぞくしました。
+# speaker: narrator
+名前は、タナカ、スズキ、サトウ。日付は、三年にわたっていた。
 # speaker: heroine
 # emotion: worried
 # voice: gt_delhi_depart_scam_office_001
@@ -943,8 +969,9 @@ No, thank you.
 -> gt_delhi_depart_scam_on_platform ->
 { cond("flag gt_delhi_scam_paid"):
     # speaker: heroine
-    # voice: gt_delhi_depart_scam_015
-    手付金は、高い授業料だったね。……ううん、やっぱり悔しい。でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
+    手付金は、高い授業料だったね。……ううん、やっぱり悔しい
+    # speaker: heroine
+    でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
 }
 * [水のボトルを渡して、黙っている # option: hand_water]
     # rel: trust +1
@@ -990,12 +1017,16 @@ No, thank you.
 # photo: gt_album_d129 # photo_caption: ホームのベンチで、少し震える手
 ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
 # speaker: heroine
-# voice: gt_delhi_depart_scam_013
-親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も。……悔しい。最初に、ついて行こうって言ったの、わたしだから
+親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も
+# speaker: heroine
+……悔しい。最初に、ついて行こうって言ったの、わたしだから
 # speaker: heroine
 # emotion: serious
-# voice: gt_delhi_depart_scam_014
-でも、教えてくれた荷運びの人も、検札の人も、本物だった。宿のご主人も、ルーヒーさんも。……疑うのは疲れるけど、全部を疑うようには、なりたくないな
+でも、教えてくれた荷運びの人も、検札の人も、本物だった
+# speaker: heroine
+宿のご主人も、ルーヒーさんも
+# speaker: heroine
+……疑うのは疲れるけど、全部を疑うようには、なりたくないな
 ->->
 
 // 下書き（2026-11-18）：作者の確認待ち。確かめてほしいこと：authoring/journeys/golden_triangle/research/golden-triangle-station-scam-20261118/README.md
@@ -1024,7 +1055,9 @@ No, thank you.
 # bgm: gt_vadodora_chill_mix
 # ambience: gt_amb_railway_station
 # speaker: narrator
-ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
+ホームは、発車を待つ人であふれていた。
+# speaker: narrator
+赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
 # local_word: gt_delhi_word_sahayak
 # term: gt_term_sahayak
 昔は「クーリー」と呼ばれた彼らは、今は「サハーヤク」――助ける人、という名前に変わっている。
@@ -1086,7 +1119,9 @@ No, thank you.
 - cond("flag gt_delhi_suresh_encouraged"):
     # speaker: narrator
     # se: phone_vibrate
-    携帯が震えた。ロディ・ガーデンの笑う会の連絡に、長い伝言が一つ流れてきた。差出人は、新聞で顔を隠していた、あの人だ。
+    携帯が震えた。ロディ・ガーデンの笑う会の連絡に、長い伝言が一つ流れてきた。
+    # speaker: narrator
+    差出人は、新聞で顔を隠していた、あの人だ。
     # speaker: gt_suresh
     # phone: received
     自主申告をした。夕食の席で。誰も笑わなかった。最初に拍手をしたのは、メヘルだった
@@ -1100,7 +1135,11 @@ No, thank you.
     二人とも、自分の口で言えたんだ。叔父さんが先に言ったから、メヘルさんも言えたのかな
 - cond("flag gt_delhi_suresh_kept_secret"):
     # speaker: narrator
-    笑う会の連絡に、写真が一枚流れてきた。ロディ・ガーデンの集合写真。端の一人の顔にだけ、大きな薔薇の絵が貼ってある。その人から、一行だけ添えられていた。
+    笑う会の連絡に、写真が一枚流れてきた。ロディ・ガーデンの集合写真。
+    # speaker: narrator
+    端の一人の顔にだけ、大きな薔薇の絵が貼ってある。
+    # speaker: narrator
+    その人から、一行だけ添えられていた。
     # speaker: gt_suresh
     # phone: received
     この写真には、誰も写っていない

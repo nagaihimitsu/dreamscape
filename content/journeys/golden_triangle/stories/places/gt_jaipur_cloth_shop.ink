@@ -19,7 +19,9 @@ INCLUDE modules.ink
 # person: gt_sumitra
 # background: gt_bg_jaipur_johari_bazaar
 # speaker: narrator
-旧市街のアーケードの下に、刷った布を軒いっぱいに吊るした店があった。白い地に、小さな赤い花。風が来るたびに、花の列がそろって揺れる。
+旧市街のアーケードの下に、刷った布を軒いっぱいに吊るした店があった。
+# speaker: narrator
+白い地に、小さな赤い花。風が来るたびに、花の列がそろって揺れる。
 # speaker: heroine
 # voice: gt_jaipur_cloth_shop_intro_001
 吊るしてある布、どれも小さな花が並んでる。……近くで見たら、ひとつずつ違ったりして
@@ -77,7 +79,11 @@ INCLUDE modules.ink
 - else:
     # speaker: narrator
     # term: gt_term_kurta
-    スミトラーが、軒から一着を下ろした。白い地のクルタに、揃いのゆったりしたズボン。小さな赤い花が、きちんと列になっている。
+    スミトラーが、軒から一着を下ろした。
+    # speaker: narrator
+    白い地のクルタに、揃いのゆったりしたズボン。
+    # speaker: narrator
+    小さな赤い花が、きちんと列になっている。
 }
 { cond("date gt_jaipur_date_johari_bazaar"):
     # speaker: heroine
@@ -121,7 +127,9 @@ INCLUDE modules.ink
     # voice: gt_jaipur_cloth_shop_haggle_005
     一回だけ、だよね。……いきます
     # speaker: narrator
-    彼女は息を止めて版を置き、手のひらで、とん、と押した。版を上げると、白い端切れの上に、少しだけ傾いた花が一輪咲いていた。
+    彼女は息を止めて版を置き、手のひらで、とん、と押した。
+    # speaker: narrator
+    版を上げると、白い端切れの上に、少しだけ傾いた花が一輪咲いていた。
     # speaker: heroine
     # reaction: heroine,happy,sparkle
     # voice: gt_jaipur_cloth_shop_haggle_006
