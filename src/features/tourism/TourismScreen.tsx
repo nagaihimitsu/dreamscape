@@ -25,7 +25,8 @@ import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPo
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
-import { useSceneStage } from "../../components/useSceneStage";
+import { stageLayout, useSceneStage } from "../../components/useSceneStage";
+import { useStageGlide } from "../../components/useStageGlide";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -117,8 +118,11 @@ export function TourismScreen({
   // She stands from the guide's start; a person with a figure who speaks in their own name stands opposite her from that line
   // (scene-stage.ts). A guide read again starts with her alone. A line's `# leave:` takes her or them off until they
   // come again (her next line or reaction, their next line). Only who stands there is drawn.
-  const { stage, focus } = useSceneStage(active.phase === "guide" ? stageLine(frame, storyState.people, { heroine: !!reaction }) : {},
-    GUIDE_STAGE, active.phase);
+  const { stage, focus, leaving } = useSceneStage(active.phase === "guide" ? stageLine(frame, storyState.people, { heroine: !!reaction }) : {},
+    GUIDE_STAGE, active.phase, reduceMotion);
+  // Those who stay walk to their new places as someone comes or goes (useStageGlide).
+  const stageLayer = useRef<HTMLDivElement>(null);
+  useStageGlide(stageLayer, stageLayout(stage), { reduceMotion });
   const personId = stage.opposite?.figure;
   const cast = stageCast(stage);
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName }, storyState.people);
@@ -228,9 +232,9 @@ export function TourismScreen({
           {/* With a person on stage the two stand side by side (the encounter's slots), the person alone in the middle while
               she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. Two or
               three people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as another goes). */}
-          <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
+          <div ref={stageLayer} className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
             data-together={cast.together}>
-            {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
+            {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : "vn-character-slot"}>
               <CharacterPortrait
                 characterId="heroine"
                 sceneId={landmark.id}
@@ -238,13 +242,14 @@ export function TourismScreen({
                 emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
                 focus={focus.heroine}
                 stand={frame.stand}
+                leaving={leaving.includes("heroine")}
               >
                 {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
               </CharacterPortrait>
             </div>}
             {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => (
               <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "opposite" ? "enemy" : place}`}>
-                <CharacterPortrait characterId={figure.figure} focus={at} />
+                <CharacterPortrait characterId={figure.figure} focus={at} leaving={leaving.includes(figure.figure)} />
               </div>
             ))}
           </div>

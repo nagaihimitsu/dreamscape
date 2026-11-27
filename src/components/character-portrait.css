@@ -16,6 +16,15 @@
 @keyframes vn-character-in {
   from { opacity: 0; }
 }
+/* Going off the stage (useSceneStage's `leaving`; 2026-11-27 user decision: never in an instant): where it stood, it
+   steps back (a little smaller about its feet) as it fades, over --motion-leave; then the stage as it is now comes and the
+   others walk to their places (useStageGlide). Under reduced motion it goes at once (no `leaving`). */
+.vn-character.is-leaving {
+  animation: vn-character-out var(--motion-leave) var(--ease-step) forwards;
+}
+@keyframes vn-character-out {
+  to { opacity: 0; scale: calc(var(--stand-scale, 1) * 0.9); }
+}
 /* While a line is read (scene-stage.ts stageFocus): its speaker on stage comes slightly forward, the others
    listen, slightly dimmed; a line no one on stage says leaves everyone as they are. `scale` is its own
    property: it adds to the placement's transform (inline) about the same origin, and moves
@@ -85,12 +94,17 @@
 /* A scene's `# stand:` (2026-11-11 user decision; the writer's staging, never set by the relationship): where the
    heroine stands, until the scene's next `# stand:` or its end. `near` is her place without the tag; `apart` a little
    away (smaller, to one side), `close` right beside (larger). Its own `translate` and `scale` add to the placement's
-   transform about the same origin and move nothing else; a change of place eases over --motion-scene (and so does her
-   coming forward as she speaks, while a scene places her). */
+   transform about the same origin and move nothing else. A change of place is a slow walk there (2026-11-27 user
+   decision: not at once): while CharacterPortrait marks it (data-stepping) it eases in and out over --motion-step; her
+   coming forward as she speaks eases over --motion-scene. */
 .vn-character[data-stand] {
   translate: var(--stand-x) var(--stand-y);
   scale: var(--stand-scale);
   transition: opacity 180ms ease, scale var(--motion-scene) var(--ease-out), translate var(--motion-scene) var(--ease-out),
+    var(--vn-camera-moves);
+}
+.vn-character[data-stand][data-stepping] {
+  transition: opacity 180ms ease, scale var(--motion-step) var(--ease-step), translate var(--motion-step) var(--ease-step),
     var(--vn-camera-moves);
 }
 .vn-character[data-stand="near"] { --stand-x: 0%; --stand-y: 0%; --stand-scale: 1; }
@@ -121,12 +135,13 @@
 .reduce-motion .vn-character { animation: none; transition: none; }
 .reduce-motion .vn-character.is-speaking { scale: none; }
 .reduce-motion .vn-character[data-stand],
+.reduce-motion .vn-character[data-stand][data-stepping],
 .battle-screen[data-reduce-motion="true"] .vn-character[data-stand] { transition: none; }
 .reduce-motion .vn-character[data-stand].is-speaking { scale: var(--stand-scale); }
 @media (prefers-reduced-motion: reduce) {
   .vn-character { transition: none; animation: none; }
   .vn-character > :is(img, svg) { animation: none; }
   .vn-character.is-speaking { scale: none; }
-  .vn-character[data-stand] { transition: none; }
+  .vn-character[data-stand], .vn-character[data-stand][data-stepping] { transition: none; }
   .vn-character[data-stand].is-speaking { scale: var(--stand-scale); }
 }
