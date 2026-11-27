@@ -231,8 +231,6 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
             )}
           </div>
         </div>
-        {/* The talk's tools, in a row under its window (DialogueControls). */}
-        <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
         {/* The replies float above the window, which keeps the line or the question they answer (romance-scene.css .vn-choices). */}
         {quiz ? (!quiz.result && <div className="vn-choices">
           <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} japaneseOnly={englishOff} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
@@ -245,6 +243,8 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
           </ChoicePoint>
         </div>)}
       </section>
+      {/* The talk's tools, at the scene's lower left corner (DialogueControls). */}
+      <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} hidden={windowVisibility.hidden} />
       <DialogueWindowRestore state={windowVisibility} />
       <MiniGameSlot />
     </div>

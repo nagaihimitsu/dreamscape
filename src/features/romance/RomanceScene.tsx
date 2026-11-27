@@ -282,8 +282,6 @@ export function RomanceScene({
             ) : null}
           </div>
         </div>
-        {/* The talk's tools, in a row under its window (DialogueControls). */}
-        <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
         {/* The replies float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
         {frame.choices.length ? (
           <div className="vn-choices">
@@ -315,6 +313,8 @@ export function RomanceScene({
           </div>
         ) : null}
       </section>
+      {/* The talk's tools, at the scene's lower left corner (DialogueControls). */}
+      <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} hidden={windowVisibility.hidden} />
       <DialogueWindowRestore state={windowVisibility} />
       <MiniGameSlot />
     </div>

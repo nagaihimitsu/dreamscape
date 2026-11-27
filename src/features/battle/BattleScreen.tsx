@@ -878,8 +878,6 @@ export function BattleScreen({
         )}
       </section>
       </div>
-      {/* The talk's tools, in a row under its window (DialogueControls). */}
-      {isDialogue && <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
       {/* The talk's choices float above its window, which keeps the line they answer (romance-scene.css .vn-choices). */}
       {isDialogue && frame && choosing && onChoose && <div className="vn-choices">
         <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
@@ -890,6 +888,8 @@ export function BattleScreen({
         </ChoicePoint>
       </div>}
       </div>
+      {/* The talk's tools, at the screen's lower left corner (DialogueControls). */}
+      {isDialogue && <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} hidden={windowVisibility.hidden || coveredByCutIn} />}
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
       <MiniGameSlot />
       {cutIn && <ReasoningCutIn kind={cutIn} reduceMotion={reduceMotion} onComplete={() => {

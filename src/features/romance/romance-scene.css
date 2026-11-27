@@ -135,9 +135,10 @@
   flex: 0 1 auto;
   width: 90%;
   max-width: 1100px;
-  max-height: calc(100% - 8px - clamp(8px, 1.8dvh, 16px));
+  max-height: calc(100% - 8px - clamp(8px, 1.8dvh, 16px) - var(--vn-controls-row));
   min-height: 0;
-  margin: 0 auto clamp(8px, 1.8dvh, 16px);
+  /* Above the row of its controls (dialogue-controls.css). */
+  margin: 0 auto calc(clamp(8px, 1.8dvh, 16px) + var(--vn-controls-row));
   padding: 0;
   color: var(--vn-text);
   background: none;
@@ -336,8 +337,8 @@
   :root { --vn-window-radius: 28px; --vn-window-bleed: 8px; --vn-feather: 24px; }
   .vn-scene .vn-dialogue {
     width: calc(100% - 16px);
-    margin-bottom: 8px;
-    max-height: calc(100% - 16px);
+    margin-bottom: calc(8px + var(--vn-controls-row));
+    max-height: calc(100% - 16px - var(--vn-controls-row));
   }
   .vn-scene .vn-window-body { padding: 0 16px 12px; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
@@ -347,15 +348,15 @@
    talk's window floats over the speaker's waist, its top always at the same height, a quarter of the screen and its head
    and two lines above the scene's foot (--vn-window-top): a longer line grows the window downwards, into the room under
    it, not upwards; only a line too long for that room (or enlarged text) scrolls, or grows it upwards. Its controls
-   keep to the scene's lower left corner, and the choices float above the window, never moving it. The talk is a grid
-   of these three rows: the choices (shrinking, they scroll), the window's room (at least --vn-window-room, styles.css;
-   the window at its top), the controls. The battle's talk is laid out the same (battle.css). A short screen keeps the talk at the
+   keep to the scene's lower left corner (dialogue-controls.css), under it, and the choices float above the window, never
+   moving it. The talk is a grid of two rows: the choices (shrinking, they scroll) and the window's room (at least
+   --vn-window-room, styles.css; the window at its top). The battle's talk is laid out the same (battle.css). A short screen keeps the talk at the
    foot, as on a wide one. */
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .vn-scene .vn-dialogue {
     display: grid;
-    margin-bottom: 0;
-    grid-template-rows: minmax(0, auto) minmax(var(--vn-window-room), auto) auto;
+    margin-bottom: var(--vn-controls-row);
+    grid-template-rows: minmax(0, auto) minmax(var(--vn-window-room), auto);
     grid-template-columns: minmax(0, 1fr);
   }
   .vn-scene .vn-dialogue > .vn-choices {
@@ -368,10 +369,5 @@
     grid-row: 2;
     align-self: start;
     max-height: 100%;
-  }
-  .vn-scene .vn-dialogue > .dialogue-controls {
-    grid-row: 3;
-    justify-self: start;
-    margin: 0 0 4px -4px;
   }
 }

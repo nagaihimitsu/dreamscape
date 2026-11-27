@@ -43,21 +43,24 @@ export function DialogueWindowHead({ speaker, band, narration = false, remembere
 }
 
 /**
- * Presentation-only tools of the talk, in a row under its window at the left
- * (2026-11-25 user decision: the window rises a little, the tools below it, the
- * name band free to stand over the speaker), in this order: 「隠す」 (U6; a
+ * Presentation-only tools of the talk, in a row at the scene's lower left corner,
+ * wherever its window stands (2026-11-27 user decision; a child of the scene, not
+ * of the window: dialogue-controls.css), in this order: 「隠す」 (U6; a
  * sightseeing guide's too since 2026-11-14), 「ログ」, 「高速送り」, a group named
  * 「会話の操作」. Round buttons of the window's glass showing their marks only;
  * their words stay as their names for screen readers and voice control
  * (dialogue-controls.css). A tap in the gaps between them is a near miss, not a
- * tap on the scene. They come after the line in the reading order.
+ * tap on the scene. They come after the talk in the reading order. `hidden` while
+ * the window is (隠す) or covered: they go with it.
  */
-export function DialogueControls({ close, entries, auto }: {
+export function DialogueControls({ close, entries, auto, hidden }: {
   close: ReactNode;
   entries: readonly DialogueLogEntry[];
   auto: ReturnType<typeof useAutoAdvance>;
+  hidden?: boolean;
 }) {
-  return <div className="dialogue-controls" role="group" aria-label="会話の操作" data-no-advance {...{ [DIALOGUE_TOOLS_ATTRIBUTE]: "" }}>
+  return <div className="dialogue-controls" role="group" aria-label="会話の操作" data-no-advance {...{ [DIALOGUE_TOOLS_ATTRIBUTE]: "" }}
+    inert={hidden || undefined} aria-hidden={hidden || undefined}>
     {close}
     <DialogueLog entries={entries} label="ログ" />
     <AutoAdvanceButton state={auto} />

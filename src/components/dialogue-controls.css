@@ -66,19 +66,21 @@
   vertical-align: 0.08em;
   white-space: nowrap;
 }
-/* The controls (2026-11-25 user decisions: the talk's tools step back, under the window, and melt into the scene): a
-   row at the window's lower left, below it, of marks only, in the order 隠す · ログ · 高速送り: white, a little
+/* The controls (2026-11-25 user decisions: the talk's tools step back and melt into the scene; 2026-11-27: they keep
+   to the scene's lower left corner, wherever the window stands): a row of marks only, in the order 隠す · ログ · 高速送り: white, a little
    see-through, with a soft shadow that keeps them seen over a light picture, on no ground of their own; each still a
    44-px press. A faint round ground shows under the finger or the focus, and under 高速送り while it runs. Their words
-   are their names for screen readers and voice control (dialogue-tool-word). The window stands that much higher above
-   the scene's foot. */
+   are their names for screen readers and voice control (dialogue-tool-word). The row is the scene's own (a child of
+   .vn-scene or .battle-screen, after the talk); the window keeps --vn-controls-row above the scene's foot for it. */
 .dialogue-controls {
-  flex: none;
-  align-self: flex-start;
+  position: absolute;
+  z-index: 2;
+  left: 4px;
+  bottom: 4px;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 8px 0 0 4px;
+  margin: 0;
 }
 /* (button.text-button: over the window's own .vn-dialogue .text-button colour.) */
 .dialogue-controls button.text-button {

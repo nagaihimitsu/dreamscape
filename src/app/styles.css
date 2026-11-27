@@ -227,12 +227,13 @@ body {
   margin: 0;
 }
 
-/* The talk's place on a phone held upright (romance-scene.css, battle.css; 2026-11-27): its window's top this far above
-   the scene's foot, the controls' row under it, and the room between for the window to grow down into. */
+/* The talk's place (romance-scene.css, battle.css; 2026-11-27): the row of its controls at the scene's foot (a 44-px
+   press and 4 px under it), which the window keeps above; on a phone held upright, its window's top this far above the
+   scene's foot, and the room between for the window to grow down into. */
+:root { --vn-controls-row: 48px; }
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   :root {
     --vn-window-top: calc(25dvh + 118px);
-    --vn-controls-row: 48px; /* a 44-px press and 4 px under it */
     --vn-window-room: calc(var(--vn-window-top) - var(--vn-controls-row));
   }
 }

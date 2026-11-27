@@ -1,5 +1,7 @@
 .vn-scene[data-dialogue-hidden="true"] > .vn-dialogue,
-.battle-screen[data-dialogue-hidden="true"] > .battle-paper-shell {
+.vn-scene[data-dialogue-hidden="true"] > .dialogue-controls,
+.battle-screen[data-dialogue-hidden="true"] > .battle-paper-shell,
+.battle-screen[data-dialogue-hidden="true"] > .dialogue-controls {
   visibility: hidden;
   pointer-events: none;
 }
