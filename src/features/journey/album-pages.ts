@@ -1,6 +1,7 @@
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
 import type { GameState } from "../../domain/game";
+import { FLICK_MIN_PX, FLICK_SPEED } from "./photo-cards";
 import { placeDisplayName } from "./travel-labels";
 import { formatTravelTime } from "./travel-time";
 
@@ -57,10 +58,32 @@ export const showsMissedPhotos = (game: GameState, kept: boolean): boolean => ke
 export const ALBUM_SWIPE_PX = 48;
 
 /**
- * The page a released swipe turns to, from where the finger went (`dx`, `dy` in px): to the left the next page (+1),
- * to the right the one before (-1); a short or mostly upright move (the page's own scrolling) turns none (0).
+ * The page a released swipe turns to, from where the finger went (`dx`, `dy` in px) and its sideways speed as it let go
+ * (`speed`, px per ms, negative leftwards; photo-cards.ts flickSpeed): to the left the next page (+1), to the right the one
+ * before (-1). It turns after ALBUM_SWIPE_PX, or sooner on a quick flick (FLICK_MIN_PX at FLICK_SPEED or faster its way, as
+ * the free-time cards' flick up; 2026-11-27 user request: a flick turns the photos); a short slow or mostly upright move
+ * (the page's own scrolling) turns none (0).
  */
-export function albumSwipeStep(dx: number, dy: number): -1 | 0 | 1 {
-  if (Math.abs(dx) < ALBUM_SWIPE_PX || Math.abs(dx) < Math.abs(dy) * 1.5) return 0;
+export function albumSwipeStep(dx: number, dy: number, speed = 0): -1 | 0 | 1 {
+  if (Math.abs(dx) < Math.abs(dy) * 1.5) return 0;
+  const flick = Math.abs(dx) >= FLICK_MIN_PX && Math.abs(speed) >= FLICK_SPEED && Math.sign(speed) === Math.sign(dx);
+  if (Math.abs(dx) < ALBUM_SWIPE_PX && !flick) return 0;
   return dx < 0 ? 1 : -1;
+}
+
+/** A finger that went this far (px) sideways, and more sideways than upright, takes the page along (swipeOffset). */
+export const SWIPE_FOLLOW_PX = 8;
+/** Towards a side with nothing to turn to, the page goes only this share of the finger's way (and comes back). */
+export const SWIPE_EDGE_GIVE = 0.3;
+
+/**
+ * How far (px) the page goes with a finger that went `dx`, `dy` from its press, or null while it does not go along: until
+ * the finger has gone SWIPE_FOLLOW_PX more sideways than upright (`following`: it already goes along, and keeps on).
+ * `canStep` says whether there is a page on the side the finger pulls towards (+1: the next, to the left); towards none,
+ * it gives only SWIPE_EDGE_GIVE of the way.
+ */
+export function swipeOffset(dx: number, dy: number, following: boolean, canStep: (step: -1 | 1) => boolean): number | null {
+  if (!following && (Math.abs(dx) < SWIPE_FOLLOW_PX || Math.abs(dx) <= Math.abs(dy))) return null;
+  if (dx === 0) return 0;
+  return Math.round(dx * (canStep(dx < 0 ? 1 : -1) ? 1 : SWIPE_EDGE_GIVE));
 }

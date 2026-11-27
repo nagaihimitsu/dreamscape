@@ -16,9 +16,10 @@ import { useSwipe } from "./useSwipe";
 import "./sns.css";
 
 // 旅の記録's 「SNS」 (2026-11-26・27 user decisions; authoring/SNS_PLAN.md 「画面」): the timeline of the nights (a night's two
-// cards, a photo a slide: the heroine's posts, and under them the people's), the comments and likes under each, the people met and their pages,
-// the heroine's page with 旅の数字. Read-only but for the player's like (a heart; no count anywhere). Each page opens in
-// place inside 旅の記録 and 「‹」 goes back to where the page before it was. A photo opens larger over it (TravelLog's viewer).
+// cards, a photo a slide: the heroine's posts, and under them the people's), the comments and likes under each, the people
+// met and their pages, the heroine's page with 旅の数字. Read-only but for the player's like (a heart; no count anywhere).
+// Each page opens in place inside 旅の記録 and 「‹」 goes back to where the page before it was. A photo opens larger over it
+// (TravelLog's viewer).
 
 const served = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -166,9 +167,9 @@ function Faces({ faces, size }: { faces: readonly SnsFace[]; size: "xs" | "sm" }
 
 /**
  * A card: one post's paper, or a night's posts as one card (a photo a slide: the heroine's in the order written, or the
- * people's in the order they came; each one card a day). The photos turn sideways (‹ ›, or a swipe on the photo band only); within a post the line and the comments
- * stay, across posts they change with it. The card is as tall as its tallest post (every post's part under the band is laid
- * in one cell, the others hidden), so nothing under it moves as it turns.
+ * people's in the order they came; each one card a day). The photos turn sideways (‹ ›, or a swipe on the photo band only);
+ * within a post the line and the comments stay, across posts they change with it. The card is as tall as its tallest post
+ * (every post's part under the band is laid in one cell, the others hidden), so nothing under it moves as it turns.
  */
 function SnsCard({ posts, startPostId, actions }: { posts: readonly SnsPostView[]; startPostId?: string; actions: Actions }) {
   const slides = useMemo(() => posts.flatMap((post, postIndex) => post.photos.map((photo, photoIndex) =>
@@ -186,7 +187,7 @@ function SnsCard({ posts, startPostId, actions }: { posts: readonly SnsPostView[
     if (next === last && document.activeElement === nextButton.current) prevButton.current?.focus({ preventScroll: true });
     setIndex(next);
   };
-  const swipe = useSwipe(go);
+  const swipe = useSwipe(go, { canStep: (step) => step === 1 ? at < last : at > 0 });
   if (!current) return null;
   const many = slides.length > 1;
   const hasUnder = posts.some((post) => post.comments.length || post.likers.length);
