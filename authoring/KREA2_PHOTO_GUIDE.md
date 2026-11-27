@@ -141,6 +141,8 @@ The young woman has shoulder-length brown bob hair with slightly wavy tips and w
 
 ### 5.3 主人公（クオッカ）
 
+> 2026-11-27：クオッカの見た目は作り直す予定（ユーザーが参考の画像を送る）。新しい見た目が決まったら、この文を書き直す。それまでは下の文を使う。
+
 ```text
 The quokka is a small anthropomorphic quokka traveler about half her height, with fluffy light tan-brown fur, a round chubby face with the quokka's famous gentle smile, small rounded ears, big glossy dark-brown eyes, a small dark nose and a short thick tail, wearing a light grey hoodie, black trousers, white sneakers and a small white backpack.
 ```
