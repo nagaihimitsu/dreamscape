@@ -130,6 +130,12 @@ describe("the heroine lines of a voice script", () => {
     expect(line("また来ようね")?.prev).toEqual(["―", "条件で変わる（この前の分かれ道のどれを通ったかによる）"]);
   });
 
+  it("reads no line from a gather, nested ones too (`- -`)", () => {
+    const shop = `=== ta_shop ===\n# speaker: heroine\nどれにする？\n* [A]\n    * * [B]\n        これにする\n    * * [C]\n        やめておく\n    - -\n* [D]\n    -> END\n-\nまた来ようね\n`;
+    expect(heroineLines(voiceScript(input([{ storyId: "places/ta_west_shop", source: shop }]))).map((item) => item.text)).toEqual([
+      "どれにする？", "これにする", "やめておく", "また来ようね"]);
+  });
+
   it("takes a battle's title and opponent from its catalog entry, else names the scene by its knot", () => {
     expect(line("はい")).toMatchObject({ title: "時計の番人", prev: ["番人", "止まれ"] });
     expect(line("これが広場")).toMatchObject({ title: "観光案内（ta_square_guide）", prev: null });

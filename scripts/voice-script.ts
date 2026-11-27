@@ -332,8 +332,8 @@ function readStory(storyId: string, source: string, input: VoiceScriptInput): { 
       prev = blockPrev[blockPrev.length - 1];
       return;
     }
-    // A gather, labelled or not (`-`, `- -> END`, `- (stop)`: a reasoning quiz's loop), is no line.
-    if (/^-+\s*(?:\(\w+\)\s*)?(->.*)?$/u.test(line)) {
+    // A gather, labelled or not (`-`, `- -> END`, `- (stop)`: a reasoning quiz's loop), nested too (`- -`), is no line.
+    if (/^(?:-\s*)+(?:\(\w+\)\s*)?(->.*)?$/u.test(line)) {
       if (menuPrev !== null || choice) prev = CHANGES_BY_CHOICE;
       choice = null;
       menuPrev = null;
