@@ -95,10 +95,14 @@
 .free-time-hub .city-complete .secondary {
   margin: 0;
   min-height: 44px;
-  border: 1px solid var(--ds-gold-hairline);
+  border: 0;
   border-radius: var(--ds-radius-control);
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
+  background: var(--ds-action-fill);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-action-shadow);
+  color: var(--ds-action-ink);
+  text-shadow: var(--ds-action-text-shadow);
   font-size: var(--ds-text-body);
   font-weight: 600;
 }

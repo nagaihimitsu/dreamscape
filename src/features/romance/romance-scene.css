@@ -77,7 +77,7 @@
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
-/* The link is a pressable rectangle (§2.3): gold hairline, 44 px, ↗ for leaving the game. */
+/* The link is a pressable rectangle (§2.3): the talk's smoked glass with its gold hairline, 44 px, ↗ for leaving the game. */
 .date-reference a {
   display: inline-flex;
   align-items: center;
@@ -85,10 +85,14 @@
   width: 100%;
   min-height: 44px;
   padding: 4px 8px;
-  border: 1px solid var(--ds-gold-hairline);
+  border: 0;
   border-radius: var(--ds-radius-control);
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
+  background: var(--ds-action-fill);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-action-shadow);
+  color: var(--ds-action-ink);
+  text-shadow: var(--ds-action-text-shadow);
   font-weight: 600;
   text-decoration: none;
 }

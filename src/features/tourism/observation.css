@@ -229,9 +229,13 @@
 .observation-overlay .notebook-button {
   flex: none;
   pointer-events: auto;
-  border: 1px solid var(--ds-gold-hairline);
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
+  border: 0;
+  background: var(--ds-action-fill);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-action-shadow);
+  color: var(--ds-action-ink);
+  text-shadow: var(--ds-action-text-shadow);
   white-space: nowrap;
 }
 .observation-options { align-items: center; gap: 4px; }

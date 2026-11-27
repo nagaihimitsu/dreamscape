@@ -74,7 +74,7 @@
   text-align: center;
   touch-action: manipulation;
 }
-.mg-engine-shape-drag .mg-shape-drag-done[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-shape-drag .mg-shape-drag-done[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-smoke-muted); }
 .mg-engine-shape-drag .mg-shape-drag-auto {
   display: flex;
   align-items: center;

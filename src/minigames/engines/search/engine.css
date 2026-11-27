@@ -23,7 +23,7 @@
   touch-action: manipulation;
 }
 .mg-engine-search .mg-search-button.secondary { border-color: color-mix(in srgb, var(--ds-on-slate) 50%, transparent); background: color-mix(in srgb, var(--ds-veil) 55%, transparent); color: var(--ds-on-slate); }
-.mg-engine-search .mg-search-button[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-search .mg-search-button[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-smoke-muted); }
 .mg-engine-search .mg-search-auto {
   display: flex;
   align-items: center;

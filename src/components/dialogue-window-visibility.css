@@ -21,7 +21,8 @@
   color: var(--ds-glass-mark-full);
 }
 /* Its visible cue (D7), without words (2026-11-11, the user's decision): a
-   44-px pressable square with an eye at the bottom, where the window was, above
+   44-px pressable circle of the header's smoked glass with a white eye (2026-11-27 user decision: no longer an opaque
+   slate square edged in gold, which stood on the scene as a form's part) at the bottom, where the window was, above
    the phone's home indicator. As it appears its ring spreads out and fades
    twice, then it rests. The whole scene is the control (the first tap only
    shows the window); its focus ring is drawn on the cue. Under reduced motion
@@ -35,17 +36,18 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: var(--ds-radius-control);
-  background: var(--ds-slate-800);
-  box-shadow: var(--ds-pill-shadow);
+  border-radius: 50%;
+  background: var(--ds-smoke);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
+  box-shadow: var(--ds-smoke-edge), var(--ds-pill-shadow);
 }
-.vn-window-restore-hint .icon { width: 22px; height: 22px; color: var(--ds-gold); }
+.vn-window-restore-hint .icon { width: 22px; height: 22px; color: var(--ds-glass-mark-full); }
 .vn-window-restore-hint::after {
   content: "";
   position: absolute;
   inset: -1px;
-  border: 2px solid var(--ds-gold);
+  border: 2px solid var(--ds-glass-mark);
   border-radius: inherit;
   opacity: 0;
   pointer-events: none;
