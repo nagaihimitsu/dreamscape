@@ -254,12 +254,8 @@
 .hud-menu-rule { width: 100%; margin: 2px 0; border: 0; border-top: 1px solid var(--ds-parchment-line); }
 /* ≡メニュー's panel comes down out of the header (2026-11-27 user decision: 「スーッと上から」): it slides down a
    little as a blind unrolls over it from its top edge, and its items follow one after another. Only the opening
-   moves; it closes at once (styles.css, Motion). The press on an item is never held back. */
-.hud-menu-panel,
-.journey-hud .held-item-detail {
-  --motion-drop: 340ms;
-  --ease-drop: cubic-bezier(0.16, 1, 0.3, 1);
-}
+   moves; it closes at once (styles.css, Motion). The press on an item is never held back. The menus that open
+   upward from the free-time band rise the same way (travel-menu.css). */
 @keyframes hud-menu-in {
   /* The sides and foot open wide at the end so the pane's shadow is not cut off. */
   from { opacity: 0; transform: translateY(-14px); clip-path: inset(0 -40px 100% -40px); }
