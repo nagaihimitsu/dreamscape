@@ -98,10 +98,31 @@ dialog.modal.travel-map-modal[open] { display: flex; flex-direction: column; }
 .travel-map-selection { margin-top: 8px; padding: 0 0 4px; touch-action: manipulation; }
 .travel-map-selection h3 { margin: 0 0 4px; font-size: var(--ds-text-body); }
 .travel-map-selection > p { margin: 4px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+/* The selected place's card lies on the dialog's own glass (2026-11-27 user request: one UI): no box of its own (no edge,
+   ground or shadow) inside the pane, its words under 「選んだ行き先」 as the page's card's lie on its glass. */
+.travel-map-selection .place-card { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
 /* The map leaves room for the title band and, in free time, the bar. */
 dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100svh - 420px), 520px); }
 .travel-map-modal-place { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: var(--ds-text-note); }
 .travel-map-modal-place select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
+/* 「地点を名前で探す」's select (2026-11-27 user request: one UI): the light pane of the presses in the dialog, its field's
+   edge (3:1) drawn fine inside it, the talk's choice's corner and a soft shadow; the system's own box and arrow give way
+   to a drawn chevron in the ink. */
+.travel-map-modal-place select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0 36px 0 14px;
+  border: 0;
+  border-radius: var(--ds-radius-pane);
+  background-color: var(--ds-parchment);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 1px var(--ds-field-edge), var(--ds-glass-shadow);
+  color: var(--ds-ink);
+  font-size: var(--ds-text-field);
+}
 /* The selection's bar at the foot: a display-only parchment band like the title band (its hairline on top), the name and
    the way (or why not) at the left, 「行く」 or 「休む」 at the right under the thumb. */
 .travel-map-bar {
