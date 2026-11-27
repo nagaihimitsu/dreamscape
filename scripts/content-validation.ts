@@ -475,12 +475,6 @@ export function validateContent(sources: ContentSources,
     }
   }
   const balance = parseCatalog(balanceSchema, "romance/balance.json");
-  for (const plannedJourney of journeyCatalog.journeys) {
-    if (plannedJourney.initialState && plannedJourney.initialState.ap > balance.apCap)
-      throw new Error(`Journey initial AP exceeds cap: ${plannedJourney.id}`);
-    if (plannedJourney.cityPlan && plannedJourney.cityPlan.cityClearAp > balance.apCap)
-      throw new Error(`Journey city clear AP exceeds cap: ${plannedJourney.id}`);
-  }
   const presentation = parseCatalog(presentationSchema, "romance/presentation.json");
   const travels = cities.map((item, index) => {
     const files = sources.cities[index];
@@ -647,8 +641,6 @@ export function validateContent(sources: ContentSources,
   ) {
     throw new Error("Default name exceeds maxNameLength");
   }
-  if (cities.some((item) => item.firstClearReward.ap > balance.apCap))
-    throw new Error("First clear reward exceeds AP cap");
   // The words of the countries visited (optional; 2026-11-11 user decision): a line's # local_word: names one of them.
   const localWords = parseCatalog(localWordsCatalogSchema, "learning/local-words.json").words;
   unique(localWords.map((word) => word.id), "local word ID");
@@ -868,9 +860,9 @@ export function validateContent(sources: ContentSources,
   }
   for (const file of placeFiles.values()) {
     const read = withContext(storyLabel(file.storyId), () => placeScenes({
-      file, compiled: stories[file.storyId], apCap: balance.apCap, mains, landmarkCity, placeCity,
+      file, compiled: stories[file.storyId], mains, landmarkCity, placeCity,
       dateCity: (dateId) => dates.find((date) => date.id === dateId)?.chapterId, cityExists: (cityId) => cities.some((city) => city.id === cityId),
-      tourStep, shopCity: (shopId) => shopCatalog.shops.find((shop) => shop.id === shopId)?.cityId, onWarning: sceneWarn,
+      tourStep, shopCity: (shopId) => shopCatalog.shops.find((shop) => shop.id === shopId)?.cityId,
     }));
     if (!read.length) throw new Error(`A place file without scenes: ${storyLabel(file.storyId)} (give a knot the head tag # scene:)`);
     placeEntries.push(...read.map((item) => item.entry));
@@ -922,7 +914,7 @@ export function validateContent(sources: ContentSources,
       ? withContext(storyLabel(main.address), () => readFileChoices(main.address, storySources[main.address])) : [];
     if (choices.length) fileChoiceStories.add(main.address);
     const options = choices.flatMap((choice) => {
-      const option = withContext(storyLabel(main.address), () => choiceOption(choice, balance.apCap, sceneWarn));
+      const option = withContext(storyLabel(main.address), () => choiceOption(choice));
       return option ? [option] : [];
     });
     if (main.kind === "date") {
@@ -933,7 +925,7 @@ export function validateContent(sources: ContentSources,
     }
     if (!head && !options.length) continue;
     unique(options.map((option) => option.id), `option ID of ${main.address}`);
-    const done = withContext(storyLabel(main.address), () => parseDone(head?.onDone ?? [], balance.apCap));
+    const done = withContext(storyLabel(main.address), () => parseDone(head?.onDone ?? []));
     fileEntries.push({
       id: mainFileSceneId(main.main), kind: main.kind, title: main.title, cityId: main.cityId, story: { storyId: main.address }, main: main.main,
       at: [], order: 0, repeat: "once", people: [], options, done,
@@ -992,7 +984,7 @@ export function validateContent(sources: ContentSources,
     if (sceneData.scenes.some((item) => item.id === scene.id) && scene.sources === "none")
       throw new Error(`The sources of ${scene.id} are written twice: # sources: none in ${label} and sources in scenes/catalog.json (keep one; A4)`);
     if (scene.title !== undefined && !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(scene.title) && scene.origin === "place")
-      languageNotes.push({ kind: "data-language", message: `\`# title:\` に日本語がありません：${scene.id}「${scene.title}」。道中交流の題名や保留 AP の題名として、そのまま出ます（止めません）。` });
+      languageNotes.push({ kind: "data-language", message: `\`# title:\` に日本語がありません：${scene.id}「${scene.title}」。道中交流の題名として、そのまま出ます（止めません）。` });
     for (const option of scene.options) if (option.profile && scene.kind === "date" && decidesConfession(dateOf(scene) ?? { kind: "normal" }))
       throw new Error(`A ${dateOf(scene)!.kind === "answer" ? "date of her answer" : "confession date"} takes no # profile: (its outcome is never random; B2): ${label}`);
     // # withhold (告白を見送る; 2026-11-20): only a direct choice of a confession date (its own knot) does not confess.
@@ -1026,7 +1018,7 @@ export function validateContent(sources: ContentSources,
     const tagged = choices.flatMap((choice) => choice.tags.filter((tag) => tag.key !== "effect"));
     if (!tagged.length) continue;
     const options = choices.flatMap((choice) => {
-      const option = withContext(storyLabel(id), () => choiceOption(choice, balance.apCap, sceneWarn));
+      const option = withContext(storyLabel(id), () => choiceOption(choice));
       return option ? [option] : [];
     });
     const event = encounterCatalog.encounters.find((item) => item.storyId === id);
@@ -1284,8 +1276,6 @@ export function validateContent(sources: ContentSources,
       throw new Error(`Unknown chapter reference: ${date.id}`);
     if (!presentation.backgrounds[date.backgroundId])
       throw new Error(`Unknown background: ${date.backgroundId}`);
-    if (date.apCost > balance.apCap)
-      throw new Error(`Date cost exceeds AP cap: ${date.id}`);
     if (
       date.allowAfterEnding && date.kind !== "normal"
     )
@@ -1819,7 +1809,7 @@ export function validateContent(sources: ContentSources,
         sources: taggedScenes.flatMap((scene) => scene.done.items ?? []),
       },
     });
-    if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes);
+    if (episodes.length) validateJourney(cityJourney, current, cityLandmarks, battles, quizzes);
     else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
     validateTravelContent(travel, settings, current.id, cityJourney, cityDates, battles,
       cityLandmarks.map((landmark) => landmark.id), cityDestinations.map((destination) => destination.id), presentation.backgrounds,

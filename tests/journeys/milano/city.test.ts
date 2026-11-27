@@ -53,8 +53,7 @@ const restore = (state: GameState) => {
   return next;
 };
 const totalAp = (state: GameState) =>
-  state.ap +
-  state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
+  state.ap;
 function finishBattle(initial: GameState, score: number): GameState {
   let state = initial;
   const battle = battles.find(
@@ -213,12 +212,11 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.inventory).toEqual(before.inventory);
     expect(state.travelBudget).toBe(before.travelBudget);
     expect(state.memories).toEqual(before.memories);
-    expect(state.ap).toBe(12);
-    expect(state.pendingApRewards.length).toBeGreaterThan(0);
+    expect(state.ap).toBeGreaterThan(12);
     const loaded = persisted(state);
     expect(loaded.schemaVersion).toBe(state.schemaVersion);
     expect(loaded.inventory.blue_pick).toBe("held");
-    expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
+    expect(loaded.ap).toBe(state.ap);
   });
 
   it("retains an unused local item and the existing relationship ending after save and load", () => {
@@ -232,7 +230,6 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(loaded.memories).toEqual(ending.memories);
     // Collecting the pick played the Duomo's battle again (its rewards are the battle's): the save keeps what it holds.
     expect(loaded.ap).toBe(state.ap);
-    expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
     expect(loaded.travelBudget).toBe(ending.travelBudget);
   });
   it("allows sightseeing in any order while keeping the city finale locked", () => {

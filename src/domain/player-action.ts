@@ -15,7 +15,6 @@ import {
 import { advanceCityEpilogue, canReadCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay } from "./epilogue";
 import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, type GameState } from "./game";
 import { getDayEnd, type NightAction } from "./day-end";
-import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
 import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { miniGameOutcomeChoice, openMiniGame, type MiniGameScene } from "./minigame";
@@ -60,7 +59,7 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
  */
 export type PlayerAction =
   // Free time (FreeTimeHub; B案's PhotoCardFreeTime, the previous MapListFreeTime alike): PlaceCard's ways (TravelMenu's rows before;
-  // TravelRentals: 借りる; TravelTours: 予約する・予約を取り消す), StayCard or TravelActions (待機・休む), FreeTimeExtras (PendingRewards, 出発), CityProgress.
+  // TravelRentals: 借りる; TravelTours: 予約する・予約を取り消す), StayCard or TravelActions (待機・休む), FreeTimeExtras (出発), CityProgress.
   | { kind: "travel"; eventId: string; mode: TravelMode }
   | { kind: "rent"; modeId: string }
   | { kind: "book_tour"; tourId: string; offerId: string }
@@ -73,7 +72,6 @@ export type PlayerAction =
   | { kind: "rest"; mode: TravelMode; viaPlaceId: string | null }
   | { kind: "depart" }
   | { kind: "read_epilogue" }
-  | { kind: "claim_ap" }
   // Arrival and city epilogue: EpilogueScreen (the arrival logo ends by itself).
   | { kind: "arrival_logo" }
   | { kind: "epilogue_next" }
@@ -176,7 +174,6 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     }
     const exits = getBattleResultExits(state);
     return [
-      ...(canClaimPendingRewards(state) ? [{ kind: "claim_ap" as const }] : []),
       ...(exits.epilogue ? [{ kind: "battle_epilogue" as const }] : []),
       ...(exits.leave ? [{ kind: "battle_leave" as const }] : []),
       ...back,
@@ -196,7 +193,6 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
       .filter((route) => getTravelEventAvailability(state, event.id, route.mode).available)
       .map((route) => ({ kind: "travel" as const, eventId: event.id, mode: route.mode }))),
     ...(canReadCityEpilogue(state) ? [{ kind: "read_epilogue" as const }] : []),
-    ...(canClaimPendingRewards(state) ? [{ kind: "claim_ap" as const }] : []),
     ...(getPlayerDeparture(state) ? [{ kind: "depart" as const }] : []),
     ...getTravelWaitOptions(state).filter((option) => option.available).map((option) => ({ kind: "wait" as const, minutes: option.minutes })),
     ...getRentalOffers(state).filter((choice) => choice.available).map((choice) => ({ kind: "rent" as const, modeId: choice.offer.modeId })),
@@ -275,7 +271,6 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId, nextRoll);
       case "depart": return openOccasion(state, { kind: "depart" }, revision, nextRoll);
       case "read_epilogue": case "battle_epilogue": return openOccasion(state, { kind: "epilogue" }, revision, nextRoll);
-      case "claim_ap": return claimPendingRewards(state, revision);
       case "arrival_logo": return completeArrivalLogo(state, revision);
       case "epilogue_next": return advanceCityEpilogue(state, revision);
       case "epilogue_choose": return chooseCityEpilogue(state, action.index, revision, nextRoll);

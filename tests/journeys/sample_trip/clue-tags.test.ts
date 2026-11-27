@@ -24,7 +24,7 @@ const RAIN = "smp_obs_mihon_market_rain";
 const MARKET = "mihon_market";
 const TOWER_EVENT = "smp_mihon_main_clock_tower";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
-const MAP = ["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"];
+const MAP = ["travel", "wait", "rest", "rent", "depart", "read_epilogue"];
 const kept = [...scenes];
 afterEach(() => { (scenes as SceneEntry[]).splice(0, scenes.length, ...kept); });
 
@@ -76,7 +76,7 @@ describe("a clue heard in conversation", () => {
     expect(clueRecordedNotice(heard.previous, heard.next)).toBe(`手がかり帳に「${tourismClues.find((clue) => clue.id === RAIN)!.titleJa}」を記録しました。`);
     // Applied again (a repeat, a second tap that got through), the clue is still recorded once.
     const option = sceneById("smp_mihon_clock_bell")!.options.find((item) => item.id === "stay_below")!;
-    expect(applyChoiceEffects(state, "smp_mihon_clock_bell", option, state.revision + 1).state.discoveredClueIds).toEqual(state.discoveredClueIds);
+    expect(applyChoiceEffects(state, "smp_mihon_clock_bell", option).state.discoveredClueIds).toEqual(state.discoveredClueIds);
     // The other choice records nothing.
     const climbed = visitTower(["climb"], bellDone).state;
     expect(climbed.discoveredClueIds).not.toContain(RAIN);
@@ -92,7 +92,7 @@ describe("a clue heard in conversation", () => {
     expect(state.discoveredClueIds.filter((id) => id === RAIN)).toHaveLength(1);
     expect(heardAt(steps).map(({ previous }) => previous.activeEncounter?.encounterId)).toEqual(["smp_mihon_clock_gears"]);
     // Its # on_done: clue applied again (its AP is the scene's own once-only rule's) leaves the record as it is.
-    expect(applyDoneEffects(state, "smp_mihon_clock_gears", { clues: sceneById("smp_mihon_clock_gears")!.done.clues }, state.revision + 1)).toEqual(state);
+    expect(applyDoneEffects(state, "smp_mihon_clock_gears", { clues: sceneById("smp_mihon_clock_gears")!.done.clues })).toEqual(state);
   });
 
   it("is kept by the save check only when a scene gives it or its landmark was visited (clueRecordAllowed)", () => {

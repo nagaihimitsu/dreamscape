@@ -121,45 +121,6 @@
 /* A booked tour holds the departure (tour stage 2a): display only. */
 .free-time-tour-wait { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 
-.free-time-hub .pending-rewards {
-  max-width: none;
-  margin: 0;
-}
-
-.free-time-hub .pending-rewards-compact {
-  padding: 8px 10px;
-}
-
-.pending-rewards-compact .pending-rewards-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.pending-rewards-compact .pending-rewards-heading h2 {
-  margin: 0;
-  font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-snug);
-}
-
-.pending-rewards-compact .pending-rewards-heading button {
-  flex: none;
-  width: auto;
-  min-height: 44px;
-  padding: 6px 10px;
-}
-
-.pending-rewards-compact p {
-  margin: 2px 0;
-  line-height: var(--ds-leading-body);
-}
-
-.pending-rewards-compact summary {
-  min-height: 44px;
-  padding: 10px 0;
-}
-
 /* The page ends above the previous screen's bottom band (its measured height, --bottom-h); B案 has no band. */
 .app-shell.free-time-active { padding-bottom: var(--bottom-h, 0px); }
 

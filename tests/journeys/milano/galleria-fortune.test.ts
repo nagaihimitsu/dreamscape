@@ -136,14 +136,12 @@ describe("the Galleria wish during observation", () => {
     state = leaveBattleResult(state, state.revision);
     state = restore(openTourism(state, galleria));
     const ap = state.ap;
-    const pending = state.pendingApRewards;
     const rewards = state.claimedRewardIds;
     state = playScene(restore(startTourismEncounter(state, encounter, state.revision, () => 0)));
     expect(state.activeEncounter).toBeNull();
     expect(state.activeTourism?.landmarkId).toBe(galleria);
     expect(state.completedEncounterIds).toContain(encounter);
     expect(state.ap).toBe(ap);
-    expect(state.pendingApRewards).toEqual(pending);
     expect(state.claimedRewardIds).toEqual(rewards);
   });
 

@@ -40,7 +40,7 @@ export const journeyCatalogSchema = z.object({
     startWeekday: z.number().int().min(0).max(6).optional(),
     // Optional for existing journeys that already have an initial state.
     initialState: z.object({
-      ap: z.number().int().nonnegative(), pendingAp: z.literal(0),
+      ap: z.number().int().nonnegative(),
       affection: z.number().int(), trust: z.number().int(), spark: z.number().int(),
       romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
       // A new journey starts with empty date/ending history. Other statuses

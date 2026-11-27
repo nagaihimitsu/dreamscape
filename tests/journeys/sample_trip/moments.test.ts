@@ -41,7 +41,7 @@ function patch<T extends object>(target: T, fields: Partial<T>) {
 const rule = (id: string) => encounterEntryRuleList.find((item) => item.encounterId === id)!;
 const scene = (id: string) => scenes.find((item) => item.id === id)!;
 
-const MAP = ["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"];
+const MAP = ["travel", "wait", "rest", "rent", "depart", "read_epilogue"];
 /** Take an action the screen offers (a choice by its option ID when given, else the first that is not the map's), saving and restoring each step, until `done`. */
 function playUntil(initial: GameState, done: (state: GameState) => boolean, prefer: readonly string[] = [], limit = 400): GameState {
   let state = initial;
@@ -136,9 +136,8 @@ describe("the date's moment (3.5, 4.2)", () => {
     expect(moved.ap).toBe(ready.ap);
     expect(moved.travel.currentPlaceId).toBe("mihon_market");
     const home = playUntil(moved, free);
-    const total = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
     const again = playUntil(depart(at(home, "mihon_hotel", home.travel.minute), DATE), (state) => !!state.activeDate);
-    expect(total(again)).toBe(total(home) - 2);
+    expect(again.ap).toBe(home.ap - 2);
   });
 });
 

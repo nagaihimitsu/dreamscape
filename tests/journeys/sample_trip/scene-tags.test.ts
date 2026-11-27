@@ -11,7 +11,7 @@ import type { StoryFrame } from "../../../src/story/runtime";
 // # stand: places, played with the game's own actions, saved and restored at every step.
 
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
-const MAP = ["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"];
+const MAP = ["travel", "wait", "rest", "rent", "depart", "read_epilogue"];
 /** Take the first action the screen offers (never the map's; a battle with its right answers) until `done`, keeping the frames `frameOf` reads. */
 function playUntil(initial: GameState, done: (state: GameState) => boolean, frameOf: (state: GameState) => StoryFrame | undefined = () => undefined) {
   let state = initial;

@@ -51,7 +51,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
     cleanup();
   });
 
-  it("starts independently and preserves histories, money and pending AP across all three departures", () => {
+  it("starts independently and preserves histories, money and AP across all three departures", () => {
     const journey = getJourney("uzbekistan")!;
     const memory = effects.find((effect) => effect.memoryId)?.memoryId ?? scenes.flatMap((scene) => scene.options.flatMap((option) => option.memory ?? []))[0];
     if (!memory) throw new Error("No existing memory fixture");
@@ -81,7 +81,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
         inventory: { ...state.inventory, [`${cityId}_item`]: "held" },
         travel: { ...state.travel, day: 3, calendar: { journeyDay: 3 + index * 2, cityStartJourneyDay: 1 + index * 2, startWeekday: 0 } } });
       expect(state.claimedRewardIds.some((id) => id.startsWith("milano"))).toBe(false);
-      expect(state.pendingApRewards.length).toBeGreaterThan(0);
+      expect(state.ap).toBeGreaterThan(0);
       expect(state.completedCityIds).toEqual(cityIds.slice(0, index + 1));
       if (index === cityIds.length - 1) {
         expect(getNextCity(state)).toBeUndefined();
@@ -121,7 +121,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       expect(state.inventory[`${cityId}_item`]).toBe("left_behind");
       // The departure keeps the journey as the epilogue left it: the epilogue's own choice may change it (the sample's
       // first choice, which advanceCityEpilogue takes, gives affection +1).
-      for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark",
+      for (const field of ["playerName", "heroineName", "ap", "travelBudget", "affection", "trust", "spark",
         "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds",
         "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const) expect(state[field], field).toEqual(lastStep[field]);
       expect(advanceCompletedJourneyCity(state, lastStep.revision)).toBe(state);

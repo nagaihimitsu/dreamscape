@@ -23,7 +23,7 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
  */
 
 const GT = "content/journeys/golden_triangle";
-const MAP_ACTIONS = new Set<PlayerAction["kind"]>(["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"]);
+const MAP_ACTIONS = new Set<PlayerAction["kind"]>(["travel", "wait", "rest", "rent", "depart", "read_epilogue"]);
 
 const roundtrip = (state: GameState): GameState => {
   const values = new Map<string, string>();

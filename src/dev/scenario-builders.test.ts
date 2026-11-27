@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { balance, episodes, getCityContent } from "../content";
+import { episodes, getCityContent } from "../content";
 import { getJourney, journeys } from "../content/journeys";
 import { leaveBattle } from "../domain/battle";
 import { storyBattlesForCity } from "../domain/chapter";
@@ -164,8 +164,8 @@ describe("scenario builders", () => {
 
   it("opens Debug's scenes at their places with the saved reaction ticket", () => {
     const cleared = withAp(completedCity("mihon"), 9);
-    expect(cleared).toMatchObject({ ap: 9, pendingApRewards: [] });
-    expect(withAp(cleared, 99).ap).toBe(balance.apCap);
+    expect(cleared).toMatchObject({ ap: 9 });
+    expect(withAp(cleared, 99).ap).toBe(99);
     expect(withAp(cleared, -1).ap).toBe(0);
 
     const tower = openTourismScene(cleared, "mihon_clock_tower");

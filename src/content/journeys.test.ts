@@ -13,7 +13,7 @@ describe("journey catalog", () => {
     // (tests/journeys/golden_triangle/budget.test.ts).
     expect(india.initialBudget).toBe(38_000);
     expect(india.cityPlan).toEqual({ cityClearAp: 4, lodgingCost: 0, mainTourismCount: 4, dateCount: 6 });
-    expect(india.initialState).toMatchObject({ ap: 0, pendingAp: 0, affection: 0, trust: 0, spark: 0, romanceStage: 1, confessionStatus: "none" });
+    expect(india.initialState).toMatchObject({ ap: 0, affection: 0, trust: 0, spark: 0, romanceStage: 1, confessionStatus: "none" });
     expect(getJourneyForCity("milano")?.currency.code).toBe("EUR");
     expect(getJourneyForCity("agra")?.id).toBe("golden_triangle");
     expect(getJourneyForCity("unknown")).toBeUndefined();

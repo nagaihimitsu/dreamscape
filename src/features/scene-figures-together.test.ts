@@ -91,7 +91,7 @@ describe("a battle with two people opposite her (BattleScreen): Jama Masjid, Ham
   const learning: Learning = { data: loadLearning({ getItem: () => null, setItem: nothing }).data, error: "", update: () => true, isMarked: () => false };
   const render = (game: GameState) => drawn(renderToStaticMarkup(createElement(BattleScreen, {
     learning, onEnglish: nothing, game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onAnswer: () => true,
-    onClaimRewards: nothing, onPress: nothing, onSubmitEvidence: nothing })));
+    onPress: nothing, onSubmitEvidence: nothing })));
   const zoheb = { speaker: "person" as const, speakerPersonId: "gt_zoheb", text: "また爺さんの作り話だ", together: ["enemy", "gt_zoheb"] };
 
   it("draws her, the opponent in their place and the person beside them, three in a row", () => {

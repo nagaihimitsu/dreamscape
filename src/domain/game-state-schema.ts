@@ -8,7 +8,7 @@ import { activeEncounterSchema } from "./encounter-state";
 import { stableContentId } from "./stable-id";
 import { activeEpilogueSchema } from "./epilogue";
 import { activeTourismSchema } from "./tourism";
-import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
+import { battleRewardReceiptSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
 import { livedTimesSchema } from "./lived-times";
@@ -18,7 +18,7 @@ import { difficultySchema } from "./difficulty";
 import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 23;
+export const GAME_STATE_VERSION = 24;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -141,7 +141,7 @@ export const gameStateSchema = z.object({
   // The difficulty (2026-11-19, an optional field of save v23; src/domain/difficulty.ts): chosen when the journey starts.
   // A save written before it has none and plays at the default (ふつう and ふつう).
   difficulty: difficultySchema.optional(),
-  ap: z.number().int().min(0).max(balance.apCap),
+  ap: z.number().int().min(0),
   affection: z.number().int(),
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
   claimedRewardIds: uniqueStrings,
@@ -185,7 +185,6 @@ export const gameStateSchema = z.object({
   completedEpisodeIds: uniqueStrings,
   completedCityIds: uniqueStrings,
   completedGuideIds: uniqueStrings,
-  pendingApRewards: z.array(pendingApRewardSchema),
   battleRewardReceipt: battleRewardReceiptSchema.nullable(),
   activeEpilogue: activeEpilogueSchema.nullable(),
   viewedEpilogueCityIds: uniqueStrings,

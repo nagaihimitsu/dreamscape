@@ -90,7 +90,7 @@ export function chooseCityEpilogue(state: GameState, index: number, expectedRevi
   const choice = active.frame.choices.find((item) => item.index === index)!;
   const option = sceneOption(scene, choice.optionId);
   const revision = state.revision + 1;
-  const applied = option && scene ? applyChoiceEffects(state, scene.id, option, revision, nextRoll) : { state };
+  const applied = option && scene ? applyChoiceEffects(state, scene.id, option, nextRoll) : { state };
   // The romance progress is read again before Ink goes on: the lines after the choice (and the saved conversation, which
   // keeps the stage and the address it was given) read the new stage, as a reload checks them.
   const next = option?.rel || option?.profile ? evaluateProgression(applied.state) : applied.state;
@@ -253,7 +253,7 @@ export function advanceCityEpilogue(
     const scene = first ? epilogueScene(active) : undefined;
     // Its moment (stage 4) goes on: the scenes after it, a then: of it.
     if (!scene) return advanceRunningOccasion(closed);
-    const paid = applyDoneEffects(closed, scene.id, scene.done, closed.revision);
+    const paid = applyDoneEffects(closed, scene.id, scene.done);
     return advanceRunningOccasion(scene.done.rel ? evaluateProgression(paid) : paid);
   }
   return {

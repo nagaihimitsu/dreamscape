@@ -41,7 +41,7 @@ function playUntil(initial: GameState, done: (state: GameState) => boolean, limi
   let state = initial;
   for (let step = 0; !done(state); step++) {
     expect(step, "the occasion did not reach the expected step").toBeLessThan(limit);
-    const action = listPlayerActions(state).find((item: PlayerAction) => !["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"].includes(item.kind));
+    const action = listPlayerActions(state).find((item: PlayerAction) => !["travel", "wait", "rest", "rent", "depart", "read_epilogue"].includes(item.kind));
     if (!action) throw new Error(`no action on the screen ${screenFor(state)}`);
     const next = applyPlayerAction(state, playerActionChange(action, () => 0), () => 0);
     expect(next, action.kind).not.toBe(state);

@@ -32,7 +32,7 @@ import { journeyStorage } from "../../../src/persistence/journey-storage";
 
 const QUIZ = "smp_mihon_special_b_coach";
 const BELL = "smp_obs_mihon_coach_bell";
-const MAP = ["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"];
+const MAP = ["travel", "wait", "rest", "rent", "depart", "read_epilogue"];
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 
 class MemoryStorage implements StorageLike {
@@ -169,7 +169,7 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
   });
 
   it("shows the AP its tags gave in its result screen's total (a choice's # ap:, the head's # on_done: ap)", () => {
-    const rewards = (state: GameState) => renderToStaticMarkup(createElement(BattleRewards, { game: state, onClaim: () => {} }));
+    const rewards = (state: GameState) => renderToStaticMarkup(createElement(BattleRewards, { game: state }));
     // Without AP tags (the sample's): nothing gained. The screen shows the total only (2026-11-20 user decision: no
     // breakdown under it).
     const plain = playBattleToResult(toEpilogue(cleared(true)));
@@ -187,8 +187,7 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
     undo.push(() => { for (const rule of tagRules) rules.splice(rules.indexOf(rule), 1); });
     const started = toEpilogue(cleared(true));
     const result = playBattleToResult(started);
-    const total = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
-    expect(total(result) - total(started)).toBe(3);
+    expect(result.ap - started.ap).toBe(3);
     expect(battleTagApGained(result)).toBe(3);
     expect(rewards(result)).toContain("＋3");
     // A second play (repeat always, the records of the first) gives nothing, and says so.

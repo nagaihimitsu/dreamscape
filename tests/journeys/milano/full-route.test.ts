@@ -21,7 +21,6 @@ import {
 } from "../../../src/domain/encounter";
 import { advanceCityEpilogue, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, confessionResult, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
-import { claimPendingRewards } from "../../../src/domain/rewards";
 import { advanceTourismGuide } from "../../../src/domain/tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "../../../src/domain/travel-destinations";
 import { applyPlayerAction } from "../../../src/domain/player-action";
@@ -29,7 +28,6 @@ import { beginTravelEvent, getTravelEventAvailability, getTravelSleepOptions, sl
 
 const CITY = "milano";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
-const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
 const roll = () => 0;
 
 const mainEvents = getCityContent(CITY).travel.events.filter((event) => event.category === "main").map((event) => event.id);
@@ -143,7 +141,7 @@ function playMilano(allCorrect: boolean): GameState {
   expect(new Set(s.claimedRewardIds).size).toBe(s.claimedRewardIds.length);
   // Every battle pays its first completion and first clear (Last Supper +4 chapter, finale +3 city clear);
   // read guides (the four stops and the special battles B and C) and first wins add 1 each.
-  expect(totalAp(s)).toBe(allCorrect ? 32 : 26);
+  expect(s.ap).toBe(allCorrect ? 32 : 26);
   s = act(s, (current) => startCityEpilogue(current, CITY, current.revision));
   while (s.activeEpilogue) s = act(s, (current) => advanceCityEpilogue(current, current.revision));
   expect(s.viewedEpilogueCityIds).toContain(CITY);
@@ -187,10 +185,9 @@ describe("full Milan route", () => {
     expect(normal).toHaveLength(12);
     expect(normal.reduce((sum, date) => sum + date.apCost, 0)).toBe(24);
     for (const date of [...normal].reverse()) {
-      s = claimPendingRewards(s, s.revision);
       s = playDate(s, date.id);
     }
-    expect(totalAp(s)).toBe(32 - 24);
+    expect(s.ap).toBe(32 - 24);
     expect(confessionResult(s)).toBe("accepted");
     s = playDate(s, "milano_confession_01");
     expect(s.endingReached).toBe(true);

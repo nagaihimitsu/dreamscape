@@ -19,37 +19,6 @@
   color: var(--ds-on-slate);
   font-weight: 600;
 }
-.pending-rewards {
-  padding: 18px 22px;
-  margin: 20px auto;
-  max-width: 576px;
-  background: var(--ds-parchment);
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-pane);
-}
-.pending-rewards h2 {
-  font-size: var(--ds-text-subhead);
-  margin-bottom: 8px;
-}
-.pending-rewards p,
-.pending-rewards li {
-  font-size: var(--ds-text-caption);
-  line-height: var(--ds-leading-reading);
-}
-.pending-rewards summary {
-  font-size: var(--ds-text-mark);
-  min-height: 44px;
-  padding: 12px 0;
-  cursor: pointer;
-}
-.pending-rewards ul {
-  padding-left: 18px;
-  margin: 0;
-}
-.pending-rewards .fine-print {
-  margin-top: 12px;
-  font-size: var(--ds-text-mark);
-}
 .battle-rewards {
   border-top: 1px solid var(--ds-parchment-line);
   padding-top: 18px;
@@ -117,9 +86,6 @@
 @media (max-width: 480px) {
   .journey-stage {
     padding: 10px 24px;
-  }
-  main > .pending-rewards {
-    margin: 16px 24px;
   }
 }
 

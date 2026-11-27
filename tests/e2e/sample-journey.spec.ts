@@ -85,7 +85,7 @@ async function playBattleToResult(page: Page, pick: Pick) {
   await expect(page.getByTestId("battle-result")).toBeVisible();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   const receipt = result.battleRewardReceipt!.entries;
-  expect(result.ap).toBe(before.ap + receipt.reduce((sum, entry) => sum + entry.creditedAp, 0));
+  expect(result.ap).toBe(before.ap + receipt.reduce((sum, entry) => sum + entry.earnedAp, 0));
   expect(result.claimedRewardIds).toEqual([...before.claimedRewardIds, ...receipt.map((entry) => entry.rewardId)]);
   return result;
 }

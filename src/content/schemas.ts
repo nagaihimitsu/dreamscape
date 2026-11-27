@@ -199,7 +199,7 @@ const economyLevel = difficultyLabel.extend({
   budgetPercent: z.number().int().min(1).max(1000),
   /**
    * AP added to each reward that gives AP, by its kind (a first read, a first clear…; a kind left out adds none; a scene's
-   * `ap` tag is never changed), up to the AP cap; never less than as authored (the AP checks read the numbers as written).
+   * `ap` tag is never changed); never less than as authored (the AP checks read the numbers as written).
    */
   rewardApBonus: z.object(Object.fromEntries(REWARD_AP_BONUS_TRIGGERS.map((trigger) => [trigger, z.number().int().min(0).max(10).optional()])) as
     Record<RewardApBonusTrigger, z.ZodOptional<z.ZodNumber>>).strict(),
@@ -207,7 +207,6 @@ const economyLevel = difficultyLabel.extend({
 export const balanceSchema = z
   .object({
     schemaVersion: version,
-    apCap: z.number().int().positive(),
     defaultPlayerName: text,
     defaultHeroineName: text,
     maxNameLength: z.number().int().min(1).max(100),

@@ -16,7 +16,6 @@ import "./free-time-hub.css";
 
 export type FreeTimeHubProps = {
   game: GameState;
-  onClaimRewards: () => void;
   onEpilogue: (id: string) => void;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
   onRent: (modeId: string) => boolean;
@@ -53,7 +52,6 @@ export function FreeTimeHub(props: FreeTimeHubProps) {
  */
 export function MapListFreeTime({
   game,
-  onClaimRewards,
   onEpilogue,
   onTravelEvent,
   onRent,
@@ -97,7 +95,7 @@ export function MapListFreeTime({
 
       <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} onBookTour={onBookTour} onCancelTour={onCancelTour} />
 
-      <FreeTimeExtras game={game} onClaimRewards={onClaimRewards} nextCityName={nextCityName} onDepart={onDepart} />
+      <FreeTimeExtras game={game} nextCityName={nextCityName} onDepart={onDepart} />
       {/* Hidden: its height is the visible height with the browser's bars shown (100svh). */}
       <div className="free-time-svh-probe" aria-hidden="true" />
       <TravelActions game={game} api={selection} onTravelWait={onTravelWait} />

@@ -148,7 +148,7 @@ export function chooseTourismGuide(state: GameState, index: number, expectedRevi
   const scene = guideScene(active.landmarkId);
   const option = sceneOption(scene, choice.optionId);
   const revision = state.revision + 1;
-  const applied = option && scene && !active.replay ? applyChoiceEffects(state, scene.id, option, revision, nextRoll) : { state };
+  const applied = option && scene && !active.replay ? applyChoiceEffects(state, scene.id, option, nextRoll) : { state };
   const next = applied.state;
   const result: Record<string, string> = "profile" in applied && applied.profile ? { romance_result: applied.profile.result } : {};
   const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, result, next.inventory, sceneConditionReader(next));

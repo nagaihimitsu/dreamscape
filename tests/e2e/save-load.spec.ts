@@ -28,7 +28,7 @@ test("autosaved progress, a battle question, the English note and the text speed
   const result = await playUntil(page, (state) => state.activeBattle?.phase === "result");
   const receipt = result.battleRewardReceipt!.entries;
   expect(receipt.length).toBeGreaterThan(0);
-  expect(result.ap).toBe(beforeBattle.ap + receipt.reduce((sum, entry) => sum + entry.creditedAp, 0));
+  expect(result.ap).toBe(beforeBattle.ap + receipt.reduce((sum, entry) => sum + entry.earnedAp, 0));
   expect(result.claimedRewardIds).toEqual([...beforeBattle.claimedRewardIds, ...receipt.map((entry) => entry.rewardId)]);
   await page.reload();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();

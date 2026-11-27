@@ -15,7 +15,7 @@ const top = "INCLUDE modules.ink\n-> DONE\n";
 function scenesOf(source: string): { compiled: string; scenes: SceneEntry[] } {
   const file = readPlaceFile("places/smp_x_tower", source);
   const compiled = compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK });
-  const scenes = placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x" }).map((item) => item.entry);
+  const scenes = placeScenes({ file, compiled, mains: [], landmarkCity: () => "x" }).map((item) => item.entry);
   return { compiled, scenes };
 }
 const walk = (source: string, extra: Partial<Parameters<typeof walkScene>[0]> = {}) => {
@@ -150,7 +150,7 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
   const scenesAt = (at: string, priority = "-1", input: Partial<Parameters<typeof placeScenes>[0]> = {}) => {
     const file = readPlaceFile("places/smp_x_tower", `${top}\n=== smp_x_moment ===\n# scene: talk\n# at: ${at}\n# priority: ${priority}\nx\n-> END\n`);
     const compiled = compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK });
-    return placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x", placeCity: (place) => (place.startsWith("x_") ? "x" : undefined),
+    return placeScenes({ file, compiled, mains: [], landmarkCity: () => "x", placeCity: (place) => (place.startsWith("x_") ? "x" : undefined),
       dateCity: (date) => (date === "smp_x_date" ? "x" : undefined), cityExists: (city) => city === "x", ...input }).map((item) => item.entry);
   };
   it("gives each scene its moments' city, and stops at a date, a place or a city it does not know (A2)", () => {

@@ -14,7 +14,6 @@ import { isJourneyComplete } from "./city-travel";
 import { isAuthoredEpilogueCity, startCityArrival } from "./epilogue";
 import { createGame, type GameState } from "./game";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "./player-action";
-import { canClaimPendingRewards } from "./rewards";
 import { getTravelWaitOptions } from "./travel-destinations";
 import { installTourTestCity, testTour } from "../dev/test-tours";
 import { DAY_END, NIGHT_START } from "./travel";
@@ -145,14 +144,6 @@ describe("the actions a player can take now", () => {
     const cleared = completedCity(last);
     expect(isJourneyComplete(cleared)).toBe(false);
     expect(isJourneyComplete(readEpilogue(openEpilogueScene(cleared)))).toBe(true);
-  });
-
-  it("stored AP is offered for collection only while the wallet is below its cap", () => {
-    const state = newJourney(defaultJourneyId);
-    const stored = { ...state, pendingApRewards: [{ rewardId: "any", earnedAp: 2, remainingAp: 1 }] };
-    expect(canClaimPendingRewards(state)).toBe(false);
-    expect(canClaimPendingRewards(stored)).toBe(true);
-    expect(canClaimPendingRewards({ ...stored, ap: 10_000 })).toBe(false);
   });
 
   it("free time offers each available tour offer and, once booked, its cancel instead; neither during a scene (tour stage 2a)", () => {

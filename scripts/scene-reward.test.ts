@@ -18,7 +18,7 @@ function scenesOf(...knots: [name: string, head: string][]): SceneEntry[] {
   const source = top + knots.map(([name, head]) => `\n=== ${name} ===\n${head}x\n-> END\n`).join("");
   const file = readPlaceFile("places/smp_x_square", source);
   const compiled = compileInk(file.source, "places/smp_x_square.ink", { [MODULES_FILE]: MODULES_INK });
-  return placeScenes({ file, compiled, apCap: 12, mains, landmarkCity: () => "x", tourStep }).map((item) => item.entry);
+  return placeScenes({ file, compiled, mains, landmarkCity: () => "x", tourStep }).map((item) => item.entry);
 }
 const wish = (extra = "") => `# scene: encounter\n# title: 願掛け\n# at: visit x_square\n# priority: after observe\n${extra}`;
 const rewards: RewardOfCity[] = [
@@ -29,11 +29,11 @@ const rewards: RewardOfCity[] = [
 
 describe("# on_done: reward (C1)", () => {
   it("reads one reward ID in a head's # on_done: and refuses two, none or more than one word", () => {
-    expect(parseDone(["reward x_battle_two", "set x_flag"], 12)).toEqual({ reward: "x_battle_two", set: ["x_flag"] });
-    expect(() => parseDone(["reward x_battle_two", "reward x_free"], 12)).toThrow("Write # on_done: reward once");
-    expect(() => parseDone(["reward"], 12)).toThrow("# on_done: reward takes one ID");
-    expect(() => parseDone(["reward x_a x_b"], 12)).toThrow("# on_done: reward takes one ID");
-    expect(() => parseDone(["reward X-Bad"], 12)).toThrow();
+    expect(parseDone(["reward x_battle_two", "set x_flag"])).toEqual({ reward: "x_battle_two", set: ["x_flag"] });
+    expect(() => parseDone(["reward x_battle_two", "reward x_free"])).toThrow("Write # on_done: reward once");
+    expect(() => parseDone(["reward"])).toThrow("# on_done: reward takes one ID");
+    expect(() => parseDone(["reward x_a x_b"])).toThrow("# on_done: reward takes one ID");
+    expect(() => parseDone(["reward X-Bad"])).toThrow();
   });
 
   it("writes it to the scene table and to the encounter the game runs (alternativeApRewardId)", () => {

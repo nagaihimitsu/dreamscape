@@ -382,7 +382,7 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
     const choice = active.frame.choices.find((item) => item.index === index)!;
     const option = sceneOption(place, choice.optionId);
     const revision = state.revision + 1;
-    const applied = option ? applyChoiceEffects(state, place.id, option, revision, nextRoll) : { state };
+    const applied = option ? applyChoiceEffects(state, place.id, option, nextRoll) : { state };
     const next = applied.state;
     const profile = "profile" in applied ? applied.profile : undefined;
     const chosen = [...(active.chosen ?? []), { optionId: option?.id ?? `_${choice.index}`, ...(profile ? { result: profile.result, roll: profile.roll } : {}) }];
@@ -422,7 +422,7 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   const tags = catalogTagOption(event, option);
   if (tags) {
     if (encounterChoiceDisplay(state, index).show !== "open") return state;
-    next = applyChoiceEffects(next, event.id, tags, state.revision + 1, nextRoll).state;
+    next = applyChoiceEffects(next, event.id, tags, nextRoll).state;
   }
   const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, next.memories, {}, { ...variables(next), romance_result: result }, next.inventory, sceneConditionReader(next));
   const chosen = { ...next, revision: state.revision + 1, activeEncounter: withStep({ ...active, selectedOptionId: option.id, romanceResolution }, step) };
@@ -500,7 +500,7 @@ function finishPlaceScene(state: GameState, active: ActiveEncounter, event: Enco
   let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null, seenEncounterIds };
   if (!later) {
     next = applyDoneEffects({ ...next, completedEncounterIds: next.completedEncounterIds.includes(event.id) ? next.completedEncounterIds : [...next.completedEncounterIds, event.id] },
-      place.id, place.done, next.revision);
+      place.id, place.done);
   }
   return changesRelationship(later ? {} : place.done, chosen as never) ? evaluateProgression(next) : next;
 }

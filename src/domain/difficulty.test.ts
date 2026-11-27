@@ -38,7 +38,7 @@ describe("the difficulty's money and AP", () => {
     expect(startingBudget(99, "tight")).toBe(Math.floor(99 * balance.difficulty.economy.tight.budgetPercent / 100));
   });
 
-  it("adds the level's bonus to a reward's AP by its kind, once, keeping the rest above the cap as pending", () => {
+  it("adds the level's bonus to a reward's AP by its kind, once, with no cap", () => {
     const rule = allRewardRules.find((item) => item.ap > 0 && rewardApBonus("relaxed", item.trigger) > 0)!;
     const bonus = rewardApBonus("relaxed", rule.trigger);
     const without = allRewardRules.find((item) => item.ap > 0 && rewardApBonus("relaxed", item.trigger) === 0)!;
@@ -48,11 +48,10 @@ describe("the difficulty's money and AP", () => {
     expect(rewardApBonus("standard", rule.trigger)).toBe(0);
     const earned = earnRewards(relaxed, [rule.id]);
     expect(earned.state.ap).toBe(relaxed.ap + rule.ap + bonus);
-    expect(earned.entries).toEqual([{ rewardId: rule.id, earnedAp: rule.ap + bonus, creditedAp: rule.ap + bonus, pendingAp: 0 }]);
+    expect(earned.entries).toEqual([{ rewardId: rule.id, earnedAp: rule.ap + bonus }]);
     expect(earnRewards(earned.state, [rule.id]).state).toEqual(earned.state);
     expect(earnRewards(createGame(), [rule.id]).state.ap).toBe(rule.ap);
-    const full = earnRewards({ ...relaxed, ap: balance.apCap }, [rule.id]).state;
-    expect(full.pendingApRewards).toEqual([{ rewardId: rule.id, earnedAp: rule.ap + bonus, remainingAp: rule.ap + bonus }]);
+    expect(earnRewards({ ...relaxed, ap: 40 }, [rule.id]).state.ap).toBe(40 + rule.ap + bonus);
   });
 });
 

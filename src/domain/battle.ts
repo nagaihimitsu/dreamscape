@@ -406,7 +406,7 @@ export function chooseBattle(state: GameState, index: number, expectedRevision: 
   const revision = state.revision + 1;
   const firstPlay = !state.battleRecords.some((record) => record.battleId === battle.id);
   const apply = !!option && !!scene && firstPlay && !active.appliedOptionIds.includes(option.id);
-  const applied = apply ? applyChoiceEffects(state, scene!.id, option!, revision, nextRoll) : { state };
+  const applied = apply ? applyChoiceEffects(state, scene!.id, option!, nextRoll) : { state };
   const next = applied.state;
   const result: Record<string, string> = "profile" in applied && applied.profile ? { romance_result: applied.profile.result } : {};
   const step = selectStoryChoice(battle.storyId, active.storyState, active.frame, index, next.memories, {}, result, next.inventory, sceneConditionReader(next),
@@ -455,7 +455,7 @@ function finishBattle(state: GameState, active: ActiveBattle): GameState {
   // The battle's main # on_done: (its knot head or its file's head), once: when its first result is recorded (any score).
   const doneScene = previous ? undefined : mainScene({ battle: active.battleId });
   if (!doneScene) return recorded;
-  const paid = applyDoneEffects(recorded, doneScene.id, doneScene.done, recorded.revision);
+  const paid = applyDoneEffects(recorded, doneScene.id, doneScene.done);
   return doneScene.done.rel ? evaluateProgression(paid) : paid;
 }
 

@@ -50,10 +50,10 @@ export function rewardApBonus(economy: EconomyLevel, trigger: string): number {
   return trigger in bonus ? bonus[trigger as RewardApBonusTrigger] ?? 0 : 0;
 }
 
-/** The AP a reward gives at the save's level: as written, plus the level's bonus for its kind when it gives any, up to the AP cap. */
+/** The AP a reward gives at the save's level: as written, plus the level's bonus for its kind when it gives any. */
 export function rewardAp(state: { difficulty?: Difficulty }, rule: { ap: number; trigger: string }): number {
   if (rule.ap <= 0) return rule.ap;
-  return Math.min(balance.apCap, rule.ap + rewardApBonus(difficultyOf(state).economy, rule.trigger));
+  return rule.ap + rewardApBonus(difficultyOf(state).economy, rule.trigger);
 }
 
 /**

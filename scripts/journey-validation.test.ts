@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  balance,
   battleQuizzes,
   battles,
   getCityContent,
@@ -25,7 +24,7 @@ const journeyConfig: JourneyConfig = { ...allJourneyConfig, episodes, storyBattl
     ? episodeIds.has(rule.episodeId) : rule.battleId !== undefined && storyBattleIds.has(rule.battleId)) };
 
 function check(journey: JourneyConfig) {
-  validateJourney(journey, city, balance.apCap, landmarks, battles, battleQuizzes);
+  validateJourney(journey, city, landmarks, battles, battleQuizzes);
 }
 
 function withSpecialReward(trigger: RewardRule["trigger"] = "battle_score") {
@@ -62,14 +61,11 @@ describe("story battle references in the journey", () => {
     expect(() => check(journey)).toThrow(/Unknown reward story battle/);
   });
 
-  it("rejects unreachable scores and rewards over the AP cap for a special battle", () => {
+  it("rejects unreachable scores for a special battle", () => {
     const { journey, reward } = withSpecialReward();
     const battle = battles.find((item) => item.id === reward.battleId)!;
     reward.minScore = battleQuizzes[battle.quizId].questions.length + 1;
     expect(() => check(journey)).toThrow(/Unreachable score reward/);
-    reward.minScore = 2;
-    reward.ap = balance.apCap + 1;
-    expect(() => check(journey)).toThrow(/Journey reward exceeds AP cap/);
   });
 
   it("rejects completion rewards that duplicate the existing special entitlement", () => {
@@ -89,7 +85,7 @@ describe("story battle references in the journey", () => {
     const battle = battles.find((item) => item.id === reward.battleId)!;
     const otherCityLandmarks = landmarks.map((landmark) => landmark.id === battle.landmarkId
       ? { ...landmark, cityId: "other_city" } : landmark);
-    expect(() => validateJourney(journey, city, balance.apCap, otherCityLandmarks, battles, battleQuizzes))
+    expect(() => validateJourney(journey, city, otherCityLandmarks, battles, battleQuizzes))
       .toThrow(/Invalid story battle/);
   });
 
@@ -134,7 +130,7 @@ describe("story battle references in the journey", () => {
     journey.rewards = journey.rewards.filter((rule) => rule.trigger !== "episode_clear");
     const localLandmarks = landmarks.map((landmark) => ({ ...landmark, cityId: "new_city" }));
     const localBattles = battles.map((battle) => battle.cityId === "milano" ? { ...battle, cityId: "new_city" } : battle);
-    const run = () => validateJourney(journey, prototype, balance.apCap, localLandmarks, localBattles, battleQuizzes);
+    const run = () => validateJourney(journey, prototype, localLandmarks, localBattles, battleQuizzes);
     expect(run).not.toThrow();
     journey.rewards.push({ ...oldClear, id: "new_episode_reward" });
     expect(run).not.toThrow();
@@ -178,7 +174,7 @@ describe("map conditions and guides (unified event design stage 2b)", () => {
       const { guideStoryId: _guide, ...rest } = landmark;
       return rest;
     });
-    const run = () => validateJourney(journey, city, balance.apCap, guideless, battles, battleQuizzes);
+    const run = () => validateJourney(journey, city, guideless, battles, battleQuizzes);
     expect(run).toThrow(/Guide reward at a landmark without a guide: milano_duomo_episode/);
     journey.rewards = journey.rewards.filter((rule) => !(rule.episodeId === episode.id && rule.trigger === "guide_read"));
     expect(run).not.toThrow();

@@ -33,7 +33,7 @@ export function balanceInputs(root: string, journeyId?: string): BalanceInput[] 
     tours: tourCatalogSchema.parse(read("tours.json")), episodes: progression.episodes, rewards: getAllRewardRules(progression, scenes.rewards),
     dates: dateCatalogSchema.parse(read("content/romance/date_catalog.json")).dates, romance: progressionSchema.parse(read("content/romance/progression.json")),
     profiles: responseProfileCatalogSchema.parse(read("content/romance/response_profiles.json")).profiles,
-    apCap: balance.apCap, items,
+    items,
     economyLevelNames: Object.fromEntries(Object.entries(balance.difficulty.economy).map(([level, { labelJa }]) => [level, labelJa])),
   };
   return journeys.map((journey) => {

@@ -12,7 +12,7 @@ import { cityStart, playBattleToResult } from "../../../src/dev/scenario-builder
 // taken once.
 
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
-const MAP = ["travel", "wait", "rest", "rent", "claim_ap", "depart", "read_epilogue"];
+const MAP = ["travel", "wait", "rest", "rent", "depart", "read_epilogue"];
 const act = (state: GameState, action: PlayerAction) => {
   const next = applyPlayerAction(state, playerActionChange(action, () => 0), () => 0);
   expect(next, action.kind).not.toBe(state);

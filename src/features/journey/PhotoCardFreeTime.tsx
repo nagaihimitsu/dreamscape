@@ -49,7 +49,7 @@ import "./photo-free-time.css";
  * shared selection (useTravelSelection) travels and rests through the same handlers.
  */
 export function PhotoCardFreeTime({
-  game, onClaimRewards, onEpilogue, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, onBuyOutfit, onWearOutfit,
+  game, onEpilogue, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, onBuyOutfit, onWearOutfit,
   onEnterShop, nextCityName, onDepart, seenCards, debug = false,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
@@ -261,7 +261,7 @@ export function PhotoCardFreeTime({
       <Announce message={api.message} testId="travel-announce" />
     </section>
 
-    <FreeTimeExtras game={game} onClaimRewards={onClaimRewards} nextCityName={nextCityName} onDepart={onDepart} />
+    <FreeTimeExtras game={game} nextCityName={nextCityName} onDepart={onDepart} />
     {/* Hidden: its height is the visible height with the browser's bars shown (100svh). */}
     <div className="free-time-svh-probe" aria-hidden="true" />
 

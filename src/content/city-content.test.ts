@@ -126,7 +126,6 @@ describe("Milan city content", () => {
     const check = (journey: ReturnType<typeof journeySchema.parse>) => validateJourney(
       journey,
       cityData,
-      balance.apCap,
       tourismCatalogSchema.parse(tourismData).landmarks,
       battleCatalogSchema.parse(battleData).battles,
       battleQuizzes,

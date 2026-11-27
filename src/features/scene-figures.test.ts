@@ -102,7 +102,7 @@ describe("a battle's figures (BattleScreen): the Red Fort's school trip, with Ni
   const learning: Learning = { data: loadLearning({ getItem: () => null, setItem: nothing }).data, error: "", update: () => true, isMarked: () => false };
   const render = (game: GameState) => drawn(renderToStaticMarkup(createElement(BattleScreen, {
     learning, onEnglish: nothing, game, speed: 0, reduceMotion: true, onSpeed: nothing, onAdvance: nothing, onAnswer: () => true,
-    onClaimRewards: nothing, onPress: nothing, onSubmitEvidence: nothing })));
+    onPress: nothing, onSubmitEvidence: nothing })));
   const anjali = { speaker: "person" as const, speakerPersonId: "gt_anjali", text: "学級委員のアンジャリです。質問は、番号順にします" };
 
   it("has her and the opponent from the start, as before", () => {
