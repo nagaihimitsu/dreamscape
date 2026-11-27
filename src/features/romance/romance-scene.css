@@ -10,12 +10,10 @@
   /* The speaker's name band without colours of its own: white words on it (5.5:1). */
   --vn-name-bg: var(--ds-speaker);
   --vn-name-ink: var(--ds-speaker-ink);
-  --vn-window-radius: 32px;
-  /* The glass's edges melt into the scene over this much, softly (an eased fade, not a straight one): no edge line, no
-     shadow (2026-11-27 user request: a fluffier window). The glass reaches --vn-window-bleed past the window's box, so
-     the fade lies mostly outside the words: it is whole again where the text begins (the body's padding). */
-  --vn-feather: 26px;
-  --vn-window-bleed: 10px;
+  /* The glass's edges (2026-11-27 user request: a fluffier window; then every pane of glass the same): the rules' glass
+     edge (styles.css --ds-glass-*), its eased fade lying mostly outside the words. */
+  --vn-window-radius: var(--ds-glass-radius);
+  --vn-window-bleed: var(--ds-glass-bleed);
   --vn-body-size: var(--ds-text-reading);
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
   /* A choice: a pane of smoked glass over the scene (--ds-action), set apart from the light glass of the words. */
@@ -159,7 +157,7 @@
   min-height: min(var(--vn-window-height), 100%);
 }
 .vn-window:not(:has(.phone-screen, .letter-sheet, .encounter-quiz-prompt)) { height: var(--vn-window-height); }
-/* The glass: no edge line and no shadow; its edges melt into the scene (--vn-feather), as a soft light over it. The
+/* The glass: no edge line and no shadow; its edges melt into the scene (--ds-glass-mask), as a soft light over it. The
    battle's talk has the same window (battle.css). */
 .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-window::before {
@@ -170,18 +168,10 @@
     calc(0px - var(--vn-window-bleed));
   border-radius: var(--vn-window-radius);
   background: var(--vn-window-bg);
-  /* Each edge fades in along an eased curve (smoothstep at quarter steps), so no rim of the fade shows. */
-  --vn-fade-in: transparent, rgb(0 0 0 / 0.16) calc(var(--vn-feather) * 0.25), rgb(0 0 0 / 0.5) calc(var(--vn-feather) * 0.5),
-    rgb(0 0 0 / 0.84) calc(var(--vn-feather) * 0.75), black var(--vn-feather);
-  --vn-fade-out: black calc(100% - var(--vn-feather)), rgb(0 0 0 / 0.84) calc(100% - var(--vn-feather) * 0.75),
-    rgb(0 0 0 / 0.5) calc(100% - var(--vn-feather) * 0.5), rgb(0 0 0 / 0.16) calc(100% - var(--vn-feather) * 0.25), transparent;
-  -webkit-mask-image:
-    linear-gradient(to right, var(--vn-fade-in), var(--vn-fade-out)),
-    linear-gradient(to bottom, var(--vn-fade-in), var(--vn-fade-out));
+  /* Each edge fades in along an eased curve, so no rim of the fade shows (--ds-glass-mask). */
+  -webkit-mask-image: var(--ds-glass-mask);
   -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, var(--vn-fade-in), var(--vn-fade-out)),
-    linear-gradient(to bottom, var(--vn-fade-in), var(--vn-fade-out));
+  mask-image: var(--ds-glass-mask);
   mask-composite: intersect;
   pointer-events: none;
 }
@@ -351,13 +341,12 @@
   .date-reference { width: 240px; }
 }
 @media (max-width: 700px) and (orientation: portrait) {
-  :root { --vn-window-radius: 28px; --vn-window-bleed: 8px; --vn-feather: 24px; }
   .vn-scene .vn-dialogue {
     width: calc(100% - 16px);
     margin-bottom: calc(8px + var(--vn-controls-row));
     max-height: calc(100% - 16px - var(--vn-controls-row));
   }
-  .vn-scene .vn-window-body { padding: 0 16px calc(var(--vn-head-height) - var(--vn-head-overhang)); }
+  .vn-scene .vn-window-body { padding: 0 var(--ds-glass-padding) calc(var(--vn-head-height) - var(--vn-head-overhang)); }
   .vn-scene .vn-window-body > .next { right: 16px; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
   .vn-choices .choice { padding: 9px 14px; }

@@ -1,4 +1,4 @@
-/* 「ノート」 (NoteDialog.tsx): its pages side by side under the title, the one shown filled (aria-pressed). */
+/* 「ノート」 (NoteDialog.tsx): its pages side by side under the title, the one shown the smoked glass (aria-pressed). */
 .note-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; margin: 0 0 8px; }
 .note-tabs button {
   position: relative;
@@ -7,15 +7,16 @@
   justify-content: center;
   min-height: 44px;
   margin: 0;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  box-shadow: var(--ds-press-shadow);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
   font-weight: 700;
 }
-.note-tabs button[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+.note-tabs button[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
 /* A page's dot (fx.css) at its button's top right, in the markers' rose on the parchment (a page shown has none). */
 .note-tabs .fx-dot { top: 6px; left: auto; right: 8px; background: var(--ds-marker); box-shadow: 0 0 0 1.5px var(--ds-parchment); }
 /* 旅のことば's page (2026-11-20): the frame of 旅の図鑑's, so the note keeps its size between the two. */

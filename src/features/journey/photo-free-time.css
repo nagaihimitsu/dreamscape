@@ -592,9 +592,12 @@
   box-shadow: var(--ds-card-shadow);
   touch-action: manipulation;
 }
-/* On the glass under the row (2026-11-27 user request, as in the talk's window): as much room under the card's last part
-   (its small map, its chips) as over its first words, whose line keeps half its leading above them (the description's). */
-.photo-menu .place-card { padding-bottom: calc(12px + var(--ds-text-note) * (var(--ds-leading-body) - 1) / 2); }
+/* On the glass under the row (2026-11-27 user requests: one UI with the talk's window): the window's room round its
+   words, and as much under the card's last part (its small map, its chips) as over its first words, whose line keeps
+   half its leading above them (the description's). */
+.photo-menu .place-card {
+  padding: var(--ds-glass-padding) var(--ds-glass-padding) calc(var(--ds-glass-padding) + var(--ds-text-note) * (var(--ds-leading-body) - 1) / 2);
+}
 .place-card .place-card-name {
   display: flex;
   align-items: center;
@@ -712,9 +715,10 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 6px;
-  border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-control);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
+  box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
@@ -731,7 +735,7 @@
   text-shadow: var(--ds-action-text-shadow);
 }
 .place-card-mode:disabled,
-.place-card-option:disabled { opacity: 1; border-style: dashed; background: none; color: var(--ds-ink-muted); cursor: default; }
+.place-card-option:disabled { opacity: 1; border-style: dashed; border-color: var(--ds-field-edge); background: none; box-shadow: none; color: var(--ds-ink-muted); cursor: default; }
 .place-card-mode-cost { display: block; font-size: var(--ds-text-caption); font-weight: 500; font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
    so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
@@ -748,9 +752,10 @@
   min-height: 44px;
   margin: 0;
   padding: 4px 14px;
-  border: 1px solid var(--ds-field-edge);
+  border: 1px solid transparent;
   border-radius: var(--ds-radius-pill);
   background: var(--ds-parchment);
+  box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
@@ -806,7 +811,7 @@
 .place-inset-map {
   height: 120px;
   border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-control);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-map-ground);
   isolation: isolate;
   pointer-events: none;
