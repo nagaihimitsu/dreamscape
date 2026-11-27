@@ -19,6 +19,7 @@ import { rollTickets } from "./scenario-builders";
 import { relationshipAxisLabels } from "../domain/relationship-change";
 import { PrototypePreview } from "./PrototypePreview";
 import { OccasionCandidatesView } from "./OccasionCandidatesView";
+import { SnsDebugView } from "./SnsDebugView";
 import { EffectsRoom } from "./EffectsRoom";
 import { MiniGameRoom } from "./MiniGameRoom";
 import { debugClueGroups, debugClueIds, debugEpisodes, debugFlagGroups, debugFlagIds } from "./debug-edits";
@@ -221,7 +222,7 @@ export default function DebugMode() {
         <button type="button" onClick={backToSettings}>場面の選択へ<wbr />戻る</button>
       </header>}
       <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugAccess={gameAccess} debugShot={shot}
-        debugPanel={(state) => <OccasionCandidatesView state={state} />} />
+        debugPanel={(state) => <><OccasionCandidatesView state={state} /><SnsDebugView state={state} /></>} />
       {editing && !shot.on && <DebugEditDialog access={gameAccess} onClose={() => setEditing(false)} />}
     </div>
   );

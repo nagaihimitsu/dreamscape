@@ -52,6 +52,9 @@
 .debug-candidates summary { min-height: 36px; cursor: pointer; }
 .debug-candidates ol, .debug-candidates ul { margin: 6px 0; padding-left: 20px; }
 .debug-candidates p { margin: 2px 0; }
+/* Debug's SNS check (SnsDebugView.tsx): a city's name over its posts, a little room between posts and between comments. */
+.debug-sns .debug-sns-city { margin-top: 8px; font-weight: 600; }
+.debug-sns li + li { margin-top: 6px; }
 
 /* Flags, free time's clock and 恋の段階 (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻・段階」. */
 .debug-note { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
