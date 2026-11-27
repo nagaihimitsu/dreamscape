@@ -228,7 +228,7 @@
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
   box-shadow: var(--ds-glass-shadow);
-  animation: hud-menu-in var(--motion-fast) var(--ease-out);
+  animation: hud-menu-in var(--motion-drop) var(--ease-drop);
 }
 .hud-menu-panel[hidden] { display: none; }
 .hud-menu-panel button {
@@ -252,12 +252,32 @@
 .hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
 /* Between ≡メニュー's groups (2026-11-19): a thin rule across, never a thick left line. */
 .hud-menu-rule { width: 100%; margin: 2px 0; border: 0; border-top: 1px solid var(--ds-parchment-line); }
+/* ≡メニュー's panel comes down out of the header (2026-11-27 user decision: 「スーッと上から」): it slides down a
+   little as a blind unrolls over it from its top edge, and its items follow one after another. Only the opening
+   moves; it closes at once (styles.css, Motion). The press on an item is never held back. */
+.hud-menu-panel,
+.journey-hud .held-item-detail {
+  --motion-drop: 340ms;
+  --ease-drop: cubic-bezier(0.16, 1, 0.3, 1);
+}
 @keyframes hud-menu-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: none; }
+  /* The sides and foot open wide at the end so the pane's shadow is not cut off. */
+  from { opacity: 0; transform: translateY(-14px); clip-path: inset(0 -40px 100% -40px); }
+  35% { opacity: 1; }
+  to { opacity: 1; transform: none; clip-path: inset(-40px); }
+}
+.hud-menu-panel > * { animation: hud-menu-item-in var(--motion-drop) var(--ease-drop) backwards; }
+.hud-menu-panel > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
+.hud-menu-panel > :nth-child(3) { animation-delay: calc(var(--motion-stagger) * 1); }
+.hud-menu-panel > :nth-child(4) { animation-delay: calc(var(--motion-stagger) * 1.5); }
+.hud-menu-panel > :nth-child(5) { animation-delay: calc(var(--motion-stagger) * 2); }
+.hud-menu-panel > :nth-child(6) { animation-delay: calc(var(--motion-stagger) * 2.5); }
+.hud-menu-panel > :nth-child(n + 7) { animation-delay: calc(var(--motion-stagger) * 3); }
+@keyframes hud-menu-item-in {
+  from { opacity: 0; transform: translateY(-8px); }
 }
 /* The held items' detail hangs from the header as ≡メニュー's panel does, and opens as it does. */
-.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-fast) var(--ease-out); }
+.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-drop) var(--ease-drop); }
 
 /* A change the player sees (JourneyHud's useSeenChange; display only, the new value shows
    and is read from the start): a budget or AP that rises grows for a moment in the
@@ -280,11 +300,13 @@
 }
 
 .reduce-motion .hud-menu-panel,
+.reduce-motion .hud-menu-panel > *,
 .reduce-motion .held-item-detail,
 .reduce-motion .hud-wallet [data-cue],
 .reduce-motion .held-item-button [data-gained] { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .journey-hud .hud-menu-panel,
+  .journey-hud .hud-menu-panel > *,
   .journey-hud .held-item-detail,
   .journey-hud .hud-wallet [data-cue],
   .journey-hud .held-item-button [data-gained] { animation: none; }
