@@ -592,6 +592,9 @@
   box-shadow: var(--ds-card-shadow);
   touch-action: manipulation;
 }
+/* On the glass under the row (2026-11-27 user request, as in the talk's window): as much room under the card's last part
+   (its small map, its chips) as over its first words, whose line keeps half its leading above them (the description's). */
+.photo-menu .place-card { padding-bottom: calc(12px + var(--ds-text-note) * (var(--ds-leading-body) - 1) / 2); }
 .place-card .place-card-name {
   display: flex;
   align-items: center;
