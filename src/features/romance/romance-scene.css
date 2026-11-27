@@ -117,6 +117,9 @@
    establishing shot: their clothes, where they stand; useEstablishingShot), and the camera comes in with the next one.
    Each figure's box grows in the layout (figure-zoom.ts, encounter.css), never by a transform: the pictures stay sharp. */
 .vn-character-layer { --vn-zoom: 1.45; }
+/* Her place when she stands alone (a date, a guide, an arrival or epilogue with no one opposite): the whole layer, as if
+   the portrait stood in it; its own box so she can walk from it and into it as someone comes or goes (useStageGlide). */
+.vn-character-slot { position: absolute; inset: 0; pointer-events: none; }
 .vn-scene[data-establishing] .vn-character-layer { --vn-zoom: 1; }
 .reduce-motion .vn-character { transition: none; }
 /* The talk (D1): its window (.vn-window) and, while the scene waits for one, its choices floating above it (.vn-choices).

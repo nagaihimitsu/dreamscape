@@ -29,7 +29,8 @@ import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useSceneStage } from "../../components/useSceneStage";
+import { stageLayout, useSceneStage } from "../../components/useSceneStage";
+import { useStageGlide } from "../../components/useStageGlide";
 import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -374,7 +375,10 @@ export function BattleScreen({
   const opponentFigure = characterForBattle(battle.id);
   const stageScene = sceneStageOf("battle", opponentFigure);
   const line = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction }) : { enemyCue: true };
-  const { stage, focus } = useSceneStage(line, stageScene);
+  const { stage, focus, leaving } = useSceneStage(line, stageScene, "", reduceMotion);
+  // In the talk, those who stay walk to their new places as someone comes or goes (useStageGlide); the quiz's stage changes at once.
+  const stageLayer = useRef<HTMLDivElement>(null);
+  useStageGlide(stageLayer, stageLayout(stage), { enabled: isDialogue, reduceMotion });
   // Who stands opposite her (two or three in a stretch of `# together:`: the first in the opponent's place, the second
   // beside it, the third beyond). In the quiz (no line) the opponent asks, alone in their place, as without the tag.
   const opposite = oppositeFigures(stage, focus).filter(({ figure }) => isDialogue || figureIsEnemy(figure, stageScene));
@@ -385,11 +389,12 @@ export function BattleScreen({
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
   /** A figure opposite her: the opponent with their expression, mark and drawn fallback, or a person's one picture. */
   const oppositePortrait = (figure: StageFigure, at: PortraitFocus | undefined) => !figureIsEnemy(figure, stageScene)
-    ? <CharacterPortrait key={figure.figure} characterId={figure.figure} focus={at} />
+    ? <CharacterPortrait key={figure.figure} characterId={figure.figure} focus={at} leaving={leaving.includes(figure.figure)} />
     : <CharacterPortrait
       characterId={opponentFigure}
       emotion={enemyEmotion}
       focus={at}
+      leaving={leaving.includes(figure.figure)}
       fallback={battle.portrait === "abstract" ? undefined :
         <EnemyPortrait
           emotion={enemyEmotion}
@@ -535,7 +540,7 @@ export function BattleScreen({
           <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <div className="battle-characters" data-together={far ? "four" : beside ? "three" : undefined}>
+        <div ref={stageLayer} className="battle-characters" data-together={far ? "four" : beside ? "three" : undefined}>
           {isDialogue && stage.heroine && (
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
@@ -545,6 +550,7 @@ export function BattleScreen({
                 emotion={heroineEmotion}
                 focus={focus.heroine}
                 stand={staging?.stand}
+                leaving={leaving.includes("heroine")}
               >
                 {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
               </CharacterPortrait>

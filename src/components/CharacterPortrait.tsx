@@ -15,10 +15,29 @@ const characters = catalog.characters;
 
 export { characterForBattle } from "./character-catalog";
 
+/** How long she takes to walk to a new `# stand:` place (character-portrait.css, --motion-step). */
+const STAND_STEP_MS = 1400;
+
+/**
+ * Whether she is walking to a new `# stand:` place (2026-11-27 user decision: slowly, not at once): from the render
+ * where her place changes (so the slow transition is on with the new place, in the same commit) for STAND_STEP_MS.
+ * Her first place in a portrait just mounted comes as it is.
+ */
+function useStandStep(stand: StandPosition | undefined): boolean {
+  const [step, setStep] = useState({ stand, moving: false });
+  if (step.stand !== stand) setStep({ stand, moving: true });
+  useEffect(() => {
+    if (!step.moving) return;
+    const timer = window.setTimeout(() => setStep((current) => ({ ...current, moving: false })), STAND_STEP_MS);
+    return () => window.clearTimeout(timer);
+  }, [step]);
+  return step.moving;
+}
+
 /** A decorative layer. Position and image are independent of the Ink story, but for a scene's `# stand:` (written by its writer). */
 export function CharacterPortrait({
   characterId, emotion, costume, pose, sceneId, cityId, countryId, regionId,
-  focus, stand, fallback, onImageError, children,
+  focus, stand, leaving, fallback, onImageError, children,
 }: {
   characterId: string;
   emotion?: string;
@@ -32,6 +51,8 @@ export function CharacterPortrait({
   focus?: PortraitFocus;
   /** Where the scene's `# stand:` puts her (line-stage.css); none: her placement as it is. */
   stand?: StandPosition;
+  /** Going off the stage (useSceneStage's `leaving`): steps back as it fades (character-portrait.css). */
+  leaving?: boolean;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
   children?: ReactNode;
@@ -53,13 +74,14 @@ export function CharacterPortrait({
   const liveKey = avatar ? `${avatar.folder}|${avatar.face ?? ""}` : null;
   const [live, setLive] = useState<{ key: string; state: "ready" | "failed" } | null>(null);
   const liveState = live && live.key === liveKey ? live.state : null;
+  const stepping = useStandStep(stand);
   if (!character) return null;
   const placement = characterPlacement(character, selection);
   const pictureTop = pictureTopAt(character.figureScale);
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
-    <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} data-live={liveState ?? undefined}
+    <div className={`vn-character${focus ? ` is-${focus}` : ""}${leaving ? " is-leaving" : ""}`} data-figure={characterId} data-stand={stand} data-stepping={stepping || undefined} data-live={liveState ?? undefined}
       aria-hidden="true" style={{
       // Its box under the scene's camera (figure-zoom.ts): the placement as it is where the scene sets no --vn-zoom.
       ...zoomedPlacement(placement, pictureTop),
