@@ -95,6 +95,7 @@ dialog.modal.travel-log {
   border-color: transparent;
   background: var(--ds-disabled-bg);
   color: var(--ds-disabled-ink);
+  box-shadow: none;
 }
 .album-page-count { flex: 1 1 auto; min-width: 3em; font-size: var(--ds-text-note); color: var(--ds-ink-muted); text-align: center; }
 /* The photo opened larger: the whole picture, its time and place, 「前の写真」「次の写真」 at the foot with more than one. The frame is the

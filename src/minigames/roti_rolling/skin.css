@@ -107,14 +107,16 @@
   right: 96%;
   top: 30%;
   padding: 3px 10px;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
+  border: 0;
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  color: var(--ds-glass-ink);
   font-size: var(--ds-text-body);
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: var(--ds-window-shadow);
+  box-shadow: var(--ds-glass-shadow);
   animation: mg-roti-rolling-word 2000ms ease-out forwards;
 }
 .mg-roti-rolling-harbans:not([data-figure]) .mg-roti-rolling-harbans-word { right: 8px; top: 8px; }

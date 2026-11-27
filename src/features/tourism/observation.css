@@ -143,6 +143,7 @@
   border-color: transparent;
   background: var(--ds-disabled-bg);
   color: var(--ds-disabled-ink);
+  box-shadow: none;
 }
 .observation-controls output {
   min-width: 3.5em;
@@ -278,3 +279,6 @@
   .observation-next { flex: 1 0 100%; grid-column: 1 / -1; gap: 6px; margin: 2px 0 6px; }
   .observation-replay { padding-inline: 10px; }
 }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.observation-marker-toggle:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
+.observation-replay:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

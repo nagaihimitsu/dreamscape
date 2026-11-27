@@ -96,8 +96,17 @@
   box-shadow: none;
   color: var(--ds-glass-muted);
 }
-/* Before the start can be pressed (its guard, 準備中…): the same smoked glass, its words muted, not a parchment block. */
-.minigame-ready .minigame-start:disabled { background: var(--ds-action-fill); box-shadow: none; color: var(--ds-smoke-muted); opacity: 0.75; }
+/* Before the start can be pressed (its guard, 準備中…): over the scene a press that cannot be pressed is the plain light
+   glass with its words muted, as a talk's choice and 練習 (2026-11-27 user request: one UI). */
+.minigame-ready .minigame-start:disabled {
+  opacity: 1;
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: none;
+  color: var(--ds-glass-muted);
+  text-shadow: none;
+}
 
 /* The hand (HandDemo.tsx): 52 px, 36 in the one-line card; one round in 2.4 s; still at the press with less motion. */
 .minigame-hand { flex: none; width: 52px; height: 52px; overflow: hidden; }

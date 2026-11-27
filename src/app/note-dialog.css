@@ -29,3 +29,5 @@ dialog.modal.words-note {
 }
 .words-note .modal-title-bar { margin-bottom: 4px; }
 .words-note > .fine-print { margin: 0 0 8px; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.note-tabs button:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
