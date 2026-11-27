@@ -1,6 +1,6 @@
 // The SNS's rules and readers (2026-11-26 user decisions; authoring/SNS_PLAN.md 「届き方と記録」) on the sample journey's
-// fictional 見本の街, with posts made for the test: the sample's people have no portrait (so its own posts file has only the
-// heroine's), and here リリ and トーマ are given one, as the build requires of anyone on the SNS.
+// fictional 見本の街, with posts made for the test: of the sample's people only リリ has a (placeholder) portrait, and here
+// トーマ is given one too (and リリ the same), as the build requires of anyone on the SNS.
 import { describe, expect, it, vi } from "vitest";
 import type { SnsData } from "../content/sns";
 

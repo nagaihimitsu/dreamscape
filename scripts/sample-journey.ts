@@ -61,17 +61,23 @@ export function withoutOptionalParts<T extends Buffer | null>(files: ReadonlyMap
   const ids = new Set(readme.optional.flatMap((part) => part.ids));
   return new Map([...files].filter(([file]) => !optionalFiles.has(file)).map(([file, bytes]): [string, T] =>
     [file, (bytes && file.endsWith(".json") ? Buffer.from(jsonText(withoutIds(JSON.parse(bytes.toString("utf8")), ids)))
-      : bytes && file.startsWith("stories/places/") ? Buffer.from(withoutKnots(bytes.toString("utf8"), ids)) : bytes) as T]));
+      : bytes && /^stories\/(?:places|posts)\//u.test(file) ? Buffer.from(withoutKnots(bytes.toString("utf8"), ids)) : bytes) as T]));
 }
 
-/** A place file without the knots an optional part names, and without the lines that name them (their calls). */
+/**
+ * A place file or a posts file without the knots and stitches an optional part names (a posts file's comment is a stitch
+ * named by the person who writes it), and without the lines that name them (their calls, `# speaker:`, `# likes:`).
+ */
 function withoutKnots(source: string, ids: ReadonlySet<string>): string {
   const kept: string[] = [];
-  let dropping = false;
+  let knotDropped = false;
+  let stitchDropped = false;
   for (const line of source.split("\n")) {
     const knot = /^\s*={2,}\s*([A-Za-z_][A-Za-z0-9_]*)/u.exec(line);
-    if (knot) dropping = ids.has(knot[1]);
-    if (dropping || [...ids].some((id) => new RegExp(`\\b${id}\\b`, "u").test(line))) continue;
+    const stitch = knot ? null : /^\s*=(?!=)\s*([A-Za-z_][A-Za-z0-9_]*)\s*$/u.exec(line);
+    if (knot) [knotDropped, stitchDropped] = [ids.has(knot[1]), false];
+    else if (stitch) stitchDropped = ids.has(stitch[1]);
+    if (knotDropped || stitchDropped || [...ids].some((id) => new RegExp(`\\b${id}\\b`, "u").test(line))) continue;
     kept.push(line);
   }
   return kept.join("\n");

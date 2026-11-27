@@ -220,7 +220,7 @@ SNSを作る前に、別の作業として片付ける。
 
 ### 見本とテスト
 
-- 見本の編：`authoring/templates/sample_trip/stories/posts/mihon.ink`（デートの夜に届くヒロインの投稿1つ。見本の人物には立ち絵がないので、コメントの例はない）。
+- 見本の編：`authoring/templates/sample_trip/stories/posts/mihon.ink`（デートの夜に届くヒロインの投稿1つと、リリのコメント・いいね。画面のテストのため、リリにだけ図形と「見本」の字で描いた仮の立ち絵を与えた。2026-11-27）。
 - テスト：`scripts/sns-posts.test.ts`（ビルドの読み取りと止めるもの・注意）、`src/domain/sns.test.ts`（届く規則・セーブ・条件・読み口。テストの中で見本の人物に立ち絵を与えた仮の投稿で）、`tests/journeys/sample_trip/sns.test.ts`（見本の投稿）。
 
 ## インド編：デリーの投稿（2026-11-27）

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "characters": [
+    {
+      "id": "smp_mihon_lili",
+      "imagePath": "assets/characters/smp_mihon_lili/neutral.webp",
+      "placement": {
+        "x": 50,
+        "bottom": 0,
+        "width": 80,
+        "height": 62,
+        "scale": 1.4,
+        "originX": 50,
+        "originY": 0
+      },
+      "placeholderColor": "#5f8f86",
+      "nameBand": {
+        "fill": "#5f8f86",
+        "edge": "#2f4f4a"
+      },
+      "variants": []
+    }
+  ]
+}

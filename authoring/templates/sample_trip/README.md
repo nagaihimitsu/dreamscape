@@ -17,6 +17,7 @@
 
 - 出典はすべて `https://example.com/dreamscape-sample`、発行者は「Dreamscape 見本の旅（架空）」、`claimJa` は「見本用の架空の…」で始まります。クイズの出典の区分は `legend`、地点・徒歩時間は `hypothesis` です。
 - 画像は図形だけで描いた自作のPNG（240×160、CC0）です。アルバムの絵（`public/assets/album/`）は、同じ絵を1200×800のWebPに広げたものです（アルバムの絵は作者が描いた絵なので、登録も出典もありません）。地点の座標は海上の 0,0 付近です。
+- リリの立ち絵（`public/assets/characters/smp_mihon_lili/neutral.webp`）は、図形と「見本」「リリ（架空）」「仮の立ち絵」の字だけで描いた自作の仮の絵です（SNS の画面のテストで、コメントといいねを確かめるため。2026-11-27）。`presentation/own-artwork.json` に自作の絵として載せています。
 - 本番の旅行編にこの文章・出典・画像を残さないでください。複製して使うときは、実在の観光地、確認した出典、権利を確認した画像に置き換えます。
 
 ## 必須の19ファイル
@@ -69,10 +70,10 @@
 
 ### 道中交流・会話と品物（場所のファイルの差し込み）
 
-時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与。その最初の行では、ポケットのしおりを行の札 `# item_out:` で取り出して紙の札で見せます。見せるだけで、品物は動きません）。受け取る交流と渡す交流の2件で1組です（使い道が要るのは、次の都市がある都市の、持ち歩く印のない品物だけです。見本の街は旅の最後の都市ですが、使い道のある形を手本にしています）。観察の後の会話（近道を教わり、APを1得る）と、対決の後の鐘の会話（APを1使って鐘楼に上がると、ときめきが上がる）、デートの中でしおりを渡すかの「場面の中の選択」もあります。どれも時計塔の場所のファイルの knot で、起きる時と順番は knot の頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`after observe` は観察の後、`+1`・`+2` は本筋の後）。品物は `encounters/catalog.json` の `items`、フラグ・人物・名前付きの条件は `progression/story.json` に宣言します（人物の紹介 `descriptionJa` は、出会った後に旅の記録の「出会った人」に出ます）。
+時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与。その最初の行では、ポケットのしおりを行の札 `# item_out:` で取り出して紙の札で見せます。見せるだけで、品物は動きません）。受け取る交流と渡す交流の2件で1組です（使い道が要るのは、次の都市がある都市の、持ち歩く印のない品物だけです。見本の街は旅の最後の都市ですが、使い道のある形を手本にしています）。観察の後の会話（近道を教わり、APを1得る）と、対決の後の鐘の会話（APを1使って鐘楼に上がると、ときめきが上がる）、デートの中でしおりを渡すかの「場面の中の選択」もあります。どれも時計塔の場所のファイルの knot で、起きる時と順番は knot の頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`after observe` は観察の後、`+1`・`+2` は本筋の後）。品物は `encounters/catalog.json` の `items`、フラグ・人物・名前付きの条件は `progression/story.json` に宣言します（人物の紹介 `descriptionJa` は、出会った後に旅の記録の「出会った人」に出ます）。リリには仮の立ち絵があり（`presentation/characters.json`。人物の `characterId`）、SNS の投稿にコメントといいねをします（下の「SNS」）。
 
-- ファイル：`encounters/catalog.json`
-- 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`、`smp_mihon_lili`、`smp_mihon_lili_told_why`、`smp_mihon_bookmark_to_heroine`、`smp_mihon_bookmark_kept`、`smp_mihon_lili_heard`、`smp_mihon_bookmark_before_leaving`、`smp_mihon_lili_seeoff`（場所のファイルからは、その knot と、その ID を書いた行を消し、`progression/story.json` からはリリと3つのフラグと名前付きの条件を消す。最後の2つは下の「ほかの時点の場面と都市の終わり」のエピローグの前の場面で、ここで宣言するリリとフラグを使うので、この部分と一緒に外す）
+- ファイル：`encounters/catalog.json`、`presentation/characters.json`、`presentation/own-artwork.json`、`public/assets/characters/smp_mihon_lili/neutral.webp`
+- 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`、`smp_mihon_lili`、`smp_mihon_lili_told_why`、`smp_mihon_bookmark_to_heroine`、`smp_mihon_bookmark_kept`、`smp_mihon_lili_heard`、`smp_mihon_bookmark_before_leaving`、`smp_mihon_lili_seeoff`（場所のファイルからは、その knot と、その ID を書いた行を消し、投稿のファイルからは、リリの人物IDを名前にしたコメント（stitch）と、その ID を書いた行（`# likes:`）を消し、`progression/story.json` からはリリと3つのフラグと名前付きの条件を消す。最後の2つは下の「ほかの時点の場面と都市の終わり」のエピローグの前の場面で、ここで宣言するリリとフラグを使うので、この部分と一緒に外す）
 
 ### ほかの時点の場面と都市の終わり（段階4）
 
@@ -117,7 +118,7 @@
 
 ### SNS（旅の記録の「SNS」）
 
-旅の記録の「SNS」に届く投稿の例です（2026-11-26。[SNS の仕様](../../SNS_PLAN.md)）。デート「三時までの席」を遊ぶと、その最後の行で時計塔の写真がアルバムに入り、その夜（21時の夜の画面か、ホテルで休んだとき）に、ヒロインの投稿が届きます。投稿は都市ごとのファイル `stories/posts/<都市ID>.ink` の knot に書き、場面としては流れません。見本の街の人物には立ち絵がないので、コメント・いいねの例はありません（立ち絵のない人の投稿・コメント・いいねはビルドが止めます）。
+旅の記録の「SNS」に届く投稿の例です（2026-11-26。[SNS の仕様](../../SNS_PLAN.md)）。デート「三時までの席」を遊ぶと、その最後の行で時計塔の写真がアルバムに入り、その夜（21時の夜の画面か、ホテルで休んだとき）に、ヒロインの投稿が届きます。投稿は都市ごとのファイル `stories/posts/<都市ID>.ink` の knot に書き、場面としては流れません。投稿には、リリのいいね（`# likes:`）と、リリのコメントとヒロインの返事があります。SNS に出られるのは立ち絵のある人だけなので（立ち絵のない人の投稿・コメント・いいねはビルドが止めます）、見本の街では仮の立ち絵のあるリリだけが書きます。リリは「道中交流・会話と品物」の人なので、その部分を外すと、リリのコメントといいねも消えます。
 
 - ファイル：`stories/posts/mihon.ink`
 - 項目のID：`smp_post_mihon_three_seats`
