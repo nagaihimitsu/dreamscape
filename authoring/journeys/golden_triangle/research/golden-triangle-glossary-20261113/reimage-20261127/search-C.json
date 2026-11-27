@@ -1,0 +1,232 @@
+[
+ {
+  "id": "gt_term_pillar_hug",
+  "nameJa": "鉄の柱を抱く願掛け",
+  "verdict": "new",
+  "photoNoteJa": null,
+  "altJa": "1993年、クトゥブ・ミナールの鉄の柱に背中をつけ、両腕を後ろに回して柱を抱こうとする旅行者の女性と、それを見守る人たちの写真。柵ができる前の様子。",
+  "image": {
+   "file": "gt_term_pillar_hug.jpg",
+   "page": "https://www.flickr.com/photos/71401718@N00/3946596047",
+   "title": "Linda Lane putting her arms around the iron pole, iron post, iron pillar, backwards for luck, on pilgrimage, Old Delhi, India, in 1993",
+   "author": "Wonderlane (Flickr)",
+   "license": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+   "licenseEvidence": "Flickr photo page licence link: creativecommons.org/licenses/by/2.0/ (Some rights reserved, Attribution)",
+   "originalSize": "2771x3880 (Flickr original)",
+   "downloadedSize": "914x1280",
+   "date": "1993 (scan uploaded 2009-09-23)",
+   "place": "Iron pillar, Qutb Minar complex, Mehrauli, Delhi (title says 'Old Delhi')",
+   "facesSignsPlates": "Main subject: the woman hugging the pillar (named in title; face visible with sunglasses) at about x430-550,y550-655. Bystanders' faces visible: group of boys/young men at left x0-365,y575-730; man at right edge x785-890,y485-600; man behind her right shoulder x755-800,y575-680; small man in middle x305-355,y765-815. Girl in foreground seen from behind (no face). No signs, plates or watermark.",
+   "suggestedCrop": {
+    "x": 220,
+    "y": 120,
+    "w": 540,
+    "h": 1000
+   },
+   "notes": "Shows the custom itself (back to pillar, arms behind) before the 1997 fence. Not on Commons (Flickr only). Faces of bystanders should be blurred or cropped; the woman's face is the act-doer and is identifiable — consider a light blur if policy requires. Flickr static image downloaded via the web-fetch route."
+  },
+  "searched": "Flickr: iron pillar hug/luck/wish/arms/slide/mehrauli, qutub minar 1970s/1980/qutab 1960, लौह स्तंभ, lauh stambh; Openverse: iron pillar delhi/hug/embrace/qutub people; Commons search (rate-limited).",
+  "notes": "Strong match: photo title explicitly describes the custom ('backwards for luck'), dated 1993."
+ },
+ {
+  "id": "gt_term_black_taj",
+  "nameJa": "黒いタージ",
+  "verdict": "new",
+  "photoNoteJa": "写真は、ヤムナー川に黒く映るタージ・マハル（黒い墓は実際には建てられていない）",
+  "altJa": "夜明けの空を背に、タージ・マハルとその脇の建物が黒い影になり、手前のヤムナー川の水面に黒い姿がそのまま逆さに映っている写真。",
+  "image": {
+   "file": "gt_term_black_taj.jpg",
+   "page": "https://www.flickr.com/photos/97235261@N00/2234966100",
+   "title": "Winter Sunrise at Taj (Explore)",
+   "author": "Koshy Koshy (Flickr: Koshyk)",
+   "license": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+   "licenseEvidence": "Flickr photo page licence link: creativecommons.org/licenses/by/2.0/",
+   "originalSize": "1080x672",
+   "downloadedSize": "1080x672 (original)",
+   "date": "2008-01-28",
+   "place": "Taj Mahal seen across the Yamuna, Agra (river bank north/north-west of the Taj; exact spot not stated)",
+   "facesSignsPlates": "None (silhouette architecture only). No watermark.",
+   "suggestedCrop": {
+    "x": 160,
+    "y": 0,
+    "w": 672,
+    "h": 672
+   },
+   "notes": "No image of the imagined black tomb exists (no free illustration/model found; Flickr 'Black Taj' hits were Second Life renders and a Hyderabad palace). This dark mirror image of the Taj in the river evokes the legend, and the Mehtab Bagh pool reflection theory is related. Square crop centres the dome and its black reflection."
+  },
+  "searched": "Flickr: black taj, black taj mahal, mehtab bagh (+reflection/pool), moonlight garden agra, taj mahal reflection yamuna, taj mahal silhouette reflection, taj yamuna dusk, black taj legend, काला ताजमहल; Openverse: black taj mahal, mehtab bagh, taj mahal night reflection; Commons: Category:Mehtab Bagh, Category:Views of the Taj Mahal from Mehtab Bagh (checked Aks The Reflection, Taj Mahal reflection on Yamuna river (640px only), Black Taji - panoramio, Possible site of the fabled Black Taj, The main water tank).",
+  "notes": "Alternative (smaller, 640x480, CC BY 2.0): Commons File:Taj Mahal reflection on Yamuna river, Agra.jpg."
+ },
+ {
+  "id": "gt_term_nahar_singh_bhomia",
+  "nameJa": "ナハル・シン・ボーミヤー",
+  "verdict": "keep",
+  "photoNoteJa": "画像は彼の名に由来するとされるナハルガル城の写真",
+  "altJa": null,
+  "image": null,
+  "searched": "Commons: search 'Nahargarh temple', Bhomia/Bhomiya, 'Nahar Singh Baba', नाहरगढ़; all files of Category:Nahargarh Fort checked by description (only Wikipedia-copied legend text, no temple photo); hi.wikipedia नाहरगढ़ दुर्ग images; Flickr: nahar singh bhomia, nahar singh, nahargarh temple/mandir/shrine/gate/puja, नाहर सिंह भोमिया, नाहरगढ़ मंदिर, bhomia ji, nahar singh ji, nahar garh; Openverse: nahar singh, nahargarh temple, bhomiya; web search EN.",
+  "notes": "No freely licensed photo of the Nahar Singh Bhomia shrine inside the fort and no depiction of him found. Flickr photos whose captions mention him (Dimitry B 8172650188, lensnmatter 25231375926) show a watchtower and a palace gate, not the shrine. Keep current image."
+ },
+ {
+  "id": "gt_term_cut_hands_legend",
+  "nameJa": "手を切られた職人の伝説",
+  "verdict": "keep",
+  "photoNoteJa": "写真は、今のアーグラの象嵌職人の手元",
+  "altJa": null,
+  "image": null,
+  "searched": "Commons: Taj Mahal legend hands / 'cut off' / artisans / workers / construction painting; Flickr: taj mahal hands cut, taj mahal legend hands, taj mahal artisans hands, pietra dura agra craftsman.",
+  "notes": "No free painting/drawing/memorial depicting the legend found. Keep the inlay craftsman's hands."
+ },
+ {
+  "id": "gt_term_sher_shah",
+  "nameJa": "シェール・シャー",
+  "verdict": "new",
+  "photoNoteJa": "写真は、彼の名を刻んだルピヤ銀貨",
+  "altJa": "シェール・シャーが出したルピヤ銀貨の表と裏。四角い枠の中に、彼の名と称号がアラビア文字で刻まれている。",
+  "image": {
+   "file": "gt_term_sher_shah.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Sher_shah%27s_rupee.jpg",
+   "title": "Sher shah's rupee.jpg",
+   "author": "Dr. N. Sreedhar (Drnsreedhar at English Wikipedia)",
+   "license": "CC BY-SA 3.0 (GFDL relicensed)",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+   "licenseEvidence": "Commons API extmetadata LicenseShortName: 'CC BY-SA 3.0'; wikitext has a GFDL-with-disclaimers template with migration=relicense (summary via fetch tool; raw text not obtainable verbatim due to rate limit)",
+   "originalSize": "1701x861",
+   "downloadedSize": "1280x648",
+   "date": "2006-10-11 (photo); coin r. 1540-1545",
+   "place": "Personal collection (coin of the Sur Empire)",
+   "facesSignsPlates": "None. Coin has two small drilled/pitted marks. Dark red velvet background.",
+   "suggestedCrop": {
+    "x": 8,
+    "y": 0,
+    "w": 640,
+    "h": 648
+   },
+   "notes": "Left coin (obverse) carries 'Sultan Sher Shah …' legend; the crop keeps only it. Description on Commons: 'First Rupee, a Rupiya Silver coin, issued by Sher Shah Suri r. 1540-1545 CE.' Directly supports the card line (ルピー銀貨). Alternatives with clean CC BY-SA 4.0 'own work': File:Silver Coin of Sher Shah Suri, Shergarh Mint, circa 950 AH, INHCRF Coin Museum, Nashik, Maharashtra.jpg (1200x1123). Portrait option rejected: File:Painting of Sher Shah Suri from a manuscript of Tarikh-i-Khandan-i-Timuriya… (PD-art-70) is sourced only from Twitter posts and looks stylistically much later than the claimed c.1570-90; other portraits are 20th-century/unknown."
+  },
+  "searched": "Commons: Sher Shah Suri coin, Sher Shah painting/portrait Suri; en.wikipedia Sher Shah Suri images; Flickr: sher shah suri, sher shah rupee, sher shah coin, sur dynasty coin; Openverse (rate-limited); Hindi शेरशाह सूरी queued but Commons throttled.",
+  "notes": ""
+ },
+ {
+  "id": "gt_term_amanat_khan",
+  "nameJa": "アマーナト・ハーン",
+  "verdict": "new",
+  "photoNoteJa": "写真は、彼が書いたタージ・マハル正門のコーランの文字",
+  "altJa": "タージ・マハルの正門（大門）のアーチを囲む白い大理石の帯。黒い石をはめ込んだ大きなアラビア文字（コーランの「暁」の章）が斜めに見上げる形で写っている。",
+  "image": {
+   "file": "gt_term_amanat_khan.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Taj_Mahal_calligraphy,_India,_2013-03_(11551455483).jpg",
+   "title": "Taj Mahal calligraphy, India, 2013-03 (11551455483).jpg (Flickr: 2013-03 India 037)",
+   "author": "Edmund Gall",
+   "license": "CC BY-SA 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+   "licenseEvidence": "Flickr page https://www.flickr.com/photos/e_n_gall/11551455483/ licence link creativecommons.org/licenses/by-sa/2.0/; Commons LicenseShortName 'CC BY-SA 2.0'",
+   "originalSize": "3168x4752",
+   "downloadedSize": "1280x1920",
+   "date": "2013-03-03",
+   "place": "Great Gate (Darwaza-i rauza), Taj Mahal, Agra",
+   "facesSignsPlates": "None.",
+   "suggestedCrop": {
+    "x": 0,
+    "y": 400,
+    "w": 1280,
+    "h": 1280
+   },
+   "notes": "Flickr caption: 'The main entrance at the Great Gate is framed with Sura 89 of the Qur'an, namely al-Fajr (daybreak)…' — the gate's inscription that Amanat Khan wrote and signed. No freely licensed photo of his actual signature ('Amanat Khan Shirazi', at the dome base inside or lower-left of the gate frame) was found; Mukul Banerjee's Flickr photo of the gate signature area is all rights reserved. Other usable calligraphy shots: dalbera Flickr 8521865729 (CC BY 2.0, iwan bands, caption names Amanat Khan Shirazi); Gary Todd Flickr 22825377807/22851648099 (CC0)."
+  },
+  "searched": "Commons: Amanat Khan, امانت خان, Taj Mahal calligraphy/inscription/calligrapher, signature; Flickr: taj mahal calligraphy, taj mahal inscription, amanat khan, taj mahal gate calligraphy; Openverse: amanat khan; web search for signature photos.",
+  "notes": ""
+ },
+ {
+  "id": "gt_term_vidyadhar",
+  "nameJa": "ヴィディヤーダル",
+  "verdict": "keep",
+  "photoNoteJa": "画像は彼の名を冠したヴィディヤーダル庭園の回廊の写真",
+  "altJa": null,
+  "image": null,
+  "searched": "Commons: Vidyadhar, विद्याधर, বিদ্যাধর, 'Vidyadhar Bhattacharya', 'Vidhyadhar Bhattacharya', 'Vidyadhar Garden' (hits are Gujarat stepwell, other people); en.wikipedia article has no image; Flickr: vidyadhar statue, vidyadhar bhattacharya; web search EN and Hindi (विद्याधर भट्टाचार्य मूर्ति जयपुर).",
+  "notes": "No portrait, statue or bust found in any free source. Keep."
+ },
+ {
+  "id": "gt_term_isa_khan",
+  "nameJa": "イーサー・ハーン",
+  "verdict": "keep",
+  "photoNoteJa": "画像は彼の墓廟の内部の写真",
+  "altJa": null,
+  "image": null,
+  "searched": "Commons: 'Isa Khan' portrait/painting, ईसा, عیسی خان (only tomb photos, plus a 1618 portrait of a different Isa Khan, Safavid Qurchibashi of Shah Abbas I — not him); Flickr: isa khan (tombs only); en.wikipedia Isa Khan Niazi images.",
+  "notes": "No portrait exists in free sources. Do NOT use 'Portrait of Isa Khan, Qurchibashi of Shah Abbas I' (different person). Keep."
+ },
+ {
+  "id": "gt_term_mariam_uz_zamani",
+  "nameJa": "マリアム・ウッザマーニー",
+  "verdict": "new",
+  "photoNoteJa": "絵は、息子サリーム（のちのジャハーンギール）誕生の場面。天蓋の下に横たわるのが彼女",
+  "altJa": "ムガル朝の宮廷画家ビシャンダースが1620年ごろに描いた、王子サリームの誕生の絵。天蓋つきの寝台に母が横たわり、女性たちが生まれたばかりの赤ん坊を抱いている。下の段では占星術師たちが運勢を占っている。",
+  "image": {
+   "file": "gt_term_mariam_uz_zamani.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Bishan_Das._The_Birth_of_Prince,_ca_1610-15,_Page_from_Jahangirnama,_Museum_of_Fine_Arts,_Boston.jpg",
+   "title": "Bishan Das. The Birth of Prince, ca 1610-15, Page from Jahangirnama, Museum of Fine Arts, Boston.jpg",
+   "author": "Bishandas (Mughal court painter); scan by uploader",
+   "license": "Public domain",
+   "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-Art",
+   "licenseEvidence": "{{PD-Art|PD-old-100-expired}}; source={{self-scanned}}",
+   "originalSize": "1427x2083",
+   "downloadedSize": "877x1280",
+   "date": "c. 1620 (MFA Boston record: about 1620; acc. no. 14.657, 'Birth of Prince Salim')",
+   "place": "Museum of Fine Arts, Boston (Mughal India)",
+   "facesSignsPlates": "Painted figures only; no real people. No watermark.",
+   "suggestedCrop": {
+    "x": 369,
+    "y": 111,
+    "w": 430,
+    "h": 430
+   },
+   "notes": "Suggested square crop isolates the canopied bed with the mother and the newborn (checked visually). Identification: MFA titles it Birth of Prince Salim; Salim's mother is Mariam-uz-Zamani, so the woman in bed is her (painted ~50 years after the event, not a likeness). Other options rejected: 'Posthumous portrait of Mariam uz-Zamani' (c.1850, dealer-site source), 'Mariam-uz-ZamaniPortrait.jpg' (1907 illustration, CC0 claim doubtful), 'AkbarMariamuzZamani.jpg' (later-coloured sketch, odd CC BY-SA licence), 'Jodhbai.jpg' (no source)."
+  },
+  "searched": "en.wikipedia Mariam-uz-Zamani images; Commons: birth of Salim/Jahangir, Mariam uz Zamani portrait files; Flickr: mariam zamani, jodha bai (palace photos only); web search MFA record.",
+  "notes": ""
+ },
+ {
+  "id": "gt_term_afzal_khan",
+  "nameJa": "アフザル・ハーン・シーラーズィー",
+  "verdict": "new",
+  "photoNoteJa": null,
+  "altJa": "紫の長衣に橙色の帯を締め、白いターバンをかぶった白いひげの老人が、杖を手に横向きに立つ肖像画。17世紀の絵をもとに20世紀初めに描かれた写し。",
+  "image": {
+   "file": "gt_term_afzal_khan.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Shah_Jahan%27s_minister,_Afzal_Khan_(1570-1639)_(cropped).jpg",
+   "title": "Portrait of Shah Jahan's minister, Afzal Khan (1570-1639) (cropped).jpg",
+   "author": "Unknown artist (Royal Collection RCIN 970132)",
+   "license": "Public domain",
+   "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-Art",
+   "licenseEvidence": "Parent file: PD-Art with PD-UK-unknown ('author is unknown and cannot be ascertained by reasonable enquiry') and PD-US-expired (published before 1931)",
+   "originalSize": "629x1096 (cropped file; parent 1500x2000)",
+   "downloadedSize": "629x1096",
+   "date": "c. 1900-1910, after a 17th-century painting",
+   "place": "Royal Collection, UK (RCIN 970132)",
+   "facesSignsPlates": "Painted figure only. No watermark.",
+   "suggestedCrop": {
+    "x": 0,
+    "y": 150,
+    "w": 629,
+    "h": 629
+   },
+   "notes": "Commons description: 'Portrait of Shah Jahan's minister, Afzal Khan (1570-1639), after a seventeenth century painting.' Used on en.wikipedia Afzal Khan Shirazi. Later copy, so altJa says so; photoNoteJa could optionally add '絵は、20世紀初めの写し'. Parent uncropped file includes floral border and mat."
+  },
+  "searched": "en.wikipedia Afzal Khan Shirazi images; web search Padshahnama/Royal Collection; Commons.",
+  "notes": ""
+ },
+ {
+  "id": "gt_term_bahai",
+  "nameJa": "バハイ信仰",
+  "verdict": "keep",
+  "photoNoteJa": "写真は、デリーの蓮の寺院（バハイの礼拝堂）",
+  "altJa": null,
+  "image": null,
+  "searched": "Judgement only (no wide search): the Lotus Temple is the Baha'i House of Worship of the Indian subcontinent in Delhi, the faith's best-known image in India.",
+  "notes": "Keep: it shows a Baha'i house of worship (the thing the line describes) and is in the story's city."
+ }
+]
