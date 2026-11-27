@@ -19,7 +19,7 @@ type Notice = { key: number; name: string; iconPath: string };
  *
  * `hold`: while true no notice shows; one on screen goes back to the head of the queue and shows again in full once the
  * hold ends, and new ones wait behind it. GameApp holds them while another notice under the header shows (写真の札,
- * 「ことばを覚えた」, so they never lie over each other), and the header while it steps aside (a quiet line). Anything
+ * a line's cards (旅の図鑑, 旅のことば), so they never lie over each other), and the header while it steps aside (a quiet line). Anything
  * else that should come first (a larger showing of the item itself) holds them the same way, through JourneyHud's
  * `holdNotices`.
  */

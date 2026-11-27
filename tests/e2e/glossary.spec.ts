@@ -97,3 +97,32 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(photo).toContainText(CREDIT);
   await expect(photo.getByRole("link", { name: "CC0 1.0", exact: true })).toHaveAttribute("href", "https://creativecommons.org/publicdomain/zero/1.0/");
 });
+
+// 旅のことば (2026-11-27 user decision: as 旅の図鑑's card): the clock tower's guide teaches the sample's fictional Trisól on
+// its fifth line. Its card shows before the line (the line writes nothing yet), says 「旅のことば」 with the word, its reading
+// and meaning, and a tap puts it away; then the line starts, as it was, and nothing is saved.
+test("旅のことば: a word's card has its turn before its line and goes on a tap", { tag: tier.sample }, async ({ page }) => {
+  await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_clock_tower", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  const line = page.getByTestId("dialogue-text");
+  const card = page.getByTestId("glossary-term-window");
+  for (let read = 0; read < 8 && await card.count() === 0; read++) {
+    await ops.settled(page);
+    if (await line.getAttribute("data-photo-turn") !== null) await line.click();
+    await expect(line).toHaveAttribute("data-ready", "true");
+    await line.focus();
+    await page.keyboard.press("Enter");
+  }
+  await expect(card).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Trisól" })).toHaveAccessibleDescription(/三時に会おう.*旅のことば/u);
+  await expect(card).toContainText("トリソル");
+  await expect(line).toHaveAttribute("data-photo-turn", "true");
+  await expect(line).toHaveAttribute("data-ready", "false");
+  const revision = (await debugGame(page))!.revision;
+
+  await ops.settled(page);
+  await card.click();
+  await expect(card).toHaveCount(0);
+  await expect(line).toHaveAttribute("data-ready", "true");
+  await expect(line).toContainText("Trisól");
+  expect((await debugGame(page))!.revision).toBe(revision);
+});

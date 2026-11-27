@@ -3,8 +3,8 @@ import { useSyncExternalStore } from "react";
 // A line's large photo has its own turn before the line (2026-11-27 user decision): while the print is up, the line's
 // text waits (nothing is written, its voice and sounds wait with it); a tap or a key on the scene (what would read the
 // line on) ends the photo's turn instead, the print goes quickly and the line starts at once. No timer ends it.
-// 旅の図鑑's card has its turn the same way (2026-11-27 user decision; GlossaryTermWindow), before a photo of the same
-// line. PhotoShowLayer and GlossaryTermWindow hold a turn, DialogueText reads it.
+// The cards of 旅の図鑑 and 旅のことば have their turn the same way (2026-11-27 user decision; LineCardWindow), before a
+// photo of the same line. PhotoShowLayer and LineCardWindow hold a turn, DialogueText reads it.
 
 /** A turn on screen: `end` takes the print (or the card) away and lets the line start. */
 export type PhotoTurn = { end(): void };

@@ -115,18 +115,6 @@ export function lineFrameOnScreen(state: SceneFrames | null): FrameWords {
           : state.activeDate?.frame ?? null;
 }
 
-/**
- * The 「ことばを覚えた」 notice on screen: the words just learned, none while something over the line holds it (`held`:
- * 旅の図鑑's card of a term on the same line, 2026-11-13). The words are learned all the same; the notice waits, not
- * lost, and shows (for its whole time) once the card has closed.
- */
-export const shownWordNotice = <T>(notice: T | null, held: boolean): T | null => (held ? null : notice);
-
-/** The notice of words just learned: 「ことばを覚えた：नमस्ते（ナマステ）」. */
-export function learnedNoticeText(words: readonly Pick<LocalWord, "word" | "reading">[]): string {
-  return `ことばを覚えた：${words.map((word) => `${word.word}（${word.reading}）`).join("、")}`;
-}
-
 /** Whether the journey has words of the country: one of the catalog belongs to a city of the journey (旅のことば's page). */
 export function journeyHasLocalWords(journeyId: string, catalog: readonly LocalWord[] = catalogWords,
   journeyOf: (cityId: string) => string | undefined = (cityId) => getJourneyForCity(cityId)?.id): boolean {

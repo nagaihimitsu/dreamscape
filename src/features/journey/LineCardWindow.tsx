@@ -1,10 +1,10 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { glossaryTerms, tourismAssets } from "../../content";
+import { glossaryTerms, localWords, tourismAssets } from "../../content";
 import { photoNote, termSubtitle } from "../../content/glossary";
 import { playCue } from "../../audio/sound-effects";
 import { DOUBLE_TAP_WINDOW_MS } from "../../components/double-tap";
 import { HOLDS_READING_ATTRIBUTE } from "../../components/dialogueObstructed";
-import { Icon } from "../../components/icons";
+import { Icon, type IconName } from "../../components/icons";
 import { itemFlight } from "../../components/item-show";
 import { holdPhotoTurn } from "../../components/photo-turn";
 import { DIALOGUE_LINE_ATTRIBUTE } from "../../components/scene-tap";
@@ -12,20 +12,27 @@ import { focusQuietly } from "../../components/scene-focus";
 import "./glossary.css";
 import { FitText } from "../../components/FitText";
 
+/** A card a line brings: a term it has just put in 旅の図鑑 (`# term:`), or a word of the country it has just taught (`# local_word:`). */
+export type LineCard = { kind: "term" | "word"; id: string };
+
 /**
- * 旅の図鑑's card in the story (2026-11-13 user decision): the terms a line's `# term:` has just put in 旅の図鑑 (GameApp:
- * termsAdded on an action, not during 高速送り), one card after another, over the scene without changing screens: the
- * middle of the screen darkens, and a card shows the term's photo, its name with its reading or other name, its one line
- * and a small 「旅の図鑑」 (with 1 / 2 when the line named more). The cards have their own turn before the line (2026-11-27
- * user decision, as a large photo's: photo-turn.ts): the line under them writes nothing and its voice and sounds wait until
- * the last card goes. A tap anywhere, Esc, Enter or Space puts the card away (the next one, if the line named more); it has
- * no 「閉じる」 button (2026-11-25 user decision: the dimmed page is enough): the card shrinks and flies into ≡メニュー,
- * where 旅の図鑑 is (2026-11-27; it fades where it is without the button, and goes at once under reduced motion), and the
- * line starts as the last one goes. The window holds the scene's reading (HOLDS_READING_ATTRIBUTE: auto mode waits, a tap or a key reads
- * nothing). Each card rings card_new as it shows (not on a quiet line), takes no tap for the moment of a double tap
+ * The cards of a line over the story (2026-11-27 user decision: 旅の図鑑, 旅のことば and the large photo work alike): the
+ * terms a line's `# term:` has just put in 旅の図鑑 (GameApp: termsAdded on an action, not during 高速送り; 2026-11-13) and
+ * the words its `# local_word:` has just taught (useLocalWords, not during 高速送り nor on a load; until 2026-11-27 a notice
+ * under the header), one card after another (the terms first), over the scene without changing screens: the middle of the
+ * screen darkens, and a card shows a small 「旅の図鑑」 or 「旅のことば」 (with 1 / 2 when the line brought more) and, for a
+ * term, its photo, its name with its reading or other name and its one line; for a word, the word in its own script, its
+ * reading, its meaning and its note. The cards have their own turn before the line (as a large photo's: photo-turn.ts): the
+ * line under them writes nothing and its voice and sounds wait until the last card goes. A tap anywhere, Esc, Enter or
+ * Space puts the card away (the next one comes); it has no 「閉じる」 button (2026-11-25 user decision: the dimmed page is
+ * enough): the card shrinks and flies into ≡メニュー, where 旅の図鑑 and 旅のことば are (it fades where it is without the
+ * button, and goes at once under reduced motion), and the line starts as the last one goes. The window holds the scene's
+ * reading (HOLDS_READING_ATTRIBUTE: auto mode waits, a tap or a key reads nothing). Each card rings as it shows (card_new
+ * for a term, local_word for a word; not on a quiet line), takes no tap for the moment of a double tap
  * (DOUBLE_TAP_WINDOW_MS: the tap that brought the line must not close it unseen), and comes in softly (not under reduced
- * motion). A dialog: the focus goes to the card (no ring) and back where it was; readers hear the name and the line. A term
- * the content does not have shows nothing.
+ * motion). A dialog: the focus goes to the card (no ring) and back where it was; readers hear the name and the line. A card
+ * the content does not have shows nothing. `cards` may grow while the window is open (a line's words come a moment after
+ * its terms); the cards already shown stay as they are.
  */
 /** How long a card takes to fly into ≡メニュー, or to fade where it is (glossary.css). */
 const GLOSSARY_STOW_MS = 560;
@@ -37,10 +44,28 @@ const menuBox = (): DOMRect | undefined => document.querySelector<HTMLElement>("
 const reducedMotion = (element: Element) =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches || !!element.closest(".reduce-motion");
 
-export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds: readonly string[]; quiet?: boolean; onDone: () => void }) {
+/** What a card shows (null for one the content does not have). */
+function cardContent(card: LineCard | undefined) {
+  if (card?.kind === "term") {
+    const term = glossaryTerms.find((item) => item.id === card.id);
+    if (!term) return null;
+    const asset = tourismAssets.find((item) => item.id === term.imageId);
+    return { mark: "旅の図鑑", icon: "lens" as IconName, sound: "card_new" as const, name: term.nameJa, subtitle: termSubtitle(term), line: term.lineJa,
+      note: null, photo: asset ? { asset, note: photoNote(term) } : null };
+  }
+  if (card?.kind === "word") {
+    const word = localWords.find((item) => item.id === card.id);
+    if (!word) return null;
+    return { mark: "旅のことば", icon: "book" as IconName, sound: "local_word" as const, name: word.word, subtitle: word.reading, line: word.meaningJa,
+      note: word.noteJa ?? null, photo: null };
+  }
+  return null;
+}
+
+export function LineCardWindow({ cards, quiet = false, onDone }: { cards: readonly LineCard[]; quiet?: boolean; onDone: () => void }) {
   const [index, setIndex] = useState(0);
-  const term = glossaryTerms.find((item) => item.id === termIds[index]);
-  const asset = term && tourismAssets.find((item) => item.id === term.imageId);
+  const card = cards[index];
+  const content = cardContent(card);
   const windowRef = useRef<HTMLDivElement>(null);
   const [settling, setSettling] = useState(true);
   const ids = useId();
@@ -48,7 +73,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
   const lineId = `${ids}-line`;
   const markId = `${ids}-mark`;
   const cardRef = useRef<HTMLDivElement>(null);
-  const last = index + 1 >= termIds.length;
+  const last = index + 1 >= cards.length;
   // The card on its way into ≡メニュー (`fly`, with where it goes) or fading where it is (`fade`).
   const [stowing, setStowing] = useState<{ mode: "fly" | "fade"; style?: CSSProperties } | null>(null);
   const next = () => {
@@ -99,11 +124,11 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
   }, []);
   // Each card: its sound, the focus on the window, and the moment it takes no tap.
   useEffect(() => {
-    if (!term) {
+    if (!content) {
       closeRef.current();
       return;
     }
-    if (!quiet) playCue("card_new");
+    if (!quiet) playCue(content.sound);
     if (windowRef.current) focusQuietly(windowRef.current);
     setSettling(true);
     const timer = window.setTimeout(() => setSettling(false), DOUBLE_TAP_WINDOW_MS);
@@ -127,8 +152,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
     window.addEventListener("keydown", onKeyDown, true);
     return () => window.removeEventListener("keydown", onKeyDown, true);
   }, []);
-  if (!term) return null;
-  const subtitle = termSubtitle(term);
+  if (!content || !card) return null;
   // A tap in the moment of a double tap is ignored.
   const tap = (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
@@ -139,15 +163,16 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
     <div ref={windowRef} className="glossary-term-window" role="dialog" aria-modal="true" aria-labelledby={nameId} aria-describedby={`${lineId} ${markId}`}
       tabIndex={-1} data-testid="glossary-term-window" data-tap-settling={settling || undefined} data-leaving={(last && stowing) || undefined}
       {...{ [HOLDS_READING_ATTRIBUTE]: "" }} onClick={tap}>
-      <div key={term.id} ref={cardRef} className="glossary-term-card" data-stowing={stowing?.mode} style={stowing?.style}>
-        <p className="glossary-term-mark" id={markId}><Icon name="lens" />旅の図鑑
-          {termIds.length > 1 && <span className="glossary-term-count">{index + 1} / {termIds.length}</span>}</p>
-        {asset && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} width={asset.width}
-          height={asset.height} decoding="async" />}
-        {asset && photoNote(term) && <p className="glossary-term-photo-note" data-testid="glossary-term-photo-note">{photoNote(term)}</p>}
-        <h2 className="glossary-term-name" id={nameId}><FitText text={term.nameJa} /></h2>
-        {subtitle && <p className="glossary-term-subtitle">{subtitle}</p>}
-        <p className="glossary-term-line" id={lineId}>{term.lineJa}</p>
+      <div key={`${card.kind}-${card.id}`} ref={cardRef} className="glossary-term-card" data-kind={card.kind} data-stowing={stowing?.mode} style={stowing?.style}>
+        <p className="glossary-term-mark" id={markId}><Icon name={content.icon} />{content.mark}
+          {cards.length > 1 && <span className="glossary-term-count">{index + 1} / {cards.length}</span>}</p>
+        {content.photo && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${content.photo.asset.path}`} alt={content.photo.asset.altJa}
+          width={content.photo.asset.width} height={content.photo.asset.height} decoding="async" />}
+        {content.photo?.note && <p className="glossary-term-photo-note" data-testid="glossary-term-photo-note">{content.photo.note}</p>}
+        <h2 className="glossary-term-name" id={nameId}><FitText text={content.name} /></h2>
+        {content.subtitle && <p className="glossary-term-subtitle">{content.subtitle}</p>}
+        <p className="glossary-term-line" id={lineId}>{content.line}</p>
+        {content.note && <p className="glossary-term-note">{content.note}</p>}
       </div>
     </div>
   );

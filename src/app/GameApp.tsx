@@ -5,7 +5,6 @@ import {
   dates,
   presentation,
   landmarks,
-  localWords,
   journeyTerms,
   scenes,
   storyState,
@@ -73,7 +72,6 @@ import { useLearning } from "../features/learning/useLearning";
 import { answeredQuestions, latestAnsweredQuestionId, metQuestions } from "../features/learning/EnglishReview";
 import { ENGLISH_NOTE_SHOWN, NOTE_PAGE_NAMES, NoteDialog, noteName, type NoteTab } from "./NoteDialog";
 import { useLocalWords } from "../features/learning/useLocalWords";
-import { LocalWordNotice } from "../features/learning/LocalWordNotice";
 import { journeyHasLocalWords, lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
 import { readAloudSupported } from "../features/learning/read-aloud";
 import { primeSpeechOnGesture } from "../features/learning/ReadAloud";
@@ -98,7 +96,7 @@ import { loadJourneyMemory, type MemoryLoad } from "../persistence";
 import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
-import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
+import { LineCardWindow, type LineCard } from "../features/journey/LineCardWindow";
 import { DifficultyFields } from "../features/journey/DifficultyFields";
 import { DEFAULT_DIFFICULTY, difficultyOf, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
@@ -268,7 +266,7 @@ export function GameApp({
   const [clueWords, setClueWords] = useState<readonly ClueNoticeWord[]>([]);
   const clueWordKey = useRef(0);
   const dropClueWord = useCallback((key: number) => setClueWords((words) => (words[0]?.key === key ? words.slice(1) : words)), []);
-  // 旅の図鑑's card (GlossaryTermWindow): the terms the player's last action put in 旅の図鑑 (`addedTerms`, with whether
+  // 旅の図鑑's cards (LineCardWindow): the terms the player's last action put in 旅の図鑑 (`addedTerms`, with whether
   // its line is quiet), then the card that shows them over their story scene (`termCard`) once the line on screen is known
   // not to be passed by 高速送り (below).
   const [addedTerms, setAddedTerms] = useState<{ key: number; ids: string[]; quiet: boolean } | null>(null);
@@ -392,23 +390,21 @@ export function GameApp({
   // useJourneyMoments and useTravelEffects): what the scene under it brings of its own (旅の図鑑's card, a large photo, the
   // notices under the header) waits until it has gone (2026-11-25 user request: nothing shows before the title has shown).
   const [momentCovers, setMomentCovers] = useState(false);
-  // 旅の図鑑's card shows over its scene (below): the notices under the header wait for it to close, not lost behind it.
-  const termCardShown = !!termCard && termCard.scene === storyScene && !momentCovers;
-  // A large photo (PhotoShowLayer) does not show under the card (2026-11-25 user request: the two overlapped): it waits from
-  // the line's first drawing, while the card is yet to be decided on, and comes (taken then) once the card has closed.
-  const photoHeld = momentCovers || termCardShown || (!!addedTerms && addedTerms.key !== termsDecidedKey);
   // The words of the country this device has learned in this journey (local-words.ts): the line on screen teaches its
-  // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory. A word of a line
-  // that also names a term is learned at once; its 「ことばを覚えた」 shows once the term's card has closed.
-  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game), termCardShown || momentCovers);
-  // 「ことばを覚えた」 rings (local_word) as its notice comes, but not on a quiet line nor during 高速送り (playCue).
-  const learnedNoticeId = learnedWords.notice?.id;
+  // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory.
+  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game), storyScene);
   const quietLine = !!lineFrameOnScreen(game)?.quiet;
-  useEffect(() => {
-    if (learnedNoticeId !== undefined && !quietLine) playCue("local_word");
-  // Once a notice: the line's quiet is read as it comes.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [learnedNoticeId]);
+  // The cards of the line on screen (LineCardWindow, 2026-11-27 user decision: 旅の図鑑 and 旅のことば alike): the terms its
+  // action put in 旅の図鑑, then the words it taught, over their scene, once the title card or a ride's art has gone.
+  const lineCards: LineCard[] = momentCovers ? [] : [
+    ...(termCard && termCard.scene === storyScene ? termCard.ids.map((id) => ({ kind: "term" as const, id })) : []),
+    ...(learnedWords.notice && learnedWords.notice.scene === storyScene ? learnedWords.notice.words.map((word) => ({ kind: "word" as const, id: word.id })) : []),
+  ];
+  // The cards show over their scene (below): the notices under the header wait for them to close, not lost behind them.
+  const lineCardsShown = lineCards.length > 0;
+  // A large photo (PhotoShowLayer) does not show under the cards (2026-11-25 user request: the two overlapped): it waits from
+  // the line's first drawing, while the card is yet to be decided on, and comes (taken then) once the cards have closed.
+  const photoHeld = momentCovers || lineCardsShown || (!!addedTerms && addedTerms.key !== termsDecidedKey);
   const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, nightLeavingClock, riding, nightVisual, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
@@ -853,8 +849,8 @@ export function GameApp({
       return view && `${view.placeJa} · ${view.whenJa}`;
     },
   }), [photoNotice, album, albumCityId, photoHeld, donePhoto]);
-  // 旅の図鑑's card holds the photo's card as it holds 「ことばを覚えた」: it shows (its whole time) once the card closes.
-  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown && !momentCovers ? photoNotice : null;
+  // A line's cards hold the photo's card: it shows (its whole time) once they close.
+  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !lineCardsShown && !momentCovers ? photoNotice : null;
   const shownPhotoNoticeId = shownPhotoNotice?.id;
   useEffect(() => {
     if (!shownPhotoNotice) return;
@@ -1083,7 +1079,7 @@ export function GameApp({
         noteNew={newNotePages.map((page) => NOTE_PAGE_NAMES[page])}
         // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
         // line's item card (# item_show:, # item_out:) shows or flies into the bag, and under the title card or a ride's art.
-        holdNotices={momentCovers || (!!shownPhotoNotice && !shownPhotoNotice.flown) || !!printFlight || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
+        holdNotices={momentCovers || (!!shownPhotoNotice && !shownPhotoNotice.flown) || !!printFlight || lineCardsShown || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
         itemFlight={itemLeave}
         photoFlight={printFlight}
         recordsNew={albumNew || snsNewIds.length > 0}
@@ -1158,11 +1154,10 @@ export function GameApp({
           </div>
         )}
         {moments.recapCard}
-        {/* Only where a line can teach a word or take a photo: a story scene of a build with words of the country or
-            album images. Their status regions stay mounted through the scene, so a new notice is announced. */}
-        {conversationActive && (localWords.length > 0 || albumImages.length > 0) && (
+        {/* Only where a line can take a photo: a story scene of a build with album images. Its status region stays mounted
+            through the scene, so a new notice is announced. */}
+        {conversationActive && albumImages.length > 0 && (
           <div className="scene-notices" ref={noticesHeight}>
-            {localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
             {albumImages.length > 0 && <AlbumPhotoNotice notice={shownPhotoNotice} />}
           </div>
         )}
@@ -1534,8 +1529,8 @@ export function GameApp({
           numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
       </LazyDialog>}
 
-      {termCardShown && termCard && game &&
-        <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
+      {lineCardsShown && game &&
+        <LineCardWindow cards={lineCards} quiet={termCard?.quiet ?? quietLine} onDone={() => { setTermCard(null); learnedWords.dismiss(); }} />}
       {screenCreditsOpen && <ScreenCredits scenePhoto={scenePhoto} photos={creditPhotos} factSources={explanationSources} answer={screenAnswer}
         clues={screenClues} onAllCredits={() => setCreditsOpen(true)}
         onClose={() => setScreenCreditsOpen(false)} />}

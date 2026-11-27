@@ -12,7 +12,7 @@ export type ClueNoticeWord = { key: number; text: string };
  * recorded outside the observation (a date, a walk or a scene has no clue book button that gleams; a player without sound or
  * vibration learns it here). It takes no presses and no focus; its status region stays mounted with the header, so screen
  * readers announce it politely. It is shown for CLUE_NOTICE_MS, long enough to read beside the line being read (the clue
- * stays readable in 手がかり帳), and it never lies over another notice: while `hold` (a 写真の札, 「ことばを覚えた」, an item's
+ * stays readable in 手がかり帳), and it never lies over another notice: while `hold` (a 写真の札, a line's cards (旅の図鑑, 旅のことば), an item's
  * card, the session's word, a quiet line) it waits, and shows again in full once the hold ends. `onDone` drops it from the queue.
  */
 export function ClueRecordedNotice({ notice, hold, onDone }: { notice: ClueNoticeWord | null; hold: boolean; onDone: (key: number) => void }) {

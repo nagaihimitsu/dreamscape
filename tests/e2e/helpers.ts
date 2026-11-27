@@ -893,7 +893,8 @@ export const ops = {
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene], [data-testid=quiz-cutin]")).toHaveCount(0);
   },
   /**
-   * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): a tap on each, as a player
+   * A line's cards (旅の図鑑's `# term:` the first time a term shows in the game, 旅のことば's `# local_word:` the first
+   * time a word is learned on this device): a tap on each, as a player
    * reads them, until none is left (each takes no tap for the moment of a double tap: settled waits for it).
    */
   async closeTermCards(page: Page) {
