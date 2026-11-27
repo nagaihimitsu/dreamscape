@@ -288,10 +288,12 @@
   }
   .battle-screen[data-phase="dialogue"] .battle-paper-shell {
     width: calc(100% - 16px);
-    max-height: max(calc(100% - 140px + var(--vn-head-overhang, 22px)), min(calc(100% - 8px), 9em));
-    margin: auto 8px 8px;
+    /* Lifted as the story scenes' window (--vn-window-lift, romance-scene.css), keeping the faces' room above it. */
+    max-height: max(calc(100% - 132px - var(--vn-window-lift, 8px) + var(--vn-head-overhang, 22px)),
+      min(calc(100% - var(--vn-window-lift, 8px)), 9em));
+    margin: auto 8px var(--vn-window-lift, 8px);
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px); }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - var(--vn-window-lift, 8px)); }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
     margin: 0;
     padding: 2px 16px 8px;
