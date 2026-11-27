@@ -19,4 +19,16 @@ describe("photo turn", () => {
     releaseSecond();
     expect(photoTurn()).toBeNull();
   });
+
+  it("a turn held under a later one (a photo under 旅の図鑑's card) is on again once the later one is released", () => {
+    const photo = { end: () => {} };
+    const releasePhoto = holdPhotoTurn(photo);
+    const card = { end: () => {} };
+    const releaseCard = holdPhotoTurn(card);
+    expect(photoTurn()).toBe(card);
+    releaseCard();
+    expect(photoTurn()).toBe(photo);
+    releasePhoto();
+    expect(photoTurn()).toBeNull();
+  });
 });

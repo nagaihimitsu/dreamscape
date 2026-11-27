@@ -16,8 +16,8 @@ export const HOLDS_READING_ATTRIBUTE = "data-holds-reading";
 
 /**
  * The scene must not read on (a tap, a key, auto mode, 高速送り) while dialogueObstructed holds or a window over it holds
- * the reading (HOLDS_READING_ATTRIBUTE: 旅の図鑑's card). Unlike a modal, such a window lets the line write itself on and
- * its voice play: only going on to the next line waits.
+ * the reading (HOLDS_READING_ATTRIBUTE: 旅の図鑑's card). The card also holds the line's turn (photo-turn.ts), so the line
+ * under it writes nothing till it goes.
  */
 export function readingHeld(): boolean {
   return dialogueObstructed() || !!document.querySelector(`[${HOLDS_READING_ATTRIBUTE}]`);

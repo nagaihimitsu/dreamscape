@@ -1,10 +1,12 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { glossaryTerms, tourismAssets } from "../../content";
 import { photoNote, termSubtitle } from "../../content/glossary";
 import { playCue } from "../../audio/sound-effects";
 import { DOUBLE_TAP_WINDOW_MS } from "../../components/double-tap";
 import { HOLDS_READING_ATTRIBUTE } from "../../components/dialogueObstructed";
 import { Icon } from "../../components/icons";
+import { itemFlight } from "../../components/item-show";
+import { holdPhotoTurn } from "../../components/photo-turn";
 import { DIALOGUE_LINE_ATTRIBUTE } from "../../components/scene-tap";
 import { focusQuietly } from "../../components/scene-focus";
 import "./glossary.css";
@@ -14,14 +16,27 @@ import { FitText } from "../../components/FitText";
  * 旅の図鑑's card in the story (2026-11-13 user decision): the terms a line's `# term:` has just put in 旅の図鑑 (GameApp:
  * termsAdded on an action, not during 高速送り), one card after another, over the scene without changing screens: the
  * middle of the screen darkens, and a card shows the term's photo, its name with its reading or other name, its one line
- * and a small 「旅の図鑑に追加」 (with 1 / 2 when the line named more). A tap anywhere, Esc, Enter or Space closes the card
- * (the next one, if the line named more); it has no 「閉じる」 button (2026-11-25 user decision: the dimmed page is enough)
- * without reading on: the window holds the scene's reading (HOLDS_READING_ATTRIBUTE: auto mode waits, a tap or a key
- * reads nothing), while the line goes on writing itself under it and its voice plays on. Each card rings card_new as it
- * shows (not on a quiet line), takes no tap for the moment of a double tap (DOUBLE_TAP_WINDOW_MS: the tap that brought the
- * line must not close it unseen), and comes in softly (not under reduced motion). A dialog: the focus goes to the card
- * (no ring) and back where it was; readers hear the name and the line. A term the content does not have shows nothing.
+ * and a small 「旅の図鑑」 (with 1 / 2 when the line named more). The cards have their own turn before the line (2026-11-27
+ * user decision, as a large photo's: photo-turn.ts): the line under them writes nothing and its voice and sounds wait until
+ * the last card goes. A tap anywhere, Esc, Enter or Space puts the card away (the next one, if the line named more); it has
+ * no 「閉じる」 button (2026-11-25 user decision: the dimmed page is enough): the card shrinks and flies into ≡メニュー,
+ * where 旅の図鑑 is (2026-11-27; it fades where it is without the button, and goes at once under reduced motion), and the
+ * line starts as the last one goes. The window holds the scene's reading (HOLDS_READING_ATTRIBUTE: auto mode waits, a tap or a key reads
+ * nothing). Each card rings card_new as it shows (not on a quiet line), takes no tap for the moment of a double tap
+ * (DOUBLE_TAP_WINDOW_MS: the tap that brought the line must not close it unseen), and comes in softly (not under reduced
+ * motion). A dialog: the focus goes to the card (no ring) and back where it was; readers hear the name and the line. A term
+ * the content does not have shows nothing.
  */
+/** How long a card takes to fly into ≡メニュー, or to fade where it is (glossary.css). */
+const GLOSSARY_STOW_MS = 560;
+const GLOSSARY_FADE_MS = 240;
+
+/** ≡メニュー's button, where 旅の図鑑 is. */
+const menuBox = (): DOMRect | undefined => document.querySelector<HTMLElement>(".journey-hud [data-testid='hud-menu']")?.getBoundingClientRect();
+
+const reducedMotion = (element: Element) =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches || !!element.closest(".reduce-motion");
+
 export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds: readonly string[]; quiet?: boolean; onDone: () => void }) {
   const [index, setIndex] = useState(0);
   const term = glossaryTerms.find((item) => item.id === termIds[index]);
@@ -32,12 +47,44 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
   const nameId = `${ids}-name`;
   const lineId = `${ids}-line`;
   const markId = `${ids}-mark`;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const last = index + 1 >= termIds.length;
+  // The card on its way into ≡メニュー (`fly`, with where it goes) or fading where it is (`fade`).
+  const [stowing, setStowing] = useState<{ mode: "fly" | "fade"; style?: CSSProperties } | null>(null);
+  const next = () => {
+    if (last) onDone();
+    else setIndex(index + 1);
+  };
   const close = () => {
-    if (index + 1 < termIds.length) setIndex(index + 1);
-    else onDone();
+    if (stowing) return;
+    const card = cardRef.current;
+    if (!card || reducedMotion(card)) {
+      next();
+      return;
+    }
+    const menu = menuBox();
+    const fly = menu && menu.width > 0 && menu.height > 0 ? itemFlight(card.getBoundingClientRect(), menu) : undefined;
+    setStowing(fly ? { mode: "fly", style: { "--dx": `${fly.dx}px`, "--dy": `${fly.dy}px`, "--to-scale": fly.scale } as CSSProperties } : { mode: "fade" });
   };
   const closeRef = useRef(close);
   closeRef.current = close;
+  const nextRef = useRef(next);
+  nextRef.current = next;
+  // The cards' turn before the line: from the first card till the last one starts to go.
+  const turnOn = !(last && stowing);
+  useLayoutEffect(() => {
+    if (!turnOn) return;
+    return holdPhotoTurn({ end: () => closeRef.current() });
+  }, [turnOn]);
+  // As the card has gone: the next card, or the window closes.
+  useEffect(() => {
+    if (!stowing) return;
+    const timer = window.setTimeout(() => {
+      setStowing(null);
+      nextRef.current();
+    }, stowing.mode === "fly" ? GLOSSARY_STOW_MS : GLOSSARY_FADE_MS);
+    return () => window.clearTimeout(timer);
+  }, [stowing]);
   // The focus: on the window while the cards show, then back where it was; where it was lost (the line it was on gave way to
   // the new line under the card), on the line on screen, so a key reads on from there (its ring only after a key).
   useEffect(() => {
@@ -90,9 +137,10 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
   };
   return (
     <div ref={windowRef} className="glossary-term-window" role="dialog" aria-modal="true" aria-labelledby={nameId} aria-describedby={`${lineId} ${markId}`}
-      tabIndex={-1} data-testid="glossary-term-window" data-tap-settling={settling || undefined} {...{ [HOLDS_READING_ATTRIBUTE]: "" }} onClick={tap}>
-      <div key={term.id} className="glossary-term-card">
-        <p className="glossary-term-mark" id={markId}><Icon name="lens" />旅の図鑑に追加
+      tabIndex={-1} data-testid="glossary-term-window" data-tap-settling={settling || undefined} data-leaving={(last && stowing) || undefined}
+      {...{ [HOLDS_READING_ATTRIBUTE]: "" }} onClick={tap}>
+      <div key={term.id} ref={cardRef} className="glossary-term-card" data-stowing={stowing?.mode} style={stowing?.style}>
+        <p className="glossary-term-mark" id={markId}><Icon name="lens" />旅の図鑑
           {termIds.length > 1 && <span className="glossary-term-count">{index + 1} / {termIds.length}</span>}</p>
         {asset && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} width={asset.width}
           height={asset.height} decoding="async" />}
