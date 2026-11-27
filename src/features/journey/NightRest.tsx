@@ -105,7 +105,7 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * The day's end card (21:00; GameApp, getDayEnd with no night action): the game has already rested at the hotel by itself, as
  * 「休む」 does, and saved. It covers what the night led to (the next morning, or the hotel's scenes after waking) until it ends:
  * the screen turns to the night colour, a crescent moon and a few stars come out with 「夜も更けたので、ホテルで休みました。」,
- * and 「タップして次へ」 under it. Under the line: the heroine's line and today's route when there are any
+ * (on screen no 「タップして次へ」: 2026-11-27 user decision). Under the line: the heroine's line and today's route when there are any
  * (`recap`, the night before the rest; NightRecap, 2026-11-11). It plays once a night: when the rest sleeps at once, or after the
  * hotel's scenes before the night (useTravelEffects). It stays until a tap anywhere on it (once the double-tap moment of holdTaps
  * has passed) or Enter, Space or Esc (2026-11-15 user decision: it used to end by itself, while the player read today's route).
@@ -137,7 +137,6 @@ export function NightRest({ cityId, recap, line = DAY_END_REST_JA, reduceMotion,
       {/* Seen here; read from the live region below (not twice). */}
       <p className="night-rest-text" aria-hidden="true">{line}</p>
       {shown && <div aria-hidden="true"><NightRecapView recap={shown} /></div>}
-      <p className="night-tap-hint" aria-hidden="true">{NIGHT_TAP_HINT_JA}</p>
     </div>
     <p className="sr-only" role="status">{announced ? `${heard}${NIGHT_TAP_HINT_JA}。` : ""}</p>
   </div>, document.body);

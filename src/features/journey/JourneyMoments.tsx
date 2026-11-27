@@ -177,7 +177,6 @@ export function PackingScene({ packing, reduceMotion, onEnd }: { packing: Packin
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: PACKING_MS, reducedMs: PACKING_REDUCED_MS, onEnd });
   return <section className={`packing-scene${reduced ? " is-reduced" : ""}`} data-testid="packing-scene" data-obstructs-dialogue="" onClick={end}>
     <div className="packing-content" aria-hidden="true">
-      <p className="packing-eyebrow">荷造り</p>
       <p className="packing-title">{packing.fromCityJa}を発つ</p>
       {packing.carried.length > 0 && <div className="packing-case">
         <span className="packing-case-handle" />

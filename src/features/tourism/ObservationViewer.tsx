@@ -203,8 +203,8 @@ export function ObservationViewer({
   }
 
   const fitted = fittedSize(asset, viewport);
-  const proceed = <button type="button" className="primary observation-proceed" data-testid="observation-proceed" onClick={onProceed}>
-    進む<span aria-hidden="true"> →</span>
+  const proceed = <button type="button" className="primary arrow-only observation-proceed" data-testid="observation-proceed" aria-label="進む" onClick={onProceed}>
+    <span aria-hidden="true">→</span>
   </button>;
   return (
     <div className="observation-viewer" inert={inert}>

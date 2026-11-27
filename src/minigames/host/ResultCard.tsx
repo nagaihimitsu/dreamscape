@@ -111,8 +111,8 @@ export function ResultCard({ label, rating, score, detail, face, line, retry, an
       </div>
       <div className="minigame-result-actions">
         {buttons.retry && <button type="button" className="secondary" data-testid="minigame-again" onClick={guarded(onRetry)}>もう一回</button>}
-        {buttons.next && <button ref={primary} type="button" className="primary" data-testid="minigame-next" data-minigame-card-primary
-          onClick={guarded(onNext)}>次へ <span aria-hidden="true">→</span></button>}
+        {buttons.next && <button ref={primary} type="button" className="primary arrow-only" data-testid="minigame-next" data-minigame-card-primary
+          aria-label="次へ" onClick={guarded(onNext)}><span aria-hidden="true">→</span></button>}
       </div>
     </section>
   );

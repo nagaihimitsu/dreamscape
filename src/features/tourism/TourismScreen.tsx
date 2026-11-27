@@ -289,10 +289,10 @@ export function TourismScreen({
                   className="next"
                   data-testid="tourism-advance"
                   disabled={!ready}
+                  aria-label={endLabel}
                   onClick={advanceSafely}
                 >
-                  {endLabel}
-                  <span aria-hidden="true"> →</span>
+                  <span aria-hidden="true">→</span>
                 </button>}
               </div>
             </div>
