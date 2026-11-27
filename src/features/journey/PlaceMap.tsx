@@ -20,6 +20,15 @@ type Place = TravelPlace;
 type MapView = { center: L.LatLng; zoom: number };
 type MarkerPress = (placeId: string, kind: PressKind) => void;
 
+/**
+ * A place's glyphs on the map, each in its colour (2026-11-27 user request: the kinds must read at a glance): ◆ the story
+ * in the ink, ♥ a date in the markers' rose, ● anything else (the inn and such) muted. The legend shows the same.
+ */
+export function markGlyphs(main: boolean, date: boolean): string {
+  if (!main && !date) return `<span class="travel-map-glyph is-other">●</span>`;
+  return `${main ? `<span class="travel-map-glyph is-main">◆</span>` : ""}${date ? `<span class="travel-map-glyph is-date">♥</span>` : ""}`;
+}
+
 export const escapeHtml = (text: string) => text.replace(/[&<>"']/gu, (char) => `&#${char.charCodeAt(0)};`);
 export const reducedMotion = () => !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 /** The public OSM tiles every map uses, with their credit (shown on each map). */
@@ -151,7 +160,7 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
       const categories = new Set(events.filter((event) => event.placeId === place.id).map((event) => event.category));
       const visited = visitedIds.includes(place.id);
       const label = `${place.nameJa}${here ? "、現在地" : ""}${categories.has("main") ? "、観光" : ""}${categories.has("date") ? "、デート" : ""}${visited ? "、行った場所" : ""}`;
-      const symbol = `${categories.has("main") ? "◆" : ""}${categories.has("date") ? "♥" : ""}` || "●";
+      const symbol = markGlyphs(categories.has("main"), categories.has("date"));
       const classes = `travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}${selected ? " is-selected" : ""}`;
       // The selected marker (U21): the glyph in yellow on a dark disc, larger, with its name above (display only).
       const html = `<span class="${classes}" aria-hidden="true">${symbol}</span>${selected ? `<span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(placeDisplayName(game, place))}</span>` : ""}`;
@@ -222,9 +231,9 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
 /** The map's legend: each mark named by its shape, never by its colour alone (UI redesign §3.5). */
 function MapLegend() {
   return <p className="travel-map-legend">
-    <span><span className="travel-map-legend-glyph" aria-hidden="true">◆</span> 観光</span>
-    <span><span className="travel-map-legend-glyph" aria-hidden="true">♥</span> デート</span>
-    <span><span className="travel-map-legend-glyph" aria-hidden="true">●</span> 滞在先など</span>
+    <span><span className="travel-map-glyph is-main" aria-hidden="true">◆</span> 観光</span>
+    <span><span className="travel-map-glyph is-date" aria-hidden="true">♥</span> デート</span>
+    <span><span className="travel-map-glyph is-other" aria-hidden="true">●</span> 滞在先など</span>
     <span>輪つき 現在地</span>
     <span><span className="travel-map-legend-visited" aria-hidden="true">✓</span> 行った場所</span>
     <span><span className="travel-map-legend-disc" aria-hidden="true" /> 大きな丸 選んだ場所</span>
