@@ -91,6 +91,7 @@ INCLUDE modules.ink
 紙には、名前らしいものが書いてあった。らしい、としか言えない字だった。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_hotel_vinod_001
 ラ……ラ、ジ……？　あっ、ごめんなさい。じっと読んじゃって
 # speaker: gt_vinod
 # cutin: name
@@ -99,15 +100,18 @@ INCLUDE modules.ink
 その字は、わたしが書きました。読めなくて、当然です
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_hotel_vinod_002
 読めなかったの、わたしだけじゃなくて、よかった
 # speaker: gt_vinod
 明日の朝、このお客さんを、シークリーへ乗せていきます。ファテープル・シークリー。……お二人は、もう？
 # speaker: heroine
+# voice: gt_agra_hotel_vinod_003
 まだです。宿の帳場で、ツアーの紙は見ました
 # speaker: gt_vinod
 宿で買うと、ガイドがつきます。予約のサイトで買うと、ほかのお客さんと乗り合い。運転は、どちらも、わたしです
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
+# voice: gt_agra_hotel_vinod_004
 え、どっちも？
 # speaker: gt_vinod
 車は、わたしのものです。会社が、あちこちで売ってくれる。……わたしに直接頼めば、間に入る分が要りません。ガイドはいない。乗り合いでもない。わたしと、お二人だけ
@@ -115,6 +119,7 @@ INCLUDE modules.ink
 彼女が、半歩だけ下がった。
 # speaker: heroine
 # emotion: worried
+# voice: gt_agra_hotel_vinod_005
 ごめんなさい。デリーの駅で、道の上で親切な話をされたことがあって
 # speaker: gt_vinod
 それは、正しい。道の上の話は、疑ってください
@@ -126,6 +131,7 @@ INCLUDE modules.ink
 あっ、ヴィノードさん！　今夜もお迎えですか。……そちらは、うちのハネムーンのお二人です
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_hotel_vinod_006
 ち、違います！
 # speaker: narrator
 # leave: gt_samir
@@ -134,6 +140,7 @@ INCLUDE modules.ink
 ……ハネムーン
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
+# voice: gt_agra_hotel_vinod_007
 違うんです。サミールさんの帳面の中だけ、です
 # speaker: gt_vinod
 分かりました。帳面の中だけ
@@ -141,6 +148,7 @@ INCLUDE modules.ink
 ヴィノードは、ダッシュボードから通行料の受け取りを一枚取り、裏に数字を並べた。名前の字よりは、ずっと読めた。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_hotel_vinod_008
 数字は、読めます
 # speaker: gt_vinod
 数字だけは、ちゃんと書けます。運転手なので
@@ -148,6 +156,7 @@ INCLUDE modules.ink
 どれで行くかは、お二人が決めることです。帳場でも、サイトでも、わたしでも
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_hotel_vinod_009
 ちゃんと、選ばせてくれるんですね
 # speaker: narrator
 ヴィノードの携帯が鳴った。列車が着いたらしい。彼は読めない名前の紙を助手席に置き、駅の方へ車を出した。

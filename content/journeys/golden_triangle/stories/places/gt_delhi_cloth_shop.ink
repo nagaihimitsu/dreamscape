@@ -40,6 +40,7 @@ INCLUDE modules.ink
 ゴーヴィンドだ。ここは問屋でね。布は反物のまま、北の町の店へ卸す。一枚ずつは売らない
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_cloth_shop_intro_001
 入って三秒で、断られちゃった……
 # speaker: gt_govind
 見るだけなら、ただだ
@@ -47,10 +48,12 @@ INCLUDE modules.ink
 彼女は布の山を見上げた。生成りの綿、薄いモスリン、つやのある絹。一つの山の中にも、手ざわりの違う布が何枚も重なっている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
+# voice: gt_delhi_cloth_shop_intro_002
 同じ白でも、全部ちがう白なんだ。……あ
 # speaker: narrator
 白い山のあいだに、一枚だけ、深い青がはさまっていた。
 # speaker: heroine
+# voice: gt_delhi_cloth_shop_intro_003
 あの青いのも、反物ですか？
 # speaker: gt_govind
 # term: gt_term_saree
@@ -62,15 +65,18 @@ INCLUDE modules.ink
 銀の花は、上から縫ったんじゃない。織るときに、銀の糸を一緒に織り込んである。バナーラスの織り方だ
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_delhi_cloth_shop_intro_004
 織り込んであるんだ……。じゃあ、この花は飾りじゃなくて、布そのものなんだね
 # speaker: gt_govind
 織ったのはイクバール。バナーラスの織り手でね。三十年、あいつの布を仕入れてる
 # speaker: heroine
+# voice: gt_delhi_cloth_shop_intro_005
 三十年も。じゃあ、すごく仲がいいんですね
 # speaker: gt_govind
 声しか知らん。電話だけだ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_delhi_cloth_shop_intro_006
 えっ。一度も、会ったことがないんですか
 # speaker: gt_govind
 バナーラスは、ガンガーのほとりの町だそうだ。四十年、布は毎日見てきたが、あの町は見たことがない
@@ -113,6 +119,7 @@ INCLUDE modules.ink
 深い青の上に、銀の花が散っている。広げると、思っていたよりずっと長い。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_delhi_cloth_shop_haggle_001
 わ……。一枚の布なのに、川みたい
 # speaker: narrator
 彼女は布に手を伸ばしかけて、途中で止めた。
@@ -120,6 +127,7 @@ INCLUDE modules.ink
 二千八百
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_cloth_shop_haggle_002
 ……二千八百。旅のお金は、二人のお金だし。わたし一人の服に、それは
 # speaker: narrator
 黙って布を見ている彼女の横で、ふと、路地の老婦人の声を思い出した。
@@ -143,9 +151,11 @@ INCLUDE modules.ink
     ゴーヴィンドは黙ってサリーを畳み、新聞紙で包んだ。織り手の話の続きは、もう出てこなかった。
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_delhi_cloth_shop_haggle_003
     今の、ちょっとカムラさんみたいだった。値段が、目の前でどんどん溶けていくの
     # speaker: heroine
     # emotion: worried
+    # voice: gt_delhi_cloth_shop_haggle_004
     安くなって、うれしい。……でも、イクバールさんの話、もう少し聞きたかったな
 * [It's worth it. We'll pay your price. # option: pay_asking # translation: それだけの値打ちがあります。言い値で払います。]
     # outfit: gt_saree_blue
@@ -156,6 +166,7 @@ INCLUDE modules.ink
     値切らない客は、たいてい何か隠してる。何を隠してる
     # speaker: heroine
     # reaction: heroine,surprised,sweat
+    # voice: gt_delhi_cloth_shop_haggle_005
     な、何も！　……たぶん
     # speaker: narrator
     ゴーヴィンドは鼻を鳴らし、サリーの端を裏返した。織り終わりの所で、銀の糸が一本だけ、小さく結んである。
@@ -167,9 +178,11 @@ INCLUDE modules.ink
     アーグラへ行くなら、ラフィークの店に寄れ。金の糸の刺繍屋だ。俺の名前を出せば、俺に売る値段で売る
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_cloth_shop_haggle_006
     高かったのに、おまけのほうが大きい気がする
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_cloth_shop_haggle_007
     ……でも、二人のお金なんだから。次は、わたしにも半分、決めさせてね
 * [Tell him yourself. Do you want it? # option: ask_her # translation: 自分で言ってみて。欲しい？]
     # outfit: gt_saree_blue
@@ -177,11 +190,13 @@ INCLUDE modules.ink
     # rel: trust +1
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_delhi_cloth_shop_haggle_008
     えっ、わたし？
     # speaker: narrator
     彼女は布とこちらの顔を見比べ、それからゴーヴィンドに向き直った。
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_cloth_shop_haggle_009
     欲しいです。この青が、すごく好きです
     # speaker: narrator
     帳面の上で、ゴーヴィンドのペンが止まった。
@@ -189,9 +204,11 @@ INCLUDE modules.ink
     欲しい人が着ると、布は長持ちする。……二千四百。好きだと言った分は、引いておく
     # speaker: heroine
     # reaction: heroine,happy,sparkle
+    # voice: gt_delhi_cloth_shop_haggle_010
     値切ってないのに、安くなった……
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_cloth_shop_haggle_011
     言ってよかった。……言わせてくれて、ありがとう
 // デリーのフィナーレで、揚げ菓子屋から「ジャレビー百グラムで三回値切った」と聞いた後だけ。
 * [Your best price? ... Your real best? ... One more time? # option: kamla_way # translation: いちばん安くて、いくら？　……本当のいちばんは？　……もう一回だけ。]
@@ -206,11 +223,13 @@ INCLUDE modules.ink
     三回聞くのは、旧市街のばあさんぐらいだ。誰に習った
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_delhi_cloth_shop_haggle_012
     ジャレビー百グラムで、三回値切った人です
     # speaker: gt_govind
     ……千九百。持っていけ。ばあさんが三人に増えたみたいで、くたびれる
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_cloth_shop_haggle_013
     ふふ。カムラさん、ジャイプールでも、きっとこうしてるね
 * [Let us think about it. # option: think_later # translation: 少し考えさせてください。]
     # later
@@ -218,6 +237,7 @@ INCLUDE modules.ink
     布は逃げない。俺もだ。……四十年、ここから動いてない
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_cloth_shop_haggle_014
     ふふ。じゃあ、また来ます
     -> END
 -
@@ -225,5 +245,6 @@ INCLUDE modules.ink
 包みを受け取ると、思ったより軽かった。一枚の布の重さだった。
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_cloth_shop_haggle_015
 サリーって、どうやって巻くんだろう。……着る前に、だれかに教わらなきゃ
 -> END

@@ -41,21 +41,25 @@ INCLUDE modules.ink
     ガイドは、叔父が仕込んだルクサーナです。シークリーに住んでいるので、向こうでお待ちしています
     # speaker: heroine
     # emotion: surprised
+    # voice: gt_agra_tour_morning_007
     叔父さんの、お弟子さん？
     # speaker: gt_samir
     # term: gt_term_akbar
     はい。叔父の弟子で、女のガイドは、彼女だけです。皇帝アクバルと、お妃の恋の話なら、ルクサーナも、ちゃんと泣かせます
     { cond("date gt_agra_date_mariam_tomb"):
         # speaker: heroine
+        # voice: gt_agra_tour_morning_008
         そのお妃、ジョーダーって呼ばれるのかな。マリアムさんのお墓で、あとから付いた名前かもしれないって、聞いたんです
         # speaker: gt_samir
         恋の話は、名前より、涙です
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_tour_morning_009
         泣く前に、名前くらいは、ちゃんと呼んであげたいな
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_agra_tour_morning_010
         泣かせるのは、もう決まってるんだ。……ハンカチ、二枚持っていこうかな
     }
     # speaker: narrator
@@ -136,6 +140,7 @@ INCLUDE modules.ink
 { cond("seen gt_agra_hotel_vinod"):
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_morning_011
     知ってます。駅のお客さんの紙、一文字も読めなかったから
     # speaker: narrator
     # emotion: happy
@@ -143,6 +148,7 @@ INCLUDE modules.ink
     ヴィノードは声を出して笑い、紙をていねいに折って、胸のポケットにしまった。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_morning_012
     知ってる人が、名前の紙を持って待っててくれるの、なんだか、うれしいね
 - else:
     # speaker: narrator
@@ -159,6 +165,7 @@ INCLUDE modules.ink
     後ろの席の二人は、チェンナイから来たスンダルとパドマだと名乗った。今日は、同じ車でシークリーを回るのだという。
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_agra_tour_morning_013
     ……二人で見て回りたい、って、さっき言ったばかりなのに
     # speaker: gt_padma
     # cutin: name
@@ -336,6 +343,7 @@ INCLUDE modules.ink
 ついてきた人がね、シークリーで、わたしのサンダルをなくしたの
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_tour_out_shared_001
 サンダル、ですか？
 # speaker: gt_padma
 結婚式のために買った、赤いの。上のモスクでは、靴を脱いで預けるでしょう。戻ったら、なかった
@@ -349,6 +357,7 @@ INCLUDE modules.ink
 ねえ、あなたたち。どっちの話を信じる？
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_tour_out_shared_002
 えっ、わたしたちが決めるんですか？　四十年分を？
 * [I believe both of you. # option: believe_both # translation: お二人とも、信じます。]
     # set: gt_agra_tour_shared_both
@@ -357,6 +366,7 @@ INCLUDE modules.ink
     それが、いちばんずるい答え。……でも、この人は四十年、一度もそう言ってくれなかったわ
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_out_shared_003
     ずるい答え、わたしは好きです。けんかが、どっちも負けないまま続くから
 * [Was anyone else there to see it? # option: any_witness # translation: ほかに、見ていた人はいましたか。]
     # set: gt_agra_tour_shared_witness
@@ -366,6 +376,7 @@ INCLUDE modules.ink
     # speaker: gt_padma
     その二枚は、サンダルを預ける前に撮ったの。だから、最後の証拠は、ちゃんと履いてるところ
     # speaker: heroine
+    # voice: gt_agra_tour_out_shared_004
     記録が、なくなる直前で終わってるんですね。……それは、決着がつかないかも
 * [How did you get back without shoes? # option: back_barefoot # translation: 靴なしで、どうやって戻ったんですか。]
     # set: gt_agra_tour_shared_barefoot
@@ -378,6 +389,7 @@ INCLUDE modules.ink
     わたしは裸足で、焼けた石の上を、バスまで。足の裏の皮が、新婚旅行のあいだに、全部むけた
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_out_shared_005
     なくした話より、そっちの方が、ずっと大事な話に聞こえます
 -
 # speaker: gt_padma
@@ -388,6 +400,7 @@ INCLUDE modules.ink
 二人は、同時に座席に背中を戻した。それから、窓の外を見ながら、まだ小声で言い合っていた。
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_tour_out_shared_006
 二人きりじゃ、なくなっちゃったけど……この車で、よかったかも
 -> END
 
@@ -421,6 +434,7 @@ INCLUDE modules.ink
     ガイドさんは、もうすぐ来ます。ルクサーナさんなら、心配いりません。この町で、いちばん口の休まない人です
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_arrive_003
     ヴィノードさんと足したら、ちょうどいいくらいですね
 - else:
     # speaker: gt_vinod
@@ -437,6 +451,7 @@ INCLUDE modules.ink
 }
 { cond("tour gt_agra_tour_fatehpur_sikri by web"):
     # speaker: heroine
+    # voice: gt_agra_tour_arrive_004
     お母さんに、よろしく伝えてください。レモン、すてきでしたって
 - else:
     # speaker: heroine
@@ -468,11 +483,13 @@ INCLUDE modules.ink
 入口で、ガイドだと名乗る人が来たら、この札を見せてもらってください。見せない人は、ガイドではありません。わたしも含めて
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_tour_guide_gate_001
 ルクサーナさんは、表も裏も見せてくれましたね
 # speaker: gt_rukhsana
 裏まで見るお客さまは、めずらしい。……サミールの紙には、新婚のお二人、とありました
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_tour_guide_gate_002
 それは、サミールさんの紙の中だけです
 # speaker: gt_rukhsana
 では、紙の中だけ、ということにしておきます
@@ -487,11 +504,13 @@ INCLUDE modules.ink
 だから、最初は、お二人だけで見てきてください。わたしは、ジョーダー・バーイーの宮殿と呼ばれている所で、待っています
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_tour_guide_gate_003
 ガイドさんなのに、最初は、ついてこないんですか？
 # speaker: gt_rukhsana
 最初の眺めは、お客さまのものです。話は、そのあと。……そのかわり、あとで、ちゃんと泣かせます
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_tour_guide_gate_004
 泣かせるのは、もう決まってるんだ
 # speaker: narrator
 厚紙の二行目には、太い字で何か書いてあった。三行目に指をかけたところで、ルクサーナは厚紙を札の後ろへ戻した。
@@ -512,6 +531,7 @@ INCLUDE modules.ink
 おかえりなさい。最初の眺めは、お二人のものでした。……ここからは、わたしの番
 { cond("battle gt_agra_main_fatehpur_sikri_battle"):
     # speaker: heroine
+    # voice: gt_agra_tour_guide_palace_001
     町のことより先に、石段で会った人のことを、話したくなっちゃいます。自分の家を建てている人で
     # speaker: gt_rukhsana
     石段では、よく誰かが、人生の相談をしています。今日は、お二人が相談される側だったんですね
@@ -534,14 +554,18 @@ INCLUDE modules.ink
 { cond("date gt_agra_date_mariam_tomb"):
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_tour_guide_palace_002
     すごく、いい話。……でも、ルクサーナさん。その人、ジョーダーって名前じゃなかったかもしれないんですよね
     # speaker: heroine
+    # voice: gt_agra_tour_guide_palace_003
     マリアムさんのお墓で、お父さんと娘さんが、それでけんかしてました。映画の名前だ、って
 - else:
     # speaker: heroine
+    # voice: gt_agra_tour_guide_palace_004
     いい話……。わたしまで、泣きそうになりました
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_agra_tour_guide_palace_005
     でも、皇帝が何年も待った、っていうのは、どこに書いてあるんですか？
 }
 # speaker: narrator
@@ -564,11 +588,13 @@ INCLUDE modules.ink
 # speaker: gt_rukhsana
 でも、皇帝が待ったかどうか。二人が好き合っていたかどうか。それは、どこにも書いてありません。映画が、そう作りました
 # speaker: heroine
+# voice: gt_agra_tour_guide_palace_006
 じゃあ、ここは、ジョーダーさんじゃなくて、マリアムさんの宮殿なんですね
 # speaker: gt_rukhsana
 たぶん、です。この中で、誰がどの建物に住んだか、はっきり書いた記録は、あまりありません。名前の多くは、あとの人が付けました
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_tour_guide_palace_007
 あ……。わたしも今、決めつけてました。違う名前を、別の名前に貼りかえただけで
 # speaker: narrator
 ルクサーナは、首の札の後ろから、あの厚紙を抜いた。今度は、三行目を指で隠さなかった。
@@ -585,6 +611,7 @@ INCLUDE modules.ink
     ……そういうお客さまのことは、先生の決まりに、書いてありません
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_guide_palace_008
     じゃあ、四行目に、書き足しておいてください
 * [Then tell us the legend as a legend. # option: legend_as_legend # translation: それなら、伝説は、伝説として聞かせてください。]
     # rel: affection +1
@@ -592,6 +619,7 @@ INCLUDE modules.ink
     伝説として。……それなら、さっきの話は、まるごと本当です。映画の中では
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_guide_palace_009
     ふふ。映画の中のお姫さまには、ちゃんと泣かされました
 * [What do you think she felt? # option: what_she_felt # translation: あなたは、彼女がどう思っていたと思いますか。]
     # rel: trust +1
@@ -602,6 +630,7 @@ INCLUDE modules.ink
     言ってから、ルクサーナは自分で驚いた顔をした。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_guide_palace_010
     今、言いましたね。三行目
 -
 # speaker: gt_rukhsana
@@ -612,10 +641,12 @@ INCLUDE modules.ink
 その船が、海でポルトガルに奪われたとき、息子の皇帝は怒って、港を止め、ポルトガルの町を囲ませました。記録に、ちゃんと残っています
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_tour_guide_palace_011
 船！　お姫さまの話だと思ってたら、船主さんの話だった
 { cond("date gt_agra_date_mariam_tomb"):
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_guide_palace_012
     名前は、あとから違うのを付けられちゃったけど、船のことは、本人のまま残ってるんだ
 }
 # speaker: gt_rukhsana
@@ -624,6 +655,7 @@ INCLUDE modules.ink
 今夜は、船の話をしてやります。恋の台詞より、あの子は、こっちを覚えるかもしれない
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_tour_guide_palace_013
 わたしも、船の話の方を覚えて帰ります。泣いた話も、ちょっとだけ
 # speaker: narrator
 ルクサーナは、厚紙を札の後ろへ戻した。三行目は、書いてあるままだった。ただ、しまう手つきが、来たときより少しだけ雑だった。
@@ -631,6 +663,7 @@ INCLUDE modules.ink
 車は、下の木の陰ですね。わたしは、ここまで。ヴィノードさんのお母さんに、よろしく
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_tour_guide_palace_014
 お知り合いなんですか？
 # speaker: gt_rukhsana
 シークリーは、狭い町です。皇帝が出ていってから、ずっと
@@ -653,6 +686,7 @@ INCLUDE modules.ink
 パドマの足もとで、新しい赤いサンダルが光っている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_tour_shared_sandals_001
 あ、赤い！
 # speaker: gt_padma
 この人が、今、買ったの。四十年分の弁償ですって
@@ -674,9 +708,11 @@ INCLUDE modules.ink
     スンダルが鞄の口を開けると、古いチャッパルが一足、新聞紙にくるまっていた。四十年前と同じ形だという。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_shared_sandals_002
     要らなかった靴を持ってくる人、すてきだと思います
 - cond("flag gt_agra_tour_shared_witness"):
     # speaker: heroine
+    # voice: gt_agra_tour_shared_sandals_003
     見ていた人がいなくても、もう一回、二人で行けば、確かめられるんですね
     # speaker: gt_padma
     四十年かかったけどね
@@ -685,6 +721,7 @@ INCLUDE modules.ink
     あなたの言ったとおりだったわ。両方、信じておけばよかったのよ。四十年前から
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_shared_sandals_004
     ずるい答えで、よかった
 - else:
     # speaker: gt_padma
@@ -692,12 +729,14 @@ INCLUDE modules.ink
 }
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_tour_shared_sandals_005
 同じけんかの続きを、四十年たって、一緒に確かめに来るの……なんだか、いいな
 # speaker: gt_padma
 # reaction: heroine,shy,blush
 あなたたちも、来るといいわ。四十年後に。何か一つ、なくしておきなさい
 # speaker: heroine
 # reaction: heroine,surprised_big,sweat
+# voice: gt_agra_tour_shared_sandals_006
 な、なくしておくって……！
 # speaker: narrator
 スンダルが、古い靴の入った箱を、大事そうに小脇に抱え直した。
@@ -801,6 +840,7 @@ INCLUDE modules.ink
 下の町の細い路地を、二つ曲がった。突き当たりの青い戸の前に、小柄な女の人が腰かけて、糸に何かを通していた。レモンと、青唐辛子。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_tour_mother_door_001
 あ……バックミラーの
 # speaker: narrator
 ヴィノードが声をかけると、女の人は顔を上げ、こちらを頭から足もとまで眺めた。それから、糸を膝に置いて、ゆっくり立ち上がった。
@@ -813,6 +853,7 @@ INCLUDE modules.ink
     ヴィノードが、少し照れくさそうに訳した。
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_tour_mother_door_002
     か、顔に、出てますか
 - cond("flag gt_agra_tour_told_reader"):
     # speaker: gt_vinod_mother
@@ -822,6 +863,7 @@ INCLUDE modules.ink
     ヴィノードが、少し照れくさそうに訳した。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_mother_door_003
     ……よく笑う人の、しわです
 - cond("flag gt_agra_tour_told_traveling"):
     # speaker: gt_vinod_mother
@@ -831,6 +873,7 @@ INCLUDE modules.ink
     ヴィノードが、少し照れくさそうに訳した。
     # speaker: heroine
     # reaction: heroine,surprised,sweat
+    # voice: gt_agra_tour_mother_door_004
     そ、そこを、三回目……
 - else:
     # speaker: gt_vinod_mother
@@ -840,9 +883,11 @@ INCLUDE modules.ink
     ヴィノードが、少し照れくさそうに訳した。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_tour_mother_door_005
     はい。牛にも、クラクションを鳴らさなかったです
 }
 # speaker: heroine
+# voice: gt_agra_tour_mother_door_006
 マトリー、ありがとうございました。しょっぱくて、すっとして……とても、おいしかったです
 # speaker: narrator
 ヴィノードが訳し終える前に、母は笑って、彼女の両手を包んだ。言葉の半分は、もう届いていたらしい。
@@ -850,6 +895,7 @@ INCLUDE modules.ink
 自分で言いに来る人は、めずらしいね
 # speaker: heroine
 # reaction: heroine,shy,blush
+# voice: gt_agra_tour_mother_door_007
 伝えてもらうのも、うれしかったんです。でも、これだけは、自分で言いたくて
 # speaker: narrator
 母は、通し終えたばかりのレモンと青唐辛子を、ヴィノードの手に押しつけた。帰りの車の分だという。それから、こちらに向き直って、もう一言足した。
@@ -995,18 +1041,22 @@ INCLUDE modules.ink
 振り返ると、パドマとスンダルが、同じ向きに首を傾けて眠っていた。古い靴の入った箱が、二人の膝の間に挟まっている。
 # speaker: heroine
 # quiet: line
+# voice: gt_agra_tour_back_shared_001
 ……寝ちゃった。二人とも、同じ方に傾いてる
 # speaker: heroine
+# voice: gt_agra_tour_back_shared_002
 四十年も一緒にいると、寝る向きまで、そろうのかな
 * [Or one of them gave in, a long time ago. # option: one_gave_in # translation: それか、どちらかが、ずっと前に折れたのかも。]
     # rel: trust +1
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_tour_back_shared_003
     ふふ。サンダルのときみたいに？　どっちが折れたのかで、また四十年もめそう
 * [I'd like to see that someday. # option: like_to_see # translation: いつか、そういうのを見てみたい。]
     # rel: spark +1
     # speaker: heroine
     # reaction: heroine,surprised,blush
+    # voice: gt_agra_tour_back_shared_004
     見てみたい、って……四十年後を？　……誰の、とは聞かないでおくね
 * [Shh. Let them sleep. # option: let_them_sleep # translation: しっ。寝かせておこう。]
     # rel: affection +1
@@ -1015,6 +1065,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # quiet: line
     # stand: close
+    # voice: gt_agra_tour_back_shared_005
     やっと、二人で話せたね。……小声だけど
 -
 # speaker: narrator
@@ -1038,6 +1089,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # photo: gt_album_a065 # photo_caption: 白い車と、最後まで揺れるレモン # photo_with: gt_vinod
+    # voice: gt_agra_tour_home_004
     お母さんと、同じことを言ってる。……はい。次は、戸口の中まで
 - else:
     # speaker: heroine
@@ -1060,6 +1112,7 @@ INCLUDE modules.ink
     # speaker: gt_samir
     おかえりなさい。いかがでした？　ルクサーナは、ちゃんと泣かせましたか
     # speaker: heroine
+    # voice: gt_agra_tour_home_005
     泣きそうには、なりました。でも、いちばん覚えてるのは、船の話です
 - else:
     # speaker: gt_samir
