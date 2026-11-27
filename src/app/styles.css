@@ -1366,19 +1366,43 @@ dialog.modal::backdrop {
   -webkit-backdrop-filter: blur(8px) saturate(1.1);
   backdrop-filter: blur(8px) saturate(1.1);
 }
-/* A dialog rises into place as it opens (only its frame: the blurred backdrop comes at
-   once). It closes at once, so a quick second tap lands on what it leaves behind, as
-   before. The rise is a few pixels and never a scale: a point read from it at once
-   still falls on its buttons, and the expanded map's Leaflet keeps its scale. */
+/* A dialog comes into focus as it opens (2026-11-27 user decision, 案A 「ピントが合うように浮かび上がる」): the place
+   around it softens and dims over a moment instead of at once, the pane rises and clears into place, and what it holds
+   comes sharp after it, one part after another. It closes at once, so a quick second tap lands on what it leaves
+   behind, as before. The rise is a few pixels and never a scale: a point read from it at once still falls on its
+   buttons, and the expanded map's Leaflet keeps its scale. The blur is on the parts, never on the pane itself (a
+   filter beside the pane's own backdrop-filter is drawn badly by some browsers). (The ::backdrop's values are
+   written out: it does not take the page's custom properties in every browser.) */
 dialog.modal[open] {
-  animation: modal-in var(--motion-fast) var(--ease-out);
+  animation: modal-in var(--motion-drop) var(--ease-drop);
 }
+dialog.modal[open]::backdrop {
+  animation: modal-backdrop-in 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* :where(): a part with its own coming-in (the photo viewer's print, photo-show.css) keeps it. */
+:where(dialog.modal[open]) > * { animation: modal-part-in calc(var(--motion-drop) + 60ms) var(--ease-drop) backwards; }
+:where(dialog.modal[open]) > :nth-child(1) { animation-delay: 30ms; }
+:where(dialog.modal[open]) > :nth-child(2) { animation-delay: calc(30ms + var(--motion-stagger)); }
+:where(dialog.modal[open]) > :nth-child(3) { animation-delay: calc(30ms + var(--motion-stagger) * 2); }
+:where(dialog.modal[open]) > :nth-child(n + 4) { animation-delay: calc(30ms + var(--motion-stagger) * 3); }
 @keyframes modal-in {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(16px); }
+  40% { opacity: 1; }
 }
-.reduce-motion dialog.modal[open] { animation: none; }
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+}
+@keyframes modal-part-in {
+  from { opacity: 0; transform: translateY(10px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.reduce-motion dialog.modal[open],
+.reduce-motion dialog.modal[open]::backdrop,
+.reduce-motion dialog.modal[open] > * { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  dialog.modal[open] { animation: none; }
+  dialog.modal[open],
+  dialog.modal[open]::backdrop,
+  dialog.modal[open] > * { animation: none; }
 }
 
 
