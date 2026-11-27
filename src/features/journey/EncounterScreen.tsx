@@ -171,7 +171,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
       {/* The scene's weather stays over its quiz too. */}
       <WeatherLayer weather={view.staging?.weather} />
       <RecallLayer imageId={staging?.recall} />
-      <PhotoShowLayer photo={staging?.photo} aboveHeads={keepsAboveHeads(staging?.speaker)} />
+      <PhotoShowLayer photo={staging?.photo} />
       <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={staging?.itemShow} aboveHeads={keepsAboveHeads(staging?.speaker)} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />

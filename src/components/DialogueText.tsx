@@ -4,6 +4,7 @@ import { vibrate } from "../audio/vibration";
 import { SCENE_SHAKES, sceneShakeFrames } from "./scene-atmosphere";
 import { dialogueObstructed, readingHeld } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
+import { photoTurn, usePhotoTurnOn } from "./photo-turn";
 import { useLineVoice, type VoiceLink } from "./useVoice";
 import { sceneCuesQuiet, useLineSounds } from "../audio/sound-effects";
 import type { SystemSoundId } from "../content/sounds";
@@ -122,6 +123,8 @@ export function DialogueText({
   // Read as the line comes (each line is its own text).
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const stillWords = useMemo(() => sceneCuesQuiet(), [text]);
+  // The line's large photo has its turn first (photo-turn.ts): nothing is written until it has ended.
+  const photoUp = usePhotoTurnOn();
   useEffect(() => {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -129,6 +132,13 @@ export function DialogueText({
     if (progressRef.current.text !== text) progressRef.current = { text, count: 0, paused: false, shaken: false };
     const progress = progressRef.current;
     const length = Array.from(text).length;
+    // Read from the store, not the render: the print's turn begins in a layout effect of this same commit.
+    if (photoTurn()) {
+      progress.count = 0;
+      setCount(0);
+      onReady(false);
+      return;
+    }
     const showAll = () => {
       progress.count = length;
       setCount(length);
@@ -181,7 +191,7 @@ export function DialogueText({
       window.clearTimeout(pause);
       window.clearInterval(timer);
     };
-  }, [text, speed, onReady, pauseMs]);
+  }, [text, speed, onReady, pauseMs, photoUp]);
   const ready = count >= chars.length;
   // The line's shake (# shake: window) plays once, as its text starts to show.
   useEffect(() => {
@@ -204,6 +214,12 @@ export function DialogueText({
     // A compact settings menu is not a native modal, so its open state must also block taps on the text behind it; nor
     // does 旅の図鑑's card read on (readingHeld), though the line writes itself on under it.
     if (readingHeld() || textRef.current?.closest("[inert]")) return;
+    // A tap during the photo's turn ends it: the print goes and the line starts.
+    const photo = photoTurn();
+    if (photo) {
+      photo.end();
+      return;
+    }
     if (!ready) {
       window.clearTimeout(pauseRef.current);
       window.clearInterval(timerRef.current);
@@ -227,6 +243,7 @@ export function DialogueText({
         data-testid="dialogue-text"
         {...{ [DIALOGUE_LINE_ATTRIBUTE]: "" }}
         data-ready={ready}
+        data-photo-turn={photoUp || undefined}
         role={onAdvance ? "button" : undefined}
         tabIndex={onAdvance ? 0 : undefined}
         onClick={onAdvance ? activate : undefined}
