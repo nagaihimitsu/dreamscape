@@ -4,7 +4,6 @@
    the heroine's reaction and the result card. */
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --host-minigame-practice-ground-014: rgba(127, 127, 127, 0.14);
   --host-minigame-hand-finger-fill: #f6dcc4;
   --host-minigame-hand-finger-line: #2a211c;
   --host-minigame-hand-beat-fill: #fff3cf;
@@ -22,22 +21,84 @@
   --minigame-cutin-size: 40px;
   --minigame-big-star-size: 36px;
 }
-.minigame-ready .minigame-start { justify-content: center; gap: 8px; font-size: var(--ds-text-subhead); font-weight: 700; }
-/* The instruction card: the hand, the title and length, the goal (what to do and how). One line after the first play. */
-.minigame-card { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
-.minigame-card-text { min-width: 0; }
-.minigame-card-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; margin: 0; font-size: var(--ds-text-subhead); font-weight: 700; line-height: var(--ds-leading-snug); }
-.minigame-card-length { font-size: var(--ds-text-caption); font-weight: 400; opacity: 0.82; }
-.minigame-ready .minigame-card-goal { margin: 2px 0 0; color: inherit; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
-.minigame-card[data-brief] { margin-bottom: 8px; }
-.minigame-card[data-brief] .minigame-card-goal { margin: 0; font-size: var(--ds-text-note); }
-/* 「練習する」 (secondary, left) and the start (primary, right, the larger). */
-.minigame-card-actions[data-practice] { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 8px; align-items: stretch; }
-/* 練習 is optional (UI_RULES A-5, A-9): an outlined button in the window's own ink, quieter than the start on a dark window
-   or a light one. */
-.minigame-card-actions .minigame-practice { justify-content: center; min-height: 48px; margin: 0; border-color: currentColor; background: transparent; color: inherit; font-size: var(--ds-text-body); }
-.minigame-card-actions .minigame-practice:hover:enabled { background: var(--host-minigame-practice-ground-014); }
-.minigame-card-actions .minigame-start { min-height: 54px; }
+/* The instruction card (2026-11-27 user remark on an iPhone: its words in two small separate pills, 練習 an outline
+   lost on the people behind it, the start an opaque slate block, all hard to read and out of the scene): one pane of the
+   talk's light glass, as the window under it, with the hand, the title and length, and the goal in the talk's reading size.
+   One line after the game's first play in the session. */
+.choices.minigame-ready > .minigame-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  padding: 12px 16px;
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-glass-shadow);
+  color: var(--ds-glass-ink);
+}
+.minigame-card-text { display: grid; gap: 4px; min-width: 0; }
+/* Its words lie on the card's glass, not on pills of their own (romance-scene.css gives a talk's loose words one). */
+.choices.minigame-ready .minigame-card p {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: inherit;
+}
+.minigame-ready .minigame-card .minigame-card-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
+  font-family: var(--ds-font-serif);
+  font-size: var(--ds-text-heading);
+  font-weight: 700;
+  line-height: var(--ds-leading-tight);
+}
+.minigame-card-length { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: 600; color: var(--ds-glass-muted); }
+.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-reading); font-weight: 500; line-height: var(--ds-leading-snug); text-wrap: pretty; word-break: auto-phrase; }
+.minigame-ready .minigame-card[data-brief] { padding: 10px 14px; }
+.minigame-ready .minigame-card[data-brief] .minigame-card-goal { font-size: var(--ds-text-body); }
+/* 「練習する」 (left) and the start (right, the larger): the start the talk's press of smoked glass (.primary), 練習 a pane
+   of the light glass in its ink with a fine edge, quieter but as plain to see over the people and the place. */
+.choices.minigame-ready > .minigame-card-actions[data-practice] { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 10px; align-items: stretch; }
+.minigame-ready .minigame-start {
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  border-radius: var(--ds-radius-pane);
+  font-size: var(--ds-text-subhead);
+  font-weight: 700;
+}
+.minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  margin: 0;
+  border: 0;
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
+  color: var(--ds-glass-ink);
+  font-size: var(--ds-text-body);
+  font-weight: 700;
+}
+.minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):hover:enabled { background: var(--ds-glass-bar); }
+.minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):active:enabled { translate: 0 1px; }
+.minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):disabled {
+  background: var(--ds-glass-bg);
+  box-shadow: none;
+  color: var(--ds-glass-muted);
+}
+/* Before the start can be pressed (its guard, 準備中…): the same smoked glass, its words muted, not a parchment block. */
+.minigame-ready .minigame-start:disabled { background: var(--ds-action-fill); box-shadow: none; color: var(--ds-smoke-muted); opacity: 0.75; }
 
 /* The hand (HandDemo.tsx): 52 px, 36 in the one-line card; one round in 2.4 s; still at the press with less motion. */
 .minigame-hand { flex: none; width: 52px; height: 52px; overflow: hidden; }
@@ -92,7 +153,7 @@
 @media (hover: hover) and (pointer: fine) { .minigame-ready .minigame-keys { display: block; } }
 .minigame-failed p { margin: 0 0 8px; }
 .minigame-failed-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.minigame-failed-actions > button { justify-content: center; min-height: 44px; }
+.minigame-failed-actions > button { justify-content: center; min-height: 48px; margin: 0; }
 .minigame-debug { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 8px; margin-top: 10px; }
 .minigame-debug .fine-print { grid-column: 1 / -1; margin: 0; }
 .minigame-debug .secondary { min-height: 44px; margin-top: 6px; padding: 6px 8px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }

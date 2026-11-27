@@ -197,7 +197,7 @@
   text-align: center;
   touch-action: manipulation;
 }
-.mg-engine-rhythm-tap .mg-rhythm-tap-action[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-rhythm-tap .mg-rhythm-tap-action[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-smoke-muted); }
 .mg-engine-rhythm-tap .mg-rhythm-tap-auto {
   display: flex;
   align-items: center;

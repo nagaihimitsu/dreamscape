@@ -550,28 +550,34 @@ h3 {
   color: var(--ds-ink);
   font-size: var(--ds-text-field);
 }
-/* Primary pressable (§2.3): a 12-px rectangle filled with slate and edged with the gold
-   hairline (drawn inside, so the box keeps its size). */
+/* Primary pressable (§2.3): a pane of smoked glass with the gold hairline, the same press as a talk's choice
+   (--ds-action, 2026-11-25 user decision). It was an opaque slate rectangle; over a scene it cut the place off as a form's
+   part (2026-11-27 user remark on the mini-game's start on an iPhone), so every primary press is now the glass. Its white
+   words keep 6:1 or more over any picture and on the parchment (its show-through counted at white). */
 .primary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
+  background: var(--ds-action-fill);
+  color: var(--ds-action-ink);
   border-radius: var(--ds-radius-control);
-  box-shadow: inset 0 0 0 1px var(--ds-gold-hairline);
+  box-shadow: var(--ds-action-shadow);
+  text-shadow: var(--ds-action-text-shadow);
+  -webkit-backdrop-filter: var(--ds-smoke-blur);
+  backdrop-filter: var(--ds-smoke-blur);
   padding: 15px 20px;
   min-height: 54px;
   width: 100%;
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-snug);
   text-align: left;
-  transition: background var(--motion-fast) var(--ease-out);
+  transition: filter var(--motion-fast) var(--ease-out), translate var(--motion-fast) var(--ease-out);
 }
 .primary:hover:enabled:not(:where([data-settling])) {
-  background: var(--ds-slate-900);
+  filter: brightness(1.12);
 }
+.primary:active:enabled:not(:where([data-settling])) { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
 .primary:focus-visible { box-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 0 0 6px var(--ds-slate-900); }
 .name-form .primary {
   margin-top: 7px;
@@ -1125,6 +1131,7 @@ dialog.modal .offline-summary {
   color: var(--ds-disabled-ink);
   border-color: transparent;
   box-shadow: none;
+  text-shadow: none;
 }
 .modal .name-form {
   margin-bottom: 20px;
