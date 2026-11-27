@@ -57,6 +57,7 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags, withPhotoSpots } from "./album-images";
+import { validateSns as validateSnsPosts } from "./sns-posts";
 import { checkMiniGameArtTags, miniGameArtOf } from "./minigame-art";
 import { miniGameUseKey, type MiniGameUse } from "../src/minigames/uses";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
@@ -1619,6 +1620,23 @@ export function validateContent(sources: ContentSources,
     returningScenes: new Set(placeEntries.filter((scene) => scene.at.some((moment) => !("visit" in moment) &&
       (!("place" in moment) || datesAtPlace(moment.place).length > 0 || finalesAtPlace(moment.place).length > 0))).map((scene) => scene.id)),
   };
+  // The SNS (2026-11-26; sns-posts.ts): each journey's stories/posts/<city>.ink, its pictures and the photos' # photo_with:.
+  const sns = validateSnsPosts({
+    root, layers: sources.layers, postFiles: sources.postFiles ?? [], storyFiles: sources.storyFiles, publicFiles,
+    journeys: journeyCatalog.journeys, people: storyStateCatalog.people, heroineSns: storyStateCatalog.heroineSns,
+    heroineSnsFiles: sources.catalogs["progression/story.json"]?.provenance.keys.heroineSns ?? {},
+    costumes: new Map(characters.characters.map((character) => [character.id, (character.costumes ?? []).map((costume) => costume.id)])),
+    albumImages, placesOfCity: new Map(travels.map(({ city: item, travel }) => [item.id, travel.places.map((place) => place.id)])),
+  });
+  // A posts file is Ink too (Inky previews it with the copy of modules.ink beside it): it compiles as one.
+  for (const posted of sources.postFiles ?? []) compileInk(posted.source, displayPath(root, posted.file), { [MODULES_FILE]: MODULES_INK });
+  conditionContent.snsPosts = sns.posts.map((post) => ({ id: post.id, cityId: post.cityId, commentIds: post.comments.map((comment) => comment.id) }));
+  // A post's and its comments' and likes' conditions, read at night in the post's city.
+  const snsOwners: ConditionOwner[] = sns.posts.map((post) => ({ label: `the SNS post ${post.id}`, cityId: post.cityId, conditions: [
+    ...(post.when ? [{ field: "when", condition: post.when }] : []),
+    ...post.likes.flatMap((like) => like.when ? [{ field: `likes ${like.personId}`, condition: like.when }] : []),
+    ...post.comments.flatMap((comment) => comment.when ? [{ field: `comment ${comment.id}`, condition: comment.when }] : []),
+  ] })).filter((owner) => owner.conditions.length);
   // Scenes' cond("…") (unified event design stage 2a): read in the city where the scene is played, checked like the other conditions.
   const sceneCity = (storyId: string): string | undefined =>
     placeEntries.find((scene) => scene.story.storyId === storyId)?.cityId ??
@@ -1661,7 +1679,7 @@ export function validateContent(sources: ContentSources,
     conditions: (["heroineLinesJa", "recapLinesJa"] as const).flatMap((field) => (place[field] ?? [])
       .flatMap((line, index) => (typeof line === "string" ? [] : [{ field: `${field}[${index}].when`, condition: line.when }]))),
   }))).filter((owner) => owner.conditions.length);
-  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners, ...placeLineOwners]);
+  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners, ...placeLineOwners, ...snsOwners]);
   // A moment quiz's # when: / # until: (read as its turn comes, like an inserted scene's entry rule): the same notes as one.
   const momentQuizWhenOwners: ConditionOwner[] = taggedScenes.flatMap((scene) => momentQuizBattle(scene) && scene.when
     ? [{ label: `the moment quiz ${scene.id}`, cityId: scene.cityId, conditions: [{ field: "when", condition: scene.when }] }] : []);
@@ -1894,6 +1912,8 @@ export function validateContent(sources: ContentSources,
     albumImages: withPhotoSpots(albumImages, sources.storyFiles.map(({ id, source }) => ({ id, source })), generatedScenes.scenes),
     /** 旅の図鑑's terms of every journey with their journeys (generated/glossary.json; src/content/glossary.ts). */
     glossaryTerms,
+    /** The SNS of every journey (generated/sns.json; src/content/sns.ts). */
+    sns: { schemaVersion: 1 as const, posts: sns.posts, images: sns.images, photoWith: sns.photoWith },
     /** The mini-games' pictures of every layer (generated/minigame-art.json; src/minigames/art.ts). */
     miniGameArt,
     /** Where the stories use the mini-games (generated/minigame-uses.json; src/minigames/uses.ts): the tests and Debug's room read it. */
@@ -1937,7 +1957,7 @@ export function validateContent(sources: ContentSources,
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes,
+    warnings: [...sns.warnings, ...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes,
       ...glossaryWarnings(sources, glossaryTerms, shopCatalog.outfits.flatMap((outfit) => outfit.termIds ?? [])), ...openingMovieWarnings(journeyCatalog.journeys, (id) => manifestFiles.get(id) ?? id)],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources, heardClues),

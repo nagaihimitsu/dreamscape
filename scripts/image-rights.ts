@@ -2,6 +2,7 @@ import path from "node:path";
 import { IMAGE_EXTENSIONS, ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import type { TourismAsset } from "../src/content/tourism-schemas";
 import { albumFolderLayer } from "./album-images";
+import { snsFolderLayer } from "./sns-posts";
 import { displayPath, parseCatalog, type ContentLayer, type ContentSources } from "./content-sources";
 
 // Rights of the served images (docs/02 「画像の出典と自作の絵」): every image
@@ -98,7 +99,8 @@ export function checkImageRights(
 
   for (const [assetPath, file] of sources.publicFiles) {
     if (!isImagePath(assetPath)) continue;
-    if (albumFolderLayer(sources, file)) {
+    // The SNS's own pictures (a journey's public/assets/sns/; sns-posts.ts) are Dreamscape's own artwork too, as the album's.
+    if (albumFolderLayer(sources, file) || snsFolderLayer(sources, file)) {
       if (credited.has(assetPath))
         errors.push(`アルバムの絵に出典は付けません：${show(file)} が tourism/catalog.json の assets に載っています。アルバムには Dreamscape のために作った絵だけを置き、` +
           `出典のある写真は assets/album/ の外に置いてください（Album image registered as a credited tourism image: ${assetPath}）。`);

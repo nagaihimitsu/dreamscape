@@ -115,6 +115,13 @@
 - ファイル：`glossary/terms.json`、`public/assets/tourism/sample_trip/mihon_sanji_pan.png`
 - 項目のID：`smp_term_mihon_sanji_pan`、`smp_img_mihon_sanji_pan`（場所のファイルからは、その ID を書いた行（札）を消す）
 
+### SNS（旅の記録の「SNS」）
+
+旅の記録の「SNS」に届く投稿の例です（2026-11-26。[SNS の仕様](../../SNS_PLAN.md)）。デート「三時までの席」を遊ぶと、その最後の行で時計塔の写真がアルバムに入り、その夜（21時の夜の画面か、ホテルで休んだとき）に、ヒロインの投稿が届きます。投稿は都市ごとのファイル `stories/posts/<都市ID>.ink` の knot に書き、場面としては流れません。見本の街の人物には立ち絵がないので、コメント・いいねの例はありません（立ち絵のない人の投稿・コメント・いいねはビルドが止めます）。
+
+- ファイル：`stories/posts/mihon.ink`
+- 項目のID：`smp_post_mihon_three_seats`
+
 任意の英文だけが使う語は `learning/word-meanings.json` に残ります。使われない語はエラーではなく、`npm run content:build -- --verbose` で一覧できます。
 
 ## 遊び方の流れとAP

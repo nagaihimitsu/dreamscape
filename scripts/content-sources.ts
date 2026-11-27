@@ -1,3 +1,4 @@
+import type { PostsSource } from "./sns-posts";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { journeyCatalogSchema, type JourneyCatalog } from "../src/content/journey-catalog";
@@ -106,6 +107,8 @@ export type ContentSources = {
   catalogs: Partial<Record<CatalogKind, MergedCatalog>>;
   cities: CitySource[];
   storyFiles: StorySource[];
+  /** The SNS's posts files (`stories/posts/<city>.ink` of a journey folder; scripts/sns-posts.ts). Absent: none. */
+  postFiles?: PostsSource[];
   quizFiles: QuizSource[];
   tourFiles: TourSource[];
   /** Static file roots served by the game: root `public/`, then each journey's `public/` that has files. */
@@ -398,6 +401,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   const cityFiles: (LayerFile & { id: string })[] = [];
   const travelFiles: (LayerFile & { cityId: string })[] = [];
   const stories: StorySource[] = [];
+  const postFiles: PostsSource[] = [];
   const storyFileById = new Map<string, string>();
   const quizzes: (LayerFile & { example: boolean })[] = [];
   const tours: (LayerFile & { id: string })[] = [];
@@ -413,6 +417,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     else if (type.type === "travel") travelFiles.push({ ...item, cityId: type.cityId });
     else if (type.type === "quiz") quizzes.push({ ...item, example: type.example });
     else if (type.type === "tour") tours.push({ ...item, id: type.id });
+    else if (type.type === "posts") postFiles.push({ cityId: type.cityId, file: item.file, layer: item.layer.id, source: bytesOf(item).toString("utf8") });
     else if (type.type === "story") {
       const previous = storyFileById.get(type.id);
       if (previous) throw new Error(`Duplicate story ID ${type.id}: ${previous} and ${item.file}`);
@@ -503,7 +508,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   }
 
   return {
-    root, layers, manifests, catalogs, cities, storyFiles: stories, quizFiles, tourFiles,
+    root, layers, manifests, catalogs, cities, storyFiles: stories, postFiles, quizFiles, tourFiles,
     publicRoots: publicDirectories.filter((directory) => servedRoots.has(directory)), publicFiles, tree,
   };
 }

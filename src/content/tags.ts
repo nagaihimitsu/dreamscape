@@ -478,6 +478,12 @@ export function parseStoryTags(
         throw new Error(`Invalid photo_show tag: ${value} (write # photo_show: small to keep it to the small card; large is the default)`);
       if (show !== undefined) throw new Error("Duplicate photo_show tag");
       show = value as PhotoShow;
+    } else if (key === "photo_with") {
+      // The people the line's photo shows (the SNS's person pages; 2026-11-26): read with the photo by content:build
+      // (scripts/sns-posts.ts photoWithOf), which keeps it to the source line of its # photo:. Nothing on screen.
+      for (const personId of value.split(/\s+/u))
+        if (!/^[a-z][a-z0-9_]*$/u.test(personId) || (context.personIds && !context.personIds.includes(personId)))
+          throw new Error(`Unknown person in photo_with: ${personId} (a person of progression/story.json people)`);
     } else if (key === "recall") {
       if (!context.photoIds?.includes(value))
         throw new Error(`Unknown recall image: ${value} (name an album image, as # photo: does: the file name of public/assets/album/<ID>.webp, .png, .jpg or .jpeg)`);

@@ -54,6 +54,8 @@ import { validateOutfits } from "./outfits";
 import { validatePastBattles } from "./carry-over";
 import { validateLivedTimes, withLivedTimes } from "./lived-times";
 import { validateMetTimes } from "./met-people";
+import { validateSns } from "./sns";
+import { EMPTY_SNS } from "./sns-state";
 import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishChoice } from "./difficulty";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
@@ -124,6 +126,7 @@ export function createGame(
     album: [],
     glossary: [],
     metTimes: [],
+    sns: EMPTY_SNS,
     activeDate: null,
     unlockedEventIds: [],
     confessionStatus: initial?.confessionStatus ?? "none",
@@ -569,5 +572,6 @@ export function validateGameState(input: unknown): GameState {
   validatePastBattles(state);
   validateLivedTimes(state);
   validateMetTimes(state);
+  validateSns(state);
   return state;
 }

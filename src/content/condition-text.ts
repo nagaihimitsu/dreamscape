@@ -37,6 +37,8 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
  * | `clue <clue>` (found in an observation or heard in a scene; 2026-11-18) | `clue` |
  * | `tour <tour> by <offer>` (booked or running through that offer; 2026-11-26) | `tourOffer` |
  * | `outfit <outfit>` (the party owns it; 2026-11-26) | `outfit` |
+ * | `comment <post>.<comment>` (the SNS comment has arrived; 2026-11-26) | `snsComment` |
+ * | `liked <post>` (the player likes the SNS post now; 2026-11-26) | `snsLiked` |
  */
 const LATER_PARTS: Record<string, number> = {};
 
@@ -112,6 +114,8 @@ function leafOf(words: string[]): Condition {
       return rest.length === 3 && by === "by" ? { tourOffer: { tour, offer } } : fail("tour <tour> by <offer>");
     }
     case "outfit": return { outfit: one("outfit <outfit>") };
+    case "comment": return { snsComment: one("comment <post>.<comment>") };
+    case "liked": return { snsLiked: one("liked <post>") };
     case "weekday": {
       const days = one("weekday 5,6 (Monday is 0)").split(",").map((day) => (/^[0-6]$/u.test(day) ? Number(day) : NaN));
       return days.some(Number.isNaN) ? fail("weekday 5,6 (Monday is 0)") : { weekday: days };

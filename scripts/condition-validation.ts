@@ -39,6 +39,8 @@ export type ConditionContent = {
   tours?: readonly { id: string; cityId: string; offers: readonly { id: string }[] }[];
   /** The outfits of the shops (shop/catalog.json), read by `outfit <outfit>` (2026-11-26). */
   outfits?: readonly string[];
+  /** The SNS posts (stories/posts/; 2026-11-26) and their comments' IDs, read by `liked <post>` and `comment <post>.<comment>`. */
+  snsPosts?: readonly { id: string; cityId: string; commentIds: readonly string[] }[];
   /** Scenes that also run at other moments than their landmark's visit (stage 4: a `place` with a date or a finale): 「また今度」 brings them back there. */
   returningScenes?: ReadonlySet<string>;
 };
@@ -49,6 +51,7 @@ const KIND_LABELS: Record<LeafReference["kind"], string> = {
   episode: "episode", city: "city", battle: "battle", landmark: "landmark", encounter: "encounter", date: "date", item: "item", mode: "transport mode",
   flag: "flag (progression/story.json)", person: "person (progression/story.json)", condition: "named condition (progression/story.json)",
   clue: "clue (tourism/catalog.json)", tour: "tour or its offer (tours/)", outfit: "outfit (shop/catalog.json)",
+  post: "SNS post (stories/posts/)", comment: "SNS comment (stories/posts/)",
 };
 
 /** The dates' `when` and `until`, checked in each date's city (its chapterId). */
@@ -117,6 +120,8 @@ export function referenceCity(content: ConditionContent, reference: LeafReferenc
       return places.reduce((first, cityId) => (cityOrder(content, cityId) < cityOrder(content, first) ? cityId : first));
     }
     case "tour": return content.tours?.find((item) => item.id === reference.id)?.cityId;
+    case "post": return content.snsPosts?.find((item) => item.id === reference.id)?.cityId;
+    case "comment": return content.snsPosts?.find((item) => item.id === reference.id.split(".")[0])?.cityId;
     case "mode": case "flag": case "condition": case "outfit": return undefined;
   }
 }
@@ -137,6 +142,11 @@ function exists(content: ConditionContent, reference: LeafReference): boolean {
     case "clue": return !!content.clues?.some((item) => item.id === reference.id);
     case "tour": return !!content.tours?.find((item) => item.id === reference.id)?.offers.some((offer) => offer.id === reference.offer);
     case "outfit": return !!content.outfits?.includes(reference.id);
+    case "post": return !!content.snsPosts?.some((item) => item.id === reference.id);
+    case "comment": {
+      const [postId, commentId] = reference.id.split(".");
+      return !!content.snsPosts?.find((item) => item.id === postId)?.commentIds.includes(commentId);
+    }
   }
 }
 

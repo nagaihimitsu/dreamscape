@@ -47,6 +47,11 @@
             "type": "string",
             "minLength": 1
           },
+          "callJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
           "titleJa": {
             "type": "string",
             "minLength": 1,
@@ -60,6 +65,30 @@
           "characterId": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "sns": {
+            "type": "object",
+            "properties": {
+              "introJa": {
+                "minItems": 1,
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                }
+              },
+              "hidden": {
+                "type": "boolean",
+                "const": true
+              },
+              "iconCostume": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "additionalProperties": false
           }
         },
         "required": [
@@ -78,6 +107,34 @@
         "pattern": "^[a-z][a-z0-9_]*$"
       },
       "additionalProperties": {}
+    },
+    "heroineSns": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "introJa": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "language": "ja"
+            }
+          },
+          "iconCostume": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false

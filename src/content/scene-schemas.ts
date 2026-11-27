@@ -213,6 +213,19 @@ export function sceneGivenClues(list: readonly Pick<SceneEntry, "options" | "don
  * `descriptionJa` is shown under the name in 旅の記録's 「出会った人」 once the person is met (2026-11-11 user decision).
  */
 const text = z.string().trim().min(1);
+/** A self-introduction on the SNS: one to three lines in the person's own voice (the names set as `{heroine_name}`). */
+const snsIntroSchema = z.array(japaneseText).min(1).max(3);
+/**
+ * A person on the SNS (2026-11-26 user decisions; authoring/SNS_PLAN.md): `introJa`, their own self-introduction (without
+ * it, the page shows their name and the heroine's note only); `hidden`, never on the SNS (a voice on the phone, an
+ * immigration officer: everyone else with a portrait is); `iconCostume`, the outfit of their portrait (characters.json
+ * `costumes`) their icon shows, else the basic one. A person without a portrait (`characterId`) is never on the SNS.
+ */
+export const snsProfileSchema = z.object({
+  introJa: snsIntroSchema.optional(),
+  hidden: z.literal(true).optional(),
+  iconCostume: id.optional(),
+}).strict();
 export const storyStateCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   flags: z.array(z.object({ id, noteJa: text.optional() }).strict()).default([]),
@@ -227,8 +240,15 @@ export const storyStateCatalogSchema = z.object({
   people: z.array(z.object({
     id, cityId: id, nameJa: text, callJa: japaneseText.optional(), titleJa: japaneseText.optional(), descriptionJa: japaneseText.optional(),
     characterId: id.optional(),
+    /** The person on the SNS (2026-11-26; authoring/SNS_PLAN.md): see snsProfileSchema. */
+    sns: snsProfileSchema.optional(),
   }).strict()).default([]),
   conditions: z.record(id, conditionSchema).default({}),
+  /**
+   * The heroine on the SNS, by journey ID (2026-11-26): her self-introduction and icon outfit on her own page, as a person's
+   * `sns` (`hidden` is not hers). A journey folder writes only its own key.
+   */
+  heroineSns: z.record(id, z.object({ introJa: snsIntroSchema.optional(), iconCostume: id.optional() }).strict()).default({}),
 }).strict();
 export type StoryStateCatalog = z.infer<typeof storyStateCatalogSchema>;
 

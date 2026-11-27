@@ -13,6 +13,7 @@ import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
 import { livedTimesSchema } from "./lived-times";
 import { metTimesSchema } from "./met-times";
+import { snsStateSchema } from "./sns-state";
 import { difficultySchema } from "./difficulty";
 import { kanaReading, MAX_KANA_PER_CHARACTER } from "./name-romaji";
 
@@ -164,6 +165,9 @@ export const gameStateSchema = z.object({
   // When and where each person was first met (2026-11-26, an optional field; src/domain/met-times.ts): the city, its day, the
   // minute and the place, in the order met. Absent in a save written before it (the people it had met stay without a time).
   metTimes: metTimesSchema.optional(),
+  // The SNS (2026-11-26, an optional field; src/domain/sns.ts): the posts and comments that arrived, each with its night, and
+  // the posts the player likes. Absent in a save written before it: nothing has arrived, nothing is liked.
+  sns: snsStateSchema.optional(),
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),

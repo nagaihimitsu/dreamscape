@@ -1,4 +1,5 @@
 import { getCities, getCityContent } from "../content";
+import { deliverSns } from "./sns";
 import { getJourneyForCity } from "../content/journeys";
 import { isAuthoredEpilogueCity, startCityArrival, startCityEpilogue } from "./epilogue";
 import { isSceneOpen } from "./game-state-schema";
@@ -44,21 +45,23 @@ export const canDepart = (state: GameState) =>
   state.completedCityIds.includes(state.currentCityId) && !isSceneOpen(state) && !state.travel.activeEvent && state.tour === null && !!getNextCity(state);
 
 /** The departure itself (the departure moment's main part): the items left behind and the next city reached, its arrival not begun. */
-export function leaveForNextCity(state: GameState): GameState {
-  const next = getNextCity(state);
-  if (!next) return state;
+export function leaveForNextCity(city: GameState): GameState {
+  const next = getNextCity(city);
+  if (!next) return city;
+  // The city's last night on the SNS (src/domain/sns.ts): what arrives before the party leaves.
+  const state = deliverSns(city);
   // A held item is this city's or one carried from an earlier city (a broken state is refused). Preserve the history;
   // an item carried through the journey stays held, the others are left behind (the item design §2.3).
   const inventory = { ...state.inventory };
   for (const [id, status] of Object.entries(inventory)) {
     if (status !== "held") continue;
-    if (!itemUsableIn(state, id, state.currentCityId)) return state;
+    if (!itemUsableIn(state, id, state.currentCityId)) return city;
     if (!isCarriedItem(id)) inventory[id] = "left_behind";
   }
   // The next city starts the next morning (2026-11-13 user decision: the clock never goes back): its day 1 at 9:00 is the
   // journey's next day, so the weekday moves on by one as after a night.
   const calendar = state.travel.calendar;
-  if (calendar && !Number.isSafeInteger(calendar.journeyDay + 1)) return state;
+  if (calendar && !Number.isSafeInteger(calendar.journeyDay + 1)) return city;
   const hotel = next.travelSettings.hotelPlaceId;
   const arrived: GameState = {
     ...state,

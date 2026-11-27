@@ -58,6 +58,8 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
     return `「${tour?.titleJa ?? leaf.tourOffer.tour}」を${seller}で予約中か参加中`;
   }
   if ("outfit" in leaf) return `服「${getOutfit(leaf.outfit)?.nameJa ?? leaf.outfit}」を持っている`;
+  if ("snsComment" in leaf) return `SNSのコメント ${leaf.snsComment} が届いた`;
+  if ("snsLiked" in leaf) return `SNSの投稿 ${leaf.snsLiked} にいいねしている`;
   return leafKind(leaf);
 }
 

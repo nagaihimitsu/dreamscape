@@ -11,6 +11,7 @@ import { getTransportMode, WALK_MODE_ID } from "../content/transport";
 import { getUsableRoutes, isTransportModeUsable, rentalReason } from "./transport";
 import { hasActiveScene } from "./game-state-schema";
 import { battlePlayed } from "./conditions";
+import { deliverSns } from "./sns";
 
 /** `walk` or a transport mode ID declared by the journey (src/content/transport.ts). */
 export type TravelMode = TravelRoute["mode"];
@@ -258,13 +259,15 @@ export function waitForTravel(state: GameState, minutes: number, expectedRevisio
 
 /** `viaPlaceId`: undefined selects a feasible route for legacy callers; null
  * selects the direct route; a place ID selects that exact connection. */
-export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null, nextRoll?: () => number): GameState {
-  if (state.revision !== expectedRevision || hasActiveScene(state)) return state;
-  const plan = getTravelSleepOptions(state)
+export function sleepAtHotel(night: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null, nextRoll?: () => number): GameState {
+  if (night.revision !== expectedRevision || hasActiveScene(night)) return night;
+  const plan = getTravelSleepOptions(night)
     .filter(({ route }) => route.mode === mode && (viaPlaceId === undefined || (route.viaPlaceId ?? null) === viaPlaceId))
     .map((option) => option.plan).find((item) => item.ok);
-  if (!plan || !plan.ok) return state;
-  if (state.travel.calendar && !Number.isSafeInteger(state.travel.calendar.journeyDay + 1)) return state;
+  if (!plan || !plan.ok) return night;
+  if (night.travel.calendar && !Number.isSafeInteger(night.travel.calendar.journeyDay + 1)) return night;
+  // The night's SNS (src/domain/sns.ts): what arrives tonight, before the hotel's scenes (their end checks again: occasion.ts sleep).
+  const state = deliverSns(night);
   // The hotel's moment (stage 4) when scenes run there or on the way: paid now, the night comes after its scenes.
   const budget = plan.remainingBudget + tourKeepBack(state).money;
   const paid: GameState = { ...state, revision: state.revision + 1, travelBudget: budget, travel: { ...state.travel, returnReserve: 0, returnDeadline: DAY_END } };

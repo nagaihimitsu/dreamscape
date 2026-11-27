@@ -36,6 +36,8 @@ import sceneData from "./generated/scenes.json";
 import storyStateData from "./generated/content/progression/story.json";
 import { generatedScenesSchema, sceneGivenClues, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
 import albumImageData from "./generated/album-images.json";
+import snsJson from "./generated/sns.json";
+import { snsDataSchema, type SnsData } from "./sns";
 import { albumImageListSchema, type AlbumImage } from "./album-images";
 import miniGameArtData from "./generated/minigame-art.json";
 import glossaryData from "./generated/glossary.json";
@@ -220,6 +222,15 @@ export const albumImages: readonly AlbumImage[] = albumImageListSchema.parse(alb
 /** The album image a line's `# photo:` or `# recall:` names, by its ID. */
 export function getAlbumImage(imageId: string): AlbumImage | undefined {
   return albumImages.find((image) => image.id === imageId);
+}
+/**
+ * The SNS of every journey (content:build reads each journey's stories/posts/<city>.ink; src/content/sns.ts): the posts in
+ * file order, the SNS pictures and the people the album's photos show (`# photo_with:`).
+ */
+export const snsData: SnsData = snsDataSchema.parse(snsJson);
+/** The SNS's own picture (a journey's public/assets/sns/), by its ID. */
+export function getSnsImage(imageId: string): SnsData["images"][number] | undefined {
+  return snsData.images.find((image) => image.id === imageId);
 }
 /** 旅の図鑑's terms of every journey, each with its journey (content:build lists them; src/content/glossary.ts). */
 export const glossaryTerms: readonly ListedTerm[] = glossaryListSchema.parse(glossaryData);

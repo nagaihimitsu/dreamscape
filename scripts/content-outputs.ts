@@ -23,6 +23,10 @@ export const BUILD_INFO_FILE = `${GENERATED_DIRECTORY}/build-info.json`;
 export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 /** Every journey's album images (album-images.ts albumImagesOf; read by src/content/index.ts). */
 export const ALBUM_IMAGES_FILE = `${GENERATED_DIRECTORY}/album-images.json`;
+/** The SNS of every journey (sns-posts.ts validateSns; read by src/content/index.ts). */
+export const SNS_FILE = `${GENERATED_DIRECTORY}/sns.json`;
+/** The SNS file of a build without posts. */
+const NO_SNS = { schemaVersion: 1, posts: [], images: [], photoWith: {} };
 /** 旅の図鑑's terms of every journey, with their journeys (glossary-terms.ts glossaryTermsOf; read by src/content/index.ts). */
 export const GLOSSARY_FILE = `${GENERATED_DIRECTORY}/glossary.json`;
 /** Every layer's mini-game pictures (minigame-art.ts miniGameArtOf; read by src/content/index.ts). */
@@ -55,7 +59,7 @@ export function writeContentOutputs(
   validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; tours?: readonly unknown[];
     catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
-    scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; glossaryTerms?: readonly unknown[]; miniGameArt?: readonly unknown[]; miniGameUses?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>>;
+    scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; sns?: unknown; glossaryTerms?: readonly unknown[]; miniGameArt?: readonly unknown[]; miniGameUses?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>>;
     music?: unknown; ambience?: unknown; audioLayers?: unknown; sceneAudio?: unknown },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
@@ -79,6 +83,8 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, IMAGE_JOURNEYS_FILE), `${JSON.stringify(imageJourneyIndex(sources), null, 2)}\n`);
   // The album's illustrations (src/content/index.ts imports the file, so it is written even with none: `[]`).
   writeFileSync(path.join(root, ALBUM_IMAGES_FILE), `${JSON.stringify(validated.albumImages ?? [], null, 2)}\n`);
+  // The SNS (src/content/index.ts imports the file, so it is written even with no post).
+  writeFileSync(path.join(root, SNS_FILE), `${JSON.stringify(validated.sns ?? NO_SNS, null, 2)}\n`);
   // 旅の図鑑's terms (src/content/index.ts imports the file, so it is written even with none: `[]`).
   writeFileSync(path.join(root, GLOSSARY_FILE), `${JSON.stringify(validated.glossaryTerms ?? [], null, 2)}\n`);
   // The mini-games' pictures (src/content/index.ts imports the file, so it is written even with none: `[]`).
