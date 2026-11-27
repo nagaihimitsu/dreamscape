@@ -1,18 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countLines, fitScale, headingPhrases } from "./fit-text";
-
-describe("headingPhrases", () => {
-  it("breaks between phrases and after 「・」, never inside brackets", () => {
-    expect(headingPhrases("ディーワーニ・ハース（内謁の間）")).toEqual(["ディーワーニ・", "ハース", "（内謁の間）"]);
-    expect(headingPhrases("ジャイプルのアンベール城")).toEqual(["ジャイプルの", "アンベール城"]);
-  });
-
-  it("gives back the text when joined", () => {
-    for (const text of ["フマーユーン廟", "聖なる水を汲む少女と古い井戸の物語", "「最後の晩餐」の謎（仮）", "A short English title", ""]) {
-      expect(headingPhrases(text).join("")).toBe(text);
-    }
-  });
-});
+import { countLines, fitScale } from "./fit-text";
 
 describe("fitScale", () => {
   // Words that need `width` pixels at 1px a pixel of size, in a heading `room` wide: as many lines as it takes.

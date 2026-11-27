@@ -20,8 +20,6 @@ dialog.modal.credits-modal {
   font-size: var(--ds-text-body);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
-  /* Wrap before 「（238枚）」, not inside it: between words and at punctuation only, any point when one word is too long. */
-  word-break: keep-all;
   overflow-wrap: anywhere;
 }
 .credits-journey { border-bottom: 1px solid var(--ds-parchment-line); }

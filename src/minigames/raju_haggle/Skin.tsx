@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { availableOutcome } from "../fallback";
 import type { StepPickFieldProps, StepPickSkin, StepPickView } from "../engines/step_pick/EnginePlay";
 import type { StepPickTuning } from "../engines/step_pick/engine";
@@ -95,12 +95,6 @@ export function rajuCallJa(view: StepPickView<RajuHaggleOutcome>, available: rea
       if (step === 0 && index === 0 && taken !== own) return taken === "fair_map" ? "五十は……無理そう？　じゃあ、四十" : "……三十でいいよ。特別だからね";
       return pick(BOASTS, seed, index);
   }
-}
-
-/** His words with a break allowed after each phrase's mark (a narrow phone breaks there, not inside a word). */
-function Phrased({ text }: { text: string }) {
-  const parts = text.split(/(?<=[、。！？　）]|……)/u);
-  return <>{parts.map((part, index) => <Fragment key={index}>{part}{index < parts.length - 1 && <wbr />}</Fragment>)}</>;
 }
 
 /** His mood for his picture (a use's three pictures): while the haggle goes on, by his look and pride; once decided, by the deal. */
@@ -253,7 +247,7 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
       {showBubble && (
         <div className="mg-raju-haggle-bubble" key={`${words}:${view.pushes}`} data-testid="raju-bubble">
           <FaceIcon face={away ? "sulky" : faceOf(look, mood)} pride={pride} full={full} />
-          <span className="mg-raju-haggle-line"><Phrased text={words} /></span>
+          <span className="mg-raju-haggle-line">{words}</span>
         </div>
       )}
       {/* His look in words, for a screen reader only: the band shows the price and the stares left, never his mood (his face,
