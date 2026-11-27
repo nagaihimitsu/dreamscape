@@ -50,7 +50,7 @@ INCLUDE modules.ink
 列の脇で、胸ポケットを何度も押さえている青年が、きょろきょろと誰かを探していた。
 # speaker: heroine
 # voice: gt_agra_taj_mahal_guide_005
-# photo: gt_album_a012 # photo_caption: 建物より緊張している青年
+# photo: gt_album_a012 # photo_caption: 建物より緊張している青年 # photo_with: gt_nikhil
 なんだか、あの人の方が、建物より緊張してるみたい
 -> END
 
@@ -67,7 +67,7 @@ INCLUDE modules.ink
 # speaker: gt_nikhil
 # unnamed
 # voice: gt_agra_main_taj_mahal_battle_nikhil_001
-# photo: gt_album_a013 # photo_caption: 「ベンチを十分だけ確保してください！」
+# photo: gt_album_a013 # photo_caption: 「ベンチを十分だけ確保してください！」 # photo_with: gt_nikhil
 お願いがあります！　あのベンチを、十分だけ確保してください！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
@@ -88,7 +88,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_taj_mahal_002
 わたしたちが、あそこに？　二人で？　……ゆっくり？
 # speaker: narrator
-# photo: gt_album_a014 # photo_caption: 三十枚のスライド、七枚目に赤い丸
+# photo: gt_album_a014 # photo_caption: 三十枚のスライド、七枚目に赤い丸 # photo_with: gt_nikhil
 ニキルは携帯を見せた。プロポーズの手順が三十枚のスライドになっている。七枚目に、ベンチの写真と赤い丸。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -99,7 +99,7 @@ INCLUDE modules.ink
 列の順番が来て、二人はベンチに並んで座った。後ろの視線が痛い。{heroine_name}は、意味もなく三回、髪を直した。
 # speaker: narrator
 # together: enemy gt_tanvi
-# photo: gt_album_a016 # photo_caption: すべてを理解した顔のタンヴィ
+# photo: gt_album_a016 # photo_caption: すべてを理解した顔のタンヴィ # photo_with: gt_nikhil gt_tanvi
 予定より早く、緑のクルタの女性が戻ってきた。タンヴィだ。ベンチの二人と、汗だくの恋人と、彼の胸ポケットを順に見て、彼女はすべてを理解した顔になった。
 # speaker: narrator
 ニキルが、練習どおりの台詞を始める。皇帝が亡き妃のために建てた、この白い墓の話からだ。
@@ -203,7 +203,7 @@ INCLUDE modules.ink
 沈黙。{heroine_name}は、ずっと引っかかっていたことを、やっと言葉にした。
 # speaker: heroine
 # voice: gt_agra_main_taj_mahal_006
-# photo: gt_album_a017 # photo_caption: 「一度も、聞かれなかったこと、ですよね」
+# photo: gt_album_a017 # photo_caption: 「一度も、聞かれなかったこと、ですよね」 # photo_with: gt_nikhil gt_tanvi
 タンヴィさんが嫌なのは、タージじゃなくて……一度も、聞かれなかったこと、ですよね
 # speaker: narrator
 タンヴィは少し驚いた顔をして、それから、ゆっくりうなずいた。
@@ -234,7 +234,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: enemy
 # leave: gt_tanvi
-# photo: gt_album_a018 # photo_caption: ベンチではなく出口へ、少し近い距離で # photo_show: small
+# photo: gt_album_a018 # photo_caption: ベンチではなく出口へ、少し近い距離で # photo_show: small # photo_with: gt_nikhil gt_tanvi
 二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
 # speaker: heroine
 # reaction: heroine,shy,blush
@@ -261,7 +261,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_anwar_001
 そして最後の石が置かれた日。皇帝は命じたのです。二度とこれほどのものを造らせぬよう、二万の職人の手を、切り落とせと
 # speaker: narrator
-# photo: gt_album_a131 # photo_caption: 一番泣かせるガイドの人だかり
+# photo: gt_album_a131 # photo_caption: 一番泣かせるガイドの人だかり # photo_with: gt_anwar
 観客から、悲鳴に近い溜め息が漏れた。何人かは本当に目を拭っている。アンワルは満足げに杖を鳴らし、ぐるりと見回して、こちらで目を止めた。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_002
@@ -272,7 +272,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_finale_001
-# photo: gt_album_a132 # photo_caption: 「日本から来た新婚のお二人です」
+# photo: gt_album_a132 # photo_caption: 「日本から来た新婚のお二人です」 # photo_with: gt_anwar
 ち、違います！　わたしたち、新婚じゃ……！
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_003
@@ -337,7 +337,7 @@ INCLUDE modules.ink
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
 # speaker: heroine
 # voice: gt_agra_finale_battle_003
-# photo: gt_album_a134 # photo_caption: 夕日の対岸、正面のタージ
+# photo: gt_album_a134 # photo_caption: 夕日の対岸、正面のタージ # photo_with: gt_anwar
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
 # term: gt_term_tavernier
@@ -363,7 +363,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_006
 それに、この岸を何年もかけて掘った人たちがいます
 # speaker: narrator
-# photo: gt_album_a135 # photo_caption: 土の上で止まった杖
+# photo: gt_album_a135 # photo_caption: 土の上で止まった杖 # photo_with: gt_anwar
 アンワルの杖が、土の上で止まった。
 -> quiz(2) ->
 # background: gt_bg_agra_mehtab_bagh_sunset
@@ -386,7 +386,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_battle_anwar_008
 皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう。あなたの本当の話で、この人たちを泣かせてみなさい
 # speaker: narrator
-# photo: gt_album_a136 # photo_caption: 五十人の目の前へ
+# photo: gt_album_a136 # photo_caption: 五十人の目の前へ # photo_with: gt_anwar
 観客が、拍手で彼女を前へ押し出した。逃げ場はない。五十人の目が、こちらを見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
@@ -448,7 +448,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # em: 名前
-# photo: gt_album_a137 # photo_caption: 白い壁のどこかに、一人の名前
+# photo: gt_album_a137 # photo_caption: 白い壁のどこかに、一人の名前 # photo_with: gt_anwar
 観客の何人かが、川向こうのタージを、目を細めて見つめた。あの白い壁のどこかに、一人の名前がある。
 # speaker: heroine
 # voice: gt_agra_finale_011
@@ -499,7 +499,7 @@ INCLUDE modules.ink
 # voice: gt_agra_finale_015
 手を切られた人の話じゃなくて、手を受け継いだ人の話。タージと一緒に生まれた町に、七代、住んでる人の話
 # speaker: narrator
-# photo: gt_album_a139 # photo_caption: 白から灰色へ、杖を握る手
+# photo: gt_album_a139 # photo_caption: 白から灰色へ、杖を握る手 # photo_with: gt_anwar
 アンワルは答えなかった。杖を握る指に、少し力が入った。日が沈み、川向こうのタージが、白から灰色へ変わっていく。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_016
@@ -533,7 +533,7 @@ INCLUDE modules.ink
 それから、二人に紙の箱を差し出した。
 # speaker: enemy
 # voice: gt_agra_finale_battle_anwar_021
-# photo: gt_album_a140 # photo_caption: 詫びのペーター
+# photo: gt_album_a140 # photo_caption: 詫びのペーター # photo_with: gt_anwar
 詫びの印だ。新婚でなくても、甘いものは食べられる
 # speaker: heroine
 # reaction: heroine,teasing,music

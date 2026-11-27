@@ -31,7 +31,7 @@ INCLUDE modules.ink
 # term: gt_term_langar
 その奥に、大きな台所があった。ランガル。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
 # term: gt_term_dal
-# photo: gt_album_d083 # photo_caption: ランガルの大台所に手招き
+# photo: gt_album_d083 # photo_caption: ランガルの大台所に手招き # photo_with: gt_harbans
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_harbans
 # unnamed
@@ -43,7 +43,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_bangla_sahib_harbans_002
 ハルバンス・シンだ。四十年、トラックで国を縦断する大きな街道を走ってきた。降りてからは、毎日ここで生地を丸めている
 # speaker: narrator
-# photo: gt_album_d084 # photo_caption: インドの形のローティー
+# photo: gt_album_d084 # photo_caption: インドの形のローティー # photo_with: gt_harbans
 彼女が丸めた一枚目は、どこから見ても丸くなかった。ハルバンスはそれを持ち上げて、光にかざした。
 # speaker: gt_harbans
 # voice: gt_delhi_date_bangla_sahib_harbans_003
@@ -69,7 +69,7 @@ INCLUDE modules.ink
     伸ばした生地は、ほとんど丸かった。ハルバンスはそれを持ち上げて、光にかざした。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_005
-    # photo: gt_album_d085 # photo_caption: ほとんど丸いローティー
+    # photo: gt_album_d085 # photo_caption: ほとんど丸いローティー # photo_with: gt_harbans
     丸い。……四十年で、いちばんつまらん地図だ
     { romance_result == "negative":
         # speaker: heroine
@@ -90,7 +90,7 @@ INCLUDE modules.ink
         全力で伸ばした生地は、なぜか四角くなった。
         # speaker: gt_harbans
         # voice: gt_delhi_date_bangla_sahib_harbans_006
-        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー
+        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー # photo_with: gt_harbans
         ……荷台だな
         # speaker: heroine
         # emotion: exasperated
@@ -101,7 +101,7 @@ INCLUDE modules.ink
         全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
         # speaker: gt_harbans
         # voice: gt_delhi_date_bangla_sahib_harbans_007
-        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー
+        # photo: gt_album_d085 # photo_caption: なぜか四角くなったローティー # photo_with: gt_harbans
         トラックの荷台だな。積みやすくていい
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -115,7 +115,7 @@ INCLUDE modules.ink
     生地は、思ったようには伸びてくれなかった。ハルバンスが、目を細める。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_008
-    # photo: gt_album_d085 # photo_caption: ハートの形のローティー
+    # photo: gt_album_d085 # photo_caption: ハートの形のローティー # photo_with: gt_harbans
     ほう。……これは、ハートか
     { romance_result == "negative":
         # speaker: heroine
@@ -141,7 +141,7 @@ INCLUDE modules.ink
     もう一押し、と力を込めたところで、生地の真ん中に、ぽっかり穴が開いた。
     # speaker: gt_harbans
     # voice: gt_delhi_date_bangla_sahib_harbans_010
-    # photo: gt_album_d085 # photo_caption: 真ん中に穴の開いたローティー
+    # photo: gt_album_d085 # photo_caption: 真ん中に穴の開いたローティー # photo_with: gt_harbans
     トンネルだな。……丸め直せ。生地は、何度でもやり直せる
     { romance_result == "negative":
         # speaker: heroine
@@ -237,7 +237,7 @@ INCLUDE modules.ink
 食事の広間では、細長い敷物が何列も敷かれ、人々が床に並んで座っていた。隣はスーツの男、その隣は裸足の子ども。誰がどこに座っても、出てくるものは同じだ。
 # term: gt_term_cupped_hands
 奉仕の人が籠を持って回ってくる。二人は、裸足の子どもの手つきを真似て、両手をお椀の形にして差し出した。
-# photo: gt_album_d086 # photo_caption: 自分の地図が、手のひらに戻る
+# photo: gt_album_d086 # photo_caption: 自分の地図が、手のひらに戻る # photo_with: gt_harbans
 ハルバンスが、わざわざ二枚を選んで、二人の手のひらに落とした。インドの形と、もう一枚。自分で丸めたものが、自分の手に戻ってきた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle

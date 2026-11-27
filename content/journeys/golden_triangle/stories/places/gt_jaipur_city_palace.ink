@@ -48,11 +48,12 @@ INCLUDE modules.ink
 # speaker: narrator
 人の背丈ほどもある銀の壺の陰で、言い合いは近づくほど大きくなった。{heroine_name}がそばまで来たところで、女性の声が跳ね上がった。
 # speaker: gt_jaipur_city_palace_woman
+# unnamed
 # voice: gt_jaipur_main_city_palace_battle_sushma_001
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
 # together: enemy gt_vishal
-# photo: gt_album_j034 # photo_caption: 漬物五キロと、荷物の秤
+# photo: gt_album_j034 # photo_caption: 漬物五キロと、荷物の秤 # photo_with: gt_jaipur_city_palace_woman gt_vishal
 サリー姿の女性と、二十代半ばの青年。青年が女性の手提げを荷物用の秤に吊るすと、中の瓶が鳴り、針が大きく振れた。
 # speaker: gt_vishal
 # unnamed
@@ -108,7 +109,7 @@ INCLUDE modules.ink
 王様には、荷物の重量制限がなかったんだよ、母さん
 # speaker: narrator
 # emotion: happy
-# photo: gt_album_j035 # photo_caption: 審判、吹き出す
+# photo: gt_album_j035 # photo_caption: 審判、吹き出す # photo_with: gt_jaipur_city_palace_woman gt_vishal
 ヴィシャールの切り返しに、{heroine_name}は思わず吹き出した。慌てて口を押さえたが、もう遅い。
 # speaker: enemy
 # reaction: enemy,anger
@@ -133,12 +134,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     # voice: gt_jaipur_main_city_palace_battle_sushma_010
-    # photo: gt_album_j036 # photo_caption: 四つの季節の門
+    # photo: gt_album_j036 # photo_caption: 四つの季節の門 # photo_with: gt_jaipur_city_palace_woman gt_vishal
     四つの季節。春も、夏も、秋も、冬も。……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_city_palace_battle_sushma_011
-    # photo: gt_album_j036 # photo_caption: 四つの季節の門
+    # photo: gt_album_j036 # photo_caption: 四つの季節の門 # photo_with: gt_jaipur_city_palace_woman gt_vishal
     四季よ。孔雀が秋で、蓮が夏。……うちの台所にも、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる
 }
 # speaker: narrator
@@ -154,7 +155,7 @@ INCLUDE modules.ink
 わたし、旅の途中で、家のお味噌汁が恋しくなることがあります。我慢したら、もっと恋しくなりました
 # speaker: heroine
 # voice: gt_jaipur_main_city_palace_005
-# photo: gt_album_j037 # photo_caption: 恋しくなるのは、帰る場所があるってこと
+# photo: gt_album_j037 # photo_caption: 恋しくなるのは、帰る場所があるってこと # photo_with: gt_jaipur_city_palace_woman gt_vishal
 恋しくなるのは、帰る場所があるってことだと思います。……恥ずかしいことじゃ、ないです
 # speaker: narrator
 スシュマが、こちらを見た。得意げな顔ではなかった。それから、隣に立つ息子を、黙って見上げた。
@@ -189,7 +190,7 @@ INCLUDE modules.ink
 スシュマとヴィシャールが、同時に黙った。先に口を開いたのは、母親の方だった。
 # speaker: enemy
 # voice: gt_jaipur_main_city_palace_battle_sushma_014
-# photo: gt_album_j038 # photo_caption: 二キロと、毎週の電話
+# photo: gt_album_j038 # photo_caption: 二キロと、毎週の電話 # photo_with: gt_jaipur_city_palace_woman gt_vishal
 ……毎週よ。日曜の朝。時差があるなら、そっちに合わせてあげる
 # speaker: gt_vishal
 # voice: gt_jaipur_main_city_palace_battle_vishal_007
@@ -214,7 +215,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_jaipur_main_city_palace_009
-# photo: gt_album_j039 # photo_caption: 審判の報酬、ライムの漬物
+# photo: gt_album_j039 # photo_caption: 審判の報酬、ライムの漬物 # photo_with: gt_jaipur_city_palace_woman
 あ、ありがとうございます。……わたしにも、重量制限が……
 # speaker: enemy
 # voice: gt_jaipur_main_city_palace_battle_sushma_018

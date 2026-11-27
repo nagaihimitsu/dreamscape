@@ -151,7 +151,14 @@
       "id": "gt_aman",
       "cityId": "delhi",
       "nameJa": "アマン",
-      "characterId": "gt_aman"
+      "characterId": "gt_aman",
+      "sns": {
+        "introJa": [
+          "カムラの孫です。",
+          "もうすぐ、結婚します。",
+          "家族の頼みごと、受付中。"
+        ]
+      }
     },
     {
       "id": "gt_kamla",
@@ -173,14 +180,28 @@
       "nameJa": "ハルバンス",
       "callJa": "老人",
       "titleJa": "ローティーを丸める元トラック運転手",
-      "characterId": "gt_harbans"
+      "characterId": "gt_harbans",
+      "sns": {
+        "introJa": [
+          "四十年、トラックで街道を。",
+          "降りてからは、生地を丸める。",
+          "濃いチャイの店なら、聞け。"
+        ]
+      }
     },
     {
       "id": "gt_suresh",
       "cityId": "delhi",
       "nameJa": "スレーシュ",
       "callJa": "男",
-      "characterId": "gt_suresh"
+      "characterId": "gt_suresh",
+      "sns": {
+        "introJa": [
+          "元・所得税調査官。三十五年。",
+          "合わない申告は、匂いで分かる。",
+          "新聞は、毎朝三紙。"
+        ]
+      }
     },
     {
       "id": "gt_mehr",
@@ -188,14 +209,26 @@
       "nameJa": "メヘル",
       "callJa": "女の子",
       "titleJa": "叔父さんに見つかりたくない大学生",
-      "characterId": "gt_mehr"
+      "characterId": "gt_mehr",
+      "sns": {
+        "introJa": [
+          "大学生。よく早口って言われる。",
+          "うちの親戚、連絡網が速すぎる。"
+        ]
+      }
     },
     {
       "id": "gt_kabir",
       "cityId": "delhi",
       "nameJa": "カビール",
       "titleJa": "メヘルの同級生",
-      "characterId": "gt_kabir"
+      "characterId": "gt_kabir",
+      "sns": {
+        "introJa": [
+          "……カビールです。",
+          "歴史学科。廟の案内ならできます。"
+        ]
+      }
     },
     {
       "id": "gt_zoheb",
@@ -203,40 +236,85 @@
       "nameJa": "ゾヘブ",
       "callJa": "若い男",
       "titleJa": "隣の店で携帯ケースを売る若者",
-      "characterId": "gt_zoheb"
+      "characterId": "gt_zoheb",
+      "sns": {
+        "introJa": [
+          "携帯ケースと充電器の店。",
+          "隣の香油屋より、客は多い。",
+          "この路地で育った。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_jama_old_man",
       "cityId": "delhi",
-      "nameJa": "老人",
-      "characterId": "gt_hamid"
+      "nameJa": "ハミード",
+      "callJa": "老人",
+      "titleJa": "六十年、路地で香りを売る老人",
+      "characterId": "gt_hamid",
+      "sns": {
+        "introJa": [
+          "階段の下で六十年、香油屋。",
+          "値引きは、しない。",
+          "香りは、店で嗅げ。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_qutb_man",
       "cityId": "delhi",
-      "nameJa": "男",
-      "characterId": "gt_ramkishan"
+      "nameJa": "ラームキシャン",
+      "callJa": "男",
+      "titleJa": "柵を越えたい理科の教師",
+      "characterId": "gt_ramkishan",
+      "sns": {
+        "introJa": [
+          "理科の教師です。",
+          "鉄の柱の授業は、毎年やります。",
+          "娘は、受験生です。"
+        ]
+      }
     },
     {
       "id": "gt_anjali",
       "cityId": "delhi",
       "nameJa": "アンジャリ",
       "titleJa": "遠足の学級委員",
-      "characterId": "gt_anjali"
+      "characterId": "gt_anjali",
+      "sns": {
+        "introJa": [
+          "学級委員です。",
+          "質問には、番号を振ります。",
+          "来年は、もっと難しいのを。"
+        ]
+      }
     },
     {
       "id": "gt_sonu",
       "cityId": "delhi",
       "nameJa": "ソーヌー",
       "titleJa": "敬礼が本格的な生徒",
-      "characterId": "gt_sonu"
+      "characterId": "gt_sonu",
+      "sns": {
+        "introJa": [
+          "敬礼の角度には、自信あり。",
+          "将来は、首相の予定。",
+          "鈴が鳴ったのは、事故です。"
+        ]
+      }
     },
     {
       "id": "gt_faiz",
       "cityId": "delhi",
       "nameJa": "ファイズ",
       "titleJa": "ノートを閉じたままの生徒",
-      "characterId": "gt_faiz"
+      "characterId": "gt_faiz",
+      "sns": {
+        "introJa": [
+          "話すのは、苦手。",
+          "書くのは、少しだけ好き。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_airport_girl",
@@ -257,19 +335,37 @@
       "id": "gt_delhi_red_fort_classmate",
       "cityId": "delhi",
       "nameJa": "隣の子",
-      "characterId": "gt_delhi_red_fort_classmate"
+      "characterId": "gt_delhi_red_fort_classmate",
+      "sns": {
+        "introJa": [
+          "声の大きさなら、学年一。",
+          "ファイズの通訳、たまに。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_sweet_shopkeeper",
       "cityId": "delhi",
       "nameJa": "店主",
-      "characterId": "gt_delhi_sweet_shopkeeper"
+      "characterId": "gt_delhi_sweet_shopkeeper",
+      "sns": {
+        "introJa": [
+          "揚げたてのジャレビーの店。",
+          "値切った客は、忘れない。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_spice_trader",
       "cityId": "delhi",
       "nameJa": "問屋",
-      "characterId": "gt_delhi_spice_trader"
+      "characterId": "gt_delhi_spice_trader",
+      "sns": {
+        "introJa": [
+          "香辛料の卸です。",
+          "くしゃみは、店の名物。"
+        ]
+      }
     },
     {
       "id": "gt_roohi",
@@ -290,13 +386,25 @@
       "id": "gt_delhi_hotel_okami",
       "cityId": "delhi",
       "nameJa": "おかみ",
-      "characterId": "gt_delhi_hotel_okami"
+      "characterId": "gt_delhi_hotel_okami",
+      "sns": {
+        "introJa": [
+          "宿のおかみです。",
+          "お腹を壊したら、キチュリー。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_hotel_owner",
       "cityId": "delhi",
       "nameJa": "宿の主人",
-      "characterId": "gt_delhi_hotel_owner"
+      "characterId": "gt_delhi_hotel_owner",
+      "sns": {
+        "introJa": [
+          "宿の主人です。",
+          "駅まで、車でお送りします。"
+        ]
+      }
     },
     {
       "id": "gt_kunal",
@@ -318,7 +426,14 @@
       "cityId": "delhi",
       "nameJa": "ジャスミート",
       "titleJa": "クナールの撮影仲間",
-      "characterId": "gt_jasmeet"
+      "characterId": "gt_jasmeet",
+      "sns": {
+        "introJa": [
+          "クナールの動画の、叫ぶ係。",
+          "怖いのは、わりと平気。",
+          "ドゥパッター、貸し出し中。"
+        ]
+      }
     },
     {
       "id": "gt_monu",
@@ -341,7 +456,14 @@
       "nameJa": "ドゥベイ",
       "callJa": "老人",
       "titleJa": "元・駅の案内放送係",
-      "characterId": "gt_dubey"
+      "characterId": "gt_dubey",
+      "sns": {
+        "introJa": [
+          "元・駅の案内放送係です。",
+          "笑う会を、主宰しております。",
+          "まもなく、新しい笑いが到着。"
+        ]
+      }
     },
     {
       "id": "gt_meena",
@@ -349,55 +471,111 @@
       "nameJa": "ミーナ",
       "callJa": "女性",
       "titleJa": "スレーシュの大学の同級生",
-      "characterId": "gt_meena"
+      "characterId": "gt_meena",
+      "sns": {
+        "introJa": [
+          "週に二回、公園で笑ってます。",
+          "淡い色のサリーが好き。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_scam_young_man",
       "cityId": "delhi",
       "nameJa": "青年",
-      "characterId": "gt_delhi_scam_young_man"
+      "characterId": "gt_delhi_scam_young_man",
+      "sns": {
+        "introJa": [
+          "ニューデリー駅の案内係です。",
+          "今朝の運休も、お知らせします。",
+          "臨時の窓口まで、徒歩五分。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_scam_vest_man",
       "cityId": "delhi",
       "nameJa": "ベストの男",
-      "characterId": "gt_delhi_scam_vest_man"
+      "characterId": "gt_delhi_scam_vest_man",
+      "sns": {
+        "introJa": [
+          "駅の係の者です。",
+          "無線で、最新の運休情報を。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_scam_suit_man",
       "cityId": "delhi",
       "nameJa": "背広の男",
-      "characterId": "gt_delhi_scam_suit_man"
+      "characterId": "gt_delhi_scam_suit_man",
+      "sns": {
+        "introJa": [
+          "政府公認・観光案内所。",
+          "車とホテル、特別価格で。",
+          "まずは、チャイをどうぞ。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_porter",
       "cityId": "delhi",
       "nameJa": "荷運びの男",
-      "characterId": "gt_delhi_porter"
+      "characterId": "gt_delhi_porter",
+      "sns": {
+        "introJa": [
+          "駅の荷運び、サハーヤク。",
+          "スーツケースなら、頭に三つ。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_ticket_checker",
       "cityId": "delhi",
       "nameJa": "検札係",
-      "characterId": "gt_delhi_ticket_checker"
+      "characterId": "gt_delhi_ticket_checker",
+      "sns": {
+        "introJa": [
+          "ホームの検札係です。",
+          "切符は、お手元に。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_chandni_vendor",
       "cityId": "delhi",
       "nameJa": "屋台の男",
-      "characterId": "gt_delhi_chandni_vendor"
+      "characterId": "gt_delhi_chandni_vendor",
+      "sns": {
+        "introJa": [
+          "ゴルガッパの屋台。",
+          "最後の一つは、おまけだ。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_chandni_customer",
       "cityId": "delhi",
       "nameJa": "隣の客",
-      "characterId": "gt_delhi_chandni_customer"
+      "characterId": "gt_delhi_chandni_customer",
+      "sns": {
+        "introJa": [
+          "この屋台の常連。",
+          "断るときは、一言。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_auto_driver",
       "cityId": "delhi",
       "nameJa": "運転手",
-      "characterId": "gt_delhi_auto_driver"
+      "characterId": "gt_delhi_auto_driver",
+      "sns": {
+        "introJa": [
+          "オートリキシャの運転手。",
+          "メーターは、調子が悪い。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_scam_phone_voice",
@@ -408,40 +586,95 @@
       "id": "gt_delhi_red_fort_guide",
       "cityId": "delhi",
       "nameJa": "案内の係員",
-      "characterId": "gt_delhi_red_fort_guide"
+      "characterId": "gt_delhi_red_fort_guide",
+      "sns": {
+        "introJa": [
+          "レッド・フォートの係員です。",
+          "昼の券は、日没までです。"
+        ]
+      }
+    },
+    {
+      "id": "gt_nidhi",
+      "cityId": "delhi",
+      "nameJa": "ニディ",
+      "titleJa": "一時間後のバスを守る引率教師",
+      "characterId": "gt_nidhi",
+      "sns": {
+        "introJa": [
+          "中学校の教師です。",
+          "遠足の引率、三十八人。",
+          "バスの時刻は、守ります。"
+        ]
+      }
     },
     {
       "id": "gt_tanvi",
       "cityId": "agra",
       "nameJa": "タンヴィ",
       "titleJa": "ニキルの恋人",
-      "characterId": "gt_tanvi"
+      "characterId": "gt_tanvi",
+      "sns": {
+        "introJa": [
+          "建物なら、タージが世界一。",
+          "伝記は、寝る前に一冊ずつ。"
+        ]
+      }
     },
     {
       "id": "gt_nikhil",
       "cityId": "agra",
       "nameJa": "ニキル",
       "callJa": "青年",
-      "characterId": "gt_nikhil"
+      "characterId": "gt_nikhil",
+      "sns": {
+        "introJa": [
+          "ラクナウで、銀行員。",
+          "段取りは、スライドで組む。",
+          "汗かきです。"
+        ]
+      }
     },
     {
       "id": "gt_riya",
       "cityId": "agra",
       "nameJa": "リヤ",
       "titleJa": "ツアーの添乗員",
-      "characterId": "gt_riya"
+      "characterId": "gt_riya",
+      "sns": {
+        "introJa": [
+          "旗を振る仕事。",
+          "携帯は、いつも二台。",
+          "バスは、定刻に出したい。"
+        ]
+      }
     },
     {
       "id": "gt_agra_fort_old_man",
       "cityId": "agra",
-      "nameJa": "老人",
-      "characterId": "gt_duggal"
+      "nameJa": "ドゥッガル",
+      "callJa": "老人",
+      "titleJa": "塔から動かない元陸軍大佐",
+      "characterId": "gt_duggal",
+      "sns": {
+        "introJa": [
+          "退役陸軍大佐。",
+          "鳥打ち帽は、四十年もの。",
+          "座る場所には、こだわる。"
+        ]
+      }
     },
     {
       "id": "gt_agra_finale_student",
       "cityId": "agra",
       "nameJa": "青年",
-      "characterId": "gt_agra_finale_student"
+      "characterId": "gt_agra_finale_student",
+      "sns": {
+        "introJa": [
+          "調べるのは、速い方。",
+          "ツアーは、学割で参加。"
+        ]
+      }
     },
     {
       "id": "gt_jagdeep",
@@ -449,58 +682,120 @@
       "nameJa": "ジャグディープ",
       "callJa": "男",
       "titleJa": "結婚前の二人を撮る写真家",
-      "characterId": "gt_jagdeep"
+      "characterId": "gt_jagdeep",
+      "sns": {
+        "introJa": [
+          "結婚前の二人を撮ってます。",
+          "反射板が相棒。",
+          "遅刻には、もう慣れた。"
+        ]
+      }
     },
     {
       "id": "gt_agra_chini_bride",
       "cityId": "agra",
       "nameJa": "花嫁になる人",
-      "characterId": "gt_agra_chini_bride"
+      "characterId": "gt_agra_chini_bride",
+      "sns": {
+        "introJa": [
+          "プネーから。式は半年後。",
+          "背景は、自分たちで選ぶ。"
+        ]
+      }
     },
     {
       "id": "gt_gurmeet",
       "cityId": "agra",
       "nameJa": "グルミート",
       "titleJa": "ハルバンスの息子",
-      "characterId": "gt_gurmeet"
+      "characterId": "gt_gurmeet",
+      "sns": {
+        "introJa": [
+          "カナダのブランプトンから。",
+          "トラックの会社をやってます。",
+          "鼻と肩幅は、親父ゆずり。"
+        ]
+      }
     },
     {
       "id": "gt_anwar",
       "cityId": "agra",
       "nameJa": "アンワル",
-      "characterId": "gt_anwar"
+      "characterId": "gt_anwar",
+      "sns": {
+        "introJa": [
+          "アーグラ一のガイド（甥いわく）。",
+          "ガイドして、四十年。",
+          "泣かない客は、帰さない。"
+        ]
+      }
     },
     {
       "id": "gt_samir",
       "cityId": "agra",
       "nameJa": "サミール",
       "titleJa": "宿の若い支配人",
-      "characterId": "gt_samir"
+      "characterId": "gt_samir",
+      "sns": {
+        "introJa": [
+          "南門近くの宿の、支配人です。",
+          "白鳥のタオル、折れます。",
+          "叔父は、アーグラ一のガイド。"
+        ]
+      }
     },
     {
       "id": "gt_vimla",
       "cityId": "agra",
       "nameJa": "ヴィムラー",
       "callJa": "女性",
-      "characterId": "gt_vimla"
+      "characterId": "gt_vimla",
+      "sns": {
+        "introJa": [
+          "ヒンディー語の教師を、三十八年。",
+          "ある墓の名誉回復をしています。",
+          "発音には、うるさいです。"
+        ]
+      }
     },
     {
       "id": "gt_agra_fatehpur_man",
       "cityId": "agra",
-      "nameJa": "男",
-      "characterId": "gt_mukesh"
+      "nameJa": "ムケーシュ",
+      "callJa": "男",
+      "titleJa": "自分の家だけ建てられない建設業者",
+      "characterId": "gt_mukesh",
+      "sns": {
+        "introJa": [
+          "建設業、三十年。",
+          "人の家は、たくさん建てた。",
+          "自分の家は、ただいま建設中。"
+        ]
+      }
     },
     {
       "id": "gt_agra_mariam_father",
       "cityId": "agra",
       "nameJa": "父親",
-      "characterId": "gt_agra_mariam_father"
+      "characterId": "gt_agra_mariam_father",
+      "sns": {
+        "introJa": [
+          "家族でピクニック中。",
+          "歴史は、映画で覚えた派。"
+        ]
+      }
     },
     {
       "id": "gt_agra_mariam_daughter",
       "cityId": "agra",
       "nameJa": "娘",
-      "characterId": "gt_agra_mariam_daughter"
+      "characterId": "gt_agra_mariam_daughter",
+      "sns": {
+        "introJa": [
+          "パパの説明を、訂正する係。",
+          "根拠は、携帯に。"
+        ]
+      }
     },
     {
       "id": "gt_sonia",
@@ -508,20 +803,40 @@
       "nameJa": "ソニア",
       "callJa": "女の子",
       "titleJa": "空き地のキャプテン",
-      "characterId": "gt_sonia"
+      "characterId": "gt_sonia",
+      "sns": {
+        "introJa": [
+          "空き地のキャプテン、十二歳。",
+          "目標は、州のチーム。",
+          "本物のバット、貯金中。"
+        ]
+      }
     },
     {
       "id": "gt_agra_ram_bagh_tea_master",
       "cityId": "agra",
       "nameJa": "茶屋の主人",
-      "characterId": "gt_agra_ram_bagh_tea_master"
+      "characterId": "gt_agra_ram_bagh_tea_master",
+      "sns": {
+        "introJa": [
+          "ラーム・バーグの向かいの茶屋。",
+          "噂は、麺より早く茹で上がる。"
+        ]
+      }
     },
     {
       "id": "gt_vinod",
       "cityId": "agra",
       "nameJa": "ヴィノード",
       "titleJa": "ツアーの運転手",
-      "characterId": "gt_vinod"
+      "characterId": "gt_vinod",
+      "sns": {
+        "introJa": [
+          "運転手。ガイドではありません。",
+          "白い車で、シークリーまで。",
+          "字は、娘の方がきれい。"
+        ]
+      }
     },
     {
       "id": "gt_vinod_mother",
@@ -554,13 +869,25 @@
       "id": "gt_agra_akbar_guard",
       "cityId": "agra",
       "nameJa": "番人",
-      "characterId": "gt_agra_akbar_guard"
+      "characterId": "gt_agra_akbar_guard",
+      "sns": {
+        "introJa": [
+          "シカンドラの番人。",
+          "猿とは、交渉で。"
+        ]
+      }
     },
     {
       "id": "gt_agra_fort_tourist",
       "cityId": "agra",
       "nameJa": "ツアーの客",
-      "characterId": "gt_agra_fort_tourist"
+      "characterId": "gt_agra_fort_tourist",
+      "sns": {
+        "introJa": [
+          "ツアーで、アーグラ城。",
+          "聞いた話は、すぐ言いたい。"
+        ]
+      }
     },
     {
       "id": "gt_pooja",
@@ -568,25 +895,53 @@
       "nameJa": "プージャー",
       "callJa": "花嫁のいとこ",
       "titleJa": "花嫁のいとこ",
-      "characterId": "gt_pooja"
+      "characterId": "gt_pooja",
+      "sns": {
+        "introJa": [
+          "花嫁のいとこ。声は大きい方。",
+          "門のリボン係（花嫁側）。",
+          "動画は、いとこ全員で見る。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_bride_grandmother",
       "cityId": "jaipur",
       "nameJa": "花嫁の祖母",
-      "characterId": "gt_jaipur_bride_grandmother"
+      "characterId": "gt_jaipur_bride_grandmother",
+      "sns": {
+        "introJa": [
+          "十六でこの家に来て、六十年。",
+          "窓から見るのは、得意よ。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_amber_shopkeeper",
       "cityId": "jaipur",
       "nameJa": "店主",
-      "characterId": "gt_jaipur_amber_shopkeeper"
+      "characterId": "gt_jaipur_amber_shopkeeper",
+      "sns": {
+        "introJa": [
+          "アンベール城の、門の脇の店。",
+          "安い・早い・たくさん。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_hawa_woman",
       "cityId": "jaipur",
-      "nameJa": "女性",
-      "characterId": "gt_gaura"
+      "nameJa": "ガウラ",
+      "callJa": "女性",
+      "titleJa": "窓の下の野菜売り",
+      "characterId": "gt_gaura",
+      "sns": {
+        "introJa": [
+          "ハワー・マハルの下で、四十年。",
+          "朝四時、卸の市場で仕入れ。",
+          "窓は、外から数える派。"
+        ]
+      }
     },
     {
       "id": "gt_vishal",
@@ -594,32 +949,70 @@
       "nameJa": "ヴィシャール",
       "callJa": "青年",
       "titleJa": "来週ドイツへ発つ息子",
-      "characterId": "gt_vishal"
+      "characterId": "gt_vishal",
+      "sns": {
+        "introJa": [
+          "来週から、ドイツで働きます。",
+          "預け荷物は、二十三キロまで。",
+          "母の漬物は、重量オーバー。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_city_palace_woman",
       "cityId": "jaipur",
-      "nameJa": "女性",
-      "characterId": "gt_sushma"
+      "nameJa": "スシュマ",
+      "callJa": "女性",
+      "titleJa": "漬物で息子を引き止める母",
+      "characterId": "gt_sushma",
+      "sns": {
+        "introJa": [
+          "ジャイプールの、母です。",
+          "漬物は、季節ごとに漬けます。",
+          "息子の鞄は、まだ空いてる。"
+        ]
+      }
     },
     {
       "id": "gt_shastri",
       "cityId": "jaipur",
       "nameJa": "シャーストリー",
       "titleJa": "町の占星術師",
-      "characterId": "gt_shastri"
+      "characterId": "gt_shastri",
+      "sns": {
+        "introJa": [
+          "町の占星術師だよ。",
+          "毎朝、日時計の影を見ている。",
+          "吉時の相談、受け付けます。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_jantar_woman",
       "cityId": "jaipur",
-      "nameJa": "女性",
-      "characterId": "gt_divya"
+      "nameJa": "ディヴィヤ",
+      "callJa": "女性",
+      "titleJa": "時刻に厳しい天文学者",
+      "characterId": "gt_divya",
+      "sns": {
+        "introJa": [
+          "ベンガルールの研究所で、星を。",
+          "博士論文、提出間近。",
+          "秒の単位で、生きています。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_hotel_front",
       "cityId": "jaipur",
       "nameJa": "フロントの女性",
-      "characterId": "gt_jaipur_hotel_front"
+      "characterId": "gt_jaipur_hotel_front",
+      "sns": {
+        "introJa": [
+          "旧市街の宿の、帳場にいます。",
+          "お祝いの相談も、どうぞ。"
+        ]
+      }
     },
     {
       "id": "gt_raju",
@@ -627,13 +1020,26 @@
       "nameJa": "ラージュー",
       "callJa": "男の子",
       "titleJa": "地図を描く男の子",
-      "characterId": "gt_raju"
+      "characterId": "gt_raju",
+      "sns": {
+        "introJa": [
+          "宝の地図、ぼくが描いてる。",
+          "一枚五十ルピー（相談可）。",
+          "案内もするよ。本当だよ。"
+        ]
+      }
     },
     {
       "id": "gt_jaipur_jaigarh_old_man",
       "cityId": "jaipur",
       "nameJa": "老人",
-      "characterId": "gt_jaipur_jaigarh_old_man"
+      "characterId": "gt_jaipur_jaigarh_old_man",
+      "sns": {
+        "introJa": [
+          "ジャイガル城の門の外で、茶屋。",
+          "話は、チャイ一杯につき一つ。"
+        ]
+      }
     },
     {
       "id": "gt_farhana",
@@ -641,21 +1047,56 @@
       "nameJa": "ファルハーナ",
       "callJa": "女性",
       "titleJa": "遊歩道のメヘンディ描き",
-      "characterId": "gt_farhana"
+      "characterId": "gt_farhana",
+      "sns": {
+        "introJa": [
+          "湖の遊歩道で、メヘンディ。",
+          "描いた模様は、二週間残るわ。",
+          "夢は、扇風機と鏡のある店。"
+        ]
+      }
     },
     {
       "id": "gt_nasreen",
       "cityId": "jaipur",
       "nameJa": "ナスリーン",
       "titleJa": "腕輪の店のおかみ",
-      "characterId": "gt_nasreen"
+      "characterId": "gt_nasreen",
+      "sns": {
+        "introJa": [
+          "宝石街の端の、腕輪の店。",
+          "作るのは夫たち、売るのはわたし。",
+          "はめるのは、特別な日に。"
+        ]
+      }
     },
     {
       "id": "gt_kavya",
       "cityId": "jaipur",
       "nameJa": "カヴィヤ",
       "titleJa": "地下へ下りられない女の子",
-      "characterId": "gt_kavya"
+      "characterId": "gt_kavya",
+      "sns": {
+        "introJa": [
+          "カヴィヤ、八さい。",
+          "こわいときは、三つかぞえる。",
+          "ママのけいたいで、かいてます。"
+        ]
+      }
+    },
+    {
+      "id": "gt_saleem",
+      "cityId": "jaipur",
+      "nameJa": "サリーム",
+      "titleJa": "中庭で八年描き続ける画家",
+      "characterId": "gt_saleem",
+      "sns": {
+        "introJa": [
+          "アンベール城の中庭で、八年。",
+          "描く前に、何日も座る。",
+          "説明は、書かない。"
+        ]
+      }
     },
     {
       "id": "gt_govind",

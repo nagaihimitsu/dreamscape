@@ -26,7 +26,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_jaipur_amber_fort_guide_003
-# photo: gt_album_j008 # photo_caption: まつげみたいに細い筆
+# photo: gt_album_j008 # photo_caption: まつげみたいに細い筆 # photo_with: gt_saleem
 わ……門の模様まで、ちゃんと描いてある。この筆、まつげみたいに細い
 # speaker: narrator
 画家は顔を上げず、「手描き」と値段だけを言った。{heroine_name}は財布を開きかけ、手を止めた。
@@ -39,7 +39,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,music
 # voice: gt_jaipur_amber_fort_guide_005
-# photo: gt_album_j009 # photo_caption: 自分のための、初めての買い物
+# photo: gt_album_j009 # photo_caption: 自分のための、初めての買い物 # photo_with: gt_saleem
 自分のための買い物、この旅で初めてかも。……ちょっと、どきどきした
 # speaker: narrator
 包みを大事そうに鞄にしまい、二人は門の方へ歩き出した。門の脇には、大きな土産物屋が口を開けている。
@@ -96,13 +96,13 @@ INCLUDE modules.ink
     # speaker: heroine
     # voice: gt_jaipur_main_amber_fort_004
     # term: gt_term_ganesha
-    # photo: gt_album_j011 # photo_caption: 二枚を並べて
+    # photo: gt_album_j011 # photo_caption: 二枚を並べて # photo_with: gt_saleem
     サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる
 - else:
     # speaker: enemy
     # voice: gt_jaipur_main_amber_fort_battle_saleem_004
     # term: gt_term_ganesha
-    # photo: gt_album_j011 # photo_caption: 二枚を並べて
+    # photo: gt_album_j011 # photo_caption: 二枚を並べて # photo_with: gt_saleem
     ガネーシャだ。ガネーシュ・ポール、ガネーシャの門。名前を読めば分かる。向こうのは孔雀になっている
 }
 # speaker: narrator
@@ -128,7 +128,7 @@ INCLUDE modules.ink
 ……サリームさん、これ、何日描いたんですか
 # speaker: enemy
 # voice: gt_jaipur_main_amber_fort_battle_saleem_007
-# photo: gt_album_j012 # photo_caption: 鏡の間に、四日座った
+# photo: gt_album_j012 # photo_caption: 鏡の間に、四日座った # photo_with: gt_saleem
 鏡の間に、四日座った。警備員に顔を覚えられた
 -> quiz(2) ->
 # background: gt_bg_jaipur_amber_fort
@@ -176,7 +176,7 @@ INCLUDE modules.ink
 # speaker: narrator
 土産物屋の店主は、いつの間にかいなくなっていた。周りの店主たちが、黙ってこちらを見ている。
 # speaker: narrator
-# photo: gt_album_j013 # photo_caption: 深く頭を下げる
+# photo: gt_album_j013 # photo_caption: 深く頭を下げる # photo_with: gt_saleem
 {heroine_name}はサリームに向き直り、深く頭を下げた。
 # speaker: heroine
 # emotion: serious
@@ -219,6 +219,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,sparkle
 # voice: gt_jaipur_main_amber_fort_012
-# photo: gt_album_j015 # photo_caption: 裏に書かれた名前
+# photo: gt_album_j015 # photo_caption: 裏に書かれた名前 # photo_with: gt_saleem
 ……わたしが、自分のために買った、初めての絵です。疑ったことも、ちゃんと一緒に覚えておきます
 -> END

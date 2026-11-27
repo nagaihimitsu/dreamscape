@@ -68,6 +68,7 @@ INCLUDE modules.ink
 # speaker: narrator
 甘くて、少し煙たい匂い。小さな店の棚に、色の違う液体の小瓶が何十本も並んでいる。
 # speaker: gt_delhi_jama_old_man
+# unnamed
 # term: gt_term_attar
 # voice: gt_delhi_main_jama_masjid_battle_hamid_001
 アタル。花や木を、油に閉じこめたものだ。手首を
@@ -80,7 +81,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_delhi_main_jama_masjid_001
-# photo: gt_album_d036 # photo_caption: 手首にひと筋の薔薇のアタル
+# photo: gt_album_d036 # photo_caption: 手首にひと筋の薔薇のアタル # photo_with: gt_delhi_jama_old_man
 わ……。薔薇なのに、甘すぎない。ずっと嗅いでいられる
 # speaker: gt_zoheb
 # unnamed
@@ -93,7 +94,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_battle_hamid_003
 隣のゾヘブだ。気にするな。……いや、気にしてもらうことになるか
 # speaker: narrator
-# photo: gt_album_d037 # photo_caption: 「客だ！　時計、スタート！」
+# photo: gt_album_d037 # photo_caption: 「客だ！　時計、スタート！」 # photo_with: gt_zoheb gt_delhi_jama_old_man
 店の奥で、古い柱時計の長い針が、かちりと一つ進んだ。ハミードの説明は短かった。
 # speaker: enemy
 # voice: gt_delhi_main_jama_masjid_battle_hamid_004
@@ -184,7 +185,7 @@ INCLUDE modules.ink
 # se: phone_ring
 そのとき、ゾヘブの電話が鳴った。画面を見て、彼は路地の角まで離れる。
 # speaker: narrator
-# photo: gt_album_d039 # photo_caption: 路地の角の電話
+# photo: gt_album_d039 # photo_caption: 路地の角の電話 # photo_with: gt_zoheb
 声を落としても、狭い路地では全部聞こえた。
 # speaker: gt_zoheb
 # voice: gt_delhi_main_jama_masjid_battle_zoheb_008
@@ -270,7 +271,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # term: gt_term_rupee
-# photo: gt_album_d041 # photo_caption: 一ルピーもまけない、布袋の小瓶
+# photo: gt_album_d041 # photo_caption: 一ルピーもまけない、布袋の小瓶 # photo_with: gt_delhi_jama_old_man
 代金を出すと、ハミードは一ルピーもまけなかった。
 # speaker: enemy
 # voice: gt_delhi_main_jama_masjid_battle_hamid_022

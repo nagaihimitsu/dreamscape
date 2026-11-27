@@ -60,7 +60,7 @@ INCLUDE modules.ink
 # speaker: gt_mehr
 # unnamed
 # voice: gt_delhi_main_humayun_tomb_battle_mehr_001
-# photo: gt_album_d026 # photo_caption: 「お願い、十分だけ友達になって！」
+# photo: gt_album_d026 # photo_caption: 「お願い、十分だけ友達になって！」 # photo_with: gt_mehr gt_kabir
 お願い、十分だけ友達になって！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
@@ -104,7 +104,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_humayun_tomb_battle_suresh_003
 スレーシュだ。この子の叔父。所得税の調査官を三十五年やった。話の合わない申告は、匂いで分かる
 # speaker: narrator
-# photo: gt_album_d027 # photo_caption: 新聞を指揮棒にする元調査官
+# photo: gt_album_d027 # photo_caption: 新聞を指揮棒にする元調査官 # photo_with: gt_suresh gt_mehr gt_kabir
 スレーシュはこちらに鼻を向け、本当に匂いをかぐ仕草をした。それから新聞を丸め、指揮棒のように振る。
 # speaker: enemy
 # voice: gt_delhi_main_humayun_tomb_battle_suresh_004
@@ -171,7 +171,7 @@ INCLUDE modules.ink
 # speaker: narrator
 スレーシュは腕時計を見た。三度目だった。視線が、こちらではなく東の門の方へ流れる。
 # speaker: narrator
-# photo: gt_album_d028 # photo_caption: 胸ポケットからのぞく赤い薔薇
+# photo: gt_album_d028 # photo_caption: 胸ポケットからのぞく赤い薔薇 # photo_with: gt_suresh
 クルタの胸ポケットから、赤いものが少しのぞいていた。薔薇だ。新聞で隠すように、彼は姿勢を変えた。
 # speaker: heroine
 # reaction: heroine,teasing,question
@@ -212,7 +212,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: paper_drop
 # reaction: enemy,exclamation
-# photo: gt_album_d029 # photo_caption: 新聞が落ち、薔薇があらわに
+# photo: gt_album_d029 # photo_caption: 新聞が落ち、薔薇があらわに # photo_with: gt_suresh gt_meena gt_mehr gt_kabir
 スレーシュの手から新聞が落ち、胸ポケットの薔薇が、全員の前にあらわになった。
 # speaker: narrator
 メヘルの目が、ゆっくり細くなる。
@@ -233,7 +233,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_humayun_tomb_battle_mehr_007
 異議なし
 # speaker: narrator
-# photo: gt_album_d030 # photo_caption: 「今日この廟で、誰も、誰にも会わなかった」
+# photo: gt_album_d030 # photo_caption: 「今日この廟で、誰も、誰にも会わなかった」 # photo_with: gt_suresh gt_mehr gt_kabir
 メヘルが即答し、カビールが何度もうなずいた。三人の視線が、そろって{heroine_name}に向く。
 # speaker: heroine
 # emotion: serious
@@ -266,7 +266,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # leave: enemy
-# photo: gt_album_d031 # photo_caption: 東の門へ、西の門へ
+# photo: gt_album_d031 # photo_caption: 東の門へ、西の門へ # photo_with: gt_suresh gt_mehr gt_kabir
 叔父は東の門へ、若い二人は西の門へ。互いに振り返らないまま、別々の方向へ歩いていった。
 # speaker: heroine
 # reaction: heroine,exasperated,sigh

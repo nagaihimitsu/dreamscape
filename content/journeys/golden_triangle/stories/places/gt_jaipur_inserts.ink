@@ -167,7 +167,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
 # voice: gt_jaipur_hotel_mehndi_morning_001
-# photo: gt_album_j095 # photo_caption: 一晩で濃くなった色
+# photo: gt_album_j095 # photo_caption: 一晩で濃くなった色 # photo_with: gt_jaipur_hotel_front
 だ、旦那さまはいないです！
 { cond("flag gt_jaipur_mehndi_her_secret"):
     -> secret_read
@@ -186,7 +186,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_hotel_mehndi_morning_jaipur_hotel_front_002
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
-# photo: gt_album_j096 # photo_caption: 読み上げられた名前
+# photo: gt_album_j096 # photo_caption: 読み上げられた名前 # photo_with: gt_jaipur_hotel_front
 # pause: 900
 帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
@@ -234,7 +234,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_hotel_radish_night_002
-# photo: gt_album_j087 # photo_caption: 新聞紙の包みを、帳場へ
+# photo: gt_album_j087 # photo_caption: 新聞紙の包みを、帳場へ # photo_with: gt_jaipur_hotel_front
 本当に、お皿に戻ってくるんだ……。何になるんですか？
 # speaker: gt_jaipur_hotel_front
 それは、朝のお楽しみ
@@ -278,7 +278,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_jaipur_hotel_radish_morning_002
-# photo: gt_album_j088 # photo_caption: ガウラさんの大根が、パンになった
+# photo: gt_album_j088 # photo_caption: ガウラさんの大根が、パンになった # photo_with: gt_jaipur_hotel_front
 ……おいしい！　外はぱりっとしてて、中の大根が、ちょっと辛くて、ちょっと甘い
 { cond("item gt_jaipur_sushma_lime_pickle held"):
     # speaker: heroine
@@ -408,7 +408,7 @@ INCLUDE modules.ink
 # voice: gt_jaipur_finale_after_envelope_001
 アマンさんに
 # speaker: narrator
-# photo: gt_album_j130 # photo_caption: アマンさんに
+# photo: gt_album_j130 # photo_caption: アマンさんに # photo_with: gt_kamla
 カムラは封筒を光にかざし、中の一ルピー玉を、指で確かめた。
 { cond("flag gt_jaipur_envelope_letter"):
     # speaker: enemy
@@ -447,7 +447,7 @@ INCLUDE modules.ink
 踊りの輪がほどけたころ、花嫁のいとこのプージャーが、携帯を握りしめて走ってきた。画面と彼女の顔を、交互に見る。
 # speaker: gt_pooja
 # voice: gt_jaipur_finale_after_reel_pooja_001
-# photo: gt_album_j131 # photo_caption: 「きゃー？」の人
+# photo: gt_album_j131 # photo_caption: 「きゃー？」の人 # photo_with: gt_pooja
 やっぱり！　デリーの階段井戸の、『きゃー？』の人でしょ！　いとこ全員で見たの、あの動画！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang

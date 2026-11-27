@@ -1,8 +1,13 @@
 // 【SNS の投稿のファイル】デリーの投稿（2026-11-27）。書き方は authoring/SNS_PLAN.md の「札（書き方）」と「文の書き方」。
 // - knot が1つの投稿、その中の stitch（= 名前）が1件のコメント。コメントの最初の行がコメント、次の行からが返事。
-// - デリーの常連（コメントする人）は4人：カムラ・ルーヒー・モヌ・クナール（自己紹介は progression/story.json の people の sns）。
+// - デリーの常連（ヒロインの投稿にコメントする人）は4人：カムラ・ルーヒー・モヌ・クナール（自己紹介は progression/story.json の people の sns）。
 // - ヒロインの投稿は5つ：到着・クトゥブ・ミナール・インド門・チャンドニー・チョーク・アグラセン・キ・バオリ。
-//   出会った人の投稿は、モヌ（インド門。1回目の3択で写真が3通り）とクナール（階段井戸の動画）。
+// - 出会った人の投稿（「出会った人の投稿」の所）。1人1つ（常連は2つまで）、写真は1枚で、たいてい会った場面の夜に届く：
+//   常連：モヌ（インド門の写真。1回目の3択で3通りのうち1つだけ届く／村の上映会）、クナール（階段井戸の動画／次の撮影の下見）、
+//         カムラ（段ボール、あと三つ）、ルーヒー（地下鉄の女性車両）。
+//   クイズの相手：ニディ（帰りのバス）、ラームキシャン（柱の小さな土産）、スレーシュ（特記事項なし）、ハミード（雨が一本）、アマン（招待状）。
+//   2つの場面に出る人・都市をまたぐ人：ミーナ（押し花）、ハルバンス（まん丸のローティー）。
+//   新しい写真（gt_sns_*）は public/assets/sns/<ID>.webp。ほかの人（駅の3人も）は自己紹介だけ。
 // - 関係の変化は、インド門の投稿のモヌの後のコメント（# when: couple）。アーグラ・ジャイプールで交際が始まった夜にも届く。
 INCLUDE modules.ink
 -> DONE
@@ -192,3 +197,204 @@ INCLUDE modules.ink
 うちの宿のお客さんだ！
 # speaker: heroine
 夜に見ちゃだめだよ
+
+// モヌ：村に帰った夕方、ダーディーが近所の人に携帯の写真を見せる（インド門のデートの夜に届く。帰りのバスの後の夕方）。
+// 携帯の画面の中身は写さないので、十三人目・十四人・アイスのどの道でも同じ投稿。
+=== gt_post_delhi_monu_village ===
+# post: gt_monu
+# images: gt_sns_monu_village
+# where: ハリヤーナーの村
+# when: date gt_delhi_date_india_gate
+ダーディー、村で上映会
+
+= heroine
+# speaker: heroine
+おばあさん、得意そう！
+# speaker: gt_monu
+本日、三回目の上映です
+
+// クナール：次の撮影の下見（夜の屋敷の階段に、ジャスミートの白い布）。デリーを終えた後の夜に届く（アーグラにいるときのこともある）。
+// 下見の場所は明かさない（# where: なし）。
+=== gt_post_delhi_kunal_location ===
+# post: gt_kunal
+# images: gt_sns_kunal_location
+# when: date gt_delhi_date_agrasen_baoli
+# when: city delhi
+# likes: gt_roohi if met gt_roohi
+次の現場、下見中
+
+= jasmeet
+# speaker: gt_jasmeet
+わたしの布、返して
+# speaker: gt_kunal
+撮影が終わったら
+
+= heroine
+# speaker: heroine
+わたしは、行かないからね
+# speaker: gt_kunal
+まだ、誘ってません
+
+// カムラ：引っ越しの朝の戸口（段ボールが三つ）。デリーの2日目の夜から、エピローグの前まで（エピローグの翌朝に車で出るため）。
+=== gt_post_delhi_kamla_boxes ===
+# post: gt_kamla
+# images: gt_sns_kamla_last_boxes
+# where: 路地の家
+# when: day >= 2
+# until: epilogue delhi
+# likes: gt_roohi if met gt_roohi
+段ボール、あと三つ。
+
+= heroine
+# speaker: heroine
+手伝いましょうか？
+# speaker: gt_kamla
+指図なら、足りてる。
+
+// ルーヒー：地下鉄の女性車両（作文の場面の後、その夜に届く）。作文の題がメトロになったかで、返事を書き分ける。
+// メトロにならなかった道の返事は、駅の場面の伝言（誰にも見せない作文）を先に言わない。
+=== gt_post_delhi_roohi_metro ===
+# post: gt_roohi
+# images: gt_sns_roohi_metro
+# where: 地下鉄の女性車両
+# when: seen gt_delhi_hotel_homework
+# likes: gt_kamla
+今日も、先頭の車両
+
+= heroine_essay
+# one_of: heroine
+# when: flag gt_delhi_roohi_metro_essay
+# speaker: heroine
+床で宿題の子、ほんとにいた！
+# speaker: gt_roohi
+作文も、ここで書いてる
+
+= heroine_monument
+# one_of: heroine
+# when: not flag gt_delhi_roohi_metro_essay
+# speaker: heroine
+床で宿題の子、ほんとにいた！
+# speaker: gt_roohi
+作文には、書かないけどね
+
+// ニディ：遠足の帰りのバス（レッド・フォートのクイズの夜に届く）。約束を破った子はバスで歌う決まりだった。
+=== gt_post_delhi_nidhi_bus ===
+# post: gt_nidhi
+# images: gt_sns_nidhi_bus
+# where: 帰りのバス
+# when: battle gt_delhi_main_red_fort_battle
+# likes: gt_anjali gt_faiz
+帰りのバス、歌った子はゼロ
+
+= heroine
+# speaker: heroine
+三十九人、そろってますか？
+# speaker: gt_nidhi
+数えました。三回
+
+= sonu
+# speaker: gt_sonu
+先生、ぼく今から歌えます
+# speaker: gt_nidhi
+寝なさい。
+
+// ラームキシャン：帰りの夜行バスで、鉄の柱の小さな土産を手のひらに（クトゥブ・ミナールのクイズの夜に届く）。
+=== gt_post_delhi_ramkishan_souvenir ===
+# post: gt_delhi_qutb_man
+# images: gt_sns_ramkishan_pillar
+# where: 帰りの夜行バス
+# when: battle gt_delhi_main_qutb_minar_battle
+抱けないので、小さいのを買った
+
+= heroine
+# speaker: heroine
+それ、錆びないやつですか？
+# speaker: gt_delhi_qutb_man
+安物です。錆びたら教材に
+
+// スレーシュ：誰も誰にも会わなかった日の、家の机（フマユーン廟のクイズの夜に届く）。椅子の背のクルタの胸ポケットは空。
+// メヘルの「異議なし」は、廟での口裏合わせへの返事。スレーシュは返事をしない。
+=== gt_post_delhi_suresh_desk ===
+# post: gt_suresh
+# images: gt_sns_suresh_desk
+# when: battle gt_delhi_main_humayun_tomb_battle
+# likes: gt_meena if date gt_delhi_date_lodhi_garden
+本日、特記事項なし
+
+= mehr
+# speaker: gt_mehr
+異議なし
+
+// ミーナ：古い本に挟んだ薔薇の押し花（フマユーン廟のクイズとロディ・ガーデンのデートの両方の後の夜に届く。順はどちらでも二本目）。
+// スレーシュのコメントは、ロディ・ガーデンで、写真をメヘルに送ってみたらと勧めた道だけ（隠すのをやめかけている）。
+=== gt_post_delhi_meena_book ===
+# post: gt_meena
+# images: gt_sns_meena_book
+# when: battle gt_delhi_main_humayun_tomb_battle
+# when: date gt_delhi_date_lodhi_garden
+押し花、二本目になりました
+
+= heroine
+# speaker: heroine
+まだ、いい匂いしますか？
+# speaker: gt_meena
+本と同じ匂いになったわ
+
+= suresh
+# when: flag gt_delhi_suresh_encouraged
+# speaker: gt_suresh
+その本は、閉じておくように
+# speaker: gt_meena
+閉じてるわよ
+
+// ハミード：店の棚、ミッティ（雨の匂い）の瓶が一本ぶん空いた（ジャーマー・マスジドのクイズの夜に届く）。
+// ゾヘブへの返事で、ハミードが息子と電話で話したことが分かる。
+=== gt_post_delhi_hamid_shelf ===
+# post: gt_delhi_jama_old_man
+# images: gt_sns_hamid_shelf
+# where: delhi_jama_masjid
+# when: battle gt_delhi_main_jama_masjid_battle
+雨が一本、売れた
+
+= zoheb
+# speaker: gt_zoheb
+爺さん、SNS始めたのかよ
+# speaker: gt_delhi_jama_old_man
+息子に教わった
+
+// ハルバンス：ランガルの台所、夕方のローティーは全部まん丸（バングラー・サーヒブのデートの夜に届く）。
+// アーグラのグル・カ・タールの再会（息子）は先に言わない。
+=== gt_post_delhi_harbans_roti ===
+# post: gt_harbans
+# images: gt_sns_harbans_roti
+# where: delhi_bangla_sahib
+# when: date gt_delhi_date_bangla_sahib
+夕方の分は、全部まん丸。つまらん
+
+= heroine
+# speaker: heroine
+また、地図を作りに行きます
+# speaker: gt_harbans
+国は、まだたくさんある
+
+// アマン：空になった祖母の家で、結婚式の招待状を書く（エピローグの後、都市を出るときに届く）。横で祖母が落花生を割っている。
+=== gt_post_delhi_aman_invitations ===
+# post: gt_aman
+# images: gt_sns_aman_invitations
+# where: 祖母の家
+# when: epilogue delhi
+招待状、残り二百枚
+
+= kamla
+# speaker: gt_kamla
+字が、曲がってる。
+# speaker: gt_aman
+……零時過ぎなので
+
+= heroine
+# speaker: heroine
+一通、受け取りました
+# speaker: gt_aman
+祖母が、返事はまだかと
+# speaker: heroine
+……まだ、一晩です

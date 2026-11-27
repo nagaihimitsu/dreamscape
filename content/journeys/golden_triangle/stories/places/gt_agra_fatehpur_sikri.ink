@@ -57,6 +57,7 @@ INCLUDE modules.ink
 # speaker: narrator
 同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
 # speaker: gt_agra_fatehpur_man
+# unnamed
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_001
 家を、建てるな……だと
 # speaker: heroine
@@ -80,7 +81,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_main_fatehpur_sikri_002
-# photo: gt_album_a053 # photo_caption: 碑文に携帯を向ける男
+# photo: gt_album_a053 # photo_caption: 碑文に携帯を向ける男 # photo_with: gt_agra_fatehpur_man
 えっ、わたしが？　む、無理です。それは、ムケーシュさんが決めることです
 # speaker: enemy
 # reaction: enemy,anger
@@ -122,7 +123,7 @@ INCLUDE modules.ink
 施主さん、厳しいんですね
 # speaker: enemy
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_010
-# photo: gt_album_a054 # photo_caption: 「施主は自分です」
+# photo: gt_album_a054 # photo_caption: 「施主は自分です」 # photo_with: gt_agra_fatehpur_man
 施主は自分です。だから一番厳しい
 # speaker: narrator
 彼は石段の上の、赤い石の町並みを見渡した。宮殿、広場、柱廊。人の住まない町が、どこまでも続いている。
@@ -149,7 +150,7 @@ INCLUDE modules.ink
 わたしの家もね、息子のためなんです。二階は全部、息子夫婦の部屋。孫ができたら、屋上で凧を揚げる
 # speaker: enemy
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_015
-# photo: gt_album_a055 # photo_caption: 伏せた携帯、誰も住まない二階
+# photo: gt_album_a055 # photo_caption: 伏せた携帯、誰も住まない二階 # photo_with: gt_agra_fatehpur_man
 先週、息子が言いました。ベンガルールで仕事が決まった。向こうで暮らすって。……誰も住まない二階に、今日、屋根を流すんです
 # speaker: narrator
 {heroine_name}は何も言えなかった。慰める言葉なら、いくらでも浮かぶ。どれも、この人の四百万ルピーには軽すぎた。
@@ -191,14 +192,14 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_agra_main_fatehpur_sikri_009
-# photo: gt_album_a056 # photo_caption: 「橋を渡るな、とは書いてないです」
+# photo: gt_album_a056 # photo_caption: 「橋を渡るな、とは書いてないです」 # photo_with: gt_agra_fatehpur_man
 い、今のは感想です。決めたわけじゃないです
 # speaker: narrator
 # pause: 900
 ムケーシュは長いあいだ黙っていた。それから携帯を表に返し、現場監督の番号を押した。
 # speaker: enemy
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_020
-# photo: gt_album_a057 # photo_caption: 「四時、予定どおり屋根を流せ」
+# photo: gt_album_a057 # photo_caption: 「四時、予定どおり屋根を流せ」 # photo_with: gt_agra_fatehpur_man
 わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ。息子が帰ってきたら、そこで一緒に茶を飲む
 # speaker: narrator
 電話を切ると、彼は立ち上がり、ズボンの埃を払った。
@@ -221,7 +222,7 @@ INCLUDE modules.ink
 あなた、最後まで決めてくれませんでしたね。……ありがとう。人に決めてもらった家には、住めないところでした
 # speaker: narrator
 # leave: enemy
-# photo: gt_album_a058 # photo_caption: 現場の方角へ下りていく背中
+# photo: gt_album_a058 # photo_caption: 現場の方角へ下りていく背中 # photo_with: gt_agra_fatehpur_man
 彼は石段を、一段ずつ下りていった。現場の方角へ。四時まで、まだ少し時間がある。
 # speaker: heroine
 # emotion: smile

@@ -43,13 +43,13 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_delhi_date_chandni_chowk_003
-# photo: gt_album_d044 # photo_caption: 一つ目「口の中で、割れた！」
+# photo: gt_album_d044 # photo_caption: 一つ目「口の中で、割れた！」 # photo_with: gt_delhi_chandni_vendor
 すっぱ、からっ、おいしい！　口の中で、割れた！
 # speaker: narrator
 感想を言い終わる前に、二つ目が来た。飲み込む前に、三つ目。屋台の男は客の顔を見ていない。手だけが、正確に、休まずに動いている。
 # speaker: narrator
 # emotion: smile
-# photo: gt_album_d045 # photo_caption: 涙目で、律儀にうなずく
+# photo: gt_album_d045 # photo_caption: 涙目で、律儀にうなずく # photo_with: gt_delhi_chandni_vendor
 四つ目。五つ目。彼女は涙目のまま、律儀に笑ってうなずいている。口がいっぱいで、何も言えない。
 隣の男の客が、短く何か言った。
 # speaker: gt_delhi_chandni_customer
@@ -58,7 +58,7 @@ INCLUDE modules.ink
 バス
 # speaker: narrator
 # leave: gt_delhi_chandni_customer
-# photo: gt_album_d046 # photo_caption: 「バス」で止まる手 # photo_show: small
+# photo: gt_album_d046 # photo_caption: 「バス」で止まる手 # photo_show: small # photo_with: gt_delhi_chandni_customer gt_delhi_chandni_vendor
 屋台の男の手が、その客の器だけを飛ばした。
 // 一回目の噛み合いの代わりに、ミニゲーム「ゴルガッパの勝負」（2026-11-16。前は「勝負を挑む」を選んだときだけ遊んだ）。
 // 屋台の男が二人の器に交互に置き、ゲームの結果と同じ ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。結果ごとに、前の3択の道の台詞へつなぐ。
@@ -73,7 +73,7 @@ INCLUDE modules.ink
     # memory: gt_delhi_date_chandni_chowk_memory
     # set: gt_delhi_said_bas
     # speaker: narrator
-    # photo: gt_album_d047 # photo_caption: 十四で、二人同時に手を上げた
+    # photo: gt_album_d047 # photo_caption: 十四で、二人同時に手を上げた # photo_with: gt_delhi_chandni_vendor
     十四で、二人の手が同時に上がった。けれど屋台の男は、手を見ていない。二人の器に、十五個目が置かれた。思わず「バス」と口に出すと、男の手が、こちらの器の上でだけ止まった。
     { romance_result == "negative":
         # speaker: narrator
@@ -137,7 +137,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
     # voice: gt_delhi_chandni_chowk_duel_002
-    # photo: gt_album_d048 # photo_caption: 「この人の分も、バス！」
+    # photo: gt_album_d048 # photo_caption: 「この人の分も、バス！」 # photo_with: gt_delhi_chandni_vendor
     バス！　この人の分も、バス！
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -147,7 +147,7 @@ INCLUDE modules.ink
     # profile: provocative
     # memory: gt_delhi_date_chandni_chowk_memory
     # speaker: narrator
-    # photo: gt_album_d049 # photo_caption: 長く食べて、拍手
+    # photo: gt_album_d049 # photo_caption: 長く食べて、拍手 # photo_with: gt_delhi_chandni_vendor
     十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
     { romance_result == "negative":
         # speaker: narrator
@@ -173,7 +173,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_chandni_chowk_012
 ……食べたい。食べたいけど、もう入らないかも。でも、せっかくくれたのに
 # speaker: narrator
-# photo: gt_album_d050 # photo_caption: 最後の一つを三回ずつ見比べる
+# photo: gt_album_d050 # photo_caption: 最後の一つを三回ずつ見比べる # photo_with: gt_delhi_chandni_vendor
 彼女は器の上の一つと、こちらの顔を、三回ずつ見比べた。
 * [自分が食べる # option: eat_last_myself]
     # profile: provocative
@@ -238,7 +238,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,happy,sparkle
     # voice: gt_delhi_date_chandni_chowk_020
-    # photo: gt_album_d052 # photo_caption: 水なしの、おまけのおまけ
+    # photo: gt_album_d052 # photo_caption: 水なしの、おまけのおまけ # photo_with: gt_delhi_chandni_vendor
     水なしの、おまけのおまけ。断ったのに、もらえちゃった。言ってみるものだね
 -
 # speaker: narrator
