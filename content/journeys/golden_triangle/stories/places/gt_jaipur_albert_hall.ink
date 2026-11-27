@@ -51,7 +51,7 @@ INCLUDE modules.ink
         一握り撒いた瞬間、灰色の波が足もとに押し寄せた。肩に一羽、頭に一羽。彼女は、悲鳴の手前で笑い出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        # photo: gt_album_j31 # photo_caption: 鳩の王さま
+        # photo: gt_album_j041 # photo_caption: 鳩の王さま
         # voice: gt_jaipur_date_albert_hall_004
         頭！　頭に乗ってる！　ふふっ、すごく似合ってるよ、鳩の王さま
     }

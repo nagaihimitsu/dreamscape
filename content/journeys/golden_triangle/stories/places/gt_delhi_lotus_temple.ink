@@ -94,7 +94,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # pause: 1000
 どれくらい経っただろう。立ち上がる前に、もう一度だけ、指先が背中に触れた。
-# photo: gt_album_d61 # photo_caption: 背中の字あて
+# photo: gt_album_d069 # photo_caption: 背中の字あて
 さっきより、ずっとゆっくりだった。一画ずつ、確かめるように。
 一つ目を追っているうちに、もう次の字が始まっていた。背中の上の線は、書かれたそばからほどけていく。読もうとするほど、指先のあたたかさばかりが残った。
 # leave: heroine
