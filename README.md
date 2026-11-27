@@ -50,6 +50,7 @@
 - [コンテンツ制作ガイド](authoring/CONTENT_GUIDE.md)：会話・札・クイズ・観光・デート・条件・移動・音・人物の絵の書き方。
 - [シナリオ改稿のポイント（編集者視点）](authoring/SCENARIO_EDITING_GUIDE.md)：書き上がったシナリオを、書いた人とは別の編集者が、初めて遊ぶ人の目で読み直して整える手引き。
 - [発注マニュアル](authoring/ORDERING_MANUAL.md)：声（ヒロインとほかの人物）と、描いてもらう絵の頼み方・受け取り方。
+- [Krea 2 で写真を作るやり方](authoring/KREA2_PHOTO_GUIDE.md)：アルバム・SNS の写真の Krea 2 用プロンプトの書き方（決まった画風の文と外見文、否定を書かない、画角、表情）と、依頼ファイルの形・点検。
 - [人物の声の作り方](authoring/CHARACTER_VOICE_GUIDE.md)：ヒロイン以外の人物の声の配役（10の特徴・モデルの選び方・権利・声の高さ）と、依頼書の作り方・受け取り方。
 - [外の書き手とのやりとり](authoring/WRITER_HANDOFF_GUIDE.md)：書き手に説明書を渡す前の試し書きと、受け取った原稿の点検のしかた。
 - [調べものの落とし穴集](authoring/RESEARCH_PITFALLS.md)：事実・出典・道のり・写真を調べるときに実際に引っかかった所と、防ぐ習慣。
