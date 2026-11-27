@@ -291,8 +291,6 @@ export function TourismScreen({
                 </button>}
               </div>
             </div>
-            {/* The talk's tools, in a row under its window (DialogueControls). */}
-            <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />
             {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
             {frame.choices.length > 0 && onChooseGuide && <div className="vn-choices">
               <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
@@ -303,6 +301,8 @@ export function TourismScreen({
               </ChoicePoint>
             </div>}
           </div>
+          {/* The talk's tools, at the scene's lower left corner (DialogueControls). */}
+          <DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} hidden={windowVisibility.hidden} />
           <DialogueWindowRestore state={windowVisibility} />
           <MiniGameSlot />
         </div>
