@@ -287,6 +287,46 @@ INCLUDE modules.ink
 # speaker: heroine
 ……次の門って、どこの？
 
+// ───── 旅の終わりに届く、出会った人のその後（2026-11-27 に足した）
+
+// ヴィシャール：ドイツへ発つ日の空港。母の漬物の入った預け荷物が、二十三キロちょうど。シティ・パレスのクイズをして、旅を終えたときに届く。
+// スシュマの「百グラムは、愛よ」（旅の間の投稿 gt_post_jaipur_sushma_pickles）の続き。
+=== gt_post_jaipur_vishal_scale ===
+# post: gt_vishal
+# images: gt_sns_vishal_scale
+# where: 空港のカウンター
+# when: battle gt_jaipur_main_city_palace_battle
+# when: epilogue jaipur
+預け荷物、二十三キロちょうど
+
+= sushma
+# speaker: gt_jaipur_city_palace_woman
+百グラムは、手荷物に入れたわ
+# speaker: gt_vishal
+……道理で、重いと思った
+
+= heroine
+# speaker: heroine
+漬物、無事に飛びますように
+
+// アマン：式の夜明け、片付いた会場の隅で、椅子で眠る祖母。旅を終えたときに届く。
+=== gt_post_jaipur_aman_dawn ===
+# post: gt_aman
+# images: gt_sns_aman_dawn
+# where: 花嫁の家
+# when: epilogue jaipur
+最後まで踊ってたのは、祖母でした
+
+= kamla
+# speaker: gt_kamla
+寝てない。目を閉じて、聞いてた。
+
+= heroine
+# speaker: heroine
+カムラさん、お疲れさまでした
+# speaker: gt_aman
+祖母が、あなたたちもと
+
 // ───── 過去の投稿（会うと人物ページで読める。夜には届かない）
 // 二人に会う前の、その人の暮らし。場面の種明かし（窓の本当の数、宝の最後の印、印刷の絵の出どころなど）は書かない。
 // 1人分は新しいものから。写真は立ち絵のある人ごとに3枚以上（クイズの相手と常連は4枚）。コメントは、その人を知っている立ち絵のある人だけ。

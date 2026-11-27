@@ -123,7 +123,7 @@ SNS（[SNS_PLAN.md](../../../SNS_PLAN.md)）の、出会った人の投稿に載
 
 ## 2026-11-27-sns-india.md（SNS の、インド編で出会った人の写真）
 
-インド編の全員の SNS（[SNS_PLAN.md の「インド編：全員の SNS の方針」](../../../SNS_PLAN.md)）で、出会った人の投稿に載せる日常の写真23枚（デリー7・アーグラ9・ジャイプール7）。上の「2026-11-27-sns-delhi.md」の4枚と合わせて27枚。依頼書の各項目は「何の写真か・写すもの・写さないもの・視点・時間・光」までで、構図の％と Krea 2 の英文は、頼むときに足す。
+インド編の全員の SNS（[SNS_PLAN.md の「インド編：全員の SNS の方針」](../../../SNS_PLAN.md)）で、出会った人の投稿に載せる日常の写真23枚（デリー7・アーグラ9・ジャイプール7）と、後の都市で届く「その後」9枚（24〜32。2026-11-27 にユーザーが提案の8投稿を全部選んだ。ルーヒーは作文の題で2枚）。上の「2026-11-27-sns-delhi.md」の4枚と合わせて27枚。依頼書の各項目は「何の写真か・写すもの・写さないもの・視点・時間・光」までで、構図の％と Krea 2 の英文は、頼むときに足す。
 
 | 番号 | ファイル名 | 使う所（投稿） | つなぐのにコードの変更 |
 | --- | --- | --- | --- |
@@ -150,6 +150,15 @@ SNS（[SNS_PLAN.md](../../../SNS_PLAN.md)）の、出会った人の投稿に載
 | 21 | `gt_sns_divya_shadow_notes.png` | gt_post_jaipur_divya_shadow（ディヴィヤ） | 要らない |
 | 22 | `gt_sns_kamla_two_sandals.png` | gt_post_jaipur_kamla_sandals（カムラ） | 要らない |
 | 23 | `gt_sns_pooja_toll_split.png` | gt_post_jaipur_pooja_toll（プージャー） | 要らない |
+| 24 | `gt_sns_kunal_clip.png` | gt_post_delhi_kunal_clip（クナール）（後の都市で届く「その後」） | 要らない |
+| 25 | `gt_sns_suresh_dinner.png` | gt_post_delhi_suresh_dinner（スレーシュ）（後の都市で届く「その後」） | 要らない |
+| 26 | `gt_sns_ramkishan_application.png` | gt_post_delhi_ramkishan_application（ラームキシャン）（後の都市で届く「その後」） | 要らない |
+| 27 | `gt_sns_monu_bridal_cloth.png` | gt_post_delhi_monu_bridal_cloth（モヌ）（後の都市で届く「その後」） | 要らない |
+| 28 | `gt_sns_roohi_essay_metro.png` | gt_post_delhi_roohi_essay_metro（ルーヒー）（後の都市で届く「その後」） | 要らない |
+| 29 | `gt_sns_roohi_essay_monument.png` | gt_post_delhi_roohi_essay_monument（ルーヒー）（後の都市で届く「その後」） | 要らない |
+| 30 | `gt_sns_gurmeet_brampton.png` | gt_post_agra_gurmeet_brampton（グルミート）（後の都市で届く「その後」） | 要らない |
+| 31 | `gt_sns_vishal_scale.png` | gt_post_jaipur_vishal_scale（ヴィシャール）（後の都市で届く「その後」） | 要らない |
+| 32 | `gt_sns_aman_dawn.png` | gt_post_jaipur_aman_dawn（アマン）（後の都市で届く「その後」） | 要らない |
 
 - 今は仮の写真：どの ID も `content/journeys/golden_triangle/public/assets/sns/<ID>.webp` に、無地の紙に「仮の写真」と ID を書いた絵（1344×896、WebP）を置き、投稿はもう書いてある（届けばゲームに出る）。
 - 届いたら：WebP（品質80）にして、同じ名前のファイルに差し替える。札は変えない。
