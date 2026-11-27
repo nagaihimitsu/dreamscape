@@ -171,7 +171,19 @@
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
 }
-.battle-screen .quiz-choice:not(.chosen):not(.correct) { background: var(--ds-glass-press); }
+/* An answer: a pane of its own on the glass, whiter than it with a fine edge and a soft shadow, so each row reads as
+   one thing to press (2026-11-27 user remark: the rows melted into the glass). */
+.battle-screen .quiz-choice { border-radius: var(--ds-radius-pane); }
+.battle-screen .quiz-choice:not(.chosen):not(.correct) {
+  border-color: transparent;
+  background: var(--ds-glass-press);
+  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
+  color: var(--ds-glass-ink);
+}
+/* Japanese only (no 「訳を見る」 beside it): the words take the whole row. */
+.battle-screen .quiz-choices .quiz-choice:not(:has(.translation)) { grid-template-columns: minmax(0, 1fr); }
+/* A Japanese question and its answers break between phrases, not inside a word (「ハワ／ー・マハル」, 「蜂の／巣」). */
+.battle-screen :is(.question-ja, .quiz-choice [lang="ja"]) { word-break: auto-phrase; text-wrap: pretty; }
 .battle-screen .battle-stage:before {
   display: none;
 }
@@ -909,7 +921,7 @@
   .battle-screen .question-en {
     font-size: var(--ds-text-lead);
     line-height: var(--ds-leading-snug);
-    margin: 7px 0 2px;
+    margin: 7px 0 12px;
   }
   .battle-screen .question-translation-tools > .translation {
     margin: 0;
@@ -917,8 +929,10 @@
   .battle-screen .question-translation-tools > .translation-all {
     margin: 0;
   }
+  /* 10 px between two answers, which cannot be undone (AGENTS 選択肢の誤タップ防止; 2026-11-27 user remark on an
+     iPhone: 5 px apart and 27 px high, the rows were hard to press and easy to miss). */
   .battle-screen .quiz-choices {
-    gap: 5px;
+    gap: 10px;
   }
   .battle-screen .quiz-choice,
   .battle-screen .quiz-choice.chosen,
@@ -926,8 +940,9 @@
     grid-template-columns: minmax(0, 1fr) 64px;
     align-items: center;
     gap: 3px 6px;
-    padding: 4px 7px 4px 14px;
-    font-size: var(--ds-text-body);
+    min-height: 52px;
+    padding: 10px 10px 10px 16px;
+    font-size: var(--ds-text-subhead);
     line-height: var(--ds-leading-snug);
   }
   .battle-screen .quiz-choice > .translation {
