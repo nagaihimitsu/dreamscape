@@ -73,7 +73,7 @@ export function TravelLogDialog({ game, missedPhotos = false, photosNew = false,
     const index = photos.findIndex((item) => item.imageId === photo.imageId);
     if (index >= 0) return setViewing({ photos, index });
     if (!photo.path) return;
-    const when = post ? `${post.arrived.day}日目` : photo.album ? `${photo.album.day}日目 ${formatTravelTime(photo.album.minute)}` : "";
+    const when = post ? (post.arrived ? `${post.arrived.day}日目` : post.pastJa ?? "") : photo.album ? `${photo.album.day}日目 ${formatTravelTime(photo.album.minute)}` : "";
     setViewing({ index: 0, photos: [{ imageId: photo.imageId, path: photo.path, thumbPath: photo.thumbPath ?? photo.path,
       altJa: post?.line.textJa ?? "", titleJa: post ? `${post.author.nameJa}の写真` : "写真",
       metaJa: [when, photo.placeNameJa].filter(Boolean).join(" · "), missed: false }] });

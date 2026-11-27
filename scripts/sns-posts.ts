@@ -20,7 +20,7 @@ import { withoutComments } from "./place-files";
 export type PostsSource = { cityId: string; file: string; layer: string; source: string };
 
 /** The tags of a post's head, of a comment's head, and of a line. */
-export const POST_HEAD_TAGS = ["post", "images", "where", "when", "until", "likes"] as const;
+export const POST_HEAD_TAGS = ["post", "images", "where", "when", "until", "likes", "past"] as const;
 export const COMMENT_HEAD_TAGS = ["when", "until", "one_of", "timing"] as const;
 export const SNS_LINE_TAGS = ["speaker", "translation"] as const;
 /** The effect tags of the scenes: a comment changes nothing in the game (authoring/SNS_PLAN.md 「作らないもの」). */
@@ -250,11 +250,34 @@ export function checkPost(read: ReadPost, context: PostsContext): SnsPost {
   const twice = ids.find((id, index) => ids.indexOf(id) !== index);
   if (twice) throw new Error(`${at}：同じ名前のコメントが2つあります：${twice}（Duplicate comment ID）。`);
   const when = headCondition(read.head);
+  const likes = likesOf(read.head, context);
+  const comments = read.comments.map((comment) => checkComment(comment, context));
+  const past = single(read.head, "past");
+  if (past) checkPast(read, author.value, past, { when, likes, comments });
   return {
     id: read.id, journeyId: context.journeyId, cityId: context.cityId, author: author.value, imageIds,
-    ...(where ? { where } : {}), ...(when ? { when } : {}), line, likes: likesOf(read.head, context),
-    comments: read.comments.map((comment) => checkComment(comment, context)),
+    ...(where ? { where } : {}), ...(when ? { when } : {}), line, likes, comments, ...(past ? { past: past.value } : {}),
   };
+}
+
+/**
+ * A past post (`# past: <いつ>`, 2026-11-27): a person's post from before the two met, read on their page once met and always
+ * the same. Throws for the heroine's, a condition (its own, a comment's or a `# likes:` one), a later or one-of comment, the
+ * heroine's word in a comment (she had not met them), or a `# past:` that is no Japanese.
+ */
+function checkPast(read: ReadPost, author: string, past: Tag, parts: Pick<SnsPost, "when" | "likes" | "comments">): void {
+  const at = `${past.line}行目：過去の投稿 ${read.id}`;
+  if (author === SNS_HEROINE) throw new Error(`${at}：ヒロインの過去の投稿は書けません（# past: is for a person's post）。`);
+  if (!/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(past.value))
+    throw new Error(`${at}：# past: には、いつの投稿かを日本語で書きます（例「去年の冬」「三年前」。# past: needs Japanese）。`);
+  if (parts.when) throw new Error(`${at}：過去の投稿には # when:・# until: を書けません。会えば、いつも人物ページで読めます（no condition on a past post）。`);
+  if (parts.likes.some((like) => like.when)) throw new Error(`${at}：過去の投稿の # likes: には、条件（if）を書けません（no condition on a past post）。`);
+  for (const comment of parts.comments) {
+    if (comment.when || comment.later || comment.oneOf)
+      throw new Error(`${at}：過去の投稿のコメント ${comment.id} には、# when:・# until:・# timing:・# one_of: を書けません（a past post never changes）。`);
+    if (comment.lines.some((line) => line.speaker === SNS_HEROINE))
+      throw new Error(`${at}：過去の投稿のコメント ${comment.id} に、ヒロインは書けません。まだ会っていない頃の投稿です（no heroine on a past post）。`);
+  }
 }
 
 /**

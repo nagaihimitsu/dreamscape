@@ -74,6 +74,52 @@ I'll get a better zoom. # translation: もっと望遠のきく携帯にする
     expect(posts.map((post) => [post.where, post.line.speaker])).toEqual([[{ placeId: "ta_gate" }, "ta_monu"], [{ nameJa: "村の家" }, "ta_monu"]]);
   });
 
+  it("reads a person's past post (# past:), always the same: its pictures, comments and likes without a condition (2026-11-27)", () => {
+    const [post] = read(`
+=== ta_past_monu_phone ===
+# post: ta_monu
+# past: 去年の冬
+# images: ta_sns_phone
+# where: 村の家
+# likes: ta_roohi
+ダーディーの携帯、また機種変
+
+= roohi
+# speaker: ta_roohi
+画面、割れてない？
+# speaker: ta_monu
+割れてからが本番
+`);
+    expect(post).toEqual({
+      id: "ta_past_monu_phone", journeyId: "ta_trip", cityId: "ta_city", author: "ta_monu", imageIds: ["ta_sns_phone"], where: { nameJa: "村の家" },
+      line: { speaker: "ta_monu", textJa: "ダーディーの携帯、また機種変" }, likes: [{ personId: "ta_roohi" }], past: "去年の冬",
+      comments: [{ id: "roohi", lines: [{ speaker: "ta_roohi", textJa: "画面、割れてない？" }, { speaker: "ta_monu", textJa: "割れてからが本番" }] }],
+    });
+  });
+
+  it("stops a past post of the heroine's, with a condition, a changing comment or the heroine's word, or a # past: not in Japanese", () => {
+    const past = (headTags: string, comment = "") => () => read(`
+=== ta_past_x ===
+# post: ta_monu
+# images: ta_sns_phone
+${headTags}
+一言
+${comment}`);
+    expect(() => read(`
+=== ta_past_x ===
+# post: heroine
+# past: 去年
+# images: ta_album_gate
+一言
+`)).toThrow("ヒロインの過去の投稿は書けません");
+    expect(past("# past: 去年\n# when: met ta_monu")).toThrow("過去の投稿には # when:・# until: を書けません");
+    expect(past("# past: 去年\n# likes: ta_roohi if flag ta_x")).toThrow("条件（if）を書けません");
+    expect(past("# past: 去年", "= c\n# timing: later\n# speaker: ta_roohi\nいいね")).toThrow("# timing:・# one_of: を書けません");
+    expect(past("# past: 去年", "= c\n# speaker: ta_roohi\nいいね\n# speaker: heroine\nわたしも")).toThrow("ヒロインは書けません");
+    expect(past("# past: last winter")).toThrow("日本語で書きます");
+    expect(past("# past: 去年\n# past: 一昨年")).toThrow("# past: が2つあります");
+  });
+
   it("stops a choice, a cond, an effect tag, a tag it does not know, logic, and a second line of a post", () => {
     const post = (body: string, top = "# post: heroine\n# images: ta_album_gate\n# speaker: heroine\n一言\n") => () => read(`=== ta_post_x ===\n${top}${body}`);
     expect(post("* [選ぶ]\n")).toThrow(/選択肢/u);

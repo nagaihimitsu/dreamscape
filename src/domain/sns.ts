@@ -25,11 +25,14 @@ export const sameNight = (a: Pick<SnsNight, "cityId" | "day">, b: Pick<SnsNight,
 /** The save's SNS record (empty for a save written before it). */
 export const snsOf = (state: Pick<GameState, "sns">): SnsState => state.sns ?? EMPTY_SNS;
 
-/** The posts of the current journey's cities reached so far (the current city and those before it), in file order. */
+/**
+ * The posts that may arrive: of the current journey's cities reached so far (the current city and those before it), in
+ * file order. Never a past post (`# past:`, 2026-11-27): it is read on its writer's page once met, and never arrives.
+ */
 export function reachablePosts(state: Pick<GameState, "currentCityId">): SnsPost[] {
   const cities = getJourneyForCity(state.currentCityId)?.cities.map((city) => city.id) ?? [state.currentCityId];
   const reached = cities.slice(0, cities.indexOf(state.currentCityId) + 1);
-  return snsData.posts.filter((post) => reached.includes(post.cityId));
+  return snsData.posts.filter((post) => reached.includes(post.cityId) && !post.past);
 }
 
 /** A post of the content by its ID. */

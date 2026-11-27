@@ -32,8 +32,11 @@ export type SnsDebugPost = {
   photos: { imageId: string; taken: boolean }[];
   likes: SnsDebugLike[]; liked: boolean; comments: SnsDebugComment[];
 };
-/** A city of the journey: its posts in file order, and whether the party has reached it (a later city's wait till then). */
-export type SnsDebugCity = { cityId: string; cityNameJa: string; reached: boolean; posts: SnsDebugPost[] };
+/**
+ * A city of the journey: its posts in file order, and whether the party has reached it (a later city's wait till then).
+ * `pastCount`: its past posts (`# past:`), left out of `posts`: they never arrive, but are read on their writer's page.
+ */
+export type SnsDebugCity = { cityId: string; cityNameJa: string; reached: boolean; posts: SnsDebugPost[]; pastCount: number };
 
 const cityName = (cityId: string) => cityContents[cityId]?.city.nameJa ?? cityId;
 /** A night as Debug writes it: 「デリー 2日目 21:00」. */
@@ -93,7 +96,9 @@ export function snsDebugCities(state: Readonly<GameState>): SnsDebugCity[] {
   const cityIds = journey?.cities.map((city) => city.id) ?? [state.currentCityId];
   const here = cityIds.indexOf(state.currentCityId);
   return cityIds.map((cityId, index) => {
-    const posts = snsData.posts.filter((post) => post.cityId === cityId && (!journey || post.journeyId === journey.id));
-    return { cityId, cityNameJa: cityName(cityId), reached: index <= here, posts: posts.map((post) => postRow(state, post, index <= here)) };
-  }).filter((city) => city.posts.length > 0);
+    const all = snsData.posts.filter((post) => post.cityId === cityId && (!journey || post.journeyId === journey.id));
+    const posts = all.filter((post) => !post.past);
+    return { cityId, cityNameJa: cityName(cityId), reached: index <= here, posts: posts.map((post) => postRow(state, post, index <= here)),
+      pastCount: all.length - posts.length };
+  }).filter((city) => city.posts.length > 0 || city.pastCount > 0);
 }

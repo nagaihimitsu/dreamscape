@@ -9,7 +9,6 @@ import { metTimeOf } from "../../domain/met-times";
 import {
   likesPost, postLikers, sameNight, snsOf, snsPost, snsShowsPerson, type SnsNight,
 } from "../../domain/sns";
-import type { SnsArrivedPost } from "../../domain/sns-state";
 import { withNames } from "../romance/names";
 import { placeDisplayName } from "./travel-labels";
 
@@ -28,12 +27,15 @@ export type SnsText = { textJa: string; translationJa?: string };
  * the heroine's the album's record of it.
  */
 export type SnsPhotoView = { imageId: string; path?: string; thumbPath?: string; placeNameJa?: string; album?: AlbumPhoto };
-/** A comment as shown: its writer, its lines (the comment, then the replies) and the night it came. */
-export type SnsCommentView = { id: string; writer: SnsFace; lines: (SnsText & { speaker: SnsFace })[]; arrived: SnsNight };
-/** A post as shown. `likers`: the faces of those who like it (postLikers); `liked`: the player likes it. */
+/** A comment as shown: its writer, its lines (the comment, then the replies) and the night it came (none on a past post). */
+export type SnsCommentView = { id: string; writer: SnsFace; lines: (SnsText & { speaker: SnsFace })[]; arrived?: SnsNight };
+/**
+ * A post as shown. `likers`: the faces of those who like it (postLikers); `liked`: the player likes it. `arrived`: the night
+ * it came; a past post (`# past:`, 2026-11-27) has none but `pastJa`, when it was posted (「去年の冬」), and no player's like.
+ */
 export type SnsPostView = {
   id: string; author: SnsFace; photos: SnsPhotoView[]; line: SnsText; comments: SnsCommentView[]; likers: SnsFace[]; liked: boolean;
-  arrived: SnsNight;
+  arrived?: SnsNight; pastJa?: string;
 };
 /**
  * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, the
@@ -71,8 +73,8 @@ export function snsPicture(imageId: string): { path?: string; thumbPath?: string
   return image ? { path: image.path, thumbPath: pictureThumbPath(image) } : {};
 }
 
-function photosOf(game: Readonly<GameState>, post: SnsPost, record: SnsArrivedPost): SnsPhotoView[] {
-  return record.imageIds.map((imageId) => {
+function photosOf(game: Readonly<GameState>, post: SnsPost, imageIds: readonly string[]): SnsPhotoView[] {
+  return imageIds.map((imageId) => {
     const { path, thumbPath } = snsPicture(imageId);
     const album = post.author === SNS_HEROINE ? game.album.find((photo) => photo.imageId === imageId) : undefined;
     const placeNameJa = album ? placeName(game, album.cityId, album.placeId)
@@ -81,9 +83,23 @@ function photosOf(game: Readonly<GameState>, post: SnsPost, record: SnsArrivedPo
   });
 }
 
-/** An arrived post as shown, with its arrived comments in the order they came. */
+/**
+ * A past post as shown (`# past:`): all its photos and comments, always the same; those who like it are its commenters, then
+ * its `# likes:` people (its writer left out). Read on its writer's page, which the SNS opens only for someone met.
+ */
+function pastPostView(game: Readonly<GameState>, post: SnsPost & { past: string }): SnsPostView {
+  const comments = post.comments.map((comment): SnsCommentView => ({ id: snsCommentId(post.id, comment.id),
+    writer: snsFace(game, comment.lines[0].speaker), lines: comment.lines.map((line) => ({ speaker: snsFace(game, line.speaker), ...textOf(game, line) })) }));
+  const likers = [...new Set([...post.comments.map((comment) => comment.lines[0].speaker), ...post.likes.map((like) => like.personId)])]
+    .filter((id) => id !== post.author);
+  return { id: post.id, author: snsFace(game, post.author), photos: photosOf(game, post, post.imageIds), line: textOf(game, post.line),
+    comments, likers: likers.map((id) => snsFace(game, id)), liked: false, pastJa: post.past };
+}
+
+/** A post as shown: an arrived one with its arrived comments in the order they came, or a past one (pastPostView). */
 export function snsPostView(game: Readonly<GameState>, postId: string): SnsPostView | null {
   const post = snsPost(postId);
+  if (post?.past) return pastPostView(game, { ...post, past: post.past });
   const record = snsOf(game).posts.find((item) => item.id === postId);
   if (!post || !record) return null;
   const comments = snsOf(game).comments.flatMap((arrived): SnsCommentView[] => {
@@ -94,8 +110,14 @@ export function snsPostView(game: Readonly<GameState>, postId: string): SnsPostV
       lines: comment.lines.map((line) => ({ speaker: snsFace(game, line.speaker), ...textOf(game, line) })) }];
   });
   const { cityId, day, minute } = record;
-  return { id: post.id, author: snsFace(game, post.author), photos: photosOf(game, post, record), line: textOf(game, post.line),
+  return { id: post.id, author: snsFace(game, post.author), photos: photosOf(game, post, record.imageIds), line: textOf(game, post.line),
     comments, likers: postLikers(game, post.id).map((id) => snsFace(game, id)), liked: likesPost(game, post.id), arrived: { cityId, day, minute } };
+}
+
+/** A post's own page's heading: its night (「デリー · 2日目」), or for a past post its writer and when (「モヌ · 去年の冬」). */
+export function snsPostPageTitle(view: Pick<SnsPostView, "arrived" | "pastJa" | "author">): string {
+  if (view.arrived) return `${cityName(view.arrived.cityId)} · ${view.arrived.day}日目`;
+  return view.pastJa ? `${view.author.nameJa} · ${view.pastJa}` : view.author.nameJa;
 }
 
 /** The faces of the people first met on a day (the save's metTimes), in the order met; only those the SNS shows. */
@@ -150,7 +172,8 @@ const tileOf = (postId: string, photo: SnsPhotoView): SnsTile =>
 /**
  * A person's page (one for the whole journey): their own words (face, name, self-introduction), the heroine's note (their
  * role, where and when they were first met: none for a save that did not keep it), their photos (their posts' photos, the
- * newest first), their comments on her posts (with the post's first photo) and the album's photos they are in
+ * newest first, then their past posts' in the order written: the newest written first), their comments on her posts (with
+ * the post's first photo) and the album's photos they are in
  * (`# photo_with:`, in the order taken). Null for someone the SNS does not show.
  */
 export type SnsPersonPage = {
@@ -174,7 +197,8 @@ export function snsPersonPage(game: Readonly<GameState>, personId: string): SnsP
       ...(time ? { met: { cityNameJa: cityName(time.cityId), day: time.day,
         ...(placeName(game, time.cityId, time.placeId) ? { placeNameJa: placeName(game, time.cityId, time.placeId) } : {}) } } : {}),
     },
-    photos: views.filter((view) => view.author.id === personId).reverse()
+    photos: [...views.filter((view) => view.author.id === personId).reverse(),
+      ...snsData.posts.filter((post) => post.past && post.author === personId).flatMap((post) => snsPostView(game, post.id) ?? [])]
       .flatMap((view) => view.photos.map((photo) => tileOf(view.id, photo))),
     comments: views.filter((view) => view.author.id === SNS_HEROINE).flatMap((view) => view.comments
       .filter((comment) => comment.writer.id === personId)
