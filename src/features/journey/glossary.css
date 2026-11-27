@@ -204,6 +204,9 @@ button.glossary-card:hover { background: var(--ds-parchment-2); }
   font-weight: 600;
   line-height: var(--ds-leading-snug);
   overflow-wrap: anywhere;
+  /* Each line filled as far as it goes, not the buttons' text-wrap: pretty (styles.css): in a tile this narrow, Safari
+     evened the lines out into many short ones (「クトゥ／ブ・ミ／ナー／ルの／文字／の帯」). */
+  text-wrap: wrap;
 }
 /* 「NEW」 on a term met since 旅の図鑑 was last opened (as beside a held item: held-items.css). */
 .glossary-card-new {
