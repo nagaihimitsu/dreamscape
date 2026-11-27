@@ -50,6 +50,10 @@
   --ds-glass-press: rgba(255, 255, 255, 0.72);
   --ds-glass-chosen: rgba(61, 106, 166, 0.18);
   --ds-glass-line: rgba(29, 39, 64, 0.16);
+  /* A press that cannot be pressed now, on a pane of the glass: a faint grey, flat (no edge, no shadow), its words the
+     muted ink (2026-11-27 user request: one UI). Over the scene itself such a press is the plain light glass instead
+     (a talk's choice, the mini-game's start). */
+  --ds-glass-disabled: rgba(29, 39, 64, 0.08);
   /* Its edges (2026-11-27 user requests: the talk's window made fluffier, then every pane of glass the same, as one UI):
      no edge line and no shadow; the glass reaches --ds-glass-bleed past its box and melts into the scene over
      --ds-glass-feather along an eased curve (smoothstep at quarter steps), so no rim of the fade shows. Smaller on a
@@ -283,7 +287,7 @@ body {
    time's cards over the city, a quiz's panels over its place (its question, explanation and reasoning, its result's card),
    every dialog, the menu's panels, the title's and 交際開始's cards, 前回までのあらすじ (and the night's: night-rest.css).
    What lies on them was written for the parchment, so its colours are pointed at the glass's here: the ink, the muted
-   ink, a pressable's ground, the chosen ground, the hairlines, a field's ground and edge. */
+   ink, a pressable's ground, the chosen ground, the hairlines, a field's ground and edge, a disabled press's ground and ink. */
 .photo-menu .place-card,
 .photo-free-time .photo-menu-note,
 .photo-free-time .free-time-extras,
@@ -303,6 +307,8 @@ body {
   --ds-parchment-line: var(--ds-glass-line);
   --ds-field: var(--ds-glass-press);
   --ds-field-edge: var(--ds-glass-field-edge);
+  --ds-disabled-bg: var(--ds-glass-disabled);
+  --ds-disabled-ink: var(--ds-glass-muted);
   color: var(--ds-ink);
 }
 /* A pane that does not scroll: the glass is its ::before, so its feathered edge never fades the words or a focus ring. (A
@@ -1165,7 +1171,8 @@ dialog.modal .offline-summary {
   box-shadow: var(--ds-press-shadow);
 }
 .secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-parchment-2); }
-/* Disabled (§2.1): its own ground and ink, no edge; the reason stays in the text beside it. */
+/* Disabled (§2.1): its own ground and ink, no edge and no shadow; the reason stays in the text beside it. Every light pane
+   to press (--ds-press-shadow) that cannot be pressed looks the same (2026-11-27 user request: one UI). */
 .primary:disabled,
 .secondary:disabled,
 .primary[data-settling],
@@ -2101,3 +2108,5 @@ dialog.date-background-viewer > img {
 }
 /* Its description, credit and links shown at once under the photo, as 写真の出典 shows each photo's. */
 dialog.date-background-viewer .background-credit p { margin: 6px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.modal-close:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

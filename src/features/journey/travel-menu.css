@@ -397,7 +397,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-route > span { min-width: 0; overflow-wrap: anywhere; }
 .travel-route-cost { margin-left: auto; color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-weight: 500; }
 .travel-route:disabled,
-.travel-event-button:disabled { border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); cursor: default; }
+.travel-event-button:disabled { border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; cursor: default; }
 .travel-route:disabled .travel-route-cost { color: var(--ds-disabled-ink); }
 .travel-route:focus-visible,
 .travel-event-button:focus-visible,
@@ -431,3 +431,6 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-band-sleep .travel-sleep-choices { display: grid; gap: 6px; max-width: 648px; margin: 0 auto; padding-bottom: 4px; }
 .travel-band .travel-sleep-toggle.is-selected { border-width: 2px; background: var(--ds-parchment-2); }
 .travel-map-selection .travel-sleep-choices { display: grid; gap: 6px; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.travel-band .travel-sleep-toggle:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
+.travel-choices-close:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

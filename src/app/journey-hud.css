@@ -339,3 +339,5 @@
   .hud-status > .hud-wallet { margin-left: 0; }
   .hud-actions { flex: 0 1 auto; }
 }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.hud-menu-panel button:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

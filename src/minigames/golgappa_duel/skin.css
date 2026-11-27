@@ -246,13 +246,15 @@
   gap: 4px;
   align-items: center;
   padding: 4px 12px;
-  border: 1.5px solid var(--ds-slate-800);
+  border: 0;
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  color: var(--ds-glass-ink);
   font-size: var(--ds-text-subhead);
   font-weight: 700;
-  box-shadow: var(--ds-window-shadow);
+  box-shadow: var(--ds-glass-shadow);
 }
 /* Her 「バス」: beside her face, with her raised palm, bigger and ringed in gold (the moment to say it with her). */
 .mg-golgappa-duel-say-her {

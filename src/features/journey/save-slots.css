@@ -48,3 +48,5 @@
 /* The journey's choice (2026-11-20, from ゲームの設定): apart from the saved data above it by a thin rule across. */
 .save-load-journey { margin-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
 .save-load-journey .journey-selection { margin-bottom: 0; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.save-load-modes button:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

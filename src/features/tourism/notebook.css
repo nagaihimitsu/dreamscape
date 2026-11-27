@@ -91,6 +91,7 @@ dialog.modal.clue-notebook {
   border-color: transparent;
   background: var(--ds-disabled-bg);
   color: var(--ds-disabled-ink);
+  box-shadow: none;
 }
 .clue-notebook .notebook-clue { padding: 0; }
 .clue-notebook .notebook-clue .case-provenance,
@@ -129,12 +130,8 @@ dialog.modal.clue-notebook {
   background: var(--ds-parchment-2);
   font-weight: 600;
 }
-.case-select:disabled {
-  opacity: .55;
-}
-.case-select[aria-pressed="true"]:disabled {
-  opacity: 1;
-}
+/* A clue that cannot be chosen now: the disabled press; the chosen one keeps its look. */
+.case-select:disabled:not([aria-pressed="true"]) { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
 .case-image {
   position: relative;
   margin: 5px 0 0;

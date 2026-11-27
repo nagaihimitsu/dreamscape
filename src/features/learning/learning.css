@@ -365,3 +365,5 @@
 .word-book-credits li { padding: 6px 0; border-top: 1px solid var(--ds-parchment-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .word-book-credits h4 { margin: 0 0 2px; font-size: var(--ds-text-body); }
 .word-book-credits p { margin: 2px 0; overflow-wrap: anywhere; }
+/* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
+.read-aloud:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
