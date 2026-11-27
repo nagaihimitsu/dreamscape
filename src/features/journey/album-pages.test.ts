@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AlbumPhoto } from "../../domain/album-state";
-import { ALBUM_SWIPE_PX, albumPages, albumSwipeStep, type AlbumContent } from "./album-pages";
+import { ALBUM_SWIPE_PX, albumPages, albumSwipeStep, SWIPE_EDGE_GIVE, SWIPE_FOLLOW_PX, swipeOffset, type AlbumContent } from "./album-pages";
+import { FLICK_MIN_PX, FLICK_SPEED } from "./photo-cards";
 
 // The album's pages (≡メニュー → 「アルバム」): one per city in the journey's order, the swipe of the larger photos. Each photo
 // is the author's illustration (public/assets/album/<ID>.<ext>), shown by its served path with no credit.
@@ -47,5 +48,26 @@ describe("the album's pages", () => {
     expect(albumSwipeStep(-(ALBUM_SWIPE_PX - 1), 0)).toBe(0);
     expect(albumSwipeStep(-80, 60)).toBe(0);
     expect(albumSwipeStep(0, -200)).toBe(0);
+  });
+
+  it("turn on a quick short flick its way, never on a slow short move, a flick back or an upright one", () => {
+    expect(albumSwipeStep(-FLICK_MIN_PX, 0, -FLICK_SPEED)).toBe(1);
+    expect(albumSwipeStep(FLICK_MIN_PX + 4, 8, FLICK_SPEED * 2)).toBe(-1);
+    expect(albumSwipeStep(-(FLICK_MIN_PX - 1), 0, -FLICK_SPEED * 2)).toBe(0);
+    expect(albumSwipeStep(-30, 0, -(FLICK_SPEED - 0.1))).toBe(0);
+    expect(albumSwipeStep(-30, 0, FLICK_SPEED)).toBe(0);
+    expect(albumSwipeStep(-30, 40, -FLICK_SPEED * 2)).toBe(0);
+  });
+
+  it("take the page along once a finger has gone sideways, and only a little towards a side with nothing to turn to", () => {
+    const both = () => true;
+    const firstPage = (step: -1 | 1) => step === 1;
+    expect(swipeOffset(-(SWIPE_FOLLOW_PX - 1), 0, false, both)).toBeNull();
+    expect(swipeOffset(-20, 30, false, both)).toBeNull();
+    expect(swipeOffset(-20, 10, false, both)).toBe(-20);
+    expect(swipeOffset(-20, 60, true, both)).toBe(-20);
+    expect(swipeOffset(-40, 0, false, firstPage)).toBe(-40);
+    expect(swipeOffset(40, 0, false, firstPage)).toBe(Math.round(40 * SWIPE_EDGE_GIVE));
+    expect(swipeOffset(0, 50, true, firstPage)).toBe(0);
   });
 });

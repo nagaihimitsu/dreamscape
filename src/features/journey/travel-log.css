@@ -106,8 +106,12 @@ dialog.modal.album-photo-viewer {
   max-width: 760px;
 }
 .album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
-/* Sideways moves of a finger turn the photos (albumSwipeStep); upright ones still scroll, and pinch still zooms. */
-.photo-viewer-frame { touch-action: pan-y pinch-zoom; }
+/* Sideways moves of a finger turn the photos (albumSwipeStep: far enough, or a quick flick); upright ones still scroll,
+   and pinch still zooms. The picture goes along with the finger (useSwipe's --swipe-dx, on `translate` so that it stays
+   apart from the coming-in's `transform`) and goes back when let go short; the photo turned to comes in from the side it
+   was pulled from (data-turn). The frame keeps the picture moved aside inside it. With less motion the picture still goes
+   along with the finger, but nothing glides back or comes in. */
+.photo-viewer-frame { overflow: hidden; touch-action: pan-y pinch-zoom; }
 .photo-viewer-frame img {
   display: block;
   width: auto;
@@ -116,6 +120,17 @@ dialog.modal.album-photo-viewer {
   max-height: min(60dvh, 520px);
   margin: 0 auto;
   border-radius: var(--ds-radius-field);
+  translate: var(--swipe-dx, 0px) 0;
+  transition: translate 200ms var(--ease-out);
+}
+.photo-viewer-frame[data-swiping] img { transition: none; }
+.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next 240ms var(--ease-out); }
+.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev 240ms var(--ease-out); }
+@keyframes photo-viewer-in-next { from { transform: translateX(56px); opacity: 0; } }
+@keyframes photo-viewer-in-prev { from { transform: translateX(-56px); opacity: 0; } }
+.reduce-motion .photo-viewer-frame img { transition: none; animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .photo-viewer-frame img { transition: none; animation: none; }
 }
 .album-photo-viewer > .album-meta { margin: 6px 0 8px; }
 @media (orientation: landscape) and (max-height: 500px) {

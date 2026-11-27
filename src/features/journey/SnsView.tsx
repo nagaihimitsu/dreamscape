@@ -186,7 +186,7 @@ function SnsCard({ posts, startPostId, actions }: { posts: readonly SnsPostView[
     if (next === last && document.activeElement === nextButton.current) prevButton.current?.focus({ preventScroll: true });
     setIndex(next);
   };
-  const swipe = useSwipe(go);
+  const swipe = useSwipe(go, { canStep: (step) => step === 1 ? at < last : at > 0 });
   if (!current) return null;
   const many = slides.length > 1;
   const hasUnder = posts.some((post) => post.comments.length || post.likers.length);
