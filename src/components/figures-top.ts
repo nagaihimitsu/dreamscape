@@ -1,14 +1,15 @@
 import { useEffect, useLayoutEffect, type RefObject } from "react";
 
-// A line's large photo and its item card keep clear of the faces of the people on stage (2026-11-25 user decisions,
-// after an iPhone: a card over their faces hid how they looked as they spoke). The layer measures the stage: where the
-// highest head begins and where the lowest face ends (the standing pictures are drawn from near their top edge, the chin
-// about a fifth down), and where the dialogue window begins. The photo or the card goes between the faces and the
-// window when there is room enough there (alone or with others: 2026-11-25 user decision, the place under the chins
-// reads better on a phone), and else in the larger room of the two. The room goes to the CSS as --room-top (only under the faces) and --room-bottom, in px from the layer's own
-// top; it fits the photo or the card in it, down to a smallest size it keeps (photo-show.css, item-show.css). Only on a
-// line someone says: on the narration's lines no one's expression is read, so the photo and the card keep their full
-// size and place. No one on stage, or the narration: the variables are unset and nothing limits them.
+// A line's item card keeps clear of the faces of the people on stage (2026-11-25 user decisions, after an iPhone: a card
+// over their faces hid how they looked as they spoke; a line's large photo no longer does, 2026-11-27: it shows at one
+// size on every line). The layer measures the stage: where the highest head begins and where the lowest face ends (the
+// standing pictures are drawn from near their top edge, the chin about a fifth down), and where the dialogue window
+// begins. The card goes between the faces and the window when there is room enough there (alone or with others:
+// 2026-11-25 user decision, the place under the chins reads better on a phone), and else in the larger room of the two.
+// The room goes to the CSS as --room-top (only under the faces) and --room-bottom, in px from the layer's own top; it
+// fits the card in it, down to a smallest size it keeps (item-show.css). Only on a line someone says: on the narration's
+// lines no one's expression is read, so the card keeps its full size and place. No one on stage, or the narration: the
+// variables are unset and nothing limits them.
 
 /** How far down a standing picture its face ends (its chin, with a little air): about a fifth of its height. */
 const FACE_BOTTOM = 0.22;

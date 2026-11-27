@@ -193,7 +193,7 @@ export function RomanceScene({
       </div>
       <WeatherLayer weather={frame.weather} />
       <RecallLayer imageId={frame.recall} />
-      <PhotoShowLayer photo={frame.photo} aboveHeads={keepsAboveHeads(frame.speaker)} />
+      <PhotoShowLayer photo={frame.photo} />
       <NameCutInPlate cutIn={nameCut} />
       <ItemShowLayer itemId={frame.itemShow} aboveHeads={keepsAboveHeads(frame.speaker)} quiet={!!frame.quiet} />
       <ItemOutLayer card={itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />

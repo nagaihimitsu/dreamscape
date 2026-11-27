@@ -142,7 +142,7 @@ export function EpilogueScreen({
         </div>
         <WeatherLayer weather={frame.weather} />
         <RecallLayer imageId={frame.recall} />
-        <PhotoShowLayer photo={frame.photo} aboveHeads={keepsAboveHeads(frame.speaker)} />
+        <PhotoShowLayer photo={frame.photo} />
         <NameCutInPlate cutIn={nameCut} />
         {/* Not under an arrival's title card, which holds the first line. */}
         <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} aboveHeads={keepsAboveHeads(frame.speaker)} quiet={!!frame.quiet} />
