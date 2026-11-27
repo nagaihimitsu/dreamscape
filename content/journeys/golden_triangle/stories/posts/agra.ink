@@ -10,6 +10,10 @@
 // - 出会った人の投稿は、クイズの相手（ニキル・ドゥッガル・ヴィムラー・ムケーシュ・アンワル）、二つ以上の場面に出る人（タンヴィ・サミール・ヴィノード）、
 //   都市をまたぐ人（デリーのハルバンス）に1つずつ。写真は新しく描く絵（gt_sns_*。依頼は scratchpad の sns-agra-photos.md）。
 //   同じ夜に重ならないよう、サミールは2日目の夜から、タンヴィはチーニー・カ・ラウザーのデートの後、ヴィノードはツアーから宿に戻った夜にした。
+// - 過去の投稿（# past:。ファイルの最後）：二人に会う前の暮らし。会うと人物ページで読める（夜には届かない）。クイズの相手と常連は3つ、
+//   ほかの名前のある人は2つ、名前のない人は3人（茶屋の主人・番人・ピクニックの父親）に1つ。コメントはその人を知っている人だけ
+//   （サミールとアンワル、ニキルとタンヴィ、大佐とリヤ、グルミートと父のハルバンス、ヴィノード・茶屋の主人とサミール、父親と娘）。
+//   場面の種明かし（タンヴィが嫌だったこと・大佐の車酔い・ムケーシュの息子のこと・ヴィノードの母）は書かない。
 INCLUDE modules.ink
 -> DONE
 
@@ -303,3 +307,427 @@ INCLUDE modules.ink
 やっぱり、違う国になりましたね
 # speaker: gt_harbans
 世界地図の娘の、真似だ
+
+// ───── 過去の投稿（会うと人物ページで読める。夜には届かない）
+// 1人分は新しいものから。写真は1人3枚以上（クイズの相手は3〜4枚）。
+
+// サミール：白鳥と帳面と、叔父
+=== gt_past_samir_swan_video ===
+# post: gt_samir
+# past: 先月
+# images: gt_sns_samir_swan_video
+# where: 宿の部屋
+白鳥の動画、再生が三桁になりました！
+
+= anwar
+# speaker: gt_anwar
+わしの話なら、もっと泣ける
+# speaker: gt_samir
+白鳥は、泣かせない方針です
+
+=== gt_past_samir_first_swans ===
+# post: gt_samir
+# past: 去年の冬
+# images: gt_sns_samir_first_swans
+# where: 宿の部屋
+ハネムーン・スペシャル、始めました
+
+= anwar
+# speaker: gt_anwar
+その鳥は、鴨だ
+# speaker: gt_samir
+……春までに、白鳥にします
+
+=== gt_past_samir_ledger ===
+# post: gt_samir
+# past: 三年前
+# images: gt_sns_samir_new_ledger
+# where: 宿の帳場
+支配人になりました。帳面も新調です
+
+= anwar
+# speaker: gt_anwar
+帳面は、物語の始まりだ
+# speaker: gt_samir
+はい。何でも書きます
+
+// アンワル：詫びの菓子屋、最初の客、杖
+=== gt_past_anwar_petha_shop ===
+# post: gt_anwar
+# past: 先週
+# images: gt_sns_anwar_petha_shop
+# where: ペーターの店
+詫びの品は、いつもこの店で
+
+= samir
+# speaker: gt_samir
+叔父さん、今月三箱目です
+# speaker: gt_anwar
+客が、正直すぎるのだ
+
+=== gt_past_anwar_first_guests ===
+# post: gt_anwar
+# past: 去年
+# images: gt_sns_anwar_first_guests
+四十年前の、最初の客たち
+
+= samir
+# speaker: gt_samir
+叔父さん、髪が黒い！
+# speaker: gt_anwar
+話は、今より下手だった
+
+=== gt_past_anwar_cane ===
+# post: gt_anwar
+# past: 三年前
+# images: gt_sns_anwar_silver_cane
+杖を新調した。指し棒として
+
+// ニキル：裏返した三十枚、送別会の段取り、三軒の予約
+=== gt_past_nikhil_slides ===
+# post: gt_nikhil
+# past: 先週
+# images: gt_sns_nikhil_slides
+# where: ラクナウ
+大事な資料、三十枚目が完成
+
+= tanvi
+# speaker: gt_tanvi
+何の三十枚？
+# speaker: gt_nikhil
+し、仕事です
+
+=== gt_past_nikhil_farewell ===
+# post: gt_nikhil
+# past: 先月
+# images: gt_sns_nikhil_farewell_table
+# where: ラクナウの支店
+# likes: gt_tanvi
+支店長の送別会。段取りは僕
+
+=== gt_past_nikhil_first_date ===
+# post: gt_nikhil
+# past: 去年の秋
+# images: gt_sns_nikhil_first_date
+# where: ラクナウ
+初めての食事。店は三軒予約
+
+= tanvi
+# speaker: gt_tanvi
+一軒で、よかったのに
+# speaker: gt_nikhil
+……次は一軒にします
+
+// タンヴィ：伝記と、緑の服
+=== gt_past_tanvi_biographies ===
+# post: gt_tanvi
+# past: 先週
+# images: gt_sns_tanvi_biographies
+今月の伝記、四冊目
+
+= nikhil
+# speaker: gt_nikhil
+僕の話も、いつか伝記に？
+# speaker: gt_tanvi
+まず、本人が話して
+
+=== gt_past_tanvi_green_kurtas ===
+# post: gt_tanvi
+# past: 去年
+# images: gt_sns_tanvi_green_kurtas gt_sns_tanvi_mirror
+緑のクルタ、三着目。迷わない
+
+= nikhil
+# speaker: gt_nikhil
+また緑？
+# speaker: gt_tanvi
+緑は、決めてあるの
+
+// ドゥッガル：旅行会社の指揮下、孫とチェス、八十歳
+=== gt_past_duggal_tour_flag ===
+# post: gt_agra_fort_old_man
+# past: 三日前
+# images: gt_sns_duggal_tour_flag
+本日より、旅行会社の指揮下に入る。
+
+= riya
+# speaker: gt_riya
+大佐、集合は九時です
+# speaker: gt_agra_fort_old_man
+八時四十分に、いた。
+
+=== gt_past_duggal_chess ===
+# post: gt_agra_fort_old_man
+# past: 先月
+# images: gt_sns_duggal_chess
+孫に負けた。再戦を要求する。
+
+=== gt_past_duggal_birthday ===
+# post: gt_agra_fort_old_man
+# past: 去年
+# images: gt_sns_duggal_pushup gt_sns_duggal_cake
+八十歳。腕立ては、八回。
+
+// リヤ：旗と、二台の電話
+=== gt_past_riya_no_strays ===
+# post: gt_riya
+# past: 先週
+# images: gt_sns_riya_flag gt_sns_riya_headcount
+# where: agra_taj_mahal
+本日の迷子、ゼロ人！
+
+=== gt_past_riya_two_phones ===
+# post: gt_riya
+# past: 去年
+# images: gt_sns_riya_two_phones
+電話が鳴りやまないので、二台目
+
+// ツアーの客：寝ている夫と、屋上の菜園
+=== gt_past_fort_tourist_husband ===
+# post: gt_agra_fort_tourist
+# past: 先週
+# images: gt_sns_fort_tourist_husband
+聞いた話を、夫に全部話す。夫は寝てる
+
+=== gt_past_fort_tourist_chillies ===
+# post: gt_agra_fort_tourist
+# past: 去年の秋
+# images: gt_sns_fort_tourist_pots gt_sns_fort_tourist_harvest
+屋上の唐辛子、今年は豊作
+
+// ヴィムラー：満員の木陰、書き直しの請願書、返さない赤ペン
+=== gt_past_vimla_full_shade ===
+# post: gt_vimla
+# past: 先月
+# images: gt_sns_vimla_full_shade
+# where: agra_itimad_tomb
+署名はゼロ。木陰は満員。
+
+=== gt_past_vimla_drafts ===
+# post: gt_vimla
+# past: 三年前
+# images: gt_sns_vimla_drafts
+請願書、書き直し七回目。
+
+=== gt_past_vimla_red_pen ===
+# post: gt_vimla
+# past: 五年前
+# images: gt_sns_vimla_red_pen
+退職。赤ペンは、返しません。
+
+// ムケーシュ：自分の家の三年（型枠・基礎・土地）
+=== gt_past_mukesh_formwork ===
+# post: gt_agra_fatehpur_man
+# past: 先月
+# images: gt_sns_mukesh_formwork
+# where: 郊外の現場
+型枠、完成。来月は屋根だ
+
+=== gt_past_mukesh_foundation ===
+# post: gt_agra_fatehpur_man
+# past: 二年前
+# images: gt_sns_mukesh_foundation
+# where: 郊外の現場
+自分の家の基礎。施主がうるさい
+
+=== gt_past_mukesh_land ===
+# post: gt_agra_fatehpur_man
+# past: 三年前
+# images: gt_sns_mukesh_land
+# where: 郊外の現場
+土地を買った。二階は息子の分
+
+// 青年（観客の中の学生）：締め切りと、寮の屋上
+=== gt_past_student_deadline ===
+# post: gt_agra_finale_student
+# past: 先週
+# images: gt_sns_student_desk
+歴史の課題、締め切り三時間前
+
+=== gt_past_student_rooftop ===
+# post: gt_agra_finale_student
+# past: 先月
+# images: gt_sns_student_rooftop gt_sns_student_thumb
+寮の屋上から。タージは親指くらい
+
+// ジャグディープ：帰った光と、三代目の反射板
+=== gt_past_jagdeep_empty_arch ===
+# post: gt_jagdeep
+# past: 先週
+# images: gt_sns_jagdeep_empty_arch
+# where: agra_chini_rauza
+二時間待った。光は帰った
+
+=== gt_past_jagdeep_reflectors ===
+# post: gt_jagdeep
+# past: 去年
+# images: gt_sns_jagdeep_reflectors gt_sns_jagdeep_river
+反射板、三代目。二代目は川へ
+
+// 花嫁になる人：決まらない色と、二本の傘
+=== gt_past_bride_colours ===
+# post: gt_agra_chini_bride
+# past: 先月
+# images: gt_sns_bride_swatches gt_sns_bride_fiance_swatches
+# where: プネー
+式の色、まだ決まらない
+
+= jagdeep
+# speaker: gt_jagdeep
+色は、光を見てから決めろ
+# speaker: gt_agra_chini_bride
+光を見に行く日を、決めます
+
+=== gt_past_bride_umbrellas ===
+# post: gt_agra_chini_bride
+# past: 半年前
+# images: gt_sns_bride_umbrellas
+# where: プネー
+婚約しました。傘は二本のまま
+
+// グルミート：三台目のトラックと、ブランプトンのチャイ（父のハルバンスがコメントする）
+=== gt_past_gurmeet_third_truck ===
+# post: gt_gurmeet
+# past: 先月
+# images: gt_sns_gurmeet_third_truck gt_sns_gurmeet_white_road
+# where: ブランプトン
+三台目が来ました。道は、まだ白い
+
+= harbans
+# speaker: gt_harbans
+白い道は、走らん。
+# speaker: gt_gurmeet
+親父は、乗らなくていい
+
+=== gt_past_gurmeet_chai ===
+# post: gt_gurmeet
+# past: 去年の夏
+# images: gt_sns_gurmeet_brampton_chai
+# where: ブランプトン
+この店のチャイは、濃い
+
+= harbans
+# speaker: gt_harbans
+薄い。写真で分かる。
+# speaker: gt_gurmeet
+飲んでから言ってくれ
+
+// ピクニックの父親：映画と、母の弁当（娘がコメントする）
+=== gt_past_picnic_father_movie ===
+# post: gt_agra_mariam_father
+# past: 先月
+# images: gt_sns_picnic_father_movie
+この映画、三回目。また泣いた
+
+= daughter
+# speaker: gt_agra_mariam_daughter
+パパ、毎回同じ所で泣く
+# speaker: gt_agra_mariam_father
+名場面だからだ
+
+=== gt_past_picnic_father_tiffin ===
+# post: gt_agra_mariam_father
+# past: 去年の冬
+# images: gt_sns_picnic_father_tiffin gt_sns_picnic_father_mat
+# where: 公園の芝生
+母の弁当、五段重ね。完食
+
+= daughter
+# speaker: gt_agra_mariam_daughter
+三段目、パパひとりで食べた
+# speaker: gt_agra_mariam_father
+あれは、パパの段だ
+
+// ピクニックの娘：父の解説の訂正と、ゲーム
+=== gt_past_picnic_daughter_corrections ===
+# post: gt_agra_mariam_daughter
+# past: 先週
+# images: gt_sns_picnic_daughter_lecture gt_sns_picnic_daughter_grandma
+パパの歴史講座、本日の訂正は三つ
+
+= father
+# speaker: gt_agra_mariam_father
+訂正は、家に帰ってから
+# speaker: gt_agra_mariam_daughter
+その場で直すのが、早い
+
+=== gt_past_picnic_daughter_game ===
+# post: gt_agra_mariam_daughter
+# past: 先月
+# images: gt_sns_picnic_daughter_game
+ゲーム、学年で一位
+
+= father
+# speaker: gt_agra_mariam_father
+勉強は？
+# speaker: gt_agra_mariam_daughter
+した。そのあと一位
+
+// ソニア：煉瓦と、テープのバット
+=== gt_past_sonia_bricks ===
+# post: gt_sonia
+# past: 先週
+# images: gt_sns_sonia_bricks
+# where: 塀の外の空き地
+新しい煉瓦、三つ確保
+
+=== gt_past_sonia_taped_bat ===
+# post: gt_sonia
+# past: 先月
+# images: gt_sns_sonia_cracked_bat gt_sns_sonia_taped_bat
+バット、また割れた。テープ三周
+
+// 茶屋の主人：マギーの日と、雨の日（サミールがコメントする）
+=== gt_past_teashop_maggi ===
+# post: gt_agra_ram_bagh_tea_master
+# past: 先月
+# images: gt_sns_teashop_maggi
+# where: ラーム・バーグの向かいの茶屋
+マギー、本日四十皿
+
+= samir
+# speaker: gt_samir
+今度、新婚のお客さまを送ります
+# speaker: gt_agra_ram_bagh_tea_master
+ゆで卵、用意しとく
+
+=== gt_past_teashop_rain ===
+# post: gt_agra_ram_bagh_tea_master
+# past: 去年の雨季
+# images: gt_sns_teashop_rain_chairs gt_sns_teashop_two_cups
+# where: ラーム・バーグの向かいの茶屋
+雨。客はゼロ。チャイは自分で二杯
+
+// ヴィノード：洗車と、牛一頭の渋滞（サミールがコメントする）
+=== gt_past_vinod_car_wash ===
+# post: gt_vinod
+# past: 先週
+# images: gt_sns_vinod_car_wash gt_sns_vinod_cow_mirror
+洗車した。牛が見に来た
+
+=== gt_past_vinod_cow_jam ===
+# post: gt_vinod
+# past: 去年
+# images: gt_sns_vinod_cow_jam
+本日の渋滞、牛一頭
+
+= samir
+# speaker: gt_samir
+鳴らせば、いいのでは
+# speaker: gt_vinod
+鳴らすと、こっちが疲れます
+
+// 番人（アクバル廟）：見習いの猿と、ずれる鹿の数
+=== gt_past_guard_trainee_monkey ===
+# post: gt_agra_akbar_guard
+# past: 先週
+# images: gt_sns_guard_trainee_monkey
+# where: agra_akbar_tomb
+見習い、初めてジュースを獲得
+
+=== gt_past_guard_blackbuck ===
+# post: gt_agra_akbar_guard
+# past: 先月
+# images: gt_sns_guard_blackbuck_herd gt_sns_guard_blackbuck_stare
+# where: agra_akbar_tomb
+鹿を数えた。毎回一頭ずれる

@@ -20,6 +20,7 @@ export function SnsDebugView({ state }: { state: GameState }) {
       {cities.map((city) => (
         <section key={city.cityId} aria-label={`${city.cityNameJa}の投稿`}>
           <p className="debug-sns-city">{city.cityNameJa}{city.reached ? "" : "（まだ着いていない）"}</p>
+          {city.pastCount > 0 && <p>過去の投稿 {city.pastCount}（夜には届かない。書いた人に会うと、人物ページで読める）</p>}
           <ol>
             {city.posts.map((post) => (
               <li key={post.id} data-testid={`debug-sns-post-${post.id}`} data-status={post.status}>

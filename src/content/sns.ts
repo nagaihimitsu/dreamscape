@@ -59,6 +59,8 @@ export const snsLikeSchema = z.object({ personId: id, when: conditionSchema.opti
  * One post (a knot). `author`: `# post:`. `imageIds`: `# images:` (album images, or for a person also SNS pictures; the
  * heroine's show only the photos taken). `where`: `# where:` (a person's post only: a place of its city, or a name).
  * `when`: `# when:` and `# until:`. `line`: its one line. `likes`: `# likes:`. `comments`: its stitches, in order.
+ * `past`: `# past: <いつ>` (2026-11-27): a person's post from before the two met (「去年の冬」), never delivered: it is read on
+ * their page once they are met, always the same (no condition, no later comment, no heroine's word, no like of the player).
  */
 export const snsPostSchema = z.object({
   id,
@@ -71,6 +73,7 @@ export const snsPostSchema = z.object({
   line: snsLineSchema,
   likes: z.array(snsLikeSchema),
   comments: z.array(snsCommentSchema),
+  past: japaneseText.optional(),
 }).strict();
 export type SnsPost = z.infer<typeof snsPostSchema>;
 

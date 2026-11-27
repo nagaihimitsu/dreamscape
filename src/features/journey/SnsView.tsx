@@ -9,7 +9,7 @@ import { snsShowsPerson } from "../../domain/sns";
 import { JourneyNumbersCard } from "./JourneyNumbers";
 import type { JourneyNumbers } from "./journey-numbers";
 import {
-  snsHeroinePage, snsMetPeople, snsPersonPage, snsPostView, snsTimeline,
+  snsHeroinePage, snsMetPeople, snsPersonPage, snsPostPageTitle, snsPostView, snsTimeline,
   type SnsCommentView, type SnsDay, type SnsFace, type SnsMetPerson, type SnsPhotoView, type SnsPostView,
 } from "./sns";
 import { useSwipe } from "./useSwipe";
@@ -251,8 +251,12 @@ function Paper({ post, photo, actions }: { post: SnsPostView; photo: SnsPhotoVie
   </figure>;
 }
 
-/** The player's heart (2026-11-26): a line when not liked, red when liked; pressed again, taken back. No count. */
+/**
+ * The player's heart (2026-11-26): a line when not liked, red when liked; pressed again, taken back. No count. None on a past
+ * post (`# past:`: from before the two met, it is only read).
+ */
 function LikeButton({ post, onLike }: { post: SnsPostView; onLike?: (postId: string) => void }) {
+  if (post.pastJa) return null;
   if (!onLike) return post.liked ? <span className="sns-like is-liked is-still"><Icon name="heart" /><span className="sr-only">いいね済み</span></span> : null;
   return <button type="button" className={`sns-like${post.liked ? " is-liked" : ""}`} aria-pressed={post.liked} data-testid="sns-like"
     onClick={() => onLike(post.id)}>
@@ -401,13 +405,16 @@ function HeroinePage({ game, numbers, reduceMotion, actions }: { game: GameState
   </article>;
 }
 
-/** One post on a page of its own (from a person's page): its night's heading and its card. */
+/**
+ * One post on a page of its own (from a person's page): its night's heading and its card; a past post (`# past:`), its writer
+ * and when it was posted (「カムラ · 去年の冬」).
+ */
 function PostPage({ game, postId, actions }: { game: GameState; postId: string; actions: Actions }) {
   const view = useMemo(() => snsPostView(game, postId), [game, postId]);
   if (!view) return null;
-  const day = snsTimeline(game).find((item) => item.cityId === view.arrived.cityId && item.day === view.arrived.day);
+  const title = snsPostPageTitle(view);
   return <section aria-labelledby="sns-post-title" data-testid="sns-post-page">
-    <h3 id="sns-post-title" className="sns-page-title sns-post-title" tabIndex={-1}>{day ? `${day.cityNameJa} · ${day.day}日目` : view.author.nameJa}</h3>
+    <h3 id="sns-post-title" className="sns-page-title sns-post-title" tabIndex={-1}>{title}</h3>
     <SnsCard posts={[view]} actions={actions} />
   </section>;
 }

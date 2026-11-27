@@ -138,7 +138,7 @@ describe("the SNS", () => {
     expect(tea.line.textJa).toBe("航と、三時のお茶");
     expect(tea.author).toMatchObject({ id: "heroine", nameJa: "澪", characterId: "heroine" });
     expect(tea.photos).toEqual([expect.objectContaining({ imageId: "smp_album_clock_tower", path: expect.any(String), album: expect.objectContaining({ day: 1 }) })]);
-    expect(tea.comments.map((comment) => [comment.writer.id, comment.lines.length, comment.arrived.day])).toEqual([[LILI, 2, 1], [TOMA, 1, 1], [LILI, 1, 1], [TOMA, 1, 2]]);
+    expect(tea.comments.map((comment) => [comment.writer.id, comment.lines.length, comment.arrived?.day])).toEqual([[LILI, 2, 1], [TOMA, 1, 1], [LILI, 1, 1], [TOMA, 1, 2]]);
     expect(tea.likers.map((face) => face.id)).toEqual([LILI, TOMA]);
     expect(tea.liked).toBe(true);
     expect(days[0].posts[0].photos[0].placeNameJa).toEqual(expect.any(String));
