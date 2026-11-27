@@ -1,6 +1,7 @@
 /* The dialogue window's head (UI redesign §3.3, decision H; DialogueWindowHead): the speaker's name band on the
    window's top edge, which it straddles (the window paints itself from --vn-head-overhang down). Without a band (the
-   narration) the head keeps the room the band's lower half would take, so the words start as far into the glass. */
+   narration) the head keeps the whole room the band and its glow take (2026-11-27 user request), so the words start
+   as far into the glass as under a name. */
 .vn-window-head {
   position: relative;
   z-index: 1;
@@ -9,7 +10,8 @@
   container-type: inline-size;
   display: flex;
   align-items: flex-start;
-  min-height: calc(var(--vn-head-overhang) + 8px);
+  /* The band's margins (4 + 12), its padding (4 + 5) and its one line. */
+  min-height: calc(4px + 9px + var(--ds-text-body) * var(--ds-leading-tight) + 12px);
   padding: 0 10px;
 }
 /* The name band (2026-11-25 user decisions): a rounded tag in the colours of the speaker's clothes (name-band.ts: its
