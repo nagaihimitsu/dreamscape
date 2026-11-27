@@ -38,8 +38,10 @@ export type SnsPostView = {
   arrived?: SnsNight; pastJa?: string;
 };
 /**
- * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, the
- * heroine's posts of the night (her one card, a slide a photo, in the order written) and the people's posts (each a card).
+ * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, and its
+ * two cards (2026-11-27 user decision), each turned sideways a slide a photo: the heroine's posts of the night (in the order
+ * written) and under them the people's (`posts`, in the order they came). Two, not one: her posts come several a night with
+ * many photos, and the people's would be far behind them (some of theirs show her photos again: Monu's of India Gate).
  */
 export type SnsDay = { cityId: string; cityNameJa: string; day: number; met: SnsFace[]; heroine: SnsPostView[]; posts: SnsPostView[] };
 
@@ -127,7 +129,7 @@ function metOn(game: Readonly<GameState>, night: Pick<SnsNight, "cityId" | "day"
 
 /**
  * The timeline (トップ): a day for each night something came, the newest first. In a day, the heroine's posts of that night
- * make her one card (in the order written), the people's posts each a card, the newest first.
+ * make her one card (in the order written), the people's posts their one card (in the order they came).
  */
 export function snsTimeline(game: Readonly<GameState>): SnsDay[] {
   const days: SnsDay[] = [];
@@ -140,7 +142,7 @@ export function snsTimeline(game: Readonly<GameState>): SnsDay[] {
       days.push(day);
     }
     if (view.author.id === SNS_HEROINE) day.heroine.push(view);
-    else day.posts.unshift(view);
+    else day.posts.push(view);
   }
   const order = snsData.posts.map((post) => post.id);
   for (const day of days) day.heroine.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
