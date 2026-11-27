@@ -21,7 +21,7 @@
 .debug-session-bar strong, .debug-session-bar span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .debug-session-bar span { font-size: var(--ds-text-caption); }
 .debug-session-bar button { flex: none; min-height: 44px; padding: 4px 9px; line-height: var(--ds-leading-tight); word-break: keep-all; }
-/* On a phone the bar's buttons wrap at their <wbr> (「フラグ・」「時刻・段階」, 「場面の選択へ」「戻る」): the bar keeps its 56 px and
+/* On a phone the bar's buttons wrap at their <wbr> (「フラグ・時刻・」「段階・人」, 「場面の選択へ」「戻る」): the bar keeps its 56 px and
    its label keeps room for 「Debug · 通常セーブとは別」 and the place. A button's second line stays one line (not at its 「・」). */
 @media (max-width: 480px) {
   .debug-session-bar button { width: min-content; padding: 4px 8px; font-size: var(--ds-text-caption); }
@@ -56,7 +56,7 @@
 .debug-sns .debug-sns-city { margin-top: 8px; font-weight: 600; }
 .debug-sns li + li { margin-top: 6px; }
 
-/* Flags, free time's clock and 恋の段階 (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻・段階」. */
+/* Flags, free time's clock and 恋の段階 (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻・段階・人」. */
 .debug-note { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .debug-panel .debug-note { font-size: var(--ds-text-note); }
 .debug-clock { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 10px 12px 12px; border: 1px solid var(--debug-mode-debug-clock-edge); border-radius: var(--ds-radius-field); }

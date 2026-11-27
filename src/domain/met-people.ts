@@ -69,23 +69,73 @@ export function metPeople(game: Readonly<GameState>): MetEntry[] {
   addPeopleOf(cityIds.flatMap((cityId) => scenes.filter((scene) => isArrival(scene) && scene.cityId === cityId && sceneCompleted(scene, game, reached))));
   addPeopleOf(game.seenEncounterIds.flatMap((sceneId) => scenes.filter((scene) => scene.id === sceneId && INSERTED_KINDS.includes(scene.kind))));
   for (const record of game.battleRecords) {
-    const battle = battles.find((item) => item.id === record.battleId);
-    const cityId = battle && battleCityId(battle.id);
-    if (!battle || !cityId) continue;
-    const characterId = BATTLE_CHARACTERS[battle.id];
-    const inCity = storyState.people.filter((item) => item.cityId === cityId);
-    const named = inCity.find((item) => item.nameJa === battle.enemyNameJa);
-    // The quiz's partner by their own name (enemyNameJa): a person of the partner's portrait declared under another name lends
-    // the entry its ID and words, not its name.
-    const person = named ?? (characterId === undefined ? undefined : inCity.find((item) => item.characterId === characterId));
-    add(person
-      ? { id: person.id, cityId: person.cityId, nameJa: named ? person.nameJa : battle.enemyNameJa,
-        ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa), ...portrait(person.characterId ?? characterId) }
-      : { id: quizPartnerId(battle.id), cityId, nameJa: battle.enemyNameJa, ...words(battle.enemyTitleJa), ...portrait(characterId) });
+    const entry = quizPartnerEntry(record.battleId);
+    if (entry) add(entry);
   }
   const other = scenes.filter((scene) => !isArrival(scene) && !INSERTED_KINDS.includes(scene.kind) && sceneCompleted(scene, game, reached));
   addPeopleOf([...other.filter((scene) => !(scene.main && "epilogue" in scene.main)), ...other.filter((scene) => !!scene.main && "epilogue" in scene.main)]);
+  // Debug's (GameState.debugMetIds), last, in the order Debug recorded them.
+  if (game.debugMetIds?.length) {
+    const meetable = meetableEntries(cityIds);
+    for (const id of game.debugMetIds) {
+      const entry = meetable.find((item) => item.id === id);
+      if (entry) add({ ...entry });
+    }
+  }
   return met;
+}
+
+/**
+ * The entry of a quiz's partner, always under the name the quiz gives them (`enemyNameJa`; 2026-11-25 user decision): the
+ * declared person of the quiz's city with that name, else the one whose portrait the quiz shows (presentation/characters.json
+ * `battleCharacters`; declared under another name: the entry takes their ID and words, not their name), else the quiz's own
+ * partner (its name and role). Undefined for a quiz this build does not know or that belongs to no city.
+ */
+function quizPartnerEntry(battleId: string): MetEntry | undefined {
+  const battle = battles.find((item) => item.id === battleId);
+  const cityId = battle && battleCityId(battle.id);
+  if (!battle || !cityId) return undefined;
+  const characterId = BATTLE_CHARACTERS[battle.id];
+  const inCity = storyState.people.filter((item) => item.cityId === cityId);
+  const named = inCity.find((item) => item.nameJa === battle.enemyNameJa);
+  const person = named ?? (characterId === undefined ? undefined : inCity.find((item) => item.characterId === characterId));
+  const words = (...texts: (string | undefined)[]) => {
+    const text = texts.find((item) => item);
+    return text ? { descriptionJa: text } : {};
+  };
+  const portraitId = person?.characterId ?? characterId;
+  const portrait = portraitId ? { characterId: portraitId } : {};
+  return person
+    ? { id: person.id, cityId: person.cityId, nameJa: named ? person.nameJa : battle.enemyNameJa,
+      ...words(person.descriptionJa, person.titleJa, battle.enemyTitleJa), ...portrait }
+    : { id: quizPartnerId(battle.id), cityId, nameJa: battle.enemyNameJa, ...words(battle.enemyTitleJa), ...portrait };
+}
+
+/**
+ * Everyone a journey declares to meet, as the people met's entries: in each city of `cityIds` (in that order), the people of
+ * progression/story.json of the city (in the order declared; also those no scene's `# person:` names yet, whom play does not
+ * meet), then the quizzes' partners (in the quiz table's order) not listed yet. One entry a person (the same ID, or the same
+ * name in the same city). What Debug offers to record as met (src/dev/debug-edits.ts) and what GameState.debugMetIds may name.
+ */
+export function meetableEntries(cityIds: readonly string[]): MetEntry[] {
+  const entries: MetEntry[] = [];
+  const add = (entry: MetEntry) => {
+    if (!entries.some((item) => item.id === entry.id || (item.cityId === entry.cityId && item.nameJa === entry.nameJa))) entries.push(entry);
+  };
+  for (const cityId of cityIds) {
+    for (const person of storyState.people)
+      if (person.cityId === cityId) {
+        const text = person.descriptionJa ?? person.titleJa;
+        add({ id: person.id, cityId, nameJa: person.nameJa, ...(text ? { descriptionJa: text } : {}),
+          ...(person.characterId ? { characterId: person.characterId } : {}) });
+      }
+    for (const battle of battles) {
+      if (battleCityId(battle.id) !== cityId) continue;
+      const entry = quizPartnerEntry(battle.id);
+      if (entry) add(entry);
+    }
+  }
+  return entries;
 }
 
 /** The IDs of the people met so far (metPeople). */
@@ -117,4 +167,11 @@ export function validateMetTimes(state: GameState): void {
     if (!known || !city || getJourneyForCity(item.cityId)?.id !== journeyId || !city.travel.places.some((place) => place.id === item.placeId))
       throw new Error("出会った人の記録の参照先が見つかりません。");
   }
+}
+
+/** Debug's people met (GameState.debugMetIds) name only people the save's journey can meet (meetableEntries). */
+export function validateDebugMet(state: GameState): void {
+  if (!state.debugMetIds?.length) return;
+  const meetable = new Set(meetableEntries(journeyCityIds(state)).map((entry) => entry.id));
+  if (state.debugMetIds.some((id) => !meetable.has(id))) throw new Error("Debugで出会ったことにした人の参照先が見つかりません。");
 }

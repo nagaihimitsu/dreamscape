@@ -6,6 +6,7 @@ import { formatMoneyForCity } from "../content/currency";
 import { getJourneyForCity } from "../content/journeys";
 import { validateGameState, type GameState } from "../domain/game";
 import { hasActiveScene } from "../domain/game-state-schema";
+import { journeyCityIds, meetableEntries, metPersonIds, recordMetTimes } from "../domain/met-people";
 import { tourKeepBack } from "../domain/reservations";
 import { clueRecordAllowed } from "../domain/tourism";
 import { getUsableRoutes } from "../domain/transport";
@@ -129,6 +130,75 @@ export function withDebugClues(state: GameState, ids: readonly string[]): GameSt
   if (!ids.length) return state;
   checkDebugClues(state.currentCityId, ids);
   return withClues(state, ids);
+}
+
+/** A person Debug can record as met (2026-11-27 user request 「デバッグモードで、出会った人を設定したい」), with their name. */
+export type DebugPerson = { id: string; nameJa: string };
+/** The people of one city of a journey. */
+export type DebugPersonGroup = { cityId: string; nameJa: string; people: DebugPerson[] };
+
+/**
+ * The people Debug offers to record as met for a city (the scene picker's 「出会ったことにする」, a launch URL's `met`, the Debug
+ * bar's dialog): everyone its journey declares (met-people.ts meetableEntries: the people of its cities, also those no scene's
+ * `# person:` names yet, and the quizzes' partners), by their city in the journey's order.
+ */
+export function debugPersonGroups(cityId: string): DebugPersonGroup[] {
+  const cityIds = journeyCityIds({ currentCityId: cityId });
+  const entries = meetableEntries(cityIds);
+  const cityName = (id: string) => getCities().find((city) => city.id === id)?.nameJa ?? id;
+  return cityIds.map((id) => ({ cityId: id, nameJa: cityName(id),
+    people: entries.filter((entry) => entry.cityId === id).map((entry) => ({ id: entry.id, nameJa: entry.nameJa })) }))
+    .filter((group) => group.people.length);
+}
+
+/** Throws the reason when a person is not one Debug offers for the city (a launch URL's `met`, a change). */
+export function checkDebugMet(cityId: string, ids: readonly string[]): void {
+  if (!ids.length) return;
+  const offered = new Set(debugPersonGroups(cityId).flatMap((group) => group.people.map((person) => person.id)));
+  const refused = ids.find((id) => !offered.has(id));
+  if (refused === undefined) return;
+  const journey = getJourneyForCity(cityId)?.nameJa ?? getCityContent(cityId).city.nameJa;
+  throw new Error(`「${refused}」は${journey}で出会える人ではありません（その旅行編の都市の progression/story.json の people のID、または名前のある人物のいないクイズの相手の quiz:<クイズのID>。場面の確認の「出会ったことにする」に一覧があります）。`);
+}
+
+/** The people met in play (the save's own records), without those Debug recorded (GameState.debugMetIds). */
+export function playMetIds(state: GameState): Set<string> {
+  const { debugMetIds: _debug, ...rest } = state;
+  return metPersonIds(rest);
+}
+
+/**
+ * The state with these people met too (GameState.debugMetIds; each must be offered for the current city): one met already is
+ * passed over. Each new one is recorded as first met now, at the party's place (met-times.ts), as play records it, so the
+ * SNS's person page and the day's faces show them.
+ */
+export function withDebugMet(state: GameState, ids: readonly string[]): GameState {
+  if (!ids.length) return state;
+  checkDebugMet(state.currentCityId, ids);
+  const before = metPersonIds(state);
+  const added = ids.filter((id, index) => !before.has(id) && ids.indexOf(id) === index);
+  if (!added.length) return state;
+  return validateGameState(recordMetTimes({ ...state, debugMetIds: [...(state.debugMetIds ?? []), ...added] }, before));
+}
+
+/**
+ * Record one person as met, or no longer met, in the running Debug game (refused while a scene is open). Only those Debug
+ * recorded can be taken back (with their record of when they were met); one met in play stays met.
+ */
+export function setDebugMet(state: GameState, id: string, met: boolean): GameState {
+  const refusal = debugEditRefusal(state);
+  if (refusal) throw new Error(refusal);
+  checkDebugMet(state.currentCityId, [id]);
+  if (met) return withDebugMet(state, [id]);
+  if (!state.debugMetIds?.includes(id)) {
+    if (playMetIds(state).has(id)) throw new Error("遊びで出会った人は、出会っていないことにはできません。");
+    return state;
+  }
+  const { debugMetIds, ...rest } = state;
+  const left = debugMetIds.filter((item) => item !== id);
+  const next: GameState = left.length ? { ...rest, debugMetIds: left } : rest;
+  const still = metPersonIds(next).has(id);
+  return validateGameState(still ? next : { ...next, metTimes: (next.metTimes ?? []).filter((item) => item.id !== id) });
 }
 
 /** An episode of a city (not its finale) Debug can record as finished, with its landmark's name. */

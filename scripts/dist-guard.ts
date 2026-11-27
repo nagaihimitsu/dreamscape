@@ -70,7 +70,7 @@ export const lazyDebugMarkers: readonly DevOnlyMarker[] = [
   // Debug's 音と演出の見本 (every sound and effect to check, 2026-11-13) and its rules.
   { text: "ここでの音の設定はこの部屋だけのもので", source: "src/dev/EffectsRoom.tsx" },
   { text: "消す（# tint: off）", source: "src/dev/effects-room.ts" },
-  // Debug's flags, free time's clock (2026-11-15) and 恋の段階 (2026-11-16): 場面の確認's choices, the Debug bar's 「フラグ・時刻・段階」
+  // Debug's flags, free time's clock (2026-11-15) and 恋の段階 (2026-11-16): 場面の確認's choices, the Debug bar's 「フラグ・時刻・段階・人」
   // and their rules.
   { text: "このDebugのゲームだけを、すぐに変えます", source: "src/dev/DebugStateTools.tsx" },
   { text: "どの場面も使っていないフラグ", source: "src/dev/debug-edits.ts" },

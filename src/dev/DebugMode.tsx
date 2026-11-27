@@ -22,8 +22,8 @@ import { OccasionCandidatesView } from "./OccasionCandidatesView";
 import { SnsDebugView } from "./SnsDebugView";
 import { EffectsRoom } from "./EffectsRoom";
 import { MiniGameRoom } from "./MiniGameRoom";
-import { debugClueGroups, debugClueIds, debugEpisodes, debugFlagGroups, debugFlagIds } from "./debug-edits";
-import { DebugClockFields, DebugClueChooser, DebugEditDialog, DebugEpisodeChooser, DebugFlagChooser, DebugStageField } from "./DebugStateTools";
+import { debugClueGroups, debugClueIds, debugEpisodes, debugFlagGroups, debugFlagIds, debugPersonGroups } from "./debug-edits";
+import { DebugClockFields, DebugClueChooser, DebugEditDialog, DebugEpisodeChooser, DebugFlagChooser, DebugMetChooser, DebugStageField } from "./DebugStateTools";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -62,9 +62,10 @@ export default function DebugMode() {
   const options = debugTargets(cityId);
   const flagGroups = useMemo(() => debugFlagGroups(cityId), [cityId, dataMode]);
   const clueGroups = useMemo(() => debugClueGroups(cityId), [cityId, dataMode]);
+  const personGroups = useMemo(() => debugPersonGroups(cityId), [cityId, dataMode]);
   const cityEpisodes = useMemo(() => debugEpisodes(cityId), [cityId, dataMode]);
   const [session, setSession] = useState<Session | null>(null);
-  // The Debug bar's 「フラグ・時刻・段階」 (DebugEditDialog) and its way into the running game (GameApp sets it).
+  // The Debug bar's 「フラグ・時刻・段階・人」 (DebugEditDialog) and its way into the running game (GameApp sets it).
   const [editing, setEditing] = useState(false);
   const gameAccess = useRef<DebugGameAccess | null>(null);
   const [prototype, setPrototype] = useState<DebugSceneInfo | null>(null);
@@ -106,17 +107,20 @@ export default function DebugMode() {
   }) : undefined, []);
 
   function update(next: DebugSettings) {
-    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it. The flags
-    // and clues chosen belong to the city's journey (another city keeps those of its journey); the day and time, to any scene.
+    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it. The flags,
+    // clues and people chosen belong to the city's journey (another city keeps those of its journey); the day and time, to any scene.
     // The episodes finished first belong to the city, from the journey's start (a cleared city has finished them all).
     const { step: _step, episodes, ...rest } = next;
     const keepEpisodes = !!episodes?.length && next.cityId === settings.cityId && next.progress === "initial";
     const keepStep = !next.step || (next.scene === "tour" && next.id === settings.id && next.cityId === settings.cityId);
     const offered = next.flags?.length && next.cityId !== settings.cityId ? debugFlagIds(next.cityId ?? defaultDebugCityId) : null;
     const offeredClues = next.clues?.length && next.cityId !== settings.cityId ? debugClueIds(next.cityId ?? defaultDebugCityId) : null;
+    const offeredPeople = next.met?.length && next.cityId !== settings.cityId
+      ? debugPersonGroups(next.cityId ?? defaultDebugCityId).flatMap((group) => group.people.map((person) => person.id)) : null;
     setSettings({ ...rest, ...(keepStep && next.step ? { step: next.step } : {}), ...(keepEpisodes ? { episodes } : {}),
       ...(offered ? { flags: next.flags!.filter((flag) => offered.includes(flag)) } : {}),
-      ...(offeredClues ? { clues: next.clues!.filter((clue) => offeredClues.includes(clue)) } : {}) });
+      ...(offeredClues ? { clues: next.clues!.filter((clue) => offeredClues.includes(clue)) } : {}),
+      ...(offeredPeople ? { met: next.met!.filter((person) => offeredPeople.includes(person)) } : {}) });
     setCopyMessage("");
   }
   /** Open `next` (a prototype city's map, else its scene in fresh memory storage); throws a message. */
@@ -218,7 +222,7 @@ export default function DebugMode() {
     <div className="debug-session" data-testid="debug-session" data-shot={shot.on || undefined}>
       {!shot.on && <header className="debug-session-bar">
         <div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div>
-        <button type="button" data-testid="debug-edit-open" onClick={() => setEditing(true)}>フラグ・<wbr /><span className="debug-bar-keep">時刻・段階</span></button>
+        <button type="button" data-testid="debug-edit-open" onClick={() => setEditing(true)}><span className="debug-bar-keep">フラグ・時刻・</span><wbr /><span className="debug-bar-keep">段階・人</span></button>
         <button type="button" onClick={backToSettings}>場面の選択へ<wbr />戻る</button>
       </header>}
       <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugAccess={gameAccess} debugShot={shot}
@@ -298,6 +302,7 @@ export default function DebugMode() {
           chosen={settings.episodes ?? []} onChange={(episodes) => update({ ...settings, episodes })} />}
         <DebugFlagChooser groups={flagGroups} cityId={cityId} chosen={settings.flags ?? []} onChange={(flags) => update({ ...settings, flags })} />
         <DebugClueChooser groups={clueGroups} cityId={cityId} chosen={settings.clues ?? []} onChange={(clues) => update({ ...settings, clues })} />
+        <DebugMetChooser groups={personGroups} cityId={cityId} chosen={settings.met ?? []} onChange={(met) => update({ ...settings, met })} />
         </>}
         {message && <p role="alert">{message}</p>}
         <button type="submit" className="primary">{isPrototype ? "地図・交通を確認" : "この場面を開く"}</button>

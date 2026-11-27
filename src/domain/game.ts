@@ -53,7 +53,7 @@ import { validateGlossary } from "./glossary";
 import { validateOutfits } from "./outfits";
 import { validatePastBattles } from "./carry-over";
 import { validateLivedTimes, withLivedTimes } from "./lived-times";
-import { validateMetTimes } from "./met-people";
+import { validateDebugMet, validateMetTimes } from "./met-people";
 import { validateSns } from "./sns";
 import { EMPTY_SNS } from "./sns-state";
 import { DEFAULT_DIFFICULTY, difficultyOf, difficultySchema, startingBudget, type Difficulty, type EnglishChoice } from "./difficulty";
@@ -572,6 +572,7 @@ export function validateGameState(input: unknown): GameState {
   validatePastBattles(state);
   validateLivedTimes(state);
   validateMetTimes(state);
+  validateDebugMet(state);
   validateSns(state);
   return state;
 }
