@@ -1,477 +1,117 @@
-インド編　ヒロインの台詞（ボイス収録用）　録り直しの収録分（長い台詞を分けた行）
-
-作成：2026-11-27
-収録する台詞：52行（1行＝1回の収録＝1ファイル。ファイル名は [ID]。例：gt_delhi_date_bangla_sahib_023.wav）
-  ・長い台詞を分けた行：52行（前に届いた声の24行を、それぞれ2〜3行に分けた。新しい ID で録ります）
-  ・新しい行・文を直した行・同じ ID での録り直しはありません
-  ・都市：デリー 23行（もとの11行）、アーグラ 18行（もとの8行）、ジャイプール 11行（もとの5行）
-
-なぜ分けたか：
-  ・会話の窓を、名札と3段分の大きさに固定しました（2026-11-27）。台詞の長さで窓の大きさが変わらないようにするためです。
-  ・スマートフォンの画面で4段以上になる長い台詞を、文の切れ目で2段ほどずつの行に分けました。
-    声が届いていたヒロインの台詞のうち、分けたのは次の24行です。
-  ・言葉は前と同じです。切れ目の「。」を取っただけ（台詞の終わりには「。」を付けない書き方のため）。
-    分けた行は続けて流れます。前に届いた声の1行を録るつもりで、2つ（または3つ）のファイルに分けて録ってください。
-    演技は、前に届いた声（各場面の「前の台本の行」の ID）と同じで構いません。
-
-読み方の決まりは、2026-11-12の説明書（../2026-11-12/india_voice_guide.txt）と同じです。読むのは「台詞：」の後ろだけ。
-「前の行」「場面の分かれ道」「表情」「演出」「状況」と、場面の見出しの下の説明・前の台本の行は、声の調子の手がかりで、読みません。
-同じ場面に並ぶ別の分かれ道の台詞（「クイズに正解したとき」と「それ以外」など）は、遊ぶ人にはどちらか1つしか聞こえないので、別々に録ります。
-この台本の台詞には、主人公とヒロインの名前は出てきません。
-
-前に届いた声の次の24行は、分けたので使わなくなりました（この台本の新しい ID で録ります）：
-  gt_delhi_date_bangla_sahib_021（→ gt_delhi_date_bangla_sahib_023・gt_delhi_date_bangla_sahib_024）
-  gt_delhi_arrival_004（→ gt_delhi_arrival_005・gt_delhi_arrival_006）
-  gt_delhi_epilogue_007（→ gt_delhi_epilogue_010・gt_delhi_epilogue_011）
-  gt_delhi_main_humayun_tomb_005（→ gt_delhi_main_humayun_tomb_battle_001・gt_delhi_main_humayun_tomb_battle_002）
-  gt_delhi_hotel_homework_005（→ gt_delhi_hotel_homework_008・gt_delhi_hotel_homework_009）
-  gt_delhi_depart_scam_015（→ gt_delhi_depart_scam_office_007・gt_delhi_depart_scam_office_008）
-  gt_delhi_depart_scam_013（→ gt_delhi_depart_scam_on_platform_001・gt_delhi_depart_scam_on_platform_002）
-  gt_delhi_depart_scam_014（→ gt_delhi_depart_scam_on_platform_003・gt_delhi_depart_scam_on_platform_004・gt_delhi_depart_scam_on_platform_005）
-  gt_delhi_date_lodhi_garden_026（→ gt_delhi_date_lodhi_garden_029・gt_delhi_date_lodhi_garden_030）
-  gt_delhi_finale_003（→ gt_delhi_finale_battle_001・gt_delhi_finale_battle_002）
-  gt_delhi_finale_014（→ gt_delhi_finale_battle_003・gt_delhi_finale_battle_004）
-  gt_agra_main_agra_fort_005（→ gt_agra_main_agra_fort_battle_001・gt_agra_main_agra_fort_battle_002）
-  gt_agra_date_guru_ka_taal_008（→ gt_agra_date_guru_ka_taal_018・gt_agra_date_guru_ka_taal_019）
-  gt_agra_arrival_006（→ gt_agra_arrival_007・gt_agra_arrival_008・gt_agra_arrival_009）
-  gt_agra_epilogue_009（→ gt_agra_epilogue_013・gt_agra_epilogue_014）
-  gt_agra_date_confession_004（→ gt_agra_date_confession_034・gt_agra_date_confession_035・gt_agra_date_confession_036）
-  gt_agra_date_confession_022（→ gt_agra_date_confession_037・gt_agra_date_confession_038）
-  gt_agra_finale_012（→ gt_agra_finale_battle_007・gt_agra_finale_battle_008）
-  gt_agra_tour_out_leg_002（→ gt_agra_tour_out_leg_005・gt_agra_tour_out_leg_006）
-  gt_jaipur_main_city_palace_007（→ gt_jaipur_main_city_palace_battle_001・gt_jaipur_main_city_palace_battle_002・gt_jaipur_main_city_palace_battle_003）
-  gt_jaipur_main_hawa_mahal_009（→ gt_jaipur_main_hawa_mahal_battle_003・gt_jaipur_main_hawa_mahal_battle_004）
-  gt_jaipur_date_her_confession_004（→ gt_jaipur_date_her_confession_026・gt_jaipur_date_her_confession_027）
-  gt_jaipur_date_nahargarh_fort_020（→ gt_jaipur_date_nahargarh_fort_037・gt_jaipur_date_nahargarh_fort_038）
-  gt_jaipur_date_panna_meena_kund_030（→ gt_jaipur_date_panna_meena_kund_033・gt_jaipur_date_panna_meena_kund_034）
-
-並び：デリー → アーグラ → ジャイプール。場面は台本のファイルの順。
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■■ デリー　23行
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-■ 世界地図のローティー　2行（長い台詞を分けた）　（places/gt_delhi_bangla_sahib.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_date_bangla_sahib_021] 誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね。なんだか不思議。知らない人に、ちょっとだけ届いた感じ（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_date_bangla_sahib_023]　分けた行（1／2）（gt_delhi_date_bangla_sahib_021 の代わり）
-  前の行（地の文）：二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。
-  状況：前に届いた声 [gt_delhi_date_bangla_sahib_021] の前半。同じ調子で。
-  台詞：誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね
-
-[gt_delhi_date_bangla_sahib_024]　分けた行（2／2）（gt_delhi_date_bangla_sahib_021 の代わり）
-  前の行（ヒロイン）：誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね
-  状況：前に届いた声 [gt_delhi_date_bangla_sahib_021] の後半。同じ調子で、続けて。
-  台詞：なんだか不思議。知らない人に、ちょっとだけ届いた感じ
-
-
-■ 到着（gt_delhi_arrival）　2行（長い台詞を分けた）　（places/gt_delhi_hotel_hub.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_arrival_004] ……はい、覚えておきます。それにしても、地図というより暗号だね。せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_arrival_005]　分けた行（1／2）（gt_delhi_arrival_004 の代わり）
-  前の行（カムラ）：デリーは押しの強い町だよ。欲しいものは、欲しいと言いなさい。黙っていたら、誰も気づかない。
-  表情：からかう / 楽しげ
-  状況：前に届いた声 [gt_delhi_arrival_004] の前半。同じ調子で。
-  台詞：……はい、覚えておきます。それにしても、地図というより暗号だね
-
-[gt_delhi_arrival_006]　分けた行（2／2）（gt_delhi_arrival_004 の代わり）
-  前の行（ヒロイン）：……はい、覚えておきます。それにしても、地図というより暗号だね
-  表情：からかう / 楽しげ（前に届いた声の表情）
-  状況：前に届いた声 [gt_delhi_arrival_004] の後半。同じ調子で、続けて。
-  台詞：せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
-
-
-■ エピローグ（gt_delhi_epilogue）　2行（長い台詞を分けた）　（places/gt_delhi_hotel_hub.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_epilogue_007] 言いそびれたことって、あとから重くなるんだね。わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_epilogue_010]　分けた行（1／2）（gt_delhi_epilogue_007 の代わり）
-  前の行（地の文）：アマンが帰ったあと、【ヒロインの名前】はチャイの最後の一口を飲み干し、窓の外を見た。路地のトラックは、もう全部積み終わっている。
-  場面の分かれ道：関係の段階が2のとき
-  状況：前に届いた声 [gt_delhi_epilogue_007] の前半。同じ調子で。
-  台詞：言いそびれたことって、あとから重くなるんだね
-
-[gt_delhi_epilogue_011]　分けた行（2／2）（gt_delhi_epilogue_007 の代わり）
-  前の行（ヒロイン）：言いそびれたことって、あとから重くなるんだね
-  場面の分かれ道：関係の段階が2のとき
-  状況：前に届いた声 [gt_delhi_epilogue_007] の後半。同じ調子で、続けて。
-  台詞：わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
-
-
-■ 三人目の友達　2行（長い台詞を分けた）　（places/gt_delhi_humayun_tomb.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_main_humayun_tomb_005] わたしは、誰にも言いません。言う相手もいないですし。……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_main_humayun_tomb_battle_001]　分けた行（1／2）（gt_delhi_main_humayun_tomb_005 の代わり）
-  前の行（地の文）：メヘルが即答し、カビールが何度もうなずいた。三人の視線が、そろって【ヒロインの名前】に向く。
-  表情：真剣
-  状況：前に届いた声 [gt_delhi_main_humayun_tomb_005] の前半。同じ調子で。
-  台詞：わたしは、誰にも言いません。言う相手もいないですし
-
-[gt_delhi_main_humayun_tomb_battle_002]　分けた行（2／2）（gt_delhi_main_humayun_tomb_005 の代わり）
-  前の行（ヒロイン）：わたしは、誰にも言いません。言う相手もいないですし
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_delhi_main_humayun_tomb_005] の後半。同じ調子で、続けて。
-  台詞：……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも
-
-
-■ 宿の場面（gt_delhi_hotel_homework）　2行（長い台詞を分けた）　（places/gt_delhi_inserts.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_hotel_homework_005] わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。回ってる洗濯物を見てると、落ち着くから（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_hotel_homework_008]　分けた行（1／2）（gt_delhi_hotel_homework_005 の代わり）
-  前の行（地の文）：かじっていた鉛筆が、やっと紙の上で動きはじめた。
-  表情：ほほえみ
-  状況：前に届いた声 [gt_delhi_hotel_homework_005] の前半。同じ調子で。
-  台詞：わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの
-
-[gt_delhi_hotel_homework_009]　分けた行（2／2）（gt_delhi_hotel_homework_005 の代わり）
-  前の行（ヒロイン）：わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの
-  表情：ほほえみ（前に届いた声の表情）
-  状況：前に届いた声 [gt_delhi_hotel_homework_005] の後半。同じ調子で、続けて。
-  台詞：回ってる洗濯物を見てると、落ち着くから
-
-
-■ 出発（gt_delhi_depart_scam_office）　2行（長い台詞を分けた）　（places/gt_delhi_inserts.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_depart_scam_015] 手付金は、高い授業料だったね。……ううん、やっぱり悔しい。でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_depart_scam_office_007]　分けた行（1／2）（gt_delhi_depart_scam_015 の代わり）
-  前の行（―）：条件で変わる（この前の分かれ道のどれを通ったかによる）
-  場面の分かれ道：条件つき：出来事「gt_delhi_scam_paid」があったとき
-  状況：前に届いた声 [gt_delhi_depart_scam_015] の前半。同じ調子で。
-  台詞：手付金は、高い授業料だったね。……ううん、やっぱり悔しい
-
-[gt_delhi_depart_scam_office_008]　分けた行（2／2）（gt_delhi_depart_scam_015 の代わり）
-  前の行（ヒロイン）：手付金は、高い授業料だったね。……ううん、やっぱり悔しい
-  場面の分かれ道：条件つき：出来事「gt_delhi_scam_paid」があったとき
-  状況：前に届いた声 [gt_delhi_depart_scam_015] の後半。同じ調子で、続けて。
-  台詞：でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
-
-
-■ 出発（gt_delhi_depart_scam_on_platform）　5行（長い台詞を分けた）　（places/gt_delhi_inserts.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_depart_scam_013] 親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も。……悔しい。最初に、ついて行こうって言ったの、わたしだから（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_depart_scam_on_platform_001]　分けた行（1／2）（gt_delhi_depart_scam_013 の代わり）
-  前の行（地の文）：ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
-  状況：前に届いた声 [gt_delhi_depart_scam_013] の前半。同じ調子で。
-  台詞：親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も
-
-[gt_delhi_depart_scam_on_platform_002]　分けた行（2／2）（gt_delhi_depart_scam_013 の代わり）
-  前の行（ヒロイン）：親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も
-  状況：前に届いた声 [gt_delhi_depart_scam_013] の後半。同じ調子で、続けて。
-  台詞：……悔しい。最初に、ついて行こうって言ったの、わたしだから
-
-  前の台本の行：[gt_delhi_depart_scam_014] でも、教えてくれた荷運びの人も、検札の人も、本物だった。宿のご主人も、ルーヒーさんも。……疑うのは疲れるけど、全部を疑うようには、なりたくないな（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_depart_scam_on_platform_003]　分けた行（1／3）（gt_delhi_depart_scam_014 の代わり）
-  前の行（ヒロイン）：……悔しい。最初に、ついて行こうって言ったの、わたしだから
-  表情：真剣
-  状況：前に届いた声 [gt_delhi_depart_scam_014] の前半。同じ調子で。
-  台詞：でも、教えてくれた荷運びの人も、検札の人も、本物だった
-
-[gt_delhi_depart_scam_on_platform_004]　分けた行（2／3）（gt_delhi_depart_scam_014 の代わり）
-  前の行（ヒロイン）：でも、教えてくれた荷運びの人も、検札の人も、本物だった
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_delhi_depart_scam_014] の中ほど。同じ調子で、続けて。
-  台詞：宿のご主人も、ルーヒーさんも
-
-[gt_delhi_depart_scam_on_platform_005]　分けた行（3／3）（gt_delhi_depart_scam_014 の代わり）
-  前の行（ヒロイン）：宿のご主人も、ルーヒーさんも
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_delhi_depart_scam_014] の後半。同じ調子で、続けて。
-  台詞：……疑うのは疲れるけど、全部を疑うようには、なりたくないな
-
-
-■ 笑う会の秘密　2行（長い台詞を分けた）　（places/gt_delhi_lodhi_garden.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_date_lodhi_garden_026] 理由がなくても笑っていいって言われると、ちょっと楽になるね。わたし、いつも、笑っていい理由を探してから笑ってた気がする（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_date_lodhi_garden_029]　分けた行（1／2）（gt_delhi_date_lodhi_garden_026 の代わり）
-  前の行（ヒロイン）：だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも
-  表情：ほほえみ
-  状況：前に届いた声 [gt_delhi_date_lodhi_garden_026] の前半。同じ調子で。
-  台詞：理由がなくても笑っていいって言われると、ちょっと楽になるね
-
-[gt_delhi_date_lodhi_garden_030]　分けた行（2／2）（gt_delhi_date_lodhi_garden_026 の代わり）
-  前の行（ヒロイン）：理由がなくても笑っていいって言われると、ちょっと楽になるね
-  表情：ほほえみ（前に届いた声の表情）
-  状況：前に届いた声 [gt_delhi_date_lodhi_garden_026] の後半。同じ調子で、続けて。
-  台詞：わたし、いつも、笑っていい理由を探してから笑ってた気がする
-
-
-■ 月が落ちた通り　4行（長い台詞を分けた）　（places/gt_delhi_red_fort.ink）
-----------------------------------------
-  前の台本の行：[gt_delhi_finale_003] 待ってください。あの日のカムラさん、すごくはっきりしてました。オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_finale_battle_001]　分けた行（1／2）（gt_delhi_finale_003 の代わり）
-  前の行（地の文）：彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
-  状況：前に届いた声 [gt_delhi_finale_003] の前半。同じ調子で。
-  台詞：待ってください。あの日のカムラさん、すごくはっきりしてました
-
-[gt_delhi_finale_battle_002]　分けた行（2／2）（gt_delhi_finale_003 の代わり）
-  前の行（ヒロイン）：待ってください。あの日のカムラさん、すごくはっきりしてました
-  状況：前に届いた声 [gt_delhi_finale_003] の後半。同じ調子で、続けて。
-  台詞：オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
-
-  前の台本の行：[gt_delhi_finale_014] はい。黙っていなくなるのは、自由とは違うと思ったから。カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした（2026-11-12の台本。この行は録らなくてよくなりました）
-
-[gt_delhi_finale_battle_003]　分けた行（1／2）（gt_delhi_finale_014 の代わり）
-  前の行（カムラ）：……あんたが連れてきたの
-  状況：前に届いた声 [gt_delhi_finale_014] の前半。同じ調子で。
-  台詞：はい。黙っていなくなるのは、自由とは違うと思ったから
-
-[gt_delhi_finale_battle_004]　分けた行（2／2）（gt_delhi_finale_014 の代わり）
-  前の行（ヒロイン）：はい。黙っていなくなるのは、自由とは違うと思ったから
-  状況：前に届いた声 [gt_delhi_finale_014] の後半。同じ調子で、続けて。
-  台詞：カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■■ アーグラ　18行
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-■ 大佐の座り込み　2行（長い台詞を分けた）　（places/gt_agra_agra_fort.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_main_agra_fort_005] はい。城の一部は、今も陸軍の区域ですよね。……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います（2026-11-15の台本。この行は録らなくてよくなりました）
-
-[gt_agra_main_agra_fort_battle_001]　分けた行（1／2）（gt_agra_main_agra_fort_005 の代わり）
-  前の行（ドゥッガル大佐）：それに、わしがここに残る正当な理由はほかにもある。この城には、今も軍がいるのだ
-  場面の分かれ道：クイズに正解したとき
-  状況：前に届いた声 [gt_agra_main_agra_fort_005] の前半。同じ調子で。
-  台詞：はい。城の一部は、今も陸軍の区域ですよね
-
-[gt_agra_main_agra_fort_battle_002]　分けた行（2／2）（gt_agra_main_agra_fort_005 の代わり）
-  前の行（ヒロイン）：はい。城の一部は、今も陸軍の区域ですよね
-  場面の分かれ道：クイズに正解したとき
-  状況：前に届いた声 [gt_agra_main_agra_fort_005] の後半。同じ調子で、続けて。
-  台詞：……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
-
-
-■ 寒い国へは、夏だけ　2行（長い台詞を分けた）　（places/gt_agra_guru_ka_taal.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_date_guru_ka_taal_008] わたしが伝えたら、お二人の言葉じゃなくなっちゃうから。……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか（2026-11-13の台本。この行は録らなくてよくなりました）
-
-[gt_agra_date_guru_ka_taal_018]　分けた行（1／2）（gt_agra_date_guru_ka_taal_008 の代わり）
-  前の行（ヒロイン）：ごめんなさい。伝言は、運べません
-  状況：前に届いた声 [gt_agra_date_guru_ka_taal_008] の前半。同じ調子で。
-  台詞：わたしが伝えたら、お二人の言葉じゃなくなっちゃうから
-
-[gt_agra_date_guru_ka_taal_019]　分けた行（2／2）（gt_agra_date_guru_ka_taal_008 の代わり）
-  前の行（ヒロイン）：わたしが伝えたら、お二人の言葉じゃなくなっちゃうから
-  状況：前に届いた声 [gt_agra_date_guru_ka_taal_008] の後半。同じ調子で、続けて。
-  台詞：……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
-
-
-■ 到着（gt_agra_arrival）　3行（長い台詞を分けた）　（places/gt_agra_hotel_hub.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_arrival_006] あ……見えた。あれ、タージ・マハルの屋根だよね。写真で百回は見たのに、指先がそわそわする。……よし。誤解は、ちゃんと解く。その前に、どこから行こうか（2026-11-13の台本。この行は録らなくてよくなりました）
-
-[gt_agra_arrival_007]　分けた行（1／3）（gt_agra_arrival_006 の代わり）
-  前の行（地の文）：窓の外、家々の屋根の向こうに、白いドームの先がほんの少しだけのぞいていた。
-  表情：驚き / 感激
-  状況：前に届いた声 [gt_agra_arrival_006] の前半。同じ調子で。
-  台詞：あ……見えた。あれ、タージ・マハルの屋根だよね
-
-[gt_agra_arrival_008]　分けた行（2／3）（gt_agra_arrival_006 の代わり）
-  前の行（ヒロイン）：あ……見えた。あれ、タージ・マハルの屋根だよね
-  表情：驚き / 感激（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_arrival_006] の中ほど。同じ調子で、続けて。
-  台詞：写真で百回は見たのに、指先がそわそわする。……よし
-
-[gt_agra_arrival_009]　分けた行（3／3）（gt_agra_arrival_006 の代わり）
-  前の行（ヒロイン）：写真で百回は見たのに、指先がそわそわする。……よし
-  表情：驚き / 感激（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_arrival_006] の後半。同じ調子で、続けて。
-  台詞：誤解は、ちゃんと解く。その前に、どこから行こうか
-
-
-■ エピローグ（gt_agra_epilogue）　2行（長い台詞を分けた）　（places/gt_agra_hotel_hub.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_epilogue_009] 今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。あれ、恋人として言ったんだよ。ちゃんと届いてた？（2026-11-13の台本。この行は録らなくてよくなりました）
-
-[gt_agra_epilogue_013]　分けた行（1／2）（gt_agra_epilogue_009 の代わり）
-  前の行（ヒロイン）：ジャイプールの結婚式、行きたい。誘われたからじゃなくて、わたしが行きたいの。……一緒に、来てくれる？
-  場面の分かれ道：恋人になっているとき
-  表情：ほほえみ
-  状況：前に届いた声 [gt_agra_epilogue_009] の前半。同じ調子で。
-  台詞：今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう
-
-[gt_agra_epilogue_014]　分けた行（2／2）（gt_agra_epilogue_009 の代わり）
-  前の行（ヒロイン）：今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう
-  場面の分かれ道：恋人になっているとき
-  表情：ほほえみ（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_epilogue_009] の後半。同じ調子で、続けて。
-  台詞：あれ、恋人として言ったんだよ。ちゃんと届いてた？
-
-
-■ 屋上の、言いたいこと　5行（長い台詞を分けた）　（places/gt_agra_hotel_hub_dates.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_date_confession_004] 迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても（2026-11-13の台本。この行は録らなくてよくなりました）
-
-[gt_agra_date_confession_034]　分けた行（1／3）（gt_agra_date_confession_004 の代わり）
-  前の行（ヒロイン）：……うん。わたしも、好き
-  場面の分かれ道：告白を受け入れるとき
-  表情：真剣
-  状況：前に届いた声 [gt_agra_date_confession_004] の前半。同じ調子で。
-  台詞：迷ったけど、ちゃんと、わたしの言葉で言いたかった
-
-[gt_agra_date_confession_035]　分けた行（2／3）（gt_agra_date_confession_004 の代わり）
-  前の行（ヒロイン）：迷ったけど、ちゃんと、わたしの言葉で言いたかった
-  場面の分かれ道：告白を受け入れるとき
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_date_confession_004] の中ほど。同じ調子で、続けて。
-  台詞：言われたから、うなずくんじゃなくて
-
-[gt_agra_date_confession_036]　分けた行（3／3）（gt_agra_date_confession_004 の代わり）
-  前の行（ヒロイン）：言われたから、うなずくんじゃなくて
-  場面の分かれ道：告白を受け入れるとき
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_date_confession_004] の後半。同じ調子で、続けて。
-  台詞：……わたしも、一緒にいたい。旅が終わっても
-
-  前の台本の行：[gt_agra_date_confession_022] 話したいことは、あるの。あるんだけど。……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった（2026-11-23の台本。この行は録らなくてよくなりました）
-
-[gt_agra_date_confession_037]　分けた行（1／2）（gt_agra_date_confession_022 の代わり）
-  前の行（ヒロイン）：わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
-  場面の分かれ道：告白を受け入れるとき
-  表情：真剣
-  状況：前に届いた声 [gt_agra_date_confession_022] の前半。同じ調子で。
-  台詞：話したいことは、あるの。あるんだけど
-
-[gt_agra_date_confession_038]　分けた行（2／2）（gt_agra_date_confession_022 の代わり）
-  前の行（ヒロイン）：話したいことは、あるの。あるんだけど
-  場面の分かれ道：告白を受け入れるとき
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_date_confession_022] の後半。同じ調子で、続けて。
-  台詞：……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
-
-
-■ 一番いい話　2行（長い台詞を分けた）　（places/gt_agra_taj_mahal.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_finale_012] わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます（2026-11-15の台本。この行は録らなくてよくなりました）
-
-[gt_agra_finale_battle_007]　分けた行（1／2）（gt_agra_finale_012 の代わり）
-  前の行（地の文）：【ヒロインの名前】は観客に向き直った。耳が熱い。それでも、声は最初より通っていた。
-  表情：照れ / 赤面
-  状況：前に届いた声 [gt_agra_finale_012] の前半。同じ調子で。
-  台詞：わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です
-
-[gt_agra_finale_battle_008]　分けた行（2／2）（gt_agra_finale_012 の代わり）
-  前の行（ヒロイン）：わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です
-  表情：照れ / 赤面（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_finale_012] の後半。同じ調子で、続けて。
-  台詞：わたしたちのことは、わたしたちで決めます
-
-
-■ ツアー（gt_agra_tour_out_leg）　2行（長い台詞を分けた）　（places/gt_agra_tour_fatehpur_sikri.ink）
-----------------------------------------
-  前の台本の行：[gt_agra_tour_out_leg_002] ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？　どういう意味なんだろう。あ、あっちのトラックにも書いてある（2026-11-15の台本。この行は録らなくてよくなりました）
-
-[gt_agra_tour_out_leg_005]　分けた行（1／2）（gt_agra_tour_out_leg_002 の代わり）
-  前の行（地の文）：HORN OK PLEASE。
-  表情：驚き / 疑問
-  状況：前に届いた声 [gt_agra_tour_out_leg_002] の前半。同じ調子で。
-  台詞：ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？
-
-[gt_agra_tour_out_leg_006]　分けた行（2／2）（gt_agra_tour_out_leg_002 の代わり）
-  前の行（ヒロイン）：ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？
-  表情：驚き / 疑問（前に届いた声の表情）
-  状況：前に届いた声 [gt_agra_tour_out_leg_002] の後半。同じ調子で、続けて。
-  台詞：どういう意味なんだろう。あ、あっちのトラックにも書いてある
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-■■ ジャイプール　11行
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-■ 漬物五キロ　3行（長い台詞を分けた）　（places/gt_jaipur_city_palace.ink）
-----------------------------------------
-  前の台本の行：[gt_jaipur_main_city_palace_007] 五キロは無理でも、二キロなら入りますよね。……それで、漬物がなくなったら、電話してください。お母さんに、次の分を頼むって（2026-11-15の台本。この行は録らなくてよくなりました）
-
-[gt_jaipur_main_city_palace_battle_001]　分けた行（1／3）（gt_jaipur_main_city_palace_007 の代わり）
-  前の行（地の文）：審判の答えを、二人が待っていた。【ヒロインの名前】は、ヴィシャールが提げた秤を指さした。
-  表情：真剣
-  状況：前に届いた声 [gt_jaipur_main_city_palace_007] の前半。同じ調子で。
-  台詞：五キロは無理でも、二キロなら入りますよね
-
-[gt_jaipur_main_city_palace_battle_002]　分けた行（2／3）（gt_jaipur_main_city_palace_007 の代わり）
-  前の行（ヒロイン）：五キロは無理でも、二キロなら入りますよね
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_jaipur_main_city_palace_007] の中ほど。同じ調子で、続けて。
-  台詞：……それで、漬物がなくなったら、電話してください
-
-[gt_jaipur_main_city_palace_battle_003]　分けた行（3／3）（gt_jaipur_main_city_palace_007 の代わり）
-  前の行（ヒロイン）：……それで、漬物がなくなったら、電話してください
-  表情：真剣（前に届いた声の表情）
-  状況：前に届いた声 [gt_jaipur_main_city_palace_007] の後半。同じ調子で、続けて。
-  台詞：お母さんに、次の分を頼むって
-
-
-■ 窓から見た私　2行（長い台詞を分けた）　（places/gt_jaipur_hawa_mahal.ink）
-----------------------------------------
-  前の台本の行：[gt_jaipur_main_hawa_mahal_009] ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って（2026-11-15の台本。この行は録らなくてよくなりました）
-
-[gt_jaipur_main_hawa_mahal_battle_003]　分けた行（1／2）（gt_jaipur_main_hawa_mahal_009 の代わり）
-  前の行（―）：条件で変わる（この前の分かれ道のどれを通ったかによる）
-  状況：前に届いた声 [gt_jaipur_main_hawa_mahal_009] の前半。同じ調子で。
-  台詞：ガウラさんは、お客さんと値段で喧嘩してました
-
-[gt_jaipur_main_hawa_mahal_battle_004]　分けた行（2／2）（gt_jaipur_main_hawa_mahal_009 の代わり）
-  前の行（ヒロイン）：ガウラさんは、お客さんと値段で喧嘩してました
-  状況：前に届いた声 [gt_jaipur_main_hawa_mahal_009] の後半。同じ調子で、続けて。
-  台詞：それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
-
-
-■ 先に、言わせて　2行（長い台詞を分けた）　（places/gt_jaipur_hotel_hub_dates.ink）
-----------------------------------------
-  前の台本の行：[gt_jaipur_date_her_confession_004] 六十年、言わなかった人の言葉だから、重かった。アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた（2026-11-23の台本。この行は録らなくてよくなりました）
-
-[gt_jaipur_date_her_confession_026]　分けた行（1／2）（gt_jaipur_date_her_confession_004 の代わり）
-  前の行（ヒロイン）：デリーの最後の朝、カムラさんが言ってたでしょ。言いたいことは言いなさいって
-  状況：前に届いた声 [gt_jaipur_date_her_confession_004] の前半。同じ調子で。
-  台詞：六十年、言わなかった人の言葉だから、重かった
-
-[gt_jaipur_date_her_confession_027]　分けた行（2／2）（gt_jaipur_date_her_confession_004 の代わり）
-  前の行（ヒロイン）：六十年、言わなかった人の言葉だから、重かった
-  状況：前に届いた声 [gt_jaipur_date_her_confession_004] の後半。同じ調子で、続けて。
-  台詞：アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
-
-
-■ 同じ形の部屋　2行（長い台詞を分けた）　（places/gt_jaipur_nahargarh_fort.ink）
-----------------------------------------
-  前の台本の行：[gt_jaipur_date_nahargarh_fort_020] あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる（2026-11-15の台本。この行は録らなくてよくなりました）
-
-[gt_jaipur_date_nahargarh_fort_037]　分けた行（1／2）（gt_jaipur_date_nahargarh_fort_020 の代わり）
-  前の行（地の文）：宮殿の屋上に出ると、町の全部が見えた。桃色の屋根、白い寺院の塔、遠くの湖の光。
-  表情：ほほえみ
-  状況：前に届いた声 [gt_jaipur_date_nahargarh_fort_020] の前半。同じ調子で。
-  台詞：あ、見て。あの辺が、たぶん、わたしたちの宿
-
-[gt_jaipur_date_nahargarh_fort_038]　分けた行（2／2）（gt_jaipur_date_nahargarh_fort_020 の代わり）
-  前の行（ヒロイン）：あ、見て。あの辺が、たぶん、わたしたちの宿
-  表情：ほほえみ（前に届いた声の表情）
-  状況：前に届いた声 [gt_jaipur_date_nahargarh_fort_020] の後半。同じ調子で、続けて。
-  台詞：この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
-
-
-■ 文字どおりの井戸端会議　2行（長い台詞を分けた）　（places/gt_jaipur_panna_meena_kund.ink）
-----------------------------------------
-  前の台本の行：[gt_jaipur_date_panna_meena_kund_030] アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。カムラさんに『毎日言葉にしなさい』って言われたから（2026-11-17の台本。この行は録らなくてよくなりました）
-
-[gt_jaipur_date_panna_meena_kund_033]　分けた行（1／2）（gt_jaipur_date_panna_meena_kund_030 の代わり）
-  前の行（―）：条件で変わる（この前の分かれ道のどれを通ったかによる）
-  場面の分かれ道：選択肢［「君から、どうぞ」］のあと
-  状況：前に届いた声 [gt_jaipur_date_panna_meena_kund_030] の前半。同じ調子で。
-  台詞：アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
-
-[gt_jaipur_date_panna_meena_kund_034]　分けた行（2／2）（gt_jaipur_date_panna_meena_kund_030 の代わり）
-  前の行（ヒロイン）：アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
-  場面の分かれ道：選択肢［「君から、どうぞ」］のあと
-  状況：前に届いた声 [gt_jaipur_date_panna_meena_kund_030] の後半。同じ調子で、続けて。
-  台詞：カムラさんに『毎日言葉にしなさい』って言われたから
+インド編　ヒロイン　追加収録 52本（2026-11-27）
 
+・1行＝1ファイル。ファイル名は [ ] の中の ID（例：gt_delhi_date_bangla_sahib_023.wav）。
+・声の設定・ファイルの形式は前回と同じ（WAV、48kHz か 44.1kHz、モノラル）。
+・前に録った24本の台詞を、それぞれ2〜3本に分けたものです。言葉は前と同じ。
+　「元」の声と同じ演技で、続けて聞いて自然につながるように録ってください。
+
+読み：百回（ひゃっかい）、三十回（さんじゅっかい）、六十年（ろくじゅうねん）、手付金（てつけきん）、検札（けんさつ）、荷運び（にはこび）、碁盤（ごばん）
+
+
+■ デリー
+
+元：gt_delhi_date_bangla_sahib_021
+[gt_delhi_date_bangla_sahib_023] 誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね
+[gt_delhi_date_bangla_sahib_024] なんだか不思議。知らない人に、ちょっとだけ届いた感じ
+
+元：gt_delhi_epilogue_007
+[gt_delhi_epilogue_010] 言いそびれたことって、あとから重くなるんだね
+[gt_delhi_epilogue_011] わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
+
+元：gt_delhi_arrival_004（からかう・楽しげ）
+[gt_delhi_arrival_005] ……はい、覚えておきます。それにしても、地図というより暗号だね
+[gt_delhi_arrival_006] せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
+
+元：gt_delhi_main_humayun_tomb_005（真剣）
+[gt_delhi_main_humayun_tomb_battle_001] わたしは、誰にも言いません。言う相手もいないですし
+[gt_delhi_main_humayun_tomb_battle_002] ……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも
+
+元：gt_delhi_depart_scam_014（真剣）
+[gt_delhi_depart_scam_on_platform_003] でも、教えてくれた荷運びの人も、検札の人も、本物だった
+[gt_delhi_depart_scam_on_platform_004] 宿のご主人も、ルーヒーさんも
+[gt_delhi_depart_scam_on_platform_005] ……疑うのは疲れるけど、全部を疑うようには、なりたくないな
+
+元：gt_delhi_depart_scam_013
+[gt_delhi_depart_scam_on_platform_001] 親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も
+[gt_delhi_depart_scam_on_platform_002] ……悔しい。最初に、ついて行こうって言ったの、わたしだから
+
+元：gt_delhi_depart_scam_015
+[gt_delhi_depart_scam_office_007] 手付金は、高い授業料だったね。……ううん、やっぱり悔しい
+[gt_delhi_depart_scam_office_008] でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
+
+元：gt_delhi_hotel_homework_005（ほほえみ）
+[gt_delhi_hotel_homework_008] わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの
+[gt_delhi_hotel_homework_009] 回ってる洗濯物を見てると、落ち着くから
+
+元：gt_delhi_date_lodhi_garden_026（ほほえみ）
+[gt_delhi_date_lodhi_garden_029] 理由がなくても笑っていいって言われると、ちょっと楽になるね
+[gt_delhi_date_lodhi_garden_030] わたし、いつも、笑っていい理由を探してから笑ってた気がする
+
+元：gt_delhi_finale_014
+[gt_delhi_finale_battle_003] はい。黙っていなくなるのは、自由とは違うと思ったから
+[gt_delhi_finale_battle_004] カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
+
+元：gt_delhi_finale_003
+[gt_delhi_finale_battle_001] 待ってください。あの日のカムラさん、すごくはっきりしてました
+[gt_delhi_finale_battle_002] オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
+
+
+■ アーグラ
+
+元：gt_agra_main_agra_fort_005
+[gt_agra_main_agra_fort_battle_001] はい。城の一部は、今も陸軍の区域ですよね
+[gt_agra_main_agra_fort_battle_002] ……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
+
+元：gt_agra_date_guru_ka_taal_008
+[gt_agra_date_guru_ka_taal_018] わたしが伝えたら、お二人の言葉じゃなくなっちゃうから
+[gt_agra_date_guru_ka_taal_019] ……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
+
+元：gt_agra_epilogue_009（ほほえみ）
+[gt_agra_epilogue_013] 今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう
+[gt_agra_epilogue_014] あれ、恋人として言ったんだよ。ちゃんと届いてた？
+
+元：gt_agra_arrival_006（驚き・感激）
+[gt_agra_arrival_007] あ……見えた。あれ、タージ・マハルの屋根だよね
+[gt_agra_arrival_008] 写真で百回は見たのに、指先がそわそわする。……よし
+[gt_agra_arrival_009] 誤解は、ちゃんと解く。その前に、どこから行こうか
+
+元：gt_agra_date_confession_022（真剣）
+[gt_agra_date_confession_037] 話したいことは、あるの。あるんだけど
+[gt_agra_date_confession_038] ……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
+
+元：gt_agra_date_confession_004（真剣）
+[gt_agra_date_confession_034] 迷ったけど、ちゃんと、わたしの言葉で言いたかった
+[gt_agra_date_confession_035] 言われたから、うなずくんじゃなくて
+[gt_agra_date_confession_036] ……わたしも、一緒にいたい。旅が終わっても
+
+元：gt_agra_finale_012（照れ・赤面）
+[gt_agra_finale_battle_007] わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です
+[gt_agra_finale_battle_008] わたしたちのことは、わたしたちで決めます
+
+元：gt_agra_tour_out_leg_002（驚き・疑問）
+[gt_agra_tour_out_leg_005] ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？
+[gt_agra_tour_out_leg_006] どういう意味なんだろう。あ、あっちのトラックにも書いてある
+
+
+■ ジャイプール
+
+元：gt_jaipur_main_city_palace_007（真剣）
+[gt_jaipur_main_city_palace_battle_001] 五キロは無理でも、二キロなら入りますよね
+[gt_jaipur_main_city_palace_battle_002] ……それで、漬物がなくなったら、電話してください
+[gt_jaipur_main_city_palace_battle_003] お母さんに、次の分を頼むって
+
+元：gt_jaipur_main_hawa_mahal_009
+[gt_jaipur_main_hawa_mahal_battle_003] ガウラさんは、お客さんと値段で喧嘩してました
+[gt_jaipur_main_hawa_mahal_battle_004] それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
+
+元：gt_jaipur_date_her_confession_004
+[gt_jaipur_date_her_confession_026] 六十年、言わなかった人の言葉だから、重かった
+[gt_jaipur_date_her_confession_027] アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
+
+元：gt_jaipur_date_nahargarh_fort_020（ほほえみ）
+[gt_jaipur_date_nahargarh_fort_037] あ、見て。あの辺が、たぶん、わたしたちの宿
+[gt_jaipur_date_nahargarh_fort_038] この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
+
+元：gt_jaipur_date_panna_meena_kund_030
+[gt_jaipur_date_panna_meena_kund_033] アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
+[gt_jaipur_date_panna_meena_kund_034] カムラさんに『毎日言葉にしなさい』って言われたから
