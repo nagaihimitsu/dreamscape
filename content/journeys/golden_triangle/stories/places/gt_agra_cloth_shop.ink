@@ -26,12 +26,14 @@ INCLUDE modules.ink
 片手は布の上、片手は布の下。上の手が針を刺すと、下の手が受けて、また返す。銀色の糸が、少しずつ花の形になっていく。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
+# voice: gt_agra_cloth_shop_intro_001
 両手で、布をはさんで縫ってるんだ。下の手、見えてないのに
 # speaker: gt_rafiq
 # cutin: name
 いらっしゃい。ラフィークだ。……女房は、妹の家へ行ってる。三日、帰らない
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_cloth_shop_intro_002
 えっと……それは、つまり？
 # speaker: gt_rafiq
 つまり、今日は俺が売る。俺は、売るのが下手だ
@@ -47,8 +49,10 @@ INCLUDE modules.ink
 昔は、王さまと妃さまの服にしか刺さなかった。ムガルの皇帝や貴族が好んだそうだ。今は、サリーにも、靴にも刺す
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_agra_cloth_shop_intro_003
 タージ・マハルの町で、ムガルの時代の刺繍……。なんだか、ぴったりだね
 # speaker: heroine
+# voice: gt_agra_cloth_shop_intro_004
 ……これ、本物の金ですか？
 # speaker: narrator
 針が、一瞬だけ止まった。
@@ -59,6 +63,7 @@ INCLUDE modules.ink
 # speaker: gt_rafiq
 だから、金の値段を聞かれても困る。金は、ほとんど入ってない。入ってるのは、日にちだ
 # speaker: heroine
+# voice: gt_agra_cloth_shop_intro_005
 日にち？
 # speaker: gt_rafiq
 一枚に、何日かかったか。それなら、言える
@@ -89,6 +94,7 @@ INCLUDE modules.ink
 # speaker: narrator
 翡翠色の長い上着には、金の糸で縁どった赤い花。紺の上着には、銀の小さな花が並んでいる。
 # speaker: heroine
+# voice: gt_agra_cloth_shop_haggle_001
 どっちも、きれい……。翡翠色のは、お祝いの日の服みたい。紺のは、毎日でも着られそう
 * [The jade one. # option: look_jade # translation: 翡翠色のほうを。]
     -> jade
@@ -97,15 +103,18 @@ INCLUDE modules.ink
 * [Which one do you like? # option: ask_which # translation: どっちが好き？]
     # speaker: heroine
     # emotion: worried
+    # voice: gt_agra_cloth_shop_haggle_002
     えー、迷う……。両方、少しずつ好き
     { cond("outfit gt_saree_blue"):
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_cloth_shop_haggle_003
         ……でも、銀の花はもう、デリーの青いのがあるから。今日は金のほう
         -> jade
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_cloth_shop_haggle_004
         ……毎日着られるほうにする。旅は、まだ続くもんね
         -> navy
     }
@@ -122,6 +131,7 @@ INCLUDE modules.ink
 { cond("outfit gt_saree_blue"):
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_agra_cloth_shop_haggle_005
     デリーのサリーの銀は、織り込んであった。こっちの金は、上から縫ってあるんだね。同じように光るのに、作り方が違う
 }
 # speaker: gt_rafiq
@@ -145,6 +155,7 @@ INCLUDE modules.ink
     一日目は、手が硬い。十一日目には、手が布に慣れる
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_cloth_shop_haggle_006
     一日目の花、ちゃんと残ってるんだ。わたし、これがいちばん好きかも
     -> his_price_jade
 * [Govind in Delhi sent us. # option: jade_govind # translation: デリーのゴーヴィンドさんの紹介です。]
@@ -163,6 +174,7 @@ INCLUDE modules.ink
 { cond("outfit gt_saree_blue"):
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_agra_cloth_shop_haggle_007
     デリーのサリーの銀は、織り込んであった。こっちの銀は、上から縫ってあるんだね。同じように光るのに、作り方が違う
 }
 # speaker: gt_rafiq
@@ -186,6 +198,7 @@ INCLUDE modules.ink
     一日目は、糸を引きすぎる。八日目には、引かなくなる
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_cloth_shop_haggle_008
     長い花びら、ちょっと背伸びしてるみたい。わたし、これがいちばん好きかも
     -> his_price_navy
 * [Govind in Delhi sent us. # option: navy_govind # translation: デリーのゴーヴィンドさんの紹介です。]
@@ -232,6 +245,7 @@ INCLUDE modules.ink
 ラフィークはそれ以上何も言わず、服を畳んで紙に包んだ。木の枠の前に戻っても、針はしばらく動かなかった。
 # speaker: heroine
 # emotion: worried
+# voice: gt_agra_cloth_shop_haggle_009
 あっさり決まっちゃった……。安く買えたのに、なんだか悪いことをした気がする
 -> wrap
 
@@ -242,6 +256,7 @@ INCLUDE modules.ink
 ラフィークが、初めて少し笑った。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_agra_cloth_shop_haggle_010
 奥さんの字の値札、強いね。ここにいないのに、ちゃんと値段を守ってる
 -> wrap
 
@@ -250,6 +265,7 @@ INCLUDE modules.ink
 包みを渡すと、ラフィークは針を取り直した。さっきより、手が速い。
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_cloth_shop_haggle_011
 自分で決めた値段、って顔してた。……奥さん、びっくりするだろうな
 -> wrap
 
@@ -260,6 +276,7 @@ INCLUDE modules.ink
 ……あの男に売る値段なら、俺にも分かる。それでいい
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_agra_cloth_shop_haggle_012
 名刺一枚で、ほんとに安くなった……。デリーで言い値で払った分、ここで返ってきたね
 -> wrap
 
@@ -272,6 +289,7 @@ INCLUDE modules.ink
     今度は、札の値段だ。女房の字は、読めるだろう
     # speaker: heroine
     # emotion: worried
+    # voice: gt_agra_cloth_shop_haggle_013
     ……この前の値段、やっぱり覚えてるよね
 - else:
     # speaker: narrator
@@ -311,6 +329,7 @@ INCLUDE modules.ink
 二着とも、うちから出ていったか。女房が帰ったら、棚が空いてて驚く
 # speaker: heroine
 # reaction: heroine,happy,music
+# voice: gt_agra_cloth_shop_haggle_014
 金の花と、銀の花。……どの日に、どっちを着よう
 -> END
 

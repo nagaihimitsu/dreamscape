@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: narrator
 旧市街のアーケードの下に、刷った布を軒いっぱいに吊るした店があった。白い地に、小さな赤い花。風が来るたびに、花の列がそろって揺れる。
 # speaker: heroine
+# voice: gt_jaipur_cloth_shop_intro_001
 吊るしてある布、どれも小さな花が並んでる。……近くで見たら、ひとつずつ違ったりして
 # speaker: narrator
 # term: gt_term_block_print
@@ -32,6 +33,7 @@ INCLUDE modules.ink
 藍だよ。洗っても、すぐには落ちない。……スミトラー。サーンガーネールから、毎朝バスで布を運んでくる
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_jaipur_cloth_shop_intro_002
 サーンガーネール？
 # speaker: gt_sumitra
 ジャイプールのすぐそばの、刷り師の町だ。うちはチッパーの家。チャーパー、押すっていう言葉から来てる
@@ -43,11 +45,13 @@ INCLUDE modules.ink
 サーンガーネールの布は、地が白い。白い地に、細かい花。年寄りは、川の水がいいから白が冴えるんだ、って言う
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_cloth_shop_intro_003
 川の水で、白が……。本当かな。でも、そう聞くと、この白がもっときれいに見えてくる
 { cond("seen gt_delhi_cloth_shop_intro"):
     { cond("seen gt_agra_cloth_shop_intro"):
         # speaker: heroine
         # reaction: heroine,happy,sparkle
+        # voice: gt_jaipur_cloth_shop_intro_004
         デリーの布は織って、アーグラの布は縫って、ここは押すんだ。……三つの町で、花の付け方が全部違う
     }
 }
@@ -78,10 +82,12 @@ INCLUDE modules.ink
 { cond("date gt_jaipur_date_johari_bazaar"):
     # speaker: heroine
     # reaction: heroine,happy,sparkle
+    # voice: gt_jaipur_cloth_shop_haggle_001
     これ、欲しいです。……あ、言っちゃった。欲しいって先に言うと、値切れないんだった
 - else:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_jaipur_cloth_shop_haggle_002
     これ、着てみたいな。……花が、ほんの少しずつ傾いてる
 }
 # speaker: gt_sumitra
@@ -91,11 +97,13 @@ INCLUDE modules.ink
 { cond("date gt_jaipur_date_johari_bazaar"):
     # speaker: heroine
     # reaction: heroine,teasing,question
+    # voice: gt_jaipur_cloth_shop_haggle_003
     宝石街の腕輪屋さんでは、少しだけ値切ってみたんですけど……
     # speaker: gt_sumitra
     ここは腕輪屋じゃない
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_jaipur_cloth_shop_haggle_004
     ……一言で終わっちゃった
 }
 * [Twelve hundred. Done. # option: pay_once # translation: 千二百。決まりです。]
@@ -110,11 +118,13 @@ INCLUDE modules.ink
     押してみな。一回だけ。まっすぐ
     # speaker: heroine
     # emotion: serious
+    # voice: gt_jaipur_cloth_shop_haggle_005
     一回だけ、だよね。……いきます
     # speaker: narrator
     彼女は息を止めて版を置き、手のひらで、とん、と押した。版を上げると、白い端切れの上に、少しだけ傾いた花が一輪咲いていた。
     # speaker: heroine
     # reaction: heroine,happy,sparkle
+    # voice: gt_jaipur_cloth_shop_haggle_006
     咲いた！　……ちょっと、傾いてるけど
     # speaker: gt_sumitra
     傾いた花は、手で押した証拠だ
@@ -129,10 +139,12 @@ INCLUDE modules.ink
     {heroine_name}は布に顔を近づけ、花の列を、端から一輪ずつ指でたどっていった。
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
+    # voice: gt_jaipur_cloth_shop_haggle_007
     あった。ここだけ、花がにじんで、二重になってる
     # speaker: gt_sumitra
     息子が、初めて一人で刷った一枚だ。同じ所に二度押した。だから、売り物にはしてない
     # speaker: heroine
+    # voice: gt_jaipur_cloth_shop_haggle_008
     売り物にしてないのに、捨てなかったんですね
     # speaker: gt_sumitra
     ……籠に入れておいただけだ
@@ -143,6 +155,7 @@ INCLUDE modules.ink
         ……あいつに言っておく。にじんだのを、わざわざ選んだ客がいたって
         # speaker: heroine
         # emotion: smile
+        # voice: gt_jaipur_cloth_shop_haggle_009
         にじんだ花、なんだか照れてるみたいに見える
     * * [No, the first one. At your price. # option: back_to_first # translation: やっぱり最初のを、言い値で。]
         # outfit: gt_kurta_block_print
@@ -153,6 +166,7 @@ INCLUDE modules.ink
         スミトラーは、にじんだ一着を籠に戻した。端切れも版も、台の上に出てこなかった。
         # speaker: heroine
         # emotion: worried
+        # voice: gt_jaipur_cloth_shop_haggle_010
         一度しか言わないって、こういうことなんだね……
     * * [Let us think about it. # option: cheaper_later # translation: 少し考えさせてください。]
         # later
@@ -166,6 +180,7 @@ INCLUDE modules.ink
 包み紙にも、同じ花の版が一つ、押してあった。
 # speaker: heroine
 # emotion: smile
+# voice: gt_jaipur_cloth_shop_haggle_011
 帰ったら、この花の数、数えてみようかな。……一つずつ、違う顔してるから
 -> END
 

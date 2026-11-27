@@ -23,12 +23,15 @@ INCLUDE modules.ink
 銅色の円盤を敷きつめた壁から、白く大きな手が、いくつも突き出している。
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
+# voice: gt_delhi_arrive_hands_001
 わ……見て。手だよ。壁から、おっきな手が生えてる
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_arrive_hands_002
 指の形が、全部ちがうね。てのひらに、お花まで彫ってある
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_arrive_hands_003
 何か、言ってるみたい。……看板なら読めるのに、これは読めないな
 # speaker: narrator
 隣の列から、くすっと笑う声がした。仕切りのベルトの向こうで、十歳くらいの女の子がこちらを見上げている。
@@ -41,6 +44,7 @@ INCLUDE modules.ink
 これ、なーんだ
 # speaker: heroine
 # reaction: heroine,surprised,sweat
+# voice: gt_delhi_arrive_hands_004
 えっ。えっと……キツネ？
 # speaker: gt_delhi_airport_girl
 # term: gt_term_peacock
@@ -49,6 +53,7 @@ INCLUDE modules.ink
 女の子が手首をくるりと返すと、そろえた指が、ふわりと揺れた。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_delhi_arrive_hands_005
 ほんとだ、くじゃく。くっつけた指がくちばしで、そろえた指が頭の羽なんだ
 # speaker: narrator
 並んでいた祖母らしい人が女の子の肩をたたき、てのひらで小さく前をあおいだ。列が進んでいる。
@@ -60,6 +65,7 @@ INCLUDE modules.ink
 {heroine_name}は自分の指で、くじゃくを作ってみた。薬指が、なかなか親指に届かない。
 # speaker: heroine
 # emotion: happy
+# voice: gt_delhi_arrive_hands_006
 見て、くじゃく。……インドで最初に覚えた言葉、手だった
 # speaker: narrator
 やがて、こちらの番が来た。係官がパスポートの写真とこちらの顔を見比べ、短く聞く。
@@ -70,6 +76,7 @@ INCLUDE modules.ink
     係官はうなずき、何も聞き返さずにパスポートを返した。
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_delhi_arrive_hands_007
     一行で通った……。わたし、答えを三通りも練習してきたのに
 * [To see the Taj Mahal. # option: say_the_taj # translation: タージ・マハルを見に。]
     # rel: affection +1
@@ -77,6 +84,7 @@ INCLUDE modules.ink
     タージだけ？　デリーにも、見るものはたくさんありますよ
     # speaker: heroine
     # reaction: heroine,shy,sweat
+    # voice: gt_delhi_arrive_hands_008
     ですよね！　……あ、すみません。今のは、わたしの番じゃなかった
 * [I don't know yet. That's why I came. # option: say_not_yet # translation: まだ分かりません。だから来ました。]
     # rel: spark +1
@@ -86,6 +94,7 @@ INCLUDE modules.ink
     分かったら、帰りに教えてください
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_delhi_arrive_hands_009
     ふふ。今の、ちょっと格好つけたでしょ
 -
 # speaker: narrator
@@ -94,18 +103,21 @@ INCLUDE modules.ink
 入国の目的は？
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_arrive_hands_010
 観光です。……それと、写真でしか知らなかったものを、自分の目で見に来ました
 # speaker: narrator
 # se: stamp
 係官はスタンプを押し、パスポートを返した。それから、首を左右に小さく揺らした。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_arrive_hands_011
 ねえ、今の首。いいってこと？　だめってこと？
 # speaker: narrator
 # term: gt_term_head_bobble
 パスポートには、ちゃんとスタンプが押してある。たぶん、いいという意味だ。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_arrive_hands_012
 看板は読める。手は、一つ覚えた。首は……まだ、読めないな
 -> END
 
