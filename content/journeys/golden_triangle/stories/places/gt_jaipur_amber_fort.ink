@@ -22,7 +22,11 @@ INCLUDE modules.ink
 # photo: gt_album_j007 # photo_caption: くぐるのがもったいない門
 門って、くぐる所なのに。ここまで飾られてると、くぐるのがもったいないね
 # speaker: narrator
-中庭の隅に、小さな露店が出ていた。若い男が板に紙を留め、極細の筆で絵を描いている。手のひらほどの紙に、この城がまるごと入っていた。
+中庭の隅に、小さな露店が出ていた。
+# speaker: narrator
+若い男が板に紙を留め、極細の筆で絵を描いている。
+# speaker: narrator
+手のひらほどの紙に、この城がまるごと入っていた。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # voice: gt_jaipur_amber_fort_guide_003
@@ -169,9 +173,10 @@ INCLUDE modules.ink
     城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる
 - else:
     # speaker: enemy
-    # voice: gt_jaipur_main_amber_fort_battle_saleem_011
     # term: gt_term_man_singh
-    城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前。向こうは王を取り違えている。……描いた奴は、ここに来たこともない
+    城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前。
+    # speaker: enemy
+    向こうは王を取り違えている。……描いた奴は、ここに来たこともない
 }
 # speaker: narrator
 土産物屋の店主は、いつの間にかいなくなっていた。周りの店主たちが、黙ってこちらを見ている。

@@ -23,11 +23,15 @@ INCLUDE modules.ink
     # background: gt_bg_delhi_chandni_chowk_night
     # tint: off
     # speaker: narrator
-    日が落ちても、布の市場カトラー・ニールの店は、裸電球の下で開いていた。間口の狭い店が、どこも天井まで布でふさがっている。
+    日が落ちても、布の市場カトラー・ニールの店は、裸電球の下で開いていた。
+    # speaker: narrator
+    間口の狭い店が、どこも天井まで布でふさがっている。
 - else:
     # background: gt_bg_delhi_chandni_chowk
     # speaker: narrator
-    チャンドニー・チョークの路地の奥に、布の市場カトラー・ニールがある。間口の狭い店が、どこも天井まで布でふさがっている。
+    チャンドニー・チョークの路地の奥に、布の市場カトラー・ニールがある。
+    # speaker: narrator
+    間口の狭い店が、どこも天井まで布でふさがっている。
 }
 # speaker: narrator
 一軒の奥で、白い口ひげの男が、電話を二台、両方の耳に当てていた。
@@ -45,7 +49,9 @@ INCLUDE modules.ink
 # speaker: gt_govind
 見るだけなら、ただだ
 # speaker: narrator
-彼女は布の山を見上げた。生成りの綿、薄いモスリン、つやのある絹。一つの山の中にも、手ざわりの違う布が何枚も重なっている。
+彼女は布の山を見上げた。生成りの綿、薄いモスリン、つやのある絹。
+# speaker: narrator
+一つの山の中にも、手ざわりの違う布が何枚も重なっている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
 # voice: gt_delhi_cloth_shop_intro_002
@@ -85,7 +91,11 @@ INCLUDE modules.ink
 # speaker: narrator
 ゴーヴィンドは帳面を閉じ、青い布の端をもう一度だけ撫でた。
 # speaker: gt_govind
-バナーラスの名前には、登録がある。よそで織った布をバナーラスと呼ぶのは、嘘つきのすることだ。うちは、イクバールの布しかそう呼ばない
+バナーラスの名前には、登録がある。
+# speaker: gt_govind
+よそで織った布をバナーラスと呼ぶのは、嘘つきのすることだ。
+# speaker: gt_govind
+うちは、イクバールの布しかそう呼ばない
 # speaker: gt_govind
 ……広げてみるか。広げたら、たいてい買うことになるがな
 -> END

@@ -18,7 +18,9 @@ INCLUDE modules.ink
 町が、まるごと？　お城じゃなくて、町なの？
 # speaker: narrator
 # photo: gt_album_a050 # photo_caption: 暮らしの音だけが抜けた町
-宮殿、広場、柱廊。どこまでも赤い砂岩。けれど、洗濯物も、呼び込みの声もない。人の暮らしの音だけが、すっぽり抜けている。
+宮殿、広場、柱廊。どこまでも赤い砂岩。けれど、洗濯物も、呼び込みの声もない。
+# speaker: narrator
+人の暮らしの音だけが、すっぽり抜けている。
 # speaker: heroine
 # emotion: neutral
 # voice: gt_agra_fatehpur_sikri_guide_002
@@ -33,7 +35,9 @@ INCLUDE modules.ink
 この階段を、上るの……？　門って、くぐるものじゃなくて、登るものだったんだ
 # speaker: narrator
 # term: gt_term_calligraphy_band
-途中で三回休み、{heroine_name}はやっとアーチの真下にたどり着いた。見上げると、石の表面に、流れるような文字が帯になって刻まれている。
+途中で三回休み、{heroine_name}はやっとアーチの真下にたどり着いた。
+# speaker: narrator
+見上げると、石の表面に、流れるような文字が帯になって刻まれている。
 # speaker: heroine
 # voice: gt_agra_fatehpur_sikri_guide_004
 何て書いてあるんだろう。……文字が読めなくても、何か大事なことが書いてあるのは分かるね
@@ -53,9 +57,13 @@ INCLUDE modules.ink
 # photo: gt_album_a052 # photo_caption: アーチの真下、文字の帯
 # term: gt_term_buland_darwaza
 # term: gt_term_calligraphy_band
-巨大な門へ続く急な石段を上りきって、{heroine_name}はまだ息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
+巨大な門へ続く急な石段を上りきって、{heroine_name}はまだ息を整えていた。
 # speaker: narrator
-同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
+見上げるアーチの内側に、流れるような文字が刻まれている。
+# speaker: narrator
+同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。
+# speaker: narrator
+携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
 # speaker: gt_agra_fatehpur_man
 # unnamed
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_001
@@ -69,10 +77,15 @@ INCLUDE modules.ink
 # voice: gt_agra_main_fatehpur_sikri_battle_mukesh_002
 大丈夫に見えますか。ムケーシュ、建設業です。人の家を三十年建ててきて、三年前から、自分の家を建てている
 # speaker: narrator
-アーグラの郊外。二階建て。貯金と借金で四百万ルピー。今日の午後四時に、屋根のコンクリートを流すミキサー車が来るという。
+アーグラの郊外。二階建て。貯金と借金で四百万ルピー。
+# speaker: narrator
+今日の午後四時に、屋根のコンクリートを流すミキサー車が来るという。
 # speaker: enemy
-# voice: gt_agra_main_fatehpur_sikri_battle_mukesh_003
-この町の聖者の墓に、しるしをくださいと頼みに来たんです。そしたら門に、これだ。世界は橋だ、家を建てるな。……しるし、来ちゃったでしょう
+この町の聖者の墓に、しるしをくださいと頼みに来たんです。
+# speaker: enemy
+そしたら門に、これだ。世界は橋だ、家を建てるな。
+# speaker: enemy
+……しるし、来ちゃったでしょう
 # speaker: narrator
 ムケーシュは携帯を突き出した。現場監督の番号が表示されている。
 # speaker: enemy
@@ -115,8 +128,11 @@ INCLUDE modules.ink
 # speaker: narrator
 ムケーシュは、しばらく口を開けたままだった。それから、変なところに感心し始めた。
 # speaker: enemy
-# voice: gt_agra_main_fatehpur_sikri_battle_mukesh_009
-皇帝ってのは、度量が大きいんだな。よその宗教の言葉を、自分の勝ちを祝う門に刻むなんて。……うちの施主なら、絶対に許さない
+皇帝ってのは、度量が大きいんだな。
+# speaker: enemy
+よその宗教の言葉を、自分の勝ちを祝う門に刻むなんて。
+# speaker: enemy
+……うちの施主なら、絶対に許さない
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_agra_main_fatehpur_sikri_005
@@ -149,9 +165,10 @@ INCLUDE modules.ink
 # term: gt_term_kite
 わたしの家もね、息子のためなんです。二階は全部、息子夫婦の部屋。孫ができたら、屋上で凧を揚げる
 # speaker: enemy
-# voice: gt_agra_main_fatehpur_sikri_battle_mukesh_015
 # photo: gt_album_a055 # photo_caption: 伏せた携帯、誰も住まない二階 # photo_with: gt_agra_fatehpur_man
-先週、息子が言いました。ベンガルールで仕事が決まった。向こうで暮らすって。……誰も住まない二階に、今日、屋根を流すんです
+先週、息子が言いました。ベンガルールで仕事が決まった。向こうで暮らすって。
+# speaker: enemy
+……誰も住まない二階に、今日、屋根を流すんです
 # speaker: narrator
 {heroine_name}は何も言えなかった。慰める言葉なら、いくらでも浮かぶ。どれも、この人の四百万ルピーには軽すぎた。
 # speaker: heroine
@@ -198,9 +215,12 @@ INCLUDE modules.ink
 # pause: 900
 ムケーシュは長いあいだ黙っていた。それから携帯を表に返し、現場監督の番号を押した。
 # speaker: enemy
-# voice: gt_agra_main_fatehpur_sikri_battle_mukesh_020
 # photo: gt_album_a057 # photo_caption: 「四時、予定どおり屋根を流せ」 # photo_with: gt_agra_fatehpur_man
-わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ。息子が帰ってきたら、そこで一緒に茶を飲む
+わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。
+# speaker: enemy
+二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ。
+# speaker: enemy
+息子が帰ってきたら、そこで一緒に茶を飲む
 # speaker: narrator
 電話を切ると、彼は立ち上がり、ズボンの埃を払った。
 {

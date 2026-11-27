@@ -16,7 +16,9 @@ INCLUDE modules.ink
 # on_done: clue gt_delhi_clue_dubey_announcement
 # background: gt_bg_delhi_lodhi_garden
 # speaker: narrator
-ロディ・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。
+ロディ・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。
+# speaker: narrator
+散歩の人、走る人、ベンチで新聞を読む人。
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_001
 # photo: gt_album_d089 # photo_caption: 五百年前の墓の間をジョギング
@@ -24,7 +26,9 @@ INCLUDE modules.ink
 # speaker: narrator
 もっとも、先にいたのは墓の方だ。公園は1930年代に、墓のまわりに後から作られた。
 # speaker: narrator
-そのとき、芝生の真ん中で、二十人ほどの輪が、いっせいに笑い出した。手を叩き、空を仰ぎ、腹を抱えて。冗談を言った人は、どこにもいない。
+そのとき、芝生の真ん中で、二十人ほどの輪が、いっせいに笑い出した。
+# speaker: narrator
+手を叩き、空を仰ぎ、腹を抱えて。冗談を言った人は、どこにもいない。
 # speaker: heroine
 # emotion: surprised_big
 # voice: gt_delhi_date_lodhi_garden_002
@@ -93,7 +97,9 @@ INCLUDE modules.ink
         # speaker: narrator
         # emotion: happy
         # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
-        腕をつかまれ、輪の中へ引っぱり込まれた。隣の老人が、こちらの肩を叩いて、頼まれてもいないのに笑い出す。結局、二人とも笑っていた。
+        腕をつかまれ、輪の中へ引っぱり込まれた。
+        # speaker: narrator
+        隣の老人が、こちらの肩を叩いて、頼まれてもいないのに笑い出す。結局、二人とも笑っていた。
     }
 * [「一緒に入ろう」と手を差し出す # option: join_hand]
     # profile: bold
@@ -115,7 +121,9 @@ INCLUDE modules.ink
         # speaker: narrator
         # emotion: happy
         # photo: gt_album_d091 # photo_caption: 見えない電話に向かって笑う
-        手をつないだまま、二人で見えない電話を耳に当てた。相手のいない電話に笑ううち、彼女の笑い声が、だんだん本物になっていった。
+        手をつないだまま、二人で見えない電話を耳に当てた。
+        # speaker: narrator
+        相手のいない電話に笑ううち、彼女の笑い声が、だんだん本物になっていった。
     }
 -
 // 下書き（2026-11-18）：作者の確認待ち。確かめてほしいこと：authoring/journeys/golden_triangle/research/golden-triangle-station-scam-20261118/README.md
@@ -177,7 +185,11 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: camera_shutter
 # photo: gt_album_d094 # photo_caption: 集合写真の端、新聞で顔を隠す人 # photo_with: gt_dubey gt_suresh gt_meena
-会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
+会の最後に、ドゥベイが集合写真を撮った。
+# speaker: narrator
+新入りにも送るからと、二人の番号を聞いていく。
+# speaker: narrator
+スレーシュは写真の端で、新聞で顔を隠していた。
 # together: gt_suresh gt_meena
 それから、観念したように、女性を連れてやってきた。
 # speaker: gt_suresh
@@ -305,11 +317,12 @@ INCLUDE modules.ink
 # speaker: narrator
 ドゥベイが、二人の前に立った。会の最後に、新入りには、いつも一つ頼むことがあるという。
 # speaker: gt_dubey
-# voice: gt_delhi_date_lodhi_garden_dubey_006
 # local_word: gt_delhi_word_yatrigan
 # local_word: gt_delhi_word_kripya
 # local_word: gt_delhi_word_dhyan
-わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン
+わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。
+# speaker: gt_dubey
+ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_016
 や、ヤートリーガン、クリプヤー、ディヤーン、デーン
@@ -347,7 +360,9 @@ INCLUDE modules.ink
         ……今の、九割くらい、そっちの声だったよ
     - else:
         # speaker: narrator
-        出だしが、ぴたりと重なった。二人の声が、芝生の向こうの墓まで届いた。散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
+        出だしが、ぴたりと重なった。二人の声が、芝生の向こうの墓まで届いた。
+        # speaker: narrator
+        散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
         # speaker: heroine
         # reaction: heroine,happy,music
         # voice: gt_delhi_lodhi_garden_say_together_003
@@ -420,8 +435,9 @@ INCLUDE modules.ink
     お知らせいたします。列車が一本、運休となりました
 -
 # speaker: gt_dubey
-# voice: gt_delhi_date_lodhi_garden_dubey_011
-合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る
+合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。
+# speaker: gt_dubey
+それで、この会を始めたんです。声には、行き先が要る
 # speaker: narrator
 # leave: gt_dubey
 人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
@@ -448,6 +464,7 @@ INCLUDE modules.ink
 だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも
 # speaker: heroine
 # emotion: smile
-# voice: gt_delhi_date_lodhi_garden_026
-理由がなくても笑っていいって言われると、ちょっと楽になるね。わたし、いつも、笑っていい理由を探してから笑ってた気がする
+理由がなくても笑っていいって言われると、ちょっと楽になるね。
+# speaker: heroine
+わたし、いつも、笑っていい理由を探してから笑ってた気がする
 -> END
