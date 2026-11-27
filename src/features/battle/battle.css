@@ -288,12 +288,35 @@
   }
   .battle-screen[data-phase="dialogue"] .battle-paper-shell {
     width: calc(100% - 16px);
-    /* Lifted as the story scenes' window (--vn-window-lift, romance-scene.css), keeping the faces' room above it. */
-    max-height: max(calc(100% - 132px - var(--vn-window-lift, 8px) + var(--vn-head-overhang, 22px)),
-      min(calc(100% - var(--vn-window-lift, 8px)), 9em));
-    margin: auto 8px var(--vn-window-lift, 8px);
+    max-height: max(calc(100% - 140px + var(--vn-head-overhang, 22px)), min(calc(100% - 8px), 9em));
+    /* Down to the screen's foot: its controls keep to the lower left corner, its window's top at the story scenes'
+       height (--vn-window-top, romance-scene.css). */
+    margin: auto 8px 0;
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - var(--vn-window-lift, 8px)); }
+  .battle-screen[data-phase="dialogue"] { padding-bottom: 0; }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px); }
+  /* The story scenes' grid (romance-scene.css): the choices, the window's room with the window at its top, the controls. */
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell {
+    display: grid;
+    grid-template-rows: minmax(0, auto) minmax(var(--vn-window-room), auto) auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell > .vn-choices {
+    grid-row: 1;
+    align-self: end;
+    justify-self: center;
+    max-height: 100%;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell > .battle-window {
+    grid-row: 2;
+    align-self: start;
+    max-height: 100%;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell > .dialogue-controls {
+    grid-row: 3;
+    justify-self: start;
+    margin: 0 0 4px -4px;
+  }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
     margin: 0;
     padding: 2px 16px 8px;

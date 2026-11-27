@@ -227,6 +227,16 @@ body {
   margin: 0;
 }
 
+/* The talk's place on a phone held upright (romance-scene.css, battle.css; 2026-11-27): its window's top this far above
+   the scene's foot, the controls' row under it, and the room between for the window to grow down into. */
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  :root {
+    --vn-window-top: calc(25dvh + 118px);
+    --vn-controls-row: 48px; /* a 44-px press and 4 px under it */
+    --vn-window-room: calc(var(--vn-window-top) - var(--vn-controls-row));
+  }
+}
+
 /* This stylesheet's things, named once (docs/02 「デザインの決まり」): an effect word's size larger than the steps, and
    the colours of things of their own (the drawn canal's paper, the quiz partner's stage). */
 :root {
