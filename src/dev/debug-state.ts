@@ -12,7 +12,10 @@ import {
   atPlace, cityStart, completedCity, finishEpisode, isHotelInsert, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
   startDateScene, startEncounterScene, startHotelInsertScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
-import { checkDebugClues, checkDebugEpisodes, checkDebugFlags, withDebugClock, withDebugClues, withDebugEpisodes, withDebugFlags, withDebugStage } from "./debug-edits";
+import {
+  checkDebugClues, checkDebugEpisodes, checkDebugFlags, checkDebugMet, withDebugClock, withDebugClues, withDebugEpisodes, withDebugFlags, withDebugMet,
+  withDebugStage,
+} from "./debug-edits";
 
 export type { DebugScene, DebugSettings } from "./debug-query";
 
@@ -129,6 +132,7 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
     throw new Error(`「${id}」（${target.name}）は、${target.unavailable}。${target.unavailableKind === "item" ? "Debugの場面は品物を持たない状態から始まります。" : ""}`);
   checkDebugFlags(cityId, query.flags ?? []);
   checkDebugClues(cityId, query.clues ?? []);
+  checkDebugMet(cityId, query.met ?? []);
   checkDebugEpisodes(cityId, query.episodes ?? []);
   const defaults = defaultDebugSettings(cityId);
   // A tour is booked before the city is cleared (a cleared city has played its tour): it starts at the city's start.
@@ -142,7 +146,7 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
     ...(query.without ? { without: query.without } : {}), ...(query.before ? { before: query.before } : {}),
     ...(query.day !== undefined ? { day: query.day } : {}), ...(query.time !== undefined ? { time: query.time } : {}),
     ...(query.episodes ? { episodes: query.episodes } : {}), ...(query.flags ? { flags: query.flags } : {}), ...(query.clues ? { clues: query.clues } : {}),
-    ...(query.stage !== undefined ? { stage: query.stage } : {}) } };
+    ...(query.met ? { met: query.met } : {}), ...(query.stage !== undefined ? { stage: query.stage } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -204,7 +208,9 @@ function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: stri
 /**
  * The scene's starting state from its progress's: with the episodes it finishes (played first), without the items `without` names, with the flags and the clues it adds, at its day and
  * time when one is chosen (the party at the hotel, where every scene's opener starts from; free time sets its clock at its
- * own place: openFreeTime), Debug's AP and relationship values, and its 恋の段階 when one is chosen (else the progress's own).
+ * own place: openFreeTime), Debug's AP and relationship values, its 恋の段階 when one is chosen (else the progress's own), and
+ * the people it has met (last, so they are first met at the scene's day, time and place; free time meets them at its own
+ * place and clock: openFreeTime).
  */
 function prepared(state: GameState, settings: DebugSettings): GameState {
   const played = withDebugEpisodes(state, settings.episodes ?? []);
@@ -212,12 +218,16 @@ function prepared(state: GameState, settings: DebugSettings): GameState {
   const clocked = settings.scene === "free" || (settings.day === undefined && settings.time === undefined) ? base
     : withDebugClock(atPlace(base, base.travel.hotelPlaceId), { day: settings.day, minute: settings.time });
   const related = withRelationship(withAp(clocked, settings.ap), settings);
-  return settings.stage === undefined ? related : withDebugStage(related, settings.stage);
+  const staged = settings.stage === undefined ? related : withDebugStage(related, settings.stage);
+  return settings.scene === "free" ? staged : withDebugMet(staged, settings.met ?? []);
 }
 
-/** Free time (scene=free) at a place of the city, its clock at the settings' day and time (each the progress's own when left out). */
+/**
+ * Free time (scene=free) at a place of the city, its clock at the settings' day and time (each the progress's own when left out),
+ * with the people it has met (first met there and then).
+ */
 function openFreeTime(state: GameState, placeId: string, settings: DebugSettings): GameState {
-  return withDebugClock(atPlace(state, placeId), { day: settings.day, minute: settings.time });
+  return withDebugMet(withDebugClock(atPlace(state, placeId), { day: settings.day, minute: settings.time }), settings.met ?? []);
 }
 
 /** Build only states the real game functions can start; never alter player data. */

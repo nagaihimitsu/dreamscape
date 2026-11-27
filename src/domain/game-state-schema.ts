@@ -165,6 +165,11 @@ export const gameStateSchema = z.object({
   // When and where each person was first met (2026-11-26, an optional field; src/domain/met-times.ts): the city, its day, the
   // minute and the place, in the order met. Absent in a save written before it (the people it had met stay without a time).
   metTimes: metTimesSchema.optional(),
+  // Debug only (2026-11-27 user request 「デバッグモードで、出会った人を設定したい」; src/dev/debug-edits.ts setDebugMet): the
+  // people Debug records as met, each a person's ID or `quiz:<battle ID>` (met-people.ts meetableEntries). The people met
+  // (metPeople) and the condition `met` read them besides the play's own records. Play never writes it; Debug plays in its own
+  // memory storage, so it never reaches a normal save.
+  debugMetIds: z.array(z.string()).refine((items) => new Set(items).size === items.length, "同じ人が2回あります。").optional(),
   // The SNS (2026-11-26, an optional field; src/domain/sns.ts): the posts and comments that arrived, each with its night, and
   // the posts the player likes. Absent in a save written before it: nothing has arrived, nothing is liked.
   sns: snsStateSchema.optional(),

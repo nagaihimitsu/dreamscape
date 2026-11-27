@@ -4,7 +4,7 @@ import { test as base, bothStorages, debugGame, expect, ops, placeSave, playUnti
 
 // Debug's flags and 街歩き's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」; the player-facing
 // name is 「街歩き」 since 2026-11-16) and 恋の段階 (2026-11-16): 場面の確認 opens 街歩き (scene=free) at a chosen time with flags,
-// any scene at a chosen 恋の段階, and the Debug bar's 「フラグ・時刻・段階」 changes them in the running Debug game. Lane 3
+// any scene at a chosen 恋の段階, and the Debug bar's 「フラグ・時刻・段階・人」 changes them in the running Debug game. Lane 3
 // (docs/10): development server only, never a save/resume check.
 // Every test starts next to a normal saved game and ends with both browser storages exactly as before (Debug never changes
 // the player's data).
@@ -29,10 +29,10 @@ async function nightDateGo(page: Page): Promise<Locator> {
   return ops.wayButton(card, "milano_night_01");
 }
 
-/** The Debug bar's 「フラグ・時刻・段階」. */
+/** The Debug bar's 「フラグ・時刻・段階・人」. */
 async function openEdit(page: Page): Promise<Locator> {
   await page.getByTestId("debug-edit-open").click();
-  const dialog = page.getByRole("dialog", { name: "フラグ・時刻・段階" });
+  const dialog = page.getByRole("dialog", { name: "フラグ・時刻・段階・人" });
   await expect(dialog).toBeVisible();
   return dialog;
 }
@@ -68,7 +68,7 @@ test("場面の確認 opens Milan's 街歩き at night with a flag, its URL says
   await expect(await nightDateGo(page)).toBeDisabled();
 });
 
-test("the bar's 「フラグ・時刻・段階」 sets a flag that a hotel scene reads, and changes nothing while that scene is open", { tag: tier.debug }, async ({ page }) => {
+test("the bar's 「フラグ・時刻・段階・人」 sets a flag that a hotel scene reads, and changes nothing while that scene is open", { tag: tier.debug }, async ({ page }) => {
   await page.goto(`/${debugQueryString({ dataMode: "real", cityId: "delhi", scene: "free", progress: "initial" })}`);
   await ops.debugShown(page.getByTestId("debug-session"));
   let dialog = await openEdit(page);
@@ -186,4 +186,20 @@ test("shot=1 opens a date without Debug's bar, candidates and strip; turned off 
   await expect(page.getByTestId("debug-url")).toHaveValue(/&shot=1$/u);
   await panelShot.uncheck();
   await expect(page.getByTestId("debug-url")).not.toHaveValue(/shot=/u);
+});
+
+test("the bar's 「フラグ・時刻・段階・人」 meets a person and takes them back (2026-11-27)", { tag: tier.debug }, async ({ page }) => {
+  await page.goto(`/${debugQueryString({ dataMode: "real", cityId: "delhi", scene: "free", progress: "initial" })}`);
+  await ops.debugShown(page.getByTestId("debug-session"));
+  const dialog = await openEdit(page);
+  const monu = dialog.getByTestId("debug-met-gt_monu");
+  await expect(monu).not.toBeChecked();
+  await monu.check();
+  await expect(monu).toBeChecked();
+  await expect.poll(async () => (await debugGame(page))?.debugMetIds).toEqual(["gt_monu"]);
+  expect((await debugGame(page))!.metTimes?.map((item) => item.id)).toContain("gt_monu");
+  await monu.uncheck();
+  await expect.poll(async () => (await debugGame(page))?.debugMetIds).toBeUndefined();
+  await dialog.getByTestId("debug-edit-close").click();
+  await expect(dialog).toHaveCount(0);
 });

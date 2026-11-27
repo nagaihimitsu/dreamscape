@@ -48,6 +48,16 @@ describe("Debug launch URLs", () => {
     expect(debugQueryString(settingsQuery("real", { ...settings, flags: [] }))).not.toContain("flags");
   });
 
+  it("writes and reads the people met after the clues (2026-11-27), a quiz's own partner too, never for the map check", () => {
+    const free: DebugSettings = { ...settings, scene: "free", id: "", clues: ["smp_obs_a"], met: ["gt_monu", "quiz:gt_delhi_quiz"] };
+    const url = debugQueryString(settingsQuery("real", free));
+    expect(url.endsWith("&clues=smp_obs_a&met=gt_monu%2Cquiz:gt_delhi_quiz")).toBe(true);
+    expect(parseDebugQuery("?debug&city=delhi&scene=free&met=gt_monu,quiz:gt_delhi_quiz"))
+      .toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "free", met: ["gt_monu", "quiz:gt_delhi_quiz"] } });
+    expect(parseDebugQuery("?debug&city=delhi&scene=free&met=Monu")).toMatchObject({ kind: "error", message: expect.stringMatching(/出会った人/u) });
+    expect(parseDebugQuery("?debug&city=delhi&scene=map&met=gt_monu")).toMatchObject({ kind: "error" });
+  });
+
   it("writes and reads the clues heard of any scene after the flags (2026-11-18), never for the map check", () => {
     const epilogue: DebugSettings = { ...settings, scene: "epilogue", id: "smp_mihon_finale", flags: ["a_flag"], clues: ["smp_obs_a", "smp_obs_b"] };
     const url = debugQueryString(settingsQuery("real", epilogue));

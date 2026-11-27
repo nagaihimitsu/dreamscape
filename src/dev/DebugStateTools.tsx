@@ -5,18 +5,24 @@ import { weekdayLabel } from "../app/journey-hud-text";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { clockText, debugClockPresets, debugDayRange, debugRomanceStages, debugTimeRange, parseClockText, type DebugRomanceStage, type DebugScene } from "./debug-query";
+import { metPersonIds } from "../domain/met-people";
 import {
-  debugEditRefusal, debugFlagGroups, setDebugFlag, setDebugStage, withDebugClock, type DebugClueGroup, type DebugEpisode, type DebugFlagGroup,
+  debugEditRefusal, debugFlagGroups, debugPersonGroups, playMetIds, setDebugFlag, setDebugMet, setDebugStage, withDebugClock, type DebugClueGroup,
+  type DebugEpisode, type DebugFlagGroup, type DebugPersonGroup,
 } from "./debug-edits";
 
 /**
  * Debug's flags, free time's clock (2026-11-15 user request 「〜〜のフラグを得たことにする」「自由時間を指定する」) and 恋の段階
  * (2026-11-16): the parts of 場面の確認 that choose them for the scene to open, and the Debug bar's dialog that changes them in
- * the running Debug game. The clues heard in conversation (2026-11-18): 場面の確認 only (a launch URL's `clues`).
+ * the running Debug game. The clues heard in conversation (2026-11-18): 場面の確認 only (a launch URL's `clues`). The people met
+ * (2026-11-27 user request 「デバッグモードで、出会った人を設定したい」): both, like the flags.
  */
 
 /** The title of the Debug bar's dialog (its button in DebugMode.tsx says the same, with a place to wrap on a phone). */
-const debugEditTitle = "フラグ・時刻・段階";
+const debugEditTitle = "フラグ・時刻・段階・人";
+
+/** What a person Debug records as met is to the game (GameState.debugMetIds). */
+const metNote = "旅の記録・SNSの「出会った人」と条件の met に入り、会った日と場所はそのときの日時・場所になります。";
 
 /**
  * What a chosen 恋の段階 does next (debug-edits.ts withDebugStage): Debug sets only the stage, and play raises it again where
@@ -40,7 +46,7 @@ export function DebugStageField({ stage, onChange }: { stage: DebugRomanceStage 
 
 /** Checkboxes by city (the journey's flags or clues): each row's text and ID are its label (44 px or more). */
 function DebugCheckList({ groups, cityId, checked, disabled = false, testId, onChange }: {
-  groups: readonly { cityId: string | null; nameJa: string; rows: readonly { id: string; text?: string }[] }[];
+  groups: readonly { cityId: string | null; nameJa: string; rows: readonly { id: string; text?: string; fixed?: string }[] }[];
   cityId: string;
   checked: readonly string[];
   disabled?: boolean;
@@ -53,9 +59,9 @@ function DebugCheckList({ groups, cityId, checked, disabled = false, testId, onC
       <ul>
         {group.rows.map((row) => <li key={row.id}>
           <label className="debug-flag">
-            <input type="checkbox" data-testid={`${testId}-${row.id}`} checked={checked.includes(row.id)} disabled={disabled}
+            <input type="checkbox" data-testid={`${testId}-${row.id}`} checked={checked.includes(row.id)} disabled={disabled || !!row.fixed}
               onChange={(event) => onChange(row.id, event.currentTarget.checked)} />
-            <span>{row.text ?? row.id}{row.text && <code>{row.id}</code>}</span>
+            <span>{row.text ?? row.id}{row.fixed && `（${row.fixed}）`}{row.text && <code>{row.id}</code>}</span>
           </label>
         </li>)}
       </ul>
@@ -166,6 +172,37 @@ export function DebugClueChooser({ groups, cityId, chosen, onChange }: {
   </details>;
 }
 
+/** The journey's people as checkboxes, by city (debugPersonGroups); those in `fixed` (met in play) checked and not changeable. */
+function DebugPersonList({ groups, fixed = new Set(), ...rest }: {
+  groups: readonly DebugPersonGroup[];
+  fixed?: ReadonlySet<string>;
+  cityId: string;
+  checked: readonly string[];
+  disabled?: boolean;
+  onChange: (id: string, met: boolean) => void;
+}) {
+  return <DebugCheckList {...rest} testId="debug-met"
+    groups={groups.map((group) => ({ ...group, rows: group.people.map((person) =>
+      ({ id: person.id, text: person.nameJa, ...(fixed.has(person.id) ? { fixed: "遊びで出会った" } : {}) })) }))} />;
+}
+
+/** 場面の確認's people met (2026-11-27; debugPersonGroups), folded like the flags. None in a journey without anyone to meet. */
+export function DebugMetChooser({ groups, cityId, chosen, onChange }: {
+  groups: readonly DebugPersonGroup[];
+  cityId: string;
+  chosen: readonly string[];
+  onChange: (met: string[]) => void;
+}) {
+  const [open, setOpen] = useState(chosen.length > 0);
+  if (!groups.length) return null;
+  return <details className="debug-flags" data-testid="debug-met" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+    <summary>出会ったことにする（{chosen.length ? `${chosen.length}人を選択中` : "なし"}）</summary>
+    <p className="debug-note">チェックした人に出会った状態で場面を開きます。{metNote}旅の進行ですでに出会っている人はそのままです。開いた後は上の帯の「{debugEditTitle}」で付け外しできます。</p>
+    <DebugPersonList groups={groups} cityId={cityId} checked={chosen}
+      onChange={(id, met) => onChange(met ? [...chosen, id] : chosen.filter((person) => person !== id))} />
+  </details>;
+}
+
 /**
  * 場面の確認's episodes of the city to finish first (2026-11-25 user request; debugEpisodes), folded like the flags. Shown with
  * 旅の進行「旅の開始時」 only: a cleared city has finished them all.
@@ -195,14 +232,16 @@ function clockNow(game: GameState): string {
 }
 
 /**
- * The Debug bar's 「フラグ・時刻・段階」 (the running Debug game; memory only, like all of Debug's play): free time's clock,
- * 恋の段階 and the journey's flags, each change put in place at once (DebugGameAccess.replace). Only while no scene is open
- * (debugEditRefusal): during one the dialog shows the stage and the flags as they are, its controls disabled with the reason.
+ * The Debug bar's 「フラグ・時刻・段階・人」 (the running Debug game; memory only, like all of Debug's play): free time's clock,
+ * 恋の段階, the journey's flags and the people met, each change put in place at once (DebugGameAccess.replace). Only while no
+ * scene is open (debugEditRefusal): during one the dialog shows them as they are, its controls disabled with the reason.
  */
 export function DebugEditDialog({ access, onClose }: { access: { current: DebugGameAccess | null }; onClose: () => void }) {
   const id = useId();
   const [game, setGame] = useState(() => access.current?.game() ?? null);
   const groups = useMemo(() => (game ? debugFlagGroups(game.currentCityId) : []), [game?.currentCityId]);
+  const personGroups = useMemo(() => (game ? debugPersonGroups(game.currentCityId) : []), [game?.currentCityId]);
+  const met = useMemo(() => (game ? { all: [...metPersonIds(game)], play: playMetIds(game) } : null), [game]);
   const [time, setTime] = useState(() => (game ? clockText(game.travel.minute) : ""));
   const [day, setDay] = useState(() => (game ? String(game.travel.day) : ""));
   const [error, setError] = useState("");
@@ -264,5 +303,11 @@ export function DebugEditDialog({ access, onClose }: { access: { current: DebugG
       {game && <DebugFlagList groups={groups} cityId={game.currentCityId} checked={game.storyProgress.flags} disabled={!!refusal}
         onChange={(flag, obtained) => apply((state) => setDebugFlag(state, flag, obtained))} />}
     </section>
+    {personGroups.length > 0 && <section className="debug-edit-section" aria-labelledby={`${id}-met`}>
+      <h3 id={`${id}-met`}>出会った人（チェックで出会ったことにする）</h3>
+      <p className="debug-note">{metNote}遊びで出会った人は外せません。</p>
+      {game && met && <DebugPersonList groups={personGroups} fixed={met.play} cityId={game.currentCityId} checked={met.all} disabled={!!refusal}
+        onChange={(person, isMet) => apply((state) => setDebugMet(state, person, isMet))} />}
+    </section>}
   </Modal>;
 }

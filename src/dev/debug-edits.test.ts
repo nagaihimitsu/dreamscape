@@ -7,8 +7,11 @@ import { getDayEnd } from "../domain/day-end";
 import { getDateAvailability, isEventVisible } from "../domain/date-rules";
 import { evaluateProgression } from "../domain/game";
 import { debugTimeRange, type DebugRomanceStage } from "./debug-query";
+import { meets } from "../domain/conditions";
+import { metPeople, metPersonIds } from "../domain/met-people";
 import {
-  debugEditRefusal, debugFlagGroups, debugFlagIds, setDebugFlag, setDebugStage, withDebugClock, withDebugFlags, withDebugStage,
+  checkDebugMet, debugEditRefusal, debugEpisodes, debugFlagGroups, debugFlagIds, debugPersonGroups, playMetIds, setDebugFlag, setDebugMet, setDebugStage,
+  withDebugClock, withDebugFlags, withDebugStage,
 } from "./debug-edits";
 import { createDebugState, defaultDebugSettings, resolveDebugLaunch, type DebugSettings } from "./debug-state";
 import { atPlace, cityStart, finishEpisode } from "./scenario-builders";
@@ -164,5 +167,50 @@ describe("Debug's clock of free time", () => {
       .toThrow(`ツアーを予約している間は日を変えられません（予約した日：${booked.tour!.bookedDay}日目。翌朝に出発します）。時刻は変えられます。`);
     const later = withDebugClock(booked, { minute: 17 * 60 });
     expect(validateGameState(later)).toEqual(later);
+  });
+});
+
+describe("Debug's people met (2026-11-27 user request 「デバッグモードで、出会った人を設定したい」)", () => {
+  const delhiFree = (input: Partial<DebugSettings> = {}) =>
+    createDebugState(free("delhi", { progress: "initial", id: cityStart("delhi").travel.hotelPlaceId, ...input }));
+
+  it("offers everyone the journey can meet, by city in the journey's order, a quiz partner too", () => {
+    const groups = debugPersonGroups("agra");
+    expect(groups.map((group) => group.cityId)).toEqual(["delhi", "agra", "jaipur"]);
+    const ids = groups.flatMap((group) => group.people.map((person) => person.id));
+    expect(ids).toContain("gt_monu");
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(debugPersonGroups("milano").every((group) => group.cityId === "milano")).toBe(true);
+    expect(() => checkDebugMet("milano", ["gt_monu"])).toThrow(/出会える人ではありません/u);
+  });
+
+  it("meets a person as a scene opens: 出会った人, the condition met and when and where they were met", () => {
+    const before = delhiFree();
+    expect(metPersonIds(before).has("gt_monu")).toBe(false);
+    expect(meets(before, { met: "gt_monu" })).toBe(false);
+    const state = delhiFree({ met: ["gt_monu"] });
+    expect(state.debugMetIds).toEqual(["gt_monu"]);
+    expect(metPeople(state).at(-1)).toMatchObject({ id: "gt_monu", cityId: "delhi" });
+    expect(meets(state, { met: "gt_monu" })).toBe(true);
+    expect(state.metTimes?.find((item) => item.id === "gt_monu"))
+      .toEqual({ id: "gt_monu", cityId: "delhi", day: state.travel.day, minute: state.travel.minute, placeId: state.travel.currentPlaceId });
+    expect(() => resolveDebugLaunch({ dataMode: "real", cityId: "delhi", scene: "free", met: ["nobody_here"] })).toThrow(/nobody_here/u);
+  });
+
+  it("the bar meets and unmeets one Debug met, never one met in play, and waits while a scene is open", () => {
+    const state = delhiFree();
+    const met = setDebugMet(state, "gt_monu", true);
+    expect(playMetIds(met).has("gt_monu")).toBe(false);
+    expect(metPersonIds(met).has("gt_monu")).toBe(true);
+    const back = setDebugMet(met, "gt_monu", false);
+    expect(back.debugMetIds).toBeUndefined();
+    expect(metPersonIds(back).has("gt_monu")).toBe(false);
+    expect(back.metTimes?.some((item) => item.id === "gt_monu")).toBe(false);
+    const played = finishEpisode(state, debugEpisodes("delhi")[0].id);
+    const playedMet = [...playMetIds(played)][0];
+    expect(playedMet).toBeDefined();
+    expect(() => setDebugMet(played, playedMet, false)).toThrow(/遊びで出会った人/u);
+    expect(setDebugMet(played, playedMet, true)).toBe(played);
+    expect(() => validateGameState({ ...state, debugMetIds: ["nobody_here"] })).toThrow(/Debugで出会ったことにした人/u);
   });
 });
