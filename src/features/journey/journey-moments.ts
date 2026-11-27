@@ -206,7 +206,7 @@ export type ResumeRecap = {
 };
 
 /**
- * A thing finished, looked back on (the recap and 旅の記録's 「体験」, travel-log.ts): its clear title and record (an
+ * A thing finished, looked back on (前回までのあらすじ): its clear title and record (an
  * episode's, or a date's, else the date's title and description; the names filled in), the city it was in, its place's
  * name, its picture (subjectPicture) and her line looking back on its place (the first of the place's `recapLinesJa` that
  * holds now).

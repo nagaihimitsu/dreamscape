@@ -4,8 +4,8 @@ import { stableContentId } from "./stable-id";
 
 // 旅の記録's times (2026-11-19 user decision; an optional field of save v23, the version not raised): when each episode was
 // completed and each date first finished, as the header's clock said then (the city's day and the minute of the game
-// clock), in the order they were. 旅の記録's 「体験」 orders a city's cards by it and shows 「n日目 hh:mm」 on each.
-// A save written before it has none; what was lived then shows without a time, before the timed ones.
+// clock), in the order they were. 旅の記録's 「体験」 read it until 2026-11-27 (「体験」 made the SNS); nothing shows it now,
+// and it is kept in the save as it was (the save's format is not changed for it). A save written before it has none.
 
 export const livedTimeSchema = z.object({
   id: stableContentId,

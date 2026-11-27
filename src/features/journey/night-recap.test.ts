@@ -1,11 +1,11 @@
-// The night's recap (2026-11-11 user decision; NightScreen, NightRest): today's headlines (save v23), today's route on a
-// small map, its stops in words, and the heroine's line of the night from the city's optional nightLinesJa (the sample
-// journey writes three).
+// The night's recap (2026-11-11 user decision; NightScreen, NightRest): today's route on a small map, its stops in words,
+// and the heroine's line of the night from the city's optional nightLinesJa (the sample journey writes three). Today's
+// headlines are gone (2026-11-27 user decision).
 import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles, episodes, getCityContent } from "../../content";
 import { cityStart, finishEpisode } from "../../dev/scenario-builders";
 import type { GameState } from "../../domain/game";
-import { hasNightRecap, headlinesSentenceJa, nightRecap, nudgeMarksApart, restNightCard, routeMarks, routeSentenceJa, todayWord, type MarkBox } from "./night-recap";
+import { hasNightRecap, nightRecap, nudgeMarksApart, restNightCard, routeMarks, routeSentenceJa, todayWord, type MarkBox } from "./night-recap";
 
 const SAMPLE = "mihon";
 const at = (state: GameState, day: number, todayPlaceIds: string[]): GameState =>
@@ -58,30 +58,11 @@ describe("what the night shows under its line", () => {
     ]);
   });
 
-  it("lists today's headlines: the clear titles of the episodes completed today, in order, the names filled in", () => {
-    const start = cityStart(SAMPLE, ["航", "澪"]);
-    expect(nightRecap(start).headlines).toEqual([]);
-    expect(headlinesSentenceJa([])).toBe("");
-    const done = finishEpisode(start, "smp_mihon_main_clock_tower");
-    const episode = episodes.find((item) => item.id === "smp_mihon_main_clock_tower")!;
-    expect(done.travel.todayEpisodeIds).toEqual([episode.id]);
-    const recap = nightRecap(done);
-    expect(recap.headlines).toEqual([episode.clearTitleJa]);
-    expect(hasNightRecap(recap)).toBe(true);
-    expect(headlinesSentenceJa(recap.headlines)).toBe(`今日の見出し：${episode.clearTitleJa}。`);
-    // Only today's: an episode completed on an earlier day is not a headline of this night.
-    expect(nightRecap({ ...done, travel: { ...done.travel, todayEpisodeIds: [] } }).headlines).toEqual([]);
-    // Headlines alone are something to show (a city without night lines, the party back at the hotel).
+  it("has no headlines: an episode completed today alone is nothing to show (2026-11-27)", () => {
     const milan = finishEpisode(cityStart("milano"), "milano_duomo_episode");
-    expect(nightRecap(milan)).toMatchObject({ route: [], line: null });
-    expect(hasNightRecap(nightRecap(milan))).toBe(true);
-    const written = episode.clearTitleJa;
-    episode.clearTitleJa = "{heroine_name}と見上げた三時";
-    try {
-      expect(nightRecap(done).headlines).toEqual(["澪と見上げた三時"]);
-    } finally {
-      episode.clearTitleJa = written;
-    }
+    expect(milan.travel.todayEpisodeIds).toEqual(["milano_duomo_episode"]);
+    expect(nightRecap(milan)).toEqual({ route: [], line: null, heroineName: milan.heroineName, cityId: "milano" });
+    expect(hasNightRecap(nightRecap(milan))).toBe(false);
   });
 });
 
@@ -95,8 +76,8 @@ describe("the card of a night at the hotel", () => {
     const card = restNightCard(out, { dayEnd: false, shown: null });
     expect(card).toEqual({ kind: "rest", recap: nightRecap(out) });
     expect(card.kind === "rest" && card.recap.route.map((stop) => stop.place.id)).toEqual(["p_hotel", "p_duomo", "p_galleria"]);
-    // Headlines alone are a recap too (the same rule as at 21:00).
-    expect(restNightCard(finishEpisode(milan, "milano_duomo_episode"), { dayEnd: false, shown: null }).kind).toBe("rest");
+    // An episode completed today alone is not (no headlines since 2026-11-27).
+    expect(restNightCard(finishEpisode(milan, "milano_duomo_episode"), { dayEnd: false, shown: null }).kind).toBe("next_day");
   });
 
   it("is the plain 「次の日」 for a rest before 21:00 with nothing to recap (the party stayed in, a city without night lines)", () => {

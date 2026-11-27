@@ -1,6 +1,5 @@
-/* 旅の記録 (TravelLog.tsx): the shared frame, the 「体験｜写真」 switch at its top, the cities told apart by their names
-   (each a button that folds the city), cards on their own paper and photos in a close grid (no side accents). Every
-   pressable is 44 px. */
+/* 旅の記録 (TravelLog.tsx): the shared frame, the 「SNS｜写真」 switch at its top (SnsView.tsx, sns.css) and the photos in a
+   close grid (no side accents). Every pressable is 44 px. */
 dialog.modal.travel-log {
   --modal-pad-top: 16px;
   --modal-pad-inline: 16px;
@@ -18,6 +17,7 @@ dialog.modal.travel-log {
   background: var(--ds-parchment-2);
 }
 .travel-log-axes button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -39,103 +39,24 @@ dialog.modal.travel-log {
   box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 18%, transparent);
 }
 .travel-log-count { font-size: var(--ds-text-caption); font-weight: 400; color: var(--ds-ink-muted); }
-/* 「体験」: each city under its name, a full-width button with its count and a chevron that turns as the city folds. */
-.travel-log-city + .travel-log-city, .travel-log .journey-numbers { border-top: 1px solid var(--ds-parchment-line); }
-.travel-log-city-name { margin: 0; }
-.travel-log-city-name button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 48px;
-  margin: 0;
-  padding: 8px 2px;
-  border: 0;
-  background: transparent;
-  color: var(--ds-ink);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  line-height: var(--ds-leading-snug);
-  text-align: left;
-  overflow-wrap: anywhere;
-}
-.travel-log-city-name button > span:first-child { flex: 0 1 auto; min-width: 0; }
-.travel-log-city-count { flex: none; font-family: inherit; font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
-.travel-log-city-name svg { flex: none; margin-left: auto; transition: transform var(--motion-fast, 120ms) ease; }
-.travel-log-city-name button[aria-expanded="false"] svg { transform: rotate(-90deg); }
-.travel-log-city > div { padding-bottom: 16px; }
-/* 「体験」: each thing lived as a card of its own paper, its picture on top, her words at its foot. */
-.travel-log-lived { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
-.travel-log-card {
-  overflow: hidden;
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-}
-.travel-log-card > .travel-log-picture { border-radius: 0; }
-.travel-log-card-body { padding: 10px 12px 4px; }
-.travel-log-where { margin: 0 0 2px; font-size: var(--ds-text-caption); color: var(--ds-ink-muted); overflow-wrap: anywhere; }
-.travel-log-card .stop-title { margin: 0 0 4px; }
-.travel-log-card h4 {
-  min-width: 0;
-  margin: 0;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  line-height: var(--ds-leading-body);
-  overflow-wrap: anywhere;
-}
-.travel-log-record { margin: 0 0 6px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.travel-log-heroine { margin: 0 12px 12px; }
-/* 出会った人: each person's standing picture, small, beside the name and words. The whole picture is laid from the frame's
-   top at 1.7 times its height, so the frame shows the head to about the waist and the feet are cut off; any character
-   fits without a face position of its own. A person without a portrait keeps the empty frame. */
-.travel-log .met-people dl > .travel-log-person { display: flex; align-items: flex-start; gap: 10px; }
-.travel-log-person-figure {
-  flex: none;
-  width: 48px;
-  height: 64px;
-  margin-top: 2px;
-  overflow: hidden;
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment-2);
-}
-.travel-log-person-figure .character-figure { height: 170%; }
-.travel-log-person-figure .character-figure img,
-.travel-log-person-figure .character-figure svg { object-position: center top; }
-.travel-log-person > div { min-width: 0; }
-.travel-log-people-title { margin: 0 0 4px; font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); }
-.travel-log .met-people { margin-top: 16px; }
-.travel-log .journey-numbers { margin-top: 0; padding-top: 14px; }
-.album-photo {
-  display: block;
-  width: 100%;
-  border-radius: var(--ds-radius-control);
-  overflow: hidden;
-  background: var(--ds-photo-mat);
-}
-/* A card's picture fills a fixed 3:2 frame (one of another shape keeps its middle), so the file's own size is never needed. A short screen held sideways keeps the frame low by narrowing it. */
-.album-photo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-@media (orientation: landscape) and (max-height: 500px) {
-  .travel-log-card > .travel-log-picture { width: min(100%, 69dvh); margin-inline: auto; }
-}
-/* 「写真」: square thumbnails three to a row, close together, each one a button (wider than 44 px at any width). */
+/* A tab's dot (something new there): at the top right of its word, in the SNS's red. */
+.travel-log-axes .fx-dot { position: static; align-self: flex-start; margin: 6px 0 0 -2px; background: var(--ds-marker); box-shadow: none; }
+/* A journey without an SNS: 「写真」 is the log's one page, under a small heading. */
+.travel-log-photos-title { margin: 0 0 8px; font-size: var(--ds-text-body); font-weight: 600; }
+.travel-log-photos-title .travel-log-count { margin-left: 6px; }
+.travel-log .journey-numbers { margin-top: 16px; }
+/* 「写真」: square thumbnails five to a row (2026-11-27; their 256-px copies), close together, each one a button (about 60 px
+   on a 320-px phone); about seven on a wide screen. No pinch to change the rows (the browser's own zoom has the pinch). */
 .travel-log-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 2px;
   margin: 0 calc(-1 * var(--modal-pad-inline, 16px));
   padding: 0;
   list-style: none;
 }
 @media (min-width: 520px) {
-  .travel-log-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-inline: 0; }
+  .travel-log-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); margin-inline: 0; }
 }
 .travel-log-grid button {
   display: block;

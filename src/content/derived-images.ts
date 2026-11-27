@@ -18,3 +18,9 @@ export function derivedImagePath(asset: Pick<TourismAsset, "id">, kind: DerivedI
   if (!journeyId) throw new Error(`No journey provides the tourism image ${asset.id}`);
   return derivedImageFile(journeyId, asset.id, kind);
 }
+
+/**
+ * The served path of an album or SNS picture's square copy (`thumb`, 256 px: 旅の記録's grids). content:build makes one for
+ * every such picture of the journeys it builds.
+ */
+export const pictureThumbPath = (picture: { id: string; journeyId: string }): string => derivedImageFile(picture.journeyId, picture.id, "thumb");

@@ -210,8 +210,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(free.inventory.blue_pick).toBe("held");
   await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
   const cleared = await ops.openRecords(page);
-  // 旅の記録's 「体験」 keeps the Duomo as its one card.
-  await expect(cleared.locator('[data-testid^="log-experience-"]')).toHaveCount(1);
+  // 旅の記録 of a journey without posts is its 「写真」 alone (2026-11-27: 「体験」 made the SNS).
+  await expect(cleared.getByRole("heading", { name: /^写真/u })).toBeVisible();
+  await expect(cleared.getByTestId("travel-log-sns")).toHaveCount(0);
   await ops.closeDialog(cleared);
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).

@@ -15,7 +15,8 @@ export function reactionMarkImage(mark: ReactionMark): string {
 }
 
 /** The reduced copies of tourism photos that content:build writes (scripts/derived-images.ts). */
-export type DerivedImageKind = "card" | "backdrop" | "recap";
+/** `thumb`: a square copy of an album or SNS picture, for the grids of 旅の記録 (2026-11-27). */
+export type DerivedImageKind = "card" | "backdrop" | "recap" | "thumb";
 
 /**
  * The served file of a tourism photo's reduced copy, written by content:build

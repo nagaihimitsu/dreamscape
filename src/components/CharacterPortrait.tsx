@@ -98,17 +98,22 @@ export function CharacterPortrait({
  * whispered hint, her line on a right answer): the picture of her portrait in the scene's outfit,
  * cropped to the head (character-portrait.css). Decorative: her name is written beside it.
  */
-export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
+export function CharacterFace({ characterId, emotion, sceneId, cityId, costume, fixed = false }: {
   characterId: string;
   emotion?: string;
   sceneId?: string;
   cityId?: string;
+  /** The outfit to show (the SNS's icon: progression/story.json `iconCostume`), over the scene's and the worn one. */
+  costume?: string;
+  /** Never the outfit the player chose for her (the SNS's icon is the person's own, fixed: 2026-11-26). */
+  fixed?: boolean;
 }) {
   const character = characters.find((item) => item.id === characterId);
-  const worn = useWornCostume();
+  const wornNow = useWornCostume();
+  const worn = fixed ? undefined : wornNow;
   const selection = useMemo(
-    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, worn }) : {},
-    [character, sceneId, cityId, worn],
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, worn, costume }) : {},
+    [character, sceneId, cityId, worn, costume],
   );
   if (!character) return null;
   const image = characterImage(character, { ...selection, emotion });
