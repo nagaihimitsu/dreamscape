@@ -104,6 +104,8 @@ export const sceneOptionSchema = z.object({
   clues: z.array(id).optional(),
   /** `# outfit: <outfit ID>` (2026-11-26): the party gets that outfit (bought with the choice's `# money:`, or given); hidden once owned. */
   outfit: id.optional(),
+  /** `# item: <item ID>` (2026-11-27): the items the choice gives (held from then on; one recorded already stays as it is). */
+  items: z.array(id).optional(),
   memory: z.array(id).optional(),
   /** `# profile:` (docs/03 「噛み合い」): the reaction profile the choice resolves with. */
   profile: id.optional(),

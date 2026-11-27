@@ -1806,7 +1806,7 @@ export function validateContent(sources: ContentSources,
       sceneItems: {
         uses: taggedScenes.flatMap((scene) => [...scene.options.flatMap((option) => [option.give?.item, option.use]), ...(scene.done.use ?? [])])
           .filter((item): item is string => !!item),
-        sources: taggedScenes.flatMap((scene) => scene.done.items ?? []),
+        sources: taggedScenes.flatMap((scene) => [...(scene.done.items ?? []), ...scene.options.flatMap((option) => option.items ?? [])]),
       },
     });
     if (episodes.length) validateJourney(cityJourney, current, cityLandmarks, battles, quizzes);

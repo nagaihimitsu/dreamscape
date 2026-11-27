@@ -159,7 +159,7 @@ INCLUDE modules.ink
     一日目の花、ちゃんと残ってるんだ。わたし、これがいちばん好きかも
     -> his_price_jade
 * [Govind in Delhi sent us. # option: jade_govind # translation: デリーのゴーヴィンドさんの紹介です。]
-    # requires: flag gt_delhi_govind_card
+    # requires: item gt_delhi_govind_card held
     # outfit: gt_anarkali_jade
     # money: -1800
     -> govind
@@ -202,7 +202,7 @@ INCLUDE modules.ink
     長い花びら、ちょっと背伸びしてるみたい。わたし、これがいちばん好きかも
     -> his_price_navy
 * [Govind in Delhi sent us. # option: navy_govind # translation: デリーのゴーヴィンドさんの紹介です。]
-    # requires: flag gt_delhi_govind_card
+    # requires: item gt_delhi_govind_card held
     # outfit: gt_salwar_kameez_navy
     # money: -1300
     -> govind
@@ -271,6 +271,7 @@ INCLUDE modules.ink
 
 = govind
 # speaker: gt_rafiq
+# item_out: gt_delhi_govind_card
 ゴーヴィンドか。あの男は、俺の金糸の縁取りを、デリーで倍の値で売る
 # speaker: gt_rafiq
 ……あの男に売る値段なら、俺にも分かる。それでいい

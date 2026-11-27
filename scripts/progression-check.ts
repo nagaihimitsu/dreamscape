@@ -97,15 +97,17 @@ export type SceneItems = { sceneId: string; cityId: string; gives: readonly stri
 /** The scenes' items and clues as the check reads them (ProgressionContent.sceneItems), from the scene list content:build makes. */
 export function sceneItemsOf(scenes: readonly { id: string; cityId: string; repeat?: "once" | "always"; main?: Record<string, string>; at: readonly Record<string, string>[];
   done: { items?: readonly string[]; use?: readonly string[]; clues?: readonly string[] };
-  options: readonly { give?: { item: string }; use?: string; clues?: readonly string[] }[] }[]): SceneItems[] {
+  options: readonly { give?: { item: string }; use?: string; items?: readonly string[]; clues?: readonly string[] }[] }[]): SceneItems[] {
   const choiceCluesOf = (scene: (typeof scenes)[number]) => [...new Set(scene.options.flatMap((option) => option.clues ?? []))];
   const cluesOf = (scene: (typeof scenes)[number]) => [...new Set([...(scene.done.clues ?? []), ...choiceCluesOf(scene)])];
-  return scenes.filter((scene) => scene.done.items?.length || scene.done.use?.length || scene.options.some((option) => option.give || option.use) ||
+  // A choice's # item: gives as the scene's # on_done: item does (read as sure to come some day, as the build reads an item's sources).
+  const givesOf = (scene: (typeof scenes)[number]) => [...new Set([...(scene.done.items ?? []), ...scene.options.flatMap((option) => option.items ?? [])])];
+  return scenes.filter((scene) => givesOf(scene).length || scene.done.use?.length || scene.options.some((option) => option.give || option.use) ||
       cluesOf(scene).length)
     .map((scene) => {
       const clues = cluesOf(scene);
       const choiceClues = choiceCluesOf(scene);
-      return { sceneId: scene.id, cityId: scene.cityId, gives: scene.done.items ?? [],
+      return { sceneId: scene.id, cityId: scene.cityId, gives: givesOf(scene),
         spends: [...(scene.done.use ?? []), ...scene.options.flatMap((option) => [option.give?.item, option.use].filter((id): id is string => !!id))],
         ...(clues.length ? { clues } : {}), ...(choiceClues.length ? { choiceClues } : {}), ...(scene.repeat ? { repeat: scene.repeat } : {}),
         // A moment quiz (a battle's scene with # at:, 2026-11-18) keeps both: it gives at its moment, and is over once played.

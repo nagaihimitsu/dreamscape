@@ -44,6 +44,16 @@ describe("place files", () => {
     expect(plain).toBeUndefined();
   });
 
+  it("reads # item: on the lines after a choice (2026-11-27), one ID each, any number of lines", () => {
+    const file = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n",
+      "* [Pay. # option: pay]\n    # item: smp_x_card\n    # item: smp_x_note\n    # money: -300\n    「どうぞ」\n    -> END\n"));
+    expect(choiceOption(file.knots[0].choices[0])).toEqual({ id: "pay", knot: "smp_x_talk", items: ["smp_x_card", "smp_x_note"], money: -300 });
+    const two = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [Pay. # option: pay]\n    # item: smp_a smp_b\n    -> END\n"));
+    expect(() => choiceOption(two.knots[0].choices[0])).toThrow("# item: takes an ID");
+    const bare = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n", "* [Pay.]\n    # item: smp_x_card\n    -> END\n"));
+    expect(() => choiceOption(bare.knots[0].choices[0])).toThrow("needs # option:");
+  });
+
   it("reads # clue: on the lines after a choice and # on_done: clue in a head (2026-11-18), one ID each, any number of lines", () => {
     const file = readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n# on_done: clue smp_x_clue_heard\n# on_done: clue smp_x_clue_two\n",
       "* [Ask. # option: ask]\n    # clue: smp_x_clue_heard\n    # clue: smp_x_clue_two\n    # set: smp_x_flag\n    「駅の話です」\n    -> END\n" +

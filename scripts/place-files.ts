@@ -18,7 +18,7 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 // Light module (no content loading): unit tests use it directly.
 
 export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources", "hint"] as const;
-export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "clue", "outfit", "money", "ap", "then", "later", "withhold"] as const;
+export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "clue", "outfit", "item", "money", "ap", "then", "later", "withhold"] as const;
 /**
  * Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place
  * file; a tour's file, `places/<tourId>`, holds its legs' narrations, `tour_leg`).
@@ -300,6 +300,8 @@ export function choiceOption(choice: PlaceChoice): SceneOption | undefined {
       case "clue": option.clues = [...(option.clues ?? []), ident(tag.value, "# clue:")]; break;
       // An outfit got with the choice (2026-11-26): bought with its # money:, or given.
       case "outfit": if (option.outfit) throw new Error(`One # outfit: per choice ${where}`); option.outfit = ident(tag.value, "# outfit:"); break;
+      // An item got with the choice (2026-11-27): held from then on, as a scene's # on_done: item (an item recorded already stays as it is).
+      case "item": option.items = [...(option.items ?? []), ident(tag.value, "# item:")]; break;
       case "memory": option.memory = [...(option.memory ?? []), ident(tag.value, "# memory:")]; break;
       case "profile": if (option.profile) throw new Error(`One # profile: per choice ${where}`); option.profile = ident(tag.value, "# profile:"); break;
       case "effect": if (option.effect) throw new Error(`One # effect: per choice ${where}`); option.effect = ident(tag.value, "# effect:"); break;
