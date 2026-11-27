@@ -233,12 +233,40 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
               {face.swipeable && <span className="photo-card-cue" />}
             </span>
           </button>
-          {!row && isChosen && card}
+          {!row && isChosen && <CardSheet cardId={chosenId}>{card}</CardSheet>}
         </li>;
       })}
     </ul>
-    {row && card}
+    {row && <CardSheet cardId={chosenId}>{card}</CardSheet>}
   </>;
+}
+
+/** The cloud's coming-in (2026-11-27 user decision: 「雲のようにふんわり」): the card swells softly into place. */
+const CLOUD_IN: Keyframe[] = [
+  { opacity: 0, transform: "translateY(10px) scale(0.94)" },
+  { opacity: 0.9, offset: 0.5 },
+  { opacity: 1, transform: "none" },
+];
+const CLOUD_MS = 620;
+
+/**
+ * The chosen card's sheet under the row (or under its row in the list): each card chosen comes in like a cloud. The
+ * sheet itself swells into place (on the card, never on this wrapper: the card's glass is its own ::before), and a
+ * white mist over it drifts apart (photo-card-mist, a new one for each card). The same card drawn again (its plan
+ * changed) does not come in again. Under reduced motion it is simply there; it never holds a press back.
+ */
+function CardSheet({ cardId, children }: { cardId: string; children: ReactNode }) {
+  const sheet = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const card = sheet.current?.firstElementChild;
+    if (!card || reducedMotion() || typeof card.animate !== "function") return;
+    const animation = card.animate(CLOUD_IN, { duration: CLOUD_MS, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+    return () => animation.cancel();
+  }, [cardId]);
+  return <div ref={sheet} className="photo-card-sheet">
+    {children}
+    <span key={cardId} className="photo-card-mist" aria-hidden="true" />
+  </div>;
 }
 
 /**
