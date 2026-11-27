@@ -424,17 +424,7 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
   - 頭を覆う布の名前の案「パトカー（patka）」は、日本語の車のパトカーに読める。そのため、名前を「頭を覆う布」、別名を貸し出しの布の呼び名「ルマール」にした。
 - **言葉そのものの説明に直した**：赤い砂岩（案は塔の説明だった）、バハイ信仰（案は礼拝堂の説明だった）、バーオリー（階段井戸）。
 - **写真を使い回した**：鉄の柱を抱く願掛け（デリーの鉄柱の写真）、ムフールタ（パンチャーングの写真）。
-  - **ムフールタの画像は差し替える（2026-11-27のユーザー判断。未着手）**：パンチャーングと同じ画像（`gt_img_term_panchang`）を使い回すのはやめる。札はシャーストリー（町の占星術師）が名乗る行。
-    - 英語で見つけた File:Brahmin-astrologer.jpg（1905年ごろの絵はがき）と File:Lagna_Patrika.JPG（オディシャの書状）は、ユーザーが「どっちも微妙」と判断したので使わない。**インドの言葉で探し直す**（ユーザーの指示）。
-    - 2026-11-27に Openverse（api.openverse.org）でインドの言葉で探して見つけた、Commons の候補（Wikimedia の配信が429で、絵はまだ見ていない）：
-      - `ಮುಹೂರ್ತ ಕಂಬ`（カンナダ語「ムフールタの柱」。婚礼の前に吉時に立てる柱。CC BY-SA、1128×752、投稿 ರೇಣುಕಾ）https://commons.wikimedia.org/w/index.php?curid=149175761
-      - `Hindu Marriage muhurtam (YS)`（CC BY-SA、1636×1444、YVSREDDY）https://commons.wikimedia.org/w/index.php?curid=20694488
-      - `श्री राधे ज्योतिष दरबार, शास्त्री नगर, गवालू (नागौर)राज.`（ラージャスターン州ナーガウルの占星術師の店。CC BY-SA、1280×720）https://commons.wikimedia.org/w/index.php?curid=148192853
-      - `सिताराम ज्योतिष तथा वास्तु सेवा`（占星術の店。CC BY-SA）https://commons.wikimedia.org/w/index.php?curid=67704611
-      - `ज्योतिषी`（CC BY-SA）https://commons.wikimedia.org/w/index.php?curid=130855338 ／ `ज्योतिष`（CC BY-SA）https://commons.wikimedia.org/w/index.php?curid=192529825
-      - `Shubh vivah in Hindu culture`（CC BY-SA、480×277と小さい）https://commons.wikimedia.org/w/index.php?curid=76425249
-    - 絵を見て見送ったもの：Flickr の「मुहूर्त अनुष्ठान」（CC0。塔の起工の儀式で、大勢の顔が主題）、「Mahakali Jyotish」（手相見）、Tamil の婚礼の「muhurtham」の写真（個人の婚礼で、新郎新婦の顔が主題）、「lagna patrika」（CC BY-NC-SA で使えない）。
-    - 次の会話で上の候補を見て、場面に合う絵を選んでから、`gt_img_term_muhurat`（`assets/tourism/india/term_muhurat.webp`）を `tourism/catalog.json` に出典つきで登録し、`terms.json` の `gt_term_muhurat` の `imageId` と `photoNoteJa`、`added-20261125.md` のムフールタの画像・加工の行を直す。パンチャーングの画像はそのまま。
+  - 2026-11-27に、この2つを含む24語の画像を、言葉そのものの画像に差し替えた（`reimage-20261127.md`）。
 - **自作の図（CC0。SVG は `diagrams/`）**：頭を覆う布、頭に手を置く祝福、バクシーシ、屋上に突き出た鉄筋。
   - バクシーシの写真の候補は、1879年のエジプトの本の物乞いの挿絵だけだった。インドの場面でもなく、人を見下ろす描き方なので使わず、場面（手のひらを上に向けて差し出す）に合わせた図にした。
 - **人と文字の扱い**：

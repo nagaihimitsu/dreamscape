@@ -170,7 +170,6 @@
       "aliasJa": null,
       "category": "transport",
       "lineJa": "2002年末に最初の区間が開業し、今では世界有数の規模の路線網になった。",
-      "photoNoteJa": "写真は、ラージーヴ・チョーク駅の駅名標",
       "imageId": "gt_img_term_delhi_metro"
     },
     {
@@ -180,7 +179,6 @@
       "aliasJa": null,
       "category": "transport",
       "lineJa": "タージの500m以内は排ガスの出る車が禁止。駐車場から電動バスやカートで向かう。",
-      "photoNoteJa": "写真は、タージ近くの駐車場の電動カート",
       "imageId": "gt_img_term_taj_electric_bus"
     },
     {
@@ -254,7 +252,7 @@
       "category": "legend",
       "lineJa": "皇帝がタージの対岸に、黒い墓を建てるつもりだったという言い伝え。",
       "imageId": "gt_img_term_black_taj",
-      "photoNoteJa": "写真は、対岸のメヘターブ・バーグに残る、庭の大きな池の跡"
+      "photoNoteJa": "写真は、川に黒く映るタージ・マハル（黒い墓は建てられていない）"
     },
     {
       "id": "gt_term_neem",
@@ -354,7 +352,6 @@
       "aliasJa": null,
       "category": "building",
       "lineJa": "ハワー・マハルの上の階へは、階段でなく傾斜路で上がる造り。",
-      "photoNoteJa": "写真は、ハワー・マハルの外観",
       "imageId": "gt_img_term_hawa_ramps"
     },
     {
@@ -418,7 +415,6 @@
       "aliasJa": null,
       "category": "food",
       "lineJa": "冬の路上の定番。熱い砂や塩で炒った落花生を、新聞紙の袋に入れて売る。",
-      "photoNoteJa": "写真は、ラージャスターンの町の落花生の屋台",
       "imageId": "gt_img_term_peanuts"
     },
     {
@@ -428,7 +424,6 @@
       "aliasJa": null,
       "category": "food",
       "lineJa": "「熱い（温める）香辛料」の意の混合香辛料。配合は地方や好みで違う。",
-      "photoNoteJa": "写真は、混ぜる前の、ガラムマサラに使う香辛料",
       "imageId": "gt_img_term_garam_masala"
     },
     {
@@ -640,8 +635,7 @@
       "aliasJa": "ルマール",
       "category": "clothing",
       "lineJa": "シク教の寺院では、誰もが頭を布で覆う。持っていなければ入口で貸してくれる。",
-      "imageId": "gt_img_term_head_covering",
-      "photoNoteJa": "画像は、頭を布で覆った後ろ姿と、貸し出しの布の籠を表した図"
+      "imageId": "gt_img_term_head_covering"
     },
     {
       "id": "gt_term_gangaur",
@@ -668,7 +662,6 @@
       "aliasJa": null,
       "category": "music",
       "lineJa": "夜のレッド・フォートで、俳優と映像の投影を使い、城で起きた出来事を語るショー。",
-      "photoNoteJa": "写真は、色の光で照らされたレッド・フォートの建物（2011年）",
       "imageId": "gt_img_term_light_sound_show"
     },
     {
@@ -757,7 +750,7 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "官庁ではヒンディー語と英語を使う。予定を早める「prepone」はインド英語。",
-      "photoNoteJa": "写真は、ヒンディー語と英語が並ぶ駅名標",
+      "photoNoteJa": "写真は、トラックの後ろに描かれるインドの英語の決まり文句「Horn OK Please」",
       "imageId": "gt_img_term_indian_english"
     },
     {
@@ -767,7 +760,6 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "市場や小さな店では、値段を交渉して買うのがふつう。定価の店では値切りにくい。",
-      "photoNoteJa": "写真は、デリーのサロージニー・ナガル市場の入口",
       "imageId": "gt_img_term_bargaining"
     },
     {
@@ -777,7 +769,6 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "旧市街の屋上で鳩の群れを飛ばす趣味。17世紀には通信にも鳩が使われた。",
-      "photoNoteJa": "写真は、デリーの屋上から見た夕暮れの鳩の群れ",
       "imageId": "gt_img_term_kabootarbazi"
     },
     {
@@ -797,7 +788,6 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "ラージプートの口ひげは誇りの印とされ、プシュカルの祭りでは長さを競う大会がある。",
-      "photoNoteJa": "写真は、シティ・パレスの門の衛兵",
       "imageId": "gt_img_term_moustache"
     },
     {
@@ -807,8 +797,7 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "結婚式のような大事な儀式は、占星術師が吉とされる時刻を選んで行う。",
-      "imageId": "gt_img_term_panchang",
-      "photoNoteJa": "画像は、吉時を調べる暦（パンチャーング）"
+      "imageId": "gt_img_term_muhurat"
     },
     {
       "id": "gt_term_pigeon_feeding",
@@ -817,7 +806,6 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "ジャイナ教徒やヒンドゥー教徒には、鳩などへの餌やりを信仰の一部とする人がいる。",
-      "photoNoteJa": "写真は、アルバート・ホール前の広場の鳩",
       "imageId": "gt_img_term_pigeon_feeding"
     },
     {
@@ -854,7 +842,6 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "花嫁側の親族が花婿一行の行く手をふさぎ、通すかわりに祝儀を求める風習がある。",
-      "photoNoteJa": "写真は、プシュカルの花婿の行列",
       "imageId": "gt_img_term_ribbon_ceremony"
     },
     {
@@ -891,7 +878,6 @@
       "aliasJa": "座り込み",
       "category": "custom",
       "lineJa": "要求がかなうまで、相手の家や役所の前に座り込む。インドに古くからある抗議の形。",
-      "photoNoteJa": "写真は、座り込みの横断幕（マラーティー語）",
       "imageId": "gt_img_term_dharna"
     },
     {
@@ -901,8 +887,7 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "鉄の柱に背中をつけ、両手が後ろで回れば幸運が来る、と信じられていた。",
-      "imageId": "gt_img_term_iron_pillar",
-      "photoNoteJa": "写真は、クトゥブ・ミナールの鉄の柱"
+      "imageId": "gt_img_term_pillar_hug"
     },
     {
       "id": "gt_term_bahai",
@@ -952,7 +937,7 @@
       "category": "custom",
       "lineJa": "ペルシア語由来の言葉で、チップや施し、時に賄賂も指す。中東から南アジアで使う。",
       "imageId": "gt_img_term_baksheesh",
-      "photoNoteJa": "画像は、差し出した手のひらと硬貨を表した図"
+      "photoNoteJa": "絵は、寺の前で施しを渡す女性（ラヴィ・ヴァルマの多色石版画）"
     },
     {
       "id": "gt_term_rebar_roof",
@@ -1136,7 +1121,6 @@
       "aliasJa": "大理石のベンチ",
       "category": "thing",
       "lineJa": "1992年、ダイアナ妃が一人で座った写真から「ダイアナ・ベンチ」と呼ばれる。",
-      "photoNoteJa": "写真は、タージの庭のベンチ（ダイアナ妃が座ったものとは別）",
       "imageId": "gt_img_term_diana_bench"
     },
     {
@@ -1166,7 +1150,6 @@
       "aliasJa": null,
       "category": "thing",
       "lineJa": "赤い城や多くの廟の石。クトゥブ・ミナールは赤と淡黄色の砂岩が帯を成す。",
-      "photoNoteJa": "写真は、クトゥブ・ミナール",
       "imageId": "gt_img_term_red_sandstone"
     },
     {
@@ -1380,7 +1363,7 @@
       "aliasJa": "ジョーダー・バーイー",
       "category": "person",
       "lineJa": "アクバルの妃で、皇帝ジャハーンギールの母。「ジョーダー」は後に広まった呼び名。",
-      "photoNoteJa": "画像は彼女が建てさせたラホールのモスクの壁画の写真",
+      "photoNoteJa": "画像は息子サリームの誕生を描いた絵（天蓋の下に横たわるのが彼女）",
       "imageId": "gt_img_term_mariam_uz_zamani"
     },
     {
@@ -1390,7 +1373,7 @@
       "aliasJa": null,
       "category": "person",
       "lineJa": "シーラーズ出身の書家。兄は宰相アフザル・ハーン。自分の名の隊商宿を建てた。",
-      "photoNoteJa": "画像は彼が建てた隊商宿、サライ・アマーナト・ハーンの門の写真",
+      "photoNoteJa": "画像は彼が書いたタージ・マハル正門の文字の写真",
       "imageId": "gt_img_term_amanat_khan"
     },
     {
@@ -1400,7 +1383,7 @@
       "aliasJa": null,
       "category": "person",
       "lineJa": "スール朝を開いた王。フマユーンを破り、ルピー銀貨を出して街道を整えた。",
-      "photoNoteJa": "画像はサーサーラームにある彼の墓廟の写真",
+      "photoNoteJa": "画像は彼の名を刻んだルピヤ銀貨の写真",
       "imageId": "gt_img_term_sher_shah"
     },
     {
@@ -1410,7 +1393,7 @@
       "aliasJa": null,
       "category": "person",
       "lineJa": "シーラーズ出身の学者。シャー・ジャハーンの宰相を務め、1639年に亡くなった。",
-      "photoNoteJa": "画像は彼が眠るチーニー・カ・ラウザーの外壁のタイルの写真",
+      "photoNoteJa": "画像は17世紀の絵を20世紀初めに写した肖像",
       "imageId": "gt_img_term_afzal_khan"
     },
     {
@@ -1484,7 +1467,6 @@
       "aliasJa": null,
       "category": "place",
       "lineJa": "1727年に築かれた計画都市。古い建築書の考えに沿って、町を碁盤の目に割った。",
-      "photoNoteJa": "写真は、ナハルガル城から見たジャイプールの町",
       "imageId": "gt_img_term_grid_city"
     },
     {
