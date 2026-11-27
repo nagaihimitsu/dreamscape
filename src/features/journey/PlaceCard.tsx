@@ -11,7 +11,7 @@ import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
 import {
   blockedSleepWays, blockedWays, chooseSleepWay, chooseWay, chosenEvent, departureOf, eventKindJa, refusalReasonsJa, sleepRefusalReasonsJa, sleepWayKey,
-  sleepWayLabelJa, WAIT_BLOCKED_JA, waitKey, waitLabelJa, type DeparturePlan, type PhotoCardEntry,
+  sleepWayLabelJa, WAIT_BLOCKED_JA, waitKey, waitLabelJa, waitLineJa, type DeparturePlan, type PhotoCardEntry,
 } from "./photo-cards";
 import { placeHeroineLine } from "./place-heroine-line";
 import { PlaceInsetMap } from "./PlaceInsetMap";
@@ -191,7 +191,8 @@ type CardOption = { key: string; testId: string; label: string; cost: string | n
  * 「待機」's waits and 「ホテルに戻る」's ways home (2026-11-14, the UI audit): pressing one only chooses it (the swipe up
  * waits or rests), so they are chips, not buttons that look like actions: an outline, the chosen one with ✓ (its edge
  * thicker, on the darker paper). Pressing the chosen one again calls `onAgain` (the row nudges the photo card's swipe
- * cue: what waits or rests is the swipe). One choice is a line of text (nothing to choose), greyed when it cannot be taken.
+ * cue: what waits or rests is the swipe). One choice is a line of plain text (nothing to choose; 2026-11-27: not bold, so
+ * it does not read as a button), greyed when it cannot be taken; a tap on it nudges the cue too (it did nothing before).
  */
 function CardOptions({ label, options, chosenKey, onPick, onAgain }: {
   label: string;
@@ -202,7 +203,7 @@ function CardOptions({ label, options, chosenKey, onPick, onAgain }: {
 }) {
   if (options.length === 1) {
     const [only] = options;
-    return <p className={`place-card-way${only.available ? "" : " is-unavailable"}`} data-testid={only.testId}>
+    return <p className={`place-card-way${only.available ? "" : " is-unavailable"}`} data-testid={only.testId} onClick={only.available ? onAgain : undefined}>
       {only.label}{only.cost && <span className="place-card-mode-cost"> {only.cost}</span>}
     </p>;
   }
@@ -339,7 +340,8 @@ export function StayCard({ game, api, picked, onPick, onAgain, scope = "page", h
 
 /**
  * 「待機」's card: today's waits where the party is (「30分待つ」 and, while it is day, 「夜（18:00）まで待つ」) as chips, one
- * always chosen (`wait`: the card chosen afresh and each new day start at 「30分待つ」; CardOptions: one wait is a line). A
+ * always chosen (`wait`: the card chosen afresh and each new day start at 「30分待つ」; CardOptions: one wait is a line,
+ * in words that say what happens: waitLineJa). A
  * wait that cannot be waited is greyed and cannot be chosen, its reason said under them. A swipe up on its photo card
  * waits the chosen one (user decision 2026-11-11), as does its 「待つ」 (`quietGo`: in the row, for screen readers and keys
  * only), through the same onTravelWait.
@@ -365,7 +367,7 @@ export function WaitCard({ game, options, wait, onPick, onAgain, onWait, heading
     <p className="place-card-hook">今いる場所で時間を進めます。</p>
     <div className="place-card-ways">
       <CardOptions label="待ち方" chosenKey={chosenKey} onPick={onPick} onAgain={onAgain} options={options.map((option) => ({
-        key: waitKey(option), testId: `travel-wait-option-${waitKey(option)}`, label: waitLabelJa(option), cost: null, available: option.available,
+        key: waitKey(option), testId: `travel-wait-option-${waitKey(option)}`, label: options.length === 1 ? waitLineJa(option, game.travel.minute) : waitLabelJa(option), cost: null, available: option.available,
       }))} />
       <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid="travel-wait-go" disabled={!wait}
         onKeyDown={ignoreRepeat} onClick={() => { if (wait) onWait(wait); }}>

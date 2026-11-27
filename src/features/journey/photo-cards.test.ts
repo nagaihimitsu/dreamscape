@@ -8,7 +8,7 @@ import {
   defaultCardIndex, departureOf, joinedCardsJa, lockedCardId, lockedCardJa, newCardIds, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
   NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards,
   SHOP_CARD_ID, sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
-  TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
+  TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, waitLineJa, type PhotoCardEntry,
 } from "./photo-cards";
 
 const way = (mode: string, minutes: number, cost: number, reason?: string): RouteChoice =>
@@ -212,6 +212,10 @@ describe("「待機」 and 「ホテルに戻る」 go by a swipe up too (user d
     expect(waitLabelJa(minutes)).toBe("30分待つ");
     expect(waitLabelJa(night)).toBe("夜（18:00）まで待つ");
     expect(waitLabelJa({ minutes: 45, until: 15 * 60 + 30 })).toBe("15:30まで待つ");
+    // The only wait (nothing to choose) as a sentence of what happens, not a label that reads as a button.
+    expect(waitLineJa(minutes, 18 * 60)).toBe("30分待つと18:30になります。");
+    expect(waitLineJa({ minutes: 20, until: 21 * 60 }, 20 * 60 + 40)).toBe("21:00まで待ちます。");
+    expect(waitLineJa(night, 17 * 60)).toBe("夜（18:00）まで待ちます。");
     expect(WAIT_BLOCKED_JA).toBe("21:00までにホテルへ帰れなくなる待ち方は選べません。");
     expect(WAIT_REFUSAL_JA).toBe("待てません。21:00までにホテルへ帰れなくなります。");
   });
