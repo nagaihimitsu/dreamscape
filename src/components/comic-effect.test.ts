@@ -19,6 +19,13 @@ describe("reaction artwork", () => {
     }
     expect(new Set(images).size).toBe(13);
   });
+  it("gives every mark its own entrance motion, which reduced motion turns off", async () => {
+    const css = await readFile(new URL("./comic-effect.css", import.meta.url), "utf8");
+    for (const mark of REACTION_MARKS) {
+      expect(css).toMatch(new RegExp(`\\[data-effect="${mark}"\\] img \\{[^}]*animation:`));
+    }
+    expect(css).toMatch(/\.is-reduced\[data-effect\] img \{ animation: none;/);
+  });
   it("renders a decorative cue with the requested reduced-motion state", () => {
     const markup = renderToStaticMarkup(createElement(ComicEffect, {
       effect: "heart", cueKey: "line-1", reduceMotion: true,
