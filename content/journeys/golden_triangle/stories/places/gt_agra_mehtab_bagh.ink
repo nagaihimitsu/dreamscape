@@ -39,8 +39,9 @@ INCLUDE modules.ink
 一人足りない。入って。どっちでもいい。……ううん、やっぱり、投げられる方
 # speaker: gt_sonia
 # cutin: name
-# voice: gt_agra_date_mehtab_bagh_sonia_002
-ソニア、十二歳。この空き地のキャプテン。ルールは三つ。川まで飛ばしたら六点。ただし、自分で拾いに行くこと。庭の塀を越えたら、アウト
+ソニア、十二歳。この空き地のキャプテン。ルールは三つ。
+# speaker: gt_sonia
+川まで飛ばしたら六点。ただし、自分で拾いに行くこと。庭の塀を越えたら、アウト
 # speaker: narrator
 # photo: gt_album_a112 # photo_caption: 空き地のキャプテン、ソニア # photo_with: gt_sonia
 指を折りながら、そう教えてくれた。
@@ -128,7 +129,9 @@ INCLUDE modules.ink
 最後の一球。今、同点。あなたが打って。この人が投げる。打てなかったら、わたしたちの勝ち
 # speaker: narrator
 # photo: gt_album_a115 # photo_caption: 「本気で投げるから。本気で打ってね」
-板きれのバットを渡された。マウンドの代わりの土の盛り上がりに、彼女が立つ。ボールを握り直して、まっすぐこちらを見た。
+板きれのバットを渡された。マウンドの代わりの土の盛り上がりに、彼女が立つ。
+# speaker: narrator
+ボールを握り直して、まっすぐこちらを見た。
 # speaker: heroine
 # emotion: serious
 # minigame: cricket_batting auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
@@ -152,7 +155,11 @@ INCLUDE modules.ink
     # speaker: narrator
     # emotion: serious
     # photo: gt_album_a119 # photo_caption: 見送った一球、笑っていない彼女 # photo_with: gt_sonia
-    板きれは、肩の上で止まったままだった。ボールは脇を抜けて、後ろの煉瓦を落とした。子どもたちが歓声を上げる。彼女だけが、笑っていなかった。
+    板きれは、肩の上で止まったままだった。
+    # speaker: narrator
+    ボールは脇を抜けて、後ろの煉瓦を落とした。子どもたちが歓声を上げる。
+    # speaker: narrator
+    彼女だけが、笑っていなかった。
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
@@ -221,7 +228,9 @@ INCLUDE modules.ink
     -> gt_agra_mehtab_bagh_ball_bowled ->
 * [もう一球：また振らなかった # option: again_no_swing]
     # speaker: narrator
-    板きれは、また動かなかった。けれど今度は、少し遅いボールの方が板きれに当たって、ぼてぼてと転がり、彼女の足もとで止まった。
+    板きれは、また動かなかった。
+    # speaker: narrator
+    けれど今度は、少し遅いボールの方が板きれに当たって、ぼてぼてと転がり、彼女の足もとで止まった。
     # speaker: gt_sonia
     # voice: gt_agra_mehtab_bagh_another_ball_sonia_001
     ……当たった。時間。引き分け
@@ -350,7 +359,9 @@ INCLUDE modules.ink
     # money: -10
     # speaker: narrator
     # photo: gt_album_a121 # photo_caption: 煉瓦の前の集合写真 # photo_show: small # photo_with: gt_sonia
-    子どもたちが煉瓦の前に並び、真ん中にソニアが板きれを構えて立った。後ろの白いドームは、写真の中で、ちょうど打球の行き先みたいに見えた。
+    子どもたちが煉瓦の前に並び、真ん中にソニアが板きれを構えて立った。
+    # speaker: narrator
+    後ろの白いドームは、写真の中で、ちょうど打球の行き先みたいに見えた。
 * [「撮る前に、写真代の使い道を聞いてもいい？」 # option: ask_photo_money]
     # money: -10
     # rel: trust +1

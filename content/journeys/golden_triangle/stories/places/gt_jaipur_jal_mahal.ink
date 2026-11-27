@@ -18,7 +18,9 @@ INCLUDE modules.ink
     # ambience: amb_night_insects
     # speaker: narrator
     # photo: gt_album_j056 # photo_caption: 湖に浮かぶ宮殿
-    湖の真ん中に、灯りに縁どられた宮殿が浮かんでいた。ジャル・マハル。水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
+    湖の真ん中に、灯りに縁どられた宮殿が浮かんでいた。ジャル・マハル。
+    # speaker: narrator
+    水面に映ったもう一つの宮殿が、風が吹くたびに揺れる。
 - else:
     # background: gt_bg_jaipur_jal_mahal
     # speaker: narrator
@@ -28,7 +30,11 @@ INCLUDE modules.ink
 # speaker: narrator
 もとは鴨猟のための館だったという。湖の水が満ちると、下の階は水に沈むと言われている。
 # term: gt_term_camel
-遊歩道には、焼きとうもろこしの屋台、写真用に飾り立てたラクダ、風船売り。その間に、低い椅子を並べた女性がいた。手の中には、絞り袋のような、細い円錐の筒。
+遊歩道には、焼きとうもろこしの屋台、写真用に飾り立てたラクダ、風船売り。
+# speaker: narrator
+その間に、低い椅子を並べた女性がいた。
+# speaker: narrator
+手の中には、絞り袋のような、細い円錐の筒。
 # speaker: gt_farhana
 # unnamed
 # voice: gt_jaipur_date_jal_mahal_farhana_001
@@ -41,16 +47,20 @@ INCLUDE modules.ink
 メヘンディ、どう？　手に描く模様。ヘナで描いて、二週間くらい残るの
 # speaker: gt_farhana
 # cutin: name
-# voice: gt_jaipur_date_jal_mahal_farhana_003
-わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。いつか、扇風機と鏡のある自分のお店を持つのが夢
+わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。
+# speaker: gt_farhana
+いつか、扇風機と鏡のある自分のお店を持つのが夢
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_jaipur_date_jal_mahal_021
 わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか
 # speaker: gt_farhana
-# voice: gt_jaipur_date_jal_mahal_farhana_004
 # term: gt_term_mehndi_name
-結婚式なら、手の甲と手のひら、両方ね。……花嫁さんの手には、模様の中に花婿の名前を隠すの。初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
+結婚式なら、手の甲と手のひら、両方ね。
+# speaker: gt_farhana
+……花嫁さんの手には、模様の中に花婿の名前を隠すの。
+# speaker: gt_farhana
+初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
 # speaker: gt_farhana
 # voice: gt_jaipur_date_jal_mahal_farhana_005
 # photo: gt_album_j057 # photo_caption: 遊歩道のメヘンディ屋 # photo_with: gt_farhana
@@ -125,7 +135,9 @@ INCLUDE modules.ink
     そう言いながら、ファルハーナの筒の先は、手のひらの真ん中で、妙に長く止まっていた。
 -
 # speaker: narrator
-筒の先から、こげ茶色のペーストが細い線になって出てくる。花びら。蔓。孔雀の羽。手首から指先まで、迷いのない線が、見る見るうちに彼女の手を埋めていった。
+筒の先から、こげ茶色のペーストが細い線になって出てくる。花びら。蔓。孔雀の羽。
+# speaker: narrator
+手首から指先まで、迷いのない線が、見る見るうちに彼女の手を埋めていった。
 # speaker: heroine
 # voice: gt_jaipur_date_jal_mahal_011
 # photo: gt_album_j060 # photo_caption: 自分の手じゃないみたい # photo_with: gt_farhana
@@ -134,7 +146,11 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_jal_mahal_farhana_007
 しばらくは、何にも触らないで。乾いたら、水で洗わずに、指でこそげ落とすの。最初はオレンジ色。一晩たつと、濃くなる
 # speaker: narrator
-描き終わると、彼女は両手を胸の前に上げたまま、動けなくなった。その鼻先を、焼きとうもろこしの匂いが通り過ぎる。炭火で焼いて、塩とライムと唐辛子をこすりつけたものだ。
+描き終わると、彼女は両手を胸の前に上げたまま、動けなくなった。
+# speaker: narrator
+その鼻先を、焼きとうもろこしの匂いが通り過ぎる。
+# speaker: narrator
+炭火で焼いて、塩とライムと唐辛子をこすりつけたものだ。
 # speaker: heroine
 # emotion: exasperated
 # voice: gt_jaipur_date_jal_mahal_012

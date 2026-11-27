@@ -21,7 +21,11 @@ INCLUDE modules.ink
 # person: gt_rafiq
 # background: gt_bg_agra_fatehabad_road
 # speaker: narrator
-大通りの車の音が、路地へ一本入っただけで遠くなった。小さな店の入口に、木の枠が据えてある。枠に張った布の上に、男が一人かがみこんでいた。
+大通りの車の音が、路地へ一本入っただけで遠くなった。
+# speaker: narrator
+小さな店の入口に、木の枠が据えてある。
+# speaker: narrator
+枠に張った布の上に、男が一人かがみこんでいた。
 # speaker: narrator
 片手は布の上、片手は布の下。上の手が針を刺すと、下の手が受けて、また返す。銀色の糸が、少しずつ花の形になっていく。
 # speaker: heroine

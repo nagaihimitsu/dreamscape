@@ -17,7 +17,9 @@ INCLUDE modules.ink
 # background: gt_bg_agra_akbar_tomb
 # speaker: narrator
 # term: gt_term_akbar
-シカンドラのアクバル廟は、門だけで一つの宮殿のようだった。赤い砂岩の大門をくぐると、広い芝生の向こうに、墓廟が低く横たわっている。
+シカンドラのアクバル廟は、門だけで一つの宮殿のようだった。
+# speaker: narrator
+赤い砂岩の大門をくぐると、広い芝生の向こうに、墓廟が低く横たわっている。
 # term: gt_term_blackbuck
 芝生の上で、背中の黒い獣が数頭、草を食んでいた。ブラックバックだ。この廟の庭では、その群れが見られる。
 # speaker: heroine
@@ -178,7 +180,9 @@ Many handwritten books were collected at his court.
 # shake: window
 # se: snatch
 # term: gt_term_monkey
-言い終わる前に、灰色の影が横から走り抜けた。布袋が消えていた。猿が一匹、門の壁をするすると登り、袋を片手に、こちらを見下ろしている。
+言い終わる前に、灰色の影が横から走り抜けた。布袋が消えていた。
+# speaker: narrator
+猿が一匹、門の壁をするすると登り、袋を片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_akbar_tomb_monkey_attar_002
@@ -198,7 +202,9 @@ Many handwritten books were collected at his court.
     # money: -20
     # rel: trust +1
     # speaker: narrator
-    パックのジュースを高く掲げてみせると、猿は首をかしげた。布袋から小瓶をつまみ出して、小瓶と、こちらのジュースを、何度も見比べる。
+    パックのジュースを高く掲げてみせると、猿は首をかしげた。
+    # speaker: narrator
+    布袋から小瓶をつまみ出して、小瓶と、こちらのジュースを、何度も見比べる。
     ジュースを壁の上へ放ると、猿は片手で受け取った。もう片方の手は、まだ小瓶を握っている。
     -> gt_agra_akbar_tomb_monkey_catch_attar ->
     { cond("item gt_delhi_rain_attar held"):
@@ -221,14 +227,20 @@ Many handwritten books were collected at his court.
     # rel: affection +1
     # speaker: narrator
     # photo: gt_album_a070 # photo_caption: くしゃみをする猿
-    待っていると、猿は布袋の口を開け、中の小瓶を取り出した。栓を歯でくわえて、引っぱる。抜けない。栓のまわりの匂いを嗅いで――大きなくしゃみを一つ。小瓶が、手から離れた。
+    待っていると、猿は布袋の口を開け、中の小瓶を取り出した。
+    # speaker: narrator
+    栓を歯でくわえて、引っぱる。抜けない。
+    # speaker: narrator
+    栓のまわりの匂いを嗅いで――大きなくしゃみを一つ。小瓶が、手から離れた。
     -> gt_agra_akbar_tomb_monkey_catch_attar ->
 -
 { cond("flag gt_agra_rain_on_lawn"):
     # speaker: narrator
     # se: glass_break_small
     石の通路で、かしゃん、と小さな音。
-    次の瞬間、匂いが広がった。乾ききった芝生の上に、夏の終わりの最初の雨が降ったような、土の匂い。少し離れたところで、ブラックバックたちが、いっせいに顔を上げた。
+    次の瞬間、匂いが広がった。乾ききった芝生の上に、夏の終わりの最初の雨が降ったような、土の匂い。
+    # speaker: narrator
+    少し離れたところで、ブラックバックたちが、いっせいに顔を上げた。
     # speaker: heroine
     # reaction: heroine,surprised,question
     # voice: gt_agra_akbar_tomb_monkey_attar_004
@@ -311,7 +323,9 @@ Many handwritten books were collected at his court.
     # money: -20
     # rel: trust +1
     # speaker: narrator
-    パックを高く掲げてみせると、猿はサングラスのつるをかじりながら、ジュースと何度も見比べた。やがて、ぱっと手を離した。
+    パックを高く掲げてみせると、猿はサングラスのつるをかじりながら、ジュースと何度も見比べた。
+    # speaker: narrator
+    やがて、ぱっと手を離した。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
     # speaker: heroine
     # emotion: teasing
@@ -329,7 +343,9 @@ Many handwritten books were collected at his court.
     # speaker: narrator
     # emotion: teasing_big
     # photo: gt_album_a075 # photo_caption: サングラスがすごく似合う猿
-    彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放り上げた。思ったより暗かったらしい。
+    彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放り上げた。
+    # speaker: narrator
+    思ったより暗かったらしい。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
 * [「待とう。猿にも、考える時間がいる」 # option: glasses_wait]
     # rel: affection +1
