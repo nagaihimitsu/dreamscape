@@ -2,6 +2,10 @@
    window's top edge, which it straddles (the window paints itself from --vn-head-overhang down). Without a band (the
    narration) the head keeps the same room (2026-11-27 user requests: the words start as far into the glass under a
    name as without one, halfway between where they once started under each). */
+:root {
+  /* The head's height, with or without a band: the band's padding (4 + 5), its one line and its margin below (6). */
+  --vn-head-height: calc(9px + var(--ds-text-body) * var(--ds-leading-tight) + 6px);
+}
 .vn-window-head {
   position: relative;
   z-index: 1;
@@ -10,8 +14,7 @@
   container-type: inline-size;
   display: flex;
   align-items: flex-start;
-  /* The band's padding (4 + 5), its one line and its margin below (6). */
-  min-height: calc(9px + var(--ds-text-body) * var(--ds-leading-tight) + 6px);
+  min-height: var(--vn-head-height);
   padding: 0 10px;
 }
 /* The name band (2026-11-25 user decisions): a rounded tag in the colours of the speaker's clothes (name-band.ts: its
