@@ -88,7 +88,8 @@
   margin: 0 calc(-1 * var(--modal-pad-inline, 16px));
   padding: 8px 0 10px;
   overflow: hidden;
-  /* Sideways moves of a finger on the band turn the photos (useSwipe); upright ones scroll, a pinch zooms. */
+  /* Sideways moves of a finger on the band turn the photos (useSwipe: far enough, or a quick flick); upright ones scroll, a
+     pinch zooms. The slides go along with the finger meanwhile (--swipe-dx; only a little at either end). */
   touch-action: pan-y pinch-zoom;
 }
 .sns-track {
@@ -97,9 +98,10 @@
   display: flex;
   align-items: flex-start;
   gap: var(--sns-gap);
-  transform: translateX(calc(var(--sns-at, 0) * -1 * (var(--sns-slide) + var(--sns-gap))));
+  transform: translateX(calc(var(--sns-at, 0) * -1 * (var(--sns-slide) + var(--sns-gap)) + var(--swipe-dx, 0px)));
   transition: transform 280ms var(--ease-out);
 }
+.sns-strip[data-swiping] .sns-track { transition: none; }
 .sns-slide { flex: 0 0 var(--sns-slide); min-width: 0; }
 .sns-slide:first-child { margin-left: calc((100% - var(--sns-slide)) / 2); }
 .sns-slide[aria-hidden] { opacity: 0.85; }

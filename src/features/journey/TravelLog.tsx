@@ -126,19 +126,33 @@ export function PhotoGrid({ photos, onOpen }: { photos: readonly LogPhoto[]; onO
 /**
  * Photos opened larger, over the log: the whole picture, its caption as the title, 「n日目 hh:mm · 場所」 (a photo not taken
  * yet: grey, 「都市 · まだ残していない写真」), and with more than one photo 「前の写真」「次の写真」 and 「2 / 5」 at the foot
- * (a sideways swipe on the picture and the arrow keys turn them too, in the grid's order). It closes back to the log with
- * 「× 閉じる」, a tap on the dimmed page around, or Esc.
+ * (a sideways swipe or flick on the picture and the arrow keys turn them too, in the grid's order). The picture goes along
+ * with a finger moved sideways (useSwipe; only a little at either end) and the photo turned to comes in from the side it
+ * was pulled from (2026-11-27 user request; none with less motion); the photos either side are fetched beforehand. It
+ * closes back to the log with 「× 閉じる」, a tap on the dimmed page around, or Esc.
  */
 function PhotoViewer({ viewing, onClose }: { viewing: Viewing; onClose: () => void }) {
   const [index, setIndex] = useState(viewing.index);
+  /** The way the last turn went (+1: to the next), for the photo turned to to come in from its side. */
+  const [turn, setTurn] = useState<-1 | 0 | 1>(0);
   const frame = useRef<HTMLDivElement>(null);
   const { photos } = viewing;
   const last = photos.length - 1;
-  const photo = photos[Math.min(index, last)];
-  const go = (step: -1 | 1) => setIndex((current) => Math.max(0, Math.min(last, current + step)));
+  const at = Math.min(index, last);
+  const photo = photos[at];
+  const go = (step: -1 | 1) => {
+    const next = Math.max(0, Math.min(last, at + step));
+    if (next === at) return;
+    setTurn(step);
+    setIndex(next);
+  };
   const goRef = useRef(go);
   goRef.current = go;
-  const swipe = useSwipe(go);
+  const swipe = useSwipe(go, { canStep: (step) => step === 1 ? at < last : at > 0 });
+  // The photos either side, fetched beforehand so the one turned to is there as it comes in.
+  useEffect(() => {
+    for (const near of [photos[at - 1], photos[at + 1]]) if (near) new Image().src = served(near.path);
+  }, [photos, at]);
   // ←/→ turn the photos while the focus is in this dialog (no modifier key).
   useEffect(() => {
     if (photos.length < 2) return;
@@ -156,15 +170,15 @@ function PhotoViewer({ viewing, onClose }: { viewing: Viewing; onClose: () => vo
   }, [photos.length]);
   return <Modal labelledBy="album-photo-title" className="album-photo-viewer" onClose={onClose} closeOnBackdrop>
     <ModalTitle id="album-photo-title" onClose={onClose}>{photo.titleJa}</ModalTitle>
-    <div ref={frame} className="photo-viewer-frame" {...swipe}>
+    <div ref={frame} className="photo-viewer-frame" data-turn={turn === 1 ? "next" : turn === -1 ? "prev" : undefined} {...swipe}>
       <img key={photo.imageId} src={served(photo.path)} alt={photo.altJa} className={photo.missed ? "is-missed" : undefined}
         data-testid="album-photo-large" />
     </div>
     <p className="album-meta">{photo.metaJa}</p>
     {photos.length > 1 && <nav className="photo-viewer-pager" aria-label="写真">
-      <button type="button" className="album-page-button" disabled={index === 0} onClick={() => go(-1)}>前の写真</button>
-      <p className="album-page-count" aria-live="polite">{index + 1} / {photos.length}</p>
-      <button type="button" className="album-page-button" disabled={index === last} onClick={() => go(1)}>次の写真</button>
+      <button type="button" className="album-page-button" disabled={at === 0} onClick={() => go(-1)}>前の写真</button>
+      <p className="album-page-count" aria-live="polite">{at + 1} / {photos.length}</p>
+      <button type="button" className="album-page-button" disabled={at === last} onClick={() => go(1)}>次の写真</button>
     </nav>}
   </Modal>;
 }
