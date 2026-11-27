@@ -267,7 +267,8 @@
   font-weight: 600;
   line-height: 1;
 }
-/* A mark on the map: the stop numbers in the selected marker's yellow on its dark disc; the day's last place ringed green. */
+/* A mark on the map: the stop numbers in the selected marker's yellow on its dark disc; the day's last place ringed as the
+   current place is on the travel map (its white rim and the ink outside it: travel-menu.css). */
 .today-route-mark-wrap { background: transparent; border: 0; }
 .today-route-mark {
   display: flex;
@@ -284,7 +285,7 @@
   white-space: nowrap;
   box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
-.today-route-mark.is-last { box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.today-route-mark.is-last { box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 4px var(--ds-ink), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .night-recap .heroine-note { margin: 0; text-align: left; }
 /* The SNS's card (SnsNightCard.tsx, 2026-11-27): a pane of the night's glass under the buttons and well apart from them (a
    card of another shape: faces at its left), its words white, the first comment two lines at most. */

@@ -22,14 +22,16 @@
 .travel-map-frame .leaflet-control-zoom a { display: grid; place-items: center; width: 44px; height: 44px; line-height: 1; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
 .travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--ds-marker); font-size: var(--ds-text-subhead); font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white, 0 1px 3px color-mix(in srgb, var(--ds-shade) 30%, transparent); }
-.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); border-radius: 50%; background: color-mix(in srgb, var(--ds-light) 60%, transparent); }
-/* Where the couple are: a ring in the current place's green widens and fades from the mark,
-   slowly (every 2.4 s), so the eye finds it on the map. Display only, never pressed. */
+/* Where the couple are (2026-11-27 user request: the mark stood out of the one UI in its green): a disc of the light glass
+   with a soft shadow, ringed in the ink (the legend's 「輪つき」 is its shape). */
+.travel-map-marker.is-here { position: relative; border: 2px solid var(--ds-ink); border-radius: 50%; background: var(--ds-glass-bg); box-shadow: var(--ds-glass-shadow); }
+/* A ring in the same ink widens and fades from the mark, slowly (every 2.4 s), so the eye finds it on the map. Display
+   only, never pressed. */
 .travel-map-marker.is-here::before {
   content: "";
   position: absolute;
-  inset: -3px;
-  border: 2px solid var(--ds-here);
+  inset: -2px;
+  border: 2px solid var(--ds-ink);
   border-radius: 50%;
   pointer-events: none;
   animation: map-here-pulse 2.4s var(--ease-out) infinite;
@@ -44,9 +46,10 @@
 }
 /* A place the party has been to (「行った場所」, visited-places.ts; 2026-11-11 user decision): its mark on a warm paper
    disc, with a stamp (a tick in a dark ink circle) at its lower right, so it differs from a plain mark by its shape, not
-   by colour alone. The selected marker's slate disc and yellow mark (later rules) still win; the stamp stays on it. */
-.travel-map-marker.is-visited { position: relative; border-radius: 50%; background: var(--ds-parchment-2); box-shadow: 0 0 0 1.5px var(--ds-gold), 0 1px 3px color-mix(in srgb, var(--ds-shade) 25%, transparent); }
-.travel-map-marker.is-here.is-visited { box-shadow: none; }
+   by colour alone. The selected marker's slate disc and yellow mark (later rules) still win; the stamp stays on it. The
+   disc is the light glass with a white rim and a soft shadow (2026-11-27: one UI; it was paper with a gold rim). */
+.travel-map-marker.is-visited { position: relative; border-radius: 50%; background: var(--ds-glass-bg); box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-glass-shadow); }
+.travel-map-marker.is-here.is-visited { box-shadow: var(--ds-glass-shadow); }
 .travel-map-marker.is-visited::after {
   content: "✓";
   position: absolute;
@@ -292,7 +295,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
 
 /* The selected marker (U21): the same glyph in yellow on a dark 40-px disc with a white
-   ring, slightly enlarged, the current place's ring outside the disc, the name above it
+   ring, slightly enlarged, the current place's ink ring outside the disc, the name above it
    (display only: taps go through to the markers under it). */
 .travel-map-marker.is-selected {
   position: relative;
@@ -307,7 +310,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: scale(1.25);
 }
-.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 4px var(--ds-ink), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .travel-map-marker-label {
   position: absolute;
   bottom: calc(100% + 9px);
