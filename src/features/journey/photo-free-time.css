@@ -659,6 +659,32 @@
 .place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
 .place-card .place-card-heroine .heroine-note-bubble { padding: 6px 13px 7px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); }
 .place-card .place-card-heroine .heroine-note-bubble::before { top: 12px; height: 10px; }
+/* The chosen card's sheet (PhotoCardPicker's CardSheet): each card chosen comes in like a cloud (2026-11-27 user
+   decision): the card swells softly into place as a white mist over it drifts apart and thins away. The mist takes no
+   press; under reduced motion there is none. */
+.photo-card-sheet { position: relative; }
+.photo-card-mist {
+  position: absolute;
+  z-index: 1;
+  inset: -14px 4px;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side at 30% 45%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(closest-side at 70% 55%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(closest-side at 50% 50%, rgba(255, 255, 255, 0.7), transparent);
+  filter: blur(14px);
+  visibility: hidden; /* gone once it has drifted apart */
+  pointer-events: none;
+  animation: photo-card-mist 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes photo-card-mist {
+  from { visibility: visible; opacity: 0.9; transform: scale(0.8); }
+  to { visibility: visible; opacity: 0; transform: scale(1.12, 1.15); }
+}
+.reduce-motion .photo-card-mist { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .photo-card-mist { display: none; }
+}
 .place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
 @keyframes place-card-heroine-in {
   from { opacity: 0; transform: translateY(4px) scale(0.98); }
