@@ -38,10 +38,11 @@ export type SnsPostView = {
   arrived?: SnsNight; pastJa?: string;
 };
 /**
- * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, the
- * heroine's posts of the night (her one card, a slide a photo, in the order written) and the people's posts (each a card).
+ * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, and the
+ * posts of the night, the day's one card (2026-11-27 user decision: a slide a photo, turned sideways): the heroine's first,
+ * in the order written, then the people's, in the order they came.
  */
-export type SnsDay = { cityId: string; cityNameJa: string; day: number; met: SnsFace[]; heroine: SnsPostView[]; posts: SnsPostView[] };
+export type SnsDay = { cityId: string; cityNameJa: string; day: number; met: SnsFace[]; posts: SnsPostView[] };
 
 const cityName = (cityId: string) => cityContents[cityId]?.city.nameJa ?? cityId;
 const journeyOf = (game: Pick<GameState, "currentCityId">) => getJourneyForCity(game.currentCityId)?.id ?? "";
@@ -126,25 +127,24 @@ function metOn(game: Readonly<GameState>, night: Pick<SnsNight, "cityId" | "day"
 }
 
 /**
- * The timeline (トップ): a day for each night something came, the newest first. In a day, the heroine's posts of that night
- * make her one card (in the order written), the people's posts each a card, the newest first.
+ * The timeline (トップ): a day for each night something came, the newest first, each the day's one card: the heroine's posts
+ * of that night (in the order written), then the people's (in the order they came).
  */
 export function snsTimeline(game: Readonly<GameState>): SnsDay[] {
-  const days: SnsDay[] = [];
+  const days: (SnsDay & { people: SnsPostView[] })[] = [];
   for (const record of snsOf(game).posts) {
     const view = snsPostView(game, record.id);
     if (!view) continue;
     let day = days.find((item) => sameNight(item, record));
     if (!day) {
-      day = { cityId: record.cityId, cityNameJa: cityName(record.cityId), day: record.day, met: metOn(game, record), heroine: [], posts: [] };
+      day = { cityId: record.cityId, cityNameJa: cityName(record.cityId), day: record.day, met: metOn(game, record), posts: [], people: [] };
       days.push(day);
     }
-    if (view.author.id === SNS_HEROINE) day.heroine.push(view);
-    else day.posts.unshift(view);
+    (view.author.id === SNS_HEROINE ? day.posts : day.people).push(view);
   }
   const order = snsData.posts.map((post) => post.id);
-  for (const day of days) day.heroine.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
-  return days.reverse();
+  return days.reverse().map(({ people, posts, ...day }) =>
+    ({ ...day, posts: [...posts.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id)), ...people] }));
 }
 
 /** One person in 「出会った人」: their face and the first line of their self-introduction. */
@@ -207,12 +207,16 @@ export function snsPersonPage(game: Readonly<GameState>, personId: string): SnsP
   };
 }
 
-/** The heroine's page: her face and self-introduction (progression/story.json `heroineSns`) and her day cards, the newest first. */
+/**
+ * The heroine's page: her face and self-introduction (progression/story.json `heroineSns`) and her day cards, the newest
+ * first (the timeline's days, her posts only).
+ */
 export function snsHeroinePage(game: Readonly<GameState>): { face: SnsFace; introJa: string[]; days: SnsDay[] } {
   return {
     face: snsFace(game, SNS_HEROINE),
     introJa: (storyState.heroineSns[journeyOf(game)]?.introJa ?? []).map((line) => withNames(line, game)),
-    days: snsTimeline(game).filter((day) => day.heroine.length).map((day) => ({ ...day, posts: [] })),
+    days: snsTimeline(game).map((day) => ({ ...day, posts: day.posts.filter((post) => post.author.id === SNS_HEROINE) }))
+      .filter((day) => day.posts.length),
   };
 }
 

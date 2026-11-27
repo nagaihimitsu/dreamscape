@@ -15,8 +15,8 @@ import {
 import { useSwipe } from "./useSwipe";
 import "./sns.css";
 
-// 旅の記録's 「SNS」 (2026-11-26・27 user decisions; authoring/SNS_PLAN.md 「画面」): the timeline of the nights (the heroine's
-// day card, a photo a slide, and the people's posts), the comments and likes under each, the people met and their pages,
+// 旅の記録's 「SNS」 (2026-11-26・27 user decisions; authoring/SNS_PLAN.md 「画面」): the timeline of the nights (a night one
+// card, a photo a slide: the heroine's posts, then the people's), the comments and likes under each, the people met and their pages,
 // the heroine's page with 旅の数字. Read-only but for the player's like (a heart; no count anywhere). Each page opens in
 // place inside 旅の記録 and 「‹」 goes back to where the page before it was. A photo opens larger over it (TravelLog's viewer).
 
@@ -117,7 +117,7 @@ export function SnsView({ game, newIds, openPostId, numbers, reduceMotion, onLik
   </div>;
 }
 
-/** The top: 「出会った人 ›」, then each night (the newest first) with its people met, her card and the people's posts. */
+/** The top: 「出会った人 ›」, then each night (the newest first) with its people met and its one card (hers, then the people's). */
 function SnsTop({ game, openPostId, actions, onOpen }: { game: GameState; openPostId?: string; actions: Actions; onOpen: (page: Page) => void }) {
   const days = useMemo(() => snsTimeline(game), [game]);
   const met = useMemo(() => snsMetPeople(game).flatMap((group) => group.people), [game]);
@@ -130,8 +130,7 @@ function SnsTop({ game, openPostId, actions, onOpen }: { game: GameState; openPo
     {days.length === 0 && <p className="sns-empty" data-testid="sns-empty">まだ投稿はありません。夜になると、旅の写真や出会った人の便りがここに届きます。</p>}
     {days.map((day) => <section key={`${day.cityId}:${day.day}`} className="sns-day" aria-labelledby={`sns-day-${day.cityId}-${day.day}`}>
       <DayHead day={day} onMet={() => onOpen({ kind: "people", day })} />
-      {day.heroine.length > 0 && <SnsCard posts={day.heroine} startPostId={openPostId} actions={actions} />}
-      {day.posts.map((post) => <SnsCard key={post.id} posts={[post]} actions={actions} />)}
+      <SnsCard posts={day.posts} startPostId={openPostId} actions={actions} />
     </section>)}
   </>;
 }
@@ -165,8 +164,8 @@ function Faces({ faces, size }: { faces: readonly SnsFace[]; size: "xs" | "sm" }
 }
 
 /**
- * A card: one post's paper, or the heroine's posts of a night as one card (a photo a slide, in the order written; her one
- * card a day). The photos turn sideways (‹ ›, or a swipe on the photo band only); within a post the line and the comments
+ * A card: one post's paper, or a night's posts as one card (a photo a slide: the heroine's, then the people's; one card a
+ * day). The photos turn sideways (‹ ›, or a swipe on the photo band only); within a post the line and the comments
  * stay, across posts they change with it. The card is as tall as its tallest post (every post's part under the band is laid
  * in one cell, the others hidden), so nothing under it moves as it turns.
  */
@@ -213,7 +212,7 @@ function SnsCard({ posts, startPostId, actions }: { posts: readonly SnsPostView[
         {post.comments.some((comment) => actions.newIds.has(comment.id)) && <span className="sns-new-dot" />}
       </span>)}
     </div>}
-    {many && <p className="sr-only" aria-live="polite">{`写真 ${at + 1} / ${slides.length}`}</p>}
+    {many && <p className="sr-only" aria-live="polite">{`${current.post.author.nameJa}の写真 ${at + 1} / ${slides.length}`}</p>}
     {hasUnder && <div className="sns-unders">
       {posts.map((post, postIndex) => <div key={post.id} className="sns-under" inert={postIndex !== current.postIndex}
         aria-hidden={postIndex !== current.postIndex || undefined} data-current={postIndex === current.postIndex || undefined}>
@@ -400,7 +399,7 @@ function HeroinePage({ game, numbers, reduceMotion, actions }: { game: GameState
     {numbers && <div className="sns-numbers"><JourneyNumbersCard numbers={numbers} reduceMotion={reduceMotion} /></div>}
     {page.days.map((day) => <section key={`${day.cityId}:${day.day}`} className="sns-day" aria-labelledby={`sns-day-${day.cityId}-${day.day}`}>
       <DayHead day={day} />
-      <SnsCard posts={day.heroine} actions={actions} />
+      <SnsCard posts={day.posts} actions={actions} />
     </section>)}
   </article>;
 }
