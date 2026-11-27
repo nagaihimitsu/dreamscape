@@ -727,6 +727,7 @@ export function BattleScreen({
                     <div
                       data-testid={`option-text-${option.id}`}
                       className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}${glowing ? " answer-glow" : ""}`}
+                      data-japanese-only={japaneseOnly || undefined}
                     >
                       <button
                         type="button"
