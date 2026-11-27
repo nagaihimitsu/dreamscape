@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkPost, photoWithOf, postWarnings, readPostsFile, type PostsContext } from "./sns-posts";
+import { checkPost, mayHoldAtNight, photoWithOf, postWarnings, readPostsFile, type PostsContext } from "./sns-posts";
 
 // content:build's SNS posts (2026-11-26; authoring/SNS_PLAN.md 「札（書き方）」): stories/posts/<city>.ink read statically
 // into posts, the build stopping only what would break the SNS and warning where reading would tire.
@@ -120,6 +120,19 @@ I'll get a better zoom. # translation: もっと望遠のきく携帯にする
     const [calm] = read(`=== ta_post_calm ===\n# post: heroine\n# images: ta_album_gate\n一言\n${comment("a")}${comment("b", true)}${comment("c")}`);
     expect(postWarnings([many, later, calm].map((post) => ({ ...post, file: "posts.ink" }))).map((warning) => warning.message))
       .toEqual([expect.stringContaining("ta_post_many"), expect.stringContaining("ta_post_later")]);
+  });
+
+  it("warns when a post, a comment or a like can never arrive because its condition never holds at night", () => {
+    const [post] = read(`=== ta_post_day ===\n# post: heroine\n# images: ta_album_gate\n# when: time day\n# likes: ta_roohi if not time night\n一言\n` +
+      `= a\n# when: flag ta_x\n# speaker: ta_roohi\n文\n= b\n# when: time day\n# when: flag ta_x\n# speaker: ta_monu\n文\n`);
+    expect(postWarnings([{ ...post, file: "posts.ink" }]).map((warning) => [warning.kind, warning.message.split("（")[0]])).toEqual([
+      ["sns-night", "SNS の投稿 ta_post_day"],
+      ["sns-night", "SNS のコメント ta_post_day.b"],
+      ["sns-night", "SNS のta_post_day の # likes: ta_roohi"],
+    ]);
+    expect(mayHoldAtNight({ any: [{ time: "day" }, { flag: "ta_x" }] })).toBe(true);
+    expect(mayHoldAtNight({ not: { time: "night" } })).toBe(false);
+    expect(mayHoldAtNight(undefined)).toBe(true);
   });
 
   it("reads the people a photo shows from # photo_with: on its # photo: line", () => {

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>夜の画面 見本</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 夜の画面（night-rest.css の値を写した）。上の帯は省略 */
+  :root { --ds-night: #111a2f; --ds-night-glass: rgba(255, 255, 255, 0.1); --ds-gold-hairline: rgba(201, 163, 95, 0.7); --moon: #f6e7ae; --on-slate-muted: #d9dde3; }
+  body { min-height: 100vh; background: var(--ds-night); color: var(--ds-on-slate); }
+  .backdrop { position: fixed; inset: 0; background: url(img/bg.jpg) center / cover; }
+  .backdrop::after { content: ""; position: absolute; inset: 0; background: rgba(17, 26, 47, 0.84); }
+  .night { position: relative; min-height: 100vh; padding: 96px 16px 32px; display: flex; flex-direction: column; align-items: center; }
+  .band { position: absolute; top: 0; left: 0; right: 0; height: 72px; display: flex; align-items: center; justify-content: center; color: var(--on-slate-muted); font-size: 12px; letter-spacing: .1em; }
+  .content { width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
+  h1 { margin: 14px 0 0; font-family: var(--ds-font-serif); font-size: 18px; font-weight: 500; letter-spacing: .06em; }
+  .actions { width: 100%; margin-top: 18px; display: flex; flex-direction: column; }
+  .secondary { margin-top: 10px; min-height: 48px; border: 1.5px solid var(--ds-gold-hairline); border-radius: 12px; background: var(--ds-night-glass); color: var(--ds-on-slate); font: inherit; font-size: 15px; }
+  .rest { margin-top: 16px; min-height: 54px; border: 0; border-radius: 12px; background: var(--moon); color: #1f2430; font: inherit; font-size: 15px; font-weight: 600; box-shadow: 0 0 18px rgba(246, 231, 174, 0.25); }
+
+  /* 新しい札：届いたコメント。押すと旅の記録の SNS のその投稿を開く */
+  .sns-card { width: 100%; margin-top: 22px; padding: 12px 12px 12px 14px; display: flex; align-items: center; gap: 12px; border: 1.5px solid var(--ds-gold-hairline); border-radius: 16px; background: var(--ds-night-glass); color: var(--ds-on-slate); text-align: left; font: inherit; }
+  .faces { display: flex; flex: none; }
+  .faces .face { width: 36px; height: 36px; border: 2px solid #26304a; }
+  .faces .face + .face { margin-left: -12px; }
+  .sns-body { min-width: 0; flex: 1; }
+  .sns-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; color: var(--on-slate-muted); }
+  .sns-line { margin-top: 2px; font-size: 14px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .sns-line b { margin-right: 6px; }
+  .chev { flex: none; color: var(--ds-gold); font-size: 20px; }
+
+  .headlines { width: 100%; margin-top: 22px; }
+  .headlines h2 { margin: 0 0 4px; font-size: 12px; font-weight: 600; letter-spacing: .08em; color: var(--on-slate-muted); text-align: center; }
+  .headlines li { padding: 4px 0; font-family: var(--ds-font-serif); font-size: 17px; text-align: center; list-style: none; }
+  .headlines ol { margin: 0; padding: 0; }
+  .route { width: 100%; height: 120px; margin-top: 18px; border-radius: 12px; border: 1px dashed rgba(217, 221, 227, 0.35); display: grid; place-items: center; color: var(--on-slate-muted); font-size: 12px; }
+  .note { margin-top: 18px; font-size: 12px; color: var(--on-slate-muted); }
+</style>
+</head>
+<body>
+<div class="backdrop"></div>
+<section class="night">
+  <div class="band">（上の帯）</div>
+  <div class="content">
+    <h1>夜も更けました。</h1>
+    <div class="actions">
+      <button class="secondary">ツアーを見る</button>
+      <button class="rest">ホテルで休む</button>
+    </div>
+
+    <button class="sns-card">
+      <span class="faces"><img class="face" src="img/face_roohi.jpg" alt=""><img class="face" src="img/face_monu.jpg" alt=""></span>
+      <span class="sns-body">
+        <span class="sns-label">SNS にコメントが届きました</span>
+        <span class="sns-line"><b>ルーヒー</b>毎朝あの門の前を通るのに、名前なんて一度も読んだことなかった。今度、探してみる</span>
+      </span>
+      <span class="chev" aria-hidden="true">›</span>
+    </button>
+
+    <section class="headlines">
+      <h2>今日の見出し</h2>
+      <ol><li>抱く代わりの話</li></ol>
+    </section>
+    <div class="route">（今日の道のりの地図）</div>
+    <p class="note">見本の画面（文は仮）</p>
+  </div>
+</section>
+</body>
+</html>

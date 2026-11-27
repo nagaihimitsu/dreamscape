@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SNS 見本 6</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600&family=Klee+One:wght@600&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+  .day { display: flex; align-items: center; gap: 10px; min-height: 44px; margin: 6px 0 2px; font-family: var(--ds-font-serif); font-size: 14px; color: var(--ds-ink); }
+  .day .rule { flex: 1; height: 1px; background: var(--ds-parchment-line); }
+  .day .met { display: flex; align-items: center; min-height: 44px; padding: 0 0 0 4px; border: 0; background: transparent; color: var(--ds-ink-muted); font: inherit; font-size: 16px; }
+  .day .met img { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fbf8f2; object-fit: cover; }
+  .day .met img + img { margin-left: -9px; }
+  .day .met .chev { margin-left: 4px; }
+
+  /* 1日の札：写真の紙を横に並べ、その下にコメント。札の枠は使わない */
+  .viewport { position: relative; margin: 0 -16px; overflow: hidden; }
+  .strip { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0 8px; transition: transform .3s ease; }
+  .print { position: relative; flex: none; width: 304px; margin: 0; padding: 5px 5px 0; background: var(--print); border-radius: 2px; box-shadow: 0 2px 10px rgba(40, 30, 20, 0.26); }
+  .print:nth-child(odd) { transform: rotate(-0.7deg); }
+  .print:nth-child(even) { transform: rotate(0.7deg); }
+  .photo { position: relative; }
+  .photo img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  /* 左上に顔と名前、右下に場所。写真の上なので白い字に影 */
+  .photo::before { content: ""; position: absolute; inset: 0 auto auto 0; width: 120px; height: 64px; border-radius: 0 0 40px 0; background: linear-gradient(rgba(20, 24, 32, 0.5), rgba(20, 24, 32, 0)); }
+  .who { position: absolute; top: 6px; left: 6px; display: flex; flex-direction: column; align-items: center; gap: 1px; color: #fff; font-size: 10px; font-weight: 700; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7); }
+  .who .face { width: 30px; height: 30px; border: 1.5px solid rgba(255, 255, 255, 0.9); }
+  .photo::after { content: ""; position: absolute; right: 0; bottom: 0; width: 60%; height: 34px; background: linear-gradient(to top left, rgba(20, 24, 32, 0.45), rgba(20, 24, 32, 0) 70%); }
+  .where { position: absolute; z-index: 1; right: 8px; bottom: 5px; color: rgba(255, 255, 255, 0.92); font-size: 12px; font-weight: 500; letter-spacing: .04em; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); }
+  /* 紙の余白に、彼女の一言を手書き風で */
+  .says { padding: 5px 3px 7px; font-family: var(--hand); font-size: 14px; letter-spacing: -0.03em; line-height: 1.5; color: #2f2a26; text-wrap: pretty; }
+
+  /* 前へ・次へ：のぞいている前後の写真の上に、小さな丸 */
+  .nav { position: absolute; top: 87px; width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; }
+  .nav span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, 0.85); color: var(--ds-ink); font-size: 18px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25); }
+  .nav.prev { left: 0; } .nav.next { right: 0; }
+  .nav[hidden] { display: none; }
+
+  .dots { display: flex; justify-content: center; gap: 12px; margin: 0 0 6px; }
+  .group { position: relative; display: flex; gap: 5px; }
+  .group i { width: 6px; height: 6px; border-radius: 50%; background: #cdb98f; }
+  .group i.on { background: var(--ds-slate-800); }
+  .group.new::after { content: ""; position: absolute; top: -4px; right: -7px; width: 6px; height: 6px; border-radius: 50%; background: var(--ds-marker); }
+
+  .comments { margin: 0 0 4px; padding: 8px 10px; border-radius: 10px; background: var(--ds-parchment-2); font-size: 14px; line-height: 1.6; }
+  .comments p { display: flex; align-items: flex-start; gap: 7px; margin: 0; padding: 3px 0; }
+  .comments p > span { min-width: 0; }
+  .comments .cf { flex: none; width: 24px; height: 24px; margin-top: 0; border-radius: 50%; object-fit: cover; border: 1px solid var(--ds-parchment-line); }
+  .comments .re .cf { width: 20px; height: 20px; }
+  .comments b { font-weight: 700; margin-right: 6px; }
+  .comments .re { padding-left: 31px; }
+  .comments p + p:not(.re) { margin-top: 6px; }
+  .comments .nd { display: inline-block; width: 7px; height: 7px; margin: 0 5px 2px 0; border-radius: 50%; background: var(--ds-marker); vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="modal">
+  <div class="titlebar"><h2>旅の記録</h2><button class="close">✕ 閉じる</button></div>
+  <div class="axes">
+    <button aria-pressed="true">SNS<span class="dot"></span></button>
+    <button aria-pressed="false">写真<span style="margin-left:6px;font-size:12px;color:var(--ds-ink-muted)">128</span></button>
+  </div>
+  <div id="days"></div>
+  <p class="sample-note">見本の画面（文は仮）</p>
+</div>
+<script>
+  // 1日1枚。写真は投稿ごとに続けて並ぶ。紙の余白の一言とコメントは投稿ごと。
+  const days = [
+    { title: "デリー · 2日目", met: ["hamid", "zoheb", "monu"], posts: [
+      { where: "ジャマー・マスジド", isNew: false, photos: ["gt_album_d036", "gt_album_d038"],
+        says: "雨の匂いを買いました。晴れの日に開けます",
+        comments: [["ゾヘブ", "賭けは負け。悔しいから一本買った"], ["あゆみ", "雨仲間ですね", true]] },
+      { where: "インド門", isNew: true, photos: ["gt_album_d054", "gt_album_d25", "gt_album_d060"],
+        says: "十二人家族に、一日だけ入りました",
+        comments: [["ルーヒー", "毎朝通ってるのに、知らなかった", false, true], ["あゆみ", "同じ名前、いっぱいあるよ", true],
+                   ["モヌ", "来年はもっと望遠のきく携帯にする", false, true], ["あゆみ", "十三人目、予約しておきます", true]] },
+    ] },
+    { title: "デリー · 1日目", met: ["roohi", "anjali", "sonu", "faiz"], posts: [
+      { where: "レッド・フォート", isNew: false, photos: ["gt_album_d009"],
+        says: "インタビューされる側でした",
+        comments: [["ソーヌー", "あの日の敬礼、先生にほめられた"], ["あゆみ", "あれは満点だった", true]] },
+    ] },
+  ];
+  const FACE = { "あゆみ": "heroine", "ゾヘブ": "zoheb", "ルーヒー": "roohi", "モヌ": "monu", "ソーヌー": "sonu" };
+  const root = document.getElementById("days");
+  const start = Number(new URLSearchParams(location.search).get("s") || 0);
+  days.forEach((day, d) => {
+    const slides = day.posts.flatMap((post, p) => post.photos.map((id) => ({ p, id })));
+    const el = document.createElement("section");
+    el.innerHTML = `<div class="day"><span>${day.title}</span><span class="rule"></span><button class="met" aria-label="この日に会った人">${day.met.map((f) => `<img src="img/face_${f}.jpg" alt="">`).join("")}<span class="chev">›</span></button></div>
+      <div class="viewport"><div class="strip">${slides.map((s) => { const post = day.posts[s.p]; return `
+        <figure class="print"><div class="photo"><img src="../../../content/journeys/golden_triangle/public/assets/album/${s.id}.webp" alt="">
+          <span class="who"><img class="face" src="img/face_heroine.jpg" alt="">あゆみ</span>
+          <span class="where">${post.where}</span></div>
+          <figcaption class="says">${post.says}</figcaption></figure>`; }).join("")}</div>
+        <button class="nav prev" aria-label="前へ"><span>‹</span></button><button class="nav next" aria-label="次へ"><span>›</span></button></div>
+      <div class="dots"></div><div class="comments"></div>`;
+    root.appendChild(el);
+    const strip = el.querySelector(".strip");
+    let cur = d === 0 ? start : 0;
+    const show = (i) => {
+      cur = i;
+      const s = slides[i], post = day.posts[s.p];
+      strip.style.transform = `translateX(${16 - i * 314 + (i > 0 ? 24 : 0)}px)`;
+      el.querySelector(".comments").innerHTML = post.comments.map(([who, text, re, isNew]) =>
+        `<p class="${re ? "re" : ""}"><img class="cf" src="img/face_${FACE[who]}.jpg" alt=""><span>${isNew ? '<i class="nd"></i>' : ""}<b>${who}</b>${text}</span></p>`).join("");
+      let k = 0;
+      el.querySelector(".dots").innerHTML = slides.length < 2 ? "" : day.posts.map((pp) =>
+        `<span class="group${pp.isNew ? " new" : ""}">${pp.photos.map(() => `<i class="${k++ === i ? "on" : ""}"></i>`).join("")}</span>`).join("");
+      el.querySelector(".prev").hidden = i === 0;
+      el.querySelector(".next").hidden = i === slides.length - 1;
+    };
+    el.querySelector(".prev").onclick = () => show(Math.max(0, cur - 1));
+    el.querySelector(".next").onclick = () => show(Math.min(slides.length - 1, cur + 1));
+    show(cur);
+  });
+</script>
+</body>
+</html>

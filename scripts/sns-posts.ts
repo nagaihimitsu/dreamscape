@@ -257,9 +257,39 @@ export function checkPost(read: ReadPost, context: PostsContext): SnsPost {
   };
 }
 
-/** The warnings of the posts: a post with SNS_COMMENT_WARNING comments or more, or SNS_LATER_WARNING later ones or more. */
+/**
+ * Whether a condition may hold at night, when the SNS checks what arrives (src/domain/sns.ts deliverSns; 2026-11-27, the
+ * missed note of authoring/SNS_PLAN.md): three-valued, with `time` known (night) and every other leaf unknown. False only
+ * when it can never hold then (`time day`, `not time night`, within all/any/not/atLeast).
+ */
+export function mayHoldAtNight(condition: Condition | undefined): boolean {
+  const at = (item: Condition): boolean | undefined => {
+    if ("all" in item) { const values = item.all.map(at); return values.includes(false) ? false : values.every((value) => value === true) ? true : undefined; }
+    if ("any" in item) { const values = item.any.map(at); return values.includes(true) ? true : values.every((value) => value === false) ? false : undefined; }
+    if ("not" in item) { const value = at(item.not); return value === undefined ? undefined : !value; }
+    if ("atLeast" in item) {
+      const values = item.atLeast.of.map(at);
+      if (values.filter((value) => value === true).length >= item.atLeast.count) return true;
+      return values.filter((value) => value !== false).length < item.atLeast.count ? false : undefined;
+    }
+    return "time" in item ? item.time === "night" : undefined;
+  };
+  return condition === undefined || at(condition) !== false;
+}
+
+/**
+ * The warnings of the posts: a post with SNS_COMMENT_WARNING comments or more, or SNS_LATER_WARNING later ones or more;
+ * a post, comment or `# likes:` whose condition never holds at night (mayHoldAtNight), so it never arrives.
+ */
 export function postWarnings(posts: readonly (SnsPost & { file: string })[]): ContentWarning[] {
   return posts.flatMap((post) => [
+    ...[
+      ...(mayHoldAtNight(post.when) ? [] : [`投稿 ${post.id}`]),
+      ...post.comments.filter((comment) => !mayHoldAtNight(comment.when)).map((comment) => `コメント ${post.id}.${comment.id}`),
+      ...post.likes.filter((like) => !mayHoldAtNight(like.when)).map((like) => `${post.id} の # likes: ${like.personId}`),
+    ].map((what) => ({ kind: "sns-night" as const,
+      message: `SNS の${what}（${post.file}）の条件は、夜には成り立ちません。SNS は夜にだけ届くので、これは届きません（time day など。` +
+        `お金・AP・品物の条件は、夜の値で調べます）（condition never holds at night）` })),
     ...(post.comments.length >= SNS_COMMENT_WARNING ? [{ kind: "sns-reading" as const,
       message: `SNS の投稿 ${post.id}（${post.file}）にコメントが${post.comments.length}件あります。読み疲れないよう、1つの投稿に2件くらいまでにします` +
         `（${post.comments.length} comments on one post）` }] : []),

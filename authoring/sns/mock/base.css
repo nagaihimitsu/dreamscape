@@ -1,0 +1,66 @@
+/* 見本の画面の共通部分：ゲームの「旅の記録」のダイアログの枠（styles.css・travel-log.css の値を写した） */
+:root {
+  --ds-slate-900: #1f2430;
+  --ds-slate-800: #2b3140;
+  --ds-on-slate: #fffaf1;
+  --ds-gold: #c9a35f;
+  --ds-parchment: #fbf3e6;
+  --ds-parchment-2: #f3e4c8;
+  --ds-parchment-line: #d9c39a;
+  --ds-ink: #3b2f2a;
+  --ds-ink-muted: #6b5a4a;
+  --ds-marker: #a23d5a;
+  --ds-glass-bg: rgba(255, 254, 251, 0.94);
+  --ds-glass-bar: rgba(244, 246, 252, 0.96);
+  --ds-card-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
+  --ds-font-sans: "Noto Sans JP", system-ui, sans-serif;
+  --ds-font-serif: "Noto Serif JP", serif;
+  --hand: "Klee One", "Noto Serif JP", serif;
+  --stamp: #b4532a;
+  --print: #fbfaf6;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh;
+  background: #20242e url(img/bg.jpg) center top / 100% auto no-repeat;
+  font-family: var(--ds-font-sans);
+  color: var(--ds-ink);
+  -webkit-font-smoothing: antialiased;
+}
+.modal {
+  width: calc(100% - 24px);
+  margin: 12px auto 24px;
+  padding: 0 16px 24px;
+  border-radius: 22px;
+  background: var(--ds-glass-bg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  margin: 0 -16px 8px;
+  padding: 6px 10px 6px 16px;
+  background: var(--ds-glass-bar);
+}
+.titlebar h2 { margin: 0; font-family: var(--ds-font-serif); font-size: 20px; font-weight: 600; color: #1d2740; }
+.close {
+  display: inline-flex; align-items: center; gap: 4px;
+  min-height: 44px; padding: 4px 12px 4px 8px;
+  border: 1.5px solid var(--ds-slate-800); border-radius: 12px;
+  background: var(--ds-parchment); color: var(--ds-ink); font: inherit; font-size: 13px;
+}
+.axes { display: flex; margin: 0 0 14px; padding: 3px; border-radius: 12px; background: var(--ds-parchment-2); }
+.axes button {
+  position: relative;
+  flex: 1 1 0; min-height: 44px; margin: 0; border: 0; border-radius: 12px;
+  background: transparent; color: var(--ds-ink-muted); font: inherit; font-size: 15px;
+}
+.axes button[aria-pressed="true"] { background: var(--ds-parchment); color: var(--ds-ink); font-weight: 700; box-shadow: 0 1px 3px rgba(40, 30, 20, 0.18); }
+.axes .count { margin-left: 6px; font-size: 12px; font-weight: 400; color: var(--ds-ink-muted); }
+.axes .dot { position: absolute; top: 10px; margin-left: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--ds-marker); }
+.face { display: block; flex: none; border-radius: 50%; object-fit: cover; }
+.sample-note { margin: 18px 0 0; font-size: 12px; color: var(--ds-ink-muted); text-align: center; }
