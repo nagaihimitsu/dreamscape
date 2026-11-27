@@ -10,7 +10,6 @@
   --host-minigame-burst-ring-edge: #f6d36b;
   --host-minigame-particle-dust-ground: #d8bf94;
   --host-minigame-particle-splash-ground: #e8f4ff;
-  --host-primary-ground: #ffd666;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/02 「デザインの決まり」). */
@@ -342,12 +341,15 @@
   max-width: 560px;
   margin: 0 auto;
   padding: 12px 14px 14px;
-  border: 1px solid var(--ds-gold-hairline);
+  border: 0;
   border-radius: var(--ds-radius-pane);
-  /* Nearly opaque: the dead controls under it do not show through. */
-  background: color-mix(in srgb, var(--ds-slate-900) 96%, transparent);
-  box-shadow: var(--ds-window-shadow);
-  color: var(--ds-on-slate);
+  /* The talk's light glass (2026-11-27 user decision: no longer a near-opaque slate card edged in gold): the place shows
+     on behind it, softened; its blur keeps the dead controls under it from being read. */
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-glass-shadow);
+  color: var(--ds-glass-ink);
   text-align: center;
   animation: minigame-result-in 220ms var(--ease-out, ease-out) both;
 }
@@ -379,32 +381,38 @@
 .minigame-result-head:empty { display: none; }
 /* ★ one by one (120 ms apart), ★3 bigger; an unearned one dim and outlined (not told by colour alone). */
 .minigame-stars { display: flex; align-items: flex-end; gap: 4px; font-size: var(--ds-text-title); line-height: 1; }
-.minigame-star { color: transparent; -webkit-text-stroke: 1.5px var(--ds-on-slate-muted); animation: minigame-star-in 200ms var(--ease-out, ease-out) both; }
+.minigame-star { color: transparent; -webkit-text-stroke: 1.5px var(--ds-glass-muted); animation: minigame-star-in 200ms var(--ease-out, ease-out) both; }
 .minigame-star[data-on] { color: var(--host-minigame-burst-ring-edge); -webkit-text-stroke: 1.5px var(--host-minigame-hand-finger-line); }
 .minigame-star[data-big] { font-size: var(--minigame-big-star-size); }
 @keyframes minigame-star-in { from { opacity: 0; transform: scale(1.6); } }
 .minigame-layer .minigame-result p { margin: 0; }
 .minigame-layer .minigame-result-label { font-size: var(--ds-text-heading); font-weight: 700; line-height: var(--ds-leading-snug); }
-.minigame-layer .minigame-result-score { font-size: var(--ds-text-subhead); font-weight: 700; color: var(--ds-marker-selected); font-variant-numeric: tabular-nums; }
-.minigame-layer .minigame-result-detail { font-size: var(--ds-text-note); color: var(--ds-on-slate-muted); }
+.minigame-layer .minigame-result-score { font-size: var(--ds-text-subhead); font-weight: 700; color: var(--ds-glass-ink); font-variant-numeric: tabular-nums; }
+.minigame-layer .minigame-result-detail { font-size: var(--ds-text-note); color: var(--ds-glass-muted); }
 .minigame-result-react { display: flex; align-items: center; gap: 8px; margin-top: 4px; max-width: 100%; text-align: left; }
 .minigame-result-react .character-face { width: 56px; height: 56px; }
 .minigame-layer .minigame-result-line {
   padding: 6px 10px;
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
+  background: var(--ds-glass-chosen);
+  color: var(--ds-glass-ink);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
 }
 .minigame-result-actions { display: flex; gap: 8px; width: 100%; margin-top: 8px; }
 .minigame-result-actions > button { flex: 1 1 0; justify-content: center; min-height: 52px; margin: 0; }
-/* On the dark card the main button is gold (it stands out from the card), もう一回 an outline. */
-.minigame-result-actions > .primary { flex-grow: 1.4; background: var(--ds-marker-selected); box-shadow: none; color: var(--ds-slate-900); font-size: var(--ds-text-subhead); font-weight: 700; }
-.minigame-result-actions > .primary:hover:enabled { background: var(--host-primary-ground); }
-.minigame-result-actions > .primary:focus-visible { box-shadow: 0 0 0 3px var(--ds-slate-900), 0 0 0 5px var(--ds-focus); }
-.minigame-result-actions > .secondary { border-color: color-mix(in srgb, var(--ds-on-slate) 55%, transparent); background: transparent; color: var(--ds-on-slate); font-size: var(--ds-text-body); }
-.minigame-result-actions > .secondary:hover:enabled { background: color-mix(in srgb, var(--ds-on-slate) 12%, transparent); }
+/* On the glass 「次へ」 is the talk's press of smoked glass (.primary), もう一回 a pane of the glass with a fine edge. */
+.minigame-result-actions > .primary { flex-grow: 1.4; border-radius: var(--ds-radius-pane); font-size: var(--ds-text-subhead); font-weight: 700; }
+.minigame-result-actions > .secondary {
+  border: 0;
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-press);
+  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
+  color: var(--ds-glass-ink);
+  font-size: var(--ds-text-body);
+  font-weight: 700;
+}
+.minigame-result-actions > .secondary:hover:enabled { background: var(--ds-glass-bar); }
 /* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
    the buttons a bar of their own at the bottom in the controls' place, as on every other game (2026-11-14). Between
    them the field shows, and a press there reaches the ended play, which takes none. */
@@ -416,6 +424,8 @@
   overflow: visible;
   border: 0;
   background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   box-shadow: none;
   pointer-events: none;
 }
@@ -423,10 +433,12 @@
 .minigame-result[data-anchor="top"] > .minigame-result-actions {
   box-sizing: border-box;
   width: 100%;
-  border: 1px solid var(--ds-gold-hairline);
+  border: 0;
   border-radius: var(--ds-radius-pane);
-  background: color-mix(in srgb, var(--ds-slate-900) 96%, transparent);
-  box-shadow: var(--ds-window-shadow);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-glass-shadow);
   pointer-events: auto;
 }
 .minigame-result[data-anchor="top"] > .minigame-result-body {
