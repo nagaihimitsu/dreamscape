@@ -14,7 +14,9 @@ INCLUDE modules.ink
 # background: gt_bg_agra_ram_bagh
 # speaker: narrator
 # photo: gt_album_a086 # photo_caption: 最初の皇帝の、静かな庭
-ラーム・バーグには、ほとんど人がいなかった。一段高い石の通路が庭を四つに分け、水のない水路が、川の方へまっすぐ下りていく。木の上で、緑のインコが騒いでいた。
+ラーム・バーグには、ほとんど人がいなかった。
+# speaker: narrator
+一段高い石の通路が庭を四つに分け、水のない水路が、川の方へまっすぐ下りていく。木の上で、緑のインコが騒いでいた。
 # term: gt_term_babur
 インドでいちばん古いムガル庭園の一つで、帝国を開いたバーブルが造らせたと伝えられている。
 # speaker: heroine
@@ -141,7 +143,11 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # term: gt_term_maggi
-庭を出ると、道の向かいに小さな茶屋があった。プラスチックの椅子が三つと、湯気の立つ大鍋。注文は、インスタントのマギーの麺と、チャイを二つ。
+庭を出ると、道の向かいに小さな茶屋があった。
+# speaker: narrator
+プラスチックの椅子が三つと、湯気の立つ大鍋。
+# speaker: narrator
+注文は、インスタントのマギーの麺と、チャイを二つ。
 麺を運んできた主人が、二人を見比べて、にやりとした。
 # speaker: gt_agra_ram_bagh_tea_master
 # voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_001
@@ -191,7 +197,9 @@ INCLUDE modules.ink
         # emotion: shy
         # leave: gt_agra_ram_bagh_tea_master
         # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ # photo_with: gt_agra_ram_bagh_tea_master
-        茶屋の主人は満足そうにうなずき、頼んでいないゆで卵を二つ置いていった。彼女は麺をすすりながら、しばらくこちらを見なかった。
+        茶屋の主人は満足そうにうなずき、頼んでいないゆで卵を二つ置いていった。
+        # speaker: narrator
+        彼女は麺をすすりながら、しばらくこちらを見なかった。
     }
 * [笑ってごまかす # option: laugh_it_off]
     # profile: provocative

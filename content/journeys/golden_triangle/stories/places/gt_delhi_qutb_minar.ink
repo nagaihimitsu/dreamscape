@@ -18,7 +18,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_red_sandstone
 # term: gt_term_qutb_calligraphy
-赤い砂岩の帯の間を、文字の帯が巻き上がっていく。家族連れが塔を背に並び、誰かが毎回「もうちょっと下がって」と叫んでいた。
+赤い砂岩の帯の間を、文字の帯が巻き上がっていく。
+# speaker: narrator
+家族連れが塔を背に並び、誰かが毎回「もうちょっと下がって」と叫んでいた。
 # speaker: heroine
 # reaction: heroine,exasperated,dizzy
 # voice: gt_delhi_qutb_minar_guide_002
@@ -41,7 +43,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # emotion: smile
 # photo: gt_album_d017 # photo_caption: 鉄の柱と、メモの二行目
-想像したらしく、彼女は一人で小さく笑った。それから、柵の前で何かを測るように手を動かしている男の人に気づいて、首をかしげた。
+想像したらしく、彼女は一人で小さく笑った。
+# speaker: narrator
+それから、柵の前で何かを測るように手を動かしている男の人に気づいて、首をかしげた。
 # speaker: heroine
 # reaction: heroine,worried,question
 # voice: gt_delhi_qutb_minar_guide_005
@@ -148,8 +152,9 @@ INCLUDE modules.ink
 # speaker: narrator
 ラームキシャンはしばらく黙り、ボールペンを胸ポケットに戻した。
 # speaker: enemy
-# voice: gt_delhi_main_qutb_minar_battle_ramkishan_012
-娘には、魔法じゃないと教えました。九歳のときに。そしたら先月、あの子が泣きながら電話してきたんです。『パパ、抱いてきて』って
+娘には、魔法じゃないと教えました。九歳のときに。
+# speaker: enemy
+そしたら先月、あの子が泣きながら電話してきたんです。『パパ、抱いてきて』って
 # speaker: enemy
 # voice: gt_delhi_main_qutb_minar_battle_ramkishan_013
 科学で答えられないことを、頼まれたんですよ。父親は、科学の先生より弱い

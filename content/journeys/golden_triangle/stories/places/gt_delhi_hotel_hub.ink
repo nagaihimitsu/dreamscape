@@ -88,8 +88,9 @@ INCLUDE modules.ink
 デリーは押しの強い町だよ。欲しいものは、欲しいと言いなさい。黙っていたら、誰も気づかない。
 # speaker: heroine
 # reaction: heroine,teasing,music
-# voice: gt_delhi_arrival_004
-……はい、覚えておきます。それにしても、地図というより暗号だね。せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
+……はい、覚えておきます。それにしても、地図というより暗号だね。
+# speaker: heroine
+せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
 -> END
 
 // エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。
@@ -132,15 +133,20 @@ INCLUDE modules.ink
 # voice: gt_delhi_epilogue_aman_004
 僕の結婚は、親が紹介してくれた相手です。不満はない。でも、どう話せばいいか、まだ分からない
 # speaker: enemy
-# voice: gt_delhi_epilogue_aman_005
-祖母に言われました。どう出会ったかより、毎日ちゃんと言葉にしなさい、と。……六十年言わなかった人が、言うんですよ
+祖母に言われました。どう出会ったかより、毎日ちゃんと言葉にしなさい、と。
+# speaker: enemy
+……六十年言わなかった人が、言うんですよ
 # speaker: heroine
 # reaction: heroine,smile,music
 # voice: gt_delhi_epilogue_002
 説得力、ありますね。経験者の言葉だもん
 # speaker: narrator
 # item_show: gt_delhi_aman_wedding_invitation
-アマンはチャイを置き、折りたたんだ紙を差し出した。結婚式の案内。場所はジャイプールの旧市街。日付は、ちょうど二人がジャイプールにいるころだった。
+アマンはチャイを置き、折りたたんだ紙を差し出した。結婚式の案内。
+# speaker: narrator
+場所はジャイプールの旧市街。
+# speaker: narrator
+日付は、ちょうど二人がジャイプールにいるころだった。
 # speaker: enemy
 # voice: gt_delhi_epilogue_aman_006
 祖母が、あの生意気な娘を呼べと。……『来なくてもいい』とも言ってましたけど。たぶん、来いという意味です
@@ -173,8 +179,9 @@ INCLUDE modules.ink
     六十年って、長いね。……わたしは、そんなに待たせたくないな。誰を、とは言わないけど
 - romance_stage == 2:
     # speaker: heroine
-    # voice: gt_delhi_epilogue_007
-    言いそびれたことって、あとから重くなるんだね。わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
+    言いそびれたことって、あとから重くなるんだね。
+    # speaker: heroine
+    わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
 - else:
     # speaker: heroine
     # voice: gt_delhi_epilogue_008

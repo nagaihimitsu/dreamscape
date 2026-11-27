@@ -9,7 +9,9 @@ INCLUDE modules.ink
 # scene: guide
 # background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
-旧市街の大通りは、車とリキシャと牛と人で、隙間なく埋まっていた。その上に、桃色の壁が、小さな窓をびっしりと並べて立ち上がっている。
+旧市街の大通りは、車とリキシャと牛と人で、隙間なく埋まっていた。
+# speaker: narrator
+その上に、桃色の壁が、小さな窓をびっしりと並べて立ち上がっている。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_jaipur_hawa_mahal_guide_001
@@ -17,7 +19,9 @@ INCLUDE modules.ink
 窓、窓、窓……！　建物というより、窓でできた壁みたい
 # speaker: narrator
 # term: gt_term_jharokha
-小窓の一つひとつに、細かな格子がはまっている。張り出した出窓が、上へ行くほど少しずつ細くなり、とがった屋根へ集まっていく。
+小窓の一つひとつに、細かな格子がはまっている。
+# speaker: narrator
+張り出した出窓が、上へ行くほど少しずつ細くなり、とがった屋根へ集まっていく。
 # speaker: heroine
 # voice: gt_jaipur_hawa_mahal_guide_002
 全部の窓から、誰かがこっちを見てたらって考えると……ちょっと、どきっとするね
@@ -54,7 +58,9 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_battle_gaura_001
 そこ、うちの大根に影が落ちてるよ
 # speaker: narrator
-歩道の端に布を敷き、野菜を並べている女性がいた。大根、人参、オクラ、小ぶりのトマト。古い日傘を、竿にくくりつけている。
+歩道の端に布を敷き、野菜を並べている女性がいた。
+# speaker: narrator
+大根、人参、オクラ、小ぶりのトマト。古い日傘を、竿にくくりつけている。
 # speaker: heroine
 # reaction: heroine,surprised,sweat
 # voice: gt_jaipur_main_hawa_mahal_001
@@ -66,8 +72,11 @@ INCLUDE modules.ink
 撮るなら、大根も一緒に入れなさい。四十年、あの窓の下にいるのは、こっちなんだから
 # speaker: enemy
 # cutin: name
-# voice: gt_jaipur_main_hawa_mahal_battle_gaura_003
-ガウラよ。この歩道で野菜を売って四十年。朝四時に卸の市場で仕入れて、昼過ぎまでここに座ってる。膝が痛いのは、三十年前から
+ガウラよ。この歩道で野菜を売って四十年。
+# speaker: enemy
+朝四時に卸の市場で仕入れて、昼過ぎまでここに座ってる。
+# speaker: enemy
+膝が痛いのは、三十年前から
 # speaker: heroine
 # voice: gt_jaipur_main_hawa_mahal_002
 四十年……じゃあ、中にも何度も？
@@ -113,7 +122,11 @@ INCLUDE modules.ink
 # voice: gt_jaipur_main_hawa_mahal_battle_gaura_010
 それとね。窓の数も数えたのよ。暇な日に、少しずつ。何度数えても九百五十一。ガイドの言う数と、合わないの
 # speaker: narrator
-入口は正面ではなく、裏手の路地にあった。券を買って中へ入ると、{heroine_name}は首をかしげた。上の階が見えるのに、どこにも階段がない。
+入口は正面ではなく、裏手の路地にあった。
+# speaker: narrator
+券を買って中へ入ると、{heroine_name}は首をかしげた。
+# speaker: narrator
+上の階が見えるのに、どこにも階段がない。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_main_hawa_mahal_005
@@ -157,13 +170,19 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 # photo: gt_album_j027 # photo_caption: 格子の小窓から見下ろす、古い日傘 # photo_with: gt_jaipur_hawa_woman
-ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
+ガウラは客と値段で揉めていた。
+# speaker: narrator
+それから、通りがかった子どもに、トマトを一つ黙って渡した。
+# speaker: narrator
+日傘の陰で髪を直し、膝をさすった。
 # speaker: heroine
 # emotion: neutral
 # voice: gt_jaipur_main_hawa_mahal_007
 ……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま
 # speaker: narrator
-窓の数を数えようとして、{heroine_name}はすぐに諦めた。中からでは、とても数えきれない。ガウラは四十年、外から数え続けてきたのだ。
+窓の数を数えようとして、{heroine_name}はすぐに諦めた。
+# speaker: narrator
+中からでは、とても数えきれない。ガウラは四十年、外から数え続けてきたのだ。
 -> quiz(3) ->
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
@@ -189,8 +208,9 @@ INCLUDE modules.ink
     下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
 }
 # speaker: heroine
-# voice: gt_jaipur_main_hawa_mahal_009
-ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
+ガウラさんは、お客さんと値段で喧嘩してました。
+# speaker: heroine
+それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
 # speaker: heroine
 # voice: gt_jaipur_main_hawa_mahal_010
 # photo: gt_album_j028 # photo_caption: 通りで一番、生きてる # photo_with: gt_jaipur_hawa_woman
@@ -261,7 +281,11 @@ INCLUDE modules.ink
 # speaker: narrator
 # term: gt_term_sehra
 # term: gt_term_light_bearers
-赤い制服の楽隊。頭に灯りを載せて歩く男たち。白い馬の上には、花の房で顔を隠した花婿、アマン。その前で、親戚たちが道いっぱいに踊っている。
+赤い制服の楽隊。頭に灯りを載せて歩く男たち。
+# speaker: narrator
+白い馬の上には、花の房で顔を隠した花婿、アマン。
+# speaker: narrator
+その前で、親戚たちが道いっぱいに踊っている。
 # speaker: narrator
 # photo: gt_album_j116 # photo_caption: 照明に浮かぶハワー・マハルと、花婿の行列 # photo_with: gt_aman
 招待客の二人は、行列の端を歩いていた。踊る人たちの輪から、半歩だけ離れて。
@@ -297,7 +321,9 @@ INCLUDE modules.ink
 # speaker: narrator
 あちこちから、ブーイングと笑い声が一緒に上がった。本気で怒っている顔は、一つもない。
 # speaker: narrator
-デリーから来た花婿側の親戚たちが、顔を見合わせる。ジャイプールのことなど、誰も知らない。カムラが、{heroine_name}の背中を押した。
+デリーから来た花婿側の親戚たちが、顔を見合わせる。
+# speaker: narrator
+ジャイプールのことなど、誰も知らない。カムラが、{heroine_name}の背中を押した。
 # speaker: enemy
 # voice: gt_jaipur_finale_battle_kamla_003
 この子が答える。デリーで、わたしの地図を全部読んだ子よ
@@ -347,7 +373,9 @@ INCLUDE modules.ink
 # voice: gt_jaipur_finale_005
 こ、これでも精いっぱいです……
 # speaker: narrator
-白い馬の上で、アマンが花の房の隙間から片手を上げた。ありがとう、という合図らしい。馬は退屈そうに、前脚で地面をかいている。
+白い馬の上で、アマンが花の房の隙間から片手を上げた。
+# speaker: narrator
+ありがとう、という合図らしい。馬は退屈そうに、前脚で地面をかいている。
 # speaker: narrator
 プージャーが、指を二本立てた。二問目。花婿側を、横目で見ながら。
 # speaker: gt_pooja
@@ -531,7 +559,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # stand: apart
 # photo: gt_album_j125 # photo_caption: 怖いけど、踊りたいです
-通りの真ん中へ、一歩。手拍子に合わせて、ぎこちなく腕を上げる。誰かが笑い、誰かが真似をし、それがすぐに踊りの輪になった。
+通りの真ん中へ、一歩。手拍子に合わせて、ぎこちなく腕を上げる。
+# speaker: narrator
+誰かが笑い、誰かが真似をし、それがすぐに踊りの輪になった。
 # speaker: narrator
 # stand: close
 # photo: gt_album_j126 # photo_caption: 迷いのない手
@@ -584,5 +614,7 @@ INCLUDE modules.ink
 // 踊りの写真は、どの結果の後も、合流したこの行で1回（踊りの前の行に付けると、遊ぶ場の上に写真の札が重なるため）。
 # speaker: narrator
 # photo: gt_album_j129 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」 # photo_with: gt_kamla gt_jaipur_bride_grandmother gt_aman
-杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
+杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。
+# speaker: narrator
+頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
 -> END

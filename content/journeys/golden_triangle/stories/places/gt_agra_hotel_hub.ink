@@ -9,11 +9,15 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
 # photo: gt_album_a001 # photo_caption: 薔薇の花びらの道 # photo_with: gt_samir
-アーグラの宿は、タージ・マハルの南門に近い路地の奥にあった。若い支配人のサミールが自ら彼女の部屋まで案内し、扉を開けた瞬間、{heroine_name}が固まった。
+アーグラの宿は、タージ・マハルの南門に近い路地の奥にあった。
+# speaker: narrator
+若い支配人のサミールが自ら彼女の部屋まで案内し、扉を開けた瞬間、{heroine_name}が固まった。
 # background: gt_bg_agra_hotel_room_heart
 # speaker: narrator
 # se: door_open
-足もとから寝台まで、薔薇の花びらが点々と道を作っていた。寝台の上では、タオルで折った白鳥が二羽、くちばしを寄せ合い、首でハートを描いている。
+足もとから寝台まで、薔薇の花びらが点々と道を作っていた。
+# speaker: narrator
+寝台の上では、タオルで折った白鳥が二羽、くちばしを寄せ合い、首でハートを描いている。
 # speaker: gt_samir
 # cutin: name
 # photo: gt_album_a01 # photo_caption: ハネムーン・スペシャルの白鳥 # photo_with: gt_samir
@@ -35,7 +39,9 @@ INCLUDE modules.ink
 三回説明して、三回とも笑顔で流された。
 # speaker: narrator
 # leave: gt_samir
-去り際にサミールが置いていった名刺には、こう添えてあった。「叔父アンワルは、アーグラ一のガイドです。愛の物語なら、叔父に」
+去り際にサミールが置いていった名刺には、こう添えてあった。
+# speaker: narrator
+「叔父アンワルは、アーグラ一のガイドです。愛の物語なら、叔父に」
 { ending_reached:
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
@@ -63,9 +69,12 @@ INCLUDE modules.ink
 窓の外、家々の屋根の向こうに、白いドームの先がほんの少しだけのぞいていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
-# voice: gt_agra_arrival_006
 # photo: gt_album_a005 # photo_caption: 屋根の向こうにのぞく白いドーム
-あ……見えた。あれ、タージ・マハルの屋根だよね。写真で百回は見たのに、指先がそわそわする。……よし。誤解は、ちゃんと解く。その前に、どこから行こうか
+あ……見えた。あれ、タージ・マハルの屋根だよね。
+# speaker: heroine
+写真で百回は見たのに、指先がそわそわする。……よし。
+# speaker: heroine
+誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
 
 // 宿で休む前（-1）：路地の入口の大通りで、駅の客を待つ運転手のヴィノードに会う。
@@ -86,7 +95,9 @@ INCLUDE modules.ink
 # bgm: late_night_radio
 # ambience: gt_amb_street_traffic
 # speaker: narrator
-宿へ戻る路地の入口で、大通りの端に、白い車が一台寄せてあった。運転席の横に立った男が、紙を一枚、胸の前に掲げている。
+宿へ戻る路地の入口で、大通りの端に、白い車が一台寄せてあった。
+# speaker: narrator
+運転席の横に立った男が、紙を一枚、胸の前に掲げている。
 # speaker: narrator
 紙には、名前らしいものが書いてあった。らしい、としか言えない字だった。
 # speaker: heroine
@@ -114,7 +125,11 @@ INCLUDE modules.ink
 # voice: gt_agra_hotel_vinod_004
 え、どっちも？
 # speaker: gt_vinod
-車は、わたしのものです。会社が、あちこちで売ってくれる。……わたしに直接頼めば、間に入る分が要りません。ガイドはいない。乗り合いでもない。わたしと、お二人だけ
+車は、わたしのものです。会社が、あちこちで売ってくれる。
+# speaker: gt_vinod
+……わたしに直接頼めば、間に入る分が要りません。ガイドはいない。
+# speaker: gt_vinod
+乗り合いでもない。わたしと、お二人だけ
 # speaker: narrator
 彼女が、半歩だけ下がった。
 # speaker: heroine
@@ -220,7 +235,9 @@ INCLUDE modules.ink
 # speaker: narrator
 # item_out: gt_agra_anwar_petha
 # local_word: gt_agra_word_petha
-二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。ペーターは冬瓜からできているのだと、箱に書いてある。
+二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。
+# speaker: narrator
+ペーターは冬瓜からできているのだと、箱に書いてある。
 # speaker: heroine
 # reaction: heroine,happy,music
 # voice: gt_agra_epilogue_005
@@ -250,8 +267,9 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # recall: gt_album_a138
-    # voice: gt_agra_epilogue_009
-    今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。あれ、恋人として言ったんだよ。ちゃんと届いてた？
+    今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。
+    # speaker: heroine
+    あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:
     # speaker: heroine
     # recall: gt_album_a138

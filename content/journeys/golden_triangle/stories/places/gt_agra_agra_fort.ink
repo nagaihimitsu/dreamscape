@@ -25,7 +25,9 @@ INCLUDE modules.ink
 あの子、狙ってる。ボトル、しまっておこう。……目、合わせないようにしよう
 # speaker: narrator
 # photo: gt_album_a022 # photo_caption: 赤い宮殿と白い宮殿
-門の中は、赤い石の宮殿と白い大理石の宮殿が、隣り合って並んでいた。旗を掲げた添乗員のあとを、ツアーの一行が列になって進んでいく。
+門の中は、赤い石の宮殿と白い大理石の宮殿が、隣り合って並んでいた。
+# speaker: narrator
+旗を掲げた添乗員のあとを、ツアーの一行が列になって進んでいく。
 # speaker: heroine
 # voice: gt_agra_agra_fort_guide_003
 赤い建物と、白い建物。同じお城の中で、こんなに雰囲気が違うんだ
@@ -62,7 +64,9 @@ INCLUDE modules.ink
 # speaker: narrator
 川に面した八角形の塔。白い大理石の欄干の向こうに、遠くタージ・マハルが霞んで見える。
 # speaker: narrator
-旗を掲げた添乗員の後ろで、ツアーの一行が出口へ流れていく。ただ一人、鳥打ち帽の老人だけが、床にあぐらをかいて動かなかった。
+旗を掲げた添乗員の後ろで、ツアーの一行が出口へ流れていく。
+# speaker: narrator
+ただ一人、鳥打ち帽の老人だけが、床にあぐらをかいて動かなかった。
 # speaker: gt_agra_fort_old_man
 # unnamed
 # voice: gt_agra_main_agra_fort_battle_duggal_001
@@ -78,10 +82,11 @@ INCLUDE modules.ink
 バス、と聞いたとたん、老人は駐車場の方から顔をそむけた。
 # speaker: gt_agra_fort_old_man
 # unnamed
-# voice: gt_agra_main_agra_fort_battle_duggal_002
 # term: gt_term_shah_jahan
 # term: gt_term_dharna
-タージを建てたシャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
+タージを建てたシャー・ジャハーンは、この塔に八年座っていた。
+# speaker: gt_agra_fort_old_man # unnamed
+わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
 老人の視線が、近くにいた{heroine_name}たちを捉えた。背筋がさらに伸びる。
 # speaker: gt_agra_fort_old_man
@@ -170,8 +175,9 @@ INCLUDE modules.ink
 # speaker: narrator
 怒鳴った声は、すぐにしぼんだ。大佐は欄干の向こうのタージを見たまま、小さく言った。
 # speaker: enemy
-# voice: gt_agra_main_agra_fort_battle_duggal_015
-……後ろの席だと、十分でだめなんだ。今日の座席表では、わしは最後列だ。言えるか、そんなこと。若い娘さんの前で、元大佐が
+……後ろの席だと、十分でだめなんだ。今日の座席表では、わしは最後列だ。
+# speaker: enemy
+言えるか、そんなこと。若い娘さんの前で、元大佐が
 # speaker: narrator
 リヤは電話中で、こちらの話には気づいていない。大佐は咳払いをして、声を大きくした。
 # speaker: enemy
@@ -181,8 +187,9 @@ INCLUDE modules.ink
 # background: gt_bg_agra_agra_fort
 { quiz_correct:
     # speaker: heroine
-    # voice: gt_agra_main_agra_fort_005
-    はい。城の一部は、今も陸軍の区域ですよね。……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
+    はい。城の一部は、今も陸軍の区域ですよね。
+    # speaker: heroine
+    ……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
 - else:
     # speaker: enemy
     # voice: gt_agra_main_agra_fort_battle_duggal_017
@@ -194,8 +201,9 @@ INCLUDE modules.ink
 # speaker: narrator
 リヤの顔が、ぱっと明るくなる。彼女は旗を下ろし、大佐の前に立った。
 # speaker: gt_riya
-# voice: gt_agra_main_agra_fort_battle_riya_002
-大佐。ジャイプールまでの道中、一番前の席で、窓の外の解説をお願いできませんか。皆さん、大佐のお話を聞きたがっています
+大佐。ジャイプールまでの道中、一番前の席で、窓の外の解説をお願いできませんか。
+# speaker: gt_riya
+皆さん、大佐のお話を聞きたがっています
 # speaker: enemy
 # voice: gt_agra_main_agra_fort_battle_duggal_018
 ……任務とあらば
@@ -224,5 +232,7 @@ INCLUDE modules.ink
 勲章、ちょっと辛い……
 # speaker: narrator
 # photo: gt_album_a031 # photo_caption: 先頭で解説する大佐、手を合わせるリヤ # photo_show: small # photo_with: gt_agra_fort_old_man gt_riya
-出口へ向かう一行の先頭で、大佐が誰より大きな声で、城の説明を始めていた。リヤが振り返り、こちらに小さく手を合わせた。
+出口へ向かう一行の先頭で、大佐が誰より大きな声で、城の説明を始めていた。
+# speaker: narrator
+リヤが振り返り、こちらに小さく手を合わせた。
 -> END

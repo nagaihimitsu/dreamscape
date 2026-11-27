@@ -16,22 +16,32 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_nahargarh_fort
 # speaker: narrator
 # photo: gt_album_j073 # photo_caption: 碁盤の目の旧市街
-ナハルガル城は、ジャイプールの町を見下ろす尾根の上にあった。城壁の端に立つと、桃色の旧市街が、碁盤の目のまま足もとに広がっている。
+ナハルガル城は、ジャイプールの町を見下ろす尾根の上にあった。
+# speaker: narrator
+城壁の端に立つと、桃色の旧市街が、碁盤の目のまま足もとに広がっている。
 # term: gt_term_nahar_singh_bhomia
-砦の名には、言い伝えがある。この地には、ナハル・シン・ボーミヤーという人の霊がいて、砦の工事を邪魔したのだという。砦の中に彼のための祠を建てると霊は鎮まり、砦は彼の名で呼ばれるようになった。
+砦の名には、言い伝えがある。
+# speaker: narrator
+この地には、ナハル・シン・ボーミヤーという人の霊がいて、砦の工事を邪魔したのだという。
+# speaker: narrator
+砦の中に彼のための祠を建てると霊は鎮まり、砦は彼の名で呼ばれるようになった。
 # speaker: heroine
 # voice: gt_jaipur_date_nahargarh_fort_001
 幽霊に、ちゃんとあいさつしたら、工事が進んだんだ。怖い話なのに、ちょっと礼儀正しいね
 # speaker: narrator
 # term: gt_term_madhavendra_bhawan
-砦の奥に、二階建ての宮殿が建っていた。マーダヴェーンドラ・バワン。王と王妃たちの部屋が、九つの区画に分かれて、中庭を囲んでいる。
+砦の奥に、二階建ての宮殿が建っていた。マーダヴェーンドラ・バワン。
+# speaker: narrator
+王と王妃たちの部屋が、九つの区画に分かれて、中庭を囲んでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_jaipur_date_nahargarh_fort_002
 # photo: gt_album_j074 # photo_caption: 同じ部屋が、ずらっと
 同じ部屋が、ずらっと……。どこにいるのか、すぐ分からなくなりそう
 # speaker: narrator
-部屋どうしは廊下でつながっていて、王はそこを通って、ほかの王妃に知られずに、誰の部屋にでも行けた、と伝えられている。
+部屋どうしは、廊下でつながっている。
+# speaker: narrator
+王はそこを通って、ほかの王妃に知られずに、誰の部屋にでも行けた、と伝えられている。
 # speaker: narrator
 # emotion: teasing
 彼女は廊下の先を見て、それから、こちらを振り返った。目が、少しいたずらっぽく光っていた。
@@ -44,15 +54,21 @@ INCLUDE modules.ink
 # se: footsteps_run
 # leave: heroine
 返事を待たずに、足音が廊下の奥へ消えていった。
+九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。
+# speaker: narrator
 # minigame: nahargarh_hide_seek auto door_by_door hide 7 art.bay gt_img_jaipur_nahargarh_doorways art.room gt_img_jaipur_nahargarh_chamber
-九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
+自分が今、どの王妃の部屋の前にいるのかも分からない。
 // かくれんぼ：選択肢の代わりにミニゲーム。探し方の ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。
 * [かくれんぼ：名前を呼んで探した # option: call_her_name]
     # profile: playful
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":
         # speaker: narrator
-        名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。こだまにまじって、小さな笑い声がしたきり、返事はない。三回目に呼んだとき、ようやく扉の陰から彼女が出てきた。
+        名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。
+        # speaker: narrator
+        こだまにまじって、小さな笑い声がしたきり、返事はない。
+        # speaker: narrator
+        三回目に呼んだとき、ようやく扉の陰から彼女が出てきた。
         # speaker: heroine
         # emotion: exasperated
         # voice: gt_jaipur_date_nahargarh_fort_004
@@ -74,7 +90,9 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: narrator
         # se: door_creak
-        扉を開ける。空っぽの部屋。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
+        扉を開ける。空っぽの部屋。次の扉。また同じ部屋。
+        # speaker: narrator
+        いくつ目かの扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
         # speaker: heroine
         # emotion: exasperated
         # voice: gt_jaipur_date_nahargarh_fort_021
@@ -83,7 +101,9 @@ INCLUDE modules.ink
         # speaker: narrator
         # se: door_creak
         # photo: gt_album_j077 # photo_caption: 壁の絵の前で、振り向く
-        扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。いくつ目かの扉を開けたとき、壁の絵を見ていた彼女が、振り向いた。
+        扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。
+        # speaker: narrator
+        いくつ目かの扉を開けたとき、壁の絵を見ていた彼女が、振り向いた。
         # speaker: heroine
         # reaction: heroine,surprised,blush
         # voice: gt_jaipur_date_nahargarh_fort_007
@@ -214,7 +234,8 @@ INCLUDE modules.ink
 宮殿の屋上に出ると、町の全部が見えた。桃色の屋根、白い寺院の塔、遠くの湖の光。
 # speaker: heroine
 # emotion: smile
-# voice: gt_jaipur_date_nahargarh_fort_020
 # photo: gt_album_j081 # photo_caption: 屋上から、町の全部
-あ、見て。あの辺が、たぶん、わたしたちの宿。この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
+あ、見て。あの辺が、たぶん、わたしたちの宿。
+# speaker: heroine
+この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる
 -> END

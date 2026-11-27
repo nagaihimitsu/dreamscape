@@ -14,7 +14,11 @@ INCLUDE modules.ink
 # speaker: narrator
 # local_word: gt_delhi_word_gurdwara
 # term: gt_term_head_covering
-金色の丸屋根の下で、入口の人たちが、次々に頭を布で覆っていた。グルドワーラー・バングラー・サーヒブ。シク教の礼拝所で、ここでは男も女も、頭を覆って入る。
+金色の丸屋根の下で、入口の人たちが、次々に頭を布で覆っていた。
+# speaker: narrator
+グルドワーラー・バングラー・サーヒブ。
+# speaker: narrator
+シク教の礼拝所で、ここでは男も女も、頭を覆って入る。
 # emotion: happy
 入口で配られる橙色の布を、彼女は手際よく結んだ。それから、こちらを見て、こらえきれずに笑った。
 # speaker: heroine
@@ -32,7 +36,9 @@ INCLUDE modules.ink
 その奥に、大きな台所があった。ランガル。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
 # term: gt_term_dal
 # photo: gt_album_d083 # photo_caption: ランガルの大台所に手招き # photo_with: gt_harbans
-巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
+巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。
+# speaker: narrator
+その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_harbans
 # unnamed
 # term: gt_term_roti
@@ -157,7 +163,11 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 # term: gt_term_chai
-生地を丸めながら、ハルバンスは街道の話をした。どの町の茶屋のチャイが一番濃いか。夜中の検問で、どうやって眠気をこらえたか。川が溢れて、三日動けなかった夏のこと。
+生地を丸めながら、ハルバンスは街道の話をした。
+# speaker: narrator
+どの町の茶屋のチャイが一番濃いか。夜中の検問で、どうやって眠気をこらえたか。
+# speaker: narrator
+川が溢れて、三日動けなかった夏のこと。
 # speaker: gt_harbans
 # voice: gt_delhi_date_bangla_sahib_harbans_011
 米も、セメントも、祭りの花も運んだ。荷台が空のまま走った日は、ほとんどない
@@ -202,8 +212,9 @@ INCLUDE modules.ink
         ハルバンスの手が、初めて止まった。
     }
     # speaker: gt_harbans
-    # voice: gt_delhi_date_bangla_sahib_harbans_016
-    向こうへ行ったら、わしは、何も運ばない人になる。四十年、何かを運んできた。運ばないわしを、息子に見せるのが、嫌なんだ
+    向こうへ行ったら、わしは、何も運ばない人になる。
+    # speaker: gt_harbans
+    四十年、何かを運んできた。運ばないわしを、息子に見せるのが、嫌なんだ
     # speaker: heroine
     # emotion: serious
     # voice: gt_delhi_date_bangla_sahib_013
@@ -234,11 +245,17 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
-食事の広間では、細長い敷物が何列も敷かれ、人々が床に並んで座っていた。隣はスーツの男、その隣は裸足の子ども。誰がどこに座っても、出てくるものは同じだ。
+食事の広間では、細長い敷物が何列も敷かれ、人々が床に並んで座っていた。
+# speaker: narrator
+隣はスーツの男、その隣は裸足の子ども。
+# speaker: narrator
+誰がどこに座っても、出てくるものは同じだ。
 # term: gt_term_cupped_hands
 奉仕の人が籠を持って回ってくる。二人は、裸足の子どもの手つきを真似て、両手をお椀の形にして差し出した。
 # photo: gt_album_d086 # photo_caption: 自分の地図が、手のひらに戻る # photo_with: gt_harbans
-ハルバンスが、わざわざ二枚を選んで、二人の手のひらに落とした。インドの形と、もう一枚。自分で丸めたものが、自分の手に戻ってきた。
+ハルバンスが、わざわざ二枚を選んで、二人の手のひらに落とした。
+# speaker: narrator
+インドの形と、もう一枚。自分で丸めたものが、自分の手に戻ってきた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_delhi_date_bangla_sahib_016
@@ -286,12 +303,15 @@ INCLUDE modules.ink
 外に出ると、大きな池が、金色の丸屋根を逆さに映していた。この池の水には、病を癒やす力があると信じられている。
 # speaker: narrator
 # term: gt_term_guru_harkrishan
-昔、ここに滞在したシク教の師、八代目のグルが、天然痘やコレラに苦しむ人たちを、井戸の水で助けたという話が伝わっている。
+ここには、シク教の八代目のグルの話が伝わっている。
+# speaker: narrator
+昔ここに滞在し、天然痘やコレラに苦しむ人たちを、井戸の水で助けたという。
 # photo: gt_album_d088 # photo_caption: 金色の丸屋根を映す池
 二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。
 # speaker: heroine
-# voice: gt_delhi_date_bangla_sahib_021
-誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね。なんだか不思議。知らない人に、ちょっとだけ届いた感じ
+誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね。
+# speaker: heroine
+なんだか不思議。知らない人に、ちょっとだけ届いた感じ
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_date_bangla_sahib_022

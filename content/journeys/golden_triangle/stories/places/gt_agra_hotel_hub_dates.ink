@@ -25,7 +25,9 @@ INCLUDE modules.ink
 # speaker: narrator
 宿の屋上からは、タージのドームが見えた。夜の中で、そこだけが白く、薄く光っている。
 # photo: gt_album_a123 # photo_caption: タージに背を向けて座る
-彼女は手すりの前まで行きかけて、くるりと向きを変えた。ドームに背を向けて、反対側の、洗濯物と貯水タンクしかない方の縁に腰を下ろす。
+彼女は手すりの前まで行きかけて、くるりと向きを変えた。
+# speaker: narrator
+ドームに背を向けて、反対側の、洗濯物と貯水タンクしかない方の縁に腰を下ろす。
 # speaker: heroine
 # voice: gt_agra_date_confession_001
 タージの方を向いてると、なんだか、誰かの有名な恋の話の中にいるみたいで。こっち向きの方が、落ち着く
@@ -65,8 +67,11 @@ INCLUDE modules.ink
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
-    # voice: gt_agra_date_confession_004
-    迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
+    迷ったけど、ちゃんと、わたしの言葉で言いたかった。
+    # speaker: heroine
+    言われたから、うなずくんじゃなくて。
+    # speaker: heroine
+    ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
     # photo: gt_album_a125 # photo_caption: タージに背を向けた告白
@@ -128,8 +133,9 @@ INCLUDE modules.ink
     わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
     # speaker: heroine
     # emotion: serious
-    # voice: gt_agra_date_confession_022
-    話したいことは、あるの。あるんだけど。……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
+    話したいことは、あるの。あるんだけど。
+    # speaker: heroine
+    ……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
     # speaker: narrator
     物干しの綱で、シャツが一枚、風にあおられて裏返った。
     # speaker: heroine
@@ -272,7 +278,9 @@ INCLUDE modules.ink
     {
     - cond("date gt_agra_date_confession"):
         # speaker: narrator
-        屋上に誘ったのは、今夜もこちらだった。彼女も、たぶん分かっている。縁に腰かけたまま、こちらが口を開くのを待っていた。
+        屋上に誘ったのは、今夜もこちらだった。彼女も、たぶん分かっている。
+        # speaker: narrator
+        縁に腰かけたまま、こちらが口を開くのを待っていた。
         { cond("date gt_agra_date_reassurance"):
             # speaker: narrator
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。

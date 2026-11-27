@@ -145,7 +145,9 @@ INCLUDE modules.ink
 
 * [Let me pick up the packet. # option: case # translation: 袋を拾います。]
     # speaker: narrator
-    袋を拾うと、中から青いピックがこぼれた。ノラは新しい弦を一本だけ鳴らしてから、二枚のうち一枚をこちらへ押し戻した。
+    袋を拾うと、中から青いピックがこぼれた。
+    # speaker: narrator
+    ノラは新しい弦を一本だけ鳴らしてから、二枚のうち一枚をこちらへ押し戻した。
     -> duomo_string_pick
 
 * [I'll give you some room. # option: leave # translation: 少し場所を空けます。]

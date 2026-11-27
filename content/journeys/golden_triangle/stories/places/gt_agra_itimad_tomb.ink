@@ -21,7 +21,9 @@ INCLUDE modules.ink
 # term: gt_term_bhutta
 門の前の露店で、水と、焼いたとうもろこしを売っている。客は、ほとんどいない。
 # speaker: narrator
-門をくぐると、庭の奥に白い墓廟が座っていた。タージよりずっと小さい。けれど、壁一面に、色のついた石で模様が描かれている。
+門をくぐると、庭の奥に白い墓廟が座っていた。タージよりずっと小さい。
+# speaker: narrator
+けれど、壁一面に、色のついた石で模様が描かれている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # term: gt_term_parchin_kari
@@ -66,7 +68,11 @@ INCLUDE modules.ink
 # photo: gt_album_a037 # photo_caption: 「ベビーではありません！」 # photo_with: gt_vimla
 ベビーではありません！
 # speaker: narrator
-ニームの木陰から、サリー姿の女性が立ち上がった。白髪をきっちり結い、布の手提げを肩にかけている。手提げから、紙の束がのぞいていた。
+ニームの木陰から、サリー姿の女性が立ち上がった。
+# speaker: narrator
+白髪をきっちり結い、布の手提げを肩にかけている。
+# speaker: narrator
+手提げから、紙の束がのぞいていた。
 # speaker: enemy
 # cutin: name
 # voice: gt_agra_main_itimad_tomb_battle_vimla_002
@@ -79,7 +85,9 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_battle_vimla_003
 この墓は、誰の赤ちゃんでもない。娘が、亡くなった両親のために建てたものです。それを『タージの赤ちゃん』だなんて
 # speaker: narrator
-ヴィムラーは紙の束から一枚を抜き、クリップボードごと差し出した。観光局宛ての請願書。案内板の「ベビー・タージ」を外してほしい、という内容だった。
+ヴィムラーは紙の束から一枚を抜き、クリップボードごと差し出した。観光局宛ての請願書。
+# speaker: narrator
+案内板の「ベビー・タージ」を外してほしい、という内容だった。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_004
 署名を。名前と国名だけで結構です
@@ -140,8 +148,9 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_005
 建てたのも、建ててもらったのも、自分の足で来た人たちなんですね
 # speaker: enemy
-# voice: gt_agra_main_itimad_tomb_battle_vimla_012
-分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先。タージは、それを大きくしただけ
+分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先。
+# speaker: enemy
+タージは、それを大きくしただけ
 # speaker: narrator
 三つ目の主張は、一番下に、一番大きな字で書いてあった。
 # speaker: narrator
@@ -206,7 +215,9 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # photo: gt_album_a041 # photo_caption: 線を引かれた三つ目の行、そして発音の授業 # photo_with: gt_vimla
-ヴィムラーは新しい紙を、請願書の一番上にクリップで留めた。一番大きな字の三つ目の行は、ボールペンで一本、線を引かれていた。
+ヴィムラーは新しい紙を、請願書の一番上にクリップで留めた。
+# speaker: narrator
+一番大きな字の三つ目の行は、ボールペンで一本、線を引かれていた。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_020
 それから、あなた。さっきの『イティマード』、発音が違います。イッ、ティ、マード。はい、繰り返して
