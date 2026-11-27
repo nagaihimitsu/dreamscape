@@ -1,4 +1,4 @@
-/* 旅の図鑑 (2026-11-13 user decision): the card a line's # term: shows over the story (GlossaryTermWindow), and the
+/* 旅の図鑑 (2026-11-13 user decision): the card a line's # term: (or # local_word:, 旅のことば) shows over the story (LineCardWindow), and the
    collection in ≡メニュー (GlossaryDialog). Parchment tiles with a hairline all round, as the item card (item-show.css): no
    thick edge on one side. Every pressable is at least 44 px. */
 
@@ -17,8 +17,16 @@
   padding: max(16px, 7dvh, env(safe-area-inset-top)) 16px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: radial-gradient(ellipse 90% 62% at 50% 40%, color-mix(in srgb, var(--ds-shade) 50%, transparent), color-mix(in srgb, var(--ds-shade) 30%, transparent) 62%, color-mix(in srgb, var(--ds-shade) 8%, transparent));
   cursor: pointer;
+}
+/* The dimming, apart from the card, so it can go while the last card flies. */
+.glossary-term-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 90% 62% at 50% 40%, color-mix(in srgb, var(--ds-shade) 50%, transparent), color-mix(in srgb, var(--ds-shade) 30%, transparent) 62%, color-mix(in srgb, var(--ds-shade) 8%, transparent));
+  pointer-events: none;
   animation: glossary-dim-in var(--motion-medium) var(--ease-out) both;
 }
 @keyframes glossary-dim-in {
@@ -53,7 +61,24 @@
 @keyframes glossary-card-in {
   from { opacity: 0; transform: translateY(10px) scale(0.96); }
 }
-/* 「旅の図鑑に追加」: a small label, not a control (no edge, no press). */
+/* As the player puts a card away (LineCardWindow): it shrinks and flies into ≡メニュー, where 旅の図鑑 and 旅のことば are, and fades on
+   it (`fly`), or fades where it is (`fade`); with the last card the dimming goes too. */
+.glossary-term-card[data-stowing="fly"] {
+  transform-origin: 50% 50%;
+  animation: glossary-card-stow 560ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+}
+.glossary-term-card[data-stowing="fade"] { animation: glossary-fade-out 240ms var(--ease-out) both; }
+.glossary-term-window[data-leaving]::before { animation: glossary-fade-out 560ms var(--ease-out) both; }
+@keyframes glossary-card-stow {
+  0% { opacity: 1; transform: none; }
+  18% { transform: scale(1.03); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--to-scale, 0.2)); }
+}
+@keyframes glossary-fade-out {
+  to { opacity: 0; }
+}
+/* 「旅の図鑑」: a small label, not a control (no edge, no press). */
 .glossary-term-mark {
   display: inline-flex;
   align-items: center;
@@ -110,6 +135,24 @@
   text-align: left;
   overflow-wrap: anywhere;
 }
+/* A word in its own script (旅のことば; as in its page, local-words.css): the system's fonts fill in the glyphs the game's
+   fonts lack, with no letter spacing nor Japanese width feature, which break scripts whose letters join. */
+.glossary-term-card[data-kind="word"] .glossary-term-name {
+  font-family: var(--ds-font-sans);
+  font-weight: 500;
+  letter-spacing: normal;
+  font-feature-settings: normal;
+  line-height: var(--ds-leading-body);
+}
+/* A word's note (旅のことば): small and quiet, under its meaning. */
+.glossary-term-note {
+  margin: 0;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
 /* No ring on the window the focus rests on (it is the whole screen, and only a target for keys and readers). */
 .glossary-term-window:focus { outline: none; }
 .glossary-term-count { margin-left: 4px; font-variant-numeric: tabular-nums; }
@@ -137,6 +180,8 @@
   .glossary-term-name { grid-area: name; margin: 0; font-size: var(--ds-text-subhead); }
   .glossary-term-subtitle { grid-area: subtitle; }
   .glossary-term-line { grid-area: line; margin: 0; }
+  .glossary-term-card[data-kind="word"] { grid-template-columns: minmax(0, 1fr); grid-template-areas: "mark" "name" "subtitle" "line" "note"; width: min(100%, 420px); }
+  .glossary-term-note { grid-area: note; }
 }
 
 /* 「旅の図鑑」 in ≡メニュー: the shared frame, how far it has come under its title, then a group per category (told apart
@@ -259,10 +304,10 @@ dialog.modal.glossary-entry {
 .glossary-entry-photo-note { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .glossary-entry-line { margin: 10px 0 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 
-/* Reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion): the card and the dimming show at once. */
-.reduce-motion .glossary-term-window,
+/* Reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion): the card and the dimming show and go at once. */
+.reduce-motion .glossary-term-window::before,
 .reduce-motion .glossary-term-card { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .glossary-term-window,
+  .glossary-term-window::before,
   .glossary-term-card { animation: none; }
 }

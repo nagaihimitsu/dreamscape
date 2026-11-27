@@ -15,6 +15,10 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_market", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
   const line = page.getByTestId("dialogue-text");
   const card = page.getByTestId("glossary-term-window");
+  // The first line's photo (# photo:) has its turn first: a tap ends it and the line starts.
+  await expect(line).toHaveAttribute("data-photo-turn", "true");
+  await ops.settled(page);
+  await line.click();
   await expect(line).toHaveAttribute("data-ready", "true");
   // The guide's first line names no term: no card, and the menu has no dot.
   await expect(card).toHaveCount(0);
@@ -27,11 +31,14 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await page.keyboard.press("Enter");
   await expect(card).toBeVisible();
   await expect(card).toHaveAttribute("aria-modal", "true");
-  await expect(page.getByRole("dialog", { name: "三時パン" })).toHaveAccessibleDescription(/見本の街の朝市で焼く架空の丸パン。.*旅の図鑑に追加/u);
+  await expect(page.getByRole("dialog", { name: "三時パン" })).toHaveAccessibleDescription(/見本の街の朝市で焼く架空の丸パン。.*旅の図鑑/u);
   await expect(card).toContainText("さんじパン");
   await expect(card.getByRole("img")).toHaveAttribute("alt", /三時パン/u);
   await expect(card).toBeFocused();
   await expect(card.getByRole("button")).toHaveCount(0);
+  // The card has its turn before the line (2026-11-27): the line under it writes nothing yet.
+  await expect(line).toHaveAttribute("data-photo-turn", "true");
+  await expect(line).toHaveAttribute("data-ready", "false");
   const shown = (await debugGame(page))!;
   expect(shown.glossary).toEqual([TERM]);
   expect(shown.activeTourism?.frame?.termIds).toEqual([TERM]);
@@ -46,6 +53,7 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await ops.settled(page);
   expect((await debugGame(page))!.revision).toBe(shown.revision);
   await expect(line).toHaveText(text!);
+  await expect(line).toHaveAttribute("data-ready", "true");
   await expect(line).toBeFocused();
 
   // ≡メニュー and its 「ノート」 carry the dot of something new; the note opens on 旅の図鑑 (the page with something new),
@@ -88,4 +96,33 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   const photo = journey.getByRole("listitem").filter({ hasText: "見本の街の架空のパン「三時パン」を描いた簡単な絵。" });
   await expect(photo).toContainText(CREDIT);
   await expect(photo.getByRole("link", { name: "CC0 1.0", exact: true })).toHaveAttribute("href", "https://creativecommons.org/publicdomain/zero/1.0/");
+});
+
+// 旅のことば (2026-11-27 user decision: as 旅の図鑑's card): the clock tower's guide teaches the sample's fictional Trisól on
+// its fifth line. Its card shows before the line (the line writes nothing yet), says 「旅のことば」 with the word, its reading
+// and meaning, and a tap puts it away; then the line starts, as it was, and nothing is saved.
+test("旅のことば: a word's card has its turn before its line and goes on a tap", { tag: tier.sample }, async ({ page }) => {
+  await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_clock_tower", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  const line = page.getByTestId("dialogue-text");
+  const card = page.getByTestId("glossary-term-window");
+  for (let read = 0; read < 8 && await card.count() === 0; read++) {
+    await ops.settled(page);
+    if (await line.getAttribute("data-photo-turn") !== null) await line.click();
+    await expect(line).toHaveAttribute("data-ready", "true");
+    await line.focus();
+    await page.keyboard.press("Enter");
+  }
+  await expect(card).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Trisól" })).toHaveAccessibleDescription(/三時に会おう.*旅のことば/u);
+  await expect(card).toContainText("トリソル");
+  await expect(line).toHaveAttribute("data-photo-turn", "true");
+  await expect(line).toHaveAttribute("data-ready", "false");
+  const revision = (await debugGame(page))!.revision;
+
+  await ops.settled(page);
+  await card.click();
+  await expect(card).toHaveCount(0);
+  await expect(line).toHaveAttribute("data-ready", "true");
+  await expect(line).toContainText("Trisól");
+  expect((await debugGame(page))!.revision).toBe(revision);
 });

@@ -8,7 +8,7 @@
 }
 /* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
    header; the card sits at its top middle, above the heads of the people on stage or under their faces (figures-top.ts;
-   2026-11-25 user decisions: their faces stay seen as they speak), and below the notices under the header (「写真の札」, 「ことばを覚えた」: their
+   2026-11-25 user decisions: their faces stay seen as they speak), and below the notices under the header (「写真の札」: its
    measured height --notices-h, GameApp), which would otherwise cover its top. */
 .item-show-layer {
   position: absolute;

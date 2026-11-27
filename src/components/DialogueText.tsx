@@ -212,7 +212,7 @@ export function DialogueText({
   } : undefined);
   function activate() {
     // A compact settings menu is not a native modal, so its open state must also block taps on the text behind it; nor
-    // does 旅の図鑑's card read on (readingHeld), though the line writes itself on under it.
+    // does 旅の図鑑's card read on (readingHeld; it holds the line's turn too, photo-turn.ts).
     if (readingHeld() || textRef.current?.closest("[inert]")) return;
     // A tap during the photo's turn ends it: the print goes and the line starts.
     const photo = photoTurn();
