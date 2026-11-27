@@ -183,7 +183,6 @@ INCLUDE modules.ink
 # speaker: narrator
 フマユーン廟で、全員で口裏を合わせた、あの一言だった。
 # speaker: narrator
-# se: camera_shutter
 # photo: gt_album_d094 # photo_caption: 集合写真の端、新聞で顔を隠す人 # photo_with: gt_dubey gt_suresh gt_meena
 会の最後に、ドゥベイが集合写真を撮った。
 # speaker: narrator
