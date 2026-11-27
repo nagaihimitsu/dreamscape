@@ -38,11 +38,12 @@ export type SnsPostView = {
   arrived?: SnsNight; pastJa?: string;
 };
 /**
- * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, and the
- * posts of the night, the day's one card (2026-11-27 user decision: a slide a photo, turned sideways): the heroine's first,
- * in the order written, then the people's, in the order they came.
+ * A day of the timeline (the night the posts came): its city and day, the faces of the people first met that day, and its
+ * two cards (2026-11-27 user decision), each turned sideways a slide a photo: the heroine's posts of the night (in the order
+ * written) and under them the people's (`posts`, in the order they came). Two, not one: her posts come several a night with
+ * many photos, and the people's would be far behind them (some of theirs show her photos again: Monu's of India Gate).
  */
-export type SnsDay = { cityId: string; cityNameJa: string; day: number; met: SnsFace[]; posts: SnsPostView[] };
+export type SnsDay = { cityId: string; cityNameJa: string; day: number; met: SnsFace[]; heroine: SnsPostView[]; posts: SnsPostView[] };
 
 const cityName = (cityId: string) => cityContents[cityId]?.city.nameJa ?? cityId;
 const journeyOf = (game: Pick<GameState, "currentCityId">) => getJourneyForCity(game.currentCityId)?.id ?? "";
@@ -127,24 +128,25 @@ function metOn(game: Readonly<GameState>, night: Pick<SnsNight, "cityId" | "day"
 }
 
 /**
- * The timeline (トップ): a day for each night something came, the newest first, each the day's one card: the heroine's posts
- * of that night (in the order written), then the people's (in the order they came).
+ * The timeline (トップ): a day for each night something came, the newest first. In a day, the heroine's posts of that night
+ * make her one card (in the order written), the people's posts their one card (in the order they came).
  */
 export function snsTimeline(game: Readonly<GameState>): SnsDay[] {
-  const days: (SnsDay & { people: SnsPostView[] })[] = [];
+  const days: SnsDay[] = [];
   for (const record of snsOf(game).posts) {
     const view = snsPostView(game, record.id);
     if (!view) continue;
     let day = days.find((item) => sameNight(item, record));
     if (!day) {
-      day = { cityId: record.cityId, cityNameJa: cityName(record.cityId), day: record.day, met: metOn(game, record), posts: [], people: [] };
+      day = { cityId: record.cityId, cityNameJa: cityName(record.cityId), day: record.day, met: metOn(game, record), heroine: [], posts: [] };
       days.push(day);
     }
-    (view.author.id === SNS_HEROINE ? day.posts : day.people).push(view);
+    if (view.author.id === SNS_HEROINE) day.heroine.push(view);
+    else day.posts.push(view);
   }
   const order = snsData.posts.map((post) => post.id);
-  return days.reverse().map(({ people, posts, ...day }) =>
-    ({ ...day, posts: [...posts.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id)), ...people] }));
+  for (const day of days) day.heroine.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+  return days.reverse();
 }
 
 /** One person in 「出会った人」: their face and the first line of their self-introduction. */
@@ -207,16 +209,12 @@ export function snsPersonPage(game: Readonly<GameState>, personId: string): SnsP
   };
 }
 
-/**
- * The heroine's page: her face and self-introduction (progression/story.json `heroineSns`) and her day cards, the newest
- * first (the timeline's days, her posts only).
- */
+/** The heroine's page: her face and self-introduction (progression/story.json `heroineSns`) and her day cards, the newest first. */
 export function snsHeroinePage(game: Readonly<GameState>): { face: SnsFace; introJa: string[]; days: SnsDay[] } {
   return {
     face: snsFace(game, SNS_HEROINE),
     introJa: (storyState.heroineSns[journeyOf(game)]?.introJa ?? []).map((line) => withNames(line, game)),
-    days: snsTimeline(game).map((day) => ({ ...day, posts: day.posts.filter((post) => post.author.id === SNS_HEROINE) }))
-      .filter((day) => day.posts.length),
+    days: snsTimeline(game).filter((day) => day.heroine.length).map((day) => ({ ...day, posts: [] })),
   };
 }
 

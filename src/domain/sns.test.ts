@@ -131,9 +131,9 @@ describe("the SNS", () => {
     const second = restore(applyPlayerAction(liked, at(2, 21 * 60, flags("smp_mihon_bookmark_kept"))));
     expect(journeyHasSns(second)).toBe(true);
     const days = snsTimeline(second);
-    expect(days.map((day) => [day.cityNameJa, day.day, day.posts.map((post) => post.id)]))
-      .toEqual([[expect.any(String), 2, [P2]], [expect.any(String), 1, [P1]]]);
-    const [tea] = days[1].posts;
+    expect(days.map((day) => [day.cityNameJa, day.day, day.heroine.map((post) => post.id), day.posts.map((post) => post.id)]))
+      .toEqual([[expect.any(String), 2, [], [P2]], [expect.any(String), 1, [P1], []]]);
+    const [tea] = days[1].heroine;
     expect(days[1].met.map((face) => face.id)).toEqual([TOMA]);
     expect(tea.line.textJa).toBe("航と、三時のお茶");
     expect(tea.author).toMatchObject({ id: "heroine", nameJa: "澪", characterId: "heroine" });
@@ -149,14 +149,12 @@ describe("the SNS", () => {
     expect(page.withPhotos.map((item) => item.imageId)).toEqual(["smp_album_clock_tower"]);
     // Someone without a portrait has no page; the heroine's page has her one card.
     expect(snsPersonPage(second, "smp_mihon_clock_keeper")).toBeNull();
-    expect(snsHeroinePage(second).days.map((day) => day.posts.map((post) => post.id))).toEqual([[P1]]);
-    // A night's posts are its one card (2026-11-27): hers first, then the people's, though トーマ's came first; her page, hers only.
-    const sameNight = { ...second, sns: { ...second.sns!, posts: second.sns!.posts.map((post) => ({ ...post, day: 1 })).reverse() } };
-    expect(snsTimeline(sameNight).map((day) => day.posts.map((post) => post.id))).toEqual([[P1, P2]]);
-    expect(snsHeroinePage(sameNight).days.map((day) => day.posts.map((post) => post.id))).toEqual([[P1]]);
-    const oneCard = renderToStaticMarkup(createElement(TravelLogDialog, { game: sameNight, onClose: () => {}, sns: { isNew: false, newIds: new Set<string>(), onLike: () => {} } }));
-    expect(oneCard.match(/data-testid="sns-card"/gu)).toHaveLength(1);
-    expect(oneCard).toContain(`data-sns-posts="${P1} ${P2}"`);
+    expect(snsHeroinePage(second).days.map((day) => day.heroine.map((post) => post.id))).toEqual([[P1]]);
+    // A night of hers and the people's (2026-11-27): her card, then the people's card, each a day's posts turned sideways.
+    const sameNight = { ...second, sns: { ...second.sns!, posts: second.sns!.posts.map((post) => ({ ...post, day: 1 })) } };
+    expect(snsTimeline(sameNight).map((day) => [day.heroine.map((post) => post.id), day.posts.map((post) => post.id)])).toEqual([[[P1], [P2]]]);
+    const both = renderToStaticMarkup(createElement(TravelLogDialog, { game: sameNight, onClose: () => {}, sns: { isNew: false, newIds: new Set<string>(), onLike: () => {} } }));
+    expect(both.match(/data-sns-posts="[^"]*"/gu)).toEqual([`data-sns-posts="${P1}"`, `data-sns-posts="${P2}"`]);
     const tonight = snsNightArrivals(second, { cityId: "mihon", day: 2 });
     expect([tonight.posts.map((post) => post.id), tonight.comments.map((item) => item.comment.id), tonight.faces.map((face) => face.id)])
       .toEqual([[P2], [`${P1}.later`], [TOMA]]);
