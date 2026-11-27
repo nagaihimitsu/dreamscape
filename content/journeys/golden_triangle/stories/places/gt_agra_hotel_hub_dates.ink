@@ -242,7 +242,7 @@ INCLUDE modules.ink
     - cond("flag gt_delhi_back_word_secret"):
         // 「読めなかった」と答えた人：ロータス寺院で約束したとおり、声で言い直す。
         # speaker: heroine
-        # recall: gt_album_d61
+        # recall: gt_album_d069
         # voice: gt_agra_confession_lead_011
         あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
         # speaker: heroine
@@ -256,7 +256,7 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_lotus_temple"):
         // ほかの答えの人：あの場面では読めなかった字を、ここで初めて明かす（2026-11-16）。
         # speaker: heroine
-        # recall: gt_album_d61
+        # recall: gt_album_d069
         # voice: gt_agra_confession_lead_013
         あ、その前に、一つだけ。ロータス寺院で、最後に背中に書いた字
         # speaker: heroine
