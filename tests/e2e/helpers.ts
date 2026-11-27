@@ -566,7 +566,7 @@ export const ops = {
     await expect(dialog).not.toHaveAttribute("data-settling");
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
-  /** ≡メニュー → 「旅の記録」 (on 「体験」: each thing lived is a `log-experience-<id>` card); returns that dialog. */
+  /** ≡メニュー → 「旅の記録」 (「SNS｜写真」, or 「写真」 alone for a journey without posts); returns that dialog. */
   async openRecords(page: Page): Promise<Locator> {
     await ops.menuItem(page, "旅の記録");
     const records = page.getByRole("dialog", { name: "旅の記録" });

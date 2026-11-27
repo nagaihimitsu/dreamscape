@@ -300,10 +300,10 @@ test("the sample journey plays from a new journey through its city finale and ep
   await page.getByTestId("end-roll-close").click();
   await memories.getByTestId("memories-records").click();
   const records = page.getByRole("dialog", { name: "旅の記録" });
-  // (With a photo taken since 「写真」 was last open it opens on 「写真」, 2026-11-25: 「体験」 lists what was lived.)
-  await records.getByTestId("travel-log-lived").click();
-  await expect(records.getByTestId("travel-log-lived")).toHaveAttribute("aria-pressed", "true");
-  await expect(records.locator('[data-testid^="log-experience-"]').first()).toBeVisible();
+  // (It may open on 「写真」 with a photo taken since it was last open, 2026-11-25; the sample's posts make 「SNS」 beside it.)
+  await records.getByTestId("travel-log-sns").click();
+  await expect(records.getByTestId("travel-log-sns")).toHaveAttribute("aria-pressed", "true");
+  await expect(records.getByTestId("sns")).toBeVisible();
   await expect(records.getByTestId("kept-memory-open")).toHaveCount(0);
   await ops.closeDialog(records);
   await expect(page.getByRole("button", { name: /へ出発/ })).toHaveCount(0);

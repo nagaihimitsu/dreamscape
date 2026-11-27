@@ -1,171 +1,109 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Modal, ModalTitle } from "../../components/Modal";
-import { CharacterFigure } from "../../components/CharacterPortrait";
-import { Icon } from "../../components/icons";
+import { NewDot } from "../../components/fx";
 import type { GameState } from "../../domain/game";
-import { HeroineNote } from "../battle/HeroineNote";
-import { albumSwipeStep } from "./album-pages";
-import { MISSED_PHOTO_JA, travelLogCities, travelLogPhotos, type LogCity, type LogPhoto } from "./travel-log";
-import "../battle/battle.css";
-import "./city.css";
+import { JourneyNumbersCard } from "./JourneyNumbers";
+import type { JourneyNumbers } from "./journey-numbers";
+import { journeyHasSns, type SnsPhotoView, type SnsPostView } from "./sns";
+import { SnsView } from "./SnsView";
+import { MISSED_PHOTO_JA, travelLogPhotos, type LogPhoto } from "./travel-log";
+import { formatTravelTime } from "./travel-time";
+import { useSwipe } from "./useSwipe";
 import "./travel-log.css";
 
 const served = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 /** The two axes of the log. */
-type Axis = "lived" | "photos";
-const KIND_JA: Record<"visit" | "finale" | "date", string> = { visit: "観光", finale: "都市フィナーレ", date: "デート" };
+type Axis = "sns" | "photos";
 /** Photos opened larger: the list they are turned through and the one shown first. */
 type Viewing = { photos: readonly LogPhoto[]; index: number };
 
-/**
- * A sideways swipe on an element (albumSwipeStep): `onStep` with +1 (to the left: the next) or -1, and the click the
- * release may still fire swallowed. A mouse never swipes.
- */
-function useSwipe(onStep: (step: -1 | 1) => void) {
-  const start = useRef<{ pointerId: number; x: number; y: number } | null>(null);
-  const swiped = useRef(false);
-  return {
-    onPointerDown: (event: React.PointerEvent) => {
-      swiped.current = false;
-      start.current = event.isPrimary && event.pointerType !== "mouse" ? { pointerId: event.pointerId, x: event.clientX, y: event.clientY } : null;
-    },
-    onPointerUp: (event: React.PointerEvent) => {
-      const from = start.current;
-      start.current = null;
-      if (!from || from.pointerId !== event.pointerId) return;
-      const step = albumSwipeStep(event.clientX - from.x, event.clientY - from.y);
-      if (!step) return;
-      swiped.current = true;
-      onStep(step);
-    },
-    onPointerCancel: () => { start.current = null; },
-    onClickCapture: (event: React.MouseEvent) => {
-      const afterSwipe = swiped.current;
-      swiped.current = false;
-      // A key's click (detail 0) is never the swipe's.
-      if (!afterSwipe || event.detail === 0) return;
-      event.preventDefault();
-      event.stopPropagation();
-    },
-  };
-}
+/** What 旅の記録 gives the SNS: the comments new as it opened, the post to open on, the player's like (none: a kept journey). */
+export type TravelLogSns = {
+  /** Something arrived that 「SNS」 has not shown yet (its dot; 旅の記録 then opens on it). */
+  isNew?: boolean;
+  newIds?: ReadonlySet<string>;
+  openPostId?: string;
+  onShown?: () => void;
+  onLike?: (postId: string) => void;
+};
 
 /**
- * 旅の記録 (2026-11-19 user decisions: 旅の記録 and アルバム made one; reshaped 2026-11-20; travel-log.ts): `extras` (旅の音楽室,
+ * 旅の記録 (2026-11-19 user decisions: 旅の記録 and アルバム made one; 2026-11-27: 「体験」 made 「SNS」): `extras` (旅の音楽室,
  * the end roll, the kept 旅の思い出), then the switch between its two axes:
- * - 「体験」: each city of the journey lived in, in its order, under its name; a tap on the name folds the city away (and
- *   back), as the list grows with the cities. In a city, each thing lived there as a card (its place's photo, kind, time when
- *   the save has it, place, clear title and record with its seal 「完」, and her few words looking back on the place, her
- *   face saying who speaks), then the people met there with their small standing pictures. `footer` (旅の数字) under it.
- * - 「写真」: every photo of the journey's album, the newest at the top left, as a close grid of square thumbnails; a tap
- *   opens them larger, in their own dialog over the log (PhotoViewer), which closes back to it. With `missedPhotos`
- *   (travel-log.ts showsMissedPhotos: the journey is over), the photos not taken yet follow in the story's order, in grey
- *   in the grid and opened larger alike (2026-11-20 user decision), a line above the grid saying what the grey ones are.
- * With `photosNew` (a photo taken since 「写真」 was last open, 2026-11-25) it opens on 「写真」; `onPhotosShown` tells when
- * 「写真」 is on show, so its photos count as seen.
+ * - 「SNS」 (SnsView.tsx; only for a journey with posts, journeyHasSns): the nights' posts and comments, the people met and
+ *   their pages, the heroine's page with 旅の数字 (`numbers`).
+ * - 「写真」: every photo of the journey's album, the newest at the top left, as a close grid of square thumbnails (their
+ *   reduced copies); a tap opens them larger, in their own dialog over the log (PhotoViewer), which closes back to it. With
+ *   `missedPhotos` (travel-log.ts showsMissedPhotos: the journey is over), the photos not taken yet follow in the story's
+ *   order, in grey in the grid and opened larger alike (2026-11-20 user decision), a line above the grid saying what the
+ *   grey ones are. A journey without an SNS has 旅の数字 under it.
+ * A tab with something new has a small dot (this tab's memory: GameApp). It opens on 「SNS」 when something came there (or
+ * to open a post), else on 「写真」 when a photo is new (`photosNew`), else on 「SNS」 when there is one. `onPhotosShown` and
+ * the SNS's `onShown` tell when each is on show, so what it has counts as seen.
  * It takes no press for a moment (settlePresses) and closes with 「× 閉じる」, a tap on the dimmed page around, or Esc. It
- * shows no names, no city progress, no credit, no relationship value and no quiz score (the place photos' credits are in
- * 出典・権利の一覧).
+ * shows no city progress, no credit, no relationship value and no quiz score.
  */
-export function TravelLogDialog({ game, missedPhotos = false, photosNew = false, onPhotosShown, extras, footer, onClose }: {
+export function TravelLogDialog({ game, missedPhotos = false, photosNew = false, onPhotosShown, sns = {}, numbers = null, reduceMotion = false, extras, onClose }: {
   game: GameState;
   missedPhotos?: boolean;
   photosNew?: boolean;
   onPhotosShown?: () => void;
+  sns?: TravelLogSns;
+  numbers?: JourneyNumbers | null;
+  reduceMotion?: boolean;
   extras?: ReactNode;
-  footer?: ReactNode;
   onClose: () => void;
 }) {
-  const cities = useMemo(() => travelLogCities(game), [game]);
+  const hasSns = journeyHasSns(game);
   const photos = useMemo(() => travelLogPhotos(game, missedPhotos), [game, missedPhotos]);
   const taken = photos.filter((photo) => !photo.missed).length;
-  const [axis, setAxis] = useState<Axis>(photosNew ? "photos" : "lived");
+  const [axis, setAxis] = useState<Axis>(() => !hasSns ? "photos" : sns.isNew || sns.openPostId ? "sns" : photosNew ? "photos" : "sns");
+  // The comments new as 旅の記録 opened keep their dots while it is open.
+  const [newIds] = useState(() => sns.newIds ?? new Set<string>());
   useEffect(() => {
     if (axis === "photos") onPhotosShown?.();
-  // As 「写真」 comes on show (and while it shows, a photo taken meanwhile: `game`).
+    else sns.onShown?.();
+  // As a tab comes on show (and while it shows, what arrives meanwhile: `game`).
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [axis, game.album]);
-  const [folded, setFolded] = useState<ReadonlySet<string>>(() => new Set());
+  }, [axis, game.album, game.sns]);
   const [viewing, setViewing] = useState<Viewing | null>(null);
-  const lived = cities.reduce((sum, city) => sum + city.experiences.length, 0);
-  const toggle = (cityId: string) => setFolded((current) => {
-    const next = new Set(current);
-    if (!next.delete(cityId)) next.add(cityId);
-    return next;
-  });
+  /** A photo of the SNS opened larger: in the album's order when it is an album photo there, else on its own. */
+  function openSnsPhoto(photo: SnsPhotoView, post?: SnsPostView) {
+    const index = photos.findIndex((item) => item.imageId === photo.imageId);
+    if (index >= 0) return setViewing({ photos, index });
+    if (!photo.path) return;
+    const when = post ? `${post.arrived.day}日目` : photo.album ? `${photo.album.day}日目 ${formatTravelTime(photo.album.minute)}` : "";
+    setViewing({ index: 0, photos: [{ imageId: photo.imageId, path: photo.path, thumbPath: photo.thumbPath ?? photo.path,
+      altJa: post?.line.textJa ?? "", titleJa: post ? `${post.author.nameJa}の写真` : "写真",
+      metaJa: [when, photo.placeNameJa].filter(Boolean).join(" · "), missed: false }] });
+  }
 
   return <>
     <Modal labelledBy="travel-log-title" className="travel-log" onClose={onClose} settlePresses closeOnBackdrop>
       <ModalTitle id="travel-log-title" onClose={onClose} closeTestId="travel-log-close">旅の記録</ModalTitle>
       {extras}
-      <div className="travel-log-axes" role="group" aria-label="記録の見方">
-        <button type="button" aria-pressed={axis === "lived"} data-testid="travel-log-lived" onClick={() => setAxis("lived")}>
-          体験<span className="travel-log-count">{lived}</span></button>
+      {hasSns && <div className="travel-log-axes" role="group" aria-label="記録の見方">
+        <button type="button" aria-pressed={axis === "sns"} data-testid="travel-log-sns" onClick={() => setAxis("sns")}>
+          SNS{sns.isNew && axis !== "sns" && <NewDot label="新しい投稿・コメントあり" />}</button>
         <button type="button" aria-pressed={axis === "photos"} data-testid="travel-log-photos" onClick={() => setAxis("photos")}>
-          写真<span className="travel-log-count">{taken}</span></button>
-      </div>
-      {axis === "lived" ? <>
-        {cities.map((city) => <LivedCity key={city.cityId} city={city} heroineName={game.heroineName}
-          open={!folded.has(city.cityId)} onToggle={() => toggle(city.cityId)} />)}
-        {footer}
-      </> : <PhotoGrid photos={photos} onOpen={(index) => setViewing({ photos, index })} />}
+          写真<span className="travel-log-count">{taken}</span>{photosNew && axis !== "photos" && <NewDot label="新しい写真あり" />}</button>
+      </div>}
+      {!hasSns && <h3 className="travel-log-photos-title">写真<span className="travel-log-count">{taken}</span></h3>}
+      {axis === "sns" ? <SnsView game={game} newIds={newIds} openPostId={sns.openPostId} numbers={numbers} reduceMotion={reduceMotion}
+        onLike={sns.onLike} onPhoto={openSnsPhoto} />
+        : <>
+          <PhotoGrid photos={photos} onOpen={(index) => setViewing({ photos, index })} />
+          {!hasSns && numbers && <JourneyNumbersCard numbers={numbers} reduceMotion={reduceMotion} />}
+        </>}
     </Modal>
     {viewing && <PhotoViewer viewing={viewing} onClose={() => setViewing(null)} />}
   </>;
 }
 
-/** One city of 「体験」: its name (a button that folds it), the things lived there in the order lived, the people met there. */
-function LivedCity({ city, heroineName, open, onToggle }: { city: LogCity; heroineName: string; open: boolean; onToggle: () => void }) {
-  const body = `log-city-${city.cityId}`;
-  return <section className="travel-log-city" data-testid={`log-city-${city.cityId}`} aria-labelledby={`${body}-name`}>
-    <h3 className="travel-log-city-name">
-      <button type="button" id={`${body}-name`} aria-expanded={open} aria-controls={body} onClick={onToggle}>
-        <span>{city.cityJa}</span>
-        <span className="travel-log-city-count">{city.experiences.length}</span>
-        <Icon name="chevron-down" />
-      </button>
-    </h3>
-    <div id={body} hidden={!open}>
-      {city.experiences.length === 0
-        ? <p className="travel-log-empty">この街での体験は、まだありません。訪ねた場所の思い出が、ここに残ります。</p>
-        : <ol className="travel-log-lived">
-          {city.experiences.map((item) => <li key={item.id} data-testid={`log-experience-${item.id}`}>
-            <article className="travel-log-card" aria-labelledby={`log-title-${item.id}`}>
-              {item.picture && <div className="album-photo travel-log-picture">
-                <img src={served(item.picture.path)} alt={item.picture.altJa} loading="lazy" decoding="async" />
-              </div>}
-              <div className="travel-log-card-body">
-                <p className="travel-log-where">{[KIND_JA[item.kind], item.whenJa, item.placeJa].filter(Boolean).join(" · ")}</p>
-                <div className="stop-title">
-                  <h4 id={`log-title-${item.id}`}>{item.titleJa}</h4>
-                  <span className="stop-seal" aria-hidden="true">完</span>
-                </div>
-                <p className="travel-log-record">{item.descriptionJa}</p>
-              </div>
-              {item.heroine && <HeroineNote className="travel-log-heroine" label={heroineName} hideLabel text={item.heroine.textJa}
-                cityId={item.heroine.cityId} testId={`log-heroine-${item.id}`} />}
-            </article>
-          </li>)}
-        </ol>}
-      {city.people.length > 0 && <section className="met-people" aria-labelledby={`${body}-people`} data-testid="met-people">
-        <h4 id={`${body}-people`} className="travel-log-people-title">出会った人</h4>
-        <dl>{city.people.map((person) => <div key={person.id} className="travel-log-person" data-testid={`met-person-${person.id}`}>
-          <span className="travel-log-person-figure" aria-hidden="true">
-            {person.characterId && <CharacterFigure characterId={person.characterId} cityId={city.cityId} />}
-          </span>
-          <div>
-            <dt>{person.nameJa}</dt>
-            {person.descriptionJa && <dd>{person.descriptionJa}</dd>}
-          </div>
-        </div>)}</dl>
-      </section>}
-    </div>
-  </section>;
-}
-
 /**
- * 「写真」: the journey's album photos, the newest first, then any not taken yet (grey), as a close grid of square thumbnails.
+ * 「写真」: the journey's album photos, the newest first, then any not taken yet (grey), as a close grid of square thumbnails
+ * (five to a row, about seven on a wide screen; 2026-11-27), each the picture's reduced copy.
  * Grey is not the only sign of one not taken: a line above the grid says what the grey ones are, and its button's name says so.
  */
 export function PhotoGrid({ photos, onOpen }: { photos: readonly LogPhoto[]; onOpen: (index: number) => void }) {
@@ -178,7 +116,7 @@ export function PhotoGrid({ photos, onOpen }: { photos: readonly LogPhoto[]; onO
         <button type="button" className={photo.missed ? "is-missed" : undefined} data-testid={photo.missed ? "album-missed" : undefined}
           aria-label={photo.missed ? `${photo.titleJa}（${MISSED_PHOTO_JA}）を大きく見る` : `${photo.titleJa}の写真を大きく見る`}
           onClick={() => onOpen(index)}>
-          <img src={served(photo.path)} alt="" loading="lazy" decoding="async" />
+          <img src={served(photo.thumbPath)} alt="" loading="lazy" decoding="async" />
         </button>
       </li>)}
     </ul>

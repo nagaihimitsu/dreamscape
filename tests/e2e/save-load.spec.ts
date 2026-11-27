@@ -67,7 +67,7 @@ test("autosaved progress, a battle question, the English note and the text speed
   await ops.closeDialog(photoCredits);
   await expect(ops.settingsButton(page)).toBeFocused();
   const records = await ops.openRecords(page);
-  await expect(records.locator('[data-testid^="log-experience-"]')).toHaveCount(1);
+  await expect(records.getByRole("heading", { name: /^写真/u })).toBeVisible();
   await ops.closeDialog(records);
   const settings = await ops.openSettings(page);
   await expect(settings.getByLabel("文字送り")).toHaveValue("45");

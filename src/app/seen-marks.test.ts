@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { addedIds, englishNoteKeys, markSeen, seenAll, unseenIds } from "./seen-marks";
 
 describe("the marks of what the player has not looked at yet", () => {
-  const start = seenAll({ items: ["charm"], clues: ["altar"], english: ["word:namaste"], glossary: ["gt_term_golgappa"], album: ["gt_album_d008"] });
+  const start = seenAll({ items: ["charm"], clues: ["altar"], english: ["word:namaste"], glossary: ["gt_term_golgappa"], album: ["gt_album_d008"], sns: [] });
 
   it("count everything there is as seen after a new game, a load or Debug's return", () => {
     expect(unseenIds(start.items, ["charm"])).toEqual([]);

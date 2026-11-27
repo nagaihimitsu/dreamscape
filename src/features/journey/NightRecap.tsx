@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLeaflet } from "./leaflet";
 import { HeroineNote } from "../battle/HeroineNote";
 import { escapeHtml, OSM_TILES } from "./PlaceMap";
@@ -91,19 +91,6 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
 }
 
 /**
- * Today's headlines (2026-11-11 user decision, save v23): the clear titles of the episodes completed today, in the order
- * completed, as the night's list above the route. Display only.
- */
-export function TodayHeadlines({ headlines }: { headlines: readonly string[] }) {
-  // (The night screen and its leaving may both be in the page for a moment.)
-  const titleId = useId();
-  return <section className="today-headlines" aria-labelledby={titleId} data-testid="today-headlines">
-    <h2 id={titleId} className="today-headlines-title">今日の見出し</h2>
-    <ol>{headlines.map((headline, index) => <li key={index}>{headline}</li>)}</ol>
-  </section>;
-}
-
-/**
  * 今日の一語 (2026-11-13 user decision): one English word or phrase met today and its meaning there (todayWord), a small plain
  * line at the end of the night screen. Display only, read in the screen's order (no live region).
  */
@@ -115,11 +102,10 @@ export function TodayWordLine({ word }: { word: TodayWord }) {
   </p>;
 }
 
-/** Under the night's line: today's headlines (episodes completed today), today's route (when the party went out) and the heroine's line of the night (when written). */
+/** Under the night's line: the heroine's line of the night (when written), then today's route (when the party went out). */
 export function NightRecapView({ recap }: { recap: NightRecap }) {
   return <div className="night-recap">
-    {recap.headlines.length > 0 && <TodayHeadlines headlines={recap.headlines} />}
-    {recap.route.length > 1 && <TodayRouteMap route={recap.route} />}
     {recap.line !== null && <HeroineNote className="night-recap-line" label={recap.heroineName} text={recap.line} cityId={recap.cityId} testId="night-line" />}
+    {recap.route.length > 1 && <TodayRouteMap route={recap.route} />}
   </div>;
 }

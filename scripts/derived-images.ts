@@ -14,7 +14,9 @@ import { requireServedFile } from "./public-assets";
 // choosePlacePhoto) and 「待機」's, the tour's and the shop's (chooseCardPhotos) and a `backdrop` for every city backdrop; and a `recap`
 // (2026-11-13) of the photo of each episode's map place, which the resume
 // recap shows when the episode took no album photo (journey-moments.ts
-// recapPicture: sharp on a 3× phone at its 280 px). content:build
+// recapPicture: sharp on a 3× phone at its 280 px); and a square `thumb`
+// (2026-11-27) of every album and SNS picture, which 旅の記録's grids read
+// (the 「写真」 grid, the SNS's person pages). content:build
 // makes them after the content is valid and serves them from the generated
 // public folder only (content-outputs.ts); they never enter content/ or git.
 // The copies are kept in a cache (node_modules/.cache, beside the Ink
@@ -30,6 +32,8 @@ export const DERIVED_IMAGE_SETTINGS = {
   backdrop: { width: 1280, height: 1280, fit: "inside", withoutEnlargement: true, quality: 60 },
   /** An 840×560 cover crop: the recap's 3:2 frame (160 px wide, 280 px on a 320-px phone) at 3× (target ≤ 80 KiB). */
   recap: { width: 840, height: 560, fit: "cover", withoutEnlargement: false, quality: 60 },
+  /** A 256×256 cover crop: an album or SNS picture in 旅の記録's grids (5 to 7 a row, about 70 px on a phone) at 3× (2026-11-27; target ≤ 16 KiB). */
+  thumb: { width: 256, height: 256, fit: "cover", withoutEnlargement: false, quality: 60 },
 } as const satisfies Record<DerivedImageKind, { width: number; height: number; fit: "cover" | "inside"; withoutEnlargement: boolean; quality: number }>;
 
 /** Bump when the way a copy is encoded changes outside the settings. */
@@ -68,6 +72,8 @@ export function derivedImageList(input: {
   }[];
   journeyOf: ReadonlyMap<string, string>;
   publicFiles: ReadonlyMap<string, string>;
+  /** The album's and the SNS's pictures (their IDs are one namespace: sns-posts.ts), each made a `thumb`. */
+  pictures?: readonly { id: string; path: string; journeyId: string }[];
 }): DerivedImage[] {
   const images = new Map<string, DerivedImage>();
   const add = (asset: TourismAsset | null, kind: DerivedImageKind) => {
@@ -84,6 +90,10 @@ export function derivedImageList(input: {
     // 前回までのあらすじ's photo: an episode's place, or a date's destination (a date finished last, 2026-11-19).
     for (const place of places.filter((item) => episodePlaceIds.includes(item.id) || item.destinationIds?.length))
       add(choosePlacePhoto(input.content, place, hotelPlaceId), "recap");
+  }
+  for (const picture of input.pictures ?? []) {
+    const served = derivedImageFile(picture.journeyId, picture.id, "thumb");
+    if (!images.has(served)) images.set(served, { path: served, kind: "thumb", assetId: picture.id, source: requireServedFile(input.publicFiles, picture.path) });
   }
   return [...images.values()];
 }

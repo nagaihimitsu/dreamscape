@@ -10,6 +10,7 @@ import { TimePassage } from "../features/journey/TimePassage";
 import { NightFade, NightRest } from "../features/journey/NightRest";
 import { NightLeaving, type NightButton } from "../features/journey/NightScreen";
 import { nightRecap, restNightCard, todayWord, type NightKey, type NightRecap, type TodayWord } from "../features/journey/night-recap";
+import { snsNightCard, type SnsNightCard } from "../features/journey/sns";
 import { DAY_END_REST_JA, NIGHT_RESTED_JA } from "../features/journey/night-rest-text";
 import type { HomeRoute } from "../domain/travel-routes";
 import type { GameChange } from "./useGameSession";
@@ -29,7 +30,8 @@ const legArt = (leg: TourLeg): TransportMode => ({ id: leg.id, nameJa: leg.label
  * scenes before the night).
  */
 type Effect = { kind: "move"; mode: TransportMode; route?: RideRoute } | { kind: "night" } | { kind: "day_end"; cityId: string; recap?: NightRecap; line: string }
-  | { kind: "night_left"; cityId: string; buttons: readonly NightButton[]; recap: NightRecap; word: TodayWord | null; clock: NightClock } | { kind: "night_fade" };
+  | { kind: "night_left"; cityId: string; buttons: readonly NightButton[]; recap: NightRecap; word: TodayWord | null; sns: SnsNightCard | null; clock: NightClock }
+  | { kind: "night_fade" };
 /** The night's clock, as the header shows it (day, time, the journey's calendar for the weekday). */
 export type NightClock = Pick<GameState["travel"], "day" | "minute" | "calendar">;
 const clockOf = (state: GameState): NightClock => ({ day: state.travel.day, minute: state.travel.minute, calendar: state.travel.calendar });
@@ -111,7 +113,8 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
         // home to them as after 「休む」, and the visual when the night passes (playMove).
         if (after.travel.day !== before.travel.day)
           play([dayEnd.by === "game" ? nightCard(before, true)
-            : { kind: "night_left", cityId: before.currentCityId, buttons: dayEnd.buttons, recap: nightRecap(before), word: todayWord(before), clock: clockOf(before) }, ...tour]);
+            : { kind: "night_left", cityId: before.currentCityId, buttons: dayEnd.buttons, recap: nightRecap(before), word: todayWord(before),
+              sns: snsNightCard(before, { cityId: before.currentCityId, day: before.travel.day }), clock: clockOf(before) }, ...tour]);
         else {
           dayEndNight.current = { by: dayEnd.by, cityId: before.currentCityId, day: before.travel.day };
           if (before.travel.currentPlaceId !== after.travel.currentPlaceId)
@@ -189,7 +192,7 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
       held={queue[1] ? queue[1].kind === "move" : darkAfter} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night" && <TimePassage key={`${queue.length}:night`} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "day_end" && <NightRest key={`${queue.length}:day_end`} cityId={current.cityId} recap={current.recap} line={current.line} reduceMotion={reduceMotion} onEnd={done} />}
-    {current?.kind === "night_left" && <NightLeaving key={`${queue.length}:night_left`} cityId={current.cityId} buttons={current.buttons} recap={current.recap} word={current.word} reduceMotion={reduceMotion} onEnd={done} />}
+    {current?.kind === "night_left" && <NightLeaving key={`${queue.length}:night_left`} cityId={current.cityId} buttons={current.buttons} recap={current.recap} word={current.word} sns={current.sns} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night_fade" && <NightFade key={`${queue.length}:night_fade`} reduceMotion={reduceMotion} onEnd={done} />}
   </>;
   /** An effect is on screen (the day's end waits for it to end). */

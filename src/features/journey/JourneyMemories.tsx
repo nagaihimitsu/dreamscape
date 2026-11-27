@@ -9,7 +9,7 @@ export type MemoryViews = {
   onMusicRoom: () => void;
   /** ミニゲーム集 (MiniGameCollection.tsx): every mini-game of the journey, to play again. */
   onMiniGames: () => void;
-  /** 旅の記録 (TravelLog.tsx: the journey's 体験 and 写真, city by city). */
+  /** 旅の記録 (TravelLog.tsx: the journey's SNS and 写真). */
   onRecords: () => void;
 };
 
