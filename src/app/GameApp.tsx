@@ -80,12 +80,13 @@ import { primeSpeechOnGesture } from "../features/learning/ReadAloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
-import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { albumPages, showsMissedPhotos } from "../features/journey/album-pages";
 import { PhotoShowContext, shownPrintOf, type PhotoShowCue, type PrintFlight } from "../components/PhotoShow";
 import { ITEM_LEAVE_MS } from "../components/item-show";
 import { photoShowsLarge } from "../content/tags";
 import { journeyNumbers } from "../features/journey/journey-numbers";
+import { snsArrivedIds, snsNightCard } from "../features/journey/sns";
+import { toggleSnsLike } from "../domain/sns";
 import { freeTimePhotos, recapPhotos, ScreenCredits, type ScreenAnswer } from "../features/journey/PhotoCredits";
 import { shownNotebookClues } from "../features/tourism/notebook-clues";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
@@ -414,15 +415,17 @@ export function GameApp({
   });
   playMoveRef.current = playMove;
   // The day's end (docs/02 「一日の終わり」): free time at 21:00 or later is not shown. When control comes back to it (after a move,
-  // a wait, a scene, a date or a tour, a load, the page's start), getDayEnd says what comes instead: with night actions open, the
-  // night screen (below); with none, the game rests by itself through the same action as 「休む」 (its cheapest way home) with
+  // a wait, a scene, a date or a tour, a load, the page's start), getDayEnd says what comes instead: with night actions open or
+  // something new on the SNS tonight, the night screen (below); with neither, the game rests by itself through the same action as 「休む」 (its cheapest way home) with
   // its one night visual. Once the night screen has shown tonight (this tab's memory), it stays for its 「ホテルで休む」 when its
   // last action is done, so a night never has two night visuals.
   const dayEnd = game ? getDayEnd(game) : null;
   const nightShown = useRef<{ cityId: string; day: number } | null>(null);
   const seen = nightShown.current;
   const nightSeen = !!game && !!seen && seen.cityId === game.currentCityId && seen.day === game.travel.day;
-  const nightScreen = !!dayEnd && (dayEnd.actions.length > 0 || nightSeen);
+  // Something came on the SNS tonight (2026-11-27): the night screen shows, with its card, even with no night action open.
+  const nightSns = game && dayEnd ? snsNightCard(game, { cityId: game.currentCityId, day: game.travel.day }) : null;
+  const nightScreen = !!dayEnd && (dayEnd.actions.length > 0 || nightSeen || !!nightSns);
   useEffect(() => {
     if (game && nightScreen) nightShown.current = { cityId: game.currentCityId, day: game.travel.day };
   }, [game, nightScreen]);
@@ -559,8 +562,11 @@ export function GameApp({
     if (game) setAgainDifficulty(difficultyOf(game));
     setConfirmAgain(loadJourneyMemory(storage));
   }
-  function openRecords() {
+  // The post 旅の記録 opens on (the night screen's SNS card), none from the menu.
+  const [recordsPost, setRecordsPost] = useState<string | null>(null);
+  function openRecords(postId: string | null = null) {
     setKeptMemory(loadJourneyMemory(storage));
+    setRecordsPost(postId);
     setRecordsOpen(true);
   }
   // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
@@ -592,8 +598,9 @@ export function GameApp({
   );
   const englishIds = englishKey ? englishKey.split("\n") : [];
   const albumIds = game?.album.map((photo) => photo.imageId) ?? [];
+  const snsIds = game ? snsArrivedIds(game) : [];
   useEffect(() => {
-    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds, glossary: metTerms(game), album: albumIds }));
+    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds, glossary: metTerms(game), album: albumIds, sns: snsIds }));
   });
   useEffect(() => {
     if (notebook && game) setSeenMarks((marks) => marks && markSeen(marks, "clues", game.discoveredClueIds));
@@ -610,6 +617,9 @@ export function GameApp({
   }, [noteTab, englishKey]);
   // 旅の記録's 「写真」: its dot while a photo taken in play has not been shown there (2026-11-25); 旅の記録 then opens on it.
   const albumNew = unseenIds(seenMarks?.album, albumIds).length > 0;
+  // 旅の記録's 「SNS」: its dot while a post or comment that arrived in play has not been shown there (2026-11-27); a new
+  // comment's own red dot there; 旅の記録 then opens on it.
+  const snsNewIds = unseenIds(seenMarks?.sns, snsIds);
   const notebookCue = { gleam: clueGleam, unseen: !!game && unseenIds(seenMarks?.clues, game.discoveredClueIds).length > 0 };
   const englishNew = unseenIds(seenMarks?.english, questionMarks).length > 0;
   const wordsNew = unseenIds(seenMarks?.english, wordMarks).length > 0;
@@ -1051,7 +1061,7 @@ export function GameApp({
         sceneBackgroundId={sceneBackgroundId}
         scenePlaceJa={scenePlaceJa}
         view={hudView(game)}
-        onRecords={openRecords}
+        onRecords={() => openRecords()}
         onNote={notePages.length ? openNote : undefined}
         noteLabel={noteName(notePages)}
         onScreenCredits={() => setScreenCreditsOpen(true)}
@@ -1074,7 +1084,7 @@ export function GameApp({
         holdNotices={momentCovers || (!!shownPhotoNotice && !shownPhotoNotice.flown) || !!printFlight || !!learnedWords.notice || !!lineItemId || !!itemLeave || !!lineItemOutId || !!itemOutLeave}
         itemFlight={itemLeave}
         photoFlight={printFlight}
-        recordsNew={albumNew}
+        recordsNew={albumNew || snsNewIds.length > 0}
         itemOutFlight={itemOutLeave}
         onSettings={() => {
           setPlayer(game.playerName);
@@ -1403,7 +1413,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <JourneyMemoriesScreen journeyJa={getJourney(journeyId)?.nameJa ?? ""} playerName={game.playerName} heroineName={game.heroineName}
               numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
-              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true), onRecords: openRecords }}
+              views={{ onEndRoll: moments.openEndRoll, onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true), onRecords: () => openRecords() }}
               onAgain={openAgain}
               selector={!isDebug && onSwitchJourney ? <JourneySelection value={journeyId} onChange={requestJourneySwitch} /> : undefined} />
           </>
@@ -1412,6 +1422,8 @@ export function GameApp({
             key={`${game.currentCityId}:${game.travel.day}`}
             game={game}
             buttons={nightButtons(game, dayEnd.actions, departure?.city.nameJa)}
+            sns={nightSns}
+            onOpenSns={(postId) => openRecords(postId)}
             reduceMotion={displaySettings.value.reduceMotion}
             onAction={(kind) => {
               if (kind === "read_epilogue") {
@@ -1470,6 +1482,10 @@ export function GameApp({
       {recordsOpen && game && <LazyDialog onClose={() => setRecordsOpen(false)}>
         <TravelLogDialog game={game} onClose={() => setRecordsOpen(false)}
           photosNew={albumNew} onPhotosShown={() => setSeenMarks((marks) => marks && markSeen(marks, "album", albumIds))}
+          sns={{ isNew: snsNewIds.length > 0, newIds: new Set(snsNewIds), openPostId: recordsPost ?? undefined,
+            onShown: () => setSeenMarks((marks) => marks && markSeen(marks, "sns", snsIds)),
+            onLike: (postId) => { commit((state) => toggleSnsLike(state, postId, game.revision)); } }}
+          numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion}
           missedPhotos={showsMissedPhotos(game, keptMemory?.status === "loaded")}
           extras={<>
             {isJourneyComplete(game) && <div className="records-extras">
@@ -1483,7 +1499,7 @@ export function GameApp({
             {keptMemory?.status === "loaded" && <button type="button" className="secondary records-kept" data-testid="kept-memory-open"
               onClick={() => setKeptOpen(true)}>前の旅の思い出</button>}
           </>}
-          footer={<JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />} />
+          />
       </LazyDialog>}
       {keptOpen && keptGame && <Modal labelledBy="kept-memory-title" onClose={closeKept} closeOnBackdrop>
         <ModalTitle id="kept-memory-title" onClose={closeKept}>前の旅の思い出</ModalTitle>
@@ -1519,7 +1535,8 @@ export function GameApp({
         <MiniGameCollection game={keptGame ?? game} play={collectionPlay} onClose={() => setMiniGamesOpen(false)} />
       </LazyDialog>}
       {keptLogOpen && keptGame && <LazyDialog onClose={() => setKeptLogOpen(false)}>
-        <TravelLogDialog game={keptGame} missedPhotos={showsMissedPhotos(keptGame, true)} onClose={() => setKeptLogOpen(false)} />
+        <TravelLogDialog game={keptGame} missedPhotos={showsMissedPhotos(keptGame, true)} onClose={() => setKeptLogOpen(false)}
+          numbers={journeyNumbers(keptGame, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
       </LazyDialog>}
 
       {termCardShown && termCard && game &&

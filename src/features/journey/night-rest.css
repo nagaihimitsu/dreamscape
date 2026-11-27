@@ -226,7 +226,7 @@
 .night-rest.has-recap .night-rest-sky { width: min(120px, 34vw); }
 .night-rest.has-recap .night-rest-content { width: 100%; max-width: 360px; }
 .night-recap { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 12px; }
-.night-screen-actions + .night-recap { margin-top: 22px; }
+.night-screen-actions + .night-recap { margin-top: 30px; }
 .today-route { margin: 0; }
 /* --ds-on-slate-muted on the night colour: about 13:1. */
 .today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; text-align: center; }
@@ -288,31 +288,55 @@
 }
 .today-route-mark.is-last { box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .night-recap .heroine-note { margin: 0; text-align: left; }
-/* Today's headlines (TodayHeadlines, save v23): the clear titles of the day's episodes above the route, in the serif of the
-   night's line, told apart by their heading (no side accent); hairlines of the moon's gold between them. */
-.today-headlines { width: 100%; }
-.today-headlines-title {
-  margin: 0 0 4px;
-  color: var(--ds-on-slate-muted);
-  font-family: inherit;
-  font-size: var(--ds-text-caption);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: var(--ds-leading-body);
-  text-align: center;
-}
-.today-headlines ol { margin: 0; padding: 0; list-style: none; }
-.today-headlines li {
-  padding: 4px 0;
+/* The SNS's card (SnsNightCard.tsx, 2026-11-27): a pane of the night's glass under the buttons and well apart from them (a
+   card of another shape: faces at its left), its words white, the first comment two lines at most. */
+.night-sns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  margin: 30px 0 0;
+  padding: 10px 10px 10px 12px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-night-glass);
   color: var(--ds-on-slate);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  line-height: var(--ds-leading-body);
-  text-align: center;
-  overflow-wrap: anywhere;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-snug);
+  text-align: left;
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
 }
-.today-headlines li + li { border-top: 1px solid var(--ds-gold-hairline); }
-/* 今日の一語 (TodayWordLine, 2026-11-13): a small plain line at the night screen's end, its label as the headlines' heading, the
+button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
+.night-sns > .icon { flex: none; width: 18px; height: 18px; color: var(--ds-gold); }
+.night-sns-faces { display: inline-flex; flex: none; }
+.night-sns-face {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ds-parchment);
+  box-shadow: 0 0 0 1.5px var(--ds-night);
+}
+.night-sns-face + .night-sns-face { margin-left: -10px; }
+.night-sns-face .character-face { width: 100%; height: 100%; border: 0; }
+.night-sns-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; line-height: 1; }
+.night-sns-text { display: flex; flex: 1 1 auto; flex-direction: column; gap: 2px; min-width: 0; }
+.night-sns-title { color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.04em; }
+.night-sns-first {
+  display: -webkit-box;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.night-sns-first b { font-weight: 700; }
+.night-sns + .night-recap { margin-top: 18px; }
+/* 今日の一語 (TodayWordLine, 2026-11-13): a small plain line at the night screen's end, its label as the route's title, the
    English word in the night line's serif, its meaning beside it (--ds-on-slate about 16:1, the muted label about 13:1). */
 .today-word {
   display: flex;

@@ -1,6 +1,8 @@
 // The SNS's rules and readers (2026-11-26 user decisions; authoring/SNS_PLAN.md 「届き方と記録」) on the sample journey's
 // fictional 見本の街, with posts made for the test: the sample's people have no portrait (so its own posts file has only the
 // heroine's), and here リリ and トーマ are given one, as the build requires of anyone on the SNS.
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import type { SnsData } from "../content/sns";
 
@@ -44,7 +46,8 @@ const { validateGameState } = await import("./game");
 const { applyPlayerAction } = await import("./player-action");
 const { deliverSns, postLikers, toggleSnsLike, snsShowsPerson } = await import("./sns");
 const { meets } = await import("./conditions");
-const { snsTimeline, snsPersonPage, snsNightArrivals, snsHeroinePage, snsMetPeople, journeyHasSns } = await import("../features/journey/sns");
+const { snsTimeline, snsPersonPage, snsNightArrivals, snsHeroinePage, snsMetPeople, journeyHasSns, snsNightCard, snsArrivedIds } = await import("../features/journey/sns");
+const { TravelLogDialog } = await import("../features/journey/TravelLog");
 type GameState = import("./game").GameState;
 
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
@@ -152,5 +155,30 @@ describe("the SNS", () => {
       .toEqual([[P2], [`${P1}.later`], [TOMA]]);
     expect(snsNightArrivals(second, { cityId: "mihon", day: 3 })).toEqual({ posts: [], comments: [], faces: [] });
     expect(snsMetPeople(second)).toEqual([]);
+  });
+
+  it("gives the night screen its card and 旅の記録 its 「SNS」 (2026-11-27)", () => {
+    const first = restore(applyPlayerAction(cityStart("mihon", ["航", "澪"]), at(1, 21 * 60, datePlayed)));
+    const liked = toggleSnsLike(first, P1, first.revision);
+    const second = restore(applyPlayerAction(liked, at(2, 21 * 60, flags("smp_mihon_bookmark_kept"))));
+    // The night's card: the first comment of the night and the post it opens; a post alone when no comment came; none for a quiet night.
+    expect(snsNightCard(first, { cityId: "mihon", day: 1 })).toMatchObject({ titleJa: "SNS にコメントが届きました", postId: P1,
+      first: { textJa: "その席、わたしが拭いたの" }, faces: [expect.objectContaining({ id: LILI }), expect.objectContaining({ id: TOMA })] });
+    expect(snsNightCard(second, { cityId: "mihon", day: 2 })).toMatchObject({ postId: P1, first: { textJa: "しおり、まだ持ってますか" } });
+    expect(snsNightCard(second, { cityId: "mihon", day: 3 })).toBeNull();
+    expect(snsArrivedIds(second)).toEqual([P1, P2, `${P1}.lili`, `${P1}.toma_b`, `${P1}.after_lili`, `${P1}.later`]);
+    // 旅の記録 opens on 「SNS」 with something new: the heroine's card and トーマ's post, the heart pressed, a red dot on the new comment.
+    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: second, onClose: () => {},
+      sns: { isNew: true, newIds: new Set([`${P1}.later`]), onLike: () => {} } }));
+    expect(html).toContain('aria-pressed="true" data-testid="travel-log-sns"');
+    expect(html.match(/data-testid="sns-card"/gu)).toHaveLength(2);
+    expect(html).toContain('aria-pressed="true" data-testid="sns-like"');
+    expect(html.match(/class="sns-new-dot"><span class="sr-only">新着：/gu)).toHaveLength(1);
+    expect(html).toContain("航と、三時のお茶");
+    expect(html).not.toMatch(/いいね\s*\d|\d+件/u);
+    // A kept journey's 旅の記録 shows the like but has no heart to press.
+    const kept = renderToStaticMarkup(createElement(TravelLogDialog, { game: second, onClose: () => {} }));
+    expect(kept).not.toContain('data-testid="sns-like"');
+    expect(kept).toContain("いいね済み");
   });
 });

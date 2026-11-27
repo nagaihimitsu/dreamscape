@@ -46,7 +46,7 @@ export async function buildContent(
   const storyCache = chooseStoryCache(options.storyCache);
   const content = validateContent(sources, { storyCache });
   await checkContentImages(sources.publicFiles, content.images);
-  // The reduced copies of the free-time photos (derived-images.ts), served beside the other public files.
+  // The reduced copies of the free-time photos and the album's and SNS's pictures (derived-images.ts), served beside the other public files.
   let derivedImages: { count: number; made: number } | undefined;
   if (writeOutput) {
     const journeyOf = new Map(Object.entries(imageJourneyIndex(sources).journeys)
@@ -54,6 +54,7 @@ export async function buildContent(
     const derived = await prepareDerivedImages(derivedImageList({
       content: { assets: content.tourism.assets, landmarks: content.tourism.landmarks, backgrounds: content.photoContent.backgrounds },
       cities: content.photoContent.cities, journeyOf, publicFiles: sources.publicFiles,
+      pictures: [...content.albumImages, ...content.sns.images],
     }));
     writeContentOutputs(root, sources, content, derived.files);
     derivedImages = { count: derived.files.size, made: derived.made };

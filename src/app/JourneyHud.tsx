@@ -71,9 +71,12 @@ type MenuActions = {
   onSaveLoad: () => void;
   /** Counts the saves that succeeded: each new count drops a ribbon onto ≡メニュー. */
   saveMark?: number;
-  /** 「旅の記録」: the journey's 体験 and 写真, city by city (TravelLog.tsx; 2026-11-19, アルバム made one with it). */
+  /** 「旅の記録」: the journey's SNS and 写真 (TravelLog.tsx; 2026-11-19, アルバム made one with it; 2026-11-27, 「体験」 made the SNS). */
   onRecords: () => void;
-  /** A photo taken that 旅の記録's 「写真」 has not shown yet (2026-11-25): a dot on ≡メニュー and on 「旅の記録」. */
+  /**
+   * A photo taken that 旅の記録's 「写真」 has not shown yet (2026-11-25), or something arrived that its 「SNS」 has not
+   * (2026-11-27): a dot on ≡メニュー and on 「旅の記録」.
+   */
   recordsNew?: boolean;
   /** 「ノート」: 旅のことば and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20); none for a journey with neither. */
   onNote?: () => void;
@@ -420,7 +423,7 @@ function HudMenu({ onSaveLoad, saveMark = 0, onRecords, recordsNew = false, onNo
       <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
         <button type="button" onClick={choose(onSaveLoad)}><Icon name="save" />セーブ・ロード</button>
         <hr className="hud-menu-rule" />
-        <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録{recordsNew && <NewDot label="新しい写真あり" />}</button>
+        <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録{recordsNew && <NewDot label="新しい写真・投稿あり" />}</button>
         {onNote && <button type="button" onClick={choose(onNote)}><Icon name="book" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>}
         <hr className="hud-menu-rule" />
         {onScreenCredits && <button type="button" onClick={choose(onScreenCredits)}><Icon name="credit" />画面の出典</button>}

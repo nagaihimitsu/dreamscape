@@ -1,4 +1,5 @@
 import { cityContents, getAlbumImage, getSnsImage, snsData, storyState } from "../../content";
+import { pictureThumbPath } from "../../content/derived-images";
 import { getJourneyForCity } from "../../content/journeys";
 import { SNS_HEROINE, snsCommentId, type SnsLine, type SnsPost } from "../../content/sns";
 import type { AlbumPhoto } from "../../domain/album-state";
@@ -22,8 +23,11 @@ import { placeDisplayName } from "./travel-labels";
 export type SnsFace = { id: string; nameJa: string; characterId?: string; costume?: string };
 /** A line as shown: the text and its translation, the names filled in. */
 export type SnsText = { textJa: string; translationJa?: string };
-/** One photo of a post: the picture's served path, the place it shows, and for the heroine's the album's record of it. */
-export type SnsPhotoView = { imageId: string; path?: string; placeNameJa?: string; album?: AlbumPhoto };
+/**
+ * One photo of a post: the picture's served path and its square copy (`thumbPath`, the grids'), the place it shows, and for
+ * the heroine's the album's record of it.
+ */
+export type SnsPhotoView = { imageId: string; path?: string; thumbPath?: string; placeNameJa?: string; album?: AlbumPhoto };
 /** A comment as shown: its writer, its lines (the comment, then the replies) and the night it came. */
 export type SnsCommentView = { id: string; writer: SnsFace; lines: (SnsText & { speaker: SnsFace })[]; arrived: SnsNight };
 /** A post as shown. `likers`: the faces of those who like it (postLikers); `liked`: the player likes it. */
@@ -61,13 +65,19 @@ function placeName(game: Readonly<GameState>, cityId: string, placeId: string): 
   return place ? placeDisplayName(game, place) : undefined;
 }
 
+/** An album or SNS picture's served path and square copy. */
+export function snsPicture(imageId: string): { path?: string; thumbPath?: string } {
+  const image = getAlbumImage(imageId) ?? getSnsImage(imageId);
+  return image ? { path: image.path, thumbPath: pictureThumbPath(image) } : {};
+}
+
 function photosOf(game: Readonly<GameState>, post: SnsPost, record: SnsArrivedPost): SnsPhotoView[] {
   return record.imageIds.map((imageId) => {
-    const path = getAlbumImage(imageId)?.path ?? getSnsImage(imageId)?.path;
+    const { path, thumbPath } = snsPicture(imageId);
     const album = post.author === SNS_HEROINE ? game.album.find((photo) => photo.imageId === imageId) : undefined;
     const placeNameJa = album ? placeName(game, album.cityId, album.placeId)
       : post.where && "placeId" in post.where ? placeName(game, post.cityId, post.where.placeId) : post.where?.nameJa;
-    return { imageId, ...(path ? { path } : {}), ...(placeNameJa ? { placeNameJa } : {}), ...(album ? { album } : {}) };
+    return { imageId, ...(path ? { path } : {}), ...(thumbPath ? { thumbPath } : {}), ...(placeNameJa ? { placeNameJa } : {}), ...(album ? { album } : {}) };
   });
 }
 
@@ -132,8 +142,10 @@ export function snsMetPeople(game: Readonly<GameState>): { cityId: string; cityN
   return groups;
 }
 
-/** A photo on a person's page: the post it opens (none for a photo they are in), the picture and its served path. */
-export type SnsTile = { postId?: string; imageId: string; path?: string };
+/** A photo on a person's page: the post it opens (none for a photo they are in), the picture, its served path and square copy. */
+export type SnsTile = { postId?: string; imageId: string; path?: string; thumbPath?: string };
+const tileOf = (postId: string, photo: SnsPhotoView): SnsTile =>
+  ({ postId, imageId: photo.imageId, ...(photo.path ? { path: photo.path } : {}), ...(photo.thumbPath ? { thumbPath: photo.thumbPath } : {}) });
 
 /**
  * A person's page (one for the whole journey): their own words (face, name, self-introduction), the heroine's note (their
@@ -163,10 +175,10 @@ export function snsPersonPage(game: Readonly<GameState>, personId: string): SnsP
         ...(placeName(game, time.cityId, time.placeId) ? { placeNameJa: placeName(game, time.cityId, time.placeId) } : {}) } } : {}),
     },
     photos: views.filter((view) => view.author.id === personId).reverse()
-      .flatMap((view) => view.photos.map((photo) => ({ postId: view.id, imageId: photo.imageId, ...(photo.path ? { path: photo.path } : {}) }))),
+      .flatMap((view) => view.photos.map((photo) => tileOf(view.id, photo))),
     comments: views.filter((view) => view.author.id === SNS_HEROINE).flatMap((view) => view.comments
       .filter((comment) => comment.writer.id === personId)
-      .map((comment) => ({ post: { postId: view.id, imageId: view.photos[0].imageId, ...(view.photos[0].path ? { path: view.photos[0].path } : {}) }, comment }))),
+      .map((comment) => ({ post: tileOf(view.id, view.photos[0]), comment }))),
     withPhotos: game.album.filter((photo) => snsData.photoWith[photo.imageId]?.includes(personId)),
   };
 }
@@ -202,3 +214,27 @@ export function snsNightArrivals(game: Readonly<GameState>, night: Pick<SnsNight
 /** Whether the journey has an SNS: some post written for it (without, 旅の記録 shows 「写真」 alone; 2026-11-26). */
 export const journeyHasSns = (game: Pick<GameState, "currentCityId">): boolean =>
   snsData.posts.some((post) => post.journeyId === journeyOf(game));
+
+/**
+ * The night screen's SNS card (2026-11-27): the faces of who wrote tonight (snsNightArrivals; the heroine's own only when
+ * nothing else came), its words and the first of
+ * what came, the post it opens. 「SNS にコメントが届きました」 and the first comment when a comment came, else 「SNS に新しい
+ * 投稿があります」 and the first post's line. Null for a quiet night. No count (the faces say that some came).
+ */
+export type SnsNightCard = { faces: SnsFace[]; titleJa: string; first: { nameJa: string; textJa: string }; postId: string };
+export function snsNightCard(game: Readonly<GameState>, night: Pick<SnsNight, "cityId" | "day">): SnsNightCard | null {
+  const arrivals = snsNightArrivals(game, night);
+  const { posts, comments } = arrivals;
+  // Whose words came: the others' faces (hers only when nothing else came: her own post of the night).
+  const others = arrivals.faces.filter((face) => face.id !== SNS_HEROINE);
+  const faces = others.length ? others : arrivals.faces;
+  const [comment] = comments;
+  if (comment) return { faces, titleJa: "SNS にコメントが届きました", postId: comment.postId,
+    first: { nameJa: comment.comment.writer.nameJa, textJa: comment.comment.lines[0].textJa } };
+  const [post] = posts;
+  return post ? { faces, titleJa: "SNS に新しい投稿があります", postId: post.id, first: { nameJa: post.author.nameJa, textJa: post.line.textJa } } : null;
+}
+
+/** The IDs of everything arrived (posts, then comments `<post>.<comment>`): GameApp's marks of what is new on the SNS. */
+export const snsArrivedIds = (game: Pick<GameState, "sns">): string[] =>
+  [...snsOf(game).posts.map((post) => post.id), ...snsOf(game).comments.map((comment) => comment.id)];

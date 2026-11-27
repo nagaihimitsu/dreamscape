@@ -4,7 +4,7 @@ import { holdTaps } from "../../components/tap-hold";
 import { getCityBackdropPath } from "../../content/city-backdrop";
 import { playSe } from "../../audio/sound-effects";
 import { DAY_END_REST_JA } from "./night-rest-text";
-import { hasNightRecap, headlinesSentenceJa, routeSentenceJa, type NightRecap } from "./night-recap";
+import { hasNightRecap, routeSentenceJa, type NightRecap } from "./night-recap";
 import { NightRecapView } from "./NightRecap";
 import "./night-rest.css";
 
@@ -105,7 +105,7 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * The day's end card (21:00; GameApp, getDayEnd with no night action): the game has already rested at the hotel by itself, as
  * 「休む」 does, and saved. It covers what the night led to (the next morning, or the hotel's scenes after waking) until it ends:
  * the screen turns to the night colour, a crescent moon and a few stars come out with 「夜も更けたので、ホテルで休みました。」,
- * and 「タップして次へ」 under it. Under the line: the night's headlines, today's route and the heroine's line when there are any
+ * and 「タップして次へ」 under it. Under the line: the heroine's line and today's route when there are any
  * (`recap`, the night before the rest; NightRecap, 2026-11-11). It plays once a night: when the rest sleeps at once, or after the
  * hotel's scenes before the night (useTravelEffects). It stays until a tap anywhere on it (once the double-tap moment of holdTaps
  * has passed) or Enter, Space or Esc (2026-11-15 user decision: it used to end by itself, while the player read today's route).
@@ -126,7 +126,7 @@ export function NightRest({ cityId, recap, line = DAY_END_REST_JA, reduceMotion,
   useEffect(() => playSe("night_rest"), []);
   const shown = hasNightRecap(recap) ? recap : undefined;
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: null, reducedMs: null, onEnd });
-  const heard = shown ? [line, headlinesSentenceJa(shown.headlines), routeSentenceJa(shown.route), shown.line === null ? "" : `${shown.heroineName}：${shown.line}`].join("") : line;
+  const heard = shown ? [line, shown.line === null ? "" : `${shown.heroineName}：${shown.line}`, routeSentenceJa(shown.route)].join("") : line;
   // `data-obstructs-dialogue`: a scene under the card (the hotel's after waking, a tour's morning) waits for it as for an open
   // dialog (dialogueObstructed: no typing, auto-advance or reading on), and the tap that ends it does not read on either.
   return createPortal(<div className={`night-rest${reduced ? " is-reduced" : ""}${shown ? " has-recap" : ""}`} data-testid="night-rest" data-obstructs-dialogue=""
