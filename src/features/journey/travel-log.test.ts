@@ -14,9 +14,10 @@ const delhiArrival: AlbumPhoto = { imageId: "gt_album_d001", caption: "路地の
 
 describe("旅の記録's dialog", () => {
   it("is 「写真」 alone for a journey without posts, with no quiz score or names line", () => {
-    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: { ...cityStart("agra", ["航", "澪"]), album: [delhiArrival] }, onClose: () => {} }));
+    // ミラノ編 has no posts (インド編 has デリー's since 2026-11-27) and no album photos yet.
+    const html = renderToStaticMarkup(createElement(TravelLogDialog, { game: cityStart("milano", ["航", "澪"]), onClose: () => {} }));
     expect(html).not.toContain("travel-log-sns");
-    expect(html).toContain('class="travel-log-photos-title">写真<span class="travel-log-count">1</span>');
+    expect(html).toContain('class="travel-log-photos-title">写真<span class="travel-log-count">0</span>');
     expect(html).not.toContain("航");
     expect(html).not.toMatch(/挑戦|最高|手がかり \d/u);
   });

@@ -28,5 +28,10 @@ describe("the sample journey's SNS", () => {
     const night = restore(applyPlayerAction(cityStart("mihon"), played(21 * 60)));
     expect(snsTimeline(night).map((day) => day.heroine.map((post) => [post.id, post.photos.map((photo) => photo.imageId)])))
       .toEqual([[["smp_post_mihon_three_seats", ["smp_album_clock_tower"]]]]);
+    // リリ (the one sample person with a placeholder portrait) comments, the heroine replies, and リリ likes it.
+    const [post] = snsTimeline(night)[0].heroine;
+    expect(post.comments.map((comment) => comment.lines.map((line) => line.speaker.id)))
+      .toEqual([["smp_mihon_lili", "heroine"]]);
+    expect(post.likers.map((person) => person.id)).toEqual(["smp_mihon_lili"]);
   });
 });

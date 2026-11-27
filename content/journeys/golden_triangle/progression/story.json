@@ -86,6 +86,10 @@
       "noteJa": "インド門で写真屋を呼び、二人とも家族の写真に入った（デートの後の差し込みで写真をもらう）"
     },
     {
+      "id": "gt_delhi_india_gate_ice",
+      "noteJa": "インド門で、主人公が十四本のアイスを買いに走った（写真は彼女がモヌの携帯で撮り、走ってくる主人公が写った）"
+    },
+    {
       "id": "gt_delhi_player_sick",
       "noteJa": "最後の一つを主人公が食べ、主人公がお腹を壊した（その夜の宿の差し込み）"
     },
@@ -154,7 +158,14 @@
       "cityId": "delhi",
       "nameJa": "カムラ",
       "titleJa": "宿の隣の家を引き払う人",
-      "characterId": "gt_kamla"
+      "characterId": "gt_kamla",
+      "sns": {
+        "introJa": [
+          "この路地に、六十年。",
+          "地下鉄は、女性車両。",
+          "説明したら、つまらない。"
+        ]
+      }
     },
     {
       "id": "gt_harbans",
@@ -266,7 +277,14 @@
       "nameJa": "ルーヒー",
       "callJa": "宿の娘",
       "titleJa": "宿の娘",
-      "characterId": "gt_roohi"
+      "characterId": "gt_roohi",
+      "sns": {
+        "introJa": [
+          "宿の娘、十三歳。",
+          "家では「あれ持ってきて」係。",
+          "英語の作文、ただいま格闘中。"
+        ]
+      }
     },
     {
       "id": "gt_delhi_hotel_okami",
@@ -286,7 +304,14 @@
       "nameJa": "クナール",
       "callJa": "青年",
       "titleJa": "怖い動画を撮る大学生",
-      "characterId": "gt_kunal"
+      "characterId": "gt_kunal",
+      "sns": {
+        "introJa": [
+          "怖い動画を撮っています。",
+          "叫ぶ役は、いつもジャスミート。",
+          "あくびは、悲鳴に数えません。"
+        ]
+      }
     },
     {
       "id": "gt_jasmeet",
@@ -301,7 +326,14 @@
       "nameJa": "モヌ",
       "callJa": "男の子",
       "titleJa": "村から来た男の子",
-      "characterId": "gt_monu"
+      "characterId": "gt_monu",
+      "sns": {
+        "introJa": [
+          "ハリヤーナーの村から。",
+          "ダーディーの通訳係（無給）。",
+          "携帯の望遠を研究中。"
+        ]
+      }
     },
     {
       "id": "gt_dubey",

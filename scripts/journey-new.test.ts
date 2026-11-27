@@ -115,7 +115,8 @@ describe("journey:new copy of the sample", () => {
     expect(tower).toContain("=== ky_kyoto_finale_battle ===");
     expect(minimal.get("stories/places/ky_kyoto_hotel.ink")!.toString("utf8")).toContain("=== ky_kyoto_epilogue ===");
     expect(full.get("stories/places/ky_kyoto_market.ink")!.toString("utf8")).toContain("=== ky_kyoto_special_b_market_claim ===");
-    expect([...full.keys()].filter((file) => file.startsWith("stories/") && !file.startsWith("stories/places/"))).toEqual([]);
+    // Besides the place files, only the city's SNS posts file (stories/posts/<city>.ink, an optional part).
+    expect([...full.keys()].filter((file) => file.startsWith("stories/") && !file.startsWith("stories/places/"))).toEqual(["stories/posts/kyoto.ink"]);
     // No name of the sample is left as an ID, a part of one or a path (English names such as "Mihon Inn" are text to rewrite).
     const left = /(?<![A-Za-z0-9])(sample_trip|smp|mihon)(?![A-Za-z0-9])/u;
     for (const [file, bytes] of full) {
