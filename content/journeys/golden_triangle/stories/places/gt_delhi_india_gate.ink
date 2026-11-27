@@ -31,7 +31,7 @@ Photo, please!
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_india_gate_002
-# photo: gt_album_d055 # photo_caption: 十二人を撮る「寄りすぎ」
+# photo: gt_album_d055 # photo_caption: 十二人を撮る「寄りすぎ」 # photo_with: gt_monu
 十二人！　ええと、もう少し寄ってください。あ、寄りすぎ。おばあさんが、おじさんの肘で隠れてる
 # speaker: narrator
 祖母が、細い手で彼女を招いた。
@@ -61,7 +61,7 @@ Photo, please!
     # speaker: narrator
     彼女は祖母の隣に押し込まれた。祖母はその手を握ったまま離さない。
     # speaker: narrator
-    # photo: gt_album_d25 # photo_caption: 十三人目 # photo_show: large
+    # photo: gt_album_d25 # photo_caption: 十三人目 # photo_show: large # photo_with: gt_monu
     # se: camera_shutter
     画面の中で、一人だけ顔立ちの違う十三人目が、困ったように笑っていた。
 * [写真屋を呼んで、二人とも入る # option: hire_photographer]
@@ -119,7 +119,7 @@ Photo, please!
 去年も柵の前で一時間。僕は飽きた。名前が一万三千もあって、遠くて読めないんだ
 # speaker: heroine
 # voice: gt_delhi_date_india_gate_011
-# photo: gt_album_d059 # photo_caption: 門を見上げたまま動かない祖母
+# photo: gt_album_d059 # photo_caption: 門を見上げたまま動かない祖母 # photo_with: gt_monu
 ……探したいな。おばあさんが見たいのは、たぶん写真より、そっちだと思う
 * [「一緒に探そう」 # option: search_together]
     # profile: attentive
@@ -183,7 +183,7 @@ Photo, please!
     貸すだけだからね。ラーム・シン、だっけ。あ、待って
 }
 # speaker: narrator
-# photo: gt_album_d060 # photo_caption: 携帯の望遠で、石の文字を寄せる
+# photo: gt_album_d060 # photo_caption: 携帯の望遠で、石の文字を寄せる # photo_with: gt_monu
 画面に、同じ名前がいくつも並んだ。ラーム・シン。ラーム・シン。もう一人、ラーム・シン。
 # speaker: heroine
 # emotion: surprised_big
@@ -193,7 +193,7 @@ Photo, please!
 モヌが画面を見せると、祖母は目を細め、しばらく黙っていた。それから、画面の中の一番近くの一つを指さした。
 # speaker: gt_monu
 # voice: gt_delhi_date_india_gate_monu_009
-# photo: gt_album_d061 # photo_caption: 「どれでもいい」と指さす祖母
+# photo: gt_album_d061 # photo_caption: 「どれでもいい」と指さす祖母 # photo_with: gt_monu
 ……どれでもいいって。全部、誰かのおじいさんだから、どれに手を合わせても怒られないって
 # speaker: heroine
 # emotion: smile
@@ -230,7 +230,7 @@ Photo, please!
 帰りぎわ、母親たちが弁当箱を差し出した。揚げたパンに、辛い漬物。断ると、もう一つ増えた。
 # speaker: gt_monu
 # voice: gt_delhi_date_india_gate_monu_012
-# photo: gt_album_d063 # photo_caption: 「二人はいつ結婚するのか」
+# photo: gt_album_d063 # photo_caption: 「二人はいつ結婚するのか」 # photo_with: gt_monu
 あと、ダーディーが聞いてって。二人はいつ結婚するのかって。……ごめん、うちの村ではこれ、あいさつだから
 {
 - cond("couple"):

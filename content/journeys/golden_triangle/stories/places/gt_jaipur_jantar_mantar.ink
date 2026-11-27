@@ -45,6 +45,7 @@ INCLUDE modules.ink
 # speaker: narrator
 巨大な三角の斜面が、空に向かって伸びていた。世界でも指折りの大きな日時計、サムラート・ヤントラ。その日陰で、言い争いが始まっていた。
 # speaker: gt_jaipur_jantar_woman
+# unnamed
 # voice: gt_jaipur_main_jantar_mantar_battle_divya_001
 十一時四十三分？　天体物理学の博士論文を、占いの時刻に提出しろって言うんですか！
 # speaker: narrator
@@ -76,7 +77,7 @@ INCLUDE modules.ink
 シャーストリーは何も言わず、日時計の斜面に落ちた影を、杖の先で示した。
 # speaker: enemy
 # voice: gt_jaipur_main_jantar_mantar_battle_divya_005
-# photo: gt_album_j018 # photo_caption: 大日時計の日陰の言い争い
+# photo: gt_album_j018 # photo_caption: 大日時計の日陰の言い争い # photo_with: gt_jaipur_jantar_woman gt_shastri
 ちょうどいい。あなた、外国の人ですよね。証人になってください。十二時になったら、この日時計が、わたしの正しさを証明しますから
 # speaker: narrator
 {heroine_name}は、斜面の影と、女性の自信に満ちた顔を見比べた。ふと、素朴な疑問が浮かぶ。この影は、何の時刻を示しているのだろう。
@@ -145,7 +146,7 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,interrobang
 # voice: gt_jaipur_main_jantar_mantar_battle_divya_012
-# photo: gt_album_j020 # photo_caption: 十二時ちょうど、届かない影
+# photo: gt_album_j020 # photo_caption: 十二時ちょうど、届かない影 # photo_with: gt_jaipur_jantar_woman gt_shastri
 どうして？　太陽が一番高いのは、十二時のはずなのに
 # speaker: narrator
 シャーストリーは暦の冊子を閉じ、ようやく立ち上がった。若い天文学者に向ける目は、意地悪ではなかった。孫の宿題を見る目だった。
@@ -212,6 +213,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,music
 # voice: gt_jaipur_main_jantar_mantar_006
-# photo: gt_album_j021 # photo_caption: 天文学者と占星術師が、同じ影を
+# photo: gt_album_j021 # photo_caption: 天文学者と占星術師が、同じ影を # photo_with: gt_jaipur_jantar_woman gt_shastri
 天文学者と占星術師が、同じ影を見てる。……なんだか、いい眺め
 -> END

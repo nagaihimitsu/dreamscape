@@ -78,7 +78,7 @@ INCLUDE modules.ink
     皇帝アクバルと、お妃ジョーダーの恋の話なら、叔父の右に出る者はおりません
     # speaker: heroine
     # voice: gt_agra_tour_morning_001
-    # photo: gt_album_a042 # photo_caption: 叔父を薦めるサミール、自分で断る彼女
+    # photo: gt_album_a042 # photo_caption: 叔父を薦めるサミール、自分で断る彼女 # photo_with: gt_samir
     ありがとうございます。でも、今日は、二人で見て回りたいんです
     # speaker: narrator
     # emotion: surprised
@@ -139,7 +139,7 @@ INCLUDE modules.ink
     知ってます。駅のお客さんの紙、一文字も読めなかったから
     # speaker: narrator
     # emotion: happy
-    # photo: gt_album_a043 # photo_caption: 娘さんが書いた、名前の紙
+    # photo: gt_album_a043 # photo_caption: 娘さんが書いた、名前の紙 # photo_with: gt_vinod
     ヴィノードは声を出して笑い、紙をていねいに折って、胸のポケットにしまった。
     # speaker: heroine
     # emotion: smile
@@ -147,7 +147,7 @@ INCLUDE modules.ink
 - else:
     # speaker: narrator
     # emotion: happy
-    # photo: gt_album_a043 # photo_caption: 娘さんが書いた、名前の紙
+    # photo: gt_album_a043 # photo_caption: 娘さんが書いた、名前の紙 # photo_with: gt_vinod
     彼女は吹き出し、それから、こちらにだけ聞こえる声で言った。
     # speaker: heroine
     # emotion: smile
@@ -175,7 +175,7 @@ INCLUDE modules.ink
 # ambience: stop
 # speaker: narrator
 アーグラの町を抜けるまでが、いちばん長かった。オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
-# photo: gt_album_a044 # photo_caption: 鳴らさないクラクション、信号のかわりの牛
+# photo: gt_album_a044 # photo_caption: 鳴らさないクラクション、信号のかわりの牛 # photo_with: gt_vinod
 ヴィノードは、クラクションを鳴らさなかった。牛の後ろで、ただ待っている。
 # speaker: heroine
 # voice: gt_agra_tour_out_leg_001
@@ -191,7 +191,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_agra_tour_out_leg_002
-# photo: gt_album_a045 # photo_caption: HORN OK PLEASE
+# photo: gt_album_a045 # photo_caption: HORN OK PLEASE # photo_with: gt_vinod
 ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？　どういう意味なんだろう。あ、あっちのトラックにも書いてある
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_002
@@ -211,7 +211,7 @@ INCLUDE modules.ink
 書いてあると、なんだか安心する。それだけです
 # speaker: narrator
 # term: gt_term_nimbu_mirchi
-# photo: gt_album_a046 # photo_caption: バックミラーのレモンと青唐辛子
+# photo: gt_album_a046 # photo_caption: バックミラーのレモンと青唐辛子 # photo_with: gt_vinod
 バックミラーの下で、糸に通した小さなレモンと青唐辛子が揺れていた。彼女の視線に気づいて、ヴィノードが顎で示す。
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_004
@@ -294,7 +294,7 @@ INCLUDE modules.ink
     彼女は少し考えてから、前の座席の背に手をかけた。
     # speaker: heroine
     # voice: gt_agra_tour_out_mother_007
-    # photo: gt_album_a047 # photo_caption: 母への土産話
+    # photo: gt_album_a047 # photo_caption: 母への土産話 # photo_with: gt_vinod
     同じ町を、同じ日に見たかった二人です。……って、伝えてください
     { cond("couple"):
         # speaker: heroine
@@ -413,7 +413,7 @@ INCLUDE modules.ink
     ヴィノードは、前に渡した番号の紙を、こちらがまだ持っているか確かめてから、うなずいた。
 - else:
     # speaker: narrator
-    # photo: gt_album_a048 # photo_caption: 木陰の車、牛の字の電話番号
+    # photo: gt_album_a048 # photo_caption: 木陰の車、牛の字の電話番号 # photo_with: gt_vinod
     ヴィノードは名前の紙を裏返し、電話番号を書いて、こちらに渡した。娘さんのきれいな字の裏に、道に迷った牛の字が並んだ。
 }
 { cond("tour gt_agra_tour_fatehpur_sikri by hotel_desk"):
@@ -728,7 +728,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
 # voice: gt_agra_tour_mathri_001
-# photo: gt_album_a059 # photo_caption: しょっぱいマトリー
+# photo: gt_album_a059 # photo_caption: しょっぱいマトリー # photo_with: gt_vinod
 あ、しょっぱい！　甘いクッキーだと思ってた
 # speaker: heroine
 # emotion: happy
@@ -748,7 +748,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_tour_she_answered"):
     # speaker: gt_vinod
     # voice: gt_agra_tour_mathri_vinod_003
-    # photo: gt_album_a060 # photo_caption: お母さんの返事
+    # photo: gt_album_a060 # photo_caption: お母さんの返事 # photo_with: gt_vinod
     母に、伝えました。同じ町を、同じ日に見たかった二人。母はしばらく黙って、それから言いました。それはもう、旅の話じゃなくて、二人の話だね、と
     # speaker: heroine
     # reaction: heroine,shy,blush
@@ -757,7 +757,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_tour_told_reader"):
     # speaker: gt_vinod
     # voice: gt_agra_tour_mathri_vinod_004
-    # photo: gt_album_a060 # photo_caption: お母さんの返事
+    # photo: gt_album_a060 # photo_caption: お母さんの返事 # photo_with: gt_vinod
     母に、伝えました。何でも読む人。母は笑って、それなら帰りの道も、ずっと何か読んでいるんだろう、運転は静かにね、と
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -766,7 +766,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_tour_told_traveling"):
     # speaker: gt_vinod
     # voice: gt_agra_tour_mathri_vinod_005
-    # photo: gt_album_a060 # photo_caption: お母さんの返事
+    # photo: gt_album_a060 # photo_caption: お母さんの返事 # photo_with: gt_vinod
     母に、伝えました。一緒に旅をしている二人。母は、『一緒に』のところだけ、二回聞き返しました
     # speaker: heroine
     # reaction: heroine,surprised,sweat
@@ -948,7 +948,7 @@ INCLUDE modules.ink
 * [Always. She notices what I miss. # option: notices_more # translation: いつもです。自分が見落とすものに、気づく人です。]
     # rel: affection +1
     # speaker: narrator
-    # photo: gt_album_a064 # photo_caption: 眠ったふり
+    # photo: gt_album_a064 # photo_caption: 眠ったふり # photo_with: gt_vinod
     目を閉じたまま、彼女の口元だけが、ゆっくり笑った。
     # speaker: heroine
     # reaction: heroine,shy,blush
@@ -957,7 +957,7 @@ INCLUDE modules.ink
 * [Only when she's having fun. # option: when_happy # translation: 楽しいときだけです。]
     # rel: spark +1
     # speaker: narrator
-    # photo: gt_album_a064 # photo_caption: 眠ったふり
+    # photo: gt_album_a064 # photo_caption: 眠ったふり # photo_with: gt_vinod
     目を閉じたまま、彼女が言った。
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -966,7 +966,7 @@ INCLUDE modules.ink
 * [Ask her when she wakes up. # option: ask_when_awake # translation: 起きたら、本人に聞いてください。]
     # rel: trust +1
     # speaker: narrator
-    # photo: gt_album_a064 # photo_caption: 眠ったふり
+    # photo: gt_album_a064 # photo_caption: 眠ったふり # photo_with: gt_vinod
     すると、閉じていたはずの目が、片方だけ開いた。
     # speaker: heroine
     # reaction: heroine,teasing,question
@@ -1037,13 +1037,13 @@ INCLUDE modules.ink
 { cond("tour gt_agra_tour_fatehpur_sikri by vinod_direct"):
     # speaker: heroine
     # emotion: smile
-    # photo: gt_album_a065 # photo_caption: 白い車と、最後まで揺れるレモン
+    # photo: gt_album_a065 # photo_caption: 白い車と、最後まで揺れるレモン # photo_with: gt_vinod
     お母さんと、同じことを言ってる。……はい。次は、戸口の中まで
 - else:
     # speaker: heroine
     # emotion: smile
     # voice: gt_agra_tour_home_001
-    # photo: gt_album_a065 # photo_caption: 白い車と、最後まで揺れるレモン
+    # photo: gt_album_a065 # photo_caption: 白い車と、最後まで揺れるレモン # photo_with: gt_vinod
     次は、って言ってくれるんですね。はい。マトリーのお礼、お母さんに、自分で言いたいです
 }
 { cond("tour gt_agra_tour_fatehpur_sikri by web"):
@@ -1077,6 +1077,6 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
 # voice: gt_agra_tour_home_003
-# photo: gt_album_a066 # photo_caption: 誤解は、今度、まとめて
+# photo: gt_album_a066 # photo_caption: 誤解は、今度、まとめて # photo_with: gt_samir
 ……誤解は、今度、まとめて、ちゃんと解きます
 -> END

@@ -208,13 +208,17 @@
     {
       "id": "gt_delhi_jama_old_man",
       "cityId": "delhi",
-      "nameJa": "老人",
+      "nameJa": "ハミード",
+      "callJa": "老人",
+      "titleJa": "六十年、路地で香りを売る老人",
       "characterId": "gt_hamid"
     },
     {
       "id": "gt_delhi_qutb_man",
       "cityId": "delhi",
-      "nameJa": "男",
+      "nameJa": "ラームキシャン",
+      "callJa": "男",
+      "titleJa": "柵を越えたい理科の教師",
       "characterId": "gt_ramkishan"
     },
     {
@@ -411,6 +415,13 @@
       "characterId": "gt_delhi_red_fort_guide"
     },
     {
+      "id": "gt_nidhi",
+      "cityId": "delhi",
+      "nameJa": "ニディ",
+      "titleJa": "一時間後のバスを守る引率教師",
+      "characterId": "gt_nidhi"
+    },
+    {
       "id": "gt_tanvi",
       "cityId": "agra",
       "nameJa": "タンヴィ",
@@ -434,7 +445,9 @@
     {
       "id": "gt_agra_fort_old_man",
       "cityId": "agra",
-      "nameJa": "老人",
+      "nameJa": "ドゥッガル",
+      "callJa": "老人",
+      "titleJa": "塔から動かない元陸軍大佐",
       "characterId": "gt_duggal"
     },
     {
@@ -487,7 +500,9 @@
     {
       "id": "gt_agra_fatehpur_man",
       "cityId": "agra",
-      "nameJa": "男",
+      "nameJa": "ムケーシュ",
+      "callJa": "男",
+      "titleJa": "自分の家だけ建てられない建設業者",
       "characterId": "gt_mukesh"
     },
     {
@@ -585,7 +600,9 @@
     {
       "id": "gt_jaipur_hawa_woman",
       "cityId": "jaipur",
-      "nameJa": "女性",
+      "nameJa": "ガウラ",
+      "callJa": "女性",
+      "titleJa": "窓の下の野菜売り",
       "characterId": "gt_gaura"
     },
     {
@@ -599,7 +616,9 @@
     {
       "id": "gt_jaipur_city_palace_woman",
       "cityId": "jaipur",
-      "nameJa": "女性",
+      "nameJa": "スシュマ",
+      "callJa": "女性",
+      "titleJa": "漬物で息子を引き止める母",
       "characterId": "gt_sushma"
     },
     {
@@ -612,7 +631,9 @@
     {
       "id": "gt_jaipur_jantar_woman",
       "cityId": "jaipur",
-      "nameJa": "女性",
+      "nameJa": "ディヴィヤ",
+      "callJa": "女性",
+      "titleJa": "時刻に厳しい天文学者",
       "characterId": "gt_divya"
     },
     {
@@ -656,6 +677,13 @@
       "nameJa": "カヴィヤ",
       "titleJa": "地下へ下りられない女の子",
       "characterId": "gt_kavya"
+    },
+    {
+      "id": "gt_saleem",
+      "cityId": "jaipur",
+      "nameJa": "サリーム",
+      "titleJa": "中庭で八年描き続ける画家",
+      "characterId": "gt_saleem"
     },
     {
       "id": "gt_govind",

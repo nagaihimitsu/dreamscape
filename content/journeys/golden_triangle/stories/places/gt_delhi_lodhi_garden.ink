@@ -30,7 +30,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_002
 え、なに？　何がおかしかったの？　誰も、何も言ってないよね？
 # speaker: narrator
-# photo: gt_album_d090 # photo_caption: 理由なく笑い出す二十人の輪
+# photo: gt_album_d090 # photo_caption: 理由なく笑い出す二十人の輪 # photo_with: gt_dubey
 輪の中心にいた白い口ひげの老人が、二人に気づいて手招きした。張りのある、よく通る声だった。
 # speaker: gt_dubey
 # unnamed
@@ -142,7 +142,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_date_lodhi_garden_028
-# photo: gt_album_d092 # photo_caption: 元・放送係のお知らせ
+# photo: gt_album_d092 # photo_caption: 元・放送係のお知らせ # photo_with: gt_dubey
 放送で言われると、忘れられなさそう
 { cond("episode gt_delhi_main_humayun_tomb"):
     -> suresh_again
@@ -167,7 +167,7 @@ INCLUDE modules.ink
 逃げ場はなかった。スレーシュは彼女の手を握り、律儀に笑いながら、早口でささやいた。
 # speaker: gt_suresh
 # voice: gt_delhi_date_lodhi_garden_suresh_001
-# photo: gt_album_d093 # photo_caption: 握手しながら「誰にも会わなかった。ハ、ハ」
+# photo: gt_album_d093 # photo_caption: 握手しながら「誰にも会わなかった。ハ、ハ」 # photo_with: gt_suresh gt_dubey
 ハ、ハ、ハ。……今日も、誰も、誰にも会わなかった。ハ、ハ
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_011
@@ -176,7 +176,7 @@ INCLUDE modules.ink
 フマユーン廟で、全員で口裏を合わせた、あの一言だった。
 # speaker: narrator
 # se: camera_shutter
-# photo: gt_album_d094 # photo_caption: 集合写真の端、新聞で顔を隠す人
+# photo: gt_album_d094 # photo_caption: 集合写真の端、新聞で顔を隠す人 # photo_with: gt_dubey gt_suresh gt_meena
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
 # together: gt_suresh gt_meena
 それから、観念したように、女性を連れてやってきた。
@@ -320,7 +320,7 @@ INCLUDE modules.ink
 // 彼女の「せー」「の」の次の拍で、主人公が「言う」を押す。大きさではなく、出だしのタイミングを合わせる（2026-11-13 ユーザー判断）。
 // ゲームの結果と同じ ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。結果の後は、ドゥベイの「合格」へ合流する。
 # speaker: narrator
-# photo: gt_album_d096 # photo_caption: 「ヤートリーガン、クリプヤー……」せーので言う
+# photo: gt_album_d096 # photo_caption: 「ヤートリーガン、クリプヤー……」せーので言う # photo_with: gt_dubey
 彼女が、こちらの袖を引いた。一緒に、と口の形だけで言う。こちらがうなずくと、彼女も小さくうなずき返した。
 { romance_result == "negative":
     # speaker: heroine

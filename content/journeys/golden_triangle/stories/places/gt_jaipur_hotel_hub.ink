@@ -37,7 +37,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_hotel_front
 # term: gt_term_shagun
 # voice: gt_jaipur_arrival_jaipur_hotel_front_001
-# photo: gt_album_j003 # photo_caption: 割り切れない数は、縁起がいい
+# photo: gt_album_j003 # photo_caption: 割り切れない数は、縁起がいい # photo_with: gt_jaipur_hotel_front
 お祝いはね、封筒に入れた現金。金額の最後に、一ルピー足すの。割り切れない数は、縁起がいいから
 # speaker: heroine
 # reaction: heroine,smile,question
@@ -77,7 +77,7 @@ INCLUDE modules.ink
 運転手が何か文句を言っている。料金を半分に値切られたらしい。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
-# photo: gt_album_j133 # photo_caption: オートリキシャで、カムラが来た
+# photo: gt_album_j133 # photo_caption: オートリキシャで、カムラが来た # photo_with: gt_kamla
 # voice: gt_jaipur_epilogue_001
 カムラさん！　昨日の今日なのに、もう値切ってる……
 # speaker: enemy
@@ -86,7 +86,7 @@ INCLUDE modules.ink
 # speaker: narrator
 カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
 # speaker: narrator
-# photo: gt_album_j134 # photo_caption: 段ボールの六行目「通りで踊った夜」
+# photo: gt_album_j134 # photo_caption: 段ボールの六行目「通りで踊った夜」 # photo_with: gt_kamla
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
 # speaker: narrator
 # item_out: gt_delhi_kamla_memo 6
@@ -114,14 +114,14 @@ INCLUDE modules.ink
 カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
 # voice: gt_jaipur_epilogue_kamla_006
-# photo: gt_album_j135 # photo_caption: 「あんたは黙らないこと」
+# photo: gt_album_j135 # photo_caption: 「あんたは黙らないこと」 # photo_with: gt_kamla
 あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと
 {
 - ending_reached:
     # speaker: heroine
     # emotion: smile
     # voice: gt_jaipur_epilogue_003
-    # photo: gt_album_j136 # photo_caption: 「もう、言いました」
+    # photo: gt_album_j136 # photo_caption: 「もう、言いました」 # photo_with: gt_kamla
     はい。……もう、言いました。これからも、言いたいときに言います
     # speaker: enemy
     # voice: gt_jaipur_epilogue_kamla_007

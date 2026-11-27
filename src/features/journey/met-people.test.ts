@@ -26,9 +26,11 @@ describe("the people met on the journey", () => {
     const groups = metPeopleGroups(seen(["smp_mihon_clock_gears", "smp_mihon_bookmark_stall", "smp_mihon_clock_bell"]));
     expect(groups).toEqual([{ cityId: SAMPLE, cityNameJa: getCityContent(SAMPLE).city.nameJa, people: [
       { id: "smp_mihon_toma", nameJa: "トーマ", descriptionJa: person("smp_mihon_toma").descriptionJa },
-      { id: "smp_mihon_lili", nameJa: "リリ", descriptionJa: person("smp_mihon_lili").descriptionJa },
+      // リリ has the sample's one (placeholder) portrait (2026-11-27), so her entry names it.
+      { id: "smp_mihon_lili", nameJa: "リリ", descriptionJa: person("smp_mihon_lili").descriptionJa, characterId: "smp_mihon_lili" },
     ] }]);
-    for (const met of groups.flatMap((group) => group.people)) expect(Object.keys(met).sort()).toEqual(["descriptionJa", "id", "nameJa"]);
+    for (const met of groups.flatMap((group) => group.people))
+      expect(Object.keys(met).sort()).toEqual(met.characterId ? ["characterId", "descriptionJa", "id", "nameJa"] : ["descriptionJa", "id", "nameJa"]);
   });
 
   it("lists everyone the met condition holds for", () => {
@@ -57,10 +59,10 @@ describe("the people met on the journey", () => {
     expect(names(delhi)).toEqual([["delhi", ["カムラ"]]]);
     expect(names(played(delhi, ["gt_delhi_finale_battle"]))).toEqual([["delhi", ["カムラ", "アマン"]]]);
     expect(names({ ...delhi, viewedEpilogueCityIds: ["delhi"] })).toEqual([["delhi", ["カムラ", "アマン"]]]);
-    // A quiz partner who is no declared person: by the quiz's name and role, with the quiz's portrait (旅の記録's small face).
+    // A quiz partner declared only by the portrait (ニディ, gt_nidhi, declared for the SNS 2026-11-27): by the quiz's name.
     const redFort = battles.find((battle) => battle.id === "gt_delhi_main_red_fort_battle")!;
     expect(metPeopleGroups(played(delhi, ["gt_delhi_main_red_fort_battle"]))[0].people[1])
-      .toEqual({ id: "quiz:gt_delhi_main_red_fort_battle", nameJa: redFort.enemyNameJa, descriptionJa: redFort.enemyTitleJa, characterId: "gt_nidhi" });
+      .toEqual({ id: "gt_nidhi", nameJa: redFort.enemyNameJa, descriptionJa: redFort.enemyTitleJa, characterId: "gt_nidhi" });
   });
 
   it("lists a quiz partner by the name they give, not what the lines call them before it (2026-11-25)", () => {
@@ -87,7 +89,7 @@ describe("the people met on the journey", () => {
       delete lili.descriptionJa;
       expect(metPeopleGroups(seen(["smp_mihon_bookmark_stall"]))[0].people[0].descriptionJa).toBe(role);
       delete lili.titleJa;
-      expect(metPeopleGroups(seen(["smp_mihon_bookmark_stall"]))[0].people[0]).toEqual({ id: "smp_mihon_lili", nameJa: "リリ" });
+      expect(metPeopleGroups(seen(["smp_mihon_bookmark_stall"]))[0].people[0]).toEqual({ id: "smp_mihon_lili", nameJa: "リリ", characterId: "smp_mihon_lili" });
     } finally {
       lili.descriptionJa = written;
       lili.titleJa = role;

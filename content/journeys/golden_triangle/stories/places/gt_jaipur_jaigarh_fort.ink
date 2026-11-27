@@ -15,7 +15,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jaigarh_fort
 # speaker: narrator
 ジャイガル城は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
-# photo: gt_album_j049 # photo_caption: 赤いバツ印の宝の地図
+# photo: gt_album_j049 # photo_caption: 赤いバツ印の宝の地図 # photo_with: gt_raju
 門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
 # speaker: gt_raju
 # unnamed
@@ -28,7 +28,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_jaipur_date_jaigarh_fort_001
-# photo: gt_album_j050 # photo_caption: じっと見ると、負けちゃう
+# photo: gt_album_j050 # photo_caption: じっと見ると、負けちゃう # photo_with: gt_raju
 宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた
 -> gt_jaipur_jaigarh_fort_map ->
 # speaker: narrator
@@ -36,7 +36,7 @@ INCLUDE modules.ink
 最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。この砦で造られ、当時は、車輪のついた大砲として世界最大だったという。
 # speaker: gt_raju
 # voice: gt_jaipur_date_jaigarh_fort_raju_003
-# photo: gt_album_j052 # photo_caption: 世界最大の、車輪のついた大砲
+# photo: gt_album_j052 # photo_caption: 世界最大の、車輪のついた大砲 # photo_with: gt_raju
 宝を守る大砲。一回撃ったら、玉が三十五キロ先まで飛んだんだ。落ちたところが、池になった
 # speaker: narrator
 試し撃ちは一度きりだった、と伝えられている。三十五キロ飛んだという話も残っているが、どこまでが本当かは分からない。
@@ -121,7 +121,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 # voice: gt_jaipur_date_jaigarh_fort_007
-# photo: gt_album_j053 # photo_caption: 最後の印は、お茶屋さん
+# photo: gt_album_j053 # photo_caption: 最後の印は、お茶屋さん # photo_with: gt_raju
 やられた！　ふふっ、最後の印、お茶屋さんだった！
 # speaker: narrator
 老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。
@@ -224,7 +224,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,happy,sparkle
     # voice: gt_jaipur_jaigarh_fort_map_002
-    # photo: gt_album_j051 # photo_caption: 値段で地図が変わった
+    # photo: gt_album_j051 # photo_caption: 値段で地図が変わった # photo_with: gt_raju
     本物の宝の地図だ。……ねえ、最初の印は、どこ？
 * [地図の値段：₹30まで値切った # option: haggle_map]
     # money: -30
@@ -237,7 +237,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     # voice: gt_jaipur_jaigarh_fort_map_001
-    # photo: gt_album_j051 # photo_caption: 値段で地図が変わった
+    # photo: gt_album_j051 # photo_caption: 値段で地図が変わった # photo_with: gt_raju
     ふふっ、値段で地図が変わった！
 // decline_map は「やめておく」、3回跳ね返されてへそを曲げた（「もういい！　地図は売らない！」）、12秒何もしなかった、のどれでも来る
 // （どれかは物語に渡らない）。最初の一言は、すねたときにも、断られたときにも合う形にする。

@@ -124,7 +124,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_date_india_gate_print_001
-# photo: gt_album_d098 # photo_caption: 十四人の刷り上がり写真
+# photo: gt_album_d098 # photo_caption: 十四人の刷り上がり写真 # photo_with: gt_monu
 十四人。旅のアルバムに、知らない親戚が増えちゃった
 -> END
 
@@ -210,7 +210,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_hotel_homework_005
-# photo: gt_album_d099 # photo_caption: 帳場の机のルーヒーと「女性車両」の作文
+# photo: gt_album_d099 # photo_caption: 帳場の机のルーヒーと「女性車両」の作文 # photo_with: gt_roohi
 わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。回ってる洗濯物を見てると、落ち着くから
 # speaker: heroine
 # reaction: heroine,teasing,music
@@ -397,7 +397,7 @@ INCLUDE modules.ink
 キチュリー。うちでは、お腹を壊したら、これ
 # speaker: gt_delhi_hotel_okami
 # voice: gt_delhi_hotel_sick_morning_delhi_hotel_okami_002
-# photo: gt_album_d104 # photo_caption: キチュリーの鍋とクミンの水
+# photo: gt_album_d104 # photo_caption: キチュリーの鍋とクミンの水 # photo_with: gt_delhi_hotel_okami gt_roohi
 ……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
@@ -429,7 +429,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_hotel_sick_morning_001
-    # photo: gt_album_d106 # photo_caption: 「今日は、わたしが決める日」
+    # photo: gt_album_d106 # photo_caption: 「今日は、わたしが決める日」 # photo_with: gt_delhi_hotel_okami
     今日は、わたしが決める日。午前中は休み。異議は受けつけません
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -471,7 +471,7 @@ INCLUDE modules.ink
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
 # speaker: gt_delhi_scam_young_man
 # voice: gt_delhi_depart_scam_delhi_scam_young_man_001
-# photo: gt_album_d122 # photo_caption: 「Your train is cancelled today.」
+# photo: gt_album_d122 # photo_caption: 「Your train is cancelled today.」 # photo_with: gt_delhi_scam_young_man gt_delhi_scam_vest_man
 Agra? Your train is cancelled today.
 # speaker: narrator
 アーグラ行きの列車は、今日は運休だという。今朝、決まったのだと。
@@ -592,7 +592,7 @@ Agra? Your train is cancelled today.
 # speaker: heroine
 # emotion: smile
 # voice: gt_delhi_depart_scam_quiz_004
-# photo: gt_album_d123 # photo_caption: 「Thank you. We'll check it ourselves.」
+# photo: gt_album_d123 # photo_caption: 「Thank you. We'll check it ourselves.」 # photo_with: gt_delhi_scam_young_man
 Thank you. We'll check it ourselves.
 # speaker: narrator
 お礼と、自分たちで確かめます、のひとこと。にこやかで、譲る気のない声だった。
@@ -758,7 +758,7 @@ Thank you. We'll check it ourselves.
 # voice: gt_delhi_depart_scam_004
 この値段！？
 # speaker: narrator
-# photo: gt_album_d125 # photo_caption: 偽の案内所と、三年分同じ字のノート
+# photo: gt_album_d125 # photo_caption: 偽の案内所と、三年分同じ字のノート # photo_with: gt_delhi_scam_suit_man
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。
 // 道2の条件：rel spark のしきい値 6 は仮（作者があとで計算して決める。README の「作者に確かめてほしいこと」5）。
 { cond("rel spark >= 6"):
@@ -806,7 +806,7 @@ Thank you. We'll check it ourselves.
 # se: book_close
 彼女は、手をつけていないチャイの横にノートを閉じて置き、立ち上がった。背広の男の目を、まっすぐ見る。
 # speaker: heroine
-# photo: gt_album_d126 # photo_caption: 偽の案内所で「No, thank you.」
+# photo: gt_album_d126 # photo_caption: 偽の案内所で「No, thank you.」 # photo_with: gt_delhi_scam_suit_man
 # size: large
 # voice: gt_delhi_depart_scam_009
 No, thank you.
@@ -912,7 +912,7 @@ No, thank you.
     # voice: gt_delhi_depart_scam_delhi_scam_suit_man_008
     返金はできません。契約の決まりです
     # speaker: narrator
-    # photo: gt_album_d127 # photo_caption: 鍵のかかった引き出し
+    # photo: gt_album_d127 # photo_caption: 鍵のかかった引き出し # photo_with: gt_delhi_scam_suit_man
     机の向こうで、引き出しはもう鍵がかかっていた。
     # speaker: heroine
     # emotion: serious
@@ -954,7 +954,7 @@ No, thank you.
 # background: gt_bg_delhi_station_front
 # ambience: gt_amb_street_traffic
 # speaker: narrator
-# photo: gt_album_d128 # photo_caption: 赤いシャツの荷運びが首を振る
+# photo: gt_album_d128 # photo_caption: 赤いシャツの荷運びが首を振る # photo_with: gt_delhi_porter
 階段を駆け下り、道を渡る。駅の入口で、赤いシャツの荷運びの男が、こちらの出てきた路地を見て、首を振った。
 # speaker: gt_delhi_porter
 # voice: gt_delhi_depart_scam_delhi_porter_001

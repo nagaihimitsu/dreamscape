@@ -44,7 +44,7 @@ INCLUDE modules.ink
 通称、ベビー・タージ、だって。かわいい名前。……確かに、タージを小さくしたみたいだもんね
 # speaker: narrator
 # term: gt_term_neem
-# photo: gt_album_a036 # photo_caption: ニームの木の下の白髪の女性
+# photo: gt_album_a036 # photo_caption: ニームの木の下の白髪の女性 # photo_with: gt_vimla
 庭の隅のニームの木の下で、白髪の女性が一人、布の手提げを膝に置いて座っていた。その目が、こちらを向いた気がした。
 -> END
 
@@ -63,7 +63,7 @@ INCLUDE modules.ink
 # unnamed
 # leave: gt_vimla
 # voice: gt_agra_main_itimad_tomb_battle_vimla_001
-# photo: gt_album_a037 # photo_caption: 「ベビーではありません！」
+# photo: gt_album_a037 # photo_caption: 「ベビーではありません！」 # photo_with: gt_vimla
 ベビーではありません！
 # speaker: narrator
 ニームの木陰から、サリー姿の女性が立ち上がった。白髪をきっちり結い、布の手提げを肩にかけている。手提げから、紙の束がのぞいていた。
@@ -88,7 +88,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_003
 あの……読んでからでも、いいですか？
 # speaker: narrator
-# photo: gt_album_a038 # photo_caption: 署名の前に読む人
+# photo: gt_album_a038 # photo_caption: 署名の前に読む人 # photo_with: gt_vimla
 ヴィムラーの手が止まった。教師の目で、{heroine_name}を上から下まで見る。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_005
@@ -168,7 +168,7 @@ INCLUDE modules.ink
 # speaker: enemy
 # reaction: enemy,sweat
 # voice: gt_agra_main_itimad_tomb_battle_vimla_014
-# photo: gt_album_a039 # photo_caption: 止まったペン、「盛ったの」
+# photo: gt_album_a039 # photo_caption: 止まったペン、「盛ったの」 # photo_with: gt_vimla
 ……知ってるわよ。盛ったの
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_015
@@ -182,7 +182,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_008
 この紙には署名できません。……でも、白い紙を一枚もらえますか
 # speaker: narrator
-# photo: gt_album_a040 # photo_caption: 白い紙の、短くて強い一文
+# photo: gt_album_a040 # photo_caption: 白い紙の、短くて強い一文 # photo_with: gt_vimla
 {heroine_name}は新しい紙に短く書き、下に自分の名前と国名を添えた。
 # speaker: narrator
 # letter: card
@@ -205,7 +205,7 @@ INCLUDE modules.ink
     点数は低いけれど、署名の前に読んだ。それだけで、この三年で一番の人よ
 }
 # speaker: narrator
-# photo: gt_album_a041 # photo_caption: 線を引かれた三つ目の行、そして発音の授業
+# photo: gt_album_a041 # photo_caption: 線を引かれた三つ目の行、そして発音の授業 # photo_with: gt_vimla
 ヴィムラーは新しい紙を、請願書の一番上にクリップで留めた。一番大きな字の三つ目の行は、ボールペンで一本、線を引かれていた。
 # speaker: enemy
 # voice: gt_agra_main_itimad_tomb_battle_vimla_020

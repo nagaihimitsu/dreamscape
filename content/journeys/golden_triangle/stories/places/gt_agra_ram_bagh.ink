@@ -152,7 +152,7 @@ INCLUDE modules.ink
 ど、どうして知ってるんですか！　しかも新婚じゃないです！
 # speaker: gt_agra_ram_bagh_tea_master
 # voice: gt_agra_date_ram_bagh_agra_ram_bagh_tea_master_002
-# photo: gt_album_a091 # photo_caption: 噂は麺より早く茹で上がる
+# photo: gt_album_a091 # photo_caption: 噂は麺より早く茹で上がる # photo_with: gt_agra_ram_bagh_tea_master
 サミールが、会う人ごとに話してるからな。この町じゃ、噂は麺より早く茹で上がる
 * [「新婚じゃありません」 # option: not_newlyweds]
     # profile: honest
@@ -180,7 +180,7 @@ INCLUDE modules.ink
         ……そういう冗談、ここで言う？　お店の人、本気にするよ
         # speaker: narrator
         # leave: gt_agra_ram_bagh_tea_master
-        # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ
+        # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ # photo_with: gt_agra_ram_bagh_tea_master
         茶屋の主人は本気にしたらしく、頼んでいないゆで卵を二つ置いていった。
     - else:
         # speaker: heroine
@@ -190,7 +190,7 @@ INCLUDE modules.ink
         # speaker: narrator
         # emotion: shy
         # leave: gt_agra_ram_bagh_tea_master
-        # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ
+        # photo: gt_album_a092 # photo_caption: 頼んでいないゆで卵が二つ # photo_with: gt_agra_ram_bagh_tea_master
         茶屋の主人は満足そうにうなずき、頼んでいないゆで卵を二つ置いていった。彼女は麺をすすりながら、しばらくこちらを見なかった。
     }
 * [笑ってごまかす # option: laugh_it_off]

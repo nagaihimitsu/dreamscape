@@ -21,7 +21,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_arrive_reel_001
-# photo: gt_album_a006 # photo_caption: 階段井戸の動画、アーグラまで
+# photo: gt_album_a006 # photo_caption: 階段井戸の動画、アーグラまで # photo_with: gt_samir
 な、なんで知ってるんですか！
 # speaker: gt_samir
 # voice: gt_agra_arrive_reel_samir_002

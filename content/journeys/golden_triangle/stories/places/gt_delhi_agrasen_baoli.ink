@@ -48,7 +48,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_agrasen_baoli_002
-# photo: gt_album_d074 # photo_caption: あくびじゃない悲鳴を撮りたい二人
+# photo: gt_album_d074 # photo_caption: あくびじゃない悲鳴を撮りたい二人 # photo_with: gt_kunal gt_jasmeet
 わたし？　悲鳴なんて、人生で上げたことないかも……
 * [「自分が幽霊をやる」 # option: play_ghost]
     # profile: playful
@@ -64,7 +64,7 @@ INCLUDE modules.ink
         # speaker: narrator
         ジャスミートのドゥパッターを借りて頭からかぶり、途中のくぼみに身を隠した。彼女が一人で階段を下りてくる。足音が近づく。今だ。
         # emotion: happy
-        # photo: gt_album_d075 # photo_caption: 幽霊の足は、いつもの靴
+        # photo: gt_album_d075 # photo_caption: 幽霊の足は、いつもの靴 # photo_with: gt_kunal
         飛び出した瞬間、彼女は悲鳴のかわりに、思いきり吹き出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -123,7 +123,7 @@ INCLUDE modules.ink
 底に着いた。涸れた井戸の口には柵があり、覗き込むと、丸い暗がりがずっと下まで続いている。クナールが手で合図をした。本番だ。
 # speaker: heroine
 # voice: gt_delhi_date_agrasen_baoli_011
-# photo: gt_album_d077 # photo_caption: 「きゃ、きゃー……？」
+# photo: gt_album_d077 # photo_caption: 「きゃ、きゃー……？」 # photo_with: gt_kunal
 きゃ、きゃー……？
 # speaker: gt_kunal
 # voice: gt_delhi_date_agrasen_baoli_kunal_005
@@ -210,7 +210,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_jasmeet_004
 きゃあああっ！
 # speaker: narrator
-# photo: gt_album_d080 # photo_caption: 二本目の本物、お腹を抱えて笑う
+# photo: gt_album_d080 # photo_caption: 二本目の本物、お腹を抱えて笑う # photo_with: gt_jasmeet gt_kunal
 二本目の本物が、井戸の底から空へ抜けていった。ジャスミートは自分の声に驚いて、それから、お腹を抱えて笑い出した。
 # speaker: gt_jasmeet
 # voice: gt_delhi_date_agrasen_baoli_jasmeet_005
@@ -255,7 +255,7 @@ INCLUDE modules.ink
 // どの結果も、戻った先のジャスミートの本物の悲鳴へつながる（後の動画の話：布を広げて飛び出す鳩の役）。
 === gt_delhi_agrasen_baoli_pigeon_flap ===
 # speaker: narrator
-# photo: gt_album_d079 # photo_caption: 布を広げる鳩の役
+# photo: gt_album_d079 # photo_caption: 布を広げる鳩の役 # photo_with: gt_jasmeet
 鳩の役は、こちらだった。ジャスミートのドゥパッターを借りてくぼみに隠れ、両手に持って、羽ばたく準備をする。
 # speaker: narrator
 ジャスミートが、階段を途中まで上り直した。
