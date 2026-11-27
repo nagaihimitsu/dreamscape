@@ -207,7 +207,6 @@ INCLUDE modules.ink
     点数は気にしなくていい。わたしも最初は、この柱を魔法だと思っていました
 }
 # speaker: narrator
-# se: camera_shutter
 # photo: gt_album_d021 # photo_caption: 柵の外から、正面を向けて一枚 # photo_with: gt_delhi_qutb_man
 彼はスマートフォンで柱の碑文を一枚だけ撮った。柵の外から、背中ではなく正面を向けて。
 # speaker: enemy

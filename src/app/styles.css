@@ -361,8 +361,6 @@ summary {
 button {
   cursor: pointer;
   touch-action: manipulation;
-  /* A button's words wrap without leaving one character alone on the last line (「予約す／る」). */
-  text-wrap: pretty;
 }
 /* [data-settling]: a confirmation's action while it still waits (ConfirmActionButton): it looks disabled, but stays in
    the Tab order (aria-disabled), so its rules follow each :disabled rule of the buttons it is drawn as. */
