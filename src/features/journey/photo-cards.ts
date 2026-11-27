@@ -196,7 +196,19 @@ export function chooseWait<T extends TravelWaitOption>(options: readonly T[], pi
  */
 export function waitLabelJa(option: Pick<TravelWaitOption, "minutes" | "until">): string {
   if (option.until === null) return `${option.minutes}分待つ`;
-  return `${option.until === NIGHT_START ? `夜（${formatTravelTime(NIGHT_START)}）` : formatTravelTime(option.until)}まで待つ`;
+  return `${untilJa(option.until)}まで待つ`;
+}
+
+const untilJa = (until: number) => (until === NIGHT_START ? `夜（${formatTravelTime(NIGHT_START)}）` : formatTravelTime(until));
+
+/**
+ * 「待機」's only wait (nothing to choose: CardOptions' line) as a sentence that says what happens, not a label that reads
+ * as a button (2026-11-27, the user's decision: 「30分待つ」 alone looked pressable): 「30分待つと18:30になります。」, else
+ * 「21:00まで待ちます。」. `now` is the travel clock's minute.
+ */
+export function waitLineJa(option: Pick<TravelWaitOption, "minutes" | "until">, now: number): string {
+  if (option.until === null) return `${option.minutes}分待つと${formatTravelTime(now + option.minutes)}になります。`;
+  return `${untilJa(option.until)}まで待ちます。`;
 }
 
 /** Why a wait cannot be chosen (the line under 「待機」's waits), and the live regions' words when none can be waited. */

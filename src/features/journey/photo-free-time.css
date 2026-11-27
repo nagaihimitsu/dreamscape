@@ -765,8 +765,9 @@
 }
 .place-card-option-mark { flex: none; font-size: var(--ds-text-body); font-weight: 700; line-height: 1; }
 .place-card-option-text { min-width: 0; }
-/* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. */
-.place-card-way { margin: 0 2px; font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+/* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. Plain
+   weight like the card's other prose (2026-11-27: bold, 「30分待つ」 read as a button that did nothing). */
+.place-card-way { margin: 0 2px; font-size: var(--ds-text-note); font-weight: 400; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
 .place-card-way .place-card-mode-cost { display: inline; }
 .place-card-way.is-unavailable { color: var(--ds-ink-muted); }
 .place-card .place-card-go {
