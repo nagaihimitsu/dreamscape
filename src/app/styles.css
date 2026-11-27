@@ -206,6 +206,9 @@
   --motion-scene: 450ms; /* a scene's picture giving way to the next */
   --motion-stagger: 40ms; /* between the items of a list coming in */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* A menu's panel coming out of its button's edge (2026-11-27 user decision: 「スーッと」; journey-hud.css, travel-menu.css). */
+  --motion-drop: 340ms;
+  --ease-drop: cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* The sizes of the design's rules that follow the screen's width. */
 @media (min-width: 701px) {

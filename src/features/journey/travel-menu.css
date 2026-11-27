@@ -266,6 +266,28 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   background: var(--ds-parchment);
   box-shadow: var(--ds-card-shadow);
 }
+/* It rises out of the band as ≡メニュー's panel comes down out of the header (journey-hud.css), its waits after it. */
+.travel-band .travel-wait-actions { animation: travel-band-rise var(--motion-drop) var(--ease-drop); }
+.travel-band .travel-wait-actions > * { animation: travel-band-item-rise var(--motion-drop) var(--ease-drop) backwards; }
+.travel-band .travel-wait-actions > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
+.travel-band .travel-wait-actions > :nth-child(n + 3) { animation-delay: var(--motion-stagger); }
+@keyframes travel-band-rise {
+  /* The sides and top open wide at the end so the pane's shadow is not cut off. */
+  from { opacity: 0; transform: translateY(14px); clip-path: inset(100% -40px 0 -40px); }
+  35% { opacity: 1; }
+  to { opacity: 1; transform: none; clip-path: inset(-40px); }
+}
+@keyframes travel-band-item-rise {
+  from { opacity: 0; transform: translateY(8px); }
+}
+.reduce-motion .travel-band .travel-wait-actions,
+.reduce-motion .travel-band .travel-wait-actions > *,
+.reduce-motion .travel-band .travel-band-sleep { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .travel-band .travel-wait-actions,
+  .travel-band .travel-wait-actions > *,
+  .travel-band .travel-band-sleep { animation: none; }
+}
 .travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
 
 /* The selected marker (U21): the same glyph in yellow on a dark 40-px disc with a white
@@ -400,6 +422,8 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   border-top: 1px solid var(--ds-parchment-line);
   background: var(--ds-parchment);
   box-shadow: 0 -4px 10px color-mix(in srgb, var(--ds-paper-shade) 16%, transparent);
+  /* It rises out of the band as 待機's menu does (above). */
+  animation: travel-band-rise var(--motion-drop) var(--ease-drop);
 }
 .travel-band-sleep .travel-sleep-choices { display: grid; gap: 6px; max-width: 648px; margin: 0 auto; padding-bottom: 4px; }
 .travel-band .travel-sleep-toggle.is-selected { border-width: 2px; background: var(--ds-parchment-2); }
