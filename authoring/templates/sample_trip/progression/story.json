@@ -21,7 +21,14 @@
       "nameJa": "リリ",
       "titleJa": "見本の時計番の妹",
       "descriptionJa": "時計塔の下で、針が三時を指す手描きのしおりを並べていた女の子。トーマの妹。",
-      "characterId": "smp_mihon_lili"
+      "characterId": "smp_mihon_lili",
+      "sns": {
+        "introJa": [
+          "見本の時計塔の下の、しおり屋です。",
+          "兄ちゃんは時計番。わたしは三時番。",
+          "針は、ぜんぶ三時に描きます。"
+        ]
+      }
     },
     {
       "id": "smp_mihon_toma",
