@@ -10,9 +10,12 @@
   /* The speaker's name band without colours of its own: white words on it (5.5:1). */
   --vn-name-bg: var(--ds-speaker);
   --vn-name-ink: var(--ds-speaker-ink);
-  --vn-window-radius: var(--ds-glass-radius);
-  /* The glass's edges melt into the scene over this much: no edge line, no shadow. */
-  --vn-feather: var(--ds-glass-feather);
+  --vn-window-radius: 32px;
+  /* The glass's edges melt into the scene over this much, softly (an eased fade, not a straight one): no edge line, no
+     shadow (2026-11-27 user request: a fluffier window). The glass reaches --vn-window-bleed past the window's box, so
+     the fade lies mostly outside the words: it is whole again where the text begins (the body's padding). */
+  --vn-feather: 26px;
+  --vn-window-bleed: 10px;
   --vn-body-size: var(--ds-text-reading);
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
   /* A choice: a pane of smoked glass over the scene (--ds-action), set apart from the light glass of the words. */
@@ -157,16 +160,22 @@
   content: "";
   position: absolute;
   z-index: -1;
-  inset: var(--vn-head-overhang) 0 0;
+  inset: calc(var(--vn-head-overhang) - var(--vn-window-bleed)) calc(0px - var(--vn-window-bleed))
+    calc(0px - var(--vn-window-bleed));
   border-radius: var(--vn-window-radius);
   background: var(--vn-window-bg);
+  /* Each edge fades in along an eased curve (smoothstep at quarter steps), so no rim of the fade shows. */
+  --vn-fade-in: transparent, rgb(0 0 0 / 0.16) calc(var(--vn-feather) * 0.25), rgb(0 0 0 / 0.5) calc(var(--vn-feather) * 0.5),
+    rgb(0 0 0 / 0.84) calc(var(--vn-feather) * 0.75), black var(--vn-feather);
+  --vn-fade-out: black calc(100% - var(--vn-feather)), rgb(0 0 0 / 0.84) calc(100% - var(--vn-feather) * 0.75),
+    rgb(0 0 0 / 0.5) calc(100% - var(--vn-feather) * 0.5), rgb(0 0 0 / 0.16) calc(100% - var(--vn-feather) * 0.25), transparent;
   -webkit-mask-image:
-    linear-gradient(to right, transparent, black var(--vn-feather), black calc(100% - var(--vn-feather)), transparent),
-    linear-gradient(to bottom, transparent, black var(--vn-feather), black calc(100% - var(--vn-feather)), transparent);
+    linear-gradient(to right, var(--vn-fade-in), var(--vn-fade-out)),
+    linear-gradient(to bottom, var(--vn-fade-in), var(--vn-fade-out));
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent, black var(--vn-feather), black calc(100% - var(--vn-feather)), transparent),
-    linear-gradient(to bottom, transparent, black var(--vn-feather), black calc(100% - var(--vn-feather)), transparent);
+    linear-gradient(to right, var(--vn-fade-in), var(--vn-fade-out)),
+    linear-gradient(to bottom, var(--vn-fade-in), var(--vn-fade-out));
   mask-composite: intersect;
   pointer-events: none;
 }
@@ -324,7 +333,7 @@
   .date-reference { width: 240px; }
 }
 @media (max-width: 700px) and (orientation: portrait) {
-  :root { --vn-window-radius: 18px; }
+  :root { --vn-window-radius: 28px; --vn-window-bleed: 8px; --vn-feather: 24px; }
   .vn-scene .vn-dialogue {
     width: calc(100% - 16px);
     margin-bottom: 8px;
