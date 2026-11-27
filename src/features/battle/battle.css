@@ -256,7 +256,9 @@
   max-height: none;
   min-height: 0;
   margin: 0;
-  padding: 2px 24px 12px;
+  /* The story scenes' room round the words (romance-scene.css .vn-window-body; 2026-11-27 user request: as much room under
+     the words as over them, as in the other talks): under them, the head's height less its overhang. */
+  padding: 0 var(--vn-window-padding) calc(var(--vn-head-height) - var(--vn-head-overhang));
   overflow-y: auto;
   overscroll-behavior: contain;
   border: 0;
@@ -266,7 +268,8 @@
   background: none;
 }
 .battle-dialogue .dialogue-text {
-  margin: 10px 0 8px;
+  /* The same above and below, as the story scenes' words. */
+  margin: 6px 0;
   min-height: 2.5em;
   font-size: var(--vn-body-size);
   line-height: var(--ds-leading-reading);
@@ -314,7 +317,7 @@
   }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
     margin: 0;
-    padding: 2px 16px 8px;
+    padding: 0 var(--ds-glass-padding) calc(var(--vn-head-height) - var(--vn-head-overhang));
   }
 }
 
