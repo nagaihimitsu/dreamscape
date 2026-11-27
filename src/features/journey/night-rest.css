@@ -152,10 +152,10 @@
   margin-top: 18px;
 }
 /* The night actions: panes of glass on the night (2026-11-25: the parchment buttons lit the city's night like a form), the
-   gold hairline of a pressable on the dark, white words. */
+   white hairline of a pressable on the dark (no longer gold, 2026-11-27), white words. */
 .night-screen-actions .secondary {
   margin-top: 10px;
-  border: 1.5px solid var(--ds-gold-hairline);
+  border: 1.5px solid var(--ds-action-edge);
   background: var(--ds-night-glass);
   color: var(--ds-on-slate);
   font-size: var(--ds-text-body);
@@ -298,7 +298,7 @@
   min-height: 64px;
   margin: 30px 0 0;
   padding: 10px 10px 10px 12px;
-  border: 1px solid var(--ds-gold-hairline);
+  border: 1px solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-night-glass);
   color: var(--ds-on-slate);

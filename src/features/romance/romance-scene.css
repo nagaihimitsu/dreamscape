@@ -80,7 +80,7 @@
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
-/* The link is a pressable rectangle (§2.3): the talk's smoked glass with its gold hairline, 44 px, ↗ for leaving the game. */
+/* The link is a pressable rectangle (§2.3): the talk's smoked glass with its white hairline, 44 px, ↗ for leaving the game. */
 .date-reference a {
   display: inline-flex;
   align-items: center;
@@ -230,7 +230,7 @@
 .vn-dialogue h1 { font-size: var(--ds-text-heading); margin: 2px 0 8px; color: var(--vn-text); }
 
 /* The choices (2026-11-25 user decision): above the window, which stays as it was and keeps the line they answer, they
-   float over the scene as panes of smoked glass with a gold hairline (--ds-action; no longer terracotta, 2026-11-25),
+   float over the scene as panes of smoked glass with a white hairline (--ds-action; no longer terracotta, 2026-11-25; white, not gold, 2026-11-27),
    set apart from the light glass of the words. They come before the window
    on the screen and after it in the reading order (the line, then what to answer). Many or long ones scroll in their own
    place, the window keeping its head and two lines. 10 px between two choices, which cannot be undone (AGENTS
