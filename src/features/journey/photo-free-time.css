@@ -810,7 +810,7 @@
 .place-card-map { position: relative; display: grid; gap: 2px; }
 .place-inset { display: grid; gap: 2px; }
 .place-inset-map {
-  height: 120px;
+  height: 136px;
   border: 1px solid var(--ds-parchment-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-map-ground);

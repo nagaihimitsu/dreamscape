@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import type * as L from "leaflet";
 import { useLeaflet, type Leaflet } from "./leaflet";
 import type { TravelPlace } from "../../content/travel-schemas";
-import { escapeHtml, OSM_TILES, reducedMotion } from "./PlaceMap";
+import { escapeHtml, markGlyphs, OSM_TILES, reducedMotion } from "./PlaceMap";
 import { whenLaidOut } from "./when-laid-out";
 import "./place-map.css";
 import "./travel-menu.css";
 
 /** The closest the small map comes (both marks still show with their labels). */
 const INSET_MAX_ZOOM = 16;
-/** Room around the marks: the selected place's name above its disc, 「現在地」 under its ring. */
-const INSET_PADDING = { paddingTopLeft: [36, 38] as L.PointTuple, paddingBottomRight: [36, 30] as L.PointTuple, maxZoom: INSET_MAX_ZOOM };
+/** Room around the marks: the selected place's name above its disc, 「現在地」 under its ring and clear of the map's credit. */
+const INSET_PADDING = { paddingTopLeft: [36, 38] as L.PointTuple, paddingBottomRight: [36, 48] as L.PointTuple, maxZoom: INSET_MAX_ZOOM };
 const INSET_FLY_S = 0.4;
 
 const mark = (L: Leaflet, place: TravelPlace, html: string, size: number) => L.marker([place.latitude, place.longitude], {
@@ -88,8 +88,8 @@ function LeafletInsetMap({ L, here, there, name, glyph, visited = [] }: InsetPro
     // At the current place one mark only: the selected disc with the current place's ring.
     const from = here && here.id !== there.id ? here : null;
     const stamp = (place: TravelPlace) => (visitedKey.split(" ").includes(place.id) ? " is-visited" : "");
-    if (from) mark(L, from,`<span class="travel-map-marker is-here${stamp(from)}" aria-hidden="true">●</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>`, 32).addTo(group);
-    mark(L, there,`<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${glyph}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
+    if (from) mark(L, from,`<span class="travel-map-marker is-here${stamp(from)}" aria-hidden="true">${markGlyphs(false, false)}</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>`, 32).addTo(group);
+    mark(L, there,`<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${markGlyphs(glyph === "◆", glyph === "♥")}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
     // The view needs the frame's size (in a dialog, a frame or so later).
     return whenLaidOut(frame, () => {
       map.invalidateSize();

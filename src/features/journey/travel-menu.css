@@ -21,9 +21,11 @@
 .travel-tour-offer-note { margin: 2px 0 6px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
 .travel-map-frame .leaflet-control-zoom a { display: grid; place-items: center; width: 44px; height: 44px; line-height: 1; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
-/* A place on the map (2026-11-27 user request: the rose ◆ ♥ ● outlined in white stood out of the one UI): its glyph in the
-   ink on a disc of the light glass with a white rim and a soft shadow; the legend names each by its shape. Where the
-   couple are, it is ringed in the ink; the selected one is the dark disc with the yellow glyph (below). */
+/* A place on the map (2026-11-27 user requests: the glyphs outlined in white stood out of the one UI, then the kinds and
+   where the couple are must still read at a glance): a disc of the light glass with a white rim and a soft shadow, its
+   glyphs each in the colour of its kind (PlaceMap.tsx markGlyphs; the legend the same): ◆ the story in the ink, ♥ a date
+   in the markers' rose, ● the inn and such muted. Where the couple are, it is ringed in the current place's green (the
+   one green on the map); the selected one is the dark disc with the yellow glyph (below). */
 .travel-map-marker {
   display: flex;
   align-items: center;
@@ -33,21 +35,23 @@
   border-radius: 50%;
   background: var(--ds-glass-bg);
   box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-glass-shadow);
-  color: var(--ds-ink);
   font-size: var(--ds-text-body);
   font-weight: bold;
   letter-spacing: -0.08em;
 }
-/* Where the couple are (2026-11-27 user request: the mark stood out of the one UI in its green): the disc ringed in the
-   ink (the legend's 「輪つき」 is its shape). */
-.travel-map-marker.is-here { position: relative; border: 2px solid var(--ds-ink); box-shadow: var(--ds-glass-shadow); }
-/* A ring in the same ink widens and fades from the mark, slowly (every 2.4 s), so the eye finds it on the map. Display
+.travel-map-glyph.is-main { color: var(--ds-ink); }
+.travel-map-glyph.is-date { color: var(--ds-marker); }
+.travel-map-glyph.is-other { color: var(--ds-glass-muted); }
+.travel-map-marker.is-selected .travel-map-glyph { color: inherit; }
+/* Where the couple are: the disc ringed in the current place's green (the legend's 「輪つき」), its white rim outside. */
+.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-glass-shadow); }
+/* A ring in the same green widens and fades from the mark, slowly (every 2.4 s), so the eye finds it on the map. Display
    only, never pressed. */
 .travel-map-marker.is-here::before {
   content: "";
   position: absolute;
-  inset: -2px;
-  border: 2px solid var(--ds-ink);
+  inset: -3px;
+  border: 2px solid var(--ds-here);
   border-radius: 50%;
   pointer-events: none;
   animation: map-here-pulse 2.4s var(--ease-out) infinite;
@@ -309,7 +313,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
 
 /* The selected marker (U21): the same glyph in yellow on a dark 40-px disc with a white
-   ring, slightly enlarged, the current place's ink ring outside the disc, the name above it
+   ring, slightly enlarged, the current place's green ring outside the disc, the name above it
    (display only: taps go through to the markers under it). */
 .travel-map-marker.is-selected {
   position: relative;
@@ -324,7 +328,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: scale(1.25);
 }
-.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 4px var(--ds-ink), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .travel-map-marker-label {
   position: absolute;
   bottom: calc(100% + 9px);
