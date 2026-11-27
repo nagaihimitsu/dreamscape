@@ -225,7 +225,8 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
                     voiceId={view.voiceId} seId={view.seId} cues={lineCues(staging, !!nameCut)} voice={autoAdvance.voice} onReady={onReady} onAdvance={advance} />
                 </LineStage>
                 {!view.choices.length && view.ended ? (
-                  <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "街歩きへ" : "続きを読む"} <span aria-hidden="true">→</span></button>
+                  <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}
+                    aria-label={view.finishLabel ?? "街歩きへ"}><span aria-hidden="true">→</span></button>
                 ) : null}
               </>
             )}

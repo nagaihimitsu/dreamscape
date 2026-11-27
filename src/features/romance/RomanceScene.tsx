@@ -272,11 +272,9 @@ export function RomanceScene({
               />
             </LineStage>
             {!frame.choices.length && frame.ended ? (
-              // The scene's last step in the right-aligned 「… →」 of every scene's end (2026-11-14, the phone UI audit).
-              <button disabled={!ready} className="next" data-testid="date-finish" onClick={advance}>
-                {date?.kind === "normal"
-                  ? "デートを終える"
-                  : "この時間を終える"}{" "}
+              // The scene's last step: only the right-aligned 「→」, its name for screen readers alone (2026-11-27 user decision: no words).
+              <button disabled={!ready} className="next" data-testid="date-finish" onClick={advance}
+                aria-label={date?.kind === "normal" ? "デートを終える" : "この時間を終える"}>
                 <span aria-hidden="true">→</span>
               </button>
             ) : null}

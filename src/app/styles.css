@@ -758,6 +758,7 @@ footer span {
 }
 .next {
   display: flex;
+  min-width: 44px;
   gap: 30px;
   align-items: center;
   justify-content: flex-end;

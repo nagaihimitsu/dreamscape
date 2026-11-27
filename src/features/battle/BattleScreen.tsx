@@ -671,9 +671,9 @@ export function BattleScreen({
               className="next"
               data-testid={chrome.advance.testId}
               disabled={!ready}
+              aria-label={chrome.advance.label}
               onClick={advanceSafely}
             >
-              {chrome.advance.label}{" "}
               <span aria-hidden="true">→</span>
             </button>}
           </>
