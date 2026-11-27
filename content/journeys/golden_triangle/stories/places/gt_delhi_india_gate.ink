@@ -120,7 +120,7 @@ Photo, please!
 # speaker: narrator
 モヌが、面倒くさそうに通訳する。
 # speaker: gt_monu
-ダーディーのおじいさんの名前が、あの門に彫ってあるんだって。
+ダーディーのおじいさんの名前が、あの門に彫ってあるんだって
 # speaker: gt_monu
 最初の世界大戦で、遠い国で死んだ兵士。毎年探して、毎年見つからない
 # speaker: heroine

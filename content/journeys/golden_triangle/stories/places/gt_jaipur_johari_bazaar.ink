@@ -34,7 +34,7 @@ INCLUDE modules.ink
 店番の女性が、顔を上げた。
 # speaker: gt_nasreen
 # cutin: name
-いらっしゃい。ナスリーンよ。
+いらっしゃい。ナスリーンよ
 # speaker: gt_nasreen
 腕輪は、夫と義理の弟が、近くの職人の路地で、小さな炉に向かって作ってるの。売るのは、女の仕事
 { cond("battle gt_delhi_main_red_fort_battle"):
@@ -76,7 +76,7 @@ INCLUDE modules.ink
 # speaker: gt_nasreen
 # term: gt_term_parvati
 # term: gt_term_shiva
-昔ね、女神パールヴァティーがシヴァと結婚するとき、腕輪職人たちがラックの腕輪を作ったの。
+昔ね、女神パールヴァティーがシヴァと結婚するとき、腕輪職人たちがラックの腕輪を作ったの
 # speaker: gt_nasreen
 それからずっと、花嫁や結婚した女の人は、ラックの腕輪で手首を飾るのよ
 # speaker: gt_nasreen

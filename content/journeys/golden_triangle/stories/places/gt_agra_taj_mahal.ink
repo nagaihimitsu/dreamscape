@@ -79,9 +79,9 @@ INCLUDE modules.ink
 か、確保？
 # speaker: enemy
 # cutin: name
-ニキルです。ラクナウで銀行員をしています。
+ニキルです。ラクナウで銀行員をしています
 # speaker: enemy
-恋人のタンヴィが、今トイレの列に並んでいて。
+恋人のタンヴィが、今トイレの列に並んでいて
 # speaker: enemy
 戻ってきたら、あのベンチで指輪を出すんです。三か月前から決めてたんです
 # speaker: enemy
@@ -346,7 +346,7 @@ INCLUDE modules.ink
 # speaker: narrator
 夕方、一行は川を渡った。メヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
 # speaker: enemy
-皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。
+皇帝は、この岸に、自分のための黒いタージを建てるつもりだった
 # speaker: enemy
 白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです
 # speaker: narrator
@@ -357,9 +357,9 @@ INCLUDE modules.ink
 その黒いタージの話、最初に書いたのは誰なんですか
 # speaker: enemy
 # term: gt_term_tavernier
-フランスの宝石商、タヴェルニエだよ。
+フランスの宝石商、タヴェルニエだよ
 # speaker: enemy
-三百六十年前、タージが建っていくのをその目で見た男だ。
+三百六十年前、タージが建っていくのをその目で見た男だ
 # speaker: enemy
 手を切る話の二万という数も、あの男の旅行記にある
 # speaker: narrator
@@ -373,7 +373,7 @@ INCLUDE modules.ink
 -> reasoning ->
 { evidence_result == "failure":
     # speaker: enemy
-    それは黒い墓の話ではないね。昔の人が向こう岸について何と書いたか。
+    それは黒い墓の話ではないね。昔の人が向こう岸について何と書いたか
     # speaker: enemy
     この岸の土から何が出たか。わしが聞きたいのは、その二つだ
     -> stop
@@ -405,7 +405,7 @@ INCLUDE modules.ink
 # term: gt_term_black_taj
 アンワルは杖をついたまま、しばらく黙った。それから、観客に向かって両手を広げた。
 # speaker: enemy
-皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう。
+皆さん、この若いお嬢さんは、わしの話を二つも壊した。では、お願いしよう
 # speaker: enemy
 あなたの本当の話で、この人たちを泣かせてみなさい
 # speaker: narrator
@@ -481,7 +481,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,shy,blush
 # photo: gt_album_a138 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
-わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。
+わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です
 # speaker: heroine
 わたしたちのことは、わたしたちで決めます
 # speaker: narrator
@@ -493,7 +493,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。
 # speaker: enemy
-参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。
+参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね
 # speaker: enemy
 タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる
 -> quiz(5) ->
@@ -571,9 +571,9 @@ INCLUDE modules.ink
 === gt_agra_finale_battle_claim ===
 # background: gt_bg_agra_mehtab_bagh_sunset
 # speaker: enemy
-黒い墓は、この岸に建つはずだった。
+黒い墓は、この岸に建つはずだった
 # speaker: enemy
-違うと言うなら、昔の記録から一つ、この岸の土から一つ。
+違うと言うなら、昔の記録から一つ、この岸の土から一つ
 # speaker: enemy
 二つ並べて、わしの話のどこが嘘か見せてみなさい
 ->->

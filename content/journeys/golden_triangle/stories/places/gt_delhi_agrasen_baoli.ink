@@ -123,7 +123,7 @@ INCLUDE modules.ink
 # photo: gt_album_d076 # photo_caption: 一段ごとに冷たくなる空気
 一段下りるごとに、空気が冷たくなっていく。上の路地の暑さが、嘘みたいだった。彼女は小さな声で、段を数えている。
 # speaker: gt_jasmeet
-ここ、出るって言われてるんですよ。
+ここ、出るって言われてるんですよ
 # speaker: gt_jasmeet
 昔は底に黒い水が溜まっていて、その水に呼ばれて、飛び込んだ人がいたって。……言い伝えですけど
 # speaker: heroine

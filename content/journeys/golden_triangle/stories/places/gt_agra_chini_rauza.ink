@@ -32,9 +32,9 @@ INCLUDE modules.ink
 電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
 # speaker: gt_jagdeep
 # unnamed
-お願いがある。カップルが橋の渋滞で遅れてる。
+お願いがある。カップルが橋の渋滞で遅れてる
 # speaker: gt_jagdeep # unnamed
-光を決めたいのに、立つ人がいない。
+光を決めたいのに、立つ人がいない
 # speaker: gt_jagdeep # unnamed
 ……二人とも、身長がちょうどいい。代役をやってくれないか
 # speaker: gt_jagdeep

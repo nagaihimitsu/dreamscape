@@ -89,7 +89,7 @@ INCLUDE modules.ink
         わたしから？　じゃあ……
     }
     # speaker: heroine
-    アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。
+    アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
     # speaker: heroine
     カムラさんに『毎日言葉にしなさい』って言われたから
     # speaker: narrator

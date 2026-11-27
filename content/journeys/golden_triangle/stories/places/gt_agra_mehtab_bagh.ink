@@ -39,7 +39,7 @@ INCLUDE modules.ink
 一人足りない。入って。どっちでもいい。……ううん、やっぱり、投げられる方
 # speaker: gt_sonia
 # cutin: name
-ソニア、十二歳。この空き地のキャプテン。ルールは三つ。
+ソニア、十二歳。この空き地のキャプテン。ルールは三つ
 # speaker: gt_sonia
 川まで飛ばしたら六点。ただし、自分で拾いに行くこと。庭の塀を越えたら、アウト
 # speaker: narrator

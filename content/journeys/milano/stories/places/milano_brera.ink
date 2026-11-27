@@ -79,7 +79,7 @@ INCLUDE modules.ink
 }
 # background: milano_brera_date
 # speaker: heroine
-二国の旗を思わせる衣装と、統一をめぐる闘いを祝った展覧会。
+二国の旗を思わせる衣装と、統一をめぐる闘いを祝った展覧会
 # speaker: heroine
 組み合わせれば、抱き合う二人を見ながら当時の国のことも考えられます
 -> quiz(3) ->
@@ -128,7 +128,7 @@ INCLUDE modules.ink
 # speaker: heroine
 みんな、ここで描いてるんだね
 # speaker: milano_brera_student
-ここの絵画館の絵、もとは美術学校の学生が見て学べるように集められたんです。絵画館として開く前から。
+ここの絵画館の絵、もとは美術学校の学生が見て学べるように集められたんです。絵画館として開く前から
 # speaker: milano_brera_student
 だから僕ら、ここに来ると、ちょっとだけ自分の分もある気がして
 # speaker: heroine

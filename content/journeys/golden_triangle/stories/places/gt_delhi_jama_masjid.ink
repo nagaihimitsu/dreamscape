@@ -101,7 +101,7 @@ INCLUDE modules.ink
 こいつが、この店を売れと言ってきた。断った。そうしたら、賭けを持ちかけてきた
 # speaker: gt_zoheb
 # cutin: name
-一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く。
+一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く
 # speaker: gt_zoheb
 買わなきゃ、爺さんは店を売る。観光客が買うのは携帯のケースだけさ
 # speaker: heroine
@@ -199,9 +199,9 @@ INCLUDE modules.ink
 # emotion: serious
 戻ってきたゾヘブは、{heroine_name}の顔を見て観念したように息を吐いた。ハミードには聞こえない声で言う。
 # speaker: gt_zoheb
-爺さんの息子だよ。ドバイにいる。
+爺さんの息子だよ。ドバイにいる
 # speaker: gt_zoheb
-親父を引き取りたいけど、店がある限り動かないって。
+親父を引き取りたいけど、店がある限り動かないって
 # speaker: gt_zoheb
 だから俺が買う役。賭けも、負けても納得できるようにって、俺が考えた
 # speaker: gt_zoheb

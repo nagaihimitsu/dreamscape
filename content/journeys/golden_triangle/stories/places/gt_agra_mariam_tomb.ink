@@ -113,7 +113,7 @@ INCLUDE modules.ink
 # photo: gt_album_a082 # photo_caption: ヴィムラー先生、ふたたび # photo_with: gt_vimla gt_agra_mariam_father
 ヴィムラー先生！
 # speaker: gt_vimla
-あら。署名の前に読む人ね。……今度の請願書は、これ。
+あら。署名の前に読む人ね。……今度の請願書は、これ
 # speaker: gt_vimla
 案内やガイドの説明で、この方を正しい名前で呼んでほしい、という内容
 # speaker: narrator
@@ -158,7 +158,7 @@ INCLUDE modules.ink
 # speaker: narrator
 言い合う父と娘の横で、それまで黙っていた祖母が、ゆっくり口を開いた。娘が英語に訳してくれる。
 # speaker: gt_agra_mariam_daughter
-おばあちゃんが言ってる。
+おばあちゃんが言ってる
 # speaker: gt_agra_mariam_daughter
 名前なんてどうでもいい、って男の人は言うけど、それは、ずっと自分の名前で呼ばれてきた人の言い方だって
 # speaker: gt_agra_mariam_daughter

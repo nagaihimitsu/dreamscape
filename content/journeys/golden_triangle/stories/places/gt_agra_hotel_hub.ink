@@ -70,9 +70,9 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # photo: gt_album_a005 # photo_caption: 屋根の向こうにのぞく白いドーム
-あ……見えた。あれ、タージ・マハルの屋根だよね。
+あ……見えた。あれ、タージ・マハルの屋根だよね
 # speaker: heroine
-写真で百回は見たのに、指先がそわそわする。……よし。
+写真で百回は見たのに、指先がそわそわする。……よし
 # speaker: heroine
 誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
@@ -125,9 +125,9 @@ INCLUDE modules.ink
 # voice: gt_agra_hotel_vinod_004
 え、どっちも？
 # speaker: gt_vinod
-車は、わたしのものです。会社が、あちこちで売ってくれる。
+車は、わたしのものです。会社が、あちこちで売ってくれる
 # speaker: gt_vinod
-……わたしに直接頼めば、間に入る分が要りません。ガイドはいない。
+……わたしに直接頼めば、間に入る分が要りません。ガイドはいない
 # speaker: gt_vinod
 乗り合いでもない。わたしと、お二人だけ
 # speaker: narrator
@@ -267,7 +267,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # recall: gt_album_a138
-    今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。
+    今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう
     # speaker: heroine
     あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:

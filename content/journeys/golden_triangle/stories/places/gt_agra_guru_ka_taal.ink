@@ -134,7 +134,7 @@ INCLUDE modules.ink
 ごめんなさい。伝言は、運べません
 # speaker: heroine
 # photo: gt_album_a107 # photo_caption: 「何が、怖いんですか」 # photo_with: gt_harbans gt_gurmeet
-わたしが伝えたら、お二人の言葉じゃなくなっちゃうから。
+わたしが伝えたら、お二人の言葉じゃなくなっちゃうから
 # speaker: heroine
 ……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
 # speaker: narrator
@@ -146,14 +146,14 @@ INCLUDE modules.ink
     # speaker: narrator
     ハルバンスは、しばらく豆の皿を見ていた。それから、息子の方を見ないまま、口を開いた。
     # speaker: gt_harbans
-    ……向こうへ行ったら、わしは、何も運ばない人になる。
+    ……向こうへ行ったら、わしは、何も運ばない人になる
     # speaker: gt_harbans
     四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
     # speaker: narrator
     グルミートが、初めて父親の方を向いた。そんな話は、一度も聞いたことがなかったらしい。
 - else:
     # speaker: gt_harbans
-    ……向こうへ行ったら、わしは、何も運ばない人になる。
+    ……向こうへ行ったら、わしは、何も運ばない人になる
     # speaker: gt_harbans
     四十年、何かを運んできた。運ばないわしを、息子に見せるのが嫌なんだ
     # speaker: narrator

@@ -148,7 +148,7 @@ INCLUDE modules.ink
 本人の話では、だが。
 # speaker: gt_jaipur_jaigarh_old_man
 # photo: gt_album_j054 # photo_caption: 宝物の味のチャイ
-何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ。
+何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ
 # speaker: gt_jaipur_jaigarh_old_man
 ……でも、あの年だけは、この砦が、国でいちばん有名だった
 * [「本当に、宝の味がする」 # option: treasure_taste]

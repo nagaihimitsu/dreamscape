@@ -121,7 +121,7 @@ INCLUDE modules.ink
 # speaker: heroine
 お城の中で練習していいの？
 # speaker: milano_tino
-もとは砦で、そのあと宮廷の住まいだったんだって。
+もとは砦で、そのあと宮廷の住まいだったんだって
 # speaker: milano_tino
 今は博物館と図書館が入ってるから、中庭は誰でも歩ける。ぼくみたいなのでも
 # speaker: narrator

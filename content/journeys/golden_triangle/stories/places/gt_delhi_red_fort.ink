@@ -84,7 +84,7 @@ INCLUDE modules.ink
 ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
 # speaker: enemy
 # term: gt_term_indian_english
-英語の宿題なんです。『外国人観光客に遺産について質問する』。
+英語の宿題なんです。『外国人観光客に遺産について質問する』
 # speaker: enemy
 一時間後にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
@@ -362,7 +362,7 @@ INCLUDE modules.ink
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
 # speaker: heroine
 # term: gt_term_auto_rickshaw
-待ってください。あの日のカムラさん、すごくはっきりしてました。
+待ってください。あの日のカムラさん、すごくはっきりしてました
 # speaker: heroine
 オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
 # speaker: enemy
@@ -453,7 +453,7 @@ INCLUDE modules.ink
 # speaker: gt_delhi_sweet_shopkeeper
 # term: gt_term_jalebi
 # term: gt_term_bargaining
-ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。
+ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ
 # speaker: gt_delhi_sweet_shopkeeper
 一年分の香辛料を、一番安く買えるのはどこかって
 # speaker: enemy
@@ -486,9 +486,9 @@ INCLUDE modules.ink
 # speaker: narrator
 アマンは香辛料の袋に手をつき、深く息を吐いた。
 # speaker: enemy
-祖母は、誰にも何も頼まない人なんです。
+祖母は、誰にも何も頼まない人なんです
 # speaker: enemy
-僕の結婚式の準備で、家族はみんな僕に頼みごとをする。
+僕の結婚式の準備で、家族はみんな僕に頼みごとをする
 # speaker: enemy
 祖母だけは何も言わない。だから、何を考えてるのか分からない
 # speaker: heroine
@@ -602,7 +602,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_battle_kamla_005
 ……あんたが連れてきたの
 # speaker: heroine
-はい。黙っていなくなるのは、自由とは違うと思ったから。
+はい。黙っていなくなるのは、自由とは違うと思ったから
 # speaker: heroine
 カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
 # speaker: gt_kamla

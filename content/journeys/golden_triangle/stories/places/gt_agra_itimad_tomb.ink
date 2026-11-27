@@ -148,7 +148,7 @@ INCLUDE modules.ink
 # voice: gt_agra_main_itimad_tomb_005
 建てたのも、建ててもらったのも、自分の足で来た人たちなんですね
 # speaker: enemy
-分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先。
+分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先
 # speaker: enemy
 タージは、それを大きくしただけ
 # speaker: narrator

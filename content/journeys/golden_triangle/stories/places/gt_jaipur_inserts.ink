@@ -174,7 +174,7 @@ INCLUDE modules.ink
 フロントの女性が、それを見て声を上げた。
 # speaker: gt_jaipur_hotel_front
 # term: gt_term_mehndi_colour
-まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ。
+まあ、濃い。いい色。……濃く染まるほど、愛されるって言うのよ
 # speaker: gt_jaipur_hotel_front
 旦那さまに、ってね。お姑さんに、って言う人もいるけど
 # speaker: heroine
