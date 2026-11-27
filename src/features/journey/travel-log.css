@@ -82,8 +82,9 @@ dialog.modal.travel-log {
   min-width: 88px;
   min-height: 44px;
   padding: 6px 14px;
-  border: 1.5px solid var(--ds-slate-800);
-  border-radius: var(--ds-radius-control);
+  border: 1.5px solid transparent;
+  box-shadow: var(--ds-press-shadow);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
