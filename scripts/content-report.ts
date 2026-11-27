@@ -19,7 +19,7 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "sns-reading" | "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo" | "portrait"
+export type ContentWarningKind = "sns-reading" | "sns-night" | "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo" | "portrait"
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
@@ -29,6 +29,7 @@ export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "sns-reading": "SNS post(s) with many comments (4 or more, or 2 or more # timing: later)",
+  "sns-night": "SNS post(s), comment(s) or like(s) whose condition never holds at night, when the SNS arrives (time day)",
   "tour-note": "tour note(s) (schedule windows, offer places, sources, then: on a tour day)",
   "scene-tag": "scene tag note(s) (place files and choice tags)",
   "special-date-ap": "special date(s) that cost AP",
