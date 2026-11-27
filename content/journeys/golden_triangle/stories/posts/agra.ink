@@ -308,6 +308,29 @@ INCLUDE modules.ink
 # speaker: gt_harbans
 世界地図の娘の、真似だ
 
+// ───── 後の都市で届く、出会った人のその後（2026-11-27 に足した）
+
+// グルミート：カナダに戻り、父ゆずりの丸くないローティーを焼いた。グル・カ・タールのデートの後、ジャイプールの観光を一つ終えた夜に届く。
+=== gt_post_agra_gurmeet_brampton ===
+# post: gt_gurmeet
+# images: gt_sns_gurmeet_brampton
+# where: ブランプトンの家
+# when: date gt_agra_date_guru_ka_taal
+# when: episodes jaipur >= 1
+ブランプトンで、親父の形を再現
+
+= harbans
+# speaker: gt_harbans
+形が、甘い。
+# speaker: gt_gurmeet
+親父ほど、下手になれない
+
+= heroine
+# speaker: heroine
+それ、何の国ですか？
+# speaker: gt_gurmeet
+親父に聞いてくれ
+
 // ───── 過去の投稿（会うと人物ページで読める。夜には届かない）
 // 1人分は新しいものから。写真は1人3枚以上（クイズの相手は3〜4枚）。
 

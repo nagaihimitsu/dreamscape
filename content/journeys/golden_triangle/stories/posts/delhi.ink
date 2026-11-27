@@ -401,6 +401,112 @@ INCLUDE modules.ink
 # speaker: heroine
 ……まだ、一晩です
 
+// ───── 後の都市で届く、出会った人のその後（2026-11-27 に足した。二人のしたことや、前の都市の出来事が返ってくる）
+
+// クナール：階段井戸の動画の「おまけ」が、勝手に切り抜かれて出回る。アーグラの宿で動画に気づかれた夜に届く（3つ目の投稿）。
+=== gt_post_delhi_kunal_clip ===
+# post: gt_kunal
+# images: gt_sns_kunal_clip
+# where: 大学の近くのカフェ
+# when: seen gt_agra_arrive_reel
+切り抜き、勝手に出回ってる
+
+= heroine
+# speaker: heroine
+……消せませんか？
+# speaker: gt_kunal
+ネットは、消えません
+
+= jasmeet
+# speaker: gt_jasmeet
+本編も、見てね
+
+// スレーシュ：ロディ・ガーデンで、写真を送ってみたらと勧めた道だけ。駅の伝言（今夜、カビールが夕食に来る）の後に届く。
+// 「本日、特記事項なし」（フマユーン廟の夜）の続き。
+=== gt_post_delhi_suresh_dinner ===
+# post: gt_suresh
+# images: gt_sns_suresh_dinner
+# where: 家の食卓
+# when: flag gt_delhi_suresh_encouraged
+# when: seen gt_delhi_depart_station
+本日、特記事項あり。夕食、一人多い
+
+= mehr
+# speaker: gt_mehr
+叔父さん、その写真は消して
+# speaker: gt_suresh
+記録は、残す。
+
+= heroine
+# speaker: heroine
+特記事項、聞きたいです
+# speaker: gt_suresh
+申告は、本人から
+
+// ラームキシャン：反対していたデリーの大学の願書を、娘と二人で書いた。アーグラの観光を一つ終えた夜に届く。
+// 机の上に、クトゥブ・ミナールの土産の柱の置き物（旅の間の投稿 gt_post_delhi_ramkishan_souvenir）。
+=== gt_post_delhi_ramkishan_application ===
+# post: gt_delhi_qutb_man
+# images: gt_sns_ramkishan_application
+# where: 家の机
+# when: battle gt_delhi_main_qutb_minar_battle
+# when: episodes agra >= 1
+願書、二人で書いた
+
+= heroine
+# speaker: heroine
+先生、反対は？
+# speaker: gt_delhi_qutb_man
+撤回しました。柱のせいです
+
+// モヌ：インド門のデートをして、交際が始まった夜だけ届く。村の布屋で、ダーディーが婚礼の布を広げている。
+// 「二人はいつ結婚するのか」と、コメントの「ダーディーが「ほらね」って」の、さらに先。
+=== gt_post_delhi_monu_bridal_cloth ===
+# post: gt_monu
+# images: gt_sns_monu_bridal_cloth
+# where: 村の布屋
+# when: date gt_delhi_date_india_gate
+# when: couple
+ダーディーが、布を選び始めた
+
+= heroine
+# speaker: heroine
+まだ、早いです！
+# speaker: gt_monu
+もう、通訳しておいた
+
+// ルーヒー：作文が返ってきた。駅の伝言の後に届く。作文の題で2つに分かれ、1つだけが届く。
+// 女性車両の作文：クラスで読まれて、点はまあまあ。車両の子たちに見せた。
+=== gt_post_delhi_roohi_essay_metro ===
+# post: gt_roohi
+# images: gt_sns_roohi_essay_metro
+# where: 地下鉄の女性車両
+# when: flag gt_delhi_roohi_metro_essay
+# when: seen gt_delhi_depart_station
+作文、まあまあでした！
+
+= heroine
+# speaker: heroine
+車両のみんなにも、見せた？
+# speaker: gt_roohi
+朗読会、三駅ぶん
+
+// インド門の作文：満点。引き出しには、誰にも見せない女性車両の作文（駅の伝言のとおり。中身は写さない）。
+=== gt_post_delhi_roohi_essay_monument ===
+# post: gt_roohi
+# images: gt_sns_roohi_essay_monument
+# where: 宿の帳場
+# when: seen gt_delhi_hotel_homework
+# when: not flag gt_delhi_roohi_metro_essay
+# when: seen gt_delhi_depart_station
+インド門の作文、満点
+
+= heroine
+# speaker: heroine
+引き出しの方も、読みたいな
+# speaker: gt_roohi
+……ひみつ
+
 // ───── 過去の投稿（会うと人物ページで読める。夜には届かない）
 // 二人に会う前の暮らし。場面の種明かし・ヒロインが守った秘密・フィナーレの手がかり（女性車両・月の池・香辛料・城の灯り）は書かない。
 // コメントは、その人を知っている立ち絵のある人だけ。1人分は新しいものから。
