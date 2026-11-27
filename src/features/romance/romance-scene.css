@@ -180,10 +180,11 @@
   mask-composite: intersect;
   pointer-events: none;
 }
+/* Under the words, as much room above the window's foot as over them below its top (2026-11-27 user request). */
 .vn-scene .vn-window-body {
   flex: 0 1 auto;
   min-height: 0;
-  padding: 0 var(--vn-window-padding) var(--vn-window-padding);
+  padding: 0 var(--vn-window-padding) calc(var(--vn-head-height) - var(--vn-head-overhang));
   overflow-y: auto;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
@@ -212,7 +213,8 @@
 }
 @media (prefers-reduced-motion: reduce) { .vn-choice-exit { display: none; } }
 .vn-dialogue .dialogue-text {
-  margin: 6px 0 10px;
+  /* The same above and below: the room over the words and under them match. */
+  margin: 6px 0;
   min-height: 0;
   color: var(--vn-text);
   font-size: var(--vn-body-size);
@@ -340,7 +342,7 @@
     margin-bottom: calc(8px + var(--vn-controls-row));
     max-height: calc(100% - 16px - var(--vn-controls-row));
   }
-  .vn-scene .vn-window-body { padding: 0 16px 12px; }
+  .vn-scene .vn-window-body { padding: 0 16px calc(var(--vn-head-height) - var(--vn-head-overhang)); }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
   .vn-choices .choice { padding: 9px 14px; }
 }
