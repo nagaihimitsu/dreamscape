@@ -1,46 +1,37 @@
 import { devModules, expect, lengthenExplanation, longExplanationBattle, ops, playUntil, savedGame, test, tier } from "./helpers";
 
-// Below 500 px of portrait height the page scrolls instead of the battle's reading area
-// (battle.css), and the battle holds its round bar (an answer's verdict) at the top of
-// the screen. In normal play the journey bar above the battle then scrolls away with the
-// page (styles.css); were it held at the top too, it would cover the round bar and the start
-// of a long explanation (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」).
-// Debug cannot catch this: its session caps the game's height (debug-mode.css), so there the
-// journey bar has scrolled away with the game's box by the time a long explanation shows. And
-// Debug must leave the normal storage as it was, so this is played from a normal save. State
-// shortcut (lane 2 in docs/10): reaching a city's battles takes minutes of play, so the page's
-// own scene builders open the battle on a cleared city and the game's own saveGame stores it
-// as a normal save; the answer and the reading are played in the UI. The battle and the
-// answer are chosen as in debug-scenes.spec.ts's long explanation (the ordinary battle whose first
-// question's explanation is the longest, a wrong first answer: helpers.ts longExplanationBattle).
+// Below 500 px of portrait height the page scrolls instead of the battle's window (battle.css). After an answer the
+// options stay above the window with their marks and the explanation comes in the window in the question's place
+// (2026-11-28 user decision): its start must show, not under the journey bar or the options, and 「→」 (相手の反応を見る)
+// at its end must be reached by scrolling and show whole (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、
+// 主な操作へ到達できる」「スクロールして重なった部品の下に隠れない」). Debug cannot catch this: its session caps the game's height
+// (debug-mode.css). And Debug must leave the normal storage as it was, so this is played from a normal save. State
+// shortcut (lane 2 in docs/10): reaching a city's battles takes minutes of play, so the page's own scene builders open
+// the battle on a cleared city and the game's own saveGame stores it as a normal save; the answer and the reading are
+// played in the UI. The battle and the answer are chosen as in debug-scenes.spec.ts's long explanation (the ordinary
+// battle whose first question's explanation is the longest, a wrong first answer: helpers.ts longExplanationBattle).
 test.use({ viewport: { width: 320, height: 480 } });
 
 // Long flow (docs/10「不安定さと時間の決まり」), with the same budget as debug-scenes.spec.ts in this
-// tier: the app loads twice on the development server, then a battle is played and loaded again
-// (ops.loadSaved). About 7 s locally, but 15–21 s under a 6x CPU throttle; the runner about four times
-// slower than usual on 2026-11-08 ran that file's long flows out of the default 30 s.
+// tier: the app loads twice on the development server, then a battle is played.
 test.describe.configure({ timeout: 120_000 });
 
-/** In the page: what shows at the top of the screen, and where the explanation's first line starts. */
+/** In the page: where the explanation's first line starts, and whether it and the marked options show. */
 function feedbackStart() {
   const area = document.querySelector('[aria-label="クイズ"]')!;
-  const bar = document.querySelector('[data-testid="battle-roundbar"]')!.getBoundingClientRect();
   const journeyBar = document.querySelector('[data-testid="journey-bar"]')!.getBoundingClientRect();
-  const feedback = document.querySelector('[data-testid="battle-feedback"]')!.getBoundingClientRect();
-  const first = document.querySelector('[data-testid="battle-feedback"] [data-testid="correct-answer"]')!;
+  const first = document.querySelector('[data-testid="battle-feedback"] .quiz-explanation')!;
   const line = first.getBoundingClientRect();
-  const shown = document.elementFromPoint(line.left + 4, line.top + 1);
-  const barShown = document.elementFromPoint(bar.left + 4, bar.top + 4);
+  const shown = document.elementFromPoint(line.left + 4, line.top + 4);
+  const marked = [...document.querySelectorAll<HTMLElement>("[data-mark]")].filter((row) => row.matches(".quiz-choice-row"));
   return {
-    pageScrolls: getComputedStyle(area).overflowY === "visible", scrolled: scrollY,
-    room: innerHeight - bar.bottom, rest: feedback.bottom - line.top, lineTop: line.top,
-    below: line.top - bar.bottom, belowJourneyBar: line.top - journeyBar.bottom,
-    journeyBarHeld: journeyBar.top >= 0 && journeyBar.bottom > bar.bottom,
-    shown: !!shown && first.contains(shown), barShown: !!barShown?.closest('[data-testid="battle-roundbar"]'),
+    pageScrolls: getComputedStyle(area).overflowY === "visible" || document.documentElement.scrollHeight > innerHeight,
+    lineTop: line.top, inScreen: line.top >= 0 && line.top + 8 <= innerHeight, belowJourneyBar: line.top - journeyBar.bottom,
+    shown: !!shown && first.contains(shown), marks: marked.map((row) => row.dataset.mark).sort(),
   };
 }
 
-test("battle on a 320×480 screen: after a wrong answer the round bar and the explanation's first line are not under the journey bar", { tag: tier.debug }, async ({ page }) => {
+test("battle on a 320×480 screen: after a wrong answer the explanation's start shows, and 「→」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const target = await longExplanationBattle(page);
   // The layout under test needs an explanation taller than this screen (helpers.ts lengthenExplanation).
@@ -68,12 +59,11 @@ test("battle on a 320×480 screen: after a wrong answer the round bar and the ex
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
 
   const start = await page.evaluate(feedbackStart);
-  expect(start.pageScrolls, "on this screen the page scrolls, not the reading area").toBe(true);
-  expect(start.scrolled, "the page scrolled down to the explanation").toBeGreaterThan(0);
-  expect(start.rest, "the explanation from its first line on is taller than the room below the round bar").toBeGreaterThan(start.room);
-  expect(start.barShown, "the round bar shows at the top of the screen, not the journey bar over it").toBe(true);
-  expect(start.shown, "the first line of the explanation shows, not the journey bar or the round bar over it").toBe(true);
-  expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
+  expect(start.pageScrolls, "on this screen the page scrolls").toBe(true);
+  expect(start.marks, "the chosen option and the right one keep their marks").toEqual(["answer", "missed"]);
+  expect(start.inScreen, "the explanation's first line is on the screen").toBe(true);
+  expect(start.shown, "the first line of the explanation shows, not the journey bar or an option over it").toBe(true);
+  expect(start.belowJourneyBar, "the first line starts below the journey bar").toBeGreaterThanOrEqual(0);
 
   // Scrolled back to the top of the page, the header's controls show again, and ≡メニュー →
   // ゲームの設定 opens.
@@ -81,25 +71,14 @@ test("battle on a 320×480 screen: after a wrong answer the round bar and the ex
   await expect(ops.settingsButton(page)).toBeInViewport();
   await ops.closeDialog(await ops.openSettings(page));
 
-  // Were the header held at the top of the screen above the round bar (as it was where :has()
-  // was missing, before UI step 1.2): a load brings the explanation back and focuses it at once,
-  // while no tap reaches the page (tap-hold.ts), and its first line then starts just below the
-  // held header.
-  const stillHeld = await page.addStyleTag({ content: '[data-testid="journey-bar"] { position: sticky !important; }' });
-  await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight }));
-  expect((await page.evaluate(feedbackStart)).lineTop, "at the end of the page the first line is above the screen").toBeLessThan(0);
-  await ops.loadSaved(page);
-  await expect(page.getByTestId("battle-feedback")).toBeFocused();
+  // 「相手の反応を見る」 at the explanation's end is reached by scrolling and reads on (once the page takes taps again
+  // after the dialog).
   await ops.settled(page);
-  const held = await page.evaluate(feedbackStart);
-  expect(held.journeyBarHeld, "the journey bar is held at the top of the screen, above the round bar").toBe(true);
-  expect(held.shown, "the first line of the explanation shows, not the journey bar over it").toBe(true);
-  expect(held.belowJourneyBar, "the first line starts below the held journey bar").toBeGreaterThanOrEqual(0);
-  expect(held.belowJourneyBar, "the first line starts just below the held journey bar").toBeLessThanOrEqual(12);
-  await stillHeld.evaluate((style) => (style as HTMLStyleElement).remove());
-
-  // 「相手の反応を見る」 at the explanation's end is reached by scrolling and reads on.
-  await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight }));
+  await page.evaluate(() => {
+    const area = document.getElementById("battle-content")!;
+    area.scrollTo({ top: area.scrollHeight });
+    scrollTo({ top: document.documentElement.scrollHeight });
+  });
   const reaction = battle.getByRole("button", { name: "相手の反応を見る" });
   expect(await reaction.evaluate((button) => {
     const box = button.getBoundingClientRect();

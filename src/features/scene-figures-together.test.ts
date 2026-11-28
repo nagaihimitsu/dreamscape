@@ -106,10 +106,11 @@ describe("a battle with two people opposite her (BattleScreen): Jama Masjid, Ham
       .toEqual({ figures: ["heroine", "gt_kamla", "gt_pooja", "gt_jaipur_bride_grandmother"], together: "four", slots: ["enemy", "beside", "far"] });
   });
 
-  it("shows the opponent alone over the quiz, as before", () => {
+  // The quiz is a part of the talk (2026-11-28 user decision): she stays, and the opponent asks alone opposite her.
+  it("shows her and the opponent alone opposite her over the quiz", () => {
     const question = atLine(start, "activeBattle", zoheb);
     expect(render({ ...question, activeBattle: { ...question.activeBattle!, phase: "question" } }))
-      .toEqual({ figures: ["gt_hamid"], together: null, slots: ["enemy"] });
+      .toEqual({ figures: ["heroine", "gt_hamid"], together: null, slots: ["enemy"] });
   });
 });
 

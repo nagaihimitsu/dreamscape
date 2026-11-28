@@ -73,35 +73,35 @@
 /* The portraits (z-index 1) stack as one layer, so a large photo (a line's # photo:, z-index 1, photo-show.css) lies
    over them and under the talk's window. */
 .battle-characters { isolation: isolate; }
-.battle-screen[data-phase="dialogue"] .battle-stage {
+.battle-screen[data-talk] .battle-stage {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0;
   padding: 12px 24px 0;
 }
-.battle-screen[data-phase="dialogue"] .battle-enemy-info {
+.battle-screen[data-talk] .battle-enemy-info {
   flex: none;
   padding: 0;
 }
-.battle-screen[data-phase="dialogue"] .battle-enemy-info h2 {
+.battle-screen[data-talk] .battle-enemy-info h2 {
   margin: 0;
   font-size: var(--ds-text-subhead);
 }
-.battle-screen[data-phase="dialogue"] .battle-enemy-info .eyebrow,
-.battle-screen[data-phase="dialogue"] .enemy-title,
-.battle-screen[data-phase="dialogue"] .enemy-detail {
+.battle-screen[data-talk] .battle-enemy-info .eyebrow,
+.battle-screen[data-talk] .enemy-title,
+.battle-screen[data-talk] .enemy-detail {
   display: none;
 }
-.battle-screen[data-phase="dialogue"] .battle-characters {
+.battle-screen[data-talk] .battle-characters {
   position: relative;
   flex: 1;
   min-height: 170px;
 }
-.battle-screen[data-phase="dialogue"] .battle-heroine {
+.battle-screen[data-talk] .battle-heroine {
   right: 50%;
 }
-.battle-screen[data-phase="dialogue"] .battle-enemy {
+.battle-screen[data-talk] .battle-enemy {
   left: 50%;
 }
 /* Two people opposite her (# together:, 2026-11-15 user decision; BattleScreen's battle-beside): three in a row, a third
@@ -113,17 +113,17 @@
 /* With two opposite her (2026-11-25 user decision): she on the left, the two together on the right, close, one a little
    over the other, each place wider than a third (42 %), so the three stand larger than in thirds, yet smaller than two
    side by side; their middles a quarter, three fifths and 86 % across (name-band.ts speakerSpot follows them). */
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-character-slot { right: auto; width: 42%; }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-heroine { left: calc(25% - 21%); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-enemy { left: calc(60% - 21%); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] .battle-beside { left: calc(86% - 21%); }
+.battle-screen[data-talk] .battle-characters[data-together="three"] .battle-character-slot { right: auto; width: 42%; }
+.battle-screen[data-talk] .battle-characters[data-together="three"] .battle-heroine { left: calc(25% - 21%); }
+.battle-screen[data-talk] .battle-characters[data-together="three"] .battle-enemy { left: calc(60% - 21%); }
+.battle-screen[data-talk] .battle-characters[data-together="three"] .battle-beside { left: calc(86% - 21%); }
 /* Where figures overlap, the one speaking stands in front. */
-.battle-screen[data-phase="dialogue"] .battle-character-slot:has(.vn-character.is-speaking) { z-index: 1; }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-character-slot { right: auto; width: calc(100% / 3); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-heroine { left: calc(12.5% - 100% / 6); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-enemy { left: calc(37.5% - 100% / 6); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-beside { left: calc(62.5% - 100% / 6); }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-far { left: calc(87.5% - 100% / 6); }
+.battle-screen[data-talk] .battle-character-slot:has(.vn-character.is-speaking) { z-index: 1; }
+.battle-screen[data-talk] .battle-characters[data-together="four"] .battle-character-slot { right: auto; width: calc(100% / 3); }
+.battle-screen[data-talk] .battle-characters[data-together="four"] .battle-heroine { left: calc(12.5% - 100% / 6); }
+.battle-screen[data-talk] .battle-characters[data-together="four"] .battle-enemy { left: calc(37.5% - 100% / 6); }
+.battle-screen[data-talk] .battle-characters[data-together="four"] .battle-beside { left: calc(62.5% - 100% / 6); }
+.battle-screen[data-talk] .battle-characters[data-together="four"] .battle-far { left: calc(87.5% - 100% / 6); }
 .battle-screen .battle-stage-compact {
   min-height: 116px;
   padding-top: 8px;
@@ -148,7 +148,7 @@
   border-radius: var(--ds-radius-pane);
   box-shadow: var(--ds-window-shadow);
 }
-.battle-screen:not([data-phase="dialogue"]) .battle-paper {
+.battle-screen:not([data-talk]) .battle-paper {
   flex: 1 1 0;
   min-height: 0;
   overflow-y: auto;
@@ -158,7 +158,7 @@
    the talk's window and the result's card are, its colours the glass's (styles.css). It scrolls, so the panel is the glass
    itself (a feathered edge would fade its words). Under it the verdict's bar keeps the glass over the words scrolled
    behind it, and an answer's ground is a pressable's on the glass (a right one keeps its green). */
-.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
+.battle-screen[data-phase="reasoning"] .battle-paper {
   border: 0;
   border-radius: var(--ds-glass-radius);
   background: var(--ds-glass-bg);
@@ -166,33 +166,17 @@
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
 }
-.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-roundbar {
-  background: var(--ds-glass-bg);
-  -webkit-backdrop-filter: var(--ds-glass-blur);
-  backdrop-filter: var(--ds-glass-blur);
-}
-/* An answer: a pane of its own on the glass, whiter than it with a fine edge and a soft shadow, so each row reads as
-   one thing to press (2026-11-27 user remark: the rows melted into the glass). */
-.battle-screen .quiz-choice { border-radius: var(--ds-radius-pane); }
-.battle-screen .quiz-choice:not(.chosen):not(.correct) {
-  border-color: transparent;
-  background: var(--ds-glass-press);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
-  color: var(--ds-glass-ink);
-}
-/* Japanese only (no 「訳を見る」 beside it): the words take the whole row. */
-.battle-screen .quiz-choices .quiz-choice:not(:has(.translation)) { grid-template-columns: minmax(0, 1fr); }
 .battle-screen .battle-stage:before {
   display: none;
 }
-.battle-screen[data-phase="dialogue"] .battle-paper {
+.battle-screen[data-talk] .battle-paper {
   margin-top: -28px;
   background: var(--battle-paper-ground);
 }
 
 /* Conversation and quiz share the same background. Only the readable panel
    changes: the dialogue window floats above the characters and scenery. */
-.battle-screen[data-phase="dialogue"] .battle-stage {
+.battle-screen[data-talk] .battle-stage {
   position: absolute;
   inset: var(--scene-top, 0px) 0 0;
   width: 100%;
@@ -200,10 +184,10 @@
   min-height: 0;
   padding: 0;
 }
-.battle-screen[data-phase="dialogue"] .battle-enemy-info {
+.battle-screen[data-talk] .battle-enemy-info {
   display: none;
 }
-.battle-screen[data-phase="dialogue"] .battle-characters {
+.battle-screen[data-talk] .battle-characters {
   position: absolute;
   inset: 0;
   /* Keep faces clear of the dialogue window without changing asset anchors. */
@@ -212,10 +196,10 @@
 }
 /* The scene's camera (romance-scene.css, figure-zoom.ts): the two (or more) seen nearer, the top of their picture where
    it was as they stood whole and their feet behind the window; each part of the talk opens on them whole (its establishing shot). */
-.battle-screen[data-phase="dialogue"] .battle-characters { --vn-zoom: 1.3; }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="three"] { --vn-zoom: 1.22; }
-.battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] { --vn-zoom: 1.15; }
-.battle-screen[data-phase="dialogue"][data-establishing] .battle-characters { --vn-zoom: 1; }
+.battle-screen[data-talk] .battle-characters { --vn-zoom: 1.3; }
+.battle-screen[data-talk] .battle-characters[data-together="three"] { --vn-zoom: 1.22; }
+.battle-screen[data-talk] .battle-characters[data-together="four"] { --vn-zoom: 1.15; }
+.battle-screen[data-talk][data-establishing] .battle-characters { --vn-zoom: 1; }
 .battle-paper-shell,
 .battle-window { display: contents; }
 /* The battle's talk uses the story scenes' window (romance-scene.css, §3.3): the
@@ -228,7 +212,7 @@
    and about two lines of the talk at 200 %; at normal text the faces' room leaves
    it more on every screen), up to the whole stage; with choices it may take the
    whole stage. */
-.battle-screen[data-phase="dialogue"] .battle-paper-shell {
+.battle-screen[data-talk] .battle-paper-shell {
   position: relative;
   z-index: 2;
   container: vn-window / inline-size;
@@ -240,16 +224,33 @@
   /* Above the row of its controls, at the screen's foot (dialogue-controls.css). */
   margin: auto auto calc(16px + var(--vn-controls-row));
 }
-.battle-screen[data-phase="dialogue"] { padding-bottom: 0; }
-.battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 16px - var(--vn-controls-row)); }
-.battle-screen[data-phase="dialogue"] .battle-window {
+.battle-screen[data-talk] { padding-bottom: 0; }
+.battle-screen[data-talk] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 16px - var(--vn-controls-row)); }
+/* A question and its explanation (2026-11-28): no talk's tools under the window, so it keeps to the scene's foot. The
+   options keep their whole height first (they scroll in their own place only past what leaves the window its least
+   room, about its head and four lines), and the window, as tall as what it holds, takes the rest and scrolls: a long
+   explanation never pushes the marked options out of sight. */
+.battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: calc(100% - 32px);
+  max-height: none;
+  margin-bottom: 16px;
+}
+.battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell > .vn-choices {
+  flex: 0 0 auto;
+  max-height: calc(100% - min(9em, 50%));
+}
+.battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell > .battle-window { flex: 0 1 auto; }
+.battle-screen[data-talk] .battle-window {
   position: relative;
   display: flex;
   flex-direction: column;
   flex: 0 1 auto;
   min-height: min(7.5em, 100%);
 }
-.battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
+.battle-screen[data-talk] .battle-paper.battle-dialogue {
   flex: 0 1 auto;
   width: 100%;
   max-width: none;
@@ -283,42 +284,51 @@
   color: var(--vn-text);
 }
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .battle-screen[data-phase="dialogue"] .battle-characters {
+  .battle-screen[data-talk] .battle-characters {
     bottom: 34%;
   }
-  .battle-screen[data-phase="dialogue"] .battle-character-slot {
+  .battle-screen[data-talk] .battle-character-slot {
     transform: scale(1.5);
     transform-origin: center bottom;
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell {
+  .battle-screen[data-talk] .battle-paper-shell {
     width: calc(100% - 16px);
     max-height: max(calc(100% - 140px - var(--vn-controls-row) + var(--vn-head-overhang, 22px)),
       min(calc(100% - 8px - var(--vn-controls-row)), 9em));
     /* Just above its controls' row: its window's top at the story scenes' height (--vn-window-top, romance-scene.css). */
     margin: auto 8px var(--vn-controls-row);
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px - var(--vn-controls-row)); }
+  .battle-screen[data-talk] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px - var(--vn-controls-row)); }
   /* The story scenes' grid (romance-scene.css): the choices, the window's room with the window at its top. */
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell {
+  .battle-screen[data-talk] .battle-paper-shell {
     display: grid;
     grid-template-rows: minmax(0, auto) minmax(var(--vn-window-room), auto);
     grid-template-columns: minmax(0, 1fr);
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell > .vn-choices {
+  .battle-screen[data-talk] .battle-paper-shell > .vn-choices {
     grid-row: 1;
     align-self: end;
     justify-self: center;
     max-height: 100%;
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper-shell > .battle-window {
+  .battle-screen[data-talk] .battle-paper-shell > .battle-window {
     grid-row: 2;
     align-self: start;
     max-height: 100%;
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
+  .battle-screen[data-talk] .battle-paper.battle-dialogue {
     margin: 0;
     padding: 0 var(--ds-glass-padding) calc(var(--vn-head-height) - var(--vn-head-overhang));
   }
+  /* A question and its explanation: the column above at the scene's foot, not the talk's grid (no room kept for a line). */
+  .battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell {
+    display: flex;
+    height: calc(100% - 16px);
+    max-height: none;
+    margin-bottom: 8px;
+  }
+  .battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell > .vn-choices { align-self: center; }
+  .battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell > .battle-window { align-self: stretch; }
 }
 
 /* A result (2026-11-25 user decision: part of the place, not a sheet laid over it). The stage gives its room to the
@@ -490,46 +500,27 @@
 /* Wide, short screens use their horizontal space for the three choices.
    If a translation or a long option expands, the reading panel still scrolls. */
 @media (orientation: landscape) and (max-height: 900px) {
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact {
+  .battle-screen:not([data-talk]) .battle-stage-compact {
     flex: 0 0 64px;
     min-height: 64px;
     height: 64px;
     padding: 4px 20px 0;
   }
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact h2 {
+  .battle-screen:not([data-talk]) .battle-stage-compact h2 {
     margin: 0;
     font-size: var(--ds-text-subhead);
     line-height: var(--ds-leading-tight);
   }
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .battle-enemy-info { padding-bottom: 8px; }
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .eyebrow,
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .enemy-title,
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .enemy-detail { display: none; }
-  .battle-screen:not([data-phase="dialogue"]) .battle-paper {
+  .battle-screen:not([data-talk]) .battle-stage-compact .battle-enemy-info { padding-bottom: 8px; }
+  .battle-screen:not([data-talk]) .battle-stage-compact .eyebrow,
+  .battle-screen:not([data-talk]) .battle-stage-compact .enemy-title,
+  .battle-screen:not([data-talk]) .battle-stage-compact .enemy-detail { display: none; }
+  .battle-screen:not([data-talk]) .battle-paper {
     width: min(94%, 920px);
     max-width: none;
     margin: 0 auto 8px;
     padding: 8px 18px 16px;
   }
-  .battle-screen .question-en { font-size: var(--ds-text-lead); line-height: var(--ds-leading-snug); margin: 4px 0 0; }
-  .battle-screen .question-translation-tools > .translation,
-  .battle-screen .question-translation-tools > .translation-all { margin: 0; }
-  .battle-screen .quiz-choices { gap: 4px; }
-  .battle-screen .quiz-choice,
-  .battle-screen .quiz-choice.chosen,
-  .battle-screen .quiz-choice.correct {
-    grid-template-columns: minmax(0, 1fr) 64px;
-    align-items: center;
-    gap: 4px 8px;
-    min-height: 52px;
-    padding: 4px 8px 4px 16px;
-    font-size: var(--ds-text-body);
-    line-height: var(--ds-leading-snug);
-  }
-  .battle-screen .quiz-choice > .translation { display: contents; }
-  .battle-screen .quiz-choice .translation-actions { grid-column: 2; grid-row: 1; justify-content: flex-end; }
-  .battle-screen .quiz-choice .translation-toggle { min-height: 44px; }
-  .battle-screen .quiz-choice .translation > p { grid-column: 1 / -1; margin: 2px 0 8px; }
 }
 
 /* Below 500px of portrait height the scene cannot fit a readable dialogue
@@ -541,66 +532,36 @@
     min-height: max(500px, 100dvh);
     overflow: visible;
   }
-  .battle-screen:not([data-phase="dialogue"]) .battle-paper {
+  .battle-screen:not([data-talk]) .battle-paper {
     flex: 0 0 auto;
     overflow: visible;
   }
-  .battle-screen[data-phase="dialogue"] .battle-characters {
+  .battle-screen[data-talk] .battle-characters {
     bottom: 40%;
   }
-  .battle-screen[data-phase="dialogue"] .battle-character-slot {
+  .battle-screen[data-talk] .battle-character-slot {
     transform: scale(1.18);
     transform-origin: center bottom;
   }
 }
-/* The round bar over an answer's explanation (its verdict). Its line stays as
-   tall as the 44-px 手がかり帳 it held (padding and edge outside it), so the
-   explanation's start sits where it did. */
-.battle-screen .battle-roundbar {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  box-sizing: content-box;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 7px 0;
-  background: var(--ds-parchment);
-}
-/* The bar sticks below the reading area's top padding: fill that strip too, so
-   text scrolled up behind the bar is not left showing, cut, above it. 40px
-   covers the largest top padding of the paper (35px, .paper on large screens);
-   the scrolling paper clips the fill to its own box. z-index -1 keeps the fill
-   under the bar's content. */
-.battle-screen .battle-roundbar::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 0;
-  right: 0;
-  bottom: 100%;
-  height: 40px;
-  background: inherit;
-}
-/* There the page scrolls and the bar sticks to the top of the screen, where the
-   header above the battle has scrolled away (styles.css): no padding above it. */
-@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
-  .battle-screen .battle-roundbar::before { display: none; }
-}
 .battle-screen .question-area {
   min-width: 0;
 }
+/* A question and its explanation (2026-11-28 user decision: the quiz's three options are choices of the talk, not a card
+   over it; BattleScreen, QuizChoices). The opponent asks in the talk's window, under their name band and its small
+   「Quiz」 (dialogue-controls.css .speaker-tag), at the talk's size in the window's ink, the question's own translation
+   tools under it; the explanation then comes in its place, as the narration, its 「英文を確認する」 and 「→」 at its foot.
+   The window grows for them from its least size, as a wayside quiz's question does (romance-scene.css), and its body
+   scrolls when they are longer still. */
 .battle-screen .question-en {
-  margin: 14px 0 6px;
-}
-.battle-screen .quiz-choice {
-  position: relative;
-  grid-template-columns: minmax(0, 1fr) 64px;
-  align-items: center;
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-paper-shade) 12%, transparent);
-}
-.battle-screen .quiz-feedback {
-  margin: 18px 0;
+  margin: 6px 0 2px;
+  color: var(--vn-text);
+  font-family: var(--ds-font-sans);
+  font-size: var(--vn-body-size);
+  font-weight: 500;
+  line-height: var(--ds-leading-reading);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 .question-translation-tools {
   display: flex;
@@ -610,28 +571,96 @@
 }
 .question-translation-tools > .translation {
   flex: 1 1 135px;
+  margin: 0;
 }
-.question-translation-tools > .translation-all {
-  margin: 3px 0;
+.question-translation-tools > .translation-all { margin: 0; }
+.question-translation-tools .translation-toggle { padding: 4px 2px; }
+.question-translation-tools .translation > p {
+  margin: 0 0 6px;
+  color: var(--vn-text);
+  font-size: var(--ds-text-note);
 }
-/* The result is visible even when a long question has put the explanation
-   below the fold.  It is a visual echo of the accessible feedback status. */
-.battle-screen .answer-verdict {
+.battle-screen .quiz-explanation {
+  margin: 6px 0;
+  font-size: var(--vn-body-size);
+  line-height: var(--ds-leading-reading);
+  overflow-wrap: anywhere;
+}
+.quiz-feedback-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.quiz-feedback-actions > .text-button { min-height: 44px; padding: 4px 2px; }
+.quiz-feedback-actions > .next { margin-left: auto; }
+/* The explanation comes in, a moment after the answer's own beat. */
+.battle-screen.answer-animating .quiz-feedback { animation: quiz-feedback-in 340ms 120ms ease-out both; }
+@keyframes quiz-feedback-in {
+  from { opacity: 0; transform: translateY(5px); }
+}
+
+/* The options and her whisper over them float above the window, as the talk's choices do (romance-scene.css
+   .vn-choices): the rows of a wayside quiz's replies (encounter.css), 10 px apart, which cannot be undone (AGENTS
+   選択肢の誤タップ防止). Her whisper (the hint, and her line after a right answer) is a bubble of the window's glass at
+   their top left, by her small face. */
+.battle-quiz-choices { display: grid; gap: 8px; }
+.battle-quiz-choices .heroine-note {
+  justify-self: start;
+  max-width: min(100%, 520px);
+  margin: 0;
+}
+.battle-quiz-choices .heroine-note-bubble {
+  padding: 6px 14px 7px;
+  background: var(--vn-window-bg);
+  color: var(--vn-text);
+  -webkit-backdrop-filter: var(--vn-window-blur);
+  backdrop-filter: var(--vn-window-blur);
+}
+.battle-quiz-choices .heroine-note-bubble--unlabeled { padding-top: 6px; }
+.battle-quiz-choices .heroine-note-name { color: var(--vn-muted); }
+/* An option's speaker (ReadAloud.tsx, with 「英語を読み上げるボタンを出す」): at the right of its text, before its
+   「訳を見る」. The text runs beside it and on below it, so a short option keeps its row's height. */
+.quiz-choice-row .encounter-choice-content > .read-aloud {
+  float: right;
+  margin: 0 0 2px 6px;
+}
+/* Once the answer shows, the options stay where they were with their marks (QuizChoices): the one chosen when right
+   on a right answer's ground with 「○ 正解！」, the one chosen when wrong with 「× 不正解」 in a missed answer's ink, and
+   the right one after it on the right answer's ground with 「○ 正解」. The others step back. */
+.vn-choices .quiz-choice-row[data-mark="right"],
+.vn-choices .quiz-choice-row[data-mark="answer"] {
+  background: var(--ds-right-ground);
+  box-shadow: inset 0 0 0 2px var(--ds-right-edge), var(--ds-glass-shadow);
+  color: var(--ds-right-ink);
+}
+.vn-choices .quiz-choice-row[data-mark="missed"] { box-shadow: inset 0 0 0 2px var(--ds-wrong-ground), var(--ds-glass-shadow); }
+.vn-choices .quiz-choice-row[data-faded] { color: var(--vn-muted); }
+.vn-choices .quiz-choice-row .encounter-choice-select:disabled { cursor: default; }
+.quiz-choice-mark {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 3px 8px;
-  border: 2px solid currentColor;
+  margin-left: 8px;
+  padding: 0 8px;
   border-radius: var(--ds-radius-pill);
   font-size: var(--ds-text-note);
   font-weight: 800;
-  line-height: var(--ds-leading-tight);
+  line-height: var(--ds-leading-body);
   white-space: nowrap;
+  vertical-align: 0.06em;
 }
-.battle-screen .answer-verdict b { font-size: var(--ds-text-heading); line-height: 1; }
-.battle-screen .answer-verdict-correct { color: var(--ds-right-ink); background: var(--ds-right-ground); }
-.battle-screen .answer-verdict-incorrect { color: var(--ds-wrong-ink); background: var(--ds-wrong-ground); }
-
+.quiz-choice-mark b { font-size: var(--ds-text-subhead); line-height: 1; }
+.quiz-choice-mark:is([data-mark="right"], [data-mark="answer"]) { background: var(--ds-right-ink); color: var(--ds-right-ground); }
+.quiz-choice-mark[data-mark="missed"] { background: var(--ds-wrong-ground); color: var(--ds-wrong-ink); }
+/* 「○ 正解！」 on a right answer given in this screen pops in, a gold light round it (the answer's own stamp; a special
+   battle's and a full score's stamp over the scene stay). A restored answer's mark is still. */
+.quiz-choice-mark[data-pop] { animation: quiz-mark-pop 520ms cubic-bezier(.2, .8, .25, 1) both; }
+@keyframes quiz-mark-pop {
+  0% { opacity: 0; transform: scale(.4) rotate(-10deg); }
+  55% { opacity: 1; transform: scale(1.18) rotate(-3deg); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-marker-selected) 90%, transparent),
+    0 0 16px 6px color-mix(in srgb, var(--ds-marker-selected) 55%, transparent); }
+  100% { transform: scale(1) rotate(0); }
+}
 /* Presentation only: the answer has already been saved.  This layer never
    intercepts input and naturally disappears without an animation callback. */
 .battle-screen .answer-effect {
@@ -712,20 +741,6 @@
 .battle-screen .answer-effect-rays i:nth-child(7) { --ray-angle: 270deg; }
 .battle-screen .answer-effect-rays i:nth-child(8) { --ray-angle: 315deg; }
 .battle-screen .answer-effect-incorrect .answer-effect-rays i:nth-child(even) { opacity: 0; }
-/* A small confirmation for an ordinary quiz, keeping its text readable. */
-.battle-screen .answer-effect-subtle { background: transparent; }
-.battle-screen .answer-effect-subtle .answer-effect-stamp {
-  width: 70px;
-  border-width: 3px;
-  box-shadow: 0 2px 10px var(--battle-answer-effect-stamp-shade-3);
-}
-.battle-screen .answer-effect-subtle .answer-effect-symbol { font-size: var(--ds-text-display); }
-.battle-screen .answer-effect-subtle .answer-effect-stamp strong { font-size: var(--ds-text-note); margin-top: 1px; }
-.battle-screen .answer-effect-subtle .answer-effect-rays i {
-  width: 3px;
-  height: 10px;
-  transform: rotate(var(--ray-angle)) translateY(-48px);
-}
 .battle-screen .answer-effect-perfect {
   --effect-ink: #23543e;
   --effect-bright: #f6d687;
@@ -789,75 +804,46 @@
 @media (prefers-reduced-motion: reduce) {
   .battle-screen .answer-effect { display: none; }
 }
-/* Purely presentational: the saved answer is already locked before these play. */
-.battle-screen.answer-animating[data-effect-active="true"] .selected-panel {
-  animation: counter-forward 420ms ease-out both;
+/* A low screen held sideways (a phone on its side): the window, her whisper and the options draw in, so the three
+   options show with the question without scrolling (each row still 44 px high, 6 px apart). */
+@media (orientation: landscape) and (max-height: 500px) {
+  .battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell {
+    height: calc(100% - 16px);
+    margin-bottom: 8px;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"]) .battle-paper.battle-dialogue { padding-bottom: 6px; }
+  .battle-screen .question-en { margin: 2px 0 0; }
+  .battle-quiz-choices { gap: 6px; }
+  .vn-choices .quiz-choices { gap: 6px; }
+  .vn-choices .quiz-choice-row { min-height: 44px; padding-block: 2px; }
+  .battle-quiz-choices .heroine-note-bubble { padding: 3px 12px 4px; line-height: var(--ds-leading-body); }
+  .battle-quiz-choices .heroine-note .character-face { width: 32px; height: 32px; }
 }
-
-.battle-screen.answer-animating[data-effect-active="true"] .other-panel {
-  animation: counter-retreat 420ms ease-out both;
-}
-.battle-screen.answer-animating[data-effect-active="true"] .quiz-feedback {
-  animation: counter-feedback 340ms 120ms ease-out both;
-}
-@keyframes counter-forward {
-  0% { transform: scale(1); }
-  42% { transform: scale(1.025); }
-  100% { transform: scale(1); }
-}
-@keyframes counter-retreat {
-  0% { opacity: 1; transform: translateX(0); }
-  45% { opacity: .65; transform: translateX(4px); }
-  100% { opacity: 1; transform: translateX(0); }
-}
-@keyframes counter-feedback {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-/* ためと決め (2026-11-13; BattleScreen CORRECT_HOLD_MS): while a right answer is held still, the card stays as it was
-   tapped (nothing else comes yet) and the chosen option sits pressed in a little; then its
-   gold pulse (a ring of light, no movement of its own) comes with quiz_correct and the feedback. Reduced motion: no hold,
-   a shorter glow. */
-.battle-screen[data-answer-held] .selected-panel .quiz-choice {
-  scale: 0.985;
-}
-.battle-screen .quiz-choice.answer-glow {
-  animation: answer-glow 560ms var(--ease-out);
-}
+/* ためと決め (2026-11-13; BattleScreen CORRECT_HOLD_MS): while a right answer is held still, the options stay as they were
+   tapped (nothing else comes yet) and the chosen one sits pressed in a little; then its gold pulse (a ring of light, no
+   movement of its own) comes with quiz_correct, its mark and the explanation. Reduced motion: no hold, a shorter glow.
+   Purely presentational: the saved answer is already locked before these play. */
+.battle-screen[data-answer-held] .quiz-choice-row[data-chosen] { scale: 0.985; }
+.battle-screen .quiz-choice-row.answer-glow { animation: answer-glow 560ms var(--ease-out); }
 @keyframes answer-glow {
-  0%, 100% { box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-paper-shade) 12%, transparent); }
   30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-marker-selected) 95%, transparent), 0 0 20px 6px color-mix(in srgb, var(--ds-marker-selected) 55%, transparent); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .battle-screen[data-answer-held] .selected-panel .quiz-choice { scale: none; }
-  .battle-screen .quiz-choice.answer-glow { animation-duration: 380ms; }
-}
-.reduce-motion .battle-screen[data-answer-held] .selected-panel .quiz-choice,
-.battle-screen[data-reduce-motion="true"][data-answer-held] .selected-panel .quiz-choice { scale: none; }
-.reduce-motion .battle-screen .quiz-choice.answer-glow,
-.battle-screen[data-reduce-motion="true"] .quiz-choice.answer-glow { animation-duration: 380ms; }
-/* An ordinary quiz's wrong answer (no stamp plays): the chosen card gives one small shake,
-   with every answer already locked. */
-.battle-screen[data-answer-missed="true"] .selected-panel {
-  animation: answer-missed var(--motion-medium) ease-in-out;
-}
+/* An ordinary quiz's wrong answer (no stamp plays): the chosen option gives one small shake, with every answer locked. */
+.battle-screen[data-answer-missed="true"] .quiz-choice-row[data-chosen] { animation: answer-missed var(--motion-medium) ease-in-out; }
 @keyframes answer-missed {
   25% { transform: translateX(-4px); }
   65% { transform: translateX(3px); }
 }
-.battle-screen.answer-animating[data-reduce-motion="true"] .selected-panel,
-.battle-screen.answer-animating[data-reduce-motion="true"] .other-panel,
-.battle-screen.answer-animating[data-reduce-motion="true"] .quiz-feedback,
-.battle-screen[data-answer-missed="true"][data-reduce-motion="true"] .selected-panel {
-  animation: none;
-}
-.battle-screen[data-reduce-motion="true"] .vn-character {
-  transition: none;
-}
+:is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .battle-screen[data-answer-held] .quiz-choice-row[data-chosen],
+.battle-screen[data-reduce-motion="true"][data-answer-held] .quiz-choice-row[data-chosen] { scale: none; }
+:is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .quiz-choice-row.answer-glow,
+.battle-screen[data-reduce-motion="true"] .quiz-choice-row.answer-glow { animation-duration: 380ms; }
+.battle-screen[data-reduce-motion="true"] :is(.quiz-choice-row[data-chosen], .quiz-feedback, .quiz-choice-mark) { animation: none; }
+.battle-screen[data-reduce-motion="true"] .vn-character { transition: none; }
 @media (prefers-reduced-motion: reduce) {
-  .battle-screen .selected-panel,
-  .battle-screen .other-panel,
-  .battle-screen .quiz-feedback { animation: none !important; }
+  .battle-screen[data-answer-held] .quiz-choice-row[data-chosen] { scale: none; }
+  .battle-screen .quiz-choice-row.answer-glow { animation-duration: 380ms; }
+  .battle-screen :is(.quiz-choice-row[data-chosen], .quiz-feedback, .quiz-choice-mark) { animation: none; }
 }
 @media (max-width: 600px) {
   .battle-screen .battle-stage {
@@ -870,17 +856,6 @@
     margin-left: 8px;
     margin-right: 8px;
     padding: 18px 16px 24px;
-  }
-  .battle-screen .quiz-choice {
-    padding: 11px 10px;
-    gap: 4px 8px;
-  }
-  .battle-screen .quiz-choice.chosen,
-  .battle-screen .quiz-choice.correct {
-    padding: 10px 9px;
-  }
-  .battle-screen .question-en {
-    margin: 12px 0 6px;
   }
 }
 
@@ -926,67 +901,12 @@
     scrollbar-gutter: stable;
     border-radius: var(--ds-radius-pane);
   }
-  .battle-screen[data-phase="dialogue"] .battle-paper {
+  .battle-screen[data-talk] .battle-paper {
     margin-top: 0;
-  }
-  .battle-screen .battle-roundbar {
-    padding: 2px 0;
-  }
-  .battle-screen .question-en {
-    font-size: var(--ds-text-lead);
-    line-height: var(--ds-leading-snug);
-    margin: 7px 0 12px;
-  }
-  .battle-screen .question-translation-tools > .translation {
-    margin: 0;
-  }
-  .battle-screen .question-translation-tools > .translation-all {
-    margin: 0;
-  }
-  /* 10 px between two answers, which cannot be undone (AGENTS 選択肢の誤タップ防止; 2026-11-27 user remark on an
-     iPhone: 5 px apart and 27 px high, the rows were hard to press and easy to miss). */
-  .battle-screen .quiz-choices {
-    gap: 10px;
-  }
-  .battle-screen .quiz-choice,
-  .battle-screen .quiz-choice.chosen,
-  .battle-screen .quiz-choice.correct {
-    grid-template-columns: minmax(0, 1fr) 64px;
-    align-items: center;
-    gap: 3px 6px;
-    min-height: 52px;
-    padding: 10px 10px 10px 16px;
-    font-size: var(--ds-text-subhead);
-    line-height: var(--ds-leading-snug);
-  }
-  .battle-screen .quiz-choice > .translation {
-    display: contents;
-  }
-  .battle-screen .quiz-choice .translation-actions {
-    grid-column: 2;
-    grid-row: 1;
-    flex-direction: row;
-    gap: 2px;
-  }
-  .battle-screen .quiz-choice .translation-toggle {
-    width: auto;
-    min-height: 44px;
-    padding: 4px 2px;
-    font-size: var(--ds-text-caption);
-  }
-  .battle-screen .quiz-choice .translation > p {
-    grid-column: 1 / -1;
-    margin: 2px 0 8px;
-  }
-  .battle-screen .vocabulary {
-    margin-top: 12px;
-    padding-top: 10px;
   }
 }
 
-/* Short phones (320×568 and the like): the enemy header and the round bar
-   shrink so the third answer stays above the fold under the header (UI stage 0,
-   item F). */
+/* Short phones (320×568 and the like): the enemy header over the reasoning shrinks (UI stage 0, item F). */
 @media (max-width: 700px) and (min-height: 500px) and (max-height: 599px) and (orientation: portrait) {
   .battle-screen .battle-stage-compact {
     min-height: 28px;
@@ -994,52 +914,7 @@
     padding-top: 2px;
   }
   .battle-screen .battle-stage-compact .battle-enemy-info { padding-bottom: 4px; }
-  .battle-screen .battle-roundbar { padding: 0; }
 }
-
-/* The whole row is the answer's press (2026-11-26 user decision: no A·B·C letter; it was the press, and the words
-   only reading targets). The answer button lies under the row (stretched over it); the words and the translation let
-   a press through to it, except their own buttons (a word's meaning, its close, the speaker, 「訳を見る」). */
-.battle-screen .quiz-choice > .translation { display: contents; }
-.battle-screen .quiz-choice > .option-body { grid-column: 1; grid-row: 1; }
-.battle-screen .quiz-choice > :not(.answer-submit),
-.battle-screen .quiz-choice .translation > * { position: relative; }
-.battle-screen .quiz-choice > .option-body,
-.battle-screen .quiz-choice .translation > p { pointer-events: none; }
-.battle-screen .quiz-choice .option-body :is(button, .word-meaning) { pointer-events: auto; }
-.battle-screen .quiz-choice .translation-actions {
-  grid-column: 2;
-  grid-row: 1;
-  justify-content: flex-end;
-}
-.battle-screen .quiz-choice .translation > p {
-  grid-column: 1 / -1;
-  margin: 2px 0 8px;
-}
-/* An option's speaker (ReadAloud.tsx, with 「英語を読み上げるボタンを出す」): at the right of its text, next to its
-   「訳を見る」 and away from its answer button. The text runs beside it and on below it, so a short option keeps its row's
-   height (the answer button's 44 px) and a long one is only narrower for its first lines. */
-.battle-screen .option-body > .read-aloud {
-  float: right;
-  margin: 0 0 2px 6px;
-}
-/* The answer button: the row's whole face, clear (the row's own look shows it), its focus ring around the row. */
-.battle-screen .quiz-choice .answer-submit {
-  position: absolute;
-  inset: 0;
-  grid-area: auto; /* not a cell's: an absolute child placed in a cell would cover that cell only */
-  width: 100%;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: inherit;
-  background: transparent;
-  cursor: pointer;
-}
-.battle-screen .quiz-choice .answer-submit:disabled { opacity: 1; cursor: default; }
-.battle-screen .quiz-choice .answer-submit:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
-.battle-screen .quiz-choice:has(> .answer-submit:active:enabled) { translate: 0 1px; }
 
 /* Place reaction marks by the painted image, not the often much taller
    portrait box. Heroine art shares a 2:3 canvas; the fallback enemy is a
@@ -1069,17 +944,17 @@
 @media (orientation: landscape) and (max-height: 420px) {
   /* On a short landscape display the dialogue sits higher; lift each portrait
      enough to keep its face above the reading window. */
-  .battle-screen[data-phase="dialogue"] .battle-heroine { transform: translateY(-22dvh); }
-  .battle-screen[data-phase="dialogue"] .battle-enemy,
-  .battle-screen[data-phase="dialogue"] .battle-beside,
-  .battle-screen[data-phase="dialogue"] .battle-far {
+  .battle-screen[data-talk] .battle-heroine { transform: translateY(-22dvh); }
+  .battle-screen[data-talk] .battle-enemy,
+  .battle-screen[data-talk] .battle-beside,
+  .battle-screen[data-talk] .battle-far {
     transform: translateY(-7dvh) scale(.76);
     transform-origin: center top;
   }
   /* A drawn opponent stands as large as the heroine, beside her (and so does a person beside them: # together:). */
-  .battle-screen[data-phase="dialogue"] .battle-enemy:has(.vn-character > img),
-  .battle-screen[data-phase="dialogue"] .battle-beside:has(.vn-character > img),
-  .battle-screen[data-phase="dialogue"] .battle-far:has(.vn-character > img) {
+  .battle-screen[data-talk] .battle-enemy:has(.vn-character > img),
+  .battle-screen[data-talk] .battle-beside:has(.vn-character > img),
+  .battle-screen[data-talk] .battle-far:has(.vn-character > img) {
     transform: translateY(-22dvh);
   }
   .battle-heroine .vn-character .comic-effect {
@@ -1123,7 +998,6 @@
   gap: 10px;
   margin: 8px 0 18px;
 }
-.quiz-feedback .heroine-note { margin: 10px 0 4px; }
 .heroine-note-bubble {
   position: relative;
   flex: 1 1 auto;
@@ -1232,24 +1106,16 @@
    the thighs up (the scene's camera, figure-zoom.ts), the lower part seen softened through the glass. A long panel gives
    the stage back down to its least height. */
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-stage-compact {
+  .battle-screen[data-phase="reasoning"] .battle-stage-compact {
     flex: 1 1 auto;
     align-items: flex-start;
     height: auto;
     min-height: 96px;
   }
-  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
+  .battle-screen[data-phase="reasoning"] .battle-paper {
     flex: 0 1 auto;
   }
-  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-characters {
+  .battle-screen[data-phase="reasoning"] .battle-characters {
     --vn-zoom: 1.3;
   }
-}
-
-/* An option shown in Japanese only has no 「訳を見る」, so its text takes the row's whole width: the 64-px column kept for
-   that button stood empty at the right, and a line that would have fitted left its last 「で。」 alone below (2026-11-27,
-   seen on an iPhone). After the rules above, so it holds on every screen and for a chosen or right answer too. */
-.battle-screen .quiz-choice[data-japanese-only] {
-  grid-template-columns: minmax(0, 1fr);
-  padding-right: 14px;
 }
