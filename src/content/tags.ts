@@ -51,6 +51,11 @@ export interface StoryTags {
   translationJa?: string;
   /** `# local_word: <id>`: the words of the country the line teaches (learned when it is shown in normal play). */
   localWordIds?: string[];
+  /**
+   * `# mention: off` (2026-11-28 user decision): the line shows no tab of a term of 旅の図鑑 or a word of 旅のことば that its
+   * text names (src/content/mentions.ts), as where a name stands for something else.
+   */
+  mentionOff?: true;
   /** `# term: <id>`: the 旅の図鑑 terms the line names first (their card shows the first time in a game; src/domain/glossary.ts). */
   termIds?: string[];
   /** `# call: quiz` / `# call: reasoning`: the one choice of modules.ink's battle calls (stage 5). */
@@ -456,6 +461,10 @@ export function parseStoryTags(
         throw new Error(`Unknown local word: ${value} (not in learning/local-words.json)`);
       if (result.localWordIds?.includes(value)) throw new Error(`Duplicate local_word tag: ${value}`);
       result.localWordIds = [...(result.localWordIds ?? []), value];
+    } else if (key === "mention") {
+      if (value !== "off") throw new Error(`# mention: には off だけを書けます（Invalid mention tag: ${value}; write # mention: off）。`);
+      if (result.mentionOff) throw new Error("Duplicate mention tag");
+      result.mentionOff = true;
     } else if (key === "term") {
       // Its journey is checked by content:build (scripts/glossary-terms.ts), which knows each term's journey.
       if (!TERM_ID.test(value)) throw new Error(`Invalid term tag: ${value} (write # term: <term ID>, a term of glossary/terms.json)`);

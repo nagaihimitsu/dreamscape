@@ -4,6 +4,7 @@
     {
       "id": "gt_delhi_word_bas",
       "cityId": "delhi",
+      "mentionsJa": [],
       "word": "बस",
       "reading": "バス",
       "meaningJa": "もういい、そこまで（十分だ）",
@@ -233,6 +234,7 @@
     {
       "id": "gt_agra_word_haan",
       "cityId": "agra",
+      "mentionsJa": [],
       "word": "हाँ",
       "reading": "ハーン",
       "meaningJa": "はい",

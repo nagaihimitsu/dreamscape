@@ -57,6 +57,8 @@ export const storyFrameSchema = z
     localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
     // `# term:` (旅の図鑑, 2026-11-13): the terms the line names first.
     termIds: z.array(z.string().regex(TERM_ID)).min(1).optional(),
+    // `# mention: off` (2026-11-28): no tab of a known term or word the line's text names.
+    mentionOff: z.literal(true).optional(),
     // The scene tags (frame-reader.ts stageFrame): presentation only.
     recall: albumImageIdSchema.optional(),
     // The line before recalled the same picture (2026-11-16): it stays up, no new sound.

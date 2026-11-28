@@ -40,6 +40,13 @@
             "minLength": 1,
             "language": "ja"
           },
+          "mentionsJa": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
           "sources": {
             "minItems": 1,
             "type": "array",

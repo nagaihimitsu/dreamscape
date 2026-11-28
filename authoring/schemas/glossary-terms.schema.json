@@ -80,6 +80,13 @@
               }
             ]
           },
+          "mentionsJa": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
           "imageId": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$"

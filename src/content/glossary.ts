@@ -55,6 +55,9 @@ export const glossaryTermSchema = z.object({
   category: z.enum(GLOSSARY_CATEGORIES),
   lineJa: japaneseText,
   photoNoteJa: optionalText,
+  // The words a line's text is searched for, to show the term's tab on a line after it was met (src/content/mentions.ts;
+  // 2026-11-28): without it, its name and its other name; [] for none.
+  mentionsJa: z.array(z.string().trim().min(1)).optional(),
   imageId: z.string().regex(TERM_ID, "Expected the ID of a tourism photo (tourism/catalog.json assets)"),
 }).strict();
 export type GlossaryTerm = z.infer<typeof glossaryTermSchema>;

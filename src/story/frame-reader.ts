@@ -57,6 +57,8 @@ export interface StoryFrame {
    * the line is shown, and GameApp shows its card (src/domain/glossary.ts).
    */
   termIds?: string[];
+  /** The line's `# mention: off` (only the line it is written on): no tab of a known term or word its text names. */
+  mentionOff?: true;
   /** The line's `# recall:` (only the line it is written on): the album image shown faintly behind it. */
   recall?: string;
   /**
@@ -240,6 +242,7 @@ function readTags(
   else if (parsed.ambience) frame.ambience = parsed.ambience;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   if (parsed.termIds) frame.termIds = [...new Set([...(frame.termIds ?? []), ...parsed.termIds])];
+  if (parsed.mentionOff) frame.mentionOff = true;
   events.push(...parsed.effects);
 }
 

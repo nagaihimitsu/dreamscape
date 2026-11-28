@@ -41,7 +41,7 @@ test("旅の図鑑: a term's card shows under the window with its first line and
   await expect(card).toContainText("見本の街の朝市で焼く架空の丸パン。");
   await expect(card.getByRole("img")).toHaveAttribute("alt", /三時パン/u);
   await expect(page.getByRole("status").filter({ has: card })).toContainText("旅の図鑑：三時パン");
-  await expect(card.getByRole("button")).toHaveCount(0);
+  expect(await card.evaluate((element) => element.tagName)).toBe("BUTTON");
   await expect(line).toHaveAttribute("data-ready", "true");
   const cardBox = (await card.boundingBox())!;
   const windowBox = (await guide.locator(".vn-window").boundingBox())!;
@@ -51,11 +51,15 @@ test("旅の図鑑: a term's card shows under the window with its first line and
   expect(shown.activeTourism?.frame?.termIds).toEqual([TERM]);
   expect(await line.textContent()).toContain("三時パン");
 
-  // A tap on the card reads on, as anywhere on the scene: the next line comes and the card goes with its line.
+  // Reading on: the card goes with its line. The next line names 三時パン again: a tab with its name only (2026-11-28).
   await ops.settled(page);
-  await card.click();
+  await line.focus();
+  await page.keyboard.press("Enter");
   await expect.poll(async () => (await debugGame(page))!.revision).toBeGreaterThan(shown.revision);
   await expect(cards).toHaveCount(0);
+  const tab = page.getByTestId("line-mention");
+  await expect(tab).toHaveCount(1);
+  await expect(tab).toHaveAccessibleName("旅の図鑑：三時パン");
   await ops.settled(page);
 
   // ≡メニュー and its 「ノート」 carry the dot of something new; the note opens on 旅の図鑑 (the page with something new),
@@ -91,6 +95,17 @@ test("旅の図鑑: a term's card shows under the window with its first line and
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
   await expect(card).toHaveCount(0);
 
+  // The tab opens the term larger over the line, which waits; closing it goes back to the same line.
+  const lineText = await line.textContent();
+  const revision = (await debugGame(page))!.revision;
+  await tab.click();
+  const opened = page.getByRole("dialog", { name: "三時パン", exact: true });
+  await expect(opened).toContainText("見本の街の朝市で焼く架空の丸パン。");
+  await page.getByTestId("glossary-entry-close").click();
+  await expect(opened).toHaveCount(0);
+  await expect(line).toHaveText(lineText!);
+  expect((await debugGame(page))!.revision).toBe(revision);
+
   // The photo's credit: 画面の出典 → 出典・権利の一覧 lists it with the journey's photos, with its licence.
   const credits = await ops.openCredits(page, "menu");
   const journey = credits.getByTestId("credits-journey-sample_trip");
@@ -122,4 +137,14 @@ test("旅のことば: a word's card shows under the window with its line", { ta
   await expect(page.getByRole("status").filter({ has: card })).toContainText("旅のことば：Trisól");
   await expect(line).toHaveAttribute("data-ready", "true");
   await expect(line).toContainText("Trisól");
+
+  // A press on the card opens the word larger (2026-11-28), and the line waits under it.
+  const revision = (await debugGame(page))!.revision;
+  await card.click();
+  const entry = page.getByRole("dialog", { name: "Trisól" });
+  await expect(entry).toContainText("トリソル");
+  await expect(entry).toContainText("三時に会おう");
+  await page.keyboard.press("Escape");
+  await expect(entry).toHaveCount(0);
+  expect((await debugGame(page))!.revision).toBe(revision);
 });

@@ -6,6 +6,7 @@ import {
   presentation,
   landmarks,
   glossaryTerms,
+  localWords,
   journeyTerms,
   scenes,
   storyState,
@@ -97,7 +98,8 @@ import { loadJourneyMemory, type MemoryLoad } from "../persistence";
 import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
-import { LineCardsContext, type LineCard } from "../components/LineCards";
+import { LineCardsContext, type LineCard, type LineCardsCue } from "../components/LineCards";
+import { lineMentions, termMentionNames, wordMentionNames, type MentionEntry } from "../content/mentions";
 import { DifficultyFields } from "../features/journey/DifficultyFields";
 import { DEFAULT_DIFFICULTY, difficultyOf, isJapaneseOnly, type Difficulty } from "../domain/difficulty";
 import { useNameReading } from "../features/journey/useNameReading";
@@ -195,6 +197,12 @@ const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({
 const OfflinePlayDialog = lazy(() => import("./OfflinePlayDialog").then((module) => ({ default: module.OfflinePlayDialog })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
 const MiniGameCollection = lazy(() => import("../features/journey/MiniGameCollection").then((module) => ({ default: module.MiniGameCollection })));
+/** What a line's text may name (its tabs, src/content/mentions.ts): every term, then every word. */
+const MENTION_ENTRIES: readonly MentionEntry[] = [
+  ...glossaryTerms.map((term) => ({ kind: "term" as const, id: term.id, names: termMentionNames(term) })),
+  ...localWords.map((word) => ({ kind: "word" as const, id: word.id, names: wordMentionNames(word) })),
+];
+const LineEntryDialog = lazy(() => import("../features/journey/LineEntryDialog").then((module) => ({ default: module.LineEntryDialog })));
 const TravelLogDialog = lazy(() => import("../features/journey/TravelLog").then((module) => ({ default: module.TravelLogDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
@@ -406,6 +414,31 @@ export function GameApp({
   // The cards as their ids say.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   ], [lineCardsKey]);
+  // The line's tabs (2026-11-28 user decision: a term met or a word learned before, looked up again the moment the line
+  // names it; src/content/mentions.ts): not for a line marked # mention: off, nor for what its cards already show.
+  const mentionsKey = (() => {
+    const text = lineFrame?.text;
+    if (momentCovers || !game || !text || lineFrame.mentionOff) return "";
+    const met = new Set(metTerms(game));
+    const learnedIds = new Set(learnedWords.learned);
+    const shownIds = new Set([...termIdsShown, ...wordIdsShown]);
+    const known = MENTION_ENTRIES.filter((entry) => !shownIds.has(entry.id) && (entry.kind === "term" ? met.has(entry.id) : learnedIds.has(entry.id)));
+    return lineMentions(text, known).map((entry) => `${entry.kind}:${entry.id}`).join(" ");
+  })();
+  // The entry a card or a tab opened larger (LineEntryDialog), over the line, which waits under it.
+  const [openedEntry, setOpenedEntry] = useState<LineCard | null>(null);
+  const lineCardsCue = useMemo<LineCardsCue>(() => ({
+    cards: lineCards,
+    mentions: mentionsKey ? mentionsKey.split(" ").map((key) => {
+      const [kind, id] = key.split(":");
+      return { kind: kind as LineCard["kind"], id };
+    }) : [],
+    onOpen: (card) => {
+      setOpenedEntry(card);
+      // A term opened here is seen: 旅の図鑑's 「NEW」 and its dot are for what has not been looked at.
+      if (card.kind === "term") setSeenMarks((marks) => marks && markSeen(marks, "glossary", [card.id]));
+    },
+  }), [lineCards, mentionsKey]);
   // Each line's cards ring once as they show (card_new with a term, else local_word; not on a quiet line, nor during
   // 高速送り: playCue).
   const cardsRungFor = useRef<object | null>(null);
@@ -1054,7 +1087,7 @@ export function GameApp({
   return (
     <WornCostumeContext.Provider value={game ? wornCostume(game) : undefined}>
     <PhotoShowContext.Provider value={photoShowCue}>
-    <LineCardsContext.Provider value={lineCards}>
+    <LineCardsContext.Provider value={lineCardsCue}>
     <div
       className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
     >
@@ -1510,6 +1543,9 @@ export function GameApp({
           views={{ onEndRoll: () => setKeptEndRoll(true), onMusicRoom: () => setMusicRoom(true), onMiniGames: () => setMiniGamesOpen(true),
             onRecords: () => setKeptLogOpen(true) }} />
       </Modal>}
+      {openedEntry && game && <LazyDialog onClose={() => setOpenedEntry(null)}>
+        <LineEntryDialog entry={openedEntry} onClose={() => setOpenedEntry(null)} />
+      </LazyDialog>}
       {keptEndRoll && keptGame && <EndRollDialog roll={endRollOf(keptGame)} numbers={journeyNumbers(keptGame, learnedWords.learned)}
         reduceMotion={displaySettings.value.reduceMotion} onClose={() => setKeptEndRoll(false)} />}
       {confirmAgain && game && <Modal labelledBy="again-title" onClose={() => setConfirmAgain(null)}>

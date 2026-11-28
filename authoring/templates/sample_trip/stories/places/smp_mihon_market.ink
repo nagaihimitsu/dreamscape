@@ -14,6 +14,7 @@ INCLUDE modules.ink
 // - 最初の行の # photo: は、朝市の絵（public/assets/album/smp_album_market.webp）をアルバムに入れる例（説明の札なし）。
 // - 2行目の # term: は、旅の図鑑の言葉（glossary/terms.json の架空の「三時パン」）の札の例。その言葉が初めて出る行の前に置くと、
 //   その行で会話の窓の下に写真と1行の説明のカードが出て、旅の図鑑に入る（同じセーブでは二度と出ない）。
+// - 3行目は、もう出会った「三時パン」の名前が台詞に出るので、会話の窓の下に名前だけの札が出る例（押すと図鑑の説明が開く。札を出したくない行には # mention: off）。
 === smp_mihon_market_guide ===
 # scene: guide
 # background: smp_bg_mihon_market
@@ -25,7 +26,7 @@ INCLUDE modules.ink
 棚には、針の模様を焼きつけた丸い三時パンが並んでいる。
 # speaker: heroine
 # emotion: happy
-わ、いい匂い。……でもあの人、なんだか怒ってない？
+わ、三時パンのいい匂い。……でもあの人、なんだか怒ってない？
 -> END
 
 // ───── 特殊戦B・矛盾追及（本筋。battles/catalog.json の format: "B"、reasoning.kind: "contradiction"。storyId がこの住所を指す）。

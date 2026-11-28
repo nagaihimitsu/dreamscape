@@ -22,6 +22,9 @@ export const localWordSchema = z.object({
   reading: japaneseText,
   meaningJa: japaneseText,
   noteJa: japaneseText.optional(),
+  // The words a line's text is searched for, to show the word's tab on a line after it was learned (src/content/mentions.ts;
+  // 2026-11-28): without it, its reading; [] for none (a reading that is also an everyday word, as バス).
+  mentionsJa: z.array(text).optional(),
   sources: z.array(tourismSourceSchema).min(1),
 }).strict();
 

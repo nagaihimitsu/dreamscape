@@ -7,7 +7,7 @@
    term's photo small at its left (cropped to the row), its mark, name and reading on the first line, then its line;
    no edge on one side. They take no tap of their own: a tap on them reads on, as anywhere on the scene. */
 
-:is(.vn-window, .battle-window):has(> .line-cards:not(:empty)) {
+:is(.vn-window, .battle-window):has(> .line-cards:not([data-empty])) {
   margin-bottom: calc(var(--line-cards-h, 0px) + var(--ds-space-3));
 }
 .line-cards {
@@ -16,26 +16,44 @@
   top: calc(100% + var(--ds-space-3));
   left: 0;
   right: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  align-items: start;
+  display: flex;
+  flex-direction: column;
   gap: var(--ds-space-2);
   color: var(--ds-ink);
   text-align: left;
 }
+.line-cards-new {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  align-items: start;
+  gap: var(--ds-space-2);
+}
+.line-cards-new:empty { display: none; }
+/* A card: a button (a press opens the entry larger), as a pane of the light glass. */
 .line-card {
   display: flex;
   align-items: flex-start;
   gap: var(--ds-space-3);
+  width: 100%;
   min-width: 0;
+  margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
+  border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   box-shadow: var(--ds-shadow);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   animation: line-card-in var(--motion-scene) var(--ease-out) both;
 }
+.line-card:focus-visible,
+.line-mention:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }
+.line-card:active,
+.line-mention:active { background: var(--ds-glass-press); }
 .line-card + .line-card { animation-delay: var(--motion-stagger); }
 @keyframes line-card-in {
   from { opacity: 0; transform: translateY(-6px); }
@@ -51,6 +69,7 @@
   background: var(--ds-glass-chosen);
 }
 .line-card-words {
+  display: block;
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -62,7 +81,7 @@
   margin: 0;
 }
 /* The mark (a lens: 旅の図鑑, a book: 旅のことば), quiet beside the name. */
-.line-card-head .icon {
+:is(.line-card-head, .line-mention) .icon {
   flex: none;
   align-self: center;
   width: 16px;
@@ -84,6 +103,7 @@
   overflow-wrap: anywhere;
 }
 .line-card-line {
+  display: block;
   margin: 0;
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
@@ -98,10 +118,44 @@
 }
 /* A word in its own script (旅のことば; as in its page, local-words.css): the system's fonts fill in the glyphs the game's
    font lacks, with no letter spacing nor Japanese width feature, which break scripts whose letters join. */
-.line-card[data-kind="word"] .line-card-name {
+:is(.line-card, .line-mention)[data-kind="word"] :is(.line-card-name, .line-mention-name) {
   font-weight: var(--ds-weight-medium);
   letter-spacing: 0;
   font-feature-settings: normal;
+}
+
+/* The tabs (a term met or a word learned before, named again by the line): small pills of the light glass in one row,
+   each a 44-px press with its mark and name only. */
+.line-mentions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+}
+.line-mention {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: var(--ds-space-1) var(--ds-space-4) var(--ds-space-1) var(--ds-space-3);
+  border: 0;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow-small);
+  color: var(--ds-ink);
+  font: inherit;
+  cursor: pointer;
+  animation: line-card-in var(--motion-scene) var(--ease-out) both;
+}
+.line-mention-name {
+  font-size: var(--ds-text-note);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  overflow-wrap: anywhere;
 }
 
 /* A narrow phone (320 px): the words take the whole card (the photo is in 旅の図鑑), so two cards stay short. */
@@ -110,7 +164,7 @@
 }
 
 /* Reduced motion and 「演出を短縮する」: the cards come at once. */
-.reduce-motion .line-card { animation: none; }
+.reduce-motion :is(.line-card, .line-mention) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .line-card { animation: none; }
+  .line-card, .line-mention { animation: none; }
 }
