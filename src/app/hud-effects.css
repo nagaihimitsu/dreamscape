@@ -49,8 +49,8 @@
 .journey-hud[data-view="quiet"] .hud-toast-region { visibility: visible; }
 .item-gain-notice img {
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-light);
@@ -86,8 +86,8 @@
 }
 .hud-flight-token {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: var(--ds-size-2);
+  height: var(--ds-size-2);
   margin: -8px 0 0 -8px;
   opacity: 0;
   animation: hud-flight var(--motion-scene) var(--ease-in) both;

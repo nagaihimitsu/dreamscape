@@ -131,7 +131,7 @@ dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .photo-credits-list li { display: flex; gap: var(--ds-space-3); align-items: flex-start; padding-top: var(--ds-space-3); border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* Only the recap's photo (the night screen): no note above the list, so its first entry needs no second line under the title bar. */
 .photo-credits-modal .modal-title-bar + .photo-credits-list > li:first-child { padding-top: 0; border-top: 0; }
-.photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: var(--ds-radius-control); object-fit: cover; }
+.photo-credits-list img { flex: none; width: var(--ds-size-6); height: var(--ds-size-5); border-radius: var(--ds-radius-control); object-fit: cover; }
 .photo-credits-list div { min-width: 0; }
 .photo-credits-list h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
 .photo-credits-list p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }

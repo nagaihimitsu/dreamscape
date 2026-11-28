@@ -37,7 +37,7 @@
 /* The picture's small copy, 3:2 as in the album, in a white frame, a little tilted like a print. */
 .album-photo-notice-picture {
   flex: none;
-  width: 66px;
+  width: var(--ds-size-5);
   aspect-ratio: 3 / 2;
   object-fit: cover;
   border: var(--ds-edge-thick) solid var(--ds-light);

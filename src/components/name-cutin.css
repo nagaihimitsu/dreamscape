@@ -19,7 +19,7 @@
   box-shadow: var(--ds-shadow);
   text-align: center;
   pointer-events: none;
-  animation: name-cutin-in var(--motion-short) var(--ease-out);
+  animation: ds-rise-in var(--motion-short) var(--ease-out);
 }
 .name-cutin p { margin: 0; overflow-wrap: anywhere; }
 .name-cutin .name-cutin-title {
@@ -41,9 +41,6 @@
   margin-top: var(--ds-space-1);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
-}
-@keyframes name-cutin-in {
-  from { opacity: 0; transform: translateY(8px); }
 }
 :is(.reduce-motion, [data-reduce-motion="true"]) .name-cutin { animation: none; }
 @media (prefers-reduced-motion: reduce) {

@@ -449,19 +449,13 @@
 .battle-result-actions .secondary { margin-top: 0; }
 /* The result comes in: the outcome and the score rise into place, the card follows, then the AP earned pops (nothing
    pressable moves; its buttons show at once). */
-.battle-result-heading { animation: battle-result-in var(--motion-short) var(--ease-out); }
+.battle-result-heading { animation: ds-rise-in var(--motion-short) var(--ease-out); }
 .battle-result .outcome { animation: battle-result-word var(--motion-slow) var(--ease-out) backwards; }
 /* The card only rises (its opacity stays whole, so its glass blurs the place from the first frame). */
-.battle-result-card { animation: battle-result-card-in var(--motion-short) var(--ease-out); }
+.battle-result-card { animation: ds-rise-in var(--motion-short) var(--ease-out); }
 .battle-result .reward-total dd {
   transform-origin: 0 50%;
   animation: battle-reward-pop var(--motion-short) var(--ease-out) var(--motion-short) backwards;
-}
-@keyframes battle-result-in {
-  from { opacity: 0; transform: translateY(8px); }
-}
-@keyframes battle-result-card-in {
-  from { transform: translateY(14px); }
 }
 /* The word opens out from close letters, as a title card does. */
 @keyframes battle-result-word {
@@ -583,10 +577,7 @@
 .quiz-feedback-actions > .text-button { min-height: var(--ds-press-small); padding: var(--ds-space-1) var(--ds-space-1); }
 .quiz-feedback-actions > .next { margin-left: auto; }
 /* The explanation comes in, a moment after the answer's own beat. */
-.battle-screen.answer-animating .quiz-feedback { animation: quiz-feedback-in var(--motion-short) var(--motion-instant) var(--ease-out) both; }
-@keyframes quiz-feedback-in {
-  from { opacity: 0; transform: translateY(5px); }
-}
+.battle-screen.answer-animating .quiz-feedback { animation: ds-rise-in var(--motion-short) var(--motion-instant) var(--ease-out) both; }
 
 /* The options and her whisper over them float above the window, as the talk's choices do (romance-scene.css
    .vn-choices): the rows of a wayside quiz's replies (encounter.css), 10 px apart, which cannot be undone (AGENTS
@@ -806,7 +797,7 @@
   .vn-choices .quiz-choices { gap: var(--ds-space-2); }
   .vn-choices .quiz-choice-row { min-height: var(--ds-press-small); padding-block: var(--ds-space-1); }
   .battle-quiz-choices .heroine-note-bubble { padding: var(--ds-space-1) var(--ds-space-3) var(--ds-space-1); line-height: var(--ds-leading-body); }
-  .battle-quiz-choices .heroine-note .character-face { width: 32px; height: 32px; }
+  .battle-quiz-choices .heroine-note .character-face { width: var(--ds-size-4); height: var(--ds-size-4); }
 }
 /* ためと決め (2026-11-13; BattleScreen CORRECT_HOLD_MS): while a right answer is held still, the options stay as they were
    tapped (nothing else comes yet) and the chosen one sits pressed in a little; then its white pulse (a ring of light, no
@@ -1016,10 +1007,7 @@
   line-height: var(--ds-leading-body);
 }
 .heroine-note-bubble--unlabeled { padding-top: var(--ds-space-2); }
-.hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
-@keyframes heroine-note-in {
-  from { opacity: 0; transform: translateY(4px); }
-}
+.hint-whisper { animation: ds-rise-in var(--motion-fast) var(--ease-out); }
 .battle-screen[data-reduce-motion="true"] .hint-whisper { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .battle-screen .hint-whisper { animation: none; }
@@ -1063,10 +1051,9 @@
   border: calc(2px / var(--reveal-scale)) solid var(--battle-reveal-region-edge);
   border-radius: calc(4px / var(--reveal-scale));
   box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 70%, transparent), inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 70%, transparent);
-  animation: battle-reveal-outline var(--motion-short) var(--ease-out) 1.6s both;
+  animation: ds-fade-in var(--motion-short) var(--ease-out) 1.6s both;
 }
 @keyframes battle-reveal-zoom { to { transform: scale(var(--reveal-scale)); } }
-@keyframes battle-reveal-outline { from { opacity: 0; } }
 .battle-reveal figcaption {
   margin: var(--ds-space-2) 0 0;
   color: var(--ds-ink);

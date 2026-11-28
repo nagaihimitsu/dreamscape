@@ -23,8 +23,8 @@
 }
 .held-item-button img {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-glass-mark);
@@ -80,7 +80,7 @@
 .held-item-list { margin: var(--ds-space-1) 0 0; padding: 0; list-style: none; display: grid; gap: var(--ds-space-3); }
 /* Only the items themselves (the list's own rows): a note's lines inside an item are a list of their own. */
 .held-item-list > li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: var(--ds-space-2); align-items: start; }
-.held-item-list > li > img { width: 32px; height: 32px; }
+.held-item-list > li > img { width: var(--ds-size-4); height: var(--ds-size-4); }
 /* A faint rule between items, fading out at both ends, so one item's description is not read as the next one's. */
 .held-item-list > li + li { position: relative; padding-top: var(--ds-space-3); }
 .held-item-list > li + li::before {
@@ -147,8 +147,8 @@
 }
 .held-item-ghost img,
 .held-item-button .held-item-ghost img {
-  width: 26px;
-  height: 26px;
+  width: var(--ds-size-3);
+  height: var(--ds-size-3);
   padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-surface);

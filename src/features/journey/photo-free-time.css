@@ -575,7 +575,7 @@
 .photo-cards.is-list::after { content: none; }
 .photo-cards.is-list > li { display: block; flex: none; pointer-events: auto; }
 .photo-cards.is-list .photo-card { flex-direction: row; align-items: flex-start; gap: var(--ds-space-2); width: 100%; padding: var(--ds-space-2); transform: none; }
-.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: 112px; aspect-ratio: 3 / 2; }
+.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: var(--ds-size-6); aspect-ratio: 3 / 2; }
 .photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: var(--ds-space-1) 0 0; }
 .photo-cards.is-list .place-card { margin-top: var(--ds-space-2); }
 
@@ -663,7 +663,7 @@
    it is simply there. */
 /* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
 .place-card .place-card-heroine { gap: var(--ds-space-2); }
-.place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
+.place-card .place-card-heroine .character-face { width: var(--ds-size-4); height: var(--ds-size-4); }
 .place-card .place-card-heroine .heroine-note-bubble { padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .place-card .place-card-heroine .heroine-note-bubble::before { top: var(--ds-space-3); height: 10px; }
 /* The chosen card's sheet (PhotoCardPicker's CardSheet): each card chosen comes in like a cloud (2026-11-27 user
@@ -692,10 +692,7 @@
 @media (prefers-reduced-motion: reduce) {
   .photo-card-mist { display: none; }
 }
-.place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
-@keyframes place-card-heroine-in {
-  from { opacity: 0; transform: translateY(4px) scale(0.98); }
-}
+.place-card .place-card-heroine { margin: 0; animation: ds-rise-in var(--motion-fast) var(--ease-out); }
 .reduce-motion .place-card .place-card-heroine { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .place-card .place-card-heroine { animation: none; }

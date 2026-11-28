@@ -29,10 +29,7 @@
   overflow: hidden;
   contain: layout paint;
   pointer-events: none;
-  animation: weather-in var(--motion-scene) var(--ease-out);
-}
-@keyframes weather-in {
-  from { opacity: 0; }
+  animation: ds-fade-in var(--motion-scene) var(--ease-out);
 }
 .weather-layer::before,
 .weather-layer::after {

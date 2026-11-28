@@ -40,10 +40,7 @@
   backdrop-filter: var(--ds-glass-blur);
   box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
-  animation: item-show-in var(--motion-scene) var(--ease-out) both;
-}
-@keyframes item-show-in {
-  from { opacity: 0; transform: scale(0.9); }
+  animation: ds-pop-in var(--motion-scene) var(--ease-out) both;
 }
 /* The picture: an SVG as large as the card allows (up to 160 px, less on a short or narrow screen); a picture of pixels
    at its own size at most, so it stays sharp. A white glow breathes softly behind it. */
@@ -141,18 +138,15 @@
   from { opacity: 1; }
   to { opacity: 0; }
 }
-@keyframes item-show-fade-in {
-  from { opacity: 0; }
-}
 
 /* Reduced motion: the card fades in and out where it is, without its scale, gleam, breathing glow or flight. */
-.reduce-motion .item-show-card { animation-name: item-show-fade-in; }
+.reduce-motion .item-show-card { animation-name: ds-fade-in; }
 .reduce-motion .item-show-gleam { display: none; }
 .reduce-motion .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
 .reduce-motion .item-show-card.item-show-leaving,
 .reduce-motion .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only var(--motion-scene) var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) {
-  .item-show-card { animation-name: item-show-fade-in; }
+  .item-show-card { animation-name: ds-fade-in; }
   .item-show-gleam { display: none; }
   .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
   .item-show-card.item-show-leaving,

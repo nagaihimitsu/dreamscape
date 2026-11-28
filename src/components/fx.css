@@ -75,8 +75,8 @@
   position: absolute;
   top: var(--ds-space-1);
   left: var(--ds-space-1);
-  width: 9px;
-  height: 9px;
+  width: var(--ds-size-1);
+  height: var(--ds-size-1);
   border-radius: 50%;
   background: var(--ds-light);
   box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark);

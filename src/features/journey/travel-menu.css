@@ -30,8 +30,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   border-radius: 50%;
   background: var(--ds-glass-bg);
   box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow);
@@ -170,8 +170,8 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-destination-button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: inset 0 0 0 var(--ds-edge-thick) var(--ds-dark); }
 .travel-thumb {
   flex: none;
-  width: 64px;
-  height: 43px;
+  width: var(--ds-size-5);
+  height: var(--ds-press-small);
   margin-top: var(--ds-space-1);
   border-radius: var(--ds-radius-control);
   object-fit: cover;
@@ -290,7 +290,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 }
 /* It rises out of the band as ≡メニュー's panel comes down out of the header (journey-hud.css), its waits after it. */
 .travel-band .travel-wait-actions { animation: travel-band-rise var(--motion-short) var(--ease-out); }
-.travel-band .travel-wait-actions > * { animation: travel-band-item-rise var(--motion-short) var(--ease-out) backwards; }
+.travel-band .travel-wait-actions > * { animation: ds-rise-in var(--motion-short) var(--ease-out) backwards; }
 .travel-band .travel-wait-actions > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
 .travel-band .travel-wait-actions > :nth-child(n + 3) { animation-delay: var(--motion-stagger); }
 @keyframes travel-band-rise {
@@ -298,9 +298,6 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   from { opacity: 0; transform: translateY(14px); clip-path: inset(100% -40px 0 -40px); }
   35% { opacity: 1; }
   to { opacity: 1; transform: none; clip-path: inset(-40px); }
-}
-@keyframes travel-band-item-rise {
-  from { opacity: 0; transform: translateY(8px); }
 }
 .reduce-motion .travel-band .travel-wait-actions,
 .reduce-motion .travel-band .travel-wait-actions > *,
@@ -317,8 +314,8 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
    (display only: taps go through to the markers under it). */
 .travel-map-marker.is-selected {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
   border: 0;
   border-radius: 50%;
   background: var(--ds-dark);

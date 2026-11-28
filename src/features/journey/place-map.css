@@ -36,14 +36,14 @@
 .travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-3); margin: 0; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
 .travel-map-legend > span { white-space: nowrap; }
 /* The stamp of 「行った場所」 as the marks carry it (travel-menu.css .is-visited). */
-.travel-map-legend-visited { display: inline-grid; place-items: center; width: 14px; height: 14px; margin: 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; vertical-align: -1px; }
+.travel-map-legend-visited { display: inline-grid; place-items: center; width: var(--ds-size-2); height: var(--ds-size-2); margin: 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; vertical-align: -1px; }
 /* The trail (PlaceMap, visited-places.ts trailPlaceIds): a place been to that has no mark of its own keeps the stamp
    alone, smaller and under the marks; it is not a control (no taps, no focus). */
 .travel-map-trail-wrap { background: transparent; border: 0; pointer-events: none; }
-.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-small); }
+.travel-map-trail { display: grid; place-items: center; width: var(--ds-size-2); height: var(--ds-size-2); border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-small); }
 .free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: var(--ds-space-2); }
 .travel-map-error { margin: var(--ds-space-1) 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
-.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 var(--ds-space-1) 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-dark); box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-dark); vertical-align: -1px; }
+.travel-map-legend-disc { display: inline-block; width: var(--ds-size-2); height: var(--ds-size-2); margin: 0 var(--ds-space-1) 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-dark); box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-dark); vertical-align: -1px; }
 /* The map's zoom: the light pane to press (styles.css --ds-press-shadow; 2026-11-27 user request: one UI), its two
    presses on the light ground with the glass's hairline between them. */
 .leaflet-container .leaflet-control-zoom { border: var(--ds-edge) solid transparent; border-radius: var(--ds-radius-pane); overflow: hidden; box-shadow: var(--ds-press-shadow); }

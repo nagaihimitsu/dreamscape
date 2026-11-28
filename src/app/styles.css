@@ -191,6 +191,13 @@
   --ds-icon: 20px;
   --ds-icon-large: 24px;
   --ds-icon-xl: 32px;
+  /* The size of a face, an item's picture, a thumbnail, a dot or a map's mark: six (a touch square takes --ds-press-*). */
+  --ds-size-1: 8px; /* a dot */
+  --ds-size-2: 16px; /* a small mark: a map's trail, a legend's disc */
+  --ds-size-3: 24px; /* a small face */
+  --ds-size-4: 32px; /* a face, an item's picture, a map's mark */
+  --ds-size-5: 64px; /* a large face, a thumbnail */
+  --ds-size-6: 96px; /* a photo's small copy */
   /* The width of a panel, a dialog, the page (500 to 900 px): three. */
   --ds-width-narrow: 560px; /* a dialog, a card */
   --ds-width: 680px; /* a panel, a page's text */
@@ -273,6 +280,22 @@
 }
 body {
   margin: 0;
+}
+
+/* The shapes of coming in: four, shared by every screen (2026-11-28 user decision: one way to come in, not one per part).
+   Fading in; rising from a little below; dropping from a little above (what hangs under the header); and growing from a
+   little smaller (a card, a print). A presentation's own motion (a cut-in, a flight, a stamp, a ride) keeps its own. */
+@keyframes ds-fade-in {
+  from { opacity: 0; }
+}
+@keyframes ds-rise-in {
+  from { opacity: 0; transform: translateY(var(--ds-space-2)); }
+}
+@keyframes ds-drop-in {
+  from { opacity: 0; transform: translateY(calc(-1 * var(--ds-space-2))); }
+}
+@keyframes ds-pop-in {
+  from { opacity: 0; transform: scale(0.94); }
 }
 
 /* The talk's place (romance-scene.css, battle.css; 2026-11-27): the row of its controls at the scene's foot (a 44-px
@@ -510,10 +533,7 @@ h3 {
 /* A scene's next picture (CanalScene's SceneArtwork): unseen over the last one until it has
    loaded, then fading in over it in --motion-scene (its timer, ARTWORK_FADE_MS, matches). */
 .scene-artwork[data-entering]:not([data-loaded]) { opacity: 0; }
-.scene-artwork[data-entering][data-loaded] { animation: scene-artwork-in var(--motion-scene) var(--ease-out); }
-@keyframes scene-artwork-in {
-  from { opacity: 0; }
-}
+.scene-artwork[data-entering][data-loaded] { animation: ds-fade-in var(--motion-scene) var(--ease-out); }
 .reduce-motion .scene-artwork[data-entering][data-loaded] { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .scene-artwork[data-entering][data-loaded] { animation: none; }
@@ -830,14 +850,11 @@ footer span {
    appear with their line: a fade only, nothing moves, since a choice may take a press as it
    shows. The last starts within 120 ms and all are whole within 280 ms. */
 :is(.choices, .encounter-choices) > * {
-  animation: choice-in var(--motion-fast) var(--ease-out) backwards;
+  animation: ds-fade-in var(--motion-fast) var(--ease-out) backwards;
 }
 :is(.choices, .encounter-choices) > :nth-child(2) { animation-delay: var(--motion-stagger); }
 :is(.choices, .encounter-choices) > :nth-child(3) { animation-delay: calc(2 * var(--motion-stagger)); }
 :is(.choices, .encounter-choices) > :nth-child(n + 4) { animation-delay: calc(3 * var(--motion-stagger)); }
-@keyframes choice-in {
-  from { opacity: 0; }
-}
 .reduce-motion :is(.choices, .encounter-choices) > * { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   :is(.choices, .encounter-choices) > * { animation: none; }
@@ -895,10 +912,7 @@ footer span {
 /* A notice of the session (「現在の場面を保存しました。」, a learning record's error…) slides
    down into its place as it appears; it goes at once when closed. */
 .app-shell > main > .notice {
-  animation: notice-in var(--motion-fast) var(--ease-out);
-}
-@keyframes notice-in {
-  from { opacity: 0; transform: translateY(-6px); }
+  animation: ds-drop-in var(--motion-fast) var(--ease-out);
 }
 .app-shell.reduce-motion > main > .notice { animation: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -1449,7 +1463,7 @@ dialog.modal[open] {
   animation: modal-in var(--motion-short) var(--ease-out);
 }
 dialog.modal[open]::backdrop {
-  animation: modal-backdrop-in var(--motion-short) var(--ease-out);
+  animation: ds-fade-in var(--motion-short) var(--ease-out);
 }
 /* :where(): a part with its own coming-in keeps it. */
 :where(dialog.modal[open]) > * { animation: modal-part-in calc(var(--motion-short) + 60ms) var(--ease-out) backwards; }
@@ -1460,9 +1474,6 @@ dialog.modal[open]::backdrop {
 @keyframes modal-in {
   from { opacity: 0; transform: translateY(16px); }
   40% { opacity: 1; }
-}
-@keyframes modal-backdrop-in {
-  from { opacity: 0; }
 }
 @keyframes modal-part-in {
   from { opacity: 0; transform: translateY(10px); filter: blur(6px); }

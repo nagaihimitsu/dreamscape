@@ -299,8 +299,8 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
 .night-sns-face {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   overflow: hidden;
   border-radius: 50%;
   background: var(--ds-surface);

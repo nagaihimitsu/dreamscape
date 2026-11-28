@@ -264,7 +264,7 @@
    only), two to a row on a phone. */
 .word-book { padding-bottom: var(--ds-space-3); }
 .word-book-place-head { display: flex; align-items: center; gap: var(--ds-space-2); margin: var(--ds-space-4) 0 var(--ds-space-2); }
-.word-book-place-photo { flex: 0 0 auto; width: 84px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-dark-2); }
+.word-book-place-photo { flex: 0 0 auto; width: var(--ds-size-6); aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-dark-2); }
 .word-book-place-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* No photo: the free-time cards' plain tile (the place's background colour, else the dark grey) with the sightseeing mark. */
 .word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-dark-2); color: color-mix(in srgb, var(--ds-light) 88%, transparent); font-size: var(--ds-text-large); }

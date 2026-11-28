@@ -202,6 +202,21 @@ const breakpointErrors = (text: string) =>
     .map(([query]) => `${query} (not one of the rules' screen sizes)`);
 const mediaErrors = (css: string) => [...css.matchAll(/@media([^{]+)\{/g)].flatMap(([, query]) => breakpointErrors(query));
 
+/** A face, an item's picture, a thumbnail, a dot or a map's mark: its size one of the rules' (not a drawn shape's ::before). */
+const THING = /face|\bimg\b|picture|thumb|(?:^|[-.])dot\b|-dot|avatar|marker|token|legend|trail|-photo\b/;
+const sizeErrors = (css: string) =>
+  [...css.replace(KEYFRAMES, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter(([, selector]) => THING.test(selector) && !/::(?:before|after)|\.icon/.test(selector))
+    .flatMap(([, , body]) => declarations(body + ";"))
+    .filter(({ property, value }) => /^(?:min-|max-)?(?:width|height)$/.test(property) && /^(\d+)px$/.test(value) && Number.parseInt(value, 10) >= 6 && Number.parseInt(value, 10) <= 112)
+    .map(({ property, value }) => `${property}: ${value} (a thing's size not one of the rules': --ds-size-*, --ds-press-*)`);
+/** A plain way of coming in (fading, rising, dropping, growing) is one of the four shared ones (styles.css's ds-*-in). */
+const entranceErrors = (css: string) =>
+  [...css.matchAll(/@keyframes\s+([\w-]+)\s*\{\s*(?:from|0%)\s*\{([^{}]*)\}\s*\}/g)]
+    .filter(([, name, body]) => !name.startsWith("ds-") && declarations(body.trim().replace(/;?$/, ";")).every(({ property, value }) =>
+      (property === "opacity" && value === "0") || (property === "transform" && /^(?:translateY\([^()]*\)|scale\([\d.]+\)|\s)+$/.test(value))))
+    .map(([, name]) => `@keyframes ${name} (a plain way of coming in: use ds-fade-in, ds-rise-in, ds-drop-in or ds-pop-in)`);
+
 /** The shadows a thing casts: one of the rules' (a mini-game's drawing keeps its own, and a glow of light is not a shadow). */
 const shadowErrors = (css: string) =>
   declarations(css.replace(KEYFRAMES, ""))
@@ -235,6 +250,8 @@ describe("the design's rules", () => {
     expect(stepsOf(root, "--ds-icon")).toHaveLength(4);
     expect(stepsOf(root, "--ds-width")).toHaveLength(3);
     expect(stepsOf(root, "--ds-blur")).toHaveLength(3);
+    expect(stepsOf(root, "--ds-size-")).toHaveLength(6);
+    expect(stepsOf(root, "--ds-card")).toHaveLength(2);
   });
 
   it("loads one web font for the words, Noto Sans JP (2026-11-28 user decision: one typeface)", () => {
@@ -290,7 +307,7 @@ describe("the design's rules", () => {
       const wrong = typeErrors(css, path.startsWith("src/minigames/"));
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);
       wrong.push(...alphaErrors(css), ...mediaErrors(css));
-      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css));
+      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css), ...sizeErrors(css), ...entranceErrors(css));
       expect(wrong).toEqual([]);
     });
   }

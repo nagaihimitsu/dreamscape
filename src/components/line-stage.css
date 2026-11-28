@@ -76,13 +76,7 @@
   mask-image: linear-gradient(to bottom, transparent, black 18%),
     radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
   mask-composite: intersect;
-  animation: recall-photo-in var(--motion-slow) var(--motion-short) var(--ease-out) both;
-}
-@keyframes stage-fade-in {
-  from { opacity: 0; }
-}
-@keyframes recall-photo-in {
-  from { opacity: 0; }
+  animation: ds-fade-in var(--motion-slow) var(--motion-short) var(--ease-out) both;
 }
 
 /* # quiet: a soft veil over the scene's picture, darker towards its edges, and the visited place's reference (a
@@ -95,7 +89,7 @@
   inset: 0;
   background: var(--stage-quiet-veil);
   pointer-events: none;
-  animation: stage-fade-in var(--motion-scene) var(--ease-out);
+  animation: ds-fade-in var(--motion-scene) var(--ease-out);
 }
 [data-quiet] > .date-reference {
   visibility: hidden;
