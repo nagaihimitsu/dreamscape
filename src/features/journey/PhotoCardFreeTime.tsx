@@ -28,6 +28,7 @@ import { armedAt, type PressKind } from "./travel-selection";
 import { TravelRentals } from "./TravelRentals";
 import { ShopCard } from "./ShopCard";
 import { currentShop } from "../../domain/outfits";
+import { shopScenesNow } from "../../domain/occasion";
 import type { CardSwipe } from "./useCardGestures";
 import { useTravelSelection, type PressScope } from "./useTravelSelection";
 import { playSe } from "../../audio/sound-effects";
@@ -99,14 +100,17 @@ export function PhotoCardFreeTime({
   const { current, nearby, other, candidates, recommendedMainId, nearestId } = api.destinations;
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
-  // The city's shop (2026-11-20): its card at the right end of the row.
-  const shop = currentShop(game)?.nameJa ?? null;
+  // The city's shop (2026-11-20): its card at the right end of the row; a talking shop's swipe up goes in while one of its
+  // scenes can run (2026-11-28).
+  const shopName = currentShop(game)?.nameJa ?? null;
+  const shopEnters = shopScenesNow(game).length > 0;
   // The dates not open yet whose writer gave a hint (# hint:, 2026-11-13): with Debug mode on only, locked cards after the
   // places', never chosen to go (players never see them: a date joins the row as a new card once it opens).
   const locked = useMemo(() => (debug ? hintedLockedDates(game) : []), [game, debug]);
   const lockedKey = locked.map((date) => `${date.dateId}:${date.hintJa}`).join("\n");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour, shop, locked, debug }), [places, api.choices, tour, shop, lockedKey, debug]);
+  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices),
+    { tour, shop: shopName === null ? null : { nameJa: shopName, enters: shopEnters }, locked, debug }), [places, api.choices, tour, shopName, shopEnters, lockedKey, debug]);
   const joining = useJoiningCards(game, cards, seenCards, (fresh) => {
     // The row turns to the first new card (quietly, as the screen's own choice), and the live region names them all.
     setPick(fresh[0].id);
@@ -193,7 +197,7 @@ export function PhotoCardFreeTime({
     if (card.kind === "stay")
       return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} onAgain={onAgain} scope={scope} heading={heading} quietGo={quietGo} go={go} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
-    if (card.kind === "shop") return <ShopCard game={game} onBuy={onBuyOutfit} onWear={onWearOutfit} onEnter={onEnterShop} heading={heading} />;
+    if (card.kind === "shop") return <ShopCard game={game} onBuy={onBuyOutfit} onWear={onWearOutfit} onEnter={onEnterShop} heading={heading} quietGo={quietGo} />;
     if (card.kind === "locked") return <LockedCard hintJa={card.hintJa} heading={heading} />;
     return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
       plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} go={go} />;
@@ -209,11 +213,13 @@ export function PhotoCardFreeTime({
   };
   /**
    * The chosen card's swipe up (photo-cards.ts takesSwipe): a place's (swipeOf); 「待機」's waits the chosen wait (this
-   * screen stays: its card comes back); 「ホテルに戻る」's rests by the chosen way home while it is the selection; or none.
+   * screen stays: its card comes back); a talking shop's goes in (its scenes open; it takes a swipe only while one can run);
+   * 「ホテルに戻る」's rests by the chosen way home while it is the selection; or none.
    */
   const swipeFor = (card: RowCard): CardSwipe | null => {
     if (!takesSwipe(card)) return null;
     if (card.kind === "place") return swipeOf(card.entry);
+    if (card.kind === "shop") return { go: () => { onEnterShop(); }, readyAt: 0, refuse: () => undefined, note: "" };
     if (card.kind === "wait")
       return { go: wait ? () => onTravelWait(wait.minutes) : null, readyAt: 0, stays: true, refuse: () => api.announce(WAIT_REFUSAL_JA),
         note: refusalNoteJa(WAIT_REFUSAL_REASON_JA) };

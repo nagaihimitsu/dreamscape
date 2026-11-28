@@ -24,7 +24,7 @@ import "../battle/battle.css";
 import { FitText } from "../../components/FitText";
 
 /** A held key repeats its keydown: only its first press counts (the travel guards). */
-function ignoreRepeat(event: KeyboardEvent) {
+export function ignoreRepeat(event: KeyboardEvent) {
   if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
 }
 

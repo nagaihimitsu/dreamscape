@@ -787,8 +787,10 @@
 }
 .place-card-go > span { min-width: 0; overflow-wrap: anywhere; }
 .place-card-go-cost { margin-left: auto; font-size: var(--ds-text-note); font-weight: var(--ds-weight-medium); }
-/* In the row: kept for screen readers and the keyboard (visually hidden until it has the focus). */
-.place-card .place-card-go.is-quiet:not(:focus) {
+/* In the row: kept for screen readers and the keyboard (visually hidden until it has the focus): 「行く」「待つ」「休む」, and a
+   talking shop's 「店に入る」 (2026-11-28: a swipe up on the shop's photo card goes in). */
+.place-card .place-card-go.is-quiet:not(:focus),
+.shop-card .shop-enter.is-quiet:not(:focus) {
   position: absolute;
   width: 1px;
   height: 1px;
