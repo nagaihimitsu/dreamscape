@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { MOTION, MOTION_STAGGER } from "../components/motion";
 
 /**
  * The design's rules (2026-11-25 user decision, remade 2026-11-28; styles.css :root, docs/14 「デザインの決まり」): every
@@ -149,6 +150,25 @@ const greyErrors = (css: string) =>
       })
       .map(([literal]) => `${property}: ${literal} (a grey not one of the rules': --ds-gray-*, --ds-light, --ds-shade)`));
 
+/**
+ * A motion's length and way (not a mini-game's: its timing is its play): up to 1.4 s, one of the six (--motion-*), and one
+ * of the three ways (--ease-*), or linear or steps(). A longer one is a presentation's own length; under 10 ms, an instant
+ * reset; inside calc(), an offset.
+ */
+const motionErrors = (css: string) =>
+  declarations(css.replace(KEYFRAMES, ""))
+    .filter(({ property }) => /^(?:transition|animation)(?:-(?:duration|delay|timing-function))?$/.test(property))
+    .flatMap(({ property, value }) => {
+      const bare = bareOf(value.replace(/var\([^()]*\)/g, ""));
+      const wrong: string[] = [];
+      for (const [, number, unit] of bare.matchAll(/(?<![\w.-])(\d*\.?\d+)(ms|s)\b/g)) {
+        const ms = Number(number) * (unit === "s" ? 1000 : 1);
+        if (ms >= 10 && ms <= 1400) wrong.push(`${property}: ${value} (a length not one of the rules': --motion-*)`);
+      }
+      if (/\b(?:ease|ease-in|ease-out|ease-in-out)\b|cubic-bezier\(/.test(bareOf(value))) wrong.push(`${property}: ${value} (a way not one of the rules': --ease-*)`);
+      return wrong;
+    });
+
 /** The shadows a thing casts: one of the rules' (a mini-game's drawing keeps its own, and a glow of light is not a shadow). */
 const shadowErrors = (css: string) =>
   declarations(css.replace(KEYFRAMES, ""))
@@ -191,6 +211,15 @@ describe("the design's rules", () => {
     expect(families).toEqual(["Noto Sans JP"]);
   });
 
+  it("keeps the motion's six lengths and three ways, the same in the stylesheet and the code (src/components/motion.ts)", () => {
+    const root = read("src/app/styles.css");
+    const lengths = Object.fromEntries([...root.matchAll(/--motion-([a-z]+):\s*(\d+)ms;/g)].map(([, name, ms]) => [name, Number(ms)]));
+    const { stagger, ...steps } = lengths;
+    expect(steps).toEqual({ ...MOTION });
+    expect(stagger).toBe(MOTION_STAGGER);
+    expect(stepsOf(root, "--ease-")).toHaveLength(3);
+  });
+
   it("never defines a rule by itself", () => {
     const root = read("src/app/styles.css");
     const selfReferring = [...root.matchAll(/(--ds-[\w-]+)\s*:([^;]*);/g)].filter(([, name, value]) => value.includes(`var(${name})`)).map(([, name]) => name);
@@ -219,7 +248,7 @@ describe("the design's rules", () => {
       const wrong = typeErrors(css);
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);
       wrong.push(...alphaErrors(css));
-      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css));
+      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css));
       expect(wrong).toEqual([]);
     });
   }

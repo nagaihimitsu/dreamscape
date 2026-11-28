@@ -42,7 +42,7 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: episode-title-card 2.4s ease both;
+  animation: episode-title-card 2.4s var(--ease-out) both;
 }
 .episode-title-photo {
   position: absolute;
@@ -52,7 +52,7 @@
   object-fit: cover;
   /* The photo stays recognisable; the title's ground is the dark below (about 12:1 for --ds-on-dark). */
   filter: brightness(0.5);
-  animation: episode-title-photo 2.4s ease both;
+  animation: episode-title-photo 2.4s var(--ease-out) both;
 }
 .episode-title-card::after {
   content: "";
@@ -70,7 +70,7 @@
   color: var(--ds-on-dark);
   text-align: center;
   text-shadow: var(--ds-scene-text-shadow);
-  animation: episode-title-text 2.4s ease both;
+  animation: episode-title-text 2.4s var(--ease-out) both;
 }
 .episode-title-place { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-3); overflow-wrap: anywhere; }
 .episode-title-rule { width: 56px; height: 1px; background: var(--ds-hairline); }
@@ -167,7 +167,7 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: packing-scene 4.2s ease both;
+  animation: packing-scene 4.2s var(--ease-out) both;
 }
 /* Centred in the screen; from its top when it does not fit (auto margins). */
 .packing-content { display: grid; justify-items: center; gap: var(--ds-space-3); width: min(360px, 100%); margin: auto; text-align: center; }
@@ -205,7 +205,7 @@
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
-  animation: packing-item 0.4s var(--ease-out) both;
+  animation: packing-item var(--motion-scene) var(--ease-out) both;
   animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
 }
 .packing-items img { flex: none; width: 32px; height: 32px; }
@@ -277,9 +277,9 @@
   100% { opacity: 0; transform: rotate(-8deg) scale(1); }
 }
 @keyframes chapter-stamp-fade { 0% { opacity: 0; } 15%, 78% { opacity: 1; } 100% { opacity: 0; } }
-.chapter-stamp.is-reduced .chapter-stamp-seal, .reduce-motion .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
+.chapter-stamp.is-reduced .chapter-stamp-seal, .reduce-motion .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: var(--ease-out); }
 @media (prefers-reduced-motion: reduce) {
-  .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
+  .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: var(--ease-out); }
 }
 
 /* ── 旅の終わりのエンドロール ── a dialog over the whole screen under a night sky (a deep blue with a faint glow above and a

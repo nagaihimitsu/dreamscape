@@ -34,10 +34,10 @@
   z-index: -1;
   inset: 0;
   background: var(--ds-night);
-  animation: travel-transition-dark 1.8s ease both;
+  animation: travel-transition-dark 1.8s var(--ease-out) both;
 }
 .travel-transition.is-held::before { animation: none; }
-.travel-transition-scene, .travel-ride-map { animation: travel-transition-overlay 1.8s ease both; }
+.travel-transition-scene, .travel-ride-map { animation: travel-transition-overlay 1.8s var(--ease-out) both; }
 /* The little scene in the dialogs' frame (UI redesign stage 2.3): a light ground mount with its
    hairline and 16-px corners; the caption is a display-only light ground pill (§2.3). */
 .travel-transition-scene {
@@ -83,9 +83,9 @@
    away): each layer moves left by one tile (120 px) per loop, the farther the slower, at the pace of the mode's kind
    (data-pace, sceneryPace; --scenery-pace is the near layer's loop). Transform only, under the vehicle and the caption;
    it stands still under reduced motion. */
-.travel-transition-scene { --scenery-pace: 1.4s; }
+.travel-transition-scene { --scenery-pace: var(--motion-long); }
 .travel-transition-scene[data-pace="slow"] { --scenery-pace: 3.6s; }
-.travel-transition-scene[data-pace="fast"] { --scenery-pace: 0.75s; }
+.travel-transition-scene[data-pace="fast"] { --scenery-pace: var(--motion-slow); }
 .travel-scenery {
   position: absolute;
   left: 0;
@@ -111,13 +111,13 @@
   bottom: 12px;
   width: 102px;
   height: 58px;
-  animation: travel-transition-crossing 1.8s ease-in-out both;
+  animation: travel-transition-crossing 1.8s var(--ease-in-out) both;
 }
 .travel-transition-vehicle svg { display: block; width: 100%; height: 100%; }
 .travel-transition-vehicle.is-walk { bottom: 11px; }
-.travel-transition-leg { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate; }
+.travel-transition-leg { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step var(--motion-scene) var(--ease-in-out) infinite alternate; }
 .travel-transition-leg.is-second { animation-direction: alternate-reverse; }
-.travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate-reverse; }
+.travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step var(--motion-scene) var(--ease-in-out) infinite alternate-reverse; }
 .travel-transition-arm.is-second { animation-direction: alternate; }
 @keyframes travel-transition-overlay { 0%, 100% { opacity: 0; } 10%, 88% { opacity: 1; } }
 @keyframes travel-transition-dark { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
@@ -144,7 +144,7 @@
 .travel-ride-view {
   position: absolute;
   inset: 0;
-  animation: travel-ride-near 1.8s ease-in-out both;
+  animation: travel-ride-near 1.8s var(--ease-in-out) both;
 }
 .travel-ride-tiles {
   position: absolute;
@@ -170,7 +170,7 @@
 }
 .travel-ride-dot {
   fill: var(--ds-dark-2);
-  animation: travel-ride-dot .12s ease-out both;
+  animation: travel-ride-dot var(--motion-instant) var(--ease-out) both;
   animation-delay: calc(.25s + var(--ride-dot-at, 0) * 1.2s);
 }
 .travel-ride-from { fill: var(--ds-on-dark); stroke: var(--ds-here); stroke-width: 3; }
@@ -179,7 +179,7 @@
   fill: var(--ds-here);
   stroke: var(--ds-on-dark);
   stroke-width: 2.5;
-  animation: travel-ride-go 1.2s .25s ease-in-out both;
+  animation: travel-ride-go var(--motion-long) var(--motion-short) var(--ease-in-out) both;
 }
 .travel-ride-name {
   fill: var(--ds-ink);

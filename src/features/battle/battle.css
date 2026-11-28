@@ -448,13 +448,13 @@
 .battle-result-actions .secondary { margin-top: 0; }
 /* The result comes in: the outcome and the score rise into place, the card follows, then the AP earned pops (nothing
    pressable moves; its buttons show at once). */
-.battle-result-heading { animation: battle-result-in var(--motion-medium) var(--ease-out); }
-.battle-result .outcome { animation: battle-result-word 700ms var(--ease-out) backwards; }
+.battle-result-heading { animation: battle-result-in var(--motion-short) var(--ease-out); }
+.battle-result .outcome { animation: battle-result-word var(--motion-slow) var(--ease-out) backwards; }
 /* The card only rises (its opacity stays whole, so its glass blurs the place from the first frame). */
-.battle-result-card { animation: battle-result-card-in var(--motion-medium) var(--ease-out); }
+.battle-result-card { animation: battle-result-card-in var(--motion-short) var(--ease-out); }
 .battle-result .reward-total dd {
   transform-origin: 0 50%;
-  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 260ms backwards;
+  animation: battle-reward-pop var(--motion-short) var(--ease-out) var(--motion-short) backwards;
 }
 @keyframes battle-result-in {
   from { opacity: 0; transform: translateY(8px); }
@@ -582,7 +582,7 @@
 .quiz-feedback-actions > .text-button { min-height: var(--ds-press-small); padding: var(--ds-space-1) var(--ds-space-1); }
 .quiz-feedback-actions > .next { margin-left: auto; }
 /* The explanation comes in, a moment after the answer's own beat. */
-.battle-screen.answer-animating .quiz-feedback { animation: quiz-feedback-in 340ms 120ms ease-out both; }
+.battle-screen.answer-animating .quiz-feedback { animation: quiz-feedback-in var(--motion-short) var(--motion-instant) var(--ease-out) both; }
 @keyframes quiz-feedback-in {
   from { opacity: 0; transform: translateY(5px); }
 }
@@ -642,7 +642,7 @@
 .quiz-choice-mark[data-mark="missed"] { background: var(--ds-wrong-ground); color: var(--ds-wrong-ink); }
 /* 「○ 正解！」 on a right answer given in this screen pops in, a white light round it (the answer's own stamp; a special
    battle's and a full score's stamp over the scene stay). A restored answer's mark is still. */
-.quiz-choice-mark[data-pop] { animation: quiz-mark-pop 520ms cubic-bezier(.2, .8, .25, 1) both; }
+.quiz-choice-mark[data-pop] { animation: quiz-mark-pop var(--motion-scene) var(--ease-out) both; }
 @keyframes quiz-mark-pop {
   0% { opacity: 0; transform: scale(.4) rotate(-10deg); }
   55% { opacity: 1; transform: scale(1.18) rotate(-3deg); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-light) 90%, transparent),
@@ -662,7 +662,7 @@
   overflow: hidden;
   pointer-events: none;
   background: radial-gradient(circle, var(--battle-answer-effect-ground), transparent 70%);
-  animation: answer-effect-visibility 900ms ease-out both;
+  animation: answer-effect-visibility var(--motion-slow) var(--ease-out) both;
 }
 .battle-screen .answer-effect-incorrect {
   --effect-ink: #853941;
@@ -683,7 +683,7 @@
   background: var(--effect-ink);
   box-shadow: 0 0 0 var(--ds-edge-heavy) var(--battle-answer-effect-stamp-shade), var(--ds-shadow-large);
   transform: rotate(-7deg);
-  animation: answer-stamp-enter 650ms cubic-bezier(.2,.8,.25,1) both;
+  animation: answer-stamp-enter var(--motion-slow) var(--ease-out) both;
 }
 .battle-screen .answer-effect-incorrect .answer-effect-stamp {
   border-radius: 22%;
@@ -707,7 +707,7 @@
   position: absolute;
   width: 0;
   height: 0;
-  animation: answer-rays-enter 750ms ease-out both;
+  animation: answer-rays-enter var(--motion-slow) var(--ease-out) both;
 }
 .battle-screen .answer-effect-rays i {
   position: absolute;
@@ -733,7 +733,7 @@
   --effect-ink: #23543e;
   --effect-bright: var(--ds-light);
   background: radial-gradient(circle, var(--battle-answer-effect-perfect-ground), transparent 65%);
-  animation-duration: 1300ms;
+  animation-duration: var(--motion-long);
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp {
   position: relative;
@@ -812,12 +812,12 @@
    movement of its own) comes with quiz_correct, its mark and the explanation. Reduced motion: no hold, a shorter glow.
    Purely presentational: the saved answer is already locked before these play. */
 .battle-screen[data-answer-held] .quiz-choice-row[data-chosen] { scale: 0.985; }
-.battle-screen .quiz-choice-row.answer-glow { animation: answer-glow 560ms var(--ease-out); }
+.battle-screen .quiz-choice-row.answer-glow { animation: answer-glow var(--motion-scene) var(--ease-out); }
 @keyframes answer-glow {
   30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-light) 95%, transparent), 0 0 20px 6px color-mix(in srgb, var(--ds-light) 55%, transparent); }
 }
 /* An ordinary quiz's wrong answer (no stamp plays): the chosen option gives one small shake, with every answer locked. */
-.battle-screen[data-answer-missed="true"] .quiz-choice-row[data-chosen] { animation: answer-missed var(--motion-medium) ease-in-out; }
+.battle-screen[data-answer-missed="true"] .quiz-choice-row[data-chosen] { animation: answer-missed var(--motion-short) var(--ease-in-out); }
 @keyframes answer-missed {
   25% { transform: translateX(-4px); }
   65% { transform: translateX(3px); }
@@ -825,12 +825,12 @@
 :is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .battle-screen[data-answer-held] .quiz-choice-row[data-chosen],
 .battle-screen[data-reduce-motion="true"][data-answer-held] .quiz-choice-row[data-chosen] { scale: none; }
 :is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .quiz-choice-row.answer-glow,
-.battle-screen[data-reduce-motion="true"] .quiz-choice-row.answer-glow { animation-duration: 380ms; }
+.battle-screen[data-reduce-motion="true"] .quiz-choice-row.answer-glow { animation-duration: var(--motion-scene); }
 .battle-screen[data-reduce-motion="true"] :is(.quiz-choice-row[data-chosen], .quiz-feedback, .quiz-choice-mark) { animation: none; }
 .battle-screen[data-reduce-motion="true"] .vn-character { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .battle-screen[data-answer-held] .quiz-choice-row[data-chosen] { scale: none; }
-  .battle-screen .quiz-choice-row.answer-glow { animation-duration: 380ms; }
+  .battle-screen .quiz-choice-row.answer-glow { animation-duration: var(--motion-scene); }
   .battle-screen :is(.quiz-choice-row[data-chosen], .quiz-feedback, .quiz-choice-mark) { animation: none; }
 }
 @media (max-width: 600px) {
@@ -1049,7 +1049,7 @@
   position: absolute;
   inset: 0;
   transform-origin: var(--reveal-origin);
-  animation: battle-reveal-zoom 2.4s var(--ease-out) 0.5s both;
+  animation: battle-reveal-zoom 2.4s var(--ease-out) var(--motion-scene) both;
 }
 .battle-reveal-zoom img {
   display: block;
@@ -1062,7 +1062,7 @@
   border: calc(2px / var(--reveal-scale)) solid var(--battle-reveal-region-edge);
   border-radius: calc(4px / var(--reveal-scale));
   box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 70%, transparent), inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 70%, transparent);
-  animation: battle-reveal-outline var(--motion-medium) ease-out 1.6s both;
+  animation: battle-reveal-outline var(--motion-short) var(--ease-out) 1.6s both;
 }
 @keyframes battle-reveal-zoom { to { transform: scale(var(--reveal-scale)); } }
 @keyframes battle-reveal-outline { from { opacity: 0; } }

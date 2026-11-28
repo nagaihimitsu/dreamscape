@@ -7,11 +7,12 @@ import { DAY_END_REST_JA } from "./night-rest-text";
 import { hasNightRecap, routeSentenceJa, type NightRecap } from "./night-recap";
 import { NightRecapView } from "./NightRecap";
 import "./night-rest.css";
+import { MOTION } from "../../components/motion";
 
 /** Under a card that waits for the player (NightRest, the night screen's NightLeaving): how it ends. */
 export const NIGHT_TAP_HINT_JA = "タップして次へ";
 /** The plain fade to the morning after the hotel's scenes of a night screen's rest (ms; none with reduced motion). */
-const NIGHT_FADE_MS = 700;
+const NIGHT_FADE_MS = MOTION.slow;
 /** The live region is in the page a moment before its line, so a screen reader hears the line as an announcement. */
 const ANNOUNCE_AFTER_MS = 100;
 /** The keys that end a card at once (a held key's repeats do not). */

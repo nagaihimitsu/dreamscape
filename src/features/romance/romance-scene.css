@@ -23,7 +23,7 @@
      (decision H). */
   --vn-head-overhang: 16px;
   /* The scene's camera (figure-zoom.ts): how much nearer than whole the people on stage are seen, and how fast it comes in. */
-  --vn-camera: 700ms;
+  --vn-camera: var(--motion-slow);
 }
 /* The glass, on the window and on what lies on the scene with it (the choices, smoked, and the words beside them). */
 .vn-window::before,
@@ -203,7 +203,7 @@
   font-size: var(--ds-text-note);
   font-weight: var(--ds-weight-bold);
   pointer-events: none;
-  animation: vn-choice-away 220ms ease-in forwards;
+  animation: vn-choice-away var(--motion-fast) var(--ease-in) forwards;
 }
 @keyframes vn-choice-away {
   from { opacity: 1; transform: translateX(0); }

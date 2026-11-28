@@ -235,22 +235,24 @@
   --ds-layer-night-rest: 2000; /* the night's rest, its fade and the time passing */
   --ds-layer-movie: 2100; /* the opening movie */
   --ds-layer-ignored-tap: 3000; /* the ring where an ignored tap landed, over everything */
-  /* Motion of the UI's feedback: short, transform and opacity only, and never holding
-     input back. Each animation that uses these stops, in its own stylesheet, under
-     prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
-     app shell). What closes or leaves is never animated: it goes at once (but for someone on a scene's stage, who steps back
-     off it: --motion-leave, 2026-11-27). */
-  --motion-fast: 160ms; /* a panel, a dialog, a notice or a choice coming in */
-  --motion-medium: 260ms; /* a value or a mark that changed, a character or a result coming in */
-  --motion-scene: 450ms; /* a scene's picture giving way to the next */
-  --motion-step: 1400ms; /* the heroine walking to a new `# stand:` place (2026-11-27 user decision: slowly) */
-  --motion-leave: 700ms; /* someone stepping back off the stage (useSceneStage STAGE_LEAVE_MS) */
-  --ease-step: cubic-bezier(0.45, 0, 0.3, 1);
-  --motion-stagger: 40ms; /* between the items of a list coming in */
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* A menu's panel coming out of its button's edge (2026-11-27 user decision: 「スーッと」; journey-hud.css, travel-menu.css). */
-  --motion-drop: 340ms;
-  --ease-drop: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Motion of the UI's feedback: short, transform and opacity only, and never holding input back. Each animation that
+     uses these stops, in its own stylesheet, under prefers-reduced-motion and under the game's 「演出を短縮する」
+     (.reduce-motion on the app shell). What closes or leaves is never animated: it goes at once (but for someone on a
+     scene's stage, who steps back off it). The lengths: six (2026-11-28 user decision: six patterns at most); a timer in
+     the code that waits for one takes it from src/app/motion.ts (MOTION), which the tests hold to these. A presentation
+     longer than 1.4 s (a title card, the packing, a ride, time passing, a breath, the weather) is that thing's own
+     length, the same in its stylesheet and its code. */
+  --motion-instant: 120ms; /* a press's answer, a small mark */
+  --motion-fast: 200ms; /* a panel, a dialog, a notice or a choice coming in */
+  --motion-short: 300ms; /* a value or a mark that changed, a menu dropping from its button */
+  --motion-scene: 450ms; /* a scene's picture giving way to the next, a card coming in */
+  --motion-slow: 700ms; /* someone stepping back off the stage, a thing flying away */
+  --motion-long: 1400ms; /* the heroine walking to a new `# stand:` place (2026-11-27 user decision: slowly) */
+  --motion-stagger: 40ms; /* between the items of a list coming in (an interval, not a length) */
+  /* The ways of moving: three (and linear or steps() for a motion that does not ease: a loop, a tremble). */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1); /* coming in, settling */
+  --ease-in-out: cubic-bezier(0.45, 0, 0.3, 1); /* moving from one place to another, breathing */
+  --ease-in: cubic-bezier(0.5, 0, 0.75, 0.45); /* going away, flying into the bag */
 }
 /* The glass's edges on a phone held upright (the talk's window since 2026-11-27). */
 @media (max-width: 700px) and (orientation: portrait) {
@@ -1437,16 +1439,16 @@ dialog.modal::backdrop {
    filter beside the pane's own backdrop-filter is drawn badly by some browsers). (The ::backdrop's values are
    written out: it does not take the page's custom properties in every browser.) */
 dialog.modal[open] {
-  animation: modal-in var(--motion-drop) var(--ease-drop);
+  animation: modal-in var(--motion-short) var(--ease-out);
 }
 dialog.modal[open]::backdrop {
-  animation: modal-backdrop-in 340ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modal-backdrop-in var(--motion-short) var(--ease-out);
 }
 /* :where(): a part with its own coming-in keeps it. */
-:where(dialog.modal[open]) > * { animation: modal-part-in calc(var(--motion-drop) + 60ms) var(--ease-drop) backwards; }
-:where(dialog.modal[open]) > :nth-child(1) { animation-delay: 30ms; }
-:where(dialog.modal[open]) > :nth-child(2) { animation-delay: calc(30ms + var(--motion-stagger)); }
-:where(dialog.modal[open]) > :nth-child(3) { animation-delay: calc(30ms + var(--motion-stagger) * 2); }
+:where(dialog.modal[open]) > * { animation: modal-part-in calc(var(--motion-short) + 60ms) var(--ease-out) backwards; }
+:where(dialog.modal[open]) > :nth-child(1) { animation-delay: var(--motion-stagger); }
+:where(dialog.modal[open]) > :nth-child(2) { animation-delay: calc(2 * var(--motion-stagger)); }
+:where(dialog.modal[open]) > :nth-child(3) { animation-delay: calc(3 * var(--motion-stagger)); }
 :where(dialog.modal[open]) > :nth-child(n + 4) { animation-delay: calc(30ms + var(--motion-stagger) * 3); }
 @keyframes modal-in {
   from { opacity: 0; transform: translateY(16px); }

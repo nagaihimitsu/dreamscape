@@ -19,10 +19,10 @@
   display: inline-block;
 }
 .dialogue-em.is-shown:not(.is-still) {
-  animation: dialogue-em-pop 320ms var(--ease-out) both;
+  animation: dialogue-em-pop var(--motion-short) var(--ease-out) both;
 }
 .dialogue-em-shake:not(.is-still) .dialogue-em-shake-char:not(.unrevealed) {
-  animation: dialogue-em-tremble 360ms steps(1, end) infinite;
+  animation: dialogue-em-tremble var(--motion-short) steps(1, end) infinite;
   /* Each character on its own beat, so the word shivers rather than slides. */
   animation-delay: calc(var(--em-i, 0) * -90ms);
 }

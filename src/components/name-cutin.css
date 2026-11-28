@@ -19,7 +19,7 @@
   box-shadow: var(--ds-shadow);
   text-align: center;
   pointer-events: none;
-  animation: name-cutin-in var(--motion-medium) var(--ease-out);
+  animation: name-cutin-in var(--motion-short) var(--ease-out);
 }
 .name-cutin p { margin: 0; overflow-wrap: anywhere; }
 .name-cutin .name-cutin-title {

@@ -226,7 +226,7 @@
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
   box-shadow: var(--ds-shadow);
-  animation: hud-menu-in var(--motion-drop) var(--ease-drop);
+  animation: hud-menu-in var(--motion-short) var(--ease-out);
 }
 .hud-menu-panel[hidden] { display: none; }
 .hud-menu-panel button {
@@ -262,7 +262,7 @@
   35% { opacity: 1; }
   to { opacity: 1; transform: none; clip-path: inset(-40px); }
 }
-.hud-menu-panel > * { animation: hud-menu-item-in var(--motion-drop) var(--ease-drop) backwards; }
+.hud-menu-panel > * { animation: hud-menu-item-in var(--motion-short) var(--ease-out) backwards; }
 .hud-menu-panel > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
 .hud-menu-panel > :nth-child(3) { animation-delay: calc(var(--motion-stagger) * 1); }
 .hud-menu-panel > :nth-child(4) { animation-delay: calc(var(--motion-stagger) * 1.5); }
@@ -273,7 +273,7 @@
   from { opacity: 0; transform: translateY(-8px); }
 }
 /* The held items' detail hangs from the header as ≡メニュー's panel does, and opens as it does. */
-.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-drop) var(--ease-drop); }
+.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-short) var(--ease-out); }
 
 /* A change the player sees (JourneyHud's useSeenChange; display only, the new value shows
    and is read from the start): a budget or AP that rises grows for a moment in the
@@ -281,7 +281,7 @@
    picture, not the button. Each plays once per change. */
 .hud-wallet [data-cue] {
   transform-origin: 100% 50%;
-  animation: hud-value-up var(--motion-medium) var(--ease-out);
+  animation: hud-value-up var(--motion-short) var(--ease-out);
 }
 .hud-wallet [data-cue="down"] { animation-name: hud-value-down; }
 @keyframes hud-value-up {
@@ -290,7 +290,7 @@
 @keyframes hud-value-down {
   40% { transform: scale(0.88); }
 }
-.journey-hud .held-item-button [data-gained] { animation: held-item-gained var(--motion-medium) var(--ease-out); }
+.journey-hud .held-item-button [data-gained] { animation: held-item-gained var(--motion-short) var(--ease-out); }
 @keyframes held-item-gained {
   45% { transform: scale(1.3) rotate(-8deg); }
 }

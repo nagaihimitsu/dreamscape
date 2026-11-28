@@ -123,11 +123,11 @@ dialog.modal.album-photo-viewer {
   margin: 0 auto;
   border-radius: var(--ds-radius-control);
   translate: var(--swipe-dx, 0px) 0;
-  transition: translate 200ms var(--ease-out);
+  transition: translate var(--motion-fast) var(--ease-out);
 }
 .photo-viewer-frame[data-swiping] img { transition: none; }
-.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next 240ms var(--ease-out); }
-.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev 240ms var(--ease-out); }
+.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next var(--motion-fast) var(--ease-out); }
+.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev var(--motion-fast) var(--ease-out); }
 @keyframes photo-viewer-in-next { from { transform: translateX(56px); opacity: 0; } }
 @keyframes photo-viewer-in-prev { from { transform: translateX(-56px); opacity: 0; } }
 .reduce-motion .photo-viewer-frame img { transition: none; animation: none; }

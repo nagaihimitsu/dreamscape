@@ -98,7 +98,7 @@
   align-items: flex-start;
   gap: var(--sns-gap);
   transform: translateX(calc(var(--sns-at, 0) * -1 * (var(--sns-slide) + var(--sns-gap)) + var(--swipe-dx, 0px)));
-  transition: transform 280ms var(--ease-out);
+  transition: transform var(--motion-short) var(--ease-out);
 }
 .sns-strip[data-swiping] .sns-track { transition: none; }
 .sns-slide { flex: 0 0 var(--sns-slide); min-width: 0; }

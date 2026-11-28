@@ -11,6 +11,7 @@ import { DIALOGUE_LINE_ATTRIBUTE } from "../../components/scene-tap";
 import { focusQuietly } from "../../components/scene-focus";
 import "./glossary.css";
 import { FitText } from "../../components/FitText";
+import { MOTION } from "../../components/motion";
 
 /** A card a line brings: a term it has just put in 旅の図鑑 (`# term:`), or a word of the country it has just taught (`# local_word:`). */
 export type LineCard = { kind: "term" | "word"; id: string };
@@ -35,8 +36,8 @@ export type LineCard = { kind: "term" | "word"; id: string };
  * its terms); the cards already shown stay as they are.
  */
 /** How long a card takes to fly into ≡メニュー, or to fade where it is (glossary.css). */
-const GLOSSARY_STOW_MS = 560;
-const GLOSSARY_FADE_MS = 240;
+const GLOSSARY_STOW_MS = MOTION.scene;
+const GLOSSARY_FADE_MS = MOTION.fast;
 
 /** ≡メニュー's button, where 旅の図鑑 is. */
 const menuBox = (): DOMRect | undefined => document.querySelector<HTMLElement>(".journey-hud [data-testid='hud-menu']")?.getBoundingClientRect();

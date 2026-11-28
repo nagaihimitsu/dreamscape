@@ -34,24 +34,24 @@
   background: var(--stage-recall-ground);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1000ms ease-in-out;
+  transition: opacity var(--motion-slow) var(--ease-in-out);
 }
 /* Back to the scene (the transition of the state it goes to): a gentle 1 s. Into the memory: 0.9 s, quick at first. */
 :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
 :is(.vn-scene, .battle-screen) > .weather-layer {
-  transition: opacity 1000ms ease-in-out;
+  transition: opacity var(--motion-slow) var(--ease-in-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer)::before {
   opacity: 1;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer) > :is(.vn-background, .battle-backdrop) {
   opacity: 0;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer) > .weather-layer {
   opacity: 0;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 .recall-layer {
   position: absolute;
@@ -77,7 +77,7 @@
   mask-image: linear-gradient(to bottom, transparent, black 18%),
     radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
   mask-composite: intersect;
-  animation: recall-photo-in 700ms 300ms var(--ease-out) both;
+  animation: recall-photo-in var(--motion-slow) var(--motion-short) var(--ease-out) both;
 }
 @keyframes stage-fade-in {
   from { opacity: 0; }

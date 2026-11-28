@@ -126,7 +126,7 @@
 /* An item given away or used (2026-11-13 user decision): the button's picture shrinks for a moment and a faint copy of
    the item's icon floats up from the button and fades (from where the button was, when it was the last item: an empty
    box of the button's size, for that moment only). Under reduced motion: no shrink, the copy only fades where it is. */
-.held-item-button [data-spent] { animation: held-item-spent var(--motion-medium) var(--ease-out); }
+.held-item-button [data-spent] { animation: held-item-spent var(--motion-short) var(--ease-out); }
 @keyframes held-item-spent {
   40% { transform: scale(0.8); }
 }
@@ -143,7 +143,7 @@
   display: grid;
   place-items: center;
   pointer-events: none;
-  animation: held-item-ghost 760ms var(--ease-out) both;
+  animation: held-item-ghost var(--motion-slow) var(--ease-out) both;
 }
 .held-item-ghost img,
 .held-item-button .held-item-ghost img {
@@ -162,8 +162,8 @@
   100% { opacity: 0; }
 }
 .reduce-motion .held-item-button [data-spent] { animation: none; }
-.reduce-motion .held-item-ghost { animation-name: held-item-ghost-fade; animation-duration: 500ms; }
+.reduce-motion .held-item-ghost { animation-name: held-item-ghost-fade; animation-duration: var(--motion-scene); }
 @media (prefers-reduced-motion: reduce) {
   .held-item-button [data-spent] { animation: none; }
-  .held-item-ghost { animation-name: held-item-ghost-fade; animation-duration: 500ms; }
+  .held-item-ghost { animation-name: held-item-ghost-fade; animation-duration: var(--motion-scene); }
 }

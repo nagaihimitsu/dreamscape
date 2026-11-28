@@ -65,7 +65,7 @@
   border: var(--ds-edge-thick) solid var(--reasoning-cutin-impact-edge);
   transform: rotate(45deg);
   box-shadow: 0 0 0 12px var(--reasoning-cutin-impact-shade), var(--ds-shadow-large);
-  animation: reasoning-impact-in 320ms ease-out both;
+  animation: reasoning-impact-in var(--motion-short) var(--ease-out) both;
 }
 /* Fixed, low-contrast rays suggest impact without flashing or shaking. */
 .reasoning-cutin-impact::before {
@@ -98,14 +98,14 @@
   background: repeating-linear-gradient(to bottom, var(--reasoning-cutin-card-ground) 0 6px, var(--reasoning-cutin-card-ground-2) 7px 8px, var(--reasoning-cutin-card-ground) 9px 18px);
   box-shadow: var(--ds-shadow);
 }
-.reasoning-cutin-card-left { animation: reasoning-card-left 420ms ease-out both; }
-.reasoning-cutin-card-right { animation: reasoning-card-right 420ms ease-out both; }
+.reasoning-cutin-card-left { animation: reasoning-card-left var(--motion-scene) var(--ease-out) both; }
+.reasoning-cutin-card-right { animation: reasoning-card-right var(--motion-scene) var(--ease-out) both; }
 .reasoning-cutin-line {
   width: clamp(48px, 20vw, 100px);
   height: 3px;
   background: var(--reasoning-cutin-line-ground);
   box-shadow: 0 0 12px var(--reasoning-cutin-line-shade);
-  animation: reasoning-line 400ms 250ms ease-out both;
+  animation: reasoning-line var(--motion-scene) var(--motion-short) var(--ease-out) both;
 }
 .reasoning-cutin-copy { max-width: 100%; }
 .reasoning-cutin-copy strong {
@@ -116,7 +116,7 @@
   letter-spacing: var(--ds-tracking-2);
   text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
   overflow-wrap: anywhere;
-  animation: reasoning-copy-in 400ms ease-out both;
+  animation: reasoning-copy-in var(--motion-scene) var(--ease-out) both;
 }
 .reasoning-cutin-copy p {
   margin: var(--ds-space-2) 0 0;

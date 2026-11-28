@@ -289,8 +289,8 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   box-shadow: var(--ds-shadow);
 }
 /* It rises out of the band as ≡メニュー's panel comes down out of the header (journey-hud.css), its waits after it. */
-.travel-band .travel-wait-actions { animation: travel-band-rise var(--motion-drop) var(--ease-drop); }
-.travel-band .travel-wait-actions > * { animation: travel-band-item-rise var(--motion-drop) var(--ease-drop) backwards; }
+.travel-band .travel-wait-actions { animation: travel-band-rise var(--motion-short) var(--ease-out); }
+.travel-band .travel-wait-actions > * { animation: travel-band-item-rise var(--motion-short) var(--ease-out) backwards; }
 .travel-band .travel-wait-actions > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
 .travel-band .travel-wait-actions > :nth-child(n + 3) { animation-delay: var(--motion-stagger); }
 @keyframes travel-band-rise {
@@ -447,7 +447,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   background: var(--ds-surface);
   box-shadow: var(--ds-shadow-up);
   /* It rises out of the band as 待機's menu does (above). */
-  animation: travel-band-rise var(--motion-drop) var(--ease-drop);
+  animation: travel-band-rise var(--motion-short) var(--ease-out);
 }
 .travel-band-sleep .travel-sleep-choices { display: grid; gap: var(--ds-space-2); max-width: var(--ds-width); margin: 0 auto; padding-bottom: var(--ds-space-1); }
 .travel-band .travel-sleep-toggle.is-selected { border-width: var(--ds-edge); background: var(--ds-surface-chosen); }

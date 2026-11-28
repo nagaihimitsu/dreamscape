@@ -27,7 +27,7 @@
   z-index: -1;
   background: radial-gradient(ellipse 90% 62% at 50% 40%, color-mix(in srgb, var(--ds-shade) 50%, transparent), color-mix(in srgb, var(--ds-shade) 30%, transparent) 62%, color-mix(in srgb, var(--ds-shade) 8%, transparent));
   pointer-events: none;
-  animation: glossary-dim-in var(--motion-medium) var(--ease-out) both;
+  animation: glossary-dim-in var(--motion-short) var(--ease-out) both;
 }
 @keyframes glossary-dim-in {
   from { opacity: 0; }
@@ -63,10 +63,10 @@
    it (`fly`), or fades where it is (`fade`); with the last card the dimming goes too. */
 .glossary-term-card[data-stowing="fly"] {
   transform-origin: 50% 50%;
-  animation: glossary-card-stow 560ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+  animation: glossary-card-stow var(--motion-scene) var(--ease-in) both;
 }
-.glossary-term-card[data-stowing="fade"] { animation: glossary-fade-out 240ms var(--ease-out) both; }
-.glossary-term-window[data-leaving]::before { animation: glossary-fade-out 560ms var(--ease-out) both; }
+.glossary-term-card[data-stowing="fade"] { animation: glossary-fade-out var(--motion-fast) var(--ease-out) both; }
+.glossary-term-window[data-leaving]::before { animation: glossary-fade-out var(--motion-scene) var(--ease-out) both; }
 @keyframes glossary-card-stow {
   0% { opacity: 1; transform: none; }
   18% { transform: scale(1.03); }

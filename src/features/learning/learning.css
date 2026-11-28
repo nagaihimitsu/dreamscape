@@ -296,7 +296,7 @@
   display: grid;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform var(--motion-medium) var(--ease-out);
+  transition: transform var(--motion-short) var(--ease-out);
 }
 .word-card[data-turned] .word-card-inner { transform: rotateY(180deg); }
 .word-card-face {

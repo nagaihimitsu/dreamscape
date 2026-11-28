@@ -49,7 +49,7 @@
   line-height: var(--ds-leading-tight);
   letter-spacing: var(--ds-tracking-2);
   overflow-wrap: anywhere;
-  transition: translate var(--motion-medium) var(--ease-out);
+  transition: translate var(--motion-short) var(--ease-out);
 }
 .reduce-motion .vn-window-head > .speaker { transition: none; }
 @media (prefers-reduced-motion: reduce) { .vn-window-head > .speaker { transition: none; } }

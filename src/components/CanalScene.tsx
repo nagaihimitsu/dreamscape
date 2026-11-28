@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { presentation, tourismAssets } from "../content";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { TitleArt } from "../content/journey-catalog";
+import { MOTION } from "./motion";
 /** Original decorative illustration; all game information is also available as text. */
 export function CanalScene({
   compact = false,
@@ -126,7 +127,7 @@ export function CanalScene({
 type Artwork = { path: string; position?: { x: number; y: number } };
 
 /** How long a scene's next picture takes to fade in over the last (styles.css, --motion-scene). */
-const ARTWORK_FADE_MS = 450;
+const ARTWORK_FADE_MS = MOTION.scene;
 
 /**
  * The scene's picture. When a line changes it, the next one waits, unseen, over the one on

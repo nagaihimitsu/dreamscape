@@ -6,6 +6,7 @@ import { CardFlight } from "./ItemShow";
 import type { Box } from "./item-show";
 import { holdPhotoTurn } from "./photo-turn";
 import "./photo-show.css";
+import { MOTION } from "./motion";
 
 // A line's `# photo:` shown large (2026-11-12; the default since 2026-11-25, `# photo_show: small` keeps it to the small
 // card): the picture as a print in the middle of the scene, at the same size on every line (2026-11-27 user decision:
@@ -33,7 +34,7 @@ export type PhotoShowCue = {
 export const PhotoShowContext = createContext<PhotoShowCue>({});
 
 /** How long the print takes to go when its turn ends (photo-show.css .photo-show-leaving): quickly. */
-const PHOTO_LEAVE_MS = 160;
+const PHOTO_LEAVE_MS = MOTION.fast;
 
 /** Where the print on screen is (its box in the window, without its coming-in scale): its flight starts there. */
 let shownPrint: { imageId: string; box: Box } | null = null;

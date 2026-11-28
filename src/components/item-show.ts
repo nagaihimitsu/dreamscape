@@ -1,9 +1,10 @@
+import { MOTION } from "./motion";
 // A line's `# item_show: <item ID>` (2026-11-13 user decision): the item's card over the scene while its line is on
 // screen (ItemShow.tsx), and, as the line goes, the card's way into the header's bag. Pure rules, apart from the
 // components. Presentation only: the card never gives the item (the scene's own `# give:` / `# on_done:` do).
 
 /** How long the card's leaving plays (milliseconds; item-show.css): its flight into the bag, or its fading. */
-export const ITEM_LEAVE_MS = 650;
+export const ITEM_LEAVE_MS = MOTION.slow;
 
 /** Whether an item's picture is drawn as vector art (an SVG: sharp at any size), else a picture of its own pixels. */
 export const isVectorIcon = (iconPath: string): boolean => /\.svg$/iu.test(iconPath);

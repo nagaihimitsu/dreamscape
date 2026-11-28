@@ -53,7 +53,7 @@
   right: 0;
   height: 100lvh;
   pointer-events: none;
-  transition: background-color calc(2 * var(--motion-scene)) ease;
+  transition: background-color calc(2 * var(--motion-scene)) var(--ease-out);
 }
 .reduce-motion .free-time-tint { transition: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -411,9 +411,9 @@
   border-left: var(--ds-edge) solid currentColor;
   transform: rotate(45deg);
   opacity: 0;
-  animation: photo-card-cue-rise 1.6s ease-out infinite;
+  animation: photo-card-cue-rise 1.6s var(--ease-out) infinite;
 }
-.photo-card-cue::after { animation-delay: 0.3s; }
+.photo-card-cue::after { animation-delay: var(--motion-short); }
 /* inherit, not visible: while its floating copy flies (useCardGestures hides the card), the cue goes with the card. */
 .photo-card[data-cue] .photo-card-cue { visibility: inherit; }
 @keyframes photo-card-cue-rise {
@@ -422,7 +422,7 @@
   75%, 100% { opacity: 0; translate: 0 -7px; }
 }
 .photo-cards:not(.is-list) .photo-card[data-cue]:not(.photo-card-ghost) {
-  animation: photo-card-lift 900ms var(--ease-out) 600ms both;
+  animation: photo-card-lift var(--motion-slow) var(--ease-out) var(--motion-slow) both;
 }
 @keyframes photo-card-lift {
   0%, 100% { translate: 0 0; }
@@ -446,10 +446,10 @@
    reduced motion the chevrons only blink twice where they stand. The card's own lift stays first in the list, so it does
    not run again when the nudge ends. */
 .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) {
-  animation: photo-card-lift 900ms var(--ease-out) 600ms both, photo-card-nudge 700ms var(--ease-out);
+  animation: photo-card-lift var(--motion-slow) var(--ease-out) var(--motion-slow) both, photo-card-nudge var(--motion-slow) var(--ease-out);
 }
 .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge 350ms ease-out 2; }
+.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge var(--motion-short) var(--ease-out) 2; }
 @keyframes photo-card-nudge {
   0%, 50%, 100% { translate: 0 0; }
   22% { translate: 0 -14px; }
@@ -467,11 +467,11 @@
 @media (prefers-reduced-motion: reduce) {
   .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
   .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink var(--motion-short) steps(1) 2; }
 }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
 .reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink var(--motion-short) steps(1) 2; }
 
 /* The row's drags (useCardGestures, user decision 2026-11-11). On the row a sideways drag stays the row's own scroll
    and a drag up lifts the chosen card, so the row leaves the browser its sideways panning only. Elsewhere on the screen
@@ -543,7 +543,7 @@
    After JOIN_DELAY_MS (the screen has appeared; card_new sounds then) it springs up from small with a white gleam that
    fades as it settles. Its slot keeps its place throughout (only the card moves), and the motion stays inside the row's
    padding, which clips. In the list it slides in from the side. Reduced motion: it fades in with the gleam, unmoving. */
-.photo-cards > li[data-joining] { animation: photo-card-join 760ms var(--ease-out) 220ms both; }
+.photo-cards > li[data-joining] { animation: photo-card-join var(--motion-slow) var(--ease-out) var(--motion-fast) both; }
 .photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-list; }
 @keyframes photo-card-join {
   0% { opacity: 0; scale: 0.4; translate: 0 -8px; filter: drop-shadow(0 0 0 transparent); }
@@ -682,7 +682,7 @@
   filter: blur(var(--ds-blur));
   visibility: hidden; /* gone once it has drifted apart */
   pointer-events: none;
-  animation: photo-card-mist 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: photo-card-mist var(--motion-slow) var(--ease-out);
 }
 @keyframes photo-card-mist {
   from { visibility: visible; opacity: 0.9; transform: scale(0.8); }

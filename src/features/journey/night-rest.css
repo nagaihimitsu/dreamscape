@@ -22,14 +22,14 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: night-rest-overlay 1.4s ease both;
+  animation: night-rest-overlay var(--motion-long) var(--ease-out) both;
 }
 .night-rest-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 100%;
-  animation: night-rest-content 1.4s ease both;
+  animation: night-rest-content var(--motion-long) var(--ease-out) both;
 }
 .night-rest-sky {
   display: block;
@@ -39,7 +39,7 @@
   filter: drop-shadow(0 0 10px var(--night-rest-sky-shade));
 }
 .night-rest-moon { fill: var(--night-rest-moon-fill); }
-.night-rest-star { fill: var(--night-rest-star-fill); animation: night-rest-twinkle 1.6s ease-in-out infinite alternate; }
+.night-rest-star { fill: var(--night-rest-star-fill); animation: night-rest-twinkle 1.6s var(--ease-in-out) infinite alternate; }
 .night-rest-star:nth-of-type(2n) { animation-delay: -0.8s; }
 .night-rest-star:nth-of-type(3n) { animation-delay: -0.4s; }
 /* --ds-on-dark on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
@@ -86,7 +86,7 @@
   position: absolute;
   inset: 0;
   background: var(--ds-night-veil);
-  animation: night-backdrop-veil 1.4s ease both;
+  animation: night-backdrop-veil var(--motion-long) var(--ease-out) both;
 }
 @keyframes night-backdrop-veil { from { background-color: var(--ds-night-veil-dusk); } }
 .is-reduced .night-backdrop::after { animation: none; }
@@ -107,7 +107,7 @@
   padding: calc(var(--hud-h, 96px) + 12px) var(--ds-space-4) calc(24px + env(safe-area-inset-bottom));
   background: var(--ds-night);
   color: var(--ds-on-dark);
-  animation: night-screen-in 0.6s ease both;
+  animation: night-screen-in var(--motion-slow) var(--ease-out) both;
 }
 /* Centred in the room under the header; from its top when it does not fit (auto margins). */
 .night-screen-content {
@@ -117,7 +117,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: night-screen-content-in 0.6s ease both;
+  animation: night-screen-content-in var(--motion-slow) var(--ease-out) both;
 }
 /* --ds-on-dark on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
 .night-screen-line {
@@ -173,7 +173,7 @@
   user-select: none;
 }
 .night-screen.is-leaving .night-screen-content { animation: none; }
-.night-screen.is-leaving .night-screen-line { animation: night-screen-line-in 0.3s ease both; }
+.night-screen.is-leaving .night-screen-line { animation: night-screen-line-in var(--motion-short) var(--ease-out) both; }
 .night-screen.is-leaving .night-screen-actions { position: relative; visibility: hidden; }
 @keyframes night-screen-in { from { background-color: var(--ds-night-dusk); } to { background-color: var(--ds-night); } }
 @keyframes night-screen-content-in {
@@ -200,7 +200,7 @@
   background: var(--ds-night);
   pointer-events: auto;
   touch-action: none;
-  animation: night-fade-out 0.7s ease both;
+  animation: night-fade-out var(--motion-slow) var(--ease-out) both;
 }
 @keyframes night-fade-out { from { opacity: 1; } to { opacity: 0; } }
 

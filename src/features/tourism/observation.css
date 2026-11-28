@@ -90,7 +90,7 @@
 /* A clue found in this observation: its mark pops once as it turns to ✓ (the button, its
    48-px target, stays where it is). */
 .observation-hotspot.is-new > span {
-  animation: hotspot-found var(--motion-medium) var(--ease-out);
+  animation: hotspot-found var(--motion-short) var(--ease-out);
 }
 @keyframes hotspot-found {
   40% { transform: scale(1.35); }
@@ -109,7 +109,7 @@
   box-shadow: var(--ds-shadow-small);
   opacity: 0;
   pointer-events: none;
-  animation: hotspot-call 1.1s var(--ease-out) 300ms 2;
+  animation: hotspot-call var(--motion-long) var(--ease-out) var(--motion-short) 2;
 }
 @keyframes hotspot-call {
   from { opacity: 0.9; transform: scale(1); }

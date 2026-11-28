@@ -73,7 +73,7 @@
   border-radius: inherit;
   opacity: 0;
   pointer-events: none;
-  animation: vn-window-restore-call 1.1s var(--ease-out) 200ms 2;
+  animation: vn-window-restore-call var(--motion-long) var(--ease-out) var(--motion-fast) 2;
 }
 @keyframes vn-window-restore-call {
   from { opacity: 0.9; transform: scale(1); }

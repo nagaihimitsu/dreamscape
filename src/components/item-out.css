@@ -145,8 +145,8 @@
 
 /* Coming in: out of the header's bag when the item is held (from the bag's middle, small, to its place: ItemOut.tsx sets
    --from-dx, --from-dy and --from-scale), else softly where it is. */
-.item-out-card[data-enter="bag"] { animation: item-out-rise 600ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }
-.item-out-card[data-enter="here"] { animation: item-out-in 320ms var(--ease-out) both; }
+.item-out-card[data-enter="bag"] { animation: item-out-rise var(--motion-slow) var(--ease-out) both; }
+.item-out-card[data-enter="here"] { animation: item-out-in var(--motion-short) var(--ease-out) both; }
 @keyframes item-out-rise {
   from { opacity: 0; transform: translate(var(--from-dx, 0px), var(--from-dy, 0px)) scale(var(--from-scale, 0.2)); }
   35% { opacity: 1; }
@@ -162,10 +162,10 @@
   position: absolute;
   max-width: none;
   transform-origin: 50% 50%;
-  animation: item-show-fade 400ms var(--ease-out) both;
+  animation: item-show-fade var(--motion-scene) var(--ease-out) both;
 }
 .item-out-card.item-out-leaving[data-mode="fly"] {
-  animation: item-show-fly 650ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+  animation: item-show-fly var(--motion-slow) var(--ease-in) both;
 }
 
 /* A short landscape screen: a lower heading and tighter lines, so more of the list shows above the window. */
