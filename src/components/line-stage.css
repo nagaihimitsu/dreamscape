@@ -9,7 +9,6 @@
    --ds-*; 2026-11-25). */
 :root {
   --stage-recall-ground: #2b2d33; /* the quiet grey a memory comes up in */
-  --stage-photo-veil: rgba(16, 17, 20, 0.5);
   --stage-photo-frame: #ffffff; /* a print's white border */
   --stage-photo-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
   --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(22, 23, 26, 0.14), rgba(22, 23, 26, 0.46));

@@ -82,4 +82,12 @@ describe("the notes of 旅の図鑑", () => {
       expect.stringContaining("# term: on a choice: gt_term_golgappa"),
     ]);
   });
+
+  it("warn about a line with more than two cards of 旅の図鑑 and 旅のことば (only two show under the window)", () => {
+    const terms = [term("gt_term_golgappa", "golden_triangle"), term("gt_term_pani", "golden_triangle")];
+    const two = "=== gt_x ===\n# term: gt_term_golgappa\n# local_word: gt_word_a\n行。\n-> END";
+    expect(notes(two, terms.slice(0, 1))).toEqual([]);
+    const three = "=== gt_x ===\n# term: gt_term_golgappa\n# term: gt_term_pani\n# local_word: gt_word_a\n行。\n-> END";
+    expect(notes(three, terms)).toEqual([expect.stringContaining("More than 2 cards on one line: gt_term_golgappa, gt_term_pani, gt_word_a")]);
+  });
 });

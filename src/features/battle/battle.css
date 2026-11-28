@@ -225,7 +225,8 @@
   margin: auto auto calc(16px + var(--vn-controls-row));
 }
 .battle-screen[data-talk] { padding-bottom: 0; }
-.battle-screen[data-talk] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 16px - var(--vn-controls-row)); }
+/* With choices, or a line's cards under the window (line-cards.css), it may take the whole stage. */
+.battle-screen[data-talk] .battle-paper-shell:is(:has(> .vn-choices), :has(.line-cards:not(:empty))) { max-height: calc(100% - 16px - var(--vn-controls-row)); }
 /* A question and its explanation (2026-11-28): no talk's tools under the window, so it keeps to the scene's foot. The
    options keep their whole height first (they scroll in their own place only past what leaves the window its least
    room, about its head and four lines), and the window, as tall as what it holds, takes the rest and scrolls: a long
@@ -298,7 +299,7 @@
     /* Just above its controls' row: its window's top at the story scenes' height (--vn-window-top, romance-scene.css). */
     margin: auto var(--ds-space-2) var(--vn-controls-row);
   }
-  .battle-screen[data-talk] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px - var(--vn-controls-row)); }
+  .battle-screen[data-talk] .battle-paper-shell:is(:has(> .vn-choices), :has(.line-cards:not(:empty))) { max-height: calc(100% - 8px - var(--vn-controls-row)); }
   /* The story scenes' grid (romance-scene.css): the choices, the window's room with the window at its top. */
   .battle-screen[data-talk] .battle-paper-shell {
     display: grid;

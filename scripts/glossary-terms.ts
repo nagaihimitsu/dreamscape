@@ -1,4 +1,4 @@
-import { TERM_LINE_ADVISED, TERM_LINE_MAX, textLength, type GlossaryTerm, type ListedTerm } from "../src/content/glossary";
+import { LINE_CARDS_SHOWN, TERM_LINE_ADVISED, TERM_LINE_MAX, textLength, type GlossaryTerm, type ListedTerm } from "../src/content/glossary";
 import type { ContentWarning } from "./content-report";
 import { displayPath, type ContentSources } from "./content-sources";
 import { layerOfFile } from "./image-rights";
@@ -37,7 +37,7 @@ export function glossaryTermsOf(sources: Pick<ContentSources, "root" | "layers" 
     firstOf.set(term.id, index);
     const length = textLength(term.lineJa);
     if (length > TERM_LINE_MAX)
-      errors.push(`言葉の説明が長すぎます：${where} の lineJa が${length}字です。小窓に収まるよう${TERM_LINE_MAX}字まで（目安は${TERM_LINE_ADVISED}字）にしてください` +
+      errors.push(`言葉の説明が長すぎます：${where} の lineJa が${length}字です。カードに収まるよう${TERM_LINE_MAX}字まで（目安は${TERM_LINE_ADVISED}字）にしてください` +
         `（Term line over ${TERM_LINE_MAX} characters: ${term.id}, ${length}）。`);
     if (!assetIds.has(term.imageId))
       errors.push(`言葉の写真が登録されていません：${where} の imageId "${term.imageId}" が tourism/catalog.json の assets にありません。` +
@@ -81,7 +81,8 @@ export function checkTermTags(source: string, journeyId: string, termJourneys: R
  * `# term:` of its journey's stories names and no outfit puts in 旅の図鑑 (`outfitTermIds`: the outfits' `termIds`, each its
  * own journey's; content-ownership.ts) — it can never be met —, the same term tagged twice on one path of a scene (a
  * knot, or a file without knots; once on each arm of a conditional or each choice of a menu is not counted:
- * ink-branches.ts), and a tag on a choice (it shows with the line after the choice).
+ * ink-branches.ts), a tag on a choice (it shows with the line after the choice), and a line with more than
+ * LINE_CARDS_SHOWN tags of # term: and # local_word: (the cards past them are not shown).
  */
 export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, terms: readonly ListedTerm[],
   outfitTermIds: readonly string[] = []): ContentWarning[] {
@@ -102,19 +103,34 @@ export function glossaryWarnings(sources: Pick<ContentSources, "root" | "storyFi
       // that did not meet it on theirs, are as they should be: only a tag every walk to this one has passed makes it idle.
       if (earlier.some((other) => alwaysBefore(other, path)))
         notes.push(`同じ場面の同じ道に、同じ言葉の札がもう1つあります：${where}。この行に来るまでに、どの道でも前の札を通っています。` +
-          "言葉の小窓は最初の1回しか出ないので、この札は外せます（条件や選択肢の分かれ道のそれぞれに置いた札、" +
+          "言葉のカードは最初の1回しか出ないので、この札は外せます（条件や選択肢の分かれ道のそれぞれに置いた札、" +
           "分かれ道の一つで先に出会う言葉にその後で置いた札には、この注意は出ません）" +
           `（Term tagged twice on one path of a scene: ${value}）。`);
       inScene.set(scene, [...earlier, path]);
       if (choice)
-        notes.push(`選択肢に言葉の札があります：${where}。選択肢の文には置かず、その言葉が出る台詞か地の文の行の前に置いてください（選んだ後の行で小窓が出ます）` +
+        notes.push(`選択肢に言葉の札があります：${where}。選択肢の文には置かず、その言葉が出る台詞か地の文の行の前に置いてください（選んだ後の行でカードが出ます）` +
           `（# term: on a choice: ${value}）。`);
     }
+  }
+  // A line shows at most LINE_CARDS_SHOWN cards under its window (2026-11-28 user decision); its other terms and words are
+  // only recorded.
+  for (const story of sources.storyFiles) {
+    const file = displayPath(sources.root, story.file);
+    const cards = new Map<number, string[]>();
+    for (const tag of taggedLines(story.source, ["term", "local_word"])) {
+      if (tag.choice || tag.textLine === null || !tag.value.trim()) continue;
+      cards.set(tag.textLine, [...cards.get(tag.textLine) ?? [], tag.value.replace(/\].*$/u, "").trim()]);
+    }
+    for (const [line, ids] of cards)
+      if (ids.length > LINE_CARDS_SHOWN)
+        notes.push(`1つの行に、旅の図鑑・旅のことばの札が${ids.length}つあります：${file} の${line}行目（${ids.join("、")}）。` +
+          `会話の窓の下に出るカードは${LINE_CARDS_SHOWN}枚までで、${LINE_CARDS_SHOWN + 1}つ目からは図鑑・ノートに入るだけです。見せたい札は前後の行に分けてください` +
+          `（More than ${LINE_CARDS_SHOWN} cards on one line: ${ids.join(", ")}）。`);
   }
   for (const term of terms) {
     const length = textLength(term.lineJa);
     if (length > TERM_LINE_ADVISED)
-      notes.push(`言葉の説明が${TERM_LINE_ADVISED}字を超えています：旅行編 ${term.journeyId} の "${term.id}" の lineJa（${length}字）。小窓では短いほど読みやすくなります` +
+      notes.push(`言葉の説明が${TERM_LINE_ADVISED}字を超えています：旅行編 ${term.journeyId} の "${term.id}" の lineJa（${length}字）。会話の窓の下のカードでは短いほど読みやすくなります` +
         `（Term line over ${TERM_LINE_ADVISED} characters: ${term.id}, ${length}）。`);
     if (!tagged.has(`${term.journeyId}\u0000${term.id}`) && !outfitTermIds.includes(term.id))
       notes.push(`どの行にも札がなく、服からも入らない言葉です：旅行編 ${term.journeyId} の "${term.id}"。# term: ${term.id} を、その言葉が初めて出る行の前に置くか、` +
