@@ -20,7 +20,7 @@ INCLUDE modules.ink
 寝台の上では、タオルで折った白鳥が二羽、くちばしを寄せ合い、首でハートを描いている。
 # speaker: gt_samir
 # cutin: name
-# photo: gt_album_a01 # photo_caption: ハネムーン・スペシャルの白鳥 # photo_with: gt_samir
+# photo: gt_album_a002 # photo_caption: ハネムーン・スペシャルの白鳥 # photo_with: gt_samir
 # voice: gt_agra_arrival_samir_001
 ハネムーン・スペシャルです！
 # speaker: narrator
@@ -70,10 +70,13 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # photo: gt_album_a005 # photo_caption: 屋根の向こうにのぞく白いドーム
+# voice: gt_agra_arrival_007
 あ……見えた。あれ、タージ・マハルの屋根だよね
 # speaker: heroine
+# voice: gt_agra_arrival_008
 写真で百回は見たのに、指先がそわそわする。……よし
 # speaker: heroine
+# voice: gt_agra_arrival_009
 誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
 
@@ -210,7 +213,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_room
 # leave: gt_samir
 # speaker: narrator
-# recall: gt_album_a01
+# recall: gt_album_a002
 二つの部屋の扉を開けると、白鳥が消え、寝台はただの白い寝台に戻っていた。こちらの部屋の花びらの道も、もうない。
 {
 - ending_reached:
@@ -267,8 +270,10 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # recall: gt_album_a138
+    # voice: gt_agra_epilogue_013
     今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう
     # speaker: heroine
+    # voice: gt_agra_epilogue_014
     あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:
     # speaker: heroine

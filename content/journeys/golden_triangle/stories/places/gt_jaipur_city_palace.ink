@@ -190,10 +190,13 @@ INCLUDE modules.ink
 審判の答えを、二人が待っていた。{heroine_name}は、ヴィシャールが提げた秤を指さした。
 # speaker: heroine
 # emotion: serious
+# voice: gt_jaipur_main_city_palace_battle_001
 五キロは無理でも、二キロなら入りますよね
 # speaker: heroine
+# voice: gt_jaipur_main_city_palace_battle_002
 ……それで、漬物がなくなったら、電話してください
 # speaker: heroine
+# voice: gt_jaipur_main_city_palace_battle_003
 お母さんに、次の分を頼むって
 # speaker: heroine
 # voice: gt_jaipur_main_city_palace_008

@@ -14,9 +14,6 @@
   min-height: 44px;
   margin: var(--ds-space-2) 0;
 }
-.quiz-option-wrap {
-  min-width: 0;
-}
 .modal.english-review {
   --modal-pad-top: 0;
   --modal-pad-inline: 0;
@@ -184,8 +181,8 @@
   text-underline-offset: 4px;
 }
 /* 「英語を読み上げるボタン」 (ReadAloud.tsx): a 44-px outlined square with the speaker, beside an English text and before
-   its 「訳を見る」. Outlined like the other helps, not dark like an answer; while it reads (aria-pressed), filled and edged
-   in the dark. */
+   its 「訳を見る」. Outlined like the other helps, not slate like an answer; while it reads (aria-pressed), filled and edged
+   in slate. */
 .read-aloud {
   display: inline-flex;
   flex: none;
@@ -245,31 +242,6 @@
   color: var(--ds-ink);
 }
 .word-close .icon { width: 18px; height: 18px; }
-.option-body {
-  min-width: 0;
-}
-.option-body .option-mark {
-  display: block;
-  margin-top: var(--ds-space-2);
-}
-.option-body .option-mark:empty {
-  display: none;
-}
-.answer-submit {
-  grid-column: 2;
-  min-height: 44px;
-  justify-self: start;
-  padding: var(--ds-space-2) var(--ds-space-4);
-  border: var(--ds-edge-thin) solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-control);
-  background: var(--ds-surface);
-  color: var(--ds-ink);
-  font-size: var(--ds-text-note);
-}
-.answer-submit:disabled {
-  opacity: var(--ds-opacity-soft);
-  cursor: default;
-}
 .review-translation-toggle {
   min-height: 36px;
   margin-right: var(--ds-space-2);
@@ -280,10 +252,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ds-space-2);
-}
-.quiz-choice > .translation {
-  grid-column: 2;
-  margin: 0;
 }
 
 /* The note's views, 「問題」, 「単語帳」 and 「その国の言葉」 (2026-11-11): the one shown is the smoked glass (and aria-pressed).

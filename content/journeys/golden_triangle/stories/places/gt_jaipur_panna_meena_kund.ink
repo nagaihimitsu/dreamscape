@@ -47,13 +47,13 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
-        # recall: gt_album_a01
+        # recall: gt_album_a002
         # voice: gt_jaipur_date_panna_meena_kund_005
         サミールさん……。思い出すと、また誤解が増えそう。白鳥の折り方、毎晩練習してると思う
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        # recall: gt_album_a01
+        # recall: gt_album_a002
         # voice: gt_jaipur_date_panna_meena_kund_006
         絶対、毎晩、白鳥の折り方を練習してる。新しいお客さんが来るたびに、首の角度を変えてると思う
     }
@@ -89,8 +89,10 @@ INCLUDE modules.ink
         わたしから？　じゃあ……
     }
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_033
     アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_034
     カムラさんに『毎日言葉にしなさい』って言われたから
     # speaker: narrator
     カムラの孫で、二人を結婚式に招いてくれた花婿のことだ。

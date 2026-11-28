@@ -27,7 +27,7 @@
 }
 /* The glass, on the window and on what lies on the scene with it (the choices, smoked, and the words beside them). */
 .vn-window::before,
-.battle-screen[data-phase="dialogue"] .battle-window::before,
+.battle-screen[data-talk] .battle-window::before,
 .vn-choices .choice,
 .vn-choice-exit,
 .vn-choices .choice-hint,
@@ -163,7 +163,7 @@
 /* The glass: no edge line and no shadow; its edges melt into the scene (--ds-glass-mask), as a soft light over it. The
    battle's talk has the same window (battle.css). */
 .vn-window::before,
-.battle-screen[data-phase="dialogue"] .battle-window::before {
+.battle-screen[data-talk] .battle-window::before {
   content: "";
   position: absolute;
   z-index: -1;

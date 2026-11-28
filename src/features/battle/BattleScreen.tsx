@@ -27,7 +27,7 @@ import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure } from "../../components/scene-stage";
+import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure, type StageLine } from "../../components/scene-stage";
 import { loggedSpeaker, nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { stageLayout, useSceneStage } from "../../components/useSceneStage";
 import { useStageGlide } from "../../components/useStageGlide";
@@ -42,6 +42,7 @@ import { QuizCutIn } from "./QuizCutIn";
 import { battleCutInView, shouldShowQuizCutIn } from "./quiz-cutin";
 import { OutcomeHeading } from "./OutcomeHeading";
 import { HeroineNote } from "./HeroineNote";
+import { QuizChoices } from "./QuizChoices";
 import { LandmarkReveal } from "./LandmarkReveal";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import { answerBeat, CORRECT_HOLD_MS } from "./answer-beat";
@@ -59,70 +60,6 @@ import { metQuestions } from "../learning/EnglishReview";
 import { metWordKeys } from "../learning/met-words";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
-
-/** Room left between the round bar and the first line of a feedback below it. */
-const FEEDBACK_GAP_PX = 8;
-
-/**
- * How far below the top of the screen the sticky boxes held there reach once
- * `line` is scrolled up to them: the round bar, and a header held above it
- * (the journey bar where :has() is missing, styles.css). Those are the sticky
- * boxes before `line` beside it or beside one of its ancestors; one held at the
- * top sits at its `top`. Read from styles and boxes, not by hit-testing, which
- * misses boxes without pointer events (all of them while taps are held after a
- * load: tap-hold.ts), and the same before and after a scroll.
- */
-function heldDepth(line: Element) {
-  let depth = 0;
-  for (let node: Element = line; node.parentElement; node = node.parentElement) {
-    for (let box = node.previousElementSibling; box; box = box.previousElementSibling) {
-      const style = getComputedStyle(box);
-      const top = parseFloat(style.top);
-      const height = box.getBoundingClientRect().height;
-      if (style.position === "sticky" && Number.isFinite(top) && height > 0) depth = Math.max(depth, top + height);
-    }
-  }
-  return depth;
-}
-
-/**
- * Focuses the answer's feedback (screen readers read on from there) and shows
- * its start: its first line (「正しい答え：…」 after a wrong answer, else the
- * explanation) just below the sticky round bar. The box's top padding may sit
- * under the bar, so that as much of the rest shows as can.
- *
- * The browser's own focus scroll does most of it: the scroll-margin-top set
- * here from what is held at the top of the view (the bar, and a header held
- * above it) keeps that line clear of it, and a feedback that fits below it then
- * shows whole (one that nearly fills that room may keep some of its top
- * padding under it). One taller than that room may still be left with its start
- * under the bar (a hidden one is centred, for example), so it is scrolled back
- * until the first line shows; the rest and 「相手の反応を見る」 are read by
- * scrolling on. Both jumps are instant, as the browser's own.
- */
-function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar: HTMLElement | null) {
-  if (!area || !bar) {
-    feedback.focus();
-    return;
-  }
-  const line = feedback.querySelector(":scope > p") ?? feedback;
-  // Below 500 px of portrait height the reading area grows with its content and the
-  // page scrolls instead (battle.css): the bar then sticks to the top of the screen,
-  // and the journey bar above the battle scrolls away with the page (styles.css), or
-  // is held there too where :has() is missing. Otherwise the reading area scrolls and
-  // holds the bar just below its top padding, where the bar is laid out.
-  const pageScrolls = getComputedStyle(area).overflowY === "visible";
-  const viewTop = pageScrolls ? 0 : area.getBoundingClientRect().top;
-  const held = pageScrolls ? heldDepth(line) : bar.getBoundingClientRect().bottom - viewTop;
-  const lineOffset = line.getBoundingClientRect().top - feedback.getBoundingClientRect().top;
-  feedback.style.scrollMarginTop = `${Math.max(0, held + FEEDBACK_GAP_PX - lineOffset)}px`;
-  feedback.focus();
-  const clear = Math.max(viewTop + held, bar.getBoundingClientRect().bottom);
-  const covered = clear + FEEDBACK_GAP_PX - line.getBoundingClientRect().top;
-  if (covered <= 0) return;
-  if (pageScrolls) window.scrollBy(0, -covered);
-  else area.scrollTop -= covered;
-}
 
 interface Props {
   learning: Learning;
@@ -223,7 +160,6 @@ export function BattleScreen({
   const coveredByCutIn = !!cutIn || quizCutIn;
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
-  const roundBar = useRef<HTMLDivElement>(null);
   const displayedStoryState = active.phase === "dialogue" ? active.storyState : null;
   // Start each new scene at the top of its own reading area, without moving
   // the page or disturbing a question when a notebook or translation opens.
@@ -305,9 +241,16 @@ export function BattleScreen({
   useEffect(() => {
     // The feedback is not on the page while its right answer is held (it comes, and is focused, after).
     if (active.phase !== "feedback" || holding) return;
+    // The explanation stands in the window in the question's place (screen readers read on from it), its start shown:
+    // the window's reading area back at its top, and where the page scrolls instead (below 500 px of portrait height,
+    // battle.css) the page brought to it when it starts below the screen; the marked options above stay where they are.
     const focusFeedback = () => {
       const feedback = document.getElementById("battle-feedback");
-      if (feedback) focusFeedbackStart(feedback, readingArea.current, roundBar.current);
+      if (!feedback) return;
+      readingArea.current?.scrollTo({ top: 0 });
+      feedback.focus({ preventScroll: true });
+      const explanation = feedback.querySelector(".quiz-explanation");
+      if (explanation && explanation.getBoundingClientRect().top > window.innerHeight - 48) explanation.scrollIntoView({ block: "nearest" });
     };
     // A newly saved answer gets a short, optional visual beat. Restored frames,
     // hidden tabs and reduced-motion preferences never wait for an animation.
@@ -337,6 +280,11 @@ export function BattleScreen({
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion, holding]);
   const frame = active.frame;
   const isDialogue = active.phase === "dialogue";
+  // A question and its explanation (2026-11-28 user decision): a part of the talk, not a card over it. The opponent asks in
+  // the talk's window, the options float above it as the talk's choices do, and the explanation comes in the window in
+  // the question's place (QuizChoices, battle.css). The talk and the quiz share the scene's layout (data-talk).
+  const quizCard = active.phase === "question" || active.phase === "feedback";
+  const talk = isDialogue || quizCard;
   // The line's scene tags (LineStage), only while the talk shows its line.
   const staging = isDialogue ? frame : null;
   // The scene's weather and tint (# weather:, # tint:) in every phase: its frame's, or what the battle keeps over a call.
@@ -374,7 +322,10 @@ export function BattleScreen({
   // 2026-11-11): their figure, expression and reaction stay the opponent's.
   const opponentFigure = characterForBattle(battle.id);
   const stageScene = sceneStageOf("battle", opponentFigure);
-  const line = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction }) : { enemyCue: true };
+  // Over a question the opponent asks: they speak (their name band over them, she listens); over its explanation, the
+  // narration, no one does.
+  const line: StageLine = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction })
+    : active.phase === "question" || holding ? { speaker: "enemy", enemyCue: true } : { enemyCue: true };
   const { stage, focus, leaving } = useSceneStage(line, stageScene, "", reduceMotion);
   // In the talk, those who stay walk to their new places as someone comes or goes (useStageGlide); the quiz's stage changes at once.
   const stageLayer = useRef<HTMLDivElement>(null);
@@ -435,10 +386,14 @@ export function BattleScreen({
     readSkip,
     lineId: isDialogue && frame?.text ? readLineId(battle.id, frame.text) : null,
   });
-  const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
+  // The explanation stands where the line would: a tap on the scene goes on to the opponent's reaction, as its 「→」 does
+  // (the wayside quiz's way, 2026-11-16 user decision). While a right answer is held still nothing reads on.
+  const feedbackShown = active.phase === "feedback" && !!answer && !holding;
+  const sceneTap = useSceneTap({ active: isDialogue || feedbackShown, lineShown: ready, choicesShown: isDialogue && choosing,
+    resultShown: feedbackShown, windowHidden: windowVisibility.hidden, onResult: advanceSafely });
   // Each part of the battle's talk opens on its establishing shot (the camera comes in with its next line; battle.css).
   const establishing = useEstablishingShot(`${battle.id}:${active.phase}`, game.revision);
-  const band = useNameBand(isDialogue ? speakerSpot(stage, focus, "battle") : undefined, frame?.speaker === "heroine", { sceneId: battle.id, cityId: heroineCityId });
+  const band = useNameBand(talk ? speakerSpot(stage, focus, "battle") : undefined, frame?.speaker === "heroine", { sceneId: battle.id, cityId: heroineCityId });
   // A line's `# cutin: name` shows its speaker's name plate over the scene for a moment (NameCutIn): the opponent's
   // heading (role, name, the quote when written), or a person's. An episode's title card over the opening holds it.
   const nameCut = useNameCutIn(isDialogue && frame
@@ -446,13 +401,10 @@ export function BattleScreen({
       storyState.people)
     : undefined, displayedStoryState ?? "", introHeld);
   const isResult = active.phase === "result";
-  /** The answer whose explanation shows (its verdict heads the reading area). */
-  const verdict = active.phase === "feedback" && !holding ? answer : undefined;
-  // What the quiz card shows of the answer: nothing yet while a right answer is held (the card stays as it was tapped).
+  // What the options show of the answer: nothing yet while a right answer is held (they stay as they were tapped).
   const shownAnswer = holding ? undefined : answer;
   const isSpecial = !!battle.reasoning;
-  // The quiz card (a question and its explanation): its speaker buttons stop reading when it goes or the next question comes.
-  const quizCard = active.phase === "question" || active.phase === "feedback";
+  // The quiz's speaker buttons stop reading when it goes or the next question comes.
   const reader = useReadAloud(readAloud, quizCard ? `${active.roundIndex}:${question?.id}` : "", autoReadAloud);
   // 「問題が出たら英語を自動で読み上げる」 (2026-11-14): the question read once as it shows; the answer stops it (below).
   useAutoReadAloud(reader, autoReadKey(autoReadAloud, active.phase, active.runId, active.roundIndex, question?.id), "question",
@@ -483,11 +435,12 @@ export function BattleScreen({
         }
       }}
       data-phase={isDialogue ? "dialogue" : active.phase}
+      data-talk={talk || undefined}
       data-answer-settling={answerSettling || undefined}
-      // ためと決め: the right answer held still (battle.css keeps the tapped card as it was, its option pressed).
+      // ためと決め: the right answer held still (battle.css keeps the options as they were tapped, the chosen one pressed).
       data-answer-held={holding || undefined}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
-      // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: its card gives a small shake (battle.css).
+      // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: the option chosen gives a small shake (battle.css).
       data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
@@ -495,9 +448,11 @@ export function BattleScreen({
       data-quiet={staging?.quiet}
       {...sceneTap.props}
     >
-      {active.phase === "feedback" && answer && effectAnswer === answerKey && (
+      {/* The stamp over the scene: a special battle's answer and the last answer of a full score. An ordinary quiz's
+          right answer has its 「○ 正解！」 on the option itself (QuizChoices; 2026-11-28 user decision). */}
+      {active.phase === "feedback" && answer && effectAnswer === answerKey && (isSpecial || perfectAnswer) && (
         <div
-          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}${perfectAnswer ? " answer-effect-perfect" : !isSpecial ? " answer-effect-subtle" : ""}`}
+          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}${perfectAnswer ? " answer-effect-perfect" : ""}`}
           data-testid="answer-effect"
           data-result={answer.correct ? "correct" : "incorrect"}
           data-perfect={perfectAnswer || undefined}
@@ -530,10 +485,11 @@ export function BattleScreen({
       <SceneHeading label={landmark?.nameJa ?? battle.titleJa} badge={tourSceneBadge(game)} />
       {chrome.notebookTab && onNotebook && <SceneNotebookTool onClick={onNotebook} />}
       <div
-        className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
-        data-testid={isDialogue ? "scene-picture" : undefined}
+        className={`battle-stage ${talk ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
+        data-testid={talk ? "scene-picture" : undefined}
       >
-        {/* The opponent's heading above the quiz card (its name plate in the talk: `# cutin: name`, NameCutIn). */}
+        {/* The opponent's heading above the reasoning's panel (its name plate in the talk: `# cutin: name`, NameCutIn;
+            over a question, the name band over the window). */}
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
           <p className="enemy-title">{battle.enemyTitleJa}</p>
@@ -541,7 +497,7 @@ export function BattleScreen({
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
         <div ref={stageLayer} className="battle-characters" data-together={far ? "four" : beside ? "three" : undefined}>
-          {isDialogue && stage.heroine && (
+          {talk && stage.heroine && (
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
                 characterId="heroine"
@@ -571,26 +527,23 @@ export function BattleScreen({
         speaker={frame && showsSpeakerPlate(frame) && speaker}
         band={band}
       />}
+      {/* Over a question the opponent asks, a small 「Quiz」 by their name (the options above are scored, a talk's
+          choices never are; 2026-11-28 user decision); the explanation is no one's words, with no name over it. */}
+      {quizCard && <DialogueWindowHead
+        plateClassName="battle-nameplate"
+        narration={feedbackShown}
+        speaker={<>{battle.enemyNameJa}<span className="speaker-tag" data-testid="quiz-mark">
+          <span className="sr-only">（</span><span lang="en">Quiz</span><span className="sr-only">）</span>
+        </span></>}
+        band={band}
+      />}
       <section
         ref={readingArea}
-        className={`paper battle-paper${isDialogue ? " battle-dialogue" : ""}`}
+        className={`paper battle-paper${talk ? " battle-dialogue" : ""}`}
         id="battle-content"
         aria-label="クイズ"
         data-testid={chrome.rebuttal ? "reasoning-rebuttal" : undefined}
       >
-        {/* The round bar, held at the top of the reading area: the verdict over an answer's
-            explanation. A question has none (user decision 2026-11-11: no question count, English
-            level, own 手がかり帳 or answers' review on the quiz card), nor does the result (user
-            decision 2026-11-11: no 「決着」 over it). */}
-        {verdict && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
-          <span
-            className={`answer-verdict ${verdict.correct ? "answer-verdict-correct" : "answer-verdict-incorrect"}`}
-            data-testid="answer-verdict"
-            aria-hidden="true"
-          >
-            <b>{verdict.correct ? "○" : "×"}</b> {verdict.correct ? "正解" : "不正解"}
-          </span>
-        </div>}
         {isResult ? (
           <div className="battle-result" data-testid="battle-result" data-outcome={outcome}>
             {/* The outcome over the scene, the rest on a glass card at the foot (2026-11-25 user decision: the result
@@ -698,8 +651,55 @@ export function BattleScreen({
             onNotebook={onNotebook}
           />
         ) : (
+          feedbackShown && answer ? (
+            <div
+              className="quiz-feedback"
+              data-testid="battle-feedback"
+              id="battle-feedback"
+              tabIndex={-1}
+            >
+              <h3 className="sr-only" role="status">{answer.correct ? "正解" : "不正解"}</h3>
+              {/* After a wrong answer the right option shows it (its mark and translation, QuizChoices); screen readers
+                  hear it here, read on from the explanation. */}
+              {!answer.correct && (
+                <p className="sr-only" data-testid="correct-answer">
+                  正しい答え：
+                  {japaneseOnly ? correctTranslation : <>
+                    <span lang="en">{question.options.find((option) => option.id === question.correctOptionId)?.textEn}</span>
+                    {correctTranslation && <>（{correctTranslation}）</>}
+                  </>}
+                </p>
+              )}
+              {/* The explanation as the narration (2026-11-28 user decision: no one's words, so she is no teacher). */}
+              <p className="quiz-explanation">{answer.correct ? question.correctExplanationJa : question.incorrectExplanationJa}</p>
+              {/* The reveal on the landmark photo, only where the question has a region (revealRegion). */}
+              {question.revealRegion && landmarkAsset && (
+                <LandmarkReveal
+                  key={question.id}
+                  asset={landmarkAsset}
+                  region={question.revealRegion}
+                  captionJa={question.revealCaptionJa}
+                />
+              )}
+              {/* Its sources, with the answer chosen, are in ≡メニュー's 「画面の出典」 while it shows (2026-11-20 user decision). */}
+              <div className="quiz-feedback-actions">
+                {!japaneseOnly && onEnglish && <button type="button" className="text-button" onClick={() => onEnglish(question.id)}>
+                  英文を確認する
+                </button>}
+                <button
+                  type="button"
+                  className="next"
+                  data-testid="battle-advance"
+                  aria-label="相手の反応を見る"
+                  onClick={advanceSafely}
+                >
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          ) : (
           <div className="question-area" data-testid="battle-question">
-            {/* The battle's progress, for screen readers only (the card shows no question count). */}
+            {/* The battle's progress, for screen readers only (no question count on the screen). */}
             <p className="sr-only">第{active.roundIndex + 1}問 / 全{quiz.questions.length}問</p>
             {japaneseOnly ? (
               <h2 className="question-en question-ja" lang="ja">{quizTranslation?.questionJa}</h2>
@@ -723,175 +723,70 @@ export function BattleScreen({
               <TranslationAll learning={learning} id={question.textKey} />
             </div>
             </>)}
-            <div className="quiz-choices" aria-label={japaneseOnly ? "3択" : "英語の3択"}>
-              {question.options.map((option) => {
-                const selected = answer?.optionId === option.id;
-                const correct =
-                  shownAnswer && option.id === question.correctOptionId;
-                // The right answer's gold pulse, once its hold has ended (or at once under reduced motion).
-                const glowing = selected && !holding && active.phase === "feedback" && glowAnswer === answerKey;
-                return (
-                  <div
-                    key={`${question.id}:${option.id}`}
-                    className={`quiz-option-wrap ${selected ? "selected-panel" : ""} ${shownAnswer && !selected ? "other-panel" : ""}`}
-                  >
-                    <div
-                      data-testid={`option-text-${option.id}`}
-                      className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}${glowing ? " answer-glow" : ""}`}
-                      data-japanese-only={japaneseOnly || undefined}
-                    >
-                      <button
-                        type="button"
-                        data-testid={`answer-${option.id}`}
-                        className="option-id answer-submit"
-                        aria-label={`「${japaneseOnly ? quizTranslation?.optionsJa[option.id] : option.textEn}」を答える`}
-                        disabled={active.phase !== "question"}
-                        onClick={() => {
-                          if (onAnswer(option.id)) {
-                            // The English being read (the automatic reading, or a button's) stops at the answer.
-                            reader.stop();
-                            answeredAt.current = performance.now();
-                            setAnswerSettling(true);
-                            const key = `${battle.id}:${active.roundIndex}:${option.id}`;
-                            setAnimatedAnswer(key);
-                            const moving = !reduceMotion && !document.hidden && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-                            // A right answer: held still first (its pulse, sound, stamp and feedback come after); under
-                            // reduced motion no hold, its glow at once. A wrong one of a special battle: its stamp.
-                            const beat = answerBeat({ right: option.id === question.correctOptionId, moving, special: isSpecial });
-                            if (beat === "hold") setHeldAnswer(key);
-                            else if (beat === "glow") setGlowAnswer(key);
-                            else if (beat === "stamp") setEffectAnswer(key);
-                          }
-                        }}
-                      />
-                      <div className="option-body">
-                        {/* At the right of the option's text, before its 「訳を見る」 and away from its answer button. */}
-                        {japaneseOnly ? <span lang="ja">{quizTranslation?.optionsJa[option.id]}</span> : <>
-                        <ReadAloudButton reader={reader} part={option.id} text={option.textEn} />
-                        <InteractiveEnglish
-                          text={option.textEn}
-                          vocabulary={question.vocabularyJa}
-                          metWords={metWords}
-                          label={`選択肢${option.id}`}
-                          onDoubleTap={() =>
-                            revealTranslation(learning, question.textKey, option.id)
-                          }
-                        />
-                        </>}
-                        {/* After a wrong answer only: which was chosen and which was right, in words (a right one is
-                            told by the verdict over it; 2026-11-20 user decision). */}
-                        {shownAnswer && !shownAnswer.correct && (
-                          <span className="option-mark">
-                            {selected ? "選んだ答え" : ""}
-                            {correct ? " ✓ 正解" : ""}
-                          </span>
-                        )}
-                      </div>
-                      {!japaneseOnly && <Translation
-                        learning={learning}
-                        id={question.textKey}
-                        part={option.id}
-                      />}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            {active.phase === "feedback" && answer && !holding && (
-              <div
-                className={`quiz-feedback ${answer.correct ? "correct-feedback" : ""}`}
-                data-testid="battle-feedback"
-                id="battle-feedback"
-                tabIndex={-1}
-              >
-                <h3 className="sr-only" role="status">{answer.correct ? "正解" : "不正解"}</h3>
-                {!answer.correct && (
-                  <p className="correct-answer" data-testid="correct-answer">
-                    正しい答え：
-                    {japaneseOnly ? <span>{correctTranslation}</span> : <>
-                    <span lang="en">
-                      {
-                        question.options.find(
-                          (option) => option.id === question.correctOptionId,
-                        )?.textEn
-                      }
-                    </span>
-                    {correctTranslation && <span>（{correctTranslation}）</span>}
-                    </>}
-                  </p>
-                )}
-                <p>
-                  {answer.correct
-                    ? question.correctExplanationJa
-                    : question.incorrectExplanationJa}
-                </p>
-                {/* Her short line on a right answer, only where the question has one (heroineCorrectJa). */}
-                {answer.correct && question.heroineCorrectJa && (
-                  <HeroineNote
-                    label={game.heroineName}
-                    text={question.heroineCorrectJa}
-                    emotion="happy"
-                    sceneId={battle.id}
-                    cityId={heroineCityId}
-                    testId="heroine-correct"
-                  />
-                )}
-                {/* The reveal on the landmark photo, only where the question has a region (revealRegion). */}
-                {question.revealRegion && landmarkAsset && (
-                  <LandmarkReveal
-                    key={question.id}
-                    asset={landmarkAsset}
-                    region={question.revealRegion}
-                    captionJa={question.revealCaptionJa}
-                  />
-                )}
-                {!japaneseOnly && onEnglish && <button
-                  className="secondary"
-                  onClick={() => onEnglish(question.id)}
-                >
-                  英文を確認する
-                </button>}
-                {/* Its sources, with the answer chosen, are in ≡メニュー's 「画面の出典」 while it shows (2026-11-20 user decision). */}
-                <button
-                  className="primary arrow-only quiz-feedback-next"
-                  data-testid="battle-advance"
-                  aria-label="相手の反応を見る"
-                  onClick={advanceSafely}
-                >
-                  <span aria-hidden="true">→</span>
-                </button>
-              </div>
-            )}
-            {!japaneseOnly && <div className="vocabulary" aria-label="難単語の補足">
-              <h3>ことばの補足</h3>
-              <dl>
-                {question.vocabularyJa.map((word) => (
-                  <div key={word.word}>
-                    <dt lang="en">{word.word}</dt>
-                    <dd>{word.meaning}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>}
-            {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa),
-                else its hint (hintJa, plain narration: shown as her note, not quoted as her words). Always
-                shown under the question, with no button to open or close it (user decision 2026-11-11). */}
-            {(active.phase === "question" || holding) && (
-              <HeroineNote
-                className="hint-whisper"
-                label={`${game.heroineName}の耳打ち`}
-                hideLabel
-                text={question.hintHeroineJa ?? question.hintJa}
-                emotion="smile"
-                sceneId={battle.id}
-                cityId={heroineCityId}
-              />
-            )}
-
           </div>
+          )
         )}
       </section>
       </div>
+      {/* The options float above the window, which keeps the question they answer, as the talk's choices do; her whisper
+          (the hint) above them, and after a right answer her line in its place (HeroineNote). */}
+      {quizCard && question && <div className="vn-choices battle-quiz-choices">
+        {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa), else its hint
+            (hintJa, plain narration: shown as her note, not quoted as her words). Always shown over the options, with
+            no button to open or close it (user decision 2026-11-11). */}
+        {(active.phase === "question" || holding) && (
+          <HeroineNote
+            className="hint-whisper"
+            label={`${game.heroineName}の耳打ち`}
+            hideLabel
+            text={question.hintHeroineJa ?? question.hintJa}
+            emotion="smile"
+            sceneId={battle.id}
+            cityId={heroineCityId}
+          />
+        )}
+        {/* Her short line on a right answer, only where the question has one (heroineCorrectJa). */}
+        {feedbackShown && answer?.correct && question.heroineCorrectJa && (
+          <HeroineNote
+            label={game.heroineName}
+            text={question.heroineCorrectJa}
+            emotion="happy"
+            sceneId={battle.id}
+            cityId={heroineCityId}
+            testId="heroine-correct"
+          />
+        )}
+        <QuizChoices
+          question={question}
+          optionsJa={quizTranslation?.optionsJa}
+          learning={learning}
+          reader={reader}
+          japaneseOnly={japaneseOnly}
+          metWords={metWords}
+          answer={shownAnswer}
+          disabled={active.phase !== "question"}
+          chosenId={answer?.optionId}
+          glowing={!holding && active.phase === "feedback" && glowAnswer === answerKey}
+          popping={active.phase === "feedback" && effectAnswer === answerKey}
+          onAnswer={(optionId) => {
+            if (onAnswer(optionId)) {
+              // The English being read (the automatic reading, or a button's) stops at the answer.
+              reader.stop();
+              answeredAt.current = performance.now();
+              setAnswerSettling(true);
+              const key = `${battle.id}:${active.roundIndex}:${optionId}`;
+              setAnimatedAnswer(key);
+              const moving = !reduceMotion && !document.hidden && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              // A right answer: held still first (its pulse, sound, mark and explanation come after); under reduced
+              // motion no hold, its glow at once. A wrong one of a special battle: its stamp.
+              const beat = answerBeat({ right: optionId === question.correctOptionId, moving, special: isSpecial });
+              if (beat === "hold") setHeldAnswer(key);
+              else if (beat === "glow") setGlowAnswer(key);
+              else if (beat === "stamp") setEffectAnswer(key);
+            }
+          }}
+        />
+      </div>}
       {/* The talk's choices float above its window, which keeps the line they answer (romance-scene.css .vn-choices). */}
       {isDialogue && frame && choosing && onChoose && <div className="vn-choices">
         <ChoicePoint minigame={frame.minigame} ready={ready} cast={{

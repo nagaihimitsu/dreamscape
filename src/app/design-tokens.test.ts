@@ -138,6 +138,12 @@ describe("the design's rules", () => {
     expect(stepsOf(root, "--ds-shadow")).toHaveLength(4);
   });
 
+  it("never defines a rule by itself", () => {
+    const root = read("src/app/styles.css");
+    const selfReferring = [...root.matchAll(/(--ds-[\w-]+)\s*:([^;]*);/g)].filter(([, name, value]) => value.includes(`var(${name})`)).map(([, name]) => name);
+    expect(selfReferring).toEqual([]);
+  });
+
   it("names every grey of the rules once, as one of the six", () => {
     const root = read("src/app/styles.css").split(/\n\}\n/)[0];
     const greys = [...root.matchAll(/(--ds-[\w-]+)\s*:\s*(#[0-9a-fA-F]{6})\b/g)].filter(([, , hex]) => {

@@ -15,11 +15,15 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_market", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
   const line = page.getByTestId("dialogue-text");
   const card = page.getByTestId("glossary-term-window");
-  // The first line's photo (# photo:) has its turn first: a tap ends it and the line starts.
+  const guide = page.getByTestId("tourism-guide");
+  // The first line's photo (# photo:) has its turn first, the window not shown (2026-11-28): a tap ends it and the line
+  // starts in the window.
   await expect(line).toHaveAttribute("data-photo-turn", "true");
+  await expect(guide).toHaveCSS("opacity", "0");
   await ops.settled(page);
   await line.click();
   await expect(line).toHaveAttribute("data-ready", "true");
+  await expect(guide).toHaveCSS("opacity", "1");
   // The guide's first line names no term: no card, and the menu has no dot.
   await expect(card).toHaveCount(0);
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
@@ -36,9 +40,10 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(card.getByRole("img")).toHaveAttribute("alt", /三時パン/u);
   await expect(card).toBeFocused();
   await expect(card.getByRole("button")).toHaveCount(0);
-  // The card has its turn before the line (2026-11-27): the line under it writes nothing yet.
+  // The card has its turn before the line (2026-11-27): the line under it writes nothing yet, its window not shown.
   await expect(line).toHaveAttribute("data-photo-turn", "true");
   await expect(line).toHaveAttribute("data-ready", "false");
+  await expect(guide).toHaveCSS("opacity", "0");
   const shown = (await debugGame(page))!;
   expect(shown.glossary).toEqual([TERM]);
   expect(shown.activeTourism?.frame?.termIds).toEqual([TERM]);
@@ -55,6 +60,7 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(line).toHaveText(text!);
   await expect(line).toHaveAttribute("data-ready", "true");
   await expect(line).toBeFocused();
+  await expect(guide).toHaveCSS("opacity", "1");
 
   // ≡メニュー and its 「ノート」 carry the dot of something new; the note opens on 旅の図鑑 (the page with something new),
   // which shows the term with 「NEW」 and 1 / 1.

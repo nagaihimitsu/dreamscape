@@ -210,8 +210,10 @@ HORN OK PLEASE。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # photo: gt_album_a045 # photo_caption: HORN OK PLEASE # photo_with: gt_vinod
+# voice: gt_agra_tour_out_leg_005
 ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？
 # speaker: heroine
+# voice: gt_agra_tour_out_leg_006
 どういう意味なんだろう。あ、あっちのトラックにも書いてある
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_002
@@ -1021,7 +1023,7 @@ HORN OK PLEASE。
     それから、しばらく誰も話さなかった。{heroine_name}のまぶたが、ゆっくりと下りてくる。
     { cond("couple"):
         # speaker: narrator
-        # photo: gt_album_a27 # photo_caption: 帰りの車、こつんと落ちる頭
+        # photo: gt_album_a062 # photo_caption: 帰りの車、こつんと落ちる頭
         # stand: close
         頭が、こちらの肩に、こつんと落ちた。
     - else:

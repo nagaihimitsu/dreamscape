@@ -121,8 +121,9 @@ describe("a battle's figures (BattleScreen): the Red Fort's school trip, with Ni
     expect(render(atLine(start, "activeBattle", { ...anjali, leave: ["gt_anjali"] }))).toEqual({ figures: ["heroine"], twoCharacters: false });
   });
 
-  it("shows the opponent over the quiz, without her, as before", () => {
+  // The quiz is a part of the talk (2026-11-28 user decision): she stays on stage while the opponent asks.
+  it("shows her and the opponent over the quiz, as in the talk", () => {
     const question: GameState = { ...start, activeBattle: { ...start.activeBattle!, phase: "question" } };
-    expect(render(question)).toEqual({ figures: ["gt_nidhi"], twoCharacters: false });
+    expect(render(question)).toEqual({ figures: ["heroine", "gt_nidhi"], twoCharacters: false });
   });
 });

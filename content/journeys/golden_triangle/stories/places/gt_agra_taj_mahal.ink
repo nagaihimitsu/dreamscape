@@ -481,8 +481,10 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,shy,blush
 # photo: gt_album_a138 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
+# voice: gt_agra_finale_battle_007
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です
 # speaker: heroine
+# voice: gt_agra_finale_battle_008
 わたしたちのことは、わたしたちで決めます
 # speaker: narrator
 # pause: 800

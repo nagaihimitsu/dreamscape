@@ -98,7 +98,7 @@
   --ds-action-ink: var(--ds-light);
   --ds-action-fill: linear-gradient(180deg, var(--ds-action), var(--ds-action-deep));
   --ds-action-edge: color-mix(in srgb, var(--ds-light) 32%, transparent); /* a white hairline catching the light */
-  --ds-action-text-shadow: var(--ds-action-text-shadow);
+  --ds-action-text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   /* The shadows: soft and wide, never a hard edge (2026-11-28 user decision: soft). */
   --ds-shadow-small: 0 2px 8px color-mix(in srgb, var(--ds-shade) 18%, transparent); /* a pill over a photo, a small mark */
   --ds-shadow: 0 8px 28px color-mix(in srgb, var(--ds-shade) 14%, transparent); /* a card, a pane of glass, a press */
@@ -282,7 +282,7 @@ body {
 .photo-free-time .free-time-extras,
 .photo-free-time .photo-menu .travel-rentals,
 .battle-result-card,
-.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper,
+.battle-screen[data-phase="reasoning"] .battle-paper,
 .modal,
 .hud-menu-panel,
 .held-item-detail,
@@ -1635,134 +1635,6 @@ dialog.modal[open]::backdrop {
 .battle-paper {
   max-width: 680px;
 }
-.battle-roundbar {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--ds-space-4);
-  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
-  padding-bottom: var(--ds-space-3);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-small);
-  letter-spacing: var(--ds-tracking-2);
-}
-.question-en {
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-large);
-  line-height: var(--ds-leading-body);
-  font-weight: var(--ds-weight-medium);
-  letter-spacing: 0;
-  margin: var(--ds-space-6) 0;
-  overflow-wrap: anywhere;
-}
-.quiz-choices {
-  display: grid;
-  gap: var(--ds-space-3);
-}
-.quiz-choice {
-  display: grid;
-  grid-template-columns: 26px 1fr;
-  gap: var(--ds-space-1) var(--ds-space-3);
-  width: 100%;
-  padding: var(--ds-space-4);
-  text-align: left;
-  border: var(--ds-edge-thin) solid var(--ds-line);
-  background: var(--ds-field);
-  color: var(--ds-ink);
-  border-radius: var(--ds-radius-control);
-  font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-body);
-  overflow-wrap: anywhere;
-}
-.quiz-choice .option-id {
-  font-family: var(--ds-font-sans);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-large);
-}
-.quiz-choice:disabled {
-  opacity: 1;
-  cursor: default;
-}
-/* The chosen answer: the selected-row look (§2.3), a 2-px dark edge and the light ground fill. */
-.quiz-choice.chosen {
-  border: var(--ds-edge) solid var(--ds-dark-2);
-  padding: var(--ds-space-4);
-  background: var(--ds-surface-chosen);
-}
-/* The correct answer: the done colour's edge (after a wrong answer its mark says 正解 in words; after a right one the
-   verdict over the explanation does, and 画面の出典 names the answer chosen: 2026-11-20). */
-.quiz-choice.correct {
-  border: var(--ds-edge) solid var(--ds-here);
-  padding: var(--ds-space-4);
-  background: var(--ds-right-ground);
-}
-.option-mark {
-  grid-column: 2;
-  font-size: var(--ds-text-small);
-  color: var(--ds-ink-muted);
-  letter-spacing: var(--ds-tracking-2);
-  min-height: 0;
-}
-.option-mark:empty {
-  display: none;
-}
-.vocabulary {
-  margin-top: var(--ds-space-6);
-  padding-top: var(--ds-space-4);
-  border-top: var(--ds-edge-thin) solid var(--ds-line);
-}
-.vocabulary h3 {
-  font-size: var(--ds-text-small);
-  color: var(--ds-ink-muted);
-  font-weight: var(--ds-weight-regular);
-  letter-spacing: var(--ds-tracking-2);
-}
-.vocabulary dl {
-  margin: var(--ds-space-2) 0;
-  display: flex;
-  gap: var(--ds-space-2) var(--ds-space-4);
-  flex-wrap: wrap;
-  font-size: var(--ds-text-small);
-}
-.vocabulary dl > div {
-  display: flex;
-  gap: var(--ds-space-2);
-  align-items: baseline;
-}
-.vocabulary dt {
-  color: var(--ds-ink);
-}
-.vocabulary dd {
-  margin: 0;
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-small);
-}
-/* The explanation: a light ground panel inside the paper; the verdict pill above says right or wrong. */
-.quiz-feedback {
-  margin-top: var(--ds-space-6);
-  padding: var(--ds-space-6);
-  border: var(--ds-edge-thin) solid var(--ds-line);
-  background: var(--ds-surface-chosen);
-  border-radius: var(--ds-radius-control);
-}
-.quiz-feedback.correct-feedback {
-  background: var(--ds-right-ground);
-  border-color: var(--ds-right-edge);
-}
-.quiz-feedback h3 {
-  font-size: var(--ds-text-heading);
-  font-family: var(--ds-font-sans);
-  font-weight: var(--ds-weight-medium);
-  margin-bottom: var(--ds-space-3);
-}
-.quiz-feedback > p {
-  font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-reading);
-  overflow-wrap: anywhere;
-}
-/* 「相手の反応を見る」, a little apart from the explanation and 「英文を確認する」 above it. */
-.quiz-feedback .quiz-feedback-next {
-  margin-top: var(--ds-space-4);
-}
 .outcome {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-display);
@@ -1821,21 +1693,6 @@ dialog.modal[open]::backdrop {
   }
   .battle-stage-compact .battle-enemy-info {
     padding-bottom: var(--ds-space-6);
-  }
-  .question-en {
-    margin: var(--ds-space-6) 0;
-  }
-  .quiz-choice {
-    padding: var(--ds-space-4) var(--ds-space-3);
-    gap: var(--ds-space-1) var(--ds-space-2);
-    grid-template-columns: 23px 1fr;
-  }
-  .quiz-choice.chosen,
-  .quiz-choice.correct {
-    padding: var(--ds-space-3) var(--ds-space-3);
-  }
-  .quiz-feedback {
-    padding: var(--ds-space-4);
   }
 }
 

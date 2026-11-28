@@ -10,7 +10,7 @@ const FIXTURE: SnsData = {
   images: [],
   photoWith: {},
   posts: [
-    { id: "gt_post_test_now", journeyId: "golden_triangle", cityId: "delhi", author: "gt_monu", imageIds: ["gt_album_d25"],
+    { id: "gt_post_test_now", journeyId: "golden_triangle", cityId: "delhi", author: "gt_monu", imageIds: ["gt_album_d056"],
       line: line("gt_monu", "十三人目"), likes: [], comments: [] },
     { id: "gt_past_test_phone", journeyId: "golden_triangle", cityId: "delhi", author: "gt_monu", imageIds: ["gt_album_d003", "gt_album_d005"],
       where: { nameJa: "村の家" }, past: "去年の冬", line: line("gt_monu", "{heroine_name}より前の携帯"), likes: [{ personId: "gt_kamla" }],
@@ -31,7 +31,7 @@ describe("past posts", () => {
     expect(night.sns?.posts.map((post) => post.id)).toEqual(["gt_post_test_now"]);
     expect(snsTimeline(night).flatMap((day) => day.posts.map((post) => post.id))).toEqual(["gt_post_test_now"]);
     expect(snsPersonPage(night, "gt_monu")?.photos.map((tile) => [tile.postId, tile.imageId])).toEqual([
-      ["gt_post_test_now", "gt_album_d25"], ["gt_past_test_phone", "gt_album_d003"], ["gt_past_test_phone", "gt_album_d005"]]);
+      ["gt_post_test_now", "gt_album_d056"], ["gt_past_test_phone", "gt_album_d003"], ["gt_past_test_phone", "gt_album_d005"]]);
     const past = snsPostView(night, "gt_past_test_phone")!;
     expect(past).toMatchObject({ pastJa: "去年の冬", liked: false, line: { textJa: "澪より前の携帯" } });
     expect(past.arrived).toBeUndefined();

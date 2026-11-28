@@ -53,7 +53,7 @@ INCLUDE modules.ink
 // インド門のデート。写真は、選んだ道で撮れたものだけが載る（十三人目・十四人・アイス、探した・探さなかった）。
 === gt_post_delhi_india_gate ===
 # post: heroine
-# images: gt_album_d054 gt_album_d25 gt_album_d057 gt_album_d058 gt_album_d061 gt_album_d062
+# images: gt_album_d054 gt_album_d056 gt_album_d057 gt_album_d058 gt_album_d061 gt_album_d062
 # when: date gt_delhi_date_india_gate
 # likes: gt_kamla
 # likes: gt_roohi if met gt_roohi
@@ -138,7 +138,7 @@ INCLUDE modules.ink
 // 主人公が撮った十三人目（彼女が祖母の隣に入った）。
 === gt_post_delhi_monu_thirteen ===
 # post: gt_monu
-# images: gt_album_d25
+# images: gt_album_d056
 # where: delhi_india_gate
 # when: date gt_delhi_date_india_gate
 # when: not flag gt_delhi_photo_both_in

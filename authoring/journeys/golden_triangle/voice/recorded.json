@@ -7669,6 +7669,214 @@
     "gt_jaipur_cloth_shop_haggle_011": {
       "text": "帰ったら、この花の数、数えてみようかな。……一つずつ、違う顔してるから",
       "script": "2026-11-27"
+    },
+    "gt_delhi_date_bangla_sahib_023": {
+      "text": "誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_date_bangla_sahib_024": {
+      "text": "なんだか不思議。知らない人に、ちょっとだけ届いた感じ",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_arrival_005": {
+      "text": "……はい、覚えておきます。それにしても、地図というより暗号だね",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_arrival_006": {
+      "text": "せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_epilogue_010": {
+      "text": "言いそびれたことって、あとから重くなるんだね",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_epilogue_011": {
+      "text": "わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_main_humayun_tomb_battle_001": {
+      "text": "わたしは、誰にも言いません。言う相手もいないですし",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_main_humayun_tomb_battle_002": {
+      "text": "……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_hotel_homework_008": {
+      "text": "わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_hotel_homework_009": {
+      "text": "回ってる洗濯物を見てると、落ち着くから",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_office_007": {
+      "text": "手付金は、高い授業料だったね。……ううん、やっぱり悔しい",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_office_008": {
+      "text": "でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_on_platform_001": {
+      "text": "親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_on_platform_002": {
+      "text": "……悔しい。最初に、ついて行こうって言ったの、わたしだから",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_on_platform_003": {
+      "text": "でも、教えてくれた荷運びの人も、検札の人も、本物だった",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_on_platform_004": {
+      "text": "宿のご主人も、ルーヒーさんも",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_depart_scam_on_platform_005": {
+      "text": "……疑うのは疲れるけど、全部を疑うようには、なりたくないな",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_date_lodhi_garden_029": {
+      "text": "理由がなくても笑っていいって言われると、ちょっと楽になるね",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_date_lodhi_garden_030": {
+      "text": "わたし、いつも、笑っていい理由を探してから笑ってた気がする",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_finale_battle_001": {
+      "text": "待ってください。あの日のカムラさん、すごくはっきりしてました",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_finale_battle_002": {
+      "text": "オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_finale_battle_003": {
+      "text": "はい。黙っていなくなるのは、自由とは違うと思ったから",
+      "script": "2026-11-27_split"
+    },
+    "gt_delhi_finale_battle_004": {
+      "text": "カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_main_agra_fort_battle_001": {
+      "text": "はい。城の一部は、今も陸軍の区域ですよね",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_main_agra_fort_battle_002": {
+      "text": "……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_guru_ka_taal_018": {
+      "text": "わたしが伝えたら、お二人の言葉じゃなくなっちゃうから",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_guru_ka_taal_019": {
+      "text": "……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_arrival_007": {
+      "text": "あ……見えた。あれ、タージ・マハルの屋根だよね",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_arrival_008": {
+      "text": "写真で百回は見たのに、指先がそわそわする。……よし",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_arrival_009": {
+      "text": "誤解は、ちゃんと解く。その前に、どこから行こうか",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_epilogue_013": {
+      "text": "今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_epilogue_014": {
+      "text": "あれ、恋人として言ったんだよ。ちゃんと届いてた？",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_confession_034": {
+      "text": "迷ったけど、ちゃんと、わたしの言葉で言いたかった",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_confession_035": {
+      "text": "言われたから、うなずくんじゃなくて",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_confession_036": {
+      "text": "……わたしも、一緒にいたい。旅が終わっても",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_confession_037": {
+      "text": "話したいことは、あるの。あるんだけど",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_date_confession_038": {
+      "text": "……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_finale_battle_007": {
+      "text": "わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_finale_battle_008": {
+      "text": "わたしたちのことは、わたしたちで決めます",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_tour_out_leg_005": {
+      "text": "ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？",
+      "script": "2026-11-27_split"
+    },
+    "gt_agra_tour_out_leg_006": {
+      "text": "どういう意味なんだろう。あ、あっちのトラックにも書いてある",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_main_city_palace_battle_001": {
+      "text": "五キロは無理でも、二キロなら入りますよね",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_main_city_palace_battle_002": {
+      "text": "……それで、漬物がなくなったら、電話してください",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_main_city_palace_battle_003": {
+      "text": "お母さんに、次の分を頼むって",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_main_hawa_mahal_battle_003": {
+      "text": "ガウラさんは、お客さんと値段で喧嘩してました",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_main_hawa_mahal_battle_004": {
+      "text": "それから、子どもにトマトを一つあげてました。誰にも見られてないと思って",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_date_her_confession_026": {
+      "text": "六十年、言わなかった人の言葉だから、重かった",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_date_her_confession_027": {
+      "text": "アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_date_nahargarh_fort_037": {
+      "text": "あ、見て。あの辺が、たぶん、わたしたちの宿",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_date_nahargarh_fort_038": {
+      "text": "この高さから見ると、迷ってばっかりだった道が、ちゃんと碁盤の目になってる",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_date_panna_meena_kund_033": {
+      "text": "アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる",
+      "script": "2026-11-27_split"
+    },
+    "gt_jaipur_date_panna_meena_kund_034": {
+      "text": "カムラさんに『毎日言葉にしなさい』って言われたから",
+      "script": "2026-11-27_split"
     }
   }
 }
