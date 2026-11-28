@@ -7,7 +7,7 @@ import {
   blockedSleepWays, blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, chooseWay,
   defaultCardIndex, departureOf, joinedCardsJa, lockedCardId, lockedCardJa, newCardIds, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
   NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards,
-  SHOP_CARD_ID, sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
+  SHOP_CARD_ID, sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, sleepWayShortJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
   TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, waitLineJa, type PhotoCardEntry,
 } from "./photo-cards";
 
@@ -242,6 +242,10 @@ describe("「待機」 and 「ホテルに戻る」 go by a swipe up too (user d
     expect(sleepWayLabelJa({ atHotel: true, mode: "徒歩" })).toBe("ホテルに戻って休む");
     expect(sleepWayLabelJa({ atHotel: false, mode: "徒歩" })).toBe("徒歩で帰る");
     expect(sleepWayLabelJa({ atHotel: false, mode: "メトロ", via: "中央駅" })).toBe("メトロで帰る・中央駅から徒歩");
+    // On the screen the mode alone, as a place's ways (2026-11-28): 「休む」 above already says it goes back.
+    expect(sleepWayShortJa({ atHotel: true, mode: "徒歩" })).toBe("ホテルに戻って休む");
+    expect(sleepWayShortJa({ atHotel: false, mode: "オートリキシャ" })).toBe("オートリキシャ");
+    expect(sleepWayShortJa({ atHotel: false, mode: "メトロ", via: "中央駅" })).toBe("メトロ・中央駅から徒歩");
   });
 
   it("says each reason a way home cannot be taken once, with its ways, and why a rest cannot be made", () => {

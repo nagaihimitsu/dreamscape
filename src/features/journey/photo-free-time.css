@@ -740,16 +740,15 @@
 .place-card-option:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; cursor: default; }
 .place-card-mode-cost { display: block; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
-   so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
-   on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one that
-   cannot be chosen is the disabled press. */
+   so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one on the
+   modes' smoked glass with no mark (2026-11-28 user decision: the modes have none). Their longer words wrap the row,
+   each chip at least about eight characters wide; one that cannot be chosen is the disabled press. */
 .place-card-options { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
 .place-card-option {
   display: inline-flex;
   flex: 1 1 8em;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-2);
   min-width: 0;
   min-height: 44px;
   margin: 0;
@@ -773,7 +772,6 @@
   box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
   text-shadow: var(--ds-action-text-shadow);
 }
-.place-card-option-mark { flex: none; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: 1; }
 .place-card-option-text { min-width: 0; }
 /* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. Plain
    weight like the card's other prose (2026-11-27: bold, 「30分待つ」 read as a button that did nothing). */
