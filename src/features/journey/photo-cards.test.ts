@@ -93,12 +93,15 @@ describe("the row of cards", () => {
     expect(rowCards(photoCardEntries(places, map), { tour: false, locked: [], debug: true }).map((item) => item.kind)).toEqual(["wait", "place", "place", "place", "place", "stay"]);
   });
 
-  it("puts the city's shop at the right end, after 「ホテルに戻る」 (2026-11-20); it neither departs nor stands for a selection", () => {
-    const cards = rowCards(photoCardEntries(places, map), { tour: true, shop: "布地の店" });
+  it("puts the city's shop at the right end, after 「ホテルに戻る」 (2026-11-20); it stands for no selection, and a swipe up goes in only while it can be gone into", () => {
+    const cards = rowCards(photoCardEntries(places, map), { tour: true, shop: { nameJa: "布地の店", enters: false } });
     expect(cards.map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", TOUR_CARD_ID, STAY_CARD_ID, SHOP_CARD_ID]);
     const shop = cards.at(-1)!;
-    expect(shop).toEqual({ kind: "shop", id: SHOP_CARD_ID, nameJa: "布地の店" });
+    expect(shop).toEqual({ kind: "shop", id: SHOP_CARD_ID, nameJa: "布地の店", enters: false });
     expect([takesSwipe(shop), cardTarget(shop), cardKinds(shop)]).toEqual([false, null, "none"]);
+    // A talking shop whose scenes can run now: its swipe up goes in, as the other destinations go (2026-11-28).
+    const talking = rowCards([], { tour: false, shop: { nameJa: "布の問屋", enters: true } }).at(-1)!;
+    expect([talking.kind, takesSwipe(talking), cardTarget(talking)]).toEqual(["shop", true, null]);
     expect(defaultCardIndex(cards)).toBe(1);
     // A city without a shop: the row as before.
     expect(rowCards(photoCardEntries(places, map), { tour: false, shop: null }).at(-1)?.id).toBe(STAY_CARD_ID);

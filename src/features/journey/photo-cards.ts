@@ -57,7 +57,8 @@ export const lockedCardId = (dateId: string): string => `${LOCKED_PREFIX}${dateI
 /**
  * A card of the row: 「待機」 (the waits), a place, a date not open yet whose writer gave it a hint (`# hint:`, 2026-11-13;
  * date-rules.ts hintedLockedDates; only while Debug mode is on), the city's tour (booking, cancelling), 「ホテルに戻る」 (休む)
- * or the city's shop (its outfits; 2026-11-20, shop/catalog.json: `nameJa` is its name).
+ * or the city's shop (its outfits; 2026-11-20, shop/catalog.json: `nameJa` is its name; `enters`: a talking shop's scenes can
+ * run now, so a swipe up goes in, occasion.ts shopScenesNow; 2026-11-28).
  */
 export type RowCard =
   | { kind: "wait"; id: typeof WAIT_CARD_ID }
@@ -65,11 +66,12 @@ export type RowCard =
   | { kind: "locked"; id: string; dateId: string; hintJa: string }
   | { kind: "tour"; id: typeof TOUR_CARD_ID }
   | { kind: "stay"; id: typeof STAY_CARD_ID }
-  | { kind: "shop"; id: typeof SHOP_CARD_ID; nameJa: string };
+  | { kind: "shop"; id: typeof SHOP_CARD_ID; nameJa: string; enters: boolean };
 
 /**
  * The row: 「待機」 at the left end (always), the places' cards, then the tour while one is offered or booked here, then
- * 「ホテルに戻る」 (always), then the city's shop at the right end when it has one (`shop`, its name; 2026-11-20 user decision).
+ * 「ホテルに戻る」 (always), then the city's shop at the right end when it has one (`shop`, its name and whether it can be gone
+ * into now; 2026-11-20 user decision).
  * A destination not open yet is not in the row (2026-11-13 user decision: it joins as a new card once it opens,
  * newCardIds); a place open but not usable now (its hours, AP, the way back by 21:00) is, with its reasons. Only while
  * Debug mode is on (`debug`, the writer's check) do the dates not open yet whose writer gave a hint (`locked`, in their
@@ -77,14 +79,14 @@ export type RowCard =
  */
 export function rowCards(entries: readonly PhotoCardEntry[], { tour, shop = null, locked = [], debug = false }: {
   tour: boolean;
-  shop?: string | null;
+  shop?: { nameJa: string; enters: boolean } | null;
   locked?: readonly { dateId: string; hintJa: string }[];
   debug?: boolean;
 }): RowCard[] {
   const places = entries.map((entry): RowCard => ({ kind: "place", id: entry.place.id, entry }));
   const lockedCards = debug ? locked.map((date): RowCard => ({ kind: "locked", id: lockedCardId(date.dateId), dateId: date.dateId, hintJa: date.hintJa })) : [];
   return [{ kind: "wait", id: WAIT_CARD_ID }, ...places, ...lockedCards, ...(tour ? [{ kind: "tour", id: TOUR_CARD_ID } as const] : []),
-    { kind: "stay", id: STAY_CARD_ID }, ...(shop !== null ? [{ kind: "shop", id: SHOP_CARD_ID, nameJa: shop } as const] : [])];
+    { kind: "stay", id: STAY_CARD_ID }, ...(shop !== null ? [{ kind: "shop", id: SHOP_CARD_ID, ...shop } as const] : [])];
 }
 
 /** What a locked date's card says (its face's words for readers, and the live regions' when it is chosen): the writer's hint only. */
@@ -115,11 +117,12 @@ export function defaultCardIndex(cards: readonly RowCard[]): number {
 
 /**
  * Whether a card takes a swipe up (and, in the row, Enter on it): a place's departs (or starts there), 「待機」's waits
- * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; the tour's, the
- * shop's and a locked date's never.
+ * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; a talking shop's
+ * goes in while its scenes can run (`enters`, user decision 2026-11-28: as the other destinations go, not by a button);
+ * the tour's, a shop's that cannot be gone into now and a locked date's never.
  */
 export function takesSwipe(card: RowCard): boolean {
-  return card.kind !== "tour" && card.kind !== "locked" && card.kind !== "shop";
+  return card.kind === "shop" ? card.enters : card.kind !== "tour" && card.kind !== "locked";
 }
 
 /** The selection a card stands for: its place, the hotel's 休む (「ホテルに戻る」), or none (「待機」, a locked date, the tour). */
