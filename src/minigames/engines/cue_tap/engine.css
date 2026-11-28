@@ -12,7 +12,7 @@
 }
 .mg-engine-cue-tap .mg-cue-tap-controls { flex: none; padding: var(--ds-space-2) var(--ds-space-4) calc(16px + env(safe-area-inset-bottom, 0px)); }
 /* How to play, right above the meter it speaks of (read at a glance mid-play: 15px, 13px where a line would not fit). */
-.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); }
+.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 70%, transparent); }
 @media (max-width: 360px) { .mg-engine-cue-tap .mg-cue-tap-hint { font-size: var(--ds-text-note); } }
 /* The meter: its needle crosses it from the thing's start to the end of the play; white where it arrives. The clean zone is
    brighter, narrower and glows (not told by colour alone). */
@@ -25,7 +25,7 @@
   background: color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
 }
 .mg-engine-cue-tap .mg-cue-tap-meter-near, .mg-engine-cue-tap .mg-cue-tap-meter-clean { position: absolute; top: 0; bottom: 0; }
-.mg-engine-cue-tap .mg-cue-tap-meter-near { background: color-mix(in srgb, var(--ds-hairline) 42%, transparent); }
+.mg-engine-cue-tap .mg-cue-tap-meter-near { background: color-mix(in srgb, var(--ds-hairline) 50%, transparent); }
 .mg-engine-cue-tap .mg-cue-tap-meter-clean { border-radius: var(--ds-radius-pill); background: var(--ds-game-mark); box-shadow: 0 0 6px color-mix(in srgb, var(--ds-game-mark) 70%, transparent); }
 .mg-engine-cue-tap .mg-cue-tap-meter-needle {
   position: absolute;
@@ -41,7 +41,7 @@
 .mg-engine-cue-tap .mg-cue-tap-action {
   justify-content: center;
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   font-size: var(--ds-text-heading);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-4);
@@ -53,7 +53,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   border-radius: var(--ds-radius-control);
   background: var(--ds-smoke);
@@ -61,5 +61,5 @@
 }
 @media (max-height: 620px) {
   .mg-engine-cue-tap .mg-cue-tap-controls { padding-top: var(--ds-space-2); }
-  .mg-engine-cue-tap .mg-cue-tap-action, .mg-engine-cue-tap .mg-cue-tap-auto { min-height: 54px; }
+  .mg-engine-cue-tap .mg-cue-tap-action, .mg-engine-cue-tap .mg-cue-tap-auto { min-height: var(--ds-press-large); }
 }

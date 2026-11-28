@@ -49,7 +49,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 48px;
+  min-height: var(--ds-press);
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-4);
   border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
@@ -60,11 +60,11 @@
   text-align: left;
 }
 .sns .sns-met-all > .sns-faces { margin-left: auto; }
-.sns-met-all > .icon, .sns-day-met > .icon, .sns-person-row > .icon { flex: none; width: 18px; height: 18px; color: var(--ds-ink-muted); }
+.sns-met-all > .icon, .sns-day-met > .icon, .sns-person-row > .icon { flex: none; width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-ink-muted); }
 
 /* A night's heading 「デリー · 2日目」, a hairline to the faces of the people met that day. */
 .sns-day { margin-top: var(--ds-space-4); }
-.sns-day-head { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; }
+.sns-day-head { display: flex; align-items: center; gap: var(--ds-space-2); min-height: var(--ds-press-small); }
 .sns-day-head h3,
 .sns-section-title {
   flex: none;
@@ -77,7 +77,7 @@
   overflow-wrap: anywhere;
 }
 .sns-rule { flex: 1 1 auto; min-width: 12px; height: 1px; background: var(--ds-line); }
-.sns .sns-day-met { display: inline-flex; flex: none; align-items: center; gap: var(--ds-space-1); min-width: 44px; min-height: 44px; padding: 0 var(--ds-space-1) 0 var(--ds-space-2); }
+.sns .sns-day-met { display: inline-flex; flex: none; align-items: center; gap: var(--ds-space-1); min-width: 44px; min-height: var(--ds-press-small); padding: 0 var(--ds-space-1) 0 var(--ds-space-2); }
 
 /* A card: the photo band (its slides side by side, the one on show in the middle, its neighbours peeking at the sides),
    the dots, and the part under the band. It reaches the dialog's sides, so the neighbours peek from its edges. */
@@ -98,7 +98,7 @@
   align-items: flex-start;
   gap: var(--sns-gap);
   transform: translateX(calc(var(--sns-at, 0) * -1 * (var(--sns-slide) + var(--sns-gap)) + var(--swipe-dx, 0px)));
-  transition: transform 280ms var(--ease-out);
+  transition: transform var(--motion-short) var(--ease-out);
 }
 .sns-strip[data-swiping] .sns-track { transition: none; }
 .sns-slide { flex: 0 0 var(--sns-slide); min-width: 0; }
@@ -126,7 +126,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ds-light) 94%, transparent);
+  background: color-mix(in srgb, var(--ds-light) 100%, transparent);
   color: var(--ds-ink);
   font-size: var(--ds-text-heading);
   line-height: 1;
@@ -156,7 +156,7 @@
   align-items: center;
   gap: 0;
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-1) var(--ds-space-1);
   color: var(--ds-light);
 }
@@ -189,13 +189,13 @@
   pointer-events: none;
 }
 /* The card's margin: the post's line, its translation under it, the heart at its right. */
-.sns-margin { display: flex; align-items: center; gap: var(--ds-space-1); min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-1); color: var(--ds-ink); }
+.sns-margin { display: flex; align-items: center; gap: var(--ds-space-1); min-height: var(--ds-press-small); padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-1); color: var(--ds-ink); }
 .sns-line { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; padding: var(--ds-space-1) 0; }
 .sns-line-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-line-translation { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* The heart: a line, red and filled once pressed. */
 .sns .sns-like { display: grid; flex: none; place-items: center; width: 44px; height: 44px; color: var(--ds-ink-muted); }
-.sns-like .icon { width: 22px; height: 22px; }
+.sns-like .icon { width: var(--ds-icon-large); height: var(--ds-icon-large); }
 .sns-like.is-liked { color: var(--sns-like); }
 .sns-like.is-liked .icon path { fill: currentColor; }
 .sns-like.is-still { width: 32px; }
@@ -206,7 +206,7 @@
 /* The dots: one per photo, bunched by post with room between posts; a post with a new comment has a red dot beside. */
 .sns-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ds-space-1) var(--ds-space-3); margin: -2px 0 var(--ds-space-2); }
 .sns-dot-group { display: inline-flex; align-items: center; gap: var(--ds-space-1); }
-.sns-dot { width: 6px; height: 6px; border-radius: 50%; background: color-mix(in srgb, var(--ds-ink-muted) 35%, transparent); }
+.sns-dot { width: 6px; height: 6px; border-radius: 50%; background: color-mix(in srgb, var(--ds-ink-muted) 32%, transparent); }
 .sns-dot.is-on { background: var(--ds-ink); }
 .sns-new-dot { flex: none; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--sns-like); }
 
@@ -215,23 +215,23 @@
 .sns-under { grid-area: 1 / 1; visibility: hidden; }
 .sns-under[data-current] { visibility: visible; }
 .sns-under-paper { padding: var(--ds-space-1) var(--ds-space-2); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); color: var(--ds-ink); }
-.sns-likers { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 32px; color: var(--sns-like); }
-.sns-likers .icon { width: 16px; height: 16px; }
+.sns-likers { display: flex; align-items: center; gap: var(--ds-space-2); min-height: var(--ds-press-small); color: var(--sns-like); }
+.sns-likers .icon { width: var(--ds-icon-small); height: var(--ds-icon-small); }
 .sns-likers .icon path { fill: currentColor; }
 .sns-likers + .sns-comments { border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* A comment a line: face, name (bold), words; the replies set in with a smaller face (no side line). */
 .sns-comments { margin: 0; padding: 0; list-style: none; }
-.sns-comment-line { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
-.sns-comment-line.is-reply { padding-left: var(--ds-space-6); min-height: 40px; }
+.sns-comment-line { display: flex; align-items: center; gap: var(--ds-space-2); min-height: var(--ds-press-small); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.sns-comment-line.is-reply { padding-left: var(--ds-space-6); min-height: var(--ds-press-small); }
 .sns-comment-line > .sns-new-dot { margin-right: -2px; }
-.sns .sns-who { display: inline-flex; flex: none; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-weight: var(--ds-weight-bold); }
-.sns-comment-line.is-reply .sns-who { min-height: 40px; }
+.sns .sns-who { display: inline-flex; flex: none; align-items: center; gap: var(--ds-space-2); min-height: var(--ds-press-small); font-weight: var(--ds-weight-bold); }
+.sns-comment-line.is-reply .sns-who { min-height: var(--ds-press-small); }
 .sns-who-name { overflow-wrap: anywhere; }
 .sns-comment-text { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
 .sns-comment-translation { color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
 
 /* A page over the timeline: 「‹ SNS」 at its top left, then its title. */
-.sns .sns-back { display: inline-flex; align-items: center; gap: var(--ds-space-1); min-height: 44px; padding: 0 var(--ds-space-2) 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-note); }
+.sns .sns-back { display: inline-flex; align-items: center; gap: var(--ds-space-1); min-height: var(--ds-press-small); padding: 0 var(--ds-space-2) 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-note); }
 .sns-back > span[aria-hidden] { font-size: var(--ds-text-large); line-height: 1; }
 .sns-page-title { margin: var(--ds-space-1) 0 var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-large); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
 .sns-page-title:focus { outline: none; }
@@ -247,7 +247,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 56px;
+  min-height: var(--ds-press-large);
   padding: var(--ds-space-2) var(--ds-space-1);
   border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   text-align: left;
@@ -280,7 +280,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 56px;
+  min-height: var(--ds-press-large);
   padding: var(--ds-space-1) 0;
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);

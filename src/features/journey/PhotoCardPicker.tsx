@@ -15,6 +15,7 @@ import { placeDisplayName } from "./travel-labels";
 import { centreOf, INSTANT, reducedMotion, rowItems, useCardGestures, type CardSwipe } from "./useCardGestures";
 import { whenLaidOut } from "./when-laid-out";
 import "./travel-menu.css";
+import { MOTION } from "../../components/motion";
 
 /** No card joining the row. */
 const NONE_JOINING: readonly string[] = [];
@@ -247,7 +248,7 @@ const CLOUD_IN: Keyframe[] = [
   { opacity: 0.9, offset: 0.5 },
   { opacity: 1, transform: "none" },
 ];
-const CLOUD_MS = 620;
+const CLOUD_MS = MOTION.slow;
 
 /**
  * The chosen card's sheet under the row (or under its row in the list): each card chosen comes in like a cloud. The

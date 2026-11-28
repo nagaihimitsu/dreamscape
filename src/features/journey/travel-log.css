@@ -3,8 +3,8 @@
 dialog.modal.travel-log {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(560px, calc(100% - 24px));
-  max-width: 560px;
+  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  max-width: var(--ds-width-narrow);
   max-height: calc(100dvh - 24px);
 }
 .travel-log .modal-title-bar { margin-bottom: var(--ds-space-2); }
@@ -22,7 +22,7 @@ dialog.modal.travel-log {
   align-items: center;
   gap: var(--ds-space-2);
   flex: 1 1 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
   border: 0;
@@ -55,7 +55,7 @@ dialog.modal.travel-log {
   padding: 0;
   list-style: none;
 }
-@media (min-width: 520px) {
+@media (min-width: 481px) {
   .travel-log-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); margin-inline: 0; }
 }
 .travel-log-grid button {
@@ -80,7 +80,7 @@ dialog.modal.travel-log {
 .album-page-button {
   flex: none;
   min-width: 88px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-4);
   border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
@@ -104,8 +104,8 @@ dialog.modal.travel-log {
 dialog.modal.album-photo-viewer {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(760px, calc(100% - 24px));
-  max-width: 760px;
+  width: min(var(--ds-width), calc(100% - 24px));
+  max-width: var(--ds-width);
 }
 .album-photo-viewer .modal-title-bar { margin-bottom: var(--ds-space-2); }
 /* Sideways moves of a finger turn the photos (albumSwipeStep: far enough, or a quick flick); upright ones still scroll,
@@ -123,11 +123,11 @@ dialog.modal.album-photo-viewer {
   margin: 0 auto;
   border-radius: var(--ds-radius-control);
   translate: var(--swipe-dx, 0px) 0;
-  transition: translate 200ms var(--ease-out);
+  transition: translate var(--motion-fast) var(--ease-out);
 }
 .photo-viewer-frame[data-swiping] img { transition: none; }
-.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next 240ms var(--ease-out); }
-.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev 240ms var(--ease-out); }
+.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next var(--motion-fast) var(--ease-out); }
+.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev var(--motion-fast) var(--ease-out); }
 @keyframes photo-viewer-in-next { from { transform: translateX(56px); opacity: 0; } }
 @keyframes photo-viewer-in-prev { from { transform: translateX(-56px); opacity: 0; } }
 .reduce-motion .photo-viewer-frame img { transition: none; animation: none; }

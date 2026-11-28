@@ -4,7 +4,7 @@
 /* A line's # em: and # em_shake: words (2026-11-13): bold in the accent colour on light ground, without motion. */
 .vn-log .vn-log-em { color: var(--ds-emphasis); font-weight: var(--ds-weight-bold); }
 /* A letter's line with its # translation: (2026-11-15): the Japanese under the English, smaller and quieter, as on the paper. */
-.vn-log .vn-log-translation { margin-top: var(--ds-space-1); color: var(--ds-ink-muted); font-size: 0.88em; }
+.vn-log .vn-log-translation { margin-top: var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-note); }
 /* The log's dialog lies inside the window's controls (DialogueControls): their head icons' rules (hidden on a narrow
    window) must not reach its 「× 閉じる」, which shows its × as every dialog does. */
-.dialogue-controls dialog .modal-close .icon { display: inline-block; width: 18px; height: 18px; color: inherit; }
+.dialogue-controls dialog .modal-close .icon { display: inline-block; width: var(--ds-icon); height: var(--ds-icon); color: inherit; }

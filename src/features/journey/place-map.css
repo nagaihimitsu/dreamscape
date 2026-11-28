@@ -16,7 +16,7 @@
   justify-content: center;
   gap: var(--ds-space-1);
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-1);
   border: var(--ds-edge) solid transparent;
@@ -31,7 +31,7 @@
   white-space: nowrap;
   cursor: pointer;
 }
-.travel-map-expand .icon { width: 18px; height: 18px; color: var(--ds-ink); }
+.travel-map-expand .icon { width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-ink); }
 /* The legend names each mark by its shape (§3.5); each item stays whole. */
 .travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-3); margin: 0; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
 .travel-map-legend > span { white-space: nowrap; }
@@ -85,7 +85,7 @@
 dialog.modal.travel-map-modal {
   --modal-pad-top: var(--ds-space-3);
   --modal-pad-inline: var(--ds-space-3);
-  width: min(760px, calc(100% - 24px));
+  width: min(var(--ds-width), calc(100% - 24px));
   max-height: calc(100dvh - 24px);
   padding: var(--ds-space-3);
   overflow: hidden;
@@ -104,7 +104,7 @@ dialog.modal.travel-map-modal[open] { display: flex; flex-direction: column; }
 /* The map leaves room for the title band and, in free time, the bar. */
 dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100svh - 420px), 520px); }
 .travel-map-modal-place { display: flex; align-items: center; gap: var(--ds-space-2); margin-top: var(--ds-space-2); font-size: var(--ds-text-note); }
-.travel-map-modal-place select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
+.travel-map-modal-place select { flex: 1; min-width: 0; min-height: var(--ds-press-small); font: inherit; }
 /* 「地点を名前で探す」's select (2026-11-27 user request: one UI): the light pane of the presses in the dialog, its field's
    edge (3:1) drawn fine inside it, the talk's choice's corner and a soft shadow; the system's own box and arrow give way
    to a drawn chevron in the ink. */
@@ -144,7 +144,7 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
   justify-content: center;
   width: auto;
   min-width: 96px;
-  min-height: 48px;
+  min-height: var(--ds-press);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);

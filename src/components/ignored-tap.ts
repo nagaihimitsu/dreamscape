@@ -1,4 +1,5 @@
 import "./ignored-tap.css";
+import { MOTION } from "./motion";
 
 // 押したのに何も起きない、をなくす (2026-11-13 user decision): where the game ignores a tap on purpose for a moment (the
 // taps held as a scene starts, ends or is loaded and as the journey is switched: tap-hold.ts; the second tap of a double
@@ -6,7 +7,7 @@ import "./ignored-tap.css";
 // Presentation only: never a control, never the focus, never the game. Read aloud by nothing (aria-hidden).
 
 /** How long the ring shows (ignored-tap.css runs its animation as long). */
-export const IGNORED_TAP_MS = 420;
+export const IGNORED_TAP_MS = MOTION.scene;
 /** Taps closer together than this make one ring (a pointer's burst, two fingers). */
 const REPEAT_MS = 120;
 

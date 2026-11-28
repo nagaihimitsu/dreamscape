@@ -6,7 +6,7 @@
 /* At least 44×44, its word under the hanger as the held items' 「所持品」. */
 .hud-outfits-button {
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: 0;
   display: inline-flex;
   flex-direction: column;
@@ -22,7 +22,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-1);
   border: var(--ds-edge) solid transparent;

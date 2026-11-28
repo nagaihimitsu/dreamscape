@@ -89,17 +89,17 @@
   inset: 0;
   background: var(--ds-light);
   opacity: 0;
-  animation: photo-show-flash 420ms ease-out;
+  animation: photo-show-flash var(--motion-scene) var(--ease-out);
 }
 @keyframes photo-show-flash {
   0% { opacity: 0.85; }
   100% { opacity: 0; }
 }
 [data-taken] > .photo-print {
-  animation: photo-show-taken 700ms 80ms var(--ease-out) both;
+  animation: photo-show-taken var(--motion-slow) var(--motion-instant) var(--ease-out) both;
 }
 [data-taken] > .photo-print img {
-  animation: photo-show-develop 1100ms 200ms ease-out both;
+  animation: photo-show-develop var(--motion-long) var(--motion-fast) var(--ease-out) both;
 }
 @keyframes photo-show-taken {
   from { opacity: 0; transform: translateY(14px) scale(0.9); }
@@ -117,10 +117,10 @@
   max-width: none;
   overflow: hidden;
   transform-origin: 50% 50%;
-  animation: item-show-fade 400ms var(--ease-out) both;
+  animation: item-show-fade var(--motion-scene) var(--ease-out) both;
 }
 .photo-print.photo-print-leaving[data-mode="fly"] {
-  animation: photo-print-fly 650ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+  animation: photo-print-fly var(--motion-slow) var(--ease-in) both;
 }
 .photo-print-leaving img {
   width: 100%;
@@ -150,7 +150,7 @@
 .reduce-motion [data-taken] > .photo-print img { animation: none; }
 .reduce-motion .photo-show-flash { display: none; }
 .reduce-motion .photo-print.photo-print-leaving,
-.reduce-motion .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+.reduce-motion .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only var(--motion-scene) var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) {
   .photo-show-layer,
   .photo-print,
@@ -159,5 +159,5 @@
   [data-taken] > .photo-print img { animation: none; }
   .photo-show-flash { display: none; }
   .photo-print.photo-print-leaving,
-  .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+  .photo-print.photo-print-leaving[data-mode="fly"] { animation: item-show-fade-only var(--motion-scene) var(--ease-out) both; }
 }

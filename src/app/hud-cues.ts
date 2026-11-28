@@ -1,3 +1,4 @@
+import { MOTION, MOTION_STAGGER } from "../components/motion";
 /**
  * The rules of the header's cues (JourneyHud; display only, the header always shows the values themselves). A cue
  * plays for a change the player sees in play: never for what a load, a new game or Debug's return brings.
@@ -33,8 +34,8 @@ export function flightTokens(kind: FlightKind, before: number, now: number): num
 }
 
 /** Between the tokens' starts (milliseconds); each flies for FLIGHT_MS (hud-effects.css: the same times). */
-export const FLIGHT_STAGGER_MS = 70;
-export const FLIGHT_MS = 520;
+export const FLIGHT_STAGGER_MS = MOTION_STAGGER;
+export const FLIGHT_MS = MOTION.scene;
 
 /** Where the tokens start around the screen's centre (px), the first ones nearest. */
 const SPREAD: readonly (readonly [number, number])[] = [[-34, 8], [30, -16], [-6, -36], [42, 24], [-44, -24]];

@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef, type RefObject } from "react";
+import { MOTION } from "./motion";
 
 /** How long someone takes to walk to a new place on the stage. */
-export const STAGE_GLIDE_MS = 900;
+export const STAGE_GLIDE_MS = MOTION.slow;
 const GLIDE_EASING = "cubic-bezier(0.45, 0, 0.3, 1)";
 
 /** The game's 「演出を短縮する」 (the screen's `reduceMotion`) or the system's reduced motion. */

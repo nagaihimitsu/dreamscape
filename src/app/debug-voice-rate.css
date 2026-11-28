@@ -19,7 +19,7 @@
   grid-template-columns: auto minmax(0, 1fr) 4.2em;
   align-items: center;
   gap: var(--ds-space-2);
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   font-size: var(--ds-text-body);
 }
 .debug-voice-rate-row input[type="range"] {
@@ -34,7 +34,7 @@
   font-variant-numeric: tabular-nums;
 }
 .debug-voice-rate .secondary {
-  min-height: 48px;
+  min-height: var(--ds-press);
   margin-top: 0;
 }
 .debug-voice-rate [role="alert"] {

@@ -1,6 +1,7 @@
 // 「Quiz」 (2026-11-18 user decision: a short cut-in as a quiz starts, nothing elaborate; QuizCutIn.tsx). Presentation
 // only: it changes no game state and no save.
 import type { ActiveBattle } from "../../domain/battle";
+import { MOTION } from "../../components/motion";
 
 /** What the battle screen's cut-ins read of the battle, as the mounted screen last showed it and as it shows it now. */
 export interface BattleCutInView {
@@ -33,8 +34,8 @@ export function shouldShowQuizCutIn(previous: BattleCutInView, current: BattleCu
  * How long it shows (ms): short, and shorter and still with reduced motion. Each is longer than a double tap's moment
  * (DOUBLE_TAP_WINDOW_MS), whose second tap it ignores, so a later tap can still end it early.
  */
-export const QUIZ_CUTIN_MS = 900;
-export const QUIZ_CUTIN_STILL_MS = 500;
+export const QUIZ_CUTIN_MS = MOTION.slow;
+export const QUIZ_CUTIN_STILL_MS = MOTION.scene;
 
 export function quizCutInDuration(still: boolean): number {
   return still ? QUIZ_CUTIN_STILL_MS : QUIZ_CUTIN_MS;

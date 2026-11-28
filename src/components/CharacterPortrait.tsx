@@ -10,13 +10,14 @@ import { LivePortrait } from "./LivePortrait";
 import { useWornCostume } from "./worn-costume";
 import { pictureTopAt, zoomedPlacement } from "./figure-zoom";
 import "./character-portrait.css";
+import { MOTION } from "./motion";
 
 const characters = catalog.characters;
 
 export { characterForBattle } from "./character-catalog";
 
-/** How long she takes to walk to a new `# stand:` place (character-portrait.css, --motion-step). */
-const STAND_STEP_MS = 1400;
+/** How long she takes to walk to a new `# stand:` place (character-portrait.css, --motion-long). */
+const STAND_STEP_MS = MOTION.long;
 
 /**
  * Whether she is walking to a new `# stand:` place (2026-11-27 user decision: slowly, not at once): from the render

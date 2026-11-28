@@ -42,10 +42,10 @@
 /* Row 1: where and when, then the budget above the AP at the right end. Nothing
    here is pressed. When the plate and the money do not fit side by side, the
    money goes below the plate: the row wraps (the header's height is measured). */
-.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1); min-height: 40px; text-shadow: var(--ds-scene-text-shadow); }
+.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1); min-height: var(--ds-press-small); text-shadow: var(--ds-scene-text-shadow); }
 .hud-plate,
 .hud-wallet {
-  min-height: 40px;
+  min-height: var(--ds-press-small);
   border-radius: var(--ds-radius-pill);
 }
 /* The plate takes the row beside the money. It needs at least about nine
@@ -128,7 +128,7 @@
 .journey-hud .held-item-button,
 .journey-hud .hud-outfits-button {
   position: relative;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   border: 0;
   border-radius: 50%;
@@ -153,8 +153,8 @@
 /* The keys' marks: white with the talk's tools' soft shadow (row 1 has words only); under a finger or
    while its panel is open a key shows a faint white disc, and an open key's mark is white. */
 .hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon {
-  width: 24px;
-  height: 24px;
+  width: var(--ds-icon-large);
+  height: var(--ds-icon-large);
   color: var(--ds-glass-mark-full);
   filter: var(--ds-glass-mark-shadow);
 }
@@ -192,7 +192,7 @@
 .reduce-motion .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
 /* Out of a talk the place and time show again at once, also where a finished fade's last frame would linger (an iPhone
    showed free time without them): a new one-frame animation replaces the fade's. */
-.journey-hud:not([data-view="talk"]) .hud-plate { animation: hud-plate-back 1ms forwards; }
+.journey-hud:not([data-view="talk"]) .hud-plate { animation: hud-plate-back var(--motion-instant) forwards; }
 @keyframes hud-plate-back {
   from, to { opacity: 1; }
 }
@@ -226,7 +226,7 @@
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
   box-shadow: var(--ds-shadow);
-  animation: hud-menu-in var(--motion-drop) var(--ease-drop);
+  animation: hud-menu-in var(--motion-short) var(--ease-out);
 }
 .hud-menu-panel[hidden] { display: none; }
 .hud-menu-panel button {
@@ -234,7 +234,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0 var(--ds-space-3);
   /* The light pane to press (styles.css .secondary). */
@@ -249,7 +249,7 @@
   line-height: var(--ds-leading-tight);
   text-align: left;
 }
-.hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-ink); }
+.hud-menu-panel .icon { width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-ink); }
 /* Between ≡メニュー's groups (2026-11-19): a thin rule across, never a thick left line. */
 .hud-menu-rule { width: 100%; margin: var(--ds-space-1) 0; border: 0; border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* ≡メニュー's panel comes down out of the header (2026-11-27 user decision: 「スーッと上から」): it slides down a
@@ -262,7 +262,7 @@
   35% { opacity: 1; }
   to { opacity: 1; transform: none; clip-path: inset(-40px); }
 }
-.hud-menu-panel > * { animation: hud-menu-item-in var(--motion-drop) var(--ease-drop) backwards; }
+.hud-menu-panel > * { animation: hud-menu-item-in var(--motion-short) var(--ease-out) backwards; }
 .hud-menu-panel > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
 .hud-menu-panel > :nth-child(3) { animation-delay: calc(var(--motion-stagger) * 1); }
 .hud-menu-panel > :nth-child(4) { animation-delay: calc(var(--motion-stagger) * 1.5); }
@@ -273,7 +273,7 @@
   from { opacity: 0; transform: translateY(-8px); }
 }
 /* The held items' detail hangs from the header as ≡メニュー's panel does, and opens as it does. */
-.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-drop) var(--ease-drop); }
+.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-short) var(--ease-out); }
 
 /* A change the player sees (JourneyHud's useSeenChange; display only, the new value shows
    and is read from the start): a budget or AP that rises grows for a moment in the
@@ -281,7 +281,7 @@
    picture, not the button. Each plays once per change. */
 .hud-wallet [data-cue] {
   transform-origin: 100% 50%;
-  animation: hud-value-up var(--motion-medium) var(--ease-out);
+  animation: hud-value-up var(--motion-short) var(--ease-out);
 }
 .hud-wallet [data-cue="down"] { animation-name: hud-value-down; }
 @keyframes hud-value-up {
@@ -290,7 +290,7 @@
 @keyframes hud-value-down {
   40% { transform: scale(0.88); }
 }
-.journey-hud .held-item-button [data-gained] { animation: held-item-gained var(--motion-medium) var(--ease-out); }
+.journey-hud .held-item-button [data-gained] { animation: held-item-gained var(--motion-short) var(--ease-out); }
 @keyframes held-item-gained {
   45% { transform: scale(1.3) rotate(-8deg); }
 }
@@ -316,18 +316,18 @@
   box-shadow: var(--ds-focus-halo);
 }
 
-@media (min-width: 380px) {
+@media (min-width: 361px) {
   .hud-wallet .travel-budget { font-size: var(--ds-text-large); }
   .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-body); }
   .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-note); }
 }
-@media (max-width: 359px) {
+@media (max-width: 360px) {
   .hud-place { font-size: var(--ds-text-note); }
 }
 
 /* Wide screens and phones on their side: one row of about 52 px. */
 @media (min-width: 701px), (orientation: landscape) {
-  .journey-hud { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-2); min-height: 52px; }
+  .journey-hud { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-2); min-height: var(--ds-press-large); }
   /* The status takes what row 2 leaves, at least the plate's time line and the
      money; with less, row 2 goes on a line of its own. In it the plate is as wide
      as its place (down to its time line; a name the row then cannot hold wraps)

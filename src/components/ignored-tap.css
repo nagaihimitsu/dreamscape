@@ -7,25 +7,25 @@
   width: 34px;
   height: 34px;
   margin: -17px 0 0 -17px;
-  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
+  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   border-radius: 50%;
-  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-dark) 35%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-dark) 32%, transparent);
   pointer-events: none;
   opacity: 0;
-  animation: ignored-tap-ring 420ms var(--ease-out, ease-out) both;
+  animation: ignored-tap-ring var(--motion-scene) var(--ease-out, ease-out) both;
 }
 @keyframes ignored-tap-ring {
   0% { opacity: 0.7; scale: 0.45; }
   100% { opacity: 0; scale: 1.15; }
 }
 .ignored-tap.is-still {
-  animation: ignored-tap-fade 260ms ease-out both;
+  animation: ignored-tap-fade var(--motion-short) var(--ease-out) both;
 }
 @keyframes ignored-tap-fade {
   0%, 100% { opacity: 0; }
   40% { opacity: 0.6; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ignored-tap { animation: ignored-tap-fade 260ms ease-out both; }
+  .ignored-tap { animation: ignored-tap-fade var(--motion-short) var(--ease-out) both; }
 }
-.reduce-motion .ignored-tap { animation: ignored-tap-fade 260ms ease-out both; }
+.reduce-motion .ignored-tap { animation: ignored-tap-fade var(--motion-short) var(--ease-out) both; }

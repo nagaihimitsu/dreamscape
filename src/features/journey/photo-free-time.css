@@ -5,15 +5,15 @@
 
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --photo-free-time-photo-backdrop-ground: rgba(90, 92, 97, 0.12);
-  --photo-free-time-photo-backdrop-ground-2: rgba(120, 122, 128, 0.14);
-  --photo-free-time-photo-card-ground: #ffffff;
-  --photo-free-time-photo-card-silhouette-ground: #c9cbcf;
+  --photo-free-time-photo-backdrop-ground: color-mix(in srgb, var(--ds-gray-3) 16%, transparent);
+  --photo-free-time-photo-backdrop-ground-2: color-mix(in srgb, var(--ds-gray-3) 16%, transparent);
+  --photo-free-time-photo-card-ground: var(--ds-light);
+  --photo-free-time-photo-card-silhouette-ground: var(--ds-gray-5);
 }
 /* The height of the marks over a card's photo, named once: the kind mark and the chips beside it stand in one line. */
 :root { --photo-card-mark: 22px; }
 
-.free-time-hub.photo-free-time { max-width: 680px; }
+.free-time-hub.photo-free-time { max-width: var(--ds-width); }
 
 /* The background of a city without a backdrop: a map-like pattern (faint streets, an avenue, a river and a park), not a
    real map; decoration only, in the same fixed layer as the backdrop (free-time-hub.css). */
@@ -53,7 +53,7 @@
   right: 0;
   height: 100lvh;
   pointer-events: none;
-  transition: background-color calc(2 * var(--motion-scene)) ease;
+  transition: background-color calc(2 * var(--motion-scene)) var(--ease-out);
 }
 .reduce-motion .free-time-tint { transition: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -271,7 +271,7 @@
   border-radius: var(--ds-radius-pill);
   color: var(--ds-on-dark);
 }
-.photo-card-kind .icon { width: 12px; height: 12px; }
+.photo-card-kind .icon { width: var(--ds-icon-small); height: var(--ds-icon-small); }
 .photo-cards:not(.is-list) > li > .photo-card .photo-card-kind { opacity: var(--card-text); }
 .photo-cards:not(.is-list) :is(.photo-card-chip, .photo-card-kind),
 .photo-card-ghost :is(.photo-card-chip, .photo-card-kind),
@@ -332,10 +332,10 @@
   width: 100%;
   height: 100%;
   background: var(--ds-dark-2);
-  color: color-mix(in srgb, var(--ds-light) 92%, transparent);
+  color: color-mix(in srgb, var(--ds-light) 88%, transparent);
   font-size: var(--ds-text-heading);
 }
-.photo-card-plain .icon { width: 32px; height: 32px; }
+.photo-card-plain .icon { width: var(--ds-icon-xl); height: var(--ds-icon-xl); }
 /* No filter on photos (their pixels stay as credited): a cannot-go card only fades its photo. */
 .photo-card.is-unavailable .photo-card-photo > img,
 .photo-card.is-unavailable .photo-card-plain { opacity: var(--ds-opacity-soft); }
@@ -411,9 +411,9 @@
   border-left: var(--ds-edge) solid currentColor;
   transform: rotate(45deg);
   opacity: 0;
-  animation: photo-card-cue-rise 1.6s ease-out infinite;
+  animation: photo-card-cue-rise 1.6s var(--ease-out) infinite;
 }
-.photo-card-cue::after { animation-delay: 0.3s; }
+.photo-card-cue::after { animation-delay: var(--motion-short); }
 /* inherit, not visible: while its floating copy flies (useCardGestures hides the card), the cue goes with the card. */
 .photo-card[data-cue] .photo-card-cue { visibility: inherit; }
 @keyframes photo-card-cue-rise {
@@ -422,7 +422,7 @@
   75%, 100% { opacity: 0; translate: 0 -7px; }
 }
 .photo-cards:not(.is-list) .photo-card[data-cue]:not(.photo-card-ghost) {
-  animation: photo-card-lift 900ms var(--ease-out) 600ms both;
+  animation: photo-card-lift var(--motion-slow) var(--ease-out) var(--motion-slow) both;
 }
 @keyframes photo-card-lift {
   0%, 100% { translate: 0 0; }
@@ -446,10 +446,10 @@
    reduced motion the chevrons only blink twice where they stand. The card's own lift stays first in the list, so it does
    not run again when the nudge ends. */
 .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) {
-  animation: photo-card-lift 900ms var(--ease-out) 600ms both, photo-card-nudge 700ms var(--ease-out);
+  animation: photo-card-lift var(--motion-slow) var(--ease-out) var(--motion-slow) both, photo-card-nudge var(--motion-slow) var(--ease-out);
 }
 .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge 350ms ease-out 2; }
+.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge var(--motion-short) var(--ease-out) 2; }
 @keyframes photo-card-nudge {
   0%, 50%, 100% { translate: 0 0; }
   22% { translate: 0 -14px; }
@@ -467,11 +467,11 @@
 @media (prefers-reduced-motion: reduce) {
   .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
   .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink var(--motion-short) steps(1) 2; }
 }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
 .reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink var(--motion-short) steps(1) 2; }
 
 /* The row's drags (useCardGestures, user decision 2026-11-11). On the row a sideways drag stays the row's own scroll
    and a drag up lifts the chosen card, so the row leaves the browser its sideways panning only. Elsewhere on the screen
@@ -543,7 +543,7 @@
    After JOIN_DELAY_MS (the screen has appeared; card_new sounds then) it springs up from small with a white gleam that
    fades as it settles. Its slot keeps its place throughout (only the card moves), and the motion stays inside the row's
    padding, which clips. In the list it slides in from the side. Reduced motion: it fades in with the gleam, unmoving. */
-.photo-cards > li[data-joining] { animation: photo-card-join 760ms var(--ease-out) 220ms both; }
+.photo-cards > li[data-joining] { animation: photo-card-join var(--motion-slow) var(--ease-out) var(--motion-fast) both; }
 .photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-list; }
 @keyframes photo-card-join {
   0% { opacity: 0; scale: 0.4; translate: 0 -8px; filter: drop-shadow(0 0 0 transparent); }
@@ -622,7 +622,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-2);
   border: var(--ds-edge-thin) solid var(--ds-field-edge);
@@ -679,10 +679,10 @@
     radial-gradient(closest-side at 30% 45%, color-mix(in srgb, var(--ds-light) 85%, transparent), transparent),
     radial-gradient(closest-side at 70% 55%, color-mix(in srgb, var(--ds-light) 80%, transparent), transparent),
     radial-gradient(closest-side at 50% 50%, color-mix(in srgb, var(--ds-light) 70%, transparent), transparent);
-  filter: blur(14px);
+  filter: blur(var(--ds-blur));
   visibility: hidden; /* gone once it has drifted apart */
   pointer-events: none;
-  animation: photo-card-mist 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: photo-card-mist var(--motion-slow) var(--ease-out);
 }
 @keyframes photo-card-mist {
   from { visibility: visible; opacity: 0.9; transform: scale(0.8); }
@@ -714,7 +714,7 @@
 .place-card-mode {
   flex: 1 1 0;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2);
   border: var(--ds-edge-thin) solid transparent;
@@ -750,7 +750,7 @@
   align-items: center;
   justify-content: center;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-4);
   border: var(--ds-edge-thin) solid transparent;
@@ -781,7 +781,7 @@
 .place-card .place-card-go {
   flex-wrap: wrap;
   gap: var(--ds-space-1) var(--ds-space-2);
-  min-height: 48px;
+  min-height: var(--ds-press);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);

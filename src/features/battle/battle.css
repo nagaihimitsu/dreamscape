@@ -1,26 +1,26 @@
 /* The portrait and dialogue share one scene; the reading surfaces stay opaque. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --battle-screen-ground: #76787e;
-  --battle-screen-ground-2: #3a3c41;
-  --battle-paper-ground: #fafafb;
-  --battle-outcome-ink: #ffffff;
+  --battle-screen-ground: var(--ds-gray-3);
+  --battle-screen-ground-2: var(--ds-gray-2);
+  --battle-paper-ground: var(--ds-light);
+  --battle-outcome-ink: var(--ds-light);
   --battle-answer-effect-ground: #1f3a2b40;
   --battle-answer-effect-incorrect-ground: #4f29362b;
-  --battle-answer-effect-stamp-ink: #ffffff;
-  --battle-answer-effect-stamp-shade: #ffffffc9;
-  --battle-answer-effect-stamp-shade-2: #16251e82;
+  --battle-answer-effect-stamp-ink: var(--ds-light);
+  --battle-answer-effect-stamp-shade: color-mix(in srgb, var(--ds-light) 70%, transparent);
+  --battle-answer-effect-stamp-shade-2: color-mix(in srgb, var(--ds-gray-1) 50%, transparent);
   --battle-answer-effect-rays-shade: #26382e80;
-  --battle-answer-effect-stamp-shade-3: #16251e4d;
+  --battle-answer-effect-stamp-shade-3: color-mix(in srgb, var(--ds-gray-1) 32%, transparent);
   --battle-answer-effect-perfect-ground: #31594133;
   --battle-answer-effect-stamp-ground: #367559;
   --battle-answer-effect-stamp-ground-2: #194330;
-  --battle-answer-effect-stamp-shade-4: #ffffffd9;
-  --battle-answer-effect-stamp-shade-5: #ffffff80;
-  --battle-answer-effect-stamp-shade-6: #16251e66;
-  --battle-answer-effect-perfect-title-ink: #ffffff;
-  --battle-answer-effect-stamp-ink-2: #ffffff;
-  --battle-reveal-region-edge: #ffffff;
+  --battle-answer-effect-stamp-shade-4: color-mix(in srgb, var(--ds-light) 88%, transparent);
+  --battle-answer-effect-stamp-shade-5: color-mix(in srgb, var(--ds-light) 50%, transparent);
+  --battle-answer-effect-stamp-shade-6: color-mix(in srgb, var(--ds-gray-1) 32%, transparent);
+  --battle-answer-effect-perfect-title-ink: var(--ds-light);
+  --battle-answer-effect-stamp-ink-2: var(--ds-light);
+  --battle-reveal-region-edge: var(--ds-light);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/14 「デザインの決まり」). */
@@ -32,7 +32,7 @@
   --answer-perfect-title-size: clamp(26px, 8vw, 36px);
 }
 .battle-screen {
-  --scene-edge: #2c2e33;
+  --scene-edge: var(--ds-gray-1);
   position: relative;
   isolation: isolate;
   display: flex;
@@ -278,13 +278,13 @@
 }
 .battle-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .battle-dialogue .next:disabled { visibility: hidden; }
-.battle-dialogue .next { min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-3); }
-.battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
+.battle-dialogue .next { min-height: var(--ds-press-small); padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-3); }
+.battle-dialogue .reveal { min-height: var(--ds-press-small); margin: 0 0 0 auto; }
 .battle-dialogue .next,
 .battle-dialogue .text-button {
   color: var(--vn-text);
 }
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .battle-screen[data-talk] .battle-characters {
     bottom: 34%;
   }
@@ -342,7 +342,7 @@
 .battle-screen[data-phase="result"] .battle-paper {
   display: flex;
   flex-direction: column;
-  width: min(100% - 24px, 680px);
+  width: min(100% - 24px, var(--ds-width));
   max-width: none;
   margin: 0 auto;
   padding: 0 0 var(--ds-space-1);
@@ -384,7 +384,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   margin: 0;
-  color: color-mix(in srgb, var(--ds-light) 90%, transparent);
+  color: color-mix(in srgb, var(--ds-light) 88%, transparent);
   font-size: var(--ds-text-small);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-4);
@@ -408,7 +408,7 @@
 /* Every question answered right: the word in a soft white light. */
 .battle-result[data-outcome="perfect"] .outcome {
   color: var(--battle-outcome-ink);
-  text-shadow: var(--ds-scene-text-shadow), 0 0 22px color-mix(in srgb, var(--ds-light) 60%, transparent);
+  text-shadow: var(--ds-scene-text-shadow), 0 0 22px color-mix(in srgb, var(--ds-light) 70%, transparent);
 }
 .battle-result .battle-score {
   justify-content: center;
@@ -449,13 +449,13 @@
 .battle-result-actions .secondary { margin-top: 0; }
 /* The result comes in: the outcome and the score rise into place, the card follows, then the AP earned pops (nothing
    pressable moves; its buttons show at once). */
-.battle-result-heading { animation: battle-result-in var(--motion-medium) var(--ease-out); }
-.battle-result .outcome { animation: battle-result-word 700ms var(--ease-out) backwards; }
+.battle-result-heading { animation: battle-result-in var(--motion-short) var(--ease-out); }
+.battle-result .outcome { animation: battle-result-word var(--motion-slow) var(--ease-out) backwards; }
 /* The card only rises (its opacity stays whole, so its glass blurs the place from the first frame). */
-.battle-result-card { animation: battle-result-card-in var(--motion-medium) var(--ease-out); }
+.battle-result-card { animation: battle-result-card-in var(--motion-short) var(--ease-out); }
 .battle-result .reward-total dd {
   transform-origin: 0 50%;
-  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 260ms backwards;
+  animation: battle-reward-pop var(--motion-short) var(--ease-out) var(--motion-short) backwards;
 }
 @keyframes battle-result-in {
   from { opacity: 0; transform: translateY(8px); }
@@ -476,22 +476,22 @@
   .battle-screen :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total dd) { animation: none; }
 }
 
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 var(--ds-space-1); }
   .battle-result-card { padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-3); }
   .battle-result .special-result-note { margin: var(--ds-space-1) 0; padding: var(--ds-space-2); line-height: var(--ds-leading-body); }
   .battle-result-foot { gap: var(--ds-space-2); padding-top: var(--ds-space-3); }
   .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-2); }
   .battle-result-actions .primary { grid-column: 1 / -1; }
-  .battle-result-actions button { min-height: 44px; padding: var(--ds-space-2) var(--ds-space-2); line-height: var(--ds-leading-body); }
+  .battle-result-actions button { min-height: var(--ds-press-small); padding: var(--ds-space-2) var(--ds-space-2); line-height: var(--ds-leading-body); }
 }
 
 /* Wide, short screens use their horizontal space for the three choices.
    If a translation or a long option expands, the reading panel still scrolls. */
-@media (orientation: landscape) and (max-height: 900px) {
+@media (orientation: landscape) and (max-height: 700px) {
   .battle-screen:not([data-talk]) .battle-stage-compact {
     flex: 0 0 64px;
-    min-height: 64px;
+    min-height: var(--ds-press-large);
     height: 64px;
     padding: var(--ds-space-1) var(--ds-space-6) 0;
   }
@@ -515,7 +515,7 @@
 /* Below 500px of portrait height the scene cannot fit a readable dialogue
    and controls in a fixed viewport. Let the document grow instead of
    collapsing the quiz's reading area to a thin, inaccessible strip. */
-@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+@media (max-width: 700px) and (max-height: 500px) and (orientation: portrait) {
   .battle-screen {
     height: auto;
     min-height: max(500px, 100dvh);
@@ -580,10 +580,10 @@
   align-items: center;
   gap: var(--ds-space-3);
 }
-.quiz-feedback-actions > .text-button { min-height: 44px; padding: var(--ds-space-1) var(--ds-space-1); }
+.quiz-feedback-actions > .text-button { min-height: var(--ds-press-small); padding: var(--ds-space-1) var(--ds-space-1); }
 .quiz-feedback-actions > .next { margin-left: auto; }
 /* The explanation comes in, a moment after the answer's own beat. */
-.battle-screen.answer-animating .quiz-feedback { animation: quiz-feedback-in 340ms 120ms ease-out both; }
+.battle-screen.answer-animating .quiz-feedback { animation: quiz-feedback-in var(--motion-short) var(--motion-instant) var(--ease-out) both; }
 @keyframes quiz-feedback-in {
   from { opacity: 0; transform: translateY(5px); }
 }
@@ -595,7 +595,7 @@
 .battle-quiz-choices { display: grid; gap: var(--ds-space-2); }
 .battle-quiz-choices .heroine-note {
   justify-self: start;
-  max-width: min(100%, 520px);
+  max-width: min(100%, var(--ds-width-narrow));
   margin: 0;
 }
 .battle-quiz-choices .heroine-note-bubble {
@@ -643,7 +643,7 @@
 .quiz-choice-mark[data-mark="missed"] { background: var(--ds-wrong-ground); color: var(--ds-wrong-ink); }
 /* 「○ 正解！」 on a right answer given in this screen pops in, a white light round it (the answer's own stamp; a special
    battle's and a full score's stamp over the scene stay). A restored answer's mark is still. */
-.quiz-choice-mark[data-pop] { animation: quiz-mark-pop 520ms cubic-bezier(.2, .8, .25, 1) both; }
+.quiz-choice-mark[data-pop] { animation: quiz-mark-pop var(--motion-scene) var(--ease-out) both; }
 @keyframes quiz-mark-pop {
   0% { opacity: 0; transform: scale(.4) rotate(-10deg); }
   55% { opacity: 1; transform: scale(1.18) rotate(-3deg); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-light) 90%, transparent),
@@ -654,7 +654,7 @@
    intercepts input and naturally disappears without an animation callback. */
 .battle-screen .answer-effect {
   --effect-ink: #245a42;
-  --effect-bright: #ffffff;
+  --effect-bright: var(--ds-light);
   position: absolute;
   z-index: var(--ds-layer-answer-effect);
   inset: var(--scene-top, 0px) 0 0;
@@ -663,7 +663,7 @@
   overflow: hidden;
   pointer-events: none;
   background: radial-gradient(circle, var(--battle-answer-effect-ground), transparent 70%);
-  animation: answer-effect-visibility 900ms ease-out both;
+  animation: answer-effect-visibility var(--motion-slow) var(--ease-out) both;
 }
 .battle-screen .answer-effect-incorrect {
   --effect-ink: #853941;
@@ -684,7 +684,7 @@
   background: var(--effect-ink);
   box-shadow: 0 0 0 var(--ds-edge-heavy) var(--battle-answer-effect-stamp-shade), var(--ds-shadow-large);
   transform: rotate(-7deg);
-  animation: answer-stamp-enter 650ms cubic-bezier(.2,.8,.25,1) both;
+  animation: answer-stamp-enter var(--motion-slow) var(--ease-out) both;
 }
 .battle-screen .answer-effect-incorrect .answer-effect-stamp {
   border-radius: 22%;
@@ -708,7 +708,7 @@
   position: absolute;
   width: 0;
   height: 0;
-  animation: answer-rays-enter 750ms ease-out both;
+  animation: answer-rays-enter var(--motion-slow) var(--ease-out) both;
 }
 .battle-screen .answer-effect-rays i {
   position: absolute;
@@ -732,9 +732,9 @@
 .battle-screen .answer-effect-incorrect .answer-effect-rays i:nth-child(even) { opacity: 0; }
 .battle-screen .answer-effect-perfect {
   --effect-ink: #23543e;
-  --effect-bright: #ffffff;
+  --effect-bright: var(--ds-light);
   background: radial-gradient(circle, var(--battle-answer-effect-perfect-ground), transparent 65%);
-  animation-duration: 1300ms;
+  animation-duration: var(--motion-long);
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp {
   position: relative;
@@ -804,7 +804,7 @@
   .battle-screen .question-en { margin: var(--ds-space-1) 0 0; }
   .battle-quiz-choices { gap: var(--ds-space-2); }
   .vn-choices .quiz-choices { gap: var(--ds-space-2); }
-  .vn-choices .quiz-choice-row { min-height: 44px; padding-block: var(--ds-space-1); }
+  .vn-choices .quiz-choice-row { min-height: var(--ds-press-small); padding-block: var(--ds-space-1); }
   .battle-quiz-choices .heroine-note-bubble { padding: var(--ds-space-1) var(--ds-space-3) var(--ds-space-1); line-height: var(--ds-leading-body); }
   .battle-quiz-choices .heroine-note .character-face { width: 32px; height: 32px; }
 }
@@ -813,12 +813,12 @@
    movement of its own) comes with quiz_correct, its mark and the explanation. Reduced motion: no hold, a shorter glow.
    Purely presentational: the saved answer is already locked before these play. */
 .battle-screen[data-answer-held] .quiz-choice-row[data-chosen] { scale: 0.985; }
-.battle-screen .quiz-choice-row.answer-glow { animation: answer-glow 560ms var(--ease-out); }
+.battle-screen .quiz-choice-row.answer-glow { animation: answer-glow var(--motion-scene) var(--ease-out); }
 @keyframes answer-glow {
   30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-light) 95%, transparent), 0 0 20px 6px color-mix(in srgb, var(--ds-light) 55%, transparent); }
 }
 /* An ordinary quiz's wrong answer (no stamp plays): the chosen option gives one small shake, with every answer locked. */
-.battle-screen[data-answer-missed="true"] .quiz-choice-row[data-chosen] { animation: answer-missed var(--motion-medium) ease-in-out; }
+.battle-screen[data-answer-missed="true"] .quiz-choice-row[data-chosen] { animation: answer-missed var(--motion-short) var(--ease-in-out); }
 @keyframes answer-missed {
   25% { transform: translateX(-4px); }
   65% { transform: translateX(3px); }
@@ -826,12 +826,12 @@
 :is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .battle-screen[data-answer-held] .quiz-choice-row[data-chosen],
 .battle-screen[data-reduce-motion="true"][data-answer-held] .quiz-choice-row[data-chosen] { scale: none; }
 :is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .quiz-choice-row.answer-glow,
-.battle-screen[data-reduce-motion="true"] .quiz-choice-row.answer-glow { animation-duration: 380ms; }
+.battle-screen[data-reduce-motion="true"] .quiz-choice-row.answer-glow { animation-duration: var(--motion-scene); }
 .battle-screen[data-reduce-motion="true"] :is(.quiz-choice-row[data-chosen], .quiz-feedback, .quiz-choice-mark) { animation: none; }
 .battle-screen[data-reduce-motion="true"] .vn-character { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .battle-screen[data-answer-held] .quiz-choice-row[data-chosen] { scale: none; }
-  .battle-screen .quiz-choice-row.answer-glow { animation-duration: 380ms; }
+  .battle-screen .quiz-choice-row.answer-glow { animation-duration: var(--motion-scene); }
   .battle-screen :is(.quiz-choice-row[data-chosen], .quiz-feedback, .quiz-choice-mark) { animation: none; }
 }
 @media (max-width: 600px) {
@@ -851,7 +851,7 @@
 /* The app reserves a viewport-height play area on phones in portrait. Keep
    one reading surface for long translations, clues, and results rather than
    scrolling the whole page whenever a new line or question appears. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .battle-screen {
     height: 100%;
     min-height: 0;
@@ -863,7 +863,7 @@
     flex: 0 0 auto;
   }
   .battle-screen .battle-stage-compact {
-    min-height: 64px;
+    min-height: var(--ds-press-large);
     height: 64px;
     padding: var(--ds-space-1) var(--ds-space-4) 0;
   }
@@ -896,7 +896,7 @@
 }
 
 /* Short phones (320×568 and the like): the enemy header over the reasoning shrinks (UI stage 0, item F). */
-@media (max-width: 700px) and (min-height: 500px) and (max-height: 599px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (max-height: 620px) and (orientation: portrait) {
   .battle-screen .battle-stage-compact {
     min-height: 28px;
     height: 28px;
@@ -930,7 +930,7 @@
   left: auto;
   right: calc(50% + min(4vw, 5dvh, 15px));
 }
-@media (orientation: landscape) and (max-height: 420px) {
+@media (orientation: landscape) and (max-height: 500px) {
   /* On a short landscape display the dialogue sits higher; lift each portrait
      enough to keep its face above the reading window. */
   .battle-screen[data-talk] .battle-heroine { transform: translateY(-22dvh); }
@@ -1050,7 +1050,7 @@
   position: absolute;
   inset: 0;
   transform-origin: var(--reveal-origin);
-  animation: battle-reveal-zoom 2.4s var(--ease-out) 0.5s both;
+  animation: battle-reveal-zoom 2.4s var(--ease-out) var(--motion-scene) both;
 }
 .battle-reveal-zoom img {
   display: block;
@@ -1062,8 +1062,8 @@
   position: absolute;
   border: calc(2px / var(--reveal-scale)) solid var(--battle-reveal-region-edge);
   border-radius: calc(4px / var(--reveal-scale));
-  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 65%, transparent), inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 65%, transparent);
-  animation: battle-reveal-outline var(--motion-medium) ease-out 1.6s both;
+  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 70%, transparent), inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 70%, transparent);
+  animation: battle-reveal-outline var(--motion-short) var(--ease-out) 1.6s both;
 }
 @keyframes battle-reveal-zoom { to { transform: scale(var(--reveal-scale)); } }
 @keyframes battle-reveal-outline { from { opacity: 0; } }
@@ -1076,7 +1076,7 @@
   overflow-wrap: anywhere;
 }
 /* Short phones (320×568) and low landscape screens. */
-@media (max-height: 599px) {
+@media (max-height: 620px) {
   .battle-reveal { --reveal-max-h: 120px; }
 }
 :is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .battle-reveal-frame { --reveal-scale: 1; }
@@ -1093,7 +1093,7 @@
    above takes the rest of the screen, the opponent's name at its top and the opponent standing in it nearer, from about
    the thighs up (the scene's camera, figure-zoom.ts), the lower part seen softened through the glass. A long panel gives
    the stage back down to its least height. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .battle-screen[data-phase="reasoning"] .battle-stage-compact {
     flex: 1 1 auto;
     align-items: flex-start;

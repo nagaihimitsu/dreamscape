@@ -1,23 +1,23 @@
 /* A short visual bridge; the saved reasoning state remains underneath it. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --reasoning-cutin-reasoning-cutin-ink: #ffffff;
-  --reasoning-cutin-reasoning-cutin-ground: #4a4c52;
-  --reasoning-cutin-reasoning-cutin-ground-2: #1c1d20;
-  --reasoning-cutin-contradiction-ground: #3a3b40;
-  --reasoning-cutin-contradiction-ground-2: #121315;
-  --reasoning-cutin-impact-edge: #ffffff;
-  --reasoning-cutin-impact-shade: #ffffff1c;
-  --reasoning-cutin-impact-shade-2: #ffffff55;
-  --reasoning-cutin-impact-ground: #ffffff77;
-  --reasoning-cutin-impact-ink: #ffffff;
-  --reasoning-cutin-card-edge: #d4d6da;
-  --reasoning-cutin-card-ground: #f4f5f7;
-  --reasoning-cutin-card-ground-2: #d9dbdf;
-  --reasoning-cutin-line-ground: #ffffff;
-  --reasoning-cutin-line-shade: #e3e4e7;
-  --reasoning-cutin-skip-edge: #e6e7e9;
-  --reasoning-cutin-skip-ground: #1c1d20e6;
+  --reasoning-cutin-reasoning-cutin-ink: var(--ds-light);
+  --reasoning-cutin-reasoning-cutin-ground: var(--ds-gray-2);
+  --reasoning-cutin-reasoning-cutin-ground-2: var(--ds-gray-1);
+  --reasoning-cutin-contradiction-ground: var(--ds-gray-2);
+  --reasoning-cutin-contradiction-ground-2: var(--ds-gray-1);
+  --reasoning-cutin-impact-edge: var(--ds-light);
+  --reasoning-cutin-impact-shade: color-mix(in srgb, var(--ds-light) 8%, transparent);
+  --reasoning-cutin-impact-shade-2: color-mix(in srgb, var(--ds-light) 32%, transparent);
+  --reasoning-cutin-impact-ground: color-mix(in srgb, var(--ds-light) 50%, transparent);
+  --reasoning-cutin-impact-ink: var(--ds-light);
+  --reasoning-cutin-card-edge: var(--ds-gray-5);
+  --reasoning-cutin-card-ground: var(--ds-gray-6);
+  --reasoning-cutin-card-ground-2: var(--ds-gray-5);
+  --reasoning-cutin-line-ground: var(--ds-light);
+  --reasoning-cutin-line-shade: var(--ds-gray-5);
+  --reasoning-cutin-skip-edge: var(--ds-gray-6);
+  --reasoning-cutin-skip-ground: color-mix(in srgb, var(--ds-gray-1) 88%, transparent);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/14 「デザインの決まり」). */
@@ -65,7 +65,7 @@
   border: var(--ds-edge-thick) solid var(--reasoning-cutin-impact-edge);
   transform: rotate(45deg);
   box-shadow: 0 0 0 12px var(--reasoning-cutin-impact-shade), var(--ds-shadow-large);
-  animation: reasoning-impact-in 320ms ease-out both;
+  animation: reasoning-impact-in var(--motion-short) var(--ease-out) both;
 }
 /* Fixed, low-contrast rays suggest impact without flashing or shaking. */
 .reasoning-cutin-impact::before {
@@ -98,14 +98,14 @@
   background: repeating-linear-gradient(to bottom, var(--reasoning-cutin-card-ground) 0 6px, var(--reasoning-cutin-card-ground-2) 7px 8px, var(--reasoning-cutin-card-ground) 9px 18px);
   box-shadow: var(--ds-shadow);
 }
-.reasoning-cutin-card-left { animation: reasoning-card-left 420ms ease-out both; }
-.reasoning-cutin-card-right { animation: reasoning-card-right 420ms ease-out both; }
+.reasoning-cutin-card-left { animation: reasoning-card-left var(--motion-scene) var(--ease-out) both; }
+.reasoning-cutin-card-right { animation: reasoning-card-right var(--motion-scene) var(--ease-out) both; }
 .reasoning-cutin-line {
   width: clamp(48px, 20vw, 100px);
   height: 3px;
   background: var(--reasoning-cutin-line-ground);
   box-shadow: 0 0 12px var(--reasoning-cutin-line-shade);
-  animation: reasoning-line 400ms 250ms ease-out both;
+  animation: reasoning-line var(--motion-scene) var(--motion-short) var(--ease-out) both;
 }
 .reasoning-cutin-copy { max-width: 100%; }
 .reasoning-cutin-copy strong {
@@ -114,9 +114,9 @@
   line-height: var(--ds-leading-tight);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-2);
-  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
   overflow-wrap: anywhere;
-  animation: reasoning-copy-in 400ms ease-out both;
+  animation: reasoning-copy-in var(--motion-scene) var(--ease-out) both;
 }
 .reasoning-cutin-copy p {
   margin: var(--ds-space-2) 0 0;
@@ -128,7 +128,7 @@
 .reasoning-cutin-skip {
   flex: none;
   min-width: 140px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   border: var(--ds-edge-thin) solid var(--reasoning-cutin-skip-edge);

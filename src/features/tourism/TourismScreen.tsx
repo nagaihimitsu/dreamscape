@@ -52,7 +52,7 @@ import "../journey/encounter.css";
 /** A guide's stage: she stands from the start; no one stands for `# speaker: enemy`. */
 const GUIDE_STAGE = sceneStageOf("guide");
 
-const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 500px)";
+const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 501px)";
 
 interface Props {
   game: GameState;

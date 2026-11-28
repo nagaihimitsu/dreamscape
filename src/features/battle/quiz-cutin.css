@@ -16,16 +16,16 @@
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
   padding: max(12px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) 0 max(12px, env(safe-area-inset-bottom));
   overflow: hidden;
-  background: color-mix(in srgb, var(--ds-shade) 52%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 50%, transparent);
   /* In quickly, out over its last moment (the screen removes it at 900 ms, QUIZ_CUTIN_MS). */
-  animation: quiz-cutin-veil 900ms linear both;
+  animation: quiz-cutin-veil var(--motion-slow) linear both;
 }
 .quiz-cutin-band {
   width: 100%;
   border-block: var(--ds-edge) solid var(--ds-hairline);
   background: var(--ds-dark);
   box-shadow: var(--ds-shadow-large);
-  animation: quiz-cutin-band 180ms var(--ease-out) both;
+  animation: quiz-cutin-band var(--motion-fast) var(--ease-out) both;
 }
 .quiz-cutin-word {
   margin: 0;
@@ -38,8 +38,8 @@
   line-height: var(--ds-leading-tight);
   letter-spacing: var(--ds-tracking-2);
   text-align: center;
-  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
-  animation: quiz-cutin-word 300ms 50ms var(--ease-out) both;
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
+  animation: quiz-cutin-word var(--motion-short) var(--motion-instant) var(--ease-out) both;
 }
 @keyframes quiz-cutin-veil {
   0% { opacity: 0; }

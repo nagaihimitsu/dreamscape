@@ -8,19 +8,19 @@
   align-items: flex-end;
   justify-content: center;
   /* Its box follows the scene's camera (figure-zoom.ts) over --vn-camera: the coming in after a scene's first line. */
-  transition: opacity 180ms ease, scale var(--motion-fast) var(--ease-out), var(--vn-camera-moves);
+  transition: opacity var(--motion-fast) var(--ease-out), scale var(--motion-fast) var(--ease-out), var(--vn-camera-moves);
   /* A character who comes into the scene fades in (a change of expression does not: the
      portrait stays, only its picture changes). */
-  animation: vn-character-in var(--motion-medium) var(--ease-out);
+  animation: vn-character-in var(--motion-short) var(--ease-out);
 }
 @keyframes vn-character-in {
   from { opacity: 0; }
 }
 /* Going off the stage (useSceneStage's `leaving`; 2026-11-27 user decision: never in an instant): where it stood, it
-   steps back (a little smaller about its feet) as it fades, over --motion-leave; then the stage as it is now comes and the
+   steps back (a little smaller about its feet) as it fades, over --motion-slow; then the stage as it is now comes and the
    others walk to their places (useStageGlide). Under reduced motion it goes at once (no `leaving`). */
 .vn-character.is-leaving {
-  animation: vn-character-out var(--motion-leave) var(--ease-step) forwards;
+  animation: vn-character-out var(--motion-slow) var(--ease-in-out) forwards;
 }
 @keyframes vn-character-out {
   to { opacity: 0; scale: calc(var(--stand-scale, 1) * 0.9); }
@@ -95,16 +95,16 @@
    heroine stands, until the scene's next `# stand:` or its end. `near` is her place without the tag; `apart` a little
    away (smaller, to one side), `close` right beside (larger). Its own `translate` and `scale` add to the placement's
    transform about the same origin and move nothing else. A change of place is a slow walk there (2026-11-27 user
-   decision: not at once): while CharacterPortrait marks it (data-stepping) it eases in and out over --motion-step; her
+   decision: not at once): while CharacterPortrait marks it (data-stepping) it eases in and out over --motion-long; her
    coming forward as she speaks eases over --motion-scene. */
 .vn-character[data-stand] {
   translate: var(--stand-x) var(--stand-y);
   scale: var(--stand-scale);
-  transition: opacity 180ms ease, scale var(--motion-scene) var(--ease-out), translate var(--motion-scene) var(--ease-out),
+  transition: opacity var(--motion-fast) var(--ease-out), scale var(--motion-scene) var(--ease-out), translate var(--motion-scene) var(--ease-out),
     var(--vn-camera-moves);
 }
 .vn-character[data-stand][data-stepping] {
-  transition: opacity 180ms ease, scale var(--motion-step) var(--ease-step), translate var(--motion-step) var(--ease-step),
+  transition: opacity var(--motion-fast) var(--ease-out), scale var(--motion-long) var(--ease-in-out), translate var(--motion-long) var(--ease-in-out),
     var(--vn-camera-moves);
 }
 .vn-character[data-stand="near"] { --stand-x: 0%; --stand-y: 0%; --stand-scale: 1; }
@@ -123,7 +123,7 @@
    speaking `scale` and its `# stand:` place and moves nothing else. Off under reduced motion. */
 .vn-character > img,
 .vn-character > svg {
-  animation: vn-breathe 4600ms ease-in-out infinite;
+  animation: vn-breathe 4600ms var(--ease-in-out) infinite;
 }
 @keyframes vn-breathe {
   0%, 100% { translate: 0 0; }

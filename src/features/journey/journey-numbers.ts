@@ -4,6 +4,7 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { declaresPeople, metPeopleGroups } from "./met-people";
 import { eventPlaceIdsIn } from "./visited-places";
+import { MOTION } from "../../components/motion";
 
 // 旅の数字 (2026-11-13 user decision): a short card of the journey in numbers, at the end roll and in 旅の記録, derived
 // from what the game and this device already keep (nothing new is saved). Never a relationship value, never an English
@@ -66,7 +67,7 @@ export function journeyNumbers(game: GameState, learnedWordIds: readonly string[
 }
 
 /** How long the numbers count up (ms). */
-export const COUNT_UP_MS = 700;
+export const COUNT_UP_MS = MOTION.slow;
 
 /** The number shown `elapsed` ms into a count up to `target` (eased out, whole numbers; the target itself from the end). */
 export function countUpValue(target: number, elapsed: number, duration = COUNT_UP_MS): number {

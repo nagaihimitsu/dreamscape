@@ -18,7 +18,7 @@
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-controls { flex: none; padding: var(--ds-space-2) var(--ds-space-4) calc(16px + env(safe-area-inset-bottom, 0px)); }
 .mg-engine-rhythm-tap .mg-rhythm-tap-top { display: flex; align-items: center; justify-content: flex-end; gap: var(--ds-space-3); margin: 0 0 var(--ds-space-2); }
-.mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { min-height: 44px; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { min-height: var(--ds-press-small); }
 .mg-engine-rhythm-tap .mg-rhythm-tap-hint {
   flex: 1 1 auto;
   min-width: 0;
@@ -26,7 +26,7 @@
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   text-wrap: balance;
-  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 70%, transparent);
 }
 /* The stop: smaller than the tap and above the lane (a fast thumb does not reach it by chance); filled plum with a palm,
    so it reads as a button apart from anything the field says (a speech bubble is white glass). */
@@ -37,7 +37,7 @@
   align-items: center;
   justify-content: center;
   min-width: 96px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0 var(--ds-space-4) 0 var(--ds-space-3);
   border: var(--ds-edge) solid var(--ds-on-dark);
@@ -47,14 +47,14 @@
   font-size: var(--ds-text-large);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-3);
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 45%, transparent);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 50%, transparent);
   touch-action: manipulation;
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-palm { width: 20px; height: 20px; fill: currentColor; }
 .mg-engine-rhythm-tap .mg-rhythm-tap-stop[aria-disabled="true"] { opacity: var(--ds-opacity-soft); }
 /* The partner has just stopped: the stop button lights (a white ring and a pulse; still: the ring only). */
 .mg-engine-rhythm-tap .mg-rhythm-tap-stop[data-partner="up"]:not([aria-disabled="true"]) {
-  box-shadow: 0 0 0 var(--ds-edge-thick) var(--ds-game-mark), 0 0 16px color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--ds-game-mark), 0 0 16px color-mix(in srgb, var(--ds-game-mark) 88%, transparent);
   animation: mg-rhythm-tap-stop-pulse 400ms ease-out 2;
 }
 @keyframes mg-rhythm-tap-stop-pulse { 50% { transform: scale(1.1); } }
@@ -67,7 +67,7 @@
   overflow: hidden;
   border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-large);
-  background: color-mix(in srgb, var(--ds-dark) 55%, transparent);
+  background: color-mix(in srgb, var(--ds-dark) 50%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring,
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark {
@@ -80,19 +80,19 @@
   left: 16%;
   width: 40px;
   height: 40px;
-  border: var(--ds-edge-thick) solid color-mix(in srgb, var(--ds-game-mark) 80%, transparent);
-  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-dark) 80%, transparent);
+  border: var(--ds-edge-thick) solid color-mix(in srgb, var(--ds-game-mark) 88%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-dark) 88%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="good"] {
   border-width: var(--ds-edge-heavy);
   border-color: var(--ds-on-dark);
-  background: color-mix(in srgb, var(--ds-on-dark) 30%, transparent);
+  background: color-mix(in srgb, var(--ds-on-dark) 32%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="perfect"] {
   border-width: var(--ds-edge-heavy);
   border-color: var(--ds-game-mark);
-  background: color-mix(in srgb, var(--ds-game-mark) 45%, transparent);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--ds-game-mark) 95%, transparent);
+  background: color-mix(in srgb, var(--ds-game-mark) 50%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ds-game-mark) 100%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark {
   left: 110%;
@@ -134,15 +134,15 @@
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-big][data-state="coming"] {
   width: 30px;
   height: 30px;
-  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark), 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark), 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-game-mark) 88%, transparent);
 }
 /* A rest (not to tap: the dance's break, the vendor's feint once it shows): a hollow circle with a bar across (a rest
    sign); tapped, the bar turns into a cross on a terracotta ring; kept, it passes dim. Shape, not colour alone. */
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"], [data-state="fooled"]) {
   width: 22px;
   height: 22px;
-  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 80%, transparent);
-  background: color-mix(in srgb, var(--ds-dark) 85%, transparent);
+  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
+  background: color-mix(in srgb, var(--ds-dark) 88%, transparent);
   box-shadow: none;
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"])::before,
@@ -155,7 +155,7 @@
   width: 12px;
   height: 3px;
   border-radius: var(--ds-radius-pill);
-  background: color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
+  background: color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   transform: translate(-50%, -50%);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="kept"] { opacity: var(--ds-opacity-faint); }
@@ -190,7 +190,7 @@
 .mg-engine-rhythm-tap .mg-rhythm-tap-action {
   justify-content: center;
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   font-size: var(--ds-text-heading);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-4);
@@ -202,7 +202,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   border-radius: var(--ds-radius-control);
   background: var(--ds-smoke);
@@ -216,5 +216,5 @@
   .mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { position: absolute; z-index: var(--ds-layer-game-stop); top: 8px; left: 12px; min-height: 0; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-controls { padding-top: var(--ds-space-1); }
   .mg-engine-rhythm-tap .mg-rhythm-tap-lane { height: 44px; margin-bottom: var(--ds-space-2); }
-  .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: 54px; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: var(--ds-press-large); }
 }

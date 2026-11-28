@@ -3,10 +3,10 @@
    card has a thick edge on one side. The sample stage reuses the game's own scene, header and notices. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --effects-room-off-ground: #f1f2f4;
+  --effects-room-off-ground: var(--ds-gray-6);
 }
 .effects-room {
-  max-width: 720px;
+  max-width: var(--ds-width);
   margin: 0 auto;
   padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-6);
   color: var(--ds-ink);
@@ -24,7 +24,7 @@
 .effects-room p:not(.effects-room-screen *) { margin: var(--ds-space-2) 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .effects-room button.effects-room-close {
   flex: none;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-3);
   border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
@@ -51,7 +51,7 @@
   display: inline-flex;
   align-items: center;
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: 0 var(--ds-space-4);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-surface-chosen);
@@ -63,7 +63,7 @@
 .effects-room-chips { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
 .effects-room button.effects-room-chip {
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-3);
   border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
@@ -105,24 +105,24 @@
 .effects-room-voice-group button.effects-room-chip { min-width: 56px; }
 
 /* Settings and fields. */
-.effects-room-toggle { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+.effects-room-toggle { display: flex; align-items: center; gap: var(--ds-space-2); min-height: var(--ds-press-small); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .effects-room-toggle input { flex: none; width: 22px; height: 22px; margin: 0; }
 .effects-room-volume {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) 3.2em;
   align-items: center;
   gap: var(--ds-space-2);
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   font-size: var(--ds-text-body);
 }
-.effects-room-volume input { width: 100%; min-height: 44px; margin: 0; }
+.effects-room-volume input { width: 100%; min-height: var(--ds-press-small); margin: 0; }
 .effects-room-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--ds-space-2); margin: var(--ds-space-2) 0; }
 .effects-room-field { display: grid; gap: var(--ds-space-1); margin: var(--ds-space-2) 0; font-size: var(--ds-text-note); }
 .effects-room-field select,
 .effects-room-field input {
   width: 100%;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-2);
   border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
@@ -165,7 +165,7 @@
 .effects-room-now-row button {
   flex: none;
   min-width: 64px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);

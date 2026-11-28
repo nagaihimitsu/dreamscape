@@ -59,7 +59,7 @@
   inset: -28%;
   border-radius: 50%;
   background: radial-gradient(circle, color-mix(in srgb, var(--ds-light) 42%, transparent), transparent 66%);
-  animation: item-show-glow 2.4s ease-in-out infinite alternate;
+  animation: item-show-glow 2.4s var(--ease-in-out) infinite alternate;
 }
 @keyframes item-show-glow {
   from { opacity: 0.55; }
@@ -94,7 +94,7 @@
   inset: 0;
   background: linear-gradient(115deg, transparent 35%, color-mix(in srgb, var(--ds-light) 70%, transparent) 50%, transparent 65%);
   transform: translateX(-120%);
-  animation: item-show-gleam 1100ms var(--ease-out) 250ms both;
+  animation: item-show-gleam var(--motion-long) var(--ease-out) var(--motion-short) both;
 }
 @keyframes item-show-gleam {
   to { transform: translateX(120%); }
@@ -122,10 +122,10 @@
   min-width: 0;
   max-width: none;
   transform-origin: 50% 50%;
-  animation: item-show-fade 400ms var(--ease-out) both;
+  animation: item-show-fade var(--motion-scene) var(--ease-out) both;
 }
 .item-show-card.item-show-leaving[data-mode="fly"] {
-  animation: item-show-fly 650ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+  animation: item-show-fly var(--motion-slow) var(--ease-in) both;
 }
 @keyframes item-show-fly {
   0% { opacity: 1; transform: none; }
@@ -150,11 +150,11 @@
 .reduce-motion .item-show-gleam { display: none; }
 .reduce-motion .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
 .reduce-motion .item-show-card.item-show-leaving,
-.reduce-motion .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+.reduce-motion .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only var(--motion-scene) var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) {
   .item-show-card { animation-name: item-show-fade-in; }
   .item-show-gleam { display: none; }
   .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
   .item-show-card.item-show-leaving,
-  .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+  .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only var(--motion-scene) var(--ease-out) both; }
 }

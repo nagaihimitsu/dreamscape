@@ -13,6 +13,7 @@ import type { TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { announcement, sameTarget, type SelectionTarget, type TargetChoices } from "./travel-selection";
 import { formatTravelTime } from "./travel-time";
+import { MOTION } from "../../components/motion";
 
 /** A place's card: the destination with every event there (sightseeing and dates alike). */
 export type PhotoCardEntry = {
@@ -458,7 +459,7 @@ export function flickSpeed(samples: readonly SwipeSample[], axis: "x" | "y"): nu
 }
 
 /** How far a sideways drag of the screen glides on once let go: its release speed for this long (ms). */
-export const GLIDE_MS = 200;
+export const GLIDE_MS = MOTION.fast;
 
 /**
  * The card a sideways drag of the screen leaves in the row's centre (`centres` and `centre` as nearestIndex; `speed` the

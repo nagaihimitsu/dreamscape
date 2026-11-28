@@ -11,10 +11,11 @@ import { whenLaidOut } from "./when-laid-out";
 import { playSe, playSound } from "../../audio/sound-effects";
 import { useNightCard } from "./NightRest";
 import "./travel-transition.css";
+import { MOTION } from "../../components/motion";
 
 /** How long a ride's visual shows (ms; travel-transition.css's timeline matches); reduced motion: still, shorter. */
 const RIDE_MS = 1800;
-const RIDE_REDUCED_MS = 450;
+const RIDE_REDUCED_MS = MOTION.scene;
 
 /**
  * Small, decorative transition; movement and saving are handled by the caller.

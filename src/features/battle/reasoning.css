@@ -29,7 +29,7 @@
   margin: var(--ds-space-3) 0;
 }
 .reasoning-press-notes summary {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) 0;
   cursor: pointer;
 }
@@ -88,7 +88,7 @@
 
 /* Keep the claim and reasoning actions together on a phone. Long claims or
    enlarged text remain readable in the existing battle reading area. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .reasoning-panel { margin-bottom: var(--ds-space-2); }
   .reasoning-panel > .eyebrow { margin: var(--ds-space-1) 0; }
   .reasoning-panel h2 { font-size: var(--ds-text-large); margin: var(--ds-space-1) 0 var(--ds-space-2); }
@@ -121,7 +121,7 @@
   .selected-evidence { grid-column: 2; grid-row: 1; margin: 0; padding: var(--ds-space-1) var(--ds-space-2); }
   .selected-evidence p, .selected-evidence ul { margin: 0; line-height: var(--ds-leading-tight); }
   .reasoning-actions { grid-column: 2; grid-row: 2; margin: 0; }
-  .reasoning-actions > button { min-height: 44px; padding-block: var(--ds-space-2); line-height: var(--ds-leading-body); }
-  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: 44px; padding: var(--ds-space-2) var(--ds-space-3); line-height: var(--ds-leading-body); }
+  .reasoning-actions > button { min-height: var(--ds-press-small); padding-block: var(--ds-space-2); line-height: var(--ds-leading-body); }
+  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: var(--ds-press-small); padding: var(--ds-space-2) var(--ds-space-3); line-height: var(--ds-leading-body); }
   .reasoning-panel > .fine-print { grid-column: 2; grid-row: 4; margin: 0; line-height: var(--ds-leading-tight); }
 }

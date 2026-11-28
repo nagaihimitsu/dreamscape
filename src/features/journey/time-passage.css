@@ -2,9 +2,9 @@
 :root {
   --time-passage-sun-ground: #ffd873;
   --time-passage-sun-shade: #ffd87388;
-  --time-passage-moon-ground: #f1f2f4;
-  --time-passage-moon-shade: #f1f2f455;
-  --time-passage-moon-ground-2: #3b3d43;
+  --time-passage-moon-ground: var(--ds-gray-6);
+  --time-passage-moon-shade: color-mix(in srgb, var(--ds-gray-6) 32%, transparent);
+  --time-passage-moon-ground-2: var(--ds-gray-2);
   --time-passage-horizon-ground: #506d5d;
   --time-passage-sky-ground: #bddbe1;
 }
@@ -16,7 +16,7 @@
   place-items: center;
   /* Takes stray taps while it shows (a double tap on a destination never reaches the next scene, §3.3 H22). */
   pointer-events: auto;
-  animation: time-passage-overlay 2.8s ease both;
+  animation: time-passage-overlay 2.8s var(--ease-out) both;
 }
 .time-passage-sky {
   position: relative;
@@ -26,7 +26,7 @@
   border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-pane);
   box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
-  animation: time-passage-sky 2.8s ease both;
+  animation: time-passage-sky 2.8s var(--ease-out) both;
 }
 .time-passage-label {
   position: absolute;
@@ -76,12 +76,12 @@
 /* Keep the day transition readable without moving the sun or moon. */
 @keyframes time-passage-still { from, to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .time-passage { animation: time-passage-still 900ms steps(1, end); }
+  .time-passage { animation: time-passage-still var(--motion-slow) steps(1, end); }
   .time-passage-sky { animation: none; background: var(--time-passage-sky-ground); }
   .time-passage-sun { animation: none; }
   .time-passage-moon { display: none; }
 }
-.time-passage.is-reduced { animation: time-passage-still 900ms steps(1, end); }
+.time-passage.is-reduced { animation: time-passage-still var(--motion-slow) steps(1, end); }
 .time-passage.is-reduced .time-passage-sky { animation: none; background: var(--time-passage-sky-ground); }
 .time-passage.is-reduced .time-passage-sun { animation: none; }
 .time-passage.is-reduced .time-passage-moon { display: none; }

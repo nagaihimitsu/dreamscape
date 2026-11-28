@@ -1,11 +1,11 @@
 /* The day's end (NightRest, docs/02 「休む」): the whole screen at night over what the rest led to, until the card ends. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --night-rest-sky-shade: rgba(240, 241, 244, 0.3);
-  --night-rest-moon-fill: #eef0f3;
-  --night-rest-star-fill: #ffffff;
-  --night-rest-night-screen-rest-shade: rgba(240, 241, 244, 0.22);
-  --night-rest-night-screen-rest-ground: #f1f2f4;
+  --night-rest-sky-shade: color-mix(in srgb, var(--ds-gray-6) 32%, transparent);
+  --night-rest-moon-fill: var(--ds-gray-6);
+  --night-rest-star-fill: var(--ds-light);
+  --night-rest-night-screen-rest-shade: color-mix(in srgb, var(--ds-gray-6) 16%, transparent);
+  --night-rest-night-screen-rest-ground: var(--ds-gray-6);
 }
 .night-rest {
   position: fixed;
@@ -22,14 +22,14 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: night-rest-overlay 1.4s ease both;
+  animation: night-rest-overlay var(--motion-long) var(--ease-out) both;
 }
 .night-rest-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 100%;
-  animation: night-rest-content 1.4s ease both;
+  animation: night-rest-content var(--motion-long) var(--ease-out) both;
 }
 .night-rest-sky {
   display: block;
@@ -39,7 +39,7 @@
   filter: drop-shadow(0 0 10px var(--night-rest-sky-shade));
 }
 .night-rest-moon { fill: var(--night-rest-moon-fill); }
-.night-rest-star { fill: var(--night-rest-star-fill); animation: night-rest-twinkle 1.6s ease-in-out infinite alternate; }
+.night-rest-star { fill: var(--night-rest-star-fill); animation: night-rest-twinkle 1.6s var(--ease-in-out) infinite alternate; }
 .night-rest-star:nth-of-type(2n) { animation-delay: -0.8s; }
 .night-rest-star:nth-of-type(3n) { animation-delay: -0.4s; }
 /* --ds-on-dark on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
@@ -86,7 +86,7 @@
   position: absolute;
   inset: 0;
   background: var(--ds-night-veil);
-  animation: night-backdrop-veil 1.4s ease both;
+  animation: night-backdrop-veil var(--motion-long) var(--ease-out) both;
 }
 @keyframes night-backdrop-veil { from { background-color: var(--ds-night-veil-dusk); } }
 .is-reduced .night-backdrop::after { animation: none; }
@@ -107,7 +107,7 @@
   padding: calc(var(--hud-h, 96px) + 12px) var(--ds-space-4) calc(24px + env(safe-area-inset-bottom));
   background: var(--ds-night);
   color: var(--ds-on-dark);
-  animation: night-screen-in 0.6s ease both;
+  animation: night-screen-in var(--motion-slow) var(--ease-out) both;
 }
 /* Centred in the room under the header; from its top when it does not fit (auto margins). */
 .night-screen-content {
@@ -117,7 +117,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: night-screen-content-in 0.6s ease both;
+  animation: night-screen-content-in var(--motion-slow) var(--ease-out) both;
 }
 /* --ds-on-dark on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
 .night-screen-line {
@@ -152,7 +152,7 @@
 /* 「ホテルで休む」: the screen's main step, in the moon's pale grey (dark ink on it: about 13:1). */
 .night-screen-rest {
   width: 100%;
-  min-height: 54px;
+  min-height: var(--ds-press-large);
   margin-top: var(--ds-space-4);
   padding: var(--ds-space-3) var(--ds-space-6);
   border-radius: var(--ds-radius-control);
@@ -173,7 +173,7 @@
   user-select: none;
 }
 .night-screen.is-leaving .night-screen-content { animation: none; }
-.night-screen.is-leaving .night-screen-line { animation: night-screen-line-in 0.3s ease both; }
+.night-screen.is-leaving .night-screen-line { animation: night-screen-line-in var(--motion-short) var(--ease-out) both; }
 .night-screen.is-leaving .night-screen-actions { position: relative; visibility: hidden; }
 @keyframes night-screen-in { from { background-color: var(--ds-night-dusk); } to { background-color: var(--ds-night); } }
 @keyframes night-screen-content-in {
@@ -200,7 +200,7 @@
   background: var(--ds-night);
   pointer-events: auto;
   touch-action: none;
-  animation: night-fade-out 0.7s ease both;
+  animation: night-fade-out var(--motion-slow) var(--ease-out) both;
 }
 @keyframes night-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
@@ -280,7 +280,7 @@
   align-items: center;
   gap: var(--ds-space-3);
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: var(--ds-space-8) 0 0;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
   border: var(--ds-edge-thin) solid var(--ds-action-edge);
@@ -294,7 +294,7 @@
   backdrop-filter: var(--ds-glass-blur);
 }
 button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
-.night-sns > .icon { flex: none; width: 18px; height: 18px; color: var(--ds-hairline); }
+.night-sns > .icon { flex: none; width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-hairline); }
 .night-sns-faces { display: inline-flex; flex: none; }
 .night-sns-face {
   display: grid;
@@ -339,7 +339,7 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
 .today-word-en { font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: var(--ds-tracking-1); overflow-wrap: anywhere; }
 .today-word-meaning { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
-@media (max-height: 480px) {
+@media (max-height: 500px) {
   .night-rest.has-recap .night-rest-sky { display: none; }
   .night-rest.has-recap .today-route-map { height: 96px; }
 }

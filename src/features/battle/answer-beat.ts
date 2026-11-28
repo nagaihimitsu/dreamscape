@@ -1,3 +1,4 @@
+import { MOTION } from "../../components/motion";
 // What a quiz answer saved in this screen plays (2026-11-13 user decision, ためと決め). Presentation only: the answer is
 // saved and scored before any of it, and a restored feedback plays nothing.
 
@@ -5,7 +6,7 @@
  * How long a right answer is held still before its pulse, its sound and its feedback: inside the double tap's moment
  * (DOUBLE_TAP_WINDOW_MS, src/components/double-tap.ts), whose taps are ignored anyway, so the hold delays no tap.
  */
-export const CORRECT_HOLD_MS = 150;
+export const CORRECT_HOLD_MS = MOTION.instant;
 
 /**
  * `hold`: held still, then its gold pulse, quiz_correct, the stamp and the feedback; `glow`: under reduced motion, its

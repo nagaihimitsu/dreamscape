@@ -13,7 +13,7 @@ export const MAP_BLOCK_MIN_PX = 148;
 export const MAP_STICKY_MIN_LIST_PX = 150;
 
 /** The media query of phones held sideways, where the map and the list stand side by side. */
-export const SIDE_BY_SIDE_QUERY = "(orientation: landscape) and (max-height: 559px)";
+export const SIDE_BY_SIDE_QUERY = "(orientation: landscape) and (max-height: 500px)";
 
 export type FreeTimeHeights = {
   /** The visible height with the browser's bars shown (100svh). */

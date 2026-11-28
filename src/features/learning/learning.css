@@ -3,7 +3,7 @@
   font-size: var(--ds-text-note);
 }
 .translation-toggle {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-2);
 }
 .translation p {
@@ -11,7 +11,7 @@
   line-height: var(--ds-leading-reading);
 }
 .translation-all {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: var(--ds-space-2) 0;
 }
 .modal.english-review {
@@ -44,7 +44,7 @@
 .review-list select {
   width: 100%;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-2);
   color: var(--ds-ink);
   background: var(--ds-field);
@@ -57,7 +57,7 @@
 .review-navigation .secondary {
   width: auto;
   min-width: 52px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2);
   white-space: nowrap;
 }
@@ -72,7 +72,7 @@
 }
 .review-question .review-mark {
   width: auto;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) var(--ds-space-3);
   font-size: var(--ds-text-note);
 }
@@ -101,7 +101,7 @@
 }
 .review-question summary {
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) 0;
 }
 .review-options {
@@ -122,7 +122,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--ds-space-2);
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) 0;
   line-height: var(--ds-leading-body);
 }
@@ -134,7 +134,7 @@
 }
 .english-review > details > summary {
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-2) 0;
 }
 .review-options {
@@ -191,7 +191,7 @@
   width: 44px;
   min-width: 44px;
   height: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0;
   border: var(--ds-edge-thin) solid transparent;
@@ -202,8 +202,8 @@
   vertical-align: middle;
 }
 .read-aloud .icon {
-  width: 22px;
-  height: 22px;
+  width: var(--ds-icon-large);
+  height: var(--ds-icon-large);
 }
 .read-aloud[aria-pressed="true"] {
   box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
@@ -233,7 +233,7 @@
   vertical-align: middle;
   place-items: center;
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: -10px -10px -10px var(--ds-space-1);
   padding: 0;
   border: 0;
@@ -241,9 +241,9 @@
   background: transparent;
   color: var(--ds-ink);
 }
-.word-close .icon { width: 18px; height: 18px; }
+.word-close .icon { width: var(--ds-icon); height: var(--ds-icon); }
 .review-translation-toggle {
-  min-height: 36px;
+  min-height: var(--ds-press-small);
   margin-right: var(--ds-space-2);
   font-size: var(--ds-text-small);
 }
@@ -257,7 +257,7 @@
 /* The note's views, 「問題」, 「単語帳」 and 「その国の言葉」 (2026-11-11): the one shown is the smoked glass (and aria-pressed).
    Three fit one row at 320 px; with larger text a button moves to the next row instead of leaving the dialog. */
 .english-review .review-views { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); margin-top: var(--ds-space-1); }
-.english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-2); font-size: var(--ds-text-body); }
+.english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: var(--ds-press-small); margin: 0; padding: var(--ds-space-2) var(--ds-space-2); font-size: var(--ds-text-body); }
 .english-review .review-views .secondary[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
 
 /* 「単語帳」 (WordBook): the places in the order met, each under its photo and name once, with its words' cards (words
@@ -267,7 +267,7 @@
 .word-book-place-photo { flex: 0 0 auto; width: 84px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-dark-2); }
 .word-book-place-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* No photo: the free-time cards' plain tile (the place's background colour, else the dark grey) with the sightseeing mark. */
-.word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-dark-2); color: color-mix(in srgb, var(--ds-light) 92%, transparent); font-size: var(--ds-text-large); }
+.word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-dark-2); color: color-mix(in srgb, var(--ds-light) 88%, transparent); font-size: var(--ds-text-large); }
 .word-book-place h3 { margin: 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .word-book-cards {
   display: grid;
@@ -282,7 +282,7 @@
 .word-card {
   display: block;
   width: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0;
   border: 0;
@@ -296,7 +296,7 @@
   display: grid;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform var(--motion-medium) var(--ease-out);
+  transition: transform var(--motion-short) var(--ease-out);
 }
 .word-card[data-turned] .word-card-inner { transform: rotateY(180deg); }
 .word-card-face {
@@ -313,7 +313,7 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.word-card-face.is-front { justify-content: center; min-height: 64px; padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); }
+.word-card-face.is-front { justify-content: center; min-height: var(--ds-press-large); padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); }
 .word-card-face.is-back { justify-content: flex-start; padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); background: var(--ds-surface-chosen); transform: rotateY(180deg); }
 .word-card-word { font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .word-card-meaning { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
@@ -328,7 +328,7 @@
   .word-card-inner { transition: none; }
 }
 .word-book-credits { margin-top: var(--ds-space-4); padding-top: var(--ds-space-2); border-top: var(--ds-edge-thin) solid var(--ds-line); }
-.word-book-credits summary { min-height: 44px; padding: var(--ds-space-2) 0; cursor: pointer; }
+.word-book-credits summary { min-height: var(--ds-press-small); padding: var(--ds-space-2) 0; cursor: pointer; }
 .word-book-credits ul { margin: 0; padding: 0; list-style: none; }
 .word-book-credits li { padding: var(--ds-space-2) 0; border-top: var(--ds-edge-thin) solid var(--ds-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .word-book-credits h4 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); }

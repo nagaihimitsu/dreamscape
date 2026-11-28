@@ -65,8 +65,8 @@
 .line-card-head .icon {
   flex: none;
   align-self: center;
-  width: 16px;
-  height: 16px;
+  width: var(--ds-icon-small);
+  height: var(--ds-icon-small);
   color: var(--ds-ink-muted);
 }
 .line-card-name {
@@ -105,7 +105,7 @@
 }
 
 /* A narrow phone (320 px): the words take the whole card (the photo is in 旅の図鑑), so two cards stay short. */
-@media (max-width: 359px) {
+@media (max-width: 360px) {
   .line-card-photo { display: none; }
 }
 

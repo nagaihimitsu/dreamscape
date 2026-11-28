@@ -4,17 +4,17 @@
 
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --journey-moments-packing-scene-ground: #f4f5f7f5;
-  --journey-moments-packing-case-ground: #e4e5e8;
-  --journey-moments-end-roll-ground: #0b0b0d;
-  --journey-moments-end-roll-sky-ground: rgba(110, 112, 120, 0.3);
-  --journey-moments-end-roll-sky-ground-2: rgba(140, 142, 148, 0.12);
-  --journey-moments-end-roll-sky-ground-3: #18191c;
-  --journey-moments-end-roll-sky-ground-4: #0f1012;
-  --journey-moments-end-roll-fast-ground: rgba(11, 11, 13, 0.72);
-  --journey-moments-end-roll-title-glow: rgba(255, 255, 255, 0.2);
-  --journey-moments-end-roll-bar-ground: rgba(11, 11, 13, 0.88);
-  --journey-moments-end-roll-bar-edge: rgba(255, 255, 255, 0.18);
+  --journey-moments-packing-scene-ground: var(--ds-gray-6);
+  --journey-moments-packing-case-ground: var(--ds-gray-5);
+  --journey-moments-end-roll-ground: var(--ds-shade);
+  --journey-moments-end-roll-sky-ground: color-mix(in srgb, var(--ds-gray-3) 32%, transparent);
+  --journey-moments-end-roll-sky-ground-2: color-mix(in srgb, var(--ds-gray-4) 16%, transparent);
+  --journey-moments-end-roll-sky-ground-3: var(--ds-gray-1);
+  --journey-moments-end-roll-sky-ground-4: var(--ds-gray-1);
+  --journey-moments-end-roll-fast-ground: color-mix(in srgb, var(--ds-shade) 70%, transparent);
+  --journey-moments-end-roll-title-glow: color-mix(in srgb, var(--ds-light) 16%, transparent);
+  --journey-moments-end-roll-bar-ground: color-mix(in srgb, var(--ds-shade) 88%, transparent);
+  --journey-moments-end-roll-bar-edge: color-mix(in srgb, var(--ds-light) 16%, transparent);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/14 「デザインの決まり」). */
@@ -42,7 +42,7 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: episode-title-card 2.4s ease both;
+  animation: episode-title-card 2.4s var(--ease-out) both;
 }
 .episode-title-photo {
   position: absolute;
@@ -52,7 +52,7 @@
   object-fit: cover;
   /* The photo stays recognisable; the title's ground is the dark below (about 12:1 for --ds-on-dark). */
   filter: brightness(0.5);
-  animation: episode-title-photo 2.4s ease both;
+  animation: episode-title-photo 2.4s var(--ease-out) both;
 }
 .episode-title-card::after {
   content: "";
@@ -66,11 +66,11 @@
   display: grid;
   justify-items: center;
   gap: var(--ds-space-3);
-  max-width: min(560px, 100%);
+  max-width: min(var(--ds-width-narrow), 100%);
   color: var(--ds-on-dark);
   text-align: center;
   text-shadow: var(--ds-scene-text-shadow);
-  animation: episode-title-text 2.4s ease both;
+  animation: episode-title-text 2.4s var(--ease-out) both;
 }
 .episode-title-place { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-3); overflow-wrap: anywhere; }
 .episode-title-rule { width: 56px; height: 1px; background: var(--ds-hairline); }
@@ -99,7 +99,7 @@
    or the night screen, over the place, in the page's flow as the notices are (its colours: styles.css, the glass surfaces). */
 .resume-recap {
   width: calc(100% - 16px);
-  max-width: 680px;
+  max-width: var(--ds-width);
   margin: var(--ds-space-2) auto;
   padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3);
   border: 0;
@@ -133,7 +133,7 @@
 /* Her line looking back on the place finished last, under the record (resumeRecap). */
 .resume-recap .resume-recap-heroine { margin: var(--ds-space-2) 0 0; }
 /* A narrow phone: the photo above the record, so the record keeps the card's width. */
-@media (max-width: 359px) {
+@media (max-width: 360px) {
   .resume-recap-body { flex-direction: column; }
   .resume-recap-photo { flex: none; width: 100%; }
 }
@@ -167,7 +167,7 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  animation: packing-scene 4.2s ease both;
+  animation: packing-scene 4.2s var(--ease-out) both;
 }
 /* Centred in the screen; from its top when it does not fit (auto margins). */
 .packing-content { display: grid; justify-items: center; gap: var(--ds-space-3); width: min(360px, 100%); margin: auto; text-align: center; }
@@ -181,7 +181,7 @@
   border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-pane);
   background: var(--journey-moments-packing-case-ground);
-  box-shadow: inset 0 -6px 0 color-mix(in srgb, var(--ds-dark-2) 12%, transparent), var(--ds-shadow);
+  box-shadow: inset 0 -6px 0 color-mix(in srgb, var(--ds-dark-2) 16%, transparent), var(--ds-shadow);
 }
 .packing-case-handle {
   position: absolute;
@@ -194,7 +194,7 @@
   border-bottom: 0;
   border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
 }
-.packing-left { width: 100%; padding: var(--ds-space-2) var(--ds-space-4); border-radius: var(--ds-radius-pane); background: color-mix(in srgb, var(--ds-light) 55%, transparent); }
+.packing-left { width: 100%; padding: var(--ds-space-2) var(--ds-space-4); border-radius: var(--ds-radius-pane); background: color-mix(in srgb, var(--ds-light) 50%, transparent); }
 .packing-left .packing-items { opacity: var(--ds-opacity-dim); }
 .packing-items { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ds-space-2) var(--ds-space-4); margin: 0; padding: 0; list-style: none; }
 .packing-items li {
@@ -205,7 +205,7 @@
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
-  animation: packing-item 0.4s var(--ease-out) both;
+  animation: packing-item var(--motion-scene) var(--ease-out) both;
   animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
 }
 .packing-items img { flex: none; width: 32px; height: 32px; }
@@ -250,9 +250,9 @@
   padding: var(--ds-space-6);
   border: var(--ds-edge-thick) solid var(--ds-ink);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ds-surface) 94%, transparent);
+  background: color-mix(in srgb, var(--ds-surface) 100%, transparent);
   color: var(--ds-ink);
-  box-shadow: inset 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-surface) 94%, transparent), inset 0 0 0 var(--ds-edge-heavy) var(--ds-ink), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-surface) 100%, transparent), inset 0 0 0 var(--ds-edge-heavy) var(--ds-ink), var(--ds-shadow);
   text-align: center;
   transform: rotate(-8deg);
   animation: chapter-stamp-drop 1.6s both;
@@ -277,9 +277,9 @@
   100% { opacity: 0; transform: rotate(-8deg) scale(1); }
 }
 @keyframes chapter-stamp-fade { 0% { opacity: 0; } 15%, 78% { opacity: 1; } 100% { opacity: 0; } }
-.chapter-stamp.is-reduced .chapter-stamp-seal, .reduce-motion .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
+.chapter-stamp.is-reduced .chapter-stamp-seal, .reduce-motion .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: var(--ease-out); }
 @media (prefers-reduced-motion: reduce) {
-  .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
+  .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: var(--ease-out); }
 }
 
 /* ── 旅の終わりのエンドロール ── a dialog over the whole screen under a night sky (a deep blue with a faint glow above and a
@@ -299,9 +299,9 @@ dialog.modal.end-roll {
   box-shadow: none;
   background: var(--journey-moments-end-roll-ground);
   color: var(--ds-on-dark);
-  --roll-light: #e3e4e7; /* a light grey: text on the night ground only (about 14:1) */
-  --roll-muted: rgba(255, 255, 255, 0.62);
-  --roll-line: rgba(255, 255, 255, 0.35);
+  --roll-light: var(--ds-gray-5); /* a light grey: text on the night ground only (about 14:1) */
+  --roll-muted: color-mix(in srgb, var(--ds-light) 70%, transparent);
+  --roll-line: color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-sky {
@@ -444,7 +444,7 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   padding: var(--ds-space-2);
   border: var(--ds-edge-thin) solid color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
   border-radius: var(--ds-radius-control);
-  background: color-mix(in srgb, var(--ds-on-dark) 5%, transparent);
+  background: color-mix(in srgb, var(--ds-on-dark) 8%, transparent);
   box-shadow: var(--ds-shadow-large);
 }
 .end-roll-photos figcaption {
@@ -493,4 +493,4 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   background: var(--journey-moments-end-roll-bar-ground);
   border-top: var(--ds-edge-thin) solid var(--journey-moments-end-roll-bar-edge);
 }
-.end-roll-bar button { flex: 1 1 0; min-height: 48px; margin: 0; justify-content: center; text-align: center; }
+.end-roll-bar button { flex: 1 1 0; min-height: var(--ds-press); margin: 0; justify-content: center; text-align: center; }
