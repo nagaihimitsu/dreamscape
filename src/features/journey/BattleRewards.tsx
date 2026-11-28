@@ -37,9 +37,8 @@ export function BattleRewards({ game }: { game: GameState }) {
       </section>
       {episode && game.completedEpisodeIds.includes(episode.id) && (
         <section className="episode-clear" data-testid="episode-clear">
-          <p className="eyebrow">
-            {episode.kind === "city_finale" ? "都市クリア" : "旅の一区切り"}
-          </p>
+          {/* No 「旅の一区切り」「都市クリア」 over it (2026-11-28 user decision: words the scene does not need); its
+              title, the author's, tells it. */}
           <h2><FitText text={episode.clearTitleJa} /></h2>
           {/* Shown open, not folded under 「旅の記録を読む」 (user decision 2026-11-11). */}
           <p>{episode.clearDescriptionJa}</p>

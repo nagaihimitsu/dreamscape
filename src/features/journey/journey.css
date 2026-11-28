@@ -68,19 +68,14 @@
   background: var(--ds-surface-chosen);
   text-align: left;
 }
-.episode-clear .eyebrow {
-  margin: 0;
-  line-height: var(--ds-leading-tight);
-  letter-spacing: var(--ds-tracking-2);
-}
 .episode-clear h2 {
-  margin: var(--ds-space-2) 0;
+  margin: 0 0 var(--ds-space-2);
   font-size: var(--ds-text-large);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   letter-spacing: var(--ds-tracking-1);
 }
-.episode-clear > p:not(.eyebrow) {
+.episode-clear > p {
   margin: 0;
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
