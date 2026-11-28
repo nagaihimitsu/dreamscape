@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent } from "react";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { encounters } from "../content/encounters";
 import { getCities, getCityContent, presentation } from "../content";
@@ -45,7 +45,7 @@ const mapCities = (): MapCity[] => getCities().map((city) => {
   return { hotelPlaceId: travelSettings.hotelPlaceId, places: travel.places };
 });
 
-/** How long ≡メニュー's bounce as a photo's print lands plays, its flight included (milliseconds; hud-effects.css). */
+/** How long the bounce of 「旅の記録」 or ≡メニュー as a photo's print lands plays, its flight included (milliseconds; hud-effects.css). */
 const PHOTO_LANDING_MS = MOTION.long;
 /** How long a save's ribbon plays on ≡メニュー (milliseconds; hud-effects.css). */
 const SAVE_MARK_MS = MOTION.slow;
@@ -72,14 +72,20 @@ type MenuActions = {
   onSaveLoad: () => void;
   /** Counts the saves that succeeded: each new count drops a ribbon onto ≡メニュー. */
   saveMark?: number;
-  /** 「旅の記録」: the journey's SNS and 写真 (TravelLog.tsx; 2026-11-19, アルバム made one with it; 2026-11-27, 「体験」 made the SNS). */
+  /**
+   * 「旅の記録」: the journey's SNS and 写真 (TravelLog.tsx; 2026-11-19, アルバム made one with it; 2026-11-27, 「体験」 made
+   * the SNS); its 📱 in the header (HudRecordTools) and its item in ≡メニュー.
+   */
   onRecords: () => void;
   /**
    * A photo taken that 旅の記録's 「写真」 has not shown yet (2026-11-25), or something arrived that its 「SNS」 has not
-   * (2026-11-27): a dot on ≡メニュー and on 「旅の記録」.
+   * (2026-11-27): a dot on 「旅の記録」 (its 📱 while it shows, else ≡メニュー) and on its item in ≡メニュー.
    */
   recordsNew?: boolean;
-  /** 「ノート」: 旅のことば and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20); none for a journey with neither. */
+  /**
+   * 「ノート」: 旅のことば and 旅の図鑑 in one dialog (NoteDialog.tsx; 2026-11-20); none for a journey with neither. Its 🗒️ in
+   * the header (HudRecordTools) and its item in ≡メニュー.
+   */
   onNote?: () => void;
   /** Its name: 「ノート」, or its page's name for a note of one page (noteName). */
   noteLabel?: string;
@@ -96,12 +102,12 @@ const noop = () => undefined;
  * The header of every game screen (UI redesign §3.1): row 1 shows where and when
  * the couple are and what they have (display only; the budget above the AP at
  * the right end; the place name is never cut: it wraps), row 2 holds what can be
- * pressed, side by side at its right end (user decision 2026-11-11): 「服」 once an outfit is bought (HudOutfits,
- * 2026-11-20), the held items, the screen's own tool (free time's 「地図」, a guide's or a battle's
- * 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」 until 2026-11-14) with
- * セーブ・ロード | 旅の記録・ノート | 画面の出典・ゲームの設定.
+ * pressed, side by side at its right end (user decision 2026-11-11): 「ノート」 and 「旅の記録」 (HudRecordTools,
+ * 2026-11-28), 「服」 once an outfit is bought (HudOutfits, 2026-11-20), the held items, the screen's own tool (free
+ * time's 「地図」, a guide's or a battle's 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」
+ * until 2026-11-14) with セーブ・ロード | 旅の記録・ノート | 画面の出典・ゲームの設定.
  * Over a story scene
- * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
+ * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, 「ノート」 and 「旅の記録」, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
  * Its height is measured as `--hud-h` for the reserves of the scenes it lies over.
  * Its feedback (2026-11-13 user decision; display only, for changes in play): the held items' キラリ, their
@@ -110,6 +116,7 @@ const noop = () => undefined;
  * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight), and an item taken out
  * (`# item_out:`) going back into them (ItemOutFlight). The session's short words (`toast`: a save, a load, a tour's end)
  * show in the same place for a moment, the clue's word (ClueRecordedNotice) and the item notices waiting behind them.
+ * A photo's print flies into 「旅の記録」 while it shows, else into ≡メニュー (chosen as the flight starts).
  */
 export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa, replaced = 0, seenItemIds, onItemsSeen, noteNew = [], holdNotices = false,
   itemFlight = null, itemOutFlight = null, photoFlight = null, toast = null, clueNotice = null, onClueNoticeDone, clock, onWearOutfit, ...actions }: {
@@ -203,6 +210,11 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
   const starsFlying = useCuePlaying(stars ? apCue?.count : undefined, FLIGHT_TOTAL_MS);
   const spentIcon = spentCue ? itemDefinition(spentCue.change[0])?.iconPath : undefined;
   const newItemIds = items.filter((item) => seenItemIds && !seenItemIds.has(item.id)).map((item) => item.id);
+  // Where a photo's print flies, chosen as its flight starts (the header's view may change meanwhile): 「旅の記録」 when it
+  // shows, else ≡メニュー. Kept after the flight, so the button it landed on does not bounce again.
+  const [printTo, setPrintTo] = useState<{ key: number; records: boolean } | null>(null);
+  if (photoFlight && printTo?.key !== photoFlight.key) setPrintTo({ key: photoFlight.key, records: shown });
+  const printKey = (records: boolean) => (printTo && printTo.records === records ? printTo.key : undefined);
   // In a tour's car (its leg's narration begun, the move not yet) the leg's label, not the place left behind; while the
   // scene shows a background that says where it is (a station, the hotel's alley in a finale), that place.
   const backdrop = sceneBackgroundId === undefined ? undefined : presentation.backgrounds[sceneBackgroundId];
@@ -228,6 +240,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
         </p>
       </div>
       <div className="hud-actions">
+        <HudRecordTools onNote={actions.onNote} noteLabel={actions.noteLabel} noteNew={noteNew} onRecords={actions.onRecords}
+          recordsNew={actions.recordsNew} photoMark={printKey(true)} />
         <HudOutfits options={outfitOptions} worn={game.outfit ?? null} canChange={canChangeOutfit(game)} onOpen={closeWaitMenu}
           onWear={(id) => onWearOutfit?.(id)} gained={outfitsCue?.count} fresh={(outfitsCue?.count ?? 0) > outfitsOpenedAt}
           onSeen={() => setOutfitsOpenedAt(outfitsCue?.count ?? 0)} />
@@ -236,7 +250,7 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
           newIds={newItemIds} onSeen={() => onItemsSeen?.(items.map((item) => item.id))} />
         <nav className="hud-tools" aria-label="旅の操作">
           <span id={HUD_SCREEN_TOOL_ID} className="hud-screen-tool" />
-          <HudMenu {...actions} noteNew={noteNew} photoMark={photoFlight?.key} />
+          <HudMenu {...actions} noteNew={noteNew} photoMark={printKey(false)} quickShown={shown} />
         </nav>
       </div>
       {/* One notice under the header at a time: the session's word first, then the clue's, then 「…を手に入れました」. */}
@@ -250,7 +264,8 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, scenePlaceJa,
       {coinsFlying && <HudFlight key={`coins-${budgetCue?.count}`} kind="coin" count={coins} to={budgetRef} />}
       {starsFlying && <HudFlight key={`stars-${apCue?.count}`} kind="star" count={stars} to={apRef} />}
       {itemFlight && <ItemShowFlight key={itemFlight.key} itemId={itemFlight.itemId} toBag={itemFlight.held && shown} />}
-      {photoFlight && <PhotoShowFlight key={`photo-${photoFlight.key}`} flight={photoFlight} toMenu={view !== "quiet"} />}
+      {photoFlight && <PhotoShowFlight key={`photo-${photoFlight.key}`} flight={photoFlight} toMenu={view !== "quiet"}
+        intoRecords={printTo?.key === photoFlight.key ? printTo.records : shown} />}
       {itemOutFlight && <ItemOutFlight key={`out-${itemOutFlight.key}`} itemId={itemOutFlight.itemId} toBag={itemOutFlight.held && shown} />}
     </div>
   );
@@ -307,6 +322,42 @@ const playApGain = (before: number, now: number) => {
 };
 
 /**
+ * 🗒️「ノート」 and 📱「旅の記録」 at the left of the header's pressables (2026-11-28 user decision: left of the held items,
+ * to open the note and the SNS and photos at once): white marks as the header's other tools, each opening its dialog as
+ * its item in ≡メニュー does (that item stays: the user's choice). They show as the held items do (journey-hud.css): over
+ * a talk that waits for no choice they keep their room, hidden, and ≡メニュー holds them. Their dots (`noteNew`, the
+ * note's pages with something new; `recordsNew`) are on them; ≡メニュー's own dot then leaves them out (HudMenu's
+ * `quickShown`). Pressing one closes the free-time band's open 待機 menu and puts the focus on the button, so the
+ * dialog gives it back as it closes (Safari does not focus a pressed button); the dialogs take no press for a moment
+ * (settlePresses), so the second tap of a double tap presses nothing in them. `photoMark`: a photo's print lands on
+ * 「旅の記録」 (it bounces, as ≡メニュー did).
+ */
+function HudRecordTools({ onNote, noteLabel = "ノート", noteNew, onRecords, recordsNew = false, photoMark }: {
+  onNote?: () => void; noteLabel?: string; noteNew: readonly string[]; onRecords: () => void; recordsNew?: boolean; photoMark?: number;
+}) {
+  const photoLanding = useCuePlaying(photoMark, PHOTO_LANDING_MS);
+  const press = (action: () => void) => (event: ReactMouseEvent<HTMLButtonElement>) => {
+    closeWaitMenu();
+    event.currentTarget.focus({ preventScroll: true });
+    action();
+  };
+  const newIn = noteNew.join("と");
+  return (
+    <div className="hud-records">
+      {onNote && <button type="button" className="hud-tool fx-host" data-testid="hud-note" onClick={press(onNote)}>
+        <Icon name="note" /><span className="hud-tool-word">{noteLabel}</span>
+        {newIn && <NewDot label={`${newIn}に新しい項目あり`} />}
+      </button>}
+      <button type="button" className="hud-tool fx-host" data-testid="hud-records" data-photo-landing={photoLanding || undefined}
+        onClick={press(onRecords)}>
+        <Icon name="phone" /><span className="hud-tool-word">旅の記録</span>
+        {recordsNew && <NewDot label="新しい写真・投稿あり" />}
+      </button>
+    </div>
+  );
+}
+
+/**
  * A press on the header's text (the place, the money) keeps the focus where it
  * is, as on a page's plain text, instead of dropping it to the page: the open
  * ≡メニュー panel then gives it back to its button (HudMenu).
@@ -322,7 +373,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * セーブ・ロード (one item since 2026-11-19: the dialog of the slots, SaveLoadDialog); 旅の記録 and ノート (旅のことば and
  * 旅の図鑑 in one dialog since 2026-11-20), what the journey collected; 画面の出典 (one item for free time's and a story
  * scene's photos since 2026-11-20, on every screen with the way into 出典・権利の一覧) and ゲームの設定 (U28). Debug's
- * 移動画面に戻る comes last.
+ * 移動画面に戻る comes last. 旅の記録 and ノート also have their own marks left of the held items (HudRecordTools, 2026-11-28).
  * Opening moves the focus to the first item (ArrowUp/ArrowDown also move between the items); Esc closes and
  * returns it to ≡メニュー; leaving the group with the focus or a press elsewhere
  * closes it. A tap on the page outside the header only closes it (DismissLayer).
@@ -333,14 +384,15 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * 画面の出典 opens its dialog at once (the second tap lands inside the dialog);
  * 旅の記録's dialog takes no press for that moment, as its photos open larger on a tap.
  * Its marks (2026-11-13 user decision): while 英語ノート has an entry the player has not
- * opened it on, or 旅のことば a word, or 旅の図鑑 a term (`noteNew`, their names), a dot on ≡メニュー and on 「ノート」, said in
- * their names;
+ * opened it on, or 旅のことば a word, or 旅の図鑑 a term (`noteNew`, their names), a dot on 「ノート」, said in
+ * their names, and on ≡メニュー while the header's own 「ノート」 and 「旅の記録」 are hidden (`quickShown` false: over a talk;
+ * while they show, the dots are theirs, not said twice);
  * a save that succeeded (`saveMark`) drops a small ribbon onto ≡メニュー, which fades.
  */
 function HudMenu({ onSaveLoad, saveMark = 0, onRecords, recordsNew = false, onNote, noteLabel = "ノート", onScreenCredits, onSettings,
-  onReturnToFreeTime, noteNew, photoMark }: MenuActions & { noteNew: readonly string[]; photoMark?: number }) {
+  onReturnToFreeTime, noteNew, photoMark, quickShown }: MenuActions & { noteNew: readonly string[]; photoMark?: number; quickShown: boolean }) {
   const newIn = noteNew.join("と");
-  const menuNewIn = [...(recordsNew ? ["旅の記録"] : []), ...noteNew].join("と");
+  const menuNewIn = quickShown ? "" : [...(recordsNew ? ["旅の記録"] : []), ...noteNew].join("と");
   // A photo's print lands on the button as its flight ends (PhotoShowFlight): the button bounces (hud-effects.css).
   const photoLanding = useCuePlaying(photoMark, PHOTO_LANDING_MS);
   const [open, setOpen] = useState(false);
@@ -424,8 +476,8 @@ function HudMenu({ onSaveLoad, saveMark = 0, onRecords, recordsNew = false, onNo
       <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
         <button type="button" onClick={choose(onSaveLoad)}><Icon name="save" />セーブ・ロード</button>
         <hr className="hud-menu-rule" />
-        <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録{recordsNew && <NewDot label="新しい写真・投稿あり" />}</button>
-        {onNote && <button type="button" onClick={choose(onNote)}><Icon name="book" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>}
+        <button type="button" onClick={choose(onRecords)}><Icon name="phone" />旅の記録{recordsNew && <NewDot label="新しい写真・投稿あり" />}</button>
+        {onNote && <button type="button" onClick={choose(onNote)}><Icon name="note" />{noteLabel}{newIn && <NewDot label={`${newIn}に新しい項目あり`} />}</button>}
         <hr className="hud-menu-rule" />
         {onScreenCredits && <button type="button" onClick={choose(onScreenCredits)}><Icon name="credit" />画面の出典</button>}
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>

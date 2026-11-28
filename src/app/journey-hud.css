@@ -116,13 +116,15 @@
 .hud-wallet .ap small { font-family: var(--ds-font-sans); font-size: var(--ds-text-small); letter-spacing: var(--ds-tracking-3); }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
-   2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
-   a guide's or a battle's 「手がかり帳」), then ≡メニュー. On other screens the tool's
-   place is empty and takes no room. Each is a white mark; its word is its name
+   2026-11-11): 「ノート」 and 「旅の記録」 (2026-11-28 user decision: 🗒️ and 📱 left of
+   the held items), 「服」, the held items, then the screen's own tool (free time's
+   「地図」, a guide's or a battle's 「手がかり帳」), then ≡メニュー. On other screens the
+   tool's place is empty and takes no room. Each is a white mark; its word is its name
    (visually hidden since 2026-11-25: the header as blended as it can be). */
 .hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: var(--ds-space-1); }
 .hud-actions > * { flex: none; }
-.hud-tools { display: flex; gap: var(--ds-space-1); }
+.hud-tools,
+.hud-records { display: flex; gap: var(--ds-space-1); }
 .hud-screen-tool { display: contents; }
 .hud-tool,
 .journey-hud .held-item-button,
@@ -175,10 +177,11 @@
 
 /* Over a story scene that waits for no choice (hud-view.ts, user decision
    2026-11-11) the header shows only the place and time and ≡メニュー. The budget
-   and AP, the held items and the screen's tool (手がかり帳) keep their room,
+   and AP, 「ノート」 and 「旅の記録」 (≡メニュー holds them too), the held items and the
+   screen's tool (手がかり帳) keep their room,
    so neither the header nor the scene under it moves when they show at a
    choice; hidden, they are neither seen, pressed, focused nor read. */
-.journey-hud[data-view="talk"] :is(.hud-wallet, .held-items, .hud-outfits, .hud-screen-tool > *) { visibility: hidden; }
+.journey-hud[data-view="talk"] :is(.hud-wallet, .hud-records, .held-items, .hud-outfits, .hud-screen-tool > *) { visibility: hidden; }
 /* In such a talk the header steps back further (2026-11-25 user decision, after comparing the talk with a romance game
    on an iPhone): the place and time show as the talk begins (and when its place changes: the plate's key), then fade
    away after five seconds, keeping their room (still read by screen readers); ≡メニュー stays, a round mark without its
