@@ -50,7 +50,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   padding-bottom: var(--ds-space-2);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 /* The picture: small beside the name (the lines are what is looked at); a vector picture fills its square, any other
    at its own size at most, so it stays sharp. */
@@ -79,9 +79,9 @@
   min-width: 0;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ds-tracking-1);
   overflow-wrap: anywhere;
 }
 /* What is written on it, numbered as the held items' detail numbers it; a list longer than the card's room scrolls
@@ -130,11 +130,11 @@
 }
 .item-out-lines li[data-highlighted] {
   color: var(--ds-ink);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 .item-out-lines li[data-highlighted]::marker {
   color: var(--ds-ink);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .item-out-lines li[data-highlighted] > span {
   padding: 0 var(--ds-space-1);

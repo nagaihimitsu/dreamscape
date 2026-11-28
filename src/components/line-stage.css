@@ -69,7 +69,7 @@
   width: 100%;
   height: calc(100% - var(--scene-top, 0px));
   object-fit: cover;
-  opacity: 0.66;
+  opacity: var(--ds-opacity-soft);
   /* Its edges dissolve into the grey; the top edge too (under the header), so no straight line shows there. */
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 18%),
     radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
@@ -129,7 +129,7 @@
   width: min(100%, 22rem);
   margin: var(--ds-space-2) auto var(--ds-space-2);
   padding: var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--phone-corner);
   background: var(--phone-body);
   box-shadow: var(--ds-shadow);
@@ -179,7 +179,7 @@
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
@@ -189,7 +189,7 @@
   padding: var(--ds-space-2) var(--ds-space-3);
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control);
   background: var(--ds-glass-press);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line);
   color: var(--ds-ink);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
@@ -200,7 +200,7 @@
 .phone-message[data-side="sent"] .phone-bubble {
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-pane);
   background: var(--ds-action-fill); /* white text at 6:1 or more */
-  box-shadow: inset 0 0 0 1px var(--ds-action-edge);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
   color: var(--ds-action-ink);
 }
 /* The line on screen is its whole bubble, in the bubble's own type: the bubble's padding is the line's, so a
@@ -218,7 +218,7 @@
 }
 :is(.vn-dialogue, .battle-dialogue) .phone-bubble .dialogue-next-mark {
   color: inherit;
-  opacity: 0.6;
+  opacity: var(--ds-opacity-soft);
 }
 
 /* # letter: what is written (a letter, a note, a card) as a sheet in the window, centred, its text larger, without the
@@ -239,7 +239,7 @@
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-press);
   color: var(--ds-ink);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
 }
@@ -254,9 +254,9 @@
   color: inherit;
   font-family: inherit;
   font-size: 1em;
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--letter-line);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -274,7 +274,7 @@
    moves when the English has been typed. */
 .letter-entry > .letter-line,
 :is(.vn-dialogue, .battle-dialogue) .letter-entry > p.dialogue-text {
-  letter-spacing: 0.01em;
+  letter-spacing: var(--ds-tracking-1);
 }
 .letter-sheet:not([data-kind="note"]) .letter-entry > .letter-line,
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet:not([data-kind="note"]) .letter-entry > p.dialogue-text {
@@ -290,7 +290,7 @@
   font-family: var(--ds-font-sans);
   font-size: calc(var(--letter-gloss) * 1em);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ds-tracking-1);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }

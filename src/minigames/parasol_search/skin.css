@@ -46,7 +46,7 @@
   container-type: size;
   border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
   background: var(--parasol-search-window-ground);
-  box-shadow: 0 0 0 3px var(--parasol-search-window-shadow), 0 0 0 7px var(--parasol-search-window-shadow-2), 0 6px 18px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--parasol-search-window-shadow), 0 0 0 var(--ds-edge-heavy) var(--parasol-search-window-shadow-2), 0 6px 18px color-mix(in srgb, var(--ds-shade) 60%, transparent);
 }
 /* A short field (a 320×568 phone; 2026-11-14 playtest: a street about 250px tall, the customers over the umbrellas): the
    window takes more of the field's height, and the things a little less of its width, so the rows keep apart. */
@@ -93,7 +93,7 @@ button.mg-parasol-search-spot { z-index: 2; pointer-events: auto; }
 .mg-parasol-search-spot[data-walker] { z-index: 2; }
 button.mg-parasol-search-spot[data-walker] { z-index: 3; }
 .mg-parasol-search-spot[aria-disabled="true"] { cursor: default; }
-.mg-parasol-search-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
+.mg-parasol-search-spot:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; }
 .mg-parasol-search-unit {
   position: absolute;
   left: 50%;
@@ -109,7 +109,7 @@ button.mg-parasol-search-spot[data-walker] { z-index: 3; }
    ones fade a little. */
 .mg-parasol-search-canopy { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 380ms ease-out, opacity 380ms ease-out; }
 .mg-parasol-search-spot[data-shown] .mg-parasol-search-canopy { transform: translate(14%, -42%) rotate(-10deg) scale(0.86); }
-.mg-parasol-search-spot[data-shown][data-searched] .mg-parasol-search-canopy { opacity: 0.62; }
+.mg-parasol-search-spot[data-shown][data-searched] .mg-parasol-search-canopy { opacity: var(--ds-opacity-soft); }
 /* A round's things come in (round 2's customers to the stalls, round 3's children into the street). */
 button.mg-parasol-search-spot { animation: mg-parasol-search-arrive 260ms ease-out both; }
 @keyframes mg-parasol-search-arrive { from { opacity: 0; } }
@@ -150,7 +150,7 @@ button.mg-parasol-search-spot { animation: mg-parasol-search-arrive 260ms ease-o
   bottom: 0;
   width: calc(4.8 * var(--u));
   height: calc(var(--reach) * 70%);
-  border: 1px solid var(--parasol-search-handover-arm-edge);
+  border: var(--ds-edge-thin) solid var(--parasol-search-handover-arm-edge);
   border-radius: calc(2.4 * var(--u));
   background: var(--parasol-search-handover-arm-ground);
 }
@@ -160,7 +160,7 @@ button.mg-parasol-search-spot { animation: mg-parasol-search-arrive 260ms ease-o
   bottom: calc(var(--reach) * 70% - 4.4 * var(--u));
   width: calc(8.8 * var(--u));
   aspect-ratio: 1;
-  border: 1px solid var(--parasol-search-handover-arm-edge);
+  border: var(--ds-edge-thin) solid var(--parasol-search-handover-arm-edge);
   border-radius: 50%;
   background: radial-gradient(circle at 50% 18%, var(--parasol-search-handover-tomato-ground) 0 22%, transparent 24%), var(--parasol-search-handover-tomato-ground-2);
 }

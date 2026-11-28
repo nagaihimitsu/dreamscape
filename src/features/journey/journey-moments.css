@@ -12,7 +12,7 @@
   --journey-moments-end-roll-sky-ground-3: #18191c;
   --journey-moments-end-roll-sky-ground-4: #0f1012;
   --journey-moments-end-roll-fast-ground: rgba(11, 11, 13, 0.72);
-  --journey-moments-end-roll-title-shade: rgba(255, 255, 255, 0.2);
+  --journey-moments-end-roll-title-glow: rgba(255, 255, 255, 0.2);
   --journey-moments-end-roll-bar-ground: rgba(11, 11, 13, 0.88);
   --journey-moments-end-roll-bar-edge: rgba(255, 255, 255, 0.18);
 }
@@ -69,17 +69,17 @@
   max-width: min(560px, 100%);
   color: var(--ds-on-dark);
   text-align: center;
-  text-shadow: 0 1px 8px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+  text-shadow: var(--ds-scene-text-shadow);
   animation: episode-title-text 2.4s ease both;
 }
-.episode-title-place { font-size: var(--ds-text-note); font-weight: 600; letter-spacing: 0.16em; overflow-wrap: anywhere; }
+.episode-title-place { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-3); overflow-wrap: anywhere; }
 .episode-title-rule { width: 56px; height: 1px; background: var(--ds-hairline); }
 .episode-title-name {
   font-family: var(--ds-font-sans);
   font-size: var(--episode-title-size);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ds-tracking-2);
   overflow-wrap: anywhere;
 }
 /* Dark from its first frame (2026-11-25 user request: the scene under it, or a ride's dark ground before it, never flashes
@@ -171,14 +171,14 @@
 }
 /* Centred in the screen; from its top when it does not fit (auto margins). */
 .packing-content { display: grid; justify-items: center; gap: var(--ds-space-3); width: min(360px, 100%); margin: auto; text-align: center; }
-.packing-title { font-family: var(--ds-font-sans); font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
-.packing-label { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; overflow-wrap: anywhere; }
+.packing-title { font-family: var(--ds-font-sans); font-size: var(--packing-title-size); font-weight: var(--ds-weight-medium); letter-spacing: var(--ds-tracking-2); overflow-wrap: anywhere; }
+.packing-label { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); overflow-wrap: anywhere; }
 .packing-case {
   position: relative;
   width: 100%;
   margin-top: var(--ds-space-4);
   padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-3);
-  border: 2px solid var(--ds-dark-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-pane);
   background: var(--journey-moments-packing-case-ground);
   box-shadow: inset 0 -6px 0 color-mix(in srgb, var(--ds-dark-2) 12%, transparent), var(--ds-shadow);
@@ -190,12 +190,12 @@
   width: 64px;
   height: 18px;
   margin-left: -32px;
-  border: 2px solid var(--ds-dark-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-bottom: 0;
   border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
 }
 .packing-left { width: 100%; padding: var(--ds-space-2) var(--ds-space-4); border-radius: var(--ds-radius-pane); background: color-mix(in srgb, var(--ds-light) 55%, transparent); }
-.packing-left .packing-items { opacity: 0.75; }
+.packing-left .packing-items { opacity: var(--ds-opacity-dim); }
 .packing-items { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ds-space-2) var(--ds-space-4); margin: 0; padding: 0; list-style: none; }
 .packing-items li {
   display: inline-flex;
@@ -209,7 +209,7 @@
   animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
 }
 .packing-items img { flex: none; width: 32px; height: 32px; }
-.packing-next { margin-top: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: 0.08em; }
+.packing-next { margin-top: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: var(--ds-tracking-2); }
 @keyframes packing-scene { 0% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes packing-item { from { opacity: 0; transform: translateY(-10px); } }
 .packing-scene.is-reduced, .packing-scene.is-reduced .packing-items li { animation: none; }
@@ -220,12 +220,12 @@
 /* ── 出発の確認の品物 ── (DepartureLuggage, 2026-11-13) in the departure's dialog: each part told by its small heading, the
    items as icon and name in a wrapping row; what stays behind dimmed a little, as in the packing. No side accent. */
 .departure-items { margin: var(--ds-space-4) 0 0; }
-.departure-items h3 { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; letter-spacing: 0.06em; line-height: var(--ds-leading-body); }
+.departure-items h3 { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); line-height: var(--ds-leading-body); }
 .departure-items ul { display: flex; flex-wrap: wrap; gap: var(--ds-space-2) var(--ds-space-4); margin: 0; padding: 0; list-style: none; }
 .departure-items li { display: inline-flex; align-items: center; gap: var(--ds-space-2); max-width: 100%; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .departure-items img { flex: none; width: 28px; height: 28px; }
-.departure-items.is-left img { opacity: 0.75; }
-.departure-items + .primary { margin-top: var(--ds-space-5); }
+.departure-items.is-left img { opacity: var(--ds-opacity-dim); }
+.departure-items + .primary { margin-top: var(--ds-space-6); }
 
 /* ── 話の終わりの「完」の判 ── (ChapterStamp, 2026-11-13) a round seal in red-brown ink (#8a3324; the same ink as 旅の記録's small
    seal, city.css) on light ground, a double ring, tilted a little, in the middle of the screen. It takes no tap. It drops from
@@ -247,12 +247,12 @@
   gap: var(--ds-space-1);
   width: 152px;
   height: 152px;
-  padding: var(--ds-space-5);
-  border: 4px solid var(--ds-ink);
+  padding: var(--ds-space-6);
+  border: var(--ds-edge-thick) solid var(--ds-ink);
   border-radius: 50%;
   background: color-mix(in srgb, var(--ds-surface) 94%, transparent);
   color: var(--ds-ink);
-  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--ds-surface) 94%, transparent), inset 0 0 0 5px var(--ds-ink), 0 4px 18px color-mix(in srgb, var(--ds-shade) 28%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-surface) 94%, transparent), inset 0 0 0 var(--ds-edge-heavy) var(--ds-ink), var(--ds-shadow);
   text-align: center;
   transform: rotate(-8deg);
   animation: chapter-stamp-drop 1.6s both;
@@ -262,14 +262,14 @@
   overflow: hidden;
   max-width: 100%;
   font-size: var(--ds-text-small);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
-.chapter-stamp-mark { font-family: var(--ds-font-sans); font-size: var(--chapter-stamp-size); font-weight: 700; line-height: var(--ds-leading-tight); }
+.chapter-stamp-mark { font-family: var(--ds-font-sans); font-size: var(--chapter-stamp-size); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); }
 @keyframes chapter-stamp-drop {
   0% { opacity: 0; transform: rotate(-8deg) scale(1.8); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
   16% { opacity: 1; transform: rotate(-8deg) scale(0.92); animation-timing-function: var(--ease-out); }
@@ -344,12 +344,12 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   gap: var(--ds-space-2);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-3);
-  border: 1px solid var(--roll-line);
+  border: var(--ds-edge-thin) solid var(--roll-line);
   border-radius: var(--ds-radius-pill);
   background: var(--journey-moments-end-roll-fast-ground);
   color: var(--roll-light);
   font-size: var(--ds-text-small);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ds-tracking-4);
   pointer-events: none;
 }
 .end-roll-fast span { font-size: var(--ds-text-small); letter-spacing: 0; }
@@ -361,10 +361,10 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   mask-image: linear-gradient(180deg, transparent 0, var(--ds-shade) 24px, var(--ds-shade) calc(100% - 24px), transparent 100%);
 }
 .end-roll.is-still .end-roll-scroller::-webkit-scrollbar { display: initial; }
-.end-roll-scroller:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: -3px; }
+.end-roll-scroller:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: -3px; }
 /* Rolling: the first lines start half way down, the last lines end mid-screen. */
-.end-roll-content { width: min(480px, 100%); margin: 0 auto; padding: 50dvh var(--ds-space-5) 50dvh; text-align: center; }
-.end-roll.is-still .end-roll-content { padding: calc(40px + env(safe-area-inset-top)) var(--ds-space-5) var(--ds-space-12); }
+.end-roll-content { width: min(480px, 100%); margin: 0 auto; padding: 50dvh var(--ds-space-6) 50dvh; text-align: center; }
+.end-roll.is-still .end-roll-content { padding: calc(40px + env(safe-area-inset-top)) var(--ds-space-6) var(--ds-space-8); }
 .end-roll-opening { display: grid; justify-items: center; gap: var(--ds-space-4); }
 /* 「旅の終わり」 between two short white lines. */
 .end-roll-eyebrow {
@@ -374,8 +374,8 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   margin: 0;
   color: var(--roll-light);
   font-size: var(--ds-text-small);
-  font-weight: 500;
-  letter-spacing: 0.5em;
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-4);
   text-indent: 0.5em;
 }
 .end-roll-eyebrow::before, .end-roll-eyebrow::after { content: ""; width: 36px; height: 1px; background: var(--roll-line); }
@@ -384,10 +384,10 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   margin: 0;
   font-family: var(--ds-font-sans);
   font-size: var(--end-roll-title-size);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.06em;
-  text-shadow: 0 0 24px var(--journey-moments-end-roll-title-shade);
+  letter-spacing: var(--ds-tracking-2);
+  text-shadow: 0 0 24px var(--journey-moments-end-roll-title-glow);
 }
 /* A small diamond between two fading lines. */
 .end-roll-ornament {
@@ -405,30 +405,30 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   left: 50%;
   width: 6px;
   height: 6px;
-  border: 1px solid var(--roll-light);
+  border: var(--ds-edge-thin) solid var(--roll-light);
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .end-roll-city { margin-top: 30dvh; }
-.end-roll.is-still .end-roll-city { margin-top: var(--ds-space-20); }
+.end-roll.is-still .end-roll-city { margin-top: var(--ds-space-8); }
 .end-roll-chapter {
   margin: 0 0 var(--ds-space-2);
   color: var(--roll-light);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-note);
-  letter-spacing: 0.4em;
+  letter-spacing: var(--ds-tracking-4);
   text-indent: 0.4em;
 }
 .end-roll-city h3 {
-  margin: 0 0 var(--ds-space-10);
+  margin: 0 0 var(--ds-space-8);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  font-weight: 500;
-  letter-spacing: 0.24em;
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-4);
   text-indent: 0.24em;
   overflow-wrap: anywhere;
 }
 .end-roll-city h3::after { content: ""; display: block; width: 28px; height: 1px; margin: var(--ds-space-4) auto 0; background: var(--roll-line); }
-.end-roll-photos { display: grid; gap: var(--ds-space-12); margin: 0; padding: 0; list-style: none; }
+.end-roll-photos { display: grid; gap: var(--ds-space-8); margin: 0; padding: 0; list-style: none; }
 /* The photos sit left and right in turn, each in a thin print frame; the caption keeps to the photo's side. */
 .end-roll-photos li { width: 88%; }
 .end-roll-photos li:nth-child(even) { justify-self: end; }
@@ -442,17 +442,17 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   aspect-ratio: 3 / 2;
   object-fit: cover;
   padding: var(--ds-space-2);
-  border: 1px solid color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
+  border: var(--ds-edge-thin) solid color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
   border-radius: var(--ds-radius-control);
   background: color-mix(in srgb, var(--ds-on-dark) 5%, transparent);
-  box-shadow: 0 18px 40px color-mix(in srgb, var(--ds-shade) 45%, transparent);
+  box-shadow: var(--ds-shadow-large);
 }
 .end-roll-photos figcaption {
   margin-top: var(--ds-space-3);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ds-tracking-2);
   text-align: left;
   overflow-wrap: anywhere;
 }
@@ -474,16 +474,16 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   .end-roll .end-roll-photos figure { animation: none; }
 }
 .end-roll-last { display: grid; justify-items: center; gap: var(--ds-space-4); margin-top: 36dvh; }
-.end-roll.is-still .end-roll-last { margin-top: var(--ds-space-24); }
+.end-roll.is-still .end-roll-last { margin-top: var(--ds-space-8); }
 .end-roll-fin {
   margin: 0;
   color: var(--roll-light);
   font-family: var(--ds-font-sans);
   font-size: var(--end-roll-fin-size);
   font-style: italic;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ds-tracking-3);
 }
-.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: var(--ds-text-small); letter-spacing: 0.3em; overflow-wrap: anywhere; }
+.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: var(--ds-text-small); letter-spacing: var(--ds-tracking-4); overflow-wrap: anywhere; }
 .end-roll-bar {
   position: relative;
   flex: none;
@@ -491,6 +491,6 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   gap: var(--ds-space-2);
   padding: var(--ds-space-2) var(--ds-space-4) calc(10px + env(safe-area-inset-bottom));
   background: var(--journey-moments-end-roll-bar-ground);
-  border-top: 1px solid var(--journey-moments-end-roll-bar-edge);
+  border-top: var(--ds-edge-thin) solid var(--journey-moments-end-roll-bar-edge);
 }
 .end-roll-bar button { flex: 1 1 0; min-height: 48px; margin: 0; justify-content: center; text-align: center; }

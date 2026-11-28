@@ -79,9 +79,9 @@
   box-shadow: var(--ds-shadow-small);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ds-tracking-1);
 }
 .free-time-banner span { min-width: 0; overflow-wrap: anywhere; }
 .free-time-banner .icon { flex: none; width: 20px; height: 20px; color: var(--ds-ink-muted); }
@@ -104,7 +104,7 @@
   color: var(--ds-action-ink);
   text-shadow: var(--ds-action-text-shadow);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 
 /* F20–F22: the remaining actions of the city, one card without a heading. */
@@ -112,7 +112,7 @@
   display: grid;
   gap: var(--ds-space-2);
   padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   box-shadow: var(--ds-shadow);
@@ -128,12 +128,12 @@
 dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
 .photo-credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
 .photo-credits-list { display: grid; gap: var(--ds-space-3); margin: var(--ds-space-2) 0 0; padding: 0; list-style: none; }
-.photo-credits-list li { display: flex; gap: var(--ds-space-3); align-items: flex-start; padding-top: var(--ds-space-3); border-top: 1px solid var(--ds-line); }
+.photo-credits-list li { display: flex; gap: var(--ds-space-3); align-items: flex-start; padding-top: var(--ds-space-3); border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* Only the recap's photo (the night screen): no note above the list, so its first entry needs no second line under the title bar. */
 .photo-credits-modal .modal-title-bar + .photo-credits-list > li:first-child { padding-top: 0; border-top: 0; }
 .photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: var(--ds-radius-control); object-fit: cover; }
 .photo-credits-list div { min-width: 0; }
-.photo-credits-list h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: 600; }
+.photo-credits-list h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
 .photo-credits-list p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 
 /* The visible height with the browser's bars shown, measured by FreeTimeHub. */

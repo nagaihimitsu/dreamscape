@@ -62,10 +62,10 @@
 .mg-baraat-dance-drum {
   position: absolute;
   inset: 8%;
-  border: 6px solid var(--baraat-dance-drum-edge);
+  border: var(--ds-edge-heavy) solid var(--baraat-dance-drum-edge);
   border-radius: 50%;
   background: radial-gradient(circle at 45% 40%, var(--baraat-dance-drum-ground), var(--baraat-dance-drum-ground-2) 70%);
-  box-shadow: 0 0 0 3px var(--baraat-dance-drum-shadow), 0 0 0 5px var(--baraat-dance-drum-shadow-2), 0 6px 14px color-mix(in srgb, var(--ds-shade) 45%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--baraat-dance-drum-shadow), 0 0 0 var(--ds-edge-heavy) var(--baraat-dance-drum-shadow-2), 0 6px 14px color-mix(in srgb, var(--ds-shade) 45%, transparent);
   transition: transform 90ms ease-out;
 }
 /* The stick, raised; down on the beat. */
@@ -77,13 +77,13 @@
   height: 52%;
   border-radius: var(--ds-radius-control);
   background: linear-gradient(var(--baraat-dance-drum-ground-3), var(--baraat-dance-drum-ground-4));
-  box-shadow: 0 0 0 1.5px var(--baraat-dance-drum-shadow-2);
+  box-shadow: 0 0 0 var(--ds-edge) var(--baraat-dance-drum-shadow-2);
   transform-origin: 50% 100%;
   transform: rotate(32deg);
 }
 .mg-baraat-dance[data-beat] .mg-baraat-dance-drum {
   background: radial-gradient(circle at 45% 40%, var(--baraat-dance-drum-ground-5), var(--baraat-dance-drum-ground-6) 70%);
-  box-shadow: 0 0 0 3px var(--ds-game-mark), 0 0 0 5px var(--baraat-dance-drum-shadow-2), 0 0 22px color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--ds-game-mark), 0 0 0 var(--ds-edge-heavy) var(--baraat-dance-drum-shadow-2), 0 0 22px color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
   transform: scale(1.08);
 }
 /* The last two beats: the big 「ドン・ドン」. */
@@ -99,7 +99,7 @@
   top: 50%;
   color: var(--baraat-dance-count-ink);
   font-size: var(--baraat-count-size);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   transform: translate(-50%, -50%);
   animation: mg-baraat-dance-count 400ms ease-out both;
@@ -116,7 +116,7 @@
   align-items: center;
   color: var(--ds-on-dark);
   font-size: var(--ds-text-large);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   white-space: nowrap;
   -webkit-text-stroke: 3px var(--baraat-dance-drum-shadow-2);
@@ -139,7 +139,7 @@
   background: var(--baraat-dance-faster-ground-088);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-large);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   white-space: nowrap;
   transform: translateX(-50%);
   animation: mg-baraat-dance-grade 300ms ease-out both;
@@ -191,7 +191,7 @@
   background: color-mix(in srgb, var(--ds-shade) 82%, transparent);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   white-space: nowrap;
   transform: translateX(-50%);
   animation: mg-baraat-dance-grade 200ms ease-out both;

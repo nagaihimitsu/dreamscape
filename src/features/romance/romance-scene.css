@@ -94,10 +94,10 @@
   box-shadow: var(--ds-action-shadow);
   color: var(--ds-action-ink);
   text-shadow: var(--ds-action-text-shadow);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   text-decoration: none;
 }
-.date-reference a:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-dark); }
+.date-reference a:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }
 /* The portrait and the window are independent layers over the same backdrop.
    The layer is sized and placed on the area below the header (the whole scene
    where none lies over it) and clipped at that area's top edge only: the top 10.714 %
@@ -201,7 +201,7 @@
   background: var(--vn-choice-bg);
   color: var(--ds-action-ink);
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   pointer-events: none;
   animation: vn-choice-away 220ms ease-in forwards;
 }
@@ -225,7 +225,7 @@
 .vn-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
-.vn-dialogue .next { min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-5); }
+.vn-dialogue .next { min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-6); }
 /* A scene's last step (「… →」) keeps to the window's lower right corner, over the room under the words, so the window
    keeps its size; it takes the place of the next mark. */
 .vn-scene .vn-window-body > .next {
@@ -233,7 +233,7 @@
   right: var(--vn-window-padding);
   bottom: 0;
   z-index: 1;
-  padding: 0 0 0 var(--ds-space-5);
+  padding: 0 0 0 var(--ds-space-6);
 }
 .vn-window-body:has(> .next) .dialogue-next-mark { display: none; }
 .vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
@@ -277,7 +277,7 @@
   background: var(--vn-window-bg);
   color: var(--vn-text);
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 .vn-choices .choice {
   justify-self: stretch;
@@ -290,7 +290,7 @@
   box-shadow: var(--vn-choice-shadow);
   color: var(--ds-action-ink);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   text-shadow: var(--ds-action-text-shadow);
 }
@@ -306,7 +306,7 @@
 .vn-choices .choice-number { color: var(--ds-glass-mark); }
 .vn-choices .choice:hover:enabled, .vn-choices .choice:focus-visible { filter: brightness(1.08); }
 .vn-choices .choice:active:enabled { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
-.vn-choices .choice:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-dark); }
+.vn-choices .choice:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }
 /* One that cannot be chosen yet or at all: the glass, its words muted (its reason under it). */
 .vn-choices .choice:disabled {
   opacity: 1;

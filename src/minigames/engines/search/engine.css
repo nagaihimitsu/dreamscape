@@ -17,8 +17,8 @@
   justify-content: center;
   min-height: 56px;
   font-size: var(--ds-text-large);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   touch-action: manipulation;
 }

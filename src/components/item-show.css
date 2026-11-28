@@ -31,7 +31,7 @@
   width: max-content;
   min-width: 140px;
   max-width: min(100%, 260px);
-  padding: var(--ds-space-4) var(--ds-space-5) var(--ds-space-3);
+  padding: var(--ds-space-4) var(--ds-space-6) var(--ds-space-3);
   overflow: hidden;
   border: 0;
   border-radius: var(--ds-radius-large);
@@ -82,9 +82,9 @@
   max-width: 100%;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ds-tracking-1);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -148,13 +148,13 @@
 /* Reduced motion: the card fades in and out where it is, without its scale, gleam, breathing glow or flight. */
 .reduce-motion .item-show-card { animation-name: item-show-fade-in; }
 .reduce-motion .item-show-gleam { display: none; }
-.reduce-motion .item-show-picture::before { animation: none; opacity: 0.8; }
+.reduce-motion .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
 .reduce-motion .item-show-card.item-show-leaving,
 .reduce-motion .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
 @media (prefers-reduced-motion: reduce) {
   .item-show-card { animation-name: item-show-fade-in; }
   .item-show-gleam { display: none; }
-  .item-show-picture::before { animation: none; opacity: 0.8; }
+  .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
   .item-show-card.item-show-leaving,
   .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
 }

@@ -34,12 +34,12 @@
 /* The skin's meter over the hint: its name, a bar with a mark (where the outcome changes), the value in words. The bar
    fills brighter past the mark (and the words say the number: not colour alone). */
 .mg-engine-shape-drag .mg-shape-drag-meter { display: flex; gap: var(--ds-space-2); align-items: center; margin: 0 0 var(--ds-space-2); }
-.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: var(--ds-text-body); font-weight: 700; }
+.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
 .mg-engine-shape-drag .mg-shape-drag-meter-bar {
   position: relative;
   flex: 1 1 auto;
   height: 12px;
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: color-mix(in srgb, var(--ds-dark) 60%, transparent);
 }
@@ -60,17 +60,17 @@
   width: 3px;
   border-radius: var(--ds-radius-pill);
   background: var(--ds-on-dark);
-  box-shadow: 0 0 0 1px var(--ds-dark);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-dark);
   transform: translateX(-50%);
 }
-.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: var(--ds-text-body); font-weight: 700; text-align: right; }
+.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); text-align: right; }
 .mg-engine-shape-drag .mg-shape-drag-done {
   justify-content: center;
   width: 100%;
   min-height: 64px;
   font-size: var(--ds-text-heading);
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-4);
   text-align: center;
   touch-action: manipulation;
 }
@@ -92,4 +92,4 @@
   .mg-engine-shape-drag .mg-shape-drag-done, .mg-engine-shape-drag .mg-shape-drag-auto { min-height: 54px; }
 }
 /* A warning in place of the hint (the skin's: 「生地がうすくなってきた」): brighter and bold. */
-.mg-engine-shape-drag .mg-shape-drag-hint[data-note] { color: var(--shape-drag-hint-ink); font-weight: 700; }
+.mg-engine-shape-drag .mg-shape-drag-hint[data-note] { color: var(--shape-drag-hint-ink); font-weight: var(--ds-weight-bold); }

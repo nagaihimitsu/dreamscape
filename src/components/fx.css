@@ -79,6 +79,6 @@
   height: 9px;
   border-radius: 50%;
   background: var(--ds-light);
-  box-shadow: 0 0 0 1.5px var(--ds-dark);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark);
   pointer-events: none;
 }

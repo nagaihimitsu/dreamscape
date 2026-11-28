@@ -41,7 +41,7 @@
 .selected-evidence {
   margin: var(--ds-space-4) 0;
   padding: var(--ds-space-4);
-  border: 1px dashed var(--ds-ink-muted);
+  border: var(--ds-edge-thin) dashed var(--ds-ink-muted);
   border-radius: var(--ds-radius-control);
 }
 .selected-evidence p {

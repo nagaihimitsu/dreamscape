@@ -51,7 +51,7 @@
   padding: var(--ds-space-2) var(--ds-space-2);
   color: var(--ds-ink);
   background: var(--ds-field);
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
 }
 .review-navigation {
@@ -100,7 +100,7 @@
 }
 .review-question details {
   padding: var(--ds-space-2) 0;
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .review-question summary {
   cursor: pointer;
@@ -197,7 +197,7 @@
   min-height: 44px;
   margin: 0;
   padding: 0;
-  border: 1px solid transparent;
+  border: var(--ds-edge-thin) solid transparent;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
@@ -209,7 +209,7 @@
   height: 22px;
 }
 .read-aloud[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
   background: var(--ds-surface-chosen);
 }
 /* A word's meaning: a display-only light ground note under the sentence. */
@@ -217,9 +217,9 @@
   display: block;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-body);
-  letter-spacing: normal;
+  letter-spacing: 0;
   color: var(--ds-ink);
   background: var(--ds-surface-chosen);
   border-radius: var(--ds-radius-control);
@@ -260,14 +260,14 @@
   min-height: 44px;
   justify-self: start;
   padding: var(--ds-space-2) var(--ds-space-4);
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
 .answer-submit:disabled {
-  opacity: 0.55;
+  opacity: var(--ds-opacity-soft);
   cursor: default;
 }
 .review-translation-toggle {
@@ -338,7 +338,7 @@
   flex-direction: column;
   gap: var(--ds-space-1);
   overflow: hidden;
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   box-shadow: var(--ds-shadow);
@@ -347,22 +347,22 @@
 }
 .word-card-face.is-front { justify-content: center; min-height: 64px; padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); }
 .word-card-face.is-back { justify-content: flex-start; padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); background: var(--ds-surface-chosen); transform: rotateY(180deg); }
-.word-card-word { font-size: var(--ds-text-large); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.word-card-meaning { font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.word-card-word { font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.word-card-meaning { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .word-card-sentence { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* That the card turns: a small mark in its corner (decorative). */
 .word-card-turn { position: absolute; right: 8px; bottom: 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .word-card:focus-visible { outline: none; box-shadow: none; }
-.word-card:focus-visible .word-card-face { outline: 3px solid var(--ds-focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--ds-dark); }
+.word-card:focus-visible .word-card-face { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 1px; box-shadow: var(--ds-focus-halo); }
 /* No turning motion with reduced motion: the other face shows at once. */
 .reduce-motion .word-card-inner { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .word-card-inner { transition: none; }
 }
-.word-book-credits { margin-top: var(--ds-space-4); padding-top: var(--ds-space-2); border-top: 1px solid var(--ds-line); }
+.word-book-credits { margin-top: var(--ds-space-4); padding-top: var(--ds-space-2); border-top: var(--ds-edge-thin) solid var(--ds-line); }
 .word-book-credits summary { min-height: 44px; padding: var(--ds-space-2) 0; cursor: pointer; }
 .word-book-credits ul { margin: 0; padding: 0; list-style: none; }
-.word-book-credits li { padding: var(--ds-space-2) 0; border-top: 1px solid var(--ds-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.word-book-credits li { padding: var(--ds-space-2) 0; border-top: var(--ds-edge-thin) solid var(--ds-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .word-book-credits h4 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); }
 .word-book-credits p { margin: var(--ds-space-1) 0; overflow-wrap: anywhere; }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */

@@ -106,7 +106,7 @@
   cursor: pointer;
   touch-action: pan-x;
 }
-.mg-nahargarh-hide-seek-bay:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: -6px; }
+.mg-nahargarh-hide-seek-bay:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: -6px; }
 .mg-nahargarh-hide-seek-bay[aria-disabled="true"] { cursor: default; }
 /* The use's doorway photo: the back layer of each bay (the host's mg-photo: a little greyer, darker and soft). */
 .mg-nahargarh-hide-seek[data-art-bay] .mg-nahargarh-hide-seek-bay { background: none; }
@@ -121,7 +121,7 @@
   bottom: 12%;
   overflow: hidden;
   border-radius: 50% 50% 0 0 / 28% 28% 0 0;
-  box-shadow: 0 0 0 4px var(--nahargarh-hide-seek-door-shadow), 0 0 0 6px var(--nahargarh-hide-seek-door-shadow-045), 0 6px 10px color-mix(in srgb, var(--ds-shade) 25%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--nahargarh-hide-seek-door-shadow), 0 0 0 var(--ds-edge-heavy) var(--nahargarh-hide-seek-door-shadow-045), 0 6px 10px color-mix(in srgb, var(--ds-shade) 25%, transparent);
 }
 .mg-nahargarh-hide-seek-room {
   position: absolute;
@@ -143,7 +143,7 @@
   background:
     radial-gradient(circle, var(--nahargarh-hide-seek-leaf-ground) 0 1.6px, transparent 2.2px) 0 0 / 12px 16px,
     linear-gradient(to bottom, var(--nahargarh-hide-seek-leaf-ground-2), var(--nahargarh-hide-seek-leaf-ground-3));
-  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transition: transform 420ms cubic-bezier(0.2, 0.8, 0.3, 1), filter 420ms;
 }
 .mg-nahargarh-hide-seek-leaf-left { left: 0; transform-origin: 0 50%; }
@@ -154,7 +154,7 @@
   top: 54%;
   width: max(8px, 14%);
   aspect-ratio: 1;
-  border: 2px solid var(--nahargarh-hide-seek-leaf-ground);
+  border: var(--ds-edge) solid var(--nahargarh-hide-seek-leaf-ground);
   border-radius: 50%;
   box-shadow: 0 1px 1px color-mix(in srgb, var(--ds-shade) 60%, transparent);
 }
@@ -186,7 +186,7 @@
   pointer-events: none;
   transition: opacity 120ms linear;
 }
-.mg-nahargarh-hide-seek-fingers > i { display: block; width: 13px; height: 7px; border: 1px solid var(--nahargarh-hide-seek-fingers-edge); border-radius: var(--ds-radius-pill) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-pill); background: var(--nahargarh-hide-seek-fingers-ground); }
+.mg-nahargarh-hide-seek-fingers > i { display: block; width: 13px; height: 7px; border: var(--ds-edge-thin) solid var(--nahargarh-hide-seek-fingers-edge); border-radius: var(--ds-radius-pill) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-pill); background: var(--nahargarh-hide-seek-fingers-ground); }
 .mg-nahargarh-hide-seek-bay[data-peek="peek"] .mg-nahargarh-hide-seek-fingers { opacity: 1; }
 [data-still] .mg-nahargarh-hide-seek-leaf, [data-still] .mg-nahargarh-hide-seek-fingers { transition: none; }
 /* Her gasp through the wall of the room next to hers, on her side. */
@@ -199,7 +199,7 @@
   background: color-mix(in srgb, var(--ds-on-dark) 92%, transparent);
   color: var(--nahargarh-hide-seek-gasp-ink);
   font-size: var(--ds-text-large);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   pointer-events: none;
   animation: mg-nahargarh-hide-seek-giggle-edge 1400ms ease-out both;
@@ -207,7 +207,7 @@
 .mg-nahargarh-hide-seek-gasp[data-toward="right"] { right: 2px; }
 .mg-nahargarh-hide-seek-gasp[data-toward="left"] { left: 2px; }
 /* Her 「まだかな」 (muffled, a little smaller) and a peek's 「ちらっ」. */
-.mg-nahargarh-hide-seek-giggle[data-kind="ask"] { font-size: var(--ds-text-note); font-weight: 600; }
+.mg-nahargarh-hide-seek-giggle[data-kind="ask"] { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 .mg-nahargarh-hide-seek-giggle[data-kind="peek"] { font-size: var(--ds-text-body); }
 /* Her second call's giggle, louder. */
 .mg-nahargarh-hide-seek-giggle-line[data-call="2"] { font-size: var(--ds-text-large); }
@@ -297,8 +297,8 @@
   transform: translateX(-50%);
   animation: mg-nahargarh-hide-seek-echo 1400ms ease-out both;
 }
-.mg-nahargarh-hide-seek-echo[data-hers] { font-size: var(--ds-text-body); font-weight: 700; }
-.mg-nahargarh-hide-seek-giggle-line { font-size: var(--ds-text-note); font-weight: 700; color: var(--nahargarh-hide-seek-gasp-ink); }
+.mg-nahargarh-hide-seek-echo[data-hers] { font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+.mg-nahargarh-hide-seek-giggle-line { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); color: var(--nahargarh-hide-seek-gasp-ink); }
 @keyframes mg-nahargarh-hide-seek-echo {
   0% { opacity: 0; transform: translate(-50%, 8px); }
   20%, 70% { opacity: 1; transform: translate(-50%, 0); }
@@ -315,7 +315,7 @@
   background: color-mix(in srgb, var(--ds-on-dark) 92%, transparent);
   color: var(--nahargarh-hide-seek-gasp-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   white-space: nowrap;
   pointer-events: none;

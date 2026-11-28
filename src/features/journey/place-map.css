@@ -19,34 +19,34 @@
   min-height: 44px;
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-1);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
 }
 .travel-map-expand .icon { width: 18px; height: 18px; color: var(--ds-ink); }
 /* The legend names each mark by its shape (§3.5); each item stays whole. */
-.travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-3); margin: 0; font-size: var(--ds-text-small); font-weight: 500; line-height: var(--ds-leading-body); }
+.travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-3); margin: 0; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
 .travel-map-legend > span { white-space: nowrap; }
 /* The stamp of 「行った場所」 as the marks carry it (travel-menu.css .is-visited). */
-.travel-map-legend-visited { display: inline-grid; place-items: center; width: 14px; height: 14px; margin: 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: 700; line-height: 1; vertical-align: -1px; }
+.travel-map-legend-visited { display: inline-grid; place-items: center; width: 14px; height: 14px; margin: 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; vertical-align: -1px; }
 /* The trail (PlaceMap, visited-places.ts trailPlaceIds): a place been to that has no mark of its own keeps the stamp
    alone, smaller and under the marks; it is not a control (no taps, no focus). */
 .travel-map-trail-wrap { background: transparent; border: 0; pointer-events: none; }
-.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: 700; line-height: 1; box-shadow: 0 0 0 1.5px var(--ds-light), 0 1px 3px color-mix(in srgb, var(--ds-shade) 25%, transparent); }
+.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-small); }
 .free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: var(--ds-space-2); }
 .travel-map-error { margin: var(--ds-space-1) 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
-.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 var(--ds-space-1) 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-dark); box-shadow: 0 0 0 1.5px var(--ds-light), 0 0 0 2.5px var(--ds-dark); vertical-align: -1px; }
+.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 var(--ds-space-1) 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-dark); box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-dark); vertical-align: -1px; }
 /* The map's zoom: the light pane to press (styles.css --ds-press-shadow; 2026-11-27 user request: one UI), its two
    presses on the light ground with the glass's hairline between them. */
-.leaflet-container .leaflet-control-zoom { border: 1.5px solid transparent; border-radius: var(--ds-radius-pane); overflow: hidden; box-shadow: var(--ds-press-shadow); }
+.leaflet-container .leaflet-control-zoom { border: var(--ds-edge) solid transparent; border-radius: var(--ds-radius-pane); overflow: hidden; box-shadow: var(--ds-press-shadow); }
 .leaflet-container .leaflet-control-zoom a { background: var(--ds-field); color: var(--ds-ink); border-bottom-color: var(--ds-glass-line); }
 .leaflet-container .leaflet-control-zoom a.leaflet-disabled { background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); }
 
@@ -67,7 +67,7 @@
 .free-time-hub[data-map-sticky="false"] .travel-map { position: relative; top: auto; }
 .free-time-hub .travel-map-frame {
   height: clamp(140px, calc(100svh - var(--hud-h, 96px) - var(--bottom-h, 60px) - 272px), 210px);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-control);
 }
 .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: -8px; }
@@ -111,7 +111,7 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
 .travel-map-modal-place select {
   -webkit-appearance: none;
   appearance: none;
-  padding: 0 var(--ds-space-10) 0 var(--ds-space-4);
+  padding: 0 var(--ds-space-8) 0 var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-pane);
   background-color: var(--ds-surface);
@@ -119,7 +119,7 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
   background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
   background-size: 6px 6px;
   background-repeat: no-repeat;
-  box-shadow: inset 0 0 0 1px var(--ds-field-edge), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-field-edge), var(--ds-shadow);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
 }
@@ -129,16 +129,16 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
   flex: none;
   margin: 0 -12px -12px;
   padding: var(--ds-space-2) var(--ds-space-3) calc(8px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
   background: var(--ds-surface-chosen);
   touch-action: manipulation;
 }
 .map-go-bar { display: flex; align-items: center; gap: var(--ds-space-2); }
 .map-go-bar-text { display: grid; flex: 1 1 auto; gap: var(--ds-space-1); min-width: 0; margin: 0; }
-.map-go-bar-name { font-family: var(--ds-font-sans); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
-.map-go-bar-detail { color: var(--ds-ink); font-size: var(--ds-text-small); font-weight: 600; line-height: var(--ds-leading-body); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.map-go-bar-name { font-family: var(--ds-font-sans); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
+.map-go-bar-detail { color: var(--ds-ink); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .map-go-bar-detail .place-card-tag { margin-right: var(--ds-space-2); }
-.map-go-bar-detail.is-unavailable { color: var(--ds-ink-muted); font-weight: 500; }
+.map-go-bar-detail.is-unavailable { color: var(--ds-ink-muted); font-weight: var(--ds-weight-medium); }
 .travel-map-bar .map-go-bar-go {
   flex: none;
   justify-content: center;
@@ -148,7 +148,7 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
 }
 @media (max-height: 500px) and (orientation: landscape) {

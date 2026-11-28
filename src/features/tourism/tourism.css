@@ -7,7 +7,7 @@
 .notebook-button {
   color: var(--ds-ink);
   background: var(--ds-surface);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
   padding: var(--ds-space-2) var(--ds-space-4);
@@ -20,10 +20,10 @@
   z-index: 3;
   display: flex;
   justify-content: flex-end;
-  margin: -12px 0 var(--ds-space-5);
+  margin: -12px 0 var(--ds-space-6);
   padding: var(--ds-space-2) 0;
   background: var(--ds-surface);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .tourism-observation {
   padding: 0 var(--ds-space-6);
@@ -43,7 +43,7 @@
   min-height: 56px;
   padding: var(--ds-space-2) var(--ds-space-4);
   text-align: left;
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   background: var(--ds-surface);
   color: var(--ds-ink);
@@ -52,7 +52,7 @@
 }
 /* The open point: the selected-row look (the chosen ground, --ds-ink's edge inside). */
 .discovery-list button[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
   background: var(--ds-surface-chosen);
 }
 .discovery-number {
@@ -73,7 +73,7 @@
 }
 .discovery-detail {
   margin-top: var(--ds-space-4);
-  padding: var(--ds-space-5);
+  padding: var(--ds-space-6);
   background: var(--ds-surface-chosen);
   border-radius: var(--ds-radius-control);
 }
@@ -92,7 +92,7 @@
   color: var(--ds-here);
   padding-bottom: var(--ds-space-3);
   margin-bottom: var(--ds-space-3);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .observation-detail .clue-heading {
   display: flex;
@@ -107,14 +107,14 @@
 .clue-kind {
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-small);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ds-tracking-3);
   margin-bottom: var(--ds-space-1);
 }
 .discovery-detail h3,
 .notebook-clue h3 {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-body);
 }
 .clue-description {
@@ -144,7 +144,7 @@
 .clue-sources > div {
   margin-top: var(--ds-space-2);
   padding: var(--ds-space-2) 0;
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .clue-sources p {
   margin: var(--ds-space-2) 0;
@@ -167,7 +167,7 @@
   text-align: left;
   padding: var(--ds-space-4);
   margin-top: var(--ds-space-3);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-here);
@@ -178,7 +178,7 @@
   color: var(--ds-ink-muted);
 }
 .tourism-credits {
-  margin: var(--ds-space-6) var(--ds-space-10) 0;
+  margin: var(--ds-space-6) var(--ds-space-8) 0;
   font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
   overflow-wrap: anywhere;
@@ -192,7 +192,7 @@
   margin-top: var(--ds-space-2);
 }
 .tourism-actions {
-  padding: var(--ds-space-4) var(--ds-space-10) var(--ds-space-8);
+  padding: var(--ds-space-4) var(--ds-space-8) var(--ds-space-8);
 }
 .tourism-actions > .fine-print {
   margin-bottom: var(--ds-space-3);
@@ -214,10 +214,10 @@
   padding: var(--ds-space-4) var(--ds-space-6) var(--ds-space-6);
 }
 .notebook-clue {
-  padding: var(--ds-space-5) 0;
+  padding: var(--ds-space-6) 0;
 }
 .notebook-clue + .notebook-clue {
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .empty-clues {
   font-size: var(--ds-text-body);
@@ -414,7 +414,7 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 0 var(--ds-space-4) var(--ds-space-4);
-    border: 1px solid var(--ds-line);
+    border: var(--ds-edge-thin) solid var(--ds-line);
     border-radius: var(--ds-radius-pane);
     background: var(--ds-surface);
     box-shadow: var(--ds-shadow);

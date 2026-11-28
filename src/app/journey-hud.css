@@ -70,7 +70,7 @@
   overflow-wrap: anywhere;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
 }
 .hud-time {
@@ -81,7 +81,7 @@
   white-space: nowrap;
   color: var(--ds-on-dark);
   font-size: var(--ds-text-small);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   font-variant-numeric: tabular-nums;
 }
 /* Enlarged text on a phone held upright: when the header holds fewer than
@@ -113,7 +113,7 @@
 .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-note); }
 .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-small); }
 .hud-wallet .ap { font-size: var(--ds-text-note); }
-.hud-wallet .ap small { font-family: var(--ds-font-sans); font-size: var(--ds-text-small); letter-spacing: 0.1em; }
+.hud-wallet .ap small { font-family: var(--ds-font-sans); font-size: var(--ds-text-small); letter-spacing: var(--ds-tracking-3); }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
@@ -238,20 +238,20 @@
   margin: 0;
   padding: 0 var(--ds-space-3);
   /* The light pane to press (styles.css .secondary). */
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   text-align: left;
 }
 .hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-ink); }
 /* Between ≡メニュー's groups (2026-11-19): a thin rule across, never a thick left line. */
-.hud-menu-rule { width: 100%; margin: var(--ds-space-1) 0; border: 0; border-top: 1px solid var(--ds-line); }
+.hud-menu-rule { width: 100%; margin: var(--ds-space-1) 0; border: 0; border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* ≡メニュー's panel comes down out of the header (2026-11-27 user decision: 「スーッと上から」): it slides down a
    little as a blind unrolls over it from its top edge, and its items follow one after another. Only the opening
    moves; it closes at once (styles.css, Motion). The press on an item is never held back. The menus that open
@@ -311,9 +311,9 @@
 /* The two-tone focus ring (§2.1): seen on the dark, on the glass and over photos. */
 .journey-hud button:focus-visible,
 .journey-hud summary:focus-visible {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 0;
-  box-shadow: 0 0 0 6px var(--ds-dark);
+  box-shadow: var(--ds-focus-halo);
 }
 
 @media (min-width: 380px) {

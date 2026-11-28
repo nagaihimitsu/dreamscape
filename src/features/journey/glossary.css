@@ -49,7 +49,7 @@
   border: 0;
   border-radius: var(--ds-radius-large);
   background: var(--ds-glass-bg);
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--ds-shade) 30%, transparent), 0 0 28px color-mix(in srgb, var(--ds-light) 28%, transparent);
+  box-shadow: var(--ds-shadow-large), 0 0 28px color-mix(in srgb, var(--ds-light) 28%, transparent);
   color: var(--ds-ink);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -88,7 +88,7 @@
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
 }
 .glossary-term-mark .icon { width: 14px; height: 14px; }
 /* The photo whole, in its own shape (a tall one stays tall), as wide as the card and no taller than its share of the
@@ -115,7 +115,7 @@
   margin: var(--ds-space-1) 0 0;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
@@ -137,8 +137,8 @@
    fonts lack, with no letter spacing nor Japanese width feature, which break scripts whose letters join. */
 .glossary-term-card[data-kind="word"] .glossary-term-name {
   font-family: var(--ds-font-sans);
-  font-weight: 500;
-  letter-spacing: normal;
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: 0;
   font-feature-settings: normal;
   line-height: var(--ds-leading-body);
 }
@@ -192,7 +192,7 @@ dialog.modal.glossary-modal {
   max-height: calc(100dvh - 24px);
 }
 .glossary-modal .modal-title-bar { margin-bottom: var(--ds-space-1); }
-.glossary-progress { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); }
+.glossary-progress { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
 .glossary-debug-note { margin: 0 0 var(--ds-space-1); }
 .glossary-empty { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .glossary-group h3 {
@@ -205,7 +205,7 @@ dialog.modal.glossary-modal {
   font-size: var(--ds-text-large);
   line-height: var(--ds-leading-body);
 }
-.glossary-group-count { font-family: inherit; font-size: var(--ds-text-small); font-weight: 400; color: var(--ds-ink-muted); }
+.glossary-group-count { font-family: inherit; font-size: var(--ds-text-small); font-weight: var(--ds-weight-regular); color: var(--ds-ink-muted); }
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
@@ -225,7 +225,7 @@ dialog.modal.glossary-modal {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
@@ -244,7 +244,7 @@ button.glossary-card:hover { background: var(--ds-surface-chosen); }
 .glossary-card-name {
   padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-2);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
@@ -259,8 +259,8 @@ button.glossary-card:hover { background: var(--ds-surface-chosen); }
   color: var(--ds-on-dark);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-small);
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
   line-height: var(--ds-leading-body);
 }
 /* Debug: a term not met yet, shown with its mark. */
@@ -275,7 +275,7 @@ button.glossary-card:hover { background: var(--ds-surface-chosen); }
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
 }
-button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: 0.55; }
+button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: var(--ds-opacity-soft); }
 /* A term not met yet: an empty card, dashed, with neither its photo nor its name. */
 .glossary-card-empty { border-style: dashed; background: transparent; }
 .glossary-card-empty .glossary-card-photo { background: transparent; color: var(--ds-ink-muted); font-size: var(--ds-text-heading); }

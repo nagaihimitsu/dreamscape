@@ -20,13 +20,13 @@
 .effects-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-body); }
 .effects-room h2 { margin: var(--ds-space-8) 0 var(--ds-space-2); font-size: var(--ds-text-large); line-height: var(--ds-leading-body); letter-spacing: 0; }
 /* The room's own text only: the sample screen keeps the game's own sizes and margins. */
-.effects-room h3:not(.effects-room-screen *) { margin: var(--ds-space-4) 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); }
+.effects-room h3:not(.effects-room-screen *) { margin: var(--ds-space-4) 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
 .effects-room p:not(.effects-room-screen *) { margin: var(--ds-space-2) 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .effects-room button.effects-room-close {
   flex: none;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1.5px solid var(--ds-dark-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
@@ -34,7 +34,7 @@
 }
 .effects-room-note {
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
 }
@@ -65,7 +65,7 @@
   min-width: 44px;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1.5px solid var(--ds-dark-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
@@ -124,13 +124,13 @@
   min-width: 0;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-2);
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-light);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
 }
-.effects-room-elsewhere { margin: var(--ds-space-2) 0; padding-left: var(--ds-space-5); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+.effects-room-elsewhere { margin: var(--ds-space-2) 0; padding-left: var(--ds-space-6); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .effects-room-elsewhere li { margin: var(--ds-space-1) 0; }
 
 /* The sample screen: the game's header over a short story scene. The header stays in the page's flow here (in the game
@@ -155,7 +155,7 @@
   z-index: var(--ds-layer-cutin);
   display: grid;
   gap: var(--ds-space-1);
-  margin: var(--ds-space-5) -16px 0;
+  margin: var(--ds-space-6) -16px 0;
   padding: var(--ds-space-2) var(--ds-space-4) calc(6px + env(safe-area-inset-bottom));
   background: var(--ds-dark);
   color: var(--ds-on-dark);

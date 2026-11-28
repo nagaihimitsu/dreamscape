@@ -7,7 +7,7 @@
 .journey-numbers {
   margin: var(--ds-space-3) 0;
   padding: var(--ds-space-3) var(--ds-space-4);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
@@ -34,18 +34,18 @@
   margin: var(--ds-space-1) 0 0;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
 /* In the end roll: no card, the numbers set on the night between two white lines, labels small and spaced. */
 .end-roll .journey-numbers {
-  margin: var(--ds-space-16) auto 0;
+  margin: var(--ds-space-8) auto 0;
   max-width: 32rem;
   padding: var(--ds-space-6) var(--ds-space-1);
   border: 0;
-  border-block: 1px solid var(--journey-numbers-journey-numbers-edge);
+  border-block: var(--ds-edge-thin) solid var(--journey-numbers-journey-numbers-edge);
   border-radius: 0;
   background: transparent;
   color: var(--ds-on-dark);
@@ -55,10 +55,10 @@
   margin-bottom: var(--ds-space-4);
   color: var(--roll-light);
   font-size: var(--ds-text-small);
-  font-weight: 500;
-  letter-spacing: 0.4em;
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-4);
   text-indent: 0.4em;
 }
 .end-roll .journey-numbers dl { gap: var(--ds-space-4) var(--ds-space-4); }
-.end-roll .journey-numbers dt { color: var(--roll-muted); font-size: var(--ds-text-small); letter-spacing: 0.12em; }
-.end-roll .journey-numbers dd { margin-top: var(--ds-space-1); font-size: var(--ds-text-heading); font-weight: 500; }
+.end-roll .journey-numbers dt { color: var(--roll-muted); font-size: var(--ds-text-small); letter-spacing: var(--ds-tracking-3); }
+.end-roll .journey-numbers dd { margin-top: var(--ds-space-1); font-size: var(--ds-text-heading); font-weight: var(--ds-weight-medium); }

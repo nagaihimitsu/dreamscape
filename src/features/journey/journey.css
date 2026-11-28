@@ -9,7 +9,7 @@
   font-size: var(--ds-text-small);
   background: var(--ds-surface-chosen);
   color: var(--ds-ink);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .journey-stage span:last-child {
   flex-shrink: 0;
@@ -17,10 +17,10 @@
   border-radius: var(--ds-radius-pill);
   background: var(--ds-dark-2);
   color: var(--ds-on-dark);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 .battle-rewards {
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
   padding-top: var(--ds-space-4);
   margin: var(--ds-space-6) 0;
   text-align: left;
@@ -35,7 +35,7 @@
 .reward-total strong {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-display);
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-tight);
   color: var(--ds-ink);
   white-space: nowrap;
@@ -43,7 +43,7 @@
 .reward-total small {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-small);
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-tight);
 }
 .current-ap {
@@ -54,9 +54,9 @@
 }
 /* A cleared episode: a light ground panel; done is told by its heading's words (§2.1). */
 .episode-clear {
-  padding: var(--ds-space-6) var(--ds-space-5);
+  padding: var(--ds-space-6) var(--ds-space-6);
   background: var(--ds-surface-chosen);
-  margin: var(--ds-space-6) 0 var(--ds-space-5);
+  margin: var(--ds-space-6) 0 var(--ds-space-6);
   text-align: left;
   border-radius: var(--ds-radius-control);
 }
@@ -97,13 +97,13 @@
 .journey-selection-head > .text-button { display: inline-flex; align-items: flex-end; min-height: 44px; margin: -26px -5px -6px auto; padding: 0 var(--ds-space-1) var(--ds-space-2); font-size: var(--ds-text-small); line-height: inherit; white-space: nowrap; }
 .journey-select { position: relative; display: block; }
 /* The journey select looks like the text fields (stage 2.2) with its own chevron (⌄). */
-.journey-select-value { display: block; min-height: 48px; padding: var(--ds-space-3) var(--ds-space-10) var(--ds-space-3) var(--ds-space-2); border: 1px solid var(--ds-field-edge); border-radius: var(--ds-radius-control); background: var(--ds-field); color: var(--ds-ink); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.journey-select-value::after { content: ""; position: absolute; top: 50%; right: 16px; width: 8px; height: 8px; border-right: 2px solid var(--ds-ink); border-bottom: 2px solid var(--ds-ink); transform: translateY(-70%) rotate(45deg); }
+.journey-select-value { display: block; min-height: 48px; padding: var(--ds-space-3) var(--ds-space-8) var(--ds-space-3) var(--ds-space-2); border: var(--ds-edge-thin) solid var(--ds-field-edge); border-radius: var(--ds-radius-control); background: var(--ds-field); color: var(--ds-ink); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.journey-select-value::after { content: ""; position: absolute; top: 50%; right: 16px; width: 8px; height: 8px; border-right: var(--ds-edge) solid var(--ds-ink); border-bottom: var(--ds-edge) solid var(--ds-ink); transform: translateY(-70%) rotate(45deg); }
 .journey-select select { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 48px; margin: 0; opacity: 0; font-size: var(--ds-text-body); cursor: pointer; }
 /* The select is transparent, so its focus ring is drawn on the value box. Browsers
    without :has() (Safari before 15.4) show it whenever the select has focus;
    the others keep it to keyboard focus, like the global :focus-visible rings. */
-.journey-select:focus-within .journey-select-value { outline: 3px solid var(--ds-focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ds-dark); }
+.journey-select:focus-within .journey-select-value { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 2px; box-shadow: var(--ds-focus-halo); }
 .journey-select:has(select:focus:not(:focus-visible)) .journey-select-value { outline: none; box-shadow: none; }
 .journey-preparation h1 { margin-top: var(--ds-space-6); }
 .journey-preparation > p:not(.eyebrow) { line-height: var(--ds-leading-reading); }

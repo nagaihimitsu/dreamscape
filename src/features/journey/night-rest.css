@@ -49,9 +49,9 @@
   color: var(--ds-on-dark);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-reading);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -125,9 +125,9 @@
   color: var(--ds-on-dark);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-reading);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -141,7 +141,7 @@
    white hairline of a pressable on the dark (no longer gold, 2026-11-27), white words. */
 .night-screen-actions .secondary {
   margin-top: var(--ds-space-2);
-  border: 1.5px solid var(--ds-action-edge);
+  border: var(--ds-edge) solid var(--ds-action-edge);
   background: var(--ds-night-glass);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-body);
@@ -154,13 +154,13 @@
   width: 100%;
   min-height: 54px;
   margin-top: var(--ds-space-4);
-  padding: var(--ds-space-3) var(--ds-space-5);
+  padding: var(--ds-space-3) var(--ds-space-6);
   border-radius: var(--ds-radius-control);
   background: var(--night-rest-moon-fill);
   color: var(--ds-dark);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  box-shadow: 0 0 18px var(--night-rest-night-screen-rest-shade);
+  font-weight: var(--ds-weight-bold);
+  box-shadow: var(--ds-shadow);
 }
 .night-screen-rest:hover:enabled { background: var(--night-rest-night-screen-rest-ground); }
 /* After 「ホテルで休む」 has slept (NightLeaving): the line changes in place, the buttons go from sight (their room stays; no words
@@ -213,11 +213,11 @@
 .night-screen-actions + .night-recap { margin-top: var(--ds-space-8); }
 .today-route { margin: 0; }
 /* --ds-on-dark-muted on the night colour: about 13:1. */
-.today-route-title { margin: 0 0 var(--ds-space-1); color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: 600; letter-spacing: 0.08em; text-align: center; }
+.today-route-title { margin: 0 0 var(--ds-space-1); color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); text-align: center; }
 /* A picture only: taps go to the screen (the card ends on one), the OSM credit stays readable (and pressable on the night screen). */
 .today-route-map {
   height: clamp(110px, 22vh, 160px);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-map-ground);
   isolation: isolate;
@@ -250,7 +250,7 @@
   background: var(--ds-light);
   color: var(--ds-dark);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
 }
 /* A mark on the map: the stop numbers in the selected marker's yellow on its dark disc; the day's last place ringed in the
@@ -266,12 +266,12 @@
   background: var(--ds-dark);
   color: var(--ds-light);
   font-size: var(--ds-text-small);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-small);
 }
-.today-route-mark.is-last { box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.today-route-mark.is-last { box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-heavy) var(--ds-here), var(--ds-shadow-small); }
 .night-recap .heroine-note { margin: 0; text-align: left; }
 /* The SNS's card (SnsNightCard.tsx, 2026-11-27): a pane of the night's glass under the buttons and well apart from them (a
    card of another shape: faces at its left), its words white, the first comment two lines at most. */
@@ -283,7 +283,7 @@
   min-height: 64px;
   margin: var(--ds-space-8) 0 0;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-night-glass);
   color: var(--ds-on-dark);
@@ -304,13 +304,13 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
   overflow: hidden;
   border-radius: 50%;
   background: var(--ds-surface);
-  box-shadow: 0 0 0 1.5px var(--ds-night);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-night);
 }
 .night-sns-face + .night-sns-face { margin-left: -10px; }
 .night-sns-face .character-face { width: 100%; height: 100%; border: 0; }
-.night-sns-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; line-height: 1; }
+.night-sns-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; }
 .night-sns-text { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--ds-space-1); min-width: 0; }
-.night-sns-title { color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: 600; letter-spacing: 0.04em; }
+.night-sns-title { color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); }
 .night-sns-first {
   display: -webkit-box;
   overflow: hidden;
@@ -319,7 +319,7 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
   -webkit-line-clamp: 2;
   line-clamp: 2;
 }
-.night-sns-first b { font-weight: 700; }
+.night-sns-first b { font-weight: var(--ds-weight-bold); }
 .night-sns + .night-recap { margin-top: var(--ds-space-4); }
 /* 今日の一語 (TodayWordLine, 2026-11-13): a small plain line at the night screen's end, its label as the route's title, the
    English word, its meaning beside it (--ds-on-dark about 16:1, the muted label about 13:1). */
@@ -335,8 +335,8 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
   line-height: var(--ds-leading-body);
   text-align: center;
 }
-.today-word-label { flex-basis: 100%; color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: 600; letter-spacing: 0.08em; }
-.today-word-en { font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.today-word-label { flex-basis: 100%; color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); }
+.today-word-en { font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: var(--ds-tracking-1); overflow-wrap: anywhere; }
 .today-word-meaning { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
 @media (max-height: 480px) {

@@ -29,14 +29,14 @@
   height: 32px;
   border-radius: 50%;
   background: var(--ds-surface);
-  box-shadow: 0 0 0 1.5px var(--ds-light);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-light);
   overflow: hidden;
 }
 .sns-face.is-xs { width: 20px; height: 20px; }
 .sns-face.is-sm { width: 24px; height: 24px; }
-.sns-face.is-lg { width: 64px; height: 64px; box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 3px var(--ds-hairline); }
+.sns-face.is-lg { width: 64px; height: 64px; box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-hairline); }
 .sns-face .character-face { width: 100%; height: 100%; border: 0; }
-.sns-face-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; line-height: 1; }
+.sns-face-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; }
 .sns-face.is-lg .sns-face-initial { font-size: var(--ds-text-heading); }
 /* Faces overlapped, each over the one before. */
 .sns-faces { display: inline-flex; padding-left: var(--ds-space-1); }
@@ -51,12 +51,12 @@
   width: 100%;
   min-height: 48px;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-4);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   text-align: left;
 }
 .sns .sns-met-all > .sns-faces { margin-left: auto; }
@@ -72,7 +72,7 @@
   margin: 0;
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
@@ -103,7 +103,7 @@
 .sns-strip[data-swiping] .sns-track { transition: none; }
 .sns-slide { flex: 0 0 var(--sns-slide); min-width: 0; }
 .sns-slide:first-child { margin-left: calc((100% - var(--sns-slide)) / 2); }
-.sns-slide[aria-hidden] { opacity: 0.85; }
+.sns-slide[aria-hidden] { opacity: var(--ds-opacity-strong); }
 .reduce-motion .sns-track { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .sns-track { transition: none; }
@@ -130,7 +130,7 @@
   color: var(--ds-ink);
   font-size: var(--ds-text-heading);
   line-height: 1;
-  box-shadow: 0 1px 4px color-mix(in srgb, var(--ds-shade) 30%, transparent);
+  box-shadow: var(--ds-shadow-small);
 }
 .sns-turn[hidden] { display: none; }
 
@@ -140,7 +140,7 @@
   padding: var(--ds-space-2) var(--ds-space-2) 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
-  box-shadow: inset 0 0 0 1px var(--ds-line), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow);
 }
 .sns-photo { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-photo-mat); }
 .sns .sns-photo-open { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
@@ -163,7 +163,7 @@
 .sns-author-name {
   max-width: 6em;
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   text-shadow: var(--ds-scene-text-shadow);
   overflow: hidden;
@@ -181,7 +181,7 @@
   background: radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--ds-shade) 45%, transparent), transparent 70%);
   color: var(--ds-light);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   text-align: right;
   text-shadow: var(--ds-scene-text-shadow);
@@ -191,7 +191,7 @@
 /* The card's margin: the post's line, its translation under it, the heart at its right. */
 .sns-margin { display: flex; align-items: center; gap: var(--ds-space-1); min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-1); color: var(--ds-ink); }
 .sns-line { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; padding: var(--ds-space-1) 0; }
-.sns-line-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.sns-line-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-line-translation { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* The heart: a line, red and filled once pressed. */
 .sns .sns-like { display: grid; flex: none; place-items: center; width: 44px; height: 44px; color: var(--ds-ink-muted); }
@@ -218,13 +218,13 @@
 .sns-likers { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 32px; color: var(--sns-like); }
 .sns-likers .icon { width: 16px; height: 16px; }
 .sns-likers .icon path { fill: currentColor; }
-.sns-likers + .sns-comments { border-top: 1px solid var(--ds-line); }
+.sns-likers + .sns-comments { border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* A comment a line: face, name (bold), words; the replies set in with a smaller face (no side line). */
 .sns-comments { margin: 0; padding: 0; list-style: none; }
 .sns-comment-line { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .sns-comment-line.is-reply { padding-left: var(--ds-space-6); min-height: 40px; }
 .sns-comment-line > .sns-new-dot { margin-right: -2px; }
-.sns .sns-who { display: inline-flex; flex: none; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-weight: 700; }
+.sns .sns-who { display: inline-flex; flex: none; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-weight: var(--ds-weight-bold); }
 .sns-comment-line.is-reply .sns-who { min-height: 40px; }
 .sns-who-name { overflow-wrap: anywhere; }
 .sns-comment-text { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
@@ -235,7 +235,7 @@
 .sns-back > span[aria-hidden] { font-size: var(--ds-text-large); line-height: 1; }
 .sns-page-title { margin: var(--ds-space-1) 0 var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-large); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
 .sns-page-title:focus { outline: none; }
-.sns-page-title:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ds-dark); }
+.sns-page-title:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 2px; box-shadow: var(--ds-focus-halo); }
 .sns-post-title { color: var(--ds-ink-muted); font-family: inherit; font-size: var(--ds-text-note); }
 .sns-section-title { display: flex; align-items: center; gap: var(--ds-space-2); max-width: none; margin: var(--ds-space-4) 0 var(--ds-space-2); }
 .sns-section-title > span:first-child { flex: none; max-width: 70%; }
@@ -249,11 +249,11 @@
   width: 100%;
   min-height: 56px;
   padding: var(--ds-space-2) var(--ds-space-1);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   text-align: left;
 }
 .sns-person-row-text { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; }
-.sns-person-row-name { font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
+.sns-person-row-name { font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
 .sns-person-row-intro { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-people-group + .sns-people-group { margin-top: var(--ds-space-1); }
 
@@ -264,15 +264,15 @@
 .sns-profile .sns-page-title { margin: var(--ds-space-1) 0 var(--ds-space-1); font-size: var(--ds-text-heading); }
 .sns-intro { display: flex; flex-direction: column; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-note { margin: var(--ds-space-4) 0 var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); color: var(--ds-ink); }
-.sns-note-head { display: flex; align-items: center; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; line-height: var(--ds-leading-tight); }
-.sns-note-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.sns-note-head { display: flex; align-items: center; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); }
+.sns-note-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* Their photos (3 to a row) and the photos they are in (5 to a row): close squares, their reduced copies. */
 .sns-grid { display: grid; gap: var(--ds-space-1); margin: 0; padding: 0; list-style: none; }
 .sns-grid.is-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .sns-grid.is-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .sns .sns-grid button { display: block; width: 100%; aspect-ratio: 1; overflow: hidden; background: var(--ds-photo-mat); }
 .sns-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.sns-grid button:focus-visible { outline: 3px solid var(--ds-dark-2); outline-offset: -3px; box-shadow: none; }
+.sns-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: -3px; box-shadow: none; }
 /* Their comments on her posts: the post's photo small, the comment beside it. */
 .sns-their-comments { margin: 0; padding: 0; list-style: none; }
 .sns .sns-their-comments button {

@@ -18,7 +18,7 @@ dialog.modal.clue-notebook {
   position: static;
   flex-shrink: 0;
   margin: 0;
-  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-5);
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-6);
 }
 .clue-notebook .cluebook-header h2 {
   font-size: var(--ds-text-heading);
@@ -27,9 +27,9 @@ dialog.modal.clue-notebook {
 }
 .case-context {
   flex-shrink: 0;
-  padding: var(--ds-space-2) var(--ds-space-5);
+  padding: var(--ds-space-2) var(--ds-space-6);
   background: var(--ds-surface-chosen);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   max-height: 28dvh;
   overflow: auto;
   overscroll-behavior: contain;
@@ -37,7 +37,7 @@ dialog.modal.clue-notebook {
 .case-context-label {
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-small);
-  letter-spacing: .08em;
+  letter-spacing: var(--ds-tracking-2);
   margin-bottom: var(--ds-space-1);
 }
 .case-context blockquote {
@@ -50,7 +50,7 @@ dialog.modal.clue-notebook {
 .clue-notebook .cluebook-body {
   flex: 1;
   min-height: 100px;
-  padding: var(--ds-space-2) var(--ds-space-5) var(--ds-space-4);
+  padding: var(--ds-space-2) var(--ds-space-6) var(--ds-space-4);
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -61,7 +61,7 @@ dialog.modal.clue-notebook {
   align-items: center;
   gap: var(--ds-space-2);
   padding: var(--ds-space-2) var(--ds-space-4);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   background: var(--ds-surface);
 }
 .clue-picker { flex: 1; min-width: 0; }
@@ -69,7 +69,7 @@ dialog.modal.clue-notebook {
   width: 100%;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-2);
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
@@ -79,7 +79,7 @@ dialog.modal.clue-notebook {
   flex: none;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-2);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
@@ -118,7 +118,7 @@ dialog.modal.clue-notebook {
   min-height: 48px;
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
@@ -126,9 +126,9 @@ dialog.modal.clue-notebook {
   font-size: var(--ds-text-note);
 }
 .case-select[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
   background: var(--ds-surface-chosen);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 /* A clue that cannot be chosen now: the disabled press; the chosen one keeps its look. */
 .case-select:disabled:not([aria-pressed="true"]) { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
@@ -174,13 +174,13 @@ dialog.modal.clue-notebook {
 .clue-image-unavailable { margin: var(--ds-space-1) 0 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .case-footer {
   flex-shrink: 0;
-  padding: var(--ds-space-2) var(--ds-space-5) max(8px, env(safe-area-inset-bottom));
+  padding: var(--ds-space-2) var(--ds-space-6) max(8px, env(safe-area-inset-bottom));
   background: var(--ds-surface);
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .case-footer-actions { display: flex; gap: var(--ds-space-2); align-items: stretch; }
 .case-footer-actions > button { flex: 1 1 0; min-width: 0; }
-.clue-footer { flex: none; padding: var(--ds-space-2) var(--ds-space-4) max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--ds-line); }
+.clue-footer { flex: none; padding: var(--ds-space-2) var(--ds-space-4) max(8px, env(safe-area-inset-bottom)); border-top: var(--ds-edge-thin) solid var(--ds-line); }
 .clue-footer .secondary { min-height: 44px; margin: 0; }
 .case-footer p {
   margin-bottom: var(--ds-space-1);

@@ -7,7 +7,7 @@ dialog.modal.credits-modal {
   max-height: calc(100dvh - 24px);
 }
 .credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
-.credits-list > section { padding: var(--ds-space-3) 0; border-top: 1px solid var(--ds-line); }
+.credits-list > section { padding: var(--ds-space-3) 0; border-top: var(--ds-edge-thin) solid var(--ds-line); }
 .credits-list > section:first-child { padding-top: 0; border-top: 0; }
 .credits-list h3 { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); }
 .credits-list h4 { margin: var(--ds-space-3) 0 var(--ds-space-1); font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
@@ -18,11 +18,11 @@ dialog.modal.credits-modal {
   min-height: 44px;
   padding: var(--ds-space-3) 0;
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
-.credits-journey { border-bottom: 1px solid var(--ds-line); }
+.credits-journey { border-bottom: var(--ds-edge-thin) solid var(--ds-line); }
 .credits-journey:last-child { border-bottom: 0; }
 .credits-journey[open] { padding-bottom: var(--ds-space-2); }
 .credits-journey > section:first-of-type h4 { margin-top: 0; }
@@ -30,15 +30,15 @@ dialog.modal.credits-modal {
 .credits-sounds,
 .credits-licences { display: grid; gap: var(--ds-space-2); margin: 0; padding: 0; list-style: none; }
 .credits-photos li,
-.credits-sounds li { padding-top: var(--ds-space-2); border-top: 1px solid var(--ds-line); }
+.credits-sounds li { padding-top: var(--ds-space-2); border-top: var(--ds-edge-thin) solid var(--ds-line); }
 .credits-photos li:first-child,
 .credits-sounds li:first-child { border-top: 0; }
 .credits-photos p,
 .credits-sounds p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
-.credits-list .credits-place { font-size: var(--ds-text-note); font-weight: 600; }
+.credits-list .credits-place { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 .credits-licences { gap: 0; }
-.credits-licences li { border-bottom: 1px solid var(--ds-line); }
-.credits-licences summary { font-weight: 500; font-size: var(--ds-text-note); }
+.credits-licences li { border-bottom: var(--ds-edge-thin) solid var(--ds-line); }
+.credits-licences summary { font-weight: var(--ds-weight-medium); font-size: var(--ds-text-note); }
 .credits-licences pre {
   margin: 0 0 var(--ds-space-2);
   padding: var(--ds-space-2);

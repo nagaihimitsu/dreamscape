@@ -26,15 +26,15 @@
   color: var(--vn-muted);
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ds-tracking-2);
 }
 /* The name in the headings' type, as the battle opponent's heading shows it. */
 .name-cutin .name-cutin-name {
   color: var(--vn-text);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  font-weight: 500;
-  letter-spacing: 0.045em;
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-2);
   line-height: var(--ds-leading-tight);
 }
 .name-cutin .name-cutin-quote {

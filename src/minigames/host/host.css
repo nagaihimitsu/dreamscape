@@ -55,11 +55,11 @@
   gap: 0 var(--ds-space-2);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
 }
-.minigame-card-length { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: 600; color: var(--ds-ink-muted); }
-.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-large); font-weight: 500; line-height: var(--ds-leading-body); }
+.minigame-card-length { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); color: var(--ds-ink-muted); }
+.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-large); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
 .minigame-ready .minigame-card[data-brief] { padding: var(--ds-space-2) var(--ds-space-4); }
 .minigame-ready .minigame-card[data-brief] .minigame-card-goal { font-size: var(--ds-text-body); }
 /* 「練習する」 (left) and the start (right, the larger): the start the talk's press of smoked glass (.primary), 練習 a pane
@@ -71,7 +71,7 @@
   min-height: 56px;
   border-radius: var(--ds-radius-pane);
   font-size: var(--ds-text-large);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary) {
   display: flex;
@@ -84,10 +84,10 @@
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line), var(--ds-shadow);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):hover:enabled { background: var(--ds-glass-bar); }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):active:enabled { translate: 0 1px; }
@@ -214,14 +214,14 @@
   min-width: 0;
   line-height: var(--ds-leading-tight);
 }
-.minigame-band-title { max-width: 100%; overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.minigame-band-title { max-width: 100%; overflow: hidden; font-weight: var(--ds-weight-bold); text-overflow: ellipsis; white-space: nowrap; }
 .minigame-band-status { flex: 0 1 auto; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-dark-muted); }
 .minigame-layer .minigame-quit {
   flex: none;
   min-width: 44px;
   min-height: 44px;
   padding: 0 var(--ds-space-3);
-  border: 1px solid color-mix(in srgb, var(--ds-on-dark) 35%, transparent);
+  border: var(--ds-edge-thin) solid color-mix(in srgb, var(--ds-on-dark) 35%, transparent);
   border-radius: var(--ds-radius-control);
   background: transparent;
   color: var(--ds-on-dark);
@@ -231,11 +231,11 @@
 .minigame-band-practice {
   flex: none;
   padding: 0 var(--ds-space-2);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pill);
   color: var(--ds-light);
   font-size: var(--ds-text-small);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-stage { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 /* The field's own CSS motion waits through the host's count and stands still through a hit-stop (the clock does too). */
@@ -246,7 +246,7 @@
 .minigame-flash { position: absolute; inset: 0; }
 /* Particles and rings: a dark 2 px edge so they read over a bright photo (group3 6.4). */
 .minigame-burst-ring, .minigame-particle { position: absolute; display: block; translate: -50% -50%; }
-.minigame-burst-ring { border: 3px solid var(--host-minigame-burst-ring-edge); border-radius: 50%; box-shadow: 0 0 0 2px var(--host-minigame-hand-finger-line), inset 0 0 0 2px var(--host-minigame-hand-finger-line); }
+.minigame-burst-ring { border: var(--ds-edge-thick) solid var(--host-minigame-burst-ring-edge); border-radius: 50%; box-shadow: 0 0 0 var(--ds-edge) var(--host-minigame-hand-finger-line), inset 0 0 0 var(--ds-edge) var(--host-minigame-hand-finger-line); }
 .minigame-particle { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)); }
 .minigame-particle > i { display: block; width: 100%; height: 100%; }
 .minigame-particle-star > i {
@@ -265,7 +265,7 @@
   right: 0;
   margin: 0;
   color: var(--ds-on-dark);
-  font-weight: 800;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   text-align: center;
   pointer-events: none;
@@ -301,8 +301,8 @@
 .minigame-layer:not([data-still]) .minigame-cutin { animation: minigame-cutin-in 220ms var(--ease-out, ease-out) both; }
 @keyframes minigame-cutin-in { from { opacity: 0; transform: translate(18%, -50%); } }
 .minigame-layer .minigame-cutin p { margin: 0; text-align: center; text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line); }
-.minigame-layer .minigame-cutin-sub { color: var(--ds-on-dark); font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-body); }
-.minigame-layer .minigame-cutin-main { color: var(--ds-light); font-size: var(--minigame-cutin-size); font-weight: 800; line-height: var(--ds-leading-tight); }
+.minigame-layer .minigame-cutin-sub { color: var(--ds-on-dark); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
+.minigame-layer .minigame-cutin-main { color: var(--ds-light); font-size: var(--minigame-cutin-size); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); }
 
 /* The heroine's quick reaction: her face (64 px) and a short bubble, under the band on the left, for 0.9 s. */
 .minigame-react {
@@ -317,16 +317,16 @@
   pointer-events: none;
   animation: minigame-react-in 140ms var(--ease-out, ease-out) both;
 }
-.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: 2px solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: var(--ds-edge) solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .minigame-layer .minigame-react-line {
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1.5px solid var(--host-minigame-hand-finger-line);
+  border: var(--ds-edge) solid var(--host-minigame-hand-finger-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
 }
 @keyframes minigame-react-in { from { opacity: 0; transform: scale(0.85); transform-origin: 32px 32px; } }
@@ -377,7 +377,7 @@
 .minigame-result[data-compact] .minigame-star[data-big] { font-size: var(--ds-text-heading); }
 .minigame-layer .minigame-result[data-compact] .minigame-result-label { font-size: var(--ds-text-large); line-height: var(--ds-leading-tight); }
 .minigame-result[data-compact] .minigame-result-react { justify-content: center; gap: var(--ds-space-2); margin-top: var(--ds-space-1); }
-.minigame-result[data-compact] .minigame-result-react .character-face { flex: none; width: 36px; height: 36px; border-width: 1.5px; }
+.minigame-result[data-compact] .minigame-result-react .character-face { flex: none; width: 36px; height: 36px; border-width: var(--ds-edge); }
 .minigame-result-texts { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-1); min-width: 0; }
 .minigame-result-react:not(:has(.character-face)) .minigame-result-texts { align-items: center; }
 .minigame-layer .minigame-result[data-compact] .minigame-result-score { font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
@@ -395,8 +395,8 @@
 .minigame-star[data-big] { font-size: var(--minigame-big-star-size); }
 @keyframes minigame-star-in { from { opacity: 0; transform: scale(1.6); } }
 .minigame-layer .minigame-result p { margin: 0; }
-.minigame-layer .minigame-result-label { font-size: var(--ds-text-heading); font-weight: 700; line-height: var(--ds-leading-body); }
-.minigame-layer .minigame-result-score { font-size: var(--ds-text-large); font-weight: 700; color: var(--ds-ink); font-variant-numeric: tabular-nums; }
+.minigame-layer .minigame-result-label { font-size: var(--ds-text-heading); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
+.minigame-layer .minigame-result-score { font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); color: var(--ds-ink); font-variant-numeric: tabular-nums; }
 .minigame-layer .minigame-result-detail { font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
 .minigame-result-react { display: flex; align-items: center; gap: var(--ds-space-2); margin-top: var(--ds-space-1); max-width: 100%; text-align: left; }
 .minigame-result-react .character-face { width: 56px; height: 56px; }
@@ -411,15 +411,15 @@
 .minigame-result-actions { display: flex; gap: var(--ds-space-2); width: 100%; margin-top: var(--ds-space-2); }
 .minigame-result-actions > button { flex: 1 1 0; justify-content: center; min-height: 52px; margin: 0; }
 /* On the glass 「次へ」 is the talk's press of smoked glass (.primary), もう一回 a pane of the glass with a fine edge. */
-.minigame-result-actions > .primary { flex-grow: 1.4; border-radius: var(--ds-radius-pane); font-size: var(--ds-text-large); font-weight: 700; }
+.minigame-result-actions > .primary { flex-grow: 1.4; border-radius: var(--ds-radius-pane); font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); }
 .minigame-result-actions > .secondary {
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-press);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-result-actions > .secondary:hover:enabled { background: var(--ds-glass-bar); }
 /* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
@@ -486,7 +486,7 @@
   padding: var(--ds-space-4);
   background: color-mix(in srgb, var(--ds-shade) 78%, transparent);
 }
-.minigame-pause p { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); font-weight: 700; text-align: center; }
+.minigame-pause p { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); text-align: center; }
 .minigame-pause button { justify-content: center; min-height: 52px; }
 
 /* 「演出を短縮する」 and the device's reduced motion: no fade, run-up, sweep, tumble or pop (what the play needs still moves,

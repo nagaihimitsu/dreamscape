@@ -17,7 +17,7 @@
   width: 100%;
   min-height: 56px;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
@@ -31,14 +31,14 @@
   align-items: baseline;
   gap: 0 var(--ds-space-2);
   font-size: var(--ds-text-large);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
 }
 .minigame-collection-length,
 .minigame-collection-where {
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-note);
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-body);
 }
 
@@ -84,7 +84,7 @@ dialog.modal.minigame-collection-stage {
   width: calc(100% - 16px);
   margin: 0 auto calc(8px + env(safe-area-inset-bottom, 0px));
   padding: var(--ds-space-3);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);

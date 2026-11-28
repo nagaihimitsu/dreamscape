@@ -41,16 +41,13 @@
   background: color-mix(in srgb, var(--band-fill, var(--vn-name-bg)) 82%, transparent);
   /* The rim: firm at the fill, then ever fainter outwards. */
   box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 92%, transparent),
-    0 0 4px 6px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 60%, transparent),
-    0 0 10px 8px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 30%, transparent),
-    0 0 18px 9px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 12%, transparent);
+    0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 92%, transparent), 0 0 4px 6px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 60%, transparent), 0 0 10px 8px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 30%, transparent), 0 0 18px 9px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 12%, transparent);
   color: var(--band-ink, var(--vn-name-ink));
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   overflow-wrap: anywhere;
   transition: translate var(--motion-medium) var(--ease-out);
 }
@@ -63,12 +60,12 @@
   display: inline-block;
   margin-left: 0.5em;
   padding: 0 0.4em;
-  border: 1px solid currentColor;
+  border: var(--ds-edge-thin) solid currentColor;
   border-radius: var(--ds-radius-control);
   font-size: var(--ds-text-small);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ds-tracking-2);
   vertical-align: 0.08em;
   white-space: nowrap;
 }
@@ -126,11 +123,11 @@
   background: var(--ds-glass-mark-on);
   color: var(--ds-glass-mark-full);
 }
-.dialogue-controls .text-button:disabled { opacity: 0.4; cursor: default; }
+.dialogue-controls .text-button:disabled { opacity: var(--ds-opacity-faint); cursor: default; }
 .dialogue-controls .text-button:focus-visible {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 0;
-  box-shadow: 0 0 0 6px var(--ds-dark);
+  box-shadow: var(--ds-focus-halo);
 }
 /* The next mark (D9) sits at the line's bottom-right corner, in the window's
    padding, out of the text's flow: the line breaks the same while it is written

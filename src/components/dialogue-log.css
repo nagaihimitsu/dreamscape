@@ -1,8 +1,8 @@
 .vn-log { max-height: 52vh; overflow: auto; padding: 0; list-style: none; }
-.vn-log li { padding: var(--ds-space-2) 0; border-bottom: 1px solid var(--ds-line); }
+.vn-log li { padding: var(--ds-space-2) 0; border-bottom: var(--ds-edge-thin) solid var(--ds-line); }
 .vn-log p { margin: var(--ds-space-1) 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 /* A line's # em: and # em_shake: words (2026-11-13): bold in the accent colour on light ground, without motion. */
-.vn-log .vn-log-em { color: var(--ds-emphasis); font-weight: 700; }
+.vn-log .vn-log-em { color: var(--ds-emphasis); font-weight: var(--ds-weight-bold); }
 /* A letter's line with its # translation: (2026-11-15): the Japanese under the English, smaller and quieter, as on the paper. */
 .vn-log .vn-log-translation { margin-top: var(--ds-space-1); color: var(--ds-ink-muted); font-size: 0.88em; }
 /* The log's dialog lies inside the window's controls (DialogueControls): their head icons' rules (hidden on a narrow

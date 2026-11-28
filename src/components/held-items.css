@@ -43,13 +43,13 @@
   color: var(--ds-dark);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-small);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   font-variant-numeric: tabular-nums;
   line-height: var(--ds-leading-body);
   text-align: center;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: var(--ds-shadow-small);
 }
-.held-items-word { font-size: var(--ds-text-small); font-weight: 600; line-height: 1; white-space: nowrap; }
+.held-items-word { font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; white-space: nowrap; }
 .held-item-detail {
   position: absolute;
   z-index: var(--ds-layer-hud-panel);
@@ -97,7 +97,7 @@
 .held-item-lines {
   margin: var(--ds-space-2) 0 0;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) 2.1em;
-  border: 1px dashed var(--ds-line);
+  border: var(--ds-edge-thin) dashed var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface-chosen);
 }
@@ -116,8 +116,8 @@
   color: var(--ds-on-dark);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-small);
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
   line-height: var(--ds-leading-body);
   vertical-align: 1px;
 }

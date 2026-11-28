@@ -40,21 +40,21 @@
   min-height: 44px;
   margin: 0;
   padding: 0 var(--ds-space-4) 0 var(--ds-space-3);
-  border: 2px solid var(--ds-on-dark);
+  border: var(--ds-edge) solid var(--ds-on-dark);
   border-radius: var(--ds-radius-large);
   background: var(--ds-ink-muted);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-large);
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-3);
   box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 45%, transparent);
   touch-action: manipulation;
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-palm { width: 20px; height: 20px; fill: currentColor; }
-.mg-engine-rhythm-tap .mg-rhythm-tap-stop[aria-disabled="true"] { opacity: 0.55; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-stop[aria-disabled="true"] { opacity: var(--ds-opacity-soft); }
 /* The partner has just stopped: the stop button lights (a white ring and a pulse; still: the ring only). */
 .mg-engine-rhythm-tap .mg-rhythm-tap-stop[data-partner="up"]:not([aria-disabled="true"]) {
-  box-shadow: 0 0 0 3px var(--ds-game-mark), 0 0 16px color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--ds-game-mark), 0 0 16px color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
   animation: mg-rhythm-tap-stop-pulse 400ms ease-out 2;
 }
 @keyframes mg-rhythm-tap-stop-pulse { 50% { transform: scale(1.1); } }
@@ -65,7 +65,7 @@
   height: 48px;
   margin: 0 0 var(--ds-space-3);
   overflow: hidden;
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-large);
   background: color-mix(in srgb, var(--ds-dark) 55%, transparent);
 }
@@ -80,16 +80,16 @@
   left: 16%;
   width: 40px;
   height: 40px;
-  border: 3px solid color-mix(in srgb, var(--ds-game-mark) 80%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ds-dark) 80%, transparent);
+  border: var(--ds-edge-thick) solid color-mix(in srgb, var(--ds-game-mark) 80%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-dark) 80%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="good"] {
-  border-width: 5px;
+  border-width: var(--ds-edge-heavy);
   border-color: var(--ds-on-dark);
   background: color-mix(in srgb, var(--ds-on-dark) 30%, transparent);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="perfect"] {
-  border-width: 7px;
+  border-width: var(--ds-edge-heavy);
   border-color: var(--ds-game-mark);
   background: color-mix(in srgb, var(--ds-game-mark) 45%, transparent);
   box-shadow: 0 0 14px color-mix(in srgb, var(--ds-game-mark) 95%, transparent);
@@ -99,21 +99,21 @@
   width: 22px;
   height: 22px;
   background: var(--ds-on-dark);
-  box-shadow: 0 0 0 2px var(--ds-dark);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-state="miss"] {
   width: 16px;
   height: 16px;
-  border: 2px solid var(--ds-on-dark-muted);
+  border: var(--ds-edge) solid var(--ds-on-dark-muted);
   background: transparent;
   box-shadow: none;
-  opacity: 0.6;
+  opacity: var(--ds-opacity-soft);
 }
 /* A count-in's beat (not to tap): a hollow circle with a cross. */
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-state="count"] {
   width: 20px;
   height: 20px;
-  border: 2px dashed color-mix(in srgb, var(--ds-on-dark) 70%, transparent);
+  border: var(--ds-edge) dashed color-mix(in srgb, var(--ds-on-dark) 70%, transparent);
   background: transparent;
   box-shadow: none;
 }
@@ -134,14 +134,14 @@
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-big][data-state="coming"] {
   width: 30px;
   height: 30px;
-  box-shadow: 0 0 0 2px var(--ds-dark), 0 0 0 4px color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark), 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
 }
 /* A rest (not to tap: the dance's break, the vendor's feint once it shows): a hollow circle with a bar across (a rest
    sign); tapped, the bar turns into a cross on a terracotta ring; kept, it passes dim. Shape, not colour alone. */
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"], [data-state="fooled"]) {
   width: 22px;
   height: 22px;
-  border: 2px solid color-mix(in srgb, var(--ds-on-dark) 80%, transparent);
+  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 80%, transparent);
   background: color-mix(in srgb, var(--ds-dark) 85%, transparent);
   box-shadow: none;
 }
@@ -158,7 +158,7 @@
   background: color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
   transform: translate(-50%, -50%);
 }
-.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="kept"] { opacity: 0.4; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="kept"] { opacity: var(--ds-opacity-faint); }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"] { border-color: var(--rhythm-tap-mark-edge); background: var(--rhythm-tap-mark-ground-06); }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"]::before { transform: translate(-50%, -50%) rotate(45deg); }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"]::after { transform: translate(-50%, -50%) rotate(-45deg); }
@@ -177,12 +177,12 @@
   top: 3px;
   left: 50%;
   padding: 0 var(--ds-space-2);
-  border: 1.5px solid var(--ds-on-dark);
+  border: var(--ds-edge) solid var(--ds-on-dark);
   border-radius: var(--ds-radius-control);
   background: var(--ds-ink-muted);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-small);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   white-space: nowrap;
   transform: translateX(-50%);
@@ -192,8 +192,8 @@
   width: 100%;
   min-height: 64px;
   font-size: var(--ds-text-heading);
-  font-weight: 700;
-  letter-spacing: 0.3em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-4);
   text-align: center;
   touch-action: manipulation;
 }

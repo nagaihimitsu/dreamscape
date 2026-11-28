@@ -45,10 +45,10 @@
   overflow: hidden;
   width: min(340px, calc(100vw - 32px));
   height: 112px;
-  border: 4px solid var(--ds-surface);
+  border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-pane);
   background: linear-gradient(var(--travel-transition-scene-ground), var(--travel-transition-scene-ground-2) 78%);
-  box-shadow: 0 0 0 1px var(--ds-line), var(--ds-shadow-large);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
 }
 .travel-transition-label {
   position: absolute;
@@ -63,9 +63,9 @@
   color: var(--ds-ink);
   box-shadow: var(--ds-shadow-small);
   font-size: var(--ds-text-note);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: .06em;
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   width: max-content;
 }
@@ -78,7 +78,7 @@
 }
 .travel-transition-hill-back { right: -42px; background: var(--travel-transition-hill-back-ground); }
 .travel-transition-hill-front { left: -56px; bottom: 15px; background: var(--travel-transition-hill-front-ground); }
-.travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: 1px solid var(--travel-transition-wire-edge); }
+.travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: var(--ds-edge-thin) solid var(--travel-transition-wire-edge); }
 /* The passing scenery (PassingScenery: a skyline, trees and poles, far to near, over the hills that stay still far
    away): each layer moves left by one tile (120 px) per loop, the farther the slower, at the pace of the mode's kind
    (data-pace, sceneryPace; --scenery-pace is the near layer's loop). Transform only, under the vehicle and the caption;
@@ -102,8 +102,8 @@
   height: 20px;
   background: var(--travel-transition-ground-ground);
 }
-.travel-transition-ground::before { content: ""; position: absolute; inset: 6px 0 auto; border-top: 1px dashed var(--travel-transition-ground-edge); }
-.travel-transition-ground.is-rail::before { inset: 4px 0 auto; border-top: 2px solid var(--travel-transition-is-rail-edge); }
+.travel-transition-ground::before { content: ""; position: absolute; inset: 6px 0 auto; border-top: var(--ds-edge-thin) dashed var(--travel-transition-ground-edge); }
+.travel-transition-ground.is-rail::before { inset: 4px 0 auto; border-top: var(--ds-edge) solid var(--travel-transition-is-rail-edge); }
 .travel-transition-vehicle {
   position: absolute;
   z-index: 2;
@@ -136,10 +136,10 @@
   position: relative;
   width: min(340px, calc(100vw - 32px));
   overflow: hidden;
-  border: 4px solid var(--ds-surface);
+  border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-control);
   background: var(--travel-transition-scene-ground-2);
-  box-shadow: 0 0 0 1px var(--ds-line), var(--ds-shadow-large);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
 }
 .travel-ride-view {
   position: absolute;
@@ -154,7 +154,7 @@
   background: var(--travel-transition-scene-ground-2);
   pointer-events: none;
 }
-.travel-ride-tiles .leaflet-tile-pane { opacity: .78; }
+.travel-ride-tiles .leaflet-tile-pane { opacity: var(--ds-opacity-dim); }
 .travel-ride-map svg { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; }
 .travel-ride-credit {
   position: absolute;
@@ -184,8 +184,8 @@
 .travel-ride-name {
   fill: var(--ds-ink);
   font-size: var(--ds-text-note);
-  font-weight: 700;
-  letter-spacing: .02em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-1);
   paint-order: stroke;
   stroke: var(--ds-on-dark);
   stroke-width: 3.5px;

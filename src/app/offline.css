@@ -34,7 +34,7 @@ dialog.offline-play .modal-title-bar {
 .offline-answers {
   flex: none;
   padding: var(--ds-space-3) var(--ds-space-6) var(--ds-space-4);
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .offline-answers .modal-answers {
   margin-top: 0;
@@ -46,12 +46,12 @@ dialog.offline-play .modal-title-bar {
 /* A row: a journey (or the kept journeys' newer build) under its heading, its state line, its buttons. */
 .offline-row {
   padding: var(--ds-space-3) 0;
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .offline-row > h3 {
   margin: 0 0 var(--ds-space-1);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
@@ -75,7 +75,7 @@ dialog.offline-play h2:focus {
 }
 .offline-notice {
   margin-top: var(--ds-space-2);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 /* The first progress bar of the game: a light ground track with a dark fill, no motion of its own; the same numbers are
    in the line above it. */
@@ -85,7 +85,7 @@ dialog.offline-play h2:focus {
   height: 10px;
   margin: var(--ds-space-2) 0 var(--ds-space-1);
   appearance: none;
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-surface-chosen);
   overflow: hidden;
@@ -126,7 +126,7 @@ dialog.offline-play h2:focus {
 .offline-body > .offline-advice {
   margin: 0;
   padding-top: var(--ds-space-3);
-  border-top: 1px solid var(--ds-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .offline-body > .offline-foot {
   margin: var(--ds-space-2) 0 0;

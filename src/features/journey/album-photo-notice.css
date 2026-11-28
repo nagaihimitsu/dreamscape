@@ -40,9 +40,9 @@
   width: 66px;
   aspect-ratio: 3 / 2;
   object-fit: cover;
-  border: 3px solid var(--ds-light);
+  border: var(--ds-edge-thick) solid var(--ds-light);
   border-radius: var(--ds-radius-control);
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 30%, transparent);
+  box-shadow: var(--ds-shadow-small);
   transform: rotate(-3deg);
   background: var(--ds-line);
 }

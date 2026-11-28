@@ -17,7 +17,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  padding: var(--ds-space-5);
+  padding: var(--ds-space-6);
   border: 0;
   background: transparent;
   color: var(--ds-glass-mark-full);
@@ -49,7 +49,7 @@
   content: "";
   position: absolute;
   inset: -1px;
-  border: 2px solid var(--ds-glass-mark);
+  border: var(--ds-edge) solid var(--ds-glass-mark);
   border-radius: inherit;
   opacity: 0;
   pointer-events: none;
@@ -64,7 +64,7 @@
   .vn-window-restore-hint::after { animation: none; }
 }
 .vn-window-restore:focus-visible .vn-window-restore-hint {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 0;
-  box-shadow: 0 0 0 6px var(--ds-dark);
+  box-shadow: var(--ds-focus-halo);
 }

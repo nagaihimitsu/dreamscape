@@ -4,32 +4,32 @@
 .minigame-room-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
 .minigame-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-body); }
 .minigame-room h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--ds-space-1) var(--ds-space-2); margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); line-height: var(--ds-leading-body); }
-.minigame-room h3 { margin: var(--ds-space-4) 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); }
+.minigame-room h3 { margin: var(--ds-space-4) 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
 .minigame-room p, .minigame-room li { font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .minigame-room p { margin: var(--ds-space-2) 0; }
-.minigame-room ul { margin: 0; padding-left: var(--ds-space-5); }
+.minigame-room ul { margin: 0; padding-left: var(--ds-space-6); }
 .minigame-room button.minigame-room-close {
   flex: none;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1.5px solid var(--ds-dark-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
-.minigame-room-note { padding: var(--ds-space-2) var(--ds-space-3); border: 1px solid var(--ds-line); border-radius: var(--ds-radius-control); background: var(--ds-surface); }
+.minigame-room-note { padding: var(--ds-space-2) var(--ds-space-3); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); background: var(--ds-surface); }
 .minigame-room p.minigame-room-off { padding: var(--ds-space-2) var(--ds-space-2); border-radius: var(--ds-radius-control); background: var(--ds-smoke); }
-.minigame-room-game { margin-top: var(--ds-space-4); padding: var(--ds-space-3); border: 1px solid var(--ds-line); border-radius: var(--ds-radius-control); background: var(--ds-surface); }
-.minigame-room-id { color: var(--ds-ink-muted, inherit); font-size: var(--ds-text-note); font-weight: 400; }
+.minigame-room-game { margin-top: var(--ds-space-4); padding: var(--ds-space-3); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); background: var(--ds-surface); }
+.minigame-room-id { color: var(--ds-ink-muted, inherit); font-size: var(--ds-text-note); font-weight: var(--ds-weight-regular); }
 .minigame-room-facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-1) var(--ds-space-2); margin: var(--ds-space-2) 0 0; font-size: var(--ds-text-note); }
-.minigame-room-facts dt { font-weight: 600; }
+.minigame-room-facts dt { font-weight: var(--ds-weight-bold); }
 .minigame-room-facts dd { margin: 0; }
 .minigame-room-reason { font-size: var(--ds-text-note); }
 .minigame-room-game li a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--ds-space-1); }
 .minigame-room button.minigame-room-open { width: 100%; min-height: 44px; margin-top: var(--ds-space-3); justify-content: center; }
-.minigame-room-controls { display: grid; gap: var(--ds-space-1); margin: var(--ds-space-3) 0 0; padding: var(--ds-space-2) var(--ds-space-3); border: 1px solid var(--ds-line); border-radius: var(--ds-radius-control); }
-.minigame-room-controls legend { padding: 0 var(--ds-space-1); font-size: var(--ds-text-note); font-weight: 600; }
+.minigame-room-controls { display: grid; gap: var(--ds-space-1); margin: var(--ds-space-3) 0 0; padding: var(--ds-space-2) var(--ds-space-3); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); }
+.minigame-room-controls legend { padding: 0 var(--ds-space-1); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 .minigame-room-controls label { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-size: var(--ds-text-body); }
 .minigame-room-controls input { width: 20px; height: 20px; }
 .minigame-room-example { flex-wrap: wrap; }
@@ -46,7 +46,7 @@
 .minigame-room .minigame-room-line { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); }
 /* A slow phone's feel (E3): three choices in one row. */
 .minigame-room-delay { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-4); margin: var(--ds-space-1) 0 0; padding: 0; border: 0; }
-.minigame-room-delay legend { padding: 0; font-size: var(--ds-text-note); font-weight: 600; }
+.minigame-room-delay legend { padding: 0; font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 /* The tuning numbers (E1, E2): a name and its field per line; the original value beside an edited one. */
 .minigame-room-tuning p { margin: var(--ds-space-1) 0; }
 .minigame-room-controls .minigame-room-number { flex-wrap: wrap; justify-content: space-between; font-family: var(--ds-font-mono); font-size: var(--ds-text-note); }
@@ -54,6 +54,6 @@
 .minigame-room-was { flex-basis: 100%; font-family: inherit; font-size: var(--ds-text-small); text-align: right; }
 .minigame-room-tuning .secondary { min-height: 44px; margin-top: var(--ds-space-1); }
 /* Numbers the engine finds unfair: said in words under them (not colour alone), on a warm ground, no edge on one side. */
-.minigame-room-unfair { margin: var(--ds-space-2) 0 var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-2); border: 1.5px solid var(--ds-ink-muted); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); color: var(--ds-ink); }
-.minigame-room-unfair p { margin: 0 0 var(--ds-space-1); font-weight: 600; }
+.minigame-room-unfair { margin: var(--ds-space-2) 0 var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-2); border: var(--ds-edge) solid var(--ds-ink-muted); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); color: var(--ds-ink); }
+.minigame-room-unfair p { margin: 0 0 var(--ds-space-1); font-weight: var(--ds-weight-bold); }
 .minigame-room-unfair li { font-family: var(--ds-font-mono); font-size: var(--ds-text-small); }

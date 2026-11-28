@@ -68,7 +68,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  border: 3px solid var(--roti-rolling-tava-edge);
+  border: var(--ds-edge-thick) solid var(--roti-rolling-tava-edge);
   border-radius: 50%;
   background: radial-gradient(circle at 40% 38%, var(--roti-rolling-tava-ground), var(--roti-rolling-tava-ground-2) 70%);
   box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 50%, transparent);
@@ -114,7 +114,7 @@
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   white-space: nowrap;
   box-shadow: var(--ds-shadow);
   animation: mg-roti-rolling-word 2000ms ease-out forwards;
@@ -153,7 +153,7 @@
 .mg-roti-rolling-arrow { transition: opacity 120ms ease-out; }
 /* A dark casing under the shaft and the head (no filter: the fuse changes every frame). */
 .mg-roti-rolling-arrow .mg-roti-rolling-arrow-case { stroke: color-mix(in srgb, var(--ds-shade) 85%, transparent); stroke-width: 0.034; stroke-linecap: round; }
-.mg-roti-rolling-arrow[data-coming] { opacity: 0.35; }
+.mg-roti-rolling-arrow[data-coming] { opacity: var(--ds-opacity-faint); }
 /* Harbans's hand: a brown hand in a white kurta's sleeve, a dark edge round the whole of it (its parts outlined, then
    filled over) so it reads on the dough and the board; a soft shadow under it. */
 .mg-roti-rolling-sleeve { fill: var(--roti-rolling-sleeve-fill); }

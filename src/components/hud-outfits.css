@@ -25,21 +25,21 @@
   min-height: 64px;
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-1);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   text-align: left;
   cursor: pointer;
 }
-.hud-outfit[aria-pressed="true"] { background: var(--ds-surface-chosen); box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow); cursor: default; }
+.hud-outfit[aria-pressed="true"] { background: var(--ds-surface-chosen); box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow); cursor: default; }
 .hud-outfit:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; cursor: default; }
-.hud-outfit:focus-visible { outline: 3px solid var(--ds-focus); box-shadow: 0 0 0 6px var(--ds-dark); outline-offset: 0; }
+.hud-outfit:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); box-shadow: var(--ds-focus-halo); outline-offset: 0; }
 .hud-outfit-figure {
   display: block;
   width: 40px;

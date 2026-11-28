@@ -239,7 +239,7 @@ describe("the hidden name's field", () => {
     expect(readFileSync(new URL("./Skin.tsx", import.meta.url), "utf8")).toContain('import "./skin.css";');
     // The decorations take the name's font, weight and colour from the stylesheet (one rule for the two; the same fill).
     const css = readFileSync(new URL("./skin.css", import.meta.url), "utf8");
-    expect(css).toMatch(/\.mg-mehndi-hidden-name-lettering, \.mg-mehndi-hidden-name-decoy \{\s*font-family: "Fasol SP Demo", "Noto Sans JP", sans-serif;\s*font-weight: 400;/u);
+    expect(css).toMatch(/\.mg-mehndi-hidden-name-lettering, \.mg-mehndi-hidden-name-decoy \{\s*font-family: "Fasol SP Demo", "Noto Sans JP", sans-serif;\s*font-weight: var\(--ds-weight-regular\);/u);
     // A colour is named once at the stylesheet's head (docs/02 「デザインの決まり」): a fill resolves through its name.
     const named = (value: string | undefined) => {
       const name = value?.match(/^var\((--[\w-]+)\)$/u)?.[1];

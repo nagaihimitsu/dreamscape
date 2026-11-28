@@ -91,7 +91,7 @@
 .mg-mehndi-hidden-name-ink { fill: none; stroke: var(--mehndi-hidden-name-ink-line); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .mg-mehndi-hidden-name-fill { fill: var(--mehndi-hidden-name-ink-line); stroke: none; }
 .mg-mehndi-hidden-name-fine { stroke-width: 1.2; }
-.mg-mehndi-hidden-name-writing { fill: var(--mehndi-hidden-name-writing-fill); font-family: var(--ds-font-sans); font-weight: 600; }
+.mg-mehndi-hidden-name-writing { fill: var(--mehndi-hidden-name-writing-fill); font-family: var(--ds-font-sans); font-weight: var(--ds-weight-bold); }
 /* The hand of the player's name and of the decorations made of its letters (docs/13 2.10, 2.12; the user's decisions of
    2026-11-17): Fasol SP Demo by Sasha Pavljenko, the unmodified demo file bundled with the game (its licence:
    fonts/LICENSE-FasolSP.txt), declared here, in the play's own stylesheet, so the title page never loads it; the relative
@@ -111,7 +111,7 @@
    (geometricPrecision: no hinted rounding of each letter), as writing.ts and marks.ts measure it. */
 .mg-mehndi-hidden-name-lettering, .mg-mehndi-hidden-name-decoy {
   font-family: "Fasol SP Demo", "Noto Sans JP", sans-serif;
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   font-synthesis: none;
   text-rendering: geometricPrecision;
 }
@@ -136,21 +136,21 @@
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
-.mg-mehndi-hidden-name-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
+.mg-mehndi-hidden-name-spot:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; }
 /* The places pointed at: a dashed ring where the writing is not (round a decoration pointed at, as wide as Skin.tsx
    says); white where it is, once found or shown. */
 .mg-mehndi-hidden-name-mark-ring {
   position: absolute;
   width: 24cqw;
   aspect-ratio: 1;
-  border: 2px dashed color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
+  border: var(--ds-edge) dashed color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
   animation: mg-mehndi-hidden-name-ring 420ms ease-out both;
 }
 @keyframes mg-mehndi-hidden-name-ring { from { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
-.mg-mehndi-hidden-name-mark-ring[data-writing] { border: 2px solid var(--ds-game-mark); box-shadow: 0 0 12px color-mix(in srgb, var(--ds-game-mark) 70%, transparent); }
+.mg-mehndi-hidden-name-mark-ring[data-writing] { border: var(--ds-edge) solid var(--ds-game-mark); box-shadow: 0 0 12px color-mix(in srgb, var(--ds-game-mark) 70%, transparent); }
 /* The real writing catches the light now and then (the tell; the decorations never do). */
 .mg-mehndi-hidden-name-writing { animation: mg-mehndi-hidden-name-glint var(--mehndi-glint-every, 1600ms) ease-in-out infinite; }
 @keyframes mg-mehndi-hidden-name-glint {
@@ -188,7 +188,7 @@
   z-index: 2;
   width: 24cqw;
   aspect-ratio: 1;
-  border: 2px solid var(--mehndi-hidden-name-aim-edge-095);
+  border: var(--ds-edge) solid var(--mehndi-hidden-name-aim-edge-095);
   border-radius: 50%;
   box-shadow: 0 0 10px var(--mehndi-hidden-name-aim-shadow-055);
   pointer-events: none;
@@ -205,7 +205,7 @@
   background: color-mix(in srgb, var(--ds-shade) 82%, transparent);
   color: var(--mehndi-hidden-name-aim-ink);
   font-size: var(--ds-text-note);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   white-space: nowrap;
   transform: translateX(-50%);
 }
@@ -218,7 +218,7 @@
   z-index: 1;
   width: 39cqw;
   aspect-ratio: 1;
-  border: 3px dotted var(--mehndi-hidden-name-mg-mehndi-hidden-name-glint-shadow-095);
+  border: var(--ds-edge-thick) dotted var(--mehndi-hidden-name-mg-mehndi-hidden-name-glint-shadow-095);
   border-radius: 50%;
   box-shadow: 0 0 10px var(--mehndi-hidden-name-hint-ring-shadow-035);
   pointer-events: none;
@@ -238,13 +238,13 @@
   max-width: min(78cqw, 260px);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   text-align: center;
   pointer-events: none;

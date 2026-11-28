@@ -17,7 +17,7 @@
   gap: var(--ds-space-2);
   padding: var(--ds-space-2) var(--ds-space-3);
   background: var(--ds-surface-chosen);
-  border-bottom: 1px solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
@@ -26,12 +26,12 @@
   flex: none;
   margin-top: 0;
   padding: 0 var(--ds-space-2);
-  border: 1px solid var(--ds-ink-muted);
+  border: var(--ds-edge-thin) solid var(--ds-ink-muted);
   border-radius: var(--ds-radius-pill);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-small);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
 }
 .relationship-change-lines {
   min-width: 0;

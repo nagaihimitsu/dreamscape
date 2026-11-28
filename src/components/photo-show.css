@@ -63,7 +63,7 @@
 .photo-print-caption {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
@@ -71,7 +71,7 @@
   margin-left: auto;
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-tight);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   color: var(--ds-ink-muted);
   text-align: right;
   overflow-wrap: anywhere;

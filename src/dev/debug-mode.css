@@ -40,27 +40,27 @@
 }
 .debug-panel [role="alert"] { background: var(--debug-mode-debug-panel-ground); padding: var(--ds-space-2) var(--ds-space-3); border-radius: var(--ds-radius-control); overflow-wrap: anywhere; }
 .debug-launch-error { display: grid; gap: var(--ds-space-4); align-content: start; }
-.debug-url { display: grid; gap: var(--ds-space-2); margin: var(--ds-space-8) 0 var(--ds-space-5); }
+.debug-url { display: grid; gap: var(--ds-space-2); margin: var(--ds-space-8) 0 var(--ds-space-6); }
 .debug-url h2 { font-size: var(--ds-text-large); letter-spacing: 0; }
 .debug-url button { min-height: 44px; }
 .debug-url [role="status"] { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
-.debug-room-entry { display: grid; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-5); }
+.debug-room-entry { display: grid; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-6); }
 .debug-room-entry h2 { margin: 0; font-size: var(--ds-text-large); letter-spacing: 0; }
 .debug-room-entry p { margin: 0; }
 .debug-room-entry button { min-height: 44px; margin-top: 0; }
 .debug-candidates { margin: var(--ds-space-2) var(--ds-space-2); padding: var(--ds-space-2) var(--ds-space-2); background: var(--debug-mode-debug-candidates-ground); border-radius: var(--ds-radius-control); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .debug-candidates summary { min-height: 36px; cursor: pointer; }
-.debug-candidates ol, .debug-candidates ul { margin: var(--ds-space-2) 0; padding-left: var(--ds-space-5); }
+.debug-candidates ol, .debug-candidates ul { margin: var(--ds-space-2) 0; padding-left: var(--ds-space-6); }
 .debug-candidates p { margin: var(--ds-space-1) 0; }
 /* Debug's SNS check (SnsDebugView.tsx): a city's name over its posts, a little room between posts and between comments. */
-.debug-sns .debug-sns-city { margin-top: var(--ds-space-2); font-weight: 600; }
+.debug-sns .debug-sns-city { margin-top: var(--ds-space-2); font-weight: var(--ds-weight-bold); }
 .debug-sns li + li { margin-top: var(--ds-space-2); }
 
 /* Flags, free time's clock and 恋の段階 (DebugStateTools.tsx): in 場面の確認 and in the Debug bar's 「フラグ・時刻・段階・人」. */
 .debug-note { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .debug-panel .debug-note { font-size: var(--ds-text-note); }
-.debug-clock { display: grid; gap: var(--ds-space-2); min-width: 0; margin: 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3); border: 1px solid var(--debug-mode-debug-clock-edge); border-radius: var(--ds-radius-control); }
-.debug-clock legend { padding: 0 var(--ds-space-1); font-weight: 600; }
+.debug-clock { display: grid; gap: var(--ds-space-2); min-width: 0; margin: 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3); border: var(--ds-edge-thin) solid var(--debug-mode-debug-clock-edge); border-radius: var(--ds-radius-control); }
+.debug-clock legend { padding: 0 var(--ds-space-1); font-weight: var(--ds-weight-bold); }
 .debug-clock-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-space-2); }
 .debug-clock-presets button { display: grid; justify-items: center; align-content: center; min-height: 52px; margin-top: 0; padding: var(--ds-space-1) var(--ds-space-1); font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
 .debug-clock-presets button[aria-pressed="true"] { background: var(--ds-dark-2); color: var(--ds-on-dark); }
@@ -69,7 +69,7 @@
 .debug-stage-choices button { min-height: 44px; margin-top: 0; padding: var(--ds-space-1) var(--ds-space-1); font-size: var(--ds-text-body); }
 .debug-stage-choices button[aria-pressed="true"] { background: var(--ds-dark-2); color: var(--ds-on-dark); }
 /* The summary keeps its disclosure triangle (a list item), so the fold reads as one to open. */
-.debug-flags summary { box-sizing: border-box; min-height: 44px; padding: var(--ds-space-2) 0; font-weight: 600; cursor: pointer; }
+.debug-flags summary { box-sizing: border-box; min-height: 44px; padding: var(--ds-space-2) 0; font-weight: var(--ds-weight-bold); cursor: pointer; }
 .debug-flags > .debug-note { margin: var(--ds-space-1) 0 var(--ds-space-2); }
 .debug-flag-list section + section { margin-top: var(--ds-space-3); }
 .debug-flag-list h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); }

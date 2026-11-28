@@ -33,7 +33,7 @@
 }
 /* The tomb, small and pale with distance, on the horizon at the left (clear of her bubble). */
 .mg-say-together-tomb { position: absolute; left: 5%; bottom: 54%; width: 32%; aspect-ratio: 12 / 7; pointer-events: none; }
-.mg-say-together-tomb-figure { display: block; width: 100%; height: 100%; fill: var(--say-together-tomb-figure-fill); opacity: 0.88; }
+.mg-say-together-tomb-figure { display: block; width: 100%; height: 100%; fill: var(--say-together-tomb-figure-fill); opacity: var(--ds-opacity-strong); }
 .mg-say-together-tomb-arches { fill: var(--say-together-tomb-arches-fill); }
 /* Her: a step away on the right, feet at the bottom, her box the standing picture's shape (2:3): 72% of the field's
    height, no wider than its right half, and low enough to leave room above her head for her bubble (about 100px). */
@@ -52,9 +52,9 @@
 .mg-say-together[data-still] .mg-say-together-her-body { transition: none; transform: none; }
 /* Her breath before the last word: her shoulders rise a little (not with less motion: her bubble's 「すっ」 says it). */
 .mg-say-together-her[data-breath] .mg-say-together-her-body { transform: translateY(-1.4%) scaleY(1.01); transition-duration: 200ms; }
-.mg-say-together-breath { display: inline-block; margin-left: var(--ds-space-1); color: var(--ds-ink-muted); font-size: 0.85em; font-weight: 500; font-style: italic; }
+.mg-say-together-breath { display: inline-block; margin-left: var(--ds-space-1); color: var(--ds-ink-muted); font-size: 0.85em; font-weight: var(--ds-weight-medium); font-style: italic; }
 /* Her held syllable (ディヤーーン): the word a little wider as it grows. */
-.mg-say-together-word[data-held] { letter-spacing: 0.04em; }
+.mg-say-together-word[data-held] { letter-spacing: var(--ds-tracking-2); }
 /* The bubbles: white, a name, the words; on the beat together both glow white with a thicker dark edge (not colour alone). */
 .mg-say-together-bubble {
   position: absolute;
@@ -64,7 +64,7 @@
   gap: var(--ds-space-1);
   box-sizing: border-box;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-shade) 30%, transparent);
@@ -72,7 +72,7 @@
   pointer-events: none;
 }
 .mg-say-together-bubble small { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
-.mg-say-together-text { font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.mg-say-together-text { font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* A word stays whole on its line (a katakana word broken in two reads as two words). */
 .mg-say-together-word { display: inline-block; max-width: 100%; }
 .mg-say-together-bubble::after {
@@ -81,13 +81,13 @@
   bottom: -7px;
   width: 12px;
   height: 12px;
-  border-right: 1px solid var(--ds-action-edge);
-  border-bottom: 1px solid var(--ds-action-edge);
+  border-right: var(--ds-edge-thin) solid var(--ds-action-edge);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-action-edge);
   background: var(--ds-surface);
   transform: rotate(45deg);
 }
-.mg-say-together-bubble[data-together] { border: 3px solid var(--say-together-bubble-edge); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-game-mark) 45%, transparent), 0 0 18px color-mix(in srgb, var(--ds-game-mark) 75%, transparent), 0 2px 10px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
-.mg-say-together-bubble[data-together]::after { border-color: var(--say-together-bubble-edge); border-width: 0 3px 3px 0; bottom: -9px; }
+.mg-say-together-bubble[data-together] { border: var(--ds-edge-thick) solid var(--say-together-bubble-edge); box-shadow: 0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--ds-game-mark) 45%, transparent), 0 0 18px color-mix(in srgb, var(--ds-game-mark) 75%, transparent), 0 2px 10px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.mg-say-together-bubble[data-together]::after { border-color: var(--say-together-bubble-edge); border-width: 0 var(--ds-edge-thick) var(--ds-edge-thick) 0; bottom: -9px; }
 /* Hers: over her head, a little wider than her, to her right edge; its tail at her head. */
 .mg-say-together-bubble-her { right: 0; bottom: calc(100% + 6px); width: max(118%, 150px); min-height: 64px; }
 .mg-say-together-bubble-her::after { right: 40%; margin-right: -6px; }
@@ -116,9 +116,9 @@
 .mg-say-together[data-still] .mg-say-together-word { animation: none; }
 @keyframes mg-say-together-pop { from { transform: scale(0.8); opacity: 0.4; } }
 .mg-say-together-word[data-state="together"] { color: var(--say-together-word-ink); }
-.mg-say-together-word[data-state="off"] { color: var(--ds-ink-muted); font-weight: 500; text-decoration: underline dotted 1.5px; text-underline-offset: 3px; }
+.mg-say-together-word[data-state="off"] { color: var(--ds-ink-muted); font-weight: var(--ds-weight-medium); text-decoration: underline dotted 1.5px; text-underline-offset: 3px; }
 /* The last word, 「デーン！」, is the loudest: written large; together (the peak), it glows in both bubbles. */
-.mg-say-together-word[data-last] { font-size: 1.3em; line-height: var(--ds-leading-tight); letter-spacing: 0.02em; }
+.mg-say-together-word[data-last] { font-size: 1.3em; line-height: var(--ds-leading-tight); letter-spacing: var(--ds-tracking-1); }
 .mg-say-together-bubble[data-peak] .mg-say-together-word[data-last] { color: var(--say-together-word-ink-2); text-shadow: 0 0 10px color-mix(in srgb, var(--ds-light) 90%, transparent); }
 /* After she said them alone: she turns to the player (？ by her head, on the side away from the outcome's label). */
 .mg-say-together-mark {
@@ -131,12 +131,12 @@
   justify-content: center;
   min-width: 32px;
   height: 32px;
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-heading);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 30%, transparent);
 }

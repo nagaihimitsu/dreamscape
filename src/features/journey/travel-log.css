@@ -35,14 +35,14 @@ dialog.modal.travel-log {
 .travel-log-axes button[aria-pressed="true"] {
   background: var(--ds-surface);
   color: var(--ds-ink);
-  font-weight: 700;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 18%, transparent);
+  font-weight: var(--ds-weight-bold);
+  box-shadow: var(--ds-shadow-small);
 }
-.travel-log-count { font-size: var(--ds-text-small); font-weight: 400; color: var(--ds-ink-muted); }
+.travel-log-count { font-size: var(--ds-text-small); font-weight: var(--ds-weight-regular); color: var(--ds-ink-muted); }
 /* A tab's dot (something new there): at the top right of its word, in the SNS's red. */
 .travel-log-axes .fx-dot { position: static; align-self: flex-start; margin: var(--ds-space-2) 0 0 -2px; background: var(--ds-ink-muted); box-shadow: none; }
 /* A journey without an SNS: 「写真」 is the log's one page, under a small heading. */
-.travel-log-photos-title { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: 600; }
+.travel-log-photos-title { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
 .travel-log-photos-title .travel-log-count { margin-left: var(--ds-space-2); }
 .travel-log .journey-numbers { margin-top: var(--ds-space-4); }
 /* 「写真」: square thumbnails five to a row (2026-11-27; their 256-px copies), close together, each one a button (about 60 px
@@ -70,11 +70,11 @@ dialog.modal.travel-log {
   overflow: hidden;
 }
 .travel-log-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.travel-log-grid button:focus-visible { outline: 3px solid var(--ds-dark-2); outline-offset: -3px; }
+.travel-log-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: -3px; }
 /* A photo not taken yet (once the journey is over; 2026-11-20 user decision): the same picture in grey, by a filter rather
    than a second file, a little faded on the grid's dark ground; opened larger, grey too. The line above the grid says so. */
 .travel-log-photos-note { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
-.travel-log-grid .is-missed img { filter: grayscale(1); opacity: 0.7; }
+.travel-log-grid .is-missed img { filter: grayscale(1); opacity: var(--ds-opacity-dim); }
 .photo-viewer-frame img.is-missed { filter: grayscale(1); }
 .album-meta { font-size: var(--ds-text-small); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); overflow-wrap: anywhere; }
 .album-page-button {
@@ -82,7 +82,7 @@ dialog.modal.travel-log {
   min-width: 88px;
   min-height: 44px;
   padding: var(--ds-space-2) var(--ds-space-4);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);

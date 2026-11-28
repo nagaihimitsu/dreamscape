@@ -37,7 +37,7 @@
   align-items: center;
   gap: clamp(8px, 2dvh, 20px);
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
-  padding: max(18px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) var(--ds-space-5) max(18px, env(safe-area-inset-bottom));
+  padding: max(18px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) var(--ds-space-6) max(18px, env(safe-area-inset-bottom));
   overflow: auto;
   overscroll-behavior: contain;
   color: var(--reasoning-cutin-reasoning-cutin-ink);
@@ -62,9 +62,9 @@
   place-items: center;
   width: clamp(76px, 17dvh, 124px);
   aspect-ratio: 1;
-  border: 3px solid var(--reasoning-cutin-impact-edge);
+  border: var(--ds-edge-thick) solid var(--reasoning-cutin-impact-edge);
   transform: rotate(45deg);
-  box-shadow: 0 0 0 12px var(--reasoning-cutin-impact-shade), 0 0 36px var(--reasoning-cutin-impact-shade-2);
+  box-shadow: 0 0 0 12px var(--reasoning-cutin-impact-shade), var(--ds-shadow-large);
   animation: reasoning-impact-in 320ms ease-out both;
 }
 /* Fixed, low-contrast rays suggest impact without flashing or shaking. */
@@ -80,7 +80,7 @@
   transform: rotate(-45deg);
   color: var(--reasoning-cutin-impact-ink);
   font-size: var(--reasoning-impact-size);
-  font-weight: 800;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
 }
 .reasoning-cutin-connection {
@@ -93,10 +93,10 @@
   flex: none;
   width: clamp(62px, 15vw, 86px);
   height: clamp(78px, 18dvh, 112px);
-  border: 3px solid var(--reasoning-cutin-card-edge);
+  border: var(--ds-edge-thick) solid var(--reasoning-cutin-card-edge);
   border-radius: var(--ds-radius-control);
   background: repeating-linear-gradient(to bottom, var(--reasoning-cutin-card-ground) 0 6px, var(--reasoning-cutin-card-ground-2) 7px 8px, var(--reasoning-cutin-card-ground) 9px 18px);
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--ds-shade) 40%, transparent);
+  box-shadow: var(--ds-shadow);
 }
 .reasoning-cutin-card-left { animation: reasoning-card-left 420ms ease-out both; }
 .reasoning-cutin-card-right { animation: reasoning-card-right 420ms ease-out both; }
@@ -112,8 +112,8 @@
   display: block;
   font-size: var(--reasoning-copy-size);
   line-height: var(--ds-leading-tight);
-  font-weight: 800;
-  letter-spacing: .05em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
   text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
   overflow-wrap: anywhere;
   animation: reasoning-copy-in 400ms ease-out both;
@@ -122,7 +122,7 @@
   margin: var(--ds-space-2) 0 0;
   font-size: var(--ds-text-large);
   line-height: var(--ds-leading-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   overflow-wrap: anywhere;
 }
 .reasoning-cutin-skip {
@@ -131,12 +131,12 @@
   min-height: 44px;
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
-  border: 1px solid var(--reasoning-cutin-skip-edge);
+  border: var(--ds-edge-thin) solid var(--reasoning-cutin-skip-edge);
   border-radius: var(--ds-radius-control);
   color: var(--ds-light);
   background: var(--reasoning-cutin-skip-ground);
 }
-.reasoning-cutin-skip:focus-visible { outline: 3px solid var(--ds-light); outline-offset: 3px; }
+.reasoning-cutin-skip:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-light); outline-offset: 3px; }
 @keyframes reasoning-impact-in {
   from { opacity: 0; transform: rotate(45deg) scale(.72); }
   to { opacity: 1; transform: rotate(45deg) scale(1); }

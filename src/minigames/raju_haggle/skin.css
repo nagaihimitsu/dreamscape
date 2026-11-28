@@ -24,8 +24,8 @@
 .mg-raju-haggle[data-look="boast"] .mg-raju-haggle-raju { animation: mg-raju-haggle-boast 760ms ease-in-out infinite alternate; }
 .mg-raju-haggle[data-look="wobble"] .mg-raju-haggle-raju { animation: mg-raju-haggle-fidget 520ms ease-in-out infinite alternate; }
 .mg-raju-haggle[data-look="recover"] .mg-raju-haggle-raju { transform: translateX(-5%) scale(0.95); }
-.mg-raju-haggle[data-look="turn"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88); opacity: 0.9; }
-.mg-raju-haggle[data-look="peek"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88) rotate(-8deg); opacity: 0.9; }
+.mg-raju-haggle[data-look="turn"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88); opacity: var(--ds-opacity-strong); }
+.mg-raju-haggle[data-look="peek"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88) rotate(-8deg); opacity: var(--ds-opacity-strong); }
 .mg-raju-haggle[data-look="back"] .mg-raju-haggle-raju { transform: translateX(-4%) rotate(3deg); }
 .mg-raju-haggle[data-look="floor"] .mg-raju-haggle-raju { animation: mg-raju-haggle-hop 340ms ease-out infinite alternate; }
 .mg-raju-haggle[data-away] .mg-raju-haggle-raju { animation: mg-raju-haggle-off 650ms ease-in both; }
@@ -43,7 +43,7 @@
 @keyframes mg-raju-haggle-flinch { 35% { transform: translate(-5%, 2%) scale(0.95, 1.05); } }
 @keyframes mg-raju-haggle-glare { 40% { transform: translateX(5%) scale(1.06); } }
 /* His pride nearly gone: his bubble's edge turns red (his face's puffed cheeks and the band's words say it too). */
-.mg-raju-haggle[data-pride="1"] .mg-raju-haggle-bubble { border: 2px solid var(--raju-haggle-bubble-edge); }
+.mg-raju-haggle[data-pride="1"] .mg-raju-haggle-bubble { border: var(--ds-edge) solid var(--raju-haggle-bubble-edge); }
 /* Less motion: his looks are still poses, at once (given up, he is gone at once); no bob, fidget, hop or flinch. */
 .mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transition: none; }
 .mg-raju-haggle[data-still][data-look="boast"] .mg-raju-haggle-raju { transform: scale(1.04) rotate(2deg); }
@@ -72,7 +72,7 @@
   max-width: min(84%, 320px);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2) var(--ds-space-2);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   box-shadow: var(--ds-shadow);
@@ -85,14 +85,14 @@
   bottom: -9px;
   width: 16px;
   height: 16px;
-  border-right: 1px solid var(--ds-line);
-  border-bottom: 1px solid var(--ds-line);
+  border-right: var(--ds-edge-thin) solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   background: var(--ds-surface);
   transform: rotate(45deg);
 }
 @keyframes mg-raju-haggle-say { from { opacity: 0; transform: translateY(4px); } }
 .mg-raju-haggle-face { flex: none; width: 40px; height: 40px; }
-.mg-raju-haggle-line { font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.mg-raju-haggle-line { font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 
 /* The paper of his prices: a page torn from a notebook, the price on show large in a frame with a mark, passed ones struck
    out, coming ones faint (not colour alone). */
@@ -110,7 +110,7 @@
   box-shadow: 0 4px 12px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: rotate(1.5deg);
 }
-.mg-raju-haggle-paper-title { margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; text-align: center; }
+.mg-raju-haggle-paper-title { margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); text-align: center; }
 .mg-raju-haggle-paper ol { display: grid; gap: var(--ds-space-1); margin: 0; padding: 0; list-style: none; }
 .mg-raju-haggle-paper li {
   position: relative;
@@ -120,18 +120,18 @@
   gap: 0 var(--ds-space-2);
   min-height: 34px;
   padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-1);
-  border: 2px solid transparent;
+  border: var(--ds-edge) solid transparent;
   border-radius: var(--ds-radius-control);
   font-size: var(--ds-text-heading);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
 }
 .mg-raju-haggle-mark { width: 1em; color: var(--raju-haggle-bubble-edge); font-size: var(--ds-text-note); text-align: center; }
 .mg-raju-haggle-price { font-variant-numeric: tabular-nums; }
-.mg-raju-haggle-was { color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-weight: 400; }
-.mg-raju-haggle-paper li[data-state="passed"] { opacity: 0.55; }
+.mg-raju-haggle-was { color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-weight: var(--ds-weight-regular); }
+.mg-raju-haggle-paper li[data-state="passed"] { opacity: var(--ds-opacity-soft); }
 .mg-raju-haggle-paper li[data-state="passed"] .mg-raju-haggle-price { text-decoration: line-through 2px var(--raju-haggle-bubble-edge); }
-.mg-raju-haggle-paper li[data-state="coming"] { opacity: 0.45; font-size: var(--ds-text-large); }
+.mg-raju-haggle-paper li[data-state="coming"] { opacity: var(--ds-opacity-faint); font-size: var(--ds-text-large); }
 .mg-raju-haggle-paper li[data-state="now"] { border-color: var(--ds-ink); background: color-mix(in srgb, var(--ds-light) 70%, transparent); font-size: var(--ds-text-heading); }
 .mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: var(--ds-text-large); }
 /* Nothing he could sell for what the player has: the prices are the paper's words, smaller. */
@@ -143,12 +143,12 @@
   left: 50%;
   top: 54%;
   padding: 0 var(--ds-space-2);
-  border: 2px solid var(--raju-haggle-bubble-edge);
+  border: var(--ds-edge) solid var(--raju-haggle-bubble-edge);
   border-radius: var(--ds-radius-control);
   background: color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   color: var(--raju-haggle-stamp-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   white-space: nowrap;
   transform: translate(-50%, -50%) rotate(-12deg);

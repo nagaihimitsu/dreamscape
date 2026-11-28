@@ -28,7 +28,7 @@
   background:
     repeating-linear-gradient(176deg, var(--cricket-batting-pitch-ground-012) 0 6px, transparent 6px 15px),
     linear-gradient(to bottom, var(--cricket-batting-pitch-ground), var(--cricket-batting-pitch-ground-2));
-  opacity: 0.94;
+  opacity: var(--ds-opacity-strong);
 }
 /* Over a photo (the use's bg): the drawn pitch fades into it far off, its ground a little greyer (D1, group1 3). */
 .minigame-backdrop ~ .minigame-stage .mg-cricket-batting-pitch {
@@ -98,7 +98,7 @@
     repeating-linear-gradient(55deg, transparent 0 6px, var(--cricket-batting-ball-ground-032) 6px 8px),
     radial-gradient(circle at 35% 30%, var(--cricket-batting-ball-ground), var(--cricket-batting-ball-ground-2) 48%, var(--cricket-batting-ball-ground-3));
   /* A faint rim: the pale ball stays clear of a hazy sky in a photo behind it (the use's bg). */
-  box-shadow: 0 0 0 1px var(--cricket-batting-ball-shadow-045), 0 1px 2px color-mix(in srgb, var(--ds-shade) 30%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--cricket-batting-ball-shadow-045), 0 1px 2px color-mix(in srgb, var(--ds-shade) 30%, transparent);
 }
 .mg-cricket-batting-shadow { z-index: 1; width: 34px; height: 11px; border-radius: 50%; background: color-mix(in srgb, var(--ds-shade) 38%, transparent); }
 /* The plank: its handle at the bottom right, raised; a swing sweeps it across the ball. */
@@ -137,7 +137,7 @@
   align-items: flex-end;
   height: 15%;
   color: var(--cricket-batting-kids-ink);
-  opacity: 0.9;
+  opacity: var(--ds-opacity-strong);
   /* A faint light rim: they stay apart from dark trees and shade in a photo behind them. */
   filter: drop-shadow(0 0 1.5px var(--cricket-batting-kids-shadow-06));
   pointer-events: none;
@@ -161,12 +161,12 @@
   right: 3%;
   bottom: 52%;
   padding: var(--ds-space-1) var(--ds-space-2);
-  border: 1.5px solid var(--cricket-batting-call-edge);
+  border: var(--ds-edge) solid var(--cricket-batting-call-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   white-space: nowrap;
   box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   pointer-events: none;

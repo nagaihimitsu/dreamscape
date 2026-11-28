@@ -54,7 +54,7 @@
   padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-light);
-  box-shadow: inset 0 0 0 1px var(--ds-line);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-line);
 }
 @keyframes item-gain-notice {
   0% { opacity: 0; transform: translateY(-6px); }
@@ -95,7 +95,7 @@
 .hud-flight-coin {
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, var(--hud-effects-hud-flight-coin-ground) 0 18%, var(--ds-light) 48%, var(--hud-effects-hud-flight-coin-ground-2) 100%);
-  box-shadow: inset 0 0 0 1.5px var(--hud-effects-hud-flight-coin-shade), 0 1px 2px color-mix(in srgb, var(--ds-shade) 30%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--hud-effects-hud-flight-coin-shade), var(--ds-shadow-small);
 }
 .hud-flight-star {
   background: radial-gradient(circle, var(--hud-effects-hud-flight-star-ground) 0 25%, var(--ds-light) 70%);
@@ -121,7 +121,7 @@
   flex: none;
   margin-left: auto;
   background: var(--ds-ink-muted);
-  box-shadow: 0 0 0 1.5px var(--ds-surface);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-surface);
 }
 .hud-save-mark {
   position: absolute;

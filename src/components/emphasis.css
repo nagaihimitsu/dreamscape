@@ -12,7 +12,7 @@
 .dialogue-em,
 .dialogue-em-shake {
   color: var(--em-accent);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .dialogue-em,
 .dialogue-em-shake-char {

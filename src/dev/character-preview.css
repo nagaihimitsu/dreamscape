@@ -8,7 +8,7 @@
 .character-preview {
   width: min(100%, 720px);
   margin: 0 auto;
-  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-5);
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-6);
 }
 .character-preview header {
   display: flex;
@@ -44,7 +44,7 @@
 }
 .preview-guides { position: absolute; inset: 0; pointer-events: none; background:
   linear-gradient(to right, transparent calc(50% - .5px), var(--character-preview-preview-guides-ground) 50%, transparent calc(50% + .5px)),
-  repeating-linear-gradient(to bottom, transparent 0, transparent calc(25% - 1px), var(--character-preview-preview-guides-ground) 25%); opacity: .55; }
+  repeating-linear-gradient(to bottom, transparent 0, transparent calc(25% - 1px), var(--character-preview-preview-guides-ground) 25%); opacity: var(--ds-opacity-soft); }
 .vn-scene .preview-dialogue { width: 90%; }
 .preview-dialogue .dialogue-text { cursor: default; }
 @media (max-width: 700px) {

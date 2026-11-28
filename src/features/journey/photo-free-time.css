@@ -152,11 +152,11 @@
   min-height: 0;
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2);
-  border: 1.5px solid var(--ds-dark-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
   background: var(--photo-free-time-photo-card-ground);
   color: var(--ds-ink);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-shade) 18%, transparent);
+  box-shadow: var(--ds-shadow-small);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -166,7 +166,7 @@
 }
 .photo-card[aria-current="true"] {
   background: var(--ds-surface-chosen);
-  box-shadow: inset 0 0 0 1.5px var(--ds-dark-2), 0 3px 9px color-mix(in srgb, var(--ds-shade) 30%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-dark-2), var(--ds-shadow);
 }
 /* What the place holds, at a glance and without words (photo-cards.ts cardKinds; the card under the row names it):
    the story's dark grey (its tag's), a date's mid grey (its tag's), both split on the diagonal (2026-11-28: white and grey
@@ -177,14 +177,14 @@
 .photo-card.is-both { background: linear-gradient(135deg, var(--ds-dark-2) 50%, var(--ds-ink-muted) 50%); }
 .photo-card:is(.is-story, .is-date, .is-both) { color: var(--ds-on-dark); }
 .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--ds-light), 0 3px 9px color-mix(in srgb, var(--ds-shade) 30%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow);
 }
 /* Over the city (2026-11-25 user decision) the cards lie on the street as prints: no dark edge (its line would draw a
    form over the picture), a shadow cast on the picture under them, and the chosen one held up in a soft white light
    (its edge stays drawn inside: the dark on the light ground, white on a fill). */
 .photo-cards .photo-card:not(.is-locked) {
   border-color: transparent;
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--ds-shade) 42%, transparent);
+  box-shadow: var(--ds-shadow);
 }
 /* In the row each card is the photo itself (2026-11-25 user decisions, after free time on an iPhone: the slate band of
    the name under the photo was a form's part laid over the city; then, the immersion before the colours decided
@@ -203,7 +203,7 @@
   color: var(--ds-on-dark);
 }
 .photo-cards:not(.is-list) .photo-card:not(.is-locked)[aria-current="true"] {
-  box-shadow: 0 0 0 2px var(--ds-glass-mark), 0 10px 26px color-mix(in srgb, var(--ds-shade) 50%, transparent), 0 0 28px color-mix(in srgb, var(--ds-light) 32%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-glass-mark), var(--ds-shadow-large), 0 0 28px color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 .photo-cards:not(.is-list) .photo-card-photo,
 .photo-card-ghost .photo-card-photo {
@@ -229,7 +229,7 @@
   align-self: stretch;
   color: inherit;
   text-align: center;
-  text-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 50%, transparent);
+  text-shadow: var(--ds-scene-text-shadow);
 }
 .photo-cards:not(.is-list) .photo-card.is-unavailable .photo-card-name,
 .photo-card-ghost.is-unavailable .photo-card-name { color: var(--ds-on-dark-muted); }
@@ -250,7 +250,7 @@
 .photo-cards:not(.is-list) .photo-card.is-unavailable:has(.photo-card-plain) .photo-card-name,
 .photo-card-ghost.is-unavailable:has(.photo-card-plain) .photo-card-name { color: var(--ds-ink-muted); }
 .photo-cards:not(.is-list) .photo-card.is-locked {
-  border: 1px dashed var(--ds-ink-muted);
+  border: var(--ds-edge-thin) dashed var(--ds-ink-muted);
   box-shadow: none;
 }
 .photo-cards:not(.is-list) .photo-card-plain:not([style]),
@@ -301,7 +301,7 @@
 }
 .photo-cards.is-list .photo-card:not(.is-locked)[aria-current="true"] {
   background: var(--ds-glass-bg);
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
 }
 .photo-cards.is-list .photo-card.is-unavailable .photo-card-name { color: var(--ds-ink-muted); }
 .photo-cards.is-list .photo-card-plain:not([style]) {
@@ -310,10 +310,10 @@
   backdrop-filter: var(--ds-smoke-blur);
 }
 .photo-cards .photo-card:not(.is-locked)[aria-current="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-dark-2), 0 10px 26px color-mix(in srgb, var(--ds-shade) 50%, transparent), 0 0 26px color-mix(in srgb, var(--ds-light) 32%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-dark-2), var(--ds-shadow-large), 0 0 26px color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 .photo-cards .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--ds-light), 0 10px 26px color-mix(in srgb, var(--ds-shade) 50%, transparent), 0 0 26px color-mix(in srgb, var(--ds-light) 32%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-large), 0 0 26px color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 .photo-card-photo {
   position: relative;
@@ -338,7 +338,7 @@
 .photo-card-plain .icon { width: 32px; height: 32px; }
 /* No filter on photos (their pixels stay as credited): a cannot-go card only fades its photo. */
 .photo-card.is-unavailable .photo-card-photo > img,
-.photo-card.is-unavailable .photo-card-plain { opacity: 0.55; }
+.photo-card.is-unavailable .photo-card-plain { opacity: var(--ds-opacity-soft); }
 .photo-card.is-unavailable .photo-card-name { color: var(--ds-ink-muted); }
 /* On a fill: 9.6:1 on the dark grey, 5:1 or more on the mid grey. */
 .photo-card:is(.is-story, .is-date, .is-both).is-unavailable .photo-card-name { color: var(--ds-on-dark-muted); }
@@ -351,7 +351,7 @@
   box-shadow: none;
   cursor: default;
 }
-.photo-card.is-locked[aria-current="true"] { background: var(--ds-disabled-bg); box-shadow: inset 0 0 0 1.5px var(--ds-disabled-ink); }
+.photo-card.is-locked[aria-current="true"] { background: var(--ds-disabled-bg); box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-disabled-ink); }
 .photo-card-plain.photo-card-silhouette { background: var(--photo-free-time-photo-card-silhouette-ground); color: var(--ds-disabled-ink); }
 .photo-card.is-locked .photo-card-name {
   display: -webkit-box;
@@ -371,7 +371,7 @@
   background: var(--ds-smoke);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   white-space: nowrap;
   overflow: hidden;
@@ -383,7 +383,7 @@
 .photo-card-name {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
@@ -407,8 +407,8 @@
   width: 7px;
   height: 7px;
   margin-left: -4px;
-  border-top: 2px solid currentColor;
-  border-left: 2px solid currentColor;
+  border-top: var(--ds-edge) solid currentColor;
+  border-left: var(--ds-edge) solid currentColor;
   transform: rotate(45deg);
   opacity: 0;
   animation: photo-card-cue-rise 1.6s ease-out infinite;
@@ -432,12 +432,12 @@
 }
 .photo-cards.is-list .photo-card-cue { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .photo-card-cue::before, .photo-card-cue::after { opacity: 0.9; animation: none; }
+  .photo-card-cue::before, .photo-card-cue::after { opacity: var(--ds-opacity-strong); animation: none; }
   .photo-card-cue::after { top: 1px; }
   .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
 }
 .reduce-motion .photo-card-cue::before,
-.reduce-motion .photo-card-cue::after { opacity: 0.9; animation: none; }
+.reduce-motion .photo-card-cue::after { opacity: var(--ds-opacity-strong); animation: none; }
 .reduce-motion .photo-card-cue::after { top: 1px; }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
 
@@ -502,15 +502,15 @@
   width: max-content;
   max-width: min(calc(100vw - 32px), 320px);
   padding: var(--ds-space-2) var(--ds-space-4);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-smoke-on);
   color: var(--ds-on-dark);
   box-shadow: var(--ds-shadow-large);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--ds-tracking-1);
   text-align: center;
   overflow-wrap: anywhere;
   pointer-events: none;
@@ -586,7 +586,7 @@
   gap: var(--ds-space-2);
   margin: 0;
   padding: var(--ds-space-3);
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   color: var(--ds-ink);
@@ -606,15 +606,15 @@
   margin: 0;
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-1);
   line-height: var(--ds-leading-tight);
 }
 .place-card .place-card-name > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .place-card-event-list { display: grid; gap: var(--ds-space-2); }
 .place-card-event { display: grid; gap: var(--ds-space-1); }
-.place-card-event + .place-card-event { padding-top: var(--ds-space-2); border-top: 1px solid var(--ds-line); }
-.place-card-event-title { margin: 0; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.place-card-event + .place-card-event { padding-top: var(--ds-space-2); border-top: var(--ds-edge-thin) solid var(--ds-line); }
+.place-card-event-title { margin: 0; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* A place with several events: which one the swipe up (or 「行く」) takes, ● the chosen one; a press only chooses it
    (its ways show under it). */
 .place-card-event-choice {
@@ -625,18 +625,18 @@
   min-height: 44px;
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-2);
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   text-align: left;
   cursor: pointer;
 }
-.place-card-event-choice[aria-pressed="true"] { background: var(--ds-surface-chosen); box-shadow: inset 0 0 0 1px var(--ds-ink); }
+.place-card-event-choice[aria-pressed="true"] { background: var(--ds-surface-chosen); box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-ink); }
 .place-card-event-choice .place-card-tag { margin-right: 0; }
 .place-card-event-choice > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .place-card-event-mark { flex: none; font-size: var(--ds-text-small); }
@@ -651,7 +651,7 @@
   background: var(--ds-smoke);
   color: var(--ds-on-dark);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   white-space: nowrap;
   vertical-align: 1px;
@@ -717,14 +717,14 @@
   min-height: 44px;
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2);
-  border: 1px solid transparent;
+  border: var(--ds-edge-thin) solid transparent;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
   cursor: pointer;
@@ -733,12 +733,12 @@
   border-color: transparent;
   background: var(--ds-action-fill);
   color: var(--ds-action-ink);
-  box-shadow: inset 0 0 0 1px var(--ds-action-edge);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
   text-shadow: var(--ds-action-text-shadow);
 }
 .place-card-mode:disabled,
 .place-card-option:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; cursor: default; }
-.place-card-mode-cost { display: block; font-size: var(--ds-text-small); font-weight: 500; font-variant-numeric: tabular-nums; }
+.place-card-mode-cost { display: block; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
    so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
    on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one that
@@ -754,14 +754,14 @@
   min-height: 44px;
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-4);
-  border: 1px solid transparent;
+  border: var(--ds-edge-thin) solid transparent;
   border-radius: var(--ds-radius-pill);
   background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
   cursor: pointer;
@@ -770,14 +770,14 @@
   border-color: transparent;
   background: var(--ds-action-fill);
   color: var(--ds-action-ink);
-  box-shadow: inset 0 0 0 1px var(--ds-action-edge);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
   text-shadow: var(--ds-action-text-shadow);
 }
-.place-card-option-mark { flex: none; font-size: var(--ds-text-body); font-weight: 700; line-height: 1; }
+.place-card-option-mark { flex: none; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: 1; }
 .place-card-option-text { min-width: 0; }
 /* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. Plain
    weight like the card's other prose (2026-11-27: bold, 「30分待つ」 read as a button that did nothing). */
-.place-card-way { margin: 0 var(--ds-space-1); font-size: var(--ds-text-note); font-weight: 400; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.place-card-way { margin: 0 var(--ds-space-1); font-size: var(--ds-text-note); font-weight: var(--ds-weight-regular); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .place-card-way .place-card-mode-cost { display: inline; }
 .place-card-way.is-unavailable { color: var(--ds-ink-muted); }
 .place-card .place-card-go {
@@ -787,11 +787,11 @@
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
 }
 .place-card-go > span { min-width: 0; overflow-wrap: anywhere; }
-.place-card-go-cost { margin-left: auto; font-size: var(--ds-text-note); font-weight: 500; }
+.place-card-go-cost { margin-left: auto; font-size: var(--ds-text-note); font-weight: var(--ds-weight-medium); }
 /* In the row: kept for screen readers and the keyboard (visually hidden until it has the focus). */
 .place-card .place-card-go.is-quiet:not(:focus) {
   position: absolute;
@@ -812,7 +812,7 @@
 .place-inset { display: grid; gap: var(--ds-space-1); }
 .place-inset-map {
   height: 136px;
-  border: 1px solid var(--ds-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-map-ground);
   isolation: isolate;
@@ -835,7 +835,7 @@
   box-shadow: var(--ds-shadow-small);
   color: var(--ds-ink);
   font-size: var(--ds-text-small);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   pointer-events: none;
 }

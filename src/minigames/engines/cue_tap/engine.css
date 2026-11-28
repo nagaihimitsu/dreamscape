@@ -20,7 +20,7 @@
   position: relative;
   height: 14px;
   margin: 0 0 var(--ds-space-3);
-  border: 1px solid var(--ds-action-edge);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
 }
@@ -35,7 +35,7 @@
   width: 4px;
   border-radius: var(--ds-radius-pill);
   background: var(--ds-on-dark);
-  box-shadow: 0 0 0 1px var(--ds-dark);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-dark);
   transform: translateX(-50%);
 }
 .mg-engine-cue-tap .mg-cue-tap-action {
@@ -43,8 +43,8 @@
   width: 100%;
   min-height: 64px;
   font-size: var(--ds-text-heading);
-  font-weight: 700;
-  letter-spacing: 0.3em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-4);
   text-align: center;
   touch-action: manipulation;
 }
