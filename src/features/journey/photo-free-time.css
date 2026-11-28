@@ -3,7 +3,7 @@
    glass keep the redesign's shape (a 1.5-px dark edge, 12-px corners), display-only pills have no edge, and no card has
    a thick accent line on its left (AGENTS.md). */
 
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --photo-free-time-photo-backdrop-ground: rgba(90, 92, 97, 0.12);
   --photo-free-time-photo-backdrop-ground-2: rgba(120, 122, 128, 0.14);

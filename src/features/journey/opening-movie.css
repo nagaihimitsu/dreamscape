@@ -1,7 +1,7 @@
 /* A journey's opening movie (OpeningMovie.tsx): full screen over everything, the portrait movie fitted in black, the
    sound and skip buttons in the top corner clear of the notch, a play button in the middle when the browser refused to
    start it. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --opening-movie-button-ground: rgba(18, 19, 22, 0.6);
 }

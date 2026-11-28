@@ -1,6 +1,6 @@
 /* The cricket's field (Skin.tsx): the batter's view of the pitch, from the bricks behind the bat to her at the far end.
    Over the scene's picture (or the use's bg); with the use's art.pitch, that picture in place of the drawn pitch. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --cricket-batting-pitch-ground-012: rgba(120, 82, 40, 0.12);
   --cricket-batting-pitch-ground: #cbb083;

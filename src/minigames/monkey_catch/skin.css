@@ -2,7 +2,7 @@
    bottom. Over the scene's picture (or the use's bg); with the use's art.wall, that picture in place of the drawn wall.
    What the play judges (the falling thing, the ring, the hands) and the monkey have a dark edge and a shadow, so they
    stand out of a photo's detail. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --monkey-catch-wall-ground-018: rgba(70, 24, 12, 0.18);
   --monkey-catch-wall-ground: #b85a3e;

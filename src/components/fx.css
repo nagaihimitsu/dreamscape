@@ -1,6 +1,6 @@
 /* Small feedback marks (components/fx.tsx, 2026-11-13 user decision): decorative, aria-hidden, no presses.
    A button that carries one is an fx-host. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --fx-sparkle-sweep-ground: rgba(255, 255, 255, 0);
   --fx-sparkle-sweep-ground-2: rgba(255, 255, 255, 0.85);

@@ -35,6 +35,7 @@
 - [12 開発の手引き](docs/12_DEVELOPMENT.md)：開発の入口。起動、コマンドの一覧、生成と編集の流れ、公開、今の実装の範囲。
 - [10 開発時の確認](docs/10_DEVELOPMENT_CHECKS.md)：変更ごとの確認、テストの組、E2E、探索テスト、Debug起動URL、CI。
 - [13 ミニゲームの仕組み](docs/13_MINIGAMES.md)：ミニゲームの仕組みと、ゲームを足す人のチェックリスト。
+- [14 デザインの決まり](docs/14_DESIGN_RULES.md)：見た目（形・色・字・数値）の決まりと、ユーザーの判断の記録。画面を変える前に読む。
 - [08 公式資料](docs/08_REFERENCES.md)：使っている版と公式資料、史実の確かめ先。
 - [UI_RULES.md](UI_RULES.md)・[UI_REVIEW_CHECKLIST.md](UI_REVIEW_CHECKLIST.md)：画面の作り方と、作った後の点検。
 - [UI監査記録](docs/UI_AUDIT_2026_10.md)：2026年10月の画面の点検の記録。

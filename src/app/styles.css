@@ -13,7 +13,7 @@
      white and grey frosted glass, one typeface, six sizes, three line heights, a 4-px scale of room, soft round corners,
      and none of the old colours — indigo, navy, gold, parchment — anywhere, the things drawn in a scene included).
      Every stylesheet takes its colours, typeface, font sizes, line heights, room, corners and layers from these
-     (src/app/design-tokens.test.ts holds them to it). docs/02 「デザインの決まり」 lists them by role. */
+     (src/app/design-tokens.test.ts holds them to it). docs/14 「デザインの決まり」 lists them by role. */
 
   /* The colours: white and grey only (2026-11-28 user decision: no accent; the place's photo brings the colour). The
      colours that carry a meaning stay: a right answer's green, the current place's green, a missed answer's red, an
@@ -260,7 +260,7 @@ body {
   }
 }
 
-/* This stylesheet's things, named once (docs/02 「デザインの決まり」): an effect word's size larger than the steps, and
+/* This stylesheet's things, named once (docs/14 「デザインの決まり」): an effect word's size larger than the steps, and
    the colours of things of their own (the drawn canal's paper, the quiz partner's stage). */
 :root {
   --battle-score-size: 55px;

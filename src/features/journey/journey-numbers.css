@@ -1,6 +1,6 @@
 /* 旅の数字 (2026-11-13; JourneyNumbers.tsx): a card of label and number pairs, two to a row where they fit,
    one to a row on the narrowest phones; the numbers large enough to read at a glance. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --journey-numbers-journey-numbers-edge: rgba(36, 38, 43, 0.14);
 }

@@ -2,7 +2,7 @@
    right with her bubble over her head, the player's bubble from the bottom left (lifted clear of the result card as the
    play ends). Over the scene's picture (or the use's bg); with the use's art.lawn, that picture in place of the drawn lawn
    and tomb. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --say-together-lawn-ground-09: rgba(52, 78, 44, 0.9);
   --say-together-lawn-ground-085: rgba(60, 86, 50, 0.85);

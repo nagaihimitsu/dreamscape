@@ -1,7 +1,7 @@
 /* Debug's 「音と演出の見本」 (EffectsRoom.tsx): a working page for one hand on a phone (320–390 px), 44 px targets.
    Pressables are light ground rectangles with a dark edge (pressed: dark), state notes sit on their own ground, and no
    card has a thick edge on one side. The sample stage reuses the game's own scene, header and notices. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --effects-room-off-ground: #f1f2f4;
 }

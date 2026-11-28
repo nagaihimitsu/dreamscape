@@ -1,6 +1,6 @@
 /* The rhythm_tap engine (EnginePlay.tsx): the skin's field fills the middle; at the bottom in thumb reach, the hint and
    the stop button (away from the big button: the lane lies between them), the lane of beats, the big tap button. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --rhythm-tap-mark-edge: #e07a82;
   --rhythm-tap-mark-ground-06: rgba(163, 49, 60, 0.6);

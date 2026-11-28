@@ -3,7 +3,7 @@
    in % of the window; sizes in --u, a unit of the window's width, so the rows keep apart on a short phone too. The
    umbrellas, customers and children are the buttons (each at least 52px); a looked-at umbrella slides aside to show who is
    under it. With the use's art.street, that picture in place of the drawn street. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --parasol-search-skin-ground: #8d4c43;
   --parasol-search-window-ground: #dcb2a2;

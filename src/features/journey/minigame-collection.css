@@ -1,6 +1,6 @@
 /* ミニゲーム集 (2026-11-20; MiniGameCollection.tsx): the list, one full-width row of at least 44 px per game (its name and
    length, where the journey plays it), as 旅の音楽室's rows; no card has a thick edge on one side. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --minigame-collection-stage-ground: #1e1f23;
 }

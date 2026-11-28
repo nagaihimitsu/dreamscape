@@ -3,7 +3,7 @@
    (the compositor's work), standing still while the page is hidden ([data-paused]). Every movement has its still form
    under reduced motion (the system's and 「演出を短縮する」, .reduce-motion; at the end of this file). */
 
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --scene-atmosphere-weather-layer-ground: rgba(70, 72, 78, 0.14);
   --scene-atmosphere-weather-layer-ground-2: rgba(214, 178, 120, 0.06);

@@ -1,5 +1,5 @@
 /* A short visual bridge; the saved reasoning state remains underneath it. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --reasoning-cutin-reasoning-cutin-ink: #ffffff;
   --reasoning-cutin-reasoning-cutin-ground: #4a4c52;
@@ -20,7 +20,7 @@
   --reasoning-cutin-skip-ground: #1c1d20e6;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --reasoning-impact-size: clamp(46px, 9dvh, 76px);
   --reasoning-copy-size: clamp(34px, 9vw, 64px);
