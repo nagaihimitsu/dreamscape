@@ -210,7 +210,6 @@
   --ds-layer-cutin: 30; /* (in a quiz) 「Quiz」 and the reasoning cut-ins */
   --ds-layer-map-control: 1000; /* (on a map) its controls, over the map's own panes */
   --ds-layer-map-note: 1001; /* (on a map) the way to a place, over its controls */
-  --ds-layer-term: 1800; /* a term's window over the page */
   --ds-layer-arrival: 1900; /* a city's arrival */
   --ds-layer-stamp: 1940; /* a chapter's stamp */
   --ds-layer-title-card: 1950; /* a story's title card, the packing */

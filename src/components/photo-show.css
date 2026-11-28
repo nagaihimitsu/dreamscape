@@ -1,25 +1,24 @@
-/* A line's photo shown large (PhotoShow.tsx; 2026-11-12, the default since 2026-11-25): the album picture on a pane of
-   the light glass with a wider margin under it, where its caption and its stamp (the place and 「n日目 hh:mm」) are set
-   in the game's one face (2026-11-28 user decision: one UI first; it was a white paper print, tilted, its caption in a
-   pen's hand, its stamp in orange ink). It lies over the portraits (dimmed by the layer's veil) and under the window (z-index 2),
-   in the area below the header, below the notices under the header (--notices-h, as the item card), at the same size on
-   every line (2026-11-27 user decision: not made smaller beside the faces of whoever speaks). The picture keeps its own
-   ratio and fits within the width and its height. The print has its own turn before its line (photo-turn.ts): a tap
-   anywhere, the print too, ends it and the print goes quickly (.photo-show-leaving). The album's pictures are the author's own art (never
-   credited), so a print just taken may develop through a filter. The veil dims the whole scene, behind the header too
-   (2026-11-25 user decision, after an iPhone: the band behind the header was left brighter than the dimmed scene). */
+/* A line's photo on the scene (PhotoShow.tsx; 2026-11-12, the default since 2026-11-25; 2026-11-28 user decision: smaller,
+   right above the dialogue window, with the line, as a part of its words): the album picture on a pane of the light
+   glass with a margin under it, where its caption and its stamp (the place and 「n日目 hh:mm」) are set in the game's one
+   face. It lies over the portraits and under the window (z-index 2), its foot just above the window's top, its choices
+   included (--photo-bottom, measured), and no higher than the area under the header and the notices there
+   (--notices-h). Nothing dims the scene round it: the people and the place stay as they are, and a tap anywhere (the
+   print too) reads on. The picture keeps its own ratio, at most about a quarter of the screen's height, and less where
+   the room above the window is shorter (--photo-room, measured). The album's pictures are the author's own art (never
+   credited), so a print just taken may develop through a filter. */
 
 .photo-show-layer {
   position: absolute;
   z-index: 1;
   inset: 0;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  /* The print's top (its upper edge, from the scene's top), which its picture's height counts from. */
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  /* The print's highest top (from the scene's top): under the header and its notices. */
   --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px)));
-  padding: var(--photo-top) var(--ds-space-4) 0;
-  background: var(--stage-photo-veil);
+  padding: var(--photo-top) var(--ds-space-4) calc(var(--photo-bottom, 0px) + var(--ds-space-2));
   pointer-events: none;
   animation: stage-fade-in var(--motion-scene) var(--ease-out);
 }
@@ -28,8 +27,9 @@
    flex column, so the picture is never stretched); the margin's words wrap within it. */
 .photo-print {
   display: block;
+  flex: none;
   width: fit-content;
-  max-width: min(100%, 600px);
+  max-width: min(100%, 480px);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-2) 0;
   border-radius: var(--ds-radius-pane);
@@ -44,8 +44,9 @@
   width: auto;
   height: auto;
   max-width: 100%;
-  /* Never larger than 40 % of the screen, so the window below stays clear. */
-  max-height: 40dvh;
+  /* About a quarter of the screen at most, and within the room above the window, less the margin under it (its caption
+     on a line); never smaller than a small picture. */
+  max-height: max(64px, min(24dvh, calc(var(--photo-room, 100dvh) - var(--ds-space-8) - var(--ds-space-6))));
   border-radius: var(--ds-radius-control);
 }
 .photo-print-margin {
@@ -53,16 +54,16 @@
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--ds-space-1) var(--ds-space-3);
+  gap: 0 var(--ds-space-2);
   /* Not wider than the picture: the margin takes the print's width, never gives it one. */
   width: 0;
   min-width: 100%;
-  padding: var(--ds-space-2) var(--ds-space-1) var(--ds-space-2);
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2);
   color: var(--ds-ink);
 }
 .photo-print-caption {
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-body);
+  font-size: var(--ds-text-note);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
@@ -76,17 +77,11 @@
   text-align: right;
   overflow-wrap: anywhere;
 }
+/* A print with nothing in its margin keeps as much room under its picture as round it. */
+.photo-print:not(:has(.photo-print-margin)) { padding-bottom: var(--ds-space-2); }
 @keyframes photo-show-in {
   from { opacity: 0; transform: scale(0.94); }
 }
-/* Its turn ended (a tap): the print and its veil go quickly (PhotoShow.tsx PHOTO_LEAVE_MS), the line starting meanwhile. */
-.photo-show-layer.photo-show-leaving {
-  animation: photo-show-leave 160ms ease-in forwards;
-}
-@keyframes photo-show-leave {
-  to { opacity: 0; }
-}
-
 /* A photo just taken (data-taken): a short flash over the scene, then the print comes up and its picture
    develops, from a pale wash into its colours. */
 .photo-show-flash {
@@ -141,15 +136,13 @@
   100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--to-scale, 0.2)); }
 }
 
-/* A short landscape screen: a smaller picture, so the window below stays clear. */
+/* A short landscape screen: the print may begin right under the header. */
 @media (max-height: 500px) {
-  .photo-show-layer { --photo-top: 8px; }
-  .photo-print img { max-height: 32dvh; }
-  .photo-print-margin { padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2); }
+  .photo-show-layer { --photo-top: calc(var(--scene-top, 0px) + 8px); }
 }
 
-/* Reduced motion and 「演出を短縮する」: no flash, no flight; the print and its veil come at once, developed, and go by
-   fading where they were. */
+/* Reduced motion and 「演出を短縮する」: no flash, no flight; the print comes at once, developed, and goes by fading where
+   it was. */
 .reduce-motion .photo-show-layer,
 .reduce-motion .photo-print,
 .reduce-motion [data-taken] > .photo-print,

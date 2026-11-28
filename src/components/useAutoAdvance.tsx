@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icons";
-import { readingHeld } from "./dialogueObstructed";
+import { dialogueObstructed } from "./dialogueObstructed";
 import { stopsFastForward, type ReadSkip } from "./read-skip";
 import type { LineVoiceState, VoiceLink } from "./useVoice";
 import { setSceneFastForward } from "../audio/sound-effects";
-import { photoTurn, usePhotoTurnOn } from "./photo-turn";
 
 /** How long auto mode waits after a line's voice has ended before it reads on (milliseconds). */
 const AFTER_VOICE_MS = 700;
-/** Auto mode's shortest reading time for a line, also how long it shows a line's large photo before its line (photo-turn.ts). */
+/** Auto mode's shortest reading time for a line. */
 const MIN_READING_MS = 2000;
 
 /** Optional presentation state. It is never written to the game save. */
@@ -32,7 +31,7 @@ export function useAutoAdvance({
   lineId?: string | null;
 }) {
   const [fast, setFast] = useState(false);
-  const [blocked, setBlocked] = useState(readingHeld);
+  const [blocked, setBlocked] = useState(dialogueObstructed);
   // The voice of the line on screen (`# voice:`), as its DialogueText reports it (null: none, or it stopped early).
   const [voice, setVoice] = useState<LineVoiceState | null>(null);
   // Read-skip: arriving at a line not read before stops fast-forward (unless the reader skips unread lines too). Decided
@@ -65,7 +64,7 @@ export function useAutoAdvance({
 
   useEffect(() => {
     const stopIfObstructed = () => {
-      const obstructed = readingHeld();
+      const obstructed = dialogueObstructed();
       setBlocked(obstructed);
       if (obstructed) setFast(false);
     };
@@ -92,7 +91,7 @@ export function useAutoAdvance({
     // lines indefinitely. A manual tap remains available throughout.
     const delay = fast ? 250 : voice === "ended" ? AFTER_VOICE_MS : Math.min(7000, Math.max(MIN_READING_MS, Array.from(text).length * 90));
     const timer = window.setTimeout(() => {
-      if (!canAdvanceRef.current || readingHeld()) {
+      if (!canAdvanceRef.current || dialogueObstructed()) {
         setFast(false);
         return;
       }
@@ -100,16 +99,6 @@ export function useAutoAdvance({
     }, delay);
     return () => window.clearTimeout(timer);
   }, [fast, defaultEnabled, blocked, ready, canAdvance, text, voice]);
-  // Auto mode also ends a line's photo turn by itself (2026-11-27 user decision), after its shortest reading time; a tap
-  // ends it sooner. Without auto mode only a tap does (高速送り shows no photo).
-  const photoUp = usePhotoTurnOn();
-  useEffect(() => {
-    if (!defaultEnabled || fast || blocked || !photoUp) return;
-    const timer = window.setTimeout(() => {
-      if (!readingHeld()) photoTurn()?.end();
-    }, MIN_READING_MS);
-    return () => window.clearTimeout(timer);
-  }, [defaultEnabled, fast, blocked, photoUp]);
   const voiceLink: VoiceLink = { muted: fast, onState: setVoice };
 
   return {
@@ -121,7 +110,7 @@ export function useAutoAdvance({
     /** For the line's DialogueText (useLineVoice, useLineSounds): no voice and no sound while 高速送り, and the voice's state for auto mode. */
     voice: voiceLink,
     toggle: () => {
-      if (readingHeld()) return;
+      if (dialogueObstructed()) return;
       if (canAdvance) setFast((value) => !value);
     },
   };

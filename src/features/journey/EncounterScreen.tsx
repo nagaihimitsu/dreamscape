@@ -3,6 +3,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading } from "../../components/SceneHeading";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { LineCards } from "../../components/LineCards";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
@@ -15,7 +16,7 @@ import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
-import { dialogueObstructed, readingHeld } from "../../components/dialogueObstructed";
+import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { useEstablishingShot } from "../../components/useEstablishingShot";
 import { speakerSpot, useNameBand } from "../../components/name-band";
@@ -159,7 +160,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
   // The quiz's verdict and explanation, its options gone: 「続きを読む」 or a tap on the scene goes on (2026-11-16 user decision).
   const resultShown = !!quiz?.result;
   function continueFromResult() {
-    if (!resultShown || windowVisibility.hidden || readingHeld()) return;
+    if (!resultShown || windowVisibility.hidden || dialogueObstructed()) return;
     onAdvance();
   }
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: (!!quiz && !resultShown) || view.choices.length > 0, resultShown,
@@ -236,6 +237,7 @@ export function EncounterScreen({ view, learning, englishOff = false, speed, red
               </>
             )}
           </div>
+          <LineCards />
         </div>
         {/* The replies float above the window, which keeps the line or the question they answer (romance-scene.css .vn-choices). */}
         {quiz ? (!quiz.result && <div className="vn-choices">
