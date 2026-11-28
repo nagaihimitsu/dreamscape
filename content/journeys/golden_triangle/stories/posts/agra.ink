@@ -21,7 +21,7 @@ INCLUDE modules.ink
 // 後のコメントは、交際が始まった夜に届く（サミールの最初のコメントが届いていれば）。
 === gt_post_agra_arrival ===
 # post: heroine
-# images: gt_album_a001 gt_album_a01 gt_album_a003 gt_album_a004 gt_album_a005
+# images: gt_album_a001 gt_album_a002 gt_album_a003 gt_album_a004 gt_album_a005
 新婚なのは、白鳥だけです
 
 = samir

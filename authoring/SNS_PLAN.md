@@ -117,7 +117,7 @@ Debugモードの間だけ、投稿ごとに「届いた投稿・コメント・
 ```ink
 === post_gt_india_gate ===
 # post: heroine
-# images: gt_album_d054 gt_album_d25 gt_album_d060
+# images: gt_album_d054 gt_album_d056 gt_album_d060
 # when: date gt_delhi_date_india_gate
 # speaker: heroine
 十二人家族に、一日だけ入りました
@@ -196,7 +196,7 @@ SNSを作る前に、別の作業として片付ける。
 - `# where:` は、その都市の地点のID（`travel/<都市>.json` の places）か、場所の名前（日本語。例「村の家」）。英小文字の ID の形で地点にないものはビルドが止める。ヒロインの投稿には書けない（写真の記録の場所を出す）。
 - `# images:` は、ヒロインならアルバムの絵（撮ったものだけが載る）。出会った人なら、アルバムの絵か、新しく描いた絵（旅行編の `public/assets/sns/<ID>.webp`。アルバムと同じく自作の絵で、登録も出典も要らない。ID はアルバムの絵と重ねない）。
 - `# likes:` の人ごとの条件は `# likes: <人物ID> … if <条件>`（例 `# likes: gt_monu if met gt_monu`）。`# likes:` は何度でも書ける。いいねは投稿が届いた夜に決まり、セーブに残る（後で条件が変わっても変わらない）。
-- `# photo_with: <人物ID> …` は、場面の写真の札 `# photo:` と**同じ行**に書く（例 `# photo: gt_album_d25 # photo_caption: 十三人目 # photo_with: gt_monu`）。people にいる人なら書ける（立ち絵のない人は人物ページがないので出ない）。
+- `# photo_with: <人物ID> …` は、場面の写真の札 `# photo:` と**同じ行**に書く（例 `# photo: gt_album_d056 # photo_caption: 十三人目 # photo_with: gt_monu`）。people にいる人なら書ける（立ち絵のない人は人物ページがないので出ない）。
 - 条件：`comment <投稿>.<コメント>`（JSON では `snsComment`）、`liked <投稿>`（`snsLiked`）。場面の `cond(…)`・頭の `# when:` など、今の条件の書ける所ならどこでも書ける。
 - ビルドが止めるもの：絵・人物・地点がない、立ち絵のない人・SNS に出さない人の投稿・コメント・いいね、同じ投稿のIDが2つ・同じコメントの名前が1つの投稿に2つ、選択肢・分岐・`~`・行き先（`->`）・`cond(…)`・`{…}`（`{heroine_name}`・`{player_name}` は書ける）・効果の札、書けない札（`# emotion:` なども）、条件の書き間違い・参照切れ。注意（止めない）：1つの投稿にコメント4件以上、後から届くコメント2件以上（`content:build` の注意 `sns-reading`）、夜には成り立たない条件（`time day` など）の投稿・コメント・`# likes:`（注意 `sns-night`。2026-11-27 に足した）。
 - 生成データ：`src/content/generated/sns.json`（`src/content/sns.ts` の `snsDataSchema`。投稿・SNS の絵・写真に写っている人）。ゲームは `src/content` の `snsData` で読む。ビルドは `scripts/sns-posts.ts`。
@@ -251,7 +251,7 @@ SNSを作る前に、別の作業として片付ける。
 
 - ヒロインの投稿5つ：到着（カムラの段ボールの地図）・クトゥブ・ミナール（対決の後）・インド門・チャンドニー・チョーク・アグラセン・キ・バオリ（どれもデートの後）。到着とクトゥブ・ミナールは誰でも通るので、デートを遊ばなくても2つは届く。
 - 常連は4人：カムラ・ルーヒー・モヌ・クナール（自己紹介は `progression/story.json` の `people` の `sns.introJa`）。モヌとクナールは、会った場面の投稿にだけ書く。カムラのコメントは句点で終わる短い命令・問いの口調にした。
-- 出会った人の投稿：モヌ（インド門の写真。1回目の3択で、十三人目 `gt_album_d25`・写真屋の十四人 `d057`・アイスの `d058` の3つの投稿に分け、1つだけが届く）、クナール（階段井戸の動画）。アイスの道を分けるため、インド門の選択肢「アイスを人数分、買ってきます」に `# set: gt_delhi_india_gate_ice` を足した。
+- 出会った人の投稿：モヌ（インド門の写真。1回目の3択で、十三人目 `gt_album_d056`・写真屋の十四人 `d057`・アイスの `d058` の3つの投稿に分け、1つだけが届く）、クナール（階段井戸の動画）。アイスの道を分けるため、インド門の選択肢「アイスを人数分、買ってきます」に `# set: gt_delhi_india_gate_ice` を足した。
 - 二人がしたことへの反応：誰が「バス」と言ったか（`gt_delhi_said_bas`・`gt_delhi_bas_for_her` と `# one_of:`）、腹を壊した翌朝の宿の場面（`seen gt_delhi_hotel_sick_morning`）、アーグラの宿で動画に気づかれた場面（`seen gt_agra_arrive_reel`）、エピローグ（`epilogue delhi`）。
 - 関係の変化：インド門の投稿の後のコメント（`# when: couple`。祖母の「いつ結婚するのか」への答えを受けて、モヌ「ダーディーが「ほらね」って」）。デリーでは交際が始まらないので、ふつうはアーグラ・ジャイプールの夜に届く。
 - 出会った人の日常の写真（新しく描く絵）の依頼：`authoring/journeys/golden_triangle/art-requests/2026-11-27-sns-delhi.md`（4人に1枚ずつ。投稿の案は同じフォルダの README）。

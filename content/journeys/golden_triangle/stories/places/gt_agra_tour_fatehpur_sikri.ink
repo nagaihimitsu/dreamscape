@@ -1021,7 +1021,7 @@ HORN OK PLEASE。
     それから、しばらく誰も話さなかった。{heroine_name}のまぶたが、ゆっくりと下りてくる。
     { cond("couple"):
         # speaker: narrator
-        # photo: gt_album_a27 # photo_caption: 帰りの車、こつんと落ちる頭
+        # photo: gt_album_a062 # photo_caption: 帰りの車、こつんと落ちる頭
         # stand: close
         頭が、こちらの肩に、こつんと落ちた。
     - else:
