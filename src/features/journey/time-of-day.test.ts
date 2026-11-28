@@ -9,7 +9,7 @@ describe("the free-time background's colour of the time of day", () => {
     expect(timeOfDayTint(at(9))).toBe("rgba(214, 232, 255, 0.16)");
     expect(timeOfDayTint(at(12))).toBe("rgba(0, 0, 0, 0)");
     expect(timeOfDayTint(at(16, 30))).toBe("rgba(255, 138, 51, 0.22)");
-    expect(timeOfDayTint(at(21))).toBe("rgba(18, 30, 78, 0.42)");
+    expect(timeOfDayTint(at(21))).toBe("rgba(16, 17, 22, 0.42)");
   });
 
   it("passes from one to the next: a tint fading out keeps its hue, and 18:00 is halfway to the night", () => {
@@ -28,7 +28,7 @@ describe("the free-time background's colour of the time of day", () => {
 
   it("wraps past midnight (a late return) and is the night before dawn", () => {
     expect(timeOfDayTint(at(24, 30))).toBe(timeOfDayTint(at(0, 30)));
-    expect(timeOfDayTint(at(0, 30))).toBe("rgba(18, 30, 78, 0.42)");
+    expect(timeOfDayTint(at(0, 30))).toBe("rgba(16, 17, 22, 0.42)");
     expect(timeOfDayTint(-30)).toBe(timeOfDayTint(at(23, 30)));
   });
 });
@@ -46,7 +46,7 @@ describe("the title art's colour of the device's time of day", () => {
     expect(titleArtTint(7).color).toBe("rgba(255, 196, 140, 0.14)");
     expect(titleArtTint(12).color).toBeNull();
     expect(titleArtTint(17).color).toBe("rgba(255, 150, 50, 0.2)");
-    expect(titleArtTint(22).color).toBe("rgba(18, 30, 78, 0.38)");
+    expect(titleArtTint(22).color).toBe("rgba(16, 17, 22, 0.38)");
   });
 
   it("stays faint enough to leave the picture readable (opacity at most 0.4)", () => {
@@ -67,7 +67,7 @@ describe("the title art's colour of the device's time of day", () => {
 describe("a story scene's colour of the time of day (2026-11-13)", () => {
   it("is free time's colour at half its opacity: the evening's amber and the night's blue, none at midday", () => {
     expect(sceneTimeTint(at(16, 30), false)).toBe("rgba(255, 138, 51, 0.11)");
-    expect(sceneTimeTint(at(21), false)).toBe("rgba(18, 30, 78, 0.21)");
+    expect(sceneTimeTint(at(21), false)).toBe("rgba(16, 17, 22, 0.21)");
     expect(sceneTimeTint(at(9), false)).toBe("rgba(214, 232, 255, 0.08)");
     expect(sceneTimeTint(at(12), false)).toBe("rgba(0, 0, 0, 0)");
     for (let minute = 0; minute < 24 * 60; minute += 10)

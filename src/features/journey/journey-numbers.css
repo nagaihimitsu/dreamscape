@@ -1,25 +1,25 @@
-/* 旅の数字 (2026-11-13; JourneyNumbers.tsx): a parchment card of label and number pairs, two to a row where they fit,
-   one to a row on the narrowest phones; the numbers in the serif face, large enough to read at a glance. */
+/* 旅の数字 (2026-11-13; JourneyNumbers.tsx): a card of label and number pairs, two to a row where they fit,
+   one to a row on the narrowest phones; the numbers large enough to read at a glance. */
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --journey-numbers-journey-numbers-edge: rgba(216, 184, 120, 0.3);
+  --journey-numbers-journey-numbers-edge: rgba(36, 38, 43, 0.14);
 }
 .journey-numbers {
-  margin: 12px 0;
-  padding: 12px 14px;
-  border: 1px solid var(--ds-parchment-line);
+  margin: var(--ds-space-3) 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
 }
 .journey-numbers h3 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--ds-space-2);
   font-size: var(--ds-text-body);
 }
 .journey-numbers dl {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
-  gap: 8px 14px;
+  gap: var(--ds-space-2) var(--ds-space-4);
   margin: 0;
 }
 .journey-numbers dl > div {
@@ -27,38 +27,38 @@
 }
 .journey-numbers dt {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-caption);
-  line-height: var(--ds-leading-snug);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
 }
 .journey-numbers dd {
-  margin: 2px 0 0;
-  font-family: var(--ds-font-serif);
+  margin: var(--ds-space-1) 0 0;
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
-/* In the end roll: no card, the numbers set on the night between two gold lines, labels small and spaced. */
+/* In the end roll: no card, the numbers set on the night between two white lines, labels small and spaced. */
 .end-roll .journey-numbers {
-  margin: 56px auto 0;
+  margin: var(--ds-space-16) auto 0;
   max-width: 32rem;
-  padding: 22px 4px;
+  padding: var(--ds-space-6) var(--ds-space-1);
   border: 0;
   border-block: 1px solid var(--journey-numbers-journey-numbers-edge);
   border-radius: 0;
   background: transparent;
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   text-align: center;
 }
 .end-roll .journey-numbers h3 {
-  margin-bottom: 16px;
-  color: var(--roll-gold);
-  font-size: var(--ds-text-caption);
+  margin-bottom: var(--ds-space-4);
+  color: var(--roll-light);
+  font-size: var(--ds-text-small);
   font-weight: 500;
   letter-spacing: 0.4em;
   text-indent: 0.4em;
 }
-.end-roll .journey-numbers dl { gap: 18px 14px; }
-.end-roll .journey-numbers dt { color: var(--roll-muted); font-size: var(--ds-text-mark); letter-spacing: 0.12em; }
-.end-roll .journey-numbers dd { margin-top: 4px; font-size: var(--ds-text-heading); font-weight: 500; }
+.end-roll .journey-numbers dl { gap: var(--ds-space-4) var(--ds-space-4); }
+.end-roll .journey-numbers dt { color: var(--roll-muted); font-size: var(--ds-text-small); letter-spacing: 0.12em; }
+.end-roll .journey-numbers dd { margin-top: var(--ds-space-1); font-size: var(--ds-text-heading); font-weight: 500; }

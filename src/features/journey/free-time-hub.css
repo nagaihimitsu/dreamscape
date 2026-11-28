@@ -26,7 +26,7 @@
   left: 0;
   right: 0;
   height: 100lvh;
-  background: linear-gradient(var(--ds-parchment-2), var(--ds-parchment));
+  background: linear-gradient(var(--ds-surface-chosen), var(--ds-surface));
   pointer-events: none;
 }
 .free-time-backdrop img,
@@ -50,17 +50,17 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--ds-veil) 6%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 6%, transparent);
 }
 
 .free-time-hub {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--ds-space-2);
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
-  padding: 8px 16px 24px;
+  padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-6);
   color: var(--ds-ink);
 }
 
@@ -69,23 +69,23 @@
 .free-time-banner {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   min-height: 40px;
   margin: 0;
-  padding: 4px 12px;
-  border-radius: var(--ds-radius-small);
-  background: var(--ds-parchment-2);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-chosen);
   color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
+  box-shadow: var(--ds-shadow-small);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
   letter-spacing: 0.02em;
 }
 .free-time-banner span { min-width: 0; overflow-wrap: anywhere; }
 .free-time-banner .icon { flex: none; width: 20px; height: 20px; color: var(--ds-ink-muted); }
-.free-time-banner .free-time-banner-plane { margin-left: auto; color: var(--ds-gold); }
+.free-time-banner .free-time-banner-plane { margin-left: auto; color: var(--ds-hairline); }
 @media (max-width: 379px) {
   .free-time-banner .free-time-banner-plane { display: none; }
 }
@@ -110,31 +110,31 @@
 /* F20–F22: the remaining actions of the city, one card without a heading. */
 .free-time-extras {
   display: grid;
-  gap: 8px;
-  padding: 8px 12px 12px;
-  border: 1px solid var(--ds-parchment-line);
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-card-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow);
 }
 .free-time-extras > .secondary { margin: 0; min-height: 44px; }
 /* A booked tour holds the departure (tour stage 2a): display only. */
-.free-time-tour-wait { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.free-time-tour-wait { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 
 /* The page ends above the previous screen's bottom band (its measured height, --bottom-h); B案 has no band. */
 .app-shell.free-time-active { padding-bottom: var(--bottom-h, 0px); }
 
 /* 「画面の出典」's list of free time's photos (PhotoCredits.tsx's ScreenCredits). */
-dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16px; width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
-.photo-credits-modal .modal-title-bar { margin-bottom: 8px; }
-.photo-credits-list { display: grid; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
-.photo-credits-list li { display: flex; gap: 12px; align-items: flex-start; padding-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
+dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+.photo-credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
+.photo-credits-list { display: grid; gap: var(--ds-space-3); margin: var(--ds-space-2) 0 0; padding: 0; list-style: none; }
+.photo-credits-list li { display: flex; gap: var(--ds-space-3); align-items: flex-start; padding-top: var(--ds-space-3); border-top: 1px solid var(--ds-line); }
 /* Only the recap's photo (the night screen): no note above the list, so its first entry needs no second line under the title bar. */
 .photo-credits-modal .modal-title-bar + .photo-credits-list > li:first-child { padding-top: 0; border-top: 0; }
-.photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: var(--ds-radius-field); object-fit: cover; }
+.photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: var(--ds-radius-control); object-fit: cover; }
 .photo-credits-list div { min-width: 0; }
-.photo-credits-list h3 { margin: 0 0 4px; font-size: var(--ds-text-body); font-weight: 600; }
-.photo-credits-list p { margin: 2px 0; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.photo-credits-list h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: 600; }
+.photo-credits-list p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 
 /* The visible height with the browser's bars shown, measured by FreeTimeHub. */
 .free-time-svh-probe {
@@ -154,18 +154,18 @@ dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   .free-time-hub .travel-menu {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    column-gap: 8px;
+    column-gap: var(--ds-space-2);
     row-gap: 0;
     align-items: start;
   }
-  .free-time-hub .travel-menu > * { grid-column: 2; margin-bottom: 8px; }
+  .free-time-hub .travel-menu > * { grid-column: 2; margin-bottom: var(--ds-space-2); }
   .free-time-hub .travel-menu > .travel-map {
     grid-column: 1;
     grid-row: 1 / span 30;
     padding: 0;
     border-radius: var(--ds-radius-pane);
   }
-  .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: 0; border-radius: var(--ds-radius-pane); padding-top: 6px; }
+  .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: 0; border-radius: var(--ds-radius-pane); padding-top: var(--ds-space-2); }
   .free-time-hub .travel-map-frame {
     height: calc(100svh - var(--hud-h, 52px) - var(--bottom-h, 60px) - 16px);
     border-radius: var(--ds-radius-pane);

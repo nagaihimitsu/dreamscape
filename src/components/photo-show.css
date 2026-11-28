@@ -10,9 +10,9 @@
 
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --photo-print-margin: #fbfaf6; /* the print's paper */
+  --photo-print-margin: #fafafa; /* the print's paper */
   --photo-print-stamp: #b4532a; /* a date stamp's orange ink */
-  --photo-print-hand: "Klee One", "Noto Serif JP", serif; /* a pen's hand */
+  --photo-print-hand: "Klee One", "Noto Sans JP", sans-serif; /* a pen's hand */
 }
 
 .photo-show-layer {
@@ -24,7 +24,7 @@
   align-items: flex-start;
   /* The print's top (its upper edge, from the scene's top), which its picture's height counts from. */
   --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px)));
-  padding: var(--photo-top) 16px 0;
+  padding: var(--photo-top) var(--ds-space-4) 0;
   background: var(--stage-photo-veil);
   pointer-events: none;
   animation: stage-fade-in var(--motion-scene) var(--ease-out);
@@ -37,8 +37,8 @@
   width: fit-content;
   max-width: min(100%, 600px);
   margin: 0;
-  padding: 7px 7px 0;
-  border-radius: var(--ds-radius-hair);
+  padding: var(--ds-space-2) var(--ds-space-2) 0;
+  border-radius: var(--ds-radius-pill);
   background: var(--photo-print-margin);
   box-shadow: var(--stage-photo-shadow);
   transform: rotate(-1.5deg);
@@ -51,30 +51,30 @@
   max-width: 100%;
   /* Never larger than 40 % of the screen, so the window below stays clear. */
   max-height: 40dvh;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
 }
 .photo-print-margin {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 2px 12px;
+  gap: var(--ds-space-1) var(--ds-space-3);
   /* Not wider than the picture: the margin takes the print's width, never gives it one. */
   width: 0;
   min-width: 100%;
-  padding: 7px 4px 9px;
+  padding: var(--ds-space-2) var(--ds-space-1) var(--ds-space-2);
   color: var(--ds-ink);
 }
 .photo-print-caption {
   font-family: var(--photo-print-hand);
   font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .photo-print-stamp {
   margin-left: auto;
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-tight);
   letter-spacing: 0.04em;
   color: var(--photo-print-stamp);
@@ -150,7 +150,7 @@
 @media (max-height: 500px) {
   .photo-show-layer { --photo-top: 8px; }
   .photo-print img { max-height: 32dvh; }
-  .photo-print-margin { padding: 4px 4px 6px; }
+  .photo-print-margin { padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2); }
 }
 
 /* Reduced motion and 「演出を短縮する」: no flash, no flight; the print and its veil come at once, developed, and go by

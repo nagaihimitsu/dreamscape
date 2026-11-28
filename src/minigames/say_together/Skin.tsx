@@ -8,7 +8,7 @@ import "./skin.css";
 // the left, her standing a step away on the right. Her bubble over her head counts 「せー」「の」 and then says the four
 // words in her own rhythm (rules.ts: a stretched first word, a quick third whose long syllable she holds, its ー growing
 // in the bubble, and a breath, 「すっ」, before the last); the player's bubble rises from the bottom left and says each
-// word the player taps, gold when it came on her word (both bubbles glow), plain when off it. The lane under the field shows her beats (her count as
+// word the player taps, dark when it came on her word (both bubbles glow), plain when off it. The lane under the field shows her beats (her count as
 // crosses, the words as marks, the last one bigger). The last word, 「デーン！」, is the peak: together, the play stops on it with stars on both
 // bubbles, a shake and the host's finish (the skin ends the play there). With the use's art (`art.lawn`, `art.heroine`)
 // the drawn lawn and her standing picture give way to those pictures. As the play ends, the player's bubble lifts clear
@@ -135,7 +135,7 @@ function HerWords({ script, count, held }: { script: SayScript; count: number; h
   ))}</>;
 }
 
-/** The player's words said so far (a word skipped is not there): gold on her beat, plain off it. */
+/** The player's words said so far (a word skipped is not there): dark on her beat, plain off it. */
 function YourWords({ script, words }: { script: SayScript; words: readonly SayWord[] }) {
   return <>{words.map((state, index) => state && (
     <span key={script.words[index]} className="mg-say-together-word" data-state={state} data-last={index === words.length - 1 || undefined}>{script.words[index]}</span>
@@ -177,7 +177,7 @@ export function sayTogetherSkinFor(game: SayGame, script: SayScript = STORY): Rh
           live.current.sound(SOUNDS.tick);
           live.current.vibrate("clue");
         }
-        // Each of the player's words as it is said: gold on her beat (a bright chime, a ring on both bubbles), plain off it;
+        // Each of the player's words as it is said: dark on her beat (a bright chime, a ring on both bubbles), plain off it;
         // a second tap on a word she has met turns it plain (a small refusal on the bubble).
         judgement.words.forEach((state, word) => {
           if (state === said[word]) return;

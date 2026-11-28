@@ -4,12 +4,12 @@
 
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --hud-effects-hud-flight-coin-ground: #fff3c4;
-  --hud-effects-hud-flight-coin-ground-2: #b8862f;
-  --hud-effects-hud-flight-coin-shade: rgba(110, 74, 18, 0.55);
-  --hud-effects-hud-flight-star-ground: #fffbea;
+  --hud-effects-hud-flight-coin-ground: #f4f5f7;
+  --hud-effects-hud-flight-coin-ground-2: #9a9da4;
+  --hud-effects-hud-flight-coin-shade: rgba(40, 42, 46, 0.55);
+  --hud-effects-hud-flight-star-ground: #ffffff;
 }
-/* 「{品物名}を手に入れました」: a parchment pill hanging from the header's bottom edge (below Debug mode's strip when
+/* 「{品物名}を手に入れました」: a light ground pill hanging from the header's bottom edge (below Debug mode's strip when
    it shows a change), over the screen; the region takes no presses and has no size of its own. */
 .item-gain-notice-region,
 .hud-toast-region,
@@ -25,17 +25,17 @@
 .journey-hud .item-gain-notice {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   max-width: min(100%, 340px);
   margin: 0;
-  padding: 5px 14px 5px 6px;
+  padding: var(--ds-space-1) var(--ds-space-4) var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-pane);
   /* On the glass, as the header's panels (2026-11-25). */
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  color: var(--ds-glass-ink);
-  box-shadow: var(--ds-glass-shadow);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
@@ -43,7 +43,7 @@
 }
 /* The session's word (a save, a load, a tour's end; SessionToast): the same pill without an icon. It answers what the
    player just did, so it shows over a quiet line too, while the rest of the header steps aside. */
-.journey-hud .hud-toast { padding: 7px 16px; }
+.journey-hud .hud-toast { padding: var(--ds-space-2) var(--ds-space-4); }
 /* 「手がかり帳に「…」を記録しました。」 (ClueRecordedNotice): the same pill, shown longer (CLUE_NOTICE_MS) to be read. */
 .journey-hud .clue-notice { animation-duration: 5000ms; }
 .journey-hud[data-view="quiet"] .hud-toast-region { visibility: visible; }
@@ -51,10 +51,10 @@
   flex: none;
   width: 28px;
   height: 28px;
-  padding: 3px;
+  padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-light);
-  box-shadow: inset 0 0 0 1px var(--ds-parchment-line);
+  box-shadow: inset 0 0 0 1px var(--ds-line);
 }
 @keyframes item-gain-notice {
   0% { opacity: 0; transform: translateY(-6px); }
@@ -94,11 +94,11 @@
 }
 .hud-flight-coin {
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, var(--hud-effects-hud-flight-coin-ground) 0 18%, var(--ds-marker-selected) 48%, var(--hud-effects-hud-flight-coin-ground-2) 100%);
+  background: radial-gradient(circle at 35% 35%, var(--hud-effects-hud-flight-coin-ground) 0 18%, var(--ds-light) 48%, var(--hud-effects-hud-flight-coin-ground-2) 100%);
   box-shadow: inset 0 0 0 1.5px var(--hud-effects-hud-flight-coin-shade), 0 1px 2px color-mix(in srgb, var(--ds-shade) 30%, transparent);
 }
 .hud-flight-star {
-  background: radial-gradient(circle, var(--hud-effects-hud-flight-star-ground) 0 25%, var(--ds-marker-selected) 70%);
+  background: radial-gradient(circle, var(--hud-effects-hud-flight-star-ground) 0 25%, var(--ds-light) 70%);
   clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 @keyframes hud-flight {
@@ -113,15 +113,15 @@
   .hud-flight { display: none; }
 }
 
-/* ≡メニュー's marks: the English note's dot (fx.css; on the panel's parchment the markers' rose, 5.9:1, at the item's end),
+/* ≡メニュー's marks: the English note's dot (fx.css; on the panel's light ground the muted ink, 5.9:1, at the item's end),
    and a manual save's ribbon bookmark that drops onto the button's top right corner and fades (a brief highlight of
    the button under reduced motion). */
 .hud-menu-panel .fx-dot {
   position: static;
   flex: none;
   margin-left: auto;
-  background: var(--ds-marker);
-  box-shadow: 0 0 0 1.5px var(--ds-parchment);
+  background: var(--ds-ink-muted);
+  box-shadow: 0 0 0 1.5px var(--ds-surface);
 }
 .hud-save-mark {
   position: absolute;
@@ -135,7 +135,7 @@
   right: 6px;
   width: 10px;
   height: 14px;
-  background: linear-gradient(var(--ds-marker-selected), var(--ds-gold));
+  background: linear-gradient(var(--ds-light), var(--ds-hairline));
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%);
   animation: hud-save-ribbon 800ms var(--ease-out) both;
 }
@@ -149,7 +149,7 @@
 }
 @keyframes hud-save-highlight {
   0%, 100% { background: transparent; box-shadow: inset 0 0 0 0 transparent; }
-  30% { background: color-mix(in srgb, var(--ds-marker-selected) 18%, transparent); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-marker-selected) 90%, transparent); }
+  30% { background: color-mix(in srgb, var(--ds-light) 18%, transparent); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-light) 90%, transparent); }
 }
 .reduce-motion .hud-save-ribbon { display: none; }
 .reduce-motion .hud-save-mark { animation: hud-save-highlight 700ms ease-out both; }

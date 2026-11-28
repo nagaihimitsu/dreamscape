@@ -30,7 +30,7 @@ export const MONKEY_THINGS = ["bottle", "glasses"] as const;
  * next, and right for either thing; her face alone when it gets away (the bottle breaks, and she says nothing for a while).
  * The catch snaps (a short high knock right as the hands meet it, the pouch's settle under it) with a small shake.
  *
- * Accessibility: 「受け止める」 is 64px at the bottom (thumb reach), Space and Enter close the hands; no meter: a gold ring
+ * Accessibility: 「受け止める」 is 64px at the bottom (thumb reach), Space and Enter close the hands; no meter: a white ring
  * with a dark edge marks where things meet the hands and tightens for whatever is about to arrive (the shells too: the
  * thing's look says what, never colour alone: the shell is small, dull and of another shape); the ledge's knock has its
  * puff of dust; with less motion the thing and the shells do not turn and the monkey does not lean (its fall, the snatch
@@ -42,7 +42,7 @@ export const monkeyCatch = defineMiniGame({
   titleJa: "猿の落とし物",
   howToJa: "壁の上の猿が返してくる落とし物（小瓶かサングラス）が、両手の上の輪に届く瞬間に、「受け止める」を1回押して受け止める。猿はからかって、腕だけ振る・殻を落とす・落としてすぐ取り返す。最後は殻と一緒に落とし、落とし物は壁の飾りの出っ張りに当たって少し遅れて来る（約7秒）",
   outcomes: [
-    { id: "caught", labelJa: "受け止めた", noteJa: "輪に届く瞬間（針が金色の所）に押した", finishJa: "キャッチ！",
+    { id: "caught", labelJa: "受け止めた", noteJa: "輪に届く瞬間（針が白い所）に押した", finishJa: "キャッチ！",
       reaction: { kind: "surprise", linesJa: ["わっ、取った！", "ナイスキャッチ！"] } },
     // Her face only when it gets away: for her bottle the story goes on to the glass breaking and 「しばらく何も言わなかった」,
     // and its next line tells the slip (指先に…跳ねて／手の先をかすめて) itself.

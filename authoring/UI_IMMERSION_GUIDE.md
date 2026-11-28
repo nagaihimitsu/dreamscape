@@ -117,7 +117,7 @@
 - 書く所：旅行編の `presentation/characters.json` の人物（ヒロインは `content/presentation/characters.json` の衣装ごと）。
 - 形：`"nameBand": { "fill": "#918788", "edge": "#484448" }`。`fill` は服でいちばん目立つ色（札の地）、`edge` は次に目立つ色（札の縁取り）です。
 - 選び方：インド編の67人とヒロインの衣装は、立ち絵の胴（上から22〜56%、左右の28〜72%）の色から、肌の色を除いて多い順に2つを取りました。服と違う色が出たら手で直します（例：ピンクの服の花嫁で黒が出た）。一覧の画像を作って、人物と色を並べて見ます。
-- 字の色は、白か紺のうち読みやすいほうになり、読めない地は自動で少し暗く（明るく）なります（`src/components/name-band.ts` の `bandColours`）。書かなければ窓の青です。
+- 字の色は、白か濃い灰色のうち読みやすいほうになり、読めない地は自動で少し暗く（明るく）なります（`src/components/name-band.ts` の `bandColours`）。書かなければ窓の青です。
 - 書いたら `npm run content:build` と `npm run schemas:build`（入力補助のスキーマ）を流します。
 
 ## 9. iPhone の感想を、小さな PR で返す

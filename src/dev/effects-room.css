@@ -1,79 +1,79 @@
 /* Debug's 「音と演出の見本」 (EffectsRoom.tsx): a working page for one hand on a phone (320–390 px), 44 px targets.
-   Pressables are parchment rectangles with a slate edge (pressed: slate), state notes sit on their own ground, and no
+   Pressables are light ground rectangles with a dark edge (pressed: dark), state notes sit on their own ground, and no
    card has a thick edge on one side. The sample stage reuses the game's own scene, header and notices. */
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --effects-room-off-ground: #f1e7d1;
+  --effects-room-off-ground: #f1f2f4;
 }
 .effects-room {
   max-width: 720px;
   margin: 0 auto;
-  padding: 12px 16px 24px;
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-6);
   color: var(--ds-ink);
 }
 .effects-room-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
-.effects-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-snug); }
-.effects-room h2 { margin: 28px 0 8px; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-snug); letter-spacing: 0; }
+.effects-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-body); }
+.effects-room h2 { margin: var(--ds-space-8) 0 var(--ds-space-2); font-size: var(--ds-text-large); line-height: var(--ds-leading-body); letter-spacing: 0; }
 /* The room's own text only: the sample screen keeps the game's own sizes and margins. */
-.effects-room h3:not(.effects-room-screen *) { margin: 16px 0 6px; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); }
-.effects-room p:not(.effects-room-screen *) { margin: 6px 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.effects-room h3:not(.effects-room-screen *) { margin: var(--ds-space-4) 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); }
+.effects-room p:not(.effects-room-screen *) { margin: var(--ds-space-2) 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .effects-room button.effects-room-close {
   flex: none;
   min-height: 44px;
-  padding: 6px 12px;
-  border: 1.5px solid var(--ds-slate-800);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: 1.5px solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
 .effects-room-note {
-  padding: 10px 12px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
 }
 /* A setting that is off, a missing list: a note on its own ground, not a pressable. */
 .effects-room p.effects-room-off {
-  padding: 8px 10px;
-  border-radius: var(--ds-radius-field);
+  padding: var(--ds-space-2) var(--ds-space-2);
+  border-radius: var(--ds-radius-control);
   background: var(--effects-room-off-ground);
 }
 
 /* The jumps to the sections. */
-.effects-room-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.effects-room-jump { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); margin: var(--ds-space-2) 0 0; }
 .effects-room-jump a {
   display: inline-flex;
   align-items: center;
   min-width: 44px;
   min-height: 44px;
-  padding: 0 14px;
+  padding: 0 var(--ds-space-4);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
   font-size: var(--ds-text-note);
   text-decoration: none;
 }
 
 /* Rows of pressables, and the lists of sounds (two columns from 320 px). */
-.effects-room-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.effects-room-chips { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
 .effects-room button.effects-room-chip {
   min-width: 44px;
   min-height: 44px;
-  padding: 6px 12px;
-  border: 1.5px solid var(--ds-slate-800);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: 1.5px solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
-.effects-room button.effects-room-chip:hover:enabled:not([aria-pressed="true"], [data-playing]) { background: var(--ds-parchment-2); }
-.effects-room button.effects-room-chip:is([aria-pressed="true"], [data-playing]) { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+.effects-room button.effects-room-chip:hover:enabled:not([aria-pressed="true"], [data-playing]) { background: var(--ds-surface-chosen); }
+.effects-room button.effects-room-chip:is([aria-pressed="true"], [data-playing]) { background: var(--ds-dark-2); color: var(--ds-on-dark); }
 .effects-room button.effects-room-chip:disabled {
   opacity: 1;
   border-color: transparent;
@@ -83,7 +83,7 @@
 .effects-room-sounds {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
-  gap: 8px;
+  gap: var(--ds-space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -91,51 +91,51 @@
 .effects-room-sounds button.effects-room-chip {
   display: grid;
   align-content: start;
-  gap: 2px;
+  gap: var(--ds-space-1);
   width: 100%;
   height: 100%;
   text-align: left;
 }
-.effects-room-id { font-family: var(--ds-font-mono); font-size: var(--ds-text-caption); overflow-wrap: anywhere; }
-.effects-room-use { font-size: var(--ds-text-caption); color: var(--ds-ink-muted); }
-.effects-room button[aria-pressed="true"] .effects-room-use { color: var(--ds-on-slate-muted); }
+.effects-room-id { font-family: var(--ds-font-mono); font-size: var(--ds-text-small); overflow-wrap: anywhere; }
+.effects-room-use { font-size: var(--ds-text-small); color: var(--ds-ink-muted); }
+.effects-room button[aria-pressed="true"] .effects-room-use { color: var(--ds-on-dark-muted); }
 .effects-room button:disabled .effects-room-use { color: inherit; }
-.effects-room-voice-group { margin: 8px 0 12px; }
-.effects-room-voice-group > p.effects-room-id { margin: 0 0 4px; }
+.effects-room-voice-group { margin: var(--ds-space-2) 0 var(--ds-space-3); }
+.effects-room-voice-group > p.effects-room-id { margin: 0 0 var(--ds-space-1); }
 .effects-room-voice-group button.effects-room-chip { min-width: 56px; }
 
 /* Settings and fields. */
-.effects-room-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); }
+.effects-room-toggle { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .effects-room-toggle input { flex: none; width: 22px; height: 22px; margin: 0; }
 .effects-room-volume {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) 3.2em;
   align-items: center;
-  gap: 10px;
+  gap: var(--ds-space-2);
   min-height: 44px;
   font-size: var(--ds-text-body);
 }
 .effects-room-volume input { width: 100%; min-height: 44px; margin: 0; }
-.effects-room-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 8px 0; }
-.effects-room-field { display: grid; gap: 4px; margin: 6px 0; font-size: var(--ds-text-note); }
+.effects-room-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--ds-space-2); margin: var(--ds-space-2) 0; }
+.effects-room-field { display: grid; gap: var(--ds-space-1); margin: var(--ds-space-2) 0; font-size: var(--ds-text-note); }
 .effects-room-field select,
 .effects-room-field input {
   width: 100%;
   min-width: 0;
   min-height: 44px;
-  padding: 6px 8px;
+  padding: var(--ds-space-2) var(--ds-space-2);
   border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-field);
+  border-radius: var(--ds-radius-control);
   background: var(--ds-light);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
 }
-.effects-room-elsewhere { margin: 6px 0; padding-left: 20px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
-.effects-room-elsewhere li { margin: 4px 0; }
+.effects-room-elsewhere { margin: var(--ds-space-2) 0; padding-left: var(--ds-space-5); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+.effects-room-elsewhere li { margin: var(--ds-space-1) 0; }
 
 /* The sample screen: the game's header over a short story scene. The header stays in the page's flow here (in the game
    it sticks to the top), and the photo card sits right under it, over the scene, as the game places it. */
-.effects-room-screen { position: relative; margin: 10px 0; background: var(--ds-slate-900); }
+.effects-room-screen { position: relative; margin: var(--ds-space-2) 0; background: var(--ds-dark); }
 .effects-room-screen .journey-hud { position: relative; }
 .effects-room-stage-area { position: relative; }
 .vn-scene.effects-room-stage { min-height: 0; height: clamp(300px, 56dvh, 460px); }
@@ -154,21 +154,21 @@
   bottom: 0;
   z-index: var(--ds-layer-cutin);
   display: grid;
-  gap: 4px;
-  margin: 20px -16px 0;
-  padding: 6px 16px calc(6px + env(safe-area-inset-bottom));
-  background: var(--ds-slate-900);
-  color: var(--ds-on-slate);
+  gap: var(--ds-space-1);
+  margin: var(--ds-space-5) -16px 0;
+  padding: var(--ds-space-2) var(--ds-space-4) calc(6px + env(safe-area-inset-bottom));
+  background: var(--ds-dark);
+  color: var(--ds-on-dark);
 }
-.effects-room-now-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.effects-room-now-row { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .effects-room-now-row span { min-width: 0; overflow-wrap: anywhere; }
 .effects-room-now-row button {
   flex: none;
   min-width: 64px;
   min-height: 44px;
-  padding: 4px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }

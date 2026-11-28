@@ -1,4 +1,4 @@
-/* 「写真の札」 (AlbumPhotoNotice, 2026-11-12 user decision): a parchment card right under the header, over the scene, for
+/* 「写真の札」 (AlbumPhotoNotice, 2026-11-12 user decision): a light ground card right under the header, over the scene, for
    a few seconds (GameApp's .scene-notices). The region takes no taps (a tap
    there reaches the scene below) and has no size of its own. The card comes in, stays, and at the end goes up and to the
    right, smaller, toward ≡メニュー where the album is; its length is the notice's (--album-notice-ms). */
@@ -10,13 +10,13 @@
 .album-photo-notice {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--ds-space-2);
   max-width: min(100%, 340px);
-  padding: 6px 12px 6px 8px;
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2) var(--ds-space-2);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
+  box-shadow: var(--ds-shadow-small);
   animation: album-photo-notice var(--album-notice-ms, 4000ms) var(--ease-out) both;
 }
 @keyframes album-photo-notice {
@@ -41,10 +41,10 @@
   aspect-ratio: 3 / 2;
   object-fit: cover;
   border: 3px solid var(--ds-light);
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 30%, transparent);
   transform: rotate(-3deg);
-  background: var(--ds-parchment-line);
+  background: var(--ds-line);
 }
 .album-photo-notice-text {
   display: flex;
@@ -54,7 +54,7 @@
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
-.album-photo-notice-label { font-size: var(--ds-text-caption); color: var(--ds-ink-muted); }
+.album-photo-notice-label { font-size: var(--ds-text-small); color: var(--ds-ink-muted); }
 .album-photo-notice-caption { font-size: var(--ds-text-note); }
 /* Under reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion; Debug's 音と演出の見本 puts it on its
    stage) it comes and goes without moving. */

@@ -52,19 +52,19 @@ interface KindLook {
   stallJa: string;
 }
 const KINDS: Record<ParasolKind, KindLook> = {
-  juice: { panels: ["#c63f2c", "#f1e9dc"], rib: "#7d2a1e", person: ["#3f6ea6", "#2a211c"], stall: "#3f7f55", labelJa: "赤白の縞の傘、ジュースの屋台", stallJa: "ジュースの屋台" },
-  chai: { panels: ["#d8c59d", "#ccb68b"], rib: "#8d7752", worn: true, person: ["#f2eee4", "#2a211c"], stall: "#7b5636", labelJa: "古い日傘、チャイの屋台", stallJa: "チャイの屋台" },
+  juice: { panels: ["#c63f2c", "#f1e9dc"], rib: "#7d2a1e", person: ["#3f6ea6", "#24262b"], stall: "#3f7f55", labelJa: "赤白の縞の傘、ジュースの屋台", stallJa: "ジュースの屋台" },
+  chai: { panels: ["#d8c59d", "#ccb68b"], rib: "#8d7752", worn: true, person: ["#f2eee4", "#24262b"], stall: "#7b5636", labelJa: "古い日傘、チャイの屋台", stallJa: "チャイの屋台" },
   fruit: { panels: ["#2d68ad", "#3a78c0"], rib: "#1d4675", person: ["#7a8c5a", "#e08a2a"], stall: "#8a6440", labelJa: "青い傘、果物の荷車", stallJa: "果物の荷車" },
-  bangles: { panels: ["#e9c43a", "#f2d35a"], rib: "#9a7a14", person: ["#9b3f8c", "#2a211c"], stall: "#5b3a6e", labelJa: "黄色い傘、腕輪の店", stallJa: "腕輪の店" },
-  spices: { panels: ["#8c4a2f", "#9d5a3a"], rib: "#5a2c18", person: ["#d9c79a", "#2a211c"], stall: "#6e5a3c", labelJa: "茶色の傘、香辛料の店", stallJa: "香辛料の店" },
-  greens: { panels: ["#2e9852", "#3aa863"], rib: "#1d6537", person: ["#5c8a3c", "#2a211c"], stall: "#8c6f4b", labelJa: "緑の傘、野菜の店", stallJa: "緑の傘の野菜の店" },
+  bangles: { panels: ["#e9c43a", "#f2d35a"], rib: "#9a7a14", person: ["#9b3f8c", "#24262b"], stall: "#5b3a6e", labelJa: "黄色い傘、腕輪の店", stallJa: "腕輪の店" },
+  spices: { panels: ["#8c4a2f", "#9d5a3a"], rib: "#5a2c18", person: ["#d9c79a", "#24262b"], stall: "#6e5a3c", labelJa: "茶色の傘、香辛料の店", stallJa: "香辛料の店" },
+  greens: { panels: ["#2e9852", "#3aa863"], rib: "#1d6537", person: ["#5c8a3c", "#24262b"], stall: "#8c6f4b", labelJa: "緑の傘、野菜の店", stallJa: "緑の傘の野菜の店" },
   old: { panels: ["#c4a77b", "#b99c70"], rib: "#7b6340", worn: true, person: ["#b8323a", "#a52b33"], stall: "#56709d", labelJa: "古い日傘、野菜の店", stallJa: "古い日傘の野菜の店" },
-  marigold: { panels: ["#e5862a", "#ee983b"], rib: "#9c5414", person: ["#e9d36a", "#2a211c"], stall: "#7a5a3c", labelJa: "橙の傘、花輪の店", stallJa: "花輪の店" },
-  old_garland: { panels: ["#c9ad86", "#bda27a"], rib: "#7e6747", worn: true, person: ["#3d7d74", "#2a211c"], stall: "#7d4f6a", labelJa: "古い日傘、花輪の店", stallJa: "古い日傘の花輪の店" },
-  new_greens: { panels: ["#f3ecd9", "#e9e0c8"], rib: "#a89a76", person: ["#c25a2a", "#2a211c"], stall: "#4f7a8f", labelJa: "新しい生成りの日傘、野菜の店", stallJa: "新しい日傘の野菜の店" },
-  black: { panels: ["#24262b", "#30333a"], rib: "#0f1013", person: ["#c9c2b4", "#2a211c"], stall: null, labelJa: "黒い傘、車道を行く人", stallJa: "" },
-  floral: { panels: ["#e48bb0", "#eea7c3"], rib: "#a65476", person: ["#2f8c8a", "#2a211c"], stall: null, labelJa: "花柄の日傘、車道を行く人", stallJa: "" },
-  white: { panels: ["#eef1f4", "#dfe4ea"], rib: "#8d96a0", person: ["#6b5b8f", "#2a211c"], stall: null, labelJa: "白い傘、車道を行く人", stallJa: "" },
+  marigold: { panels: ["#e5862a", "#ee983b"], rib: "#9c5414", person: ["#e9d36a", "#24262b"], stall: "#7a5a3c", labelJa: "橙の傘、花輪の店", stallJa: "花輪の店" },
+  old_garland: { panels: ["#c9ad86", "#bda27a"], rib: "#7e6747", worn: true, person: ["#3d7d74", "#24262b"], stall: "#7d4f6a", labelJa: "古い日傘、花輪の店", stallJa: "古い日傘の花輪の店" },
+  new_greens: { panels: ["#f3ecd9", "#e9e0c8"], rib: "#a89a76", person: ["#c25a2a", "#24262b"], stall: "#4f7a8f", labelJa: "新しい生成りの日傘、野菜の店", stallJa: "新しい日傘の野菜の店" },
+  black: { panels: ["#24262b", "#30333a"], rib: "#0f1013", person: ["#c9c2b4", "#24262b"], stall: null, labelJa: "黒い傘、車道を行く人", stallJa: "" },
+  floral: { panels: ["#e48bb0", "#eea7c3"], rib: "#a65476", person: ["#2f8c8a", "#24262b"], stall: null, labelJa: "花柄の日傘、車道を行く人", stallJa: "" },
+  white: { panels: ["#eef1f4", "#dfe4ea"], rib: "#8d96a0", person: ["#6b5b8f", "#24262b"], stall: null, labelJa: "白い傘、車道を行く人", stallJa: "" },
 };
 /** The stalls other than hers, shuffled over the stalls' places by the seed (the decoys: two more old parasols, two more vegetable stalls). */
 const OTHER_STALLS: readonly ParasolKind[] = ["juice", "chai", "fruit", "bangles", "spices", "greens", "marigold", "old_garland", "new_greens"];
@@ -257,7 +257,7 @@ const ROUND_WORDS = [
   { hintJa: "トマトをもらった子を、行ってしまう前に押す", lookedJa: "見た子" },
 ] as const;
 const RIBS = 8;
-const OUTLINE = "#2a211c";
+const OUTLINE = "#24262b";
 const vertex = (index: number, r: number): [number, number] => {
   const angle = (index / RIBS) * Math.PI * 2 - Math.PI / 2 + Math.PI / RIBS;
   return [r * Math.cos(angle), r * Math.sin(angle)];
@@ -484,26 +484,26 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
     stretch: [arm([-3, 2], [-4, 14]), arm([3, 2], [4, 14])],
   };
   const colours: Record<ParasolGesture, [string, string]> = {
-    argue: ["#d0a03a", "#2a211c"], ask: ["#4f6fa8", "#2a211c"], laugh: ["#a8486a", "#2a211c"], wave: ["#5f8f5a", "#2a211c"], basket: ["#e2dccb", "#2a211c"],
-    cheer: ["#c8642a", "#2a211c"], stretch: ["#7a6aa8", "#2a211c"],
+    argue: ["#d0a03a", "#24262b"], ask: ["#4f6fa8", "#24262b"], laugh: ["#a8486a", "#24262b"], wave: ["#5f8f5a", "#24262b"], basket: ["#e2dccb", "#24262b"],
+    cheer: ["#c8642a", "#24262b"], stretch: ["#7a6aa8", "#24262b"],
   };
   // The argument's mark: a jagged burst with the ₹!, a size larger than the others' (2026-11-14 playtest: the marks were
   // 10–16 px on a phone), out toward the stall. The two feints shout too, in the same burst: glad (♪!) and stretching
   // (ん〜), in their own colour: the ₹ is what tells the argument (round 3 playtest: the feints must read as feints).
   const burst = (ink: string, text: string) => (
     <g transform={`translate(0 ${fixed(face * r * 1.5)}) scale(1.35)`}>
-      <path d="M-9 0 L-5 -3 L-6 -8 L-1 -5 L2 -9 L4 -4 L9 -5 L6 0 L9 4 L4 4 L2 9 L-1 5 L-6 8 L-5 3 Z" fill="#fff4dc" stroke={ink} strokeWidth="1.2" />
+      <path d="M-9 0 L-5 -3 L-6 -8 L-1 -5 L2 -9 L4 -4 L9 -5 L6 0 L9 4 L4 4 L2 9 L-1 5 L-6 8 L-5 3 Z" fill="#ffffff" stroke={ink} strokeWidth="1.2" />
       <text y="2.6" textAnchor="middle" fontSize={text.length > 2 ? 5.6 : 7.4} fontWeight="700" fill={ink}>{text}</text>
     </g>
   );
   const mark = gesture === "argue" ? burst("#b2241f", "₹!") : gesture === "cheer" ? burst("#c26a12", "♪!") : gesture === "stretch" ? burst("#5f5a9a", "ん〜") : gesture === "ask" ? (
     <g transform={`translate(${fixed(r * 1.3)} ${fixed(-r * 0.9)})`}>
-      <ellipse rx="6" ry="4.6" fill="#fffaf1" stroke={OUTLINE} strokeWidth="0.9" />
+      <ellipse rx="6" ry="4.6" fill="#ffffff" stroke={OUTLINE} strokeWidth="0.9" />
       <text y="2.4" textAnchor="middle" fontSize="6.4" fontWeight="700" fill={OUTLINE}>?</text>
     </g>
   ) : gesture === "laugh" ? (
     <g transform={`translate(${fixed(r * 1.3)} ${fixed(-r * 0.9)})`}>
-      <ellipse rx="6" ry="4.6" fill="#fffaf1" stroke={OUTLINE} strokeWidth="0.9" />
+      <ellipse rx="6" ry="4.6" fill="#ffffff" stroke={OUTLINE} strokeWidth="0.9" />
       <text y="2.4" textAnchor="middle" fontSize="6.4" fontWeight="700" fill="#a8486a">♪</text>
     </g>
   ) : gesture === "basket" ? <circle r="6.4" fill="#c99a5a" stroke={OUTLINE} strokeWidth="1" strokeDasharray="2 1.2" /> : null;
@@ -549,14 +549,14 @@ function Child({ holding, ring }: { holding: ParasolHolding; ring: Ring }) {
   ) : (
     <g transform="translate(0 -11)">
       <circle r="4.4" fill={holding === "red_ball" ? "#d8342c" : "#2f6fc0"} stroke={OUTLINE} strokeWidth="0.9" />
-      <path d="M-4.2 -1 Q0 1.6 4.2 -1" fill="none" stroke="#fffaf1" strokeWidth="1.2" />
+      <path d="M-4.2 -1 Q0 1.6 4.2 -1" fill="none" stroke="#ffffff" strokeWidth="1.2" />
     </g>
   );
   return (
     <svg className="mg-parasol-search-unit" viewBox={`${-reach} ${-reach} ${reach * 2} ${reach * 2}`} style={{ "--reach": reach } as CSSProperties}
       aria-hidden="true" focusable="false">
       <ellipse cx="0" cy={fixed(r * 0.25)} rx={fixed(r * 0.8)} ry={fixed(r * 0.55)} fill="rgba(30,20,15,0.3)" />
-      <Person body={CHILD_BODY[holding]} head="#2a211c" r={r * 1.1}>
+      <Person body={CHILD_BODY[holding]} head="#24262b" r={r * 1.1}>
         <path d="M-6 -1 l4 -5 M6 -1 l-4 -5" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
       </Person>
       {/* What they hold, a size up (readable on a phone); the tomato child's only once it is handed over. */}
@@ -628,7 +628,7 @@ function Vehicle({ id, left }: { id: (typeof VEHICLES)[number]["id"]; left: bool
             <rect x="-9" y="-6" width="20" height="13" rx="2" fill="rgba(0,0,0,0.22)" />
             <path d="M-10 -6 H10 M-10 6 H10" stroke="#2a2a2a" strokeWidth="1.2" />
             <rect x="2" y="-6" width="9" height="12" rx="3" fill="#8b2c2c" />
-            <circle cx="-6" cy="0" r="3.2" fill="#2a211c" />
+            <circle cx="-6" cy="0" r="3.2" fill="#24262b" />
           </>
         )}
       </g>

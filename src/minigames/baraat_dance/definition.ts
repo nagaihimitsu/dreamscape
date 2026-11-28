@@ -28,7 +28,7 @@ import { defineMiniGame } from "../contract";
  * hers) follow at once and are never repeated here.
  *
  * Accessibility: 「踊る」 is 64px at the bottom (thumb reach), Space and Enter tap; the drum stands right over the lane's
- * ring (one glance holds both); the ring lights on a beat met (brighter and thicker; gold and thicker still right on the
+ * ring (one glance holds both); the ring lights on a beat met (brighter and thicker; white and thicker still right on the
  * beat: not colour alone) and a word says how (ぴったり, いいね; a rest held ピタッ！, tapped おっと！). The count-in's beats
  * pass on the lane as crosses, the rests as bars, the big beats as bigger marks. With less motion nobody sways or
  * freezes and the drum does not swell (its face still lights on each beat; the stick still lifts at a rest; the lane's

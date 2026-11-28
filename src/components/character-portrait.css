@@ -69,9 +69,9 @@
   width: 44px;
   height: 44px;
   overflow: hidden;
-  border: 1px solid var(--ds-parchment-line);
+  border: 1px solid var(--ds-line);
   border-radius: 50%;
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
 }
 .character-face img,
 .character-face svg {

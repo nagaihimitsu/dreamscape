@@ -25,7 +25,7 @@ export const CRICKET_BALLS = ["quick", "slower"] as const;
  * 「ごめん、もう一球！」; a swing at it skies it over the side wall: over_wall, ★1). She walks back and bowls her
  * real last ball, which changes pace where it bounces (the tag's `ball`): `quick` holds up off the pitch (a swing timed by
  * its first part is early), `slower` is tossed up and skids on (one timed by its first part is late). The meter's needle
- * follows only the real ball's travel (it waits through the bouncer, and slows or quickens at the bounce); the gold zone
+ * follows only the real ball's travel (it waits through the bouncer, and slows or quickens at the bounce); the white zone
  * is exactly where a swing is clean.
  *
  * The host's flow (docs/13 2.6): practice first, a warm-up of its own (the `warmup` key, rules.ts CRICKET_WARMUP): after a
@@ -39,7 +39,7 @@ export const CRICKET_BALLS = ["quick", "slower"] as const;
  * short, and never what she says next. The children watch from the near corners: the batter's side jumps with a cheer at a
  * six, the bowler's raises its arms when the bricks fall.
  *
- * Accessibility: 「振る」 is 64px at the bottom (thumb reach), Space and Enter swing; the meter's gold zone is brighter and
+ * Accessibility: 「振る」 is 64px at the bottom (thumb reach), Space and Enter swing; the meter's white zone is brighter and
  * narrower than the near zone (not colour alone); the bouncer's kick off the crack is drawn (it climbs over the bat, its
  * shadow stays on the ground) with a tick, and Sonia's call is written; with less motion the bowler does not run up and a
  * hit ball does not fly (the ball and the needle still move); the outcome is read out by the host.
@@ -51,7 +51,7 @@ export const cricketBatting = defineMiniGame({
   howToJa: "向こうから投げられた球を、「振る」を1回押して打つ。最初の球は割れ目で高く跳ね上がる（見送る）。本番の一球は弾んだところで速さが変わる（約6秒）",
   outcomes: [
     // The story's 「わ、見た？」 follows: her first breath here, lost for words for a moment.
-    { id: "six", labelJa: "まっすぐ打ち返した", noteJa: "針が金色の所で振った", finishJa: "六点！",
+    { id: "six", labelJa: "まっすぐ打ち返した", noteJa: "針が白い所で振った", finishJa: "六点！",
       reaction: { kind: "surprise", linesJa: ["……うそ、川まで？"] } },
     // Her face only: the story's 「一瞬の静けさ」 comes before Sonia's call and her laugh.
     { id: "over_wall", labelJa: "横へ高く上がった", noteJa: "少し早く振った（高く跳ね上がる最初の球に振ったときも）", finishJa: "アウト！", finishTone: "plain",
@@ -76,8 +76,8 @@ export const cricketBatting = defineMiniGame({
   }).strict(),
   examples: [{}, { ball: "slower", letgo: "plank" }],
   startJa: "構える",
-  hintJa: "針が金色に来たら「振る」（高い球は見送る）",
-  goalJa: "高く跳ね上がる球は見送り、本番の一球を針が金色に来た瞬間に「振る」で打ち返す",
+  hintJa: "針が白い所に来たら「振る」（高い球は見送る）",
+  goalJa: "高く跳ね上がる球は見送り、本番の一球を針が白い所に来た瞬間に「振る」で打ち返す",
   controls: "timing",
   durationSec: 6,
   practice: { params: { warmup: "yes" } },

@@ -1,26 +1,26 @@
 /* The portrait and dialogue share one scene; the reading surfaces stay opaque. */
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --battle-screen-ground: #70816d;
-  --battle-screen-ground-2: #344e42;
-  --battle-paper-ground: #fcfaf4;
-  --battle-outcome-ink: #ffe6a8;
+  --battle-screen-ground: #76787e;
+  --battle-screen-ground-2: #3a3c41;
+  --battle-paper-ground: #fafafb;
+  --battle-outcome-ink: #ffffff;
   --battle-answer-effect-ground: #1f3a2b40;
   --battle-answer-effect-incorrect-ground: #4f29362b;
-  --battle-answer-effect-stamp-ink: #fffdf5;
-  --battle-answer-effect-stamp-shade: #fff9eec9;
+  --battle-answer-effect-stamp-ink: #ffffff;
+  --battle-answer-effect-stamp-shade: #ffffffc9;
   --battle-answer-effect-stamp-shade-2: #16251e82;
   --battle-answer-effect-rays-shade: #26382e80;
   --battle-answer-effect-stamp-shade-3: #16251e4d;
   --battle-answer-effect-perfect-ground: #31594133;
   --battle-answer-effect-stamp-ground: #367559;
   --battle-answer-effect-stamp-ground-2: #194330;
-  --battle-answer-effect-stamp-shade-4: #fff7dfd9;
-  --battle-answer-effect-stamp-shade-5: #f2ca7380;
+  --battle-answer-effect-stamp-shade-4: #ffffffd9;
+  --battle-answer-effect-stamp-shade-5: #ffffff80;
   --battle-answer-effect-stamp-shade-6: #16251e66;
-  --battle-answer-effect-perfect-title-ink: #fff6d7;
-  --battle-answer-effect-stamp-ink-2: #f6d687;
-  --battle-reveal-region-edge: #fff3b0;
+  --battle-answer-effect-perfect-title-ink: #ffffff;
+  --battle-answer-effect-stamp-ink-2: #ffffff;
+  --battle-reveal-region-edge: #ffffff;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/02 「デザインの決まり」). */
@@ -32,7 +32,7 @@
   --answer-perfect-title-size: clamp(26px, 8vw, 36px);
 }
 .battle-screen {
-  --scene-edge: #263d35;
+  --scene-edge: #2c2e33;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -43,7 +43,7 @@
   /* The backdrop runs on behind the header where it lies over the battle
      (--scene-top, styles.css); the stage and the reading panels start below it. */
   padding-top: var(--scene-top, 0px);
-  padding-bottom: 24px;
+  padding-bottom: var(--ds-space-6);
   overflow: clip;
 }
 .battle-screen .battle-stage {
@@ -78,7 +78,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 0;
-  padding: 12px 24px 0;
+  padding: var(--ds-space-3) var(--ds-space-6) 0;
 }
 .battle-screen[data-phase="dialogue"] .battle-enemy-info {
   flex: none;
@@ -86,7 +86,7 @@
 }
 .battle-screen[data-phase="dialogue"] .battle-enemy-info h2 {
   margin: 0;
-  font-size: var(--ds-text-subhead);
+  font-size: var(--ds-text-large);
 }
 .battle-screen[data-phase="dialogue"] .battle-enemy-info .eyebrow,
 .battle-screen[data-phase="dialogue"] .enemy-title,
@@ -126,7 +126,7 @@
 .battle-screen[data-phase="dialogue"] .battle-characters[data-together="four"] .battle-far { left: calc(87.5% - 100% / 6); }
 .battle-screen .battle-stage-compact {
   min-height: 116px;
-  padding-top: 8px;
+  padding-top: var(--ds-space-2);
 }
 .battle-screen .battle-enemy-info {
   flex: 0 1 43%;
@@ -137,16 +137,16 @@
   height: 100%;
 }
 /* The question, explanation, reasoning and result panels (UI redesign stage 2.1): one
-   opaque parchment card over the battle's picture, ink text, slate actions. */
+   opaque light ground card over the battle's picture, ink text, dark actions. */
 .battle-screen .battle-paper {
   position: relative;
   z-index: 1;
   margin: -12px auto 0;
   color: var(--ds-ink);
-  background: var(--ds-parchment);
-  border: 1px solid var(--ds-parchment-line);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  box-shadow: var(--ds-window-shadow);
+  box-shadow: var(--ds-shadow-large);
 }
 .battle-screen:not([data-phase="dialogue"]) .battle-paper {
   flex: 1 1 0;
@@ -160,7 +160,7 @@
    behind it, and an answer's ground is a pressable's on the glass (a right one keeps its green). */
 .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper {
   border: 0;
-  border-radius: var(--ds-glass-radius);
+  border-radius: var(--ds-radius-large);
   background: var(--ds-glass-bg);
   box-shadow: none;
   -webkit-backdrop-filter: var(--ds-glass-blur);
@@ -177,8 +177,8 @@
 .battle-screen .quiz-choice:not(.chosen):not(.correct) {
   border-color: transparent;
   background: var(--ds-glass-press);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
-  color: var(--ds-glass-ink);
+  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-shadow);
+  color: var(--ds-ink);
 }
 /* Japanese only (no 「訳を見る」 beside it): the words take the whole row. */
 .battle-screen .quiz-choices .quiz-choice:not(:has(.translation)) { grid-template-columns: minmax(0, 1fr); }
@@ -269,14 +269,14 @@
 }
 .battle-dialogue .dialogue-text {
   /* The same above and below, as the story scenes' words. */
-  margin: 6px 0;
+  margin: var(--ds-space-2) 0;
   min-height: 2.5em;
   font-size: var(--vn-body-size);
   line-height: var(--ds-leading-reading);
 }
 .battle-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .battle-dialogue .next:disabled { visibility: hidden; }
-.battle-dialogue .next { min-height: 44px; padding: 2px 0 2px 12px; }
+.battle-dialogue .next { min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-3); }
 .battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
 .battle-dialogue .next,
 .battle-dialogue .text-button {
@@ -295,7 +295,7 @@
     max-height: max(calc(100% - 140px - var(--vn-controls-row) + var(--vn-head-overhang, 22px)),
       min(calc(100% - 8px - var(--vn-controls-row)), 9em));
     /* Just above its controls' row: its window's top at the story scenes' height (--vn-window-top, romance-scene.css). */
-    margin: auto 8px var(--vn-controls-row);
+    margin: auto var(--ds-space-2) var(--vn-controls-row);
   }
   .battle-screen[data-phase="dialogue"] .battle-paper-shell:has(> .vn-choices) { max-height: calc(100% - 8px - var(--vn-controls-row)); }
   /* The story scenes' grid (romance-scene.css): the choices, the window's room with the window at its top. */
@@ -334,7 +334,7 @@
   width: min(100% - 24px, 680px);
   max-width: none;
   margin: 0 auto;
-  padding: 0 0 4px;
+  padding: 0 0 var(--ds-space-1);
   border: 0;
   border-radius: 0;
   background: none;
@@ -354,7 +354,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 8px 24px;
+  padding: var(--ds-space-5) var(--ds-space-2) var(--ds-space-6);
   color: var(--ds-glass-mark-full);
   text-align: center;
   text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 18px color-mix(in srgb, var(--ds-shade) 45%, transparent);
@@ -365,16 +365,16 @@
   position: absolute;
   z-index: -1;
   inset: 0 -12px;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--ds-veil) 55%, transparent), color-mix(in srgb, var(--ds-veil) 25%, transparent) 60%, transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--ds-shade) 55%, transparent), color-mix(in srgb, var(--ds-shade) 25%, transparent) 60%, transparent);
   pointer-events: none;
 }
 .battle-result-heading .eyebrow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--ds-space-2);
   margin: 0;
   color: color-mix(in srgb, var(--ds-light) 90%, transparent);
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   font-weight: 600;
   letter-spacing: 0.4em;
 }
@@ -383,26 +383,26 @@
   content: "";
   width: 32px;
   height: 1px;
-  background: var(--ds-gold);
+  background: var(--ds-hairline);
   box-shadow: none;
 }
 .battle-result .outcome {
-  margin: 6px 0 0;
+  margin: var(--ds-space-2) 0 0;
   color: var(--ds-glass-mark-full);
   font-size: var(--result-outcome-size);
   font-weight: 400;
-  line-height: var(--ds-leading-display);
+  line-height: var(--ds-leading-tight);
   letter-spacing: 0.08em;
 }
-/* Every question answered right: the word in a warm gold light. */
+/* Every question answered right: the word in a soft white light. */
 .battle-result[data-outcome="perfect"] .outcome {
   color: var(--battle-outcome-ink);
-  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 22px color-mix(in srgb, var(--ds-marker-selected) 60%, transparent);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 22px color-mix(in srgb, var(--ds-light) 60%, transparent);
 }
 .battle-result .battle-score {
   justify-content: center;
-  gap: 6px;
-  margin: 4px 0 0;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-1) 0 0;
   color: var(--ds-glass-mark-full);
 }
 .battle-result .battle-score strong { font-size: var(--result-score-size); }
@@ -412,7 +412,7 @@
   display: flex;
   flex: 0 1 auto;
   flex-direction: column;
-  padding: 16px 16px 14px;
+  padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-4);
 }
 .battle-result-body {
   flex: 0 1 auto;
@@ -422,30 +422,30 @@
 }
 .battle-result-card .battle-rewards { margin: 0; padding: 0; border: 0; }
 .battle-result-card .reward-total strong { font-size: var(--ds-text-display); }
-.battle-result-card .current-ap { margin: 4px 0 0; }
+.battle-result-card .current-ap { margin: var(--ds-space-1) 0 0; }
 /* The trip's milestone on the glass: a warm light, its words in the glass's ink. */
 .battle-result-card .episode-clear {
-  margin: 12px 0 0;
-  padding: 12px 14px;
+  margin: var(--ds-space-3) 0 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
   border-radius: var(--ds-radius-pane);
-  background: color-mix(in srgb, var(--ds-gold) 20%, transparent);
+  background: color-mix(in srgb, var(--ds-hairline) 20%, transparent);
 }
-.battle-result-card .episode-clear h2 { margin: 2px 0 4px; font-size: var(--ds-text-subhead); }
+.battle-result-card .episode-clear h2 { margin: var(--ds-space-1) 0 var(--ds-space-1); font-size: var(--ds-text-large); }
 .battle-result-card .episode-clear > p:not(.eyebrow):not(.fine-print) { margin: 0; line-height: var(--ds-leading-reading); }
 .battle-result-foot {
   display: grid;
   flex: none;
-  gap: 8px;
-  padding-top: 14px;
+  gap: var(--ds-space-2);
+  padding-top: var(--ds-space-4);
 }
 .battle-result-actions {
   display: grid;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
 .next-story-battle-note {
   margin: 0;
   font-size: var(--ds-text-note);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
 .battle-result-actions .secondary { margin-top: 0; }
 /* The result comes in: the outcome and the score rise into place, the card follows, then the AP earned pops (nothing
@@ -478,13 +478,13 @@
 }
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 4px; }
-  .battle-result-card { padding: 14px 14px 12px; }
-  .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: var(--ds-leading-body); }
-  .battle-result-foot { gap: 6px; padding-top: 12px; }
-  .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 var(--ds-space-1); }
+  .battle-result-card { padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-3); }
+  .battle-result .special-result-note { margin: var(--ds-space-1) 0; padding: var(--ds-space-2); line-height: var(--ds-leading-body); }
+  .battle-result-foot { gap: var(--ds-space-2); padding-top: var(--ds-space-3); }
+  .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-2); }
   .battle-result-actions .primary { grid-column: 1 / -1; }
-  .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: var(--ds-leading-snug); }
+  .battle-result-actions button { min-height: 44px; padding: var(--ds-space-2) var(--ds-space-2); line-height: var(--ds-leading-body); }
 }
 
 /* Wide, short screens use their horizontal space for the three choices.
@@ -494,42 +494,42 @@
     flex: 0 0 64px;
     min-height: 64px;
     height: 64px;
-    padding: 4px 20px 0;
+    padding: var(--ds-space-1) var(--ds-space-5) 0;
   }
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact h2 {
     margin: 0;
-    font-size: var(--ds-text-subhead);
+    font-size: var(--ds-text-large);
     line-height: var(--ds-leading-tight);
   }
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .battle-enemy-info { padding-bottom: 8px; }
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .battle-enemy-info { padding-bottom: var(--ds-space-2); }
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .eyebrow,
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .enemy-title,
   .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .enemy-detail { display: none; }
   .battle-screen:not([data-phase="dialogue"]) .battle-paper {
     width: min(94%, 920px);
     max-width: none;
-    margin: 0 auto 8px;
-    padding: 8px 18px 16px;
+    margin: 0 auto var(--ds-space-2);
+    padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-4);
   }
-  .battle-screen .question-en { font-size: var(--ds-text-lead); line-height: var(--ds-leading-snug); margin: 4px 0 0; }
+  .battle-screen .question-en { font-size: var(--ds-text-large); line-height: var(--ds-leading-body); margin: var(--ds-space-1) 0 0; }
   .battle-screen .question-translation-tools > .translation,
   .battle-screen .question-translation-tools > .translation-all { margin: 0; }
-  .battle-screen .quiz-choices { gap: 4px; }
+  .battle-screen .quiz-choices { gap: var(--ds-space-1); }
   .battle-screen .quiz-choice,
   .battle-screen .quiz-choice.chosen,
   .battle-screen .quiz-choice.correct {
     grid-template-columns: minmax(0, 1fr) 64px;
     align-items: center;
-    gap: 4px 8px;
+    gap: var(--ds-space-1) var(--ds-space-2);
     min-height: 52px;
-    padding: 4px 8px 4px 16px;
+    padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-4);
     font-size: var(--ds-text-body);
-    line-height: var(--ds-leading-snug);
+    line-height: var(--ds-leading-body);
   }
   .battle-screen .quiz-choice > .translation { display: contents; }
   .battle-screen .quiz-choice .translation-actions { grid-column: 2; grid-row: 1; justify-content: flex-end; }
   .battle-screen .quiz-choice .translation-toggle { min-height: 44px; }
-  .battle-screen .quiz-choice .translation > p { grid-column: 1 / -1; margin: 2px 0 8px; }
+  .battle-screen .quiz-choice .translation > p { grid-column: 1 / -1; margin: var(--ds-space-1) 0 var(--ds-space-2); }
 }
 
 /* Below 500px of portrait height the scene cannot fit a readable dialogue
@@ -562,10 +562,10 @@
   z-index: 5;
   box-sizing: content-box;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   min-height: 44px;
-  padding: 7px 0;
-  background: var(--ds-parchment);
+  padding: var(--ds-space-2) 0;
+  background: var(--ds-surface);
 }
 /* The bar sticks below the reading area's top padding: fill that strip too, so
    text scrolled up behind the bar is not left showing, cut, above it. 40px
@@ -591,36 +591,36 @@
   min-width: 0;
 }
 .battle-screen .question-en {
-  margin: 14px 0 6px;
+  margin: var(--ds-space-4) 0 var(--ds-space-2);
 }
 .battle-screen .quiz-choice {
   position: relative;
   grid-template-columns: minmax(0, 1fr) 64px;
   align-items: center;
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-paper-shade) 12%, transparent);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 12%, transparent);
 }
 .battle-screen .quiz-feedback {
-  margin: 18px 0;
+  margin: var(--ds-space-4) 0;
 }
 .question-translation-tools {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  column-gap: 12px;
+  column-gap: var(--ds-space-3);
 }
 .question-translation-tools > .translation {
   flex: 1 1 135px;
 }
 .question-translation-tools > .translation-all {
-  margin: 3px 0;
+  margin: var(--ds-space-1) 0;
 }
 /* The result is visible even when a long question has put the explanation
    below the fold.  It is a visual echo of the accessible feedback status. */
 .battle-screen .answer-verdict {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 3px 8px;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-1) var(--ds-space-2);
   border: 2px solid currentColor;
   border-radius: var(--ds-radius-pill);
   font-size: var(--ds-text-note);
@@ -636,7 +636,7 @@
    intercepts input and naturally disappears without an animation callback. */
 .battle-screen .answer-effect {
   --effect-ink: #245a42;
-  --effect-bright: #f9d66d;
+  --effect-bright: #ffffff;
   position: absolute;
   z-index: var(--ds-layer-answer-effect);
   inset: var(--scene-top, 0px) 0 0;
@@ -680,7 +680,7 @@
   line-height: 1;
 }
 .battle-screen .answer-effect-stamp strong {
-  margin-top: 4px;
+  margin-top: var(--ds-space-1);
   font-size: var(--answer-stamp-size);
   font-weight: 900;
   line-height: var(--ds-leading-tight);
@@ -698,7 +698,7 @@
   left: -3px;
   width: 6px;
   height: 25px;
-  border-radius: var(--ds-radius-small);
+  border-radius: var(--ds-radius-control);
   background: var(--effect-bright);
   box-shadow: 0 1px 4px var(--battle-answer-effect-rays-shade);
   transform: rotate(var(--ray-angle)) translateY(calc(-1 * min(36vw, 145px)));
@@ -720,7 +720,7 @@
   box-shadow: 0 2px 10px var(--battle-answer-effect-stamp-shade-3);
 }
 .battle-screen .answer-effect-subtle .answer-effect-symbol { font-size: var(--ds-text-display); }
-.battle-screen .answer-effect-subtle .answer-effect-stamp strong { font-size: var(--ds-text-note); margin-top: 1px; }
+.battle-screen .answer-effect-subtle .answer-effect-stamp strong { font-size: var(--ds-text-note); margin-top: 0; }
 .battle-screen .answer-effect-subtle .answer-effect-rays i {
   width: 3px;
   height: 10px;
@@ -728,7 +728,7 @@
 }
 .battle-screen .answer-effect-perfect {
   --effect-ink: #23543e;
-  --effect-bright: #f6d687;
+  --effect-bright: #ffffff;
   background: radial-gradient(circle, var(--battle-answer-effect-perfect-ground), transparent 65%);
   animation-duration: 1300ms;
 }
@@ -741,14 +741,14 @@
 }
 .battle-screen .answer-effect-perfect-title {
   color: var(--battle-answer-effect-perfect-title-ink);
-  font-family: var(--ds-font-latin);
+  font-family: var(--ds-font-sans);
   font-size: var(--answer-perfect-title-size);
   font-style: italic;
   line-height: 1;
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp strong {
-  margin-top: 8px;
-  font-size: var(--ds-text-subhead);
+  margin-top: var(--ds-space-2);
+  font-size: var(--ds-text-large);
   letter-spacing: .12em;
 }
 .battle-screen .answer-effect-perfect .answer-effect-stamp::before,
@@ -816,7 +816,7 @@
 }
 /* ためと決め (2026-11-13; BattleScreen CORRECT_HOLD_MS): while a right answer is held still, the card stays as it was
    tapped (nothing else comes yet) and the chosen option sits pressed in a little; then its
-   gold pulse (a ring of light, no movement of its own) comes with quiz_correct and the feedback. Reduced motion: no hold,
+   white pulse (a ring of light, no movement of its own) comes with quiz_correct and the feedback. Reduced motion: no hold,
    a shorter glow. */
 .battle-screen[data-answer-held] .selected-panel .quiz-choice {
   scale: 0.985;
@@ -825,8 +825,8 @@
   animation: answer-glow 560ms var(--ease-out);
 }
 @keyframes answer-glow {
-  0%, 100% { box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-paper-shade) 12%, transparent); }
-  30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-marker-selected) 95%, transparent), 0 0 20px 6px color-mix(in srgb, var(--ds-marker-selected) 55%, transparent); }
+  0%, 100% { box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 12%, transparent); }
+  30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-light) 95%, transparent), 0 0 20px 6px color-mix(in srgb, var(--ds-light) 55%, transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .battle-screen[data-answer-held] .selected-panel .quiz-choice { scale: none; }
@@ -867,20 +867,20 @@
     min-height: 96px;
   }
   .battle-screen .battle-paper {
-    margin-left: 8px;
-    margin-right: 8px;
-    padding: 18px 16px 24px;
+    margin-left: var(--ds-space-2);
+    margin-right: var(--ds-space-2);
+    padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-6);
   }
   .battle-screen .quiz-choice {
-    padding: 11px 10px;
-    gap: 4px 8px;
+    padding: var(--ds-space-3) var(--ds-space-2);
+    gap: var(--ds-space-1) var(--ds-space-2);
   }
   .battle-screen .quiz-choice.chosen,
   .battle-screen .quiz-choice.correct {
-    padding: 10px 9px;
+    padding: var(--ds-space-2) var(--ds-space-2);
   }
   .battle-screen .question-en {
-    margin: 12px 0 6px;
+    margin: var(--ds-space-3) 0 var(--ds-space-2);
   }
 }
 
@@ -901,11 +901,11 @@
   .battle-screen .battle-stage-compact {
     min-height: 64px;
     height: 64px;
-    padding: 4px 16px 0;
+    padding: var(--ds-space-1) var(--ds-space-4) 0;
   }
   .battle-screen .battle-stage-compact .battle-enemy-info {
     flex-basis: 65%;
-    padding-bottom: 9px;
+    padding-bottom: var(--ds-space-2);
   }
   .battle-screen .battle-stage-compact h2 {
     font-size: var(--ds-text-body);
@@ -919,8 +919,8 @@
     flex: 1 1 auto;
     min-height: 0;
     width: auto;
-    margin: 0 8px 8px;
-    padding: 8px 12px 16px;
+    margin: 0 var(--ds-space-2) var(--ds-space-2);
+    padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-4);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
@@ -930,12 +930,12 @@
     margin-top: 0;
   }
   .battle-screen .battle-roundbar {
-    padding: 2px 0;
+    padding: var(--ds-space-1) 0;
   }
   .battle-screen .question-en {
-    font-size: var(--ds-text-lead);
-    line-height: var(--ds-leading-snug);
-    margin: 7px 0 12px;
+    font-size: var(--ds-text-large);
+    line-height: var(--ds-leading-body);
+    margin: var(--ds-space-2) 0 var(--ds-space-3);
   }
   .battle-screen .question-translation-tools > .translation {
     margin: 0;
@@ -946,18 +946,18 @@
   /* 10 px between two answers, which cannot be undone (AGENTS 選択肢の誤タップ防止; 2026-11-27 user remark on an
      iPhone: 5 px apart and 27 px high, the rows were hard to press and easy to miss). */
   .battle-screen .quiz-choices {
-    gap: 10px;
+    gap: var(--ds-space-2);
   }
   .battle-screen .quiz-choice,
   .battle-screen .quiz-choice.chosen,
   .battle-screen .quiz-choice.correct {
     grid-template-columns: minmax(0, 1fr) 64px;
     align-items: center;
-    gap: 3px 6px;
+    gap: var(--ds-space-1) var(--ds-space-2);
     min-height: 52px;
-    padding: 10px 10px 10px 16px;
-    font-size: var(--ds-text-subhead);
-    line-height: var(--ds-leading-snug);
+    padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-4);
+    font-size: var(--ds-text-large);
+    line-height: var(--ds-leading-body);
   }
   .battle-screen .quiz-choice > .translation {
     display: contents;
@@ -966,21 +966,21 @@
     grid-column: 2;
     grid-row: 1;
     flex-direction: row;
-    gap: 2px;
+    gap: var(--ds-space-1);
   }
   .battle-screen .quiz-choice .translation-toggle {
     width: auto;
     min-height: 44px;
-    padding: 4px 2px;
-    font-size: var(--ds-text-caption);
+    padding: var(--ds-space-1) var(--ds-space-1);
+    font-size: var(--ds-text-small);
   }
   .battle-screen .quiz-choice .translation > p {
     grid-column: 1 / -1;
-    margin: 2px 0 8px;
+    margin: var(--ds-space-1) 0 var(--ds-space-2);
   }
   .battle-screen .vocabulary {
-    margin-top: 12px;
-    padding-top: 10px;
+    margin-top: var(--ds-space-3);
+    padding-top: var(--ds-space-2);
   }
 }
 
@@ -991,9 +991,9 @@
   .battle-screen .battle-stage-compact {
     min-height: 28px;
     height: 28px;
-    padding-top: 2px;
+    padding-top: var(--ds-space-1);
   }
-  .battle-screen .battle-stage-compact .battle-enemy-info { padding-bottom: 4px; }
+  .battle-screen .battle-stage-compact .battle-enemy-info { padding-bottom: var(--ds-space-1); }
   .battle-screen .battle-roundbar { padding: 0; }
 }
 
@@ -1014,14 +1014,14 @@
 }
 .battle-screen .quiz-choice .translation > p {
   grid-column: 1 / -1;
-  margin: 2px 0 8px;
+  margin: var(--ds-space-1) 0 var(--ds-space-2);
 }
 /* An option's speaker (ReadAloud.tsx, with 「英語を読み上げるボタンを出す」): at the right of its text, next to its
    「訳を見る」 and away from its answer button. The text runs beside it and on below it, so a short option keeps its row's
    height (the answer button's 44 px) and a long one is only narrower for its first lines. */
 .battle-screen .option-body > .read-aloud {
   float: right;
-  margin: 0 0 2px 6px;
+  margin: 0 0 var(--ds-space-1) var(--ds-space-2);
 }
 /* The answer button: the row's whole face, clear (the row's own look shows it), its focus ring around the row. */
 .battle-screen .quiz-choice .answer-submit {
@@ -1101,13 +1101,13 @@
 .battle-screen .battle-stage-compact h2 {
   display: inline-block;
   max-width: 100%;
-  padding: 0 10px;
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-chip-bg);
-  color: var(--ds-on-slate);
-  box-shadow: var(--ds-pill-shadow);
+  background: var(--ds-smoke);
+  color: var(--ds-on-dark);
+  box-shadow: var(--ds-shadow-small);
 }
-/* Links and translations on the parchment read in ink. */
+/* Links and translations on the light ground read in ink. */
 .battle-screen .battle-paper:not(.battle-dialogue) .text-button {
   color: var(--ds-ink);
 }
@@ -1120,17 +1120,17 @@
 .heroine-note {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin: 8px 0 18px;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-2) 0 var(--ds-space-4);
 }
-.quiz-feedback .heroine-note { margin: 10px 0 4px; }
+.quiz-feedback .heroine-note { margin: var(--ds-space-2) 0 var(--ds-space-1); }
 .heroine-note-bubble {
   position: relative;
   flex: 1 1 auto;
   min-width: 0;
-  padding: 7px 15px 10px;
+  padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-2);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-reading);
@@ -1149,10 +1149,10 @@
 .heroine-note-name {
   display: block;
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
 }
-.heroine-note-bubble--unlabeled { padding-top: 9px; }
+.heroine-note-bubble--unlabeled { padding-top: var(--ds-space-2); }
 .hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
 @keyframes heroine-note-in {
   from { opacity: 0; transform: translateY(4px); }
@@ -1170,7 +1170,7 @@
    stays whole and the outline shows at once. Display only: an edge all round, no accent line. */
 .battle-reveal {
   --reveal-max-h: min(180px, 28vh);
-  margin: 10px 0 8px;
+  margin: var(--ds-space-2) 0 var(--ds-space-2);
 }
 .battle-reveal-frame {
   --reveal-scale: var(--reveal-zoom);
@@ -1179,9 +1179,9 @@
   width: min(100%, calc(var(--reveal-max-h) * var(--reveal-width) / var(--reveal-height)));
   aspect-ratio: var(--reveal-width) / var(--reveal-height);
   margin: 0 auto;
-  border: 1px solid var(--ds-parchment-line);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
 }
 .battle-reveal-zoom {
   position: absolute;
@@ -1199,14 +1199,14 @@
   position: absolute;
   border: calc(2px / var(--reveal-scale)) solid var(--battle-reveal-region-edge);
   border-radius: calc(4px / var(--reveal-scale));
-  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-veil) 65%, transparent),
-    inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-veil) 65%, transparent);
+  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 65%, transparent),
+    inset 0 0 0 calc(1px / var(--reveal-scale)) color-mix(in srgb, var(--ds-shade) 65%, transparent);
   animation: battle-reveal-outline var(--motion-medium) ease-out 1.6s both;
 }
 @keyframes battle-reveal-zoom { to { transform: scale(var(--reveal-scale)); } }
 @keyframes battle-reveal-outline { from { opacity: 0; } }
 .battle-reveal figcaption {
-  margin: 6px 0 0;
+  margin: var(--ds-space-2) 0 0;
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
@@ -1251,5 +1251,5 @@
    seen on an iPhone). After the rules above, so it holds on every screen and for a chosen or right answer too. */
 .battle-screen .quiz-choice[data-japanese-only] {
   grid-template-columns: minmax(0, 1fr);
-  padding-right: 14px;
+  padding-right: var(--ds-space-4);
 }

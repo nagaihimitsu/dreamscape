@@ -43,7 +43,7 @@ export const MEHNDI_WRITING: Record<MehndiTarget, { x: number; y: number; rotate
 /** How far a ring stays out from what it rings (units: its 2 px line and a little air). */
 export const RING_CLEAR = 4;
 /**
- * The gold ring round the writing once found (in the hand's units): centred on the writing, not on the place pointed at
+ * The white ring round the writing once found (in the hand's units): centred on the writing, not on the place pointed at
  * (at the thumb the two are apart, and a ring round the place crossed the name), and round all of its room, the tall
  * strokes and the tails of the largest size included, RING_CLEAR clear of them.
  */

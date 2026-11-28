@@ -2,8 +2,9 @@ import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 /**
- * The design's rules (2026-11-25 user decision; styles.css :root, docs/02 「デザインの決まり」): every stylesheet takes its
- * font sizes, line heights, corners, layers and colours from them (all stylesheets since 2026-11-26). What is a thing's
+ * The design's rules (2026-11-25 user decision, remade 2026-11-28; styles.css :root, docs/02 「デザインの決まり」): every
+ * stylesheet takes its font sizes, line heights, room (margins, padding, gaps: --ds-space-*, since 2026-11-28), corners,
+ * layers and colours from them (all stylesheets since 2026-11-26). What is a thing's
  * own (a phone's body and corners, a game's artwork, an effect's word larger than the steps or following the screen) is
  * named once as a custom property at the head of its stylesheet and used by that name. A colour of the rules at an alpha
  * is color-mix() of its name. A part orders its own pieces with 0–9; every layer above that is a --ds-layer-*.
@@ -36,6 +37,14 @@ const typeErrors = (css: string) => {
     if (/^border(?:-(?:top|bottom)-(?:left|right))?-radius$/.test(property) && /(?<![\w.(-])[\d.]+px\b/.test(value.replace(/calc\([^)]*var\([^)]*\)[^)]*\)/g, ""))) {
       wrong.push(`${property}: ${value} (not one of the rules' corners)`);
     }
+    // The room: a step of --ds-space-* (0, a negative pull such as a bleed's, and a calc() or env() are geometry).
+    if (/^(?:margin|padding)(?:-[a-z-]+)?$|^(?:row-|column-)?gap$/.test(property)) {
+      let bare = value;
+      for (let before = ""; before !== bare; ) [before, bare] = [bare, bare.replace(/[a-z-]*\([^()]*\)/g, "")];
+      if ([...bare.matchAll(/(?<![\w.-])(\d*\.?\d+)px\b/g)].some(([, px]) => Number(px) > 0)) {
+        wrong.push(`${property}: ${value} (not a step of the room: --ds-space-*)`);
+      }
+    }
     if (property === "z-index" && /^\d{2,}$/.test(value)) wrong.push(`z-index: ${value} (a layer not named: --ds-layer-*)`);
     if (property === "font" && value !== "inherit") wrong.push(`font: ${value} (write font-family, font-size and line-height from the rules)`);
     if (property === "font-family" && !/^(?:var\(--[\w-]+\)|inherit)$/.test(value) && !ownFaces.some((face) => value.startsWith(face))) {
@@ -51,7 +60,7 @@ describe("the design's rules", () => {
   it("finds the stylesheets", () => expect(STYLESHEETS.length).toBeGreaterThan(50));
 
   for (const path of STYLESHEETS) {
-    it(`${path} takes its type, corners and layers from the rules`, () => {
+    it(`${path} takes its type, room, corners and layers from the rules`, () => {
       const css = read(path);
       const wrong = typeErrors(css);
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);

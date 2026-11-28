@@ -29,7 +29,7 @@ export interface JuiceSurface {
 /** The shake of each level (group3 6.4): how far (px), how long (ms), and whether it moves sideways too. */
 const SHAKES = { s: { px: 2, ms: 120, sideways: false }, m: { px: 4, ms: 200, sideways: true }, l: { px: 8, ms: 320, sideways: true } } as const;
 /** A flash: light then dark, 33 ms each (never plain white). */
-const FLASH = ["rgba(255, 248, 230, 0.45)", "rgba(20, 16, 12, 0.25)"] as const;
+const FLASH = ["rgba(255, 255, 255, 0.45)", "rgba(16, 17, 20, 0.25)"] as const;
 
 export function createJuice(surface: JuiceSurface): MiniGameJuice {
   const { still, clock } = surface;

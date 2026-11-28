@@ -4,17 +4,17 @@
 
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --journey-moments-packing-scene-ground: #f4f1e6f5;
-  --journey-moments-packing-case-ground: #e9dcc1;
-  --journey-moments-end-roll-ground: #070b16;
-  --journey-moments-end-roll-sky-ground: rgba(88, 104, 160, 0.38);
-  --journey-moments-end-roll-sky-ground-2: rgba(150, 110, 60, 0.16);
-  --journey-moments-end-roll-sky-ground-3: #0e1630;
-  --journey-moments-end-roll-sky-ground-4: #0a1022;
-  --journey-moments-end-roll-fast-ground: rgba(7, 11, 22, 0.72);
-  --journey-moments-end-roll-title-shade: rgba(216, 184, 120, 0.25);
-  --journey-moments-end-roll-bar-ground: rgba(7, 11, 22, 0.88);
-  --journey-moments-end-roll-bar-edge: rgba(216, 184, 120, 0.22);
+  --journey-moments-packing-scene-ground: #f4f5f7f5;
+  --journey-moments-packing-case-ground: #e4e5e8;
+  --journey-moments-end-roll-ground: #0b0b0d;
+  --journey-moments-end-roll-sky-ground: rgba(110, 112, 120, 0.3);
+  --journey-moments-end-roll-sky-ground-2: rgba(140, 142, 148, 0.12);
+  --journey-moments-end-roll-sky-ground-3: #18191c;
+  --journey-moments-end-roll-sky-ground-4: #0f1012;
+  --journey-moments-end-roll-fast-ground: rgba(11, 11, 13, 0.72);
+  --journey-moments-end-roll-title-shade: rgba(255, 255, 255, 0.2);
+  --journey-moments-end-roll-bar-ground: rgba(11, 11, 13, 0.88);
+  --journey-moments-end-roll-bar-edge: rgba(255, 255, 255, 0.18);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/02 「デザインの決まり」). */
@@ -32,7 +32,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 24px 16px;
+  padding: var(--ds-space-6) var(--ds-space-4);
   overflow: hidden;
   background: var(--ds-night);
   /* Takes every tap while it shows (a tap ends it); a swipe does not scroll the page under it. */
@@ -50,7 +50,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* The photo stays recognisable; the title's ground is the dark below (about 12:1 for --ds-on-slate). */
+  /* The photo stays recognisable; the title's ground is the dark below (about 12:1 for --ds-on-dark). */
   filter: brightness(0.5);
   animation: episode-title-photo 2.4s ease both;
 }
@@ -65,17 +65,17 @@
   z-index: 1;
   display: grid;
   justify-items: center;
-  gap: 12px;
+  gap: var(--ds-space-3);
   max-width: min(560px, 100%);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   text-align: center;
   text-shadow: 0 1px 8px color-mix(in srgb, var(--ds-shade) 60%, transparent);
   animation: episode-title-text 2.4s ease both;
 }
 .episode-title-place { font-size: var(--ds-text-note); font-weight: 600; letter-spacing: 0.16em; overflow-wrap: anywhere; }
-.episode-title-rule { width: 56px; height: 1px; background: var(--ds-gold); }
+.episode-title-rule { width: 56px; height: 1px; background: var(--ds-hairline); }
 .episode-title-name {
-  font-family: var(--ds-font-serif);
+  font-family: var(--ds-font-sans);
   font-size: var(--episode-title-size);
   font-weight: 500;
   line-height: var(--ds-leading-body);
@@ -100,15 +100,15 @@
 .resume-recap {
   width: calc(100% - 16px);
   max-width: 680px;
-  margin: 8px auto;
-  padding: 10px 12px 12px;
+  margin: var(--ds-space-2) auto;
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3);
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
   animation: resume-recap-in var(--motion-fast) var(--ease-out);
 }
 @keyframes resume-recap-in { from { opacity: 0; transform: translateY(-6px); } }
@@ -116,22 +116,22 @@
 @media (prefers-reduced-motion: reduce) {
   .resume-recap { animation: none; }
 }
-.resume-recap-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.resume-recap-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ds-space-2); }
 .resume-recap-head > div { min-width: 0; }
-.resume-recap-title { margin: 0; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.resume-recap-when { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
-.resume-recap-body { display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; }
+.resume-recap-title { margin: 0; font-size: var(--ds-text-large); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.resume-recap-when { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
+.resume-recap-body { display: flex; gap: var(--ds-space-3); align-items: flex-start; margin-top: var(--ds-space-2); }
 .resume-recap-photo { flex: 0 0 min(38%, 160px); margin: 0; }
 /* The album's illustration in the same 3:2 frame as the album (a picture of another shape keeps its middle); a place's
    photo is its 3:2 card copy. */
-.resume-recap-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--ds-radius-field); background: var(--ds-photo-mat); }
-.resume-recap-photo figcaption { margin-top: 4px; font-size: var(--ds-text-mark); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.resume-recap-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--ds-radius-control); background: var(--ds-photo-mat); }
+.resume-recap-photo figcaption { margin-top: var(--ds-space-1); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .resume-recap-chapter { min-width: 0; }
-.resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
-.resume-recap-chapter h3 { margin: 0; font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.resume-recap-chapter p:last-child { margin: 4px 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
+.resume-recap-chapter h3 { margin: 0; font-family: var(--ds-font-sans); font-size: var(--ds-text-large); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.resume-recap-chapter p:last-child { margin: var(--ds-space-1) 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* Her line looking back on the place finished last, under the record (resumeRecap). */
-.resume-recap .resume-recap-heroine { margin: 10px 0 0; }
+.resume-recap .resume-recap-heroine { margin: var(--ds-space-2) 0 0; }
 /* A narrow phone: the photo above the record, so the record keeps the card's width. */
 @media (max-width: 359px) {
   .resume-recap-body { flex-direction: column; }
@@ -144,10 +144,10 @@
 .night-active > main > .resume-recap { position: relative; z-index: var(--ds-layer-night-over); }
 .night-active > main:has(> .resume-recap) .night-screen {
   border-top: calc(var(--hud-h, 96px) + var(--recap-h, 0px) + 16px) solid transparent;
-  padding-top: 12px;
+  padding-top: var(--ds-space-3);
 }
 
-/* ── 荷造りの場面 ── over the whole screen in the parchment of the arrival's title card; the suitcase (drawn: a rounded case
+/* ── 荷造りの場面 ── over the whole screen in the light ground of the arrival's title card; the suitcase (drawn: a rounded case
    with a handle) holds what goes along, what stays is set apart under it, dimmed. */
 .packing-scene {
   position: fixed;
@@ -155,7 +155,7 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  padding: calc(24px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+  padding: calc(24px + env(safe-area-inset-top)) var(--ds-space-4) calc(24px + env(safe-area-inset-bottom));
   /* A long list scrolls inside (a short phone held sideways); the page under it does not. A tap ends it. */
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -170,18 +170,18 @@
   animation: packing-scene 4.2s ease both;
 }
 /* Centred in the screen; from its top when it does not fit (auto margins). */
-.packing-content { display: grid; justify-items: center; gap: 12px; width: min(360px, 100%); margin: auto; text-align: center; }
-.packing-title { font-family: var(--ds-font-serif); font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
-.packing-label { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; overflow-wrap: anywhere; }
+.packing-content { display: grid; justify-items: center; gap: var(--ds-space-3); width: min(360px, 100%); margin: auto; text-align: center; }
+.packing-title { font-family: var(--ds-font-sans); font-size: var(--packing-title-size); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
+.packing-label { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; overflow-wrap: anywhere; }
 .packing-case {
   position: relative;
   width: 100%;
-  margin-top: 18px;
-  padding: 14px 14px 12px;
-  border: 2px solid var(--ds-slate-800);
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-3);
+  border: 2px solid var(--ds-dark-2);
   border-radius: var(--ds-radius-pane);
   background: var(--journey-moments-packing-case-ground);
-  box-shadow: inset 0 -6px 0 color-mix(in srgb, var(--ds-slate-800) 12%, transparent), var(--ds-card-shadow);
+  box-shadow: inset 0 -6px 0 color-mix(in srgb, var(--ds-dark-2) 12%, transparent), var(--ds-shadow);
 }
 .packing-case-handle {
   position: absolute;
@@ -190,17 +190,17 @@
   width: 64px;
   height: 18px;
   margin-left: -32px;
-  border: 2px solid var(--ds-slate-800);
+  border: 2px solid var(--ds-dark-2);
   border-bottom: 0;
   border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
 }
-.packing-left { width: 100%; padding: 10px 14px; border-radius: var(--ds-radius-pane); background: color-mix(in srgb, var(--ds-light) 55%, transparent); }
+.packing-left { width: 100%; padding: var(--ds-space-2) var(--ds-space-4); border-radius: var(--ds-radius-pane); background: color-mix(in srgb, var(--ds-light) 55%, transparent); }
 .packing-left .packing-items { opacity: 0.75; }
-.packing-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; margin: 0; padding: 0; list-style: none; }
+.packing-items { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ds-space-2) var(--ds-space-4); margin: 0; padding: 0; list-style: none; }
 .packing-items li {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ds-space-2);
   max-width: 100%;
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
@@ -209,7 +209,7 @@
   animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
 }
 .packing-items img { flex: none; width: 32px; height: 32px; }
-.packing-next { margin-top: 6px; font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); letter-spacing: 0.08em; }
+.packing-next { margin-top: var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: 0.08em; }
 @keyframes packing-scene { 0% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes packing-item { from { opacity: 0; transform: translateY(-10px); } }
 .packing-scene.is-reduced, .packing-scene.is-reduced .packing-items li { animation: none; }
@@ -219,40 +219,40 @@
 
 /* ── 出発の確認の品物 ── (DepartureLuggage, 2026-11-13) in the departure's dialog: each part told by its small heading, the
    items as icon and name in a wrapping row; what stays behind dimmed a little, as in the packing. No side accent. */
-.departure-items { margin: 14px 0 0; }
-.departure-items h3 { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.06em; line-height: var(--ds-leading-snug); }
-.departure-items ul { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; }
-.departure-items li { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.departure-items { margin: var(--ds-space-4) 0 0; }
+.departure-items h3 { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; letter-spacing: 0.06em; line-height: var(--ds-leading-body); }
+.departure-items ul { display: flex; flex-wrap: wrap; gap: var(--ds-space-2) var(--ds-space-4); margin: 0; padding: 0; list-style: none; }
+.departure-items li { display: inline-flex; align-items: center; gap: var(--ds-space-2); max-width: 100%; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .departure-items img { flex: none; width: 28px; height: 28px; }
 .departure-items.is-left img { opacity: 0.75; }
-.departure-items + .primary { margin-top: 20px; }
+.departure-items + .primary { margin-top: var(--ds-space-5); }
 
 /* ── 話の終わりの「完」の判 ── (ChapterStamp, 2026-11-13) a round seal in red-brown ink (#8a3324; the same ink as 旅の記録's small
-   seal, city.css) on parchment, a double ring, tilted a little, in the middle of the screen. It takes no tap. It drops from
+   seal, city.css) on light ground, a double ring, tilted a little, in the middle of the screen. It takes no tap. It drops from
    large to a little under its size and settles (lands at 16 %: its sound, STAMP_LAND_MS), holds and fades over 1.6 s;
-   reduced motion: it fades in and out in place. The ink on the parchment: about 7:1, 6.5:1 over the night screen. */
+   reduced motion: it fades in and out in place. The ink on the light ground: about 7:1, 6.5:1 over the night screen. */
 .chapter-stamp {
   position: fixed;
   z-index: var(--ds-layer-stamp);
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 16px;
+  padding: var(--ds-space-4);
   pointer-events: none;
 }
 .chapter-stamp-seal {
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: 2px;
+  gap: var(--ds-space-1);
   width: 152px;
   height: 152px;
-  padding: 20px;
-  border: 4px solid var(--ds-seal);
+  padding: var(--ds-space-5);
+  border: 4px solid var(--ds-ink);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ds-parchment) 94%, transparent);
-  color: var(--ds-seal);
-  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--ds-parchment) 94%, transparent), inset 0 0 0 5px var(--ds-seal), 0 4px 18px color-mix(in srgb, var(--ds-paper-shade) 28%, transparent);
+  background: color-mix(in srgb, var(--ds-surface) 94%, transparent);
+  color: var(--ds-ink);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--ds-surface) 94%, transparent), inset 0 0 0 5px var(--ds-ink), 0 4px 18px color-mix(in srgb, var(--ds-shade) 28%, transparent);
   text-align: center;
   transform: rotate(-8deg);
   animation: chapter-stamp-drop 1.6s both;
@@ -261,15 +261,15 @@
   display: -webkit-box;
   overflow: hidden;
   max-width: 100%;
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   font-weight: 700;
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
-.chapter-stamp-mark { font-family: var(--ds-font-serif); font-size: var(--chapter-stamp-size); font-weight: 700; line-height: var(--ds-leading-display); }
+.chapter-stamp-mark { font-family: var(--ds-font-sans); font-size: var(--chapter-stamp-size); font-weight: 700; line-height: var(--ds-leading-tight); }
 @keyframes chapter-stamp-drop {
   0% { opacity: 0; transform: rotate(-8deg) scale(1.8); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
   16% { opacity: 1; transform: rotate(-8deg) scale(0.92); animation-timing-function: var(--ease-out); }
@@ -298,10 +298,10 @@ dialog.modal.end-roll {
   overflow: hidden;
   box-shadow: none;
   background: var(--journey-moments-end-roll-ground);
-  color: var(--ds-on-slate);
-  --roll-gold: #d8b878; /* text on the night ground only (about 9:1) */
-  --roll-muted: rgba(255, 250, 241, 0.62);
-  --roll-line: rgba(216, 184, 120, 0.45);
+  color: var(--ds-on-dark);
+  --roll-light: #e3e4e7; /* a light grey: text on the night ground only (about 14:1) */
+  --roll-muted: rgba(255, 255, 255, 0.62);
+  --roll-line: rgba(255, 255, 255, 0.35);
 }
 dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-sky {
@@ -309,13 +309,13 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(1px 1px at 12% 18%, color-mix(in srgb, var(--ds-on-slate) 70%, transparent), transparent 60%),
-    radial-gradient(1px 1px at 78% 12%, color-mix(in srgb, var(--ds-on-slate) 55%, transparent), transparent 60%),
-    radial-gradient(1.5px 1.5px at 64% 34%, color-mix(in srgb, var(--ds-on-slate) 45%, transparent), transparent 60%),
-    radial-gradient(1px 1px at 28% 58%, color-mix(in srgb, var(--ds-on-slate) 40%, transparent), transparent 60%),
-    radial-gradient(1px 1px at 88% 66%, color-mix(in srgb, var(--ds-on-slate) 50%, transparent), transparent 60%),
-    radial-gradient(1.5px 1.5px at 42% 82%, color-mix(in srgb, var(--ds-on-slate) 35%, transparent), transparent 60%),
-    radial-gradient(1px 1px at 6% 90%, color-mix(in srgb, var(--ds-on-slate) 45%, transparent), transparent 60%),
+    radial-gradient(1px 1px at 12% 18%, color-mix(in srgb, var(--ds-on-dark) 70%, transparent), transparent 60%),
+    radial-gradient(1px 1px at 78% 12%, color-mix(in srgb, var(--ds-on-dark) 55%, transparent), transparent 60%),
+    radial-gradient(1.5px 1.5px at 64% 34%, color-mix(in srgb, var(--ds-on-dark) 45%, transparent), transparent 60%),
+    radial-gradient(1px 1px at 28% 58%, color-mix(in srgb, var(--ds-on-dark) 40%, transparent), transparent 60%),
+    radial-gradient(1px 1px at 88% 66%, color-mix(in srgb, var(--ds-on-dark) 50%, transparent), transparent 60%),
+    radial-gradient(1.5px 1.5px at 42% 82%, color-mix(in srgb, var(--ds-on-dark) 35%, transparent), transparent 60%),
+    radial-gradient(1px 1px at 6% 90%, color-mix(in srgb, var(--ds-on-dark) 45%, transparent), transparent 60%),
     radial-gradient(120% 60% at 50% -10%, var(--journey-moments-end-roll-sky-ground), transparent 70%),
     radial-gradient(90% 50% at 50% 110%, var(--journey-moments-end-roll-sky-ground-2), transparent 70%),
     linear-gradient(180deg, var(--journey-moments-end-roll-sky-ground-3) 0%, var(--journey-moments-end-roll-sky-ground-4) 55%, var(--journey-moments-end-roll-ground) 100%);
@@ -341,18 +341,18 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   right: 16px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ds-space-2);
   margin: 0;
-  padding: 4px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border: 1px solid var(--roll-line);
   border-radius: var(--ds-radius-pill);
   background: var(--journey-moments-end-roll-fast-ground);
-  color: var(--roll-gold);
-  font-size: var(--ds-text-caption);
+  color: var(--roll-light);
+  font-size: var(--ds-text-small);
   letter-spacing: 0.2em;
   pointer-events: none;
 }
-.end-roll-fast span { font-size: var(--ds-text-mark); letter-spacing: 0; }
+.end-roll-fast span { font-size: var(--ds-text-small); letter-spacing: 0; }
 /* By hand: a narrow fade only, and the scroll bar comes back. */
 .end-roll.is-still .end-roll-scroller {
   cursor: auto;
@@ -363,17 +363,17 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll.is-still .end-roll-scroller::-webkit-scrollbar { display: initial; }
 .end-roll-scroller:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: -3px; }
 /* Rolling: the first lines start half way down, the last lines end mid-screen. */
-.end-roll-content { width: min(480px, 100%); margin: 0 auto; padding: 50dvh 20px 50dvh; text-align: center; }
-.end-roll.is-still .end-roll-content { padding: calc(40px + env(safe-area-inset-top)) 20px 48px; }
-.end-roll-opening { display: grid; justify-items: center; gap: 14px; }
-/* 「旅の終わり」 between two short gold lines. */
+.end-roll-content { width: min(480px, 100%); margin: 0 auto; padding: 50dvh var(--ds-space-5) 50dvh; text-align: center; }
+.end-roll.is-still .end-roll-content { padding: calc(40px + env(safe-area-inset-top)) var(--ds-space-5) var(--ds-space-12); }
+.end-roll-opening { display: grid; justify-items: center; gap: var(--ds-space-4); }
+/* 「旅の終わり」 between two short white lines. */
 .end-roll-eyebrow {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--ds-space-4);
   margin: 0;
-  color: var(--roll-gold);
-  font-size: var(--ds-text-caption);
+  color: var(--roll-light);
+  font-size: var(--ds-text-small);
   font-weight: 500;
   letter-spacing: 0.5em;
   text-indent: 0.5em;
@@ -382,7 +382,7 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 /* The journey's name (FitText) shrinks a little before it takes two lines. From 6vw, as on a 320-px phone. */
 .end-roll .end-roll-title {
   margin: 0;
-  font-family: var(--ds-font-serif);
+  font-family: var(--ds-font-sans);
   font-size: var(--end-roll-title-size);
   font-weight: 500;
   line-height: var(--ds-leading-body);
@@ -405,30 +405,30 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   left: 50%;
   width: 6px;
   height: 6px;
-  border: 1px solid var(--roll-gold);
+  border: 1px solid var(--roll-light);
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .end-roll-city { margin-top: 30dvh; }
-.end-roll.is-still .end-roll-city { margin-top: 72px; }
+.end-roll.is-still .end-roll-city { margin-top: var(--ds-space-20); }
 .end-roll-chapter {
-  margin: 0 0 6px;
-  color: var(--roll-gold);
-  font-family: var(--ds-font-serif);
+  margin: 0 0 var(--ds-space-2);
+  color: var(--roll-light);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-note);
   letter-spacing: 0.4em;
   text-indent: 0.4em;
 }
 .end-roll-city h3 {
-  margin: 0 0 36px;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-title);
+  margin: 0 0 var(--ds-space-10);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-heading);
   font-weight: 500;
   letter-spacing: 0.24em;
   text-indent: 0.24em;
   overflow-wrap: anywhere;
 }
-.end-roll-city h3::after { content: ""; display: block; width: 28px; height: 1px; margin: 16px auto 0; background: var(--roll-line); }
-.end-roll-photos { display: grid; gap: 44px; margin: 0; padding: 0; list-style: none; }
+.end-roll-city h3::after { content: ""; display: block; width: 28px; height: 1px; margin: var(--ds-space-4) auto 0; background: var(--roll-line); }
+.end-roll-photos { display: grid; gap: var(--ds-space-12); margin: 0; padding: 0; list-style: none; }
 /* The photos sit left and right in turn, each in a thin print frame; the caption keeps to the photo's side. */
 .end-roll-photos li { width: 88%; }
 .end-roll-photos li:nth-child(even) { justify-self: end; }
@@ -441,15 +441,15 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   height: auto;
   aspect-ratio: 3 / 2;
   object-fit: cover;
-  padding: 6px;
-  border: 1px solid color-mix(in srgb, var(--ds-on-slate) 16%, transparent);
-  border-radius: var(--ds-radius-hair);
-  background: color-mix(in srgb, var(--ds-on-slate) 5%, transparent);
+  padding: var(--ds-space-2);
+  border: 1px solid color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
+  border-radius: var(--ds-radius-pill);
+  background: color-mix(in srgb, var(--ds-on-dark) 5%, transparent);
   box-shadow: 0 18px 40px color-mix(in srgb, var(--ds-shade) 45%, transparent);
 }
 .end-roll-photos figcaption {
-  margin-top: 12px;
-  color: var(--ds-on-slate);
+  margin-top: var(--ds-space-3);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
   letter-spacing: 0.06em;
@@ -457,7 +457,7 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
   overflow-wrap: anywhere;
 }
 .end-roll-photos li:nth-child(even) figcaption { text-align: right; }
-.end-roll-photos figcaption span { color: var(--roll-muted); font-size: var(--ds-text-caption); }
+.end-roll-photos figcaption span { color: var(--roll-muted); font-size: var(--ds-text-small); }
 /* While it rolls, each photo comes up out of the dark as it enters the view (where the browser can tie it to the scroll). */
 @supports (animation-timeline: view()) {
   .end-roll:not(.is-still) .end-roll-photos figure {
@@ -473,23 +473,23 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 @media (prefers-reduced-motion: reduce) {
   .end-roll .end-roll-photos figure { animation: none; }
 }
-.end-roll-last { display: grid; justify-items: center; gap: 18px; margin-top: 36dvh; }
-.end-roll.is-still .end-roll-last { margin-top: 88px; }
+.end-roll-last { display: grid; justify-items: center; gap: var(--ds-space-4); margin-top: 36dvh; }
+.end-roll.is-still .end-roll-last { margin-top: var(--ds-space-24); }
 .end-roll-fin {
   margin: 0;
-  color: var(--roll-gold);
-  font-family: var(--ds-font-latin);
+  color: var(--roll-light);
+  font-family: var(--ds-font-sans);
   font-size: var(--end-roll-fin-size);
   font-style: italic;
   letter-spacing: 0.12em;
 }
-.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: var(--ds-text-caption); letter-spacing: 0.3em; overflow-wrap: anywhere; }
+.end-roll-last-title { margin: 0; color: var(--roll-muted); font-size: var(--ds-text-small); letter-spacing: 0.3em; overflow-wrap: anywhere; }
 .end-roll-bar {
   position: relative;
   flex: none;
   display: flex;
-  gap: 10px;
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-4) calc(10px + env(safe-area-inset-bottom));
   background: var(--journey-moments-end-roll-bar-ground);
   border-top: 1px solid var(--journey-moments-end-roll-bar-edge);
 }

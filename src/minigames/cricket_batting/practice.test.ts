@@ -67,7 +67,7 @@ describe("the cricket's practice", () => {
       expect(["ready", "run1"], String(ms)).toContain(CRICKET_FIELD_POINTS.warmup.phaseAt(ms));
       expect(CRICKET_FIELD_POINTS.warmup.meetsAt(ms)).toBe(ms);
     }
-    // The needle follows the ball at one pace: at the bat (1) at its arrival, the gold zone where a swing is clean.
+    // The needle follows the ball at one pace: at the bat (1) at its arrival, the white zone where a swing is clean.
     expect(cricketTravel(plan, plan.contact)).toBeCloseTo(1, 9);
     expect(cricketTravel(plan, plan.bounce)).toBeCloseTo(0.6, 9);
     expect(CRICKET_FIELD_POINTS.warmup.bowledBall(plan.contact).ball.y).toBe(CRICKET_FIELD_POINTS.BAT.y);

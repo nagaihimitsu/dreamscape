@@ -1,30 +1,30 @@
-.travel-menu { margin: 4px 0 0; }
-.travel-menu h2 { margin: 16px 0 8px; font-size: var(--ds-text-subhead); }
-.travel-reserve { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
-.travel-rentals { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
-.travel-rented { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
-.travel-rent-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
+.travel-menu { margin: var(--ds-space-1) 0 0; }
+.travel-menu h2 { margin: var(--ds-space-4) 0 var(--ds-space-2); font-size: var(--ds-text-large); }
+.travel-reserve { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
+.travel-rentals { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-3); margin: var(--ds-space-1) 0; }
+.travel-rented { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
+.travel-rent-open { width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
 /* Tours (tour stage 2a): the same place-action line as the rentals; the sheet's cards. */
-.travel-tours { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
-.travel-tour-booked { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.travel-tours { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-3); margin: var(--ds-space-1) 0; }
+.travel-tour-booked { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 /* (Scoped: the shared .secondary is loaded later and would widen the line's buttons.) */
-.travel-tours .travel-tour-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
-.travel-tour-card { margin: 12px 0 0; padding: 10px 12px 8px; border: 1px solid var(--ds-parchment-line); border-radius: var(--ds-radius-control); }
-.travel-tour-card h3 { margin: 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); }
-.travel-choice-modal .travel-tour-when { display: inline-block; margin: 6px 0 0; padding: 2px 10px; border-radius: var(--ds-radius-pill);
-  background: var(--ds-chip-bg); color: var(--ds-on-slate); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
-.travel-tour-itinerary { margin: 6px 0; padding: 0; list-style: none; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-tour-itinerary li { padding: 1px 0; }
+.travel-tours .travel-tour-open { width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
+.travel-tour-card { margin: var(--ds-space-3) 0 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); border: 1px solid var(--ds-line); border-radius: var(--ds-radius-control); }
+.travel-tour-card h3 { margin: 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+.travel-choice-modal .travel-tour-when { display: inline-block; margin: var(--ds-space-2) 0 0; padding: var(--ds-space-1) var(--ds-space-2); border-radius: var(--ds-radius-pill);
+  background: var(--ds-smoke); color: var(--ds-on-dark); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
+.travel-tour-itinerary { margin: var(--ds-space-2) 0; padding: 0; list-style: none; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.travel-tour-itinerary li { padding: 0 0; }
 .travel-tour-end { color: var(--ds-ink-muted); }
 .travel-tour-seller { font-weight: 600; }
 /* What one offer adds (2026-11-26: a guide, a shared car), right under its button. */
-.travel-tour-offer-note { margin: 2px 0 6px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.travel-tour-offer-note { margin: var(--ds-space-1) 0 var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .travel-map-frame .leaflet-control-zoom a { display: grid; place-items: center; width: 44px; height: 44px; line-height: 1; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
 /* A place on the map (2026-11-27 user requests: the glyphs outlined in white stood out of the one UI, then the kinds and
    where the couple are must still read at a glance): a disc of the light glass with a white rim and a soft shadow, its
    glyphs each in the colour of its kind (PlaceMap.tsx markGlyphs; the legend the same): ◆ the story in the ink, ♥ a date
-   in the markers' rose, ● the inn and such muted. Where the couple are, it is ringed in the current place's green (the
+   in the muted ink, ● the inn and such muted. Where the couple are, it is ringed in the current place's green (the
    one green on the map); the selected one is the dark disc with the yellow glyph (below). */
 .travel-map-marker {
   display: flex;
@@ -34,17 +34,17 @@
   height: 32px;
   border-radius: 50%;
   background: var(--ds-glass-bg);
-  box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-glass-shadow);
+  box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-shadow);
   font-size: var(--ds-text-body);
   font-weight: bold;
   letter-spacing: -0.08em;
 }
 .travel-map-glyph.is-main { color: var(--ds-ink); }
-.travel-map-glyph.is-date { color: var(--ds-marker); }
-.travel-map-glyph.is-other { color: var(--ds-glass-muted); }
+.travel-map-glyph.is-date { color: var(--ds-ink-muted); }
+.travel-map-glyph.is-other { color: var(--ds-ink-muted); }
 .travel-map-marker.is-selected .travel-map-glyph { color: inherit; }
 /* Where the couple are: the disc ringed in the current place's green (the legend's 「輪つき」), its white rim outside. */
-.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-glass-shadow); }
+.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); box-shadow: 0 0 0 1.5px var(--ds-light), var(--ds-shadow); }
 /* A ring in the same green widens and fades from the mark, slowly (every 2.4 s), so the eye finds it on the map. Display
    only, never pressed. */
 .travel-map-marker.is-here::before {
@@ -66,7 +66,7 @@
 }
 /* A place the party has been to (「行った場所」, visited-places.ts; 2026-11-11 user decision): its mark on a warm paper
    mark with a stamp (a tick in a dark ink circle) at its lower right, so it differs from a plain mark by its shape, not
-   by colour alone. The selected marker's slate disc and yellow mark (later rules) still win; the stamp stays on it. */
+   by colour alone. The selected marker's dark disc and yellow mark (later rules) still win; the stamp stays on it. */
 .travel-map-marker.is-visited { position: relative; }
 .travel-map-marker.is-visited::after {
   content: "✓";
@@ -79,86 +79,86 @@
   height: 15px;
   border-radius: 50%;
   background: var(--ds-ink);
-  color: var(--ds-parchment);
-  font-size: var(--ds-text-mark);
+  color: var(--ds-surface);
+  font-size: var(--ds-text-small);
   font-weight: 700;
   line-height: 1;
   text-shadow: none;
   box-shadow: 0 0 0 1.5px var(--ds-light);
 }
 .travel-list { display: grid; }
-.travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.travel-choice-header h3 { margin: 0; font-size: var(--ds-text-subhead); }
+.travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-space-2); }
+.travel-choice-header h3 { margin: 0; font-size: var(--ds-text-large); }
 .travel-choice-header button { min-height: 44px; }
-dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16px; width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
-.travel-choice-modal .modal-title-bar { margin-bottom: 8px; }
-.travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: 44px; padding: 8px 12px; white-space: nowrap; }
-.travel-choice-modal p { margin: 8px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-choice-routes { display: grid; gap: 3px; }
+dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+.travel-choice-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
+.travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: 44px; padding: var(--ds-space-2) var(--ds-space-3); white-space: nowrap; }
+.travel-choice-modal p { margin: var(--ds-space-2) 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.travel-choice-routes { display: grid; gap: var(--ds-space-1); }
 
 
 /* Free time's cards over the city's picture (UI redesign §3.4, §2.4): every
-   block has its own opaque parchment; the map block, its notes and the list
+   block has its own opaque light ground; the map block, its notes and the list
    card follow each other inside the travel-menu section, which is what the
    sticky map block stays over. */
-.free-time-hub .travel-menu { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.free-time-hub .travel-menu { display: flex; flex-direction: column; gap: var(--ds-space-2); margin: 0; }
 /* F4: a display-only note, so a pill. */
 .free-time-hub .travel-reserve {
   align-self: flex-start;
-  padding: 4px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink-muted);
-  box-shadow: var(--ds-pill-shadow);
-  font-size: var(--ds-text-caption);
-  line-height: var(--ds-leading-snug);
+  box-shadow: var(--ds-shadow-small);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
 }
 .free-time-hub .travel-rentals {
   margin: 0;
-  padding: 0 12px;
+  padding: 0 var(--ds-space-3);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-pill-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-small);
 }
 .free-time-hub .travel-rented { color: var(--ds-ink-muted); }
 .free-time-hub .travel-tours {
   margin: 0;
-  padding: 6px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-pill-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-small);
 }
 
 /* The list card (§3.6): 「近くの行き先」, the rows and 「ほかの行き先を見る」. */
 .travel-list-card {
-  padding: 0 8px 4px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: 0 var(--ds-space-2) var(--ds-space-1);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-shadow);
   touch-action: manipulation;
 }
 .travel-list-card h2 {
   margin: 0;
-  padding: 5px 4px 3px;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-1);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
 }
-.travel-list-card > p { margin: 4px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-destination { border-bottom: 1px solid var(--ds-parchment-line); }
+.travel-list-card > p { margin: var(--ds-space-1); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.travel-destination { border-bottom: 1px solid var(--ds-line); }
 .travel-list > .travel-destination:last-child { border-bottom: 0; }
 /* One button for the whole row: photo, category words, name, route line, reason. */
 .travel-destination-button {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: var(--ds-space-2);
   width: 100%;
   min-height: 64px;
   margin: 0;
-  padding: 8px 4px;
+  padding: var(--ds-space-2) var(--ds-space-1);
   border: 0;
   border-radius: var(--ds-radius-control);
   background: none;
@@ -167,62 +167,62 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   text-align: left;
   cursor: pointer;
 }
-.travel-destination-button:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: inset 0 0 0 3px var(--ds-slate-900); }
+.travel-destination-button:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: inset 0 0 0 3px var(--ds-dark); }
 .travel-thumb {
   flex: none;
   width: 64px;
   height: 43px;
-  margin-top: 2px;
-  border-radius: var(--ds-radius-field);
+  margin-top: var(--ds-space-1);
+  border-radius: var(--ds-radius-control);
   object-fit: cover;
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
 }
 .travel-thumb.is-plain {
   display: grid;
   place-items: center;
   color: color-mix(in srgb, var(--ds-light) 90%, transparent);
-  font-size: var(--ds-text-subhead);
+  font-size: var(--ds-text-large);
 }
 .travel-destination-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
-.travel-destination-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 17px; }
-.travel-category { color: var(--ds-here); font-size: var(--ds-text-caption); font-weight: 500; line-height: var(--ds-leading-snug); white-space: nowrap; }
+.travel-destination-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-2); min-height: 17px; }
+.travel-category { color: var(--ds-here); font-size: var(--ds-text-small); font-weight: 500; line-height: var(--ds-leading-body); white-space: nowrap; }
 /* 「おすすめ」: display only, a pill without an edge (§2.3). */
 .travel-recommended {
   flex: none;
-  padding: 0 8px;
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-mark);
+  background: var(--ds-dark-2);
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-small);
   font-weight: 600;
-  line-height: var(--ds-leading-chip);
+  line-height: var(--ds-leading-body);
 }
 .travel-destination-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4px;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
+  gap: var(--ds-space-1);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
 }
 .travel-destination-title > span { min-width: 0; overflow-wrap: anywhere; }
 .travel-destination-title .icon { flex: none; width: 16px; height: 16px; color: var(--ds-ink-muted); }
-.travel-destination-meta { min-width: 0; overflow-wrap: anywhere; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-destination-reason { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.travel-destination-meta { min-width: 0; overflow-wrap: anywhere; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.travel-destination-reason { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .travel-destination.is-unavailable .travel-thumb { opacity: 0.55; }
 .travel-destination.is-unavailable .travel-destination-title { color: var(--ds-ink-muted); }
 /* F17: a ribbon summary (pressable: a chevron). */
-.travel-other { margin: 4px 0 4px; }
+.travel-other { margin: var(--ds-space-1) 0 var(--ds-space-1); }
 .travel-other > summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 44px;
-  padding: 4px 12px;
-  border-radius: var(--ds-radius-small);
-  background: var(--ds-parchment-2);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-chosen);
   font-size: var(--ds-text-body);
   font-weight: 600;
   list-style: none;
@@ -240,26 +240,26 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 7px 16px calc(8px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--ds-parchment-line);
-  background: var(--ds-parchment);
+  padding: var(--ds-space-2) var(--ds-space-4) calc(8px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--ds-line);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: 0 -2px 10px color-mix(in srgb, var(--ds-paper-shade) 18%, transparent);
+  box-shadow: 0 -2px 10px color-mix(in srgb, var(--ds-shade) 18%, transparent);
   touch-action: manipulation;
 }
-.travel-band-row { display: flex; gap: 8px; max-width: 648px; margin: 0 auto; }
+.travel-band-row { display: flex; gap: var(--ds-space-2); max-width: 648px; margin: 0 auto; }
 .travel-band .travel-wait summary,
 .travel-band .travel-sleep-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ds-space-2);
   min-height: 44px;
   margin: 0;
-  padding: 4px 14px;
+  padding: var(--ds-space-1) var(--ds-space-4);
   border: 1.5px solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
@@ -269,9 +269,9 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-band .icon { width: 20px; height: 20px; color: var(--ds-ink); }
 .travel-band .travel-wait summary { list-style: none; }
 .travel-band .travel-wait summary::-webkit-details-marker { display: none; }
-.travel-band .travel-wait summary .travel-band-word::after { content: "▾"; margin-left: 2px; }
+.travel-band .travel-wait summary .travel-band-word::after { content: "▾"; margin-left: var(--ds-space-1); }
 .travel-band .travel-wait[open] summary .travel-band-word::after { content: "▴"; }
-.travel-band .travel-wait[open] summary { background: var(--ds-parchment-2); }
+.travel-band .travel-wait[open] summary { background: var(--ds-surface-chosen); }
 /* The open 待機 menu rises above the band (the band is its containing block). */
 .travel-band .travel-wait-actions {
   position: absolute;
@@ -279,14 +279,14 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   left: 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--ds-space-2);
   width: max-content;
   max-width: calc(100% - 32px);
-  padding: 8px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-2);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-card-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow);
 }
 /* It rises out of the band as ≡メニュー's panel comes down out of the header (journey-hud.css), its waits after it. */
 .travel-band .travel-wait-actions { animation: travel-band-rise var(--motion-drop) var(--ease-drop); }
@@ -310,7 +310,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   .travel-band .travel-wait-actions > *,
   .travel-band .travel-band-sleep { animation: none; }
 }
-.travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: var(--ds-text-note); }
+.travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
 
 /* The selected marker (U21): the same glyph in yellow on a dark 40-px disc with a white
    ring, slightly enlarged, the current place's green ring outside the disc, the name above it
@@ -321,14 +321,14 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   height: 40px;
   border: 0;
   border-radius: 50%;
-  background: var(--ds-slate-900);
-  color: var(--ds-marker-selected);
-  font-size: var(--ds-text-subhead);
+  background: var(--ds-dark);
+  color: var(--ds-light);
+  font-size: var(--ds-text-large);
   text-shadow: none;
   box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: scale(1.25);
 }
-.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-dark); box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
 .travel-map-marker-label {
   position: absolute;
   bottom: calc(100% + 9px);
@@ -336,45 +336,45 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   transform: translateX(-50%);
   max-width: var(--map-label-max, 144px);
   overflow: hidden;
-  padding: 1px 8px;
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
-  font-size: var(--ds-text-caption);
+  box-shadow: var(--ds-shadow-small);
+  font-size: var(--ds-text-small);
   font-weight: 600;
-  line-height: var(--ds-leading-chip);
+  line-height: var(--ds-leading-body);
   text-overflow: ellipsis;
   white-space: nowrap;
   pointer-events: none;
 }
-.travel-map-marker-wrap:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 2px; border-radius: 50%; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+.travel-map-marker-wrap:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 2px; border-radius: 50%; box-shadow: 0 0 0 6px var(--ds-dark); }
 
-/* The selected row (§3.6): a slate edge all round the row and the darker parchment, then the hint strip (or
+/* The selected row (§3.6): a dark edge all round the row and the chosen ground, then the hint strip (or
    its choices) inside it. No mark before its name (2026-11-13 user decision, like the cards: no ◆ badge).
    Drawn inside the row (no border or margin), so selecting a row never moves what is under the finger. */
-.travel-destination.is-selected { border-radius: var(--ds-radius-control); background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-glass-shadow); }
+.travel-destination.is-selected { border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow); }
 .travel-destination-title { justify-content: flex-start; }
 .travel-destination-title > .icon { margin-left: auto; }
 .travel-hint-strip {
   display: block;
-  margin-top: 8px;
-  padding: 6px 10px;
-  border-radius: var(--ds-radius-field);
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
+  margin-top: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-2);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-dark-2);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
   font-weight: 600;
   line-height: var(--ds-leading-body);
 }
-.travel-hint-muted { margin-top: 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.travel-hint-muted { margin-top: var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 
 /* Inline choices (§3.6): the header with ×, then the events or the modes. */
 .travel-choices,
 .travel-band-sleep { touch-action: manipulation; }
-.travel-choices { display: grid; gap: 6px; padding: 0 8px 8px; }
-.travel-choices-head { display: flex; align-items: flex-start; gap: 8px; }
-.travel-choices-head p { flex: 1; margin: 4px 0 0; color: var(--ds-ink); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.travel-choices { display: grid; gap: var(--ds-space-2); padding: 0 var(--ds-space-2) var(--ds-space-2); }
+.travel-choices-head { display: flex; align-items: flex-start; gap: var(--ds-space-2); }
+.travel-choices-head p { flex: 1; margin: var(--ds-space-1) 0 0; color: var(--ds-ink); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .travel-choices-close {
   display: grid;
   flex: none;
@@ -386,32 +386,32 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   border: 1.5px solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   cursor: pointer;
 }
 .travel-choices-close .icon { width: 18px; height: 18px; }
-.travel-routes { display: grid; gap: 6px; }
+.travel-routes { display: grid; gap: var(--ds-space-2); }
 .travel-route,
 .travel-event-button {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 2px 8px;
+  gap: var(--ds-space-1) var(--ds-space-2);
   width: 100%;
   min-height: 44px;
   margin: 0;
-  padding: 6px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   border: 1.5px solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
   font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   text-align: left;
   cursor: pointer;
 }
@@ -422,16 +422,16 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-route:disabled .travel-route-cost { color: var(--ds-disabled-ink); }
 .travel-route:focus-visible,
 .travel-event-button:focus-visible,
-.travel-choices-close:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--ds-slate-900); }
-.travel-event { display: grid; gap: 4px; }
+.travel-choices-close:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--ds-dark); }
+.travel-event { display: grid; gap: var(--ds-space-1); }
 .travel-event-title { flex: 1 1 100%; min-width: 0; overflow-wrap: anywhere; }
-.travel-event-button small { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 500; }
-.travel-event-go { display: inline-flex; align-items: center; gap: 2px; margin-left: auto; font-size: var(--ds-text-note); }
+.travel-event-button small { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 500; }
+.travel-event-go { display: inline-flex; align-items: center; gap: var(--ds-space-1); margin-left: auto; font-size: var(--ds-text-note); }
 .travel-event-go .icon { width: 14px; height: 14px; }
-.travel-event > p { margin: 0 4px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-event > .travel-routes { margin-left: 12px; }
+.travel-event > p { margin: 0 var(--ds-space-1); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.travel-event > .travel-routes { margin-left: var(--ds-space-3); }
 .travel-choices .fine-print,
-.travel-sleep-choices .fine-print { margin: 2px 4px 0; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); }
+.travel-sleep-choices .fine-print { margin: var(--ds-space-1) var(--ds-space-1) 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
 
 /* 休む's ways home (§3.4 item 7): the band grows upward (the panel sits on its top edge,
    so the band's measured height stays the row's); its height ends at the map block. */
@@ -442,16 +442,16 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   right: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 8px 16px 0;
-  border-top: 1px solid var(--ds-parchment-line);
-  background: var(--ds-parchment);
-  box-shadow: 0 -4px 10px color-mix(in srgb, var(--ds-paper-shade) 16%, transparent);
+  padding: var(--ds-space-2) var(--ds-space-4) 0;
+  border-top: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+  box-shadow: 0 -4px 10px color-mix(in srgb, var(--ds-shade) 16%, transparent);
   /* It rises out of the band as 待機's menu does (above). */
   animation: travel-band-rise var(--motion-drop) var(--ease-drop);
 }
-.travel-band-sleep .travel-sleep-choices { display: grid; gap: 6px; max-width: 648px; margin: 0 auto; padding-bottom: 4px; }
-.travel-band .travel-sleep-toggle.is-selected { border-width: 2px; background: var(--ds-parchment-2); }
-.travel-map-selection .travel-sleep-choices { display: grid; gap: 6px; }
+.travel-band-sleep .travel-sleep-choices { display: grid; gap: var(--ds-space-2); max-width: 648px; margin: 0 auto; padding-bottom: var(--ds-space-1); }
+.travel-band .travel-sleep-toggle.is-selected { border-width: 2px; background: var(--ds-surface-chosen); }
+.travel-map-selection .travel-sleep-choices { display: grid; gap: var(--ds-space-2); }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
 .travel-band .travel-sleep-toggle:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
 .travel-choices-close:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

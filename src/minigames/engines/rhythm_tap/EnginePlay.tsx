@@ -173,7 +173,7 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
           status = nextStatus;
           latest.current.status(status);
         }
-        // The lane: each beat's mark slides to the ring; a hit one is gone (the ring lights: gold and thicker right on
+        // The lane: each beat's mark slides to the ring; a hit one is gone (the ring lights: white and thicker right on
         // the beat), a missed one dims and passes. A count-in's crosses and the partner's flag slide the same way.
         if (summary.hits > hits) {
           flashUntil = ms + LANE_FLASH_MS;

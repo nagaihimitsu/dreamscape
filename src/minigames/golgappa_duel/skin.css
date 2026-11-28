@@ -2,7 +2,7 @@
    with the use's art.stall, that picture in place of the drawn pot, heap and counter. */
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --golgappa-duel-puri-drawn-shadow: #2a1a0c;
+  --golgappa-duel-puri-drawn-shadow: #24262b;
   --golgappa-duel-pot-edge: #c4c8cc;
   --golgappa-duel-pot-ground: #9cc35f;
   --golgappa-duel-pot-ground-2: #5a8a33;
@@ -26,11 +26,11 @@
   --golgappa-duel-puri-drawn-ground-3: #f5d796;
   --golgappa-duel-puri-drawn-ground-4: #d89b45;
   --golgappa-duel-puri-drawn-ground-5: #a46a28;
-  --golgappa-duel-bite-ink: #fff6d8;
-  --golgappa-duel-bite-ink-2: #ffd76a;
+  --golgappa-duel-bite-ink: #dcdee2;
+  --golgappa-duel-bite-ink-2: #ffffff;
   --golgappa-duel-clack-ink: #c9ccd2;
-  --golgappa-duel-say-her-edge: #e2b54e;
-  --golgappa-duel-feint-edge: #ffe0b8;
+  --golgappa-duel-say-her-edge: #24262b;
+  --golgappa-duel-feint-edge: #f1f2f4;
   --golgappa-duel-feint-ground: #a04826;
   --golgappa-duel-drop-edge: #b9d98a;
   --golgappa-duel-drop-edge-2: #e9f7cf;
@@ -64,7 +64,7 @@
   flex-wrap: wrap;
   justify-content: center;
   width: 28%;
-  padding: 4px 4px 10px;
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2);
   border-radius: 0 0 40% 40%;
   background: linear-gradient(var(--golgappa-duel-heap-ground), var(--golgappa-duel-heap-ground-2));
 }
@@ -84,7 +84,7 @@
   bottom: 0;
   border-top: 3px solid var(--golgappa-duel-counter-edge);
   background:
-    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ds-paper-shade) 18%, transparent) 0 2px, transparent 2px 46px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ds-shade) 18%, transparent) 0 2px, transparent 2px 46px),
     linear-gradient(var(--golgappa-duel-counter-ground), var(--golgappa-duel-counter-ground-2));
 }
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-counter { display: none; }
@@ -118,7 +118,7 @@
 .minigame-layer:not([data-still]) .mg-golgappa-duel-her[data-thump] { animation: mg-golgappa-duel-bob 180ms ease-out 2; }
 @keyframes mg-golgappa-duel-bob { 50% { transform: translateX(-50%) translateY(2%); } }
 /* The vendor's hand, waiting over the bowl of the next one to drop (low enough that a feint's raised, shaking hand stays
-   inside the field on a short screen: 40% of its height up, ±9° and its gold edge). */
+   inside the field on a short screen: 40% of its height up, ±9° and its white edge). */
 .mg-golgappa-duel-hand {
   position: absolute;
   z-index: 4;
@@ -156,10 +156,10 @@
 .mg-golgappa-duel-held > img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .mg-golgappa-duel-hand[data-holding="yes"] .mg-golgappa-duel-held { opacity: 1; }
 /* A feint's wind-up (its tell, with the lane's mark turning into a rest): the hand rises high and shakes; with less motion
-   it only rises, with a gold edge. After it the hand wags a moment (it gave nothing). */
+   it only rises, with a white edge. After it the hand wags a moment (it gave nothing). */
 .mg-golgappa-duel-hand[data-windup="up"] {
   translate: 0 -40%;
-  box-shadow: 0 0 0 3px var(--ds-game-gold), 0 3px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 0 0 3px var(--ds-game-mark), 0 3px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
 .minigame-layer:not([data-still]) .mg-golgappa-duel-hand[data-windup="up"] { animation: mg-golgappa-duel-windup 140ms ease-in-out infinite alternate; }
 @keyframes mg-golgappa-duel-windup { from { rotate: -9deg; } to { rotate: 9deg; } }
@@ -210,7 +210,7 @@
     radial-gradient(circle at 40% 45%, var(--golgappa-duel-puri-drawn-ground-3), var(--golgappa-duel-puri-drawn-ground-4) 62%, var(--golgappa-duel-puri-drawn-ground-5));
   box-shadow: 0 2px 3px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
-/* What is said and heard: a bite (golden and bigger right on the landing), a clack at nothing, the onlookers' count, her
+/* What is said and heard: a bite (white and bigger right on the landing), a clack at nothing, the onlookers' count, her
    「バス」 beside her face, the player's over their bowl, the cough. The words have a 3-px dark edge (readable on the photo). */
 .mg-golgappa-duel-bite, .mg-golgappa-duel-say, .mg-golgappa-duel-clack, .mg-golgappa-duel-crowd {
   position: absolute;
@@ -230,45 +230,45 @@
   font-size: var(--ds-text-heading);
   animation: mg-golgappa-duel-pop 380ms ease-out both;
 }
-.mg-golgappa-duel-bite[data-kind="perfect"] { color: var(--golgappa-duel-bite-ink-2); font-size: var(--ds-text-title); }
+.mg-golgappa-duel-bite[data-kind="perfect"] { color: var(--golgappa-duel-bite-ink-2); font-size: var(--ds-text-heading); }
 @keyframes mg-golgappa-duel-pop { from { opacity: 0.4; transform: translate(-50%, -20%) scale(0.8); } }
 .mg-golgappa-duel-clack { color: var(--golgappa-duel-clack-ink); font-size: var(--ds-text-body); }
 /* The onlookers' count, below the vendor's hand (clear of her face under the band when she reacts). */
 .mg-golgappa-duel-crowd {
   left: 60%;
   top: 21%;
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-title);
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-heading);
   animation: mg-golgappa-duel-pop 300ms ease-out both;
 }
 .mg-golgappa-duel-say {
   display: inline-flex;
-  gap: 4px;
+  gap: var(--ds-space-1);
   align-items: center;
-  padding: 4px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  color: var(--ds-glass-ink);
-  font-size: var(--ds-text-subhead);
+  color: var(--ds-ink);
+  font-size: var(--ds-text-large);
   font-weight: 700;
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
 }
-/* Her 「バス」: beside her face, with her raised palm, bigger and ringed in gold (the moment to say it with her). */
+/* Her 「バス」: beside her face, with her raised palm, bigger and ringed in dark (the moment to say it with her). */
 .mg-golgappa-duel-say-her {
   top: 30%;
-  padding: 6px 14px 6px 10px;
+  padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
   border: 3px solid var(--golgappa-duel-say-her-edge);
   font-size: var(--ds-text-heading);
   visibility: hidden;
 }
 .mg-golgappa-duel-say-her[data-shown] { visibility: visible; animation: mg-golgappa-duel-pop 300ms ease-out both; }
-.mg-golgappa-duel-say svg { width: 22px; height: 22px; fill: var(--ds-marker); }
-/* Her bluff beside her face: a plain bubble (no gold ring), the palm only half up, smaller; then her joke. Her warning
+.mg-golgappa-duel-say svg { width: 22px; height: 22px; fill: var(--ds-ink-muted); }
+/* Her bluff beside her face: a plain bubble (no dark ring), the palm only half up, smaller; then her joke. Her warning
    (「わたし、次でバス」) in the same place after it, plain too, until her 「バス！」 takes its place. */
-.mg-golgappa-duel-bluff, .mg-golgappa-duel-warn { top: 30%; font-size: var(--ds-text-subhead); animation: mg-golgappa-duel-pop 240ms ease-out both; }
+.mg-golgappa-duel-bluff, .mg-golgappa-duel-warn { top: 30%; font-size: var(--ds-text-large); animation: mg-golgappa-duel-pop 240ms ease-out both; }
 .mg-golgappa-duel-bluff svg { width: 18px; height: 18px; rotate: 55deg; opacity: 0.8; }
 .mg-golgappa-duel-bluff[data-joke] svg { rotate: 100deg; }
 /* The vendor's 「フェイント！」 under his hand (a bite at his feint), and the player's 「見切った！」 over the bowl (held still). */
@@ -283,12 +283,12 @@
 }
 .mg-golgappa-duel-feint {
   top: 30%;
-  padding: 2px 10px;
+  padding: var(--ds-space-1) var(--ds-space-2);
   border: 2px solid var(--golgappa-duel-feint-edge);
   border-radius: var(--ds-radius-control);
   background: var(--golgappa-duel-feint-ground);
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-subhead);
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-large);
   box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 50%, transparent);
 }
 .mg-golgappa-duel-seen {
@@ -305,19 +305,19 @@
   z-index: 6;
   display: flex;
   flex-direction: column-reverse;
-  gap: 3px;
+  gap: var(--ds-space-1);
   align-items: center;
-  padding: 4px 3px 2px;
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-1);
   border-radius: var(--ds-radius-control);
-  background: color-mix(in srgb, var(--ds-slate-900) 60%, transparent);
+  background: color-mix(in srgb, var(--ds-dark) 60%, transparent);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
-.mg-golgappa-duel-gauge small { order: -1; color: var(--ds-on-slate); font-size: var(--ds-text-mark); font-weight: 700; line-height: var(--ds-leading-tight); }
+.mg-golgappa-duel-gauge small { order: -1; color: var(--ds-on-dark); font-size: var(--ds-text-small); font-weight: 700; line-height: var(--ds-leading-tight); }
 .mg-golgappa-duel-drop {
   width: 12px;
   height: 12px;
-  margin: 2px 0;
+  margin: var(--ds-space-1) 0;
   border: 2px solid var(--golgappa-duel-drop-edge);
   border-radius: 0 50% 50% 50%;
   transform: rotate(45deg);
@@ -334,14 +334,14 @@
   align-items: center;
   max-width: 44%;
   transform: translateX(-50%);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-heading);
   font-weight: 700;
-  line-height: var(--ds-leading-display);
+  line-height: var(--ds-leading-tight);
   text-align: center;
   text-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 80%, transparent);
 }
-.mg-golgappa-duel-count small { font-size: var(--ds-text-mark); font-weight: 400; overflow-wrap: anywhere; }
+.mg-golgappa-duel-count small { font-size: var(--ds-text-small); font-weight: 400; overflow-wrap: anywhere; }
 /* A short screen: smaller counts, so they stay under the bowls. */
 @media (max-height: 620px) {
   .mg-golgappa-duel-count { font-size: var(--ds-text-body); }
@@ -356,7 +356,7 @@
     gap: 0;
     min-width: 60px;
     min-height: 52px;
-    padding: 4px 10px;
+    padding: var(--ds-space-1) var(--ds-space-2);
     font-size: var(--ds-text-body);
     line-height: var(--ds-leading-tight);
   }

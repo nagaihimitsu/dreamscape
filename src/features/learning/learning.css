@@ -1,35 +1,35 @@
 .translation {
-  margin: 3px 0 10px;
+  margin: var(--ds-space-1) 0 var(--ds-space-2);
   font-size: var(--ds-text-note);
 }
 .translation-toggle {
   min-height: 44px;
-  padding: 6px 8px;
+  padding: var(--ds-space-2) var(--ds-space-2);
 }
 .translation p {
-  margin: 0 8px 12px;
+  margin: 0 var(--ds-space-2) var(--ds-space-3);
   line-height: var(--ds-leading-reading);
 }
 .translation-all {
   min-height: 44px;
-  margin: 8px 0;
+  margin: var(--ds-space-2) 0;
 }
 .quiz-option-wrap {
   min-width: 0;
 }
 .modal.english-review {
-  --modal-pad-top: 0px;
-  --modal-pad-inline: 0px;
+  --modal-pad-top: 0;
+  --modal-pad-inline: 0;
   max-height: min(90dvh, 900px);
   overflow-y: auto;
 }
 .english-review > :not(.english-review-header) {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: var(--ds-space-4);
+  margin-right: var(--ds-space-4);
 }
 .english-review > p {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: var(--ds-space-2);
+  margin-bottom: var(--ds-space-2);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
 }
@@ -37,8 +37,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 6px;
-  margin-top: 12px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-3);
 }
 .review-list label {
   grid-column: 1 / -1;
@@ -48,11 +48,11 @@
   width: 100%;
   min-width: 0;
   min-height: 44px;
-  padding: 6px 8px;
+  padding: var(--ds-space-2) var(--ds-space-2);
   color: var(--ds-ink);
   background: var(--ds-field);
   border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-field);
+  border-radius: var(--ds-radius-control);
 }
 .review-navigation {
   display: contents;
@@ -61,22 +61,22 @@
   width: auto;
   min-width: 52px;
   min-height: 44px;
-  padding: 6px;
+  padding: var(--ds-space-2);
   white-space: nowrap;
 }
 .review-question {
-  padding: 8px 0;
+  padding: var(--ds-space-2) 0;
 }
 .review-question h3 {
-  margin: 6px 0;
-  font-size: var(--ds-text-subhead);
+  margin: var(--ds-space-2) 0;
+  font-size: var(--ds-text-large);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .review-question .review-mark {
   width: auto;
   min-height: 44px;
-  padding: 6px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   font-size: var(--ds-text-note);
 }
 /* The question's own tools in one row: 「あとで復習する」, the speaker (when shown) and 「問題文の訳を見る」. */
@@ -84,61 +84,61 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  margin-top: 12px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-3);
 }
 .review-question-tools > .review-mark {
   margin: 0;
 }
 .review-options .read-aloud {
-  margin-right: 4px;
+  margin-right: var(--ds-space-1);
 }
 .review-question p,
 .review-question li {
-  margin: 6px 0;
+  margin: var(--ds-space-2) 0;
   overflow-wrap: anywhere;
 }
 .review-question details {
-  padding: 10px 0;
-  border-top: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-2) 0;
+  border-top: 1px solid var(--ds-line);
 }
 .review-question summary {
   cursor: pointer;
   min-height: 44px;
-  padding: 8px 0;
+  padding: var(--ds-space-2) 0;
 }
 .review-options {
-  padding-left: 22px;
+  padding-left: var(--ds-space-6);
 }
 .learning-story {
-  padding: 12px;
-  background: var(--ds-parchment);
+  padding: var(--ds-space-3);
+  background: var(--ds-surface);
 }
 
 /* The note's title bar (ModalTitle): its padding is the note's own (the dialog has none). */
 .english-review .english-review-header {
-  margin: 0 0 8px;
-  padding: 6px 10px 6px 16px;
+  margin: 0 0 var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-4);
 }
 /* A 44 px row like the settings checkboxes (docs/10「タップ領域」). */
 .english-review .review-filter {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: var(--ds-space-2);
   min-height: 44px;
-  padding: 10px 0;
+  padding: var(--ds-space-2) 0;
   line-height: var(--ds-leading-body);
 }
 .english-review .review-filter input {
   flex: none;
   width: 18px;
   height: 18px;
-  margin: 2px 0 0;
+  margin: var(--ds-space-1) 0 0;
 }
 .english-review > details > summary {
   cursor: pointer;
   min-height: 44px;
-  padding: 10px 0;
+  padding: var(--ds-space-2) 0;
 }
 .review-options {
   list-style: none;
@@ -146,8 +146,8 @@
 }
 
 .learning-summary {
-  background: var(--ds-parchment-2);
-  padding: 10px 12px;
+  background: var(--ds-surface-chosen);
+  padding: var(--ds-space-2) var(--ds-space-3);
 }
 
 .interactive-english {
@@ -157,7 +157,7 @@
 .english-word {
   display: inline;
   min-height: 0;
-  padding: 1px 0;
+  padding: 0 0;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -171,7 +171,7 @@
 .english-word:hover,
 .english-word:focus-visible {
   color: var(--ds-ink);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
 }
 /* 前に出た単語 (met-words.ts): a word of the word book met again in a battle's English. Every word's dotted line says it
    can be pressed for its meaning; this one's is blue and twice as thick (not a colour alone). Its name says it too. */
@@ -179,13 +179,13 @@
 .met-word {
   text-decoration-line: underline;
   text-decoration-style: dotted;
-  text-decoration-color: var(--ds-plate-blue);
+  text-decoration-color: var(--ds-speaker);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }
 /* 「英語を読み上げるボタン」 (ReadAloud.tsx): a 44-px outlined square with the speaker, beside an English text and before
-   its 「訳を見る」. Outlined like the other helps, not slate like an answer; while it reads (aria-pressed), filled and edged
-   in slate. */
+   its 「訳を見る」. Outlined like the other helps, not dark like an answer; while it reads (aria-pressed), filled and edged
+   in the dark. */
 .read-aloud {
   display: inline-flex;
   flex: none;
@@ -199,7 +199,7 @@
   padding: 0;
   border: 1px solid transparent;
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   vertical-align: middle;
@@ -209,10 +209,10 @@
   height: 22px;
 }
 .read-aloud[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-glass-shadow);
-  background: var(--ds-parchment-2);
+  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-shadow);
+  background: var(--ds-surface-chosen);
 }
-/* A word's meaning: a display-only parchment note under the sentence. */
+/* A word's meaning: a display-only light ground note under the sentence. */
 .word-meaning {
   display: block;
   font-family: var(--ds-font-sans);
@@ -221,13 +221,13 @@
   line-height: var(--ds-leading-body);
   letter-spacing: normal;
   color: var(--ds-ink);
-  background: var(--ds-parchment-2);
-  border-radius: var(--ds-radius-field);
-  padding: 8px 10px;
-  margin-top: 8px;
+  background: var(--ds-surface-chosen);
+  border-radius: var(--ds-radius-control);
+  padding: var(--ds-space-2) var(--ds-space-2);
+  margin-top: var(--ds-space-2);
 }
 .word-meaning small {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
 }
 /* Its close: the dialogs' close mark (×) without the word, as the box is a line in the text; a 44-px target that does not
    heighten the box (its negative margins). */
@@ -237,7 +237,7 @@
   place-items: center;
   min-width: 44px;
   min-height: 44px;
-  margin: -10px -10px -10px 4px;
+  margin: -10px -10px -10px var(--ds-space-1);
   padding: 0;
   border: 0;
   border-radius: var(--ds-radius-control);
@@ -250,7 +250,7 @@
 }
 .option-body .option-mark {
   display: block;
-  margin-top: 8px;
+  margin-top: var(--ds-space-2);
 }
 .option-body .option-mark:empty {
   display: none;
@@ -259,10 +259,10 @@
   grid-column: 2;
   min-height: 44px;
   justify-self: start;
-  padding: 8px 16px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-small);
-  background: var(--ds-parchment);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
@@ -272,14 +272,14 @@
 }
 .review-translation-toggle {
   min-height: 36px;
-  margin-right: 8px;
-  font-size: var(--ds-text-caption);
+  margin-right: var(--ds-space-2);
+  font-size: var(--ds-text-small);
 }
 .translation-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
 .quiz-choice > .translation {
   grid-column: 2;
@@ -288,23 +288,23 @@
 
 /* The note's views, 「問題」, 「単語帳」 and 「その国の言葉」 (2026-11-11): the one shown is the smoked glass (and aria-pressed).
    Three fit one row at 320 px; with larger text a button moves to the next row instead of leaving the dialog. */
-.english-review .review-views { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: 44px; margin: 0; padding: 6px 10px; font-size: var(--ds-text-body); }
+.english-review .review-views { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); margin-top: var(--ds-space-1); }
+.english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-2); font-size: var(--ds-text-body); }
 .english-review .review-views .secondary[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
 
 /* 「単語帳」 (WordBook): the places in the order met, each under its photo and name once, with its words' cards (words
    only), two to a row on a phone. */
-.word-book { padding-bottom: 12px; }
-.word-book-place-head { display: flex; align-items: center; gap: 10px; margin: 14px 0 8px; }
-.word-book-place-photo { flex: 0 0 auto; width: 84px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-field); background: var(--ds-slate-800); }
+.word-book { padding-bottom: var(--ds-space-3); }
+.word-book-place-head { display: flex; align-items: center; gap: var(--ds-space-2); margin: var(--ds-space-4) 0 var(--ds-space-2); }
+.word-book-place-photo { flex: 0 0 auto; width: 84px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-dark-2); }
 .word-book-place-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* No photo: the free-time cards' plain tile (the place's background colour, else slate) with the sightseeing mark. */
-.word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-slate-800); color: color-mix(in srgb, var(--ds-light) 92%, transparent); font-size: var(--ds-text-subhead); }
+/* No photo: the free-time cards' plain tile (the place's background colour, else the dark grey) with the sightseeing mark. */
+.word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-dark-2); color: color-mix(in srgb, var(--ds-light) 92%, transparent); font-size: var(--ds-text-large); }
 .word-book-place h3 { margin: 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .word-book-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
+  gap: var(--ds-space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -336,34 +336,34 @@
   grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--ds-space-1);
   overflow: hidden;
-  border: 1px solid var(--ds-parchment-line);
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-card-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.word-card-face.is-front { justify-content: center; min-height: 64px; padding: 10px 10px 22px; }
-.word-card-face.is-back { justify-content: flex-start; padding: 8px 10px 22px; background: var(--ds-parchment-2); transform: rotateY(180deg); }
-.word-card-word { font-size: var(--ds-text-subhead); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
-.word-card-meaning { font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
-.word-card-sentence { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.word-card-face.is-front { justify-content: center; min-height: 64px; padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); }
+.word-card-face.is-back { justify-content: flex-start; padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6); background: var(--ds-surface-chosen); transform: rotateY(180deg); }
+.word-card-word { font-size: var(--ds-text-large); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.word-card-meaning { font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.word-card-sentence { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* That the card turns: a small mark in its corner (decorative). */
-.word-card-turn { position: absolute; right: 8px; bottom: 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.word-card-turn { position: absolute; right: 8px; bottom: 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .word-card:focus-visible { outline: none; box-shadow: none; }
-.word-card:focus-visible .word-card-face { outline: 3px solid var(--ds-focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--ds-slate-900); }
+.word-card:focus-visible .word-card-face { outline: 3px solid var(--ds-focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--ds-dark); }
 /* No turning motion with reduced motion: the other face shows at once. */
 .reduce-motion .word-card-inner { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .word-card-inner { transition: none; }
 }
-.word-book-credits { margin-top: 16px; padding-top: 6px; border-top: 1px solid var(--ds-parchment-line); }
-.word-book-credits summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
+.word-book-credits { margin-top: var(--ds-space-4); padding-top: var(--ds-space-2); border-top: 1px solid var(--ds-line); }
+.word-book-credits summary { min-height: 44px; padding: var(--ds-space-2) 0; cursor: pointer; }
 .word-book-credits ul { margin: 0; padding: 0; list-style: none; }
-.word-book-credits li { padding: 6px 0; border-top: 1px solid var(--ds-parchment-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.word-book-credits h4 { margin: 0 0 2px; font-size: var(--ds-text-body); }
-.word-book-credits p { margin: 2px 0; overflow-wrap: anywhere; }
+.word-book-credits li { padding: var(--ds-space-2) 0; border-top: 1px solid var(--ds-line); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.word-book-credits h4 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); }
+.word-book-credits p { margin: var(--ds-space-1) 0; overflow-wrap: anywhere; }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
 .read-aloud:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

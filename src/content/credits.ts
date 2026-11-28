@@ -265,8 +265,9 @@ export const MAP_CREDIT = {
 } as const;
 
 /**
- * The fonts, as a courtesy (decision D4). Noto Sans JP and Noto Serif JP are loaded from Google Fonts (index.html), not
- * shipped (google/fonts ofl/notosansjp and ofl/notoserifjp, checked 2026-11-08), under the SIL Open Font License 1.1.
+ * The fonts, as a courtesy (decision D4). Noto Sans JP is loaded from Google Fonts (index.html), not shipped (google/fonts
+ * ofl/notosansjp, checked 2026-11-08), under the SIL Open Font License 1.1; Noto Serif JP, under the same licence, is
+ * drawn into the opening movie (gt_opening.mp4), the game's only words still in it since 2026-11-28 (one typeface).
  * Fasol SP Demo by Sasha Pavljenko (the user's choice of 2026-11-17) is shipped with the game as the unmodified demo file
  * (src/minigames/mehndi_hidden_name/fonts/, beside its licence, LICENSE-FasolSP.txt; checked 2026-11-17): free to use,
  * commercial use included; no resale; the font may be shared, with a link to its author, which the links give. What it
@@ -274,7 +275,7 @@ export const MAP_CREDIT = {
  * the scene away, as the spelling field did, the user's word of 2026-11-17).
  */
 export const FONT_CREDIT = {
-  textJa: "Noto Sans JP・Noto Serif JP（SIL Open Font License 1.1）。Google Fonts から読み込んでいます。" +
+  textJa: "Noto Sans JP（Google Fonts から読み込んでいます）・Noto Serif JP（オープニングムービーの字）（SIL Open Font License 1.1）。" +
     "Fasol SP Demo（Sasha Pavljenko。デモ版の利用許諾：商用を含めて無料、フォントの再販売は禁止、作者へのリンクを添えて共有できる）。" +
     "ゲームの中の飾り文字に使い、ゲームと一緒に配っています。",
   links: [

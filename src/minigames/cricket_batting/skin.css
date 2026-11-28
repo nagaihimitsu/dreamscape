@@ -8,16 +8,16 @@
   --cricket-batting-bricks-ground: #b4553a;
   --cricket-batting-bricks-ground-2: #8e3f2b;
   --cricket-batting-ball-ground-032: rgba(90, 90, 90, 0.32);
-  --cricket-batting-ball-ground: #fffaf0;
-  --cricket-batting-ball-ground-2: #ddd6c6;
-  --cricket-batting-ball-ground-3: #9d9585;
-  --cricket-batting-ball-shadow-045: rgba(70, 60, 45, 0.45);
+  --cricket-batting-ball-ground: #ffffff;
+  --cricket-batting-ball-ground-2: #dddddf;
+  --cricket-batting-ball-ground-3: #9d9ea0;
+  --cricket-batting-ball-shadow-045: rgba(60, 60, 62, 0.45);
   --cricket-batting-bat-ground: #c9a06a;
   --cricket-batting-bat-ground-2: #9c7140;
   --cricket-batting-bat-ground-3: #6b4a2a;
-  --cricket-batting-kids-ink: #2b221c;
-  --cricket-batting-kids-shadow-06: rgba(255, 246, 228, 0.6);
-  --cricket-batting-call-edge: #2a211c;
+  --cricket-batting-kids-ink: #24262b;
+  --cricket-batting-kids-shadow-06: rgba(255, 255, 255, 0.6);
+  --cricket-batting-call-edge: #24262b;
 }
 .mg-cricket-batting { position: absolute; inset: 0; }
 .mg-cricket-batting-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; pointer-events: none; }
@@ -36,7 +36,7 @@
   mask-image: linear-gradient(transparent, var(--ds-shade) 22%);
   filter: saturate(0.8);
 }
-.mg-cricket-batting-crease { position: absolute; height: 2px; background: color-mix(in srgb, var(--ds-on-slate) 75%, transparent); }
+.mg-cricket-batting-crease { position: absolute; height: 2px; background: color-mix(in srgb, var(--ds-on-dark) 75%, transparent); }
 .mg-cricket-batting-crease-far { top: 29%; left: 41%; width: 18%; height: 1px; }
 .mg-cricket-batting-crease-near { top: 82%; left: 19%; width: 62%; }
 /* A pitch picture shows its own pitch, creases and far wicket. */
@@ -76,13 +76,13 @@
 .mg-cricket-batting-bricks { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translateX(-50%); }
 .mg-cricket-batting-bricks > span {
   display: block;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background: linear-gradient(var(--cricket-batting-bricks-ground), var(--cricket-batting-bricks-ground-2));
   box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--ds-shade) 25%, transparent);
 }
-.mg-cricket-batting-bricks-far { left: 56%; bottom: 71%; gap: 1px; }
+.mg-cricket-batting-bricks-far { left: 56%; bottom: 71%; gap: 0; }
 .mg-cricket-batting-bricks-far > span { width: 12px; height: 5px; }
-.mg-cricket-batting-bricks-near { left: 50%; bottom: 1%; gap: 2px; z-index: 2; }
+.mg-cricket-batting-bricks-near { left: 50%; bottom: 1%; gap: var(--ds-space-1); z-index: 2; }
 .mg-cricket-batting-bricks-near > span { width: 64px; height: 20px; transition: transform 380ms cubic-bezier(0.2, 0.8, 0.3, 1); }
 .mg-cricket-batting-bricks-near[data-down] > span:nth-child(1) { transform: translate(-46px, 38px) rotate(-38deg); }
 .mg-cricket-batting-bricks-near[data-down] > span:nth-child(2) { transform: translate(40px, 20px) rotate(24deg); }
@@ -100,7 +100,7 @@
   /* A faint rim: the pale ball stays clear of a hazy sky in a photo behind it (the use's bg). */
   box-shadow: 0 0 0 1px var(--cricket-batting-ball-shadow-045), 0 1px 2px color-mix(in srgb, var(--ds-shade) 30%, transparent);
 }
-.mg-cricket-batting-shadow { z-index: 1; width: 34px; height: 11px; border-radius: 50%; background: color-mix(in srgb, var(--ds-paper-shade) 38%, transparent); }
+.mg-cricket-batting-shadow { z-index: 1; width: 34px; height: 11px; border-radius: 50%; background: color-mix(in srgb, var(--ds-shade) 38%, transparent); }
 /* The plank: its handle at the bottom right, raised; a swing sweeps it across the ball. */
 .mg-cricket-batting-bat {
   position: absolute;
@@ -109,7 +109,7 @@
   bottom: 8%;
   width: 18px;
   height: 36%;
-  border-radius: var(--ds-radius-small) var(--ds-radius-small) var(--ds-radius-small) var(--ds-radius-small);
+  border-radius: var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control);
   background: linear-gradient(to right, var(--cricket-batting-bat-ground), var(--cricket-batting-bat-ground-2));
   box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 30%, transparent);
   transform-origin: 50% 100%;
@@ -123,7 +123,7 @@
   right: 4px;
   bottom: -18%;
   height: 22%;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background: var(--cricket-batting-bat-ground-3);
 }
 .mg-cricket-batting-bat[data-swung] { transform: rotate(-104deg); }
@@ -160,10 +160,10 @@
   z-index: 5;
   right: 3%;
   bottom: 52%;
-  padding: 4px 10px;
+  padding: var(--ds-space-1) var(--ds-space-2);
   border: 1.5px solid var(--cricket-batting-call-edge);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
   font-weight: 700;

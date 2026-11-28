@@ -1,55 +1,55 @@
 /* 「出典・権利の一覧」 (CreditsDialog): the shared frame, wider on tablets; sections under plain
    headings, separated by hairlines (no side accents). Disclosures are 44 px rows. */
 dialog.modal.credits-modal {
-  --modal-pad-top: 16px;
-  --modal-pad-inline: 16px;
+  --modal-pad-top: var(--ds-space-4);
+  --modal-pad-inline: var(--ds-space-4);
   width: min(560px, calc(100% - 24px));
   max-height: calc(100dvh - 24px);
 }
-.credits-modal .modal-title-bar { margin-bottom: 8px; }
-.credits-list > section { padding: 12px 0; border-top: 1px solid var(--ds-parchment-line); }
+.credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
+.credits-list > section { padding: var(--ds-space-3) 0; border-top: 1px solid var(--ds-line); }
 .credits-list > section:first-child { padding-top: 0; border-top: 0; }
-.credits-list h3 { margin: 0 0 6px; font-size: var(--ds-text-subhead); }
-.credits-list h4 { margin: 12px 0 4px; font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
-.credits-list p { margin: 4px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.credits-list .fine-print { font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); }
+.credits-list h3 { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); }
+.credits-list h4 { margin: var(--ds-space-3) 0 var(--ds-space-1); font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
+.credits-list p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.credits-list .fine-print { font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .credits-list summary {
   cursor: pointer;
   min-height: 44px;
-  padding: 11px 0;
+  padding: var(--ds-space-3) 0;
   font-size: var(--ds-text-body);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
-.credits-journey { border-bottom: 1px solid var(--ds-parchment-line); }
+.credits-journey { border-bottom: 1px solid var(--ds-line); }
 .credits-journey:last-child { border-bottom: 0; }
-.credits-journey[open] { padding-bottom: 8px; }
+.credits-journey[open] { padding-bottom: var(--ds-space-2); }
 .credits-journey > section:first-of-type h4 { margin-top: 0; }
 .credits-photos,
 .credits-sounds,
-.credits-licences { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.credits-licences { display: grid; gap: var(--ds-space-2); margin: 0; padding: 0; list-style: none; }
 .credits-photos li,
-.credits-sounds li { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
+.credits-sounds li { padding-top: var(--ds-space-2); border-top: 1px solid var(--ds-line); }
 .credits-photos li:first-child,
 .credits-sounds li:first-child { border-top: 0; }
 .credits-photos p,
-.credits-sounds p { margin: 2px 0; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.credits-sounds p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .credits-list .credits-place { font-size: var(--ds-text-note); font-weight: 600; }
 .credits-licences { gap: 0; }
-.credits-licences li { border-bottom: 1px solid var(--ds-parchment-line); }
+.credits-licences li { border-bottom: 1px solid var(--ds-line); }
 .credits-licences summary { font-weight: 500; font-size: var(--ds-text-note); }
 .credits-licences pre {
-  margin: 0 0 10px;
-  padding: 8px;
+  margin: 0 0 var(--ds-space-2);
+  padding: var(--ds-space-2);
   background: var(--ds-field);
-  border-radius: var(--ds-radius-field);
-  font-size: var(--ds-text-mark);
-  line-height: var(--ds-leading-snug);
+  border-radius: var(--ds-radius-control);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-.credits-list .credits-own-artwork { margin-top: 12px; }
+.credits-list .credits-own-artwork { margin-top: var(--ds-space-3); }
 /* The entries: the title screen's below its note, ゲームの設定's first in its データ. */
 .credits-entry { display: block; min-height: 44px; }
-.intro > .credits-entry { margin: 4px auto 0; }
+.intro > .credits-entry { margin: var(--ds-space-1) auto 0; }

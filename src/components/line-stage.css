@@ -9,23 +9,23 @@
    --ds-*; 2026-11-25). */
 :root {
   --stage-recall-ground: #2b2d33; /* the quiet grey a memory comes up in */
-  --stage-photo-veil: rgba(16, 20, 28, 0.5);
+  --stage-photo-veil: rgba(16, 17, 20, 0.5);
   --stage-photo-frame: #ffffff; /* a print's white border */
   --stage-photo-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(24, 28, 38, 0.14), rgba(24, 28, 38, 0.46));
-  --stage-remembered-rim: inset 0 0 26px rgba(120, 80, 30, 0.3);
-  --phone-body: #10141c;
+  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(22, 23, 26, 0.14), rgba(22, 23, 26, 0.46));
+  --stage-remembered-rim: inset 0 0 26px rgba(40, 42, 46, 0.3);
+  --phone-body: #141518;
   --phone-corner: 28px; /* the rounded corners of the phone's glass */
-  --phone-slot: #3a4152;
-  --phone-screen: #e9edf1;
-  --phone-name: #4b5563; /* 6.4:1 on the screen */
+  --phone-slot: #3b3d42;
+  --phone-screen: #ececee;
+  --phone-name: #55585f; /* 6.4:1 on the screen */
   --phone-bubble: #ffffff;
   --phone-sent-ink: #ffffff;
-  --letter-grain: rgba(120, 90, 50, 0.03);
-  --letter-paper: linear-gradient(170deg, #fdf8ec, #f4e9d2);
-  --letter-rule: rgba(77, 101, 138, 0.3);
-  --note-paper: #fffbea;
-  --card-paper: #fffdf8;
+  --letter-grain: rgba(0, 0, 0, 0.03);
+  --letter-paper: linear-gradient(170deg, #ffffff, #f1f2f4);
+  --letter-rule: rgba(36, 38, 43, 0.22);
+  --note-paper: #fdfdfd;
+  --card-paper: #ffffff;
 }
 
 /* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
@@ -118,10 +118,10 @@
    moves. The text stays at 8:1 or more on the glass, and 5.7:1 on the band, over any picture behind (its 16 %
    show-through counted at black). */
 [data-dialogue-window][data-remembered] {
-  --vn-window-bg: rgba(244, 232, 212, 0.84);
-  --vn-text: #33241a;
-  --vn-muted: #5e4a35;
-  --vn-name-bg: #7a6148;
+  --vn-window-bg: rgba(232, 233, 236, 0.84);
+  --vn-text: #2a2b2f;
+  --vn-muted: #55585f;
+  --vn-name-bg: #6b6e75;
 }
 .vn-dialogue[data-remembered] .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-paper-shell[data-remembered] .battle-window::before {
@@ -134,12 +134,12 @@
 .phone-screen {
   position: relative;
   width: min(100%, 22rem);
-  margin: 6px auto 8px;
-  padding: 14px 7px 8px;
-  border: 1px solid var(--ds-gold-hairline);
+  margin: var(--ds-space-2) auto var(--ds-space-2);
+  padding: var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
+  border: 1px solid var(--ds-action-edge);
   border-radius: var(--phone-corner);
   background: var(--phone-body);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-shadow);
 }
 /* The speaker slot at the top of the phone (decoration). */
 .phone-screen::before {
@@ -150,21 +150,21 @@
   width: 40px;
   height: 4px;
   margin-left: -20px;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background: var(--phone-slot);
 }
 .phone-thread {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--ds-space-2);
   max-height: min(22rem, 44dvh);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding: 12px 10px;
-  border-radius: var(--ds-glass-radius);
+  padding: var(--ds-space-3) var(--ds-space-2);
+  border-radius: var(--ds-radius-large);
   background: var(--phone-screen);
-  color: var(--ds-slate-900);
+  color: var(--ds-dark);
 }
 /* Choices follow the message: the phone keeps less room, so they stay in view. */
 .phone-screen[data-compact] .phone-thread {
@@ -182,10 +182,10 @@
   align-items: flex-end;
 }
 .phone-name {
-  margin: 0 0 2px 6px;
+  margin: 0 0 var(--ds-space-1) var(--ds-space-2);
   color: var(--phone-name);
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   font-weight: 600;
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
@@ -193,10 +193,10 @@
 .phone-bubble {
   max-width: 100%;
   margin: 0;
-  padding: 10px 12px;
-  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control);
   background: var(--phone-bubble);
-  color: var(--ds-slate-900);
+  color: var(--ds-dark);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
@@ -204,8 +204,8 @@
   overflow-wrap: anywhere;
 }
 .phone-message[data-side="sent"] .phone-bubble {
-  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small) var(--ds-radius-pane);
-  background: var(--ds-plate-blue); /* white text at 5.9:1 */
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-pane);
+  background: var(--ds-speaker); /* white text at 5.9:1 */
   color: var(--phone-sent-ink);
 }
 /* The line on screen is its whole bubble, in the bubble's own type: the bubble's padding is the line's, so a
@@ -216,7 +216,7 @@
 :is(.vn-dialogue, .battle-dialogue) .phone-screen .phone-bubble > p.dialogue-text {
   min-height: 44px;
   margin: 0;
-  padding: 10px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   color: inherit;
   font: inherit;
   letter-spacing: 0;
@@ -226,31 +226,31 @@
   opacity: 0.6;
 }
 
-/* # letter: a sheet of paper in the window, centred, its text larger in the serif face (Noto Serif JP, already loaded),
+/* # letter: a sheet of paper in the window, centred, its text larger, in the game's one face,
    without the speaker's plate. Lines written on the same kind of paper stack on one sheet; a long sheet scrolls inside
-   itself to its newest line. Three papers: a letter (cream, a faint grain), a note (ruled lines), a card (centred text
+   itself to its newest line. Three papers: a letter (white, a faint grain), a note (ruled lines), a card (centred text
    in a thin inner frame). */
 .letter-sheet {
   --letter-line: 1.9em;
   position: relative;
   width: min(100%, 30rem);
   max-height: min(28rem, 54dvh);
-  margin: 8px auto 6px;
-  padding: 18px 22px;
+  margin: var(--ds-space-2) auto var(--ds-space-2);
+  padding: var(--ds-space-4) var(--ds-space-6);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  border-radius: var(--ds-radius-small);
+  border-radius: var(--ds-radius-control);
   background:
     repeating-linear-gradient(115deg, var(--letter-grain) 0 2px, transparent 2px 7px),
     var(--letter-paper);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-lead);
+  box-shadow: var(--ds-shadow);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
 }
 .letter-sheet[data-kind="note"] {
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background:
     repeating-linear-gradient(to bottom, transparent 0 calc(var(--letter-line) - 1px), var(--letter-rule) calc(var(--letter-line) - 1px) var(--letter-line)),
     var(--note-paper);
@@ -261,7 +261,7 @@
 .letter-sheet[data-kind="card"] {
   border-radius: var(--ds-radius-control);
   background: var(--card-paper);
-  outline: 1px solid var(--ds-parchment-line);
+  outline: 1px solid var(--ds-line);
   outline-offset: -8px;
   text-align: center;
 }
@@ -322,7 +322,7 @@
 }
 @media (max-width: 700px) {
   .letter-sheet {
-    padding: 14px 16px;
+    padding: var(--ds-space-4) var(--ds-space-4);
   }
 }
 

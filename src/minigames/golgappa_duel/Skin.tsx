@@ -12,11 +12,11 @@ import "./skin.css";
 // drops it (a soft 「ぽとっ」 as the player's lands: the beat to eat on); each count is under its bowl. A feint: the hand
 // rises high and shakes over the player's bowl (the lane's mark turns into a rest at the same moment) and drops nothing; a
 // bite at it clacks with the vendor's 「フェイント！」 and fills two drops of the choke gauge, holding still is 「見切った！」.
-// A bite crumbles over the bowl (a star right on the landing, with a bigger golden 「パリッ！」); a bite at nothing clacks
+// A bite crumbles over the bowl (a star right on the landing, with a bigger white 「パリッ！」); a bite at nothing clacks
 // and fills a drop of the choke gauge beside the player's bowl, and a full gauge coughs one golgappa back into the bowl.
 // A missed one stays in the bowl (after her hand, the next one lands on it: a choke). Her face under the band as her 10th
 // goes down (the sour water gets to her); at her 12th she bluffs beside her face (her palm half up, 「バ……」, then
-// 「なんてね」 as she thumps her chest: no flag on the lane, no gold ring); one golgappa before her 14th she says she is
+// 「なんてね」 as she thumps her chest: no flag on the lane, no dark ring); one golgappa before her 14th she says she is
 // about to stop; her raised palm and 「バス！」 come beside her face after it (the lane's flag meets its ring then); the
 // onlookers count aloud from the 10th. With the use's art (`art.stall`, `art.heroine`, `art.bowl`, `art.puri`) those
 // pictures take the drawn ones' places. The practice (rules.ts golgappaWarmup) is the same stall with the vendor serving

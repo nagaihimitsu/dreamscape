@@ -408,7 +408,7 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
       <svg className="mg-roti-rolling mg-play-object" viewBox="-0.5 -0.5 1 1" data-art-board={art.board ? true : undefined} data-torn={torn || undefined} data-warn={warn || undefined}
         data-hand={hand?.phase ?? undefined}>
         <RotiBoardFace ids={ids} art={art} seed={seed} />
-        {/* How big a good roti is: reached, it turns gold. */}
+        {/* How big a good roti is: reached, it turns white. */}
         <circle r={numbers.bigSpan / 2} className="mg-roti-rolling-target" data-reached={big || undefined} />
         <RotiPinAtRest art={art} length={pinLength} hidden={!!view.pin} />
         <RotiDough ids={ids} art={art} path={path} thin={thin} press={press} />

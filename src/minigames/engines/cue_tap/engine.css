@@ -10,32 +10,32 @@
   -webkit-user-select: none;
   cursor: pointer;
 }
-.mg-engine-cue-tap .mg-cue-tap-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-cue-tap .mg-cue-tap-controls { flex: none; padding: var(--ds-space-2) var(--ds-space-4) calc(16px + env(safe-area-inset-bottom, 0px)); }
 /* How to play, right above the meter it speaks of (read at a glance mid-play: 15px, 13px where a line would not fit). */
-.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 6px; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); }
+.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); }
 @media (max-width: 360px) { .mg-engine-cue-tap .mg-cue-tap-hint { font-size: var(--ds-text-note); } }
-/* The meter: its needle crosses it from the thing's start to the end of the play; gold where it arrives. The clean zone is
+/* The meter: its needle crosses it from the thing's start to the end of the play; white where it arrives. The clean zone is
    brighter, narrower and glows (not told by colour alone). */
 .mg-engine-cue-tap .mg-cue-tap-meter {
   position: relative;
   height: 14px;
-  margin: 0 0 12px;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: var(--ds-radius-field);
-  background: color-mix(in srgb, var(--ds-on-slate) 16%, transparent);
+  margin: 0 0 var(--ds-space-3);
+  border: 1px solid var(--ds-action-edge);
+  border-radius: var(--ds-radius-control);
+  background: color-mix(in srgb, var(--ds-on-dark) 16%, transparent);
 }
 .mg-engine-cue-tap .mg-cue-tap-meter-near, .mg-engine-cue-tap .mg-cue-tap-meter-clean { position: absolute; top: 0; bottom: 0; }
-.mg-engine-cue-tap .mg-cue-tap-meter-near { background: color-mix(in srgb, var(--ds-gold) 42%, transparent); }
-.mg-engine-cue-tap .mg-cue-tap-meter-clean { border-radius: var(--ds-radius-hair); background: var(--ds-game-gold); box-shadow: 0 0 6px color-mix(in srgb, var(--ds-game-gold) 70%, transparent); }
+.mg-engine-cue-tap .mg-cue-tap-meter-near { background: color-mix(in srgb, var(--ds-hairline) 42%, transparent); }
+.mg-engine-cue-tap .mg-cue-tap-meter-clean { border-radius: var(--ds-radius-pill); background: var(--ds-game-mark); box-shadow: 0 0 6px color-mix(in srgb, var(--ds-game-mark) 70%, transparent); }
 .mg-engine-cue-tap .mg-cue-tap-meter-needle {
   position: absolute;
   top: -5px;
   bottom: -5px;
   left: 0;
   width: 4px;
-  border-radius: var(--ds-radius-hair);
-  background: var(--ds-on-slate);
-  box-shadow: 0 0 0 1px var(--ds-slate-900);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-on-dark);
+  box-shadow: 0 0 0 1px var(--ds-dark);
   transform: translateX(-50%);
 }
 .mg-engine-cue-tap .mg-cue-tap-action {
@@ -48,7 +48,7 @@
   text-align: center;
   touch-action: manipulation;
 }
-.mg-engine-cue-tap .mg-cue-tap-action[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-smoke-muted); }
+.mg-engine-cue-tap .mg-cue-tap-action[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-on-dark-muted); }
 .mg-engine-cue-tap .mg-cue-tap-auto {
   display: flex;
   align-items: center;
@@ -56,10 +56,10 @@
   min-height: 64px;
   margin: 0;
   border-radius: var(--ds-radius-control);
-  background: var(--ds-chip-bg);
+  background: var(--ds-smoke);
   font-size: var(--ds-text-body);
 }
 @media (max-height: 620px) {
-  .mg-engine-cue-tap .mg-cue-tap-controls { padding-top: 6px; }
+  .mg-engine-cue-tap .mg-cue-tap-controls { padding-top: var(--ds-space-2); }
   .mg-engine-cue-tap .mg-cue-tap-action, .mg-engine-cue-tap .mg-cue-tap-auto { min-height: 54px; }
 }

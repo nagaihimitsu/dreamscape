@@ -4,7 +4,7 @@
 // with the game as the unmodified file fonts/FasolSPDemo.otf under its demo licence (fonts/LICENSE-FasolSP.txt). skin.css
 // declares it for the letters A–Z, a–z and the space only (its unicode-range): the demo draws an advert ("GET FULL FONT")
 // in place of digits and punctuation, and a letter with marks (é, ø) without its marks, so a hyphen, an apostrophe or a
-// letter with marks comes from the fallback (Noto Serif JP, the face of the scene's other writing). Its capitals and small
+// letter with marks comes from the fallback (Noto Sans JP, the game's one face). Its capitals and small
 // letters share their shapes (one case). Only the play's module loads skin.css (play.ts → Skin.tsx), never the title
 // page's. The size is worked out from the font's own advances (measured from the file), so the name fits its room and is
 // never pressed wider than it is.
@@ -24,8 +24,8 @@ const ADVANCE: Readonly<Record<string, number>> = {
 /** The characters the font draws (skin.css's unicode-range): A–Z, a–z and the space. */
 const DRAWN = /^[A-Za-z ]$/u;
 /**
- * A character the fallback draws, in em, at least and at most: the punctuation a Latin name keeps (Noto Serif JP, and the
- * serif faces a phone falls back to without it: Times, Georgia, DejaVu Serif), and anything else as a letter with marks
+ * A character the fallback draws, in em, at least and at most: the punctuation a Latin name keeps (Noto Sans JP, and the
+ * sans-serif faces a phone falls back to without it), and anything else as a letter with marks
  * (from ı to Œ).
  */
 const FALLBACK: Readonly<Record<string, readonly [number, number]>> = {
