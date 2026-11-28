@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from "react";
 import type { z } from "zod";
 import type { TagContext } from "../content/tags";
+import type { SeVolume } from "../audio/se-rules";
 import type { VibrationKind } from "../audio/vibration";
 
 // The contract of a mini-game (docs/13 2.3–2.5): what a game's folder (src/minigames/<gameId>/) gives the shared host
@@ -154,10 +155,11 @@ export interface MiniGamePlayProps<Params = unknown, Outcome extends string = st
   /** The served URLs of the art slots the use fills (`art.<slot>`); a slot left out draws its CSS look. */
   art: Readonly<Record<string, string>>;
   /**
-   * Plays one of the definition's `sounds` (the settings' sound switch and volume apply), at a share of its volume and a
-   * playback rate if asked (`{ volume: 0.35 }` a fading echo, `{ rate: 0.85 }` lower and longer).
+   * Plays one of the definition's `sounds` (the settings' sound switch and volume apply), at a share of its volume, one
+   * of the four of SE_VOLUME (src/audio/se-rules.ts), and a playback rate if asked (`{ volume: SE_VOLUME.faint }` a
+   * fading echo, `{ rate: 0.85 }` lower and longer).
    */
-  sound(id: string, level?: { volume?: number; rate?: number }): void;
+  sound(id: string, level?: { volume?: SeVolume; rate?: number }): void;
   vibrate(kind: VibrationKind): void;
   /** A short text in the host's top band (「2/3」「のこり8秒」), read out politely. */
   status(textJa: string): void;

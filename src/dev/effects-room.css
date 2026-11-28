@@ -74,12 +74,7 @@
 }
 .effects-room button.effects-room-chip:hover:enabled:not([aria-pressed="true"], [data-playing]) { background: var(--ds-surface-chosen); }
 .effects-room button.effects-room-chip:is([aria-pressed="true"], [data-playing]) { background: var(--ds-dark-2); color: var(--ds-on-dark); }
-.effects-room button.effects-room-chip:disabled {
-  opacity: 1;
-  border-color: transparent;
-  background: var(--ds-disabled-bg);
-  color: var(--ds-disabled-ink);
-}
+.effects-room button.effects-room-chip:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
 .effects-room-sounds {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));

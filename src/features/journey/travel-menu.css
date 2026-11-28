@@ -415,7 +415,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-route > span { min-width: 0; overflow-wrap: anywhere; }
 .travel-route-cost { margin-left: auto; color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-weight: var(--ds-weight-medium); }
 .travel-route:disabled,
-.travel-event-button:disabled { border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; cursor: default; }
+.travel-event-button:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
 .travel-route:disabled .travel-route-cost { color: var(--ds-disabled-ink); }
 .travel-route:focus-visible,
 .travel-event-button:focus-visible,

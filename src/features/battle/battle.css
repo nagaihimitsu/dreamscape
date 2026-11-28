@@ -615,7 +615,6 @@
 }
 .vn-choices .quiz-choice-row[data-mark="missed"] { box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-wrong-ground), var(--ds-shadow); }
 .vn-choices .quiz-choice-row[data-faded] { color: var(--vn-muted); }
-.vn-choices .quiz-choice-row .encounter-choice-select:disabled { cursor: default; }
 .quiz-choice-mark {
   display: inline-flex;
   align-items: center;

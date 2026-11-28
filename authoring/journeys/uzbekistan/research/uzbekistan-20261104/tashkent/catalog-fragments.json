@@ -145,77 +145,66 @@
     "uz_bg_tashkent_khast_imam": {
       "nameJa": "ハスト・イマーム複合体",
       "captionJa": "タシュケント ／ ハスト・イマーム複合体（バラク・ハン／2023年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_khast_imam"
     },
     "uz_bg_tashkent_chorsu_bazaar": {
       "nameJa": "チョルスー・バザール",
       "captionJa": "タシュケント ／ チョルスー・バザール（乾物売り場／2024年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_chorsu_bazaar"
     },
     "uz_bg_tashkent_kukeldash": {
       "nameJa": "クカルダシュ・マドラサ",
       "captionJa": "タシュケント ／ クカルダシュ・マドラサ（2018年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_kukeldash"
     },
     "uz_bg_tashkent_amir_temur_square": {
       "nameJa": "アミール・ティムール広場",
       "captionJa": "タシュケント ／ アミール・ティムール広場（公園全景／2023年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_amir_temur_square"
     },
     "uz_bg_tashkent_anhor_canal": {
       "nameJa": "ミノール周辺のアンホール運河",
       "captionJa": "タシュケント ／ ミノール周辺のアンホール運河（運河の参考写真／2015年夕景）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_anhor_canal"
     },
     "uz_bg_tashkent_japanese_garden": {
       "nameJa": "日本庭園",
       "captionJa": "タシュケント ／ 日本庭園（2017年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_japanese_garden"
     },
     "uz_bg_tashkent_navoi_theatre": {
       "nameJa": "ナヴォイ劇場（外観）",
       "captionJa": "タシュケント ／ ナヴォイ劇場（外観）（2005年の外観写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_navoi_theatre"
     },
     "uz_bg_tashkent_independence_square": {
       "nameJa": "独立広場の庭園",
       "captionJa": "タシュケント ／ 独立広場の庭園（噴水広場／2016年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_independence_square"
     },
     "uz_bg_tashkent_abulkasym": {
       "nameJa": "アブルカシム・マドラサ",
       "captionJa": "タシュケント ／ アブルカシム・マドラサ（工房入口の細部／2026年の写真）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_abulkasym"
     },
     "uz_bg_tashkent_navoi_park": {
       "nameJa": "アリシェル・ナヴォイ公園",
       "captionJa": "タシュケント ／ アリシェル・ナヴォイ公園（湖の参考写真／2016年）",
-      "color": "#67836d",
       "fallback": "neutral",
       "imageAssetId": "uz_img_tashkent_navoi_park"
     },
     "uz_bg_tashkent_hotel_hub": {
       "nameJa": "タシュケントの滞在先",
       "captionJa": "タシュケント ／ 架空の滞在先",
-      "color": "#67836d",
       "fallback": "neutral"
     }
   },

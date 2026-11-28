@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { WEATHER_KINDS } from "../content/tags";
+import { MOTION } from "./motion";
 import { portraitBreath, SCENE_SHAKES, sceneShakeFrames, WEATHER_PART_COUNTS, weatherParts } from "./scene-atmosphere";
 import { isVectorIcon, itemFlight, itemShowLeaving } from "./item-show";
 
@@ -56,8 +57,8 @@ describe("the scene's shake", () => {
     }
     expect(SCENE_SHAKES.small.ms).toBeLessThan(SCENE_SHAKES.normal.ms);
     expect(SCENE_SHAKES.normal.ms).toBeLessThan(SCENE_SHAKES.large.ms);
-    expect(SCENE_SHAKES.large.ms).toBeLessThanOrEqual(450);
-    expect(SCENE_SHAKES.small.ms).toBeGreaterThanOrEqual(300);
+    expect(SCENE_SHAKES.large.ms).toBeLessThanOrEqual(MOTION.scene);
+    for (const { ms } of Object.values(SCENE_SHAKES)) expect(Object.values(MOTION)).toContain(ms);
   });
 
   it("grows the picture meanwhile so its edges never show, and its people not at all", () => {

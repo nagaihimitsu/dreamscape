@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type ComponentType, type CSSProperties, type ReactNode } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import type { MiniGamePlayProps } from "../contract";
 import { searchFieldMs } from "../engines/search/engine";
 import { searchPlay, type SearchFieldProps, type SearchSkin, type SearchView } from "../engines/search/EnginePlay";
@@ -771,7 +772,7 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
     roundsOver.current = view.done.length;
     if (!last) return;
     if (over && !view.done[view.done.length - 1].found) {
-      play.current.sound(SOUNDS.look, { volume: 0.6 });
+      play.current.sound(SOUNDS.look, { volume: SE_VOLUME.normal });
       // The practice: her pointing is the ring only (no face, none of the story's words).
       if (warmup) return;
       if ("gone" in last.action) kitRef.current.react("surprise", LEAVING_JA);

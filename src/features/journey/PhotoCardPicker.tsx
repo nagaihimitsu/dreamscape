@@ -15,7 +15,7 @@ import { placeDisplayName } from "./travel-labels";
 import { centreOf, INSTANT, reducedMotion, rowItems, useCardGestures, type CardSwipe } from "./useCardGestures";
 import { whenLaidOut } from "./when-laid-out";
 import "./travel-menu.css";
-import { MOTION } from "../../components/motion";
+import { EASE, MOTION } from "../../components/motion";
 
 /** No card joining the row. */
 const NONE_JOINING: readonly string[] = [];
@@ -261,7 +261,7 @@ function CardSheet({ cardId, children }: { cardId: string; children: ReactNode }
   useLayoutEffect(() => {
     const card = sheet.current?.firstElementChild;
     if (!card || reducedMotion() || typeof card.animate !== "function") return;
-    const animation = card.animate(CLOUD_IN, { duration: CLOUD_MS, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+    const animation = card.animate(CLOUD_IN, { duration: CLOUD_MS, easing: EASE.out });
     return () => animation.cancel();
   }, [cardId]);
   return <div ref={sheet} className="photo-card-sheet">

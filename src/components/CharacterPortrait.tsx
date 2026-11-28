@@ -4,6 +4,7 @@ import { characterAvatar, characterFaceFrame, characterImage, characterPlacement
 import type { StandPosition } from "../content/tags";
 import { loadPicture, pictureReady } from "../media/preload";
 import { characterCatalog as catalog } from "./character-catalog";
+import { GRAY } from "./greys";
 import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import { LivePortrait } from "./LivePortrait";
@@ -184,9 +185,9 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
  */
 /**
  * The plain figure shown while a portrait has no picture: one grey for everyone (2026-11-28 user decision: white and
- * grey only; a character's placeholderColor is not shown). --ds-gray-3.
+ * grey only). --ds-gray-3.
  */
-const PLACEHOLDER_FILL = "#5d616b";
+const PLACEHOLDER_FILL = GRAY[3];
 
 function CharacterImage({ path, neutralPath, fallback, onImageError, breathOf, imageStyle }: {
   path: string | null;
@@ -238,11 +239,11 @@ function CharacterImage({ path, neutralPath, fallback, onImageError, breathOf, i
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.
   return <svg viewBox="0 0 240 360" role="presentation" focusable="false" style={breath}>
-    <ellipse cx="120" cy="350" rx="88" ry="8" fill="#2a2b2f" opacity=".15" />
+    <ellipse cx="120" cy="350" rx="88" ry="8" fill={GRAY[1]} opacity=".15" />
     <path d="M42 350v-81c0-48 30-73 78-73s78 25 78 73v81" fill={PLACEHOLDER_FILL} />
     <path d="M92 187h56v34H92z" fill={PLACEHOLDER_FILL} />
     <ellipse cx="120" cy="130" rx="48" ry="61" fill={PLACEHOLDER_FILL} />
-    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke="#f4f5f7" opacity=".8" strokeWidth="3" strokeLinecap="round" />
-    <path d="M86 218l34 31 34-31" fill="none" stroke="#f4f5f7" opacity=".4" strokeWidth="3" />
+    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke={GRAY[6]} opacity=".8" strokeWidth="3" strokeLinecap="round" />
+    <path d="M86 218l34 31 34-31" fill="none" stroke={GRAY[6]} opacity=".4" strokeWidth="3" />
   </svg>;
 }

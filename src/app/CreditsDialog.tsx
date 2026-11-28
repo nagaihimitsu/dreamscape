@@ -56,7 +56,7 @@ function useThirdPartyLicenses(): LicenceListState {
 
 function Licences({ state }: { state: LicenceListState }) {
   if (state.status === "dev") return <p className="fine-print">開発用のサーバーでは表示しません。公開版（本番ビルド）では、ここに一覧が出ます。</p>;
-  if (state.status === "loading") return <p role="status">読み込んでいます…</p>;
+  if (state.status === "loading") return <p role="status">読み込み中…</p>;
   if (state.status === "failed") return <p role="status">ライブラリのライセンス一覧を読み込めませんでした。ページを開き直してください。</p>;
   return <ul className="credits-licences" data-testid="credits-licences">
     {state.licenses.map((licence) => <li key={`${licence.name}@${licence.version}`}>

@@ -179,7 +179,7 @@ describe("reading the observation cards", () => {
 describe("portraits", () => {
   const placement = { x: 50, bottom: 0, width: 80, height: 62, scale: 1.4, originX: 50, originY: 0 };
   const character = (id: string, imagePath: string | null, extra: object = {}) =>
-    ({ id, imagePath, placement, placeholderColor: "#4f6f9a", variants: [], ...extra });
+    ({ id, imagePath, placement, variants: [], ...extra });
   const heroine = character("heroine", null, {
     variants: [{ emotion: "shy", imagePath: "assets/presentation/heroine_shy_placeholder.svg" }],
     costumes: [{ id: "default_01", poses: [{ id: "standing_01", canvas: { width: 1024, height: 1536 }, expressions: {

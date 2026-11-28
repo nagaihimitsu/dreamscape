@@ -111,6 +111,8 @@
   /* The light pane to press (2026-11-27 user request: one UI over every screen): a secondary press, a tab, a row, a way
      to choose: the glass's fine edge and a soft shadow. */
   --ds-press-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line), var(--ds-shadow);
+  /* A press under the pointer that has no lighter ground of its own (a dark action, a choice on a scene): one lift. */
+  --ds-hover-filter: brightness(1.1);
   --ds-emphasis: #a3243b; /* an emphasised word in a talk (# em:): 5:1 on the glass */
   --ds-speaker: var(--ds-gray-3); /* the name band of a speaker without colours of their own: white words 6.4:1 */
   --ds-speaker-edge: var(--ds-gray-4);
@@ -653,7 +655,7 @@ h3 {
    arrow at the right, where a worded button has it. */
 .primary.arrow-only { justify-content: flex-end; }
 .primary:hover:enabled:not(:where([data-settling])) {
-  filter: brightness(1.12);
+  filter: var(--ds-hover-filter);
 }
 .primary:active:enabled:not(:where([data-settling])) { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
 .primary:focus-visible { box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge), var(--ds-focus-halo); }

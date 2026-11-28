@@ -45,7 +45,7 @@
   cursor: pointer;
 }
 .opening-movie-button[aria-disabled="true"] {
-  opacity: var(--ds-opacity-soft);
+  opacity: var(--ds-opacity-faint);
   cursor: default;
 }
 .opening-movie-button:focus-visible {

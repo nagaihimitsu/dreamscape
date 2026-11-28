@@ -145,77 +145,66 @@
     "uz_bg_khiva_kunya_ark": {
       "nameJa": "クフナ・アルク",
       "captionJa": "ヒヴァ ／ クフナ・アルク（夜景の参考写真）",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_kunya_ark"
     },
     "uz_bg_khiva_juma_mosque": {
       "nameJa": "ジュマ・モスク",
       "captionJa": "ヒヴァ ／ ジュマ・モスク",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_juma_mosque"
     },
     "uz_bg_khiva_tash_hauli": {
       "nameJa": "タシュ・ハウリ宮殿",
       "captionJa": "ヒヴァ ／ タシュ・ハウリ宮殿",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_tash_hauli"
     },
     "uz_bg_khiva_islam_khoja": {
       "nameJa": "イスラム・ホジャ複合体",
       "captionJa": "ヒヴァ ／ イスラム・ホジャ複合体",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_islam_khoja"
     },
     "uz_bg_khiva_kalta_minor": {
       "nameJa": "カルタ・ミノル外観",
       "captionJa": "ヒヴァ ／ カルタ・ミノル外観",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_kalta_minor"
     },
     "uz_bg_khiva_pahlavan_mahmud": {
       "nameJa": "パフラヴァン・マフムド廟前",
       "captionJa": "ヒヴァ ／ パフラヴァン・マフムド廟前",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_pahlavan_mahmud"
     },
     "uz_bg_khiva_muhammad_amin_khan": {
       "nameJa": "ムハンマド・アミン・ハン・マドラサ外観",
       "captionJa": "ヒヴァ ／ ムハンマド・アミン・ハン・マドラサ外観",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_muhammad_amin_khan"
     },
     "uz_bg_khiva_ota_darvoza": {
       "nameJa": "オタ門",
       "captionJa": "ヒヴァ ／ オタ門",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_ota_darvoza"
     },
     "uz_bg_khiva_palvan_darvoza": {
       "nameJa": "パルヴァン門",
       "captionJa": "ヒヴァ ／ パルヴァン門",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_palvan_darvoza"
     },
     "uz_bg_khiva_bogcha_darvoza": {
       "nameJa": "バグチャ門・北側城壁",
       "captionJa": "ヒヴァ ／ バグチャ門・北側城壁",
-      "color": "#a38a65",
       "fallback": "neutral",
       "imageAssetId": "uz_img_khiva_bogcha_darvoza"
     },
     "uz_bg_khiva_hotel_hub": {
       "nameJa": "ヒヴァの滞在先",
       "captionJa": "ヒヴァ ／ 西門外の架空宿",
-      "color": "#a38a65",
       "fallback": "neutral"
     }
   },

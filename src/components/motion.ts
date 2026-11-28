@@ -14,6 +14,16 @@ export const MOTION: Readonly<Record<"instant" | "fast" | "short" | "scene" | "s
   long: 1400,
 };
 
+/**
+ * The three ways of motion, the same as styles.css's --ease-* (2026-11-28): a motion the code plays itself (Web Animations)
+ * takes its way from here.
+ */
+export const EASE: Readonly<Record<"out" | "inOut" | "in", string>> = {
+  out: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+  inOut: "cubic-bezier(0.45, 0, 0.3, 1)",
+  in: "cubic-bezier(0.5, 0, 0.75, 0.45)",
+};
+
 /** Between the items of a list coming in, one after another (--motion-stagger): an interval, not a length. */
 export const MOTION_STAGGER = 40;
 

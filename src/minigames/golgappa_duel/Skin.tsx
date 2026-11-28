@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import { useMiniGameKit } from "../host/kit";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { rhythmTapPerfect } from "../engines/rhythm_tap/engine";
@@ -241,7 +242,7 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         const feint = next?.feint && next.at - ms <= numbers.feintTellMs ? move : -1;
         if (feint >= 0 && feint !== woundUp) {
           woundUp = feint;
-          live.current.sound(SOUNDS.windup, { volume: 0.5 });
+          live.current.sound(SOUNDS.windup, { volume: SE_VOLUME.soft });
         }
         const lastFeint = feints.filter((at) => at <= ms).pop();
         const grin = !over && lastFeint !== undefined && ms - lastFeint < FEINT_WORD_MS;
