@@ -624,9 +624,10 @@
   float: right;
   margin: 0 0 2px 6px;
 }
-/* Once the answer shows, the options stay where they were with their marks (QuizChoices): the one chosen when right
-   on a right answer's ground with 「○ 正解！」, the one chosen when wrong with 「× 不正解」 in a missed answer's ink, and
-   the right one after it on the right answer's ground with 「○ 正解」. The others step back. */
+/* Once the answer shows, only the right option stays, and the one chosen when it was wrong (QuizChoices), with their
+   marks: the one chosen when right on a right answer's ground with 「○ 正解！」, the one chosen when wrong with
+   「× 不正解」 in a missed answer's ink, and the right one after it on the right answer's ground with 「○ 正解」. The other
+   wrong ones fade and the rows close up over them (QuizChoices, QUIZ_CHOICE_LEAVE_MS). */
 .vn-choices .quiz-choice-row[data-mark="right"],
 .vn-choices .quiz-choice-row[data-mark="answer"] {
   background: var(--ds-right-ground);
@@ -634,7 +635,9 @@
   color: var(--ds-right-ink);
 }
 .vn-choices .quiz-choice-row[data-mark="missed"] { box-shadow: inset 0 0 0 2px var(--ds-wrong-ground), var(--ds-glass-shadow); }
-.vn-choices .quiz-choice-row[data-faded] { color: var(--vn-muted); }
+/* The wrong options that do not stay (QuizChoices) leave in a column, so the gap after one closes with it. */
+.vn-choices .quiz-choices { display: flex; flex-direction: column; }
+.vn-choices .quiz-choice-row[data-leaving] { overflow: hidden; pointer-events: none; }
 .vn-choices .quiz-choice-row .encounter-choice-select:disabled { cursor: default; }
 .quiz-choice-mark {
   display: inline-flex;

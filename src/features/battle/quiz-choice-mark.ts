@@ -11,3 +11,11 @@ export function quizChoiceMark(optionId: string, correctOptionId: string, answer
   if (optionId === answer.optionId) return answer.correct ? "right" : "missed";
   return !answer.correct && optionId === correctOptionId ? "answer" : undefined;
 }
+
+/**
+ * Whether option `optionId` stays once the answer shows (2026-11-28 user decision): the right one, and the one chosen when
+ * it was wrong. The other wrong ones leave (QuizChoices: they fade and close up when the answer is given in the screen).
+ */
+export function quizChoiceStays(optionId: string, correctOptionId: string, answer: { optionId: string; correct: boolean } | undefined): boolean {
+  return !answer || quizChoiceMark(optionId, correctOptionId, answer) !== undefined;
+}
