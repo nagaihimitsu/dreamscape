@@ -22,7 +22,7 @@
 }
 .observation-viewport:focus-visible {
   outline: var(--ds-edge-thick) solid var(--ds-focus);
-  outline-offset: 2px;
+  outline-offset: var(--ds-focus-offset);
   box-shadow: var(--ds-focus-halo);
 }
 /* The arrow keys' line: shown only while the picture itself has keyboard focus (2026-11-11, the user's decision). */
@@ -103,7 +103,7 @@
   content: "";
   position: absolute;
   z-index: -1;
-  inset: 12px;
+  inset: var(--ds-space-3);
   border: var(--ds-edge) solid var(--ds-on-dark);
   border-radius: 50%;
   box-shadow: var(--ds-shadow-small);
@@ -206,9 +206,9 @@
 .observation-overlay {
   position: absolute;
   z-index: 2;
-  top: 8px;
-  left: 8px;
-  right: 8px;
+  top: var(--ds-space-2);
+  left: var(--ds-space-2);
+  right: var(--ds-space-2);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;

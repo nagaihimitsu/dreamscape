@@ -19,7 +19,7 @@
 /* The board: dragged on with one finger (no scroll, no pull to reload, no text selection). */
 .mg-engine-shape-drag .mg-shape-drag-board {
   position: relative;
-  width: min(100cqw - 24px, 100cqh - 16px);
+  width: min(100cqw - var(--ds-space-6), 100cqh - var(--ds-space-4));
   aspect-ratio: 1;
   touch-action: none;
   overscroll-behavior: contain;

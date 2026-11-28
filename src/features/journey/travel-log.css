@@ -3,9 +3,9 @@
 dialog.modal.travel-log {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6)));
   max-width: var(--ds-width-narrow);
-  max-height: calc(100dvh - 24px);
+  max-height: calc(100dvh - var(--ds-space-6));
 }
 .travel-log .modal-title-bar { margin-bottom: var(--ds-space-2); }
 .travel-log-empty { margin: var(--ds-space-1) 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
@@ -51,7 +51,7 @@ dialog.modal.travel-log {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--ds-space-1);
-  margin: 0 calc(-1 * var(--modal-pad-inline, 16px));
+  margin: 0 calc(-1 * var(--modal-pad-inline, var(--ds-space-4)));
   padding: 0;
   list-style: none;
 }
@@ -70,7 +70,7 @@ dialog.modal.travel-log {
   overflow: hidden;
 }
 .travel-log-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.travel-log-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: -3px; }
+.travel-log-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: var(--ds-focus-offset-in); }
 /* A photo not taken yet (once the journey is over; 2026-11-20 user decision): the same picture in grey, by a filter rather
    than a second file, a little faded on the grid's dark ground; opened larger, grey too. The line above the grid says so. */
 .travel-log-photos-note { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
@@ -104,7 +104,7 @@ dialog.modal.travel-log {
 dialog.modal.album-photo-viewer {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(var(--ds-width), calc(100% - 24px));
+  width: min(var(--ds-width), calc(100% - var(--ds-space-6)));
   max-width: var(--ds-width);
 }
 .album-photo-viewer .modal-title-bar { margin-bottom: var(--ds-space-2); }

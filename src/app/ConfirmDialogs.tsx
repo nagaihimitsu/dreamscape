@@ -7,7 +7,7 @@ import { Modal, ModalAnswers, ModalTitle } from "../components/Modal";
  * `cancel`) focused first and the action beside it. `settlePresses` when it opens under the finger that opened it (from
  * ≡メニュー's panel). Closing by Esc is the cancel.
  */
-export function ConfirmDialog({ id, title, eyebrow, children, cancel = "戻る", action, onCancel, onAction, settlePresses = false }: {
+export function ConfirmDialog({ id, title, eyebrow, children, cancel = "やめる", action, onCancel, onAction, settlePresses = false }: {
   id: string;
   title: ReactNode;
   eyebrow?: ReactNode;

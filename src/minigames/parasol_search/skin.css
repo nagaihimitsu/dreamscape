@@ -40,8 +40,8 @@
   --u: calc(min(100cqw, 170cqh) / 240);
   position: relative;
   z-index: 1;
-  width: min(100cqw - 20px, var(--ds-width-narrow));
-  height: min(76cqh, 100cqh - 24px, 150cqw);
+  width: min(100cqw - var(--ds-space-6), var(--ds-width-narrow));
+  height: min(76cqh, 100cqh - var(--ds-space-6), 150cqw);
   overflow: hidden;
   container-type: size;
   border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
@@ -51,7 +51,7 @@
 /* A short field (a 320×568 phone; 2026-11-14 playtest: a street about 250px tall, the customers over the umbrellas): the
    window takes more of the field's height, and the things a little less of its width, so the rows keep apart. */
 @container (max-height: 420px) {
-  .mg-parasol-search-window { --u: calc(min(100cqw, 80cqh) / 240); height: min(90cqh, 100cqh - 10px, 150cqw); }
+  .mg-parasol-search-window { --u: calc(min(100cqw, 80cqh) / 240); height: min(90cqh, 100cqh - var(--ds-space-2), 150cqw); }
 }
 .mg-parasol-search-street { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 /* The cow and the traffic: drawn things at a place, their size in the window's unit. */
@@ -65,7 +65,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: max(6px, 2.4cqh);
+  height: max(var(--ds-space-2), 2.4cqh);
   background: linear-gradient(var(--parasol-search-sill-ground), var(--parasol-search-sill-ground-2));
   box-shadow: 0 -2px 4px color-mix(in srgb, var(--ds-shade) 32%, transparent);
   pointer-events: none;
@@ -76,7 +76,7 @@
   position: absolute;
   z-index: 1;
   display: block;
-  width: max(52px, calc(var(--r) * 2 * var(--u) + 8px));
+  width: max(52px, calc(var(--r) * 2 * var(--u) + var(--ds-space-2)));
   min-height: 0;
   aspect-ratio: 1;
   padding: 0;

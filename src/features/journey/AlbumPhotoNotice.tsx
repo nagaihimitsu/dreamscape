@@ -3,10 +3,11 @@ import { getAlbumImage } from "../../content";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { ALBUM_IMAGE_ALT_JA } from "./album-pages";
 import "./album-photo-notice.css";
+import { NOTICE } from "../../components/motion";
 
 /** How long the photo card stays (milliseconds); longer with the journey's first photo. */
-export const ALBUM_PHOTO_NOTICE_MS = 4000;
-export const FIRST_ALBUM_PHOTO_NOTICE_MS = 6000;
+export const ALBUM_PHOTO_NOTICE_MS = NOTICE.long;
+export const FIRST_ALBUM_PHOTO_NOTICE_MS = NOTICE.long;
 
 /**
  * The photo just taken, said for a moment (`id` changes with each new notice; `first`: the journey's first photo;

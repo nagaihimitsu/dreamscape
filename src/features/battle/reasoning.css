@@ -51,7 +51,7 @@
 }
 .selected-evidence ul {
   margin: var(--ds-space-2) 0 0;
-  padding-left: 1.3em;
+  padding-left: var(--ds-space-6);
   line-height: var(--ds-leading-reading);
   font-size: var(--ds-text-body);
 }

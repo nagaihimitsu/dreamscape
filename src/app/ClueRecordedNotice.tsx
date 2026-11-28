@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import "./hud-effects.css";
+import { NOTICE } from "../components/motion";
 
 /** How long 「手がかり帳に「…」を記録しました。」 stays once shown (milliseconds; hud-effects.css plays its coming and going in that time). */
-export const CLUE_NOTICE_MS = 5000;
+export const CLUE_NOTICE_MS = NOTICE.long;
 
 /** One word that a clue was recorded (clueRecordedNotice), waiting in GameApp's queue. */
 export type ClueNoticeWord = { key: number; text: string };

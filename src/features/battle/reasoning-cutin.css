@@ -35,9 +35,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: clamp(8px, 2dvh, 20px);
+  gap: clamp(8px, 2dvh, var(--ds-space-6));
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
-  padding: max(18px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) var(--ds-space-6) max(18px, env(safe-area-inset-bottom));
+  padding: max(var(--ds-space-4), env(safe-area-inset-top), calc(var(--scene-top, 0px) + var(--ds-space-2))) var(--ds-space-6) max(var(--ds-space-4), env(safe-area-inset-bottom));
   overflow: auto;
   overscroll-behavior: contain;
   color: var(--reasoning-cutin-reasoning-cutin-ink);
@@ -136,7 +136,7 @@
   color: var(--ds-light);
   background: var(--reasoning-cutin-skip-ground);
 }
-.reasoning-cutin-skip:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-light); outline-offset: 3px; }
+.reasoning-cutin-skip:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-light); outline-offset: var(--ds-focus-offset); }
 @keyframes reasoning-impact-in {
   from { opacity: 0; transform: rotate(45deg) scale(.72); }
   to { opacity: 1; transform: rotate(45deg) scale(1); }

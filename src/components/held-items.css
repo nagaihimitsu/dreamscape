@@ -37,7 +37,7 @@
   top: -0.35em;
   right: -0.8em;
   min-width: 1.4em;
-  padding: 0 0.25em;
+  padding: 0 var(--ds-space-1);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-glass-mark-full);
   color: var(--ds-dark);
@@ -53,11 +53,11 @@
 .held-item-detail {
   position: absolute;
   z-index: var(--ds-layer-hud-panel);
-  top: calc(100% + 4px);
-  right: 8px;
-  width: min(280px, calc(100vw - 16px));
+  top: calc(100% + var(--ds-space-1));
+  right: var(--ds-space-2);
+  width: min(280px, calc(100vw - var(--ds-space-4)));
   /* Before HeldItems measures where the detail starts (the header at the screen's top). */
-  max-height: calc(100dvh - 100% - 16px);
+  max-height: calc(100dvh - 100% - var(--ds-space-4));
   overflow-y: auto;
   padding: var(--ds-space-3) var(--ds-space-4);
   /* A pane of the glass over the scene (2026-11-25), as ≡メニュー's panel; its colours: styles.css, the glass surfaces. */
@@ -87,8 +87,8 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 8px;
-  right: 8px;
+  left: var(--ds-space-2);
+  right: var(--ds-space-2);
   height: 1px;
   background: linear-gradient(to right, transparent, color-mix(in srgb, currentColor 16%, transparent) 20%, color-mix(in srgb, currentColor 16%, transparent) 80%, transparent);
 }
@@ -96,7 +96,7 @@
 /* What is written on the item (a note's lines), on a slip of paper under the description. */
 .held-item-lines {
   margin: var(--ds-space-2) 0 0;
-  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) 2.1em;
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-8);
   border: var(--ds-edge-thin) dashed var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface-chosen);

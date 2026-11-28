@@ -45,6 +45,8 @@
   --ds-here: #23704f; /* the current place's ring, a done or cleared word: 5.4:1 on the glass */
   --ds-focus: var(--ds-light); /* the focus ring, white, with its dark halo */
   --ds-focus-halo: 0 0 0 var(--ds-edge-heavy) var(--ds-dark); /* the focus ring's dark halo, so the white ring shows on the glass and on the dark */
+  --ds-focus-offset: 2px; /* the focus ring outside a control */
+  --ds-focus-offset-in: -3px; /* the focus ring inside a picture that fills its box */
   --ds-photo-shade: color-mix(in srgb, var(--ds-shade) 50%, transparent); /* top of the gradient behind the header over a photo */
   /* The light frosted glass over a scene (2026-11-25 user decisions; every pane since 2026-11-28): the place shows on,
      softened, behind what is read. A bright, nearly white pane (an iPhone showed a thinner one going grey over a dark
@@ -85,7 +87,7 @@
      words 5:1 and white marks 4.5:1 or more over anything behind it), then fading out over the 56 px below it. */
   --ds-hud-shade: linear-gradient(
     color-mix(in srgb, var(--ds-shade) 62%, transparent), color-mix(in srgb, var(--ds-shade) 60%, transparent) calc(100% - 56px), color-mix(in srgb, var(--ds-shade) 42%, transparent) calc(100% - 44px),
-    color-mix(in srgb, var(--ds-shade) 24%, transparent) calc(100% - 30px), color-mix(in srgb, var(--ds-shade) 10%, transparent) calc(100% - 16px), color-mix(in srgb, var(--ds-shade) 3%, transparent) calc(100% - 6px),
+    color-mix(in srgb, var(--ds-shade) 24%, transparent) calc(100% - var(--ds-space-8)), color-mix(in srgb, var(--ds-shade) 10%, transparent) calc(100% - var(--ds-space-4)), color-mix(in srgb, var(--ds-shade) 3%, transparent) calc(100% - var(--ds-space-2)),
     color-mix(in srgb, var(--ds-shade) 0%, transparent));
   /* The same falling shade, lighter, over a talk. */
   --ds-talk-shade: linear-gradient(
@@ -193,6 +195,9 @@
   --ds-width-narrow: 560px; /* a dialog, a card */
   --ds-width: 680px; /* a panel, a page's text */
   --ds-width-wide: 880px; /* the game on a wide screen */
+  /* The width of a card in a scene (in rem, so it follows the reader's text size): two. */
+  --ds-card-narrow: 22rem; /* a phone, an item taken out */
+  --ds-card: 30rem; /* a letter's sheet, the journey's numbers */
   /* The blur: three. */
   --ds-blur-faint: 2px; /* a photo softened behind a game */
   --ds-blur-soft: 8px; /* a scene behind a dialog */
@@ -248,6 +253,9 @@
   --motion-slow: 700ms; /* someone stepping back off the stage, a thing flying away */
   --motion-long: 1400ms; /* the heroine walking to a new `# stand:` place (2026-11-27 user decision: slowly) */
   --motion-stagger: 40ms; /* between the items of a list coming in (an interval, not a length) */
+  /* How long a notice stays to be read: two (src/components/motion.ts NOTICE). */
+  --notice-short: 2500ms; /* a word that something was received: an item, a save */
+  --notice-long: 5000ms; /* a line to read beside the scene: a clue, a photo for the album, the place's plate */
   /* The ways of moving: three (and linear or steps() for a motion that does not ease: a loop, a tremble). */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1); /* coming in, settling */
   --ease-in-out: cubic-bezier(0.45, 0, 0.3, 1); /* moving from one place to another, breathing */
@@ -378,7 +386,7 @@ input:focus-visible:not(:where([data-quiet-focus])),
 select:focus-visible:not(:where([data-quiet-focus])),
 summary:focus-visible:not(:where([data-quiet-focus])) {
   outline: var(--ds-edge-thick) solid var(--ds-focus);
-  outline-offset: 2px;
+  outline-offset: var(--ds-focus-offset);
   box-shadow: var(--ds-focus-halo);
 }
 /* (Nor the browser's own ring on it.) */
@@ -392,7 +400,7 @@ main[tabindex="-1"]:focus { outline: none; }
 h1[tabindex="-1"]:focus { outline: none; }
 h1[tabindex="-1"]:focus-visible:not([data-quiet-focus]) {
   outline: var(--ds-edge-thick) solid var(--ds-focus);
-  outline-offset: 2px;
+  outline-offset: var(--ds-focus-offset);
   box-shadow: var(--ds-focus-halo);
 }
 button {
@@ -516,8 +524,8 @@ h3 {
 /* The art's caption: a display-only pill over the picture (§2.3, §2.4). */
 .scene-stamp {
   position: absolute;
-  bottom: 18px;
-  left: 30px;
+  bottom: var(--ds-space-4);
+  left: var(--ds-space-8);
   color: var(--ds-on-dark);
   background: var(--ds-smoke);
   border-radius: var(--ds-radius-pill);
@@ -933,7 +941,7 @@ footer span {
   padding: var(--modal-pad-top) var(--modal-pad-inline);
   border: 0;
   border-radius: var(--ds-radius-large);
-  max-width: min(440px, calc(100% - 24px));
+  max-width: min(440px, calc(100% - var(--ds-space-6)));
   width: 100%;
   max-height: 90dvh;
   overflow: auto;
@@ -959,7 +967,7 @@ footer span {
   gap: var(--ds-space-2) var(--ds-space-3);
   min-height: var(--ds-press-large);
   margin: calc(-1 * var(--modal-pad-top, 0px)) calc(-1 * var(--modal-pad-inline, 0px)) var(--ds-space-4);
-  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) max(16px, var(--modal-pad-inline, 0px));
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) max(var(--ds-space-4), var(--modal-pad-inline, 0px));
   background: var(--ds-glass-bar);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -1140,7 +1148,7 @@ dialog.modal .offline-summary {
   color: var(--ds-ink-muted);
 }
 .offline-summary-live {
-  margin-left: 0.6em;
+  margin-left: var(--ds-space-2);
   font-variant-numeric: tabular-nums;
 }
 /* The title's line under the journey choice while offline: the chosen journey is not on the device. */
@@ -1229,8 +1237,8 @@ dialog.modal .offline-summary {
     height: 180px;
   }
   .scene-stamp {
-    left: 22px;
-    bottom: 13px;
+    left: var(--ds-space-6);
+    bottom: var(--ds-space-3);
   }
   .paper {
     padding: var(--ds-space-6) var(--ds-space-6) var(--ds-space-8);
@@ -1279,7 +1287,7 @@ dialog.modal .offline-summary {
   /* Over a talk the header's shade is lighter (only the place, for a while, and ≡メニュー's mark lie on it), and thins
      out as far below it with no edge (journey-hud.css draws it). */
   .mobile-play-active > .journey-hud::before {
-    height: max(140px, calc(100% + 24px));
+    height: max(140px, calc(100% + var(--ds-space-6)));
     background: var(--ds-talk-shade);
   }
   /* Debug mode's relationship-change strip lies right under the header, over the
@@ -1348,8 +1356,8 @@ dialog.modal .offline-summary {
     position: absolute;
     z-index: 1;
     top: var(--scene-top);
-    left: 8px;
-    max-width: calc(100% - 16px);
+    left: var(--ds-space-2);
+    max-width: calc(100% - var(--ds-space-4));
     margin: 0;
     padding: var(--ds-space-1) var(--ds-space-3);
     border-radius: var(--ds-radius-pill);
@@ -1590,7 +1598,7 @@ dialog.modal[open]::backdrop {
 .battle-stage:before {
   content: "";
   position: absolute;
-  inset: 12px;
+  inset: var(--ds-space-3);
   border: var(--ds-edge-thin) solid var(--battle-stage-frame);
   pointer-events: none;
 }

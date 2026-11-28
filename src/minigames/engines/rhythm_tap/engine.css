@@ -174,7 +174,7 @@
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-flag > span {
   position: absolute;
-  top: 3px;
+  top: var(--ds-space-1);
   left: 50%;
   padding: 0 var(--ds-space-2);
   border: var(--ds-edge) solid var(--ds-on-dark);
@@ -213,7 +213,7 @@
 @media (max-height: 620px) {
   .mg-engine-rhythm-tap .mg-rhythm-tap-hint { display: none; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-top { margin: 0; }
-  .mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { position: absolute; z-index: var(--ds-layer-game-stop); top: 8px; left: 12px; min-height: 0; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { position: absolute; z-index: var(--ds-layer-game-stop); top: var(--ds-space-2); left: var(--ds-space-3); min-height: 0; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-controls { padding-top: var(--ds-space-1); }
   .mg-engine-rhythm-tap .mg-rhythm-tap-lane { height: 44px; margin-bottom: var(--ds-space-2); }
   .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: var(--ds-press-large); }

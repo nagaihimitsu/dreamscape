@@ -25,8 +25,8 @@
 }
 .opening-movie-controls {
   position: absolute;
-  top: max(12px, env(safe-area-inset-top, 0px));
-  right: max(12px, env(safe-area-inset-right, 0px));
+  top: max(var(--ds-space-3), env(safe-area-inset-top, 0px));
+  right: max(var(--ds-space-3), env(safe-area-inset-right, 0px));
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -50,7 +50,7 @@
 }
 .opening-movie-button:focus-visible {
   outline: var(--ds-edge-thick) solid var(--ds-light);
-  outline-offset: 2px;
+  outline-offset: var(--ds-focus-offset);
 }
 .opening-movie-play {
   position: absolute;

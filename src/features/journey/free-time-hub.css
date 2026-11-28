@@ -125,7 +125,7 @@
 .app-shell.free-time-active { padding-bottom: var(--bottom-h, 0px); }
 
 /* 「画面の出典」's list of free time's photos (PhotoCredits.tsx's ScreenCredits). */
-dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(var(--ds-width-narrow), calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6))); max-height: calc(100dvh - var(--ds-space-6)); }
 .photo-credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
 .photo-credits-list { display: grid; gap: var(--ds-space-3); margin: var(--ds-space-2) 0 0; padding: 0; list-style: none; }
 .photo-credits-list li { display: flex; gap: var(--ds-space-3); align-items: flex-start; padding-top: var(--ds-space-3); border-top: var(--ds-edge-thin) solid var(--ds-line); }
@@ -167,7 +167,7 @@ dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   }
   .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: 0; border-radius: var(--ds-radius-pane); padding-top: var(--ds-space-2); }
   .free-time-hub .travel-map-frame {
-    height: calc(100svh - var(--hud-h, 52px) - var(--bottom-h, 60px) - 16px);
+    height: calc(100svh - var(--hud-h, 52px) - var(--bottom-h, 60px) - var(--ds-space-4));
     border-radius: var(--ds-radius-pane);
   }
 }

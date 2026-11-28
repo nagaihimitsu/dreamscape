@@ -6,10 +6,10 @@
 .name-cutin {
   position: absolute;
   z-index: 3;
-  top: calc(var(--scene-top, 0px) + max(12px, var(--notices-h, 0px) + 8px));
+  top: calc(var(--scene-top, 0px) + max(var(--ds-space-3), var(--notices-h, 0px) + var(--ds-space-2)));
   left: 50%;
   translate: -50% 0;
-  width: min(calc(100% - 32px), 380px);
+  width: min(calc(100% - var(--ds-space-8)), 380px);
   padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-2);
   border-radius: var(--ds-radius-pane);
   background: var(--vn-window-bg);

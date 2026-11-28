@@ -7,9 +7,9 @@
 dialog.modal.glossary-modal {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6)));
   max-width: var(--ds-width-narrow);
-  max-height: calc(100dvh - 24px);
+  max-height: calc(100dvh - var(--ds-space-6));
 }
 .glossary-modal .modal-title-bar { margin-bottom: var(--ds-space-1); }
 .glossary-progress { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
@@ -71,8 +71,8 @@ button.glossary-card:hover { background: var(--ds-surface-chosen); }
 /* 「NEW」 on a term met since 旅の図鑑 was last opened (as beside a held item: held-items.css). */
 .glossary-card-new {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: var(--ds-space-1);
+  right: var(--ds-space-1);
   padding: 0 var(--ds-space-1);
   border-radius: var(--ds-radius-control);
   background: var(--ds-ink-muted);
@@ -86,8 +86,8 @@ button.glossary-card:hover { background: var(--ds-surface-chosen); }
 /* Debug: a term not met yet, shown with its mark. */
 .glossary-card-unmet {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: var(--ds-space-1);
+  left: var(--ds-space-1);
   padding: 0 var(--ds-space-1);
   border-radius: var(--ds-radius-control);
   background: var(--ds-smoke);
@@ -105,7 +105,7 @@ button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: var(--d
 dialog.modal.glossary-entry {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6)));
   max-width: var(--ds-width-narrow);
 }
 .glossary-entry .modal-title-bar { margin-bottom: var(--ds-space-1); }

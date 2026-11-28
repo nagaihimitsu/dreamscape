@@ -219,14 +219,14 @@
   display: flex;
   flex-direction: column;
   width: min(90%, 1100px);
-  max-height: max(calc(100% - clamp(110px, 22vh, 190px) - var(--vn-controls-row) + var(--vn-head-overhang, 22px)),
-    min(calc(100% - 16px - var(--vn-controls-row)), 9em));
+  max-height: max(calc(100% - clamp(110px, 22vh, 190px) - var(--vn-controls-row) + var(--vn-head-overhang, var(--ds-space-6))),
+    min(calc(100% - var(--ds-space-4) - var(--vn-controls-row)), 9em));
   /* Above the row of its controls, at the screen's foot (dialogue-controls.css). */
   margin: auto auto calc(16px + var(--vn-controls-row));
 }
 .battle-screen[data-talk] { padding-bottom: 0; }
 /* With choices, or a line's cards under the window (line-cards.css), it may take the whole stage. */
-.battle-screen[data-talk] .battle-paper-shell:is(:has(> .vn-choices), :has(.line-cards:not(:empty))) { max-height: calc(100% - 16px - var(--vn-controls-row)); }
+.battle-screen[data-talk] .battle-paper-shell:is(:has(> .vn-choices), :has(.line-cards:not(:empty))) { max-height: calc(100% - var(--ds-space-4) - var(--vn-controls-row)); }
 /* A question and its explanation (2026-11-28): no talk's tools under the window, so it keeps to the scene's foot. The
    options keep their whole height first (they scroll in their own place only past what leaves the window its least
    room, about its head and four lines), and the window, as tall as what it holds, takes the rest and scrolls: a long
@@ -235,7 +235,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: calc(100% - 32px);
+  height: calc(100% - var(--ds-space-8));
   max-height: none;
   margin-bottom: var(--ds-space-4);
 }
@@ -293,13 +293,13 @@
     transform-origin: center bottom;
   }
   .battle-screen[data-talk] .battle-paper-shell {
-    width: calc(100% - 16px);
-    max-height: max(calc(100% - 140px - var(--vn-controls-row) + var(--vn-head-overhang, 22px)),
-      min(calc(100% - 8px - var(--vn-controls-row)), 9em));
+    width: calc(100% - var(--ds-space-4));
+    max-height: max(calc(100% - 140px - var(--vn-controls-row) + var(--vn-head-overhang, var(--ds-space-6))),
+      min(calc(100% - var(--ds-space-2) - var(--vn-controls-row)), 9em));
     /* Just above its controls' row: its window's top at the story scenes' height (--vn-window-top, romance-scene.css). */
     margin: auto var(--ds-space-2) var(--vn-controls-row);
   }
-  .battle-screen[data-talk] .battle-paper-shell:is(:has(> .vn-choices), :has(.line-cards:not(:empty))) { max-height: calc(100% - 8px - var(--vn-controls-row)); }
+  .battle-screen[data-talk] .battle-paper-shell:is(:has(> .vn-choices), :has(.line-cards:not(:empty))) { max-height: calc(100% - var(--ds-space-2) - var(--vn-controls-row)); }
   /* The story scenes' grid (romance-scene.css): the choices, the window's room with the window at its top. */
   .battle-screen[data-talk] .battle-paper-shell {
     display: grid;
@@ -324,7 +324,7 @@
   /* A question and its explanation: the column above at the scene's foot, not the talk's grid (no room kept for a line). */
   .battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell {
     display: flex;
-    height: calc(100% - 16px);
+    height: calc(100% - var(--ds-space-4));
     max-height: none;
     margin-bottom: var(--ds-space-2);
   }
@@ -342,7 +342,7 @@
 .battle-screen[data-phase="result"] .battle-paper {
   display: flex;
   flex-direction: column;
-  width: min(100% - 24px, var(--ds-width));
+  width: min(100% - var(--ds-space-6), var(--ds-width));
   max-width: none;
   margin: 0 auto;
   padding: 0 0 var(--ds-space-1);
@@ -477,7 +477,7 @@
 }
 
 @media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
-  .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - 16px); padding: 0 0 var(--ds-space-1); }
+  .battle-screen[data-phase="result"] .battle-paper { width: calc(100% - var(--ds-space-4)); padding: 0 0 var(--ds-space-1); }
   .battle-result-card { padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-3); }
   .battle-result .special-result-note { margin: var(--ds-space-1) 0; padding: var(--ds-space-2); line-height: var(--ds-leading-body); }
   .battle-result-foot { gap: var(--ds-space-2); padding-top: var(--ds-space-3); }
@@ -797,7 +797,7 @@
    options show with the question without scrolling (each row still 44 px high, 6 px apart). */
 @media (orientation: landscape) and (max-height: 500px) {
   .battle-screen[data-talk]:is([data-phase="question"], [data-phase="feedback"]) .battle-paper-shell {
-    height: calc(100% - 16px);
+    height: calc(100% - var(--ds-space-4));
     margin-bottom: var(--ds-space-2);
   }
   .battle-screen:is([data-phase="question"], [data-phase="feedback"]) .battle-paper.battle-dialogue { padding-bottom: var(--ds-space-2); }
@@ -911,7 +911,7 @@
 .battle-character-slot .vn-character { container-type: size; }
 .battle-heroine .vn-character .comic-effect {
   top: max(3%, calc(100% - 150cqw));
-  left: calc(50% + min(4vw, 5dvh, 15px));
+  left: calc(50% + min(4vw, 5dvh, var(--ds-space-4)));
   right: auto;
 }
 .battle-enemy .vn-character .comic-effect,
@@ -928,7 +928,7 @@
 .battle-far .vn-character:has(> img) .comic-effect {
   top: max(3%, calc(100% - var(--figure-scale, 1) * 150cqw));
   left: auto;
-  right: calc(50% + min(4vw, 5dvh, 15px));
+  right: calc(50% + min(4vw, 5dvh, var(--ds-space-4)));
 }
 @media (orientation: landscape) and (max-height: 500px) {
   /* On a short landscape display the dialogue sits higher; lift each portrait
@@ -1002,7 +1002,7 @@
 .heroine-note-bubble::before {
   content: "";
   position: absolute;
-  top: 14px;
+  top: var(--ds-space-4);
   left: -7px;
   width: 7px;
   height: 12px;

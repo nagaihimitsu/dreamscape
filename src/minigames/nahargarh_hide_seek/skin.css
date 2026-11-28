@@ -75,7 +75,7 @@
    the doors, a painted frieze over the doors (dots and leaves), a pilaster between bays. Colours kept soft, under the
    photo's. */
 .mg-nahargarh-hide-seek-row {
-  --frieze-y: calc(100% - var(--bay-h) - 18px);
+  --frieze-y: calc(100% - var(--bay-h) - var(--ds-space-4));
   display: flex;
   align-items: flex-end;
   width: max-content;
@@ -106,7 +106,7 @@
   cursor: pointer;
   touch-action: pan-x;
 }
-.mg-nahargarh-hide-seek-bay:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: -6px; }
+.mg-nahargarh-hide-seek-bay:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset-in); }
 .mg-nahargarh-hide-seek-bay[aria-disabled="true"] { cursor: default; }
 /* The use's doorway photo: the back layer of each bay (the host's mg-photo: a little greyer, darker and soft). */
 .mg-nahargarh-hide-seek[data-art-bay] .mg-nahargarh-hide-seek-bay { background: none; }
@@ -152,7 +152,7 @@
 .mg-nahargarh-hide-seek-handle {
   position: absolute;
   top: 54%;
-  width: max(8px, 14%);
+  width: max(var(--ds-space-2), 14%);
   aspect-ratio: 1;
   border: var(--ds-edge) solid var(--nahargarh-hide-seek-leaf-ground);
   border-radius: 50%;
@@ -179,7 +179,7 @@
 .mg-nahargarh-hide-seek-fingers {
   position: absolute;
   top: 46%;
-  left: calc(50% + 50% * 0.38 - 3px);
+  left: calc(50% + 50% * 0.38 - var(--ds-space-1));
   display: grid;
   gap: var(--ds-space-1);
   opacity: 0;
@@ -204,8 +204,8 @@
   pointer-events: none;
   animation: mg-nahargarh-hide-seek-giggle-edge 1400ms ease-out both;
 }
-.mg-nahargarh-hide-seek-gasp[data-toward="right"] { right: 2px; }
-.mg-nahargarh-hide-seek-gasp[data-toward="left"] { left: 2px; }
+.mg-nahargarh-hide-seek-gasp[data-toward="right"] { right: var(--ds-space-1); }
+.mg-nahargarh-hide-seek-gasp[data-toward="left"] { left: var(--ds-space-1); }
 /* Her 「まだかな」 (muffled, a little smaller) and a peek's 「ちらっ」. */
 .mg-nahargarh-hide-seek-giggle[data-kind="ask"] { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 .mg-nahargarh-hide-seek-giggle[data-kind="peek"] { font-size: var(--ds-text-body); }
@@ -324,12 +324,12 @@
 }
 @keyframes mg-nahargarh-hide-seek-giggle { 0% { opacity: 0; transform: translate(-50%, 6px); } 15%, 75% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
 .mg-nahargarh-hide-seek-fade > .mg-nahargarh-hide-seek-giggle { top: 46%; }
-.mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-giggle { left: 8px; transform: none; animation-name: mg-nahargarh-hide-seek-giggle-edge; }
-.mg-nahargarh-hide-seek-fade-right > .mg-nahargarh-hide-seek-giggle { left: auto; right: 8px; transform: none; animation-name: mg-nahargarh-hide-seek-giggle-edge; }
+.mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-giggle { left: var(--ds-space-2); transform: none; animation-name: mg-nahargarh-hide-seek-giggle-edge; }
+.mg-nahargarh-hide-seek-fade-right > .mg-nahargarh-hide-seek-giggle { left: auto; right: var(--ds-space-2); transform: none; animation-name: mg-nahargarh-hide-seek-giggle-edge; }
 @keyframes mg-nahargarh-hide-seek-giggle-edge { 0% { opacity: 0; } 15%, 75% { opacity: 1; } 100% { opacity: 0; } }
 /* A call's giggle at the edge (her door out of view): larger, under the chevron (clear of the doors' echoes at their tops),
    which pulses once on her side. */
-.mg-nahargarh-hide-seek-fade > .mg-nahargarh-hide-seek-giggle[data-echo] { top: calc(50% + 24px); font-size: var(--ds-text-heading); }
+.mg-nahargarh-hide-seek-fade > .mg-nahargarh-hide-seek-giggle[data-echo] { top: calc(50% + var(--ds-space-6)); font-size: var(--ds-text-heading); }
 .mg-nahargarh-hide-seek[data-echo-side="left"] .mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-chevron,
 .mg-nahargarh-hide-seek[data-echo-side="right"] .mg-nahargarh-hide-seek-fade-right > .mg-nahargarh-hide-seek-chevron {
   opacity: 1;

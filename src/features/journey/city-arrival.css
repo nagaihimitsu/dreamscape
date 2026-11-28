@@ -21,7 +21,7 @@
 .city-arrival-mark svg { width: 180px; height: 64px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 .city-arrival-mark path { stroke-dasharray: 1; animation: city-arrival-draw var(--motion-slow) var(--ease-out) both; }
 /* As wide as the mark, so the name's FitText fits it there (a long name smaller, or two lines at the phrases). */
-.city-arrival-mark strong { font-family: var(--ds-font-sans); font-size: var(--city-arrival-name-size); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-tight); letter-spacing: var(--ds-tracking-4); padding-left: .2em; justify-self: stretch; text-align: center; }
+.city-arrival-mark strong { font-family: var(--ds-font-sans); font-size: var(--city-arrival-name-size); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-tight); letter-spacing: var(--ds-tracking-4); padding-left: var(--ds-space-2); justify-self: stretch; text-align: center; }
 .city-arrival-line { width: 60px; height: 1px; background: var(--city-arrival-line-ground); }
 @keyframes city-arrival-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes city-arrival-fade { 0% { opacity: 0; } 15%, 100% { opacity: 1; } }

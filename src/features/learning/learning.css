@@ -319,9 +319,9 @@
 .word-card-meaning { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .word-card-sentence { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* That the card turns: a small mark in its corner (decorative). */
-.word-card-turn { position: absolute; right: 8px; bottom: 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
+.word-card-turn { position: absolute; right: var(--ds-space-2); bottom: var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .word-card:focus-visible { outline: none; box-shadow: none; }
-.word-card:focus-visible .word-card-face { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 1px; box-shadow: var(--ds-focus-halo); }
+.word-card:focus-visible .word-card-face { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset); box-shadow: var(--ds-focus-halo); }
 /* No turning motion with reduced motion: the other face shows at once. */
 .reduce-motion .word-card-inner { transition: none; }
 @media (prefers-reduced-motion: reduce) {

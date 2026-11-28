@@ -207,7 +207,7 @@
 .modal:has(.cluebook-header) {
   --modal-pad-top: 0;
   --modal-pad-inline: 0;
-  width: min(var(--ds-width), calc(100vw - 24px));
+  width: min(var(--ds-width), calc(100vw - var(--ds-space-6)));
   max-width: var(--ds-width);
 }
 .cluebook-body {
@@ -354,7 +354,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    max-height: max(60%, calc(100% - clamp(250px, 43dvh, 440px) - 16px));
+    max-height: max(60%, calc(100% - clamp(250px, 43dvh, 440px) - var(--ds-space-4)));
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -410,7 +410,7 @@
     display: none;
     position: absolute;
     z-index: var(--ds-layer-observation-notes);
-    inset: 6px;
+    inset: var(--ds-space-2);
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 0 var(--ds-space-4) var(--ds-space-4);

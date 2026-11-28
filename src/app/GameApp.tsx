@@ -1523,7 +1523,7 @@ export function GameApp({
         </div>
         {confirmAgain.status === "invalid" && confirmAgain.raw === null && <p role="alert">このブラウザの保存領域を読み取れないため、始められません。保存の設定を確認してください。</p>}
         <ModalAnswers
-          cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmAgain(null)}>戻る</button>}
+          cancel={<button type="button" className="secondary" autoFocus onClick={() => setConfirmAgain(null)}>やめる</button>}
           action={<button type="button" className="primary" data-testid="again-confirm"
             disabled={confirmAgain.status === "invalid" && confirmAgain.raw === null}
             onClick={() => beginAgain(confirmAgain.status === "empty" ? null : confirmAgain.raw, againDifficulty)}>最初から始める</button>} />

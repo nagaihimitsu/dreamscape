@@ -43,7 +43,7 @@
 .travel-transition-scene {
   position: relative;
   overflow: hidden;
-  width: min(340px, calc(100vw - 32px));
+  width: min(340px, calc(100vw - var(--ds-space-8)));
   height: 112px;
   border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-pane);
@@ -53,9 +53,9 @@
 .travel-transition-label {
   position: absolute;
   z-index: 3;
-  top: 6px;
+  top: var(--ds-space-2);
   left: 50%;
-  max-width: calc(100% - 12px);
+  max-width: calc(100% - var(--ds-space-3));
   transform: translateX(-50%);
   padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
@@ -71,13 +71,13 @@
 }
 .travel-transition-hill {
   position: absolute;
-  bottom: 17px;
+  bottom: var(--ds-space-4);
   width: 180px;
   height: 34px;
   border-radius: 50% 50% 0 0;
 }
 .travel-transition-hill-back { right: -42px; background: var(--travel-transition-hill-back-ground); }
-.travel-transition-hill-front { left: -56px; bottom: 15px; background: var(--travel-transition-hill-front-ground); }
+.travel-transition-hill-front { left: -56px; bottom: var(--ds-space-4); background: var(--travel-transition-hill-front-ground); }
 .travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: var(--ds-edge-thin) solid var(--travel-transition-wire-edge); }
 /* The passing scenery (PassingScenery: a skyline, trees and poles, far to near, over the hills that stay still far
    away): each layer moves left by one tile (120 px) per loop, the farther the slower, at the pace of the mode's kind
@@ -89,7 +89,7 @@
 .travel-scenery {
   position: absolute;
   left: 0;
-  bottom: 20px;
+  bottom: var(--ds-space-6);
   display: block;
   animation: travel-scenery-pass var(--scenery-pace) linear infinite;
 }
@@ -102,19 +102,19 @@
   height: 20px;
   background: var(--travel-transition-ground-ground);
 }
-.travel-transition-ground::before { content: ""; position: absolute; inset: 6px 0 auto; border-top: var(--ds-edge-thin) dashed var(--travel-transition-ground-edge); }
-.travel-transition-ground.is-rail::before { inset: 4px 0 auto; border-top: var(--ds-edge) solid var(--travel-transition-is-rail-edge); }
+.travel-transition-ground::before { content: ""; position: absolute; inset: var(--ds-space-2) 0 auto; border-top: var(--ds-edge-thin) dashed var(--travel-transition-ground-edge); }
+.travel-transition-ground.is-rail::before { inset: var(--ds-space-1) 0 auto; border-top: var(--ds-edge) solid var(--travel-transition-is-rail-edge); }
 .travel-transition-vehicle {
   position: absolute;
   z-index: 2;
   left: calc(50% - 51px);
-  bottom: 12px;
+  bottom: var(--ds-space-3);
   width: 102px;
   height: 58px;
   animation: travel-transition-crossing 1.8s var(--ease-in-out) both;
 }
 .travel-transition-vehicle svg { display: block; width: 100%; height: 100%; }
-.travel-transition-vehicle.is-walk { bottom: 11px; }
+.travel-transition-vehicle.is-walk { bottom: var(--ds-space-3); }
 .travel-transition-leg { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step var(--motion-scene) var(--ease-in-out) infinite alternate; }
 .travel-transition-leg.is-second { animation-direction: alternate-reverse; }
 .travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step var(--motion-scene) var(--ease-in-out) infinite alternate-reverse; }
@@ -134,7 +134,7 @@
    reduced motion the whole line shows at once, still, without the party's mark. */
 .travel-ride-map {
   position: relative;
-  width: min(340px, calc(100vw - 32px));
+  width: min(340px, calc(100vw - var(--ds-space-8)));
   overflow: hidden;
   border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-control);

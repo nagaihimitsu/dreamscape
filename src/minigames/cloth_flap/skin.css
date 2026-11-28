@@ -82,7 +82,7 @@
 .mg-cloth-flap-mark-step[data-lit] { background: var(--cloth-flap-mark-step-ground); }
 /* (At least 28 × 9 px: on a 320-px phone 7.2% alone is a thin strip.) */
 .mg-cloth-flap-mark-step[data-gold] {
-  width: max(7.2%, 28px);
+  width: max(7.2%, var(--ds-space-8));
   height: 9px;
   border-radius: var(--ds-radius-pill);
   background: color-mix(in srgb, var(--ds-game-mark) 70%, transparent);

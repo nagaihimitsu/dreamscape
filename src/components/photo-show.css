@@ -17,7 +17,7 @@
   justify-content: flex-end;
   align-items: center;
   /* The print's highest top (from the scene's top): under the header and its notices. */
-  --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px)));
+  --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, var(--ds-space-6)), calc(var(--notices-h, 0px) + var(--ds-space-2))));
   padding: var(--photo-top) var(--ds-space-4) calc(var(--photo-bottom, 0px) + var(--ds-space-2));
   pointer-events: none;
   animation: stage-fade-in var(--motion-scene) var(--ease-out);
@@ -138,7 +138,7 @@
 
 /* A short landscape screen: the print may begin right under the header. */
 @media (max-height: 500px) {
-  .photo-show-layer { --photo-top: calc(var(--scene-top, 0px) + 8px); }
+  .photo-show-layer { --photo-top: calc(var(--scene-top, 0px) + var(--ds-space-2)); }
 }
 
 /* Reduced motion and 「演出を短縮する」: no flash, no flight; the print comes at once, developed, and goes by fading where

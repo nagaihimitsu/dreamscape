@@ -17,7 +17,7 @@
   background: var(--ds-surface);
   color: var(--ds-ink);
   box-shadow: var(--ds-shadow-small);
-  animation: album-photo-notice var(--album-notice-ms, 4000ms) var(--ease-out) both;
+  animation: album-photo-notice var(--album-notice-ms, var(--notice-long)) var(--ease-out) both;
 }
 @keyframes album-photo-notice {
   0% { opacity: 0; transform: translateY(-6px); }

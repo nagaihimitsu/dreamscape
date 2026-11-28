@@ -6,7 +6,7 @@
 dialog.modal.clue-notebook {
   display: flex;
   flex-direction: column;
-  width: min(var(--ds-width), calc(100vw - 24px));
+  width: min(var(--ds-width), calc(100vw - var(--ds-space-6)));
   max-width: var(--ds-width);
   height: min(880px, 94dvh);
   max-height: 94dvh;
@@ -138,8 +138,8 @@ dialog.modal.clue-notebook {
 }
 .case-image-placeholder {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: var(--ds-space-1);
+  left: var(--ds-space-1);
   z-index: 1;
   padding: var(--ds-space-1) var(--ds-space-2);
   color: white;
@@ -162,8 +162,8 @@ dialog.modal.clue-notebook {
 }
 .case-image-toggle span {
   position: absolute;
-  right: 5px;
-  bottom: 5px;
+  right: var(--ds-space-1);
+  bottom: var(--ds-space-1);
   padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
   background: var(--notebook-case-image-placeholder-ground);
@@ -174,13 +174,13 @@ dialog.modal.clue-notebook {
 .clue-image-unavailable { margin: var(--ds-space-1) 0 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .case-footer {
   flex-shrink: 0;
-  padding: var(--ds-space-2) var(--ds-space-6) max(8px, env(safe-area-inset-bottom));
+  padding: var(--ds-space-2) var(--ds-space-6) max(var(--ds-space-2), env(safe-area-inset-bottom));
   background: var(--ds-surface);
   border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .case-footer-actions { display: flex; gap: var(--ds-space-2); align-items: stretch; }
 .case-footer-actions > button { flex: 1 1 0; min-width: 0; }
-.clue-footer { flex: none; padding: var(--ds-space-2) var(--ds-space-4) max(8px, env(safe-area-inset-bottom)); border-top: var(--ds-edge-thin) solid var(--ds-line); }
+.clue-footer { flex: none; padding: var(--ds-space-2) var(--ds-space-4) max(var(--ds-space-2), env(safe-area-inset-bottom)); border-top: var(--ds-edge-thin) solid var(--ds-line); }
 .clue-footer .secondary { min-height: var(--ds-press-small); margin: 0; }
 .case-footer p {
   margin-bottom: var(--ds-space-1);

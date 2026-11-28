@@ -11,14 +11,13 @@ export type WordCard = { key: string; word: string; meaningJa: string; sentenceE
 /**
  * The words met at one place (2026-11-11 user decision, 英語ノートの「単語帳」): the place of the battles whose questions
  * gave them, its name (with its city) and the photo free time shows for it (its reduced `card` copy; null for a plain
- * tile in `tileColor`). No score, no mastery: only the words, their meanings and their sentences.
+ * grey tile). No score, no mastery: only the words, their meanings and their sentences.
  */
 export type WordBookGroup = {
   key: string;
   cityNameJa: string;
   placeNameJa: string;
   photo: TourismAsset | null;
-  tileColor?: string;
   cards: WordCard[];
 };
 
@@ -54,9 +53,8 @@ export function wordBookGroups(answered: readonly AnsweredWordSource[]): WordBoo
     const where = battlePlace(battle);
     if (!where || !question.vocabularyJa.length) continue;
     const key = `${where.cityId}:${where.place?.id ?? ""}`;
-    const tileColor = where.place ? presentation.backgrounds[where.place.backgroundId]?.color : undefined;
     const group: WordBookGroup & { seen: Set<string> } = groups.get(key) ?? { key, cityNameJa: where.cityNameJa, placeNameJa: where.placeNameJa,
-      photo: where.place ? getPlacePhoto(where.cityId, where.place.id) : null, ...(tileColor ? { tileColor } : {}), cards: [], seen: new Set<string>() };
+      photo: where.place ? getPlacePhoto(where.cityId, where.place.id) : null, cards: [], seen: new Set<string>() };
     groups.set(key, group);
     question.vocabularyJa.forEach((item, index) => {
       const identity = `${normalizeWord(item.word)}\u0000${item.meaning}`;

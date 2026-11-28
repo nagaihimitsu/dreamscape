@@ -42,7 +42,7 @@
 /* In the end roll: no card, the numbers set on the night between two white lines, labels small and spaced. */
 .end-roll .journey-numbers {
   margin: var(--ds-space-8) auto 0;
-  max-width: 32rem;
+  max-width: var(--ds-card);
   padding: var(--ds-space-6) var(--ds-space-1);
   border: 0;
   border-block: var(--ds-edge-thin) solid var(--journey-numbers-journey-numbers-edge);

@@ -69,7 +69,7 @@ dialog.offline-play h2:focus {
 }
 /* How far a run is, beside its line (the numbers keep their width as they change). */
 .offline-live {
-  margin-left: 0.6em;
+  margin-left: var(--ds-space-2);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

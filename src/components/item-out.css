@@ -16,21 +16,21 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: max(clamp(10px, 3dvh, 28px), calc(var(--notices-h, 0px) + 8px)) var(--ds-space-4) 0;
+  padding: max(clamp(10px, 3dvh, var(--ds-space-8)), calc(var(--notices-h, 0px) + var(--ds-space-2))) var(--ds-space-4) 0;
   pointer-events: none;
 }
 /* Clear of what a scene keeps in the top left corner, drawn over this layer: a date's reference note (romance-scene.css:
    its width beside the portrait). */
-.vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - 8px) + 16px); }
+.vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - var(--ds-space-2)) + var(--ds-space-4)); }
 @media (min-width: 701px) {
-  .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + 16px); }
+  .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + var(--ds-space-4)); }
 }
 .item-out-card {
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: min(100%, 24rem);
+  width: min(100%, var(--ds-card-narrow));
   min-height: 0;
   padding: var(--ds-glass-padding);
   overflow: hidden;
@@ -101,7 +101,7 @@
 }
 .item-out-lines {
   position: relative;
-  padding: 0 var(--ds-space-1) 0 1.9em;
+  padding: 0 var(--ds-space-1) 0 var(--ds-space-8);
 }
 .item-out-lines[data-scrolls] { pointer-events: auto; }
 /* Lines beyond the room (data-before above, data-more below; ItemOut.tsx): the edge's line fades, so the list says it
@@ -170,8 +170,8 @@
 
 /* A short landscape screen: a lower heading and tighter lines, so more of the list shows above the window. */
 @media (max-height: 500px) {
-  .item-out-layer { padding-top: max(6px, calc(var(--notices-h, 0px) + 6px)); }
-  .item-out-card { width: min(100%, 30rem); padding: var(--ds-space-2) var(--ds-space-4); }
+  .item-out-layer { padding-top: max(var(--ds-space-2), calc(var(--notices-h, 0px) + var(--ds-space-2))); }
+  .item-out-card { width: min(100%, var(--ds-card)); padding: var(--ds-space-2) var(--ds-space-4); }
   .item-out-head { gap: var(--ds-space-2); padding-bottom: var(--ds-space-2); }
   .item-out-picture { width: 32px; height: 32px; }
   .item-out-picture img { max-width: 28px; max-height: 28px; }

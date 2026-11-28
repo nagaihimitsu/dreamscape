@@ -31,15 +31,14 @@ export function CanalScene({
     <div
       className={`canal-scene ${compact ? "compact" : ""}`}
       data-fallback={backdrop?.fallback ?? "canal"}
-      style={backdrop?.fallback === "neutral" ? { backgroundColor: backdrop.color } : undefined}
       aria-hidden="true"
     >
       {backdrop?.fallback !== "neutral" && (
       <svg viewBox="0 0 800 440" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="sky" x2="0" y2="1">
-            <stop stopColor={backdrop?.color ?? "#e4e5e8"} />
-            <stop offset="1" stopColor="#f4f5f7" />
+            <stop stopColor="#dcdee2" />
+            <stop offset="1" stopColor="#eeeff1" />
           </linearGradient>
           <linearGradient id="water" x2="0" y2="1">
             <stop stopColor="#a7b8ab" />
