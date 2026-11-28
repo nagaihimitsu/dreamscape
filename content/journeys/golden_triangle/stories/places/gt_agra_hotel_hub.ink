@@ -20,7 +20,7 @@ INCLUDE modules.ink
 寝台の上では、タオルで折った白鳥が二羽、くちばしを寄せ合い、首でハートを描いている。
 # speaker: gt_samir
 # cutin: name
-# photo: gt_album_a01 # photo_caption: ハネムーン・スペシャルの白鳥 # photo_with: gt_samir
+# photo: gt_album_a002 # photo_caption: ハネムーン・スペシャルの白鳥 # photo_with: gt_samir
 # voice: gt_agra_arrival_samir_001
 ハネムーン・スペシャルです！
 # speaker: narrator
@@ -210,7 +210,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_room
 # leave: gt_samir
 # speaker: narrator
-# recall: gt_album_a01
+# recall: gt_album_a002
 二つの部屋の扉を開けると、白鳥が消え、寝台はただの白い寝台に戻っていた。こちらの部屋の花びらの道も、もうない。
 {
 - ending_reached:

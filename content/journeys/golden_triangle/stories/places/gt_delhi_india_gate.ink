@@ -67,7 +67,7 @@ Photo, please!
     # speaker: narrator
     彼女は祖母の隣に押し込まれた。祖母はその手を握ったまま離さない。
     # speaker: narrator
-    # photo: gt_album_d25 # photo_caption: 十三人目 # photo_show: large # photo_with: gt_monu
+    # photo: gt_album_d056 # photo_caption: 十三人目 # photo_show: large # photo_with: gt_monu
     画面の中で、一人だけ顔立ちの違う十三人目が、困ったように笑っていた。
 * [写真屋を呼んで、二人とも入る # option: hire_photographer]
     # profile: bold
