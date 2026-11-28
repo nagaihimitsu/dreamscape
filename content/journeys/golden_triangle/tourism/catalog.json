@@ -1922,16 +1922,16 @@
     {
       "id": "gt_img_term_shagun",
       "path": "assets/tourism/india/term_shagun.webp",
-      "width": 1200,
-      "height": 1200,
-      "altJa": "シャグンを表した図。表に金の字でヒンディー語の「शगुन」（シャグン）と書いた赤い封筒と、その手前に置いた一ルピー硬貨。",
+      "width": 1262,
+      "height": 810,
+      "altJa": "ヒンドゥーの結婚式の祝い金。ガネーシャの絵や飾り模様の付いた赤い祝儀袋の上に、20ドル札と1ドル札（合わせて21ドル。端を1にした額）が置いてある。アメリカで撮られた写真。",
       "isPlaceholder": false,
-      "sourceUrl": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/golden_triangle/research/golden-triangle-delhi-opening-20261123/shagun_envelope.svg",
-      "licenseName": "CC0 1.0",
-      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "creditJa": "図：Dreamscape のための自作の図（写真ではありません）",
-      "modificationJa": "Dreamscape のために図形と文字だけで描いた図（SVG。元のファイルは制作資料の authoring/journeys/golden_triangle/research/golden-triangle-delhi-opening-20261123/shagun_envelope.svg）を、1200×1200pxのPNGに書き出しました。実在の封筒・硬貨・紙幣の写真や絵はもとにしていません。文字は FreeSerif と DejaVu Serif の字形です。さらに同じ寸法のままWebP形式（品質80）に変換。",
-      "checkedAt": "2026-11-25"
+      "sourceUrl": "https://www.flickr.com/photos/imtfi/5869148560/",
+      "licenseName": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "creditJa": "写真：Parul Aggarwal（IMTFI）／Flickr／CC BY-SA 2.0",
+      "modificationJa": "Flickr配信の1280×861px版（元画像は1792×1205px。2011年、アメリカで撮影）を使用。下の透かしの文字と右の白い縁を外すため、上から1262×810pxの範囲を切り抜きました。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。この加工版もCC BY-SA 2.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 2.0で提供。",
+      "checkedAt": "2026-11-28"
     },
     {
       "id": "gt_img_term_laughter_club",
@@ -3266,16 +3266,16 @@
     {
       "id": "gt_img_term_rebar_roof",
       "path": "assets/tourism/india/term_rebar_roof.webp",
-      "width": 1200,
-      "height": 1200,
-      "altJa": "平屋根の1階建ての家の図。三本の柱の頭から鉄筋が屋上へ突き出し、その上に、後で足す2階の形が点線で描いてある。屋上には水のタンク。",
+      "width": 860,
+      "height": 720,
+      "altJa": "バングラデシュ・ダッカの建物の屋上。給水タンクと太陽光パネルが置かれて使われている屋上のあちこちから、次の階の柱のための鉄筋の束が突き出している。人は写っていない。",
       "isPlaceholder": false,
-      "sourceUrl": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/rebar_roof.svg",
-      "licenseName": "CC0 1.0",
-      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "creditJa": "図：Dreamscape のための自作の図（写真ではありません）",
-      "modificationJa": "Dreamscape のために図形だけで描いた図（SVG。元のファイルは制作資料の authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/rebar_roof.svg）を、1200×1200pxのPNGに書き出しました。写真や他人の作品はもとにしていません。さらに同じ寸法のままWebP形式（品質80）に変換。",
-      "checkedAt": "2026-11-25"
+      "sourceUrl": "https://www.flickr.com/photos/inoldnews/53890574440/",
+      "licenseName": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "creditJa": "写真：Sumit Das（InOldNews）／Flickr／CC BY 2.0",
+      "modificationJa": "Flickr配信の1280×720px版（元画像は1920×1080px。2024年、ダッカで撮影）を使用。右のヤシの木を外すため、左から860×720pxの範囲を切り抜きました。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。さらに同じ寸法のままWebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-28"
     },
     {
       "id": "gt_img_delhi_wait_cows",
