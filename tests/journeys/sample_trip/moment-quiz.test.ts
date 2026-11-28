@@ -174,7 +174,7 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
     // breakdown under it).
     const plain = playBattleToResult(toEpilogue(cleared(true)));
     expect(battleTagApGained(plain)).toBe(0);
-    expect(rewards(plain)).toContain("＋0");
+    expect(rewards(plain)).toContain(">+0<");
     // As content:build would write `# on_done: ap +2` and the first choice's `# ap: +1` (with their scene_tag rules).
     patchScene(QUIZ, (scene) => ({ ...scene, done: { ap: 2 },
       options: scene.options.map((option) => (option.id === "ask_which_three" ? { ...option, ap: 1 } : option)) }));
@@ -189,7 +189,7 @@ describe("a reasoning quiz placed at the epilogue (the sample's coach stop)", ()
     const result = playBattleToResult(started);
     expect(result.ap - started.ap).toBe(3);
     expect(battleTagApGained(result)).toBe(3);
-    expect(rewards(result)).toContain("＋3");
+    expect(rewards(result)).toContain(">+3<");
     // A second play (repeat always, the records of the first) gives nothing, and says so.
     expect(battleTagApGained({ ...result, battleRecords: result.battleRecords.map((record) => ({ ...record, attempts: 2 })) })).toBe(0);
   });

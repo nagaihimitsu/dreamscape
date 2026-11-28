@@ -416,7 +416,7 @@
   color: var(--ds-glass-mark-full);
 }
 .battle-result .battle-score strong { font-size: var(--result-score-size); }
-.battle-result .battle-score > span { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
+.battle-result .battle-score > span { font-size: var(--ds-text-body); font-weight: var(--ds-weight-medium); letter-spacing: var(--ds-tracking-2); }
 /* It may give way down to its choices and a few lines of the part that scrolls (its least height). */
 .battle-result-card {
   display: flex;
@@ -430,18 +430,6 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.battle-result-card .battle-rewards { margin: 0; padding: 0; border: 0; }
-.battle-result-card .reward-total strong { font-size: var(--ds-text-display); }
-.battle-result-card .current-ap { margin: var(--ds-space-1) 0 0; }
-/* The trip's milestone on the glass: a warm light, its words in the glass's ink. */
-.battle-result-card .episode-clear {
-  margin: var(--ds-space-3) 0 0;
-  padding: var(--ds-space-3) var(--ds-space-4);
-  border-radius: var(--ds-radius-pane);
-  background: color-mix(in srgb, var(--ds-hairline) 20%, transparent);
-}
-.battle-result-card .episode-clear h2 { margin: var(--ds-space-1) 0 var(--ds-space-1); font-size: var(--ds-text-large); }
-.battle-result-card .episode-clear > p:not(.eyebrow):not(.fine-print) { margin: 0; line-height: var(--ds-leading-reading); }
 .battle-result-foot {
   display: grid;
   flex: none;
@@ -464,8 +452,8 @@
 .battle-result .outcome { animation: battle-result-word 700ms var(--ease-out) backwards; }
 /* The card only rises (its opacity stays whole, so its glass blurs the place from the first frame). */
 .battle-result-card { animation: battle-result-card-in var(--motion-medium) var(--ease-out); }
-.battle-result .reward-total strong {
-  transform-origin: 100% 50%;
+.battle-result .reward-total dd {
+  transform-origin: 0 50%;
   animation: battle-reward-pop var(--motion-medium) var(--ease-out) 260ms backwards;
 }
 @keyframes battle-result-in {
@@ -482,9 +470,9 @@
   from { opacity: 0; transform: scale(0.7); }
   60% { opacity: 1; transform: scale(1.08); }
 }
-.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total strong) { animation: none; }
+.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total dd) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .battle-screen :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total strong) { animation: none; }
+  .battle-screen :is(.battle-result-heading, .battle-result .outcome, .battle-result-card, .reward-total dd) { animation: none; }
 }
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
