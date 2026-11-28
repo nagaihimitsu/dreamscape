@@ -770,6 +770,7 @@ export function BattleScreen({
           chosenId={answer?.optionId}
           glowing={!holding && active.phase === "feedback" && glowAnswer === answerKey}
           popping={active.phase === "feedback" && effectAnswer === answerKey}
+          animateLeaving={animatedAnswer === answerKey && !reduceMotion}
           onAnswer={(optionId) => {
             if (onAnswer(optionId)) {
               // The English being read (the automatic reading, or a button's) stops at the answer.
