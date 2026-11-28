@@ -2,9 +2,9 @@
 :root {
   --time-passage-sun-ground: #ffd873;
   --time-passage-sun-shade: #ffd87388;
-  --time-passage-moon-ground: #f1f2f4;
-  --time-passage-moon-shade: #f1f2f455;
-  --time-passage-moon-ground-2: #3b3d43;
+  --time-passage-moon-ground: var(--ds-gray-6);
+  --time-passage-moon-shade: color-mix(in srgb, var(--ds-gray-6) 32%, transparent);
+  --time-passage-moon-ground-2: var(--ds-gray-2);
   --time-passage-horizon-ground: #506d5d;
   --time-passage-sky-ground: #bddbe1;
 }

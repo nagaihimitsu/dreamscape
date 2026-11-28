@@ -134,9 +134,9 @@
 .mg-roti-rolling-board-ring { fill: none; stroke: var(--roti-rolling-board-ring-line-028); stroke-width: 0.006; }
 .mg-roti-rolling-flour { fill: var(--roti-rolling-flour-fill-055); }
 /* How big a good roti is: a dotted ring, white once the dough reaches it. */
-.mg-roti-rolling-target { fill: none; stroke: color-mix(in srgb, var(--ds-on-dark) 60%, transparent); stroke-width: 0.005; stroke-dasharray: 0.012 0.014; }
+.mg-roti-rolling-target { fill: none; stroke: color-mix(in srgb, var(--ds-on-dark) 70%, transparent); stroke-width: 0.005; stroke-dasharray: 0.012 0.014; }
 .mg-roti-rolling-target[data-reached] { stroke: var(--ds-game-mark); stroke-width: 0.007; }
-.mg-roti-rolling-dough-shadow { fill: color-mix(in srgb, var(--ds-shade) 28%, transparent); }
+.mg-roti-rolling-dough-shadow { fill: color-mix(in srgb, var(--ds-shade) 32%, transparent); }
 .mg-roti-rolling-dough { stroke: var(--roti-rolling-dough-line-07); stroke-width: 0.006; stroke-linejoin: round; }
 /* Near a tear: the dough's edge turns to a dark dotted line (the hint says so too). */
 .mg-roti-rolling[data-warn] .mg-roti-rolling-dough { stroke: var(--roti-rolling-dough-line); stroke-width: 0.01; stroke-dasharray: 0.018 0.012; }
@@ -147,20 +147,20 @@
 /* The next stroke's way: a pale arrow with a dark edge (readable on the dough and the board). Its shaft is a fuse: the
    bright part burns down from the head while the window lasts (the spent part stays a thin dark line); with his hand
    coming the whole arrow fades (and his hand shows: not by the fuse alone). */
-.mg-roti-rolling-arrow .mg-roti-rolling-arrow-fuse { stroke: color-mix(in srgb, var(--ds-on-dark) 95%, transparent); stroke-width: 0.022; stroke-linecap: round; }
-.mg-roti-rolling-arrow .mg-roti-rolling-arrow-spent { stroke: color-mix(in srgb, var(--ds-shade) 55%, transparent); stroke-width: 0.01; stroke-linecap: round; stroke-dasharray: 0.014 0.01; }
-.mg-roti-rolling-arrow path { fill: color-mix(in srgb, var(--ds-on-dark) 92%, transparent); stroke: var(--roti-rolling-board-face-line); stroke-width: 0.006; stroke-linejoin: round; }
+.mg-roti-rolling-arrow .mg-roti-rolling-arrow-fuse { stroke: color-mix(in srgb, var(--ds-on-dark) 100%, transparent); stroke-width: 0.022; stroke-linecap: round; }
+.mg-roti-rolling-arrow .mg-roti-rolling-arrow-spent { stroke: color-mix(in srgb, var(--ds-shade) 50%, transparent); stroke-width: 0.01; stroke-linecap: round; stroke-dasharray: 0.014 0.01; }
+.mg-roti-rolling-arrow path { fill: color-mix(in srgb, var(--ds-on-dark) 88%, transparent); stroke: var(--roti-rolling-board-face-line); stroke-width: 0.006; stroke-linejoin: round; }
 .mg-roti-rolling-arrow { transition: opacity 120ms ease-out; }
 /* A dark casing under the shaft and the head (no filter: the fuse changes every frame). */
-.mg-roti-rolling-arrow .mg-roti-rolling-arrow-case { stroke: color-mix(in srgb, var(--ds-shade) 85%, transparent); stroke-width: 0.034; stroke-linecap: round; }
+.mg-roti-rolling-arrow .mg-roti-rolling-arrow-case { stroke: color-mix(in srgb, var(--ds-shade) 88%, transparent); stroke-width: 0.034; stroke-linecap: round; }
 .mg-roti-rolling-arrow[data-coming] { opacity: var(--ds-opacity-faint); }
 /* Harbans's hand: a brown hand in a white kurta's sleeve, a dark edge round the whole of it (its parts outlined, then
    filled over) so it reads on the dough and the board; a soft shadow under it. */
 .mg-roti-rolling-sleeve { fill: var(--roti-rolling-sleeve-fill); }
 .mg-roti-rolling-palm { fill: var(--roti-rolling-palm-fill); }
-.mg-roti-rolling-hand-shadow > * { fill: color-mix(in srgb, var(--ds-shade) 26%, transparent); }
+.mg-roti-rolling-hand-shadow > * { fill: color-mix(in srgb, var(--ds-shade) 32%, transparent); }
 .mg-roti-rolling-hand-outline > * { stroke: var(--roti-rolling-hand-outline-line); stroke-width: 0.014; stroke-linejoin: round; }
-.mg-roti-rolling-hand-line { stroke: color-mix(in srgb, var(--ds-shade) 75%, transparent); stroke-width: 0.005; stroke-linecap: round; }
+.mg-roti-rolling-hand-line { stroke: color-mix(in srgb, var(--ds-shade) 70%, transparent); stroke-width: 0.005; stroke-linecap: round; }
 /* The window has had its stroke: a faint turning sign in the dough's middle (his turn next). */
 .mg-roti-rolling-wait path { fill: none; stroke: var(--roti-rolling-wait-line-055); stroke-width: 0.012; stroke-linecap: round; }
 .mg-roti-rolling-wait .mg-roti-rolling-wait-head { fill: var(--roti-rolling-wait-line-055); stroke: none; }
@@ -170,8 +170,8 @@
 .mg-roti-rolling-pin[data-skid] .mg-roti-rolling-pin-body { fill: var(--roti-rolling-pin-body-fill); }
 /* Left alone: a faint fingertip rolls along the arrow, again and again (still: it waits at the arrow's tail). */
 .mg-roti-rolling-finger {
-  fill: color-mix(in srgb, var(--ds-on-dark) 55%, transparent);
-  stroke: color-mix(in srgb, var(--ds-shade) 80%, transparent);
+  fill: color-mix(in srgb, var(--ds-on-dark) 50%, transparent);
+  stroke: color-mix(in srgb, var(--ds-shade) 88%, transparent);
   stroke-width: 0.006;
   animation: mg-roti-rolling-finger 1200ms ease-in-out infinite;
 }
@@ -184,5 +184,5 @@
 /* The tear: the board shows through a ragged hole. */
 .mg-roti-rolling-hole { fill: var(--roti-rolling-hole-fill); stroke: var(--roti-rolling-hole-line); stroke-width: 0.008; stroke-linejoin: round; }
 .mg-roti-rolling-pin-body { fill: var(--roti-rolling-pin-body-fill-2); stroke: var(--roti-rolling-pin-body-line-085); stroke-width: 0.005; }
-.mg-roti-rolling-pin-handle { fill: var(--roti-rolling-pin-handle-fill); stroke: color-mix(in srgb, var(--ds-shade) 80%, transparent); stroke-width: 0.004; }
-.mg-roti-rolling-pin-shadow { fill: color-mix(in srgb, var(--ds-shade) 25%, transparent); }
+.mg-roti-rolling-pin-handle { fill: var(--roti-rolling-pin-handle-fill); stroke: color-mix(in srgb, var(--ds-shade) 88%, transparent); stroke-width: 0.004; }
+.mg-roti-rolling-pin-shadow { fill: color-mix(in srgb, var(--ds-shade) 32%, transparent); }

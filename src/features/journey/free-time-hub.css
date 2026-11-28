@@ -50,7 +50,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--ds-shade) 6%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 8%, transparent);
 }
 
 .free-time-hub {
@@ -58,7 +58,7 @@
   flex-direction: column;
   gap: var(--ds-space-2);
   width: 100%;
-  max-width: 680px;
+  max-width: var(--ds-width);
   margin: 0 auto;
   padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-6);
   color: var(--ds-ink);
@@ -70,7 +70,7 @@
   display: flex;
   align-items: center;
   gap: var(--ds-space-2);
-  min-height: 40px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
@@ -84,7 +84,7 @@
   letter-spacing: var(--ds-tracking-1);
 }
 .free-time-banner span { min-width: 0; overflow-wrap: anywhere; }
-.free-time-banner .icon { flex: none; width: 20px; height: 20px; color: var(--ds-ink-muted); }
+.free-time-banner .icon { flex: none; width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-ink-muted); }
 .free-time-banner .free-time-banner-plane { margin-left: auto; color: var(--ds-hairline); }
 @media (max-width: 379px) {
   .free-time-banner .free-time-banner-plane { display: none; }
@@ -94,7 +94,7 @@
 .free-time-hub .city-progress { max-width: none; margin: 0; padding: 0; border: 0; }
 .free-time-hub .city-complete .secondary {
   margin: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   border: 0;
   border-radius: var(--ds-radius-control);
   background: var(--ds-action-fill);
@@ -117,7 +117,7 @@
   background: var(--ds-surface);
   box-shadow: var(--ds-shadow);
 }
-.free-time-extras > .secondary { margin: 0; min-height: 44px; }
+.free-time-extras > .secondary { margin: 0; min-height: var(--ds-press-small); }
 /* A booked tour holds the departure (tour stage 2a): display only. */
 .free-time-tour-wait { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 
@@ -125,7 +125,7 @@
 .app-shell.free-time-active { padding-bottom: var(--bottom-h, 0px); }
 
 /* 「画面の出典」's list of free time's photos (PhotoCredits.tsx's ScreenCredits). */
-dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(var(--ds-width-narrow), calc(100% - 24px)); max-height: calc(100dvh - 24px); }
 .photo-credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
 .photo-credits-list { display: grid; gap: var(--ds-space-3); margin: var(--ds-space-2) 0 0; padding: 0; list-style: none; }
 .photo-credits-list li { display: flex; gap: var(--ds-space-3); align-items: flex-start; padding-top: var(--ds-space-3); border-top: var(--ds-edge-thin) solid var(--ds-line); }

@@ -61,8 +61,8 @@
   filter: drop-shadow(0 -1px 0 color-mix(in srgb, var(--ds-shade) 70%, transparent));
 }
 .mg-cloth-flap-tread { fill: none; stroke: var(--cloth-flap-tread-line-075); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
-.mg-cloth-flap-lip-shadow { fill: color-mix(in srgb, var(--ds-shade) 38%, transparent); }
-.mg-cloth-flap-joint { fill: none; stroke: color-mix(in srgb, var(--ds-shade) 28%, transparent); stroke-width: 1px; vector-effect: non-scaling-stroke; }
+.mg-cloth-flap-lip-shadow { fill: color-mix(in srgb, var(--ds-shade) 32%, transparent); }
+.mg-cloth-flap-joint { fill: none; stroke: color-mix(in srgb, var(--ds-shade) 32%, transparent); stroke-width: 1px; vector-effect: non-scaling-stroke; }
 /* A stairs picture shows its own wall and steps; a far-wall picture (art.wall) only the wall, under the drawn steps. */
 .mg-cloth-flap[data-art-stairs] .mg-cloth-flap-far-wall,
 .mg-cloth-flap[data-art-wall] .mg-cloth-flap-far-wall { display: none; }
@@ -75,7 +75,7 @@
   height: 4px;
   border-radius: var(--ds-radius-pill);
   background: var(--cloth-flap-mark-step-ground-035);
-  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-shade) 55%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-shade) 50%, transparent);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -85,10 +85,10 @@
   width: max(7.2%, 28px);
   height: 9px;
   border-radius: var(--ds-radius-pill);
-  background: color-mix(in srgb, var(--ds-game-mark) 75%, transparent);
-  box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 80%, transparent), 0 0 8px color-mix(in srgb, var(--ds-game-mark) 55%, transparent);
+  background: color-mix(in srgb, var(--ds-game-mark) 70%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 88%, transparent), 0 0 8px color-mix(in srgb, var(--ds-game-mark) 50%, transparent);
 }
-.mg-cloth-flap-mark-step[data-gold][data-lit] { background: var(--cloth-flap-mark-step-ground-2); box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 85%, transparent), 0 0 14px 2px var(--cloth-flap-mark-step-shadow-09); }
+.mg-cloth-flap-mark-step[data-gold][data-lit] { background: var(--cloth-flap-mark-step-ground-2); box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 88%, transparent), 0 0 14px 2px var(--cloth-flap-mark-step-shadow-09); }
 /* The one coming down: her feet on the point the play's frames move (Skin.tsx), one step at a time; a dark edge and a
    shadow at her feet keep her on the stone, over a photo too. */
 .mg-cloth-flap-walker {
@@ -109,7 +109,7 @@
   width: 120%;
   height: 7px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ds-shade) 40%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 32%, transparent);
   transform: translateX(-50%);
   z-index: -1;
 }
@@ -156,7 +156,7 @@
   font-weight: var(--ds-weight-bold);
   line-height: 1;
   transform: translateX(-50%);
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 32%, transparent);
 }
 /* Her scream, written large beside her (on the side she faces). */
 .mg-cloth-flap-shriek {
@@ -186,7 +186,7 @@
   border: var(--ds-edge-heavy) solid var(--cloth-flap-arch-edge);
   border-bottom: 0;
   border-radius: 48% 48% 0 0 / 26% 26% 0 0;
-  box-shadow: 0 0 0 200vmax var(--cloth-flap-skin-ground), inset 0 8px 18px color-mix(in srgb, var(--ds-shade) 45%, transparent);
+  box-shadow: 0 0 0 200vmax var(--cloth-flap-skin-ground), inset 0 8px 18px color-mix(in srgb, var(--ds-shade) 50%, transparent);
   pointer-events: none;
 }
 /* The dupatta in the player's hands at the bottom of the niche: folded, then spread wide on the tap (never over her: at
@@ -212,7 +212,7 @@
   background:
     repeating-linear-gradient(100deg, var(--cloth-flap-cloth-folded-ground-06) 0 3px, transparent 3px 14px),
     linear-gradient(to bottom, var(--cloth-flap-cloth-folded-ground), var(--cloth-flap-cloth-folded-ground-2));
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-shade) 32%, transparent);
   transform: translateX(-50%);
 }
 .mg-cloth-flap-cloth-spread {
@@ -273,9 +273,9 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 45%, transparent);
+  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 50%, transparent);
   border-radius: 50%;
-  color: color-mix(in srgb, var(--ds-on-dark) 60%, transparent);
+  color: color-mix(in srgb, var(--ds-on-dark) 70%, transparent);
   font-size: var(--ds-text-small);
   font-weight: var(--ds-weight-bold);
   line-height: 1;
@@ -284,12 +284,12 @@
 .mg-cloth-flap-gauge > span[data-gold] {
   width: 26px;
   height: 26px;
-  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-game-mark) 90%, transparent);
-  background: color-mix(in srgb, var(--ds-game-mark) 18%, transparent);
+  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-game-mark) 88%, transparent);
+  background: color-mix(in srgb, var(--ds-game-mark) 16%, transparent);
   box-shadow: 0 0 6px color-mix(in srgb, var(--ds-game-mark) 50%, transparent);
 }
-.mg-cloth-flap-gauge > span[data-gold][data-lit] { background: var(--cloth-flap-mark-step-ground-2); box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 14px 3px var(--cloth-flap-mark-step-shadow-09); }
-.mg-cloth-flap-gauge > span[data-gold][data-past] { background: color-mix(in srgb, var(--ds-game-mark) 40%, transparent); box-shadow: none; }
+.mg-cloth-flap-gauge > span[data-gold][data-lit] { background: var(--cloth-flap-mark-step-ground-2); box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 70%, transparent), 0 0 14px 3px var(--cloth-flap-mark-step-shadow-09); }
+.mg-cloth-flap-gauge > span[data-gold][data-past] { background: color-mix(in srgb, var(--ds-game-mark) 32%, transparent); box-shadow: none; }
 @media (max-height: 620px) { .mg-cloth-flap-gauge { height: 22px; margin-bottom: var(--ds-space-2); } }
 
 /* Round 3: her tells and the boy. She crouches as she bobs to leap (the play's frames set --mg-cloth-flap-crouch, 0 to 1;
@@ -301,7 +301,7 @@
   height: 28px;
   border-width: var(--ds-edge);
   border-radius: var(--ds-radius-pane);
-  background: color-mix(in srgb, var(--ds-on-dark) 90%, transparent);
+  background: color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   font-size: var(--ds-text-large);
 }
 /* The boy who runs down past her: smaller than her, in front of her on the stairs, a dark edge and a shadow at his feet. */
@@ -324,11 +324,11 @@
   width: 110%;
   height: 5px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ds-shade) 40%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 32%, transparent);
   transform: translateX(-50%);
   z-index: -1;
 }
-.mg-cloth-flap-boy-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ds-shade) 90%, transparent)); }
+.mg-cloth-flap-boy-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ds-shade) 88%, transparent)); }
 .mg-cloth-flap-boy[data-startled] .mg-cloth-flap-boy-figure { animation: mg-cloth-flap-boy-jump 320ms ease-out both; }
 @keyframes mg-cloth-flap-boy-jump { 40% { transform: translateY(-18%) rotate(8deg); } }
 .mg-cloth-flap[data-still] .mg-cloth-flap-boy-figure { animation: none; }

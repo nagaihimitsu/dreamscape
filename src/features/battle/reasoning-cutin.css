@@ -1,23 +1,23 @@
 /* A short visual bridge; the saved reasoning state remains underneath it. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --reasoning-cutin-reasoning-cutin-ink: #ffffff;
-  --reasoning-cutin-reasoning-cutin-ground: #4a4c52;
-  --reasoning-cutin-reasoning-cutin-ground-2: #1c1d20;
-  --reasoning-cutin-contradiction-ground: #3a3b40;
-  --reasoning-cutin-contradiction-ground-2: #121315;
-  --reasoning-cutin-impact-edge: #ffffff;
-  --reasoning-cutin-impact-shade: #ffffff1c;
-  --reasoning-cutin-impact-shade-2: #ffffff55;
-  --reasoning-cutin-impact-ground: #ffffff77;
-  --reasoning-cutin-impact-ink: #ffffff;
-  --reasoning-cutin-card-edge: #d4d6da;
-  --reasoning-cutin-card-ground: #f4f5f7;
-  --reasoning-cutin-card-ground-2: #d9dbdf;
-  --reasoning-cutin-line-ground: #ffffff;
-  --reasoning-cutin-line-shade: #e3e4e7;
-  --reasoning-cutin-skip-edge: #e6e7e9;
-  --reasoning-cutin-skip-ground: #1c1d20e6;
+  --reasoning-cutin-reasoning-cutin-ink: var(--ds-light);
+  --reasoning-cutin-reasoning-cutin-ground: var(--ds-gray-2);
+  --reasoning-cutin-reasoning-cutin-ground-2: var(--ds-gray-1);
+  --reasoning-cutin-contradiction-ground: var(--ds-gray-2);
+  --reasoning-cutin-contradiction-ground-2: var(--ds-gray-1);
+  --reasoning-cutin-impact-edge: var(--ds-light);
+  --reasoning-cutin-impact-shade: color-mix(in srgb, var(--ds-light) 8%, transparent);
+  --reasoning-cutin-impact-shade-2: color-mix(in srgb, var(--ds-light) 32%, transparent);
+  --reasoning-cutin-impact-ground: color-mix(in srgb, var(--ds-light) 50%, transparent);
+  --reasoning-cutin-impact-ink: var(--ds-light);
+  --reasoning-cutin-card-edge: var(--ds-gray-5);
+  --reasoning-cutin-card-ground: var(--ds-gray-6);
+  --reasoning-cutin-card-ground-2: var(--ds-gray-5);
+  --reasoning-cutin-line-ground: var(--ds-light);
+  --reasoning-cutin-line-shade: var(--ds-gray-5);
+  --reasoning-cutin-skip-edge: var(--ds-gray-6);
+  --reasoning-cutin-skip-ground: color-mix(in srgb, var(--ds-gray-1) 88%, transparent);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
    docs/14 「デザインの決まり」). */
@@ -114,7 +114,7 @@
   line-height: var(--ds-leading-tight);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-2);
-  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
   overflow-wrap: anywhere;
   animation: reasoning-copy-in 400ms ease-out both;
 }
@@ -128,7 +128,7 @@
 .reasoning-cutin-skip {
   flex: none;
   min-width: 140px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   border: var(--ds-edge-thin) solid var(--reasoning-cutin-skip-edge);

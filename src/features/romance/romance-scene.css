@@ -84,7 +84,7 @@
   align-items: center;
   gap: var(--ds-space-1);
   width: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-1) var(--ds-space-2);
   border: 0;
   border-radius: var(--ds-radius-control);
@@ -221,11 +221,11 @@
 }
 /* A tap on the line goes on to the next one: a one-line line is still a
    44 px tap row (docs/10「タップ領域」); the text stays at its top. */
-.vn-dialogue .dialogue-text[role="button"] { min-height: 44px; }
+.vn-dialogue .dialogue-text[role="button"] { min-height: var(--ds-press-small); }
 .vn-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
-.vn-dialogue .next { min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-6); }
+.vn-dialogue .next { min-height: var(--ds-press-small); padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-6); }
 /* A scene's last step (「… →」) keeps to the window's lower right corner, over the room under the words, so the window
    keeps its size; it takes the place of the next mark. */
 .vn-scene .vn-window-body > .next {
@@ -251,7 +251,7 @@
   flex: 0 1 auto;
   align-self: center;
   /* On a wide screen they keep to a readable width in the middle, as the words of a reply do. */
-  width: min(100% - 4px, 680px);
+  width: min(100% - 4px, var(--ds-width));
   min-height: 0;
   margin: 0 0 var(--ds-space-2);
   /* Room for the presses' shadows inside the scrolling place. */
@@ -281,7 +281,7 @@
 }
 .vn-choices .choice {
   justify-self: stretch;
-  min-height: 48px;
+  min-height: var(--ds-press);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   border: 0;
@@ -327,7 +327,7 @@
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
 }
-.vn-choices .text-button { min-height: 44px; }
+.vn-choices .text-button { min-height: var(--ds-press-small); }
 
 /* The app supplies the visible play area; exceptionally long text remains
    reachable inside the window instead of being clipped. */

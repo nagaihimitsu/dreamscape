@@ -4,7 +4,7 @@
 .mg-engine-step-pick { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .mg-engine-step-pick .mg-step-pick-field { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; user-select: none; -webkit-user-select: none; }
 .mg-engine-step-pick .mg-step-pick-controls { flex: none; padding: var(--ds-space-2) var(--ds-space-4) calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); text-wrap: balance; }
+.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 70%, transparent); text-wrap: balance; }
 .mg-engine-step-pick .mg-step-pick-buttons {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr) minmax(0, 1.12fr);
@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2);
   line-height: var(--ds-leading-tight);
@@ -32,11 +32,11 @@
 .mg-engine-step-pick .mg-step-pick-push { font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); }
 .mg-engine-step-pick .mg-step-pick-take { font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); }
 .mg-engine-step-pick .mg-step-pick-take-detail { font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); font-variant-numeric: tabular-nums; }
-.mg-engine-step-pick .mg-step-pick-buttons > .mg-step-pick-leave { min-height: 48px; font-size: var(--ds-text-body); }
+.mg-engine-step-pick .mg-step-pick-buttons > .mg-step-pick-leave { min-height: var(--ds-press); font-size: var(--ds-text-body); }
 /* Not pressable now (the play is decided, or the take button has nothing to take): a dashed outline, not a filled button. */
 .mg-engine-step-pick .mg-step-pick-buttons > button[aria-disabled="true"] {
-  border: var(--ds-edge) dashed color-mix(in srgb, var(--ds-on-dark) 45%, transparent);
-  background: color-mix(in srgb, var(--ds-dark) 45%, transparent);
+  border: var(--ds-edge) dashed color-mix(in srgb, var(--ds-on-dark) 50%, transparent);
+  background: color-mix(in srgb, var(--ds-dark) 50%, transparent);
   box-shadow: none;
   color: var(--ds-on-dark-muted);
   cursor: default;
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   border-radius: var(--ds-radius-control);
   background: var(--ds-smoke);
@@ -53,8 +53,8 @@
 }
 @media (max-height: 620px) {
   .mg-engine-step-pick .mg-step-pick-controls { padding-top: var(--ds-space-2); }
-  .mg-engine-step-pick .mg-step-pick-buttons > button, .mg-engine-step-pick .mg-step-pick-auto { min-height: 56px; }
-  .mg-engine-step-pick .mg-step-pick-buttons > .mg-step-pick-leave { min-height: 48px; }
+  .mg-engine-step-pick .mg-step-pick-buttons > button, .mg-engine-step-pick .mg-step-pick-auto { min-height: var(--ds-press-large); }
+  .mg-engine-step-pick .mg-step-pick-buttons > .mg-step-pick-leave { min-height: var(--ds-press); }
 }
 @media (max-width: 340px) {
   .mg-engine-step-pick .mg-step-pick-buttons { gap: var(--ds-space-2); }

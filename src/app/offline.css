@@ -105,7 +105,7 @@ dialog.offline-play h2:focus {
 .offline-actions > .secondary,
 .offline-row > .offline-reload {
   width: auto;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-4);
 }
@@ -115,7 +115,7 @@ dialog.offline-play h2:focus {
 .offline-actions > .text-button {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0 var(--ds-space-2);
   font-size: var(--ds-text-note);

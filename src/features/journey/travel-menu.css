@@ -3,12 +3,12 @@
 .travel-reserve { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
 .travel-rentals { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-3); margin: var(--ds-space-1) 0; }
 .travel-rented { margin: 0; color: var(--ds-ink-muted); font-size: var(--ds-text-small); }
-.travel-rent-open { width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
+.travel-rent-open { width: auto; min-height: var(--ds-press-small); margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
 /* Tours (tour stage 2a): the same place-action line as the rentals; the sheet's cards. */
 .travel-tours { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-3); margin: var(--ds-space-1) 0; }
 .travel-tour-booked { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 /* (Scoped: the shared .secondary is loaded later and would widen the line's buttons.) */
-.travel-tours .travel-tour-open { width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
+.travel-tours .travel-tour-open { width: auto; min-height: var(--ds-press-small); margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
 .travel-tour-card { margin: var(--ds-space-3) 0 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); }
 .travel-tour-card h3 { margin: 0; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .travel-choice-modal .travel-tour-when { display: inline-block; margin: var(--ds-space-2) 0 0; padding: var(--ds-space-1) var(--ds-space-2); border-radius: var(--ds-radius-pill);
@@ -89,10 +89,10 @@
 .travel-list { display: grid; }
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-space-2); }
 .travel-choice-header h3 { margin: 0; font-size: var(--ds-text-large); }
-.travel-choice-header button { min-height: 44px; }
+.travel-choice-header button { min-height: var(--ds-press-small); }
 dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
 .travel-choice-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
-.travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: 44px; padding: var(--ds-space-2) var(--ds-space-3); white-space: nowrap; }
+.travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: var(--ds-press-small); padding: var(--ds-space-2) var(--ds-space-3); white-space: nowrap; }
 .travel-choice-modal p { margin: var(--ds-space-2) 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .travel-choice-routes { display: grid; gap: var(--ds-space-1); }
 
@@ -156,7 +156,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   align-items: flex-start;
   gap: var(--ds-space-2);
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-1);
   border: 0;
@@ -180,7 +180,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-thumb.is-plain {
   display: grid;
   place-items: center;
-  color: color-mix(in srgb, var(--ds-light) 90%, transparent);
+  color: color-mix(in srgb, var(--ds-light) 88%, transparent);
   font-size: var(--ds-text-large);
 }
 .travel-destination-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
@@ -208,7 +208,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   line-height: var(--ds-leading-tight);
 }
 .travel-destination-title > span { min-width: 0; overflow-wrap: anywhere; }
-.travel-destination-title .icon { flex: none; width: 16px; height: 16px; color: var(--ds-ink-muted); }
+.travel-destination-title .icon { flex: none; width: var(--ds-icon-small); height: var(--ds-icon-small); color: var(--ds-ink-muted); }
 .travel-destination-meta { min-width: 0; overflow-wrap: anywhere; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .travel-destination-reason { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .travel-destination.is-unavailable .travel-thumb { opacity: var(--ds-opacity-soft); }
@@ -219,7 +219,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface-chosen);
@@ -229,7 +229,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   cursor: pointer;
 }
 .travel-other > summary::-webkit-details-marker { display: none; }
-.travel-other > summary .icon { width: 16px; height: 16px; }
+.travel-other > summary .icon { width: var(--ds-icon-small); height: var(--ds-icon-small); }
 .travel-other[open] > summary .icon { transform: rotate(180deg); }
 
 /* The bottom band (§3.4 item 7): opaque, fixed to the screen's bottom, under the
@@ -247,13 +247,13 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   box-shadow: var(--ds-shadow-up);
   touch-action: manipulation;
 }
-.travel-band-row { display: flex; gap: var(--ds-space-2); max-width: 648px; margin: 0 auto; }
+.travel-band-row { display: flex; gap: var(--ds-space-2); max-width: var(--ds-width); margin: 0 auto; }
 .travel-band .travel-wait summary,
 .travel-band .travel-sleep-toggle {
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-4);
   border: var(--ds-edge) solid transparent;
@@ -266,7 +266,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   font-weight: var(--ds-weight-bold);
   cursor: pointer;
 }
-.travel-band .icon { width: 20px; height: 20px; color: var(--ds-ink); }
+.travel-band .icon { width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-ink); }
 .travel-band .travel-wait summary { list-style: none; }
 .travel-band .travel-wait summary::-webkit-details-marker { display: none; }
 .travel-band .travel-wait summary .travel-band-word::after { content: "▾"; margin-left: var(--ds-space-1); }
@@ -310,7 +310,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   .travel-band .travel-wait-actions > *,
   .travel-band .travel-band-sleep { animation: none; }
 }
-.travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
+.travel-band .travel-wait-actions button { width: auto; min-height: var(--ds-press-small); margin: 0; padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-note); }
 
 /* The selected marker (U21): the same glyph in yellow on a dark 40-px disc with a white
    ring, slightly enlarged, the current place's green ring outside the disc, the name above it
@@ -390,7 +390,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   color: var(--ds-ink);
   cursor: pointer;
 }
-.travel-choices-close .icon { width: 18px; height: 18px; }
+.travel-choices-close .icon { width: var(--ds-icon); height: var(--ds-icon); }
 .travel-routes { display: grid; gap: var(--ds-space-2); }
 .travel-route,
 .travel-event-button {
@@ -400,7 +400,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   justify-content: space-between;
   gap: var(--ds-space-1) var(--ds-space-2);
   width: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
   border: var(--ds-edge) solid transparent;
@@ -427,7 +427,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-event-title { flex: 1 1 100%; min-width: 0; overflow-wrap: anywhere; }
 .travel-event-button small { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); }
 .travel-event-go { display: inline-flex; align-items: center; gap: var(--ds-space-1); margin-left: auto; font-size: var(--ds-text-note); }
-.travel-event-go .icon { width: 14px; height: 14px; }
+.travel-event-go .icon { width: var(--ds-icon-small); height: var(--ds-icon-small); }
 .travel-event > p { margin: 0 var(--ds-space-1); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 .travel-event > .travel-routes { margin-left: var(--ds-space-3); }
 .travel-choices .fine-print,
@@ -449,7 +449,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   /* It rises out of the band as 待機's menu does (above). */
   animation: travel-band-rise var(--motion-drop) var(--ease-drop);
 }
-.travel-band-sleep .travel-sleep-choices { display: grid; gap: var(--ds-space-2); max-width: 648px; margin: 0 auto; padding-bottom: var(--ds-space-1); }
+.travel-band-sleep .travel-sleep-choices { display: grid; gap: var(--ds-space-2); max-width: var(--ds-width); margin: 0 auto; padding-bottom: var(--ds-space-1); }
 .travel-band .travel-sleep-toggle.is-selected { border-width: var(--ds-edge); background: var(--ds-surface-chosen); }
 .travel-map-selection .travel-sleep-choices { display: grid; gap: var(--ds-space-2); }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */

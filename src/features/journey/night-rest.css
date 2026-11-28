@@ -1,11 +1,11 @@
 /* The day's end (NightRest, docs/02 「休む」): the whole screen at night over what the rest led to, until the card ends. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --night-rest-sky-shade: rgba(240, 241, 244, 0.3);
-  --night-rest-moon-fill: #eef0f3;
-  --night-rest-star-fill: #ffffff;
-  --night-rest-night-screen-rest-shade: rgba(240, 241, 244, 0.22);
-  --night-rest-night-screen-rest-ground: #f1f2f4;
+  --night-rest-sky-shade: color-mix(in srgb, var(--ds-gray-6) 32%, transparent);
+  --night-rest-moon-fill: var(--ds-gray-6);
+  --night-rest-star-fill: var(--ds-light);
+  --night-rest-night-screen-rest-shade: color-mix(in srgb, var(--ds-gray-6) 16%, transparent);
+  --night-rest-night-screen-rest-ground: var(--ds-gray-6);
 }
 .night-rest {
   position: fixed;
@@ -152,7 +152,7 @@
 /* 「ホテルで休む」: the screen's main step, in the moon's pale grey (dark ink on it: about 13:1). */
 .night-screen-rest {
   width: 100%;
-  min-height: 54px;
+  min-height: var(--ds-press-large);
   margin-top: var(--ds-space-4);
   padding: var(--ds-space-3) var(--ds-space-6);
   border-radius: var(--ds-radius-control);
@@ -280,7 +280,7 @@
   align-items: center;
   gap: var(--ds-space-3);
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: var(--ds-space-8) 0 0;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
   border: var(--ds-edge-thin) solid var(--ds-action-edge);
@@ -294,7 +294,7 @@
   backdrop-filter: var(--ds-glass-blur);
 }
 button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
-.night-sns > .icon { flex: none; width: 18px; height: 18px; color: var(--ds-hairline); }
+.night-sns > .icon { flex: none; width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-hairline); }
 .night-sns-faces { display: inline-flex; flex: none; }
 .night-sns-face {
   display: grid;

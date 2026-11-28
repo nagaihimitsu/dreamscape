@@ -16,7 +16,7 @@
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
   padding: max(12px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) 0 max(12px, env(safe-area-inset-bottom));
   overflow: hidden;
-  background: color-mix(in srgb, var(--ds-shade) 52%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 50%, transparent);
   /* In quickly, out over its last moment (the screen removes it at 900 ms, QUIZ_CUTIN_MS). */
   animation: quiz-cutin-veil 900ms linear both;
 }
@@ -38,7 +38,7 @@
   line-height: var(--ds-leading-tight);
   letter-spacing: var(--ds-tracking-2);
   text-align: center;
-  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
   animation: quiz-cutin-word 300ms 50ms var(--ease-out) both;
 }
 @keyframes quiz-cutin-veil {

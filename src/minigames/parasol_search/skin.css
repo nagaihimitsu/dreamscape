@@ -40,13 +40,13 @@
   --u: calc(min(100cqw, 170cqh) / 240);
   position: relative;
   z-index: 1;
-  width: min(100cqw - 20px, 560px);
+  width: min(100cqw - 20px, var(--ds-width-narrow));
   height: min(76cqh, 100cqh - 24px, 150cqw);
   overflow: hidden;
   container-type: size;
   border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
   background: var(--parasol-search-window-ground);
-  box-shadow: 0 0 0 var(--ds-edge-thick) var(--parasol-search-window-shadow), 0 0 0 var(--ds-edge-heavy) var(--parasol-search-window-shadow-2), 0 6px 18px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thick) var(--parasol-search-window-shadow), 0 0 0 var(--ds-edge-heavy) var(--parasol-search-window-shadow-2), 0 6px 18px color-mix(in srgb, var(--ds-shade) 70%, transparent);
 }
 /* A short field (a 320×568 phone; 2026-11-14 playtest: a street about 250px tall, the customers over the umbrellas): the
    window takes more of the field's height, and the things a little less of its width, so the rows keep apart. */
@@ -67,7 +67,7 @@
   bottom: 0;
   height: max(6px, 2.4cqh);
   background: linear-gradient(var(--parasol-search-sill-ground), var(--parasol-search-sill-ground-2));
-  box-shadow: 0 -2px 4px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 -2px 4px color-mix(in srgb, var(--ds-shade) 32%, transparent);
   pointer-events: none;
 }
 /* The things of the street: buttons while their round is on show, as big as the thing and never under 52px, the
@@ -113,7 +113,7 @@ button.mg-parasol-search-spot[data-walker] { z-index: 3; }
 /* A round's things come in (round 2's customers to the stalls, round 3's children into the street). */
 button.mg-parasol-search-spot { animation: mg-parasol-search-arrive 260ms ease-out both; }
 @keyframes mg-parasol-search-arrive { from { opacity: 0; } }
-.mg-parasol-search-ring-wrong { fill: none; stroke: color-mix(in srgb, var(--ds-on-dark) 95%, transparent); stroke-width: 1.6; stroke-dasharray: 4 3; }
+.mg-parasol-search-ring-wrong { fill: none; stroke: color-mix(in srgb, var(--ds-on-dark) 100%, transparent); stroke-width: 1.6; stroke-dasharray: 4 3; }
 .mg-parasol-search-ring-found, .mg-parasol-search-ring-pointed { fill: none; stroke: var(--parasol-search-ring-found-line); stroke-width: 2.4; filter: drop-shadow(0 0 3px var(--parasol-search-ring-found-shadow-09)); }
 .mg-parasol-search-ring-pointed { stroke-dasharray: 6 3; animation: mg-parasol-search-point 900ms ease-out 2 both; }
 .mg-parasol-search-ring-found { animation: mg-parasol-search-ring 420ms ease-out both; }

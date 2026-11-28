@@ -3,7 +3,7 @@
 dialog.modal.credits-modal {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(560px, calc(100% - 24px));
+  width: min(var(--ds-width-narrow), calc(100% - 24px));
   max-height: calc(100dvh - 24px);
 }
 .credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
@@ -15,7 +15,7 @@ dialog.modal.credits-modal {
 .credits-list .fine-print { font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .credits-list summary {
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-3) 0;
   font-size: var(--ds-text-body);
   font-weight: var(--ds-weight-bold);
@@ -51,5 +51,5 @@ dialog.modal.credits-modal {
 }
 .credits-list .credits-own-artwork { margin-top: var(--ds-space-3); }
 /* The entries: the title screen's below its note, ゲームの設定's first in its データ. */
-.credits-entry { display: block; min-height: 44px; }
+.credits-entry { display: block; min-height: var(--ds-press-small); }
 .intro > .credits-entry { margin: var(--ds-space-1) auto 0; }

@@ -8,15 +8,15 @@
 /* The materials of the scene tags, named once: every colour below is one of these or of the design's rules (styles.css
    --ds-*; 2026-11-25). */
 :root {
-  --stage-recall-ground: #2b2d33; /* the quiet grey a memory comes up in */
-  --stage-photo-veil: rgba(16, 17, 20, 0.5);
-  --stage-photo-frame: #ffffff; /* a print's white border */
-  --stage-photo-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(22, 23, 26, 0.14), rgba(22, 23, 26, 0.46));
-  --stage-remembered-rim: inset 0 0 26px rgba(40, 42, 46, 0.3);
-  --phone-body: #141518;
+  --stage-recall-ground: var(--ds-gray-1); /* the quiet grey a memory comes up in */
+  --stage-photo-veil: color-mix(in srgb, var(--ds-gray-1) 50%, transparent);
+  --stage-photo-frame: var(--ds-light); /* a print's white border */
+  --stage-photo-shadow: 0 8px 28px color-mix(in srgb, var(--ds-shade) 50%, transparent);
+  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, color-mix(in srgb, var(--ds-gray-1) 16%, transparent), color-mix(in srgb, var(--ds-gray-1) 50%, transparent));
+  --stage-remembered-rim: inset 0 0 26px color-mix(in srgb, var(--ds-gray-1) 32%, transparent);
+  --phone-body: var(--ds-gray-1);
   --phone-corner: 28px; /* the rounded corners of the phone's glass */
-  --phone-slot: #3b3d42;
+  --phone-slot: var(--ds-gray-2);
 }
 
 /* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
@@ -109,10 +109,10 @@
    moves. The text stays at 8:1 or more on the glass, and 5.7:1 on the band, over any picture behind (its 16 %
    show-through counted at black). */
 [data-dialogue-window][data-remembered] {
-  --vn-window-bg: rgba(232, 233, 236, 0.84);
-  --vn-text: #2a2b2f;
-  --vn-muted: #55585f;
-  --vn-name-bg: #6b6e75;
+  --vn-window-bg: color-mix(in srgb, var(--ds-gray-6) 88%, transparent);
+  --vn-text: var(--ds-gray-1);
+  --vn-muted: var(--ds-gray-3);
+  --vn-name-bg: var(--ds-gray-3);
 }
 .vn-dialogue[data-remembered] .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-paper-shell[data-remembered] .battle-window::before {
@@ -209,7 +209,7 @@
   padding: 0;
 }
 :is(.vn-dialogue, .battle-dialogue) .phone-screen .phone-bubble > p.dialogue-text {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
   color: inherit;
@@ -253,7 +253,7 @@
   margin: 0;
   color: inherit;
   font-family: inherit;
-  font-size: 1em;
+  font-size: inherit;
   font-weight: var(--ds-weight-regular);
   line-height: var(--letter-line);
   letter-spacing: var(--ds-tracking-2);
@@ -261,7 +261,7 @@
   overflow-wrap: anywhere;
 }
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet p.dialogue-text {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
 }
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet .dialogue-next-mark {
   color: var(--ds-ink-muted);
@@ -288,7 +288,7 @@
   margin: 0.15em 0 0.85em;
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
-  font-size: calc(var(--letter-gloss) * 1em);
+  font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
   letter-spacing: var(--ds-tracking-1);
   white-space: pre-wrap;

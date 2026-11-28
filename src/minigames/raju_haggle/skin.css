@@ -13,7 +13,7 @@
 .mg-raju-haggle-flinch { display: block; width: 100%; height: 100%; }
 .mg-raju-haggle-flinch > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 .mg-raju-haggle-raju[data-figure="drawn"] .mg-raju-haggle-flinch { display: flex; align-items: center; justify-content: center; }
-.mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent)); }
+.mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px color-mix(in srgb, var(--ds-shade) 32%, transparent)); }
 /* His look, big enough to read on a phone (round 3: how a stare lands is read from him, so each look has its own pose,
    and his bubble's face and words say it too): boasting, chin up and puffed out, bobbing; eyes wandering, he fidgets
    from side to side, leaning back; recovering after a landed stare, he shrinks back; the fake walk-away, he turns his
@@ -107,7 +107,7 @@
   background:
     repeating-linear-gradient(to bottom, transparent 0 25px, var(--raju-haggle-paper-ground-028) 25px 26px),
     var(--raju-haggle-paper-ground);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--ds-shade) 32%, transparent);
   transform: rotate(1.5deg);
 }
 .mg-raju-haggle-paper-title { margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); text-align: center; }
@@ -118,7 +118,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 var(--ds-space-2);
-  min-height: 34px;
+  min-height: var(--ds-press-small);
   padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-1);
   border: var(--ds-edge) solid transparent;
   border-radius: var(--ds-radius-control);
@@ -160,7 +160,7 @@
 @media (max-height: 620px) {
   .mg-raju-haggle-bubble { top: 2%; }
   .mg-raju-haggle-paper { top: 28%; }
-  .mg-raju-haggle-paper li { min-height: 30px; font-size: var(--ds-text-large); }
+  .mg-raju-haggle-paper li { min-height: var(--ds-press-small); font-size: var(--ds-text-large); }
   .mg-raju-haggle-paper li[data-state="now"] { font-size: var(--ds-text-heading); }
 }
 /* A short field (a small phone with the browser's bars, or more over the scene's top): his words at the top, the prices in

@@ -55,7 +55,7 @@ const typeErrors = (css: string) => {
   // A typeface of a thing's own: one this stylesheet loads itself (@font-face), as a mini-game's handwriting.
   const ownFaces = [...css.matchAll(/@font-face\s*\{[^}]*font-family\s*:\s*([^;}]+)/g)].map(([, face]) => face.trim());
   for (const { property, value } of declarations(css.replace(/@font-face\s*\{[^}]*\}/g, ""))) {
-    if (property === "font-size" && !/^(?:var\(--[\w-]+\)|[\d.]+em|inherit|calc\(.*(?:var\(|em\b).*\))$/.test(value)) {
+    if (property === "font-size" && !/^(?:var\(--[\w-]+\)|inherit|calc\(.*var\(.*\))$/.test(value)) {
       wrong.push(`font-size: ${value} (not a step of the type scale)`);
     }
     if (property === "line-height" && !/^(?:var\(--[\w-]+\)|1|0|normal|inherit|calc\(.*var\(.*\))$/.test(value)) {
@@ -84,13 +84,30 @@ const typeErrors = (css: string) => {
     if (/^(?:border|outline)(?:-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?)?(?:-width)?$/.test(property) && barePixels(value).some((px) => px <= 8)) {
       wrong.push(`${property}: ${value} (not one of the rules' edges: --ds-edge-*)`);
     }
+    // The height of a press or a row: one of three.
+    if (property === "min-height" && barePixels(value).some((px) => px >= 30 && px <= 70)) {
+      wrong.push(`min-height: ${value} (not one of the rules' press heights: --ds-press-*)`);
+    }
+    // The width of a panel, a dialog, the page: one of three (inside min() and calc() too).
+    if (/^(?:max-)?width$/.test(property) && [...value.matchAll(/(?<![\w.-])(\d+)px\b/g)].some(([, px]) => Number(px) >= 500 && Number(px) <= 900)) {
+      wrong.push(`${property}: ${value} (not one of the rules' widths: --ds-width-*)`);
+    }
     if (property === "z-index" && /^\d{2,}$/.test(value)) wrong.push(`z-index: ${value} (a layer not named: --ds-layer-*)`);
     if (property === "font" && value !== "inherit") wrong.push(`font: ${value} (write font-family, font-size and line-height from the rules)`);
     if (property === "font-family" && !/^(?:var\(--[\w-]+\)|inherit)$/.test(value) && !ownFaces.some((face) => value.startsWith(face))) {
       wrong.push(`font-family: ${value} (not one of the rules' typefaces)`);
     }
   }
+  // An icon's size: one of four.
+  for (const [, selector, body] of css.replace(KEYFRAMES, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    if (!selector.includes(".icon")) continue;
+    for (const { property, value } of declarations(body + ";")) {
+      if (/^(?:width|height)$/.test(property) && /^\d+px$/.test(value)) wrong.push(`${property}: ${value} (an icon's size not one of the rules': --ds-icon-*)`);
+    }
+  }
   for (const { property, value } of declarations(css.replace(KEYFRAMES, ""))) {
+    // A blur: one of three.
+    if (!property.startsWith("--") && /blur\(\s*\d*\.?\d+px/.test(value)) wrong.push(`${property}: ${value} (a blur not one of the rules': --ds-blur-*)`);
     // An opacity between 0 and 1: one of four (a keyframe's steps are its motion's own).
     if (property === "opacity" && !/^(?:0|1|var\(--[\w-]+\))$/.test(value)) {
       wrong.push(`opacity: ${value} (not one of the rules' opacities: --ds-opacity-*)`);
@@ -106,6 +123,31 @@ const typeErrors = (css: string) => {
   }
   return wrong;
 };
+
+/** A value without its gradients (their stops are a curve, not a colour's alpha). */
+const withoutGradients = (value: string) => {
+  let bare = value;
+  for (let before = ""; before !== bare; ) [before, bare] = [bare, bare.replace(/(?:repeating-)?(?:linear|radial|conic)-gradient\((?:[^()]|\([^()]*\)|\((?:[^()]|\([^()]*\))*\))*\)/g, "")];
+  return bare;
+};
+const ALPHAS = new Set([0, 8, 16, 32, 50, 70, 88, 100]);
+/** A colour's transparency (color-mix's share): one of six, with 0 and 100 (a gradient's stops and a motion's steps are theirs). */
+const alphaErrors = (css: string) =>
+  declarations(css.replace(KEYFRAMES, ""))
+    .filter(({ property, value }) => !(property.startsWith("--") && /transparent\)\s*(?:calc\(|\d+%)/.test(value)))
+    .flatMap(({ property, value }) => [...withoutGradients(value).matchAll(/color-mix\(in srgb, [^,]*? (\d+(?:\.\d+)?)%/g)]
+      .filter(([, share]) => !ALPHAS.has(Number(share)))
+      .map(([, share]) => `${property}: ${share}% (not one of the rules' transparencies: 8, 16, 32, 50, 70, 88)`));
+/** A grey a stylesheet names for a thing of its own (not a mini-game's drawing): one of the six (--ds-gray-*), white or black. */
+const greyErrors = (css: string) =>
+  declarations(css)
+    .filter(({ property }) => property.startsWith("--") && !property.startsWith("--ds-"))
+    .flatMap(({ property, value }) => [...value.matchAll(/#([0-9a-fA-F]{6})(?:[0-9a-fA-F]{2})?\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g)]
+      .filter(([, hex, r, g, b]) => {
+        const channels = hex ? [0, 2, 4].map((at) => parseInt(hex.slice(at, at + 2), 16)) : [r, g, b].map(Number);
+        return Math.max(...channels) - Math.min(...channels) <= 16;
+      })
+      .map(([literal]) => `${property}: ${literal} (a grey not one of the rules': --ds-gray-*, --ds-light, --ds-shade)`));
 
 /** The shadows a thing casts: one of the rules' (a mini-game's drawing keeps its own, and a glow of light is not a shadow). */
 const shadowErrors = (css: string) =>
@@ -136,6 +178,10 @@ describe("the design's rules", () => {
     expect(stepsOf(root, "--ds-opacity-")).toHaveLength(4);
     expect(stepsOf(root, "--ds-gray-")).toHaveLength(6);
     expect(stepsOf(root, "--ds-shadow")).toHaveLength(4);
+    expect(stepsOf(root, "--ds-press").filter((name) => !name.endsWith("-shadow"))).toHaveLength(3);
+    expect(stepsOf(root, "--ds-icon")).toHaveLength(4);
+    expect(stepsOf(root, "--ds-width")).toHaveLength(3);
+    expect(stepsOf(root, "--ds-blur")).toHaveLength(3);
   });
 
   it("loads one web font for the words, Noto Sans JP (2026-11-28 user decision: one typeface)", () => {
@@ -172,7 +218,8 @@ describe("the design's rules", () => {
       const css = read(path);
       const wrong = typeErrors(css);
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);
-      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css));
+      wrong.push(...alphaErrors(css));
+      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css));
       expect(wrong).toEqual([]);
     });
   }

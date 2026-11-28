@@ -2,7 +2,7 @@
    one to a row on the narrowest phones; the numbers large enough to read at a glance. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --journey-numbers-journey-numbers-edge: rgba(36, 38, 43, 0.14);
+  --journey-numbers-journey-numbers-edge: color-mix(in srgb, var(--ds-gray-1) 16%, transparent);
 }
 .journey-numbers {
   margin: var(--ds-space-3) 0;

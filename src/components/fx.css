@@ -2,9 +2,9 @@
    A button that carries one is an fx-host. */
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --fx-sparkle-sweep-ground: rgba(255, 255, 255, 0);
-  --fx-sparkle-sweep-ground-2: rgba(255, 255, 255, 0.85);
-  --fx-star-ground: #ffffff;
+  --fx-sparkle-sweep-ground: color-mix(in srgb, var(--ds-light) 0%, transparent);
+  --fx-sparkle-sweep-ground-2: color-mix(in srgb, var(--ds-light) 88%, transparent);
+  --fx-star-ground: var(--ds-light);
 }
 .fx-host { position: relative; }
 

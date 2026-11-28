@@ -26,7 +26,7 @@
 .shop-card .shop-outfit-action {
   flex-wrap: wrap;
   gap: var(--ds-space-1) var(--ds-space-2);
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: var(--ds-space-1) 0 0;
   padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
@@ -37,5 +37,5 @@
 .shop-outfit-state { margin: var(--ds-space-1) 0 0; color: var(--ds-here); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
 /* A talking shop (2026-11-26): 「店に入る」 under her words, and what the shop first asks for each outfit not owned (the price is
    agreed inside). */
-.shop-card .shop-enter { width: 100%; min-height: 48px; margin: var(--ds-space-2) 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+.shop-card .shop-enter { width: 100%; min-height: var(--ds-press); margin: var(--ds-space-2) 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
 .shop-outfit-asking { margin: var(--ds-space-1) 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-variant-numeric: tabular-nums; line-height: var(--ds-leading-body); }

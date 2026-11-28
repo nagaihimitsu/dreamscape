@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
@@ -23,8 +23,8 @@
 dialog.modal.words-note {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(560px, calc(100% - 24px));
-  max-width: 560px;
+  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  max-width: var(--ds-width-narrow);
   max-height: calc(100dvh - 24px);
 }
 .words-note .modal-title-bar { margin-bottom: var(--ds-space-1); }

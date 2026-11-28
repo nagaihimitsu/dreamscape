@@ -6,7 +6,7 @@
   margin-top: var(--ds-space-2);
 }
 .encounter-translation-tools { display: flex; justify-content: flex-end; }
-.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: var(--ds-space-1) var(--ds-space-1); font-size: var(--ds-text-small); }
+.encounter-translation-tools > .translation-all { min-height: var(--ds-press-small); margin: 0; padding: var(--ds-space-1) var(--ds-space-1); font-size: var(--ds-text-small); }
 
 /* An English choice of an encounter (UI redesign stage 2.4): a row in the window, the whole row its press (2026-11-26
    user decision: no A·B·C letter). The select button lies under the row's words (stretched over it); the words let a
@@ -17,7 +17,7 @@
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: var(--ds-space-1) var(--ds-space-2);
-  min-height: 48px;
+  min-height: var(--ds-press);
   padding: var(--ds-space-1) var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-control);
@@ -29,7 +29,7 @@
   grid-column: 2;
   grid-row: 1;
   justify-self: end;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-1);
   font-size: var(--ds-text-small);
@@ -186,7 +186,7 @@
    reply that cannot be chosen: the disabled grey, its reason under its words). Nothing inside a row has a glass of its own. */
 .vn-choices .encounter-choices { gap: var(--ds-space-2); margin: 0; }
 .vn-choices .encounter-choice {
-  min-height: 52px;
+  min-height: var(--ds-press-large);
   padding: var(--ds-space-2) var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-pane);

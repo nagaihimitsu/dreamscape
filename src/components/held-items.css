@@ -4,7 +4,7 @@
 /* At least 44×44; the bag grows with its word when the text is enlarged. */
 .held-item-button {
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   padding: 0;
   display: inline-flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
   background: var(--ds-glass-mark);
 }
 .held-items-bag-icon { position: relative; display: block; line-height: 0; }
-.held-items-bag-icon .icon { width: 20px; height: 20px; }
+.held-items-bag-icon .icon { width: var(--ds-icon); height: var(--ds-icon); }
 /* The count's badge scales with its own text (enlarged text keeps it whole). */
 .held-items-count {
   position: absolute;
@@ -103,7 +103,7 @@
 }
 .held-item-lines li { overflow-wrap: anywhere; }
 .held-item-lines li + li { margin-top: var(--ds-space-1); }
-.held-item-lines li::marker { font-family: var(--ds-font-sans); font-size: 0.85em; }
+.held-item-lines li::marker { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); }
 
 /* 「NEW」 beside an item the player had not looked at when the detail opened (2026-11-13 user decision): white on the
    muted ink, 6:1. In the single item's heading it follows the name, before the ×. */

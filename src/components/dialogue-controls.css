@@ -93,7 +93,7 @@
   justify-content: center;
   width: 44px;
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0;
   border: 0;
@@ -106,7 +106,7 @@
   transition: background-color var(--motion-fast) var(--ease-out);
 }
 .dialogue-controls button.text-button:hover:enabled { background: var(--ds-glass-mark-hover); }
-.dialogue-controls .icon { display: block; width: 20px; height: 20px; color: currentColor; }
+.dialogue-controls .icon { display: block; width: var(--ds-icon); height: var(--ds-icon); color: currentColor; }
 .dialogue-controls .dialogue-tool-word {
   position: absolute;
   width: 1px;

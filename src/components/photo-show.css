@@ -29,7 +29,7 @@
 .photo-print {
   display: block;
   width: fit-content;
-  max-width: min(100%, 600px);
+  max-width: min(100%, var(--ds-width-narrow));
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-2) 0;
   border-radius: var(--ds-radius-pane);

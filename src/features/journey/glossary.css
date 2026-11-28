@@ -49,7 +49,7 @@
   border: 0;
   border-radius: var(--ds-radius-large);
   background: var(--ds-glass-bg);
-  box-shadow: var(--ds-shadow-large), 0 0 28px color-mix(in srgb, var(--ds-light) 28%, transparent);
+  box-shadow: var(--ds-shadow-large), 0 0 28px color-mix(in srgb, var(--ds-light) 32%, transparent);
   color: var(--ds-ink);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -84,13 +84,13 @@
   margin: 0;
   padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: color-mix(in srgb, var(--ds-hairline) 22%, transparent);
+  background: color-mix(in srgb, var(--ds-hairline) 16%, transparent);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
   letter-spacing: var(--ds-tracking-2);
 }
-.glossary-term-mark .icon { width: 14px; height: 14px; }
+.glossary-term-mark .icon { width: var(--ds-icon-small); height: var(--ds-icon-small); }
 /* The photo whole, in its own shape (a tall one stays tall), as wide as the card and no taller than its share of the
    screen; the file's size (its width and height attributes) keeps its room before it loads. */
 .glossary-term-photo {
@@ -170,7 +170,7 @@
     align-content: start;
     column-gap: var(--ds-space-4);
     row-gap: var(--ds-space-1);
-    width: min(100%, 600px);
+    width: min(100%, var(--ds-width-narrow));
     text-align: left;
   }
   .glossary-term-photo { grid-area: photo; align-self: start; max-height: 70dvh; }
@@ -187,8 +187,8 @@
 dialog.modal.glossary-modal {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(560px, calc(100% - 24px));
-  max-width: 560px;
+  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  max-width: var(--ds-width-narrow);
   max-height: calc(100dvh - 24px);
 }
 .glossary-modal .modal-title-bar { margin-bottom: var(--ds-space-1); }
@@ -221,7 +221,7 @@ dialog.modal.glossary-modal {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -285,8 +285,8 @@ button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: var(--d
 dialog.modal.glossary-entry {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(560px, calc(100% - 24px));
-  max-width: 560px;
+  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  max-width: var(--ds-width-narrow);
 }
 .glossary-entry .modal-title-bar { margin-bottom: var(--ds-space-1); }
 .glossary-entry-subtitle { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }

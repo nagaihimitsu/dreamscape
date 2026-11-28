@@ -62,7 +62,7 @@
   width: 44px;
   height: 44px;
   border-radius: var(--ds-radius-control);
-  background: color-mix(in srgb, var(--ds-light) 55%, transparent);
+  background: color-mix(in srgb, var(--ds-light) 50%, transparent);
 }
 .item-out-picture img {
   display: block;
@@ -107,11 +107,11 @@
 /* Lines beyond the room (data-before above, data-more below; ItemOut.tsx): the edge's line fades, so the list says it
    goes on. */
 .item-out-lines {
-  --fade-top: #000;
-  --fade-bottom: #000;
+  --fade-top: var(--ds-shade);
+  --fade-bottom: var(--ds-shade);
 }
-.item-out-lines[data-before] { --fade-top: rgba(0, 0, 0, 0.08); }
-.item-out-lines[data-more] { --fade-bottom: rgba(0, 0, 0, 0.12); }
+.item-out-lines[data-before] { --fade-top: color-mix(in srgb, var(--ds-shade) 8%, transparent); }
+.item-out-lines[data-more] { --fade-bottom: color-mix(in srgb, var(--ds-shade) 16%, transparent); }
 .item-out-lines:is([data-before], [data-more]) {
   -webkit-mask-image: linear-gradient(to bottom, var(--fade-top), var(--ds-shade) 1.6em, var(--ds-shade) calc(100% - 1.6em), var(--fade-bottom));
   mask-image: linear-gradient(to bottom, var(--fade-top), var(--ds-shade) 1.6em, var(--ds-shade) calc(100% - 1.6em), var(--fade-bottom));
@@ -120,7 +120,7 @@
 .item-out-lines li::marker {
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
-  font-size: 0.85em;
+  font-size: var(--ds-text-note);
 }
 /* With a highlighted line, the others in the muted ink (5.3:1 on the glass), the highlighted one in full ink, heavier,
    with a soft grey band behind its words (wrapping with them). */

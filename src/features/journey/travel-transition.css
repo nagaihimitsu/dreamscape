@@ -1,7 +1,7 @@
 /* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --travel-transition-scene-ground: #c7e0dd;
-  --travel-transition-scene-ground-2: #eef0f1;
+  --travel-transition-scene-ground-2: var(--ds-gray-6);
   --travel-transition-hill-back-ground: #b2c9b0;
   --travel-transition-hill-front-ground: #a2bfa9;
   --travel-transition-wire-edge: #57796b88;
@@ -9,8 +9,8 @@
   --travel-transition-is-mid-fill: #7f9f88;
   --travel-transition-is-near-fill: #56705f;
   --travel-transition-ground-ground: #637c68;
-  --travel-transition-ground-edge: #e6e7e999;
-  --travel-transition-is-rail-edge: #e6e7e9aa;
+  --travel-transition-ground-edge: color-mix(in srgb, var(--ds-gray-6) 70%, transparent);
+  --travel-transition-is-rail-edge: color-mix(in srgb, var(--ds-gray-6) 70%, transparent);
 }
 .travel-transition {
   position: fixed;
@@ -163,7 +163,7 @@
   bottom: 0;
   padding: 0 var(--ds-space-1);
   border-top-left-radius: var(--ds-radius-control);
-  background: color-mix(in srgb, var(--ds-on-dark) 80%, transparent);
+  background: color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   color: var(--ds-ink);
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
