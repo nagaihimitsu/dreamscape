@@ -1,14 +1,14 @@
 /* The city's shop's card under free time's row (ShopCard.tsx; 2026-11-20): the place card's paper, then each outfit it
    sells as a row: the heroine's small standing picture in it beside its name, description, price and 「買う」 (or
    「着てみる」 / 「着ています」 once bought). */
-.shop-outfits { display: grid; gap: 10px; margin: 2px 0 0; padding: 0; list-style: none; }
+.shop-outfits { display: grid; gap: var(--ds-space-2); margin: var(--ds-space-1) 0 0; padding: 0; list-style: none; }
 .shop-outfit {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr);
-  gap: 10px;
+  gap: var(--ds-space-2);
   align-items: start;
-  padding-top: 10px;
-  border-top: 1px solid var(--ds-parchment-line);
+  padding-top: var(--ds-space-2);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 /* The whole figure (the picture is 2:3), on a soft paper ground so a white outfit still has an edge. */
 .shop-outfit-figure {
@@ -17,25 +17,25 @@
   aspect-ratio: 2 / 3;
   overflow: hidden;
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
 }
 .shop-outfit-figure img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.shop-outfit-text { display: grid; gap: 4px; min-width: 0; }
-.shop-outfit-name { margin: 0; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
-.shop-outfit-description { margin: 0; font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.shop-outfit-text { display: grid; gap: var(--ds-space-1); min-width: 0; }
+.shop-outfit-name { margin: 0; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.shop-outfit-description { margin: 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .shop-card .shop-outfit-action {
   flex-wrap: wrap;
-  gap: 2px 10px;
+  gap: var(--ds-space-1) var(--ds-space-2);
   min-height: 44px;
-  margin: 4px 0 0;
-  padding: 6px 14px;
+  margin: var(--ds-space-1) 0 0;
+  padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
-.shop-outfit-price { margin-left: auto; font-size: var(--ds-text-note); font-weight: 500; font-variant-numeric: tabular-nums; }
-.shop-outfit-state { margin: 4px 0 0; color: var(--ds-here); font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-snug); }
+.shop-outfit-price { margin-left: auto; font-size: var(--ds-text-note); font-weight: var(--ds-weight-medium); font-variant-numeric: tabular-nums; }
+.shop-outfit-state { margin: var(--ds-space-1) 0 0; color: var(--ds-here); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
 /* A talking shop (2026-11-26): 「店に入る」 under her words, and what the shop first asks for each outfit not owned (the price is
    agreed inside). */
-.shop-card .shop-enter { width: 100%; min-height: 48px; margin: 6px 0 10px; font-size: var(--ds-text-body); font-weight: 600; }
-.shop-outfit-asking { margin: 4px 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-variant-numeric: tabular-nums; line-height: var(--ds-leading-snug); }
+.shop-card .shop-enter { width: 100%; min-height: 48px; margin: var(--ds-space-2) 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+.shop-outfit-asking { margin: var(--ds-space-1) 0 0; color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-variant-numeric: tabular-nums; line-height: var(--ds-leading-body); }

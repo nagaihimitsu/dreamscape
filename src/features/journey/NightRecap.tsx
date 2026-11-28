@@ -44,7 +44,7 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
       if (++errors === 2) setTilesFailed(true);
     }).addTo(map);
     const points = stops.map((stop) => L.latLng(stop.place.latitude, stop.place.longitude));
-    L.polyline(points, { className: "today-route-line", color: "#2b3140", weight: 3, opacity: 0.9, dashArray: "1 8", lineCap: "round", interactive: false }).addTo(map);
+    L.polyline(points, { className: "today-route-line", color: "#2c2e33", weight: 3, opacity: 0.9, dashArray: "1 8", lineCap: "round", interactive: false }).addTo(map);
     const resized = new ResizeObserver(() => map.invalidateSize());
     resized.observe(frame);
     // The view needs the frame's size (a frame or so later when it has none yet); the marks need the view (where they fall).
@@ -64,7 +64,7 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
       const nudges = nudgeMarksApart(marks.map((item) => item.box), MARK_GAP);
       marks.forEach(({ mark, at, width }, index) => {
         const { dx, dy } = nudges[index];
-        if (dx || dy) L.circleMarker(at, { className: "today-route-place", radius: 3, stroke: false, fillColor: "#2b3140", fillOpacity: 1, interactive: false }).addTo(map);
+        if (dx || dy) L.circleMarker(at, { className: "today-route-place", radius: 3, stroke: false, fillColor: "#2c2e33", fillOpacity: 1, interactive: false }).addTo(map);
         L.marker(at, {
           icon: L.divIcon({ className: "today-route-mark-wrap", iconSize: [width, MARK_HEIGHT], iconAnchor: [width / 2 - dx, MARK_HEIGHT / 2 - dy],
             html: `<span class="today-route-mark${mark.last ? " is-last" : ""}" aria-hidden="true">${escapeHtml(mark.label)}</span>` }),

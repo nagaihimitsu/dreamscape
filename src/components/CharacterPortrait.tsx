@@ -233,11 +233,11 @@ function CharacterImage({ path, neutralPath, color, fallback, onImageError, brea
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.
   return <svg viewBox="0 0 240 360" role="presentation" focusable="false" style={breath}>
-    <ellipse cx="120" cy="350" rx="88" ry="8" fill="#302f2b" opacity=".15" />
+    <ellipse cx="120" cy="350" rx="88" ry="8" fill="#2a2b2f" opacity=".15" />
     <path d="M42 350v-81c0-48 30-73 78-73s78 25 78 73v81" fill={color} />
     <path d="M92 187h56v34H92z" fill={color} />
     <ellipse cx="120" cy="130" rx="48" ry="61" fill={color} />
-    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke="#f3eee3" opacity=".8" strokeWidth="3" strokeLinecap="round" />
-    <path d="M86 218l34 31 34-31" fill="none" stroke="#f3eee3" opacity=".4" strokeWidth="3" />
+    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke="#f4f5f7" opacity=".8" strokeWidth="3" strokeLinecap="round" />
+    <path d="M86 218l34 31 34-31" fill="none" stroke="#f4f5f7" opacity=".4" strokeWidth="3" />
   </svg>;
 }

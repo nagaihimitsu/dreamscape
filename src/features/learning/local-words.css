@@ -5,19 +5,19 @@
    join; a line height with room for marks above and below the letters. */
 .local-word-script {
   font-family: var(--ds-font-sans);
-  letter-spacing: normal;
+  letter-spacing: 0;
   font-feature-settings: normal;
 }
 
 /* 「その国の言葉」 (LocalWords): the cities in the order their first word was learned, a row for each word. */
-.local-words { padding-bottom: 12px; }
-.local-words h3 { margin: 14px 0 2px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.local-words { padding-bottom: var(--ds-space-3); }
+.local-words h3 { margin: var(--ds-space-4) 0 var(--ds-space-1); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .local-words-list { margin: 0; padding: 0; list-style: none; }
-.local-word { padding: 8px 0 0; border-top: 1px solid var(--ds-parchment-line); }
+.local-word { padding: var(--ds-space-2) 0 0; border-top: var(--ds-edge-thin) solid var(--ds-line); }
 .local-word > p { margin: 0; overflow-wrap: anywhere; }
-.local-word-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
-.local-word-script { font-size: var(--ds-text-title); font-weight: 500; line-height: var(--ds-leading-body); }
+.local-word-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--ds-space-3); }
+.local-word-script { font-size: var(--ds-text-heading); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
 .local-word-reading { font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
 .local-word-meaning { font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
-.local-word .local-word-note { margin-top: 4px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
-.local-word .local-word-sources { margin-top: 2px; }
+.local-word .local-word-note { margin-top: var(--ds-space-1); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
+.local-word .local-word-sources { margin-top: var(--ds-space-1); }

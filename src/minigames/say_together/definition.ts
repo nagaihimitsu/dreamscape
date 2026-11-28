@@ -24,7 +24,7 @@ import { defineMiniGame } from "../contract";
  * Accessibility: 「言う」 is 64px at the bottom (thumb reach), Space and Enter say a word; the beat reads without sound (her
  * bubble shows 「せー」「の」 and each word as she says it, the held one's ー growing and her breath 「すっ」 before the last;
  * the lane shows her count as crosses and each word as a mark meeting the ring, the last one bigger) and with sound (a tick on each count, a chime with each word, brighter when the voices meet); a word on her beat
- * is gold with a thicker edge in both bubbles (not colour alone: a word off it is plain and lighter). With less motion she
+ * is dark with a thicker edge in both bubbles (not colour alone: a word off it is plain and lighter). With less motion she
  * does not nod and the bubbles appear without popping (the lane, the words still move). The outcome is read out by the
  * host.
  */

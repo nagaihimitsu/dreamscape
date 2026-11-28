@@ -7,9 +7,9 @@
   width: 34px;
   height: 34px;
   margin: -17px 0 0 -17px;
-  border: 2px solid color-mix(in srgb, var(--ds-on-slate) 85%, transparent);
+  border: var(--ds-edge) solid color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
   border-radius: 50%;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ds-slate-900) 35%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-dark) 35%, transparent);
   pointer-events: none;
   opacity: 0;
   animation: ignored-tap-ring 420ms var(--ease-out, ease-out) both;

@@ -10,16 +10,16 @@
   --monkey-catch-wall-ground-3: #7e3826;
   --monkey-catch-coping-ground: #d88a66;
   --monkey-catch-coping-ground-2: #b45e40;
-  --monkey-catch-inlay-edge-08: rgba(250, 244, 232, 0.8);
-  --monkey-catch-inlay-ground-072: rgba(250, 244, 232, 0.72);
-  --monkey-catch-ring-edge: #f6cf6a;
-  --monkey-catch-ring-shadow-06: rgba(246, 207, 106, 0.6);
-  --monkey-catch-bottle-edge: #1d2925;
+  --monkey-catch-inlay-edge-08: rgba(255, 255, 255, 0.8);
+  --monkey-catch-inlay-ground-072: rgba(255, 255, 255, 0.72);
+  --monkey-catch-ring-edge: #ffffff;
+  --monkey-catch-ring-shadow-06: rgba(255, 255, 255, 0.6);
+  --monkey-catch-bottle-edge: #1e2422;
   --monkey-catch-bottle-ground: #e3f3ea;
   --monkey-catch-bottle-ground-2: #8fc6ad;
   --monkey-catch-bottle-ground-3: #b98a55;
   --monkey-catch-glasses-edge: #141416;
-  --monkey-catch-glasses-ground: #2c3138;
+  --monkey-catch-glasses-ground: #2c2e33;
   --monkey-catch-ledge-ground: #efb48e;
   --monkey-catch-ledge-ground-2: #c0663f;
   --monkey-catch-ledge-ground-3: #8f4128;
@@ -44,9 +44,9 @@
   left: -2%;
   right: -2%;
   height: 12px;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background: linear-gradient(to bottom, var(--monkey-catch-coping-ground), var(--monkey-catch-coping-ground-2));
-  box-shadow: 0 3px 6px color-mix(in srgb, var(--ds-paper-shade) 35%, transparent);
+  box-shadow: 0 3px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
 }
 .mg-monkey-catch-inlay {
   position: absolute;
@@ -54,12 +54,12 @@
   left: 0;
   right: 0;
   height: 30px;
-  border-top: 2px solid var(--monkey-catch-inlay-edge-08);
-  border-bottom: 2px solid var(--monkey-catch-inlay-edge-08);
+  border-top: var(--ds-edge) solid var(--monkey-catch-inlay-edge-08);
+  border-bottom: var(--ds-edge) solid var(--monkey-catch-inlay-edge-08);
   background:
     repeating-linear-gradient(45deg, transparent 0 9px, var(--monkey-catch-inlay-ground-072) 9px 12px),
     repeating-linear-gradient(-45deg, transparent 0 9px, var(--monkey-catch-inlay-ground-072) 9px 12px);
-  opacity: 0.85;
+  opacity: var(--ds-opacity-strong);
 }
 /* A wall picture shows its own wall. */
 .mg-monkey-catch[data-art-wall] .mg-monkey-catch-wall { display: none; }
@@ -87,7 +87,7 @@
 .mg-monkey-catch[data-still] .mg-monkey-catch-monkey-lean { transition: none; animation: none; transform: none; }
 .mg-monkey-catch[data-still] .mg-monkey-catch-monkey[data-grip="snatch"] .mg-monkey-catch-monkey-lean { transform: translateY(4%); }
 .mg-monkey-catch-monkey-figure, .mg-monkey-catch-monkey-lean > img { display: block; width: 100%; height: 100%; object-fit: contain; }
-/* Where the thing meets the hands: a gold ring over a dark one (seen on bright stone and dark shade alike), tightening as
+/* Where the thing meets the hands: a white ring over a dark one (seen on bright stone and dark shade alike), tightening as
    the thing comes (the play's frames scale it), gone once the hands close. */
 .mg-monkey-catch-ring {
   position: absolute;
@@ -96,9 +96,9 @@
   top: 80%;
   width: 66px;
   height: 66px;
-  border: 3px solid var(--monkey-catch-ring-edge);
+  border: var(--ds-edge-thick) solid var(--monkey-catch-ring-edge);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ds-paper-shade) 80%, transparent), inset 0 0 0 2px color-mix(in srgb, var(--ds-paper-shade) 80%, transparent), 0 0 10px var(--monkey-catch-ring-shadow-06);
+  box-shadow: 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 80%, transparent), inset 0 0 0 var(--ds-edge) color-mix(in srgb, var(--ds-shade) 80%, transparent), 0 0 10px var(--monkey-catch-ring-shadow-06);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -144,7 +144,7 @@
   position: relative;
   width: 30px;
   height: 32px;
-  border: 2.5px solid var(--monkey-catch-bottle-edge);
+  border: var(--ds-edge-thick) solid var(--monkey-catch-bottle-edge);
   border-radius: var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control);
   background:
     linear-gradient(100deg, color-mix(in srgb, var(--ds-light) 85%, transparent) 0 18%, transparent 18% 100%),
@@ -157,18 +157,18 @@
   top: -16px;
   width: 12px;
   height: 14px;
-  border: 2.5px solid var(--monkey-catch-bottle-edge);
-  border-radius: var(--ds-radius-hair);
+  border: var(--ds-edge-thick) solid var(--monkey-catch-bottle-edge);
+  border-radius: var(--ds-radius-pill);
   background: linear-gradient(to bottom, var(--monkey-catch-bottle-ground-3) 0 60%, var(--monkey-catch-bottle-ground) 60%);
   transform: translateX(-50%);
 }
 /* The sunglasses: two dark lenses with a glint, the bridge between them. */
-.mg-monkey-catch-glasses { position: relative; display: flex; gap: 7px; margin-bottom: 12px; }
+.mg-monkey-catch-glasses { position: relative; display: flex; gap: var(--ds-space-2); margin-bottom: var(--ds-space-3); }
 .mg-monkey-catch-glasses > span {
   width: 23px;
   height: 17px;
-  border: 2.5px solid var(--monkey-catch-glasses-edge);
-  border-radius: var(--ds-radius-small) var(--ds-radius-small) var(--ds-radius-control) var(--ds-radius-control);
+  border: var(--ds-edge-thick) solid var(--monkey-catch-glasses-edge);
+  border-radius: var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-control);
   background: linear-gradient(135deg, color-mix(in srgb, var(--ds-light) 60%, transparent) 0 22%, var(--monkey-catch-glasses-ground) 22% 100%);
 }
 .mg-monkey-catch-glasses::before {
@@ -178,7 +178,7 @@
   top: 3px;
   width: 10px;
   height: 3px;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background: var(--monkey-catch-glasses-edge);
   transform: translateX(-50%);
 }
@@ -191,12 +191,12 @@
   left: 32%;
   width: 22%;
   height: 15px;
-  border-radius: var(--ds-radius-hair) var(--ds-radius-hair) var(--ds-radius-hair) var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill) var(--ds-radius-pill) var(--ds-radius-pill) var(--ds-radius-pill);
   /* A sandstone cornice: a lit lip, then a row of small carved brackets in its shadow. */
   background:
     linear-gradient(to bottom, var(--monkey-catch-ledge-ground) 0 4px, var(--monkey-catch-ledge-ground-2) 4px 7px, transparent 7px),
     repeating-linear-gradient(to right, var(--monkey-catch-ledge-ground-3) 0 5px, var(--monkey-catch-ledge-ground-4) 5px 7px);
-  box-shadow: 0 5px 6px color-mix(in srgb, var(--ds-paper-shade) 50%, transparent), 0 0 0 1px color-mix(in srgb, var(--ds-paper-shade) 75%, transparent);
+  box-shadow: 0 5px 6px color-mix(in srgb, var(--ds-shade) 50%, transparent), 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-shade) 75%, transparent);
   transform: translateY(-50%);
   pointer-events: none;
 }

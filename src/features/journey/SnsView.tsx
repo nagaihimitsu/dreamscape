@@ -34,9 +34,6 @@ type Actions = {
   newIds: ReadonlySet<string>;
 };
 
-/** The paper's tilt of a slide (a few tenths of a degree, in turn), so neighbouring prints lie differently. */
-const TILTS = [-0.9, 0.6, -0.4, 0.8];
-
 /**
  * 「SNS」 inside 旅の記録. `newIds`: the comments new to the player as 旅の記録 opened (GameApp's marks; a small red dot before
  * the name, and by the post's dots). `openPostId`: the post to open on (the night screen's card): the timeline at its card, on
@@ -196,7 +193,7 @@ function SnsCard({ posts, startPostId, actions }: { posts: readonly SnsPostView[
     <div className="sns-strip" {...swipe}>
       <div className="sns-track" style={{ "--sns-at": at } as CSSProperties}>
         {slides.map((slide, slideIndex) => <div key={slide.key} className="sns-slide" inert={slideIndex !== at}
-          aria-hidden={slideIndex !== at || undefined} style={{ "--sns-tilt": `${TILTS[slideIndex % TILTS.length]}deg` } as CSSProperties}>
+          aria-hidden={slideIndex !== at || undefined}>
           <Paper post={slide.post} photo={slide.photo} actions={actions} />
         </div>)}
       </div>
@@ -225,9 +222,9 @@ function SnsCard({ posts, startPostId, actions }: { posts: readonly SnsPostView[
 }
 
 /**
- * A photo's paper (the scenes' print: a white border, a little tilted; its words not): the photo (a press opens it larger),
+ * A photo's card (as the scenes' photo, on the glass): the photo (a press opens it larger),
  * the writer's face and name at its top left (their page), the place at its bottom right, and in the margin under it the
- * post's line in a hand, its translation, and the heart (the player's like; none for a kept journey but its mark).
+ * post's line, its translation, and the heart (the player's like; none for a kept journey but its mark).
  */
 function Paper({ post, photo, actions }: { post: SnsPostView; photo: SnsPhotoView; actions: Actions }) {
   return <figure className="sns-paper">

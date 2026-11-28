@@ -35,7 +35,7 @@ export const PhotoShowContext = createContext<PhotoShowCue>({});
 /** How long the print takes to go when its turn ends (photo-show.css .photo-show-leaving): quickly. */
 const PHOTO_LEAVE_MS = 160;
 
-/** Where the print on screen is (its box in the window, without its coming-in tilt and scale): its flight starts there. */
+/** Where the print on screen is (its box in the window, without its coming-in scale): its flight starts there. */
 let shownPrint: { imageId: string; box: Box } | null = null;
 
 /** The photo whose print was on screen last, if it is `imageId` (GameApp: the print that flies into ≡メニュー as it goes). */
@@ -103,7 +103,7 @@ function PhotoPrint({ imageId, path, caption, leaving }: { imageId: string; path
     const element = ref.current;
     if (!element) return;
     const measure = () => {
-      // Its own size about the middle it shows (the tilt and the coming-in scale left out).
+      // Its own size about the middle it shows (the coming-in scale left out).
       const rect = element.getBoundingClientRect();
       const width = element.offsetWidth;
       const height = element.offsetHeight;

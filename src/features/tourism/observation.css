@@ -1,9 +1,9 @@
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --observation-viewport-ground: #282e29;
+  --observation-viewport-ground: #2a2b2f;
 }
 .observation-viewer {
-  margin-block: 22px;
+  margin-block: var(--ds-space-6);
 }
 .observation-viewport {
   position: relative;
@@ -21,16 +21,16 @@
   cursor: grabbing;
 }
 .observation-viewport:focus-visible {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 2px;
-  box-shadow: 0 0 0 6px var(--ds-slate-900);
+  box-shadow: var(--ds-focus-halo);
 }
 /* The arrow keys' line: shown only while the picture itself has keyboard focus (2026-11-11, the user's decision). */
 .observation-key-hint {
   display: none;
   flex: 0 0 100%;
   margin: 0;
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
   color: var(--ds-ink-muted);
 }
@@ -57,12 +57,12 @@
   border: 0;
   background: transparent;
   transform: translate(-50%, -50%);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   touch-action: none;
 }
-/* A point to look at (stage 2.4): a slate disc with a light rim; found = parchment disc;
-   selected = the selected marker's yellow on slate with a yellow ring (§2.1, never colour alone:
+/* A point to look at (stage 2.4): a dark disc with a light rim; found = light ground disc;
+   selected = white on the dark with a white ring (§2.1, never colour alone:
    the ring and the open detail tell it too). */
 .observation-hotspot > span {
   width: 24px;
@@ -70,23 +70,22 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid var(--ds-on-slate);
-  background: var(--ds-slate-900);
-  color: var(--ds-on-slate);
+  border: var(--ds-edge-thin) solid var(--ds-on-dark);
+  background: var(--ds-dark);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
-  box-shadow: 0 1px 5px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+  box-shadow: var(--ds-shadow-small);
 }
 .observation-hotspot.is-found > span {
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
 }
 .observation-hotspot.is-selected > span {
-  border-color: var(--ds-marker-selected);
-  background: var(--ds-slate-900);
-  color: var(--ds-marker-selected);
+  border-color: var(--ds-light);
+  background: var(--ds-dark);
+  color: var(--ds-light);
   box-shadow:
-    0 0 0 3px var(--ds-marker-selected),
-    0 1px 8px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+    0 0 0 var(--ds-edge-thick) var(--ds-light), var(--ds-shadow-small);
 }
 /* A clue found in this observation: its mark pops once as it turns to ✓ (the button, its
    48-px target, stays where it is). */
@@ -105,9 +104,9 @@
   position: absolute;
   z-index: -1;
   inset: 12px;
-  border: 2px solid var(--ds-on-slate);
+  border: var(--ds-edge) solid var(--ds-on-dark);
   border-radius: 50%;
-  box-shadow: 0 0 4px color-mix(in srgb, var(--ds-shade) 60%, transparent);
+  box-shadow: var(--ds-shadow-small);
   opacity: 0;
   pointer-events: none;
   animation: hotspot-call 1.1s var(--ease-out) 300ms 2;
@@ -125,16 +124,16 @@
 .observation-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-block: 12px;
+  gap: var(--ds-space-2);
+  padding-block: var(--ds-space-3);
 }
 /* Zoom, reset, markers and 進む: secondary pressables on the page (§2.3). */
 .observation-controls button {
   min-width: 48px;
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-heading);
 }
@@ -153,38 +152,38 @@
 }
 .observation-controls .observation-reset {
   margin-left: auto;
-  padding-inline: 12px;
+  padding-inline: var(--ds-space-3);
   font-size: var(--ds-text-note);
 }
 .observation-options {
   display: flex;
   justify-content: flex-end;
-  margin: -4px 0 8px;
+  margin: -4px 0 var(--ds-space-2);
 }
 .observation-marker-toggle {
   min-height: 44px;
-  padding: 6px 12px;
-  background: var(--ds-parchment);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
 }
 
 @media (max-width: 600px) {
   .observation-viewer {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0 6px;
-    margin: 6px 0;
+    gap: 0 var(--ds-space-2);
+    margin: var(--ds-space-2) 0;
   }
   .observation-viewport {
     grid-column: 1 / -1;
   }
   .observation-controls {
-    gap: 4px;
-    padding: 6px 0;
+    gap: var(--ds-space-1);
+    padding: var(--ds-space-2) 0;
   }
   .observation-controls button {
     min-width: 44px;
@@ -193,14 +192,14 @@
     min-width: 2.8em;
   }
   .observation-controls .observation-reset {
-    padding-inline: 8px;
+    padding-inline: var(--ds-space-2);
   }
   .observation-options {
     align-items: center;
     margin: 0;
   }
   .observation-marker-toggle {
-    padding-inline: 8px;
+    padding-inline: var(--ds-space-2);
   }
 }
 
@@ -213,18 +212,18 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--ds-space-2);
   pointer-events: none;
 }
-/* Over the photo (§2.4): the place as a display-only pill, 手がかり帳 as a slate pressable. */
+/* Over the photo (§2.4): the place as a display-only pill, 手がかり帳 as a dark pressable. */
 .observation-location {
-  padding: 5px 10px;
+  padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-chip-bg);
-  color: var(--ds-on-slate);
-  box-shadow: var(--ds-pill-shadow);
-  font-size: var(--ds-text-caption);
-  line-height: var(--ds-leading-snug);
+  background: var(--ds-smoke);
+  color: var(--ds-on-dark);
+  box-shadow: var(--ds-shadow-small);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
 }
 /* The place's name gives way (it wraps) before 手がかり帳, which keeps its word on one line (2026-11-14, the phone UI
    audit: 「手がか／り帳」 under a long name). */
@@ -241,20 +240,20 @@
   text-shadow: var(--ds-action-text-shadow);
   white-space: nowrap;
 }
-.observation-options { align-items: center; gap: 4px; }
+.observation-options { align-items: center; gap: var(--ds-space-1); }
 .observation-marker-toggle { white-space: nowrap; }
 /* 「進む」 on its own row under the toolbar, its wide part (2026-11-14, the phone UI audit: it was the row's smallest
    button), after 「観光案内をもう一度読む」 where the landmark has a guide (2026-11-13 user decision). */
-.observation-next { display: flex; align-items: stretch; gap: 8px; margin: 0 0 8px; }
+.observation-next { display: flex; align-items: stretch; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-2); }
 .observation-replay {
   flex: none;
   min-height: 48px;
   margin: 0;
-  padding: 6px 12px;
-  border: 1.5px solid transparent;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
@@ -264,20 +263,20 @@
   min-width: 0;
   min-height: 48px;
   margin: 0;
-  padding: 6px 16px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
-  font-weight: 700;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
-.observation-next .observation-proceed > span { font-size: var(--ds-text-heading); font-weight: 400; }
+.observation-next .observation-proceed > span { font-size: var(--ds-text-heading); font-weight: var(--ds-weight-regular); }
 @media (max-width: 600px) {
-  .observation-controls { gap: 2px; min-width: 0; }
+  .observation-controls { gap: var(--ds-space-1); min-width: 0; }
   .observation-controls output { min-width: 2.5em; }
-  .observation-controls .observation-reset { padding-inline: 5px; white-space: nowrap; }
-  .observation-options { gap: 2px; }
-  .observation-marker-toggle { padding-inline: 5px; }
-  .observation-next { flex: 1 0 100%; grid-column: 1 / -1; gap: 6px; margin: 2px 0 6px; }
-  .observation-replay { padding-inline: 10px; }
+  .observation-controls .observation-reset { padding-inline: var(--ds-space-1); white-space: nowrap; }
+  .observation-options { gap: var(--ds-space-1); }
+  .observation-marker-toggle { padding-inline: var(--ds-space-1); }
+  .observation-next { flex: 1 0 100%; grid-column: 1 / -1; gap: var(--ds-space-2); margin: var(--ds-space-1) 0 var(--ds-space-2); }
+  .observation-replay { padding-inline: var(--ds-space-2); }
 }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
 .observation-marker-toggle:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

@@ -5,16 +5,16 @@
 :root {
   --vn-window-bg: var(--ds-glass-bg);
   --vn-window-blur: var(--ds-glass-blur);
-  --vn-text: var(--ds-glass-ink);
-  --vn-muted: var(--ds-glass-muted);
+  --vn-text: var(--ds-ink);
+  --vn-muted: var(--ds-ink-muted);
   /* The speaker's name band without colours of its own: white words on it (5.5:1). */
   --vn-name-bg: var(--ds-speaker);
   --vn-name-ink: var(--ds-speaker-ink);
   /* The glass's edges (2026-11-27 user request: a fluffier window; then every pane of glass the same): the rules' glass
      edge (styles.css --ds-glass-*), its eased fade lying mostly outside the words. */
-  --vn-window-radius: var(--ds-glass-radius);
+  --vn-window-radius: var(--ds-radius-large);
   --vn-window-bleed: var(--ds-glass-bleed);
-  --vn-body-size: var(--ds-text-reading);
+  --vn-body-size: var(--ds-text-large);
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
   /* A choice: a pane of smoked glass over the scene (--ds-action), set apart from the light glass of the words. */
   --vn-choice-bg: var(--ds-action-fill);
@@ -66,15 +66,15 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: var(--ds-space-1);
   /* Keep the reference in the margin beside the centered character's face.
      A compact width also leaves room for the lower choice window. */
   width: min(118px, calc(35% - 8px));
-  padding: 6px 8px 8px;
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-chip-bg);
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-caption);
+  background: var(--ds-smoke);
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
@@ -82,10 +82,10 @@
 .date-reference a {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--ds-space-1);
   width: 100%;
   min-height: 44px;
-  padding: 4px 8px;
+  padding: var(--ds-space-1) var(--ds-space-2);
   border: 0;
   border-radius: var(--ds-radius-control);
   background: var(--ds-action-fill);
@@ -94,10 +94,10 @@
   box-shadow: var(--ds-action-shadow);
   color: var(--ds-action-ink);
   text-shadow: var(--ds-action-text-shadow);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   text-decoration: none;
 }
-.date-reference a:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+.date-reference a:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }
 /* The portrait and the window are independent layers over the same backdrop.
    The layer is sized and placed on the area below the header (the whole scene
    where none lies over it) and clipped at that area's top edge only: the top 10.714 %
@@ -196,12 +196,12 @@
   max-width: min(65%, 260px);
   max-height: 48px;
   overflow: hidden;
-  padding: 8px 14px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   border-radius: var(--ds-radius-pane);
   background: var(--vn-choice-bg);
   color: var(--ds-action-ink);
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   pointer-events: none;
   animation: vn-choice-away 220ms ease-in forwards;
 }
@@ -212,7 +212,7 @@
 @media (prefers-reduced-motion: reduce) { .vn-choice-exit { display: none; } }
 .vn-dialogue .dialogue-text {
   /* The same above and below: the room over the words and under them match. */
-  margin: 6px 0;
+  margin: var(--ds-space-2) 0;
   min-height: 0;
   color: var(--vn-text);
   font-size: var(--vn-body-size);
@@ -225,7 +225,7 @@
 .vn-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
-.vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
+.vn-dialogue .next { min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-6); }
 /* A scene's last step (「… →」) keeps to the window's lower right corner, over the room under the words, so the window
    keeps its size; it takes the place of the next mark. */
 .vn-scene .vn-window-body > .next {
@@ -233,12 +233,12 @@
   right: var(--vn-window-padding);
   bottom: 0;
   z-index: 1;
-  padding: 0 0 0 20px;
+  padding: 0 0 0 var(--ds-space-6);
 }
 .vn-window-body:has(> .next) .dialogue-next-mark { display: none; }
 .vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
 .vn-dialogue .paused { color: var(--vn-text); }
-.vn-dialogue h1 { font-size: var(--ds-text-heading); margin: 2px 0 8px; color: var(--vn-text); }
+.vn-dialogue h1 { font-size: var(--ds-text-heading); margin: var(--ds-space-1) 0 var(--ds-space-2); color: var(--vn-text); }
 
 /* The choices (2026-11-25 user decision): above the window, which stays as it was and keeps the line they answer, they
    float over the scene as panes of smoked glass with a white hairline (--ds-action; no longer terracotta, 2026-11-25; white, not gold, 2026-11-27),
@@ -253,9 +253,9 @@
   /* On a wide screen they keep to a readable width in the middle, as the words of a reply do. */
   width: min(100% - 4px, 680px);
   min-height: 0;
-  margin: 0 0 8px;
+  margin: 0 0 var(--ds-space-2);
   /* Room for the presses' shadows inside the scrolling place. */
-  padding: 2px 2px 8px;
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2);
   overflow-y: auto;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
@@ -263,35 +263,35 @@
 }
 .vn-choices .choices {
   display: grid;
-  gap: 10px;
+  gap: var(--ds-space-2);
   margin: 0;
   padding: 0;
   border: 0;
 }
-.vn-choices .choices > div { display: grid; justify-items: end; gap: 4px; }
+.vn-choices .choices > div { display: grid; justify-items: end; gap: var(--ds-space-1); }
 .vn-choices .choice-hint {
   justify-self: start;
   margin: 0;
-  padding: 3px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
   background: var(--vn-window-bg);
   color: var(--vn-text);
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 .vn-choices .choice {
   justify-self: stretch;
   min-height: 48px;
   margin: 0;
-  padding: 9px 16px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--vn-choice-bg);
   box-shadow: var(--vn-choice-shadow);
   color: var(--ds-action-ink);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
   text-shadow: var(--ds-action-text-shadow);
 }
 /* The trailing chevron of a pressable row (§2.3). */
@@ -306,7 +306,7 @@
 .vn-choices .choice-number { color: var(--ds-glass-mark); }
 .vn-choices .choice:hover:enabled, .vn-choices .choice:focus-visible { filter: brightness(1.08); }
 .vn-choices .choice:active:enabled { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
-.vn-choices .choice:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+.vn-choices .choice:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }
 /* One that cannot be chosen yet or at all: the glass, its words muted (its reason under it). */
 .vn-choices .choice:disabled {
   opacity: 1;
@@ -320,12 +320,12 @@
 .vn-choices .text-button,
 .vn-choices :is(.choices, .encounter-choices) p {
   margin: 0;
-  padding: 4px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
   background: var(--vn-window-bg);
   color: var(--vn-text);
   font-size: var(--ds-text-note);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
 .vn-choices .text-button { min-height: 44px; }
 
@@ -352,7 +352,7 @@
   .vn-scene .vn-window-body { padding: 0 var(--ds-glass-padding) calc(var(--vn-head-height) - var(--vn-head-overhang)); }
   .vn-scene .vn-window-body > .next { right: 16px; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
-  .vn-choices .choice { padding: 9px 14px; }
+  .vn-choices .choice { padding: var(--ds-space-2) var(--ds-space-4); }
 }
 /* On a phone held upright (2026-11-27 user requests, after comparing the talk with a romance game on an iPhone) the
    talk's window floats over the speaker's waist, its top always at the same height, a quarter of the screen and its head

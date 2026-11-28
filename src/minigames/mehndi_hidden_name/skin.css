@@ -4,24 +4,24 @@
    of the drawn hand and lamp. */
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --mehndi-hidden-name-skin-ground-086: rgba(10, 8, 6, 0.86);
-  --mehndi-hidden-name-glow-ground-02: rgba(255, 214, 140, 0.2);
-  --mehndi-hidden-name-glow-ground-008: rgba(255, 200, 120, 0.08);
-  --mehndi-hidden-name-lamp-shadow-06: rgba(255, 200, 120, 0.6);
+  --mehndi-hidden-name-skin-ground-086: rgba(10, 10, 12, 0.86);
+  --mehndi-hidden-name-glow-ground-02: rgba(255, 255, 255, 0.2);
+  --mehndi-hidden-name-glow-ground-008: rgba(255, 255, 255, 0.08);
+  --mehndi-hidden-name-lamp-shadow-06: rgba(255, 255, 255, 0.6);
   --mehndi-hidden-name-skin-fill: #e2b690;
   --mehndi-hidden-name-ink-line: #8f3f17;
   --mehndi-hidden-name-writing-fill: #7a3010;
-  --mehndi-hidden-name-brass-fill: #c7963f;
-  --mehndi-hidden-name-glass-fill-06: rgba(255, 226, 160, 0.6);
-  --mehndi-hidden-name-flame-fill: #ffcf6b;
-  --mehndi-hidden-name-mg-mehndi-hidden-name-glint-shadow-095: rgba(255, 236, 190, 0.95);
-  --mehndi-hidden-name-x-shadow-08: rgba(255, 236, 190, 0.8);
-  --mehndi-hidden-name-writing-shadow-095: rgba(255, 224, 160, 0.95);
-  --mehndi-hidden-name-mg-mehndi-hidden-name-found-shadow-1: rgba(255, 236, 190, 1);
-  --mehndi-hidden-name-aim-edge-095: rgba(255, 224, 150, 0.95);
-  --mehndi-hidden-name-aim-shadow-055: rgba(255, 214, 140, 0.55);
-  --mehndi-hidden-name-aim-ink: #ffe9b8;
-  --mehndi-hidden-name-hint-ring-shadow-035: rgba(255, 214, 140, 0.35);
+  --mehndi-hidden-name-brass-fill: #b5b8bf;
+  --mehndi-hidden-name-glass-fill-06: rgba(255, 255, 255, 0.6);
+  --mehndi-hidden-name-flame-fill: #ffffff;
+  --mehndi-hidden-name-mg-mehndi-hidden-name-glint-shadow-095: rgba(255, 255, 255, 0.95);
+  --mehndi-hidden-name-x-shadow-08: rgba(255, 255, 255, 0.8);
+  --mehndi-hidden-name-writing-shadow-095: rgba(255, 255, 255, 0.95);
+  --mehndi-hidden-name-mg-mehndi-hidden-name-found-shadow-1: rgba(255, 255, 255, 1);
+  --mehndi-hidden-name-aim-edge-095: rgba(255, 255, 255, 0.95);
+  --mehndi-hidden-name-aim-shadow-055: rgba(255, 255, 255, 0.55);
+  --mehndi-hidden-name-aim-ink: #ffffff;
+  --mehndi-hidden-name-hint-ring-shadow-035: rgba(255, 255, 255, 0.35);
 }
 /* The lamp's place, registered so that it glides (a tap, a Tab, おまかせ) instead of jumping. */
 @property --mehndi-lamp-x { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
@@ -34,7 +34,7 @@
   display: grid;
   place-items: center;
   container-type: size;
-  background: radial-gradient(ellipse 70% 62% at 50% 48%, color-mix(in srgb, var(--ds-paper-shade) 50%, transparent), var(--mehndi-hidden-name-skin-ground-086));
+  background: radial-gradient(ellipse 70% 62% at 50% 48%, color-mix(in srgb, var(--ds-shade) 50%, transparent), var(--mehndi-hidden-name-skin-ground-086));
 }
 .mg-mehndi-hidden-name-palm {
   --mehndi-lamp-x: 50%;
@@ -91,7 +91,7 @@
 .mg-mehndi-hidden-name-ink { fill: none; stroke: var(--mehndi-hidden-name-ink-line); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .mg-mehndi-hidden-name-fill { fill: var(--mehndi-hidden-name-ink-line); stroke: none; }
 .mg-mehndi-hidden-name-fine { stroke-width: 1.2; }
-.mg-mehndi-hidden-name-writing { fill: var(--mehndi-hidden-name-writing-fill); font-family: var(--ds-font-serif); font-weight: 600; }
+.mg-mehndi-hidden-name-writing { fill: var(--mehndi-hidden-name-writing-fill); font-family: var(--ds-font-sans); font-weight: var(--ds-weight-bold); }
 /* The hand of the player's name and of the decorations made of its letters (docs/13 2.10, 2.12; the user's decisions of
    2026-11-17): Fasol SP Demo by Sasha Pavljenko, the unmodified demo file bundled with the game (its licence:
    fonts/LICENSE-FasolSP.txt), declared here, in the play's own stylesheet, so the title page never loads it; the relative
@@ -107,11 +107,11 @@
   unicode-range: U+0020, U+0041-005A, U+0061-007A;
 }
 /* The name and the decorations in that hand, at the one weight it comes in (no made-up bold), the name's other characters
-   in the serif of the scene's other writing (FARHANA and the mark keep the rule above). Laid out at its exact advances
+   in the game's one face, Noto Sans JP (FARHANA and the mark keep the rule above). Laid out at its exact advances
    (geometricPrecision: no hinted rounding of each letter), as writing.ts and marks.ts measure it. */
 .mg-mehndi-hidden-name-lettering, .mg-mehndi-hidden-name-decoy {
-  font-family: "Fasol SP Demo", "Noto Serif JP", serif;
-  font-weight: 400;
+  font-family: "Fasol SP Demo", "Noto Sans JP", sans-serif;
+  font-weight: var(--ds-weight-regular);
   font-synthesis: none;
   text-rendering: geometricPrecision;
 }
@@ -136,21 +136,21 @@
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
-.mg-mehndi-hidden-name-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
+.mg-mehndi-hidden-name-spot:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; }
 /* The places pointed at: a dashed ring where the writing is not (round a decoration pointed at, as wide as Skin.tsx
-   says); gold where it is, once found or shown. */
+   says); white where it is, once found or shown. */
 .mg-mehndi-hidden-name-mark-ring {
   position: absolute;
   width: 24cqw;
   aspect-ratio: 1;
-  border: 2px dashed color-mix(in srgb, var(--ds-on-slate) 85%, transparent);
+  border: var(--ds-edge) dashed color-mix(in srgb, var(--ds-on-dark) 85%, transparent);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
   animation: mg-mehndi-hidden-name-ring 420ms ease-out both;
 }
 @keyframes mg-mehndi-hidden-name-ring { from { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
-.mg-mehndi-hidden-name-mark-ring[data-writing] { border: 2px solid var(--ds-game-gold); box-shadow: 0 0 12px color-mix(in srgb, var(--ds-game-gold) 70%, transparent); }
+.mg-mehndi-hidden-name-mark-ring[data-writing] { border: var(--ds-edge) solid var(--ds-game-mark); box-shadow: 0 0 12px color-mix(in srgb, var(--ds-game-mark) 70%, transparent); }
 /* The real writing catches the light now and then (the tell; the decorations never do). */
 .mg-mehndi-hidden-name-writing { animation: mg-mehndi-hidden-name-glint var(--mehndi-glint-every, 1600ms) ease-in-out infinite; }
 @keyframes mg-mehndi-hidden-name-glint {
@@ -180,7 +180,7 @@
 }
 @keyframes mg-mehndi-hidden-name-twitch { 30% { transform: rotate(2.4deg) scaleY(0.955); } 65% { transform: rotate(-1deg) scaleY(0.975); } }
 [data-still] .mg-mehndi-hidden-name-palm[data-near] :is(.mg-mehndi-hidden-name-dark, .mg-mehndi-hidden-name-lit) { animation: none; transform: scaleY(0.98); }
-/* A finger holding the lamp still over a place, a decoration or the writing aims at it: a gold ring closes round it (as
+/* A finger holding the lamp still over a place, a decoration or the writing aims at it: a white ring closes round it (as
    wide as Skin.tsx says for a thing) and 「離すと、ここ」 over it (lifting the finger points there; the words above, clear
    of writing that lies under a place). */
 .mg-mehndi-hidden-name-aim {
@@ -188,7 +188,7 @@
   z-index: 2;
   width: 24cqw;
   aspect-ratio: 1;
-  border: 2px solid var(--mehndi-hidden-name-aim-edge-095);
+  border: var(--ds-edge) solid var(--mehndi-hidden-name-aim-edge-095);
   border-radius: 50%;
   box-shadow: 0 0 10px var(--mehndi-hidden-name-aim-shadow-055);
   pointer-events: none;
@@ -200,12 +200,12 @@
   position: absolute;
   left: 50%;
   bottom: calc(100% + 4px);
-  padding: 2px 8px;
+  padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-control);
-  background: color-mix(in srgb, var(--ds-paper-shade) 82%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 82%, transparent);
   color: var(--mehndi-hidden-name-aim-ink);
   font-size: var(--ds-text-note);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   white-space: nowrap;
   transform: translateX(-50%);
 }
@@ -218,7 +218,7 @@
   z-index: 1;
   width: 39cqw;
   aspect-ratio: 1;
-  border: 3px dotted var(--mehndi-hidden-name-mg-mehndi-hidden-name-glint-shadow-095);
+  border: var(--ds-edge-thick) dotted var(--mehndi-hidden-name-mg-mehndi-hidden-name-glint-shadow-095);
   border-radius: 50%;
   box-shadow: 0 0 10px var(--mehndi-hidden-name-hint-ring-shadow-035);
   pointer-events: none;
@@ -237,15 +237,15 @@
   width: max-content;
   max-width: min(78cqw, 260px);
   margin: 0;
-  padding: 5px 10px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-1) var(--ds-space-2);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-card-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
   text-align: center;
   pointer-events: none;
   transform: translate(clamp(-1 * var(--mehndi-said-x), -50%, 100cqw - var(--mehndi-said-x) - 100%), var(--mehndi-said-dy));

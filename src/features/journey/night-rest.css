@@ -1,11 +1,11 @@
 /* The day's end (NightRest, docs/02 「休む」): the whole screen at night over what the rest led to, until the card ends. */
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --night-rest-sky-shade: rgba(246, 231, 174, 0.35);
-  --night-rest-moon-fill: #f6e7ae;
-  --night-rest-star-fill: #fff4cc;
-  --night-rest-night-screen-rest-shade: rgba(246, 231, 174, 0.25);
-  --night-rest-night-screen-rest-ground: #fbefc4;
+  --night-rest-sky-shade: rgba(240, 241, 244, 0.3);
+  --night-rest-moon-fill: #eef0f3;
+  --night-rest-star-fill: #ffffff;
+  --night-rest-night-screen-rest-shade: rgba(240, 241, 244, 0.22);
+  --night-rest-night-screen-rest-ground: #f1f2f4;
 }
 .night-rest {
   position: fixed;
@@ -13,7 +13,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 24px 16px;
+  padding: var(--ds-space-6) var(--ds-space-4);
   background: var(--ds-night);
   /* Takes every tap while it shows (a tap ends it); a swipe does not scroll the page under it. */
   pointer-events: auto;
@@ -42,16 +42,16 @@
 .night-rest-star { fill: var(--night-rest-star-fill); animation: night-rest-twinkle 1.6s ease-in-out infinite alternate; }
 .night-rest-star:nth-of-type(2n) { animation-delay: -0.8s; }
 .night-rest-star:nth-of-type(3n) { animation-delay: -0.4s; }
-/* --ds-on-slate on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
+/* --ds-on-dark on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
 .night-rest-text {
-  margin-top: 14px;
+  margin-top: var(--ds-space-4);
   max-width: 100%;
-  color: var(--ds-on-slate);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-lead);
-  font-weight: 500;
+  color: var(--ds-on-dark);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-reading);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -104,9 +104,9 @@
   flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: calc(var(--hud-h, 96px) + 12px) 16px calc(24px + env(safe-area-inset-bottom));
+  padding: calc(var(--hud-h, 96px) + 12px) var(--ds-space-4) calc(24px + env(safe-area-inset-bottom));
   background: var(--ds-night);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   animation: night-screen-in 0.6s ease both;
 }
 /* Centred in the room under the header; from its top when it does not fit (auto margins). */
@@ -119,15 +119,15 @@
   align-items: center;
   animation: night-screen-content-in 0.6s ease both;
 }
-/* --ds-on-slate on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
+/* --ds-on-dark on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
 .night-screen-line {
-  margin-top: 14px;
-  color: var(--ds-on-slate);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-lead);
-  font-weight: 500;
+  margin-top: var(--ds-space-4);
+  color: var(--ds-on-dark);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-reading);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -135,32 +135,32 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 18px;
+  margin-top: var(--ds-space-4);
 }
-/* The night actions: panes of glass on the night (2026-11-25: the parchment buttons lit the city's night like a form), the
+/* The night actions: panes of glass on the night (2026-11-25: the light ground buttons lit the city's night like a form), the
    white hairline of a pressable on the dark (no longer gold, 2026-11-27), white words. */
 .night-screen-actions .secondary {
-  margin-top: 10px;
-  border: 1.5px solid var(--ds-action-edge);
+  margin-top: var(--ds-space-2);
+  border: var(--ds-edge) solid var(--ds-action-edge);
   background: var(--ds-night-glass);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-body);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
 }
 .night-screen-actions .secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-night-glass-hover); }
-/* 「ホテルで休む」: the screen's main step, in the moon's colour (slate ink on it: about 13:1). */
+/* 「ホテルで休む」: the screen's main step, in the moon's pale grey (dark ink on it: about 13:1). */
 .night-screen-rest {
   width: 100%;
   min-height: 54px;
-  margin-top: 16px;
-  padding: 12px 20px;
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-3) var(--ds-space-6);
   border-radius: var(--ds-radius-control);
   background: var(--night-rest-moon-fill);
-  color: var(--ds-slate-900);
+  color: var(--ds-dark);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  box-shadow: 0 0 18px var(--night-rest-night-screen-rest-shade);
+  font-weight: var(--ds-weight-bold);
+  box-shadow: var(--ds-shadow);
 }
 .night-screen-rest:hover:enabled { background: var(--night-rest-night-screen-rest-ground); }
 /* After 「ホテルで休む」 has slept (NightLeaving): the line changes in place, the buttons go from sight (their room stays; no words
@@ -209,48 +209,48 @@
 .night-screen-content.has-recap .night-rest-sky,
 .night-rest.has-recap .night-rest-sky { width: min(120px, 34vw); }
 .night-rest.has-recap .night-rest-content { width: 100%; max-width: 360px; }
-.night-recap { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 12px; }
-.night-screen-actions + .night-recap { margin-top: 30px; }
+.night-recap { display: flex; flex-direction: column; gap: var(--ds-space-2); width: 100%; margin-top: var(--ds-space-3); }
+.night-screen-actions + .night-recap { margin-top: var(--ds-space-8); }
 .today-route { margin: 0; }
-/* --ds-on-slate-muted on the night colour: about 13:1. */
-.today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; text-align: center; }
+/* --ds-on-dark-muted on the night colour: about 13:1. */
+.today-route-title { margin: 0 0 var(--ds-space-1); color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); text-align: center; }
 /* A picture only: taps go to the screen (the card ends on one), the OSM credit stays readable (and pressable on the night screen). */
 .today-route-map {
   height: clamp(110px, 22vh, 160px);
-  border: 1px solid var(--ds-gold-hairline);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-map-ground);
   isolation: isolate;
   pointer-events: none;
 }
-.today-route-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-mark); }
+.today-route-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-small); }
 .night-rest .today-route-map .leaflet-control-attribution, .night-screen.is-leaving .today-route-map .leaflet-control-attribution { pointer-events: none; }
-.today-route-error { margin: 4px 0 0; color: var(--ds-on-slate); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); text-align: center; }
+.today-route-error { margin: var(--ds-space-1) 0 0; color: var(--ds-on-dark); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); text-align: center; }
 /* The stops in the day's order, numbered as on the map. */
 .today-route-stops {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2px 12px;
-  margin: 6px 0 0;
+  gap: var(--ds-space-1) var(--ds-space-3);
+  margin: var(--ds-space-2) 0 0;
   padding: 0;
   list-style: none;
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
 }
-.today-route-stops li { display: inline-flex; align-items: center; gap: 4px; overflow-wrap: anywhere; }
+.today-route-stops li { display: inline-flex; align-items: center; gap: var(--ds-space-1); overflow-wrap: anywhere; }
 .today-route-number {
   display: inline-grid;
   flex: none;
   place-items: center;
   min-width: 18px;
   height: 18px;
-  border-radius: var(--ds-radius-field);
-  background: var(--ds-marker-selected);
-  color: var(--ds-slate-900);
-  font-size: var(--ds-text-mark);
-  font-weight: 600;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-light);
+  color: var(--ds-dark);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
 }
 /* A mark on the map: the stop numbers in the selected marker's yellow on its dark disc; the day's last place ringed in the
@@ -263,38 +263,38 @@
   width: 100%;
   height: 100%;
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-slate-900);
-  color: var(--ds-marker-selected);
-  font-size: var(--ds-text-caption);
-  font-weight: 700;
+  background: var(--ds-dark);
+  color: var(--ds-light);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 0 0 2px var(--ds-light), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-small);
 }
-.today-route-mark.is-last { box-shadow: 0 0 0 2px var(--ds-light), 0 0 0 5px var(--ds-here), 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.today-route-mark.is-last { box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-heavy) var(--ds-here), var(--ds-shadow-small); }
 .night-recap .heroine-note { margin: 0; text-align: left; }
 /* The SNS's card (SnsNightCard.tsx, 2026-11-27): a pane of the night's glass under the buttons and well apart from them (a
    card of another shape: faces at its left), its words white, the first comment two lines at most. */
 .night-sns {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--ds-space-3);
   width: 100%;
   min-height: 64px;
-  margin: 30px 0 0;
-  padding: 10px 10px 10px 12px;
-  border: 1px solid var(--ds-action-edge);
+  margin: var(--ds-space-8) 0 0;
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-control);
   background: var(--ds-night-glass);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   text-align: left;
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
 }
 button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
-.night-sns > .icon { flex: none; width: 18px; height: 18px; color: var(--ds-gold); }
+.night-sns > .icon { flex: none; width: 18px; height: 18px; color: var(--ds-hairline); }
 .night-sns-faces { display: inline-flex; flex: none; }
 .night-sns-face {
   display: grid;
@@ -303,14 +303,14 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
   height: 36px;
   overflow: hidden;
   border-radius: 50%;
-  background: var(--ds-parchment);
-  box-shadow: 0 0 0 1.5px var(--ds-night);
+  background: var(--ds-surface);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-night);
 }
 .night-sns-face + .night-sns-face { margin-left: -10px; }
 .night-sns-face .character-face { width: 100%; height: 100%; border: 0; }
-.night-sns-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; line-height: 1; }
-.night-sns-text { display: flex; flex: 1 1 auto; flex-direction: column; gap: 2px; min-width: 0; }
-.night-sns-title { color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.04em; }
+.night-sns-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; }
+.night-sns-text { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--ds-space-1); min-width: 0; }
+.night-sns-title { color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); }
 .night-sns-first {
   display: -webkit-box;
   overflow: hidden;
@@ -319,24 +319,24 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
   -webkit-line-clamp: 2;
   line-clamp: 2;
 }
-.night-sns-first b { font-weight: 700; }
-.night-sns + .night-recap { margin-top: 18px; }
+.night-sns-first b { font-weight: var(--ds-weight-bold); }
+.night-sns + .night-recap { margin-top: var(--ds-space-4); }
 /* 今日の一語 (TodayWordLine, 2026-11-13): a small plain line at the night screen's end, its label as the route's title, the
-   English word in the night line's serif, its meaning beside it (--ds-on-slate about 16:1, the muted label about 13:1). */
+   English word, its meaning beside it (--ds-on-dark about 16:1, the muted label about 13:1). */
 .today-word {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: baseline;
-  gap: 0 10px;
+  gap: 0 var(--ds-space-2);
   width: 100%;
-  margin: 18px 0 0;
-  color: var(--ds-on-slate);
+  margin: var(--ds-space-4) 0 0;
+  color: var(--ds-on-dark);
   line-height: var(--ds-leading-body);
   text-align: center;
 }
-.today-word-label { flex-basis: 100%; color: var(--ds-on-slate-muted); font-size: var(--ds-text-caption); font-weight: 600; letter-spacing: 0.08em; }
-.today-word-en { font-family: var(--ds-font-serif); font-size: var(--ds-text-subhead); letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.today-word-label { flex-basis: 100%; color: var(--ds-on-dark-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); letter-spacing: var(--ds-tracking-2); }
+.today-word-en { font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: var(--ds-tracking-1); overflow-wrap: anywhere; }
 .today-word-meaning { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
 @media (max-height: 480px) {

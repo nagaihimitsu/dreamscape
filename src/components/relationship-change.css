@@ -14,24 +14,24 @@
 .relationship-change {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  padding: 6px 12px;
-  background: var(--ds-parchment-2);
-  border-bottom: 1px solid var(--ds-parchment-line);
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: var(--ds-surface-chosen);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
 }
 .relationship-change-label {
   flex: none;
-  margin-top: 1px;
-  padding: 0 6px;
-  border: 1px solid var(--ds-ink-muted);
-  border-radius: var(--ds-radius-hair);
+  margin-top: 0;
+  padding: 0 var(--ds-space-2);
+  border: var(--ds-edge-thin) solid var(--ds-ink-muted);
+  border-radius: var(--ds-radius-pill);
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-mark);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
 }
 .relationship-change-lines {
   min-width: 0;

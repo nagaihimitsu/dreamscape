@@ -40,7 +40,7 @@ export function speakerSpot(stage: Stage, focus: StageFocus, layout: "scene" | "
 
 const INK_LIGHT = "#ffffff";
 /** The window's ink (romance-scene.css --vn-text). */
-const INK_DARK = "#1d2740";
+const INK_DARK = "#24262b";
 
 const rgb = (hex: string) => [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16));
 const linear = (value: number) => {
@@ -87,7 +87,7 @@ export function bandColours({ fill, edge }: NameBandColours): Required<Omit<Name
 }
 
 /** The band of a speaker without colours of their own: the window's blue (romance-scene.css --vn-name-bg), a lighter rim. */
-const PLAIN_BAND: NameBandColours = { fill: "#3d6aa6", edge: "#a9c0e0" };
+const PLAIN_BAND: NameBandColours = { fill: "#5a5e67", edge: "#c4c7cd" };
 
 /**
  * The name band of the line on screen: over the speaker's place on the stage (speakerSpot; else at the window's left),

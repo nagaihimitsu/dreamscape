@@ -28,10 +28,10 @@ import { defineMiniGame } from "../contract";
  * Accessibility: 「食べる」 is 64px at the bottom (thumb reach), Space and Enter eat; 「バス」 is a smaller plum button with
  * a palm above the lane (a fast thumb does not reach it by chance; on a short screen it goes up to the field's top right,
  * under her face's place, away from 「中断する」), S presses it. The lane's marks meet the ring as each one lands, so it
- * plays with the sound off; a feint's mark turns into a hollow rest sign as the hand winds up (raised, gold-edged, shaking;
- * a swish), crossed out if bitten; a hit lights the ring (brighter and thicker; gold and thicker still right on the
+ * plays with the sound off; a feint's mark turns into a hollow rest sign as the hand winds up (raised, white-edged, shaking;
+ * a swish), crossed out if bitten; a hit lights the ring (brighter and thicker; white and thicker still right on the
  * landing: not colour alone), a missed one turns hollow and stays in the bowl; her stop is a flag on the lane and her
- * 「バス！」 with a gold ring and a palm beside her face (her bluff: a plain bubble, the palm half up, no flag), and the
+ * 「バス！」 with a dark ring and a palm beside her face (her bluff: a plain bubble, the palm half up, no flag), and the
  * stop button lights then. A tap before the first golgappa is turned away (the host's refusal). The choke gauge's drops
  * fill (shape and colour). With less motion the hand jumps to the bowl, rises without shaking, and nobody bobs (the
  * golgappa still falls). The counts are in the field and the top band; the host reads out the outcome.

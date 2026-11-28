@@ -5,7 +5,7 @@
 
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --scene-atmosphere-weather-layer-ground: rgba(64, 80, 104, 0.14);
+  --scene-atmosphere-weather-layer-ground: rgba(70, 72, 78, 0.14);
   --scene-atmosphere-weather-layer-ground-2: rgba(214, 178, 120, 0.06);
   --scene-atmosphere-weather-layer-ground-3: rgba(214, 178, 120, 0.14);
   --scene-atmosphere-weather-layer-ground-4: rgba(222, 190, 136, 0.26);
@@ -144,7 +144,7 @@
   border-radius: 80% 0 80% 0;
   background: hsl(var(--hue), 72%, 87%);
   box-shadow: inset -1px -1px 0 hsla(var(--hue), 60%, 70%, 0.6);
-  opacity: 0.85;
+  opacity: var(--ds-opacity-strong);
   animation: weather-sway 2.8s ease-in-out infinite alternate;
 }
 .weather-layer[data-weather="petals"] .weather-part:nth-child(even)::before {
@@ -169,7 +169,7 @@
 .reduce-motion .weather-layer[data-weather="dust"]::before { display: none; }
 .reduce-motion .weather-layer[data-weather="colors"] .weather-part {
   top: var(--rest-y);
-  opacity: 0.55;
+  opacity: var(--ds-opacity-soft);
   transform: translate(-50%, -50%);
   animation: none;
 }
@@ -188,7 +188,7 @@
   .weather-layer[data-weather="dust"]::before { display: none; }
   .weather-layer[data-weather="colors"] .weather-part {
     top: var(--rest-y);
-    opacity: 0.55;
+    opacity: var(--ds-opacity-soft);
     transform: translate(-50%, -50%);
     animation: none;
   }

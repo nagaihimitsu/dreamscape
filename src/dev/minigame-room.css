@@ -1,59 +1,59 @@
 /* Debug's 「ミニゲームの見本」 (MiniGameRoom.tsx): a working page for one hand on a phone (320–390 px), 44 px targets, as
    「音と演出の見本」. The stage reuses the game's own scene box and the mini-games' host; no card has a thick edge on one side. */
-.minigame-room { max-width: 720px; margin: 0 auto; padding: 12px 16px 24px; color: var(--ds-ink); }
-.minigame-room-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.minigame-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-snug); }
-.minigame-room h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0 0 6px; font-size: var(--ds-text-subhead); line-height: var(--ds-leading-snug); }
-.minigame-room h3 { margin: 14px 0 4px; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); }
+.minigame-room { max-width: 720px; margin: 0 auto; padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-6); color: var(--ds-ink); }
+.minigame-room-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
+.minigame-room h1 { margin: 0; font-size: var(--ds-text-heading); line-height: var(--ds-leading-body); }
+.minigame-room h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--ds-space-1) var(--ds-space-2); margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); line-height: var(--ds-leading-body); }
+.minigame-room h3 { margin: var(--ds-space-4) 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
 .minigame-room p, .minigame-room li { font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.minigame-room p { margin: 6px 0; }
-.minigame-room ul { margin: 0; padding-left: 20px; }
+.minigame-room p { margin: var(--ds-space-2) 0; }
+.minigame-room ul { margin: 0; padding-left: var(--ds-space-6); }
 .minigame-room button.minigame-room-close {
   flex: none;
   min-height: 44px;
-  padding: 6px 12px;
-  border: 1.5px solid var(--ds-slate-800);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
 }
-.minigame-room-note { padding: 10px 12px; border: 1px solid var(--ds-parchment-line); border-radius: var(--ds-radius-control); background: var(--ds-parchment); }
-.minigame-room p.minigame-room-off { padding: 8px 10px; border-radius: var(--ds-radius-field); background: var(--ds-chip-bg); }
-.minigame-room-game { margin-top: 18px; padding: 12px; border: 1px solid var(--ds-parchment-line); border-radius: var(--ds-radius-control); background: var(--ds-parchment); }
-.minigame-room-id { color: var(--ds-ink-muted, inherit); font-size: var(--ds-text-note); font-weight: 400; }
-.minigame-room-facts { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; margin: 6px 0 0; font-size: var(--ds-text-note); }
-.minigame-room-facts dt { font-weight: 600; }
+.minigame-room-note { padding: var(--ds-space-2) var(--ds-space-3); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); background: var(--ds-surface); }
+.minigame-room p.minigame-room-off { padding: var(--ds-space-2) var(--ds-space-2); border-radius: var(--ds-radius-control); background: var(--ds-smoke); }
+.minigame-room-game { margin-top: var(--ds-space-4); padding: var(--ds-space-3); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); background: var(--ds-surface); }
+.minigame-room-id { color: var(--ds-ink-muted, inherit); font-size: var(--ds-text-note); font-weight: var(--ds-weight-regular); }
+.minigame-room-facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-1) var(--ds-space-2); margin: var(--ds-space-2) 0 0; font-size: var(--ds-text-note); }
+.minigame-room-facts dt { font-weight: var(--ds-weight-bold); }
 .minigame-room-facts dd { margin: 0; }
 .minigame-room-reason { font-size: var(--ds-text-note); }
-.minigame-room-game li a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
-.minigame-room button.minigame-room-open { width: 100%; min-height: 44px; margin-top: 12px; justify-content: center; }
-.minigame-room-controls { display: grid; gap: 2px; margin: 12px 0 0; padding: 8px 12px; border: 1px solid var(--ds-parchment-line); border-radius: var(--ds-radius-control); }
-.minigame-room-controls legend { padding: 0 4px; font-size: var(--ds-text-note); font-weight: 600; }
-.minigame-room-controls label { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: var(--ds-text-body); }
+.minigame-room-game li a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--ds-space-1); }
+.minigame-room button.minigame-room-open { width: 100%; min-height: 44px; margin-top: var(--ds-space-3); justify-content: center; }
+.minigame-room-controls { display: grid; gap: var(--ds-space-1); margin: var(--ds-space-3) 0 0; padding: var(--ds-space-2) var(--ds-space-3); border: var(--ds-edge-thin) solid var(--ds-line); border-radius: var(--ds-radius-control); }
+.minigame-room-controls legend { padding: 0 var(--ds-space-1); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
+.minigame-room-controls label { display: flex; align-items: center; gap: var(--ds-space-2); min-height: 44px; font-size: var(--ds-text-body); }
 .minigame-room-controls input { width: 20px; height: 20px; }
 .minigame-room-example { flex-wrap: wrap; }
 .minigame-room-example select { min-height: 44px; min-width: 0; max-width: 100%; }
 /* A name to try (the games that draw it): a field the line's width, its Latin form under it. */
 .minigame-room-controls .minigame-room-name { flex-wrap: wrap; }
-.minigame-room-controls .minigame-room-name input { flex: 1 1 10em; width: auto; min-width: 0; height: 44px; padding: 0 8px; font-size: var(--ds-text-field); }
+.minigame-room-controls .minigame-room-name input { flex: 1 1 10em; width: auto; min-width: 0; height: 44px; padding: 0 var(--ds-space-2); font-size: var(--ds-text-body); }
 .minigame-room-latin { flex-basis: 100%; font-size: var(--ds-text-note); }
 /* A use's pictures (bg, art.<slot>): long IDs, so the choice takes the line's width and its text is cut, not the page widened. */
 .minigame-room-pictures select { width: 100%; text-overflow: ellipsis; }
 /* The stage: the game's scene box with a window where the choices would be; the play lies over it as in a story. */
-.minigame-room .minigame-room-stage { min-height: max(480px, calc(100dvh - 96px)); margin-top: 8px; border-radius: var(--ds-radius-control); }
-.minigame-room-window { margin: 0 8px 8px; padding: 12px; border-radius: var(--ds-radius-control); }
-.minigame-room .minigame-room-line { margin: 0 0 10px; font-size: var(--ds-text-note); }
+.minigame-room .minigame-room-stage { min-height: max(480px, calc(100dvh - 96px)); margin-top: var(--ds-space-2); border-radius: var(--ds-radius-control); }
+.minigame-room-window { margin: 0 var(--ds-space-2) var(--ds-space-2); padding: var(--ds-space-3); border-radius: var(--ds-radius-control); }
+.minigame-room .minigame-room-line { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); }
 /* A slow phone's feel (E3): three choices in one row. */
-.minigame-room-delay { display: flex; flex-wrap: wrap; gap: 0 16px; margin: 4px 0 0; padding: 0; border: 0; }
-.minigame-room-delay legend { padding: 0; font-size: var(--ds-text-note); font-weight: 600; }
+.minigame-room-delay { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-4); margin: var(--ds-space-1) 0 0; padding: 0; border: 0; }
+.minigame-room-delay legend { padding: 0; font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 /* The tuning numbers (E1, E2): a name and its field per line; the original value beside an edited one. */
-.minigame-room-tuning p { margin: 4px 0; }
+.minigame-room-tuning p { margin: var(--ds-space-1) 0; }
 .minigame-room-controls .minigame-room-number { flex-wrap: wrap; justify-content: space-between; font-family: var(--ds-font-mono); font-size: var(--ds-text-note); }
-.minigame-room-number input[type="number"] { width: 7em; height: 44px; padding: 0 8px; font-size: var(--ds-text-body); }
-.minigame-room-was { flex-basis: 100%; font-family: inherit; font-size: var(--ds-text-caption); text-align: right; }
-.minigame-room-tuning .secondary { min-height: 44px; margin-top: 4px; }
+.minigame-room-number input[type="number"] { width: 7em; height: 44px; padding: 0 var(--ds-space-2); font-size: var(--ds-text-body); }
+.minigame-room-was { flex-basis: 100%; font-family: inherit; font-size: var(--ds-text-small); text-align: right; }
+.minigame-room-tuning .secondary { min-height: 44px; margin-top: var(--ds-space-1); }
 /* Numbers the engine finds unfair: said in words under them (not colour alone), on a warm ground, no edge on one side. */
-.minigame-room-unfair { margin: 6px 0 2px; padding: 8px 10px; border: 1.5px solid var(--ds-marker); border-radius: var(--ds-radius-field); background: var(--ds-parchment-2); color: var(--ds-ink); }
-.minigame-room-unfair p { margin: 0 0 4px; font-weight: 600; }
-.minigame-room-unfair li { font-family: var(--ds-font-mono); font-size: var(--ds-text-caption); }
+.minigame-room-unfair { margin: var(--ds-space-2) 0 var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-2); border: var(--ds-edge) solid var(--ds-ink-muted); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); color: var(--ds-ink); }
+.minigame-room-unfair p { margin: 0 0 var(--ds-space-1); font-weight: var(--ds-weight-bold); }
+.minigame-room-unfair li { font-family: var(--ds-font-mono); font-size: var(--ds-text-small); }

@@ -17,12 +17,12 @@
   z-index: var(--ds-layer-hud);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
-  color: var(--ds-on-slate);
+  gap: var(--ds-space-1);
+  padding: calc(4px + env(safe-area-inset-top)) var(--ds-space-2) var(--ds-space-1);
+  color: var(--ds-on-dark);
   background: none;
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-tight);
 }
 .journey-hud::before {
@@ -37,12 +37,12 @@
   pointer-events: none;
 }
 .journey-hud p { margin: 0; }
-.journey-hud .icon { flex: none; color: var(--ds-gold); }
+.journey-hud .icon { flex: none; color: var(--ds-hairline); }
 
 /* Row 1: where and when, then the budget above the AP at the right end. Nothing
    here is pressed. When the plate and the money do not fit side by side, the
    money goes below the plate: the row wraps (the header's height is measured). */
-.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 40px; text-shadow: var(--ds-scene-text-shadow); }
+.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1); min-height: 40px; text-shadow: var(--ds-scene-text-shadow); }
 .hud-plate,
 .hud-wallet {
   min-height: 40px;
@@ -61,16 +61,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1px;
-  padding: 3px 14px;
+  gap: 0;
+  padding: var(--ds-space-1) var(--ds-space-4);
   border-radius: var(--ds-radius-pane);
 }
 .hud-place {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-family: var(--ds-font-serif);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
 }
 .hud-time {
@@ -79,9 +79,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-caption);
-  font-weight: 500;
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-medium);
   font-variant-numeric: tabular-nums;
 }
 /* Enlarged text on a phone held upright: when the header holds fewer than
@@ -100,31 +100,29 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  padding: 2px 14px;
-  /* The place name's Mincho, a web font every phone loads (2026-11-16: Georgia, missing on Android and many Linux phones, drew
-     the figures in another serif there). Its figures share one width but its 1 (about 0.09em narrower), and it has no
-     tabular figures; tabular-nums keeps a fallback serif's figures of one width while the web font has not loaded. */
-  font-family: var(--ds-font-serif);
+  padding: var(--ds-space-1) var(--ds-space-4);
+  /* The game's one face, a web font every phone loads (2026-11-28); tabular-nums keeps the figures of one width. */
+  font-family: var(--ds-font-sans);
   font-variant-numeric: tabular-nums;
-  line-height: var(--ds-leading-display);
+  line-height: var(--ds-leading-tight);
   white-space: nowrap;
 }
 /* At the row's right end, also on a line of its own. */
 .hud-status > .hud-wallet { margin-left: auto; }
 .hud-wallet .travel-budget { font-size: var(--ds-text-body); }
 .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-note); }
-.hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-caption); }
+.hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-small); }
 .hud-wallet .ap { font-size: var(--ds-text-note); }
-.hud-wallet .ap small { font-family: var(--ds-font-sans); font-size: var(--ds-text-mark); letter-spacing: 0.1em; }
+.hud-wallet .ap small { font-family: var(--ds-font-sans); font-size: var(--ds-text-small); letter-spacing: var(--ds-tracking-3); }
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
    a guide's or a battle's 「手がかり帳」), then ≡メニュー. On other screens the tool's
    place is empty and takes no room. Each is a white mark; its word is its name
    (visually hidden since 2026-11-25: the header as blended as it can be). */
-.hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: 4px; }
+.hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: var(--ds-space-1); }
 .hud-actions > * { flex: none; }
-.hud-tools { display: flex; gap: 4px; }
+.hud-tools { display: flex; gap: var(--ds-space-1); }
 .hud-screen-tool { display: contents; }
 .hud-tool,
 .journey-hud .held-item-button,
@@ -147,13 +145,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: var(--ds-space-1);
   width: 44px;
   min-width: 44px;
   padding: 0;
 }
 /* The keys' marks: white with the talk's tools' soft shadow (row 1 has words only); under a finger or
-   while its panel is open a key shows a faint white disc, and an open key's mark is gold. */
+   while its panel is open a key shows a faint white disc, and an open key's mark is white. */
 .hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button) .icon {
   width: 24px;
   height: 24px;
@@ -173,7 +171,7 @@
 .journey-hud .held-item-button[aria-expanded="true"],
 .journey-hud .hud-outfits-button[aria-expanded="true"],
 .hud-tool[aria-expanded="true"] { background: var(--ds-glass-mark-on); }
-.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button)[aria-expanded="true"] .icon { color: var(--ds-gold); }
+.hud-actions :is(.hud-tool, .held-item-button, .hud-outfits-button)[aria-expanded="true"] .icon { color: var(--ds-hairline); }
 
 /* Over a story scene that waits for no choice (hud-view.ts, user decision
    2026-11-11) the header shows only the place and time and ≡メニュー. The budget
@@ -214,12 +212,12 @@
   top: calc(100% + 4px);
   right: 8px;
   display: grid;
-  gap: 4px;
+  gap: var(--ds-space-1);
   width: 180px; /* 「セーブ・ロード」 on one line beside its icon at 15 px */
   max-height: calc(100dvh - var(--hud-h, 96px) - 8px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 8px;
+  padding: var(--ds-space-2);
   /* A pane of the glass over the scene (2026-11-25: every screen in the one immersive look); its colours: styles.css, the glass surfaces. */
   border: 0;
   border-radius: var(--ds-radius-pane);
@@ -227,33 +225,33 @@
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   color: var(--ds-ink);
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
   animation: hud-menu-in var(--motion-drop) var(--ease-drop);
 }
 .hud-menu-panel[hidden] { display: none; }
 .hud-menu-panel button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   width: 100%;
   min-height: 44px;
   margin: 0;
-  padding: 0 12px;
+  padding: 0 var(--ds-space-3);
   /* The light pane to press (styles.css .secondary). */
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   text-align: left;
 }
 .hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-ink); }
 /* Between ≡メニュー's groups (2026-11-19): a thin rule across, never a thick left line. */
-.hud-menu-rule { width: 100%; margin: 2px 0; border: 0; border-top: 1px solid var(--ds-parchment-line); }
+.hud-menu-rule { width: 100%; margin: var(--ds-space-1) 0; border: 0; border-top: var(--ds-edge-thin) solid var(--ds-line); }
 /* ≡メニュー's panel comes down out of the header (2026-11-27 user decision: 「スーッと上から」): it slides down a
    little as a blind unrolls over it from its top edge, and its items follow one after another. Only the opening
    moves; it closes at once (styles.css, Motion). The press on an item is never held back. The menus that open
@@ -287,7 +285,7 @@
 }
 .hud-wallet [data-cue="down"] { animation-name: hud-value-down; }
 @keyframes hud-value-up {
-  40% { transform: scale(1.18); color: var(--ds-marker-selected); }
+  40% { transform: scale(1.18); color: var(--ds-light); }
 }
 @keyframes hud-value-down {
   40% { transform: scale(0.88); }
@@ -310,16 +308,16 @@
   .journey-hud .held-item-button [data-gained] { animation: none; }
 }
 
-/* The two-tone focus ring (§2.1): seen on slate, on parchment and over photos. */
+/* The two-tone focus ring (§2.1): seen on the dark, on the glass and over photos. */
 .journey-hud button:focus-visible,
 .journey-hud summary:focus-visible {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 0;
-  box-shadow: 0 0 0 6px var(--ds-slate-900);
+  box-shadow: var(--ds-focus-halo);
 }
 
 @media (min-width: 380px) {
-  .hud-wallet .travel-budget { font-size: var(--ds-text-subhead); }
+  .hud-wallet .travel-budget { font-size: var(--ds-text-large); }
   .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-body); }
   .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-note); }
 }
@@ -329,7 +327,7 @@
 
 /* Wide screens and phones on their side: one row of about 52 px. */
 @media (min-width: 701px), (orientation: landscape) {
-  .journey-hud { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 52px; }
+  .journey-hud { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1) var(--ds-space-2); min-height: 52px; }
   /* The status takes what row 2 leaves, at least the plate's time line and the
      money; with less, row 2 goes on a line of its own. In it the plate is as wide
      as its place (down to its time line; a name the row then cannot hold wraps)

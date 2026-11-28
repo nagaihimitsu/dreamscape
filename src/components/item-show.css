@@ -1,11 +1,7 @@
 /* A line's # item_show: (2026-11-13 user decision; ItemShow.tsx): the item's card in the middle of the scene, and its
    way into the header's bag. Display only: no presses, no focus, aria-hidden. No thick edge on one side: the card is a
-   parchment tile with a gold hairline all round and a soft gold glow. */
-
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --item-show-card-ground: #fff7dc;
-}
+   pane of the light glass over the scene (2026-11-28 user decision: one UI first, the things in the story too), with
+   the glass's corner and a soft shadow; a soft white glow breathes behind the picture. */
 /* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
    header; the card sits at its top middle, above the heads of the people on stage or under their faces (figures-top.ts;
    2026-11-25 user decisions: their faces stay seen as they speak), and below the notices under the header (「写真の札」: its
@@ -22,7 +18,7 @@
   /* Clear of the faces on stage (--room-bottom, figures-top.ts): the room left under the card's top, less its padding,
      its name on up to two lines and a little air; never smaller than 56 px, never larger than 160 px. */
   --item-picture-max: min(160px, max(56px, calc(var(--room-bottom, 100dvh) - var(--item-top) - 92px)));
-  padding: var(--item-top) 16px 0;
+  padding: var(--item-top) var(--ds-space-4) 0;
   pointer-events: none;
 }
 .item-show-card {
@@ -31,16 +27,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   width: max-content;
   min-width: 140px;
   max-width: min(100%, 260px);
-  padding: 18px 20px 12px;
+  padding: var(--ds-space-4) var(--ds-space-6) var(--ds-space-3);
   overflow: hidden;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: var(--ds-radius-pane);
-  background: radial-gradient(circle at 50% 36%, var(--item-show-card-ground), var(--ds-parchment) 68%);
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--ds-shade) 35%, transparent), 0 0 28px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
+  border: 0;
+  border-radius: var(--ds-radius-large);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
   animation: item-show-in var(--motion-scene) var(--ease-out) both;
 }
@@ -48,7 +46,7 @@
   from { opacity: 0; transform: scale(0.9); }
 }
 /* The picture: an SVG as large as the card allows (up to 160 px, less on a short or narrow screen); a picture of pixels
-   at its own size at most, so it stays sharp. A gold glow breathes softly behind it. */
+   at its own size at most, so it stays sharp. A white glow breathes softly behind it. */
 .item-show-picture {
   position: relative;
   display: flex;
@@ -60,7 +58,7 @@
   position: absolute;
   inset: -28%;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--ds-marker-selected) 42%, transparent), transparent 66%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--ds-light) 42%, transparent), transparent 66%);
   animation: item-show-glow 2.4s ease-in-out infinite alternate;
 }
 @keyframes item-show-glow {
@@ -82,11 +80,11 @@
 .item-show-name {
   position: relative;
   max-width: 100%;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
-  letter-spacing: 0.02em;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
+  letter-spacing: var(--ds-tracking-1);
   text-align: center;
   overflow-wrap: anywhere;
 }
@@ -104,7 +102,7 @@
 /* A short landscape screen: a smaller card, so the window below stays clear. */
 @media (max-height: 500px) {
   .item-show-layer { --item-top: max(8px, calc(var(--room-top, 0px) + 8px)); }
-  .item-show-card { gap: 4px; padding: 10px 14px 8px; }
+  .item-show-card { gap: var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-2); }
   .item-show-name { font-size: var(--ds-text-body); }
 }
 
@@ -150,13 +148,13 @@
 /* Reduced motion: the card fades in and out where it is, without its scale, gleam, breathing glow or flight. */
 .reduce-motion .item-show-card { animation-name: item-show-fade-in; }
 .reduce-motion .item-show-gleam { display: none; }
-.reduce-motion .item-show-picture::before { animation: none; opacity: 0.8; }
+.reduce-motion .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
 .reduce-motion .item-show-card.item-show-leaving,
 .reduce-motion .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
 @media (prefers-reduced-motion: reduce) {
   .item-show-card { animation-name: item-show-fade-in; }
   .item-show-gleam { display: none; }
-  .item-show-picture::before { animation: none; opacity: 0.8; }
+  .item-show-picture::before { animation: none; opacity: var(--ds-opacity-dim); }
   .item-show-card.item-show-leaving,
   .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
 }

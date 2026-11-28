@@ -14,39 +14,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: var(--ds-space-1);
   min-width: 44px;
   min-height: 44px;
   margin: 0;
-  padding: 3px 2px;
-  border: 1.5px solid transparent;
+  padding: var(--ds-space-1) var(--ds-space-1);
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
-  font-size: var(--ds-text-mark);
-  font-weight: 600;
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
 }
 .travel-map-expand .icon { width: 18px; height: 18px; color: var(--ds-ink); }
 /* The legend names each mark by its shape (§3.5); each item stays whole. */
-.travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 12px; margin: 0; font-size: var(--ds-text-caption); font-weight: 500; line-height: var(--ds-leading-snug); }
+.travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 var(--ds-space-3); margin: 0; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
 .travel-map-legend > span { white-space: nowrap; }
 /* The stamp of 「行った場所」 as the marks carry it (travel-menu.css .is-visited). */
-.travel-map-legend-visited { display: inline-grid; place-items: center; width: 14px; height: 14px; margin: 0 2px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-parchment); font-size: var(--ds-text-mark); font-weight: 700; line-height: 1; vertical-align: -1px; }
+.travel-map-legend-visited { display: inline-grid; place-items: center; width: 14px; height: 14px; margin: 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; vertical-align: -1px; }
 /* The trail (PlaceMap, visited-places.ts trailPlaceIds): a place been to that has no mark of its own keeps the stamp
    alone, smaller and under the marks; it is not a control (no taps, no focus). */
 .travel-map-trail-wrap { background: transparent; border: 0; pointer-events: none; }
-.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-parchment); font-size: var(--ds-text-mark); font-weight: 700; line-height: 1; box-shadow: 0 0 0 1.5px var(--ds-light), 0 1px 3px color-mix(in srgb, var(--ds-shade) 25%, transparent); }
-.free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: 6px; }
-.travel-map-error { margin: 4px 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
-.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--ds-slate-900); box-shadow: 0 0 0 1.5px var(--ds-light), 0 0 0 2.5px var(--ds-slate-900); vertical-align: -1px; }
+.travel-map-trail { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-surface); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-small); }
+.free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: var(--ds-space-2); }
+.travel-map-error { margin: var(--ds-space-1) 0 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
+.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 var(--ds-space-1) 0 var(--ds-space-1); border-radius: 50%; background: var(--ds-dark); box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-dark); vertical-align: -1px; }
 /* The map's zoom: the light pane to press (styles.css --ds-press-shadow; 2026-11-27 user request: one UI), its two
    presses on the light ground with the glass's hairline between them. */
-.leaflet-container .leaflet-control-zoom { border: 1.5px solid transparent; border-radius: var(--ds-radius-pane); overflow: hidden; box-shadow: var(--ds-press-shadow); }
+.leaflet-container .leaflet-control-zoom { border: var(--ds-edge) solid transparent; border-radius: var(--ds-radius-pane); overflow: hidden; box-shadow: var(--ds-press-shadow); }
 .leaflet-container .leaflet-control-zoom a { background: var(--ds-field); color: var(--ds-ink); border-bottom-color: var(--ds-glass-line); }
 .leaflet-container .leaflet-control-zoom a.leaflet-disabled { background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); }
 
@@ -60,50 +60,50 @@
   z-index: 3;
   top: var(--hud-h, 96px);
   margin: 0;
-  padding: 0 0 8px;
+  padding: 0 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
 }
 .free-time-hub[data-map-sticky="false"] .travel-map { position: relative; top: auto; }
 .free-time-hub .travel-map-frame {
   height: clamp(140px, calc(100svh - var(--hud-h, 96px) - var(--bottom-h, 60px) - 272px), 210px);
-  border: 1px solid var(--ds-parchment-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-control);
 }
 .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: -8px; }
 /* No bottom padding under the tile error: the unscrolled first row must clear the
    band at 320×568 and 375×553 (§3.4's arithmetic, measured). */
 .free-time-hub .travel-map-notes {
-  padding: 0 12px;
+  padding: 0 var(--ds-space-3);
   border-radius: 0 0 var(--ds-radius-pane) var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
 }
 /* The expanded map (§3.5): the shared title band with 「× 閉じる」 (ModalTitle) across its top, then a scroll area with
    the map (sticky at its top), the legend, 「地点を名前で探す」 and the 「選んだ行き先」 slot, and in free time the bar of the
    selection pinned at its foot (its way and 「行く」 or 「休む」: always in reach, 2026-11-14 the UI audit). */
 dialog.modal.travel-map-modal {
-  --modal-pad-top: 12px;
-  --modal-pad-inline: 12px;
+  --modal-pad-top: var(--ds-space-3);
+  --modal-pad-inline: var(--ds-space-3);
   width: min(760px, calc(100% - 24px));
   max-height: calc(100dvh - 24px);
-  padding: 12px;
+  padding: var(--ds-space-3);
   overflow: hidden;
 }
 dialog.modal.travel-map-modal[open] { display: flex; flex-direction: column; }
-.travel-map-modal .modal-title-bar { flex: none; margin-bottom: 8px; }
+.travel-map-modal .modal-title-bar { flex: none; margin-bottom: var(--ds-space-2); }
 .travel-map-modal-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
-.travel-map-modal-map { position: sticky; z-index: 1; top: 0; padding-bottom: 6px; background: var(--ds-parchment); isolation: isolate; }
-.travel-map-modal-body > .travel-map-legend { margin-top: 2px; }
-.travel-map-selection { margin-top: 8px; padding: 0 0 4px; touch-action: manipulation; }
-.travel-map-selection h3 { margin: 0 0 4px; font-size: var(--ds-text-body); }
-.travel-map-selection > p { margin: 4px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.travel-map-modal-map { position: sticky; z-index: 1; top: 0; padding-bottom: var(--ds-space-2); background: var(--ds-surface); isolation: isolate; }
+.travel-map-modal-body > .travel-map-legend { margin-top: var(--ds-space-1); }
+.travel-map-selection { margin-top: var(--ds-space-2); padding: 0 0 var(--ds-space-1); touch-action: manipulation; }
+.travel-map-selection h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); }
+.travel-map-selection > p { margin: var(--ds-space-1) 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 /* The selected place's card lies on the dialog's own glass (2026-11-27 user request: one UI): no box of its own (no edge,
    ground or shadow) inside the pane, its words under 「選んだ行き先」 as the page's card's lie on its glass. */
 .travel-map-selection .place-card { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
 /* The map leaves room for the title band and, in free time, the bar. */
 dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100svh - 420px), 520px); }
-.travel-map-modal-place { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: var(--ds-text-note); }
+.travel-map-modal-place { display: flex; align-items: center; gap: var(--ds-space-2); margin-top: var(--ds-space-2); font-size: var(--ds-text-note); }
 .travel-map-modal-place select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
 /* 「地点を名前で探す」's select (2026-11-27 user request: one UI): the light pane of the presses in the dialog, its field's
    edge (3:1) drawn fine inside it, the talk's choice's corner and a soft shadow; the system's own box and arrow give way
@@ -111,34 +111,34 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
 .travel-map-modal-place select {
   -webkit-appearance: none;
   appearance: none;
-  padding: 0 36px 0 14px;
+  padding: 0 var(--ds-space-8) 0 var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-pane);
-  background-color: var(--ds-parchment);
+  background-color: var(--ds-surface);
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
   background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
   background-size: 6px 6px;
   background-repeat: no-repeat;
-  box-shadow: inset 0 0 0 1px var(--ds-field-edge), var(--ds-glass-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-field-edge), var(--ds-shadow);
   color: var(--ds-ink);
-  font-size: var(--ds-text-field);
+  font-size: var(--ds-text-body);
 }
-/* The selection's bar at the foot: a display-only parchment band like the title band (its hairline on top), the name and
+/* The selection's bar at the foot: a display-only light ground band like the title band (its hairline on top), the name and
    the way (or why not) at the left, 「行く」 or 「休む」 at the right under the thumb. */
 .travel-map-bar {
   flex: none;
   margin: 0 -12px -12px;
-  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--ds-parchment-line);
-  background: var(--ds-parchment-2);
+  padding: var(--ds-space-2) var(--ds-space-3) calc(8px + env(safe-area-inset-bottom, 0px));
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
+  background: var(--ds-surface-chosen);
   touch-action: manipulation;
 }
-.map-go-bar { display: flex; align-items: center; gap: 10px; }
-.map-go-bar-text { display: grid; flex: 1 1 auto; gap: 2px; min-width: 0; margin: 0; }
-.map-go-bar-name { font-family: var(--ds-font-serif); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
-.map-go-bar-detail { color: var(--ds-ink); font-size: var(--ds-text-caption); font-weight: 600; line-height: var(--ds-leading-snug); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.map-go-bar-detail .place-card-tag { margin-right: 6px; }
-.map-go-bar-detail.is-unavailable { color: var(--ds-ink-muted); font-weight: 500; }
+.map-go-bar { display: flex; align-items: center; gap: var(--ds-space-2); }
+.map-go-bar-text { display: grid; flex: 1 1 auto; gap: var(--ds-space-1); min-width: 0; margin: 0; }
+.map-go-bar-name { font-family: var(--ds-font-sans); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
+.map-go-bar-detail { color: var(--ds-ink); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.map-go-bar-detail .place-card-tag { margin-right: var(--ds-space-2); }
+.map-go-bar-detail.is-unavailable { color: var(--ds-ink-muted); font-weight: var(--ds-weight-medium); }
 .travel-map-bar .map-go-bar-go {
   flex: none;
   justify-content: center;
@@ -146,10 +146,10 @@ dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100s
   min-width: 96px;
   min-height: 48px;
   margin: 0;
-  padding: 8px 18px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
 @media (max-height: 500px) and (orientation: landscape) {
   dialog.modal.travel-map-modal .travel-map-frame { height: max(120px, 36dvh); }

@@ -1,6 +1,6 @@
 .city-progress {
-  margin-bottom: 22px;
+  margin-bottom: var(--ds-space-6);
 }
 .city-complete {
-  padding-top: 18px;
+  padding-top: var(--ds-space-4);
 }

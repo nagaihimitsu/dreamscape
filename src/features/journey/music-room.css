@@ -1,28 +1,28 @@
 /* 旅の音楽室 (2026-11-13; MusicRoom.tsx): two parts, the tracks and her voices (folded by scene), each entry a full-width
-   row of at least 44 px with its mark and words; the entry playing shows pressed (the slate edge and the parchment fill
+   row of at least 44 px with its mark and words; the entry playing shows pressed (the dark edge and the light ground fill
    of a chosen row, never colour alone: its mark and aria-pressed say it too). */
 .music-room-part {
-  margin: 14px 0;
+  margin: var(--ds-space-4) 0;
 }
 .music-room-part h3 {
-  margin: 0 0 6px;
+  margin: 0 0 var(--ds-space-2);
   font-size: var(--ds-text-body);
 }
 .music-room-list {
   display: grid;
-  gap: 6px;
-  margin: 6px 0;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-2) 0;
   padding: 0;
   list-style: none;
 }
 .music-room-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--ds-space-2);
   width: 100%;
   min-height: 44px;
-  padding: 8px 12px;
-  border: 1px solid transparent;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-edge-thin) solid transparent;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-field);
   box-shadow: var(--ds-press-shadow);
@@ -40,9 +40,9 @@
 }
 .music-room-item[aria-pressed="true"] {
   border-color: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-glass-shadow);
-  background: var(--ds-parchment-2);
-  font-weight: 600;
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
+  background: var(--ds-surface-chosen);
+  font-weight: var(--ds-weight-bold);
 }
 .music-room-item:disabled {
   border-color: transparent;
@@ -51,17 +51,17 @@
   box-shadow: none;
 }
 .music-room-item.is-voice span {
-  font-family: var(--ds-font-serif);
+  font-family: var(--ds-font-sans);
 }
 .music-room-group {
-  margin: 6px 0;
-  border-bottom: 1px solid var(--ds-parchment-line);
+  margin: var(--ds-space-2) 0;
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .music-room-group > summary {
   min-height: 44px;
-  padding: 10px 2px;
+  padding: var(--ds-space-2) var(--ds-space-1);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 
 /* The title bar's line (ModalTitle's subline, 2026-11-14): the track playing with its 「止める」, or a quiet hint while
@@ -69,13 +69,13 @@
 .music-room-now {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   min-height: 44px;
-  margin: 2px 0 0;
+  margin: var(--ds-space-1) 0 0;
   font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
 .music-room-now .icon { flex: none; width: 18px; height: 18px; }
-.music-room-now-label { flex: 1 1 auto; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.music-room-now-label { flex: 1 1 auto; min-width: 0; font-weight: var(--ds-weight-bold); overflow-wrap: anywhere; }
 .music-room-now-idle { color: var(--ds-ink-muted); font-size: var(--ds-text-note); }
-.music-room-now .music-room-stop { flex: none; width: auto; min-height: 44px; margin: 0; padding: 4px 14px; }
+.music-room-now .music-room-stop { flex: none; width: auto; min-height: 44px; margin: 0; padding: var(--ds-space-1) var(--ds-space-4); }

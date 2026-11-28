@@ -65,11 +65,11 @@ const SOUNDS = { drum: "drum_beat", hit: "bangles_clink" } as const;
 /** One of the player's raised hands (an open palm over a sleeve); the left one is this, mirrored. */
 const Hand = () => (
   <svg viewBox="0 0 40 80" aria-hidden="true">
-    <rect x="7" y="52" width="26" height="28" rx="4" fill="#f0e6d4" stroke="#3b2f2a" strokeWidth="1.5" />
-    <rect x="12" y="34" width="16" height="22" rx="5" fill="#c58b5c" stroke="#3b2f2a" strokeWidth="1.5" />
-    <rect x="9" y="20" width="22" height="22" rx="7" fill="#c58b5c" stroke="#3b2f2a" strokeWidth="1.5" />
-    {[9.5, 15, 20.5, 26].map((x) => <rect key={x} x={x} y={x === 9.5 || x === 26 ? 9 : 5} width="4.6" height="18" rx="2.3" fill="#c58b5c" stroke="#3b2f2a" strokeWidth="1.2" />)}
-    <rect x="1" y="22" width="5" height="15" rx="2.5" fill="#c58b5c" stroke="#3b2f2a" strokeWidth="1.2" transform="rotate(-28 3.5 30)" />
+    <rect x="7" y="52" width="26" height="28" rx="4" fill="#e8e9ec" stroke="#24262b" strokeWidth="1.5" />
+    <rect x="12" y="34" width="16" height="22" rx="5" fill="#c58b5c" stroke="#24262b" strokeWidth="1.5" />
+    <rect x="9" y="20" width="22" height="22" rx="7" fill="#c58b5c" stroke="#24262b" strokeWidth="1.5" />
+    {[9.5, 15, 20.5, 26].map((x) => <rect key={x} x={x} y={x === 9.5 || x === 26 ? 9 : 5} width="4.6" height="18" rx="2.3" fill="#c58b5c" stroke="#24262b" strokeWidth="1.2" />)}
+    <rect x="1" y="22" width="5" height="15" rx="2.5" fill="#c58b5c" stroke="#24262b" strokeWidth="1.2" transform="rotate(-28 3.5 30)" />
   </svg>
 );
 

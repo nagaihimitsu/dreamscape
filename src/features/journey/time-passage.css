@@ -2,9 +2,9 @@
 :root {
   --time-passage-sun-ground: #ffd873;
   --time-passage-sun-shade: #ffd87388;
-  --time-passage-moon-ground: #fff3c8;
-  --time-passage-moon-shade: #fff3c855;
-  --time-passage-moon-ground-2: #354a65;
+  --time-passage-moon-ground: #f1f2f4;
+  --time-passage-moon-shade: #f1f2f455;
+  --time-passage-moon-ground-2: #3b3d43;
   --time-passage-horizon-ground: #506d5d;
   --time-passage-sky-ground: #bddbe1;
 }
@@ -23,9 +23,9 @@
   overflow: hidden;
   width: min(230px, 68vw);
   height: 112px;
-  border: 4px solid var(--ds-parchment);
+  border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-pane);
-  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
   animation: time-passage-sky 2.8s ease both;
 }
 .time-passage-label {
@@ -35,15 +35,15 @@
   left: 50%;
   max-width: calc(100% - 12px);
   transform: translateX(-50%);
-  padding: 2px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
+  box-shadow: var(--ds-shadow-small);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: .12em;
+  letter-spacing: var(--ds-tracking-3);
   text-align: center;
   width: max-content;
 }
@@ -55,8 +55,8 @@
   height: 30px;
   border-radius: 50%;
 }
-.time-passage-sun { background: var(--time-passage-sun-ground); box-shadow: 0 0 18px var(--time-passage-sun-shade); animation: time-passage-sun 2.8s linear both; }
-.time-passage-moon { background: var(--time-passage-moon-ground); box-shadow: 0 0 12px var(--time-passage-moon-shade); animation: time-passage-moon 2.8s linear both; }
+.time-passage-sun { background: var(--time-passage-sun-ground); box-shadow: var(--ds-shadow); animation: time-passage-sun 2.8s linear both; }
+.time-passage-moon { background: var(--time-passage-moon-ground); box-shadow: var(--ds-shadow); animation: time-passage-moon 2.8s linear both; }
 .time-passage-moon::after { content: ""; position: absolute; top: -4px; left: 9px; width: 28px; height: 28px; border-radius: 50%; background: var(--time-passage-moon-ground-2); }
 .time-passage-horizon { position: absolute; inset: auto 0 0; height: 22px; background: var(--time-passage-horizon-ground); }
 @keyframes time-passage-overlay { 0%, 100% { opacity: 0; } 8%, 92% { opacity: 1; } }

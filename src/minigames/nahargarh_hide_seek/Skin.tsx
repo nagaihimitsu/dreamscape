@@ -161,13 +161,13 @@ function RoomEvent({ kind, toward: leaning }: { kind: HideSeekRoomEvent; toward:
       return (
         <span className="mg-nahargarh-hide-seek-event" data-event="portrait" data-toward={toward} style={lean}>
           <svg viewBox="0 0 24 30" aria-hidden="true" focusable="false">
-            <ellipse cx="12" cy="15" rx="10.5" ry="13.5" fill="#7b4a2c" stroke="#c49a5a" strokeWidth="1.5" />
+            <ellipse cx="12" cy="15" rx="10.5" ry="13.5" fill="#7b4a2c" stroke="#c4c7cd" strokeWidth="1.5" />
             <ellipse cx="12" cy="16" rx="6" ry="7.5" fill="#c99b72" />
             <path d="M5 14 Q 12 2, 19 14 L 19 26 Q 12 22, 5 26 Z" fill="#8a2f2a" opacity="0.85" />
             <ellipse cx="12" cy="16" rx="5" ry="6.2" fill="#d8ab80" />
             <g className="mg-nahargarh-hide-seek-eyes">
-              <ellipse cx="9.6" cy="15.4" rx="1.3" ry="0.8" fill="#f4ead8" />
-              <ellipse cx="14.4" cy="15.4" rx="1.3" ry="0.8" fill="#f4ead8" />
+              <ellipse cx="9.6" cy="15.4" rx="1.3" ry="0.8" fill="#f4f4f5" />
+              <ellipse cx="14.4" cy="15.4" rx="1.3" ry="0.8" fill="#f4f4f5" />
               <circle className="mg-nahargarh-hide-seek-pupil" cx="9.6" cy="15.4" r="0.6" fill="#2a211c" />
               <circle className="mg-nahargarh-hide-seek-pupil" cx="14.4" cy="15.4" r="0.6" fill="#2a211c" />
             </g>

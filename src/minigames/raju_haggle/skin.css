@@ -3,8 +3,8 @@
 /* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
 :root {
   --raju-haggle-bubble-edge: #c8302a;
-  --raju-haggle-paper-ground-028: rgba(120, 160, 200, 0.28);
-  --raju-haggle-paper-ground: #f6f0e2;
+  --raju-haggle-paper-ground-028: rgba(120, 124, 132, 0.28);
+  --raju-haggle-paper-ground: #f4f4f5;
   --raju-haggle-stamp-ink: #b2241f;
 }
 .mg-raju-haggle { position: absolute; inset: 0; color: var(--ds-ink); container-type: size; }
@@ -24,8 +24,8 @@
 .mg-raju-haggle[data-look="boast"] .mg-raju-haggle-raju { animation: mg-raju-haggle-boast 760ms ease-in-out infinite alternate; }
 .mg-raju-haggle[data-look="wobble"] .mg-raju-haggle-raju { animation: mg-raju-haggle-fidget 520ms ease-in-out infinite alternate; }
 .mg-raju-haggle[data-look="recover"] .mg-raju-haggle-raju { transform: translateX(-5%) scale(0.95); }
-.mg-raju-haggle[data-look="turn"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88); opacity: 0.9; }
-.mg-raju-haggle[data-look="peek"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88) rotate(-8deg); opacity: 0.9; }
+.mg-raju-haggle[data-look="turn"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88); opacity: var(--ds-opacity-strong); }
+.mg-raju-haggle[data-look="peek"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88) rotate(-8deg); opacity: var(--ds-opacity-strong); }
 .mg-raju-haggle[data-look="back"] .mg-raju-haggle-raju { transform: translateX(-4%) rotate(3deg); }
 .mg-raju-haggle[data-look="floor"] .mg-raju-haggle-raju { animation: mg-raju-haggle-hop 340ms ease-out infinite alternate; }
 .mg-raju-haggle[data-away] .mg-raju-haggle-raju { animation: mg-raju-haggle-off 650ms ease-in both; }
@@ -43,7 +43,7 @@
 @keyframes mg-raju-haggle-flinch { 35% { transform: translate(-5%, 2%) scale(0.95, 1.05); } }
 @keyframes mg-raju-haggle-glare { 40% { transform: translateX(5%) scale(1.06); } }
 /* His pride nearly gone: his bubble's edge turns red (his face's puffed cheeks and the band's words say it too). */
-.mg-raju-haggle[data-pride="1"] .mg-raju-haggle-bubble { border: 2px solid var(--raju-haggle-bubble-edge); }
+.mg-raju-haggle[data-pride="1"] .mg-raju-haggle-bubble { border: var(--ds-edge) solid var(--raju-haggle-bubble-edge); }
 /* Less motion: his looks are still poses, at once (given up, he is gone at once); no bob, fidget, hop or flinch. */
 .mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transition: none; }
 .mg-raju-haggle[data-still][data-look="boast"] .mg-raju-haggle-raju { transform: scale(1.04) rotate(2deg); }
@@ -68,14 +68,14 @@
   left: 4%;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   max-width: min(84%, 320px);
   margin: 0;
-  padding: 8px 12px 8px 8px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2) var(--ds-space-2);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-card-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow);
   animation: mg-raju-haggle-say 200ms var(--ease-out, ease-out) both;
 }
 .mg-raju-haggle-bubble::after {
@@ -85,14 +85,14 @@
   bottom: -9px;
   width: 16px;
   height: 16px;
-  border-right: 1px solid var(--ds-parchment-line);
-  border-bottom: 1px solid var(--ds-parchment-line);
-  background: var(--ds-parchment);
+  border-right: var(--ds-edge-thin) solid var(--ds-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
+  background: var(--ds-surface);
   transform: rotate(45deg);
 }
 @keyframes mg-raju-haggle-say { from { opacity: 0; transform: translateY(4px); } }
 .mg-raju-haggle-face { flex: none; width: 40px; height: 40px; }
-.mg-raju-haggle-line { font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.mg-raju-haggle-line { font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 
 /* The paper of his prices: a page torn from a notebook, the price on show large in a frame with a mark, passed ones struck
    out, coming ones faint (not colour alone). */
@@ -102,38 +102,38 @@
   right: 4%;
   width: 44%;
   max-width: 210px;
-  padding: 8px 10px 12px;
-  border-radius: var(--ds-radius-small) var(--ds-radius-field) var(--ds-radius-hair) var(--ds-radius-small);
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
+  border-radius: var(--ds-radius-control);
   background:
     repeating-linear-gradient(to bottom, transparent 0 25px, var(--raju-haggle-paper-ground-028) 25px 26px),
     var(--raju-haggle-paper-ground);
   box-shadow: 0 4px 12px color-mix(in srgb, var(--ds-shade) 35%, transparent);
   transform: rotate(1.5deg);
 }
-.mg-raju-haggle-paper-title { margin: 0 0 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); font-weight: 600; text-align: center; }
-.mg-raju-haggle-paper ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.mg-raju-haggle-paper-title { margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); text-align: center; }
+.mg-raju-haggle-paper ol { display: grid; gap: var(--ds-space-1); margin: 0; padding: 0; list-style: none; }
 .mg-raju-haggle-paper li {
   position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0 6px;
+  gap: 0 var(--ds-space-2);
   min-height: 34px;
-  padding: 2px 6px 2px 2px;
-  border: 2px solid transparent;
-  border-radius: var(--ds-radius-field);
+  padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-1);
+  border: var(--ds-edge) solid transparent;
+  border-radius: var(--ds-radius-control);
   font-size: var(--ds-text-heading);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
 }
 .mg-raju-haggle-mark { width: 1em; color: var(--raju-haggle-bubble-edge); font-size: var(--ds-text-note); text-align: center; }
 .mg-raju-haggle-price { font-variant-numeric: tabular-nums; }
-.mg-raju-haggle-was { color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-weight: 400; }
-.mg-raju-haggle-paper li[data-state="passed"] { opacity: 0.55; }
+.mg-raju-haggle-was { color: var(--ds-ink-muted); font-size: var(--ds-text-note); font-weight: var(--ds-weight-regular); }
+.mg-raju-haggle-paper li[data-state="passed"] { opacity: var(--ds-opacity-soft); }
 .mg-raju-haggle-paper li[data-state="passed"] .mg-raju-haggle-price { text-decoration: line-through 2px var(--raju-haggle-bubble-edge); }
-.mg-raju-haggle-paper li[data-state="coming"] { opacity: 0.45; font-size: var(--ds-text-subhead); }
-.mg-raju-haggle-paper li[data-state="now"] { border-color: var(--ds-ink); background: color-mix(in srgb, var(--ds-light) 70%, transparent); font-size: var(--ds-text-title); }
-.mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: var(--ds-text-subhead); }
+.mg-raju-haggle-paper li[data-state="coming"] { opacity: var(--ds-opacity-faint); font-size: var(--ds-text-large); }
+.mg-raju-haggle-paper li[data-state="now"] { border-color: var(--ds-ink); background: color-mix(in srgb, var(--ds-light) 70%, transparent); font-size: var(--ds-text-heading); }
+.mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: var(--ds-text-large); }
 /* Nothing he could sell for what the player has: the prices are the paper's words, smaller. */
 .mg-raju-haggle-paper[data-none] li[data-state] { font-size: var(--ds-text-body); }
 /* The deal or no deal: a red ink stamp, on one line however narrow the phone: at the end of the deal's row (its price
@@ -142,13 +142,13 @@
   position: absolute;
   left: 50%;
   top: 54%;
-  padding: 0 8px;
-  border: 2px solid var(--raju-haggle-bubble-edge);
-  border-radius: var(--ds-radius-field);
-  background: color-mix(in srgb, var(--ds-on-slate) 88%, transparent);
+  padding: 0 var(--ds-space-2);
+  border: var(--ds-edge) solid var(--raju-haggle-bubble-edge);
+  border-radius: var(--ds-radius-control);
+  background: color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   color: var(--raju-haggle-stamp-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   white-space: nowrap;
   transform: translate(-50%, -50%) rotate(-12deg);
@@ -160,7 +160,7 @@
 @media (max-height: 620px) {
   .mg-raju-haggle-bubble { top: 2%; }
   .mg-raju-haggle-paper { top: 28%; }
-  .mg-raju-haggle-paper li { min-height: 30px; font-size: var(--ds-text-subhead); }
+  .mg-raju-haggle-paper li { min-height: 30px; font-size: var(--ds-text-large); }
   .mg-raju-haggle-paper li[data-state="now"] { font-size: var(--ds-text-heading); }
 }
 /* A short field (a small phone with the browser's bars, or more over the scene's top): his words at the top, the prices in
@@ -168,7 +168,7 @@
 @container (max-height: 300px) {
   .mg-raju-haggle-raju { display: none; }
   .mg-raju-haggle-bubble { top: 6px; max-width: calc(100% - 24px); }
-  .mg-raju-haggle-paper { top: auto; bottom: 8px; left: 4%; right: 4%; width: auto; max-width: none; padding: 4px 8px 6px; transform: none; }
+  .mg-raju-haggle-paper { top: auto; bottom: 8px; left: 4%; right: 4%; width: auto; max-width: none; padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-2); transform: none; }
   .mg-raju-haggle-paper-title { display: none; }
   .mg-raju-haggle-paper ol { grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; }
   .mg-raju-haggle-paper li, .mg-raju-haggle-paper[data-none] li[data-state] { justify-content: center; min-height: 0; font-size: var(--ds-text-body); }

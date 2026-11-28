@@ -6,11 +6,11 @@
 /* 手がかり帳 on the page: a secondary pressable (§2.3). */
 .notebook-button {
   color: var(--ds-ink);
-  background: var(--ds-parchment);
-  border: 1.5px solid transparent;
+  background: var(--ds-surface);
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  padding: 8px 18px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-note);
   min-height: 48px;
 }
@@ -20,40 +20,40 @@
   z-index: 3;
   display: flex;
   justify-content: flex-end;
-  margin: -12px 0 20px;
-  padding: 6px 0;
-  background: var(--ds-parchment);
-  border-bottom: 1px solid var(--ds-parchment-line);
+  margin: -12px 0 var(--ds-space-6);
+  padding: var(--ds-space-2) 0;
+  background: var(--ds-surface);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .tourism-observation {
-  padding: 0 24px;
+  padding: 0 var(--ds-space-6);
 }
 .observation-notes {
-  padding-top: 15px;
+  padding-top: var(--ds-space-4);
 }
 .discovery-list {
   display: grid;
-  gap: 8px;
-  margin-top: 18px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-4);
 }
 .discovery-list button {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--ds-space-3);
   min-height: 56px;
-  padding: 10px 14px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   text-align: left;
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   border-radius: var(--ds-radius-pane);
   font-size: var(--ds-text-note);
 }
 /* The open point: the selected-row look (the chosen ground, --ds-ink's edge inside). */
 .discovery-list button[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-ink), var(--ds-glass-shadow);
-  background: var(--ds-parchment-2);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
+  background: var(--ds-surface-chosen);
 }
 .discovery-number {
   width: 25px;
@@ -62,19 +62,19 @@
   place-items: center;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--ds-parchment-2);
-  font-family: var(--ds-font-latin);
+  background: var(--ds-surface-chosen);
+  font-family: var(--ds-font-sans);
 }
 .discovered-mark {
   margin-left: auto;
   flex-shrink: 0;
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
 }
 .discovery-detail {
-  margin-top: 16px;
-  padding: 20px;
-  background: var(--ds-parchment-2);
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-6);
+  background: var(--ds-surface-chosen);
   border-radius: var(--ds-radius-control);
 }
 /* A found clue's explanation fades in as it opens (no movement: its 「説明を閉じる」 takes
@@ -88,17 +88,17 @@
   .observation-detail { animation: none; }
 }
 .recorded-label {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-here);
-  padding-bottom: 12px;
-  margin-bottom: 13px;
-  border-bottom: 1px solid var(--ds-parchment-line);
+  padding-bottom: var(--ds-space-3);
+  margin-bottom: var(--ds-space-3);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .observation-detail .clue-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
 .observation-detail .clue-heading button {
   flex: none;
@@ -106,19 +106,19 @@
 }
 .clue-kind {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-mark);
-  letter-spacing: 0.12em;
-  margin-bottom: 5px;
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-3);
+  margin-bottom: var(--ds-space-1);
 }
 .discovery-detail h3,
 .notebook-clue h3 {
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  font-weight: 500;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-body);
 }
 .clue-description {
-  margin-top: 12px;
+  margin-top: var(--ds-space-3);
   line-height: var(--ds-leading-reading);
   font-size: var(--ds-text-body);
   white-space: pre-line;
@@ -126,129 +126,129 @@
 }
 .claim-types {
   display: flex;
-  gap: 6px;
+  gap: var(--ds-space-2);
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: var(--ds-space-2);
 }
 .clue-sources {
-  margin-top: 14px;
-  font-size: var(--ds-text-mark);
+  margin-top: var(--ds-space-4);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
   overflow-wrap: anywhere;
 }
 .clue-sources summary {
-  padding: 10px 0;
+  padding: var(--ds-space-2) 0;
   cursor: pointer;
   min-height: 44px;
 }
 .clue-sources > div {
-  margin-top: 9px;
-  padding: 9px 0;
-  border-top: 1px solid var(--ds-parchment-line);
+  margin-top: var(--ds-space-2);
+  padding: var(--ds-space-2) 0;
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .clue-sources p {
-  margin: 9px 0;
+  margin: var(--ds-space-2) 0;
 }
 .clue-sources a {
   display: inline-block;
-  padding: 8px 0;
+  padding: var(--ds-space-2) 0;
 }
 .document-cards {
-  margin-top: 30px;
+  margin-top: var(--ds-space-8);
 }
 .document-cards h2 {
   font-size: var(--ds-text-heading);
-  margin-bottom: 5px;
+  margin-bottom: var(--ds-space-1);
 }
 .document-card {
   display: grid;
-  gap: 5px;
+  gap: var(--ds-space-1);
   width: 100%;
   text-align: left;
-  padding: 16px;
-  margin-top: 12px;
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-small);
-  background: var(--ds-parchment);
+  padding: var(--ds-space-4);
+  margin-top: var(--ds-space-3);
+  border: var(--ds-edge-thin) solid var(--ds-line);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface);
   color: var(--ds-here);
   font-size: var(--ds-text-body);
 }
 .document-card small {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
 }
 .tourism-credits {
-  margin: 24px 36px 0;
-  font-size: var(--ds-text-mark);
+  margin: var(--ds-space-6) var(--ds-space-8) 0;
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
   overflow-wrap: anywhere;
 }
 .tourism-credits summary {
   min-height: 44px;
   cursor: pointer;
-  padding: 8px 0;
+  padding: var(--ds-space-2) 0;
 }
 .tourism-credits p {
-  margin-top: 6px;
+  margin-top: var(--ds-space-2);
 }
 .tourism-actions {
-  padding: 16px 36px 32px;
+  padding: var(--ds-space-4) var(--ds-space-8) var(--ds-space-8);
 }
 .tourism-actions > .fine-print {
-  margin-bottom: 12px;
+  margin-bottom: var(--ds-space-3);
 }
-.tourism-encounter { display: block; margin-top: 8px; min-height: 44px; }
+.tourism-encounter { display: block; margin-top: var(--ds-space-2); min-height: 44px; }
 .image-placeholder-note {
-  margin: 0 24px 16px;
-  padding: 12px;
-  font-size: var(--ds-text-caption);
-  background: var(--ds-parchment-2);
+  margin: 0 var(--ds-space-6) var(--ds-space-4);
+  padding: var(--ds-space-3);
+  font-size: var(--ds-text-small);
+  background: var(--ds-surface-chosen);
 }
 .modal:has(.cluebook-header) {
-  --modal-pad-top: 0px;
-  --modal-pad-inline: 0px;
+  --modal-pad-top: 0;
+  --modal-pad-inline: 0;
   width: min(620px, calc(100vw - 24px));
   max-width: 620px;
 }
 .cluebook-body {
-  padding: 18px 22px 26px;
+  padding: var(--ds-space-4) var(--ds-space-6) var(--ds-space-6);
 }
 .notebook-clue {
-  padding: 20px 0;
+  padding: var(--ds-space-6) 0;
 }
 .notebook-clue + .notebook-clue {
-  border-top: 1px solid var(--ds-parchment-line);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .empty-clues {
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
-  margin: 18px 0;
+  margin: var(--ds-space-4) 0;
 }
 @media (max-width: 480px) {
   .tourism-observation {
-    padding: 0 12px;
+    padding: 0 var(--ds-space-3);
   }
   .observation-notes {
-    padding: 14px 12px 0;
+    padding: var(--ds-space-4) var(--ds-space-3) 0;
   }
   .discovery-detail {
-    padding: 17px;
+    padding: var(--ds-space-4);
   }
   .discovery-list button {
-    gap: 8px;
-    padding: 10px;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-2);
   }
   .tourism-credits {
-    margin-left: 24px;
-    margin-right: 24px;
+    margin-left: var(--ds-space-6);
+    margin-right: var(--ds-space-6);
   }
   .tourism-actions {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: var(--ds-space-6);
+    padding-right: var(--ds-space-6);
   }
   .cluebook-body {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: var(--ds-space-4);
+    padding-right: var(--ds-space-4);
   }
 }
 
@@ -263,8 +263,8 @@
     order: 1;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    padding: 4px 16px;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-1) var(--ds-space-4);
   }
   .tourism-screen:not(.guide-active) > .tourism-actions .fine-print {
     grid-column: 1 / -1;
@@ -275,17 +275,17 @@
   .tourism-screen:not(.guide-active) > .tourism-actions .secondary {
     min-height: 48px;
     margin: 0;
-    padding: 8px 10px;
+    padding: var(--ds-space-2) var(--ds-space-2);
     font-size: var(--ds-text-note);
-    line-height: var(--ds-leading-snug);
+    line-height: var(--ds-leading-body);
   }
   .tourism-screen:not(.guide-active) > .tourism-actions .primary:last-child {
     grid-column: 1 / -1;
   }
   .tourism-screen:not(.guide-active) > .image-placeholder-note {
     order: 2;
-    margin: 4px 16px;
-    padding: 6px 8px;
+    margin: var(--ds-space-1) var(--ds-space-4);
+    padding: var(--ds-space-2) var(--ds-space-2);
   }
   .tourism-screen > .tourism-observation { order: 3; }
   .tourism-screen:not(.guide-active) > .replay-guide { order: 4; }
@@ -310,20 +310,20 @@
   }
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-actions {
     flex: none;
-    padding: 4px 12px;
+    padding: var(--ds-space-1) var(--ds-space-3);
   }
   .mobile-observation-active .tourism-screen:not(.guide-active) > .image-placeholder-note {
     flex: none;
-    margin: 2px 12px;
-    padding: 3px 6px;
-    line-height: var(--ds-leading-snug);
+    margin: var(--ds-space-1) var(--ds-space-3);
+    padding: var(--ds-space-1) var(--ds-space-2);
+    line-height: var(--ds-leading-body);
   }
   .mobile-observation-active .tourism-observation {
     display: flex;
     flex: 1 1 0;
     flex-direction: column;
     min-height: 0;
-    padding: 0 12px 4px;
+    padding: 0 var(--ds-space-3) var(--ds-space-1);
   }
   .mobile-observation-active .observation-viewer {
     display: flex;
@@ -331,7 +331,7 @@
     flex-wrap: wrap;
     align-content: start;
     min-height: 0;
-    margin: 2px 0;
+    margin: var(--ds-space-1) 0;
   }
   .mobile-observation-active .observation-viewport {
     flex: 1 0 100%;
@@ -342,7 +342,7 @@
   .mobile-observation-active .observation-controls { flex: 1 1 0; }
   .mobile-observation-active .observation-options { flex: none; }
   /* 「観光案内をもう一度読む」 and 「進む」 on a row of their own under the toolbar. */
-  .mobile-observation-active .observation-next { flex: 1 0 100%; margin: 0 0 2px; }
+  .mobile-observation-active .observation-next { flex: 1 0 100%; margin: 0 0 var(--ds-space-1); }
   /* A found clue's explanation (2026-11-14, the phone UI audit: it opened at the screen's bottom edge in a 159-px
      scroll box): a sheet over the lower part of the observation, its heading and 「説明を閉じる」 at its top, readable
      at once. It is as tall as its text, up to the room under the picture or 60 % of the screen, whichever is more:
@@ -359,17 +359,15 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     margin: 0;
-    padding: 0 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    padding: 0 var(--ds-space-4) calc(12px + env(safe-area-inset-bottom, 0px));
     /* The light glass over the picture (2026-11-25 user decision, as the quiz's panels): the place shows on, softened,
        behind the clue's words, its colours the glass's. It scrolls, so the sheet is the glass itself; its heading held at
        the top keeps the glass over the words scrolled behind it. */
-    --ds-ink: var(--ds-glass-ink);
-    --ds-ink-muted: var(--ds-glass-muted);
-    --ds-parchment: var(--ds-glass-press);
-    --ds-parchment-2: var(--ds-glass-chosen);
-    --ds-parchment-line: var(--ds-glass-line);
+    --ds-surface: var(--ds-glass-press);
+    --ds-surface-chosen: var(--ds-glass-chosen);
+    --ds-line: var(--ds-glass-line);
     border: 0;
-    border-radius: var(--ds-glass-radius) var(--ds-glass-radius) 0 0;
+    border-radius: var(--ds-radius-large) var(--ds-radius-large) 0 0;
     background: var(--ds-glass-bg);
     color: var(--ds-ink);
     box-shadow: none;
@@ -380,7 +378,7 @@
     position: sticky;
     z-index: 1;
     top: 0;
-    padding-top: 6px;
+    padding-top: var(--ds-space-2);
     background: var(--ds-glass-bg);
     -webkit-backdrop-filter: var(--ds-glass-blur);
     backdrop-filter: var(--ds-glass-blur);
@@ -389,14 +387,14 @@
     margin: 0;
   }
   .mobile-observation-active .observation-detail h3 {
-    font-size: var(--ds-text-subhead);
-    line-height: var(--ds-leading-snug);
+    font-size: var(--ds-text-large);
+    line-height: var(--ds-leading-body);
   }
   .mobile-observation-active .observation-detail .claim-types {
-    margin-top: 3px;
+    margin-top: var(--ds-space-1);
   }
   .mobile-observation-active .observation-detail .clue-description {
-    margin-top: 5px;
+    margin-top: var(--ds-space-1);
     font-size: var(--ds-text-note);
     line-height: var(--ds-leading-body);
   }
@@ -405,7 +403,7 @@
     flex: none;
     min-height: 44px;
     margin: 0;
-    padding: 5px 10px;
+    padding: var(--ds-space-1) var(--ds-space-2);
     font-size: var(--ds-text-note);
   }
   .mobile-observation-active .observation-notes {
@@ -415,11 +413,11 @@
     inset: 6px;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 0 16px 18px;
-    border: 1px solid var(--ds-parchment-line);
+    padding: 0 var(--ds-space-4) var(--ds-space-4);
+    border: var(--ds-edge-thin) solid var(--ds-line);
     border-radius: var(--ds-radius-pane);
-    background: var(--ds-parchment);
-    box-shadow: var(--ds-card-shadow);
+    background: var(--ds-surface);
+    box-shadow: var(--ds-shadow);
   }
   .mobile-observation-active .observation-notes[data-open="true"] { display: block; }
   .mobile-observation-active .observation-notes-header {
@@ -428,44 +426,44 @@
     top: 0;
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
-    background: var(--ds-parchment);
+    gap: var(--ds-space-2);
+    background: var(--ds-surface);
   }
   .mobile-observation-active .observation-list-help {
     display: none;
   }
   .mobile-observation-active .discovery-list {
-    gap: 4px;
-    margin-top: 4px;
+    gap: var(--ds-space-1);
+    margin-top: var(--ds-space-1);
   }
   .mobile-observation-active .discovery-list button {
     min-height: 44px;
-    padding: 7px 10px;
+    padding: var(--ds-space-2) var(--ds-space-2);
   }
   .mobile-observation-active .document-cards {
-    margin-top: 12px;
+    margin-top: var(--ds-space-3);
   }
   .mobile-observation-active .document-cards h2 {
-    font-size: var(--ds-text-subhead);
-    margin-bottom: 2px;
+    font-size: var(--ds-text-large);
+    margin-bottom: var(--ds-space-1);
   }
   .mobile-observation-active .document-cards .fine-print {
     margin: 0;
-    line-height: var(--ds-leading-snug);
+    line-height: var(--ds-leading-body);
   }
   .mobile-observation-active .document-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--ds-space-2);
     min-height: 44px;
-    margin-top: 6px;
-    padding: 8px 10px;
+    margin-top: var(--ds-space-2);
+    padding: var(--ds-space-2) var(--ds-space-2);
   }
   .mobile-observation-active .replay-guide {
-    margin: 8px 0 0;
+    margin: var(--ds-space-2) 0 0;
   }
-  .mobile-observation-active .observation-notes .tourism-credits { margin: 4px 0 0; }
+  .mobile-observation-active .observation-notes .tourism-credits { margin: var(--ds-space-1) 0 0; }
 }
 
 @media (max-width: 600px) and (min-height: 500px) {

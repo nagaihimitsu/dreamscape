@@ -3,7 +3,7 @@
    start it. */
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --opening-movie-button-ground: rgba(16, 20, 28, 0.6);
+  --opening-movie-button-ground: rgba(18, 19, 22, 0.6);
 }
 .opening-movie {
   position: fixed;
@@ -30,26 +30,26 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
 .opening-movie-button {
   min-width: 44px;
   min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid color-mix(in srgb, var(--ds-light) 70%, transparent);
+  padding: 0 var(--ds-space-4);
+  border: var(--ds-edge-thin) solid color-mix(in srgb, var(--ds-light) 70%, transparent);
   border-radius: var(--ds-radius-pill);
   background: var(--opening-movie-button-ground);
   color: var(--ds-light);
   font: inherit;
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   cursor: pointer;
 }
 .opening-movie-button[aria-disabled="true"] {
-  opacity: 0.55;
+  opacity: var(--ds-opacity-soft);
   cursor: default;
 }
 .opening-movie-button:focus-visible {
-  outline: 3px solid var(--ds-light);
+  outline: var(--ds-edge-thick) solid var(--ds-light);
   outline-offset: 2px;
 }
 .opening-movie-play {
@@ -57,7 +57,7 @@
   top: 50%;
   left: 50%;
   min-height: 56px;
-  padding: 0 28px;
+  padding: 0 var(--ds-space-8);
   transform: translate(-50%, -50%);
-  font-size: var(--ds-text-subhead);
+  font-size: var(--ds-text-large);
 }

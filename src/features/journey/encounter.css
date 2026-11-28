@@ -2,11 +2,11 @@
    rows 5 px apart, 「すべての訳を見る」 at the top right, each 「訳を見る」 at its row's right, 44 px high. */
 .encounter-choices {
   display: grid;
-  gap: 5px;
-  margin-top: 8px;
+  gap: var(--ds-space-1);
+  margin-top: var(--ds-space-2);
 }
 .encounter-translation-tools { display: flex; justify-content: flex-end; }
-.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: var(--ds-text-caption); }
+.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: var(--ds-space-1) var(--ds-space-1); font-size: var(--ds-text-small); }
 
 /* An English choice of an encounter (UI redesign stage 2.4): a row in the window, the whole row its press (2026-11-26
    user decision: no A·B·C letter). The select button lies under the row's words (stretched over it); the words let a
@@ -16,14 +16,14 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: 3px 6px;
+  gap: var(--ds-space-1) var(--ds-space-2);
   min-height: 48px;
-  padding: 4px 14px;
+  padding: var(--ds-space-1) var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-control);
   background: var(--ds-glass-bg);
 }
-.encounter-choice[data-translated] { grid-template-columns: minmax(0, 1fr) 64px; padding-right: 7px; }
+.encounter-choice[data-translated] { grid-template-columns: minmax(0, 1fr) 64px; padding-right: var(--ds-space-2); }
 .encounter-choice > .encounter-choice-content { grid-column: 1; grid-row: 1; }
 .encounter-choice > .encounter-choice-translate {
   grid-column: 2;
@@ -31,8 +31,8 @@
   justify-self: end;
   min-height: 44px;
   margin: 0;
-  padding: 4px 2px;
-  font-size: var(--ds-text-caption);
+  padding: var(--ds-space-1) var(--ds-space-1);
+  font-size: var(--ds-text-small);
 }
 /* The translation and a reason it cannot be chosen: under the words, across to the row's right edge. */
 .encounter-choice > p { grid-column: 1 / -1; }
@@ -61,24 +61,24 @@
   min-width: 0;
   overflow-wrap: anywhere;
   font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
 
 /* Its price and AP under its words. */
 .encounter-choice-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   font-size: var(--ds-text-note);
 }
 
 .encounter-choice > p {
-  margin: 2px 0 8px;
+  margin: var(--ds-space-1) 0 var(--ds-space-2);
   font-size: var(--ds-text-note);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
 
-.encounter-choice-reason { font-weight: 700; }
+.encounter-choice-reason { font-weight: var(--ds-weight-bold); }
 
 .encounter-background { width: 100%; height: 100%; display: block; object-fit: cover; }
 .encounter-character-layer { inset: var(--scene-top, 0px) 0 0; height: auto; transform: none; clip-path: none; overflow: hidden; }
@@ -177,30 +177,30 @@
   left: auto;
   right: 64%;
 }
-.encounter-dialogue .encounter-quiz-prompt { font-size: var(--ds-text-reading); line-height: var(--ds-leading-body); }
+.encounter-dialogue .encounter-quiz-prompt { font-size: var(--ds-text-large); line-height: var(--ds-leading-body); }
 .encounter-dialogue .english-word { color: inherit; }
 .encounter-dialogue .word-meaning { color: var(--ds-ink); }
 
 /* An encounter's replies floating above the window (romance-scene.css .vn-choices, 2026-11-25): each row one pane of the
    window's glass, its words and translation in the window's ink, its letter the smoked press of every choice (a
    reply that cannot be chosen: the disabled grey, its reason under its words). Nothing inside a row has a glass of its own. */
-.vn-choices .encounter-choices { gap: 10px; margin: 0; }
+.vn-choices .encounter-choices { gap: var(--ds-space-2); margin: 0; }
 .vn-choices .encounter-choice {
   min-height: 52px;
-  padding: 6px 16px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--vn-window-bg);
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
   color: var(--vn-text);
 }
 .vn-choices .encounter-choice :is(.text-button, p) {
-  padding: 4px 2px;
+  padding: var(--ds-space-1) var(--ds-space-1);
   border-radius: 0;
   background: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-.vn-choices .encounter-choice[data-translated] { padding-right: 8px; }
+.vn-choices .encounter-choice[data-translated] { padding-right: var(--ds-space-2); }
 .vn-choices .encounter-choice[data-unavailable] { color: var(--vn-muted); }
-.encounter-choice-select:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+.encounter-choice-select:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }

@@ -225,8 +225,8 @@ function WalkerFigure({ pose, reach }: { pose: Pose | ClothPose | null; reach: b
       <path d="M17 10 Q 8 26, 11 48" fill="none" stroke="#1f1a17" strokeWidth="5" strokeLinecap="round" />
       <path d={legs} stroke="#4a6f9a" strokeWidth="6" strokeLinecap="round" />
       <path d={reach ? "M12 99 L 18 99 M35 92 L 41 92" : "M12 99 L 18 99 M27 99 L 34 99"} stroke="#6b4a30" strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M14 22 L 28 22 L 32 70 L 10 70 Z" fill="#efe4cc" stroke="#6b5a45" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d={arms} fill="none" stroke="#e4d6b8" strokeWidth="5" strokeLinecap="round" />
+      <path d="M14 22 L 28 22 L 32 70 L 10 70 Z" fill="#f1f1f2" stroke="#6b5a45" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d={arms} fill="none" stroke="#dcdde0" strokeWidth="5" strokeLinecap="round" />
       <circle cx="21" cy="12" r="8" fill="#b98b6b" />
       <path d="M13 12 Q 14 2, 23 3 Q 29 4, 29 9 Q 22 7, 16 14 Z" fill="#1f1a17" />
       {pose === "scream" && <ellipse cx="26" cy="15.5" rx="1.8" ry="2.4" fill="#4a1f1a" />}
@@ -499,11 +499,11 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
   return {
     tuning: (params) => walkFor(params).plan.tuning,
     rules: clothFlapRulesFor(tuning),
-    hintJa: "金色の段に立った瞬間に「広げる」",
+    hintJa: "白く光る段に立った瞬間に「広げる」",
     actionJa: "広げる",
-    actionHintJa: "階段を下りてくる人が、くぼみの前の金色の段に立ったときに押します。立ち止まったり、一段戻ったり、跳んだりします。ほかの人にはつられないで。",
+    actionHintJa: "階段を下りてくる人が、くぼみの前の白く光る段に立ったときに押します。立ち止まったり、一段戻ったり、跳んだりします。ほかの人にはつられないで。",
     // The practice's plain walk: no stop, no step back, no leap, nobody else.
-    practiceActionHintJa: "階段を下りてくる人が、くぼみの前の金色の段に立ったときに押します。",
+    practiceActionHintJa: "階段を下りてくる人が、くぼみの前の白く光る段に立ったときに押します。",
     autoJa: "おまかせで広げています",
     // The play ends as she reacts (her scream, her laugh at the cloth, her peering back), the host's finish over it…
     impactAt: ({ outcome, tapMs }, _still, params) => reactionOf(outcome, tapMs, walkFor(params)).at,

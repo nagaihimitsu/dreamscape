@@ -1,5 +1,5 @@
 /* 「ノート」 (NoteDialog.tsx): its pages side by side under the title, the one shown the smoked glass (aria-pressed). */
-.note-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; margin: 0 0 8px; }
+.note-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--ds-space-2); margin: 0 0 var(--ds-space-2); }
 .note-tabs button {
   position: relative;
   display: flex;
@@ -7,27 +7,27 @@
   justify-content: center;
   min-height: 44px;
   margin: 0;
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .note-tabs button[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
-/* A page's dot (fx.css) at its button's top right, in the markers' rose on the parchment (a page shown has none). */
-.note-tabs .fx-dot { top: 6px; left: auto; right: 8px; background: var(--ds-marker); box-shadow: 0 0 0 1.5px var(--ds-parchment); }
+/* A page's dot (fx.css) at its button's top right, in the muted ink on the light ground (a page shown has none). */
+.note-tabs .fx-dot { top: 6px; left: auto; right: 8px; background: var(--ds-ink-muted); box-shadow: 0 0 0 var(--ds-edge) var(--ds-surface); }
 /* 旅のことば's page (2026-11-20): the frame of 旅の図鑑's, so the note keeps its size between the two. */
 dialog.modal.words-note {
-  --modal-pad-top: 16px;
-  --modal-pad-inline: 16px;
+  --modal-pad-top: var(--ds-space-4);
+  --modal-pad-inline: var(--ds-space-4);
   width: min(560px, calc(100% - 24px));
   max-width: 560px;
   max-height: calc(100dvh - 24px);
 }
-.words-note .modal-title-bar { margin-bottom: 4px; }
-.words-note > .fine-print { margin: 0 0 8px; }
+.words-note .modal-title-bar { margin-bottom: var(--ds-space-1); }
+.words-note > .fine-print { margin: 0 0 var(--ds-space-2); }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
 .note-tabs button:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

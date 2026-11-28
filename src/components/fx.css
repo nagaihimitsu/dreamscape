@@ -2,9 +2,9 @@
    A button that carries one is an fx-host. */
 /* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
 :root {
-  --fx-sparkle-sweep-ground: rgba(255, 248, 225, 0);
-  --fx-sparkle-sweep-ground-2: rgba(255, 248, 225, 0.85);
-  --fx-star-ground: #fffbea;
+  --fx-sparkle-sweep-ground: rgba(255, 255, 255, 0);
+  --fx-sparkle-sweep-ground-2: rgba(255, 255, 255, 0.85);
+  --fx-star-ground: #ffffff;
 }
 .fx-host { position: relative; }
 
@@ -41,7 +41,7 @@
   width: 9px;
   height: 9px;
   margin: -4.5px 0 0 -4.5px;
-  background: radial-gradient(circle, var(--fx-star-ground) 0 30%, var(--ds-marker-selected) 70%);
+  background: radial-gradient(circle, var(--fx-star-ground) 0 30%, var(--ds-light) 70%);
   clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
   opacity: 0;
   animation: fx-star 440ms var(--ease-out) both;
@@ -54,10 +54,10 @@
   35% { opacity: 1; transform: translate(calc(var(--fx-x) * 0.5), calc(var(--fx-y) * 0.5)) scale(1) rotate(30deg); }
   100% { opacity: 0; transform: translate(var(--fx-x), var(--fx-y)) scale(0.5) rotate(70deg); }
 }
-/* Under reduced motion and 「演出を短縮する」: one soft gold glow on the button, nothing moves. */
+/* Under reduced motion and 「演出を短縮する」: one soft white glow on the button, nothing moves. */
 @keyframes fx-glow {
   0%, 100% { box-shadow: 0 0 0 0 transparent; }
-  35% { box-shadow: 0 0 10px 3px color-mix(in srgb, var(--ds-gold) 80%, transparent); }
+  35% { box-shadow: 0 0 10px 3px color-mix(in srgb, var(--ds-hairline) 80%, transparent); }
 }
 .reduce-motion .fx-sparkle-sweep,
 .reduce-motion .fx-star { display: none; }
@@ -69,7 +69,7 @@
 }
 
 /* Something new (a held item not looked at, a clue or an English-note entry): a small dot at the button's top left
-   corner, clear of its icon and of the bag's count; the selected marker's yellow with a slate ring, 8:1 on the slate
+   corner, clear of its icon and of the bag's count; white with a dark ring, 8:1 or more on the dark
    buttons. Its meaning is in the button's name. */
 .fx-dot {
   position: absolute;
@@ -78,7 +78,7 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--ds-marker-selected);
-  box-shadow: 0 0 0 1.5px var(--ds-slate-900);
+  background: var(--ds-light);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark);
   pointer-events: none;
 }

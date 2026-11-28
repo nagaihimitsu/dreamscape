@@ -1,67 +1,67 @@
-/* The web fonts (Noto Sans JP and Noto Serif JP) are linked from index.html, which starts loading them at once. */
+/* The web font (Noto Sans JP) is linked from index.html, which starts loading it at once. */
 :root {
   font-family: var(--ds-font-sans);
   color: var(--ds-ink);
   background: var(--ds-page);
   font-synthesis: none;
-  font-weight: 400;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-body);
   font-size: var(--ds-text-body);
   font-feature-settings: "palt";
-  /* Shared colours of the redesigned HUD, map, list and dialogue window
-     (UI redesign §2.1). Text colours keep WCAG AA on the surfaces named
-     beside them; a role is never told by colour alone. */
-  --ds-slate-900: #1f2430; /* chip/window base, focus halo, selected-marker disc */
-  --ds-slate-800: #2b3140; /* primary fill, HUD tools, row hint strip, selected-row border */
-  --ds-chip-bg: rgba(31, 36, 48, 0.84); /* status pills over photos */
-  --ds-window-bg: rgba(31, 36, 48, 0.9); /* dialogue window */
-  --ds-on-slate: #fffaf1; /* text on slate */
-  --ds-on-slate-muted: #d9dde3;
-  --ds-plate-blue: #4d658a; /* speaker name plate */
-  --ds-gold: #c9a35f; /* hairlines and icons only, never text on parchment */
-  --ds-parchment: #fbf3e6; /* map card, list card, bottom band, menu panel */
-  --ds-parchment-2: #f3e4c8; /* map banner, ribbon summary, selected row fill */
-  --ds-parchment-line: #d9c39a; /* card borders, row separators */
-  --ds-ink: #3b2f2a; /* text on parchment */
-  --ds-ink-muted: #6b5a4a;
-  --ds-marker: #a23d5a; /* map markers and legend glyphs */
-  --ds-marker-selected: #f6c445; /* selected marker and row badge, always on --ds-slate-900 */
-  --ds-here: #245a48; /* current-place ring, done/cleared text */
-  --ds-focus: #ffd27a; /* focus ring, with a --ds-slate-900 halo */
-  --ds-disabled-bg: #e6dfd2;
-  --ds-disabled-ink: #5c544a;
-  --ds-field: #fffaf1; /* the ground of a text field, a select, a row to press in a dialog's list */
-  --ds-field-edge: #8f7c66; /* text fields and selects: 3.6:1 on --ds-parchment */
-  --ds-gold-hairline: rgba(201, 163, 95, 0.7); /* --ds-gold at 70 %: the edge of pressables on slate */
-  --ds-photo-shade: rgba(20, 24, 32, 0.55); /* top of the gradient behind the header over a photo (§2.4) */
-  /* Shadows of the shapes (§2.3). */
-  --ds-pill-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
-  --ds-card-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
-  --ds-window-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
-  /* The light frosted glass over a scene (2026-11-25 user decisions): the talk's window, then free time's cards and a
-     quiz's result, so the place shows on, softened, behind what is read. A bright, nearly white pane (2026-11-25 user
-     remark on free time on an iPhone: everything looked dark; the cooler, thinner pane went grey over a dark photo).
-     Its ink keeps 8:1 or more over any picture (its 12 % show-through counted at black), its muted ink 4.5:1. A pressable on it stands on --ds-glass-press, a
-     chosen one on --ds-glass-chosen with its slate edge drawn inside. */
-  --ds-glass-bg: rgba(255, 254, 251, 0.88);
-  --ds-glass-blur: blur(14px) saturate(1.2);
-  --ds-glass-ink: #1d2740;
-  --ds-glass-muted: #47536b;
-  --ds-glass-press: rgba(255, 255, 255, 0.72);
-  --ds-glass-chosen: rgba(61, 106, 166, 0.18);
-  --ds-glass-line: rgba(29, 39, 64, 0.16);
-  /* A press that cannot be pressed now, on a pane of the glass: a faint grey, flat (no edge, no shadow), its words the
-     muted ink (2026-11-27 user request: one UI). Over the scene itself such a press is the plain light glass instead
-     (a talk's choice, the mini-game's start). */
-  --ds-glass-disabled: rgba(29, 39, 64, 0.08);
-  /* Its edges (2026-11-27 user requests: the talk's window made fluffier, then every pane of glass the same, as one UI):
-     no edge line and no shadow; the glass reaches --ds-glass-bleed past its box and melts into the scene over
-     --ds-glass-feather along an eased curve (smoothstep at quarter steps), so no rim of the fade shows. Smaller on a
-     phone held upright (below). A pane that scrolls or holds a bar (a dialog, a quiz's panel) keeps a plain edge with
-     the same corner. */
+  /* The design's rules (2026-11-25 user decision, after learning from a product designer's practice: a few named sizes
+     and colours, decided first and used everywhere, so every screen reads as one; remade 2026-11-28 by user decision:
+     white and grey frosted glass, one typeface, six sizes, three line heights, a 4-px scale of room, soft round corners,
+     and none of the old colours — indigo, navy, gold, parchment — anywhere, the things drawn in a scene included).
+     Every stylesheet takes its colours, typeface, font sizes, line heights, room, corners and layers from these
+     (src/app/design-tokens.test.ts holds them to it). docs/02 「デザインの決まり」 lists them by role. */
+
+  /* The colours: white and grey only (2026-11-28 user decision: no accent; the place's photo brings the colour). The
+     colours that carry a meaning stay: a right answer's green, the current place's green, a missed answer's red, an
+     action that cannot be undone, and an emphasised word in a talk. A role is never told by colour alone.
+     Every grey is one of these six, with white and black (2026-11-28 user decision: six patterns at most); a role's
+     colour below names one of them, at an alpha with color-mix(). */
+  --ds-gray-1: #1e1f23; /* the words, the dark, the night */
+  --ds-gray-2: #3b3d43; /* a dark fill */
+  --ds-gray-3: #5d616b; /* a secondary line, a field's edge, a plain name band */
+  --ds-gray-4: #a8abb2; /* a hairline, an icon's stroke */
+  --ds-gray-5: #dcdee2; /* a line on the light ground */
+  --ds-gray-6: #eeeff1; /* a light ground: a chosen row, the page */
+  --ds-light: #ffffff; /* white: a gleam, a flash, a glow, a photo's white border, a chosen mark */
+  --ds-shade: #000000; /* black: a shadow, a picture's dark veil */
+  --ds-ink: var(--ds-gray-1); /* the words: 12:1 or more on the glass over any picture (its show-through counted at black) */
+  --ds-ink-muted: var(--ds-gray-3); /* a secondary line, a mark, a dot: 4.8:1 or more on the glass */
+  --ds-surface: var(--ds-light); /* the ground of a card, a row, a press (on the glass: --ds-glass-press) */
+  --ds-surface-chosen: var(--ds-gray-6); /* a chosen row's ground, a band (on the glass: --ds-glass-chosen) */
+  --ds-line: var(--ds-gray-5); /* a card's edge, a row's separator (on the glass: --ds-glass-line) */
+  --ds-hairline: var(--ds-gray-4); /* a hairline, an icon's stroke */
+  --ds-field: var(--ds-light); /* the ground of a text field, a select, a row to press in a dialog's list */
+  --ds-field-edge: var(--ds-gray-3); /* a field's edge: 3:1 or more on the glass over any picture */
+  --ds-disabled-bg: var(--ds-gray-6);
+  --ds-disabled-ink: var(--ds-gray-3);
+  --ds-dark: var(--ds-gray-1); /* the dark of the header's tools, the focus ring's halo, a chosen mark's disc */
+  --ds-dark-2: var(--ds-gray-2); /* a dark fill: a card without a photo, a selected row's edge */
+  --ds-on-dark: var(--ds-light); /* words on the dark and on the smoked glass */
+  --ds-on-dark-muted: var(--ds-gray-6); /* secondary words there: 4.6:1 or more on the smoked glass */
+  --ds-here: #23704f; /* the current place's ring, a done or cleared word: 5.4:1 on the glass */
+  --ds-focus: var(--ds-light); /* the focus ring, white, with its dark halo */
+  --ds-focus-halo: 0 0 0 var(--ds-edge-heavy) var(--ds-dark); /* the focus ring's dark halo, so the white ring shows on the glass and on the dark */
+  --ds-photo-shade: color-mix(in srgb, var(--ds-shade) 55%, transparent); /* top of the gradient behind the header over a photo */
+  /* The light frosted glass over a scene (2026-11-25 user decisions; every pane since 2026-11-28): the place shows on,
+     softened, behind what is read. A bright, nearly white pane (an iPhone showed a thinner one going grey over a dark
+     photo). A pressable on it stands on --ds-glass-press, a chosen one on --ds-glass-chosen. */
+  --ds-glass-bg: color-mix(in srgb, var(--ds-light) 88%, transparent);
+  --ds-glass-blur: blur(16px) saturate(1.2);
+  --ds-glass-press: color-mix(in srgb, var(--ds-light) 72%, transparent);
+  --ds-glass-chosen: color-mix(in srgb, var(--ds-gray-1) 9%, transparent);
+  --ds-glass-line: color-mix(in srgb, var(--ds-gray-1) 14%, transparent);
+  --ds-glass-disabled: color-mix(in srgb, var(--ds-gray-1) 7%, transparent); /* a press that cannot be pressed now, flat, its words muted */
+  --ds-glass-bar: color-mix(in srgb, var(--ds-gray-6) 94%, transparent); /* a band over what scrolls under it (a dialog's title bar) */
+  /* Its edges (2026-11-27 user requests: fluffy, and every pane of glass the same): no edge line and no shadow; the glass
+     reaches --ds-glass-bleed past its box and melts into the scene over --ds-glass-feather along an eased curve
+     (smoothstep at quarter steps). Smaller on a phone held upright (below). A pane that scrolls or holds a bar (a dialog,
+     a quiz's panel) keeps a plain edge with the same corner, --ds-radius-large. */
   --ds-glass-feather: 26px;
   --ds-glass-bleed: 10px;
-  --ds-glass-radius: 32px;
   --ds-glass-fade-in: transparent, color-mix(in srgb, var(--ds-mask) 16%, transparent) calc(var(--ds-glass-feather) * 0.25),
     color-mix(in srgb, var(--ds-mask) 50%, transparent) calc(var(--ds-glass-feather) * 0.5),
     color-mix(in srgb, var(--ds-mask) 84%, transparent) calc(var(--ds-glass-feather) * 0.75), var(--ds-mask) var(--ds-glass-feather);
@@ -71,71 +71,126 @@
     color-mix(in srgb, var(--ds-mask) 16%, transparent) calc(100% - var(--ds-glass-feather) * 0.25), transparent;
   --ds-glass-mask: linear-gradient(to right, var(--ds-glass-fade-in), var(--ds-glass-fade-out)),
     linear-gradient(to bottom, var(--ds-glass-fade-in), var(--ds-glass-fade-out));
-  /* The room between a pane's edge and its words (the talk's window on a phone, a card under free time's row). */
-  --ds-glass-padding: 16px;
-  /* A band that stays over what scrolls under it on the glass (a dialog's title bar): the glass, nearly opaque. */
-  --ds-glass-bar: rgba(244, 246, 252, 0.94);
-  /* A field's edge on the glass: 3:1 on it whatever lies behind (its 12 % show-through counted at black). */
-  --ds-glass-field-edge: #646b7e;
-  /* The smoked glass (2026-11-25 user decision, after free time's header on an iPhone: its slate pills and buttons sat on
-     the city as a form's parts): the header's plates and buttons over the scene, which shows through them blurred. White
-     words on it read 5.5:1 whatever lies behind (its show-through counted at white), its muted words 4.7:1. */
-  --ds-smoke: rgba(18, 23, 36, 0.66);
-  --ds-smoke-on: rgba(12, 16, 26, 0.86); /* an open tool */
-  --ds-smoke-blur: blur(14px) saturate(1.4);
-  --ds-smoke-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.14); /* its edge catching the light */
-  --ds-smoke-muted: #e6e9ee;
+  /* The room between a pane's edge and its words. */
+  --ds-glass-padding: var(--ds-space-4);
+  /* The smoked glass (2026-11-25 user decision): the header's plates and buttons, a chip over a photo; the scene shows
+     through it blurred. White words on it read 5.7:1 whatever lies behind (its show-through counted at white). */
+  --ds-smoke: color-mix(in srgb, var(--ds-gray-1) 66%, transparent);
+  --ds-smoke-on: color-mix(in srgb, var(--ds-gray-1) 88%, transparent); /* an open tool, a dark window */
+  --ds-smoke-blur: blur(16px) saturate(1.4);
+  --ds-smoke-edge: inset 0 0 0 var(--ds-edge-thin) color-mix(in srgb, var(--ds-light) 14%, transparent); /* its edge catching the light */
   /* White words over a scene, without a ground (the header's): a soft dark shadow round each. */
-  --ds-scene-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 8px rgba(0, 0, 0, 0.35);
-  /* The shade that falls from the screen's top behind the header (journey-hud.css; 2026-11-25 user decisions: more and
-     more see-through as it goes down, so it melts into the scene with no edge; then, the screen looked dark: as light
-     as the header's reading allows, and a short fall). It is even over the header itself (white words 5:1 and white
-     marks 4.5:1 or more over anything behind it, white counted: 0.6 at least), and fades out over the 56 px below the
-     header on an easing curve (its height: the header's + 56 px). */
+  --ds-scene-text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent), 0 0 8px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  /* The shade that falls from the screen's top behind the header (journey-hud.css): even over the header itself (white
+     words 5:1 and white marks 4.5:1 or more over anything behind it), then fading out over the 56 px below it. */
   --ds-hud-shade: linear-gradient(
-    rgba(10, 14, 24, 0.62), rgba(10, 14, 24, 0.6) calc(100% - 56px), rgba(10, 14, 24, 0.42) calc(100% - 44px),
-    rgba(10, 14, 24, 0.24) calc(100% - 30px), rgba(10, 14, 24, 0.1) calc(100% - 16px), rgba(10, 14, 24, 0.03) calc(100% - 6px),
-    rgba(10, 14, 24, 0));
-  /* The same falling shade, lighter, over a talk (only the place, for a while, and ≡メニュー's mark lie on it). */
+    color-mix(in srgb, var(--ds-shade) 62%, transparent), color-mix(in srgb, var(--ds-shade) 60%, transparent) calc(100% - 56px), color-mix(in srgb, var(--ds-shade) 42%, transparent) calc(100% - 44px),
+    color-mix(in srgb, var(--ds-shade) 24%, transparent) calc(100% - 30px), color-mix(in srgb, var(--ds-shade) 10%, transparent) calc(100% - 16px), color-mix(in srgb, var(--ds-shade) 3%, transparent) calc(100% - 6px),
+    color-mix(in srgb, var(--ds-shade) 0%, transparent));
+  /* The same falling shade, lighter, over a talk. */
   --ds-talk-shade: linear-gradient(
-    rgba(20, 24, 32, 0.55), rgba(20, 24, 32, 0.44) 30%, rgba(20, 24, 32, 0.3) 50%, rgba(20, 24, 32, 0.17) 68%,
-    rgba(20, 24, 32, 0.07) 84%, rgba(20, 24, 32, 0));
-  /* The design's rules (2026-11-25 user decision, after learning from a product designer's practice: a few named sizes
-     and colours, decided first and used everywhere, so every screen reads as one). The talk's stylesheets use only
-     these, and every stylesheet takes its font sizes and line heights from them (src/app/design-tokens.test.ts holds them to
-     it); the other screens' colours move to them in turn. docs/02 「デザインの決まり」 lists them by role. Sizes that follow the screen's width are set below. */
-  /* The typefaces, by role (2026-11-26). The two Noto faces are web fonts every phone loads (index.html); Georgia is
-     on Apple's and Microsoft's systems only, so the Latin face falls back to the loaded Mincho, not a system serif. */
-  --ds-font-sans: "Noto Sans JP", "Noto Sans", system-ui, sans-serif; /* the UI's words */
-  --ds-font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif; /* a story's words, a place's name, a title */
-  --ds-font-latin: Georgia, "Noto Serif JP", serif; /* Latin marks and figures: a choice's letter, NEW, a score */
+    color-mix(in srgb, var(--ds-shade) 55%, transparent), color-mix(in srgb, var(--ds-shade) 44%, transparent) 30%, color-mix(in srgb, var(--ds-shade) 30%, transparent) 50%, color-mix(in srgb, var(--ds-shade) 17%, transparent) 68%,
+    color-mix(in srgb, var(--ds-shade) 7%, transparent) 84%, color-mix(in srgb, var(--ds-shade) 0%, transparent));
+  /* What is pressed to go on, a choice, every primary press: a pane of dark grey smoked glass over the scene with a white
+     hairline. Its white words keep 6:1 or more over any picture (its show-through counted at white). */
+  --ds-action: color-mix(in srgb, var(--ds-gray-1) 70%, transparent);
+  --ds-action-deep: color-mix(in srgb, var(--ds-gray-1) 80%, transparent); /* its lower end */
+  --ds-action-ink: var(--ds-light);
+  --ds-action-fill: linear-gradient(180deg, var(--ds-action), var(--ds-action-deep));
+  --ds-action-edge: color-mix(in srgb, var(--ds-light) 32%, transparent); /* a white hairline catching the light */
+  --ds-action-text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 35%, transparent);
+  /* The shadows: soft and wide, never a hard edge (2026-11-28 user decision: soft). */
+  --ds-shadow-small: 0 2px 8px color-mix(in srgb, var(--ds-shade) 18%, transparent); /* a pill over a photo, a small mark */
+  --ds-shadow: 0 8px 28px color-mix(in srgb, var(--ds-shade) 14%, transparent); /* a card, a pane of glass, a press */
+  --ds-shadow-up: 0 -4px 16px color-mix(in srgb, var(--ds-shade) 14%, transparent); /* a band at the foot of the screen, casting upward */
+  --ds-shadow-large: 0 16px 48px color-mix(in srgb, var(--ds-shade) 28%, transparent); /* a window over everything, a photo shown large */
+  --ds-action-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge), var(--ds-shadow);
+  --ds-action-pressed-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge), var(--ds-shadow-small);
+  /* The light pane to press (2026-11-27 user request: one UI over every screen): a secondary press, a tab, a row, a way
+     to choose: the glass's fine edge and a soft shadow. */
+  --ds-press-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line), var(--ds-shadow);
+  --ds-emphasis: #a3243b; /* an emphasised word in a talk (# em:): 5:1 on the glass */
+  --ds-speaker: var(--ds-gray-3); /* the name band of a speaker without colours of their own: white words 6.4:1 */
+  --ds-speaker-edge: var(--ds-gray-4);
+  --ds-speaker-ink: var(--ds-light);
+  --ds-scene-ground: var(--ds-gray-2); /* behind a scene before its picture has come */
+  --ds-page: var(--ds-gray-6); /* the page around the game on a wide screen */
+  --ds-page-edge: var(--ds-gray-5); /* the game's edge on that page */
+  --ds-page-shadow: var(--ds-shadow); /* the game's soft shade on that page */
+  --ds-backdrop: color-mix(in srgb, var(--ds-shade) 40%, transparent); /* behind an open dialog (the scene stays, blurred, under it) */
+  --ds-photo-mat: var(--ds-gray-1); /* behind a photo before it has come, and around one shown whole */
+  --ds-map-ground: var(--ds-gray-6); /* a map's ground before its tiles come */
+  --ds-mask: var(--ds-shade); /* the opaque part of a mask (only its alpha counts) */
+  --ds-game-mark: var(--ds-light); /* the mini-games' mark: a ring to hit, a gauge, a good grade (white, with a soft shadow) */
+  --ds-right-ink: #23704f; /* a right answer's words */
+  --ds-right-ground: #e4f2ea; /* a right answer's ground */
+  --ds-right-edge: #b4d5c3;
+  --ds-wrong-ink: #a3313c; /* a missed answer's words */
+  --ds-wrong-ground: #f8e9ea;
+  --ds-danger: #a3313c; /* an action that cannot be undone (消去), a Debug warning */
+  --ds-danger-edge: #b2434d;
+  --ds-glass-mark: color-mix(in srgb, var(--ds-light) 86%, transparent); /* a white mark over the scene: the talk's tools */
+  --ds-glass-mark-shadow: drop-shadow(0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent));
+  --ds-glass-mark-hover: color-mix(in srgb, var(--ds-light) 14%, transparent);
+  --ds-glass-mark-on: color-mix(in srgb, var(--ds-light) 24%, transparent);
+  --ds-glass-mark-full: var(--ds-light); /* a white mark at its fullest */
+  /* The night over the city (the night screen and its card): a deep grey, the dusk it deepens from, the veil over the
+     city's picture (--ds-on-dark keeps 9:1 or more on it over any picture) and a pane of glass on it. */
+  --ds-night: var(--ds-gray-1);
+  --ds-night-dusk: var(--ds-gray-2);
+  --ds-night-veil: color-mix(in srgb, var(--ds-gray-1) 84%, transparent);
+  --ds-night-veil-dusk: color-mix(in srgb, var(--ds-gray-2) 60%, transparent);
+  --ds-night-glass: color-mix(in srgb, var(--ds-light) 10%, transparent);
+  --ds-night-glass-hover: color-mix(in srgb, var(--ds-light) 18%, transparent);
+
+  /* The typeface: one, Noto Sans JP, for every word (2026-11-28 user decision; the Mincho and Georgia are gone). Debug's
+     codes keep the monospace; a stylesheet's own @font-face (a hand on a photo or in a mini-game) is that thing's own. */
+  --ds-font-sans: "Noto Sans JP", "Noto Sans", system-ui, sans-serif;
   --ds-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace; /* a storage key, Debug's codes */
-  /* The type scale, by role. */
-  --ds-text-mark: 11px; /* a mark's word: ▼, a tool's word under its icon */
-  --ds-text-caption: 12px; /* a label, a small note: a sender's name, a role over a name */
-  --ds-text-note: 13px; /* a secondary line: a hint, a translation, a reason */
-  --ds-text-body: 15px; /* the UI's text: a name band, a choice, a button, a message */
-  --ds-text-field: 16px; /* the words in a text field or a select (an iPhone zooms into a field under 16px) */
-  --ds-text-subhead: 17px; /* a small heading: a card's or a row's name, a section's heading in a list; a mid-sized mark */
-  --ds-text-reading: 17px; /* the talk's words (18px on a wide screen) */
-  --ds-text-lead: 18px; /* a larger reading: a letter's sheet (20px on a wide screen) */
-  --ds-text-heading: 20px; /* a heading in a panel; a large mark */
-  --ds-text-title: 24px; /* a name presented: the name plate */
+  /* The type scale: six steps (2026-11-28 user decision; the words in a field are the body's 16px, so an iPhone never
+     zooms into one). */
+  --ds-text-small: 12px; /* a label, a mark's word, a small note: a sender's name, a role over a name, a badge */
+  --ds-text-note: 14px; /* a secondary line: a hint, a translation, a reason */
+  --ds-text-body: 16px; /* the UI's text: a choice, a button, a message, a field */
+  --ds-text-large: 18px; /* the talk's words, a reading, a card's or a row's name, a small heading */
+  --ds-text-heading: 22px; /* a heading in a panel, a name presented, a large mark */
   --ds-text-display: 32px; /* a word shown large: a city's arrival, a result */
-  /* The line heights that go with them. */
-  --ds-leading-display: 1.15; /* a large word: a title, a result, an effect's word */
-  --ds-leading-tight: 1.3; /* names, headings, one-line labels */
-  --ds-leading-snug: 1.45; /* choices, notes */
-  --ds-leading-body: 1.6; /* the UI's text */
-  --ds-leading-reading: 1.75; /* the talk's words (1.8 on a wide screen) */
-  --ds-leading-chip: 18px; /* the line of a one-line chip or badge: its height inside its padding */
-  /* The corners, by role (2026-11-26). A circle is 50 %; a thing's own shape is named in its stylesheet. */
-  --ds-radius-hair: 2px; /* a thin bar or line */
-  --ds-radius-small: 4px; /* a badge, a small mark */
-  --ds-radius-field: 8px; /* a text field or select, a thumbnail, a small picture */
-  --ds-radius-control: 12px; /* a button, a row to press, a picture in a card */
-  --ds-radius-pane: 16px; /* a card, a notice, a bubble, a choice in a talk */
-  --ds-radius-pill: 999px; /* a pill: a chip, a status, a band's plate */
+  /* The weights: three (2026-11-28 user decision: six patterns at most; Noto Sans JP is loaded at these three). */
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-bold: 600;
+  /* The letter spacing: four, with 0 (a negative pull that sets two marks together is a thing's own geometry). */
+  --ds-tracking-1: 0.02em; /* a heading, a name */
+  --ds-tracking-2: 0.06em; /* a label, a figure */
+  --ds-tracking-3: 0.12em; /* a small spaced label */
+  --ds-tracking-4: 0.24em; /* a word spaced wide: a brand, a stamp */
+  /* The line heights: three. */
+  --ds-leading-tight: 1.3; /* names, headings, one-line labels, a large word */
+  --ds-leading-body: 1.6; /* the UI's text, choices, notes */
+  --ds-leading-reading: 1.8; /* the talk's words, a text to read */
+  /* The room (margins, padding, gaps): six steps (2026-11-28 user decisions: steps of 4px, then six patterns at most). */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  /* The widths of an edge (a border, an outline, a ring): four. */
+  --ds-edge-thin: 1px; /* a hairline, a card's or a field's edge */
+  --ds-edge: 2px; /* a chosen row's edge, a press's reserved edge */
+  --ds-edge-thick: 3px; /* the focus ring, a strong mark */
+  --ds-edge-heavy: 6px; /* the focus ring's halo, a frame, an effect's ring */
+  /* The opacities between 0 and 1: four. */
+  --ds-opacity-faint: 0.4; /* a press that cannot be pressed now, a faint mark */
+  --ds-opacity-soft: 0.6;
+  --ds-opacity-dim: 0.8;
+  --ds-opacity-strong: 0.9;
+  /* The corners: soft and round (2026-11-28 user decision). A circle is 50 %; a thing's own shape is named in its
+     stylesheet. */
+  --ds-radius-control: 16px; /* a button, a row to press, a field, a badge, a picture */
+  --ds-radius-pane: 24px; /* a card, a notice, a bubble, a choice in a talk */
+  --ds-radius-large: 32px; /* a pane of glass, a dialog, the talk's window */
+  --ds-radius-pill: 999px; /* a pill: a chip, a status, a band's plate, a thin bar */
   /* The layers, from the bottom (2026-11-26). Within a part, 0–9 order its own pieces; every layer above that is named
      here, with what lies on it. Those marked (in a part) order a part's pieces over each other inside it. */
   --ds-layer-answer-effect: 10; /* (in a quiz) an answer's ○ or × over the question */
@@ -163,67 +218,6 @@
   --ds-layer-night-rest: 2000; /* the night's rest, its fade and the time passing */
   --ds-layer-movie: 2100; /* the opening movie */
   --ds-layer-ignored-tap: 3000; /* the ring where an ignored tap landed, over everything */
-  /* The colours, by role, with those above: --ds-glass-* the glass and its ink, --ds-gold the hairlines and icons,
-     --ds-parchment the paper, --ds-slate-* the header's tools, --ds-focus the focus ring. */
-  /* What is pressed to go on, a choice: a pane of smoked glass over the scene with a white hairline (2026-11-25 user decision:
-     the terracotta presses cut across the scene), apart from the light glass of the words. Its white words keep 6:1 or
-     more over any picture (its show-through counted at white). */
-  --ds-action: rgba(22, 28, 44, 0.72);
-  --ds-action-deep: rgba(14, 18, 30, 0.8); /* its lower end */
-  --ds-action-ink: #ffffff;
-  --ds-action-fill: linear-gradient(180deg, var(--ds-action), var(--ds-action-deep));
-  /* Its edge: a white hairline catching the light (2026-11-27 user decision: no longer gold). */
-  --ds-action-edge: rgba(255, 255, 255, 0.32);
-  --ds-action-shadow: inset 0 0 0 1px var(--ds-action-edge), 0 6px 18px rgba(8, 10, 16, 0.28);
-  --ds-action-pressed-shadow: inset 0 0 0 1px var(--ds-action-edge), 0 2px 8px rgba(8, 10, 16, 0.28);
-  --ds-action-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --ds-emphasis: #93233a; /* emphasised words on the glass (# em:): 4.9:1 */
-  --ds-speaker: #3d6aa6; /* the name band of a speaker without colours of their own */
-  --ds-speaker-edge: #a9c0e0;
-  --ds-speaker-ink: #ffffff;
-  --ds-scene-ground: #5b6258; /* behind a scene before its picture has come */
-  --ds-page: #eeeae1; /* the page around the game on a wide screen */
-  --ds-page-edge: #dcded0; /* the game's edge on that page */
-  --ds-page-shadow: 0 0 90px #463d2a09; /* the game's faint shade on that page */
-  --ds-backdrop: rgba(16, 20, 30, 0.4); /* behind an open dialog (the scene stays, blurred, under it) */
-  --ds-photo-mat: #26342e; /* behind a photo before it has come, and around one shown whole */
-  --ds-mask: #000; /* the opaque part of a mask (only its alpha counts) */
-  /* The inks of light and shade (2026-11-26). A colour of the rules at an alpha is written
-     color-mix(in srgb, var(--ds-…) N%, transparent): a gold glow is --ds-marker-selected, a gold hairline --ds-gold. */
-  --ds-light: #ffffff; /* light: a gleam, a flash, a photo's white border, a white ring */
-  --ds-shade: #000000; /* a shadow's black, a picture's dark veil */
-  --ds-veil: #141820; /* the night-blue shade over a picture, behind a word or a band */
-  --ds-paper-shade: #281e14; /* the warm shadow under paper and cards */
-  --ds-map-ground: #e8ece8; /* a map's ground before its tiles come */
-  --ds-seal: #8a3324; /* a red seal's ink: a stamp, a chapter's mark */
-  --ds-game-gold: #f0c860; /* the mini-games' gold: a ring to hit, a mark, a gauge, a good grade */
-  --ds-right-ink: #245a42; /* a right answer's words */
-  --ds-right-ground: #e2efda; /* a right answer's ground */
-  --ds-right-edge: #b9c9ac;
-  --ds-wrong-ink: #8b363c; /* a missed answer's words */
-  --ds-wrong-ground: #f9e9e4;
-  --ds-danger: #873b34; /* an action that cannot be undone (消去), a Debug warning */
-  --ds-danger-edge: #93443c;
-  --ds-glass-shadow: 0 2px 10px rgba(20, 28, 48, 0.2); /* a pane of glass over the scene: a reply, a plate */
-  /* The light pane to press (2026-11-27 user request: one UI over every screen): a secondary press, a tab, a row or a
-     way to choose, ≡メニュー's items, as a quiz's answer and the mini-game's 練習: the glass's fine edge and a soft shadow
-     on the light ground, the talk's choice's corner (--ds-radius-pane). Chosen: a tab or a way the smoked glass of the
-     talk's choices (--ds-action-*); a row with more in it the chosen ground with --ds-ink's edge drawn inside. */
-  --ds-press-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
-  --ds-glass-mark: rgba(255, 255, 255, 0.86); /* a white mark over the scene: the talk's tools */
-  --ds-glass-mark-shadow: drop-shadow(0 1px 2px rgba(10, 14, 24, 0.6));
-  --ds-glass-mark-hover: rgba(255, 255, 255, 0.14);
-  --ds-glass-mark-on: rgba(255, 255, 255, 0.24);
-  --ds-glass-mark-full: #ffffff; /* a white mark at its fullest: one that is on, the eye that shows the window again */
-  /* The night over the city (the night screen and its card, 2026-11-25): the night colour, the dusk it deepens from, the veil
-     over the city's picture (--ds-on-slate keeps 9:1 or more on it over any picture) and a pane of glass on it (a secondary
-     button, its white words at 7:1 or more). */
-  --ds-night: #111a2f;
-  --ds-night-dusk: #3a416c;
-  --ds-night-veil: rgba(17, 26, 47, 0.84);
-  --ds-night-veil-dusk: rgba(58, 65, 108, 0.6);
-  --ds-night-glass: rgba(255, 255, 255, 0.1);
-  --ds-night-glass-hover: rgba(255, 255, 255, 0.18);
   /* Motion of the UI's feedback: short, transform and opacity only, and never holding
      input back. Each animation that uses these stops, in its own stylesheet, under
      prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
@@ -241,20 +235,11 @@
   --motion-drop: 340ms;
   --ease-drop: cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* The sizes of the design's rules that follow the screen's width. */
-@media (min-width: 701px) {
-  :root {
-    --ds-text-reading: 18px;
-    --ds-text-lead: 20px;
-    --ds-leading-reading: 1.8;
-  }
-}
 /* The glass's edges on a phone held upright (the talk's window since 2026-11-27). */
 @media (max-width: 700px) and (orientation: portrait) {
   :root {
     --ds-glass-feather: 24px;
     --ds-glass-bleed: 8px;
-    --ds-glass-radius: 28px;
   }
 }
 * {
@@ -279,19 +264,19 @@ body {
    the colours of things of their own (the drawn canal's paper, the quiz partner's stage). */
 :root {
   --battle-score-size: 55px;
-  --canal-scene-ground: #d3c3a8;
-  --battle-stage-light: #6d7a68;
-  --battle-stage-ground: #334a40;
-  --battle-stage-dark: #263d35;
-  --battle-stage-frame: #d9d3b126;
-  --battle-stage-shade: #14251d55;
+  --canal-scene-ground: #d4d6d9;
+  --battle-stage-light: #7a7c82;
+  --battle-stage-ground: #3a3c41;
+  --battle-stage-dark: #2c2e33;
+  --battle-stage-frame: #d9dbdf26;
+  --battle-stage-shade: #16171a55;
 }
 
 /* The glass surfaces over a scene (--ds-glass-*; 2026-11-25 user decision: every screen in the one immersive look): free
    time's cards over the city, a quiz's panels over its place (its question, explanation and reasoning, its result's card),
    every dialog, the menu's panels, the title's and 交際開始's cards, 前回までのあらすじ (and the night's: night-rest.css).
-   What lies on them was written for the parchment, so its colours are pointed at the glass's here: the ink, the muted
-   ink, a pressable's ground, the chosen ground, the hairlines, a field's ground and edge, a disabled press's ground and ink. */
+   On them a card's, a row's and a press's ground, the chosen ground, the lines, a field's ground and a disabled press
+   are the glass's own, so the scene shows on through them too. */
 .photo-menu .place-card,
 .photo-free-time .photo-menu-note,
 .photo-free-time .free-time-extras,
@@ -303,16 +288,13 @@ body {
 .held-item-detail,
 .resume-recap,
 .intro-art + .paper.intro,
-.paper.ending {
-  --ds-ink: var(--ds-glass-ink);
-  --ds-ink-muted: var(--ds-glass-muted);
-  --ds-parchment: var(--ds-glass-press);
-  --ds-parchment-2: var(--ds-glass-chosen);
-  --ds-parchment-line: var(--ds-glass-line);
+.paper.ending,
+.item-out-card {
+  --ds-surface: var(--ds-glass-press);
+  --ds-surface-chosen: var(--ds-glass-chosen);
+  --ds-line: var(--ds-glass-line);
   --ds-field: var(--ds-glass-press);
-  --ds-field-edge: var(--ds-glass-field-edge);
   --ds-disabled-bg: var(--ds-glass-disabled);
-  --ds-disabled-ink: var(--ds-glass-muted);
   color: var(--ds-ink);
 }
 /* A pane that does not scroll: the glass is its ::before, so its feathered edge never fades the words or a focus ring. (A
@@ -325,7 +307,7 @@ body {
   position: relative;
   isolation: isolate;
   border: 0;
-  border-radius: var(--ds-glass-radius);
+  border-radius: var(--ds-radius-large);
   background: none;
   box-shadow: none;
 }
@@ -335,7 +317,7 @@ body {
   position: absolute;
   z-index: -1;
   inset: calc(0px - var(--ds-glass-bleed));
-  border-radius: var(--ds-glass-radius);
+  border-radius: var(--ds-radius-large);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
@@ -366,10 +348,10 @@ button {
    the Tab order (aria-disabled), so its rules follow each :disabled rule of the buttons it is drawn as. */
 button:disabled,
 button[data-settling] {
-  opacity: 0.45;
+  opacity: var(--ds-opacity-faint);
   cursor: default;
 }
-/* The two-tone focus ring of the redesign (§2.1): visible on slate, on parchment and over photos. Not on a control the page
+/* The two-tone focus ring of the redesign (§2.1): visible on the dark, on the glass and over photos. Not on a control the page
    focused before any key was pressed (data-quiet-focus, src/components/scene-focus.ts: the night screen's first button after a
    load); :where() keeps the rule as weak as before, so the controls' own rings still win. */
 button:focus-visible:not(:where([data-quiet-focus])),
@@ -377,9 +359,9 @@ a:focus-visible:not(:where([data-quiet-focus])),
 input:focus-visible:not(:where([data-quiet-focus])),
 select:focus-visible:not(:where([data-quiet-focus])),
 summary:focus-visible:not(:where([data-quiet-focus])) {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 2px;
-  box-shadow: 0 0 0 6px var(--ds-slate-900);
+  box-shadow: var(--ds-focus-halo);
 }
 /* (Nor the browser's own ring on it.) */
 [data-quiet-focus]:focus-visible { outline: none; }
@@ -391,9 +373,9 @@ main[tabindex="-1"]:focus { outline: none; }
    never after a finger or before any key (data-quiet-focus). */
 h1[tabindex="-1"]:focus { outline: none; }
 h1[tabindex="-1"]:focus-visible:not([data-quiet-focus]) {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 2px;
-  box-shadow: 0 0 0 6px var(--ds-slate-900);
+  box-shadow: var(--ds-focus-halo);
 }
 button {
   min-height: 48px;
@@ -410,70 +392,70 @@ p {
 }
 h1,
 h2 {
-  font-family: var(--ds-font-serif);
-  font-weight: 500;
-  letter-spacing: 0.045em;
+  font-family: var(--ds-font-sans);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-1);
 }
 h1 {
   font-size: var(--ds-text-display);
   line-height: var(--ds-leading-body);
-  margin: 12px 0 20px;
+  margin: var(--ds-space-3) 0 var(--ds-space-6);
 }
 h2 {
-  font-size: var(--ds-text-title);
+  font-size: var(--ds-text-heading);
   line-height: var(--ds-leading-body);
 }
 h3 {
   font-size: var(--ds-text-body);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
 }
 .app-shell {
   max-width: 880px;
   min-height: 100dvh;
   margin: auto;
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   box-shadow: var(--ds-page-shadow);
 }
 .masthead {
   height: 97px;
-  padding: 20px 42px;
+  padding: var(--ds-space-6) var(--ds-space-8);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--ds-parchment-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .brand {
-  font-family: var(--ds-font-latin);
-  font-size: var(--ds-text-title);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-heading);
   line-height: var(--ds-leading-tight);
-  letter-spacing: 0.035em;
+  letter-spacing: var(--ds-tracking-1);
   text-decoration: none;
 }
 .brand span {
   display: block;
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-mark);
-  letter-spacing: 0.35em;
-  margin-top: 4px;
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-4);
+  margin-top: var(--ds-space-1);
   color: var(--ds-ink-muted);
 }
 .edition {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ds-tracking-3);
 }
 /* 旅の記録's header line: the couple's names (as text, never HTML) and 交際中. */
 /* 旅の音楽室, ミニゲーム集 and 「エンドロールを見る」 at the top of 旅の記録 (2026-11-14, 2026-11-20), two to a row (one alone, and
    the last of three, takes the row). */
-.records-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 14px; }
+.records-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-2); margin: 0 0 var(--ds-space-4); }
 .records-extras > :last-child:nth-child(odd) { grid-column: 1 / -1; }
-.records-extras > .secondary { min-height: 44px; margin: 0; padding: 6px 10px; }
-.records-kept { width: 100%; min-height: 44px; margin: 0 0 14px; }
-.records-progress { margin: 0 0 8px; font-size: var(--ds-text-body); font-weight: 600; }
-/* 「と」 between the names in 旅の記録 (on --ds-parchment). */
+.records-extras > .secondary { min-height: 44px; margin: 0; padding: var(--ds-space-2) var(--ds-space-2); }
+.records-kept { width: 100%; min-height: 44px; margin: 0 0 var(--ds-space-4); }
+.records-progress { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+/* 「と」 between the names in 旅の記録 (on --ds-surface). */
 .amp {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
 }
 /* The header stays a band of its own above an active scene's own layout where
    the scene does not lie under it (observation; short portrait screens). */
@@ -518,44 +500,44 @@ h3 {
   position: absolute;
   bottom: 18px;
   left: 30px;
-  color: var(--ds-on-slate);
-  background: var(--ds-chip-bg);
+  color: var(--ds-on-dark);
+  background: var(--ds-smoke);
   border-radius: var(--ds-radius-pill);
-  box-shadow: var(--ds-pill-shadow);
-  font-size: var(--ds-text-mark);
-  padding: 5px 12px;
-  letter-spacing: 0.16em;
+  box-shadow: var(--ds-shadow-small);
+  font-size: var(--ds-text-small);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  letter-spacing: var(--ds-tracking-3);
 }
 .paper {
-  padding: 35px 52px 40px;
+  padding: var(--ds-space-8) var(--ds-space-8) var(--ds-space-8);
   max-width: 680px;
   margin: auto;
 }
 .eyebrow {
-  font-size: var(--ds-text-mark);
-  letter-spacing: 0.2em;
-  /* Small text on paper or parchment: the muted ink (6.0:1), never the gold (§2.1). */
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-4);
+  /* Small text on the light ground: the muted ink (5.3:1 or more). */
   color: var(--ds-ink-muted);
-  font-weight: 500;
+  font-weight: var(--ds-weight-medium);
 }
 .lead {
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
   color: var(--ds-ink-muted);
-  margin-bottom: 27px;
+  margin-bottom: var(--ds-space-6);
 }
 .intro {
-  padding-top: 36px;
+  padding-top: var(--ds-space-8);
 }
-/* The title card (UI redesign stage 2.2): parchment with its hairline, rising over the
+/* The title card (UI redesign stage 2.2): light ground with its hairline, rising over the
    journey's title art with rounded top corners; its width and padding are the page's. */
 .paper.intro {
   position: relative;
   color: var(--ds-ink);
-  background: var(--ds-parchment);
-  border: 1px solid var(--ds-parchment-line);
+  background: var(--ds-surface);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-shadow);
 }
 .intro-art + .paper.intro {
   margin-top: -16px;
@@ -566,7 +548,7 @@ h3 {
 }
 @media (max-width: 719px) {
   .paper.intro {
-    border-width: 1px 0 0;
+    border-width: var(--ds-edge-thin) 0 0;
     border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
   }
 }
@@ -575,37 +557,37 @@ h3 {
 }
 .name-form {
   display: grid;
-  gap: 18px;
+  gap: var(--ds-space-4);
 }
 .name-form label {
   display: grid;
-  gap: 7px;
-  font-size: var(--ds-text-caption);
-  letter-spacing: 0.07em;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-2);
 }
 /* Text fields (title, settings, Debug password): a light field with an edge of 3.6:1 on
-   parchment (WCAG 1.4.11), 8-px corners so it does not read as a button (§2.3). */
+   light ground (WCAG 1.4.11), 8-px corners so it does not read as a button (§2.3). */
 .name-form input,
 .debug-mode-password input {
   width: 100%;
   min-width: 0;
   min-height: 50px;
   background: var(--ds-field);
-  border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-field);
-  padding: 10px 15px;
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
+  border-radius: var(--ds-radius-control);
+  padding: var(--ds-space-2) var(--ds-space-4);
   color: var(--ds-ink);
-  font-size: var(--ds-text-field);
+  font-size: var(--ds-text-body);
 }
 /* Primary pressable (§2.3): a pane of smoked glass with a white hairline, the same press as a talk's choice
    (--ds-action, 2026-11-25 user decision). It was an opaque slate rectangle; over a scene it cut the place off as a form's
    part (2026-11-27 user remark on the mini-game's start on an iPhone), so every primary press is now the glass. Its white
-   words keep 6:1 or more over any picture and on the parchment (its show-through counted at white). */
+   words keep 6:1 or more over any picture and on the light ground (its show-through counted at white). */
 .primary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--ds-space-3);
   background: var(--ds-action-fill);
   color: var(--ds-action-ink);
   border-radius: var(--ds-radius-pane);
@@ -613,11 +595,11 @@ h3 {
   text-shadow: var(--ds-action-text-shadow);
   -webkit-backdrop-filter: var(--ds-smoke-blur);
   backdrop-filter: var(--ds-smoke-blur);
-  padding: 15px 20px;
+  padding: var(--ds-space-4) var(--ds-space-6);
   min-height: 54px;
   width: 100%;
   font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   text-align: left;
   transition: filter var(--motion-fast) var(--ease-out), translate var(--motion-fast) var(--ease-out);
 }
@@ -628,9 +610,9 @@ h3 {
   filter: brightness(1.12);
 }
 .primary:active:enabled:not(:where([data-settling])) { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
-.primary:focus-visible { box-shadow: inset 0 0 0 1px var(--ds-action-edge), 0 0 0 6px var(--ds-slate-900); }
+.primary:focus-visible { box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge), var(--ds-focus-halo); }
 .name-form .primary {
-  margin-top: 7px;
+  margin-top: var(--ds-space-2);
 }
 /* The default names shown as placeholders: lighter than a typed name, still readable (6.0:1). */
 /* The difficulty's selects (2026-11-19): the same field as a name's, with the system's arrow. */
@@ -639,15 +621,15 @@ h3 {
   min-width: 0;
   min-height: 50px;
   background: var(--ds-field);
-  border: 1px solid var(--ds-field-edge);
-  border-radius: var(--ds-radius-field);
-  padding: 10px 15px;
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
+  border-radius: var(--ds-radius-control);
+  padding: var(--ds-space-2) var(--ds-space-4);
   color: var(--ds-ink);
-  font-size: var(--ds-text-field);
+  font-size: var(--ds-text-body);
 }
 /* What the chosen level does, under its select (not spaced as a label's caption). */
 .name-form .difficulty-note {
-  letter-spacing: normal;
+  letter-spacing: 0;
   line-height: var(--ds-leading-body);
 }
 /* The title's difficulty, folded (2026-11-19): the summary is a 44-px row over the form's width; open, its two fields stack. */
@@ -656,13 +638,13 @@ h3 {
 }
 .name-form .difficulty-fields-body {
   display: grid;
-  gap: 12px;
+  gap: var(--ds-space-3);
 }
 .name-form .difficulty-fields > summary {
   min-height: 44px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   cursor: pointer;
   list-style: none;
   font-size: var(--ds-text-note);
@@ -676,8 +658,8 @@ h3 {
   content: "";
   width: 7px;
   height: 7px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
+  border-right: var(--ds-edge) solid currentColor;
+  border-bottom: var(--ds-edge) solid currentColor;
   transform: rotate(-45deg);
   flex: none;
 }
@@ -685,7 +667,7 @@ h3 {
   transform: rotate(45deg);
 }
 .name-form .difficulty-fields[open] > summary {
-  margin-bottom: 8px;
+  margin-bottom: var(--ds-space-2);
 }
 /* ゲームの設定's English: one field over the full width (the names' form has two columns there). */
 dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
@@ -701,62 +683,62 @@ dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings {
   margin: -8px 0 0;
 }
 .fine-print {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
   line-height: var(--ds-leading-reading);
 }
 .intro > .fine-print {
-  margin-top: 21px;
+  margin-top: var(--ds-space-6);
   text-align: center;
 }
-/* A display-only label (§2.3): a flat slate pill without an edge. */
+/* A display-only label (§2.3): a flat dark pill without an edge. */
 .pill {
-  font-size: var(--ds-text-mark);
-  letter-spacing: 0.09em;
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
-  padding: 4px 9px;
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-3);
+  background: var(--ds-dark-2);
+  color: var(--ds-on-dark);
+  padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
 }
 .section-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--ds-space-2);
 }
 footer {
   text-align: center;
-  font-family: var(--ds-font-latin);
-  font-size: var(--ds-text-mark);
-  letter-spacing: 0.09em;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-3);
   color: var(--ds-ink-muted);
-  padding: 20px 15px 28px;
+  padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-8);
 }
 footer span {
-  padding: 0 8px;
+  padding: 0 var(--ds-space-2);
 }
 .story-paper {
-  padding-top: 25px;
+  padding-top: var(--ds-space-6);
   min-height: 355px;
 }
 .speaker {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--ds-space-2);
   font-size: var(--ds-text-note);
-  margin-top: 25px;
+  margin-top: var(--ds-space-6);
   overflow-wrap: anywhere;
 }
 /* The words of a talk in the game's Gothic face, easy to read over the glass at a glance (2026-11-25 user decisions:
    Gothic, not Mincho; Noto Sans JP, the face of the rest of the game, a web font every phone loads, so every phone
-   breaks the lines alike). A letter's sheet keeps its serif (line-stage.css). */
+   breaks the lines alike). Since 2026-11-28 every word is in it. */
 .dialogue-text {
   font-family: var(--ds-font-sans);
-  font-weight: 500;
-  font-size: var(--ds-text-reading);
+  font-weight: var(--ds-weight-medium);
+  font-size: var(--ds-text-large);
   line-height: var(--ds-leading-reading);
-  letter-spacing: 0.03em;
-  margin: 18px 0 24px;
+  letter-spacing: var(--ds-tracking-1);
+  margin: var(--ds-space-4) 0 var(--ds-space-6);
   min-height: 90px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -786,37 +768,37 @@ footer span {
   color: var(--ds-ink);
   text-decoration: underline;
   text-underline-offset: 4px;
-  padding: 5px;
-  font-size: var(--ds-text-caption);
+  padding: var(--ds-space-1);
+  font-size: var(--ds-text-small);
 }
 .reveal {
   display: block;
-  margin: -13px 0 12px auto;
+  margin: -13px 0 var(--ds-space-3) auto;
 }
 .next {
   display: flex;
   min-width: 44px;
-  gap: 30px;
+  gap: var(--ds-space-8);
   align-items: center;
   justify-content: flex-end;
   background: none;
   color: var(--ds-here);
   margin-left: auto;
   font-size: var(--ds-text-note);
-  padding: 10px 0 10px 22px;
+  padding: var(--ds-space-2) 0 var(--ds-space-2) var(--ds-space-6);
 }
 .next span {
-  font-size: var(--ds-text-title);
+  font-size: var(--ds-text-heading);
 }
 .choice-hint {
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink-muted);
-  margin-bottom: 12px;
+  margin-bottom: var(--ds-space-3);
 }
 .choices {
-  border-top: 1px solid var(--ds-parchment-line);
-  padding-top: 20px;
-  margin-top: 8px;
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
+  padding-top: var(--ds-space-6);
+  margin-top: var(--ds-space-2);
 }
 /* A scene's choices (and an encounter's English replies) come in one after another as they
    appear with their line: a fade only, nothing moves, since a choice may take a press as it
@@ -837,35 +819,35 @@ footer span {
 .choice {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: var(--ds-space-4);
   text-align: left;
-  border: 1px solid var(--ds-parchment-line);
-  background: var(--ds-parchment);
-  border-radius: var(--ds-radius-hair);
+  border: var(--ds-edge-thin) solid var(--ds-line);
+  background: var(--ds-surface);
+  border-radius: var(--ds-radius-pane);
   color: var(--ds-ink);
-  padding: 16px 18px;
-  margin: 10px 0;
+  padding: var(--ds-space-4) var(--ds-space-4);
+  margin: var(--ds-space-2) 0;
   width: 100%;
   font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   transition: background var(--motion-fast) var(--ease-out);
 }
 .choice:hover:enabled {
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
 }
 .choice-number {
-  font-family: var(--ds-font-latin);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-note);
   color: var(--ds-ink-muted);
   flex-shrink: 0;
 }
 .paused {
-  padding-top: 15px;
+  padding-top: var(--ds-space-4);
 }
 .paused p {
   font-size: var(--ds-text-note);
-  margin-bottom: 24px;
+  margin-bottom: var(--ds-space-6);
 }
 /* A notice (a session's word, a save that cannot be opened): a pane of the glass over the place (2026-11-25: every
    screen in the one immersive look), its ink the glass's. */
@@ -873,10 +855,10 @@ footer span {
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  color: var(--ds-glass-ink);
+  color: var(--ds-ink);
   border-radius: var(--ds-radius-pane);
-  box-shadow: var(--ds-glass-shadow);
-  padding: 16px 24px;
+  box-shadow: var(--ds-shadow);
+  padding: var(--ds-space-4) var(--ds-space-6);
   font-size: var(--ds-text-note);
   overflow-wrap: anywhere;
 }
@@ -900,22 +882,22 @@ footer span {
   .app-shell > main > .notice {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 12px;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-1) var(--ds-space-3);
   }
   .app-shell > main > .notice .text-button {
     flex: none;
     min-height: 44px;
-    padding: 8px;
+    padding: var(--ds-space-2);
   }
 }
 .warning {
-  background: var(--ds-parchment-2);
-  margin: 20px 0;
+  background: var(--ds-surface-chosen);
+  margin: var(--ds-space-6) 0;
   border-radius: var(--ds-radius-control);
 }
 .warning p {
-  margin-top: 8px;
+  margin-top: var(--ds-space-2);
 }
 /* The shared dialog frame (UI redesign stage 2.3; 2026-11-25 user decision: every screen in the one immersive look):
    a pane of the light glass (--ds-glass-*) over the place it opens on, which shows on behind it, softened and a little
@@ -925,25 +907,25 @@ footer span {
    --modal-pad-inline, so the title bar can reach its edges. Every dialog keeps 12 px of the scene beside it on a phone
    (2026-11-14), so its rounded corners never touch the screen's edge. */
 .modal {
-  --modal-pad-top: 30px;
-  --modal-pad-inline: 30px;
+  --modal-pad-top: var(--ds-space-8);
+  --modal-pad-inline: var(--ds-space-8);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   padding: var(--modal-pad-top) var(--modal-pad-inline);
   border: 0;
-  border-radius: var(--ds-glass-radius);
+  border-radius: var(--ds-radius-large);
   max-width: min(440px, calc(100% - 24px));
   width: 100%;
   max-height: 90dvh;
   overflow: auto;
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
 }
 /* Opened under the finger (Modal's settlePresses): no press reaches it for a moment. */
 .modal[data-settling] { pointer-events: none; }
 .modal h2 {
   font-size: var(--ds-text-heading);
-  margin: 10px 0 20px;
+  margin: var(--ds-space-2) 0 var(--ds-space-6);
 }
 /* The title bar: a display-only band of the glass, nearly opaque (--ds-glass-bar, so what scrolls under it does not
    show through), with a hairline under it, that stays at the top while the dialog scrolls; the heading wraps, the
@@ -956,49 +938,49 @@ footer span {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px 12px;
+  gap: var(--ds-space-2) var(--ds-space-3);
   min-height: 56px;
-  margin: calc(-1 * var(--modal-pad-top, 0px)) calc(-1 * var(--modal-pad-inline, 0px)) 16px;
-  padding: 6px 10px 6px max(16px, var(--modal-pad-inline, 0px));
+  margin: calc(-1 * var(--modal-pad-top, 0px)) calc(-1 * var(--modal-pad-inline, 0px)) var(--ds-space-4);
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) max(16px, var(--modal-pad-inline, 0px));
   background: var(--ds-glass-bar);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  border-bottom: 1px solid var(--ds-parchment-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .modal .modal-title-bar h2 {
   min-width: 0;
   margin: 0;
   font-size: var(--ds-text-heading);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
   /* A heading on two lines keeps them even (「選んだ保存データを／消去しますか？」, not 「…します／か？」). An author's name
      in a heading is FitText's (its own balance). */
   text-wrap: balance;
 }
 .modal-title-text { min-width: 0; }
-.modal-title-text .eyebrow { margin: 0; line-height: var(--ds-leading-snug); }
+.modal-title-text .eyebrow { margin: 0; line-height: var(--ds-leading-body); }
 /* 「閉じる」 in the title bar: a secondary pressable with the × (§2.3, §2.5), 44 px, the same pane to press. */
 .modal-close {
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--ds-space-1);
   width: auto;
   min-width: 44px;
   min-height: 44px;
   margin: 0 0 0 auto;
-  padding: 4px 12px 4px 8px;
-  border: 1.5px solid transparent;
+  padding: var(--ds-space-1) var(--ds-space-3) var(--ds-space-1) var(--ds-space-2);
+  border: var(--ds-edge) solid transparent;
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   white-space: nowrap;
 }
-.modal-close:hover { background: var(--ds-parchment-2); }
+.modal-close:hover { background: var(--ds-surface-chosen); }
 .modal-close .icon { width: 18px; height: 18px; }
 /* A line kept in the band under the heading (ModalTitle's subline): the band wraps to hold it at its full width. */
 .modal-title-bar.has-subline { flex-wrap: wrap; }
@@ -1008,69 +990,69 @@ footer span {
 .modal-answers {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-4);
 }
 .modal-answers > :is(button, a) {
   width: 100%;
   min-height: 48px;
   margin: 0;
-  padding: 8px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   justify-content: center;
   text-align: center;
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .modal .translation-setting {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: var(--ds-space-2);
   min-height: 44px;
-  padding: 10px 0;
+  padding: var(--ds-space-2) 0;
   line-height: var(--ds-leading-body);
 }
 .modal .translation-setting input {
   flex: none;
   width: 18px;
   height: 18px;
-  margin: 2px 0 0;
+  margin: var(--ds-space-1) 0 0;
 }
-/* Checkboxes in the slate of the pressables (the native box keeps its size and focus). */
-input[type="checkbox"] { accent-color: var(--ds-slate-800); }
+/* Checkboxes in the dark of the pressables (the native box keeps its size and focus). */
+input[type="checkbox"] { accent-color: var(--ds-dark-2); }
 /* The text speed select fills its 44 px row instead of the browser's ~19 px box (field look, stage 2.3). */
-.modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 8px; border: 1px solid var(--ds-field-edge); border-radius: var(--ds-radius-field); background: var(--ds-field); color: var(--ds-ink); }
+.modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 var(--ds-space-2); border: var(--ds-edge-thin) solid var(--ds-field-edge); border-radius: var(--ds-radius-control); background: var(--ds-field); color: var(--ds-ink); }
 /* 「声の大きさ」 and 「効果音の大きさ」: the slider fills its 44 px row between its label and its value (the row's input rule sizes checkboxes). */
 .modal .volume-setting { align-items: center; }
-.modal .volume-setting input[type="range"] { flex: 1 1 auto; width: auto; min-width: 0; height: 44px; margin: -10px 0; accent-color: var(--ds-slate-800); }
+.modal .volume-setting input[type="range"] { flex: 1 1 auto; width: auto; min-width: 0; height: 44px; margin: -10px 0; accent-color: var(--ds-dark-2); }
 .volume-value { flex: none; min-width: 3em; text-align: end; font-variant-numeric: tabular-nums; }
 @media (max-width: 600px) {
   dialog.modal[aria-labelledby="settings-title"] {
-    --modal-pad-top: 18px;
-    --modal-pad-inline: 22px;
+    --modal-pad-top: var(--ds-space-4);
+    --modal-pad-inline: var(--ds-space-6);
   }
   dialog.modal[aria-labelledby="settings-title"] .modal-title-bar {
-    margin-bottom: 8px;
+    margin-bottom: var(--ds-space-2);
   }
   dialog.modal[aria-labelledby="settings-title"] .name-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 10px;
-    margin-bottom: 4px;
+    gap: var(--ds-space-2) var(--ds-space-2);
+    margin-bottom: var(--ds-space-1);
   }
   dialog.modal[aria-labelledby="settings-title"] .name-form .secondary {
     grid-column: 1 / -1;
     min-height: 44px;
     margin: 0;
-    padding: 8px 12px;
+    padding: var(--ds-space-2) var(--ds-space-3);
   }
 }
 /* ゲームの設定's groups (2026-11-14, regrouped 2026-11-19 and 2026-11-20): 文字と演出, 英語, 音と振動 and 旅, each under its
    heading with a hairline above (none under the title bar, nor under a status line above them), then 「制作者向け」 folded. */
 dialog.modal[aria-labelledby="settings-title"] > h3 {
-  margin: 14px 0 2px;
-  padding-top: 12px;
-  border-top: 1px solid var(--ds-parchment-line);
+  margin: var(--ds-space-4) 0 var(--ds-space-1);
+  padding-top: var(--ds-space-3);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + h3,
 dialog.modal[aria-labelledby="settings-title"] > .modal-title-bar + [role="status"] + h3 {
@@ -1082,61 +1064,61 @@ dialog.modal[aria-labelledby="settings-title"] .name-form .secondary { margin-to
 /* A checkbox's note and a sound's volume sit under its label (past the 18-px box and its 10-px gap), so each reads as part
    of the setting above it. */
 dialog.modal[aria-labelledby="settings-title"] .setting-note {
-  margin: -8px 0 6px 28px;
+  margin: -8px 0 var(--ds-space-2) var(--ds-space-8);
 }
 dialog.modal[aria-labelledby="settings-title"] .setting-sub {
-  margin-left: 28px;
+  margin-left: var(--ds-space-8);
 }
 /* 英語's quiz level: a little room before the checkboxes, or the line under 「日本語のみ」, under it. */
-dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .translation-setting { margin-top: 4px; }
-dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .setting-english-off { margin: 8px 0 4px; }
+dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .translation-setting { margin-top: var(--ds-space-1); }
+dialog.modal[aria-labelledby="settings-title"] .name-form.difficulty-settings + .setting-english-off { margin: var(--ds-space-2) 0 var(--ds-space-1); }
 /* 旅's line about money and AP, under the names (or the line that they cannot change now). */
-dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: 6px 0 0; }
+dialog.modal[aria-labelledby="settings-title"] .name-form + .fine-print { margin: var(--ds-space-2) 0 0; }
 /* 「解説の出典」: the quiz explanation's sources, first under the title bar, each a link on its own 44-px row. */
-dialog.modal .fact-sources h3 { margin: 0 0 2px; font-size: var(--ds-text-body); font-weight: 600; }
-dialog.modal .fact-sources ul { margin: 0 0 12px; padding: 0; list-style: none; }
-dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+dialog.modal .fact-sources h3 { margin: 0 0 var(--ds-space-1); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+dialog.modal .fact-sources ul { margin: 0 0 var(--ds-space-3); padding: 0; list-style: none; }
+dialog.modal .fact-sources a { display: flex; align-items: center; min-height: 44px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 dialog.modal .fact-sources .screen-credits-choice { margin: 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
 /* 「手がかりの根拠と解釈」 (PhotoCredits.tsx, SourceNotes): the clue book's clues' sources, after the photo, under a hairline.
    Each source: its kind's pill, what it supports and its link. */
 dialog.modal .screen-credits-sources {
-  margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px solid var(--ds-parchment-line);
+  margin-top: var(--ds-space-3);
+  padding-top: var(--ds-space-2);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 dialog.modal .modal-title-bar + .screen-credits-sources { margin-top: 0; padding-top: 0; border-top: 0; }
-dialog.modal .screen-credits-sources h3 { margin: 0 0 6px; font-size: var(--ds-text-body); font-weight: 600; }
-dialog.modal .screen-credits-sources h4 { margin: 10px 0 0; font-size: var(--ds-text-note); font-weight: 600; }
+dialog.modal .screen-credits-sources h3 { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+dialog.modal .screen-credits-sources h4 { margin: var(--ds-space-2) 0 0; font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); }
 .source-notes { margin: 0; padding: 0; list-style: none; }
-.source-notes li { padding-top: 8px; }
-.source-notes p { margin: 6px 0 0; font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
-.source-notes a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.source-notes li { padding-top: var(--ds-space-2); }
+.source-notes p { margin: var(--ds-space-2) 0 0; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.source-notes a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* 画面の出典's way into 出典・権利の一覧: on its own, under a hairline, after the screen's photos. */
 dialog.modal .screen-credits-all {
-  margin-top: 14px;
-  padding-top: 6px;
-  border-top: 1px solid var(--ds-parchment-line);
+  margin-top: var(--ds-space-4);
+  padding-top: var(--ds-space-2);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 /* The ways into the credits, the old data, オフラインで遊ぶ and the deletion: one 44-px row each, evenly spaced, at the left. */
 dialog.modal .settings-data-links {
   display: grid;
   justify-items: start;
-  margin-top: 2px;
+  margin-top: var(--ds-space-1);
 }
 dialog.modal .settings-data-links > .text-button {
   display: flex;
   align-items: center;
   min-height: 44px;
   margin: 0;
-  padding: 0 4px;
+  padding: 0 var(--ds-space-1);
   font-size: var(--ds-text-note);
 }
 /* 「オフライン」's line in セーブ・ロード: what this device keeps of the journeys (how far a run is beside it, in digits of one
    width), a note of the size and colour of the notes around it, so the rows that can be pressed stand out. */
 dialog.modal .offline-summary {
-  margin: 8px 0 0;
-  font-size: var(--ds-text-caption);
-  line-height: var(--ds-leading-snug);
+  margin: var(--ds-space-2) 0 0;
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
   color: var(--ds-ink-muted);
 }
 .offline-summary-live {
@@ -1145,38 +1127,38 @@ dialog.modal .offline-summary {
 }
 /* The title's line under the journey choice while offline: the chosen journey is not on the device. */
 .intro > .offline-hint {
-  margin: -8px 0 12px;
+  margin: -8px 0 var(--ds-space-3);
   line-height: var(--ds-leading-body);
 }
 /* 「制作者向け」: Debug mode and its tools, folded away for players; its summary a 44-px row like the group headings. */
 .settings-creator {
-  margin-top: 14px;
-  border-top: 1px solid var(--ds-parchment-line);
+  margin-top: var(--ds-space-4);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .settings-creator > summary {
   min-height: 44px;
-  padding: 12px 0 6px;
+  padding: var(--ds-space-3) 0 var(--ds-space-2);
   cursor: pointer;
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
-.settings-creator .debug-mode-setting { margin-top: 4px; }
+.settings-creator .debug-mode-setting { margin-top: var(--ds-space-1); }
 /* Secondary pressable (§2.3): a pane of the glass to press (2026-11-27 user request: one UI), as a quiz's answer and the
    mini-game's 練習: the glass's light ground with a fine edge and a soft shadow, the talk's choice's corner. It was
-   parchment with a 1.5-px slate edge, a form's part over the scene. On the glass its colours are the glass's
+   light ground with a 1.5-px dark edge, a form's part over the scene. On the glass its colours are the glass's
    (the glass surfaces above). */
 .secondary {
   width: 100%;
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  margin-top: 12px;
+  margin-top: var(--ds-space-3);
   font-size: var(--ds-text-body);
-  border: 1.5px solid transparent;
+  border: var(--ds-edge) solid transparent;
   border-radius: var(--ds-radius-pane);
   box-shadow: var(--ds-press-shadow);
 }
-.secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-parchment-2); }
+.secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-surface-chosen); }
 /* Disabled (§2.1): its own ground and ink, no edge and no shadow; the reason stays in the text beside it. Every light pane
    to press (--ds-press-shadow) that cannot be pressed looks the same (2026-11-27 user request: one UI). */
 .primary:disabled,
@@ -1191,7 +1173,7 @@ dialog.modal .offline-summary {
   text-shadow: none;
 }
 .modal .name-form {
-  margin-bottom: 20px;
+  margin-bottom: var(--ds-space-6);
 }
 @media (min-width: 720px) {
   .intro .name-form {
@@ -1207,20 +1189,20 @@ dialog.modal .offline-summary {
     height: 280px;
   }
   .app-shell {
-    margin: 24px auto;
-    border: 1px solid var(--ds-page-edge);
+    margin: var(--ds-space-6) auto;
+    border: var(--ds-edge-thin) solid var(--ds-page-edge);
   }
   .paper {
-    padding-bottom: 46px;
+    padding-bottom: var(--ds-space-8);
   }
 }
 @media (max-width: 480px) {
   .masthead {
     height: 82px;
-    padding: 16px 22px;
+    padding: var(--ds-space-4) var(--ds-space-6);
   }
   .edition {
-    letter-spacing: 0.04em;
+    letter-spacing: var(--ds-tracking-2);
   }
   .canal-scene {
     height: 235px;
@@ -1233,28 +1215,28 @@ dialog.modal .offline-summary {
     bottom: 13px;
   }
   .paper {
-    padding: 27px 24px 30px;
+    padding: var(--ds-space-6) var(--ds-space-6) var(--ds-space-8);
   }
   .intro h1 {
-    font-size: var(--ds-text-title);
+    font-size: var(--ds-text-heading);
   }
   .dialogue-text {
     min-height: 114px;
   }
   .choice {
-    padding: 14px 12px;
-    gap: 10px;
+    padding: var(--ds-space-4) var(--ds-space-3);
+    gap: var(--ds-space-2);
   }
   .story-paper {
-    padding-top: 21px;
+    padding-top: var(--ds-space-6);
   }
   .section-meta .eyebrow {
-    font-size: var(--ds-text-mark);
-    letter-spacing: 0.12em;
+    font-size: var(--ds-text-small);
+    letter-spacing: var(--ds-tracking-3);
   }
   .modal {
-    --modal-pad-top: 26px;
-    --modal-pad-inline: 23px;
+    --modal-pad-top: var(--ds-space-6);
+    --modal-pad-inline: var(--ds-space-6);
   }
 }
 
@@ -1343,7 +1325,7 @@ dialog.modal .offline-summary {
     display: flex;
     flex-direction: column;
   }
-  /* 「仮画像です…」 (S2): fine print under the header, a parchment pill. */
+  /* 「仮画像です…」 (S2): fine print under the header, a light ground pill. */
   .mobile-play-active .guide-active > .image-placeholder-note {
     position: absolute;
     z-index: 1;
@@ -1351,19 +1333,19 @@ dialog.modal .offline-summary {
     left: 8px;
     max-width: calc(100% - 16px);
     margin: 0;
-    padding: 4px 12px;
+    padding: var(--ds-space-1) var(--ds-space-3);
     border-radius: var(--ds-radius-pill);
-    background: var(--ds-parchment);
+    background: var(--ds-surface);
     color: var(--ds-ink);
-    box-shadow: var(--ds-pill-shadow);
-    font-size: var(--ds-text-caption);
-    line-height: var(--ds-leading-snug);
+    box-shadow: var(--ds-shadow-small);
+    font-size: var(--ds-text-small);
+    line-height: var(--ds-leading-body);
   }
   /* Keep the direct battle route available without a large action panel. */
   .mobile-play-active .guide-active > .tourism-actions {
     display: flex;
-    gap: 8px;
-    padding: 4px 8px;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-1) var(--ds-space-2);
   }
   .mobile-play-active .guide-active > .tourism-actions .fine-print {
     display: none;
@@ -1373,8 +1355,8 @@ dialog.modal .offline-summary {
     min-width: 0;
     min-height: 44px;
     margin: 0;
-    padding: 6px 8px;
-    font-size: var(--ds-text-caption);
+    padding: var(--ds-space-2) var(--ds-space-2);
+    font-size: var(--ds-text-small);
   }
   .mobile-play-active .guide-active .tourism-guide-scene {
     flex: 1 1 0;
@@ -1418,7 +1400,7 @@ dialog.modal .offline-summary {
 }
 dialog.modal {
   /* Dialogs can be mounted inside the dark VN scene. Do not inherit its
-     light text onto the parchment of the dialog. */
+     light text onto the light ground of the dialog. */
   color: var(--ds-ink);
   margin: auto;
 }
@@ -1490,22 +1472,22 @@ dialog.modal[open]::backdrop {
   right: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 6px 16px 0;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-4) 0;
   pointer-events: none;
 }
-/* 交際開始 (UI redesign stage 2.4): the title card's parchment over the place's picture. */
+/* 交際開始 (UI redesign stage 2.4): the title card's light ground over the place's picture. */
 .ending {
-  padding-top: 42px;
+  padding-top: var(--ds-space-8);
 }
 .paper.ending {
   position: relative;
   margin-top: -16px;
   color: var(--ds-ink);
-  background: var(--ds-parchment);
-  border: 1px solid var(--ds-parchment-line);
+  background: var(--ds-surface);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-shadow);
 }
 /* The title and 交際開始 over their place's picture (2026-11-25 user decision: every screen in the one immersive look). The
    picture fills the screen behind the page (its band keeps its place and height, and its caption stays on it), the
@@ -1530,16 +1512,16 @@ dialog.modal[open]::backdrop {
 .app-shell:has(.intro-art + .paper.intro) > .masthead { border-bottom: 0; }
 .app-shell:has(.intro-art .scene-artwork) > .masthead {
   background: linear-gradient(to bottom, var(--ds-photo-shade), transparent);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
 }
-.app-shell:has(.intro-art .scene-artwork) > .masthead :is(.brand, .brand span, .edition) { color: var(--ds-on-slate); }
+.app-shell:has(.intro-art .scene-artwork) > .masthead :is(.brand, .brand span, .edition) { color: var(--ds-on-dark); }
 .intro-art + .paper.intro,
 .paper.ending {
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   border-color: transparent;
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
 }
 /* The picture's caption stays clear of the card's rounded top. */
 .canal-scene:has(+ .paper.ending) .scene-stamp {
@@ -1547,28 +1529,28 @@ dialog.modal[open]::backdrop {
 }
 @media (max-width: 719px) {
   .paper.ending {
-    border-width: 1px 0 0;
+    border-width: var(--ds-edge-thin) 0 0;
     border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
   }
 }
 .ending h1 {
-  font-size: var(--ds-text-title);
+  font-size: var(--ds-text-heading);
 }
 .ending .lead {
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
 .ending-names {
-  font-family: var(--ds-font-serif);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  margin: 24px 0;
+  margin: var(--ds-space-6) 0;
   overflow-wrap: anywhere;
 }
 .ending-names span {
-  font-family: var(--ds-font-latin);
+  font-family: var(--ds-font-sans);
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-title);
-  margin: 0 10px;
+  font-size: var(--ds-text-heading);
+  margin: 0 var(--ds-space-2);
 }
 .battle-stage {
   position: relative;
@@ -1578,12 +1560,12 @@ dialog.modal[open]::backdrop {
     var(--battle-stage-ground) 57%,
     var(--battle-stage-dark) 100%
   );
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 16px;
-  padding: 27px 45px 0;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-6) var(--ds-space-8) 0;
   min-height: 230px;
   overflow: hidden;
 }
@@ -1591,37 +1573,37 @@ dialog.modal[open]::backdrop {
   content: "";
   position: absolute;
   inset: 12px;
-  border: 1px solid var(--battle-stage-frame);
+  border: var(--ds-edge-thin) solid var(--battle-stage-frame);
   pointer-events: none;
 }
 .battle-enemy-info {
-  padding-bottom: 27px;
+  padding-bottom: var(--ds-space-6);
   position: relative;
   min-width: 0;
   flex: 1;
 }
 .battle-stage .eyebrow {
-  color: var(--ds-on-slate-muted);
-  font-size: var(--ds-text-mark);
+  color: var(--ds-on-dark-muted);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-reading);
 }
 .battle-stage h2 {
-  font-size: var(--ds-text-title);
+  font-size: var(--ds-text-heading);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.035em;
-  margin: 6px 0 12px;
+  letter-spacing: var(--ds-tracking-1);
+  margin: var(--ds-space-2) 0 var(--ds-space-3);
   overflow-wrap: anywhere;
 }
 .enemy-title {
-  font-size: var(--ds-text-mark);
-  color: var(--ds-on-slate-muted);
-  margin-top: 17px;
-  letter-spacing: 0.05em;
+  font-size: var(--ds-text-small);
+  color: var(--ds-on-dark-muted);
+  margin-top: var(--ds-space-4);
+  letter-spacing: var(--ds-tracking-2);
 }
 .enemy-detail {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-reading);
-  color: var(--ds-on-slate-muted);
+  color: var(--ds-on-dark-muted);
   max-width: 265px;
 }
 .enemy-portrait {
@@ -1632,7 +1614,7 @@ dialog.modal[open]::backdrop {
 }
 .battle-stage-compact {
   min-height: 155px;
-  padding-top: 16px;
+  padding-top: var(--ds-space-4);
 }
 .battle-stage-compact .enemy-portrait {
   width: 112px;
@@ -1642,52 +1624,52 @@ dialog.modal[open]::backdrop {
   margin-bottom: 0;
 }
 .battle-stage-compact .enemy-title {
-  margin-top: 10px;
+  margin-top: var(--ds-space-2);
 }
 .battle-stage-compact .enemy-detail {
   display: none;
 }
 .battle-stage-compact .battle-enemy-info {
-  padding-bottom: 23px;
+  padding-bottom: var(--ds-space-6);
 }
 .battle-paper {
   max-width: 680px;
 }
 .outcome {
-  font-family: var(--ds-font-latin);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-display);
   line-height: var(--ds-leading-tight);
-  letter-spacing: 0.03em;
-  margin: 15px 0;
+  letter-spacing: var(--ds-tracking-1);
+  margin: var(--ds-space-4) 0;
   color: var(--ds-ink);
   overflow-wrap: anywhere;
 }
 .battle-score {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  margin: 20px 0;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-6) 0;
   color: var(--ds-ink);
 }
 .battle-score strong {
-  font-family: var(--ds-font-latin);
+  font-family: var(--ds-font-sans);
   font-size: var(--battle-score-size);
-  font-weight: 400;
-  line-height: var(--ds-leading-display);
+  font-weight: var(--ds-weight-regular);
+  line-height: var(--ds-leading-tight);
 }
 .battle-score > span {
   font-size: var(--ds-text-note);
 }
 .battle-screen .paused {
-  padding-top: 25px;
+  padding-top: var(--ds-space-6);
 }
 .battle-screen .paused h2 {
-  margin-bottom: 18px;
+  margin-bottom: var(--ds-space-4);
 }
 @media (max-width: 600px) {
   .battle-stage {
-    padding: 23px 23px 0;
-    gap: 8px;
+    padding: var(--ds-space-6) var(--ds-space-6) 0;
+    gap: var(--ds-space-2);
     min-height: 200px;
   }
   .battle-stage h2 {
@@ -1697,20 +1679,20 @@ dialog.modal[open]::backdrop {
     width: 125px;
   }
   .battle-enemy-info {
-    padding-bottom: 23px;
+    padding-bottom: var(--ds-space-6);
   }
   .battle-stage-compact {
-    padding-top: 12px;
+    padding-top: var(--ds-space-3);
     min-height: 135px;
   }
   .battle-stage-compact h2 {
-    font-size: var(--ds-text-subhead);
+    font-size: var(--ds-text-large);
   }
   .battle-stage-compact .enemy-portrait {
     width: 95px;
   }
   .battle-stage-compact .battle-enemy-info {
-    padding-bottom: 19px;
+    padding-bottom: var(--ds-space-6);
   }
 }
 
@@ -1725,19 +1707,19 @@ dialog.modal[open]::backdrop {
     height: 80px;
   }
   .intro {
-    padding-top: 18px;
+    padding-top: var(--ds-space-4);
   }
   .intro h1 {
-    margin: 5px 0 10px;
-    font-size: var(--ds-text-title);
-    line-height: var(--ds-leading-snug);
+    margin: var(--ds-space-1) 0 var(--ds-space-2);
+    font-size: var(--ds-text-heading);
+    line-height: var(--ds-leading-body);
   }
   .intro .lead {
     line-height: var(--ds-leading-body);
-    margin-bottom: 15px;
+    margin-bottom: var(--ds-space-4);
   }
   .intro .name-form {
-    gap: 10px;
+    gap: var(--ds-space-2);
   }
 }
 /* A short phone (320×568, 2026-11-14): 「旅をはじめる」 shows without scrolling. The title's header and art band are
@@ -1746,27 +1728,27 @@ dialog.modal[open]::backdrop {
 @media (max-width: 480px) and (max-height: 600px) {
   .app-shell:has(.paper.intro) > .masthead {
     height: 64px;
-    padding-block: 6px;
+    padding-block: var(--ds-space-2);
   }
   .intro-art .canal-scene.compact {
     height: 64px;
   }
   .intro .lead {
-    margin-bottom: 8px;
+    margin-bottom: var(--ds-space-2);
   }
   /* The small 「旅のはじまり」 over the heading gives its row to the difficulty's folded line (2026-11-19). */
   .intro > .eyebrow {
     display: none;
   }
   .intro {
-    padding-top: 6px;
+    padding-top: var(--ds-space-2);
   }
   .intro h1 {
-    margin: 0 0 4px;
+    margin: 0 0 var(--ds-space-1);
   }
   .intro .name-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 10px;
+    gap: var(--ds-space-2) var(--ds-space-2);
   }
   .intro .name-form .primary {
     grid-column: 1 / -1;
@@ -1786,15 +1768,15 @@ dialog.modal[open]::backdrop {
 .notice .old-data-entry {
   display: block;
   min-height: 44px;
-  margin-top: 4px;
+  margin-top: var(--ds-space-1);
 }
 /* 「古い保存データの整理」 keeps one size in both steps (the list and its confirmation): the shared title band
    on top, the text under it (only it scrolls), the buttons side by side at its foot. 「消去せず戻る」 appears exactly
    where 「選んだデータを消去する」 was (the left half) and 「消去する」 where the line of what is chosen was, so a second
    tap at the same place never reaches 「消去する」. */
 dialog.old-data[open] {
-  --modal-pad-top: 0px;
-  --modal-pad-inline: 0px;
+  --modal-pad-top: 0;
+  --modal-pad-inline: 0;
   display: flex;
   flex-direction: column;
   height: min(90dvh, 760px);
@@ -1805,18 +1787,18 @@ dialog.old-data .modal-title-bar {
   flex: none;
   position: static;
   margin: 0;
-  padding-left: 22px;
+  padding-left: var(--ds-space-6);
 }
 .old-data-body {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: 12px 22px;
+  padding: var(--ds-space-3) var(--ds-space-6);
 }
 .old-data-actions {
   flex: none;
-  padding: 12px 22px 18px;
-  border-top: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-3) var(--ds-space-6) var(--ds-space-4);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .old-data-actions .modal-answers {
   margin-top: 0;
@@ -1824,18 +1806,18 @@ dialog.old-data .modal-title-bar {
 }
 .old-data-list {
   list-style: none;
-  margin: 12px 0;
+  margin: var(--ds-space-3) 0;
   padding: 0;
 }
 .old-data-list > li {
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  background: var(--ds-parchment-2);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  margin-bottom: var(--ds-space-2);
+  background: var(--ds-surface-chosen);
   border-radius: var(--ds-radius-control);
 }
 .old-data-list .translation-setting {
   align-items: center;
-  padding: 4px 0;
+  padding: var(--ds-space-1) 0;
 }
 .old-data-size {
   white-space: nowrap;
@@ -1852,42 +1834,42 @@ dialog.old-data .old-data-notice:focus {
 .old-data-impact {
   font-size: var(--ds-text-note);
   line-height: var(--ds-leading-body);
-  margin: 4px 0 6px;
+  margin: var(--ds-space-1) 0 var(--ds-space-2);
 }
 .old-data-keys {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
   color: var(--ds-ink-muted);
 }
 .old-data-keys li + li {
-  margin-top: 4px;
+  margin-top: var(--ds-space-1);
 }
 /* Key names are long and unbroken: wrap them anywhere instead of widening the dialog. */
 .old-data-keys code {
   display: block;
   overflow-wrap: anywhere;
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-ink);
 }
 .old-data-notice {
-  margin: 10px 0;
-  font-weight: 600;
+  margin: var(--ds-space-2) 0;
+  font-weight: var(--ds-weight-bold);
 }
 /* Beside 「選んだデータを消去する」: what is chosen, or how to choose (display only, never pressed). */
 .old-data-hint {
   align-self: center;
   margin: 0;
-  font-size: var(--ds-text-caption);
-  line-height: var(--ds-leading-snug);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
 }
 /* ゲームの設定 → Debugモード (DebugModeSetting): after 名前の設定, before the data entries. Every control 44 px or more. */
 .debug-mode-setting {
   display: grid;
-  gap: 8px;
-  margin-top: 18px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-4);
 }
 .debug-mode-setting .fine-print {
   margin: 0;
@@ -1921,13 +1903,13 @@ dialog.old-data .old-data-notice:focus {
 }
 .debug-mode-password {
   display: grid;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
 .debug-mode-password label {
   display: grid;
-  gap: 6px;
-  font-size: var(--ds-text-caption);
-  letter-spacing: 0.07em;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-small);
+  letter-spacing: var(--ds-tracking-2);
 }
 /* 16 px text: phones do not zoom into the field (its look: the text fields above). */
 .debug-mode-password input {
@@ -1936,31 +1918,31 @@ dialog.old-data .old-data-notice:focus {
 .debug-mode-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: var(--ds-space-2);
 }
 .debug-mode-actions .primary {
   justify-content: center;
   min-height: 48px;
-  padding: 8px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   text-align: center;
 }
 .danger-button {
   width: 100%;
-  margin-top: 12px;
-  padding: 12px 16px;
-  border: 1.5px solid var(--ds-danger-edge);
+  margin-top: var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border: var(--ds-edge) solid var(--ds-danger-edge);
   border-radius: var(--ds-radius-control);
   color: var(--ds-danger);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   min-height: 48px;
 }
 
 /* A complete view of the photograph, including details hidden by portraits. */
 dialog.date-background-viewer {
-  --modal-pad-top: 16px;
-  --modal-pad-inline: 16px;
+  --modal-pad-top: var(--ds-space-4);
+  --modal-pad-inline: var(--ds-space-4);
 }
-dialog.date-background-viewer .modal-title-bar { margin-bottom: 8px; }
+dialog.date-background-viewer .modal-title-bar { margin-bottom: var(--ds-space-2); }
 dialog.date-background-viewer > img {
   display: block;
   width: 100%;
@@ -1969,6 +1951,6 @@ dialog.date-background-viewer > img {
   background: var(--ds-photo-mat);
 }
 /* Its description, credit and links shown at once under the photo, as 写真の出典 shows each photo's. */
-dialog.date-background-viewer .background-credit p { margin: 6px 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+dialog.date-background-viewer .background-credit p { margin: var(--ds-space-2) 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* Cannot be pressed now: the disabled press (styles.css; 2026-11-27 user request: one UI). */
 .modal-close:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }

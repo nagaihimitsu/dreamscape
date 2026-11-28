@@ -239,7 +239,7 @@ describe("the hidden name's field", () => {
     expect(readFileSync(new URL("./Skin.tsx", import.meta.url), "utf8")).toContain('import "./skin.css";');
     // The decorations take the name's font, weight and colour from the stylesheet (one rule for the two; the same fill).
     const css = readFileSync(new URL("./skin.css", import.meta.url), "utf8");
-    expect(css).toMatch(/\.mg-mehndi-hidden-name-lettering, \.mg-mehndi-hidden-name-decoy \{\s*font-family: "Fasol SP Demo", "Noto Serif JP", serif;\s*font-weight: 400;/u);
+    expect(css).toMatch(/\.mg-mehndi-hidden-name-lettering, \.mg-mehndi-hidden-name-decoy \{\s*font-family: "Fasol SP Demo", "Noto Sans JP", sans-serif;\s*font-weight: var\(--ds-weight-regular\);/u);
     // A colour is named once at the stylesheet's head (docs/02 「デザインの決まり」): a fill resolves through its name.
     const named = (value: string | undefined) => {
       const name = value?.match(/^var\((--[\w-]+)\)$/u)?.[1];
@@ -532,7 +532,7 @@ describe("where the writing lies", () => {
       // Every point of the room is inside it, RING_CLEAR from its line at the farthest corner.
       expect(ring.diameter / 2 - reach, target).toBeCloseTo(RING_CLEAR, 9);
       expect(ring.diameter, target).toBeCloseTo(across[target], 1);
-      // An area, not the thing: wider than the gold ring round the writing found; never wider than it was (39% of the palm).
+      // An area, not the thing: wider than the white ring round the writing found; never wider than it was (39% of the palm).
       expect(ring.diameter, target).toBeGreaterThan(mehndiWritingRing(target).diameter);
       expect(ring.diameter, target).toBeLessThanOrEqual(117);
     }
@@ -542,7 +542,7 @@ describe("where the writing lies", () => {
 // Where the decorations lie (2026-11-17), measured from the shapes the field draws, each run at its largest (the name's
 // largest size times its scale; a smaller run lies inside that box): on the hand and off its dyed fingertips, nearest its own
 // place, clear of every line drawn (by the line's half width and a unit of air), apart from the other runs, and far from
-// the writing: from the place to point at for it (her hand's tell never fires on a run), from its gold ring and from its room.
+// the writing: from the place to point at for it (her hand's tell never fires on a run), from its white ring and from its room.
 describe("where the decorations lie", () => {
   const boxOf = (decoy: MehndiDecoy) => mehndiDecoyBox(decoy, WRITING_MAX_SIZE * decoy.scale);
   /** The lines of the pattern (as points) and each line's half width; `only`: drawn at these targets alone. */
@@ -623,7 +623,7 @@ describe("where the decorations lie", () => {
     expect(nearest(base, boxOf(base), wholeFeather) - half).toBeLessThan(AIR);
   });
 
-  it("keeps every run far from the writing (its place, its gold ring, its room) and apart from the other runs", () => {
+  it("keeps every run far from the writing (its place, its white ring, its room) and apart from the other runs", () => {
     for (const target of MEHNDI_TARGETS) {
       const drawn = mehndiDecoysFor(target);
       const writing = MEHNDI_WRITING[target];
@@ -635,8 +635,8 @@ describe("where the decorations lie", () => {
         const points = edge(decoy, boxOf(decoy));
         // Her hand's tell reaches 34 from the place to point at: never to a run (40 or more away).
         expect(Math.min(...points.map(([x, y]) => Math.hypot(x - MEHNDI_PLACES[target].x, y - MEHNDI_PLACES[target].y))), `${label} the place`).toBeGreaterThanOrEqual(40);
-        // Outside the gold ring round the writing found, and well off the writing's room.
-        expect(Math.min(...points.map(([x, y]) => Math.hypot(x - ring.x, y - ring.y))) - ring.diameter / 2, `${label} the gold ring`).toBeGreaterThanOrEqual(3);
+        // Outside the white ring round the writing found, and well off the writing's room.
+        expect(Math.min(...points.map(([x, y]) => Math.hypot(x - ring.x, y - ring.y))) - ring.diameter / 2, `${label} the white ring`).toBeGreaterThanOrEqual(3);
         // Outside the dotted ring of her hint (2 or more): the area she hints holds nothing letter-like but the writing
         // (2026-11-17 review: a ring of 117 at every target took in a third of the run above the wrist at the central vine).
         expect(Math.min(...points.map(([x, y]) => Math.hypot(x - hint.x, y - hint.y))) - hint.diameter / 2, `${label} her hint's ring`).toBeGreaterThanOrEqual(2);
