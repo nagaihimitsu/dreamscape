@@ -67,10 +67,13 @@ INCLUDE modules.ink
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_034
     迷ったけど、ちゃんと、わたしの言葉で言いたかった
     # speaker: heroine
+    # voice: gt_agra_date_confession_035
     言われたから、うなずくんじゃなくて
     # speaker: heroine
+    # voice: gt_agra_date_confession_036
     ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
@@ -133,8 +136,10 @@ INCLUDE modules.ink
     わたしの？　……ずるい。先に聞かせてって、わたしが言ったのに
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_037
     話したいことは、あるの。あるんだけど
     # speaker: heroine
+    # voice: gt_agra_date_confession_038
     ……いざ順番が回ってきたら、言葉が全部、洗濯物の向こうに飛んでいっちゃった
     # speaker: narrator
     物干しの綱で、シャツが一枚、風にあおられて裏返った。

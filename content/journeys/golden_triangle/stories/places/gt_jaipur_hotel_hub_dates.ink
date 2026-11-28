@@ -585,8 +585,10 @@ INCLUDE modules.ink
 # voice: gt_jaipur_date_her_confession_003
 デリーの最後の朝、カムラさんが言ってたでしょ。言いたいことは言いなさいって
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_026
 六十年、言わなかった人の言葉だから、重かった
 # speaker: heroine
+# voice: gt_jaipur_date_her_confession_027
 アーグラで、新婚じゃないって言えなかったときも、ずっと耳の中で鳴ってた
 # speaker: heroine
 # emotion: smile

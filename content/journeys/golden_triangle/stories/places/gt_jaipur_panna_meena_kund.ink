@@ -89,8 +89,10 @@ INCLUDE modules.ink
         わたしから？　じゃあ……
     }
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_033
     アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる
     # speaker: heroine
+    # voice: gt_jaipur_date_panna_meena_kund_034
     カムラさんに『毎日言葉にしなさい』って言われたから
     # speaker: narrator
     カムラの孫で、二人を結婚式に招いてくれた花婿のことだ。

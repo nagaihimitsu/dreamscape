@@ -362,8 +362,10 @@ INCLUDE modules.ink
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
 # speaker: heroine
 # term: gt_term_auto_rickshaw
+# voice: gt_delhi_finale_battle_001
 待ってください。あの日のカムラさん、すごくはっきりしてました
 # speaker: heroine
+# voice: gt_delhi_finale_battle_002
 オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
 # speaker: enemy
 # reaction: enemy,anger
@@ -602,8 +604,10 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_battle_kamla_005
 ……あんたが連れてきたの
 # speaker: heroine
+# voice: gt_delhi_finale_battle_003
 はい。黙っていなくなるのは、自由とは違うと思ったから
 # speaker: heroine
+# voice: gt_delhi_finale_battle_004
 カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
 # speaker: gt_kamla
 # voice: gt_delhi_finale_battle_kamla_006

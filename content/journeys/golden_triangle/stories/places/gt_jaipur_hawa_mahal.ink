@@ -208,8 +208,10 @@ INCLUDE modules.ink
     下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
 }
 # speaker: heroine
+# voice: gt_jaipur_main_hawa_mahal_battle_003
 ガウラさんは、お客さんと値段で喧嘩してました
 # speaker: heroine
+# voice: gt_jaipur_main_hawa_mahal_battle_004
 それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
 # speaker: heroine
 # voice: gt_jaipur_main_hawa_mahal_010

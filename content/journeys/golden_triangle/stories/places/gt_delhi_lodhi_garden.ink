@@ -463,7 +463,9 @@ INCLUDE modules.ink
 だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_date_lodhi_garden_029
 理由がなくても笑っていいって言われると、ちょっと楽になるね
 # speaker: heroine
+# voice: gt_delhi_date_lodhi_garden_030
 わたし、いつも、笑っていい理由を探してから笑ってた気がする
 -> END

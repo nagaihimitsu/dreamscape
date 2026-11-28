@@ -134,8 +134,10 @@ INCLUDE modules.ink
 ごめんなさい。伝言は、運べません
 # speaker: heroine
 # photo: gt_album_a107 # photo_caption: 「何が、怖いんですか」 # photo_with: gt_harbans gt_gurmeet
+# voice: gt_agra_date_guru_ka_taal_018
 わたしが伝えたら、お二人の言葉じゃなくなっちゃうから
 # speaker: heroine
+# voice: gt_agra_date_guru_ka_taal_019
 ……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
 # speaker: narrator
 二人とも、同時に彼女を見た。怒っているというより、そんなことを聞かれたのは初めてだ、という顔だった。

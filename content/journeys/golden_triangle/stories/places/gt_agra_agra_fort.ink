@@ -187,8 +187,10 @@ INCLUDE modules.ink
 # background: gt_bg_agra_agra_fort
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_agra_main_agra_fort_battle_001
     はい。城の一部は、今も陸軍の区域ですよね
     # speaker: heroine
+    # voice: gt_agra_main_agra_fort_battle_002
     ……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います
 - else:
     # speaker: enemy
