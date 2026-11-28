@@ -1,4 +1,4 @@
-/* The colours and the effect word of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours and the effect word of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --city-arrival-name-size: clamp(28px, 8vw, 40px); /* the city's name as it arrives: an effect's word, following the screen */
   --city-arrival-logo-ground: #fafafbed;

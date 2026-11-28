@@ -2,7 +2,7 @@
    the fine lines, the decorations that look like letters and the writing (a second copy of the hand, masked to a
    soft-edged circle whose edge breathes with the flame). With the use's art.palm and art.lamp, those pictures in place
    of the drawn hand and lamp. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --mehndi-hidden-name-skin-ground-086: rgba(10, 10, 12, 0.86);
   --mehndi-hidden-name-glow-ground-02: rgba(255, 255, 255, 0.2);

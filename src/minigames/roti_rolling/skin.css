@@ -1,7 +1,7 @@
 /* The roti's field (Skin.tsx): the work table from above, the round board, the dough and the pin. With the use's
    art.kitchen, that picture in place of the drawn table (softened, so the drawn board stands in front of it); art.board,
    art.pin and art.dough likewise. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --roti-rolling-table-ground-035: rgba(255, 255, 255, 0.35);
   --roti-rolling-table-ground-028: rgba(255, 255, 255, 0.28);

@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 /**
- * The design's rules (2026-11-25 user decision, remade 2026-11-28; styles.css :root, docs/02 「デザインの決まり」): every
+ * The design's rules (2026-11-25 user decision, remade 2026-11-28; styles.css :root, docs/14 「デザインの決まり」): every
  * stylesheet takes its font sizes, line heights, room (margins, padding, gaps: --ds-space-*, since 2026-11-28), corners,
  * layers and colours from them (all stylesheets since 2026-11-26). What is a thing's
  * own (a phone's body and corners, a game's artwork, an effect's word larger than the steps or following the screen) is
@@ -136,6 +136,13 @@ describe("the design's rules", () => {
     expect(stepsOf(root, "--ds-opacity-")).toHaveLength(4);
     expect(stepsOf(root, "--ds-gray-")).toHaveLength(6);
     expect(stepsOf(root, "--ds-shadow")).toHaveLength(4);
+  });
+
+  it("loads one web font for the words, Noto Sans JP (2026-11-28 user decision: one typeface)", () => {
+    const html = readFileSync(new URL("../../index.html", import.meta.url), "utf8");
+    const families = [...html.matchAll(/fonts\.googleapis\.com\/css2\?([^"']+)/g)].flatMap(([, query]) =>
+      [...query.matchAll(/family=([^:&]+)/g)].map(([, family]) => decodeURIComponent(family.replaceAll("+", " "))));
+    expect(families).toEqual(["Noto Sans JP"]);
   });
 
   it("never defines a rule by itself", () => {

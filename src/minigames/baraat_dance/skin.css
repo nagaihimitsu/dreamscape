@@ -2,7 +2,7 @@
    the heroine dancing, the player's hands at the bottom, the band's drum at the bottom left right over the lane's ring.
    On each drum beat the root takes data-beat for a moment (the drum lights and swells, the dancers dip) and data-step
    flips (the dancers sway the other way). Less motion keeps the light only. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --baraat-dance-lights-ground-022: rgba(255, 255, 255, 0.22);
   --baraat-dance-lights-ground-09: rgba(255, 255, 255, 0.9);
@@ -22,7 +22,7 @@
   --baraat-dance-grade-ink-2: #f2a3a9;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --baraat-count-size: 40px;
 }

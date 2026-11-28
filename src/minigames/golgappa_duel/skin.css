@@ -1,6 +1,6 @@
 /* The golgappa duel's field (Skin.tsx): the stall's counter from the customer's side over the scene (or the use's bg);
    with the use's art.stall, that picture in place of the drawn pot, heap and counter. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --golgappa-duel-puri-drawn-shadow: #24262b;
   --golgappa-duel-pot-edge: #c4c8cc;

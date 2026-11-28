@@ -1,6 +1,6 @@
 /* Raju's haggle (Skin.tsx): over the scene's picture (the fort's gate), Raju on the left from the bottom, his bubble over
    him (his face and his words), the paper of his prices on the right. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --raju-haggle-bubble-edge: #c8302a;
   --raju-haggle-paper-ground-028: rgba(120, 124, 132, 0.28);

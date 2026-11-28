@@ -1,5 +1,5 @@
 /* The portrait and dialogue share one scene; the reading surfaces stay opaque. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --battle-screen-ground: #76787e;
   --battle-screen-ground-2: #3a3c41;
@@ -23,7 +23,7 @@
   --battle-reveal-region-edge: #ffffff;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --result-outcome-size: clamp(40px, 12vw, 64px);
   --result-score-size: 36px;

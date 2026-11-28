@@ -2,7 +2,7 @@
    would be (in the dialogue window); the play lies over the whole scene, below what lies over the scene's top (--scene-top):
    the top band, the game's stage (its field and, at the bottom in thumb reach, its controls), the count, the finish word,
    the heroine's reaction and the result card. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --host-minigame-hand-finger-fill: #f6dcc4;
   --host-minigame-hand-finger-line: #2a211c;
@@ -12,7 +12,7 @@
   --host-minigame-particle-splash-ground: #e8f4ff;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --minigame-count-size: 72px;
   --minigame-go-size: 48px;

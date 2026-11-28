@@ -1,7 +1,7 @@
 /* The flap's field (Skin.tsx): the view from inside a niche of the stepwell, through its arch, of the stairs she comes
    down. Over the scene's picture (or the use's bg); with the use's art.stairs, that picture in place of the drawn stairs.
    What the play judges (her, her steps' marks, the cloth) has a dark edge and a shadow, so it stands out of a photo. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --cloth-flap-skin-ground: #2e241c;
   --cloth-flap-far-wall-ground-09: rgba(206, 207, 210, 0.9);

@@ -2,7 +2,7 @@
    decorative or polite text, never pressed. Each has its reduced-motion form under both the system setting and
    「演出を短縮する」 (.reduce-motion). */
 
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --hud-effects-hud-flight-coin-ground: #f4f5f7;
   --hud-effects-hud-flight-coin-ground-2: #9a9da4;

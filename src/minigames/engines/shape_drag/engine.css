@@ -1,6 +1,6 @@
 /* The shape_drag engine (EnginePlay.tsx): the skin's backdrop fills the field, the square board sits in its middle as large
    as the field allows, the controls sit at the bottom in thumb reach. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --shape-drag-meter-fill-ground: #b5b8bf;
   --shape-drag-hint-ink: #ffffff;

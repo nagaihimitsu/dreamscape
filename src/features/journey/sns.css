@@ -3,7 +3,7 @@
    2026-11-28 user decision: one UI first, no longer a tilted paper print in a pen's hand) is the post, its comments on
    the chosen ground under it. Headings, hairlines and grounds tell things apart (no side accent). No count
    anywhere. Every pressable is 44 px but the dots (a picture of where the card is; ‹ › turn it). */
-/* The colour of this stylesheet's own thing, named once (docs/02 「デザインの決まり」): a like's red, which tells it. */
+/* The colour of this stylesheet's own thing, named once (docs/14 「デザインの決まり」): a like's red, which tells it. */
 :root {
   --sns-like: #d23a4a; /* the heart pressed, the red of a like */
 }

@@ -2,7 +2,7 @@
    same place over the battle, below the header, and the same heavy, shadowed word; but a quick band over a veil that
    lets the question show through, not a scene of its own. The question is already saved underneath. */
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --quiz-cutin-word-size: clamp(44px, min(17vw, 22dvh), 104px);
 }
