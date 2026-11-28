@@ -1,12 +1,11 @@
 /* 旅の記録's 「SNS」 (SnsView.tsx; 2026-11-26・27 user decisions, authoring/SNS_PLAN.md 「画面」): no frame or head row of its
-   own for a post: the photo's paper (the scenes' print: white border, a little tilted, its words level) is the post, its
-   comments on a slightly darker paper under it. Headings, hairlines and grounds tell things apart (no side accent). No count
+   own for a post: the photo's card (as the scenes' photo: a pane on the glass, level, its words in the game's one face;
+   2026-11-28 user decision: one UI first, no longer a tilted paper print in a pen's hand) is the post, its comments on
+   the chosen ground under it. Headings, hairlines and grounds tell things apart (no side accent). No count
    anywhere. Every pressable is 44 px but the dots (a picture of where the card is; ‹ › turn it). */
-/* The colours and typeface of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colour of this stylesheet's own thing, named once (docs/02 「デザインの決まり」): a like's red, which tells it. */
 :root {
-  --sns-print: #fafafa; /* the print's paper (photo-show.css --photo-print-margin) */
   --sns-like: #d23a4a; /* the heart pressed, the red of a like */
-  --sns-hand: "Klee One", "Noto Sans JP", sans-serif; /* a pen's hand (the photo's caption in a scene) */
 }
 .sns { padding-bottom: var(--ds-space-2); }
 .sns button {
@@ -135,17 +134,15 @@
 }
 .sns-turn[hidden] { display: none; }
 
-/* The paper: a print, tilted (--sns-tilt); its photo with it, its words level. */
+/* The card: a pane on the dialog's glass, its photo in it. */
 .sns-paper {
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-2) 0;
-  border-radius: var(--ds-radius-pill);
-  background: var(--sns-print);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-shade) 24%, transparent);
-  transform: rotate(var(--sns-tilt, 0deg));
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-surface);
+  box-shadow: inset 0 0 0 1px var(--ds-line), var(--ds-shadow);
 }
-.sns-paper :is(.sns-margin, .sns-author, .sns-place) { rotate: calc(-1 * var(--sns-tilt, 0deg)); }
-.sns-photo { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-pill); background: var(--ds-photo-mat); }
+.sns-photo { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-photo-mat); }
 .sns .sns-photo-open { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .sns-photo-open img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .sns-photo-open:focus-visible { outline-offset: -3px; }
@@ -191,10 +188,10 @@
   overflow-wrap: anywhere;
   pointer-events: none;
 }
-/* The paper's margin: the post's line in a hand, its translation under it, the heart at its right. */
+/* The card's margin: the post's line, its translation under it, the heart at its right. */
 .sns-margin { display: flex; align-items: center; gap: var(--ds-space-1); min-height: 44px; padding: var(--ds-space-1) 0 var(--ds-space-1) var(--ds-space-1); color: var(--ds-ink); }
 .sns-line { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; padding: var(--ds-space-1) 0; }
-.sns-line-text { font-family: var(--sns-hand); font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.sns-line-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-line-translation { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* The heart: a line, red and filled once pressed. */
 .sns .sns-like { display: grid; flex: none; place-items: center; width: 44px; height: 44px; color: var(--ds-ink-muted); }
@@ -260,7 +257,7 @@
 .sns-person-row-intro { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-people-group + .sns-people-group { margin-top: var(--ds-space-1); }
 
-/* A person's page: their own words beside their face; the heroine's note on her paper, in a hand, apart from them. */
+/* A person's page: their own words beside their face; the heroine's note on her card, apart from them. */
 .sns-profile { display: flex; align-items: flex-start; gap: var(--ds-space-4); margin-top: var(--ds-space-1); }
 .sns-profile .sns-face.is-lg { margin: var(--ds-space-1) 0 0 var(--ds-space-1); }
 .sns-profile-text { min-width: 0; }
@@ -268,7 +265,7 @@
 .sns-intro { display: flex; flex-direction: column; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .sns-note { margin: var(--ds-space-4) 0 var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); color: var(--ds-ink); }
 .sns-note-head { display: flex; align-items: center; gap: var(--ds-space-2); margin: 0 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: 600; line-height: var(--ds-leading-tight); }
-.sns-note-text { font-family: var(--sns-hand); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.sns-note-text { font-family: var(--ds-font-sans); font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* Their photos (3 to a row) and the photos they are in (5 to a row): close squares, their reduced copies. */
 .sns-grid { display: grid; gap: var(--ds-space-1); margin: 0; padding: 0; list-style: none; }
 .sns-grid.is-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }

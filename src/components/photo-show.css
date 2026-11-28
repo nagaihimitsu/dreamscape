@@ -1,19 +1,13 @@
-/* A line's photo shown large (PhotoShow.tsx; 2026-11-12, the default since 2026-11-25): the album picture as a print
-   with a white border and a wider margin under it, where its caption is written by hand and its stamp (the place and
-   「n日目 hh:mm」) is pressed. It lies over the portraits (dimmed by the layer's veil) and under the window (z-index 2),
+/* A line's photo shown large (PhotoShow.tsx; 2026-11-12, the default since 2026-11-25): the album picture on a pane of
+   the light glass with a wider margin under it, where its caption and its stamp (the place and 「n日目 hh:mm」) are set
+   in the game's one face (2026-11-28 user decision: one UI first; it was a white paper print, tilted, its caption in a
+   pen's hand, its stamp in orange ink). It lies over the portraits (dimmed by the layer's veil) and under the window (z-index 2),
    in the area below the header, below the notices under the header (--notices-h, as the item card), at the same size on
    every line (2026-11-27 user decision: not made smaller beside the faces of whoever speaks). The picture keeps its own
    ratio and fits within the width and its height. The print has its own turn before its line (photo-turn.ts): a tap
    anywhere, the print too, ends it and the print goes quickly (.photo-show-leaving). The album's pictures are the author's own art (never
    credited), so a print just taken may develop through a filter. The veil dims the whole scene, behind the header too
    (2026-11-25 user decision, after an iPhone: the band behind the header was left brighter than the dimmed scene). */
-
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --photo-print-margin: #fafafa; /* the print's paper */
-  --photo-print-stamp: #b4532a; /* a date stamp's orange ink */
-  --photo-print-hand: "Klee One", "Noto Sans JP", sans-serif; /* a pen's hand */
-}
 
 .photo-show-layer {
   position: absolute;
@@ -38,10 +32,11 @@
   max-width: min(100%, 600px);
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-2) 0;
-  border-radius: var(--ds-radius-pill);
-  background: var(--photo-print-margin);
-  box-shadow: var(--stage-photo-shadow);
-  transform: rotate(-1.5deg);
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow-large);
   animation: photo-show-in var(--motion-scene) var(--ease-out);
 }
 .photo-print img {
@@ -51,7 +46,7 @@
   max-width: 100%;
   /* Never larger than 40 % of the screen, so the window below stays clear. */
   max-height: 40dvh;
-  border-radius: var(--ds-radius-pill);
+  border-radius: var(--ds-radius-control);
 }
 .photo-print-margin {
   display: flex;
@@ -66,7 +61,7 @@
   color: var(--ds-ink);
 }
 .photo-print-caption {
-  font-family: var(--photo-print-hand);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   font-weight: 600;
   line-height: var(--ds-leading-body);
@@ -77,12 +72,12 @@
   font-size: var(--ds-text-small);
   line-height: var(--ds-leading-tight);
   letter-spacing: 0.04em;
-  color: var(--photo-print-stamp);
+  color: var(--ds-ink-muted);
   text-align: right;
   overflow-wrap: anywhere;
 }
 @keyframes photo-show-in {
-  from { opacity: 0; transform: rotate(-1.5deg) scale(0.94); }
+  from { opacity: 0; transform: scale(0.94); }
 }
 /* Its turn ended (a tap): the print and its veil go quickly (PhotoShow.tsx PHOTO_LEAVE_MS), the line starting meanwhile. */
 .photo-show-layer.photo-show-leaving {
@@ -92,7 +87,7 @@
   to { opacity: 0; }
 }
 
-/* A photo just taken (data-taken): a short flash over the scene, then the print comes up a little turned and its picture
+/* A photo just taken (data-taken): a short flash over the scene, then the print comes up and its picture
    develops, from a pale wash into its colours. */
 .photo-show-flash {
   position: absolute;
@@ -112,7 +107,7 @@
   animation: photo-show-develop 1100ms 200ms ease-out both;
 }
 @keyframes photo-show-taken {
-  from { opacity: 0; transform: translateY(14px) rotate(-5deg) scale(0.9); }
+  from { opacity: 0; transform: translateY(14px) scale(0.9); }
 }
 @keyframes photo-show-develop {
   from { filter: brightness(1.8) saturate(0.1) contrast(0.6); }
@@ -140,10 +135,10 @@
   object-fit: cover;
 }
 @keyframes photo-print-fly {
-  0% { opacity: 1; transform: rotate(-1.5deg); }
-  18% { transform: rotate(-1.5deg) scale(1.03); }
+  0% { opacity: 1; transform: none; }
+  18% { transform: scale(1.03); }
   85% { opacity: 1; }
-  100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(8deg) scale(var(--to-scale, 0.2)); }
+  100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--to-scale, 0.2)); }
 }
 
 /* A short landscape screen: a smaller picture, so the window below stays clear. */

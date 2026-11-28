@@ -1,15 +1,10 @@
-/* A line's # item_out: (2026-11-15 user decision; ItemOut.tsx): the item taken out of the bag, on a quiet sheet of paper
-   with what is written on it, in the scene's free area between the header and the window. Display only: no focus, no
-   presses but the scroll of a long list (a tap on the card reads on like a tap on the scene). No thick edge on one side
-   (AGENTS.md): the paper has a hairline all round, a dashed rule under its heading; the line the story reads is marked
-   by a soft marker band behind its words and their full ink and weight, the other lines a little quieter. */
-
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --item-out-card-ground: rgba(0, 0, 0, 0.03);
-  --item-out-card-ground-2: #ffffff;
-  --item-out-card-ground-3: #f1f2f4;
-}
+/* A line's # item_out: (2026-11-15 user decision; ItemOut.tsx): the item taken out of the bag, with what is written on it,
+   in the scene's free area between the header and the window. Display only: no focus, no presses but the scroll of a
+   long list (a tap on the card reads on like a tap on the scene). Since 2026-11-28 (user decision: a thing like
+   カムラの段ボールのメモ follows the one UI first) it is not drawn as paper but as a pane of the light glass, as every
+   pane over a scene (styles.css's glass surfaces): no grain, no edge line, the glass's corner and room; a hairline under
+   its heading. The line the story reads is marked by a soft grey band behind its words and their full ink and weight,
+   the other lines a little quieter. No thick edge on one side (AGENTS.md). */
 /* The layer: over the portraits (z-index 1, as # item_show:'s card) and under the window (z-index 2), in the area below
    the header and below the notices under it (--notices-h, GameApp). The card's height is kept to the window's top
    (ItemOut.tsx: itemOutFit), so it never covers the window; where not even its heading fits above the window (a short
@@ -37,14 +32,14 @@
   flex-direction: column;
   width: min(100%, 24rem);
   min-height: 0;
-  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-3) var(--ds-space-4);
+  padding: var(--ds-glass-padding);
   overflow: hidden;
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-control);
-  background:
-    repeating-linear-gradient(115deg, var(--item-out-card-ground) 0 2px, transparent 2px 7px),
-    linear-gradient(170deg, var(--item-out-card-ground-2), var(--item-out-card-ground-3));
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--ds-shade) 32%, transparent);
+  border: 0;
+  border-radius: var(--ds-radius-large);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
   pointer-events: none;
 }
@@ -55,7 +50,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   padding-bottom: var(--ds-space-2);
-  border-bottom: 1px dashed var(--ds-line);
+  border-bottom: 1px solid var(--ds-line);
 }
 /* The picture: small beside the name (the lines are what is looked at); a vector picture fills its square, any other
    at its own size at most, so it stays sharp. */
@@ -127,8 +122,8 @@
   font-family: var(--ds-font-sans);
   font-size: 0.85em;
 }
-/* With a highlighted line, the others in the muted ink (5.5:1 on the paper), the highlighted one in full ink, heavier,
-   with a marker band behind its words (wrapping with them). */
+/* With a highlighted line, the others in the muted ink (5.3:1 on the glass), the highlighted one in full ink, heavier,
+   with a soft grey band behind its words (wrapping with them). */
 .item-out-lines[data-highlight] li {
   color: var(--ds-ink-muted);
   transition: color var(--motion-fast) var(--ease-out);
@@ -143,7 +138,7 @@
 }
 .item-out-lines li[data-highlighted] > span {
   padding: 0 var(--ds-space-1);
-  background: linear-gradient(transparent 52%, color-mix(in srgb, var(--ds-light) 55%, transparent) 52%);
+  background: linear-gradient(transparent 52%, color-mix(in srgb, var(--ds-ink) 10%, transparent) 52%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
@@ -176,7 +171,7 @@
 /* A short landscape screen: a lower heading and tighter lines, so more of the list shows above the window. */
 @media (max-height: 500px) {
   .item-out-layer { padding-top: max(6px, calc(var(--notices-h, 0px) + 6px)); }
-  .item-out-card { width: min(100%, 30rem); padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2) var(--ds-space-4); }
+  .item-out-card { width: min(100%, 30rem); padding: var(--ds-space-2) var(--ds-space-4); }
   .item-out-head { gap: var(--ds-space-2); padding-bottom: var(--ds-space-2); }
   .item-out-picture { width: 32px; height: 32px; }
   .item-out-picture img { max-width: 28px; max-height: 28px; }

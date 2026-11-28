@@ -17,15 +17,6 @@
   --phone-body: #141518;
   --phone-corner: 28px; /* the rounded corners of the phone's glass */
   --phone-slot: #3b3d42;
-  --phone-screen: #ececee;
-  --phone-name: #55585f; /* 6.4:1 on the screen */
-  --phone-bubble: #ffffff;
-  --phone-sent-ink: #ffffff;
-  --letter-grain: rgba(0, 0, 0, 0.03);
-  --letter-paper: linear-gradient(170deg, #ffffff, #f1f2f4);
-  --letter-rule: rgba(36, 38, 43, 0.22);
-  --note-paper: #fdfdfd;
-  --card-paper: #ffffff;
 }
 
 /* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
@@ -128,8 +119,10 @@
   box-shadow: var(--stage-remembered-rim);
 }
 
-/* # phone: a phone in the window: a dark body with a hairline edge, a light screen whose messages scroll inside it
-   (newest at the bottom), received ones on the left under their sender's name, sent ones on the right. The line on
+/* # phone: a phone in the window: a dark body with a hairline edge (the one thing drawn as itself, 2026-11-28 user
+   decision), and inside it the one UI: a screen of the light glass whose messages scroll inside it (newest at the
+   bottom), received ones on the left under their sender's name as panes on the glass, sent ones on the right in the
+   smoked glass of the talk's choices. The line on
    screen is its last bubble; tapping it or the scene reads on as on any line. */
 .phone-screen {
   position: relative;
@@ -163,8 +156,8 @@
   -webkit-overflow-scrolling: touch;
   padding: var(--ds-space-3) var(--ds-space-2);
   border-radius: var(--ds-radius-large);
-  background: var(--phone-screen);
-  color: var(--ds-dark);
+  background: var(--ds-glass-bg);
+  color: var(--ds-ink);
 }
 /* Choices follow the message: the phone keeps less room, so they stay in view. */
 .phone-screen[data-compact] .phone-thread {
@@ -183,7 +176,7 @@
 }
 .phone-name {
   margin: 0 0 var(--ds-space-1) var(--ds-space-2);
-  color: var(--phone-name);
+  color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-small);
   font-weight: 600;
@@ -195,8 +188,9 @@
   margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control);
-  background: var(--phone-bubble);
-  color: var(--ds-dark);
+  background: var(--ds-glass-press);
+  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
+  color: var(--ds-ink);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
@@ -205,8 +199,9 @@
 }
 .phone-message[data-side="sent"] .phone-bubble {
   border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-pane);
-  background: var(--ds-speaker); /* white text at 5.9:1 */
-  color: var(--phone-sent-ink);
+  background: var(--ds-action-fill); /* white text at 6:1 or more */
+  box-shadow: inset 0 0 0 1px var(--ds-action-edge);
+  color: var(--ds-action-ink);
 }
 /* The line on screen is its whole bubble, in the bubble's own type: the bubble's padding is the line's, so a
    one-line message is still a 44 px tap row (docs/10 「タップ領域」), as high as the other bubbles. */
@@ -226,10 +221,11 @@
   opacity: 0.6;
 }
 
-/* # letter: a sheet of paper in the window, centred, its text larger, in the game's one face,
-   without the speaker's plate. Lines written on the same kind of paper stack on one sheet; a long sheet scrolls inside
-   itself to its newest line. Three papers: a letter (white, a faint grain), a note (ruled lines), a card (centred text
-   in a thin inner frame). */
+/* # letter: what is written (a letter, a note, a card) as a sheet in the window, centred, its text larger, without the
+   speaker's plate. Lines written on the same kind of paper stack on one sheet; a long sheet scrolls inside itself to its
+   newest line. Since 2026-11-28 (user decision: such things follow the one UI first) the sheet is not drawn as paper
+   (no grain, ruled lines or inner frame) but as a pane on the window's glass, the glass's press ground with its fine
+   edge; the three kinds keep their rhythm: a letter and a note at the paper's line pitch, a card centred. */
 .letter-sheet {
   --letter-line: 1.9em;
   position: relative;
@@ -240,29 +236,14 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  border-radius: var(--ds-radius-control);
-  background:
-    repeating-linear-gradient(115deg, var(--letter-grain) 0 2px, transparent 2px 7px),
-    var(--letter-paper);
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-press);
   color: var(--ds-ink);
-  box-shadow: var(--ds-shadow);
+  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-large);
 }
-.letter-sheet[data-kind="note"] {
-  border-radius: var(--ds-radius-pill);
-  background:
-    repeating-linear-gradient(to bottom, transparent 0 calc(var(--letter-line) - 1px), var(--letter-rule) calc(var(--letter-line) - 1px) var(--letter-line)),
-    var(--note-paper);
-  background-attachment: local;
-  background-origin: content-box;
-  background-clip: padding-box;
-}
 .letter-sheet[data-kind="card"] {
-  border-radius: var(--ds-radius-control);
-  background: var(--card-paper);
-  outline: 1px solid var(--ds-line);
-  outline-offset: -8px;
   text-align: center;
 }
 /* The lines keep the paper's rhythm; the line on screen is at least a 44 px tap row (its room below a one-line text). */
@@ -287,8 +268,8 @@
 }
 /* A line with its # translation: (2026-11-15 user decision; LineStage.tsx TranslatedLetterLine): the English as
    written, without the Japanese text's tracking, and right under it its Japanese in the window's sans face, smaller
-   and quieter (a reading aid beside the paper's own words; 6.5:1 on the card). The English's lines sit a little closer
-   than the paper's rhythm, so each English line and its Japanese read as one pair; on a note both keep the ruled lines'
+   and quieter (a reading aid beside the sheet's own words; 5.3:1 or more on it). The English's lines sit a little closer
+   than the paper's rhythm, so each English line and its Japanese read as one pair; on a note both keep the sheet's line
    pitch instead. On a card the lines of each are balanced. The Japanese is there from the line's start, so nothing
    moves when the English has been typed. */
 .letter-entry > .letter-line,

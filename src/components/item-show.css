@@ -1,11 +1,7 @@
 /* A line's # item_show: (2026-11-13 user decision; ItemShow.tsx): the item's card in the middle of the scene, and its
    way into the header's bag. Display only: no presses, no focus, aria-hidden. No thick edge on one side: the card is a
-   light ground tile with a light hairline all round and a soft white glow. */
-
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --item-show-card-ground: #fafafb;
-}
+   pane of the light glass over the scene (2026-11-28 user decision: one UI first, the things in the story too), with
+   the glass's corner and a soft shadow; a soft white glow breathes behind the picture. */
 /* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
    header; the card sits at its top middle, above the heads of the people on stage or under their faces (figures-top.ts;
    2026-11-25 user decisions: their faces stay seen as they speak), and below the notices under the header (「写真の札」: its
@@ -37,10 +33,12 @@
   max-width: min(100%, 260px);
   padding: var(--ds-space-4) var(--ds-space-5) var(--ds-space-3);
   overflow: hidden;
-  border: 1px solid var(--ds-action-edge);
-  border-radius: var(--ds-radius-pane);
-  background: radial-gradient(circle at 50% 36%, var(--item-show-card-ground), var(--ds-surface) 68%);
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--ds-shade) 35%, transparent), 0 0 28px color-mix(in srgb, var(--ds-light) 32%, transparent);
+  border: 0;
+  border-radius: var(--ds-radius-large);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
   animation: item-show-in var(--motion-scene) var(--ease-out) both;
 }

@@ -44,7 +44,7 @@
   height: min(76cqh, 100cqh - 24px, 150cqw);
   overflow: hidden;
   container-type: size;
-  border-radius: var(--ds-radius-pill) var(--ds-radius-pill) 0 0;
+  border-radius: var(--ds-radius-control) var(--ds-radius-control) 0 0;
   background: var(--parasol-search-window-ground);
   box-shadow: 0 0 0 3px var(--parasol-search-window-shadow), 0 0 0 7px var(--parasol-search-window-shadow-2), 0 6px 18px color-mix(in srgb, var(--ds-shade) 60%, transparent);
 }

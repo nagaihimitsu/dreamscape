@@ -103,7 +103,7 @@
   width: 44%;
   max-width: 210px;
   padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-3);
-  border-radius: var(--ds-radius-control) var(--ds-radius-control) var(--ds-radius-pill) var(--ds-radius-control);
+  border-radius: var(--ds-radius-control);
   background:
     repeating-linear-gradient(to bottom, transparent 0 25px, var(--raju-haggle-paper-ground-028) 25px 26px),
     var(--raju-haggle-paper-ground);

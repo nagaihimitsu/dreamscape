@@ -267,7 +267,8 @@ body {
 .held-item-detail,
 .resume-recap,
 .intro-art + .paper.intro,
-.paper.ending {
+.paper.ending,
+.item-out-card {
   --ds-surface: var(--ds-glass-press);
   --ds-surface-chosen: var(--ds-glass-chosen);
   --ds-line: var(--ds-glass-line);
@@ -801,7 +802,7 @@ footer span {
   text-align: left;
   border: 1px solid var(--ds-line);
   background: var(--ds-surface);
-  border-radius: var(--ds-radius-pill);
+  border-radius: var(--ds-radius-pane);
   color: var(--ds-ink);
   padding: var(--ds-space-4) var(--ds-space-4);
   margin: var(--ds-space-2) 0;
