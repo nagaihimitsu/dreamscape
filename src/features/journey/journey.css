@@ -19,58 +19,66 @@
   color: var(--ds-on-dark);
   font-weight: var(--ds-weight-bold);
 }
+/* A quiz's result (battle.css's glass card): the AP earned and the AP held, side by side in one type, and the trip's
+   milestone under them (2026-11-28 user decision: the two figures were set in very different sizes). */
 .battle-rewards {
-  border-top: var(--ds-edge-thin) solid var(--ds-line);
-  padding-top: var(--ds-space-4);
-  margin: var(--ds-space-6) 0;
+  margin: 0;
   text-align: left;
 }
-.reward-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.reward-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ds-space-4);
-  font-size: var(--ds-text-small);
+  margin: 0;
 }
-.reward-total strong {
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-display);
-  font-weight: var(--ds-weight-regular);
+.reward-figures > div {
+  display: grid;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.reward-figures dt {
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-medium);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-2);
+  color: var(--ds-ink-muted);
+}
+.reward-figures dd {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-1);
+  margin: 0;
+  font-size: var(--ds-text-heading);
+  font-weight: var(--ds-weight-medium);
   line-height: var(--ds-leading-tight);
   color: var(--ds-ink);
   white-space: nowrap;
 }
-.reward-total small {
-  font-family: var(--ds-font-sans);
+.reward-figures dd small {
   font-size: var(--ds-text-small);
-  font-weight: var(--ds-weight-regular);
-  line-height: var(--ds-leading-tight);
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-2);
+  color: var(--ds-ink-muted);
 }
-.current-ap {
-  margin-top: var(--ds-space-4);
-  font-size: var(--ds-text-note);
-  display: flex;
-  justify-content: space-between;
-}
-/* A cleared episode: a light ground panel; done is told by its heading's words (§2.1). */
+/* A cleared episode: a soft ground on the glass; done is told by its heading's words (§2.1). */
 .episode-clear {
-  padding: var(--ds-space-6) var(--ds-space-6);
+  margin: var(--ds-space-4) 0 0;
+  padding: var(--ds-space-4);
+  border-radius: var(--ds-radius-pane);
   background: var(--ds-surface-chosen);
-  margin: var(--ds-space-6) 0 var(--ds-space-6);
   text-align: left;
-  border-radius: var(--ds-radius-control);
 }
 .episode-clear h2 {
-  font-size: var(--ds-text-heading);
-  margin: var(--ds-space-2) 0 var(--ds-space-3);
+  margin: 0 0 var(--ds-space-2);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-1);
 }
-.episode-clear > p:not(.eyebrow):not(.fine-print) {
-  font-family: var(--ds-font-sans);
+.episode-clear > p {
+  margin: 0;
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
-}
-.episode-clear .fine-print {
-  margin-top: var(--ds-space-4);
 }
 .guide-reward-note {
   font-size: var(--ds-text-small);
