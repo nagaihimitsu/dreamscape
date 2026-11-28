@@ -309,8 +309,10 @@ INCLUDE modules.ink
 # photo: gt_album_d088 # photo_caption: 金色の丸屋根を映す池
 二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。
 # speaker: heroine
+# voice: gt_delhi_date_bangla_sahib_023
 誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね
 # speaker: heroine
+# voice: gt_delhi_date_bangla_sahib_024
 なんだか不思議。知らない人に、ちょっとだけ届いた感じ
 # speaker: heroine
 # emotion: smile

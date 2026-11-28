@@ -223,8 +223,10 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 # photo: gt_album_d099 # photo_caption: 帳場の机のルーヒーと「女性車両」の作文 # photo_with: gt_roohi
+# voice: gt_delhi_hotel_homework_008
 わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの
 # speaker: heroine
+# voice: gt_delhi_hotel_homework_009
 回ってる洗濯物を見てると、落ち着くから
 # speaker: heroine
 # reaction: heroine,teasing,music
@@ -969,8 +971,10 @@ No, thank you.
 -> gt_delhi_depart_scam_on_platform ->
 { cond("flag gt_delhi_scam_paid"):
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_office_007
     手付金は、高い授業料だったね。……ううん、やっぱり悔しい
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_office_008
     でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
 }
 * [水のボトルを渡して、黙っている # option: hand_water]
@@ -1017,15 +1021,20 @@ No, thank you.
 # photo: gt_album_d129 # photo_caption: ホームのベンチで、少し震える手
 ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
 # speaker: heroine
+# voice: gt_delhi_depart_scam_on_platform_001
 親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も
 # speaker: heroine
+# voice: gt_delhi_depart_scam_on_platform_002
 ……悔しい。最初に、ついて行こうって言ったの、わたしだから
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_on_platform_003
 でも、教えてくれた荷運びの人も、検札の人も、本物だった
 # speaker: heroine
+# voice: gt_delhi_depart_scam_on_platform_004
 宿のご主人も、ルーヒーさんも
 # speaker: heroine
+# voice: gt_delhi_depart_scam_on_platform_005
 ……疑うのは疲れるけど、全部を疑うようには、なりたくないな
 ->->
 

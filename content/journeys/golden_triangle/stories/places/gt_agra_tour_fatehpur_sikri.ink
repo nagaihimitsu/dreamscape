@@ -210,8 +210,10 @@ HORN OK PLEASE。
 # speaker: heroine
 # reaction: heroine,surprised,question
 # photo: gt_album_a045 # photo_caption: HORN OK PLEASE # photo_with: gt_vinod
+# voice: gt_agra_tour_out_leg_005
 ホーン、オーケー、プリーズ……。鳴らして、いいよ、お願い？
 # speaker: heroine
+# voice: gt_agra_tour_out_leg_006
 どういう意味なんだろう。あ、あっちのトラックにも書いてある
 # speaker: gt_vinod
 # voice: gt_agra_tour_out_leg_vinod_002

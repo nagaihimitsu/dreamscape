@@ -70,10 +70,13 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # photo: gt_album_a005 # photo_caption: 屋根の向こうにのぞく白いドーム
+# voice: gt_agra_arrival_007
 あ……見えた。あれ、タージ・マハルの屋根だよね
 # speaker: heroine
+# voice: gt_agra_arrival_008
 写真で百回は見たのに、指先がそわそわする。……よし
 # speaker: heroine
+# voice: gt_agra_arrival_009
 誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
 
@@ -267,8 +270,10 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     # recall: gt_album_a138
+    # voice: gt_agra_epilogue_013
     今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう
     # speaker: heroine
+    # voice: gt_agra_epilogue_014
     あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:
     # speaker: heroine

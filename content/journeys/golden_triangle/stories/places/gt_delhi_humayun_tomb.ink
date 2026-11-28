@@ -237,8 +237,10 @@ INCLUDE modules.ink
 メヘルが即答し、カビールが何度もうなずいた。三人の視線が、そろって{heroine_name}に向く。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_humayun_tomb_battle_001
 わたしは、誰にも言いません。言う相手もいないですし
 # speaker: heroine
+# voice: gt_delhi_main_humayun_tomb_battle_002
 ……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも
 # speaker: enemy
 # voice: gt_delhi_main_humayun_tomb_battle_suresh_018

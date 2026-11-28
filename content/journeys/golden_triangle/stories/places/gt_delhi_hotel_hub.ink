@@ -88,8 +88,10 @@ INCLUDE modules.ink
 デリーは押しの強い町だよ。欲しいものは、欲しいと言いなさい。黙っていたら、誰も気づかない。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_arrival_005
 ……はい、覚えておきます。それにしても、地図というより暗号だね
 # speaker: heroine
+# voice: gt_delhi_arrival_006
 せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
 -> END
 
@@ -179,8 +181,10 @@ INCLUDE modules.ink
     六十年って、長いね。……わたしは、そんなに待たせたくないな。誰を、とは言わないけど
 - romance_stage == 2:
     # speaker: heroine
+    # voice: gt_delhi_epilogue_010
     言いそびれたことって、あとから重くなるんだね
     # speaker: heroine
+    # voice: gt_delhi_epilogue_011
     わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
 - else:
     # speaker: heroine
