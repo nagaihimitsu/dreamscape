@@ -9,7 +9,6 @@
    --ds-*; 2026-11-25). */
 :root {
   --stage-recall-ground: var(--ds-gray-1); /* the quiet grey a memory comes up in */
-  --stage-photo-veil: color-mix(in srgb, var(--ds-gray-1) 50%, transparent);
   --stage-photo-frame: var(--ds-light); /* a print's white border */
   --stage-photo-shadow: 0 8px 28px color-mix(in srgb, var(--ds-shade) 50%, transparent);
   --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, color-mix(in srgb, var(--ds-gray-1) 16%, transparent), color-mix(in srgb, var(--ds-gray-1) 50%, transparent));
@@ -288,7 +287,7 @@
   margin: 0.15em 0 0.85em;
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-note);
+  font-size: calc(var(--letter-gloss) * 1em);
   line-height: var(--ds-leading-body);
   letter-spacing: var(--ds-tracking-1);
   white-space: pre-wrap;

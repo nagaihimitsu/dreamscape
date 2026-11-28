@@ -13,6 +13,7 @@ import { NameCutInPlate, useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { LineCards } from "../../components/LineCards";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
@@ -284,6 +285,7 @@ export function RomanceScene({
               </button>
             ) : null}
           </div>
+          <LineCards />
         </div>
         {/* The replies float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
         {frame.choices.length ? (

@@ -192,7 +192,7 @@
 .reduce-motion .journey-hud[data-view="talk"] .hud-plate { animation-timing-function: step-end; }
 /* Out of a talk the place and time show again at once, also where a finished fade's last frame would linger (an iPhone
    showed free time without them): a new one-frame animation replaces the fade's. */
-.journey-hud:not([data-view="talk"]) .hud-plate { animation: hud-plate-back 1ms forwards; }
+.journey-hud:not([data-view="talk"]) .hud-plate { animation: hud-plate-back var(--motion-instant) forwards; }
 @keyframes hud-plate-back {
   from, to { opacity: 1; }
 }

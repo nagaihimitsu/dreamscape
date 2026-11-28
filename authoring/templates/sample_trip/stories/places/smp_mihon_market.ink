@@ -13,7 +13,7 @@ INCLUDE modules.ink
 // - 観光地（tourism/catalog.json の mihon_market）の battleId が特殊戦なので、初めて訪ねるとこの案内の後に特殊戦が始まる。
 // - 最初の行の # photo: は、朝市の絵（public/assets/album/smp_album_market.webp）をアルバムに入れる例（説明の札なし）。
 // - 2行目の # term: は、旅の図鑑の言葉（glossary/terms.json の架空の「三時パン」）の札の例。その言葉が初めて出る行の前に置くと、
-//   その行で写真と1行の説明の小窓が出て、旅の図鑑に入る（同じセーブでは二度と出ない）。
+//   その行で会話の窓の下に写真と1行の説明のカードが出て、旅の図鑑に入る（同じセーブでは二度と出ない）。
 === smp_mihon_market_guide ===
 # scene: guide
 # background: smp_bg_mihon_market

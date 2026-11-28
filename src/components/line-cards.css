@@ -1,0 +1,116 @@
+/* A line's cards of 旅の図鑑 and 旅のことば (LineCards.tsx; 2026-11-28 user decision): at most two small panes of the
+   light glass under the dialogue window, with the line, as a note on its words. They hang from the window's foot (they
+   are its last child, out of its flow) and the window keeps that room under it (its margin): on a phone held upright
+   the talk's grid keeps the window's top where it is while they fit in the room it has under it anyway
+   (romance-scene.css --vn-window-room), and lifts it only by what does not fit; elsewhere the talk, at the scene's foot,
+   rises by their height. One under the other on a phone, side by side where the window is wide. Each is a row: a
+   term's photo small at its left (cropped to the row), its mark, name and reading on the first line, then its line;
+   no edge on one side. They take no tap of their own: a tap on them reads on, as anywhere on the scene. */
+
+:is(.vn-window, .battle-window):has(> .line-cards:not(:empty)) {
+  margin-bottom: calc(var(--line-cards-h, 0px) + var(--ds-space-3));
+}
+.line-cards {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + var(--ds-space-3));
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  align-items: start;
+  gap: var(--ds-space-2);
+  color: var(--ds-ink);
+  text-align: left;
+}
+.line-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-3);
+  min-width: 0;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow);
+  animation: line-card-in var(--motion-scene) var(--ease-out) both;
+}
+.line-card + .line-card { animation-delay: var(--motion-stagger); }
+@keyframes line-card-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+/* The term's photo, small: a crop of it as wide as two lines are tall and a half more. */
+.line-card-photo {
+  flex: none;
+  width: 72px;
+  height: 48px;
+  margin-top: var(--ds-space-1);
+  object-fit: cover;
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-glass-chosen);
+}
+.line-card-words {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.line-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--ds-space-2);
+  margin: 0;
+}
+/* The mark (a lens: 旅の図鑑, a book: 旅のことば), quiet beside the name. */
+.line-card-head .icon {
+  flex: none;
+  align-self: center;
+  width: var(--ds-icon-small);
+  height: var(--ds-icon-small);
+  color: var(--ds-ink-muted);
+}
+.line-card-name {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-body);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
+  letter-spacing: var(--ds-tracking-1);
+  overflow-wrap: anywhere;
+}
+.line-card-subtitle {
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-tight);
+  overflow-wrap: anywhere;
+}
+.line-card-line {
+  margin: 0;
+  font-size: var(--ds-text-note);
+  line-height: var(--ds-leading-body);
+  overflow-wrap: anywhere;
+}
+/* What the photo shows when it stands in for the term, and a word's note: small and quiet, under the line. */
+.line-card-note {
+  display: block;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-small);
+  line-height: var(--ds-leading-body);
+}
+/* A word in its own script (旅のことば; as in its page, local-words.css): the system's fonts fill in the glyphs the game's
+   font lacks, with no letter spacing nor Japanese width feature, which break scripts whose letters join. */
+.line-card[data-kind="word"] .line-card-name {
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: 0;
+  font-feature-settings: normal;
+}
+
+/* A narrow phone (320 px): the words take the whole card (the photo is in 旅の図鑑), so two cards stay short. */
+@media (max-width: 360px) {
+  .line-card-photo { display: none; }
+}
+
+/* Reduced motion and 「演出を短縮する」: the cards come at once. */
+.reduce-motion .line-card { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .line-card { animation: none; }
+}

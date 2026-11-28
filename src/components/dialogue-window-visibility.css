@@ -8,26 +8,6 @@
 .battle-screen[data-dialogue-hidden="true"] {
   position: relative;
 }
-/* While a line's large photo, or its card of 旅の図鑑・旅のことば, has its turn before the line (photo-turn.ts; the line is
-   marked data-photo-turn), the window has nothing to say yet and is not shown (2026-11-28 user decision, after an
-   iPhone: a load's first line showed its print over an empty window). It goes at once and comes back as the turn ends,
-   the line starting in it. It keeps its place (the faces and the cards are placed from it), the line keeps the focus and
-   still takes a tap or a key (it ends the turn); a tap elsewhere on it falls through to the scene, which ends it too. */
-[data-dialogue-window] {
-  transition: opacity var(--motion-fast) var(--ease-out);
-}
-[data-dialogue-window]:has([data-photo-turn]) {
-  opacity: 0;
-  pointer-events: none;
-  transition: none;
-}
-[data-dialogue-window]:has([data-photo-turn]) [data-dialogue-line] {
-  pointer-events: auto;
-}
-.reduce-motion [data-dialogue-window] { transition: none; }
-@media (prefers-reduced-motion: reduce) {
-  [data-dialogue-window] { transition: none; }
-}
 .vn-window-restore {
   position: absolute;
   inset: 0;

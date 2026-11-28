@@ -720,11 +720,9 @@ export const ops = {
     const end = page.getByTestId("tourism-advance");
     for (let step = 0; await guide.count(); step++) {
       if (step > 300) throw new Error("The guide did not end within 300 taps");
-      await ops.closeTermCards(page);
       if (await choice.count()) await choice.first().click();
       else if (await end.isVisible()) await end.click();
       else {
-        await endPhotoTurn(line);
         await expect(line).toHaveAttribute("data-ready", "true");
         const text = await line.textContent();
         await line.click();
@@ -892,20 +890,6 @@ export const ops = {
     }
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene], [data-testid=quiz-cutin]")).toHaveCount(0);
   },
-  /**
-   * A line's cards (旅の図鑑's `# term:` the first time a term shows in the game, 旅のことば's `# local_word:` the first
-   * time a word is learned on this device): a tap on each, as a player
-   * reads them, until none is left (each takes no tap for the moment of a double tap: settled waits for it).
-   */
-  async closeTermCards(page: Page) {
-    const card = page.getByTestId("glossary-term-window");
-    for (let shown = 0; shown < 20 && await card.isVisible(); shown++) {
-      await ops.settled(page);
-      await card.click();
-    }
-    await expect(card).toHaveCount(0);
-    await ops.settled(page);
-  },
   /** A story scene's 「ログ」: opens the dialogue log. */
   async openDialogueLog(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "会話ログ", exact: true }).click();
@@ -1018,8 +1002,6 @@ const nextButtons = ["tourism-advance", "battle-advance", "epilogue-advance", "a
 async function act(page: Page, state: GameState, pick: Pick) {
   // Right after an answer, a reply or a scene's end, taps are ignored for a moment (the second tap of a double tap).
   await ops.settled(page);
-  // 旅の図鑑's card over a line (# term:, its first time in the game) takes the next taps and reads nothing on.
-  await ops.closeTermCards(page);
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return ops.pressChoice(page.getByTestId(`answer-${pick(state)}`));
@@ -1052,14 +1034,8 @@ async function act(page: Page, state: GameState, pick: Pick) {
   // During a line's pause (# pause:) or its typing, a tap only shows the whole line and saves nothing: the line is let
   // finish first, so the tap goes on.
   const line = page.getByTestId("dialogue-text");
-  await endPhotoTurn(line);
   await expect(line).toHaveAttribute("data-ready", "true");
   return line.click();
-}
-
-/** A line's large photo has its turn first (photo-turn.ts): a tap ends it, and the line starts. */
-async function endPhotoTurn(line: Locator) {
-  if (await line.getAttribute("data-photo-turn") !== null) await line.click();
 }
 
 export interface PlayOptions {
@@ -1075,9 +1051,8 @@ export async function playUntil(page: Page, done: (state: GameState) => boolean,
   for (let step = 0; step < 200; step++) {
     const state = (await source(page))!;
     if (done(state)) {
-      // The caller may tap at once (also with the page's clock held), also where the last action brought 旅の図鑑's card.
+      // The caller may tap at once (also with the page's clock held).
       await ops.settled(page);
-      await ops.closeTermCards(page);
       return state;
     }
     await act(page, state, pick);

@@ -1,66 +1,62 @@
 import { debugGame, expect, ops, test, tier } from "./helpers";
 
 // 旅の図鑑 (2026-11-13 user decision) on the sample journey's fictional 三時パン: Debug opens the market's guide (lane 3,
-// docs/10「Debugを場面の起動台にする」), whose second line names the term (# term:). Its card shows over the scene the
-// first time; a tap anywhere closes it without reading on, and the focus comes back; 旅の図鑑 in ≡メニュー then has the term,
-// with the dots that say it is new and its 「NEW」. Its photo's credit is not in 旅の図鑑 but in 出典・権利の一覧 (2026-11-15). The sample is built only into the sample tier's server
+// docs/10「Debugを場面の起動台にする」), whose first line shows its photo above the window and whose second line names the
+// term (# term:). Its card shows under the window with that line, the first time (2026-11-28 user decision: small, with
+// the line, no turn of its own), and goes with it; 旅の図鑑 in ≡メニュー then has the term, with the dots that say it is
+// new and its 「NEW」. Its photo's credit is not in 旅の図鑑 but in 出典・権利の一覧 (2026-11-15). The sample is built only into the sample tier's server
 // (playwright.sample.config.ts), so this runs there, through Debug as the @debug tier does. The recording rule (once a
-// save, not opened during 高速送り, the save's round trip) is src/domain/glossary.test.ts's.
+// save, not shown during 高速送り, the save's round trip) is src/domain/glossary.test.ts's.
 
 const TERM = "smp_term_mihon_sanji_pan";
 /** The credit of the term's photo (the sample's tourism/catalog.json). */
 const CREDIT = "Dreamscape 見本の旅のための自作画像（架空の街）";
 
-test("旅の図鑑: a term's card over its first line closes without reading on, and the term waits in 旅の図鑑 with its NEW marks", { tag: tier.sample }, async ({ page }) => {
+test("旅の図鑑: a term's card shows under the window with its first line and goes with it, and the term waits in 旅の図鑑 with its NEW marks", { tag: tier.sample }, async ({ page }) => {
   await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_market", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
   const line = page.getByTestId("dialogue-text");
-  const card = page.getByTestId("glossary-term-window");
+  const cards = page.getByTestId("line-card");
   const guide = page.getByTestId("tourism-guide");
-  // The first line's photo (# photo:) has its turn first, the window not shown (2026-11-28): a tap ends it and the line
-  // starts in the window.
-  await expect(line).toHaveAttribute("data-photo-turn", "true");
-  await expect(guide).toHaveCSS("opacity", "0");
-  await ops.settled(page);
-  await line.click();
+  const photo = page.getByTestId("photo-show");
+  // The first line's photo (# photo:) shows with the line, above the window (2026-11-28): the line is written at once.
+  await expect(photo).toBeVisible();
   await expect(line).toHaveAttribute("data-ready", "true");
-  await expect(guide).toHaveCSS("opacity", "1");
+  const print = (await photo.locator("figure").boundingBox())!;
+  const window = (await guide.boundingBox())!;
+  expect(print.y + print.height).toBeLessThanOrEqual(window.y + 1);
   // The guide's first line names no term: no card, and the menu has no dot.
-  await expect(card).toHaveCount(0);
+  await expect(cards).toHaveCount(0);
   await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
 
-  // The second line names 三時パン (read on from the keyboard, so the focus is on the line): its card shows over the
-  // scene, a dialog that says the name and the line, with the focus on it (it has no 「閉じる」 button).
+  // The second line names 三時パン: its card shows under the window with the line (the line itself as it is, at once),
+  // its words said to readers (a status region), and nothing to press on it.
   await ops.settled(page);
   await line.focus();
   await page.keyboard.press("Enter");
-  await expect(card).toBeVisible();
-  await expect(card).toHaveAttribute("aria-modal", "true");
-  await expect(page.getByRole("dialog", { name: "三時パン" })).toHaveAccessibleDescription(/見本の街の朝市で焼く架空の丸パン。.*旅の図鑑/u);
+  await expect(cards).toHaveCount(1);
+  await expect(photo).toHaveCount(0);
+  const card = cards.first();
+  await expect(card).toContainText("三時パン");
   await expect(card).toContainText("さんじパン");
+  await expect(card).toContainText("見本の街の朝市で焼く架空の丸パン。");
   await expect(card.getByRole("img")).toHaveAttribute("alt", /三時パン/u);
-  await expect(card).toBeFocused();
+  await expect(page.getByRole("status").filter({ has: card })).toContainText("旅の図鑑：三時パン");
   await expect(card.getByRole("button")).toHaveCount(0);
-  // The card has its turn before the line (2026-11-27): the line under it writes nothing yet, its window not shown.
-  await expect(line).toHaveAttribute("data-photo-turn", "true");
-  await expect(line).toHaveAttribute("data-ready", "false");
-  await expect(guide).toHaveCSS("opacity", "0");
+  await expect(line).toHaveAttribute("data-ready", "true");
+  const cardBox = (await card.boundingBox())!;
+  const windowBox = (await guide.locator(".vn-window").boundingBox())!;
+  expect(cardBox.y).toBeGreaterThanOrEqual(windowBox.y + windowBox.height);
   const shown = (await debugGame(page))!;
   expect(shown.glossary).toEqual([TERM]);
   expect(shown.activeTourism?.frame?.termIds).toEqual([TERM]);
-  const text = await line.textContent();
-  expect(text).toContain("三時パン");
+  expect(await line.textContent()).toContain("三時パン");
 
-  // A tap anywhere (here beside the card, over the scene) closes it; the line stays, nothing is saved, the focus is back.
+  // A tap on the card reads on, as anywhere on the scene: the next line comes and the card goes with its line.
   await ops.settled(page);
-  const viewport = page.viewportSize()!;
-  await page.mouse.click(12, Math.round(viewport.height / 2));
-  await expect(card).toHaveCount(0);
+  await card.click();
+  await expect.poll(async () => (await debugGame(page))!.revision).toBeGreaterThan(shown.revision);
+  await expect(cards).toHaveCount(0);
   await ops.settled(page);
-  expect((await debugGame(page))!.revision).toBe(shown.revision);
-  await expect(line).toHaveText(text!);
-  await expect(line).toHaveAttribute("data-ready", "true");
-  await expect(line).toBeFocused();
-  await expect(guide).toHaveCSS("opacity", "1");
 
   // ≡メニュー and its 「ノート」 carry the dot of something new; the note opens on 旅の図鑑 (the page with something new),
   // which shows the term with 「NEW」 and 1 / 1.
@@ -99,36 +95,31 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   const credits = await ops.openCredits(page, "menu");
   const journey = credits.getByTestId("credits-journey-sample_trip");
   await journey.locator("summary").click();
-  const photo = journey.getByRole("listitem").filter({ hasText: "見本の街の架空のパン「三時パン」を描いた簡単な絵。" });
-  await expect(photo).toContainText(CREDIT);
-  await expect(photo.getByRole("link", { name: "CC0 1.0", exact: true })).toHaveAttribute("href", "https://creativecommons.org/publicdomain/zero/1.0/");
+  const credit = journey.getByRole("listitem").filter({ hasText: "見本の街の架空のパン「三時パン」を描いた簡単な絵。" });
+  await expect(credit).toContainText(CREDIT);
+  await expect(credit.getByRole("link", { name: "CC0 1.0", exact: true })).toHaveAttribute("href", "https://creativecommons.org/publicdomain/zero/1.0/");
 });
 
-// 旅のことば (2026-11-27 user decision: as 旅の図鑑's card): the clock tower's guide teaches the sample's fictional Trisól on
-// its fifth line. Its card shows before the line (the line writes nothing yet), says 「旅のことば」 with the word, its reading
-// and meaning, and a tap puts it away; then the line starts, as it was, and nothing is saved.
-test("旅のことば: a word's card has its turn before its line and goes on a tap", { tag: tier.sample }, async ({ page }) => {
+// 旅のことば (2026-11-27 user decision: as 旅の図鑑's card; 2026-11-28: under the window, with the line): the clock tower's
+// guide teaches the sample's fictional Trisól on its fifth line. Its card shows under the window with the line (written
+// at once), with 旅のことば's mark for readers, the word, its reading and meaning; nothing is saved for it.
+test("旅のことば: a word's card shows under the window with its line", { tag: tier.sample }, async ({ page }) => {
   await ops.openDebugScene(page, { cityId: "mihon", scene: "tourism", id: "mihon_clock_tower", progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
   const line = page.getByTestId("dialogue-text");
-  const card = page.getByTestId("glossary-term-window");
-  for (let read = 0; read < 8 && await card.count() === 0; read++) {
+  const cards = page.getByTestId("line-card");
+  for (let read = 0; read < 8 && await cards.count() === 0; read++) {
     await ops.settled(page);
-    if (await line.getAttribute("data-photo-turn") !== null) await line.click();
     await expect(line).toHaveAttribute("data-ready", "true");
     await line.focus();
     await page.keyboard.press("Enter");
   }
-  await expect(card).toBeVisible();
-  await expect(page.getByRole("dialog", { name: "Trisól" })).toHaveAccessibleDescription(/三時に会おう.*旅のことば/u);
+  await expect(cards).toHaveCount(1);
+  const card = cards.first();
+  await expect(card).toHaveAttribute("data-kind", "word");
+  await expect(card).toContainText("Trisól");
   await expect(card).toContainText("トリソル");
-  await expect(line).toHaveAttribute("data-photo-turn", "true");
-  await expect(line).toHaveAttribute("data-ready", "false");
-  const revision = (await debugGame(page))!.revision;
-
-  await ops.settled(page);
-  await card.click();
-  await expect(card).toHaveCount(0);
+  await expect(card).toContainText("三時に会おう");
+  await expect(page.getByRole("status").filter({ has: card })).toContainText("旅のことば：Trisól");
   await expect(line).toHaveAttribute("data-ready", "true");
   await expect(line).toContainText("Trisól");
-  expect((await debugGame(page))!.revision).toBe(revision);
 });

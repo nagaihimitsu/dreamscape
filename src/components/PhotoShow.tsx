@@ -1,99 +1,91 @@
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ComponentPropsWithoutRef, type Ref } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ComponentPropsWithoutRef, type Ref, type RefObject } from "react";
 import { getAlbumImage } from "../content";
 import { photoShowsLarge, type StoryPhoto } from "../content/tags";
 import { playCue, useSceneFastForward } from "../audio/sound-effects";
 import { CardFlight } from "./ItemShow";
 import type { Box } from "./item-show";
-import { holdPhotoTurn } from "./photo-turn";
+import { DIALOGUE_WINDOW_ATTRIBUTE } from "./DialogueText";
 import "./photo-show.css";
-import { MOTION } from "./motion";
 
-// A line's `# photo:` shown large (2026-11-12; the default since 2026-11-25, `# photo_show: small` keeps it to the small
-// card): the picture as a print in the middle of the scene, at the same size on every line (2026-11-27 user decision:
-// no smaller print beside the faces of whoever speaks). The print has its own turn before its line (photo-turn.ts,
-// 2026-11-27 user decision): the line waits while it is up, and a tap anywhere on the scene (the print too) takes it
-// quickly away and starts the line. A photo just put in the album flies into ≡メニュー as the print goes
-// (PhotoShowFlight, drawn by JourneyHud). Presentation only, on every reading of the line: the album takes the photo once
-// (src/domain/album.ts). The photo card's status region (AlbumPhotoNotice) says the photo is taken.
+// A line's `# photo:` shown on the scene (2026-11-12; the default since 2026-11-25, `# photo_show: small` keeps it to the
+// small card): the picture on its pane of glass, smaller than the scene (2026-11-28 user decision: the photo goes with
+// the line, as a part of the words, not a turn of its own before them), right above the dialogue window, while its line
+// is on screen; the line writes itself on and reads on as any other, and a tap anywhere reads on. A photo just put in
+// the album flies into ≡メニュー as its line goes (PhotoShowFlight, drawn by JourneyHud). Presentation only, on every
+// reading of the line: the album takes the photo once (src/domain/album.ts). The photo card's status region
+// (AlbumPhotoNotice) says the photo is taken.
 
 /**
  * What GameApp tells the prints: the photo the player's last action has just put in the album (`fresh`; its print is
  * taken: a flash, the album sound unless `sound` is false, and it develops), and the stamp of a photo of the album (its
- * place and 「n日目 hh:mm」), which the print shows under its caption. `held`: 旅の図鑑's card is over the scene (or about to
- * open for the line), so the print waits and comes once the card has closed, not under it (a photo just taken is taken then);
- * its turn holds the line all the same. `done`: the line's photo whose turn has ended (`onDone` says so), so it is not up
- * again on that line.
+ * place and 「n日目 hh:mm」), which the print shows under its caption. `held`: the episode's title card or a ride's art
+ * covers the screen, so the print waits and comes once it has gone (a photo just taken is taken then).
  */
 export type PhotoShowCue = {
   fresh?: { imageId: string; sound: boolean };
   stampOf?: (imageId: string) => string | undefined;
   held?: boolean;
-  done?: StoryPhoto | null;
-  onDone?: (photo: StoryPhoto) => void;
 };
 export const PhotoShowContext = createContext<PhotoShowCue>({});
-
-/** How long the print takes to go when its turn ends (photo-show.css .photo-show-leaving): quickly. */
-const PHOTO_LEAVE_MS = MOTION.fast;
 
 /** Where the print on screen is (its box in the window, without its coming-in scale): its flight starts there. */
 let shownPrint: { imageId: string; box: Box } | null = null;
 
-/** The photo whose print was on screen last, if it is `imageId` (GameApp: the print that flies into ≡メニュー as it goes). */
+/** The photo whose print was on screen last, if it is `imageId` (GameApp: the print that flies into ≡メニュー as its line goes). */
 export const shownPrintOf = (imageId: string): Box | undefined => (shownPrint?.imageId === imageId ? shownPrint.box : undefined);
 
-const reducedMotion = (element: Element | null) =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches || !!element?.closest(".reduce-motion");
-
 /**
- * The line's photo (`photo`, the frame's) large, unless the line keeps it small: over the portraits (dimmed by a veil)
- * and under the window, for its turn. Not while 高速送り runs past the line (a line it stops at shows it), nor while 旅の図鑑's
- * card is open (it comes as the card closes; its turn has begun).
+ * The line's photo (`photo`, the frame's) on the scene, unless the line keeps it small: over the portraits and right
+ * above the dialogue window. Not while 高速送り runs past the line (a line it stops at shows it), nor while the episode's
+ * title card or a ride's art covers the screen.
  */
 export function PhotoShowLayer({ photo }: { photo?: StoryPhoto }) {
   const fast = useSceneFastForward();
-  const { held, done, onDone, fresh } = useContext(PhotoShowContext);
-  // The photo whose turn has ended here, and whether its print is still going.
-  const [ended, setEnded] = useState<{ photo: StoryPhoto; leaving: boolean } | null>(null);
-  const up = photoShowsLarge(photo) && photo !== done && !(ended?.photo === photo && !ended.leaving) ? photo : undefined;
-  const image = up ? getAlbumImage(up.imageId) : undefined;
-  const turn = !!up && !!image && !fast && ended?.photo !== up;
-  const endRef = useRef(() => {});
-  endRef.current = () => {
-    if (!up) return;
-    // A photo just taken flies from where it is (GameApp, PhotoShowFlight) or becomes its card: no fading first.
-    const quick = fresh?.imageId === up.imageId || reducedMotion(document.querySelector(".photo-show-layer"));
-    setEnded({ photo: up, leaving: !quick });
-    if (quick) onDone?.(up);
-  };
-  useLayoutEffect(() => {
-    if (!turn) return;
-    return holdPhotoTurn({ end: () => endRef.current() });
-  }, [turn]);
-  const leaving = !!ended && ended.photo === up && ended.leaving;
-  useEffect(() => {
-    if (!leaving || !up) return;
-    const timer = window.setTimeout(() => {
-      setEnded({ photo: up, leaving: false });
-      onDone?.(up);
-    }, PHOTO_LEAVE_MS);
-    return () => window.clearTimeout(timer);
-  // Once, as the print begins to go.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leaving]);
+  const { held } = useContext(PhotoShowContext);
+  const image = photoShowsLarge(photo) ? getAlbumImage(photo.imageId) : undefined;
   // 高速送り took the print away: it has no place to fly from.
   useEffect(() => {
     if (fast) shownPrint = null;
   }, [fast]);
-  if (!image || !up || fast || held) return null;
-  return <PhotoPrint key={image.id} imageId={image.id} path={image.path} caption={up.caption} leaving={leaving} />;
+  if (!image || !photo || fast || held) return null;
+  return <PhotoPrint key={image.id} imageId={image.id} path={image.path} caption={photo.caption} />;
 }
 
-function PhotoPrint({ imageId, path, caption, leaving }: { imageId: string; path: string; caption?: string; leaving: boolean }) {
+/**
+ * Keeps the print above the dialogue window: the room under the print (`--photo-bottom`, from the layer's foot to the
+ * window's top, its choices included) and the room it has above that (`--photo-room`, down from where the print may
+ * begin under the header), in px, measured as the window grows or moves (a line's cards under it, its choices above it)
+ * and as the screen changes. A scene without a window keeps the print at its foot.
+ */
+function useAboveWindow(ref: RefObject<HTMLDivElement | null>) {
+  useLayoutEffect(() => {
+    const layer = ref.current;
+    const scene = layer?.parentElement;
+    if (!layer || !scene) return;
+    const measure = () => {
+      const dialogue = scene.querySelector(`[${DIALOGUE_WINDOW_ATTRIBUTE}]`)?.getBoundingClientRect();
+      const box = layer.getBoundingClientRect();
+      const top = Number.parseFloat(getComputedStyle(layer).paddingTop) || 0;
+      const windowTop = dialogue && dialogue.height > 0 ? dialogue.top : box.bottom;
+      layer.style.setProperty("--photo-bottom", `${Math.max(0, Math.round(box.bottom - windowTop))}px`);
+      layer.style.setProperty("--photo-room", `${Math.max(0, Math.round(windowTop - box.top - top))}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(layer);
+    const dialogue = scene.querySelector(`[${DIALOGUE_WINDOW_ATTRIBUTE}]`);
+    if (dialogue) observer.observe(dialogue);
+    return () => observer.disconnect();
+  }, [ref]);
+}
+
+function PhotoPrint({ imageId, path, caption }: { imageId: string; path: string; caption?: string }) {
   const { fresh, stampOf } = useContext(PhotoShowContext);
   // Taken now (read once, as the print appears): a re-reading of the line, a load's scene, shows the print as it is.
   const [taken] = useState(() => fresh?.imageId === imageId);
   const stamp = stampOf?.(imageId);
+  const layer = useRef<HTMLDivElement>(null);
+  useAboveWindow(layer);
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     if (taken && fresh?.sound) playCue("album_photo");
@@ -111,15 +103,16 @@ function PhotoPrint({ imageId, path, caption, leaving }: { imageId: string; path
       shownPrint = { imageId, box: { left: rect.left + rect.width / 2 - width / 2, top: rect.top + rect.height / 2 - height / 2, width, height } };
     };
     measure();
-    const image = element.querySelector("img");
-    image?.addEventListener("load", measure);
+    // Its size and place change with its picture's loading and with the window it keeps above.
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
     window.addEventListener("resize", measure);
     return () => {
-      image?.removeEventListener("load", measure);
+      observer.disconnect();
       window.removeEventListener("resize", measure);
     };
   }, [imageId]);
-  return <div className={`photo-show-layer${leaving ? " photo-show-leaving" : ""}`} data-testid="photo-show" data-taken={taken || undefined}>
+  return <div ref={layer} className="photo-show-layer" data-testid="photo-show" data-taken={taken || undefined}>
     <PrintBody ref={ref} path={path} caption={caption} stamp={stamp} />
     {taken && <span className="photo-show-flash" aria-hidden="true" />}
   </div>;
@@ -145,7 +138,7 @@ const menuBox = (): DOMRect | undefined => document.querySelector<HTMLElement>("
 export type PrintFlight = { key: number; imageId: string; caption?: string; box: Box };
 
 /**
- * The print of a photo just taken that has just gone (its turn ended; GameApp), in the header's own layer over the screen: from where it was, it
+ * The print of a photo just taken that has just gone with its line (GameApp), in the header's own layer over the screen: from where it was, it
  * shrinks and flies into ≡メニュー, where the album is (`toMenu`: the header shows it), or else it fades where it was.
  * Fading only under reduced motion (photo-show.css).
  */
