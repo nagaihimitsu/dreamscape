@@ -297,7 +297,7 @@ body {
 .photo-free-time .free-time-extras,
 .photo-free-time .photo-menu .travel-rentals,
 .battle-result-card,
-.battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .battle-paper,
+.battle-screen[data-phase="reasoning"] .battle-paper,
 .modal,
 .hud-menu-panel,
 .held-item-detail,
@@ -1653,134 +1653,6 @@ dialog.modal[open]::backdrop {
 .battle-paper {
   max-width: 680px;
 }
-.battle-roundbar {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  border-bottom: 1px solid var(--ds-parchment-line);
-  padding-bottom: 12px;
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-mark);
-  letter-spacing: 0.08em;
-}
-.question-en {
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-lead);
-  line-height: var(--ds-leading-body);
-  font-weight: 500;
-  letter-spacing: 0;
-  margin: 24px 0;
-  overflow-wrap: anywhere;
-}
-.quiz-choices {
-  display: grid;
-  gap: 11px;
-}
-.quiz-choice {
-  display: grid;
-  grid-template-columns: 26px 1fr;
-  gap: 4px 12px;
-  width: 100%;
-  padding: 16px;
-  text-align: left;
-  border: 1px solid var(--ds-parchment-line);
-  background: var(--ds-field);
-  color: var(--ds-ink);
-  border-radius: var(--ds-radius-control);
-  font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-body);
-  overflow-wrap: anywhere;
-}
-.quiz-choice .option-id {
-  font-family: var(--ds-font-latin);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-subhead);
-}
-.quiz-choice:disabled {
-  opacity: 1;
-  cursor: default;
-}
-/* The chosen answer: the selected-row look (§2.3), a 2-px slate edge and the parchment fill. */
-.quiz-choice.chosen {
-  border: 2px solid var(--ds-slate-800);
-  padding: 15px;
-  background: var(--ds-parchment-2);
-}
-/* The correct answer: the done colour's edge (after a wrong answer its mark says 正解 in words; after a right one the
-   verdict over the explanation does, and 画面の出典 names the answer chosen: 2026-11-20). */
-.quiz-choice.correct {
-  border: 2px solid var(--ds-here);
-  padding: 15px;
-  background: var(--ds-right-ground);
-}
-.option-mark {
-  grid-column: 2;
-  font-size: var(--ds-text-mark);
-  color: var(--ds-ink-muted);
-  letter-spacing: 0.04em;
-  min-height: 0;
-}
-.option-mark:empty {
-  display: none;
-}
-.vocabulary {
-  margin-top: 24px;
-  padding-top: 17px;
-  border-top: 1px solid var(--ds-parchment-line);
-}
-.vocabulary h3 {
-  font-size: var(--ds-text-mark);
-  color: var(--ds-ink-muted);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-}
-.vocabulary dl {
-  margin: 9px 0;
-  display: flex;
-  gap: 8px 15px;
-  flex-wrap: wrap;
-  font-size: var(--ds-text-caption);
-}
-.vocabulary dl > div {
-  display: flex;
-  gap: 7px;
-  align-items: baseline;
-}
-.vocabulary dt {
-  color: var(--ds-ink);
-}
-.vocabulary dd {
-  margin: 0;
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-mark);
-}
-/* The explanation: a parchment panel inside the paper; the verdict pill above says right or wrong. */
-.quiz-feedback {
-  margin-top: 23px;
-  padding: 20px;
-  border: 1px solid var(--ds-parchment-line);
-  background: var(--ds-parchment-2);
-  border-radius: var(--ds-radius-control);
-}
-.quiz-feedback.correct-feedback {
-  background: var(--ds-right-ground);
-  border-color: var(--ds-right-edge);
-}
-.quiz-feedback h3 {
-  font-size: var(--ds-text-heading);
-  font-family: var(--ds-font-serif);
-  font-weight: 500;
-  margin-bottom: 12px;
-}
-.quiz-feedback > p {
-  font-size: var(--ds-text-body);
-  line-height: var(--ds-leading-reading);
-  overflow-wrap: anywhere;
-}
-/* 「相手の反応を見る」, a little apart from the explanation and 「英文を確認する」 above it. */
-.quiz-feedback .quiz-feedback-next {
-  margin-top: 17px;
-}
 .outcome {
   font-family: var(--ds-font-latin);
   font-size: var(--ds-text-display);
@@ -1839,21 +1711,6 @@ dialog.modal[open]::backdrop {
   }
   .battle-stage-compact .battle-enemy-info {
     padding-bottom: 19px;
-  }
-  .question-en {
-    margin: 21px 0;
-  }
-  .quiz-choice {
-    padding: 14px 12px;
-    gap: 4px 8px;
-    grid-template-columns: 23px 1fr;
-  }
-  .quiz-choice.chosen,
-  .quiz-choice.correct {
-    padding: 13px 11px;
-  }
-  .quiz-feedback {
-    padding: 18px;
   }
 }
 

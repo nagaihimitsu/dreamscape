@@ -477,14 +477,30 @@ test("battle: a remembered line shows 「回想」 by its speaker's name and in 
     { message: "the scene's picture comes back" }).toBeGreaterThan(0.6);
 });
 
-// After a wrong answer the explanation, which starts with 「正しい答え：英文（訳）」, can be taller than the
-// battle paper's reading area (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、主な操作へ到達
-// できる。必要なスクロールは内容を読む領域に限る。」). Focus goes to it (for screen readers), and its first
-// line shows just below the round bar that stays at the top of the area, not hidden under it. 「相手の反応を
-// 見る」 at its end is reached by scrolling the area and then shows whole, not under the bar or cut at the
-// edge (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの
-// 重要部分だけが見切れる」 is avoided).
-test("battle: a long explanation after a wrong answer starts below the round bar, and 「相手の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
+// The explanation stands where a line would (2026-11-28 user decision): a tap on it (or elsewhere on the scene) goes on
+// to the opponent's reaction, as 「→」 does (the wayside quiz's way); a tap on an answered option, locked, does nothing.
+test("battle: after an answer a tap on an option does nothing, and a tap on the explanation goes on", { tag: tier.debug }, async ({ page }) => {
+  await page.goto("/");
+  const target = await longExplanationBattle(page);
+  await ops.openDebugScene(page, settings({ cityId: target.cityId, scene: "battle", id: target.id }));
+  const answered = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => target.wrong });
+  await ops.tapAt(page, await ops.centerOf(page.getByTestId(`option-text-${target.wrong}`)));
+  await ops.settled(page);
+  expect((await debugGame(page))!.revision, "the locked option takes no tap").toBe(answered.revision);
+  await expect(page.getByTestId("battle-feedback")).toBeVisible();
+  const explanation = await ops.centerOf(page.getByTestId("battle-feedback").locator(".quiz-explanation"));
+  expect(await ops.readsOnAt(page, explanation), "the explanation is in the window, where a tap reads on").toBe(true);
+  await ops.tapAt(page, explanation);
+  await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
+});
+
+// After a wrong answer the explanation, in the window in the question's place (2026-11-28 user decision), can be taller
+// than the window's reading area (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、主な操作へ到達できる。必要な
+// スクロールは内容を読む領域に限る。」). Focus goes to it (for screen readers), its first line shows at the top of the
+// window, and the three options stay whole above the window with their marks. 「相手の反応を見る」 at its end is reached by
+// scrolling the reading area and then shows whole, not cut at the window's edge (UI_REVIEW_CHECKLIST: 「スクロールして
+// 重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの重要部分だけが見切れる」 is avoided).
+test("battle: a long explanation after a wrong answer starts at the top of the window, and 「相手の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const target = await longExplanationBattle(page);
   // An explanation taller than the reading area (helpers.ts lengthenExplanation).
@@ -494,20 +510,25 @@ test("battle: a long explanation after a wrong answer starts below the round bar
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
   const start = await page.evaluate(() => {
     const area = document.getElementById("battle-content")!;
-    const bar = area.querySelector('[data-testid="battle-roundbar"]')!.getBoundingClientRect();
-    const feedback = document.getElementById("battle-feedback")!.getBoundingClientRect();
-    const first = document.querySelector('[data-testid="battle-feedback"] [data-testid="correct-answer"]')!;
+    const first = document.querySelector('[data-testid="battle-feedback"] .quiz-explanation')!;
     const line = first.getBoundingClientRect();
-    const shown = document.elementFromPoint(line.left + 4, line.top + 1);
+    const shown = document.elementFromPoint(line.left + 4, line.top + 4);
+    const rows = [...document.querySelectorAll<HTMLElement>(".quiz-choice-row")];
+    const whole = (row: HTMLElement) => {
+      const box = row.getBoundingClientRect();
+      const at = (y: number) => row.contains(document.elementFromPoint(box.left + 24, y));
+      return at(box.top + 4) && at(box.bottom - 4);
+    };
     return {
-      room: area.getBoundingClientRect().bottom - bar.bottom, rest: feedback.bottom - line.top,
-      below: line.top - bar.bottom, shown: !!shown && first.contains(shown),
+      longer: area.scrollHeight > area.clientHeight, atTop: area.scrollTop, shown: !!shown && first.contains(shown),
+      rows: rows.map(whole), marks: rows.map((row) => row.dataset.mark ?? "").filter(Boolean).sort(),
     };
   });
-  expect(start.rest, "the explanation from its first line on is taller than the reading area below the round bar").toBeGreaterThan(start.room);
-  expect(start.shown, "the first line of the explanation shows, not the round bar over it").toBe(true);
-  // Only a small gap above that line (the box's top padding may sit under the bar), so as much of the rest shows as can.
-  expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
+  expect(start.longer, "the explanation is taller than the window's reading area").toBe(true);
+  expect(start.atTop, "the reading area starts at its top").toBe(0);
+  expect(start.shown, "the first line of the explanation shows").toBe(true);
+  expect(start.rows, "the three options show whole above the window").toEqual([true, true, true]);
+  expect(start.marks, "the chosen option and the right one keep their marks").toEqual(["answer", "missed"]);
   const reaction = page.getByRole("button", { name: "相手の反応を見る" });
   await page.locator("#battle-content").evaluate((area) => area.scrollTo({ top: area.scrollHeight }));
   expect(await reaction.evaluate((button) => {
