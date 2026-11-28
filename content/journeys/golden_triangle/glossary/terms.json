@@ -916,8 +916,7 @@
       "aliasJa": null,
       "category": "custom",
       "lineJa": "年長者は、足に触れて敬意を示す年下の頭に手を置き、祝福を返す。",
-      "imageId": "gt_img_term_blessing_hand",
-      "photoNoteJa": "画像は、頭に手を置く祝福を表した図"
+      "imageId": "gt_img_term_blessing_hand"
     },
     {
       "id": "gt_term_prewedding",
@@ -1047,8 +1046,7 @@
       "aliasJa": "ヒンドゥーの暦",
       "category": "thing",
       "lineJa": "名は「五つの肢」。日の吉凶や祭りの日取りを見る、ヒンドゥーの暦。",
-      "imageId": "gt_img_term_panchang",
-      "photoNoteJa": "画像は、1871〜72年のラージャスターンの布の暦"
+      "imageId": "gt_img_term_panchang"
     },
     {
       "id": "gt_term_mitti_attar",
@@ -1333,7 +1331,6 @@
       "aliasJa": null,
       "category": "legend",
       "lineJa": "言い伝えの人物。その霊が砦の工事を妨げ、砦の中に彼の寺が建てられたという。",
-      "photoNoteJa": "画像は彼の名に由来するとされるナハルガル城の写真",
       "imageId": "gt_img_term_nahar_singh_bhomia"
     },
     {

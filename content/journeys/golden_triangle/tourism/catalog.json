@@ -1768,16 +1768,16 @@
     {
       "id": "gt_img_term_nahar_singh_bhomia",
       "path": "assets/tourism/india/term_nahar_singh_bhomia.webp",
-      "width": 1024,
-      "height": 488,
-      "altJa": "岩山の尾根の上に建つナハルガル城を、ジャイプールの町から見上げた写真。城の名は、ナハル・シン・ボーミヤーにちなむと言い伝えられる（本人の姿を描いた絵はない）。",
+      "width": 650,
+      "height": 1067,
+      "altJa": "ナハルガル城の中にある、ナハル・シン・ボーミヤーをまつる白い大理石の小さな祠。金色の模様の段を重ねた屋根の下に格子の扉があり、下の黒い板にヒンディー語で「シュリー・シュリー1008 ナハル・シン・ボーミヤー・ジー・マハラージ」と書いてある。",
       "isPlaceholder": false,
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nahargarh_Fort_in_Winters.jpg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raja_Nahar_singh_temple.jpg",
       "licenseName": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "creditJa": "写真：Harshit Tiwary／Wikimedia Commons／CC BY-SA 4.0",
-      "modificationJa": "Wikimedia Commons の元画像（1024×768px）から、上の空を外して下の1024×488pxを切り抜きました。描き足しやAI生成は行っていません。WebP形式（品質80）に変換。",
-      "checkedAt": "2026-11-21"
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Nitin Khare Chetan／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1280×1707px縮小版（元画像は3048×4064px。2025年撮影）を使用。祠の前に立つ人と子どもを外すため、横630〜1280px・縦640〜1707pxの範囲（650×1067px）を切り抜きました。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。この加工版もCC BY-SA 4.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-28"
     },
     {
       "id": "gt_img_term_vidyadhar",
@@ -3210,16 +3210,16 @@
     {
       "id": "gt_img_term_blessing_hand",
       "path": "assets/tourism/india/term_blessing_hand.webp",
-      "width": 1200,
-      "height": 1200,
-      "altJa": "頭を下げた人の頭に、白い袖の年長者が上から手のひらを置いている図。そばに祝福を表す短い光の線。",
+      "width": 840,
+      "height": 769,
+      "altJa": "寝台に腰かけたオレンジ色の衣の年長の師が、足もとにひざまずいて両手でその足に触れる男性の頭に、右手をのせて祝福している。インドの寺の一室。人の顔はぼかしてある。",
       "isPlaceholder": false,
-      "sourceUrl": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/blessing_hand.svg",
-      "licenseName": "CC0 1.0",
-      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "creditJa": "図：Dreamscape のための自作の図（写真ではありません）",
-      "modificationJa": "Dreamscape のために図形だけで描いた図（SVG。元のファイルは制作資料の authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/diagrams/blessing_hand.svg）を、1200×1200pxのPNGに書き出しました。写真や他人の作品はもとにしていません。さらに同じ寸法のままWebP形式（品質80）に変換。",
-      "checkedAt": "2026-11-25"
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Abheya_singh_Daliyan_Satguru_Samandas_ji_se_aashirwad_lete_hyye.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Abheya singh daliyan／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1280×849px縮小版（元画像は2256×1496px。2010年撮影）を使用。横240〜1080px・縦80〜849pxの範囲（840×769px）を切り抜き、写っている人の顔をすべてぼかしました。描き足しやAI生成は行っていません。旅の図鑑の一覧では正方形に切り抜いて表示します。この加工版もCC BY-SA 4.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-28"
     },
     {
       "id": "gt_img_term_taj_electric_bus",
