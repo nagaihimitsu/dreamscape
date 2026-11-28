@@ -56,7 +56,7 @@
   .mg-engine-step-pick .mg-step-pick-buttons > button, .mg-engine-step-pick .mg-step-pick-auto { min-height: var(--ds-press-large); }
   .mg-engine-step-pick .mg-step-pick-buttons > .mg-step-pick-leave { min-height: var(--ds-press); }
 }
-@media (max-width: 340px) {
+@media (max-width: 360px) {
   .mg-engine-step-pick .mg-step-pick-buttons { gap: var(--ds-space-2); }
   .mg-engine-step-pick .mg-step-pick-push { font-size: var(--ds-text-body); letter-spacing: 0; }
   .mg-engine-step-pick .mg-step-pick-take { font-size: var(--ds-text-body); }

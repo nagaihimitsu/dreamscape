@@ -133,7 +133,7 @@
 /* Her line looking back on the place finished last, under the record (resumeRecap). */
 .resume-recap .resume-recap-heroine { margin: var(--ds-space-2) 0 0; }
 /* A narrow phone: the photo above the record, so the record keeps the card's width. */
-@media (max-width: 359px) {
+@media (max-width: 360px) {
   .resume-recap-body { flex-direction: column; }
   .resume-recap-photo { flex: none; width: 100%; }
 }

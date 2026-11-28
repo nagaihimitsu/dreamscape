@@ -316,12 +316,12 @@
   box-shadow: var(--ds-focus-halo);
 }
 
-@media (min-width: 380px) {
+@media (min-width: 361px) {
   .hud-wallet .travel-budget { font-size: var(--ds-text-large); }
   .hud-wallet .travel-budget[data-length="long"] { font-size: var(--ds-text-body); }
   .hud-wallet .travel-budget[data-length="longer"] { font-size: var(--ds-text-note); }
 }
-@media (max-width: 359px) {
+@media (max-width: 360px) {
   .hud-place { font-size: var(--ds-text-note); }
 }
 

@@ -339,7 +339,7 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
 .today-word-en { font-family: var(--ds-font-sans); font-size: var(--ds-text-large); letter-spacing: var(--ds-tracking-1); overflow-wrap: anywhere; }
 .today-word-meaning { font-size: var(--ds-text-note); overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
-@media (max-height: 480px) {
+@media (max-height: 500px) {
   .night-rest.has-recap .night-rest-sky { display: none; }
   .night-rest.has-recap .today-route-map { height: 96px; }
 }

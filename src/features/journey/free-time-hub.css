@@ -86,7 +86,7 @@
 .free-time-banner span { min-width: 0; overflow-wrap: anywhere; }
 .free-time-banner .icon { flex: none; width: var(--ds-icon); height: var(--ds-icon); color: var(--ds-ink-muted); }
 .free-time-banner .free-time-banner-plane { margin-left: auto; color: var(--ds-hairline); }
-@media (max-width: 379px) {
+@media (max-width: 360px) {
   .free-time-banner .free-time-banner-plane { display: none; }
 }
 
@@ -149,7 +149,7 @@ dialog.modal.photo-credits-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 
 /* Phones held sideways (§3.4): the map on the left (40 %, as tall as the space
    between the header and the band, sticky), the notes and the list on the right. */
-@media (orientation: landscape) and (max-height: 559px) {
+@media (orientation: landscape) and (max-height: 500px) {
   .free-time-hub { max-width: none; }
   .free-time-hub .travel-menu {
     display: grid;

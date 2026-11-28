@@ -169,6 +169,20 @@ const motionErrors = (css: string) =>
       return wrong;
     });
 
+/**
+ * The screen sizes a layout changes at (2026-11-28 user decision): widths 360, 480, 600 and 700 px, heights 500, 620 and
+ * 700 px; a query's upper bound is the size, its lower bound the size and 1 px (a pair never overlaps nor leaves a gap).
+ */
+const BREAKPOINTS = {
+  "max-width": [360, 480, 600, 700], "min-width": [361, 481, 601, 701],
+  "max-height": [500, 620, 700], "min-height": [501, 621, 701],
+} as const;
+const breakpointErrors = (text: string) =>
+  [...text.matchAll(/\b((?:max|min)-(?:width|height)):\s*(\d+)px/g)]
+    .filter(([, feature, px]) => !(BREAKPOINTS[feature as keyof typeof BREAKPOINTS] as readonly number[]).includes(Number(px)))
+    .map(([query]) => `${query} (not one of the rules' screen sizes)`);
+const mediaErrors = (css: string) => [...css.matchAll(/@media([^{]+)\{/g)].flatMap(([, query]) => breakpointErrors(query));
+
 /** The shadows a thing casts: one of the rules' (a mini-game's drawing keeps its own, and a glow of light is not a shadow). */
 const shadowErrors = (css: string) =>
   declarations(css.replace(KEYFRAMES, ""))
@@ -220,6 +234,13 @@ describe("the design's rules", () => {
     expect(stepsOf(root, "--ease-")).toHaveLength(3);
   });
 
+  it("changes a layout in the code at the stylesheets' screen sizes", () => {
+    const queries = ["src/features/tourism/TourismScreen.tsx", "src/features/journey/free-time-layout.ts"]
+      .flatMap((path) => [...readFileSync(new URL(`../../${path}`, import.meta.url), "utf8").matchAll(/"(\([^"]*(?:max|min)-(?:width|height)[^"]*)"/g)].map(([, query]) => query));
+    expect(queries.length).toBeGreaterThan(0);
+    expect(queries.flatMap(breakpointErrors)).toEqual([]);
+  });
+
   it("never defines a rule by itself", () => {
     const root = read("src/app/styles.css");
     const selfReferring = [...root.matchAll(/(--ds-[\w-]+)\s*:([^;]*);/g)].filter(([, name, value]) => value.includes(`var(${name})`)).map(([, name]) => name);
@@ -247,7 +268,7 @@ describe("the design's rules", () => {
       const css = read(path);
       const wrong = typeErrors(css);
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);
-      wrong.push(...alphaErrors(css));
+      wrong.push(...alphaErrors(css), ...mediaErrors(css));
       if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css));
       expect(wrong).toEqual([]);
     });

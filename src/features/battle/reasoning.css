@@ -88,7 +88,7 @@
 
 /* Keep the claim and reasoning actions together on a phone. Long claims or
    enlarged text remain readable in the existing battle reading area. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .reasoning-panel { margin-bottom: var(--ds-space-2); }
   .reasoning-panel > .eyebrow { margin: var(--ds-space-1) 0; }
   .reasoning-panel h2 { font-size: var(--ds-text-large); margin: var(--ds-space-1) 0 var(--ds-space-2); }

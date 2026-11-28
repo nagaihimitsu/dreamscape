@@ -272,7 +272,7 @@ body {
    press and 4 px under it), which the window keeps above; on a phone held upright, its window's top this far above the
    scene's foot, and the room between for the window to grow down into. */
 :root { --vn-controls-row: 48px; }
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   :root {
     --vn-window-top: calc(25dvh + 118px);
     --vn-window-room: calc(var(--vn-window-top) - var(--vn-controls-row));
@@ -565,7 +565,7 @@ h3 {
 .intro-art .scene-stamp {
   transform: translateY(-16px);
 }
-@media (max-width: 719px) {
+@media (max-width: 700px) {
   .paper.intro {
     border-width: var(--ds-edge-thin) 0 0;
     border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
@@ -1194,7 +1194,7 @@ dialog.modal .offline-summary {
 .modal .name-form {
   margin-bottom: var(--ds-space-6);
 }
-@media (min-width: 720px) {
+@media (min-width: 701px) {
   .intro .name-form {
     grid-template-columns: 1fr 1fr;
   }
@@ -1261,7 +1261,7 @@ dialog.modal .offline-summary {
 
 /* Keep the active scene in the phone's visible area; observation remains a
    normal document so its image gestures and coordinates are unaffected. */
-@media (min-width: 701px), (max-width: 700px) and (min-height: 500px) and (orientation: portrait), (max-width: 700px) and (orientation: landscape) {
+@media (min-width: 701px), (max-width: 700px) and (min-height: 501px) and (orientation: portrait), (max-width: 700px) and (orientation: landscape) {
   /* The header lies over the story scene or battle, which fills the screen
      from its top (UI redesign §3.1): the picture runs on behind the header, and
      what the scene shows starts below it. --scene-top is that reserve: the
@@ -1384,7 +1384,7 @@ dialog.modal .offline-summary {
 }
 /* An unusually short portrait viewport needs natural page scrolling, while
    the surrounding site header still stays out of the game scene. */
-@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+@media (max-width: 700px) and (max-height: 500px) and (orientation: portrait) {
   .mobile-play-active > .masthead,
   .mobile-play-active > .journey-stage,
   .mobile-play-active > footer {
@@ -1546,7 +1546,7 @@ dialog.modal[open]::backdrop {
 .canal-scene:has(+ .paper.ending) .scene-stamp {
   transform: translateY(-16px);
 }
-@media (max-width: 719px) {
+@media (max-width: 700px) {
   .paper.ending {
     border-width: var(--ds-edge-thin) 0 0;
     border-radius: var(--ds-radius-pane) var(--ds-radius-pane) 0 0;
@@ -1744,7 +1744,7 @@ dialog.modal[open]::backdrop {
 /* A short phone (320×568, 2026-11-14): 「旅をはじめる」 shows without scrolling. The title's header and art band are
    lower, and the two name fields sit side by side (the default names' line, the difficulty's folded line and the start under
    both, closer together). */
-@media (max-width: 480px) and (max-height: 600px) {
+@media (max-width: 480px) and (max-height: 620px) {
   .app-shell:has(.paper.intro) > .masthead {
     height: 64px;
     padding-block: var(--ds-space-2);

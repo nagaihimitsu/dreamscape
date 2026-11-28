@@ -335,7 +335,7 @@
 .conversation-active .vn-scene { height: 100%; min-height: 0; }
 /* Very short portrait windows use normal document scrolling, rather than
    collapsing the portrait behind the dialogue. */
-@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+@media (max-width: 700px) and (max-height: 500px) and (orientation: portrait) {
   .conversation-active #city-epilogue-screen { height: auto; }
   .conversation-active .vn-scene { height: auto; min-height: 480px; }
   .conversation-active .vn-scene[data-has-choices="true"] { min-height: 640px; }
@@ -362,7 +362,7 @@
    moving it. The talk is a grid of two rows: the choices (shrinking, they scroll) and the window's room (at least
    --vn-window-room, styles.css; the window at its top). The battle's talk is laid out the same (battle.css). A short screen keeps the talk at the
    foot, as on a wide one. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
   .vn-scene .vn-dialogue {
     display: grid;
     margin-bottom: var(--vn-controls-row);
