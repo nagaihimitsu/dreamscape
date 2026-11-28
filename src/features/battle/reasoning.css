@@ -1,22 +1,22 @@
 .reasoning-panel {
-  margin: 0 0 24px;
+  margin: 0 0 var(--ds-space-6);
 }
 .reasoning-panel h2 {
   font-size: var(--ds-text-heading);
-  margin: 8px 0 16px;
+  margin: var(--ds-space-2) 0 var(--ds-space-4);
 }
 .reasoning-claim {
-  background: var(--ds-parchment-2);
-  padding: 12px 15px;
+  background: var(--ds-surface-chosen);
+  padding: var(--ds-space-3) var(--ds-space-4);
   border-radius: var(--ds-radius-control);
 }
 .reasoning-claim .fine-print {
-  margin: 0 0 5px;
+  margin: 0 0 var(--ds-space-1);
 }
 .reasoning-claim blockquote {
   margin: 0;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
   line-height: var(--ds-leading-reading);
   white-space: pre-line;
   overflow-wrap: anywhere;
@@ -26,11 +26,11 @@
   font-size: var(--ds-text-note);
 }
 .reasoning-press-notes {
-  margin: 12px 0;
+  margin: var(--ds-space-3) 0;
 }
 .reasoning-press-notes summary {
-  min-height: 44px;
-  padding: 10px 0;
+  min-height: var(--ds-press-small);
+  padding: var(--ds-space-2) 0;
   cursor: pointer;
 }
 .reasoning-press-notes p {
@@ -39,9 +39,9 @@
   line-height: var(--ds-leading-reading);
 }
 .selected-evidence {
-  margin: 16px 0;
-  padding: 14px;
-  border: 1px dashed var(--ds-ink-muted);
+  margin: var(--ds-space-4) 0;
+  padding: var(--ds-space-4);
+  border: var(--ds-edge-thin) dashed var(--ds-ink-muted);
   border-radius: var(--ds-radius-control);
 }
 .selected-evidence p {
@@ -50,16 +50,16 @@
   line-height: var(--ds-leading-body);
 }
 .selected-evidence ul {
-  margin: 8px 0 0;
-  padding-left: 1.3em;
+  margin: var(--ds-space-2) 0 0;
+  padding-left: var(--ds-space-6);
   line-height: var(--ds-leading-reading);
   font-size: var(--ds-text-body);
 }
 .reasoning-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: var(--ds-space-2);
+  margin-bottom: var(--ds-space-2);
 }
 .reasoning-actions:empty { display: none; }
 .reasoning-actions > button {
@@ -69,37 +69,37 @@
 }
 .reasoning-actions .reasoning-notebook {
   justify-content: center;
-  padding-inline: 10px;
+  padding-inline: var(--ds-space-2);
   text-align: center;
 }
 /* The submit, brought into view on the return from the clue book (ReasoningPanel), stops a little inside the edge. */
 .reasoning-panel > .primary { scroll-margin-block: 16px; }
 .special-entry-heading {
-  margin: 28px 0 8px;
+  margin: var(--ds-space-8) 0 var(--ds-space-2);
   font-size: var(--ds-text-heading);
 }
 .special-result-note {
   line-height: var(--ds-leading-reading);
   font-size: var(--ds-text-note);
-  padding: 14px;
+  padding: var(--ds-space-4);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
 }
 
 /* Keep the claim and reasoning actions together on a phone. Long claims or
    enlarged text remain readable in the existing battle reading area. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .reasoning-panel { margin-bottom: 10px; }
-  .reasoning-panel > .eyebrow { margin: 3px 0; }
-  .reasoning-panel h2 { font-size: var(--ds-text-subhead); margin: 3px 0 8px; }
-  .reasoning-claim { padding: 7px 10px; }
+@media (max-width: 700px) and (min-height: 501px) and (orientation: portrait) {
+  .reasoning-panel { margin-bottom: var(--ds-space-2); }
+  .reasoning-panel > .eyebrow { margin: var(--ds-space-1) 0; }
+  .reasoning-panel h2 { font-size: var(--ds-text-large); margin: var(--ds-space-1) 0 var(--ds-space-2); }
+  .reasoning-claim { padding: var(--ds-space-2) var(--ds-space-2); }
   .reasoning-claim blockquote { line-height: var(--ds-leading-body); }
-  .reasoning-help { margin: 7px 0; line-height: var(--ds-leading-body); }
-  .reasoning-press-notes { margin: 4px 0; }
-  .selected-evidence { margin: 7px 0; padding: 7px 10px; }
-  .selected-evidence ul { margin: 2px 0 0; line-height: var(--ds-leading-body); }
-  .reasoning-actions { margin-bottom: 6px; }
-  .reasoning-panel > .fine-print { margin: 5px 0; line-height: var(--ds-leading-snug); }
+  .reasoning-help { margin: var(--ds-space-2) 0; line-height: var(--ds-leading-body); }
+  .reasoning-press-notes { margin: var(--ds-space-1) 0; }
+  .selected-evidence { margin: var(--ds-space-2) 0; padding: var(--ds-space-2) var(--ds-space-2); }
+  .selected-evidence ul { margin: var(--ds-space-1) 0 0; line-height: var(--ds-leading-body); }
+  .reasoning-actions { margin-bottom: var(--ds-space-2); }
+  .reasoning-panel > .fine-print { margin: var(--ds-space-1) 0; line-height: var(--ds-leading-body); }
 }
 
 /* In a short landscape viewport, put the evidence controls beside the claim
@@ -108,20 +108,20 @@
   .reasoning-panel {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(210px, .8fr);
-    gap: 4px 12px;
+    gap: var(--ds-space-1) var(--ds-space-3);
     align-items: start;
-    margin-bottom: 8px;
+    margin-bottom: var(--ds-space-2);
   }
   .reasoning-prompt { grid-column: 1; grid-row: 1 / span 4; min-width: 0; }
-  .reasoning-panel h2 { font-size: var(--ds-text-subhead); margin: 0 0 3px; }
-  .reasoning-help { margin: 0 0 4px; line-height: var(--ds-leading-snug); }
-  .reasoning-claim { padding: 7px 10px; }
-  .reasoning-claim blockquote { line-height: var(--ds-leading-snug); }
+  .reasoning-panel h2 { font-size: var(--ds-text-large); margin: 0 0 var(--ds-space-1); }
+  .reasoning-help { margin: 0 0 var(--ds-space-1); line-height: var(--ds-leading-body); }
+  .reasoning-claim { padding: var(--ds-space-2) var(--ds-space-2); }
+  .reasoning-claim blockquote { line-height: var(--ds-leading-body); }
   .reasoning-press-notes { margin: 0; }
-  .selected-evidence { grid-column: 2; grid-row: 1; margin: 0; padding: 3px 8px; }
+  .selected-evidence { grid-column: 2; grid-row: 1; margin: 0; padding: var(--ds-space-1) var(--ds-space-2); }
   .selected-evidence p, .selected-evidence ul { margin: 0; line-height: var(--ds-leading-tight); }
   .reasoning-actions { grid-column: 2; grid-row: 2; margin: 0; }
-  .reasoning-actions > button { min-height: 44px; padding-block: 6px; line-height: var(--ds-leading-snug); }
-  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: 44px; padding: 6px 12px; line-height: var(--ds-leading-snug); }
+  .reasoning-actions > button { min-height: var(--ds-press-small); padding-block: var(--ds-space-2); line-height: var(--ds-leading-body); }
+  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: var(--ds-press-small); padding: var(--ds-space-2) var(--ds-space-3); line-height: var(--ds-leading-body); }
   .reasoning-panel > .fine-print { grid-column: 2; grid-row: 4; margin: 0; line-height: var(--ds-leading-tight); }
 }

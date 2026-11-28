@@ -1,10 +1,10 @@
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --time-passage-sun-ground: #ffd873;
   --time-passage-sun-shade: #ffd87388;
-  --time-passage-moon-ground: #fff3c8;
-  --time-passage-moon-shade: #fff3c855;
-  --time-passage-moon-ground-2: #354a65;
+  --time-passage-moon-ground: var(--ds-gray-6);
+  --time-passage-moon-shade: color-mix(in srgb, var(--ds-gray-6) 32%, transparent);
+  --time-passage-moon-ground-2: var(--ds-gray-2);
   --time-passage-horizon-ground: #506d5d;
   --time-passage-sky-ground: #bddbe1;
 }
@@ -16,48 +16,48 @@
   place-items: center;
   /* Takes stray taps while it shows (a double tap on a destination never reaches the next scene, §3.3 H22). */
   pointer-events: auto;
-  animation: time-passage-overlay 2.8s ease both;
+  animation: time-passage-overlay 2.8s var(--ease-out) both;
 }
 .time-passage-sky {
   position: relative;
   overflow: hidden;
   width: min(230px, 68vw);
   height: 112px;
-  border: 4px solid var(--ds-parchment);
+  border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-pane);
-  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
-  animation: time-passage-sky 2.8s ease both;
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
+  animation: time-passage-sky 2.8s var(--ease-out) both;
 }
 .time-passage-label {
   position: absolute;
   z-index: 1;
-  top: 6px;
+  top: var(--ds-space-2);
   left: 50%;
-  max-width: calc(100% - 12px);
+  max-width: calc(100% - var(--ds-space-3));
   transform: translateX(-50%);
-  padding: 2px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
+  box-shadow: var(--ds-shadow-small);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: .12em;
+  letter-spacing: var(--ds-tracking-3);
   text-align: center;
   width: max-content;
 }
 .time-passage-sun, .time-passage-moon {
   position: absolute;
-  left: calc(50% - 15px);
+  left: calc(50% - var(--ds-space-4));
   bottom: 37px;
   width: 30px;
   height: 30px;
   border-radius: 50%;
 }
-.time-passage-sun { background: var(--time-passage-sun-ground); box-shadow: 0 0 18px var(--time-passage-sun-shade); animation: time-passage-sun 2.8s linear both; }
-.time-passage-moon { background: var(--time-passage-moon-ground); box-shadow: 0 0 12px var(--time-passage-moon-shade); animation: time-passage-moon 2.8s linear both; }
-.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: 9px; width: 28px; height: 28px; border-radius: 50%; background: var(--time-passage-moon-ground-2); }
+.time-passage-sun { background: var(--time-passage-sun-ground); box-shadow: var(--ds-shadow); animation: time-passage-sun 2.8s linear both; }
+.time-passage-moon { background: var(--time-passage-moon-ground); box-shadow: var(--ds-shadow); animation: time-passage-moon 2.8s linear both; }
+.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: var(--ds-space-2); width: 28px; height: 28px; border-radius: 50%; background: var(--time-passage-moon-ground-2); }
 .time-passage-horizon { position: absolute; inset: auto 0 0; height: 22px; background: var(--time-passage-horizon-ground); }
 @keyframes time-passage-overlay { 0%, 100% { opacity: 0; } 8%, 92% { opacity: 1; } }
 @keyframes time-passage-sky { 0%, 100% { background: var(--time-passage-sky-ground); } 34%, 66% { background: var(--time-passage-moon-ground-2); } }
@@ -76,12 +76,12 @@
 /* Keep the day transition readable without moving the sun or moon. */
 @keyframes time-passage-still { from, to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .time-passage { animation: time-passage-still 900ms steps(1, end); }
+  .time-passage { animation: time-passage-still var(--motion-slow) steps(1, end); }
   .time-passage-sky { animation: none; background: var(--time-passage-sky-ground); }
   .time-passage-sun { animation: none; }
   .time-passage-moon { display: none; }
 }
-.time-passage.is-reduced { animation: time-passage-still 900ms steps(1, end); }
+.time-passage.is-reduced { animation: time-passage-still var(--motion-slow) steps(1, end); }
 .time-passage.is-reduced .time-passage-sky { animation: none; background: var(--time-passage-sky-ground); }
 .time-passage.is-reduced .time-passage-sun { animation: none; }
 .time-passage.is-reduced .time-passage-moon { display: none; }

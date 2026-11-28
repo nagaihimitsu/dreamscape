@@ -10,6 +10,7 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { LineCards } from "../../components/LineCards";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
@@ -227,6 +228,7 @@ export function EpilogueScreen({
                 <span aria-hidden="true">→</span>
               </button>}
             </div>
+            <LineCards />
           </div>
           {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
           {frame.choices.length > 0 && onChoose && <div className="vn-choices">

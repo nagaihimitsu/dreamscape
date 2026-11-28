@@ -278,7 +278,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   expect(manual.travel.currentPlaceId).toBe("p_duomo");
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");
 
-  // Progress after the manual save is not stored. Switching journeys asks first; 戻る keeps this scene.
+  // Progress after the manual save is not stored. Switching journeys asks first; やめる keeps this scene.
   await ops.readGuide(page);
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano")!.id;
@@ -286,9 +286,9 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await slots.getByLabel("旅行編").selectOption(otherJourney);
   const switching = page.getByRole("dialog", { name: "旅行編を切り替える" });
   await expect(switching).toContainText("手動セーブしていない進行は失われます。");
-  await switching.getByRole("button", { name: "戻る", exact: true }).click();
+  await switching.getByRole("button", { name: "やめる", exact: true }).click();
   await expect(switching).toBeHidden();
-  // 「戻る」 goes back to セーブ・ロード, which the confirmation opened over (ゲームの設定 until 2026-11-20), on this journey.
+  // 「やめる」 goes back to セーブ・ロード, which the confirmation opened over (ゲームの設定 until 2026-11-20), on this journey.
   await expect(slots).toBeVisible();
   await expect(slots.getByLabel("旅行編")).toHaveValue("milano");
   await ops.closeDialog(slots);
@@ -306,11 +306,11 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
   await ops.closeDialog(reopened);
 
-  // ロード asks too: 戻る keeps the scene and gives the focus back to ≡メニュー, and loading brings
+  // ロード asks too: やめる keeps the scene and gives the focus back to ≡メニュー, and loading brings
   // the manual save's scene back (its word shows under the header for a moment).
   await ops.readGuide(page);
   const asked = await ops.askToLoad(page);
-  await asked.dialog.getByRole("button", { name: "戻る", exact: true }).click();
+  await asked.dialog.getByRole("button", { name: "やめる", exact: true }).click();
   await expect(asked.dialog).toBeHidden();
   await expect(gear).toBeFocused();
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
@@ -338,13 +338,13 @@ test("セーブ・ロード saves into the slot chosen and loads another slot's 
   const played = await readSave(page);
   expect(JSON.parse((await allStorage(page))[slot2]!)).toEqual(played);
 
-  // Over a save there, it asks first; 戻る writes nothing.
+  // Over a save there, it asks first; やめる writes nothing.
   await ops.goTo(page, "p_duomo");
   dialog = await ops.openSaveLoad(page, "save");
   await expect(dialog.getByTestId("save-slot-1")).toContainText("遊んでいる枠");
   await dialog.getByTestId("save-slot-2").getByRole("button", { name: /にセーブ$/u }).click();
   const overwrite = page.getByRole("dialog", { name: "セーブ2に上書きしますか？" });
-  await overwrite.getByRole("button", { name: "戻る", exact: true }).click();
+  await overwrite.getByRole("button", { name: "やめる", exact: true }).click();
   await expect(overwrite).toBeHidden();
   expect(JSON.parse((await allStorage(page))[slot2]!)).toEqual(played);
   await ops.closeDialog(dialog);

@@ -219,5 +219,5 @@ export function SleepChoice({ game, sleep, api, scope = "page", hintId }: {
 function PlaceThumbnail({ game, place, glyph }: { game: GameState; place: TravelPlace; glyph: string }) {
   const photo = getPlacePhoto(game.currentCityId, place.id);
   if (photo) return <img className="travel-thumb" src={`${import.meta.env.BASE_URL}${derivedImagePath(photo, "card")}`} alt="" width={64} height={43} loading="lazy" decoding="async" />;
-  return <span className="travel-thumb is-plain" style={{ backgroundColor: presentation.backgrounds[place.backgroundId]?.color }} aria-hidden="true">{glyph}</span>;
+  return <span className="travel-thumb is-plain" aria-hidden="true">{glyph}</span>;
 }

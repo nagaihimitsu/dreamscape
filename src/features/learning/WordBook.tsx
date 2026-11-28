@@ -23,7 +23,7 @@ export function WordBook({ answered }: { answered: readonly AnsweredWordSource[]
         <span className="word-book-place-photo" aria-hidden="true">
           {group.photo
             ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(group.photo, "card")}`} alt="" width={480} height={320} loading="lazy" decoding="async" />
-            : <span className="word-book-place-plain" style={group.tileColor ? { backgroundColor: group.tileColor } : undefined}>◇</span>}
+            : <span className="word-book-place-plain">◇</span>}
         </span>
         <h3 id={`word-book-${group.key}`}>{group.cityNameJa} ／ {group.placeNameJa}</h3>
       </div>

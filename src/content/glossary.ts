@@ -24,10 +24,15 @@ export const GLOSSARY_CATEGORY_LABELS_JA: Readonly<Record<GlossaryCategory, stri
   custom: "ならわし", music: "音楽と踊り", legend: "神話と言い伝え", person: "人", transport: "乗り物",
 };
 
-/** The most characters a term's line may have (content:build stops a longer one: the card has room for about two lines). */
+/** The most characters a term's line may have (content:build stops a longer one: a card under the window has room for about three lines). */
 export const TERM_LINE_MAX = 60;
 /** The characters a term's line should keep within (content:build warns beyond them, without stopping). */
 export const TERM_LINE_ADVISED = 40;
+/**
+ * How many cards a line shows under its dialogue window (LineCards; 2026-11-28 user decision: at most two); a line's
+ * other terms and words are recorded all the same (旅の図鑑, 旅のことば), and content:build warns of such a line.
+ */
+export const LINE_CARDS_SHOWN = 2;
 /** The characters of a text as the reader counts them (a kanji, a kana, a letter: one each). */
 export const textLength = (text: string) => Array.from(text).length;
 

@@ -22,22 +22,23 @@ export function BattleRewards({ game }: { game: GameState }) {
         data-testid="battle-rewards"
         aria-label="AP報酬"
       >
-        <div className="reward-total">
-          <span>獲得AP</span>
-          <strong>
-            ＋{earned}
-            <small> AP</small>
-          </strong>
-        </div>
-        <p className="current-ap">
-          所持AP <strong>{game.ap} AP</strong>
-        </p>
+        {/* The two figures side by side in one type (2026-11-28 user decision: the earned AP and the AP held were
+            set in very different sizes). */}
+        <dl className="reward-figures">
+          <div className="reward-total">
+            <dt>獲得AP</dt>
+            <dd>+{earned}<small>AP</small></dd>
+          </div>
+          <div className="current-ap">
+            <dt>所持AP</dt>
+            <dd>{game.ap}<small>AP</small></dd>
+          </div>
+        </dl>
       </section>
       {episode && game.completedEpisodeIds.includes(episode.id) && (
         <section className="episode-clear" data-testid="episode-clear">
-          <p className="eyebrow">
-            {episode.kind === "city_finale" ? "都市クリア" : "旅の一区切り"}
-          </p>
+          {/* No 「旅の一区切り」「都市クリア」 over it (2026-11-28 user decision: words the scene does not need); its
+              title, the author's, tells it. */}
           <h2><FitText text={episode.clearTitleJa} /></h2>
           {/* Shown open, not folded under 「旅の記録を読む」 (user decision 2026-11-11). */}
           <p>{episode.clearDescriptionJa}</p>

@@ -1,9 +1,9 @@
 /* The shape_drag engine (EnginePlay.tsx): the skin's backdrop fills the field, the square board sits in its middle as large
    as the field allows, the controls sit at the bottom in thumb reach. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --shape-drag-meter-fill-ground: #b9a27a;
-  --shape-drag-hint-ink: #ffe3a3;
+  --shape-drag-meter-fill-ground: #b5b8bf;
+  --shape-drag-hint-ink: #ffffff;
 }
 .mg-engine-shape-drag { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .mg-engine-shape-drag .mg-shape-drag-field {
@@ -19,7 +19,7 @@
 /* The board: dragged on with one finger (no scroll, no pull to reload, no text selection). */
 .mg-engine-shape-drag .mg-shape-drag-board {
   position: relative;
-  width: min(100cqw - 24px, 100cqh - 16px);
+  width: min(100cqw - var(--ds-space-6), 100cqh - var(--ds-space-4));
   aspect-ratio: 1;
   touch-action: none;
   overscroll-behavior: contain;
@@ -29,67 +29,67 @@
   cursor: grab;
 }
 .mg-engine-shape-drag .mg-shape-drag-board[data-rolling] { cursor: grabbing; }
-.mg-engine-shape-drag .mg-shape-drag-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 8px; font-size: var(--ds-text-body); line-height: var(--ds-leading-snug); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 60%, transparent); text-wrap: balance; }
+.mg-engine-shape-drag .mg-shape-drag-controls { flex: none; padding: var(--ds-space-2) var(--ds-space-4) calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); text-align: center; text-shadow: 0 1px 2px color-mix(in srgb, var(--ds-shade) 70%, transparent); text-wrap: balance; }
 /* The skin's meter over the hint: its name, a bar with a mark (where the outcome changes), the value in words. The bar
    fills brighter past the mark (and the words say the number: not colour alone). */
-.mg-engine-shape-drag .mg-shape-drag-meter { display: flex; gap: 10px; align-items: center; margin: 0 0 6px; }
-.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: var(--ds-text-body); font-weight: 700; }
+.mg-engine-shape-drag .mg-shape-drag-meter { display: flex; gap: var(--ds-space-2); align-items: center; margin: 0 0 var(--ds-space-2); }
+.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
 .mg-engine-shape-drag .mg-shape-drag-meter-bar {
   position: relative;
   flex: 1 1 auto;
   height: 12px;
-  border: 1px solid var(--ds-gold-hairline);
-  border-radius: var(--ds-radius-field);
-  background: color-mix(in srgb, var(--ds-slate-900) 60%, transparent);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
+  border-radius: var(--ds-radius-control);
+  background: color-mix(in srgb, var(--ds-dark) 70%, transparent);
 }
 .mg-engine-shape-drag .mg-shape-drag-meter-fill {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  border-radius: var(--ds-radius-field);
+  border-radius: var(--ds-radius-control);
   background: var(--shape-drag-meter-fill-ground);
   transition: width 160ms ease-out;
 }
-.mg-engine-shape-drag .mg-shape-drag-meter-fill[data-over] { background: var(--ds-game-gold); box-shadow: 0 0 8px color-mix(in srgb, var(--ds-game-gold) 70%, transparent); }
+.mg-engine-shape-drag .mg-shape-drag-meter-fill[data-over] { background: var(--ds-game-mark); box-shadow: 0 0 8px color-mix(in srgb, var(--ds-game-mark) 70%, transparent); }
 .mg-engine-shape-drag .mg-shape-drag-meter-mark {
   position: absolute;
   top: -4px;
   bottom: -4px;
   width: 3px;
-  border-radius: var(--ds-radius-hair);
-  background: var(--ds-on-slate);
-  box-shadow: 0 0 0 1px var(--ds-slate-900);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-on-dark);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-dark);
   transform: translateX(-50%);
 }
-.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: var(--ds-text-body); font-weight: 700; text-align: right; }
+.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); text-align: right; }
 .mg-engine-shape-drag .mg-shape-drag-done {
   justify-content: center;
   width: 100%;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   font-size: var(--ds-text-heading);
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-4);
   text-align: center;
   touch-action: manipulation;
 }
-.mg-engine-shape-drag .mg-shape-drag-done[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-smoke-muted); }
+.mg-engine-shape-drag .mg-shape-drag-done[aria-disabled="true"] { background: var(--ds-smoke); box-shadow: var(--ds-smoke-edge); color: var(--ds-on-dark-muted); }
 .mg-engine-shape-drag .mg-shape-drag-auto {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 64px;
+  min-height: var(--ds-press-large);
   margin: 0;
   border-radius: var(--ds-radius-control);
-  background: var(--ds-chip-bg);
+  background: var(--ds-smoke);
   font-size: var(--ds-text-body);
 }
 @media (max-height: 620px) {
-  .mg-engine-shape-drag .mg-shape-drag-controls { padding-top: 4px; }
-  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: 4px; font-size: var(--ds-text-note); }
-  .mg-engine-shape-drag .mg-shape-drag-meter { margin-bottom: 2px; }
-  .mg-engine-shape-drag .mg-shape-drag-done, .mg-engine-shape-drag .mg-shape-drag-auto { min-height: 54px; }
+  .mg-engine-shape-drag .mg-shape-drag-controls { padding-top: var(--ds-space-1); }
+  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: var(--ds-space-1); font-size: var(--ds-text-note); }
+  .mg-engine-shape-drag .mg-shape-drag-meter { margin-bottom: var(--ds-space-1); }
+  .mg-engine-shape-drag .mg-shape-drag-done, .mg-engine-shape-drag .mg-shape-drag-auto { min-height: var(--ds-press-large); }
 }
 /* A warning in place of the hint (the skin's: 「生地がうすくなってきた」): brighter and bold. */
-.mg-engine-shape-drag .mg-shape-drag-hint[data-note] { color: var(--shape-drag-hint-ink); font-weight: 700; }
+.mg-engine-shape-drag .mg-shape-drag-hint[data-note] { color: var(--shape-drag-hint-ink); font-weight: var(--ds-weight-bold); }

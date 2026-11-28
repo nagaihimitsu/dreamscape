@@ -4,9 +4,10 @@ import type { GameState } from "../domain/game";
 import { itemDefinition } from "../domain/item-cities";
 import { gainedItemIds } from "../domain/item-changes";
 import "./hud-effects.css";
+import { NOTICE } from "../components/motion";
 
 /** How long one 「…を手に入れました」 stays (milliseconds; hud-effects.css plays its coming and going in that time). */
-export const ITEM_GAIN_NOTICE_MS = 2500;
+export const ITEM_GAIN_NOTICE_MS = NOTICE.short;
 
 type Notice = { key: number; name: string; iconPath: string };
 

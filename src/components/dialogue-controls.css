@@ -4,7 +4,7 @@
    name as without one, halfway between where they once started under each). */
 :root {
   /* The head's height, with or without a band: the band's padding (4 + 5), its one line and its margin below (6). */
-  --vn-head-height: calc(9px + var(--ds-text-body) * var(--ds-leading-tight) + 6px);
+  --vn-head-height: calc(9px + var(--ds-text-body) * var(--ds-leading-tight) + var(--ds-space-2));
 }
 .vn-window-head {
   position: relative;
@@ -15,10 +15,10 @@
   display: flex;
   align-items: flex-start;
   min-height: var(--vn-head-height);
-  padding: 0 10px;
+  padding: 0 var(--ds-space-2);
 }
 /* The name band (2026-11-25 user decisions): a rounded tag in the colours of the speaker's clothes (name-band.ts: its
-   fill behind the name, its edge as the rim, the name in white or navy at 4.5:1 or more), standing over the speaker on
+   fill behind the name, its edge as the rim, the name in white or dark grey at 4.5:1 or more), standing over the speaker on
    the stage, and melting into the scene: its fill a little see-through (BAND_FILL_SHARE, 82 %), and round it a thick
    rim in its edge colour, firm at the fill and fading away outwards into the scene (no line where it ends; 2026-11-25
    user decision). The rim lies outside the fill, never under the name; the head keeps room below it for the glow. --band-x is the speaker's place across the stage (0 to 1, name-band.ts); the stage is about a tenth wider
@@ -34,25 +34,22 @@
   margin: 0;
   margin-top: 0;
   /* Its glow fades out over the line's own leading above the words. */
-  margin-bottom: 6px;
-  padding: 4px 18px 5px;
+  margin-bottom: var(--ds-space-2);
+  padding: var(--ds-space-1) var(--ds-space-4) var(--ds-space-1);
   border: 0;
   border-radius: var(--ds-radius-pill);
   background: color-mix(in srgb, var(--band-fill, var(--vn-name-bg)) 82%, transparent);
   /* The rim: firm at the fill, then ever fainter outwards. */
   box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 92%, transparent),
-    0 0 4px 6px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 60%, transparent),
-    0 0 10px 8px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 30%, transparent),
-    0 0 18px 9px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 12%, transparent);
+    0 0 0 var(--ds-edge-thick) color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 92%, transparent), 0 0 4px 6px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 60%, transparent), 0 0 10px 8px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 30%, transparent), 0 0 18px 9px color-mix(in srgb, var(--band-edge, var(--ds-speaker-edge)) 12%, transparent);
   color: var(--band-ink, var(--vn-name-ink));
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   overflow-wrap: anywhere;
-  transition: translate var(--motion-medium) var(--ease-out);
+  transition: translate var(--motion-short) var(--ease-out);
 }
 .reduce-motion .vn-window-head > .speaker { transition: none; }
 @media (prefers-reduced-motion: reduce) { .vn-window-head > .speaker { transition: none; } }
@@ -62,14 +59,14 @@
    the band reads on). It never breaks inside; a long name wraps before it. */
 .vn-window-head > .speaker :is(.speaker-remembered, .speaker-tag) {
   display: inline-block;
-  margin-left: 0.5em;
-  padding: 0 0.4em;
-  border: 1px solid currentColor;
-  border-radius: var(--ds-radius-small);
-  font-size: var(--ds-text-caption);
-  font-weight: 500;
-  line-height: var(--ds-leading-snug);
-  letter-spacing: 0.08em;
+  margin-left: var(--ds-space-2);
+  padding: 0 var(--ds-space-1);
+  border: var(--ds-edge-thin) solid currentColor;
+  border-radius: var(--ds-radius-control);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-medium);
+  line-height: var(--ds-leading-body);
+  letter-spacing: var(--ds-tracking-2);
   vertical-align: 0.08em;
   white-space: nowrap;
 }
@@ -82,11 +79,11 @@
 .dialogue-controls {
   position: absolute;
   z-index: 2;
-  left: 4px;
-  bottom: 4px;
+  left: var(--ds-space-1);
+  bottom: var(--ds-space-1);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2);
   margin: 0;
 }
 /* (button.text-button: over the window's own .vn-dialogue .text-button colour.) */
@@ -96,7 +93,7 @@
   justify-content: center;
   width: 44px;
   min-width: 44px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
   padding: 0;
   border: 0;
@@ -109,7 +106,7 @@
   transition: background-color var(--motion-fast) var(--ease-out);
 }
 .dialogue-controls button.text-button:hover:enabled { background: var(--ds-glass-mark-hover); }
-.dialogue-controls .icon { display: block; width: 20px; height: 20px; color: currentColor; }
+.dialogue-controls .icon { display: block; width: var(--ds-icon); height: var(--ds-icon); color: currentColor; }
 .dialogue-controls .dialogue-tool-word {
   position: absolute;
   width: 1px;
@@ -119,19 +116,19 @@
   white-space: nowrap;
 }
 @container vn-window (width < 24em) {
-  .vn-window-head { padding: 0 8px; }
-  .vn-window-head > .speaker { padding: 4px 14px 5px; }
+  .vn-window-head { padding: 0 var(--ds-space-2); }
+  .vn-window-head > .speaker { padding: var(--ds-space-1) var(--ds-space-4) var(--ds-space-1); }
 }
 /* 高速送り while on: its mark whole on a faint round ground (with its 「高速送り中」 and aria-pressed). */
 .dialogue-controls button.text-button[aria-pressed="true"] {
   background: var(--ds-glass-mark-on);
   color: var(--ds-glass-mark-full);
 }
-.dialogue-controls .text-button:disabled { opacity: 0.4; cursor: default; }
+.dialogue-controls .text-button:disabled { opacity: var(--ds-opacity-faint); cursor: default; }
 .dialogue-controls .text-button:focus-visible {
-  outline: 3px solid var(--ds-focus);
+  outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 0;
-  box-shadow: 0 0 0 6px var(--ds-slate-900);
+  box-shadow: var(--ds-focus-halo);
 }
 /* The next mark (D9) sits at the line's bottom-right corner, in the window's
    padding, out of the text's flow: the line breaks the same while it is written
@@ -141,7 +138,7 @@
   position: absolute;
   right: -11px;
   bottom: -2px;
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   line-height: 1;
   white-space: nowrap;
 }

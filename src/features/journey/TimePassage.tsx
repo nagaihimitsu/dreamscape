@@ -3,10 +3,11 @@ import { createPortal } from "react-dom";
 import { playSe } from "../../audio/sound-effects";
 import { useNightCard } from "./NightRest";
 import "./time-passage.css";
+import { MOTION } from "../../components/motion";
 
 /** How long 「次の日」 shows (ms; time-passage.css's timeline matches); reduced motion: still, shorter. */
 const PASSAGE_MS = 2800;
-const PASSAGE_REDUCED_MS = 900;
+const PASSAGE_REDUCED_MS = MOTION.slow;
 
 /**
  * Decorative only: the game clock and save have already been updated. It ends with its animation (2.8 s; reduced

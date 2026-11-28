@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { OPPOSITE_PLACES, stageAfter, stageFocus, type Stage, type StageFocus, type StageLine, type StageScene } from "./scene-stage";
 import { motionReduced } from "./useStageGlide";
+import { MOTION } from "./motion";
 
-/** How long someone who goes off stage takes to step back and fade (character-portrait.css, --motion-leave). */
-export const STAGE_LEAVE_MS = 700;
+/** How long someone who goes off stage takes to step back and fade (character-portrait.css, --motion-slow). */
+export const STAGE_LEAVE_MS = MOTION.slow;
 
 const sameFigure = (a: Stage["opposite"], b: Stage["opposite"]) => a?.figure === b?.figure && !!a?.standIn === !!b?.standIn;
 const sameStage = (a: Stage, b: Stage) => a.heroine === b.heroine && OPPOSITE_PLACES.every((place) => sameFigure(a[place], b[place])) &&

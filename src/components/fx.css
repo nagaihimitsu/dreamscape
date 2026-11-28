@@ -1,10 +1,10 @@
 /* Small feedback marks (components/fx.tsx, 2026-11-13 user decision): decorative, aria-hidden, no presses.
    A button that carries one is an fx-host. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --fx-sparkle-sweep-ground: rgba(255, 248, 225, 0);
-  --fx-sparkle-sweep-ground-2: rgba(255, 248, 225, 0.85);
-  --fx-star-ground: #fffbea;
+  --fx-sparkle-sweep-ground: color-mix(in srgb, var(--ds-light) 0%, transparent);
+  --fx-sparkle-sweep-ground-2: color-mix(in srgb, var(--ds-light) 88%, transparent);
+  --fx-star-ground: var(--ds-light);
 }
 .fx-host { position: relative; }
 
@@ -31,7 +31,7 @@
   width: 45%;
   background: linear-gradient(90deg, var(--fx-sparkle-sweep-ground), var(--fx-sparkle-sweep-ground-2), var(--fx-sparkle-sweep-ground));
   transform: translateX(-130%) skewX(-22deg);
-  animation: fx-sweep 420ms var(--ease-out) 180ms both;
+  animation: fx-sweep var(--motion-scene) var(--ease-out) var(--motion-fast) both;
 }
 @keyframes fx-sweep {
   to { transform: translateX(260%) skewX(-22deg); }
@@ -41,44 +41,44 @@
   width: 9px;
   height: 9px;
   margin: -4.5px 0 0 -4.5px;
-  background: radial-gradient(circle, var(--fx-star-ground) 0 30%, var(--ds-marker-selected) 70%);
+  background: radial-gradient(circle, var(--fx-star-ground) 0 30%, var(--ds-light) 70%);
   clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
   opacity: 0;
-  animation: fx-star 440ms var(--ease-out) both;
+  animation: fx-star var(--motion-scene) var(--ease-out) both;
 }
-.fx-star-1 { left: 86%; top: 12%; --fx-x: 7px; --fx-y: -8px; animation-delay: 280ms; }
-.fx-star-2 { left: 14%; top: 22%; --fx-x: -7px; --fx-y: -6px; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; animation-delay: 330ms; }
-.fx-star-3 { left: 80%; top: 84%; --fx-x: 6px; --fx-y: 6px; width: 6px; height: 6px; margin: -3px 0 0 -3px; animation-delay: 380ms; }
+.fx-star-1 { left: 86%; top: 12%; --fx-x: 7px; --fx-y: -8px; animation-delay: var(--motion-short); }
+.fx-star-2 { left: 14%; top: 22%; --fx-x: -7px; --fx-y: -6px; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; animation-delay: var(--motion-short); }
+.fx-star-3 { left: 80%; top: 84%; --fx-x: 6px; --fx-y: 6px; width: 6px; height: 6px; margin: -3px 0 0 -3px; animation-delay: var(--motion-scene); }
 @keyframes fx-star {
   0% { opacity: 0; transform: translate(0, 0) scale(0.2) rotate(0deg); }
   35% { opacity: 1; transform: translate(calc(var(--fx-x) * 0.5), calc(var(--fx-y) * 0.5)) scale(1) rotate(30deg); }
   100% { opacity: 0; transform: translate(var(--fx-x), var(--fx-y)) scale(0.5) rotate(70deg); }
 }
-/* Under reduced motion and 「演出を短縮する」: one soft gold glow on the button, nothing moves. */
+/* Under reduced motion and 「演出を短縮する」: one soft white glow on the button, nothing moves. */
 @keyframes fx-glow {
   0%, 100% { box-shadow: 0 0 0 0 transparent; }
-  35% { box-shadow: 0 0 10px 3px color-mix(in srgb, var(--ds-gold) 80%, transparent); }
+  35% { box-shadow: 0 0 10px 3px color-mix(in srgb, var(--ds-hairline) 80%, transparent); }
 }
 .reduce-motion .fx-sparkle-sweep,
 .reduce-motion .fx-star { display: none; }
-.reduce-motion .fx-sparkle { animation: fx-glow 700ms ease-out both; }
+.reduce-motion .fx-sparkle { animation: fx-glow var(--motion-slow) var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) {
   .fx-sparkle-sweep,
   .fx-star { display: none; }
-  .fx-sparkle { animation: fx-glow 700ms ease-out both; }
+  .fx-sparkle { animation: fx-glow var(--motion-slow) var(--ease-out) both; }
 }
 
 /* Something new (a held item not looked at, a clue or an English-note entry): a small dot at the button's top left
-   corner, clear of its icon and of the bag's count; the selected marker's yellow with a slate ring, 8:1 on the slate
+   corner, clear of its icon and of the bag's count; white with a dark ring, 8:1 or more on the dark
    buttons. Its meaning is in the button's name. */
 .fx-dot {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 9px;
-  height: 9px;
+  top: var(--ds-space-1);
+  left: var(--ds-space-1);
+  width: var(--ds-size-1);
+  height: var(--ds-size-1);
   border-radius: 50%;
-  background: var(--ds-marker-selected);
-  box-shadow: 0 0 0 1.5px var(--ds-slate-900);
+  background: var(--ds-light);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark);
   pointer-events: none;
 }

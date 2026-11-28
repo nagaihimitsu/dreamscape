@@ -1,19 +1,19 @@
 /* B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」). Every text sits on its own ground over the background: the photo
    cards' mats, and the light glass of the cards under them (styles.css's glass surfaces, 2026-11-25); pressables on the
-   glass keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no card has
+   glass keep the redesign's shape (a 1.5-px dark edge, 12-px corners), display-only pills have no edge, and no card has
    a thick accent line on its left (AGENTS.md). */
 
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --photo-free-time-photo-backdrop-ground: rgba(86, 128, 80, 0.13);
-  --photo-free-time-photo-backdrop-ground-2: rgba(84, 132, 160, 0.17);
-  --photo-free-time-photo-card-ground: #fffdf8;
-  --photo-free-time-photo-card-silhouette-ground: #cfc8bb;
+  --photo-free-time-photo-backdrop-ground: color-mix(in srgb, var(--ds-gray-3) 16%, transparent);
+  --photo-free-time-photo-backdrop-ground-2: color-mix(in srgb, var(--ds-gray-3) 16%, transparent);
+  --photo-free-time-photo-card-ground: var(--ds-light);
+  --photo-free-time-photo-card-silhouette-ground: var(--ds-gray-5);
 }
 /* The height of the marks over a card's photo, named once: the kind mark and the chips beside it stand in one line. */
 :root { --photo-card-mark: 22px; }
 
-.free-time-hub.photo-free-time { max-width: 680px; }
+.free-time-hub.photo-free-time { max-width: var(--ds-width); }
 
 /* The background of a city without a backdrop: a map-like pattern (faint streets, an avenue, a river and a park), not a
    real map; decoration only, in the same fixed layer as the backdrop (free-time-hub.css). */
@@ -31,7 +31,7 @@
     repeating-linear-gradient(34deg, transparent 0 168px, color-mix(in srgb, var(--ds-ink-muted) 9%, transparent) 168px 171px),
     repeating-linear-gradient(0deg, transparent 0 46px, color-mix(in srgb, var(--ds-ink-muted) 6%, transparent) 46px 47px),
     repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--ds-ink-muted) 6%, transparent) 46px 47px),
-    var(--ds-parchment-2);
+    var(--ds-surface-chosen);
 }
 
 /* A city's backdrop (FreeTimeBackdrop: its own artwork or its photo, fixed, cropped to fill the screen) is dimmed so the
@@ -39,7 +39,7 @@
    the glass of the cards (2026-11-25 user decision: the screen as the place, not a form laid over it). The header
    brings its own shade (journey-hud.css), so the top is dimmed only as the middle. */
 .photo-free-time .free-time-backdrop:not(.is-plain)::after {
-  background: linear-gradient(color-mix(in srgb, var(--ds-veil) 18%, transparent), color-mix(in srgb, var(--ds-veil) 18%, transparent) 62%, color-mix(in srgb, var(--ds-veil) 45%, transparent));
+  background: linear-gradient(color-mix(in srgb, var(--ds-shade) 18%, transparent), color-mix(in srgb, var(--ds-shade) 18%, transparent) 62%, color-mix(in srgb, var(--ds-shade) 45%, transparent));
 }
 /* The colour of the time of day (time-of-day.ts timeOfDayTint, user decision 2026-11-11) over the backdrop or the
    pattern: one more fixed layer, after them in the same place, under every card. Every text over it sits on its own
@@ -53,21 +53,21 @@
   right: 0;
   height: 100lvh;
   pointer-events: none;
-  transition: background-color calc(2 * var(--motion-scene)) ease;
+  transition: background-color calc(2 * var(--motion-scene)) var(--ease-out);
 }
 .reduce-motion .free-time-tint { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .free-time-tint { transition: none; }
 }
-.photo-menu { display: flex; flex-direction: column; gap: 8px; }
+.photo-menu { display: flex; flex-direction: column; gap: var(--ds-space-2); }
 .photo-menu-note {
   margin: 0;
-  padding: 8px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-pill-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-small);
   font-size: var(--ds-text-note);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-body);
 }
 /* The name of a header button (「≡メニュー」) kept on one line. */
 .photo-menu-note-word { white-space: nowrap; }
@@ -81,7 +81,7 @@
   --card-w: 54cqi;
   --card-small: 0.38;
   --card-step: calc(var(--card-w) * (1 + var(--card-small)) / 2 + 2cqi);
-  --row-bleed: 16px;
+  --row-bleed: var(--ds-space-4);
   position: relative;
   container-type: inline-size;
 }
@@ -94,7 +94,7 @@
   display: flex;
   margin: 0 calc(-1 * var(--row-bleed));
   /* Room inside the scroller for the focus ring and the chosen card's lift. */
-  padding: 8px 0 12px;
+  padding: var(--ds-space-2) 0 var(--ds-space-3);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -142,7 +142,7 @@
 }
 
 /* A photo card: pressable (its edge), a mat around the photo, and the name under it. Chosen: a thicker edge drawn
-   inside (the size never changes), the darker parchment (or on a fill the yellow of the map's selected mark) and a lift.
+   inside (the size never changes), the chosen ground (or on a fill the white of the map's selected mark) and a lift.
    Pressing and dragging never selects its text or opens the picture's own menu. */
 .photo-card {
   position: relative;
@@ -151,12 +151,12 @@
   width: 100%;
   min-height: 0;
   margin: 0;
-  padding: 4px 4px 8px;
-  border: 1.5px solid var(--ds-slate-800);
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-2);
+  border: var(--ds-edge) solid var(--ds-dark-2);
   border-radius: var(--ds-radius-control);
   background: var(--photo-free-time-photo-card-ground);
   color: var(--ds-ink);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--ds-paper-shade) 18%, transparent);
+  box-shadow: var(--ds-shadow-small);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -165,32 +165,33 @@
   -webkit-touch-callout: none;
 }
 .photo-card[aria-current="true"] {
-  background: var(--ds-parchment-2);
-  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 3px 9px color-mix(in srgb, var(--ds-paper-shade) 30%, transparent);
+  background: var(--ds-surface-chosen);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-dark-2), var(--ds-shadow);
 }
 /* What the place holds, at a glance and without words (photo-cards.ts cardKinds; the card under the row names it):
-   the story's slate (its tag's), a date's rose (its tag's), both split on the diagonal. The tour and 「ホテルに戻る」
-   keep the paper. On every fill the name is light: 13:1 on the slate, 6:1 on the rose. */
-.photo-card.is-story { background: var(--ds-slate-800); }
-.photo-card.is-date { background: var(--ds-marker); }
-.photo-card.is-both { background: linear-gradient(135deg, var(--ds-slate-800) 50%, var(--ds-marker) 50%); }
-.photo-card:is(.is-story, .is-date, .is-both) { color: var(--ds-on-slate); }
+   the story's dark grey (its tag's), a date's mid grey (its tag's), both split on the diagonal (2026-11-28: white and grey
+   only; the tag's word tells them apart). The tour and 「ホテルに戻る」 keep the light ground. On every fill the name is
+   white: 13:1 on the dark grey, 7:1 on the mid grey. */
+.photo-card.is-story { background: var(--ds-dark-2); }
+.photo-card.is-date { background: var(--ds-ink-muted); }
+.photo-card.is-both { background: linear-gradient(135deg, var(--ds-dark-2) 50%, var(--ds-ink-muted) 50%); }
+.photo-card:is(.is-story, .is-date, .is-both) { color: var(--ds-on-dark); }
 .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 3px 9px color-mix(in srgb, var(--ds-paper-shade) 30%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow);
 }
-/* Over the city (2026-11-25 user decision) the cards lie on the street as prints: no slate edge (its line would draw a
-   form over the picture), a shadow cast on the picture under them, and the chosen one held up in a soft gold light
-   (its edge stays drawn inside: the paper's slate, a fill's yellow). */
+/* Over the city (2026-11-25 user decision) the cards lie on the street as prints: no dark edge (its line would draw a
+   form over the picture), a shadow cast on the picture under them, and the chosen one held up in a soft white light
+   (its edge stays drawn inside: the dark on the light ground, white on a fill). */
 .photo-cards .photo-card:not(.is-locked) {
   border-color: transparent;
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--ds-veil) 42%, transparent);
+  box-shadow: var(--ds-shadow);
 }
 /* In the row each card is the photo itself (2026-11-25 user decisions, after free time on an iPhone: the slate band of
    the name under the photo was a form's part laid over the city; then, the immersion before the colours decided
    earlier): the photo fills the card, with no frame or fill of what the place holds, and the name lies on the photo's
    foot over a shade, in white (8:1 or more on the shade's foot), the swipe's cue under it. What the place holds shows
    as a small mark on the photo's corner (a book for the story, a heart for a date; the card under the row names it).
-   The chosen card is held up in a thin white ring and a soft gold light (it is also the largest: never the colour
+   The chosen card is held up in a thin white ring and a soft white light (it is also the largest: never the colour
    alone). A card without a photo (待機, the tour, the shop, a place without one, a date not open yet) is a pane of the
    light glass, the scene blurred through it, with its mark. */
 .photo-cards:not(.is-list) .photo-card,
@@ -199,14 +200,14 @@
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: none;
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
 }
 .photo-cards:not(.is-list) .photo-card:not(.is-locked)[aria-current="true"] {
-  box-shadow: 0 0 0 2px var(--ds-glass-mark), 0 10px 26px color-mix(in srgb, var(--ds-veil) 50%, transparent), 0 0 28px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
+  box-shadow: 0 0 0 var(--ds-edge) var(--ds-glass-mark), var(--ds-shadow-large), 0 0 28px color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 .photo-cards:not(.is-list) .photo-card-photo,
 .photo-card-ghost .photo-card-photo {
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 4 / 3;
   border-radius: inherit;
   background: none;
 }
@@ -217,10 +218,10 @@
   right: 0;
   bottom: 0;
   align-items: center;
-  padding: 30px 10px 6px;
+  padding: var(--ds-space-8) var(--ds-space-2) var(--ds-space-2);
   border-radius: 0 0 var(--ds-radius-pane) var(--ds-radius-pane);
-  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ds-veil) 62%, transparent) 45%, color-mix(in srgb, var(--ds-veil) 86%, transparent));
-  color: var(--ds-on-slate);
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ds-shade) 62%, transparent) 45%, color-mix(in srgb, var(--ds-shade) 86%, transparent));
+  color: var(--ds-on-dark);
   pointer-events: none;
 }
 .photo-cards:not(.is-list) .photo-card-name,
@@ -228,11 +229,11 @@
   align-self: stretch;
   color: inherit;
   text-align: center;
-  text-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 50%, transparent);
+  text-shadow: var(--ds-scene-text-shadow);
 }
 .photo-cards:not(.is-list) .photo-card.is-unavailable .photo-card-name,
-.photo-card-ghost.is-unavailable .photo-card-name { color: var(--ds-smoke-muted); }
-.photo-cards:not(.is-list) .photo-card-cue { margin-top: 2px; }
+.photo-card-ghost.is-unavailable .photo-card-name { color: var(--ds-on-dark-muted); }
+.photo-cards:not(.is-list) .photo-card-cue { margin-top: var(--ds-space-1); }
 /* A card without a photo is a pane of the light glass (2026-11-25 user remark: the dark panes made the screen look
    dark), its mark and name in the glass's ink with no shade under them. */
 .photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked),
@@ -240,37 +241,37 @@
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  color: var(--ds-glass-ink);
+  color: var(--ds-ink);
 }
 .photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked) .photo-card-text,
-.photo-card-ghost:has(.photo-card-plain) .photo-card-text { background: none; color: var(--ds-glass-ink); }
+.photo-card-ghost:has(.photo-card-plain) .photo-card-text { background: none; color: var(--ds-ink); }
 .photo-cards:not(.is-list) .photo-card:is(:has(.photo-card-plain), .is-locked) .photo-card-name,
 .photo-card-ghost:has(.photo-card-plain) .photo-card-name { text-shadow: none; }
 .photo-cards:not(.is-list) .photo-card.is-unavailable:has(.photo-card-plain) .photo-card-name,
-.photo-card-ghost.is-unavailable:has(.photo-card-plain) .photo-card-name { color: var(--ds-glass-muted); }
+.photo-card-ghost.is-unavailable:has(.photo-card-plain) .photo-card-name { color: var(--ds-ink-muted); }
 .photo-cards:not(.is-list) .photo-card.is-locked {
-  border: 1px dashed var(--ds-glass-muted);
+  border: var(--ds-edge-thin) dashed var(--ds-ink-muted);
   box-shadow: none;
 }
-.photo-cards:not(.is-list) .photo-card-plain:not([style]),
-.photo-card-ghost .photo-card-plain:not([style]) { background: none; color: var(--ds-glass-ink); }
-.photo-cards:not(.is-list) .photo-card-plain { padding-bottom: 24px; }
-.photo-cards:not(.is-list) .photo-card.is-locked .photo-card-name { color: var(--ds-glass-muted); }
+.photo-cards:not(.is-list) .photo-card-plain,
+.photo-card-ghost .photo-card-plain { background: none; color: var(--ds-ink); }
+.photo-cards:not(.is-list) .photo-card-plain { padding-bottom: var(--ds-space-6); }
+.photo-cards:not(.is-list) .photo-card.is-locked .photo-card-name { color: var(--ds-ink-muted); }
 /* The marks over the photo are smoked glass: what the place holds and 訪問済み at the top left (clear of the name), the
    current place, 「おすすめ」 or 「最寄り」 at the top right. */
 .photo-card-kind {
   position: absolute;
-  top: 6px;
-  left: 6px;
+  top: var(--ds-space-2);
+  left: var(--ds-space-2);
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--ds-space-1);
   height: var(--photo-card-mark);
-  padding: 0 6px;
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
 }
-.photo-card-kind .icon { width: 12px; height: 12px; }
+.photo-card-kind .icon { width: var(--ds-icon-small); height: var(--ds-icon-small); }
 .photo-cards:not(.is-list) > li > .photo-card .photo-card-kind { opacity: var(--card-text); }
 .photo-cards:not(.is-list) :is(.photo-card-chip, .photo-card-kind),
 .photo-card-ghost :is(.photo-card-chip, .photo-card-kind),
@@ -281,9 +282,9 @@
   box-shadow: var(--ds-smoke-edge);
 }
 .photo-cards:not(.is-list) .photo-card-chip.is-top,
-.photo-card-ghost .photo-card-chip.is-top { top: 6px; right: 6px; }
+.photo-card-ghost .photo-card-chip.is-top { top: var(--ds-space-2); right: var(--ds-space-2); }
 .photo-cards:not(.is-list) .photo-card-chip.is-bottom,
-.photo-card-ghost .photo-card-chip.is-bottom { top: 6px; bottom: auto; left: 6px; line-height: var(--photo-card-mark); }
+.photo-card-ghost .photo-card-chip.is-bottom { top: var(--ds-space-2); bottom: auto; left: var(--ds-space-2); line-height: var(--photo-card-mark); }
 .photo-cards:not(.is-list) .photo-card-kind ~ .photo-card-chip.is-bottom,
 .photo-card-ghost .photo-card-kind ~ .photo-card-chip.is-bottom { left: 34px; }
 .photo-cards:not(.is-list) .photo-card-kind.is-both ~ .photo-card-chip.is-bottom,
@@ -296,23 +297,23 @@
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  color: var(--ds-glass-ink);
+  color: var(--ds-ink);
 }
 .photo-cards.is-list .photo-card:not(.is-locked)[aria-current="true"] {
   background: var(--ds-glass-bg);
-  box-shadow: inset 0 0 0 1.5px var(--ds-glass-ink), var(--ds-glass-shadow);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
 }
-.photo-cards.is-list .photo-card.is-unavailable .photo-card-name { color: var(--ds-glass-muted); }
-.photo-cards.is-list .photo-card-plain:not([style]) {
+.photo-cards.is-list .photo-card.is-unavailable .photo-card-name { color: var(--ds-ink-muted); }
+.photo-cards.is-list .photo-card-plain {
   background: var(--ds-smoke);
   -webkit-backdrop-filter: var(--ds-smoke-blur);
   backdrop-filter: var(--ds-smoke-blur);
 }
 .photo-cards .photo-card:not(.is-locked)[aria-current="true"] {
-  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 10px 26px color-mix(in srgb, var(--ds-veil) 50%, transparent), 0 0 26px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-dark-2), var(--ds-shadow-large), 0 0 26px color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 .photo-cards .photo-card:is(.is-story, .is-date, .is-both)[aria-current="true"] {
-  box-shadow: inset 0 0 0 2px var(--ds-marker-selected), 0 10px 26px color-mix(in srgb, var(--ds-veil) 50%, transparent), 0 0 26px color-mix(in srgb, var(--ds-marker-selected) 32%, transparent);
+  box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow-large), 0 0 26px color-mix(in srgb, var(--ds-light) 32%, transparent);
 }
 .photo-card-photo {
   position: relative;
@@ -320,27 +321,27 @@
   flex: none;
   overflow: hidden;
   aspect-ratio: 4 / 3;
-  border-radius: var(--ds-radius-field);
-  background: var(--ds-parchment-2);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-chosen);
 }
 .photo-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* A place without a photo, 「ホテルに戻る」 and the tour: a plain tile (the place's colour, else the slate) and a mark. */
+/* A place without a photo, 「ホテルに戻る」 and the tour: a plain tile (the place's colour, else the dark grey) and a mark. */
 .photo-card-plain {
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
-  background: var(--ds-slate-800);
-  color: color-mix(in srgb, var(--ds-light) 92%, transparent);
-  font-size: var(--ds-text-title);
+  background: var(--ds-dark-2);
+  color: color-mix(in srgb, var(--ds-light) 88%, transparent);
+  font-size: var(--ds-text-heading);
 }
-.photo-card-plain .icon { width: 32px; height: 32px; }
+.photo-card-plain .icon { width: var(--ds-icon-xl); height: var(--ds-icon-xl); }
 /* No filter on photos (their pixels stay as credited): a cannot-go card only fades its photo. */
 .photo-card.is-unavailable .photo-card-photo > img,
-.photo-card.is-unavailable .photo-card-plain { opacity: 0.55; }
+.photo-card.is-unavailable .photo-card-plain { opacity: var(--ds-opacity-soft); }
 .photo-card.is-unavailable .photo-card-name { color: var(--ds-ink-muted); }
-/* On a fill: 9.6:1 on the slate, 4.6:1 on the rose. */
-.photo-card:is(.is-story, .is-date, .is-both).is-unavailable .photo-card-name { color: var(--ds-on-slate-muted); }
+/* On a fill: 9.6:1 on the dark grey, 5:1 or more on the mid grey. */
+.photo-card:is(.is-story, .is-date, .is-both).is-unavailable .photo-card-name { color: var(--ds-on-dark-muted); }
 /* A date not open yet (2026-11-13, # hint:): a grey silhouette with a dashed edge and a lock, its name the writer's hint
    in two lines at most (the card under the row shows it whole). Nothing on it departs. */
 .photo-card.is-locked {
@@ -350,7 +351,7 @@
   box-shadow: none;
   cursor: default;
 }
-.photo-card.is-locked[aria-current="true"] { background: var(--ds-disabled-bg); box-shadow: inset 0 0 0 1.5px var(--ds-disabled-ink); }
+.photo-card.is-locked[aria-current="true"] { background: var(--ds-disabled-bg); box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-disabled-ink); }
 .photo-card-plain.photo-card-silhouette { background: var(--photo-free-time-photo-card-silhouette-ground); color: var(--ds-disabled-ink); }
 .photo-card.is-locked .photo-card-name {
   display: -webkit-box;
@@ -364,25 +365,25 @@
 /* Status over the photo: display-only pills on a solid ground. */
 .photo-card-chip {
   position: absolute;
-  max-width: calc(100% - 8px);
-  padding: 0 8px;
+  max-width: calc(100% - var(--ds-space-2));
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-chip-bg);
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-mark);
-  font-weight: 600;
-  line-height: var(--ds-leading-chip);
+  background: var(--ds-smoke);
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.photo-card-chip.is-top { top: 4px; right: 4px; }
-.photo-card-chip.is-bottom { bottom: 4px; left: 4px; }
-.photo-card-text { display: flex; flex-direction: column; min-width: 0; padding: 6px 4px 0; }
+.photo-card-chip.is-top { top: var(--ds-space-1); right: var(--ds-space-1); }
+.photo-card-chip.is-bottom { bottom: var(--ds-space-1); left: var(--ds-space-1); }
+.photo-card-text { display: flex; flex-direction: column; min-width: 0; padding: var(--ds-space-2) var(--ds-space-1) 0; }
 .photo-card-name {
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  font-weight: 600;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
@@ -394,25 +395,25 @@
   position: relative;
   display: block;
   height: 16px;
-  margin-top: 4px;
+  margin-top: var(--ds-space-1);
   visibility: hidden;
 }
 .photo-card-cue::before,
 .photo-card-cue::after {
   content: "";
   position: absolute;
-  top: 7px;
+  top: var(--ds-space-2);
   left: 50%;
   width: 7px;
   height: 7px;
   margin-left: -4px;
-  border-top: 2px solid currentColor;
-  border-left: 2px solid currentColor;
+  border-top: var(--ds-edge) solid currentColor;
+  border-left: var(--ds-edge) solid currentColor;
   transform: rotate(45deg);
   opacity: 0;
-  animation: photo-card-cue-rise 1.6s ease-out infinite;
+  animation: photo-card-cue-rise 1.6s var(--ease-out) infinite;
 }
-.photo-card-cue::after { animation-delay: 0.3s; }
+.photo-card-cue::after { animation-delay: var(--motion-short); }
 /* inherit, not visible: while its floating copy flies (useCardGestures hides the card), the cue goes with the card. */
 .photo-card[data-cue] .photo-card-cue { visibility: inherit; }
 @keyframes photo-card-cue-rise {
@@ -421,7 +422,7 @@
   75%, 100% { opacity: 0; translate: 0 -7px; }
 }
 .photo-cards:not(.is-list) .photo-card[data-cue]:not(.photo-card-ghost) {
-  animation: photo-card-lift 900ms var(--ease-out) 600ms both;
+  animation: photo-card-lift var(--motion-slow) var(--ease-out) var(--motion-slow) both;
 }
 @keyframes photo-card-lift {
   0%, 100% { translate: 0 0; }
@@ -431,12 +432,12 @@
 }
 .photo-cards.is-list .photo-card-cue { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .photo-card-cue::before, .photo-card-cue::after { opacity: 0.9; animation: none; }
+  .photo-card-cue::before, .photo-card-cue::after { opacity: var(--ds-opacity-strong); animation: none; }
   .photo-card-cue::after { top: 1px; }
   .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
 }
 .reduce-motion .photo-card-cue::before,
-.reduce-motion .photo-card-cue::after { opacity: 0.9; animation: none; }
+.reduce-motion .photo-card-cue::after { opacity: var(--ds-opacity-strong); animation: none; }
 .reduce-motion .photo-card-cue::after { top: 1px; }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
 
@@ -445,10 +446,10 @@
    reduced motion the chevrons only blink twice where they stand. The card's own lift stays first in the list, so it does
    not run again when the nudge ends. */
 .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) {
-  animation: photo-card-lift 900ms var(--ease-out) 600ms both, photo-card-nudge 700ms var(--ease-out);
+  animation: photo-card-lift var(--motion-slow) var(--ease-out) var(--motion-slow) both, photo-card-nudge var(--motion-slow) var(--ease-out);
 }
 .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge 350ms ease-out 2; }
+.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge var(--motion-short) var(--ease-out) 2; }
 @keyframes photo-card-nudge {
   0%, 50%, 100% { translate: 0 0; }
   22% { translate: 0 -14px; }
@@ -466,11 +467,11 @@
 @media (prefers-reduced-motion: reduce) {
   .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
   .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink var(--motion-short) steps(1) 2; }
 }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
 .reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::before,
-.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink var(--motion-short) steps(1) 2; }
 
 /* The row's drags (useCardGestures, user decision 2026-11-11). On the row a sideways drag stays the row's own scroll
    and a drag up lifts the chosen card, so the row leaves the browser its sideways panning only. Elsewhere on the screen
@@ -499,17 +500,17 @@
   z-index: var(--ds-layer-drag-note);
   translate: -50% -50%;
   width: max-content;
-  max-width: min(calc(100vw - 32px), 320px);
-  padding: 8px 18px;
-  border: 1px solid var(--ds-gold-hairline);
+  max-width: min(calc(100vw - var(--ds-space-8)), 320px);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-window-bg);
-  color: var(--ds-on-slate);
-  box-shadow: var(--ds-window-shadow);
+  background: var(--ds-smoke-on);
+  color: var(--ds-on-dark);
+  box-shadow: var(--ds-shadow-large);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--ds-tracking-1);
   text-align: center;
   overflow-wrap: anywhere;
   pointer-events: none;
@@ -539,25 +540,25 @@
 }
 
 /* A card new to the row (PhotoCardFreeTime useJoiningCards, 2026-11-13): a destination the story opened is dealt in.
-   After JOIN_DELAY_MS (the screen has appeared; card_new sounds then) it springs up from small with a gold gleam that
+   After JOIN_DELAY_MS (the screen has appeared; card_new sounds then) it springs up from small with a white gleam that
    fades as it settles. Its slot keeps its place throughout (only the card moves), and the motion stays inside the row's
    padding, which clips. In the list it slides in from the side. Reduced motion: it fades in with the gleam, unmoving. */
-.photo-cards > li[data-joining] { animation: photo-card-join 760ms var(--ease-out) 220ms both; }
+.photo-cards > li[data-joining] { animation: photo-card-join var(--motion-slow) var(--ease-out) var(--motion-fast) both; }
 .photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-list; }
 @keyframes photo-card-join {
   0% { opacity: 0; scale: 0.4; translate: 0 -8px; filter: drop-shadow(0 0 0 transparent); }
-  55% { opacity: 1; scale: 1.06; translate: 0 0; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-gold) 95%, transparent)); }
+  55% { opacity: 1; scale: 1.06; translate: 0 0; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-hairline) 95%, transparent)); }
   78% { scale: 0.98; }
   100% { opacity: 1; scale: 1; filter: drop-shadow(0 0 0 transparent); }
 }
 @keyframes photo-card-join-list {
   0% { opacity: 0; translate: 32px 0; filter: drop-shadow(0 0 0 transparent); }
-  60% { opacity: 1; translate: -4px 0; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-gold) 95%, transparent)); }
+  60% { opacity: 1; translate: -4px 0; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-hairline) 95%, transparent)); }
   100% { opacity: 1; translate: 0 0; filter: drop-shadow(0 0 0 transparent); }
 }
 @keyframes photo-card-join-still {
   0% { opacity: 0; filter: drop-shadow(0 0 0 transparent); }
-  50% { opacity: 1; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-gold) 95%, transparent)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-hairline) 95%, transparent)); }
   100% { opacity: 1; filter: drop-shadow(0 0 0 transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -569,27 +570,27 @@
 
 /* The list (short screens, large text, sideways): one card per line, the photo at the left; the chosen row's
    introduction card opens under it. */
-.photo-cards.is-list { flex-direction: column; gap: 6px; margin: 0; padding: 0; overflow: visible; scroll-snap-type: none; }
+.photo-cards.is-list { flex-direction: column; gap: var(--ds-space-2); margin: 0; padding: 0; overflow: visible; scroll-snap-type: none; }
 .photo-cards.is-list::before,
 .photo-cards.is-list::after { content: none; }
 .photo-cards.is-list > li { display: block; flex: none; pointer-events: auto; }
-.photo-cards.is-list .photo-card { flex-direction: row; align-items: flex-start; gap: 10px; width: 100%; padding: 6px; transform: none; }
-.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: 112px; aspect-ratio: 3 / 2; }
-.photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: 2px 0 0; }
-.photo-cards.is-list .place-card { margin-top: 6px; }
+.photo-cards.is-list .photo-card { flex-direction: row; align-items: flex-start; gap: var(--ds-space-2); width: 100%; padding: var(--ds-space-2); transform: none; }
+.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: var(--ds-size-6); aspect-ratio: 3 / 2; }
+.photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: var(--ds-space-1) 0 0; }
+.photo-cards.is-list .place-card { margin-top: var(--ds-space-2); }
 
 /* The card under the row: a place's introduction, 「待機」's waits, 「ホテルに戻る」's 休む or the tour. On the page it is
-   glass over the city (styles.css's glass surfaces); in the expanded map's dialog, parchment. */
+   glass over the city (styles.css's glass surfaces); in the expanded map's dialog, light ground. */
 .place-card {
   display: grid;
-  gap: 8px;
+  gap: var(--ds-space-2);
   margin: 0;
-  padding: 12px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-3);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-shadow);
   touch-action: manipulation;
 }
 /* On the glass under the row (2026-11-27 user requests: one UI with the talk's window): the window's room round its
@@ -601,57 +602,57 @@
 .place-card .place-card-name {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ds-space-2);
   margin: 0;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-1);
   line-height: var(--ds-leading-tight);
 }
 .place-card .place-card-name > span:last-child { min-width: 0; overflow-wrap: anywhere; }
-.place-card-event-list { display: grid; gap: 8px; }
-.place-card-event { display: grid; gap: 4px; }
-.place-card-event + .place-card-event { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
-.place-card-event-title { margin: 0; font-size: var(--ds-text-body); font-weight: 600; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.place-card-event-list { display: grid; gap: var(--ds-space-2); }
+.place-card-event { display: grid; gap: var(--ds-space-1); }
+.place-card-event + .place-card-event { padding-top: var(--ds-space-2); border-top: var(--ds-edge-thin) solid var(--ds-line); }
+.place-card-event-title { margin: 0; font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* A place with several events: which one the swipe up (or 「行く」) takes, ● the chosen one; a press only chooses it
    (its ways show under it). */
 .place-card-event-choice {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ds-space-2);
   width: 100%;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 6px 10px;
-  border: 1px solid var(--ds-field-edge);
+  padding: var(--ds-space-2) var(--ds-space-2);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
   text-align: left;
   cursor: pointer;
 }
-.place-card-event-choice[aria-pressed="true"] { background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1px var(--ds-ink); }
+.place-card-event-choice[aria-pressed="true"] { background: var(--ds-surface-chosen); box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-ink); }
 .place-card-event-choice .place-card-tag { margin-right: 0; }
 .place-card-event-choice > span:last-child { min-width: 0; overflow-wrap: anywhere; }
-.place-card-event-mark { flex: none; font-size: var(--ds-text-caption); }
-.place-card-event-meta { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.place-card-event-mark { flex: none; font-size: var(--ds-text-small); }
+.place-card-event-meta { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 /* What an event is, before its title or its time: a display-only pill whose word says it (「ストーリー」, 「デート」), on
    the smoked glass for both (2026-11-25 user decision: the immersion before the colours decided earlier). */
 .place-card-tag {
   display: inline-block;
-  margin-right: 6px;
-  padding: 0 8px;
+  margin-right: var(--ds-space-2);
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-smoke);
-  color: var(--ds-on-slate);
-  font-size: var(--ds-text-mark);
-  font-weight: 600;
-  line-height: var(--ds-leading-chip);
+  color: var(--ds-on-dark);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
   white-space: nowrap;
   vertical-align: 1px;
 }
@@ -661,10 +662,10 @@
    (nothing in it is pressable). Each place chosen brings a new note, which comes in like a panel; under reduced motion
    it is simply there. */
 /* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
-.place-card .place-card-heroine { gap: 8px; }
-.place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
-.place-card .place-card-heroine .heroine-note-bubble { padding: 6px 13px 7px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); }
-.place-card .place-card-heroine .heroine-note-bubble::before { top: 12px; height: 10px; }
+.place-card .place-card-heroine { gap: var(--ds-space-2); }
+.place-card .place-card-heroine .character-face { width: var(--ds-size-4); height: var(--ds-size-4); }
+.place-card .place-card-heroine .heroine-note-bubble { padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
+.place-card .place-card-heroine .heroine-note-bubble::before { top: var(--ds-space-3); height: 10px; }
 /* The chosen card's sheet (PhotoCardPicker's CardSheet): each card chosen comes in like a cloud (2026-11-27 user
    decision): the card swells softly into place as a white mist over it drifts apart and thins away. The mist takes no
    press; under reduced motion there is none. */
@@ -672,16 +673,16 @@
 .photo-card-mist {
   position: absolute;
   z-index: 1;
-  inset: -14px 4px;
+  inset: -14px var(--ds-space-1);
   border-radius: 50%;
   background:
     radial-gradient(closest-side at 30% 45%, color-mix(in srgb, var(--ds-light) 85%, transparent), transparent),
     radial-gradient(closest-side at 70% 55%, color-mix(in srgb, var(--ds-light) 80%, transparent), transparent),
     radial-gradient(closest-side at 50% 50%, color-mix(in srgb, var(--ds-light) 70%, transparent), transparent);
-  filter: blur(14px);
+  filter: blur(var(--ds-blur));
   visibility: hidden; /* gone once it has drifted apart */
   pointer-events: none;
-  animation: photo-card-mist 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: photo-card-mist var(--motion-slow) var(--ease-out);
 }
 @keyframes photo-card-mist {
   from { visibility: visible; opacity: 0.9; transform: scale(0.8); }
@@ -691,16 +692,13 @@
 @media (prefers-reduced-motion: reduce) {
   .photo-card-mist { display: none; }
 }
-.place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
-@keyframes place-card-heroine-in {
-  from { opacity: 0; transform: translateY(4px) scale(0.98); }
-}
+.place-card .place-card-heroine { margin: 0; animation: ds-rise-in var(--motion-fast) var(--ease-out); }
 .reduce-motion .place-card .place-card-heroine { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .place-card .place-card-heroine { animation: none; }
 }
-.place-card-note { color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
-.place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.place-card-note { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
+.place-card .fine-print { margin: 0 var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 
 /* The way: the modes in one row, each with its time and fare (pressing one only chooses it), or the one way as a line;
    then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「待機」's waits and
@@ -708,22 +706,22 @@
    decision: the immersion first) a mode or chip is the light pane to press (--ds-press-shadow), the chosen one the
    smoked glass of the talk's choices with its white hairline, one that cannot be chosen the disabled press (flat, a faint
    grey, its words muted: styles.css, 2026-11-27 one UI). */
-.place-card-ways { display: grid; gap: 6px; margin-top: 2px; }
-.place-card-modes { display: flex; gap: 6px; }
+.place-card-ways { display: grid; gap: var(--ds-space-2); margin-top: var(--ds-space-1); }
+.place-card-modes { display: flex; gap: var(--ds-space-2); }
 .place-card-mode {
   flex: 1 1 0;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 4px 6px;
-  border: 1px solid transparent;
+  padding: var(--ds-space-1) var(--ds-space-2);
+  border: var(--ds-edge-thin) solid transparent;
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
   cursor: pointer;
@@ -732,35 +730,34 @@
   border-color: transparent;
   background: var(--ds-action-fill);
   color: var(--ds-action-ink);
-  box-shadow: inset 0 0 0 1px var(--ds-action-edge);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
   text-shadow: var(--ds-action-text-shadow);
 }
 .place-card-mode:disabled,
 .place-card-option:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; cursor: default; }
-.place-card-mode-cost { display: block; font-size: var(--ds-text-caption); font-weight: 500; font-variant-numeric: tabular-nums; }
+.place-card-mode-cost { display: block; font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); font-variant-numeric: tabular-nums; }
 /* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
-   so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one with ✓
-   on the modes' smoked glass. Their longer words wrap the row, each chip at least about eight characters wide; one that
-   cannot be chosen is the disabled press. */
-.place-card-options { display: flex; flex-wrap: wrap; gap: 8px; }
+   so they are chips, not the filled look of a button that acts: pills with the modes' thin edge, the chosen one on the
+   modes' smoked glass with no mark (2026-11-28 user decision: the modes have none). Their longer words wrap the row,
+   each chip at least about eight characters wide; one that cannot be chosen is the disabled press. */
+.place-card-options { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
 .place-card-option {
   display: inline-flex;
   flex: 1 1 8em;
   align-items: center;
   justify-content: center;
-  gap: 6px;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 4px 14px;
-  border: 1px solid transparent;
+  padding: var(--ds-space-1) var(--ds-space-4);
+  border: var(--ds-edge-thin) solid transparent;
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   box-shadow: var(--ds-press-shadow);
   color: var(--ds-ink);
   font: inherit;
   font-size: var(--ds-text-note);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
   cursor: pointer;
@@ -769,28 +766,27 @@
   border-color: transparent;
   background: var(--ds-action-fill);
   color: var(--ds-action-ink);
-  box-shadow: inset 0 0 0 1px var(--ds-action-edge);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
   text-shadow: var(--ds-action-text-shadow);
 }
-.place-card-option-mark { flex: none; font-size: var(--ds-text-body); font-weight: 700; line-height: 1; }
 .place-card-option-text { min-width: 0; }
 /* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. Plain
    weight like the card's other prose (2026-11-27: bold, 「30分待つ」 read as a button that did nothing). */
-.place-card-way { margin: 0 2px; font-size: var(--ds-text-note); font-weight: 400; line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
+.place-card-way { margin: 0 var(--ds-space-1); font-size: var(--ds-text-note); font-weight: var(--ds-weight-regular); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .place-card-way .place-card-mode-cost { display: inline; }
 .place-card-way.is-unavailable { color: var(--ds-ink-muted); }
 .place-card .place-card-go {
   flex-wrap: wrap;
-  gap: 2px 10px;
-  min-height: 48px;
+  gap: var(--ds-space-1) var(--ds-space-2);
+  min-height: var(--ds-press);
   margin: 0;
-  padding: 8px 14px;
+  padding: var(--ds-space-2) var(--ds-space-4);
   font-size: var(--ds-text-body);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
 .place-card-go > span { min-width: 0; overflow-wrap: anywhere; }
-.place-card-go-cost { margin-left: auto; font-size: var(--ds-text-note); font-weight: 500; }
+.place-card-go-cost { margin-left: auto; font-size: var(--ds-text-note); font-weight: var(--ds-weight-medium); }
 /* In the row: kept for screen readers and the keyboard (visually hidden until it has the focus). */
 .place-card .place-card-go.is-quiet:not(:focus) {
   position: absolute;
@@ -807,35 +803,35 @@
 
 /* The small map: display only (a swipe over it scrolls the page), its credit's link the one thing to press. Leaflet's
    own layers (z-index 400–1000) stay inside it. */
-.place-card-map { position: relative; display: grid; gap: 2px; }
-.place-inset { display: grid; gap: 2px; }
+.place-card-map { position: relative; display: grid; gap: var(--ds-space-1); }
+.place-inset { display: grid; gap: var(--ds-space-1); }
 .place-inset-map {
   height: 136px;
-  border: 1px solid var(--ds-parchment-line);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-map-ground);
   isolation: isolate;
   pointer-events: none;
 }
-.place-inset-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-mark); }
+.place-inset-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-small); }
 .place-inset-map .travel-map-marker-label { --map-label-max: 150px; }
-.place-inset-map .travel-map-marker-label.is-below { top: calc(100% + 4px); bottom: auto; }
-.place-inset-error { font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.place-inset-map .travel-map-marker-label.is-below { top: calc(100% + var(--ds-space-1)); bottom: auto; }
+.place-inset-error { font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 /* The direction: a display-only pill over the small map's top-left corner (above Leaflet's layers). */
 .place-card-direction {
   position: absolute;
   z-index: var(--ds-layer-map-note);
-  top: 6px;
-  left: 6px;
+  top: var(--ds-space-2);
+  left: var(--ds-space-2);
   margin: 0;
-  padding: 1px 8px;
+  padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
-  box-shadow: var(--ds-pill-shadow);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-small);
   color: var(--ds-ink);
-  font-size: var(--ds-text-mark);
-  font-weight: 600;
-  line-height: var(--ds-leading-chip);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
   pointer-events: none;
 }
 

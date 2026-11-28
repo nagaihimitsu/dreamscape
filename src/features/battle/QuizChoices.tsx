@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { MOTION } from "../../components/motion";
 import type { AskedQuestion } from "../../content/english-levels";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import { ReadAloudButton, type ReadAloud } from "../learning/ReadAloud";
@@ -7,8 +8,10 @@ import type { Learning } from "../learning/useLearning";
 import { quizChoiceMark, quizChoiceStays, type QuizChoiceMark } from "./quiz-choice-mark";
 import "../journey/encounter.css";
 
-/** How long a leaving option takes: it fades out, then the rows close up over its place. */
-export const QUIZ_CHOICE_LEAVE_MS = 520;
+/** How long a leaving option takes (MOTION, docs/14): it fades out, then the rows close up over its place. */
+export const QUIZ_CHOICE_LEAVE_MS = MOTION.scene;
+/** The way it moves: going away (styles.css --ease-in-out, a place given up; docs/14 「動き方」). */
+const LEAVE_EASING = "cubic-bezier(0.45, 0, 0.3, 1)";
 
 const MARK_WORDS: Record<QuizChoiceMark, { symbol: string; word: string }> = {
   right: { symbol: "○", word: "正解！" },
@@ -75,7 +78,7 @@ export function QuizChoices({ question, optionsJa, learning, reader, japaneseOnl
         { ...whole, opacity: 0, transform: "translateX(12px)", offset: 0.45 },
         { height: "0px", minHeight: "0px", paddingTop: "0px", paddingBottom: "0px", marginBottom: `${-gap}px`, opacity: 0,
           transform: "translateX(12px)" },
-      ], { duration: QUIZ_CHOICE_LEAVE_MS, easing: "cubic-bezier(.4, 0, .2, 1)", fill: "forwards" });
+      ], { duration: QUIZ_CHOICE_LEAVE_MS, easing: LEAVE_EASING, fill: "forwards" });
     });
     let current = true;
     Promise.all(animations.map((animation) => animation.finished)).then(() => {

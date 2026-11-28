@@ -16,7 +16,7 @@
   width: 100%;
   height: 100%;
   transform-origin: 50% 70%;
-  animation: comic-effect-appear 260ms ease-out both;
+  animation: comic-effect-appear var(--motion-short) var(--ease-out) both;
 }
 @keyframes comic-effect-appear {
   0% { opacity: 0; transform: scale(.7) translateY(4px); }
@@ -27,7 +27,7 @@
 /* Each mark comes in with a short motion of its own and then holds still,
    so it reads at a glance without pulling the eye from the line. The image
    remounts with each new line (cueKey), which plays it again. */
-.vn-character .comic-effect[data-effect="question"] img { animation: comic-effect-tilt 620ms ease-out both; }
+.vn-character .comic-effect[data-effect="question"] img { animation: comic-effect-tilt var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-tilt {
   0% { opacity: 0; transform: scale(.6) rotate(-18deg); }
   35% { opacity: 1; transform: scale(1.08) rotate(10deg); }
@@ -37,7 +37,7 @@
 }
 .vn-character .comic-effect[data-effect="exclamation"] img {
   transform-origin: 50% 100%;
-  animation: comic-effect-jump 420ms cubic-bezier(.2, .9, .3, 1.2) both;
+  animation: comic-effect-jump var(--motion-scene) var(--ease-out) both;
 }
 @keyframes comic-effect-jump {
   0% { opacity: 0; transform: translateY(6px) scale(.8, .5); }
@@ -47,14 +47,14 @@
 }
 .vn-character .comic-effect[data-effect="interrobang"] img {
   transform-origin: 50% 100%;
-  animation: comic-effect-jump 380ms cubic-bezier(.2, .9, .3, 1.2) both, comic-effect-shake 300ms 360ms ease-in-out;
+  animation: comic-effect-jump var(--motion-scene) var(--ease-out) both, comic-effect-shake var(--motion-short) var(--motion-short) var(--ease-in-out);
 }
 @keyframes comic-effect-shake {
   0%, 100% { transform: none; }
   20%, 60% { transform: translateX(-2px) rotate(-5deg); }
   40%, 80% { transform: translateX(2px) rotate(5deg); }
 }
-.vn-character .comic-effect[data-effect="anger"] img { animation: comic-effect-throb 640ms ease-out both; }
+.vn-character .comic-effect[data-effect="anger"] img { animation: comic-effect-throb var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-throb {
   0% { opacity: 0; transform: scale(.5); }
   22% { opacity: 1; transform: scale(1.2); }
@@ -63,32 +63,32 @@
   80% { transform: scale(.98); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="sweat"] img { animation: comic-effect-drip 560ms cubic-bezier(.3, .6, .4, 1) both; }
+.vn-character .comic-effect[data-effect="sweat"] img { animation: comic-effect-drip var(--motion-scene) var(--ease-out) both; }
 @keyframes comic-effect-drip {
   0% { opacity: 0; transform: translateY(-8px) scale(.85); }
   45% { opacity: 1; transform: translateY(3px) scale(.95, 1.08); }
   75% { transform: translateY(-1px); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="blush"] img { animation: comic-effect-glow 700ms ease-out both; }
+.vn-character .comic-effect[data-effect="blush"] img { animation: comic-effect-glow var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-glow {
   0% { opacity: 0; transform: scale(.9); }
   60% { opacity: 1; transform: scale(1.04); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="gloom"] img { animation: comic-effect-sink 900ms ease-in-out both; }
+.vn-character .comic-effect[data-effect="gloom"] img { animation: comic-effect-sink var(--motion-slow) var(--ease-in-out) both; }
 @keyframes comic-effect-sink {
   0% { opacity: 0; transform: translateY(-10px); }
   60% { opacity: .85; transform: translateY(2px); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="dizzy"] img { animation: comic-effect-spin 760ms cubic-bezier(.25, .8, .35, 1) both; }
+.vn-character .comic-effect[data-effect="dizzy"] img { animation: comic-effect-spin var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-spin {
   0% { opacity: 0; transform: scale(.6) rotate(-300deg); }
   60% { opacity: 1; transform: scale(1.05) rotate(20deg); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="music"] img { animation: comic-effect-sway 900ms ease-in-out both; }
+.vn-character .comic-effect[data-effect="music"] img { animation: comic-effect-sway var(--motion-slow) var(--ease-in-out) both; }
 @keyframes comic-effect-sway {
   0% { opacity: 0; transform: translateY(6px) rotate(-12deg); }
   25% { opacity: 1; transform: translateY(-3px) rotate(10deg); }
@@ -96,7 +96,7 @@
   75% { transform: translateY(-2px) rotate(5deg); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="heart"] img { animation: comic-effect-beat 720ms ease-out both; }
+.vn-character .comic-effect[data-effect="heart"] img { animation: comic-effect-beat var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-beat {
   0% { opacity: 0; transform: scale(.5); }
   25% { opacity: 1; transform: scale(1.2); }
@@ -105,19 +105,19 @@
   80% { transform: scale(.99); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="sparkle"] img { animation: comic-effect-twinkle 640ms ease-out both; }
+.vn-character .comic-effect[data-effect="sparkle"] img { animation: comic-effect-twinkle var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-twinkle {
   0% { opacity: 0; transform: scale(.2) rotate(-60deg); filter: brightness(1.6); }
   50% { opacity: 1; transform: scale(1.15) rotate(8deg); filter: brightness(1.4); }
   100% { opacity: 1; transform: none; filter: none; }
 }
-.vn-character .comic-effect[data-effect="sleep"] img { animation: comic-effect-float 1000ms ease-out both; }
+.vn-character .comic-effect[data-effect="sleep"] img { animation: comic-effect-float var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-float {
   0% { opacity: 0; transform: translate(-4px, 8px) scale(.8); }
   50% { opacity: 1; transform: translate(2px, -3px) scale(1.02); }
   100% { opacity: 1; transform: none; }
 }
-.vn-character .comic-effect[data-effect="sigh"] img { animation: comic-effect-drift 820ms ease-out both; }
+.vn-character .comic-effect[data-effect="sigh"] img { animation: comic-effect-drift var(--motion-slow) var(--ease-out) both; }
 @keyframes comic-effect-drift {
   0% { opacity: 0; transform: translate(-8px, 2px) scale(.85); }
   60% { opacity: 1; transform: translate(2px, 0) scale(1.02); }
@@ -131,5 +131,5 @@
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-  .comic-effect { top: 0; width: min(24px, 7dvh); }
+  .comic-effect { top: 0; width: min(var(--ds-space-6), 7dvh); }
 }

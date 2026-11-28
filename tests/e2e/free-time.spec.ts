@@ -37,17 +37,17 @@ test("the morning after a rest starts at the first place, with the first wait an
   await expect(first).toHaveAttribute("data-selected", "true");
   const firstId = (await first.getAttribute("data-testid"))!.slice("travel-place-".length);
 
-  // 「待機」: its two waits are chips, 「30分待つ」 chosen (✓) first; a press chooses the other. Pressed again, the chosen one
+  // 「待機」: its two waits are chips (no ✓: 2026-11-28), 「30分待つ」 chosen first; a press chooses the other. Pressed again, the chosen one
   // nudges the photo card's swipe cue (the swipe up is what waits: the chip only chooses).
   await menu.getByTestId("travel-wait").getByRole("button").first().click();
   const wait = menu.getByTestId("wait-card");
   const waits = wait.getByRole("group", { name: "待ち方" }).getByRole("button");
   await expect(waits).toHaveCount(2);
   await expect(waits.first()).toHaveAttribute("aria-pressed", "true");
-  await expect(waits.first()).toContainText("✓30分待つ");
+  await expect(waits.first()).toHaveText("30分待つ");
   await waits.last().click();
   await expect(waits.last()).toHaveAttribute("aria-pressed", "true");
-  await expect(waits.first()).not.toContainText("✓");
+  await expect(waits.first()).toHaveAttribute("aria-pressed", "false");
   await waits.last().click();
   await expect(menu.getByTestId("travel-wait").locator(".photo-card")).toHaveAttribute("data-nudge", "");
   await expect(page.getByTestId("free-time-hub")).toBeVisible();

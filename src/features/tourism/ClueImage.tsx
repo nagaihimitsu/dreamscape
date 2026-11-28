@@ -50,7 +50,7 @@ export function ClueImage({ clue }: { clue: TourismClue }) {
       />
       {region && <rect
         x={x} y={y} width={width} height={height}
-        fill="none" stroke="#fff7c0" strokeWidth="2"
+        fill="none" stroke="#ffffff" strokeWidth="2"
         vectorEffect="non-scaling-stroke"
       />}
     </svg>

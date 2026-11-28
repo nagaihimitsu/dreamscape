@@ -1,12 +1,13 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import "./fx.css";
+import { MOTION } from "./motion";
 
 // Small feedback marks shared by the header's buttons and 手がかり帳's (2026-11-13 user decision): presentation only,
 // decorative (aria-hidden; a mark's meaning is in its button's name), they take no presses, never move the focus and
 // never change the game.
 
 /** How long キラリ plays (milliseconds; fx.css): after the bag's pop, a light crosses the button and sparkles burst. */
-export const SPARKLE_MS = 900;
+export const SPARKLE_MS = MOTION.slow;
 
 /**
  * Whether the cue numbered `count` (a counter that grows by one with each change) plays: for `ms` after it changed. Never

@@ -13,6 +13,7 @@ import type { TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { announcement, sameTarget, type SelectionTarget, type TargetChoices } from "./travel-selection";
 import { formatTravelTime } from "./travel-time";
+import { MOTION } from "../../components/motion";
 
 /** A place's card: the destination with every event there (sightseeing and dates alike). */
 export type PhotoCardEntry = {
@@ -232,11 +233,20 @@ export function chooseSleepWay<T extends Pick<SleepOption, "route" | "plan">>(op
 }
 
 /**
- * A way home in words: at the hotel 「ホテルに戻って休む」 (user decision 2026-11-11), else 「{mode}で帰る」 and, when it
- * changes to walking at a place, 「・{place}から徒歩」 (`mode` and `via` already in words).
+ * A way home in words, for the live regions: at the hotel 「ホテルに戻って休む」 (user decision 2026-11-11), else
+ * 「{mode}で帰る」 and, when it changes to walking at a place, 「・{place}から徒歩」 (`mode` and `via` already in words).
  */
 export function sleepWayLabelJa({ atHotel, mode, via }: { atHotel: boolean; mode: string; via?: string }): string {
   return atHotel ? "ホテルに戻って休む" : `${mode}で帰る${via ? `・${via}から徒歩` : ""}`;
+}
+
+/**
+ * A way home as 「ホテルに戻る」's card and the expanded map's bar show it: the mode alone, as a place's ways show theirs
+ * (2026-11-28 user decision: 「休む」 above already says it goes back), with 「・{place}から徒歩」 when it changes to walking
+ * at a place; at the hotel 「ホテルに戻って休む」.
+ */
+export function sleepWayShortJa({ atHotel, mode, via }: { atHotel: boolean; mode: string; via?: string }): string {
+  return atHotel ? "ホテルに戻って休む" : `${mode}${via ? `・${via}から徒歩` : ""}`;
 }
 
 /** Why a way home cannot be taken ("" when it can). */
@@ -449,7 +459,7 @@ export function flickSpeed(samples: readonly SwipeSample[], axis: "x" | "y"): nu
 }
 
 /** How far a sideways drag of the screen glides on once let go: its release speed for this long (ms). */
-export const GLIDE_MS = 200;
+export const GLIDE_MS = MOTION.fast;
 
 /**
  * The card a sideways drag of the screen leaves in the row's centre (`centres` and `centre` as nearestIndex; `speed` the

@@ -34,6 +34,7 @@ import { playSe } from "../../audio/sound-effects";
 import { usePreloadDestination } from "../../media/preload-ahead";
 import "./free-time-hub.css";
 import "./photo-free-time.css";
+import { MOTION } from "../../components/motion";
 
 /**
  * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「街歩きの画面」): the epilogue's button, one row of photo cards (「待機」,
@@ -295,9 +296,9 @@ function useCueNudge(hub: { current: HTMLElement | null }) {
 }
 
 /** When a joining card's motion starts (photo-free-time.css photo-card-join's delay: the screen has appeared). */
-const JOIN_DELAY_MS = 220;
+const JOIN_DELAY_MS = MOTION.fast;
 /** How long the cards count as joining (the motion's delay and length, with some room). */
-const JOIN_MS = 1400;
+const JOIN_MS = MOTION.long;
 
 /**
  * The cards new to the row (2026-11-13, photo-cards.ts newCardIds): a destination the story opened (a date whose `when:`

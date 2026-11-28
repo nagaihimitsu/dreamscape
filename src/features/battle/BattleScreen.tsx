@@ -10,6 +10,7 @@ import { useEstablishingShot } from "../../components/useEstablishingShot";
 import { speakerSpot, useNameBand } from "../../components/name-band";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { LineCards } from "../../components/LineCards";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { ItemShowLayer } from "../../components/ItemShow";
 import { ItemOutLayer, itemOutCard } from "../../components/ItemOut";
@@ -727,6 +728,7 @@ export function BattleScreen({
           )
         )}
       </section>
+      <LineCards />
       </div>
       {/* The options float above the window, which keeps the question they answer, as the talk's choices do; her whisper
           (the hint) above them, and after a right answer her line in its place (HeroineNote). */}

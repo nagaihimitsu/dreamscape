@@ -1,7 +1,7 @@
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
   --travel-transition-scene-ground: #c7e0dd;
-  --travel-transition-scene-ground-2: #eef1df;
+  --travel-transition-scene-ground-2: var(--ds-gray-6);
   --travel-transition-hill-back-ground: #b2c9b0;
   --travel-transition-hill-front-ground: #a2bfa9;
   --travel-transition-wire-edge: #57796b88;
@@ -9,8 +9,8 @@
   --travel-transition-is-mid-fill: #7f9f88;
   --travel-transition-is-near-fill: #56705f;
   --travel-transition-ground-ground: #637c68;
-  --travel-transition-ground-edge: #e8e6cf99;
-  --travel-transition-is-rail-edge: #e8e6cfaa;
+  --travel-transition-ground-edge: color-mix(in srgb, var(--ds-gray-6) 70%, transparent);
+  --travel-transition-is-rail-edge: color-mix(in srgb, var(--ds-gray-6) 70%, transparent);
 }
 .travel-transition {
   position: fixed;
@@ -20,7 +20,7 @@
   place-items: center;
   /* The scene and, under it, the ride's map card together in the middle. */
   align-content: center;
-  gap: 10px;
+  gap: var(--ds-space-2);
   /* Takes stray taps while it shows (a double tap on a destination never reaches the next scene, §3.3 H22). */
   pointer-events: auto;
 }
@@ -34,62 +34,62 @@
   z-index: -1;
   inset: 0;
   background: var(--ds-night);
-  animation: travel-transition-dark 1.8s ease both;
+  animation: travel-transition-dark 1.8s var(--ease-out) both;
 }
 .travel-transition.is-held::before { animation: none; }
-.travel-transition-scene, .travel-ride-map { animation: travel-transition-overlay 1.8s ease both; }
-/* The little scene in the dialogs' frame (UI redesign stage 2.3): a parchment mount with its
-   hairline and 16-px corners; the caption is a display-only parchment pill (§2.3). */
+.travel-transition-scene, .travel-ride-map { animation: travel-transition-overlay 1.8s var(--ease-out) both; }
+/* The little scene in the dialogs' frame (UI redesign stage 2.3): a light ground mount with its
+   hairline and 16-px corners; the caption is a display-only light ground pill (§2.3). */
 .travel-transition-scene {
   position: relative;
   overflow: hidden;
-  width: min(340px, calc(100vw - 32px));
+  width: min(340px, calc(100vw - var(--ds-space-8)));
   height: 112px;
-  border: 4px solid var(--ds-parchment);
+  border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-pane);
   background: linear-gradient(var(--travel-transition-scene-ground), var(--travel-transition-scene-ground-2) 78%);
-  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
 }
 .travel-transition-label {
   position: absolute;
   z-index: 3;
-  top: 6px;
+  top: var(--ds-space-2);
   left: 50%;
-  max-width: calc(100% - 12px);
+  max-width: calc(100% - var(--ds-space-3));
   transform: translateX(-50%);
-  padding: 2px 12px;
+  padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  box-shadow: var(--ds-pill-shadow);
+  box-shadow: var(--ds-shadow-small);
   font-size: var(--ds-text-note);
-  font-weight: 700;
-  line-height: var(--ds-leading-snug);
-  letter-spacing: .06em;
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
   width: max-content;
 }
 .travel-transition-hill {
   position: absolute;
-  bottom: 17px;
+  bottom: var(--ds-space-4);
   width: 180px;
   height: 34px;
   border-radius: 50% 50% 0 0;
 }
 .travel-transition-hill-back { right: -42px; background: var(--travel-transition-hill-back-ground); }
-.travel-transition-hill-front { left: -56px; bottom: 15px; background: var(--travel-transition-hill-front-ground); }
-.travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: 1px solid var(--travel-transition-wire-edge); }
+.travel-transition-hill-front { left: -56px; bottom: var(--ds-space-4); background: var(--travel-transition-hill-front-ground); }
+.travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: var(--ds-edge-thin) solid var(--travel-transition-wire-edge); }
 /* The passing scenery (PassingScenery: a skyline, trees and poles, far to near, over the hills that stay still far
    away): each layer moves left by one tile (120 px) per loop, the farther the slower, at the pace of the mode's kind
    (data-pace, sceneryPace; --scenery-pace is the near layer's loop). Transform only, under the vehicle and the caption;
    it stands still under reduced motion. */
-.travel-transition-scene { --scenery-pace: 1.4s; }
+.travel-transition-scene { --scenery-pace: var(--motion-long); }
 .travel-transition-scene[data-pace="slow"] { --scenery-pace: 3.6s; }
-.travel-transition-scene[data-pace="fast"] { --scenery-pace: 0.75s; }
+.travel-transition-scene[data-pace="fast"] { --scenery-pace: var(--motion-slow); }
 .travel-scenery {
   position: absolute;
   left: 0;
-  bottom: 20px;
+  bottom: var(--ds-space-6);
   display: block;
   animation: travel-scenery-pass var(--scenery-pace) linear infinite;
 }
@@ -102,29 +102,29 @@
   height: 20px;
   background: var(--travel-transition-ground-ground);
 }
-.travel-transition-ground::before { content: ""; position: absolute; inset: 6px 0 auto; border-top: 1px dashed var(--travel-transition-ground-edge); }
-.travel-transition-ground.is-rail::before { inset: 4px 0 auto; border-top: 2px solid var(--travel-transition-is-rail-edge); }
+.travel-transition-ground::before { content: ""; position: absolute; inset: var(--ds-space-2) 0 auto; border-top: var(--ds-edge-thin) dashed var(--travel-transition-ground-edge); }
+.travel-transition-ground.is-rail::before { inset: var(--ds-space-1) 0 auto; border-top: var(--ds-edge) solid var(--travel-transition-is-rail-edge); }
 .travel-transition-vehicle {
   position: absolute;
   z-index: 2;
   left: calc(50% - 51px);
-  bottom: 12px;
+  bottom: var(--ds-space-3);
   width: 102px;
   height: 58px;
-  animation: travel-transition-crossing 1.8s ease-in-out both;
+  animation: travel-transition-crossing 1.8s var(--ease-in-out) both;
 }
 .travel-transition-vehicle svg { display: block; width: 100%; height: 100%; }
-.travel-transition-vehicle.is-walk { bottom: 11px; }
-.travel-transition-leg { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate; }
+.travel-transition-vehicle.is-walk { bottom: var(--ds-space-3); }
+.travel-transition-leg { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step var(--motion-scene) var(--ease-in-out) infinite alternate; }
 .travel-transition-leg.is-second { animation-direction: alternate-reverse; }
-.travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate-reverse; }
+.travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step var(--motion-scene) var(--ease-in-out) infinite alternate-reverse; }
 .travel-transition-arm.is-second { animation-direction: alternate; }
 @keyframes travel-transition-overlay { 0%, 100% { opacity: 0; } 10%, 88% { opacity: 1; } }
 @keyframes travel-transition-dark { 0%, 88% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes travel-transition-crossing { 0% { transform: translateX(-105px); } 50% { transform: translateX(0); } 100% { transform: translateX(105px); } }
 @keyframes travel-transition-step { from { transform: rotate(-19deg); } to { transform: rotate(19deg); } }
 @keyframes travel-scenery-pass { to { transform: translateX(-120px); } }
-/* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its parchment mount, as wide as the scene and about
+/* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its light ground mount, as wide as the scene and about
    three-fifths as tall (2026-11-26 user request: larger, on the OpenStreetMap tiles of the same view; the card's ground
    until they come, or offline). The tiles are a little paled so the drawing reads on them. The place left ringed in the
    current place's green, the place reached in the markers' colour, their names in ink with a light halo, each whole: on
@@ -134,17 +134,17 @@
    reduced motion the whole line shows at once, still, without the party's mark. */
 .travel-ride-map {
   position: relative;
-  width: min(340px, calc(100vw - 32px));
+  width: min(340px, calc(100vw - var(--ds-space-8)));
   overflow: hidden;
-  border: 4px solid var(--ds-parchment);
+  border: var(--ds-edge-thick) solid var(--ds-surface);
   border-radius: var(--ds-radius-control);
   background: var(--travel-transition-scene-ground-2);
-  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
+  box-shadow: 0 0 0 var(--ds-edge-thin) var(--ds-line), var(--ds-shadow-large);
 }
 .travel-ride-view {
   position: absolute;
   inset: 0;
-  animation: travel-ride-near 1.8s ease-in-out both;
+  animation: travel-ride-near 1.8s var(--ease-in-out) both;
 }
 .travel-ride-tiles {
   position: absolute;
@@ -154,40 +154,40 @@
   background: var(--travel-transition-scene-ground-2);
   pointer-events: none;
 }
-.travel-ride-tiles .leaflet-tile-pane { opacity: .78; }
+.travel-ride-tiles .leaflet-tile-pane { opacity: var(--ds-opacity-dim); }
 .travel-ride-map svg { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; }
 .travel-ride-credit {
   position: absolute;
   z-index: 2;
   right: 0;
   bottom: 0;
-  padding: 0 5px;
-  border-top-left-radius: var(--ds-radius-field);
-  background: color-mix(in srgb, var(--ds-on-slate) 80%, transparent);
+  padding: 0 var(--ds-space-1);
+  border-top-left-radius: var(--ds-radius-control);
+  background: color-mix(in srgb, var(--ds-on-dark) 88%, transparent);
   color: var(--ds-ink);
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-body);
 }
 .travel-ride-dot {
-  fill: var(--ds-slate-800);
-  animation: travel-ride-dot .12s ease-out both;
+  fill: var(--ds-dark-2);
+  animation: travel-ride-dot var(--motion-instant) var(--ease-out) both;
   animation-delay: calc(.25s + var(--ride-dot-at, 0) * 1.2s);
 }
-.travel-ride-from { fill: var(--ds-on-slate); stroke: var(--ds-here); stroke-width: 3; }
-.travel-ride-to { fill: var(--ds-marker); stroke: var(--ds-on-slate); stroke-width: 2; }
+.travel-ride-from { fill: var(--ds-on-dark); stroke: var(--ds-here); stroke-width: 3; }
+.travel-ride-to { fill: var(--ds-ink-muted); stroke: var(--ds-on-dark); stroke-width: 2; }
 .travel-ride-party {
   fill: var(--ds-here);
-  stroke: var(--ds-on-slate);
+  stroke: var(--ds-on-dark);
   stroke-width: 2.5;
-  animation: travel-ride-go 1.2s .25s ease-in-out both;
+  animation: travel-ride-go var(--motion-long) var(--motion-short) var(--ease-in-out) both;
 }
 .travel-ride-name {
   fill: var(--ds-ink);
   font-size: var(--ds-text-note);
-  font-weight: 700;
-  letter-spacing: .02em;
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-1);
   paint-order: stroke;
-  stroke: var(--ds-on-slate);
+  stroke: var(--ds-on-dark);
   stroke-width: 3.5px;
   stroke-linejoin: round;
 }

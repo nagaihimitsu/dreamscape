@@ -164,7 +164,7 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
       const classes = `travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}${selected ? " is-selected" : ""}`;
       // The selected marker (U21): the glyph in yellow on a dark disc, larger, with its name above (display only).
       const html = `<span class="${classes}" aria-hidden="true">${symbol}</span>${selected ? `<span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(placeDisplayName(game, place))}</span>` : ""}`;
-      const size = selected ? 40 : 32;
+      const size = selected ? 44 : 32;
       const icon = L.divIcon({ className: "travel-map-marker-wrap", html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
       const marker = L.marker([place.latitude, place.longitude], { icon, keyboard: true, zIndexOffset: selected ? 1000 : 0 });
       // The element exists once the map has its first view (Leaflet adds layers then).
@@ -197,7 +197,7 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
     for (const id of trailPlaceIds(game, places.map((place) => place.id))) {
       const place = travel.places.find((item) => item.id === id);
       if (!place) continue;
-      const icon = L.divIcon({ className: "travel-map-trail-wrap", html: '<span class="travel-map-trail" aria-hidden="true">✓</span>', iconSize: [18, 18], iconAnchor: [9, 9] });
+      const icon = L.divIcon({ className: "travel-map-trail-wrap", html: '<span class="travel-map-trail" aria-hidden="true">✓</span>', iconSize: [16, 16], iconAnchor: [8, 8] });
       const trail = L.marker([place.latitude, place.longitude], { icon, interactive: false, keyboard: false, zIndexOffset: -1000 });
       trail.on("add", () => {
         const element = trail.getElement();

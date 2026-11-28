@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { presentation, tourismAssets } from "../content";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { TitleArt } from "../content/journey-catalog";
+import { MOTION } from "./motion";
 /** Original decorative illustration; all game information is also available as text. */
 export function CanalScene({
   compact = false,
@@ -30,15 +31,14 @@ export function CanalScene({
     <div
       className={`canal-scene ${compact ? "compact" : ""}`}
       data-fallback={backdrop?.fallback ?? "canal"}
-      style={backdrop?.fallback === "neutral" ? { backgroundColor: backdrop.color } : undefined}
       aria-hidden="true"
     >
       {backdrop?.fallback !== "neutral" && (
       <svg viewBox="0 0 800 440" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="sky" x2="0" y2="1">
-            <stop stopColor={backdrop?.color ?? "#e6d8bb"} />
-            <stop offset="1" stopColor="#f6ebd5" />
+            <stop stopColor="#dcdee2" />
+            <stop offset="1" stopColor="#eeeff1" />
           </linearGradient>
           <linearGradient id="water" x2="0" y2="1">
             <stop stopColor="#a7b8ab" />
@@ -46,7 +46,7 @@ export function CanalScene({
           </linearGradient>
         </defs>
         <path fill="url(#sky)" d="M0 0h800v440H0z" />
-        <circle cx="562" cy="90" r="41" fill="#fff4d7" />
+        <circle cx="562" cy="90" r="41" fill="#ffffff" />
         <path
           fill="#a1a590"
           d="M0 165h65v-35h82v47h63v-23h76v46h74v-50h60v72H0z"
@@ -62,10 +62,10 @@ export function CanalScene({
           <path d="M21 150h19v31H21zM61 150h19v31H61zM21 206h19v31H21zM61 206h19v31H61zM120 179h17v28h-17zM164 179h17v28h-17zM120 232h17v28h-17zM164 232h17v28h-17zM225 211h14v25h-14zM259 211h14v25h-14zM697 160h20v33h-20zM750 160h20v33h-20zM697 216h20v33h-20zM750 216h20v33h-20zM606 196h17v29h-17zM645 196h17v29h-17z" />
         </g>
         <path fill="url(#water)" d="M315 277h260l225 163H0z" />
-        <path fill="#d6c8ad" d="M0 288l315-11L145 440H0zM575 277l225 18v145z" />
+        <path fill="#cfd1d4" d="M0 288l315-11L145 440H0zM575 277l225 18v145z" />
         <path
           fill="none"
-          stroke="#eee3c6"
+          stroke="#e8e9eb"
           strokeWidth="3"
           opacity=".55"
           d="M350 317h113m-85 24h138m-214 31h108m25 30h150m-335 22h165"
@@ -126,7 +126,7 @@ export function CanalScene({
 type Artwork = { path: string; position?: { x: number; y: number } };
 
 /** How long a scene's next picture takes to fade in over the last (styles.css, --motion-scene). */
-const ARTWORK_FADE_MS = 450;
+const ARTWORK_FADE_MS = MOTION.scene;
 
 /**
  * The scene's picture. When a line changes it, the next one waits, unseen, over the one on

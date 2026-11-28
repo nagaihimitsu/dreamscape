@@ -160,10 +160,10 @@ function FaceIcon({ face, pride, full }: { face: Face; pride: number; full: numb
 function DrawnMap() {
   return (
     <svg viewBox="0 0 120 90" className="mg-raju-haggle-drawn-map" aria-hidden="true">
-      <path d="M4 6 L 116 2 L 114 86 L 6 88 Z" fill="#f6f0e2" stroke="#b9ae98" strokeWidth="1.5" />
-      {[18, 30, 42, 54, 66, 78].map((y) => <path key={y} d={`M8 ${y} L 112 ${y - 2}`} stroke="#a9c3d8" strokeWidth="0.8" />)}
-      <path d="M14 70 C 30 40, 52 62, 66 36 S 96 30, 102 20" fill="none" stroke="#5b5650" strokeWidth="1.6" strokeDasharray="4 3" />
-      <path d="M20 24 h12 v10 h-12 Z M70 60 q8 -10 16 0" fill="none" stroke="#5b5650" strokeWidth="1.4" />
+      <path d="M4 6 L 116 2 L 114 86 L 6 88 Z" fill="#f4f4f5" stroke="#a8abb2" strokeWidth="1.5" />
+      {[18, 30, 42, 54, 66, 78].map((y) => <path key={y} d={`M8 ${y} L 112 ${y - 2}`} stroke="#c4c7cd" strokeWidth="0.8" />)}
+      <path d="M14 70 C 30 40, 52 62, 66 36 S 96 30, 102 20" fill="none" stroke="#565a63" strokeWidth="1.6" strokeDasharray="4 3" />
+      <path d="M20 24 h12 v10 h-12 Z M70 60 q8 -10 16 0" fill="none" stroke="#565a63" strokeWidth="1.4" />
       <path d="M92 12 L 108 28 M108 12 L 92 28" stroke="#c8302a" strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   );

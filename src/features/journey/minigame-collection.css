@@ -1,23 +1,23 @@
 /* ミニゲーム集 (2026-11-20; MiniGameCollection.tsx): the list, one full-width row of at least 44 px per game (its name and
    length, where the journey plays it), as 旅の音楽室's rows; no card has a thick edge on one side. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --minigame-collection-stage-ground: #1d2420;
+  --minigame-collection-stage-ground: var(--ds-gray-1);
 }
 .minigame-collection-list {
   display: grid;
-  gap: 8px;
-  margin: 12px 0 4px;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-3) 0 var(--ds-space-1);
   padding: 0;
   list-style: none;
 }
 .minigame-collection-item {
   display: grid;
-  gap: 2px;
+  gap: var(--ds-space-1);
   width: 100%;
-  min-height: 56px;
-  padding: 8px 12px;
-  border: 1px solid var(--ds-parchment-line);
+  min-height: var(--ds-press-large);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-field);
   color: var(--ds-ink);
@@ -29,17 +29,17 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0 8px;
-  font-size: var(--ds-text-subhead);
-  font-weight: 700;
-  line-height: var(--ds-leading-snug);
+  gap: 0 var(--ds-space-2);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
 .minigame-collection-length,
 .minigame-collection-where {
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-note);
-  font-weight: 400;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-regular);
+  line-height: var(--ds-leading-body);
 }
 
 /* A game's stage: a dialog over the whole screen (as the end roll), the story's scene box in the app's column. Its name
@@ -47,8 +47,8 @@
    people stand below it), the game's start where the story's choices would be, in thumb reach; the play lies over the
    box from the top and hides the rest, as in a story (host.css). */
 dialog.modal.minigame-collection-stage {
-  --modal-pad-top: 0px;
-  --modal-pad-inline: 0px;
+  --modal-pad-top: 0;
+  --modal-pad-inline: 0;
   --scene-top: calc(56px + env(safe-area-inset-top, 0px));
   width: 100vw;
   max-width: 100vw;
@@ -63,7 +63,7 @@ dialog.modal.minigame-collection-stage {
 }
 .minigame-collection-scene {
   width: 100%;
-  max-width: 880px;
+  max-width: var(--ds-width-wide);
   height: 100%;
   min-height: 0;
   margin: 0 auto;
@@ -80,14 +80,14 @@ dialog.modal.minigame-collection-stage {
 .minigame-collection-window {
   position: relative;
   z-index: 2;
-  max-width: 560px;
-  width: calc(100% - 16px);
+  max-width: var(--ds-width-narrow);
+  width: calc(100% - var(--ds-space-4));
   margin: 0 auto calc(8px + env(safe-area-inset-bottom, 0px));
-  padding: 12px;
-  border: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-3);
+  border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
 }
 .minigame-collection-window .choices { margin-top: 0; padding-top: 0; border-top: 0; }
-.minigame-collection-from { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-snug); }
+.minigame-collection-from { margin: 0 0 var(--ds-space-2); color: var(--ds-ink-muted); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }

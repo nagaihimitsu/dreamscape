@@ -5,6 +5,7 @@ import {
 } from "./photo-cards";
 import type { PressKind } from "./travel-selection";
 import { playSe } from "../../audio/sound-effects";
+import { MOTION } from "../../components/motion";
 
 /** What a swipe up does (in the row; null: the chosen card does not take it: the tour, photo-cards.ts takesSwipe). */
 export type CardSwipe = {
@@ -31,8 +32,8 @@ export const centreOf = (item: HTMLElement) => item.offsetLeft + item.offsetWidt
 
 /** While the card cannot depart it follows the finger only this much (it will come back). */
 const HELD_BACK = 0.35;
-const SPRING_MS = 180;
-const FLY_MS = 240;
+const SPRING_MS = MOTION.fast;
+const FLY_MS = MOTION.fast;
 /** A departure that left this screen on show (the move did not happen): the card comes back after this long. */
 const RESTORE_MS = 1200;
 /** How long a refusal's words float over the card (photo-free-time.css .photo-card-refusal runs as long). */

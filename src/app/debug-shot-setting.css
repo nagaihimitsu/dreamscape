@@ -5,15 +5,15 @@
  */
 .debug-shot-setting {
   display: grid;
-  gap: 8px;
-  margin-top: 18px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-4);
 }
 .debug-shot-setting h2,
 .debug-shot-setting h3 {
   margin: 0;
 }
 .debug-shot-setting h2 {
-  font-size: var(--ds-text-subhead);
+  font-size: var(--ds-text-large);
   letter-spacing: 0;
 }
 .debug-shot-setting p {
@@ -23,8 +23,8 @@
 .debug-shot-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 44px;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-press-small);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   cursor: pointer;

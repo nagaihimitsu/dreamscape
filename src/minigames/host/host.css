@@ -2,17 +2,17 @@
    would be (in the dialogue window); the play lies over the whole scene, below what lies over the scene's top (--scene-top):
    the top band, the game's stage (its field and, at the bottom in thumb reach, its controls), the count, the finish word,
    the heroine's reaction and the result card. */
-/* The colours of this game's things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this game's things, named once (docs/14 「デザインの決まり」). */
 :root {
   --host-minigame-hand-finger-fill: #f6dcc4;
   --host-minigame-hand-finger-line: #2a211c;
-  --host-minigame-hand-beat-fill: #fff3cf;
-  --host-minigame-burst-ring-edge: #f6d36b;
+  --host-minigame-hand-beat-fill: #ffffff;
+  --host-minigame-burst-ring-edge: #ffffff;
   --host-minigame-particle-dust-ground: #d8bf94;
   --host-minigame-particle-splash-ground: #e8f4ff;
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --minigame-count-size: 72px;
   --minigame-go-size: 48px;
@@ -27,17 +27,17 @@
 .choices.minigame-ready > .minigame-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0 0 10px;
-  padding: 12px 16px;
+  gap: var(--ds-space-3);
+  margin: 0 0 var(--ds-space-2);
+  padding: var(--ds-space-3) var(--ds-space-4);
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  box-shadow: var(--ds-glass-shadow);
-  color: var(--ds-glass-ink);
+  box-shadow: var(--ds-shadow);
+  color: var(--ds-ink);
 }
-.minigame-card-text { display: grid; gap: 4px; min-width: 0; }
+.minigame-card-text { display: grid; gap: var(--ds-space-1); min-width: 0; }
 /* Its words lie on the card's glass, not on pills of their own (romance-scene.css gives a talk's loose words one). */
 .choices.minigame-ready .minigame-card p {
   margin: 0;
@@ -52,49 +52,49 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0 10px;
-  font-family: var(--ds-font-serif);
+  gap: 0 var(--ds-space-2);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-heading);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
 }
-.minigame-card-length { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: 600; color: var(--ds-glass-muted); }
-.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-reading); font-weight: 500; line-height: var(--ds-leading-snug); }
-.minigame-ready .minigame-card[data-brief] { padding: 10px 14px; }
+.minigame-card-length { font-family: var(--ds-font-sans); font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); color: var(--ds-ink-muted); }
+.minigame-ready .minigame-card .minigame-card-goal { font-size: var(--ds-text-large); font-weight: var(--ds-weight-medium); line-height: var(--ds-leading-body); }
+.minigame-ready .minigame-card[data-brief] { padding: var(--ds-space-2) var(--ds-space-4); }
 .minigame-ready .minigame-card[data-brief] .minigame-card-goal { font-size: var(--ds-text-body); }
 /* 「練習する」 (left) and the start (right, the larger): the start the talk's press of smoked glass (.primary), 練習 a pane
    of the light glass in its ink with a fine edge, quieter but as plain to see over the people and the place. */
-.choices.minigame-ready > .minigame-card-actions[data-practice] { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 10px; align-items: stretch; }
+.choices.minigame-ready > .minigame-card-actions[data-practice] { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--ds-space-2); align-items: stretch; }
 .minigame-ready .minigame-start {
   justify-content: center;
-  gap: 8px;
-  min-height: 56px;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-press-large);
   border-radius: var(--ds-radius-pane);
-  font-size: var(--ds-text-subhead);
-  font-weight: 700;
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary) {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
+  min-height: var(--ds-press-large);
   margin: 0;
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line), var(--ds-glass-shadow);
-  color: var(--ds-glass-ink);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line), var(--ds-shadow);
+  color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):hover:enabled { background: var(--ds-glass-bar); }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):active:enabled { translate: 0 1px; }
 .minigame-ready :is(.minigame-practice, .minigame-failed-actions .secondary):disabled {
   background: var(--ds-glass-bg);
   box-shadow: none;
-  color: var(--ds-glass-muted);
+  color: var(--ds-ink-muted);
 }
 /* Before the start can be pressed (its guard, 準備中…): over the scene a press that cannot be pressed is the plain light
    glass with its words muted, as a talk's choice and 練習 (2026-11-27 user request: one UI). */
@@ -104,7 +104,7 @@
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   box-shadow: none;
-  color: var(--ds-glass-muted);
+  color: var(--ds-ink-muted);
   text-shadow: none;
 }
 
@@ -112,15 +112,15 @@
 .minigame-hand { flex: none; width: 52px; height: 52px; overflow: hidden; }
 .minigame-card[data-brief] .minigame-hand { width: 36px; height: 36px; }
 .minigame-hand-finger { fill: var(--host-minigame-hand-finger-fill); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; stroke-linejoin: round; transform: translate(-2px, 4px); }
-.minigame-hand-button { fill: var(--ds-gold); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; transform-box: fill-box; transform-origin: center; }
-.minigame-hand-ripple { fill: none; stroke: var(--ds-gold); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
-.minigame-hand-spot { fill: color-mix(in srgb, var(--ds-on-slate) 25%, transparent); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
-.minigame-hand-spot-hit { fill: var(--ds-gold); }
-.minigame-hand-trail { fill: none; stroke: var(--ds-gold); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
-.minigame-hand-meter { fill: color-mix(in srgb, var(--ds-on-slate) 30%, transparent); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
-.minigame-hand-zone { fill: var(--ds-game-gold); }
-.minigame-hand-needle { fill: var(--ds-on-slate); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1; }
-.minigame-hand-beat { fill: var(--ds-gold); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
+.minigame-hand-button { fill: var(--ds-hairline); stroke: var(--host-minigame-hand-finger-line); stroke-width: 2; transform-box: fill-box; transform-origin: center; }
+.minigame-hand-ripple { fill: none; stroke: var(--ds-hairline); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.minigame-hand-spot { fill: color-mix(in srgb, var(--ds-on-dark) 32%, transparent); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
+.minigame-hand-spot-hit { fill: var(--ds-hairline); }
+.minigame-hand-trail { fill: none; stroke: var(--ds-hairline); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
+.minigame-hand-meter { fill: color-mix(in srgb, var(--ds-on-dark) 32%, transparent); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; }
+.minigame-hand-zone { fill: var(--ds-game-mark); }
+.minigame-hand-needle { fill: var(--ds-on-dark); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1; }
+.minigame-hand-beat { fill: var(--ds-hairline); stroke: var(--host-minigame-hand-finger-line); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
 .minigame-hand[data-kind="tap-target"] .minigame-hand-finger { transform: translate(-2px, 6px); }
 .minigame-hand[data-kind="drag"] .minigame-hand-finger { transform: translate(6px, 0); }
 .minigame-hand[data-kind="timing"] .minigame-hand-finger,
@@ -144,7 +144,7 @@
   0%, 15% { transform: translate(-22px, 12px); } 35%, 45% { transform: translate(18px, 12px); }
   65% { transform: translate(-2px, 12px); } 72%, 80% { transform: translate(-2px, 6px); } 90%, 100% { transform: translate(-22px, 12px); }
 }
-@keyframes minigame-hand-found { 0%, 72% { fill: color-mix(in srgb, var(--ds-on-slate) 25%, transparent); } 76%, 92% { fill: var(--ds-gold); } 100% { fill: color-mix(in srgb, var(--ds-on-slate) 25%, transparent); } }
+@keyframes minigame-hand-found { 0%, 72% { fill: color-mix(in srgb, var(--ds-on-dark) 25%, transparent); } 76%, 92% { fill: var(--ds-hairline); } 100% { fill: color-mix(in srgb, var(--ds-on-dark) 25%, transparent); } }
 @keyframes minigame-hand-drag {
   0% { transform: translate(-24px, 10px); } 25% { transform: translate(-12px, 2px); } 50% { transform: translate(6px, 2px); }
   75% { transform: translate(14px, -2px); } 90%, 100% { transform: translate(22px, 2px); }
@@ -153,18 +153,18 @@
 @keyframes minigame-hand-needle { 0% { transform: translateX(-33px); } 66% { transform: translateX(15px); } 100% { transform: translateX(15px); } }
 @keyframes minigame-hand-time { 0%, 36%, 54%, 100% { transform: translate(-2px, 16px); } 42%, 48% { transform: translate(-2px, 10px); } }
 @keyframes minigame-hand-beat-tap { 0%, 30%, 100% { transform: translate(-2px, 16px); } 8%, 16% { transform: translate(-2px, 10px); } }
-@keyframes minigame-hand-beat { 0%, 12%, 100% { transform: scale(1); fill: var(--ds-gold); } 4% { transform: scale(1.35); fill: var(--host-minigame-hand-beat-fill); } }
+@keyframes minigame-hand-beat { 0%, 12%, 100% { transform: scale(1); fill: var(--ds-hairline); } 4% { transform: scale(1.35); fill: var(--host-minigame-hand-beat-fill); } }
 .reduce-motion .minigame-hand *, .minigame-hand[data-still] * { animation: none !important; }
 @media (prefers-reduced-motion: reduce) { .minigame-hand * { animation: none !important; } }
 /* How to play with keys: only where a keyboard is likely (a fine pointer that hovers). */
-.minigame-ready .minigame-keys { display: none; margin: 6px 0 0; }
+.minigame-ready .minigame-keys { display: none; margin: var(--ds-space-2) 0 0; }
 @media (hover: hover) and (pointer: fine) { .minigame-ready .minigame-keys { display: block; } }
-.minigame-failed p { margin: 0 0 8px; }
-.minigame-failed-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.minigame-failed-actions > button { justify-content: center; min-height: 48px; margin: 0; }
-.minigame-debug { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 8px; margin-top: 10px; }
+.minigame-failed p { margin: 0 0 var(--ds-space-2); }
+.minigame-failed-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-2); }
+.minigame-failed-actions > button { justify-content: center; min-height: var(--ds-press); margin: 0; }
+.minigame-debug { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--ds-space-2); margin-top: var(--ds-space-2); }
 .minigame-debug .fine-print { grid-column: 1 / -1; margin: 0; }
-.minigame-debug .secondary { min-height: 44px; margin-top: 6px; padding: 6px 8px; font-size: var(--ds-text-caption); line-height: var(--ds-leading-snug); }
+.minigame-debug .secondary { min-height: var(--ds-press-small); margin-top: var(--ds-space-2); padding: var(--ds-space-2) var(--ds-space-2); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 
 .minigame-layer {
   position: absolute;
@@ -173,9 +173,9 @@
   display: flex;
   flex-direction: column;
   padding-top: var(--scene-top, 0px);
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   /* The scene's picture (or the use's bg) stays behind the field; the bottom darkens under the controls. */
-  background: linear-gradient(to bottom, color-mix(in srgb, var(--ds-veil) 20%, transparent), color-mix(in srgb, var(--ds-veil) 15%, transparent) 45%, color-mix(in srgb, var(--ds-veil) 88%, transparent));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--ds-shade) 20%, transparent), color-mix(in srgb, var(--ds-shade) 15%, transparent) 45%, color-mix(in srgb, var(--ds-shade) 88%, transparent));
   animation: minigame-in var(--motion-fast, 180ms) var(--ease-out, ease-out);
   outline: none;
 }
@@ -190,17 +190,17 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, color-mix(in srgb, var(--ds-veil) 20%, transparent), color-mix(in srgb, var(--ds-veil) 15%, transparent) 45%, color-mix(in srgb, var(--ds-veil) 88%, transparent));
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--ds-shade) 20%, transparent), color-mix(in srgb, var(--ds-shade) 15%, transparent) 45%, color-mix(in srgb, var(--ds-shade) 88%, transparent));
 }
 /* The top band: the game's name, its short status, 「中断する」 (a quiet secondary control). */
 .minigame-band {
   display: flex;
   flex: none;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 4px 8px 4px 16px;
-  background: color-mix(in srgb, var(--ds-veil) 55%, transparent);
+  gap: var(--ds-space-2);
+  min-height: var(--ds-press-small);
+  padding: var(--ds-space-1) var(--ds-space-2) var(--ds-space-1) var(--ds-space-4);
+  background: color-mix(in srgb, var(--ds-shade) 50%, transparent);
   font-size: var(--ds-text-note);
 }
 /* The name, 「練習」 and the status: one line where they fit; on a narrow phone the status (or 「練習」 too) wraps under the
@@ -210,32 +210,32 @@
   flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 8px;
+  gap: 0 var(--ds-space-2);
   min-width: 0;
   line-height: var(--ds-leading-tight);
 }
-.minigame-band-title { max-width: 100%; overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.minigame-band-status { flex: 0 1 auto; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-slate-muted); }
+.minigame-band-title { max-width: 100%; overflow: hidden; font-weight: var(--ds-weight-bold); text-overflow: ellipsis; white-space: nowrap; }
+.minigame-band-status { flex: 0 1 auto; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-dark-muted); }
 .minigame-layer .minigame-quit {
   flex: none;
   min-width: 44px;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid color-mix(in srgb, var(--ds-on-slate) 35%, transparent);
+  min-height: var(--ds-press-small);
+  padding: 0 var(--ds-space-3);
+  border: var(--ds-edge-thin) solid color-mix(in srgb, var(--ds-on-dark) 32%, transparent);
   border-radius: var(--ds-radius-control);
   background: transparent;
-  color: var(--ds-on-slate);
+  color: var(--ds-on-dark);
   font-size: var(--ds-text-note);
 }
 /* 「練習」 in the band: a chip, so a practice play is never mistaken for the real one. */
 .minigame-band-practice {
   flex: none;
-  padding: 1px 8px;
-  border: 1px solid var(--ds-gold-hairline);
+  padding: 0 var(--ds-space-2);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pill);
-  color: var(--ds-marker-selected);
-  font-size: var(--ds-text-caption);
-  font-weight: 700;
+  color: var(--ds-light);
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-stage { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 /* The field's own CSS motion waits through the host's count and stands still through a hit-stop (the clock does too). */
@@ -246,7 +246,7 @@
 .minigame-flash { position: absolute; inset: 0; }
 /* Particles and rings: a dark 2 px edge so they read over a bright photo (group3 6.4). */
 .minigame-burst-ring, .minigame-particle { position: absolute; display: block; translate: -50% -50%; }
-.minigame-burst-ring { border: 3px solid var(--host-minigame-burst-ring-edge); border-radius: 50%; box-shadow: 0 0 0 2px var(--host-minigame-hand-finger-line), inset 0 0 0 2px var(--host-minigame-hand-finger-line); }
+.minigame-burst-ring { border: var(--ds-edge-thick) solid var(--host-minigame-burst-ring-edge); border-radius: 50%; box-shadow: 0 0 0 var(--ds-edge) var(--host-minigame-hand-finger-line), inset 0 0 0 var(--ds-edge) var(--host-minigame-hand-finger-line); }
 .minigame-particle { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)); }
 .minigame-particle > i { display: block; width: 100%; height: 100%; }
 .minigame-particle-star > i {
@@ -264,21 +264,21 @@
   left: 0;
   right: 0;
   margin: 0;
-  color: var(--ds-on-slate);
-  font-weight: 800;
-  line-height: var(--ds-leading-display);
+  color: var(--ds-on-dark);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
   text-align: center;
   pointer-events: none;
   /* A dark edge: readable over any photo. */
-  text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line), 0 4px 10px color-mix(in srgb, var(--ds-shade) 45%, transparent);
+  text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line), 0 4px 10px color-mix(in srgb, var(--ds-shade) 50%, transparent);
   transform: translateY(-50%);
 }
 .minigame-layer .minigame-count { font-size: var(--minigame-count-size); animation: minigame-count-in 120ms var(--ease-out, ease-out) both; }
-.minigame-layer .minigame-count[data-phase="go"] { color: var(--ds-marker-selected); font-size: var(--minigame-go-size); }
+.minigame-layer .minigame-count[data-phase="go"] { color: var(--ds-light); font-size: var(--minigame-go-size); }
 @keyframes minigame-count-in { from { opacity: 0.4; transform: translateY(-50%) scale(1.3); } }
 /* The finish word (「そこまで！」): 40 px for 0.5 s as the play ends. */
 .minigame-layer .minigame-finish { font-size: var(--minigame-finish-size); animation: minigame-finish-in 160ms var(--ease-out, ease-out) both; }
-.minigame-layer .minigame-finish[data-level="great"] { color: var(--ds-marker-selected); }
+.minigame-layer .minigame-finish[data-level="great"] { color: var(--ds-light); }
 @keyframes minigame-finish-in { from { opacity: 0; transform: translateY(-50%) scale(1.4); } }
 /* High, under the band (finishAnchor "top"): off a key picture in the middle of the field (her scream). */
 .minigame-layer .minigame-finish[data-anchor="top"] { top: 22%; }
@@ -292,42 +292,42 @@
   right: 0;
   display: grid;
   justify-items: center;
-  gap: 2px;
-  padding: 10px 16px 12px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--ds-paper-shade) 0%, transparent), color-mix(in srgb, var(--ds-paper-shade) 86%, transparent) 16%, color-mix(in srgb, var(--ds-paper-shade) 86%, transparent) 84%, color-mix(in srgb, var(--ds-paper-shade) 0%, transparent));
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-3);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ds-shade) 0%, transparent), color-mix(in srgb, var(--ds-shade) 86%, transparent) 16%, color-mix(in srgb, var(--ds-shade) 86%, transparent) 84%, color-mix(in srgb, var(--ds-shade) 0%, transparent));
   pointer-events: none;
   transform: translateY(-50%);
 }
 .minigame-layer:not([data-still]) .minigame-cutin { animation: minigame-cutin-in 220ms var(--ease-out, ease-out) both; }
 @keyframes minigame-cutin-in { from { opacity: 0; transform: translate(18%, -50%); } }
 .minigame-layer .minigame-cutin p { margin: 0; text-align: center; text-shadow: 0 0 2px var(--host-minigame-hand-finger-line), 0 2px 0 var(--host-minigame-hand-finger-line); }
-.minigame-layer .minigame-cutin-sub { color: var(--ds-on-slate); font-size: var(--ds-text-body); font-weight: 700; line-height: var(--ds-leading-snug); }
-.minigame-layer .minigame-cutin-main { color: var(--ds-marker-selected); font-size: var(--minigame-cutin-size); font-weight: 800; line-height: var(--ds-leading-display); }
+.minigame-layer .minigame-cutin-sub { color: var(--ds-on-dark); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
+.minigame-layer .minigame-cutin-main { color: var(--ds-light); font-size: var(--minigame-cutin-size); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-tight); }
 
 /* The heroine's quick reaction: her face (64 px) and a short bubble, under the band on the left, for 0.9 s. */
 .minigame-react {
   position: absolute;
   z-index: 8;
   top: calc(var(--scene-top, 0px) + 52px);
-  left: 12px;
+  left: var(--ds-space-3);
   display: flex;
   align-items: center;
-  gap: 6px;
-  max-width: calc(100% - 24px);
+  gap: var(--ds-space-2);
+  max-width: calc(100% - var(--ds-space-6));
   pointer-events: none;
   animation: minigame-react-in 140ms var(--ease-out, ease-out) both;
 }
-.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: 2px solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 35%, transparent); }
+.minigame-react .character-face, .minigame-result-react .character-face { width: 64px; height: 64px; border: var(--ds-edge) solid var(--host-minigame-hand-finger-line); box-shadow: 0 2px 6px color-mix(in srgb, var(--ds-shade) 32%, transparent); }
 .minigame-layer .minigame-react-line {
   margin: 0;
-  padding: 6px 12px;
-  border: 1.5px solid var(--host-minigame-hand-finger-line);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-edge) solid var(--host-minigame-hand-finger-line);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
-  line-height: var(--ds-leading-snug);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
 }
 @keyframes minigame-react-in { from { opacity: 0; transform: scale(0.85); transform-origin: 32px 32px; } }
 
@@ -340,16 +340,16 @@
 .minigame-result {
   position: absolute;
   z-index: 9;
-  left: 12px;
-  right: 12px;
+  left: var(--ds-space-3);
+  right: var(--ds-space-3);
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  max-width: 560px;
+  gap: var(--ds-space-1);
+  max-width: var(--ds-width-narrow);
   margin: 0 auto;
-  padding: 12px 14px 14px;
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4);
   border: 0;
   border-radius: var(--ds-radius-pane);
   /* The talk's light glass (2026-11-27 user decision: no longer a near-opaque slate card edged in gold): the place shows
@@ -357,8 +357,8 @@
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  box-shadow: var(--ds-glass-shadow);
-  color: var(--ds-glass-ink);
+  box-shadow: var(--ds-shadow);
+  color: var(--ds-ink);
   text-align: center;
   animation: minigame-result-in 220ms var(--ease-out, ease-out) both;
 }
@@ -371,55 +371,55 @@
 /* Compact (ResultCard's data-compact: a play 700 px high or less, or where the full card would cover more than 45% of
    the field): ★ beside the label on one row, a small face beside the score and her line, tight padding; the buttons stay
    44 px. The key picture of the field stays in view above it. */
-.minigame-layer .minigame-result[data-compact] { gap: 2px; padding: 6px 10px 8px; }
-.minigame-result-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: 8px; max-width: 100%; }
-.minigame-result[data-compact] .minigame-stars { gap: 2px; font-size: var(--ds-text-subhead); }
+.minigame-layer .minigame-result[data-compact] { gap: var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2); }
+.minigame-result-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: var(--ds-space-2); max-width: 100%; }
+.minigame-result[data-compact] .minigame-stars { gap: var(--ds-space-1); font-size: var(--ds-text-large); }
 .minigame-result[data-compact] .minigame-star[data-big] { font-size: var(--ds-text-heading); }
-.minigame-layer .minigame-result[data-compact] .minigame-result-label { font-size: var(--ds-text-subhead); line-height: var(--ds-leading-tight); }
-.minigame-result[data-compact] .minigame-result-react { justify-content: center; gap: 8px; margin-top: 2px; }
-.minigame-result[data-compact] .minigame-result-react .character-face { flex: none; width: 36px; height: 36px; border-width: 1.5px; }
-.minigame-result-texts { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.minigame-layer .minigame-result[data-compact] .minigame-result-label { font-size: var(--ds-text-large); line-height: var(--ds-leading-tight); }
+.minigame-result[data-compact] .minigame-result-react { justify-content: center; gap: var(--ds-space-2); margin-top: var(--ds-space-1); }
+.minigame-result[data-compact] .minigame-result-react .character-face { flex: none; width: 36px; height: 36px; border-width: var(--ds-edge); }
+.minigame-result-texts { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-1); min-width: 0; }
 .minigame-result-react:not(:has(.character-face)) .minigame-result-texts { align-items: center; }
 .minigame-layer .minigame-result[data-compact] .minigame-result-score { font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
-.minigame-layer .minigame-result[data-compact] .minigame-result-detail { font-size: var(--ds-text-caption); line-height: var(--ds-leading-tight); }
-.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: 2px 8px; border-radius: var(--ds-radius-control); font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
-.minigame-result[data-compact] .minigame-result-actions { margin-top: 4px; }
-.minigame-result[data-compact] .minigame-result-actions > button { min-height: 44px; padding-top: 6px; padding-bottom: 6px; line-height: var(--ds-leading-snug); }
+.minigame-layer .minigame-result[data-compact] .minigame-result-detail { font-size: var(--ds-text-small); line-height: var(--ds-leading-tight); }
+.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: var(--ds-space-1) var(--ds-space-2); border-radius: var(--ds-radius-control); font-size: var(--ds-text-note); line-height: var(--ds-leading-tight); }
+.minigame-result[data-compact] .minigame-result-actions { margin-top: var(--ds-space-1); }
+.minigame-result[data-compact] .minigame-result-actions > button { min-height: var(--ds-press-small); padding-top: var(--ds-space-2); padding-bottom: var(--ds-space-2); line-height: var(--ds-leading-body); }
 @keyframes minigame-result-in { from { opacity: 0; transform: translateY(12px); } }
-.minigame-result-head { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 0; }
+.minigame-result-head { display: flex; align-items: center; justify-content: center; gap: var(--ds-space-2); min-height: 0; }
 .minigame-result-head:empty { display: none; }
 /* ★ one by one (120 ms apart), ★3 bigger; an unearned one dim and outlined (not told by colour alone). */
-.minigame-stars { display: flex; align-items: flex-end; gap: 4px; font-size: var(--ds-text-title); line-height: 1; }
-.minigame-star { color: transparent; -webkit-text-stroke: 1.5px var(--ds-glass-muted); animation: minigame-star-in 200ms var(--ease-out, ease-out) both; }
+.minigame-stars { display: flex; align-items: flex-end; gap: var(--ds-space-1); font-size: var(--ds-text-heading); line-height: 1; }
+.minigame-star { color: transparent; -webkit-text-stroke: 1.5px var(--ds-ink-muted); animation: minigame-star-in 200ms var(--ease-out, ease-out) both; }
 .minigame-star[data-on] { color: var(--host-minigame-burst-ring-edge); -webkit-text-stroke: 1.5px var(--host-minigame-hand-finger-line); }
 .minigame-star[data-big] { font-size: var(--minigame-big-star-size); }
 @keyframes minigame-star-in { from { opacity: 0; transform: scale(1.6); } }
 .minigame-layer .minigame-result p { margin: 0; }
-.minigame-layer .minigame-result-label { font-size: var(--ds-text-heading); font-weight: 700; line-height: var(--ds-leading-snug); }
-.minigame-layer .minigame-result-score { font-size: var(--ds-text-subhead); font-weight: 700; color: var(--ds-glass-ink); font-variant-numeric: tabular-nums; }
-.minigame-layer .minigame-result-detail { font-size: var(--ds-text-note); color: var(--ds-glass-muted); }
-.minigame-result-react { display: flex; align-items: center; gap: 8px; margin-top: 4px; max-width: 100%; text-align: left; }
+.minigame-layer .minigame-result-label { font-size: var(--ds-text-heading); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); }
+.minigame-layer .minigame-result-score { font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); color: var(--ds-ink); font-variant-numeric: tabular-nums; }
+.minigame-layer .minigame-result-detail { font-size: var(--ds-text-note); color: var(--ds-ink-muted); }
+.minigame-result-react { display: flex; align-items: center; gap: var(--ds-space-2); margin-top: var(--ds-space-1); max-width: 100%; text-align: left; }
 .minigame-result-react .character-face { width: 56px; height: 56px; }
 .minigame-layer .minigame-result-line {
-  padding: 6px 10px;
+  padding: var(--ds-space-2) var(--ds-space-2);
   border-radius: var(--ds-radius-control);
   background: var(--ds-glass-chosen);
-  color: var(--ds-glass-ink);
+  color: var(--ds-ink);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
 }
-.minigame-result-actions { display: flex; gap: 8px; width: 100%; margin-top: 8px; }
-.minigame-result-actions > button { flex: 1 1 0; justify-content: center; min-height: 52px; margin: 0; }
+.minigame-result-actions { display: flex; gap: var(--ds-space-2); width: 100%; margin-top: var(--ds-space-2); }
+.minigame-result-actions > button { flex: 1 1 0; justify-content: center; min-height: var(--ds-press-large); margin: 0; }
 /* On the glass 「次へ」 is the talk's press of smoked glass (.primary), もう一回 a pane of the glass with a fine edge. */
-.minigame-result-actions > .primary { flex-grow: 1.4; border-radius: var(--ds-radius-pane); font-size: var(--ds-text-subhead); font-weight: 700; }
+.minigame-result-actions > .primary { flex-grow: 1.4; border-radius: var(--ds-radius-pane); font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); }
 .minigame-result-actions > .secondary {
   border: 0;
   border-radius: var(--ds-radius-pane);
   background: var(--ds-glass-press);
-  box-shadow: inset 0 0 0 1px var(--ds-glass-line);
-  color: var(--ds-glass-ink);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line);
+  color: var(--ds-ink);
   font-size: var(--ds-text-body);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .minigame-result-actions > .secondary:hover:enabled { background: var(--ds-glass-bar); }
 /* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
@@ -447,7 +447,7 @@
   background: var(--ds-glass-bg);
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
-  box-shadow: var(--ds-glass-shadow);
+  box-shadow: var(--ds-shadow);
   pointer-events: auto;
 }
 .minigame-result[data-anchor="top"] > .minigame-result-body {
@@ -455,24 +455,24 @@
   flex: 0 1 auto;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--ds-space-1);
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 12px 14px 14px;
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4);
 }
-.minigame-layer .minigame-result[data-anchor="top"][data-compact] > .minigame-result-body { gap: 2px; padding: 6px 10px 8px; }
-.minigame-result[data-anchor="top"] > .minigame-result-actions { flex: none; margin-top: 0; padding: 8px; }
+.minigame-layer .minigame-result[data-anchor="top"][data-compact] > .minigame-result-body { gap: var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2); }
+.minigame-result[data-anchor="top"] > .minigame-result-actions { flex: none; margin-top: 0; padding: var(--ds-space-2); }
 
 /* Photos and drawn art together (D1, group3 6.5): the photo is the back layer, a little greyer, darker and soft (the host
    gives it to a use's bg and to the scene's own picture under a play; a skin's backdrop slot image takes `mg-photo`), and
    what the player presses or watches is the play layer, with a dark edge and a shadow under it (`mg-play-object`). */
 .minigame-layer .mg-photo > :first-child, .minigame-layer img.mg-photo,
 :is(.vn-scene, .battle-screen):has(> .minigame-slot > .minigame-layer) > :is(.vn-background, .battle-backdrop) {
-  filter: saturate(0.78) contrast(0.9) brightness(0.82) blur(1.5px);
+  filter: saturate(0.78) contrast(0.9) brightness(0.82) blur(var(--ds-blur-faint));
   scale: 1.03;
 }
-.mg-play-object { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 2px 1px color-mix(in srgb, var(--ds-shade) 35%, transparent)); }
+.mg-play-object { filter: drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 0 1px var(--host-minigame-hand-finger-line)) drop-shadow(0 2px 1px color-mix(in srgb, var(--ds-shade) 32%, transparent)); }
 /* 一時停止中 (a timed game after the page was hidden): over the play, 「続ける」 first. */
 .minigame-pause {
   position: absolute;
@@ -482,12 +482,12 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 10px;
-  padding: 16px;
-  background: color-mix(in srgb, var(--ds-veil) 78%, transparent);
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  background: color-mix(in srgb, var(--ds-shade) 70%, transparent);
 }
-.minigame-pause p { margin: 0 0 6px; font-size: var(--ds-text-subhead); font-weight: 700; text-align: center; }
-.minigame-pause button { justify-content: center; min-height: 52px; }
+.minigame-pause p { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-large); font-weight: var(--ds-weight-bold); text-align: center; }
+.minigame-pause button { justify-content: center; min-height: var(--ds-press-large); }
 
 /* 「演出を短縮する」 and the device's reduced motion: no fade, run-up, sweep, tumble or pop (what the play needs still moves,
    drawn from the clock). */

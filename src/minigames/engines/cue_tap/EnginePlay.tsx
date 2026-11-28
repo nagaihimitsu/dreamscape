@@ -69,7 +69,7 @@ export interface CueTapSkin<Params, Outcome extends string> {
   Field: ComponentType<CueTapFieldProps<Params, Outcome>>;
   /**
    * Where the meter's needle is (0 to 1) at `ms`, along the thing's own way (the ball's travel: it speeds up as the ball
-   * skids on); it never goes back, and the gold zone is where it is through the clean window, so the needle in gold is
+   * skids on); it never goes back, and the white zone is where it is through the clean window, so the needle in white is
    * always a clean tap. Without it, the needle crosses the meter at one pace in time.
    */
   progress?(ms: number, params: Params): number;

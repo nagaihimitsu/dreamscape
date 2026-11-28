@@ -14,6 +14,7 @@ import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { LineCards } from "../../components/LineCards";
 import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
 import { keepsAboveHeads } from "../../components/figures-top";
 import { ItemShowLayer } from "../../components/ItemShow";
@@ -51,7 +52,7 @@ import "../journey/encounter.css";
 /** A guide's stage: she stands from the start; no one stands for `# speaker: enemy`. */
 const GUIDE_STAGE = sceneStageOf("guide");
 
-const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 500px)";
+const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 501px)";
 
 interface Props {
   game: GameState;
@@ -295,6 +296,7 @@ export function TourismScreen({
                   <span aria-hidden="true">→</span>
                 </button>}
               </div>
+              <LineCards />
             </div>
             {/* The choices float above the window, which keeps the line they answer (romance-scene.css .vn-choices). */}
             {frame.choices.length > 0 && onChooseGuide && <div className="vn-choices">

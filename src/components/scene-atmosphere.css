@@ -3,9 +3,9 @@
    (the compositor's work), standing still while the page is hidden ([data-paused]). Every movement has its still form
    under reduced motion (the system's and 「演出を短縮する」, .reduce-motion; at the end of this file). */
 
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --scene-atmosphere-weather-layer-ground: rgba(64, 80, 104, 0.14);
+  --scene-atmosphere-weather-layer-ground: color-mix(in srgb, var(--ds-gray-2) 16%, transparent);
   --scene-atmosphere-weather-layer-ground-2: rgba(214, 178, 120, 0.06);
   --scene-atmosphere-weather-layer-ground-3: rgba(214, 178, 120, 0.14);
   --scene-atmosphere-weather-layer-ground-4: rgba(222, 190, 136, 0.26);
@@ -29,10 +29,7 @@
   overflow: hidden;
   contain: layout paint;
   pointer-events: none;
-  animation: weather-in var(--motion-scene) var(--ease-out);
-}
-@keyframes weather-in {
-  from { opacity: 0; }
+  animation: ds-fade-in var(--motion-scene) var(--ease-out);
 }
 .weather-layer::before,
 .weather-layer::after {
@@ -64,13 +61,13 @@
   top: -200px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='200'%3E%3Cg stroke='%23e8eff8' stroke-width='1.3' stroke-linecap='round' opacity='.55'%3E%3Cpath d='M9 12v34M47 78v30M28 140v36'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 70px 200px;
-  animation: weather-rain-near 0.45s linear infinite;
+  animation: weather-rain-near var(--motion-scene) linear infinite;
 }
 .weather-layer[data-weather="rain"]::after {
   top: -150px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='150'%3E%3Cg stroke='%23dfe7f2' stroke-width='1' stroke-linecap='round' opacity='.35'%3E%3Cpath d='M6 20v20M30 70v18M18 118v22'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 46px 150px;
-  animation: weather-rain-far 0.6s linear infinite;
+  animation: weather-rain-far var(--motion-slow) linear infinite;
 }
 @keyframes weather-rain-near {
   to { transform: translateY(200px); }
@@ -96,7 +93,7 @@
   inset: 30% -10% -10%;
   background: radial-gradient(ellipse 60% 55% at 30% 80%, var(--scene-atmosphere-weather-layer-ground-4), transparent 70%),
     radial-gradient(ellipse 55% 50% at 75% 85%, var(--scene-atmosphere-weather-layer-ground-5), transparent 70%);
-  animation: weather-dust-haze 15s ease-in-out infinite alternate;
+  animation: weather-dust-haze 15s var(--ease-in-out) infinite alternate;
 }
 @keyframes weather-dust-motes {
   to { transform: translateX(-240px); }
@@ -116,7 +113,7 @@
   border-radius: 50%;
   background: radial-gradient(circle, hsla(var(--hue), 88%, 64%, 0.5) 0, hsla(var(--hue), 88%, 64%, 0.22) 42%, hsla(var(--hue), 88%, 64%, 0) 70%);
   opacity: 0;
-  animation: weather-puff 8s ease-out infinite;
+  animation: weather-puff 8s var(--ease-out) infinite;
 }
 @keyframes weather-puff {
   0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
@@ -144,8 +141,8 @@
   border-radius: 80% 0 80% 0;
   background: hsl(var(--hue), 72%, 87%);
   box-shadow: inset -1px -1px 0 hsla(var(--hue), 60%, 70%, 0.6);
-  opacity: 0.85;
-  animation: weather-sway 2.8s ease-in-out infinite alternate;
+  opacity: var(--ds-opacity-strong);
+  animation: weather-sway 2.8s var(--ease-in-out) infinite alternate;
 }
 .weather-layer[data-weather="petals"] .weather-part:nth-child(even)::before {
   animation-duration: 3.4s;
@@ -169,7 +166,7 @@
 .reduce-motion .weather-layer[data-weather="dust"]::before { display: none; }
 .reduce-motion .weather-layer[data-weather="colors"] .weather-part {
   top: var(--rest-y);
-  opacity: 0.55;
+  opacity: var(--ds-opacity-soft);
   transform: translate(-50%, -50%);
   animation: none;
 }
@@ -188,7 +185,7 @@
   .weather-layer[data-weather="dust"]::before { display: none; }
   .weather-layer[data-weather="colors"] .weather-part {
     top: var(--rest-y);
-    opacity: 0.55;
+    opacity: var(--ds-opacity-soft);
     transform: translate(-50%, -50%);
     animation: none;
   }

@@ -63,7 +63,7 @@ INCLUDE modules.ink
     -> END
 
 // ───── 0：案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。# effect は置かない。
-// 行の札 # local_word: smp_mihon_word_trisol は、その行が出たときにその国の言葉を1つ覚える（下の扉の文字の行。learning/local-words.json の語で、ノートの「旅のことば」に並ぶ。その行では、語のカードが台詞より先に出る）。
+// 行の札 # local_word: smp_mihon_word_trisol は、その行が出たときにその国の言葉を1つ覚える（下の扉の文字の行。learning/local-words.json の語で、ノートの「旅のことば」に並ぶ。その行では、語のカードが台詞と一緒に会話の窓の下に出る）。
 // 行の札 # em_shake: <語> は、その行の最初の<語>を小さく震わせる（ヒロインの「三時？」）。# em: <語> は、その行の最初の<語>を
 // 太字と強調の色で見せる（「止まってる」）。語は、その行の字に書いたとおりに書く（名前は {heroine_name} のまま）。
 === smp_mihon_clock_tower_guide ===

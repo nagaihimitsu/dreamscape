@@ -2,8 +2,8 @@
    (styles.css dialog.old-data): the title band on top, the text under it (only it scrolls), a confirmation's two
    answers at the foot. Rows are told apart by their heading and a hairline; no edge at the left. */
 dialog.offline-play[open] {
-  --modal-pad-top: 0px;
-  --modal-pad-inline: 0px;
+  --modal-pad-top: 0;
+  --modal-pad-inline: 0;
   display: flex;
   flex-direction: column;
   height: min(90dvh, 720px);
@@ -14,27 +14,27 @@ dialog.offline-play .modal-title-bar {
   flex: none;
   position: static;
   margin: 0;
-  padding-left: 22px;
+  padding-left: var(--ds-space-6);
 }
 .offline-body {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: 12px 22px 16px;
+  padding: var(--ds-space-3) var(--ds-space-6) var(--ds-space-4);
 }
 .offline-body > p {
-  margin: 0 0 10px;
+  margin: 0 0 var(--ds-space-2);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
 }
 .offline-body > .fine-print {
-  font-size: var(--ds-text-caption);
+  font-size: var(--ds-text-small);
   line-height: var(--ds-leading-reading);
 }
 .offline-answers {
   flex: none;
-  padding: 12px 22px 18px;
-  border-top: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-3) var(--ds-space-6) var(--ds-space-4);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .offline-answers .modal-answers {
   margin-top: 0;
@@ -45,13 +45,13 @@ dialog.offline-play .modal-title-bar {
 }
 /* A row: a journey (or the kept journeys' newer build) under its heading, its state line, its buttons. */
 .offline-row {
-  padding: 12px 0;
-  border-top: 1px solid var(--ds-parchment-line);
+  padding: var(--ds-space-3) 0;
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .offline-row > h3 {
-  margin: 0 0 4px;
+  margin: 0 0 var(--ds-space-1);
   font-size: var(--ds-text-body);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
@@ -69,55 +69,55 @@ dialog.offline-play h2:focus {
 }
 /* How far a run is, beside its line (the numbers keep their width as they change). */
 .offline-live {
-  margin-left: 0.6em;
+  margin-left: var(--ds-space-2);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 .offline-notice {
-  margin-top: 6px;
-  font-weight: 600;
+  margin-top: var(--ds-space-2);
+  font-weight: var(--ds-weight-bold);
 }
-/* The first progress bar of the game: a parchment track with a slate fill, no motion of its own; the same numbers are
+/* The first progress bar of the game: a light ground track with a dark fill, no motion of its own; the same numbers are
    in the line above it. */
 .offline-progress {
   display: block;
   width: 100%;
   height: 10px;
-  margin: 8px 0 2px;
+  margin: var(--ds-space-2) 0 var(--ds-space-1);
   appearance: none;
-  border: 1px solid var(--ds-field-edge);
+  border: var(--ds-edge-thin) solid var(--ds-field-edge);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
   overflow: hidden;
 }
-.offline-progress::-webkit-progress-bar { background: var(--ds-parchment-2); }
-.offline-progress::-webkit-progress-value { background: var(--ds-slate-800); }
-.offline-progress::-moz-progress-bar { background: var(--ds-slate-800); }
+.offline-progress::-webkit-progress-bar { background: var(--ds-surface-chosen); }
+.offline-progress::-webkit-progress-value { background: var(--ds-dark-2); }
+.offline-progress::-moz-progress-bar { background: var(--ds-dark-2); }
 /* A row's buttons: the action as a secondary pressable, 「端末から消す」 as a text button in the colour of what deletes;
    each 44 px or more, apart from each other. */
 .offline-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 16px;
-  margin-top: 8px;
+  gap: var(--ds-space-1) var(--ds-space-4);
+  margin-top: var(--ds-space-2);
 }
 .offline-actions > .secondary,
 .offline-row > .offline-reload {
   width: auto;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 8px 18px;
+  padding: var(--ds-space-2) var(--ds-space-4);
 }
 .offline-row > .offline-reload {
-  margin-top: 8px;
+  margin-top: var(--ds-space-2);
 }
 .offline-actions > .text-button {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 0 6px;
+  padding: 0 var(--ds-space-2);
   font-size: var(--ds-text-note);
 }
 .offline-actions > .text-button[data-settling] {
@@ -125,9 +125,9 @@ dialog.offline-play h2:focus {
 }
 .offline-body > .offline-advice {
   margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--ds-parchment-line);
+  padding-top: var(--ds-space-3);
+  border-top: var(--ds-edge-thin) solid var(--ds-line);
 }
 .offline-body > .offline-foot {
-  margin: 6px 0 0;
+  margin: var(--ds-space-2) 0 0;
 }

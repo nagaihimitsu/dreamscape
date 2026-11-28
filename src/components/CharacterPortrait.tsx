@@ -10,13 +10,14 @@ import { LivePortrait } from "./LivePortrait";
 import { useWornCostume } from "./worn-costume";
 import { pictureTopAt, zoomedPlacement } from "./figure-zoom";
 import "./character-portrait.css";
+import { MOTION } from "./motion";
 
 const characters = catalog.characters;
 
 export { characterForBattle } from "./character-catalog";
 
-/** How long she takes to walk to a new `# stand:` place (character-portrait.css, --motion-step). */
-const STAND_STEP_MS = 1400;
+/** How long she takes to walk to a new `# stand:` place (character-portrait.css, --motion-long). */
+const STAND_STEP_MS = MOTION.long;
 
 /**
  * Whether she is walking to a new `# stand:` place (2026-11-27 user decision: slowly, not at once): from the render
@@ -94,7 +95,6 @@ export function CharacterPortrait({
       <CharacterImage
         path={image}
         neutralPath={neutral}
-        color={character.placeholderColor}
         fallback={fallback}
         onImageError={onImageError}
         breathOf={characterId}
@@ -145,7 +145,7 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId, costume, 
   const frame = characterFaceFrame(character, selection);
   return (
     <span className="character-face" aria-hidden="true">
-      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} imageStyle={frame ? faceFrameStyle(frame) : undefined} />
+      <CharacterImage path={image} neutralPath={neutral} imageStyle={frame ? faceFrameStyle(frame) : undefined} />
     </span>
   );
 }
@@ -171,7 +171,7 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <span className="character-figure" aria-hidden="true">
-      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} />
     </span>
   );
 }
@@ -182,10 +182,15 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
  * last picture stays up, so the figure never goes blank while a file arrives. A file that cannot be shown falls back to
  * the neutral picture, then to `fallback` or the placeholder.
  */
-function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf, imageStyle }: {
+/**
+ * The plain figure shown while a portrait has no picture: one grey for everyone (2026-11-28 user decision: white and
+ * grey only; a character's placeholderColor is not shown). --ds-gray-3.
+ */
+const PLACEHOLDER_FILL = "#5d616b";
+
+function CharacterImage({ path, neutralPath, fallback, onImageError, breathOf, imageStyle }: {
   path: string | null;
   neutralPath: string | null;
-  color: string;
   /** Where the picture sits in its box (CharacterFace's face frame), over its stylesheet's. */
   imageStyle?: CSSProperties;
   fallback?: ReactNode;
@@ -233,11 +238,11 @@ function CharacterImage({ path, neutralPath, color, fallback, onImageError, brea
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.
   return <svg viewBox="0 0 240 360" role="presentation" focusable="false" style={breath}>
-    <ellipse cx="120" cy="350" rx="88" ry="8" fill="#302f2b" opacity=".15" />
-    <path d="M42 350v-81c0-48 30-73 78-73s78 25 78 73v81" fill={color} />
-    <path d="M92 187h56v34H92z" fill={color} />
-    <ellipse cx="120" cy="130" rx="48" ry="61" fill={color} />
-    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke="#f3eee3" opacity=".8" strokeWidth="3" strokeLinecap="round" />
-    <path d="M86 218l34 31 34-31" fill="none" stroke="#f3eee3" opacity=".4" strokeWidth="3" />
+    <ellipse cx="120" cy="350" rx="88" ry="8" fill="#2a2b2f" opacity=".15" />
+    <path d="M42 350v-81c0-48 30-73 78-73s78 25 78 73v81" fill={PLACEHOLDER_FILL} />
+    <path d="M92 187h56v34H92z" fill={PLACEHOLDER_FILL} />
+    <ellipse cx="120" cy="130" rx="48" ry="61" fill={PLACEHOLDER_FILL} />
+    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke="#f4f5f7" opacity=".8" strokeWidth="3" strokeLinecap="round" />
+    <path d="M86 218l34 31 34-31" fill="none" stroke="#f4f5f7" opacity=".4" strokeWidth="3" />
   </svg>;
 }

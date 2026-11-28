@@ -2,7 +2,7 @@
    same place over the battle, below the header, and the same heavy, shadowed word; but a quick band over a veil that
    lets the question show through, not a scene of its own. The question is already saved underneath. */
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --quiz-cutin-word-size: clamp(44px, min(17vw, 22dvh), 104px);
 }
@@ -14,32 +14,32 @@
   align-items: center;
   justify-content: center;
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
-  padding: max(12px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) 0 max(12px, env(safe-area-inset-bottom));
+  padding: max(var(--ds-space-3), env(safe-area-inset-top), calc(var(--scene-top, 0px) + var(--ds-space-2))) 0 max(var(--ds-space-3), env(safe-area-inset-bottom));
   overflow: hidden;
-  background: color-mix(in srgb, var(--ds-veil) 52%, transparent);
+  background: color-mix(in srgb, var(--ds-shade) 50%, transparent);
   /* In quickly, out over its last moment (the screen removes it at 900 ms, QUIZ_CUTIN_MS). */
-  animation: quiz-cutin-veil 900ms linear both;
+  animation: quiz-cutin-veil var(--motion-slow) linear both;
 }
 .quiz-cutin-band {
   width: 100%;
-  border-block: 2px solid var(--ds-gold);
-  background: var(--ds-slate-900);
-  box-shadow: var(--ds-window-shadow);
-  animation: quiz-cutin-band 180ms var(--ease-out) both;
+  border-block: var(--ds-edge) solid var(--ds-hairline);
+  background: var(--ds-dark);
+  box-shadow: var(--ds-shadow-large);
+  animation: quiz-cutin-band var(--motion-fast) var(--ease-out) both;
 }
 .quiz-cutin-word {
   margin: 0;
-  padding: clamp(2px, 1.2dvh, 10px) max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
-  color: var(--ds-on-slate);
-  font-family: var(--ds-font-latin);
+  padding: clamp(2px, 1.2dvh, var(--ds-space-2)) max(var(--ds-space-4), env(safe-area-inset-left), env(safe-area-inset-right));
+  color: var(--ds-on-dark);
+  font-family: var(--ds-font-sans);
   font-size: var(--quiz-cutin-word-size);
   font-style: italic;
-  font-weight: 700;
-  line-height: var(--ds-leading-display);
-  letter-spacing: 0.04em;
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-2);
   text-align: center;
-  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
-  animation: quiz-cutin-word 300ms 50ms var(--ease-out) both;
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
+  animation: quiz-cutin-word var(--motion-short) var(--motion-instant) var(--ease-out) both;
 }
 @keyframes quiz-cutin-veil {
   0% { opacity: 0; }

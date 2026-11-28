@@ -5,8 +5,8 @@
  */
 .debug-voice-rate {
   display: grid;
-  gap: 8px;
-  margin-top: 18px;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-4);
 }
 .debug-voice-rate h3 {
   margin: 0;
@@ -18,8 +18,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) 4.2em;
   align-items: center;
-  gap: 10px;
-  min-height: 44px;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-press-small);
   font-size: var(--ds-text-body);
 }
 .debug-voice-rate-row input[type="range"] {
@@ -27,14 +27,14 @@
   min-width: 0;
   height: 44px;
   margin: 0;
-  accent-color: var(--ds-slate-800);
+  accent-color: var(--ds-dark-2);
 }
 .debug-voice-rate-value {
   text-align: end;
   font-variant-numeric: tabular-nums;
 }
 .debug-voice-rate .secondary {
-  min-height: 48px;
+  min-height: var(--ds-press);
   margin-top: 0;
 }
 .debug-voice-rate [role="alert"] {

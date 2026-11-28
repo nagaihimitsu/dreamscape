@@ -1,30 +1,30 @@
 /* 旅の記録 (TravelLog.tsx): the shared frame, the 「SNS｜写真」 switch at its top (SnsView.tsx, sns.css) and the photos in a
    close grid (no side accents). Every pressable is 44 px. */
 dialog.modal.travel-log {
-  --modal-pad-top: 16px;
-  --modal-pad-inline: 16px;
-  width: min(560px, calc(100% - 24px));
-  max-width: 560px;
-  max-height: calc(100dvh - 24px);
+  --modal-pad-top: var(--ds-space-4);
+  --modal-pad-inline: var(--ds-space-4);
+  width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6)));
+  max-width: var(--ds-width-narrow);
+  max-height: calc(100dvh - var(--ds-space-6));
 }
-.travel-log .modal-title-bar { margin-bottom: 8px; }
-.travel-log-empty { margin: 4px 0 8px; font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
+.travel-log .modal-title-bar { margin-bottom: var(--ds-space-2); }
+.travel-log-empty { margin: var(--ds-space-1) 0 var(--ds-space-2); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); }
 .travel-log-axes {
   display: flex;
-  margin: 0 0 12px;
-  padding: 3px;
+  margin: 0 0 var(--ds-space-3);
+  padding: var(--ds-space-1);
   border-radius: var(--ds-radius-control);
-  background: var(--ds-parchment-2);
+  background: var(--ds-surface-chosen);
 }
 .travel-log-axes button {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ds-space-2);
   flex: 1 1 0;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 6px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   border: 0;
   border-radius: var(--ds-radius-control);
   background: transparent;
@@ -33,29 +33,29 @@ dialog.modal.travel-log {
   justify-content: center;
 }
 .travel-log-axes button[aria-pressed="true"] {
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
-  font-weight: 700;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--ds-shade) 18%, transparent);
+  font-weight: var(--ds-weight-bold);
+  box-shadow: var(--ds-shadow-small);
 }
-.travel-log-count { font-size: var(--ds-text-caption); font-weight: 400; color: var(--ds-ink-muted); }
+.travel-log-count { font-size: var(--ds-text-small); font-weight: var(--ds-weight-regular); color: var(--ds-ink-muted); }
 /* A tab's dot (something new there): at the top right of its word, in the SNS's red. */
-.travel-log-axes .fx-dot { position: static; align-self: flex-start; margin: 6px 0 0 -2px; background: var(--ds-marker); box-shadow: none; }
+.travel-log-axes .fx-dot { position: static; align-self: flex-start; margin: var(--ds-space-2) 0 0 -2px; background: var(--ds-ink-muted); box-shadow: none; }
 /* A journey without an SNS: 「写真」 is the log's one page, under a small heading. */
-.travel-log-photos-title { margin: 0 0 8px; font-size: var(--ds-text-body); font-weight: 600; }
-.travel-log-photos-title .travel-log-count { margin-left: 6px; }
-.travel-log .journey-numbers { margin-top: 16px; }
+.travel-log-photos-title { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-body); font-weight: var(--ds-weight-bold); }
+.travel-log-photos-title .travel-log-count { margin-left: var(--ds-space-2); }
+.travel-log .journey-numbers { margin-top: var(--ds-space-4); }
 /* 「写真」: square thumbnails five to a row (2026-11-27; their 256-px copies), close together, each one a button (about 60 px
    on a 320-px phone); about seven on a wide screen. No pinch to change the rows (the browser's own zoom has the pinch). */
 .travel-log-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 2px;
-  margin: 0 calc(-1 * var(--modal-pad-inline, 16px));
+  gap: var(--ds-space-1);
+  margin: 0 calc(-1 * var(--modal-pad-inline, var(--ds-space-4)));
   padding: 0;
   list-style: none;
 }
-@media (min-width: 520px) {
+@media (min-width: 481px) {
   .travel-log-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); margin-inline: 0; }
 }
 .travel-log-grid button {
@@ -70,26 +70,26 @@ dialog.modal.travel-log {
   overflow: hidden;
 }
 .travel-log-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.travel-log-grid button:focus-visible { outline: 3px solid var(--ds-slate-800); outline-offset: -3px; }
+.travel-log-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: var(--ds-focus-offset-in); }
 /* A photo not taken yet (once the journey is over; 2026-11-20 user decision): the same picture in grey, by a filter rather
    than a second file, a little faded on the grid's dark ground; opened larger, grey too. The line above the grid says so. */
-.travel-log-photos-note { margin: 0 0 8px; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
-.travel-log-grid .is-missed img { filter: grayscale(1); opacity: 0.7; }
+.travel-log-photos-note { margin: 0 0 var(--ds-space-2); font-size: var(--ds-text-note); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); }
+.travel-log-grid .is-missed img { filter: grayscale(1); opacity: var(--ds-opacity-dim); }
 .photo-viewer-frame img.is-missed { filter: grayscale(1); }
-.album-meta { font-size: var(--ds-text-caption); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.album-meta { font-size: var(--ds-text-small); line-height: var(--ds-leading-body); color: var(--ds-ink-muted); overflow-wrap: anywhere; }
 .album-page-button {
   flex: none;
   min-width: 88px;
-  min-height: 44px;
-  padding: 6px 14px;
-  border: 1.5px solid transparent;
+  min-height: var(--ds-press-small);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border: var(--ds-edge) solid transparent;
   box-shadow: var(--ds-press-shadow);
   border-radius: var(--ds-radius-pane);
-  background: var(--ds-parchment);
+  background: var(--ds-surface);
   color: var(--ds-ink);
   font-size: var(--ds-text-body);
 }
-.album-page-button:hover:enabled { background: var(--ds-parchment-2); }
+.album-page-button:hover:enabled { background: var(--ds-surface-chosen); }
 .album-page-button:disabled {
   opacity: 1;
   border-color: transparent;
@@ -102,12 +102,12 @@ dialog.modal.travel-log {
    picture's own shape (2026-11-13 user decision: no empty band around a wide picture on a phone held upright), as wide as
    the dialog and no taller than its share of the screen; a picture taller than that keeps its shape, narrower. */
 dialog.modal.album-photo-viewer {
-  --modal-pad-top: 16px;
-  --modal-pad-inline: 16px;
-  width: min(760px, calc(100% - 24px));
-  max-width: 760px;
+  --modal-pad-top: var(--ds-space-4);
+  --modal-pad-inline: var(--ds-space-4);
+  width: min(var(--ds-width), calc(100% - var(--ds-space-6)));
+  max-width: var(--ds-width);
 }
-.album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
+.album-photo-viewer .modal-title-bar { margin-bottom: var(--ds-space-2); }
 /* Sideways moves of a finger turn the photos (albumSwipeStep: far enough, or a quick flick); upright ones still scroll,
    and pinch still zooms. The picture goes along with the finger (useSwipe's --swipe-dx, on `translate` so that it stays
    apart from the coming-in's `transform`) and goes back when let go short; the photo turned to comes in from the side it
@@ -121,21 +121,21 @@ dialog.modal.album-photo-viewer {
   height: auto;
   max-height: min(60dvh, 520px);
   margin: 0 auto;
-  border-radius: var(--ds-radius-field);
+  border-radius: var(--ds-radius-control);
   translate: var(--swipe-dx, 0px) 0;
-  transition: translate 200ms var(--ease-out);
+  transition: translate var(--motion-fast) var(--ease-out);
 }
 .photo-viewer-frame[data-swiping] img { transition: none; }
-.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next 240ms var(--ease-out); }
-.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev 240ms var(--ease-out); }
+.photo-viewer-frame[data-turn="next"] img { animation: photo-viewer-in-next var(--motion-fast) var(--ease-out); }
+.photo-viewer-frame[data-turn="prev"] img { animation: photo-viewer-in-prev var(--motion-fast) var(--ease-out); }
 @keyframes photo-viewer-in-next { from { transform: translateX(56px); opacity: 0; } }
 @keyframes photo-viewer-in-prev { from { transform: translateX(-56px); opacity: 0; } }
 .reduce-motion .photo-viewer-frame img { transition: none; animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .photo-viewer-frame img { transition: none; animation: none; }
 }
-.album-photo-viewer > .album-meta { margin: 6px 0 8px; }
+.album-photo-viewer > .album-meta { margin: var(--ds-space-2) 0 var(--ds-space-2); }
 @media (orientation: landscape) and (max-height: 500px) {
   .photo-viewer-frame img { max-height: 52dvh; }
 }
-.photo-viewer-pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.photo-viewer-pager { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-2); margin-bottom: var(--ds-space-1); }

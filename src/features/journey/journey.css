@@ -1,111 +1,119 @@
-/* The site's progress line on wide screens (stage 2.4): a parchment band; the phase is a
+/* The site's progress line on wide screens (stage 2.4): a light ground band; the phase is a
    display-only pill (§2.3). */
 .journey-stage {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 10px 24px;
-  font-size: var(--ds-text-mark);
-  background: var(--ds-parchment-2);
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-2) var(--ds-space-6);
+  font-size: var(--ds-text-small);
+  background: var(--ds-surface-chosen);
   color: var(--ds-ink);
-  border-bottom: 1px solid var(--ds-parchment-line);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 .journey-stage span:last-child {
   flex-shrink: 0;
-  padding: 2px 10px;
+  padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
-  font-weight: 600;
+  background: var(--ds-dark-2);
+  color: var(--ds-on-dark);
+  font-weight: var(--ds-weight-bold);
 }
+/* A quiz's result (battle.css's glass card): the AP earned and the AP held, side by side in one type, and the trip's
+   milestone under them (2026-11-28 user decision: the two figures were set in very different sizes). */
 .battle-rewards {
-  border-top: 1px solid var(--ds-parchment-line);
-  padding-top: 18px;
-  margin: 24px 0;
+  margin: 0;
   text-align: left;
 }
-.reward-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  font-size: var(--ds-text-caption);
+.reward-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-4);
+  margin: 0;
 }
-.reward-total strong {
-  font-family: var(--ds-font-latin);
-  font-size: var(--ds-text-display);
-  font-weight: 400;
-  line-height: var(--ds-leading-display);
+.reward-figures > div {
+  display: grid;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+.reward-figures dt {
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-medium);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-2);
+  color: var(--ds-ink-muted);
+}
+.reward-figures dd {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-1);
+  margin: 0;
+  font-size: var(--ds-text-heading);
+  font-weight: var(--ds-weight-medium);
+  line-height: var(--ds-leading-tight);
   color: var(--ds-ink);
   white-space: nowrap;
 }
-.reward-total small {
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-caption);
-  font-weight: 400;
-  line-height: var(--ds-leading-tight);
+.reward-figures dd small {
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-2);
+  color: var(--ds-ink-muted);
 }
-.current-ap {
-  margin-top: 14px;
-  font-size: var(--ds-text-note);
-  display: flex;
-  justify-content: space-between;
-}
-/* A cleared episode: a parchment panel; done is told by its heading's words (§2.1). */
+/* A cleared episode: a soft ground on the glass; done is told by its heading's words (§2.1). */
 .episode-clear {
-  padding: 22px 20px;
-  background: var(--ds-parchment-2);
-  margin: 24px 0 20px;
+  margin: var(--ds-space-4) 0 0;
+  padding: var(--ds-space-4);
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-surface-chosen);
   text-align: left;
-  border-radius: var(--ds-radius-control);
 }
 .episode-clear h2 {
-  font-size: var(--ds-text-heading);
-  margin: 7px 0 13px;
+  margin: 0 0 var(--ds-space-2);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-1);
 }
-.episode-clear > p:not(.eyebrow):not(.fine-print) {
-  font-family: var(--ds-font-serif);
+.episode-clear > p {
+  margin: 0;
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-reading);
 }
-.episode-clear .fine-print {
-  margin-top: 14px;
-}
 .guide-reward-note {
-  font-size: var(--ds-text-mark);
+  font-size: var(--ds-text-small);
   color: var(--ds-here);
-  margin-top: 12px;
+  margin-top: var(--ds-space-3);
 }
 .replay-guide {
-  margin: 16px 24px 0;
+  margin: var(--ds-space-4) var(--ds-space-6) 0;
 }
 .replay-guide .text-button {
-  padding: 8px 0;
+  padding: var(--ds-space-2) 0;
 }
 @media (max-width: 480px) {
   .journey-stage {
-    padding: 10px 24px;
+    padding: var(--ds-space-2) var(--ds-space-6);
   }
 }
 
-.journey-selection { display: grid; gap: 7px; margin: 16px 0; font-size: var(--ds-text-caption); }
+.journey-selection { display: grid; gap: var(--ds-space-2); margin: var(--ds-space-4) 0; font-size: var(--ds-text-small); }
 /* The caption's row when something sits beside it (the title's 「オフラインで遊ぶ」): the row keeps the caption's height, and
    the button's 44 px reach up into the selector's top margin, never over the select under it. */
-.journey-selection-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0 12px; }
+.journey-selection-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0 var(--ds-space-3); }
 .journey-selection-head > label { flex: none; white-space: nowrap; }
-.journey-selection-head > .text-button { display: inline-flex; align-items: flex-end; min-height: 44px; margin: -26px -5px -6px auto; padding: 0 5px 6px; font-size: var(--ds-text-caption); line-height: inherit; white-space: nowrap; }
+.journey-selection-head > .text-button { display: inline-flex; align-items: flex-end; min-height: var(--ds-press-small); margin: -26px -5px -6px auto; padding: 0 var(--ds-space-1) var(--ds-space-2); font-size: var(--ds-text-small); line-height: inherit; white-space: nowrap; }
 .journey-select { position: relative; display: block; }
 /* The journey select looks like the text fields (stage 2.2) with its own chevron (⌄). */
-.journey-select-value { display: block; min-height: 48px; padding: 12px 40px 12px 10px; border: 1px solid var(--ds-field-edge); border-radius: var(--ds-radius-field); background: var(--ds-field); color: var(--ds-ink); font-size: var(--ds-text-field); line-height: var(--ds-leading-snug); overflow-wrap: anywhere; }
-.journey-select-value::after { content: ""; position: absolute; top: 50%; right: 16px; width: 8px; height: 8px; border-right: 2px solid var(--ds-ink); border-bottom: 2px solid var(--ds-ink); transform: translateY(-70%) rotate(45deg); }
-.journey-select select { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 48px; margin: 0; opacity: 0; font-size: var(--ds-text-field); cursor: pointer; }
+.journey-select-value { display: block; min-height: var(--ds-press); padding: var(--ds-space-3) var(--ds-space-8) var(--ds-space-3) var(--ds-space-2); border: var(--ds-edge-thin) solid var(--ds-field-edge); border-radius: var(--ds-radius-control); background: var(--ds-field); color: var(--ds-ink); font-size: var(--ds-text-body); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
+.journey-select-value::after { content: ""; position: absolute; top: 50%; right: var(--ds-space-4); width: 8px; height: 8px; border-right: var(--ds-edge) solid var(--ds-ink); border-bottom: var(--ds-edge) solid var(--ds-ink); transform: translateY(-70%) rotate(45deg); }
+.journey-select select { position: absolute; inset: 0; width: 100%; height: 100%; min-height: var(--ds-press); margin: 0; opacity: 0; font-size: var(--ds-text-body); cursor: pointer; }
 /* The select is transparent, so its focus ring is drawn on the value box. Browsers
    without :has() (Safari before 15.4) show it whenever the select has focus;
    the others keep it to keyboard focus, like the global :focus-visible rings. */
-.journey-select:focus-within .journey-select-value { outline: 3px solid var(--ds-focus); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+.journey-select:focus-within .journey-select-value { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset); box-shadow: var(--ds-focus-halo); }
 .journey-select:has(select:focus:not(:focus-visible)) .journey-select-value { outline: none; box-shadow: none; }
-.journey-preparation h1 { margin-top: 24px; }
+.journey-preparation h1 { margin-top: var(--ds-space-6); }
 .journey-preparation > p:not(.eyebrow) { line-height: var(--ds-leading-reading); }
 .journey-route-stop { display: inline-block; white-space: nowrap; }
-.journey-preparation-saved { margin-top: 24px; padding: 18px; border-radius: var(--ds-radius-control); background: var(--ds-parchment-2); }
+.journey-preparation-saved { margin-top: var(--ds-space-6); padding: var(--ds-space-4); border-radius: var(--ds-radius-control); background: var(--ds-surface-chosen); }

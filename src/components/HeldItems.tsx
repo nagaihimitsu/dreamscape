@@ -4,13 +4,14 @@ import { DismissLayer } from "./DismissLayer";
 import { NewDot, Sparkle, SPARKLE_MS, useCuePlaying } from "./fx";
 import { Icon } from "./icons";
 import "./held-items.css";
+import { MOTION } from "./motion";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
 /** `lines`: what is written on the item (a note's lines, the catalog's `linesJa`), shown in order under the description. */
 export type HeldItem = { id: string; name: string; description: string; lines?: string[]; iconPath?: string };
 
 /** How long an item given away or used plays (milliseconds; held-items.css): the picture's shrink and its icon's float. */
-const SPENT_MS = 800;
+const SPENT_MS = MOTION.slow;
 
 const iconPath = (path: string | undefined) => `${import.meta.env.BASE_URL}${path ?? DEFAULT_ITEM_ICON}`;
 const iconSource = (item: HeldItem) => iconPath(item.iconPath);

@@ -1,12 +1,12 @@
 // The colour of the time of day laid over the free-time background (user decision 2026-11-11): pale and cool in
-// the morning, none at midday, warm orange in the late afternoon and evening, deep blue at night. PhotoCardFreeTime
+// the morning, none at midday, warm orange in the late afternoon and evening, a deep grey at night (2026-11-28: no navy). PhotoCardFreeTime
 // lays it as one fixed layer over the city's backdrop (or its map-like pattern), under every card. The title screen's art
 // takes its own, by the device's clock (titleArtTint, 2026-11-13).
 
 /** Red, green and blue (0–255) and the opacity (0–1). */
 type Rgba = readonly [red: number, green: number, blue: number, alpha: number];
 
-const NIGHT: Rgba = [18, 30, 78, 0.42];
+const NIGHT: Rgba = [16, 17, 22, 0.42];
 const MORNING: Rgba = [214, 232, 255, 0.16];
 const MIDDAY: Rgba = [0, 0, 0, 0];
 const EVENING: Rgba = [255, 138, 51, 0.22];
@@ -36,12 +36,12 @@ const STOPS: readonly (readonly [minute: number, tint: Rgba])[] = [
 /** The title screen's part of the day by the device's clock. */
 export type TitlePeriod = "morning" | "day" | "evening" | "night";
 
-/** The title art's tints: a faint warm wash in the morning, none by day, amber in the evening, deep blue at night. */
+/** The title art's tints: a faint warm wash in the morning, none by day, amber in the evening, a deep grey at night. */
 const TITLE_TINTS: Readonly<Record<TitlePeriod, string | null>> = {
   morning: "rgba(255, 196, 140, 0.14)",
   day: null,
   evening: "rgba(255, 150, 50, 0.2)",
-  night: "rgba(18, 30, 78, 0.38)",
+  night: "rgba(16, 17, 22, 0.38)",
 };
 
 /**

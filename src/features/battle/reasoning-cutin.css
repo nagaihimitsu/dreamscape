@@ -1,26 +1,26 @@
 /* A short visual bridge; the saved reasoning state remains underneath it. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --reasoning-cutin-reasoning-cutin-ink: #fffdf2;
-  --reasoning-cutin-reasoning-cutin-ground: #34584a;
-  --reasoning-cutin-reasoning-cutin-ground-2: #122720;
-  --reasoning-cutin-contradiction-ground: #724a2c;
-  --reasoning-cutin-contradiction-ground-2: #271913;
-  --reasoning-cutin-impact-edge: #f1c879;
-  --reasoning-cutin-impact-shade: #f1c8791c;
-  --reasoning-cutin-impact-shade-2: #f1c87955;
-  --reasoning-cutin-impact-ground: #f1c87977;
-  --reasoning-cutin-impact-ink: #fff5d1;
-  --reasoning-cutin-card-edge: #c8ead2;
-  --reasoning-cutin-card-ground: #eaf4e5;
-  --reasoning-cutin-card-ground-2: #c8dac9;
-  --reasoning-cutin-line-ground: #d1fbe0;
-  --reasoning-cutin-line-shade: #b2f6c7;
-  --reasoning-cutin-skip-edge: #e3eee4;
-  --reasoning-cutin-skip-ground: #12271de6;
+  --reasoning-cutin-reasoning-cutin-ink: var(--ds-light);
+  --reasoning-cutin-reasoning-cutin-ground: var(--ds-gray-2);
+  --reasoning-cutin-reasoning-cutin-ground-2: var(--ds-gray-1);
+  --reasoning-cutin-contradiction-ground: var(--ds-gray-2);
+  --reasoning-cutin-contradiction-ground-2: var(--ds-gray-1);
+  --reasoning-cutin-impact-edge: var(--ds-light);
+  --reasoning-cutin-impact-shade: color-mix(in srgb, var(--ds-light) 8%, transparent);
+  --reasoning-cutin-impact-shade-2: color-mix(in srgb, var(--ds-light) 32%, transparent);
+  --reasoning-cutin-impact-ground: color-mix(in srgb, var(--ds-light) 50%, transparent);
+  --reasoning-cutin-impact-ink: var(--ds-light);
+  --reasoning-cutin-card-edge: var(--ds-gray-5);
+  --reasoning-cutin-card-ground: var(--ds-gray-6);
+  --reasoning-cutin-card-ground-2: var(--ds-gray-5);
+  --reasoning-cutin-line-ground: var(--ds-light);
+  --reasoning-cutin-line-shade: var(--ds-gray-5);
+  --reasoning-cutin-skip-edge: var(--ds-gray-6);
+  --reasoning-cutin-skip-ground: color-mix(in srgb, var(--ds-gray-1) 88%, transparent);
 }
 /* The sizes of this stylesheet's effect words, named once (larger than the design's steps or following the screen:
-   docs/02 「デザインの決まり」). */
+   docs/14 「デザインの決まり」). */
 :root {
   --reasoning-impact-size: clamp(46px, 9dvh, 76px);
   --reasoning-copy-size: clamp(34px, 9vw, 64px);
@@ -35,9 +35,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: clamp(8px, 2dvh, 20px);
+  gap: clamp(8px, 2dvh, var(--ds-space-6));
   /* Below the header where it lies over the battle (--scene-top, styles.css). */
-  padding: max(18px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) 20px max(18px, env(safe-area-inset-bottom));
+  padding: max(var(--ds-space-4), env(safe-area-inset-top), calc(var(--scene-top, 0px) + var(--ds-space-2))) var(--ds-space-6) max(var(--ds-space-4), env(safe-area-inset-bottom));
   overflow: auto;
   overscroll-behavior: contain;
   color: var(--reasoning-cutin-reasoning-cutin-ink);
@@ -62,10 +62,10 @@
   place-items: center;
   width: clamp(76px, 17dvh, 124px);
   aspect-ratio: 1;
-  border: 3px solid var(--reasoning-cutin-impact-edge);
+  border: var(--ds-edge-thick) solid var(--reasoning-cutin-impact-edge);
   transform: rotate(45deg);
-  box-shadow: 0 0 0 12px var(--reasoning-cutin-impact-shade), 0 0 36px var(--reasoning-cutin-impact-shade-2);
-  animation: reasoning-impact-in 320ms ease-out both;
+  box-shadow: 0 0 0 12px var(--reasoning-cutin-impact-shade), var(--ds-shadow-large);
+  animation: reasoning-impact-in var(--motion-short) var(--ease-out) both;
 }
 /* Fixed, low-contrast rays suggest impact without flashing or shaking. */
 .reasoning-cutin-impact::before {
@@ -80,7 +80,7 @@
   transform: rotate(-45deg);
   color: var(--reasoning-cutin-impact-ink);
   font-size: var(--reasoning-impact-size);
-  font-weight: 800;
+  font-weight: var(--ds-weight-bold);
   line-height: 1;
 }
 .reasoning-cutin-connection {
@@ -93,50 +93,50 @@
   flex: none;
   width: clamp(62px, 15vw, 86px);
   height: clamp(78px, 18dvh, 112px);
-  border: 3px solid var(--reasoning-cutin-card-edge);
-  border-radius: var(--ds-radius-small);
+  border: var(--ds-edge-thick) solid var(--reasoning-cutin-card-edge);
+  border-radius: var(--ds-radius-control);
   background: repeating-linear-gradient(to bottom, var(--reasoning-cutin-card-ground) 0 6px, var(--reasoning-cutin-card-ground-2) 7px 8px, var(--reasoning-cutin-card-ground) 9px 18px);
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--ds-shade) 40%, transparent);
+  box-shadow: var(--ds-shadow);
 }
-.reasoning-cutin-card-left { animation: reasoning-card-left 420ms ease-out both; }
-.reasoning-cutin-card-right { animation: reasoning-card-right 420ms ease-out both; }
+.reasoning-cutin-card-left { animation: reasoning-card-left var(--motion-scene) var(--ease-out) both; }
+.reasoning-cutin-card-right { animation: reasoning-card-right var(--motion-scene) var(--ease-out) both; }
 .reasoning-cutin-line {
   width: clamp(48px, 20vw, 100px);
   height: 3px;
   background: var(--reasoning-cutin-line-ground);
   box-shadow: 0 0 12px var(--reasoning-cutin-line-shade);
-  animation: reasoning-line 400ms 250ms ease-out both;
+  animation: reasoning-line var(--motion-scene) var(--motion-short) var(--ease-out) both;
 }
 .reasoning-cutin-copy { max-width: 100%; }
 .reasoning-cutin-copy strong {
   display: block;
   font-size: var(--reasoning-copy-size);
-  line-height: var(--ds-leading-display);
-  font-weight: 800;
-  letter-spacing: .05em;
-  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 53.3%, transparent);
+  line-height: var(--ds-leading-tight);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-2);
+  text-shadow: 0 3px 0 color-mix(in srgb, var(--ds-shade) 50%, transparent);
   overflow-wrap: anywhere;
-  animation: reasoning-copy-in 400ms ease-out both;
+  animation: reasoning-copy-in var(--motion-scene) var(--ease-out) both;
 }
 .reasoning-cutin-copy p {
-  margin: 8px 0 0;
-  font-size: var(--ds-text-lead);
-  line-height: var(--ds-leading-snug);
-  font-weight: 700;
+  margin: var(--ds-space-2) 0 0;
+  font-size: var(--ds-text-large);
+  line-height: var(--ds-leading-body);
+  font-weight: var(--ds-weight-bold);
   overflow-wrap: anywhere;
 }
 .reasoning-cutin-skip {
   flex: none;
   min-width: 140px;
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 8px 16px;
-  border: 1px solid var(--reasoning-cutin-skip-edge);
-  border-radius: var(--ds-radius-small);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border: var(--ds-edge-thin) solid var(--reasoning-cutin-skip-edge);
+  border-radius: var(--ds-radius-control);
   color: var(--ds-light);
   background: var(--reasoning-cutin-skip-ground);
 }
-.reasoning-cutin-skip:focus-visible { outline: 3px solid var(--ds-light); outline-offset: 3px; }
+.reasoning-cutin-skip:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-light); outline-offset: var(--ds-focus-offset); }
 @keyframes reasoning-impact-in {
   from { opacity: 0; transform: rotate(45deg) scale(.72); }
   to { opacity: 1; transform: rotate(45deg) scale(1); }
@@ -157,11 +157,11 @@
   .reasoning-cutin * { animation: none !important; }
 }
 @media (orientation: landscape) and (max-height: 500px) {
-  .reasoning-cutin { gap: 4px; padding: 8px 18px; }
+  .reasoning-cutin { gap: var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-4); }
   .reasoning-cutin-visual { height: 70px; }
   .reasoning-cutin-card { height: 58px; width: 48px; }
   .reasoning-cutin-impact { width: 60px; }
   .reasoning-cutin-impact span { font-size: var(--reasoning-impact-size-landscape); }
   .reasoning-cutin-copy strong { font-size: var(--reasoning-copy-size-landscape); }
-  .reasoning-cutin-copy p { margin-top: 2px; }
+  .reasoning-cutin-copy p { margin-top: var(--ds-space-1); }
 }

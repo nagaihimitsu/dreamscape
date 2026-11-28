@@ -37,6 +37,7 @@ import type { SessionToast } from "./useGameSession";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
 import "./hud-effects.css";
+import { MOTION } from "../components/motion";
 
 /** Every loaded city's map (place IDs are unique across them), for a background that names its place by placeId. */
 const mapCities = (): MapCity[] => getCities().map((city) => {
@@ -45,9 +46,9 @@ const mapCities = (): MapCity[] => getCities().map((city) => {
 });
 
 /** How long ≡メニュー's bounce as a photo's print lands plays, its flight included (milliseconds; hud-effects.css). */
-const PHOTO_LANDING_MS = 1100;
+const PHOTO_LANDING_MS = MOTION.long;
 /** How long a save's ribbon plays on ≡メニュー (milliseconds; hud-effects.css). */
-const SAVE_MARK_MS = 900;
+const SAVE_MARK_MS = MOTION.slow;
 
 /**
  * The header's popovers open one at a time, all hanging from its bottom edge:

@@ -8,24 +8,14 @@
 /* The materials of the scene tags, named once: every colour below is one of these or of the design's rules (styles.css
    --ds-*; 2026-11-25). */
 :root {
-  --stage-recall-ground: #2b2d33; /* the quiet grey a memory comes up in */
-  --stage-photo-veil: rgba(16, 20, 28, 0.5);
-  --stage-photo-frame: #ffffff; /* a print's white border */
-  --stage-photo-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(24, 28, 38, 0.14), rgba(24, 28, 38, 0.46));
-  --stage-remembered-rim: inset 0 0 26px rgba(120, 80, 30, 0.3);
-  --phone-body: #10141c;
+  --stage-recall-ground: var(--ds-gray-1); /* the quiet grey a memory comes up in */
+  --stage-photo-frame: var(--ds-light); /* a print's white border */
+  --stage-photo-shadow: 0 8px 28px color-mix(in srgb, var(--ds-shade) 50%, transparent);
+  --stage-quiet-veil: radial-gradient(ellipse 90% 80% at 50% 40%, color-mix(in srgb, var(--ds-gray-1) 16%, transparent), color-mix(in srgb, var(--ds-gray-1) 50%, transparent));
+  --stage-remembered-rim: inset 0 0 26px color-mix(in srgb, var(--ds-gray-1) 32%, transparent);
+  --phone-body: var(--ds-gray-1);
   --phone-corner: 28px; /* the rounded corners of the phone's glass */
-  --phone-slot: #3a4152;
-  --phone-screen: #e9edf1;
-  --phone-name: #4b5563; /* 6.4:1 on the screen */
-  --phone-bubble: #ffffff;
-  --phone-sent-ink: #ffffff;
-  --letter-grain: rgba(120, 90, 50, 0.03);
-  --letter-paper: linear-gradient(170deg, #fdf8ec, #f4e9d2);
-  --letter-rule: rgba(77, 101, 138, 0.3);
-  --note-paper: #fffbea;
-  --card-paper: #fffdf8;
+  --phone-slot: var(--ds-gray-2);
 }
 
 /* # recall: the scene's own picture fades away into a quiet grey and the photo comes up in it (2026-11-16 user
@@ -43,24 +33,24 @@
   background: var(--stage-recall-ground);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1000ms ease-in-out;
+  transition: opacity var(--motion-slow) var(--ease-in-out);
 }
 /* Back to the scene (the transition of the state it goes to): a gentle 1 s. Into the memory: 0.9 s, quick at first. */
 :is(.vn-scene, .battle-screen) > :is(.vn-background, .battle-backdrop),
 :is(.vn-scene, .battle-screen) > .weather-layer {
-  transition: opacity 1000ms ease-in-out;
+  transition: opacity var(--motion-slow) var(--ease-in-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer)::before {
   opacity: 1;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer) > :is(.vn-background, .battle-backdrop) {
   opacity: 0;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 :is(.vn-scene, .battle-screen):has(> .recall-layer) > .weather-layer {
   opacity: 0;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 .recall-layer {
   position: absolute;
@@ -78,7 +68,7 @@
   width: 100%;
   height: calc(100% - var(--scene-top, 0px));
   object-fit: cover;
-  opacity: 0.66;
+  opacity: var(--ds-opacity-soft);
   /* Its edges dissolve into the grey; the top edge too (under the header), so no straight line shows there. */
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 18%),
     radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
@@ -86,13 +76,7 @@
   mask-image: linear-gradient(to bottom, transparent, black 18%),
     radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
   mask-composite: intersect;
-  animation: recall-photo-in 700ms 300ms var(--ease-out) both;
-}
-@keyframes stage-fade-in {
-  from { opacity: 0; }
-}
-@keyframes recall-photo-in {
-  from { opacity: 0; }
+  animation: ds-fade-in var(--motion-slow) var(--motion-short) var(--ease-out) both;
 }
 
 /* # quiet: a soft veil over the scene's picture, darker towards its edges, and the visited place's reference (a
@@ -105,7 +89,7 @@
   inset: 0;
   background: var(--stage-quiet-veil);
   pointer-events: none;
-  animation: stage-fade-in var(--motion-scene) var(--ease-out);
+  animation: ds-fade-in var(--motion-scene) var(--ease-out);
 }
 [data-quiet] > .date-reference {
   visibility: hidden;
@@ -118,53 +102,55 @@
    moves. The text stays at 8:1 or more on the glass, and 5.7:1 on the band, over any picture behind (its 16 %
    show-through counted at black). */
 [data-dialogue-window][data-remembered] {
-  --vn-window-bg: rgba(244, 232, 212, 0.84);
-  --vn-text: #33241a;
-  --vn-muted: #5e4a35;
-  --vn-name-bg: #7a6148;
+  --vn-window-bg: color-mix(in srgb, var(--ds-gray-6) 88%, transparent);
+  --vn-text: var(--ds-gray-1);
+  --vn-muted: var(--ds-gray-3);
+  --vn-name-bg: var(--ds-gray-3);
 }
 .vn-dialogue[data-remembered] .vn-window::before,
 .battle-screen[data-phase="dialogue"] .battle-paper-shell[data-remembered] .battle-window::before {
   box-shadow: var(--stage-remembered-rim);
 }
 
-/* # phone: a phone in the window: a dark body with a hairline edge, a light screen whose messages scroll inside it
-   (newest at the bottom), received ones on the left under their sender's name, sent ones on the right. The line on
+/* # phone: a phone in the window: a dark body with a hairline edge (the one thing drawn as itself, 2026-11-28 user
+   decision), and inside it the one UI: a screen of the light glass whose messages scroll inside it (newest at the
+   bottom), received ones on the left under their sender's name as panes on the glass, sent ones on the right in the
+   smoked glass of the talk's choices. The line on
    screen is its last bubble; tapping it or the scene reads on as on any line. */
 .phone-screen {
   position: relative;
-  width: min(100%, 22rem);
-  margin: 6px auto 8px;
-  padding: 14px 7px 8px;
-  border: 1px solid var(--ds-gold-hairline);
+  width: min(100%, var(--ds-card-narrow));
+  margin: var(--ds-space-2) auto var(--ds-space-2);
+  padding: var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
+  border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--phone-corner);
   background: var(--phone-body);
-  box-shadow: var(--ds-card-shadow);
+  box-shadow: var(--ds-shadow);
 }
 /* The speaker slot at the top of the phone (decoration). */
 .phone-screen::before {
   content: "";
   position: absolute;
-  top: 5px;
+  top: var(--ds-space-1);
   left: 50%;
   width: 40px;
   height: 4px;
   margin-left: -20px;
-  border-radius: var(--ds-radius-hair);
+  border-radius: var(--ds-radius-pill);
   background: var(--phone-slot);
 }
 .phone-thread {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--ds-space-2);
   max-height: min(22rem, 44dvh);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding: 12px 10px;
-  border-radius: var(--ds-glass-radius);
-  background: var(--phone-screen);
-  color: var(--ds-slate-900);
+  padding: var(--ds-space-3) var(--ds-space-2);
+  border-radius: var(--ds-radius-large);
+  background: var(--ds-glass-bg);
+  color: var(--ds-ink);
 }
 /* Choices follow the message: the phone keeps less room, so they stay in view. */
 .phone-screen[data-compact] .phone-thread {
@@ -182,21 +168,22 @@
   align-items: flex-end;
 }
 .phone-name {
-  margin: 0 0 2px 6px;
-  color: var(--phone-name);
+  margin: 0 0 var(--ds-space-1) var(--ds-space-2);
+  color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-caption);
-  font-weight: 600;
+  font-size: var(--ds-text-small);
+  font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   overflow-wrap: anywhere;
 }
 .phone-bubble {
   max-width: 100%;
   margin: 0;
-  padding: 10px 12px;
-  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small);
-  background: var(--phone-bubble);
-  color: var(--ds-slate-900);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control);
+  background: var(--ds-glass-press);
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line);
+  color: var(--ds-ink);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
@@ -204,9 +191,10 @@
   overflow-wrap: anywhere;
 }
 .phone-message[data-side="sent"] .phone-bubble {
-  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-small) var(--ds-radius-pane);
-  background: var(--ds-plate-blue); /* white text at 5.9:1 */
-  color: var(--phone-sent-ink);
+  border-radius: var(--ds-radius-pane) var(--ds-radius-pane) var(--ds-radius-control) var(--ds-radius-pane);
+  background: var(--ds-action-fill); /* white text at 6:1 or more */
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-action-edge);
+  color: var(--ds-action-ink);
 }
 /* The line on screen is its whole bubble, in the bubble's own type: the bubble's padding is the line's, so a
    one-line message is still a 44 px tap row (docs/10 「タップ領域」), as high as the other bubbles. */
@@ -214,55 +202,41 @@
   padding: 0;
 }
 :is(.vn-dialogue, .battle-dialogue) .phone-screen .phone-bubble > p.dialogue-text {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
   margin: 0;
-  padding: 10px 12px;
+  padding: var(--ds-space-2) var(--ds-space-3);
   color: inherit;
   font: inherit;
   letter-spacing: 0;
 }
 :is(.vn-dialogue, .battle-dialogue) .phone-bubble .dialogue-next-mark {
   color: inherit;
-  opacity: 0.6;
+  opacity: var(--ds-opacity-soft);
 }
 
-/* # letter: a sheet of paper in the window, centred, its text larger in the serif face (Noto Serif JP, already loaded),
-   without the speaker's plate. Lines written on the same kind of paper stack on one sheet; a long sheet scrolls inside
-   itself to its newest line. Three papers: a letter (cream, a faint grain), a note (ruled lines), a card (centred text
-   in a thin inner frame). */
+/* # letter: what is written (a letter, a note, a card) as a sheet in the window, centred, its text larger, without the
+   speaker's plate. Lines written on the same kind of paper stack on one sheet; a long sheet scrolls inside itself to its
+   newest line. Since 2026-11-28 (user decision: such things follow the one UI first) the sheet is not drawn as paper
+   (no grain, ruled lines or inner frame) but as a pane on the window's glass, the glass's press ground with its fine
+   edge; the three kinds keep their rhythm: a letter and a note at the paper's line pitch, a card centred. */
 .letter-sheet {
   --letter-line: 1.9em;
   position: relative;
-  width: min(100%, 30rem);
+  width: min(100%, var(--ds-card));
   max-height: min(28rem, 54dvh);
-  margin: 8px auto 6px;
-  padding: 18px 22px;
+  margin: var(--ds-space-2) auto var(--ds-space-2);
+  padding: var(--ds-space-4) var(--ds-space-6);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  border-radius: var(--ds-radius-small);
-  background:
-    repeating-linear-gradient(115deg, var(--letter-grain) 0 2px, transparent 2px 7px),
-    var(--letter-paper);
+  border-radius: var(--ds-radius-pane);
+  background: var(--ds-glass-press);
   color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-lead);
-}
-.letter-sheet[data-kind="note"] {
-  border-radius: var(--ds-radius-hair);
-  background:
-    repeating-linear-gradient(to bottom, transparent 0 calc(var(--letter-line) - 1px), var(--letter-rule) calc(var(--letter-line) - 1px) var(--letter-line)),
-    var(--note-paper);
-  background-attachment: local;
-  background-origin: content-box;
-  background-clip: padding-box;
+  box-shadow: inset 0 0 0 var(--ds-edge-thin) var(--ds-glass-line);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
 }
 .letter-sheet[data-kind="card"] {
-  border-radius: var(--ds-radius-control);
-  background: var(--card-paper);
-  outline: 1px solid var(--ds-parchment-line);
-  outline-offset: -8px;
   text-align: center;
 }
 /* The lines keep the paper's rhythm; the line on screen is at least a 44 px tap row (its room below a one-line text). */
@@ -272,28 +246,28 @@
   margin: 0;
   color: inherit;
   font-family: inherit;
-  font-size: 1em;
-  font-weight: 400;
+  font-size: inherit;
+  font-weight: var(--ds-weight-regular);
   line-height: var(--letter-line);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ds-tracking-2);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet p.dialogue-text {
-  min-height: 44px;
+  min-height: var(--ds-press-small);
 }
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet .dialogue-next-mark {
   color: var(--ds-ink-muted);
 }
 /* A line with its # translation: (2026-11-15 user decision; LineStage.tsx TranslatedLetterLine): the English as
    written, without the Japanese text's tracking, and right under it its Japanese in the window's sans face, smaller
-   and quieter (a reading aid beside the paper's own words; 6.5:1 on the card). The English's lines sit a little closer
-   than the paper's rhythm, so each English line and its Japanese read as one pair; on a note both keep the ruled lines'
+   and quieter (a reading aid beside the sheet's own words; 5.3:1 or more on it). The English's lines sit a little closer
+   than the paper's rhythm, so each English line and its Japanese read as one pair; on a note both keep the sheet's line
    pitch instead. On a card the lines of each are balanced. The Japanese is there from the line's start, so nothing
    moves when the English has been typed. */
 .letter-entry > .letter-line,
 :is(.vn-dialogue, .battle-dialogue) .letter-entry > p.dialogue-text {
-  letter-spacing: 0.01em;
+  letter-spacing: var(--ds-tracking-1);
 }
 .letter-sheet:not([data-kind="note"]) .letter-entry > .letter-line,
 :is(.vn-dialogue, .battle-dialogue) .letter-sheet:not([data-kind="note"]) .letter-entry > p.dialogue-text {
@@ -304,12 +278,12 @@
 }
 .letter-translation {
   --letter-gloss: 0.78;
-  margin: 0.15em 0 0.85em;
+  margin: var(--ds-space-1) 0 var(--ds-space-3);
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
   font-size: calc(var(--letter-gloss) * 1em);
   line-height: var(--ds-leading-body);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ds-tracking-1);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -322,7 +296,7 @@
 }
 @media (max-width: 700px) {
   .letter-sheet {
-    padding: 14px 16px;
+    padding: var(--ds-space-4) var(--ds-space-4);
   }
 }
 

@@ -1,9 +1,9 @@
 /* A journey's opening movie (OpeningMovie.tsx): full screen over everything, the portrait movie fitted in black, the
    sound and skip buttons in the top corner clear of the notch, a play button in the middle when the browser refused to
    start it. */
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
+/* The colours of this stylesheet's own things, named once (docs/14 「デザインの決まり」). */
 :root {
-  --opening-movie-button-ground: rgba(16, 20, 28, 0.6);
+  --opening-movie-button-ground: color-mix(in srgb, var(--ds-gray-1) 70%, transparent);
 }
 .opening-movie {
   position: fixed;
@@ -25,39 +25,39 @@
 }
 .opening-movie-controls {
   position: absolute;
-  top: max(12px, env(safe-area-inset-top, 0px));
-  right: max(12px, env(safe-area-inset-right, 0px));
+  top: max(var(--ds-space-3), env(safe-area-inset-top, 0px));
+  right: max(var(--ds-space-3), env(safe-area-inset-right, 0px));
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--ds-space-2);
 }
 .opening-movie-button {
   min-width: 44px;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid color-mix(in srgb, var(--ds-light) 70%, transparent);
+  min-height: var(--ds-press-small);
+  padding: 0 var(--ds-space-4);
+  border: var(--ds-edge-thin) solid color-mix(in srgb, var(--ds-light) 70%, transparent);
   border-radius: var(--ds-radius-pill);
   background: var(--opening-movie-button-ground);
   color: var(--ds-light);
   font: inherit;
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
   cursor: pointer;
 }
 .opening-movie-button[aria-disabled="true"] {
-  opacity: 0.55;
+  opacity: var(--ds-opacity-soft);
   cursor: default;
 }
 .opening-movie-button:focus-visible {
-  outline: 3px solid var(--ds-light);
-  outline-offset: 2px;
+  outline: var(--ds-edge-thick) solid var(--ds-light);
+  outline-offset: var(--ds-focus-offset);
 }
 .opening-movie-play {
   position: absolute;
   top: 50%;
   left: 50%;
-  min-height: 56px;
-  padding: 0 28px;
+  min-height: var(--ds-press-large);
+  padding: 0 var(--ds-space-8);
   transform: translate(-50%, -50%);
-  font-size: var(--ds-text-subhead);
+  font-size: var(--ds-text-large);
 }

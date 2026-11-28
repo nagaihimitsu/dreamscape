@@ -140,7 +140,8 @@ describe("the name's writing in Fasol SP Demo", () => {
   it("bounds the drawn width by the font's advances and the fallback's: every width measured in Chromium lies inside", () => {
     // Shaped widths (em) in Chromium (getComputedTextLength at 100 units, geometricPrecision, 2026-11-17): the font's
     // tightest kerning (Blblbl, Hlhlhl), its narrowest letters, kana names, long names, and names with a hyphen, an
-    // apostrophe, full stops or letters with marks, those in Noto Serif JP (as index.html loads it) and in the local serif.
+    // apostrophe, full stops or letters with marks, measured then in Noto Serif JP and in the local serif (the fallback is Noto Sans JP since 2026-11-28;
+    // not measured again in it).
     const measured: [string, number, number][] = [
       ["Blblbl", 2.757, 2.757], ["Hlhlhl", 2.589, 2.589], ["Ii", 0.338, 0.338], ["Taichi", 2.351, 2.351], ["Jo", 0.72, 0.72],
       ["Masayoshi", 4.797, 4.797], ["Mmmmmmmm", 6.52, 6.52], ["Jan-Poru", 3.674, 3.661], ["O'Brien", 3.137, 3.121],

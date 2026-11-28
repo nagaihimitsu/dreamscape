@@ -1,15 +1,10 @@
-/* A line's # item_out: (2026-11-15 user decision; ItemOut.tsx): the item taken out of the bag, on a quiet sheet of paper
-   with what is written on it, in the scene's free area between the header and the window. Display only: no focus, no
-   presses but the scroll of a long list (a tap on the card reads on like a tap on the scene). No thick edge on one side
-   (AGENTS.md): the paper has a hairline all round, a dashed rule under its heading; the line the story reads is marked
-   by a soft marker band behind its words and their full ink and weight, the other lines a little quieter. */
-
-/* The colours of this stylesheet's own things, named once (docs/02 「デザインの決まり」). */
-:root {
-  --item-out-card-ground: rgba(120, 90, 50, 0.03);
-  --item-out-card-ground-2: #fdf8ec;
-  --item-out-card-ground-3: #f4e9d2;
-}
+/* A line's # item_out: (2026-11-15 user decision; ItemOut.tsx): the item taken out of the bag, with what is written on it,
+   in the scene's free area between the header and the window. Display only: no focus, no presses but the scroll of a
+   long list (a tap on the card reads on like a tap on the scene). Since 2026-11-28 (user decision: a thing like
+   カムラの段ボールのメモ follows the one UI first) it is not drawn as paper but as a pane of the light glass, as every
+   pane over a scene (styles.css's glass surfaces): no grain, no edge line, the glass's corner and room; a hairline under
+   its heading. The line the story reads is marked by a soft grey band behind its words and their full ink and weight,
+   the other lines a little quieter. No thick edge on one side (AGENTS.md). */
 /* The layer: over the portraits (z-index 1, as # item_show:'s card) and under the window (z-index 2), in the area below
    the header and below the notices under it (--notices-h, GameApp). The card's height is kept to the window's top
    (ItemOut.tsx: itemOutFit), so it never covers the window; where not even its heading fits above the window (a short
@@ -21,30 +16,30 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: max(clamp(10px, 3dvh, 28px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
+  padding: max(clamp(10px, 3dvh, var(--ds-space-8)), calc(var(--notices-h, 0px) + var(--ds-space-2))) var(--ds-space-4) 0;
   pointer-events: none;
 }
 /* Clear of what a scene keeps in the top left corner, drawn over this layer: a date's reference note (romance-scene.css:
    its width beside the portrait). */
-.vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - 8px) + 16px); }
+.vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - var(--ds-space-2)) + var(--ds-space-4)); }
 @media (min-width: 701px) {
-  .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + 16px); }
+  .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + var(--ds-space-4)); }
 }
 .item-out-card {
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: min(100%, 24rem);
+  width: min(100%, var(--ds-card-narrow));
   min-height: 0;
-  padding: 12px 14px 12px 16px;
+  padding: var(--ds-glass-padding);
   overflow: hidden;
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: var(--ds-radius-field);
-  background:
-    repeating-linear-gradient(115deg, var(--item-out-card-ground) 0 2px, transparent 2px 7px),
-    linear-gradient(170deg, var(--item-out-card-ground-2), var(--item-out-card-ground-3));
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--ds-shade) 32%, transparent);
+  border: 0;
+  border-radius: var(--ds-radius-large);
+  background: var(--ds-glass-bg);
+  -webkit-backdrop-filter: var(--ds-glass-blur);
+  backdrop-filter: var(--ds-glass-blur);
+  box-shadow: var(--ds-shadow);
   color: var(--ds-ink);
   pointer-events: none;
 }
@@ -53,9 +48,9 @@
   display: flex;
   flex: none;
   align-items: center;
-  gap: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed var(--ds-parchment-line);
+  gap: var(--ds-space-2);
+  padding-bottom: var(--ds-space-2);
+  border-bottom: var(--ds-edge-thin) solid var(--ds-line);
 }
 /* The picture: small beside the name (the lines are what is looked at); a vector picture fills its square, any other
    at its own size at most, so it stays sharp. */
@@ -64,29 +59,29 @@
   flex: none;
   justify-content: center;
   align-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--ds-radius-field);
-  background: color-mix(in srgb, var(--ds-light) 55%, transparent);
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
+  border-radius: var(--ds-radius-control);
+  background: color-mix(in srgb, var(--ds-light) 50%, transparent);
 }
 .item-out-picture img {
   display: block;
   width: auto;
   height: auto;
-  max-width: 40px;
-  max-height: 40px;
+  max-width: var(--ds-press-small);
+  max-height: var(--ds-press-small);
 }
 .item-out-picture img[data-vector] {
-  width: 40px;
-  height: 40px;
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
 }
 .item-out-name {
   min-width: 0;
-  font-family: var(--ds-font-serif);
-  font-size: var(--ds-text-subhead);
-  font-weight: 600;
-  line-height: var(--ds-leading-snug);
-  letter-spacing: 0.02em;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-large);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-body);
+  letter-spacing: var(--ds-tracking-1);
   overflow-wrap: anywhere;
 }
 /* What is written on it, numbered as the held items' detail numbers it; a list longer than the card's room scrolls
@@ -95,69 +90,66 @@
 .item-out-description {
   flex: 0 1 auto;
   min-height: 0;
-  margin: 8px 0 0;
+  margin: var(--ds-space-2) 0 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  font-family: var(--ds-font-serif);
+  font-family: var(--ds-font-sans);
   font-size: var(--ds-text-body);
   line-height: var(--ds-leading-body);
   overflow-wrap: anywhere;
 }
 .item-out-lines {
   position: relative;
-  padding: 0 4px 0 1.9em;
+  padding: 0 var(--ds-space-1) 0 var(--ds-space-8);
 }
 .item-out-lines[data-scrolls] { pointer-events: auto; }
 /* Lines beyond the room (data-before above, data-more below; ItemOut.tsx): the edge's line fades, so the list says it
    goes on. */
 .item-out-lines {
-  --fade-top: #000;
-  --fade-bottom: #000;
+  --fade-top: var(--ds-shade);
+  --fade-bottom: var(--ds-shade);
 }
-.item-out-lines[data-before] { --fade-top: rgba(0, 0, 0, 0.08); }
-.item-out-lines[data-more] { --fade-bottom: rgba(0, 0, 0, 0.12); }
+.item-out-lines[data-before] { --fade-top: color-mix(in srgb, var(--ds-shade) 8%, transparent); }
+.item-out-lines[data-more] { --fade-bottom: color-mix(in srgb, var(--ds-shade) 16%, transparent); }
 .item-out-lines:is([data-before], [data-more]) {
   -webkit-mask-image: linear-gradient(to bottom, var(--fade-top), var(--ds-shade) 1.6em, var(--ds-shade) calc(100% - 1.6em), var(--fade-bottom));
   mask-image: linear-gradient(to bottom, var(--fade-top), var(--ds-shade) 1.6em, var(--ds-shade) calc(100% - 1.6em), var(--fade-bottom));
 }
-.item-out-lines li + li { margin-top: 2px; }
+.item-out-lines li + li { margin-top: var(--ds-space-1); }
 .item-out-lines li::marker {
   color: var(--ds-ink-muted);
-  font-family: var(--ds-font-latin);
-  font-size: 0.85em;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-note);
 }
-/* With a highlighted line, the others in the muted ink (5.5:1 on the paper), the highlighted one in full ink, heavier,
-   with a marker band behind its words (wrapping with them). */
+/* With a highlighted line, the others in the muted ink (5.3:1 on the glass), the highlighted one in full ink, heavier,
+   with a soft grey band behind its words (wrapping with them). */
 .item-out-lines[data-highlight] li {
   color: var(--ds-ink-muted);
   transition: color var(--motion-fast) var(--ease-out);
 }
 .item-out-lines li[data-highlighted] {
   color: var(--ds-ink);
-  font-weight: 600;
+  font-weight: var(--ds-weight-bold);
 }
 .item-out-lines li[data-highlighted]::marker {
   color: var(--ds-ink);
-  font-weight: 700;
+  font-weight: var(--ds-weight-bold);
 }
 .item-out-lines li[data-highlighted] > span {
-  padding: 0 2px;
-  background: linear-gradient(transparent 52%, color-mix(in srgb, var(--ds-marker-selected) 55%, transparent) 52%);
+  padding: 0 var(--ds-space-1);
+  background: linear-gradient(transparent 52%, color-mix(in srgb, var(--ds-ink) 10%, transparent) 52%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
 /* Coming in: out of the header's bag when the item is held (from the bag's middle, small, to its place: ItemOut.tsx sets
    --from-dx, --from-dy and --from-scale), else softly where it is. */
-.item-out-card[data-enter="bag"] { animation: item-out-rise 600ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }
-.item-out-card[data-enter="here"] { animation: item-out-in 320ms var(--ease-out) both; }
+.item-out-card[data-enter="bag"] { animation: item-out-rise var(--motion-slow) var(--ease-out) both; }
+.item-out-card[data-enter="here"] { animation: ds-drop-in var(--motion-short) var(--ease-out) both; }
 @keyframes item-out-rise {
   from { opacity: 0; transform: translate(var(--from-dx, 0px), var(--from-dy, 0px)) scale(var(--from-scale, 0.2)); }
   35% { opacity: 1; }
-}
-@keyframes item-out-in {
-  from { opacity: 0; transform: translateY(-6px); }
 }
 
 /* As its line goes (ItemOutFlight, in the header's layer over the screen, item-show.css's .item-show-flight): the card,
@@ -167,23 +159,23 @@
   position: absolute;
   max-width: none;
   transform-origin: 50% 50%;
-  animation: item-show-fade 400ms var(--ease-out) both;
+  animation: item-show-fade var(--motion-scene) var(--ease-out) both;
 }
 .item-out-card.item-out-leaving[data-mode="fly"] {
-  animation: item-show-fly 650ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+  animation: item-show-fly var(--motion-slow) var(--ease-in) both;
 }
 
 /* A short landscape screen: a lower heading and tighter lines, so more of the list shows above the window. */
 @media (max-height: 500px) {
-  .item-out-layer { padding-top: max(6px, calc(var(--notices-h, 0px) + 6px)); }
-  .item-out-card { width: min(100%, 30rem); padding: 8px 12px 8px 14px; }
-  .item-out-head { gap: 8px; padding-bottom: 6px; }
-  .item-out-picture { width: 32px; height: 32px; }
-  .item-out-picture img { max-width: 28px; max-height: 28px; }
-  .item-out-picture img[data-vector] { width: 28px; height: 28px; }
+  .item-out-layer { padding-top: max(var(--ds-space-2), calc(var(--notices-h, 0px) + var(--ds-space-2))); }
+  .item-out-card { width: min(100%, var(--ds-card)); padding: var(--ds-space-2) var(--ds-space-4); }
+  .item-out-head { gap: var(--ds-space-2); padding-bottom: var(--ds-space-2); }
+  .item-out-picture { width: var(--ds-size-4); height: var(--ds-size-4); }
+  .item-out-picture img { max-width: var(--ds-size-4); max-height: var(--ds-size-4); }
+  .item-out-picture img[data-vector] { width: var(--ds-size-4); height: var(--ds-size-4); }
   .item-out-name { font-size: var(--ds-text-body); }
   .item-out-lines,
-  .item-out-description { margin-top: 6px; }
+  .item-out-description { margin-top: var(--ds-space-2); }
 }
 
 /* Reduced motion and 「演出を短縮する」: no movement; the card simply appears, and simply goes (no copy on its way out). */

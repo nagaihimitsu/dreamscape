@@ -15,6 +15,7 @@ import { placeDisplayName } from "./travel-labels";
 import { centreOf, INSTANT, reducedMotion, rowItems, useCardGestures, type CardSwipe } from "./useCardGestures";
 import { whenLaidOut } from "./when-laid-out";
 import "./travel-menu.css";
+import { MOTION } from "../../components/motion";
 
 /** No card joining the row. */
 const NONE_JOINING: readonly string[] = [];
@@ -247,7 +248,7 @@ const CLOUD_IN: Keyframe[] = [
   { opacity: 0.9, offset: 0.5 },
   { opacity: 1, transform: "none" },
 ];
-const CLOUD_MS = 620;
+const CLOUD_MS = MOTION.slow;
 
 /**
  * The chosen card's sheet under the row (or under its row in the list): each card chosen comes in like a cloud. The
@@ -298,7 +299,7 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
     return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, swipeable,
       photo: hotelPhoto
         ? <CardPhoto asset={hotelPhoto} />
-        : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
+        : <PlainTile><Icon name="bed" /></PlainTile> };
   }
   // The city's shop (2026-11-20): its name over an awning, at the right end of the row.
   if (card.kind === "shop")
@@ -342,8 +343,8 @@ function CardPhoto({ asset }: { asset: TourismAsset }) {
 }
 
 /** A tile in place of a photo: the place's background colour (else the slate) with a mark. */
-function PlainTile({ color, children }: { color?: string; children: ReactNode }) {
-  return <span className="photo-card-plain" style={color ? { backgroundColor: color } : undefined}>{children}</span>;
+function PlainTile({ children }: { children: ReactNode }) {
+  return <span className="photo-card-plain">{children}</span>;
 }
 
 /**
@@ -355,5 +356,5 @@ function PlacePhoto({ game, entry }: { game: GameState; entry: PhotoCardEntry })
   const photo = getPlacePhoto(game.currentCityId, place.id);
   if (photo) return <CardPhoto asset={photo} />;
   const date = entry.events.every((choice) => choice.event.category === "date");
-  return <PlainTile color={presentation.backgrounds[place.backgroundId]?.color}>{date ? "♡" : "◇"}</PlainTile>;
+  return <PlainTile>{date ? "♡" : "◇"}</PlainTile>;
 }

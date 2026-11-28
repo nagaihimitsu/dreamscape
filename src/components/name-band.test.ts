@@ -32,9 +32,9 @@ describe("the speaker's name band (name-band)", () => {
     expect(speakerSpot(her({ opposite: person("a") }), { heroine: "listening", opposite: "listening" })).toBeUndefined();
   });
 
-  it("writes the name in white or navy, whichever reads, and moves the fill only as far as 4.5:1 needs over any backdrop", () => {
-    // White clothes: navy ink, the fill as it is.
-    expect(bandColours({ fill: "#F8F4F2", edge: "#3B3739" })).toEqual({ fill: "#f8f4f2", edge: "#3b3739", ink: "#1d2740" });
+  it("writes the name in white or dark grey, whichever reads, and moves the fill only as far as 4.5:1 needs over any backdrop", () => {
+    // White clothes: dark grey ink, the fill as it is.
+    expect(bandColours({ fill: "#F8F4F2", edge: "#3B3739" })).toEqual({ fill: "#f8f4f2", edge: "#3b3739", ink: "#24262b" });
     // Deep blue: white ink, the fill as it is.
     expect(bandColours({ fill: "#132455", edge: "#4d5679" })).toMatchObject({ fill: "#132455", ink: "#ffffff" });
     // Mid tones read in neither at 4.5:1 once the band lets the scene through: the fill moves until they do.
