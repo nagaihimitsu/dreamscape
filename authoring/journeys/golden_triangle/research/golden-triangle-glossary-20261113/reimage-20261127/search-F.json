@@ -1,0 +1,95 @@
+[
+ {
+  "id": "gt_term_rebar_roof",
+  "nameJa": "屋上に突き出た鉄筋",
+  "verdict": "new",
+  "photoNoteJa": null,
+  "altJa": "バングラデシュ・ダッカの建物の屋上。給水タンクと太陽光パネルが置かれて使われている屋上のあちこちに、次の階の柱のための鉄筋の束が何本も突き出している。",
+  "image": {
+   "file": "gt_term_rebar_roof.jpg",
+   "page": "https://www.flickr.com/photos/inoldnews/53890574440/",
+   "title": "Solar Panels installed on rooftops often finds its way into the landfills",
+   "author": "Sumit Das / InOldNews (Flickr: Open Journalism Network by InOldNews)",
+   "license": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+   "licenseEvidence": "Flickr photo page: \"license\": \"https://creativecommons.org/licenses/by/2.0/\" (license id 4 = Attribution); description: \"Credit: InOldNews | Sumit Das  Location & Date: Dhaka 03/07/2024\"",
+   "originalSize": "1920x1080",
+   "downloadedSize": "1280x720",
+   "date": "2024-07-07 (Flickr 'Taken on'; description says 03/07/2024)",
+   "place": "Dhaka, Bangladesh",
+   "facesSignsPlates": "No people, no plates. Tiny brand word 'GAZI' on the black water tank at about x560-600, y80-95 (illegible at card size). No watermark.",
+   "suggestedCrop": {
+    "x": 120,
+    "y": 0,
+    "w": 720,
+    "h": 720
+   },
+   "notes": "Looked at visually (not found by title). A finished, lived-in roof slab (water tanks, solar panels in use, rain puddles) with bundles of column rebar standing up for the next storey, plus a few short concrete column stubs - exactly the 'build the next floor later' custom. The building is in Bangladesh, not India. The square crop keeps the panels, rebar bundles and tanks and drops the palm tree."
+  },
+  "alternatives": [],
+  "searched": "Third pass, visual scanning of contact sheets (see scanned). Flickr (CC BY/BY-SA/CC0/PDM/No known restrictions/US Gov), Wikimedia Commons file search with thumbnails (rate-limited by 429), Openverse/Pexels/Pixabay/Unsplash retried.",
+  "scanned": "About 640 thumbnails looked at. Flickr: 'rooftops delhi', 'Agra rooftops', 'view from Taj Mahal', 'Jaipur rooftops', 'Varanasi rooftops', 'Paharganj rooftop', 'Old Delhi rooftops', 'Jodhpur/Pushkar/Amritsar/Udaipur/Jaisalmer/Mcleod Ganj rooftops' (~120 images, 5 opened at 1024px: Karol Bagh, Agra Taj Ganj panoramas x2, Agra rooftop children, IMG_0319 - no rebar); 'Kathmandu/Bhaktapur/Lahore/Dhaka rooftops', 'unfinished house India', 'rods sticking out roof', 'steel rods roof house' (~100; Lahore 'Mori Gate' opened - towers are pigeon lofts, not rebar; Kathmandu vulture photo has a few bent bars, unclear); 'Taj Ganj', 'Agra houses', 'Punjab/Rajasthan village house', 'Indian house terrace', 'concrete house India', 'Indian town' etc. (~150 viewed of 246); 'rebar India/Nepal/Bangladesh/Rajasthan', 'rebar roof', 'iron rods roof', 'steel bars roof' (~80, mostly US construction); InOldNews photostream 'rooftop/roof/building/Dhaka/construction' (~85). Commons file search with thumbs: 'rooftops Delhi' (50, mostly Khari Baoli market), 'rooftop Agra' (5), 'view from Agra Fort' (50, only Yamuna/Taj views, no town roofs), 'view from Taj Mahal' (45, ~14 viewed: monument shots only); remaining queries (Jaipur/Varanasi/Paharganj/Kathmandu/Lahore rooftops, rebar house India) stopped because Commons answered mostly 429.",
+  "notes": "Best find of all passes. Earlier rejected candidates (Meghalaya construction, Mexico, Belize) not repeated. No Indian photo with a clear lived-in roof and rebar was found in the views scanned. Pexels/Pixabay 403, Unsplash 307 redirect wall, Openverse 429 again."
+ },
+ {
+  "id": "gt_term_shagun",
+  "nameJa": "シャグン",
+  "verdict": "new",
+  "photoNoteJa": null,
+  "altJa": "ヒンドゥー教の結婚式の祝い金。ガネーシャの絵や飾り模様の付いた赤い祝儀袋の上に、20ドル札と1ドル札（合わせて21ドル。端を1にした額）が置いてある。アメリカで撮られた写真。",
+  "image": {
+   "file": "gt_term_shagun.jpg",
+   "page": "https://www.flickr.com/photos/imtfi/5869148560/",
+   "title": "Hindu wedding money",
+   "author": "Parul Aggarwal / Institute for Money, Technology and Financial Inclusion (IMTFI, UC Irvine)",
+   "license": "CC BY-SA 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+   "licenseEvidence": "Flickr photo page: \"license\": \"https://creativecommons.org/licenses/by-sa/2.0/\"; description: \"United States\\nPhoto by Parul Aggarwal\"",
+   "originalSize": "1792x1205",
+   "downloadedSize": "1280x861",
+   "date": "2011-06-25 (Flickr 'Taken on'; looks like a scanned print)",
+   "place": "United States (Hindu wedding)",
+   "facesSignsPlates": "No faces (only the engraved portraits on the banknotes). Watermark 'www.imtfi.uci.edu' at bottom-left, about x0-350, y815-850. Thin white scan border at right edge (x~1265-1280).",
+   "suggestedCrop": {
+    "x": 230,
+    "y": 0,
+    "w": 810,
+    "h": 810
+   },
+   "notes": "Shows the thing itself: decorated wedding money envelopes (one with Ganesha) and a gift of $21 - the 'add one' rule (20+1). The money is US dollars, not rupees, and there is no coin. The suggested crop removes the watermark and keeps envelopes and notes."
+  },
+  "alternatives": [
+   {
+    "file": "gt_term_shagun_alt1.jpg",
+    "page": "https://www.flickr.com/photos/imtfi/5868358640/",
+    "title": "Marriage gift from groom to bride",
+    "author": "Parul Aggarwal / IMTFI",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "licenseEvidence": "Flickr photo page: \"license\": \"https://creativecommons.org/licenses/by-sa/2.0/\"; description: \"Photo by Parul Aggarwal\"",
+    "originalSize": "1792x1205",
+    "downloadedSize": "1280x861",
+    "date": "2011-06-24",
+    "place": "United States (same wedding series)",
+    "facesSignsPlates": "No faces; hands, a bare foot, sari and trousers. Watermark 'www.imtfi.uci.edu' bottom-left x0-350, y815-850.",
+    "altJa": "床に座った二人の手元。金の飾り模様の赤い祝儀袋を、片方がもう片方に手渡している。",
+    "notes": "The act of handing over a gift-money envelope; money not visible."
+   }
+  ],
+  "searched": "Third pass, visual scanning. Flickr CC/PD searches, IMTFI photostream, stock sites/Openverse retried.",
+  "scanned": "About 300 thumbnails. Flickr: 'shagun' (a family Rakhi/birthday album, no money visible), 'roka ceremony', 'sagan ceremony', 'dakshina', 'wedding envelopes' (incl. 123WeddingCards-type product renders of empty Indian 'money envelopes', BY-SA, no money), 'rupee coin', 'envelope coin', 'money envelope India' (~145); 'money envelopes', 'money envelope', 'Indian money envelope', 'cash envelope wedding', 'envelope with coin', 'Eidi' (~80); IMTFI photostream 'wedding/India/Hindu/gift/envelope/Diwali' (55 listed, 13 viewed: Hindu wedding money x2, dollar dance, gifts of money at marriage (faces), Diwali coin offerings, marriage gift envelope).",
+  "notes": "Second IMTFI 'Hindu wedding money' photo (5868588955: blue pouch with coins next to puja plates) is less clear. A rupee version with the one-rupee coin was not found. Previously rejected Vanjara/Rajput/Nairobi photos not repeated."
+ },
+ {
+  "id": "gt_term_head_bobble",
+  "nameJa": "首を揺らすしぐさ",
+  "verdict": "keep",
+  "photoNoteJa": "画像は、首の動きを表した図",
+  "altJa": "首を左右に傾けるしぐさを表した図。笑顔の人の頭が真ん中にあり、その左右に、首の付け根を軸に傾けた頭が薄く重ねてある。頭の上に、左右を指す赤い弧の矢印。",
+  "image": null,
+  "alternatives": [],
+  "searched": "Third pass: YouTube CC-filtered search, Internet Archive CC videos with automated head-roll detection, Flickr, Openclipart, stock sites/Openverse.",
+  "scanned": "YouTube search with the Creative Commons filter ('indian head wobble/bobble/shake/nod', 'head wobble india'; ~150 results listed, candidates e.g. 'Head shake.MP4' (Praveen22), 'Parking the 71 Jawa, Indian head shake et al', Tamil 'secret behind the head wobble', YaoIndia) - watch pages and yt-dlp hit the bot wall (429 / 'Sign in to confirm you are not a bot'), so neither licence nor video could be checked. Internet Archive: 'head wobble/bobble/waggle', 'indian head shake', gestures/body language/etiquette + India (movies, images); CC BY video 'MarginalizedAadhaar Episode 2' (8 min, 720p) downloaded and scanned automatically at 6 fps with OpenCV face+eye detection for left-right roll swings: one swing found (415-417 s), frames viewed - a private villager in close-up, only a slight tilt: rejected (face is the subject, not a public speaker). Flickr: 'head wobble', 'head bobble', 'head shake india', 'indian nod', 'head waggle', 'head tilt india', 'nodding india', 'yes india head' (~170 titles, bobble-head toys, plants; 1 opened). Openclipart: 'head shake', 'nod', 'head wobble', 'gesture india', 'yes gesture' (nothing). Pexels/Pixabay 403, Unsplash redirect wall, Openverse 429, svgrepo 429.",
+  "notes": "No free image or verifiable free video frame of the gesture was found. Longer CC BY interviews of public figures on IA (e.g. 'MarginalizedAadhaar: Sunil Abraham', 50 min, 600 MB, CC BY 4.0) could still be scanned the same way, but a talking speaker's tilt would not show the 'yes/ok' meaning and his face would be the subject. Keep the diagram."
+ }
+]

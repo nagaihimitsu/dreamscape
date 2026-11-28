@@ -711,7 +711,7 @@
       "category": "custom",
       "lineJa": "祝いに贈るお金。101のように1を足し、ゼロで終わらない額にする。",
       "imageId": "gt_img_term_shagun",
-      "photoNoteJa": "画像は、シャグンの封筒と一ルピー硬貨を表した図"
+      "photoNoteJa": "写真は、アメリカでのヒンドゥーの結婚式の祝い金（20ドルに1ドルを足した21ドル）"
     },
     {
       "id": "gt_term_jora_ghar",
@@ -945,8 +945,7 @@
       "aliasJa": "サリヤー",
       "category": "custom",
       "lineJa": "家は一度に建てず、数年ごとに階を足す。その備えの鉄筋が、何年も屋上に残る。",
-      "imageId": "gt_img_term_rebar_roof",
-      "photoNoteJa": "画像は、1階の家の柱から突き出た鉄筋と、後で足す階を表した図"
+      "imageId": "gt_img_term_rebar_roof"
     },
     {
       "id": "gt_term_rose_ringed_parakeet",
