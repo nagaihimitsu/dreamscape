@@ -497,9 +497,10 @@ test("battle: after an answer a tap on an option does nothing, and a tap on the 
 // After a wrong answer the explanation, in the window in the question's place (2026-11-28 user decision), can be taller
 // than the window's reading area (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、主な操作へ到達できる。必要な
 // スクロールは内容を読む領域に限る。」). Focus goes to it (for screen readers), its first line shows at the top of the
-// window, and the three options stay whole above the window with their marks. 「相手の反応を見る」 at its end is reached by
-// scrolling the reading area and then shows whole, not cut at the window's edge (UI_REVIEW_CHECKLIST: 「スクロールして
-// 重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの重要部分だけが見切れる」 is avoided).
+// window, and the right option and the one chosen stay whole above the window with their marks (the other wrong one
+// leaves). 「相手の反応を見る」 at its end is reached by scrolling the reading area and then shows whole, not cut at the
+// window's edge (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの重要部分
+// だけが見切れる」 is avoided).
 test("battle: a long explanation after a wrong answer starts at the top of the window, and 「相手の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const target = await longExplanationBattle(page);
@@ -527,7 +528,7 @@ test("battle: a long explanation after a wrong answer starts at the top of the w
   expect(start.longer, "the explanation is taller than the window's reading area").toBe(true);
   expect(start.atTop, "the reading area starts at its top").toBe(0);
   expect(start.shown, "the first line of the explanation shows").toBe(true);
-  expect(start.rows, "the three options show whole above the window").toEqual([true, true, true]);
+  expect(start.rows, "the right option and the one chosen show whole above the window; the other wrong one is gone").toEqual([true, true]);
   expect(start.marks, "the chosen option and the right one keep their marks").toEqual(["answer", "missed"]);
   const reaction = page.getByRole("button", { name: "相手の反応を見る" });
   await page.locator("#battle-content").evaluate((area) => area.scrollTo({ top: area.scrollHeight }));

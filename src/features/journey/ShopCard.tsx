@@ -12,6 +12,7 @@ import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
 import "./shop-card.css";
 import { FitText } from "../../components/FitText";
+import { ignoreRepeat } from "./PlaceCard";
 
 /** The served path of the heroine in a costume (its neutral picture), or null when it has none. */
 function outfitPicture(costume: string): string | null {
@@ -27,13 +28,17 @@ function outfitPicture(costume: string): string | null {
  * stay the party's for the rest of the journey: the header's 「服」 changes between them and 普段の服.
  * A talking shop (2026-11-26: scenes at `# at: shop <shop>`, outfits.ts shopTalks) has no 「買う」: its 「店に入る」 opens its
  * scenes, where the price is agreed and the outfit is got, and each outfit not owned shows what the shop first asks (言い値).
+ * In the row a swipe up on the shop's photo card goes in, as the other destinations go (2026-11-28 user decision), and its
+ * 「店に入る」 is for screen readers and keys only (`quietGo`).
  */
-export function ShopCard({ game, onBuy, onWear, onEnter, heading = true }: {
+export function ShopCard({ game, onBuy, onWear, onEnter, heading = true, quietGo = false }: {
   game: GameState;
   onBuy: (outfitId: string) => boolean;
   onWear: (outfitId: string) => boolean;
   onEnter: () => boolean;
   heading?: boolean;
+  /** 「店に入る」 for screen readers and keys only (the row, where a swipe up on the photo card goes in). */
+  quietGo?: boolean;
 }) {
   const id = useId();
   const [confirm, setConfirm] = useHeldState<ShopOutfitChoice | null>("shop:confirm", null);
@@ -54,7 +59,8 @@ export function ShopCard({ game, onBuy, onWear, onEnter, heading = true }: {
     {/* A new note when something is bought, so it comes in again (place-card-heroine). */}
     {line && <HeroineNote key={boughtOutfit?.id ?? "shop"} className="place-card-heroine" label={game.heroineName} hideLabel
       text={withNames(line, game)} emotion={boughtOutfit ? "happy" : "smile"} cityId={cityId} testId="shop-heroine-line" />}
-    {canEnter && <button type="button" className="primary shop-enter" data-testid="shop-enter" onClick={() => onEnter()}>店に入る</button>}
+    {canEnter && <button type="button" className={`primary shop-enter${quietGo ? " is-quiet" : ""}`} data-testid="shop-enter"
+      onKeyDown={ignoreRepeat} onClick={() => onEnter()}>店に入る</button>}
     <ul className="shop-outfits" aria-label="売っている服">
       {choices.map((choice) => {
         const { outfit } = choice;

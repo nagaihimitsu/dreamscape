@@ -158,7 +158,7 @@
   .hud-save-mark { animation: hud-save-highlight var(--motion-slow) var(--ease-out) both; }
 }
 
-/* A photo's print lands on ≡メニュー (PhotoShowFlight, 2026-11-25): as its flight ends, the button gives a small bounce. */
+/* A photo's print lands on 「旅の記録」 or ≡メニュー (PhotoShowFlight, 2026-11-25; 2026-11-28): as its flight ends, the button gives a small bounce. */
 .hud-tool[data-photo-landing] {
   animation: hud-photo-landing var(--motion-scene) var(--motion-scene) var(--ease-out) both;
 }

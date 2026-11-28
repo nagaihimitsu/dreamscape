@@ -131,21 +131,24 @@ function PrintBody({ ref, path, caption, stamp, ...props }: PrintProps & { ref?:
   </figure>;
 }
 
-/** The box of ≡メニュー, where a print flies in. */
-const menuBox = (): DOMRect | undefined => document.querySelector<HTMLElement>(".journey-hud [data-testid='hud-menu']")?.getBoundingClientRect();
+/** The box of one of the header's tools, where a print flies in: 「旅の記録」 (its 📱) or ≡メニュー. */
+const toolBox = (testId: string) => (): DOMRect | undefined =>
+  document.querySelector<HTMLElement>(`.journey-hud [data-testid='${testId}']`)?.getBoundingClientRect();
+const menuBox = toolBox("hud-menu");
+const recordsBox = toolBox("hud-records");
 
 /** A photo just taken whose print has just gone (GameApp): where the print was, to fly from. */
 export type PrintFlight = { key: number; imageId: string; caption?: string; box: Box };
 
 /**
  * The print of a photo just taken that has just gone with its line (GameApp), in the header's own layer over the screen: from where it was, it
- * shrinks and flies into ≡メニュー, where the album is (`toMenu`: the header shows it), or else it fades where it was.
- * Fading only under reduced motion (photo-show.css).
+ * shrinks and flies to where the album is, 「旅の記録」 (`intoRecords`: its 📱 shows, 2026-11-28) or ≡メニュー (`toMenu`: the
+ * header shows it), or else it fades where it was. Fading only under reduced motion (photo-show.css).
  */
-export function PhotoShowFlight({ flight, toMenu }: { flight: PrintFlight; toMenu: boolean }) {
+export function PhotoShowFlight({ flight, toMenu, intoRecords = false }: { flight: PrintFlight; toMenu: boolean; intoRecords?: boolean }) {
   const image = getAlbumImage(flight.imageId);
   if (!image) return null;
-  return <CardFlight box={flight.box} toBag={toMenu} target={menuBox} className="photo-print photo-print-leaving">
+  return <CardFlight box={flight.box} toBag={toMenu} target={intoRecords ? recordsBox : menuBox} className="photo-print photo-print-leaving">
     <img src={`${import.meta.env.BASE_URL}${image.path}`} alt="" decoding="async" />
     {flight.caption && <span className="photo-print-margin"><span className="photo-print-caption">{flight.caption}</span></span>}
   </CardFlight>;
