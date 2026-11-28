@@ -15,7 +15,7 @@ describe("the free-time background's colour of the time of day", () => {
   it("passes from one to the next: a tint fading out keeps its hue, and 18:00 is halfway to the night", () => {
     expect(timeOfDayTint(at(10, 45))).toBe("rgba(214, 232, 255, 0.08)");
     expect(timeOfDayTint(at(15))).toBe("rgba(255, 138, 51, 0.11)");
-    expect(timeOfDayTint(at(18))).toBe("rgba(99, 67, 69, 0.32)");
+    expect(timeOfDayTint(at(18))).toBe("rgba(98, 59, 32, 0.32)");
     // The opacity changes step by step through the evening, never jumping.
     let previous = alphaOf(timeOfDayTint(at(17, 20)));
     for (let minute = at(17, 21); minute <= at(18, 40); minute++) {
