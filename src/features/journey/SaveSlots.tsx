@@ -143,7 +143,7 @@ export function SaveLoadDialog({ readSlots, current, autoSave, debug = false, no
       <ModalTitle id="save-overwrite-title">セーブ{overwrite.slot}に上書きしますか？</ModalTitle>
       <p>{slotLine(overwrite).title}（{slotLine(overwrite).detail}）のセーブは、今の旅に置き換わります。元には戻せません。</p>
       <ModalAnswers
-        cancel={<button type="button" className="secondary" autoFocus onClick={() => setOverwrite(null)}>戻る</button>}
+        cancel={<button type="button" className="secondary" autoFocus onClick={() => setOverwrite(null)}>やめる</button>}
         action={<ConfirmActionButton className="primary" onClick={() => { const slot = overwrite.slot; setOverwrite(null); onSave(slot); }}>上書きする</ConfirmActionButton>} />
     </Modal>}
   </Modal>;

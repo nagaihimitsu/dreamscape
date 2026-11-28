@@ -25,16 +25,16 @@
   flex: none;
   display: inline-grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   border-radius: 50%;
   background: var(--ds-surface);
   box-shadow: 0 0 0 var(--ds-edge) var(--ds-light);
   overflow: hidden;
 }
-.sns-face.is-xs { width: 20px; height: 20px; }
-.sns-face.is-sm { width: 24px; height: 24px; }
-.sns-face.is-lg { width: 64px; height: 64px; box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-hairline); }
+.sns-face.is-xs { width: var(--ds-size-3); height: var(--ds-size-3); }
+.sns-face.is-sm { width: var(--ds-size-3); height: var(--ds-size-3); }
+.sns-face.is-lg { width: var(--ds-size-5); height: var(--ds-size-5); box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-thick) var(--ds-hairline); }
 .sns-face .character-face { width: 100%; height: 100%; border: 0; }
 .sns-face-initial { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-bold); line-height: 1; }
 .sns-face.is-lg .sns-face-initial { font-size: var(--ds-text-heading); }
@@ -84,7 +84,7 @@
 .sns-card { margin: var(--ds-space-1) 0 var(--ds-space-4); scroll-margin-top: 72px; }
 .sns-strip {
   position: relative;
-  margin: 0 calc(-1 * var(--modal-pad-inline, 16px));
+  margin: 0 calc(-1 * var(--modal-pad-inline, var(--ds-space-4)));
   padding: var(--ds-space-2) 0 var(--ds-space-2);
   overflow: hidden;
   /* Sideways moves of a finger on the band turn the photos (useSwipe: far enough, or a quick flick); upright ones scroll, a
@@ -145,12 +145,12 @@
 .sns-photo { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-photo-mat); }
 .sns .sns-photo-open { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .sns-photo-open img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.sns-photo-open:focus-visible { outline-offset: -3px; }
+.sns-photo-open:focus-visible { outline-offset: var(--ds-focus-offset-in); }
 /* The writer at the photo's top left: their face, their name small under it (white with the scene's shadow). */
 .sns .sns-author {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: var(--ds-space-1);
+  left: var(--ds-space-1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -206,9 +206,9 @@
 /* The dots: one per photo, bunched by post with room between posts; a post with a new comment has a red dot beside. */
 .sns-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ds-space-1) var(--ds-space-3); margin: -2px 0 var(--ds-space-2); }
 .sns-dot-group { display: inline-flex; align-items: center; gap: var(--ds-space-1); }
-.sns-dot { width: 6px; height: 6px; border-radius: 50%; background: color-mix(in srgb, var(--ds-ink-muted) 32%, transparent); }
+.sns-dot { width: var(--ds-size-1); height: var(--ds-size-1); border-radius: 50%; background: color-mix(in srgb, var(--ds-ink-muted) 32%, transparent); }
 .sns-dot.is-on { background: var(--ds-ink); }
-.sns-new-dot { flex: none; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--sns-like); }
+.sns-new-dot { flex: none; display: inline-block; width: var(--ds-size-1); height: var(--ds-size-1); border-radius: 50%; background: var(--sns-like); }
 
 /* Under the band: every post's part in one cell (the card as tall as the tallest), the one on show seen. */
 .sns-unders { display: grid; }
@@ -235,7 +235,7 @@
 .sns-back > span[aria-hidden] { font-size: var(--ds-text-large); line-height: 1; }
 .sns-page-title { margin: var(--ds-space-1) 0 var(--ds-space-2); font-family: var(--ds-font-sans); font-size: var(--ds-text-large); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
 .sns-page-title:focus { outline: none; }
-.sns-page-title:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 2px; box-shadow: var(--ds-focus-halo); }
+.sns-page-title:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset); box-shadow: var(--ds-focus-halo); }
 .sns-post-title { color: var(--ds-ink-muted); font-family: inherit; font-size: var(--ds-text-note); }
 .sns-section-title { display: flex; align-items: center; gap: var(--ds-space-2); max-width: none; margin: var(--ds-space-4) 0 var(--ds-space-2); }
 .sns-section-title > span:first-child { flex: none; max-width: 70%; }
@@ -272,7 +272,7 @@
 .sns-grid.is-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .sns .sns-grid button { display: block; width: 100%; aspect-ratio: 1; overflow: hidden; background: var(--ds-photo-mat); }
 .sns-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.sns-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: -3px; box-shadow: none; }
+.sns-grid button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-dark-2); outline-offset: var(--ds-focus-offset-in); box-shadow: none; }
 /* Their comments on her posts: the post's photo small, the comment beside it. */
 .sns-their-comments { margin: 0; padding: 0; list-style: none; }
 .sns .sns-their-comments button {
@@ -287,7 +287,7 @@
   text-align: left;
   overflow-wrap: anywhere;
 }
-.sns-their-comments img { flex: none; width: 48px; height: 48px; border-radius: var(--ds-radius-control); object-fit: cover; }
+.sns-their-comments img { flex: none; width: var(--ds-press); height: var(--ds-press); border-radius: var(--ds-radius-control); object-fit: cover; }
 /* 旅の数字 on the heroine's page: small, the numbers at a subhead's size. */
 .sns-numbers .journey-numbers { margin: var(--ds-space-4) 0 var(--ds-space-1); padding: var(--ds-space-2) var(--ds-space-3); }
 .sns-numbers .journey-numbers h3 { margin-bottom: var(--ds-space-1); font-size: var(--ds-text-small); color: var(--ds-ink-muted); }

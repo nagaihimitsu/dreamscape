@@ -184,7 +184,7 @@
    away after five seconds, keeping their room (still read by screen readers); ≡メニュー stays, a round mark without its
    word, as every key (its name for screen readers and voice control). At a choice ("all") the whole header shows
    again; back in the talk, the place and time show again for a while. */
-.journey-hud[data-view="talk"] .hud-plate { animation: hud-plate-away 5s linear forwards; }
+.journey-hud[data-view="talk"] .hud-plate { animation: hud-plate-away var(--notice-long) linear forwards; }
 @keyframes hud-plate-away {
   0%, 88% { opacity: 1; }
   100% { opacity: 0; }
@@ -209,12 +209,12 @@
 .hud-menu-panel {
   position: absolute;
   z-index: 1;
-  top: calc(100% + 4px);
-  right: 8px;
+  top: calc(100% + var(--ds-space-1));
+  right: var(--ds-space-2);
   display: grid;
   gap: var(--ds-space-1);
   width: 180px; /* 「セーブ・ロード」 on one line beside its icon at 15 px */
-  max-height: calc(100dvh - var(--hud-h, 96px) - 8px);
+  max-height: calc(100dvh - var(--hud-h, 96px) - var(--ds-space-2));
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: var(--ds-space-2);
@@ -262,16 +262,13 @@
   35% { opacity: 1; }
   to { opacity: 1; transform: none; clip-path: inset(-40px); }
 }
-.hud-menu-panel > * { animation: hud-menu-item-in var(--motion-short) var(--ease-out) backwards; }
+.hud-menu-panel > * { animation: ds-drop-in var(--motion-short) var(--ease-out) backwards; }
 .hud-menu-panel > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
 .hud-menu-panel > :nth-child(3) { animation-delay: calc(var(--motion-stagger) * 1); }
 .hud-menu-panel > :nth-child(4) { animation-delay: calc(var(--motion-stagger) * 1.5); }
 .hud-menu-panel > :nth-child(5) { animation-delay: calc(var(--motion-stagger) * 2); }
 .hud-menu-panel > :nth-child(6) { animation-delay: calc(var(--motion-stagger) * 2.5); }
 .hud-menu-panel > :nth-child(n + 7) { animation-delay: calc(var(--motion-stagger) * 3); }
-@keyframes hud-menu-item-in {
-  from { opacity: 0; transform: translateY(-8px); }
-}
 /* The held items' detail hangs from the header as ≡メニュー's panel does, and opens as it does. */
 .journey-hud .held-item-detail { animation: hud-menu-in var(--motion-short) var(--ease-out); }
 

@@ -16,3 +16,13 @@ export const MOTION: Readonly<Record<"instant" | "fast" | "short" | "scene" | "s
 
 /** Between the items of a list coming in, one after another (--motion-stagger): an interval, not a length. */
 export const MOTION_STAGGER = 40;
+
+/**
+ * How long a notice stays to be read (2026-11-28 user decision: two): short, a word that something was received (an item,
+ * a save); long, a line to read beside the scene (a clue, a photo for the album, the place's plate over a talk). The same as
+ * styles.css's --notice-*.
+ */
+export const NOTICE: Readonly<Record<"short" | "long", number>> = {
+  short: 2500,
+  long: 5000,
+};

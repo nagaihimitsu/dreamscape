@@ -89,7 +89,7 @@ function LeafletInsetMap({ L, here, there, name, glyph, visited = [] }: InsetPro
     const from = here && here.id !== there.id ? here : null;
     const stamp = (place: TravelPlace) => (visitedKey.split(" ").includes(place.id) ? " is-visited" : "");
     if (from) mark(L, from,`<span class="travel-map-marker is-here${stamp(from)}" aria-hidden="true">${markGlyphs(false, false)}</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>`, 32).addTo(group);
-    mark(L, there,`<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${markGlyphs(glyph === "◆", glyph === "♥")}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
+    mark(L, there,`<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${markGlyphs(glyph === "◆", glyph === "♥")}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 44).addTo(group);
     // The view needs the frame's size (in a dialog, a frame or so later).
     return whenLaidOut(frame, () => {
       map.invalidateSize();

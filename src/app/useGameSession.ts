@@ -13,6 +13,7 @@ import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-rec
 import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
 import type { Difficulty } from "../domain/difficulty";
 import { saveToAnotherSlot } from "./save-slots";
+import { NOTICE } from "../components/motion";
 
 export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
@@ -27,7 +28,7 @@ export type CommitListener = (previous: GameState, next: GameState) => void;
  */
 export type SessionToast = { key: number; text: string };
 /** How long a SessionToast stays (milliseconds; hud-effects.css plays its coming and going in that time). */
-export const SESSION_TOAST_MS = 2500;
+export const SESSION_TOAST_MS = NOTICE.short;
 /** Where a refused write says why: the page's notice by default, or the place that asked (ゲームの設定). */
 export type NoticeReport = (message: string) => void;
 

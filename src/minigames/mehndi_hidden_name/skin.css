@@ -42,7 +42,7 @@
   /* The flame's flicker (Skin.tsx sets it from the play's clock; 1 with less motion). */
   --mehndi-lamp-k: 1;
   position: relative;
-  width: min(100cqw - 32px, (100cqh - 12px) * 5 / 7);
+  width: min(100cqw - var(--ds-space-8), (100cqh - var(--ds-space-3)) * 5 / 7);
   aspect-ratio: 5 / 7;
   container-type: inline-size;
   touch-action: none;
@@ -78,7 +78,7 @@
   position: absolute;
   left: calc(var(--mehndi-lamp-x) + var(--mehndi-lamp-r) + 5cqw);
   top: calc(var(--mehndi-lamp-y) - var(--mehndi-lamp-r) - 7cqw);
-  width: max(22px, 8cqw);
+  width: max(var(--ds-space-6), 8cqw);
   filter: drop-shadow(0 0 6px var(--mehndi-hidden-name-lamp-shadow-06));
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -199,7 +199,7 @@
 .mg-mehndi-hidden-name-aim > span {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 4px);
+  bottom: calc(100% + var(--ds-space-1));
   padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-control);
   background: color-mix(in srgb, var(--ds-shade) 88%, transparent);

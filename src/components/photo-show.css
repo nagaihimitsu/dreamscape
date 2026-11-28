@@ -17,10 +17,10 @@
   justify-content: flex-end;
   align-items: center;
   /* The print's highest top (from the scene's top): under the header and its notices. */
-  --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, 20px), calc(var(--notices-h, 0px) + 8px)));
+  --photo-top: calc(var(--scene-top, 0px) + max(clamp(8px, 2dvh, var(--ds-space-6)), calc(var(--notices-h, 0px) + var(--ds-space-2))));
   padding: var(--photo-top) var(--ds-space-4) calc(var(--photo-bottom, 0px) + var(--ds-space-2));
   pointer-events: none;
-  animation: stage-fade-in var(--motion-scene) var(--ease-out);
+  animation: ds-fade-in var(--motion-scene) var(--ease-out);
 }
 
 /* The print: as wide as its picture, which keeps its ratio within the width and the height allowed (a block, not a
@@ -37,7 +37,7 @@
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   box-shadow: var(--ds-shadow-large);
-  animation: photo-show-in var(--motion-scene) var(--ease-out);
+  animation: ds-pop-in var(--motion-scene) var(--ease-out);
 }
 .photo-print img {
   display: block;
@@ -79,9 +79,6 @@
 }
 /* A print with nothing in its margin keeps as much room under its picture as round it. */
 .photo-print:not(:has(.photo-print-margin)) { padding-bottom: var(--ds-space-2); }
-@keyframes photo-show-in {
-  from { opacity: 0; transform: scale(0.94); }
-}
 /* A photo just taken (data-taken): a short flash over the scene, then the print comes up and its picture
    develops, from a pale wash into its colours. */
 .photo-show-flash {
@@ -96,13 +93,10 @@
   100% { opacity: 0; }
 }
 [data-taken] > .photo-print {
-  animation: photo-show-taken var(--motion-slow) var(--motion-instant) var(--ease-out) both;
+  animation: ds-rise-in var(--motion-slow) var(--motion-instant) var(--ease-out) both;
 }
 [data-taken] > .photo-print img {
   animation: photo-show-develop var(--motion-long) var(--motion-fast) var(--ease-out) both;
-}
-@keyframes photo-show-taken {
-  from { opacity: 0; transform: translateY(14px) scale(0.9); }
 }
 @keyframes photo-show-develop {
   from { filter: brightness(1.8) saturate(0.1) contrast(0.6); }
@@ -138,7 +132,7 @@
 
 /* A short landscape screen: the print may begin right under the header. */
 @media (max-height: 500px) {
-  .photo-show-layer { --photo-top: calc(var(--scene-top, 0px) + 8px); }
+  .photo-show-layer { --photo-top: calc(var(--scene-top, 0px) + var(--ds-space-2)); }
 }
 
 /* Reduced motion and 「演出を短縮する」: no flash, no flight; the print comes at once, developed, and goes by fading where

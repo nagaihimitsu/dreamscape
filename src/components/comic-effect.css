@@ -131,5 +131,5 @@
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-  .comic-effect { top: 0; width: min(24px, 7dvh); }
+  .comic-effect { top: 0; width: min(var(--ds-space-6), 7dvh); }
 }

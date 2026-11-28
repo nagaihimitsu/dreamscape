@@ -264,7 +264,7 @@
    only), two to a row on a phone. */
 .word-book { padding-bottom: var(--ds-space-3); }
 .word-book-place-head { display: flex; align-items: center; gap: var(--ds-space-2); margin: var(--ds-space-4) 0 var(--ds-space-2); }
-.word-book-place-photo { flex: 0 0 auto; width: 84px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-dark-2); }
+.word-book-place-photo { flex: 0 0 auto; width: var(--ds-size-6); aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--ds-radius-control); background: var(--ds-dark-2); }
 .word-book-place-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* No photo: the free-time cards' plain tile (the place's background colour, else the dark grey) with the sightseeing mark. */
 .word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-dark-2); color: color-mix(in srgb, var(--ds-light) 88%, transparent); font-size: var(--ds-text-large); }
@@ -319,9 +319,9 @@
 .word-card-meaning { font-size: var(--ds-text-note); font-weight: var(--ds-weight-bold); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 .word-card-sentence { color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); overflow-wrap: anywhere; }
 /* That the card turns: a small mark in its corner (decorative). */
-.word-card-turn { position: absolute; right: 8px; bottom: 4px; color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
+.word-card-turn { position: absolute; right: var(--ds-space-2); bottom: var(--ds-space-1); color: var(--ds-ink-muted); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 .word-card:focus-visible { outline: none; box-shadow: none; }
-.word-card:focus-visible .word-card-face { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 1px; box-shadow: var(--ds-focus-halo); }
+.word-card:focus-visible .word-card-face { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset); box-shadow: var(--ds-focus-halo); }
 /* No turning motion with reduced motion: the other face shows at once. */
 .reduce-motion .word-card-inner { transition: none; }
 @media (prefers-reduced-motion: reduce) {

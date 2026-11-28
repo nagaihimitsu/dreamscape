@@ -119,8 +119,8 @@
 .mg-cricket-batting-bat::after {
   content: "";
   position: absolute;
-  left: 4px;
-  right: 4px;
+  left: var(--ds-space-1);
+  right: var(--ds-space-1);
   bottom: -18%;
   height: 22%;
   border-radius: var(--ds-radius-pill);

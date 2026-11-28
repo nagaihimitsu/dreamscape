@@ -18,14 +18,14 @@
 }
 .note-tabs button[aria-pressed="true"] { border-color: transparent; background: var(--ds-action-fill); color: var(--ds-action-ink); box-shadow: var(--ds-action-shadow); text-shadow: var(--ds-action-text-shadow); }
 /* A page's dot (fx.css) at its button's top right, in the muted ink on the light ground (a page shown has none). */
-.note-tabs .fx-dot { top: 6px; left: auto; right: 8px; background: var(--ds-ink-muted); box-shadow: 0 0 0 var(--ds-edge) var(--ds-surface); }
+.note-tabs .fx-dot { top: var(--ds-space-2); left: auto; right: var(--ds-space-2); background: var(--ds-ink-muted); box-shadow: 0 0 0 var(--ds-edge) var(--ds-surface); }
 /* 旅のことば's page (2026-11-20): the frame of 旅の図鑑's, so the note keeps its size between the two. */
 dialog.modal.words-note {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(var(--ds-width-narrow), calc(100% - 24px));
+  width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6)));
   max-width: var(--ds-width-narrow);
-  max-height: calc(100dvh - 24px);
+  max-height: calc(100dvh - var(--ds-space-6));
 }
 .words-note .modal-title-bar { margin-bottom: var(--ds-space-1); }
 .words-note > .fine-print { margin: 0 0 var(--ds-space-2); }

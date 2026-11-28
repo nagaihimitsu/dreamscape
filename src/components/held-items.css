@@ -23,8 +23,8 @@
 }
 .held-item-button img {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-glass-mark);
@@ -37,7 +37,7 @@
   top: -0.35em;
   right: -0.8em;
   min-width: 1.4em;
-  padding: 0 0.25em;
+  padding: 0 var(--ds-space-1);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-glass-mark-full);
   color: var(--ds-dark);
@@ -53,11 +53,11 @@
 .held-item-detail {
   position: absolute;
   z-index: var(--ds-layer-hud-panel);
-  top: calc(100% + 4px);
-  right: 8px;
-  width: min(280px, calc(100vw - 16px));
+  top: calc(100% + var(--ds-space-1));
+  right: var(--ds-space-2);
+  width: min(280px, calc(100vw - var(--ds-space-4)));
   /* Before HeldItems measures where the detail starts (the header at the screen's top). */
-  max-height: calc(100dvh - 100% - 16px);
+  max-height: calc(100dvh - 100% - var(--ds-space-4));
   overflow-y: auto;
   padding: var(--ds-space-3) var(--ds-space-4);
   /* A pane of the glass over the scene (2026-11-25), as ≡メニュー's panel; its colours: styles.css, the glass surfaces. */
@@ -80,15 +80,15 @@
 .held-item-list { margin: var(--ds-space-1) 0 0; padding: 0; list-style: none; display: grid; gap: var(--ds-space-3); }
 /* Only the items themselves (the list's own rows): a note's lines inside an item are a list of their own. */
 .held-item-list > li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: var(--ds-space-2); align-items: start; }
-.held-item-list > li > img { width: 32px; height: 32px; }
+.held-item-list > li > img { width: var(--ds-size-4); height: var(--ds-size-4); }
 /* A faint rule between items, fading out at both ends, so one item's description is not read as the next one's. */
 .held-item-list > li + li { position: relative; padding-top: var(--ds-space-3); }
 .held-item-list > li + li::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 8px;
-  right: 8px;
+  left: var(--ds-space-2);
+  right: var(--ds-space-2);
   height: 1px;
   background: linear-gradient(to right, transparent, color-mix(in srgb, currentColor 16%, transparent) 20%, color-mix(in srgb, currentColor 16%, transparent) 80%, transparent);
 }
@@ -96,7 +96,7 @@
 /* What is written on the item (a note's lines), on a slip of paper under the description. */
 .held-item-lines {
   margin: var(--ds-space-2) 0 0;
-  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) 2.1em;
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-8);
   border: var(--ds-edge-thin) dashed var(--ds-line);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface-chosen);
@@ -147,8 +147,8 @@
 }
 .held-item-ghost img,
 .held-item-button .held-item-ghost img {
-  width: 26px;
-  height: 26px;
+  width: var(--ds-size-3);
+  height: var(--ds-size-3);
   padding: var(--ds-space-1);
   border-radius: 50%;
   background: var(--ds-surface);

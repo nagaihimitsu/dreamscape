@@ -76,13 +76,7 @@
   mask-image: linear-gradient(to bottom, transparent, black 18%),
     radial-gradient(ellipse 75% 70% at 50% 40%, black 45%, transparent 100%);
   mask-composite: intersect;
-  animation: recall-photo-in var(--motion-slow) var(--motion-short) var(--ease-out) both;
-}
-@keyframes stage-fade-in {
-  from { opacity: 0; }
-}
-@keyframes recall-photo-in {
-  from { opacity: 0; }
+  animation: ds-fade-in var(--motion-slow) var(--motion-short) var(--ease-out) both;
 }
 
 /* # quiet: a soft veil over the scene's picture, darker towards its edges, and the visited place's reference (a
@@ -95,7 +89,7 @@
   inset: 0;
   background: var(--stage-quiet-veil);
   pointer-events: none;
-  animation: stage-fade-in var(--motion-scene) var(--ease-out);
+  animation: ds-fade-in var(--motion-scene) var(--ease-out);
 }
 [data-quiet] > .date-reference {
   visibility: hidden;
@@ -125,7 +119,7 @@
    screen is its last bubble; tapping it or the scene reads on as on any line. */
 .phone-screen {
   position: relative;
-  width: min(100%, 22rem);
+  width: min(100%, var(--ds-card-narrow));
   margin: var(--ds-space-2) auto var(--ds-space-2);
   padding: var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
   border: var(--ds-edge-thin) solid var(--ds-action-edge);
@@ -137,7 +131,7 @@
 .phone-screen::before {
   content: "";
   position: absolute;
-  top: 5px;
+  top: var(--ds-space-1);
   left: 50%;
   width: 40px;
   height: 4px;
@@ -228,7 +222,7 @@
 .letter-sheet {
   --letter-line: 1.9em;
   position: relative;
-  width: min(100%, 30rem);
+  width: min(100%, var(--ds-card));
   max-height: min(28rem, 54dvh);
   margin: var(--ds-space-2) auto var(--ds-space-2);
   padding: var(--ds-space-4) var(--ds-space-6);
@@ -284,7 +278,7 @@
 }
 .letter-translation {
   --letter-gloss: 0.78;
-  margin: 0.15em 0 0.85em;
+  margin: var(--ds-space-1) 0 var(--ds-space-3);
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
   font-size: calc(var(--letter-gloss) * 1em);

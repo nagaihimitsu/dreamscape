@@ -34,17 +34,14 @@
   -webkit-backdrop-filter: var(--ds-glass-blur);
   backdrop-filter: var(--ds-glass-blur);
   box-shadow: var(--ds-shadow);
-  animation: line-card-in var(--motion-scene) var(--ease-out) both;
+  animation: ds-drop-in var(--motion-scene) var(--ease-out) both;
 }
 .line-card + .line-card { animation-delay: var(--motion-stagger); }
-@keyframes line-card-in {
-  from { opacity: 0; transform: translateY(-6px); }
-}
 /* The term's photo, small: a crop of it as wide as two lines are tall and a half more. */
 .line-card-photo {
   flex: none;
-  width: 72px;
-  height: 48px;
+  width: var(--ds-size-5);
+  height: var(--ds-press);
   margin-top: var(--ds-space-1);
   object-fit: cover;
   border-radius: var(--ds-radius-control);

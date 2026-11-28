@@ -104,7 +104,7 @@
   flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: calc(var(--hud-h, 96px) + 12px) var(--ds-space-4) calc(24px + env(safe-area-inset-bottom));
+  padding: calc(var(--hud-h, 96px) + var(--ds-space-3)) var(--ds-space-4) calc(24px + env(safe-area-inset-bottom));
   background: var(--ds-night);
   color: var(--ds-on-dark);
   animation: night-screen-in var(--motion-slow) var(--ease-out) both;
@@ -299,8 +299,8 @@ button.night-sns:hover:enabled { background: var(--ds-night-glass-hover); }
 .night-sns-face {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   overflow: hidden;
   border-radius: 50%;
   background: var(--ds-surface);

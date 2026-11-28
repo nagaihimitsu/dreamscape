@@ -50,7 +50,7 @@
 }
 .mg-monkey-catch-inlay {
   position: absolute;
-  top: 18px;
+  top: var(--ds-space-4);
   left: 0;
   right: 0;
   height: 30px;
@@ -175,7 +175,7 @@
   content: "";
   position: absolute;
   left: 50%;
-  top: 3px;
+  top: var(--ds-space-1);
   width: 10px;
   height: 3px;
   border-radius: var(--ds-radius-pill);

@@ -11,10 +11,7 @@
   transition: opacity var(--motion-fast) var(--ease-out), scale var(--motion-fast) var(--ease-out), var(--vn-camera-moves);
   /* A character who comes into the scene fades in (a change of expression does not: the
      portrait stays, only its picture changes). */
-  animation: vn-character-in var(--motion-short) var(--ease-out);
-}
-@keyframes vn-character-in {
-  from { opacity: 0; }
+  animation: ds-fade-in var(--motion-short) var(--ease-out);
 }
 /* Going off the stage (useSceneStage's `leaving`; 2026-11-27 user decision: never in an instant): where it stood, it
    steps back (a little smaller about its feet) as it fades, over --motion-slow; then the stage as it is now comes and the
@@ -66,8 +63,8 @@
   position: relative;
   flex: none;
   display: block;
-  width: 44px;
-  height: 44px;
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
   overflow: hidden;
   border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: 50%;

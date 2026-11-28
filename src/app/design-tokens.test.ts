@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { MOTION, MOTION_STAGGER } from "../components/motion";
+import { MOTION, MOTION_STAGGER, NOTICE } from "../components/motion";
 
 /**
  * The design's rules (2026-11-25 user decision, remade 2026-11-28; styles.css :root, docs/14 「デザインの決まり」): every
@@ -51,7 +51,7 @@ const KEYFRAMES = /@keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g;
 /** A light the layer is made of (a glow, a gleam, a ring of a colour): not a shadow. */
 const LIGHT_LAYER = /--ds-(?:light|game-mark|glass-mark|focus|here|on-dark|action-edge|surface|field|right|wrong)|--[\w-]*-(?:fill|mark|glow|edge|line|ground|ring)\b/;
 
-const typeErrors = (css: string) => {
+const typeErrors = (css: string, drawing = false) => {
   const wrong: string[] = [];
   // A typeface of a thing's own: one this stylesheet loads itself (@font-face), as a mini-game's handwriting.
   const ownFaces = [...css.matchAll(/@font-face\s*\{[^}]*font-family\s*:\s*([^;}]+)/g)].map(([, face]) => face.trim());
@@ -85,6 +85,25 @@ const typeErrors = (css: string) => {
     if (/^(?:border|outline)(?:-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?)?(?:-width)?$/.test(property) && barePixels(value).some((px) => px <= 8)) {
       wrong.push(`${property}: ${value} (not one of the rules' edges: --ds-edge-*)`);
     }
+    // A position's offset: a step of the room (a negative pull and a far place are geometry).
+    if (/^(?:top|left|right|bottom|inset(?:-[a-z-]+)?)$/.test(property) && barePixels(value).some((px) => px >= 2 && px <= 32)) {
+      wrong.push(`${property}: ${value} (an offset not a step of the room: --ds-space-*)`);
+    }
+    // Room added in a calc(): a step of the room too.
+    if (/^(?:margin|padding)(?:-[a-z-]+)?$|^(?:row-|column-)?gap$|^(?:top|left|right|bottom|inset(?:-[a-z-]+)?)$|^(?:max-|min-)?(?:width|height)$/.test(property)
+      && [...value.matchAll(/calc\([^;]*?[+-]\s*(\d*\.?\d+)px/g)].some(([, px]) => Number(px) >= 2 && Number(px) <= 32)) {
+      wrong.push(`${property}: ${value} (room in a calc() not a step of the room: --ds-space-*)`);
+    }
+    // Room in em follows the text, not the rules: the steps of the room.
+    if (/^(?:margin|padding)(?:-[a-z-]+)?$|^(?:row-|column-)?gap$/.test(property) && /(?<![\w.-])\d*\.?\d+em\b/.test(bareOf(value))) {
+      wrong.push(`${property}: ${value} (room in em, not a step of the room: --ds-space-*)`);
+    }
+    // A card's width in rem: one of two.
+    if (/^(?:max-)?width$/.test(property) && /\d*\.?\d+rem\b/.test(value)) wrong.push(`${property}: ${value} (a card's width not one of the rules': --ds-card*)`);
+    // The focus ring's distance from its control: one of two.
+    if (property === "outline-offset" && !/^(?:0|var\(--ds-focus-offset(?:-in)?\))$/.test(value)) wrong.push(`outline-offset: ${value} (not one of the rules': --ds-focus-offset*)`);
+    // A picture's shape: one of four (a mini-game's drawing keeps its own).
+    if (!drawing && property === "aspect-ratio" && !/^(?:1|3 \/ 2|2 \/ 3|4 \/ 3|auto|var\(.*\))$/.test(value)) wrong.push(`aspect-ratio: ${value} (not one of the rules' shapes: 1, 3 / 2, 2 / 3, 4 / 3)`);
     // The height of a press or a row: one of three.
     if (property === "min-height" && barePixels(value).some((px) => px >= 30 && px <= 70)) {
       wrong.push(`min-height: ${value} (not one of the rules' press heights: --ds-press-*)`);
@@ -183,6 +202,21 @@ const breakpointErrors = (text: string) =>
     .map(([query]) => `${query} (not one of the rules' screen sizes)`);
 const mediaErrors = (css: string) => [...css.matchAll(/@media([^{]+)\{/g)].flatMap(([, query]) => breakpointErrors(query));
 
+/** A face, an item's picture, a thumbnail, a dot or a map's mark: its size one of the rules' (not a drawn shape's ::before). */
+const THING = /face|\bimg\b|picture|thumb|(?:^|[-.])dot\b|-dot|avatar|marker|token|legend|trail|-photo\b/;
+const sizeErrors = (css: string) =>
+  [...css.replace(KEYFRAMES, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter(([, selector]) => THING.test(selector) && !/::(?:before|after)|\.icon/.test(selector))
+    .flatMap(([, , body]) => declarations(body + ";"))
+    .filter(({ property, value }) => /^(?:min-|max-)?(?:width|height)$/.test(property) && /^(\d+)px$/.test(value) && Number.parseInt(value, 10) >= 6 && Number.parseInt(value, 10) <= 112)
+    .map(({ property, value }) => `${property}: ${value} (a thing's size not one of the rules': --ds-size-*, --ds-press-*)`);
+/** A plain way of coming in (fading, rising, dropping, growing) is one of the four shared ones (styles.css's ds-*-in). */
+const entranceErrors = (css: string) =>
+  [...css.matchAll(/@keyframes\s+([\w-]+)\s*\{\s*(?:from|0%)\s*\{([^{}]*)\}\s*\}/g)]
+    .filter(([, name, body]) => !name.startsWith("ds-") && declarations(body.trim().replace(/;?$/, ";")).every(({ property, value }) =>
+      (property === "opacity" && value === "0") || (property === "transform" && /^(?:translateY\([^()]*\)|scale\([\d.]+\)|\s)+$/.test(value))))
+    .map(([, name]) => `@keyframes ${name} (a plain way of coming in: use ds-fade-in, ds-rise-in, ds-drop-in or ds-pop-in)`);
+
 /** The shadows a thing casts: one of the rules' (a mini-game's drawing keeps its own, and a glow of light is not a shadow). */
 const shadowErrors = (css: string) =>
   declarations(css.replace(KEYFRAMES, ""))
@@ -216,6 +250,8 @@ describe("the design's rules", () => {
     expect(stepsOf(root, "--ds-icon")).toHaveLength(4);
     expect(stepsOf(root, "--ds-width")).toHaveLength(3);
     expect(stepsOf(root, "--ds-blur")).toHaveLength(3);
+    expect(stepsOf(root, "--ds-size-")).toHaveLength(6);
+    expect(stepsOf(root, "--ds-card")).toHaveLength(2);
   });
 
   it("loads one web font for the words, Noto Sans JP (2026-11-28 user decision: one typeface)", () => {
@@ -232,6 +268,8 @@ describe("the design's rules", () => {
     expect(steps).toEqual({ ...MOTION });
     expect(stagger).toBe(MOTION_STAGGER);
     expect(stepsOf(root, "--ease-")).toHaveLength(3);
+    const notices = Object.fromEntries([...root.matchAll(/--notice-([a-z]+):\s*(\d+)ms;/g)].map(([, name, ms]) => [name, Number(ms)]));
+    expect(notices).toEqual({ ...NOTICE });
   });
 
   it("changes a layout in the code at the stylesheets' screen sizes", () => {
@@ -266,10 +304,10 @@ describe("the design's rules", () => {
   for (const path of STYLESHEETS) {
     it(`${path} takes its type, room, edges, corners, shadows and layers from the rules`, () => {
       const css = read(path);
-      const wrong = typeErrors(css);
+      const wrong = typeErrors(css, path.startsWith("src/minigames/"));
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);
       wrong.push(...alphaErrors(css), ...mediaErrors(css));
-      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css));
+      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css), ...sizeErrors(css), ...entranceErrors(css));
       expect(wrong).toEqual([]);
     });
   }

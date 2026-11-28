@@ -31,9 +31,9 @@
 .time-passage-label {
   position: absolute;
   z-index: 1;
-  top: 6px;
+  top: var(--ds-space-2);
   left: 50%;
-  max-width: calc(100% - 12px);
+  max-width: calc(100% - var(--ds-space-3));
   transform: translateX(-50%);
   padding: var(--ds-space-1) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
@@ -49,7 +49,7 @@
 }
 .time-passage-sun, .time-passage-moon {
   position: absolute;
-  left: calc(50% - 15px);
+  left: calc(50% - var(--ds-space-4));
   bottom: 37px;
   width: 30px;
   height: 30px;
@@ -57,7 +57,7 @@
 }
 .time-passage-sun { background: var(--time-passage-sun-ground); box-shadow: var(--ds-shadow); animation: time-passage-sun 2.8s linear both; }
 .time-passage-moon { background: var(--time-passage-moon-ground); box-shadow: var(--ds-shadow); animation: time-passage-moon 2.8s linear both; }
-.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: 9px; width: 28px; height: 28px; border-radius: 50%; background: var(--time-passage-moon-ground-2); }
+.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: var(--ds-space-2); width: 28px; height: 28px; border-radius: 50%; background: var(--time-passage-moon-ground-2); }
 .time-passage-horizon { position: absolute; inset: auto 0 0; height: 22px; background: var(--time-passage-horizon-ground); }
 @keyframes time-passage-overlay { 0%, 100% { opacity: 0; } 8%, 92% { opacity: 1; } }
 @keyframes time-passage-sky { 0%, 100% { background: var(--time-passage-sky-ground); } 34%, 66% { background: var(--time-passage-moon-ground-2); } }

@@ -119,7 +119,7 @@
   box-shadow: var(--ds-shadow);
   animation: mg-roti-rolling-word 2000ms ease-out forwards;
 }
-.mg-roti-rolling-harbans:not([data-figure]) .mg-roti-rolling-harbans-word { right: 8px; top: 8px; }
+.mg-roti-rolling-harbans:not([data-figure]) .mg-roti-rolling-harbans-word { right: var(--ds-space-2); top: var(--ds-space-2); }
 @keyframes mg-roti-rolling-word {
   0% { opacity: 0; transform: translateY(4px); }
   6% { opacity: 1; transform: translateY(0); }

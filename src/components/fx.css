@@ -73,10 +73,10 @@
    buttons. Its meaning is in the button's name. */
 .fx-dot {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 9px;
-  height: 9px;
+  top: var(--ds-space-1);
+  left: var(--ds-space-1);
+  width: var(--ds-size-1);
+  height: var(--ds-size-1);
   border-radius: 50%;
   background: var(--ds-light);
   box-shadow: 0 0 0 var(--ds-edge) var(--ds-dark);

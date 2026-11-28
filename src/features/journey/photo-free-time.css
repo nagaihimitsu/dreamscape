@@ -207,7 +207,7 @@
 }
 .photo-cards:not(.is-list) .photo-card-photo,
 .photo-card-ghost .photo-card-photo {
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 4 / 3;
   border-radius: inherit;
   background: none;
 }
@@ -253,16 +253,16 @@
   border: var(--ds-edge-thin) dashed var(--ds-ink-muted);
   box-shadow: none;
 }
-.photo-cards:not(.is-list) .photo-card-plain:not([style]),
-.photo-card-ghost .photo-card-plain:not([style]) { background: none; color: var(--ds-ink); }
+.photo-cards:not(.is-list) .photo-card-plain,
+.photo-card-ghost .photo-card-plain { background: none; color: var(--ds-ink); }
 .photo-cards:not(.is-list) .photo-card-plain { padding-bottom: var(--ds-space-6); }
 .photo-cards:not(.is-list) .photo-card.is-locked .photo-card-name { color: var(--ds-ink-muted); }
 /* The marks over the photo are smoked glass: what the place holds and 訪問済み at the top left (clear of the name), the
    current place, 「おすすめ」 or 「最寄り」 at the top right. */
 .photo-card-kind {
   position: absolute;
-  top: 6px;
-  left: 6px;
+  top: var(--ds-space-2);
+  left: var(--ds-space-2);
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-1);
@@ -282,9 +282,9 @@
   box-shadow: var(--ds-smoke-edge);
 }
 .photo-cards:not(.is-list) .photo-card-chip.is-top,
-.photo-card-ghost .photo-card-chip.is-top { top: 6px; right: 6px; }
+.photo-card-ghost .photo-card-chip.is-top { top: var(--ds-space-2); right: var(--ds-space-2); }
 .photo-cards:not(.is-list) .photo-card-chip.is-bottom,
-.photo-card-ghost .photo-card-chip.is-bottom { top: 6px; bottom: auto; left: 6px; line-height: var(--photo-card-mark); }
+.photo-card-ghost .photo-card-chip.is-bottom { top: var(--ds-space-2); bottom: auto; left: var(--ds-space-2); line-height: var(--photo-card-mark); }
 .photo-cards:not(.is-list) .photo-card-kind ~ .photo-card-chip.is-bottom,
 .photo-card-ghost .photo-card-kind ~ .photo-card-chip.is-bottom { left: 34px; }
 .photo-cards:not(.is-list) .photo-card-kind.is-both ~ .photo-card-chip.is-bottom,
@@ -304,7 +304,7 @@
   box-shadow: inset 0 0 0 var(--ds-edge) var(--ds-ink), var(--ds-shadow);
 }
 .photo-cards.is-list .photo-card.is-unavailable .photo-card-name { color: var(--ds-ink-muted); }
-.photo-cards.is-list .photo-card-plain:not([style]) {
+.photo-cards.is-list .photo-card-plain {
   background: var(--ds-smoke);
   -webkit-backdrop-filter: var(--ds-smoke-blur);
   backdrop-filter: var(--ds-smoke-blur);
@@ -365,7 +365,7 @@
 /* Status over the photo: display-only pills on a solid ground. */
 .photo-card-chip {
   position: absolute;
-  max-width: calc(100% - 8px);
+  max-width: calc(100% - var(--ds-space-2));
   padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-smoke);
@@ -377,8 +377,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.photo-card-chip.is-top { top: 4px; right: 4px; }
-.photo-card-chip.is-bottom { bottom: 4px; left: 4px; }
+.photo-card-chip.is-top { top: var(--ds-space-1); right: var(--ds-space-1); }
+.photo-card-chip.is-bottom { bottom: var(--ds-space-1); left: var(--ds-space-1); }
 .photo-card-text { display: flex; flex-direction: column; min-width: 0; padding: var(--ds-space-2) var(--ds-space-1) 0; }
 .photo-card-name {
   font-family: var(--ds-font-sans);
@@ -402,7 +402,7 @@
 .photo-card-cue::after {
   content: "";
   position: absolute;
-  top: 7px;
+  top: var(--ds-space-2);
   left: 50%;
   width: 7px;
   height: 7px;
@@ -500,7 +500,7 @@
   z-index: var(--ds-layer-drag-note);
   translate: -50% -50%;
   width: max-content;
-  max-width: min(calc(100vw - 32px), 320px);
+  max-width: min(calc(100vw - var(--ds-space-8)), 320px);
   padding: var(--ds-space-2) var(--ds-space-4);
   border: var(--ds-edge-thin) solid var(--ds-action-edge);
   border-radius: var(--ds-radius-pane);
@@ -575,7 +575,7 @@
 .photo-cards.is-list::after { content: none; }
 .photo-cards.is-list > li { display: block; flex: none; pointer-events: auto; }
 .photo-cards.is-list .photo-card { flex-direction: row; align-items: flex-start; gap: var(--ds-space-2); width: 100%; padding: var(--ds-space-2); transform: none; }
-.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: 112px; aspect-ratio: 3 / 2; }
+.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: var(--ds-size-6); aspect-ratio: 3 / 2; }
 .photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: var(--ds-space-1) 0 0; }
 .photo-cards.is-list .place-card { margin-top: var(--ds-space-2); }
 
@@ -663,9 +663,9 @@
    it is simply there. */
 /* Smaller than the quiz's note (2026-11-20 user decision): a small face and the bubble's text at 12 px. */
 .place-card .place-card-heroine { gap: var(--ds-space-2); }
-.place-card .place-card-heroine .character-face { width: 36px; height: 36px; }
+.place-card .place-card-heroine .character-face { width: var(--ds-size-4); height: var(--ds-size-4); }
 .place-card .place-card-heroine .heroine-note-bubble { padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2); font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
-.place-card .place-card-heroine .heroine-note-bubble::before { top: 12px; height: 10px; }
+.place-card .place-card-heroine .heroine-note-bubble::before { top: var(--ds-space-3); height: 10px; }
 /* The chosen card's sheet (PhotoCardPicker's CardSheet): each card chosen comes in like a cloud (2026-11-27 user
    decision): the card swells softly into place as a white mist over it drifts apart and thins away. The mist takes no
    press; under reduced motion there is none. */
@@ -673,7 +673,7 @@
 .photo-card-mist {
   position: absolute;
   z-index: 1;
-  inset: -14px 4px;
+  inset: -14px var(--ds-space-1);
   border-radius: 50%;
   background:
     radial-gradient(closest-side at 30% 45%, color-mix(in srgb, var(--ds-light) 85%, transparent), transparent),
@@ -692,10 +692,7 @@
 @media (prefers-reduced-motion: reduce) {
   .photo-card-mist { display: none; }
 }
-.place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
-@keyframes place-card-heroine-in {
-  from { opacity: 0; transform: translateY(4px) scale(0.98); }
-}
+.place-card .place-card-heroine { margin: 0; animation: ds-rise-in var(--motion-fast) var(--ease-out); }
 .reduce-motion .place-card .place-card-heroine { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .place-card .place-card-heroine { animation: none; }
@@ -818,14 +815,14 @@
 }
 .place-inset-map .leaflet-control-attribution { pointer-events: auto; font-size: var(--ds-text-small); }
 .place-inset-map .travel-map-marker-label { --map-label-max: 150px; }
-.place-inset-map .travel-map-marker-label.is-below { top: calc(100% + 4px); bottom: auto; }
+.place-inset-map .travel-map-marker-label.is-below { top: calc(100% + var(--ds-space-1)); bottom: auto; }
 .place-inset-error { font-size: var(--ds-text-small); line-height: var(--ds-leading-body); }
 /* The direction: a display-only pill over the small map's top-left corner (above Leaflet's layers). */
 .place-card-direction {
   position: absolute;
   z-index: var(--ds-layer-map-note);
-  top: 6px;
-  left: 6px;
+  top: var(--ds-space-2);
+  left: var(--ds-space-2);
   margin: 0;
   padding: 0 var(--ds-space-2);
   border-radius: var(--ds-radius-pill);

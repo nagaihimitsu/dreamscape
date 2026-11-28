@@ -30,8 +30,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--ds-size-4);
+  height: var(--ds-size-4);
   border-radius: 50%;
   background: var(--ds-glass-bg);
   box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), var(--ds-shadow);
@@ -90,7 +90,7 @@
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-space-2); }
 .travel-choice-header h3 { margin: 0; font-size: var(--ds-text-large); }
 .travel-choice-header button { min-height: var(--ds-press-small); }
-dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-pad-inline: var(--ds-space-4); width: min(400px, calc(100% - var(--ds-space-6))); max-height: calc(100dvh - var(--ds-space-6)); }
 .travel-choice-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
 .travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: var(--ds-press-small); padding: var(--ds-space-2) var(--ds-space-3); white-space: nowrap; }
 .travel-choice-modal p { margin: var(--ds-space-2) 0; font-size: var(--ds-text-note); line-height: var(--ds-leading-body); }
@@ -170,8 +170,8 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-destination-button:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: inset 0 0 0 var(--ds-edge-thick) var(--ds-dark); }
 .travel-thumb {
   flex: none;
-  width: 64px;
-  height: 43px;
+  width: var(--ds-size-5);
+  height: var(--ds-press-small);
   margin-top: var(--ds-space-1);
   border-radius: var(--ds-radius-control);
   object-fit: cover;
@@ -275,13 +275,13 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 /* The open 待機 menu rises above the band (the band is its containing block). */
 .travel-band .travel-wait-actions {
   position: absolute;
-  bottom: calc(100% + 4px);
-  left: 16px;
+  bottom: calc(100% + var(--ds-space-1));
+  left: var(--ds-space-4);
   display: flex;
   flex-wrap: wrap;
   gap: var(--ds-space-2);
   width: max-content;
-  max-width: calc(100% - 32px);
+  max-width: calc(100% - var(--ds-space-8));
   padding: var(--ds-space-2);
   border: var(--ds-edge-thin) solid var(--ds-line);
   border-radius: var(--ds-radius-pane);
@@ -290,7 +290,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 }
 /* It rises out of the band as ≡メニュー's panel comes down out of the header (journey-hud.css), its waits after it. */
 .travel-band .travel-wait-actions { animation: travel-band-rise var(--motion-short) var(--ease-out); }
-.travel-band .travel-wait-actions > * { animation: travel-band-item-rise var(--motion-short) var(--ease-out) backwards; }
+.travel-band .travel-wait-actions > * { animation: ds-rise-in var(--motion-short) var(--ease-out) backwards; }
 .travel-band .travel-wait-actions > :nth-child(2) { animation-delay: calc(var(--motion-stagger) * 0.5); }
 .travel-band .travel-wait-actions > :nth-child(n + 3) { animation-delay: var(--motion-stagger); }
 @keyframes travel-band-rise {
@@ -298,9 +298,6 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   from { opacity: 0; transform: translateY(14px); clip-path: inset(100% -40px 0 -40px); }
   35% { opacity: 1; }
   to { opacity: 1; transform: none; clip-path: inset(-40px); }
-}
-@keyframes travel-band-item-rise {
-  from { opacity: 0; transform: translateY(8px); }
 }
 .reduce-motion .travel-band .travel-wait-actions,
 .reduce-motion .travel-band .travel-wait-actions > *,
@@ -317,8 +314,8 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
    (display only: taps go through to the markers under it). */
 .travel-map-marker.is-selected {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
   border: 0;
   border-radius: 50%;
   background: var(--ds-dark);
@@ -331,7 +328,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-dark); box-shadow: 0 0 0 var(--ds-edge) var(--ds-light), 0 0 0 var(--ds-edge-heavy) var(--ds-here), var(--ds-shadow-small); }
 .travel-map-marker-label {
   position: absolute;
-  bottom: calc(100% + 9px);
+  bottom: calc(100% + var(--ds-space-2));
   left: 50%;
   transform: translateX(-50%);
   max-width: var(--map-label-max, 144px);
@@ -348,7 +345,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
   white-space: nowrap;
   pointer-events: none;
 }
-.travel-map-marker-wrap:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 2px; border-radius: 50%; box-shadow: var(--ds-focus-halo); }
+.travel-map-marker-wrap:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset); border-radius: 50%; box-shadow: var(--ds-focus-halo); }
 
 /* The selected row (§3.6): a dark edge all round the row and the chosen ground, then the hint strip (or
    its choices) inside it. No mark before its name (2026-11-13 user decision, like the cards: no ◆ badge).
@@ -422,7 +419,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: var(--ds-space-4); --modal-p
 .travel-route:disabled .travel-route-cost { color: var(--ds-disabled-ink); }
 .travel-route:focus-visible,
 .travel-event-button:focus-visible,
-.travel-choices-close:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 1px; box-shadow: var(--ds-focus-halo); }
+.travel-choices-close:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: var(--ds-focus-offset); box-shadow: var(--ds-focus-halo); }
 .travel-event { display: grid; gap: var(--ds-space-1); }
 .travel-event-title { flex: 1 1 100%; min-width: 0; overflow-wrap: anywhere; }
 .travel-event-button small { color: var(--ds-ink-muted); font-size: var(--ds-text-small); font-weight: var(--ds-weight-medium); }

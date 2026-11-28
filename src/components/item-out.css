@@ -16,21 +16,21 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: max(clamp(10px, 3dvh, 28px), calc(var(--notices-h, 0px) + 8px)) var(--ds-space-4) 0;
+  padding: max(clamp(10px, 3dvh, var(--ds-space-8)), calc(var(--notices-h, 0px) + var(--ds-space-2))) var(--ds-space-4) 0;
   pointer-events: none;
 }
 /* Clear of what a scene keeps in the top left corner, drawn over this layer: a date's reference note (romance-scene.css:
    its width beside the portrait). */
-.vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - 8px) + 16px); }
+.vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(min(118px, 35% - var(--ds-space-2)) + var(--ds-space-4)); }
 @media (min-width: 701px) {
-  .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + 16px); }
+  .vn-scene:has(> .date-reference) > .item-out-layer { padding-left: calc(240px + var(--ds-space-4)); }
 }
 .item-out-card {
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: min(100%, 24rem);
+  width: min(100%, var(--ds-card-narrow));
   min-height: 0;
   padding: var(--ds-glass-padding);
   overflow: hidden;
@@ -59,8 +59,8 @@
   flex: none;
   justify-content: center;
   align-items: center;
-  width: 44px;
-  height: 44px;
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
   border-radius: var(--ds-radius-control);
   background: color-mix(in srgb, var(--ds-light) 50%, transparent);
 }
@@ -68,12 +68,12 @@
   display: block;
   width: auto;
   height: auto;
-  max-width: 40px;
-  max-height: 40px;
+  max-width: var(--ds-press-small);
+  max-height: var(--ds-press-small);
 }
 .item-out-picture img[data-vector] {
-  width: 40px;
-  height: 40px;
+  width: var(--ds-press-small);
+  height: var(--ds-press-small);
 }
 .item-out-name {
   min-width: 0;
@@ -101,7 +101,7 @@
 }
 .item-out-lines {
   position: relative;
-  padding: 0 var(--ds-space-1) 0 1.9em;
+  padding: 0 var(--ds-space-1) 0 var(--ds-space-8);
 }
 .item-out-lines[data-scrolls] { pointer-events: auto; }
 /* Lines beyond the room (data-before above, data-more below; ItemOut.tsx): the edge's line fades, so the list says it
@@ -146,13 +146,10 @@
 /* Coming in: out of the header's bag when the item is held (from the bag's middle, small, to its place: ItemOut.tsx sets
    --from-dx, --from-dy and --from-scale), else softly where it is. */
 .item-out-card[data-enter="bag"] { animation: item-out-rise var(--motion-slow) var(--ease-out) both; }
-.item-out-card[data-enter="here"] { animation: item-out-in var(--motion-short) var(--ease-out) both; }
+.item-out-card[data-enter="here"] { animation: ds-drop-in var(--motion-short) var(--ease-out) both; }
 @keyframes item-out-rise {
   from { opacity: 0; transform: translate(var(--from-dx, 0px), var(--from-dy, 0px)) scale(var(--from-scale, 0.2)); }
   35% { opacity: 1; }
-}
-@keyframes item-out-in {
-  from { opacity: 0; transform: translateY(-6px); }
 }
 
 /* As its line goes (ItemOutFlight, in the header's layer over the screen, item-show.css's .item-show-flight): the card,
@@ -170,12 +167,12 @@
 
 /* A short landscape screen: a lower heading and tighter lines, so more of the list shows above the window. */
 @media (max-height: 500px) {
-  .item-out-layer { padding-top: max(6px, calc(var(--notices-h, 0px) + 6px)); }
-  .item-out-card { width: min(100%, 30rem); padding: var(--ds-space-2) var(--ds-space-4); }
+  .item-out-layer { padding-top: max(var(--ds-space-2), calc(var(--notices-h, 0px) + var(--ds-space-2))); }
+  .item-out-card { width: min(100%, var(--ds-card)); padding: var(--ds-space-2) var(--ds-space-4); }
   .item-out-head { gap: var(--ds-space-2); padding-bottom: var(--ds-space-2); }
-  .item-out-picture { width: 32px; height: 32px; }
-  .item-out-picture img { max-width: 28px; max-height: 28px; }
-  .item-out-picture img[data-vector] { width: 28px; height: 28px; }
+  .item-out-picture { width: var(--ds-size-4); height: var(--ds-size-4); }
+  .item-out-picture img { max-width: var(--ds-size-4); max-height: var(--ds-size-4); }
+  .item-out-picture img[data-vector] { width: var(--ds-size-4); height: var(--ds-size-4); }
   .item-out-name { font-size: var(--ds-text-body); }
   .item-out-lines,
   .item-out-description { margin-top: var(--ds-space-2); }

@@ -4,7 +4,7 @@
    name as without one, halfway between where they once started under each). */
 :root {
   /* The head's height, with or without a band: the band's padding (4 + 5), its one line and its margin below (6). */
-  --vn-head-height: calc(9px + var(--ds-text-body) * var(--ds-leading-tight) + 6px);
+  --vn-head-height: calc(9px + var(--ds-text-body) * var(--ds-leading-tight) + var(--ds-space-2));
 }
 .vn-window-head {
   position: relative;
@@ -59,8 +59,8 @@
    the band reads on). It never breaks inside; a long name wraps before it. */
 .vn-window-head > .speaker :is(.speaker-remembered, .speaker-tag) {
   display: inline-block;
-  margin-left: 0.5em;
-  padding: 0 0.4em;
+  margin-left: var(--ds-space-2);
+  padding: 0 var(--ds-space-1);
   border: var(--ds-edge-thin) solid currentColor;
   border-radius: var(--ds-radius-control);
   font-size: var(--ds-text-small);
@@ -79,8 +79,8 @@
 .dialogue-controls {
   position: absolute;
   z-index: 2;
-  left: 4px;
-  bottom: 4px;
+  left: var(--ds-space-1);
+  bottom: var(--ds-space-1);
   display: flex;
   align-items: center;
   gap: var(--ds-space-2);

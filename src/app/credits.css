@@ -3,8 +3,8 @@
 dialog.modal.credits-modal {
   --modal-pad-top: var(--ds-space-4);
   --modal-pad-inline: var(--ds-space-4);
-  width: min(var(--ds-width-narrow), calc(100% - 24px));
-  max-height: calc(100dvh - 24px);
+  width: min(var(--ds-width-narrow), calc(100% - var(--ds-space-6)));
+  max-height: calc(100dvh - var(--ds-space-6));
 }
 .credits-modal .modal-title-bar { margin-bottom: var(--ds-space-2); }
 .credits-list > section { padding: var(--ds-space-3) 0; border-top: var(--ds-edge-thin) solid var(--ds-line); }
