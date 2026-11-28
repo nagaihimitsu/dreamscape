@@ -91,7 +91,7 @@ export function newCityBundle(root: string, cityId: string): unknown {
     city: { schemaVersion: 1, id: cityId, countryCode: "", nameJa: "", themeJa: "", firstClearReward: { rewardSourceId: "", ap: null }, landmarkIdsPlanned: [], productionStatus: "prototype" },
     travel: { cityId, places: [{ id: hotel, cityId, nameJa: "", nameEn: "", latitude: null, longitude: null, backgroundId: background, sources: [] }], routes: [], events: [] },
     travelSettings: { initialBudget: null, hotelPlaceId: hotel, lodgingCost: null, retryMinutes: 15, notes: "要入力：ゲーム用の前提と出典を記入してください。" },
-    backgrounds: { [background]: { nameJa: "", captionJa: "", color: "#817569", fallback: "neutral" } },
+    backgrounds: { [background]: { nameJa: "", captionJa: "", fallback: "neutral" } },
     // A journey with transport modes needs the new city's transit decisions (to be filled in).
     assets: [], dateDestinations: [], landmarks: [], clues: [], transitDecisions: cityTransitPath(sources, cityId) ? [] : null };
 }

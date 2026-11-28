@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SE_VOLUME, type SeVolume } from "../../audio/se-rules";
 import type { CueTapFieldProps, CueTapGaugeProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import {
@@ -167,9 +168,9 @@ const SOUNDS = { step: "footstep", cloth: "cloth_flap", pigeon: "pigeon_flutter"
  * A footstep as her foot lands on step k: the player counts, and the gold step rings a little higher and louder; the
  * steps on down past the niche fade as she walks away. None once she stops. The boy's steps are lighter and higher.
  */
-const footstepLevel = (k: number): { volume: number; rate?: number } =>
-  k === CLOTH_STEPS.gold ? { volume: 1, rate: 1.15 } : k < CLOTH_STEPS.gold ? { volume: 0.75 } : { volume: 0.55 };
-const BOY_STEP = { volume: 0.32, rate: 1.4 } as const;
+const footstepLevel = (k: number): { volume: SeVolume; rate?: number } =>
+  k === CLOTH_STEPS.gold ? { volume: SE_VOLUME.full, rate: 1.15 } : k < CLOTH_STEPS.gold ? { volume: SE_VOLUME.normal } : { volume: SE_VOLUME.soft };
+const BOY_STEP = { volume: SE_VOLUME.faint, rate: 1.4 } as const;
 
 /** Her reaction pose once the play is decided (over the walk's tells). */
 type Pose = "scream" | "laugh" | "peek";
@@ -349,7 +350,7 @@ export function clothFlapSkinFor(tuning: ClothTuning): CueTapSkin<ClothFlapParam
         const at = Math.min(ms, walk.stopsAt(outcome, tapMs));
         const now = walk.walkerAt(at);
         if (now.step !== step && !now.moving) {
-          live.current.sound(SOUNDS.step, now.step < step ? { volume: 0.5 } : footstepLevel(now.step));
+          live.current.sound(SOUNDS.step, now.step < step ? { volume: SE_VOLUME.soft } : footstepLevel(now.step));
           step = now.step;
           setOn(now.step);
         }

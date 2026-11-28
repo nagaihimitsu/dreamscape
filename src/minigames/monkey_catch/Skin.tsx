@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
 import type { CueTapTuning } from "../engines/cue_tap/engine";
 import { useMiniGameKit } from "../host/kit";
@@ -236,9 +237,9 @@ function gripAt(ms: number, plan: MonkeyPlan, tuning: MonkeyTuning): Grip {
  * the ledge (the same knock, quieter and higher), the shell's tick into the hands' shadow.
  */
 const SOUNDS = { grab: "cloth_grab", snap: "bat_hit", catch: "item_pouch" } as const;
-const CATCH_SNAP = { volume: 0.55, rate: 1.5 } as const;
-const CATCH_SETTLE = { volume: 0.7 } as const;
-const LEDGE_KNOCK = { volume: 0.35, rate: 1.8 } as const;
+const CATCH_SNAP = { volume: SE_VOLUME.soft, rate: 1.5 } as const;
+const CATCH_SETTLE = { volume: SE_VOLUME.normal } as const;
+const LEDGE_KNOCK = { volume: SE_VOLUME.faint, rate: 1.8 } as const;
 
 /**
  * The moment the field shows each outcome (group3 6.4's values): the stop on the thing, the burst where it meets the hands

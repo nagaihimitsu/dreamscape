@@ -67,7 +67,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     const destination = { id: "testcity_garden", cityId: "testcity", nameJa: "試験の庭園", nameEn: "Test garden",
       descriptionJa: "試験用のデート先", backgroundId: "testcity_garden_bg", facts: template.travel.places[0].sources };
     bundle.travel.places[0].destinationIds = [destination.id];
-    bundle.backgrounds[destination.backgroundId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
+    bundle.backgrounds[destination.backgroundId] = { nameJa: "試験の庭園", captionJa: "試験用の背景" };
     bundle.dateDestinations.push(destination);
     bundle.travelSettings.notes += " 編集の検証。";
     const before = fingerprint(root);
@@ -112,7 +112,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     const destination = { id: "testcity_garden", cityId: "testcity", nameJa: "試験の庭園", nameEn: "Test garden",
       descriptionJa: "試験用のデート先", backgroundId: "testcity_garden_bg", facts: template.travel.places[0].sources };
     bundle.travel.places[0].destinationIds = [destination.id];
-    bundle.backgrounds[destination.backgroundId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
+    bundle.backgrounds[destination.backgroundId] = { nameJa: "試験の庭園", captionJa: "試験用の背景" };
     bundle.dateDestinations.push(destination);
     expect((await applyCityBundle(root, bundle, true)).changedFiles).toEqual([`${testLayer}/travel/testcity.json`, presentationFile, destinationsFile]);
     // Keys that stay empty are not added; the untouched partial catalog keeps its bytes.

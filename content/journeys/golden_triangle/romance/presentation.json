@@ -4,56 +4,48 @@
     "gt_bg_agra_agra_fort": {
       "nameJa": "アーグラ城",
       "captionJa": "アーグラ ／ アーグラ城",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_agra_fort"
     },
     "gt_bg_agra_akbar_tomb": {
       "nameJa": "アクバル廟",
       "captionJa": "アーグラ ／ アクバル廟",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_akbar_tomb"
     },
     "gt_bg_agra_chini_rauza": {
       "nameJa": "チーニー・カ・ラウザー",
       "captionJa": "アーグラ ／ チーニー・カ・ラウザー",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_chini_rauza"
     },
     "gt_bg_agra_fatehpur_sikri": {
       "nameJa": "ファテープル・シークリー",
       "captionJa": "アーグラ ／ ファテープル・シークリー",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_fatehpur_sikri"
     },
     "gt_bg_agra_guru_ka_taal": {
       "nameJa": "グル・カ・タール",
       "captionJa": "アーグラ ／ グル・カ・タール",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_guru_ka_taal"
     },
     "gt_bg_agra_itimad_tomb": {
       "nameJa": "イティマード・ウッダウラ廟",
       "captionJa": "アーグラ ／ イティマード・ウッダウラ廟",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_itimad_tomb"
     },
     "gt_bg_agra_mariam_tomb": {
       "nameJa": "マリアム・ウッザマーニー廟",
       "captionJa": "アーグラ ／ マリアム・ウッザマーニー廟",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_mariam_tomb"
     },
     "gt_bg_agra_mehtab_bagh": {
       "nameJa": "メヘターブ・バーグ",
       "captionJa": "アーグラ ／ メヘターブ・バーグ",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_mehtab_bagh",
       "placeId": "agra_mehtab_bagh"
@@ -61,35 +53,30 @@
     "gt_bg_agra_ram_bagh": {
       "nameJa": "ラーム・バーグ",
       "captionJa": "アーグラ ／ ラーム・バーグ",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_ram_bagh"
     },
     "gt_bg_agra_taj_mahal": {
       "nameJa": "タージ・マハル",
       "captionJa": "アーグラ ／ タージ・マハル",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_taj_mahal"
     },
     "gt_bg_delhi_agrasen_baoli": {
       "nameJa": "アグラセン・キ・バオリ",
       "captionJa": "デリー ／ アグラセン・キ・バオリ",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_agrasen_baoli"
     },
     "gt_bg_delhi_bangla_sahib": {
       "nameJa": "グルドワーラ・バングラ・サーヒブ",
       "captionJa": "デリー ／ グルドワーラ・バングラ・サーヒブ",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_bangla_sahib"
     },
     "gt_bg_delhi_chandni_chowk": {
       "nameJa": "チャンドニー・チョーク",
       "captionJa": "デリー ／ チャンドニー・チョーク",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_chandni_chowk",
       "placeId": "delhi_chandni_chowk"
@@ -97,42 +84,36 @@
     "gt_bg_delhi_humayun_tomb": {
       "nameJa": "フマユーン廟",
       "captionJa": "デリー ／ フマユーン廟",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_humayun_tomb"
     },
     "gt_bg_delhi_india_gate": {
       "nameJa": "インド門",
       "captionJa": "デリー ／ インド門",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_india_gate"
     },
     "gt_bg_delhi_jama_masjid": {
       "nameJa": "ジャーマー・マスジド",
       "captionJa": "デリー ／ ジャーマー・マスジド",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_jama_masjid"
     },
     "gt_bg_delhi_lodhi_garden": {
       "nameJa": "ロディ・ガーデン",
       "captionJa": "デリー ／ ロディ・ガーデン",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_lodhi_garden"
     },
     "gt_bg_delhi_lotus_temple": {
       "nameJa": "ロータス寺院",
       "captionJa": "デリー ／ ロータス寺院",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_lotus_temple"
     },
     "gt_bg_delhi_paharganj": {
       "nameJa": "パハールガンジ",
       "captionJa": "デリー ／ パハールガンジ",
-      "color": "#8a6a3a",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_paharganj",
       "placeJa": "パハールガンジ"
@@ -140,21 +121,18 @@
     "gt_bg_delhi_qutb_minar": {
       "nameJa": "クトゥブ・ミナール",
       "captionJa": "デリー ／ クトゥブ・ミナール",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_qutb_minar"
     },
     "gt_bg_delhi_red_fort": {
       "nameJa": "レッド・フォート",
       "captionJa": "デリー ／ レッド・フォート",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_red_fort"
     },
     "gt_bg_delhi_station": {
       "nameJa": "ニューデリー駅",
       "captionJa": "デリー ／ ニューデリー駅",
-      "color": "#7a5a4a",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_station",
       "imagePosition": {
@@ -166,7 +144,6 @@
     "gt_bg_delhi_station_front": {
       "nameJa": "ニューデリー駅（正面）",
       "captionJa": "デリー ／ ニューデリー駅",
-      "color": "#8a6a52",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_station_front",
       "imagePosition": {
@@ -178,7 +155,6 @@
     "gt_bg_delhi_train_window": {
       "nameJa": "ニューデリー駅（列車の窓）",
       "captionJa": "デリー ／ ニューデリー駅（入線する列車の窓から）",
-      "color": "#675f5c",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_station_train_window",
       "imagePosition": {
@@ -190,35 +166,30 @@
     "gt_bg_jaipur_albert_hall": {
       "nameJa": "アルバート・ホール博物館",
       "captionJa": "ジャイプール ／ アルバート・ホール博物館",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_albert_hall"
     },
     "gt_bg_jaipur_amber_fort": {
       "nameJa": "アンベール城",
       "captionJa": "ジャイプール ／ アンベール城",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_amber_fort"
     },
     "gt_bg_jaipur_city_palace": {
       "nameJa": "シティ・パレス",
       "captionJa": "ジャイプール ／ シティ・パレス",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_city_palace"
     },
     "gt_bg_jaipur_hawa_mahal": {
       "nameJa": "ハワー・マハル",
       "captionJa": "ジャイプール ／ ハワー・マハル",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_hawa_mahal"
     },
     "gt_bg_jaipur_hawa_mahal_night": {
       "nameJa": "ハワー・マハル（夜）",
       "captionJa": "ジャイプール ／ ハワー・マハル（夜）",
-      "color": "#78614d",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_hawa_mahal_night",
       "imagePosition": {
@@ -229,49 +200,42 @@
     "gt_bg_jaipur_jaigarh_fort": {
       "nameJa": "ジャイガル城",
       "captionJa": "ジャイプール ／ ジャイガル城",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_jaigarh_fort"
     },
     "gt_bg_jaipur_jal_mahal": {
       "nameJa": "ジャル・マハル",
       "captionJa": "ジャイプール ／ ジャル・マハル",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_jal_mahal"
     },
     "gt_bg_jaipur_jantar_mantar": {
       "nameJa": "ジャンタル・マンタル",
       "captionJa": "ジャイプール ／ ジャンタル・マンタル",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_jantar_mantar"
     },
     "gt_bg_jaipur_johari_bazaar": {
       "nameJa": "ジョーハリー・バザール",
       "captionJa": "ジャイプール ／ ジョーハリー・バザール",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_johari_bazaar"
     },
     "gt_bg_jaipur_nahargarh_fort": {
       "nameJa": "ナハルガル城",
       "captionJa": "ジャイプール ／ ナハルガル城",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_nahargarh_fort"
     },
     "gt_bg_jaipur_panna_meena_kund": {
       "nameJa": "パンナ・ミーナー・クンド",
       "captionJa": "ジャイプール ／ パンナ・ミーナー・クンド",
-      "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_panna_meena_kund"
     },
     "gt_bg_delhi_hotel_hub": {
       "nameJa": "滞在先のホテル（デリー）",
       "captionJa": "デリー ／ 滞在先（パハールガンジの宿の帳場を用いたイメージ）",
-      "color": "#827c71",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_paharganj_reception",
       "imagePosition": {
@@ -283,7 +247,6 @@
     "gt_bg_delhi_airport_mudras": {
       "nameJa": "インディラ・ガンディー国際空港",
       "captionJa": "デリー ／ インディラ・ガンディー国際空港（第3ターミナルの到着の広間）",
-      "color": "#6b4a2e",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_airport_mudras",
       "imagePosition": {
@@ -295,7 +258,6 @@
     "gt_bg_delhi_hotel_alley": {
       "nameJa": "滞在先のホテルの路地（デリー）",
       "captionJa": "デリー ／ 滞在先の路地（オールドデリーの古い家並みの路地を用いたイメージ）",
-      "color": "#82827a",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_old_lane",
       "imagePosition": {
@@ -307,7 +269,6 @@
     "gt_bg_delhi_hotel_room": {
       "nameJa": "滞在先のホテルの部屋（デリー）",
       "captionJa": "デリー ／ 滞在先の部屋（パハールガンジの安宿の部屋を用いたイメージ）",
-      "color": "#1c1a16",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_paharganj_room_night",
       "imagePosition": {
@@ -319,7 +280,6 @@
     "gt_bg_delhi_hotel_corridor": {
       "nameJa": "滞在先のホテルの廊下（デリー）",
       "captionJa": "デリー ／ 滞在先の廊下（パハールガンジの宿の廊下を用いたイメージ）",
-      "color": "#757172",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_paharganj_corridor",
       "imagePosition": {
@@ -331,7 +291,6 @@
     "gt_bg_delhi_scam_office": {
       "nameJa": "二階の「観光案内所」（デリー）",
       "captionJa": "デリー ／ 二階の「観光案内所」（インドの学校の校長室を用いたイメージ）",
-      "color": "#78755e",
       "fallback": "neutral",
       "imageAssetId": "gt_img_india_office_interior",
       "imagePosition": {
@@ -343,7 +302,6 @@
     "gt_bg_agra_hotel_hub": {
       "nameJa": "滞在先のホテル（アーグラ）",
       "captionJa": "アーグラ ／ 滞在先（アーグラの宿の中庭を用いたイメージ）",
-      "color": "#81766e",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_hotel_courtyard",
       "imagePosition": {
@@ -355,7 +313,6 @@
     "gt_bg_agra_hotel_room": {
       "nameJa": "滞在先のホテルの部屋（アーグラ）",
       "captionJa": "アーグラ ／ 滞在先の部屋（チャンディーガルのホテルの客室を用いたイメージ）",
-      "color": "#865432",
       "fallback": "neutral",
       "imageAssetId": "gt_img_hotel_room_chandigarh",
       "imagePosition": {
@@ -367,7 +324,6 @@
     "gt_bg_agra_hotel_room_heart": {
       "nameJa": "滞在先のホテルの部屋・ハネムーンの飾り（アーグラ）",
       "captionJa": "アーグラ ／ 滞在先の部屋（アメリカ・ランカスターのホテルの客室の飾りを用いたイメージ）",
-      "color": "#935e35",
       "fallback": "neutral",
       "imageAssetId": "gt_img_hotel_room_towel_swans",
       "imagePosition": {
@@ -379,7 +335,6 @@
     "gt_bg_jaipur_hotel_hub": {
       "nameJa": "滞在先のホテル（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先（ジャイプールのハヴェリ・ホテルの広間を用いたイメージ）",
-      "color": "#8f795e",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_haveli_lounge",
       "imagePosition": {
@@ -391,7 +346,6 @@
     "gt_bg_jaipur_hotel_window": {
       "nameJa": "滞在先のホテルの窓（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先の窓から（ハワー・マハルの窓からの眺めを用いたイメージ）",
-      "color": "#6a6153",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_hawa_mahal_window_view",
       "imagePosition": {
@@ -403,7 +357,6 @@
     "gt_bg_jaipur_hotel_room": {
       "nameJa": "滞在先のホテルの部屋（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先の部屋（ジャイプールのハヴェリ・ホテルの客室を用いたイメージ）",
-      "color": "#826535",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_haveli_room",
       "imagePosition": {
@@ -415,7 +368,6 @@
     "gt_bg_jaipur_hotel_courtyard": {
       "nameJa": "滞在先のホテルの中庭（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先の中庭（ジャイプールのハヴェリ・ホテルの中庭を用いたイメージ）",
-      "color": "#b7a99c",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_haveli_courtyard",
       "imagePosition": {
@@ -427,7 +379,6 @@
     "gt_bg_jaipur_hotel_courtyard_night": {
       "nameJa": "滞在先のホテルの中庭・夜（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先の中庭・夜（ジャイプールの宿の夜の中庭を用いたイメージ）",
-      "color": "#392d1a",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_guesthouse_courtyard_night",
       "imagePosition": {
@@ -439,7 +390,6 @@
     "gt_bg_hotel_rooftop_night": {
       "nameJa": "宿の屋上（夜）",
       "captionJa": "宿の屋上（デリーの住宅街の夜景を用いたイメージ）",
-      "color": "#383932",
       "fallback": "neutral",
       "imageAssetId": "gt_img_hotel_rooftop_night",
       "imagePosition": {
@@ -450,7 +400,6 @@
     "gt_bg_agra_hotel_rooftop_night": {
       "nameJa": "滞在先のホテルの屋上・夜（アーグラ）",
       "captionJa": "アーグラ ／ 滞在先の屋上・夜（タージ・ガンジの屋上からの眺めを暗くしたイメージ）",
-      "color": "#202225",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_tajganj_rooftops_night",
       "imagePosition": {
@@ -462,7 +411,6 @@
     "gt_bg_jaipur_hotel_rooftop_night": {
       "nameJa": "滞在先のホテルの屋上・夜（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先の屋上・夜（ナハルガル城から見た旧市街の夜景を用いたイメージ）",
-      "color": "#222336",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_old_city_night",
       "imagePosition": {
@@ -474,7 +422,6 @@
     "gt_bg_delhi_red_fort_night": {
       "nameJa": "レッド・フォート（夜）",
       "captionJa": "デリー ／ レッド・フォート（光と音のショー）",
-      "color": "#391b06",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_red_fort_night",
       "imagePosition": {
@@ -485,7 +432,6 @@
     "gt_bg_delhi_chandni_chowk_night": {
       "nameJa": "チャンドニー・チョーク（夜）",
       "captionJa": "デリー ／ チャンドニー・チョーク（夜）",
-      "color": "#3b313f",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_chandni_chowk_night",
       "imagePosition": {
@@ -497,7 +443,6 @@
     "gt_bg_jaipur_jal_mahal_night": {
       "nameJa": "ジャル・マハル（夜）",
       "captionJa": "ジャイプール ／ ジャル・マハル（夜）",
-      "color": "#241f1d",
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_jal_mahal_night",
       "imagePosition": {
@@ -508,7 +453,6 @@
     "gt_bg_delhi_hotel_hub_night": {
       "nameJa": "滞在先のホテル・夜（デリー）",
       "captionJa": "デリー ／ 滞在先・夜（パハールガンジの宿の帳場を暗くしたイメージ）",
-      "color": "#363026",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_paharganj_reception_night",
       "imagePosition": {
@@ -520,7 +464,6 @@
     "gt_bg_agra_mehtab_bagh_sunset": {
       "nameJa": "メヘターブ・バーグ（夕方）",
       "captionJa": "アーグラ ／ メヘターブ・バーグから見た夕方のタージ・マハル",
-      "color": "#a38558",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_mehtab_bagh_sunset",
       "imagePosition": {
@@ -532,21 +475,18 @@
     "gt_bg_agra_fatehabad_road": {
       "nameJa": "アーグラの大通り",
       "captionJa": "アーグラ ／ ファテハバード・ロード",
-      "color": "#7f8288",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_fatehabad_road"
     },
     "gt_bg_agra_tour_road": {
       "nameJa": "アーグラ〜シークリー間の道",
       "captionJa": "アーグラ ／ キラオリ付近の国道沿い",
-      "color": "#7b7a63",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_kiraoli_buffaloes"
     },
     "gt_bg_car_interior": {
       "nameJa": "ツアーの車の中",
       "captionJa": "ツアーの車の中（コルカタのタクシーの車内を用いたイメージ）",
-      "color": "#686a63",
       "fallback": "neutral",
       "imageAssetId": "gt_img_taxi_interior",
       "imagePosition": {
@@ -558,21 +498,18 @@
     "gt_bg_agra_fatehpur_sikri_bazaar": {
       "nameJa": "ファテープル・シークリーの町",
       "captionJa": "アーグラ ／ ファテープル・シークリーの町のバザール",
-      "color": "#6f6253",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_fatehpur_sikri_bazaar"
     },
     "gt_bg_agra_fatehpur_sikri_distant": {
       "nameJa": "道路から見たファテープル・シークリー",
       "captionJa": "アーグラ ／ 道路から見たファテープル・シークリー",
-      "color": "#a39a86",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_fatehpur_sikri_distant"
     },
     "gt_bg_agra_mehtab_bagh_lawn": {
       "nameJa": "メヘターブ・バーグの芝地",
       "captionJa": "アーグラ ／ メヘターブ・バーグ",
-      "color": "#817569",
       "fallback": "neutral",
       "imagePosition": {
         "x": 50,
@@ -584,7 +521,6 @@
     "gt_bg_jaipur_baraat_night": {
       "nameJa": "夜の花婿の行列（ジャイプール）",
       "captionJa": "ジャイプール ／ 夜の花婿の行列",
-      "color": "#2b2622",
       "fallback": "neutral",
       "imagePosition": {
         "x": 0,

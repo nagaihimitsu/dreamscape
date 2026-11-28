@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import type { SearchFieldProps, SearchSkin, SearchView } from "../engines/search/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
@@ -35,11 +36,11 @@ const HER_ECHO_DELAY_MS = 120;
 const GIGGLE_MS = 1400;
 /** A call's sound until an echo sound exists: three soft taps this far apart, fading like an echo (a share of the volume). */
 const CALL_TAP_MS = [0, 120, 240];
-const CALL_TAP_VOLUME = [0.6, 0.35, 0.2];
+const CALL_TAP_VOLUME = [SE_VOLUME.normal, SE_VOLUME.soft, SE_VOLUME.faint];
 /** An empty room's creak, lower and longer than her door's (its playback rate). */
 const EMPTY_CREAK_RATE = 0.85;
 /** Her door opening a crack as she peeks: a small, high squeak. */
-const PEEK_CREAK = { volume: 0.3, rate: 1.45 } as const;
+const PEEK_CREAK = { volume: SE_VOLUME.faint, rate: 1.45 } as const;
 /** The stop as her door opens (ms). */
 const FOUND_STOP_MS = 90;
 /** The success chime about 140 ms after her door's creak (on the play's clock, which the stop holds first). */

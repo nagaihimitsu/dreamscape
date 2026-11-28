@@ -15,6 +15,14 @@ export function admitsSe(lastStart: number | undefined, playing: number, now: nu
   return playing < SE_MAX_PLAYING && (lastStart === undefined || now - lastStart >= SE_REPEAT_MS);
 }
 
+/**
+ * A sound's share of its volume for one play, one of four (2026-11-28 user decision: a few patterns, as the design's
+ * numbers): faint (a far echo, a small tick), soft (a step, a creak), normal (a cue to hear), full (the moment itself).
+ * A mini-game asks with these (contract.ts).
+ */
+export const SE_VOLUME = { faint: 0.3, soft: 0.5, normal: 0.7, full: 1 } as const;
+export type SeVolume = (typeof SE_VOLUME)[keyof typeof SE_VOLUME];
+
 /** A sound's own level for one play (a mini-game's fading echo, a lower creak): its volume share and playback rate. */
 export interface SeLevel {
   /** A share of the sound's registered volume, 0 to 1 (default 1). */

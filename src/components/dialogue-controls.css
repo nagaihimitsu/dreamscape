@@ -124,7 +124,6 @@
   background: var(--ds-glass-mark-on);
   color: var(--ds-glass-mark-full);
 }
-.dialogue-controls .text-button:disabled { opacity: var(--ds-opacity-faint); cursor: default; }
 .dialogue-controls .text-button:focus-visible {
   outline: var(--ds-edge-thick) solid var(--ds-focus);
   outline-offset: 0;

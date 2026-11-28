@@ -52,7 +52,6 @@
   background: transparent;
   cursor: pointer;
 }
-.encounter-choice-select:disabled { cursor: not-allowed; }
 .encounter-choice:has(> .encounter-choice-select:active:enabled) { translate: 0 1px; }
 /* One that cannot be chosen at all: its words muted (its reason under them). */
 .encounter-choice[data-unavailable] { color: var(--ds-disabled-ink); }

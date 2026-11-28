@@ -145,77 +145,66 @@
     "uz_bg_bukhara_ark": {
       "nameJa": "アルク城",
       "captionJa": "ブハラ ／ アルク城",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_ark"
     },
     "uz_bg_bukhara_poi_kalyan": {
       "nameJa": "ポイ・カリヤン",
       "captionJa": "ブハラ ／ ポイ・カリヤン（モスク中庭）",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_poi_kalyan"
     },
     "uz_bg_bukhara_samanid_mausoleum": {
       "nameJa": "サーマーン朝廟",
       "captionJa": "ブハラ ／ サーマーン朝廟",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_samanid_mausoleum"
     },
     "uz_bg_bukhara_lyabi_hauz": {
       "nameJa": "リャビ・ハウズ",
       "captionJa": "ブハラ ／ リャビ・ハウズ",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_lyabi_hauz"
     },
     "uz_bg_bukhara_chor_minor": {
       "nameJa": "チョル・ミノル外観",
       "captionJa": "ブハラ ／ チョル・ミノル外観",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_chor_minor"
     },
     "uz_bg_bukhara_bolo_hauz": {
       "nameJa": "ボロ・ハウズ外観",
       "captionJa": "ブハラ ／ ボロ・ハウズ外観",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_bolo_hauz"
     },
     "uz_bg_bukhara_toki_zargaron": {
       "nameJa": "トキ・ザルガロン",
       "captionJa": "ブハラ ／ トキ・ザルガロン",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_toki_zargaron"
     },
     "uz_bg_bukhara_abdulaziz_khan": {
       "nameJa": "アブドゥルアジズ・ハン・マドラサ",
       "captionJa": "ブハラ ／ アブドゥルアジズ・ハン・マドラサ",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_abdulaziz_khan"
     },
     "uz_bg_bukhara_ulugh_beg": {
       "nameJa": "ウルグ・ベク・マドラサ",
       "captionJa": "ブハラ ／ ウルグ・ベク・マドラサ",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_ulugh_beg"
     },
     "uz_bg_bukhara_magoki_attori": {
       "nameJa": "マゴキ・アッタリ",
       "captionJa": "ブハラ ／ マゴキ・アッタリ",
-      "color": "#b89563",
       "fallback": "neutral",
       "imageAssetId": "uz_img_bukhara_magoki_attori"
     },
     "uz_bg_bukhara_hotel_hub": {
       "nameJa": "ブハラの滞在先",
       "captionJa": "ブハラ ／ 滞在先（架空の拠点）",
-      "color": "#b89563",
       "fallback": "neutral"
     }
   },

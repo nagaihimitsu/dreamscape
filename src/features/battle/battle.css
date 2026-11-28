@@ -618,7 +618,6 @@
 /* The wrong options that do not stay (QuizChoices) leave in a column, so the gap after one closes with it. */
 .vn-choices .quiz-choices { display: flex; flex-direction: column; }
 .vn-choices .quiz-choice-row[data-leaving] { overflow: hidden; pointer-events: none; }
-.vn-choices .quiz-choice-row .encounter-choice-select:disabled { cursor: default; }
 .quiz-choice-mark {
   display: inline-flex;
   align-items: center;

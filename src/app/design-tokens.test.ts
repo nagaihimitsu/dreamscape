@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { MOTION, MOTION_STAGGER, NOTICE } from "../components/motion";
+import { GRAY } from "../components/greys";
+import { EASE, MOTION, MOTION_STAGGER, NOTICE } from "../components/motion";
 
 /**
  * The design's rules (2026-11-25 user decision, remade 2026-11-28; styles.css :root, docs/14 「デザインの決まり」): every
@@ -229,6 +230,28 @@ const shadowErrors = (css: string) =>
     })
     .map((layer) => `${layer} (a shadow not one of the rules': --ds-shadow-*, --ds-scene-text-shadow, --ds-action-text-shadow)`);
 
+/**
+ * A press that cannot be pressed now, one of two forms (2026-11-28): a pane to press goes flat (opacity 1, the disabled
+ * ground and ink, no edge, no shadow), and a bare mark or word fades (--ds-opacity-faint, styles.css's button:disabled).
+ * The pointer is the plain one. Under the pointer, a press without a lighter ground of its own lifts by --ds-hover-filter.
+ */
+const stateErrors = (css: string) =>
+  [...css.replace(KEYFRAMES, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)].flatMap(([, selector, body]) => {
+    const said = Object.fromEntries(declarations(body + ";").map(({ property, value }) => [property, value]));
+    const wrong: string[] = [];
+    const name = selector.trim().replace(/\s+/g, " ");
+    if (said.cursor === "not-allowed") wrong.push(`${name} { cursor: not-allowed } (a press that cannot be pressed keeps the plain pointer)`);
+    if (/:disabled|\[aria-disabled|\[data-settling\]/.test(selector)) {
+      if (said.opacity !== undefined && !["1", "var(--ds-opacity-faint)"].includes(said.opacity)) wrong.push(`${name} { opacity: ${said.opacity} } (disabled: 1, flat, or --ds-opacity-faint)`);
+      if (said.background === "var(--ds-disabled-bg)") {
+        const flat = { opacity: "1", color: "var(--ds-disabled-ink)", "box-shadow": "none" };
+        for (const [property, value] of Object.entries(flat)) if (said[property] !== value) wrong.push(`${name} { ${property}: ${said[property] ?? "(unset)"} } (the flat disabled form: ${property}: ${value})`);
+      }
+    }
+    if (/:hover/.test(selector) && said.filter !== undefined && said.filter !== "var(--ds-hover-filter)") wrong.push(`${name} { filter: ${said.filter} } (under the pointer: --ds-hover-filter)`);
+    return wrong;
+  });
+
 /** The steps of a scale defined in styles.css: its custom properties with this prefix. */
 const stepsOf = (root: string, prefix: string) => [...new Set([...root.matchAll(new RegExp(`(${prefix}[\\w-]*)\\s*:`, "g"))].map(([, name]) => name))];
 
@@ -267,7 +290,9 @@ describe("the design's rules", () => {
     const { stagger, ...steps } = lengths;
     expect(steps).toEqual({ ...MOTION });
     expect(stagger).toBe(MOTION_STAGGER);
-    expect(stepsOf(root, "--ease-")).toHaveLength(3);
+    const ways = Object.fromEntries([...root.matchAll(/--ease-([a-z-]+):\s*([^;]+);/g)].map(([, name, value]) =>
+      [name.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase()), value.trim()]));
+    expect(ways).toEqual({ ...EASE });
     const notices = Object.fromEntries([...root.matchAll(/--notice-([a-z]+):\s*(\d+)ms;/g)].map(([, name, ms]) => [name, Number(ms)]));
     expect(notices).toEqual({ ...NOTICE });
   });
@@ -297,6 +322,44 @@ describe("the design's rules", () => {
     expect(greys.map(([, name]) => name).filter((name) => !meaning.test(name) && !/^--ds-(?:gray-[1-6]|light|shade)$/.test(name))).toEqual([]);
   });
 
+  it("gives the code the six greys of the stylesheet (src/components/greys.ts)", () => {
+    const root = read("src/app/styles.css");
+    const greys = Object.fromEntries([...root.matchAll(/--ds-gray-([1-6]):\s*(#[0-9a-f]{6});/g)].map(([, step, hex]) => [step, hex]));
+    expect(greys).toEqual(Object.fromEntries(Object.entries(GRAY)));
+  });
+
+  // What the code draws or plays outside a mini-game takes its greys from GRAY and its ways of motion from EASE (a drawn
+  // scene or portrait keeps the colours of what it draws).
+  const DRAWINGS = /CanalScene|transport-art|EnemyPortrait|greys\.ts$/;
+  const CODE = (readdirSync(new URL("../", import.meta.url), { recursive: true }) as string[])
+    .map((path) => `src/${path.replaceAll("\\", "/")}`)
+    .filter((path) => /\.tsx?$/.test(path) && !/\.test\.tsx?$|^src\/(?:minigames|dev)\//.test(path));
+  it("draws the code's greys with the rules' greys and plays its motions in the rules' ways", () => {
+    const wrong = CODE.flatMap((path) => {
+      const text = readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
+      const found = [...text.matchAll(/easing:\s*["'`]([^"'`]+)/g)].map(([, way]) => `${path}: easing "${way}" (EASE)`);
+      if (!DRAWINGS.test(path)) {
+        for (const [hex] of text.matchAll(/#[0-9a-fA-F]{6}\b/g)) {
+          const [r, g, b] = [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16));
+          if (Math.max(r, g, b) - Math.min(r, g, b) < 24 && !/^#(?:ffffff|000000)$/i.test(hex)) found.push(`${path}: ${hex} (GRAY)`);
+        }
+      }
+      return found;
+    });
+    expect(CODE.length).toBeGreaterThan(100);
+    expect(wrong).toEqual([]);
+  });
+
+  // The screen's words, one way (2026-11-28; docs/14 「言葉の書き方」): a button or a name quoted in 「」 (『』 is the
+  // narration's, for words remembered), and a wait said 「読み込み中…」.
+  it("writes the screen's words one way", () => {
+    const wrong = CODE.filter((path) => !/content\/tags\.ts$|components\/item-out\.ts$/.test(path)).flatMap((path) => {
+      const text = readFileSync(new URL(`../../${path}`, import.meta.url), "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
+      return [...text.matchAll(/『[^』]*』|読み込んでいます…/g)].map(([words]) => `${path}: ${words}`);
+    });
+    expect(wrong).toEqual([]);
+  });
+
   const defined = new Set([...read("src/app/styles.css").matchAll(/(--ds-[\w-]+)\s*:/g)].map(([, name]) => name));
 
   it("finds the stylesheets", () => expect(STYLESHEETS.length).toBeGreaterThan(50));
@@ -307,7 +370,7 @@ describe("the design's rules", () => {
       const wrong = typeErrors(css, path.startsWith("src/minigames/"));
       for (const [, name] of css.matchAll(/var\((--ds-[\w-]+)/g)) if (!defined.has(name)) wrong.push(`${name} (not defined in styles.css)`);
       wrong.push(...alphaErrors(css), ...mediaErrors(css));
-      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css), ...sizeErrors(css), ...entranceErrors(css));
+      if (!path.startsWith("src/minigames/")) wrong.push(...shadowErrors(css), ...greyErrors(css), ...motionErrors(css), ...sizeErrors(css), ...entranceErrors(css), ...stateErrors(css));
       expect(wrong).toEqual([]);
     });
   }

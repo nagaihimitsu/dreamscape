@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType, type KeyboardEvent, type PointerEvent } from "react";
+import { SE_VOLUME } from "../../../audio/se-rules";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
 import { fieldPoint } from "../../host/seed";
 import {
@@ -222,7 +223,7 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
       shape.current = shapeOfRecord(record.current, tuning, classifier, ms);
       if (!last.deg) return;
       turnedAt.current = { ms: last.at, deg: last.deg, length: Math.max(1, Math.min(TURN_MS, hand.stayMs)) };
-      if (skin.handSounds?.turn) latest.current.sound(skin.handSounds.turn, { volume: 0.6 });
+      if (skin.handSounds?.turn) latest.current.sound(skin.handSounds.turn, { volume: SE_VOLUME.normal });
     }, []);
 
     /** Rolls a stroke into the shape (a tap or a stroke beside the shape changes nothing and is not counted). */

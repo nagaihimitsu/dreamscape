@@ -14,7 +14,6 @@
         "originX": 50,
         "originY": 100
       },
-      "placeholderColor": "#6d716c",
       "nameBand": {
         "fill": "#f8f4f2",
         "edge": "#3b3739"
@@ -256,7 +255,6 @@
         "originX": 50,
         "originY": 100
       },
-      "placeholderColor": "#6f665d",
       "variants": []
     }
   ],

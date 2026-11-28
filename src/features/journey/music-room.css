@@ -44,12 +44,7 @@
   background: var(--ds-surface-chosen);
   font-weight: var(--ds-weight-bold);
 }
-.music-room-item:disabled {
-  border-color: transparent;
-  background: var(--ds-disabled-bg);
-  color: var(--ds-disabled-ink);
-  box-shadow: none;
-}
+.music-room-item:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); box-shadow: none; text-shadow: none; }
 .music-room-item.is-voice span {
   font-family: var(--ds-font-sans);
 }

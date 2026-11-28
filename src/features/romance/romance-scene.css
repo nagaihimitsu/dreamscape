@@ -304,7 +304,7 @@
   line-height: 1;
 }
 .vn-choices .choice-number { color: var(--ds-glass-mark); }
-.vn-choices .choice:hover:enabled, .vn-choices .choice:focus-visible { filter: brightness(1.08); }
+.vn-choices .choice:hover:enabled, .vn-choices .choice:focus-visible { filter: var(--ds-hover-filter); }
 .vn-choices .choice:active:enabled { translate: 0 1px; box-shadow: var(--ds-action-pressed-shadow); }
 .vn-choices .choice:focus-visible { outline: var(--ds-edge-thick) solid var(--ds-focus); outline-offset: 0; box-shadow: var(--ds-focus-halo); }
 /* One that cannot be chosen yet or at all: the glass, its words muted (its reason under it). */

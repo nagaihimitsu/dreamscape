@@ -2,6 +2,7 @@ import { useEffect, useImperativeHandle, useMemo, useRef, useState, type CSSProp
 import type { LineDelivery, SceneShakeSize } from "../content/tags";
 import { vibrate } from "../audio/vibration";
 import { SCENE_SHAKES, sceneShakeFrames } from "./scene-atmosphere";
+import { EASE, MOTION } from "./motion";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
 import { useLineVoice, type VoiceLink } from "./useVoice";
@@ -28,7 +29,7 @@ export function shakeWindow(line: HTMLElement) {
   const target = line.closest<HTMLElement>(`[${DIALOGUE_WINDOW_ATTRIBUTE}]`) ?? line;
   target.animate?.(
     [{ translate: "0 0" }, { translate: "-6px 0" }, { translate: "5px 0" }, { translate: "-3px 0" }, { translate: "2px 0" }, { translate: "0 0" }],
-    { duration: 320, easing: "ease-out" },
+    { duration: MOTION.short, easing: EASE.out },
   );
 }
 
@@ -47,7 +48,7 @@ const SHAKEN_PEOPLE = ":scope > .vn-character-layer, :scope > .battle-stage";
 export function shakeScene(line: HTMLElement | null, size: SceneShakeSize) {
   const root = line?.closest<HTMLElement>(SCENE_ROOT);
   if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches || root.closest(".reduce-motion")) return;
-  const options = { duration: SCENE_SHAKES[size].ms, easing: "ease-out" };
+  const options = { duration: SCENE_SHAKES[size].ms, easing: EASE.out };
   for (const layer of root.querySelectorAll<HTMLElement>(SHAKEN_PICTURE)) layer.animate?.(sceneShakeFrames(size, true), options);
   for (const layer of root.querySelectorAll<HTMLElement>(SHAKEN_PEOPLE)) layer.animate?.(sceneShakeFrames(size, false), options);
 }

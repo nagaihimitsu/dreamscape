@@ -60,7 +60,6 @@ const characterSchema = z.object({
   // The figure's size in its picture, against the standard (1): a shorter person, or one who stoops or sits, is drawn
   // smaller, feet where they were (character-portrait.css). Every screen that shows the character follows it.
   figureScale: z.number().min(0.5).max(1.2).optional(),
-  placeholderColor: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   // The colours of its name band (nameBandSchema); without them the band is the window's blue.
   nameBand: nameBandSchema.optional(),
   variants: z.array(variantSchema),

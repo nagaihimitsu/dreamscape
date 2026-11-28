@@ -1,4 +1,5 @@
 import type { SceneShakeSize, WeatherKind } from "../content/tags";
+import { MOTION } from "./motion";
 
 // The scene's atmosphere (2026-11-13 user decision): the drawn parts of a line's `# weather:`, the scene's shake of
 // `# shake` and the portraits' breathing. Pure rules, apart from the components (SceneAtmosphere.tsx,
@@ -44,9 +45,9 @@ export function weatherParts(kind: WeatherKind): WeatherPart[] {
 
 /** A scene's shake (`# shake`): how far it moves (px) and how long it takes (ms), by its size. */
 export const SCENE_SHAKES: Readonly<Record<SceneShakeSize, { px: number; ms: number }>> = {
-  small: { px: 3, ms: 300 },
-  normal: { px: 6, ms: 380 },
-  large: { px: 10, ms: 450 },
+  small: { px: 3, ms: MOTION.fast },
+  normal: { px: 6, ms: MOTION.short },
+  large: { px: 10, ms: MOTION.scene },
 };
 
 /**

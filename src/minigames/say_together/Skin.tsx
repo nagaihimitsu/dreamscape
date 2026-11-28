@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import { SAY_GAME, SAY_WARMUP, sayFirstDetail, type SayGame, type SayRecord, type SayTogetherOutcome, type SayTogetherParams, type SayWord } from "./rules";
@@ -189,13 +190,13 @@ export function sayTogetherSkinFor(game: SayGame, script: SayScript = STORY): Rh
             if (word < wordCount - 1) live.current.vibrate("tap");
           } else if (state === "off") {
             if (said[word] === "together") juice.denied(yourBubble.current);
-            else live.current.sound(SOUNDS.voice, { volume: 0.4, rate: 0.85 });
+            else live.current.sound(SOUNDS.voice, { volume: SE_VOLUME.soft, rate: 0.85 });
           }
         });
         said = judgement.words;
         // Her words, one a beat (her chime, unless the player's word already met hers).
         while (spoken < wordCount && ms >= game.wordsAt[spoken] && !ended) {
-          if (judgement.words[spoken] !== "together") live.current.sound(SOUNDS.voice, { volume: 0.6 });
+          if (judgement.words[spoken] !== "together") live.current.sound(SOUNDS.voice, { volume: SE_VOLUME.normal });
           spoken += 1;
         }
         // The first word said is the story's outcome: the real play's one try is spent (no leaving it now).

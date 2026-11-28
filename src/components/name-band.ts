@@ -1,5 +1,6 @@
 import { characterNameBand, resolveCharacterCostume, type CostumeContext, type NameBandColours } from "../content/character-assets";
 import { characterCatalog as catalog } from "./character-catalog";
+import { GRAY } from "./greys";
 import { OPPOSITE_PLACES, type OppositePlace, type Stage, type StageFocus } from "./scene-stage";
 import { useWornCostume } from "./worn-costume";
 
@@ -40,7 +41,7 @@ export function speakerSpot(stage: Stage, focus: StageFocus, layout: "scene" | "
 
 const INK_LIGHT = "#ffffff";
 /** The window's ink (romance-scene.css --vn-text). */
-const INK_DARK = "#24262b";
+const INK_DARK = GRAY[1];
 
 const rgb = (hex: string) => [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16));
 const linear = (value: number) => {
@@ -86,8 +87,8 @@ export function bandColours({ fill, edge }: NameBandColours): Required<Omit<Name
   return { fill: shown, edge: edge.toLowerCase(), ink };
 }
 
-/** The band of a speaker without colours of their own: the window's blue (romance-scene.css --vn-name-bg), a lighter rim. */
-const PLAIN_BAND: NameBandColours = { fill: "#5a5e67", edge: "#c4c7cd" };
+/** The band of a speaker without colours of their own: the grey of --ds-speaker (romance-scene.css --vn-name-bg), its rim --ds-speaker-edge. */
+const PLAIN_BAND: NameBandColours = { fill: GRAY[3], edge: GRAY[4] };
 
 /**
  * The name band of the line on screen: over the speaker's place on the stage (speakerSpot; else at the window's left),

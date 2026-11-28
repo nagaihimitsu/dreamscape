@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import { availableOutcome } from "../fallback";
 import type { StepPickFieldProps, StepPickSkin, StepPickView } from "../engines/step_pick/EnginePlay";
 import type { StepPickTuning } from "../engines/step_pick/engine";
@@ -197,7 +198,7 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
   useEffect(() => {
     if (!view.pushes) return;
     if (view.lastPush === "bounced") {
-      play.current(SOUNDS.stare, { volume: 0.6, rate: 0.8 });
+      play.current(SOUNDS.stare, { volume: SE_VOLUME.normal, rate: 0.8 });
       buzz.current("tap");
     } else play.current(SOUNDS.stare);
     if (pride === 1 && view.lastPush === "bounced" && !view.ending && roomy()) kitRef.current.react("oops", PITY_JA);
@@ -206,7 +207,7 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
   // His fake walk-away: two steps as he turns; she notices his peek (once).
   const peeked = useRef(false);
   useEffect(() => {
-    if (look === "turn") play.current(SOUNDS.step, { volume: 0.5 });
+    if (look === "turn") play.current(SOUNDS.step, { volume: SE_VOLUME.soft });
     if (look === "peek" && !peeked.current && roomy()) {
       peeked.current = true;
       kitRef.current.react("laugh", PEEK_JA);
@@ -218,8 +219,8 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
       play.current(SOUNDS.stamp);
       buzz.current("hit");
     } else {
-      if (away) play.current(SOUNDS.snatch, { volume: 0.7 });
-      play.current(SOUNDS.stamp, { volume: 0.8, rate: 0.85 });
+      if (away) play.current(SOUNDS.snatch, { volume: SE_VOLUME.normal });
+      play.current(SOUNDS.stamp, { volume: SE_VOLUME.normal, rate: 0.85 });
     }
     kitRef.current.juice.squash(paper.current?.querySelector(".mg-raju-haggle-stamp") ?? null, "land");
     kitRef.current.juice.shake("s");

@@ -4,7 +4,7 @@ import { presentationSchema } from "./schemas";
 describe("background image paths", () => {
   const presentation = (imagePath: string) => ({
     schemaVersion: 1, ending: { titleJa: "旅の終わり", descriptionJa: "旅が終わる。", buttonJa: "戻る" }, emotions: {},
-    backgrounds: { cafe: { nameJa: "カフェ", captionJa: "カフェ ／ 午後", color: "#e6d8bb", imagePath } }, memories: {},
+    backgrounds: { cafe: { nameJa: "カフェ", captionJa: "カフェ ／ 午後", imagePath } }, memories: {},
   });
 
   it("stay inside assets/", () => {

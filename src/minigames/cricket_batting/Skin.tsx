@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { SE_VOLUME } from "../../audio/se-rules";
 import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import {
@@ -142,8 +143,8 @@ const SOUNDS = { hit: "bat_hit", bricks: "bricks_fall", cheer: "applause" } as c
 /** The children's cheer this long after a six on the play's clock (its 120 ms stop holds the clock: about 150 ms on screen). */
 const CHEER_AFTER_MS = 30;
 /** A ball knocking against the still plank: the bat's sound, soft and low; the bouncer's bounce off the crack, a tick. */
-const PLANK_KNOCK = { volume: 0.4, rate: 0.8 } as const;
-const CRACK_TICK = { volume: 0.25, rate: 1.6 } as const;
+const PLANK_KNOCK = { volume: SE_VOLUME.soft, rate: 0.8 } as const;
+const CRACK_TICK = { volume: SE_VOLUME.faint, rate: 1.6 } as const;
 
 /**
  * Each outcome's moment of impact (group1 3, group3 6.4): the hit-stop on the ball, the burst, the shake, and her face
@@ -305,7 +306,7 @@ export function cricketSkinFor(tuning: CricketTuning): CueTapSkin<CricketParams,
         }
         if (cheerAt !== null && ms >= cheerAt) {
           cheerAt = null;
-          live.current.sound(SOUNDS.cheer, { volume: 0.6 });
+          live.current.sound(SOUNDS.cheer, { volume: SE_VOLUME.normal });
         }
         // A ball not hit reaches the bricks behind the bat and knocks them down (the bowler's side cheers)…
         if (!flight && !plank && !fell && ms >= plan.bricks) {
